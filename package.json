@@ -1,0 +1,35 @@
+{
+	"name": "@danfugere/frame",
+	"version": "0.1.0",
+	"description": "An opinionated CLI that helps humans and agents code in small, Rails-inspired frames.",
+	"type": "module",
+	"bin": {
+		"frame": "dist/index.js"
+	},
+	"scripts": {
+		"dev": "bun run src/index.ts",
+		"build": "bun build src/index.ts --target bun --outdir dist",
+		"check": "tsc --noEmit",
+		"test": "vitest run",
+		"lint": "eslint .",
+		"format": "prettier --write .",
+		"prepack": "bun run build"
+	},
+	"dependencies": {
+		"commander": "^12.1.0"
+	},
+	"devDependencies": {
+		"@types/bun": "^1.2.18",
+		"@types/node": "^22.15.3",
+		"@typescript-eslint/eslint-plugin": "^8.31.1",
+		"@typescript-eslint/parser": "^8.31.1",
+		"eslint": "^9.25.1",
+		"eslint-config-prettier": "^10.1.2",
+		"prettier": "^3.5.3",
+		"typescript": "^5.8.3",
+		"vitest": "^3.1.2"
+	},
+	"engines": {
+		"bun": ">=1.2.0"
+	}
+}
