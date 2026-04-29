@@ -14,9 +14,10 @@ interface PackageManifest {
 
 export async function detectProjectKind(root: string): Promise<DetectedProjectKind> {
 	const manifest = await readPackage(root);
+	const explicitKind = explicitProjectKind(manifest);
 
-	if (manifest?.frame?.kind === 'app' || manifest?.frame?.kind === 'lib') {
-		return manifest.frame.kind;
+	if (explicitKind) {
+		return explicitKind;
 	}
 
 	if (await hasFile(root, 'svelte.config.js')) {
@@ -32,6 +33,14 @@ export async function detectProjectKind(root: string): Promise<DetectedProjectKi
 	}
 
 	return 'unknown';
+}
+
+function explicitProjectKind(manifest: PackageManifest | undefined): DetectedProjectKind | undefined {
+	if (manifest?.frame?.kind === 'app' || manifest?.frame?.kind === 'lib') {
+		return manifest.frame.kind;
+	}
+
+	return undefined;
 }
 
 async function readPackage(root: string): Promise<PackageManifest | undefined> {

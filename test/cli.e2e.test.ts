@@ -23,8 +23,10 @@ test('CLI scaffolds and verifies a lib project', async () => {
 
 	await runCommand(['bun', 'install'], project);
 	await runCommand(['bun', 'run', 'check'], project);
+	await runCommand(['bun', 'run', 'lint'], project);
 	await runCommand(['bun', 'run', 'test'], project);
 	await runCommand(['bun', 'run', 'build'], project);
+	await runCommand(['bun', 'run', 'verify'], project);
 	await rm(root, { recursive: true, force: true });
 }, 180_000);
 
@@ -48,8 +50,10 @@ test('CLI scaffolds and verifies an app project with routes', async () => {
 
 	await runCommand(['bun', 'install'], project);
 	await runCommand(['bun', 'run', 'check'], project);
+	await runCommand(['bun', 'run', 'lint'], project);
 	await runCommand(['bun', 'run', 'test'], project);
 	await runCommand(['bun', 'run', 'build'], project);
+	await runCommand(['bun', 'run', 'verify'], project);
 
 	const server = spawn('bun', ['x', 'vite', 'preview', '--host', '127.0.0.1', '--port', '43321'], {
 		cwd: project,
@@ -106,6 +110,15 @@ test('CLI reports edge errors cleanly and supports force overwrites', async () =
 	expect(blocked.stderr).toContain('Refusing to overwrite');
 	const forced = await runFrame(['generate', 'service', 'PublishPost', '--force'], project);
 	expect(forced.stdout).toContain('overwrite src/services/PublishPostService.ts');
+
+	await runCommand(['bun', 'install'], project);
+	await writeFile(
+		join(project, 'src/services/OversizedService.ts'),
+		['export class OversizedService {', '\trun(): void {', ...Array.from({ length: 36 }, () => '\t\tvoid 1;'), '\t}', '}'].join('\n')
+	);
+	const lintFailure = await runCommand(['bun', 'run', 'lint'], project, false);
+	expect(lintFailure.exitCode).toBe(1);
+	expect(`${lintFailure.stdout}\n${lintFailure.stderr}`).toContain('frame/max-method-lines');
 
 	await rm(root, { recursive: true, force: true });
 }, 120_000);

@@ -1,5 +1,5 @@
 import { resolve } from 'node:path';
-import { Command } from 'commander';
+import type { Command } from 'commander';
 import { auditPath } from '../audit/audit';
 import { renderAudit } from '../audit/render';
 

@@ -1,6 +1,14 @@
 import { toCamelCase, toKebabCase, toPascalCase } from '../core/case';
 import type { PlannedFile } from '../core/files';
 
+interface EntityFileInput {
+	folder: string;
+	fileName: string;
+	className: string;
+	contents: string;
+	expectation: string;
+}
+
 export function controllerFiles(name: string): PlannedFile[] {
 	const className = `${toPascalCase(name)}Controller`;
 	const fileName = toKebabCase(name);
@@ -37,7 +45,13 @@ export function repositoryFiles(name: string): PlannedFile[] {
 	const className = `${toPascalCase(name)}Repository`;
 	const fileName = toKebabCase(name);
 
-	return entityFiles('repositories', fileName, className, repositoryContents(className), 'saves records');
+	return entityFiles({
+		folder: 'repositories',
+		fileName,
+		className,
+		contents: repositoryContents(className),
+		expectation: 'saves records'
+	});
 }
 
 export function adapterFiles(name: string): PlannedFile[] {
@@ -45,7 +59,7 @@ export function adapterFiles(name: string): PlannedFile[] {
 	const fileName = toKebabCase(name);
 	const contents = `export interface ${className}Config {\n\tname?: string;\n}\n\nexport class ${className} {\n\tconstructor(private readonly config: ${className}Config = {}) {}\n\n\tconnect(): string {\n\t\treturn this.config.name ?? '${fileName}';\n\t}\n}\n`;
 
-	return entityFiles('adapters', fileName, className, contents, 'connects');
+	return entityFiles({ folder: 'adapters', fileName, className, contents, expectation: 'connects' });
 }
 
 export function validatorFiles(name: string): PlannedFile[] {
@@ -53,7 +67,7 @@ export function validatorFiles(name: string): PlannedFile[] {
 	const fileName = toKebabCase(name);
 	const contents = `export interface ${className}Result {\n\tvalid: boolean;\n\terrors: string[];\n}\n\nexport class ${className} {\n\tvalidate(input: Record<string, unknown>): ${className}Result {\n\t\tconst errors = Object.keys(input).length === 0 ? ['input is empty'] : [];\n\t\treturn { valid: errors.length === 0, errors };\n\t}\n}\n`;
 
-	return entityFiles('validators', fileName, className, contents, 'validates input');
+	return entityFiles({ folder: 'validators', fileName, className, contents, expectation: 'validates input' });
 }
 
 export function serializerFiles(name: string): PlannedFile[] {
@@ -61,7 +75,7 @@ export function serializerFiles(name: string): PlannedFile[] {
 	const fileName = toKebabCase(name);
 	const contents = `export class ${className} {\n\tserialize(input: Record<string, unknown>): Record<string, unknown> {\n\t\treturn { ...input };\n\t}\n}\n`;
 
-	return entityFiles('serializers', fileName, className, contents, 'serializes input');
+	return entityFiles({ folder: 'serializers', fileName, className, contents, expectation: 'serializes input' });
 }
 
 export function policyFiles(name: string): PlannedFile[] {
@@ -69,7 +83,7 @@ export function policyFiles(name: string): PlannedFile[] {
 	const fileName = toKebabCase(name);
 	const contents = `export interface ${className}Actor {\n\trole?: string;\n}\n\nexport class ${className} {\n\tcanRead(actor: ${className}Actor): boolean {\n\t\treturn actor.role === 'admin';\n\t}\n}\n`;
 
-	return entityFiles('policies', fileName, className, contents, 'checks access');
+	return entityFiles({ folder: 'policies', fileName, className, contents, expectation: 'checks access' });
 }
 
 export function seederFiles(name: string): PlannedFile[] {
@@ -104,18 +118,12 @@ export function utilFiles(name: string): PlannedFile[] {
 	];
 }
 
-function entityFiles(
-	folder: string,
-	fileName: string,
-	className: string,
-	contents: string,
-	expectation: string
-): PlannedFile[] {
+function entityFiles(input: EntityFileInput): PlannedFile[] {
 	return [
-		{ path: `src/${folder}/${className}.ts`, contents },
+		{ path: `src/${input.folder}/${input.className}.ts`, contents: input.contents },
 		{
-			path: `test/${folder}/${fileName}.test.ts`,
-			contents: `import { expect, test } from 'vitest';\nimport { ${className} } from '../../src/${folder}/${className}';\n\ntest('${className} ${expectation}', () => {\n\texpect(new ${className}()).toBeInstanceOf(${className});\n});\n`
+			path: `test/${input.folder}/${input.fileName}.test.ts`,
+			contents: `import { expect, test } from 'vitest';\nimport { ${input.className} } from '../../src/${input.folder}/${input.className}';\n\ntest('${input.className} ${input.expectation}', () => {\n\texpect(new ${input.className}()).toBeInstanceOf(${input.className});\n});\n`
 		}
 	];
 }

@@ -8,10 +8,15 @@ test('app projects include SvelteKit and specification files', () => {
 
 	expect(paths).toContain('svelte.config.js');
 	expect(paths).toContain('playwright.config.ts');
+	expect(paths).toContain('eslint.config.js');
+	expect(paths).toContain('eslint.frame-rules.js');
 	expect(paths).toContain('src/app.html');
 	expect(paths).toContain('specification/README.md');
 	expect(packageJson.frame.kind).toBe('app');
 	expect(packageJson.scripts['test:e2e']).toBe('playwright test');
+	expect(packageJson.scripts.lint).toContain('eslint');
+	expect(packageJson.scripts.verify).toContain('bun run lint');
+	expect(packageJson.devDependencies.eslint).toBeDefined();
 });
 
 test('library projects include Bun TypeScript test structure', () => {
@@ -20,8 +25,12 @@ test('library projects include Bun TypeScript test structure', () => {
 	const packageJson = JSON.parse(files.find((file) => file.path === 'package.json')?.contents ?? '{}');
 
 	expect(paths).toContain('src/index.ts');
+	expect(paths).toContain('eslint.config.js');
+	expect(paths).toContain('eslint.frame-rules.js');
 	expect(paths).toContain('test/index.test.ts');
 	expect(paths).toContain('tsconfig.json');
 	expect(packageJson.frame.kind).toBe('lib');
 	expect(packageJson.scripts.test).toBe('bun run test:unit');
+	expect(packageJson.scripts.verify).toContain('bun run lint');
+	expect(packageJson.devDependencies['@typescript-eslint/parser']).toBeDefined();
 });

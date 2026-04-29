@@ -1,4 +1,4 @@
-import { Command } from 'commander';
+import type { Command } from 'commander';
 import { fail } from '../core/errors';
 import { findGuide, guides } from '../guides/guide';
 import { renderGuide } from '../guides/render';

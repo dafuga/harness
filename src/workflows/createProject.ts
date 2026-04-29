@@ -2,6 +2,8 @@ import { ensureParents, renderFileList, writePlannedFiles, type FileWriteResult 
 import { validateProjectName } from '../core/validation';
 import { projectFiles, type ProjectKind } from '../templates/project';
 
+export type { ProjectKind } from '../templates/project';
+
 export interface CreateProjectInput {
 	kind: ProjectKind;
 	name: string;

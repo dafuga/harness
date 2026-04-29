@@ -80,7 +80,7 @@ function fileStatus(
 		return 'overwritten';
 	}
 
-	fail(`Refusing to overwrite ${path}. Re-run with --force to replace it.`);
+	return fail(`Refusing to overwrite ${path}. Re-run with --force to replace it.`);
 }
 
 function isMissingFile(error: unknown): boolean {

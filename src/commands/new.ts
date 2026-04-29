@@ -1,6 +1,6 @@
-import { Command } from 'commander';
+import type { Command } from 'commander';
 import { createProject, renderCreateProject } from '../workflows/createProject';
-import type { ProjectKind } from '../templates/project';
+import type { ProjectKind } from '../workflows/createProject';
 
 export function registerNewCommand(program: Command): void {
 	const command = program.command('new').description('Create a new Frame project.');

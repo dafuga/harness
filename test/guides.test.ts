@@ -16,3 +16,10 @@ test('guidance covers every non-model scaffold topic', () => {
 		expect(topics.has(kind), kind).toBe(true);
 	}
 });
+
+test('code-rules guidance exposes hard Frame limits', () => {
+	const guide = findGuide('code-rules');
+
+	expect(guide?.rules.join('\n')).toContain('Functions stay at or below 55 lines');
+	expect(guide?.rules.join('\n')).toContain('Classes stay at or below 120 lines');
+});

@@ -8,8 +8,11 @@ import { parseFields } from '../core/fields';
 import { adapterTypeFiles } from '../templates/adapterTypes';
 import { modelFiles, type AdapterName } from '../templates/model';
 import { pieceFiles, type PieceKind } from '../templates/pieces';
-import { isAppOnlyScaffold } from '../templates/scaffoldTypes';
+import { isAppOnlyScaffold, scaffoldKinds } from '../templates/scaffoldTypes';
 import { adapterExportPlan, modelExportPlans, pieceExportPlans } from './exportPlans';
+
+export { scaffoldKinds };
+export type { PieceKind };
 
 const adapters = ['d1', 'sqlite', 'postgres'] as const;
 
@@ -75,7 +78,7 @@ function normalizeAdapter(value: string): AdapterName {
 		return value as AdapterName;
 	}
 
-	fail(`Unsupported adapter "${value}". Use d1, sqlite, or postgres.`);
+	return fail(`Unsupported adapter "${value}". Use d1, sqlite, or postgres.`);
 }
 
 async function maybeExport(root: string, plans: ExportPlan[]): Promise<boolean> {

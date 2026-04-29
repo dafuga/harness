@@ -1,4 +1,6 @@
 import type { PlannedFile } from '../core/files';
+import { frameRuleLimits, frameRuleSummaries } from '../rules/catalog';
+import { lintConfigFiles } from './lintConfig';
 
 export type ProjectKind = 'app' | 'lib';
 
@@ -14,6 +16,7 @@ export function projectFiles(input: ProjectTemplateInput): PlannedFile[] {
 function appFiles(name: string): PlannedFile[] {
 	return [
 		...appConfigFiles(name),
+		...lintConfigFiles(),
 		...appSourceFiles(name),
 		...appTestFiles()
 	];
@@ -21,6 +24,7 @@ function appFiles(name: string): PlannedFile[] {
 
 function appConfigFiles(name: string): PlannedFile[] {
 	return [
+		...lintConfigFiles(),
 		{
 			path: 'package.json',
 			contents: JSON.stringify(appPackage(name), null, '\t') + '\n'
@@ -47,7 +51,7 @@ function appConfigFiles(name: string): PlannedFile[] {
 		{
 			path: 'tsconfig.json',
 			contents:
-				'{\n\t"extends": "./.svelte-kit/tsconfig.json",\n\t"compilerOptions": {\n\t\t"strict": true,\n\t\t"moduleResolution": "bundler",\n\t\t"skipLibCheck": true\n\t}\n}\n'
+				'{\n\t"extends": "./.svelte-kit/tsconfig.json",\n\t"compilerOptions": {\n\t\t"strict": true,\n\t\t"moduleResolution": "bundler",\n\t\t"skipLibCheck": true\n\t},\n\t"include": ["src/**/*.ts", "src/**/*.svelte", "test/**/*.ts", "db/**/*.ts"]\n}\n'
 		}
 	];
 }
@@ -90,6 +94,7 @@ function appTestFiles(): PlannedFile[] {
 
 function libFiles(name: string): PlannedFile[] {
 	return [
+		...lintConfigFiles(),
 		{
 			path: 'package.json',
 			contents: JSON.stringify(libPackage(name), null, '\t') + '\n'
@@ -132,15 +137,22 @@ function appPackage(name: string): Record<string, unknown> {
 			dev: 'vite dev --host --port 3322',
 			build: 'vite build',
 			check: 'svelte-kit sync && svelte-check --tsconfig ./tsconfig.json',
+			lint: 'svelte-kit sync && eslint .',
 			test: 'bun run test:unit',
 			'test:unit': 'vitest run',
-			'test:e2e': 'playwright test'
+			'test:e2e': 'playwright test',
+			verify: 'bun run check && bun run lint && bun run test && bun run build'
 		},
 		devDependencies: {
 			'@playwright/test': '^1.28.1',
+			'@eslint/js': '^9.25.1',
 			'@sveltejs/adapter-auto': '^4.0.0',
 			'@sveltejs/kit': '^2.16.1',
 			'@sveltejs/vite-plugin-svelte': '^5.0.0',
+			'@typescript-eslint/eslint-plugin': '^8.31.1',
+			'@typescript-eslint/parser': '^8.31.1',
+			eslint: '^9.25.1',
+			'eslint-config-prettier': '^10.1.2',
 			'svelte-check': '^4.0.0',
 			svelte: '^5.0.0',
 			typescript: '^5.8.3',
@@ -161,11 +173,18 @@ function libPackage(name: string): Record<string, unknown> {
 		scripts: {
 			build: 'bun build src/index.ts --target bun --outdir dist',
 			check: 'tsc --noEmit',
+			lint: 'eslint .',
 			test: 'bun run test:unit',
-			'test:unit': 'vitest run'
+			'test:unit': 'vitest run',
+			verify: 'bun run check && bun run lint && bun run test && bun run build'
 		},
 		devDependencies: {
+			'@eslint/js': '^9.25.1',
 			'@types/bun': '^1.2.18',
+			'@typescript-eslint/eslint-plugin': '^8.31.1',
+			'@typescript-eslint/parser': '^8.31.1',
+			eslint: '^9.25.1',
+			'eslint-config-prettier': '^10.1.2',
 			typescript: '^5.8.3',
 			vitest: '^3.1.2'
 		}
@@ -173,7 +192,7 @@ function libPackage(name: string): Record<string, unknown> {
 }
 
 function agentRules(projectType: string): string {
-	return `# AGENTS.md\n\nThis is a Frame ${projectType}.\n\n- Keep files small and focused.\n- Add or update a feature spec before implementation.\n- Prefer generated controllers, models, services, decorators, and tests.\n- Run relevant checks before handing work back.\n- Ask \`frame info <topic>\` before adding unfamiliar code.\n`;
+	return `# AGENTS.md\n\nThis is a Frame ${projectType}.\n\n- Keep files small and focused.\n- Add or update a feature spec before implementation.\n- Prefer generated controllers, models, services, decorators, and tests.\n- Run relevant checks before handing work back.\n- Ask \`frame info <topic>\` before adding unfamiliar code.\n\n## Code Rules\n\n${frameRuleSummaries.map((rule) => `- ${rule}`).join('\n')}\n\nHard limits: files ${frameRuleLimits.maxFileLines}, functions ${frameRuleLimits.maxFunctionLines}, classes ${frameRuleLimits.maxClassLines}, methods ${frameRuleLimits.maxMethodLines}, nesting ${frameRuleLimits.maxNestingDepth}.\n`;
 }
 
 function specificationReadme(): string {

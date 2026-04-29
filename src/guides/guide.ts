@@ -1,3 +1,5 @@
+import { frameRuleSummaries } from '../rules/catalog';
+
 export interface Guide {
 	topic: string;
 	summary: string;
@@ -109,6 +111,23 @@ export const guides: Guide[] = [
 		rules: ['Prefer boring names.', 'Move behavior only when the new file has a clear job.'],
 		antiPatterns: ['Do not refactor and add features in the same edit.'],
 		exampleCommands: ['frame audit src']
+	},
+	{
+		topic: 'code-rules',
+		summary: 'Keep Frame code small, explicit, and easy for humans and agents to change safely.',
+		steps: [
+			'Run lint and frame audit before handing work back.',
+			'Extract a named helper or class when a rule limit is reached.',
+			'Move orchestration into workflows and keep command modules thin.',
+			'Keep imports flowing from commands to workflows to templates/core, not backward.'
+		],
+		rules: [...frameRuleSummaries],
+		antiPatterns: [
+			'Do not add broad Manager classes.',
+			'Do not hide multiple responsibilities in one class, function, or command file.',
+			'Do not bypass generated-project lint and verify scripts.'
+		],
+		exampleCommands: ['frame audit src', 'frame info code-rules']
 	},
 	...scaffoldGuides()
 ];

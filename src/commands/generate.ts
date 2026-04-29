@@ -1,6 +1,6 @@
-import { Command } from 'commander';
-import { generateModel, generatePiece, renderGenerateResult } from '../workflows/generateCode';
-import { scaffoldKinds, type PieceKind } from '../templates/scaffoldTypes';
+import type { Command } from 'commander';
+import { generateModel, generatePiece, renderGenerateResult, scaffoldKinds } from '../workflows/generateCode';
+import type { PieceKind } from '../workflows/generateCode';
 
 export function registerGenerateCommand(program: Command): void {
 	const command = program.command('generate').alias('g').description('Generate Frame code.');

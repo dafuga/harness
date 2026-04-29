@@ -24,30 +24,34 @@ import type { PieceKind } from './scaffoldTypes';
 
 export type { PieceKind } from './scaffoldTypes';
 
+const pieceBuilders: Record<PieceKind, (name: string) => PlannedFile[]> = {
+	controller: controllerFiles,
+	service: (name) => classFiles('services', name, 'Service'),
+	decorator: (name) => classFiles('decorators', name, 'Decorator'),
+	component: componentFiles,
+	test: testFiles,
+	feature: featureFiles,
+	migration: migrationFiles,
+	view: viewFiles,
+	layout: layoutFiles,
+	api: apiFiles,
+	store: storeFiles,
+	hook: hookFiles,
+	e2e: e2eFiles,
+	adapter: adapterFiles,
+	repository: repositoryFiles,
+	validator: validatorFiles,
+	serializer: serializerFiles,
+	policy: policyFiles,
+	job: (name) => classFiles('jobs', name, 'Job'),
+	notification: (name) => classFiles('notifications', name, 'Notification'),
+	seeder: seederFiles,
+	command: (name) => classFiles('commands', name, 'Command'),
+	util: utilFiles
+};
+
 export function pieceFiles(kind: PieceKind, name: string): PlannedFile[] {
-	if (kind === 'controller') return controllerFiles(name);
-	if (kind === 'service') return classFiles('services', name, 'Service');
-	if (kind === 'decorator') return classFiles('decorators', name, 'Decorator');
-	if (kind === 'component') return componentFiles(name);
-	if (kind === 'test') return testFiles(name);
-	if (kind === 'feature') return featureFiles(name);
-	if (kind === 'migration') return migrationFiles(name);
-	if (kind === 'view') return viewFiles(name);
-	if (kind === 'layout') return layoutFiles(name);
-	if (kind === 'api') return apiFiles(name);
-	if (kind === 'store') return storeFiles(name);
-	if (kind === 'hook') return hookFiles(name);
-	if (kind === 'e2e') return e2eFiles(name);
-	if (kind === 'adapter') return adapterFiles(name);
-	if (kind === 'repository') return repositoryFiles(name);
-	if (kind === 'validator') return validatorFiles(name);
-	if (kind === 'serializer') return serializerFiles(name);
-	if (kind === 'policy') return policyFiles(name);
-	if (kind === 'job') return classFiles('jobs', name, 'Job');
-	if (kind === 'notification') return classFiles('notifications', name, 'Notification');
-	if (kind === 'seeder') return seederFiles(name);
-	if (kind === 'command') return classFiles('commands', name, 'Command');
-	return utilFiles(name);
+	return pieceBuilders[kind](name);
 }
 
 function testFiles(name: string): PlannedFile[] {
