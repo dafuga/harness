@@ -13,6 +13,14 @@ export function projectFiles(input: ProjectTemplateInput): PlannedFile[] {
 
 function appFiles(name: string): PlannedFile[] {
 	return [
+		...appConfigFiles(name),
+		...appSourceFiles(name),
+		...appTestFiles()
+	];
+}
+
+function appConfigFiles(name: string): PlannedFile[] {
+	return [
 		{
 			path: 'package.json',
 			contents: JSON.stringify(appPackage(name), null, '\t') + '\n'
@@ -32,10 +40,20 @@ function appFiles(name: string): PlannedFile[] {
 				"import { sveltekit } from '@sveltejs/kit/vite';\nimport { defineConfig } from 'vitest/config';\n\nexport default defineConfig({\n\tplugins: [sveltekit()],\n\ttest: {\n\t\tinclude: ['test/**/*.test.ts']\n\t}\n});\n"
 		},
 		{
+			path: 'playwright.config.ts',
+			contents:
+				"import { defineConfig } from '@playwright/test';\n\nexport default defineConfig({\n\ttestDir: 'tests/e2e',\n\twebServer: {\n\t\tcommand: 'bun run dev -- --host 127.0.0.1 --port 3322',\n\t\turl: 'http://127.0.0.1:3322',\n\t\treuseExistingServer: true\n\t},\n\tuse: {\n\t\tbaseURL: 'http://127.0.0.1:3322'\n\t}\n});\n"
+		},
+		{
 			path: 'tsconfig.json',
 			contents:
 				'{\n\t"extends": "./.svelte-kit/tsconfig.json",\n\t"compilerOptions": {\n\t\t"strict": true,\n\t\t"moduleResolution": "bundler",\n\t\t"skipLibCheck": true\n\t}\n}\n'
-		},
+		}
+	];
+}
+
+function appSourceFiles(name: string): PlannedFile[] {
+	return [
 		{
 			path: 'src/app.html',
 			contents:
@@ -56,7 +74,12 @@ function appFiles(name: string): PlannedFile[] {
 		{
 			path: 'src/lib/adapters/README.md',
 			contents: 'Persistence adapters live here. Generate models with `frame generate model`.\n'
-		},
+		}
+	];
+}
+
+function appTestFiles(): PlannedFile[] {
+	return [
 		{
 			path: 'test/smoke.test.ts',
 			contents:
@@ -78,7 +101,7 @@ function libFiles(name: string): PlannedFile[] {
 		{
 			path: 'tsconfig.json',
 			contents:
-				'{\n\t"compilerOptions": {\n\t\t"target": "ES2022",\n\t\t"module": "ESNext",\n\t\t"moduleResolution": "Bundler",\n\t\t"strict": true,\n\t\t"skipLibCheck": true,\n\t\t"types": ["bun-types"]\n\t},\n\t"include": ["src/**/*.ts", "test/**/*.ts"]\n}\n'
+				'{\n\t"compilerOptions": {\n\t\t"target": "ES2022",\n\t\t"module": "ESNext",\n\t\t"moduleResolution": "Bundler",\n\t\t"strict": true,\n\t\t"skipLibCheck": true,\n\t\t"types": ["bun-types"]\n\t},\n\t"include": ["src/**/*.ts", "test/**/*.ts", "db/**/*.ts"]\n}\n'
 		},
 		{
 			path: 'AGENTS.md',
@@ -102,13 +125,19 @@ function appPackage(name: string): Record<string, unknown> {
 		version: '0.1.0',
 		private: true,
 		type: 'module',
+		frame: {
+			kind: 'app'
+		},
 		scripts: {
 			dev: 'vite dev --host --port 3322',
 			build: 'vite build',
 			check: 'svelte-kit sync && svelte-check --tsconfig ./tsconfig.json',
-			test: 'vitest run'
+			test: 'bun run test:unit',
+			'test:unit': 'vitest run',
+			'test:e2e': 'playwright test'
 		},
 		devDependencies: {
+			'@playwright/test': '^1.28.1',
 			'@sveltejs/adapter-auto': '^4.0.0',
 			'@sveltejs/kit': '^2.16.1',
 			'@sveltejs/vite-plugin-svelte': '^5.0.0',
@@ -126,10 +155,14 @@ function libPackage(name: string): Record<string, unknown> {
 		name,
 		version: '0.1.0',
 		type: 'module',
+		frame: {
+			kind: 'lib'
+		},
 		scripts: {
 			build: 'bun build src/index.ts --target bun --outdir dist',
 			check: 'tsc --noEmit',
-			test: 'vitest run'
+			test: 'bun run test:unit',
+			'test:unit': 'vitest run'
 		},
 		devDependencies: {
 			'@types/bun': '^1.2.18',

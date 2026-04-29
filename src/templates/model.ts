@@ -40,9 +40,10 @@ export function modelFiles(input: ModelInput): PlannedFile[] {
 }
 
 function typeFile(className: string, fields: Field[]): string {
-	const fieldLines = fields.map((field) => `\t${field.name}: ${field.tsType};`).join('\n');
+	const fieldLines = fields.map((field) => `\t${field.name}: ${field.tsType};`);
+	const attributeLines = ['\tid: number;', ...fieldLines, '\tcreatedAt: string;', '\tupdatedAt: string;'];
 
-	return `export interface ${className}Attributes {\n\tid: number;\n${fieldLines}\n\tcreatedAt: string;\n\tupdatedAt: string;\n}\n\nexport type ${className}CreateInput = Omit<${className}Attributes, 'id' | 'createdAt' | 'updatedAt'>;\nexport type ${className}UpdateInput = Partial<${className}CreateInput>;\n`;
+	return `export interface ${className}Attributes {\n${attributeLines.join('\n')}\n}\n\nexport type ${className}CreateInput = Omit<${className}Attributes, 'id' | 'createdAt' | 'updatedAt'>;\nexport type ${className}UpdateInput = Partial<${className}CreateInput>;\n`;
 }
 
 function modelFile(className: string, tableName: string): string {
@@ -62,9 +63,14 @@ function adapterFile(adapter: AdapterName): string {
 }
 
 function migrationFile(tableName: string, fields: Field[]): string {
-	const columns = fields.map((field) => `\t${field.column} ${field.sqlType} NOT NULL`).join(',\n');
+	const columns = [
+		'\tid INTEGER PRIMARY KEY',
+		...fields.map((field) => `\t${field.column} ${field.sqlType} NOT NULL`),
+		'\tcreated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP',
+		'\tupdated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP'
+	];
 
-	return `CREATE TABLE IF NOT EXISTS ${tableName} (\n\tid INTEGER PRIMARY KEY,\n${columns},\n\tcreated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,\n\tupdated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP\n);\n`;
+	return `CREATE TABLE IF NOT EXISTS ${tableName} (\n${columns.join(',\n')}\n);\n`;
 }
 
 function modelTestFile(className: string): string {
@@ -72,7 +78,7 @@ function modelTestFile(className: string): string {
 }
 
 function d1Adapter(): string {
-	return `import type { PersistenceAdapter } from './types';\n\nexport function createD1Adapter(db: D1Database): PersistenceAdapter {\n\treturn {\n\t\tfind: async (table, id) => db.prepare(\`SELECT * FROM \${table} WHERE id = ?\`).bind(id).first(),\n\t\tfindBy: async () => [],\n\t\tcreate: async () => { throw new Error('D1 create adapter is generated as a starting point.'); },\n\t\tupdate: async () => null,\n\t\tdelete: async () => false\n\t};\n}\n`;
+	return `import type { PersistenceAdapter } from './types';\n\nexport interface D1LikeDatabase {\n\tprepare(query: string): {\n\t\tbind(...values: unknown[]): {\n\t\t\tfirst<T>(): Promise<T | null>;\n\t\t};\n\t};\n}\n\nexport function createD1Adapter(db: D1LikeDatabase): PersistenceAdapter {\n\treturn {\n\t\tfind: async (table, id) => db.prepare(\`SELECT * FROM \${table} WHERE id = ?\`).bind(id).first(),\n\t\tfindBy: async () => [],\n\t\tcreate: async () => { throw new Error('D1 create adapter is generated as a starting point.'); },\n\t\tupdate: async () => null,\n\t\tdelete: async () => false\n\t};\n}\n`;
 }
 
 function sqliteAdapter(): string {

@@ -1,4 +1,6 @@
 import { toCamelCase, toSnakeCase } from './case';
+import { fail } from './errors';
+import { validateFieldName } from './validation';
 
 export type FieldType = 'string' | 'text' | 'number' | 'boolean' | 'date' | 'json';
 
@@ -20,17 +22,35 @@ const fieldTypes: Record<FieldType, { tsType: string; sqlType: string }> = {
 };
 
 export function parseFields(rawFields: string[]): Field[] {
-	return rawFields.map(parseField);
+	const fields = rawFields.map(parseField);
+	const names = new Set<string>();
+
+	for (const field of fields) {
+		if (names.has(field.name)) {
+			fail(`Duplicate field "${field.name}". Field names must be unique.`);
+		}
+
+		names.add(field.name);
+	}
+
+	return fields;
 }
 
 function parseField(raw: string): Field {
-	const [rawName, rawType = 'string'] = raw.split(':');
+	const parts = raw.split(':');
+
+	if (parts.length > 2) {
+		fail(`Invalid field "${raw}". Use name:type.`);
+	}
+
+	const [rawName, rawType = 'string'] = parts;
+	const name = validateFieldName(rawName);
 	const type = normalizeType(rawType);
 	const details = fieldTypes[type];
 
 	return {
-		name: toCamelCase(rawName),
-		column: toSnakeCase(rawName),
+		name: toCamelCase(name),
+		column: toSnakeCase(name),
 		type,
 		tsType: details.tsType,
 		sqlType: details.sqlType
@@ -38,9 +58,11 @@ function parseField(raw: string): Field {
 }
 
 function normalizeType(value: string): FieldType {
-	if (value in fieldTypes) {
-		return value as FieldType;
+	const type = value.trim();
+
+	if (type in fieldTypes) {
+		return type as FieldType;
 	}
 
-	throw new Error(`Unsupported field type "${value}". Use string, text, number, boolean, date, or json.`);
+	fail(`Unsupported field type "${value}". Use string, text, number, boolean, date, or json.`);
 }

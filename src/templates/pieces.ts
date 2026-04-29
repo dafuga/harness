@@ -1,14 +1,28 @@
 import { toKebabCase, toPascalCase } from '../core/case';
 import type { PlannedFile } from '../core/files';
+import {
+	apiFiles,
+	componentFiles,
+	e2eFiles,
+	hookFiles,
+	layoutFiles,
+	storeFiles,
+	viewFiles
+} from './appPieces';
+import {
+	adapterFiles,
+	classFiles,
+	controllerFiles,
+	policyFiles,
+	repositoryFiles,
+	seederFiles,
+	serializerFiles,
+	utilFiles,
+	validatorFiles
+} from './packagePieces';
+import type { PieceKind } from './scaffoldTypes';
 
-export type PieceKind =
-	| 'controller'
-	| 'service'
-	| 'decorator'
-	| 'component'
-	| 'test'
-	| 'feature'
-	| 'migration';
+export type { PieceKind } from './scaffoldTypes';
 
 export function pieceFiles(kind: PieceKind, name: string): PlannedFile[] {
 	if (kind === 'controller') return controllerFiles(name);
@@ -17,54 +31,23 @@ export function pieceFiles(kind: PieceKind, name: string): PlannedFile[] {
 	if (kind === 'component') return componentFiles(name);
 	if (kind === 'test') return testFiles(name);
 	if (kind === 'feature') return featureFiles(name);
-	return migrationFiles(name);
-}
-
-function controllerFiles(name: string): PlannedFile[] {
-	const className = `${toPascalCase(name)}Controller`;
-	const fileName = toKebabCase(name);
-
-	return [
-		{
-			path: `src/controllers/${className}.ts`,
-			contents: `export class ${className} {\n\tasync index(): Promise<Response> {\n\t\treturn Response.json({ ok: true });\n\t}\n}\n`
-		},
-		{
-			path: `test/controllers/${fileName}-controller.test.ts`,
-			contents: `import { expect, test } from 'vitest';\nimport { ${className} } from '../../src/controllers/${className}';\n\ntest('${className} index returns ok', async () => {\n\tconst response = await new ${className}().index();\n\texpect(await response.json()).toEqual({ ok: true });\n});\n`
-		}
-	];
-}
-
-function classFiles(folder: string, name: string, suffix: string): PlannedFile[] {
-	const className = `${toPascalCase(name)}${suffix}`;
-	const fileName = toKebabCase(name);
-
-	return [
-		{
-			path: `src/${folder}/${className}.ts`,
-			contents: `export class ${className} {\n\trun(): string {\n\t\treturn '${fileName}';\n\t}\n}\n`
-		},
-		{
-			path: `test/${folder}/${fileName}.test.ts`,
-			contents: `import { expect, test } from 'vitest';\nimport { ${className} } from '../../src/${folder}/${className}';\n\ntest('${className} runs', () => {\n\texpect(new ${className}().run()).toBe('${fileName}');\n});\n`
-		}
-	];
-}
-
-function componentFiles(name: string): PlannedFile[] {
-	const componentName = `${toPascalCase(name)}.svelte`;
-
-	return [
-		{
-			path: `src/components/${componentName}`,
-			contents: `<script lang="ts">\n\tlet { label = '${toPascalCase(name)}' }: { label?: string } = $props();\n</script>\n\n<section>\n\t<h2>{label}</h2>\n</section>\n`
-		},
-		{
-			path: `test/components/${toKebabCase(name)}.test.ts`,
-			contents: `import { expect, test } from 'vitest';\n\ntest('${componentName} is generated', () => {\n\texpect('${componentName}').toContain('.svelte');\n});\n`
-		}
-	];
+	if (kind === 'migration') return migrationFiles(name);
+	if (kind === 'view') return viewFiles(name);
+	if (kind === 'layout') return layoutFiles(name);
+	if (kind === 'api') return apiFiles(name);
+	if (kind === 'store') return storeFiles(name);
+	if (kind === 'hook') return hookFiles(name);
+	if (kind === 'e2e') return e2eFiles(name);
+	if (kind === 'adapter') return adapterFiles(name);
+	if (kind === 'repository') return repositoryFiles(name);
+	if (kind === 'validator') return validatorFiles(name);
+	if (kind === 'serializer') return serializerFiles(name);
+	if (kind === 'policy') return policyFiles(name);
+	if (kind === 'job') return classFiles('jobs', name, 'Job');
+	if (kind === 'notification') return classFiles('notifications', name, 'Notification');
+	if (kind === 'seeder') return seederFiles(name);
+	if (kind === 'command') return classFiles('commands', name, 'Command');
+	return utilFiles(name);
 }
 
 function testFiles(name: string): PlannedFile[] {

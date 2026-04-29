@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { fail } from '../core/errors';
 import { findGuide, guides } from '../guides/guide';
 import { renderGuide } from '../guides/render';
 
@@ -15,7 +16,7 @@ function showInfo(topic: string, options: { json?: boolean }): void {
 
 	if (!guide) {
 		const topics = guides.map((entry) => entry.topic).join(', ');
-		throw new Error(`Unknown info topic "${topic}". Use one of: ${topics}.`);
+		fail(`Unknown info topic "${topic}". Use one of: ${topics}.`);
 	}
 
 	if (options.json) {

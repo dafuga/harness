@@ -19,8 +19,11 @@ export default [
 			globals: {
 				Bun: 'readonly',
 				console: 'readonly',
+				Buffer: 'readonly',
+				fetch: 'readonly',
 				process: 'readonly',
-				Response: 'readonly'
+				Response: 'readonly',
+				setTimeout: 'readonly'
 			}
 		},
 		plugins: {

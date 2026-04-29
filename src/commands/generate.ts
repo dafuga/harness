@@ -1,11 +1,6 @@
 import { Command } from 'commander';
-import { parseFields } from '../core/fields';
-import { ensureParents, renderFileList, writePlannedFiles } from '../core/files';
-import { adapterTypeFiles } from '../templates/adapterTypes';
-import { modelFiles, type AdapterName } from '../templates/model';
-import { pieceFiles, type PieceKind } from '../templates/pieces';
-
-const adapters = ['d1', 'sqlite', 'postgres'];
+import { generateModel, generatePiece, renderGenerateResult } from '../workflows/generateCode';
+import { scaffoldKinds, type PieceKind } from '../templates/scaffoldTypes';
 
 export function registerGenerateCommand(program: Command): void {
 	const command = program.command('generate').alias('g').description('Generate Frame code.');
@@ -13,40 +8,38 @@ export function registerGenerateCommand(program: Command): void {
 	command
 		.command('model <name> [fields...]')
 		.option('--adapter <adapter>', 'Persistence adapter: d1, sqlite, or postgres', 'd1')
+		.option('--force', 'Overwrite files that already exist.')
 		.description('Generate an ActiveRecord-like model.')
-		.action(generateModel);
+		.action(runGenerateModel);
 
-	for (const kind of ['controller', 'service', 'decorator', 'component', 'test', 'feature', 'migration']) {
+	for (const kind of scaffoldKinds) {
 		command
 			.command(`${kind} <name>`)
+			.option('--force', 'Overwrite files that already exist.')
 			.description(`Generate a ${kind}.`)
-			.action((name: string) => generatePiece(kind as PieceKind, name));
+			.action((name: string, options: { force?: boolean }) => runGeneratePiece(kind, name, options));
 	}
 }
 
-async function generateModel(
+async function runGenerateModel(
 	name: string,
 	rawFields: string[],
-	options: { adapter: string }
+	options: { adapter: string; force?: boolean }
 ): Promise<void> {
-	const adapter = normalizeAdapter(options.adapter);
-	const files = [...adapterTypeFiles(), ...modelFiles({ name, fields: parseFields(rawFields), adapter })];
-	await ensureParents(process.cwd(), files);
-	await writePlannedFiles(process.cwd(), files);
-	console.log(`Generated model "${name}".\n${renderFileList(files)}`);
+	const result = await generateModel({
+		name,
+		rawFields,
+		adapter: options.adapter,
+		force: options.force
+	});
+	console.log(renderGenerateResult(result));
 }
 
-async function generatePiece(kind: PieceKind, name: string): Promise<void> {
-	const files = pieceFiles(kind, name);
-	await ensureParents(process.cwd(), files);
-	await writePlannedFiles(process.cwd(), files);
-	console.log(`Generated ${kind} "${name}".\n${renderFileList(files)}`);
-}
-
-function normalizeAdapter(value: string): AdapterName {
-	if (adapters.includes(value)) {
-		return value as AdapterName;
-	}
-
-	throw new Error(`Unsupported adapter "${value}". Use d1, sqlite, or postgres.`);
+async function runGeneratePiece(
+	kind: PieceKind,
+	name: string,
+	options: { force?: boolean }
+): Promise<void> {
+	const result = await generatePiece({ kind, name, force: options.force });
+	console.log(renderGenerateResult(result));
 }
