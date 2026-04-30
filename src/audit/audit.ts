@@ -22,6 +22,7 @@ async function auditFile(root: string, path: string): Promise<AuditFinding[]> {
 
 	return [
 		...auditFileLength(displayPath, lines),
+		...auditClassCount(displayPath, structuralLines),
 		...auditBlocks(displayPath, structuralLines),
 		...auditArchitecture(displayPath, structuralLines)
 	];
@@ -37,6 +38,19 @@ function auditFileLength(path: string, lines: string[]): AuditFinding[] {
 			path,
 			rule: 'small-file',
 			message: `File has ${lines.length} lines. Split it by responsibility.`
+		}
+	];
+}
+
+function auditClassCount(path: string, lines: string[]): AuditFinding[] {
+	const count = lines.filter((line) => /^\s*(export\s+)?class\s+\w+/.test(line)).length;
+	if (count <= frameRuleLimits.maxClassesPerFile) return [];
+
+	return [
+		{
+			path,
+			rule: 'max-classes-per-file',
+			message: `File defines ${count} classes. Limit is ${frameRuleLimits.maxClassesPerFile}.`
 		}
 	];
 }
