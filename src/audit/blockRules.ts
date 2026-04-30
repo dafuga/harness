@@ -150,11 +150,11 @@ function collectMethods(lines: string[], offset: number): Block[] {
 }
 
 function startsClass(line: string): boolean {
-	return /\bclass\s+\w+/.test(line);
+	return /^\s*(export\s+)?class\s+\w+/.test(line);
 }
 
 function startsFunction(line: string): boolean {
-	return /\b(function|async function)\b/.test(line) || /^\s*(export\s+)?const\s+\w+\s*=.*=>/.test(line);
+	return /^\s*(export\s+)?(async\s+)?function\s+\w+/.test(line) || /^\s*(export\s+)?const\s+\w+\s*=.*=>/.test(line);
 }
 
 function startsMethod(line: string): boolean {

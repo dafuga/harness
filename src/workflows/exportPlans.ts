@@ -36,6 +36,19 @@ export function pieceExportPlans(kind: PieceKind, name: string): ExportPlan[] {
 		return [{ source: `../db/seed-data/${toKebabCase(name)}`, named: [`seed${toPascalCase(name)}`] }];
 	}
 
+	if (kind === 'concern') {
+		return [{ source: `./concerns/with${toPascalCase(name)}`, named: [`with${toPascalCase(name)}`] }];
+	}
+
+	if (kind === 'initializer') {
+		return [{ source: `./initializers/initialize${toPascalCase(name)}`, named: [`initialize${toPascalCase(name)}`] }];
+	}
+
+	if (kind === 'config') {
+		const configName = `${toCamelCase(name)}Config`;
+		return [{ source: `./config/${configName}`, named: [configName] }];
+	}
+
 	return [];
 }
 
@@ -51,7 +64,12 @@ function classExportName(kind: PieceKind, name: string): string | undefined {
 		policy: 'Policy',
 		job: 'Job',
 		notification: 'Notification',
-		command: 'Command'
+		command: 'Command',
+		mailer: 'Mailer',
+		helper: 'Helper',
+		channel: 'Channel',
+		form: 'Form',
+		middleware: 'Middleware'
 	};
 	const suffix = suffixes[kind];
 	return suffix ? `${toPascalCase(name)}${suffix}` : undefined;
@@ -69,7 +87,12 @@ function classExportSource(kind: PieceKind, className: string): string {
 		policy: 'policies',
 		job: 'jobs',
 		notification: 'notifications',
-		command: 'commands'
+		command: 'commands',
+		mailer: 'mailers',
+		helper: 'helpers',
+		channel: 'channels',
+		form: 'forms',
+		middleware: 'middleware'
 	};
 
 	return `./${folders[kind]}/${className}`;

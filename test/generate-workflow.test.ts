@@ -8,10 +8,16 @@ test('lib generation auto-exports package-safe scaffolds', async () => {
 	const root = await libProject();
 
 	await generatePiece({ root, kind: 'service', name: 'PublishPost' });
+	await generatePiece({ root, kind: 'mailer', name: 'Welcome' });
+	await generatePiece({ root, kind: 'concern', name: 'Publishable' });
+	await generatePiece({ root, kind: 'config', name: 'Search' });
 	await generateModel({ root, name: 'Post', rawFields: ['title:string'], adapter: 'sqlite' });
 
 	const index = await readFile(join(root, 'src/index.ts'), 'utf8');
 	expect(index).toContain("export { PublishPostService } from './services/PublishPostService';");
+	expect(index).toContain("export { WelcomeMailer } from './mailers/WelcomeMailer';");
+	expect(index).toContain("export { withPublishable } from './concerns/withPublishable';");
+	expect(index).toContain("export { searchConfig } from './config/searchConfig';");
 	expect(index).toContain("export { Post } from './models/Post';");
 	expect(index).toContain("export type { PostAttributes, PostCreateInput, PostUpdateInput }");
 	await rm(root, { recursive: true, force: true });

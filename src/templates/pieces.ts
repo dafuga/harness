@@ -6,6 +6,7 @@ import {
 	e2eFiles,
 	hookFiles,
 	layoutFiles,
+	partialFiles,
 	storeFiles,
 	viewFiles
 } from './appPieces';
@@ -20,6 +21,17 @@ import {
 	utilFiles,
 	validatorFiles
 } from './packagePieces';
+import {
+	channelFiles,
+	concernFiles,
+	configFiles,
+	formFiles,
+	helperFiles,
+	initializerFiles,
+	mailerFiles,
+	middlewareFiles,
+	resourceFiles
+} from './railsPieces';
 import type { PieceKind } from './scaffoldTypes';
 
 export type { PieceKind } from './scaffoldTypes';
@@ -47,7 +59,17 @@ const pieceBuilders: Record<PieceKind, (name: string) => PlannedFile[]> = {
 	notification: (name) => classFiles('notifications', name, 'Notification'),
 	seeder: seederFiles,
 	command: (name) => classFiles('commands', name, 'Command'),
-	util: utilFiles
+	util: utilFiles,
+	mailer: mailerFiles,
+	helper: helperFiles,
+	concern: concernFiles,
+	channel: channelFiles,
+	resource: resourceFiles,
+	form: formFiles,
+	partial: partialFiles,
+	initializer: initializerFiles,
+	config: configFiles,
+	middleware: middlewareFiles
 };
 
 export function pieceFiles(kind: PieceKind, name: string): PlannedFile[] {

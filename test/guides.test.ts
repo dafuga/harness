@@ -23,3 +23,12 @@ test('code-rules guidance exposes hard Frame limits', () => {
 	expect(guide?.rules.join('\n')).toContain('Functions stay at or below 55 lines');
 	expect(guide?.rules.join('\n')).toContain('Classes stay at or below 120 lines');
 });
+
+test('scaffold guidance tells agents what generated code contains', () => {
+	const catalog = findGuide('scaffolds');
+	const mailer = findGuide('mailer');
+
+	expect(catalog?.rules.join('\n')).toContain('mailer: Email rendering');
+	expect(mailer?.contains?.join('\n')).toContain('Mailer class under src/mailers');
+	expect(mailer?.exampleCommands[0]).toBe('frame generate mailer example');
+});

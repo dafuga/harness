@@ -43,6 +43,8 @@ test('CLI scaffolds and verifies an app project with routes', async () => {
 	await runFrame(['generate', 'store', 'Session'], project);
 	await runFrame(['generate', 'hook', 'RequestLogger'], project);
 	await runFrame(['generate', 'e2e', 'Dashboard'], project);
+	await runFrame(['generate', 'partial', 'PromoBanner'], project);
+	await runFrame(['generate', 'resource', 'Article'], project);
 
 	for (const kind of packageKinds) {
 		await runFrame(['g', kind, 'PublishPost'], project);
@@ -139,7 +141,15 @@ const packageKinds = [
 	'notification',
 	'seeder',
 	'command',
-	'util'
+	'util',
+	'mailer',
+	'helper',
+	'concern',
+	'channel',
+	'form',
+	'initializer',
+	'config',
+	'middleware'
 ];
 
 interface CommandResult {

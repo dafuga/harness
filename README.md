@@ -10,6 +10,9 @@ and static guidance that agents can query before making a change.
 bun run dev -- new lib my-lib
 bun run dev -- new app my-app
 bun run dev -- generate model Post title:string body:text --adapter sqlite
+bun run dev -- generate mailer Welcome
+bun run dev -- generate resource Article
+bun run dev -- info scaffolds
 bun run dev -- info model
 bun run dev -- info model --json
 bun run dev -- audit .
@@ -27,3 +30,4 @@ bun run dev -- audit .
 - Generate a feature spec before implementation work.
 - Keep persistence behind adapters.
 - Give agents static, explicit instructions through `frame info`.
+- Use `frame info scaffolds --json` to inspect what each scaffold should contain.

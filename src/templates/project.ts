@@ -24,7 +24,6 @@ function appFiles(name: string): PlannedFile[] {
 
 function appConfigFiles(name: string): PlannedFile[] {
 	return [
-		...lintConfigFiles(),
 		{
 			path: 'package.json',
 			contents: JSON.stringify(appPackage(name), null, '\t') + '\n'

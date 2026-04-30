@@ -7,7 +7,8 @@ Frame provides a Rails-like generator catalog for app and package projects. The 
 ## Acceptance Criteria
 
 - `frame new app` and `frame new lib` create detectable Frame projects.
-- `frame generate` supports model, controller, view, layout, API, component, service, decorator, adapter, repository, validator, serializer, policy, job, notification, seeder, command, util, test, feature, migration, store, hook, and e2e scaffolds.
+- `frame generate` supports model, controller, view, layout, API, component, service, decorator, adapter, repository, validator, serializer, policy, job, notification, seeder, command, util, mailer, helper, concern, channel, resource, form, partial, initializer, config, middleware, test, feature, migration, store, hook, and e2e scaffolds.
+- `frame info scaffolds` and `frame info <scaffold> --json` describe what each generated code shape should contain.
 - App-only scaffolds fail cleanly outside app projects.
 - Lib/package-safe scaffolds update `src/index.ts` exports in lib projects.
 - Existing files are protected unless `--force` is passed.

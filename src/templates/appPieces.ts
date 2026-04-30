@@ -107,6 +107,22 @@ export function e2eFiles(name: string): PlannedFile[] {
 	];
 }
 
+export function partialFiles(name: string): PlannedFile[] {
+	const componentName = `${toPascalCase(name)}Partial.svelte`;
+	const fileName = toKebabCase(name);
+
+	return [
+		{
+			path: `src/components/partials/${componentName}`,
+			contents: `<script lang="ts">\n\tlet { label = '${toPascalCase(name)}' }: { label?: string } = $props();\n</script>\n\n<div data-frame-partial="${fileName}">{label}</div>\n`
+		},
+		{
+			path: `test/components/${fileName}-partial.test.ts`,
+			contents: `import { expect, test } from 'vitest';\n\ntest('${componentName} is generated', () => {\n\texpect('${componentName}').toContain('Partial.svelte');\n});\n`
+		}
+	];
+}
+
 function titleName(name: string): string {
 	return toPascalCase(name).replace(/([a-z])([A-Z])/g, '$1 $2');
 }
