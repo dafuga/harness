@@ -18,6 +18,8 @@ export const harnessRuleSummaries = [
 	`Functions and methods take at most ${harnessRuleLimits.maxParameters} parameters.`,
 	`Cyclomatic complexity stays at or below ${harnessRuleLimits.maxComplexity}.`,
 	`Each file defines at most ${harnessRuleLimits.maxClassesPerFile} class.`,
+	'Generated scaffold file names should keep the casing and suffixes prescribed by Harness.',
+	'Function exports should use camelCase and generated function files should export the expected name.',
 	'Classes should not use catch-all Manager names.',
 	'Command modules delegate to workflows instead of importing templates or file-generation helpers.',
 	'Core, template, workflow, and command imports move in one direction.',

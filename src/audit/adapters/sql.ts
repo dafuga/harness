@@ -1,4 +1,5 @@
 import { auditFileLength } from '../commonRules';
+import { auditSqlNaming } from '../namingRules';
 import type { AuditAdapter, AuditFile } from './types';
 
 export const sqlAdapter: AuditAdapter = {
@@ -10,6 +11,7 @@ export const sqlAdapter: AuditAdapter = {
 	audit(file) {
 		return [
 			...auditFileLength(file.relativePath, file.lines),
+			...auditSqlNaming(file),
 			...auditDangerousSql(file),
 			...auditMigrationReversibility(file),
 			...auditSeedPlacement(file)

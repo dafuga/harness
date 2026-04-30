@@ -104,3 +104,32 @@ test('audit reports architecture rule violations', async () => {
 	expect(rules).toContain('thin-command-modules');
 	await rm(root, { recursive: true, force: true });
 });
+
+test('audit reports Harness scaffold file and function naming violations', async () => {
+	const root = await mkdtemp(join(tmpdir(), 'harness-audit-'));
+	await mkdir(join(root, 'src/services'), { recursive: true });
+	await mkdir(join(root, 'src/utils'), { recursive: true });
+	await mkdir(join(root, 'src/concerns'), { recursive: true });
+	await mkdir(join(root, 'db/migrations'), { recursive: true });
+
+	await writeFile(
+		join(root, 'src/services/post-service.ts'),
+		"export class PostService {\n\trun(): string {\n\t\treturn 'ok';\n\t}\n}\n"
+	);
+	await writeFile(
+		join(root, 'src/utils/format-date.ts'),
+		'export function format_date(value: string): string {\n\treturn value;\n}\n'
+	);
+	await writeFile(
+		join(root, 'src/concerns/publishable.ts'),
+		'export function publishable<T extends object>(input: T): T {\n\treturn input;\n}\n'
+	);
+	await writeFile(join(root, 'db/migrations/CreatePosts.sql'), '-- reversible: ok\n');
+
+	const findings = await auditPath(root);
+	const rules = findings.map((finding) => finding.rule);
+
+	expect(rules).toContain('file-name-pattern');
+	expect(rules).toContain('function-name-pattern');
+	await rm(root, { recursive: true, force: true });
+});

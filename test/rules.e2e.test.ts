@@ -53,6 +53,8 @@ const auditRuleIds = [
 	'max-complexity',
 	'max-nesting',
 	'max-parameters',
+	'file-name-pattern',
+	'function-name-pattern',
 	'architecture-boundaries'
 ];
 
@@ -66,14 +68,17 @@ async function writeBadRuleFixtures(project: string): Promise<void> {
 	await mkdir(join(project, 'src/core'), { recursive: true });
 	await mkdir(join(project, 'src/services'), { recursive: true });
 	await mkdir(join(project, 'src/templates'), { recursive: true });
+	await mkdir(join(project, 'src/utils'), { recursive: true });
 
 	await writeFile(join(project, 'src/long-file.ts'), longFileFixture());
 	await writeFile(join(project, 'src/long-function.ts'), longFunctionFixture());
+	await writeFile(join(project, 'src/utils/bad-name.ts'), badFunctionNameFixture());
 	await writeFile(join(project, 'src/branchy.ts'), branchyFixture());
 	await writeFile(join(project, 'src/nested.ts'), nestedFixture());
 	await writeFile(join(project, 'src/too-many.ts'), tooManyFixture());
 	await writeFile(join(project, 'src/nested-ternary.ts'), nestedTernaryFixture());
 	await writeFile(join(project, 'src/services/BigClassManager.ts'), bigClassFixture());
+	await writeFile(join(project, 'src/services/post-service.ts'), badFileNameFixture());
 	await writeFile(join(project, 'src/services/BigMethod.ts'), bigMethodFixture());
 	await writeFile(join(project, 'src/services/ManyClasses.ts'), manyClassesFixture());
 	await writeFile(
@@ -109,6 +114,14 @@ function longFunctionFixture(): string {
 		...Array.from({ length: 56 }, () => '\tvoid 1;'),
 		'}'
 	].join('\n')}\n`;
+}
+
+function badFunctionNameFixture(): string {
+	return 'export function bad_name(value: string): string {\n\treturn value;\n}\n';
+}
+
+function badFileNameFixture(): string {
+	return "export class PostService {\n\trun(): string {\n\t\treturn 'post';\n\t}\n}\n";
 }
 
 function bigClassFixture(): string {
