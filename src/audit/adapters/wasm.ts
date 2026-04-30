@@ -18,15 +18,32 @@ export const wasmAdapter: AuditAdapter = {
 function auditArtifactPlacement(file: AuditFile) {
 	const path = `/${file.relativePath}`;
 	if (artifactDirs.some((part) => path.includes(part))) return [];
-	return [{ path: file.relativePath, rule: 'wasm-artifact-placement', message: 'WASM and ABI artifacts should live under an artifact or contract directory.' }];
+	return [
+		{
+			path: file.relativePath,
+			rule: 'wasm-artifact-placement',
+			message: 'WASM and ABI artifacts should live under an artifact or contract directory.'
+		}
+	];
 }
 
 function auditArtifactPairing(file: AuditFile) {
 	if (file.extension !== '.wasm') return [];
 	const parsed = parse(file.absolutePath);
-	if (['.abi', '.cpp', '.c', '.ts'].some((ext) => existsSync(join(dirname(file.absolutePath), `${parsed.name}${ext}`)))) return [];
+	if (
+		['.abi', '.cpp', '.c', '.ts'].some((ext) =>
+			existsSync(join(dirname(file.absolutePath), `${parsed.name}${ext}`))
+		)
+	)
+		return [];
 
-	return [{ path: file.relativePath, rule: 'wasm-source-pairing', message: 'WASM artifacts should be paired with source or ABI metadata.' }];
+	return [
+		{
+			path: file.relativePath,
+			rule: 'wasm-source-pairing',
+			message: 'WASM artifacts should be paired with source or ABI metadata.'
+		}
+	];
 }
 
 function auditAbiJson(file: AuditFile) {
@@ -35,6 +52,12 @@ function auditAbiJson(file: AuditFile) {
 		JSON.parse(file.contents);
 		return [];
 	} catch {
-		return [{ path: file.relativePath, rule: 'wasm-abi-json', message: 'ABI artifacts should be valid JSON.' }];
+		return [
+			{
+				path: file.relativePath,
+				rule: 'wasm-abi-json',
+				message: 'ABI artifacts should be valid JSON.'
+			}
+		];
 	}
 }

@@ -1,6 +1,7 @@
 import type { PlannedFile } from '../core/files';
-import { frameRuleLimits, frameRuleSummaries } from '../rules/catalog';
+import { harnessRuleLimits, harnessRuleSummaries } from '../rules/catalog';
 import { auditRunnerFiles } from './auditRunner';
+import { formatConfigFiles } from './formatConfig';
 import { lintConfigFiles } from './lintConfig';
 import { verifyRunnerFiles } from './verifyRunner';
 
@@ -18,6 +19,7 @@ export function projectFiles(input: ProjectTemplateInput): PlannedFile[] {
 function appFiles(name: string): PlannedFile[] {
 	return [
 		...appConfigFiles(name),
+		...formatConfigFiles(),
 		...lintConfigFiles(),
 		...auditRunnerFiles('app'),
 		...verifyRunnerFiles('app'),
@@ -34,7 +36,7 @@ function appConfigFiles(name: string): PlannedFile[] {
 		},
 		{
 			path: 'README.md',
-			contents: `# ${name}\n\nA Frame SvelteKit app with small files, specs, tests, and adapters.\n`
+			contents: `# ${name}\n\nA Harness SvelteKit app with small files, specs, tests, and adapters.\n`
 		},
 		{
 			path: 'svelte.config.js',
@@ -80,7 +82,7 @@ function appSourceFiles(name: string): PlannedFile[] {
 		},
 		{
 			path: 'src/lib/adapters/README.md',
-			contents: 'Persistence adapters live here. Generate models with `frame generate model`.\n'
+			contents: 'Persistence adapters live here. Generate models with `harness generate model`.\n'
 		}
 	];
 }
@@ -90,13 +92,14 @@ function appTestFiles(): PlannedFile[] {
 		{
 			path: 'test/smoke.test.ts',
 			contents:
-				"import { expect, test } from 'vitest';\n\ntest('Frame app scaffold is ready', () => {\n\texpect(true).toBe(true);\n});\n"
+				"import { expect, test } from 'vitest';\n\ntest('Harness app scaffold is ready', () => {\n\texpect(true).toBe(true);\n});\n"
 		}
 	];
 }
 
 function libFiles(name: string): PlannedFile[] {
 	return [
+		...formatConfigFiles(),
 		...lintConfigFiles(),
 		...auditRunnerFiles('lib'),
 		...verifyRunnerFiles('lib'),
@@ -106,7 +109,7 @@ function libFiles(name: string): PlannedFile[] {
 		},
 		{
 			path: 'README.md',
-			contents: `# ${name}\n\nA Frame Bun TypeScript library.\n`
+			contents: `# ${name}\n\nA Harness Bun TypeScript library.\n`
 		},
 		{
 			path: 'tsconfig.json',
@@ -119,12 +122,12 @@ function libFiles(name: string): PlannedFile[] {
 		},
 		{
 			path: 'src/index.ts',
-			contents: "export function helloFrame(): string {\n\treturn 'hello from Frame';\n}\n"
+			contents: "export function helloHarness(): string {\n\treturn 'hello from Harness';\n}\n"
 		},
 		{
 			path: 'test/index.test.ts',
 			contents:
-				"import { expect, test } from 'vitest';\nimport { helloFrame } from '../src';\n\ntest('returns a greeting', () => {\n\texpect(helloFrame()).toBe('hello from Frame');\n});\n"
+				"import { expect, test } from 'vitest';\nimport { helloHarness } from '../src';\n\ntest('returns a greeting', () => {\n\texpect(helloHarness()).toBe('hello from Harness');\n});\n"
 		}
 	];
 }
@@ -135,19 +138,21 @@ function appPackage(name: string): Record<string, unknown> {
 		version: '0.1.0',
 		private: true,
 		type: 'module',
-		frame: {
+		harness: {
 			kind: 'app'
 		},
 		scripts: {
 			dev: 'vite dev --host --port 3322',
 			build: 'vite build',
 			check: 'svelte-kit sync && svelte-check --tsconfig ./tsconfig.json',
+			'format:check': 'prettier --check .',
+			format: 'prettier --write .',
 			lint: 'svelte-kit sync && eslint .',
-			audit: 'bun scripts/frame-audit.ts',
+			audit: 'bun scripts/harness-audit.ts',
 			test: 'bun run test:unit',
 			'test:unit': 'vitest run',
 			'test:e2e': 'playwright test',
-			verify: 'bun scripts/frame-verify.ts'
+			verify: 'bun scripts/harness-verify.ts'
 		},
 		devDependencies: {
 			'@playwright/test': '^1.28.1',
@@ -159,6 +164,7 @@ function appPackage(name: string): Record<string, unknown> {
 			'@typescript-eslint/parser': '^8.31.1',
 			eslint: '^9.25.1',
 			'eslint-config-prettier': '^10.1.2',
+			prettier: '^3.5.3',
 			'svelte-check': '^4.0.0',
 			svelte: '^5.0.0',
 			typescript: '^5.8.3',
@@ -173,17 +179,19 @@ function libPackage(name: string): Record<string, unknown> {
 		name,
 		version: '0.1.0',
 		type: 'module',
-		frame: {
+		harness: {
 			kind: 'lib'
 		},
 		scripts: {
 			build: 'bun build src/index.ts --target bun --outdir dist',
 			check: 'tsc --noEmit',
+			'format:check': 'prettier --check .',
+			format: 'prettier --write .',
 			lint: 'eslint .',
-			audit: 'bun scripts/frame-audit.ts',
+			audit: 'bun scripts/harness-audit.ts',
 			test: 'bun run test:unit',
 			'test:unit': 'vitest run',
-			verify: 'bun scripts/frame-verify.ts'
+			verify: 'bun scripts/harness-verify.ts'
 		},
 		devDependencies: {
 			'@eslint/js': '^9.25.1',
@@ -192,6 +200,7 @@ function libPackage(name: string): Record<string, unknown> {
 			'@typescript-eslint/parser': '^8.31.1',
 			eslint: '^9.25.1',
 			'eslint-config-prettier': '^10.1.2',
+			prettier: '^3.5.3',
 			typescript: '^5.8.3',
 			vitest: '^3.1.2'
 		}
@@ -199,7 +208,7 @@ function libPackage(name: string): Record<string, unknown> {
 }
 
 function agentRules(projectType: string): string {
-	return `# AGENTS.md\n\nThis is a Frame ${projectType}.\n\n- Keep files small and focused.\n- Add or update a feature spec before implementation.\n- Prefer generated controllers, models, services, decorators, and tests.\n- Run relevant checks before handing work back, including \`bun run audit\`.\n- Ask \`frame info <topic>\` before adding unfamiliar code.\n\n## Code Rules\n\n${frameRuleSummaries.map((rule) => `- ${rule}`).join('\n')}\n\nHard limits: files ${frameRuleLimits.maxFileLines}, functions ${frameRuleLimits.maxFunctionLines}, classes ${frameRuleLimits.maxClassLines}, methods ${frameRuleLimits.maxMethodLines}, nesting ${frameRuleLimits.maxNestingDepth}.\n`;
+	return `# AGENTS.md\n\nThis is a Harness ${projectType}.\n\n- Keep files small and focused.\n- Add or update a feature spec before implementation.\n- Prefer generated controllers, models, services, decorators, and tests.\n- Run relevant checks before handing work back, including \`bun run audit\`.\n- Ask \`harness info <topic>\` before adding unfamiliar code.\n\n## Code Rules\n\n${harnessRuleSummaries.map((rule) => `- ${rule}`).join('\n')}\n\nHard limits: files ${harnessRuleLimits.maxFileLines}, functions ${harnessRuleLimits.maxFunctionLines}, classes ${harnessRuleLimits.maxClassLines}, methods ${harnessRuleLimits.maxMethodLines}, nesting ${harnessRuleLimits.maxNestingDepth}.\n`;
 }
 
 function specificationReadme(): string {

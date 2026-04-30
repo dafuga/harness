@@ -1,4 +1,9 @@
-import { ensureParents, renderFileList, writePlannedFiles, type FileWriteResult } from '../core/files';
+import {
+	ensureParents,
+	renderFileList,
+	writePlannedFiles,
+	type FileWriteResult
+} from '../core/files';
 import { validateProjectName } from '../core/validation';
 import { projectFiles, type ProjectKind } from '../templates/project';
 
@@ -27,5 +32,5 @@ export async function createProject(input: CreateProjectInput): Promise<CreatePr
 }
 
 export function renderCreateProject(result: CreateProjectResult): string {
-	return `Created ${result.kind} frame "${result.name}".\n${renderFileList(result.writes)}`;
+	return `Created ${result.kind} harness "${result.name}".\n${renderFileList(result.writes)}`;
 }

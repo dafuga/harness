@@ -1,6 +1,6 @@
-# Frame
+# Harness
 
-Frame is an opinionated CLI for humans and coding agents. It gives projects a Rails-like
+Harness is an opinionated CLI for humans and coding agents. It gives projects a Rails-like
 structure for TypeScript: small files, focused classes, small functions, generators, specs,
 and static guidance that agents can query before making a change.
 
@@ -19,6 +19,7 @@ bun run dev -- audit .
 bun run dev -- audit . --coverage
 bun run dev -- audit . --profile app
 bun run dev -- verify --e2e
+bun run dev -- verify . --profile lib
 ```
 
 ## Project Families
@@ -26,13 +27,13 @@ bun run dev -- verify --e2e
 - `app` scaffolds a SvelteKit-shaped application inspired by Daniel's `app-template`.
 - `lib` scaffolds a Bun TypeScript package.
 
-## Frame Rules
+## Harness Rules
 
 - One file should have one reason to change.
 - Prefer small functions and tiny classes over broad modules.
 - Generate a feature spec before implementation work.
 - Keep persistence behind adapters.
-- Give agents static, explicit instructions through `frame info`.
-- Use `frame info scaffolds --json` to inspect what each scaffold should contain.
-- Use `frame audit --coverage` to inspect which ecosystem adapters covered the project.
-- Use `frame verify` to run project checks, tests, build, and Frame audit from one command.
+- Give agents static, explicit instructions through `harness info`.
+- Use `harness info scaffolds --json` to inspect what each scaffold should contain.
+- Use `harness audit --coverage` to inspect which ecosystem adapters covered the project.
+- Use `harness verify` to run format checks, project checks, tests, build, and Harness audit from one command.

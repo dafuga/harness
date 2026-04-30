@@ -1,9 +1,14 @@
 import type { Command } from 'commander';
-import { generateModel, generatePiece, renderGenerateResult, scaffoldKinds } from '../workflows/generateCode';
+import {
+	generateModel,
+	generatePiece,
+	renderGenerateResult,
+	scaffoldKinds
+} from '../workflows/generateCode';
 import type { PieceKind } from '../workflows/generateCode';
 
 export function registerGenerateCommand(program: Command): void {
-	const command = program.command('generate').alias('g').description('Generate Frame code.');
+	const command = program.command('generate').alias('g').description('Generate Harness code.');
 
 	command
 		.command('model <name> [fields...]')
@@ -17,7 +22,9 @@ export function registerGenerateCommand(program: Command): void {
 			.command(`${kind} <name>`)
 			.option('--force', 'Overwrite files that already exist.')
 			.description(`Generate a ${kind}.`)
-			.action((name: string, options: { force?: boolean }) => runGeneratePiece(kind, name, options));
+			.action((name: string, options: { force?: boolean }) =>
+				runGeneratePiece(kind, name, options)
+			);
 	}
 }
 

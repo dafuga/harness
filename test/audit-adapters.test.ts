@@ -6,7 +6,11 @@ import { auditProject } from '../src/audit/audit';
 import { adaptersForProfile, resolveAuditProfile } from '../src/audit/adapters/registry';
 
 test('audit profiles select ecosystem adapters', () => {
-	expect(adaptersForProfile('app').map((adapter) => adapter.id)).toEqual(['typescript', 'svelte', 'sql']);
+	expect(adaptersForProfile('app').map((adapter) => adapter.id)).toEqual([
+		'typescript',
+		'svelte',
+		'sql'
+	]);
 	expect(adaptersForProfile('lib').map((adapter) => adapter.id)).toEqual([
 		'typescript',
 		'cpp',
@@ -16,12 +20,12 @@ test('audit profiles select ecosystem adapters', () => {
 	]);
 });
 
-test('auto profile detects Svelte apps and Frame libs', async () => {
-	const root = await mkdtemp(join(tmpdir(), 'frame-profile-'));
+test('auto profile detects Svelte apps and Harness libs', async () => {
+	const root = await mkdtemp(join(tmpdir(), 'harness-profile-'));
 	try {
 		await writeFile(join(root, 'svelte.config.js'), 'export default {};\n');
 		expect(resolveAuditProfile(root, 'auto')).toBe('app');
-		await writeFile(join(root, 'package.json'), '{"frame":{"kind":"lib"}}\n');
+		await writeFile(join(root, 'package.json'), '{"harness":{"kind":"lib"}}\n');
 		expect(resolveAuditProfile(root, 'auto')).toBe('lib');
 	} finally {
 		await rm(root, { recursive: true, force: true });
@@ -29,7 +33,7 @@ test('auto profile detects Svelte apps and Frame libs', async () => {
 });
 
 test('coverage reports covered, ignored, and unknown files', async () => {
-	const root = await mkdtemp(join(tmpdir(), 'frame-coverage-'));
+	const root = await mkdtemp(join(tmpdir(), 'harness-coverage-'));
 	try {
 		await mkdir(join(root, 'src'));
 		await mkdir(join(root, 'node_modules'));
@@ -48,20 +52,31 @@ test('coverage reports covered, ignored, and unknown files', async () => {
 });
 
 test('ecosystem adapters report app and library rule violations', async () => {
-	const root = await mkdtemp(join(tmpdir(), 'frame-ecosystems-'));
+	const root = await mkdtemp(join(tmpdir(), 'harness-ecosystems-'));
 	try {
 		await mkdir(join(root, 'db/migrations'), { recursive: true });
 		await mkdir(join(root, 'src/components'), { recursive: true });
 		await mkdir(join(root, 'scripts'), { recursive: true });
 		await writeFile(join(root, 'db/migrations/drop_users.sql'), 'DROP TABLE users;\n');
-		await writeFile(join(root, 'src/components/bad-name.svelte'), '<script>let count = 0;</script>\n');
+		await writeFile(
+			join(root, 'src/components/bad-name.svelte'),
+			'<script>let count = 0;</script>\n'
+		);
 		await writeFile(join(root, 'scripts/run.sh'), 'rm -rf $TARGET\n');
 
-		const appRules = (await auditProject(root, { profile: 'app' })).findings.map((finding) => finding.rule);
-		const libRules = (await auditProject(root, { profile: 'lib' })).findings.map((finding) => finding.rule);
+		const appRules = (await auditProject(root, { profile: 'app' })).findings.map(
+			(finding) => finding.rule
+		);
+		const libRules = (await auditProject(root, { profile: 'lib' })).findings.map(
+			(finding) => finding.rule
+		);
 
-		expect(appRules).toEqual(expect.arrayContaining(['sql-dangerous-migration', 'svelte-script-lang']));
-		expect(libRules).toEqual(expect.arrayContaining(['shell-shebang', 'shell-strict-mode', 'shell-unsafe-rm']));
+		expect(appRules).toEqual(
+			expect.arrayContaining(['sql-dangerous-migration', 'svelte-script-lang'])
+		);
+		expect(libRules).toEqual(
+			expect.arrayContaining(['shell-shebang', 'shell-strict-mode', 'shell-unsafe-rm'])
+		);
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}

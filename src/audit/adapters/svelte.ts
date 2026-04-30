@@ -36,11 +36,23 @@ function auditScriptLanguage(file: AuditFile) {
 function auditSveltePath(file: AuditFile) {
 	const name = file.relativePath.split('/').at(-1)?.replace('.svelte', '') ?? '';
 	if (file.relativePath.startsWith('src/routes/') && !routeFiles.has(name)) {
-		return [{ path: file.relativePath, rule: 'svelte-route-file', message: 'Route Svelte files should use +page, +layout, or +error.' }];
+		return [
+			{
+				path: file.relativePath,
+				rule: 'svelte-route-file',
+				message: 'Route Svelte files should use +page, +layout, or +error.'
+			}
+		];
 	}
 
 	if (file.relativePath.startsWith('src/components/') && !/^[A-Z][A-Za-z0-9]*$/.test(name)) {
-		return [{ path: file.relativePath, rule: 'svelte-component-name', message: 'Component files should use PascalCase names.' }];
+		return [
+			{
+				path: file.relativePath,
+				rule: 'svelte-component-name',
+				message: 'Component files should use PascalCase names.'
+			}
+		];
 	}
 
 	return [];

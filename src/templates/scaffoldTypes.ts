@@ -33,9 +33,7 @@ export const scaffoldKinds = [
 	'config',
 	'middleware'
 ] as const;
-
 export type PieceKind = (typeof scaffoldKinds)[number];
-
 export interface ScaffoldDetail {
 	kind: PieceKind;
 	summary: string;
@@ -65,7 +63,10 @@ export const scaffoldDetails: Record<PieceKind, ScaffoldDetail> = {
 		'Typed props using Svelte 5 runes.',
 		'Component smoke test.'
 	]),
-	test: detail('test', 'Focused Vitest spec.', false, ['Vitest file under test.', 'Single starting assertion.']),
+	test: detail('test', 'Focused Vitest spec.', false, [
+		'Vitest file under test.',
+		'Single starting assertion.'
+	]),
 	feature: detail('feature', 'Feature specification before implementation.', false, [
 		'Planned feature markdown under specification/features/planned.',
 		'Overview, acceptance criteria, and future enhancements.'
@@ -76,7 +77,7 @@ export const scaffoldDetails: Record<PieceKind, ScaffoldDetail> = {
 	]),
 	view: detail('view', 'SvelteKit route page.', true, [
 		'Route page under src/routes/<name>/+page.svelte.',
-		'Page title and data-frame marker.',
+		'Page title and data-harness marker.',
 		'Route smoke test.'
 	]),
 	layout: detail('layout', 'SvelteKit route layout.', true, [
@@ -185,7 +186,7 @@ export const scaffoldDetails: Record<PieceKind, ScaffoldDetail> = {
 	]),
 	partial: detail('partial', 'Reusable route-level partial component.', true, [
 		'Svelte partial under src/components/partials.',
-		'Typed props and data-frame marker.',
+		'Typed props and data-harness marker.',
 		'Partial smoke test.'
 	]),
 	initializer: detail('initializer', 'Boot-time setup hook.', false, [
@@ -204,7 +205,6 @@ export const scaffoldDetails: Record<PieceKind, ScaffoldDetail> = {
 		'Middleware unit test.'
 	])
 };
-
 export function isAppOnlyScaffold(kind: PieceKind): boolean {
 	return scaffoldDetails[kind].appOnly;
 }
@@ -215,5 +215,5 @@ function detail(
 	appOnly: boolean,
 	contains: string[]
 ): ScaffoldDetail {
-	return { kind, summary, appOnly, contains, exampleCommand: `frame generate ${kind} example` };
+	return { kind, summary, appOnly, contains, exampleCommand: `harness generate ${kind} example` };
 }

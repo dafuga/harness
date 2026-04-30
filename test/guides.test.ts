@@ -6,7 +6,7 @@ test('model guidance is available for agents', () => {
 	const guide = findGuide('model');
 
 	expect(guide?.topic).toBe('model');
-	expect(guide?.exampleCommands[0]).toContain('frame generate model');
+	expect(guide?.exampleCommands[0]).toContain('harness generate model');
 });
 
 test('guidance covers every non-model scaffold topic', () => {
@@ -17,7 +17,7 @@ test('guidance covers every non-model scaffold topic', () => {
 	}
 });
 
-test('code-rules guidance exposes hard Frame limits', () => {
+test('code-rules guidance exposes hard Harness limits', () => {
 	const guide = findGuide('code-rules');
 
 	expect(guide?.rules.join('\n')).toContain('Functions stay at or below 55 lines');
@@ -30,7 +30,7 @@ test('scaffold guidance tells agents what generated code contains', () => {
 
 	expect(catalog?.rules.join('\n')).toContain('mailer: Email rendering');
 	expect(mailer?.contains?.join('\n')).toContain('Mailer class under src/mailers');
-	expect(mailer?.exampleCommands[0]).toBe('frame generate mailer example');
+	expect(mailer?.exampleCommands[0]).toBe('harness generate mailer example');
 });
 
 test('guide lookup accepts common scaffold aliases', () => {

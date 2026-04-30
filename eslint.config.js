@@ -2,9 +2,9 @@ import eslint from '@eslint/js';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import prettier from 'eslint-config-prettier';
-import frame from './eslint.frame-rules.js';
+import harness from './eslint.harness-rules.js';
 
-const frameLimits = {
+const harnessLimits = {
 	maxFileLines: 220,
 	maxFunctionLines: 55,
 	maxNestingDepth: 4,
@@ -47,7 +47,7 @@ export default [
 		},
 		plugins: {
 			'@typescript-eslint': tseslint,
-			frame
+			harness
 		},
 		rules: {
 			...eslint.configs.recommended.rules,
@@ -61,21 +61,24 @@ export default [
 			'@typescript-eslint/no-unnecessary-type-assertion': 'error',
 			'@typescript-eslint/prefer-nullish-coalescing': 'error',
 			'@typescript-eslint/prefer-optional-chain': 'error',
-			'complexity': ['error', frameLimits.maxComplexity],
+			complexity: ['error', harnessLimits.maxComplexity],
 			'consistent-return': 'error',
-			'frame/architecture-boundaries': 'error',
-			'frame/max-class-lines': 'error',
-			'frame/max-method-lines': 'error',
-			'frame/no-manager-name': 'error',
-			'frame/thin-command-modules': 'error',
-			'max-classes-per-file': ['error', frameLimits.maxClassesPerFile],
-			'max-depth': ['error', frameLimits.maxNestingDepth],
-			'max-lines': ['error', { max: frameLimits.maxFileLines, skipBlankLines: true, skipComments: true }],
+			'harness/architecture-boundaries': 'error',
+			'harness/max-class-lines': 'error',
+			'harness/max-method-lines': 'error',
+			'harness/no-manager-name': 'error',
+			'harness/thin-command-modules': 'error',
+			'max-classes-per-file': ['error', harnessLimits.maxClassesPerFile],
+			'max-depth': ['error', harnessLimits.maxNestingDepth],
+			'max-lines': [
+				'error',
+				{ max: harnessLimits.maxFileLines, skipBlankLines: true, skipComments: true }
+			],
 			'max-lines-per-function': [
 				'error',
-				{ max: frameLimits.maxFunctionLines, skipBlankLines: true, skipComments: true }
+				{ max: harnessLimits.maxFunctionLines, skipBlankLines: true, skipComments: true }
 			],
-			'max-params': ['error', frameLimits.maxParameters],
+			'max-params': ['error', harnessLimits.maxParameters],
 			'no-lonely-if': 'error',
 			'no-nested-ternary': 'error',
 			'no-unused-expressions': 'error'

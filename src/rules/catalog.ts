@@ -1,4 +1,4 @@
-export const frameRuleLimits = {
+export const harnessRuleLimits = {
 	maxFileLines: 220,
 	maxFunctionLines: 55,
 	maxClassLines: 120,
@@ -9,18 +9,18 @@ export const frameRuleLimits = {
 	maxClassesPerFile: 1
 } as const;
 
-export const frameRuleSummaries = [
-	`Files stay at or below ${frameRuleLimits.maxFileLines} lines.`,
-	`Functions stay at or below ${frameRuleLimits.maxFunctionLines} lines.`,
-	`Classes stay at or below ${frameRuleLimits.maxClassLines} lines.`,
-	`Methods stay at or below ${frameRuleLimits.maxMethodLines} lines.`,
-	`Nesting stays at or below ${frameRuleLimits.maxNestingDepth} levels.`,
-	`Functions and methods take at most ${frameRuleLimits.maxParameters} parameters.`,
-	`Cyclomatic complexity stays at or below ${frameRuleLimits.maxComplexity}.`,
-	`Each file defines at most ${frameRuleLimits.maxClassesPerFile} class.`,
+export const harnessRuleSummaries = [
+	`Files stay at or below ${harnessRuleLimits.maxFileLines} lines.`,
+	`Functions stay at or below ${harnessRuleLimits.maxFunctionLines} lines.`,
+	`Classes stay at or below ${harnessRuleLimits.maxClassLines} lines.`,
+	`Methods stay at or below ${harnessRuleLimits.maxMethodLines} lines.`,
+	`Nesting stays at or below ${harnessRuleLimits.maxNestingDepth} levels.`,
+	`Functions and methods take at most ${harnessRuleLimits.maxParameters} parameters.`,
+	`Cyclomatic complexity stays at or below ${harnessRuleLimits.maxComplexity}.`,
+	`Each file defines at most ${harnessRuleLimits.maxClassesPerFile} class.`,
 	'Classes should not use catch-all Manager names.',
 	'Command modules delegate to workflows instead of importing templates or file-generation helpers.',
 	'Core, template, workflow, and command imports move in one direction.',
-	'Frame audit applies ecosystem adapters for app and library code surfaces.',
+	'Harness audit applies ecosystem adapters for app and library code surfaces.',
 	'Unsupported file types must appear in audit coverage instead of being skipped silently.'
 ] as const;

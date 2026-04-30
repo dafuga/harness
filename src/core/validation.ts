@@ -47,7 +47,9 @@ function validateName(name: string, label: string): string {
 	}
 
 	if (!safeNamePattern.test(value)) {
-		fail(`${label} must start with a letter or number and use letters, numbers, spaces, dashes, or underscores.`);
+		fail(
+			`${label} must start with a letter or number and use letters, numbers, spaces, dashes, or underscores.`
+		);
 	}
 
 	return value;

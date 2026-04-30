@@ -35,14 +35,14 @@ export async function verifyProject(input: VerifyInput): Promise<VerifyResult> {
 		if (exitCode !== 0) return { exitCode, failedStep: script, ok: false };
 	}
 
-	input.onStep?.({ label: 'frame audit .' });
+	input.onStep?.({ label: 'harness audit .' });
 	const audit = await auditProject(root, { profile: input.profile });
 	const ok = audit.findings.length === 0;
 	return { audit, exitCode: ok ? 0 : 1, ok };
 }
 
 function scriptPlan(scripts: PackageScripts, e2e: boolean): string[] {
-	const steps = ['check', 'lint'];
+	const steps = ['format:check', 'check', 'lint'];
 	const testSteps = scripts['test:unit'] ? ['test:unit'] : ['test'];
 	const e2eSteps = e2e && scripts['test:e2e'] ? ['test:e2e'] : [];
 	return [...steps, ...testSteps, ...e2eSteps, 'build'].filter((script) => script in scripts);

@@ -9,8 +9,8 @@ export function buildProgram(): Command {
 	const program = new Command();
 
 	program
-		.name('frame')
-		.description('Opinionated Rails-inspired coding frames for humans and agents.')
+		.name('harness')
+		.description('Opinionated Rails-inspired coding harnesses for humans and agents.')
 		.version('0.1.0');
 
 	registerNewCommand(program);

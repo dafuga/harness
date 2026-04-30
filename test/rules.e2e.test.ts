@@ -2,16 +2,17 @@ import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { commandOutput, runCommand, runFrame } from './support/cli';
+import { commandOutput, runCommand, runHarness } from './support/cli';
 
-test('generated projects reject bad code through lint, verify, and Frame audit', async () => {
-	const root = await mkdtemp(join(tmpdir(), 'frame-cli-bad-rules-'));
+test('generated projects reject bad code through lint, verify, and Harness audit', async () => {
+	const root = await mkdtemp(join(tmpdir(), 'harness-cli-bad-rules-'));
 	try {
-		await runFrame(['new', 'lib', 'bad-rules'], root);
+		await runHarness(['new', 'lib', 'bad-rules'], root);
 		const project = join(root, 'bad-rules');
 
 		await writeBadRuleFixtures(project);
 		await runCommand(['bun', 'install'], project);
+		await runCommand(['bun', 'run', 'format'], project);
 
 		const lintFailure = await runCommand(['bun', 'run', 'lint'], project, false);
 		expect(lintFailure.exitCode).toBe(1);
@@ -19,9 +20,9 @@ test('generated projects reject bad code through lint, verify, and Frame audit',
 
 		const verifyFailure = await runCommand(['bun', 'run', 'verify'], project, false);
 		expect(verifyFailure.exitCode).toBe(1);
-		expect(commandOutput(verifyFailure)).toContain('frame/max-class-lines');
+		expect(commandOutput(verifyFailure)).toContain('harness/max-class-lines');
 
-		const auditFailure = await runFrame(['audit', '.'], project, false);
+		const auditFailure = await runHarness(['audit', '.'], project, false);
 		expect(auditFailure.exitCode).toBe(1);
 		expectRules(commandOutput(auditFailure), auditRuleIds);
 	} finally {
@@ -32,10 +33,10 @@ test('generated projects reject bad code through lint, verify, and Frame audit',
 const lintRuleIds = [
 	'max-lines',
 	'max-lines-per-function',
-	'frame/max-class-lines',
-	'frame/max-method-lines',
+	'harness/max-class-lines',
+	'harness/max-method-lines',
 	'max-classes-per-file',
-	'frame/no-manager-name',
+	'harness/no-manager-name',
 	'complexity',
 	'max-depth',
 	'max-params',
@@ -75,7 +76,10 @@ async function writeBadRuleFixtures(project: string): Promise<void> {
 	await writeFile(join(project, 'src/services/BigClassManager.ts'), bigClassFixture());
 	await writeFile(join(project, 'src/services/BigMethod.ts'), bigMethodFixture());
 	await writeFile(join(project, 'src/services/ManyClasses.ts'), manyClassesFixture());
-	await writeFile(join(project, 'src/templates/project.ts'), "export const templateName = 'bad';\n");
+	await writeFile(
+		join(project, 'src/templates/project.ts'),
+		"export const templateName = 'bad';\n"
+	);
 	await writeFile(
 		join(project, 'src/core/badBoundary.ts'),
 		"import { templateName } from '../templates/project';\n\nexport const boundaryName = templateName;\n"
@@ -93,33 +97,36 @@ function escapeRegExp(value: string): string {
 }
 
 function longFileFixture(): string {
-	return Array.from({ length: 225 }, (_, index) => `export const value${index} = ${index};`).join('\n');
+	return (
+		Array.from({ length: 225 }, (_, index) => `export const value${index} = ${index};`).join('\n') +
+		'\n'
+	);
 }
 
 function longFunctionFixture(): string {
-	return [
+	return `${[
 		'export function tooLong(): void {',
 		...Array.from({ length: 56 }, () => '\tvoid 1;'),
 		'}'
-	].join('\n');
+	].join('\n')}\n`;
 }
 
 function bigClassFixture(): string {
-	return [
+	return `${[
 		'export class BigClassManager {',
 		...Array.from({ length: 121 }, (_, index) => `\tvalue${index} = ${index};`),
 		'}'
-	].join('\n');
+	].join('\n')}\n`;
 }
 
 function bigMethodFixture(): string {
-	return [
+	return `${[
 		'export class BigMethod {',
 		'\trun(): void {',
 		...Array.from({ length: 36 }, () => '\t\tvoid 1;'),
 		'\t}',
 		'}'
-	].join('\n');
+	].join('\n')}\n`;
 }
 
 function manyClassesFixture(): string {
@@ -127,17 +134,17 @@ function manyClassesFixture(): string {
 }
 
 function branchyFixture(): string {
-	return [
+	return `${[
 		'export function branchy(value: number): number {',
 		'\tlet total = 0;',
 		...Array.from({ length: 11 }, (_, index) => `\tif (value > ${index}) total += ${index};`),
 		'\treturn total;',
 		'}'
-	].join('\n');
+	].join('\n')}\n`;
 }
 
 function nestedFixture(): string {
-	return [
+	return `${[
 		'export function nested(value: boolean): void {',
 		'\tif (value) {',
 		'\t\tif (value) {',
@@ -151,21 +158,21 @@ function nestedFixture(): string {
 		'\t\t}',
 		'\t}',
 		'}'
-	].join('\n');
+	].join('\n')}\n`;
 }
 
 function tooManyFixture(): string {
-	return [
+	return `${[
 		'export function tooMany(a: string, b: string, c: string, d: string, e: string): string {',
 		'\treturn a + b + c + d + e;',
 		'}'
-	].join('\n');
+	].join('\n')}\n`;
 }
 
 function nestedTernaryFixture(): string {
-	return [
+	return `${[
 		'export function label(value: number): string {',
 		"\treturn value > 1 ? 'many' : value > 0 ? 'one' : 'none';",
 		'}'
-	].join('\n');
+	].join('\n')}\n`;
 }

@@ -3,18 +3,18 @@ import { createProject, renderCreateProject } from '../workflows/createProject';
 import type { ProjectKind } from '../workflows/createProject';
 
 export function registerNewCommand(program: Command): void {
-	const command = program.command('new').description('Create a new Frame project.');
+	const command = program.command('new').description('Create a new Harness project.');
 
 	command
 		.command('app <name>')
 		.option('--force', 'Overwrite files that already exist.')
-		.description('Create a SvelteKit app frame.')
+		.description('Create a SvelteKit app harness.')
 		.action((name: string, options: { force?: boolean }) => runCreateProject('app', name, options));
 
 	command
 		.command('lib <name>')
 		.option('--force', 'Overwrite files that already exist.')
-		.description('Create a Bun TypeScript library frame.')
+		.description('Create a Bun TypeScript library harness.')
 		.action((name: string, options: { force?: boolean }) => runCreateProject('lib', name, options));
 }
 

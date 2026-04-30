@@ -7,7 +7,7 @@ export function registerInfoCommand(program: Command): void {
 	program
 		.command('info <topic>')
 		.option('--json', 'Print structured guidance for agents.')
-		.description('Show static Frame guidance for adding code.')
+		.description('Show static Harness guidance for adding code.')
 		.action((topic: string, options: { json?: boolean }) => showInfo(topic, options));
 }
 

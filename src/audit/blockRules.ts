@@ -1,4 +1,4 @@
-import { frameRuleLimits } from '../rules/catalog';
+import { harnessRuleLimits } from '../rules/catalog';
 import type { AuditFinding, Block } from './types';
 
 const methodPattern = new RegExp(String.raw`^\s*(async\s+)?\w+\([^)]*\)\s*[:\w<>,\s[\]|]*\s*\{`);
@@ -39,7 +39,11 @@ function startBlock(line: string, index: number): Block | undefined {
 
 function auditBlock(path: string, block: Block): AuditFinding[] {
 	if (block.kind === 'class') {
-		return [...auditBlockLength(path, block), ...auditClassName(path, block), ...auditClassMethods(path, block)];
+		return [
+			...auditBlockLength(path, block),
+			...auditClassName(path, block),
+			...auditClassMethods(path, block)
+		];
 	}
 
 	return [
@@ -52,7 +56,7 @@ function auditBlock(path: string, block: Block): AuditFinding[] {
 
 function auditBlockLength(path: string, block: Block): AuditFinding[] {
 	const length = block.end - block.start + 1;
-	const max = block.kind === 'class' ? frameRuleLimits.maxClassLines : lineLimit(block.kind);
+	const max = block.kind === 'class' ? harnessRuleLimits.maxClassLines : lineLimit(block.kind);
 
 	if (length <= max) return [];
 
@@ -73,39 +77,39 @@ function lengthRule(kind: Block['kind']): string {
 
 function auditParameters(path: string, block: Block): AuditFinding[] {
 	const count = parameterCount(block.lines[0]);
-	if (count <= frameRuleLimits.maxParameters) return [];
+	if (count <= harnessRuleLimits.maxParameters) return [];
 
 	return [
 		{
 			path,
 			rule: 'max-parameters',
-			message: `${capitalize(block.kind)} starting near line ${block.start + 1} has ${count} parameters. Limit is ${frameRuleLimits.maxParameters}.`
+			message: `${capitalize(block.kind)} starting near line ${block.start + 1} has ${count} parameters. Limit is ${harnessRuleLimits.maxParameters}.`
 		}
 	];
 }
 
 function auditComplexity(path: string, block: Block): AuditFinding[] {
 	const complexity = block.lines.reduce((total, line) => total + complexityPoints(line), 1);
-	if (complexity <= frameRuleLimits.maxComplexity) return [];
+	if (complexity <= harnessRuleLimits.maxComplexity) return [];
 
 	return [
 		{
 			path,
 			rule: 'max-complexity',
-			message: `${capitalize(block.kind)} starting near line ${block.start + 1} has complexity ${complexity}. Limit is ${frameRuleLimits.maxComplexity}.`
+			message: `${capitalize(block.kind)} starting near line ${block.start + 1} has complexity ${complexity}. Limit is ${harnessRuleLimits.maxComplexity}.`
 		}
 	];
 }
 
 function auditNesting(path: string, block: Block): AuditFinding[] {
 	const depth = maxDepth(block.lines);
-	if (depth <= frameRuleLimits.maxNestingDepth) return [];
+	if (depth <= harnessRuleLimits.maxNestingDepth) return [];
 
 	return [
 		{
 			path,
 			rule: 'max-nesting',
-			message: `${capitalize(block.kind)} starting near line ${block.start + 1} nests ${depth} levels. Limit is ${frameRuleLimits.maxNestingDepth}.`
+			message: `${capitalize(block.kind)} starting near line ${block.start + 1} nests ${depth} levels. Limit is ${harnessRuleLimits.maxNestingDepth}.`
 		}
 	];
 }
@@ -141,7 +145,11 @@ function collectMethods(lines: string[], offset: number): Block[] {
 
 		depth += count(line, '{') - count(line, '}');
 		if (depth <= 0 && line.includes('}')) {
-			methods.push({ ...active, end: offset + index, lines: lines.slice(active.start - offset, index + 1) });
+			methods.push({
+				...active,
+				end: offset + index,
+				lines: lines.slice(active.start - offset, index + 1)
+			});
 			active = undefined;
 		}
 	});
@@ -154,7 +162,10 @@ function startsClass(line: string): boolean {
 }
 
 function startsFunction(line: string): boolean {
-	return /^\s*(export\s+)?(async\s+)?function\s+\w+/.test(line) || /^\s*(export\s+)?const\s+\w+\s*=.*=>/.test(line);
+	return (
+		/^\s*(export\s+)?(async\s+)?function\s+\w+/.test(line) ||
+		/^\s*(export\s+)?const\s+\w+\s*=.*=>/.test(line)
+	);
 }
 
 function startsMethod(line: string): boolean {
@@ -162,7 +173,7 @@ function startsMethod(line: string): boolean {
 }
 
 function lineLimit(kind: Block['kind']): number {
-	return kind === 'method' ? frameRuleLimits.maxMethodLines : frameRuleLimits.maxFunctionLines;
+	return kind === 'method' ? harnessRuleLimits.maxMethodLines : harnessRuleLimits.maxFunctionLines;
 }
 
 function parameterCount(line: string): number {
@@ -172,10 +183,7 @@ function parameterCount(line: string): number {
 }
 
 function complexityPoints(line: string): number {
-	if (line.includes('return /')) {
-		return 0;
-	}
-
+	if (line.includes('return /')) return 0;
 	const branchTokens = line.match(/\b(if|for|while|case|catch)\b|\?\s/g);
 	return branchTokens?.length ?? 0;
 }

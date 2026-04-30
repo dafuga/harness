@@ -4,7 +4,7 @@ import { join } from 'node:path';
 export type DetectedProjectKind = 'app' | 'lib' | 'unknown';
 
 interface PackageManifest {
-	frame?: {
+	harness?: {
 		kind?: string;
 	};
 	scripts?: Record<string, string>;
@@ -35,9 +35,11 @@ export async function detectProjectKind(root: string): Promise<DetectedProjectKi
 	return 'unknown';
 }
 
-function explicitProjectKind(manifest: PackageManifest | undefined): DetectedProjectKind | undefined {
-	if (manifest?.frame?.kind === 'app' || manifest?.frame?.kind === 'lib') {
-		return manifest.frame.kind;
+function explicitProjectKind(
+	manifest: PackageManifest | undefined
+): DetectedProjectKind | undefined {
+	if (manifest?.harness?.kind === 'app' || manifest?.harness?.kind === 'lib') {
+		return manifest.harness.kind;
 	}
 
 	return undefined;

@@ -11,7 +11,7 @@ export interface CommandResult {
 	stderr: string;
 }
 
-export async function runFrame(
+export async function runHarness(
 	args: string[],
 	cwd: string,
 	expectSuccess = true
@@ -26,7 +26,7 @@ export async function runCommand(
 ): Promise<CommandResult> {
 	const child = spawn(args[0], args.slice(1), {
 		cwd,
-		env: { ...process.env, FRAME_CLI_PATH: cliPath },
+		env: { ...process.env, HARNESS_CLI_PATH: cliPath },
 		stdio: 'pipe'
 	});
 	const stdoutChunks: Buffer[] = [];

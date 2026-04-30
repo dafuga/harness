@@ -64,5 +64,7 @@ function normalizeType(value: string): FieldType {
 		return type as FieldType;
 	}
 
-	return fail(`Unsupported field type "${value}". Use string, text, number, boolean, date, or json.`);
+	return fail(
+		`Unsupported field type "${value}". Use string, text, number, boolean, date, or json.`
+	);
 }

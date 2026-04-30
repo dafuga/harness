@@ -6,7 +6,10 @@ test('every scaffold kind creates at least one file', () => {
 	for (const kind of scaffoldKinds) {
 		const files = pieceFiles(kind, 'BlogPost');
 		expect(files.length, kind).toBeGreaterThan(0);
-		expect(files.every((file) => file.path.length > 0 && file.contents.length > 0), kind).toBe(true);
+		expect(
+			files.every((file) => file.path.length > 0 && file.contents.length > 0),
+			kind
+		).toBe(true);
 	}
 });
 
@@ -36,7 +39,9 @@ test('Rails-ish scaffolds create their expected code shapes', () => {
 	expect(pieceFiles('mailer', 'Welcome').map((file) => file.path)).toContain(
 		'src/mailers/WelcomeMailer.ts'
 	);
-	expect(pieceFiles('helper', 'Post').map((file) => file.path)).toContain('src/helpers/PostHelper.ts');
+	expect(pieceFiles('helper', 'Post').map((file) => file.path)).toContain(
+		'src/helpers/PostHelper.ts'
+	);
 	expect(pieceFiles('concern', 'Publishable').map((file) => file.path)).toContain(
 		'src/concerns/withPublishable.ts'
 	);

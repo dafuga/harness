@@ -1,10 +1,10 @@
 {
-	"name": "@danfugere/frame",
+	"name": "@danfugere/harness",
 	"version": "0.1.0",
-	"description": "An opinionated CLI that helps humans and agents code in small, Rails-inspired frames.",
+	"description": "An opinionated CLI that helps humans and agents code in small, Rails-inspired harnesses.",
 	"type": "module",
 	"bin": {
-		"frame": "dist/index.js"
+		"harness": "dist/index.js"
 	},
 	"scripts": {
 		"dev": "bun run src/index.ts",
@@ -16,6 +16,7 @@
 		"verify": "bun run dev -- verify --e2e",
 		"lint": "eslint .",
 		"format": "prettier --write .",
+		"format:check": "prettier --check .",
 		"prepack": "bun run build"
 	},
 	"dependencies": {

@@ -5,20 +5,23 @@ import { expect, test } from 'vitest';
 import { appendMissingExports, applyExports } from '../src/core/exports';
 import { detectProjectKind } from '../src/core/project';
 
-test('detects explicit Frame project kinds', async () => {
-	const root = await mkdtemp(join(tmpdir(), 'frame-project-'));
-	await writeFile(join(root, 'package.json'), JSON.stringify({ frame: { kind: 'app' } }));
+test('detects explicit Harness project kinds', async () => {
+	const root = await mkdtemp(join(tmpdir(), 'harness-project-'));
+	await writeFile(join(root, 'package.json'), JSON.stringify({ harness: { kind: 'app' } }));
 
 	expect(await detectProjectKind(root)).toBe('app');
 	await rm(root, { recursive: true, force: true });
 });
 
 test('detects app and lib projects from local files', async () => {
-	const app = await mkdtemp(join(tmpdir(), 'frame-project-'));
-	await writeFile(join(app, 'package.json'), JSON.stringify({ devDependencies: { '@sveltejs/kit': '^2' } }));
+	const app = await mkdtemp(join(tmpdir(), 'harness-project-'));
+	await writeFile(
+		join(app, 'package.json'),
+		JSON.stringify({ devDependencies: { '@sveltejs/kit': '^2' } })
+	);
 	expect(await detectProjectKind(app)).toBe('app');
 
-	const lib = await mkdtemp(join(tmpdir(), 'frame-project-'));
+	const lib = await mkdtemp(join(tmpdir(), 'harness-project-'));
 	await mkdir(join(lib, 'src'));
 	await writeFile(join(lib, 'src/index.ts'), '');
 	await writeFile(join(lib, 'package.json'), JSON.stringify({ type: 'module' }));
@@ -29,12 +32,16 @@ test('detects app and lib projects from local files', async () => {
 });
 
 test('appends missing exports idempotently', async () => {
-	const root = await mkdtemp(join(tmpdir(), 'frame-exports-'));
+	const root = await mkdtemp(join(tmpdir(), 'harness-exports-'));
 	await mkdir(join(root, 'src'));
-	await writeFile(join(root, 'src/index.ts'), "export const existing = true;\n");
+	await writeFile(join(root, 'src/index.ts'), 'export const existing = true;\n');
 
-	const changed = await applyExports(root, [{ source: './services/PostService', named: ['PostService'] }]);
-	const unchanged = await applyExports(root, [{ source: './services/PostService', named: ['PostService'] }]);
+	const changed = await applyExports(root, [
+		{ source: './services/PostService', named: ['PostService'] }
+	]);
+	const unchanged = await applyExports(root, [
+		{ source: './services/PostService', named: ['PostService'] }
+	]);
 
 	expect(changed).toBe(true);
 	expect(unchanged).toBe(false);

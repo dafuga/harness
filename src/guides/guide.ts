@@ -1,4 +1,4 @@
-import { frameRuleSummaries } from '../rules/catalog';
+import { harnessRuleSummaries } from '../rules/catalog';
 import { scaffoldDetails, scaffoldKinds, type ScaffoldDetail } from '../templates/scaffoldTypes';
 import { availableGuideTopics as uniqueGuideTopics, findGuideByTopic } from './topics';
 
@@ -31,7 +31,7 @@ export const guides: Guide[] = [
 			'Do not put controller response formatting in models.',
 			'Do not create a generic database utility that knows every table.'
 		],
-		exampleCommands: ['frame generate model Post title:string body:text --adapter d1']
+		exampleCommands: ['harness generate model Post title:string body:text --adapter d1']
 	},
 	{
 		topic: 'controller',
@@ -47,8 +47,11 @@ export const guides: Guide[] = [
 			'Business decisions belong in services or models.',
 			'Each action should fit on one screen.'
 		],
-		antiPatterns: ['Do not put SQL in controllers.', 'Do not mix page rendering and API mutation logic.'],
-		exampleCommands: ['frame generate controller Posts']
+		antiPatterns: [
+			'Do not put SQL in controllers.',
+			'Do not mix page rendering and API mutation logic.'
+		],
+		exampleCommands: ['harness generate controller Posts']
 	},
 	{
 		topic: 'service',
@@ -61,7 +64,7 @@ export const guides: Guide[] = [
 		],
 		rules: ['Services orchestrate work.', 'Services should not own database adapter details.'],
 		antiPatterns: ['Do not make a service named Manager.', 'Do not collect unrelated helpers.'],
-		exampleCommands: ['frame generate service PublishPost']
+		exampleCommands: ['harness generate service PublishPost']
 	},
 	{
 		topic: 'decorator',
@@ -74,7 +77,7 @@ export const guides: Guide[] = [
 		],
 		rules: ['Decorators format and derive display values.', 'Decorators do not fetch data.'],
 		antiPatterns: ['Do not hide database writes in decorators.'],
-		exampleCommands: ['frame generate decorator Post']
+		exampleCommands: ['harness generate decorator Post']
 	},
 	{
 		topic: 'component',
@@ -87,7 +90,7 @@ export const guides: Guide[] = [
 		],
 		rules: ['Components should be reusable and visually scoped.', 'Use props for input.'],
 		antiPatterns: ['Do not embed unrelated feature workflows in one component.'],
-		exampleCommands: ['frame generate component PostCard']
+		exampleCommands: ['harness generate component PostCard']
 	},
 	{
 		topic: 'feature',
@@ -100,37 +103,37 @@ export const guides: Guide[] = [
 		],
 		rules: ['Specs are the source of truth.', 'Acceptance criteria define done.'],
 		antiPatterns: ['Do not implement hidden scope without updating the spec.'],
-		exampleCommands: ['frame generate feature scheduled-posts']
+		exampleCommands: ['harness generate feature scheduled-posts']
 	},
 	{
 		topic: 'refactor',
 		summary: 'Shrink code by extracting named responsibilities.',
 		steps: [
-			'Run frame audit to find oversized files and functions.',
+			'Run harness audit to find oversized files and functions.',
 			'Extract one responsibility at a time.',
 			'Keep public behavior unchanged.',
 			'Run tests after each meaningful extraction.'
 		],
 		rules: ['Prefer boring names.', 'Move behavior only when the new file has a clear job.'],
 		antiPatterns: ['Do not refactor and add features in the same edit.'],
-		exampleCommands: ['frame audit src']
+		exampleCommands: ['harness audit src']
 	},
 	{
 		topic: 'code-rules',
-		summary: 'Keep Frame code small, explicit, and easy for humans and agents to change safely.',
+		summary: 'Keep Harness code small, explicit, and easy for humans and agents to change safely.',
 		steps: [
-			'Run lint and frame audit before handing work back.',
+			'Run lint and harness audit before handing work back.',
 			'Extract a named helper or class when a rule limit is reached.',
 			'Move orchestration into workflows and keep command modules thin.',
 			'Keep imports flowing from commands to workflows to templates/core, not backward.'
 		],
-		rules: [...frameRuleSummaries],
+		rules: [...harnessRuleSummaries],
 		antiPatterns: [
 			'Do not add broad Manager classes.',
 			'Do not hide multiple responsibilities in one class, function, or command file.',
 			'Do not bypass generated-project lint and verify scripts.'
 		],
-		exampleCommands: ['frame audit src', 'frame info code-rules']
+		exampleCommands: ['harness audit src', 'harness info code-rules']
 	},
 	scaffoldsGuide(),
 	...scaffoldGuides()
@@ -151,18 +154,18 @@ function scaffoldGuides(): Guide[] {
 function scaffoldsGuide(): Guide {
 	return {
 		topic: 'scaffolds',
-		summary: 'Catalog of Frame scaffold types and what each generated code shape should contain.',
+		summary: 'Catalog of Harness scaffold types and what each generated code shape should contain.',
 		steps: [
-			'Run frame info <scaffold> for detailed guidance.',
+			'Run harness info <scaffold> for detailed guidance.',
 			'Use --json when an agent needs structured scaffold metadata.',
-			'Choose app-only scaffolds only inside Frame app projects.'
+			'Choose app-only scaffolds only inside Harness app projects.'
 		],
 		rules: scaffoldKinds.map((kind) => {
 			const detail = scaffoldDetails[kind];
 			return `${kind}: ${detail.summary}${detail.appOnly ? ' App-only.' : ''}`;
 		}),
-		antiPatterns: ['Do not guess a scaffold shape when frame info can describe it.'],
-		exampleCommands: ['frame info scaffolds', 'frame info mailer --json']
+		antiPatterns: ['Do not guess a scaffold shape when harness info can describe it.'],
+		exampleCommands: ['harness info scaffolds', 'harness info mailer --json']
 	};
 }
 
@@ -179,7 +182,9 @@ function scaffoldGuide(detail: ScaffoldDetail): Guide {
 		rules: [
 			'Generated code is a starting shape.',
 			'Keep public behavior covered by focused tests.',
-			detail.appOnly ? 'This scaffold belongs in Frame app projects.' : 'This scaffold is package-safe.'
+			detail.appOnly
+				? 'This scaffold belongs in Harness app projects.'
+				: 'This scaffold is package-safe.'
 		],
 		antiPatterns: ['Do not hide unrelated workflow inside the generated file.'],
 		exampleCommands: [detail.exampleCommand],

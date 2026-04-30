@@ -46,7 +46,9 @@ async function collectEntry(root: string, entry: string, prefix: string): Promis
 	const relativePath = prefix ? `${prefix}/${entry}` : entry;
 
 	if (details.isDirectory()) {
-		return ignoredDirs.has(entry) ? { files: [], ignoredPaths: [`${relativePath}/`] } : collectFiles(path, relativePath);
+		return ignoredDirs.has(entry)
+			? { files: [], ignoredPaths: [`${relativePath}/`] }
+			: collectFiles(path, relativePath);
 	}
 
 	return { files: [{ path, extension: extname(entry).toLowerCase() }], ignoredPaths: [] };

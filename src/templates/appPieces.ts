@@ -8,7 +8,7 @@ export function componentFiles(name: string): PlannedFile[] {
 	return [
 		{
 			path: `src/components/${componentName}`,
-			contents: `<script lang="ts">\n\tlet { label = '${toPascalCase(name)}' }: { label?: string } = $props();\n</script>\n\n<section data-frame-component="${fileName}">\n\t<h2>{label}</h2>\n</section>\n`
+			contents: `<script lang="ts">\n\tlet { label = '${toPascalCase(name)}' }: { label?: string } = $props();\n</script>\n\n<section data-harness-component="${fileName}">\n\t<h2>{label}</h2>\n</section>\n`
 		},
 		{
 			path: `test/components/${fileName}.test.ts`,
@@ -24,7 +24,7 @@ export function viewFiles(name: string): PlannedFile[] {
 	return [
 		{
 			path: `src/routes/${route}/+page.svelte`,
-			contents: `<script lang="ts">\n\tconst title = '${title}';\n</script>\n\n<svelte:head>\n\t<title>{title}</title>\n</svelte:head>\n\n<section data-frame-view="${route}">\n\t<h1>{title}</h1>\n</section>\n`
+			contents: `<script lang="ts">\n\tconst title = '${title}';\n</script>\n\n<svelte:head>\n\t<title>{title}</title>\n</svelte:head>\n\n<section data-harness-view="${route}">\n\t<h1>{title}</h1>\n</section>\n`
 		},
 		{
 			path: `test/routes/${route}-view.test.ts`,
@@ -39,7 +39,7 @@ export function layoutFiles(name: string): PlannedFile[] {
 	return [
 		{
 			path: `src/routes/${route}/+layout.svelte`,
-			contents: `<script lang="ts">\n\timport type { Snippet } from 'svelte';\n\n\tlet { children }: { children?: Snippet } = $props();\n</script>\n\n<section data-frame-layout="${route}">\n\t{#if children}\n\t\t{@render children()}\n\t{/if}\n</section>\n`
+			contents: `<script lang="ts">\n\timport type { Snippet } from 'svelte';\n\n\tlet { children }: { children?: Snippet } = $props();\n</script>\n\n<section data-harness-layout="${route}">\n\t{#if children}\n\t\t{@render children()}\n\t{/if}\n</section>\n`
 		},
 		{
 			path: `test/routes/${route}-layout.test.ts`,
@@ -102,7 +102,7 @@ export function e2eFiles(name: string): PlannedFile[] {
 	return [
 		{
 			path: `tests/e2e/${route}.spec.ts`,
-			contents: `import { expect, test } from '@playwright/test';\n\ntest('${route} page loads', async ({ page }) => {\n\tawait page.goto('/${route}');\n\tawait expect(page.locator('[data-frame-view="${route}"]')).toBeVisible();\n});\n`
+			contents: `import { expect, test } from '@playwright/test';\n\ntest('${route} page loads', async ({ page }) => {\n\tawait page.goto('/${route}');\n\tawait expect(page.locator('[data-harness-view="${route}"]')).toBeVisible();\n});\n`
 		}
 	];
 }
@@ -114,7 +114,7 @@ export function partialFiles(name: string): PlannedFile[] {
 	return [
 		{
 			path: `src/components/partials/${componentName}`,
-			contents: `<script lang="ts">\n\tlet { label = '${toPascalCase(name)}' }: { label?: string } = $props();\n</script>\n\n<div data-frame-partial="${fileName}">{label}</div>\n`
+			contents: `<script lang="ts">\n\tlet { label = '${toPascalCase(name)}' }: { label?: string } = $props();\n</script>\n\n<div data-harness-partial="${fileName}">{label}</div>\n`
 		},
 		{
 			path: `test/components/${fileName}-partial.test.ts`,

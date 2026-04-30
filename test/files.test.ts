@@ -5,7 +5,7 @@ import { expect, test } from 'vitest';
 import { ensureParents, renderFileList, writePlannedFiles } from '../src/core/files';
 
 test('writes planned files and renders statuses', async () => {
-	const root = await mkdtemp(join(tmpdir(), 'frame-files-'));
+	const root = await mkdtemp(join(tmpdir(), 'harness-files-'));
 	const files = [{ path: 'src/index.ts', contents: 'export const ok = true;\n' }];
 
 	await ensureParents(root, files);
@@ -17,22 +17,20 @@ test('writes planned files and renders statuses', async () => {
 });
 
 test('skips identical files and protects changed files unless forced', async () => {
-	const root = await mkdtemp(join(tmpdir(), 'frame-files-'));
+	const root = await mkdtemp(join(tmpdir(), 'harness-files-'));
 	const target = join(root, 'README.md');
 	await writeFile(target, 'first\n');
 
 	const skipped = await writePlannedFiles(root, [{ path: 'README.md', contents: 'first\n' }]);
 	expect(skipped[0].status).toBe('skipped');
 
-	await expect(writePlannedFiles(root, [{ path: 'README.md', contents: 'next\n' }])).rejects.toThrow(
-		'Refusing to overwrite README.md'
-	);
+	await expect(
+		writePlannedFiles(root, [{ path: 'README.md', contents: 'next\n' }])
+	).rejects.toThrow('Refusing to overwrite README.md');
 
-	const overwritten = await writePlannedFiles(
-		root,
-		[{ path: 'README.md', contents: 'next\n' }],
-		{ force: true }
-	);
+	const overwritten = await writePlannedFiles(root, [{ path: 'README.md', contents: 'next\n' }], {
+		force: true
+	});
 	expect(overwritten[0].status).toBe('overwritten');
 	expect(await readFile(target, 'utf8')).toBe('next\n');
 	await rm(root, { recursive: true, force: true });

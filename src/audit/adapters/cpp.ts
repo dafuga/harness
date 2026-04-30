@@ -26,7 +26,11 @@ function startsCppFunction(line: string): boolean {
 }
 
 function auditHeaderNamespace(file: AuditFile) {
-	if (!['.h', '.hh', '.hpp', '.hxx'].includes(file.extension) || !/\busing\s+namespace\s+std\s*;/.test(file.contents)) return [];
+	if (
+		!['.h', '.hh', '.hpp', '.hxx'].includes(file.extension) ||
+		!/\busing\s+namespace\s+std\s*;/.test(file.contents)
+	)
+		return [];
 
 	return [
 		{
@@ -39,5 +43,11 @@ function auditHeaderNamespace(file: AuditFile) {
 
 function auditRelativeInclude(file: AuditFile) {
 	if (!file.lines.some((line) => /^\s*#include\s+["']\.\.\//.test(line))) return [];
-	return [{ path: file.relativePath, rule: 'cpp-include-direction', message: 'Avoid parent-directory includes in C/C++ files.' }];
+	return [
+		{
+			path: file.relativePath,
+			rule: 'cpp-include-direction',
+			message: 'Avoid parent-directory includes in C/C++ files.'
+		}
+	];
 }

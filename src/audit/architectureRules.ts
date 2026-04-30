@@ -9,16 +9,46 @@ function architectureFinding(path: string, line: string, index: number): AuditFi
 	const source = importSource(line);
 	if (!source) return [];
 
-	if (path.startsWith('src/core/') && /\/(templates|workflows|commands)\//.test(resolvedImport(path, source))) {
-		return [boundaryFinding(path, index, 'architecture-boundaries', 'Core modules cannot import templates, workflows, or commands.')];
+	if (
+		path.startsWith('src/core/') &&
+		/\/(templates|workflows|commands)\//.test(resolvedImport(path, source))
+	) {
+		return [
+			boundaryFinding(
+				path,
+				index,
+				'architecture-boundaries',
+				'Core modules cannot import templates, workflows, or commands.'
+			)
+		];
 	}
 
-	if (path.startsWith('src/templates/') && /\/(workflows|commands)\//.test(resolvedImport(path, source))) {
-		return [boundaryFinding(path, index, 'architecture-boundaries', 'Template modules cannot import workflows or commands.')];
+	if (
+		path.startsWith('src/templates/') &&
+		/\/(workflows|commands)\//.test(resolvedImport(path, source))
+	) {
+		return [
+			boundaryFinding(
+				path,
+				index,
+				'architecture-boundaries',
+				'Template modules cannot import workflows or commands.'
+			)
+		];
 	}
 
-	if (path.startsWith('src/commands/') && /\/(templates|core\/files|core\/fields)\b/.test(resolvedImport(path, source))) {
-		return [boundaryFinding(path, index, 'thin-command-modules', 'Command modules should delegate instead of importing templates or file-generation helpers.')];
+	if (
+		path.startsWith('src/commands/') &&
+		/\/(templates|core\/files|core\/fields)\b/.test(resolvedImport(path, source))
+	) {
+		return [
+			boundaryFinding(
+				path,
+				index,
+				'thin-command-modules',
+				'Command modules should delegate instead of importing templates or file-generation helpers.'
+			)
+		];
 	}
 
 	return [];

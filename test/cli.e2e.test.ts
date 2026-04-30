@@ -3,19 +3,22 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { runCommand, runFrame } from './support/cli';
+import { runCommand, runHarness } from './support/cli';
 
 test('CLI scaffolds and verifies a lib project', async () => {
-	const root = await mkdtemp(join(tmpdir(), 'frame-cli-lib-'));
-	await runFrame(['new', 'lib', 'demo-lib'], root);
+	const root = await mkdtemp(join(tmpdir(), 'harness-cli-lib-'));
+	await runHarness(['new', 'lib', 'demo-lib'], root);
 	const project = join(root, 'demo-lib');
 
-	await runFrame(['generate', 'model', 'Post', 'title:string', '--adapter', 'sqlite'], project);
-	await runFrame(['generate', 'model', 'Event', 'startsAt:date', '--adapter', 'd1'], project);
-	await runFrame(['generate', 'model', 'Metric', 'value:number', '--adapter', 'postgres'], project);
+	await runHarness(['generate', 'model', 'Post', 'title:string', '--adapter', 'sqlite'], project);
+	await runHarness(['generate', 'model', 'Event', 'startsAt:date', '--adapter', 'd1'], project);
+	await runHarness(
+		['generate', 'model', 'Metric', 'value:number', '--adapter', 'postgres'],
+		project
+	);
 
 	for (const kind of packageKinds) {
-		await runFrame(['generate', kind, 'PublishPost'], project);
+		await runHarness(['generate', kind, 'PublishPost'], project);
 	}
 
 	await runCommand(['bun', 'install'], project);
@@ -24,28 +27,29 @@ test('CLI scaffolds and verifies a lib project', async () => {
 	await runCommand(['bun', 'run', 'test'], project);
 	await runCommand(['bun', 'run', 'build'], project);
 	const verify = await runCommand(['bun', 'run', 'verify'], project);
-	expect(verify.stdout).toContain('Frame verify: bun run check');
+	expect(verify.stdout).toContain('Harness verify: bun run format:check');
+	expect(verify.stdout).toContain('Harness verify: bun run check');
 	await rm(root, { recursive: true, force: true });
 }, 180_000);
 
 test('CLI scaffolds and verifies an app project with routes', async () => {
-	const root = await mkdtemp(join(tmpdir(), 'frame-cli-app-'));
-	await runFrame(['new', 'app', 'demo-app'], root);
+	const root = await mkdtemp(join(tmpdir(), 'harness-cli-app-'));
+	await runHarness(['new', 'app', 'demo-app'], root);
 	const project = join(root, 'demo-app');
 
-	await runFrame(['generate', 'model', 'Post', 'title:string'], project);
-	await runFrame(['generate', 'view', 'Dashboard'], project);
-	await runFrame(['generate', 'layout', 'Dashboard'], project);
-	await runFrame(['generate', 'api', 'Ping'], project);
-	await runFrame(['generate', 'component', 'StatusBadge'], project);
-	await runFrame(['generate', 'store', 'Session'], project);
-	await runFrame(['generate', 'hook', 'RequestLogger'], project);
-	await runFrame(['generate', 'e2e', 'Dashboard'], project);
-	await runFrame(['generate', 'partial', 'PromoBanner'], project);
-	await runFrame(['generate', 'resource', 'Article'], project);
+	await runHarness(['generate', 'model', 'Post', 'title:string'], project);
+	await runHarness(['generate', 'view', 'Dashboard'], project);
+	await runHarness(['generate', 'layout', 'Dashboard'], project);
+	await runHarness(['generate', 'api', 'Ping'], project);
+	await runHarness(['generate', 'component', 'StatusBadge'], project);
+	await runHarness(['generate', 'store', 'Session'], project);
+	await runHarness(['generate', 'hook', 'RequestLogger'], project);
+	await runHarness(['generate', 'e2e', 'Dashboard'], project);
+	await runHarness(['generate', 'partial', 'PromoBanner'], project);
+	await runHarness(['generate', 'resource', 'Article'], project);
 
 	for (const kind of packageKinds) {
-		await runFrame(['g', kind, 'PublishPost'], project);
+		await runHarness(['g', kind, 'PublishPost'], project);
 	}
 
 	await runCommand(['bun', 'install'], project);
@@ -54,7 +58,8 @@ test('CLI scaffolds and verifies an app project with routes', async () => {
 	await runCommand(['bun', 'run', 'test'], project);
 	await runCommand(['bun', 'run', 'build'], project);
 	const verify = await runCommand(['bun', 'run', 'verify'], project);
-	expect(verify.stdout).toContain('Frame verify: bun run check');
+	expect(verify.stdout).toContain('Harness verify: bun run format:check');
+	expect(verify.stdout).toContain('Harness verify: bun run check');
 
 	const server = spawn('bun', ['x', 'vite', 'preview', '--host', '127.0.0.1', '--port', '43321'], {
 		cwd: project,
@@ -63,11 +68,13 @@ test('CLI scaffolds and verifies an app project with routes', async () => {
 	const serverExited = new Promise((resolve) => server.once('exit', resolve));
 	try {
 		await waitForUrl('http://127.0.0.1:43321/dashboard');
-		const page = await fetch('http://127.0.0.1:43321/dashboard').then((response) => response.text());
+		const page = await fetch('http://127.0.0.1:43321/dashboard').then((response) =>
+			response.text()
+		);
 		const api = await fetch('http://127.0.0.1:43321/api/ping').then((response) => response.json());
 
 		expect(page).toContain('Dashboard');
-		expect(page).toContain('data-frame-view="dashboard"');
+		expect(page).toContain('data-harness-view="dashboard"');
 		expect(api).toEqual({ ok: true, resource: 'ping' });
 	} finally {
 		server.kill();
@@ -77,12 +84,12 @@ test('CLI scaffolds and verifies an app project with routes', async () => {
 	await rm(root, { recursive: true, force: true });
 }, 180_000);
 
-test('CLI reports edge errors cleanly and supports force overwrites', async () => {
-	const root = await mkdtemp(join(tmpdir(), 'frame-cli-errors-'));
-	await runFrame(['new', 'lib', 'demo-lib'], root);
+test('CLI reports edge errors cleanly', async () => {
+	const root = await mkdtemp(join(tmpdir(), 'harness-cli-errors-'));
+	await runHarness(['new', 'lib', 'demo-lib'], root);
 	const project = join(root, 'demo-lib');
 
-	const invalidAdapter = await runFrame(
+	const invalidAdapter = await runHarness(
 		['generate', 'model', 'Post', '--adapter', 'oracle'],
 		project,
 		false
@@ -91,48 +98,66 @@ test('CLI reports edge errors cleanly and supports force overwrites', async () =
 	expect(invalidAdapter.stderr).toContain('Unsupported adapter');
 	expect(invalidAdapter.stderr).not.toContain(' at ');
 
-	const unknownInfo = await runFrame(['info', 'nope'], project, false);
+	const unknownInfo = await runHarness(['info', 'nope'], project, false);
 	expect(unknownInfo.exitCode).toBe(1);
 	expect(unknownInfo.stderr).toContain('Unknown info topic');
 	expect(unknownInfo.stderr.match(/controller/g) ?? []).toHaveLength(1);
 
-	const invalidProfile = await runFrame(['audit', '.', '--profile', 'mobile'], project, false);
+	const invalidProfile = await runHarness(['audit', '.', '--profile', 'mobile'], project, false);
 	expect(invalidProfile.exitCode).toBe(1);
 	expect(invalidProfile.stderr).toContain('Unsupported audit profile');
-	const invalidVerifyProfile = await runFrame(['verify', '.', '--profile', 'mobile'], project, false);
+	const invalidVerifyProfile = await runHarness(
+		['verify', '.', '--profile', 'mobile'],
+		project,
+		false
+	);
 	expect(invalidVerifyProfile.exitCode).toBe(1);
 	expect(invalidVerifyProfile.stderr).toContain('Unsupported audit profile');
 
-	const scaffoldInfo = await runFrame(['info', 'scaffold'], project);
+	const scaffoldInfo = await runHarness(['info', 'scaffold'], project);
 	expect(scaffoldInfo.stdout).toContain('# scaffolds');
-	const controllerInfo = await runFrame(['info', 'controllers'], project);
+	const controllerInfo = await runHarness(['info', 'controllers'], project);
 	expect(controllerInfo.stdout).toContain('# controller');
 
-	const invalidName = await runFrame(['generate', 'service', '../bad'], project, false);
+	const invalidName = await runHarness(['generate', 'service', '../bad'], project, false);
 	expect(invalidName.exitCode).toBe(1);
 	expect(invalidName.stderr).toContain('path traversal');
 
-	const appOnly = await runFrame(['generate', 'view', 'Dashboard'], project, false);
+	const appOnly = await runHarness(['generate', 'view', 'Dashboard'], project, false);
 	expect(appOnly.exitCode).toBe(1);
-	expect(appOnly.stderr).toContain('only available in Frame app projects');
+	expect(appOnly.stderr).toContain('only available in Harness app projects');
 
-	const overwrite = await runFrame(['generate', 'service', 'PublishPost'], project, false);
+	await rm(root, { recursive: true, force: true });
+}, 120_000);
+
+test('CLI supports force overwrites and generated lint failures', async () => {
+	const root = await mkdtemp(join(tmpdir(), 'harness-cli-overwrite-'));
+	await runHarness(['new', 'lib', 'demo-lib'], root);
+	const project = join(root, 'demo-lib');
+
+	const overwrite = await runHarness(['generate', 'service', 'PublishPost'], project, false);
 	expect(overwrite.exitCode).toBe(0);
 	await writeFile(join(project, 'src/services/PublishPostService.ts'), 'changed\n');
-	const blocked = await runFrame(['generate', 'service', 'PublishPost'], project, false);
+	const blocked = await runHarness(['generate', 'service', 'PublishPost'], project, false);
 	expect(blocked.exitCode).toBe(1);
 	expect(blocked.stderr).toContain('Refusing to overwrite');
-	const forced = await runFrame(['generate', 'service', 'PublishPost', '--force'], project);
+	const forced = await runHarness(['generate', 'service', 'PublishPost', '--force'], project);
 	expect(forced.stdout).toContain('overwrite src/services/PublishPostService.ts');
 
 	await runCommand(['bun', 'install'], project);
 	await writeFile(
 		join(project, 'src/services/OversizedService.ts'),
-		['export class OversizedService {', '\trun(): void {', ...Array.from({ length: 36 }, () => '\t\tvoid 1;'), '\t}', '}'].join('\n')
+		[
+			'export class OversizedService {',
+			'\trun(): void {',
+			...Array.from({ length: 36 }, () => '\t\tvoid 1;'),
+			'\t}',
+			'}'
+		].join('\n')
 	);
 	const lintFailure = await runCommand(['bun', 'run', 'lint'], project, false);
 	expect(lintFailure.exitCode).toBe(1);
-	expect(`${lintFailure.stdout}\n${lintFailure.stderr}`).toContain('frame/max-method-lines');
+	expect(`${lintFailure.stdout}\n${lintFailure.stderr}`).toContain('harness/max-method-lines');
 
 	await rm(root, { recursive: true, force: true });
 }, 120_000);

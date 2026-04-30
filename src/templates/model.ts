@@ -41,13 +41,61 @@ export function modelFiles(input: ModelInput): PlannedFile[] {
 
 function typeFile(className: string, fields: Field[]): string {
 	const fieldLines = fields.map((field) => `\t${field.name}: ${field.tsType};`);
-	const attributeLines = ['\tid: number;', ...fieldLines, '\tcreatedAt: string;', '\tupdatedAt: string;'];
+	const attributeLines = [
+		'\tid: number;',
+		...fieldLines,
+		'\tcreatedAt: string;',
+		'\tupdatedAt: string;'
+	];
 
 	return `export interface ${className}Attributes {\n${attributeLines.join('\n')}\n}\n\nexport type ${className}CreateInput = Omit<${className}Attributes, 'id' | 'createdAt' | 'updatedAt'>;\nexport type ${className}UpdateInput = Partial<${className}CreateInput>;\n`;
 }
 
 function modelFile(className: string, tableName: string): string {
-	return `import type { PersistenceAdapter } from './adapters/types';\nimport type { ${className}Attributes, ${className}CreateInput, ${className}UpdateInput } from './${className}.types';\n\nconst tableName = '${tableName}';\n\nexport class ${className} {\n\tstatic find(adapter: PersistenceAdapter, id: number): Promise<${className}Attributes | null> {\n\t\treturn adapter.find(tableName, id);\n\t}\n\n\tstatic findBy(adapter: PersistenceAdapter, fields: Partial<${className}Attributes>): Promise<${className}Attributes[]> {\n\t\treturn adapter.findBy(tableName, fields);\n\t}\n\n\tstatic create(adapter: PersistenceAdapter, input: ${className}CreateInput): Promise<${className}Attributes> {\n\t\treturn adapter.create(tableName, input);\n\t}\n\n\tstatic update(adapter: PersistenceAdapter, id: number, input: ${className}UpdateInput): Promise<${className}Attributes | null> {\n\t\treturn adapter.update(tableName, id, input);\n\t}\n\n\tstatic delete(adapter: PersistenceAdapter, id: number): Promise<boolean> {\n\t\treturn adapter.delete(tableName, id);\n\t}\n}\n`;
+	const createMethod = modelCreateMethod(className);
+
+	return `import type { PersistenceAdapter } from './adapters/types';
+import type { ${className}Attributes, ${className}CreateInput, ${className}UpdateInput } from './${className}.types';
+
+const tableName = '${tableName}';
+
+export class ${className} {
+	static find(adapter: PersistenceAdapter, id: number): Promise<${className}Attributes | null> {
+		return adapter.find(tableName, id);
+	}
+
+	static findBy(
+		adapter: PersistenceAdapter,
+		fields: Partial<${className}Attributes>
+	): Promise<${className}Attributes[]> {
+		return adapter.findBy(tableName, fields);
+	}
+
+${createMethod}
+
+	static update(
+		adapter: PersistenceAdapter,
+		id: number,
+		input: ${className}UpdateInput
+	): Promise<${className}Attributes | null> {
+		return adapter.update(tableName, id, input);
+	}
+
+	static delete(adapter: PersistenceAdapter, id: number): Promise<boolean> {
+		return adapter.delete(tableName, id);
+	}
+}
+`;
+}
+
+function modelCreateMethod(className: string): string {
+	const oneLineSignature = `static create(adapter: PersistenceAdapter, input: ${className}CreateInput): Promise<${className}Attributes> {`;
+
+	if (oneLineSignature.length <= 97) {
+		return `\t${oneLineSignature}\n\t\treturn adapter.create(tableName, input);\n\t}`;
+	}
+
+	return `\tstatic create(\n\t\tadapter: PersistenceAdapter,\n\t\tinput: ${className}CreateInput\n\t): Promise<${className}Attributes> {\n\t\treturn adapter.create(tableName, input);\n\t}`;
 }
 
 function adapterFile(adapter: AdapterName): string {
@@ -78,13 +126,60 @@ function modelTestFile(className: string): string {
 }
 
 function d1Adapter(): string {
-	return `import type { PersistenceAdapter } from './types';\n\nexport interface D1LikeDatabase {\n\tprepare(query: string): {\n\t\tbind(...values: unknown[]): {\n\t\t\tfirst<T>(): Promise<T | null>;\n\t\t};\n\t};\n}\n\nexport function createD1Adapter(db: D1LikeDatabase): PersistenceAdapter {\n\treturn {\n\t\tfind: async (table, id) => db.prepare(\`SELECT * FROM \${table} WHERE id = ?\`).bind(id).first(),\n\t\tfindBy: async () => [],\n\t\tcreate: async () => { throw new Error('D1 create adapter is generated as a starting point.'); },\n\t\tupdate: async () => null,\n\t\tdelete: async () => false\n\t};\n}\n`;
+	return `import type { PersistenceAdapter } from './types';
+
+export interface D1LikeDatabase {
+	prepare(query: string): {
+		bind(...values: unknown[]): {
+			first<T>(): Promise<T | null>;
+		};
+	};
+}
+
+export function createD1Adapter(db: D1LikeDatabase): PersistenceAdapter {
+	return {
+		find: async (table, id) => db.prepare(\`SELECT * FROM \${table} WHERE id = ?\`).bind(id).first(),
+		findBy: async () => [],
+		create: async () => {
+			throw new Error('D1 create adapter is generated as a starting point.');
+		},
+		update: async () => null,
+		delete: async () => false
+	};
+}
+`;
 }
 
 function sqliteAdapter(): string {
-	return `import type { PersistenceAdapter } from './types';\n\nexport function createSqliteAdapter(): PersistenceAdapter {\n\treturn {\n\t\tfind: async () => null,\n\t\tfindBy: async () => [],\n\t\tcreate: async () => { throw new Error('SQLite create adapter is generated as a starting point.'); },\n\t\tupdate: async () => null,\n\t\tdelete: async () => false\n\t};\n}\n`;
+	return `import type { PersistenceAdapter } from './types';
+
+export function createSqliteAdapter(): PersistenceAdapter {
+	return {
+		find: async () => null,
+		findBy: async () => [],
+		create: async () => {
+			throw new Error('SQLite create adapter is generated as a starting point.');
+		},
+		update: async () => null,
+		delete: async () => false
+	};
+}
+`;
 }
 
 function postgresAdapter(): string {
-	return `import type { PersistenceAdapter } from './types';\n\nexport function createPostgresAdapter(): PersistenceAdapter {\n\treturn {\n\t\tfind: async () => null,\n\t\tfindBy: async () => [],\n\t\tcreate: async () => { throw new Error('Postgres create adapter is generated as a starting point.'); },\n\t\tupdate: async () => null,\n\t\tdelete: async () => false\n\t};\n}\n`;
+	return `import type { PersistenceAdapter } from './types';
+
+export function createPostgresAdapter(): PersistenceAdapter {
+	return {
+		find: async () => null,
+		findBy: async () => [],
+		create: async () => {
+			throw new Error('Postgres create adapter is generated as a starting point.');
+		},
+		update: async () => null,
+		delete: async () => false
+	};
+}
+`;
 }

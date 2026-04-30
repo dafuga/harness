@@ -31,22 +31,34 @@ export function adapterForExtension(
 }
 
 export function knownAuditExtensions(): string[] {
-	return [...new Set([...auditAdapters.flatMap((adapter) => adapter.extensions), ...knownFutureExtensions])];
+	return [
+		...new Set([
+			...auditAdapters.flatMap((adapter) => adapter.extensions),
+			...knownFutureExtensions
+		])
+	];
 }
 
 const knownFutureExtensions = ['.go', '.java', '.kt', '.m', '.mm', '.rs', '.swift', '.vue'];
 
-export function resolveAuditProfile(root: string, profile: AuditProfile = 'auto'): Exclude<AuditProfile, 'auto'> {
+export function resolveAuditProfile(
+	root: string,
+	profile: AuditProfile = 'auto'
+): Exclude<AuditProfile, 'auto'> {
 	if (profile !== 'auto') return profile;
-	const packageKind = framePackageKind(root);
+	const packageKind = harnessPackageKind(root);
 	if (packageKind === 'app' || packageKind === 'lib') return packageKind;
-	return existsSync(join(root, 'svelte.config.js')) || existsSync(join(root, 'src/routes')) ? 'app' : 'lib';
+	return existsSync(join(root, 'svelte.config.js')) || existsSync(join(root, 'src/routes'))
+		? 'app'
+		: 'lib';
 }
 
-function framePackageKind(root: string): string | undefined {
+function harnessPackageKind(root: string): string | undefined {
 	try {
-		const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')) as { frame?: { kind?: string } };
-		return pkg.frame?.kind;
+		const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')) as {
+			harness?: { kind?: string };
+		};
+		return pkg.harness?.kind;
 	} catch {
 		return undefined;
 	}

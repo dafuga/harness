@@ -1,8 +1,8 @@
 import { expect, test } from 'vitest';
-import { frameRuleLimits, frameRuleSummaries } from '../src/rules/catalog';
+import { harnessRuleLimits, harnessRuleSummaries } from '../src/rules/catalog';
 
-test('Frame rule catalog defines Small Frame thresholds', () => {
-	expect(frameRuleLimits).toMatchObject({
+test('Harness rule catalog defines Small Harness thresholds', () => {
+	expect(harnessRuleLimits).toMatchObject({
 		maxFileLines: 220,
 		maxFunctionLines: 55,
 		maxClassLines: 120,
@@ -12,5 +12,5 @@ test('Frame rule catalog defines Small Frame thresholds', () => {
 		maxComplexity: 10,
 		maxClassesPerFile: 1
 	});
-	expect(frameRuleSummaries.length).toBeGreaterThan(8);
+	expect(harnessRuleSummaries.length).toBeGreaterThan(8);
 });

@@ -22,7 +22,11 @@ export const typeScriptAdapter: AuditAdapter = {
 
 function auditReactComponentName(file: AuditFile) {
 	if (!['.tsx', '.jsx'].includes(file.extension)) return [];
-	const name = file.relativePath.split('/').at(-1)?.replace(/\.[tj]sx$/, '') ?? '';
+	const name =
+		file.relativePath
+			.split('/')
+			.at(-1)
+			?.replace(/\.[tj]sx$/, '') ?? '';
 	if (!name || /^[A-Z][A-Za-z0-9]*$/.test(name) || name.includes('.')) return [];
 
 	return [

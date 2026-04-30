@@ -2,7 +2,7 @@ import type { AuditFinding, AuditResult } from './audit';
 
 export function renderAudit(findings: AuditFinding[]): string {
 	if (findings.length === 0) {
-		return 'Frame audit passed. Files and functions are staying small.';
+		return 'Harness audit passed. Files and functions are staying small.';
 	}
 
 	return findings
@@ -14,7 +14,7 @@ export function renderAuditCoverage(result: AuditResult): string {
 	return [
 		renderAudit(result.findings),
 		'',
-		`Frame audit coverage (${result.coverage.profile} profile)`,
+		`Harness audit coverage (${result.coverage.profile} profile)`,
 		renderAdapterCoverage(result),
 		renderCoverageList('Unknown files', result.coverage.unknownFiles),
 		renderCoverageList('Ignored paths', result.coverage.ignoredPaths)
@@ -25,7 +25,8 @@ export function renderAuditCoverage(result: AuditResult): string {
 
 function renderAdapterCoverage(result: AuditResult): string {
 	const lines = result.coverage.adapters.map((adapter) => {
-		const tools = adapter.optionalTools.length > 0 ? ` tools: ${adapter.optionalTools.join(', ')}` : '';
+		const tools =
+			adapter.optionalTools.length > 0 ? ` tools: ${adapter.optionalTools.join(', ')}` : '';
 		return `- ${adapter.id}: ${adapter.files.length} files (${adapter.extensions.join(', ')})${tools}`;
 	});
 

@@ -10,7 +10,7 @@ export function registerVerifyCommand(program: Command): void {
 		.command('verify [path]')
 		.option('--profile <profile>', 'Audit profile: auto, app, or lib.', 'auto')
 		.option('--e2e', 'Run test:e2e when the project defines it.')
-		.description('Run project checks, tests, build, and Frame audit.')
+		.description('Run format checks, project checks, tests, build, and Harness audit.')
 		.action(async (path = '.', options: { e2e?: boolean; profile?: string }) => {
 			const profile = parseAuditProfile(options.profile ?? 'auto');
 			const result = await verifyProject({
@@ -26,5 +26,5 @@ export function registerVerifyCommand(program: Command): void {
 }
 
 function renderVerifyStep(step: VerifyStep): void {
-	console.log(`\nFrame verify: ${step.label}`);
+	console.log(`\nHarness verify: ${step.label}`);
 }

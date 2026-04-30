@@ -33,15 +33,24 @@ export function pieceExportPlans(kind: PieceKind, name: string): ExportPlan[] {
 	}
 
 	if (kind === 'seeder') {
-		return [{ source: `../db/seed-data/${toKebabCase(name)}`, named: [`seed${toPascalCase(name)}`] }];
+		return [
+			{ source: `../db/seed-data/${toKebabCase(name)}`, named: [`seed${toPascalCase(name)}`] }
+		];
 	}
 
 	if (kind === 'concern') {
-		return [{ source: `./concerns/with${toPascalCase(name)}`, named: [`with${toPascalCase(name)}`] }];
+		return [
+			{ source: `./concerns/with${toPascalCase(name)}`, named: [`with${toPascalCase(name)}`] }
+		];
 	}
 
 	if (kind === 'initializer') {
-		return [{ source: `./initializers/initialize${toPascalCase(name)}`, named: [`initialize${toPascalCase(name)}`] }];
+		return [
+			{
+				source: `./initializers/initialize${toPascalCase(name)}`,
+				named: [`initialize${toPascalCase(name)}`]
+			}
+		];
 	}
 
 	if (kind === 'config') {

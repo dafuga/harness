@@ -59,7 +59,13 @@ export function adapterFiles(name: string): PlannedFile[] {
 	const fileName = toKebabCase(name);
 	const contents = `export interface ${className}Config {\n\tname?: string;\n}\n\nexport class ${className} {\n\tconstructor(private readonly config: ${className}Config = {}) {}\n\n\tconnect(): string {\n\t\treturn this.config.name ?? '${fileName}';\n\t}\n}\n`;
 
-	return entityFiles({ folder: 'adapters', fileName, className, contents, expectation: 'connects' });
+	return entityFiles({
+		folder: 'adapters',
+		fileName,
+		className,
+		contents,
+		expectation: 'connects'
+	});
 }
 
 export function validatorFiles(name: string): PlannedFile[] {
@@ -67,7 +73,13 @@ export function validatorFiles(name: string): PlannedFile[] {
 	const fileName = toKebabCase(name);
 	const contents = `export interface ${className}Result {\n\tvalid: boolean;\n\terrors: string[];\n}\n\nexport class ${className} {\n\tvalidate(input: Record<string, unknown>): ${className}Result {\n\t\tconst errors = Object.keys(input).length === 0 ? ['input is empty'] : [];\n\t\treturn { valid: errors.length === 0, errors };\n\t}\n}\n`;
 
-	return entityFiles({ folder: 'validators', fileName, className, contents, expectation: 'validates input' });
+	return entityFiles({
+		folder: 'validators',
+		fileName,
+		className,
+		contents,
+		expectation: 'validates input'
+	});
 }
 
 export function serializerFiles(name: string): PlannedFile[] {
@@ -75,7 +87,13 @@ export function serializerFiles(name: string): PlannedFile[] {
 	const fileName = toKebabCase(name);
 	const contents = `export class ${className} {\n\tserialize(input: Record<string, unknown>): Record<string, unknown> {\n\t\treturn { ...input };\n\t}\n}\n`;
 
-	return entityFiles({ folder: 'serializers', fileName, className, contents, expectation: 'serializes input' });
+	return entityFiles({
+		folder: 'serializers',
+		fileName,
+		className,
+		contents,
+		expectation: 'serializes input'
+	});
 }
 
 export function policyFiles(name: string): PlannedFile[] {
@@ -83,7 +101,13 @@ export function policyFiles(name: string): PlannedFile[] {
 	const fileName = toKebabCase(name);
 	const contents = `export interface ${className}Actor {\n\trole?: string;\n}\n\nexport class ${className} {\n\tcanRead(actor: ${className}Actor): boolean {\n\t\treturn actor.role === 'admin';\n\t}\n}\n`;
 
-	return entityFiles({ folder: 'policies', fileName, className, contents, expectation: 'checks access' });
+	return entityFiles({
+		folder: 'policies',
+		fileName,
+		className,
+		contents,
+		expectation: 'checks access'
+	});
 }
 
 export function seederFiles(name: string): PlannedFile[] {

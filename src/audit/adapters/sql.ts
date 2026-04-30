@@ -31,7 +31,11 @@ function auditDangerousSql(file: AuditFile) {
 }
 
 function auditMigrationReversibility(file: AuditFile) {
-	if (!file.relativePath.includes('db/migrations/') || /--\s*(rollback|reversible)/i.test(file.contents)) return [];
+	if (
+		!file.relativePath.includes('db/migrations/') ||
+		/--\s*(rollback|reversible)/i.test(file.contents)
+	)
+		return [];
 	if (!/\b(create|alter|drop)\b/i.test(file.contents)) return [];
 
 	return [
@@ -44,8 +48,18 @@ function auditMigrationReversibility(file: AuditFile) {
 }
 
 function auditSeedPlacement(file: AuditFile) {
-	if (!file.relativePath.includes('db/migrations/') || !/\binsert\s+into\b/i.test(uncommentedSql(file))) return [];
-	return [{ path: file.relativePath, rule: 'sql-seed-in-migration', message: 'Seed data belongs in seed files, not migrations.' }];
+	if (
+		!file.relativePath.includes('db/migrations/') ||
+		!/\binsert\s+into\b/i.test(uncommentedSql(file))
+	)
+		return [];
+	return [
+		{
+			path: file.relativePath,
+			rule: 'sql-seed-in-migration',
+			message: 'Seed data belongs in seed files, not migrations.'
+		}
+	];
 }
 
 function uncommentedSql(file: AuditFile): string {

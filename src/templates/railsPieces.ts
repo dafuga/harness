@@ -29,7 +29,13 @@ export function mailerFiles(name: string): PlannedFile[] {
 	const fileName = toKebabCase(name);
 	const contents = `export interface ${className}Message {\n\tsubject: string;\n\ttext: string;\n}\n\nexport class ${className} {\n\trender(recipient: string): ${className}Message {\n\t\treturn { subject: '${toPascalCase(name)}', text: \`Hello \${recipient}\` };\n\t}\n}\n`;
 
-	return classEntityFiles({ folder: 'mailers', fileName, className, contents, expectation: 'renders messages' });
+	return classEntityFiles({
+		folder: 'mailers',
+		fileName,
+		className,
+		contents,
+		expectation: 'renders messages'
+	});
 }
 
 export function helperFiles(name: string): PlannedFile[] {
@@ -37,7 +43,13 @@ export function helperFiles(name: string): PlannedFile[] {
 	const fileName = toKebabCase(name);
 	const contents = `export class ${className} {\n\tformat(value: string): string {\n\t\treturn value.trim();\n\t}\n}\n`;
 
-	return classEntityFiles({ folder: 'helpers', fileName, className, contents, expectation: 'formats values' });
+	return classEntityFiles({
+		folder: 'helpers',
+		fileName,
+		className,
+		contents,
+		expectation: 'formats values'
+	});
 }
 
 export function concernFiles(name: string): PlannedFile[] {
@@ -60,7 +72,13 @@ export function channelFiles(name: string): PlannedFile[] {
 	const fileName = toKebabCase(name);
 	const contents = `export class ${className} {\n\tprivate subscribers = 0;\n\n\tsubscribe(): number {\n\t\tthis.subscribers += 1;\n\t\treturn this.subscribers;\n\t}\n\n\tbroadcast(payload: string): string {\n\t\treturn payload;\n\t}\n}\n`;
 
-	return classEntityFiles({ folder: 'channels', fileName, className, contents, expectation: 'broadcasts payloads' });
+	return classEntityFiles({
+		folder: 'channels',
+		fileName,
+		className,
+		contents,
+		expectation: 'broadcasts payloads'
+	});
 }
 
 export function formFiles(name: string): PlannedFile[] {
@@ -68,7 +86,13 @@ export function formFiles(name: string): PlannedFile[] {
 	const fileName = toKebabCase(name);
 	const contents = `export class ${className} {\n\tconstructor(private readonly values: Record<string, unknown> = {}) {}\n\n\tvalidate(): string[] {\n\t\treturn Object.keys(this.values).length === 0 ? ['values are required'] : [];\n\t}\n\n\ttoPayload(): Record<string, unknown> {\n\t\treturn { ...this.values };\n\t}\n}\n`;
 
-	return classEntityFiles({ folder: 'forms', fileName, className, contents, expectation: 'validates payloads' });
+	return classEntityFiles({
+		folder: 'forms',
+		fileName,
+		className,
+		contents,
+		expectation: 'validates payloads'
+	});
 }
 
 export function initializerFiles(name: string): PlannedFile[] {
