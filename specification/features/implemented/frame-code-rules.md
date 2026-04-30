@@ -10,6 +10,7 @@ Frame enforces strict code rules through ESLint, `frame audit`, generated projec
 - `frame audit` reports rule IDs for file, function, class, method, complexity, nesting, parameter, naming, and architecture violations.
 - `frame audit` reports class-count violations with the same one-class-per-file threshold enforced by lint.
 - Command modules stay thin and architecture imports flow in one direction.
+- `frame verify` runs project checks, lint, tests, build, and Frame audit; `--e2e` also runs `test:e2e` when present.
 - Generated app and lib projects include ESLint config, local Frame rules, `lint`, `verify`, and AGENTS.md threshold guidance.
 - CLI E2E coverage includes bad-code fixtures that prove generated-project lint, generated-project verify, and `frame audit .` fail on rule violations.
 - `frame info code-rules` exposes the rule catalog.

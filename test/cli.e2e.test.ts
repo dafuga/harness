@@ -23,7 +23,8 @@ test('CLI scaffolds and verifies a lib project', async () => {
 	await runCommand(['bun', 'run', 'lint'], project);
 	await runCommand(['bun', 'run', 'test'], project);
 	await runCommand(['bun', 'run', 'build'], project);
-	await runCommand(['bun', 'run', 'verify'], project);
+	const verify = await runCommand(['bun', 'run', 'verify'], project);
+	expect(verify.stdout).toContain('Frame verify: bun run check');
 	await rm(root, { recursive: true, force: true });
 }, 180_000);
 
@@ -52,7 +53,8 @@ test('CLI scaffolds and verifies an app project with routes', async () => {
 	await runCommand(['bun', 'run', 'lint'], project);
 	await runCommand(['bun', 'run', 'test'], project);
 	await runCommand(['bun', 'run', 'build'], project);
-	await runCommand(['bun', 'run', 'verify'], project);
+	const verify = await runCommand(['bun', 'run', 'verify'], project);
+	expect(verify.stdout).toContain('Frame verify: bun run check');
 
 	const server = spawn('bun', ['x', 'vite', 'preview', '--host', '127.0.0.1', '--port', '43321'], {
 		cwd: project,
@@ -97,6 +99,9 @@ test('CLI reports edge errors cleanly and supports force overwrites', async () =
 	const invalidProfile = await runFrame(['audit', '.', '--profile', 'mobile'], project, false);
 	expect(invalidProfile.exitCode).toBe(1);
 	expect(invalidProfile.stderr).toContain('Unsupported audit profile');
+	const invalidVerifyProfile = await runFrame(['verify', '.', '--profile', 'mobile'], project, false);
+	expect(invalidVerifyProfile.exitCode).toBe(1);
+	expect(invalidVerifyProfile.stderr).toContain('Unsupported audit profile');
 
 	const scaffoldInfo = await runFrame(['info', 'scaffold'], project);
 	expect(scaffoldInfo.stdout).toContain('# scaffolds');

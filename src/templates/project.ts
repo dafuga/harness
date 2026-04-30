@@ -2,6 +2,7 @@ import type { PlannedFile } from '../core/files';
 import { frameRuleLimits, frameRuleSummaries } from '../rules/catalog';
 import { auditRunnerFiles } from './auditRunner';
 import { lintConfigFiles } from './lintConfig';
+import { verifyRunnerFiles } from './verifyRunner';
 
 export type ProjectKind = 'app' | 'lib';
 
@@ -19,6 +20,7 @@ function appFiles(name: string): PlannedFile[] {
 		...appConfigFiles(name),
 		...lintConfigFiles(),
 		...auditRunnerFiles('app'),
+		...verifyRunnerFiles('app'),
 		...appSourceFiles(name),
 		...appTestFiles()
 	];
@@ -97,6 +99,7 @@ function libFiles(name: string): PlannedFile[] {
 	return [
 		...lintConfigFiles(),
 		...auditRunnerFiles('lib'),
+		...verifyRunnerFiles('lib'),
 		{
 			path: 'package.json',
 			contents: JSON.stringify(libPackage(name), null, '\t') + '\n'
@@ -144,7 +147,7 @@ function appPackage(name: string): Record<string, unknown> {
 			test: 'bun run test:unit',
 			'test:unit': 'vitest run',
 			'test:e2e': 'playwright test',
-			verify: 'bun run check && bun run lint && bun run audit && bun run test && bun run build'
+			verify: 'bun scripts/frame-verify.ts'
 		},
 		devDependencies: {
 			'@playwright/test': '^1.28.1',
@@ -180,7 +183,7 @@ function libPackage(name: string): Record<string, unknown> {
 			audit: 'bun scripts/frame-audit.ts',
 			test: 'bun run test:unit',
 			'test:unit': 'vitest run',
-			verify: 'bun run check && bun run lint && bun run audit && bun run test && bun run build'
+			verify: 'bun scripts/frame-verify.ts'
 		},
 		devDependencies: {
 			'@eslint/js': '^9.25.1',
