@@ -95,6 +95,12 @@ test('CLI reports edge errors cleanly and supports force overwrites', async () =
 	const unknownInfo = await runFrame(['info', 'nope'], project, false);
 	expect(unknownInfo.exitCode).toBe(1);
 	expect(unknownInfo.stderr).toContain('Unknown info topic');
+	expect(unknownInfo.stderr.match(/controller/g) ?? []).toHaveLength(1);
+
+	const scaffoldInfo = await runFrame(['info', 'scaffold'], project);
+	expect(scaffoldInfo.stdout).toContain('# scaffolds');
+	const controllerInfo = await runFrame(['info', 'controllers'], project);
+	expect(controllerInfo.stdout).toContain('# controller');
 
 	const invalidName = await runFrame(['generate', 'service', '../bad'], project, false);
 	expect(invalidName.exitCode).toBe(1);

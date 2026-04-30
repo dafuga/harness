@@ -1,6 +1,6 @@
 import type { Command } from 'commander';
 import { fail } from '../core/errors';
-import { findGuide, guides } from '../guides/guide';
+import { availableGuideTopics, findGuide } from '../guides/guide';
 import { renderGuide } from '../guides/render';
 
 export function registerInfoCommand(program: Command): void {
@@ -15,7 +15,7 @@ function showInfo(topic: string, options: { json?: boolean }): void {
 	const guide = findGuide(topic);
 
 	if (!guide) {
-		const topics = guides.map((entry) => entry.topic).join(', ');
+		const topics = availableGuideTopics().join(', ');
 		fail(`Unknown info topic "${topic}". Use one of: ${topics}.`);
 	}
 

@@ -1,5 +1,6 @@
 import { frameRuleSummaries } from '../rules/catalog';
 import { scaffoldDetails, scaffoldKinds, type ScaffoldDetail } from '../templates/scaffoldTypes';
+import { availableGuideTopics as uniqueGuideTopics, findGuideByTopic } from './topics';
 
 export interface Guide {
 	topic: string;
@@ -136,7 +137,11 @@ export const guides: Guide[] = [
 ];
 
 export function findGuide(topic: string): Guide | undefined {
-	return guides.find((guide) => guide.topic === topic);
+	return findGuideByTopic(guides, topic);
+}
+
+export function availableGuideTopics(): string[] {
+	return uniqueGuideTopics(guides);
 }
 
 function scaffoldGuides(): Guide[] {

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { findGuide, guides } from '../src/guides/guide';
+import { availableGuideTopics, findGuide, guides } from '../src/guides/guide';
 import { scaffoldKinds } from '../src/templates/scaffoldTypes';
 
 test('model guidance is available for agents', () => {
@@ -31,4 +31,18 @@ test('scaffold guidance tells agents what generated code contains', () => {
 	expect(catalog?.rules.join('\n')).toContain('mailer: Email rendering');
 	expect(mailer?.contains?.join('\n')).toContain('Mailer class under src/mailers');
 	expect(mailer?.exampleCommands[0]).toBe('frame generate mailer example');
+});
+
+test('guide lookup accepts common scaffold aliases', () => {
+	expect(findGuide('scaffold')?.topic).toBe('scaffolds');
+	expect(findGuide('controllers')?.topic).toBe('controller');
+	expect(findGuide('policies')?.topic).toBe('policy');
+	expect(findGuide('code rules')?.topic).toBe('code-rules');
+});
+
+test('available guide topics are unique for CLI error output', () => {
+	const topics = availableGuideTopics();
+
+	expect(topics).toEqual([...new Set(topics)]);
+	expect(topics.filter((topic) => topic === 'controller')).toHaveLength(1);
 });
