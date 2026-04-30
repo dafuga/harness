@@ -70,7 +70,7 @@ function migrationFile(tableName: string, fields: Field[]): string {
 		'\tupdated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP'
 	];
 
-	return `CREATE TABLE IF NOT EXISTS ${tableName} (\n${columns.join(',\n')}\n);\n`;
+	return `-- reversible: DROP TABLE IF EXISTS ${tableName};\nCREATE TABLE IF NOT EXISTS ${tableName} (\n${columns.join(',\n')}\n);\n`;
 }
 
 function modelTestFile(className: string): string {

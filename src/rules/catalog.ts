@@ -20,5 +20,7 @@ export const frameRuleSummaries = [
 	`Each file defines at most ${frameRuleLimits.maxClassesPerFile} class.`,
 	'Classes should not use catch-all Manager names.',
 	'Command modules delegate to workflows instead of importing templates or file-generation helpers.',
-	'Core, template, workflow, and command imports move in one direction.'
+	'Core, template, workflow, and command imports move in one direction.',
+	'Frame audit applies ecosystem adapters for app and library code surfaces.',
+	'Unsupported file types must appear in audit coverage instead of being skipped silently.'
 ] as const;

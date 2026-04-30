@@ -1,5 +1,6 @@
 import type { PlannedFile } from '../core/files';
 import { frameRuleLimits, frameRuleSummaries } from '../rules/catalog';
+import { auditRunnerFiles } from './auditRunner';
 import { lintConfigFiles } from './lintConfig';
 
 export type ProjectKind = 'app' | 'lib';
@@ -17,6 +18,7 @@ function appFiles(name: string): PlannedFile[] {
 	return [
 		...appConfigFiles(name),
 		...lintConfigFiles(),
+		...auditRunnerFiles('app'),
 		...appSourceFiles(name),
 		...appTestFiles()
 	];
@@ -94,6 +96,7 @@ function appTestFiles(): PlannedFile[] {
 function libFiles(name: string): PlannedFile[] {
 	return [
 		...lintConfigFiles(),
+		...auditRunnerFiles('lib'),
 		{
 			path: 'package.json',
 			contents: JSON.stringify(libPackage(name), null, '\t') + '\n'
@@ -137,10 +140,11 @@ function appPackage(name: string): Record<string, unknown> {
 			build: 'vite build',
 			check: 'svelte-kit sync && svelte-check --tsconfig ./tsconfig.json',
 			lint: 'svelte-kit sync && eslint .',
+			audit: 'bun scripts/frame-audit.ts',
 			test: 'bun run test:unit',
 			'test:unit': 'vitest run',
 			'test:e2e': 'playwright test',
-			verify: 'bun run check && bun run lint && bun run test && bun run build'
+			verify: 'bun run check && bun run lint && bun run audit && bun run test && bun run build'
 		},
 		devDependencies: {
 			'@playwright/test': '^1.28.1',
@@ -173,9 +177,10 @@ function libPackage(name: string): Record<string, unknown> {
 			build: 'bun build src/index.ts --target bun --outdir dist',
 			check: 'tsc --noEmit',
 			lint: 'eslint .',
+			audit: 'bun scripts/frame-audit.ts',
 			test: 'bun run test:unit',
 			'test:unit': 'vitest run',
-			verify: 'bun run check && bun run lint && bun run test && bun run build'
+			verify: 'bun run check && bun run lint && bun run audit && bun run test && bun run build'
 		},
 		devDependencies: {
 			'@eslint/js': '^9.25.1',
@@ -191,7 +196,7 @@ function libPackage(name: string): Record<string, unknown> {
 }
 
 function agentRules(projectType: string): string {
-	return `# AGENTS.md\n\nThis is a Frame ${projectType}.\n\n- Keep files small and focused.\n- Add or update a feature spec before implementation.\n- Prefer generated controllers, models, services, decorators, and tests.\n- Run relevant checks before handing work back.\n- Ask \`frame info <topic>\` before adding unfamiliar code.\n\n## Code Rules\n\n${frameRuleSummaries.map((rule) => `- ${rule}`).join('\n')}\n\nHard limits: files ${frameRuleLimits.maxFileLines}, functions ${frameRuleLimits.maxFunctionLines}, classes ${frameRuleLimits.maxClassLines}, methods ${frameRuleLimits.maxMethodLines}, nesting ${frameRuleLimits.maxNestingDepth}.\n`;
+	return `# AGENTS.md\n\nThis is a Frame ${projectType}.\n\n- Keep files small and focused.\n- Add or update a feature spec before implementation.\n- Prefer generated controllers, models, services, decorators, and tests.\n- Run relevant checks before handing work back, including \`bun run audit\`.\n- Ask \`frame info <topic>\` before adding unfamiliar code.\n\n## Code Rules\n\n${frameRuleSummaries.map((rule) => `- ${rule}`).join('\n')}\n\nHard limits: files ${frameRuleLimits.maxFileLines}, functions ${frameRuleLimits.maxFunctionLines}, classes ${frameRuleLimits.maxClassLines}, methods ${frameRuleLimits.maxMethodLines}, nesting ${frameRuleLimits.maxNestingDepth}.\n`;
 }
 
 function specificationReadme(): string {

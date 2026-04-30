@@ -24,7 +24,11 @@ export async function runCommand(
 	cwd: string,
 	expectSuccess = true
 ): Promise<CommandResult> {
-	const child = spawn(args[0], args.slice(1), { cwd, stdio: 'pipe' });
+	const child = spawn(args[0], args.slice(1), {
+		cwd,
+		env: { ...process.env, FRAME_CLI_PATH: cliPath },
+		stdio: 'pipe'
+	});
 	const stdoutChunks: Buffer[] = [];
 	const stderrChunks: Buffer[] = [];
 

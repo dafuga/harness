@@ -94,6 +94,10 @@ test('CLI reports edge errors cleanly and supports force overwrites', async () =
 	expect(unknownInfo.stderr).toContain('Unknown info topic');
 	expect(unknownInfo.stderr.match(/controller/g) ?? []).toHaveLength(1);
 
+	const invalidProfile = await runFrame(['audit', '.', '--profile', 'mobile'], project, false);
+	expect(invalidProfile.exitCode).toBe(1);
+	expect(invalidProfile.stderr).toContain('Unsupported audit profile');
+
 	const scaffoldInfo = await runFrame(['info', 'scaffold'], project);
 	expect(scaffoldInfo.stdout).toContain('# scaffolds');
 	const controllerInfo = await runFrame(['info', 'controllers'], project);

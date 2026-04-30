@@ -1,83 +1,74 @@
 import { readFile } from 'node:fs/promises';
 import { relative } from 'node:path';
-import { auditArchitecture } from './architectureRules';
-import { auditBlocks } from './blockRules';
 import { collectAuditedFiles } from './collect';
-import { frameRuleLimits } from '../rules/catalog';
+import { maskTemplateLiterals, splitLines } from './commonRules';
+import { adapterForExtension, adaptersForProfile, knownAuditExtensions, resolveAuditProfile } from './adapters/registry';
+import type { AuditAdapter, AuditFile, AuditOptions, AuditResult } from './adapters/types';
 import type { AuditFinding } from './types';
 
 export type { AuditFinding } from './types';
+export type { AuditOptions, AuditResult } from './adapters/types';
 
-export async function auditPath(root: string): Promise<AuditFinding[]> {
-	const files = await collectAuditedFiles(root);
-	const findings = await Promise.all(files.map((file) => auditFile(root, file)));
-	return findings.flat();
+export async function auditPath(root: string, options: AuditOptions = {}): Promise<AuditFinding[]> {
+	return (await auditProject(root, options)).findings;
 }
 
-async function auditFile(root: string, path: string): Promise<AuditFinding[]> {
-	const contents = await readFile(path, 'utf8');
-	const lines = contents.split('\n');
-	const structuralLines = maskTemplateLiterals(contents).split('\n');
-	const displayPath = relative(root, path);
+export async function auditProject(root: string, options: AuditOptions = {}): Promise<AuditResult> {
+	const profile = resolveAuditProfile(root, options.profile);
+	const collected = await collectAuditedFiles(root);
+	const activeAdapters = adaptersForProfile(profile);
+	const files = collected.files.map((file) => ({ ...file, relativePath: relative(root, file.path) }));
+	const findings = await Promise.all(files.map((file) => auditCollectedFile(root, file.path, file.extension, profile)));
 
-	return [
-		...auditFileLength(displayPath, lines),
-		...auditClassCount(displayPath, structuralLines),
-		...auditBlocks(displayPath, structuralLines),
-		...auditArchitecture(displayPath, structuralLines)
-	];
+	return {
+		findings: findings.flat(),
+		coverage: {
+			profile,
+			adapters: activeAdapters.map((adapter) => adapterCoverage(adapter, files)),
+			coveredFiles: files.filter((file) => adapterForExtension(file.extension, profile)).map((file) => file.relativePath),
+			ignoredPaths: collected.ignoredPaths,
+			unknownFiles: unknownFiles(files, profile)
+		}
+	};
 }
 
-function auditFileLength(path: string, lines: string[]): AuditFinding[] {
-	if (lines.length <= frameRuleLimits.maxFileLines) {
-		return [];
-	}
-
-	return [
-		{
-			path,
-			rule: 'small-file',
-			message: `File has ${lines.length} lines. Split it by responsibility.`
-		}
-	];
+async function auditCollectedFile(
+	root: string,
+	path: string,
+	extension: string,
+	profile: AuditResult['coverage']['profile']
+): Promise<AuditFinding[]> {
+	const adapter = adapterForExtension(extension, profile);
+	if (!adapter) return [];
+	const contents = (await readFile(path)).toString('utf8');
+	return adapter.audit(auditFile(root, path, extension, contents));
 }
 
-function auditClassCount(path: string, lines: string[]): AuditFinding[] {
-	const count = lines.filter((line) => /^\s*(export\s+)?class\s+\w+/.test(line)).length;
-	if (count <= frameRuleLimits.maxClassesPerFile) return [];
-
-	return [
-		{
-			path,
-			rule: 'max-classes-per-file',
-			message: `File defines ${count} classes. Limit is ${frameRuleLimits.maxClassesPerFile}.`
-		}
-	];
+function auditFile(root: string, path: string, extension: string, contents: string): AuditFile {
+	return {
+		absolutePath: path,
+		relativePath: relative(root, path),
+		extension,
+		contents,
+		lines: splitLines(contents),
+		structuralLines: splitLines(maskTemplateLiterals(contents)),
+		size: Buffer.byteLength(contents)
+	};
 }
 
-function maskTemplateLiterals(contents: string): string {
-	let masked = '';
-	let inTemplate = false;
-	let escaped = false;
+function adapterCoverage(adapter: AuditAdapter, files: Array<{ extension: string; relativePath: string }>) {
+	return {
+		id: adapter.id,
+		label: adapter.label,
+		extensions: adapter.extensions,
+		optionalTools: adapter.optionalTools,
+		files: files.filter((file) => adapter.extensions.includes(file.extension)).map((file) => file.relativePath)
+	};
+}
 
-	for (const char of contents) {
-		if (!inTemplate) {
-			masked += char;
-			inTemplate = char === '`';
-			continue;
-		}
-
-		if (char === '\n') {
-			masked += char;
-			escaped = false;
-			continue;
-		}
-
-		const closesTemplate = char === '`' && !escaped;
-		masked += closesTemplate ? char : ' ';
-		inTemplate = !closesTemplate;
-		escaped = char === '\\' && !escaped;
-	}
-
-	return masked;
+function unknownFiles(files: Array<{ extension: string; relativePath: string }>, profile: AuditResult['coverage']['profile']): string[] {
+	const knownExtensions = new Set(knownAuditExtensions());
+	return files
+		.filter((file) => knownExtensions.has(file.extension) && !adapterForExtension(file.extension, profile))
+		.map((file) => file.relativePath);
 }

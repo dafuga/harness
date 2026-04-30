@@ -16,6 +16,8 @@ bun run dev -- info scaffolds
 bun run dev -- info model
 bun run dev -- info model --json
 bun run dev -- audit .
+bun run dev -- audit . --coverage
+bun run dev -- audit . --profile app
 ```
 
 ## Project Families
@@ -31,3 +33,4 @@ bun run dev -- audit .
 - Keep persistence behind adapters.
 - Give agents static, explicit instructions through `frame info`.
 - Use `frame info scaffolds --json` to inspect what each scaffold should contain.
+- Use `frame audit --coverage` to inspect which ecosystem adapters covered the project.

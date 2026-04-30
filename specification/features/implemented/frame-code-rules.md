@@ -13,6 +13,8 @@ Frame enforces strict code rules through ESLint, `frame audit`, generated projec
 - Generated app and lib projects include ESLint config, local Frame rules, `lint`, `verify`, and AGENTS.md threshold guidance.
 - CLI E2E coverage includes bad-code fixtures that prove generated-project lint, generated-project verify, and `frame audit .` fail on rule violations.
 - `frame info code-rules` exposes the rule catalog.
+- `frame audit` uses ecosystem adapters for app profiles (`typescript`, `svelte`, `sql`) and lib profiles (`typescript`, `cpp`, `python`, `shell`, `wasm`).
+- `frame audit --coverage` reports covered adapters, ignored paths, and known file types that are outside the selected profile.
 
 ## Future Enhancements
 

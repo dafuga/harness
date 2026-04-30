@@ -12,7 +12,7 @@
 		"check": "tsc --noEmit",
 		"test": "bun run test:unit",
 		"test:unit": "vitest run --exclude \"test/**/*.e2e.test.ts\"",
-		"test:e2e": "vitest run test/cli.e2e.test.ts test/rules.e2e.test.ts",
+		"test:e2e": "vitest run test/cli.e2e.test.ts test/rules.e2e.test.ts test/ecosystem-adapters.e2e.test.ts",
 		"verify": "bun run check && bun run lint && bun run test:unit && bun run test:e2e && bun run build && bun run dev -- audit .",
 		"lint": "eslint .",
 		"format": "prettier --write .",
