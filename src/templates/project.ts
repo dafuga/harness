@@ -1,8 +1,8 @@
 import type { PlannedFile } from '../core/files';
-import { harnessRuleLimits, harnessRuleSummaries } from '../rules/catalog';
 import { auditRunnerFiles } from './auditRunner';
 import { formatConfigFiles } from './formatConfig';
 import { lintConfigFiles } from './lintConfig';
+import { agentRules, skillRules } from './projectGuidance';
 
 export type ProjectKind = 'app' | 'lib';
 
@@ -71,6 +71,10 @@ function appSourceFiles(name: string): PlannedFile[] {
 			contents: agentRules('SvelteKit app')
 		},
 		{
+			path: '.codex/skills/harness/SKILL.md',
+			contents: skillRules('SvelteKit app')
+		},
+		{
 			path: 'specification/README.md',
 			contents: specificationReadme()
 		},
@@ -116,6 +120,10 @@ function libFiles(name: string): PlannedFile[] {
 		{
 			path: 'AGENTS.md',
 			contents: agentRules('Bun TypeScript library')
+		},
+		{
+			path: '.codex/skills/harness/SKILL.md',
+			contents: skillRules('Bun TypeScript library')
 		},
 		{
 			path: 'src/index.ts',
@@ -204,10 +212,6 @@ function libPackage(name: string): Record<string, unknown> {
 			vitest: '^3.1.2'
 		}
 	};
-}
-
-function agentRules(projectType: string): string {
-	return `# AGENTS.md\n\nThis is a Harness ${projectType}.\n\n- Keep files small and focused.\n- Add or update a feature spec before implementation.\n- Prefer generated controllers, models, services, decorators, and tests.\n- Run relevant checks before handing work back, including \`bun run audit\`.\n- Ask \`harness info <topic>\` before adding unfamiliar code.\n\n## Code Rules\n\n${harnessRuleSummaries.map((rule) => `- ${rule}`).join('\n')}\n\nHard limits: files ${harnessRuleLimits.maxFileLines}, functions ${harnessRuleLimits.maxFunctionLines}, classes ${harnessRuleLimits.maxClassLines}, methods ${harnessRuleLimits.maxMethodLines}, nesting ${harnessRuleLimits.maxNestingDepth}.\n`;
 }
 
 function specificationReadme(): string {

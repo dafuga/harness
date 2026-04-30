@@ -17,6 +17,15 @@ test('app projects include SvelteKit and specification files', () => {
 	expect(paths).toContain('scripts/harness-audit.ts');
 	expect(paths).toContain('src/app.html');
 	expect(paths).toContain('specification/README.md');
+	expect(paths).toContain('.codex/skills/harness/SKILL.md');
+	expect(fileContents(files, 'AGENTS.md')).toContain('Treat Harness as the operating contract');
+	expect(fileContents(files, 'AGENTS.md')).toContain('bun run check');
+	expect(fileContents(files, '.codex/skills/harness/SKILL.md')).toContain(
+		'Use this skill whenever'
+	);
+	expect(fileContents(files, '.codex/skills/harness/SKILL.md')).toContain(
+		'harness info scaffolds --json'
+	);
 	expect(packageJson.harness.kind).toBe('app');
 	expect(packageJson.scripts['test:e2e']).toBe('playwright test');
 	expect(packageJson.scripts.audit).toContain('harness-audit');
@@ -44,6 +53,9 @@ test('library projects include Bun TypeScript test structure', () => {
 	expect(paths).toContain('scripts/harness-audit.ts');
 	expect(paths).toContain('test/index.test.ts');
 	expect(paths).toContain('tsconfig.json');
+	expect(paths).toContain('.codex/skills/harness/SKILL.md');
+	expect(fileContents(files, 'AGENTS.md')).toContain('Treat Harness as the operating contract');
+	expect(fileContents(files, '.codex/skills/harness/SKILL.md')).toContain('bun run check');
 	expect(packageJson.harness.kind).toBe('lib');
 	expect(packageJson.scripts.audit).toContain('harness-audit');
 	expect(packageJson.scripts.check).toContain('format:check');
@@ -54,3 +66,7 @@ test('library projects include Bun TypeScript test structure', () => {
 	expect(packageJson.devDependencies['@typescript-eslint/parser']).toBeDefined();
 	expect(packageJson.devDependencies.prettier).toBeDefined();
 });
+
+function fileContents(files: ReturnType<typeof projectFiles>, path: string): string {
+	return files.find((file) => file.path === path)?.contents ?? '';
+}
