@@ -131,7 +131,7 @@ export const guides: Guide[] = [
 		antiPatterns: [
 			'Do not add broad Manager classes.',
 			'Do not hide multiple responsibilities in one class, function, or command file.',
-			'Do not bypass generated-project lint and verify scripts.'
+			'Do not bypass generated-project lint and check scripts.'
 		],
 		exampleCommands: ['harness audit src', 'harness info code-rules']
 	},

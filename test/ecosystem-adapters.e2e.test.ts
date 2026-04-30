@@ -20,9 +20,10 @@ test('generated app audit rejects TypeScript, Svelte, and SQL rule violations', 
 			'sql-dangerous-migration'
 		]);
 
-		const verifyFailure = await runCommand(['bun', 'run', 'verify'], project, false);
-		expect(verifyFailure.exitCode).toBe(1);
-		expect(commandOutput(verifyFailure)).toContain('svelte-script-lang');
+		await runCommand(['bun', 'run', 'format'], project);
+		const checkFailure = await runCommand(['bun', 'run', 'check'], project, false);
+		expect(checkFailure.exitCode).toBe(1);
+		expect(commandOutput(checkFailure)).toContain('svelte-script-lang');
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}
@@ -45,9 +46,10 @@ test('generated lib audit rejects C++, Python, shell, and WASM rule violations',
 			'wasm-artifact-placement'
 		]);
 
-		const verifyFailure = await runCommand(['bun', 'run', 'verify'], project, false);
-		expect(verifyFailure.exitCode).toBe(1);
-		expect(commandOutput(verifyFailure)).toContain('wasm-artifact-placement');
+		await runCommand(['bun', 'run', 'format'], project);
+		const checkFailure = await runCommand(['bun', 'run', 'check'], project, false);
+		expect(checkFailure.exitCode).toBe(1);
+		expect(commandOutput(checkFailure)).toContain('wasm-artifact-placement');
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}

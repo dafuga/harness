@@ -9,7 +9,8 @@ export function formatConfigFiles(): PlannedFile[] {
 		},
 		{
 			path: '.prettierignore',
-			contents: 'node_modules\ndist\ncoverage\n.svelte-kit\nbuild\n'
+			contents:
+				'node_modules\ndist\ncoverage\n.svelte-kit\nbuild\n*.cpp\n*.h\n*.hpp\n*.py\n*.sh\n*.wasm\n'
 		}
 	];
 }

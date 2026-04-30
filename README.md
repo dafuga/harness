@@ -18,8 +18,7 @@ bun run dev -- info model --json
 bun run dev -- audit .
 bun run dev -- audit . --coverage
 bun run dev -- audit . --profile app
-bun run dev -- verify --e2e
-bun run dev -- verify . --profile lib
+bun run check
 ```
 
 ## Project Families
@@ -36,4 +35,4 @@ bun run dev -- verify . --profile lib
 - Give agents static, explicit instructions through `harness info`.
 - Use `harness info scaffolds --json` to inspect what each scaffold should contain.
 - Use `harness audit --coverage` to inspect which ecosystem adapters covered the project.
-- Use `harness verify` to run format checks, project checks, tests, build, and Harness audit from one command.
+- Generated projects use `bun run check` to run format checks, project checks, tests, build, and Harness audit.

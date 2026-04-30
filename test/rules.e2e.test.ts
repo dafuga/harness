@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { commandOutput, runCommand, runHarness } from './support/cli';
 
-test('generated projects reject bad code through lint, verify, and Harness audit', async () => {
+test('generated projects reject bad code through lint, check, and Harness audit', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-cli-bad-rules-'));
 	try {
 		await runHarness(['new', 'lib', 'bad-rules'], root);
@@ -18,9 +18,9 @@ test('generated projects reject bad code through lint, verify, and Harness audit
 		expect(lintFailure.exitCode).toBe(1);
 		expectLintRules(commandOutput(lintFailure), lintRuleIds);
 
-		const verifyFailure = await runCommand(['bun', 'run', 'verify'], project, false);
-		expect(verifyFailure.exitCode).toBe(1);
-		expect(commandOutput(verifyFailure)).toContain('harness/max-class-lines');
+		const checkFailure = await runCommand(['bun', 'run', 'check'], project, false);
+		expect(checkFailure.exitCode).toBe(1);
+		expect(commandOutput(checkFailure)).toContain('harness/max-class-lines');
 
 		const auditFailure = await runHarness(['audit', '.'], project, false);
 		expect(auditFailure.exitCode).toBe(1);

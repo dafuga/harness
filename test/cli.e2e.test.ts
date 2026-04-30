@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { runCommand, runHarness } from './support/cli';
 
-test('CLI scaffolds and verifies a lib project', async () => {
+test('CLI scaffolds and checks a lib project', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-cli-lib-'));
 	await runHarness(['new', 'lib', 'demo-lib'], root);
 	const project = join(root, 'demo-lib');
@@ -22,17 +22,13 @@ test('CLI scaffolds and verifies a lib project', async () => {
 	}
 
 	await runCommand(['bun', 'install'], project);
-	await runCommand(['bun', 'run', 'check'], project);
-	await runCommand(['bun', 'run', 'lint'], project);
-	await runCommand(['bun', 'run', 'test'], project);
-	await runCommand(['bun', 'run', 'build'], project);
-	const verify = await runCommand(['bun', 'run', 'verify'], project);
-	expect(verify.stdout).toContain('Harness verify: bun run format:check');
-	expect(verify.stdout).toContain('Harness verify: bun run check');
+	const check = await runCommand(['bun', 'run', 'check'], project);
+	expect(check.stdout).toContain('Checking formatting...');
+	expect(check.stdout).toContain('Harness audit passed');
 	await rm(root, { recursive: true, force: true });
 }, 180_000);
 
-test('CLI scaffolds and verifies an app project with routes', async () => {
+test('CLI scaffolds and checks an app project with routes', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-cli-app-'));
 	await runHarness(['new', 'app', 'demo-app'], root);
 	const project = join(root, 'demo-app');
@@ -53,13 +49,9 @@ test('CLI scaffolds and verifies an app project with routes', async () => {
 	}
 
 	await runCommand(['bun', 'install'], project);
-	await runCommand(['bun', 'run', 'check'], project);
-	await runCommand(['bun', 'run', 'lint'], project);
-	await runCommand(['bun', 'run', 'test'], project);
-	await runCommand(['bun', 'run', 'build'], project);
-	const verify = await runCommand(['bun', 'run', 'verify'], project);
-	expect(verify.stdout).toContain('Harness verify: bun run format:check');
-	expect(verify.stdout).toContain('Harness verify: bun run check');
+	const check = await runCommand(['bun', 'run', 'check'], project);
+	expect(check.stdout).toContain('Checking formatting...');
+	expect(check.stdout).toContain('Harness audit passed');
 
 	const server = spawn('bun', ['x', 'vite', 'preview', '--host', '127.0.0.1', '--port', '43321'], {
 		cwd: project,
@@ -106,13 +98,6 @@ test('CLI reports edge errors cleanly', async () => {
 	const invalidProfile = await runHarness(['audit', '.', '--profile', 'mobile'], project, false);
 	expect(invalidProfile.exitCode).toBe(1);
 	expect(invalidProfile.stderr).toContain('Unsupported audit profile');
-	const invalidVerifyProfile = await runHarness(
-		['verify', '.', '--profile', 'mobile'],
-		project,
-		false
-	);
-	expect(invalidVerifyProfile.exitCode).toBe(1);
-	expect(invalidVerifyProfile.stderr).toContain('Unsupported audit profile');
 
 	const scaffoldInfo = await runHarness(['info', 'scaffold'], project);
 	expect(scaffoldInfo.stdout).toContain('# scaffolds');

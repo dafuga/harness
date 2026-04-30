@@ -3,7 +3,6 @@ import { harnessRuleLimits, harnessRuleSummaries } from '../rules/catalog';
 import { auditRunnerFiles } from './auditRunner';
 import { formatConfigFiles } from './formatConfig';
 import { lintConfigFiles } from './lintConfig';
-import { verifyRunnerFiles } from './verifyRunner';
 
 export type ProjectKind = 'app' | 'lib';
 
@@ -22,7 +21,6 @@ function appFiles(name: string): PlannedFile[] {
 		...formatConfigFiles(),
 		...lintConfigFiles(),
 		...auditRunnerFiles('app'),
-		...verifyRunnerFiles('app'),
 		...appSourceFiles(name),
 		...appTestFiles()
 	];
@@ -102,7 +100,6 @@ function libFiles(name: string): PlannedFile[] {
 		...formatConfigFiles(),
 		...lintConfigFiles(),
 		...auditRunnerFiles('lib'),
-		...verifyRunnerFiles('lib'),
 		{
 			path: 'package.json',
 			contents: JSON.stringify(libPackage(name), null, '\t') + '\n'
@@ -144,15 +141,16 @@ function appPackage(name: string): Record<string, unknown> {
 		scripts: {
 			dev: 'vite dev --host --port 3322',
 			build: 'vite build',
-			check: 'svelte-kit sync && svelte-check --tsconfig ./tsconfig.json',
+			check:
+				'bun run format:check && bun run typecheck && bun run lint && bun run test && bun run build && bun run audit',
+			typecheck: 'svelte-kit sync && svelte-check --tsconfig ./tsconfig.json',
 			'format:check': 'prettier --check .',
 			format: 'prettier --write .',
 			lint: 'svelte-kit sync && eslint .',
 			audit: 'bun scripts/harness-audit.ts',
 			test: 'bun run test:unit',
 			'test:unit': 'vitest run',
-			'test:e2e': 'playwright test',
-			verify: 'bun scripts/harness-verify.ts'
+			'test:e2e': 'playwright test'
 		},
 		devDependencies: {
 			'@playwright/test': '^1.28.1',
@@ -184,14 +182,15 @@ function libPackage(name: string): Record<string, unknown> {
 		},
 		scripts: {
 			build: 'bun build src/index.ts --target bun --outdir dist',
-			check: 'tsc --noEmit',
+			check:
+				'bun run format:check && bun run typecheck && bun run lint && bun run test && bun run build && bun run audit',
+			typecheck: 'tsc --noEmit',
 			'format:check': 'prettier --check .',
 			format: 'prettier --write .',
 			lint: 'eslint .',
 			audit: 'bun scripts/harness-audit.ts',
 			test: 'bun run test:unit',
-			'test:unit': 'vitest run',
-			verify: 'bun scripts/harness-verify.ts'
+			'test:unit': 'vitest run'
 		},
 		devDependencies: {
 			'@eslint/js': '^9.25.1',

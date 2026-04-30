@@ -10,9 +10,9 @@ Harness enforces strict code rules through ESLint, `harness audit`, generated pr
 - `harness audit` reports rule IDs for file, function, class, method, complexity, nesting, parameter, naming, and architecture violations.
 - `harness audit` reports class-count violations with the same one-class-per-file threshold enforced by lint.
 - Command modules stay thin and architecture imports flow in one direction.
-- `harness verify` runs format checks, project checks, lint, tests, build, and Harness audit; `--e2e` also runs `test:e2e` when present.
-- Generated app and lib projects include ESLint config, local Harness rules, `lint`, `verify`, and AGENTS.md threshold guidance.
-- CLI E2E coverage includes bad-code fixtures that prove generated-project lint, generated-project verify, and `harness audit .` fail on rule violations.
+- Generated app and lib projects include a `check` script that runs format checks, type checks, lint, tests, build, and Harness audit.
+- Generated app and lib projects include ESLint config, local Harness rules, `lint`, `check`, and AGENTS.md threshold guidance.
+- CLI E2E coverage includes bad-code fixtures that prove generated-project lint, generated-project check, and `harness audit .` fail on rule violations.
 - `harness info code-rules` exposes the rule catalog.
 - `harness audit` uses ecosystem adapters for app profiles (`typescript`, `svelte`, `sql`) and lib profiles (`typescript`, `cpp`, `python`, `shell`, `wasm`).
 - `harness audit --coverage` reports covered adapters, ignored paths, and known file types that are outside the selected profile.
