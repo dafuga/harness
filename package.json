@@ -1,11 +1,15 @@
 {
-	"name": "@danfugere/harness",
+	"name": "@dafuga01/harness",
 	"version": "0.1.0",
 	"description": "An opinionated CLI that helps humans and agents code in small, Rails-inspired harnesses.",
 	"type": "module",
 	"bin": {
 		"harness": "dist/index.js"
 	},
+	"files": [
+		"dist",
+		"README.md"
+	],
 	"scripts": {
 		"dev": "bun run src/index.ts",
 		"build": "bun build src/index.ts --target bun --outdir dist",
