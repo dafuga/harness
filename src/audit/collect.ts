@@ -23,6 +23,7 @@ export interface CollectedFile {
 
 export interface CollectedFiles {
 	files: CollectedFile[];
+	dirs: string[];
 	ignoredPaths: string[];
 }
 
@@ -36,6 +37,7 @@ async function collectFiles(root: string, prefix: string): Promise<CollectedFile
 
 	return {
 		files: nested.flatMap((result) => result.files),
+		dirs: nested.flatMap((result) => result.dirs),
 		ignoredPaths: nested.flatMap((result) => result.ignoredPaths)
 	};
 }
@@ -47,9 +49,18 @@ async function collectEntry(root: string, entry: string, prefix: string): Promis
 
 	if (details.isDirectory()) {
 		return ignoredDirs.has(entry)
-			? { files: [], ignoredPaths: [`${relativePath}/`] }
-			: collectFiles(path, relativePath);
+			? { files: [], dirs: [], ignoredPaths: [`${relativePath}/`] }
+			: collectDirectory(path, relativePath);
 	}
 
-	return { files: [{ path, extension: extname(entry).toLowerCase() }], ignoredPaths: [] };
+	return { files: [{ path, extension: extname(entry).toLowerCase() }], dirs: [], ignoredPaths: [] };
+}
+
+async function collectDirectory(path: string, relativePath: string): Promise<CollectedFiles> {
+	const collected = await collectFiles(path, relativePath);
+	return {
+		files: collected.files,
+		dirs: [`${relativePath}/`, ...collected.dirs],
+		ignoredPaths: collected.ignoredPaths
+	};
 }

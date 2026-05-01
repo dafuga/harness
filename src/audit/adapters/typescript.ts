@@ -2,6 +2,7 @@ import { auditArchitecture } from '../architectureRules';
 import { auditBlocks } from '../blockRules';
 import { auditClassCount, auditFileLength } from '../commonRules';
 import { auditTypeScriptNaming } from '../namingRules';
+import { auditHarnessStructure } from '../structureRules';
 import type { AuditAdapter, AuditFile } from './types';
 
 export const typeScriptAdapter: AuditAdapter = {
@@ -10,6 +11,7 @@ export const typeScriptAdapter: AuditAdapter = {
 	profiles: ['app', 'lib'],
 	extensions: ['.ts', '.tsx', '.js', '.jsx'],
 	optionalTools: ['eslint'],
+	auditStructure: auditHarnessStructure,
 	audit(file) {
 		return [
 			...auditFileLength(file.relativePath, file.lines),

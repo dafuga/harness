@@ -23,6 +23,7 @@ export interface AuditAdapter {
 	extensions: string[];
 	optionalTools: string[];
 	audit(file: AuditFile): AuditFinding[];
+	auditStructure?(structure: AuditStructure): AuditFinding[];
 }
 
 export interface AuditCoverage {
@@ -44,4 +45,10 @@ export interface AdapterCoverage {
 export interface AuditResult {
 	findings: AuditFinding[];
 	coverage: AuditCoverage;
+}
+
+export interface AuditStructure {
+	profile: Exclude<AuditProfile, 'auto'>;
+	files: string[];
+	dirs: string[];
 }

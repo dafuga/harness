@@ -133,3 +133,35 @@ test('audit reports Harness scaffold file and function naming violations', async
 	expect(rules).toContain('function-name-pattern');
 	await rm(root, { recursive: true, force: true });
 });
+
+test('audit rejects files and folders outside the Harness structure', async () => {
+	const root = await mkdtemp(join(tmpdir(), 'harness-audit-'));
+	await mkdir(join(root, 'src/random-things'), { recursive: true });
+	await mkdir(join(root, 'test/random-things'), { recursive: true });
+	await mkdir(join(root, 'db/archive'), { recursive: true });
+	await mkdir(join(root, 'specification/features/Draft'), { recursive: true });
+
+	await writeFile(join(root, 'task.ts'), 'export const task = true;\n');
+	await writeFile(join(root, 'src/random-things/tool.ts'), 'export const tool = true;\n');
+	await writeFile(
+		join(root, 'test/random-things/tool.test.ts'),
+		'import { test } from "vitest";\n'
+	);
+	await writeFile(join(root, 'db/archive/old.sql'), 'select 1;\n');
+	await writeFile(join(root, 'specification/features/Draft/BadName.md'), '# Feature\n');
+
+	const findings = await auditPath(root);
+	const rules = findings.map((finding) => finding.rule);
+
+	expect(rules).toEqual(
+		expect.arrayContaining([
+			'folder-name-pattern',
+			'harness-root-file-structure',
+			'harness-source-structure',
+			'harness-test-structure',
+			'harness-db-structure',
+			'harness-spec-structure'
+		])
+	);
+	await rm(root, { recursive: true, force: true });
+});

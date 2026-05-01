@@ -8,7 +8,13 @@ import {
 	knownAuditExtensions,
 	resolveAuditProfile
 } from './adapters/registry';
-import type { AuditAdapter, AuditFile, AuditOptions, AuditResult } from './adapters/types';
+import type {
+	AuditAdapter,
+	AuditFile,
+	AuditOptions,
+	AuditResult,
+	AuditStructure
+} from './adapters/types';
 import type { AuditFinding } from './types';
 
 export type { AuditFinding } from './types';
@@ -29,9 +35,14 @@ export async function auditProject(root: string, options: AuditOptions = {}): Pr
 	const findings = await Promise.all(
 		files.map((file) => auditCollectedFile(root, file.path, file.extension, profile))
 	);
+	const structureFindings = auditProjectStructure(activeAdapters, {
+		profile,
+		files: files.map((file) => file.relativePath),
+		dirs: collected.dirs
+	});
 
 	return {
-		findings: findings.flat(),
+		findings: [...structureFindings, ...findings.flat()],
 		coverage: {
 			profile,
 			adapters: activeAdapters.map((adapter) => adapterCoverage(adapter, files)),
@@ -42,6 +53,13 @@ export async function auditProject(root: string, options: AuditOptions = {}): Pr
 			unknownFiles: unknownFiles(files, profile)
 		}
 	};
+}
+
+function auditProjectStructure(
+	adapters: AuditAdapter[],
+	structure: AuditStructure
+): AuditFinding[] {
+	return adapters.flatMap((adapter) => adapter.auditStructure?.(structure) ?? []);
 }
 
 async function auditCollectedFile(
