@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { relative } from 'node:path';
 import { collectAuditedFiles } from './collect';
 import { maskTemplateLiterals, splitLines } from './commonRules';
+import { filterIgnoredFindings, readAuditConfig } from './config';
 import {
 	adapterForExtension,
 	adaptersForProfile,
@@ -26,6 +27,7 @@ export async function auditPath(root: string, options: AuditOptions = {}): Promi
 
 export async function auditProject(root: string, options: AuditOptions = {}): Promise<AuditResult> {
 	const profile = resolveAuditProfile(root, options.profile);
+	const config = readAuditConfig(root);
 	const collected = await collectAuditedFiles(root);
 	const activeAdapters = adaptersForProfile(profile);
 	const files = collected.files.map((file) => ({
@@ -41,8 +43,13 @@ export async function auditProject(root: string, options: AuditOptions = {}): Pr
 		dirs: collected.dirs
 	});
 
+	const filteredFindings = filterIgnoredFindings(
+		[...structureFindings, ...findings.flat()],
+		config
+	);
+
 	return {
-		findings: [...structureFindings, ...findings.flat()],
+		findings: filteredFindings.activeFindings,
 		coverage: {
 			profile,
 			adapters: activeAdapters.map((adapter) => adapterCoverage(adapter, files)),
@@ -50,6 +57,7 @@ export async function auditProject(root: string, options: AuditOptions = {}): Pr
 				.filter((file) => adapterForExtension(file.extension, profile))
 				.map((file) => file.relativePath),
 			ignoredPaths: collected.ignoredPaths,
+			ignoredFindings: filteredFindings.ignoredFindings,
 			unknownFiles: unknownFiles(files, profile)
 		}
 	};

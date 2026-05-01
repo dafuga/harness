@@ -71,8 +71,23 @@ export const allowedTestFolders = new Set([
 ]);
 
 export const allowedRootTypeScriptFiles = new Set([
+	'capacitor.config.ts',
 	'eslint.config.ts',
 	'playwright.config.ts',
 	'svelte.config.ts',
+	'tailwind.config.ts',
+	'vitest.config.ts',
 	'vite.config.ts'
+]);
+
+export const allowedDirectSrcFiles = new Set([
+	'app.css',
+	'app.d.ts',
+	'app.html',
+	'hooks.client.ts',
+	'hooks.server.ts',
+	'index.test.ts',
+	'index.ts',
+	'service-worker.ts',
+	'setupTests.ts'
 ]);

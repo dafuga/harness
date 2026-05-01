@@ -7,13 +7,17 @@ const ignoredDirs = new Set([
 	'.git',
 	'.gradle',
 	'.svelte-kit',
+	'.wrangler',
 	'.wxt',
 	'build',
 	'coverage',
 	'dist',
 	'node_modules',
 	'Pods',
-	'target'
+	'playwright-report',
+	'target',
+	'test-results',
+	'tmp'
 ]);
 
 export interface CollectedFile {

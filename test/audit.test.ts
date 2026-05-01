@@ -165,3 +165,24 @@ test('audit rejects files and folders outside the Harness structure', async () =
 	);
 	await rm(root, { recursive: true, force: true });
 });
+
+test('audit honors local ignored finding baselines', async () => {
+	const root = await mkdtemp(join(tmpdir(), 'harness-audit-'));
+	await writeFile(
+		join(root, 'large.ts'),
+		Array.from({ length: 225 }, () => 'export {};').join('\n')
+	);
+	await writeFile(
+		join(root, 'harness.audit.json'),
+		JSON.stringify({
+			ignore: [
+				{ path: 'large.ts', rule: 'small-file', reason: 'legacy file split tracked separately' }
+			]
+		})
+	);
+
+	const findings = await auditPath(root);
+
+	expect(findings.some((finding) => finding.rule === 'small-file')).toBe(false);
+	await rm(root, { recursive: true, force: true });
+});

@@ -6,6 +6,16 @@ export interface AuditOptions {
 	profile?: AuditProfile;
 }
 
+export interface AuditConfig {
+	ignore?: AuditIgnore[];
+}
+
+export interface AuditIgnore {
+	path: string;
+	rule?: string;
+	reason?: string;
+}
+
 export interface AuditFile {
 	absolutePath: string;
 	relativePath: string;
@@ -31,6 +41,7 @@ export interface AuditCoverage {
 	adapters: AdapterCoverage[];
 	coveredFiles: string[];
 	ignoredPaths: string[];
+	ignoredFindings: AuditFinding[];
 	unknownFiles: string[];
 }
 

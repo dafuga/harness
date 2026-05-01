@@ -16,6 +16,7 @@ export function renderAuditCoverage(result: AuditResult): string {
 		'',
 		`Harness audit coverage (${result.coverage.profile} profile)`,
 		renderAdapterCoverage(result),
+		renderIgnoredFindings(result),
 		renderCoverageList('Unknown files', result.coverage.unknownFiles),
 		renderCoverageList('Ignored paths', result.coverage.ignoredPaths)
 	]
@@ -31,6 +32,11 @@ function renderAdapterCoverage(result: AuditResult): string {
 	});
 
 	return ['Covered adapters:', ...lines].join('\n');
+}
+
+function renderIgnoredFindings(result: AuditResult): string {
+	if (result.coverage.ignoredFindings.length === 0) return 'Ignored findings: none';
+	return `Ignored findings: ${result.coverage.ignoredFindings.length}`;
 }
 
 function renderCoverageList(title: string, values: string[]): string {

@@ -1,5 +1,6 @@
 import type { AuditStructure } from './adapters/types';
 import {
+	allowedDirectSrcFiles,
 	allowedRootTypeScriptFiles,
 	allowedSrcFolders,
 	allowedTestFolders
@@ -142,7 +143,7 @@ function auditE2eFolder(dir: string, segments: string[]): AuditFinding[] {
 }
 
 function auditDirectSourceFile(file: string, name: string): AuditFinding[] {
-	if (name === 'app.html' || name === 'index.ts') return [];
+	if (allowedDirectSrcFiles.has(name)) return [];
 	return [
 		{
 			path: file,
@@ -158,7 +159,8 @@ function isAllowedFolderName(segment: string): boolean {
 		segment === '.codex' ||
 		segment === '.github' ||
 		/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(segment) ||
-		/^\[[a-z0-9]+(?:-[a-z0-9]+)*\]$/.test(segment) ||
+		/^[a-z0-9]+(?:[-.][a-z0-9]+)*\.spec\.ts$/.test(segment) ||
+		/^\[[A-Za-z0-9_-]+\]$/.test(segment) ||
 		/^\([a-z0-9]+(?:-[a-z0-9]+)*\)$/.test(segment)
 	);
 }
