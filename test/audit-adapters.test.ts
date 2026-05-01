@@ -11,6 +11,15 @@ test('audit profiles select ecosystem adapters', () => {
 		'svelte',
 		'sql'
 	]);
+	expect(adaptersForProfile('dapp').map((adapter) => adapter.id)).toEqual([
+		'typescript',
+		'svelte',
+		'sql',
+		'antelope-dapp',
+		'cpp',
+		'shell',
+		'wasm'
+	]);
 	expect(adaptersForProfile('lib').map((adapter) => adapter.id)).toEqual([
 		'typescript',
 		'cpp',
@@ -25,6 +34,8 @@ test('auto profile detects Svelte apps and Harness libs', async () => {
 	try {
 		await writeFile(join(root, 'svelte.config.js'), 'export default {};\n');
 		expect(resolveAuditProfile(root, 'auto')).toBe('app');
+		await mkdir(join(root, 'smart-contract/contracts/example'), { recursive: true });
+		expect(resolveAuditProfile(root, 'auto')).toBe('dapp');
 		await writeFile(join(root, 'package.json'), '{"harness":{"kind":"lib"}}\n');
 		expect(resolveAuditProfile(root, 'auto')).toBe('lib');
 	} finally {

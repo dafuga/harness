@@ -7,7 +7,7 @@ const artifactDirs = ['/artifacts/', '/smart-contract/', '/contracts/', '/wasm/'
 export const wasmAdapter: AuditAdapter = {
 	id: 'wasm',
 	label: 'WASM artifacts',
-	profiles: ['lib'],
+	profiles: ['dapp', 'lib'],
 	extensions: ['.abi', '.wasm'],
 	optionalTools: [],
 	audit(file) {

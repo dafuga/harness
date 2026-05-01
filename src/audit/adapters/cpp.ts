@@ -7,7 +7,7 @@ const cppExtensions = ['.c', '.cc', '.cpp', '.cxx', '.h', '.hh', '.hpp', '.hxx']
 export const cppAdapter: AuditAdapter = {
 	id: 'cpp',
 	label: 'C and C++',
-	profiles: ['lib'],
+	profiles: ['dapp', 'lib'],
 	extensions: cppExtensions,
 	optionalTools: ['clang-tidy', 'clang-format'],
 	audit(file) {
@@ -22,7 +22,7 @@ export const cppAdapter: AuditAdapter = {
 
 function startsCppFunction(line: string): boolean {
 	if (/^\s*(if|for|while|switch|catch)\b/.test(line)) return false;
-	return /^\s*(?:[\w:<>,~*&\s]+\s+)+[\w:~]+\s*\([^;]*\)\s*(const\s*)?(noexcept\s*)?\{/.test(line);
+	return /^\s*(?:[\w:<>~*&]+\s+)+[\w:~]+\s*\([^;{}]*\)\s*(const\s*)?(noexcept\s*)?\{/.test(line);
 }
 
 function auditHeaderNamespace(file: AuditFile) {

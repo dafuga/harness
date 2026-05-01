@@ -7,7 +7,7 @@ const routeFiles = new Set(['+page', '+layout', '+error']);
 export const svelteAdapter: AuditAdapter = {
 	id: 'svelte',
 	label: 'Svelte',
-	profiles: ['app'],
+	profiles: ['app', 'dapp'],
 	extensions: ['.svelte'],
 	optionalTools: ['svelte-check', 'eslint'],
 	audit(file) {

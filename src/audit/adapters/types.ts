@@ -1,6 +1,6 @@
 import type { AuditFinding } from '../types';
 
-export type AuditProfile = 'app' | 'auto' | 'lib';
+export type AuditProfile = 'app' | 'auto' | 'dapp' | 'lib';
 
 export interface AuditOptions {
 	profile?: AuditProfile;

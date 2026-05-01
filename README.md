@@ -18,12 +18,14 @@ bun run dev -- info model --json
 bun run dev -- audit .
 bun run dev -- audit . --coverage
 bun run dev -- audit . --profile app
+bun run dev -- audit . --profile dapp
 bun run check
 ```
 
 ## Project Families
 
 - `app` scaffolds a SvelteKit-shaped application inspired by Daniel's `app-template`.
+- `dapp` audits SvelteKit dApps with Antelope or Harbor smart-contract folders.
 - `lib` scaffolds a Bun TypeScript package.
 
 ## Harness Rules

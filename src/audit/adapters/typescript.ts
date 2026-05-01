@@ -8,7 +8,7 @@ import type { AuditAdapter, AuditFile } from './types';
 export const typeScriptAdapter: AuditAdapter = {
 	id: 'typescript',
 	label: 'TypeScript and JavaScript',
-	profiles: ['app', 'lib'],
+	profiles: ['app', 'dapp', 'lib'],
 	extensions: ['.ts', '.tsx', '.js', '.jsx'],
 	optionalTools: ['eslint'],
 	auditStructure: auditHarnessStructure,

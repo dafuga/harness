@@ -1,4 +1,4 @@
-import { readdir, stat } from 'node:fs/promises';
+import { lstat, readdir } from 'node:fs/promises';
 import { extname } from 'node:path';
 import { join } from 'node:path';
 
@@ -51,8 +51,12 @@ async function collectFiles(root: string, prefix: string): Promise<CollectedFile
 
 async function collectEntry(root: string, entry: string, prefix: string): Promise<CollectedFiles> {
 	const path = join(root, entry);
-	const details = await stat(path);
+	const details = await lstat(path);
 	const relativePath = prefix ? `${prefix}/${entry}` : entry;
+
+	if (details.isSymbolicLink()) {
+		return { files: [], dirs: [], ignoredPaths: [relativePath] };
+	}
 
 	if (details.isDirectory()) {
 		return ignoredDirs.has(entry)

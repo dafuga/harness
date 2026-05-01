@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { antelopeDappAdapter } from './antelopeDapp';
 import { cppAdapter } from './cpp';
 import { pythonAdapter } from './python';
 import { shellAdapter } from './shell';
@@ -13,6 +14,7 @@ export const auditAdapters = [
 	typeScriptAdapter,
 	svelteAdapter,
 	sqlAdapter,
+	antelopeDappAdapter,
 	cppAdapter,
 	pythonAdapter,
 	shellAdapter,
@@ -46,11 +48,32 @@ export function resolveAuditProfile(
 	profile: AuditProfile = 'auto'
 ): Exclude<AuditProfile, 'auto'> {
 	if (profile !== 'auto') return profile;
+	return detectAuditProfile(root);
+}
+
+function detectAuditProfile(root: string): Exclude<AuditProfile, 'auto'> {
 	const packageKind = harnessPackageKind(root);
-	if (packageKind === 'app' || packageKind === 'lib') return packageKind;
-	return existsSync(join(root, 'svelte.config.js')) || existsSync(join(root, 'src/routes'))
-		? 'app'
-		: 'lib';
+	const hasContracts = hasContractWorkspace(root);
+	if (packageKind === 'lib') return 'lib';
+	if (packageKind === 'dapp' || (packageKind === 'app' && hasContracts)) return 'dapp';
+	if (packageKind === 'app') return 'app';
+	return detectUnconfiguredProfile(root, hasContracts);
+}
+
+function detectUnconfiguredProfile(
+	root: string,
+	hasContracts: boolean
+): Exclude<AuditProfile, 'auto'> {
+	if (hasContracts) return 'dapp';
+	return isSvelteApp(root) ? 'app' : 'lib';
+}
+
+function isSvelteApp(root: string): boolean {
+	return existsSync(join(root, 'svelte.config.js')) || existsSync(join(root, 'src/routes'));
+}
+
+function hasContractWorkspace(root: string): boolean {
+	return existsSync(join(root, 'smart-contract/contracts')) || existsSync(join(root, 'contracts'));
 }
 
 function harnessPackageKind(root: string): string | undefined {

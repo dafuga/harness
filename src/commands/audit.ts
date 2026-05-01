@@ -8,7 +8,7 @@ export function registerAuditCommand(program: Command): void {
 	program
 		.command('audit [path]')
 		.option('--coverage', 'Show adapter coverage and unknown file types.')
-		.option('--profile <profile>', 'Audit profile: auto, app, or lib.', 'auto')
+		.option('--profile <profile>', 'Audit profile: auto, app, dapp, or lib.', 'auto')
 		.description('Audit files for Harness size and responsibility rules.')
 		.action(async (path = '.', options: { coverage?: boolean; profile?: string }) => {
 			const profile = parseAuditProfile(options.profile ?? 'auto');

@@ -5,7 +5,7 @@ import type { AuditAdapter, AuditFile } from './types';
 export const sqlAdapter: AuditAdapter = {
 	id: 'sql',
 	label: 'SQL',
-	profiles: ['app'],
+	profiles: ['app', 'dapp'],
 	extensions: ['.sql'],
 	optionalTools: ['sqlfluff'],
 	audit(file) {

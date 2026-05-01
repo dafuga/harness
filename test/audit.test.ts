@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { expect, test } from 'vitest';
@@ -64,6 +64,17 @@ test('audit reports oversized functions and ignores build folders', async () => 
 
 	expect(findings.some((finding) => finding.rule === 'small-function')).toBe(true);
 	expect(findings.some((finding) => finding.path.includes('node_modules'))).toBe(false);
+	await rm(root, { recursive: true, force: true });
+});
+
+test('audit ignores symlinks without following missing build outputs', async () => {
+	const root = await mkdtemp(join(tmpdir(), 'harness-audit-'));
+	await mkdir(join(root, 'bin'));
+	await symlink('../build/missing-tool', join(root, 'bin/tool'));
+
+	const findings = await auditPath(root);
+
+	expect(findings).toEqual([]);
 	await rm(root, { recursive: true, force: true });
 });
 
