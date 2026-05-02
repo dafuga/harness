@@ -9,7 +9,8 @@ test('audit profiles select ecosystem adapters', () => {
 	expect(adaptersForProfile('app').map((adapter) => adapter.id)).toEqual([
 		'typescript',
 		'svelte',
-		'sql'
+		'sql',
+		'shell'
 	]);
 	expect(adaptersForProfile('dapp').map((adapter) => adapter.id)).toEqual([
 		'typescript',

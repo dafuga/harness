@@ -5,7 +5,7 @@ import type { AuditAdapter, AuditFile } from './types';
 export const shellAdapter: AuditAdapter = {
 	id: 'shell',
 	label: 'Shell',
-	profiles: ['dapp', 'lib'],
+	profiles: ['app', 'dapp', 'lib'],
 	extensions: ['.sh'],
 	optionalTools: ['shellcheck'],
 	audit(file) {

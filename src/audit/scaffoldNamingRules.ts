@@ -139,7 +139,14 @@ function functionFileRule(file: AuditFile): FunctionFileRule | undefined {
 }
 
 function camelFunctionRule(stem: string, label: string, filePattern: string): FunctionFileRule {
-	return { expected: toCamelCase(stem), label, validFileName: isCamelCase(stem), filePattern };
+	const exportStem = stem.replace(/\.(?:client|server|svelte)$/, '');
+	return {
+		expected: toCamelCase(exportStem),
+		label,
+		validFileName:
+			isCamelCase(exportStem) && (!stem.includes('.') || /\.(?:client|server|svelte)$/.test(stem)),
+		filePattern
+	};
 }
 
 function prefixedRule(stem: string, prefix: string, label: string): FunctionFileRule {
