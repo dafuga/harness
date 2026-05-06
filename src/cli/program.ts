@@ -10,7 +10,7 @@ export function buildProgram(): Command {
 	program
 		.name('harness')
 		.description('Opinionated Rails-inspired coding harnesses for humans and agents.')
-		.version('0.1.1');
+		.version('0.1.2');
 
 	registerNewCommand(program);
 	registerGenerateCommand(program);
