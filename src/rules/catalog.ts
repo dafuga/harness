@@ -6,7 +6,9 @@ export const harnessRuleLimits = {
 	maxNestingDepth: 4,
 	maxParameters: 4,
 	maxComplexity: 10,
-	maxClassesPerFile: 1
+	maxClassesPerFile: 1,
+	minDuplicateLines: 12,
+	minDuplicateCharacters: 180
 } as const;
 
 export const harnessRuleSummaries = [
@@ -23,6 +25,7 @@ export const harnessRuleSummaries = [
 	'Classes should not use catch-all Manager names.',
 	'Command modules delegate to workflows instead of importing templates or file-generation helpers.',
 	'Core, template, workflow, and command imports move in one direction.',
+	`Repeated code blocks of ${harnessRuleLimits.minDuplicateLines} or more meaningful lines should be extracted or removed.`,
 	'Harness audit applies ecosystem adapters for app and library code surfaces.',
 	'Unsupported file types must appear in audit coverage instead of being skipped silently.'
 ] as const;

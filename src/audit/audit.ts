@@ -3,6 +3,7 @@ import { relative } from 'node:path';
 import { collectAuditedFiles } from './collect';
 import { maskTemplateLiterals, splitLines } from './commonRules';
 import { filterIgnoredFindings, readAuditConfig } from './config';
+import { auditDuplicatedCode } from './duplicateRules';
 import {
 	adapterForExtension,
 	adaptersForProfile,
@@ -34,17 +35,18 @@ export async function auditProject(root: string, options: AuditOptions = {}): Pr
 		...file,
 		relativePath: relative(root, file.path)
 	}));
-	const findings = await Promise.all(
-		files.map((file) => auditCollectedFile(root, file.path, file.extension, profile))
-	);
+	const knownFiles = files.filter((file) => adapterForExtension(file.extension, profile));
+	const auditFiles = await Promise.all(knownFiles.map((file) => readAuditFile(root, file)));
+	const adapterFindings = auditFiles.flatMap((file) => auditFileWithAdapter(file, profile));
 	const structureFindings = auditProjectStructure(activeAdapters, {
 		profile,
 		files: files.map((file) => file.relativePath),
 		dirs: collected.dirs
 	});
+	const duplicateFindings = auditDuplicatedCode(auditFiles);
 
 	const filteredFindings = filterIgnoredFindings(
-		[...structureFindings, ...findings.flat()],
+		[...structureFindings, ...adapterFindings, ...duplicateFindings],
 		config
 	);
 
@@ -70,16 +72,20 @@ function auditProjectStructure(
 	return adapters.flatMap((adapter) => adapter.auditStructure?.(structure) ?? []);
 }
 
-async function auditCollectedFile(
+async function readAuditFile(
 	root: string,
-	path: string,
-	extension: string,
+	file: { path: string; extension: string }
+): Promise<AuditFile> {
+	const contents = (await readFile(file.path)).toString('utf8');
+	return auditFile(root, file.path, file.extension, contents);
+}
+
+function auditFileWithAdapter(
+	file: AuditFile,
 	profile: AuditResult['coverage']['profile']
-): Promise<AuditFinding[]> {
-	const adapter = adapterForExtension(extension, profile);
-	if (!adapter) return [];
-	const contents = (await readFile(path)).toString('utf8');
-	return adapter.audit(auditFile(root, path, extension, contents));
+): AuditFinding[] {
+	const adapter = adapterForExtension(file.extension, profile);
+	return adapter?.audit(file) ?? [];
 }
 
 function auditFile(root: string, path: string, extension: string, contents: string): AuditFile {
