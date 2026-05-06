@@ -1,5 +1,6 @@
 import { harnessRuleLimits } from '../rules/catalog';
 import type { AuditFile } from './adapters/types';
+import { auditSemanticDuplicates } from './semanticDuplicateRules';
 import type { AuditFinding } from './types';
 
 interface DuplicateWindow {
@@ -28,7 +29,7 @@ export function auditDuplicatedCode(files: AuditFile[]): AuditFinding[] {
 		}
 	}
 
-	return findings;
+	return [...findings, ...auditSemanticDuplicates(files)];
 }
 
 function collectWindows(files: AuditFile[]): Map<string, DuplicateWindow[]> {

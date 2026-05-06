@@ -11,7 +11,7 @@ test('generated projects reject duplicated code through Harness audit', async ()
 		const project = join(root, 'duplicate-code');
 
 		await writeFile(join(project, 'src/first-copy.ts'), duplicateFixture('firstCopy'));
-		await writeFile(join(project, 'src/second-copy.ts'), duplicateFixture('secondCopy'));
+		await writeFile(join(project, 'src/second-copy.ts'), semanticVariantFixture('secondCopy'));
 
 		const auditFailure = await runHarness(['audit', '.'], project, false);
 
@@ -38,6 +38,26 @@ function duplicateFixture(name: string): string {
 		'\tconst displayValue = finalValue + weighted;',
 		'\tconst safeValue = Math.min(displayValue, 200);',
 		'\treturn safeValue;',
+		'}'
+	].join('\n')}\n`;
+}
+
+function semanticVariantFixture(name: string): string {
+	return `${[
+		`export function ${name}(input: number): number {`,
+		'\tconst start = input + 15;',
+		'\tconst multiplied = start * 2;',
+		'\tconst moved = multiplied - 7;',
+		'\tconst guarded = Math.max(moved, 0);',
+		'\tconst integer = Math.round(guarded);',
+		'\tconst aggregate = integer + start;',
+		'\tconst capped = Math.min(aggregate, 100);',
+		'\tconst inflated = capped + integer;',
+		'\tconst reduced = inflated - start;',
+		'\tconst winner = Math.max(reduced, 1);',
+		'\tconst visible = winner + aggregate;',
+		'\tconst answer = Math.min(visible, 200);',
+		'\treturn answer;',
 		'}'
 	].join('\n')}\n`;
 }

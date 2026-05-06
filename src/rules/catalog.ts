@@ -8,7 +8,9 @@ export const harnessRuleLimits = {
 	maxComplexity: 10,
 	maxClassesPerFile: 1,
 	minDuplicateLines: 12,
-	minDuplicateCharacters: 180
+	minDuplicateCharacters: 180,
+	minSemanticDuplicateTokens: 18,
+	minSemanticDuplicateSimilarity: 0.86
 } as const;
 
 export const harnessRuleSummaries = [
