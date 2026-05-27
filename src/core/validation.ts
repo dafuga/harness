@@ -25,6 +25,16 @@ export function validateRouteName(name: string): string {
 	return route;
 }
 
+export function validateKebabName(name: string, label: string): string {
+	const value = name.trim();
+
+	if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value)) {
+		fail(`${label} must use lowercase kebab-case.`);
+	}
+
+	return value;
+}
+
 export function validateExportName(name: string): string {
 	const exportName = toCamelCase(validateCodeName(name));
 

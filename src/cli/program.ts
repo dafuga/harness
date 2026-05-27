@@ -2,6 +2,7 @@ import { Command } from 'commander';
 import { registerAuditCommand } from '../commands/audit';
 import { registerGenerateCommand } from '../commands/generate';
 import { registerInfoCommand } from '../commands/info';
+import { registerLoopCommand } from '../commands/loop';
 import { registerNewCommand } from '../commands/new';
 
 export function buildProgram(): Command {
@@ -15,6 +16,7 @@ export function buildProgram(): Command {
 	registerNewCommand(program);
 	registerGenerateCommand(program);
 	registerInfoCommand(program);
+	registerLoopCommand(program);
 	registerAuditCommand(program);
 
 	return program;

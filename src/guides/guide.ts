@@ -106,6 +106,31 @@ export const guides: Guide[] = [
 		exampleCommands: ['harness generate feature scheduled-posts']
 	},
 	{
+		topic: 'loop',
+		summary: 'Define a verifiable agent work loop and append a trace as work progresses.',
+		steps: [
+			'Ask the human for the goal, success criteria, constraints, expected proof, and stopping conditions.',
+			'Create the loop with the human-facing goal.',
+			'Add concrete steps that can be marked complete with evidence.',
+			'Complete steps with specific proof such as files changed, commands run, browser checks, screenshots, issue links, or deployment proof.',
+			'Use the trace as a work journal, not as a substitute for tests or verification.'
+		],
+		rules: [
+			'Harness does not call an LLM or enforce human consultation.',
+			'Agents should turn human context into specific loop steps before implementation.',
+			'Normal tests, browser checks, audit, build, and deployment proof remain the source of truth.'
+		],
+		antiPatterns: [
+			'Do not make vague steps like "finish feature".',
+			'Do not mark a step complete without concrete evidence.'
+		],
+		exampleCommands: [
+			'harness loop create newsletter-signup --goal "Visitors can subscribe from the homepage"',
+			'harness loop add newsletter-signup verify --title "Run checks and browser-proof the homepage flow"',
+			'harness loop complete newsletter-signup verify --evidence "bun run check passed; screenshot captured"'
+		]
+	},
+	{
 		topic: 'refactor',
 		summary: 'Shrink code by extracting named responsibilities.',
 		steps: [
