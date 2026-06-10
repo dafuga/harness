@@ -1,37 +1,27 @@
-import { appendFile, mkdir, readFile, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { resolveLoopTemplate } from './loopTemplates';
+import {
+	appendTrace,
+	loopPaths,
+	loopRoot,
+	readLoop,
+	timestamp,
+	validateLoopId,
+	validateRequiredText,
+	writeLoop,
+	writeNewLoop,
+	type LoopInput,
+	type LoopState,
+	type LoopStatus,
+	type LoopStep
+} from './loopState';
 import { fail } from '../core/errors';
-import { validateKebabName } from '../core/validation';
 
-export interface LoopStep {
-	id: string;
-	title: string;
-	status: 'pending' | 'complete';
-	completedAt?: string;
-	evidence?: string;
-}
-
-export interface LoopState {
-	name: string;
-	goal: string;
-	createdAt: string;
-	updatedAt: string;
-	steps: LoopStep[];
-}
-
-export interface LoopStatus {
-	state: LoopState;
-	tracePath: string;
-}
-
-interface LoopInput {
-	root?: string;
-	now?: () => string;
-}
+export type { LoopEvaluator, LoopState, LoopStatus, LoopStep } from './loopState';
 
 export interface CreateLoopInput extends LoopInput {
 	name: string;
 	goal: string;
+	from?: string;
 }
 
 export interface AddLoopStepInput extends LoopInput {
@@ -51,16 +41,15 @@ export interface ReadLoopInput extends LoopInput {
 }
 
 export async function createLoop(input: CreateLoopInput): Promise<LoopStatus> {
+	const root = loopRoot(input);
 	const name = validateLoopId(input.name, 'Loop name');
 	const goal = validateRequiredText(input.goal, 'Loop goal');
-	const paths = loopPaths(input.root ?? process.cwd(), name);
+	const paths = loopPaths(root, name);
 	const createdAt = timestamp(input.now);
-	const state = { name, goal, createdAt, updatedAt: createdAt, steps: [] };
+	const state = await newLoopState(root, { name, goal, createdAt, from: input.from });
 
-	await failIfLoopExists(paths.state);
-	await mkdir(paths.dir, { recursive: true });
-	await writeLoop(paths.state, state);
-	await appendTrace(paths.trace, { event: 'loop.created', timestamp: createdAt, name, goal });
+	await writeNewLoop(paths, state);
+	await appendTrace(paths.trace, createTraceEvent(state, createdAt));
 
 	return { state, tracePath: paths.traceRelative };
 }
@@ -69,12 +58,10 @@ export async function addLoopStep(input: AddLoopStepInput): Promise<LoopStatus> 
 	const loop = validateLoopId(input.loop, 'Loop name');
 	const step = validateLoopId(input.step, 'Step id');
 	const title = validateRequiredText(input.title, 'Step title');
-	const paths = loopPaths(input.root ?? process.cwd(), loop);
+	const paths = loopPaths(loopRoot(input), loop);
 	const state = await readLoop(paths.state);
 
-	if (state.steps.some((item) => item.id === step)) {
-		fail(`Loop step "${step}" already exists.`);
-	}
+	if (state.steps.some((item) => item.id === step)) fail(`Loop step "${step}" already exists.`);
 
 	const updatedAt = timestamp(input.now);
 	state.steps.push({ id: step, title, status: 'pending' });
@@ -90,17 +77,12 @@ export async function completeLoopStep(input: CompleteLoopStepInput): Promise<Lo
 	const loop = validateLoopId(input.loop, 'Loop name');
 	const step = validateLoopId(input.step, 'Step id');
 	const evidence = validateRequiredText(input.evidence, 'Step evidence');
-	const paths = loopPaths(input.root ?? process.cwd(), loop);
+	const paths = loopPaths(loopRoot(input), loop);
 	const state = await readLoop(paths.state);
 	const item = state.steps.find((candidate) => candidate.id === step);
 
-	if (!item) {
-		fail(`Loop step "${step}" does not exist.`);
-	}
-
-	if (item.status === 'complete') {
-		fail(`Loop step "${step}" is already complete.`);
-	}
+	if (!item) fail(`Loop step "${step}" does not exist.`);
+	if (item.status === 'complete') fail(`Loop step "${step}" is already complete.`);
 
 	const completedAt = timestamp(input.now);
 	Object.assign(item, { status: 'complete' as const, completedAt, evidence });
@@ -120,7 +102,7 @@ export async function completeLoopStep(input: CompleteLoopStepInput): Promise<Lo
 
 export async function readLoopStatus(input: ReadLoopInput): Promise<LoopStatus> {
 	const loop = validateLoopId(input.loop, 'Loop name');
-	const paths = loopPaths(input.root ?? process.cwd(), loop);
+	const paths = loopPaths(loopRoot(input), loop);
 	const state = await readLoop(paths.state);
 
 	return { state, tracePath: paths.traceRelative };
@@ -135,73 +117,40 @@ export function renderLoopStatus(status: LoopStatus): string {
 		'Steps:'
 	];
 
-	if (status.state.steps.length === 0) {
-		return [...lines, '  none'].join('\n');
-	}
-
+	if (status.state.steps.length === 0) return [...lines, '  none'].join('\n');
 	return [...lines, ...status.state.steps.flatMap(renderStep)].join('\n');
+}
+
+async function newLoopState(
+	root: string,
+	input: { name: string; goal: string; createdAt: string; from?: string }
+): Promise<LoopState> {
+	const inherited = input.from ? await resolveLoopTemplate(root, input.from) : undefined;
+	return {
+		name: input.name,
+		goal: input.goal,
+		createdAt: input.createdAt,
+		updatedAt: input.createdAt,
+		template: inherited?.id,
+		templateLineage: inherited?.lineage,
+		steps: inherited?.steps.map((step) => ({ ...step, status: 'pending' as const })) ?? [],
+		evaluators: inherited?.evaluators
+	};
+}
+
+function createTraceEvent(state: LoopState, timestampValue: string): Record<string, unknown> {
+	return {
+		event: 'loop.created',
+		timestamp: timestampValue,
+		name: state.name,
+		goal: state.goal,
+		template: state.template,
+		templateLineage: state.templateLineage
+	};
 }
 
 function renderStep(step: LoopStep): string[] {
 	const lines = [`  [${step.status}] ${step.id} - ${step.title}`];
 	if (step.evidence) lines.push(`    evidence: ${step.evidence}`);
 	return lines;
-}
-
-function loopPaths(
-	root: string,
-	loop: string
-): { dir: string; state: string; trace: string; traceRelative: string } {
-	const dirRelative = join('specification', 'loops', loop);
-	return {
-		dir: join(root, dirRelative),
-		state: join(root, dirRelative, 'loop.json'),
-		trace: join(root, dirRelative, 'trace.ndjson'),
-		traceRelative: join(dirRelative, 'trace.ndjson')
-	};
-}
-
-async function failIfLoopExists(path: string): Promise<void> {
-	try {
-		await readFile(path, 'utf8');
-		fail('Loop already exists.');
-	} catch (error) {
-		if (isMissingFile(error)) return;
-		throw error;
-	}
-}
-
-async function readLoop(path: string): Promise<LoopState> {
-	try {
-		return JSON.parse(await readFile(path, 'utf8')) as LoopState;
-	} catch (error) {
-		if (isMissingFile(error)) fail('Loop does not exist.');
-		throw error;
-	}
-}
-
-async function writeLoop(path: string, state: LoopState): Promise<void> {
-	await writeFile(path, `${JSON.stringify(state, null, '\t')}\n`);
-}
-
-async function appendTrace(path: string, event: Record<string, unknown>): Promise<void> {
-	await appendFile(path, `${JSON.stringify(event)}\n`);
-}
-
-function validateLoopId(value: string, label: string): string {
-	return validateKebabName(value, label);
-}
-
-function validateRequiredText(value: string, label: string): string {
-	const text = value.trim();
-	if (!text) fail(`${label} cannot be empty.`);
-	return text;
-}
-
-function timestamp(now: (() => string) | undefined): string {
-	return now ? now() : new Date().toISOString();
-}
-
-function isMissingFile(error: unknown): boolean {
-	return error instanceof Error && 'code' in error && error.code === 'ENOENT';
 }

@@ -13,10 +13,10 @@ export const svelteAdapter: AuditAdapter = {
 	audit(file) {
 		const script = scriptContents(file.contents);
 		return [
-			...auditFileLength(file.relativePath, file.lines),
+			...auditFileLength(file.relativePath, file.lines, file.limits),
 			...auditScriptLanguage(file),
 			...auditSveltePath(file),
-			...(script ? auditBlocks(file.relativePath, script.split('\n')) : [])
+			...(script ? auditBlocks(file.relativePath, script.split('\n'), file.limits) : [])
 		];
 	}
 };

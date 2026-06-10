@@ -2,16 +2,7 @@ import eslint from '@eslint/js';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import prettier from 'eslint-config-prettier';
-import harness from './eslint.harness-rules.js';
-
-const harnessLimits = {
-	maxFileLines: 220,
-	maxFunctionLines: 55,
-	maxNestingDepth: 4,
-	maxParameters: 4,
-	maxComplexity: 10,
-	maxClassesPerFile: 1
-};
+import harness, { harnessRuleLimits } from './eslint.harness-rules.js';
 
 export default [
 	{
@@ -61,24 +52,24 @@ export default [
 			'@typescript-eslint/no-unnecessary-type-assertion': 'error',
 			'@typescript-eslint/prefer-nullish-coalescing': 'error',
 			'@typescript-eslint/prefer-optional-chain': 'error',
-			complexity: ['error', harnessLimits.maxComplexity],
+			complexity: ['error', harnessRuleLimits.maxComplexity],
 			'consistent-return': 'error',
 			'harness/architecture-boundaries': 'error',
 			'harness/max-class-lines': 'error',
 			'harness/max-method-lines': 'error',
 			'harness/no-manager-name': 'error',
 			'harness/thin-command-modules': 'error',
-			'max-classes-per-file': ['error', harnessLimits.maxClassesPerFile],
-			'max-depth': ['error', harnessLimits.maxNestingDepth],
+			'max-classes-per-file': ['error', harnessRuleLimits.maxClassesPerFile],
+			'max-depth': ['error', harnessRuleLimits.maxNestingDepth],
 			'max-lines': [
 				'error',
-				{ max: harnessLimits.maxFileLines, skipBlankLines: true, skipComments: true }
+				{ max: harnessRuleLimits.maxFileLines, skipBlankLines: true, skipComments: true }
 			],
 			'max-lines-per-function': [
 				'error',
-				{ max: harnessLimits.maxFunctionLines, skipBlankLines: true, skipComments: true }
+				{ max: harnessRuleLimits.maxFunctionLines, skipBlankLines: true, skipComments: true }
 			],
-			'max-params': ['error', harnessLimits.maxParameters],
+			'max-params': ['error', harnessRuleLimits.maxParameters],
 			'no-lonely-if': 'error',
 			'no-nested-ternary': 'error',
 			'no-unused-expressions': 'error'

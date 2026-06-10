@@ -1,10 +1,15 @@
-import { harnessRuleLimits } from '../rules/catalog';
+import { harnessRuleLimits, type HarnessRuleLimits } from '../rules/catalog';
+import { capitalize, complexityPoints, count, maxDepth, parameterCount } from './blockMetrics';
 import type { AuditFinding, Block } from './types';
 
 const methodPattern = new RegExp(String.raw`^\s*(async\s+)?\w+\([^)]*\)\s*[:\w<>,\s[\]|]*\s*\{`);
 
-export function auditBlocks(path: string, lines: string[]): AuditFinding[] {
-	return collectBlocks(lines).flatMap((block) => auditBlock(path, block));
+export function auditBlocks(
+	path: string,
+	lines: string[],
+	limits: HarnessRuleLimits = harnessRuleLimits
+): AuditFinding[] {
+	return collectBlocks(lines).flatMap((block) => auditBlock(path, block, limits));
 }
 
 function collectBlocks(lines: string[]): Block[] {
@@ -37,35 +42,35 @@ function startBlock(line: string, index: number): Block | undefined {
 	return undefined;
 }
 
-function auditBlock(path: string, block: Block): AuditFinding[] {
+function auditBlock(path: string, block: Block, limits: HarnessRuleLimits): AuditFinding[] {
 	if (block.kind === 'class') {
 		return [
-			...auditBlockLength(path, block),
+			...auditBlockLength(path, block, limits),
 			...auditClassName(path, block),
-			...auditClassMethods(path, block)
+			...auditClassMethods(path, block, limits)
 		];
 	}
 
 	return [
-		...auditBlockLength(path, block),
-		...auditParameters(path, block),
-		...auditComplexity(path, block),
-		...auditNesting(path, block)
+		...auditBlockLength(path, block, limits),
+		...auditParameters(path, block, limits),
+		...auditComplexity(path, block, limits),
+		...auditNesting(path, block, limits)
 	];
 }
 
-function auditBlockLength(path: string, block: Block): AuditFinding[] {
+function auditBlockLength(path: string, block: Block, limits: HarnessRuleLimits): AuditFinding[] {
 	const length = block.end - block.start + 1;
-	const max = block.kind === 'class' ? harnessRuleLimits.maxClassLines : lineLimit(block.kind);
+	const max = block.kind === 'class' ? limits.maxClassLines : lineLimit(block.kind, limits);
 
 	if (length <= max) return [];
 
 	return [
-		{
+		finding(
 			path,
-			rule: lengthRule(block.kind),
-			message: `${capitalize(block.kind)} starting near line ${block.start + 1} has ${length} lines. Limit is ${max}.`
-		}
+			lengthRule(block.kind),
+			`${capitalize(block.kind)} starting near line ${block.start + 1} has ${length} lines. Limit is ${max}.`
+		)
 	];
 }
 
@@ -75,42 +80,42 @@ function lengthRule(kind: Block['kind']): string {
 	return 'method-length';
 }
 
-function auditParameters(path: string, block: Block): AuditFinding[] {
+function auditParameters(path: string, block: Block, limits: HarnessRuleLimits): AuditFinding[] {
 	const count = parameterCount(block.lines[0]);
-	if (count <= harnessRuleLimits.maxParameters) return [];
+	if (count <= limits.maxParameters) return [];
 
 	return [
-		{
+		finding(
 			path,
-			rule: 'max-parameters',
-			message: `${capitalize(block.kind)} starting near line ${block.start + 1} has ${count} parameters. Limit is ${harnessRuleLimits.maxParameters}.`
-		}
+			'max-parameters',
+			`${capitalize(block.kind)} starting near line ${block.start + 1} has ${count} parameters. Limit is ${limits.maxParameters}.`
+		)
 	];
 }
 
-function auditComplexity(path: string, block: Block): AuditFinding[] {
+function auditComplexity(path: string, block: Block, limits: HarnessRuleLimits): AuditFinding[] {
 	const complexity = block.lines.reduce((total, line) => total + complexityPoints(line), 1);
-	if (complexity <= harnessRuleLimits.maxComplexity) return [];
+	if (complexity <= limits.maxComplexity) return [];
 
 	return [
-		{
+		finding(
 			path,
-			rule: 'max-complexity',
-			message: `${capitalize(block.kind)} starting near line ${block.start + 1} has complexity ${complexity}. Limit is ${harnessRuleLimits.maxComplexity}.`
-		}
+			'max-complexity',
+			`${capitalize(block.kind)} starting near line ${block.start + 1} has complexity ${complexity}. Limit is ${limits.maxComplexity}.`
+		)
 	];
 }
 
-function auditNesting(path: string, block: Block): AuditFinding[] {
+function auditNesting(path: string, block: Block, limits: HarnessRuleLimits): AuditFinding[] {
 	const depth = maxDepth(block.lines);
-	if (depth <= harnessRuleLimits.maxNestingDepth) return [];
+	if (depth <= limits.maxNestingDepth) return [];
 
 	return [
-		{
+		finding(
 			path,
-			rule: 'max-nesting',
-			message: `${capitalize(block.kind)} starting near line ${block.start + 1} nests ${depth} levels. Limit is ${harnessRuleLimits.maxNestingDepth}.`
-		}
+			'max-nesting',
+			`${capitalize(block.kind)} starting near line ${block.start + 1} nests ${depth} levels. Limit is ${limits.maxNestingDepth}.`
+		)
 	];
 }
 
@@ -118,16 +123,18 @@ function auditClassName(path: string, block: Block): AuditFinding[] {
 	if (!/\bclass\s+\w*Manager\b/.test(block.lines[0])) return [];
 
 	return [
-		{
+		finding(
 			path,
-			rule: 'no-manager-name',
-			message: `Class starting near line ${block.start + 1} uses a catch-all Manager name.`
-		}
+			'no-manager-name',
+			`Class starting near line ${block.start + 1} uses a catch-all Manager name.`
+		)
 	];
 }
 
-function auditClassMethods(path: string, block: Block): AuditFinding[] {
-	return collectMethods(block.lines, block.start).flatMap((method) => auditBlock(path, method));
+function auditClassMethods(path: string, block: Block, limits: HarnessRuleLimits): AuditFinding[] {
+	return collectMethods(block.lines, block.start).flatMap((method) =>
+		auditBlock(path, method, limits)
+	);
 }
 
 function collectMethods(lines: string[], offset: number): Block[] {
@@ -172,48 +179,10 @@ function startsMethod(line: string): boolean {
 	return methodPattern.test(line);
 }
 
-function lineLimit(kind: Block['kind']): number {
-	return kind === 'method' ? harnessRuleLimits.maxMethodLines : harnessRuleLimits.maxFunctionLines;
+function lineLimit(kind: Block['kind'], limits: HarnessRuleLimits): number {
+	return kind === 'method' ? limits.maxMethodLines : limits.maxFunctionLines;
 }
 
-function parameterCount(line: string): number {
-	const match = line.match(/\(([^)]*)\)/);
-	if (!match?.[1].trim()) return 0;
-	return match[1].split(',').filter(Boolean).length;
-}
-
-function complexityPoints(line: string): number {
-	if (line.includes('return /')) return 0;
-	const branchTokens = line.match(/\b(if|for|while|case|catch)\b|\?\s/g);
-	return branchTokens?.length ?? 0;
-}
-
-function maxDepth(lines: string[]): number {
-	let depth = 0;
-	let maximum = 0;
-
-	for (const line of lines) {
-		if (startsControlBlock(line)) {
-			depth += 1;
-			maximum = Math.max(maximum, depth);
-		}
-
-		if (line.includes('}')) {
-			depth = Math.max(0, depth - count(line, '}'));
-		}
-	}
-
-	return maximum;
-}
-
-function startsControlBlock(line: string): boolean {
-	return /\b(if|for|while|switch|catch)\b.*\{/.test(line);
-}
-
-function count(value: string, token: string): number {
-	return value.split(token).length - 1;
-}
-
-function capitalize(value: string): string {
-	return value.charAt(0).toUpperCase() + value.slice(1);
+function finding(path: string, rule: string, message: string): AuditFinding {
+	return { path, rule, message };
 }

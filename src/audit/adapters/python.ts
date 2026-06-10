@@ -1,5 +1,4 @@
 import { auditFileLength } from '../commonRules';
-import { harnessRuleLimits } from '../../rules/catalog';
 import { auditIndentedPythonBlocks } from './blockHelpers';
 import type { AuditAdapter, AuditFile } from './types';
 
@@ -11,9 +10,9 @@ export const pythonAdapter: AuditAdapter = {
 	optionalTools: ['ruff'],
 	audit(file) {
 		return [
-			...auditFileLength(file.relativePath, file.lines),
+			...auditFileLength(file.relativePath, file.lines, file.limits),
 			...auditPythonClasses(file),
-			...auditIndentedPythonBlocks(file.relativePath, file.lines),
+			...auditIndentedPythonBlocks(file.relativePath, file.lines, file.limits),
 			...auditBroadException(file),
 			...auditMutableDefaults(file),
 			...auditScriptEntrypoint(file)
@@ -36,12 +35,12 @@ function auditPythonClasses(file: AuditFile) {
 	return file.lines.flatMap((line, index) => {
 		if (!/^\s*class\s+\w+/.test(line)) return [];
 		const length = pythonBlockLength(file.lines, index);
-		if (length <= harnessRuleLimits.maxClassLines) return [];
+		if (length <= file.limits.maxClassLines) return [];
 		return [
 			{
 				path: file.relativePath,
 				rule: 'small-class',
-				message: `Python class near line ${index + 1} has ${length} lines.`
+				message: `Python class near line ${index + 1} has ${length} lines. Limit is ${file.limits.maxClassLines}.`
 			}
 		];
 	});

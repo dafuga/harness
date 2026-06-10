@@ -12,8 +12,13 @@ export const cppAdapter: AuditAdapter = {
 	optionalTools: ['clang-tidy', 'clang-format'],
 	audit(file) {
 		return [
-			...auditFileLength(file.relativePath, file.lines),
-			...auditCurlyFunctions(file.relativePath, file.structuralLines, startsCppFunction),
+			...auditFileLength(file.relativePath, file.lines, file.limits),
+			...auditCurlyFunctions(
+				file.relativePath,
+				file.structuralLines,
+				startsCppFunction,
+				file.limits
+			),
 			...auditHeaderNamespace(file),
 			...auditRelativeInclude(file)
 		];

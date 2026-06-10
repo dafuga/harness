@@ -6,6 +6,9 @@ import {
 	readLoopStatus,
 	renderLoopStatus
 } from '../workflows/manageLoop';
+import { evaluateLoop, renderLoopEvaluation } from '../workflows/loopEvaluate';
+import { nextLoopStep, renderNextLoopStep } from '../workflows/loopNext';
+import { renderLoopSearchResults, searchLoops } from '../workflows/loopSearch';
 
 export function registerLoopCommand(program: Command): void {
 	const command = program
@@ -14,9 +17,12 @@ export function registerLoopCommand(program: Command): void {
 
 	command
 		.command('create <name>')
+		.option('--from <template>', 'Loop template to inherit from.')
 		.requiredOption('--goal <goal>', 'Human-facing goal for the loop.')
 		.description('Create a new verifiable work loop.')
-		.action((name: string, options: { goal: string }) => runCreateLoop(name, options));
+		.action((name: string, options: { from?: string; goal: string }) =>
+			runCreateLoop(name, options)
+		);
 
 	command
 		.command('add <loop> <step>')
@@ -39,10 +45,31 @@ export function registerLoopCommand(program: Command): void {
 		.option('--json', 'Print structured loop status.')
 		.description('Show loop state and trace location.')
 		.action((loop: string, options: { json?: boolean }) => runStatus(loop, options));
+
+	command
+		.command('search [query]')
+		.option('--json', 'Print structured loop search results.')
+		.description('Search loop templates and existing loop instances.')
+		.action((query: string | undefined, options: { json?: boolean }) => runSearch(query, options));
+
+	command
+		.command('next <loop>')
+		.option('--json', 'Print structured next-step guidance.')
+		.description('Show the next pending loop step.')
+		.action((loop: string, options: { json?: boolean }) => runNext(loop, options));
+
+	command
+		.command('evaluate <loop>')
+		.option('--json', 'Print structured evaluator results.')
+		.description('Run evaluator commands for a loop.')
+		.action((loop: string, options: { json?: boolean }) => runEvaluate(loop, options));
 }
 
-async function runCreateLoop(name: string, options: { goal: string }): Promise<void> {
-	const status = await createLoop({ name, goal: options.goal });
+async function runCreateLoop(
+	name: string,
+	options: { from?: string; goal: string }
+): Promise<void> {
+	const status = await createLoop({ name, goal: options.goal, from: options.from });
 	console.log(renderLoopStatus(status));
 }
 
@@ -63,4 +90,20 @@ async function runCompleteStep(
 async function runStatus(loop: string, options: { json?: boolean }): Promise<void> {
 	const status = await readLoopStatus({ loop });
 	console.log(options.json ? JSON.stringify(status, null, 2) : renderLoopStatus(status));
+}
+
+async function runSearch(query: string | undefined, options: { json?: boolean }): Promise<void> {
+	const results = await searchLoops({ query });
+	console.log(options.json ? JSON.stringify(results, null, 2) : renderLoopSearchResults(results));
+}
+
+async function runNext(loop: string, options: { json?: boolean }): Promise<void> {
+	const result = await nextLoopStep({ loop });
+	console.log(options.json ? JSON.stringify(result, null, 2) : renderNextLoopStep(result));
+}
+
+async function runEvaluate(loop: string, options: { json?: boolean }): Promise<void> {
+	const result = await evaluateLoop({ loop });
+	console.log(options.json ? JSON.stringify(result, null, 2) : renderLoopEvaluation(result));
+	if (!result.passed) process.exitCode = 1;
 }

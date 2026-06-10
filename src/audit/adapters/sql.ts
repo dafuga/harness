@@ -10,7 +10,7 @@ export const sqlAdapter: AuditAdapter = {
 	optionalTools: ['sqlfluff'],
 	audit(file) {
 		return [
-			...auditFileLength(file.relativePath, file.lines),
+			...auditFileLength(file.relativePath, file.lines, file.limits),
 			...auditSqlNaming(file),
 			...auditDangerousSql(file),
 			...auditMigrationReversibility(file),

@@ -17,6 +17,23 @@ import type {
 	AuditStructure
 } from './adapters/types';
 import type { AuditFinding } from './types';
+import type { HarnessRuleLimits } from '../rules/catalog';
+
+interface AuditCollectedFileInput {
+	root: string;
+	path: string;
+	extension: string;
+	profile: AuditResult['coverage']['profile'];
+	limits: HarnessRuleLimits;
+}
+
+interface AuditFileInput {
+	root: string;
+	path: string;
+	extension: string;
+	contents: string;
+	limits: HarnessRuleLimits;
+}
 
 export type { AuditFinding } from './types';
 export type { AuditOptions, AuditResult } from './adapters/types';
@@ -35,7 +52,15 @@ export async function auditProject(root: string, options: AuditOptions = {}): Pr
 		relativePath: relative(root, file.path)
 	}));
 	const findings = await Promise.all(
-		files.map((file) => auditCollectedFile(root, file.path, file.extension, profile))
+		files.map((file) =>
+			auditCollectedFile({
+				root,
+				path: file.path,
+				extension: file.extension,
+				profile,
+				limits: config.limits
+			})
+		)
 	);
 	const structureFindings = auditProjectStructure(activeAdapters, {
 		profile,
@@ -70,27 +95,23 @@ function auditProjectStructure(
 	return adapters.flatMap((adapter) => adapter.auditStructure?.(structure) ?? []);
 }
 
-async function auditCollectedFile(
-	root: string,
-	path: string,
-	extension: string,
-	profile: AuditResult['coverage']['profile']
-): Promise<AuditFinding[]> {
-	const adapter = adapterForExtension(extension, profile);
+async function auditCollectedFile(input: AuditCollectedFileInput): Promise<AuditFinding[]> {
+	const adapter = adapterForExtension(input.extension, input.profile);
 	if (!adapter) return [];
-	const contents = (await readFile(path)).toString('utf8');
-	return adapter.audit(auditFile(root, path, extension, contents));
+	const contents = (await readFile(input.path)).toString('utf8');
+	return adapter.audit(auditFile({ ...input, contents }));
 }
 
-function auditFile(root: string, path: string, extension: string, contents: string): AuditFile {
+function auditFile(input: AuditFileInput): AuditFile {
 	return {
-		absolutePath: path,
-		relativePath: relative(root, path),
-		extension,
-		contents,
-		lines: splitLines(contents),
-		structuralLines: splitLines(maskTemplateLiterals(contents)),
-		size: Buffer.byteLength(contents)
+		absolutePath: input.path,
+		relativePath: relative(input.root, input.path),
+		extension: input.extension,
+		contents: input.contents,
+		lines: splitLines(input.contents),
+		structuralLines: splitLines(maskTemplateLiterals(input.contents)),
+		limits: input.limits,
+		size: Buffer.byteLength(input.contents)
 	};
 }
 

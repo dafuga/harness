@@ -1,30 +1,38 @@
-import { harnessRuleLimits } from '../rules/catalog';
+import { harnessRuleLimits, type HarnessRuleLimits } from '../rules/catalog';
 import type { AuditFinding } from './types';
 
 export function splitLines(contents: string): string[] {
 	return contents.split('\n');
 }
 
-export function auditFileLength(path: string, lines: string[]): AuditFinding[] {
-	if (lines.length <= harnessRuleLimits.maxFileLines) return [];
+export function auditFileLength(
+	path: string,
+	lines: string[],
+	limits: HarnessRuleLimits = harnessRuleLimits
+): AuditFinding[] {
+	if (lines.length <= limits.maxFileLines) return [];
 	return [
 		{
 			path,
 			rule: 'small-file',
-			message: `File has ${lines.length} lines. Split it by responsibility.`
+			message: `File has ${lines.length} lines. Limit is ${limits.maxFileLines}. Split it by responsibility.`
 		}
 	];
 }
 
-export function auditClassCount(path: string, lines: string[]): AuditFinding[] {
+export function auditClassCount(
+	path: string,
+	lines: string[],
+	limits: HarnessRuleLimits = harnessRuleLimits
+): AuditFinding[] {
 	const count = lines.filter((line) => /^\s*(export\s+)?class\s+\w+/.test(line)).length;
-	if (count <= harnessRuleLimits.maxClassesPerFile) return [];
+	if (count <= limits.maxClassesPerFile) return [];
 
 	return [
 		{
 			path,
 			rule: 'max-classes-per-file',
-			message: `File defines ${count} classes. Limit is ${harnessRuleLimits.maxClassesPerFile}.`
+			message: `File defines ${count} classes. Limit is ${limits.maxClassesPerFile}.`
 		}
 	];
 }

@@ -2,7 +2,7 @@
 
 Harness is an opinionated CLI for humans and coding agents. It gives projects a Rails-like
 structure for TypeScript: small files, focused classes, small functions, generators, specs,
-and static guidance that agents can query before making a change.
+and loop driven development that agents can query before making a change.
 
 ## Commands
 
@@ -15,6 +15,10 @@ bun run dev -- generate resource Article
 bun run dev -- info scaffolds
 bun run dev -- info model
 bun run dev -- info model --json
+bun run dev -- loop search feature
+bun run dev -- loop create checkout-flow --from feature --goal "Customers can check out"
+bun run dev -- loop next checkout-flow
+bun run dev -- loop evaluate checkout-flow
 bun run dev -- audit .
 bun run dev -- audit . --coverage
 bun run dev -- audit . --profile app
@@ -35,6 +39,8 @@ bun run check
 - Generate a feature spec before implementation work.
 - Keep persistence behind adapters.
 - Give agents static, explicit instructions through `harness info`.
+- Use inherited `harness loop` templates to drive, evaluate, and trace non-trivial work.
 - Use `harness info scaffolds --json` to inspect what each scaffold should contain.
 - Use `harness audit --coverage` to inspect which ecosystem adapters covered the project.
 - Generated projects use `bun run check` to run format checks, project checks, tests, build, and Harness audit.
+- Configure audit and generated lint thresholds with `harness.audit.json`.

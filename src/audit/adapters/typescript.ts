@@ -14,9 +14,9 @@ export const typeScriptAdapter: AuditAdapter = {
 	auditStructure: auditHarnessStructure,
 	audit(file) {
 		return [
-			...auditFileLength(file.relativePath, file.lines),
-			...auditClassCount(file.relativePath, file.structuralLines),
-			...auditBlocks(file.relativePath, file.structuralLines),
+			...auditFileLength(file.relativePath, file.lines, file.limits),
+			...auditClassCount(file.relativePath, file.structuralLines, file.limits),
+			...auditBlocks(file.relativePath, file.structuralLines, file.limits),
 			...auditArchitecture(file.relativePath, file.structuralLines),
 			...auditTypeScriptNaming(file),
 			...auditReactComponentName(file)

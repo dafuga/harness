@@ -12,6 +12,7 @@ test('app projects include SvelteKit and specification files', () => {
 	expect(paths).toContain('playwright.config.ts');
 	expect(paths).toContain('eslint.config.js');
 	expect(paths).toContain('eslint.harness-rules.js');
+	expect(paths).toContain('harness.audit.json');
 	expect(paths).toContain('.prettierrc');
 	expect(paths).toContain('.prettierignore');
 	expect(paths).toContain('scripts/harness-audit.ts');
@@ -26,6 +27,7 @@ test('app projects include SvelteKit and specification files', () => {
 	expect(fileContents(files, '.codex/skills/harness/SKILL.md')).toContain(
 		'harness info scaffolds --json'
 	);
+	expect(auditConfig(files).limits.maxMethodLines).toBe(35);
 	expect(packageJson.harness.kind).toBe('app');
 	expect(packageJson.scripts['test:e2e']).toBe('playwright test');
 	expect(packageJson.scripts.audit).toContain('harness-audit');
@@ -48,6 +50,7 @@ test('library projects include Bun TypeScript test structure', () => {
 	expect(paths).toContain('src/index.ts');
 	expect(paths).toContain('eslint.config.js');
 	expect(paths).toContain('eslint.harness-rules.js');
+	expect(paths).toContain('harness.audit.json');
 	expect(paths).toContain('.prettierrc');
 	expect(paths).toContain('.prettierignore');
 	expect(paths).toContain('scripts/harness-audit.ts');
@@ -56,6 +59,7 @@ test('library projects include Bun TypeScript test structure', () => {
 	expect(paths).toContain('.codex/skills/harness/SKILL.md');
 	expect(fileContents(files, 'AGENTS.md')).toContain('Treat Harness as the operating contract');
 	expect(fileContents(files, '.codex/skills/harness/SKILL.md')).toContain('bun run check');
+	expect(auditConfig(files).limits.maxFileLines).toBe(220);
 	expect(packageJson.harness.kind).toBe('lib');
 	expect(packageJson.scripts.audit).toContain('harness-audit');
 	expect(packageJson.scripts.check).toContain('format:check');
@@ -69,4 +73,10 @@ test('library projects include Bun TypeScript test structure', () => {
 
 function fileContents(files: ReturnType<typeof projectFiles>, path: string): string {
 	return files.find((file) => file.path === path)?.contents ?? '';
+}
+
+function auditConfig(files: ReturnType<typeof projectFiles>): { limits: Record<string, number> } {
+	return JSON.parse(fileContents(files, 'harness.audit.json')) as {
+		limits: Record<string, number>;
+	};
 }

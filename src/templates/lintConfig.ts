@@ -12,7 +12,7 @@ function eslintConfigFile(): string {
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import prettier from 'eslint-config-prettier';
-import harness from './eslint.harness-rules.js';
+import harness, { harnessRuleLimits } from './eslint.harness-rules.js';
 
 export default [
 	{ ignores: ['dist/**', 'node_modules/**', 'coverage/**', '.svelte-kit/**', 'build/**'] },
@@ -22,7 +22,12 @@ export default [
 		languageOptions: {
 			parser: tsParser,
 			parserOptions: { project: './tsconfig.json' },
-			globals: { $state: 'readonly', Bun: 'readonly', Response: 'readonly', console: 'readonly' }
+			globals: {
+				$state: 'readonly',
+				Bun: 'readonly',
+				Response: 'readonly',
+				console: 'readonly'
+			}
 		},
 		plugins: { '@typescript-eslint': tseslint, harness },
 		rules: {
@@ -33,15 +38,21 @@ export default [
 			'@typescript-eslint/no-floating-promises': 'error',
 			'@typescript-eslint/no-misused-promises': 'error',
 			'@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-			complexity: ['error', 10],
+			complexity: ['error', harnessRuleLimits.maxComplexity],
 			'harness/max-class-lines': 'error',
 			'harness/max-method-lines': 'error',
 			'harness/no-manager-name': 'error',
-			'max-classes-per-file': ['error', 1],
-			'max-depth': ['error', 4],
-			'max-lines': ['error', { max: 220, skipBlankLines: true, skipComments: true }],
-			'max-lines-per-function': ['error', { max: 55, skipBlankLines: true, skipComments: true }],
-			'max-params': ['error', 4],
+			'max-classes-per-file': ['error', harnessRuleLimits.maxClassesPerFile],
+			'max-depth': ['error', harnessRuleLimits.maxNestingDepth],
+			'max-lines': [
+				'error',
+				{ max: harnessRuleLimits.maxFileLines, skipBlankLines: true, skipComments: true }
+			],
+			'max-lines-per-function': [
+				'error',
+				{ max: harnessRuleLimits.maxFunctionLines, skipBlankLines: true, skipComments: true }
+			],
+			'max-params': ['error', harnessRuleLimits.maxParameters],
 			'no-nested-ternary': 'error'
 		}
 	}
@@ -50,23 +61,63 @@ export default [
 }
 
 function harnessPluginFile(): string {
+	return `${[harnessPluginHeader(), harnessPluginRules(), harnessPluginHelpers()].join('\n\n')}\n`;
+}
+
+function harnessPluginHeader(): string {
+	return `import { existsSync, readFileSync } from 'node:fs';
+
+const defaults = {
+	maxFileLines: 220,
+	maxFunctionLines: 55,
+	maxClassLines: 120,
+	maxMethodLines: 35,
+	maxNestingDepth: 4,
+	maxParameters: 4,
+	maxComplexity: 10,
+	maxClassesPerFile: 1
+};
+
+export const harnessRuleLimits = readHarnessLimits();`;
+}
+
+function harnessPluginRules(): string {
 	return `export default {
 	rules: {
-		'max-class-lines': sizeRule('Class', 120, 'ClassDeclaration'),
-		'max-method-lines': sizeRule('Method', 35, 'MethodDefinition'),
+		'max-class-lines': sizeRule('Class', harnessRuleLimits.maxClassLines, 'ClassDeclaration'),
+		'max-method-lines': sizeRule('Method', harnessRuleLimits.maxMethodLines, 'MethodDefinition'),
 		'no-manager-name': {
-			meta: { type: 'suggestion', messages: { manager: 'Avoid catch-all Manager class names.' } },
+			meta: {
+				type: 'suggestion',
+				messages: { manager: 'Avoid catch-all Manager class names.' }
+			},
 			create(context) {
 				return {
 					ClassDeclaration(node) {
-						if (node.id?.name?.endsWith('Manager'))
+						if (node.id?.name?.endsWith('Manager')) {
 							context.report({ node: node.id, messageId: 'manager' });
+						}
 					}
 				};
 			}
 		}
 	}
-};
+};`;
+}
+
+function harnessPluginHelpers(): string {
+	return `function readHarnessLimits() {
+	const path = new URL('./harness.audit.json', import.meta.url);
+	if (!existsSync(path)) return defaults;
+	const config = JSON.parse(readFileSync(path, 'utf8'));
+	return { ...defaults, ...positiveLimits(config.limits ?? {}) };
+}
+
+function positiveLimits(config) {
+	return Object.fromEntries(
+		Object.entries(config).filter(([, value]) => Number.isInteger(value) && value > 0)
+	);
+}
 
 function sizeRule(label, max, selector) {
 	return {
@@ -78,11 +129,12 @@ function sizeRule(label, max, selector) {
 			return {
 				[selector](node) {
 					const lines = node.loc.end.line - node.loc.start.line + 1;
-					if (lines > max) context.report({ node, messageId: 'tooLarge', data: { lines, max } });
+					if (lines > max) {
+						context.report({ node, messageId: 'tooLarge', data: { lines, max } });
+					}
 				}
 			};
 		}
 	};
-}
-`;
+}`;
 }

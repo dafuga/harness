@@ -107,27 +107,28 @@ export const guides: Guide[] = [
 	},
 	{
 		topic: 'loop',
-		summary: 'Define a verifiable agent work loop and append a trace as work progresses.',
+		summary: 'Use inherited loop templates to drive, evaluate, and trace agent work.',
 		steps: [
-			'Ask the human for the goal, success criteria, constraints, expected proof, and stopping conditions.',
-			'Create the loop with the human-facing goal.',
-			'Add concrete steps that can be marked complete with evidence.',
-			'Complete steps with specific proof such as files changed, commands run, browser checks, screenshots, issue links, or deployment proof.',
-			'Use the trace as a work journal, not as a substitute for tests or verification.'
+			'Search templates and existing loops before choosing the work loop.',
+			'Create the loop from a built-in or project template with the human-facing goal.',
+			'Use next-step guidance to keep work aligned with inherited steps and evaluators.',
+			'Complete steps with concrete evidence such as tests, browser checks, screenshots, or deployment proof.',
+			'Run loop evaluators as a repeatable proof layer, not as a substitute for judgment.'
 		],
 		rules: [
-			'Harness does not call an LLM or enforce human consultation.',
-			'Agents should turn human context into specific loop steps before implementation.',
-			'Normal tests, browser checks, audit, build, and deployment proof remain the source of truth.'
+			'Built-in loops cover feature, fix, refactor, and visual-change work.',
+			'Project templates can extend one parent loop and override steps by id.',
+			'Normal tests, browser checks, audit, build, and deployment proof remain source of truth.'
 		],
 		antiPatterns: [
 			'Do not make vague steps like "finish feature".',
 			'Do not mark a step complete without concrete evidence.'
 		],
 		exampleCommands: [
-			'harness loop create newsletter-signup --goal "Visitors can subscribe from the homepage"',
-			'harness loop add newsletter-signup verify --title "Run checks and browser-proof the homepage flow"',
-			'harness loop complete newsletter-signup verify --evidence "bun run check passed; screenshot captured"'
+			'harness loop search feature',
+			'harness loop create newsletter-signup --from feature --goal "Visitors can subscribe"',
+			'harness loop next newsletter-signup',
+			'harness loop evaluate newsletter-signup'
 		]
 	},
 	{

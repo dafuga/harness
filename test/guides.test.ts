@@ -24,12 +24,12 @@ test('code-rules guidance exposes hard Harness limits', () => {
 	expect(guide?.rules.join('\n')).toContain('Classes stay at or below 120 lines');
 });
 
-test('loop guidance tells agents to ask humans and record evidence', () => {
+test('loop guidance describes loop driven development', () => {
 	const guide = findGuide('loop');
 
-	expect(guide?.summary).toContain('verifiable agent work loop');
-	expect(guide?.steps.join('\n')).toContain('Ask the human for the goal');
-	expect(guide?.rules.join('\n')).toContain('does not call an LLM');
+	expect(guide?.summary).toContain('drive, evaluate, and trace');
+	expect(guide?.steps.join('\n')).toContain('Search templates');
+	expect(guide?.rules.join('\n')).toContain('Project templates can extend one parent');
 	expect(guide?.exampleCommands.join('\n')).toContain('harness loop create');
 });
 

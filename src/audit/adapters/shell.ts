@@ -10,12 +10,12 @@ export const shellAdapter: AuditAdapter = {
 	optionalTools: ['shellcheck'],
 	audit(file) {
 		return [
-			...auditFileLength(file.relativePath, file.lines),
+			...auditFileLength(file.relativePath, file.lines, file.limits),
 			...auditShebang(file),
 			...auditStrictMode(file),
 			...auditUnsafeRm(file),
 			...auditUnquotedVariable(file),
-			...auditCurlyFunctions(file.relativePath, file.lines, startsShellFunction)
+			...auditCurlyFunctions(file.relativePath, file.lines, startsShellFunction, file.limits)
 		];
 	}
 };

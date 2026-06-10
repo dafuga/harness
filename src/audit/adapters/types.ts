@@ -1,4 +1,5 @@
 import type { AuditFinding } from '../types';
+import type { HarnessRuleLimits } from '../../rules/catalog';
 
 export type AuditProfile = 'app' | 'auto' | 'dapp' | 'lib';
 
@@ -8,6 +9,7 @@ export interface AuditOptions {
 
 export interface AuditConfig {
 	ignore?: AuditIgnore[];
+	limits?: Partial<HarnessRuleLimits>;
 }
 
 export interface AuditIgnore {
@@ -23,6 +25,7 @@ export interface AuditFile {
 	contents: string;
 	lines: string[];
 	structuralLines: string[];
+	limits: HarnessRuleLimits;
 	size: number;
 }
 

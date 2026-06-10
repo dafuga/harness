@@ -7,9 +7,9 @@ This is a Harness CLI project. Treat Harness as the operating contract for every
 - Read this file and `.codex/skills/harness/SKILL.md` before changing code.
 - Use Harness generators for supported code shapes instead of hand-rolling new structure.
 - Ask `bun run dev -- info <topic>` before adding unfamiliar code or choosing a scaffold shape.
-- For non-trivial work, ask the human what the loop should prove, then create or continue a `harness loop`.
+- For non-trivial work, ask what the loop should prove, search templates, then create or continue a `harness loop`.
 - Add or update focused unit and E2E coverage for changes to audit rules, generators, or CLI behavior.
-- Keep files small, focused, and aligned with the Harness rule catalog.
+- Keep files small, focused, and aligned with `harness.audit.json` limits.
 - Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `harness audit`.
 
 ## Code Rules

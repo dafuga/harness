@@ -1,4 +1,5 @@
 import type { PlannedFile } from '../core/files';
+import { auditConfigFiles } from './auditConfig';
 import { auditRunnerFiles } from './auditRunner';
 import { formatConfigFiles } from './formatConfig';
 import { lintConfigFiles } from './lintConfig';
@@ -19,6 +20,7 @@ function appFiles(name: string): PlannedFile[] {
 	return [
 		...appConfigFiles(name),
 		...formatConfigFiles(),
+		...auditConfigFiles(),
 		...lintConfigFiles(),
 		...auditRunnerFiles('app'),
 		...appSourceFiles(name),
@@ -102,6 +104,7 @@ function appTestFiles(): PlannedFile[] {
 function libFiles(name: string): PlannedFile[] {
 	return [
 		...formatConfigFiles(),
+		...auditConfigFiles(),
 		...lintConfigFiles(),
 		...auditRunnerFiles('lib'),
 		{
@@ -143,9 +146,7 @@ function appPackage(name: string): Record<string, unknown> {
 		version: '0.1.0',
 		private: true,
 		type: 'module',
-		harness: {
-			kind: 'app'
-		},
+		harness: { kind: 'app' },
 		scripts: {
 			dev: 'vite dev --host --port 3322',
 			build: 'vite build',
@@ -185,9 +186,7 @@ function libPackage(name: string): Record<string, unknown> {
 		name,
 		version: '0.1.0',
 		type: 'module',
-		harness: {
-			kind: 'lib'
-		},
+		harness: { kind: 'lib' },
 		scripts: {
 			build: 'bun build src/index.ts --target bun --outdir dist',
 			check:

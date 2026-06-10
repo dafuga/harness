@@ -8,10 +8,11 @@ Harness enforces strict code rules through ESLint, `harness audit`, generated pr
 
 - Lint fails for oversized files, functions, classes, methods, too many parameters, excessive nesting, excessive complexity, multiple classes per file, nested ternaries, and Manager class names.
 - `harness audit` reports rule IDs for file, function, class, method, complexity, nesting, parameter, naming, and architecture violations.
+- `harness.audit.json` can override file, function, class, method, nesting, parameter, complexity, and class-count limits.
 - `harness audit` reports class-count violations with the same one-class-per-file threshold enforced by lint.
 - Command modules stay thin and architecture imports flow in one direction.
 - Generated app and lib projects include a `check` script that runs format checks, type checks, lint, tests, build, and Harness audit.
-- Generated app and lib projects include ESLint config, local Harness rules, `lint`, `check`, AGENTS.md workflow guidance, and a `.codex/skills/harness/SKILL.md` skill.
+- Generated app and lib projects include `harness.audit.json`, ESLint config, local Harness rules, `lint`, `check`, AGENTS.md workflow guidance, and a `.codex/skills/harness/SKILL.md` skill.
 - CLI E2E coverage includes bad-code fixtures that prove generated-project lint, generated-project check, and `harness audit .` fail on rule violations.
 - `harness info code-rules` exposes the rule catalog.
 - `harness audit` uses ecosystem adapters for app profiles (`typescript`, `svelte`, `sql`) and lib profiles (`typescript`, `cpp`, `python`, `shell`, `wasm`).

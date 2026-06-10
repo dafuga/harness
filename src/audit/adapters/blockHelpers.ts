@@ -1,4 +1,4 @@
-import { harnessRuleLimits } from '../../rules/catalog';
+import { harnessRuleLimits, type HarnessRuleLimits } from '../../rules/catalog';
 import type { AuditFinding } from '../types';
 
 interface BlockCandidate {
@@ -9,15 +9,20 @@ interface BlockCandidate {
 export function auditCurlyFunctions(
 	path: string,
 	lines: string[],
-	startsFunction: (line: string) => boolean
+	startsFunction: (line: string) => boolean,
+	limits: HarnessRuleLimits = harnessRuleLimits
 ): AuditFinding[] {
 	return collectCurlyBlocks(lines, startsFunction).flatMap((block) =>
-		auditFunctionBlock(path, block)
+		auditFunctionBlock(path, block, limits)
 	);
 }
 
-export function auditIndentedPythonBlocks(path: string, lines: string[]): AuditFinding[] {
-	return collectIndentedBlocks(lines).flatMap((block) => auditFunctionBlock(path, block));
+export function auditIndentedPythonBlocks(
+	path: string,
+	lines: string[],
+	limits: HarnessRuleLimits = harnessRuleLimits
+): AuditFinding[] {
+	return collectIndentedBlocks(lines).flatMap((block) => auditFunctionBlock(path, block, limits));
 }
 
 function collectCurlyBlocks(
@@ -64,40 +69,87 @@ function pythonBlockLines(lines: string[], start: number): string[] {
 	return block;
 }
 
-function auditFunctionBlock(path: string, block: BlockCandidate): AuditFinding[] {
+function auditFunctionBlock(
+	path: string,
+	block: BlockCandidate,
+	limits: HarnessRuleLimits
+): AuditFinding[] {
 	return [
-		...auditBlockLength(path, block),
-		...auditBlockParameters(path, block),
-		...auditBlockComplexity(path, block),
-		...auditBlockNesting(path, block)
+		...auditBlockLength(path, block, limits),
+		...auditBlockParameters(path, block, limits),
+		...auditBlockComplexity(path, block, limits),
+		...auditBlockNesting(path, block, limits)
 	];
 }
 
-function auditBlockLength(path: string, block: BlockCandidate): AuditFinding[] {
-	if (block.lines.length <= harnessRuleLimits.maxFunctionLines) return [];
-	return [finding(path, 'small-function', block, `${block.lines.length} lines`)];
+function auditBlockLength(
+	path: string,
+	block: BlockCandidate,
+	limits: HarnessRuleLimits
+): AuditFinding[] {
+	if (block.lines.length <= limits.maxFunctionLines) return [];
+	return [
+		finding(
+			path,
+			'small-function',
+			block,
+			`${block.lines.length} lines. Limit is ${limits.maxFunctionLines}`
+		)
+	];
 }
 
-function auditBlockParameters(path: string, block: BlockCandidate): AuditFinding[] {
+function auditBlockParameters(
+	path: string,
+	block: BlockCandidate,
+	limits: HarnessRuleLimits
+): AuditFinding[] {
 	const count = parameterCount(block.lines[0]);
-	if (count <= harnessRuleLimits.maxParameters) return [];
-	return [finding(path, 'max-parameters', block, `${count} parameters`)];
+	if (count <= limits.maxParameters) return [];
+	return [
+		finding(path, 'max-parameters', block, `${count} parameters. Limit is ${limits.maxParameters}`)
+	];
 }
 
-function auditBlockComplexity(path: string, block: BlockCandidate): AuditFinding[] {
+function auditBlockComplexity(
+	path: string,
+	block: BlockCandidate,
+	limits: HarnessRuleLimits
+): AuditFinding[] {
 	const complexity = block.lines.reduce((total, line) => total + complexityPoints(line), 1);
-	if (complexity <= harnessRuleLimits.maxComplexity) return [];
-	return [finding(path, 'max-complexity', block, `complexity ${complexity}`)];
+	if (complexity <= limits.maxComplexity) return [];
+	return [
+		finding(
+			path,
+			'max-complexity',
+			block,
+			`complexity ${complexity}. Limit is ${limits.maxComplexity}`
+		)
+	];
 }
 
-function auditBlockNesting(path: string, block: BlockCandidate): AuditFinding[] {
+function auditBlockNesting(
+	path: string,
+	block: BlockCandidate,
+	limits: HarnessRuleLimits
+): AuditFinding[] {
 	const depth = Math.max(curlyDepth(block.lines), indentationDepth(block.lines));
-	if (depth <= harnessRuleLimits.maxNestingDepth) return [];
-	return [finding(path, 'max-nesting', block, `${depth} nested levels`)];
+	if (depth <= limits.maxNestingDepth) return [];
+	return [
+		finding(
+			path,
+			'max-nesting',
+			block,
+			`${depth} nested levels. Limit is ${limits.maxNestingDepth}`
+		)
+	];
 }
 
 function finding(path: string, rule: string, block: BlockCandidate, detail: string): AuditFinding {
-	return { path, rule, message: `Block starting near line ${block.start + 1} has ${detail}.` };
+	return {
+		path,
+		rule,
+		message: `Block starting near line ${block.start + 1} has ${detail}.`
+	};
 }
 
 function parameterCount(line: string): number {

@@ -1,0 +1,9 @@
+{"event":"loop.created","timestamp":"2026-06-10T03:32:08.560Z","name":"loop-driven-development","goal":"Harness supports inherited loop templates, searchable loop workflows, evaluator commands, and configurable audit limits"}
+{"event":"step.added","timestamp":"2026-06-10T03:32:08.588Z","loop":"loop-driven-development","step":"loop-runtime","title":"Implement inherited loop templates, search, next-step guidance, and evaluator execution"}
+{"event":"step.added","timestamp":"2026-06-10T03:32:08.615Z","loop":"loop-driven-development","step":"audit-limits","title":"Make Harness audit and generated lint configs honor harness.audit.json limits"}
+{"event":"step.added","timestamp":"2026-06-10T03:32:08.641Z","loop":"loop-driven-development","step":"docs-tests","title":"Update guidance, docs, generated project files, and automated coverage"}
+{"event":"step.added","timestamp":"2026-06-10T03:32:08.667Z","loop":"loop-driven-development","step":"verify","title":"Run focused tests and full bun run check"}
+{"event":"step.completed","timestamp":"2026-06-10T03:51:47.435Z","loop":"loop-driven-development","step":"loop-runtime","evidence":"Implemented inherited templates, search, next, and evaluator commands; bun run check passed"}
+{"event":"step.completed","timestamp":"2026-06-10T03:51:47.461Z","loop":"loop-driven-development","step":"audit-limits","evidence":"harness.audit.json limits flow through audit and generated ESLint; bun run check passed"}
+{"event":"step.completed","timestamp":"2026-06-10T03:51:47.489Z","loop":"loop-driven-development","step":"docs-tests","evidence":"Updated docs/guidance/specs and added unit/E2E coverage; bun run check passed"}
+{"event":"step.completed","timestamp":"2026-06-10T03:51:47.518Z","loop":"loop-driven-development","step":"verify","evidence":"bun run check passed: format, typecheck, lint, unit tests, E2E tests, build, and harness audit"}

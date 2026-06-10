@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
@@ -56,6 +56,43 @@ test('generated app and lib instructions mention harness loops', async () => {
 	}
 }, 120_000);
 
+test('loop CLI creates from templates, searches, guides next, and evaluates', async () => {
+	const root = await mkdtemp(join(tmpdir(), 'harness-loop-cli-'));
+	try {
+		await writeTemplate(root);
+
+		const search = await runHarness(['loop', 'search', 'proof', '--json'], root);
+		await runHarness(
+			['loop', 'create', 'proof-loop', '--from', 'proof', '--goal', 'CLI proof'],
+			root
+		);
+		const next = await runHarness(['loop', 'next', 'proof-loop', '--json'], root);
+		const evaluated = await runHarness(['loop', 'evaluate', 'proof-loop', '--json'], root);
+
+		expect(JSON.parse(search.stdout).map((result: { id: string }) => result.id)).toContain('proof');
+		expect(JSON.parse(next.stdout).step.id).toBe('verify');
+		expect(JSON.parse(next.stdout).evaluator.command).toBe('bun --version');
+		expect(JSON.parse(evaluated.stdout).passed).toBe(true);
+	} finally {
+		await rm(root, { recursive: true, force: true });
+	}
+}, 120_000);
+
 async function readTrace(project: string): Promise<string> {
 	return readFile(join(project, 'specification/loops/newsletter-signup/trace.ndjson'), 'utf8');
+}
+
+async function writeTemplate(root: string): Promise<void> {
+	const dir = join(root, 'specification/loop-templates');
+	await mkdir(dir, { recursive: true });
+	await writeFile(
+		join(dir, 'proof.json'),
+		JSON.stringify({
+			id: 'proof',
+			title: 'Proof Loop',
+			summary: 'Proves evaluator CLI behavior.',
+			steps: [{ id: 'verify', title: 'Verify the command.' }],
+			evaluators: [{ id: 'version', title: 'Check Bun.', command: 'bun --version', step: 'verify' }]
+		})
+	);
 }

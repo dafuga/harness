@@ -1,7 +1,17 @@
+import { existsSync, readFileSync } from 'node:fs';
+
 const limits = {
+	maxFileLines: 220,
+	maxFunctionLines: 55,
 	maxClassLines: 120,
-	maxMethodLines: 35
+	maxMethodLines: 35,
+	maxNestingDepth: 4,
+	maxParameters: 4,
+	maxComplexity: 10,
+	maxClassesPerFile: 1
 };
+
+export const harnessRuleLimits = readHarnessLimits();
 
 const forbiddenImports = [
 	{
@@ -38,11 +48,11 @@ export default {
 				return {
 					ClassDeclaration(node) {
 						const lines = nodeLines(node);
-						if (lines > limits.maxClassLines) {
+						if (lines > harnessRuleLimits.maxClassLines) {
 							context.report({
 								node,
 								messageId: 'tooLarge',
-								data: { lines, max: limits.maxClassLines }
+								data: { lines, max: harnessRuleLimits.maxClassLines }
 							});
 						}
 					}
@@ -60,11 +70,11 @@ export default {
 				return {
 					MethodDefinition(node) {
 						const lines = nodeLines(node);
-						if (lines > limits.maxMethodLines) {
+						if (lines > harnessRuleLimits.maxMethodLines) {
 							context.report({
 								node,
 								messageId: 'tooLarge',
-								data: { lines, max: limits.maxMethodLines }
+								data: { lines, max: harnessRuleLimits.maxMethodLines }
 							});
 						}
 					}
@@ -128,6 +138,19 @@ function boundaryViolation(filename, source, ruleName) {
 
 function nodeLines(node) {
 	return node.loc.end.line - node.loc.start.line + 1;
+}
+
+function readHarnessLimits() {
+	const path = new URL('./harness.audit.json', import.meta.url);
+	if (!existsSync(path)) return limits;
+	const config = JSON.parse(readFileSync(path, 'utf8'));
+	return { ...limits, ...positiveLimits(config.limits ?? {}) };
+}
+
+function positiveLimits(config) {
+	return Object.fromEntries(
+		Object.entries(config).filter(([, value]) => Number.isInteger(value) && value > 0)
+	);
 }
 
 function normalize(value) {
