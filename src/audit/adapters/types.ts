@@ -1,13 +1,16 @@
 import type { AuditFinding } from '../types';
 import type { HarnessRuleLimits } from '../../rules/catalog';
+import type { CleanCodeConfig, CleanCodeOptions, CleanCodeReport } from '../cleanCodeTypes';
 
 export type AuditProfile = 'app' | 'auto' | 'dapp' | 'lib';
 
 export interface AuditOptions {
 	profile?: AuditProfile;
+	cleanCode?: CleanCodeOptions;
 }
 
 export interface AuditConfig {
+	cleanCode?: CleanCodeConfig;
 	ignore?: AuditIgnore[];
 	limits?: Partial<HarnessRuleLimits>;
 }
@@ -57,6 +60,7 @@ export interface AdapterCoverage {
 }
 
 export interface AuditResult {
+	cleanCode?: CleanCodeReport;
 	findings: AuditFinding[];
 	coverage: AuditCoverage;
 }
