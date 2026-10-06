@@ -6,7 +6,10 @@ import { fixtureEvaluation } from '../support/cleanCodeFixture';
 const request = { state: 'synthetic code', questions: cleanCodeQuestions() };
 const config = { apiKey: 'synthetic-harness-key', model: 'jev-1.13.0', maxRetries: 0 };
 const success = () => new globalThis.Response(JSON.stringify(fixtureEvaluation(request)));
-afterEach(() => vi.unstubAllEnvs());
+afterEach(() => {
+	vi.unstubAllEnvs();
+	vi.useRealTimers();
+});
 
 test('SDK uses the explicit official endpoint, dedicated key, and pinned model', async () => {
 	vi.stubEnv('TYPESAFE_BASE_URL', 'https://invalid.example');
@@ -91,4 +94,31 @@ test('an already cancelled request makes no API call', async () => {
 		'cancelled or timed out'
 	);
 	expect(calls).toBe(0);
+});
+
+test('SDK request timeout aborts hanging transport and sanitizes its error', async () => {
+	vi.useFakeTimers();
+	let aborted = false;
+	const adapter = new JevAdapter({
+		...config,
+		timeout: 10,
+		fetch: async (_input, init) =>
+			new Promise((_resolve, reject) => {
+				init?.signal?.addEventListener(
+					'abort',
+					() => {
+						aborted = true;
+						reject(new Error('private contents'));
+					},
+					{ once: true }
+				);
+			})
+	});
+	const outcome = adapter.evaluate(request).then(
+		() => undefined,
+		(error: Error) => error
+	);
+	await vi.advanceTimersByTimeAsync(11);
+	expect(aborted).toBe(true);
+	expect((await outcome)?.message).toBe('Jev request or response validation failed.');
 });

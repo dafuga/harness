@@ -1,4 +1,11 @@
-import type { ChoiceQuestion } from '@typesafe-ai/sdk';
+import type { JevChoice, JevUsage } from '../core/jevTypes';
+export type {
+	JevChoice,
+	JevUsage,
+	JevQuestions,
+	JevRequest,
+	JevEvaluation
+} from '../core/jevTypes';
 
 export type CleanCodeMode = 'off' | 'advisory' | 'gate';
 export type CleanCodeVerdict = 'meets' | 'violates' | 'not_applicable' | 'insufficient_context';
@@ -26,31 +33,6 @@ export interface CleanCodeOptions {
 	dryRun?: boolean;
 	refresh?: boolean;
 	signal?: AbortSignal;
-}
-
-export interface JevChoice {
-	type: 'choice';
-	choice: string;
-	confidence: number;
-	probabilities: Record<string, number>;
-}
-
-export interface JevUsage {
-	input_tokens: number;
-	output_tokens: number;
-}
-
-export type JevQuestions = Record<string, ChoiceQuestion>;
-
-export interface JevRequest {
-	state: string;
-	questions: JevQuestions;
-}
-
-export interface JevEvaluation {
-	model: string;
-	answers: Record<string, JevChoice>;
-	usage: JevUsage;
 }
 
 export interface ReviewLocation {

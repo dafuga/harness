@@ -116,3 +116,76 @@ naming calibration corpus with a dedicated key, use
 It records confidence, usage, latency, and expected/actual labels across the supported
 languages. This small corpus is an initial probe; live accuracy across the whole rubric
 must be established before relying on the gate broadly.
+
+## JEV response checking
+
+Check whether an LLM answer follows a user request, including task fulfillment,
+completeness, explicit constraints, and relevance. This assesses supplied text;
+it does not independently verify external actions or factual claims.
+
+```bash
+harness response-check --request request.txt --response answer.txt --dry-run --json
+# Supply a project-owned HARNESS_JEV_API_KEY, then assess the answer.
+harness response-check --request request.txt --response answer.txt --json
+harness response-check --request request.txt --response answer.txt \
+  --context context.txt --criteria criteria.json --gate --json
+harness info response-check
+```
+
+Request and response are UTF-8 files. Optional context supplies prior conversation
+or reference material. Optional criteria are a JSON array, for example:
+
+```json
+[{ "id": "two-colors", "description": "Include exactly two colors." }]
+```
+
+IDs must be unique and nonempty; descriptions must be nonempty. Custom criteria
+supplement the four standard checks. The combined serialized input must fit within
+24,000 UTF-8 bytes; oversized inputs are rejected without truncation. An empty
+request is invalid; an empty answer deterministically fails task fulfillment.
+
+The command defaults to `jev-1.13.0`, confidence threshold `0.85`, and the
+project-owned `HARNESS_JEV_API_KEY`. Override with `--model`, `--min-confidence`,
+or `--api-key-env`. Explicit invocation sends input to the official TypeSafe API;
+normal audits remain unchanged. Dry runs need no credentials and make no calls.
+Judgments are not cached. The existing JEV request deadlines and retry limits apply.
+
+JSON includes each check's verdict, confidence, probabilities and fixed guidance,
+aggregate status, rubric/model identity, input hashes and token usage. It omits
+raw request, answer and context. JEV supplies typed judgments, not explanations;
+fixed guidance is not a model-generated diagnosis. Model confidence is not
+calibrated correctness. Caller-defined criterion IDs appear in output, so keep
+secrets out of IDs.
+
+Advisory assessments exit `0`, including violations or uncertainty. With `--gate`,
+only confident success on **every** check exits `0`; violations and uncertainty
+exit `1`. Input, credential, and provider failures exit `2` with `incomplete`.
+Dry runs exit `0` after successful validation. Unlike the Clean Code gate,
+response-check gates block uncertainty.
+
+Existing loop templates can use this command without changing their schema:
+
+```json
+{
+	"id": "answer-follows-request",
+	"title": "Answer follows the user request",
+	"command": "harness response-check --request request.txt --response answer.txt --gate --json",
+	"step": "verify"
+}
+```
+
+Place it in the template's `evaluators` array. Paths resolve relative to the loop's
+project root. Keep private prompt files outside version control as appropriate.
+
+Normal tests use synthetic provider responses and prove integration only. Run the
+separate live instruction-following corpus with a dedicated Harness key:
+
+```bash
+HARNESS_JEV_RESPONSE_LIVE_TEST=true bunx vitest run test/response-check-live.test.ts
+```
+
+The corpus records expected/actual verdicts, confidence, model, usage and latency
+for compliant answers, omissions, formatting/language constraints, irrelevant
+content, custom criteria, prior context, missing references and injection attempts.
+Live accuracy remains unverified until this corpus is run; it is an initial probe,
+not a broad accuracy guarantee.

@@ -10,6 +10,9 @@ globalThis.fetch = Object.assign(
 		if (scenario === 'unauthorized')
 			return Response.json({ error: 'synthetic-test-key' }, { status: 401 });
 		const request = JSON.parse(String(init?.body)) as MockRequest;
+		if (scenario === 'malformed') return Response.json({ secret: 'synthetic-test-key' });
+		if (scenario === 'wrong-model')
+			return Response.json({ model: 'jev-other', answers: {}, usage: {} });
 		const answers = Object.fromEntries(
 			Object.entries(request.questions).map(([id, question]) => {
 				const choices = Object.keys(question.criteria);

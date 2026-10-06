@@ -1,6 +1,7 @@
 import { harnessRuleSummaries } from '../rules/catalog';
 import { availableGuideTopics as uniqueGuideTopics, findGuideByTopic } from './topics';
 import { cleanCodeGuide } from './cleanCode';
+import { responseCheckGuide } from './responseCheck';
 import { scaffoldGuides, scaffoldsGuide } from './scaffolds';
 
 export interface Guide {
@@ -15,6 +16,7 @@ export interface Guide {
 
 export const guides: Guide[] = [
 	cleanCodeGuide,
+	responseCheckGuide,
 	{
 		topic: 'model',
 		summary: 'Add data behavior through a small ActiveRecord-like model and an adapter.',

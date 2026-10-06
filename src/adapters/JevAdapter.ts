@@ -1,7 +1,7 @@
 import { APIError, TypeSafeClient } from '@typesafe-ai/sdk';
 import type { Fetch } from '@typesafe-ai/sdk';
-import type { JevEvaluation, JevRequest } from '../audit/cleanCodeTypes';
-import { CleanCodeResponseValidator } from '../validators/CleanCodeResponseValidator';
+import type { JevEvaluation, JevRequest } from '../core/jevTypes';
+import { JevResponseValidator } from '../validators/JevResponseValidator';
 
 export interface JevAdapterConfig {
 	apiKey: string;
@@ -13,7 +13,7 @@ export interface JevAdapterConfig {
 
 export class JevAdapter {
 	private readonly client: TypeSafeClient;
-	private readonly validator = new CleanCodeResponseValidator();
+	private readonly validator = new JevResponseValidator();
 
 	constructor(private readonly config: JevAdapterConfig) {
 		this.client = new TypeSafeClient({
