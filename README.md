@@ -189,3 +189,66 @@ for compliant answers, omissions, formatting/language constraints, irrelevant
 content, custom criteria, prior context, missing references and injection attempts.
 Live accuracy remains unverified until this corpus is run; it is an initial probe,
 not a broad accuracy guarantee.
+
+## Analytics and media reports
+
+Harness includes the existing Project Reports website and CLI. Run `harness report serve`
+for the report gallery and `/analytics` dashboard. The installed package includes the
+server and portable viewer: serving and finalization do not rebuild source code.
+Existing `PROJECT_REPORTS_HOME` manifests and media remain compatible.
+
+```sh
+harness analytics import --root /Users/danielfugere/projects
+harness analytics summary
+harness analytics loops --project /path/to/project --json
+harness analytics jev --since 2026-10-01 --json
+harness analytics models
+harness analytics events --loop delivery --json
+harness analytics export --project /path/to/project --output analytics.html
+harness loop create delivery --from feature --goal 'Ship the feature' --agent-model gpt-6.1-sol
+harness response-check --request request.txt --response answer.txt --loop delivery --step implement
+harness audit . --clean-code --loop delivery --step implement --agent-model claude-opus-5-5
+```
+
+For standalone checks, use `--task <stable-id>` instead of `--loop`/`--step`.
+Revisions keep their task identity; new tasks use new IDs. `--agent-model` overrides
+`HARNESS_AGENT_MODEL` and a loop's stored default. Jev's evaluator model is separate.
+Optional `--report <run-id>` links assessments to a report. Loop evaluators inherit
+their loop, step and author model automatically.
+
+First-try statistics count the first substantive response or clean-code assessment
+of each linked task, separately by check type. Uncertainty and violations are
+non-passes. Dry runs, incomplete/API failures, cached-only checks, unlinked checks,
+and identical repeated inputs/settings are excluded and shown separately. Advisory
+exit zero does not imply a semantic pass. Missing models are `unknown`; imports do
+not guess historical Jev judgments from free-form evidence.
+
+Analytics are stored locally in `~/.codex/harness/analytics.sqlite`. Set
+`HARNESS_ANALYTICS_HOME` to override that directory or `HARNESS_ANALYTICS_DISABLED=1`
+to disable recording. Media retention does not delete analytics. Snapshot export is
+explicit and contains the selected metadata, including project paths; ordinary
+report publication does not expose analytics.
+
+Use the existing report operations under `harness report`: `begin`, `record`,
+`import`, `finalize`, `serve`, `publish`, `cleanup`, and `sync-storage`.
+Configure project-owned R2 settings through environment variables or an explicit
+`PROJECT_REPORTS_CONFIG_FILE`; use `PROJECT_REPORTS_CLOUDFLARE_CONFIG_HOME` for the
+report publisher's isolated Wrangler configuration. Never put credentials in the
+package. Python with reportlab is needed for PDF export; ZIP uses Python's standard
+library. Replay video encoding uses ffmpeg. See `harness info report` and the
+reporting workspace README for media and retention details.
+
+Optional `~/.codex/harness/report-settings.json` stores only configuration references:
+
+```json
+{
+	"configFile": "/absolute/path/to/reports.env",
+	"cloudflareConfigHome": "/absolute/path/to/reports-wrangler"
+}
+```
+
+Explicit environment variables override these references. `HARNESS_REPORTS_SETTINGS_FILE`
+selects another settings file. The migration preserves the existing Project Reports
+configuration references without copying credentials into Harness or its package.
+Git worktrees share their primary checkout's project identity, so copied loop traces
+do not inflate usage counts.

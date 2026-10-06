@@ -1,10 +1,10 @@
+import { analyticsOptions } from '../utils/analyticsOptions';
 import type { Command } from 'commander';
 import type { ResponseCheckOptions } from '../core/responseCheckTypes';
 import { runResponseCheck } from '../workflows/runResponseCheck';
 
 export function registerResponseCheckCommand(program: Command): void {
-	program
-		.command('response-check')
+	analyticsOptions(program.command('response-check'))
 		.option('--request <file>', 'UTF-8 file containing the user request.')
 		.option('--response <file>', 'UTF-8 file containing the LLM answer.')
 		.option('--context <file>', 'Optional prior conversation or reference material.')

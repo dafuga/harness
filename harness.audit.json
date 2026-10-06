@@ -9,5 +9,10 @@
 		"maxComplexity": 10,
 		"maxClassesPerFile": 1
 	},
-	"ignore": []
+	"ignore": [
+		{
+			"path": "packages/reports/",
+			"reason": "Reporting workspace is audited separately by its own strict app configuration in bun run check."
+		}
+	]
 }

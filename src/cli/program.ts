@@ -1,3 +1,5 @@
+import { registerAnalyticsCommand } from '../commands/AnalyticsCommand';
+import { registerReportCommand } from '../commands/ReportCommand';
 import { Command } from 'commander';
 import { registerResponseCheckCommand } from '../commands/ResponseCheckCommand';
 import { registerAuditCommand } from '../commands/audit';
@@ -14,6 +16,8 @@ export function buildProgram(): Command {
 		.description('Opinionated Rails-inspired coding harnesses for humans and agents.')
 		.version('0.1.1');
 
+	registerAnalyticsCommand(program);
+	registerReportCommand(program);
 	registerNewCommand(program);
 	registerGenerateCommand(program);
 	registerInfoCommand(program);

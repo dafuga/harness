@@ -1,10 +1,11 @@
+import type { AnalyticsContext } from './analyticsTypes';
 import type { JevChoice, JevUsage } from './jevTypes';
 
 export interface ResponseCriterion {
 	id: string;
 	description: string;
 }
-export interface ResponseCheckOptions {
+export interface ResponseCheckOptions extends AnalyticsContext {
 	request?: string;
 	response?: string;
 	context?: string;

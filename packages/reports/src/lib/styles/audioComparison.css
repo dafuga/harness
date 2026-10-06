@@ -1,0 +1,181 @@
+/* Audio before and after: one gallery card opens both originals in a lightbox viewer.
+   Imported ahead of gallery-2.css, so overrides rely on specificity. */
+.evidence-card.audio-comparison-card .card-body {
+	flex: none;
+}
+.audio-comparison-card h3 {
+	overflow-wrap: anywhere;
+}
+.audio-comparison-card:has(.audio-comparison-row:target) {
+	outline: 3px solid var(--gold);
+}
+/* The preview stands where a screenshot would, so mixed rows stay even; it outranks button rules. */
+.audio-comparison-card .audio-comparison-preview {
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+	justify-content: center;
+	gap: 16px;
+	min-width: 0;
+	margin: 12px 12px 0;
+	padding: 18px 16px 16px;
+	border: 0;
+	border-radius: 8px;
+	background: radial-gradient(120% 100% at 0% 0%, #dbb97510, transparent 60%), #0a1220;
+	box-shadow: 0 0 0 1px #1f2c47;
+	color: inherit;
+	font: inherit;
+	text-align: left;
+	white-space: normal;
+	cursor: pointer;
+	transition: box-shadow 0.15s;
+}
+.audio-comparison-card .audio-comparison-preview:hover {
+	box-shadow: 0 0 0 1px #3d5078;
+}
+.audio-comparison-card .audio-comparison-preview:focus-visible {
+	outline: 3px solid var(--gold);
+	outline-offset: 2px;
+}
+.audio-comparison-phases {
+	display: grid;
+	gap: 8px;
+}
+.audio-comparison-row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px 12px;
+	min-width: 0;
+	padding: 9px 10px 9px 12px;
+	border-radius: 8px;
+	background: #0e1728;
+	box-shadow: 0 0 0 1px #1f2c47;
+	scroll-margin-top: 96px;
+}
+.audio-comparison-row .audio-duration {
+	font-size: 15px;
+}
+.audio-comparison-row .badge {
+	margin: 0 0 0 auto;
+}
+.audio-comparison-missing {
+	color: #edc27b;
+	font-size: 12px;
+}
+.audio-comparison-open {
+	align-self: flex-end;
+	padding: 5px 12px;
+	border: 1px solid #dbb97559;
+	border-radius: 100px;
+	background: #dbb97514;
+	color: var(--gold);
+	font-size: 12px;
+	font-weight: 600;
+}
+.audio-comparison-preview:hover .audio-comparison-open {
+	border-color: var(--gold);
+}
+/* Phase pills label each original in the card rows and above each viewer column. */
+.audio-comparison-phase {
+	flex: none;
+	padding: 2px 10px;
+	border: 1px solid var(--line);
+	border-radius: 100px;
+	color: #c6d2d8;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.1em;
+	line-height: 18px;
+	text-transform: uppercase;
+}
+.audio-comparison-phase.after {
+	border-color: #dbb97559;
+	color: var(--gold);
+}
+.audio-comparison-row .audio-comparison-phase {
+	min-width: 70px;
+	text-align: center;
+}
+/* Viewer: toolbar and originals share one centred column on the lightbox canvas. */
+.audio-comparison-toolbar,
+.audio-comparison-viewer {
+	max-width: 1180px;
+	margin-inline: auto;
+}
+.audio-comparison-viewer {
+	display: grid;
+	grid-template-columns: minmax(0, 640px);
+	justify-content: center;
+	gap: 20px;
+}
+.audio-comparison-viewer.comparison {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	justify-content: stretch;
+}
+.audio-comparison-side {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	min-width: 0;
+}
+.audio-comparison-side .audio-comparison-phase {
+	align-self: flex-start;
+}
+.audio-comparison-viewer .evidence-card.audio-card {
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+	min-width: 0;
+	border-color: #223050;
+	background: #0e1728;
+}
+/* Fixed stages keep both players on one line even when only one original has notes. */
+.audio-comparison-viewer .evidence-card.audio-card .audio-stage {
+	flex: none;
+}
+.audio-comparison-viewer .evidence-card.audio-card .card-body {
+	flex: 1 1 auto;
+}
+.audio-comparison-viewer .audio-card .card-kicker {
+	flex-wrap: wrap;
+}
+.audio-comparison-viewer .audio-card h3 {
+	overflow-wrap: anywhere;
+}
+/* Audio upload: mode above the form, paired pickers in one row, shared notes below. */
+.upload-audio .upload-mode {
+	padding: 18px 18px 0;
+}
+.upload-audio .upload-mode .report-select {
+	justify-self: start;
+	width: min(100%, 280px);
+}
+.upload-audio .upload-files:not(.paired) {
+	grid-template-columns: minmax(0, 1fr);
+}
+.upload-audio .upload-files small.chosen {
+	color: #eaf0f1;
+}
+.upload-audio .upload-note {
+	margin-bottom: 16px;
+}
+.upload-audio .upload-note textarea {
+	width: 100%;
+	min-width: 0;
+}
+@media (max-width: 650px) {
+	.audio-comparison-card .audio-comparison-preview {
+		padding: 14px;
+	}
+	.audio-comparison-viewer.comparison {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 24px;
+	}
+	.audio-comparison-viewer .audio-card audio {
+		height: 44px;
+	}
+	.upload-audio .upload-mode .report-select {
+		width: 100%;
+	}
+}

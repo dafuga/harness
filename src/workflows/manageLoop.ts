@@ -22,6 +22,7 @@ export interface CreateLoopInput extends LoopInput {
 	name: string;
 	goal: string;
 	from?: string;
+	agentModel?: string;
 }
 
 export interface AddLoopStepInput extends LoopInput {
@@ -48,6 +49,7 @@ export async function createLoop(input: CreateLoopInput): Promise<LoopStatus> {
 	const createdAt = timestamp(input.now);
 	const state = await newLoopState(root, { name, goal, createdAt, from: input.from });
 
+	state.agentModel = input.agentModel ?? process.env.HARNESS_AGENT_MODEL;
 	await writeNewLoop(paths, state);
 	await appendTrace(paths.trace, createTraceEvent(state, createdAt));
 

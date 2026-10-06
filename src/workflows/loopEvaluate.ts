@@ -21,6 +21,7 @@ export interface LoopCommandResult {
 	command: string;
 	exitCode: number;
 	stdout: string;
+	durationMs?: number;
 	stderr: string;
 }
 
@@ -29,14 +30,19 @@ export interface EvaluateLoopInput extends LoopInput {
 }
 
 export async function evaluateLoop(input: EvaluateLoopInput): Promise<LoopEvaluationResult> {
+	const startedAt = Date.now();
 	const root = loopRoot(input);
 	const paths = loopPaths(root, input.loop);
 	const state = await readLoop(paths.state);
-	const results = await runEvaluators(root, state.evaluators ?? []);
+	const results = await runEvaluators(root, state.evaluators ?? [], {
+		loop: state.name,
+		agentModel: state.agentModel
+	});
 	const passed = results.every((result) => result.exitCode === 0);
 
 	await appendTrace(paths.trace, {
 		event: 'loop.evaluated',
+		durationMs: Date.now() - startedAt,
 		timestamp: input.now ? input.now() : new Date().toISOString(),
 		loop: state.name,
 		passed,
@@ -56,13 +62,32 @@ export function renderLoopEvaluation(result: LoopEvaluationResult): string {
 	].join('\n');
 }
 
-function runEvaluators(root: string, evaluators: LoopEvaluator[]): Promise<LoopCommandResult[]> {
-	return Promise.all(evaluators.map((evaluator) => runEvaluator(root, evaluator)));
+function runEvaluators(
+	root: string,
+	evaluators: LoopEvaluator[],
+	context: { loop: string; agentModel?: string }
+): Promise<LoopCommandResult[]> {
+	return Promise.all(evaluators.map((evaluator) => runEvaluator(root, evaluator, context)));
 }
 
-function runEvaluator(root: string, evaluator: LoopEvaluator): Promise<LoopCommandResult> {
+function runEvaluator(
+	root: string,
+	evaluator: LoopEvaluator,
+	context: { loop: string; agentModel?: string }
+): Promise<LoopCommandResult> {
+	const startedAt = Date.now();
 	return new Promise((resolve) => {
-		const child = spawn(evaluator.command, { cwd: root, shell: true, stdio: 'pipe' });
+		const child = spawn(evaluator.command, {
+			cwd: root,
+			shell: true,
+			stdio: 'pipe',
+			env: {
+				...process.env,
+				HARNESS_ANALYTICS_LOOP: context.loop,
+				HARNESS_ANALYTICS_STEP: evaluator.step,
+				HARNESS_AGENT_MODEL: context.agentModel ?? process.env.HARNESS_AGENT_MODEL
+			}
+		});
 		const stdout: Buffer[] = [];
 		const stderr: Buffer[] = [];
 
@@ -74,6 +99,7 @@ function runEvaluator(root: string, evaluator: LoopEvaluator): Promise<LoopComma
 				title: evaluator.title,
 				command: evaluator.command,
 				exitCode: code ?? 1,
+				durationMs: Date.now() - startedAt,
 				stdout: Buffer.concat(stdout).toString('utf8'),
 				stderr: Buffer.concat(stderr).toString('utf8')
 			});
@@ -93,6 +119,7 @@ function summaryResult(result: LoopCommandResult): Record<string, unknown> {
 	return {
 		id: result.id,
 		command: result.command,
-		exitCode: result.exitCode
+		exitCode: result.exitCode,
+		durationMs: result.durationMs
 	};
 }
