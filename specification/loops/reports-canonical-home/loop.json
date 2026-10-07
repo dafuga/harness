@@ -1,0 +1,46 @@
+{
+	"name": "reports-canonical-home",
+	"goal": "Project Reports is maintained and operated entirely from the Harness repository",
+	"createdAt": "2026-10-07T12:01:30.025Z",
+	"updatedAt": "2026-10-07T12:07:04.612Z",
+	"template": "refactor",
+	"templateLineage": ["feature", "refactor"],
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Name the responsibility boundary and unchanged behavior.",
+			"status": "complete",
+			"completedAt": "2026-10-07T12:02:06.958Z",
+			"evidence": "Reporting workspace already tracked; canonical repository scope documented in harness-analytics spec. Media behavior, report data and credentials preserved."
+		},
+		{
+			"id": "implement",
+			"title": "Extract or reorganize one responsibility at a time.",
+			"status": "complete",
+			"completedAt": "2026-10-07T12:02:07.255Z",
+			"evidence": "Root report/dev/test/check commands and canonical guidance added; retention installer calls Harness report cleanup."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-10-07T12:07:04.419Z",
+			"evidence": "Root report help passed; test:reports passed 84 tests after its viewer build. Mocked Python installer verified Harness root CLI, cleanup arguments, unchanged job label and working directory without installing or running cleanup."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "complete",
+			"completedAt": "2026-10-07T12:07:04.612Z",
+			"evidence": "bun run check passed: 172 unit, 49 CLI E2E, 1 packed-install and 84 reports tests; formatting, types, lint, builds and both audits passed. No UI changed. Initial concurrent build collision removed by sequential verification."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

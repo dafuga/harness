@@ -193,9 +193,24 @@ not a broad accuracy guarantee.
 ## Analytics and media reports
 
 Harness includes the existing Project Reports website and CLI. Run `harness report serve`
-for the report gallery and `/analytics` dashboard. The installed package includes the
+for the report gallery. The `/analytics` page is scaffolded; its dashboard UI is pending. The installed package includes the
 server and portable viewer: serving and finalization do not rebuild source code.
 Existing `PROJECT_REPORTS_HOME` manifests and media remain compatible.
+
+Project Reports is maintained in this repository at `packages/reports`, a Bun workspace.
+The website, media CLI, tests, exports, and presentation skill live there; the separate
+Project Reports checkout is no longer needed for development or installed report commands.
+From the Harness repository root:
+
+```sh
+bun run report serve
+bun run dev:reports
+bun run test:reports
+bun run check:reports
+```
+
+`bun run check` verifies both Harness and reporting. See
+[the reporting guide](packages/reports/README.md) for the CLI and configuration.
 
 ```sh
 harness analytics import --root /Users/danielfugere/projects
