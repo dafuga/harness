@@ -193,7 +193,7 @@ not a broad accuracy guarantee.
 ## Analytics and media reports
 
 Harness includes the existing Project Reports website and CLI. Run `harness report serve`
-for the report gallery. The `/analytics` page is scaffolded; its dashboard UI is pending. The installed package includes the
+for the report gallery and open `/analytics` for loop usage, model attribution, Jev first-try rates, filters and live CPU usage. The installed package includes the
 server and portable viewer: serving and finalization do not rebuild source code.
 Existing `PROJECT_REPORTS_HOME` manifests and media remain compatible.
 
@@ -218,6 +218,7 @@ harness analytics summary
 harness analytics loops --project /path/to/project --json
 harness analytics jev --since 2026-10-01 --json
 harness analytics models
+harness analytics cpu --json
 harness analytics events --loop delivery --json
 harness analytics export --project /path/to/project --output analytics.html
 harness loop create delivery --from feature --goal 'Ship the feature' --agent-model gpt-6.1-sol
@@ -243,6 +244,14 @@ Analytics are stored locally in `~/.codex/harness/analytics.sqlite`. Set
 to disable recording. Media retention does not delete analytics. Snapshot export is
 explicit and contains the selected metadata, including project paths; ordinary
 report publication does not expose analytics.
+
+The live CPU section refreshes every five seconds and samples a one-second interval.
+It shows whole-machine CPU, disjoint Codex app/Harness/local-agent totals, and safe
+agent names and PIDs. Machine percentages cover all logical cores; core percentages
+use 100% for one core. Shared Codex app-server CPU cannot be attributed to individual
+chats, and remote model inference CPU is not measured. Process arguments are never returned or stored. Live CPU samples are not
+automatically saved or published. The CPU API is
+localhost-only; unsupported platforms or failed samples show unavailable.
 
 Use the existing report operations under `harness report`: `begin`, `record`,
 `import`, `finalize`, `serve`, `publish`, `cleanup`, and `sync-storage`.

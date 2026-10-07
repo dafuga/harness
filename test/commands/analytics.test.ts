@@ -5,6 +5,7 @@ test('analytics exposes all query and import/export operations', () => {
 	const program = new Command();
 	registerAnalyticsCommand(program);
 	expect(program.commands[0].commands.map((command) => command.name())).toEqual([
+		'cpu',
 		'summary',
 		'loops',
 		'jev',

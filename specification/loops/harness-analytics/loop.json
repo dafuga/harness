@@ -2,7 +2,7 @@
 	"name": "harness-analytics",
 	"goal": "Prove durable cross-project loop and Jev analytics, bundled report portability, and dashboard evidence",
 	"createdAt": "2026-10-06T22:16:39.917Z",
-	"updatedAt": "2026-10-06T22:23:57.682Z",
+	"updatedAt": "2026-10-07T13:56:58.165Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"steps": [
@@ -16,12 +16,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-07T13:56:58.005Z",
+			"evidence": "Durable analytics, Jev/model attribution and bundled reports already landed; dashboard history/quality/model/task views, filters, reciprocal report navigation and live CPU are now implemented on PR #5."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-07T13:56:58.165Z",
+			"evidence": "Full Harness check passes with native CPU integration and packaged-site coverage; original heading-only browser regression is green, eight dashboard browser checks pass and current desktop/mobile screenshots were inspected. Manual browser layer remains blocked."
 		},
 		{
 			"id": "verify",

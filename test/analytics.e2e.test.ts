@@ -86,3 +86,21 @@ async function verifyReport(root: string): Promise<void> {
 	);
 	expect(report.run).toBeTruthy();
 }
+
+test('analytics cpu CLI samples real local counters with safe process output', async () => {
+	if (!['darwin', 'linux'].includes(process.platform)) return;
+	const result = await runHarness(['analytics', 'cpu', '--json'], process.cwd());
+	const sample = JSON.parse(result.stdout);
+	expect(sample.status).toBe('available');
+	expect(sample.intervalMs).toBeGreaterThanOrEqual(1000);
+	expect(sample.logicalCores).toBeGreaterThan(0);
+	expect(sample.machinePercent).toBeGreaterThanOrEqual(0);
+	expect(sample.machinePercent).toBeLessThanOrEqual(100);
+	expect(sample.groups.find((g: { id: string }) => g.id === 'harness').processes).toBeGreaterThan(
+		0
+	);
+	expect(
+		sample.groups.reduce((sum: number, g: { machinePercent: number }) => sum + g.machinePercent, 0)
+	).toBeCloseTo(sample.trackedPercent);
+	expect(result.stdout).not.toMatch(/parentPid|cpuMs|commandLine|--secret/);
+}, 10000);

@@ -46,7 +46,7 @@ test('packed installation serves and finalizes media without a source checkout',
 		const port = 22000 + Math.floor(Math.random() * 10000);
 		const server = JSON.parse((await run(['report', 'serve', '--port', String(port)])).stdout);
 		expect((await fetch(`${server.url}/api/health`)).status).toBe(200);
-		expect((await fetch(`${server.url}/analytics`)).status).toBe(200);
+		await verifyPackagedAnalytics(server.url);
 		const html = await (await fetch(`${server.url}/reports/${begin.run}`)).text();
 		expect(html).toContain('Matched fixture transcript');
 		expect(html).toContain('<audio');
@@ -107,4 +107,18 @@ async function recordMedia(
 			})
 		]);
 	}
+}
+
+async function verifyPackagedAnalytics(url: string): Promise<void> {
+	const page = await fetch(`${url}/analytics`);
+	expect(page.status).toBe(200);
+	const html = await page.text();
+	expect(html).toContain('Harness Analytics');
+	expect(html).toContain('Live CPU usage');
+	if (!['darwin', 'linux'].includes(process.platform)) return;
+	const response = await fetch(`${url}/api/analytics-cpu`);
+	expect(response.status).toBe(200);
+	const sample = (await response.json()) as { status: string; logicalCores: number };
+	expect(sample.status).toBe('available');
+	expect(sample.logicalCores).toBeGreaterThan(0);
 }

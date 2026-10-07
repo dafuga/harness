@@ -2,7 +2,7 @@
 	"name": "analytics-page-fix",
 	"goal": "Analytics route loads reliably for large histories without HTTP 500",
 	"createdAt": "2026-10-07T12:35:05.309Z",
-	"updatedAt": "2026-10-07T12:44:00.010Z",
+	"updatedAt": "2026-10-07T13:56:57.899752+00:00",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"steps": [
@@ -38,7 +38,7 @@
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots; keep pending until proof passes.",
 			"status": "pending",
-			"evidence": "Full check passed: 175 unit, 49 CLI E2E, 1 package, 85 report tests. Fixed bundled server HTTP 200 on port 5685 with real history; test-owned before/after screenshots inspected. Manual browser verification blocked by URL security policy. Fresh Jev review incomplete: missing project key. Dashboard visual work pending quota reset."
+			"evidence": "bun run check passes: 184 unit tests (25 opt-in live provider tests skipped), 50 CLI integration tests, packed installation test, 88 reports tests, type/lint/build and both audits. Eight browser acceptance tests pass, fresh desktop/mobile images inspected. Manual browser verification remains blocked by the earlier browser-tool URL rejection; PR #5 stays open and feature report stays active."
 		}
 	],
 	"evaluators": [

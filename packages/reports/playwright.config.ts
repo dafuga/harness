@@ -1,5 +1,7 @@
 import { defineConfig } from '@playwright/test';
 process.env.PROJECT_REPORTS_HOME = '/tmp/project-reports-e2e';
+process.env.HARNESS_ANALYTICS_HOME ??= '/tmp/harness-reports-analytics-e2e';
+process.env.HARNESS_ANALYTICS_DISABLED = '1';
 const port = Number(process.env.PROJECT_REPORTS_E2E_PORT || 5589);
 const storagePort = Number(process.env.PROJECT_REPORTS_E2E_R2_PORT || 5590);
 export default defineConfig({
