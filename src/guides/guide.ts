@@ -1,3 +1,4 @@
+import { loopGuide } from './loop';
 import { harnessRuleSummaries } from '../rules/catalog';
 import { scaffoldDetails, scaffoldKinds, type ScaffoldDetail } from '../templates/scaffoldTypes';
 import { availableGuideTopics as uniqueGuideTopics, findGuideByTopic } from './topics';
@@ -105,32 +106,7 @@ export const guides: Guide[] = [
 		antiPatterns: ['Do not implement hidden scope without updating the spec.'],
 		exampleCommands: ['harness generate feature scheduled-posts']
 	},
-	{
-		topic: 'loop',
-		summary: 'Use inherited loop templates to drive, evaluate, and trace agent work.',
-		steps: [
-			'Search templates and existing loops before choosing the work loop.',
-			'Create the loop from a built-in or project template with the human-facing goal.',
-			'Use next-step guidance to keep work aligned with inherited steps and evaluators.',
-			'Complete steps with concrete evidence such as tests, browser checks, screenshots, or deployment proof.',
-			'Run loop evaluators as a repeatable proof layer, not as a substitute for judgment.'
-		],
-		rules: [
-			'Built-in loops cover feature, fix, refactor, and visual-change work.',
-			'Project templates can extend one parent loop and override steps by id.',
-			'Normal tests, browser checks, audit, build, and deployment proof remain source of truth.'
-		],
-		antiPatterns: [
-			'Do not make vague steps like "finish feature".',
-			'Do not mark a step complete without concrete evidence.'
-		],
-		exampleCommands: [
-			'harness loop search feature',
-			'harness loop create newsletter-signup --from feature --goal "Visitors can subscribe"',
-			'harness loop next newsletter-signup',
-			'harness loop evaluate newsletter-signup'
-		]
-	},
+	loopGuide,
 	{
 		topic: 'refactor',
 		summary: 'Shrink code by extracting named responsibilities.',
