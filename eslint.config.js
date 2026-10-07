@@ -6,7 +6,7 @@ import harness, { harnessRuleLimits } from './eslint.harness-rules.js';
 
 export default [
 	{
-		ignores: ['dist/**', 'node_modules/**']
+		ignores: ['dist/**', 'node_modules/**', '.cache/**']
 	},
 	{
 		files: ['*.js'],

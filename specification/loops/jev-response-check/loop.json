@@ -1,0 +1,46 @@
+{
+	"name": "jev-response-check",
+	"goal": "Harness checks supplied LLM answers against user requests and gates on confident success",
+	"createdAt": "2026-10-06T21:12:15.139Z",
+	"updatedAt": "2026-10-06T21:18:09.627Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-06T21:15:44.330Z",
+			"evidence": "Approved request/answer scope with optional context and criteria; strict confident-success gate; six unchanged CLI regressions fail on unknown command and missing guide"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-10-06T21:15:44.357Z",
+			"evidence": "Implemented explicit response-check CLI, typed JEV rubric, bounded UTF-8 inputs, sanitized reports, strict gate and generic JEV validation reuse"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-10-06T21:18:09.597Z",
+			"evidence": "Six original CLI regressions pass unchanged; 136 unit and 42 CLI E2E tests pass; 11 live jev-1.13.0 calibration cases match expected judgments"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "complete",
+			"completedAt": "2026-10-06T21:18:09.627Z",
+			"evidence": "bun run check passes formatting, types, lint, unit/E2E tests, build and audit; built CLI manually checked against live JEV for strict success and formatting failure; frontend and deployment not applicable"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

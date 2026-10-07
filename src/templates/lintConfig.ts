@@ -15,7 +15,7 @@ import prettier from 'eslint-config-prettier';
 import harness, { harnessRuleLimits } from './eslint.harness-rules.js';
 
 export default [
-	{ ignores: ['dist/**', 'node_modules/**', 'coverage/**', '.svelte-kit/**', 'build/**'] },
+${eslintIgnoreConfig()},
 	prettier,
 	{
 		files: ['src/**/*.ts', 'test/**/*.ts', 'db/**/*.ts'],
@@ -58,6 +58,19 @@ export default [
 	}
 ];
 `;
+}
+
+function eslintIgnoreConfig(): string {
+	return `\t{
+		ignores: [
+			'dist/**',
+			'node_modules/**',
+			'coverage/**',
+			'.svelte-kit/**',
+			'build/**',
+			'.cache/**'
+		]
+	}`;
 }
 
 function harnessPluginFile(): string {

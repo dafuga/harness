@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { registerResponseCheckCommand } from '../commands/ResponseCheckCommand';
 import { registerAuditCommand } from '../commands/audit';
 import { registerGenerateCommand } from '../commands/generate';
 import { registerInfoCommand } from '../commands/info';
@@ -18,6 +19,7 @@ export function buildProgram(): Command {
 	registerInfoCommand(program);
 	registerLoopCommand(program);
 	registerAuditCommand(program);
+	registerResponseCheckCommand(program);
 
 	return program;
 }

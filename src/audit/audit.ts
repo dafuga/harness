@@ -18,6 +18,8 @@ import type {
 } from './adapters/types';
 import type { AuditFinding } from './types';
 import type { HarnessRuleLimits } from '../rules/catalog';
+import { resolveCleanCodeSettings } from './cleanCodeConfig';
+import { reviewCleanCode } from '../workflows/reviewCleanCode';
 
 interface AuditCollectedFileInput {
 	root: string;
@@ -43,6 +45,20 @@ export async function auditPath(root: string, options: AuditOptions = {}): Promi
 }
 
 export async function auditProject(root: string, options: AuditOptions = {}): Promise<AuditResult> {
+	const result = await auditStaticProject(root, options);
+	const settings = resolveCleanCodeSettings(readAuditConfig(root).cleanCode, options.cleanCode);
+	if (settings.mode !== 'off') {
+		result.cleanCode = await reviewCleanCode({
+			root,
+			settings,
+			options: options.cleanCode,
+			findings: result.findings
+		});
+	}
+	return result;
+}
+
+async function auditStaticProject(root: string, options: AuditOptions): Promise<AuditResult> {
 	const profile = resolveAuditProfile(root, options.profile);
 	const config = readAuditConfig(root);
 	const collected = await collectAuditedFiles(root);

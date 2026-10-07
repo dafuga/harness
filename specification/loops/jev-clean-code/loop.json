@@ -1,0 +1,46 @@
+{
+	"name": "jev-clean-code",
+	"goal": "Harness reviews source files against a language-aware Clean Code rubric with opt-in Jev enforcement and explicit uncertainty",
+	"createdAt": "2026-10-01T10:34:41.548Z",
+	"updatedAt": "2026-10-01T11:16:55.540Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-01T10:41:40.902Z",
+			"evidence": "Agreed opt-in gate, all current source languages, bounded related context, Jev rubric guidance, and non-blocking uncertainty; six CLI regressions fail on missing flags and guide"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-10-01T11:08:13.435Z",
+			"evidence": "Opt-in sequential Jev review, bounded context, validated choices and locations, safe SDK errors, caching, configuration and generated guidance implemented"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-10-01T11:08:13.504Z",
+			"evidence": "Six original CLI acceptance regressions pass unchanged; 48 focused unit/API/boundary tests pass; 14 live naming calibration cases require a dedicated key"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "complete",
+			"completedAt": "2026-10-01T11:16:55.540Z",
+			"evidence": "bun run check passed: format, typecheck, lint, 108 unit tests, 21 CLI E2E tests, Bun build and Harness audit; built CLI manually exercised; 14 live calibration cases await a dedicated key"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

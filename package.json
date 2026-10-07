@@ -17,13 +17,14 @@
 		"typecheck": "tsc --noEmit",
 		"test": "bun run test:unit",
 		"test:unit": "vitest run --exclude \"test/**/*.e2e.test.ts\"",
-		"test:e2e": "vitest run test/cli.e2e.test.ts test/rules.e2e.test.ts test/ecosystem-adapters.e2e.test.ts test/structure.e2e.test.ts test/dapp-audit.e2e.test.ts test/complex-feature.e2e.test.ts test/loop.e2e.test.ts test/audit-config.e2e.test.ts",
+		"test:e2e": "vitest run test/cli.e2e.test.ts test/rules.e2e.test.ts test/ecosystem-adapters.e2e.test.ts test/structure.e2e.test.ts test/dapp-audit.e2e.test.ts test/complex-feature.e2e.test.ts test/loop.e2e.test.ts test/audit-config.e2e.test.ts test/clean-code.e2e.test.ts test/response-check.e2e.test.ts",
 		"lint": "eslint .",
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
 		"prepack": "bun run build"
 	},
 	"dependencies": {
+		"@typesafe-ai/sdk": "0.6.0",
 		"commander": "^12.1.0"
 	},
 	"devDependencies": {

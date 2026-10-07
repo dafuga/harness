@@ -4,11 +4,14 @@ import type { AuditConfig, AuditIgnore } from './adapters/types';
 import type { AuditFinding } from './types';
 import { fail } from '../core/errors';
 import { harnessRuleLimits, type HarnessRuleLimits } from '../rules/catalog';
+import { resolveCleanCodeSettings } from './cleanCodeConfig';
+import type { CleanCodeSettings } from './cleanCodeTypes';
 
 const configFile = 'harness.audit.json';
 const limitKeys = Object.keys(harnessRuleLimits) as Array<keyof HarnessRuleLimits>;
 
 export interface ResolvedAuditConfig {
+	cleanCode: CleanCodeSettings;
 	ignore: AuditIgnore[];
 	limits: HarnessRuleLimits;
 }
@@ -32,6 +35,7 @@ export function filterIgnoredFindings(
 
 function normalizeConfig(config: AuditConfig): ResolvedAuditConfig {
 	return {
+		cleanCode: resolveCleanCodeSettings(config.cleanCode),
 		ignore: (config.ignore ?? []).filter((item) => item.path.trim().length > 0),
 		limits: normalizeLimits(config.limits ?? {})
 	};

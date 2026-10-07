@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest';
 import { projectFiles } from '../src/templates/project';
+import { format, type Options } from 'prettier';
 
 test('app projects include SvelteKit and specification files', () => {
 	const files = projectFiles({ kind: 'app', name: 'demo-app' });
@@ -70,6 +71,19 @@ test('library projects include Bun TypeScript test structure', () => {
 	expect(packageJson.devDependencies['@typescript-eslint/parser']).toBeDefined();
 	expect(packageJson.devDependencies.prettier).toBeDefined();
 });
+
+test.each(['app', 'lib'] as const)(
+	'generated %s code and configuration obey their formatter settings',
+	async (kind) => {
+		const files = projectFiles({ kind, name: 'format-proof' });
+		const options = JSON.parse(fileContents(files, '.prettierrc')) as Options;
+		for (const file of files.filter((file) => /\.(js|ts|json)$/.test(file.path))) {
+			expect(file.contents, file.path).toBe(
+				await format(file.contents, { ...options, filepath: file.path })
+			);
+		}
+	}
+);
 
 function fileContents(files: ReturnType<typeof projectFiles>, path: string): string {
 	return files.find((file) => file.path === path)?.contents ?? '';

@@ -1,21 +1,16 @@
-import { resolve } from 'node:path';
 import type { Command } from 'commander';
-import { auditProject } from '../audit/audit';
-import { renderAudit, renderAuditCoverage } from '../audit/render';
-import { parseAuditProfile } from '../audit/profile';
+import { runAudit, type AuditCommandOptions } from '../workflows/runAudit';
 
 export function registerAuditCommand(program: Command): void {
 	program
 		.command('audit [path]')
 		.option('--coverage', 'Show adapter coverage and unknown file types.')
 		.option('--profile <profile>', 'Audit profile: auto, app, dapp, or lib.', 'auto')
-		.description('Audit files for Harness size and responsibility rules.')
-		.action(async (path = '.', options: { coverage?: boolean; profile?: string }) => {
-			const profile = parseAuditProfile(options.profile ?? 'auto');
-			const result = await auditProject(resolve(path), { profile });
-			console.log(options.coverage ? renderAuditCoverage(result) : renderAudit(result.findings));
-			if (result.findings.length > 0) {
-				process.exitCode = 1;
-			}
-		});
+		.option('--json', 'Print structured audit results.')
+		.option('--clean-code', 'Enable advisory Jev Clean Code review.')
+		.option('--gate', 'Enable Jev review and fail on confident violations.')
+		.option('--dry-run', 'Preview enabled Clean Code review without API calls.')
+		.option('--refresh', 'Bypass cached Clean Code judgments.')
+		.description('Audit Harness rules and optionally review Clean Code principles with Jev.')
+		.action((path = '.', options: AuditCommandOptions) => runAudit(path, options));
 }
