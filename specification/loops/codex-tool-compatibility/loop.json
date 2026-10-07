@@ -1,0 +1,51 @@
+{
+	"name": "codex-tool-compatibility",
+	"goal": "Prove desktop-bundled Codex can stream a Claude answer and execute its correlated read-only tool calls with namespace definitions.",
+	"createdAt": "2026-10-07T12:01:35.837Z",
+	"updatedAt": "2026-10-07T12:12:55.124Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-07T12:12:54.732Z",
+			"evidence": "Actual Codex 0.160.0 requests contain namespace tools and hosted web_search. Flat-only mapping rejected namespaces. Claude trial must disable unsupported hosted web search explicitly; catalog must disable Responses Lite so real tool calls remain structured."
+		},
+		{
+			"id": "red",
+			"title": "Write and run a failing regression test; record the defect assertion and command.",
+			"status": "complete",
+			"completedAt": "2026-10-07T12:12:54.877Z",
+			"evidence": "vitest run test/utils/gateway-tool-definitions.test.ts test/codex-namespaces.test.ts failed 3 unchanged assertions: namespace flattening, rejection of hosted tools and namespace preservation in function calls."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-07T12:12:55.002Z",
+			"evidence": "Added namespace flattening and retained namespace on correlated outgoing function calls; unknown hosted tools still fail closed. Local trial config disables web_search and Responses Lite, uses owner-only command-backed auth, preserves native OpenAI default, and has a backup."
+		},
+		{
+			"id": "green",
+			"title": "Repeat repair and the same unchanged regression test until it passes; record passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-07T12:12:55.124Z",
+			"evidence": "Same 3 namespace assertions passed unchanged. Desktop-bundled CLI with installed trial profile performed /bin/zsh cat marker.txt under read-only sandbox and returned a previously unknown random marker. An earlier text-only catalog attempt was correctly rejected as evidence despite exit zero."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots; keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

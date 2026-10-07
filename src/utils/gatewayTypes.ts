@@ -11,6 +11,7 @@ export interface GatewayCall {
 	name: string;
 	arguments: string;
 	custom: boolean;
+	namespace?: string;
 }
 export type GatewayEvent =
 	| { type: 'text'; text: string }

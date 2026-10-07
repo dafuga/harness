@@ -1,3 +1,4 @@
+import { gatewayToolDefinitions } from '../utils/gatewayToolDefinitions';
 import { randomUUID } from 'node:crypto';
 import { createSdkMcpServer, tool } from '@anthropic-ai/claude-agent-sdk';
 import { z } from 'zod';
@@ -10,7 +11,7 @@ export class ClaudeToolsSerializer {
 	constructor(private readonly repository: CodexSessionRepository) {}
 
 	server(definitions: GatewayItem[], session: GatewaySession) {
-		const tools = definitions.map((definition, index) =>
+		const tools = gatewayToolDefinitions(definitions).map((definition, index) =>
 			this.createTool(definition, session, index)
 		);
 		return createSdkMcpServer({ name: 'codex', version: '0.1.0', tools });
@@ -34,7 +35,13 @@ export class ClaudeToolsSerializer {
 				const result = this.repository.waitForTool(session, id);
 				session.emit?.({
 					type: 'call',
-					call: { id, name, custom, arguments: JSON.stringify(args) }
+					call: {
+						id,
+						name,
+						custom,
+						namespace: typeof definition.namespace === 'string' ? definition.namespace : undefined,
+						arguments: JSON.stringify(args)
+					}
 				});
 				this.events.finishToolBatch(session);
 				return { content: [{ type: 'text' as const, text: await result }] };

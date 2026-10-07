@@ -53,7 +53,7 @@ API/provider environment overrides, disables built-in execution tools and regist
 Codex bridge tools. It does not extract subscription tokens.
 
 Supported experimental transport is streamed POST `/v1/responses` with `thread-id`,
-full replay history and flat function/custom tools. Incremental `previous_response_id`,
+full replay history and flat or namespaced function/custom tools. Incremental `previous_response_id`,
 other models and unsupported tool shapes fail closed. Exact completed requests replay
 within the running process; cancelled sessions require explicit recovery. Records and
 replay caches are memory-only: this is not a durable session or restart-recovery service.
@@ -88,3 +88,38 @@ The prototype does not register a provider/catalog or expose plugin services.
 Resume the first desktop delivery gate in an environment with authorized Codex UI access.
 Do not build dependent panels or market this prototype as installed-client compatible
 until that gate passes. No production or package publication is part of this delivery.
+
+## Local desktop trial setup (2026-10-07 follow-up)
+
+The user authorized pushing main and installing a local trial. The original prototype
+was pushed as c4e9deb. The rejected namespace shape is now repaired, with three
+red/green assertions for flattening, namespace correlation and fail-closed hosted tools.
+
+Installed in the user-level Codex configuration:
+
+- Provider `harness-claude`, gateway `http://127.0.0.1:47836/v1`.
+- Command-backed local gateway authentication reads the existing ignored owner-only
+  token file. No subscription token is extracted or placed in TOML.
+- Opt-in CLI profile `~/.codex/harness-claude.config.toml`: Opus 5.5/xhigh, explicit
+  disabled OpenAI-hosted web search, and a private local catalog. The catalog advertises
+  text only, a conservative 32K local context limit and structured Responses tools.
+  Responses Lite is explicitly disabled because the gateway does not support that wire
+  format. CLI profile selection does not activate a desktop profile.
+- Native OpenAI remains the default pending the user's choice about making Claude the
+  trial default for new desktop conversations. Existing loaded conversations stay on
+  their current provider. A private pre-install configuration backup is retained under
+  `~/.codex/harness-gateway/`.
+
+Verification: desktop-bundled Codex 0.160.0 performed a real read-only `cat marker.txt`
+through a Claude-requested bridged tool and returned an unpredictable marker matching
+the file. The same saved CLI thread resumed through Claude, native OpenAI, then Claude;
+all three retained that marker and reported the expected provider. An earlier catalog
+misconfiguration returned fabricated tool-like text; it was rejected as evidence and
+fixed before this proof. `bun run check` passed after the namespace repair.
+
+The desktop UI gate remains pending: official gateway setup requires an app restart
+after configuration changes, and this session cannot operate the desktop UI. No app
+restart or live-thread provider switch was forced. Dependent plugins, paired-phone
+reconnection and voice verification remain deferred. Trial setup is reversible by
+removing the added provider/profile/catalog and restoring only any trial default keys
+from the private backup; preserve unrelated later configuration edits.

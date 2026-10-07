@@ -75,6 +75,7 @@ export class CodexResponsesSerializer {
 			arguments: call.arguments,
 			status: 'completed'
 		};
+		if (call.namespace) item.namespace = call.namespace;
 		if (call.custom)
 			Object.assign(item, { type: 'custom_tool_call', input: JSON.parse(call.arguments).input });
 		const index = this.output.length;
