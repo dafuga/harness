@@ -1,0 +1,52 @@
+{
+	"name": "analytics-page-fix",
+	"goal": "Analytics route loads reliably for large histories without HTTP 500",
+	"createdAt": "2026-10-07T12:35:05.309Z",
+	"updatedAt": "2026-10-07T12:44:00.010Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-07T12:43:59.650Z",
+			"evidence": "Large analytics histories produce truncated JSON and HTTP 500; website must parse complete subprocess output."
+		},
+		{
+			"id": "red",
+			"title": "Write and run a failing regression test; record the defect assertion and command.",
+			"status": "complete",
+			"completedAt": "2026-10-07T12:43:59.787Z",
+			"evidence": "Real CLI fixture with 4000 events failed JSON parsing at 65536 bytes; unchanged route regression expected HTTP 200 and received 500. Inspected route-before.png."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-07T12:43:59.892Z",
+			"evidence": "CLI awaits stdout write completion; website waits for subprocess close after streams drain."
+		},
+		{
+			"id": "green",
+			"title": "Repeat repair and the same unchanged regression test until it passes; record passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-07T12:44:00.010Z",
+			"evidence": "Same large-response test passed; same browser route test passed HTTP 200. Inspected route-after.png showing Analytics scaffold; dashboard design remains blocked until Claude reset."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots; keep pending until proof passes.",
+			"status": "pending",
+			"evidence": "Full check passed: 175 unit, 49 CLI E2E, 1 package, 85 report tests. Fixed bundled server HTTP 200 on port 5685 with real history; test-owned before/after screenshots inspected. Manual browser verification blocked by URL security policy. Fresh Jev review incomplete: missing project key. Dashboard visual work pending quota reset."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

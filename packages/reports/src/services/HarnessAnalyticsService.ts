@@ -27,7 +27,7 @@ export class HarnessAnalyticsService {
 				output += chunk.toString();
 			});
 			child.once('error', reject);
-			child.once('exit', (code) => {
+			child.once('close', (code) => {
 				if (code === 0) resolveOutput(output);
 				else reject(new Error('Harness analytics query failed.'));
 			});

@@ -36,7 +36,7 @@ export class AnalyticsService {
 			);
 			return;
 		}
-		renderResult(operation, options, snapshot);
+		await renderResult(operation, options, snapshot);
 	}
 }
 export async function normalizeFilter(options: AnalyticsFilter): Promise<AnalyticsFilter> {
@@ -55,11 +55,11 @@ export async function normalizeFilter(options: AnalyticsFilter): Promise<Analyti
 	return filter;
 }
 
-function renderResult(
+async function renderResult(
 	operation: string,
 	options: AnalyticsOptions,
 	snapshot: ReturnType<typeof analyticsSnapshot>
-): void {
+): Promise<void> {
 	const values: Record<string, unknown> = {
 		summary: snapshot.summary,
 		loops: snapshot.loops,
@@ -68,9 +68,10 @@ function renderResult(
 		events: snapshot.events
 	};
 	const value = operation === 'events' ? snapshot : { [operation]: values[operation] };
-	console.log(
-		options.json
-			? JSON.stringify(value, null, 2)
-			: `${operation.toUpperCase()}\n${JSON.stringify(value, null, 2)}`
-	);
+	const output = options.json
+		? JSON.stringify(value, null, 2)
+		: `${operation.toUpperCase()}\n${JSON.stringify(value, null, 2)}`;
+	await new Promise<void>((resolveOutput, reject) => {
+		process.stdout.write(`${output}\n`, (error) => (error ? reject(error) : resolveOutput()));
+	});
 }

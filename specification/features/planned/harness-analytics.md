@@ -27,3 +27,9 @@ presentation guidance and existing retention installer target Harness. Report da
 and explicit credential references remain external and compatible; the old checkout
 is not needed to run or develop reporting. This consolidation does not complete the
 pending analytics dashboard or reinstall the live cleanup job.
+
+## Analytics route repair
+
+The CLI subprocess must close its output streams before the website parses its JSON.
+Large histories are covered by an isolated real-CLI regression and a browser HTTP 200
+regression. The dashboard design remains pending Claude subscription capacity.
