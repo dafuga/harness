@@ -45,3 +45,4 @@ export type { GatewayRequest, GatewaySession } from './utils/gatewayTypes';
 export { gatewayOptions } from './utils/gatewayOptions';
 export { gatewayStream } from './utils/gatewayStream';
 export { gatewayReplay } from './utils/gatewayReplay';
+export { SessionCommand } from './commands/SessionCommand';

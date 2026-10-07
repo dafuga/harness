@@ -62,6 +62,23 @@ bun run dev -- audit . --clean-code --gate
 bun run dev -- info clean-code
 ```
 
+To run advisory Jev reviews automatically at the start or resume of local Codex
+sessions in Harness-governed projects, build the CLI and install its background hook:
+
+```bash
+bun run build:cli
+bun run dev -- session install --root /path/to/projects \
+  --credential-file /path/to/harness/.env --bundle dist/index.js
+```
+
+Review and trust the installed definition with Codex's `/hooks` command. Installation
+preserves unrelated hooks and is safe to repeat. The owner-only credential file must
+contain `HARNESS_JEV_API_KEY`; the key is never embedded in hook configuration.
+Reviews skip unrelated projects, include Git worktrees, and reuse the existing cache.
+Violations, uncertainty and incomplete reviews remain advisory session context.
+The review covers source at startup; later edits require another review. This local
+integration does not configure cloud-orchestrated sessions.
+
 Use a dedicated project credential. Keys belong in the environment, never in audit
 configuration. `cleanCode.apiKeyEnv` can select another project-specific variable. Enabling
 review sends selected source and bounded local context to the official TypeSafe API.

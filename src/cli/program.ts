@@ -1,4 +1,5 @@
 import { registerCodexCommand } from '../commands/CodexCommand';
+import { registerSessionCommand } from '../commands/SessionCommand';
 import { registerAnalyticsCommand } from '../commands/AnalyticsCommand';
 import { registerReportCommand } from '../commands/ReportCommand';
 import { Command } from 'commander';
@@ -18,6 +19,7 @@ export function buildProgram(): Command {
 		.version('0.1.1');
 
 	registerCodexCommand(program);
+	registerSessionCommand(program);
 	registerAnalyticsCommand(program);
 	registerReportCommand(program);
 	registerNewCommand(program);

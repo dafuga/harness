@@ -8,10 +8,12 @@ export const cleanCodeGuide: Guide = {
 		'Set HARNESS_JEV_API_KEY to a credential dedicated to this project, or configure cleanCode.apiKeyEnv.',
 		'Run an advisory review and assess findings and uncertainty before enabling the gate.',
 		'Use cleanCode.mode in harness.audit.json or --gate to enforce confident violations.',
-		'Use harness audit . --clean-code --gate as an evaluator in an existing loop.'
+		'Use harness audit . --clean-code --gate as an evaluator in an existing loop.',
+		'Install automatic local Codex checks with harness session install --root <projects> --credential-file <private-env> --bundle dist/index.js, then review and trust the hook in /hooks.'
 	],
 	rules: [
 		'Normal audits stay offline when cleanCode.mode is off.',
+		'Automatic session checks are advisory background reviews at startup/resume; they use the explicitly selected checker credential and report incomplete execution honestly.',
 		'Confident violations fail only in gate mode; uncertainty is a non-blocking review item.',
 		'Incomplete execution exits 2; rule violations exit 1; non-blocking completion exits 0.',
 		'Review every supported source language with bounded imports, matching tests, and conventions.',

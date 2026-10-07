@@ -1,0 +1,46 @@
+{
+	"name": "jev-session-checks",
+	"goal": "Prove local Codex sessions automatically review Harness source using cached Jev judgments and honest advisory status, without exposing credentials.",
+	"createdAt": "2026-10-07T12:05:07.905Z",
+	"updatedAt": "2026-10-07T12:33:09.754Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-07T12:19:42.283Z",
+			"evidence": "Defined background advisory startup/resume checks for governed local projects, isolated credential transport, cache reuse, explicit failure status and mandatory Codex trust. Baseline regression: vitest run test/session-hooks.e2e.test.ts exited 1 with 7 failures; unknown session command."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-10-07T12:33:09.522Z",
+			"evidence": "Added the session hook runner and idempotent global installer, restricted to governed roots and associated Git worktrees. Installed owner-only stable bundle and settings using the dedicated Harness credential reference. Normal Codex hook review marked the exact definition trusted and active."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-10-07T12:33:09.644Z",
+			"evidence": "The same 7 CLI regressions changed from baseline exit 1 to 7 passing. Eight focused unit tests also pass, including payload minimization, credential isolation, fail-fast provider errors and worktree scope. No live Jev credential probe was run."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "complete",
+			"completedAt": "2026-10-07T12:33:09.754Z",
+			"evidence": "bun run check exited 0: 180 CLI unit tests, 56 CLI E2E tests, 1 packaged-report test and 84 report unit tests passed; 25 opt-in live tests were skipped. Formatting, types, lint, builds and both Harness audits passed. Installed-bundle dry run exited 0 with 378 eligible files. Codex hooks/list reported one enabled trusted SessionStart hook for the canonical checkout and worktree, no warnings or errors."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
