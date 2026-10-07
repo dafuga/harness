@@ -23,7 +23,11 @@
 		"format:check": "prettier --check .",
 		"prepack": "bun run build",
 		"build:cli": "bun build src/index.ts --target bun --outdir dist",
-		"test:package": "vitest run test/packaged-reports.e2e.test.ts"
+		"test:package": "vitest run test/packaged-reports.e2e.test.ts",
+		"report": "bun run src/index.ts report",
+		"dev:reports": "bun run --cwd packages/reports dev",
+		"check:reports": "bun run --cwd packages/reports build && bun run --cwd packages/reports check",
+		"test:reports": "bun run --cwd packages/reports build && bun run --cwd packages/reports test:unit"
 	},
 	"dependencies": {
 		"@anthropic-ai/claude-agent-sdk": "^0.3.292",

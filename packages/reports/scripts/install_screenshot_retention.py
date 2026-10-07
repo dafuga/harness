@@ -9,7 +9,7 @@ from pathlib import Path
 
 def main() -> None:
     home = Path.home()
-    project = Path(__file__).resolve().parents[1]
+    project = Path(__file__).resolve().parents[3]
     bun = shutil.which("bun")
     if not bun:
         raise RuntimeError("Bun is required to install report retention")
@@ -21,7 +21,7 @@ def main() -> None:
     path = agents / f"{label}.plist"
     config = {
         "Label": label,
-        "ProgramArguments": [bun, str(project / "src" / "cli" / "index.ts"), "cleanup"],
+        "ProgramArguments": [bun, str(project / "src" / "index.ts"), "report", "cleanup"],
         "WorkingDirectory": str(project),
         "EnvironmentVariables": {
             "HOME": str(home),

@@ -18,3 +18,12 @@ OAuth session expired. Its bounded brief is saved at `/tmp/harness-analytics-vis
 The unchanged dashboard browser regression still fails on its missing heading.
 Existing report header layout failures reproduce in the original frontend and are
 recorded in the active feature report. No application or analytics snapshot was published.
+
+## Canonical repository
+
+Project Reports lives entirely in Harness under `packages/reports`. Root commands
+provide reporting, frontend development, focused tests and workspace checks. The
+presentation guidance and existing retention installer target Harness. Report data
+and explicit credential references remain external and compatible; the old checkout
+is not needed to run or develop reporting. This consolidation does not complete the
+pending analytics dashboard or reinstall the live cleanup job.

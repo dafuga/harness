@@ -1,4 +1,6 @@
-# Project Reports
+# Project Reports in Harness
+
+This app is the `packages/reports` workspace in the Harness repository. Maintain its website, CLI, tests, and export code here. Use the Harness root for the commands below; no separate Project Reports repository is required.
 
 A local presentation hub for feature work and full test runs. Reports stay in `~/.codex/project-reports`, outside application repositories. The Bun CLI writes versioned manifests and copied evidence; active reports also accept screenshot and audio uploads in the local browser. Configured Cloudflare R2 is the default storage for new evidence, with local originals retained for exports. Finalized runs keep a portable HTML gallery, PDF, and ZIP.
 
@@ -10,7 +12,7 @@ The hub uses a dark navy and gold gallery with project history, status and proje
 
 With the R2 settings below configured, CLI/import evidence and browser audio uploads go to the private R2 bucket automatically. The manifest is saved only after the upload succeeds. Audio and CLI screenshots use `report-evidence/runs/<run>/assets/<content-hash>.<extension>`. Generated MP4 replays upload on download and use `report-evidence/runs/<run>/replays/<frame-digest>.mp4`; a storage receipt allows recovery without re-encoding. Gallery playback retrieves original R2 bytes through the local server, including audio seeking.
 
-Absolute CLI invocations read this repository's ignored `.env.local`, independent of the caller's directory. Real reports reject `PROJECT_REPORTS_ASSET_STORAGE=local` and incomplete R2 configuration. Offline mode is restricted to tests or an explicitly selected temporary `PROJECT_REPORTS_HOME`. Tests use local fixtures and a fake R2 endpoint.
+Harness report commands read explicit environment variables and the configuration references in `~/.codex/harness/report-settings.json`, independent of the caller's directory. `PROJECT_REPORTS_CONFIG_FILE` selects an external, owner-readable configuration file. Real reports reject `PROJECT_REPORTS_ASSET_STORAGE=local` and incomplete R2 configuration. Offline mode is restricted to tests or an explicitly selected temporary `PROJECT_REPORTS_HOME`. Tests use local fixtures and a fake R2 endpoint.
 
 Backfill existing unexpired local evidence and cached MP4s without changing results, transcripts, export bytes, or report dates:
 
@@ -22,7 +24,7 @@ bun run report sync-storage --run RUN_ID
 
 The command updates only storage metadata, skips expired reports, and can be retried. Any per-report errors are returned with a nonzero exit status.
 
-The site runs locally. Browser uploads place image bytes in a private Cloudflare R2 bucket and keep a local copy for portable exports. Report manifests remain under `PROJECT_REPORTS_HOME`; uploaded evidence is read from R2 by the gallery. Create a bucket dedicated to Project Reports and an R2 Object Read & Write token scoped to that bucket. Put these values in this repository's ignored, owner-readable `.env.local`:
+The site runs locally. Browser uploads place image bytes in a private Cloudflare R2 bucket and keep a local copy for portable exports. Report manifests remain under `PROJECT_REPORTS_HOME`; uploaded evidence is read from R2 by the gallery. Create a bucket dedicated to Project Reports and an R2 Object Read & Write token scoped to that bucket. Put these values in an external, owner-readable file selected by `PROJECT_REPORTS_CONFIG_FILE` or the Harness report settings:
 
 ```text
 PROJECT_REPORTS_R2_ACCOUNT_ID=<Cloudflare account ID>
@@ -32,7 +34,7 @@ PROJECT_REPORTS_R2_SECRET_ACCESS_KEY=<R2 secret access key>
 ```
 
 Never commit the token. The form accepts PNG, JPEG, and WebP files up to 50 MB each, only on active reports. Uploaded images start as **Not proven** evidence; attaching a screenshot does not assert that a check passed. The server accepts up to 110 MB for the multipart request. For a built Node server, set `BODY_SIZE_LIMIT=110M` when starting it. The bucket remains private and the site is not deployed by this setup.
-The local server reads `.env.local` when handling screenshots; explicit environment variables take precedence.
+The local server inherits Harness report settings; explicit environment variables take precedence.
 
 ### Thirty-day report retention
 
@@ -42,7 +44,7 @@ Install/update the existing daily cleanup job on this Mac:
 
 ```bash
 bun run report cleanup --dry-run
-python3 scripts/install_screenshot_retention.py
+python3 packages/reports/scripts/install_screenshot_retention.py
 bun run report cleanup
 ```
 
@@ -52,18 +54,18 @@ Configure enabled R2 lifecycle rules to delete objects after 30 days for each pr
 
 ## Start and view
 
-From this repository:
+From the Harness repository root:
 
 ```bash
 bun install
 bun run report serve
 ```
 
-`serve` reuses a matching loopback server, prefers port 5588, skips occupied ports, and leaves the server running. Open the returned URL in the Codex in-app browser. `bun run dev` is also available for ordinary frontend work.
+`serve` reuses a matching loopback server, prefers port 5588, skips occupied ports, and leaves the server running. Open the returned URL in the Codex in-app browser. `bun run dev:reports` is also available for ordinary frontend work.
 
 ## CLI
 
-Run these from this repository or use the absolute `src/cli/index.ts` path from another project:
+Run these from the Harness repository root, use installed `harness report`, or invoke `bun /Users/danielfugere/projects/harness/src/index.ts report` from another project:
 
 ```bash
 bun run report begin --project /path/to/project --title 'Task name' --mode feature --environment 'local browser' --revision COMMIT
