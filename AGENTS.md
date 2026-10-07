@@ -5,6 +5,9 @@ This is a Harness CLI project. Treat Harness as the operating contract for every
 ## Required Harness Workflow
 
 - Read this file and `.codex/skills/harness/SKILL.md` before changing code.
+- Use `.codex/skills/harness-jev-clean-code/SKILL.md` for Jev findings and manual
+  Clean Code reviews, and `.codex/skills/harness-jev-sessions/SKILL.md` for automatic
+  session-check setup, trust and troubleshooting.
 - Use Harness generators for supported code shapes instead of hand-rolling new structure.
 - Ask `bun run dev -- info <topic>` before adding unfamiliar code or choosing a scaffold shape.
 - For non-trivial work, ask what the loop should prove, search templates, then create or continue a `harness loop`.

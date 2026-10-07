@@ -79,6 +79,12 @@ Violations, uncertainty and incomplete reviews remain advisory session context.
 The review covers source at startup; later edits require another review. This local
 integration does not configure cloud-orchestrated sessions.
 
+Agent guidance lives in `.codex/skills/harness-jev-clean-code/SKILL.md` for manual
+reviews and finding interpretation, and `.codex/skills/harness-jev-sessions/SKILL.md`
+for setup and troubleshooting. Install these folders in your Codex skills directory
+for discovery across projects; they can also be invoked as `$harness-jev-clean-code`
+and `$harness-jev-sessions`. The project Harness skill links to both.
+
 Use a dedicated project credential. Keys belong in the environment, never in audit
 configuration. `cleanCode.apiKeyEnv` can select another project-specific variable. Enabling
 review sends selected source and bounded local context to the official TypeSafe API.

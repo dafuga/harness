@@ -12,6 +12,15 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 6. Keep generated and hand-edited files inside the configured Harness rule limits.
 7. Verify with `bun run check` before handing work back.
 
+## Jev Review Skills
+
+- Read [harness-jev-clean-code](../harness-jev-clean-code/SKILL.md) when interpreting
+  Jev findings, reviewing files or verifying a repair against the Clean Code rubric.
+- Read [harness-jev-sessions](../harness-jev-sessions/SKILL.md) when installing,
+  inspecting or troubleshooting automatic local session checks.
+- Session results are advisory startup snapshots. Incomplete or uncertain reviews
+  do not establish that code is clean; later edits need another review.
+
 ## Bug and Regression Loops
 
 - Use `harness loop create <name> --from bug-fix --goal <text>` for bug repairs: reproduce with a failing test before implementation, then repeat repair and the same unchanged test until it passes.

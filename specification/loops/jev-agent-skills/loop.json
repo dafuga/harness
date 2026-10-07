@@ -1,0 +1,46 @@
+{
+	"name": "jev-agent-skills",
+	"goal": "Prove installed agent skills accurately explain Jev review outcomes and session operations, are discoverable across local projects, and keep credentials private.",
+	"createdAt": "2026-10-07T12:42:42.949Z",
+	"updatedAt": "2026-10-07T12:51:33.729Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-07T12:51:32.965Z",
+			"evidence": "Scoped two agent skills for manual Jev Clean Code review and automatic session operations. Proof requires valid skills, matching documented behavior, global installation, cross-project discovery and offline commands; no extra live provider probe."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-10-07T12:51:33.242Z",
+			"evidence": "Created two focused skills with UI metadata; installed byte-identical global copies and linked them from the repository Harness skill, AGENTS.md, README and global harness-project. Covered the Clean Code-inspired rubric, uncertainty, advisory/gate differences, credentials, cache, startup snapshots and exact-definition hook trust."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-10-07T12:51:33.488Z",
+			"evidence": "Both source and installed skills passed quick_validate using the bundled Python runtime; updated global harness-project also passed. Six cross-skill links resolve. Read-only Codex skills/list reported both skills enabled with user scope and no skill errors for Harness and Fluora. Four offline CLI exercises passed: advisory preview, gate preview, installed session dry run and unrelated-project skip."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "complete",
+			"completedAt": "2026-10-07T12:51:33.729Z",
+			"evidence": "bun run check exited 0: formatting, type checks, lint, 180 CLI unit tests, 56 CLI E2Es, 1 packaged-report test, 84 report unit tests, builds and both audits passed. Twenty-five opt-in live tests were skipped. The live startup hook separately reported incomplete; this was not treated as a clean judgment or used as live quality proof."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
