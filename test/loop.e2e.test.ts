@@ -96,3 +96,65 @@ async function writeTemplate(root: string): Promise<void> {
 		})
 	);
 }
+
+test.each(['bug-fix', 'regression-prevention'])(
+	'%s CLI records proof and leaves verification pending across failed and passing checks',
+	async (template) => {
+		const root = await mkdtemp(join(tmpdir(), 'harness-regression-cli-'));
+		try {
+			await writeFile(
+				join(root, 'package.json'),
+				JSON.stringify({ scripts: { check: 'bun proof.ts' } })
+			);
+			await writeFile(join(root, 'proof.ts'), 'process.exit(2);');
+			await runHarness(
+				['loop', 'create', 'repair', '--from', template, '--goal', 'Repair the defect'],
+				root
+			);
+			const status = await runHarness(['loop', 'status', 'repair', '--json'], root);
+			const steps = JSON.parse(status.stdout).state.steps as { id: string }[];
+			for (const step of steps.filter((item) => item.id !== 'verify')) {
+				const next = await runHarness(['loop', 'next', 'repair', '--json'], root);
+				expect(JSON.parse(next.stdout).step.id).toBe(step.id);
+				await runHarness(
+					[
+						'loop',
+						'complete',
+						'repair',
+						step.id,
+						'--evidence',
+						`${step.id}: command and assertion proof`
+					],
+					root
+				);
+			}
+			const failed = await runHarness(['loop', 'evaluate', 'repair', '--json'], root, false);
+			expect(failed.exitCode).toBe(1);
+			expect(JSON.parse(failed.stdout).passed).toBe(false);
+			await expectPendingVerification(root);
+			await writeFile(join(root, 'proof.ts'), 'process.exit(0);');
+			const passed = await runHarness(['loop', 'evaluate', 'repair', '--json'], root);
+			expect(JSON.parse(passed.stdout).passed).toBe(true);
+			await expectPendingVerification(root);
+			await runHarness(
+				['loop', 'complete', 'repair', 'verify', '--evidence', 'bun run check passed after repair'],
+				root
+			);
+			const next = await runHarness(['loop', 'next', 'repair', '--json'], root);
+			expect(JSON.parse(next.stdout).step).toBeUndefined();
+			const trace = await readFile(join(root, 'specification/loops/repair/trace.ndjson'), 'utf8');
+			expect(trace).toContain('"passed":false');
+			expect(trace).toContain('"passed":true');
+			expect(trace).toContain('red: command and assertion proof');
+		} finally {
+			await rm(root, { recursive: true, force: true });
+		}
+	},
+	120_000
+);
+
+async function expectPendingVerification(root: string): Promise<void> {
+	const next = await runHarness(['loop', 'next', 'repair', '--json'], root);
+	expect(JSON.parse(next.stdout).step).toMatchObject({ id: 'verify', status: 'pending' });
+	expect(JSON.parse(next.stdout).evaluator.command).toBe('bun run check');
+}
