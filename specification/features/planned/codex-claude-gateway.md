@@ -105,9 +105,9 @@ Installed in the user-level Codex configuration:
   text only, a conservative 32K local context limit and structured Responses tools.
   Responses Lite is explicitly disabled because the gateway does not support that wire
   format. CLI profile selection does not activate a desktop profile.
-- Native OpenAI remains the default pending the user's choice about making Claude the
-  trial default for new desktop conversations. Existing loaded conversations stay on
-  their current provider. A private pre-install configuration backup is retained under
+- Native OpenAI remains the default, as explicitly confirmed by the user. Claude is an
+  opt-in per-conversation choice. Existing loaded conversations stay on their current
+  provider. A private pre-install configuration backup is retained under
   `~/.codex/harness-gateway/`.
 
 Verification: desktop-bundled Codex 0.160.0 performed a real read-only `cat marker.txt`
@@ -123,3 +123,17 @@ restart or live-thread provider switch was forced. Dependent plugins, paired-pho
 reconnection and voice verification remain deferred. Trial setup is reversible by
 removing the added provider/profile/catalog and restoring only any trial default keys
 from the private backup; preserve unrelated later configuration edits.
+
+## Confirmed selector behavior
+
+The user confirmed keeping OpenAI as the default and choosing providers with a small
+selector. The planned conversation panel offers OpenAI and Claude, shows the active
+provider separately from a pending selection, and preserves the same thread/history.
+Selecting a provider queues a request; it applies only after the thread is idle and
+closed on all connected clients, then the resulting provider/model is verified.
+Failed application retains the previous configuration. Selecting Claude must never
+change the global default or route native OpenAI through the gateway.
+
+This selector is not implemented or installed. The first desktop delivery gate and
+installed-client panel-support check still precede its implementation. CLI round-trip
+proof does not satisfy those desktop checks.
