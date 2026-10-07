@@ -31,3 +31,17 @@ try {
 		}
 	}
 }
+export { registerCodexCommand } from './commands/CodexCommand';
+export { ClaudeGatewayAdapter } from './adapters/ClaudeGatewayAdapter';
+export { CodexGatewayService } from './services/CodexGatewayService';
+export { CodexResponsesSerializer } from './serializers/CodexResponsesSerializer';
+export { CodexRequestValidator } from './validators/CodexRequestValidator';
+export { CodexSessionRepository } from './repositories/CodexSessionRepository';
+export { GatewayEventsService } from './services/GatewayEventsService';
+export { ClaudeQueryService } from './services/ClaudeQueryService';
+export { ClaudeToolsSerializer } from './serializers/ClaudeToolsSerializer';
+export { gatewayPrompt } from './utils/gatewayPrompt';
+export type { GatewayRequest, GatewaySession } from './utils/gatewayTypes';
+export { gatewayOptions } from './utils/gatewayOptions';
+export { gatewayStream } from './utils/gatewayStream';
+export { gatewayReplay } from './utils/gatewayReplay';

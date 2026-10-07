@@ -17,7 +17,7 @@
 		"typecheck": "tsc --noEmit",
 		"test": "bun run test:unit",
 		"test:unit": "vitest run --exclude \"test/**/*.e2e.test.ts\" --exclude \"test/packaged-reports.e2e.test.ts\"",
-		"test:e2e": "vitest run test/cli.e2e.test.ts test/rules.e2e.test.ts test/ecosystem-adapters.e2e.test.ts test/structure.e2e.test.ts test/dapp-audit.e2e.test.ts test/complex-feature.e2e.test.ts test/loop.e2e.test.ts test/audit-config.e2e.test.ts test/clean-code.e2e.test.ts test/response-check.e2e.test.ts test/analytics.e2e.test.ts test/analytics-attribution.e2e.test.ts test/analytics-worktrees.e2e.test.ts",
+		"test:e2e": "vitest run test/cli.e2e.test.ts test/rules.e2e.test.ts test/ecosystem-adapters.e2e.test.ts test/structure.e2e.test.ts test/dapp-audit.e2e.test.ts test/complex-feature.e2e.test.ts test/loop.e2e.test.ts test/audit-config.e2e.test.ts test/clean-code.e2e.test.ts test/response-check.e2e.test.ts test/analytics.e2e.test.ts test/analytics-attribution.e2e.test.ts test/analytics-worktrees.e2e.test.ts test/codex-gateway.e2e.test.ts",
 		"lint": "eslint .",
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
@@ -26,9 +26,11 @@
 		"test:package": "vitest run test/packaged-reports.e2e.test.ts"
 	},
 	"dependencies": {
+		"@anthropic-ai/claude-agent-sdk": "^0.3.292",
+		"@aws-sdk/client-s3": "^3.1138.0",
 		"@typesafe-ai/sdk": "0.6.0",
 		"commander": "^12.1.0",
-		"@aws-sdk/client-s3": "^3.1138.0"
+		"zod": "^4.6.5"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.25.1",

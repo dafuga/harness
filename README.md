@@ -260,3 +260,27 @@ do not inflate usage counts.
 - Prove the guard rejects reintroducing the original failure in an isolated fixture or temporary workspace; restore the repair and prove the guard passes.
 - Record failing and passing commands, assertions, and results as step evidence. Keep green/guard/verification steps pending while proof fails; the agent retries repairs and checks. Harness does not launch an AI repair runner or automatically complete steps.
 - For affected UI paths, exercise the browser flow and capture fresh screenshots, then inspect the images before recording proof. Report blockers without claiming completion.
+
+### Experimental Codex gateway
+
+The local gateway is a first-stage prototype; installed-desktop compatibility has
+not passed. The monitoring plugins, quota panel and provider switching are pending
+that gate. See [the feature specification](specification/features/planned/codex-claude-gateway.md)
+for evidence and transport limitations.
+
+It uses the existing Claude Code subscription login with built-in execution tools
+disabled. It binds only to `127.0.0.1`, requires an owner-only token file, and makes
+no changes to Codex's defaults or provider catalog:
+
+```sh
+mkdir -p .cache/codex-gateway
+(umask 077; openssl rand -hex 32 > .cache/codex-gateway/token)
+bun run dev -- codex serve --token-file .cache/codex-gateway/token
+```
+
+The default port is 47831; use `--port` when that port is already occupied. Keep
+that file private. Do not connect normal Codex sessions until the desktop gate
+passes. Claude Code must already be logged in; the executable defaults to
+`~/.local/bin/claude` and can be supplied through `HARNESS_CLAUDE_EXECUTABLE`.
+The prototype offers no API billing fallback. Session/retry state is in memory;
+cancelled sessions and orphaned continuations fail closed.
