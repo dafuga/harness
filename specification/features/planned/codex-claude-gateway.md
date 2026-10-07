@@ -166,3 +166,26 @@ To disable auto-start, run
 `launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.dafuga.harness-claude-gateway.plist`
 and remove that plist. Restore only the Claude provider URL from the private backup
 if returning to the still-running manual listener; preserve other config changes.
+
+## Post-reset debugging (2026-10-07)
+
+After the reported quota reset, the Claude SDK succeeded and the managed gateway on
+47837 passed a real Codex 0.160.1 read-only execution test with an unpredictable marker.
+A first CLI round trip passed the Claude follow-up and native OpenAI return, then the
+final Claude resume exceeded the test's 100-second timeout. That failure remains in
+the ignored evidence. A fresh traced run with a 160-second bound passed tool execution,
+follow-up history, and Claude/OpenAI/Claude switching in one saved CLI thread. No source
+repair was needed to obtain this pass; the timeout's cause was not established.
+
+An owner-only local launcher, `~/.codex/harness-gateway/Try Claude.command`, starts a
+fresh Claude CLI trial using the installed profile and `--no-alt-screen`. It leaves
+the global OpenAI default unchanged. Its interactive session returned
+`CLAUDE_GATEWAY_READY` through the managed gateway, without executing tools or editing
+files. Older failed/cancelled prototype sessions require
+explicit recovery and should not be treated as automatically retryable after quota reset.
+The launcher is local setup, not an installed plugin or a native model selector.
+
+Computer Use also refused Terminal access. Requests to open a Codex terminal panel
+returned queued, and the terminal-read tool reported no attached app terminal. The
+default public app-server control socket was absent. CLI proof therefore still does
+not establish the installed desktop UI gate, panel support, phone or voice behavior.
