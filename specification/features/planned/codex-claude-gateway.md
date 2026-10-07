@@ -137,3 +137,32 @@ change the global default or route native OpenAI through the gateway.
 This selector is not implemented or installed. The first desktop delivery gate and
 installed-client panel-support check still precede its implementation. CLI round-trip
 proof does not satisfy those desktop checks.
+
+## Local gateway auto-start (2026-10-07)
+
+Installed the user LaunchAgent
+`~/Library/LaunchAgents/com.dafuga.harness-claude-gateway.plist` with `RunAtLoad`,
+`KeepAlive`, and a 30-second restart throttle. It starts at Mac login, independently
+of Codex, so opening Codex does not require starting a terminal server. It runs the
+verified repository `dist/index.js` with absolute Bun/Claude executable paths and
+the existing owner-only token file. Keep the repository, build and token in place.
+
+The managed listener uses `127.0.0.1:47837`; the Claude provider's `base_url` now
+points there. Native OpenAI remains the default. Earlier manual listeners were left
+running. The plist and logs under `~/Library/Logs/HarnessGateway/` are owner-only;
+no credential values are stored in the plist. A private pre-change config backup and
+setup metadata are in `~/.codex/harness-gateway/`.
+
+Verified plist syntax, launchd running state, localhost-only binding, authenticated
+health 200, unauthenticated rejection 401, and unchanged OpenAI default. A live
+streaming request failed closed without fallback; an isolated SDK diagnostic reported
+Claude's exhausted session quota, resetting at 14:10 Europe/Lisbon. A successful
+post-reset reply, actual logout/login, and crash-relaunch were not exercised. KeepAlive
+does not preserve this prototype's in-memory sessions or ambiguous tool continuations.
+Desktop panel/selector verification remains pending and no app restart was forced.
+
+Status: `launchctl print gui/$(id -u)/com.dafuga.harness-claude-gateway`.
+To disable auto-start, run
+`launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.dafuga.harness-claude-gateway.plist`
+and remove that plist. Restore only the Claude provider URL from the private backup
+if returning to the still-running manual listener; preserve other config changes.
