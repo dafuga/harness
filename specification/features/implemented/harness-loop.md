@@ -18,7 +18,7 @@ intent into traceable work with repeatable proof.
 - `harness loop next <loop> [--json]` reports the next pending step and related evaluator.
 - `harness loop evaluate <loop> [--json]` runs evaluator commands and returns a failing exit code when proof fails.
 - Project templates in `specification/loop-templates/*.json` can extend one parent loop template.
-- Built-in templates include `feature`, `fix`, `refactor`, and `visual-change`.
+- Built-in templates include `feature`, `fix`, `bug-fix`, `regression-prevention`, `refactor`, and `visual-change`.
 - `harness info loop` tells agents to use loop driven development.
 - Root and generated project agent instructions tell agents to use `harness loop` for non-trivial work.
 - Loop files are audit-safe in generated Harness projects.

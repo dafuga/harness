@@ -1,3 +1,4 @@
+import { builtInTemplates } from './builtInLoopTemplates';
 import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fail } from '../core/errors';
@@ -31,65 +32,6 @@ export interface ResolvedLoopTemplate {
 	steps: LoopTemplateStep[];
 	evaluators: LoopEvaluator[];
 }
-
-const builtInTemplates: LoopTemplate[] = [
-	{
-		id: 'feature',
-		title: 'Feature Delivery',
-		summary: 'Spec, implement, test, and verify a user-facing or API feature.',
-		steps: [
-			{ id: 'spec', title: 'Confirm scope, success criteria, constraints, and proof.' },
-			{ id: 'implement', title: 'Implement the smallest complete feature slice.' },
-			{ id: 'test', title: 'Add or update focused automated coverage.' },
-			{ id: 'verify', title: 'Run the relevant project verification commands.' }
-		],
-		evaluators: [
-			{
-				id: 'check',
-				title: 'Run the project check script.',
-				command: 'bun run check',
-				step: 'verify'
-			}
-		]
-	},
-	{
-		id: 'fix',
-		title: 'Bug Fix',
-		summary: 'Reproduce, repair, and prove a behavioral defect is fixed.',
-		extends: 'feature',
-		steps: [
-			{ id: 'spec', title: 'Identify the failing behavior and expected replacement behavior.' },
-			{ id: 'implement', title: 'Patch the defect without broad refactors.' }
-		]
-	},
-	{
-		id: 'refactor',
-		title: 'Refactor',
-		summary: 'Improve structure while preserving public behavior.',
-		extends: 'feature',
-		steps: [
-			{ id: 'spec', title: 'Name the responsibility boundary and unchanged behavior.' },
-			{ id: 'implement', title: 'Extract or reorganize one responsibility at a time.' }
-		]
-	},
-	{
-		id: 'visual-change',
-		title: 'Visual Change',
-		summary: 'Ship a UI change with automated checks and screenshot evidence.',
-		extends: 'feature',
-		steps: [
-			{ id: 'browser-proof', title: 'Exercise the affected UI path and capture fresh evidence.' }
-		],
-		evaluators: [
-			{
-				id: 'check',
-				title: 'Run the project check script.',
-				command: 'bun run check',
-				step: 'browser-proof'
-			}
-		]
-	}
-];
 
 export async function listLoopTemplates(root: string): Promise<LoopTemplate[]> {
 	return [...builtInTemplates, ...(await readProjectTemplates(root))].map((template) => ({
