@@ -1,6 +1,7 @@
 import { loopGuide } from './loop';
 import { harnessRuleSummaries } from '../rules/catalog';
 import { availableGuideTopics as uniqueGuideTopics, findGuideByTopic } from './topics';
+import { analyticsGuide, reportGuide } from './analytics';
 import { cleanCodeGuide } from './cleanCode';
 import { responseCheckGuide } from './responseCheck';
 import { scaffoldGuides, scaffoldsGuide } from './scaffolds';
@@ -16,6 +17,8 @@ export interface Guide {
 }
 
 export const guides: Guide[] = [
+	analyticsGuide,
+	reportGuide,
 	cleanCodeGuide,
 	responseCheckGuide,
 	{

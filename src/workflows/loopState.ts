@@ -19,6 +19,7 @@ export interface LoopEvaluator {
 }
 
 export interface LoopState {
+	agentModel?: string;
 	name: string;
 	goal: string;
 	createdAt: string;

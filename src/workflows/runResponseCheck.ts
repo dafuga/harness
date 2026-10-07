@@ -1,3 +1,5 @@
+import { resolvedContext, validateReport } from './analyticsRecord';
+import { recordResponse } from './recordJevAnalytics';
 import type { ResponseCheckOptions, ResponseCheckReport } from '../core/responseCheckTypes';
 import {
 	responseCheckSettings,
@@ -54,7 +56,11 @@ export function renderResponseCheck(report: ResponseCheckReport): string {
 }
 
 export async function runResponseCheck(options: ResponseCheckOptions): Promise<void> {
+	const start = Date.now();
+	const context = await resolvedContext(options, process.cwd());
+	await validateReport(context);
 	const report = await checkResponse(options);
+	await recordResponse(report, context, Date.now() - start);
 	console.log(options.json ? JSON.stringify(report, null, 2) : renderResponseCheck(report));
 	process.exitCode = responseCheckExitCode(report);
 }

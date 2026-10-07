@@ -1,0 +1,5 @@
+import type { analyticsSnapshot } from './analyticsMetrics';
+export function analyticsHtml(snapshot: ReturnType<typeof analyticsSnapshot>): string {
+	const data = JSON.stringify(snapshot).replace(/</g, '\\u003c');
+	return `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Harness Analytics</title><style>body{background:#101114;color:#eee;font:16px system-ui;margin:32px}pre{white-space:pre-wrap;overflow-wrap:anywhere}h1{color:#d9bc72}</style><h1>Harness Analytics</h1><p>Selected local history snapshot. Generated ${snapshot.generatedAt}.</p><div id="analytics"></div><script type="application/json" id="data">${data}</script><script>const data=JSON.parse(document.getElementById('data').textContent);for(const section of ['summary','loops','jev','models']){const h=document.createElement('h2');h.textContent=section;const p=document.createElement('pre');p.textContent=JSON.stringify(data[section],null,2);document.getElementById('analytics').append(h,p)}</script></html>`;
+}

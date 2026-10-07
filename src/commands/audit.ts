@@ -1,9 +1,9 @@
+import { analyticsOptions } from '../utils/analyticsOptions';
 import type { Command } from 'commander';
 import { runAudit, type AuditCommandOptions } from '../workflows/runAudit';
 
 export function registerAuditCommand(program: Command): void {
-	program
-		.command('audit [path]')
+	analyticsOptions(program.command('audit [path]'))
 		.option('--coverage', 'Show adapter coverage and unknown file types.')
 		.option('--profile <profile>', 'Audit profile: auto, app, dapp, or lib.', 'auto')
 		.option('--json', 'Print structured audit results.')

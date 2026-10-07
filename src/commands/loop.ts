@@ -17,10 +17,11 @@ export function registerLoopCommand(program: Command): void {
 
 	command
 		.command('create <name>')
+		.option('--agent-model <name>', 'Authoring model metadata.')
 		.option('--from <template>', 'Loop template to inherit from.')
 		.requiredOption('--goal <goal>', 'Human-facing goal for the loop.')
 		.description('Create a new verifiable work loop.')
-		.action((name: string, options: { from?: string; goal: string }) =>
+		.action((name: string, options: { from?: string; goal: string; agentModel?: string }) =>
 			runCreateLoop(name, options)
 		);
 
@@ -67,9 +68,14 @@ export function registerLoopCommand(program: Command): void {
 
 async function runCreateLoop(
 	name: string,
-	options: { from?: string; goal: string }
+	options: { from?: string; goal: string; agentModel?: string }
 ): Promise<void> {
-	const status = await createLoop({ name, goal: options.goal, from: options.from });
+	const status = await createLoop({
+		name,
+		goal: options.goal,
+		from: options.from,
+		agentModel: options.agentModel
+	});
 	console.log(renderLoopStatus(status));
 }
 

@@ -1,0 +1,220 @@
+/* Audio evidence gallery. Imported ahead of gallery rules, so overrides rely on specificity. */
+.media-tabs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0 26px;
+	margin: 22px 0 0;
+	border-bottom: 1px solid #223050;
+}
+.media-tabs button {
+	position: relative;
+	min-height: 44px;
+	padding: 10px 0 12px;
+	border: 0;
+	background: transparent;
+	color: var(--muted);
+	font-size: 14px;
+	font-weight: 600;
+}
+.media-tabs button::after {
+	content: '';
+	position: absolute;
+	inset: auto 0 -1px;
+	height: 2px;
+}
+.media-tabs button:hover,
+.media-tabs button.active {
+	background: transparent;
+	color: #e6edf5;
+}
+.media-tabs button.active::after {
+	background: var(--gold);
+}
+.media-count {
+	display: inline-block;
+	padding: 0 7px;
+	border-radius: 100px;
+	background: #1a2640;
+	font-size: 11px;
+	line-height: 20px;
+}
+.media-tabs button.active .media-count {
+	background: #dbb97524;
+	color: var(--gold);
+}
+.gallery-section .media-tabs + .gallery-filters {
+	margin-top: 16px;
+}
+.gallery-section .gallery-filters.audio-mode {
+	grid-template-columns: minmax(0, 1fr);
+}
+/* The audio stage stands where a screenshot would, so mixed rows stay even. */
+.evidence-card.audio-card .card-body {
+	flex: none;
+}
+.audio-stage {
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+	justify-content: center;
+	gap: 16px;
+	margin: 12px 12px 0;
+	padding: 18px 16px 16px;
+	border-radius: 8px;
+	background: radial-gradient(120% 100% at 0% 0%, #dbb97510, transparent 60%), #0a1220;
+	box-shadow: 0 0 0 1px #1f2c47;
+}
+.audio-identity {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+.audio-icon {
+	display: grid;
+	place-items: center;
+	width: 40px;
+	height: 40px;
+	border: 1px solid #dbb97559;
+	border-radius: 50%;
+	background: #dbb97514;
+	color: var(--gold);
+}
+.audio-kind {
+	display: block;
+	color: var(--gold);
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+.audio-duration {
+	display: block;
+	color: #e6edf5;
+	font-size: 17px;
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+}
+.audio-card audio {
+	width: 100%;
+	height: 40px;
+	color-scheme: dark;
+}
+.audio-unavailable {
+	padding: 10px 12px;
+	border: 1px dashed #725b30;
+	border-radius: 8px;
+	color: #edc27b;
+	font-size: 13px;
+	text-align: center;
+}
+.audio-card.unavailable .audio-icon {
+	border-color: #725b30;
+	color: #edc27b;
+}
+.evidence-card.audio-card p {
+	margin: 0;
+}
+.audio-card .audio-source {
+	color: #c6d2d8;
+	overflow-wrap: anywhere;
+}
+.audio-source span,
+.audio-detail-label {
+	margin-right: 6px;
+	color: var(--muted);
+	font-size: 10px;
+	font-weight: 600;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+.audio-details {
+	border-top: 1px solid #1f2c47;
+}
+.audio-details summary {
+	display: flex;
+	align-items: center;
+	gap: 9px;
+	padding: 8px 0 0;
+	color: var(--gold);
+	font-size: 12px;
+	font-weight: 600;
+	list-style: none;
+}
+.audio-details summary::-webkit-details-marker {
+	display: none;
+}
+.audio-details summary::before {
+	content: '';
+	width: 6px;
+	height: 6px;
+	border-right: 1.5px solid;
+	border-bottom: 1.5px solid;
+	transform: rotate(-45deg);
+}
+.audio-details[open] summary::before {
+	transform: rotate(45deg);
+}
+.audio-card .audio-details p,
+.audio-transcript {
+	margin: 8px 0 0;
+	color: #c6d2d8;
+	font-size: 13px;
+	line-height: 1.6;
+	white-space: pre-line;
+	overflow-wrap: anywhere;
+}
+.audio-transcript {
+	padding-left: 12px;
+	border-left: 2px solid #dbb97566;
+}
+.audio-detail-label {
+	display: block;
+	margin-top: 14px;
+}
+.audio-card .audio-download {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	margin-left: auto;
+}
+/* Audio upload reuses the comparison panel; only the notes field and status need extras. */
+.upload-comparison.upload-audio {
+	margin-top: 10px;
+}
+.upload-audio textarea {
+	padding: 11px 15px;
+	border: 1px solid #536975;
+	border-radius: 9px;
+	background: #0a1220;
+	color: #eaf0f1;
+	font: inherit;
+	resize: vertical;
+}
+.upload-audio .upload-pair .upload-note {
+	padding: 0;
+	border: 0;
+	cursor: auto;
+}
+.upload-audio .upload-pair .upload-note:focus-within {
+	outline: 0;
+}
+.upload-audio .upload-storage {
+	margin: 0 0 16px;
+	font-size: 12px;
+}
+.upload-audio .upload-status .badge {
+	white-space: normal;
+}
+@media (max-width: 650px) {
+	.audio-stage {
+		padding: 14px;
+	}
+	.audio-details summary,
+	.audio-card .audio-download {
+		min-height: 44px;
+	}
+	.upload-audio .upload-pair {
+		grid-template-columns: 1fr;
+		gap: 16px;
+	}
+}

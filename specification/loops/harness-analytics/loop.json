@@ -1,0 +1,40 @@
+{
+	"name": "harness-analytics",
+	"goal": "Prove durable cross-project loop and Jev analytics, bundled report portability, and dashboard evidence",
+	"createdAt": "2026-10-06T22:16:39.917Z",
+	"updatedAt": "2026-10-06T22:23:57.682Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-06T22:23:57.682Z",
+			"evidence": "Approved cross-project local analytics, explicit task/model identity, separate Jev check rates, bundled reporting and private snapshot defaults; CLI red failed on unknown agent-model and UI red on missing dashboard heading"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -1,0 +1,176 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+:root {
+	font-family:
+		Inter,
+		-apple-system,
+		BlinkMacSystemFont,
+		'Segoe UI',
+		sans-serif;
+	color: #eaf0f1;
+	background: #0d171c;
+	font-synthesis: none;
+	color-scheme: dark;
+	--gold: #dbb975;
+	--muted: #a5b9c2;
+	--line: #30444f;
+	--panel: #17262e;
+	--ink: #0d171c;
+}
+* {
+	box-sizing: border-box;
+}
+body {
+	margin: 0;
+}
+a {
+	color: inherit;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+button,
+a,
+input,
+select,
+summary {
+	touch-action: manipulation;
+}
+button,
+input,
+select,
+.button {
+	font: inherit;
+	border: 1px solid #536975;
+	border-radius: 9px;
+	padding: 11px 15px;
+	background: #1b2c36;
+	color: inherit;
+}
+button,
+.button,
+summary {
+	cursor: pointer;
+}
+button:hover,
+.button:hover {
+	border-color: var(--gold);
+	text-decoration: none;
+}
+button.active,
+.button.primary {
+	background: var(--gold);
+	color: #161e22;
+	border-color: var(--gold);
+}
+input {
+	min-width: 180px;
+	flex: 1;
+}
+select {
+	max-width: 100%;
+}
+:focus-visible {
+	outline: 3px solid var(--gold);
+	outline-offset: 4px;
+}
+h1,
+h2,
+h3,
+p {
+	margin-top: 0;
+}
+h1 {
+	font-size: clamp(2rem, 4vw, 3.5rem);
+	line-height: 1.12;
+	letter-spacing: -0.035em;
+	font-weight: 650;
+	margin-bottom: 20px;
+}
+h2 {
+	font-size: 1.3rem;
+	line-height: 1.35;
+	font-weight: 620;
+	margin-bottom: 16px;
+}
+h3 {
+	font-size: 1.05rem;
+	line-height: 1.5;
+	margin: 12px 0;
+}
+p {
+	line-height: 1.65;
+	margin-bottom: 14px;
+}
+small,
+.muted {
+	color: var(--muted);
+}
+pre {
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+	background: #0b1419;
+	border-radius: 8px;
+	padding: 16px;
+	font-size: 12px;
+	line-height: 1.6;
+	max-height: 380px;
+	overflow: auto;
+}
+code {
+	font-size: 0.88em;
+	overflow-wrap: anywhere;
+}
+summary {
+	font-size: 0.83rem;
+	color: var(--muted);
+	padding: 8px 0;
+}
+ul {
+	padding-left: 20px;
+}
+li {
+	line-height: 1.65;
+	margin-bottom: 10px;
+}
+.report-shell {
+	max-width: 1520px;
+	margin: 0 auto;
+	padding: 0 40px 32px;
+}
+.topbar {
+	display: flex;
+	gap: 16px;
+	justify-content: space-between;
+	align-items: center;
+	min-height: 88px;
+	border-bottom: 1px solid var(--line);
+	margin-bottom: 28px;
+}
+.brand {
+	font-weight: 650;
+	font-size: 18px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+.brand-symbol {
+	font-size: 34px;
+	color: var(--gold);
+}
+.workspace-label {
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.15em;
+	color: var(--muted);
+}
+.eyebrow {
+	font-size: 12px;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--gold);
+	margin-bottom: 20px;
+	font-weight: 600;
+}

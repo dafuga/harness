@@ -6,3 +6,8 @@ coverage
 .cache/
 .env
 .env.*
+
+**/.svelte-kit/
+**/build/
+**/test-results/
+**/playwright-report/

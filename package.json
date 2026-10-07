@@ -12,20 +12,23 @@
 	],
 	"scripts": {
 		"dev": "bun run src/index.ts",
-		"build": "bun build src/index.ts --target bun --outdir dist",
-		"check": "bun run format:check && bun run typecheck && bun run lint && bun run test:unit && bun run test:e2e && bun run build && bun run dev -- audit .",
+		"build": "bun run build:cli && bun run --cwd packages/reports build && bun scripts/package-reports.ts",
+		"check": "bun run format:check && bun run typecheck && bun run lint && bun run test:unit && bun run test:e2e && bun run build && bun run test:package && bun run dev -- audit . && bun run --cwd packages/reports check",
 		"typecheck": "tsc --noEmit",
 		"test": "bun run test:unit",
-		"test:unit": "vitest run --exclude \"test/**/*.e2e.test.ts\"",
-		"test:e2e": "vitest run test/cli.e2e.test.ts test/rules.e2e.test.ts test/ecosystem-adapters.e2e.test.ts test/structure.e2e.test.ts test/dapp-audit.e2e.test.ts test/complex-feature.e2e.test.ts test/loop.e2e.test.ts test/audit-config.e2e.test.ts test/clean-code.e2e.test.ts test/response-check.e2e.test.ts",
+		"test:unit": "vitest run --exclude \"test/**/*.e2e.test.ts\" --exclude \"test/packaged-reports.e2e.test.ts\"",
+		"test:e2e": "vitest run test/cli.e2e.test.ts test/rules.e2e.test.ts test/ecosystem-adapters.e2e.test.ts test/structure.e2e.test.ts test/dapp-audit.e2e.test.ts test/complex-feature.e2e.test.ts test/loop.e2e.test.ts test/audit-config.e2e.test.ts test/clean-code.e2e.test.ts test/response-check.e2e.test.ts test/analytics.e2e.test.ts test/analytics-attribution.e2e.test.ts test/analytics-worktrees.e2e.test.ts",
 		"lint": "eslint .",
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
-		"prepack": "bun run build"
+		"prepack": "bun run build",
+		"build:cli": "bun build src/index.ts --target bun --outdir dist",
+		"test:package": "vitest run test/packaged-reports.e2e.test.ts"
 	},
 	"dependencies": {
 		"@typesafe-ai/sdk": "0.6.0",
-		"commander": "^12.1.0"
+		"commander": "^12.1.0",
+		"@aws-sdk/client-s3": "^3.1138.0"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.25.1",
@@ -41,5 +44,8 @@
 	},
 	"engines": {
 		"bun": ">=1.2.0"
-	}
+	},
+	"workspaces": [
+		"packages/*"
+	]
 }
