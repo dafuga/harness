@@ -116,7 +116,12 @@ export const guides: Guide[] = [
 			'Run loop evaluators as a repeatable proof layer, not as a substitute for judgment.'
 		],
 		rules: [
-			'Built-in loops cover feature, fix, refactor, and visual-change work.',
+			'Built-in loops cover feature, fix, bug-fix, regression-prevention, refactor, and visual-change work.',
+			'Choose bug-fix for failing-test-first repairs; choose regression-prevention for root-cause repairs with enforced guards.',
+			'Record failing and passing proof from the same unchanged regression test; retry repairs and keep verification pending while checks fail.',
+			'For prevention, wire the guard into normal verification and prove reintroducing the original failure makes it fail in isolation, then restore and prove it passes.',
+			'Agents perform retries; Harness evaluators do not launch an AI runner or automatically complete steps.',
+			'For affected UI flows, exercise the browser and capture fresh inspected screenshots.',
 			'Project templates can extend one parent loop and override steps by id.',
 			'Normal tests, browser checks, audit, build, and deployment proof remain source of truth.'
 		],
