@@ -1,0 +1,45 @@
+{
+	"name": "analytics-dashboard-cpu",
+	"goal": "Prove useful loop/model/Jev analytics and accurate live machine, Codex, Harness and local-agent CPU on the reports website",
+	"createdAt": "2026-10-07T13:02:23.382Z",
+	"updatedAt": "2026-10-07T13:56:57.898779+00:00",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-07T13:06:49.630Z",
+			"evidence": "User requests finished analytics page plus live machine, Codex, Harness and agent CPU. Acceptance recorded in feature spec. Red browser tests fail missing Harness Analytics/Live CPU usage; CPU unit red fails missing delta sampler API."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-10-07T13:44:53.644Z",
+			"evidence": "Implemented dashboard in reports workspace via Claude Opus 5.5 visual edits; live one-second CPU sampler, safe disjoint process groups, localhost API and analytics cpu command. Explicit shared app-server and remote-inference limitations."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-10-07T13:44:53.792Z",
+			"evidence": "CPU regressions failed before API implementation then 11 native/unit/CLI checks pass; original three dashboard tests failed missing headings and pass unchanged, plus filter/navigation/refresh/unavailable/mobile and real CPU API coverage. Packed old build fails missing dashboard heading; final check will prove built package."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending",
+			"evidence": "October 8 refresh: bun run check passes: 184 unit tests (25 opt-in live provider tests skipped), 50 CLI integration tests, packed installation test, 88 reports tests, type/lint/build and both audits. Eight browser acceptance tests pass; fresh desktop/mobile images inspected. Native bundled preview serves the dashboard and live CPU. Manual browser verification remains blocked by the browser-tool URL rejection, so this verification step and the feature report remain pending. Daniel explicitly requested landing PR #5 on main."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

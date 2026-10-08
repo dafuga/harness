@@ -1,0 +1,209 @@
+/* Analytics styles, using the existing report theme. */
+.analytics-intro h1 {
+	margin-bottom: 12px;
+	font-size: clamp(30px, 3.6vw, 44px);
+}
+.analytics-section,
+.analytics-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 14px;
+}
+.analytics-section {
+	margin-top: 32px;
+}
+.analytics-tiles {
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+}
+.analytics-pair {
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr));
+}
+.analytics-heading {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 6px 20px;
+}
+.analytics-heading h2,
+.analytics-heading h3 {
+	margin: 0;
+}
+.analytics-note,
+.analytics-meta {
+	margin: 0;
+	color: var(--muted);
+	font-size: 13px;
+	line-height: 1.55;
+}
+.analytics-note {
+	max-width: 96ch;
+}
+.analytics-card {
+	display: grid;
+	align-content: start;
+	gap: 6px;
+	min-width: 0;
+	padding: 16px 18px;
+	border: 1px solid var(--line);
+	border-radius: 12px;
+	background: var(--panel);
+	font-size: 14px;
+	line-height: 1.5;
+	overflow-wrap: anywhere;
+}
+.analytics-accent {
+	border-left: 3px solid var(--gold);
+	background: linear-gradient(135deg, #16223a, #111a2c);
+}
+.analytics-label {
+	margin: 0;
+	color: var(--muted);
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	line-height: 1.4;
+}
+.analytics-value {
+	color: #fff;
+	font-size: 28px;
+	font-weight: 600;
+	line-height: 1.15;
+	font-variant-numeric: tabular-nums;
+}
+.analytics-accent .analytics-value {
+	color: var(--gold);
+	font-size: 38px;
+}
+.analytics-card .analytics-value.analytics-quiet {
+	color: var(--muted);
+	font-size: 20px;
+}
+.analytics-form {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	gap: 14px 12px;
+}
+.analytics-form .analytics-heading {
+	flex-basis: 100%;
+}
+.analytics-field {
+	display: grid;
+	flex: 1 1 150px;
+	gap: 6px;
+	min-width: 0;
+}
+.analytics-field input,
+.analytics-actions .button {
+	height: 46px;
+}
+.analytics-field input {
+	width: 100%;
+	min-width: 0;
+}
+.analytics-actions,
+.analytics-alert,
+.analytics-meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px 18px;
+}
+.analytics-scroll {
+	max-height: 32rem;
+	overflow: auto;
+}
+.analytics-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 13px;
+	line-height: 1.5;
+}
+.analytics-table th,
+.analytics-table td {
+	padding: 10px 18px 10px 0;
+	text-align: left;
+	vertical-align: top;
+	white-space: nowrap;
+}
+.analytics-table th {
+	position: sticky;
+	top: 0;
+	background: var(--panel);
+	color: var(--muted);
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+.analytics-table td {
+	border-top: 1px solid var(--line);
+}
+.analytics-table th:last-child,
+.analytics-table td:last-child {
+	padding-right: 0;
+}
+.analytics-table small {
+	display: block;
+}
+.analytics-table .analytics-num,
+.analytics-bars .analytics-num {
+	text-align: right;
+	font-variant-numeric: tabular-nums;
+}
+.analytics-table .analytics-wrap {
+	min-width: 12rem;
+	white-space: normal;
+	overflow-wrap: anywhere;
+}
+.analytics-bars {
+	display: grid;
+	gap: 12px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	font-size: 13px;
+}
+.analytics-bars li {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 6px 16px;
+	margin: 0;
+	line-height: 1.4;
+	overflow-wrap: anywhere;
+}
+.analytics-bar {
+	grid-column: 1 / -1;
+	height: 4px;
+	border-radius: 4px;
+	background: var(--line);
+}
+.analytics-bar span {
+	display: block;
+	height: 100%;
+	border-radius: inherit;
+	background: var(--gold);
+}
+.analytics-empty {
+	margin: 0;
+	padding: 14px 16px;
+	border: 1px dashed var(--line);
+	border-radius: 10px;
+	color: var(--muted);
+	font-size: 13px;
+}
+@media (max-width: 520px) {
+	.analytics-section {
+		margin-top: 24px;
+	}
+	.analytics-card {
+		padding: 14px;
+	}
+	.analytics-value {
+		font-size: 22px;
+	}
+	.analytics-accent .analytics-value {
+		font-size: 30px;
+	}
+}

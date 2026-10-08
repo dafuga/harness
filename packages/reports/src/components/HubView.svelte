@@ -45,9 +45,9 @@
 
 <main class="report-shell">
 	<nav class="topbar">
-		<a href="/" class="brand"><span class="brand-symbol">◈</span> {$t('hub')}</a><span
-			class="workspace-label">{$t('local')}</span
-		>
+		<a href="/" class="brand"><span class="brand-symbol">◈</span> {$t('hub')}</a>
+		<a class="text-link" href="/analytics">Harness Analytics</a>
+		<span class="workspace-label">{$t('local')}</span>
 	</nav>
 	<header class="hub-intro">
 		<div class="eyebrow">{$t('history')}</div>

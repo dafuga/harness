@@ -46,3 +46,7 @@ export { gatewayOptions } from './utils/gatewayOptions';
 export { gatewayStream } from './utils/gatewayStream';
 export { gatewayReplay } from './utils/gatewayReplay';
 export { gatewayToolDefinitions } from './utils/gatewayToolDefinitions';
+export { CpuProcessAdapter } from './adapters/CpuProcessAdapter';
+export { CpuUsageService } from './services/CpuUsageService';
+export { cpuMetrics } from './utils/cpuMetrics';
+export { cpuProcesses } from './utils/cpuProcesses';

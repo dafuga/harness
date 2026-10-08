@@ -1,9 +1,20 @@
 import type { Command } from 'commander';
+import { CpuUsageService } from '../services/CpuUsageService';
 import { AnalyticsService } from '../services/AnalyticsService';
 export function registerAnalyticsCommand(program: Command): void {
 	const analytics = program
 		.command('analytics')
 		.description('Query durable local cross-project Harness history.');
+	analytics
+		.command('cpu')
+		.description('Sample live local CPU usage for the machine, Codex, Harness and agents.')
+		.option('--json', 'Print structured results.')
+		.action(async () => {
+			const snapshot = await new CpuUsageService().snapshot();
+			await new Promise<void>((done) => {
+				process.stdout.write(JSON.stringify(snapshot, null, 2) + '\n', () => done());
+			});
+		});
 	for (const operation of ['summary', 'loops', 'jev', 'models', 'events', 'import', 'export']) {
 		analytics
 			.command(operation)

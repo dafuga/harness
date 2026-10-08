@@ -18,3 +18,19 @@ test('analytics dashboard shows task first-try rates and filters', async ({ page
 	await expect(page.getByText('Clean code first try', { exact: true })).toBeVisible();
 	await expect(page.getByRole('link', { name: /reports/i }).first()).toBeVisible();
 });
+
+test('analytics route responds successfully and renders its page', async ({ page }) => {
+	const response = await page.goto('/analytics');
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+	});
+	if (process.env.TAKE_SCREENSHOT === 'true') {
+		await mkdir(evidence, { recursive: true });
+		await page.screenshot({
+			path: `${evidence}/route-${process.env.SCREENSHOT_LABEL ?? 'test'}.png`,
+			fullPage: true
+		});
+	}
+	expect(response?.status()).toBe(200);
+	await expect(page.getByRole('heading', { name: /Analytics/ })).toBeVisible();
+});
