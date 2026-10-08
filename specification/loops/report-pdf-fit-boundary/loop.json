@@ -1,0 +1,53 @@
+{
+	"name": "report-pdf-fit-boundary",
+	"goal": "A full-width 900px screenshot fits a single PDF evidence page without a one-pixel continuation, preserving all image pixels and tall-image pagination",
+	"createdAt": "2026-10-08T00:53:15.248Z",
+	"updatedAt": "2026-10-08T01:01:25.859Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-08T00:55:25.943Z",
+			"evidence": "Planned feature specifies one evidence page per fitted 1440x900/1600x900 capture, complete source rows, preserved tall-image pagination, immutable original reports and visual export inspection."
+		},
+		{
+			"id": "red",
+			"title": "Write and run a failing regression test; record the defect assertion and command.",
+			"status": "complete",
+			"completedAt": "2026-10-08T00:55:26.104Z",
+			"evidence": "Unchanged pdf-screenshot-visibility suite fails only the 1440x900 fitted case: expected three image-bearing pages (cover/before/after), observed five due to 899px plus 1px crops. 1600x900 fitting and tall-image source-row preservation cases pass. Genuine latest-stage PDF continuation page inspected as blank."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-08T00:57:33.495Z",
+			"evidence": "Use the complete source height when the selected scale already fits the image. Retain source tiling only for genuinely tall images rendered above the fit scale; no epsilon workaround or screenshot edits."
+		},
+		{
+			"id": "green",
+			"title": "Repeat repair and the same unchanged regression test until it passes; record passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-08T00:57:33.652Z",
+			"evidence": "The same three screenshot visibility/source-row tests pass unchanged after the one-line fix; all seven PDF/export/JPEG preservation regressions pass. Tall-image pagination and original JPEG bytes remain covered."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots; keep pending until proof passes.",
+			"status": "complete",
+			"completedAt": "2026-10-08T01:01:25.859Z",
+			"evidence": "Full Harness bun run check passes: format/types/lint, 175 units (25 existing live opt-in skips), 49 CLI E2Es, build, packaging, root audit and 86 report tests plus report type/lint/build/audit. Isolated original-code challenge rejects [900,899,1,899,1] and the repair accepts [900,900,900], with owned temp cleanup. Regenerated real staging evidence PDFs inspected at readable resolution: 21 pages for issue 1182 and 38 for issue 986, no one-pixel image objects or blank continuation, exact original assets retained; both ZIPs below 25 MiB."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

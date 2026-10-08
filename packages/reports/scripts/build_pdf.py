@@ -105,7 +105,7 @@ for item in report['evidence']:
         width, height = picture.size
         fit_scale = min(max_width / width, max_height / height, 1)
         scale = fit_scale if width * fit_scale >= max_width / 2 else min(max_width / width, 1)
-        tile_height = max(1, math.floor(max_height / scale))
+        tile_height = height if scale == fit_scale else max(1, math.floor(max_height / scale))
         parts = math.ceil(height / tile_height)
         for index, top in enumerate(range(0, height, tile_height)):
             label = item['title'] + (f' (part {index + 1}/{parts})' if parts > 1 else '')
