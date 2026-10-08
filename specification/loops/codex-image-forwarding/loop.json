@@ -40,5 +40,6 @@
 			"command": "bun run check",
 			"step": "verify"
 		}
-	]
+	],
+	"verificationNotes": "Gateway and CLI verification passed; native desktop provider switching, actual browser-highlight image delivery, phone and voice remain unverified. Keep verify pending for the installed-client acceptance gate."
 }

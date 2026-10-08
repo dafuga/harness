@@ -56,5 +56,24 @@ under `.cache/codex-picker-evidence/`; no screenshots are committed.
 Live SDK image checks passed for an attachment and a correlated screenshot tool
 reply: both identified the two shapes and an unpredictable four-digit image-only
 code. The screenshot was supplied by the smoke host fixture, not the native
-Codex browser. Actual Codex CLI attachment and final repository checks are pending.
+Codex browser. The installed desktop-bundled Codex CLI 0.162.0-alpha.2 also sent the same
+attachment through the updated local gateway and returned the exact shapes/code.
+This is CLI proof, not native desktop panel or browser-highlight proof.
+
+`bun run check` passed: 213 root unit tests, 52 CLI integration tests, one packed
+reports test, 88 reports unit tests, formatting/type/lint/build and both Harness
+audits. The 25 pre-existing live calibration skips remain unchanged.
+
+The verified gateway code commit is `e6b213b`. Its bundled artifact is installed
+under `~/.codex/harness-gateway/artifacts/<commit>/index.js` and served on
+127.0.0.1:47841 by `com.dafuga.harness-claude-gateway-images`. Authenticated health
+returns text/image capabilities; missing auth is 401 and browser origins are 403.
+The Claude provider now points to that listener and its catalog advertises images.
+Root defaults remain OpenAI, `gpt-6.1-sol`, with the user's `max` effort. The old
+47837 listener stays available for existing callers.
+
+The new LaunchAgent starts at Mac login and keeps the gateway running. To undo
+this trial, remove its provider URL/catalog edits using the private before-images
+backups and unload/remove only the images LaunchAgent. Preserve unrelated settings
+and the original listener. No public hosting or production deployment is involved.
 Native desktop rendering/provider switching, phone and voice remain separate gates.
