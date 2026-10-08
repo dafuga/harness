@@ -16,8 +16,10 @@ report packaging, shared dashboard aggregation, and compatibility bridge are imp
 The dashboard frontend is implemented with history filters, loop/template/command usage,
 separate author/evaluator models, Jev task first-try rates, report links and live CPU.
 Automated browser regressions prove desktop/mobile layout, real API sampling, refresh
-and unavailable states. Manual browser verification remains blocked by the earlier
-browser-tool URL rejection; the feature report stays active and PR #5 remains open.
+and unavailable states. Full checks and all eight dashboard browser tests were rerun
+successfully on October 8. Manual browser verification remains blocked by the
+browser-tool URL rejection, and the feature report stays active for that remaining
+verification layer. Daniel explicitly requested landing PR #5 on main.
 Existing report header layout failures reproduce in the original frontend and are
 recorded in the active feature report. No application or analytics snapshot was published.
 

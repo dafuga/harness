@@ -38,7 +38,7 @@
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots; keep pending until proof passes.",
 			"status": "pending",
-			"evidence": "bun run check passes: 184 unit tests (25 opt-in live provider tests skipped), 50 CLI integration tests, packed installation test, 88 reports tests, type/lint/build and both audits. Eight browser acceptance tests pass, fresh desktop/mobile images inspected. Manual browser verification remains blocked by the earlier browser-tool URL rejection; PR #5 stays open and feature report stays active."
+			"evidence": "October 8 refresh: bun run check passes: 184 unit tests (25 opt-in live provider tests skipped), 50 CLI integration tests, packed installation test, 88 reports tests, type/lint/build and both audits. Eight browser acceptance tests pass; fresh desktop/mobile images inspected. Native bundled preview serves the dashboard and live CPU. Manual browser verification remains blocked by the browser-tool URL rejection, so this verification step and the feature report remain pending. Daniel explicitly requested landing PR #5 on main."
 		}
 	],
 	"evaluators": [
