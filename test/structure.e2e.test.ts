@@ -34,6 +34,28 @@ const structureAuditRuleIds = [
 	'harness-spec-structure'
 ];
 
+test('Codex marketplace structure is accepted while unrelated hidden folders are rejected', async () => {
+	const root = await mkdtemp(join(tmpdir(), 'harness-marketplace-'));
+	try {
+		await runHarness(['new', 'lib', 'marketplace-project'], root);
+		const project = join(root, 'marketplace-project');
+		await mkdir(join(project, '.agents/plugins'), { recursive: true });
+		await writeFile(
+			join(project, '.agents/plugins/marketplace.json'),
+			'{"name":"fixture","plugins":[]}'
+		);
+		const accepted = await runHarness(['audit', '.'], project, false);
+		expect(accepted.exitCode).toBe(0);
+		await mkdir(join(project, '.unrelated-hidden'), { recursive: true });
+		await writeFile(join(project, '.unrelated-hidden/fixture.txt'), 'fixture');
+		const rejected = await runHarness(['audit', '.'], project, false);
+		expect(rejected.exitCode).toBe(1);
+		expect(commandOutput(rejected)).toContain('folder-name-pattern');
+	} finally {
+		await rm(root, { recursive: true, force: true });
+	}
+}, 30_000);
+
 async function writeBadStructureFixtures(project: string): Promise<void> {
 	await mkdir(join(project, 'src/BadFolder'), { recursive: true });
 	await mkdir(join(project, 'test/random-things'), { recursive: true });

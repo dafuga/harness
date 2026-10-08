@@ -1,0 +1,46 @@
+{
+	"name": "codex-provider-picker",
+	"goal": "Prove a local plugin picker lists native OpenAI and Claude separately, durably queues per-thread changes, reports unknown/pending honestly, and never changes global defaults; desktop installation/application remains pending",
+	"createdAt": "2026-10-08T11:43:04.595Z",
+	"updatedAt": "2026-10-08T12:21:09.283Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-08T12:00:04.098Z",
+			"evidence": "User authorized local picker implementation on 2026-10-08 with desktop installation/application pending. Criteria recorded in specification/features/planned/codex-provider-picker.md. OpenAI remains default; explicit sessions and unknown active state required."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-10-08T12:21:08.844Z",
+			"evidence": "Implemented a portable MCP conversation entrypoint, shared-component Svelte picker, catalog discovery, owner-only SQLite queue, explicit session binding, cancellation and internal verified application boundary. No desktop adapter is installed; OpenAI defaults remain unchanged. Native CLI installation into the user plugin cache succeeded; installed HTML/server/manifest hashes match this build."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-10-08T12:21:09.102Z",
+			"evidence": "Red before implementation: ProviderSwitchService and internal apply tests failed on missing methods; browser regression failed because provider combobox was missing; the current MCP CLI regression failed against an isolated prechange source snapshot with Connection closed. The same regressions now pass. Focused checks cover persistence, isolation, deduplication, cancellation, catalog validation, pending/applied boundary and rollback."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "complete",
+			"completedAt": "2026-10-08T12:21:09.283Z",
+			"evidence": "bun run check passed: 191 root unit tests, 52 CLI integration tests, 1 packaged report test and 88 report unit tests; 25 pre-existing live calibration tests skipped. HARNESS_PICKER_PREVIEW_URL=http://127.0.0.1:47840 TAKE_SCREENSHOT=true SCREENSHOT_LABEL=final bun run test:picker passed. Fresh final-pending.png inspected: OpenAI default, active Unknown, requested Claude Opus 5.5 xhigh Pending. Installed bundle MCP regression passed in an isolated session. Native desktop rendering/application, all-device closure, phone and voice remain pending; no production/publication performed."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

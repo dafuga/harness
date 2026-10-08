@@ -1,11 +1,13 @@
 import type { Command } from 'commander';
 import { readFile, stat } from 'node:fs/promises';
 import { CodexGatewayService } from '../services/CodexGatewayService';
+import { registerCodexPickerCommand } from './CodexPickerCommand';
 
 export function registerCodexCommand(program: Command): void {
-	program
+	const codex = program
 		.command('codex')
-		.description('Local experimental Codex compatibility gateway.')
+		.description('Local experimental Codex compatibility gateway.');
+	codex
 		.command('serve')
 		.requiredOption(
 			'--token-file <path>',
@@ -26,4 +28,5 @@ export function registerCodexCommand(program: Command): void {
 			});
 			console.log(`Experimental Codex gateway listening at ${server.url}`);
 		});
+	registerCodexPickerCommand(codex);
 }

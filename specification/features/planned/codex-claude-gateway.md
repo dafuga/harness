@@ -189,3 +189,11 @@ Computer Use also refused Terminal access. Requests to open a Codex terminal pan
 returned queued, and the terminal-read tool reported no attached app terminal. The
 default public app-server control socket was absent. CLI proof therefore still does
 not establish the installed desktop UI gate, panel support, phone or voice behavior.
+
+## Picker-only gate exception (2026-10-08)
+
+Daniel authorized building and locally verifying the picker while desktop installation
+and real switching remain pending. See [picker scope](codex-provider-picker.md). This
+exception does not mark the original desktop gate passed or authorize the remaining
+Harness/quota integrations. The picker uses local MCP stdio and a separate durable queue;
+no provider settings are applied without a verified desktop control adapter.

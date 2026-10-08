@@ -19,7 +19,9 @@
 		"test:unit": "vitest run",
 		"test:e2e": "PROJECT_REPORTS_ASSET_STORAGE=local playwright test",
 		"report": "bun src/cli/index.ts",
-		"test:all": "bun run test:unit && bun run test:e2e"
+		"test:all": "bun run test:unit && bun run test:e2e",
+		"build:picker": "vite build --config src/config/pickerViteConfig.ts",
+		"test:picker": "playwright test --config src/config/pickerPlaywrightConfig.ts"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.28.1",

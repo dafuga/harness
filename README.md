@@ -308,3 +308,10 @@ passes. Claude Code must already be logged in; the executable defaults to
 `~/.local/bin/claude` and can be supplied through `HARNESS_CLAUDE_EXECUTABLE`.
 The prototype offers no API billing fallback. Session/retry state is in memory;
 cancelled sessions and orphaned continuations fail closed.
+
+### Provider picker local delivery
+
+A local plugin picker is now available for preview and manual installation. It lists
+OpenAI/Claude catalogs and durably queues explicit per-session choices. It keeps active
+settings unknown without desktop control and does not apply a switch or change defaults.
+See [picker setup and verification limits](plugins/claude-picker/README.md).

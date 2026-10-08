@@ -1,0 +1,11 @@
+{
+	"name": "harness-local",
+	"plugins": [
+		{
+			"name": "claude-picker",
+			"source": { "source": "local", "path": "./plugins/claude-picker" },
+			"policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+			"category": "Productivity"
+		}
+	]
+}

@@ -157,6 +157,7 @@ function auditDirectSourceFile(file: string, name: string): AuditFinding[] {
 function isAllowedFolderName(segment: string): boolean {
 	return (
 		segment === '.codex' ||
+		segment === '.agents' ||
 		segment === '.github' ||
 		/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(segment) ||
 		/^[a-z0-9]+(?:[-.][a-z0-9]+)*\.spec\.ts$/.test(segment) ||

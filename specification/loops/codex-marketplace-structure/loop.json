@@ -1,0 +1,53 @@
+{
+	"name": "codex-marketplace-structure",
+	"goal": "Accept the documented .agents/plugins marketplace folder without allowing arbitrary hidden folder names",
+	"createdAt": "2026-10-08T12:02:27.995Z",
+	"updatedAt": "2026-10-08T12:21:10.032Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-08T12:21:09.464Z",
+			"evidence": "The official local marketplace uses .agents/plugins/marketplace.json. Harness rejected its documented hidden folder. Expected behavior accepts the exact .agents folder and still rejects arbitrary hidden folders; reproduced in the named structure E2E test."
+		},
+		{
+			"id": "red",
+			"title": "Write and run a failing regression test; record the defect assertion and command.",
+			"status": "complete",
+			"completedAt": "2026-10-08T12:05:28.230Z",
+			"evidence": "Red: bunx vitest run test/structure.e2e.test.ts -t Codex-marketplace-equivalent exact named test failed expected audit exit 0, received 1 for .agents/plugins. Failure reproduced before changing src/audit/structureRules.ts."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-08T12:21:09.640Z",
+			"evidence": "Added only the exact .agents folder name to existing allowed hidden folders in src/audit/structureRules.ts. Arbitrary hidden-folder rejection remains in the unchanged regression."
+		},
+		{
+			"id": "green",
+			"title": "Repeat repair and the same unchanged regression test until it passes; record passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-08T12:21:09.830Z",
+			"evidence": "bunx vitest run test/structure.e2e.test.ts passed both tests, including Codex marketplace structure is accepted while unrelated hidden folders are rejected. The same named test originally failed expected audit exit 0, received 1."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots; keep pending until proof passes.",
+			"status": "complete",
+			"completedAt": "2026-10-08T12:21:10.032Z",
+			"evidence": "bun run check passed on the completed implementation, including the unchanged structure regression and deterministic root/reports audits. This audit rule has no frontend flow."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
