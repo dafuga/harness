@@ -2,7 +2,7 @@ import { query, type SDKMessage } from '@anthropic-ai/claude-agent-sdk';
 import type { GatewayRequest, GatewaySession } from '../utils/gatewayTypes';
 import type { CodexSessionRepository } from '../repositories/CodexSessionRepository';
 import { ClaudeToolsSerializer } from '../serializers/ClaudeToolsSerializer';
-import { gatewayPrompt } from '../utils/gatewayPrompt';
+import { gatewayMessages } from '../utils/gatewayMessages';
 import { gatewayOptions } from '../utils/gatewayOptions';
 
 export class ClaudeQueryService {
@@ -21,7 +21,7 @@ export class ClaudeQueryService {
 		try {
 			const server = new ClaudeToolsSerializer(this.repository).server(request.tools, session);
 			const stream = query({
-				prompt: gatewayPrompt(request),
+				prompt: gatewayMessages(request),
 				options: {
 					...gatewayOptions(session),
 					systemPrompt:

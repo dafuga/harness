@@ -61,3 +61,7 @@ export { PickerPreviewService } from './services/PickerPreviewService';
 export { registerCodexPickerCommand } from './commands/CodexPickerCommand';
 export type { PickerModel, ProviderSelection } from './core/pickerModelTypes';
 export { ProviderSwitchApplyService } from './services/ProviderSwitchApplyService';
+export { GatewayContentSerializer } from './serializers/GatewayContentSerializer';
+export { GatewayImageValidator } from './validators/GatewayImageValidator';
+export { gatewayMessages } from './utils/gatewayMessages';
+export { gatewayContentError } from './utils/gatewayContentError';

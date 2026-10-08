@@ -1,0 +1,44 @@
+{
+	"name": "codex-image-forwarding",
+	"goal": "Forward attached images and browser screenshot results as Claude image blocks while preserving text, highlight metadata, call ownership and fail-closed unsupported media; record remaining desktop parity gates.",
+	"createdAt": "2026-10-08T13:37:06.337Z",
+	"updatedAt": "2026-10-08T13:49:28.249Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-08T13:43:27.273Z",
+			"evidence": "Explicit image-forwarding authorization; spec records structured SDK/MCP images, preserved highlight and call metadata, fail-closed unsupported media, bounded payloads and outstanding desktop/voice/phone parity gates. Eight integration assertions failed on the unchanged gateway, then passed unchanged."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-10-08T13:49:28.063Z",
+			"evidence": "SDK streaming user envelope carries native image blocks; MCP tool replies retain native screenshots, text, error metadata and image resource URI. Media validation happens before tool delivery and model inference. Native provider switching and unsupported media remain explicit."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-10-08T13:49:28.249Z",
+			"evidence": "Same 8 initially failing gateway integration assertions passed unchanged; 22 focused tests cover ordering, mutation, image validation, limits, batch atomicity and cancellation. Live Claude Agent SDK attachment and screenshot tool-result tests both read an unpredictable four-digit code from image bytes."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

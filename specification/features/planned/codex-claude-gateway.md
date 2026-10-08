@@ -197,3 +197,12 @@ and real switching remain pending. See [picker scope](codex-provider-picker.md).
 exception does not mark the original desktop gate passed or authorize the remaining
 Harness/quota integrations. The picker uses local MCP stdio and a separate durable queue;
 no provider settings are applied without a verified desktop control adapter.
+
+## Image-forwarding authorization (2026-10-08)
+
+Daniel authorized adding image forwarding while desktop routing remains pending.
+See [image scope and parity gates](codex-image-forwarding.md). The gateway now uses
+SDK streaming input for image attachments and preserves native MCP image blocks in
+correlated screenshot tool replies. Live Claude Code login tests identified an
+unpredictable image-only code through both paths. This does not prove the native
+Codex browser-highlight flow, desktop provider switching, paired-phone or voice.

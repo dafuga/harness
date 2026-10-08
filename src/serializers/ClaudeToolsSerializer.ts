@@ -4,6 +4,7 @@ import { createSdkMcpServer, tool } from '@anthropic-ai/claude-agent-sdk';
 import { z } from 'zod';
 import type { GatewayItem, GatewaySession } from '../utils/gatewayTypes';
 import type { CodexSessionRepository } from '../repositories/CodexSessionRepository';
+import { GatewayContentSerializer } from './GatewayContentSerializer';
 import { GatewayEventsService } from '../services/GatewayEventsService';
 
 export class ClaudeToolsSerializer {
@@ -44,7 +45,7 @@ export class ClaudeToolsSerializer {
 					}
 				});
 				this.events.finishToolBatch(session);
-				return { content: [{ type: 'text' as const, text: await result }] };
+				return new GatewayContentSerializer().toolResult(await result);
 			}
 		);
 	}

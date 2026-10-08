@@ -17,7 +17,12 @@ export class CodexGatewayService {
 		if (expected.length !== received.length || !timingSafeEqual(expected, received))
 			return Response.json({ error: 'Unauthorized' }, { status: 401 });
 		if (new URL(request.url).pathname === '/healthz')
-			return Response.json({ status: 'ok', prototype: true });
+			return Response.json({
+				status: 'ok',
+				prototype: true,
+				inputModalities: ['text', 'image'],
+				unsupportedModalities: ['audio', 'video', 'file']
+			});
 		if (request.method !== 'POST' || new URL(request.url).pathname !== '/v1/responses')
 			return Response.json({ error: 'Not found' }, { status: 404 });
 		return this.respond(request);
@@ -26,7 +31,7 @@ export class CodexGatewayService {
 	private async respond(request: globalThis.Request): Promise<Response> {
 		try {
 			const body = await request.text();
-			if (Buffer.byteLength(body) > 4_000_000) throw new Error('Request too large');
+			if (Buffer.byteLength(body) > 32 * 1024 * 1024) throw new Error('Request too large');
 			const input = new CodexRequestValidator().parse(JSON.parse(body));
 			const id = request.headers.get('thread-id');
 			if (!id || id.length > 256) throw new Error('thread-id required');
@@ -42,7 +47,12 @@ export class CodexGatewayService {
 			const response = gatewayStream(session, this.repository, { key, signal: request.signal });
 			adapter.start(input, session);
 			return response;
-		} catch {
+		} catch (error) {
+			if (error instanceof Error && error.name === 'GatewayContentError')
+				return Response.json(
+					{ error: { code: 'unsupported_content', message: error.message } },
+					{ status: 400 }
+				);
 			return Response.json(
 				{ error: { code: 'invalid_request', message: 'Unsupported request or tool continuation' } },
 				{ status: 400 }

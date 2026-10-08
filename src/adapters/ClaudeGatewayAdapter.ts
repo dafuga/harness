@@ -1,11 +1,13 @@
 import type { GatewayRequest, GatewaySession } from '../utils/gatewayTypes';
 import type { CodexSessionRepository } from '../repositories/CodexSessionRepository';
+import { GatewayContentSerializer } from '../serializers/GatewayContentSerializer';
 import { ClaudeQueryService } from '../services/ClaudeQueryService';
 
 export class ClaudeGatewayAdapter {
 	constructor(private readonly repository: CodexSessionRepository) {}
 
 	validate(request: GatewayRequest, session: GatewaySession): void {
+		new GatewayContentSerializer().history(request.input);
 		if (!session.running) {
 			if (
 				['function_call_output', 'custom_tool_call_output'].includes(
