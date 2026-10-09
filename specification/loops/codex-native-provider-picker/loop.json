@@ -1,0 +1,41 @@
+{
+	"name": "codex-native-provider-picker",
+	"goal": "Prove the installed native picker routes Claude selections through the local gateway and OpenAI selections through the native subscription provider, preserves the same chat and keeps OpenAI as default",
+	"createdAt": "2026-10-09T09:43:53.902Z",
+	"updatedAt": "2026-10-09T09:51:31.191Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-09T09:51:31.191Z",
+			"evidence": "User authorized native picker routing on 2026-10-09. Specification records OpenAI native default, Claude-only gateway routing, same-thread cold switching, first desktop delivery gate, and installed-client feasibility probes. Implementation and verification remain pending because model selection does not change provider."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	],
+	"verificationNotes": "Blocked on installed desktop-bundled Codex 0.162.0-alpha.2: native model selection has no provider binding. Both isolated acceptance probes exit 1; a native OpenAI thread remains openai after selecting Opus, and an HTTP fixture receives the Claude model on the previous provider endpoint. Explicit Claude provider start routes correctly. No implementation installed; desktop UI and round trip remain unverified. Evidence: specification/features/planned/codex-native-provider-picker.md and ignored .cache/codex-picker-evidence/native-routing-probe/. bun run check passed on 2026-10-09; this confirms repository health, not the failed native routing acceptance gate. No UI/runtime code was changed."
+}
