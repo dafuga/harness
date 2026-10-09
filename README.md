@@ -287,10 +287,11 @@ do not inflate usage counts.
 
 ### Experimental Codex gateway
 
-The local gateway is a first-stage prototype; installed-desktop compatibility has
-not passed. The monitoring plugins, quota panel and provider switching are pending
-that gate. See [the feature specification](specification/features/planned/codex-claude-gateway.md)
-for evidence and transport limitations.
+The local gateway is experimental. Its first desktop gate passed in a separately
+signed native app copy: Claude streaming, Codex tools, follow-up history and a
+same-chat Claude/OpenAI/Claude round trip. See [native picker setup and evidence](specification/features/planned/codex-native-provider-picker.md)
+and [the gateway specification](specification/features/planned/codex-claude-gateway.md).
+Full monitoring and quota panels remain pending.
 
 It uses the existing Claude Code subscription login with built-in execution tools
 disabled. It binds only to `127.0.0.1`, requires an owner-only token file, and makes
@@ -303,8 +304,8 @@ bun run dev -- codex serve --token-file .cache/codex-gateway/token
 ```
 
 The default port is 47831; use `--port` when that port is already occupied. Keep
-that file private. Do not connect normal Codex sessions until the desktop gate
-passes. Claude Code must already be logged in; the executable defaults to
+that file private. Native provider selection currently requires the documented
+experimental app copy. Claude Code must already be logged in; the executable defaults to
 `~/.local/bin/claude` and can be supplied through `HARNESS_CLAUDE_EXECUTABLE`.
 The prototype offers no API billing fallback. Session/retry state is in memory;
 cancelled sessions and orphaned continuations fail closed.
@@ -315,3 +316,9 @@ A local plugin picker is now available for preview and manual installation. It l
 OpenAI/Claude catalogs and durably queues explicit per-session choices. It keeps active
 settings unknown without desktop control and does not apply a switch or change defaults.
 See [picker setup and verification limits](plugins/claude-picker/README.md).
+
+The separate **Codex Harness Experimental** app now offers Claude Opus 5.5 directly
+in its native picker and applies verified provider changes on the next turn. Its
+native selection is independent of the plugin's pending queue. OpenAI remains the
+launch default. Hosted web search is unavailable for Claude; phone and voice are
+unverified. The original vendor app remains unchanged.

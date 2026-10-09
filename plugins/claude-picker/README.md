@@ -9,6 +9,11 @@ connection to the installed desktop app is unavailable. Active settings show unk
 requests stay pending. No desktop adapter, automatic resume, fallback or global configuration
 write is included. The native OpenAI default remains unchanged.
 
+The separately installed **Codex Harness Experimental** app now has a working
+native Claude picker. Use that app's native model control to apply a provider
+change; this plugin's queue remains independent and pending. See
+[native setup and desktop proof](../../specification/features/planned/codex-native-provider-picker.md).
+
 ## Build and manual installation
 
 Requirements: Bun >= 1.2, this Harness checkout with dependencies installed, and

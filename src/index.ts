@@ -65,3 +65,12 @@ export { GatewayContentSerializer } from './serializers/GatewayContentSerializer
 export { GatewayImageValidator } from './validators/GatewayImageValidator';
 export { gatewayMessages } from './utils/gatewayMessages';
 export { gatewayContentError } from './utils/gatewayContentError';
+export { DesktopExperimentService } from './services/DesktopExperimentService';
+export { NativePickerBridgeService } from './services/NativePickerBridgeService';
+export { DesktopArchiveAdapter } from './adapters/DesktopArchiveAdapter';
+export { NativePickerSwitchService } from './services/NativePickerSwitchService';
+export { pickerProvider } from './utils/nativePickerProtocol';
+export { desktopPatchConfig } from './config/desktopPatchConfig';
+export { DesktopIntegrityAdapter } from './adapters/DesktopIntegrityAdapter';
+export { NativePickerDefaultsService } from './services/NativePickerDefaultsService';
+export { NativePickerIdleValidator } from './validators/NativePickerIdleValidator';

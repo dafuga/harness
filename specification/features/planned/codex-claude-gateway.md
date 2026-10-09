@@ -35,7 +35,19 @@ stop the dependent work and retain the blocker explicitly.
 - Red/green regressions, full repository checks, desktop Claude/OpenAI/Claude round
   trip, separate phone/voice tests, fresh inspected panel screenshots and local commit.
 
-## Current delivery status: first gate blocked
+## Current delivery status: native experiment gate passed
+
+On 2026-10-09 Daniel authorized a separate native app copy. The signed
+**Codex Harness Experimental** copy passed Claude streaming, Codex terminal
+execution, follow-up history and a same-chat Claude/OpenAI/Claude round trip.
+Restarting the copy restored the chat and Claude selection, and another native
+tool call passed through the persistent gateway. See the
+[native picker specification](codex-native-provider-picker.md) for evidence,
+setup and limitations. Hosted web search is disabled for Claude; phone and voice
+are untested. Full monitoring/quota panels remain pending. The plugin picker
+queue is independent of the working native selection.
+
+## Historical first gate blocker
 
 On 2026-10-07 the computer-use tool refused access to `com.openai.codex` for safety
 reasons. No desktop provider round trip or panel installation can be verified in this

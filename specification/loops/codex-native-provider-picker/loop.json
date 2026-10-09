@@ -2,7 +2,7 @@
 	"name": "codex-native-provider-picker",
 	"goal": "Prove the installed native picker routes Claude selections through the local gateway and OpenAI selections through the native subscription provider, preserves the same chat and keeps OpenAI as default",
 	"createdAt": "2026-10-09T09:43:53.902Z",
-	"updatedAt": "2026-10-09T09:51:31.191Z",
+	"updatedAt": "2026-10-09T14:10:26.057Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"steps": [
@@ -11,22 +11,28 @@
 			"title": "Confirm scope, success criteria, constraints, and proof.",
 			"status": "complete",
 			"completedAt": "2026-10-09T09:51:31.191Z",
-			"evidence": "User authorized native picker routing on 2026-10-09. Specification records OpenAI native default, Claude-only gateway routing, same-thread cold switching, first desktop delivery gate, and installed-client feasibility probes. Implementation and verification remain pending because model selection does not change provider."
+			"evidence": "User authorized a separate native app copy on 2026-10-09 after installed-client routing probes failed. Scope preserves the original app, native OpenAI default, Claude-only localhost gateway, same-thread verified cold switching, first desktop acceptance gate and honest unsupported-feature boundaries."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-09T14:08:59.430Z",
+			"evidence": "Separate signed native desktop copy installed on macOS, pinned to 26.1002.52244. NativePickerBridgeService/DefaultsService/SwitchService bind model to provider, isolate picker defaults, preserve same thread, reject active/interrupted and connected remote state, verify cold resume and rollback. ASAR integrity remains enabled; original app signature verifies. Native Claude tool and same-chat round trip passed; hosted web search is explicitly unavailable for Claude."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-09T14:10:25.845Z",
+			"evidence": "Unchanged red-to-green regressions captured in ignored desktop-copy evidence. Focused tests cover ASAR contents/integrity, unknown asset rejection, native catalog/model routing, defaults preservation, same-thread serialization, idle/interrupted/failed-turn guards, rollback, history listing, cold resume and Claude hosted-tool isolation. Latest bun run check passed: 239 CLI unit tests, 52 CLI E2E tests, 88 report tests plus build smoke; 25 opt-in live tests skipped."
 		},
 		{
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-09T14:10:26.057Z",
+			"evidence": "bun run check passed (desktop-copy/verified-check.log). Actual native trial 01a120f2-3287-71b0-99f9-25c4dcc700d9 streamed Claude commentary; Codex executed printf with correlated output and exit 0; follow-up remembered KIWI_953; native Claude/OpenAI/Claude round trip preserved the same chat and marker. After app restart, Recents reopened the Claude chat and stable LaunchAgent gateway 47841 returned another Codex tool output. Fresh native-picker-green.png and native-roundtrip-green.png captured and inspected. Original and copy strict signatures verified; original OpenAI defaults preserved. Hosted web search disabled for Claude; phone/voice untested. No paid fallback or public deployment."
 		}
 	],
 	"evaluators": [
@@ -37,5 +43,5 @@
 			"step": "verify"
 		}
 	],
-	"verificationNotes": "Blocked on installed desktop-bundled Codex 0.162.0-alpha.2: native model selection has no provider binding. Both isolated acceptance probes exit 1; a native OpenAI thread remains openai after selecting Opus, and an HTTP fixture receives the Claude model on the previous provider endpoint. Explicit Claude provider start routes correctly. No implementation installed; desktop UI and round trip remain unverified. Evidence: specification/features/planned/codex-native-provider-picker.md and ignored .cache/codex-picker-evidence/native-routing-probe/. bun run check passed on 2026-10-09; this confirms repository health, not the failed native routing acceptance gate. No UI/runtime code was changed."
+	"verificationNotes": "Native delivery gate passed in the separately signed Codex Harness Experimental copy, desktop 26.1002.52244 / bundled 0.162.0-alpha.2. Synthetic trial 01a120f2-3287-71b0-99f9-25c4dcc700d9 proved streamed Claude commentary, Codex terminal execution with exit 0, follow-up marker recall and native Claude/OpenAI/Claude round trip. App restart restored the chat and Claude selection; persistent LaunchAgent gateway 47841 executed another Codex terminal call. Fresh screenshots and trace/check evidence are ignored under .cache/codex-picker-evidence/desktop-copy/. bun run check passed. Original bundle and defaults preserved. Hosted web_search is disabled for Claude; phone and voice remain untested. Original vendor app still requires provider-aware changes; this experimental copy provides them without changing the vendor bundle."
 }
