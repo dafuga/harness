@@ -1,0 +1,43 @@
+{
+	"schemaVersion": 1,
+	"kind": "legacy-report",
+	"id": "11445bb7-de95-473a-8a46-cdb9c8ff4f0c",
+	"project": "harness",
+	"title": "Automatic Jev session checks",
+	"mode": "feature",
+	"environment": "Local Codex sessions; mocked Jev verification",
+	"status": "passed",
+	"state": "finalized",
+	"startedAt": "2026-10-07T12:04:43.502Z",
+	"updatedAt": "2026-10-07T12:34:22.094Z",
+	"revision": "66557812757916eed7578246a2510568c23f9e85",
+	"summary": "Installed and trusted automatic advisory Jev Clean Code reviews for local Harness session startup and resume. Existing cache and source exclusions are reused. All 15 focused tests and the complete Harness check passed. No live credential probe was made. The installed stable bundle matches revision 66557812757916eed7578246a2510568c23f9e85; this is a local configuration delivery, with no application release or production merge.",
+	"checks": [
+		{
+			"id": "red",
+			"title": "Missing integration reproduced before implementation",
+			"status": "passed"
+		},
+		{
+			"id": "sessions",
+			"title": "Automatic startup review, cache reuse and exclusions",
+			"status": "passed"
+		},
+		{
+			"id": "full-check",
+			"title": "Complete Harness verification",
+			"status": "passed"
+		},
+		{
+			"id": "installed-dry-run",
+			"title": "Installed stable bundle handles a real worktree",
+			"status": "passed"
+		},
+		{
+			"id": "codex-trust",
+			"title": "Codex discovers and trusts the installed hook",
+			"status": "passed"
+		}
+	],
+	"media": []
+}
