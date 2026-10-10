@@ -1,0 +1,70 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.coverage-list",
+	"kind": "component",
+	"title": "CoverageList",
+	"responsibility": "Owns the CoverageList Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/CoverageList.svelte"],
+		"symbols": ["CoverageList"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "CoverageList.report",
+				"type": "Report"
+			},
+			{
+				"name": "CoverageList.section",
+				"type": "'all' | 'acceptance' | 'coverage'"
+			},
+			{
+				"name": "CoverageList.embedded",
+				"type": "boolean"
+			}
+		],
+		"outputs": [
+			{
+				"name": "CoverageList",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.status-badge",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-locale",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/CoverageList.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/CoverageList.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

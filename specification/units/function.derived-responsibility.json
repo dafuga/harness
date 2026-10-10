@@ -1,0 +1,50 @@
+{
+	"schemaVersion": 1,
+	"id": "function.derived-responsibility",
+	"kind": "function",
+	"title": "derivedResponsibility",
+	"responsibility": "Owns the derivedResponsibility shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/derivedResponsibility.ts"],
+		"symbols": ["derivedResponsibility"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "derivedResponsibility.kind",
+				"type": "string"
+			},
+			{
+				"name": "derivedResponsibility.title",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "derivedResponsibility",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/derivedResponsibility.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/derivedResponsibility.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

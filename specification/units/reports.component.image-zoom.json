@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.image-zoom",
+	"kind": "component",
+	"title": "ImageZoom",
+	"responsibility": "Owns the ImageZoom Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/ImageZoom.svelte"],
+		"symbols": ["ImageZoom"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ImageZoom.src",
+				"type": "string"
+			},
+			{
+				"name": "ImageZoom.alt",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ImageZoom",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.report-locale",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.trackpad-zoom",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/ImageZoom.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/ImageZoom.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

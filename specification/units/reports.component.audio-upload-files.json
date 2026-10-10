@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.audio-upload-files",
+	"kind": "component",
+	"title": "AudioUploadFiles",
+	"responsibility": "Owns the AudioUploadFiles Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/AudioUploadFiles.svelte"],
+		"symbols": ["AudioUploadFiles"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "AudioUploadFiles.mode",
+				"type": "string"
+			},
+			{
+				"name": "AudioUploadFiles.uploading",
+				"type": "boolean"
+			}
+		],
+		"outputs": [
+			{
+				"name": "AudioUploadFiles",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.report-locale",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/AudioUploadFiles.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/AudioUploadFiles.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

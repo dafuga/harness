@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.status-badge",
+	"kind": "component",
+	"title": "StatusBadge",
+	"responsibility": "Owns the StatusBadge Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/StatusBadge.svelte"],
+		"symbols": ["StatusBadge"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "StatusBadge.status",
+				"type": "Status"
+			}
+		],
+		"outputs": [
+			{
+				"name": "StatusBadge",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.report-locale",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/StatusBadge.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/StatusBadge.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

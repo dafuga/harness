@@ -1,0 +1,76 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.report-publication",
+	"kind": "function",
+	"title": "reportPublication",
+	"responsibility": "Owns the reportPublication shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/reportPublication.ts"],
+		"symbols": ["PublicationFile", "PublicationBundle", "reportPublication"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "reportPublication.repository",
+				"type": "ReportRepository"
+			},
+			{
+				"name": "reportPublication.id",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "reportPublication",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.evidence-media",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-assets",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-retention",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.repository.report",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/reportPublication.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/reportPublication.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

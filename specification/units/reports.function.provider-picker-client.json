@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.provider-picker-client",
+	"kind": "function",
+	"title": "providerPickerClient",
+	"responsibility": "Owns the providerPickerClient shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/providerPickerClient.ts"],
+		"symbols": ["PickerClient", "providerPickerClient"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "providerPickerClient.receive",
+				"type": "(data: PickerSnapshot) => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "providerPickerClient",
+				"type": "Promise<PickerClient>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.picker-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/providerPickerClient.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/providerPickerClient.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

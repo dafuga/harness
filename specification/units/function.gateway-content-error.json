@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"id": "function.gateway-content-error",
+	"kind": "function",
+	"title": "gatewayContentError",
+	"responsibility": "Owns the gatewayContentError shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/gatewayContentError.ts"],
+		"symbols": ["gatewayContentError"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "gatewayContentError.message",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "gatewayContentError",
+				"type": "Error"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/gatewayContentError.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/gatewayContentError.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

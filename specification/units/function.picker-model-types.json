@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "function.picker-model-types",
+	"kind": "function",
+	"title": "pickerModelTypes",
+	"responsibility": "Owns the pickerModelTypes shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/pickerModelTypes.ts"],
+		"symbols": ["ProviderSelection", "PickerModel", "sameSelection", "validateSessionId"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "sameSelection.a",
+				"type": "ProviderSelection"
+			},
+			{
+				"name": "sameSelection.b",
+				"type": "ProviderSelection"
+			},
+			{
+				"name": "validateSessionId.value",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "sameSelection",
+				"type": "boolean"
+			},
+			{
+				"name": "validateSessionId",
+				"type": "string"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/pickerModelTypes.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/pickerModelTypes.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

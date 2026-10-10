@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "function.gateway-prompt",
+	"kind": "function",
+	"title": "gatewayPrompt",
+	"responsibility": "Owns the gatewayPrompt shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/gatewayPrompt.ts"],
+		"symbols": ["gatewayPrompt"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "gatewayPrompt.request",
+				"type": "GatewayRequest"
+			}
+		],
+		"outputs": [
+			{
+				"name": "gatewayPrompt",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.gateway-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/gatewayPrompt.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/gatewayPrompt.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

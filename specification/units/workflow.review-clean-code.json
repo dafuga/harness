@@ -1,0 +1,102 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.review-clean-code",
+	"kind": "workflow",
+	"title": "reviewCleanCode",
+	"responsibility": "Owns the reviewCleanCode command workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/reviewCleanCode.ts"],
+		"symbols": ["ReviewCleanCodeInput", "reviewCleanCode"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "reviewCleanCode.input",
+				"type": "ReviewCleanCodeInput"
+			}
+		],
+		"outputs": [
+			{
+				"name": "reviewCleanCode",
+				"type": "Promise<CleanCodeReport>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.jev",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "audit.clean-code-assessment",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "audit.clean-code-discovery",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "audit.clean-code-evaluate",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "audit.clean-code-files",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "audit.clean-code-rubric",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "audit.clean-code-snapshot",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "audit.clean-code-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "audit.collect",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "audit.types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/reviewCleanCode.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/reviewCleanCode.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

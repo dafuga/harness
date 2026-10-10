@@ -1,0 +1,80 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.audio-evidence",
+	"kind": "component",
+	"title": "AudioEvidence",
+	"responsibility": "Owns the AudioEvidence Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/AudioEvidence.svelte"],
+		"symbols": ["AudioEvidence"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "AudioEvidence.item",
+				"type": "Evidence"
+			},
+			{
+				"name": "AudioEvidence.assetBase",
+				"type": "string"
+			},
+			{
+				"name": "AudioEvidence.idPrefix",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "AudioEvidence",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.status-badge",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.evidence-media",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-display",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-locale",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/AudioEvidence.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/AudioEvidence.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

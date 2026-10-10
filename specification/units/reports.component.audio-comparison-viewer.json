@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.audio-comparison-viewer",
+	"kind": "component",
+	"title": "AudioComparisonViewer",
+	"responsibility": "Owns the AudioComparisonViewer Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/AudioComparisonViewer.svelte"],
+		"symbols": ["AudioComparisonViewer"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "AudioComparisonViewer.before",
+				"type": "Evidence"
+			},
+			{
+				"name": "AudioComparisonViewer.after",
+				"type": "Evidence"
+			},
+			{
+				"name": "AudioComparisonViewer.assetBase",
+				"type": "string"
+			},
+			{
+				"name": "AudioComparisonViewer.onclose",
+				"type": "() => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "AudioComparisonViewer",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.audio-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.modal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-locale",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/AudioComparisonViewer.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/AudioComparisonViewer.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

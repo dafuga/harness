@@ -1,0 +1,99 @@
+{
+	"schemaVersion": 1,
+	"id": "function.unit-types",
+	"kind": "function",
+	"title": "unitTypes",
+	"responsibility": "Owns the unitTypes shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/unitTypes.ts"],
+		"symbols": [
+			"unitIdPattern",
+			"dependencyVias",
+			"runtimeKinds",
+			"performanceMetrics",
+			"performanceTolerance",
+			"contractItemSchema",
+			"unitDependencySchema",
+			"performanceBudgetSchema",
+			"executionTargetSchema",
+			"componentManifestSchema",
+			"scenarioManifestSchema",
+			"ContractItem",
+			"UnitDependency",
+			"ComponentManifest",
+			"ScenarioManifest",
+			"RuntimeKind",
+			"ExecutionTarget"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "unitIdPattern",
+				"type": "unknown"
+			},
+			{
+				"name": "dependencyVias",
+				"type": "unknown"
+			},
+			{
+				"name": "runtimeKinds",
+				"type": "unknown"
+			},
+			{
+				"name": "performanceMetrics",
+				"type": "unknown"
+			},
+			{
+				"name": "performanceTolerance",
+				"type": "unknown"
+			},
+			{
+				"name": "contractItemSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "unitDependencySchema",
+				"type": "unknown"
+			},
+			{
+				"name": "performanceBudgetSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "executionTargetSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "componentManifestSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "scenarioManifestSchema",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/unitTypes.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/unitTypes.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

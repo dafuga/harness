@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "function.source-blocks",
+	"kind": "function",
+	"title": "sourceBlocks",
+	"responsibility": "Owns the sourceBlocks shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/sourceBlocks.ts"],
+		"symbols": ["SourceBlock", "sourceBlocks"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "sourceBlocks.code",
+				"type": "string"
+			},
+			{
+				"name": "sourceBlocks.language",
+				"type": "SourceLanguage"
+			}
+		],
+		"outputs": [
+			{
+				"name": "sourceBlocks",
+				"type": "SourceBlock[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.block-complexity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.block-spans",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.mask-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.scan-imports",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/sourceBlocks.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/sourceBlocks.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.service.harness-analytics",
+	"kind": "service",
+	"title": "HarnessAnalyticsService",
+	"responsibility": "Owns the HarnessAnalyticsService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/services/HarnessAnalyticsService.ts"],
+		"symbols": ["AnalyticsSnapshot", "HarnessAnalyticsService", "HarnessAnalyticsService.snapshot"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HarnessAnalyticsService.snapshot.params",
+				"type": "URLSearchParams"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HarnessAnalyticsService.snapshot",
+				"type": "Promise<AnalyticsSnapshot>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.report-runtime-root",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.analytics-metrics",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/services/HarnessAnalyticsService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/services/HarnessAnalyticsService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

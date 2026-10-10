@@ -1,0 +1,78 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.report-state",
+	"kind": "function",
+	"title": "reportState",
+	"responsibility": "Owns the reportState shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/reportState.ts"],
+		"symbols": ["reportState", "resultStatus", "interrupted"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "reportState.input",
+				"type": "BeginInput"
+			},
+			{
+				"name": "resultStatus.report",
+				"type": "Report"
+			},
+			{
+				"name": "interrupted.report",
+				"type": "Report"
+			}
+		],
+		"outputs": [
+			{
+				"name": "reportState",
+				"type": "Report"
+			},
+			{
+				"name": "resultStatus",
+				"type": "Status"
+			},
+			{
+				"name": "interrupted",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.sanitize",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/reportState.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/reportState.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

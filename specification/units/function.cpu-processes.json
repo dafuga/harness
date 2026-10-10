@@ -1,0 +1,50 @@
+{
+	"schemaVersion": 1,
+	"id": "function.cpu-processes",
+	"kind": "function",
+	"title": "cpuProcesses",
+	"responsibility": "Owns the cpuProcesses shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/cpuProcesses.ts"],
+		"symbols": ["CpuRole", "CpuProcess", "cpuProcesses"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "cpuProcesses.value",
+				"type": "string"
+			},
+			{
+				"name": "cpuProcesses.monitorPid",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "cpuProcesses",
+				"type": "CpuProcess[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/cpuProcesses.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/cpuProcesses.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

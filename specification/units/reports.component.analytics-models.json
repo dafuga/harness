@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.analytics-models",
+	"kind": "component",
+	"title": "AnalyticsModels",
+	"responsibility": "Owns the AnalyticsModels Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/AnalyticsModels.svelte"],
+		"symbols": ["AnalyticsModels"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "AnalyticsModels.models",
+				"type": "Models"
+			}
+		],
+		"outputs": [
+			{
+				"name": "AnalyticsModels",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.analytics-display",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.service.harness-analytics",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/AnalyticsModels.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/AnalyticsModels.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

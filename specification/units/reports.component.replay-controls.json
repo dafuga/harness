@@ -1,0 +1,119 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.replay-controls",
+	"kind": "component",
+	"title": "ReplayControls",
+	"responsibility": "Owns the ReplayControls Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/ReplayControls.svelte"],
+		"symbols": ["ReplayControls"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ReplayControls.playing",
+				"type": "boolean"
+			},
+			{
+				"name": "ReplayControls.index",
+				"type": "number"
+			},
+			{
+				"name": "ReplayControls.count",
+				"type": "number"
+			},
+			{
+				"name": "ReplayControls.elapsed",
+				"type": "number"
+			},
+			{
+				"name": "ReplayControls.total",
+				"type": "number"
+			},
+			{
+				"name": "ReplayControls.title",
+				"type": "string"
+			},
+			{
+				"name": "ReplayControls.scene",
+				"type": "number | null"
+			},
+			{
+				"name": "ReplayControls.scenes",
+				"type": "number[]"
+			},
+			{
+				"name": "ReplayControls.fullscreen",
+				"type": "boolean"
+			},
+			{
+				"name": "ReplayControls.speed",
+				"type": "number"
+			},
+			{
+				"name": "ReplayControls.ontoggle",
+				"type": "() => void"
+			},
+			{
+				"name": "ReplayControls.onseek",
+				"type": "(index: number) => void"
+			},
+			{
+				"name": "ReplayControls.onscene",
+				"type": "(scene: number) => void"
+			},
+			{
+				"name": "ReplayControls.onfullscreen",
+				"type": "() => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ReplayControls",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.evidence-media",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.replay-frames",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-locale",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/ReplayControls.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/ReplayControls.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

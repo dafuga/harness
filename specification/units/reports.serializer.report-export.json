@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.serializer.report-export",
+	"kind": "serializer",
+	"title": "ReportExportSerializer",
+	"responsibility": "Owns the ReportExportSerializer serialization boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/serializers/ReportExportSerializer.ts"],
+		"symbols": [
+			"ReportExportSerializer",
+			"ReportExportSerializer.constructor",
+			"ReportExportSerializer.html"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ReportExportSerializer.constructor.appRoot",
+				"type": "string"
+			},
+			{
+				"name": "ReportExportSerializer.html.report",
+				"type": "Report"
+			},
+			{
+				"name": "ReportExportSerializer.html.directory",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ReportExportSerializer.html",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.evidence-media",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-assets",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/serializers/ReportExportSerializer.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/serializers/ReportExportSerializer.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

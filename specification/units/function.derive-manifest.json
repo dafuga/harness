@@ -1,0 +1,62 @@
+{
+	"schemaVersion": 1,
+	"id": "function.derive-manifest",
+	"kind": "function",
+	"title": "deriveManifest",
+	"responsibility": "Owns the deriveManifest shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/deriveManifest.ts"],
+		"symbols": ["DeriveInput", "deriveManifest"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "deriveManifest.input",
+				"type": "DeriveInput"
+			}
+		],
+		"outputs": [
+			{
+				"name": "deriveManifest",
+				"type": "ComponentManifest"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.derived-responsibility",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/deriveManifest.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/deriveManifest.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

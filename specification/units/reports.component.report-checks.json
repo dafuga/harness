@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.report-checks",
+	"kind": "component",
+	"title": "ReportChecks",
+	"responsibility": "Owns the ReportChecks Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/ReportChecks.svelte"],
+		"symbols": ["ReportChecks"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ReportChecks.checks",
+				"type": "Check[]"
+			},
+			{
+				"name": "ReportChecks.embedded",
+				"type": "boolean"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ReportChecks",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.status-badge",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-locale",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/ReportChecks.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/ReportChecks.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

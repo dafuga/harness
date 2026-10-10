@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "validator.unit-registry",
+	"kind": "validator",
+	"title": "UnitRegistryValidator",
+	"responsibility": "Owns the UnitRegistryValidator input validation.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/validators/UnitRegistryValidator.ts"],
+		"symbols": ["UnitRegistryValidator", "UnitRegistryValidator.validate"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "UnitRegistryValidator.validate.manifests",
+				"type": "ComponentManifest[]"
+			},
+			{
+				"name": "UnitRegistryValidator.validate.files",
+				"type": "ReadonlySet<string>"
+			}
+		],
+		"outputs": [
+			{
+				"name": "UnitRegistryValidator.validate",
+				"type": "string[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.unit-lineage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/validators/UnitRegistryValidator.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/validators/UnitRegistryValidator.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,64 @@
+{
+	"schemaVersion": 1,
+	"id": "function.scan-imports",
+	"kind": "function",
+	"title": "scanImports",
+	"responsibility": "Owns the scanImports shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/scanImports.ts"],
+		"symbols": ["ReferenceVia", "SourceLanguage", "SourceReference", "scanImports", "svelteScripts"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "scanImports.code",
+				"type": "string"
+			},
+			{
+				"name": "scanImports.language",
+				"type": "SourceLanguage"
+			},
+			{
+				"name": "svelteScripts.code",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "scanImports",
+				"type": "SourceReference[]"
+			},
+			{
+				"name": "svelteScripts",
+				"type": "string[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.mask-source",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/scanImports.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/scanImports.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

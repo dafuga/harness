@@ -1,0 +1,104 @@
+{
+	"schemaVersion": 1,
+	"id": "audit.clean-code-cache",
+	"kind": "audit",
+	"title": "cleanCodeCache",
+	"responsibility": "Owns the cleanCodeCache audit rule.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/audit/cleanCodeCache.ts"],
+		"symbols": ["CachedEvaluation", "reviewCacheKey", "readReviewCache", "writeReviewCache"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "reviewCacheKey.snapshot",
+				"type": "ReviewSnapshot"
+			},
+			{
+				"name": "reviewCacheKey.settings",
+				"type": "CleanCodeSettings"
+			},
+			{
+				"name": "readReviewCache.root",
+				"type": "string"
+			},
+			{
+				"name": "readReviewCache.key",
+				"type": "string"
+			},
+			{
+				"name": "writeReviewCache.root",
+				"type": "string"
+			},
+			{
+				"name": "writeReviewCache.key",
+				"type": "string"
+			},
+			{
+				"name": "writeReviewCache.value",
+				"type": "CachedEvaluation"
+			}
+		],
+		"outputs": [
+			{
+				"name": "reviewCacheKey",
+				"type": "string"
+			},
+			{
+				"name": "readReviewCache",
+				"type": "Promise<unknown>"
+			},
+			{
+				"name": "writeReviewCache",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "audit.clean-code-files",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "audit.clean-code-rubric",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "audit.clean-code-snapshot",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "audit.clean-code-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/audit/cleanCodeCache.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/audit/cleanCodeCache.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

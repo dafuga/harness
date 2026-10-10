@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.analytics-cpu-client",
+	"kind": "function",
+	"title": "analyticsCpuClient",
+	"responsibility": "Owns the analyticsCpuClient shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/analyticsCpuClient.ts"],
+		"symbols": ["CpuState", "analyticsCpuClient"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "analyticsCpuClient.update",
+				"type": "(sample: CpuState) => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "analyticsCpuClient",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.cpu-metrics",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/analyticsCpuClient.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/analyticsCpuClient.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

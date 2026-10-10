@@ -1,0 +1,93 @@
+{
+	"schemaVersion": 1,
+	"id": "function.files",
+	"kind": "function",
+	"title": "files",
+	"responsibility": "Owns the files shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/files.ts"],
+		"symbols": [
+			"PlannedFile",
+			"FileWriteStatus",
+			"FileWriteResult",
+			"WriteFilesOptions",
+			"writePlannedFiles",
+			"ensureParents",
+			"renderFileList"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "writePlannedFiles.root",
+				"type": "string"
+			},
+			{
+				"name": "writePlannedFiles.files",
+				"type": "PlannedFile[]"
+			},
+			{
+				"name": "writePlannedFiles.options",
+				"type": "WriteFilesOptions"
+			},
+			{
+				"name": "ensureParents.root",
+				"type": "string"
+			},
+			{
+				"name": "ensureParents.files",
+				"type": "PlannedFile[]"
+			},
+			{
+				"name": "renderFileList.files",
+				"type": "FileWriteResult[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "writePlannedFiles",
+				"type": "Promise<FileWriteResult[]>"
+			},
+			{
+				"name": "ensureParents",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "renderFileList",
+				"type": "string"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/files.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/files.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

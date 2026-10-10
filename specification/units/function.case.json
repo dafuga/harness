@@ -1,0 +1,70 @@
+{
+	"schemaVersion": 1,
+	"id": "function.case",
+	"kind": "function",
+	"title": "case",
+	"responsibility": "Owns the case shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/case.ts"],
+		"symbols": ["toKebabCase", "toPascalCase", "toCamelCase", "toSnakeCase"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "toKebabCase.value",
+				"type": "string"
+			},
+			{
+				"name": "toPascalCase.value",
+				"type": "string"
+			},
+			{
+				"name": "toCamelCase.value",
+				"type": "string"
+			},
+			{
+				"name": "toSnakeCase.value",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "toKebabCase",
+				"type": "string"
+			},
+			{
+				"name": "toPascalCase",
+				"type": "string"
+			},
+			{
+				"name": "toCamelCase",
+				"type": "string"
+			},
+			{
+				"name": "toSnakeCase",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/case.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/case.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

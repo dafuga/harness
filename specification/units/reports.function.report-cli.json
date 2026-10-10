@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.report-cli",
+	"kind": "function",
+	"title": "reportCli",
+	"responsibility": "Owns the reportCli shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/reportCli.ts"],
+		"symbols": ["CliOptions", "reportCli", "inputData", "required"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "reportCli.argv",
+				"type": "string[]"
+			},
+			{
+				"name": "inputData.flags",
+				"type": "Record<string, string | boolean>"
+			},
+			{
+				"name": "required.flags",
+				"type": "Record<string, string | boolean>"
+			},
+			{
+				"name": "required.name",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "reportCli",
+				"type": "CliOptions"
+			},
+			{
+				"name": "inputData",
+				"type": "unknown"
+			},
+			{
+				"name": "required",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/reportCli.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/reportCli.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

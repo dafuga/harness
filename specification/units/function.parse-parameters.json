@@ -1,0 +1,80 @@
+{
+	"schemaVersion": 1,
+	"id": "function.parse-parameters",
+	"kind": "function",
+	"title": "parseParameters",
+	"responsibility": "Owns the parseParameters shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/parseParameters.ts"],
+		"symbols": ["splitTopLevel", "parseParameters", "normalizeType"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "splitTopLevel.masked",
+				"type": "string"
+			},
+			{
+				"name": "splitTopLevel.separators",
+				"type": "string"
+			},
+			{
+				"name": "parseParameters.code",
+				"type": "string"
+			},
+			{
+				"name": "parseParameters.masked",
+				"type": "string"
+			},
+			{
+				"name": "parseParameters.options",
+				"type": "{ owner: string; separators?: string }"
+			},
+			{
+				"name": "normalizeType.text",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "splitTopLevel",
+				"type": "number[]"
+			},
+			{
+				"name": "parseParameters",
+				"type": "ContractItem[]"
+			},
+			{
+				"name": "normalizeType",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/parseParameters.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/parseParameters.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

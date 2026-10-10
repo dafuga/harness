@@ -1,0 +1,75 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.audio-comparison",
+	"kind": "component",
+	"title": "AudioComparison",
+	"responsibility": "Owns the AudioComparison Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/AudioComparison.svelte"],
+		"symbols": ["AudioComparison"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "AudioComparison.before",
+				"type": "Evidence"
+			},
+			{
+				"name": "AudioComparison.after",
+				"type": "Evidence"
+			},
+			{
+				"name": "AudioComparison.onopen",
+				"type": "() => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "AudioComparison",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.status-badge",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.evidence-media",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-locale",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/AudioComparison.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/AudioComparison.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

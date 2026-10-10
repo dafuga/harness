@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "function.unit-identity",
+	"kind": "function",
+	"title": "unitIdentity",
+	"responsibility": "Owns the unitIdentity shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/unitIdentity.ts"],
+		"symbols": ["UnitIdentity", "unitIdentity"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "unitIdentity.path",
+				"type": "string"
+			},
+			{
+				"name": "unitIdentity.workspace",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "unitIdentity",
+				"type": "UnitIdentity | undefined"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.case",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/unitIdentity.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/unitIdentity.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

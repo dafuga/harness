@@ -1,0 +1,62 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.select",
+	"kind": "component",
+	"title": "Select",
+	"responsibility": "Owns the Select Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/Select.svelte"],
+		"symbols": ["Select"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "Select.value",
+				"type": "string"
+			},
+			{
+				"name": "Select.label",
+				"type": "string"
+			},
+			{
+				"name": "Select.name",
+				"type": "string"
+			},
+			{
+				"name": "Select.disabled",
+				"type": "boolean"
+			},
+			{
+				"name": "Select.children",
+				"type": "Snippet"
+			}
+		],
+		"outputs": [
+			{
+				"name": "Select",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/Select.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/Select.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

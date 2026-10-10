@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "validator.component-manifest",
+	"kind": "validator",
+	"title": "ComponentManifestValidator",
+	"responsibility": "Owns the ComponentManifestValidator input validation.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/validators/ComponentManifestValidator.ts"],
+		"symbols": [
+			"ManifestValidation",
+			"ComponentManifestValidator",
+			"ComponentManifestValidator.validate",
+			"wellFormed",
+			"schemaErrors"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ComponentManifestValidator.validate.value",
+				"type": "unknown"
+			},
+			{
+				"name": "ComponentManifestValidator.validate.file",
+				"type": "string"
+			},
+			{
+				"name": "wellFormed.error",
+				"type": "z.ZodError"
+			},
+			{
+				"name": "schemaErrors.error",
+				"type": "z.ZodError"
+			},
+			{
+				"name": "schemaErrors.label",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ComponentManifestValidator.validate",
+				"type": "ManifestValidation<ComponentManifest>"
+			},
+			{
+				"name": "wellFormed",
+				"type": "boolean"
+			},
+			{
+				"name": "schemaErrors",
+				"type": "string[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.derived-responsibility",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/validators/ComponentManifestValidator.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/validators/ComponentManifestValidator.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

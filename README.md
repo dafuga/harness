@@ -23,6 +23,10 @@ bun run dev -- audit .
 bun run dev -- audit . --coverage
 bun run dev -- audit . --profile app
 bun run dev -- audit . --profile dapp
+bun run dev -- generate unit PriceQuote
+bun run dev -- units index --write
+bun run dev -- units check
+bun run dev -- units show service.analytics
 bun run check
 ```
 
@@ -44,6 +48,48 @@ bun run check
 - Use `harness audit --coverage` to inspect which ecosystem adapters covered the project.
 - Generated projects use `bun run check` to run format checks, project checks, tests, build, and Harness audit.
 - Configure audit and generated lint thresholds with `harness.audit.json`.
+
+## Units and the registry
+
+A unit is one responsibility with a stable identity, owned source and a contract. Manifests
+live in `specification/units`, one canonical JSON file per unit, and are checked by
+`bun run check` through `harness units check`.
+
+```bash
+harness generate unit PriceQuote                 # any scaffold kind, plus its manifest
+harness generate unit Billing --kind service --responsibility "Charges an invoice once."
+harness generate component StatusBadge           # unchanged Svelte component scaffold
+harness units index --write                      # reconcile manifests with source
+harness units check                              # fail on invalid, inconsistent or stale manifests
+harness units list --kind service
+harness units show service.billing               # contract, version hashes, consumers, tests
+harness units graph --json                       # files, units, scenarios and uncertain references
+harness units retire function.slugify --reason "Inlined into titles"
+harness units schema ComponentManifest           # also ScenarioManifest, VerificationRecord
+```
+
+- `harness.units.json` names the workspaces, test folders, global files and ignored paths.
+- An identity never changes. Moving source keeps it, and recreating retired source at its old
+  path revives it. A new unit that reuses a retired name or exposes the same symbols records
+  `lineage.predecessors`, so baselines and history cannot be shed by retiring and recreating.
+- `runtime.kind` and `runtime.entry` name the default execution target. `runtime.targets` lists
+  every applicable target (`module`, `wasm`, `process`, `http`), includes the default, and names
+  each runtime once. An alternative implementation in other source is a separate unit linked by
+  a declared `contract` dependency.
+- Responsibilities and contracts produced by the index are labelled `derived`. Set
+  `responsibilityOrigin` or `contract.origin` to `declared` once a person has written them.
+- Imports, re-exports, literal dynamic imports, `require`, `new URL(..., import.meta.url)`,
+  Svelte scripts and CSS imports become graph edges. Computed or unresolved references are
+  reported as uncertain instead of being dropped.
+- Manifests cap performance tolerance at 5%. A looser tolerance needs a recorded reviewer
+  approval, which is not something a manifest edit can grant.
+- `VerificationRecord` carries explicit component versions (manifest, source, contract and
+  runtime hashes) and measurement records with method, workload, profile and tested revision,
+  or an explicit reason a value is unavailable.
+
+Impact analysis, verification, budgets, Git-native evidence history and the `/harness` console
+are specified in `specification/features/planned/agentic-self-hosting.md` and are not delivered
+yet.
 
 ## Jev Clean Code review
 

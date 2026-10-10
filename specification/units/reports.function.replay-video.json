@@ -1,0 +1,84 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.replay-video",
+	"kind": "function",
+	"title": "replayVideo",
+	"responsibility": "Owns the replayVideo shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/replayVideo.ts"],
+		"symbols": ["replayVideoKey", "replayVideo"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "replayVideoKey.report",
+				"type": "Report"
+			},
+			{
+				"name": "replayVideo.report",
+				"type": "Report"
+			},
+			{
+				"name": "replayVideo.directory",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "replayVideoKey",
+				"type": "unknown"
+			},
+			{
+				"name": "replayVideo",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.replay-frames",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-assets",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-process",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/replayVideo.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/replayVideo.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

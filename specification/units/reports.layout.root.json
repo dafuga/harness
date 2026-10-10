@@ -1,0 +1,72 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.layout.root",
+	"kind": "layout",
+	"title": "/",
+	"responsibility": "Owns the / route layout.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/routes/+layout.svelte"],
+		"symbols": ["+layout"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "+layout.children",
+				"type": "import('svelte').Snippet"
+			}
+		],
+		"outputs": [
+			{
+				"name": "+layout",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.style.base",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.base-2",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.base-3",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.gallery",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.gallery-2",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/routes/+layout.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/routes/+layout.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

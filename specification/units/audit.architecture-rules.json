@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "audit.architecture-rules",
+	"kind": "audit",
+	"title": "architectureRules",
+	"responsibility": "Owns the architectureRules audit rule.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/audit/architectureRules.ts"],
+		"symbols": ["auditArchitecture"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "auditArchitecture.path",
+				"type": "string"
+			},
+			{
+				"name": "auditArchitecture.lines",
+				"type": "string[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "auditArchitecture",
+				"type": "AuditFinding[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "audit.types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/audit/architectureRules.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/audit/architectureRules.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

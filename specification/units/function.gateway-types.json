@@ -1,0 +1,54 @@
+{
+	"schemaVersion": 1,
+	"id": "function.gateway-types",
+	"kind": "function",
+	"title": "gatewayTypes",
+	"responsibility": "Owns the gatewayTypes shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/gatewayTypes.ts"],
+		"symbols": [
+			"GatewayItem",
+			"GatewayRequest",
+			"GatewayCall",
+			"GatewayEvent",
+			"PendingTool",
+			"GatewaySession",
+			"gatewayTypes"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "gatewayTypes.id",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "gatewayTypes",
+				"type": "GatewaySession"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/gatewayTypes.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/gatewayTypes.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

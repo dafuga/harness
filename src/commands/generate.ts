@@ -6,6 +6,13 @@ import {
 	scaffoldKinds
 } from '../workflows/generateCode';
 import type { PieceKind } from '../workflows/generateCode';
+import { generateUnit } from '../workflows/generateUnit';
+
+interface UnitFlags {
+	kind?: string;
+	responsibility?: string;
+	force?: boolean;
+}
 
 export function registerGenerateCommand(program: Command): void {
 	const command = program.command('generate').alias('g').description('Generate Harness code.');
@@ -16,6 +23,16 @@ export function registerGenerateCommand(program: Command): void {
 		.option('--force', 'Overwrite files that already exist.')
 		.description('Generate an ActiveRecord-like model.')
 		.action(runGenerateModel);
+
+	command
+		.command('unit <name>')
+		.option('--kind <kind>', 'Scaffold shape for the unit source.', 'function')
+		.option('--responsibility <text>', 'The one responsibility this unit owns.')
+		.option('--force', 'Overwrite files that already exist.')
+		.description('Generate a unit of any kind together with its component manifest.')
+		.action(async (name: string, flags: UnitFlags) =>
+			console.log(renderGenerateResult(await generateUnit({ name, ...flags })))
+		);
 
 	for (const kind of scaffoldKinds) {
 		command

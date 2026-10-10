@@ -1,0 +1,114 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.evidence-grid",
+	"kind": "component",
+	"title": "EvidenceGrid",
+	"responsibility": "Owns the EvidenceGrid Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/EvidenceGrid.svelte"],
+		"symbols": ["EvidenceGrid"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "EvidenceGrid.items",
+				"type": "Evidence[]"
+			},
+			{
+				"name": "EvidenceGrid.assetBase",
+				"type": "string"
+			},
+			{
+				"name": "EvidenceGrid.reportId",
+				"type": "string"
+			},
+			{
+				"name": "EvidenceGrid.onUploaded",
+				"type": "(report: Report) => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "EvidenceGrid",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.audio-comparison-viewer",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.evidence-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.evidence-viewer",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.upload-audio",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.upload-comparison",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.audio-pairs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.evidence-media",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-filter",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-locale",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/EvidenceGrid.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/EvidenceGrid.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

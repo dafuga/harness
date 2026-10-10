@@ -1,0 +1,75 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.service.report-server",
+	"kind": "service",
+	"title": "ReportServerService",
+	"responsibility": "Owns the ReportServerService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/services/ReportServerService.ts"],
+		"symbols": [
+			"ReportServerService",
+			"ReportServerService.constructor",
+			"ReportServerService.serve"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ReportServerService.constructor.repository",
+				"type": "unknown"
+			},
+			{
+				"name": "ReportServerService.serve.preferred",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ReportServerService.serve",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.report-build-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-runtime-root",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.repository.report",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/services/ReportServerService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/services/ReportServerService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,58 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.report-process",
+	"kind": "function",
+	"title": "reportProcess",
+	"responsibility": "Owns the reportProcess shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/reportProcess.ts"],
+		"symbols": ["reportProcess"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "reportProcess.command",
+				"type": "string"
+			},
+			{
+				"name": "reportProcess.args",
+				"type": "string[]"
+			},
+			{
+				"name": "reportProcess.cwd",
+				"type": "string"
+			},
+			{
+				"name": "reportProcess.environment",
+				"type": "NodeJS.ProcessEnv"
+			}
+		],
+		"outputs": [
+			{
+				"name": "reportProcess",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/reportProcess.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/reportProcess.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

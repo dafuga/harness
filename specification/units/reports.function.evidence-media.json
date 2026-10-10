@@ -1,0 +1,68 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.evidence-media",
+	"kind": "function",
+	"title": "evidenceMedia",
+	"responsibility": "Owns the evidenceMedia shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/evidenceMedia.ts"],
+		"symbols": ["mediaMime", "evidenceMedia", "audioDuration"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "mediaMime.file",
+				"type": "string"
+			},
+			{
+				"name": "evidenceMedia.item",
+				"type": "Pick<Evidence, 'mediaType' | 'file'>"
+			},
+			{
+				"name": "audioDuration.seconds",
+				"type": "number"
+			}
+		],
+		"outputs": [
+			{
+				"name": "mediaMime",
+				"type": "unknown"
+			},
+			{
+				"name": "evidenceMedia",
+				"type": "'image' | 'audio'"
+			},
+			{
+				"name": "audioDuration",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/evidenceMedia.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/evidenceMedia.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

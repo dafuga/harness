@@ -1,0 +1,75 @@
+{
+	"schemaVersion": 1,
+	"id": "function.gateway-stream",
+	"kind": "function",
+	"title": "gatewayStream",
+	"responsibility": "Owns the gatewayStream shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/gatewayStream.ts"],
+		"symbols": ["gatewayStream"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "gatewayStream.session",
+				"type": "GatewaySession"
+			},
+			{
+				"name": "gatewayStream.repository",
+				"type": "CodexSessionRepository"
+			},
+			{
+				"name": "gatewayStream.context",
+				"type": "{ key: string; signal: globalThis.AbortSignal }"
+			}
+		],
+		"outputs": [
+			{
+				"name": "gatewayStream",
+				"type": "Response"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.gateway-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.codex-session",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "serializer.codex-responses",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/gatewayStream.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/gatewayStream.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

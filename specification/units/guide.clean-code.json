@@ -1,0 +1,47 @@
+{
+	"schemaVersion": 1,
+	"id": "guide.clean-code",
+	"kind": "guide",
+	"title": "cleanCode",
+	"responsibility": "Owns the cleanCode static guidance.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/guides/cleanCode.ts"],
+		"symbols": ["cleanCodeGuide"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "cleanCodeGuide",
+				"type": "Guide"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "guide.guide",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/guides/cleanCode.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/guides/cleanCode.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

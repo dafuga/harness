@@ -13,11 +13,11 @@
 	"scripts": {
 		"dev": "bun run src/index.ts",
 		"build": "bun run build:cli && bun run --cwd packages/reports build && bun scripts/package-reports.ts && bun run build:picker",
-		"check": "bun run format:check && bun run typecheck && bun run lint && bun run test:unit && bun run test:e2e && bun run build && bun run test:package && bun run dev -- audit . && bun run --cwd packages/reports check",
+		"check": "bun run format:check && bun run typecheck && bun run lint && bun run test:unit && bun run test:e2e && bun run build && bun run test:package && bun run dev -- audit . && bun run dev -- units check && bun run --cwd packages/reports check",
 		"typecheck": "tsc --noEmit",
 		"test": "bun run test:unit",
 		"test:unit": "vitest run --exclude \"test/**/*.e2e.test.ts\" --exclude \"test/packaged-reports.e2e.test.ts\"",
-		"test:e2e": "vitest run test/cli.e2e.test.ts test/rules.e2e.test.ts test/ecosystem-adapters.e2e.test.ts test/structure.e2e.test.ts test/dapp-audit.e2e.test.ts test/complex-feature.e2e.test.ts test/loop.e2e.test.ts test/audit-config.e2e.test.ts test/clean-code.e2e.test.ts test/response-check.e2e.test.ts test/analytics.e2e.test.ts test/analytics-attribution.e2e.test.ts test/analytics-worktrees.e2e.test.ts test/codex-gateway.e2e.test.ts test/codex-picker.e2e.test.ts",
+		"test:e2e": "vitest run test/cli.e2e.test.ts test/rules.e2e.test.ts test/ecosystem-adapters.e2e.test.ts test/structure.e2e.test.ts test/dapp-audit.e2e.test.ts test/complex-feature.e2e.test.ts test/loop.e2e.test.ts test/audit-config.e2e.test.ts test/clean-code.e2e.test.ts test/response-check.e2e.test.ts test/analytics.e2e.test.ts test/analytics-attribution.e2e.test.ts test/analytics-worktrees.e2e.test.ts test/codex-gateway.e2e.test.ts test/codex-picker.e2e.test.ts test/units.e2e.test.ts test/units-graph.e2e.test.ts test/units-policy.e2e.test.ts",
 		"lint": "eslint .",
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",

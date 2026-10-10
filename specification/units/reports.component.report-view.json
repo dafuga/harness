@@ -1,0 +1,108 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.report-view",
+	"kind": "component",
+	"title": "ReportView",
+	"responsibility": "Owns the ReportView Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/ReportView.svelte"],
+		"symbols": ["ReportView"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ReportView.report",
+				"type": "Report"
+			},
+			{
+				"name": "ReportView.assetBase",
+				"type": "string"
+			},
+			{
+				"name": "ReportView.downloadBase",
+				"type": "string"
+			},
+			{
+				"name": "ReportView.portable",
+				"type": "boolean"
+			},
+			{
+				"name": "ReportView.onUploaded",
+				"type": "(report: Report) => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ReportView",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.coverage-list",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.evidence-grid",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.gameplay-replay",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.modal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.report-checks",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.report-findings",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.report-summary",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-locale",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/ReportView.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/ReportView.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

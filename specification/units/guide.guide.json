@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "guide.guide",
+	"kind": "guide",
+	"title": "guide",
+	"responsibility": "Owns the guide static guidance.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/guides/guide.ts"],
+		"symbols": ["Guide", "guides", "findGuide", "availableGuideTopics"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "findGuide.topic",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "guides",
+				"type": "Guide[]"
+			},
+			{
+				"name": "findGuide",
+				"type": "Guide | undefined"
+			},
+			{
+				"name": "availableGuideTopics",
+				"type": "string[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "guide.analytics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "guide.clean-code",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "guide.loop",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "guide.response-check",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "guide.scaffolds",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "guide.topics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "guide.units",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/guides/guide.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/guides/guide.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

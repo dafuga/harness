@@ -1,0 +1,67 @@
+{
+	"schemaVersion": 1,
+	"id": "function.fields",
+	"kind": "function",
+	"title": "fields",
+	"responsibility": "Owns the fields shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/fields.ts"],
+		"symbols": ["FieldType", "Field", "parseFields"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "parseFields.rawFields",
+				"type": "string[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "parseFields",
+				"type": "Field[]"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.case",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.validation",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/fields.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/fields.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

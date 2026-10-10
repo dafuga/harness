@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.analytics-cpu",
+	"kind": "component",
+	"title": "AnalyticsCpu",
+	"responsibility": "Owns the AnalyticsCpu Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/AnalyticsCpu.svelte"],
+		"symbols": ["AnalyticsCpu"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "AnalyticsCpu",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.cpu-metrics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.analytics-cpu-client",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/AnalyticsCpu.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/AnalyticsCpu.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

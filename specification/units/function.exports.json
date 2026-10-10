@@ -1,0 +1,62 @@
+{
+	"schemaVersion": 1,
+	"id": "function.exports",
+	"kind": "function",
+	"title": "exports",
+	"responsibility": "Owns the exports shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/exports.ts"],
+		"symbols": ["ExportPlan", "applyExports", "appendMissingExports"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "applyExports.root",
+				"type": "string"
+			},
+			{
+				"name": "applyExports.plans",
+				"type": "ExportPlan[]"
+			},
+			{
+				"name": "appendMissingExports.contents",
+				"type": "string"
+			},
+			{
+				"name": "appendMissingExports.plans",
+				"type": "ExportPlan[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "applyExports",
+				"type": "Promise<boolean>"
+			},
+			{
+				"name": "appendMissingExports",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/exports.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/exports.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

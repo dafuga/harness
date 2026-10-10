@@ -5,6 +5,7 @@ import { analyticsGuide, reportGuide } from './analytics';
 import { cleanCodeGuide } from './cleanCode';
 import { responseCheckGuide } from './responseCheck';
 import { scaffoldGuides, scaffoldsGuide } from './scaffolds';
+import { unitGuides } from './units';
 
 export interface Guide {
 	topic: string;
@@ -145,7 +146,8 @@ export const guides: Guide[] = [
 		exampleCommands: ['harness audit src', 'harness info code-rules']
 	},
 	scaffoldsGuide(),
-	...scaffoldGuides()
+	...scaffoldGuides(),
+	...unitGuides
 ];
 
 export function findGuide(topic: string): Guide | undefined {

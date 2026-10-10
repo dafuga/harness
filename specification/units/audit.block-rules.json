@@ -1,0 +1,70 @@
+{
+	"schemaVersion": 1,
+	"id": "audit.block-rules",
+	"kind": "audit",
+	"title": "blockRules",
+	"responsibility": "Owns the blockRules audit rule.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/audit/blockRules.ts"],
+		"symbols": ["auditBlocks"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "auditBlocks.path",
+				"type": "string"
+			},
+			{
+				"name": "auditBlocks.lines",
+				"type": "string[]"
+			},
+			{
+				"name": "auditBlocks.limits",
+				"type": "HarnessRuleLimits"
+			}
+		],
+		"outputs": [
+			{
+				"name": "auditBlocks",
+				"type": "AuditFinding[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "audit.block-metrics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "audit.types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.catalog",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/audit/blockRules.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/audit/blockRules.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

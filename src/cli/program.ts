@@ -8,6 +8,7 @@ import { registerGenerateCommand } from '../commands/generate';
 import { registerInfoCommand } from '../commands/info';
 import { registerLoopCommand } from '../commands/loop';
 import { registerNewCommand } from '../commands/new';
+import { registerUnitsCommand } from '../commands/UnitsCommand';
 
 export function buildProgram(): Command {
 	const program = new Command();
@@ -24,6 +25,7 @@ export function buildProgram(): Command {
 	registerGenerateCommand(program);
 	registerInfoCommand(program);
 	registerLoopCommand(program);
+	registerUnitsCommand(program);
 	registerAuditCommand(program);
 	registerResponseCheckCommand(program);
 

@@ -1,0 +1,113 @@
+{
+	"schemaVersion": 1,
+	"id": "function.validation",
+	"kind": "function",
+	"title": "validation",
+	"responsibility": "Owns the validation shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/validation.ts"],
+		"symbols": [
+			"validateProjectName",
+			"validateCodeName",
+			"validateFieldName",
+			"validateRouteName",
+			"validateKebabName",
+			"validateExportName"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "validateProjectName.name",
+				"type": "string"
+			},
+			{
+				"name": "validateCodeName.name",
+				"type": "string"
+			},
+			{
+				"name": "validateFieldName.name",
+				"type": "string"
+			},
+			{
+				"name": "validateRouteName.name",
+				"type": "string"
+			},
+			{
+				"name": "validateKebabName.name",
+				"type": "string"
+			},
+			{
+				"name": "validateKebabName.label",
+				"type": "string"
+			},
+			{
+				"name": "validateExportName.name",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "validateProjectName",
+				"type": "string"
+			},
+			{
+				"name": "validateCodeName",
+				"type": "string"
+			},
+			{
+				"name": "validateFieldName",
+				"type": "string"
+			},
+			{
+				"name": "validateRouteName",
+				"type": "string"
+			},
+			{
+				"name": "validateKebabName",
+				"type": "string"
+			},
+			{
+				"name": "validateExportName",
+				"type": "string"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.case",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/validation.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/validation.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

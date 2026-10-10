@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"id": "audit.collect",
+	"kind": "audit",
+	"title": "collect",
+	"responsibility": "Owns the collect audit rule.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/audit/collect.ts"],
+		"symbols": ["CollectedFile", "CollectedFiles", "collectAuditedFiles"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "collectAuditedFiles.root",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "collectAuditedFiles",
+				"type": "Promise<CollectedFiles>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/audit/collect.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/audit/collect.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

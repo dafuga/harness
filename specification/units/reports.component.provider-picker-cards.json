@@ -1,0 +1,77 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.provider-picker-cards",
+	"kind": "component",
+	"title": "ProviderPickerCards",
+	"responsibility": "Owns the ProviderPickerCards Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/ProviderPickerCards.svelte"],
+		"symbols": ["ProviderPickerCards"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ProviderPickerCards.active",
+				"type": "SessionObservation | null"
+			},
+			{
+				"name": "ProviderPickerCards.request",
+				"type": "SwitchRequest | null"
+			},
+			{
+				"name": "ProviderPickerCards.models",
+				"type": "PickerModel[]"
+			},
+			{
+				"name": "ProviderPickerCards.providers",
+				"type": "Record<string, string>"
+			},
+			{
+				"name": "ProviderPickerCards.locked",
+				"type": "boolean"
+			},
+			{
+				"name": "ProviderPickerCards.oncancel",
+				"type": "() => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ProviderPickerCards",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.picker-model-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.picker-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/ProviderPickerCards.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/ProviderPickerCards.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

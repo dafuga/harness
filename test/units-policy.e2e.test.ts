@@ -1,0 +1,88 @@
+import { mkdir, rm } from 'node:fs/promises';
+import { join } from 'node:path';
+import { expect, test } from 'vitest';
+import { slugifySource, unitProject } from './support/unitProject';
+
+interface Shown {
+	manifest: {
+		id: string;
+		runtime: { kind: string; entry: string; targets: Array<{ kind: string; entry: string }> };
+		lineage?: { predecessors: string[] };
+		budgets: { performance: unknown[] };
+	};
+	version: { unit: string; manifest: string; source: string; contract: string; runtime: string };
+}
+
+test('CLI exposes execution targets and component versions, and refuses relaxed tolerance', async () => {
+	const project = await unitProject('lib');
+	await project.write('src/utils/slugify.ts', slugifySource);
+	await project.harness(['units', 'index', '--write']);
+	const shown = await project.harnessJson<Shown>(['units', 'show', 'function.slugify']);
+	expect(shown.manifest.runtime).toEqual({
+		kind: 'module',
+		entry: 'src/utils/slugify.ts',
+		targets: [{ kind: 'module', entry: 'src/utils/slugify.ts' }]
+	});
+	expect(shown.version.unit).toBe('function.slugify');
+	for (const key of ['manifest', 'source', 'contract', 'runtime'] as const) {
+		expect(shown.version[key]).toMatch(/^[0-9a-f]{64}$/);
+	}
+
+	const path = 'specification/units/function.slugify.json';
+	const budget = { workload: 'slugify-1k', metric: 'latency-warm-ms', tolerance: 0.25 };
+	const relaxed = {
+		...shown.manifest,
+		budgets: { ...shown.manifest.budgets, performance: [budget] }
+	};
+	await project.write(path, JSON.stringify(relaxed));
+	const check = await project.harness(['units', 'check'], false);
+	expect(check.exitCode).toBe(1);
+	expect(check.stderr).toContain('function.slugify: budgets.performance.0.tolerance');
+	await rm(join(project.root, '..'), { recursive: true, force: true });
+}, 60_000);
+
+test('CLI records lineage when retired source is recreated under a new identity', async () => {
+	const project = await unitProject('lib');
+	await project.write('src/utils/slugify.ts', slugifySource);
+	await project.harness(['units', 'index', '--write']);
+	await rm(join(project.root, 'src/utils/slugify.ts'));
+	await project.harness(['units', 'retire', 'function.slugify', '--reason', 'Removed']);
+	await mkdir(join(project.root, 'src/core'), { recursive: true });
+	await project.write('src/core/slug.ts', slugifySource);
+	const index = await project.harnessJson<{ added: string[] }>(['units', 'index', '--write']);
+	expect(index.added).toEqual(['function.slug']);
+	const shown = await project.harnessJson<Shown>(['units', 'show', 'function.slug']);
+	expect(shown.manifest.lineage).toEqual({ predecessors: ['function.slugify'] });
+	await project.harness(['units', 'check']);
+	await rm(join(project.root, '..'), { recursive: true, force: true });
+}, 60_000);
+
+test('CLI labels a supplied responsibility as declared and a generated one as derived', async () => {
+	const project = await unitProject('lib');
+	await project.harness(['generate', 'unit', 'PriceQuote']);
+	await project.harness([
+		'generate',
+		'unit',
+		'Billing',
+		'--kind',
+		'service',
+		'--responsibility',
+		'Charges an invoice exactly once.'
+	]);
+	const derived = await project.json<Labelled>('specification/units/function.price-quote.json');
+	const declared = await project.json<Labelled>('specification/units/service.billing.json');
+	expect([derived.responsibility, derived.responsibilityOrigin]).toEqual([
+		'Owns the priceQuote shared function.',
+		'derived'
+	]);
+	expect([declared.responsibility, declared.responsibilityOrigin]).toEqual([
+		'Charges an invoice exactly once.',
+		'declared'
+	]);
+	await rm(join(project.root, '..'), { recursive: true, force: true });
+}, 60_000);
+
+interface Labelled {
+	responsibility: string;
+	responsibilityOrigin: string;
+}

@@ -1,0 +1,64 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.adapter.mira-report",
+	"kind": "adapter",
+	"title": "MiraReportAdapter",
+	"responsibility": "Owns the MiraReportAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/adapters/MiraReportAdapter.ts"],
+		"symbols": ["MiraReportAdapter", "MiraReportAdapter.ingest"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "MiraReportAdapter.ingest.store",
+				"type": "ReportRepository"
+			},
+			{
+				"name": "MiraReportAdapter.ingest.id",
+				"type": "string"
+			},
+			{
+				"name": "MiraReportAdapter.ingest.file",
+				"type": "string"
+			},
+			{
+				"name": "MiraReportAdapter.ingest.findingsFile",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "MiraReportAdapter.ingest",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.repository.report",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/adapters/MiraReportAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/adapters/MiraReportAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

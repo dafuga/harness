@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.upload-comparison",
+	"kind": "component",
+	"title": "UploadComparison",
+	"responsibility": "Owns the UploadComparison Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/UploadComparison.svelte"],
+		"symbols": ["UploadComparison"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "UploadComparison.reportId",
+				"type": "string"
+			},
+			{
+				"name": "UploadComparison.onUploaded",
+				"type": "(report: Report) => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "UploadComparison",
+				"type": "markup"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/UploadComparison.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/UploadComparison.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

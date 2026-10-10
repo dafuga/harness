@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.analytics-tasks",
+	"kind": "component",
+	"title": "AnalyticsTasks",
+	"responsibility": "Owns the AnalyticsTasks Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/AnalyticsTasks.svelte"],
+		"symbols": ["AnalyticsTasks"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "AnalyticsTasks.jev",
+				"type": "Jev"
+			}
+		],
+		"outputs": [
+			{
+				"name": "AnalyticsTasks",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.analytics-display",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.service.harness-analytics",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/AnalyticsTasks.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/AnalyticsTasks.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

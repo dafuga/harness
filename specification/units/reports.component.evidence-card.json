@@ -1,0 +1,94 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.evidence-card",
+	"kind": "component",
+	"title": "EvidenceCard",
+	"responsibility": "Owns the EvidenceCard Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/EvidenceCard.svelte"],
+		"symbols": ["EvidenceCard"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "EvidenceCard.item",
+				"type": "Evidence"
+			},
+			{
+				"name": "EvidenceCard.before",
+				"type": "Evidence"
+			},
+			{
+				"name": "EvidenceCard.assetBase",
+				"type": "string"
+			},
+			{
+				"name": "EvidenceCard.onopen",
+				"type": "() => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "EvidenceCard",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.audio-comparison",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.audio-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.status-badge",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.evidence-media",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-display",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-locale",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/EvidenceCard.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/EvidenceCard.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

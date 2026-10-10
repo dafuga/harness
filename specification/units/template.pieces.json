@@ -1,0 +1,81 @@
+{
+	"schemaVersion": 1,
+	"id": "template.pieces",
+	"kind": "template",
+	"title": "pieces",
+	"responsibility": "Owns the pieces scaffold template.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/templates/pieces.ts"],
+		"symbols": ["PieceKind", "pieceFiles"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "pieceFiles.kind",
+				"type": "PieceKind"
+			},
+			{
+				"name": "pieceFiles.name",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "pieceFiles",
+				"type": "PlannedFile[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.case",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.files",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.app-pieces",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.package-pieces",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.rails-pieces",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.scaffold-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/templates/pieces.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/templates/pieces.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

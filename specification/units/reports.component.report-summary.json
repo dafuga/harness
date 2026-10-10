@@ -1,0 +1,75 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.report-summary",
+	"kind": "component",
+	"title": "ReportSummary",
+	"responsibility": "Owns the ReportSummary Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/ReportSummary.svelte"],
+		"symbols": ["ReportSummary"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ReportSummary.report",
+				"type": "Report"
+			},
+			{
+				"name": "ReportSummary.downloadBase",
+				"type": "string"
+			},
+			{
+				"name": "ReportSummary.portable",
+				"type": "boolean"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ReportSummary",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.status-badge",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-display",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-locale",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/ReportSummary.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/ReportSummary.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

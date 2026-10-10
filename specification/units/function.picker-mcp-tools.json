@@ -1,0 +1,77 @@
+{
+	"schemaVersion": 1,
+	"id": "function.picker-mcp-tools",
+	"kind": "function",
+	"title": "pickerMcpTools",
+	"responsibility": "Owns the pickerMcpTools shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/pickerMcpTools.ts"],
+		"symbols": ["pickerSessionSchema", "pickerSwitchSchema", "pickerCancelSchema", "pickerMcpTools"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "pickerMcpTools.service",
+				"type": "ProviderSwitchService"
+			},
+			{
+				"name": "pickerMcpTools.name",
+				"type": "string"
+			},
+			{
+				"name": "pickerMcpTools.input",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "pickerSessionSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "pickerSwitchSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "pickerCancelSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "pickerMcpTools",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "service.provider-switch",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/pickerMcpTools.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/pickerMcpTools.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

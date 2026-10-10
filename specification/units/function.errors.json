@@ -1,0 +1,59 @@
+{
+	"schemaVersion": 1,
+	"id": "function.errors",
+	"kind": "function",
+	"title": "errors",
+	"responsibility": "Owns the errors shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/errors.ts"],
+		"symbols": ["ExpectedCliError", "fail", "isExpectedCliError"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "fail.message",
+				"type": "string"
+			},
+			{
+				"name": "isExpectedCliError.error",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "fail",
+				"type": "never"
+			},
+			{
+				"name": "isExpectedCliError",
+				"type": "error is ExpectedCliError"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/errors.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/errors.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

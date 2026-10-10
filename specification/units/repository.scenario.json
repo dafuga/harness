@@ -1,0 +1,90 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.scenario",
+	"kind": "repository",
+	"title": "ScenarioRepository",
+	"responsibility": "Owns the ScenarioRepository persistence boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/repositories/ScenarioRepository.ts"],
+		"symbols": [
+			"ScenarioRead",
+			"ScenarioRepository",
+			"ScenarioRepository.constructor",
+			"ScenarioRepository.read",
+			"ScenarioRepository.write"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ScenarioRepository.constructor.root",
+				"type": "string"
+			},
+			{
+				"name": "ScenarioRepository.read.tree",
+				"type": "SourceTree"
+			},
+			{
+				"name": "ScenarioRepository.write.manifest",
+				"type": "ScenarioManifest"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ScenarioRepository.read",
+				"type": "Promise<ScenarioRead>"
+			},
+			{
+				"name": "ScenarioRepository.write",
+				"type": "Promise<string>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.stable-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.units-config",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.scenario-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/ScenarioRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/ScenarioRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

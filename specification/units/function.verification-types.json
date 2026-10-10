@@ -1,0 +1,86 @@
+{
+	"schemaVersion": 1,
+	"id": "function.verification-types",
+	"kind": "function",
+	"title": "verificationTypes",
+	"responsibility": "Owns the verificationTypes shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/verificationTypes.ts"],
+		"symbols": [
+			"captureSchema",
+			"scenarioResultSchema",
+			"profileSchema",
+			"budgetFindingSchema",
+			"componentVersionSchema",
+			"measurementSchema",
+			"verificationRecordSchema",
+			"Capture",
+			"ScenarioResult",
+			"VerificationProfile",
+			"BudgetFinding",
+			"RecordedComponent",
+			"Measurement",
+			"VerificationRecord"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "captureSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "scenarioResultSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "profileSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "budgetFindingSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "componentVersionSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "measurementSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "verificationRecordSchema",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/verificationTypes.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/verificationTypes.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

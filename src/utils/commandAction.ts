@@ -1,7 +1,8 @@
 const subcommands: Record<string, string[]> = {
 	loop: ['create', 'add', 'complete', 'status', 'search', 'next', 'evaluate'],
 	analytics: ['summary', 'loops', 'jev', 'models', 'events', 'import', 'export'],
-	report: ['begin', 'record', 'import', 'finalize', 'serve', 'publish', 'cleanup', 'sync-storage']
+	report: ['begin', 'record', 'import', 'finalize', 'serve', 'publish', 'cleanup', 'sync-storage'],
+	units: ['index', 'check', 'list', 'show', 'graph', 'retire', 'schema']
 };
 export function commandAction(args: string[]): string {
 	const command = args[0] ?? 'help';

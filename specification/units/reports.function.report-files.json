@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.report-files",
+	"kind": "function",
+	"title": "reportFiles",
+	"responsibility": "Owns the reportFiles shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/reportFiles.ts"],
+		"symbols": ["reportFiles", "safeId", "readJson", "atomicJson"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "reportFiles.root",
+				"type": "string"
+			},
+			{
+				"name": "safeId.id",
+				"type": "string"
+			},
+			{
+				"name": "readJson.path",
+				"type": "string"
+			},
+			{
+				"name": "atomicJson.path",
+				"type": "string"
+			},
+			{
+				"name": "atomicJson.data",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "reportFiles",
+				"type": "unknown"
+			},
+			{
+				"name": "safeId",
+				"type": "unknown"
+			},
+			{
+				"name": "readJson",
+				"type": "Promise<T>"
+			},
+			{
+				"name": "atomicJson",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/reportFiles.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/reportFiles.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "function.component-version",
+	"kind": "function",
+	"title": "componentVersion",
+	"responsibility": "Owns the componentVersion shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/componentVersion.ts"],
+		"symbols": ["ComponentVersion", "componentVersion"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "componentVersion.manifest",
+				"type": "ComponentManifest"
+			},
+			{
+				"name": "componentVersion.files",
+				"type": "ReadonlyMap<string, { hash: string }>"
+			}
+		],
+		"outputs": [
+			{
+				"name": "componentVersion",
+				"type": "ComponentVersion"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.stable-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/componentVersion.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/componentVersion.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

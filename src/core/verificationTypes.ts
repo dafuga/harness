@@ -1,0 +1,149 @@
+import { z } from 'zod';
+import { runtimeKinds, unitIdPattern } from './unitTypes';
+
+const identifier = z.string().regex(unitIdPattern);
+const text = z.string().min(1);
+const commit = z.string().regex(/^[0-9a-f]{40}$/, 'must be a full commit or tree hash');
+const sha256 = z.string().regex(/^[0-9a-f]{64}$/, 'must be a sha256 hex digest');
+const outcome = z.enum(['passed', 'failed']);
+
+export const captureSchema = z.strictObject({
+	evidence: identifier,
+	kind: z.enum(['screenshot', 'audio', 'output', 'assertions', 'trace', 'benchmark']),
+	state: identifier,
+	viewport: identifier.optional(),
+	status: outcome,
+	path: text,
+	sha256,
+	bytes: z.number().int().nonnegative(),
+	mediaType: text,
+	capturedAt: text,
+	provenance: z.enum(['fixture', 'actual-capture']).optional(),
+	transcript: z.string().optional(),
+	durationSeconds: z.number().positive().optional(),
+	server: z.strictObject({ buildId: text, revision: commit }).optional(),
+	note: z.string().optional()
+});
+
+export const scenarioResultSchema = z.strictObject({
+	id: identifier,
+	status: z.enum(['passed', 'failed', 'referenced']),
+	/** Revision whose code produced the captures; differs from the source only when referenced. */
+	testedRevision: commit,
+	referencedRecord: text.optional(),
+	states: z.array(
+		z.strictObject({
+			id: identifier,
+			coverage: z.enum(['required', 'missing', 'inapplicable']),
+			reason: z.string().optional(),
+			captures: z.array(captureSchema)
+		})
+	)
+});
+
+export const profileSchema = z.strictObject({
+	id: text,
+	platform: text,
+	arch: text,
+	cpu: text,
+	cores: z.number().int().positive(),
+	memoryBytes: z.number().int().positive(),
+	runtime: text
+});
+
+export const budgetFindingSchema = z.strictObject({
+	unit: identifier,
+	metric: text,
+	status: z.enum(['passed', 'exceeded', 'missing-baseline', 'missing-measurement', 'incompatible']),
+	baseline: z.number().nullable(),
+	measured: z.number().nullable(),
+	detail: z.string().optional()
+});
+
+const artifactSchema = z.strictObject({
+	path: text,
+	sha256,
+	bytes: z.number().int().nonnegative()
+});
+
+/** The exact version of one unit that a record observed. */
+export const componentVersionSchema = z.strictObject({
+	unit: identifier,
+	change: z.enum(['unchanged', 'modified', 'added', 'removed']),
+	/** Execution target that was exercised. */
+	target: z.enum(runtimeKinds),
+	manifest: sha256,
+	source: sha256,
+	contract: sha256,
+	runtime: sha256,
+	files: z.array(z.strictObject({ path: text, hash: commit }))
+});
+
+/** One measured metric, or an explicit statement that it could not be measured. */
+export const measurementSchema = z.strictObject({
+	unit: identifier,
+	metric: text,
+	unitOfMeasure: text,
+	value: z.number().nullable(),
+	/** Required exactly when `value` is null. */
+	unavailable: z.string().optional(),
+	method: text,
+	workload: identifier.nullable(),
+	/** Hardware and runtime profile; null for metrics that do not depend on one. */
+	profile: text.nullable(),
+	target: z.enum(runtimeKinds).optional(),
+	samples: z.number().int().positive().optional(),
+	testedRevision: commit,
+	artifacts: z.array(artifactSchema)
+});
+
+export const verificationRecordSchema = z.strictObject({
+	schemaVersion: z.literal(1),
+	id: text,
+	repository: text,
+	source: z.strictObject({ commit, tree: commit, base: commit.nullable() }),
+	profile: profileSchema,
+	startedAt: text,
+	finishedAt: text,
+	status: outcome,
+	components: z.array(componentVersionSchema),
+	measurements: z.array(measurementSchema),
+	impact: z.strictObject({
+		runtime: text,
+		expanded: z.boolean(),
+		changed: z.array(z.strictObject({ path: text, status: text, classification: text })),
+		units: z.strictObject({
+			direct: z.array(identifier),
+			indirect: z.array(identifier),
+			added: z.array(identifier),
+			removed: z.array(identifier)
+		}),
+		uncertain: z.array(z.strictObject({ node: text, reason: text, detail: z.string() }))
+	}),
+	tests: z.array(
+		z.strictObject({
+			id: text,
+			kind: z.enum(['unit', 'integration', 'e2e']),
+			runner: z.enum(['vitest', 'playwright', 'command']),
+			target: text,
+			status: outcome,
+			durationMs: z.number().nonnegative(),
+			log: artifactSchema
+		})
+	),
+	scenarios: z.array(scenarioResultSchema),
+	budgets: z.strictObject({ status: outcome, findings: z.array(budgetFindingSchema) }),
+	reasons: z.strictObject({
+		status: outcome,
+		missing: z.array(z.strictObject({ unit: identifier, symbol: z.string().optional() }))
+	}),
+	failures: z.array(text)
+});
+
+export type Capture = z.infer<typeof captureSchema>;
+export type ScenarioResult = z.infer<typeof scenarioResultSchema>;
+export type VerificationProfile = z.infer<typeof profileSchema>;
+export type BudgetFinding = z.infer<typeof budgetFindingSchema>;
+export type RecordedComponent = z.infer<typeof componentVersionSchema>;
+export type Measurement = z.infer<typeof measurementSchema>;
+export type VerificationRecord = z.infer<typeof verificationRecordSchema>;

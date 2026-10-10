@@ -1,0 +1,64 @@
+{
+	"schemaVersion": 1,
+	"id": "function.picker-types",
+	"kind": "function",
+	"title": "pickerTypes",
+	"responsibility": "Owns the pickerTypes shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/pickerTypes.ts"],
+		"symbols": [
+			"SwitchRequest",
+			"SwitchStore",
+			"SessionObservation",
+			"SessionControl",
+			"PickerSnapshot",
+			"desktopControlUnavailable",
+			"switchRevision"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "switchRevision.record",
+				"type": "SwitchRequest | null"
+			}
+		],
+		"outputs": [
+			{
+				"name": "desktopControlUnavailable",
+				"type": "unknown"
+			},
+			{
+				"name": "switchRevision",
+				"type": "string | null"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.picker-model-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/pickerTypes.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/pickerTypes.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

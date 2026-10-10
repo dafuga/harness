@@ -1,0 +1,116 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.report-http",
+	"kind": "function",
+	"title": "reportHttp",
+	"responsibility": "Owns the reportHttp shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/reportHttp.ts"],
+		"symbols": ["repository", "reportHttp", "reportFile"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "reportFile.id",
+				"type": "string"
+			},
+			{
+				"name": "reportFile.type",
+				"type": "string"
+			},
+			{
+				"name": "reportFile.file",
+				"type": "string"
+			},
+			{
+				"name": "reportFile.range",
+				"type": "string | null"
+			}
+		],
+		"outputs": [
+			{
+				"name": "repository",
+				"type": "unknown"
+			},
+			{
+				"name": "reportHttp",
+				"type": "unknown"
+			},
+			{
+				"name": "reportFile",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			},
+			{
+				"name": "HttpError 404",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "reports.adapter.r2-evidence-store",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.adapter.r2-screenshot-store",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.evidence-media",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.media-response",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-assets",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-build-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.repository.report",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/reportHttp.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/reportHttp.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

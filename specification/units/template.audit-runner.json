@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "template.audit-runner",
+	"kind": "template",
+	"title": "auditRunner",
+	"responsibility": "Owns the auditRunner scaffold template.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/templates/auditRunner.ts"],
+		"symbols": ["auditRunnerFiles"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "auditRunnerFiles.kind",
+				"type": "ProjectKind"
+			}
+		],
+		"outputs": [
+			{
+				"name": "auditRunnerFiles",
+				"type": "PlannedFile[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.files",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.project",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/templates/auditRunner.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/templates/auditRunner.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

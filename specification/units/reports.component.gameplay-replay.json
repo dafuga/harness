@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.gameplay-replay",
+	"kind": "component",
+	"title": "GameplayReplay",
+	"responsibility": "Owns the GameplayReplay Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/GameplayReplay.svelte"],
+		"symbols": ["GameplayReplay"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "GameplayReplay.report",
+				"type": "Report"
+			},
+			{
+				"name": "GameplayReplay.assetBase",
+				"type": "string"
+			},
+			{
+				"name": "GameplayReplay.portable",
+				"type": "boolean"
+			}
+		],
+		"outputs": [
+			{
+				"name": "GameplayReplay",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.replay-controls",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.status-badge",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.replay-frames",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.replay-locale",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-display",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-locale",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.replay",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/GameplayReplay.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/GameplayReplay.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

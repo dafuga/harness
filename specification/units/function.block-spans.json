@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "function.block-spans",
+	"kind": "function",
+	"title": "blockSpans",
+	"responsibility": "Owns the blockSpans shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/blockSpans.ts"],
+		"symbols": ["BlockSpan", "blockSpans"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "blockSpans.masked",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "blockSpans",
+				"type": "BlockSpan[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.source-nesting",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/blockSpans.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/blockSpans.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

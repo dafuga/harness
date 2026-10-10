@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.analytics-history",
+	"kind": "component",
+	"title": "AnalyticsHistory",
+	"responsibility": "Owns the AnalyticsHistory Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/AnalyticsHistory.svelte"],
+		"symbols": ["AnalyticsHistory"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "AnalyticsHistory.props",
+				"type": "Props"
+			}
+		],
+		"outputs": [
+			{
+				"name": "AnalyticsHistory",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.analytics-display",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.service.harness-analytics",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/AnalyticsHistory.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/AnalyticsHistory.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

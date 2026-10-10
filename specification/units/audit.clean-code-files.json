@@ -1,0 +1,75 @@
+{
+	"schemaVersion": 1,
+	"id": "audit.clean-code-files",
+	"kind": "audit",
+	"title": "cleanCodeFiles",
+	"responsibility": "Owns the cleanCodeFiles audit rule.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/audit/cleanCodeFiles.ts"],
+		"symbols": ["ReviewInputFile", "reviewHash", "readReviewInput", "reviewInputsCurrent"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "reviewHash.value",
+				"type": "string"
+			},
+			{
+				"name": "readReviewInput.root",
+				"type": "string"
+			},
+			{
+				"name": "readReviewInput.path",
+				"type": "string"
+			},
+			{
+				"name": "reviewInputsCurrent.root",
+				"type": "string"
+			},
+			{
+				"name": "reviewInputsCurrent.inputs",
+				"type": "ReviewInputFile[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "reviewHash",
+				"type": "string"
+			},
+			{
+				"name": "readReviewInput",
+				"type": "Promise<ReviewInputFile>"
+			},
+			{
+				"name": "reviewInputsCurrent",
+				"type": "Promise<boolean>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/audit/cleanCodeFiles.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/audit/cleanCodeFiles.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

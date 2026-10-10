@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.analytics-filters",
+	"kind": "component",
+	"title": "AnalyticsFilters",
+	"responsibility": "Owns the AnalyticsFilters Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/AnalyticsFilters.svelte"],
+		"symbols": ["AnalyticsFilters"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "AnalyticsFilters.filters",
+				"type": "AnalyticsSnapshot['filters']"
+			}
+		],
+		"outputs": [
+			{
+				"name": "AnalyticsFilters",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.service.harness-analytics",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/AnalyticsFilters.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/AnalyticsFilters.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

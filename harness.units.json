@@ -1,0 +1,11 @@
+{
+	"schemaVersion": 1,
+	"workspaces": [
+		{ "name": "", "root": "." },
+		{ "name": "reports", "root": "packages/reports" }
+	],
+	"tests": ["test/", "tests/"],
+	"global": ["**/.prettierignore"],
+	"ignored": ["**/*.md", "specification/features/", "specification/loops/", "**/.gitignore"],
+	"references": []
+}

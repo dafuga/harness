@@ -1,0 +1,90 @@
+{
+	"schemaVersion": 1,
+	"id": "function.source-nesting",
+	"kind": "function",
+	"title": "sourceNesting",
+	"responsibility": "Owns the sourceNesting shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/sourceNesting.ts"],
+		"symbols": ["SourceNesting", "sourceNesting", "matchingBrace", "statementEnd", "bodyEnd"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "sourceNesting.masked",
+				"type": "string"
+			},
+			{
+				"name": "matchingBrace.nesting",
+				"type": "SourceNesting"
+			},
+			{
+				"name": "matchingBrace.open",
+				"type": "number"
+			},
+			{
+				"name": "statementEnd.masked",
+				"type": "string"
+			},
+			{
+				"name": "statementEnd.nesting",
+				"type": "SourceNesting"
+			},
+			{
+				"name": "statementEnd.start",
+				"type": "number"
+			},
+			{
+				"name": "bodyEnd.masked",
+				"type": "string"
+			},
+			{
+				"name": "bodyEnd.nesting",
+				"type": "SourceNesting"
+			},
+			{
+				"name": "bodyEnd.from",
+				"type": "number"
+			}
+		],
+		"outputs": [
+			{
+				"name": "sourceNesting",
+				"type": "SourceNesting"
+			},
+			{
+				"name": "matchingBrace",
+				"type": "number"
+			},
+			{
+				"name": "statementEnd",
+				"type": "number"
+			},
+			{
+				"name": "bodyEnd",
+				"type": "number"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/sourceNesting.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/sourceNesting.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

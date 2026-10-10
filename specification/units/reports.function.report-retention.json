@@ -1,0 +1,69 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.report-retention",
+	"kind": "function",
+	"title": "reportRetention",
+	"responsibility": "Owns the reportRetention shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/reportRetention.ts"],
+		"symbols": ["reportLifetimeMs", "reportCloudPrefixes", "reportRetention"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "reportRetention.report",
+				"type": "Pick<Report, 'startedAt'>"
+			},
+			{
+				"name": "reportRetention.now",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "reportLifetimeMs",
+				"type": "unknown"
+			},
+			{
+				"name": "reportCloudPrefixes",
+				"type": "unknown"
+			},
+			{
+				"name": "reportRetention",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/reportRetention.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/reportRetention.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.page.reports-id",
+	"kind": "page",
+	"title": "/reports/[id]",
+	"responsibility": "Owns the /reports/[id] route page.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/routes/reports/[id]/+page.server.ts",
+			"packages/reports/src/routes/reports/[id]/+page.svelte"
+		],
+		"symbols": ["load", "+page"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "load.input",
+				"type": "{ params: { id: string } }"
+			},
+			{
+				"name": "+page.data",
+				"type": "{report:Report}"
+			}
+		],
+		"outputs": [
+			{
+				"name": "load",
+				"type": "unknown"
+			},
+			{
+				"name": "+page",
+				"type": "markup"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			},
+			{
+				"name": "HttpError 404",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.report-view",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-http",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-locale",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/routes/reports/[id]/+page.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/routes/reports/[id]/+page.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

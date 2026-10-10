@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"id": "function.stable-json",
+	"kind": "function",
+	"title": "stableJson",
+	"responsibility": "Owns the stableJson shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/stableJson.ts"],
+		"symbols": ["stableJson"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "stableJson.value",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "stableJson",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/stableJson.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/stableJson.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
