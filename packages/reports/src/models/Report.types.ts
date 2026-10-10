@@ -26,6 +26,10 @@ export interface Evidence {
 	capturedAt?: string;
 	viewport?: string;
 	phase?: 'before' | 'after' | 'current';
+	/** Stated in place of the phase when the evidence is more than its report's current capture. */
+	standing?: string;
+	/** Recorded facts about what produced the evidence and which attempt it belongs to. */
+	provenance?: Array<{ label: string; value: string }>;
 	comparison?: string;
 	checkId?: string;
 	order?: number;

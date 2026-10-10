@@ -1,0 +1,149 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.focus-view",
+	"kind": "function",
+	"title": "focusView",
+	"responsibility": "Decides which part of the component map is shown and which unit an arrow key moves to.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/focusView.ts"],
+		"symbols": [
+			"MapView",
+			"wholeView",
+			"focusView",
+			"focusOn",
+			"zoomView",
+			"panView",
+			"drawnEdges",
+			"nextNode"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "wholeView.layout",
+				"type": "HarnessLayout"
+			},
+			{
+				"name": "focusView.layout",
+				"type": "HarnessLayout"
+			},
+			{
+				"name": "focusView.ids",
+				"type": "Set<string>"
+			},
+			{
+				"name": "focusOn.layout",
+				"type": "HarnessLayout"
+			},
+			{
+				"name": "focusOn.ids",
+				"type": "Set<string>"
+			},
+			{
+				"name": "zoomView.view",
+				"type": "MapView"
+			},
+			{
+				"name": "zoomView.factor",
+				"type": "number"
+			},
+			{
+				"name": "zoomView.whole",
+				"type": "MapView"
+			},
+			{
+				"name": "panView.view",
+				"type": "MapView"
+			},
+			{
+				"name": "panView.dx",
+				"type": "number"
+			},
+			{
+				"name": "panView.dy",
+				"type": "number"
+			},
+			{
+				"name": "drawnEdges.layout",
+				"type": "HarnessLayout"
+			},
+			{
+				"name": "drawnEdges.selected",
+				"type": "string | null"
+			},
+			{
+				"name": "nextNode.layout",
+				"type": "HarnessLayout"
+			},
+			{
+				"name": "nextNode.from",
+				"type": "string"
+			},
+			{
+				"name": "nextNode.key",
+				"type": "string"
+			},
+			{
+				"name": "nextNode.shown",
+				"type": "Set<string>"
+			}
+		],
+		"outputs": [
+			{
+				"name": "wholeView",
+				"type": "MapView"
+			},
+			{
+				"name": "focusView",
+				"type": "MapView"
+			},
+			{
+				"name": "focusOn",
+				"type": "MapView | null"
+			},
+			{
+				"name": "zoomView",
+				"type": "MapView"
+			},
+			{
+				"name": "panView",
+				"type": "MapView"
+			},
+			{
+				"name": "drawnEdges",
+				"type": "HarnessLayout['edges']"
+			},
+			{
+				"name": "nextNode",
+				"type": "string | undefined"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.harness-layout",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/focusView.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/focusView.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

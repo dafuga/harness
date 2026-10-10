@@ -28,6 +28,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.function.site-processes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.cpu-usage",
 			"via": "import",
 			"origin": "derived"

@@ -28,6 +28,10 @@
 			{
 				"name": "EvidenceGrid.onUploaded",
 				"type": "(report: Report) => void"
+			},
+			{
+				"name": "EvidenceGrid.idPrefix",
+				"type": "string"
 			}
 		],
 		"outputs": [

@@ -2,13 +2,15 @@ import { spawn } from 'node:child_process';
 import { resolve } from 'node:path';
 import type { analyticsSnapshot } from '../../../../src/workflows/analyticsMetrics';
 import { reportRuntimeRoot } from '../utils/reportRuntimeRoot';
+import { reportSite } from '../utils/reportSite';
 export type AnalyticsSnapshot = ReturnType<typeof analyticsSnapshot>;
 export class HarnessAnalyticsService {
 	async snapshot(params: URLSearchParams): Promise<AnalyticsSnapshot> {
 		const root = reportRuntimeRoot();
 		const cli = process.env.HARNESS_CLI_PATH ?? resolve(root, '../../src/index.ts');
-		const args = [cli, 'analytics', 'events', '--json'];
-		for (const key of ['project', 'loop', 'task', 'model', 'since', 'until']) {
+		// The site is fixed by the server; a project named in the address is not listened to.
+		const args = [cli, 'analytics', 'events', '--json', '--site', reportSite().root];
+		for (const key of ['loop', 'task', 'model', 'since', 'until']) {
 			const value = params.get(key);
 			if (value) args.push(`--${key}`, value);
 		}

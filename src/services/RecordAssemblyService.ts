@@ -75,6 +75,7 @@ export class RecordAssemblyService {
 				.filter((item) => !item.check.id.startsWith('setup-'))
 				.map((item) => item.entry),
 			scenarios: scenarios.sort((left, right) => (left.id < right.id ? -1 : 1)),
+			...(input.executed.builds ? { builds: input.executed.builds } : {}),
 			budgets: { status: outcome(budgets.report.failures), findings: budgets.report.findings },
 			reasons: recordedReasons(reasons),
 			gates: Object.fromEntries(Object.entries(gates).map(([gate, list]) => [gate, outcome(list)])),
@@ -169,7 +170,7 @@ function snapshotFailures(executed: Executed): string[] {
 	const gained = executed.added.map(
 		(path) => `snapshot gained an undeclared file during verification: ${path}`
 	);
-	return [...executed.setupFailures, ...changed, ...gained];
+	return [...executed.setupFailures, ...executed.buildFailures, ...changed, ...gained];
 }
 
 function recordedReasons(report: ReasonReport): VerificationRecord['reasons'] {

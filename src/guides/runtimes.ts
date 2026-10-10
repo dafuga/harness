@@ -27,7 +27,9 @@ const runtimeGuide: Guide = {
 		'The JSON ABI is memory, harness_alloc(len), harness_free(ptr, len) and ' +
 			'harness_invoke(ptr, len), which returns (pointer << 32) | length.',
 		'Typed APIs ship in the package: import @dafuga01/harness/contracts and ' +
-			'@dafuga01/harness/runtime. Neither starts the CLI.'
+			'@dafuga01/harness/runtime. Neither starts the CLI.',
+		'On Workers import @dafuga01/harness/edge instead: handler, precompiled Wasm and HTTP ' +
+			'targets only. See harness info edge.'
 	],
 	antiPatterns: [
 		'Do not parse a unit response without checking ok.',

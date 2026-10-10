@@ -10,6 +10,7 @@ import { revisionRegistry, type RevisionRegistry } from '../utils/revisionRegist
 import type { AttachedRecord } from './AttachedRecordService';
 import type { HistoryMediaService } from './HistoryMediaService';
 import type { CommitStatus, HistoryStatusService } from './HistoryStatusService';
+import { SourceImpactService, type SourceImpact } from './SourceImpactService';
 
 export interface RevisionDetail {
 	schemaVersion: 1;
@@ -21,7 +22,16 @@ export interface RevisionDetail {
 		record: string;
 		units: VerificationRecord['impact']['units'];
 		changed: VerificationRecord['impact']['changed'];
+		/** Scenarios this record tested afresh because the change reached them. */
+		scenarios: string[];
+		/** References the impact analysis could not resolve, which widened what was rerun. */
+		uncertain: VerificationRecord['impact']['uncertain'];
 	} | null;
+	/**
+	 * What the commit changed against its first parent, computed from the source of both commits.
+	 * It exists whether or not anything was verified; null when a tree could not be read.
+	 */
+	sourceImpact: SourceImpact | null;
 	records: RecordView[];
 	explanations: Explanation[];
 }
@@ -41,12 +51,14 @@ export interface BuiltRevision {
 export class RevisionDetailService {
 	private readonly registries = new Map<string, RevisionRegistry>();
 	private readonly git: GitAdapter;
+	private readonly source: SourceImpactService;
 
 	constructor(
 		private readonly root: string,
 		private readonly history: HistoryStatusService
 	) {
 		this.git = new GitAdapter(root);
+		this.source = new SourceImpactService(root);
 	}
 
 	async build(commit: string, media: HistoryMediaService): Promise<BuiltRevision> {
@@ -69,6 +81,7 @@ export class RevisionDetailService {
 			commit,
 			registry: await this.registry(commit),
 			comparison: comparison(sound),
+			sourceImpact: (await this.source.of(commit)) ?? null,
 			records,
 			explanations: await this.explanations(commit, sound)
 		};
@@ -100,21 +113,18 @@ export class RevisionDetailService {
 		return line ? this.history.attached.load(line.evidence) : undefined;
 	}
 
-	/** Revisions whose registry folders are identical share one parsed registry. */
+	/** Revisions with the same tree share one parsed registry. */
 	private async registry(commit: string): Promise<RevisionRegistry> {
-		const folders = ['specification/units', 'specification/scenarios'];
-		const ids = await Promise.all(
-			folders.map((folder) =>
-				this.git.attempt(['rev-parse', '--verify', '--quiet', `${commit}:${folder}`])
-			)
-		);
-		const key = ids.map((id) => id ?? 'none').join(':');
+		// Unit versions cover owned files, so the whole tree identifies a registry view.
+		const key =
+			(await this.git.attempt(['rev-parse', '--verify', '--quiet', `${commit}^{tree}`])) ?? commit;
 		const known = this.registries.get(key);
 		if (known) return known;
 		const tree = await CommitTreeAdapter.open(this.root, commit);
 		const units = await new UnitRegistryRepository(this.root).read(tree);
 		const scenarios = await new ScenarioRepository(this.root).read(tree);
-		const registry = revisionRegistry(units.manifests, scenarios.manifests);
+		const blobs = new Map((await tree.list()).map((entry) => [entry.path, entry.hash]));
+		const registry = revisionRegistry(units.manifests, scenarios.manifests, blobs);
 		this.registries.set(key, registry);
 		return registry;
 	}
@@ -141,8 +151,11 @@ function gapFor(source: AttachedRecord | undefined, path: string, origin: string
 function comparison(sound: VerificationRecord[]): RevisionDetail['comparison'] {
 	const record = sound.find((item) => item.status === 'passed') ?? sound[0];
 	if (!record) return null;
-	const { units, changed } = record.impact;
-	return { base: record.source.base, record: record.id, units, changed };
+	const { units, changed, uncertain } = record.impact;
+	const scenarios = record.scenarios
+		.filter((scenario) => scenario.status !== 'referenced')
+		.map((scenario) => scenario.id);
+	return { base: record.source.base, record: record.id, units, changed, scenarios, uncertain };
 }
 
 function short(id: string): string {

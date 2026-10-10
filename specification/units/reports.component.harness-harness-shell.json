@@ -1,0 +1,60 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-harness-shell",
+	"kind": "component",
+	"title": "HarnessShell",
+	"responsibility": "Keeps the console place in the browser history when no application router does.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/HarnessShell.svelte"],
+		"symbols": ["HarnessShell"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HarnessShell.base",
+				"type": "string"
+			},
+			{
+				"name": "HarnessShell.links",
+				"type": "Array<{ label: string; href: string }>"
+			},
+			{
+				"name": "HarnessShell.exportable",
+				"type": "boolean"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HarnessShell",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-harness-console",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/HarnessShell.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/HarnessShell.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -20,6 +20,10 @@
 			{
 				"name": "revisionRegistry.scenarios",
 				"type": "ScenarioManifest[]"
+			},
+			{
+				"name": "revisionRegistry.blobs",
+				"type": "Map<string, string>"
 			}
 		],
 		"outputs": [
@@ -31,6 +35,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.canonical-json",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.unit-types",
 			"via": "import",

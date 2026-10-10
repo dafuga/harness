@@ -22,7 +22,7 @@
 	}
 	const toPass = (row: Task) =>
 		row.attemptsToPass === null ? 'Not yet passed' : analyticsCount(row.attemptsToPass);
-	const reportHref = (report: string) => '/reports/' + encodeURIComponent(report);
+	const reportHref = (report: string) => '/harness/reports/' + encodeURIComponent(report);
 </script>
 
 <section class="analytics-section" data-harness-component="analytics-tasks">
@@ -46,7 +46,6 @@
 						<thead>
 							<tr>
 								<th scope="col">Task</th>
-								<th scope="col">Project</th>
 								<th scope="col">Loop / step</th>
 								<th scope="col">Agent model</th>
 								<th scope="col">First pass</th>
@@ -59,7 +58,6 @@
 							{#each group.tasks as row}
 								<tr>
 									<td class="analytics-wrap">{text(row.task)}</td>
-									<td>{text(row.project)}</td>
 									<td>{loopStep(row)}</td>
 									<td>{text(row.agentModel)}</td>
 									<td>{firstPass(row)}</td>

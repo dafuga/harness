@@ -104,6 +104,11 @@
 			"unit": "service.history-status",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "service.source-impact",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

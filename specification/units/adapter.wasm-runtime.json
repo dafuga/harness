@@ -8,14 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/adapters/WasmRuntimeAdapter.ts"],
-		"symbols": [
-			"WasmRuntimeAdapter",
-			"WasmRuntimeAdapter.constructor",
-			"WasmRuntimeAdapter.invoke",
-			"WasmRuntimeAdapter.invokeText",
-			"WasmRuntimeAdapter.memoryBytes",
-			"WasmRuntimeAdapter.close"
-		]
+		"symbols": ["WasmRuntimeAdapter", "WasmRuntimeAdapter.constructor"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -27,44 +20,14 @@
 			{
 				"name": "WasmRuntimeAdapter.constructor.options",
 				"type": "RuntimeOptions"
-			},
-			{
-				"name": "WasmRuntimeAdapter.invoke.request",
-				"type": "RuntimeRequest"
-			},
-			{
-				"name": "WasmRuntimeAdapter.invokeText.text",
-				"type": "string"
 			}
 		],
-		"outputs": [
-			{
-				"name": "WasmRuntimeAdapter.invoke",
-				"type": "Promise<RuntimeResponse>"
-			},
-			{
-				"name": "WasmRuntimeAdapter.invokeText",
-				"type": "Promise<string>"
-			},
-			{
-				"name": "WasmRuntimeAdapter.memoryBytes",
-				"type": "Promise<number>"
-			},
-			{
-				"name": "WasmRuntimeAdapter.close",
-				"type": "Promise<void>"
-			}
-		],
+		"outputs": [],
 		"errors": []
 	},
 	"dependencies": [
 		{
-			"unit": "function.portable-json",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.runtime-response",
+			"unit": "adapter.wasm-module-runtime",
 			"via": "import",
 			"origin": "derived"
 		},

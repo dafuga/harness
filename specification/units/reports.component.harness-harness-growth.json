@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-harness-growth",
+	"kind": "component",
+	"title": "HarnessGrowth",
+	"responsibility": "Shows when one component grew, the commit and reason behind it, and its timings kept apart by context.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/HarnessGrowth.svelte"],
+		"symbols": ["HarnessGrowth"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HarnessGrowth.index",
+				"type": "HarnessIndex"
+			},
+			{
+				"name": "HarnessGrowth.client",
+				"type": "HarnessClient"
+			},
+			{
+				"name": "HarnessGrowth.unit",
+				"type": "string | null"
+			},
+			{
+				"name": "HarnessGrowth.onunit",
+				"type": "(id: string) => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HarnessGrowth",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.harness-client",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-growth",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/HarnessGrowth.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/HarnessGrowth.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

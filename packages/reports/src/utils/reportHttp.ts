@@ -3,19 +3,23 @@ import { json, error } from '@sveltejs/kit';
 import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { join } from 'node:path';
-import { ReportRepository } from '../repositories/ReportRepository';
+import type { ReportRepository } from '../repositories/ReportRepository';
+import { SiteReportRepository } from '../repositories/SiteReportRepository';
 import { registeredAsset } from './reportAssets';
 import { R2ScreenshotStoreAdapter } from '../adapters/R2ScreenshotStoreAdapter';
 import { R2EvidenceStoreAdapter } from '../adapters/R2EvidenceStoreAdapter';
 import type { Report } from '../models/Report.types';
 import { mediaMime } from './evidenceMedia';
 import { mediaResponse } from './mediaResponse';
-export const repository = new ReportRepository();
+/** Everything this server serves or changes comes through here, limited to its own site. */
+export const repository: ReportRepository = new SiteReportRepository();
 export function reportHttp() {
 	return json({
 		app: 'project-reports',
 		version: 1,
 		buildId: reportBuildIdentity(),
+		// Only a server started for a verification run knows which revision it was built from.
+		revision: process.env.HARNESS_VERIFY_REVISION ?? null,
 		root: createHash('sha256').update(repository.root).digest('hex')
 	});
 }

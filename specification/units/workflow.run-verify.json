@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/workflows/runVerify.ts"],
-		"symbols": ["VerifyOptions", "verifyRun", "verifyCheck", "renderVerify"]
+		"symbols": ["VerifyOptions", "verifyRun", "verifyCheck", "verifyIdentity", "renderVerify"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -20,6 +20,10 @@
 			{
 				"name": "verifyCheck.options",
 				"type": "VerifyOptions"
+			},
+			{
+				"name": "verifyIdentity.directory",
+				"type": "string"
 			},
 			{
 				"name": "renderVerify.stored",
@@ -34,6 +38,10 @@
 			{
 				"name": "verifyCheck",
 				"type": "Promise<CheckReport>"
+			},
+			{
+				"name": "verifyIdentity",
+				"type": "Promise<IdentifiedBuild & { directory: string }>"
 			},
 			{
 				"name": "renderVerify",
@@ -65,6 +73,11 @@
 		},
 		{
 			"unit": "repository.verification-store",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.build-identity",
 			"via": "import",
 			"origin": "derived"
 		},

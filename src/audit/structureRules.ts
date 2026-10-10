@@ -154,6 +154,10 @@ function auditDirectSourceFile(file: string, name: string): AuditFinding[] {
 	];
 }
 
+/** A SvelteKit parameter: `[id]`, rest `[...path]`, optional `[[lang]]`, each with `=matcher`. */
+const routeParameter =
+	/^(?:\[(?:\.\.\.)?[A-Za-z0-9_-]+(?:=[A-Za-z0-9_]+)?\]|\[\[[A-Za-z0-9_-]+(?:=[A-Za-z0-9_]+)?\]\])$/;
+
 function isAllowedFolderName(segment: string): boolean {
 	return (
 		segment === '.codex' ||
@@ -161,7 +165,7 @@ function isAllowedFolderName(segment: string): boolean {
 		segment === '.github' ||
 		/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(segment) ||
 		/^[a-z0-9]+(?:[-.][a-z0-9]+)*\.spec\.ts$/.test(segment) ||
-		/^\[[A-Za-z0-9_-]+\]$/.test(segment) ||
+		routeParameter.test(segment) ||
 		/^\([a-z0-9]+(?:-[a-z0-9]+)*\)$/.test(segment)
 	);
 }

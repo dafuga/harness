@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.report-site",
+	"kind": "function",
+	"title": "reportSite",
+	"responsibility": "Fixes the application this server is hosted for when it starts, and says what belongs to it.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/reportSite.ts"],
+		"symbols": ["ReportSite", "reportSite", "ownedBySite"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ownedBySite.project",
+				"type": "{ path: string }"
+			}
+		],
+		"outputs": [
+			{
+				"name": "reportSite",
+				"type": "ReportSite"
+			},
+			{
+				"name": "ownedBySite",
+				"type": "boolean"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.repository-identity",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/reportSite.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/reportSite.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

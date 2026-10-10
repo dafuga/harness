@@ -2,6 +2,7 @@
 	import type { Evidence } from '../models/Report.types';
 	import { galleryEvidence, screenSize, type ScreenSize } from '../utils/reportFilter';
 	import { t } from '../utils/reportLocale';
+	import EvidenceProvenance from './EvidenceProvenance.svelte';
 	import ImageZoom from './ImageZoom.svelte';
 	import Modal from './Modal.svelte';
 	let {
@@ -123,6 +124,10 @@
 			>
 		{/each}
 	</div>
+	<!-- Stated before the image, so what produced it is read without scrolling past it. -->
+	{#if selected?.provenance}
+		<div class="viewer-provenance"><EvidenceProvenance item={selected} /></div>
+	{/if}
 	<div class:comparison={view === 'compare'} class="viewer-images">
 		<!-- Keyed by view too, so every image or view change mounts a fresh zoom state at fit. -->
 		{#each shown as item (`${view}:${item.id}`)}<figure>
@@ -132,7 +137,7 @@
 						>{$t('downloadImage')} ↗</a
 					>{/if}
 				<figcaption>
-					{$t(item.phase || 'current')} · {item.title}{#if item.viewport}
+					{item.standing ?? $t(item.phase || 'current')} · {item.title}{#if item.viewport}
 						· {item.viewport}{/if}
 					{#if !item.missing && item.note}<p class="viewer-note">{item.note}</p>{/if}
 				</figcaption>
@@ -141,6 +146,10 @@
 </Modal>
 
 <style>
+	.viewer-provenance {
+		max-width: 80ch;
+		margin: 0 auto 12px;
+	}
 	.viewer-note {
 		max-width: 80ch;
 		margin: 14px auto;

@@ -4,6 +4,13 @@ export function reportDisplay(report: Report): Status {
 	if (Date.now() - Date.parse(report.updatedAt) > 15 * 60_000) return 'interrupted';
 	return 'running';
 }
+/**
+ * Whether an unfinished report still receives updates. This says nothing about its outcome:
+ * what was recorded stays what is shown, and a report gone quiet is marked as such beside it.
+ */
+export function reportStale(report: Report, now = Date.now()): boolean {
+	return report.state !== 'finalized' && now - Date.parse(report.updatedAt) > 15 * 60_000;
+}
 export function dateLabel(value: string) {
 	return new Date(value).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' });
 }

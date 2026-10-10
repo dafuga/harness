@@ -32,7 +32,7 @@ test('history shows known first-try rates, model attribution and working filters
 	await expect(page.getByTestId('clean-code-first-try')).toContainText('100%');
 	await expect(page.getByText('fixture-author').first()).toBeVisible();
 	await expect(page.getByText('fixture-evaluator').first()).toBeVisible();
-	await expect(page.locator('a[href="/reports/fixture-report"]').first()).toBeVisible();
+	await expect(page.locator('a[href="/harness/reports/fixture-report"]').first()).toBeVisible();
 	await page.getByLabel('Model', { exact: true }).fill('absent-model');
 	await page.getByRole('button', { name: 'Apply filters' }).click();
 	await expect(page).toHaveURL(/model=absent-model/);

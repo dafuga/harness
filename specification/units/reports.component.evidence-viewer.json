@@ -48,6 +48,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.component.evidence-provenance",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.image-zoom",
 			"via": "import",
 			"origin": "derived"

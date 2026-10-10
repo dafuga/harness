@@ -78,11 +78,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "service.check-run",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "service.record-assembly",
 			"via": "import",
 			"origin": "derived"

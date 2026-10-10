@@ -1,12 +1,12 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import '../../lib/styles/analytics.css';
-	import AnalyticsCpu from '../../components/AnalyticsCpu.svelte';
-	import AnalyticsFilters from '../../components/AnalyticsFilters.svelte';
-	import AnalyticsHistory from '../../components/AnalyticsHistory.svelte';
-	import AnalyticsModels from '../../components/AnalyticsModels.svelte';
-	import AnalyticsTasks from '../../components/AnalyticsTasks.svelte';
-	import { analyticsCount, analyticsDisplay } from '../../utils/analyticsDisplay';
+	import '../../../lib/styles/analytics.css';
+	import AnalyticsCpu from '../../../components/AnalyticsCpu.svelte';
+	import AnalyticsFilters from '../../../components/AnalyticsFilters.svelte';
+	import AnalyticsHistory from '../../../components/AnalyticsHistory.svelte';
+	import AnalyticsModels from '../../../components/AnalyticsModels.svelte';
+	import AnalyticsTasks from '../../../components/AnalyticsTasks.svelte';
+	import { analyticsCount, analyticsDisplay } from '../../../utils/analyticsDisplay';
 	type Check = PageData['analytics']['jev']['response'];
 	let { data }: { data: PageData } = $props();
 	let { summary, filters, loops, jev, models } = $derived(data.analytics);
@@ -15,7 +15,6 @@
 	);
 	let overview = $derived([
 		{ label: 'Events', value: summary.events, hint: 'Harness events recorded' },
-		{ label: 'Projects', value: summary.projects, hint: 'Distinct projects' },
 		{ label: 'Loops', value: summary.loops, hint: 'Loops started' },
 		{ label: 'Completed loops', value: summary.completedLoops, hint: 'Loops that finished' }
 	]);
@@ -40,7 +39,7 @@
 <main class="report-shell" data-harness-view="analytics">
 	<nav class="topbar">
 		<span class="brand"><span class="brand-symbol" aria-hidden="true">◈</span> Harness</span>
-		<a class="text-link" href="/">Project reports</a>
+		<a class="text-link" href="/harness/reports">Project reports</a>
 	</nav>
 	<header class="analytics-intro">
 		<div class="eyebrow">Local harness</div>

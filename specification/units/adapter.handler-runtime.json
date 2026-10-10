@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.handler-runtime",
+	"kind": "adapter",
+	"title": "HandlerRuntimeAdapter",
+	"responsibility": "Runs a unit in the calling isolate by invoking a handler function under the runtime contract.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/adapters/HandlerRuntimeAdapter.ts"],
+		"symbols": [
+			"HandlerRuntimeAdapter",
+			"HandlerRuntimeAdapter.constructor",
+			"HandlerRuntimeAdapter.invoke",
+			"HandlerRuntimeAdapter.close"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HandlerRuntimeAdapter.constructor.handler",
+				"type": "RuntimeHandler"
+			},
+			{
+				"name": "HandlerRuntimeAdapter.constructor.options",
+				"type": "RuntimeOptions"
+			},
+			{
+				"name": "HandlerRuntimeAdapter.invoke.request",
+				"type": "RuntimeRequest"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HandlerRuntimeAdapter.invoke",
+				"type": "Promise<RuntimeResponse>"
+			},
+			{
+				"name": "HandlerRuntimeAdapter.close",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.portable-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.runtime-response",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.runtime-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/HandlerRuntimeAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/HandlerRuntimeAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,84 @@
+{
+	"schemaVersion": 1,
+	"id": "function.console-canonical",
+	"kind": "function",
+	"title": "consoleCanonical",
+	"responsibility": "Finds the canonical path a root or query-style console address stands for, from the history index.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/consoleCanonical.ts"],
+		"symbols": ["IndexedHistory", "defaultCommit", "commitBranch", "consoleCanonical"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "defaultCommit.index",
+				"type": "IndexedHistory"
+			},
+			{
+				"name": "defaultCommit.asked",
+				"type": "string"
+			},
+			{
+				"name": "commitBranch.index",
+				"type": "IndexedHistory"
+			},
+			{
+				"name": "commitBranch.commit",
+				"type": "string"
+			},
+			{
+				"name": "consoleCanonical.index",
+				"type": "IndexedHistory"
+			},
+			{
+				"name": "consoleCanonical.url",
+				"type": "URL"
+			},
+			{
+				"name": "consoleCanonical.base",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "defaultCommit",
+				"type": "string"
+			},
+			{
+				"name": "commitBranch",
+				"type": "string | null"
+			},
+			{
+				"name": "consoleCanonical",
+				"type": "string | undefined"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.console-route",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/consoleCanonical.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/consoleCanonical.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

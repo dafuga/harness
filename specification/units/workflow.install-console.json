@@ -1,0 +1,91 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.install-console",
+	"kind": "workflow",
+	"title": "installConsole",
+	"responsibility": "Installs the console into a host or restores a file an install replaced, and renders what changed.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/installConsole.ts"],
+		"symbols": [
+			"ConsoleInstallFlags",
+			"installConsole",
+			"restoreConsoleFile",
+			"renderConsoleChange",
+			"renderConsoleInstall"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "installConsole.flags",
+				"type": "ConsoleInstallFlags"
+			},
+			{
+				"name": "restoreConsoleFile.host",
+				"type": "string"
+			},
+			{
+				"name": "restoreConsoleFile.path",
+				"type": "string"
+			},
+			{
+				"name": "renderConsoleChange.change",
+				"type": "ConsoleChange"
+			},
+			{
+				"name": "renderConsoleInstall.result",
+				"type": "ConsoleInstallResult"
+			}
+		],
+		"outputs": [
+			{
+				"name": "installConsole",
+				"type": "Promise<ConsoleInstallResult>"
+			},
+			{
+				"name": "restoreConsoleFile",
+				"type": "Promise<ConsoleChange>"
+			},
+			{
+				"name": "renderConsoleChange",
+				"type": "string"
+			},
+			{
+				"name": "renderConsoleInstall",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.console-manifest",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.console-install",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/installConsole.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/installConsole.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

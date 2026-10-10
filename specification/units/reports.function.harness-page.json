@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.harness-page",
+	"kind": "function",
+	"title": "harnessPage",
+	"responsibility": "Decides what a console path shows in a history: a page, a redirect to one, or nothing.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/harnessPage.ts"],
+		"symbols": ["HarnessPage", "homePath", "harnessPage"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "homePath.index",
+				"type": "HarnessIndex"
+			},
+			{
+				"name": "harnessPage.index",
+				"type": "HarnessIndex"
+			},
+			{
+				"name": "harnessPage.path",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "homePath",
+				"type": "string | null"
+			},
+			{
+				"name": "harnessPage",
+				"type": "HarnessPage"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.console-canonical",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.console-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/harnessPage.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/harnessPage.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

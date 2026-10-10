@@ -1,0 +1,62 @@
+{
+	"schemaVersion": 1,
+	"id": "function.index-files",
+	"kind": "function",
+	"title": "indexFiles",
+	"responsibility": "Reads the files of a history index directory for bundling into a host.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/indexFiles.ts"],
+		"symbols": ["indexFiles"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "indexFiles.directory",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "indexFiles",
+				"type": "Promise<IndexFile[]>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.console-data-modules",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/indexFiles.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/indexFiles.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

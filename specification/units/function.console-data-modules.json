@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "function.console-data-modules",
+	"kind": "function",
+	"title": "consoleDataModules",
+	"responsibility": "Turns the files of a history index into server-only modules a bundler can load on demand.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/consoleDataModules.ts"],
+		"symbols": ["IndexFile", "consoleDataModules"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "consoleDataModules.files",
+				"type": "IndexFile[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "consoleDataModules",
+				"type": "HostFile[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.console-host-files",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/consoleDataModules.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/consoleDataModules.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

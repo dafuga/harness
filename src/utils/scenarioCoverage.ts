@@ -1,6 +1,6 @@
 import type { ScenarioManifest } from '../core/unitTypes';
 import type { ScenarioResult } from '../core/verificationTypes';
-import { benchmarkCaptureSchema } from '../core/verifyTypes';
+import { benchmarkCaptureSchema, verifyConfigFile } from '../core/verifyTypes';
 import type { Gathered } from './gatherCaptures';
 import type { MediaFacts } from './mediaFacts';
 import { scenarioRequirements } from './scenarioRequirements';
@@ -12,6 +12,8 @@ export interface CoverageInput {
 	gathered: Gathered[];
 	/** True when a check that produced these captures failed or timed out. */
 	checkFailed: boolean;
+	/** The builds the project declares, and the identity of each one setup compiled. */
+	builds?: { declared: string[]; compiled: Map<string, string> };
 }
 
 export interface CoverageResult {
@@ -100,7 +102,7 @@ function imageProblem(
 	const size = viewport
 		? sizeProblem(facts, viewport, evidence?.capture === 'full-page')
 		: undefined;
-	return size ? `capture ${line.file} ${size}` : stampProblem(input.commit, item);
+	return size ? `capture ${line.file} ${size}` : stampProblem(input, item, evidence);
 }
 
 /** A viewport capture has exactly the viewport's pixels; a full-page one is at least as tall. */
@@ -131,7 +133,7 @@ function audioProblem(
 	if (Math.abs(declared - facts.durationSeconds) > durationTolerance) {
 		return `capture ${line.file} declares ${declared} s but contains ${facts.durationSeconds} s of audio`;
 	}
-	return describedProblem(line, evidence) ?? liveProblem(input.commit, item);
+	return describedProblem(line, evidence) ?? liveProblem(input, item, evidence);
 }
 
 /** Audio evidence needs a transcript and the provenance its contract names. */
@@ -142,14 +144,51 @@ function describedProblem(line: Gathered['line'], evidence?: Evidence): string |
 	return `audio capture for state ${line.state} has provenance ${actual}, not ${evidence.provenance}`;
 }
 
-function liveProblem(commit: string, item: Gathered): string | undefined {
-	return item.line.provenance === 'actual-capture' ? stampProblem(commit, item) : undefined;
+function liveProblem(
+	input: CoverageInput,
+	item: Gathered,
+	evidence?: Evidence
+): string | undefined {
+	return item.line.provenance === 'actual-capture'
+		? stampProblem(input, item, evidence)
+		: undefined;
 }
 
-/** A capture of running software must name the build it came from, and it must be this commit. */
-function stampProblem(commit: string, item: Gathered): string | undefined {
-	const revision = item.line.server?.revision;
-	if (!revision) return `capture ${item.line.file} has no build stamp`;
-	if (revision === commit) return undefined;
-	return `capture ${item.line.file} was produced by revision ${revision}, not ${commit}`;
+/**
+ * A capture of running software must name the build it came from: a build of this commit and,
+ * when its evidence names a declared build, exactly the files setup compiled for it.
+ */
+function stampProblem(
+	input: CoverageInput,
+	item: Gathered,
+	evidence?: Evidence
+): string | undefined {
+	const { file, server } = item.line;
+	if (!server?.revision) return `capture ${file} has no build stamp`;
+	if (server.revision !== input.commit) {
+		return `capture ${file} was produced by revision ${server.revision}, not ${input.commit}`;
+	}
+	const problem = buildProblem(input.builds, server.buildId, evidence?.build);
+	return problem ? `capture ${file} ${problem}` : undefined;
+}
+
+/** What ties a capture to compiled files: the declared build its evidence names. */
+function buildProblem(
+	builds: CoverageInput['builds'],
+	served: string,
+	named?: string
+): string | undefined {
+	const declared = builds?.declared ?? [];
+	if (!named) {
+		return declared.length > 0
+			? `does not name the build that served it; ${verifyConfigFile} declares ${declared.join(', ')}`
+			: undefined;
+	}
+	if (!declared.includes(named)) {
+		return `names build ${named}, which ${verifyConfigFile} does not declare`;
+	}
+	const compiled = builds?.compiled.get(named);
+	if (!compiled) return `names build ${named}, which setup did not produce`;
+	if (served === compiled) return undefined;
+	return `was served by build ${served.slice(0, 12)}, not the ${named} build ${compiled.slice(0, 12)} compiled from this revision`;
 }

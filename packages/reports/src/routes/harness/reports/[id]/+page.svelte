@@ -1,8 +1,8 @@
 <script lang="ts">
  import {onMount} from 'svelte';
- import ReportView from '../../../components/ReportView.svelte';
- import type {Report} from '../../../models/Report.types';
- import {t} from '../../../utils/reportLocale';
+ import ReportView from '../../../../components/ReportView.svelte';
+ import type {Report} from '../../../../models/Report.types';
+ import {t} from '../../../../utils/reportLocale';
  let {data}: {data:{report:Report}}=$props();
  let fetchedReport=$state<Report|null>(null),error=$state(false);
  let report=$derived(fetchedReport?.id===data.report.id?fetchedReport:data.report);

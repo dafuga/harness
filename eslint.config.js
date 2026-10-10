@@ -33,11 +33,16 @@ export default [
 				project: './tsconfig.json'
 			},
 			globals: {
+				atob: 'readonly',
+				btoa: 'readonly',
 				Bun: 'readonly',
 				console: 'readonly',
 				Buffer: 'readonly',
+				clearTimeout: 'readonly',
 				fetch: 'readonly',
+				performance: 'readonly',
 				process: 'readonly',
+				Request: 'readonly',
 				Response: 'readonly',
 				setTimeout: 'readonly',
 				URL: 'readonly'

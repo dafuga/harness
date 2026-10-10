@@ -1,4 +1,6 @@
+import { createHash } from 'node:crypto';
 import type { ComponentManifest, ScenarioManifest } from '../core/unitTypes';
+import { canonicalJson } from './canonicalJson';
 
 export interface RevisionRegistry {
 	/** False when the revision stores no unit registry; nothing is substituted for it. */
@@ -12,13 +14,23 @@ export interface RevisionRegistry {
 		responsibility: string;
 		dependencies: Array<{ unit: string; via: string }>;
 		scenarios: string[];
+		/** What the unit owns and promises, as its manifest states it at this revision. */
+		owns: ComponentManifest['owns'];
+		contract: Pick<ComponentManifest['contract'], 'inputs' | 'outputs' | 'errors'>;
+		runtime: { kind: string; targets: Array<{ kind: string; entry: string }> };
+		budgets: ComponentManifest['budgets'];
+		/** Changes whenever the manifest or any owned file changes; equal versions are equal units. */
+		version: string;
 	}>;
 	scenarios: Array<{
 		id: string;
 		title: string;
 		kind: string;
 		units: string[];
-		states: Array<{ id: string; coverage: string }>;
+		states: Array<{ id: string; coverage: string; reason?: string }>;
+		viewports: ScenarioManifest['viewports'];
+		tests: Array<{ id: string; kind: string; runner: string }>;
+		evidence: Array<{ id: string; kind: string; states: string[]; viewports: string[] }>;
 	}>;
 	graph: {
 		nodes: Array<{ id: string; kind: 'unit' | 'scenario' }>;
@@ -35,24 +47,11 @@ const byId = <Item extends { id: string }>(left: Item, right: Item) =>
  */
 export function revisionRegistry(
 	manifests: ComponentManifest[],
-	scenarios: ScenarioManifest[]
+	scenarios: ScenarioManifest[],
+	blobs: Map<string, string> = new Map()
 ): RevisionRegistry {
-	const units = [...manifests].sort(byId).map((unit) => ({
-		id: unit.id,
-		kind: unit.kind,
-		status: unit.status,
-		title: unit.title,
-		responsibility: unit.responsibility,
-		dependencies: unit.dependencies.map(({ unit: target, via }) => ({ unit: target, via })),
-		scenarios: unit.scenarios
-	}));
-	const listed = [...scenarios].sort(byId).map((scenario) => ({
-		id: scenario.id,
-		title: scenario.title,
-		kind: scenario.kind,
-		units: scenario.units,
-		states: scenario.states.map(({ id, coverage }) => ({ id, coverage }))
-	}));
+	const units = [...manifests].sort(byId).map((unit) => unitView(unit, blobs));
+	const listed = [...scenarios].sort(byId).map(scenarioView);
 	const depends = units.flatMap((unit) =>
 		unit.dependencies.map(({ unit: target, via }) => ({
 			from: `unit:${unit.id}`,
@@ -79,5 +78,55 @@ export function revisionRegistry(
 		units,
 		scenarios: listed,
 		graph: { nodes, edges: [...depends, ...covers] }
+	};
+}
+
+function unitView(
+	unit: ComponentManifest,
+	blobs: Map<string, string>
+): RevisionRegistry['units'][number] {
+	const { inputs, outputs, errors } = unit.contract;
+	const files = unit.owns.source.map((path) => `${path}:${blobs.get(path) ?? 'absent'}`);
+	return {
+		id: unit.id,
+		kind: unit.kind,
+		status: unit.status,
+		title: unit.title,
+		responsibility: unit.responsibility,
+		dependencies: unit.dependencies.map(({ unit: target, via }) => ({ unit: target, via })),
+		scenarios: unit.scenarios,
+		owns: unit.owns,
+		contract: { inputs, outputs, errors },
+		runtime: {
+			kind: unit.runtime.kind,
+			targets: unit.runtime.targets.map(({ kind, entry }) => ({ kind, entry }))
+		},
+		budgets: unit.budgets,
+		version: createHash('sha256')
+			.update(canonicalJson([unit, files]))
+			.digest('hex')
+			.slice(0, 16)
+	};
+}
+
+function scenarioView(scenario: ScenarioManifest): RevisionRegistry['scenarios'][number] {
+	return {
+		id: scenario.id,
+		title: scenario.title,
+		kind: scenario.kind,
+		units: scenario.units,
+		states: scenario.states.map(({ id, coverage, reason }) => ({
+			id,
+			coverage,
+			...(reason ? { reason } : {})
+		})),
+		viewports: scenario.viewports,
+		tests: scenario.tests.map(({ id, kind, runner }) => ({ id, kind, runner })),
+		evidence: scenario.evidence.map(({ id, kind, states, viewports }) => ({
+			id,
+			kind,
+			states,
+			viewports
+		}))
 	};
 }

@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-harness-map",
+	"kind": "component",
+	"title": "HarnessMap",
+	"responsibility": "Draws the component map with search, zoom, pan, keyboard movement and a text list of the same units.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/HarnessMap.svelte"],
+		"symbols": ["HarnessMap"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HarnessMap.units",
+				"type": "HarnessUnit[]"
+			},
+			{
+				"name": "HarnessMap.marks",
+				"type": "Map<string, HarnessMark>"
+			},
+			{
+				"name": "HarnessMap.selected",
+				"type": "string | null"
+			},
+			{
+				"name": "HarnessMap.onselect",
+				"type": "(id: string) => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HarnessMap",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.focus-view",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-layout",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/HarnessMap.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/HarnessMap.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

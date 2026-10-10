@@ -7,8 +7,8 @@
 		"kind": "app"
 	},
 	"scripts": {
-		"dev": "BODY_SIZE_LIMIT=110M vite dev --host 127.0.0.1 --port 5588",
-		"build": "vite build && vite build --config src/config/reportViteConfig.ts",
+		"dev": "BODY_SIZE_LIMIT=110M HARNESS_OWNER_MODE=loopback HARNESS_BIND=127.0.0.1 vite dev --host 127.0.0.1 --port 5588",
+		"build": "vite build && vite build --config src/config/reportViteConfig.ts && vite build --config src/config/consoleViteConfig.ts",
 		"check": "bun run format:check && bun run typecheck && bun run lint && bun run test && bun run build && bun run audit",
 		"typecheck": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"format:check": "prettier --check .",
@@ -17,7 +17,7 @@
 		"audit": "bun ../../src/index.ts audit . --profile app",
 		"test": "bun run test:unit",
 		"test:unit": "vitest run",
-		"test:e2e": "PROJECT_REPORTS_ASSET_STORAGE=local playwright test",
+		"test:e2e": "PROJECT_REPORTS_ASSET_STORAGE=local playwright test && bun run test:picker",
 		"report": "bun src/cli/index.ts",
 		"test:all": "bun run test:unit && bun run test:e2e",
 		"build:picker": "vite build --config src/config/pickerViteConfig.ts",

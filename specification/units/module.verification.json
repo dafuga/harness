@@ -36,6 +36,11 @@
 			"Workload",
 			"evidenceRequested",
 			"recordCapture",
+			"buildIdentity",
+			"BuiltFile",
+			"BuildIdentityService",
+			"BuiltIdentity",
+			"IdentifiedBuild",
 			"scenarioRequirements",
 			"RequiredCapture",
 			"ScenarioRequirements",
@@ -70,6 +75,11 @@
 		},
 		{
 			"unit": "function.budget-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.build-identity",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -115,6 +125,11 @@
 		},
 		{
 			"unit": "function.verify-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.build-identity",
 			"via": "reexport",
 			"origin": "derived"
 		}

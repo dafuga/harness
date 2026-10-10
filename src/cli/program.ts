@@ -14,6 +14,7 @@ import { registerKernelCommand } from '../commands/KernelCommand';
 import { registerScenariosCommand } from '../commands/ScenariosCommand';
 import { registerExplainCommand } from '../commands/ExplainCommand';
 import { registerBudgetCommand } from '../commands/BudgetCommand';
+import { registerConsoleCommand } from '../commands/ConsoleCommand';
 import { registerHistoryCommand } from '../commands/HistoryCommand';
 import { registerHooksCommand } from '../commands/HooksCommand';
 import { registerVerifyCommand } from '../commands/VerifyCommand';
@@ -42,6 +43,7 @@ export function buildProgram(): Command {
 	registerVerifyCommand(program);
 	registerHistoryCommand(program);
 	registerHooksCommand(program);
+	registerConsoleCommand(program);
 	registerAuditCommand(program);
 	registerResponseCheckCommand(program);
 

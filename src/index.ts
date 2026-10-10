@@ -5,7 +5,9 @@ import { buildProgram } from './cli/program';
 import { recordAnalytics } from './workflows/analyticsRecord';
 import { importAnalytics } from './workflows/importAnalytics';
 import { isExpectedCliError } from './core/errors';
+import { pipedOutput } from './utils/pipedOutput';
 
+pipedOutput();
 const startedAt = Date.now();
 try {
 	await buildProgram().exitOverride().parseAsync(process.argv);

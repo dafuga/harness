@@ -20,6 +20,10 @@ export function registerAnalyticsCommand(program: Command): void {
 			.command(operation)
 			.option('--json', 'Print structured results.')
 			.option('--project <path>', 'Filter by project path.')
+			.option(
+				'--site <path>',
+				'Only what was recorded in checkouts of the repository at this path.'
+			)
 			.option('--loop <name>', 'Filter by loop.')
 			.option('--task <id>', 'Filter by task identity.')
 			.option('--model <name>', 'Filter by author or evaluator model.')

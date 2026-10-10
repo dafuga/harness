@@ -1,0 +1,68 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.capture-provenance",
+	"kind": "function",
+	"title": "captureProvenance",
+	"responsibility": "States what really produced a recorded capture: its own build, its standing and the attempt it belongs to.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/captureProvenance.ts"],
+		"symbols": ["CaptureStanding", "CaptureProvenance", "captureProvenance", "scenarioOrigin"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "captureProvenance.record",
+				"type": "HarnessRecord"
+			},
+			{
+				"name": "captureProvenance.scenario",
+				"type": "Scenario"
+			},
+			{
+				"name": "captureProvenance.capture",
+				"type": "HarnessCapture"
+			},
+			{
+				"name": "scenarioOrigin.scenario",
+				"type": "Scenario"
+			}
+		],
+		"outputs": [
+			{
+				"name": "captureProvenance",
+				"type": "CaptureProvenance"
+			},
+			{
+				"name": "scenarioOrigin",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/captureProvenance.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/captureProvenance.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

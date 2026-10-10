@@ -5,6 +5,7 @@
 	import { timeAgo } from '../utils/reportDisplay';
 	import AudioEvidence from './AudioEvidence.svelte';
 	import AudioComparison from './AudioComparison.svelte';
+	import EvidenceProvenance from './EvidenceProvenance.svelte';
 	import StatusBadge from './StatusBadge.svelte';
 	let {
 		item,
@@ -44,6 +45,7 @@
 			</div>
 			<h3><a href={'#evidence-' + item.id}>{item.title}</a></h3>
 			{#if missing && item.note}<p class="muted">{item.note}</p>{/if}
+			<EvidenceProvenance {item} />
 			<div class="evidence-meta">
 				{#if item.viewport}<span>{item.viewport}</span>{/if}{#if item.capturedAt}<time
 						datetime={item.capturedAt}>{timeAgo(item.capturedAt)}</time

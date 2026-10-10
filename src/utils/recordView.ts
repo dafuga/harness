@@ -24,6 +24,8 @@ export interface RecordView {
 	gates: VerificationRecord['gates'];
 	failures: string[];
 	tests: Array<{ id: string; kind: string; target: string; status: string; durationMs: number }>;
+	/** Identity of each declared build as compiled for this record, when any is declared. */
+	builds?: VerificationRecord['builds'];
 	scenarios: Array<{
 		id: string;
 		status: Scenario['status'];
@@ -84,6 +86,7 @@ export function recordView(
 			status,
 			durationMs
 		})),
+		...(record.builds ? { builds: record.builds } : {}),
 		scenarios,
 		measurements: record.measurements,
 		budgets: record.budgets,

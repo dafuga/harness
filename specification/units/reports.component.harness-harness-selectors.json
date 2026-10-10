@@ -1,0 +1,89 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-harness-selectors",
+	"kind": "component",
+	"title": "HarnessSelectors",
+	"responsibility": "Offers the branch, the commit and the comparison base of the page that is shown.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/HarnessSelectors.svelte"],
+		"symbols": ["HarnessSelectors"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HarnessSelectors.index",
+				"type": "HarnessIndex"
+			},
+			{
+				"name": "HarnessSelectors.branch",
+				"type": "string"
+			},
+			{
+				"name": "HarnessSelectors.commit",
+				"type": "string"
+			},
+			{
+				"name": "HarnessSelectors.commits",
+				"type": "HarnessRevisionSummary[]"
+			},
+			{
+				"name": "HarnessSelectors.bases",
+				"type": "HarnessRevisionSummary[] | null"
+			},
+			{
+				"name": "HarnessSelectors.from",
+				"type": "string"
+			},
+			{
+				"name": "HarnessSelectors.onbranch",
+				"type": "(name: string) => void"
+			},
+			{
+				"name": "HarnessSelectors.oncommit",
+				"type": "(commit: string) => void"
+			},
+			{
+				"name": "HarnessSelectors.onbase",
+				"type": "(commit: string) => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HarnessSelectors",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.harness-ancestry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/HarnessSelectors.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/HarnessSelectors.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

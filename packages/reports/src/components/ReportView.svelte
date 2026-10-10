@@ -33,13 +33,12 @@
 
 <main class="report-shell">
 	<nav class="topbar">
-		<a class="brand" href={portable ? '#' : '/'}><span class="brand-symbol">◈</span> {$t('hub')}</a>
+		<a class="brand" href={portable ? '#' : '/harness/reports'}><span class="brand-symbol">◈</span> {$t('hub')}</a>
 		<span class="workspace-label">{$t(portable ? 'html' : 'local')}</span>
 	</nav>
-	{#if !portable}<a class="back-link" href={'/?project=' + report.project.id}>← {$t('history')}</a
+	{#if !portable}<a class="back-link" href={'/harness/reports?project=' + report.project.id}>← {$t('history')}</a
 		>{/if}
 	<ReportSummary {report} {downloadBase} {portable} />
-	<GameplayReplay {report} {assetBase} {portable} />
 	<ReportFindings findings={report.findings} />
 	<section class="review-launch" aria-label={$t('reviewDetails')}>
 		<button
@@ -79,5 +78,6 @@
 		{:else if activeDetail === 'coverage'}<CoverageList {report} section="coverage" embedded />{/if}
 	</Modal>
 	<EvidenceGrid items={report.evidence} {assetBase} reportId={report.state === 'active' && !portable ? report.id : undefined} {onUploaded} />
+	<GameplayReplay {report} {assetBase} {portable} />
 	<footer class="report-footer"><span>{$t(report.state)}</span><span>{report.id}</span></footer>
 </main>

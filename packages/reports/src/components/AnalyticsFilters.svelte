@@ -5,40 +5,36 @@
 </script>
 
 <section class="analytics-section" data-harness-component="analytics-filters">
-	<form class="panel analytics-form" method="get" action="/analytics">
+	<form class="panel analytics-form" method="get" action="/harness/analytics">
 		<div class="analytics-heading">
 			<h2>History filters</h2>
 			<p class="analytics-note">
-				Paths and model names are free text; dates are UTC days. Live CPU is unaffected.
+				Loop, task and model names are free text; dates are UTC days. Live CPU is unaffected.
 			</p>
 		</div>
 		<label class="analytics-field">
-			<span class="analytics-label">Project</span>
-			<input name="project" value={filters.project ?? ''} placeholder="Any project" />
-		</label>
-		<label class="analytics-field">
 			<span class="analytics-label">Loop</span>
-			<input name="loop" value={filters.loop ?? ''} placeholder="Any loop" />
+			<input name="loop" defaultValue={filters.loop ?? ''} placeholder="Any loop" />
 		</label>
 		<label class="analytics-field">
 			<span class="analytics-label">Task</span>
-			<input name="task" value={filters.task ?? ''} placeholder="Any task" />
+			<input name="task" defaultValue={filters.task ?? ''} placeholder="Any task" />
 		</label>
 		<label class="analytics-field">
 			<span class="analytics-label">Model</span>
-			<input name="model" value={filters.model ?? ''} placeholder="Any model" />
+			<input name="model" defaultValue={filters.model ?? ''} placeholder="Any model" />
 		</label>
 		<label class="analytics-field">
 			<span class="analytics-label">Since</span>
-			<input type="date" name="since" value={day(filters.since)} />
+			<input type="date" name="since" defaultValue={day(filters.since)} />
 		</label>
 		<label class="analytics-field">
 			<span class="analytics-label">Until</span>
-			<input type="date" name="until" value={day(filters.until)} />
+			<input type="date" name="until" defaultValue={day(filters.until)} />
 		</label>
 		<div class="analytics-actions">
 			<button class="button primary" type="submit">Apply filters</button>
-			<a class="text-link" href="/analytics" data-sveltekit-reload>Reset filters</a>
+			<a class="text-link" href="/harness/analytics" data-sveltekit-reload>Reset filters</a>
 		</div>
 	</form>
 </section>

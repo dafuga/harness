@@ -2,6 +2,7 @@ import { SnapshotAdapter } from '../adapters/SnapshotAdapter';
 import { verifyConfigFile, type VerifyConfig } from '../core/verifyTypes';
 import type { BuiltArtifacts } from '../utils/unitMeasurements';
 import type { PlannedCheck } from '../utils/verifyPlan';
+import { BuildIdentityService, type BuiltIdentity } from './BuildIdentityService';
 import { CheckRunService, type CheckOutcome, type RunContext } from './CheckRunService';
 
 export interface SnapshotRun {
@@ -20,6 +21,10 @@ export interface Executed {
 	setupFailures: string[];
 	/** Declared artifacts that exist in the snapshot after the run, by path. */
 	artifacts: BuiltArtifacts;
+	/** Identity of each declared build as setup compiled it; undefined when none is declared. */
+	builds?: BuiltIdentity[];
+	/** Declared builds that are missing, or whose files changed while checks ran. */
+	buildFailures: string[];
 }
 
 /**
@@ -28,6 +33,8 @@ export interface Executed {
  * still seen and every capture was taken from the exact tested source.
  */
 export class SnapshotRunService {
+	private readonly identities = new BuildIdentityService();
+
 	constructor(private readonly run: SnapshotRun) {}
 
 	async execute(plan: PlannedCheck[], artifactPaths: string[] = []): Promise<Executed> {
@@ -44,6 +51,7 @@ export class SnapshotRunService {
 			const runner = new CheckRunService({ ...context, snapshot: snapshot.directory });
 			const misdeclared = snapshot.misdeclared().map(describeOutput);
 			const setupFailures = misdeclared.length > 0 ? misdeclared : await this.setup(runner);
+			const compiled = await this.identities.declared(snapshot.directory, config.builds);
 			await observe();
 			const outcomes: CheckOutcome[] = [];
 			for (const check of setupFailures.length > 0 ? [] : plan) {
@@ -52,7 +60,10 @@ export class SnapshotRunService {
 			}
 			const artifacts = await built(snapshot, artifactPaths);
 			const [mutated, added] = [[...seen.mutated].sort(), [...seen.added].sort()];
-			return { outcomes, mutated, added, setupFailures, artifacts };
+			const moved = await this.identities.changed(snapshot.directory, compiled.found);
+			const builds = config.builds.length > 0 ? { builds: compiled.found } : {};
+			const buildFailures = [...compiled.failures, ...moved];
+			return { outcomes, mutated, added, setupFailures, artifacts, ...builds, buildFailures };
 		} finally {
 			await snapshot.remove();
 		}

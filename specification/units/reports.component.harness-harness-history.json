@@ -1,0 +1,62 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-harness-history",
+	"kind": "component",
+	"title": "HarnessHistory",
+	"responsibility": "Shows the recorded verification of one commit: its records, failures, gaps and evidence.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/HarnessHistory.svelte"],
+		"symbols": ["HarnessHistory"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "HarnessHistory",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.evidence-grid",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.capture-provenance",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/HarnessHistory.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/HarnessHistory.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

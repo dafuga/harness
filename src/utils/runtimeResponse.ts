@@ -1,5 +1,3 @@
-import { performance } from 'node:perf_hooks';
-import { clearTimeout, setTimeout } from 'node:timers';
 import { runtimeFailure, runtimeTimeout, type RuntimeResponse } from '../core/runtimeTypes';
 
 /** Accepts only a well-formed response envelope; anything else is an `invalid-response`. */

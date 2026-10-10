@@ -197,3 +197,22 @@ test('audit honors local ignored finding baselines', async () => {
 	expect(findings.some((finding) => finding.rule === 'small-file')).toBe(false);
 	await rm(root, { recursive: true, force: true });
 });
+
+test('every SvelteKit route segment form is a valid folder name, and nothing else in brackets is', async () => {
+	const root = await mkdtemp(join(tmpdir(), 'harness-audit-'));
+	const valid = ['[id]', '[...path]', '[[lang]]', '[id=integer]', '[...rest=slug]', '(group)'];
+	const invalid = ['[..path]', '[Bad Name]', '[[lang]', '[id=]', '[...]'];
+	for (const segment of [...valid, ...invalid]) {
+		await mkdir(join(root, 'src/routes/pages', segment), { recursive: true });
+		await writeFile(
+			join(root, 'src/routes/pages', segment, '+server.ts'),
+			'export const GET = () => new Response();\n'
+		);
+	}
+	const findings = await auditPath(root);
+	await rm(root, { recursive: true, force: true });
+	const flagged = findings
+		.filter((finding) => finding.rule === 'folder-name-pattern')
+		.map((finding) => finding.path.replace(/\/$/, '').split('/').pop());
+	expect(flagged.sort()).toEqual([...invalid].sort());
+});

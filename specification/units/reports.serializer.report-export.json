@@ -11,7 +11,9 @@
 		"symbols": [
 			"ReportExportSerializer",
 			"ReportExportSerializer.constructor",
-			"ReportExportSerializer.html"
+			"ReportExportSerializer.html",
+			"ReportExportSerializer.page",
+			"ReportExportSerializer.assets"
 		]
 	},
 	"contract": {
@@ -28,12 +30,24 @@
 			{
 				"name": "ReportExportSerializer.html.directory",
 				"type": "string"
+			},
+			{
+				"name": "ReportExportSerializer.page.portable",
+				"type": "Report"
 			}
 		],
 		"outputs": [
 			{
 				"name": "ReportExportSerializer.html",
 				"type": "unknown"
+			},
+			{
+				"name": "ReportExportSerializer.page",
+				"type": "unknown"
+			},
+			{
+				"name": "ReportExportSerializer.assets",
+				"type": "Promise<PortableAssets>"
 			}
 		],
 		"errors": []
@@ -41,6 +55,11 @@
 	"dependencies": [
 		{
 			"unit": "reports.function.evidence-media",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.portable-page",
 			"via": "import",
 			"origin": "derived"
 		},

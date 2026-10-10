@@ -21,12 +21,15 @@
 		items,
 		assetBase,
 		reportId,
-		onUploaded
+		onUploaded,
+		idPrefix = ''
 	}: {
 		items: Evidence[];
 		assetBase: string;
 		reportId?: string;
 		onUploaded?: (report: Report) => void;
+		/** Keeps heading ids unique when a page shows a second gallery. */
+		idPrefix?: string;
 	} = $props();
 	let search = $state(''),
 		category = $state(''),
@@ -91,10 +94,10 @@
 	}
 </script>
 
-<section class="gallery-section" aria-labelledby="gallery-title">
+<section class="gallery-section" aria-labelledby={idPrefix + 'gallery-title'}>
 	<div class="section-heading">
 		<div>
-			<h2 id="gallery-title">{$t(audioCount ? 'mediaGallery' : 'gallery')}</h2>
+			<h2 id={idPrefix + 'gallery-title'}>{$t(audioCount ? 'mediaGallery' : 'gallery')}</h2>
 			<p class="muted">{$t(audioCount ? 'mediaEvidenceNote' : 'evidenceNote')}</p>
 		</div>
 		<span class="muted"

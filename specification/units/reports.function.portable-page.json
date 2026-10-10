@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.portable-page",
+	"kind": "function",
+	"title": "portablePage",
+	"responsibility": "Wraps a report whose media is inline into one self-contained page.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/portablePage.ts"],
+		"symbols": ["PortableAssets", "portablePage"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "portablePage.portable",
+				"type": "Report"
+			},
+			{
+				"name": "portablePage.assets",
+				"type": "PortableAssets"
+			}
+		],
+		"outputs": [
+			{
+				"name": "portablePage",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/portablePage.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/portablePage.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -34,7 +34,7 @@ test('dashboard consumes a complete large analytics response before parsing', as
 		const repository = join(process.cwd(), '../../src/repositories/AnalyticsRepository.ts');
 		await writeFile(
 			cli,
-			`import {AnalyticsRepository} from ${JSON.stringify(repository)}; const r=new AnalyticsRepository(); for(let i=0;i<4000;i++) r.record({id:String(i),timestamp:"2026-10-01T00:00:00.000Z",project:"/fixture",kind:"command",action:"x".repeat(512)}); r.close();`
+			`import {AnalyticsRepository} from ${JSON.stringify(repository)}; const r=new AnalyticsRepository(); for(let i=0;i<4000;i++) r.record({id:String(i),timestamp:"2026-10-01T00:00:00.000Z",project:${JSON.stringify(process.cwd())},kind:"command",action:"x".repeat(512)}); r.close();`
 		);
 		execFileSync(process.env.HARNESS_BUN_PATH ?? 'bun', [cli], { env: process.env });
 		const data = await new HarnessAnalyticsService().snapshot(new URLSearchParams());

@@ -5,7 +5,7 @@ addMessages('en', {
 	subtitle: 'Work, verification, and the evidence behind it.',
 	local: 'LOCAL WORKSPACE',
 	allProjects: 'All projects',
-	search: 'Search projects and reports',
+	search: 'Search reports',
 	all: 'All',
 	status: 'Status',
 	project: 'Project',

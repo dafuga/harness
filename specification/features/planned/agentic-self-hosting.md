@@ -256,6 +256,34 @@ and measured by `harness kernel bench --boundary`. The loop for this feature run
 - The legacy store is read-only for the importer. It takes only this repository's reports, keeps a
   null revision as unlinked, and exposes no global analytics.
 - The views are legible at 1440, 920 and 390 pixels.
+- Each branch, commit and view of the console has its own path, as do the selected unit, the base
+  of a comparison and the record of a history view. Reloads, direct links and back and forward
+  keep the page; a branch name keeps its slashes; a commit on no branch gets no branch; the root
+  and the earlier query addresses redirect; and a path that names nothing in the history says so.
+  The own viewer and an installed host behave alike, and every such address passes the policy.
+- The index states for every commit what it changed against its first parent, computed from the
+  source of both commits as `harness impact` computes it. A history without any record shows its
+  real impact, and the missing verification as a gap beside it.
+- Every surface under `/harness` is limited on the server to the hosting application: the report
+  list, pages, JSON, screenshots, audio, video, exports and uploads, analytics and agent CPU. The
+  application is the repository a checkout was cloned from, known by its remote address or its
+  own Git store; worktrees and clones are the same application, two applications from one
+  template are not, and what cannot be attributed belongs to none. A foreign report is answered
+  like a missing one and cannot be changed; shared stores are left intact.
+- A report recorded as running keeps that outcome when it stops updating; its liveness is shown
+  beside it, not instead of it.
+- An install may change files the host owns when that is asked for. A file that holds other
+  content, host-written or edited since an earlier install, stops the install before anything is
+  written; `--update` replaces it and `--keep` leaves it. What a replacement displaces is saved in
+  the project, `harness.console.json` records the path, reason and the identity of both sides,
+  and `harness console restore` puts it back. The change is visible in the host's Git diff, unit
+  registry, impact and reasons.
+- Every capture shows the build and revision it names, its standing and the verification attempt
+  it belongs to; a rejected, inherited or unvalidated capture is never presented as tested at the
+  selected commit, in the gallery, the viewer, the audio card or an export.
+- A capture is tied to compiled files: evidence may name a declared build, whose identity is
+  computed in the snapshot, and a capture from any other build is rejected even when it carries
+  the current revision.
 - The installer is proven on the stack host apps normally use: SvelteKit with
   `adapter-cloudflare`, where the deployed backend is TypeScript on Workers and Bun only builds
   and tests. The installed fixture builds there, and unauthorized requests for its pages, JSON
@@ -283,9 +311,10 @@ failures, recorded by independent verification and not introduced by this work:
   1104 pixels (1387.9 against a limit of 750) and at 390 pixels (1445.9 against a limit of 1100).
 - `tests/e2e/provider-picker.spec.ts:4` finds no combobox named exactly `Provider`.
 
-Their assertions stay as written. Stage E reuses this frontend, so it must reconcile the
-responsive report layout and diagnose the picker configuration before the suite is required to
-pass. Until then they are reported as failing, never as passing.
+Stage E repaired both with the assertions as written. The gameplay replay now follows the
+gallery instead of preceding it, which is what pushed the gallery down. The picker spec was
+being run against the reports server, where no picker exists; it now runs under its own
+configuration, which builds the panel and starts the picker preview it was written for.
 
 ## Future Enhancements
 
@@ -295,7 +324,7 @@ pass. Until then they are reported as failing, never as passing.
 
 ## Delivery status
 
-Stages A, B, C and D are implemented. Stage A: unit schemas, the unit generator, the `units`
+Stages A, B, C, D and E are implemented. Stage A: unit schemas, the unit generator, the `units`
 commands, the source graph and the self-host registry. Stage B: the runtime contract and
 adapters, the reference and Rust kernels, `harness impact`, `harness kernel` and the typed
 package entries. Stage C: scenario contracts and their coverage rules, the evidence protocol
@@ -305,7 +334,48 @@ reasons, frozen budgets with a reviewed ledger, and `harness scenarios`, `explai
 `reasons`, `status`, `fetch`, `push`, `sync`), the deterministic history index
 (`harness history build`), the legacy report import, the opt-in pre-push hook
 (`harness hooks`), the two CI workflows and the `@dafuga01/harness/history` package entry.
-Stages E and F are not started. Stage evidence is recorded in the `agentic-self-hosting` loop.
+Stage E: the protected `/harness` console over the history index, with the map, comparison,
+history, growth and earlier-report views built on the report gallery, viewer, player and export;
+the owner policy and the redirects of the former routes; per-capture provenance; build identity
+(`harness verify identity`, `builds` in `harness.verify.json`); the browser capture helper and
+the console scenario; the edge runtime entry (`@dafuga01/harness/edge`, `/console`,
+`/console-ui`, `/kernel.wasm`); and the SvelteKit installer (`harness console install` and
+`restore`). Stage F is not started. Stage evidence is recorded in the `agentic-self-hosting`
+loop.
+
+What stage E does not yet do:
+
+- Compare shows impact, measurements and coverage of two revisions, but not their screenshots or
+  audio side by side. Aligned base and head media belong to stage F.
+- No commit of Harness has been verified, so the console has no record of its own to show and
+  the console scenario has not run under `harness verify`. Its browser captures are validated
+  against the scenario contract and the real build identity in the suite, with a placeholder in
+  place of a verified revision. The first real run is stage F.
+- The map was exercised in the suite on a generated registry of 488 units, which describes no
+  real source. The repository's own 456 units were inspected by hand on a read-only index.
+- A host bundles its history into its server. That suits a small index; a Worker script has a
+  size limit, and the installer only warns above 5 MiB. A host with more media has to supply its
+  own protected `ConsoleData`, for example over a bucket binding, and none ships yet.
+- A server on Workers cannot read its own files, so it reports no build identity. Build
+  identity is implemented for servers that can: Harness's own and the fixtures.
+- The console document carries its script and style inline. A host with a strict content
+  security policy has to allow that for the console route.
+- The indexed impact is each commit against its first parent. Two commits further apart are
+  compared in the browser from stored unit versions and dependencies, which cannot know about
+  unresolved references or changes outside any unit; the view says so. Indexing both trees of
+  every commit makes `harness history build` take about two seconds more per commit here.
+- Site ownership needs the recording directory to exist still: a report made in a checkout that
+  was deleted since belongs to no site and is not shown. The Git-backed history already holds
+  the reviewed reports of this repository and does not depend on that.
+- The CPU panel attributes agents by their working directory. The Codex and Harness totals
+  remain totals of the machine and are labelled as such.
+- `--update` and `--keep` decide about every conflicting file of an install at once.
+- A hosted console shows the earlier reports that were imported into Git. Loop and Jev
+  analytics stay in Harness's own server, under `/harness/analytics`.
+- The moved report pages took new unit identities with their routes; the former routes keep
+  theirs as redirects. No baseline existed for either.
+- `analytics-dashboard.spec.ts:25` passes here once its report link expects the new route. Its
+  failure in the cancelled self dry-run, and the environment isolation behind it, are stage F.
 
 What stage D does not yet do:
 
@@ -318,8 +388,6 @@ What stage D does not yet do:
   run to run, so performance budgets fail there until a stable runner has reviewed baselines.
 - The hook is a local aid. `git push --no-verify`, other worktrees that did not opt in, and
   hooks managed by another tool are outside it.
-- The index is the data only. The protected `/harness` console that serves it, its installer
-  and its Workers-compatible runtime are stage E.
 - Lineage validation hashes every file of every record a record inherits from, each time; and
   a record's proven base is indexed twice per verification. Neither is cached.
 
@@ -334,11 +402,8 @@ What stage C left open and still is:
 - Checks inherit the environment of the command that started verification, and verification
   disables analytics recording for every check. Harness's own analytics tests assume it is
   enabled and its output declaration is untested: both belong to the self-host run in stage F.
-- A capture's build stamp is still whatever the check states. Tying it to a real served build
-  whose identity derives from the source, tree and compiled artifacts arrives with stages E
-  and F; until then a stale build relabelled with the current revision would not be noticed.
-- No browser runner captures screenshots or audio yet. The verifier accepts only PNG and WAV and
-  validates them; readiness for fonts, images, canvas and async state arrives with stage E.
+- A project that declares no build keeps the earlier rule: its captures are tied to a revision
+  only, and a stale build relabelled with that revision would not be noticed there.
 - Harness has not verified one of its own commits. Its configuration, boundary scenario and
   budgets are declared, but no unit has a baseline: they can only come from a clean record of a
   committed revision, which stage F establishes.

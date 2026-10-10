@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.console-export",
+	"kind": "function",
+	"title": "consoleExport",
+	"responsibility": "Builds the portable report page of one recorded verification from stored JSON and media.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/consoleExport.ts"],
+		"symbols": ["ConsoleExportInput", "consoleExport"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "consoleExport.input",
+				"type": "ConsoleExportInput"
+			},
+			{
+				"name": "consoleExport.assets",
+				"type": "PortableAssets"
+			}
+		],
+		"outputs": [
+			{
+				"name": "consoleExport",
+				"type": "Promise<string | undefined>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.harness-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.portable-page",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/consoleExport.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/consoleExport.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

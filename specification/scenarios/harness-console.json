@@ -1,0 +1,129 @@
+{
+	"schemaVersion": 1,
+	"id": "harness-console",
+	"title": "Harness console over a fixed synthetic history",
+	"kind": "ui",
+	"units": [
+		"reports.component.harness-harness-console",
+		"reports.component.harness-harness-map",
+		"reports.component.harness-harness-unit",
+		"reports.component.harness-harness-compare",
+		"reports.component.harness-harness-history",
+		"reports.component.harness-harness-legacy",
+		"reports.component.harness-harness-growth",
+		"reports.component.evidence-provenance",
+		"reports.endpoint.harness-data-path",
+		"reports.endpoint.harness-media-file",
+		"reports.entry.hooks-server",
+		"function.console-access",
+		"function.console-policy",
+		"reports.page.harness-view",
+		"reports.component.harness-harness-selectors",
+		"reports.function.harness-page",
+		"function.console-route",
+		"function.console-canonical"
+	],
+	"states": [
+		{
+			"id": "map",
+			"title": "Component map with one unit selected",
+			"coverage": "required"
+		},
+		{
+			"id": "compare",
+			"title": "Base and head comparison with affected units",
+			"coverage": "required"
+		},
+		{
+			"id": "removed",
+			"title": "A removed unit inspected in a comparison",
+			"coverage": "required"
+		},
+		{
+			"id": "history",
+			"title": "Records of a verified commit",
+			"coverage": "required"
+		},
+		{
+			"id": "media",
+			"title": "Recorded screenshots and audio of one record",
+			"coverage": "required"
+		},
+		{
+			"id": "rejected",
+			"title": "A rejected stale capture in the viewer",
+			"coverage": "required"
+		},
+		{
+			"id": "gap",
+			"title": "A commit with no verification record",
+			"coverage": "required"
+		},
+		{
+			"id": "growth",
+			"title": "Growth and timings of one component",
+			"coverage": "required"
+		},
+		{
+			"id": "hundreds",
+			"title": "A map of several hundred generated units with one selected",
+			"coverage": "required"
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 1440,
+			"height": 900
+		},
+		{
+			"id": "tablet",
+			"width": 920,
+			"height": 800
+		},
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 844
+		}
+	],
+	"tests": [
+		{
+			"id": "evidence",
+			"kind": "e2e",
+			"runner": "playwright",
+			"target": "tests/e2e/harness-evidence.spec.ts",
+			"cwd": "packages/reports"
+		}
+	],
+	"evidence": [
+		{
+			"id": "screens",
+			"kind": "screenshot",
+			"states": [
+				"map",
+				"compare",
+				"removed",
+				"history",
+				"media",
+				"rejected",
+				"gap",
+				"growth",
+				"hundreds"
+			],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"build": "reports",
+			"required": true
+		},
+		{
+			"id": "tone",
+			"kind": "audio",
+			"states": ["media"],
+			"viewports": [],
+			"provenance": "actual-capture",
+			"build": "reports",
+			"required": true
+		}
+	]
+}

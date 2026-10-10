@@ -26,6 +26,11 @@ export const verifyConfigSchema = z.strictObject({
 	 * committed, and a declaration may not cover a tracked file.
 	 */
 	outputs: z.array(text).default([]),
+	/**
+	 * Compiled output that setup produces and a server then serves. Its identity is computed in
+	 * the snapshot, and evidence that names the build must have been served by exactly it.
+	 */
+	builds: z.array(z.strictObject({ id: identifier, directory: text })).default([]),
 	/** Command templates per runner; `{target}` is replaced by the test file. */
 	runners: z.record(z.string(), text),
 	timeouts: z.strictObject({ test: z.number().int().positive() })
@@ -38,6 +43,7 @@ export const defaultVerifyConfig: VerifyConfig = {
 	setup: [],
 	link: [],
 	outputs: [],
+	builds: [],
 	runners: {
 		vitest: 'bun x vitest run {target}',
 		playwright: 'bun x playwright test {target}'

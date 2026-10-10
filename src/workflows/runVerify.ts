@@ -11,6 +11,7 @@ import {
 	VerificationStoreRepository,
 	type StoredRecord
 } from '../repositories/VerificationStoreRepository';
+import { BuildIdentityService, type IdentifiedBuild } from '../services/BuildIdentityService';
 import { EvidenceRestoreService } from '../services/EvidenceRestoreService';
 import { ImpactService } from '../services/ImpactService';
 import { TrustedBaseService } from '../services/TrustedBaseService';
@@ -104,6 +105,15 @@ export async function verifyCheck(options: VerifyOptions = {}): Promise<CheckRep
 		);
 	}
 	return new VerificationCheckService(root).check(commit, stored);
+}
+
+/** The identity of a compiled build directory, as the server that serves it should report it. */
+export async function verifyIdentity(
+	directory: string
+): Promise<IdentifiedBuild & { directory: string }> {
+	const target = resolve(directory);
+	const build = await new BuildIdentityService().identify(target);
+	return build ? { directory: target, ...build } : fail(`${directory} holds no built files.`);
 }
 
 export function renderVerify(stored: StoredRecord): string {

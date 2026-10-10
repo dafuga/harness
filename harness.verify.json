@@ -27,5 +27,11 @@
 	},
 	"timeouts": {
 		"test": 600000
-	}
+	},
+	"builds": [
+		{
+			"id": "reports",
+			"directory": "packages/reports/build"
+		}
+	]
 }

@@ -12,7 +12,12 @@
 	},
 	"contract": {
 		"origin": "derived",
-		"inputs": [],
+		"inputs": [
+			{
+				"name": "reportBuildIdentity.directory",
+				"type": "string | undefined"
+			}
+		],
 		"outputs": [
 			{
 				"name": "reportBuildIdentity",
@@ -23,7 +28,7 @@
 	},
 	"dependencies": [
 		{
-			"unit": "reports.function.report-runtime-root",
+			"unit": "function.build-identity",
 			"via": "import",
 			"origin": "derived"
 		}

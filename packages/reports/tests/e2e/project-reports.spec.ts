@@ -76,7 +76,7 @@ test('hub finds reports across projects and filters search', async ({ page }) =>
 	await capture(page, 'hub');
 	await expect(page.getByRole('heading', { name: 'Project reports', exact: true })).toBeVisible();
 	await expect(page.getByText('Account settings review', { exact: true })).toBeVisible();
-	await page.getByPlaceholder('Search projects and reports').fill('Whole-site');
+	await page.getByPlaceholder('Search reports').fill('Whole-site');
 	await expect(page.getByText('Account settings review', { exact: true })).toHaveCount(0);
 	await expect(page.getByText('Whole-site review', { exact: true })).toBeVisible();
 });

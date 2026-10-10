@@ -6,9 +6,12 @@ import { analyticsSnapshot } from '../workflows/analyticsMetrics';
 import { importAnalytics } from '../workflows/importAnalytics';
 import type { AnalyticsFilter } from '../core/analyticsTypes';
 import { analyticsHtml } from '../workflows/analyticsHtml';
+import { sameSite } from '../utils/repositoryIdentity';
 
 export interface AnalyticsOptions extends AnalyticsFilter {
 	json?: boolean;
+	/** Limits everything to events recorded in checkouts of the repository at this path. */
+	site?: string;
 	root?: string;
 	output?: string;
 }
@@ -26,7 +29,11 @@ export class AnalyticsService {
 		}
 		const filter = await normalizeFilter(options);
 		const repository = new AnalyticsRepository();
-		const snapshot = analyticsSnapshot(repository.events(), filter);
+		// A site sees its own repository and nothing else, whatever other filter is asked for.
+		const events = options.site
+			? repository.events().filter((event) => sameSite(options.site ?? '', event.project))
+			: repository.events();
+		const snapshot = analyticsSnapshot(events, filter);
 		repository.close();
 		if (operation === 'export') {
 			if (!options.output) throw new Error('--output is required.');

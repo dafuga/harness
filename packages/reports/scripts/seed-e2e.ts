@@ -155,11 +155,33 @@ await store.record(mobileOnly.id, {
 		status: 'passed'
 	}
 });
+// Another checkout of the same application: its reports belong to the same site.
 await store.begin({
-	project: '/tmp/beta-project',
+	project: '/tmp/alpha-checkout',
 	title: 'Whole-site review',
 	mode: 'suite',
 	environment: 'local fixture'
 });
+// A different application sharing the store. Nothing of it may be served by the first site.
+const foreign = await store.begin({
+	project: '/tmp/beta-project',
+	title: 'Foreign storefront review',
+	mode: 'feature',
+	environment: 'local fixture',
+	summary: 'Checkout totals of the Beta storefront.'
+});
+await store.record(foreign.id, {
+	kind: 'evidence',
+	data: {
+		id: 'storefront',
+		title: 'Storefront checkout',
+		category: 'Checkout',
+		phase: 'current',
+		viewport: '1440px desktop',
+		path: image,
+		status: 'passed'
+	}
+});
+await writeFile(join(root, 'foreign-id'), foreign.id);
 await writeFile(join(root, 'fixture-id'), report.id);
 await writeFile(join(root, 'mobile-id'), mobileOnly.id);

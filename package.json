@@ -28,6 +28,19 @@
 			"types": "./dist/types/lib/history.d.ts",
 			"default": "./dist/api/history.js"
 		},
+		"./edge": {
+			"types": "./dist/types/lib/edge.d.ts",
+			"default": "./dist/api/edge.js"
+		},
+		"./console": {
+			"types": "./dist/types/lib/console.d.ts",
+			"default": "./dist/api/console.js"
+		},
+		"./console-ui": {
+			"types": "./dist/types/lib/console-ui.d.ts",
+			"default": "./dist/api/console-ui.js"
+		},
+		"./kernel.wasm": "./dist/kernel/impact-kernel.wasm",
 		"./dist/*": "./dist/*",
 		"./package.json": "./package.json"
 	},
@@ -42,13 +55,13 @@
 		"typecheck": "tsc --noEmit",
 		"test": "bun run test:unit",
 		"test:unit": "vitest run --exclude \"test/**/*.e2e.test.ts\" --exclude \"test/packaged-reports.e2e.test.ts\"",
-		"test:e2e": "vitest run test/cli.e2e.test.ts test/rules.e2e.test.ts test/ecosystem-adapters.e2e.test.ts test/structure.e2e.test.ts test/dapp-audit.e2e.test.ts test/complex-feature.e2e.test.ts test/loop.e2e.test.ts test/audit-config.e2e.test.ts test/clean-code.e2e.test.ts test/response-check.e2e.test.ts test/analytics.e2e.test.ts test/analytics-attribution.e2e.test.ts test/analytics-worktrees.e2e.test.ts test/codex-gateway.e2e.test.ts test/codex-picker.e2e.test.ts test/units.e2e.test.ts test/units-graph.e2e.test.ts test/units-policy.e2e.test.ts test/impact.e2e.test.ts test/impact-uncertainty.e2e.test.ts test/kernel.e2e.test.ts test/kernel-calibration.e2e.test.ts test/kernel-boundary.e2e.test.ts test/verify.e2e.test.ts test/verify-negative.e2e.test.ts test/explain.e2e.test.ts test/budget.e2e.test.ts test/budget-performance.e2e.test.ts test/budget-calibration.e2e.test.ts test/verify-measures.e2e.test.ts test/budget-comparability.e2e.test.ts test/verify-range.e2e.test.ts test/verify-snapshot.e2e.test.ts test/history-attach.e2e.test.ts test/history-restore.e2e.test.ts test/history-sync.e2e.test.ts test/history-concurrency.e2e.test.ts test/history-retention.e2e.test.ts test/history-corrupt.e2e.test.ts test/history-index.e2e.test.ts test/history-legacy.e2e.test.ts test/history-reasons.e2e.test.ts test/hooks.e2e.test.ts",
+		"test:e2e": "vitest run test/cli.e2e.test.ts test/rules.e2e.test.ts test/ecosystem-adapters.e2e.test.ts test/structure.e2e.test.ts test/dapp-audit.e2e.test.ts test/complex-feature.e2e.test.ts test/loop.e2e.test.ts test/audit-config.e2e.test.ts test/clean-code.e2e.test.ts test/response-check.e2e.test.ts test/analytics.e2e.test.ts test/analytics-attribution.e2e.test.ts test/analytics-worktrees.e2e.test.ts test/codex-gateway.e2e.test.ts test/codex-picker.e2e.test.ts test/units.e2e.test.ts test/units-graph.e2e.test.ts test/units-policy.e2e.test.ts test/impact.e2e.test.ts test/impact-uncertainty.e2e.test.ts test/kernel.e2e.test.ts test/kernel-calibration.e2e.test.ts test/kernel-boundary.e2e.test.ts test/verify.e2e.test.ts test/verify-negative.e2e.test.ts test/explain.e2e.test.ts test/budget.e2e.test.ts test/budget-performance.e2e.test.ts test/budget-calibration.e2e.test.ts test/verify-measures.e2e.test.ts test/budget-comparability.e2e.test.ts test/verify-range.e2e.test.ts test/verify-snapshot.e2e.test.ts test/history-attach.e2e.test.ts test/history-restore.e2e.test.ts test/history-sync.e2e.test.ts test/history-concurrency.e2e.test.ts test/history-retention.e2e.test.ts test/history-corrupt.e2e.test.ts test/history-index.e2e.test.ts test/history-legacy.e2e.test.ts test/history-reasons.e2e.test.ts test/hooks.e2e.test.ts test/verify-build.e2e.test.ts test/cli-output.e2e.test.ts test/console-update.e2e.test.ts test/history-impact.e2e.test.ts",
 		"lint": "eslint .",
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
 		"prepack": "bun run build",
 		"build:cli": "bun build src/index.ts --target bun --outdir dist",
-		"test:package": "vitest run test/packaged-reports.e2e.test.ts test/packaged-api.e2e.test.ts test/packaged-verification.e2e.test.ts test/packaged-history.e2e.test.ts",
+		"test:package": "vitest run test/packaged-reports.e2e.test.ts test/packaged-api.e2e.test.ts test/packaged-verification.e2e.test.ts test/packaged-history.e2e.test.ts test/packaged-edge.e2e.test.ts test/console-install.e2e.test.ts test/console-host-routes.e2e.test.ts",
 		"report": "bun run src/index.ts report",
 		"dev:reports": "bun run --cwd packages/reports dev",
 		"check:reports": "bun run --cwd packages/reports build && bun run --cwd packages/reports check",
@@ -70,6 +83,8 @@
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.25.1",
+		"@sveltejs/adapter-cloudflare": "^7.0.1",
+		"@sveltejs/adapter-static": "^3.0.10",
 		"@types/bun": "^1.2.18",
 		"@types/node": "^22.15.3",
 		"@typescript-eslint/eslint-plugin": "^8.31.1",
@@ -78,7 +93,8 @@
 		"eslint-config-prettier": "^10.1.2",
 		"prettier": "^3.5.3",
 		"typescript": "^5.8.3",
-		"vitest": "^3.1.2"
+		"vitest": "^3.1.2",
+		"wrangler": "^4.53.0"
 	},
 	"engines": {
 		"bun": ">=1.2.0"

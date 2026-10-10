@@ -27,13 +27,23 @@ export class ReportServerService {
 		return (
 			health?.app === 'project-reports' &&
 			health.root === identity &&
-			health.buildId === reportBuildIdentity()
+			health.buildId === reportBuildIdentity(resolve(appRoot, 'build'))
 		);
 	}
 	private start(port: number) {
 		const child = spawn(process.execPath, [resolve(appRoot, 'build', 'index.js')], {
 			cwd: appRoot,
-			env: { ...process.env, HOST: '127.0.0.1', PORT: String(port), BODY_SIZE_LIMIT: '110M' },
+			env: {
+				...process.env,
+				HOST: '127.0.0.1',
+				PORT: String(port),
+				BODY_SIZE_LIMIT: '110M',
+				// This server is started for the local owner and listens on loopback only.
+				// The server shows the application it was started for, and no other.
+				HARNESS_SITE_ROOT: process.env.HARNESS_SITE_ROOT ?? process.cwd(),
+				HARNESS_OWNER_MODE: 'loopback',
+				HARNESS_BIND: '127.0.0.1'
+			},
 			detached: true,
 			stdio: 'ignore'
 		});

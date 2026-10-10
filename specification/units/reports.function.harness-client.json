@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.harness-client",
+	"kind": "function",
+	"title": "harnessClient",
+	"responsibility": "Fetches the index and a revision detail from the protected endpoints, each once and only when asked.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/harnessClient.ts"],
+		"symbols": ["HarnessClient", "harnessClient"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "harnessClient.base",
+				"type": "string"
+			},
+			{
+				"name": "harnessClient.fetcher",
+				"type": "typeof fetch"
+			}
+		],
+		"outputs": [
+			{
+				"name": "harnessClient",
+				"type": "HarnessClient"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/harnessClient.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/harnessClient.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

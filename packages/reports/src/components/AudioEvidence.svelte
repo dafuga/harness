@@ -4,6 +4,7 @@
 	import { audioDuration, mediaMime } from '../utils/evidenceMedia';
 	import { timeAgo } from '../utils/reportDisplay';
 	import { t } from '../utils/reportLocale';
+	import EvidenceProvenance from './EvidenceProvenance.svelte';
 	import StatusBadge from './StatusBadge.svelte';
 	type AudioEvent = Event & { currentTarget: EventTarget & HTMLAudioElement };
 	// A second copy (for example in a viewer) passes its own prefix so HTML ids stay unique.
@@ -89,7 +90,8 @@
 			>
 			<span>
 				<span class="audio-kind"
-					>{$t('audio')}{#if item.phase}
+					>{$t('audio')}{#if item.standing}
+						· {item.standing}{:else if item.phase}
 						· {$t(item.phase)}{/if}</span
 				>
 				{#if seconds}<time class="audio-duration" datetime={`PT${Math.round(seconds)}S`}
@@ -116,6 +118,7 @@
 		<h3><a href={'#evidence-' + item.id}>{item.title}</a></h3>
 		{#if item.source}<p class="audio-source"><span>{$t('source')}</span> {item.source}</p>{/if}
 		{#if missing && item.note}<p class="muted">{item.note}</p>{/if}
+		<EvidenceProvenance {item} />
 		{#if item.transcript || collapsedNote}
 			<details class="audio-details" open={Boolean(item.transcript)}>
 				<summary>{$t(detailsLabel)}</summary>

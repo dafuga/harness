@@ -1,0 +1,42 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.script.seed-harness-console",
+	"kind": "script",
+	"title": "seed-harness-console",
+	"responsibility": "Builds the fixed synthetic Git history the console browser acceptance inspects.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/scripts/seed-harness-console.ts"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.script.harness-scale-data",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/scripts/seed-harness-console.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/scripts/seed-harness-console.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

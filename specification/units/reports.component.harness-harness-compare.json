@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-harness-compare",
+	"kind": "component",
+	"title": "HarnessCompare",
+	"responsibility": "Shows what changed between a base and a head revision: units, scenarios, reasons and measurements.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/HarnessCompare.svelte"],
+		"symbols": ["HarnessCompare"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HarnessCompare.base",
+				"type": "HarnessRevision | undefined"
+			},
+			{
+				"name": "HarnessCompare.head",
+				"type": "HarnessRevision"
+			},
+			{
+				"name": "HarnessCompare.selected",
+				"type": "string | null"
+			},
+			{
+				"name": "HarnessCompare.onselect",
+				"type": "(id: string) => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HarnessCompare",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-harness-map",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-unit",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-impact",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/HarnessCompare.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/HarnessCompare.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

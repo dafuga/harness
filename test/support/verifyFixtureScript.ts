@@ -101,7 +101,7 @@ if (mode === 'page' && env.FIXTURE_HANG) {
 	}
 	if (env.FIXTURE_FAIL) process.exit(1);
 } else if (mode === 'audio') {
-	const transcript = env.FIXTURE_NO_TRANSCRIPT ? undefined : 'Title: ' + read('src/services/TitleService.ts').length;
+	const transcript = env.FIXTURE_NO_TRANSCRIPT ? undefined : (env.FIXTURE_TRANSCRIPT ?? 'Title: ' + read('src/services/TitleService.ts').length);
 	const entry = { evidence: 'speech', kind: 'audio', state: 'spoken', file: 'spoken.wav', mediaType: 'audio/wav' };
 	const durationSeconds = media === 'audio-duration' ? 9 : 0.25;
 	capture({ ...entry, provenance: 'fixture', transcript, durationSeconds }, audio());

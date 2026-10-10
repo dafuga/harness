@@ -155,6 +155,17 @@ export const verificationRecordSchema = z.strictObject({
 		})
 	),
 	scenarios: z.array(scenarioResultSchema),
+	/** Identity of each declared build as compiled in the snapshot of this exact tree. */
+	builds: z
+		.array(
+			z.strictObject({
+				id: identifier,
+				directory: text,
+				buildId: sha256,
+				files: z.number().int().positive()
+			})
+		)
+		.optional(),
 	budgets: z.strictObject({ status: outcome, findings: z.array(budgetFindingSchema) }),
 	reasons: z.strictObject({
 		status: outcome,

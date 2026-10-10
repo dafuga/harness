@@ -28,12 +28,21 @@
 			{
 				"name": "HttpError 400",
 				"type": "thrown"
+			},
+			{
+				"name": "HttpError 404",
+				"type": "thrown"
 			}
 		]
 	},
 	"dependencies": [
 		{
 			"unit": "reports.function.media-response",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-http",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -36,6 +36,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.component.evidence-provenance",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.status-badge",
 			"via": "import",
 			"origin": "derived"

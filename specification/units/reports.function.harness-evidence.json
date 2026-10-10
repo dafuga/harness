@@ -1,0 +1,90 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.harness-evidence",
+	"kind": "function",
+	"title": "harnessEvidence",
+	"responsibility": "Maps the recorded captures of one verification onto gallery items and a portable report.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/harnessEvidence.ts"],
+		"symbols": ["mediaFile", "harnessEvidence", "harnessReport"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "mediaFile.capture",
+				"type": "HarnessCapture"
+			},
+			{
+				"name": "harnessEvidence.detail",
+				"type": "HarnessRevision"
+			},
+			{
+				"name": "harnessEvidence.record",
+				"type": "HarnessRecord"
+			},
+			{
+				"name": "harnessReport.summary",
+				"type": "HarnessRevisionSummary"
+			},
+			{
+				"name": "harnessReport.detail",
+				"type": "HarnessRevision"
+			},
+			{
+				"name": "harnessReport.record",
+				"type": "HarnessRecord"
+			}
+		],
+		"outputs": [
+			{
+				"name": "mediaFile",
+				"type": "string"
+			},
+			{
+				"name": "harnessEvidence",
+				"type": "Evidence[]"
+			},
+			{
+				"name": "harnessReport",
+				"type": "Report"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.capture-provenance",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/harnessEvidence.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/harnessEvidence.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

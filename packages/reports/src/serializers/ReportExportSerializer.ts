@@ -3,14 +3,10 @@ import { join } from 'node:path';
 import type { Report } from '../models/Report.types';
 import { registeredAsset } from '../utils/reportAssets';
 import { mediaMime } from '../utils/evidenceMedia';
+import { portablePage, type PortableAssets } from '../utils/portablePage';
 export class ReportExportSerializer {
 	constructor(private readonly appRoot: string) {}
 	async html(report: Report, directory: string) {
-		const bundle = join(this.appRoot, 'dist', 'viewer');
-		const [script, style] = await Promise.all([
-			readFile(join(bundle, 'report.iife.js'), 'utf8'),
-			readFile(join(bundle, 'report.css'), 'utf8')
-		]);
 		const portable = structuredClone(report);
 		for (const item of portable.evidence) {
 			if (item.missing) continue;
@@ -22,17 +18,19 @@ export class ReportExportSerializer {
 			const mime = mediaMime(item.file);
 			item.file = `data:${mime};base64,${(await readFile(path)).toString('base64')}`;
 		}
-		const data = JSON.stringify(portable)
-			.replace(/</g, '\\u003c')
-			.replace(/\u2028/g, '\\u2028')
-			.replace(/\u2029/g, '\\u2029');
-		return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(report.title)} · Project reports</title><style>${style}</style></head><body><div id="app"></div><script>window.projectReport=${data};</script><script>${script}</script></body></html>`;
+		return this.page(portable);
 	}
-}
-function escapeHtml(value: string) {
-	return value.replace(
-		/[&<>"']/g,
-		(char) =>
-			({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char] || char
-	);
+	/** Wraps a report whose media is already inline into one self-contained page. */
+	async page(portable: Report) {
+		return portablePage(portable, await this.assets());
+	}
+	/** The compiled viewer this application ships, read from its build output. */
+	async assets(): Promise<PortableAssets> {
+		const bundle = join(this.appRoot, 'dist', 'viewer');
+		const [script, style] = await Promise.all([
+			readFile(join(bundle, 'report.iife.js'), 'utf8'),
+			readFile(join(bundle, 'report.css'), 'utf8')
+		]);
+		return { script, style };
+	}
 }

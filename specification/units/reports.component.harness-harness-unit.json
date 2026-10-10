@@ -1,0 +1,77 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-harness-unit",
+	"kind": "component",
+	"title": "HarnessUnit",
+	"responsibility": "Shows one unit: its contract, owned interface, dependencies, consumers, targets, budgets and scenarios.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/HarnessUnit.svelte"],
+		"symbols": ["HarnessUnit"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HarnessUnit.unit",
+				"type": "HarnessUnit"
+			},
+			{
+				"name": "HarnessUnit.units",
+				"type": "HarnessUnit[]"
+			},
+			{
+				"name": "HarnessUnit.scenarios",
+				"type": "HarnessScenario[]"
+			},
+			{
+				"name": "HarnessUnit.records",
+				"type": "HarnessRecord[]"
+			},
+			{
+				"name": "HarnessUnit.removed",
+				"type": "boolean"
+			},
+			{
+				"name": "HarnessUnit.onselect",
+				"type": "(id: string) => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HarnessUnit",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.capture-provenance",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/HarnessUnit.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/HarnessUnit.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

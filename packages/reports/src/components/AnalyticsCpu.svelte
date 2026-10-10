@@ -63,8 +63,11 @@
 		</p>
 		<div class="panel analytics-grid">
 			<div class="analytics-heading">
-				<h3>By local agent</h3>
-				<span class="analytics-note">One row per agent process tree</span>
+				<h3>Agents working in this repository</h3>
+				<span class="analytics-note"
+					>One row per agent process tree running in a checkout of this application. The machine
+					total above covers everything on this computer.</span
+				>
 			</div>
 			{#if cpu.agents.length}
 				<div class="analytics-scroll">
@@ -92,7 +95,7 @@
 					</table>
 				</div>
 			{:else}
-				<p class="analytics-empty">No local agent processes detected in this sample.</p>
+				<p class="analytics-empty">No agent was working in this repository in this sample.</p>
 			{/if}
 		</div>
 	{:else}

@@ -1,0 +1,65 @@
+{
+	"schemaVersion": 1,
+	"id": "function.console-policy",
+	"kind": "function",
+	"title": "consolePolicy",
+	"responsibility": "Decides who may open the console; Harness's own server admits only a loopback peer of a server explicitly bound to loopback.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/consolePolicy.ts"],
+		"symbols": [
+			"ConsoleRequest",
+			"ConsolePolicy",
+			"OwnerMode",
+			"loopbackAddress",
+			"consolePolicy",
+			"denyAll"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "loopbackAddress.address",
+				"type": "string | undefined"
+			},
+			{
+				"name": "consolePolicy.owner",
+				"type": "OwnerMode"
+			}
+		],
+		"outputs": [
+			{
+				"name": "loopbackAddress",
+				"type": "boolean"
+			},
+			{
+				"name": "consolePolicy",
+				"type": "ConsolePolicy"
+			},
+			{
+				"name": "denyAll",
+				"type": "ConsolePolicy"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/consolePolicy.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/consolePolicy.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

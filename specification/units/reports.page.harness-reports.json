@@ -1,0 +1,84 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.page.harness-reports",
+	"kind": "page",
+	"title": "/harness/reports",
+	"responsibility": "Lists project reports across projects under the console.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/routes/harness/reports/+page.server.ts",
+			"packages/reports/src/routes/harness/reports/+page.svelte"
+		],
+		"symbols": ["load", "+page"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "+page.data",
+				"type": "{ reports: Report[]; site: string }"
+			}
+		],
+		"outputs": [
+			{
+				"name": "load",
+				"type": "unknown"
+			},
+			{
+				"name": "+page",
+				"type": "markup"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.hub-view",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-http",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-locale",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-site",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/routes/harness/reports/+page.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/routes/harness/reports/+page.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

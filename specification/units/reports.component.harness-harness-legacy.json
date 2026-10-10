@@ -1,0 +1,78 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-harness-legacy",
+	"kind": "component",
+	"title": "HarnessLegacy",
+	"responsibility": "Lists the reports made before records were kept in Git, with their original outcome, date and link.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/HarnessLegacy.svelte"],
+		"symbols": ["HarnessLegacy"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HarnessLegacy.reports",
+				"type": "HarnessLegacyReport[]"
+			},
+			{
+				"name": "HarnessLegacy.commit",
+				"type": "string"
+			},
+			{
+				"name": "HarnessLegacy.known",
+				"type": "Set<string>"
+			},
+			{
+				"name": "HarnessLegacy.mediaBase",
+				"type": "string"
+			},
+			{
+				"name": "HarnessLegacy.onselect",
+				"type": "(commit: string) => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HarnessLegacy",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.evidence-grid",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.legacy-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/HarnessLegacy.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/HarnessLegacy.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

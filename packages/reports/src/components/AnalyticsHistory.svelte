@@ -62,7 +62,6 @@
 							<tr>
 								<td class="analytics-wrap">
 									<strong>{loop.name}</strong>
-									<small>{loop.project}</small>
 								</td>
 								<td>{loop.template ?? '—'}</td>
 								<td>{loop.agentModel}</td>

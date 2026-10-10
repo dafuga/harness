@@ -1,6 +1,12 @@
 import type { Command } from 'commander';
 import { fail } from '../core/errors';
-import { renderVerify, verifyCheck, verifyRun, type VerifyOptions } from '../workflows/runVerify';
+import {
+	renderVerify,
+	verifyCheck,
+	verifyIdentity,
+	verifyRun,
+	type VerifyOptions
+} from '../workflows/runVerify';
 
 type Flags = VerifyOptions & { json?: boolean };
 
@@ -44,5 +50,17 @@ export function registerVerifyCommand(program: Command): void {
 			if (report.status === 'failed') process.exitCode = 1;
 			else if (!flags.json)
 				console.log(`Commit ${report.commit} is verified by ${report.record.slice(0, 12)}.`);
+		});
+	registerIdentity(verify);
+}
+
+function registerIdentity(verify: Command): void {
+	verify
+		.command('identity <directory>')
+		.option('--json', 'Print structured results.')
+		.description('Print the identity of a compiled build directory, as a server should report it.')
+		.action(async (directory: string, flags: Flags) => {
+			const build = await verifyIdentity(directory);
+			console.log(flags.json ? JSON.stringify(build, null, 2) : build.buildId);
 		});
 }

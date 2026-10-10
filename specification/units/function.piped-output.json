@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "function.piped-output",
+	"kind": "function",
+	"title": "pipedOutput",
+	"responsibility": "Routes console output through the standard streams so piped output larger than a pipe buffer arrives whole.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/pipedOutput.ts"],
+		"symbols": ["pipedOutput"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "pipedOutput",
+				"type": "void"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/pipedOutput.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/pipedOutput.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

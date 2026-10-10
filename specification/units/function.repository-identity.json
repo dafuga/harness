@@ -1,0 +1,70 @@
+{
+	"schemaVersion": 1,
+	"id": "function.repository-identity",
+	"kind": "function",
+	"title": "repositoryIdentity",
+	"responsibility": "Identifies the application a checkout belongs to by the repository it was cloned from, never by shared history.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/repositoryIdentity.ts"],
+		"symbols": ["repositoryIdentity", "sameRepository", "sameSite"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "repositoryIdentity.directory",
+				"type": "string"
+			},
+			{
+				"name": "sameRepository.left",
+				"type": "string"
+			},
+			{
+				"name": "sameRepository.right",
+				"type": "string"
+			},
+			{
+				"name": "sameSite.site",
+				"type": "string"
+			},
+			{
+				"name": "sameSite.directory",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "repositoryIdentity",
+				"type": "string | null"
+			},
+			{
+				"name": "sameRepository",
+				"type": "boolean"
+			},
+			{
+				"name": "sameSite",
+				"type": "boolean"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/repositoryIdentity.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/repositoryIdentity.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

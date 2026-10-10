@@ -11,9 +11,8 @@ import { scenarioCoverage } from '../utils/scenarioCoverage';
 import { referencedScenario } from '../utils/sealRecord';
 import { verifyPlan } from '../utils/verifyPlan';
 import type { RevisionSide } from '../workflows/loadRevisions';
-import type { CheckOutcome } from './CheckRunService';
 import { RecordAssemblyService } from './RecordAssemblyService';
-import { SnapshotRunService } from './SnapshotRunService';
+import { SnapshotRunService, type Executed } from './SnapshotRunService';
 
 export interface VerifyContext {
 	root: string;
@@ -57,7 +56,7 @@ export class VerificationService {
 			testTimeoutMs: context.testTimeoutMs
 		});
 		const executed = await this.snapshotRun(directory).execute(plan, this.artifactPaths());
-		const scenarios = rerun.map((scenario) => this.judge(scenario, executed.outcomes));
+		const scenarios = rerun.map((scenario) => this.judge(scenario, executed));
 		const assembly = new RecordAssemblyService({
 			...context,
 			profile: this.profile,
@@ -97,14 +96,19 @@ export class VerificationService {
 
 	private judge(
 		scenario: ScenarioManifest,
-		outcomes: CheckOutcome[]
+		executed: Executed
 	): { result: ScenarioResult; failures: string[] } {
-		const own = outcomes.filter((outcome) => outcome.check.scenario === scenario.id);
+		const own = executed.outcomes.filter((outcome) => outcome.check.scenario === scenario.id);
+		const compiled = (executed.builds ?? []).map((build) => [build.id, build.buildId] as const);
 		const coverage = scenarioCoverage({
 			scenario,
 			commit: this.context.commit,
 			gathered: own.flatMap((outcome) => outcome.gathered),
-			checkFailed: own.some((outcome) => !outcome.passed)
+			checkFailed: own.some((outcome) => !outcome.passed),
+			builds: {
+				declared: this.context.config.builds.map((build) => build.id),
+				compiled: new Map(compiled)
+			}
 		});
 		const ran = own.length === scenario.tests.length;
 		const failures = [

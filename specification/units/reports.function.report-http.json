@@ -33,7 +33,7 @@
 		"outputs": [
 			{
 				"name": "repository",
-				"type": "unknown"
+				"type": "ReportRepository"
 			},
 			{
 				"name": "reportHttp",
@@ -93,6 +93,11 @@
 		},
 		{
 			"unit": "reports.repository.report",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.repository.site-report",
 			"via": "import",
 			"origin": "derived"
 		}

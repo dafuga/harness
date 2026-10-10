@@ -1,7 +1,7 @@
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import type { AddressInfo } from 'node:net';
-import { runtimeFailure, type RuntimeRequest, type UnitRuntime } from '../core/runtimeTypes';
-import { notPortable, portableJson } from '../utils/portableJson';
+import type { UnitRuntime } from '../core/runtimeTypes';
+import { runtimeReply } from '../utils/runtimeReply';
 
 export interface ServedRuntime {
 	url: string;
@@ -41,21 +41,12 @@ export class RuntimeServerService {
 		request: IncomingMessage,
 		response: ServerResponse
 	): Promise<void> {
-		if (request.method !== 'POST') {
-			return send(
-				response,
-				405,
-				runtimeFailure('invalid-request', 'send one JSON request per POST')
-			);
-		}
-		let parsed: unknown;
-		try {
-			parsed = JSON.parse(await body(request));
-		} catch {
-			return send(response, 400, runtimeFailure('invalid-json', 'request is not valid JSON'));
-		}
-		if (!portableJson(parsed)) return send(response, 400, notPortable);
-		return send(response, 200, await runtime.invoke(parsed as RuntimeRequest));
+		const reply = await runtimeReply(runtime, request.method ?? '', () => body(request));
+		response.writeHead(reply.status, {
+			'content-type': 'application/json',
+			'cache-control': 'no-store'
+		});
+		response.end(JSON.stringify(reply.value));
 	}
 }
 
@@ -63,9 +54,4 @@ async function body(request: IncomingMessage): Promise<string> {
 	const chunks: Buffer[] = [];
 	for await (const chunk of request) chunks.push(chunk as Buffer);
 	return Buffer.concat(chunks).toString('utf8');
-}
-
-function send(response: ServerResponse, status: number, value: unknown): void {
-	response.writeHead(status, { 'content-type': 'application/json', 'cache-control': 'no-store' });
-	response.end(JSON.stringify(value));
 }

@@ -1,0 +1,128 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-harness-console",
+	"kind": "component",
+	"title": "HarnessConsole",
+	"responsibility": "Loads the history index on demand and lets the reader move between branches, commits and the console views.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/HarnessConsole.svelte"],
+		"symbols": ["HarnessConsole"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HarnessConsole.base",
+				"type": "string"
+			},
+			{
+				"name": "HarnessConsole.path",
+				"type": "string"
+			},
+			{
+				"name": "HarnessConsole.navigate",
+				"type": "(path: string, replace: boolean) => void"
+			},
+			{
+				"name": "HarnessConsole.links",
+				"type": "Array<{ label: string; href: string }>"
+			},
+			{
+				"name": "HarnessConsole.exportable",
+				"type": "boolean"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HarnessConsole",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.console-canonical",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.console-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-compare",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-growth",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-history",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-legacy",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-map",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-selectors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-unit",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-ancestry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-client",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-page",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/HarnessConsole.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/HarnessConsole.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

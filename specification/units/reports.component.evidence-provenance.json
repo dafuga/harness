@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.evidence-provenance",
+	"kind": "component",
+	"title": "EvidenceProvenance",
+	"responsibility": "Lists the recorded facts about what produced one piece of evidence.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/EvidenceProvenance.svelte"],
+		"symbols": ["EvidenceProvenance"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "EvidenceProvenance.item",
+				"type": "Evidence"
+			}
+		],
+		"outputs": [
+			{
+				"name": "EvidenceProvenance",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/EvidenceProvenance.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/EvidenceProvenance.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

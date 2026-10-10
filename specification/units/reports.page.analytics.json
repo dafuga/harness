@@ -3,15 +3,12 @@
 	"id": "reports.page.analytics",
 	"kind": "page",
 	"title": "/analytics",
-	"responsibility": "Owns the /analytics route page.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Redirects the former analytics route to /harness/analytics, keeping its filters.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/routes/analytics/+page.server.ts",
-			"packages/reports/src/routes/analytics/+page.svelte"
-		],
-		"symbols": ["load", "+page"]
+		"source": ["packages/reports/src/routes/analytics/+page.server.ts"],
+		"symbols": ["load"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -19,73 +16,24 @@
 			{
 				"name": "load.input",
 				"type": "{ url: URL }"
-			},
-			{
-				"name": "+page.data",
-				"type": "PageData"
 			}
 		],
 		"outputs": [
 			{
 				"name": "load",
 				"type": "unknown"
-			},
-			{
-				"name": "+page",
-				"type": "markup"
 			}
 		],
 		"errors": []
 	},
-	"dependencies": [
-		{
-			"unit": "reports.component.analytics-cpu",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.analytics-filters",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.analytics-history",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.analytics-models",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.analytics-tasks",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.function.analytics-display",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.service.harness-analytics",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.style.analytics",
-			"via": "import",
-			"origin": "derived"
-		}
-	],
+	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/routes/analytics/+page.svelte",
+		"entry": "packages/reports/src/routes/analytics/+page.server.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/routes/analytics/+page.svelte"
+				"entry": "packages/reports/src/routes/analytics/+page.server.ts"
 			}
 		]
 	},

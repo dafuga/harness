@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/utils/reportDisplay.ts"],
-		"symbols": ["reportDisplay", "dateLabel", "timeAgo", "evidenceAnchor"]
+		"symbols": ["reportDisplay", "reportStale", "dateLabel", "timeAgo", "evidenceAnchor"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -16,6 +16,14 @@
 			{
 				"name": "reportDisplay.report",
 				"type": "Report"
+			},
+			{
+				"name": "reportStale.report",
+				"type": "Report"
+			},
+			{
+				"name": "reportStale.now",
+				"type": "unknown"
 			},
 			{
 				"name": "dateLabel.value",
@@ -38,6 +46,10 @@
 			{
 				"name": "reportDisplay",
 				"type": "Status"
+			},
+			{
+				"name": "reportStale",
+				"type": "boolean"
 			},
 			{
 				"name": "dateLabel",

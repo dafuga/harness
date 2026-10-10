@@ -8,25 +8,11 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/adapters/ModuleRuntimeAdapter.ts"],
-		"symbols": [
-			"ModuleRuntimeAdapter",
-			"ModuleRuntimeAdapter.constructor",
-			"ModuleRuntimeAdapter.load",
-			"ModuleRuntimeAdapter.invoke",
-			"ModuleRuntimeAdapter.close"
-		]
+		"symbols": ["ModuleRuntimeAdapter", "ModuleRuntimeAdapter.load"]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
-			{
-				"name": "ModuleRuntimeAdapter.constructor.handler",
-				"type": "RuntimeHandler"
-			},
-			{
-				"name": "ModuleRuntimeAdapter.constructor.options",
-				"type": "RuntimeOptions"
-			},
 			{
 				"name": "ModuleRuntimeAdapter.load.file",
 				"type": "string"
@@ -38,36 +24,19 @@
 			{
 				"name": "ModuleRuntimeAdapter.load.options",
 				"type": "RuntimeOptions & { label?: string }"
-			},
-			{
-				"name": "ModuleRuntimeAdapter.invoke.request",
-				"type": "RuntimeRequest"
 			}
 		],
 		"outputs": [
 			{
 				"name": "ModuleRuntimeAdapter.load",
 				"type": "ModuleRuntimeAdapter"
-			},
-			{
-				"name": "ModuleRuntimeAdapter.invoke",
-				"type": "Promise<RuntimeResponse>"
-			},
-			{
-				"name": "ModuleRuntimeAdapter.close",
-				"type": "Promise<void>"
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
 		{
-			"unit": "function.portable-json",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.runtime-response",
+			"unit": "adapter.handler-runtime",
 			"via": "import",
 			"origin": "derived"
 		},

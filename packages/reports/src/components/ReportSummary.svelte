@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Report } from '../models/Report.types';
 	import { t } from '../utils/reportLocale';
-	import { reportDisplay, dateLabel } from '../utils/reportDisplay';
+	import { dateLabel, reportStale } from '../utils/reportDisplay';
 	import StatusBadge from './StatusBadge.svelte';
 	let {
 		report,
@@ -22,7 +22,7 @@
 	<div class="eyebrow">{report.project.name} <span>/</span> {$t(report.mode)}</div>
 	<div class="title-row">
 		<h1>{report.title}</h1>
-		<StatusBadge status={reportDisplay(report)} />
+		<StatusBadge status={report.status} />
 	</div>
 	<p class="lead">{report.summary}</p>
 	<div class:has-gaps={gaps > 0} class="outcome-strip">
@@ -42,7 +42,7 @@
 		>
 	</div>
 	{#if report.historical}<p class="notice">{$t('historicalNote')}</p>{/if}
-	{#if reportDisplay(report) === 'interrupted'}<p class="notice">{$t('stale')}</p>{/if}
+	{#if reportStale(report)}<p class="notice">{$t('stale')}</p>{/if}
 	{#if report.state === 'finalizing'}<p class="notice">{$t('finalizingNote')}</p>{/if}
 	<div class="toolbar report-actions">
 		{#if report.exports}

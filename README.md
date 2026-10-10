@@ -304,8 +304,133 @@ default branch, validates the uploaded record as data and publishes it; it never
 commit that was verified. A runner whose machine profile has no reviewed baseline fails the
 performance gate; CI never establishes or approves one.
 
-The `/harness` console, its installer and browser capture are specified in
-`specification/features/planned/agentic-self-hosting.md` and are not delivered yet.
+## The console, its installer and the edge runtime
+
+```sh
+harness console install --host <dir> --policy <module> [--data <index>]   # embed the console in a SvelteKit app
+harness console install ... --update | --keep                             # decide about files that hold other content
+harness console restore <path> --host <dir>                               # put back what an install replaced
+harness verify identity <directory>                                       # identity of a compiled build
+```
+
+**The console.** `/harness` shows the repository's own history as `harness history build`
+wrote it: a searchable component map with each unit's contract, owned interface,
+dependencies, consumers, execution targets, budgets and scenarios; a base-and-head
+comparison with directly changed, indirectly affected, added and removed units, affected
+scenarios, reasons and measurements; the recorded verification of a commit with its
+screenshots, audio and transcripts; growth and timings per component; and the reports made
+before records were kept in Git. A map of hundreds of units is a block rather than a strip:
+searching or choosing a unit brings it into view at a readable size, the arrow keys move
+between units, and the list beside the map is the text alternative. Nothing is embedded in
+the page: the index, a revision's detail and each media file are fetched when looked at.
+
+**Addresses.** Each branch, commit and view has its own path, and so does what is selected
+on it:
+
+```text
+/harness/branch/<branch>/commit/<sha>/map[/unit/<unit>]
+/harness/branch/<branch>/commit/<sha>/compare/<base sha>[/unit/<unit>]
+/harness/branch/<branch>/commit/<sha>/history[/record/<record>]
+/harness/branch/<branch>/commit/<sha>/growth[/unit/<unit>]
+/harness/commit/<sha>/<view>            # a tested commit that no branch reaches any more
+```
+
+A branch name keeps its slashes and every part is encoded. Reloading, direct links and the
+browser's back and forward buttons stay on the page. `/harness` leads to the newest commit of
+the main branch, and the earlier `?view=&commit=&base=&unit=` form redirects to the page it
+named. A path whose commit is not in the history, or not on the branch it names, says so and
+links back; nothing is shown in its place. All of these addresses pass the same policy as the
+data behind them.
+
+**Impact without records.** For every commit the index holds what it changed against its
+first parent, computed when the index is built from the source of both commits exactly as
+`harness impact` does: directly changed, indirectly affected, added and removed units,
+affected scenarios, unresolved references and whether the change put everything in scope.
+A commit nobody verified therefore still shows its real impact, next to the statement that
+it has no record. Two commits that are not parent and child are compared from the unit
+versions and dependencies stored at both, and the view says what that cannot know.
+
+Every capture states what it itself names: the build and revision that produced it, whether
+it is fresh, inherited, rejected or from a record that could not be validated, and the
+verification attempt it belongs to. A rejected or inherited capture is never shown as tested
+at the selected commit, in the gallery, the viewer, the audio card or a portable export.
+
+**Who may see it.** Harness's own server has one owner. It serves only when started with
+`HARNESS_OWNER_MODE=loopback`, bound to a loopback address, and only to a peer that connects
+from loopback. `Host` and forwarding headers are never authorization, and owner mode is
+refused behind an address header. Without owner mode every page, API, data, media and export
+request is answered `403`. `harness report serve` and `bun run dev:reports` start it that
+way. The former `/`, `/reports/<id>` and `/analytics` routes redirect to `/harness/reports`,
+`/harness/reports/<id>` and `/harness/analytics`.
+
+**One site, its own content.** Everything under `/harness` is about the application the
+server is hosted for, and that is decided on the server. The site is fixed when the server
+starts, from where it was started or from `HARNESS_SITE_ROOT`. A report, an analytics event
+or an agent process belongs to it only when its directory is a checkout of the same
+repository: the repository it was cloned from, named by its remote address in any spelling,
+or its own Git store when it has no remote. Worktrees, renamed checkouts and local, fresh or
+shallow clones are the same application; two applications started from one template are not,
+because shared history decides nothing. A directory that is missing, is no repository or has
+an unclear origin belongs to no site.
+
+The report list, a report page, its JSON, its screenshots, audio, video and exports, and
+every upload go through that one check. A report of another application is answered `404`
+like one that does not exist, whatever project a query names, and nothing can be added to
+it. Analytics count the site's own events only and ignore a `project` parameter; the CPU
+panel keeps the machine total and lists only agents working in a checkout of the site. The
+shared stores themselves are not changed, and the `harness report` commands still record and
+finalize reports for whichever project they are run in.
+
+A report that was recorded as running and then went quiet keeps the outcome that was
+recorded. The hub shows it as running and says beside it since when it has had no update.
+
+**Installing it in an application.** The host supplies the policy; Harness adds no login,
+session or credential:
+
+```ts
+// src/lib/server/harnessPolicy.ts — the host's own rule, on the server only
+import type { ConsoleRequest } from '@dafuga01/harness/console';
+
+export function harnessPolicy(event: ConsoleRequest): boolean {
+	return (event.locals as App.Locals).user?.role === 'admin';
+}
+```
+
+`harness console install` then writes one server-only module and four endpoints under
+`/harness` (the console document, its data, its media and its exports). Each of them asks
+the policy first and answers `403` unless it returns exactly `true`; a policy that throws
+denies. The bundled history lives under `$lib/server`, so it is in the server bundle only:
+not in `static/`, not in the client bundle and under no public path. The generated code uses
+web platform APIs alone and runs on Cloudflare Workers under `adapter-cloudflare`; a static
+build of the same project, which drops server routes, is unaffected.
+
+**Changing files the host owns.** An install never loses content silently, and it never
+refuses for good. When a file it would write already holds other content, because the host
+wrote it or because someone edited it after an earlier install, the install stops before
+writing anything and names the files. Run it again with `--update` to replace them or with
+`--keep` to leave them as the host's own version. A replaced or removed file is first saved
+under `.harness/console/replaced/<sha256>`, and `harness.console.json` records the path, the
+reason and the hash of both sides. `harness console restore <path>` puts the saved contents
+back and records that as well. The files are ordinary changes of the host project: they are
+in its Git diff, its unit registry and impact see them, and they need a reason like any other
+change.
+
+**Units on Workers.** `@dafuga01/harness/edge` is the runtime contract for platforms
+without a file system or child processes. `HandlerRuntimeAdapter` runs a function in the
+same isolate, `WasmModuleRuntimeAdapter` runs a core Wasm module the platform precompiled
+(the kernel ships as `@dafuga01/harness/kernel.wasm`), `HttpRuntimeAdapter` calls a unit
+served elsewhere and `runtimeFetch` serves one from a fetch handler with the wire contract
+of the Node server. Workers do not compile Wasm from bytes at run time, so the module is
+handed in. A native process target is not exported there; it stays in
+`@dafuga01/harness/runtime` for Bun and Node.
+
+**Build identity.** A capture of running software names the build that served it. Declare
+compiled output in `harness.verify.json` (`"builds": [{ "id": "site", "directory":
+"build" }]`) and name it in the scenario's evidence (`"build": "site"`): the identity is then
+computed in the verification snapshot from the path and content of every compiled file, and a
+capture counts only if the server that produced it reported exactly that identity. A server
+reports the identity of the files it was started from, read once at start. An old bundle
+relabelled with the current revision is rejected.
 
 ## Jev Clean Code review
 

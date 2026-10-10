@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.harness-impact",
+	"kind": "function",
+	"title": "harnessImpact",
+	"responsibility": "Derives what changed between two revisions, from a record when one compared them and from the registries otherwise.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/harnessImpact.ts"],
+		"symbols": ["HarnessImpact", "harnessImpact"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "harnessImpact.base",
+				"type": "HarnessRevision | undefined"
+			},
+			{
+				"name": "harnessImpact.head",
+				"type": "HarnessRevision"
+			}
+		],
+		"outputs": [
+			{
+				"name": "harnessImpact",
+				"type": "HarnessImpact"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/harnessImpact.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/harnessImpact.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

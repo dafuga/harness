@@ -1,0 +1,98 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.page.harness-analytics",
+	"kind": "page",
+	"title": "/harness/analytics",
+	"responsibility": "Shows loop and Jev analytics of the local owner under the console.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/routes/harness/analytics/+page.server.ts",
+			"packages/reports/src/routes/harness/analytics/+page.svelte"
+		],
+		"symbols": ["load", "+page"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "load.input",
+				"type": "{ url: URL }"
+			},
+			{
+				"name": "+page.data",
+				"type": "PageData"
+			}
+		],
+		"outputs": [
+			{
+				"name": "load",
+				"type": "unknown"
+			},
+			{
+				"name": "+page",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.analytics-cpu",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.analytics-filters",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.analytics-history",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.analytics-models",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.analytics-tasks",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.analytics-display",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.service.harness-analytics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.analytics",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/routes/harness/analytics/+page.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/routes/harness/analytics/+page.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

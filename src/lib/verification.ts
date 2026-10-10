@@ -29,6 +29,10 @@ export {
 } from '../core/verifyTypes';
 export type { CaptureLine, VerifyConfig, Workload } from '../core/verifyTypes';
 export { evidenceRequested, recordCapture } from '../utils/recordCapture';
+export { buildIdentity } from '../utils/buildIdentity';
+export type { BuiltFile } from '../utils/buildIdentity';
+export { BuildIdentityService } from '../services/BuildIdentityService';
+export type { BuiltIdentity, IdentifiedBuild } from '../services/BuildIdentityService';
 export { scenarioRequirements } from '../utils/scenarioRequirements';
 export type { RequiredCapture, ScenarioRequirements } from '../utils/scenarioRequirements';
 export { mediaFacts } from '../utils/mediaFacts';
