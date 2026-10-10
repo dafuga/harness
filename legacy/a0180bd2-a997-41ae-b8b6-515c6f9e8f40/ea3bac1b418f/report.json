@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"kind": "legacy-report",
+	"id": "a0180bd2-a997-41ae-b8b6-515c6f9e8f40",
+	"project": "harness",
+	"title": "Codex Claude gateway and monitoring plugins",
+	"mode": "feature",
+	"environment": "local compatibility gate",
+	"status": "running",
+	"state": "active",
+	"startedAt": "2026-10-07T11:36:02.789Z",
+	"updatedAt": "2026-10-07T12:14:16.547Z",
+	"revision": null,
+	"summary": "Claude Max gateway must pass the installed desktop app gate before dependent plugins are built",
+	"checks": [
+		{
+			"id": "gateway-red",
+			"title": "Initial gateway regressions",
+			"status": "failed"
+		},
+		{
+			"id": "gateway-green",
+			"title": "Gateway protocol regressions",
+			"status": "passed"
+		},
+		{
+			"id": "retry-red",
+			"title": "Retry guard red proof",
+			"status": "failed"
+		},
+		{
+			"id": "retry-green",
+			"title": "Retry guard green proof",
+			"status": "passed"
+		},
+		{
+			"id": "sdk-live",
+			"title": "Claude Max live bridge",
+			"status": "passed"
+		},
+		{
+			"id": "bundled-cli",
+			"title": "Installed bundled Codex CLI compatibility",
+			"status": "failed"
+		},
+		{
+			"id": "desktop-gate",
+			"title": "Desktop first delivery gate",
+			"status": "blocked"
+		},
+		{
+			"id": "repository-check",
+			"title": "Final prototype verification",
+			"status": "passed"
+		},
+		{
+			"id": "cli-roundtrip",
+			"title": "Installed trial configuration and same-thread CLI provider round trip",
+			"status": "passed"
+		}
+	],
+	"media": []
+}
