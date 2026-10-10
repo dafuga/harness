@@ -250,11 +250,62 @@ scenario on `service.unit-runtime`, measured by `harness kernel bench --boundary
 Typed contracts for all of this ship in `@dafuga01/harness/verification`, including
 `recordCapture` for checks that write evidence.
 
-Records and reasons are local drafts until they are stored in Git. Git notes, the evidence
-branch, hooks, CI and the `/harness` console are specified in
-`specification/features/planned/agentic-self-hosting.md` and are not delivered yet. Browser
-screenshots with font, image and canvas readiness, and real audio capture, arrive with the
-console; the verifier's protocol and validators for them exist now.
+## History in Git, hooks and CI
+
+```bash
+harness history attach [--commit <rev>] [--record <id>]   # store a record and its evidence in Git
+harness history reasons [--base <rev>] [--commit <rev>]   # keep a range's reasons in notes
+harness history status [--commit <rev>]                   # what Git alone proves about a commit
+harness history fetch|push|sync [remote]                  # exchange records; never forced
+harness history build --out <dir> [--strict]              # portable, deterministic history index
+harness history import-reports --from <store>             # legacy reports, as recorded
+harness hooks install|uninstall|status                    # opt-in pre-push gate
+```
+
+**Where things live.** A source commit is never changed. Its record, manifest and files are
+added to the `harness-evidence` branch of the same repository, under
+`records/<commit>/<record>/`; screenshots and audio are Git LFS objects named by the sha256 of
+their original bytes. A note on the commit in `refs/notes/harness` holds one JSON line per
+record (id, outcome, source commit and tree, evidence commit, path and manifest hash) and one
+per reason. `refs/harness/source/<sha>` keeps a tested commit reachable when its branch is
+deleted or rewritten. `.cache/harness` is a cache that is rebuilt from these refs.
+
+**What is accepted.** A record is attached only if its seal, its files and its commit and tree
+check out; a failed record is attached as failed. Records are only ever added: separate runs of
+one commit, writers in one repository or in worktrees that share it, and clones that diverged
+are all kept, and `sync` merges and never forces. The sealed record states the outcome, so a
+note copied to a rewritten commit, or edited to say `passed`, proves nothing. A record also
+counts only together with what it inherits: its base record and the records behind referenced
+scenarios must be attached and intact.
+
+**Not source.** Evidence and notes are never verified, impacted or explained as code, and they
+start neither the hook nor CI.
+
+**The index.** `harness history build` reads source branches, archived commits, the registry
+stored at each revision, notes, manifests and media, and writes `index.json`, one
+`revisions/<commit>.json` per commit and `media/<sha256>.<ext>`. The same refs always give the
+same bytes, in any clone, without SQLite or R2. A commit without evidence is listed as a gap;
+missing or damaged notes, manifests and media are reported and never replaced by current data.
+Timings taken on another machine profile, or under another request, unit, method or sampling,
+are separate series.
+
+**Legacy reports.** `import-reports` only reads the old store. It imports the runs of this
+repository with their original dates, outcome and revision: a run that was still running stays
+`running`, and one whose revision is not a commit here stays unlinked.
+
+**The hook.** `harness hooks install` adds a pre-push hook for the current worktree. It keeps
+an existing hook and runs it first, verifies each pushed branch tip in a clean snapshot when no
+passing record proves it, attaches the record and blocks the push if it failed. It is a local
+aid: `git push --no-verify` skips it, and other worktrees are unaffected until they opt in.
+
+**CI.** `.github/workflows/harness-verify.yml` runs the full check and verifies the exact
+commit with read-only access and no secrets. `harness-evidence.yml` runs trusted code from the
+default branch, validates the uploaded record as data and publishes it; it never runs the
+commit that was verified. A runner whose machine profile has no reviewed baseline fails the
+performance gate; CI never establishes or approves one.
+
+The `/harness` console, its installer and browser capture are specified in
+`specification/features/planned/agentic-self-hosting.md` and are not delivered yet.
 
 ## Jev Clean Code review
 

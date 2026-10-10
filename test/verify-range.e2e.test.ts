@@ -36,7 +36,12 @@ test('unapproved growth cannot pass through another base or an empty child', asy
 	const grown = await repo.change('src/utils/slugify.ts', grow);
 	const normal = await repo.verify();
 	expect([normal.exitCode, normal.record.failures]).toEqual([1, growth]);
-	expect(normal.record.source).toEqual({ commit: grown, tree: expect.any(String), base: verified });
+	expect(normal.record.source).toEqual({
+		commit: grown,
+		tree: expect.any(String),
+		base: verified,
+		baseRecord: expect.stringMatching(/^[0-9a-f]{64}$/)
+	});
 
 	for (const base of ['HEAD', grown]) {
 		const narrowed = await repo.verify(['--base', base]);
@@ -113,7 +118,8 @@ test('nothing changed since a passing record: evidence is inherited and nothing 
 	expect(child.record.source).toEqual({
 		commit: await repo.git(['rev-parse', 'HEAD']),
 		tree: expect.any(String),
-		base: verified
+		base: verified,
+		baseRecord: same.record.id
 	});
 	expect(child.record.scenarios.map((scenario) => scenario.status)).toEqual(
 		child.record.scenarios.map(() => 'referenced')

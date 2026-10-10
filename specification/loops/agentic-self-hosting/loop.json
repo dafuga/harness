@@ -2,7 +2,7 @@
 	"name": "agentic-self-hosting",
 	"goal": "Harness hosts itself: component contracts, dual-graph impact, scenario evidence, frozen budgets, Git-native notes and evidence history, and a protected prebuilt /harness console are proven by failing-then-passing acceptance tests",
 	"createdAt": "2026-10-10T12:53:55.653Z",
-	"updatedAt": "2026-10-10T16:19:08.031Z",
+	"updatedAt": "2026-10-10T17:29:06.935Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"steps": [
@@ -52,7 +52,9 @@
 		{
 			"id": "stage-d",
 			"title": "Stage D - Git notes, LFS evidence branch, sync, hooks and CI: red then green.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-10T17:29:06.935Z",
+			"evidence": "RED on the unchanged Stage C commit 143e486: work/logs/stage-d-red.log, 13 new test files failed (22 tests failed, 4 skipped by failed setup, 5 files could not load). Independent finding from Codex reproduced before repair in work/logs/stage-d2-red.log: two records with identical media attached at once in one repository lost a record (3 of 4 tests failed). Reasons persistence red in stage-d3-red.log (2 of 2). GREEN work/logs/stage-d-green.log: 31 Stage D and Stage C files, 97 tests. Test provenance with every post-red change and exact diffs: work/logs/stage-d-test-diff.log. Full bun run check EXIT=0 with the tree digest unchanged during it (work/logs/stage-d-check.log): cargo fmt, clippy and cargo test; 358 unit tests in 107 files with 25 live-API tests in 2 files skipped; 144 CLI end-to-end tests in 43 files; 4 packed-package tests including the history entry; both audits; units check 456 units with 6 uncertain; 88 reports tests. Codex's unmodified probe work/root-build-stage-d-probe.ts exits 0 on the final code: three concurrent-attach attempts keep both records, a changed request under one workload name is an incompatible series in the index, and a failed record with a forged passing note stays unverified. The overlapping-writer suite passed three further runs. harness explain check: 72 reasons for 56 units, listed in work/logs/stage-d-rationale.md; the Stage C range ab9d6a2..143e486 still checks as 72 reasons. Not done here: nothing was attached, imported, synchronised or installed in the Harness repository itself (no history refs and no hook exist there), the CI workflows have not run on a hosted runner, and Harness still has no verified commit or baseline."
 		},
 		{
 			"id": "stage-e",

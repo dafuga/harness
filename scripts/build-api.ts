@@ -1,7 +1,7 @@
 import { cp, mkdir, rm, writeFile } from 'node:fs/promises';
 
 /** Builds the side-effect-free public API, its declarations and the shipped kernel artifacts. */
-const entries = ['contracts', 'runtime', 'verification'];
+const entries = ['contracts', 'runtime', 'verification', 'history'];
 
 for (const directory of ['dist/api', 'dist/types', 'dist/kernel']) {
 	await rm(directory, { recursive: true, force: true });

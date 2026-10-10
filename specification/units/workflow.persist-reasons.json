@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.persist-reasons",
+	"kind": "workflow",
+	"title": "persistReasons",
+	"responsibility": "Keeps the reasons of a committed range in the notes of its last commit.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/persistReasons.ts"],
+		"symbols": ["PersistedReasons", "persistReasons", "renderReasons"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "persistReasons.options",
+				"type": "{ root?: string; commit?: string; base?: string }"
+			},
+			{
+				"name": "renderReasons.result",
+				"type": "PersistedReasons"
+			}
+		],
+		"outputs": [
+			{
+				"name": "persistReasons",
+				"type": "Promise<PersistedReasons>"
+			},
+			{
+				"name": "renderReasons",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.history-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.required-reasons",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.explanation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.history-note",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.explanation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.load-revisions",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.run-history",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/persistReasons.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/persistReasons.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

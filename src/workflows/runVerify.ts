@@ -11,6 +11,7 @@ import {
 	VerificationStoreRepository,
 	type StoredRecord
 } from '../repositories/VerificationStoreRepository';
+import { EvidenceRestoreService } from '../services/EvidenceRestoreService';
 import { ImpactService } from '../services/ImpactService';
 import { TrustedBaseService } from '../services/TrustedBaseService';
 import { UnitRuntimeService } from '../services/UnitRuntimeService';
@@ -38,16 +39,26 @@ async function resolveCommit(git: GitAdapter, reference: string): Promise<string
 	return commit ?? fail(`"${reference}" does not name a commit in this repository.`);
 }
 
+/**
+ * The base that was asked for, and the nearest revision a passing record proves. Records
+ * attached in Git are restored first, so a fresh clone builds on what is already proven.
+ */
+async function provenBase(git: GitAdapter, commit: string, base: string | undefined) {
+	const parent = base ?? (await git.attempt(['rev-parse', '--verify', '--quiet', `${commit}^`]));
+	const requestedBase = !parent || parent === 'none' ? null : await resolveCommit(git, parent);
+	await new EvidenceRestoreService(git.root).restore();
+	const proven = await new TrustedBaseService(git.root).nearestRecord(requestedBase);
+	return { requestedBase, proven };
+}
+
 /** Verifies one exact commit in a clean snapshot; the record is stored even when it fails. */
 export async function verifyRun(options: VerifyOptions = {}): Promise<StoredRecord> {
 	const root = resolve(options.root ?? process.cwd());
 	const git = new GitAdapter(root);
 	if (!(await git.isRepository())) return fail('harness verify needs a Git repository.');
 	const commit = await resolveCommit(git, options.commit ?? 'HEAD');
-	const parent =
-		options.base ?? (await git.attempt(['rev-parse', '--verify', '--quiet', `${commit}^`]));
-	const requestedBase = !parent || parent === 'none' ? null : await resolveCommit(git, parent);
-	const baseCommit = await new TrustedBaseService(root).nearest(requestedBase);
+	const { requestedBase, proven } = await provenBase(git, commit, options.base);
+	const baseCommit = proven?.commit ?? null;
 	const { base, head } = await openRange({ root, base: baseCommit ?? 'none', head: commit });
 	const runtime = new UnitRuntimeService(root).kernel(runtimeKind(options.runtime));
 	const impact = await new ImpactService(runtime)
@@ -58,6 +69,7 @@ export async function verifyRun(options: VerifyOptions = {}): Promise<StoredReco
 		commit,
 		tree: await git.run(['rev-parse', `${commit}^{tree}`]),
 		baseCommit,
+		baseRecord: proven?.record,
 		requestedBase,
 		base,
 		head,
@@ -81,6 +93,7 @@ async function verifyConfig(head: RevisionSide): Promise<VerifyConfig> {
 export async function verifyCheck(options: VerifyOptions = {}): Promise<CheckReport> {
 	const root = resolve(options.root ?? process.cwd());
 	const commit = await resolveCommit(new GitAdapter(root), options.commit ?? 'HEAD');
+	await new EvidenceRestoreService(root).restore();
 	const store = new VerificationStoreRepository(root);
 	const stored = options.record ? store.load(options.record) : store.latest(commit);
 	if (!stored) {

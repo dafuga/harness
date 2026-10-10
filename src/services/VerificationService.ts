@@ -21,6 +21,8 @@ export interface VerifyContext {
 	tree: string;
 	/** The proven revision everything is judged against, or null when nothing is proven. */
 	baseCommit: string | null;
+	/** The passing record that proves the base; inherited evidence comes from it alone. */
+	baseRecord?: string;
 	/** The base that was asked for; it differs when that revision has no passing record. */
 	requestedBase: string | null;
 	base: RevisionSide;
@@ -84,8 +86,8 @@ export class VerificationService {
 	 * the base commit itself has a record; otherwise nothing proves they were unaffected since.
 	 */
 	private referenced(): ScenarioResult[] {
-		const { baseCommit, impact, head } = this.context;
-		const prior = baseCommit ? this.store.latest(baseCommit)?.record : undefined;
+		const { baseRecord, impact, head } = this.context;
+		const prior = baseRecord ? this.store.load(baseRecord)?.record : undefined;
 		const affected = new Set(impact.scenarios.affected);
 		if (!prior) return [];
 		return head.scenarios.flatMap((scenario) =>

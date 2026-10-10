@@ -7,7 +7,9 @@ const subcommands: Record<string, string[]> = {
 	scenarios: ['list', 'show', 'check'],
 	explain: ['add', 'list', 'check'],
 	budget: ['measure', 'status', 'history', 'establish', 'approve', 'bench'],
-	verify: ['run', 'check']
+	verify: ['run', 'check'],
+	history: ['attach', 'status', 'reasons', 'fetch', 'push', 'sync', 'build', 'import-reports'],
+	hooks: ['install', 'uninstall', 'status', 'run']
 };
 export function commandAction(args: string[]): string {
 	const command = args[0] ?? 'help';

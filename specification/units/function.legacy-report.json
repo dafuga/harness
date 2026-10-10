@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "function.legacy-report",
+	"kind": "function",
+	"title": "legacyReport",
+	"responsibility": "Normalises one legacy report manifest, keeping its original dates, outcome, revision and media provenance.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/legacyReport.ts"],
+		"symbols": ["LegacyReport", "legacyReport"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "legacyReport.manifest",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "legacyReport",
+				"type": "LegacyReport | undefined"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.history-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/legacyReport.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/legacyReport.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -5,6 +5,7 @@ import { analyticsGuide, reportGuide } from './analytics';
 import { cleanCodeGuide } from './cleanCode';
 import { responseCheckGuide } from './responseCheck';
 import { scaffoldGuides, scaffoldsGuide } from './scaffolds';
+import { historyGuides } from './history';
 import { runtimeGuides } from './runtimes';
 import { unitGuides } from './units';
 import { verificationGuides } from './verification';
@@ -151,7 +152,8 @@ export const guides: Guide[] = [
 	...scaffoldGuides(),
 	...unitGuides,
 	...runtimeGuides,
-	...verificationGuides
+	...verificationGuides,
+	...historyGuides
 ];
 
 export function findGuide(topic: string): Guide | undefined {

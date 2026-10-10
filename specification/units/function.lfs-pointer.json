@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"id": "function.lfs-pointer",
+	"kind": "function",
+	"title": "lfsPointer",
+	"responsibility": "Writes and reads Git LFS pointer text and decides which evidence files are stored through LFS.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/lfsPointer.ts"],
+		"symbols": ["LfsObject", "lfsPointer", "parseLfsPointer", "lfsStored", "lfsAttributes"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "lfsPointer.file",
+				"type": "LfsObject"
+			},
+			{
+				"name": "parseLfsPointer.text",
+				"type": "string"
+			},
+			{
+				"name": "lfsStored.path",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "lfsPointer",
+				"type": "string"
+			},
+			{
+				"name": "parseLfsPointer",
+				"type": "LfsObject | undefined"
+			},
+			{
+				"name": "lfsStored",
+				"type": "boolean"
+			},
+			{
+				"name": "lfsAttributes",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/lfsPointer.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/lfsPointer.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

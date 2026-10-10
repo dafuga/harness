@@ -1,0 +1,75 @@
+{
+	"schemaVersion": 1,
+	"id": "function.history-series",
+	"kind": "function",
+	"title": "historySeries",
+	"responsibility": "Derives per-unit growth and per-profile benchmark series from attached records.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/historySeries.ts"],
+		"symbols": ["unitGrowth", "historySeries"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "unitGrowth.records",
+				"type": "VerificationRecord[]"
+			},
+			{
+				"name": "historySeries.records",
+				"type": "VerificationRecord[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "unitGrowth",
+				"type": "Growth"
+			},
+			{
+				"name": "historySeries",
+				"type": "BenchmarkSeries[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.budget-findings",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.canonical-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.history-index-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/historySeries.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/historySeries.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

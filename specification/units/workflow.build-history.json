@@ -1,0 +1,80 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.build-history",
+	"kind": "workflow",
+	"title": "buildHistory",
+	"responsibility": "Builds the portable history index for a repository into an output directory.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/buildHistory.ts"],
+		"symbols": ["BuildOptions", "buildHistory", "renderBuild"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "buildHistory.options",
+				"type": "BuildOptions"
+			},
+			{
+				"name": "renderBuild.built",
+				"type": "BuiltHistory"
+			}
+		],
+		"outputs": [
+			{
+				"name": "buildHistory",
+				"type": "Promise<BuiltHistory>"
+			},
+			{
+				"name": "renderBuild",
+				"type": "string"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.history-index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.legacy-history",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/buildHistory.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/buildHistory.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

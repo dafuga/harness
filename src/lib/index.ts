@@ -2,3 +2,4 @@
 export * from './contracts';
 export * from './runtime';
 export * from './verification';
+export * from './history';

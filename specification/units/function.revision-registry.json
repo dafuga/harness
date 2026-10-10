@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "function.revision-registry",
+	"kind": "function",
+	"title": "revisionRegistry",
+	"responsibility": "Reads the unit registry and scenarios stored at one revision and derives its unit graph.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/revisionRegistry.ts"],
+		"symbols": ["RevisionRegistry", "revisionRegistry"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "revisionRegistry.manifests",
+				"type": "ComponentManifest[]"
+			},
+			{
+				"name": "revisionRegistry.scenarios",
+				"type": "ScenarioManifest[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "revisionRegistry",
+				"type": "RevisionRegistry"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/revisionRegistry.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/revisionRegistry.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -18,13 +18,20 @@ export class TrustedBaseService {
 	 * ancestor. Null when nothing is proven, which means the whole revision must be verified.
 	 */
 	async nearest(from: string | null): Promise<string | null> {
+		return (await this.nearestRecord(from))?.commit ?? null;
+	}
+
+	/** The nearest proven revision together with the record that proves it. */
+	async nearestRecord(from: string | null): Promise<{ commit: string; record: string } | null> {
 		const passing = this.latestPassing();
 		if (!from || passing.size === 0) return null;
 		const ancestry = await new GitAdapter(this.root).run(['rev-list', from]);
 		const checker = new VerificationCheckService(this.root);
 		for (const commit of ancestry.split('\n')) {
 			const stored = passing.get(commit);
-			if (stored && (await checker.check(commit, stored)).status === 'passed') return commit;
+			if (stored && (await checker.check(commit, stored)).status === 'passed') {
+				return { commit, record: stored.record.id };
+			}
 		}
 		return null;
 	}

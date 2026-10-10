@@ -1,0 +1,100 @@
+{
+	"schemaVersion": 1,
+	"id": "function.history-index-types",
+	"kind": "function",
+	"title": "historyIndexTypes",
+	"responsibility": "Defines the portable history index: revisions with coverage, records, growth, benchmark series and legacy reports.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/historyIndexTypes.ts"],
+		"symbols": [
+			"indexedRecordSchema",
+			"indexedRevisionSchema",
+			"benchmarkSeriesSchema",
+			"legacyMediaSchema",
+			"legacyEntrySchema",
+			"historyIndexSchema",
+			"indexedExplanationSchema",
+			"IndexedRecord",
+			"IndexedRevision",
+			"BenchmarkSeries",
+			"LegacyEntry",
+			"LegacyMedia",
+			"HistoryIndex"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "indexedRecordSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "indexedRevisionSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "benchmarkSeriesSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "legacyMediaSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "legacyEntrySchema",
+				"type": "unknown"
+			},
+			{
+				"name": "historyIndexSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "indexedExplanationSchema",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.comparison-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.explanation-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/historyIndexTypes.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/historyIndexTypes.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

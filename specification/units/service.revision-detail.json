@@ -1,0 +1,125 @@
+{
+	"schemaVersion": 1,
+	"id": "service.revision-detail",
+	"kind": "service",
+	"title": "RevisionDetailService",
+	"responsibility": "Builds the detail of one revision: its stored registry graph, its attached records with resolved media and inherited provenance, and its reasons.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/RevisionDetailService.ts"],
+		"symbols": [
+			"RevisionDetail",
+			"BuiltRevision",
+			"RevisionDetailService",
+			"RevisionDetailService.constructor",
+			"RevisionDetailService.build"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "RevisionDetailService.constructor.root",
+				"type": "string"
+			},
+			{
+				"name": "RevisionDetailService.constructor.history",
+				"type": "HistoryStatusService"
+			},
+			{
+				"name": "RevisionDetailService.build.commit",
+				"type": "string"
+			},
+			{
+				"name": "RevisionDetailService.build.media",
+				"type": "HistoryMediaService"
+			}
+		],
+		"outputs": [
+			{
+				"name": "RevisionDetailService.build",
+				"type": "Promise<BuiltRevision>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.commit-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.canonical-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.explanation-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.record-view",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.revision-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.scenario",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.unit-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.attached-record",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.history-media",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.history-status",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/RevisionDetailService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/RevisionDetailService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

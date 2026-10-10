@@ -11,6 +11,7 @@
 		"symbols": [
 			"ExplanationRepository",
 			"ExplanationRepository.constructor",
+			"ExplanationRepository.all",
 			"ExplanationRepository.read",
 			"ExplanationRepository.append"
 		]
@@ -33,6 +34,10 @@
 		],
 		"outputs": [
 			{
+				"name": "ExplanationRepository.all",
+				"type": "Promise<Explanation[]>"
+			},
+			{
 				"name": "ExplanationRepository.read",
 				"type": "Explanation[]"
 			},
@@ -46,6 +51,11 @@
 	"dependencies": [
 		{
 			"unit": "function.explanation-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.history-note",
 			"via": "import",
 			"origin": "derived"
 		}

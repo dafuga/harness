@@ -1,0 +1,83 @@
+name: Harness verify
+
+# Runs the code under test. This workflow can read the repository and nothing else: it has no
+# write permission and uses no secrets, so a pull request cannot publish or change anything.
+# The record it produces is uploaded as plain data; harness-evidence.yml publishes it from
+# trusted code. Pushes of evidence, notes and archived source never start this workflow.
+on:
+  pull_request:
+  push:
+    branches-ignore:
+      - harness-evidence
+
+permissions:
+  contents: read
+
+concurrency:
+  group: harness-verify-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: true
+
+env:
+  COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+
+jobs:
+  check:
+    name: Full check
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ env.COMMIT }}
+          persist-credentials: false
+      - name: Install the pinned Bun
+        run: npm install --global bun@1.2.18
+      - name: Install the pinned Rust toolchain and its Wasm target from rust-toolchain.toml
+        run: rustup show
+      - name: Install dependencies exactly as locked
+        run: bun install --frozen-lockfile
+      - name: Format, types, lint, Rust native and Wasm, tests, build, package and audits
+        run: bun run check
+
+  verify:
+    name: Verify the exact commit
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ env.COMMIT }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Install the pinned Bun
+        run: npm install --global bun@1.2.18
+      - name: Install the pinned Rust toolchain and its Wasm target from rust-toolchain.toml
+        run: rustup show
+      - name: Install dependencies exactly as locked
+        run: bun install --frozen-lockfile
+      - name: Read existing notes, evidence and media
+        # Read-only. Without them nothing is proven, and the whole revision is verified.
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          header="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')"
+          git config --local http.https://github.com/.extraheader "$header"
+          bun run dev -- history fetch origin || echo "::warning::Existing evidence could not be read."
+          git config --local --unset-all http.https://github.com/.extraheader
+      - name: Verify in a clean snapshot of the commit
+        # Performance budgets are judged only against a baseline reviewed for this machine
+        # profile. A runner without one fails that gate; it never borrows another profile's
+        # baseline and nothing here establishes or approves one.
+        id: verify
+        continue-on-error: true
+        run: bun run dev -- verify run --commit "$COMMIT"
+      - name: Keep the record and its evidence, pass or fail
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: harness-record
+          path: .cache/harness/verifications/${{ env.COMMIT }}
+          include-hidden-files: true
+          if-no-files-found: error
+      - name: Fail when the verification failed
+        if: steps.verify.outcome != 'success'
+        run: exit 1

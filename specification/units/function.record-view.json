@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "function.record-view",
+	"kind": "function",
+	"title": "recordView",
+	"responsibility": "Projects a record into the history index form with media references and the origin of inherited evidence.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/recordView.ts"],
+		"symbols": ["ResolvedMedia", "MediaResolver", "RecordView", "recordView"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "recordView.record",
+				"type": "VerificationRecord"
+			},
+			{
+				"name": "recordView.context",
+				"type": "{ valid: boolean; problems: string[]; resolve: MediaResolver }"
+			}
+		],
+		"outputs": [
+			{
+				"name": "recordView",
+				"type": "RecordView"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.verification-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/recordView.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/recordView.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

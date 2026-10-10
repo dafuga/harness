@@ -1,0 +1,104 @@
+{
+	"schemaVersion": 1,
+	"id": "function.note-lines",
+	"kind": "function",
+	"title": "noteLines",
+	"responsibility": "Reads, validates and merges the lines of a Harness note; a line written for another commit is reported and never used.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/noteLines.ts"],
+		"symbols": [
+			"ReadNote",
+			"noteLine",
+			"noteLines",
+			"noteCommit",
+			"mergeNoteLines",
+			"readNoteLines"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "noteLine.entry",
+				"type": "HistoryNote"
+			},
+			{
+				"name": "noteLines.entries",
+				"type": "HistoryNote[]"
+			},
+			{
+				"name": "noteCommit.entry",
+				"type": "HistoryNote"
+			},
+			{
+				"name": "mergeNoteLines.left",
+				"type": "string"
+			},
+			{
+				"name": "mergeNoteLines.right",
+				"type": "string"
+			},
+			{
+				"name": "readNoteLines.text",
+				"type": "string"
+			},
+			{
+				"name": "readNoteLines.commit",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "noteLine",
+				"type": "string"
+			},
+			{
+				"name": "noteLines",
+				"type": "string"
+			},
+			{
+				"name": "noteCommit",
+				"type": "string"
+			},
+			{
+				"name": "mergeNoteLines",
+				"type": "string"
+			},
+			{
+				"name": "readNoteLines",
+				"type": "ReadNote"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.canonical-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.history-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/noteLines.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/noteLines.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

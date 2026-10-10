@@ -120,6 +120,8 @@ export const verificationRecordSchema = z.strictObject({
 		tree: commit,
 		/** The revision everything was judged against: one a passing record proves, or none. */
 		base: commit.nullable(),
+		/** The passing record that proved the base, so the dependency can be followed exactly. */
+		baseRecord: text.optional(),
 		/** The base that was asked for, when it had no passing record and could not be used. */
 		requestedBase: commit.optional()
 	}),

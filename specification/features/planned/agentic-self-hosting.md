@@ -207,6 +207,35 @@ and measured by `harness kernel bench --boundary`. The loop for this feature run
   worktrees. The CI publish stage never runs pull request code with write credentials.
 - A fresh clone recovers notes, evidence and media. Missing notes, missing LFS objects, rewritten
   commits, malformed records and tampered artifacts are reported as such.
+- A record is accepted into history only if its schema, seal, every file and its source commit
+  and tree check out. The sealed record states the outcome: a note is an index, and a note line
+  that was written for another commit or that disagrees with its record is reported and unused.
+- Records are only added. Separate runs of one commit, overlapping writers in one repository or
+  in worktrees sharing one Git directory, and clones that diverged all keep every record; media
+  writes, note updates and ref updates are safe to overlap.
+- A record counts only with what it inherits. Its base record and the records behind referenced
+  scenarios must be attached and intact to the root; a missing or damaged dependency, or a
+  cycle, leaves it unproven. Attaching a record attaches its dependencies and the records the
+  budget ledger cites.
+- Reasons are kept in notes, with a record or for a committed range, and explain the change in
+  every clone and worktree.
+- Evidence and notes are not source: they are never impacted, explained or verified, and an
+  evidence revision is refused as a code snapshot. Branch lists leave them out, while commits
+  kept only by an archive ref stay in history marked as retained.
+- The history index is built from Git alone and is deterministic. It lists every source commit,
+  with its records or the gap, the registry graph stored at that revision, the comparison each
+  record made, inherited evidence with the record and commit that produced it, reasons, unit
+  growth and benchmark series. Series are separate per machine profile and per comparison
+  context. Media is copied in by hash; anything missing is a stated gap.
+- Legacy reports are imported as recorded and only for this repository: original dates and
+  outcomes, a running run stays running, an unresolved revision stays unlinked, and the old
+  store is only read.
+- The local hook is opt-in per worktree and pre-push only. It keeps and runs an existing hook,
+  verifies the pushed commit in a clean snapshot, attaches the record and blocks a failure.
+- CI separates verification, which is read-only and runs the code, from publication, which is
+  trusted, validates the record as data and never runs the verified commit. Actions are pinned
+  to commit hashes. No workflow establishes or approves a budget, and a runner whose profile
+  has no reviewed baseline fails the performance gate.
 
 ### E. `/harness` console and installer
 
@@ -266,20 +295,36 @@ pass. Until then they are reported as failing, never as passing.
 
 ## Delivery status
 
-Stages A, B and C are implemented. Stage A: unit schemas, the unit generator, the `units`
+Stages A, B, C and D are implemented. Stage A: unit schemas, the unit generator, the `units`
 commands, the source graph and the self-host registry. Stage B: the runtime contract and
 adapters, the reference and Rust kernels, `harness impact`, `harness kernel` and the typed
 package entries. Stage C: scenario contracts and their coverage rules, the evidence protocol
 with media and build-stamp validation, verification of clean snapshots under process isolation,
 reasons, frozen budgets with a reviewed ledger, and `harness scenarios`, `explain`, `budget` and
-`verify`. Stages D to F are not started. Stage evidence is recorded in the
-`agentic-self-hosting` loop.
+`verify`. Stage D: records, evidence and reasons kept in Git (`harness history attach`,
+`reasons`, `status`, `fetch`, `push`, `sync`), the deterministic history index
+(`harness history build`), the legacy report import, the opt-in pre-push hook
+(`harness hooks`), the two CI workflows and the `@dafuga01/harness/history` package entry.
+Stages E and F are not started. Stage evidence is recorded in the `agentic-self-hosting` loop.
 
-What stage C does not yet do:
+What stage D does not yet do:
 
-- Trust is one step deep and local: a base is proven when its latest stored record passes and is
-  intact. Records are not signed, and a fresh clone has none until stage D stores them in Git,
-  so its first verification covers the whole revision.
+- Nothing has been attached, imported, synchronised or installed in the Harness repository
+  itself. Those are deliberate steps on a clean commit; the acceptance here ran on synthetic
+  repositories and a local bare remote.
+- Records are still unsigned. A record published from CI was produced by a job that ran the
+  code under test; the trusted job validates its integrity, not its honesty.
+- The CI workflows have not run on a hosted runner. On one, the machine profile differs from
+  run to run, so performance budgets fail there until a stable runner has reviewed baselines.
+- The hook is a local aid. `git push --no-verify`, other worktrees that did not opt in, and
+  hooks managed by another tool are outside it.
+- The index is the data only. The protected `/harness` console that serves it, its installer
+  and its Workers-compatible runtime are stage E.
+- Lineage validation hashes every file of every record a record inherits from, each time; and
+  a record's proven base is indexed twice per verification. Neither is cached.
+
+What stage C left open and still is:
+
 - A benchmark capture written by an arbitrary script declares its own comparison context.
   Harness validates and compares it exactly but cannot prove what the script ran; only
   `harness budget bench` and `harness kernel bench --boundary` derive it from what they send.
@@ -292,9 +337,6 @@ What stage C does not yet do:
 - A capture's build stamp is still whatever the check states. Tying it to a real served build
   whose identity derives from the source, tree and compiled artifacts arrives with stages E
   and F; until then a stale build relabelled with the current revision would not be noticed.
-- Records, evidence and reasons are local drafts in `.cache/harness`. Notes, the evidence
-  branch, sync, hooks and CI belong to stage D, and until then a ledger line can only be checked
-  against records present in the same checkout.
 - No browser runner captures screenshots or audio yet. The verifier accepts only PNG and WAV and
   validates them; readiness for fonts, images, canvas and async state arrives with stage E.
 - Harness has not verified one of its own commits. Its configuration, boundary scenario and

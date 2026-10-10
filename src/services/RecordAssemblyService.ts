@@ -23,6 +23,7 @@ export interface AssemblyContext {
 	commit: string;
 	tree: string;
 	baseCommit: string | null;
+	baseRecord?: string;
 	requestedBase: string | null;
 	base: RevisionSide;
 	head: RevisionSide;
@@ -51,7 +52,7 @@ export class RecordAssemblyService {
 		const { outcomes } = input.executed;
 		const measurements = this.measurements(input.executed);
 		const budgets = await this.budgets(measurements);
-		const reasons = this.reasons();
+		const reasons = await this.reasons();
 		const gates = this.gates(input, { budgets, reasons });
 		const failures = Object.values(gates).flat();
 		const scenarios = [...input.scenarios.map((scenario) => scenario.result), ...input.referenced];
@@ -82,9 +83,10 @@ export class RecordAssemblyService {
 	}
 
 	private source(): VerificationRecord['source'] {
-		const { commit, tree, baseCommit, requestedBase } = this.context;
+		const { commit, tree, baseCommit, baseRecord, requestedBase } = this.context;
 		const widened = requestedBase && requestedBase !== baseCommit ? { requestedBase } : {};
-		return { commit, tree, base: baseCommit, ...widened };
+		const proven = baseCommit && baseRecord ? { baseRecord } : {};
+		return { commit, tree, base: baseCommit, ...proven, ...widened };
 	}
 
 	/** Each gate's failures, in the order they are reported. */
@@ -154,12 +156,10 @@ export class RecordAssemblyService {
 		return { report, ledger: ledgerGate(ledger, context.store) };
 	}
 
-	private reasons(): ReasonReport {
+	private async reasons(): Promise<ReasonReport> {
 		const { base, head, root } = this.context;
-		return new ExplanationService().report(
-			requiredReasons(base, head),
-			new ExplanationRepository(root).read()
-		);
+		const known = await new ExplanationRepository(root).all();
+		return new ExplanationService().report(requiredReasons(base, head), known);
 	}
 }
 

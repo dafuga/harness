@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "function.evidence-manifest",
+	"kind": "function",
+	"title": "evidenceManifest",
+	"responsibility": "Lists the files of one stored record with their original hashes, sizes and storage.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/evidenceManifest.ts"],
+		"symbols": ["RecordFile", "recordFiles", "evidenceManifest"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "recordFiles.record",
+				"type": "VerificationRecord"
+			},
+			{
+				"name": "evidenceManifest.record",
+				"type": "VerificationRecord"
+			},
+			{
+				"name": "evidenceManifest.recordJson",
+				"type": "Buffer"
+			}
+		],
+		"outputs": [
+			{
+				"name": "recordFiles",
+				"type": "RecordFile[]"
+			},
+			{
+				"name": "evidenceManifest",
+				"type": "EvidenceManifest"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.history-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.lfs-pointer",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/evidenceManifest.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/evidenceManifest.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -29,10 +29,8 @@ export async function explainReport(
 	range: RevisionRange
 ): Promise<ReasonReport & { root: string }> {
 	const { root, base, head } = await openRange(range);
-	const report = new ExplanationService().report(
-		requiredReasons(base, head),
-		new ExplanationRepository(root).read()
-	);
+	const known = await new ExplanationRepository(root).all();
+	const report = new ExplanationService().report(requiredReasons(base, head), known);
 	return { ...report, root };
 }
 

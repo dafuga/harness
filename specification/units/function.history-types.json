@@ -1,0 +1,114 @@
+{
+	"schemaVersion": 1,
+	"id": "function.history-types",
+	"kind": "function",
+	"title": "historyTypes",
+	"responsibility": "Defines the refs, note lines, evidence manifest and stored legacy report of Git-backed history.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/historyTypes.ts"],
+		"symbols": [
+			"evidenceBranch",
+			"evidenceRef",
+			"notesRef",
+			"sourceArchivePrefix",
+			"remoteTrackingPrefix",
+			"evidenceMarker",
+			"recordsDirectory",
+			"legacyDirectory",
+			"evidencePointerSchema",
+			"historyNoteSchema",
+			"evidenceFileSchema",
+			"evidenceManifestSchema",
+			"legacyRecordSchema",
+			"EvidencePointer",
+			"HistoryNote",
+			"EvidenceFile",
+			"EvidenceManifest",
+			"LegacyRecord"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "evidenceBranch",
+				"type": "unknown"
+			},
+			{
+				"name": "evidenceRef",
+				"type": "unknown"
+			},
+			{
+				"name": "notesRef",
+				"type": "unknown"
+			},
+			{
+				"name": "sourceArchivePrefix",
+				"type": "unknown"
+			},
+			{
+				"name": "remoteTrackingPrefix",
+				"type": "unknown"
+			},
+			{
+				"name": "evidenceMarker",
+				"type": "unknown"
+			},
+			{
+				"name": "recordsDirectory",
+				"type": "unknown"
+			},
+			{
+				"name": "legacyDirectory",
+				"type": "unknown"
+			},
+			{
+				"name": "evidencePointerSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "historyNoteSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "evidenceFileSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "evidenceManifestSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "legacyRecordSchema",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.explanation-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/historyTypes.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/historyTypes.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

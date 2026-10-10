@@ -2,16 +2,33 @@ import { existsSync, readFileSync } from 'node:fs';
 import { appendFile, mkdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { explanationSchema, explanationsFile, type Explanation } from '../core/explanationTypes';
+import { HistoryNoteRepository } from './HistoryNoteRepository';
 
-/** Scratch store of reasons, kept outside the source tree until they are persisted as notes. */
+/**
+ * Reasons live in two places: a scratch file while a change is being written, and the notes of
+ * the commit once a record or a range has been attached. Both explain a change equally.
+ */
 export class ExplanationRepository {
 	private readonly path: string;
 
-	constructor(root: string, file = explanationsFile) {
+	constructor(
+		private readonly root: string,
+		file = explanationsFile
+	) {
 		this.path = join(root, file);
 	}
 
-	/** Reads every well-formed reason; a damaged line is ignored and therefore explains nothing. */
+	/** Every reason known here: those kept in Git notes, then those still in the scratch file. */
+	async all(): Promise<Explanation[]> {
+		// Outside a repository, or before any note exists, there is nothing persisted to read.
+		const notes = await new HistoryNoteRepository(this.root).all().catch(() => undefined);
+		const persisted = [...(notes?.values() ?? [])].flatMap((note) =>
+			note.entries.flatMap((entry) => (entry.kind === 'reason' ? [entry.explanation] : []))
+		);
+		return [...persisted, ...this.read()];
+	}
+
+	/** Reads the scratch file; a damaged line is ignored and therefore explains nothing. */
 	read(): Explanation[] {
 		if (!existsSync(this.path)) return [];
 		return readFileSync(this.path, 'utf8')

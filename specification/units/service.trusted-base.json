@@ -11,7 +11,8 @@
 		"symbols": [
 			"TrustedBaseService",
 			"TrustedBaseService.constructor",
-			"TrustedBaseService.nearest"
+			"TrustedBaseService.nearest",
+			"TrustedBaseService.nearestRecord"
 		]
 	},
 	"contract": {
@@ -24,12 +25,20 @@
 			{
 				"name": "TrustedBaseService.nearest.from",
 				"type": "string | null"
+			},
+			{
+				"name": "TrustedBaseService.nearestRecord.from",
+				"type": "string | null"
 			}
 		],
 		"outputs": [
 			{
 				"name": "TrustedBaseService.nearest",
 				"type": "Promise<string | null>"
+			},
+			{
+				"name": "TrustedBaseService.nearestRecord",
+				"type": "Promise<{ commit: string; record: string } | null>"
 			}
 		],
 		"errors": []

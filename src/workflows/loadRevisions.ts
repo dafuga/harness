@@ -3,6 +3,7 @@ import { CommitTreeAdapter } from '../adapters/CommitTreeAdapter';
 import { GitAdapter } from '../adapters/GitAdapter';
 import { WorkingTreeAdapter } from '../adapters/WorkingTreeAdapter';
 import { fail } from '../core/errors';
+import { evidenceMarker } from '../core/historyTypes';
 import type { ImpactSide } from '../core/impactTypes';
 import type { SourceTree } from '../core/sourceTypes';
 import type { ComponentManifest } from '../core/unitTypes';
@@ -68,7 +69,14 @@ export async function openRange(
 		return fail('This command compares Git revisions; run it inside a repository.');
 	}
 	const indexer = new SourceIndexService();
-	const open = (reference: string) => CommitTreeAdapter.open(root, reference);
+	const open = async (reference: string): Promise<CommitTreeAdapter> => {
+		const tree = await CommitTreeAdapter.open(root, reference);
+		// Evidence is history about code. It is never impacted, explained or verified as code.
+		if ((await tree.list()).some((entry) => entry.path === evidenceMarker)) {
+			return fail(`"${reference}" is an evidence revision, not source; name a source commit.`);
+		}
+		return tree;
+	};
 	const base =
 		range.base === 'none'
 			? emptySide()

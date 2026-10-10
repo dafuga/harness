@@ -12,7 +12,8 @@
 			"CheckReport",
 			"VerificationCheckService",
 			"VerificationCheckService.constructor",
-			"VerificationCheckService.check"
+			"VerificationCheckService.check",
+			"VerificationCheckService.integrity"
 		]
 	},
 	"contract": {
@@ -29,12 +30,24 @@
 			{
 				"name": "VerificationCheckService.check.stored",
 				"type": "StoredRecord"
+			},
+			{
+				"name": "VerificationCheckService.integrity.commit",
+				"type": "string"
+			},
+			{
+				"name": "VerificationCheckService.integrity.stored",
+				"type": "StoredRecord"
 			}
 		],
 		"outputs": [
 			{
 				"name": "VerificationCheckService.check",
 				"type": "Promise<CheckReport>"
+			},
+			{
+				"name": "VerificationCheckService.integrity",
+				"type": "Promise<string[]>"
 			}
 		],
 		"errors": []
@@ -52,6 +65,11 @@
 		},
 		{
 			"unit": "function.component-version",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.record-lineage",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -3,9 +3,13 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { CommitTreeAdapter } from '../adapters/CommitTreeAdapter';
 import { GitAdapter } from '../adapters/GitAdapter';
-import type { StoredRecord } from '../repositories/VerificationStoreRepository';
+import {
+	VerificationStoreRepository,
+	type StoredRecord
+} from '../repositories/VerificationStoreRepository';
 import type { VerificationRecord } from '../core/verificationTypes';
 import { componentVersion } from '../utils/componentVersion';
+import { recordLineage } from '../utils/recordLineage';
 import { recordIntact } from '../utils/sealRecord';
 import { loadSide } from '../workflows/loadRevisions';
 import { SourceIndexService } from './SourceIndexService';
@@ -23,7 +27,12 @@ export class VerificationCheckService {
 
 	async check(commit: string, stored: StoredRecord): Promise<CheckReport> {
 		const { record } = stored;
-		const problems = await this.problems(commit, stored);
+		const integrity = await this.integrity(commit, stored);
+		const problems = [
+			...integrity,
+			...(integrity.length > 0 ? [] : this.lineage(record)),
+			...(record.status === 'passed' ? [] : record.failures)
+		];
 		return {
 			status: problems.length === 0 ? 'passed' : 'failed',
 			commit,
@@ -32,7 +41,8 @@ export class VerificationCheckService {
 		};
 	}
 
-	private async problems(commit: string, stored: StoredRecord): Promise<string[]> {
+	/** Identity and integrity of one record, whatever its outcome: what attaching it requires. */
+	async integrity(commit: string, stored: StoredRecord): Promise<string[]> {
 		const { record, directory } = stored;
 		if (record.source.commit !== commit) {
 			return [`record is for commit ${record.source.commit}, not ${commit}`];
@@ -46,9 +56,26 @@ export class VerificationCheckService {
 			...identity,
 			...(recordIntact(record) ? [] : ['record content does not match its id']),
 			...(await this.components(commit, record)),
-			...this.evidence(record, directory),
-			...(record.status === 'passed' ? [] : record.failures)
+			...this.evidence(record, directory)
 		];
+	}
+
+	/**
+	 * A record is only as good as what it inherits: its base record and the records behind
+	 * referenced scenarios must be stored, sealed and intact, all the way to the root.
+	 */
+	private lineage(record: VerificationRecord): string[] {
+		const store = new VerificationStoreRepository(this.root);
+		const stored = new Map(store.all().map((item) => [item.record.id, item]));
+		return recordLineage(record, {
+			find: (id) => stored.get(id)?.record,
+			problems: (dependency) => {
+				const found = stored.get(dependency.id);
+				if (!found) return ['its files are not stored'];
+				const sealed = recordIntact(dependency) ? [] : ['record content does not match its id'];
+				return [...sealed, ...this.evidence(dependency, found.directory)];
+			}
+		});
 	}
 
 	/** Recomputes each recorded unit version from the commit itself. */

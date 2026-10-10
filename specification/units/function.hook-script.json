@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"id": "function.hook-script",
+	"kind": "function",
+	"title": "hookScript",
+	"responsibility": "Renders the managed Git hook wrapper that chains an existing hook, and recognises it.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/hookScript.ts"],
+		"symbols": ["hookMarker", "chainedSuffix", "enabledFile", "hookScript", "managedHook"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hookScript.stage",
+				"type": "string"
+			},
+			{
+				"name": "managedHook.text",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hookMarker",
+				"type": "unknown"
+			},
+			{
+				"name": "chainedSuffix",
+				"type": "unknown"
+			},
+			{
+				"name": "enabledFile",
+				"type": "unknown"
+			},
+			{
+				"name": "hookScript",
+				"type": "string"
+			},
+			{
+				"name": "managedHook",
+				"type": "boolean"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/hookScript.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/hookScript.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
