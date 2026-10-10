@@ -1,0 +1,65 @@
+{
+	"schemaVersion": 1,
+	"id": "function.kernel-request",
+	"kind": "function",
+	"title": "kernelRequest",
+	"responsibility": "Validates an impact request in the fixed order every kernel implementation shares.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/kernelRequest.ts"],
+		"symbols": ["Parsed", "kernelRequest", "isObject"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "kernelRequest.input",
+				"type": "unknown"
+			},
+			{
+				"name": "isObject.value",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "kernelRequest",
+				"type": "Parsed<ImpactInput>"
+			},
+			{
+				"name": "isObject",
+				"type": "value is Fields"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.kernel-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.runtime-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/kernelRequest.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/kernelRequest.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

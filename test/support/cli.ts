@@ -14,19 +14,21 @@ export interface CommandResult {
 export async function runHarness(
 	args: string[],
 	cwd: string,
-	expectSuccess = true
+	expectSuccess = true,
+	env: Record<string, string> = {}
 ): Promise<CommandResult> {
-	return runCommand(['bun', cliPath, ...args], cwd, expectSuccess);
+	return runCommand(['bun', cliPath, ...args], cwd, expectSuccess, env);
 }
 
 export async function runCommand(
 	args: string[],
 	cwd: string,
-	expectSuccess = true
+	expectSuccess = true,
+	env: Record<string, string> = {}
 ): Promise<CommandResult> {
 	const child = spawn(args[0], args.slice(1), {
 		cwd,
-		env: { ...process.env, HARNESS_CLI_PATH: cliPath },
+		env: { ...process.env, HARNESS_CLI_PATH: cliPath, ...env },
 		stdio: 'pipe'
 	});
 	const stdoutChunks: Buffer[] = [];

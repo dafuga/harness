@@ -1,0 +1,77 @@
+{
+	"schemaVersion": 1,
+	"id": "function.kernel-workload",
+	"kind": "function",
+	"title": "kernelWorkload",
+	"responsibility": "Generates deterministic synthetic impact workloads and malformed variants.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/kernelWorkload.ts"],
+		"symbols": ["kernelWorkload", "kernelMutations", "kernelTexts"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "kernelWorkload.nodes",
+				"type": "number"
+			},
+			{
+				"name": "kernelWorkload.seed",
+				"type": "number"
+			},
+			{
+				"name": "kernelMutations.request",
+				"type": "RuntimeRequest"
+			},
+			{
+				"name": "kernelMutations.count",
+				"type": "number"
+			}
+		],
+		"outputs": [
+			{
+				"name": "kernelWorkload",
+				"type": "RuntimeRequest"
+			},
+			{
+				"name": "kernelMutations",
+				"type": "unknown[]"
+			},
+			{
+				"name": "kernelTexts",
+				"type": "string[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.kernel-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.runtime-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/kernelWorkload.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/kernelWorkload.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

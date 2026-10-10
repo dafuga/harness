@@ -55,7 +55,9 @@ export const performanceBudgetSchema = z.strictObject({
 export const executionTargetSchema = z.strictObject({
 	kind: z.enum(runtimeKinds),
 	entry: text,
-	environment: z.string().optional()
+	environment: z.string().optional(),
+	/** Exported function a module target calls with a runtime request; defaults to `invoke`. */
+	handler: z.string().optional()
 });
 
 export const componentManifestSchema = z.strictObject({

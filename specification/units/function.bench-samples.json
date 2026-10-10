@@ -1,0 +1,85 @@
+{
+	"schemaVersion": 1,
+	"id": "function.bench-samples",
+	"kind": "function",
+	"title": "benchSamples",
+	"responsibility": "Times end-to-end runtime calls and summarizes warm latency and throughput.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/benchSamples.ts"],
+		"symbols": ["WarmResult", "median", "timeCall", "benchSamples"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "median.values",
+				"type": "number[]"
+			},
+			{
+				"name": "timeCall.runtime",
+				"type": "UnitRuntime"
+			},
+			{
+				"name": "timeCall.request",
+				"type": "RuntimeRequest"
+			},
+			{
+				"name": "benchSamples.runtime",
+				"type": "UnitRuntime"
+			},
+			{
+				"name": "benchSamples.request",
+				"type": "RuntimeRequest"
+			},
+			{
+				"name": "benchSamples.iterations",
+				"type": "number"
+			}
+		],
+		"outputs": [
+			{
+				"name": "median",
+				"type": "number"
+			},
+			{
+				"name": "timeCall",
+				"type": "Promise<number>"
+			},
+			{
+				"name": "benchSamples",
+				"type": "Promise<WarmResult>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.runtime-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/benchSamples.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/benchSamples.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

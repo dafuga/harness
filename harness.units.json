@@ -5,7 +5,26 @@
 		{ "name": "reports", "root": "packages/reports" }
 	],
 	"tests": ["test/", "tests/"],
-	"global": ["**/.prettierignore"],
+	"global": ["**/.prettierignore", "tsconfig.api.json", "specification/measurements/"],
 	"ignored": ["**/*.md", "specification/features/", "specification/loops/", "**/.gitignore"],
-	"references": []
+	"references": [
+		{
+			"from": "src/utils/kernelArtifacts.ts",
+			"specifier": "./kernel/",
+			"external": "kernel-build",
+			"reason": "Built kernel beside the bundled CLI; the dependency on kernel.impact-kernel is declared on the unit."
+		},
+		{
+			"from": "src/utils/kernelArtifacts.ts",
+			"specifier": "../kernel/",
+			"external": "kernel-build",
+			"reason": "Built kernel beside the bundled public API; the dependency on kernel.impact-kernel is declared on the unit."
+		},
+		{
+			"from": "src/utils/kernelArtifacts.ts",
+			"specifier": "../../target/kernel/",
+			"external": "kernel-build",
+			"reason": "Built kernel in a source checkout; the dependency on kernel.impact-kernel is declared on the unit."
+		}
+	]
 }

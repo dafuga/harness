@@ -2,7 +2,7 @@
 	"name": "agentic-self-hosting",
 	"goal": "Harness hosts itself: component contracts, dual-graph impact, scenario evidence, frozen budgets, Git-native notes and evidence history, and a protected prebuilt /harness console are proven by failing-then-passing acceptance tests",
 	"createdAt": "2026-10-10T12:53:55.653Z",
-	"updatedAt": "2026-10-10T13:28:41.630Z",
+	"updatedAt": "2026-10-10T14:26:37.983Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"steps": [
@@ -38,7 +38,9 @@
 		{
 			"id": "stage-b",
 			"title": "Stage B - module, Wasm, native-process and HTTP runtimes with Rust kernel parity and measured default: red then green.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-10T14:07:10.108Z",
+			"evidence": "RED work/logs/stage-b-red.log: 10 new test files failed on unchanged code (15 tests failed, 6 suites could not load missing modules). GREEN work/logs/stage-b-green.log: same 10 files, 34 tests pass. Test provenance in work/logs/stage-b-test-diff.log: 11 of 15 snapshotted files unchanged; one self-inconsistent default-selection expectation corrected before green, one vector appended, two fixtures split for the 55-line limit with identical assertions. Full bun run check EXIT=0 (work/logs/stage-b-check.log): cargo fmt --check, clippy -D warnings and cargo test (2 passed, 26 shared vectors); 293 unit, 72 CLI E2E, 2 package and 88 reports tests; both audits; units check 367 units, 6 uncertain. harness kernel parity: 131 cases, wasm and process 0 mismatches (work/logs/stage-b-parity.json). Benchmark recorded for profile 1db6ce9451b5e530 in specification/measurements/impact-kernel: at 1k nodes cold module 2.53 ms, process 5.88 ms, wasm 8.40 ms; warm module 0.57, wasm 0.76, process 0.88; default module, measured. At 10k nodes cold process 13.6 ms beats module 15.0 ms; warm module 6.0 ms is fastest. Module and HTTP memory unavailable with reasons. Rust typed-parse attempt: process 18 percent faster warm at 10k, Wasm unchanged, Wasm artifact 97.8 to 145.1 kB; kept. Per-unit rationale in work/logs/stage-b-rationale.md. Packed consumer typechecks and calls all four adapters under bun and node without starting the CLI."
 		},
 		{
 			"id": "stage-c",
@@ -66,6 +68,13 @@
 			"status": "complete",
 			"completedAt": "2026-10-10T13:28:41.630Z",
 			"evidence": "Repaired TS2345 in src/utils/scanImports.ts (flatMap callback typed Found[]). RED work/logs/stage-a2-red.log and stage-a3-red.log: 13 new tests failed on then-current code (execution targets, 5% tolerance cap, lineage, component versions, VerificationRecord components and measurements, derived/declared labels). GREEN work/logs/stage-a-green.log: 11 Stage A files, 40 tests pass. Test provenance in work/logs/stage-a-test-diff.log: 6 of 7 recovered red snapshots match red checksums; scan-imports snapshot is the pre-red draft plus one correction made before the red run; later differences are Prettier formatting, one mkdir fixture line, two lint-driven rewrites with identical inputs, and additive tests. Registry: harness units index --write produced 325 manifests (200 root, 125 reports; 30 services, 3 pages, 28 components, 85 shared functions), all labelled derived, 5 uncertain references, 4 unclassified plugin files. Full bun run check EXIT=0 (work/logs/stage-a-check.log): 272 unit, 60 CLI E2E, 1 package, 88 reports tests; both audits and units check pass. Removed the interrupted Stage B cargo placeholder files; Stage B not started."
+		},
+		{
+			"id": "stage-b-repair",
+			"title": "Stage B repairs from independent review: elapsed deadlines, one portable JSON contract, the stated coverage rule and calibration provenance.",
+			"status": "complete",
+			"completedAt": "2026-10-10T14:26:37.983Z",
+			"evidence": "RED work/logs/stage-b2-red.log on the then-current code: 11 tests failed in 6 files and cargo test failed. The synchronous deadline probe returned success after its 5 ms deadline; the reference accepted 1e400, lone surrogates and 65-level nesting; the Rust typed path accepted an out-of-range number in an ignored field; benchmark runs carried no calibration label. GREEN work/logs/stage-b-green.log: 14 Stage B files, 46 tests. The four new test files are unchanged since red; vectors grew 26 to 38 before red and to 39 after, with every earlier vector unchanged (work/logs/stage-b-test-diff.log). Full bun run check EXIT=0 (work/logs/stage-b-check.log): cargo fmt --check, clippy -D warnings, cargo test 2 passed on 39 shared vectors; 304 unit, 73 CLI E2E, 2 package, 88 reports tests; both audits; units check 368 units, 6 uncertain. harness kernel parity 150 cases including 19 raw edge texts, 0 mismatches for wasm and process (work/logs/stage-b-parity.json). The stronger parity command found that the persistent native process did not answer a blank line; fixed and pinned by a vector. The first portability check cost 2.84 ms per pass at 10k nodes and doubled module latency; rewritten to 0.285 ms and run once on the module path. Recorded benchmark is calibration from an uncommitted tree: verified false, no tested revision, artifact and source hashes kept. In-process deadlines reject late results but cannot interrupt work; hard limits need process isolation in the Stage C verifier."
 		}
 	],
 	"evaluators": [

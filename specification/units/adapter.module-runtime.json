@@ -1,0 +1,96 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.module-runtime",
+	"kind": "adapter",
+	"title": "ModuleRuntimeAdapter",
+	"responsibility": "Runs a unit in-process by calling its exported handler behind the runtime contract.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/adapters/ModuleRuntimeAdapter.ts"],
+		"symbols": [
+			"ModuleRuntimeAdapter",
+			"ModuleRuntimeAdapter.constructor",
+			"ModuleRuntimeAdapter.load",
+			"ModuleRuntimeAdapter.invoke",
+			"ModuleRuntimeAdapter.close"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ModuleRuntimeAdapter.constructor.handler",
+				"type": "RuntimeHandler"
+			},
+			{
+				"name": "ModuleRuntimeAdapter.constructor.options",
+				"type": "RuntimeOptions"
+			},
+			{
+				"name": "ModuleRuntimeAdapter.load.file",
+				"type": "string"
+			},
+			{
+				"name": "ModuleRuntimeAdapter.load.handlerName",
+				"type": "string"
+			},
+			{
+				"name": "ModuleRuntimeAdapter.load.options",
+				"type": "RuntimeOptions & { label?: string }"
+			},
+			{
+				"name": "ModuleRuntimeAdapter.invoke.request",
+				"type": "RuntimeRequest"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ModuleRuntimeAdapter.load",
+				"type": "ModuleRuntimeAdapter"
+			},
+			{
+				"name": "ModuleRuntimeAdapter.invoke",
+				"type": "Promise<RuntimeResponse>"
+			},
+			{
+				"name": "ModuleRuntimeAdapter.close",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.portable-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.runtime-response",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.runtime-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/ModuleRuntimeAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/ModuleRuntimeAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

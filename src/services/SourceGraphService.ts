@@ -21,7 +21,9 @@ export class SourceGraphService {
 		manifests: ComponentManifest[],
 		scenarios: ScenarioManifest[] = []
 	): SourceGraph {
-		const active = manifests.filter((manifest) => manifest.status === 'active');
+		const exists = (unit: ComponentManifest) =>
+			unit.owns.source.some((path) => index.files.has(path));
+		const active = manifests.filter((unit) => unit.status === 'active' && exists(unit));
 		const owners = new Map(
 			active.flatMap((unit) => unit.owns.source.map((path) => [path, unit.id]))
 		);

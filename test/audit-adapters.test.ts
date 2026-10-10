@@ -18,12 +18,14 @@ test('audit profiles select ecosystem adapters', () => {
 		'sql',
 		'antelope-dapp',
 		'cpp',
+		'rust',
 		'shell',
 		'wasm'
 	]);
 	expect(adaptersForProfile('lib').map((adapter) => adapter.id)).toEqual([
 		'typescript',
 		'cpp',
+		'rust',
 		'python',
 		'shell',
 		'wasm'

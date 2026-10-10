@@ -9,12 +9,18 @@ import { GitAdapter } from './GitAdapter';
 export class WorkingTreeAdapter implements SourceTree {
 	readonly revision = 'working-tree';
 	private readonly git: GitAdapter;
+	private listed: Promise<TreeEntry[]> | undefined;
 
 	constructor(private readonly root: string) {
 		this.git = new GitAdapter(root);
 	}
 
-	async list(): Promise<TreeEntry[]> {
+	list(): Promise<TreeEntry[]> {
+		this.listed ??= this.scan();
+		return this.listed;
+	}
+
+	private async scan(): Promise<TreeEntry[]> {
 		const paths = (await this.git.isRepository()) ? await this.tracked() : await this.walked();
 		const entries = await Promise.all(paths.map((path) => this.entry(path)));
 		return entries

@@ -9,6 +9,8 @@ import { registerInfoCommand } from '../commands/info';
 import { registerLoopCommand } from '../commands/loop';
 import { registerNewCommand } from '../commands/new';
 import { registerUnitsCommand } from '../commands/UnitsCommand';
+import { registerImpactCommand } from '../commands/ImpactCommand';
+import { registerKernelCommand } from '../commands/KernelCommand';
 
 export function buildProgram(): Command {
 	const program = new Command();
@@ -26,6 +28,8 @@ export function buildProgram(): Command {
 	registerInfoCommand(program);
 	registerLoopCommand(program);
 	registerUnitsCommand(program);
+	registerImpactCommand(program);
+	registerKernelCommand(program);
 	registerAuditCommand(program);
 	registerResponseCheckCommand(program);
 

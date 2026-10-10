@@ -1,0 +1,47 @@
+{
+	"schemaVersion": 1,
+	"id": "module.index",
+	"kind": "module",
+	"title": "index",
+	"responsibility": "Public, side-effect-free package entry that re-exports contracts and runtimes.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/lib/index.ts"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "module.contracts",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "module.runtime",
+			"via": "reexport",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/lib/index.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/lib/index.ts"
+			}
+		]
+	},
+	"scenarios": ["package-api"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

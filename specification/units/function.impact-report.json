@@ -1,0 +1,75 @@
+{
+	"schemaVersion": 1,
+	"id": "function.impact-report",
+	"kind": "function",
+	"title": "impactReport",
+	"responsibility": "Shapes a kernel answer into affected units, selected tests and scenarios, widening it when uncertain.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/impactReport.ts"],
+		"symbols": ["graphTests", "impactReport"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "graphTests.graph",
+				"type": "SourceGraph"
+			},
+			{
+				"name": "impactReport.input",
+				"type": "Assembly"
+			}
+		],
+		"outputs": [
+			{
+				"name": "graphTests",
+				"type": "string[]"
+			},
+			{
+				"name": "impactReport",
+				"type": "Omit<ImpactReport, 'base' | 'head' | 'runtime'>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.impact-seeds",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.impact-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.kernel-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/impactReport.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/impactReport.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "function.kernel-types",
+	"kind": "function",
+	"title": "kernelTypes",
+	"responsibility": "Defines the impact kernel request and response contract.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/kernelTypes.ts"],
+		"symbols": ["kernelContract", "KernelGraph", "ImpactInput", "AffectedNode", "ImpactOutput"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "kernelContract",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/kernelTypes.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/kernelTypes.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

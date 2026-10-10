@@ -1,0 +1,68 @@
+{
+	"schemaVersion": 1,
+	"id": "function.runtime-response",
+	"kind": "function",
+	"title": "runtimeResponse",
+	"responsibility": "Accepts only well-formed runtime response envelopes and provides call deadlines.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/runtimeResponse.ts"],
+		"symbols": ["runtimeResponse", "runtimeResponseText", "RuntimeDeadline", "runtimeDeadline"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "runtimeResponse.value",
+				"type": "unknown"
+			},
+			{
+				"name": "runtimeResponseText.text",
+				"type": "string"
+			},
+			{
+				"name": "runtimeDeadline.timeoutMs",
+				"type": "number"
+			}
+		],
+		"outputs": [
+			{
+				"name": "runtimeResponse",
+				"type": "RuntimeResponse"
+			},
+			{
+				"name": "runtimeResponseText",
+				"type": "RuntimeResponse"
+			},
+			{
+				"name": "runtimeDeadline",
+				"type": "RuntimeDeadline"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.runtime-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/runtimeResponse.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/runtimeResponse.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

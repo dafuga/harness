@@ -1,0 +1,90 @@
+{
+	"schemaVersion": 1,
+	"id": "function.impact-kernel",
+	"kind": "function",
+	"title": "impactKernel",
+	"responsibility": "TypeScript reference of the impact kernel that every other implementation must match.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/impactKernel.ts"],
+		"symbols": ["impactKernel", "impactKernelPortable", "impactKernelText"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "impactKernel.request",
+				"type": "unknown"
+			},
+			{
+				"name": "impactKernelPortable.request",
+				"type": "unknown"
+			},
+			{
+				"name": "impactKernelText.text",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "impactKernel",
+				"type": "RuntimeResponse"
+			},
+			{
+				"name": "impactKernelPortable",
+				"type": "RuntimeResponse"
+			},
+			{
+				"name": "impactKernelText",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.kernel-closure",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.kernel-request",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.kernel-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.portable-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.runtime-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/impactKernel.ts",
+		"handler": "impactKernel",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/impactKernel.ts",
+				"handler": "impactKernel"
+			}
+		]
+	},
+	"scenarios": ["kernel-build"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -29,7 +29,11 @@ the public contracts of their dependencies.
 - `harness hooks install` adds local hooks without overwriting existing hooks.
 - `harness install sveltekit --admin-policy <module>` installs the protected `/harness` route.
 
-Only the `generate unit` and `units` commands exist today; see Delivery status.
+- `@dafuga01/harness/contracts` and `@dafuga01/harness/runtime` are typed package entry points
+  that never start the CLI.
+
+The `generate unit`, `units`, `impact` and `kernel` commands and the package entry points exist
+today; see Delivery status.
 
 ## Acceptance Criteria
 
@@ -59,14 +63,28 @@ Only the `generate unit` and `units` commands exist today; see Delivery status.
 
 ### B. Runtimes, Rust kernel and measurement
 
-- Module, Wasm, native JSON process and HTTP runtimes satisfy one typed contract, including errors.
+- Module, Wasm, native JSON process and HTTP runtimes satisfy one typed contract, including
+  errors, malformed output and timeouts. A unit's declared execution targets select real adapters,
+  and an undeclared target is refused. Functions are never routed over the network implicitly.
+- The manifest and record types and the runtime contract are importable, with declarations, from
+  the packed package without starting the CLI.
 - Impact is the reverse transitive closure over both base and head graphs. It covers removals,
   renames, shared functions, import and re-export changes, global config and test changes;
   uncertainty, including uncertain aliases, expands selection and is reported.
 - The Rust kernel builds natively and as core Wasm from the pinned toolchain and matches the
   TypeScript reference on shared vectors and on randomized graphs.
+- A request must be portable JSON: finite numbers, well-formed strings, plain objects and arrays,
+  at most 64 levels deep. The reference, the Rust kernel and all four adapters refuse anything
+  else as `invalid-json`, for structured requests and for request text alike.
+- A result that arrives after its deadline is rejected as `runtime-timeout`, including when
+  synchronous work blocked the thread. Module and Wasm targets cannot be interrupted; only
+  process and HTTP targets are stopped at the deadline.
+- A changed id that survives into head is covered only by a test or scenario in the head graph;
+  base coverage counts only for a removed id.
 - Benchmarks include serialization and invocation cost, and report memory only where it is
   attributable. The default runtime is chosen from recorded measurements.
+- A benchmark run is calibration: it is labelled unverified, a run from an uncommitted tree names
+  no tested revision, and it carries the hashes of the artifacts and sources it measured.
 - Harness audit covers Rust sources, and guidance documents the Rust and Wasm build.
 
 ### C. Scenarios, verification, budgets and reasons
@@ -82,6 +100,10 @@ Only the `generate unit` and `units` commands exist today; see Delivery status.
 - Failure evidence stays failure. Audio evidence carries fixture or actual-capture provenance.
 - Size and complexity baselines are frozen. Performance tolerates 5% against a matching workload,
   hardware and runtime profile. Missing or incompatible measurements never pass.
+- Verification runs tests and unit calls in separate processes, so its time limits are hard
+  limits; an in-process deadline only rejects a late result.
+- Only measurements inside a verification record of a clean, exact revision can establish or
+  satisfy a baseline. Calibration files and measurements without a tested revision are rejected.
 - Budget increases, and any change to the 5% tolerance policy, need a recorded reviewer approval.
   New units need an explicitly established baseline. A unit with lineage inherits the frozen
   baseline of its predecessors, and identities present at the base revision must still exist at
@@ -96,6 +118,8 @@ Only the `generate unit` and `units` commands exist today; see Delivery status.
   tree, profile, scenario identities and hashes. Source commits are never rewritten.
 - Immutable manifests and media live on the `harness-evidence` branch of the same repository,
   media through Git LFS. Notes name the evidence commit and the original file hashes.
+- Measurements of a commit are recorded after it exists, through notes and the evidence branch.
+  No tracked source file records the hash of the commit that contains it.
 - Recorded hashes do not keep commits alive. Verified commits stay reachable through explicit
   archive refs that are synchronized with notes and evidence, so history survives branch deletion
   and rewrites. A passing verification is never copied to a rewritten commit.
@@ -157,11 +181,27 @@ pass. Until then they are reported as failing, never as passing.
 
 ## Delivery status
 
-Stage A is implemented: unit schemas, the unit generator, the `units` commands, the source graph
-and the self-host registry for both workspaces. Its `VerificationRecord` schema and validator
-exist, but nothing produces records yet. Stages B to F are not started. Stage evidence is
-recorded in the `agentic-self-hosting` loop.
+Stages A and B are implemented. Stage A: unit schemas, the unit generator, the `units` commands,
+the source graph and the self-host registry for both workspaces. Stage B: the runtime contract
+with module, Wasm, process and HTTP adapters, the TypeScript reference and Rust impact kernel
+with native and Wasm builds, `harness impact`, `harness kernel`, the Rust audit adapter and the
+typed package entry points. The `VerificationRecord` schema and validator exist, but nothing
+produces records yet. Stages C to F are not started. Stage evidence is recorded in the
+`agentic-self-hosting` loop.
 
-The self-host registry is a bootstrap. Every responsibility and contract in it is derived and
-labelled as such, five runtime path lookups are recorded as uncertain references, and four plugin
-packaging files are unclassified.
+The one recorded benchmark is calibration from an uncommitted tree: it names no tested revision
+and is not verification evidence. On that machine profile the TypeScript reference is the
+fastest runtime for warm calls at every workload size and for cold calls at 100 and 1,000 nodes,
+so it is the default there. At 10,000 nodes the native process is faster for a cold call (16.7 ms
+against 19.7 ms) and slower warm (10.4 ms against 7.3 ms). Consecutive runs on the same machine
+differed by roughly 15 to 20 percent. Module memory and HTTP memory are reported as unavailable.
+
+Known gaps in what is delivered:
+
+- Module and Wasm calls cannot be interrupted. Their deadline rejects a late result but the
+  thread stays occupied until the call returns; hard limits need a process target.
+- The native binary is not shipped in the package, and no CI workflow builds the kernel yet;
+  that belongs to stage D.
+- The registry still records every pre-existing responsibility and contract as derived, six
+  references as uncertain (five runtime path lookups and the module loader), and four plugin
+  packaging files as unclassified.

@@ -1,0 +1,59 @@
+{
+	"schemaVersion": 1,
+	"id": "function.kernel-artifacts",
+	"kind": "function",
+	"title": "kernelArtifacts",
+	"responsibility": "Locates the built impact kernel artifacts without building anything.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/kernelArtifacts.ts"],
+		"symbols": ["Environment", "KernelBuild", "KernelFile", "KernelArtifacts", "kernelArtifacts"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "kernelArtifacts.env",
+				"type": "Environment"
+			}
+		],
+		"outputs": [
+			{
+				"name": "kernelArtifacts",
+				"type": "KernelArtifacts"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "kernel.impact-kernel",
+			"via": "wasm",
+			"origin": "declared",
+			"contract": "impact-kernel/1"
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"via": "process",
+			"origin": "declared",
+			"contract": "impact-kernel/1"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/kernelArtifacts.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/kernelArtifacts.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

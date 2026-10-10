@@ -1,0 +1,80 @@
+{
+	"schemaVersion": 1,
+	"id": "function.line-process",
+	"kind": "function",
+	"title": "lineProcess",
+	"responsibility": "Keeps one child process alive and exchanges newline-delimited JSON with it.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/lineProcess.ts"],
+		"symbols": ["ProcessReply", "LineProcess", "lineProcess", "unavailable", "exited"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "lineProcess.command",
+				"type": "string"
+			},
+			{
+				"name": "lineProcess.args",
+				"type": "string[]"
+			},
+			{
+				"name": "unavailable.command",
+				"type": "string"
+			},
+			{
+				"name": "unavailable.error",
+				"type": "Error"
+			},
+			{
+				"name": "exited.code",
+				"type": "number | null"
+			},
+			{
+				"name": "exited.stderr",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "lineProcess",
+				"type": "LineProcess"
+			},
+			{
+				"name": "unavailable",
+				"type": "RuntimeResponse"
+			},
+			{
+				"name": "exited",
+				"type": "RuntimeResponse"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.runtime-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/lineProcess.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/lineProcess.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

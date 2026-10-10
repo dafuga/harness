@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "function.runtime-types",
+	"kind": "function",
+	"title": "runtimeTypes",
+	"responsibility": "Defines the one typed runtime contract shared by every execution target.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/runtimeTypes.ts"],
+		"symbols": [
+			"RuntimeRequest",
+			"RuntimeFailure",
+			"RuntimeResponse",
+			"UnitRuntime",
+			"RuntimeOptions",
+			"RuntimeHandler",
+			"TransportFailure",
+			"defaultRuntimeTimeoutMs",
+			"runtimeFailure",
+			"runtimeTimeout"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "runtimeFailure.code",
+				"type": "string"
+			},
+			{
+				"name": "runtimeFailure.message",
+				"type": "string"
+			},
+			{
+				"name": "runtimeTimeout.timeoutMs",
+				"type": "number"
+			}
+		],
+		"outputs": [
+			{
+				"name": "defaultRuntimeTimeoutMs",
+				"type": "unknown"
+			},
+			{
+				"name": "runtimeFailure",
+				"type": "RuntimeResponse"
+			},
+			{
+				"name": "runtimeTimeout",
+				"type": "RuntimeResponse"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/runtimeTypes.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/runtimeTypes.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

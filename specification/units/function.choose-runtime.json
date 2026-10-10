@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "function.choose-runtime",
+	"kind": "function",
+	"title": "chooseRuntime",
+	"responsibility": "Chooses the default runtime from cold-latency measurements for one workload and profile.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/chooseRuntime.ts"],
+		"symbols": ["RuntimeChoiceInput", "RuntimeChoice", "chooseRuntime"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "chooseRuntime.input",
+				"type": "RuntimeChoiceInput"
+			}
+		],
+		"outputs": [
+			{
+				"name": "chooseRuntime",
+				"type": "RuntimeChoice"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/chooseRuntime.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/chooseRuntime.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

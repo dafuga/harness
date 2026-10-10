@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { antelopeDappAdapter } from './antelopeDapp';
 import { cppAdapter } from './cpp';
 import { pythonAdapter } from './python';
+import { rustAdapter } from './rust';
 import { shellAdapter } from './shell';
 import { sqlAdapter } from './sql';
 import { svelteAdapter } from './svelte';
@@ -16,6 +17,7 @@ export const auditAdapters = [
 	sqlAdapter,
 	antelopeDappAdapter,
 	cppAdapter,
+	rustAdapter,
 	pythonAdapter,
 	shellAdapter,
 	wasmAdapter
@@ -41,7 +43,7 @@ export function knownAuditExtensions(): string[] {
 	];
 }
 
-const knownFutureExtensions = ['.go', '.java', '.kt', '.m', '.mm', '.rs', '.swift', '.vue'];
+const knownFutureExtensions = ['.go', '.java', '.kt', '.m', '.mm', '.swift', '.vue'];
 
 export function resolveAuditProfile(
 	root: string,

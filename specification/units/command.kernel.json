@@ -1,0 +1,67 @@
+{
+	"schemaVersion": 1,
+	"id": "command.kernel",
+	"kind": "command",
+	"title": "KernelCommand",
+	"responsibility": "Registers the harness kernel parity, bench, default, serve and sample commands.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/KernelCommand.ts"],
+		"symbols": ["registerKernelCommand"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "registerKernelCommand.program",
+				"type": "Command"
+			}
+		],
+		"outputs": [
+			{
+				"name": "registerKernelCommand",
+				"type": "void"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.run-kernel",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.run-kernel-bench",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/KernelCommand.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/KernelCommand.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

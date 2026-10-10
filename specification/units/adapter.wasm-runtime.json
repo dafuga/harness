@@ -1,0 +1,93 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.wasm-runtime",
+	"kind": "adapter",
+	"title": "WasmRuntimeAdapter",
+	"responsibility": "Runs a core Wasm unit through the Harness JSON ABI behind the runtime contract.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/adapters/WasmRuntimeAdapter.ts"],
+		"symbols": [
+			"WasmRuntimeAdapter",
+			"WasmRuntimeAdapter.constructor",
+			"WasmRuntimeAdapter.invoke",
+			"WasmRuntimeAdapter.invokeText",
+			"WasmRuntimeAdapter.memoryBytes",
+			"WasmRuntimeAdapter.close"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "WasmRuntimeAdapter.constructor.file",
+				"type": "string"
+			},
+			{
+				"name": "WasmRuntimeAdapter.constructor.options",
+				"type": "RuntimeOptions"
+			},
+			{
+				"name": "WasmRuntimeAdapter.invoke.request",
+				"type": "RuntimeRequest"
+			},
+			{
+				"name": "WasmRuntimeAdapter.invokeText.text",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "WasmRuntimeAdapter.invoke",
+				"type": "Promise<RuntimeResponse>"
+			},
+			{
+				"name": "WasmRuntimeAdapter.invokeText",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "WasmRuntimeAdapter.memoryBytes",
+				"type": "Promise<number>"
+			},
+			{
+				"name": "WasmRuntimeAdapter.close",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.portable-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.runtime-response",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.runtime-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/WasmRuntimeAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/WasmRuntimeAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

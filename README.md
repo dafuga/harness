@@ -27,6 +27,8 @@ bun run dev -- generate unit PriceQuote
 bun run dev -- units index --write
 bun run dev -- units check
 bun run dev -- units show service.analytics
+bun run dev -- impact
+bun run dev -- kernel parity
 bun run check
 ```
 
@@ -87,9 +89,92 @@ harness units schema ComponentManifest           # also ScenarioManifest, Verifi
   runtime hashes) and measurement records with method, workload, profile and tested revision,
   or an explicit reason a value is unavailable.
 
-Impact analysis, verification, budgets, Git-native evidence history and the `/harness` console
-are specified in `specification/features/planned/agentic-self-hosting.md` and are not delivered
-yet.
+## Impact
+
+`harness impact` reports what a change affects by walking the dependency graph backwards from
+every changed file, over both the base and the head revision.
+
+```bash
+harness impact                                   # working tree against HEAD
+harness impact --base origin/main --head HEAD --json
+harness impact --runtime wasm                    # default, module, wasm, process or http
+```
+
+- The report lists changed files, direct and indirect units, added and removed units, selected and
+  excluded tests, and affected scenarios.
+- Edges come from imports and re-exports, declared `process`, `http`, `wasm` and `contract`
+  dependencies, unit ownership and scenario contracts.
+- A removed file or dropped dependency still reaches its dependents through the base graph. A
+  changed test selects itself and the scenarios it proves. A changed manifest reruns the tests of
+  the unit it describes.
+- A changed file that still exists needs a test or scenario in the head graph; coverage in the
+  base graph counts only for a file that was removed.
+- Global configuration, unclassified files and source files no test depends on select every test.
+  A file with a computed or unresolved reference is selected whenever anything changes. Each
+  widening is listed under `uncertain` with its reason.
+
+## Runtimes and the impact kernel
+
+Every execution target implements one contract: a `RuntimeRequest` in, and
+`{ ok: true, output }` or `{ ok: false, error: { code, message } }` out.
+
+| Target    | A unit declares                   | Transport                                          |
+| --------- | --------------------------------- | -------------------------------------------------- |
+| `module`  | a file and a `handler` export     | in-process call                                    |
+| `wasm`    | a core Wasm file                  | Harness JSON ABI (`harness_alloc`/`invoke`/`free`) |
+| `process` | a command                         | JSON on stdin and stdout, or one line per request  |
+| `http`    | the URL of an already served unit | one JSON `POST` per request                        |
+
+Transport failures are returned, not thrown: `runtime-unavailable`, `runtime-failed`,
+`runtime-timeout` and `invalid-response`. A request must be portable JSON: finite numbers,
+well-formed strings, plain objects and arrays, at most 64 levels deep. Every runtime refuses
+anything else as `invalid-json`, whether it arrives as an object or as text. A result that arrives
+after `timeoutMs` is rejected as `runtime-timeout`. Process and HTTP targets are stopped at the
+deadline; module and Wasm targets run on the calling thread and cannot be interrupted, so a call
+that overruns still occupies the thread until it returns. Use a process target when a hard limit
+is required. Only declared targets are used. Functions stay plain
+functions; declare a `process` or `http` target only for a unit that is deployed that way.
+`harness kernel serve` binds to loopback and has no authentication of its own.
+
+The impact kernel has a TypeScript reference (`src/utils/impactKernel.ts`) and a Rust
+implementation (`crates/impact-kernel`) built for the native host and for
+`wasm32-unknown-unknown` with the toolchain pinned in `rust-toolchain.toml`.
+
+```bash
+bun run build:kernel            # native process and core Wasm into target/kernel
+bun run check:kernel            # cargo fmt --check, clippy -D warnings, cargo test
+harness kernel parity           # built kernels against the reference
+harness kernel bench --write    # measure this machine and record the run
+harness kernel default          # the runtime those measurements select
+harness kernel serve --port 0   # serve the kernel over loopback HTTP
+```
+
+The default runtime is the lowest measured cold end-to-end latency on the representative
+workload for the current machine profile; within 5% the simpler runtime wins. Without a
+measurement for the profile, the reference module is used and the choice is reported as
+unmeasured. Benchmarks time serialization, invocation and parsing on identical workloads, and
+report memory only where it can be attributed. Runs are stored per profile in
+`specification/measurements/impact-kernel`. A run is calibration: it is labelled
+`verified: false`, a run from an uncommitted tree names no tested revision, and neither can
+serve as verification evidence or a budget baseline. The package ships the Wasm module; the native binary
+is built locally.
+
+## Typed package API
+
+The package exports typed, side-effect-free entry points; none of them starts the CLI.
+
+```ts
+import { componentManifestSchema, type VerificationRecord } from '@dafuga01/harness/contracts';
+import { UnitRuntimeService, type UnitRuntime } from '@dafuga01/harness/runtime';
+```
+
+`@dafuga01/harness/contracts` holds the manifest and record schemas, types and validators.
+`@dafuga01/harness/runtime` holds the runtime contract, the four adapters, `UnitRuntimeService`,
+`RuntimeServerService` and the reference kernel. The package root re-exports both. Declarations
+need `moduleResolution` set to `bundler`, `node16` or `nodenext`.
+
+Verification, budgets, Git-native evidence history and the `/harness` console are specified in
+`specification/features/planned/agentic-self-hosting.md` and are not delivered yet.
 
 ## Jev Clean Code review
 

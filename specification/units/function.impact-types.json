@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "function.impact-types",
+	"kind": "function",
+	"title": "impactTypes",
+	"responsibility": "Defines the impact report and the per-revision input of an impact computation.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/impactTypes.ts"],
+		"symbols": ["ChangedFile", "ImpactReport", "ImpactSide"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.units-config",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/impactTypes.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/impactTypes.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

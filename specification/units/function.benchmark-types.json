@@ -1,0 +1,81 @@
+{
+	"schemaVersion": 1,
+	"id": "function.benchmark-types",
+	"kind": "function",
+	"title": "benchmarkTypes",
+	"responsibility": "Defines the schema of a recorded kernel benchmark run.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/benchmarkTypes.ts"],
+		"symbols": [
+			"measurementsDirectory",
+			"representativeWorkload",
+			"calibrationNote",
+			"calibrationSchema",
+			"benchMeasurementSchema",
+			"kernelBenchmarkSchema",
+			"BenchMeasurement",
+			"KernelBenchmark"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "measurementsDirectory",
+				"type": "unknown"
+			},
+			{
+				"name": "representativeWorkload",
+				"type": "unknown"
+			},
+			{
+				"name": "calibrationNote",
+				"type": "unknown"
+			},
+			{
+				"name": "calibrationSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "benchMeasurementSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "kernelBenchmarkSchema",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/benchmarkTypes.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/benchmarkTypes.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
