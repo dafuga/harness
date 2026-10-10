@@ -1,0 +1,53 @@
+{
+	"schemaVersion": 1,
+	"kind": "legacy-report",
+	"id": "4adb4ddb-b2d6-4174-8d32-675df32001e5",
+	"project": "harness",
+	"title": "Jev Clean Code audit",
+	"mode": "feature",
+	"environment": "local CLI and mocked TypeSafe API",
+	"status": "blocked",
+	"state": "finalized",
+	"startedAt": "2026-10-01T10:34:41.642Z",
+	"updatedAt": "2026-10-01T11:18:16.293Z",
+	"revision": "3c2457ad1645249e0464eff124abbb6430f1621b",
+	"summary": "Implemented and committed as 3c2457a on dafuga/jev-clean-code. Harness now has opt-in per-file Jev Clean Code review, advisory/gate modes, bounded context, validated judgments and source spans, explicit uncertainty, local caching, safe operational failures, and generated-project configuration/guidance. Full bun run check passes, including 108 unit and 21 CLI E2E tests. The built CLI was exercised manually. Live accuracy calibration remains blocked by the absent dedicated Harness Jev credential; 14 opt-in naming cases are skipped. No frontend/device path or release/deployment applies.",
+	"checks": [
+		{
+			"id": "regression-red",
+			"title": "Missing-feature regressions reproduced before implementation",
+			"status": "passed"
+		},
+		{
+			"id": "regression-green",
+			"title": "Unchanged CLI regressions pass after implementation",
+			"status": "passed"
+		},
+		{
+			"id": "boundary-tests",
+			"title": "SDK, validation, caching and context boundaries",
+			"status": "passed"
+		},
+		{
+			"id": "live-calibration",
+			"title": "Live Jev accuracy calibration",
+			"status": "blocked"
+		},
+		{
+			"id": "full-check",
+			"title": "Full Harness verification",
+			"status": "passed"
+		},
+		{
+			"id": "built-cli",
+			"title": "Manual built CLI exercise",
+			"status": "passed"
+		},
+		{
+			"id": "recursive-exclusion",
+			"title": "Recursive path exclusions red-green regression",
+			"status": "passed"
+		}
+	],
+	"media": []
+}
