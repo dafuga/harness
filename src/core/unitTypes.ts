@@ -22,6 +22,7 @@ export const runtimeKinds = ['module', 'wasm', 'process', 'http'] as const;
 export const performanceMetrics = [
 	'latency-cold-ms',
 	'latency-warm-ms',
+	'latency-floor-ms',
 	'throughput-ops',
 	'memory-bytes'
 ] as const;
@@ -45,6 +46,8 @@ export const unitDependencySchema = z.strictObject({
 export const performanceBudgetSchema = z.strictObject({
 	workload: identifier,
 	metric: z.enum(performanceMetrics),
+	/** Execution target the budget applies to; the unit's default target when omitted. */
+	target: z.enum(runtimeKinds).optional(),
 	tolerance: z
 		.number()
 		.min(0)
@@ -110,7 +113,9 @@ export const scenarioManifestSchema = z.strictObject({
 		z.strictObject({
 			id: identifier,
 			width: z.number().int().positive(),
-			height: z.number().int().positive()
+			height: z.number().int().positive(),
+			/** Device pixel ratio of the capture; pixel dimensions are multiplied by it. */
+			scale: z.number().positive().optional()
 		})
 	),
 	tests: z
@@ -120,7 +125,9 @@ export const scenarioManifestSchema = z.strictObject({
 				kind: z.enum(['unit', 'integration', 'e2e']),
 				runner: z.enum(['vitest', 'playwright', 'command']),
 				target: text,
-				cwd: z.string().optional()
+				cwd: z.string().optional(),
+				/** Hard limit for this check; the configured default applies when omitted. */
+				timeoutMs: z.number().int().positive().optional()
 			})
 		)
 		.min(1),
@@ -131,6 +138,8 @@ export const scenarioManifestSchema = z.strictObject({
 			states: z.array(identifier),
 			viewports: z.array(identifier),
 			provenance: z.enum(['fixture', 'actual-capture']).optional(),
+			/** A screenshot shows exactly the viewport, or the full page at viewport width. */
+			capture: z.enum(['viewport', 'full-page']).optional(),
 			required: z.boolean()
 		})
 	)

@@ -1,0 +1,112 @@
+import { resolve } from 'node:path';
+import { GitAdapter } from '../adapters/GitAdapter';
+import { fail } from '../core/errors';
+import {
+	defaultVerifyConfig,
+	verifyConfigFile,
+	verifyConfigSchema,
+	type VerifyConfig
+} from '../core/verifyTypes';
+import {
+	VerificationStoreRepository,
+	type StoredRecord
+} from '../repositories/VerificationStoreRepository';
+import { ImpactService } from '../services/ImpactService';
+import { TrustedBaseService } from '../services/TrustedBaseService';
+import { UnitRuntimeService } from '../services/UnitRuntimeService';
+import { VerificationCheckService, type CheckReport } from '../services/VerificationCheckService';
+import { VerificationService } from '../services/VerificationService';
+import { openRange, type RevisionSide } from './loadRevisions';
+import { runtimeKind } from './runImpact';
+
+export interface VerifyOptions {
+	root?: string;
+	/** Commit to verify; `HEAD` by default. Uncommitted changes are never part of it. */
+	commit?: string;
+	/**
+	 * Revision to compare against; the first parent by default. It is used only when a passing
+	 * record proves it; otherwise the nearest proven ancestor is used, or nothing at all.
+	 */
+	base?: string;
+	runtime?: string;
+	testTimeout?: string;
+	record?: string;
+}
+
+async function resolveCommit(git: GitAdapter, reference: string): Promise<string> {
+	const commit = await git.attempt(['rev-parse', '--verify', '--quiet', `${reference}^{commit}`]);
+	return commit ?? fail(`"${reference}" does not name a commit in this repository.`);
+}
+
+/** Verifies one exact commit in a clean snapshot; the record is stored even when it fails. */
+export async function verifyRun(options: VerifyOptions = {}): Promise<StoredRecord> {
+	const root = resolve(options.root ?? process.cwd());
+	const git = new GitAdapter(root);
+	if (!(await git.isRepository())) return fail('harness verify needs a Git repository.');
+	const commit = await resolveCommit(git, options.commit ?? 'HEAD');
+	const parent =
+		options.base ?? (await git.attempt(['rev-parse', '--verify', '--quiet', `${commit}^`]));
+	const requestedBase = !parent || parent === 'none' ? null : await resolveCommit(git, parent);
+	const baseCommit = await new TrustedBaseService(root).nearest(requestedBase);
+	const { base, head } = await openRange({ root, base: baseCommit ?? 'none', head: commit });
+	const runtime = new UnitRuntimeService(root).kernel(runtimeKind(options.runtime));
+	const impact = await new ImpactService(runtime)
+		.compute(base, head)
+		.finally(() => runtime.close());
+	return new VerificationService({
+		root,
+		commit,
+		tree: await git.run(['rev-parse', `${commit}^{tree}`]),
+		baseCommit,
+		requestedBase,
+		base,
+		head,
+		impact,
+		config: await verifyConfig(head),
+		testTimeoutMs: options.testTimeout ? Number(options.testTimeout) : undefined,
+		env: process.env
+	}).run();
+}
+
+async function verifyConfig(head: RevisionSide): Promise<VerifyConfig> {
+	const listed = head.entries.some((entry) => entry.path === verifyConfigFile);
+	if (!listed || !head.tree) return defaultVerifyConfig;
+	const parsed = verifyConfigSchema.safeParse(JSON.parse(await head.tree.read(verifyConfigFile)));
+	if (parsed.success) return parsed.data;
+	const issue = parsed.error.issues[0];
+	return fail(`${verifyConfigFile} is invalid: ${issue.path.join('.')} ${issue.message}`);
+}
+
+/** Checks that a stored record proves a commit: the gate hooks and CI will rely on. */
+export async function verifyCheck(options: VerifyOptions = {}): Promise<CheckReport> {
+	const root = resolve(options.root ?? process.cwd());
+	const commit = await resolveCommit(new GitAdapter(root), options.commit ?? 'HEAD');
+	const store = new VerificationStoreRepository(root);
+	const stored = options.record ? store.load(options.record) : store.latest(commit);
+	if (!stored) {
+		return fail(
+			options.record
+				? `${options.record} is not a verification record.`
+				: `No verification record exists for ${commit}; run harness verify run.`
+		);
+	}
+	return new VerificationCheckService(root).check(commit, stored);
+}
+
+export function renderVerify(stored: StoredRecord): string {
+	const { record } = stored;
+	const ran = record.scenarios.filter((scenario) => scenario.status !== 'referenced').length;
+	const { base, requestedBase } = record.source;
+	const widened = requestedBase
+		? [
+				`Compared with ${base ?? 'an empty tree'}: ${requestedBase} has no passing record, so everything since the last verified revision was checked.`
+			]
+		: [];
+	return [
+		`Verification ${record.status} for ${record.source.commit}.`,
+		...widened,
+		`Tests: ${record.tests.length} run. Scenarios: ${ran} verified, ${record.scenarios.length - ran} referenced.`,
+		...record.failures.map((failure) => `  ${failure}`),
+		`Record ${record.id.slice(0, 12)} in ${stored.directory}`
+	].join('\n');
+}

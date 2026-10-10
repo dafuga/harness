@@ -3,7 +3,11 @@ const subcommands: Record<string, string[]> = {
 	analytics: ['summary', 'loops', 'jev', 'models', 'events', 'import', 'export'],
 	report: ['begin', 'record', 'import', 'finalize', 'serve', 'publish', 'cleanup', 'sync-storage'],
 	units: ['index', 'check', 'list', 'show', 'graph', 'retire', 'schema'],
-	kernel: ['parity', 'bench', 'default', 'serve', 'sample']
+	kernel: ['parity', 'bench', 'default', 'serve', 'sample'],
+	scenarios: ['list', 'show', 'check'],
+	explain: ['add', 'list', 'check'],
+	budget: ['measure', 'status', 'history', 'establish', 'approve', 'bench'],
+	verify: ['run', 'check']
 };
 export function commandAction(args: string[]): string {
 	const command = args[0] ?? 'help';

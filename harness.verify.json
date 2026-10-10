@@ -1,0 +1,31 @@
+{
+	"schemaVersion": 1,
+	"setup": [
+		{
+			"command": "bun run build",
+			"timeoutMs": 1200000
+		}
+	],
+	"link": ["node_modules", "packages/reports/node_modules"],
+	"outputs": [
+		".cache/",
+		"coverage/",
+		"dist/",
+		"packages/reports/.svelte-kit/",
+		"packages/reports/.test-reports/",
+		"packages/reports/build/",
+		"packages/reports/dist/",
+		"packages/reports/output/",
+		"packages/reports/playwright-report/",
+		"packages/reports/test-results/",
+		"plugins/claude-picker/dist/",
+		"target/"
+	],
+	"runners": {
+		"vitest": "bun x vitest run {target}",
+		"playwright": "bun x playwright test {target}"
+	},
+	"timeouts": {
+		"test": 600000
+	}
+}

@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "function.explanation-types",
+	"kind": "function",
+	"title": "explanationTypes",
+	"responsibility": "Defines a reason bound to the content fingerprints of the change it explains.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/explanationTypes.ts"],
+		"symbols": [
+			"explanationsFile",
+			"explanationOutcomes",
+			"explanationSchema",
+			"Explanation",
+			"ExplanationOutcome",
+			"RequiredReason",
+			"ReasonStatus"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "explanationsFile",
+				"type": "unknown"
+			},
+			{
+				"name": "explanationOutcomes",
+				"type": "unknown"
+			},
+			{
+				"name": "explanationSchema",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/explanationTypes.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/explanationTypes.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

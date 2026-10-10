@@ -1,0 +1,72 @@
+{
+	"schemaVersion": 1,
+	"id": "function.snapshot-additions",
+	"kind": "function",
+	"title": "snapshotAdditions",
+	"responsibility": "Lists files in a verification snapshot that the commit does not contain and no declared output covers.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/snapshotAdditions.ts"],
+		"symbols": ["SnapshotBounds", "declaredOutput", "snapshotAdditions"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "declaredOutput.path",
+				"type": "string"
+			},
+			{
+				"name": "declaredOutput.outputs",
+				"type": "string[]"
+			},
+			{
+				"name": "snapshotAdditions.directory",
+				"type": "string"
+			},
+			{
+				"name": "snapshotAdditions.bounds",
+				"type": "SnapshotBounds"
+			},
+			{
+				"name": "snapshotAdditions.prefix",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "declaredOutput",
+				"type": "boolean"
+			},
+			{
+				"name": "snapshotAdditions",
+				"type": "Promise<string[]>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.units-config",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/snapshotAdditions.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/snapshotAdditions.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

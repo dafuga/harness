@@ -1,4 +1,5 @@
 import { performance } from 'node:perf_hooks';
+import { warmupCalls } from '../core/comparisonTypes';
 import type { RuntimeRequest, UnitRuntime } from '../core/runtimeTypes';
 
 export interface WarmResult {
@@ -35,4 +36,62 @@ export async function benchSamples(
 	}
 	const total = samples.reduce((sum, value) => sum + value, 0);
 	return { medianMs: median(samples), opsPerSecond: (iterations * 1000) / total, iterations };
+}
+
+export interface RoundResult {
+	/** Fastest single call: the most repeatable figure on a machine doing other work. */
+	floorMs: number;
+	/** Median of the round medians. */
+	warmMs: number;
+	opsPerSecond: number;
+	samples: number;
+}
+
+/** Several rounds of end-to-end calls on an initialized runtime, after a short warm-up. */
+export async function benchRounds(
+	runtime: UnitRuntime,
+	request: RuntimeRequest,
+	shape: { rounds: number; iterations: number }
+): Promise<RoundResult> {
+	for (let warmup = 0; warmup < warmupCalls; warmup += 1) await timeCall(runtime, request);
+	const rounds: number[][] = [];
+	for (let round = 0; round < shape.rounds; round += 1) {
+		const samples: number[] = [];
+		for (let call = 0; call < shape.iterations; call += 1) {
+			samples.push(await timeCall(runtime, request));
+		}
+		rounds.push(samples);
+	}
+	const warmMs = median(rounds.map(median));
+	return {
+		floorMs: Math.min(...rounds.flat()),
+		warmMs,
+		opsPerSecond: 1000 / warmMs,
+		samples: shape.rounds * shape.iterations
+	};
+}
+
+/** The three measurements every boundary benchmark reports, with how each was taken. */
+export function roundMeasurements(result: RoundResult, where: string) {
+	const boundary = `${where}, including request validation, serialization and response parsing.`;
+	return [
+		{
+			metric: 'latency-floor-ms',
+			unitOfMeasure: 'ms',
+			value: result.floorMs,
+			method: `Fastest of ${boundary}`
+		},
+		{
+			metric: 'latency-warm-ms',
+			unitOfMeasure: 'ms',
+			value: result.warmMs,
+			method: `Median of the round medians over ${boundary}`
+		},
+		{
+			metric: 'throughput-ops',
+			unitOfMeasure: 'ops/s',
+			value: result.opsPerSecond,
+			method: `Calls per second at the median over ${boundary}`
+		}
+	];
 }

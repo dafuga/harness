@@ -5,6 +5,7 @@ import {
 	pathMatches,
 	scenariosDirectory,
 	unitsDirectory,
+	workloadsDirectory,
 	type UnitsConfig
 } from '../core/unitsConfig';
 import { unitIdentity, type UnitIdentity } from './unitIdentity';
@@ -58,6 +59,7 @@ function isRegistry(path: string): boolean {
 function isGlobal(path: string, relative: string, config: UnitsConfig): boolean {
 	return (
 		defaultGlobalFiles.includes(relative) ||
+		path.startsWith(`${workloadsDirectory}/`) ||
 		config.global.some((pattern) => pathMatches(path, pattern))
 	);
 }

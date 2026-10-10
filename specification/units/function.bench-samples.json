@@ -8,7 +8,15 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/benchSamples.ts"],
-		"symbols": ["WarmResult", "median", "timeCall", "benchSamples"]
+		"symbols": [
+			"WarmResult",
+			"median",
+			"timeCall",
+			"benchSamples",
+			"RoundResult",
+			"benchRounds",
+			"roundMeasurements"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -36,6 +44,26 @@
 			{
 				"name": "benchSamples.iterations",
 				"type": "number"
+			},
+			{
+				"name": "benchRounds.runtime",
+				"type": "UnitRuntime"
+			},
+			{
+				"name": "benchRounds.request",
+				"type": "RuntimeRequest"
+			},
+			{
+				"name": "benchRounds.shape",
+				"type": "{ rounds: number; iterations: number }"
+			},
+			{
+				"name": "roundMeasurements.result",
+				"type": "RoundResult"
+			},
+			{
+				"name": "roundMeasurements.where",
+				"type": "string"
 			}
 		],
 		"outputs": [
@@ -50,6 +78,14 @@
 			{
 				"name": "benchSamples",
 				"type": "Promise<WarmResult>"
+			},
+			{
+				"name": "benchRounds",
+				"type": "Promise<RoundResult>"
+			},
+			{
+				"name": "roundMeasurements",
+				"type": "unknown"
 			}
 		],
 		"errors": [
@@ -60,6 +96,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "function.comparison-types",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.runtime-types",
 			"via": "import",

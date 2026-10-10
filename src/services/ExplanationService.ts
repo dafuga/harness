@@ -1,0 +1,70 @@
+import type { Explanation, ReasonStatus, RequiredReason } from '../core/explanationTypes';
+
+export interface ReasonReport {
+	required: ReasonStatus[];
+	/** The reasons that satisfy a requirement, in requirement order. */
+	entries: Explanation[];
+	failures: string[];
+}
+
+const verbs = { added: 'added', modified: 'modified', removed: 'removed' };
+
+/**
+ * Matches recorded reasons to the changes that need them, by exact content fingerprints. A
+ * change made in several steps is explained by the reasons of every step, in order.
+ */
+export class ExplanationService {
+	report(required: RequiredReason[], explanations: Explanation[]): ReasonReport {
+		const entries: Explanation[] = [];
+		const statuses = required.map((reason): ReasonStatus => {
+			const subject = explanations.filter((entry) => sameSubject(entry, reason));
+			const steps = chain(subject, reason.from, reason.to);
+			entries.push(...(steps ?? []));
+			// A reason for the same starting point but other content was written before a later edit.
+			const started = subject.some((entry) => entry.from === reason.from);
+			const open = started ? 'stale' : 'missing';
+			return { ...reason, state: steps ? 'explained' : open };
+		});
+		const open = statuses.filter((status) => status.state !== 'explained');
+		return { required: statuses, entries, failures: open.map(describe) };
+	}
+}
+
+type Fingerprint = Explanation['from'];
+
+/** The reasons leading from one content to another: the latest exact one, else step by step. */
+function chain(
+	entries: Explanation[],
+	from: Fingerprint,
+	to: Fingerprint
+): Explanation[] | undefined {
+	const exact = [...entries].reverse().find((entry) => entry.from === from && entry.to === to);
+	if (exact) return [exact];
+	const reached = new Set<Fingerprint>([from]);
+	let frontier: Array<{ at: Fingerprint; steps: Explanation[] }> = [{ at: from, steps: [] }];
+	while (frontier.length > 0) {
+		const next = frontier.flatMap(({ at, steps }) =>
+			entries
+				.filter((entry) => entry.from === at && !reached.has(entry.to))
+				.map((entry) => ({ at: entry.to, steps: [...steps, entry] }))
+		);
+		const arrived = next.find((step) => step.at === to);
+		if (arrived) return arrived.steps;
+		for (const step of next) reached.add(step.at);
+		frontier = next;
+	}
+	return undefined;
+}
+
+function sameSubject(entry: Explanation, reason: RequiredReason): boolean {
+	return entry.unit === reason.unit && entry.symbol === reason.symbol && entry.file === reason.file;
+}
+
+export function describe(status: ReasonStatus): string {
+	const subject =
+		status.symbol === '*'
+			? 'the unit'
+			: `${status.symbol}${status.file ? ` in ${status.file}` : ''}`;
+	const tail = status.state === 'stale' ? 'after its reason was written' : 'without a reason';
+	return `${status.unit}: ${subject} was ${verbs[status.change]} ${tail}`;
+}

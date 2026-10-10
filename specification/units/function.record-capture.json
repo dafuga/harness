@@ -1,0 +1,68 @@
+{
+	"schemaVersion": 1,
+	"id": "function.record-capture",
+	"kind": "function",
+	"title": "recordCapture",
+	"responsibility": "Writes one capture and its index line when evidence was requested, and nothing otherwise.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/recordCapture.ts"],
+		"symbols": ["evidenceRequested", "recordCapture"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "evidenceRequested.env",
+				"type": "Environment"
+			},
+			{
+				"name": "recordCapture.line",
+				"type": "CaptureLine"
+			},
+			{
+				"name": "recordCapture.bytes",
+				"type": "Uint8Array | string"
+			},
+			{
+				"name": "recordCapture.env",
+				"type": "Environment"
+			}
+		],
+		"outputs": [
+			{
+				"name": "evidenceRequested",
+				"type": "boolean"
+			},
+			{
+				"name": "recordCapture",
+				"type": "boolean"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.verify-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/recordCapture.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/recordCapture.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

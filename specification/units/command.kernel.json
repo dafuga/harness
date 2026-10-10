@@ -46,6 +46,11 @@
 			"unit": "workflow.run-kernel-bench",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "workflow.run-kernel-boundary",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

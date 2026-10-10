@@ -29,6 +29,8 @@ bun run dev -- units check
 bun run dev -- units show service.analytics
 bun run dev -- impact
 bun run dev -- kernel parity
+bun run dev -- explain list
+bun run dev -- verify run
 bun run check
 ```
 
@@ -173,8 +175,86 @@ import { UnitRuntimeService, type UnitRuntime } from '@dafuga01/harness/runtime'
 `RuntimeServerService` and the reference kernel. The package root re-exports both. Declarations
 need `moduleResolution` set to `bundler`, `node16` or `nodenext`.
 
-Verification, budgets, Git-native evidence history and the `/harness` console are specified in
-`specification/features/planned/agentic-self-hosting.md` and are not delivered yet.
+## Scenarios, verification, reasons and budgets
+
+```bash
+harness scenarios list|show <id>|check     # states, viewports, checks and required evidence
+harness explain list|add|check             # a reason for every changed function or unit
+harness verify run [--commit <rev>]        # verify an exact commit in a clean snapshot
+harness verify check [--commit <rev>]      # does a stored record prove this commit?
+harness budget status|history|measure      # frozen limits and how they were set
+harness budget establish|approve           # a reviewer freezes or changes limits
+harness budget bench <unit> --workload <file>
+```
+
+**Scenarios.** A contract in `specification/scenarios` names the units it proves, their states,
+viewports, checks and evidence. A state is `required`, `missing` or `inapplicable`. A missing
+state can occur but is unproven, so the scenario cannot pass; an inapplicable state cannot occur,
+and lacking a fixture is not an applicability reason. Screenshots are PNG and must decode to the
+viewport size; audio is WAV, must be playable, and carries a transcript and its provenance. A
+capture of running software carries a build stamp naming the verified commit. Checks capture
+only when `TAKE_SCREENSHOT=1`; `harness verify` always sets it.
+
+**Verification.** `harness verify run` exports the commit with `git archive` into a clean
+directory outside every repository, so uncommitted work is never included and nothing a check
+writes reaches the source. Impact over the base and head graphs selects the test files and
+scenarios. Each check runs in its own process group under a hard limit and is killed with its
+children. Affected scenarios are captured afresh for every commit, even when the bytes are
+identical; an unaffected scenario keeps the evidence of the commit that last tested it and names
+that commit. The gates are snapshot, registry, ledger, tests, scenarios, reasons and budgets.
+A record is a statement about the whole commit, so the base only narrows what reruns when a
+passing, intact record proves it. Otherwise the nearest proven ancestor is used, or nothing, and
+everything since then is checked: `--base`, an empty commit or an unverified parent cannot
+leave a change out. The record names the base it used and the one that was asked for.
+The record is written whether it passes or fails, to `.cache/harness/verifications`, with its
+evidence and logs. `harness verify check` rejects a record for another commit or tree, changed
+component versions and tampered evidence. `harness.verify.json` configures setup commands, shared
+paths, outputs, runners and time limits.
+
+The snapshot has to remain the exact commit while checks run and capture. It is compared with
+the commit after setup and after every check: a tracked file that changes or disappears fails,
+and so does any file that appears outside a declared output, wherever it is and even if a later
+check removes it again. `outputs` in `harness.verify.json` names the build output, caches and
+reports that may be written (`"dist/"`, `"target/"`); an output that covers a tracked file is
+refused, so source cannot be declared away.
+
+**Reasons.** Every changed function, and every added, removed or unindexed unit, needs a reason:
+the behaviour change, what was tried to simplify it, and what was tried for performance, each
+with an outcome of `improved`, `not-improved` or `not-applicable`. A reason is bound to the
+content it explains and goes stale when the code changes again. Verification asks for reasons
+from the nearest proven revision; a change made over several commits is explained by the
+reasons of each step.
+
+**Budgets.** Source bytes, complexity and dependencies are frozen. Performance may be at most 5%
+worse than the baseline for the same workload, execution target and machine profile. A missing
+measurement, a missing baseline or a baseline from another profile never passes. A workload
+name is only a label: a baseline freezes the unit of measure, the method and a comparison
+context (the hash of the complete request, the measured boundary, the protocol and the
+sampling), and a measurement is compared only when all of them are identical. Any difference is
+`incompatible`, missing metadata is `incomplete`, and a new definition needs a reviewed
+approval while the ledger keeps the earlier one. `harness budget bench` derives the context
+from the request it sends; other benchmark captures must state a valid one. Limits come
+only from a record of a clean commit whose other gates passed; calibration files and failed
+records are refused. A reviewer who is not the author establishes or approves them, with a
+reason and the values before and after, in the append-only ledger
+`specification/budgets/ledger.ndjson`. A unit recreated from retired source inherits the retired
+limits, and an identity can be retired but not deleted.
+
+**The boundary gate.** When a change reaches a unit with a performance budget, directly or
+through a dependency, that unit's benchmark scenario reruns and the whole invocation boundary is
+compared with the frozen baseline: validation, serialization, the adapter and the call. A
+slowdown beyond 5% fails even when every correctness test passes. Noise is answered with more
+comparable samples, never a wider tolerance. For Harness this is the `invocation-boundary`
+scenario on `service.unit-runtime`, measured by `harness kernel bench --boundary`.
+
+Typed contracts for all of this ship in `@dafuga01/harness/verification`, including
+`recordCapture` for checks that write evidence.
+
+Records and reasons are local drafts until they are stored in Git. Git notes, the evidence
+branch, hooks, CI and the `/harness` console are specified in
+`specification/features/planned/agentic-self-hosting.md` and are not delivered yet. Browser
+screenshots with font, image and canvas readiness, and real audio capture, arrive with the
+console; the verifier's protocol and validators for them exist now.
 
 ## Jev Clean Code review
 

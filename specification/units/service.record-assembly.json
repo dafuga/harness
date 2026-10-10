@@ -1,0 +1,127 @@
+{
+	"schemaVersion": 1,
+	"id": "service.record-assembly",
+	"kind": "service",
+	"title": "RecordAssemblyService",
+	"responsibility": "Turns what a run observed into one sealed record with every gate judged.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/RecordAssemblyService.ts"],
+		"symbols": [
+			"AssemblyContext",
+			"AssemblyInput",
+			"RecordAssemblyService",
+			"RecordAssemblyService.constructor",
+			"RecordAssemblyService.assemble"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "RecordAssemblyService.constructor.context",
+				"type": "AssemblyContext"
+			},
+			{
+				"name": "RecordAssemblyService.assemble.input",
+				"type": "AssemblyInput"
+			}
+		],
+		"outputs": [
+			{
+				"name": "RecordAssemblyService.assemble",
+				"type": "Promise<VerificationRecord>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.impact-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.required-reasons",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.seal-record",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-measurements",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.budget-ledger",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.explanation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.verification-store",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.budget",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.explanation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.snapshot-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-gates",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.load-revisions",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/RecordAssemblyService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/RecordAssemblyService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

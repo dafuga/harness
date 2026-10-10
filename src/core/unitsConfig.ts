@@ -4,6 +4,8 @@ export const unitsConfigFile = 'harness.units.json';
 export const unitsDirectory = 'specification/units';
 export const scenariosDirectory = 'specification/scenarios';
 export const budgetsLedger = 'specification/budgets/ledger.ndjson';
+/** Benchmark workloads: changing one changes what every measurement of it means. */
+export const workloadsDirectory = 'specification/workloads';
 
 const text = z.string().min(1);
 
@@ -40,6 +42,7 @@ export const defaultGlobalFiles = [
 	'eslint.harness-rules.js',
 	'harness.audit.json',
 	unitsConfigFile,
+	'harness.verify.json',
 	'tailwind.config.js',
 	'postcss.config.js',
 	'.prettierrc',

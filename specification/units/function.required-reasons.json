@@ -1,0 +1,84 @@
+{
+	"schemaVersion": 1,
+	"id": "function.required-reasons",
+	"kind": "function",
+	"title": "requiredReasons",
+	"responsibility": "Lists every changed function or unit between two revisions that needs a reason.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/requiredReasons.ts"],
+		"symbols": ["ReasonSide", "presentUnits", "requiredReasons"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "presentUnits.side",
+				"type": "ReasonSide"
+			},
+			{
+				"name": "requiredReasons.base",
+				"type": "ReasonSide"
+			},
+			{
+				"name": "requiredReasons.head",
+				"type": "ReasonSide"
+			}
+		],
+		"outputs": [
+			{
+				"name": "presentUnits",
+				"type": "Map<string, ComponentManifest>"
+			},
+			{
+				"name": "requiredReasons",
+				"type": "RequiredReason[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.component-version",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.explanation-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.stable-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/requiredReasons.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/requiredReasons.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

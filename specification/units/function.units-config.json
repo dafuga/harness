@@ -13,6 +13,7 @@
 			"unitsDirectory",
 			"scenariosDirectory",
 			"budgetsLedger",
+			"workloadsDirectory",
 			"unitsConfigSchema",
 			"UnitsConfig",
 			"defaultGlobalFiles",
@@ -47,6 +48,10 @@
 			},
 			{
 				"name": "budgetsLedger",
+				"type": "unknown"
+			},
+			{
+				"name": "workloadsDirectory",
 				"type": "unknown"
 			},
 			{

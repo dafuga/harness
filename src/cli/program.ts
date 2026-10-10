@@ -11,6 +11,10 @@ import { registerNewCommand } from '../commands/new';
 import { registerUnitsCommand } from '../commands/UnitsCommand';
 import { registerImpactCommand } from '../commands/ImpactCommand';
 import { registerKernelCommand } from '../commands/KernelCommand';
+import { registerScenariosCommand } from '../commands/ScenariosCommand';
+import { registerExplainCommand } from '../commands/ExplainCommand';
+import { registerBudgetCommand } from '../commands/BudgetCommand';
+import { registerVerifyCommand } from '../commands/VerifyCommand';
 
 export function buildProgram(): Command {
 	const program = new Command();
@@ -30,6 +34,10 @@ export function buildProgram(): Command {
 	registerUnitsCommand(program);
 	registerImpactCommand(program);
 	registerKernelCommand(program);
+	registerScenariosCommand(program);
+	registerExplainCommand(program);
+	registerBudgetCommand(program);
+	registerVerifyCommand(program);
 	registerAuditCommand(program);
 	registerResponseCheckCommand(program);
 

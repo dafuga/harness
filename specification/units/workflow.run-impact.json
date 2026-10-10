@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/workflows/runImpact.ts"],
-		"symbols": ["ImpactOptions", "runImpact", "renderImpact"]
+		"symbols": ["ImpactOptions", "runImpact", "runtimeKind", "renderImpact"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -16,6 +16,10 @@
 			{
 				"name": "runImpact.options",
 				"type": "ImpactOptions"
+			},
+			{
+				"name": "runtimeKind.value",
+				"type": "string | undefined"
 			},
 			{
 				"name": "renderImpact.report",
@@ -26,6 +30,10 @@
 			{
 				"name": "runImpact",
 				"type": "Promise<ImpactReport>"
+			},
+			{
+				"name": "runtimeKind",
+				"type": "RuntimeKind | 'default'"
 			},
 			{
 				"name": "renderImpact",
@@ -41,32 +49,12 @@
 	},
 	"dependencies": [
 		{
-			"unit": "adapter.commit-tree",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "adapter.git",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "adapter.working-tree",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "function.impact-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.source-types",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -81,17 +69,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "service.source-index",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "service.unit-runtime",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "workflow.load-units",
+			"unit": "workflow.load-revisions",
 			"via": "import",
 			"origin": "derived"
 		}

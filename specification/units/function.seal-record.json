@@ -1,0 +1,141 @@
+{
+	"schemaVersion": 1,
+	"id": "function.seal-record",
+	"kind": "function",
+	"title": "sealRecord",
+	"responsibility": "Assembles record parts and seals a verification record with the hash of its content.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/sealRecord.ts"],
+		"symbols": [
+			"recordComponents",
+			"benchmarkMeasurements",
+			"referencedScenario",
+			"sealRecord",
+			"recordIntact"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "recordComponents.impact",
+				"type": "ImpactReport"
+			},
+			{
+				"name": "recordComponents.sides",
+				"type": "{ base: Side; head: Side }"
+			},
+			{
+				"name": "recordComponents.measured",
+				"type": "string[]"
+			},
+			{
+				"name": "benchmarkMeasurements.gathered",
+				"type": "Gathered[]"
+			},
+			{
+				"name": "benchmarkMeasurements.context",
+				"type": "{ profile: string; commit: string }"
+			},
+			{
+				"name": "referencedScenario.prior",
+				"type": "VerificationRecord"
+			},
+			{
+				"name": "referencedScenario.id",
+				"type": "string"
+			},
+			{
+				"name": "sealRecord.draft",
+				"type": "Omit<VerificationRecord, 'id'>"
+			},
+			{
+				"name": "recordIntact.record",
+				"type": "VerificationRecord"
+			}
+		],
+		"outputs": [
+			{
+				"name": "recordComponents",
+				"type": "RecordedComponent[]"
+			},
+			{
+				"name": "benchmarkMeasurements",
+				"type": "Measurement[]"
+			},
+			{
+				"name": "referencedScenario",
+				"type": "ScenarioResult | undefined"
+			},
+			{
+				"name": "sealRecord",
+				"type": "VerificationRecord"
+			},
+			{
+				"name": "recordIntact",
+				"type": "boolean"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.canonical-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.component-version",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.gather-captures",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.impact-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verify-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/sealRecord.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/sealRecord.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

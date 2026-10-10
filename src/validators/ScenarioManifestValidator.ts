@@ -1,6 +1,9 @@
 import { scenarioManifestSchema, type ScenarioManifest } from '../core/unitTypes';
 import { schemaErrors, type ManifestValidation } from './ComponentManifestValidator';
 
+/** Wording that admits a state could occur but has no proof yet. */
+const unproven = /fixture|not yet|todo|later|no test|unproven|pending|missing|unimplemented/i;
+
 /** Checks one scenario contract: its schema and the honesty of its own declarations. */
 export class ScenarioManifestValidator {
 	validate(value: unknown, file: string): ManifestValidation<ScenarioManifest> {
@@ -15,6 +18,7 @@ export class ScenarioManifestValidator {
 		const errors = [
 			...(scenario.id === label ? [] : [`${label}: id "${scenario.id}" must match its file name`]),
 			...this.undeclaredStates(scenario),
+			...this.stateCoverage(scenario),
 			...this.evidenceReferences(scenario),
 			...this.viewportRules(scenario)
 		];
@@ -26,6 +30,31 @@ export class ScenarioManifestValidator {
 		return scenario.states
 			.filter((state) => state.coverage !== 'required' && !state.reason?.trim())
 			.map((state) => `${scenario.id}: ${state.coverage} state ${state.id} must give a reason`);
+	}
+
+	/**
+	 * A state is inapplicable only when it cannot occur; a state nobody has proven yet is
+	 * missing. Required states need required evidence, and excluded states need none.
+	 */
+	private stateCoverage(scenario: ScenarioManifest): string[] {
+		const required = scenario.evidence.filter((evidence) => evidence.required);
+		return scenario.states.flatMap((state) => {
+			const proving = required.filter((evidence) => evidence.states.includes(state.id));
+			if (state.coverage === 'required' && proving.length === 0) {
+				return [`${scenario.id}: required state ${state.id} has no required evidence`];
+			}
+			if (state.coverage !== 'inapplicable') return [];
+			const excuse = unproven.test(state.reason ?? '')
+				? [
+						`${scenario.id}: state ${state.id} is called inapplicable, but its reason says it is unproven`
+					]
+				: [];
+			const demanded = proving.map(
+				(evidence) =>
+					`${scenario.id}: evidence ${evidence.id} requires state ${state.id}, which is declared inapplicable`
+			);
+			return [...excuse, ...demanded];
+		});
 	}
 
 	private evidenceReferences(scenario: ScenarioManifest): string[] {

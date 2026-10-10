@@ -1,0 +1,122 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.load-revisions",
+	"kind": "workflow",
+	"title": "loadRevisions",
+	"responsibility": "Loads base and head revisions with their registries, graphs and source facts.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/loadRevisions.ts"],
+		"symbols": ["RevisionSide", "RevisionRange", "loadSide", "emptySide", "openRange"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "loadSide.root",
+				"type": "string"
+			},
+			{
+				"name": "loadSide.tree",
+				"type": "SourceTree"
+			},
+			{
+				"name": "loadSide.indexer",
+				"type": "SourceIndexService"
+			},
+			{
+				"name": "openRange.range",
+				"type": "RevisionRange"
+			}
+		],
+		"outputs": [
+			{
+				"name": "loadSide",
+				"type": "Promise<RevisionSide>"
+			},
+			{
+				"name": "emptySide",
+				"type": "RevisionSide"
+			},
+			{
+				"name": "openRange",
+				"type": "Promise<{ root: string; base: RevisionSide; head: RevisionSide }>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.commit-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.working-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.impact-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.units-config",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.source-index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.load-units",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/loadRevisions.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/loadRevisions.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

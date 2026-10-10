@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "function.unit-measurements",
+	"kind": "function",
+	"title": "unitMeasurements",
+	"responsibility": "Measures the size, complexity and dependency count of one unit from its owned source.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/unitMeasurements.ts"],
+		"symbols": ["BuiltArtifacts", "unitMeasurements"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "unitMeasurements.unit",
+				"type": "ComponentManifest"
+			},
+			{
+				"name": "unitMeasurements.files",
+				"type": "ReadonlyMap<string, SourceFile>"
+			},
+			{
+				"name": "unitMeasurements.testedRevision",
+				"type": "string"
+			},
+			{
+				"name": "unitMeasurements.artifacts",
+				"type": "BuiltArtifacts"
+			}
+		],
+		"outputs": [
+			{
+				"name": "unitMeasurements",
+				"type": "Measurement[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/unitMeasurements.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/unitMeasurements.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

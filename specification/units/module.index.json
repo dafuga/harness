@@ -26,6 +26,11 @@
 			"unit": "module.runtime",
 			"via": "reexport",
 			"origin": "derived"
+		},
+		{
+			"unit": "module.verification",
+			"via": "reexport",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

@@ -1,0 +1,100 @@
+{
+	"schemaVersion": 1,
+	"id": "service.verification-check",
+	"kind": "service",
+	"title": "VerificationCheckService",
+	"responsibility": "Decides whether a stored record proves a commit: identity, integrity and outcome.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/VerificationCheckService.ts"],
+		"symbols": [
+			"CheckReport",
+			"VerificationCheckService",
+			"VerificationCheckService.constructor",
+			"VerificationCheckService.check"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "VerificationCheckService.constructor.root",
+				"type": "string"
+			},
+			{
+				"name": "VerificationCheckService.check.commit",
+				"type": "string"
+			},
+			{
+				"name": "VerificationCheckService.check.stored",
+				"type": "StoredRecord"
+			}
+		],
+		"outputs": [
+			{
+				"name": "VerificationCheckService.check",
+				"type": "Promise<CheckReport>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.commit-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.component-version",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.seal-record",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.verification-store",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.source-index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.load-revisions",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/VerificationCheckService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/VerificationCheckService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

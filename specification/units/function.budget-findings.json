@@ -1,0 +1,94 @@
+{
+	"schemaVersion": 1,
+	"id": "function.budget-findings",
+	"kind": "function",
+	"title": "budgetFindings",
+	"responsibility": "Judges one unit against its frozen limits and the exact performance tolerance.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/budgetFindings.ts"],
+		"symbols": [
+			"frozenMetrics",
+			"PerformanceBaseline",
+			"BudgetBaseline",
+			"BudgetInput",
+			"budgetFindings",
+			"performanceLimit"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "budgetFindings.input",
+				"type": "BudgetInput"
+			},
+			{
+				"name": "performanceLimit.metric",
+				"type": "string"
+			},
+			{
+				"name": "performanceLimit.baseline",
+				"type": "number"
+			},
+			{
+				"name": "performanceLimit.tolerance",
+				"type": "number"
+			}
+		],
+		"outputs": [
+			{
+				"name": "frozenMetrics",
+				"type": "unknown"
+			},
+			{
+				"name": "budgetFindings",
+				"type": "BudgetFinding[]"
+			},
+			{
+				"name": "performanceLimit",
+				"type": "number"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.comparison-differences",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.comparison-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/budgetFindings.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/budgetFindings.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

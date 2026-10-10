@@ -9,10 +9,12 @@ import {
 	serveKernelRuntime
 } from '../workflows/runKernel';
 import { renderBench, runKernelBench } from '../workflows/runKernelBench';
+import { kernelBoundary } from '../workflows/runKernelBoundary';
 
 interface Flags {
 	json?: boolean;
 	quick?: boolean;
+	boundary?: boolean;
 	write?: boolean | string;
 	measurements?: string;
 	runtime: string;
@@ -42,10 +44,15 @@ export function registerKernelCommand(program: Command): void {
 	kernel
 		.command('bench')
 		.option('--quick', 'Fewer samples and no 10k workload.')
+		.option('--boundary', 'Measure only the invocation boundary that verification gates on.')
 		.option('--write [file]', 'Record the run; defaults to the profile file in the repository.')
 		.option('--json', 'Print structured results.')
 		.description('Measure every runtime on identical workloads and derive the default.')
 		.action(async (flags: Flags) => {
+			if (flags.boundary) {
+				console.log(JSON.stringify(await kernelBoundary(), null, 2));
+				return;
+			}
 			const benchmark = await runKernelBench({
 				quick: flags.quick,
 				write: flags.write,

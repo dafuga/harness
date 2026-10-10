@@ -7,6 +7,7 @@ import { responseCheckGuide } from './responseCheck';
 import { scaffoldGuides, scaffoldsGuide } from './scaffolds';
 import { runtimeGuides } from './runtimes';
 import { unitGuides } from './units';
+import { verificationGuides } from './verification';
 
 export interface Guide {
 	topic: string;
@@ -149,7 +150,8 @@ export const guides: Guide[] = [
 	scaffoldsGuide(),
 	...scaffoldGuides(),
 	...unitGuides,
-	...runtimeGuides
+	...runtimeGuides,
+	...verificationGuides
 ];
 
 export function findGuide(topic: string): Guide | undefined {

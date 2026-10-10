@@ -1,0 +1,67 @@
+{
+	"schemaVersion": 1,
+	"id": "function.verify-plan",
+	"kind": "function",
+	"title": "verifyPlan",
+	"responsibility": "Plans the checks a verification runs: selected test files and the checks of each scenario.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/verifyPlan.ts"],
+		"symbols": ["PlannedCheck", "PlanInput", "verifyPlan"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "verifyPlan.input",
+				"type": "PlanInput"
+			}
+		],
+		"outputs": [
+			{
+				"name": "verifyPlan",
+				"type": "PlannedCheck[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.classify-path",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.units-config",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verify-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/verifyPlan.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/verifyPlan.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

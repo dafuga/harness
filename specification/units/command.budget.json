@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "command.budget",
+	"kind": "command",
+	"title": "BudgetCommand",
+	"responsibility": "Registers the harness budget measure, status, history, establish, approve and bench commands.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/BudgetCommand.ts"],
+		"symbols": ["registerBudgetCommand"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "registerBudgetCommand.program",
+				"type": "Command"
+			}
+		],
+		"outputs": [
+			{
+				"name": "registerBudgetCommand",
+				"type": "void"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "workflow.run-budget",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.sign-budget",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/BudgetCommand.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/BudgetCommand.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

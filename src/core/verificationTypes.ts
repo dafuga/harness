@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { comparisonSchema } from './comparisonTypes';
+import { explanationSchema } from './explanationTypes';
 import { runtimeKinds, unitIdPattern } from './unitTypes';
 
 const identifier = z.string().regex(unitIdPattern);
@@ -54,10 +56,20 @@ export const profileSchema = z.strictObject({
 export const budgetFindingSchema = z.strictObject({
 	unit: identifier,
 	metric: text,
-	status: z.enum(['passed', 'exceeded', 'missing-baseline', 'missing-measurement', 'incompatible']),
+	status: z.enum([
+		'passed',
+		'exceeded',
+		'missing-baseline',
+		'missing-measurement',
+		'incomplete',
+		'incompatible'
+	]),
+	/** Null whenever the measurement was not compared with a baseline. */
 	baseline: z.number().nullable(),
 	measured: z.number().nullable(),
-	detail: z.string().optional()
+	detail: z.string().optional(),
+	/** Why an incomplete or incompatible measurement could not be compared. */
+	differences: z.array(text).optional()
 });
 
 const artifactSchema = z.strictObject({
@@ -93,6 +105,8 @@ export const measurementSchema = z.strictObject({
 	profile: text.nullable(),
 	target: z.enum(runtimeKinds).optional(),
 	samples: z.number().int().positive().optional(),
+	/** The exact request, boundary and sampling; required before a budget may compare it. */
+	comparison: comparisonSchema.optional(),
 	testedRevision: commit,
 	artifacts: z.array(artifactSchema)
 });
@@ -101,7 +115,14 @@ export const verificationRecordSchema = z.strictObject({
 	schemaVersion: z.literal(1),
 	id: text,
 	repository: text,
-	source: z.strictObject({ commit, tree: commit, base: commit.nullable() }),
+	source: z.strictObject({
+		commit,
+		tree: commit,
+		/** The revision everything was judged against: one a passing record proves, or none. */
+		base: commit.nullable(),
+		/** The base that was asked for, when it had no passing record and could not be used. */
+		requestedBase: commit.optional()
+	}),
 	profile: profileSchema,
 	startedAt: text,
 	finishedAt: text,
@@ -135,8 +156,20 @@ export const verificationRecordSchema = z.strictObject({
 	budgets: z.strictObject({ status: outcome, findings: z.array(budgetFindingSchema) }),
 	reasons: z.strictObject({
 		status: outcome,
-		missing: z.array(z.strictObject({ unit: identifier, symbol: z.string().optional() }))
+		/** The explanations that satisfied this verification. */
+		entries: z.array(explanationSchema).optional(),
+		missing: z.array(
+			z.strictObject({
+				unit: identifier,
+				symbol: z.string().optional(),
+				file: z.string().optional(),
+				change: z.enum(['added', 'modified', 'removed']).optional(),
+				state: z.enum(['missing', 'stale']).optional()
+			})
+		)
 	}),
+	/** Outcome of each gate; a baseline may come only from a record whose other gates passed. */
+	gates: z.record(z.string(), outcome).optional(),
 	failures: z.array(text)
 });
 

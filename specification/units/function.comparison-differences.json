@@ -1,0 +1,60 @@
+{
+	"schemaVersion": 1,
+	"id": "function.comparison-differences",
+	"kind": "function",
+	"title": "comparisonDifferences",
+	"responsibility": "Decides whether a measurement may be compared with a baseline and names every gap or difference.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/comparisonDifferences.ts"],
+		"symbols": ["MeasuredDefinition", "ComparisonVerdict", "comparisonDifferences"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "comparisonDifferences.metric",
+				"type": "string"
+			},
+			{
+				"name": "comparisonDifferences.measured",
+				"type": "MeasuredDefinition"
+			},
+			{
+				"name": "comparisonDifferences.baseline",
+				"type": "MeasuredDefinition"
+			}
+		],
+		"outputs": [
+			{
+				"name": "comparisonDifferences",
+				"type": "ComparisonVerdict"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.comparison-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/comparisonDifferences.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/comparisonDifferences.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

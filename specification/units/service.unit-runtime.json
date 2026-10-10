@@ -148,10 +148,29 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["invocation-boundary"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
-		"performance": []
+		"performance": [
+			{
+				"workload": "graph-1k",
+				"metric": "latency-floor-ms",
+				"target": "module",
+				"tolerance": 0.05
+			},
+			{
+				"workload": "graph-1k",
+				"metric": "latency-floor-ms",
+				"target": "wasm",
+				"tolerance": 0.05
+			},
+			{
+				"workload": "graph-1k",
+				"metric": "latency-floor-ms",
+				"target": "process",
+				"tolerance": 0.05
+			}
+		]
 	}
 }
