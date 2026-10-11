@@ -1,0 +1,15 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Mt1aP7
+
+ ✓ test/impact.e2e.test.ts (5 tests) 3791ms
+   ✓ a shared function change selects its service, page-level consumers and scenarios only  1124ms
+   ✓ removed units and dropped dependencies stay visible through the base graph  605ms
+   ✓ a re-export change reaches consumers of the barrel and adds the new unit  597ms
+   ✓ a renamed source file keeps its unit and still selects dependents  602ms
+   ✓ a changed test selects itself and its scenario, and global config selects everything  861ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  02:27:02
+   Duration  4.00s (transform 24ms, setup 10ms, collect 16ms, tests 3.79s, environment 0ms, prepare 33ms)
+
