@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-DQ1VbX
+
+ ✓ test/history-concurrency.e2e.test.ts (4 tests) 20587ms
+   ✓ two records with identical media attach at the same time in one repository  3936ms
+   ✓ four writers at once lose nothing  2998ms
+   ✓ two worktrees that share one Git directory attach at the same time  5016ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  06:38:14
+   Duration  20.82s (transform 29ms, setup 9ms, collect 25ms, tests 20.59s, environment 0ms, prepare 29ms)
+
