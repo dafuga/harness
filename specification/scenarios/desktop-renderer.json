@@ -186,6 +186,13 @@
 			"build": "desktop-renderer",
 			"capture": "viewport",
 			"required": true
+		},
+		{
+			"id": "desktop-renderer-assertions",
+			"kind": "assertions",
+			"states": ["workspace-state"],
+			"viewports": [],
+			"required": true
 		}
 	]
 }

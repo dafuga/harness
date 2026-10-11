@@ -1,3 +1,4 @@
+import { planningArtifactPaths } from '../utils/planningArtifactPaths';
 import type { AuditStructure } from './adapters/types';
 import {
 	allowedDirectSrcFiles,
@@ -8,13 +9,15 @@ import {
 import type { AuditFinding } from './types';
 
 export function auditHarnessStructure(structure: AuditStructure): AuditFinding[] {
+	const artifacts = planningArtifactPaths(structure.root, structure.files);
 	return [
+		...auditPlanningFiles([...structure.files, ...structure.dirs], artifacts),
 		...auditFolderNames(structure.dirs),
-		...auditSourceFolders(structure.dirs),
+		...auditSourceFolders(structure.dirs.filter((path) => !artifacts.has(path))),
 		...auditTestFolders(structure.dirs),
 		...auditDbFolders(structure.dirs),
 		...auditRootTypeScriptFiles(structure.files),
-		...auditSourceFiles(structure.files),
+		...auditSourceFiles(structure.files.filter((path) => !artifacts.has(path))),
 		...auditSpecFiles(structure.files)
 	];
 }
@@ -176,4 +179,23 @@ function isRootTypeScriptFile(file: string): boolean {
 
 function pathSegments(path: string): string[] {
 	return path.replace(/\/$/, '').split('/');
+}
+
+function auditPlanningFiles(files: string[], artifacts: Set<string>): AuditFinding[] {
+	return files.flatMap((path) => {
+		const match =
+			/^(src\/(?:pages|components|functions|configs|services)\/[^/]+)\/(?:plan\.json$|(?:designs|threads)\/)/.exec(
+				path
+			);
+		if (!match || artifacts.has(path)) return [];
+		return [
+			{
+				path,
+				rule: 'harness-source-structure',
+				message: path.endsWith('/plan.json')
+					? 'Planning metadata is invalid or its canonical identity cannot be verified.'
+					: 'Planning artifact folders cannot contain implementation or unknown artifact shapes.'
+			}
+		];
+	});
 }

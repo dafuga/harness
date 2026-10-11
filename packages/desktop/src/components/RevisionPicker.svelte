@@ -36,4 +36,5 @@
 					: 'Historical · read-only'}</small
 			></label
 		>
+		<button type="button" style:align-self="center" onclick={chooseBranch}>Go to tip</button>
 	</div>{/if}

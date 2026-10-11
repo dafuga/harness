@@ -1,4 +1,4 @@
-import { planCommit, stageFiles } from './planCommit';
+import { planCommit, stageFiles, requireLfsFilters } from './planCommit';
 import { mkdir, mkdtemp, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
@@ -60,6 +60,7 @@ export async function commitFiles(
 	files: Files,
 	message: string
 ): Promise<Omit<Committed<never>, 'value'>> {
+	if (Object.keys(files).some((path) => path.endsWith('.png'))) await requireLfsFilters(git);
 	const parent = await revision(git);
 	if (parent !== git.transactionHead)
 		fail('conflict', 'Repository changed during planning operation');

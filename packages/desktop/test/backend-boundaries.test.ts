@@ -1,4 +1,5 @@
-import { expect, test } from 'vitest';
+import { expect } from '../../../test/verificationExpect';
+import { test } from 'vitest';
 import { IpcRequestValidator } from '../src/validators/IpcRequestValidator';
 import { NavigationValidator } from '../src/validators/NavigationValidator';
 import { scrubEnvironment } from '../src/utils/scrubEnvironment';

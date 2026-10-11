@@ -1,4 +1,5 @@
-import { expect, test, vi } from 'vitest';
+import { expect } from '../../../test/verificationExpect';
+import { test, vi } from 'vitest';
 import { writeFile, mkdtemp, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';

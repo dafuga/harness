@@ -1,9 +1,11 @@
-import { copyFile, mkdir, open, readFile, rename, rm, writeFile } from 'node:fs/promises';
+import { Buffer } from 'node:buffer';
+import { copyFile, mkdir, mkdtemp, open, readFile, rename, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import type { Git } from './planGit';
 import { safePath } from './planGit';
 import type { Files } from './planWrite';
-import { fail } from './planData';
+import { fail, hash } from './planData';
+import { tmpdir } from 'node:os';
 export async function stageFiles(git: Git, files: Files, index: string): Promise<void> {
 	for (const [path, content] of Object.entries(files)) {
 		await safePath(git, path);
@@ -78,5 +80,47 @@ export async function planCommit(git: Git, files: Files, context: CommitContext)
 		throw error;
 	} finally {
 		await rm(lock, { force: true });
+	}
+}
+
+/** Exercise the configured filter without writing repository objects, files, refs or config. */
+export async function requireLfsFilters(git: Git): Promise<void> {
+	let temp: string | undefined;
+	try {
+		await git.run(['lfs', 'version']);
+		const config = (
+			await git.run(['config', '--get-regexp', '^filter\\.lfs\\.(clean|process)$'])
+		).toString();
+		if (!config.split('\n').some((line) => /^filter\.lfs\.(clean|process)\s+\S/.test(line)))
+			throw new Error('No configured LFS filter');
+		temp = await mkdtemp(join(tmpdir(), 'planning-lfs-preflight-'));
+		await writeFile(join(temp, '.gitattributes'), '*.png filter=lfs\n');
+		const probe = 'harness-lfs-preflight\n';
+		const pointer = `version https://git-lfs.github.com/spec/v1\noid sha256:${hash(probe)}\nsize ${Buffer.byteLength(probe)}\n`;
+		const expected = await git.run(['hash-object', '--stdin'], pointer);
+		const actual = await git.run(
+			[
+				'-C',
+				temp,
+				'-c',
+				`lfs.storage=${join(temp, 'storage')}`,
+				'-c',
+				'filter.lfs.required=true',
+				'hash-object',
+				'--stdin',
+				'--path=probe.png'
+			],
+			probe,
+			{ GIT_DIR: git.dir, GIT_WORK_TREE: temp, GIT_INDEX_FILE: join(temp, 'index') }
+		);
+		if (!actual.equals(expected))
+			throw new Error('Configured filter did not produce an LFS pointer');
+	} catch {
+		fail(
+			'git-failed',
+			'PNG designs require Git LFS; configure repository Git LFS filters before adding images'
+		);
+	} finally {
+		if (temp) await rm(temp, { recursive: true, force: true });
 	}
 }

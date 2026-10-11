@@ -1,4 +1,5 @@
-import { expect, test } from 'vitest';
+import { expect } from '../../../../test/verificationExpect';
+import { test } from 'vitest';
 import { planValidate, region } from '../../src/utils/planValidate';
 test('identities and rectangles reject traversal and out-of-image coordinates', () => {
 	expect(planValidate('function.filter')).toBe('src/functions/filter');

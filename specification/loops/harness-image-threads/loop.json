@@ -2,7 +2,7 @@
 	"name": "harness-image-threads",
 	"goal": "Review committed designs and run scoped Plan or Change image threads in Electron",
 	"createdAt": "2026-10-11T19:37:27.880Z",
-	"updatedAt": "2026-10-11T22:17:41.060Z",
+	"updatedAt": "2026-10-11T22:51:28.047Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"steps": [
@@ -33,6 +33,11 @@
 			"status": "complete",
 			"evidence": "Full root bun run check passed with pinned Rust toolchain, including preserved compatibility checks, planning15, desktop30 and browser/native10. CLI live flow passed; combined core verification remains owned separately.",
 			"completedAt": "2026-10-11T22:17:41.060Z"
+		},
+		{
+			"id": "final-evidence",
+			"title": "Verify exact snapshots with artifact, assertion and navigation guards.",
+			"status": "pending"
 		}
 	],
 	"evaluators": [

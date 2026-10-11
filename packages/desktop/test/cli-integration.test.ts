@@ -1,4 +1,5 @@
-import { expect, test } from 'vitest';
+import { expect } from '../../../test/verificationExpect';
+import { test } from 'vitest';
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { spawn } from 'node:child_process';

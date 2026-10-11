@@ -4,13 +4,16 @@ import { test, expect, _electron, type ElectronApplication, type Page } from '@p
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
-import { join, resolve } from 'node:path';
+import { join, resolve, isAbsolute } from 'node:path';
 import { createRequire } from 'node:module';
 import { createPlanning } from '../../../planning/src/index';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
 
 const desktopRoot = resolve(import.meta.dirname, '../..');
 const electronBinary = createRequire(import.meta.url)('electron') as string;
+const packagedApp = process.env.HARNESS_PACKAGED_APP;
+if (packagedApp && (!isAbsolute(packagedApp) || !packagedApp.endsWith('.app')))
+	throw new Error('HARNESS_PACKAGED_APP must be an absolute macOS .app bundle path.');
 test.setTimeout(120_000);
 function git(root: string, ...args: string[]) {
 	return execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
@@ -186,8 +189,8 @@ test('native isolated window uses real Git LFS planning and rejects historical w
 			)
 		) as Record<string, string>;
 		app = await _electron.launch({
-			executablePath: electronBinary,
-			args: [desktopRoot, `--user-data-dir=${join(temp, 'profile')}`],
+			executablePath: packagedApp ? join(packagedApp, 'Contents/MacOS/Electron') : electronBinary,
+			args: [...(packagedApp ? [] : [desktopRoot]), `--user-data-dir=${join(temp, 'profile')}`],
 			env
 		});
 		await app.evaluate(({ dialog }, directory) => {

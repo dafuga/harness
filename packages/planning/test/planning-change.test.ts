@@ -1,4 +1,5 @@
-import { expect, test } from 'vitest';
+import { expect } from '../../../test/verificationExpect';
+import { test } from 'vitest';
 import { author, contract, fixture } from './planFixture';
 import type { ChangeTarget, PlanningApi } from '../src';
 async function headless(api: PlanningApi) {

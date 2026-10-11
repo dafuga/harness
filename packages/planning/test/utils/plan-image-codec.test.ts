@@ -1,5 +1,6 @@
+import { expect } from '../../../../test/verificationExpect';
 import { Buffer } from 'node:buffer';
-import { expect, test } from 'vitest';
+import { test } from 'vitest';
 import { PNG } from 'pngjs';
 import { planImageCodec } from '../../src/utils/planImageCodec';
 test('decodes complete PNG and rejects damaged compressed image content', () => {

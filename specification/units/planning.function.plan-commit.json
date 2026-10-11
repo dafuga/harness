@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/planning/src/utils/planCommit.ts"],
-		"symbols": ["stageFiles", "CommitContext", "planCommit"]
+		"symbols": ["stageFiles", "CommitContext", "planCommit", "requireLfsFilters"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -36,6 +36,10 @@
 			{
 				"name": "planCommit.context",
 				"type": "CommitContext"
+			},
+			{
+				"name": "requireLfsFilters.git",
+				"type": "Git"
 			}
 		],
 		"outputs": [
@@ -46,9 +50,17 @@
 			{
 				"name": "planCommit",
 				"type": "Promise<void>"
+			},
+			{
+				"name": "requireLfsFilters",
+				"type": "Promise<void>"
 			}
 		],
 		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			},
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown"

@@ -1,3 +1,4 @@
+import { fakeProject } from './ui-workspace-fixture';
 import { expect, test } from '@playwright/test';
 
 test('browser preview exposes no writable backend', async ({ page }) => {
@@ -10,131 +11,6 @@ test('browser preview exposes no writable backend', async ({ page }) => {
 	await expect(page.getByRole('button', { name: 'Open Project', exact: true })).toBeDisabled();
 	await expect(page.getByText(/Browser preview · read-only/)).toBeVisible();
 });
-
-const hash = 'a'.repeat(40);
-const item = {
-	id: 'page:activity',
-	category: 'pages',
-	kind: 'page',
-	title: 'Activity',
-	summary: 'A searchable timeline of project work.',
-	planned: true,
-	hasPlan: true,
-	changed: true,
-	lifecycle: null,
-	verification: 'unverified',
-	verificationNote: 'No verification recorded for this planned page.',
-	latestVersion: null,
-	approvedVersion: null,
-	threadCount: 0,
-	thumbnail: null,
-	contract: { inputs: [], outputs: [], errors: [], hash: null },
-	relationships: [],
-	versions: [],
-	threads: [],
-	history: [],
-	sources: ['src/activity.svelte'],
-	size: { available: false, text: 'Not measured' },
-	performance: { available: false, text: 'Not measured' }
-};
-const snapshot = {
-	project: { name: 'Test project', root: '/tmp/disposable-harness' },
-	revision: { branch: 'feat/activity', commit: hash, tip: hash, atTip: true },
-	branches: [{ name: 'feat/activity', tip: hash, current: true }],
-	commits: [
-		{ hash, subject: 'Fixture', authoredAt: '2026-10-11' },
-		{ hash: 'b'.repeat(40), subject: 'Earlier design', authoredAt: '2026-10-10' }
-	],
-	entities: [
-		item,
-		{ ...item, id: 'page:overview', title: 'Overview', hasPlan: false, changed: false }
-	],
-	writable: true
-};
-const providers = [
-	{
-		id: 'codex',
-		label: 'Codex CLI',
-		available: true,
-		reason: null,
-		version: 'test',
-		imageGeneration: true,
-		models: [
-			{
-				id: 'test-model',
-				label: 'Test model',
-				efforts: ['medium'],
-				defaultEffort: 'medium',
-				isDefault: true
-			}
-		]
-	},
-	{
-		id: 'claude',
-		label: 'Claude CLI',
-		available: false,
-		reason: 'CLI not installed',
-		version: null,
-		imageGeneration: false,
-		models: []
-	}
-];
-const thread = {
-	id: 'thread-1',
-	pin: 1,
-	version: null,
-	imageSha256: null,
-	state: null,
-	viewport: null,
-	region: null,
-	messageCount: 0
-};
-
-function installProject(data: {
-	snapshot: typeof snapshot;
-	item: typeof item;
-	providers: typeof providers;
-	thread: typeof thread;
-}) {
-	const { snapshot, item, providers, thread } = data;
-	const hash = snapshot.revision.tip;
-	const calls: unknown[] = [];
-	const bridge = {
-		openProject: async () => snapshot,
-		snapshot: async (query: { commit: string | null }) => ({
-			...snapshot,
-			writable: !query.commit,
-			revision: { ...snapshot.revision, commit: query.commit || hash, atTip: !query.commit }
-		}),
-		entity: async () => item,
-		source: async () => ({ path: 'src/activity.svelte', text: '<h1>Activity</h1>' }),
-		image: async () => new Uint8Array(),
-		createPlan: async (draft: unknown) => {
-			calls.push(draft);
-			return item;
-		},
-		openThread: async (input: unknown) => {
-			calls.push(input);
-			return thread;
-		},
-		messages: async () => [],
-		approve: async () => {
-			throw Error('No design');
-		},
-		providers: async () => providers,
-		startRun: async (input: unknown) => {
-			calls.push(input);
-			return { runId: 'owned-run' };
-		},
-		cancelRun: async () => true,
-		onRunEvent: () => () => {}
-	};
-	Object.assign(window, { harness: bridge, __calls: calls });
-}
-
-async function fakeProject(page: import('@playwright/test').Page) {
-	await page.addInitScript(installProject, { snapshot, item, providers, thread });
-}
 
 test('designless Plan preserves truthful status and branch/commit paths', async ({ page }) => {
 	await fakeProject(page);
@@ -202,4 +78,33 @@ test('catalog search, changed filter and new plan draft', async ({ page }) => {
 		)
 		.toContain('Make work visible');
 	await expect(page.getByRole('textbox', { name: 'Message', exact: true })).toBeVisible();
+});
+
+test('Go to tip exits both historical and explicitly pinned tip revisions', async ({ page }) => {
+	await fakeProject(page);
+	await page.goto('/');
+	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
+	for (const commit of ['b'.repeat(40), 'a'.repeat(40)]) {
+		await page.getByLabel('Commit', { exact: true }).selectOption(commit);
+		await expect(page).toHaveURL(new RegExp(`/commit/${commit}/pages$`));
+		await expect(page.getByRole('button', { name: 'New page' })).toBeDisabled();
+		if (process.env.TAKE_SCREENSHOT === 'true') {
+			await page.evaluate(() => document.fonts.ready);
+			await page.mouse.move(0, 0);
+			await page.screenshot({
+				path: `test-results/go-to-tip-${process.env.SCREENSHOT_LABEL ?? 'local'}-${commit[0]}.png`
+			});
+		}
+		await page.getByRole('button', { name: 'Go to tip', exact: true }).click();
+		await expect(page).toHaveURL(/\/harness\/branch\/feat%2Factivity\/pages$/);
+		await expect(page.getByLabel('Commit', { exact: true })).toHaveValue('a'.repeat(40));
+		await expect(page.getByRole('button', { name: 'New page' })).toBeEnabled();
+		if (process.env.TAKE_SCREENSHOT === 'true') {
+			await page.evaluate(() => document.fonts.ready);
+			await page.mouse.move(0, 0);
+			await page.screenshot({
+				path: `test-results/go-to-tip-${process.env.SCREENSHOT_LABEL ?? 'local'}-returned-${commit[0]}.png`
+			});
+		}
+	}
 });

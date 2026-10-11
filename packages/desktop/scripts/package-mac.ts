@@ -1,5 +1,5 @@
 import electron from 'electron';
-import { cp, mkdir, writeFile } from 'node:fs/promises';
+import { cp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 import { execFileSync } from 'node:child_process';
 if (process.platform !== 'darwin') throw new Error('This package target requires macOS.');
@@ -9,6 +9,7 @@ await mkdir(dirname(output), { recursive: true });
 await cp(original, output, { recursive: true });
 const project = resolve(output, 'Contents/Resources/app');
 await mkdir(project, { recursive: true });
+await rm(resolve(project, 'build'), { recursive: true, force: true });
 await cp('build', resolve(project, 'build'), { recursive: true });
 await cp('dist/main.cjs', resolve(project, 'dist/main.cjs'));
 await cp('dist/preload.cjs', resolve(project, 'dist/preload.cjs'));

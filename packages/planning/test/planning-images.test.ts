@@ -1,4 +1,5 @@
-import { expect, test } from 'vitest';
+import { expect } from '../../../test/verificationExpect';
+import { test } from 'vitest';
 import { PNG } from 'pngjs';
 import { rm } from 'node:fs/promises';
 import { join } from 'node:path';

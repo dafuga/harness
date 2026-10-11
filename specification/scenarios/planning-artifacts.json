@@ -126,6 +126,13 @@
 			"states": ["immutable-history", "repository-isolation"],
 			"viewports": [],
 			"required": true
+		},
+		{
+			"id": "planning-artifacts-assertions",
+			"kind": "assertions",
+			"states": ["immutable-history", "repository-isolation"],
+			"viewports": [],
+			"required": true
 		}
 	]
 }

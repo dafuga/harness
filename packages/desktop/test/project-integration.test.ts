@@ -1,4 +1,5 @@
-import { expect, test } from 'vitest';
+import { expect } from '../../../test/verificationExpect';
+import { test } from 'vitest';
 import { Buffer } from 'node:buffer';
 import { PNG } from 'pngjs';
 import { fixture, git, text } from './project-fixture';

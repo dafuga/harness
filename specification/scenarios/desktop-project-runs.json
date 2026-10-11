@@ -127,6 +127,13 @@
 			"states": ["project-scope", "cli-boundaries", "plan-change"],
 			"viewports": [],
 			"required": true
+		},
+		{
+			"id": "desktop-project-runs-assertions",
+			"kind": "assertions",
+			"states": ["project-scope", "cli-boundaries", "plan-change"],
+			"viewports": [],
+			"required": true
 		}
 	]
 }
