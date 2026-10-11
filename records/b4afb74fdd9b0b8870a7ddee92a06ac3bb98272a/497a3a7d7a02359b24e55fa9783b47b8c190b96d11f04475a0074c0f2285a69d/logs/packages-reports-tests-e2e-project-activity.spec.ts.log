@@ -1,0 +1,47 @@
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at emitWarning (internal:tty:33:24)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+
+Running 10 tests using 1 worker
+
+(node:19847) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/project-activity.spec.ts:28:2 › analytics name the hosting repository and who is working in it on what at desktop width (697ms)
+  ✓   2 tests/e2e/project-activity.spec.ts:66:2 › loop types, recent work and changed files lead into the history of the repository at desktop width (1.4s)
+  ✓   3 tests/e2e/project-activity.spec.ts:106:2 › a console shows the activity recorded with its history, and says live activity is not in it, at desktop width (274ms)
+  ✓   4 tests/e2e/project-activity.spec.ts:28:2 › analytics name the hosting repository and who is working in it on what at tablet width (597ms)
+  ✓   5 tests/e2e/project-activity.spec.ts:66:2 › loop types, recent work and changed files lead into the history of the repository at tablet width (1.4s)
+  ✓   6 tests/e2e/project-activity.spec.ts:106:2 › a console shows the activity recorded with its history, and says live activity is not in it, at tablet width (277ms)
+  ✓   7 tests/e2e/project-activity.spec.ts:28:2 › analytics name the hosting repository and who is working in it on what at mobile width (528ms)
+  ✓   8 tests/e2e/project-activity.spec.ts:66:2 › loop types, recent work and changed files lead into the history of the repository at mobile width (1.4s)
+  ✓   9 tests/e2e/project-activity.spec.ts:106:2 › a console shows the activity recorded with its history, and says live activity is not in it, at mobile width (230ms)
+  ✓  10 tests/e2e/project-activity.spec.ts:128:1 › activity is served to the owner only and for this repository only, whatever the address asks (702ms)
+
+  10 passed (2.5m)

@@ -1,0 +1,51 @@
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at emitWarning (internal:tty:33:24)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+
+Running 14 tests using 1 worker
+
+(node:45001) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/project-reports.spec.ts:20:2 › report details open as separate modals at 1440px (1.2s)
+  ✓   2 tests/e2e/project-reports.spec.ts:20:2 › report details open as separate modals at 390px (822ms)
+  ✓   3 tests/e2e/project-reports.spec.ts:50:2 › report header keeps audit details on demand at 1104px (730ms)
+  ✓   4 tests/e2e/project-reports.spec.ts:50:2 › report header keeps audit details on demand at 390px (742ms)
+  ✓   5 tests/e2e/project-reports.spec.ts:74:1 › hub finds reports across projects and filters search (210ms)
+  ✓   6 tests/e2e/project-reports.spec.ts:83:1 › screen-size controls remain comfortably tappable on mobile (685ms)
+  ✓   7 tests/e2e/project-reports.spec.ts:97:1 › viewer switches a standalone capture to another available screen size (849ms)
+  ✓   8 tests/e2e/project-reports.spec.ts:114:1 › viewer marks uncaptured screen sizes unavailable (779ms)
+  ✓   9 tests/e2e/project-reports.spec.ts:127:1 › viewer size controls omit screenshot totals (710ms)
+  ✓  10 tests/e2e/project-reports.spec.ts:141:2 › screenshot viewer has no outer modal frame at 1104px (783ms)
+  ✓  11 tests/e2e/project-reports.spec.ts:141:2 › screenshot viewer has no outer modal frame at 390px (778ms)
+  ✓  12 tests/e2e/project-reports.spec.ts:178:2 › report filters, compares and handles keyboard at 1440px (1.0s)
+  ✓  13 tests/e2e/project-reports.spec.ts:178:2 › report filters, compares and handles keyboard at 920px (1.0s)
+  ✓  14 tests/e2e/project-reports.spec.ts:178:2 › report filters, compares and handles keyboard at 390px (969ms)
+
+  14 passed (2.0m)
