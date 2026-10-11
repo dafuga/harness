@@ -2,7 +2,7 @@
 	"name": "harness-image-threads",
 	"goal": "Review committed designs and run scoped Plan or Change image threads in Electron",
 	"createdAt": "2026-10-11T19:37:27.880Z",
-	"updatedAt": "2026-10-11T22:51:28.047Z",
+	"updatedAt": "2026-10-11T23:23:36.283Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"steps": [
@@ -37,7 +37,9 @@
 		{
 			"id": "final-evidence",
 			"title": "Verify exact snapshots with artifact, assertion and navigation guards.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-11T23:23:36.283Z",
+			"evidence": "Root check passed at 0d1a337; clean four-scenario proof passed 18 checks and 13 captures. Structured assertions, artifact guards and revision navigation verified. Core combined gate remains separate."
 		}
 	],
 	"evaluators": [
