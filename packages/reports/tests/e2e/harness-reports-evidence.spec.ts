@@ -7,6 +7,7 @@ import { scenarioCoverage } from '../../../../src/utils/scenarioCoverage';
 import { ReportRepository } from '../../src/repositories/ReportRepository';
 import { ReportExportService } from '../../src/services/ReportExportService';
 import { audioPairFixture } from '../../test/audioPairFixture';
+import { activityReady, activityStates } from './support/activityStates';
 import {
 	captureAudio,
 	captureScreen,
@@ -25,7 +26,7 @@ test.describe.configure({ mode: 'serial' });
 const root = fixtures.reports;
 const evidence = evidenceOf('reports');
 const fixture = readFileSync(`${root}/fixture-id`, 'utf8');
-const made = { paired: '', exported: '' };
+const made = { paired: '', exported: '', restore: () => {} };
 const reportPage = async (page: Page, id: string, title: string) => {
 	await page.goto(`/harness/reports/${id}`);
 	await expect(page.getByRole('heading', { name: title, exact: true })).toBeVisible();
@@ -99,7 +100,10 @@ test.beforeAll(async () => {
 	await store.record(run.id, { kind: 'evidence', data: screenshot });
 	await new ReportExportService(store).finalize(run.id);
 	made.exported = run.id;
+	made.restore = await activityReady();
 });
+// The fixture application is left as it was found, for the suites that come after this one.
+test.afterAll(() => made.restore());
 
 for (const viewport of viewports) {
 	test(`every report and analytics state is captured at the ${viewport.id} viewport`, async ({
@@ -107,6 +111,19 @@ for (const viewport of viewports) {
 	}) => {
 		await page.setViewportSize({ width: viewport.width, height: viewport.height });
 		for (const [state, reach] of Object.entries(states)) {
+			await reach(page);
+			await captureScreen(page, state, viewport as Viewport, evidence);
+		}
+	});
+}
+
+// The activity of the site is captured apart: its last states hold the clock of their page.
+for (const viewport of viewports) {
+	test(`every project activity state is captured at the ${viewport.id} viewport`, async ({
+		page
+	}) => {
+		await page.setViewportSize({ width: viewport.width, height: viewport.height });
+		for (const [state, reach] of Object.entries(activityStates)) {
 			await reach(page);
 			await captureScreen(page, state, viewport as Viewport, evidence);
 		}
@@ -128,8 +145,9 @@ test('what was captured satisfies the reports scenario, served by the build unde
 		JSON.parse(readFileSync('../../specification/scenarios/harness-reports.json', 'utf8'))
 	);
 	const { gathered, failures } = gatherCaptures(evidence, 'evidence');
+	const declared = [...Object.keys(states), ...Object.keys(activityStates)];
 	expect(failures).toEqual([]);
-	expect(gathered).toHaveLength(Object.keys(states).length * viewports.length + 1);
+	expect(gathered).toHaveLength(declared.length * viewports.length + 1);
 	const served = await servedBuild(page);
 	const builds = { declared: ['reports'], compiled: new Map([['reports', served?.buildId ?? '']]) };
 	const judged = scenarioCoverage({
@@ -141,6 +159,6 @@ test('what was captured satisfies the reports scenario, served by the build unde
 	});
 	expect(judged.failures).toEqual([]);
 	expect(judged.states.map((state) => [state.id, state.captures.length])).toEqual(
-		Object.keys(states).map((state) => [state, state === 'audio' ? 4 : 3])
+		declared.map((state) => [state, state === 'audio' ? 4 : 3])
 	);
 });

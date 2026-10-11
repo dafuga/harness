@@ -79,6 +79,51 @@
 			"id": "exported",
 			"title": "Exported portable report opened as a file",
 			"coverage": "required"
+		},
+		{
+			"id": "activity-agents",
+			"title": "Activity of the fixture application as its server reads it: one agent working with its assignment, one stale and one finished, counted as one",
+			"coverage": "required"
+		},
+		{
+			"id": "activity-files",
+			"title": "Activity of the fixture application as its server reads it: files not committed in a checkout and committed files, with their components",
+			"coverage": "required"
+		},
+		{
+			"id": "activity-work",
+			"title": "Activity of the fixture application as its server reads it: recent commits, the newest with its components and noted reason disclosed",
+			"coverage": "required"
+		},
+		{
+			"id": "activity-loops",
+			"title": "Activity of the fixture application as its server reads it: the loop types the project uses with their outcomes",
+			"coverage": "required"
+		},
+		{
+			"id": "activity-busy",
+			"title": "A busy repository as a short first view, from a made-up reading served to the page: twelve agents, forty-four uncommitted files, bounded lists",
+			"coverage": "required"
+		},
+		{
+			"id": "activity-assignments",
+			"title": "A busy repository, from a made-up reading served to the page: the forty assignments of one agent opened",
+			"coverage": "required"
+		},
+		{
+			"id": "activity-expanded",
+			"title": "A busy repository, from a made-up reading served to the page: every commit shown and a change of hundreds of components opened",
+			"coverage": "required"
+		},
+		{
+			"id": "activity-unrefreshed",
+			"title": "A reading that could not be renewed, with the answers of the server withheld: the last one stands and is marked",
+			"coverage": "required"
+		},
+		{
+			"id": "activity-unknown",
+			"title": "A reading older than a minute on a held clock, with the answers of the server withheld: nobody is counted and the owner is not confirmed",
+			"coverage": "required"
 		}
 	],
 	"viewports": [
@@ -119,7 +164,16 @@
 				"comparison",
 				"audio",
 				"analytics",
-				"exported"
+				"exported",
+				"activity-agents",
+				"activity-files",
+				"activity-work",
+				"activity-loops",
+				"activity-busy",
+				"activity-assignments",
+				"activity-expanded",
+				"activity-unrefreshed",
+				"activity-unknown"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",
