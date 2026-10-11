@@ -3,6 +3,7 @@
 	import type { HarnessClient } from '../../utils/harnessClient';
 	import { harnessEmittedGrowth } from '../../utils/harnessEmittedGrowth';
 	import { growthMetrics, harnessGrowth, signed, unitTimings } from '../../utils/harnessGrowth';
+	import Select from '../Select.svelte';
 	import HarnessEmittedGrowth from './HarnessEmittedGrowth.svelte';
 	let {
 		index,
@@ -46,13 +47,9 @@
 <section class="hc-card">
 	<label class="hc-field"
 		>Component
-		<select
-			aria-label="Component"
-			value={current}
-			onchange={(event) => onunit(event.currentTarget.value)}
-		>
+		<Select label="Component" bind:value={() => current, onunit}>
 			{#each index.units as item (item.id)}<option value={item.id}>{item.id}</option>{/each}
-		</select>
+		</Select>
 	</label>
 	<div class="hc-table-wrap">
 		<table class="hc-table" aria-label={'Growth of ' + current}>

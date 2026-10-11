@@ -60,6 +60,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.harness-ancestry",
 			"via": "import",
 			"origin": "derived"

@@ -2,6 +2,7 @@
 	import type { HarnessRevision } from '../../models/Harness.types';
 	import { comparisonChoices, harnessComparison } from '../../utils/harnessComparison';
 	import EvidenceGrid from '../EvidenceGrid.svelte';
+	import Select from '../Select.svelte';
 	let {
 		base,
 		head,
@@ -40,10 +41,10 @@
 	{#if detail.records.length > 1}
 		<label
 			>{label}
-			<select aria-label={label} bind:value={picked[side]}>
+			<Select {label} bind:value={picked[side]}>
 				{#each detail.records as item (item.id)}<option value={item.id}>{named(item)}</option
 					>{/each}
-			</select>
+			</Select>
 		</label>
 	{/if}
 {/snippet}
@@ -67,26 +68,26 @@
 			<div class="hc-controls">
 				<label
 					>Scenario
-					<select aria-label="Scenario" bind:value={picked.scenario}>
+					<Select label="Scenario" bind:value={picked.scenario}>
 						{#each choices as item, position (position)}<option value={item.scenario}
 								>{item.scenario}</option
 							>{/each}
-					</select>
+					</Select>
 				</label>
 				<label
 					>State
-					<select aria-label="State" bind:value={picked.state}>
+					<Select label="State" bind:value={picked.state}>
 						<option value="">Every state</option>
 						{#each current.states as id (id)}<option value={id}>{id}</option>{/each}
-					</select>
+					</Select>
 				</label>
 				{#if current.viewports.length}
 					<label
 						>Viewport
-						<select aria-label="Viewport" bind:value={picked.viewport}>
+						<Select label="Viewport" bind:value={picked.viewport}>
 							<option value="">Every viewport</option>
 							{#each current.viewports as id (id)}<option value={id}>{id}</option>{/each}
-						</select>
+						</Select>
 					</label>
 				{/if}
 				{@render records('Base record', sides.base.detail, 'base')}

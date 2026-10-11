@@ -37,6 +37,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.model.report-types",
 			"via": "import",
 			"origin": "derived"

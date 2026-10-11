@@ -266,6 +266,11 @@ and measured by `harness kernel bench --boundary`. The loop for this feature run
   connection rather than from Host or URL headers a client controls. The installer requires a
   host-supplied server-side admin policy.
 - The console reuses the reports design and its gallery, player, transcript and export components.
+- Every choice on the website is one shared select component: the report filters, the comparison
+  and audio uploaders, the gallery, the replay, the provider picker, and the branch, commit, base,
+  comparison and growth choices of the console. It is a labelled native select with one caret,
+  one size and one disabled look, so the keyboard, a phone's own picker and a form behave as the
+  browser makes them. No other file writes a select field, and a test says so.
 - It shows a searchable interactive component graph, unit contract, runtime, dependency, consumer,
   test and budget details, the pull request impact graph, branch and commit ancestry navigation,
   recorded historical graph, notes, metrics, page-state screenshots and audio, and growth timelines

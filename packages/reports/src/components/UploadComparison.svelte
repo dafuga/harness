@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { Report } from '../models/Report.types';
+	import Select from './Select.svelte';
 	let { reportId, onUploaded }: { reportId: string; onUploaded: (report: Report) => void } = $props();
 	let ready = $state(false);
 	let uploading = $state(false);
@@ -46,12 +47,12 @@
 				<input name="title" maxlength="120" required placeholder="What changed?" disabled={uploading} />
 			</label>
 			<label>Viewport
-				<select name="viewport" disabled={uploading}>
+				<Select label="Viewport" name="viewport" disabled={uploading}>
 					<option value="">Not specified</option>
 					<option value="mobile">390px mobile</option>
 					<option value="tablet">920px tablet</option>
 					<option value="desktop">1440px desktop</option>
-				</select>
+				</Select>
 			</label>
 		</div>
 		<div class="upload-pair">

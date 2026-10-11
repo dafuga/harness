@@ -4,6 +4,7 @@
 	import { dateLabel, reportStale } from '../utils/reportDisplay';
 	import { evidenceMedia } from '../utils/evidenceMedia';
 	import { projectFilter } from '../utils/reportFilter';
+	import Select from './Select.svelte';
 	import StatusBadge from './StatusBadge.svelte';
 	let {
 		reports,
@@ -75,15 +76,15 @@
 	</header>
 	<div class="toolbar hub-filters">
 		<input bind:value={search} placeholder={$t('search')} aria-label={$t('search')} />
-		<select bind:value={status} aria-label={$t('status')}
+		<Select bind:value={status} label={$t('status')}
 			><option value="">{$t('status')}: {$t('all')}</option
 			>{#each ['running', 'passed', 'failed', 'blocked', 'skipped', 'not-proven', 'interrupted'] as s}<option
 					value={s}>{$t(s)}</option
-				>{/each}</select
+				>{/each}</Select
 		>
-		<select bind:value={mode} aria-label={$t('modes')}
+		<Select bind:value={mode} label={$t('modes')}
 			><option value="">{$t('allModes')}</option><option value="feature">{$t('feature')}</option
-			><option value="suite">{$t('suite')}</option></select
+			><option value="suite">{$t('suite')}</option></Select
 		>
 	</div>
 	<div class="run-grid">

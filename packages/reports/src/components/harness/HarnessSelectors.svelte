@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { HarnessIndex, HarnessRevisionSummary } from '../../models/Harness.types';
 	import { branchNames, revisionLabel } from '../../utils/harnessAncestry';
+	import Select from '../Select.svelte';
 	let {
 		index,
 		branch,
@@ -29,36 +30,24 @@
 <div class="hc-controls">
 	<label
 		>Branch
-		<select
-			aria-label="Branch"
-			value={branch}
-			onchange={(event) => onbranch(event.currentTarget.value)}
-		>
+		<Select label="Branch" bind:value={() => branch, onbranch}>
 			{#each branchNames(index) as name (name)}<option value={name}>{name}</option>{/each}
-		</select>
+		</Select>
 	</label>
 	<label
 		>Commit
-		<select
-			aria-label="Commit"
-			value={commit}
-			onchange={(event) => oncommit(event.currentTarget.value)}
-		>
+		<Select label="Commit" bind:value={() => commit, oncommit}>
 			{#each commits as item (item.commit)}<option value={item.commit}>{revisionLabel(item)}</option
 				>{/each}
-		</select>
+		</Select>
 	</label>
 	{#if bases}
 		<label
 			>Base commit
-			<select
-				aria-label="Base commit"
-				value={from}
-				onchange={(event) => onbase(event.currentTarget.value)}
-			>
+			<Select label="Base commit" bind:value={() => from, onbase}>
 				{#each bases as item (item.commit)}<option value={item.commit}>{revisionLabel(item)}</option
 					>{/each}
-			</select>
+			</Select>
 		</label>
 	{/if}
 </div>

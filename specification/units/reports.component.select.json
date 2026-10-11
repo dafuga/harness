@@ -3,8 +3,8 @@
 	"id": "reports.component.select",
 	"kind": "component",
 	"title": "Select",
-	"responsibility": "Owns the Select Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "The one select field of the website: a labelled native select with its caret, its size and its disabled look in one place, holding the options a surface gives it.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/components/Select.svelte"],
@@ -22,8 +22,16 @@
 				"type": "string"
 			},
 			{
+				"name": "Select.id",
+				"type": "string"
+			},
+			{
 				"name": "Select.name",
 				"type": "string"
+			},
+			{
+				"name": "Select.required",
+				"type": "boolean"
 			},
 			{
 				"name": "Select.disabled",

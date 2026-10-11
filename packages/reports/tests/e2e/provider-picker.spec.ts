@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { mkdir } from 'node:fs/promises';
+import { sharedField } from './support/sharedSelect';
 
 test('offers both providers and queues Claude without claiming it is active', async ({ page }) => {
 	await page.goto('/preview');
@@ -42,4 +43,10 @@ test('offers both providers and queues Claude without claiming it is active', as
 		});
 	await page.getByRole('button', { name: 'Cancel pending switch', exact: true }).click();
 	await expect(page.getByText('Cancelled', { exact: true })).toBeVisible();
+});
+
+test('the provider, model and effort fields are the shared select', async ({ page }) => {
+	await page.goto('/preview');
+	for (const name of ['Provider', 'Model', 'Reasoning effort'])
+		await sharedField(page.getByRole('combobox', { name, exact: true }));
 });
