@@ -13,6 +13,14 @@
 		{
 			"path": "packages/reports/",
 			"reason": "Reporting workspace is audited separately by its own strict app configuration in bun run check."
+		},
+		{
+			"path": "packages/planning/",
+			"reason": "Planning workspace runs its own strict library audit through check:planning in the root check."
+		},
+		{
+			"path": "packages/desktop/",
+			"reason": "Electron workspace runs its own strict app audit and browser acceptance through check:desktop in the root check."
 		}
 	]
 }

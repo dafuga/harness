@@ -1,0 +1,157 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.planning-reads",
+	"kind": "function",
+	"title": "planningReads",
+	"responsibility": "Owns the planningReads shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/planningReads.ts"],
+		"symbols": [
+			"PlanningContext",
+			"planningReads",
+			"planRecord",
+			"planVersion",
+			"readPlanMessages",
+			"readPlanImage",
+			"readPlanHistory"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "planningReads.context",
+				"type": "PlanningContext"
+			},
+			{
+				"name": "planningReads.revision",
+				"type": "string"
+			},
+			{
+				"name": "planRecord.context",
+				"type": "PlanningContext"
+			},
+			{
+				"name": "planRecord.plan",
+				"type": "PlanDetail"
+			},
+			{
+				"name": "planRecord.revision",
+				"type": "string"
+			},
+			{
+				"name": "planVersion.context",
+				"type": "PlanningContext"
+			},
+			{
+				"name": "planVersion.data",
+				"type": "{ version: StoredVersion; plan: PlanDetail; revision: string }"
+			},
+			{
+				"name": "readPlanMessages.context",
+				"type": "PlanningContext"
+			},
+			{
+				"name": "readPlanMessages.data",
+				"type": "{ entityId: string; threadId: string; revision: string }"
+			},
+			{
+				"name": "readPlanImage.context",
+				"type": "PlanningContext"
+			},
+			{
+				"name": "readPlanImage.query",
+				"type": "PlanImageQuery"
+			},
+			{
+				"name": "readPlanHistory.context",
+				"type": "PlanningContext"
+			},
+			{
+				"name": "readPlanHistory.entityId",
+				"type": "string"
+			},
+			{
+				"name": "readPlanHistory.revision",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "planningReads",
+				"type": "unknown"
+			},
+			{
+				"name": "planRecord",
+				"type": "Promise<PlanRecord>"
+			},
+			{
+				"name": "planVersion",
+				"type": "Promise<DesignVersion>"
+			},
+			{
+				"name": "readPlanMessages",
+				"type": "unknown"
+			},
+			{
+				"name": "readPlanImage",
+				"type": "unknown"
+			},
+			{
+				"name": "readPlanHistory",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.git-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.planning-convert",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.planning-port-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/planningReads.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/planningReads.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

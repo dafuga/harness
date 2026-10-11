@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.history-panel",
+	"kind": "component",
+	"title": "HistoryPanel",
+	"responsibility": "Owns the HistoryPanel Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/HistoryPanel.svelte"],
+		"symbols": ["HistoryPanel"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HistoryPanel.events",
+				"type": "HistoryEvent[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HistoryPanel",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/HistoryPanel.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/HistoryPanel.svelte"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-renderer"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

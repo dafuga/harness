@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.model.agent-runner-types",
+	"kind": "model",
+	"title": "AgentRunner",
+	"responsibility": "Owns the AgentRunner data model.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/models/AgentRunner.types.ts"],
+		"symbols": [
+			"CliCommand",
+			"AgentTurn",
+			"AgentResult",
+			"AgentRunner",
+			"ImageRequest",
+			"GeneratedImage",
+			"ImageGenerator",
+			"RunCancelled",
+			"RunCancelled.constructor"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/models/AgentRunner.types.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/models/AgentRunner.types.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.plan-badge",
+	"kind": "component",
+	"title": "PlanBadge",
+	"responsibility": "Owns the PlanBadge Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/PlanBadge.svelte"],
+		"symbols": ["PlanBadge"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "PlanBadge.label",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "PlanBadge",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/PlanBadge.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/PlanBadge.svelte"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-renderer"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

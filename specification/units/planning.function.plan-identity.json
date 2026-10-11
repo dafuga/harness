@@ -1,0 +1,155 @@
+{
+	"schemaVersion": 1,
+	"id": "planning.function.plan-identity",
+	"kind": "function",
+	"title": "planIdentity",
+	"responsibility": "Owns the planIdentity shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/planning/src/utils/planIdentity.ts"],
+		"symbols": [
+			"identity",
+			"attest",
+			"planFiles",
+			"findIdentity",
+			"planIdentity",
+			"validateIdentity"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "identity.unitId",
+				"type": "string"
+			},
+			{
+				"name": "attest.git",
+				"type": "Git"
+			},
+			{
+				"name": "attest.rev",
+				"type": "string"
+			},
+			{
+				"name": "attest.unit",
+				"type": "{ unitId: string; category: PlanCategory }"
+			},
+			{
+				"name": "planFiles.git",
+				"type": "Git"
+			},
+			{
+				"name": "planFiles.rev",
+				"type": "string"
+			},
+			{
+				"name": "findIdentity.git",
+				"type": "Git"
+			},
+			{
+				"name": "findIdentity.rev",
+				"type": "string"
+			},
+			{
+				"name": "findIdentity.unitId",
+				"type": "string"
+			},
+			{
+				"name": "planIdentity.git",
+				"type": "Git"
+			},
+			{
+				"name": "planIdentity.rev",
+				"type": "string"
+			},
+			{
+				"name": "planIdentity.unitId",
+				"type": "string"
+			},
+			{
+				"name": "validateIdentity.git",
+				"type": "Git"
+			},
+			{
+				"name": "validateIdentity.rev",
+				"type": "string"
+			},
+			{
+				"name": "validateIdentity.plan",
+				"type": "PlanSummary"
+			}
+		],
+		"outputs": [
+			{
+				"name": "identity",
+				"type": "void"
+			},
+			{
+				"name": "attest",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "planFiles",
+				"type": "Promise<string[]>"
+			},
+			{
+				"name": "findIdentity",
+				"type": "Promise<string | null>"
+			},
+			{
+				"name": "planIdentity",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "validateIdentity",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "planning.function.plan-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-validate",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.model.planning-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/planning/src/utils/planIdentity.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/planning/src/utils/planIdentity.ts"
+			}
+		]
+	},
+	"scenarios": ["planning-artifacts"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

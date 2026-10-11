@@ -1,0 +1,113 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.service.project-session",
+	"kind": "service",
+	"title": "ProjectSessionService",
+	"responsibility": "Owns the ProjectSessionService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/services/ProjectSessionService.ts"],
+		"symbols": [
+			"ProjectSessionService",
+			"ProjectSessionService.open",
+			"ProjectSessionService.snapshot",
+			"ProjectSessionService.requireProject",
+			"ProjectSessionService.mutable",
+			"ProjectSessionService.atBranch"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ProjectSessionService.open.directory",
+				"type": "string"
+			},
+			{
+				"name": "ProjectSessionService.snapshot.query",
+				"type": "RevisionQuery"
+			},
+			{
+				"name": "ProjectSessionService.atBranch.branch",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ProjectSessionService.open",
+				"type": "Promise<ProjectSnapshot>"
+			},
+			{
+				"name": "ProjectSessionService.snapshot",
+				"type": "Promise<ProjectSnapshot>"
+			},
+			{
+				"name": "ProjectSessionService.requireProject",
+				"type": "unknown"
+			},
+			{
+				"name": "ProjectSessionService.mutable",
+				"type": "unknown"
+			},
+			{
+				"name": "ProjectSessionService.atBranch",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.adapter.git-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.adapter.planning-facade",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.git-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.catalog",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/services/ProjectSessionService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/services/ProjectSessionService.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

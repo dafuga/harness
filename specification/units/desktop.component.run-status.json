@@ -1,0 +1,54 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.run-status",
+	"kind": "component",
+	"title": "RunStatus",
+	"responsibility": "Owns the RunStatus Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/RunStatus.svelte"],
+		"symbols": ["RunStatus"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "RunStatus.text",
+				"type": "string"
+			},
+			{
+				"name": "RunStatus.active",
+				"type": "boolean"
+			},
+			{
+				"name": "RunStatus.cancel",
+				"type": "() => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "RunStatus",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/RunStatus.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/RunStatus.svelte"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-renderer"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

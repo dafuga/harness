@@ -1,0 +1,154 @@
+{
+	"schemaVersion": 1,
+	"id": "planning.function.plan-git",
+	"kind": "function",
+	"title": "planGit",
+	"responsibility": "Owns the planGit shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/planning/src/utils/planGit.ts"],
+		"symbols": [
+			"Git",
+			"planGit",
+			"revision",
+			"paths",
+			"blob",
+			"imageBlob",
+			"safePath",
+			"containing"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "planGit.root",
+				"type": "string"
+			},
+			{
+				"name": "revision.git",
+				"type": "Git"
+			},
+			{
+				"name": "revision.value",
+				"type": "unknown"
+			},
+			{
+				"name": "paths.git",
+				"type": "Git"
+			},
+			{
+				"name": "paths.rev",
+				"type": "string"
+			},
+			{
+				"name": "paths.path",
+				"type": "unknown"
+			},
+			{
+				"name": "blob.git",
+				"type": "Git"
+			},
+			{
+				"name": "blob.rev",
+				"type": "string"
+			},
+			{
+				"name": "blob.path",
+				"type": "string"
+			},
+			{
+				"name": "imageBlob.git",
+				"type": "Git"
+			},
+			{
+				"name": "imageBlob.rev",
+				"type": "string"
+			},
+			{
+				"name": "imageBlob.path",
+				"type": "string"
+			},
+			{
+				"name": "safePath.git",
+				"type": "Git"
+			},
+			{
+				"name": "safePath.path",
+				"type": "string"
+			},
+			{
+				"name": "containing.git",
+				"type": "Git"
+			},
+			{
+				"name": "containing.rev",
+				"type": "string"
+			},
+			{
+				"name": "containing.path",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "planGit",
+				"type": "Promise<Git>"
+			},
+			{
+				"name": "revision",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "paths",
+				"type": "Promise<string[]>"
+			},
+			{
+				"name": "blob",
+				"type": "Promise<Buffer>"
+			},
+			{
+				"name": "imageBlob",
+				"type": "Promise<Buffer>"
+			},
+			{
+				"name": "safePath",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "containing",
+				"type": "Promise<string>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "planning.function.plan-data",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/planning/src/utils/planGit.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/planning/src/utils/planGit.ts"
+			}
+		]
+	},
+	"scenarios": ["planning-artifacts"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,54 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.segmented-choice",
+	"kind": "component",
+	"title": "SegmentedChoice",
+	"responsibility": "Owns the SegmentedChoice Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/SegmentedChoice.svelte"],
+		"symbols": ["SegmentedChoice"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "SegmentedChoice.value",
+				"type": "string"
+			},
+			{
+				"name": "SegmentedChoice.options",
+				"type": "string[]"
+			},
+			{
+				"name": "SegmentedChoice.label",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "SegmentedChoice",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/SegmentedChoice.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/SegmentedChoice.svelte"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-renderer"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

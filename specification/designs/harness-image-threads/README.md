@@ -1,6 +1,6 @@
 # Harness image threads: design proposal
 
-Five final GPT Image concepts for a future Electron Harness interface. These are committed design specifications, not implemented pages or approval to build Electron. Projects, hashes, people, events and verification indicators inside the images are synthetic examples.
+Five final GPT Image concepts for the Electron Harness interface. These are committed design specifications. Daniel authorized implementation on October 11, 2026; working code is being built in the planning and desktop workspaces. Projects, hashes, people, events and verification indicators inside these concepts are synthetic examples.
 
 The normal navbar remains Pages, Components, Functions, Configs and Services. There is no global App/Plan or Explore/Plan toggle. An entity may carry a Plan badge while its design is being reviewed.
 
@@ -19,7 +19,7 @@ The same bordered comment input contains message text, Plan / Change, Codex CLI 
 - **Plan** asks the selected agent to revise a design using GPT Image. It produces a new committed image version and keeps the entity marked Plan.
 - **Change** requests a code change through the selected local CLI and model. For an approved design, the request identifies the approved image version and hash.
 
-The selected agent orchestrates the request; GPT Image generates the visual design. CLI/model names in these images illustrate the proposed selector, rather than asserting installed backend support. The Electron app and CLI dispatch are future work.
+The selected agent orchestrates the request; GPT Image generates the visual design. CLI/model names in these concepts illustrate the selector. The implementation discovers actual installed model identifiers and exposes provider availability.
 
 ## Image annotations and history
 
@@ -41,4 +41,4 @@ Design images belong to normal project branches and commits. Test-owned screensh
 
 All five v2 images were generated with the built-in GPT Image tool and visually inspected. [Prompts](prompts.json) retain the initial edits and final corrections. [Manifest](manifest.json) and each version's `design.json` record dimensions, byte size and content hashes. Prior v1 images are preserved without rewriting them.
 
-No Electron app, image annotation implementation, model dispatch, planned entity registry or new runtime page has been added. The separate Opus implementation branch retains the previously approved Harness work.
+Implementation is tracked by the Harness image-thread feature and loop. The separate core implementation branch retains the previously approved explorer work; integration uses its tested public contracts.

@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.stream-lines",
+	"kind": "function",
+	"title": "streamLines",
+	"responsibility": "Owns the streamLines shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/streamLines.ts"],
+		"symbols": ["streamLines"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "streamLines.options",
+				"type": "{ onLine: (line: string) => void; maxBytes: number; onOverflow: () => void; }"
+			}
+		],
+		"outputs": [
+			{
+				"name": "streamLines",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/streamLines.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/streamLines.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

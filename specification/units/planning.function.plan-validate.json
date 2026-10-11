@@ -1,0 +1,132 @@
+{
+	"schemaVersion": 1,
+	"id": "planning.function.plan-validate",
+	"kind": "function",
+	"title": "planValidate",
+	"responsibility": "Owns the planValidate shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/planning/src/utils/planValidate.ts"],
+		"symbols": [
+			"categories",
+			"text",
+			"slug",
+			"planValidate",
+			"contractHash",
+			"author",
+			"region",
+			"filename",
+			"version"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "text.value",
+				"type": "unknown"
+			},
+			{
+				"name": "slug.value",
+				"type": "unknown"
+			},
+			{
+				"name": "planValidate.unitId",
+				"type": "string"
+			},
+			{
+				"name": "contractHash.contract",
+				"type": "PlanContract"
+			},
+			{
+				"name": "author.value",
+				"type": "PlanAuthor"
+			},
+			{
+				"name": "region.value",
+				"type": "NormalizedRegion | null"
+			},
+			{
+				"name": "filename.value",
+				"type": "string"
+			},
+			{
+				"name": "version.value",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "categories",
+				"type": "unknown"
+			},
+			{
+				"name": "text",
+				"type": "asserts value is string"
+			},
+			{
+				"name": "slug",
+				"type": "asserts value is string"
+			},
+			{
+				"name": "planValidate",
+				"type": "string"
+			},
+			{
+				"name": "contractHash",
+				"type": "string"
+			},
+			{
+				"name": "author",
+				"type": "void"
+			},
+			{
+				"name": "region",
+				"type": "NormalizedRegion | null"
+			},
+			{
+				"name": "filename",
+				"type": "void"
+			},
+			{
+				"name": "version",
+				"type": "void"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "planning.function.plan-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.model.planning-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/planning/src/utils/planValidate.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/planning/src/utils/planValidate.ts"
+			}
+		]
+	},
+	"scenarios": ["planning-artifacts"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

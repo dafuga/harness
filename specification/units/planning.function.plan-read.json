@@ -1,0 +1,102 @@
+{
+	"schemaVersion": 1,
+	"id": "planning.function.plan-read",
+	"kind": "function",
+	"title": "planRead",
+	"responsibility": "Owns the planRead shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/planning/src/utils/planRead.ts"],
+		"symbols": ["approvalMatches", "planRead"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "approvalMatches.record",
+				"type": "ApprovalRecord"
+			},
+			{
+				"name": "approvalMatches.latest",
+				"type": "DesignVersion | undefined"
+			},
+			{
+				"name": "planRead.git",
+				"type": "Git"
+			},
+			{
+				"name": "planRead.rev",
+				"type": "string"
+			},
+			{
+				"name": "planRead.unitId",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "approvalMatches",
+				"type": "boolean"
+			},
+			{
+				"name": "planRead",
+				"type": "Promise<PlanDetail>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "planning.function.plan-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-image-codec",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-validate",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.model.planning-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/planning/src/utils/planRead.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/planning/src/utils/planRead.ts"
+			}
+		]
+	},
+	"scenarios": ["planning-artifacts"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

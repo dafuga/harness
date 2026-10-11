@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.composer",
+	"kind": "component",
+	"title": "Composer",
+	"responsibility": "Owns the Composer Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/Composer.svelte"],
+		"symbols": ["Composer"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "Composer.providers",
+				"type": "ProviderState[]"
+			},
+			{
+				"name": "Composer.writable",
+				"type": "boolean"
+			},
+			{
+				"name": "Composer.approved",
+				"type": "boolean"
+			},
+			{
+				"name": "Composer.running",
+				"type": "boolean"
+			},
+			{
+				"name": "Composer.send",
+				"type": "(request: { text: string; mode: RunMode; provider: ProviderId; model: string; effort: string | null; }) => Promise<boolean>"
+			}
+		],
+		"outputs": [
+			{
+				"name": "Composer",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.select",
+			"via": "contract",
+			"origin": "declared",
+			"contract": "The shared Select component supplies keyboard and value selection behavior through the $shared alias."
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/Composer.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/Composer.svelte"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-renderer"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

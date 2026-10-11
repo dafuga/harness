@@ -1,0 +1,55 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.git-blobs",
+	"kind": "function",
+	"title": "gitBlobs",
+	"responsibility": "Owns the gitBlobs shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/gitBlobs.ts"],
+		"symbols": ["gitBlobs"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "gitBlobs.root",
+				"type": "string"
+			},
+			{
+				"name": "gitBlobs.request",
+				"type": "BlobRequest"
+			}
+		],
+		"outputs": [
+			{
+				"name": "gitBlobs",
+				"type": "Promise<Map<string, Buffer>>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/gitBlobs.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/gitBlobs.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

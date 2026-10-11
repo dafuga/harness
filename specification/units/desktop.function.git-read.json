@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.git-read",
+	"kind": "function",
+	"title": "gitRead",
+	"responsibility": "Owns the gitRead shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/gitRead.ts"],
+		"symbols": ["gitRead", "gitRevision", "gitFiles", "gitText"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "gitRead.root",
+				"type": "string"
+			},
+			{
+				"name": "gitRead.args",
+				"type": "string[]"
+			},
+			{
+				"name": "gitRevision.root",
+				"type": "string"
+			},
+			{
+				"name": "gitRevision.revision",
+				"type": "unknown"
+			},
+			{
+				"name": "gitFiles.root",
+				"type": "string"
+			},
+			{
+				"name": "gitFiles.revision",
+				"type": "string"
+			},
+			{
+				"name": "gitText.root",
+				"type": "string"
+			},
+			{
+				"name": "gitText.revision",
+				"type": "string"
+			},
+			{
+				"name": "gitText.path",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "gitRead",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "gitRevision",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "gitFiles",
+				"type": "Promise<string[]>"
+			},
+			{
+				"name": "gitText",
+				"type": "Promise<string>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/gitRead.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/gitRead.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

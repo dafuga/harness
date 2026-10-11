@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.design-prompt",
+	"kind": "function",
+	"title": "designPrompt",
+	"responsibility": "Owns the designPrompt shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/designPrompt.ts"],
+		"symbols": ["designPrompt"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "designPrompt.context",
+				"type": "RunContext"
+			},
+			{
+				"name": "designPrompt.prompt",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "designPrompt",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.run-context-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/designPrompt.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/designPrompt.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

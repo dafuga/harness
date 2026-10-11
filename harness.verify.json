@@ -8,6 +8,14 @@
 		{
 			"command": "bun run build",
 			"timeoutMs": 1200000
+		},
+		{
+			"command": "bun run build:desktop",
+			"timeoutMs": 600000
+		},
+		{
+			"command": "bun src/index.ts verify stamp packages/desktop/build",
+			"timeoutMs": 60000
 		}
 	],
 	"link": [],
@@ -25,7 +33,23 @@
 		"packages/reports/playwright-report/",
 		"packages/reports/test-results/",
 		"plugins/claude-picker/dist/",
-		"target/"
+		"target/",
+		"packages/desktop/.cache/",
+		"packages/desktop/.svelte-kit/",
+		"packages/desktop/build/",
+		"packages/desktop/dist/",
+		"packages/desktop/node_modules/",
+		"packages/desktop/coverage/",
+		"packages/desktop/test-results/",
+		"packages/desktop/playwright-report/",
+		"packages/planning/.cache/",
+		"packages/planning/.svelte-kit/",
+		"packages/planning/build/",
+		"packages/planning/dist/",
+		"packages/planning/node_modules/",
+		"packages/planning/coverage/",
+		"packages/planning/test-results/",
+		"packages/planning/playwright-report/"
 	],
 	"runners": {
 		"vitest": "bun x vitest run {target}",
@@ -35,6 +59,96 @@
 		{
 			"path": "packages/reports/tests/e2e/provider-picker.spec.ts",
 			"command": "bun x playwright test --config src/config/pickerPlaywrightConfig.ts"
+		},
+		{
+			"path": "packages/planning/test/planning-canonical.test.ts",
+			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+			"timeoutMs": 180000
+		},
+		{
+			"path": "packages/planning/test/planning-change.test.ts",
+			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+			"timeoutMs": 180000
+		},
+		{
+			"path": "packages/planning/test/planning-conflicts.test.ts",
+			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+			"timeoutMs": 180000
+		},
+		{
+			"path": "packages/planning/test/planning-history.test.ts",
+			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+			"timeoutMs": 180000
+		},
+		{
+			"path": "packages/planning/test/planning-images.test.ts",
+			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+			"timeoutMs": 180000
+		},
+		{
+			"path": "packages/planning/test/planning-integration.test.ts",
+			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+			"timeoutMs": 180000
+		},
+		{
+			"path": "packages/planning/test/utils/plan-data.test.ts",
+			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+			"timeoutMs": 180000
+		},
+		{
+			"path": "packages/planning/test/utils/plan-image-codec.test.ts",
+			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+			"timeoutMs": 180000
+		},
+		{
+			"path": "packages/planning/test/utils/plan-validate.test.ts",
+			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+			"timeoutMs": 180000
+		},
+		{
+			"path": "packages/desktop/test/cli-integration.test.ts",
+			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+			"timeoutMs": 180000
+		},
+		{
+			"path": "packages/desktop/test/project-integration.test.ts",
+			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+			"timeoutMs": 180000
+		},
+		{
+			"path": "packages/desktop/test/run-integration.test.ts",
+			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+			"timeoutMs": 180000
+		},
+		{
+			"path": "packages/desktop/test/backend-boundaries.test.ts",
+			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+			"timeoutMs": 180000
+		},
+		{
+			"path": "packages/desktop/test/stores/workspace.test.ts",
+			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+			"timeoutMs": 180000
+		},
+		{
+			"path": "packages/desktop/tests/e2e/ui-workspace.spec.ts",
+			"command": "CI=1 bun x playwright test {target}",
+			"timeoutMs": 180000
+		},
+		{
+			"path": "packages/desktop/tests/e2e/ui-designs.spec.ts",
+			"command": "CI=1 bun x playwright test {target}",
+			"timeoutMs": 180000
+		},
+		{
+			"path": "packages/desktop/tests/e2e/native-desktop.spec.ts",
+			"command": "CI=1 bun x playwright test {target}",
+			"timeoutMs": 180000
+		},
+		{
+			"path": "packages/planning/test/planning-registry.test.ts",
+			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+			"timeoutMs": 180000
 		}
 	],
 	"tools": [
@@ -78,6 +192,18 @@
 		{
 			"id": "reports",
 			"directory": "packages/reports/build"
+		},
+		{
+			"id": "planning",
+			"directory": "packages/planning/dist"
+		},
+		{
+			"id": "desktop-renderer",
+			"directory": "packages/desktop/build"
+		},
+		{
+			"id": "desktop-main",
+			"directory": "packages/desktop/dist"
 		}
 	]
 }

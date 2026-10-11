@@ -1,0 +1,33 @@
+pre {
+	overflow: auto;
+	font-size: 12px;
+	padding: 15px;
+	background: #001420;
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+}
+
+.segmented-choice {
+	display: flex;
+	flex-wrap: wrap;
+}
+.segmented-choice button {
+	border-radius: 0;
+	text-transform: capitalize;
+	min-width: 90px;
+}
+.segmented-choice button:first-child {
+	border-radius: 5px 0 0 5px;
+}
+.segmented-choice button:last-child {
+	border-radius: 0 5px 5px 0;
+}
+.segmented-choice button.active {
+	background: #ffd03514;
+}
+
+.behavior-notes p {
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+	color: var(--muted);
+}

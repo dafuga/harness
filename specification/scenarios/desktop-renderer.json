@@ -1,0 +1,191 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop-renderer",
+	"title": "Renderer navigation, image annotations, approvals and run states",
+	"kind": "ui",
+	"units": [
+		"desktop.component.annotated-image",
+		"desktop.component.catalog-view",
+		"desktop.component.composer",
+		"desktop.component.contract-panel",
+		"desktop.component.design-panel",
+		"desktop.component.details-panel",
+		"desktop.component.entity-card",
+		"desktop.component.entity-view",
+		"desktop.component.history-panel",
+		"desktop.component.icon",
+		"desktop.component.image-thumbnail",
+		"desktop.component.message-list",
+		"desktop.component.nav-bar",
+		"desktop.component.plan-badge",
+		"desktop.component.project-gate",
+		"desktop.component.relationships-panel",
+		"desktop.component.revision-picker",
+		"desktop.component.run-status",
+		"desktop.component.segmented-choice",
+		"desktop.component.status-bar",
+		"desktop.component.status-icon",
+		"desktop.component.thread-history",
+		"desktop.component.thread-panel",
+		"desktop.layout.root",
+		"desktop.model.desktop-bridge-types",
+		"desktop.page.harness-path",
+		"desktop.page.root",
+		"desktop.store.workspace",
+		"desktop.style.design",
+		"desktop.style.design-0",
+		"desktop.style.design-1",
+		"desktop.style.design-2",
+		"desktop.style.responsive",
+		"desktop.style.workspace",
+		"desktop.style.workspace-0",
+		"desktop.style.workspace-1"
+	],
+	"states": [
+		{
+			"id": "renderer-fixtures",
+			"title": "Fixture-backed browser interaction and responsive layout assertions",
+			"coverage": "required"
+		},
+		{
+			"id": "workspace-state",
+			"title": "Workspace store revision and selection behavior",
+			"coverage": "required"
+		},
+		{
+			"id": "catalog",
+			"title": "catalog",
+			"coverage": "required"
+		},
+		{
+			"id": "design",
+			"title": "design",
+			"coverage": "required"
+		},
+		{
+			"id": "approved",
+			"title": "approved",
+			"coverage": "required"
+		},
+		{
+			"id": "headless-before-change",
+			"title": "headless before change",
+			"coverage": "required"
+		},
+		{
+			"id": "headless-after-change",
+			"title": "headless after change",
+			"coverage": "required"
+		},
+		{
+			"id": "failed-history",
+			"title": "failed history",
+			"coverage": "required"
+		},
+		{
+			"id": "cancelled-history",
+			"title": "cancelled history",
+			"coverage": "required"
+		},
+		{
+			"id": "mobile",
+			"title": "mobile",
+			"coverage": "required"
+		},
+		{
+			"id": "tablet",
+			"title": "tablet",
+			"coverage": "required"
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 1440,
+			"height": 900
+		},
+		{
+			"id": "tablet",
+			"width": 920,
+			"height": 1100
+		},
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 844
+		}
+	],
+	"tests": [
+		{
+			"id": "workspace",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/stores/workspace.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		},
+		{
+			"id": "ui-workspace",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-workspace.spec.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		},
+		{
+			"id": "ui-designs",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-designs.spec.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "desktop-renderer-output",
+			"kind": "output",
+			"states": ["renderer-fixtures", "workspace-state"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "renderer-screens-desktop",
+			"kind": "screenshot",
+			"states": [
+				"catalog",
+				"design",
+				"approved",
+				"headless-before-change",
+				"headless-after-change",
+				"failed-history",
+				"cancelled-history"
+			],
+			"viewports": ["desktop"],
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "viewport",
+			"required": true
+		},
+		{
+			"id": "renderer-screens-mobile",
+			"kind": "screenshot",
+			"states": ["mobile"],
+			"viewports": ["mobile"],
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "viewport",
+			"required": true
+		},
+		{
+			"id": "renderer-screens-tablet",
+			"kind": "screenshot",
+			"states": ["tablet"],
+			"viewports": ["tablet"],
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "viewport",
+			"required": true
+		}
+	]
+}

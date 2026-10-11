@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "planning.function.plan-image-codec",
+	"kind": "function",
+	"title": "planImageCodec",
+	"responsibility": "Owns the planImageCodec shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/planning/src/utils/planImageCodec.ts"],
+		"symbols": ["planImageCodec"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "planImageCodec.bytes",
+				"type": "Uint8Array"
+			}
+		],
+		"outputs": [
+			{
+				"name": "planImageCodec",
+				"type": "{ width: number; height: number }"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "planning.function.plan-data",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/planning/src/utils/planImageCodec.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/planning/src/utils/planImageCodec.ts"
+			}
+		]
+	},
+	"scenarios": ["planning-artifacts"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

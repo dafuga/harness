@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.model.desktop-bridge-types",
+	"kind": "model",
+	"title": "DesktopBridge",
+	"responsibility": "Owns the DesktopBridge data model.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/models/DesktopBridge.types.ts"],
+		"symbols": [
+			"channels",
+			"ChannelName",
+			"runEventChannel",
+			"RevisionQuery",
+			"EntityQuery",
+			"SourceQuery",
+			"SourceFile",
+			"ImageQuery",
+			"PlanDraft",
+			"ThreadDraft",
+			"ThreadQuery",
+			"ApprovalDraft",
+			"RunRequest",
+			"RunPhase",
+			"RunEvent",
+			"DesktopBridge"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "channels",
+				"type": "unknown"
+			},
+			{
+				"name": "runEventChannel",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.entry.index",
+			"via": "contract",
+			"origin": "declared",
+			"contract": "IPC planning DTOs preserve public versions, approvals, anchors and change targets."
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/models/DesktopBridge.types.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/models/DesktopBridge.types.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-project-runs", "desktop-renderer"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

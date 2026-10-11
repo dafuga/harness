@@ -1,0 +1,67 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.claude-state",
+	"kind": "function",
+	"title": "claudeState",
+	"responsibility": "Owns the claudeState shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/claudeState.ts"],
+		"symbols": ["claudeState"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "claudeState.command",
+				"type": "CliCommand"
+			}
+		],
+		"outputs": [
+			{
+				"name": "claudeState",
+				"type": "Promise<ProviderState>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.cli-process",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.agent-runner-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/claudeState.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/claudeState.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

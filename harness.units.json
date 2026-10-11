@@ -8,11 +8,44 @@
 		{
 			"name": "reports",
 			"root": "packages/reports"
+		},
+		{
+			"name": "planning",
+			"root": "packages/planning"
+		},
+		{
+			"name": "desktop",
+			"root": "packages/desktop"
 		}
 	],
 	"tests": ["test/", "tests/"],
 	"global": ["**/.prettierignore", "tsconfig.api.json", "specification/measurements/"],
-	"ignored": ["**/*.md", "specification/features/", "specification/loops/", "**/.gitignore"],
+	"ignored": [
+		"**/*.md",
+		"specification/features/",
+		"specification/loops/",
+		"**/.gitignore",
+		"**/src/pages/*/plan.json",
+		"**/src/pages/*/.gitattributes",
+		"**/src/pages/*/designs/**/*",
+		"**/src/pages/*/threads/**/*",
+		"**/src/components/*/plan.json",
+		"**/src/components/*/.gitattributes",
+		"**/src/components/*/designs/**/*",
+		"**/src/components/*/threads/**/*",
+		"**/src/functions/*/plan.json",
+		"**/src/functions/*/.gitattributes",
+		"**/src/functions/*/designs/**/*",
+		"**/src/functions/*/threads/**/*",
+		"**/src/services/*/plan.json",
+		"**/src/services/*/.gitattributes",
+		"**/src/services/*/designs/**/*",
+		"**/src/services/*/threads/**/*",
+		"**/src/configs/*/plan.json",
+		"**/src/configs/*/.gitattributes",
+		"**/src/configs/*/designs/**/*",
+		"**/src/configs/*/threads/**/*"
+	],
 	"references": [
 		{
 			"from": "src/utils/kernelArtifacts.ts",

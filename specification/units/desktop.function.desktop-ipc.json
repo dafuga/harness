@@ -1,0 +1,83 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.desktop-ipc",
+	"kind": "function",
+	"title": "desktopIpc",
+	"responsibility": "Owns the desktopIpc shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/desktopIpc.ts"],
+		"symbols": ["trustedSender", "desktopIpc"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "trustedSender.event",
+				"type": "Pick<IpcMainInvokeEvent, 'sender' | 'senderFrame'>"
+			},
+			{
+				"name": "trustedSender.window",
+				"type": "BrowserWindow"
+			},
+			{
+				"name": "desktopIpc.window",
+				"type": "BrowserWindow"
+			},
+			{
+				"name": "desktopIpc.bridge",
+				"type": "Omit<DesktopBridge, 'onRunEvent'>"
+			}
+		],
+		"outputs": [
+			{
+				"name": "trustedSender",
+				"type": "boolean"
+			},
+			{
+				"name": "desktopIpc",
+				"type": "()"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.validator.ipc-request",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.validator.navigation",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/desktopIpc.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/desktopIpc.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

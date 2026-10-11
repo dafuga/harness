@@ -1,0 +1,116 @@
+{
+	"schemaVersion": 1,
+	"id": "planning.function.plan-write",
+	"kind": "function",
+	"title": "planWrite",
+	"responsibility": "Owns the planWrite shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/planning/src/utils/planWrite.ts"],
+		"symbols": ["Files", "planWrite", "clean", "assertClean", "commitFiles"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "planWrite.git",
+				"type": "Git"
+			},
+			{
+				"name": "planWrite.work",
+				"type": "() => Promise<T>"
+			},
+			{
+				"name": "clean.git",
+				"type": "Git"
+			},
+			{
+				"name": "clean.unitPath",
+				"type": "string"
+			},
+			{
+				"name": "assertClean.git",
+				"type": "Git"
+			},
+			{
+				"name": "assertClean.artifactPaths",
+				"type": "string[]"
+			},
+			{
+				"name": "commitFiles.git",
+				"type": "Git"
+			},
+			{
+				"name": "commitFiles.files",
+				"type": "Files"
+			},
+			{
+				"name": "commitFiles.message",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "planWrite",
+				"type": "Promise<T>"
+			},
+			{
+				"name": "clean",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "assertClean",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "commitFiles",
+				"type": "Promise<Omit<Committed<never>, 'value'>>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "planning.function.plan-commit",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.model.planning-view-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/planning/src/utils/planWrite.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/planning/src/utils/planWrite.ts"
+			}
+		]
+	},
+	"scenarios": ["planning-artifacts"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

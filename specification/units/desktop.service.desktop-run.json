@@ -1,0 +1,126 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.service.desktop-run",
+	"kind": "service",
+	"title": "DesktopRunService",
+	"responsibility": "Owns the DesktopRunService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/services/DesktopRunService.ts"],
+		"symbols": [
+			"DesktopRunService",
+			"DesktopRunService.constructor",
+			"DesktopRunService.start",
+			"DesktopRunService.cancelActive",
+			"DesktopRunService.cancel"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "DesktopRunService.constructor.session",
+				"type": "ProjectSessionService"
+			},
+			{
+				"name": "DesktopRunService.constructor.providers",
+				"type": "ProviderDiscoveryService"
+			},
+			{
+				"name": "DesktopRunService.constructor.generator",
+				"type": "ImageGenerator"
+			},
+			{
+				"name": "DesktopRunService.constructor.emit",
+				"type": "(event: RunEvent) => void"
+			},
+			{
+				"name": "DesktopRunService.start.request",
+				"type": "RunRequest"
+			},
+			{
+				"name": "DesktopRunService.cancel.runId",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "DesktopRunService.start",
+				"type": "Promise<{ runId: string }>"
+			},
+			{
+				"name": "DesktopRunService.cancelActive",
+				"type": "void"
+			},
+			{
+				"name": "DesktopRunService.cancel",
+				"type": "boolean"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.prepare-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.agent-runner-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.run-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.change-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.plan-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.project-session",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.provider-discovery",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/services/DesktopRunService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/services/DesktopRunService.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

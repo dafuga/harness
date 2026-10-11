@@ -1,0 +1,54 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.project-gate",
+	"kind": "component",
+	"title": "ProjectGate",
+	"responsibility": "Owns the ProjectGate Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/ProjectGate.svelte"],
+		"symbols": ["ProjectGate"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ProjectGate.available",
+				"type": "boolean"
+			},
+			{
+				"name": "ProjectGate.busy",
+				"type": "boolean"
+			},
+			{
+				"name": "ProjectGate.open",
+				"type": "() => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ProjectGate",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/ProjectGate.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/ProjectGate.svelte"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-renderer"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
