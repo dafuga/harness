@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test';
-import { readFileSync } from 'node:fs';
+import { nativeImageFixture } from './native-image-fixture';
 const hash = 'a'.repeat(40),
 	sha = 'b'.repeat(64);
 const entity = {
@@ -173,10 +173,6 @@ function installFixture({
 }
 
 export async function fixture(page: Page, headless = false) {
-	const image = Array.from(
-		readFileSync(
-			'../../specification/designs/harness-image-threads/pages/activity/designs/v002/desktop.png'
-		)
-	);
+	const image = Array.from(nativeImageFixture());
 	await page.addInitScript(installFixture, fixtureData(image, headless));
 }

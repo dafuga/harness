@@ -1,6 +1,7 @@
+import { nativeImageFixture } from './native-image-fixture';
 import { desktopEvidence } from './desktop-evidence';
 import { test, expect, _electron, type ElectronApplication, type Page } from '@playwright/test';
-import { mkdtemp, mkdir, writeFile, readFile, rm } from 'node:fs/promises';
+import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -84,14 +85,7 @@ async function createThroughUi(page: Page, root: string) {
 }
 async function committedImage(page: Page, root: string, unitId: string) {
 	const api = await createPlanning(root);
-	const bytes = new Uint8Array(
-		await readFile(
-			resolve(
-				desktopRoot,
-				'../../specification/designs/harness-image-threads/pages/activity/designs/v002/desktop.png'
-			)
-		)
-	);
+	const bytes = nativeImageFixture();
 	await api.addDesign({
 		unitId,
 		prompt: 'Native fixture image, no agent run.',
@@ -104,22 +98,22 @@ async function committedImage(page: Page, root: string, unitId: string) {
 	await expect(
 		page.getByRole('img', { name: 'Native activity v001 desktop default', exact: true })
 	).toBeVisible();
-	const count = await page.evaluate(
+	const received = await page.evaluate(
 		async ({ unitId, imageCommit }) => {
 			const bridge = (window as unknown as { harness: DesktopBridge }).harness;
 			const entity = await bridge.entity({ entityId: unitId, commit: imageCommit });
-			return (
+			return Array.from(
 				await bridge.image({
 					entityId: unitId,
 					commit: imageCommit,
 					version: 'v001',
 					sha256: entity.versions[0].images[0].sha256
 				})
-			).byteLength;
+			);
 		},
 		{ unitId, imageCommit }
 	);
-	expect(count).toBe(bytes.length);
+	expect(received).toEqual(Array.from(bytes));
 	await capture(page, 'design');
 	await page.getByRole('button', { name: 'Approve v001', exact: true }).click();
 	await expect(
