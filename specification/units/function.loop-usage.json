@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "function.loop-usage",
+	"kind": "function",
+	"title": "loopUsage",
+	"responsibility": "Counts how often each loop type was used in a project and how many of those loops are complete.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/loopUsage.ts"],
+		"symbols": ["loopUsage"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "loopUsage.loops",
+				"type": "LoopState[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "loopUsage",
+				"type": "{ total: number; types: LoopUsage[] }"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.activity-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.loop-state",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/loopUsage.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/loopUsage.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

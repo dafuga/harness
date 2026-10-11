@@ -1,4 +1,9 @@
 import { HarnessAnalyticsService } from '../../../services/HarnessAnalyticsService';
+import { siteActivity } from '../../../utils/siteActivity';
 export async function load({ url }: { url: URL }) {
-	return { analytics: await new HarnessAnalyticsService().snapshot(url.searchParams) };
+	const [analytics, project] = await Promise.all([
+		new HarnessAnalyticsService().snapshot(url.searchParams),
+		siteActivity()
+	]);
+	return { analytics, project: project ?? null };
 }

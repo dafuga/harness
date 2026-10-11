@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-harness-tabs",
+	"kind": "component",
+	"title": "HarnessTabs",
+	"responsibility": "The row of views of the console.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/HarnessTabs.svelte"],
+		"symbols": ["HarnessTabs"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HarnessTabs.view",
+				"type": "ConsoleView"
+			},
+			{
+				"name": "HarnessTabs.onview",
+				"type": "(view: ConsoleView) => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HarnessTabs",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.console-route",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/HarnessTabs.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/HarnessTabs.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

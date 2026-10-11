@@ -13,6 +13,15 @@ const budgets = (page: Page) =>
  * its panel at the commit that no longer builds one output, and its growth target by target.
  */
 export const emittedStates: Record<string, (page: Page) => Promise<void>> = {
+	// What the history recorded of the project's work; live activity is said not to be in it.
+	async activity(page) {
+		await page.goto(`/harness/branch/main/commit/${seeded().commits.sourceOnly}/activity`);
+		const work = page.getByRole('region', { name: 'Recent work', exact: true });
+		await expect(work.getByRole('list', { name: 'Recent commits' })).toBeVisible();
+		await expect(page.getByRole('region', { name: 'Working agents', exact: true })).toContainText(
+			'not part of a recorded history'
+		);
+	},
 	// Before any review: everything is measured, a freeze is declared, and no limit is claimed.
 	async unreviewed(page) {
 		await page.goto(`${kept}/commit/${seeded().commits.emitting}/map/unit/${unit}`);

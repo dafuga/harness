@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.activity-files",
+	"kind": "component",
+	"title": "ActivityFiles",
+	"responsibility": "Lists recently changed files with their components: committed ones, and apart from them what is not committed in each checkout.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/ActivityFiles.svelte"],
+		"symbols": ["ActivityFiles"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ActivityFiles.files",
+				"type": "CommittedFile[]"
+			},
+			{
+				"name": "ActivityFiles.worktrees",
+				"type": "WorktreeState[] | null"
+			},
+			{
+				"name": "ActivityFiles.href",
+				"type": "(commit: string) => string"
+			},
+			{
+				"name": "ActivityFiles.registry",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ActivityFiles",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.activity-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.activity-list",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.activity-display",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/ActivityFiles.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/ActivityFiles.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

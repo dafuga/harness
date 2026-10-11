@@ -37,7 +37,17 @@
 		"reports.function.harness-failures",
 		"reports.function.harness-emitted",
 		"reports.function.harness-emitted-growth",
-		"reports.component.harness-harness-emitted-growth"
+		"reports.component.harness-harness-emitted-growth",
+		"reports.component.harness-harness-activity",
+		"reports.component.harness-harness-tabs",
+		"reports.component.project-activity",
+		"reports.component.activity-agents",
+		"reports.component.activity-loops",
+		"reports.component.activity-work",
+		"reports.component.activity-files",
+		"reports.function.activity-display",
+		"reports.component.activity-list",
+		"reports.function.activity-reading"
 	],
 	"states": [
 		{
@@ -129,6 +139,11 @@
 			"id": "unreviewed",
 			"title": "The panel of a unit before any review: measured values, a declared freeze and no reviewed limit",
 			"coverage": "required"
+		},
+		{
+			"id": "activity",
+			"title": "The activity recorded with the history: loop types, recent work and changed files, with live activity said to be absent",
+			"coverage": "required"
 		}
 	],
 	"viewports": [
@@ -179,7 +194,8 @@
 				"emitted",
 				"emitted-gone",
 				"emitted-growth",
-				"unreviewed"
+				"unreviewed",
+				"activity"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",

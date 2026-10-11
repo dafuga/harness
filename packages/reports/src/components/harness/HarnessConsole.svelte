@@ -10,6 +10,7 @@
 	import { branchCommits, harnessAncestry, retainedBranch } from '../../utils/harnessAncestry';
 	import { harnessClient } from '../../utils/harnessClient';
 	import { harnessPage } from '../../utils/harnessPage';
+	import HarnessActivity from './HarnessActivity.svelte';
 	import HarnessCompare from './HarnessCompare.svelte';
 	import HarnessGrowth from './HarnessGrowth.svelte';
 	import HarnessHeader from './HarnessHeader.svelte';
@@ -17,6 +18,7 @@
 	import HarnessLegacy from './HarnessLegacy.svelte';
 	import HarnessMap from './HarnessMap.svelte';
 	import HarnessSelectors from './HarnessSelectors.svelte';
+	import HarnessTabs from './HarnessTabs.svelte';
 	import HarnessUnitView from './HarnessUnit.svelte';
 	let {
 		base,
@@ -34,12 +36,6 @@
 		/** False where the host serves no export endpoint, so no dead link is offered. */
 		exportable?: boolean;
 	} = $props();
-	const views: Array<[ConsoleView, string]> = [
-		['map', 'Component map'],
-		['compare', 'Compare'],
-		['history', 'History'],
-		['growth', 'Growth']
-	];
 	let client = $derived(harnessClient(base));
 	let mediaBase = $derived(base + '/media/');
 	let index = $state<HarnessIndex | null>(null);
@@ -146,18 +142,11 @@
 			oncommit={(wanted) => go({ commit: wanted })}
 			onbase={(wanted) => go({ base: wanted })}
 		/>
-		<div class="hc-tabs" role="tablist" aria-label="Views">
-			{#each views as [id, title] (id)}
-				<button
-					type="button"
-					role="tab"
-					aria-selected={view === id}
-					onclick={() => go({ view: id })}>{title}</button
-				>
-			{/each}
-		</div>
+		<HarnessTabs {view} onview={(to) => go({ view: to })} />
 		<div class="hc-panel" role="tabpanel">
-			{#if view === 'growth'}
+			{#if view === 'activity'}
+				<HarnessActivity {client} {base} />
+			{:else if view === 'growth'}
 				<HarnessGrowth
 					{index}
 					{client}

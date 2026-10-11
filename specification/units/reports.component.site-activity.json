@@ -1,0 +1,62 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.site-activity",
+	"kind": "component",
+	"title": "SiteActivity",
+	"responsibility": "Keeps the activity of the hosting site current on an open page: it reads again and lets time pass over what it last read.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/SiteActivity.svelte"],
+		"symbols": ["SiteActivity"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "SiteActivity.shown",
+				"type": "Shown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "SiteActivity",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.project-activity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.activity-client",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.run-activity",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/SiteActivity.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/SiteActivity.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

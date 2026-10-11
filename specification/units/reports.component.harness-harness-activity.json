@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-harness-activity",
+	"kind": "component",
+	"title": "HarnessActivity",
+	"responsibility": "Shows in the console the activity recorded with the history it was built from.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/HarnessActivity.svelte"],
+		"symbols": ["HarnessActivity"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HarnessActivity.client",
+				"type": "HarnessClient"
+			},
+			{
+				"name": "HarnessActivity.base",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HarnessActivity",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.activity-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.project-activity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-client",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/HarnessActivity.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/HarnessActivity.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

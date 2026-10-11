@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.activity-list",
+	"kind": "component",
+	"title": "ActivityList",
+	"responsibility": "A named list that shows its first few items and holds the rest behind one control that says how many there are.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/ActivityList.svelte"],
+		"symbols": ["ActivityList"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ActivityList.items",
+				"type": "Item[]"
+			},
+			{
+				"name": "ActivityList.label",
+				"type": "string"
+			},
+			{
+				"name": "ActivityList.noun",
+				"type": "string"
+			},
+			{
+				"name": "ActivityList.preview",
+				"type": "number"
+			},
+			{
+				"name": "ActivityList.ordered",
+				"type": "boolean"
+			},
+			{
+				"name": "ActivityList.row",
+				"type": "Snippet<[Item]>"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ActivityList",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/ActivityList.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/ActivityList.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

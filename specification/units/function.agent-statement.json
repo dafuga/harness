@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "function.agent-statement",
+	"kind": "function",
+	"title": "agentStatement",
+	"responsibility": "Checks the few short facts an owner may state about an agent and gives them in the form they are kept.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/agentStatement.ts"],
+		"symbols": ["AgentInput", "AgentStatement", "agentStatement"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "agentStatement.input",
+				"type": "AgentInput"
+			}
+		],
+		"outputs": [
+			{
+				"name": "agentStatement",
+				"type": "AgentStatement"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/agentStatement.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/agentStatement.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

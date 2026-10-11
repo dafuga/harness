@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.activity-client",
+	"kind": "function",
+	"title": "activityClient",
+	"responsibility": "Reads the activity of the site again while its page is open and visible, and reports a reading that did not arrive.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/activityClient.ts"],
+		"symbols": ["activityClient"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "activityClient.arrived",
+				"type": "(shown: Shown) => void"
+			},
+			{
+				"name": "activityClient.missed",
+				"type": "() => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "activityClient",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "workflow.run-activity",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/activityClient.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/activityClient.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

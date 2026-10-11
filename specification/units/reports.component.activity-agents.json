@@ -1,0 +1,75 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.activity-agents",
+	"kind": "component",
+	"title": "ActivityAgents",
+	"responsibility": "Shows how many registered agents are working and each agent as it described itself, or says that this is not known here.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/ActivityAgents.svelte"],
+		"symbols": ["ActivityAgents"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ActivityAgents.agents",
+				"type": "AgentRoster | null"
+			},
+			{
+				"name": "ActivityAgents.sampledAt",
+				"type": "string"
+			},
+			{
+				"name": "ActivityAgents.reading",
+				"type": "{ now: number; failed: boolean; refresh: () => void }"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ActivityAgents",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.activity-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.activity-list",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.activity-display",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.activity-reading",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/ActivityAgents.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/ActivityAgents.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

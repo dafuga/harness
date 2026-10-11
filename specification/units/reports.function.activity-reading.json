@@ -1,0 +1,69 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.activity-reading",
+	"kind": "function",
+	"title": "activityReading",
+	"responsibility": "Says what a reading of the roster still tells at a given moment: who counts as working, and when nobody can be said to be.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/activityReading.ts"],
+		"symbols": ["readingAge", "ActivityReading", "activityReading"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "activityReading.agents",
+				"type": "AgentRoster"
+			},
+			{
+				"name": "activityReading.sampledAt",
+				"type": "string"
+			},
+			{
+				"name": "activityReading.now",
+				"type": "number"
+			}
+		],
+		"outputs": [
+			{
+				"name": "readingAge",
+				"type": "unknown"
+			},
+			{
+				"name": "activityReading",
+				"type": "ActivityReading"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.activity-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.activity-display",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/activityReading.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/activityReading.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

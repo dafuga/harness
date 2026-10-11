@@ -64,7 +64,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.site-activity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.analytics-display",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.site-activity",
 			"via": "import",
 			"origin": "derived"
 		},

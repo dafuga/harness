@@ -6,6 +6,7 @@
 	import AnalyticsHistory from '../../../components/AnalyticsHistory.svelte';
 	import AnalyticsModels from '../../../components/AnalyticsModels.svelte';
 	import AnalyticsTasks from '../../../components/AnalyticsTasks.svelte';
+	import SiteActivity from '../../../components/SiteActivity.svelte';
 	import { analyticsCount, analyticsDisplay } from '../../../utils/analyticsDisplay';
 	type Check = PageData['analytics']['jev']['response'];
 	let { data }: { data: PageData } = $props();
@@ -42,12 +43,23 @@
 		<a class="text-link" href="/harness/reports">Project reports</a>
 	</nav>
 	<header class="analytics-intro">
-		<div class="eyebrow">Local harness</div>
+		<div class="eyebrow">
+			Analytics of {data.project?.activity.repository.name ?? 'this repository'}
+		</div>
 		<h1>Harness Analytics</h1>
 		<p class="lead">
-			Loop activity, first-try quality, model usage and live CPU for the harness on this machine.
+			What this repository is doing and has done: who is working in its checkouts, its loops, recent
+			work, first-try quality and model usage. Only this repository and its checkouts are counted;
+			the CPU figures further down are of this machine.
 		</p>
 	</header>
+	{#if data.project}
+		<SiteActivity shown={data.project} />
+	{:else}
+		<p class="notice analytics-alert" role="alert">
+			The activity of this repository could not be read, so none is shown.
+		</p>
+	{/if}
 	<AnalyticsFilters {filters} />
 	<section class="analytics-section">
 		<div class="analytics-heading">

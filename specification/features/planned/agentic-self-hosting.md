@@ -266,6 +266,20 @@ and measured by `harness kernel bench --boundary`. The loop for this feature run
   connection rather than from Host or URL headers a client controls. The installer requires a
   host-supplied server-side admin policy.
 - The console reuses the reports design and its gallery, player, transcript and export components.
+- `/harness/analytics` is about the application the server is hosted for. It names the repository
+  and shows, before its totals: how many registered agents are working now and on which
+  components, the loop types the project uses, its recent commits with the reasons noted on
+  them, and the files that changed with their components, committed and not committed apart.
+  An agent is working only while its own heartbeat is fresh (`harness activity register`,
+  `heartbeat`, `finish`); a stale loop, a running report or a mere process is not one, and where
+  nobody registered the number is unknown, not zero. Everything is read on the server for this
+  repository and its worktrees alone, behind the owner policy. The first view is short, with
+  what is not committed near the top and the rest one control away; an open page reads again
+  every 15 seconds and on request, and a reading it could not renew stops calling anybody
+  working after a minute.
+- `harness history build` records the same committed activity beside the index, from Git alone.
+  An installed console shows it in its Activity view without Git or a database and says that
+  live activity is not part of a recorded history.
 - Every choice on the website is one shared select component: the report filters, the comparison
   and audio uploaders, the gallery, the replay, the provider picker, and the branch, commit, base,
   comparison and growth choices of the console. It is a labelled native select with one caret,

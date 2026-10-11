@@ -37,6 +37,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.activity-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.side-impact",
 			"via": "import",
 			"origin": "derived"

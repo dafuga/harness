@@ -1,6 +1,7 @@
 import { sdkPackage } from '../utils/buildStamp';
 import { registerCodexCommand } from '../commands/CodexCommand';
 import { registerAnalyticsCommand } from '../commands/AnalyticsCommand';
+import { registerActivityCommand } from '../commands/ActivityCommand';
 import { registerReportCommand } from '../commands/ReportCommand';
 import { Command } from 'commander';
 import { registerResponseCheckCommand } from '../commands/ResponseCheckCommand';
@@ -30,6 +31,7 @@ export function buildProgram(): Command {
 
 	registerCodexCommand(program);
 	registerAnalyticsCommand(program);
+	registerActivityCommand(program);
 	registerReportCommand(program);
 	registerNewCommand(program);
 	registerGenerateCommand(program);

@@ -28,6 +28,7 @@ const bundled = `// History and media are modules of this server bundle, loaded 
 const data = consoleBundle({
 	json: import.meta.glob([
 		'./data/index.json.ts',
+		'./data/activity.json.ts',
 		'./data/revisions/*.json.ts',
 		'./data/sides/*.json.ts'
 	]),

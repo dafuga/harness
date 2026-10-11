@@ -25,7 +25,19 @@
 		"reports.repository.site-report",
 		"reports.service.harness-analytics",
 		"reports.service.report-export",
-		"reports.serializer.report-export"
+		"reports.serializer.report-export",
+		"reports.component.project-activity",
+		"reports.component.activity-agents",
+		"reports.component.activity-loops",
+		"reports.component.activity-work",
+		"reports.component.activity-files",
+		"reports.function.site-activity",
+		"reports.endpoint.api-project-activity",
+		"reports.component.activity-list",
+		"reports.component.site-activity",
+		"reports.function.activity-reading",
+		"reports.function.activity-client",
+		"reports.function.activity-display"
 	],
 	"states": [
 		{

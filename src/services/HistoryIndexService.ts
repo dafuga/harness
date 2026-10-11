@@ -14,6 +14,7 @@ import { historySeries, unitGrowth } from '../utils/historySeries';
 import { stableJson } from '../utils/stableJson';
 import { HistoryMediaService } from './HistoryMediaService';
 import { HistoryStatusService } from './HistoryStatusService';
+import { ProjectActivityService } from './ProjectActivityService';
 import { RevisionDetailService, type BuiltRevision } from './RevisionDetailService';
 
 export interface BuiltHistory {
@@ -88,6 +89,10 @@ export class HistoryIndexService {
 		};
 		const text = stableJson(index);
 		await writeFile(join(out, 'index.json'), text);
+		// What the project did, beside the index: recent work, changed files and loop types.
+		const details = new Map(built.map((item) => [item.revision.commit, item.result.detail]));
+		const activity = await new ProjectActivityService(this.root).recorded(source, details);
+		await writeFile(join(out, 'activity.json'), stableJson(activity));
 		const digest = createHash('sha256').update(text).digest('hex');
 		return { out, digest, media: media.counts, problems: index.problems, index };
 	}
@@ -95,7 +100,7 @@ export class HistoryIndexService {
 
 /** Only what a build writes is removed, so an output directory can hold other files too. */
 async function emptied(out: string): Promise<void> {
-	for (const stale of ['index.json', 'revisions', 'sides', 'media']) {
+	for (const stale of ['index.json', 'activity.json', 'revisions', 'sides', 'media']) {
 		await rm(join(out, stale), { recursive: true, force: true });
 	}
 	await mkdir(join(out, 'revisions'), { recursive: true });

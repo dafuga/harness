@@ -54,6 +54,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.harness-harness-activity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-harness-compare",
 			"via": "import",
 			"origin": "derived"
@@ -85,6 +90,11 @@
 		},
 		{
 			"unit": "reports.component.harness-harness-selectors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-tabs",
 			"via": "import",
 			"origin": "derived"
 		},

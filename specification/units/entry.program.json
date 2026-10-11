@@ -23,6 +23,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "command.activity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.analytics",
 			"via": "import",
 			"origin": "derived"

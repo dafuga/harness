@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "command.activity",
+	"kind": "command",
+	"title": "ActivityCommand",
+	"responsibility": "Declares the harness activity commands.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/ActivityCommand.ts"],
+		"symbols": ["registerActivityCommand"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "registerActivityCommand.program",
+				"type": "Command"
+			}
+		],
+		"outputs": [
+			{
+				"name": "registerActivityCommand",
+				"type": "Command"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agent-statement",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.run-activity",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/ActivityCommand.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/ActivityCommand.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

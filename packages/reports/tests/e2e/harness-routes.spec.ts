@@ -186,12 +186,12 @@ test('the pages keep to a phone width', async ({ page }) => {
 	}
 });
 
-test('on a phone all four views can be seen and chosen without scrolling anything sideways', async ({
+test('on a phone all five views can be seen and chosen without scrolling anything sideways', async ({
 	page
 }) => {
 	await page.setViewportSize({ width: 390, height: 844 });
-	const names = ['Component map', 'Compare', 'History', 'Growth'];
-	const views = ['map', 'compare', 'history', 'growth'];
+	const names = ['Component map', 'Compare', 'History', 'Growth', 'Activity'];
+	const views = ['map', 'compare', 'history', 'growth', 'activity'];
 	await page.goto(main(commits.reordered, 'history'));
 	const strip = page.getByRole('tablist', { name: 'Views' });
 	await expect(strip.getByRole('tab')).toHaveText(names);

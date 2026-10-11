@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"id": "function.activity-types",
+	"kind": "function",
+	"title": "activityTypes",
+	"responsibility": "Names what project activity is made of: the three files an agent writes, a roster entry, committed work and what only a running Harness can say.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/activityTypes.ts"],
+		"symbols": [
+			"agentRegistrationSchema",
+			"agentBeatSchema",
+			"agentEndSchema",
+			"AgentRegistration",
+			"AgentBeat",
+			"AgentEnd",
+			"AgentState",
+			"AgentEntry",
+			"AgentRoster",
+			"FileChange",
+			"CommittedFile",
+			"LoopUsage",
+			"WorkItem",
+			"ProjectActivity",
+			"WorktreeState",
+			"LiveActivity"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "agentRegistrationSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "agentBeatSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "agentEndSchema",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/activityTypes.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/activityTypes.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

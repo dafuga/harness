@@ -4,7 +4,7 @@ import type { ConsolePolicy, ConsoleRequest } from './consolePolicy';
 
 /** Where console data comes from: a directory, or modules bundled into the server. */
 export interface ConsoleData {
-	/** JSON text of `index.json` or `revisions/<commit>.json`, or undefined when absent. */
+	/** JSON text of `index.json`, `activity.json` or `revisions/<commit>.json`; undefined when absent. */
 	json(path: string): Promise<string | undefined>;
 	/** Original bytes of one media file named `<sha256>.<extension>`. */
 	media(name: string): Promise<{ bytes: Uint8Array; type: string } | undefined>;
@@ -48,7 +48,7 @@ export interface ConsoleAccess {
 	report(event: ConsoleRequest, commit: string, record: string | null): Promise<Response>;
 }
 
-const jsonPath = /^(index|revisions\/[0-9a-f]{40}|sides\/[0-9a-f]{40})\.json$/;
+const jsonPath = /^(index|activity|revisions\/[0-9a-f]{40}|sides\/[0-9a-f]{40})\.json$/;
 const mediaName = /^[0-9a-f]{64}\.[a-z0-9]+$/;
 const closed = { 'cache-control': 'no-store', 'x-content-type-options': 'nosniff' };
 

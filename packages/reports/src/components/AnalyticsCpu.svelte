@@ -43,13 +43,19 @@
 				<div class="analytics-card" data-testid={'cpu-' + group.id}>
 					<span class="analytics-label">{group.label}</span>
 					<strong class="analytics-value">{percent(group.machinePercent)}</strong>
-					<small>Core {percent(group.corePercent)} · Processes {group.processes}</small>
+					<small
+						>{group.id === 'agents' ? 'This repository' : 'All projects on this machine'} · Core
+						{percent(group.corePercent)} · Processes {group.processes}</small
+					>
 				</div>
 			{/each}
 			<div class="analytics-card" data-testid="cpu-tracked">
 				<span class="analytics-label">Tracked combined</span>
 				<strong class="analytics-value">{percent(cpu.trackedPercent)}</strong>
-				<small>Codex, harness and local agents together</small>
+				<small
+					>Machine-wide Codex and Harness plus this repository's agents; not a figure of this
+					repository</small
+				>
 			</div>
 		</div>
 		<p class="analytics-note">
@@ -106,8 +112,8 @@
 		</div>
 	{/if}
 	<p class="analytics-note">
-		Measures local processes only and ignores the history filters. The shared Codex app-server's
-		CPU cannot be split by chat, and cloud model inference CPU is not measured. Samples are not
+		Measures local processes only and ignores the history filters. The shared Codex app-server's CPU
+		cannot be split by chat, and cloud model inference CPU is not measured. Samples are not
 		automatically saved or published.
 	</p>
 </section>

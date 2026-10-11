@@ -4,6 +4,7 @@ import { commandAction } from './utils/commandAction';
 import { buildProgram } from './cli/program';
 import { recordAnalytics } from './workflows/analyticsRecord';
 import { importAnalytics } from './workflows/importAnalytics';
+import { beatFromEnvironment } from './workflows/runActivity';
 import { isExpectedCliError } from './core/errors';
 import { pipedOutput } from './utils/pipedOutput';
 
@@ -25,6 +26,7 @@ try {
 		exitCode: Number(process.exitCode ?? 0),
 		durationMs: Date.now() - startedAt
 	});
+	await beatFromEnvironment();
 	if (process.argv[2] === 'loop') {
 		try {
 			await importAnalytics(process.cwd(), false);

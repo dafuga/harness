@@ -1,4 +1,4 @@
-export const consoleViews = ['map', 'compare', 'history', 'growth'] as const;
+export const consoleViews = ['map', 'compare', 'history', 'growth', 'activity'] as const;
 export type ConsoleView = (typeof consoleViews)[number];
 
 /** One page of the console: where it is in history and what is selected on it. */

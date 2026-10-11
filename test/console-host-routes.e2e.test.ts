@@ -123,3 +123,24 @@ test('the installed console shows recorded media and exports a record, for the a
 	}
 	await page.context().close();
 }, 120_000);
+
+test('the installed console shows the activity recorded with its history, to the administrator only', async () => {
+	const data = '/harness/data/activity.json';
+	const member = { cookie: `session=${sessions.member}` };
+	expect([(await get(data)).status, (await get(data, member)).status]).toEqual([403, 403]);
+	const answered = await get(data, admin);
+	expect(answered.status).toBe(200);
+	const recorded = (await answered.json()) as { kind: string; repository: { head: string } };
+	expect([recorded.kind, recorded.repository.head]).toEqual(['recorded', head]);
+	const page = await adminPage();
+	await page.goto(worker.url + main(head, 'map'));
+	await page.getByRole('tab', { name: 'Activity', exact: true }).click();
+	expect(pathOf(page)).toBe(main(head, 'activity'));
+	const work = page.getByRole('region', { name: 'Recent work', exact: true });
+	await work.getByRole('link', { name: head.slice(0, 7) }).waitFor();
+	// The host has no checkout and no agents to ask: live activity is said to be absent.
+	const agents = page.getByRole('region', { name: 'Working agents', exact: true });
+	expect(await agents.innerText()).toContain('not part of a recorded history');
+	expect(await page.getByTestId('agents-working').count()).toBe(0);
+	await page.context().close();
+});

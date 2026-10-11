@@ -1,3 +1,4 @@
+import type { ProjectActivity } from '../../../../src/core/activityTypes';
 import type { StoredSide } from '../../../../src/utils/sideImpact';
 import type { HarnessIndex, HarnessRevision } from '../models/Harness.types';
 
@@ -6,6 +7,8 @@ export interface HarnessClient {
 	revision(commit: string): Promise<HarnessRevision>;
 	/** The stored side of a source tree, by the path a revision names. */
 	side(path: string): Promise<StoredSide>;
+	/** What the project did, as recorded when this history was built. */
+	activity(): Promise<ProjectActivity>;
 }
 
 /**
@@ -28,6 +31,7 @@ export function harnessClient(base: string, fetcher: typeof fetch = fetch): Harn
 	return {
 		index: () => load<HarnessIndex>('index.json'),
 		revision: (commit) => load<HarnessRevision>(`revisions/${commit}.json`),
-		side: (path) => load<StoredSide>(path)
+		side: (path) => load<StoredSide>(path),
+		activity: () => load<ProjectActivity>('activity.json')
 	};
 }

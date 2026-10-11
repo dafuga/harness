@@ -309,6 +309,11 @@
 			"unit": "workflow.import-analytics",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "workflow.run-activity",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

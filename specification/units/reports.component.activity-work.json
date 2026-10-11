@@ -1,0 +1,70 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.activity-work",
+	"kind": "component",
+	"title": "ActivityWork",
+	"responsibility": "Lists recent commits with their time, branches, components, noted reasons and a link to their page.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/ActivityWork.svelte"],
+		"symbols": ["ActivityWork"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ActivityWork.work",
+				"type": "WorkItem[]"
+			},
+			{
+				"name": "ActivityWork.href",
+				"type": "(commit: string) => string"
+			},
+			{
+				"name": "ActivityWork.recorded",
+				"type": "boolean"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ActivityWork",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.activity-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.activity-list",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.activity-display",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/ActivityWork.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/ActivityWork.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

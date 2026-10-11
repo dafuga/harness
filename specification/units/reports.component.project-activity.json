@@ -1,0 +1,89 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.project-activity",
+	"kind": "component",
+	"title": "ProjectActivity",
+	"responsibility": "Lays out the activity of one repository and gives its parts one look; without live data it is a recorded history.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/ProjectActivity.svelte"],
+		"symbols": ["ProjectActivity"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ProjectActivity.activity",
+				"type": "ProjectActivity"
+			},
+			{
+				"name": "ProjectActivity.live",
+				"type": "LiveActivity | null"
+			},
+			{
+				"name": "ProjectActivity.base",
+				"type": "string"
+			},
+			{
+				"name": "ProjectActivity.reading",
+				"type": "{ now: number; failed: boolean; refresh: () => void }"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ProjectActivity",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.activity-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.activity-agents",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.activity-files",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.activity-loops",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.activity-work",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.activity-display",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/ProjectActivity.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/ProjectActivity.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
