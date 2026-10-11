@@ -1,0 +1,16 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz[39m
+
+ [32m✓[39m test/clean-code.e2e.test.ts [2m([22m[2m6 tests[22m[2m)[22m[33m 3346[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI previews every supported language without contacting Jev [33m 422[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI reports violations as advisory and blocks them only in gate mode [33m 853[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI keeps uncertainty visible without blocking the gate [33m 429[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI treats provider failure as incomplete and keeps credentials out of errors [33m 414[2mms[22m[39m
+   [33m[2m✓[22m[39m configured gate activates review and clean-code guidance is discoverable [33m 822[2mms[22m[39m
+   [33m[2m✓[22m[39m normal audit remains offline and JSON contains no semantic review [33m 404[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m6 passed[39m[22m[90m (6)[39m
+[2m   Start at [22m 15:56:47
+[2m   Duration [22m 3.68s[2m (transform 57ms, setup 24ms, collect 35ms, tests 3.35s, environment 0ms, prepare 81ms)[22m
+

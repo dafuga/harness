@@ -1,0 +1,13 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz[39m
+
+ [32m✓[39m test/explain.e2e.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 14398[2mms[22m[39m
+   [33m[2m✓[22m[39m a changed function without a reason blocks verification until it is explained [33m 4683[2mms[22m[39m
+   [33m[2m✓[22m[39m a reason goes stale when the function changes again [33m 1710[2mms[22m[39m
+   [33m[2m✓[22m[39m added, removed and unindexed units need unit-wide reasons [33m 3129[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+[2m   Start at [22m 16:00:44
+[2m   Duration [22m 14.76s[2m (transform 82ms, setup 27ms, collect 68ms, tests 14.40s, environment 0ms, prepare 59ms)[22m
+

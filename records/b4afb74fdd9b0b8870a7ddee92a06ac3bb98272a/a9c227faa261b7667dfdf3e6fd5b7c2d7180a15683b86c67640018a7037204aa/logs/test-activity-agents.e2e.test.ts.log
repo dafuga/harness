@@ -1,0 +1,17 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz[39m
+
+ [32m✓[39m test/activity-agents.e2e.test.ts [2m([22m[2m7 tests[22m[2m)[22m[33m 21023[2mms[22m[39m
+   [33m[2m✓[22m[39m a repository where no agent ever registered says it does not know, not zero [33m 412[2mms[22m[39m
+   [33m[2m✓[22m[39m an agent states who it is, and every checkout of its repository sees it; another repository does not [33m 2439[2mms[22m[39m
+   [33m[2m✓[22m[39m a heartbeat keeps an agent working and may restate its work; without one it is stale and not counted [33m 3353[2mms[22m[39m
+   [33m[2m✓[22m[39m a finished or failed agent is listed as that, and a late heartbeat does not bring it back [33m 2460[2mms[22m[39m
+   [33m[2m✓[22m[39m an agent whose process ended is not counted, whatever its heartbeat says [33m 2080[2mms[22m[39m
+   [33m[2m✓[22m[39m many agents register, beat and finish at once without losing or damaging a registration [33m 7009[2mms[22m[39m
+   [33m[2m✓[22m[39m what an owner may state is bounded, and an assignment the registry does not know is marked [33m 3203[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m7 passed[39m[22m[90m (7)[39m
+[2m   Start at [22m 15:53:27
+[2m   Duration [22m 21.36s[2m (transform 59ms, setup 26ms, collect 39ms, tests 21.02s, environment 0ms, prepare 58ms)[22m
+

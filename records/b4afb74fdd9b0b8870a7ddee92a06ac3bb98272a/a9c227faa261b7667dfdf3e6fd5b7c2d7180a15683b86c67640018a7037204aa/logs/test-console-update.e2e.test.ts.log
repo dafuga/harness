@@ -1,0 +1,15 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz[39m
+
+ [32m✓[39m test/console-update.e2e.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 12848[2mms[22m[39m
+   [33m[2m✓[22m[39m an install that would overwrite the host route stops and changes nothing [33m 398[2mms[22m[39m
+   [33m[2m✓[22m[39m a requested update is a tracked change: saved, recorded, in the Git diff and in the impact [33m 3436[2mms[22m[39m
+   [33m[2m✓[22m[39m later edits by the agent are kept or replaced on request, never lost [33m 1225[2mms[22m[39m
+   [33m[2m✓[22m[39m restoring brings the host route back exactly, and repeated installs then leave it alone [33m 1231[2mms[22m[39m
+   [33m[2m✓[22m[39m uninstalling removes what was generated, keeps the record, and the console installs again [33m 1215[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m5 passed[39m[22m[90m (5)[39m
+[2m   Start at [22m 15:59:46
+[2m   Duration [22m 13.20s[2m (transform 92ms, setup 24ms, collect 66ms, tests 12.85s, environment 0ms, prepare 90ms)[22m
+

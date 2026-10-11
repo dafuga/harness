@@ -1,0 +1,39 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz[39m
+
+ [31m❯[39m test/console-host-routes.e2e.test.ts [2m([22m[2m4 tests[22m[2m | [22m[33m4 skipped[39m[2m)[22m[33m 20786[2mms[22m[39m
+   [2m[90m↓[39m[22m the host redirects the root and the query form to page paths, for the administrator only
+   [2m[90m↓[39m[22m in a browser each branch, commit and view of the installed console is its own path
+   [2m[90m↓[39m[22m the installed console shows recorded media and exports a record, for the administrator only
+   [2m[90m↓[39m[22m the installed console shows the activity recorded with its history, to the administrator only
+
+[31m⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Suites 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m test/console-host-routes.e2e.test.ts[2m [ test/console-host-routes.e2e.test.ts ][22m
+[31m[1mError[22m: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝[39m
+[36m [2m❯[22m test/console-host-routes.e2e.test.ts:[2m29:27[22m[39m
+    [90m 27| [39m [35mawait[39m [34minstallAndBuild[39m(target)[33m;[39m
+    [90m 28| [39m worker [33m=[39m [35mawait[39m [34mpagesDev[39m(target[33m.[39mhost)[33m;[39m
+    [90m 29| [39m browser [33m=[39m [35mawait[39m chromium[33m.[39m[34mlaunch[39m()[33m;[39m
+    [90m   | [39m                          [31m^[39m
+    [90m 30| [39m head = target.index.branches.find((branch) => branch.name === 'main')…
+    [90m 31| [39m}[33m,[39m [34m900_000[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [33m4 skipped[39m[90m (4)[39m
+[2m   Start at [22m 15:58:25
+[2m   Duration [22m 21.50s[2m (transform 109ms, setup 24ms, collect 412ms, tests 20.79s, environment 0ms, prepare 83ms)[22m
+
+
+::error file=/tmp/harness-snapshot-iUpwmz/test/console-host-routes.e2e.test.ts,title=test/console-host-routes.e2e.test.ts,line=29,column=27::Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell%0A╔════════════════════════════════════════════════════════════╗%0A║ Looks like Playwright was just installed or updated.       ║%0A║ Please run the following command to download new browsers: ║%0A║                                                            ║%0A║     npx playwright install                                 ║%0A║                                                            ║%0A║ <3 Playwright Team                                         ║%0A╚════════════════════════════════════════════════════════════╝%0A ❯ test/console-host-routes.e2e.test.ts:29:27%0A%0A⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯%0ASerialized Error: { log: [] }%0A
