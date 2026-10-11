@@ -8,7 +8,14 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/workflows/runVerify.ts"],
-		"symbols": ["VerifyOptions", "verifyRun", "verifyCheck", "verifyIdentity", "renderVerify"]
+		"symbols": [
+			"VerifyOptions",
+			"verifyRun",
+			"verifyCheck",
+			"verifyIdentity",
+			"verifyStamp",
+			"renderVerify"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -23,6 +30,10 @@
 			},
 			{
 				"name": "verifyIdentity.directory",
+				"type": "string"
+			},
+			{
+				"name": "verifyStamp.directory",
 				"type": "string"
 			},
 			{
@@ -41,6 +52,10 @@
 			},
 			{
 				"name": "verifyIdentity",
+				"type": "Promise<IdentifiedBuild & { directory: string }>"
+			},
+			{
+				"name": "verifyStamp",
 				"type": "Promise<IdentifiedBuild & { directory: string }>"
 			},
 			{
@@ -72,6 +87,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.explanation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.verification-store",
 			"via": "import",
 			"origin": "derived"
@@ -88,6 +108,11 @@
 		},
 		{
 			"unit": "service.impact",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.reason-path",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -30,6 +30,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.complexity-coverage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.scan-imports",
 			"via": "import",
 			"origin": "derived"

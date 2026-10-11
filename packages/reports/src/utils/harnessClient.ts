@@ -1,8 +1,11 @@
+import type { StoredSide } from '../../../../src/utils/sideImpact';
 import type { HarnessIndex, HarnessRevision } from '../models/Harness.types';
 
 export interface HarnessClient {
 	index(): Promise<HarnessIndex>;
 	revision(commit: string): Promise<HarnessRevision>;
+	/** The stored side of a source tree, by the path a revision names. */
+	side(path: string): Promise<StoredSide>;
 }
 
 /**
@@ -24,6 +27,7 @@ export function harnessClient(base: string, fetcher: typeof fetch = fetch): Harn
 	};
 	return {
 		index: () => load<HarnessIndex>('index.json'),
-		revision: (commit) => load<HarnessRevision>(`revisions/${commit}.json`)
+		revision: (commit) => load<HarnessRevision>(`revisions/${commit}.json`),
+		side: (path) => load<StoredSide>(path)
 	};
 }

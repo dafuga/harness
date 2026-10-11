@@ -1,8 +1,9 @@
+import { e2eFixtures } from '../src/utils/e2eFixtures';
 import { mkdir, writeFile, rm } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
 import { chromium } from '@playwright/test';
 import { ReportRepository } from '../src/repositories/ReportRepository';
-const root = resolve('/tmp/project-reports-e2e');
+const { reports: root, site } = e2eFixtures();
 await rm(root, { recursive: true, force: true });
 await mkdir(root, { recursive: true });
 const image = join(root, 'fixture.png');
@@ -65,7 +66,7 @@ try {
 }
 const store = new ReportRepository(root);
 const report = await store.begin({
-	project: '/tmp/alpha-project',
+	project: site('alpha-project'),
 	title: 'Account settings review',
 	mode: 'feature',
 	environment: 'local fixture',
@@ -138,7 +139,7 @@ await store.record(report.id, {
 	}
 });
 const mobileOnly = await store.begin({
-	project: '/tmp/alpha-project',
+	project: site('alpha-project'),
 	title: 'Mobile-only review',
 	mode: 'feature',
 	environment: 'local fixture'
@@ -157,14 +158,14 @@ await store.record(mobileOnly.id, {
 });
 // Another checkout of the same application: its reports belong to the same site.
 await store.begin({
-	project: '/tmp/alpha-checkout',
+	project: site('alpha-checkout'),
 	title: 'Whole-site review',
 	mode: 'suite',
 	environment: 'local fixture'
 });
 // A different application sharing the store. Nothing of it may be served by the first site.
 const foreign = await store.begin({
-	project: '/tmp/beta-project',
+	project: site('beta-project'),
 	title: 'Foreign storefront review',
 	mode: 'feature',
 	environment: 'local fixture',

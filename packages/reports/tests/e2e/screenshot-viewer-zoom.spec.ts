@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
-import { mkdir, readFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { mkdir } from 'node:fs/promises';
+import { seededId } from './support/fixtures';
 
 async function capture(page: Page, name: string) {
 	if (process.env.TAKE_SCREENSHOT !== 'true') return;
@@ -18,7 +18,7 @@ async function capture(page: Page, name: string) {
 for (const width of [1440, 390]) {
 	test(`screenshot explanations follow the viewed image at ${width}px`, async ({ page }) => {
 		await page.setViewportSize({ width, height: 900 });
-		const id = (await readFile(resolve('/tmp/project-reports-e2e/fixture-id'), 'utf8')).trim();
+		const id = await seededId();
 		await page.goto(`/reports/${id}`);
 		await page.waitForLoadState('networkidle');
 		await page.getByRole('button', { name: 'Open Settings after', exact: true }).first().click();
@@ -47,7 +47,7 @@ for (const width of [1440, 390]) {
 		page
 	}) => {
 		await page.setViewportSize({ width, height: 900 });
-		const id = (await readFile(resolve('/tmp/project-reports-e2e/fixture-id'), 'utf8')).trim();
+		const id = await seededId();
 		await page.goto(`/reports/${id}`);
 		await page.waitForLoadState('networkidle');
 		await page.getByRole('button', { name: 'Open Tall report page' }).click();
@@ -85,7 +85,7 @@ for (const width of [1440, 390]) {
 
 test('Mac trackpad pinches to zoom and two-finger scrolls to pan the image', async ({ page }) => {
 	await page.setViewportSize({ width: 1440, height: 900 });
-	const id = (await readFile(resolve('/tmp/project-reports-e2e/fixture-id'), 'utf8')).trim();
+	const id = await seededId();
 	await page.goto(`/reports/${id}`);
 	await page.waitForLoadState('networkidle');
 	await page.getByRole('button', { name: 'Open Tall report page' }).click();
@@ -126,7 +126,7 @@ test('a gentle trackpad pinch responds to successive small movements from fit', 
 	page
 }) => {
 	await page.setViewportSize({ width: 1440, height: 900 });
-	const id = (await readFile(resolve('/tmp/project-reports-e2e/fixture-id'), 'utf8')).trim();
+	const id = await seededId();
 	await page.goto(`/reports/${id}`);
 	await page.waitForLoadState('networkidle');
 	await page.getByRole('button', { name: 'Open Tall report page' }).click();

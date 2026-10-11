@@ -11,7 +11,8 @@
 		"symbols": [
 			"ReportServerService",
 			"ReportServerService.constructor",
-			"ReportServerService.serve"
+			"ReportServerService.serve",
+			"ReportServerService.stop"
 		]
 	},
 	"contract": {
@@ -24,12 +25,20 @@
 			{
 				"name": "ReportServerService.serve.preferred",
 				"type": "unknown"
+			},
+			{
+				"name": "ReportServerService.stop.port",
+				"type": "unknown"
 			}
 		],
 		"outputs": [
 			{
 				"name": "ReportServerService.serve",
 				"type": "unknown"
+			},
+			{
+				"name": "ReportServerService.stop",
+				"type": "Promise<StoppedServer>"
 			}
 		],
 		"errors": [
@@ -47,6 +56,11 @@
 		},
 		{
 			"unit": "reports.function.report-runtime-root",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-server-record",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -28,10 +28,16 @@ export interface ConsoleChange {
 	after: FileIdentity | null;
 }
 
+/** Where the installed console reads history from. */
+export type ConsoleStorage =
+	| { kind: 'bundle' }
+	| { kind: 'bucket'; binding: string; prefix: string };
+
 export interface ConsoleManifest {
 	schemaVersion: 1;
 	base?: string;
 	policy?: { module: string; export: string };
+	storage?: ConsoleStorage;
 	files: ConsoleFileEntry[];
 	/** Every replacement, removal and restore, oldest first; entries are never rewritten. */
 	changes: ConsoleChange[];

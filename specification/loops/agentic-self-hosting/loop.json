@@ -2,7 +2,7 @@
 	"name": "agentic-self-hosting",
 	"goal": "Harness hosts itself: component contracts, dual-graph impact, scenario evidence, frozen budgets, Git-native notes and evidence history, and a protected prebuilt /harness console are proven by failing-then-passing acceptance tests",
 	"createdAt": "2026-10-10T12:53:55.653Z",
-	"updatedAt": "2026-10-10T20:18:00.200Z",
+	"updatedAt": "2026-10-10T23:31:08.938Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"steps": [
@@ -66,7 +66,9 @@
 		{
 			"id": "stage-f",
 			"title": "Stage F - self-host registry, fixtures, migration, packaging, full checks and acceptance.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-10T23:31:08.938Z",
+			"evidence": "Stage F over f240fbd, uncommitted, handed to the integrator for the real exact-commit verification. RED kept under work/logs: stage-f-reasons-red (duplicate keys stopped the comparison on real data), stage-f-pairs-red and pairs-browser-red (no exact impact for commits that are not parent and child), stage-f-compare-media-red, stage-f-stamp-store-red, stage-f-console-storage-red and console-storage-e2e-red, stage-f-console-uninstall-red, stage-f-verify-plan-red, stage-f-verify-tools-red, stage-f-explain-steps-red, stage-f-concurrent-runs-red with the independent browser failure stage-f-shared-fixture-RED-independent-browser.log, stage-f-measure-availability-red and stage-f-dependency-scope-red-2; a first self-verification of a staging clone found a Git process per analytics event (1001 for 1000 events) and a spec no runner selected. Test provenance with every change after a red run: work/logs/stage-f-test-diff.log. GREEN on the frozen source: full bun run check exit 0 (work/logs/stage-f-check-3.log): cargo fmt, clippy and cargo test; 442 unit tests in 132 files with 25 live-API tests in 2 files skipped; 175 CLI end-to-end tests in 53 files; 25 package tests in 10 files with the 3 tests of the index-gated scale file skipped; both audits; units check 535 units with 15 uncertain references; 114 reports unit tests in 52 files. Complete reports browser suite exit 0 (stage-f-test-e2e-final-2.log): 114 passed, 1 env-gated skip, picker 1 passed. Scale test with the real own index: 3 passed (stage-f-console-scale-final.log). harness explain check passes for the stage (156 reasons), from 6cf10dd (389) and from an empty start (535); reasons are in .cache/harness/explanations.ndjson, copied to work/stage-f/reasons/explanations-final.ndjson, with the drivers beside it and the readable list in work/logs/stage-f-rationale.md. Captures inspected: the actual own repository from 127.0.0.1:5694 (18) and its real report hub and analytics from 127.0.0.1:5686 (6) at 1440, 920 and 390 in work/stage-f/own; scenario captures in work/stage-f/captures. Not done here: no commit of Harness is verified and no baseline exists in the repository; the staging self-verification completed once on an earlier tree (263 checks: snapshot, registry and ledger gates passed, two tests and two scenarios failed and were repaired) and two later runs of the repaired tree were stopped unfinished after 78 and 65 checks without a failure, leaving no record; nothing was deployed and no real bucket was written; Rust and Python complexity is unavailable, not measured."
 		},
 		{
 			"id": "stage-a-bootstrap",

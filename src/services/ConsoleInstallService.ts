@@ -1,12 +1,18 @@
 import { fail } from '../core/errors';
-import { consoleDataModules, type IndexFile } from '../utils/consoleDataModules';
-import { consoleHostFiles } from '../utils/consoleHostFiles';
+import {
+	bundledSize,
+	consoleDataModules,
+	type BundledSize,
+	type IndexFile
+} from '../utils/consoleDataModules';
+import { consoleHostFiles, type HostFile } from '../utils/consoleHostFiles';
 import {
 	consoleManifest,
 	writeConsoleManifest,
 	type ConsoleChange,
 	type ConsoleFileEntry,
-	type ConsoleManifest
+	type ConsoleManifest,
+	type ConsoleStorage
 } from '../utils/consoleManifest';
 import { indexFiles } from '../utils/indexFiles';
 import { hostWarnings, installableHost } from '../utils/installableHost';
@@ -18,8 +24,12 @@ export interface ConsoleInstallOptions {
 	policy: string;
 	policyExport: string;
 	base: string;
-	/** Output directory of `harness history build`, bundled into the host's server. */
+	/** Output directory of `harness history build`: bundled into the server, or to be uploaded. */
 	data?: string;
+	/** Binding of a private object store to read the history from instead of bundling it. */
+	bucket?: string;
+	/** Path inside that store the index was uploaded under. */
+	prefix?: string;
 	/** Replace files that hold other content; what they held is saved and the change recorded. */
 	update?: boolean;
 	/** Leave files that hold other content as the host's own version. */
@@ -37,6 +47,9 @@ export interface ConsoleInstallResult {
 	/** Files that held other content and were replaced or removed on request. */
 	changes: ConsoleChange[];
 	data: { revisions: number; media: number; bytes: number } | null;
+	storage: ConsoleStorage;
+	/** What the bundled history adds to the server; null when nothing is bundled. */
+	bundle: BundledSize | null;
 	warnings: string[];
 }
 
@@ -58,14 +71,18 @@ export class ConsoleInstallService {
 		await installableHost(options);
 		const index = options.data ? await indexFiles(options.data) : [];
 		const policy = { module: options.policy, export: options.policyExport };
+		const storage = storageOf(options);
+		// A bucket holds the history itself, so none of it becomes part of the host.
+		const modules = storage.kind === 'bundle' ? consoleDataModules(index) : [];
 		const manifest = await consoleManifest(host);
 		const tracker = new ConsoleChangeService(host, manifest);
-		const steps = await planned(tracker, wantedFiles(options, index, manifest));
+		const steps = await planned(tracker, wantedFiles(options, modules, manifest));
 		refuseUnasked(steps, options);
 		const applied = await this.apply(tracker, steps, options.update === true);
 		const changes = [...manifest.changes, ...applied.changes];
 		const files = applied.entries;
-		await writeConsoleManifest(host, { ...manifest, base, policy, files, changes });
+		await writeConsoleManifest(host, { ...manifest, base, policy, storage, files, changes });
+		const bundle = bundledSize(modules);
 		return {
 			host,
 			base,
@@ -75,7 +92,9 @@ export class ConsoleInstallService {
 			kept: applied.kept,
 			changes: applied.changes,
 			data: options.data ? measured(index) : null,
-			warnings: await hostWarnings(host, measured(index).bytes)
+			storage,
+			bundle,
+			warnings: await hostWarnings(host, bundle?.compressedBytes ?? 0)
 		};
 	}
 
@@ -115,20 +134,28 @@ export class ConsoleInstallService {
 /** Every file to write, then every file an earlier install wrote that is no longer wanted. */
 function wantedFiles(
 	options: ConsoleInstallOptions,
-	index: IndexFile[],
+	modules: HostFile[],
 	manifest: ConsoleManifest
 ): Array<{ path: string; contents: string | null }> {
+	const storage = storageOf(options);
 	const host = {
 		base: options.base,
 		policyModule: options.policy,
-		policyExport: options.policyExport
+		policyExport: options.policyExport,
+		...(storage.kind === 'bucket' ? { bucket: storage } : {})
 	};
-	const files = [...consoleHostFiles(host), ...consoleDataModules(index)];
+	const files = [...consoleHostFiles(host), ...modules];
 	const wanted = new Set(files.map((file) => file.path));
 	const stale = manifest.files
 		.filter((entry) => entry.owner === 'harness' && !wanted.has(entry.path))
 		.map((entry) => ({ path: entry.path, contents: null }));
 	return [...files, ...stale];
+}
+
+function storageOf(options: ConsoleInstallOptions): ConsoleStorage {
+	return options.bucket
+		? { kind: 'bucket', binding: options.bucket, prefix: options.prefix ?? '' }
+		: { kind: 'bundle' };
 }
 
 /** True when writing would overwrite content Harness did not put there. */

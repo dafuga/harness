@@ -1,16 +1,22 @@
 <script lang="ts">
 	import type { HarnessRevision, HarnessUnit } from '../../models/Harness.types';
-	import { harnessImpact } from '../../utils/harnessImpact';
+	import type { HarnessClient } from '../../utils/harnessClient';
+	import { comparedSides, harnessImpact, type ComparedSides } from '../../utils/harnessImpact';
+	import HarnessCompareMedia from './HarnessCompareMedia.svelte';
 	import HarnessMap from './HarnessMap.svelte';
 	import HarnessUnitView from './HarnessUnit.svelte';
 	let {
 		base,
 		head,
+		client,
+		mediaBase,
 		selected,
 		onselect
 	}: {
+		mediaBase: string;
 		base: HarnessRevision | undefined;
 		head: HarnessRevision;
+		client: HarnessClient;
 		selected: string | null;
 		onselect: (id: string) => void;
 	} = $props();
@@ -21,7 +27,16 @@
 		['removed', 'Removed']
 	] as const;
 	const frozen = ['source-bytes', 'complexity', 'dependencies'];
-	let impact = $derived(harnessImpact(base, head));
+	// Any two revisions are compared from what was stored of their source, not from records.
+	let compared = $state<ComparedSides | null>(null);
+	$effect(() => {
+		if (!base) return;
+		void comparedSides(client, base, head).then(
+			(found) => (compared = found ?? null),
+			() => (compared = null)
+		);
+	});
+	let impact = $derived(harnessImpact(base, head, compared));
 	let gone = $derived(
 		(base?.registry.units ?? []).filter((unit) => impact.removed.includes(unit.id))
 	);
@@ -61,9 +76,9 @@
 		{:else if !base}
 			No base commit is selected.
 		{:else}
-			Computed here from the unit versions and dependencies stored at both commits. These two
-			commits are not parent and child and no verification record compares them, so unresolved
-			references and changes outside any unit are not known for this pair.
+			Computed here from the unit versions and dependencies stored at both commits, because the
+			source of one of them was not stored in this index. Unresolved references and changes outside
+			any unit are not known for this pair.
 		{/if}
 	</p>
 	<div class="hc-groups">
@@ -88,7 +103,7 @@
 		<div>
 			<h3>Uncertain ({impact.uncertain.length})</h3>
 			<ul class="hc-plain" aria-label="Uncertain">
-				{#each impact.uncertain as item (item.node + item.detail)}
+				{#each impact.uncertain as item, position (position)}
 					<li>{item.detail} <span class="hc-muted">{item.reason} in {item.node}</span></li>
 				{/each}
 			</ul>
@@ -101,10 +116,12 @@
 	</div>
 	<h3>Why it changed</h3>
 	{#if reasons.length === 0}<p class="hc-muted">No reason is recorded for these changes.</p>{/if}
-	<ul class="hc-plain">
-		{#each reasons as reason (reason.unit + reason.symbol + reason.behavior)}
+	<!-- Several reasons may share a unit, a symbol and a text; each is one recorded reason. -->
+	<ul class="hc-plain" aria-label="Reasons">
+		{#each reasons as reason, position (position)}
 			<li>
-				<strong>{reason.unit}</strong> <span class="hc-muted">{reason.symbol}</span>: {reason.behavior}
+				<strong>{reason.unit}</strong>
+				<span class="hc-muted">{reason.symbol}{reason.file ? ` in ${reason.file}` : ''}</span>: {reason.behavior}
 				<br /><span class="hc-muted"
 					>Simpler: {reason.simplification.attempt} ({reason.simplification.outcome}). Faster:
 					{reason.performance.attempt} ({reason.performance.outcome}).</span
@@ -132,6 +149,7 @@
 		</div>
 	{/if}
 </section>
+<HarnessCompareMedia {base} {head} {mediaBase} />
 <div class="hc-panel">
 	<HarnessMap {units} marks={impact.marks} {selected} {onselect} />
 </div>

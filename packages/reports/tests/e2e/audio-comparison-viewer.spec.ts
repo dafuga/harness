@@ -2,6 +2,7 @@ import { expect, test, type Page, type Locator } from '@playwright/test';
 import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { audioPairFixture } from '../../test/audioPairFixture';
+import { fixtures } from './support/fixtures';
 
 async function capture(page: Page, region: Locator, name: string) {
 	await page.evaluate(async () => {
@@ -16,7 +17,7 @@ async function capture(page: Page, region: Locator, name: string) {
 test('switching a phase and closing the viewer stop hidden audio without autoplay on reopening', async ({
 	page
 }) => {
-	const { run } = await audioPairFixture('/tmp/project-reports-e2e');
+	const { run } = await audioPairFixture(fixtures.reports, fixtures.site('audio-comparison'));
 	await page.goto('/reports/' + run.id);
 	const opener = page.getByRole('button', {
 		name: 'Open audio comparison: Paired recording',
@@ -71,7 +72,10 @@ test('switching a phase and closing the viewer stop hidden audio without autopla
 test('opening pauses gallery audio and the Close button pauses the viewer and restores focus', async ({
 	page
 }) => {
-	const { store, run } = await audioPairFixture('/tmp/project-reports-e2e');
+	const { store, run } = await audioPairFixture(
+		fixtures.reports,
+		fixtures.site('audio-comparison')
+	);
 	await store.record(run.id, {
 		kind: 'evidence',
 		data: {
@@ -116,7 +120,7 @@ for (const width of [1440, 920, 390]) {
 	test(`one audio card opens both recordings and retains transcripts at ${width}px`, async ({
 		page
 	}) => {
-		const { run } = await audioPairFixture('/tmp/project-reports-e2e');
+		const { run } = await audioPairFixture(fixtures.reports, fixtures.site('audio-comparison'));
 		await page.setViewportSize({ width, height: 1100 });
 		await page.goto('/reports/' + run.id);
 		await page

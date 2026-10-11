@@ -6,8 +6,11 @@
 		index,
 		client,
 		unit,
-		onunit
+		onunit,
+		oncompare = () => {}
 	}: {
+		/** Opens the comparison of a commit with the one before it, where its evidence is. */
+		oncompare?: (commit: string) => void;
 		index: HarnessIndex;
 		client: HarnessClient;
 		unit: string | null;
@@ -56,7 +59,7 @@
 				>
 			</thead>
 			<tbody>
-				{#each rows as row (row.commit)}
+				{#each rows as row, position (position)}
 					<tr>
 						<td>{row.commit.slice(0, 7)}<br /><span class="hc-muted">{row.subject}</span></td>
 						{#each growthMetrics as metric (metric)}
@@ -66,13 +69,21 @@
 									<span class={(row.deltas[metric] ?? 0) > 0 ? 'hc-up' : 'hc-down'}
 										>{signed(row.deltas[metric])}</span
 									>
+								{/if}
+								{#if row.notes[metric]}
+									<br /><span class="hc-muted">{row.notes[metric]}</span>
 								{/if}</td
 							>
 						{/each}
 						<td>
-							{#each reasons[`${current}\n${row.commit}`] ?? [] as reason (reason.symbol + reason.behavior)}
+							{#each reasons[`${current}\n${row.commit}`] ?? [] as reason, position (position)}
 								<div>{reason.behavior}</div>
 							{/each}
+							{#if row.changed}
+								<button type="button" class="hc-chip" onclick={() => oncompare(row.commit)}
+									>Evidence before and after</button
+								>
+							{/if}
 							{#if row.changed && !(reasons[`${current}\n${row.commit}`] ?? []).length}
 								<span class="hc-muted">No reason is recorded.</span>
 							{/if}
@@ -89,7 +100,7 @@
 	{#if timings.length === 0}
 		<p class="hc-muted">No timing was recorded for this component; it is unavailable, not zero.</p>
 	{/if}
-	{#each timings as benchmark (benchmark.metric + benchmark.workload + benchmark.target)}
+	{#each timings as benchmark, position (position)}
 		<h3>
 			{benchmark.metric} on {benchmark.workload}{benchmark.target ? ` (${benchmark.target})` : ''}
 		</h3>
@@ -99,13 +110,13 @@
 				conditions. They are shown side by side and are not joined into one trend.
 			</p>
 		{/if}
-		{#each benchmark.series as series (series.profile + series.method)}
+		{#each benchmark.series as series, position (position)}
 			<p class="hc-muted">Profile {series.profile}: {profile(series.profile)}. {series.method}</p>
 			<div class="hc-table-wrap">
 				<table class="hc-table">
 					<thead><tr><th>Commit</th><th>Value ({series.unitOfMeasure})</th></tr></thead>
 					<tbody>
-						{#each series.points as point (point.record + point.commit)}
+						{#each series.points as point, position (position)}
 							<tr>
 								<td
 									>{point.commit.slice(0, 7)}

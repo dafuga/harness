@@ -145,3 +145,27 @@ test('restoring brings the host route back exactly, and repeated installs then l
 	}
 	expect(await repo.read(route)).toBe(hostOwned);
 });
+
+test('uninstalling removes what was generated, keeps the record, and the console installs again', async () => {
+	const removed = await json<{ removed: string[]; kept: string[]; clean: boolean }>([
+		'console',
+		'uninstall',
+		'--host',
+		'.',
+		'--json'
+	]);
+	expect(removed.removed).toContain(server);
+	expect([removed.kept, removed.clean]).toEqual([[], false]);
+	// Under src nothing generated is left and the host's own route is as Git has it.
+	expect(await repo.git(['status', '--porcelain', '--', 'src'])).toBe('');
+	expect(await repo.read(route)).toBe(hostOwned);
+	const record = await repo.json<{ base?: string; changes: Change[] }>('harness.console.json');
+	expect([record.base, record.changes.length]).toEqual([undefined, 3]);
+	expect((await repo.run(['console', 'uninstall', '--host', '.'])).stderr).toContain(
+		'No console is installed'
+	);
+
+	const again = await json<Installed>([...install, '--json']);
+	expect(again.written).toContain(server);
+	expect([again.kept, again.changes]).toEqual([[route], []]);
+});

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { readFile, mkdir } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { mkdir } from 'node:fs/promises';
+import { seededId } from './support/fixtures';
 async function capture(page: import('@playwright/test').Page, name: string, fullPage = true) {
 	if (process.env.TAKE_SCREENSHOT !== 'true') return;
 	const directory = `output/evidence/${process.env.SCREENSHOT_LABEL || 'current'}`;
@@ -19,7 +19,7 @@ async function capture(page: import('@playwright/test').Page, name: string, full
 for (const width of [1440, 390])
 	test(`report details open as separate modals at ${width}px`, async ({ page }) => {
 		await page.setViewportSize({ width, height: 1000 });
-		const id = (await readFile(resolve('/tmp/project-reports-e2e/fixture-id'), 'utf8')).trim();
+		const id = await seededId();
 		await page.goto(`/reports/${id}`);
 		await page.waitForLoadState('networkidle');
 		await capture(page, `details-default-${width}`);
@@ -49,7 +49,7 @@ for (const width of [1440, 390])
 for (const width of [1104, 390])
 	test(`report header keeps audit details on demand at ${width}px`, async ({ page }) => {
 		await page.setViewportSize({ width, height: 998 });
-		const id = (await readFile(resolve('/tmp/project-reports-e2e/fixture-id'), 'utf8')).trim();
+		const id = await seededId();
 		await page.goto(`/reports/${id}`);
 		await page.waitForLoadState('networkidle');
 		await capture(page, `header-default-${width}`);
@@ -82,7 +82,7 @@ test('hub finds reports across projects and filters search', async ({ page }) =>
 });
 test('screen-size controls remain comfortably tappable on mobile', async ({ page }) => {
 	await page.setViewportSize({ width: 390, height: 844 });
-	const id = (await readFile(resolve('/tmp/project-reports-e2e/fixture-id'), 'utf8')).trim();
+	const id = await seededId();
 	await page.goto(`/reports/${id}`);
 	await page.waitForLoadState('networkidle');
 	await page
@@ -96,7 +96,7 @@ test('screen-size controls remain comfortably tappable on mobile', async ({ page
 });
 test('viewer switches a standalone capture to another available screen size', async ({ page }) => {
 	await page.setViewportSize({ width: 1440, height: 1000 });
-	const id = (await readFile(resolve('/tmp/project-reports-e2e/fixture-id'), 'utf8')).trim();
+	const id = await seededId();
 	await page.goto(`/reports/${id}`);
 	await page.waitForLoadState('networkidle');
 	await page.getByRole('button', { name: 'Open Camera controls' }).click();
@@ -113,7 +113,7 @@ test('viewer switches a standalone capture to another available screen size', as
 });
 test('viewer marks uncaptured screen sizes unavailable', async ({ page }) => {
 	await page.setViewportSize({ width: 390, height: 844 });
-	const id = (await readFile(resolve('/tmp/project-reports-e2e/mobile-id'), 'utf8')).trim();
+	const id = await seededId('mobile-id');
 	await page.goto(`/reports/${id}`);
 	await page.waitForLoadState('networkidle');
 	await page.getByRole('button', { name: 'Open Mobile field view' }).click();
@@ -125,7 +125,7 @@ test('viewer marks uncaptured screen sizes unavailable', async ({ page }) => {
 	await expect(dialog.getByRole('button', { name: 'View desktop screenshots' })).toBeDisabled();
 });
 test('viewer size controls omit screenshot totals', async ({ page }) => {
-	const id = (await readFile(resolve('/tmp/project-reports-e2e/fixture-id'), 'utf8')).trim();
+	const id = await seededId();
 	await page.goto(`/reports/${id}`);
 	await page.waitForLoadState('networkidle');
 	await page.getByRole('button', { name: 'Open Settings after' }).first().click();
@@ -140,7 +140,7 @@ test('viewer size controls omit screenshot totals', async ({ page }) => {
 for (const width of [1104, 390])
 	test(`screenshot viewer has no outer modal frame at ${width}px`, async ({ page }) => {
 		await page.setViewportSize({ width, height: 998 });
-		const id = (await readFile(resolve('/tmp/project-reports-e2e/fixture-id'), 'utf8')).trim();
+		const id = await seededId();
 		await page.goto(`/reports/${id}`);
 		await page.waitForLoadState('networkidle');
 		await page.getByRole('button', { name: 'Open Settings after' }).first().click();
@@ -177,7 +177,7 @@ for (const width of [1104, 390])
 for (const width of [1440, 920, 390])
 	test(`report filters, compares and handles keyboard at ${width}px`, async ({ page }) => {
 		await page.setViewportSize({ width, height: 1000 });
-		const id = (await readFile(resolve('/tmp/project-reports-e2e/fixture-id'), 'utf8')).trim();
+		const id = await seededId();
 		await page.goto(`/reports/${id}`);
 		await page.waitForLoadState('networkidle');
 		await capture(page, `report-${width}`);

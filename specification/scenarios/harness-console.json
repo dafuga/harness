@@ -21,7 +21,18 @@
 		"reports.component.harness-harness-selectors",
 		"reports.function.harness-page",
 		"function.console-route",
-		"function.console-canonical"
+		"function.console-canonical",
+		"reports.component.harness-harness-compare-media",
+		"reports.component.harness-harness-header",
+		"reports.function.harness-comparison",
+		"reports.function.harness-impact",
+		"function.side-impact",
+		"reports.function.harness-budget",
+		"reports.function.harness-growth",
+		"function.complexity-coverage",
+		"function.unit-measurements",
+		"function.history-series",
+		"function.budget-findings"
 	],
 	"states": [
 		{
@@ -32,6 +43,11 @@
 		{
 			"id": "compare",
 			"title": "Base and head comparison with affected units",
+			"coverage": "required"
+		},
+		{
+			"id": "aligned",
+			"title": "One state before and after a change, side by side",
 			"coverage": "required"
 		},
 		{
@@ -62,6 +78,21 @@
 		{
 			"id": "growth",
 			"title": "Growth and timings of one component",
+			"coverage": "required"
+		},
+		{
+			"id": "unavailable",
+			"title": "Component whose complexity is not counted: unavailable and not frozen",
+			"coverage": "required"
+		},
+		{
+			"id": "partial",
+			"title": "Component with counted and uncounted code: a partial complexity",
+			"coverage": "required"
+		},
+		{
+			"id": "unavailable-growth",
+			"title": "Growth of a component whose complexity is not counted",
 			"coverage": "required"
 		},
 		{
@@ -103,12 +134,16 @@
 			"states": [
 				"map",
 				"compare",
+				"aligned",
 				"removed",
 				"history",
 				"media",
 				"rejected",
 				"gap",
 				"growth",
+				"unavailable",
+				"partial",
+				"unavailable-growth",
 				"hundreds"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],

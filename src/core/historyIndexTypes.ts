@@ -47,7 +47,9 @@ const growthPoint = z.strictObject({
 	record: text,
 	'source-bytes': z.number().optional(),
 	complexity: z.number().optional(),
-	dependencies: z.number().optional()
+	dependencies: z.number().optional(),
+	/** Per metric: why it has no value here, or what its value leaves out. */
+	notes: z.record(z.string(), text).optional()
 });
 
 /**

@@ -15,7 +15,8 @@
 			"BuildIdentityService",
 			"BuildIdentityService.declared",
 			"BuildIdentityService.changed",
-			"BuildIdentityService.identify"
+			"BuildIdentityService.identify",
+			"BuildIdentityService.stamp"
 		]
 	},
 	"contract": {
@@ -40,6 +41,10 @@
 			{
 				"name": "BuildIdentityService.identify.directory",
 				"type": "string"
+			},
+			{
+				"name": "BuildIdentityService.stamp.directory",
+				"type": "string"
 			}
 		],
 		"outputs": [
@@ -54,13 +59,32 @@
 			{
 				"name": "BuildIdentityService.identify",
 				"type": "Promise<IdentifiedBuild | undefined>"
+			},
+			{
+				"name": "BuildIdentityService.stamp",
+				"type": "Promise<IdentifiedBuild>"
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
 	},
 	"dependencies": [
 		{
 			"unit": "function.build-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.build-stamp",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		}

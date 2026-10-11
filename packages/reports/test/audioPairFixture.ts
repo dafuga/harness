@@ -2,10 +2,11 @@ import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ReportRepository } from '../src/repositories/ReportRepository';
 import { audioFixture } from './audioFixture';
-export async function audioPairFixture(root: string) {
+/** `project` is where the report says it was recorded; a site only shows its own checkouts. */
+export async function audioPairFixture(root: string, project = '/tmp/audio-comparison') {
 	const store = new ReportRepository(root);
 	const run = await store.begin({
-		project: '/tmp/audio-comparison',
+		project,
 		title: 'Audio comparison review',
 		mode: 'feature',
 		environment: 'Synthetic 220 Hz Before and 440 Hz After tones; website playback only'

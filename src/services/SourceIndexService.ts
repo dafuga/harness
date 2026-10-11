@@ -8,6 +8,7 @@ import type {
 } from '../core/sourceTypes';
 import type { UnitsConfig } from '../core/unitsConfig';
 import { classifyPath, type PathClass } from '../utils/classifyPath';
+import { complexityCoverage } from '../utils/complexityCoverage';
 import { resolveImport } from '../utils/resolveImport';
 import { scanComponent } from '../utils/scanComponent';
 import { scanExports } from '../utils/scanExports';
@@ -27,6 +28,10 @@ interface Parsed {
 	blocks: SourceBlock[];
 	exports: ExportedSymbol[];
 	errors: string[];
+	/** False for a file that was not read at all. */
+	read: boolean;
+	/** True when markup carries a script of its own. */
+	scripted: boolean;
 }
 
 const languages: Record<string, SourceLanguage> = {
@@ -70,6 +75,8 @@ export class SourceIndexService {
 			bytes: parsed.bytes,
 			lines: parsed.lines,
 			language,
+			read: parsed.read,
+			decisions: parsed.read ? complexityCoverage(entry.path, parsed.scripted) : 'unsupported',
 			classification: placed.classification,
 			workspace: placed.workspace,
 			identity: placed.identity,
@@ -97,7 +104,16 @@ export class SourceIndexService {
 	}
 }
 
-const empty: Parsed = { bytes: 0, lines: 0, references: [], blocks: [], exports: [], errors: [] };
+const empty: Parsed = {
+	bytes: 0,
+	lines: 0,
+	references: [],
+	blocks: [],
+	exports: [],
+	errors: [],
+	read: false,
+	scripted: false
+};
 
 function parseText(code: string, language: SourceLanguage, path: string): Parsed {
 	const scan = exportsOf(code, language, path);
@@ -107,7 +123,9 @@ function parseText(code: string, language: SourceLanguage, path: string): Parsed
 		references: scanImports(code, language),
 		blocks: sourceBlocks(code, language),
 		exports: scan.symbols,
-		errors: scan.errors
+		errors: scan.errors,
+		read: true,
+		scripted: language === 'other' && /<script\b/i.test(code)
 	};
 }
 

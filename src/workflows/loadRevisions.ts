@@ -84,3 +84,9 @@ export async function openRange(
 	const headTree = range.head ? await open(range.head) : new WorkingTreeAdapter(root);
 	return { root, base, head: await loadSide(root, headTree, indexer) };
 }
+
+/** Reads commits of one repository as sides of a comparison, sharing one source index. */
+export function commitLoader(root: string): (commit: string) => Promise<RevisionSide> {
+	const indexer = new SourceIndexService();
+	return async (commit) => loadSide(root, await CommitTreeAdapter.open(root, commit), indexer);
+}

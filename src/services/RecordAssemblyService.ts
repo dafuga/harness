@@ -1,3 +1,4 @@
+import { sdkPackage } from '../utils/buildStamp';
 import type { ImpactReport } from '../core/impactTypes';
 import type { ComponentManifest } from '../core/unitTypes';
 import type {
@@ -7,14 +8,12 @@ import type {
 	VerificationRecord
 } from '../core/verificationTypes';
 import { BudgetLedgerRepository } from '../repositories/BudgetLedgerRepository';
-import { ExplanationRepository } from '../repositories/ExplanationRepository';
 import type { VerificationStoreRepository } from '../repositories/VerificationStoreRepository';
-import { requiredReasons } from '../utils/requiredReasons';
 import { benchmarkMeasurements, recordComponents, sealRecord } from '../utils/sealRecord';
 import { unitMeasurements } from '../utils/unitMeasurements';
 import type { RevisionSide } from '../workflows/loadRevisions';
 import { BudgetService, type BudgetReport, type BudgetSubject } from './BudgetService';
-import { ExplanationService, type ReasonReport } from './ExplanationService';
+import type { ReasonReport } from './ExplanationService';
 import type { Executed } from './SnapshotRunService';
 import { ledgerGate, registryGate } from './VerificationGates';
 
@@ -30,6 +29,8 @@ export interface AssemblyContext {
 	impact: ImpactReport;
 	profile: VerificationProfile;
 	store: VerificationStoreRepository;
+	/** Whether every change since the base is explained, directly or step by step. */
+	explained: () => Promise<ReasonReport>;
 }
 
 export interface AssemblyInput {
@@ -52,15 +53,15 @@ export class RecordAssemblyService {
 		const { outcomes } = input.executed;
 		const measurements = this.measurements(input.executed);
 		const budgets = await this.budgets(measurements);
-		const reasons = await this.reasons();
+		const reasons = await context.explained();
 		const gates = this.gates(input, { budgets, reasons });
 		const failures = Object.values(gates).flat();
-		const scenarios = [...input.scenarios.map((scenario) => scenario.result), ...input.referenced];
 		return sealRecord({
 			schemaVersion: 1,
 			repository: context.root,
 			source: this.source(),
 			profile: context.profile,
+			tools: [{ id: 'harness', version: sdkPackage.version }, ...input.executed.tools],
 			startedAt: input.startedAt,
 			finishedAt: new Date().toISOString(),
 			status: outcome(failures),
@@ -74,7 +75,7 @@ export class RecordAssemblyService {
 			tests: outcomes
 				.filter((item) => !item.check.id.startsWith('setup-'))
 				.map((item) => item.entry),
-			scenarios: scenarios.sort((left, right) => (left.id < right.id ? -1 : 1)),
+			scenarios: judgedScenarios(input),
 			...(input.executed.builds ? { builds: input.executed.builds } : {}),
 			budgets: { status: outcome(budgets.report.failures), findings: budgets.report.findings },
 			reasons: recordedReasons(reasons),
@@ -156,15 +157,15 @@ export class RecordAssemblyService {
 		});
 		return { report, ledger: ledgerGate(ledger, context.store) };
 	}
-
-	private async reasons(): Promise<ReasonReport> {
-		const { base, head, root } = this.context;
-		const known = await new ExplanationRepository(root).all();
-		return new ExplanationService().report(requiredReasons(base, head), known);
-	}
 }
 
 /** The snapshot must stay the exact commit: nothing changed, nothing removed, nothing added. */
+/** Scenarios that ran and scenarios whose evidence is inherited, in one order. */
+function judgedScenarios(input: AssemblyInput): VerificationRecord['scenarios'] {
+	const all = [...input.scenarios.map((scenario) => scenario.result), ...input.referenced];
+	return all.sort((left, right) => (left.id < right.id ? -1 : 1));
+}
+
 function snapshotFailures(executed: Executed): string[] {
 	const changed = executed.mutated.map((path) => `snapshot mutated during verification: ${path}`);
 	const gained = executed.added.map(

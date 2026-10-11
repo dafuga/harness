@@ -3,14 +3,15 @@ import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ReportRepository } from '../../src/repositories/ReportRepository';
 import { audioFixture } from '../../test/audioFixture';
+import { fixtures } from './support/fixtures';
 test('paired upload validates both originals, attaches phases and protects finalized history', async ({
 	page,
 	request,
 	baseURL
 }) => {
-	const store = new ReportRepository('/tmp/project-reports-e2e');
+	const store = new ReportRepository(fixtures.reports);
 	const run = await store.begin({
-		project: '/tmp/upload-pair',
+		project: fixtures.site('upload-pair'),
 		title: 'Paired upload review',
 		mode: 'feature',
 		environment: 'Synthetic transport fixture'

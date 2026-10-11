@@ -1,3 +1,4 @@
+import { recordCapture } from '../src/utils/recordCapture';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -121,9 +122,11 @@ test('a packed consumer imports typed contracts and calls real adapters without 
 	const manifest = await readFile(resolve('specification/units/function.stable-json.json'), 'utf8');
 	const native = kernelArtifacts().native ?? '';
 	const expected = { ok: true, output: { contract: 'impact-kernel/1' } };
+	const printed: Record<string, unknown> = {};
 	for (const runner of ['bun', 'node']) {
 		const run = await runCommand([runner, 'consumer.ts', manifest, native], project);
 		const result = JSON.parse(run.stdout) as Record<string, unknown>;
+		printed[runner] = result;
 		expect(result, runner).toMatchObject({
 			id: 'function.stable-json',
 			errors: [],
@@ -139,5 +142,17 @@ test('a packed consumer imports typed contracts and calls real adapters without 
 		);
 		expect(run.stdout).not.toContain('Usage: harness');
 	}
+	// Under verification, what the consumer printed is the evidence of the packed state.
+	recordCapture(
+		{
+			evidence: 'consumer-output',
+			kind: 'output',
+			state: 'packed',
+			file: 'consumer-output.json',
+			mediaType: 'application/json',
+			note: 'Printed by the consumer project under each runtime after it installed the packed tarball.'
+		},
+		JSON.stringify(printed, null, 2)
+	);
 	await rm(root, { recursive: true, force: true });
 }, 240_000);

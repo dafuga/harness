@@ -13,7 +13,8 @@
 			"CheckOutcome",
 			"CheckRunService",
 			"CheckRunService.constructor",
-			"CheckRunService.run"
+			"CheckRunService.run",
+			"CheckRunService.version"
 		]
 	},
 	"contract": {
@@ -26,12 +27,20 @@
 			{
 				"name": "CheckRunService.run.check",
 				"type": "PlannedCheck"
+			},
+			{
+				"name": "CheckRunService.version.tool",
+				"type": "{ id: string; command: string }"
 			}
 		],
 		"outputs": [
 			{
 				"name": "CheckRunService.run",
 				"type": "Promise<CheckOutcome>"
+			},
+			{
+				"name": "CheckRunService.version",
+				"type": "Promise<string | undefined>"
 			}
 		],
 		"errors": []

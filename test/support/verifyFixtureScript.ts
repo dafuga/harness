@@ -80,6 +80,13 @@ if (mode === 'audio' && env.FIXTURE_ADD_EARLY) touch(env.FIXTURE_ADD_EARLY, 'add
 if (mode === 'page' && env.FIXTURE_MUTATE) touch(env.FIXTURE_MUTATE, 'mutated by a test\n');
 if (mode === 'page' && env.FIXTURE_REMOVE) rmSync(env.FIXTURE_REMOVE, { force: true });
 if (mode === 'page' && env.FIXTURE_RENAME) renameSync(...env.FIXTURE_RENAME.split(':'));
+if (mode === 'page' && env.FIXTURE_DAEMON) {
+	// A daemon in its own session that outlives this check, which then goes on and exits cleanly.
+	const daemon = spawn(process.execPath, ['-e', 'setInterval(() => {}, 1000)'], { detached: true, stdio: 'ignore' });
+	daemon.unref();
+	writeFileSync(env.FIXTURE_DAEMON, String(daemon.pid));
+	Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 700);
+}
 if (mode === 'page' && env.FIXTURE_HANG) {
 	spawn(process.execPath, ['-e', 'setTimeout(() => require("fs").writeFileSync(process.argv[1], "late"), 1500)', env.FIXTURE_HANG], { stdio: 'ignore' });
 	process.on('SIGTERM', () => {});

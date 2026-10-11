@@ -1,3 +1,4 @@
+import { buildStamp, sdkPackage } from './buildStamp';
 import { consoleCanonical, type IndexedHistory } from './consoleCanonical';
 import type { ConsolePolicy, ConsoleRequest } from './consolePolicy';
 
@@ -18,6 +19,17 @@ export interface ConsoleExportInput {
 	media: ConsoleData['media'];
 }
 
+/** Data that is the same for every request, or a store opened from the admitted request. */
+export type ConsoleSource = ConsoleData | ((event: ConsoleRequest) => ConsoleData);
+
+/** What the host says about itself, reported beside the build and the package that answered. */
+export interface ConsoleHost {
+	/** Revision of the host application this console was built into. */
+	revision?: string;
+	/** The stamp slot of the host's emitted code, as `harness verify stamp` left it. */
+	build?: string;
+}
+
 /** Builds the self-contained report page of one record, or undefined when there is none. */
 export type ConsoleExporter = (input: ConsoleExportInput) => Promise<string | undefined>;
 
@@ -29,13 +41,14 @@ export interface ConsoleAccess {
 	 * or an earlier query address to the page path it stands for. Undefined for a page path.
 	 */
 	entry(event: ConsoleRequest, base: string): Promise<Response | undefined>;
+	/** One stored JSON file, or `build.json`: the build, package and host that answered. */
 	json(event: ConsoleRequest, path: string): Promise<Response>;
 	media(event: ConsoleRequest, name: string): Promise<Response>;
 	/** One record of a commit as a downloadable page; 404 when the host has no exporter. */
 	report(event: ConsoleRequest, commit: string, record: string | null): Promise<Response>;
 }
 
-const jsonPath = /^(index|revisions\/[0-9a-f]{40})\.json$/;
+const jsonPath = /^(index|revisions\/[0-9a-f]{40}|sides\/[0-9a-f]{40})\.json$/;
 const mediaName = /^[0-9a-f]{64}\.[a-z0-9]+$/;
 const closed = { 'cache-control': 'no-store', 'x-content-type-options': 'nosniff' };
 
@@ -45,13 +58,14 @@ function refused(status: number, text: string): Response {
 
 /**
  * The only way console data leaves the server. Every request is put to the policy first, and a
- * policy that throws denies. Paths are matched against the two shapes the index has, so nothing
- * else can be read through these handlers.
+ * policy that throws denies; a store is opened only for a request that was admitted. Paths are
+ * matched against the shapes the index has, so nothing else can be read through these handlers.
  */
 export function consoleAccess(options: {
 	policy: ConsolePolicy;
-	data: ConsoleData;
+	data: ConsoleSource;
 	exporter?: ConsoleExporter;
+	host?: ConsoleHost;
 }): ConsoleAccess {
 	const guard = async (event: ConsoleRequest): Promise<Response | undefined> => {
 		const allowed = await Promise.resolve()
@@ -59,22 +73,37 @@ export function consoleAccess(options: {
 			.catch(() => false);
 		return allowed === true ? undefined : refused(403, 'Forbidden');
 	};
+	const { data: source, exporter } = options;
+	const open = (event: ConsoleRequest) => (typeof source === 'function' ? source(event) : source);
 	return {
 		guard,
 		async entry(event, base) {
-			return (await guard(event)) ?? redirected(options.data, event.url, base);
+			return (await guard(event)) ?? redirected(open(event), event.url, base);
 		},
 		async json(event, path) {
-			return (await guard(event)) ?? stored(options.data, path);
+			const answered = path === 'build.json' ? built(options.host) : undefined;
+			return (await guard(event)) ?? answered ?? stored(open(event), path);
 		},
 		async media(event, name) {
 			const range = event.request.headers.get('range');
-			return (await guard(event)) ?? recorded(options.data, name, range);
+			return (await guard(event)) ?? recorded(open(event), name, range);
 		},
 		async report(event, commit, record) {
-			return (await guard(event)) ?? exported(options, commit, record);
+			return (await guard(event)) ?? exported({ data: open(event), exporter }, commit, record);
 		}
 	};
+}
+
+/** Which emitted build, which package and which host revision answered; they may all differ. */
+function built(host: ConsoleHost | undefined): Response {
+	const body = {
+		buildId: buildStamp(host?.build),
+		sdk: sdkPackage,
+		host: { revision: host?.revision ?? null }
+	};
+	return new Response(JSON.stringify(body), {
+		headers: { ...closed, 'content-type': 'application/json; charset=utf-8' }
+	});
 }
 
 async function stored(data: ConsoleData, path: string): Promise<Response> {

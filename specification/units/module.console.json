@@ -20,6 +20,13 @@
 			"ConsoleData",
 			"ConsoleExporter",
 			"ConsoleExportInput",
+			"ConsoleHost",
+			"ConsoleSource",
+			"consoleStore",
+			"ConsoleBucket",
+			"ConsoleObject",
+			"buildStamp",
+			"sdkPackage",
 			"consoleBundle",
 			"ConsoleModules",
 			"consoleDocument",
@@ -43,6 +50,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.build-stamp",
+			"via": "reexport",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.console-access",
 			"via": "reexport",
@@ -70,6 +82,11 @@
 		},
 		{
 			"unit": "function.console-route",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.console-store",
 			"via": "reexport",
 			"origin": "derived"
 		}

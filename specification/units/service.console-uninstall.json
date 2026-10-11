@@ -1,0 +1,72 @@
+{
+	"schemaVersion": 1,
+	"id": "service.console-uninstall",
+	"kind": "service",
+	"title": "ConsoleUninstallService",
+	"responsibility": "Removes an installed console from a host, puts back what the install replaced, and never removes edited files unasked.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/ConsoleUninstallService.ts"],
+		"symbols": [
+			"ConsoleUninstallOptions",
+			"ConsoleUninstallResult",
+			"ConsoleUninstallService",
+			"ConsoleUninstallService.uninstall"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ConsoleUninstallService.uninstall.options",
+				"type": "ConsoleUninstallOptions"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ConsoleUninstallService.uninstall",
+				"type": "Promise<ConsoleUninstallResult>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.console-manifest",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.console-change",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/ConsoleUninstallService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/ConsoleUninstallService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

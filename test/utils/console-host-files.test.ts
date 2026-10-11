@@ -25,7 +25,7 @@ test('the host gets one server-only module and its endpoints under the base rout
 test('the server module binds the host policy, and no endpoint answers without it', () => {
 	const server = contents('src/lib/server/harness/console.ts');
 	expect(server).toContain("import { adminOnly as policy } from '$lib/server/harnessPolicy';");
-	expect(server).toContain('consoleAccess({ policy, data, exporter: consoleExporter })');
+	expect(server).toContain('consoleAccess({ policy, data, exporter: consoleExporter, host })');
 	expect(server).toContain("import.meta.glob('./data/media/*.ts')");
 	for (const route of [
 		'src/routes/harness/+server.ts',

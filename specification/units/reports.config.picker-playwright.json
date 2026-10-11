@@ -16,7 +16,13 @@
 		"outputs": [],
 		"errors": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "reports.function.e2e-fixtures",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/reports/src/config/pickerPlaywrightConfig.ts",

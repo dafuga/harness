@@ -48,6 +48,7 @@ export const reportGuide: Guide = {
 	],
 	exampleCommands: [
 		'harness report serve',
+		'harness report stop',
 		'harness report begin --project /path/to/project --title Delivery --mode feature --environment local',
 		'harness report finalize --run RUN_ID'
 	]

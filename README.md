@@ -209,7 +209,12 @@ leave a change out. The record names the base it used and the one that was asked
 The record is written whether it passes or fails, to `.cache/harness/verifications`, with its
 evidence and logs. `harness verify check` rejects a record for another commit or tree, changed
 component versions and tampered evidence. `harness.verify.json` configures setup commands, shared
-paths, outputs, runners and time limits.
+paths, outputs, runners and time limits. A test file that needs a command of its own, such as another configuration of its runner, is
+listed under `checks` with its path and command. `tools` names the tools the checks depend on:
+each command runs in the snapshot after setup, the first line it prints is recorded beside the
+version of Harness itself, and a tool that reports nothing fails the verification before any
+check runs. Harness verifies itself with dependencies installed from the committed lock file
+(`bun install --frozen-lockfile` as its first setup command) instead of sharing the checkout's.
 
 The snapshot has to remain the exact commit while checks run and capture. It is compared with
 the commit after setup and after every check: a tracked file that changes or disappears fails,
@@ -223,7 +228,9 @@ the behaviour change, what was tried to simplify it, and what was tried for perf
 with an outcome of `improved`, `not-improved` or `not-applicable`. A reason is bound to the
 content it explains and goes stale when the code changes again. Verification asks for reasons
 from the nearest proven revision; a change made over several commits is explained by the
-reasons of each step.
+reasons of each step. That holds for units too: one that was explained when it was added and
+changed since is explained by both, as long as every step along the first-parent history is
+explained in full. A step without a reason is not covered by the steps around it.
 
 **Budgets.** Source bytes, complexity and dependencies are frozen. Performance may be at most 5%
 worse than the baseline for the same workload, execution target and machine profile. A missing
@@ -239,6 +246,56 @@ records are refused. A reviewer who is not the author establishes or approves th
 reason and the values before and after, in the append-only ledger
 `specification/budgets/ledger.ndjson`. A unit recreated from retired source inherits the retired
 limits, and an identity can be retired but not deleted.
+
+**What is and is not measured.** Decision points are counted in TypeScript, JavaScript and
+Svelte. Stylesheets, markup without a script and data files have none to count, and their zero
+is a count. A unit with code in any other language, such as Rust or Python, has no complete
+complexity: `harness budget measure` and every record give no value and the reason when nothing
+in the unit is counted, and otherwise the points of its counted files with a `partial` note of
+what they leave out. A file Harness does not read has no size either. The dependency count is
+scoped the same way: it is the units a unit depends on plus the distinct outside modules its
+files refer to, as far as references are read, which is in TypeScript, JavaScript, Svelte and
+stylesheets. Code in another language, packages that a manifest such as `Cargo.toml` declares
+and references that could not be resolved are not in the number, and the number carries a
+`partial` note saying so; when nothing of a unit is read and nothing is known there is no
+number, and transitive dependencies are never counted. When a reviewer
+establishes a baseline, a frozen metric without a value is written into the ledger as
+`unmeasured`, with the reason, instead of a number; later records state it as `unavailable` and
+do not judge it, and `harness budget status` lists it. A number that existed at the baseline
+cannot become unavailable, and a metric that becomes measurable needs a reviewed limit before
+it passes. The console shows such a metric as unavailable and not frozen, with the reason, in
+the component panel and in the growth table.
+
+**A check leaves nothing running.** A verification follows the processes each check starts by
+their parent links, also when one puts itself in another group or session, as a daemon does.
+One that is still running after the check has ended, and after two seconds for it to end by
+itself, is stopped, and the check has failed with `left N processes running after it ended`,
+whatever its exit code was. Only processes seen while their parent was alive are followed, a
+look is taken every 200 ms, and a process is signalled only when its id and start time are the
+ones that were seen.
+
+**Browser runs do not share fixtures.** Every run of the reports browser suite seeds a
+directory of its own under the system temporary directory and listens on free ports, so two
+runs at once, from one checkout or from two verification snapshots, cannot read or remove each
+other's history, report store, sites or analytics; the run removes its directory when it ends.
+`HARNESS_E2E_ROOT` names a directory instead, which is then kept and whose running servers may
+be reused; `HARNESS_CONSOLE_E2E_HOME`, `HARNESS_ANALYTICS_HOME` and the port variables still
+place those parts explicitly. A seed script started by hand needs `HARNESS_E2E_ROOT`: there is
+no shared default.
+
+**One build at a time per checkout.** A built report server loads its files as they are asked
+for, and every build of the reports package replaces them under new names. A server started
+from `packages/reports/build` therefore answers a page it has not loaded yet with a server
+error as soon as that directory is rebuilt: a refused console page then reads 500 instead of 403. A browser run does not serve that directory. It copies the finished build once into
+`.cache/reports-e2e/<run>/build`, checks that the copy and the directory still have the
+identity the directory had when the copy began, and starts its servers from the copy; a
+directory that holds no build, or one that another build is changing at that moment, stops the
+run with that reason. The copy is removed with the run. Builds themselves are not isolated:
+`bun run build` and `bun run check` write `dist`, `target` and `packages/reports/build` of the
+checkout, two of them at once both exit 0 and leave whatever was written last, and nothing
+reports the conflict. Run one build or full check per checkout at a time, and use another
+worktree or a verification snapshot for a second: a snapshot is its own directory with its own
+build, so `harness verify run` is not affected by anything built elsewhere.
 
 **The boundary gate.** When a change reaches a unit with a performance budget, directly or
 through a dependency, that unit's benchmark scenario reruns and the whole invocation boundary is
@@ -309,8 +366,12 @@ performance gate; CI never establishes or approves one.
 ```sh
 harness console install --host <dir> --policy <module> [--data <index>]   # embed the console in a SvelteKit app
 harness console install ... --update | --keep                             # decide about files that hold other content
+harness console install ... --bucket <binding> [--prefix <path>]          # read history from a private bucket, bundle nothing
+harness console objects --data <index> [--prefix <path>] --json           # what that bucket must hold, as key and file pairs
 harness console restore <path> --host <dir>                               # put back what an install replaced
+harness console uninstall --host <dir> [--update | --keep]                # remove the console, put back what it replaced
 harness verify identity <directory>                                       # identity of a compiled build
+harness verify stamp <directory>                                          # write that identity into a build that must carry it
 ```
 
 **The console.** `/harness` shows the repository's own history as `harness history build`
@@ -431,6 +492,36 @@ computed in the verification snapshot from the path and content of every compile
 capture counts only if the server that produced it reported exactly that identity. A server
 reports the identity of the files it was started from, read once at start. An old bundle
 relabelled with the current revision is rejected.
+
+A server that cannot read its own files, such as a Worker, carries its identity instead. The
+installed console module holds an empty stamp slot; after the last build step
+`harness verify stamp <directory>` writes the identity of the emitted files into it, and the
+slot does not count towards that identity, so `harness verify identity` returns the same value
+before and after. The console then answers `<base>/data/build.json`, behind the policy like
+everything else, with the stamp, the package name and version, and the host revision its build
+was given in `VITE_HARNESS_HOST_REVISION`. The three are separate facts and may differ. For a
+SvelteKit host stamp `.svelte-kit`: the Pages directory inside it holds only the client files
+and an entry that imports the server output beside it. Files changed after stamping are
+reported as carrying the stamp of other files.
+
+**History in a private bucket.** A history bundled into the server counts against the size a
+Worker script may have, 3 MiB compressed on the free plan and 10 MiB on a paid one, and the
+installer reports the compressed size of what it bundles. Harness's own index of 65 commits is
+2.3 MiB compressed before any recorded screenshot; with the media of twelve verification
+records it is 64 MiB. `--bucket <binding>` keeps the history out of the host instead: the
+generated module opens the bucket bound under that name from the admitted request and bundles
+nothing, and the deployed Worker stays near 0.3 MiB compressed. Upload the index directory
+with its paths unchanged; `harness console objects --data <index> --prefix <path> --json`
+prints the list in the form `wrangler r2 bulk put <bucket> --filename <list>` takes. A binding
+has no public address, so the guarded handlers are the only way to the objects. An export reads
+one object per media file of the record, which counts against the subrequests a Worker may make.
+
+**Removing the console.** `harness console uninstall --host <dir>` deletes the files an
+install wrote and nobody changed, with the directories they leave empty, and puts back what
+the install replaced. A generated file the host edited stops it until you choose `--update`,
+which removes it after saving and recording its content, or `--keep`. When nothing of the host
+was ever changed the record file is removed too; otherwise it stays as the record. Installing
+again writes the same files, and installing over an unchanged install changes nothing.
 
 ## Jev Clean Code review
 
@@ -582,6 +673,11 @@ not a broad accuracy guarantee.
 Harness includes the existing Project Reports website and CLI. Run `harness report serve`
 for the report gallery and open `/analytics` for loop usage, model attribution, Jev first-try rates, filters and live CPU usage. The installed package includes the
 server and portable viewer: serving and finalization do not rebuild source code.
+`harness report serve` leaves its server running for you, and the report store records which
+process it started on which port. `harness report stop [--port <port>]` ends exactly that
+process and waits until it is gone: a process is signalled only when its id and start time are
+the recorded ones, never because it listens on a port, so a server of another store, or one
+this store did not start, is left alone.
 Existing `PROJECT_REPORTS_HOME` manifests and media remain compatible.
 
 Project Reports is maintained in this repository at `packages/reports`, a Bun workspace.

@@ -18,6 +18,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.function.e2e-fixtures",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.repository.report",
 			"via": "import",
 			"origin": "derived"

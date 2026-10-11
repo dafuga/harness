@@ -32,7 +32,7 @@ function identity(bytes: Buffer): FileIdentity {
  */
 export class ConsoleChangeService {
 	constructor(
-		private readonly host: string,
+		readonly host: string,
 		private readonly manifest: ConsoleManifest
 	) {}
 

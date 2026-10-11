@@ -14,18 +14,27 @@ export function unitGrowth(records: VerificationRecord[]): Growth {
 	const units = new Map<string, Map<string, Point>>();
 	for (const record of records) {
 		for (const item of record.measurements) {
-			if (item.value === null || !(frozenMetrics as readonly string[]).includes(item.metric))
-				continue;
+			if (!(frozenMetrics as readonly string[]).includes(item.metric)) continue;
 			const points = units.get(item.unit) ?? new Map<string, Point>();
 			const commit = item.testedRevision;
 			const point = points.get(commit) ?? { commit, record: record.id };
-			points.set(commit, { ...point, [item.metric]: item.value });
+			points.set(commit, measuredPoint(point, item));
 			units.set(item.unit, points);
 		}
 	}
 	return [...units]
 		.sort(([left], [right]) => (left < right ? -1 : 1))
 		.map(([id, points]) => ({ id, growth: [...points.values()] }));
+}
+
+/**
+ * One metric of a point: its value when there is one, and a note when it could not be measured
+ * or leaves something out. A metric without a value is absent, never zero.
+ */
+function measuredPoint(point: Point, item: Measurement): Point {
+	const note = item.value === null ? item.unavailable : item.partial;
+	const notes = note ? { notes: { ...point.notes, [item.metric]: note } } : {};
+	return { ...point, ...(item.value === null ? {} : { [item.metric]: item.value }), ...notes };
 }
 
 /** What makes two timings one line: where and how they were taken, and of exactly what. */

@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/buildIdentity.ts"],
-		"symbols": ["BuiltFile", "buildIdentity"]
+		"symbols": ["BuiltFile", "buildIdentity", "builtFileHash"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -16,17 +16,31 @@
 			{
 				"name": "buildIdentity.files",
 				"type": "BuiltFile[]"
+			},
+			{
+				"name": "builtFileHash.bytes",
+				"type": "Buffer"
 			}
 		],
 		"outputs": [
 			{
 				"name": "buildIdentity",
 				"type": "string"
+			},
+			{
+				"name": "builtFileHash",
+				"type": "{ sha256: string; stamps: string[]; slots: number }"
 			}
 		],
 		"errors": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.build-stamp",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/utils/buildIdentity.ts",

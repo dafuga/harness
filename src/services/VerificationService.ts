@@ -11,6 +11,7 @@ import { scenarioCoverage } from '../utils/scenarioCoverage';
 import { referencedScenario } from '../utils/sealRecord';
 import { verifyPlan } from '../utils/verifyPlan';
 import type { RevisionSide } from '../workflows/loadRevisions';
+import type { ReasonReport } from './ExplanationService';
 import { RecordAssemblyService } from './RecordAssemblyService';
 import { SnapshotRunService, type Executed } from './SnapshotRunService';
 
@@ -30,6 +31,8 @@ export interface VerifyContext {
 	config: VerifyConfig;
 	testTimeoutMs?: number;
 	env: Record<string, string | undefined>;
+	/** Whether every change since the base is explained, directly or step by step. */
+	explained: () => Promise<ReasonReport>;
 }
 
 /** Verifies one exact commit in a clean snapshot and writes the record, whatever the outcome. */

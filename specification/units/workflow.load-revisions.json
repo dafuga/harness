@@ -8,7 +8,14 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/workflows/loadRevisions.ts"],
-		"symbols": ["RevisionSide", "RevisionRange", "loadSide", "emptySide", "openRange"]
+		"symbols": [
+			"RevisionSide",
+			"RevisionRange",
+			"loadSide",
+			"emptySide",
+			"openRange",
+			"commitLoader"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -28,6 +35,10 @@
 			{
 				"name": "openRange.range",
 				"type": "RevisionRange"
+			},
+			{
+				"name": "commitLoader.root",
+				"type": "string"
 			}
 		],
 		"outputs": [
@@ -42,6 +53,10 @@
 			{
 				"name": "openRange",
 				"type": "Promise<{ root: string; base: RevisionSide; head: RevisionSide }>"
+			},
+			{
+				"name": "commitLoader",
+				"type": "(commit: string)"
 			}
 		],
 		"errors": [

@@ -34,17 +34,25 @@ async function signedRecord(input: SignedInput, root: string): Promise<Verificat
 	return record;
 }
 
+/**
+ * What a record says about the frozen metrics of a unit: a number where it measured one, and the
+ * stated reason where it could not. A metric the record says nothing about freezes nothing.
+ */
+function frozenMetricsOf(record: VerificationRecord, unit: ComponentManifest) {
+	const mine = record.measurements.filter((item) => item.unit === unit.id);
+	const metrics: Record<string, number> = {};
+	const unmeasured: Record<string, string> = {};
+	for (const metric of frozenMetrics) {
+		const found = mine.find((item) => item.metric === metric);
+		if (typeof found?.value === 'number') metrics[metric] = found.value;
+		else if (found?.unavailable) unmeasured[metric] = found.unavailable;
+		else return fail(`Record ${record.id.slice(0, 12)} did not measure ${unit.id}.`);
+	}
+	return { metrics, ...(Object.keys(unmeasured).length > 0 ? { unmeasured } : {}) };
+}
+
 function measuredLimits(record: VerificationRecord, unit: ComponentManifest) {
 	const own = record.measurements.filter((item) => item.unit === unit.id && item.value !== null);
-	const metrics = Object.fromEntries(
-		frozenMetrics.flatMap((metric) => {
-			const value = own.find((item) => item.metric === metric)?.value;
-			return typeof value === 'number' ? [[metric, value]] : [];
-		})
-	);
-	if (Object.keys(metrics).length < frozenMetrics.length) {
-		return fail(`Record ${record.id.slice(0, 12)} did not measure ${unit.id}.`);
-	}
 	const performance = unit.budgets.performance.flatMap((budget) => {
 		const target = budget.target ?? unit.runtime.kind;
 		const found = own.find(
@@ -56,7 +64,7 @@ function measuredLimits(record: VerificationRecord, unit: ComponentManifest) {
 		);
 		return found ? [frozen(found, { record, unit: unit.id, target })] : [];
 	});
-	return { metrics, performance };
+	return { ...frozenMetricsOf(record, unit), performance };
 }
 
 /** A value becomes a baseline only together with the complete definition of what it measured. */
@@ -135,15 +143,18 @@ export async function budgetApprove(input: SignedInput): Promise<BudgetEvent[]> 
 			loaded.manifests.find((manifest) => manifest.id === id) ?? fail(`Unknown unit "${id}".`);
 		const existing = loaded.baselines.get(id);
 		if (!existing) return fail(`${id} has no baseline; use harness budget establish.`);
-		const { metrics, performance } = measuredLimits(record, unit);
+		const { metrics, unmeasured, performance } = measuredLimits(record, unit);
 		const before = Object.fromEntries(
-			frozenMetrics.map((metric) => [metric, existing.metrics[metric]])
+			frozenMetrics.flatMap((metric) =>
+				metric in existing.metrics ? [[metric, existing.metrics[metric]]] : []
+			)
 		);
 		return {
 			type: 'approval',
 			unit: id,
 			before,
 			after: metrics,
+			...(unmeasured ? { unmeasured } : {}),
 			performance,
 			...signature(input, record)
 		};

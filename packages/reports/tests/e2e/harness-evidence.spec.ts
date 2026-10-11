@@ -1,6 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
 import { readFileSync, rmSync } from 'node:fs';
-import { join } from 'node:path';
 import { scenarioManifestSchema } from '../../../../src/core/unitTypes';
 import { gatherCaptures } from '../../../../src/utils/gatherCaptures';
 import { scenarioCoverage } from '../../../../src/utils/scenarioCoverage';
@@ -15,6 +14,7 @@ import {
 	type Viewport
 } from './support/harnessCapture';
 import { revision as recorded, seeded } from './support/harnessHistory';
+import { fixtures } from './support/fixtures';
 
 const port = (name: string, fallback: number) => Number(process.env[name] || fallback);
 const built = `http://127.0.0.1:${port('HARNESS_CONSOLE_E2E_EXPOSED_PORT', 5592)}`;
@@ -33,6 +33,11 @@ const record = (page: Page, id = '') =>
 		.getByRole('list', { name: 'Verification records' })
 		.getByRole('button', { name: `Record ${id.slice(0, 12)}` });
 const screenshots = (page: Page) => page.locator('.evidence-card:not(.audio-card)');
+const kept = '/harness/branch/feature/kept%231';
+const budgets = (page: Page) =>
+	page
+		.getByRole('region', { name: 'Component details' })
+		.getByRole('group', { name: 'Budgets and measurements' });
 
 /** The map over the generated registry of several hundred units, one of them chosen. */
 async function hundreds(page: Page): Promise<void> {
@@ -53,6 +58,16 @@ const states: Record<string, (page: Page) => Promise<void>> = {
 		await page.goto(`/harness?view=compare&base=${commits.baseline}&commit=${commits.shout}`);
 		const impact = page.getByRole('region', { name: 'Impact' });
 		await expect(impact.getByRole('list', { name: 'Directly changed' })).toContainText('slugify');
+	},
+	// One state as it was recorded before and after a change, each side with its own source.
+	async aligned(page) {
+		await page.goto(`/harness?view=compare&base=${commits.baseline}&commit=${commits.grown}`);
+		const sides = page.getByRole('region', { name: 'Recorded states, before and after' });
+		await sides.getByRole('combobox', { name: 'Scenario' }).selectOption('titles-page');
+		await sides.getByRole('combobox', { name: 'State' }).selectOption('empty');
+		await sides.getByRole('combobox', { name: 'Viewport' }).selectOption('desktop');
+		await expect(sides.getByRole('list', { name: 'Aligned states' })).toContainText('before:');
+		await sides.scrollIntoViewIfNeeded();
 	},
 	async removed(page) {
 		await page.goto(`/harness?view=compare&base=${commits.established}&commit=${commits.removed}`);
@@ -88,6 +103,23 @@ const states: Record<string, (page: Page) => Promise<void>> = {
 	async growth(page) {
 		await page.goto('/harness?view=growth&unit=service.title');
 		await expect(page.getByRole('region', { name: 'Timings of service.title' })).toBeVisible();
+	},
+	// A unit whose complexity nobody counted: unavailable and not frozen, with the reason.
+	async unavailable(page) {
+		await page.goto(`${kept}/commit/${commits.measured}/map/unit/kernel.counter`);
+		await expect(budgets(page)).toContainText('complexity: unavailable: Decision points are not');
+		await budgets(page).scrollIntoViewIfNeeded();
+	},
+	// A unit with counted and uncounted code: the counted points, and what they leave out.
+	async partial(page) {
+		await page.goto(`${kept}/commit/${commits.measured}/map/unit/kernel.mixed`);
+		await expect(budgets(page)).toContainText('Partial: Counted in 1 of 2 code files.');
+		await budgets(page).scrollIntoViewIfNeeded();
+	},
+	async 'unavailable-growth'(page) {
+		await page.goto(`${kept}/commit/${commits.measured}/growth/unit/kernel.counter`);
+		const growth = page.getByRole('table', { name: 'Growth of kernel.counter' });
+		await expect(growth).toContainText('Decision points are not counted in Rust');
 	},
 	hundreds
 };
@@ -128,7 +160,8 @@ test('what was captured satisfies the scenario contract, and another build would
 	expect(gathered).toHaveLength(Object.keys(states).length * viewports.length + 1);
 	// The server reports the digest of the very files it was started from.
 	const served = await servedBuild(page);
-	expect(served).toEqual({ buildId: reportBuildIdentity(join(process.cwd(), 'build')), revision });
+	// The server reports the digest of the very files it was started from: this run's own copy.
+	expect(served).toEqual({ buildId: reportBuildIdentity(fixtures.build), revision });
 	const judge = (compiled: string) =>
 		scenarioCoverage({
 			scenario,

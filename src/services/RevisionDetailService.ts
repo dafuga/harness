@@ -10,6 +10,7 @@ import { revisionRegistry, type RevisionRegistry } from '../utils/revisionRegist
 import type { AttachedRecord } from './AttachedRecordService';
 import type { HistoryMediaService } from './HistoryMediaService';
 import type { CommitStatus, HistoryStatusService } from './HistoryStatusService';
+import type { StoredSide } from '../utils/sideImpact';
 import { SourceImpactService, type SourceImpact } from './SourceImpactService';
 
 export interface RevisionDetail {
@@ -32,12 +33,19 @@ export interface RevisionDetail {
 	 * It exists whether or not anything was verified; null when a tree could not be read.
 	 */
 	sourceImpact: SourceImpact | null;
+	/**
+	 * Where the stored side of this revision's source tree is, relative to the index: what any
+	 * two revisions are compared from. Null when the tree could not be read.
+	 */
+	side: string | null;
 	records: RecordView[];
 	explanations: Explanation[];
 }
 
 export interface BuiltRevision {
 	detail: RevisionDetail;
+	/** The stored side to write at `detail.side`; revisions with one tree share one. */
+	side?: StoredSide;
 	status: CommitStatus;
 	/** Attached records of this commit that are intact, whatever their outcome. */
 	sound: VerificationRecord[];
@@ -76,16 +84,19 @@ export class RevisionDetailService {
 			);
 			if (item.valid) sound.push(loaded.record);
 		}
+		const side = await this.source.stored(commit);
+		const tree = await this.git.attempt(['rev-parse', '--verify', '--quiet', `${commit}^{tree}`]);
 		const detail: RevisionDetail = {
 			schemaVersion: 1,
 			commit,
 			registry: await this.registry(commit),
 			comparison: comparison(sound),
 			sourceImpact: (await this.source.of(commit)) ?? null,
+			side: side && tree ? `sides/${tree}.json` : null,
 			records,
 			explanations: await this.explanations(commit, sound)
 		};
-		return { detail, status, sound };
+		return { detail, status, sound, ...(side ? { side } : {}) };
 	}
 
 	/** Every capture is looked up in the record that produced it, which may be an earlier one. */

@@ -5,6 +5,12 @@ import { createHash } from 'node:crypto';
 import { createConnection } from 'node:net';
 import { reportRuntimeRoot } from '../utils/reportRuntimeRoot';
 import { ReportRepository } from '../repositories/ReportRepository';
+import {
+	processStarted,
+	reportServerRecord,
+	stopReportServer,
+	type StoppedServer
+} from '../utils/reportServerRecord';
 const appRoot = reportRuntimeRoot();
 export class ReportServerService {
 	constructor(private readonly repository = new ReportRepository()) {}
@@ -12,13 +18,32 @@ export class ReportServerService {
 		const identity = createHash('sha256').update(this.repository.root).digest('hex');
 		for (let port = preferred; port < preferred + 30; port++) {
 			const existing = await this.health(port);
-			if (this.matches(existing, identity)) return { port, reused: true, url: this.url(port) };
+			if (this.matches(existing, identity)) return this.reused(port);
 			if (existing || (await this.occupied(port))) continue;
-			this.start(port);
-			if (await this.waitReady(port, identity)) return { port, reused: false, url: this.url(port) };
-			throw new Error(`Report server failed to start on port ${port}`);
+			return this.started(port, identity);
 		}
 		throw new Error('No available loopback port from preferred range');
+	}
+	private async reused(port: number) {
+		const known = await reportServerRecord(this.repository.root, port).read();
+		return { port, reused: true, url: this.url(port), pid: known?.pid };
+	}
+	/** Starts a server and has the store remember it, so that `report stop` ends exactly it. */
+	private async started(port: number, identity: string) {
+		const pid = this.start(port);
+		if (!(await this.waitReady(port, identity)))
+			throw new Error(`Report server failed to start on port ${port}`);
+		const started = (await processStarted(pid)) ?? '';
+		const record = { pid, port, started, buildId: this.build() };
+		await reportServerRecord(this.repository.root, port).write(record);
+		return { port, reused: false, url: this.url(port), pid };
+	}
+	/** Ends the server this store started on the port; a server of anything else is left alone. */
+	stop(port = 5588): Promise<StoppedServer> {
+		return stopReportServer(this.repository.root, port);
+	}
+	private build(): string {
+		return reportBuildIdentity(resolve(appRoot, 'build'));
 	}
 	private matches(
 		health: { app?: string; root?: string; buildId?: string } | null,
@@ -27,10 +52,10 @@ export class ReportServerService {
 		return (
 			health?.app === 'project-reports' &&
 			health.root === identity &&
-			health.buildId === reportBuildIdentity(resolve(appRoot, 'build'))
+			health.buildId === this.build()
 		);
 	}
-	private start(port: number) {
+	private start(port: number): number {
 		const child = spawn(process.execPath, [resolve(appRoot, 'build', 'index.js')], {
 			cwd: appRoot,
 			env: {
@@ -48,6 +73,7 @@ export class ReportServerService {
 			stdio: 'ignore'
 		});
 		child.unref();
+		return child.pid ?? -1;
 	}
 	private async waitReady(port: number, identity: string) {
 		for (let attempt = 0; attempt < 40; attempt++) {

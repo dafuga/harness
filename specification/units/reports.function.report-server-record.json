@@ -1,0 +1,76 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.report-server-record",
+	"kind": "function",
+	"title": "reportServerRecord",
+	"responsibility": "Keeps the record a report store has of the server it started on a port, and ends exactly that process, known by its id and start time.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/reportServerRecord.ts"],
+		"symbols": [
+			"ServerRecord",
+			"StoppedServer",
+			"processStarted",
+			"reportServerRecord",
+			"stopReportServer"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "processStarted.pid",
+				"type": "number"
+			},
+			{
+				"name": "reportServerRecord.root",
+				"type": "string"
+			},
+			{
+				"name": "reportServerRecord.port",
+				"type": "number"
+			},
+			{
+				"name": "stopReportServer.root",
+				"type": "string"
+			},
+			{
+				"name": "stopReportServer.port",
+				"type": "number"
+			}
+		],
+		"outputs": [
+			{
+				"name": "processStarted",
+				"type": "Promise<string | undefined>"
+			},
+			{
+				"name": "reportServerRecord",
+				"type": "unknown"
+			},
+			{
+				"name": "stopReportServer",
+				"type": "Promise<StoppedServer>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/reportServerRecord.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/reportServerRecord.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

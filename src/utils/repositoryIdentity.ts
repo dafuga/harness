@@ -94,8 +94,22 @@ function realDirectory(directory: string): string | undefined {
  */
 export function sameSite(site: string, directory: string): boolean {
 	if (repositoryIdentity(site) !== null) return sameRepository(site, directory);
-	const own = realDirectory(site);
-	// Inside a repository whose origin is unclear nothing can be attributed, not even by path.
-	const plain = own !== undefined && git(own, ['rev-parse', '--git-dir']) === undefined;
-	return plain && realDirectory(directory) === own;
+	const own = plainSite(site);
+	return own !== null && realDirectory(directory) === own;
+}
+
+const plain = new Map<string, string | null>();
+
+/**
+ * The real directory of a site that is in no repository, decided once: a filter asks this for
+ * every recorded event. Inside a repository whose origin is unclear nothing can be attributed,
+ * not even by path, so that is null as well.
+ */
+function plainSite(site: string): string | null {
+	if (!plain.has(site)) {
+		const own = realDirectory(site);
+		const outside = own !== undefined && git(own, ['rev-parse', '--git-dir']) === undefined;
+		plain.set(site, outside ? own : null);
+	}
+	return plain.get(site) ?? null;
 }

@@ -7,6 +7,7 @@ import { ReportRepository } from '../../src/repositories/ReportRepository';
 import { ReportExportService } from '../../src/services/ReportExportService';
 import { reportProcess } from '../../src/utils/reportProcess';
 import { reportPdf } from '../../src/utils/reportPdf';
+import { fixtures } from './support/fixtures';
 const pixel =
 	'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=';
 test('extracted ZIP gallery works offline and opens its registered image', async ({ page }) => {
@@ -16,7 +17,7 @@ test('extracted ZIP gallery works offline and opens its registered image', async
 		await writeFile(image, Buffer.from(pixel, 'base64'));
 		const store = new ReportRepository(root);
 		const run = await store.begin({
-			project: '/tmp/offline-project',
+			project: fixtures.site('offline-project'),
 			title: 'Offline gallery proof',
 			mode: 'feature',
 			environment: 'local test',

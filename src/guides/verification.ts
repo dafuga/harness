@@ -53,6 +53,9 @@ const verifyGuide: Guide = {
 			'nothing, and everything since then is checked. --base, an empty commit or an ' +
 			'unverified parent therefore cannot leave a change out.',
 		'Every check runs in its own process group under a hard limit and is killed with its children.',
+		'A process a check started that is still running after the check ended, also one that left ' +
+			'the group or session as a daemon does, is stopped and fails the check. Processes are ' +
+			'followed by their parent links every 200 ms and signalled only by id and start time.',
 		'Affected scenarios are captured afresh for each commit, even when the bytes are identical.',
 		'An unaffected scenario keeps the evidence of the commit that last tested it, and says so; ' +
 			'evidence is inherited only from a record that passed.',
@@ -64,7 +67,8 @@ const verifyGuide: Guide = {
 			'slash names a directory. An output may not cover a tracked file, so source cannot be ' +
 			'declared away.',
 		'Records are drafts in .cache/harness/verifications until they are stored as Git evidence.',
-		'harness.verify.json configures setup commands, shared paths, outputs, runners and time limits.'
+		'harness.verify.json configures setup commands, shared paths, outputs, runners and time limits; a test file that needs a command of its own, such as another configuration of its runner, is listed under checks.',
+		'A compiled build whose server cannot read its own files, such as a Worker, is stamped after its last build step with harness verify stamp; the server reports the stamp and harness verify identity confirms it belongs to exactly those files.'
 	],
 	antiPatterns: [
 		'Do not treat a run on a dirty working tree as verification.',
@@ -92,6 +96,9 @@ const explainGuide: Guide = {
 		'A reason is bound to the exact content it explains and goes stale when the code changes again.',
 		'Verification asks for reasons from the nearest proven revision to the commit. A change made ' +
 			'in several commits is explained by the reasons of each step, in order.',
+		'A range is explained when every change has a reason for the range as a whole, or when each ' +
+			'step along its first-parent history is explained in full. A step without a reason is not ' +
+			'covered by the steps around it.',
 		'Added and removed units need a unit-wide reason; so do files the index cannot split.',
 		'A performance rationale is required for every changed unit, including validation, ' +
 			'serialization and adapters at an invocation boundary, even when nothing improved.',
@@ -125,6 +132,21 @@ const budgetGuide: Guide = {
 			'target and machine profile. Noise is answered with more comparable samples, never ' +
 			'with a wider tolerance.',
 		'A missing measurement, a missing baseline or a baseline from another profile never passes.',
+		'Decision points are counted in TypeScript, JavaScript and Svelte. Stylesheets, markup ' +
+			'without a script and data files have none to count. A unit with code in any other ' +
+			'language has no complete complexity: no value at all when nothing in it is counted, ' +
+			'otherwise the points of its counted files with a note of what they leave out. A file ' +
+			'that is not read has no size either. Zero is only ever a count.',
+		'Dependencies are the units a unit depends on plus the distinct outside modules its files ' +
+			'refer to, as far as references are read: in TypeScript, JavaScript, Svelte and ' +
+			'stylesheets. Code in another language, packages a manifest such as Cargo.toml declares ' +
+			'and references that could not be resolved are not in the number, and the number says so; ' +
+			'when nothing of a unit is read and nothing is known there is no number. Transitive ' +
+			'dependencies are never counted.',
+		'A frozen metric that cannot be measured is written into the baseline as such, with the ' +
+			'reason, when a reviewer establishes it; every later record states it and does not judge ' +
+			'it. A number that existed at the baseline cannot become unavailable, and a metric that ' +
+			'becomes measurable needs a reviewed limit before it passes.',
 		'A workload name is only a label. A baseline freezes the unit of measure, the method and a ' +
 			'comparison context: the hash of the complete request, the measured boundary, the ' +
 			'protocol and the sampling. A measurement is compared only when all of them are ' +

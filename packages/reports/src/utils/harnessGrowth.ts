@@ -8,6 +8,8 @@ export interface GrowthRow {
 	subject: string;
 	committedAt: string;
 	values: Record<GrowthMetric, number | undefined>;
+	/** Why a metric has no value at this commit, or what its value leaves out. */
+	notes: Partial<Record<GrowthMetric, string>>;
 	/** Change since the previous measured point; undefined for the first point or no value. */
 	deltas: Record<GrowthMetric, number | undefined>;
 	changed: boolean;
@@ -41,6 +43,7 @@ export function harnessGrowth(index: HarnessIndex, unit: string): GrowthRow[] {
 			subject: revision?.subject ?? '',
 			committedAt: revision?.committedAt ?? '',
 			values,
+			notes: point.notes ?? {},
 			deltas,
 			changed: growthMetrics.some((metric) => Boolean(deltas[metric]))
 		});

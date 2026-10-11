@@ -37,6 +37,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.side-impact",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.model.harness-types",
 			"via": "import",
 			"origin": "derived"

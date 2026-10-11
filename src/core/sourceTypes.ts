@@ -1,4 +1,5 @@
 import type { ContractItem } from './unitTypes';
+import type { ComplexityCoverage } from '../utils/complexityCoverage';
 import type { SourceBlock } from '../utils/sourceBlocks';
 import type { ReferenceVia, SourceLanguage } from '../utils/scanImports';
 
@@ -38,6 +39,10 @@ export interface SourceFile {
 	workspace: string;
 	/** Conventional unit identity of a source file, before registry ownership is applied. */
 	identity?: { id: string; kind: string; name: string };
+	/** False when the file was not read: nothing is known about its content, not even its size. */
+	read: boolean;
+	/** Whether its decision points are counted, absent by nature, or not counted at all. */
+	decisions: ComplexityCoverage;
 	references: ResolvedReference[];
 	blocks: SourceBlock[];
 	exports: ExportedSymbol[];

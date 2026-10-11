@@ -19,6 +19,8 @@ export interface Executed {
 	/** Files that appeared outside the declared outputs. */
 	added: string[];
 	setupFailures: string[];
+	/** Each declared tool with the version it reported in the snapshot. */
+	tools: Array<{ id: string; version: string }>;
 	/** Declared artifacts that exist in the snapshot after the run, by path. */
 	artifacts: BuiltArtifacts;
 	/** Identity of each declared build as setup compiled it; undefined when none is declared. */
@@ -51,6 +53,7 @@ export class SnapshotRunService {
 			const runner = new CheckRunService({ ...context, snapshot: snapshot.directory });
 			const misdeclared = snapshot.misdeclared().map(describeOutput);
 			const setupFailures = misdeclared.length > 0 ? misdeclared : await this.setup(runner);
+			const tools = setupFailures.length > 0 ? [] : await this.tools(runner, setupFailures);
 			const compiled = await this.identities.declared(snapshot.directory, config.builds);
 			await observe();
 			const outcomes: CheckOutcome[] = [];
@@ -63,10 +66,25 @@ export class SnapshotRunService {
 			const moved = await this.identities.changed(snapshot.directory, compiled.found);
 			const builds = config.builds.length > 0 ? { builds: compiled.found } : {};
 			const buildFailures = [...compiled.failures, ...moved];
-			return { outcomes, mutated, added, setupFailures, artifacts, ...builds, buildFailures };
+			const observed = { outcomes, mutated, added, setupFailures, tools, artifacts };
+			return { ...observed, ...builds, buildFailures };
 		} finally {
 			await snapshot.remove();
 		}
+	}
+
+	/** A declared tool that cannot say what it is counts as failed setup: nothing runs after it. */
+	private async tools(
+		runner: CheckRunService,
+		failures: string[]
+	): Promise<Array<{ id: string; version: string }>> {
+		const found: Array<{ id: string; version: string }> = [];
+		for (const tool of this.run.config.tools) {
+			const version = await runner.version(tool);
+			if (version) found.push({ id: tool.id, version });
+			else failures.push(`tool ${tool.id} did not report a version: ${tool.command}`);
+		}
+		return failures.length > 0 ? [] : found;
 	}
 
 	/** Setup runs under the same isolation and limits as any check. */

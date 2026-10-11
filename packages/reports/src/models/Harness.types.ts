@@ -43,6 +43,8 @@ export interface HarnessGrowthPoint {
 	'source-bytes'?: number;
 	complexity?: number;
 	dependencies?: number;
+	/** Per metric: why it has no value here, or what its value leaves out. */
+	notes?: Record<string, string>;
 }
 export interface HarnessLegacyMedia {
 	id: string;
@@ -151,6 +153,8 @@ export interface HarnessRecord {
 		unitOfMeasure: string;
 		value: number | null;
 		unavailable?: string;
+		/** What the value leaves out, when only part of the unit could be measured. */
+		partial?: string;
 		workload: string | null;
 		profile: string | null;
 		target?: string;
@@ -169,6 +173,8 @@ export interface HarnessRecord {
 export interface HarnessExplanation {
 	unit: string;
 	symbol: string;
+	/** The file the explained change is in; reasons of one unit may differ in this alone. */
+	file?: string;
 	change: string;
 	behavior: string;
 	simplification: { attempt: string; outcome: string };
@@ -199,6 +205,8 @@ export interface HarnessRevision {
 		uncertain: Array<{ node: string; reason: string; detail: string }>;
 		changed: Array<{ path: string; status: string }>;
 	} | null;
+	/** Path of the stored side of this revision's source tree; null when it could not be read. */
+	side?: string | null;
 	records: HarnessRecord[];
 	explanations: HarnessExplanation[];
 }

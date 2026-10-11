@@ -13,12 +13,14 @@ import {
 } from '../repositories/VerificationStoreRepository';
 import { BuildIdentityService, type IdentifiedBuild } from '../services/BuildIdentityService';
 import { EvidenceRestoreService } from '../services/EvidenceRestoreService';
+import { ExplanationRepository } from '../repositories/ExplanationRepository';
 import { ImpactService } from '../services/ImpactService';
+import { ReasonPathService } from '../services/ReasonPathService';
 import { TrustedBaseService } from '../services/TrustedBaseService';
 import { UnitRuntimeService } from '../services/UnitRuntimeService';
 import { VerificationCheckService, type CheckReport } from '../services/VerificationCheckService';
 import { VerificationService } from '../services/VerificationService';
-import { openRange, type RevisionSide } from './loadRevisions';
+import { commitLoader, openRange, type RevisionSide } from './loadRevisions';
 import { runtimeKind } from './runImpact';
 
 export interface VerifyOptions {
@@ -77,7 +79,12 @@ export async function verifyRun(options: VerifyOptions = {}): Promise<StoredReco
 		impact,
 		config: await verifyConfig(head),
 		testTimeoutMs: options.testTimeout ? Number(options.testTimeout) : undefined,
-		env: process.env
+		env: process.env,
+		explained: async () =>
+			new ReasonPathService(root, commitLoader(root)).report(
+				{ base, head, baseCommit, headCommit: commit },
+				await new ExplanationRepository(root).all()
+			)
 	}).run();
 }
 
@@ -114,6 +121,14 @@ export async function verifyIdentity(
 	const target = resolve(directory);
 	const build = await new BuildIdentityService().identify(target);
 	return build ? { directory: target, ...build } : fail(`${directory} holds no built files.`);
+}
+
+/** Stamps a compiled directory with the identity of its files, for a server that reports it. */
+export async function verifyStamp(
+	directory: string
+): Promise<IdentifiedBuild & { directory: string }> {
+	const target = resolve(directory);
+	return { directory: target, ...(await new BuildIdentityService().stamp(target)) };
 }
 
 export function renderVerify(stored: StoredRecord): string {

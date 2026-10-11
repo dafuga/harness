@@ -1,3 +1,4 @@
+import { sdkPackage } from '../utils/buildStamp';
 import { registerCodexCommand } from '../commands/CodexCommand';
 import { registerAnalyticsCommand } from '../commands/AnalyticsCommand';
 import { registerReportCommand } from '../commands/ReportCommand';
@@ -25,7 +26,7 @@ export function buildProgram(): Command {
 	program
 		.name('harness')
 		.description('Opinionated Rails-inspired coding harnesses for humans and agents.')
-		.version('0.1.1');
+		.version(sdkPackage.version);
 
 	registerCodexCommand(program);
 	registerAnalyticsCommand(program);

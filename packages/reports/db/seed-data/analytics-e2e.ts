@@ -1,18 +1,24 @@
 import { rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { AnalyticsRepository } from '../../../../src/repositories/AnalyticsRepository';
 import type { AnalyticsEvent } from '../../../../src/core/analyticsTypes';
+import { e2eFixtures } from '../../src/utils/e2eFixtures';
+
+const { root, analytics, site } = e2eFixtures();
 export function seedAnalyticsE2e(): void {
-	if (!process.env.HARNESS_ANALYTICS_HOME?.startsWith('/tmp/'))
-		throw new Error('Fixture requires a temporary analytics store.');
+	// The store of this run, or one a caller named in a temporary directory; never a real one.
+	const temporary = [root, '/tmp', tmpdir()].some((base) => analytics.startsWith(`${base}/`));
+	if (!temporary) throw new Error('Fixture requires a temporary analytics store.');
 	// The fixture store is temporary and holds nothing else, so every seeding starts it afresh.
-	rmSync(process.env.HARNESS_ANALYTICS_HOME, { recursive: true, force: true });
+	rmSync(analytics, { recursive: true, force: true });
+	process.env.HARNESS_ANALYTICS_HOME = analytics;
 	const repo = new AnalyticsRepository();
 	const events = fixtureEvents();
 	for (const event of events) repo.record(event);
 	repo.close();
 }
 const common = {
-	project: '/tmp/alpha-project',
+	project: site('alpha-project'),
 	loop: 'delivery',
 	loopRun: 'run-1',
 	agentModel: 'fixture-author',
@@ -79,7 +85,7 @@ const events: AnalyticsEvent[] = [
 // response first-try rate would no longer be one in two and a second model would be listed.
 const foreign = {
 	...common,
-	project: '/tmp/beta-project',
+	project: site('beta-project'),
 	loop: 'storefront',
 	loopRun: 'run-9',
 	agentModel: 'foreign-author',

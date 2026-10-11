@@ -1,7 +1,7 @@
 import { spawn } from 'node:child_process';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import type { CommandResult } from './cli';
+import { ownEnvironment, type CommandResult } from './cli';
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 
@@ -18,7 +18,7 @@ export function runJevCli(cwd: string, args: string[], scenario = 'meets'): Prom
 			{
 				cwd,
 				env: {
-					...process.env,
+					...ownEnvironment(),
 					HARNESS_JEV_API_KEY: 'synthetic-test-key',
 					TEST_JEV_SCENARIO: scenario
 				},

@@ -1,15 +1,26 @@
 const subcommands: Record<string, string[]> = {
 	loop: ['create', 'add', 'complete', 'status', 'search', 'next', 'evaluate'],
 	analytics: ['summary', 'loops', 'jev', 'models', 'events', 'import', 'export'],
-	report: ['begin', 'record', 'import', 'finalize', 'serve', 'publish', 'cleanup', 'sync-storage'],
+	report: [
+		'begin',
+		'record',
+		'import',
+		'finalize',
+		'serve',
+		'stop',
+		'publish',
+		'cleanup',
+		'sync-storage'
+	],
 	units: ['index', 'check', 'list', 'show', 'graph', 'retire', 'schema'],
 	kernel: ['parity', 'bench', 'default', 'serve', 'sample'],
 	scenarios: ['list', 'show', 'check'],
 	explain: ['add', 'list', 'check'],
 	budget: ['measure', 'status', 'history', 'establish', 'approve', 'bench'],
-	verify: ['run', 'check'],
+	verify: ['run', 'check', 'identity', 'stamp'],
 	history: ['attach', 'status', 'reasons', 'fetch', 'push', 'sync', 'build', 'import-reports'],
-	hooks: ['install', 'uninstall', 'status', 'run']
+	hooks: ['install', 'uninstall', 'status', 'run'],
+	console: ['install', 'objects', 'restore', 'uninstall']
 };
 export function commandAction(args: string[]): string {
 	const command = args[0] ?? 'help';

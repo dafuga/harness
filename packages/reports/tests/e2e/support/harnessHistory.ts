@@ -1,8 +1,9 @@
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { fixtures } from './fixtures';
 
-export const home = process.env.HARNESS_CONSOLE_E2E_HOME ?? '/tmp/harness-console-e2e';
+export const home = fixtures.console;
 
 export interface SeededHistory {
 	repository: string;
@@ -14,6 +15,10 @@ export interface SeededHistory {
 		| 'baseline'
 		| 'shout'
 		| 'kept'
+		| 'paired'
+		| 'twin'
+		| 'native'
+		| 'measured'
 		| 'retained'
 		| 'grown'
 		| 'approved'

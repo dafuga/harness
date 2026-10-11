@@ -38,12 +38,12 @@
 	},
 	"dependencies": [
 		{
-			"unit": "function.impact-types",
+			"unit": "function.build-stamp",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "function.required-reasons",
+			"unit": "function.impact-types",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -69,11 +69,6 @@
 		},
 		{
 			"unit": "repository.budget-ledger",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "repository.explanation",
 			"via": "import",
 			"origin": "derived"
 		},

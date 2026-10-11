@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/consoleDataModules.ts"],
-		"symbols": ["IndexFile", "consoleDataModules"]
+		"symbols": ["IndexFile", "consoleDataModules", "BundledSize", "bundledSize"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -16,12 +16,20 @@
 			{
 				"name": "consoleDataModules.files",
 				"type": "IndexFile[]"
+			},
+			{
+				"name": "bundledSize.modules",
+				"type": "HostFile[]"
 			}
 		],
 		"outputs": [
 			{
 				"name": "consoleDataModules",
 				"type": "HostFile[]"
+			},
+			{
+				"name": "bundledSize",
+				"type": "BundledSize | null"
 			}
 		],
 		"errors": []

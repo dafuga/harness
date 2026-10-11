@@ -2,14 +2,15 @@ import { test, expect } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { ReportRepository } from '../../src/repositories/ReportRepository';
 import { audioFixture } from '../../test/audioFixture';
+import { fixtures } from './support/fixtures';
 test('the active report form uploads a real audio file and preserves uncertain status', async ({
 	page,
 	request,
 	baseURL
 }) => {
-	const store = new ReportRepository('/tmp/project-reports-e2e');
+	const store = new ReportRepository(fixtures.reports);
 	const run = await store.begin({
-		project: '/tmp/upload-project',
+		project: fixtures.site('upload-project'),
 		title: 'Audio form review',
 		mode: 'feature',
 		environment: 'synthetic fixture'

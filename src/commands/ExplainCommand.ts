@@ -1,6 +1,6 @@
 import type { Command } from 'commander';
 import { fail } from '../core/errors';
-import { explainAdd, explainReport, listed, type ExplainInput } from '../workflows/runExplain';
+import { explainAdd, explainedRange, listed, type ExplainInput } from '../workflows/runExplain';
 
 type Flags = ExplainInput & { json?: boolean };
 
@@ -34,7 +34,7 @@ export function registerExplainCommand(program: Command): void {
 		.option('--json', 'Print structured results.')
 		.description('List the changes that need a reason and whether each has one.')
 		.action(async (flags: Flags) => {
-			const report = await explainReport(flags);
+			const report = await explainedRange(flags);
 			const rows = listed(report);
 			const text = rows
 				.map((row) => `${row.state.padEnd(9)} ${row.unit} ${row.symbol} (${row.change})`)
@@ -44,7 +44,7 @@ export function registerExplainCommand(program: Command): void {
 	ranged(explain.command('check'))
 		.description('Fail when a changed function or unit has no current reason.')
 		.action(async (flags: Flags) => {
-			const report = await explainReport(flags);
+			const report = await explainedRange(flags);
 			if (report.failures.length > 0) fail(report.failures.join('\n'));
 			console.log(`Every change is explained: ${report.required.length} reasons.`);
 		});

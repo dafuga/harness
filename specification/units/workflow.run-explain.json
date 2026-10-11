@@ -8,13 +8,17 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/workflows/runExplain.ts"],
-		"symbols": ["ExplainInput", "explainReport", "listed", "explainAdd"]
+		"symbols": ["ExplainInput", "explainReport", "explainedRange", "listed", "explainAdd"]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
 			{
 				"name": "explainReport.range",
+				"type": "RevisionRange"
+			},
+			{
+				"name": "explainedRange.range",
 				"type": "RevisionRange"
 			},
 			{
@@ -29,6 +33,10 @@
 		"outputs": [
 			{
 				"name": "explainReport",
+				"type": "Promise<ReasonReport & { root: string }>"
+			},
+			{
+				"name": "explainedRange",
 				"type": "Promise<ReasonReport & { root: string }>"
 			},
 			{
@@ -48,6 +56,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.errors",
 			"via": "import",
@@ -70,6 +83,11 @@
 		},
 		{
 			"unit": "service.explanation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.reason-path",
 			"via": "import",
 			"origin": "derived"
 		},

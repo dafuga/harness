@@ -1,5 +1,9 @@
 import { defineConfig } from '@playwright/test';
 import { fileURLToPath } from 'node:url';
+import { freePorts } from '../utils/e2eFixtures';
+// A verification starts a preview of its own snapshot on a port of its own, so two at once do
+// not meet; the port is written to the environment for the workers of the same run.
+if (process.env.HARNESS_VERIFY) process.env.HARNESS_PICKER_PREVIEW_PORT ??= String(freePorts(1)[0]);
 const port = Number(process.env.HARNESS_PICKER_PREVIEW_PORT || 47839);
 const origin = process.env.HARNESS_PICKER_PREVIEW_URL ?? `http://127.0.0.1:${port}`;
 // The picker is served by its own preview, not by the reports application, so this suite builds
@@ -23,6 +27,7 @@ export default defineConfig({
 				cwd: root,
 				url: `${origin}/preview`,
 				timeout: 180_000,
-				reuseExistingServer: true
+				// A verification tests the preview of its own snapshot, never one already running.
+				reuseExistingServer: !process.env.HARNESS_VERIFY
 			}
 });

@@ -1,0 +1,65 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.frozen-build",
+	"kind": "function",
+	"title": "frozenBuild",
+	"responsibility": "Copies a finished build to where one browser run serves it from, and refuses a directory that holds no build or that changed while it was copied.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/frozenBuild.ts"],
+		"symbols": ["FrozenBuild", "frozenBuild"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "frozenBuild.source",
+				"type": "string"
+			},
+			{
+				"name": "frozenBuild.target",
+				"type": "string"
+			},
+			{
+				"name": "frozenBuild.copied",
+				"type": "(from: string, to: string) => Promise<void>"
+			}
+		],
+		"outputs": [
+			{
+				"name": "frozenBuild",
+				"type": "Promise<FrozenBuild>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "service.build-identity",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/frozenBuild.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/frozenBuild.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

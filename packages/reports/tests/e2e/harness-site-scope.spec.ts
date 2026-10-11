@@ -7,12 +7,13 @@ import type { Report } from '../../src/models/Report.types';
 import { ReportRepository } from '../../src/repositories/ReportRepository';
 import { ReportExportService } from '../../src/services/ReportExportService';
 import { audioFixture } from '../../test/audioFixture';
+import { fixtures } from './support/fixtures';
 
-const home = '/tmp/project-reports-e2e';
+const home = fixtures.reports;
 const id = (name: string) => readFileSync(join(home, name), 'utf8').trim();
 const store = new ReportRepository(home);
 const foreignTitle = 'Foreign storefront review';
-const foreignProject = '/tmp/beta-project';
+const foreignProject = fixtures.site('beta-project');
 
 // Both applications have recorded analytics into the one store this server reads.
 test.beforeAll(() => {
@@ -65,7 +66,7 @@ test("every route serves the application's own report and none serves the other 
 	request
 }) => {
 	const [mine, theirs] = [
-		await finished('/tmp/alpha-checkout', 'Own finished review'),
+		await finished(fixtures.site('alpha-checkout'), 'Own finished review'),
 		await finished(foreignProject, 'Foreign finished review')
 	];
 	// Both reports are complete in the store: each has its screenshot and its built exports.
@@ -117,7 +118,10 @@ test("what this site accepts for its own report it refuses for the other applica
 }) => {
 	const begin = (project: string) =>
 		store.begin({ project, title: 'Scope control', mode: 'feature', environment: 'local fixture' });
-	const [mine, theirs] = [await begin('/tmp/alpha-checkout'), await begin(foreignProject)];
+	const [mine, theirs] = [
+		await begin(fixtures.site('alpha-checkout')),
+		await begin(foreignProject)
+	];
 	const directory = join(home, 'runs', theirs.id);
 	const before = [
 		await readFile(join(directory, 'manifest.json'), 'utf8'),

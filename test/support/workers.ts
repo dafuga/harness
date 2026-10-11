@@ -1,6 +1,7 @@
 import { spawn } from 'node:child_process';
 import { createServer } from 'node:net';
 import { join, resolve } from 'node:path';
+import { ownEnvironment } from './cli';
 
 const wrangler = resolve(import.meta.dirname, '../../node_modules/.bin/wrangler');
 
@@ -50,7 +51,7 @@ export async function startWorker(
 		cwd,
 		detached: true,
 		stdio: ['ignore', 'pipe', 'pipe'],
-		env: { ...process.env, ...settings }
+		env: { ...ownEnvironment(), ...settings }
 	});
 	const chunks: Buffer[] = [];
 	child.stdout.on('data', (chunk: Buffer) => chunks.push(chunk));

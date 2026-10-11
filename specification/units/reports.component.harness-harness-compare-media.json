@@ -1,0 +1,70 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-harness-compare-media",
+	"kind": "component",
+	"title": "HarnessCompareMedia",
+	"responsibility": "Shows one recorded state of a scenario before and after two revisions, with the provenance of each side and every gap stated.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/HarnessCompareMedia.svelte"],
+		"symbols": ["HarnessCompareMedia"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HarnessCompareMedia.base",
+				"type": "HarnessRevision | undefined"
+			},
+			{
+				"name": "HarnessCompareMedia.head",
+				"type": "HarnessRevision"
+			},
+			{
+				"name": "HarnessCompareMedia.mediaBase",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HarnessCompareMedia",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.evidence-grid",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-comparison",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/HarnessCompareMedia.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/HarnessCompareMedia.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

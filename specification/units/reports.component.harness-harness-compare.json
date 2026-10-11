@@ -14,12 +14,20 @@
 		"origin": "derived",
 		"inputs": [
 			{
+				"name": "HarnessCompare.mediaBase",
+				"type": "string"
+			},
+			{
 				"name": "HarnessCompare.base",
 				"type": "HarnessRevision | undefined"
 			},
 			{
 				"name": "HarnessCompare.head",
 				"type": "HarnessRevision"
+			},
+			{
+				"name": "HarnessCompare.client",
+				"type": "HarnessClient"
 			},
 			{
 				"name": "HarnessCompare.selected",
@@ -40,12 +48,22 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.component.harness-harness-compare-media",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-harness-map",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.component.harness-harness-unit",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-client",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -31,8 +31,26 @@ export const verifyConfigSchema = z.strictObject({
 	 * the snapshot, and evidence that names the build must have been served by exactly it.
 	 */
 	builds: z.array(z.strictObject({ id: identifier, directory: text })).default([]),
+	/**
+	 * Tools the checks depend on. Each command runs in the snapshot after setup and the first
+	 * line it prints is recorded, so a record says which versions produced it.
+	 */
+	tools: z.array(z.strictObject({ id: identifier, command: text })).default([]),
 	/** Command templates per runner; `{target}` is replaced by the test file. */
 	runners: z.record(z.string(), text),
+	/**
+	 * Test files that need a command of their own, for example another configuration of the
+	 * same runner. `path` is the tracked file; the command runs in its workspace.
+	 */
+	checks: z
+		.array(
+			z.strictObject({
+				path: text,
+				command: text,
+				timeoutMs: z.number().int().positive().optional()
+			})
+		)
+		.default([]),
 	timeouts: z.strictObject({ test: z.number().int().positive() })
 });
 
@@ -44,6 +62,8 @@ export const defaultVerifyConfig: VerifyConfig = {
 	link: [],
 	outputs: [],
 	builds: [],
+	tools: [],
+	checks: [],
 	runners: {
 		vitest: 'bun x vitest run {target}',
 		playwright: 'bun x playwright test {target}'

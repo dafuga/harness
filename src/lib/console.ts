@@ -10,8 +10,13 @@ export type {
 	ConsoleAccess,
 	ConsoleData,
 	ConsoleExporter,
-	ConsoleExportInput
+	ConsoleExportInput,
+	ConsoleHost,
+	ConsoleSource
 } from '../utils/consoleAccess';
+export { consoleStore } from '../utils/consoleStore';
+export type { ConsoleBucket, ConsoleObject } from '../utils/consoleStore';
+export { buildStamp, sdkPackage } from '../utils/buildStamp';
 export { consoleBundle } from '../utils/consoleBundle';
 export type { ConsoleModules } from '../utils/consoleBundle';
 export { consoleDocument } from '../utils/consoleDocument';

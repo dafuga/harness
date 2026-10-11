@@ -4,8 +4,9 @@ import { join } from 'node:path';
 import { fail } from '../core/errors';
 
 const packageName = '@dafuga01/harness';
-/** Bundled media beyond this is likely to exceed what a Worker script may hold. */
-const bundleWarningBytes = 5 * 1024 * 1024;
+/** What a Worker script may weigh compressed: on the free plan, and on a paid one. */
+const workerLimits = { free: 3, paid: 10 };
+const mebibyte = 1024 * 1024;
 
 export interface HostRequest {
 	host: string;
@@ -14,6 +15,8 @@ export interface HostRequest {
 	base: string;
 	update?: boolean;
 	keep?: boolean;
+	bucket?: string;
+	prefix?: string;
 }
 
 /**
@@ -26,7 +29,20 @@ export async function installableHost(options: HostRequest): Promise<void> {
 		fail('--base must be one path segment such as /harness.');
 	}
 	if (options.update && options.keep) fail('Choose --update or --keep, not both.');
+	requireStorage(options);
 	await requirePolicy(options);
+}
+
+/** Both names are written into generated code, so they must be plain names. */
+function requireStorage(options: HostRequest): void {
+	const { bucket, prefix } = options;
+	if (bucket !== undefined && !/^[A-Za-z_][A-Za-z0-9_]*$/.test(bucket)) {
+		fail('--bucket must be the name of a binding, such as HARNESS_HISTORY.');
+	}
+	if (prefix !== undefined && !/^[A-Za-z0-9][A-Za-z0-9._/-]*$/.test(prefix)) {
+		fail('--prefix must be a plain path inside the bucket, such as history.');
+	}
+	if (prefix !== undefined && bucket === undefined) fail('--prefix needs --bucket.');
 }
 
 function requireHost(host: string): void {
@@ -55,7 +71,7 @@ async function requirePolicy(options: HostRequest): Promise<void> {
 }
 
 /** What the host should know before it builds: a missing dependency, or too much bundled data. */
-export async function hostWarnings(host: string, bytes: number): Promise<string[]> {
+export async function hostWarnings(host: string, compressedBytes: number): Promise<string[]> {
 	const found: string[] = [];
 	const manifest = await readFile(join(host, 'package.json'), 'utf8').catch(() => '{}');
 	const { dependencies = {}, devDependencies = {} } = JSON.parse(manifest) as {
@@ -65,10 +81,10 @@ export async function hostWarnings(host: string, bytes: number): Promise<string[
 	if (!(packageName in dependencies) && !(packageName in devDependencies)) {
 		found.push(`${packageName} is not a dependency of the host yet; add it before building.`);
 	}
-	if (bytes > bundleWarningBytes) {
-		const size = (bytes / 1024 / 1024).toFixed(1);
+	if (compressedBytes > workerLimits.free * mebibyte) {
+		const size = (compressedBytes / mebibyte).toFixed(1);
 		found.push(
-			`The index is ${size} MiB and is bundled into the server; a Worker script has a size limit, so serve large media from a protected binding by passing your own ConsoleData.`
+			`The bundled history is ${size} MiB compressed; a Worker script may be ${workerLimits.free} MiB on the free plan and ${workerLimits.paid} MiB on a paid one. Keep it in a private bucket with --bucket <binding>.`
 		);
 	}
 	return found;

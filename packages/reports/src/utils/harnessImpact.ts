@@ -1,4 +1,6 @@
+import { sideImpact } from '../../../../src/utils/sideImpact';
 import type { HarnessMark, HarnessRevision, HarnessUnit } from '../models/Harness.types';
+import type { HarnessClient } from './harnessClient';
 
 export interface HarnessImpact {
 	/**
@@ -28,9 +30,34 @@ export interface HarnessImpact {
  */
 export function harnessImpact(
 	base: HarnessRevision | undefined,
-	head: HarnessRevision
+	head: HarnessRevision,
+	compared?: ComparedSides | null
 ): HarnessImpact {
-	return recordedImpact(base, head) ?? sourceImpact(base, head) ?? computedImpact(base, head);
+	const exact = compared && compared.base === base?.commit && compared.head === head.commit;
+	const found = exact ? compared.impact : head.sourceImpact;
+	return recordedImpact(base, head) ?? sourceImpact(base, found) ?? computedImpact(base, head);
+}
+
+/** What the stored sides of two revisions gave when they were compared. */
+export interface ComparedSides {
+	base: string;
+	head: string;
+	impact: NonNullable<HarnessRevision['sourceImpact']>;
+}
+
+/** Compares the stored sides of two revisions; undefined when either side was not stored. */
+export async function comparedSides(
+	client: HarnessClient,
+	base: HarnessRevision,
+	head: HarnessRevision
+): Promise<ComparedSides | undefined> {
+	if (!base.side || !head.side) return undefined;
+	const [from, to] = await Promise.all([client.side(base.side), client.side(head.side)]);
+	const impact = await sideImpact(
+		{ commit: base.commit, side: from },
+		{ commit: head.commit, side: to }
+	);
+	return { base: base.commit, head: head.commit, impact };
 }
 
 type Groups = Record<'direct' | 'indirect' | 'added' | 'removed', string[]>;
@@ -56,9 +83,8 @@ function recordedImpact(
 /** The impact the index computed from the source of the commit and of its first parent. */
 function sourceImpact(
 	base: HarnessRevision | undefined,
-	head: HarnessRevision
+	found: HarnessRevision['sourceImpact']
 ): HarnessImpact | undefined {
-	const found = head.sourceImpact;
 	if (!found || !base || found.base !== base.commit) return undefined;
 	return {
 		source: 'source',

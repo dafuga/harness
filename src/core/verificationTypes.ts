@@ -62,7 +62,9 @@ export const budgetFindingSchema = z.strictObject({
 		'missing-baseline',
 		'missing-measurement',
 		'incomplete',
-		'incompatible'
+		'incompatible',
+		/** It cannot be measured, and its reviewed baseline says so too: stated, not judged. */
+		'unavailable'
 	]),
 	/** Null whenever the measurement was not compared with a baseline. */
 	baseline: z.number().nullable(),
@@ -99,6 +101,8 @@ export const measurementSchema = z.strictObject({
 	value: z.number().nullable(),
 	/** Required exactly when `value` is null. */
 	unavailable: z.string().optional(),
+	/** What the value leaves out, when only part of the unit could be measured. */
+	partial: z.string().optional(),
 	method: text,
 	workload: identifier.nullable(),
 	/** Hardware and runtime profile; null for metrics that do not depend on one. */
@@ -126,6 +130,8 @@ export const verificationRecordSchema = z.strictObject({
 		requestedBase: commit.optional()
 	}),
 	profile: profileSchema,
+	/** The verifier and every declared tool, as each answered in the snapshot. */
+	tools: z.array(z.strictObject({ id: text, version: text })).optional(),
 	startedAt: text,
 	finishedAt: text,
 	status: outcome,

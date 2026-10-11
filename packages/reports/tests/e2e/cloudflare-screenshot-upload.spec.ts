@@ -1,8 +1,9 @@
 import { expect, test } from '@playwright/test';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { join } from 'node:path';
 import { ReportRepository } from '../../src/repositories/ReportRepository';
 import { ScreenshotRetentionService } from '../../src/services/ScreenshotRetentionService';
+import { fixtures, seededId } from './support/fixtures';
 
 async function capture(page: import('@playwright/test').Page, name: string) {
 	if (process.env.TAKE_SCREENSHOT !== 'true') return;
@@ -17,7 +18,7 @@ async function capture(page: import('@playwright/test').Page, name: string) {
 
 test('an active report uploads and displays a before/after pair', async ({ page }) => {
 	await page.setViewportSize({ width: 1440, height: 1000 });
-	const id = (await readFile('/tmp/project-reports-e2e/fixture-id', 'utf8')).trim();
+	const id = await seededId();
 	await page.goto(`/reports/${id}`);
 	await capture(page, 'upload-entry');
 	const disclosure = page.getByText('Add before/after comparison', { exact: true });
@@ -25,7 +26,7 @@ test('an active report uploads and displays a before/after pair', async ({ page 
 	await disclosure.click();
 	await page.getByLabel('Comparison title').fill('Uploaded checkout flow');
 	await page.locator('select[name="viewport"]').selectOption('desktop');
-	const image = resolve('/tmp/project-reports-e2e/fixture.png');
+	const image = join(fixtures.reports, 'fixture.png');
 	await page.locator('input[name="before"]').setInputFiles(image);
 	await page.locator('input[name="after"]').setInputFiles(image);
 	await page.getByRole('button', { name: 'Upload comparison' }).click();
@@ -43,12 +44,12 @@ test('an active report uploads and displays a before/after pair', async ({ page 
 
 test('mobile upload controls fit and the new pair remains visible', async ({ page }) => {
 	await page.setViewportSize({ width: 390, height: 844 });
-	const id = (await readFile('/tmp/project-reports-e2e/fixture-id', 'utf8')).trim();
+	const id = await seededId();
 	await page.goto(`/reports/${id}`);
 	await page.getByText('Add before/after comparison', { exact: true }).click();
 	await page.getByLabel('Comparison title').fill('Mobile upload proof');
 	await page.locator('select[name="viewport"]').selectOption('mobile');
-	const image = resolve('/tmp/project-reports-e2e/fixture.png');
+	const image = join(fixtures.reports, 'fixture.png');
 	await page.locator('input[name="before"]').setInputFiles(image);
 	await page.locator('input[name="after"]').setInputFiles(image);
 	await capture(page, 'upload-form-mobile');
@@ -62,8 +63,8 @@ test('multipart upload accepts realistic screenshots above the default body limi
 	request,
 	baseURL
 }) => {
-	const id = (await readFile('/tmp/project-reports-e2e/fixture-id', 'utf8')).trim();
-	const image = await readFile('/tmp/project-reports-e2e/large.png');
+	const id = await seededId();
+	const image = await readFile(join(fixtures.reports, 'large.png'));
 	expect(image.length).toBeGreaterThan(512_000);
 	const response = await request.post('/api/report-screenshot-upload', {
 		headers: { Origin: baseURL! },
@@ -89,9 +90,9 @@ test('expired uploads retain a readable report without downloadable image bytes'
 	page,
 	request
 }) => {
-	const repository = new ReportRepository('/tmp/project-reports-e2e');
+	const repository = new ReportRepository(fixtures.reports);
 	const report = await repository.begin({
-		project: '/tmp/alpha-project',
+		project: fixtures.site('alpha-project'),
 		title: 'Retention review',
 		mode: 'feature',
 		environment: 'local fixture'
@@ -99,7 +100,7 @@ test('expired uploads retain a readable report without downloadable image bytes'
 	await page.goto(`/reports/${report.id}`);
 	await page.getByText('Add before/after comparison', { exact: true }).click();
 	await page.getByLabel('Comparison title').fill('Retention proof');
-	const image = resolve('/tmp/project-reports-e2e/fixture.png');
+	const image = join(fixtures.reports, 'fixture.png');
 	await page.locator('input[name="before"]').setInputFiles(image);
 	await page.locator('input[name="after"]').setInputFiles(image);
 	await page.getByRole('button', { name: 'Upload comparison' }).click();

@@ -8,7 +8,9 @@ import {
 import { ExplanationRepository } from '../repositories/ExplanationRepository';
 import { ExplanationService, type ReasonReport } from '../services/ExplanationService';
 import { requiredReasons } from '../utils/requiredReasons';
-import { openRange, type RevisionRange } from './loadRevisions';
+import { GitAdapter } from '../adapters/GitAdapter';
+import { ReasonPathService } from '../services/ReasonPathService';
+import { commitLoader, openRange, type RevisionRange } from './loadRevisions';
 
 export interface ExplainInput extends RevisionRange {
 	all?: boolean;
@@ -32,6 +34,23 @@ export async function explainReport(
 	const known = await new ExplanationRepository(root).all();
 	const report = new ExplanationService().report(requiredReasons(base, head), known);
 	return { ...report, root };
+}
+
+/**
+ * The same question for a whole range: explained directly, or by the reasons of every step
+ * along its history. Recording a reason asks the direct question; checking asks this one.
+ */
+export async function explainedRange(
+	range: RevisionRange
+): Promise<ReasonReport & { root: string }> {
+	const { root, base, head } = await openRange(range);
+	const git = new GitAdapter(root);
+	const named = (reference: string) => git.run(['rev-parse', '--verify', `${reference}^{commit}`]);
+	const baseCommit = range.base === 'none' ? null : await named(range.base ?? 'HEAD');
+	const headCommit = range.head ? await named(range.head) : null;
+	const known = await new ExplanationRepository(root).all();
+	const service = new ReasonPathService(root, commitLoader(root));
+	return { ...(await service.report({ base, head, baseCommit, headCommit }, known)), root };
 }
 
 export function listed(report: ReasonReport): Listed[] {

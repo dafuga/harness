@@ -1,0 +1,106 @@
+{
+	"schemaVersion": 1,
+	"id": "function.side-impact",
+	"kind": "function",
+	"title": "sideImpact",
+	"responsibility": "Computes what differs between two stored revision sides exactly as the impact command does on the two commits.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/sideImpact.ts"],
+		"symbols": ["StoredSide", "SourceImpact", "storedSide", "impactView", "sideImpact"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "storedSide.side",
+				"type": "ImpactSide"
+			},
+			{
+				"name": "impactView.report",
+				"type": "ImpactReport"
+			},
+			{
+				"name": "impactView.base",
+				"type": "string | null"
+			},
+			{
+				"name": "sideImpact.base",
+				"type": "{ commit: string; side: StoredSide } | null"
+			},
+			{
+				"name": "sideImpact.head",
+				"type": "{ commit: string; side: StoredSide }"
+			}
+		],
+		"outputs": [
+			{
+				"name": "storedSide",
+				"type": "StoredSide"
+			},
+			{
+				"name": "impactView",
+				"type": "SourceImpact"
+			},
+			{
+				"name": "sideImpact",
+				"type": "Promise<SourceImpact>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.handler-runtime",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.impact-kernel",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.impact-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.units-config",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.impact",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/sideImpact.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/sideImpact.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

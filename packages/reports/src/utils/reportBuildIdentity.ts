@@ -1,8 +1,7 @@
-import { createHash } from 'node:crypto';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { buildIdentity } from '../../../../src/utils/buildIdentity';
+import { buildIdentity, builtFileHash } from '../../../../src/utils/buildIdentity';
 
 const development = 'harness-reports-development';
 const known = new Map<string, string>();
@@ -29,7 +28,7 @@ function digest(directory: string): string {
 		.map((entry) => join(entry.parentPath, entry.name))
 		.map((path) => ({
 			path: relative(directory, path).split(sep).join('/'),
-			sha256: createHash('sha256').update(readFileSync(path)).digest('hex')
+			sha256: builtFileHash(readFileSync(path)).sha256
 		}));
 	return files.length > 0 ? buildIdentity(files) : development;
 }

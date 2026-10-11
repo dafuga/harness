@@ -324,7 +324,7 @@ configuration, which builds the panel and starts the picker preview it was writt
 
 ## Delivery status
 
-Stages A, B, C, D and E are implemented. Stage A: unit schemas, the unit generator, the `units`
+Stages A to F are implemented. Stage A: unit schemas, the unit generator, the `units`
 commands, the source graph and the self-host registry. Stage B: the runtime contract and
 adapters, the reference and Rust kernels, `harness impact`, `harness kernel` and the typed
 package entries. Stage C: scenario contracts and their coverage rules, the evidence protocol
@@ -340,8 +340,75 @@ the owner policy and the redirects of the former routes; per-capture provenance;
 (`harness verify identity`, `builds` in `harness.verify.json`); the browser capture helper and
 the console scenario; the edge runtime entry (`@dafuga01/harness/edge`, `/console`,
 `/console-ui`, `/kernel.wasm`); and the SvelteKit installer (`harness console install` and
-`restore`). Stage F is not started. Stage evidence is recorded in the `agentic-self-hosting`
-loop.
+`restore`). Stage F: exact comparison of any two commits from one stored side per source tree;
+each recorded state before and after a change, with the source of both sides; position keys
+for every list of the console; a private bucket as the store of an installed console
+(`--bucket`, `harness console objects`), measured against the size a Worker script may have;
+a build stamp for servers that cannot read their own files (`harness verify stamp`,
+`<base>/data/build.json`); `harness console uninstall`; per-file check commands and recorded
+tool versions in `harness.verify.json`; dependencies of the self-run installed from the
+committed lock file; reasons counted step by step along the history; the reports scenario
+beside the console scenario, and evidence from the kernel and package checks; the isolation of
+tests from the verification that runs them; a directory and ports of its own for every browser
+run, so that two runs at once never share seeded fixtures; and measurements that say when they
+are unavailable or partial, with baselines that record a metric nobody could measure instead
+of freezing a zero; and a lifecycle for started processes: `harness report stop`, a packed smoke
+test that ends its own server, and checks that cannot pass while a descendant runs on. Stage evidence is recorded in the
+`agentic-self-hosting` loop.
+
+What stage F does not yet do:
+
+- No commit of Harness is verified in the repository itself, and no baseline is established
+  there. Both are steps on a clean commit that the integrator takes. What exists is a scratch
+  clone, outside the repository, holding the stage F tree as one local commit:
+  its first complete verification, of an earlier tree, ran 263 checks and passed the snapshot,
+  registry and ledger gates and the console and boundary scenarios; it failed two tests and two
+  scenarios without evidence, all repaired since, and the reasons and budgets gates, for which
+  the clone then held neither reasons nor baselines. Two later runs of the repaired tree were
+  stopped before they finished, after 78 and 65 checks with none failed, and left no record.
+  No staging record passes every gate, and none of them is a record of the source branch.
+- Decision points are counted in TypeScript, JavaScript and Svelte only. The Rust kernel and
+  three Python scripts of the reports package therefore have no complexity value: their records
+  say so, and a baseline for them records complexity as unmeasured. Nothing here parses Rust.
+- The dependency count covers the units a unit depends on and the outside modules its read
+  files refer to. For the Rust kernel that is its one declared unit dependency, marked partial:
+  the crates its `Cargo.toml` declares are not counted. Transitive dependencies are never counted.
+- A check that leaves a process running fails, and the process is stopped. Processes are
+  followed by their parent links, looked at every 200 ms: one that detaches from a parent which
+  exits before the next look is not seen. `harness report stop` ends only a server the report
+  store recorded when it started it; servers started before the record existed are not known to it.
+- Opt-in screenshot output of three older specs (`TAKE_SCREENSHOT=true`) still goes to fixed
+  directories under `/tmp`. They are files a developer asked for, not fixtures any run reads.
+- One checkout has one build at a time. A browser run serves a private, checked copy of the
+  finished build, so a rebuild during the run no longer reaches its servers; but two builds or
+  two full checks in one checkout still write the same `dist`, `target` and build directories,
+  both exit 0 and nothing reports the conflict. A verification snapshot has its own.
+- A bucket-backed console was exercised with Wrangler's local simulation of a bucket and
+  workerd. Nothing was deployed, and no real bucket was written.
+- The stamp identifies what the build of the host emits. Packages that the deployment tool
+  bundles afterwards are not part of it: the console reports the package by name and version.
+- An export from a bucket reads one object per media file of the record, which counts against
+  the subrequests a Worker may make; a record with more media than that limit cannot be
+  exported from a Worker on that plan.
+- The scale run added the media of twelve verification records as random bytes of realistic
+  size. They are transport load, not captures.
+- Stored sides make the index larger: 4.3 MB for the 59 source trees of this repository beside
+  4.9 MB of revision detail. They are not yet deduplicated between neighbouring commits.
+- Stepping through reasons reads every commit on the first-parent path once: about 10 s for
+  the 44 commits of this repository from an empty start. Histories of more than 200 commits
+  on that path are judged directly, as before.
+- The analytics state of the reports scenario shows the live CPU panel as unavailable, so that
+  no sample of the machine that ran it enters the evidence. The panel with values is covered
+  by the browser suite with a synthetic sample.
+- The benchmark evidence of the kernel build comes from a quick run and carries no comparison
+  context: it is recorded and not judged by a budget. The invocation boundary remains the
+  measured budget.
+
+Resolved in stage F, listed under earlier stages below as they stood then: aligned base and
+head media; the first real run of the console scenario under `harness verify`; a protected
+store for a hosted history; build identity on Workers; exact comparison of commits further
+apart; `analytics-dashboard.spec.ts:25` and the environment isolation behind it; and
+unit-wide reasons for units edited before any record passed.
 
 What stage E does not yet do:
 

@@ -3,7 +3,8 @@ import { mkdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { audioPairFixture } from '../../test/audioPairFixture';
 import { audioFixture } from '../../test/audioFixture';
-const root = '/tmp/project-reports-e2e';
+import { fixtures } from './support/fixtures';
+const root = fixtures.reports;
 async function capture(page: Page, width: number) {
 	await page.evaluate(async () => {
 		await document.fonts.ready;

@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
-import { readFile } from 'node:fs/promises';
 import { networkInterfaces } from 'node:os';
 import { currentRefs, revision, seeded } from './support/harnessHistory';
+import { seededId } from './support/fixtures';
 
 const { commits, refs } = seeded();
 const port = Number(process.env.PROJECT_REPORTS_E2E_PORT || 5589);
@@ -23,7 +23,7 @@ const protectedPaths = [
 ];
 
 test('former report and analytics routes lead into the console', async ({ page }) => {
-	const id = (await readFile('/tmp/project-reports-e2e/fixture-id', 'utf8')).trim();
+	const id = await seededId();
 	await page.goto('/');
 	await expect(page).toHaveURL(/\/harness\/reports$/);
 	await expect(page.getByRole('heading', { level: 1, name: 'Project reports' })).toBeVisible();

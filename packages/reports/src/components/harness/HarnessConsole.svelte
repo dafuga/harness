@@ -12,6 +12,7 @@
 	import { harnessPage } from '../../utils/harnessPage';
 	import HarnessCompare from './HarnessCompare.svelte';
 	import HarnessGrowth from './HarnessGrowth.svelte';
+	import HarnessHeader from './HarnessHeader.svelte';
 	import HarnessHistory from './HarnessHistory.svelte';
 	import HarnessLegacy from './HarnessLegacy.svelte';
 	import HarnessMap from './HarnessMap.svelte';
@@ -40,6 +41,7 @@
 		['growth', 'Growth']
 	];
 	let client = $derived(harnessClient(base));
+	let mediaBase = $derived(base + '/media/');
 	let index = $state<HarnessIndex | null>(null);
 	let problem = $state('');
 	let head = $state<HarnessRevision | null>(null);
@@ -123,27 +125,14 @@
 		const first = index ? branchCommits(index, name)[0] : undefined;
 		if (first) go({ branch: name === retainedBranch ? null : name, commit: first.commit });
 	}
-	function open(wanted: string) {
-		if (index) go({ branch: commitBranch(index, wanted), commit: wanted });
+	function open(wanted: string, to: ConsoleView = view) {
+		if (index)
+			go({ branch: commitBranch(index, wanted), commit: wanted, view: to, base: undefined });
 	}
 </script>
 
 <div class="hc-shell">
-	<header class="hc-top">
-		<span class="brand-symbol" aria-hidden="true">◈</span>
-		<h1>Harness</h1>
-		<span class="hc-muted">Components, impact and recorded evidence of this repository</span>
-		<nav aria-label="Other views">
-			{#each links as link (link.href)}<a href={link.href}>{link.label}</a>{/each}
-		</nav>
-	</header>
-	{#if problem}<p class="hc-notice" role="alert">{problem}</p>{/if}
-	{#if page?.kind === 'missing'}
-		<p class="hc-notice" role="alert">
-			{page.message}
-			{#if page.home}<a class="hc-link" href={base + page.home}>Open the newest commit</a>{/if}
-		</p>
-	{/if}
+	<HarnessHeader {base} {links} {problem} missing={page?.kind === 'missing' ? page : null} />
 	{#if !index && !problem}<p class="hc-muted" role="status">Loading history…</p>{/if}
 	{#if index && route}
 		<HarnessSelectors
@@ -157,11 +146,6 @@
 			oncommit={(wanted) => go({ commit: wanted })}
 			onbase={(wanted) => go({ base: wanted })}
 		/>
-		{#if index.truncated}
-			<p class="hc-notice">
-				Older commits were left out of this index; it says so rather than hide them.
-			</p>
-		{/if}
 		<div class="hc-tabs" role="tablist" aria-label="Views">
 			{#each views as [id, title] (id)}
 				<button
@@ -174,14 +158,20 @@
 		</div>
 		<div class="hc-panel" role="tabpanel">
 			{#if view === 'growth'}
-				<HarnessGrowth {index} {client} {unit} onunit={(id) => go({ unit: id })} />
+				<HarnessGrowth
+					{index}
+					{client}
+					{unit}
+					onunit={(id) => go({ unit: id })}
+					oncompare={(wanted) => open(wanted, 'compare')}
+				/>
 			{:else if !head || !summary}
 				<p class="hc-muted" role="status">Loading this revision…</p>
 			{:else if view === 'history'}
 				<HarnessHistory
 					{summary}
 					detail={head}
-					mediaBase={base + '/media/'}
+					{mediaBase}
 					exportHref={exportable ? base + '/export/' + commit : ''}
 					record={route.record ?? null}
 					onrecord={(id) => go({ record: id })}
@@ -191,7 +181,7 @@
 						reports={index.legacy}
 						{commit}
 						known={new Set(index.revisions.map((item) => item.commit))}
-						mediaBase={base + '/media/'}
+						{mediaBase}
 						onselect={open}
 					/>
 				{/if}
@@ -201,7 +191,14 @@
 					revision is not shown in its place.
 				</p>
 			{:else if view === 'compare'}
-				<HarnessCompare base={before} {head} selected={unit} onselect={select} />
+				<HarnessCompare
+					base={before}
+					{head}
+					{client}
+					{mediaBase}
+					selected={unit}
+					onselect={select}
+				/>
 			{:else}
 				<HarnessMap units={active} selected={unit} onselect={select} />
 				{#if chosen}

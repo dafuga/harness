@@ -1,8 +1,14 @@
 {
 	"schemaVersion": 1,
 	"workspaces": [
-		{ "name": "", "root": "." },
-		{ "name": "reports", "root": "packages/reports" }
+		{
+			"name": "",
+			"root": "."
+		},
+		{
+			"name": "reports",
+			"root": "packages/reports"
+		}
 	],
 	"tests": ["test/", "tests/"],
 	"global": ["**/.prettierignore", "tsconfig.api.json", "specification/measurements/"],
@@ -25,6 +31,12 @@
 			"specifier": "../../target/kernel/",
 			"external": "kernel-build",
 			"reason": "Built kernel in a source checkout; the dependency on kernel.impact-kernel is declared on the unit."
+		},
+		{
+			"from": "packages/reports/src/utils/e2eFixtures.ts",
+			"specifier": "../../../../.cache/reports-e2e/",
+			"external": "browser-run-build",
+			"reason": "Where a browser run keeps its copy of the finished build: a generated directory in the checkout cache, never source."
 		}
 	]
 }

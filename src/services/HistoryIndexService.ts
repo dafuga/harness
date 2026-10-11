@@ -40,17 +40,33 @@ export class HistoryIndexService {
 		this.history = new HistoryStatusService(root);
 	}
 
+	/** Writes the detail of each revision, and the stored side of each distinct source tree. */
+	private async revisions(
+		out: string,
+		revisions: SourceRevision[],
+		media: HistoryMediaService
+	): Promise<Array<{ revision: SourceRevision; result: BuiltRevision }>> {
+		const details = new RevisionDetailService(this.root, this.history);
+		const built: Array<{ revision: SourceRevision; result: BuiltRevision }> = [];
+		const sides = new Set<string>();
+		for (const revision of revisions) {
+			const result = await details.build(revision.commit, media);
+			await writeFile(join(out, detailPath(revision.commit)), stableJson(result.detail));
+			// One stored side per source tree: what any two revisions are compared from.
+			if (result.side && result.detail.side && !sides.has(result.detail.side)) {
+				sides.add(result.detail.side);
+				await writeFile(join(out, result.detail.side), stableJson(result.side));
+			}
+			built.push({ revision, result });
+		}
+		return built;
+	}
+
 	async build(out: string, limit: number, legacy: LegacyReader): Promise<BuiltHistory> {
 		await emptied(out);
 		const source = await new SourceHistoryRepository(this.root).read(limit);
 		const media = new HistoryMediaService(out);
-		const details = new RevisionDetailService(this.root, this.history);
-		const built: Array<{ revision: SourceRevision; result: BuiltRevision }> = [];
-		for (const revision of source.revisions) {
-			const result = await details.build(revision.commit, media);
-			await writeFile(join(out, detailPath(revision.commit)), stableJson(result.detail));
-			built.push({ revision, result });
-		}
+		const built = await this.revisions(out, source.revisions, media);
 		const entries = await legacy(media);
 		const sound = built.flatMap((item) => item.result.sound).reverse();
 		const tree = new EvidenceTreeAdapter(this.root);
@@ -78,10 +94,11 @@ export class HistoryIndexService {
 
 /** Only what a build writes is removed, so an output directory can hold other files too. */
 async function emptied(out: string): Promise<void> {
-	for (const stale of ['index.json', 'revisions', 'media']) {
+	for (const stale of ['index.json', 'revisions', 'sides', 'media']) {
 		await rm(join(out, stale), { recursive: true, force: true });
 	}
 	await mkdir(join(out, 'revisions'), { recursive: true });
+	await mkdir(join(out, 'sides'), { recursive: true });
 }
 
 function detailPath(commit: string): string {

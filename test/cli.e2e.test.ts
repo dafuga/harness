@@ -4,6 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { runCommand, runHarness } from './support/cli';
+import { freePort } from './support/workers';
 
 test('CLI scaffolds and checks a lib project', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-cli-lib-'));
@@ -53,17 +54,18 @@ test('CLI scaffolds and checks an app project with routes', async () => {
 	expect(check.stdout).toContain('Checking formatting...');
 	expect(check.stdout).toContain('Harness audit passed');
 
-	const server = spawn('bun', ['x', 'vite', 'preview', '--host', '127.0.0.1', '--port', '43321'], {
+	// A port of this run's own, and no other: two runs at once must not read each other's preview.
+	const origin = `http://127.0.0.1:${await freePort()}`;
+	const listen = ['--host', '127.0.0.1', '--port', new URL(origin).port, '--strictPort'];
+	const server = spawn('bun', ['x', 'vite', 'preview', ...listen], {
 		cwd: project,
 		stdio: 'pipe'
 	});
 	const serverExited = new Promise((resolve) => server.once('exit', resolve));
 	try {
-		await waitForUrl('http://127.0.0.1:43321/dashboard');
-		const page = await fetch('http://127.0.0.1:43321/dashboard').then((response) =>
-			response.text()
-		);
-		const api = await fetch('http://127.0.0.1:43321/api/ping').then((response) => response.json());
+		await waitForUrl(`${origin}/dashboard`);
+		const page = await fetch(`${origin}/dashboard`).then((response) => response.text());
+		const api = await fetch(`${origin}/api/ping`).then((response) => response.json());
 
 		expect(page).toContain('Dashboard');
 		expect(page).toContain('data-harness-view="dashboard"');

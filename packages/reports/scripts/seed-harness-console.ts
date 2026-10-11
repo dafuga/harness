@@ -7,10 +7,11 @@
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { legacyRun } from '../../../test/support/legacyStore';
+import { e2eFixtures } from '../src/utils/e2eFixtures';
 import { writeScaleData } from './harness-scale-data';
 import { baselineRepo, reviewer, type VerifyRepo } from '../../../test/support/verifyRepo';
 
-const root = process.env.HARNESS_CONSOLE_E2E_HOME ?? '/tmp/harness-console-e2e';
+const root = e2eFixtures().console;
 const keptBranch = 'feature/kept#1';
 const tone = { FIXTURE_TRANSCRIPT: 'Synthetic test tone. No speech.' };
 const attach = (repo: VerifyRepo, args: string[] = []) =>
@@ -58,6 +59,46 @@ await verified(repo);
 
 // A branch that stays, with a slash and a character that must be encoded in a path.
 await repo.git(['checkout', '-q', '-b', keptBranch]);
+// One unit with two files, both changed for one reason: two recorded reasons that differ only
+// in the file they are about.
+const titles = 'src/routes/titles';
+await repo.write(`${titles}/+page.server.ts`, 'export const prerender = false;\n');
+await repo.harness(['units', 'index', '--write']);
+commits.paired = await repo.commit('feat: give the titles page a server file');
+await repo.explainAll(['--base', commits.shout, '--head', 'HEAD']);
+await verified(repo);
+await repo.write(`${titles}/+page.server.ts`, 'export const prerender = true;\n');
+await repo.write(
+	`${titles}/+page.svelte`,
+	(await repo.read(`${titles}/+page.svelte`)).replace("'Hello'", "'Hello again'")
+);
+await repo.harness(['units', 'index', '--write']);
+commits.twin = await repo.commit('feat: change both files of the titles page');
+await repo.explainAll(['--base', commits.paired, '--head', 'HEAD']);
+// Its reasons are kept in the notes of the commit, as a committed range's reasons are.
+await repo.harness(['history', 'reasons', '--base', commits.paired, '--commit', 'HEAD']);
+await verified(repo);
+// Units in a language whose decision points are not counted. One has nothing that is counted:
+// its complexity has no value and its reviewed baseline says so. The other also has a counted
+// file: its value is that file's alone and says what it leaves out. Neither is frozen at a zero
+// nobody measured.
+const rust =
+	'pub fn sign(value: i32) -> i32 {\n    if value < 0 {\n        return -1;\n    }\n    1\n}\n';
+await repo.write('crates/counter/Cargo.toml', '[package]\nname = "counter"\nversion = "0.1.0"\n');
+await repo.write('crates/counter/src/lib.rs', rust);
+await repo.write('crates/mixed/src/lib.rs', rust);
+await repo.write(
+	'crates/mixed/bindings.ts',
+	'export function bound(value: number): number {\n\tif (value > 1 && value < 9) return value;\n\treturn 0;\n}\n'
+);
+await repo.harness(['units', 'index', '--write']);
+await explain(repo, 'Adds two native counters written in Rust, one with TypeScript bindings.');
+commits.native = await repo.commit('feat: add native counters');
+const uncounted = await verified(repo);
+const native = ['budget', 'establish', 'kernel.counter', 'kernel.mixed', '--record'];
+await repo.harness([...native, uncounted.record.id, ...reviewer]);
+commits.measured = await repo.commit('chore: baselines for the native counters');
+await verified(repo);
 await repo.git(['commit', '-q', '--allow-empty', '-m', 'chore: work kept on a branch']);
 commits.kept = await head(repo);
 await repo.git(['checkout', '-q', 'main']);

@@ -23,12 +23,17 @@ export class ReportCommandService {
 		if (operation === 'import') return this.import(flags);
 		if (operation === 'publish')
 			return new ReportPublishService(this.repository).publish(required(flags, 'run'));
-		if (operation === 'serve')
-			return new ReportServerService(this.repository).serve(Number(flags.port) || 5588);
+		if (operation === 'serve' || operation === 'stop') return this.server(operation, flags);
 		if (['cleanup', 'sync-storage'].includes(operation)) return this.storage(operation, flags);
 		throw new Error(
-			'Usage: report <begin|record|finalize|import|publish|serve|cleanup|sync-storage> [options]'
+			'Usage: report <begin|record|finalize|import|publish|serve|stop|cleanup|sync-storage> [options]'
 		);
+	}
+	/** Starts the server of this report store, or ends the one it started on that port. */
+	private server(operation: 'serve' | 'stop', flags: Record<string, string | boolean>) {
+		const server = new ReportServerService(this.repository);
+		const port = Number(flags.port) || 5588;
+		return operation === 'serve' ? server.serve(port) : server.stop(port);
 	}
 	private storage(operation: string, flags: Record<string, string | boolean>) {
 		const options = {

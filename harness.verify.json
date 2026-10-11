@@ -2,19 +2,25 @@
 	"schemaVersion": 1,
 	"setup": [
 		{
+			"command": "bun install --frozen-lockfile",
+			"timeoutMs": 600000
+		},
+		{
 			"command": "bun run build",
 			"timeoutMs": 1200000
 		}
 	],
-	"link": ["node_modules", "packages/reports/node_modules"],
+	"link": [],
 	"outputs": [
 		".cache/",
 		"coverage/",
 		"dist/",
+		"node_modules/",
 		"packages/reports/.svelte-kit/",
 		"packages/reports/.test-reports/",
 		"packages/reports/build/",
 		"packages/reports/dist/",
+		"packages/reports/node_modules/",
 		"packages/reports/output/",
 		"packages/reports/playwright-report/",
 		"packages/reports/test-results/",
@@ -25,6 +31,46 @@
 		"vitest": "bun x vitest run {target}",
 		"playwright": "bun x playwright test {target}"
 	},
+	"checks": [
+		{
+			"path": "packages/reports/tests/e2e/provider-picker.spec.ts",
+			"command": "bun x playwright test --config src/config/pickerPlaywrightConfig.ts"
+		}
+	],
+	"tools": [
+		{
+			"id": "node",
+			"command": "node --version"
+		},
+		{
+			"id": "git",
+			"command": "git --version"
+		},
+		{
+			"id": "git-lfs",
+			"command": "git lfs version"
+		},
+		{
+			"id": "cargo",
+			"command": "cargo --version"
+		},
+		{
+			"id": "rustc",
+			"command": "rustc --version"
+		},
+		{
+			"id": "playwright",
+			"command": "bun x playwright --version"
+		},
+		{
+			"id": "chromium",
+			"command": "node -e \"const fs=require('node:fs');const found=JSON.parse(fs.readFileSync('node_modules/playwright-core/browsers.json','utf8')).browsers.find((browser)=>browser.name==='chromium');console.log('chromium '+found.browserVersion+' revision '+found.revision)\""
+		},
+		{
+			"id": "wrangler",
+			"command": "XDG_CONFIG_HOME=.cache/wrangler WRANGLER_SEND_METRICS=false bun x wrangler --version"
+		}
+	],
 	"timeouts": {
 		"test": 600000
 	},

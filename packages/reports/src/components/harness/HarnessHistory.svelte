@@ -63,7 +63,7 @@
 		{/if}
 	</p>
 	{#if summary.coverage !== 'unverified'}
-		{#each summary.gaps as gap (gap)}<p class="hc-muted">{gap}</p>{/each}
+		{#each summary.gaps as gap, position (position)}<p class="hc-muted">{gap}</p>{/each}
 	{/if}
 	<ul class="hc-records" aria-label="Verification records">
 		{#each detail.records as item (item.id)}
@@ -81,8 +81,10 @@
 				>
 				{#if item.failures.length || summaryOf(item.id)?.problems.length}
 					<div class="hc-failures">
-						{#each item.failures as failure (failure)}<p>{failure}</p>{/each}
-						{#each summaryOf(item.id)?.problems ?? [] as problem (problem)}<p>{problem}</p>{/each}
+						{#each item.failures as failure, position (position)}<p>{failure}</p>{/each}
+						{#each summaryOf(item.id)?.problems ?? [] as problem, position (position)}<p>
+								{problem}
+							</p>{/each}
 					</div>
 				{/if}
 			</li>
@@ -95,7 +97,7 @@
 				<li>
 					<strong>{scenario.id}</strong>
 					<span class="hc-muted">{scenario.status} · {scenarioOrigin(scenario)}</span>
-					{#each scenario.states.filter((state) => state.coverage !== 'required') as state (state.id)}
+					{#each scenario.states.filter((state) => state.coverage !== 'required') as state, position (position)}
 						<br /><span class="hc-muted">{state.id} is {state.coverage}: {state.reason}</span>
 					{/each}
 				</li>
@@ -104,7 +106,7 @@
 		{#if other.length}
 			<h3>Other recorded evidence</h3>
 			<ul class="hc-plain">
-				{#each other as item (item.scenario + item.state + item.capture.path)}
+				{#each other as item, position (position)}
 					<li>
 						{item.scenario} · {item.state} · {item.capture.kind} · {item.standing}
 						{#if item.capture.media}

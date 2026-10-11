@@ -12,6 +12,28 @@ export interface CommandResult {
 	stderr: string;
 }
 
+/** What `harness verify` gives a check; a command under test must not inherit it by accident. */
+const verificationContext = [
+	'HARNESS_VERIFY',
+	'HARNESS_VERIFY_REVISION',
+	'HARNESS_VERIFY_TREE',
+	'HARNESS_VERIFY_PROFILE',
+	'HARNESS_SCENARIO',
+	'HARNESS_EVIDENCE_DIR',
+	'TAKE_SCREENSHOT',
+	'HARNESS_ANALYTICS_DISABLED'
+];
+
+/**
+ * The environment of this test without the context of a verification that may be running it.
+ * A test states what its commands need; analytics go to the temporary store the setup names.
+ */
+export function ownEnvironment(): Record<string, string | undefined> {
+	const environment = { ...process.env };
+	for (const name of verificationContext) delete environment[name];
+	return environment;
+}
+
 export async function runHarness(
 	args: string[],
 	cwd: string,
@@ -29,7 +51,7 @@ export async function runCommand(
 ): Promise<CommandResult> {
 	const child = spawn(args[0], args.slice(1), {
 		cwd,
-		env: { ...process.env, HARNESS_CLI_PATH: cliPath, ...env },
+		env: { ...ownEnvironment(), HARNESS_CLI_PATH: cliPath, ...env },
 		stdio: 'pipe'
 	});
 	const stdoutChunks: Buffer[] = [];

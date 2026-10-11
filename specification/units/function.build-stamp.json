@@ -1,0 +1,58 @@
+{
+	"schemaVersion": 1,
+	"id": "function.build-stamp",
+	"kind": "function",
+	"title": "buildStamp",
+	"responsibility": "Makes the empty stamp slot generated code holds, reads the identity stamped into a slot, and names the package that answers.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/buildStamp.ts"],
+		"symbols": ["buildStampPattern", "sdkPackage", "emptyBuildStamp", "buildStamp"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "buildStamp.slot",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "buildStampPattern",
+				"type": "unknown"
+			},
+			{
+				"name": "sdkPackage",
+				"type": "unknown"
+			},
+			{
+				"name": "emptyBuildStamp",
+				"type": "string"
+			},
+			{
+				"name": "buildStamp",
+				"type": "string | null"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/buildStamp.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/buildStamp.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

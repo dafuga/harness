@@ -1,0 +1,58 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-harness-header",
+	"kind": "component",
+	"title": "HarnessHeader",
+	"responsibility": "Shows the console title, a stated problem and the notice for an address that names nothing in the history.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/HarnessHeader.svelte"],
+		"symbols": ["HarnessHeader"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HarnessHeader.base",
+				"type": "string"
+			},
+			{
+				"name": "HarnessHeader.links",
+				"type": "Array<{ label: string; href: string }>"
+			},
+			{
+				"name": "HarnessHeader.problem",
+				"type": "string"
+			},
+			{
+				"name": "HarnessHeader.missing",
+				"type": "{ message: string; home: string | null } | null"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HarnessHeader",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/HarnessHeader.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/HarnessHeader.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

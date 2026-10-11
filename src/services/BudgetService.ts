@@ -33,12 +33,11 @@ export class BudgetService {
 		const own = new Map<string, UnitBaseline>();
 		for (const event of events) {
 			const previous = own.get(event.unit) ?? { metrics: {}, performance: [] };
-			const metrics = event.type === 'baseline' ? event.metrics : event.after;
 			const replaced = previous.performance.filter(
 				(item) => !event.performance.some((next) => sameWorkload(item, next))
 			);
 			own.set(event.unit, {
-				metrics: { ...previous.metrics, ...metrics },
+				...frozenLimits(previous, event),
 				performance: [...replaced, ...event.performance]
 			});
 		}
@@ -75,7 +74,13 @@ export class BudgetService {
 	private failures(findings: BudgetFinding[], tolerances: Map<string, number>): string[] {
 		const unbaselined = new Set<string>();
 		return findings.flatMap((finding) => {
-			if (finding.status === 'passed') return [];
+			// What cannot be measured, and was reviewed as such, is stated and not judged.
+			if (finding.status === 'passed' || finding.status === 'unavailable') return [];
+			if (finding.status === 'missing-baseline' && finding.detail === 'measurable-now') {
+				return [
+					`${finding.unit}: ${finding.metric} could not be measured when its limits were reviewed and is ${finding.measured} now; a reviewer must approve a limit`
+				];
+			}
 			if (finding.status !== 'missing-baseline') {
 				return [describe(finding, tolerances.get(`${finding.unit}\n${finding.metric}`) ?? 0)];
 			}
@@ -84,6 +89,26 @@ export class BudgetService {
 			return [`${finding.unit}: no baseline is established; a reviewer must establish one`];
 		});
 	}
+}
+
+/**
+ * The frozen numbers after one ledger line, and the metrics it recorded as not measurable. A
+ * metric is one or the other: a later number replaces the statement, and a later statement
+ * replaces the number.
+ */
+function frozenLimits(
+	previous: UnitBaseline,
+	event: BudgetEvent
+): Pick<UnitBaseline, 'metrics' | 'unmeasured'> {
+	const numbers = event.type === 'baseline' ? event.metrics : event.after;
+	const stated = event.unmeasured ?? {};
+	const metrics = Object.fromEntries(
+		Object.entries({ ...previous.metrics, ...numbers }).filter(([metric]) => !(metric in stated))
+	);
+	const unmeasured = Object.fromEntries(
+		Object.entries({ ...previous.unmeasured, ...stated }).filter(([metric]) => !(metric in numbers))
+	);
+	return { metrics, ...(Object.keys(unmeasured).length > 0 ? { unmeasured } : {}) };
 }
 
 /** A unit with no limits of its own continues those of the first predecessor that has some. */
@@ -103,6 +128,17 @@ function sameWorkload(left: BudgetBaseline['performance'][number], right: typeof
 	);
 }
 
+/** A measurement that should exist and does not; a frozen one says what was lost and why. */
+function unmeasuredText(finding: BudgetFinding, subject: string, frozen: boolean): string {
+	const reason = frozen ? finding.detail : undefined;
+	if (!reason) return `${finding.unit}: ${subject} was not measured`;
+	const lost =
+		finding.baseline === null
+			? 'was not measured'
+			: `was ${finding.baseline} at its baseline and can no longer be measured`;
+	return `${finding.unit}: ${subject} ${lost}: ${reason}`;
+}
+
 /** Why a measurement was reported instead of compared. */
 function uncompared(finding: BudgetFinding): string {
 	const differences = (finding.differences ?? []).join('; ');
@@ -115,8 +151,7 @@ function describe(finding: BudgetFinding, tolerance: number): string {
 	const frozen = (frozenMetrics as readonly string[]).includes(finding.metric);
 	const workload = finding.detail?.split(' on the ')[0] ?? '';
 	const subject = frozen ? finding.metric : `${finding.metric} on ${workload}`;
-	if (finding.status === 'missing-measurement')
-		return `${finding.unit}: ${subject} was not measured`;
+	if (finding.status === 'missing-measurement') return unmeasuredText(finding, subject, frozen);
 	if (finding.status === 'incomplete' || finding.status === 'incompatible') {
 		return `${finding.unit}: ${subject} ${uncompared(finding)}`;
 	}

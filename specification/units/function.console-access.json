@@ -11,6 +11,8 @@
 		"symbols": [
 			"ConsoleData",
 			"ConsoleExportInput",
+			"ConsoleSource",
+			"ConsoleHost",
 			"ConsoleExporter",
 			"ConsoleAccess",
 			"consoleAccess"
@@ -21,7 +23,7 @@
 		"inputs": [
 			{
 				"name": "consoleAccess.options",
-				"type": "{ policy: ConsolePolicy; data: ConsoleData; exporter?: ConsoleExporter; }"
+				"type": "{ policy: ConsolePolicy; data: ConsoleSource; exporter?: ConsoleExporter; host?: ConsoleHost; }"
 			}
 		],
 		"outputs": [
@@ -33,6 +35,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.build-stamp",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.console-canonical",
 			"via": "import",

@@ -25,6 +25,8 @@ export interface PerformanceBaseline extends Definition {
 
 export interface BudgetBaseline {
 	metrics: Record<string, number>;
+	/** Frozen metrics that had no value when the limits were reviewed, each with the reason. */
+	unmeasured?: Record<string, string>;
 	performance: PerformanceBaseline[];
 }
 
@@ -32,6 +34,10 @@ interface Measured extends Definition {
 	unit: string;
 	metric: string;
 	value: number | null;
+	/** Why there is no value; without it a missing value is a measurement that was not taken. */
+	unavailable?: string;
+	/** What a value leaves out. */
+	partial?: string;
 	workload: string | null;
 	profile: string | null;
 	target?: RuntimeKind;
@@ -51,20 +57,54 @@ export interface BudgetInput {
 
 /** Judges one unit: frozen size and complexity, and performance within its exact tolerance. */
 export function budgetFindings(input: BudgetInput): BudgetFinding[] {
-	const own = input.measurements.filter((item) => item.unit === input.unit && item.value !== null);
+	const mine = input.measurements.filter((item) => item.unit === input.unit);
+	const own = mine.filter((item) => item.value !== null);
 	const sizes = input.checkSize
-		? frozenMetrics.map((metric) => sizeFinding(input, own, metric))
+		? frozenMetrics.map((metric) => sizeFinding(input, mine, metric))
 		: [];
 	return [...sizes, ...input.budgets.map((budget) => performanceFinding(input, own, budget))];
 }
 
-function sizeFinding(input: BudgetInput, own: Measured[], metric: string): BudgetFinding {
-	const measured = own.find((item) => item.metric === metric)?.value ?? null;
+function sizeFinding(input: BudgetInput, mine: Measured[], metric: string): BudgetFinding {
+	const found = mine.find((item) => item.metric === metric);
+	const measured = found?.value ?? null;
 	const baseline = input.baseline?.metrics[metric] ?? null;
 	const base = { unit: input.unit, metric, baseline, measured };
-	if (measured === null) return { ...base, status: 'missing-measurement' };
-	if (baseline === null) return { ...base, status: 'missing-baseline' };
-	return { ...base, status: measured > baseline ? 'exceeded' : 'passed' };
+	if (measured === null) return { ...base, ...unmeasured(input, metric, found?.unavailable) };
+	if (baseline === null) return { ...base, ...unlimited(input, metric) };
+	return { ...base, ...limited(measured, baseline, found?.partial) };
+}
+
+/** A value against its limit; a value that leaves something out says so beside the verdict. */
+function limited(
+	measured: number,
+	baseline: number,
+	partial: string | undefined
+): Pick<BudgetFinding, 'status' | 'detail'> {
+	const status = measured > baseline ? 'exceeded' : 'passed';
+	return partial ? { status, detail: partial } : { status };
+}
+
+/** A value without a limit. It may be one that could not be measured when limits were reviewed. */
+function unlimited(input: BudgetInput, metric: string): Pick<BudgetFinding, 'status' | 'detail'> {
+	const became = input.baseline?.unmeasured?.[metric] ? { detail: 'measurable-now' } : {};
+	return { status: 'missing-baseline', ...became };
+}
+
+/**
+ * A frozen metric without a value. When the measurer says why and the reviewed baseline already
+ * recorded that it could not be measured, that is stated and not judged. A value that existed at
+ * the baseline and is gone, or one nobody explains, is a missing measurement and never passes.
+ */
+function unmeasured(
+	input: BudgetInput,
+	metric: string,
+	reason: string | undefined
+): Pick<BudgetFinding, 'status' | 'detail'> {
+	if (!reason) return { status: 'missing-measurement' };
+	if (!input.baseline) return { status: 'missing-baseline', detail: reason };
+	if (input.baseline.unmeasured?.[metric]) return { status: 'unavailable', detail: reason };
+	return { status: 'missing-measurement', detail: reason };
 }
 
 function performanceFinding(

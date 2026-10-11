@@ -116,6 +116,11 @@
 			"unit": "command.verify",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "function.build-stamp",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

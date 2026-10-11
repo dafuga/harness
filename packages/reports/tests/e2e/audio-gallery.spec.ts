@@ -5,11 +5,12 @@ import { createHash } from 'node:crypto';
 import { ReportRepository } from '../../src/repositories/ReportRepository';
 import { atomicJson } from '../../src/utils/reportFiles';
 import { audioFixture } from '../../test/audioFixture';
-const root = '/tmp/project-reports-e2e';
+import { fixtures } from './support/fixtures';
+const root = fixtures.reports;
 async function audioReport() {
 	const store = new ReportRepository(root);
 	const run = await store.begin({
-		project: '/tmp/audio-project',
+		project: fixtures.site('audio-project'),
 		title: 'Mixed media regression',
 		mode: 'feature',
 		environment: 'synthetic transport fixture',

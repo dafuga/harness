@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/utils/harnessImpact.ts"],
-		"symbols": ["HarnessImpact", "harnessImpact"]
+		"symbols": ["HarnessImpact", "harnessImpact", "ComparedSides", "comparedSides"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -20,17 +20,47 @@
 			{
 				"name": "harnessImpact.head",
 				"type": "HarnessRevision"
+			},
+			{
+				"name": "harnessImpact.compared",
+				"type": "ComparedSides | null"
+			},
+			{
+				"name": "comparedSides.client",
+				"type": "HarnessClient"
+			},
+			{
+				"name": "comparedSides.base",
+				"type": "HarnessRevision"
+			},
+			{
+				"name": "comparedSides.head",
+				"type": "HarnessRevision"
 			}
 		],
 		"outputs": [
 			{
 				"name": "harnessImpact",
 				"type": "HarnessImpact"
+			},
+			{
+				"name": "comparedSides",
+				"type": "Promise<ComparedSides | undefined>"
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.side-impact",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-client",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.model.harness-types",
 			"via": "import",

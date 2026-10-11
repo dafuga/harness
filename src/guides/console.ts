@@ -9,7 +9,11 @@ const consoleGuide: Guide = {
 			'request event and returning true only for an administrator.',
 		'Run harness console install --host <dir> --policy <module> --data <directory>.',
 		'Add @dafuga01/harness to the host, build it with its own adapter and deploy as usual.',
-		'Run the install again with a newer index to refresh the bundled history.'
+		'Run the install again with a newer index to refresh the bundled history.',
+		'For a history with recorded media, install with --bucket <binding> and upload the index ' +
+			'to that private bucket; harness console objects prints what it must hold.',
+		'After the last build step run harness verify stamp on the emitted directory, so a server ' +
+			'that cannot read its own files reports which build it is.'
 	],
 	rules: [
 		'The policy is required and is the host own: Harness adds no login, session or credential. ' +
@@ -40,7 +44,17 @@ const consoleGuide: Guide = {
 		'The index states what every commit changed against its first parent, computed from the ' +
 			'source of both commits as harness impact does. No verification record is needed for it.',
 		'Each capture shows the build and revision it names, its standing and the attempt it ' +
-			'belongs to. A rejected or inherited capture is never shown as tested at the selected commit.'
+			'belongs to. A rejected or inherited capture is never shown as tested at the selected commit.',
+		'A bundled history counts against the size of a Worker script: 3 MiB compressed on the free ' +
+			'plan, 10 MiB on a paid one. The installer reports the compressed size of what it bundles. ' +
+			'With --bucket nothing is bundled: the store is opened from the binding of a request the ' +
+			'policy admitted, and a binding has no public address.',
+		'<base>/data/build.json answers, behind the policy, with the stamp of the emitted build, the ' +
+			'package name and version, and the host revision the build was given. They may differ.',
+		'harness console uninstall removes what an install wrote and nobody changed, puts back what ' +
+			'it replaced, and removes an edited file only with --update, after saving and recording it.',
+		'Two commits are compared exactly, however far apart: the index keeps one side per source ' +
+			'tree and the console computes the impact from both, as harness impact does.'
 	],
 	antiPatterns: [
 		'Do not decide access from a Host, Origin or forwarding header.',
@@ -51,7 +65,11 @@ const consoleGuide: Guide = {
 		'harness console install --host . --policy $lib/server/harnessPolicy --data .cache/harness/history',
 		'harness console install --host . --policy $lib/server/harnessPolicy --update',
 		'harness console install --host . --policy $lib/server/harnessPolicy --keep',
-		'harness console restore src/routes/harness/+server.ts --host .'
+		'harness console restore src/routes/harness/+server.ts --host .',
+		'harness console install --host . --policy $lib/server/harnessPolicy --bucket HARNESS_HISTORY --prefix history',
+		'harness console objects --data .cache/harness/history --prefix history --json',
+		'harness verify stamp .svelte-kit',
+		'harness console uninstall --host .'
 	]
 };
 

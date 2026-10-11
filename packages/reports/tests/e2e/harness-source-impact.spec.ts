@@ -51,13 +51,27 @@ test('a commit nobody verified still shows what its source change affects, as th
 	await expect(page.getByText('No verification record is attached to this commit')).toBeVisible();
 });
 
-test('two commits that are not parent and child say what is not known about the pair', async ({
-	page
-}) => {
-	await page.goto(`/harness?view=compare&base=${commits.reordered}&commit=${commits.sourceOnly}`);
-	await expect(impact(page)).toContainText('not parent and child');
-	expect(await listed(page, 'Directly changed')).toEqual(
-		expect.arrayContaining(['function.clock', 'function.slugify'])
-	);
-	await expect(impact(page)).toContainText('Not known here.');
-});
+const pairs: Array<[string, keyof typeof commits, keyof typeof commits]> = [
+	['several commits apart', 'reordered', 'sourceOnly'],
+	['on diverged branches', 'sourceOnly', 'twin'],
+	['backwards in history', 'restated', 'baseline']
+];
+
+for (const [title, from, to] of pairs) {
+	test(`two commits ${title} are compared from their source, as the CLI compares them`, async ({
+		page
+	}) => {
+		const cli = authoritative(commits[from], commits[to]);
+		const added = new Set(cli.units.added);
+		await page.goto(`/harness?view=compare&base=${commits[from]}&commit=${commits[to]}`);
+		await expect(impact(page)).toContainText('Computed from the source of both commits');
+		await expect(impact(page)).not.toContainText('Not known here');
+		expect(await listed(page, 'Directly changed')).toEqual(
+			cli.units.direct.filter((unit) => !added.has(unit)).sort()
+		);
+		expect(await listed(page, 'Indirectly affected')).toEqual([...cli.units.indirect].sort());
+		expect(await listed(page, 'Added')).toEqual([...cli.units.added].sort());
+		expect(await listed(page, 'Removed')).toEqual([...cli.units.removed].sort());
+		expect(await listed(page, 'Affected scenarios')).toEqual([...cli.scenarios.affected].sort());
+	});
+}

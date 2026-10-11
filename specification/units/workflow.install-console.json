@@ -11,6 +11,10 @@
 		"symbols": [
 			"ConsoleInstallFlags",
 			"installConsole",
+			"ConsoleObjectEntry",
+			"consoleObjects",
+			"uninstallConsole",
+			"renderConsoleUninstall",
 			"restoreConsoleFile",
 			"renderConsoleChange",
 			"renderConsoleInstall"
@@ -22,6 +26,22 @@
 			{
 				"name": "installConsole.flags",
 				"type": "ConsoleInstallFlags"
+			},
+			{
+				"name": "consoleObjects.data",
+				"type": "string"
+			},
+			{
+				"name": "consoleObjects.prefix",
+				"type": "unknown"
+			},
+			{
+				"name": "uninstallConsole.flags",
+				"type": "Pick<ConsoleInstallFlags, 'host' | 'update' | 'keep'>"
+			},
+			{
+				"name": "renderConsoleUninstall.result",
+				"type": "ConsoleUninstallResult"
 			},
 			{
 				"name": "restoreConsoleFile.host",
@@ -46,6 +66,18 @@
 				"type": "Promise<ConsoleInstallResult>"
 			},
 			{
+				"name": "consoleObjects",
+				"type": "Promise<ConsoleObjectEntry[]>"
+			},
+			{
+				"name": "uninstallConsole",
+				"type": "Promise<ConsoleUninstallResult>"
+			},
+			{
+				"name": "renderConsoleUninstall",
+				"type": "string"
+			},
+			{
 				"name": "restoreConsoleFile",
 				"type": "Promise<ConsoleChange>"
 			},
@@ -58,7 +90,12 @@
 				"type": "string"
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -67,7 +104,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.index-files",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.console-install",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.console-uninstall",
 			"via": "import",
 			"origin": "derived"
 		}

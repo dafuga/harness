@@ -48,11 +48,14 @@ export async function budgetMeasure(unit?: string, root?: string) {
 	return loaded.fresh.manifests
 		.filter((manifest) => manifest.status === 'active' && (!unit || manifest.id === unit))
 		.flatMap((manifest) => unitMeasurements(manifest, loaded.index.files, '0'.repeat(40)))
-		.map(({ unit: id, metric, value, unitOfMeasure }) => ({
+		.map(({ unit: id, metric, value, unitOfMeasure, unavailable, partial }) => ({
 			unit: id,
 			metric,
 			value,
-			unitOfMeasure
+			unitOfMeasure,
+			// A missing value says why, and a value that leaves something out says what.
+			...(unavailable ? { unavailable } : {}),
+			...(partial ? { partial } : {})
 		}));
 }
 
@@ -69,7 +72,15 @@ export async function budgetStatus(root?: string) {
 		inherited: active
 			.filter((unit) => baselines.get(unit.id)?.inheritedFrom)
 			.map((unit) => unit.id),
-		unbaselined: active.filter((unit) => !baselines.has(unit.id)).map((unit) => unit.id)
+		unbaselined: active.filter((unit) => !baselines.has(unit.id)).map((unit) => unit.id),
+		// Limits that are not numbers: what could not be measured when the baseline was reviewed.
+		unmeasured: active.flatMap((unit) =>
+			Object.entries(baselines.get(unit.id)?.unmeasured ?? {}).map(([metric, reason]) => ({
+				unit: unit.id,
+				metric,
+				reason
+			}))
+		)
 	};
 }
 

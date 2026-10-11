@@ -33,7 +33,7 @@ export function registerBudgetCommand(program: Command): void {
 		.description('Show current size and complexity in the working tree; observational only.')
 		.action(async (unit: string | undefined, flags: Flags) => {
 			const rows = await budgetMeasure(unit);
-			print(flags, rows, rows.map((row) => `${row.unit} ${row.metric} ${row.value}`).join('\n'));
+			print(flags, rows, rows.map(measuredLine).join('\n'));
 		});
 	budget
 		.command('status')
@@ -41,8 +41,11 @@ export function registerBudgetCommand(program: Command): void {
 		.description('Show which units have a baseline, inherit one, or have none.')
 		.action(async (flags: Flags) => {
 			const status = await budgetStatus();
+			const stated = status.unmeasured.map(
+				(item) => `  ${item.unit} ${item.metric} is not frozen: ${item.reason}`
+			);
 			const text = `${status.baselined} units have a baseline; ${status.unbaselined.length} have none.`;
-			print(flags, status, text);
+			print(flags, status, [text, ...stated].join('\n'));
 		});
 	budget
 		.command('history [unit]')
@@ -86,4 +89,10 @@ function registerSigned(budget: Command): void {
 			const result = await budgetBench({ ...flags, unit, workload: flags.workload ?? '' });
 			console.log(JSON.stringify(result, null, 2));
 		});
+}
+
+/** A value, or why there is none, and what a value leaves out: never a bare zero for either. */
+function measuredLine(row: Awaited<ReturnType<typeof budgetMeasure>>[number]): string {
+	const value = row.value ?? `unavailable: ${row.unavailable ?? 'not measured'}`;
+	return `${row.unit} ${row.metric} ${value}${row.partial ? ` (partial: ${row.partial})` : ''}`;
 }

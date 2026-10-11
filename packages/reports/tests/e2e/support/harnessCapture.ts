@@ -19,7 +19,16 @@ export const unverifiedRevision = '0'.repeat(40);
 export const revision = process.env.HARNESS_VERIFY_REVISION ?? unverifiedRevision;
 /** Where captures go: the verification's evidence directory, or scratch for an ordinary run. */
 export const evidenceDirectory = process.env.HARNESS_EVIDENCE_DIR ?? join(home, 'evidence');
-const requested = { HARNESS_EVIDENCE_DIR: evidenceDirectory, TAKE_SCREENSHOT: '1' };
+/**
+ * The evidence directory of another scenario: a verification gives each check its own, and an
+ * ordinary run keeps the scenarios apart by name.
+ */
+export const evidenceOf = (scenario: string) =>
+	process.env.HARNESS_EVIDENCE_DIR ?? join(home, `evidence-${scenario}`);
+const requested = (directory: string) => ({
+	HARNESS_EVIDENCE_DIR: directory,
+	TAKE_SCREENSHOT: '1'
+});
 
 /** Resolves once fonts, images, canvases and pending requests have settled. */
 export async function settled(page: Page): Promise<void> {
@@ -67,7 +76,12 @@ function keep(file: string, bytes: Buffer): void {
 }
 
 /** Captures exactly the viewport of a settled page and records it under the capture protocol. */
-export async function captureScreen(page: Page, state: string, viewport: Viewport): Promise<void> {
+export async function captureScreen(
+	page: Page,
+	state: string,
+	viewport: Viewport,
+	directory = evidenceDirectory
+): Promise<void> {
 	await settled(page);
 	const bytes = await page.screenshot({ animations: 'disabled', caret: 'hide' });
 	const file = `${state}-${viewport.id}.png`;
@@ -85,7 +99,7 @@ export async function captureScreen(page: Page, state: string, viewport: Viewpor
 			...stamp
 		},
 		bytes,
-		requested
+		requested(directory)
 	);
 	keep(file, bytes);
 }
@@ -94,14 +108,20 @@ export async function captureScreen(page: Page, state: string, viewport: Viewpor
  * Plays a clip to its end in the page's own player, then records the bytes the player was
  * served together with the duration the browser decoded and the transcript the page shows.
  */
-export async function captureAudio(page: Page, state: string, player: Locator): Promise<number> {
+export async function captureAudio(
+	page: Page,
+	state: string,
+	player: Locator,
+	directory = evidenceDirectory
+): Promise<number> {
 	const media = (run: (element: HTMLAudioElement) => unknown) =>
 		player.evaluate(run as (element: HTMLElement | SVGElement) => unknown);
 	await media((element) => element.play());
-	await expect.poll(() => media((element) => element.ended)).toBe(true);
+	// A clip may be longer than the default wait; it has to play to its real end.
+	await expect.poll(() => media((element) => element.ended), { timeout: 30_000 }).toBe(true);
 	const durationSeconds = (await media((element) => element.duration)) as number;
 	const response = await page.request.get((await media((element) => element.currentSrc)) as string);
-	const transcript = await page.locator('.audio-transcript').first().innerText();
+	const transcript = await page.locator('.audio-transcript:visible').first().innerText();
 	const server = await servedBuild(page);
 	const bytes = await response.body();
 	recordCapture(
@@ -118,7 +138,7 @@ export async function captureAudio(page: Page, state: string, player: Locator): 
 			...(server ? { server } : {})
 		},
 		bytes,
-		requested
+		requested(directory)
 	);
 	keep(`${state}.wav`, bytes);
 	return durationSeconds;

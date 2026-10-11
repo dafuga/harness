@@ -1,0 +1,90 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.e2e-fixtures",
+	"kind": "function",
+	"title": "e2eFixtures",
+	"responsibility": "Gives each browser run a directory and ports of its own for everything it seeds, names them to its servers, seeds and specs, and removes only what that run made.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/e2eFixtures.ts"],
+		"symbols": [
+			"E2eFixtures",
+			"e2eFixtures",
+			"freePorts",
+			"openE2eRun",
+			"namedE2eRun",
+			"closeE2eRun"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "e2eFixtures.env",
+				"type": "Environment"
+			},
+			{
+				"name": "freePorts.count",
+				"type": "number"
+			},
+			{
+				"name": "openE2eRun.env",
+				"type": "Environment"
+			},
+			{
+				"name": "namedE2eRun.env",
+				"type": "Environment"
+			},
+			{
+				"name": "closeE2eRun.env",
+				"type": "Environment"
+			}
+		],
+		"outputs": [
+			{
+				"name": "e2eFixtures",
+				"type": "E2eFixtures"
+			},
+			{
+				"name": "freePorts",
+				"type": "number[]"
+			},
+			{
+				"name": "openE2eRun",
+				"type": "E2eFixtures"
+			},
+			{
+				"name": "namedE2eRun",
+				"type": "boolean"
+			},
+			{
+				"name": "closeE2eRun",
+				"type": "void"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/e2eFixtures.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/e2eFixtures.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

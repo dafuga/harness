@@ -12,7 +12,8 @@
 			"SourceImpact",
 			"SourceImpactService",
 			"SourceImpactService.constructor",
-			"SourceImpactService.of"
+			"SourceImpactService.of",
+			"SourceImpactService.stored"
 		]
 	},
 	"contract": {
@@ -25,12 +26,20 @@
 			{
 				"name": "SourceImpactService.of.commit",
 				"type": "string"
+			},
+			{
+				"name": "SourceImpactService.stored.commit",
+				"type": "string"
 			}
 		],
 		"outputs": [
 			{
 				"name": "SourceImpactService.of",
 				"type": "Promise<SourceImpact | undefined>"
+			},
+			{
+				"name": "SourceImpactService.stored",
+				"type": "Promise<StoredSide | undefined>"
 			}
 		],
 		"errors": []
@@ -57,7 +66,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "function.impact-types",
+			"unit": "function.side-impact",
 			"via": "import",
 			"origin": "derived"
 		},

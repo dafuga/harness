@@ -2,13 +2,14 @@ import { expect, test } from '@playwright/test';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ReportRepository } from '../../src/repositories/ReportRepository';
+import { fixtures } from './support/fixtures';
 
-const home = '/tmp/project-reports-e2e';
+const home = fixtures.reports;
 
 test('a report recorded as running keeps that outcome when it has gone quiet', async ({ page }) => {
 	const store = new ReportRepository(home);
 	const run = await store.begin({
-		project: '/tmp/alpha-checkout',
+		project: fixtures.site('alpha-checkout'),
 		title: 'Unfinished exploration',
 		mode: 'feature',
 		environment: 'local fixture'

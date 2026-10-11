@@ -1,61 +1,90 @@
-import { mkdtemp, readFile, writeFile, mkdir } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { existsSync } from 'node:fs';
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
-import { expect, test } from 'vitest';
-import { runCommand } from './support/cli';
+import { afterAll, beforeAll, expect, test } from 'vitest';
+import {
+	listening,
+	packedInstall,
+	running,
+	withReportServer,
+	type PackedInstall,
+	type ServedReports
+} from './support/packedReports';
+
+let install: PackedInstall;
+let report = '';
+beforeAll(async () => {
+	install = await packedInstall();
+}, 120_000);
+afterAll(() => install?.dispose());
 
 test('packed installation serves and finalizes media without a source checkout', async () => {
-	const root = await mkdtemp(join(tmpdir(), 'harness-packed-'));
-	const oldStore = process.env.PROJECT_REPORTS_HOME;
-	process.env.PROJECT_REPORTS_HOME = join(root, 'store');
-	try {
-		await runCommand(
-			['bun', 'pm', 'pack', '--ignore-scripts', '--filename', join(root, 'harness.tgz')],
-			process.cwd()
-		);
-		await runCommand(['tar', '-xzf', join(root, 'harness.tgz'), '-C', root], root);
-		await runCommand(['bun', 'install', '--ignore-scripts'], join(root, 'package'));
-		const cli = join(root, 'package', 'dist', 'index.js');
-		const run = (args: string[]) => runCommand(['bun', cli, ...args], root);
-		const begin = JSON.parse(
-			(
-				await run([
-					'report',
-					'begin',
-					'--project',
-					root,
-					'--title',
-					'Packaged media',
-					'--mode',
-					'feature',
-					'--environment',
-					'test'
-				])
-			).stdout
-		);
-		await recordMedia(root, begin.run, run);
-		await run(['report', 'finalize', '--run', begin.run]);
-		const manifest = JSON.parse(
-			await readFile(join(root, 'store', 'runs', begin.run, 'manifest.json'), 'utf8')
-		);
-		expect(manifest.state).toBe('finalized');
-		expect(manifest.evidence).toHaveLength(2);
-		const exports = join(root, 'store', 'runs', begin.run, 'exports');
-		for (const file of ['index.html', 'report.pdf', 'report.zip'])
-			expect((await readFile(join(exports, file))).length).toBeGreaterThan(100);
-		const port = 22000 + Math.floor(Math.random() * 10000);
-		const server = JSON.parse((await run(['report', 'serve', '--port', String(port)])).stdout);
+	const { root, run } = install;
+	const begun = await run([
+		'report',
+		'begin',
+		'--project',
+		root,
+		'--title',
+		'Packaged media',
+		'--mode',
+		'feature',
+		'--environment',
+		'test'
+	]);
+	report = (JSON.parse(begun.stdout) as { run: string }).run;
+	await recordMedia(root, report, run);
+	await run(['report', 'finalize', '--run', report]);
+	const manifest = JSON.parse(
+		await readFile(join(root, 'store', 'runs', report, 'manifest.json'), 'utf8')
+	);
+	expect(manifest.state).toBe('finalized');
+	expect(manifest.evidence).toHaveLength(2);
+	const exports = join(root, 'store', 'runs', report, 'exports');
+	for (const file of ['index.html', 'report.pdf', 'report.zip'])
+		expect((await readFile(join(exports, file))).length).toBeGreaterThan(100);
+	await withReportServer(install, async (server) => {
 		expect((await fetch(`${server.url}/api/health`)).status).toBe(200);
 		await verifyPackagedAnalytics(server.url);
-		const html = await (await fetch(`${server.url}/reports/${begin.run}`)).text();
+		const html = await (await fetch(`${server.url}/reports/${report}`)).text();
 		expect(html).toContain('Matched fixture transcript');
 		expect(html).toContain('<audio');
-		// Leave this task-owned loopback server and its fixture directory available for inspection.
-	} finally {
-		if (oldStore === undefined) delete process.env.PROJECT_REPORTS_HOME;
-		else process.env.PROJECT_REPORTS_HOME = oldStore;
-	}
+	});
 }, 120_000);
+
+test('the server a test starts is stopped when the test is done with it, passed or failed', async () => {
+	const seen: ServedReports[] = [];
+	await withReportServer(install, async (server) => {
+		seen.push(server);
+		expect([await listening(server.url), running(server.pid)]).toEqual([true, true]);
+	});
+	const failure = withReportServer(install, async (server) => {
+		seen.push(server);
+		expect(await listening(server.url)).toBe(true);
+		throw new Error('an assertion of the test failed');
+	});
+	await expect(failure).rejects.toThrow('an assertion of the test failed');
+	expect(seen).toHaveLength(2);
+	for (const server of seen) {
+		expect([server.port, await listening(server.url), running(server.pid)]).toEqual([
+			server.port,
+			false,
+			false
+		]);
+	}
+	// Stopping again finds nothing of this store to stop, and stops nothing else.
+	const again = await install.run(['report', 'stop', '--port', String(seen[0].port)]);
+	expect(JSON.parse(again.stdout)).toMatchObject({ port: seen[0].port, stopped: false });
+}, 120_000);
+
+test('the fixture and the environment of the run are gone with it', async () => {
+	const { root } = install;
+	expect(process.env.PROJECT_REPORTS_HOME).toBe(join(root, 'store'));
+	await install.dispose();
+	expect(existsSync(root)).toBe(false);
+	expect(process.env.PROJECT_REPORTS_HOME).not.toBe(join(root, 'store'));
+});
+
 async function recordMedia(
 	root: string,
 	id: string,

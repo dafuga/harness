@@ -62,3 +62,8 @@
 		</label>
 	{/if}
 </div>
+{#if index.truncated}
+	<p class="hc-notice">
+		Older commits were left out of this index; it says so rather than hide them.
+	</p>
+{/if}

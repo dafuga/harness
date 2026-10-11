@@ -64,7 +64,9 @@
 					<summary>Summary and {report.checks.length} checks</summary>
 					<p>{report.summary}</p>
 					<div class="hc-failures">
-						{#each report.checks as check (check.id)}<p>{check.title}: {check.status}</p>{/each}
+						{#each report.checks as check, position (position)}<p>
+								{check.title}: {check.status}
+							</p>{/each}
 					</div>
 				</details>
 			</li>

@@ -8,6 +8,7 @@ import { UnitRuntimeService } from '../../src/services/UnitRuntimeService';
 import { impactKernel } from '../../src/utils/impactKernel';
 import { kernelArtifacts } from '../../src/utils/kernelArtifacts';
 import { kernelMutations, kernelWorkload } from '../../src/utils/kernelWorkload';
+import { recordCapture } from '../../src/utils/recordCapture';
 import { kernelVectors, vectorText } from '../support/kernelVectors';
 
 const artifacts = kernelArtifacts();
@@ -95,3 +96,28 @@ test('seeded malformed requests are refused identically by every implementation'
 	}
 	expect([...codes].sort()).toEqual(['invalid-graph', 'invalid-request', 'unknown-operation']);
 }, 60_000);
+
+test('under verification the comparison is recorded as evidence for each built kernel', () => {
+	// The tests above compared every case; a verification rejects this evidence if one failed.
+	const compared = {
+		contract: 'impact-kernel/1',
+		reference: 'TypeScript reference kernel',
+		vectors: kernelVectors.length,
+		seededGraphs: 7 * 3,
+		expectation: 'every response equal to the reference'
+	};
+	const states = { native: artifacts.native, wasm: artifacts.wasm };
+	for (const [state, artifact] of Object.entries(states)) {
+		expect(artifact, state).toBeDefined();
+		recordCapture(
+			{
+				evidence: 'parity',
+				kind: 'assertions',
+				state,
+				file: `parity-${state}.json`,
+				mediaType: 'application/json'
+			},
+			JSON.stringify({ ...compared, runtime: state }, null, 2)
+		);
+	}
+});

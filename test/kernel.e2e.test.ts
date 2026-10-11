@@ -4,6 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import type { Measurement } from '../src/core/verificationTypes';
+import { recordCapture } from '../src/utils/recordCapture';
 import { runHarness } from './support/cli';
 
 interface Bench {
@@ -20,6 +21,43 @@ interface Bench {
 	workloads: Array<{ id: string; nodes: number; edges: number; requestBytes: number }>;
 	measurements: Measurement[];
 	default: { runtime: string; basis: string; workload: string; rule: string };
+}
+
+/**
+ * Under verification, what this run measured for each built kernel is its benchmark evidence.
+ * A quick run is not a controlled comparison, so the numbers carry no comparison context and
+ * no budget is judged by them; sizes and hashes of the built files are exact.
+ */
+function recordBenchmarks(bench: Bench): void {
+	for (const [state, target] of [
+		['native', 'process'],
+		['wasm', 'wasm']
+	]) {
+		const measurements = bench.measurements
+			.filter((item) => item.target === target)
+			.map(({ unit, metric, unitOfMeasure, value, unavailable, method, workload, samples }) => ({
+				unit,
+				metric,
+				unitOfMeasure,
+				value,
+				...(unavailable ? { unavailable } : {}),
+				method,
+				workload,
+				target,
+				...(samples ? { samples } : {})
+			}));
+		recordCapture(
+			{
+				evidence: 'benchmark',
+				kind: 'benchmark',
+				state,
+				file: `benchmark-${state}.json`,
+				mediaType: 'application/json',
+				note: 'kernel bench --quick on this machine; not a controlled comparison.'
+			},
+			JSON.stringify({ profile: bench.profile.id, target, measurements }, null, 2)
+		);
+	}
 }
 
 const find = (bench: Bench, target: string, metric: string) =>
@@ -87,6 +125,7 @@ test('kernel bench measures identical workloads fairly and records unavailable v
 	expect(bench.default.runtime).toBe(eligible[0]);
 	expect(bench.default.rule).toMatch(/cold/);
 
+	recordBenchmarks(bench);
 	const chosen = JSON.parse(
 		(await runHarness(['kernel', 'default', '--json', '--measurements', output], root)).stdout
 	);

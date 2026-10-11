@@ -1,0 +1,31 @@
+<script lang="ts">
+	let {
+		base,
+		links,
+		problem,
+		missing
+	}: {
+		base: string;
+		links: Array<{ label: string; href: string }>;
+		/** Why the history could not be loaded, when it could not. */
+		problem: string;
+		/** An address that names nothing in this history, and the way back from it. */
+		missing: { message: string; home: string | null } | null;
+	} = $props();
+</script>
+
+<header class="hc-top">
+	<span class="brand-symbol" aria-hidden="true">◈</span>
+	<h1>Harness</h1>
+	<span class="hc-muted">Components, impact and recorded evidence of this repository</span>
+	<nav aria-label="Other views">
+		{#each links as link, position (position)}<a href={link.href}>{link.label}</a>{/each}
+	</nav>
+</header>
+{#if problem}<p class="hc-notice" role="alert">{problem}</p>{/if}
+{#if missing}
+	<p class="hc-notice" role="alert">
+		{missing.message}
+		{#if missing.home}<a class="hc-link" href={base + missing.home}>Open the newest commit</a>{/if}
+	</p>
+{/if}

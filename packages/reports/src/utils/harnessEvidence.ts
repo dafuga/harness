@@ -36,7 +36,8 @@ export function harnessEvidence(detail: HarnessRevision, record: HarnessRecord):
 				const audio = capture.kind === 'audio';
 				const origin = captureProvenance(record, scenario, capture);
 				items.push({
-					id: `${record.id.slice(0, 8)}-${scenario.id}-${state.id}-${capture.viewport ?? capture.kind}`,
+					// Two captures may share a state and a viewport; the running number keeps each its own.
+					id: `${record.id.slice(0, 8)}-${scenario.id}-${state.id}-${capture.viewport ?? capture.kind}-${items.length}`,
 					title: `${scenario.id} · ${state.id}`,
 					category: scenario.id,
 					file: mediaFile(capture),

@@ -5,6 +5,7 @@ import {
 	verifyCheck,
 	verifyIdentity,
 	verifyRun,
+	verifyStamp,
 	type VerifyOptions
 } from '../workflows/runVerify';
 
@@ -61,6 +62,16 @@ function registerIdentity(verify: Command): void {
 		.description('Print the identity of a compiled build directory, as a server should report it.')
 		.action(async (directory: string, flags: Flags) => {
 			const build = await verifyIdentity(directory);
+			console.log(flags.json ? JSON.stringify(build, null, 2) : build.buildId);
+		});
+	verify
+		.command('stamp <directory>')
+		.option('--json', 'Print structured results.')
+		.description(
+			'Write the identity of a compiled directory into its stamp slots, for a server that cannot read its own files.'
+		)
+		.action(async (directory: string, flags: Flags) => {
+			const build = await verifyStamp(directory);
 			console.log(flags.json ? JSON.stringify(build, null, 2) : build.buildId);
 		});
 }

@@ -12,24 +12,7 @@
 	},
 	"contract": {
 		"origin": "derived",
-		"inputs": [
-			{
-				"name": "HarnessGrowth.index",
-				"type": "HarnessIndex"
-			},
-			{
-				"name": "HarnessGrowth.client",
-				"type": "HarnessClient"
-			},
-			{
-				"name": "HarnessGrowth.unit",
-				"type": "string | null"
-			},
-			{
-				"name": "HarnessGrowth.onunit",
-				"type": "(id: string) => void"
-			}
-		],
+		"inputs": [],
 		"outputs": [
 			{
 				"name": "HarnessGrowth",

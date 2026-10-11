@@ -67,18 +67,25 @@ export async function installAndBuild(target: SyntheticHost): Promise<string> {
 	return installed.stdout;
 }
 
-/** The built host in Wrangler's local Pages runtime. */
-export function pagesDev(host: string): Promise<LocalWorker> {
+/**
+ * The built host in Wrangler's local Pages runtime: its artifact, or another directory when an
+ * earlier artifact is served, with local bindings kept in `persist` when the host has any.
+ */
+export function pagesDev(
+	host: string,
+	served: { directory?: string; persist?: string } = {}
+): Promise<LocalWorker> {
 	return startWorker(host, ({ port, inspector }) => [
 		'pages',
 		'dev',
-		'.svelte-kit/cloudflare',
+		served.directory ?? '.svelte-kit/cloudflare',
 		'--ip',
 		'127.0.0.1',
 		'--port',
 		String(port),
 		'--inspector-port',
-		String(inspector)
+		String(inspector),
+		...(served.persist ? ['--persist-to', served.persist] : [])
 	]);
 }
 

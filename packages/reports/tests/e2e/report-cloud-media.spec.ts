@@ -3,10 +3,11 @@ import { readFile, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ReportRepository } from '../../src/repositories/ReportRepository';
 import { replayVideoKey } from '../../src/utils/replayVideo';
+import { fixtures } from './support/fixtures';
 test('MP4 download uploads the same playable bytes, supports seeking, and recovers after local eviction', async ({
 	request
 }) => {
-	const root = '/tmp/project-reports-e2e';
+	const root = fixtures.reports;
 	const id = (await readFile(join(root, 'fixture-id'), 'utf8')).trim();
 	const report = await new ReportRepository(root).get(id);
 	const file = replayVideoKey(report) + '.mp4';

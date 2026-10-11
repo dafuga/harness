@@ -57,21 +57,35 @@ export function verifyPlan(input: PlanInput): PlannedCheck[] {
 	const fileChecks = input.selectedTests
 		.filter((path) => !covered.has(path))
 		.sort()
-		.map((path): PlannedCheck => {
-			const placed = classifyPath(path, input.unitsConfig);
-			const runner = /\.spec\.[cm]?[jt]sx?$/.test(path) ? 'playwright' : 'vitest';
-			return {
-				id: path,
-				name: path,
-				kind: /\.e2e\.|tests\/e2e\//.test(path) ? 'e2e' : 'unit',
-				runner,
-				target: path,
-				cwd: placed.workspaceRoot,
-				command: command(runner, placed.relative),
-				timeoutMs
-			};
-		});
+		.map((path) => fileCheck(path, input, { command, timeoutMs }));
 	const byTarget = (left: PlannedCheck, right: PlannedCheck) =>
 		left.target < right.target ? -1 : 1;
 	return [...fileChecks, ...scenarioChecks.sort(byTarget)];
+}
+
+/** The check of one selected test file: its own declared command, or the runner its name implies. */
+function fileCheck(
+	path: string,
+	input: PlanInput,
+	defaults: {
+		command: (runner: PlannedCheck['runner'], target: string) => string;
+		timeoutMs: number;
+	}
+): PlannedCheck {
+	const placed = classifyPath(path, input.unitsConfig);
+	const runner = /\.spec\.[cm]?[jt]sx?$/.test(path) ? 'playwright' : 'vitest';
+	// A file may declare its own command, such as another configuration of its runner.
+	const own = input.config.checks.find((check) => check.path === path);
+	return {
+		id: path,
+		name: path,
+		kind: /\.e2e\.|tests\/e2e\//.test(path) ? 'e2e' : 'unit',
+		runner,
+		target: path,
+		cwd: placed.workspaceRoot,
+		command: own
+			? own.command.replace('{target}', placed.relative)
+			: defaults.command(runner, placed.relative),
+		timeoutMs: own?.timeoutMs ?? defaults.timeoutMs
+	};
 }

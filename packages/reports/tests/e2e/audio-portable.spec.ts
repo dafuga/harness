@@ -9,6 +9,7 @@ import { reportProcess } from '../../src/utils/reportProcess';
 import { reportPdf } from '../../src/utils/reportPdf';
 import { audioFixture } from '../../test/audioFixture';
 import type { Page } from '@playwright/test';
+import { fixtures } from './support/fixtures';
 
 async function reportAppearance(page: Page) {
 	return page.evaluate(() =>
@@ -28,7 +29,7 @@ async function offlineReport(root: string) {
 	await writeFile(path, audioFixture(6));
 	const store = new ReportRepository(root);
 	const run = await store.begin({
-		project: '/tmp/offline-audio',
+		project: fixtures.site('offline-audio'),
 		title: 'Offline audio proof',
 		mode: 'feature',
 		environment: 'synthetic fixture'
@@ -61,7 +62,7 @@ test('portable report preserves the canonical website theme, badges and outcome 
 	const root = await mkdtemp(join(tmpdir(), 'portable-report-appearance-'));
 	try {
 		const target = await offlineReport(root);
-		const fixtureId = await readFile('/tmp/project-reports-e2e/fixture-id', 'utf8');
+		const fixtureId = await readFile(join(fixtures.reports, 'fixture-id'), 'utf8');
 		await page.goto('/reports/' + fixtureId);
 		const canonical = await reportAppearance(page);
 		await page.goto(pathToFileURL(join(target, 'index.html')).toString());

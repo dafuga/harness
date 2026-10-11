@@ -1,13 +1,14 @@
 import { expect, test } from '@playwright/test';
-import { mkdir, readFile } from 'node:fs/promises';
+import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
+import { seededId } from './support/fixtures';
 
 for (const width of [1440, 920, 390]) {
 	test(`gallery status caret is comfortably inset and selection filters at ${width}px`, async ({
 		page
 	}) => {
 		await page.setViewportSize({ width, height: 1000 });
-		const id = (await readFile('/tmp/project-reports-e2e/fixture-id', 'utf8')).trim();
+		const id = await seededId();
 		await page.goto(`/reports/${id}`);
 		await page.waitForLoadState('networkidle');
 		const filter = page.getByRole('combobox', { name: 'Status', exact: true });

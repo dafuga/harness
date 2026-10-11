@@ -1,9 +1,10 @@
 import { test, expect } from '@playwright/test';
 import { ReportRepository } from '../../src/repositories/ReportRepository';
+import { fixtures } from './support/fixtures';
 test('upload mode waits for client handlers before accepting a selection', async ({ page }) => {
-	const store = new ReportRepository('/tmp/project-reports-e2e');
+	const store = new ReportRepository(fixtures.reports);
 	const run = await store.begin({
-		project: '/tmp/audio-readiness',
+		project: fixtures.site('audio-readiness'),
 		title: 'Audio upload readiness',
 		mode: 'feature',
 		environment: 'Deliberately delayed client scripts'

@@ -1,3 +1,4 @@
+import { readFile } from 'node:fs/promises';
 import { join, relative } from 'node:path';
 import type { VerificationRecord } from '../core/verificationTypes';
 import { gatherCaptures, type Gathered } from '../utils/gatherCaptures';
@@ -58,6 +59,26 @@ export class CheckRunService {
 		};
 	}
 
+	/** What a declared tool says it is: the first line it prints, or undefined when it fails. */
+	async version(tool: { id: string; command: string }): Promise<string | undefined> {
+		const log = join(this.context.directory, 'logs', `tool-${tool.id}.log`);
+		const result = await runIsolated({
+			command: 'sh',
+			args: ['-c', tool.command],
+			cwd: this.context.snapshot,
+			env: { ...this.context.env },
+			timeoutMs: 60_000,
+			log,
+			maxLogBytes
+		});
+		if (result.status !== 'passed') return undefined;
+		const printed = await readFile(log, 'utf8').catch(() => '');
+		return printed
+			.split('\n')
+			.find((line) => line.trim() !== '')
+			?.trim();
+	}
+
 	private entry(check: PlannedCheck, result: IsolatedResult): CheckOutcome['entry'] {
 		return {
 			id: check.id,
@@ -89,5 +110,17 @@ export class CheckRunService {
 function outcomeFailures(check: PlannedCheck, result: IsolatedResult): string[] {
 	if (result.timedOut) return [`test ${check.name} timed out after ${check.timeoutMs} ms`];
 	if (result.status === 'passed') return [];
-	return [`test ${check.name} failed with exit code ${result.exitCode ?? 'unknown'}`];
+	const left = result.survivors.length;
+	// Whatever the check itself reported, a process it left running is a failure of its own.
+	const leaked =
+		left > 0
+			? [
+					`test ${check.name} left ${left} ${left === 1 ? 'process' : 'processes'} running after it ended; ${left === 1 ? 'it was' : 'they were'} stopped`
+				]
+			: [];
+	const failed =
+		result.exitCode === 0
+			? []
+			: [`test ${check.name} failed with exit code ${result.exitCode ?? 'unknown'}`];
+	return [...failed, ...leaked];
 }

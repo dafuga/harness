@@ -7,11 +7,13 @@
  */
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
+import { e2eFixtures } from '../src/utils/e2eFixtures';
 
-export const siteRoot = '/tmp/alpha-project';
-export const foreignRoot = '/tmp/beta-project';
-const template = '/tmp/site-template';
+const { site } = e2eFixtures();
+export const siteRoot = site('alpha-project');
+export const foreignRoot = site('beta-project');
+const template = site('site-template');
 const origin = {
 	https: 'https://github.com/synthetic/alpha-app.git',
 	ssh: 'git@github.com:synthetic/alpha-app.git',
@@ -19,14 +21,14 @@ const origin = {
 };
 /** Checkouts of the site, each reaching the same repository another way. */
 const checkouts: Array<[string, 'ssh' | 'local' | 'worktree']> = [
-	['/tmp/alpha-checkout', 'worktree'],
-	['/tmp/audio-comparison', 'ssh'],
-	['/tmp/audio-project', 'local'],
-	['/tmp/audio-readiness', 'ssh'],
-	['/tmp/offline-audio', 'local'],
-	['/tmp/offline-project', 'ssh'],
-	['/tmp/upload-pair', 'local'],
-	['/tmp/upload-project', 'ssh']
+	[site('alpha-checkout'), 'worktree'],
+	[site('audio-comparison'), 'ssh'],
+	[site('audio-project'), 'local'],
+	[site('audio-readiness'), 'ssh'],
+	[site('offline-audio'), 'local'],
+	[site('offline-project'), 'ssh'],
+	[site('upload-pair'), 'local'],
+	[site('upload-project'), 'ssh']
 ];
 const user = ['-c', 'user.name=Fixture', '-c', 'user.email=fixture@harness.invalid'];
 const git = (cwd: string, args: string[]) =>
@@ -34,7 +36,7 @@ const git = (cwd: string, args: string[]) =>
 
 function application(directory: string, address: string): void {
 	rmSync(directory, { recursive: true, force: true });
-	git('/tmp', ['clone', '-q', template, directory]);
+	git(dirname(template), ['clone', '-q', template, directory]);
 	git(directory, ['remote', 'set-url', 'origin', address]);
 }
 
@@ -52,7 +54,7 @@ for (const [directory, kind] of checkouts) {
 		git(siteRoot, ['worktree', 'prune']);
 		git(siteRoot, ['worktree', 'add', '-q', '-b', 'checkout', directory]);
 	} else {
-		git('/tmp', ['clone', '-q', siteRoot, directory]);
+		git(dirname(template), ['clone', '-q', siteRoot, directory]);
 		if (kind === 'ssh') git(directory, ['remote', 'set-url', 'origin', origin.ssh]);
 	}
 }
