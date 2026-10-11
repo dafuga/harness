@@ -1,30 +1,57 @@
 import type { BenchmarkSeries, HistoryIndex } from '../core/historyIndexTypes';
 import type { Measurement, VerificationRecord } from '../core/verificationTypes';
 import { frozenMetrics } from './budgetFindings';
+import type { BudgetReview } from './budgetReviews';
 import { canonicalJson } from './canonicalJson';
+import { emittedKey, emittedSizes } from './emittedSizes';
 
 type Growth = HistoryIndex['units'];
 type Point = Growth[number]['growth'][number];
 
+/** A figure of the unit itself: it names no workload and no machine, unlike a benchmark's. */
+const own = (item: Measurement) => !item.workload && !item.profile;
+
 /**
- * Size and complexity of every unit at each commit that measured it, oldest first. One point
- * per commit: several records of a commit measured the same source.
+ * Size and complexity of every unit at each commit that measured it, oldest first, with the
+ * size of what it emits for each execution target and the reviews that froze or changed its
+ * limits. One point per commit: several records of a commit measured the same source. Only the
+ * unit's own figures are taken; a size a benchmark reports about its run is not one of them.
  */
-export function unitGrowth(records: VerificationRecord[]): Growth {
+export function unitGrowth(
+	records: VerificationRecord[],
+	reviews: Map<string, BudgetReview[]> = new Map()
+): Growth {
 	const units = new Map<string, Map<string, Point>>();
+	const placed = (item: Measurement, record: string, add: (point: Point) => Point) => {
+		const points = units.get(item.unit) ?? new Map<string, Point>();
+		const commit = item.testedRevision;
+		points.set(commit, add(points.get(commit) ?? { commit, record }));
+		units.set(item.unit, points);
+	};
 	for (const record of records) {
-		for (const item of record.measurements) {
-			if (!(frozenMetrics as readonly string[]).includes(item.metric)) continue;
-			const points = units.get(item.unit) ?? new Map<string, Point>();
-			const commit = item.testedRevision;
-			const point = points.get(commit) ?? { commit, record: record.id };
-			points.set(commit, measuredPoint(point, item));
-			units.set(item.unit, points);
+		const sized = record.measurements.filter(
+			(item) => own(item) && (frozenMetrics as readonly string[]).includes(item.metric)
+		);
+		for (const item of sized) placed(item, record.id, (point) => measuredPoint(point, item));
+		for (const item of emittedSizes(record.measurements)) {
+			placed(item, record.id, (point) => emittedPoint(point, item));
 		}
 	}
 	return [...units]
 		.sort(([left], [right]) => (left < right ? -1 : 1))
-		.map(([id, points]) => ({ id, growth: [...points.values()] }));
+		.map(([id, points]) => {
+			const reviewed = reviews.get(id);
+			return { id, growth: [...points.values()], ...(reviewed ? { reviews: reviewed } : {}) };
+		});
+}
+
+/** The emitted size of one target: its bytes, or under the name of its limit why there are none. */
+function emittedPoint(point: Point, item: Measurement & { target: string }): Point {
+	if (item.value === null) {
+		const reason = item.unavailable ?? 'It was not measured.';
+		return { ...point, notes: { ...point.notes, [emittedKey(item.target)]: reason } };
+	}
+	return { ...point, emitted: { ...point.emitted, [item.target]: item.value } };
 }
 
 /**

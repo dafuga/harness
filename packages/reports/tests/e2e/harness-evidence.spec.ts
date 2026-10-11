@@ -14,6 +14,7 @@ import {
 	type Viewport
 } from './support/harnessCapture';
 import { revision as recorded, seeded } from './support/harnessHistory';
+import { emittedStates } from './support/emittedStates';
 import { fixtures } from './support/fixtures';
 
 const port = (name: string, fallback: number) => Number(process.env[name] || fallback);
@@ -45,6 +46,18 @@ async function hundreds(page: Page): Promise<void> {
 	await expect(page.getByText('488 of 488 components')).toBeVisible();
 	await page.getByRole('group', { name: 'Component map' }).scrollIntoViewIfNeeded();
 	await expect(page.locator('[data-unit="function.generated-300"]')).toBeInViewport();
+}
+
+/** The failed record of the scale fixture: hundreds of failures, told by cause and count. */
+async function failures(page: Page): Promise<void> {
+	const failed = recorded(commits.grown).records.find((item) => item.status === 'failed');
+	await page.goto(
+		`${scale}/harness/branch/main/commit/${commits.grown}/history/record/${failed?.id}`
+	);
+	const told = page.getByRole('group', { name: `Failures of record ${failed?.id.slice(0, 12)}` });
+	await expect(told).toContainText('480 times: no baseline is established');
+	await expect(told.locator('summary')).toContainText('failures as recorded');
+	await page.getByRole('list', { name: 'Verification records' }).scrollIntoViewIfNeeded();
 }
 
 /** Each state the scenario declares: how to reach it and what must be on screen before capture. */
@@ -121,7 +134,9 @@ const states: Record<string, (page: Page) => Promise<void>> = {
 		const growth = page.getByRole('table', { name: 'Growth of kernel.counter' });
 		await expect(growth).toContainText('Decision points are not counted in Rust');
 	},
-	hundreds
+	hundreds,
+	failures,
+	...emittedStates
 };
 
 test.beforeAll(() => rmSync(evidenceDirectory, { recursive: true, force: true }));

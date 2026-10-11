@@ -10,7 +10,7 @@ import type {
 import { BudgetLedgerRepository } from '../repositories/BudgetLedgerRepository';
 import type { VerificationStoreRepository } from '../repositories/VerificationStoreRepository';
 import { benchmarkMeasurements, recordComponents, sealRecord } from '../utils/sealRecord';
-import { unitMeasurements } from '../utils/unitMeasurements';
+import { emittedTargets, unitMeasurements } from '../utils/unitMeasurements';
 import type { RevisionSide } from '../workflows/loadRevisions';
 import { BudgetService, type BudgetReport, type BudgetSubject } from './BudgetService';
 import type { ReasonReport } from './ExplanationService';
@@ -115,11 +115,16 @@ export class RecordAssemblyService {
 		return head.manifests.filter((unit) => changed.has(unit.id) && unit.status === 'active');
 	}
 
-	/** Unchanged units with a performance budget that the change reaches through a dependency. */
+	/**
+	 * Unchanged units the change reaches through a dependency that have something to judge: a
+	 * performance budget, or an output whose size is frozen and may grow with what it is built from.
+	 */
 	private budgeted(): ComponentManifest[] {
 		const indirect = new Set(this.context.impact.units.indirect);
 		return this.context.head.manifests.filter(
-			(unit) => indirect.has(unit.id) && unit.budgets.performance.length > 0
+			(unit) =>
+				indirect.has(unit.id) &&
+				(unit.budgets.performance.length > 0 || emittedTargets(unit).length > 0)
 		);
 	}
 

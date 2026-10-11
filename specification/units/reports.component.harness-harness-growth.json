@@ -23,7 +23,17 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.component.harness-harness-emitted-growth",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.harness-client",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-emitted-growth",
 			"via": "import",
 			"origin": "derived"
 		},

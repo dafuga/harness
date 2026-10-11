@@ -2,8 +2,12 @@ import type { Comparison } from '../core/comparisonTypes';
 import type { RuntimeKind } from '../core/unitTypes';
 import type { BudgetFinding } from '../core/verificationTypes';
 import { comparisonDifferences } from './comparisonDifferences';
+import { emittedKey, emittedMetric, emittedSizes } from './emittedSizes';
 
 export const frozenMetrics = ['source-bytes', 'complexity', 'dependencies'] as const;
+/** True for every metric whose limit is a frozen number, whatever name it is frozen under. */
+export const isFrozen = (metric: string): boolean =>
+	(frozenMetrics as readonly string[]).includes(metric) || metric.startsWith(emittedMetric);
 /** Metrics where a larger value is better; every other metric is better when smaller. */
 const higherIsBetter = new Set(['throughput-ops']);
 
@@ -55,24 +59,54 @@ export interface BudgetInput {
 	checkSize: boolean;
 }
 
-/** Judges one unit: frozen size and complexity, and performance within its exact tolerance. */
+/**
+ * Judges one unit: frozen size and complexity, the size of what it emits for each execution
+ * target, and performance within its exact tolerance. What a unit emits is judged whenever the
+ * unit is: a build can grow through a dependency or a tool while the source stays as it is.
+ */
 export function budgetFindings(input: BudgetInput): BudgetFinding[] {
 	const mine = input.measurements.filter((item) => item.unit === input.unit);
 	const own = mine.filter((item) => item.value !== null);
 	const sizes = input.checkSize
-		? frozenMetrics.map((metric) => sizeFinding(input, mine, metric))
+		? frozenMetrics.map((metric) =>
+				frozenFinding(
+					input,
+					mine.find((item) => item.metric === metric),
+					{ metric, key: metric }
+				)
+			)
 		: [];
-	return [...sizes, ...input.budgets.map((budget) => performanceFinding(input, own, budget))];
+	const emitted = emittedSizes(mine).map((item) =>
+		frozenFinding(input, item, { metric: emittedMetric, key: emittedKey(item.target) })
+	);
+	const performance = input.budgets.map((budget) => performanceFinding(input, own, budget));
+	return [...sizes, ...emitted, ...performance];
 }
 
-function sizeFinding(input: BudgetInput, mine: Measured[], metric: string): BudgetFinding {
-	const found = mine.find((item) => item.metric === metric);
+/** One frozen number against its limit; `key` is the name the limit has in the ledger. */
+function frozenFinding(
+	input: BudgetInput,
+	found: Measured | undefined,
+	named: { metric: string; key: string }
+): BudgetFinding {
 	const measured = found?.value ?? null;
-	const baseline = input.baseline?.metrics[metric] ?? null;
-	const base = { unit: input.unit, metric, baseline, measured };
-	if (measured === null) return { ...base, ...unmeasured(input, metric, found?.unavailable) };
-	if (baseline === null) return { ...base, ...unlimited(input, metric) };
-	return { ...base, ...limited(measured, baseline, found?.partial) };
+	const baseline = input.baseline?.metrics[named.key] ?? null;
+	// Only the size of what a target emits names its target; the limit has that name too.
+	const target = named.key === named.metric ? undefined : found?.target;
+	const base = { unit: input.unit, metric: named.metric, baseline, measured };
+	return { ...base, ...(target ? { target } : {}), ...verdict(input, found, named) };
+}
+
+function verdict(
+	input: BudgetInput,
+	found: Measured | undefined,
+	named: { metric: string; key: string }
+): Pick<BudgetFinding, 'status' | 'detail'> {
+	const measured = found?.value ?? null;
+	if (measured === null) return unmeasured(input, named.key, found?.unavailable);
+	const baseline = input.baseline?.metrics[named.key];
+	if (baseline === undefined) return unlimited(input, named);
+	return limited(measured, baseline, found?.partial);
 }
 
 /** A value against its limit; a value that leaves something out says so beside the verdict. */
@@ -85,10 +119,20 @@ function limited(
 	return partial ? { status, detail: partial } : { status };
 }
 
-/** A value without a limit. It may be one that could not be measured when limits were reviewed. */
-function unlimited(input: BudgetInput, metric: string): Pick<BudgetFinding, 'status' | 'detail'> {
-	const became = input.baseline?.unmeasured?.[metric] ? { detail: 'measurable-now' } : {};
-	return { status: 'missing-baseline', ...became };
+/**
+ * A value without a limit. It may be one that could not be measured when limits were reviewed,
+ * or an output the reviewed baseline does not cover: the unit did not emit it then, or its
+ * limits were frozen before emitted sizes were. Either needs a reviewed limit of its own.
+ */
+function unlimited(
+	input: BudgetInput,
+	named: { metric: string; key: string }
+): Pick<BudgetFinding, 'status' | 'detail'> {
+	if (input.baseline?.unmeasured?.[named.key]) {
+		return { status: 'missing-baseline', detail: 'measurable-now' };
+	}
+	const uncovered = input.baseline && named.key !== named.metric;
+	return { status: 'missing-baseline', ...(uncovered ? { detail: 'no-limit-for-output' } : {}) };
 }
 
 /**

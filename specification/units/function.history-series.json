@@ -18,6 +18,10 @@
 				"type": "VerificationRecord[]"
 			},
 			{
+				"name": "unitGrowth.reviews",
+				"type": "Map<string, BudgetReview[]>"
+			},
+			{
 				"name": "historySeries.records",
 				"type": "VerificationRecord[]"
 			}
@@ -41,7 +45,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.budget-reviews",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.canonical-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.emitted-sizes",
 			"via": "import",
 			"origin": "derived"
 		},

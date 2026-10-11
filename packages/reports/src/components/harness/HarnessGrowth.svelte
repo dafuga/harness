@@ -1,7 +1,9 @@
 <script lang="ts">
 	import type { HarnessExplanation, HarnessIndex } from '../../models/Harness.types';
 	import type { HarnessClient } from '../../utils/harnessClient';
+	import { harnessEmittedGrowth } from '../../utils/harnessEmittedGrowth';
 	import { growthMetrics, harnessGrowth, signed, unitTimings } from '../../utils/harnessGrowth';
+	import HarnessEmittedGrowth from './HarnessEmittedGrowth.svelte';
 	let {
 		index,
 		client,
@@ -18,6 +20,7 @@
 	} = $props();
 	let current = $derived(unit ?? index.units[0]?.id ?? '');
 	let rows = $derived(harnessGrowth(index, current));
+	let emitted = $derived(harnessEmittedGrowth(index, current));
 	let timings = $derived(unitTimings(index, current));
 	let reasons = $state<Record<string, HarnessExplanation[]>>({});
 	const profile = (id: string) => {
@@ -28,7 +31,8 @@
 		index.revisions.find((revision) => revision.commit === commit)?.subject ?? '';
 	// Only the commits where something changed need their reasons, and only when they are shown.
 	$effect(() => {
-		const wanted = rows.filter((row) => row.changed).map((row) => row.commit);
+		const sized = emitted.rows.filter((row) => row.changed).map((row) => row.commit);
+		const wanted = [...rows.filter((row) => row.changed).map((row) => row.commit), ...sized];
 		const unitId = current;
 		for (const commit of wanted) {
 			void client.revision(commit).then((detail) => {
@@ -95,6 +99,14 @@
 	</div>
 	{#if rows.length === 0}<p class="hc-muted">No record has measured this component.</p>{/if}
 </section>
+{#if emitted.targets.length}
+	<HarnessEmittedGrowth
+		unit={current}
+		growth={emitted}
+		reasons={(commit) => reasons[`${current}\n${commit}`] ?? []}
+		{oncompare}
+	/>
+{/if}
 <section class="hc-card hc-panel" aria-label={'Timings of ' + current}>
 	<h2>Timings</h2>
 	{#if timings.length === 0}

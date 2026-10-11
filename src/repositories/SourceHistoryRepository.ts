@@ -1,5 +1,6 @@
 import { GitAdapter } from '../adapters/GitAdapter';
 import { refKind } from '../utils/historyRefs';
+import { sourceBranches, type ListedRef } from '../utils/sourceBranches';
 
 export interface SourceRevision {
 	commit: string;
@@ -25,7 +26,9 @@ const fields = ['%H', '%T', '%P', '%an', '%aI', '%cI', '%s'].join('%x1f');
 
 /**
  * The history of source code: its branches and their commits, plus tested commits that only an
- * archive ref still keeps. Evidence, notes and internal refs are never listed as branches.
+ * archive ref still keeps. Branches are the local ones and those the repository has from its
+ * remotes, so a normal clone holds the history of every branch. Evidence, notes and internal
+ * refs are never listed as branches.
  */
 export class SourceHistoryRepository {
 	private readonly git: GitAdapter;
@@ -35,16 +38,10 @@ export class SourceHistoryRepository {
 	}
 
 	async read(limit: number): Promise<SourceHistory> {
-		const listed = await this.git.run(['for-each-ref', '--format=%(refname) %(objectname)']);
-		const refs = listed
-			.split('\n')
-			.filter(Boolean)
-			.map((line) => line.split(' '));
-		const branches = refs
-			.filter(([ref]) => refKind(ref) === 'source')
-			.map(([ref, head]) => ({ name: ref.slice('refs/heads/'.length), head }))
-			.sort((left, right) => (left.name < right.name ? -1 : 1));
-		const archived = refs.filter(([ref]) => refKind(ref) === 'archive').map(([ref]) => ref);
+		const refs = await this.refs();
+		const remotes = (await this.git.attempt(['remote'])) ?? '';
+		const branches = sourceBranches(refs, remotes.split('\n').filter(Boolean));
+		const archived = refs.filter(({ ref }) => refKind(ref) === 'archive').map(({ ref }) => ref);
 		const tips = [...branches.map((branch) => branch.head), ...archived];
 		if (tips.length === 0) return { branches, revisions: [], truncated: false };
 		const reach = await this.reach(branches);
@@ -60,6 +57,19 @@ export class SourceHistoryRepository {
 			.filter((entry) => entry.length === 7)
 			.map((entry) => revision(entry, reach));
 		return { branches, revisions: revisions.slice(0, limit), truncated: revisions.length > limit };
+	}
+
+	/** Every ref with its tip; a symbolic one, such as a remote's HEAD, says what it points to. */
+	private async refs(): Promise<ListedRef[]> {
+		const format = '--format=%(refname)%09%(objectname)%09%(symref)';
+		const listed = await this.git.run(['for-each-ref', format]);
+		return listed
+			.split('\n')
+			.filter(Boolean)
+			.map((line) => {
+				const [ref, head, symbolic] = line.split('\t');
+				return symbolic ? { ref, head, symbolic } : { ref, head };
+			});
 	}
 
 	/** For every commit, the branches that contain it. */

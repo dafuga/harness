@@ -3,10 +3,11 @@ import type { ComponentManifest } from '../core/unitTypes';
 import type { BudgetFinding, Measurement } from '../core/verificationTypes';
 import {
 	budgetFindings,
-	frozenMetrics,
+	isFrozen,
 	performanceLimit,
 	type BudgetBaseline
 } from '../utils/budgetFindings';
+import { emittedMetric } from '../utils/emittedSizes';
 
 export interface UnitBaseline extends BudgetBaseline {
 	/** Retired predecessor whose frozen limits this unit continues. */
@@ -76,11 +77,8 @@ export class BudgetService {
 		return findings.flatMap((finding) => {
 			// What cannot be measured, and was reviewed as such, is stated and not judged.
 			if (finding.status === 'passed' || finding.status === 'unavailable') return [];
-			if (finding.status === 'missing-baseline' && finding.detail === 'measurable-now') {
-				return [
-					`${finding.unit}: ${finding.metric} could not be measured when its limits were reviewed and is ${finding.measured} now; a reviewer must approve a limit`
-				];
-			}
+			const unreviewed = finding.status === 'missing-baseline' ? unfrozen(finding) : undefined;
+			if (unreviewed) return [unreviewed];
 			if (finding.status !== 'missing-baseline') {
 				return [describe(finding, tolerances.get(`${finding.unit}\n${finding.metric}`) ?? 0)];
 			}
@@ -128,6 +126,27 @@ function sameWorkload(left: BudgetBaseline['performance'][number], right: typeof
 	);
 }
 
+/** What a finding is about: a frozen metric, the size one target emits, or a timing on a workload. */
+function subjectOf(finding: BudgetFinding): string {
+	if (finding.metric === emittedMetric && finding.target) {
+		return `${finding.metric} of the ${finding.target} target`;
+	}
+	if (isFrozen(finding.metric)) return finding.metric;
+	return `${finding.metric} on ${finding.detail?.split(' on the ')[0] ?? ''}`;
+}
+
+/** A number the unit's own reviewed baseline has no limit for, although the unit has a baseline. */
+function unfrozen(finding: BudgetFinding): string | undefined {
+	const subject = `${finding.unit}: ${subjectOf(finding)}`;
+	if (finding.detail === 'measurable-now') {
+		return `${subject} could not be measured when its limits were reviewed and is ${finding.measured} now; a reviewer must approve a limit`;
+	}
+	if (finding.detail === 'no-limit-for-output') {
+		return `${subject} is ${finding.measured} and has no frozen limit: the baseline of the unit does not cover this output; a reviewer must approve a limit`;
+	}
+	return undefined;
+}
+
 /** A measurement that should exist and does not; a frozen one says what was lost and why. */
 function unmeasuredText(finding: BudgetFinding, subject: string, frozen: boolean): string {
 	const reason = frozen ? finding.detail : undefined;
@@ -148,9 +167,8 @@ function uncompared(finding: BudgetFinding): string {
 }
 
 function describe(finding: BudgetFinding, tolerance: number): string {
-	const frozen = (frozenMetrics as readonly string[]).includes(finding.metric);
-	const workload = finding.detail?.split(' on the ')[0] ?? '';
-	const subject = frozen ? finding.metric : `${finding.metric} on ${workload}`;
+	const frozen = isFrozen(finding.metric);
+	const subject = subjectOf(finding);
 	if (finding.status === 'missing-measurement') return unmeasuredText(finding, subject, frozen);
 	if (finding.status === 'incomplete' || finding.status === 'incompatible') {
 		return `${finding.unit}: ${subject} ${uncompared(finding)}`;

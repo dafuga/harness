@@ -48,8 +48,24 @@ const growthPoint = z.strictObject({
 	'source-bytes': z.number().optional(),
 	complexity: z.number().optional(),
 	dependencies: z.number().optional(),
+	/** The size of what the unit emits, by execution target, as built in the verified snapshot. */
+	emitted: z.record(z.string(), z.number()).optional(),
 	/** Per metric: why it has no value here, or what its value leaves out. */
 	notes: z.record(z.string(), text).optional()
+});
+
+const limits = z.record(z.string(), z.number());
+/** One reviewed line of the budget ledger, at the commit whose record it cites. */
+const budgetReview = z.strictObject({
+	type: z.enum(['baseline', 'approval']),
+	commit,
+	record: text,
+	reviewer: text,
+	reason: text,
+	at: text,
+	before: limits.optional(),
+	after: limits,
+	unmeasured: z.record(z.string(), text).optional()
 });
 
 /**
@@ -117,7 +133,13 @@ export const historyIndexSchema = z.strictObject({
 	refs: z.strictObject({ evidence: commit.nullable(), notes: commit.nullable() }),
 	branches: z.array(z.strictObject({ name: text, head: commit })),
 	revisions: z.array(indexedRevisionSchema),
-	units: z.array(z.strictObject({ id: text, growth: z.array(growthPoint) })),
+	units: z.array(
+		z.strictObject({
+			id: text,
+			growth: z.array(growthPoint),
+			reviews: z.array(budgetReview).optional()
+		})
+	),
 	benchmarks: z.array(benchmarkSeriesSchema),
 	profiles: z.array(profileSchema),
 	legacy: z.array(legacyEntrySchema),

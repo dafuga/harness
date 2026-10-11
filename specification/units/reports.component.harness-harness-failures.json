@@ -1,0 +1,60 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-harness-failures",
+	"kind": "component",
+	"title": "HarnessFailures",
+	"responsibility": "Shows the failures of one record: few as they are, many as a count told by cause, with every recorded failure behind a disclosure in a box that scrolls by itself.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/HarnessFailures.svelte"],
+		"symbols": ["HarnessFailures"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HarnessFailures.record",
+				"type": "string"
+			},
+			{
+				"name": "HarnessFailures.failures",
+				"type": "string[]"
+			},
+			{
+				"name": "HarnessFailures.problems",
+				"type": "string[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HarnessFailures",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.harness-failures",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/HarnessFailures.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/HarnessFailures.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

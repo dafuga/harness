@@ -32,7 +32,12 @@
 		"function.complexity-coverage",
 		"function.unit-measurements",
 		"function.history-series",
-		"function.budget-findings"
+		"function.budget-findings",
+		"reports.component.harness-harness-failures",
+		"reports.function.harness-failures",
+		"reports.function.harness-emitted",
+		"reports.function.harness-emitted-growth",
+		"reports.component.harness-harness-emitted-growth"
 	],
 	"states": [
 		{
@@ -99,6 +104,31 @@
 			"id": "hundreds",
 			"title": "A map of several hundred generated units with one selected",
 			"coverage": "required"
+		},
+		{
+			"id": "failures",
+			"title": "A failed record with hundreds of failures, told by cause and count, with every failure behind a disclosure",
+			"coverage": "required"
+		},
+		{
+			"id": "emitted",
+			"title": "The panel of a unit built for two targets: each emitted size with its own approved limit",
+			"coverage": "required"
+		},
+		{
+			"id": "emitted-gone",
+			"title": "The panel at a commit that no longer builds one output: unavailable with its reason, never zero",
+			"coverage": "required"
+		},
+		{
+			"id": "emitted-growth",
+			"title": "Emitted sizes commit by commit for each target, with limits, the baseline, the approval and the reason",
+			"coverage": "required"
+		},
+		{
+			"id": "unreviewed",
+			"title": "The panel of a unit before any review: measured values, a declared freeze and no reviewed limit",
+			"coverage": "required"
 		}
 	],
 	"viewports": [
@@ -144,7 +174,12 @@
 				"unavailable",
 				"partial",
 				"unavailable-growth",
-				"hundreds"
+				"hundreds",
+				"failures",
+				"emitted",
+				"emitted-gone",
+				"emitted-growth",
+				"unreviewed"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",

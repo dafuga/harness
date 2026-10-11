@@ -9,6 +9,7 @@ import {
 	SourceHistoryRepository,
 	type SourceRevision
 } from '../repositories/SourceHistoryRepository';
+import { budgetReviews } from '../utils/budgetReviews';
 import { historySeries, unitGrowth } from '../utils/historySeries';
 import { stableJson } from '../utils/stableJson';
 import { HistoryMediaService } from './HistoryMediaService';
@@ -78,7 +79,7 @@ export class HistoryIndexService {
 			},
 			branches: source.branches,
 			revisions: built.map((item) => summary(item.revision, item.result, entries)),
-			units: unitGrowth(sound),
+			units: unitGrowth(sound, budgetReviews(built.map((item) => item.result.ledger).reverse())),
 			benchmarks: historySeries(sound),
 			profiles: profiles(sound),
 			legacy: entries,

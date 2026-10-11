@@ -1,3 +1,4 @@
+import type { HarnessReview, HarnessUnitLimits } from './HarnessBudget.types';
 import type { Status } from './Report.types';
 
 /** The parts of the history index and revision files the console reads. */
@@ -43,6 +44,8 @@ export interface HarnessGrowthPoint {
 	'source-bytes'?: number;
 	complexity?: number;
 	dependencies?: number;
+	/** The size of what the unit emits, by execution target. */
+	emitted?: Record<string, number>;
 	/** Per metric: why it has no value here, or what its value leaves out. */
 	notes?: Record<string, string>;
 }
@@ -75,14 +78,14 @@ export interface HarnessLegacyReport {
 export interface HarnessIndex {
 	branches: Array<{ name: string; head: string }>;
 	revisions: HarnessRevisionSummary[];
-	units: Array<{ id: string; growth: HarnessGrowthPoint[] }>;
+	units: Array<{ id: string; growth: HarnessGrowthPoint[]; reviews?: HarnessReview[] }>;
 	benchmarks: HarnessBenchmark[];
 	profiles: Array<{ id: string; platform: string; arch: string; cpu: string; runtime: string }>;
 	legacy: HarnessLegacyReport[];
 	truncated: boolean;
 	problems: string[];
 }
-export interface HarnessUnit {
+export interface HarnessUnit extends HarnessUnitLimits {
 	id: string;
 	kind: string;
 	status: string;
@@ -166,6 +169,7 @@ export interface HarnessRecord {
 			status: string;
 			baseline: number | null;
 			measured: number | null;
+			target?: string;
 			detail?: string;
 		}>;
 	};

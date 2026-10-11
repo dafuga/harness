@@ -34,6 +34,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.model.harness-budget-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.model.report-types",
 			"via": "import",
 			"origin": "derived"

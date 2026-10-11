@@ -294,6 +294,10 @@
 	color: var(--muted);
 	font-weight: 500;
 }
+/* A column of sentences keeps a readable width; on a narrow screen the table scrolls instead. */
+.hc-table .hc-told {
+	min-width: 17rem;
+}
 .hc-up {
 	color: #f0b46a;
 }
@@ -327,6 +331,25 @@
 }
 .hc-failures p {
 	margin: 2px 0;
+}
+.hc-causes p {
+	margin: 6px 0;
+	padding: 8px 12px;
+	border: 1px solid var(--line);
+	border-radius: 8px;
+}
+.hc-failures summary {
+	min-height: 40px;
+	padding: 9px 0;
+	cursor: pointer;
+}
+/* Hundreds of lines stay in a box of their own, so what follows a record does not move away. */
+.hc-all {
+	max-height: 50vh;
+	padding: 6px 10px;
+	border: 1px solid var(--line);
+	border-radius: 8px;
+	overflow: auto;
 }
 @media (max-width: 900px) {
 	.hc-grid {

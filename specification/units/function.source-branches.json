@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "function.source-branches",
+	"kind": "function",
+	"title": "sourceBranches",
+	"responsibility": "Names the branches of code a repository knows, local and remote-tracking, so that no remote tip takes the name of a local branch that points elsewhere.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/sourceBranches.ts"],
+		"symbols": ["ListedRef", "SourceBranch", "sourceBranches"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "sourceBranches.refs",
+				"type": "ListedRef[]"
+			},
+			{
+				"name": "sourceBranches.remotes",
+				"type": "string[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "sourceBranches",
+				"type": "SourceBranch[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.history-refs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.history-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/sourceBranches.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/sourceBranches.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

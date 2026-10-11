@@ -24,6 +24,10 @@
 			{
 				"name": "revisionRegistry.blobs",
 				"type": "Map<string, string>"
+			},
+			{
+				"name": "revisionRegistry.baselines",
+				"type": "Map<string, BudgetBaseline>"
 			}
 		],
 		"outputs": [
@@ -35,6 +39,16 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.budget-findings",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.budget-reviews",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.canonical-json",
 			"via": "import",

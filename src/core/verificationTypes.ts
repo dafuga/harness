@@ -69,6 +69,8 @@ export const budgetFindingSchema = z.strictObject({
 	/** Null whenever the measurement was not compared with a baseline. */
 	baseline: z.number().nullable(),
 	measured: z.number().nullable(),
+	/** The execution target whose emitted size this is; other findings name none. */
+	target: z.enum(runtimeKinds).optional(),
 	detail: z.string().optional(),
 	/** Why an incomplete or incompatible measurement could not be compared. */
 	differences: z.array(text).optional()

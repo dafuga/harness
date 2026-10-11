@@ -94,5 +94,6 @@ function registerSigned(budget: Command): void {
 /** A value, or why there is none, and what a value leaves out: never a bare zero for either. */
 function measuredLine(row: Awaited<ReturnType<typeof budgetMeasure>>[number]): string {
 	const value = row.value ?? `unavailable: ${row.unavailable ?? 'not measured'}`;
-	return `${row.unit} ${row.metric} ${value}${row.partial ? ` (partial: ${row.partial})` : ''}`;
+	const metric = row.target ? `${row.metric} (${row.target})` : row.metric;
+	return `${row.unit} ${metric} ${value}${row.partial ? ` (partial: ${row.partial})` : ''}`;
 }

@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/utils/harnessBudget.ts"],
-		"symbols": ["FrozenLine", "harnessBudget"]
+		"symbols": ["FrozenLine", "Reviewed", "harnessBudget"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -20,6 +20,10 @@
 			{
 				"name": "harnessBudget.finding",
 				"type": "Finding"
+			},
+			{
+				"name": "harnessBudget.known",
+				"type": "Reviewed"
 			}
 		],
 		"outputs": [

@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-harness-emitted-growth",
+	"kind": "component",
+	"title": "HarnessEmittedGrowth",
+	"responsibility": "Shows the emitted sizes of one unit as a table: a column for each execution target, the limit and the change at every commit, the baseline or approval that reviewed it, the recorded reason and the way to the evidence.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/HarnessEmittedGrowth.svelte"],
+		"symbols": ["HarnessEmittedGrowth"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HarnessEmittedGrowth.unit",
+				"type": "string"
+			},
+			{
+				"name": "HarnessEmittedGrowth.growth",
+				"type": "EmittedGrowth"
+			},
+			{
+				"name": "HarnessEmittedGrowth.reasons",
+				"type": "(commit: string) => HarnessExplanation[]"
+			},
+			{
+				"name": "HarnessEmittedGrowth.oncompare",
+				"type": "(commit: string) => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HarnessEmittedGrowth",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.harness-emitted",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-emitted-growth",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-growth",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/HarnessEmittedGrowth.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/HarnessEmittedGrowth.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

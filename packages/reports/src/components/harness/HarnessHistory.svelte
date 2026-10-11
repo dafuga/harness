@@ -3,6 +3,7 @@
 	import { harnessEvidence, mediaFile } from '../../utils/harnessEvidence';
 	import { captureProvenance, scenarioOrigin } from '../../utils/captureProvenance';
 	import EvidenceGrid from '../EvidenceGrid.svelte';
+	import HarnessFailures from './HarnessFailures.svelte';
 	let {
 		summary,
 		detail,
@@ -80,12 +81,11 @@
 						: ' · could not be validated'}</span
 				>
 				{#if item.failures.length || summaryOf(item.id)?.problems.length}
-					<div class="hc-failures">
-						{#each item.failures as failure, position (position)}<p>{failure}</p>{/each}
-						{#each summaryOf(item.id)?.problems ?? [] as problem, position (position)}<p>
-								{problem}
-							</p>{/each}
-					</div>
+					<HarnessFailures
+						record={item.id.slice(0, 12)}
+						failures={item.failures}
+						problems={summaryOf(item.id)?.problems ?? []}
+					/>
 				{/if}
 			</li>
 		{/each}

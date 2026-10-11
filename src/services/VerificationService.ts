@@ -13,6 +13,7 @@ import { verifyPlan } from '../utils/verifyPlan';
 import type { RevisionSide } from '../workflows/loadRevisions';
 import type { ReasonReport } from './ExplanationService';
 import { RecordAssemblyService } from './RecordAssemblyService';
+import { emittedTargets } from '../utils/unitMeasurements';
 import { SnapshotRunService, type Executed } from './SnapshotRunService';
 
 export interface VerifyContext {
@@ -72,8 +73,7 @@ export class VerificationService {
 
 	/** Files that declared Wasm and process targets build, to be measured in the snapshot. */
 	private artifactPaths(): string[] {
-		const targets = this.context.head.manifests.flatMap((unit) => unit.runtime.targets);
-		const built = targets.filter((target) => target.kind === 'wasm' || target.kind === 'process');
+		const built = this.context.head.manifests.flatMap(emittedTargets);
 		return [...new Set(built.map((target) => target.entry))];
 	}
 

@@ -6,6 +6,7 @@ import { afterAll, beforeAll, expect, test } from 'vitest';
 import {
 	browserRun,
 	eventually,
+	runPassed as passed,
 	seededHistories,
 	type BrowserRun,
 	type SeededHistory
@@ -35,12 +36,6 @@ const histories = (count: number, wanted: string): Promise<SeededHistory[]> =>
 		const found = seededHistories(scratch);
 		return found.length === count ? found : undefined;
 	}, wanted);
-
-/** Waits for a run to end; one that failed says what its own output ended with. */
-async function passed(run: BrowserRun, name: string): Promise<void> {
-	const code = await run.finished;
-	if (code !== 0) throw new Error(`The ${name} run exited ${code}:\n${run.output().slice(-3000)}`);
-}
 
 beforeAll(async () => {
 	scratch = await mkdtemp(join(tmpdir(), 'harness-concurrent-runs-'));

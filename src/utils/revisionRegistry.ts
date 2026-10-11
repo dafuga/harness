@@ -1,5 +1,12 @@
 import { createHash } from 'node:crypto';
 import type { ComponentManifest, ScenarioManifest } from '../core/unitTypes';
+import type { BudgetBaseline } from './budgetFindings';
+import {
+	emittedLimits,
+	frozenLimits,
+	type EmittedLimits,
+	type FrozenLimits
+} from './budgetReviews';
 import { canonicalJson } from './canonicalJson';
 
 export interface RevisionRegistry {
@@ -19,6 +26,10 @@ export interface RevisionRegistry {
 		contract: Pick<ComponentManifest['contract'], 'inputs' | 'outputs' | 'errors'>;
 		runtime: { kind: string; targets: Array<{ kind: string; entry: string }> };
 		budgets: ComponentManifest['budgets'];
+		/** For a unit that emits an output: the limit each target has in the ledger of this revision. */
+		emitted?: EmittedLimits;
+		/** The source limits the ledger of this revision holds; absent when none was reviewed yet. */
+		limits?: FrozenLimits;
 		/** Changes whenever the manifest or any owned file changes; equal versions are equal units. */
 		version: string;
 	}>;
@@ -48,9 +59,18 @@ const byId = <Item extends { id: string }>(left: Item, right: Item) =>
 export function revisionRegistry(
 	manifests: ComponentManifest[],
 	scenarios: ScenarioManifest[],
-	blobs: Map<string, string> = new Map()
+	blobs: Map<string, string> = new Map(),
+	baselines: Map<string, BudgetBaseline> = new Map()
 ): RevisionRegistry {
-	const units = [...manifests].sort(byId).map((unit) => unitView(unit, blobs));
+	const units = [...manifests].sort(byId).map((unit) => {
+		const emitted = emittedLimits(unit, baselines.get(unit.id));
+		const limits = frozenLimits(baselines.get(unit.id));
+		return {
+			...unitView(unit, blobs),
+			...(emitted ? { emitted } : {}),
+			...(limits ? { limits } : {})
+		};
+	});
 	const listed = [...scenarios].sort(byId).map(scenarioView);
 	const depends = units.flatMap((unit) =>
 		unit.dependencies.map(({ unit: target, via }) => ({

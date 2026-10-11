@@ -56,6 +56,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.budget-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.canonical-json",
 			"via": "import",
 			"origin": "derived"
@@ -86,6 +91,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.budget-ledger",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.scenario",
 			"via": "import",
 			"origin": "derived"
@@ -97,6 +107,11 @@
 		},
 		{
 			"unit": "service.attached-record",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.budget",
 			"via": "import",
 			"origin": "derived"
 		},

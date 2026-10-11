@@ -8,6 +8,7 @@ import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { legacyRun } from '../../../test/support/legacyStore';
 import { e2eFixtures } from '../src/utils/e2eFixtures';
+import { seedEmitted } from './harness-emitted-seed';
 import { writeScaleData } from './harness-scale-data';
 import { baselineRepo, reviewer, type VerifyRepo } from '../../../test/support/verifyRepo';
 
@@ -99,6 +100,7 @@ const native = ['budget', 'establish', 'kernel.counter', 'kernel.mixed', '--reco
 await repo.harness([...native, uncounted.record.id, ...reviewer]);
 commits.measured = await repo.commit('chore: baselines for the native counters');
 await verified(repo);
+Object.assign(commits, await seedEmitted(repo, { verified, explain }));
 await repo.git(['commit', '-q', '--allow-empty', '-m', 'chore: work kept on a branch']);
 commits.kept = await head(repo);
 await repo.git(['checkout', '-q', 'main']);
@@ -199,7 +201,10 @@ await repo.harness(['history', 'import-reports', '--from', legacy.store]);
 
 const refs = await repo.git(['for-each-ref', '--format=%(refname) %(objectname)']);
 await repo.harness(['history', 'build', '--out', join(root, 'data')]);
-await writeScaleData(join(root, 'data'), join(root, 'scale'), commits.sourceOnly);
+await writeScaleData(join(root, 'data'), join(root, 'scale'), {
+	map: commits.sourceOnly,
+	failed: commits.grown
+});
 await writeFile(
 	join(root, 'meta.json'),
 	JSON.stringify({ repository: repo.root, commits, refs, keptBranch }, null, '\t')

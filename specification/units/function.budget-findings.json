@@ -10,6 +10,7 @@
 		"source": ["src/utils/budgetFindings.ts"],
 		"symbols": [
 			"frozenMetrics",
+			"isFrozen",
 			"PerformanceBaseline",
 			"BudgetBaseline",
 			"BudgetInput",
@@ -20,6 +21,10 @@
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "isFrozen.metric",
+				"type": "string"
+			},
 			{
 				"name": "budgetFindings.input",
 				"type": "BudgetInput"
@@ -43,6 +48,10 @@
 				"type": "unknown"
 			},
 			{
+				"name": "isFrozen",
+				"type": "boolean"
+			},
+			{
 				"name": "budgetFindings",
 				"type": "BudgetFinding[]"
 			},
@@ -61,6 +70,11 @@
 		},
 		{
 			"unit": "function.comparison-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.emitted-sizes",
 			"via": "import",
 			"origin": "derived"
 		},

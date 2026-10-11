@@ -40,11 +40,21 @@ const seed =
 	'bun scripts/seed-sites.ts && PROJECT_REPORTS_ASSET_STORAGE=local bun scripts/seed-e2e.ts && bun scripts/seed-harness-console.ts';
 // A built server is started as `harness report` starts it: told where the command line is.
 const cli = `HARNESS_CLI_PATH=${resolve('../../src/index.ts')}`;
-// The built servers run from the run's own copy of the finished build: a built server loads its
-// files as they are asked for, and another build in this checkout would replace them under it.
+// Every server of a run is started from the run's own copy of the finished build: a built
+// server loads its files as they are asked for, and another build in this checkout would replace
+// them under it. A run starts no development server. One keeps what it generates in the checkout,
+// writes it again whenever it starts, and tells its pages to load again when another does.
 const freeze = 'bun scripts/freeze-build.ts';
 const built = (extra: string, host: string, at: number) =>
 	`${reports} ${extra} ${cli} HARNESS_VERIFY_REVISION=${revision} HOST=${host} PORT=${at} bun ${fixtures.build}/index.js`;
+// The application under test is served as `harness report serve` serves it: told where the
+// package is, its own address for form posts, and the upload limit.
+const application = [
+	owner,
+	`ORIGIN=http://127.0.0.1:${port}`,
+	'BODY_SIZE_LIMIT=110M',
+	`HARNESS_REPORTS_RUNTIME_ROOT=${resolve('.')}`
+].join(' ');
 const scale = `${owner} HARNESS_CONSOLE_DATA=${consoleHome}/scale`;
 export default defineConfig({
 	testDir: 'tests/e2e',
@@ -61,15 +71,17 @@ export default defineConfig({
 			reuseExistingServer
 		},
 		{
-			command: `${seed} && ${reports} ${owner} bun run dev --port ${port}`,
+			// Seeding and, outside a verification, building both come before the first server
+			// now, so this entry has the time the two had between them and the next has little.
+			command: `${seed} && ${compile} && ${freeze} && ${built(application, '127.0.0.1', port)}`,
 			url: `http://127.0.0.1:${port}/api/health`,
-			timeout: 240_000,
+			timeout: 420_000,
 			reuseExistingServer
 		},
 		{
-			command: `${compile} && ${freeze} && (${built('', '127.0.0.1', lockedPort)} & ${built(scale, '127.0.0.1', scalePort)} & ${built(owner, '0.0.0.0', exposedPort)})`,
+			command: `${built('', '127.0.0.1', lockedPort)} & ${built(scale, '127.0.0.1', scalePort)} & ${built(owner, '0.0.0.0', exposedPort)}`,
 			url: `http://127.0.0.1:${exposedPort}/api/health`,
-			timeout: 240_000,
+			timeout: 60_000,
 			reuseExistingServer
 		}
 	]

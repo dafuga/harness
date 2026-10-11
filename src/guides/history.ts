@@ -13,6 +13,10 @@ const historyGuide: Guide = {
 		'The source commit is never changed: records and files go to the harness-evidence branch, ' +
 			'a note on the commit in refs/notes/harness names them, and refs/harness/source/<sha> ' +
 			'keeps the tested commit reachable after its branch is deleted or rewritten.',
+		'Branches of code are the local ones and those a clone has only from its remotes. A ' +
+			'remote-only branch keeps its plain name when the remotes agree on its tip; a remote tip ' +
+			'that differs from the local branch of that name is listed beside it as <remote>:<branch>, ' +
+			'which no local branch can be called, and a local branch is never moved to it.',
 		'A record is attached only if its seal, its files and its commit and tree all check out. ' +
 			'A failed record is attached as failed. The records it inherits from, and those the ' +
 			'budget ledger cites, are attached with it.',

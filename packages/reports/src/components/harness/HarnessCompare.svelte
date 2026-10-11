@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { emittedChange } from '../../utils/harnessEmitted';
 	import type { HarnessRevision, HarnessUnit } from '../../models/Harness.types';
 	import type { HarnessClient } from '../../utils/harnessClient';
 	import { comparedSides, harnessImpact, type ComparedSides } from '../../utils/harnessImpact';
@@ -56,6 +57,10 @@
 		return found?.value ?? null;
 	};
 	const shown = (value: number | null) => (value === null ? 'unavailable' : String(value));
+	const sized = (revision: HarnessRevision | undefined) => ({
+		units: revision?.registry.units ?? [],
+		record: revision?.records.find((item) => item.valid) ?? null
+	});
 </script>
 
 <section class="hc-card" aria-label="Impact">
@@ -141,6 +146,13 @@
 								<td>{id}</td><td>{metric}</td>
 								<td>{shown(measured(base, id, metric))}</td>
 								<td>{shown(measured(head, id, metric))}</td>
+							</tr>
+						{/each}
+						{#each emittedChange(id, [sized(base), sized(head)]) as item, position (position)}
+							<tr>
+								<td>{id}</td><td>artifact-bytes ({item.label})</td>
+								<td>{shown(item.before)}</td>
+								<td>{shown(item.after)}</td>
 							</tr>
 						{/each}
 					{/each}

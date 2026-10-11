@@ -150,24 +150,46 @@ type ArtifactEntry = Pick<
 	'metric' | 'unitOfMeasure' | 'value' | 'unavailable' | 'method' | 'target' | 'artifacts'
 >;
 
-/** One entry per built target; a unit with nothing to build says so. */
-function artifactMeasurements(unit: ComponentManifest, built: BuiltArtifacts): ArtifactEntry[] {
-	const base = { metric: 'artifact-bytes', unitOfMeasure: 'bytes' };
-	const emitted = unit.runtime.targets.filter(
+const emittedSize = { metric: 'artifact-bytes', unitOfMeasure: 'bytes' };
+
+/** The targets a unit is built for as a file of its own: a process binary or a Wasm module. */
+export function emittedTargets(unit: ComponentManifest): ComponentManifest['runtime']['targets'] {
+	return unit.runtime.targets.filter(
 		(target) => target.kind === 'wasm' || target.kind === 'process'
 	);
+}
+
+/**
+ * One entry per execution target a unit is built for; a unit with nothing to build says so.
+ * Several artifacts declared for one target are one size, their sum. Targets are never added
+ * together: what runs as a process and what runs as Wasm each keep a size of their own.
+ */
+function artifactMeasurements(unit: ComponentManifest, built: BuiltArtifacts): ArtifactEntry[] {
+	const emitted = emittedTargets(unit);
 	if (emitted.length === 0) {
 		const unavailable = 'A module unit emits no separate artifact.';
-		return [{ ...base, value: null, unavailable, method: 'Not applicable.', artifacts: [] }];
+		const method = 'Not applicable.';
+		return [{ ...emittedSize, value: null, unavailable, method, artifacts: [] }];
 	}
-	return emitted.map((target): ArtifactEntry => {
-		const found = built[target.entry];
-		const method = 'Byte size of the artifact as built in the verified snapshot.';
-		if (!found) {
-			const unavailable = `${target.entry} was not built in the verified snapshot.`;
-			return { ...base, value: null, unavailable, method, target: target.kind, artifacts: [] };
-		}
-		const artifacts = [{ path: target.entry, ...found }];
-		return { ...base, value: found.bytes, method, target: target.kind, artifacts };
+	const kinds = [...new Set(emitted.map((target) => target.kind))];
+	return kinds.map((kind) => {
+		const declared = emitted.filter((target) => target.kind === kind).map((target) => target.entry);
+		return { ...targetSize([...new Set(declared)], built), target: kind };
 	});
+}
+
+/** The size of one target. An artifact that was not built leaves the whole size unknown. */
+function targetSize(paths: string[], built: BuiltArtifacts): Omit<ArtifactEntry, 'target'> {
+	const method =
+		paths.length === 1
+			? 'Byte size of the artifact as built in the verified snapshot.'
+			: `Sum of the byte sizes of the ${paths.length} artifacts of this target as built in the verified snapshot.`;
+	const artifacts = paths.flatMap((path) => (built[path] ? [{ path, ...built[path] }] : []));
+	const absent = paths.filter((path) => !built[path]);
+	if (absent.length === 0) {
+		const value = artifacts.reduce((sum, artifact) => sum + artifact.bytes, 0);
+		return { ...emittedSize, value, method, artifacts };
+	}
+	const unavailable = `${listed(absent)} ${absent.length === 1 ? 'was' : 'were'} not built in the verified snapshot.`;
+	return { ...emittedSize, value: null, unavailable, method, artifacts };
 }

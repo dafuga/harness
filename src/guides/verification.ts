@@ -128,6 +128,16 @@ const budgetGuide: Guide = {
 	],
 	rules: [
 		'Source bytes, complexity and dependencies may not grow past the baseline at all.',
+		'What a unit is built into has a frozen size too, one for each execution target: a process ' +
+			'binary and a Wasm module each keep their own limit under artifact-bytes:<target>, so ' +
+			'one cannot grow by what the other lost. Several artifacts declared for one target are ' +
+			'one size, their sum, with the hash of each. The size is the one measured from the ' +
+			'build of the verified snapshot, judged whenever the unit is judged, also when only ' +
+			'something it is built from changed. A module emits nothing and has no such limit. An ' +
+			'output that was measured at the baseline and is no longer built fails; one that could ' +
+			'not be built when the limits were reviewed is stated; and one the baseline does not ' +
+			'cover, because the unit did not emit it then or its limits are older than these, needs ' +
+			'harness budget approve before it passes.',
 		'Performance may be at most 5% worse than the baseline for the same workload, execution ' +
 			'target and machine profile. Noise is answered with more comparable samples, never ' +
 			'with a wider tolerance.',

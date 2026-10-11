@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { harnessBudget } from '../../utils/harnessBudget';
+	import { harnessEmitted } from '../../utils/harnessEmitted';
 	import type { HarnessRecord, HarnessScenario, HarnessUnit } from '../../models/Harness.types';
 	import { scenarioOrigin } from '../../utils/captureProvenance';
 	let {
@@ -31,13 +32,25 @@
 	let covering = $derived(scenarios.filter((scenario) => scenario.units.includes(unit.id)));
 	let measured = $derived((record?.measurements ?? []).filter((item) => item.unit === unit.id));
 	const frozen = ['source-bytes', 'complexity', 'dependencies'];
+	// A figure of the unit itself names no machine; what a benchmark reports about its run does.
 	const taken = (metric: string, workload: string | null = null) =>
-		measured.find((item) => item.metric === metric && item.workload === workload);
+		measured.find(
+			(item) =>
+				item.metric === metric && item.workload === workload && (workload !== null || !item.profile)
+		);
 	const value = (metric: string, workload: string | null = null) =>
 		harnessBudget(taken(metric, workload)).value;
 	const finding = (metric: string) =>
 		record?.budgets.findings.find((item) => item.unit === unit.id && item.metric === metric);
-	const frozenLine = (metric: string) => harnessBudget(taken(metric), finding(metric));
+	// A declared freeze is a policy; a limit is a number the ledger of this revision holds.
+	const reviewed = (metric: string) => ({
+		declared: (metric === 'complexity' ? unit.budgets.complexity : unit.budgets.size) === 'frozen',
+		limit: unit.limits?.metrics[metric],
+		unmeasured: unit.limits?.unmeasured?.[metric]
+	});
+	const frozenLine = (metric: string) =>
+		harnessBudget(taken(metric), finding(metric), reviewed(metric));
+	let emitted = $derived(harnessEmitted(unit, record));
 	const tested = (id: string) => record?.scenarios.find((scenario) => scenario.id === id);
 </script>
 
@@ -109,6 +122,13 @@
 					<span class="hc-muted">· {frozenLine(metric).limit}</span>
 					{#if frozenLine(metric).note}<br /><span class="hc-muted">{frozenLine(metric).note}</span
 						>{/if}
+				</li>
+			{/each}
+			{#each emitted as line, position (position)}
+				<li>
+					emitted size{line.label ? ` (${line.label})` : ''}: {line.value}
+					<span class="hc-muted">· {line.limit}</span>
+					{#if line.note}<br /><span class="hc-muted">{line.note}</span>{/if}
 				</li>
 			{/each}
 			{#each unit.budgets.performance as budget, position (position)}

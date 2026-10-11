@@ -48,9 +48,11 @@ export async function budgetMeasure(unit?: string, root?: string) {
 	return loaded.fresh.manifests
 		.filter((manifest) => manifest.status === 'active' && (!unit || manifest.id === unit))
 		.flatMap((manifest) => unitMeasurements(manifest, loaded.index.files, '0'.repeat(40)))
-		.map(({ unit: id, metric, value, unitOfMeasure, unavailable, partial }) => ({
+		.map(({ unit: id, metric, value, unitOfMeasure, unavailable, partial, target }) => ({
 			unit: id,
 			metric,
+			// What a unit emits is one row for each execution target.
+			...(target ? { target } : {}),
 			value,
 			unitOfMeasure,
 			// A missing value says why, and a value that leaves something out says what.

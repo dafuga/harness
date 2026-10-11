@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/unitMeasurements.ts"],
-		"symbols": ["BuiltArtifacts", "unitMeasurements"]
+		"symbols": ["BuiltArtifacts", "unitMeasurements", "emittedTargets"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -28,12 +28,20 @@
 			{
 				"name": "unitMeasurements.artifacts",
 				"type": "BuiltArtifacts"
+			},
+			{
+				"name": "emittedTargets.unit",
+				"type": "ComponentManifest"
 			}
 		],
 		"outputs": [
 			{
 				"name": "unitMeasurements",
 				"type": "Measurement[]"
+			},
+			{
+				"name": "emittedTargets",
+				"type": "ComponentManifest['runtime']['targets']"
 			}
 		],
 		"errors": []

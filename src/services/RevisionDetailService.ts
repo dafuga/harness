@@ -1,3 +1,6 @@
+import type { BudgetEvent } from '../core/budgetTypes';
+import { BudgetLedgerRepository } from '../repositories/BudgetLedgerRepository';
+import { BudgetService } from './BudgetService';
 import { CommitTreeAdapter } from '../adapters/CommitTreeAdapter';
 import { GitAdapter } from '../adapters/GitAdapter';
 import type { Explanation } from '../core/explanationTypes';
@@ -42,6 +45,11 @@ export interface RevisionDetail {
 	explanations: Explanation[];
 }
 
+interface Stored {
+	registry: RevisionRegistry;
+	ledger: BudgetEvent[];
+}
+
 export interface BuiltRevision {
 	detail: RevisionDetail;
 	/** The stored side to write at `detail.side`; revisions with one tree share one. */
@@ -49,6 +57,8 @@ export interface BuiltRevision {
 	status: CommitStatus;
 	/** Attached records of this commit that are intact, whatever their outcome. */
 	sound: VerificationRecord[];
+	/** The budget ledger as this revision stores it. */
+	ledger: BudgetEvent[];
 }
 
 /**
@@ -57,7 +67,7 @@ export interface BuiltRevision {
  * from, or replaced by, the current state of the repository.
  */
 export class RevisionDetailService {
-	private readonly registries = new Map<string, RevisionRegistry>();
+	private readonly registries = new Map<string, Stored>();
 	private readonly git: GitAdapter;
 	private readonly source: SourceImpactService;
 
@@ -86,17 +96,18 @@ export class RevisionDetailService {
 		}
 		const side = await this.source.stored(commit);
 		const tree = await this.git.attempt(['rev-parse', '--verify', '--quiet', `${commit}^{tree}`]);
+		const stored = await this.registry(commit);
 		const detail: RevisionDetail = {
 			schemaVersion: 1,
 			commit,
-			registry: await this.registry(commit),
+			registry: stored.registry,
 			comparison: comparison(sound),
 			sourceImpact: (await this.source.of(commit)) ?? null,
 			side: side && tree ? `sides/${tree}.json` : null,
 			records,
 			explanations: await this.explanations(commit, sound)
 		};
-		return { detail, status, sound, ...(side ? { side } : {}) };
+		return { detail, status, sound, ledger: stored.ledger, ...(side ? { side } : {}) };
 	}
 
 	/** Every capture is looked up in the record that produced it, which may be an earlier one. */
@@ -124,8 +135,11 @@ export class RevisionDetailService {
 		return line ? this.history.attached.load(line.evidence) : undefined;
 	}
 
-	/** Revisions with the same tree share one parsed registry. */
-	private async registry(commit: string): Promise<RevisionRegistry> {
+	/**
+	 * Revisions with the same tree share one parsed registry. The ledger is part of that tree:
+	 * the limits a unit view states are those this revision itself freezes.
+	 */
+	private async registry(commit: string): Promise<Stored> {
 		// Unit versions cover owned files, so the whole tree identifies a registry view.
 		const key =
 			(await this.git.attempt(['rev-parse', '--verify', '--quiet', `${commit}^{tree}`])) ?? commit;
@@ -135,9 +149,11 @@ export class RevisionDetailService {
 		const units = await new UnitRegistryRepository(this.root).read(tree);
 		const scenarios = await new ScenarioRepository(this.root).read(tree);
 		const blobs = new Map((await tree.list()).map((entry) => [entry.path, entry.hash]));
-		const registry = revisionRegistry(units.manifests, scenarios.manifests, blobs);
-		this.registries.set(key, registry);
-		return registry;
+		const ledger = (await new BudgetLedgerRepository(this.root).read(tree)).events;
+		const limits = new BudgetService().baselines(ledger, units.manifests);
+		const registry = revisionRegistry(units.manifests, scenarios.manifests, blobs, limits);
+		this.registries.set(key, { registry, ledger });
+		return { registry, ledger };
 	}
 
 	/** Reasons noted on the commit and those that satisfied its records, each listed once. */

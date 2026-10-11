@@ -247,6 +247,44 @@ reason and the values before and after, in the append-only ledger
 `specification/budgets/ledger.ndjson`. A unit recreated from retired source inherits the retired
 limits, and an identity can be retired but not deleted.
 
+**Emitted sizes.** What a unit is built into is frozen beside its source, once for every
+execution target: the ledger holds `artifact-bytes:process` and `artifact-bytes:wasm` as
+separate limits, so a Wasm module cannot grow by what a process binary lost. The number is the
+size measured from the build of the verified snapshot, with the hash of every artifact; several
+artifacts declared for one target are one size, their sum, and an artifact that was not built
+leaves that size without a value instead of a smaller one. It is judged whenever the unit is,
+also when only something it is built from changed. A module emits nothing: its record says so,
+and it has no limit and no zero. An output that had a size at its baseline and is no longer
+built fails. One that could not be built when the limits were reviewed is written into the
+baseline with the reason, and needs a reviewed limit once it is built. A baseline that does not
+cover an output at all, because the unit did not emit it then or the ledger line is older than
+these limits, is not treated as a limit of zero or of anything: the output fails until
+`harness budget approve` records its size, and the approval keeps the limits before and after.
+Records written before emitted sizes were judged are not rewritten and keep their outcome.
+
+The console shows the same, read from the history index alone. The index keeps the emitted
+size of every target at each measured commit, the limits the ledger of each revision freezes,
+and every baseline and approval with the limits before and after at the commit it measured. A
+component's panel lists `emitted size (process (native))` and `emitted size (Wasm)` as separate
+lines beside its source limits, each with its bytes and its own limit at that revision: `no
+limit is recorded at this revision` before any review, the reason when an output was not
+built, and one line saying so for a unit that emits nothing. The growth view has a table of
+emitted sizes with a column for each target: the size and its change at every commit, the limit
+that commit was verified under, the review that set or changed it, the recorded reason, and
+the way to the evidence before and after. The comparison lists each target's size on both
+sides. Only sizes measured from the build of the snapshot are shown as that series; what a
+benchmark reports about its own run stays with the timings.
+
+**A declared freeze is not a limit.** Every manifest declares size and complexity `frozen`;
+that is a policy. A limit is a number a reviewer froze. The panel says `frozen at <number>` for
+source bytes, complexity and dependencies only where one is known for that revision: the
+baseline the record itself judged the value against, or else the limit in the ledger of that
+revision, which the index states per unit. Where neither exists, as in the first record of a
+repository, the line reads `freeze declared; no reviewed limit is recorded at this revision`.
+A later baseline is never shown at an earlier revision, a metric that cannot be measured keeps
+`not frozen` with its reason, and a value that exceeded its reviewed limit says what it grew
+from and to. Records are not changed by any of this.
+
 **What is and is not measured.** Decision points are counted in TypeScript, JavaScript and
 Svelte. Stylesheets, markup without a script and data files have none to count, and their zero
 is a count. A unit with code in any other language, such as Rust or Python, has no complete
@@ -290,7 +328,12 @@ error as soon as that directory is rebuilt: a refused console page then reads 50
 `.cache/reports-e2e/<run>/build`, checks that the copy and the directory still have the
 identity the directory had when the copy began, and starts its servers from the copy; a
 directory that holds no build, or one that another build is changing at that moment, stops the
-run with that reason. The copy is removed with the run. Builds themselves are not isolated:
+run with that reason. The copy is removed with the run. Every server of a run is started from
+that copy, the application under test included, and a run starts no development server: one
+keeps what it generates in `packages/reports/.svelte-kit`, writes all of it again each time it
+starts, and every other development server of the checkout then tells its open pages to load
+again, which undoes whatever a test had opened on them. A development server you start
+yourself in a checkout is still reloaded by a build there. Builds themselves are not isolated:
 `bun run build` and `bun run check` write `dist`, `target` and `packages/reports/build` of the
 checkout, two of them at once both exit 0 and leave whatever was written last, and nothing
 reports the conflict. Run one build or full check per checkout at a time, and use another
@@ -345,6 +388,18 @@ same bytes, in any clone, without SQLite or R2. A commit without evidence is lis
 missing or damaged notes, manifests and media are reported and never replaced by current data.
 Timings taken on another machine profile, or under another request, unit, method or sampling,
 are separate series.
+
+**Branches in the index.** A source branch is a local branch or a branch the repository has
+from a remote, so a normal clone, which has one local branch, still holds the history of all
+of them. A local branch keeps its name and its own tip, always. A branch that exists only as a
+remote-tracking ref is listed under its plain name, `main` and not `origin/main`, when every
+remote that has it agrees on its tip: the index then reads the same in the clone as where it
+was pushed from. A remote tip that differs from the local branch of that name, or from another
+remote's, is listed beside it as `<remote>:<branch>`, for example `origin:main`. A colon cannot
+occur in the name of a Git branch, so that name can never be a local branch's, not even one
+called `origin/main`, and a local branch that is behind is never shown at the remote's tip. A
+remote tip equal to the local one adds nothing. The evidence branch, notes, archived source,
+tags and a remote's symbolic `HEAD` are never listed as branches, on either side.
 
 **Legacy reports.** `import-reports` only reads the old store. It imports the runs of this
 repository with their original dates, outcome and revision: a run that was still running stays

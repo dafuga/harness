@@ -1,0 +1,72 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.harness-emitted-growth",
+	"kind": "function",
+	"title": "harnessEmittedGrowth",
+	"responsibility": "Derives the emitted size of one unit commit by commit for each execution target, with the limit each commit was verified under and the reviews that measured it.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/harnessEmittedGrowth.ts"],
+		"symbols": [
+			"EmittedCell",
+			"EmittedReview",
+			"EmittedRow",
+			"EmittedGrowth",
+			"harnessEmittedGrowth"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "harnessEmittedGrowth.index",
+				"type": "HarnessIndex"
+			},
+			{
+				"name": "harnessEmittedGrowth.unit",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "harnessEmittedGrowth",
+				"type": "EmittedGrowth"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.harness-emitted",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-budget-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/harnessEmittedGrowth.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/harnessEmittedGrowth.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

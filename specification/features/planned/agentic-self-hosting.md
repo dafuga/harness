@@ -131,6 +131,26 @@ today; see Delivery status.
 - Size, complexity and dependency baselines are frozen. Performance tolerates 5% against a
   matching workload, execution target and machine profile. Missing or incompatible measurements
   never pass.
+- The size of what a unit emits is frozen for each execution target by itself, as
+  `artifact-bytes:<target>` in the ledger, from the build of the verified snapshot and with the
+  hash of every artifact. A process binary and a Wasm module never share a limit, several
+  artifacts of one target are one sum, and a module has none. An output that is gone fails, one
+  that could not be built at review is stated, and one a baseline does not cover needs a
+  reviewed approval. Earlier records are not rewritten; a ledger line older than these limits
+  covers no output, so the first verification after it asks for that approval.
+- The console shows those sizes and limits from the index alone: a line for each target in the
+  component panel at any revision, a table of emitted sizes in the growth view with the limit
+  each commit was verified under, the baseline or approval that reviewed it, the reason and the
+  way to the evidence, and each target's size on both sides of a comparison. The index holds
+  the sizes per target, the limits of each revision and the reviews of every unit. For the
+  repository's own history this reads: process 402048 bytes and Wasm 143132 bytes at the one
+  measured commit, with no limit recorded, because no baseline has been established.
+- A declared freeze is not shown as a limit. The panel says `frozen at` a number only where a
+  reviewed limit is known for that revision, from the record's own finding or from the ledger
+  of the revision; otherwise it says that a freeze is declared and no reviewed limit is
+  recorded there. Until this was corrected the panel of the first real record read `frozen` for
+  source bytes and dependencies although that record's findings are all `missing-baseline`. The
+  record itself is unchanged.
 - A workload name does not make two measurements comparable. A performance baseline freezes its
   unit of measure, its method and a comparison context: the hash of the complete canonical
   request, the measured boundary, the protocol and the sampling. A measurement is compared only
@@ -358,10 +378,23 @@ test that ends its own server, and checks that cannot pass while a descendant ru
 
 What stage F does not yet do:
 
-- No commit of Harness is verified in the repository itself, and no baseline is established
-  there. Both are steps on a clean commit that the integrator takes. What exists is a scratch
-  clone, outside the repository, holding the stage F tree as one local commit:
-  its first complete verification, of an earlier tree, ran 263 checks and passed the snapshot,
+- No commit of Harness has a passing record of its own, and no baseline is established. The
+  first real verification of a Harness commit exists and failed: record
+  `b141c19fec6c324b9316000b5af7b61b08ae83ec8f0fd94962afd133ccb71e36` of commit
+  `1d5f793674f84d014a8d351d4ddb1e013cfbe0fa`. Of its 290 checks 289 passed and
+  `test/reports-concurrent-runs.e2e.test.ts` failed; all five scenarios passed, with 63
+  screenshots and two audio captures; the snapshot, registry, ledger and reasons gates passed;
+  and the budgets gate failed because none of the 539 units had a baseline. The record is kept
+  and attached as failed, and nothing relabels it. What it failed on is repaired after that
+  commit (a browser run starts no development server), and three gaps it and its history
+  exposed are closed after it as well: emitted sizes are frozen for each execution target, a
+  clone holds the branches it has only from its remote, and a record with hundreds of failures
+  reads as a summary by cause. None of that has a record yet. A baseline can only come from a
+  clean record whose other gates passed, signed by a reviewer: that is the integrator's step,
+  and it has not been taken.
+- Historical milestone, before the first real run: a scratch clone outside the repository held
+  the stage F tree as one local commit.
+  Its first complete verification, of an earlier tree, ran 263 checks and passed the snapshot,
   registry and ledger gates and the console and boundary scenarios; it failed two tests and two
   scenarios without evidence, all repaired since, and the reasons and budgets gates, for which
   the clone then held neither reasons nor baselines. Two later runs of the repaired tree were
@@ -380,7 +413,12 @@ What stage F does not yet do:
 - Opt-in screenshot output of three older specs (`TAKE_SCREENSHOT=true`) still goes to fixed
   directories under `/tmp`. They are files a developer asked for, not fixtures any run reads.
 - One checkout has one build at a time. A browser run serves a private, checked copy of the
-  finished build, so a rebuild during the run no longer reaches its servers; but two builds or
+  finished build from every server it starts, the application under test included, and starts
+  no development server, so neither a rebuild nor the start of another run reaches its pages:
+  a development server keeps what it generates in the checkout and reloads its pages when
+  another one starts there, which failed one test of two concurrent runs in the first real
+  verification of this stage. A development server started by hand is still reloaded by a
+  build in its checkout. Two builds or
   two full checks in one checkout still write the same `dist`, `target` and build directories,
   both exit 0 and nothing reports the conflict. A verification snapshot has its own.
 - A bucket-backed console was exercised with Wrangler's local simulation of a bucket and
@@ -414,10 +452,11 @@ What stage E does not yet do:
 
 - Compare shows impact, measurements and coverage of two revisions, but not their screenshots or
   audio side by side. Aligned base and head media belong to stage F.
-- No commit of Harness has been verified, so the console has no record of its own to show and
-  the console scenario has not run under `harness verify`. Its browser captures are validated
-  against the scenario contract and the real build identity in the suite, with a placeholder in
-  place of a verified revision. The first real run is stage F.
+- Historical milestone: at the end of stage E no commit of Harness had been verified, so the
+  console had no record of its own to show and the console scenario had not run under
+  `harness verify`. Its browser captures were validated against the scenario contract and the
+  real build identity in the suite, with a placeholder in place of a verified revision. The
+  first real run came in stage F and failed; see there.
 - The map was exercised in the suite on a generated registry of 488 units, which describes no
   real source. The repository's own 456 units were inspected by hand on a read-only index.
 - A host bundles its history into its server. That suits a small index; a Worker script has a
@@ -471,9 +510,10 @@ What stage C left open and still is:
   enabled and its output declaration is untested: both belong to the self-host run in stage F.
 - A project that declares no build keeps the earlier rule: its captures are tied to a revision
   only, and a stale build relabelled with that revision would not be noticed there.
-- Harness has not verified one of its own commits. Its configuration, boundary scenario and
-  budgets are declared, but no unit has a baseline: they can only come from a clean record of a
-  committed revision, which stage F establishes.
+- Historical milestone: at the end of this stage Harness had not verified one of its own
+  commits. Its configuration, boundary scenario and budgets were declared, but no unit had a
+  baseline. The first real run came in stage F and failed, so there is still no baseline: one
+  can only come from a clean record of a committed revision whose other gates passed.
 - The reviewer rule compares a name with the commit author; it is a recorded control, not an
   authentication.
 - Verification runs on POSIX systems; checks are started through `sh`.

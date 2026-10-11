@@ -5,7 +5,8 @@ import { fail } from '../core/errors';
 import type { ComponentManifest } from '../core/unitTypes';
 import type { Measurement, VerificationRecord } from '../core/verificationTypes';
 import { VerificationStoreRepository } from '../repositories/VerificationStoreRepository';
-import { frozenMetrics } from '../utils/budgetFindings';
+import { frozenMetrics, isFrozen } from '../utils/budgetFindings';
+import { emittedKey, emittedSizes } from '../utils/emittedSizes';
 import { loadBudgets, type SignedInput } from './runBudget';
 
 /** A limit may only come from a clean record whose every other gate passed, signed by a reviewer. */
@@ -47,6 +48,11 @@ function frozenMetricsOf(record: VerificationRecord, unit: ComponentManifest) {
 		if (typeof found?.value === 'number') metrics[metric] = found.value;
 		else if (found?.unavailable) unmeasured[metric] = found.unavailable;
 		else return fail(`Record ${record.id.slice(0, 12)} did not measure ${unit.id}.`);
+	}
+	// What the unit emits is frozen for each execution target by itself, under the target's name.
+	for (const found of emittedSizes(mine)) {
+		if (typeof found.value === 'number') metrics[emittedKey(found.target)] = found.value;
+		else if (found.unavailable) unmeasured[emittedKey(found.target)] = found.unavailable;
 	}
 	return { metrics, ...(Object.keys(unmeasured).length > 0 ? { unmeasured } : {}) };
 }
@@ -145,9 +151,7 @@ export async function budgetApprove(input: SignedInput): Promise<BudgetEvent[]> 
 		if (!existing) return fail(`${id} has no baseline; use harness budget establish.`);
 		const { metrics, unmeasured, performance } = measuredLimits(record, unit);
 		const before = Object.fromEntries(
-			frozenMetrics.flatMap((metric) =>
-				metric in existing.metrics ? [[metric, existing.metrics[metric]]] : []
-			)
+			Object.entries(existing.metrics).filter(([metric]) => isFrozen(metric))
 		);
 		return {
 			type: 'approval',

@@ -1,0 +1,64 @@
+{
+	"schemaVersion": 1,
+	"id": "function.emitted-sizes",
+	"kind": "function",
+	"title": "emittedSizes",
+	"responsibility": "Names the limit of what a unit emits for one execution target and picks the sizes that are frozen: those measured from the build of the verified snapshot.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/emittedSizes.ts"],
+		"symbols": ["emittedMetric", "emittedKey", "emittedSizes"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "emittedKey.target",
+				"type": "string"
+			},
+			{
+				"name": "emittedSizes.measurements",
+				"type": "Item[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "emittedMetric",
+				"type": "unknown"
+			},
+			{
+				"name": "emittedKey",
+				"type": "string"
+			},
+			{
+				"name": "emittedSizes",
+				"type": "Array<Item & { target: RuntimeKind }>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/emittedSizes.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/emittedSizes.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

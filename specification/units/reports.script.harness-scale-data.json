@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/scripts/harness-scale-data.ts"],
-		"symbols": ["generatedUnits", "writeScaleData"]
+		"symbols": ["generatedUnits", "generatedFailures", "writeScaleData"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -22,13 +22,17 @@
 				"type": "string"
 			},
 			{
-				"name": "writeScaleData.commit",
-				"type": "string"
+				"name": "writeScaleData.commits",
+				"type": "{ map: string; failed: string }"
 			}
 		],
 		"outputs": [
 			{
 				"name": "generatedUnits",
+				"type": "unknown"
+			},
+			{
+				"name": "generatedFailures",
 				"type": "unknown"
 			},
 			{
