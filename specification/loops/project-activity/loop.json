@@ -2,7 +2,7 @@
 	"name": "project-activity",
 	"goal": "The analytics page of a Harness site is about the application it is hosted for: it names the repository, shows the loop types the project uses, its recent committed work with reasons and the files that changed with their components, the uncommitted changes of each checkout apart from that, and how many registered agents are working now and on which components, from a registration with heartbeats that says honestly when it does not know; the same recorded activity is built into the history index and shown by an installed console without Git or a database, where live activity is said to be unavailable",
 	"createdAt": "2026-10-11T10:48:13.459Z",
-	"updatedAt": "2026-10-11T13:25:02.957Z",
+	"updatedAt": "2026-10-11T14:00:41.843Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"steps": [
@@ -47,6 +47,13 @@
 			"status": "complete",
 			"completedAt": "2026-10-11T13:25:02.957Z",
 			"evidence": "The reports scenario kept only the general analytics state: the pictures of the two activity specs are optional and outside the record. The scenario now declares nine activity states (agents, files, work, loops, busy, assignments, expanded, unrefreshed, unknown), each required at desktop, tablet and mobile. Red with the capture suite as it was: work/activity/evidence/capture-RED.log, where the existing gate 'what was captured satisfies the reports scenario' failed with 27 lines 'missing screenshot for state activity-… at viewport …'. Green: the suite takes them with the existing capture helper from the fixture application the behaviour spec uses and from the made-up busy and failing readings it serves with a held clock; 8 tests passed, 52 captures judged (51 screenshots, 1 recording), all stamped with one served build (work/activity/evidence/capture-GREEN.log, hashes of the 27 new pictures in activity-capture-hashes.txt, 2.9 MB together). The pictures were looked at. The capture suite puts the fixture checkouts back as it found them: without that a later, unchanged behaviour test met agents it had not made, which the first whole-suite run showed. Whole browser suite: 169 passed, 1 skipped as before (work/activity/evidence/browser-suite.log). No unit source changed, so no reason is asked for: explain check from 37e96d2 and from HEAD both pass. Nine activity states take about 8 seconds a viewport in a test of their own; the suite went from 1.8 to 2.2 minutes, most of it starting its servers. Simpler was tried first: the states share the two fixtures the behaviour specs already have instead of new ones. The complete verification was not run; it is Codex's."
+		},
+		{
+			"id": "ci-allowance",
+			"title": "Give the exact-commit verification job time to end and leave its record.",
+			"status": "complete",
+			"completedAt": "2026-10-11T14:00:41.843Z",
+			"evidence": "The Verify the exact commit job of .github/workflows/harness-verify.yml was limited to 60 minutes. The clean-snapshot verification of ac6a97ee91de7dddebedb47f159a9a23ed198328 from 37e96d20d2cd5020bb06e2086dc5bc09c0465946, started on this machine at 2026-10-11T12:57:50Z, was still running at 2026-10-11T14:00:28Z, one hour and three minutes in, with 175 logs written and no record yet: an uncertain reference widens its impact to all 314 test files and five scenarios, each run as a command of its own. A job stopped at 60 minutes ends before the record exists, and the step that keeps the record never runs. The limit of that one job is 180 minutes now. Nothing else changed: parsed, the workflow equals the committed one once that value is put back; the Full check job keeps 45 minutes; commands, gates, profiles, permissions, triggers, the artifact and the separate publishing workflow are as they were. It allows time and approves nothing: no budget, baseline or tolerance is touched. Checked with the existing policy test (bun x vitest run test/ci-workflow.test.ts: 4 passed) and bun run format:check. No browser suite, benchmark or verification was run for this, because the independent snapshot was still running. The policy test does not pin either limit; none was added, as asked."
 		}
 	],
 	"evaluators": [
