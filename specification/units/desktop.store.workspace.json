@@ -19,14 +19,39 @@
 				"type": "unknown"
 			}
 		],
-		"errors": [
-			{
-				"name": "Error",
-				"type": "thrown"
-			}
-		]
+		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.function.cache-status",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.load-workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.open-project",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.project-capabilities",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.project-list",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.workspace-route",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.model.desktop-bridge-types",
 			"via": "import",
@@ -34,6 +59,11 @@
 		},
 		{
 			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.project-context-types",
 			"via": "import",
 			"origin": "derived"
 		}

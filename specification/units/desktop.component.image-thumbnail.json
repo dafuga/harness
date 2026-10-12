@@ -44,6 +44,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.function.image-url",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.store.workspace",
 			"via": "import",
 			"origin": "derived"

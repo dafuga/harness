@@ -1,0 +1,91 @@
+{
+	"schemaVersion": 1,
+	"id": "collaboration.function.create-invitation",
+	"kind": "function",
+	"title": "createInvitation",
+	"responsibility": "Owns the createInvitation shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/collaboration/src/utils/createInvitation.ts"],
+		"symbols": ["createInvitation", "acceptInvitation"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "createInvitation.deps",
+				"type": "CollaborationDependencies"
+			},
+			{
+				"name": "createInvitation.actor",
+				"type": "Actor"
+			},
+			{
+				"name": "createInvitation.input",
+				"type": "Parameters<CollaborationApi['createInvitation']>[1]"
+			},
+			{
+				"name": "acceptInvitation.deps",
+				"type": "CollaborationDependencies"
+			},
+			{
+				"name": "acceptInvitation.actor",
+				"type": "Actor"
+			},
+			{
+				"name": "acceptInvitation.input",
+				"type": "Parameters<CollaborationApi['acceptInvitation']>[1]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "createInvitation",
+				"type": "unknown"
+			},
+			{
+				"name": "acceptInvitation",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "collaboration.function.current-project",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.function.parse-collaboration-input",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.model.collaboration-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/collaboration/src/utils/createInvitation.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/collaboration/src/utils/createInvitation.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

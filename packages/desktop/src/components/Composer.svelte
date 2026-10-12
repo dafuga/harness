@@ -1,51 +1,41 @@
 <script lang="ts">
-	import Select from '$shared/Select.svelte';
-	import type { ProviderState, ProviderId, RunMode } from '../models/Desktop.types';
+	import type { ProviderState } from '../models/Desktop.types';
+	import type { AgentChoice, ComposeMode, RunDraft } from '../utils/composeModes';
+	import AgentControls from './AgentControls.svelte';
 	let {
+		modes,
 		providers,
-		writable,
 		approved,
 		running,
+		notice = '',
+		comment,
 		send
 	}: {
+		/** What this context allows, Comment first. Empty when nothing can be sent. */
+		modes: ComposeMode[];
 		providers: ProviderState[];
-		writable: boolean;
 		approved: boolean;
 		running: boolean;
-		send: (request: {
-			text: string;
-			mode: RunMode;
-			provider: ProviderId;
-			model: string;
-			effort: string | null;
-		}) => Promise<boolean>;
+		notice?: string;
+		comment: (text: string) => Promise<boolean>;
+		send: (request: RunDraft) => Promise<boolean>;
 	} = $props();
+	const labels = { comment: 'Comment', plan: 'Plan', change: 'Change' };
 	let text = $state('');
-	let mode = $state<RunMode>('plan');
-	let provider = $state<ProviderId>('codex');
-	let model = $state('');
-	let effort = $state('');
-	const current = $derived(providers.find((p) => p.id === provider));
-	const selected = $derived(current?.models.find((m) => m.id === model));
-	const disabled = $derived(
-		!writable ||
-			running ||
-			!current?.available ||
-			!model ||
-			!text.trim() ||
-			(mode === 'change' && !approved)
-	);
-	$effect(() => {
-		if (!current?.models.some((m) => m.id === model))
-			model = current?.models.find((m) => m.isDefault)?.id || current?.models[0]?.id || '';
-	});
-	$effect(() => {
-		if (!selected?.efforts.includes(effort))
-			effort = selected?.defaultEffort || selected?.efforts[0] || '';
-	});
+	let chosen = $state<ComposeMode | null>(null);
+	let agent = $state<AgentChoice | null>(null);
+	/** A mode that is no longer offered is not kept: the first offered one takes its place. */
+	const mode = $derived(chosen && modes.includes(chosen) ? chosen : (modes[0] ?? null));
+	const request = $derived(mode === 'plan' || mode === 'change' ? mode : null);
+	const unready = $derived(Boolean(request) && (!agent || (request === 'change' && !approved)));
+	const blocked = $derived(!mode || running || !text.trim() || unready);
+	const hint = $derived(notice || (mode ? 'For people. A comment never starts an agent.' : ''));
+	/** A comment goes to the comment operation; only Plan and Change become a run request. */
 	async function submit() {
-		if (disabled) return;
-		const sent = await send({ text: text.trim(), mode, provider, model, effort: effort || null });
+		if (blocked) return;
+		const body = text.trim();
+		const sent =
+			request && agent ? await send({ text: body, mode: request, ...agent }) : await comment(body);
 		if (sent) text = '';
 	}
 </script>
@@ -59,44 +49,29 @@
 >
 	<textarea
 		aria-label="Message"
-		placeholder="Describe the next design…"
+		placeholder={request ? 'Describe the next design…' : 'Leave a comment…'}
 		bind:value={text}
 		rows="3"
-		disabled={!writable || running}
+		disabled={!mode || running}
 	></textarea>
-	<div class="mode-options" aria-label="Request mode">
-		<button type="button" class:active={mode === 'plan'} onclick={() => (mode = 'plan')}
-			>Plan</button
-		><button
-			type="button"
-			class:active={mode === 'change'}
-			disabled={!approved}
-			title={approved
-				? 'Implement the exact approved design'
-				: 'Approve the current exact design first'}
-			onclick={() => (mode = 'change')}>Change</button
+	{#if modes.length > 1}<div class="mode-options" role="group" aria-label="Request mode">
+			{#each modes as item (item)}<button
+					type="button"
+					class:active={mode === item}
+					aria-pressed={mode === item}
+					disabled={item === 'change' && !approved}
+					title={item === 'change' && !approved ? 'Approve the current exact design first' : ''}
+					onclick={() => (chosen = item)}>{labels[item]}</button
+				>{/each}
+		</div>{/if}
+	{#snippet action()}<button
+			class="primary send"
+			aria-label={`Send ${mode ?? 'message'}`}
+			disabled={blocked}>➤</button
+		>{/snippet}
+	{#if request}<AgentControls {providers} bind:choice={agent} {action} />{:else}<div
+			class="composer-bottom"
 		>
-	</div>
-	<div class="provider-options">
-		{#each providers as item (item.id)}<button
-				type="button"
-				class:active={provider === item.id}
-				disabled={!item.available}
-				title={item.reason || item.label}
-				onclick={() => (provider = item.id)}>{item.label}</button
-			>{/each}
-	</div>
-	<div class="composer-bottom">
-		<Select label="Model" bind:value={model} disabled={!current?.available}
-			>{#each current?.models || [] as choice (choice.id)}<option value={choice.id}
-					>{choice.label}</option
-				>{/each}</Select
-		><Select label="Reasoning effort" bind:value={effort} disabled={!selected?.efforts.length}
-			>{#each selected?.efforts || [] as choice (choice)}<option value={choice}>{choice}</option
-				>{/each}{#if !selected?.efforts.length}<option value="">Default effort</option>{/if}</Select
-		><button class="primary send" aria-label={`Send ${mode}`} {disabled}>➤</button>
-	</div>
-	{#if current?.reason}<small>{current.reason}</small>{/if}{#if !providers.length}<small
-			>No agent provider available.</small
-		>{/if}
+			<small class="composer-hint">{hint}</small>{@render action()}
+		</div>{/if}
 </form>

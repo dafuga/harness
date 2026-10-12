@@ -48,7 +48,13 @@
 		],
 		"errors": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "desktop.model.project-context-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/desktop/src/models/Desktop.types.ts",

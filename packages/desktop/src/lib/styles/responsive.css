@@ -21,8 +21,12 @@
 	.revision-picker {
 		margin-left: auto;
 	}
-	.project-name {
-		display: none;
+	.project-switcher {
+		border-inline: 0;
+		padding: 0;
+	}
+	.base-panels {
+		grid-template-columns: minmax(0, 1fr);
 	}
 	.entity-layout.with-thread {
 		grid-template-columns: minmax(0, 1fr) 330px;
@@ -81,6 +85,9 @@
 	.revision-picker label {
 		max-width: 155px;
 	}
+	.before-after {
+		grid-template-columns: minmax(0, 1fr);
+	}
 }
 @media (max-width: 560px) {
 	.topbar {
@@ -89,6 +96,19 @@
 	.brand {
 		width: 100%;
 		justify-content: center;
+	}
+	.project-switcher {
+		width: 100%;
+		justify-content: center;
+	}
+	.revision-picker {
+		flex-wrap: wrap;
+	}
+	.account {
+		width: 100%;
+		justify-content: center;
+		border: 0;
+		padding: 0;
 	}
 	.revision-picker {
 		margin: 0;

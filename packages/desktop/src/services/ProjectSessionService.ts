@@ -1,3 +1,8 @@
+import type { NativeAuthService } from './NativeAuthService';
+import type { RemoteProjectPort } from '../models/ProjectContext.types';
+import { CommentOutboxService } from './CommentOutboxService';
+import type { ProjectionCacheService } from './ProjectionCacheService';
+import { ProjectRegistryService } from './ProjectRegistryService';
 import { realpath } from 'node:fs/promises';
 import { basename } from 'node:path';
 import { GitSourceAdapter } from '../adapters/GitSourceAdapter';
@@ -8,24 +13,63 @@ import type { ProjectSnapshot } from '../models/Desktop.types';
 import { gitRead } from '../utils/gitRead';
 export class ProjectSessionService {
 	root: string | null = null;
+	projectId: string | null = null;
+	pending = 0;
+	private opening = false;
+	readonly registry: ProjectRegistryService;
+	readonly outbox: CommentOutboxService;
+	readonly cache?: ProjectionCacheService;
+	readonly remote?: RemoteProjectPort;
+	readonly auth?: NativeAuthService;
+	constructor(
+		options: {
+			registry?: ProjectRegistryService;
+			outbox?: CommentOutboxService;
+			cache?: ProjectionCacheService;
+			remote?: RemoteProjectPort;
+			auth?: NativeAuthService;
+		} = {}
+	) {
+		this.registry = options.registry ?? new ProjectRegistryService();
+		this.outbox = options.outbox ?? new CommentOutboxService();
+		this.cache = options.cache;
+		this.remote = options.remote;
+		this.auth = options.auth;
+	}
+	assertProject(projectId?: string) {
+		if (projectId !== undefined && projectId !== this.projectId)
+			throw new Error('The requested project is not selected.');
+	}
 	source: GitSourceAdapter | null = null;
 	planning: PlanningFacadeAdapter | null = null;
 	catalog: CatalogService | null = null;
 	private query: RevisionQuery = { branch: null, commit: null };
 	busy = false;
 	async open(directory: string): Promise<ProjectSnapshot> {
-		if (this.busy) throw new Error('Cancel or finish the current run before switching projects.');
-		const root = await realpath(
-			(await gitRead(directory, ['rev-parse', '--show-toplevel'])).trim()
-		);
-		this.root = root;
-		this.source = new GitSourceAdapter(root);
-		this.planning = await PlanningFacadeAdapter.open(root);
-		this.catalog = new CatalogService(this.source, this.planning);
-		this.query = { branch: null, commit: null };
-		return this.snapshot(this.query);
+		if (this.busy || this.pending || this.opening)
+			throw new Error('Cancel or finish the current run before switching projects.');
+		this.opening = true;
+		try {
+			const root = await realpath(
+				(await gitRead(directory, ['rev-parse', '--show-toplevel'])).trim()
+			);
+			const project = await this.registry.register(root);
+			const source = new GitSourceAdapter(root);
+			const planning = await PlanningFacadeAdapter.open(root);
+			this.root = root;
+			this.projectId = project.id;
+			this.source = source;
+			this.planning = planning;
+			this.catalog = new CatalogService(source, planning);
+			this.query = { branch: null, commit: null };
+			return await this.snapshot(this.query);
+		} finally {
+			this.opening = false;
+		}
 	}
+
 	async snapshot(query: RevisionQuery): Promise<ProjectSnapshot> {
+		this.assertProject(query.projectId);
 		const { source, catalog, root } = this.requireProject();
 		const revision = await source.revision(query);
 		const branches = await source.branches(),
@@ -33,7 +77,15 @@ export class ProjectSessionService {
 		const entities = await catalog.list(revision.commit);
 		this.query = { branch: revision.branch, commit: query.commit };
 		return {
-			project: { name: basename(root), root },
+			project: { name: basename(root), root, id: this.projectId! },
+			capabilities: {
+				comments: true,
+				agents: true,
+				planning: true,
+				approval: true,
+				source: 'local',
+				reason: 'Comments are saved as local pending drafts until connected.'
+			},
 			revision,
 			branches,
 			commits: await source.commits(revision.branch),

@@ -14,12 +14,12 @@
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "Composer.providers",
-				"type": "ProviderState[]"
+				"name": "Composer.modes",
+				"type": "ComposeMode[]"
 			},
 			{
-				"name": "Composer.writable",
-				"type": "boolean"
+				"name": "Composer.providers",
+				"type": "ProviderState[]"
 			},
 			{
 				"name": "Composer.approved",
@@ -30,8 +30,16 @@
 				"type": "boolean"
 			},
 			{
+				"name": "Composer.notice",
+				"type": "string"
+			},
+			{
+				"name": "Composer.comment",
+				"type": "(text: string) => Promise<boolean>"
+			},
+			{
 				"name": "Composer.send",
-				"type": "(request: { text: string; mode: RunMode; provider: ProviderId; model: string; effort: string | null; }) => Promise<boolean>"
+				"type": "(request: RunDraft) => Promise<boolean>"
 			}
 		],
 		"outputs": [
@@ -43,6 +51,16 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.component.agent-controls",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.compose-modes",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.model.desktop-types",
 			"via": "import",

@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.config.hub-env",
+	"kind": "config",
+	"title": "hubEnvConfig",
+	"responsibility": "Owns the hubEnvConfig typed configuration.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/config/hubEnvConfig.ts"],
+		"symbols": ["HubEnv", "hubEnvConfig"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hubEnvConfig.input",
+				"type": "Record<string, unknown>"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hubEnvConfig",
+				"type": "HubEnv"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/config/hubEnvConfig.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/config/hubEnvConfig.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

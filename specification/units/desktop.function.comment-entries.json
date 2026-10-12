@@ -1,0 +1,118 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.comment-entries",
+	"kind": "function",
+	"title": "commentEntries",
+	"responsibility": "Owns the commentEntries shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/commentEntries.ts"],
+		"symbols": [
+			"ThreadEntry",
+			"PendingComment",
+			"commentEntries",
+			"threadInfo",
+			"pendingEntries",
+			"requestEntry"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "commentEntries.thread",
+				"type": "CommittedThread"
+			},
+			{
+				"name": "threadInfo.thread",
+				"type": "CommittedThread"
+			},
+			{
+				"name": "threadInfo.pin",
+				"type": "number"
+			},
+			{
+				"name": "pendingEntries.results",
+				"type": "HumanCommentResult[]"
+			},
+			{
+				"name": "pendingEntries.entityId",
+				"type": "string"
+			},
+			{
+				"name": "pendingEntries.threads",
+				"type": "ThreadInfo[]"
+			},
+			{
+				"name": "requestEntry.runId",
+				"type": "string"
+			},
+			{
+				"name": "requestEntry.request",
+				"type": "RunDraft"
+			},
+			{
+				"name": "requestEntry.design",
+				"type": "DesignVersion | undefined"
+			}
+		],
+		"outputs": [
+			{
+				"name": "commentEntries",
+				"type": "ThreadEntry[]"
+			},
+			{
+				"name": "threadInfo",
+				"type": "ThreadInfo"
+			},
+			{
+				"name": "pendingEntries",
+				"type": "ThreadEntry[]"
+			},
+			{
+				"name": "requestEntry",
+				"type": "ThreadEntry"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "collaboration.model.collaboration-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.compose-modes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.project-context-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/commentEntries.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/commentEntries.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -3,6 +3,7 @@
 	let {
 		src,
 		title,
+		caption = '',
 		threads,
 		writable,
 		comment,
@@ -10,7 +11,9 @@
 	}: {
 		src: string;
 		title: string;
+		caption?: string;
 		threads: ThreadInfo[];
+		/** Whether a person may start a thread on this image or on a region of it. */
 		writable: boolean;
 		comment: (region: Region | null) => void;
 		select: (thread: ThreadInfo) => void;
@@ -74,6 +77,7 @@
 
 <div class:fullscreen={expanded} class="image-viewer">
 	<div class="image-actions">
+		{#if caption}<strong class="image-caption">{caption}</strong>{/if}
 		<button onclick={() => (expanded = !expanded)}
 			>{expanded ? 'Close full size' : 'Open full size ↗'}</button
 		><button disabled={!writable} onclick={() => comment(null)}>Comment on image</button><button

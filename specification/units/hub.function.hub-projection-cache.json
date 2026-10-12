@@ -1,0 +1,65 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.hub-projection-cache",
+	"kind": "function",
+	"title": "hubProjectionCache",
+	"responsibility": "Owns the hubProjectionCache shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/hubProjectionCache.ts"],
+		"symbols": ["hubProjectionCache"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hubProjectionCache.context",
+				"type": "HubSourceContext"
+			},
+			{
+				"name": "hubProjectionCache.projection",
+				"type": "{ profile: string; accept: (value: unknown) => T }"
+			},
+			{
+				"name": "hubProjectionCache.load",
+				"type": "() => Promise<T>"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hubProjectionCache",
+				"type": "Promise<T>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.hub-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-source",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/hubProjectionCache.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/hubProjectionCache.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

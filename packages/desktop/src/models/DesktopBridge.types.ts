@@ -1,8 +1,18 @@
 import type {
+	NativeHostedStatus,
+	CacheStatus,
+	ProjectContext,
+	DesktopProject,
+	ProjectCapabilities,
+	HumanCommentDraft,
+	HumanCommentResult
+} from './ProjectContext.types';
+import type {
 	ApprovalInfo,
 	Category,
 	DesignImage,
 	EntityDetail,
+	HistoryEvent,
 	ProjectSnapshot,
 	ProviderId,
 	ProviderState,
@@ -16,8 +26,17 @@ import type {
 /** The only channels the main process answers. Anything else is refused before any handler. */
 export const channels = {
 	openProject: 'project:open',
+	listProjects: 'project:list',
+	selectProject: 'project:select',
+	capabilities: 'project:capabilities',
+	addComment: 'thread:comment',
+	pendingComments: 'thread:pending',
+	hostedStatus: 'hosted:status',
+	connectHosted: 'hosted:connect',
+	disconnectHosted: 'hosted:disconnect',
 	snapshot: 'project:snapshot',
 	entity: 'entity:read',
+	history: 'entity:history',
 	source: 'entity:source',
 	image: 'image:read',
 	createPlan: 'plan:create',
@@ -31,12 +50,13 @@ export const channels = {
 export type ChannelName = (typeof channels)[keyof typeof channels];
 /** Main to renderer: public progress of a run. */
 export const runEventChannel = 'run:event';
+export const cacheEventChannel = 'cache:status';
 
-export interface RevisionQuery {
+export interface RevisionQuery extends ProjectContext {
 	branch: string | null;
 	commit: string | null;
 }
-export interface EntityQuery {
+export interface EntityQuery extends ProjectContext {
 	entityId: string;
 	commit: string;
 }
@@ -51,12 +71,12 @@ export interface ImageQuery extends EntityQuery {
 	version: string;
 	sha256: string;
 }
-export interface PlanDraft {
+export interface PlanDraft extends ProjectContext {
 	category: Category;
 	title: string;
 	goal: string;
 }
-export interface ThreadDraft {
+export interface ThreadDraft extends ProjectContext {
 	entityId: string;
 	version: string | null;
 	imageSha256: string | null;
@@ -68,14 +88,14 @@ export interface ThreadQuery extends EntityQuery {
 	threadId: string;
 }
 /** An approval names the exact images and contract it binds; nothing is filled in for it. */
-export interface ApprovalDraft {
+export interface ApprovalDraft extends ProjectContext {
 	entityId: string;
 	version: string;
 	imageHashes: string[];
 	contractHash: string;
 }
 
-export interface RunRequest {
+export interface RunRequest extends ProjectContext {
 	mode: RunMode;
 	provider: ProviderId;
 	/** An identifier the provider itself listed. It is never replaced by another. */
@@ -106,6 +126,18 @@ export type RunEvent = { runId: string } & (
 
 /** What the preload script exposes as `window.harness`. Without it a page is a preview. */
 export interface DesktopBridge {
+	onCacheStatus?(listener: (event: CacheStatus) => void): () => void;
+	history?(
+		input: EntityQuery & { page: number; branch?: string }
+	): Promise<{ entries: HistoryEvent[]; complete: boolean; nextPage: number | null }>;
+	hostedStatus?(): Promise<NativeHostedStatus>;
+	connectHosted?(): Promise<NativeHostedStatus>;
+	disconnectHosted?(): Promise<NativeHostedStatus>;
+	pendingComments?(input?: ProjectContext): Promise<HumanCommentResult[]>;
+	listProjects?(): Promise<DesktopProject[]>;
+	selectProject?(input: { projectId: string }): Promise<ProjectSnapshot>;
+	capabilities?(input?: ProjectContext): Promise<ProjectCapabilities>;
+	addComment?(input: HumanCommentDraft): Promise<HumanCommentResult>;
 	openProject(): Promise<ProjectSnapshot | null>;
 	snapshot(input: RevisionQuery): Promise<ProjectSnapshot>;
 	entity(input: EntityQuery): Promise<EntityDetail>;
@@ -117,6 +149,6 @@ export interface DesktopBridge {
 	approve(input: ApprovalDraft): Promise<ApprovalInfo>;
 	providers(): Promise<ProviderState[]>;
 	startRun(input: RunRequest): Promise<{ runId: string }>;
-	cancelRun(input: { runId: string }): Promise<boolean>;
+	cancelRun(input: { runId: string; projectId?: string }): Promise<boolean>;
 	onRunEvent(listener: (event: RunEvent) => void): () => void;
 }

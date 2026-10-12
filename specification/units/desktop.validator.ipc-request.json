@@ -45,6 +45,11 @@
 			"unit": "desktop.model.desktop-bridge-types",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "desktop.validator.project-context",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

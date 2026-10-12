@@ -87,14 +87,20 @@ test('failed Change never records a completed outcome', async () => {
 	);
 }, 15000);
 test('cancelled Change records cancellation and cannot cancel another run ID', async () => {
-	const f = await fixture(
-		(turn) =>
-			new Promise((_resolve, reject) =>
-				turn.signal.addEventListener('abort', () => reject(new RunCancelled()), { once: true })
-			)
-	);
-	const started = await f.service.start(await approve(f));
-	await expect.poll(() => f.run.mock.calls.length).toBe(1);
+	let entered!: () => void;
+	const ready = new Promise<void>((resolve) => {
+		entered = resolve;
+	});
+	const f = await fixture((turn) => {
+		entered();
+		return new Promise((_resolve, reject) =>
+			turn.signal.addEventListener('abort', () => reject(new RunCancelled()), { once: true })
+		);
+	});
+	const request = await approve(f);
+	const started = await f.service.start(request);
+	await ready;
+	expect(f.run.mock.calls.length).toBe(1);
 	expect(f.service.cancel('not-the-owner')).toBe(false);
 	expect(f.session.busy).toBe(true);
 	expect(f.service.cancel(started.runId)).toBe(true);

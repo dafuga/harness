@@ -1,0 +1,62 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.page.projects-project-id-harness-path",
+	"kind": "page",
+	"title": "/projects/[projectId]/harness/[...path]",
+	"responsibility": "Owns the /projects/[projectId]/harness/[...path] route page.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/routes/projects/[projectId]/harness/[...path]/+page.svelte"],
+		"symbols": ["+page"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "+page",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.component.hosted-workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.hub-frame",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.login-panel",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/routes/projects/[projectId]/harness/[...path]/+page.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/routes/projects/[projectId]/harness/[...path]/+page.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

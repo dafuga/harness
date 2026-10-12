@@ -48,6 +48,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.service.comment-outbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.service.desktop-bridge",
 			"via": "import",
 			"origin": "derived"
@@ -58,7 +63,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.service.native-connection",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.project-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.service.project-session",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.projection-cache",
 			"via": "import",
 			"origin": "derived"
 		},

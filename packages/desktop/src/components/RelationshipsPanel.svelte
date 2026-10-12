@@ -1,28 +1,26 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
 	import type { Relationship } from '../models/Desktop.types';
 	import type { Workspace } from '../lib/stores/workspace.svelte';
 	import PlanBadge from './PlanBadge.svelte';
 	import StatusIcon from './StatusIcon.svelte';
 	import Icon from './Icon.svelte';
-	let { relationships, workspace }: { relationships: Relationship[]; workspace: Workspace } =
-		$props();
+	import WorkspaceLink from './WorkspaceLink.svelte';
+	let {
+		relationships,
+		workspace,
+		title = 'Relationships'
+	}: { relationships: Relationship[]; workspace: Workspace; title?: string } = $props();
 </script>
 
 <section class="panel">
-	<h2>Relationships</h2>
+	<h2>{title}</h2>
 	<div class="relationships">
 		{#each relationships as item (`${item.direction}:${item.id}`)}<article class="relationship">
 				<Icon name={item.category || 'components'} />
 				<div>
-					<small>{item.direction === 'uses' ? 'Uses' : 'Used by'}</small>{#if item.category}<a
-							href={resolve('/harness/[...path]', {
-								path: workspace.path(item.category, item.id).slice(9)
-							})}
-							onclick={(e) => {
-								e.preventDefault();
-								void workspace.navigate(workspace.path(item.category!, item.id));
-							}}>{item.title}</a
+					<small>{item.direction === 'uses' ? 'Uses' : 'Used by'}</small
+					>{#if item.category}<WorkspaceLink {workspace} to={workspace.path(item.category, item.id)}
+							>{item.title}</WorkspaceLink
 						>{:else}<span>{item.title}</span>{/if}
 				</div>
 				{#if item.hasPlan}<PlanBadge />{/if}<StatusIcon

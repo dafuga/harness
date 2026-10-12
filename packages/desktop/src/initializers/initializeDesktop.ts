@@ -1,4 +1,8 @@
-import { app, BrowserWindow, dialog, protocol } from 'electron';
+import { NativeConnectionService } from '../services/NativeConnectionService';
+import { ProjectRegistryService } from '../services/ProjectRegistryService';
+import { CommentOutboxService } from '../services/CommentOutboxService';
+import { ProjectionCacheService } from '../services/ProjectionCacheService';
+import { app, BrowserWindow, dialog, protocol, safeStorage, shell } from 'electron';
 import { resolve } from 'node:path';
 import { DesktopBridgeService } from '../services/DesktopBridgeService';
 import { DesktopRunService } from '../services/DesktopRunService';
@@ -8,7 +12,7 @@ import { CodexAppServerAdapter } from '../adapters/CodexAppServerAdapter';
 import { ClaudeCliAdapter } from '../adapters/ClaudeCliAdapter';
 import { desktopIpc } from '../utils/desktopIpc';
 import { rendererAssets } from '../utils/rendererAssets';
-import { runEventChannel } from '../models/DesktopBridge.types';
+import { runEventChannel, cacheEventChannel } from '../models/DesktopBridge.types';
 import { NavigationValidator } from '../validators/NavigationValidator';
 protocol.registerSchemesAsPrivileged([
 	{ scheme: 'harness', privileges: { standard: true, secure: true, supportFetchAPI: true } }
@@ -38,7 +42,7 @@ export async function initializeDesktop(): Promise<BrowserWindow> {
 		if (!gate.validate(url)) event.preventDefault();
 	});
 	window.webContents.on('will-attach-webview', (event) => event.preventDefault());
-	const session = new ProjectSessionService(),
+	const session = projectSession(window),
 		codex = new CodexAppServerAdapter(),
 		providers = new ProviderDiscoveryService({ codex, claude: new ClaudeCliAdapter() });
 	const runs = new DesktopRunService(session, providers, codex, (event) => {
@@ -61,6 +65,28 @@ export async function initializeDesktop(): Promise<BrowserWindow> {
 	});
 	await window.loadURL('harness://app/');
 	return window;
+}
+function projectSession(window: BrowserWindow) {
+	const directory = app.getPath('userData');
+	const cache = new ProjectionCacheService(resolve(directory, 'cache/projections'));
+	const connection = new NativeConnectionService().create(
+		{
+			origin: process.env.HARNESS_HUB_ORIGIN,
+			onCacheStatus: (status) => {
+				if (!window.isDestroyed()) window.webContents.send(cacheEventChannel, status);
+			},
+			file: resolve(directory, 'session.enc'),
+			cache,
+			open: (url) => shell.openExternal(url)
+		},
+		safeStorage
+	);
+	return new ProjectSessionService({
+		registry: new ProjectRegistryService(resolve(directory, 'projects.json')),
+		outbox: new CommentOutboxService(resolve(directory, 'outbox/comments.json')),
+		cache,
+		...connection
+	});
 }
 void initializeDesktop().catch((error: unknown) => {
 	console.error(error);

@@ -22,12 +22,20 @@
 				"type": "Workspace"
 			},
 			{
+				"name": "DesignPanel.annotatable",
+				"type": "boolean"
+			},
+			{
 				"name": "DesignPanel.version",
 				"type": "string"
 			},
 			{
 				"name": "DesignPanel.onthread",
 				"type": "(thread: ThreadInfo) => void"
+			},
+			{
+				"name": "DesignPanel.onannotate",
+				"type": "(target: ThreadTarget) => Promise<void>"
 			}
 		],
 		"outputs": [
@@ -45,7 +53,27 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.component.prior-image",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.component.segmented-choice",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.image-url",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.prior-image",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.thread-anchor",
 			"via": "import",
 			"origin": "derived"
 		},

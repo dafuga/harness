@@ -1,0 +1,98 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.auth-cookies",
+	"kind": "function",
+	"title": "authCookies",
+	"responsibility": "Owns the authCookies shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/authCookies.ts"],
+		"symbols": [
+			"SESSION_COOKIE",
+			"CHALLENGE_COOKIE",
+			"EMAIL_PROOF_COOKIE",
+			"CookieOptions",
+			"authCookies",
+			"issueCookie",
+			"clearCookie"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "authCookies.request",
+				"type": "Request"
+			},
+			{
+				"name": "authCookies.name",
+				"type": "string"
+			},
+			{
+				"name": "issueCookie.name",
+				"type": "string"
+			},
+			{
+				"name": "issueCookie.value",
+				"type": "string"
+			},
+			{
+				"name": "issueCookie.options",
+				"type": "CookieOptions"
+			},
+			{
+				"name": "clearCookie.name",
+				"type": "string"
+			},
+			{
+				"name": "clearCookie.sameSite",
+				"type": "CookieOptions['sameSite']"
+			}
+		],
+		"outputs": [
+			{
+				"name": "SESSION_COOKIE",
+				"type": "unknown"
+			},
+			{
+				"name": "CHALLENGE_COOKIE",
+				"type": "unknown"
+			},
+			{
+				"name": "EMAIL_PROOF_COOKIE",
+				"type": "unknown"
+			},
+			{
+				"name": "authCookies",
+				"type": "string | null"
+			},
+			{
+				"name": "issueCookie",
+				"type": "string"
+			},
+			{
+				"name": "clearCookie",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/authCookies.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/authCookies.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

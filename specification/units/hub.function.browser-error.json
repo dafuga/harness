@@ -1,0 +1,50 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.browser-error",
+	"kind": "function",
+	"title": "browserError",
+	"responsibility": "Owns the browserError shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/browserError.ts"],
+		"symbols": ["browserError"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "browserError.code",
+				"type": "string"
+			},
+			{
+				"name": "browserError.status",
+				"type": "number"
+			}
+		],
+		"outputs": [
+			{
+				"name": "browserError",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/browserError.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/browserError.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

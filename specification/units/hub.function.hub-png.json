@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.hub-png",
+	"kind": "function",
+	"title": "hubPng",
+	"responsibility": "Owns the hubPng shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/hubPng.ts"],
+		"symbols": ["hubPng"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hubPng.bytes",
+				"type": "Uint8Array"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hubPng",
+				"type": "Promise<{ width: number; height: number }>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.hub-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-png-chunks",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/hubPng.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/hubPng.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,3 +1,4 @@
+import type { ProjectCapabilities, CacheProvenance } from './ProjectContext.types';
 /**
  * What the Electron main process tells the renderer about a project. Every value here is
  * serializable: it crosses the preload bridge by structured clone.
@@ -104,6 +105,8 @@ export interface ThreadMessage {
 	id: string;
 	at: string;
 	author: 'user' | 'agent' | 'system';
+	actorId?: string;
+	authorName?: string;
 	text: string;
 	mode: RunMode | null;
 	provider: ProviderId | null;
@@ -178,6 +181,7 @@ export interface Measure {
 }
 
 export interface EntityDetail extends CatalogEntity {
+	historyCoverage?: { complete: boolean; nextPage: number | null; loadedPages: number };
 	contract: EntityContract;
 	relationships: Relationship[];
 	versions: DesignVersion[];
@@ -190,7 +194,9 @@ export interface EntityDetail extends CatalogEntity {
 }
 
 export interface ProjectSnapshot {
-	project: { name: string; root: string };
+	project: { name: string; root: string; id?: string };
+	capabilities?: ProjectCapabilities;
+	cache?: CacheProvenance;
 	revision: Revision;
 	branches: BranchInfo[];
 	commits: CommitInfo[];

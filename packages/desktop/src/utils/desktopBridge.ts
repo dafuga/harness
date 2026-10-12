@@ -1,3 +1,5 @@
+import { ProjectImageCacheService } from '../services/ProjectImageCacheService';
+import { ProjectOperationsService } from '../services/ProjectOperationsService';
 import type { DesktopBridge } from '../models/DesktopBridge.types';
 import type { ProjectSessionService } from '../services/ProjectSessionService';
 import type { ProviderDiscoveryService } from '../services/ProviderDiscoveryService';
@@ -36,7 +38,21 @@ async function create(context: BridgeContext, input: Parameters<DesktopBridge['c
 }
 export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRunEvent'> {
 	const { session, providers, runs, choose } = context;
-	return {
+	const operations = new ProjectOperationsService(session);
+	const bridge: Omit<DesktopBridge, 'onRunEvent'> = {
+		hostedStatus: () =>
+			session.auth?.status() ?? Promise.resolve({ configured: false, state: 'signed-out' }),
+		connectHosted: async () => {
+			if (!session.auth) throw new Error('Hosted sign-in is not configured.');
+			return session.auth.connect();
+		},
+		disconnectHosted: () =>
+			session.auth?.disconnect() ?? Promise.resolve({ configured: false, state: 'signed-out' }),
+		listProjects: () => operations.listProjects(),
+		selectProject: (input) => operations.selectProject(input),
+		capabilities: (input) => operations.capabilities(input),
+		addComment: (input) => operations.addComment(input),
+		pendingComments: (input) => operations.pendingComments(input),
 		openProject: async () => {
 			const root = await choose();
 			return root ? session.open(root) : null;
@@ -44,7 +60,7 @@ export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRu
 		snapshot: (input) => session.snapshot(input),
 		entity: (input) => session.requireProject().catalog.entity(input.entityId, input.commit),
 		source: (input) => source(context, input),
-		image: (input) => session.requireProject().planning.image({ ...input, revision: input.commit }),
+		image: (input) => new ProjectImageCacheService(session).read(input),
 		createPlan: (input) => create(context, input),
 		openThread: (input) => thread(context, input),
 		messages: (input) =>
@@ -54,4 +70,20 @@ export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRu
 		startRun: (input) => runs.start(input),
 		cancelRun: async (input) => runs.cancel(input.runId)
 	};
+	return new Proxy(bridge, {
+		get(target, property: keyof typeof bridge) {
+			const operation = target[property];
+			if (typeof operation !== 'function') return operation;
+			if (['openProject', 'selectProject', 'listProjects'].includes(property)) return operation;
+			return async (input?: { projectId?: string }) => {
+				session.assertProject(input?.projectId);
+				session.pending++;
+				try {
+					return await (operation as (input: unknown) => Promise<unknown>)(input);
+				} finally {
+					session.pending--;
+				}
+			};
+		}
+	});
 }

@@ -53,6 +53,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.component.measures-panel",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.component.plan-badge",
 			"via": "import",
 			"origin": "derived"
@@ -69,6 +74,16 @@
 		},
 		{
 			"unit": "desktop.component.thread-panel",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.workspace-link",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.thread-anchor",
 			"via": "import",
 			"origin": "derived"
 		},

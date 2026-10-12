@@ -1,0 +1,70 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.d1-grant-store",
+	"kind": "function",
+	"title": "d1GrantStore",
+	"responsibility": "Owns the d1GrantStore shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/d1GrantStore.ts"],
+		"symbols": ["EXPIRE_GRANTS", "d1GrantStore"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "d1GrantStore.db",
+				"type": "D1Like"
+			},
+			{
+				"name": "d1GrantStore.records",
+				"type": "AuthRecordValidator"
+			}
+		],
+		"outputs": [
+			{
+				"name": "EXPIRE_GRANTS",
+				"type": "unknown"
+			},
+			{
+				"name": "d1GrantStore",
+				"type": "GrantStore"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.adapter.d1-auth-store",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.model.hub-auth-store-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.validator.auth-record",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/d1GrantStore.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/d1GrantStore.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -3,17 +3,26 @@
 	import SegmentedChoice from './SegmentedChoice.svelte';
 	import type { DesignVersion, EntityDetail, Region, ThreadInfo } from '../models/Desktop.types';
 	import type { Workspace } from '../lib/stores/workspace.svelte';
+	import { imageUrl } from '../utils/imageUrl';
+	import { priorImage } from '../utils/priorImage';
+	import { imageTarget, type ThreadTarget } from '../utils/threadAnchor';
 	import AnnotatedImage from './AnnotatedImage.svelte';
+	import PriorImage from './PriorImage.svelte';
 	let {
 		entity,
 		workspace,
+		annotatable,
 		version = $bindable(''),
-		onthread
+		onthread,
+		onannotate
 	}: {
 		entity: EntityDetail;
 		workspace: Workspace;
+		/** Whether an image or a region of it can start a thread here. */
+		annotatable: boolean;
 		version?: string;
 		onthread: (thread: ThreadInfo) => void;
+		onannotate: (target: ThreadTarget) => Promise<void>;
 	} = $props();
 	let viewport = $state('desktop');
 	let imageState = $state('default');
@@ -22,6 +31,9 @@
 	const current = $derived(entity.versions.find((v) => v.version === version));
 	const images = $derived(current?.images || []);
 	const selected = $derived(images.find((i) => i.viewport === viewport && i.state === imageState));
+	/** Only a commit view has a commit whose change can be shown as before and after. */
+	const viewed = $derived(workspace.pinned ? (workspace.snapshot?.revision.commit ?? null) : null);
+	const before = $derived(priorImage(entity.versions, { version, image: selected }, viewed));
 	$effect(() => {
 		if (!images.some((image) => image.viewport === viewport))
 			viewport = images[0]?.viewport || 'desktop';
@@ -37,43 +49,16 @@
 			version = entity.versions.at(-1)?.version || '';
 	});
 	$effect(() => {
-		let disposed = false;
-		let objectUrl = '';
-		url = '';
-		error = '';
-		if (selected && workspace.bridge && workspace.snapshot)
-			void workspace.bridge
-				.image({
-					entityId: entity.id,
-					commit: workspace.snapshot.revision.commit,
-					version,
-					sha256: selected.sha256
-				})
-				.then((bytes) => {
-					objectUrl = URL.createObjectURL(new Blob([new Uint8Array(bytes)], { type: 'image/png' }));
-					if (!disposed) url = objectUrl;
-					else URL.revokeObjectURL(objectUrl);
-				})
-				.catch((cause) => {
-					if (!disposed) error = String(cause);
-				});
-		return () => {
-			disposed = true;
-			if (objectUrl) URL.revokeObjectURL(objectUrl);
-		};
+		const request = selected && { entityId: entity.id, version, sha256: selected.sha256 };
+		return imageUrl(workspace, request || null, (value, cause) => {
+			url = value;
+			error = cause;
+		});
 	});
 	async function comment(region: Region | null) {
-		if (!workspace.bridge || !selected || !workspace.snapshot?.writable) return;
+		if (!selected || !annotatable) return;
 		try {
-			const thread = await workspace.bridge.openThread({
-				entityId: entity.id,
-				version,
-				imageSha256: selected.sha256,
-				state: selected.state,
-				viewport: selected.viewport,
-				region
-			});
-			onthread(thread);
+			await onannotate(imageTarget(version, selected, region));
 		} catch (cause) {
 			error = String(cause);
 		}
@@ -109,25 +94,37 @@
 				]}
 			/>
 		</div>
-		{#if url}<AnnotatedImage
-				src={url}
-				title={`${entity.title} ${version} ${selected.viewport} ${selected.state}`}
-				{threads}
-				writable={workspace.snapshot?.writable || false}
-				{comment}
-				select={onthread}
-			/>{:else}<p class="empty">
-				{error || 'Loading design image…'}
-			</p>{/if}{:else if current}<article class="behavior-notes">
+		<div class:before-after={before}>
+			{#if before}<PriorImage
+					{workspace}
+					entityId={entity.id}
+					version={before.version}
+					sha256={before.sha256}
+					title={`${entity.title} ${before.version} ${selected.viewport} ${selected.state}`}
+				/>{/if}{#if url}<AnnotatedImage
+					src={url}
+					title={`${entity.title} ${version} ${selected.viewport} ${selected.state}`}
+					caption={before ? `After · ${version}` : ''}
+					{threads}
+					writable={annotatable}
+					{comment}
+					select={onthread}
+				/>{:else}<p class="empty">{error || 'Loading design image…'}</p>{/if}
+		</div>{:else if current}<article class="behavior-notes">
 			<h3>Planned behavior</h3>
 			<p>{current.notes || 'No behavior notes recorded for this version.'}</p>
 		</article>{:else}<div class="empty">
 			<h3>No design image yet</h3>
-			<p>Use Plan to describe the first design.</p>
+			<p>
+				{workspace.capabilities.planning
+					? 'Use Plan to describe the first design.'
+					: 'No design has been committed for this entity.'}
+			</p>
 		</div>{/if}
-	<div class="row measures">
-		<span>Size · {entity.size.text || 'Not measured'}</span><span
-			>Performance · {entity.performance.text || 'Not measured'}</span
-		>
-	</div>
+	{#if error && url}<p class="error" role="alert">{error}</p>{/if}
+	{#if entity.category === 'pages'}<div class="row measures">
+			<span>Size · {entity.size.text || 'Not measured'}</span><span
+				>Performance · {entity.performance.text || 'Not measured'}</span
+			>
+		</div>{/if}
 </section>

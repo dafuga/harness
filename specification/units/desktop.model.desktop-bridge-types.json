@@ -12,6 +12,7 @@
 			"channels",
 			"ChannelName",
 			"runEventChannel",
+			"cacheEventChannel",
 			"RevisionQuery",
 			"EntityQuery",
 			"SourceQuery",
@@ -38,6 +39,10 @@
 			{
 				"name": "runEventChannel",
 				"type": "unknown"
+			},
+			{
+				"name": "cacheEventChannel",
+				"type": "unknown"
 			}
 		],
 		"errors": []
@@ -45,6 +50,11 @@
 	"dependencies": [
 		{
 			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.project-context-types",
 			"via": "import",
 			"origin": "derived"
 		},

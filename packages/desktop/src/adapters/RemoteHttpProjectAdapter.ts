@@ -1,0 +1,139 @@
+import { createHash } from 'node:crypto';
+import type { AddCommentInput } from '../../../collaboration/src/models/Collaboration.types';
+import type { RemoteProjectPort, ProjectCapabilities } from '../models/ProjectContext.types';
+import type {
+	EntityQuery,
+	SourceQuery,
+	ImageQuery,
+	ThreadQuery
+} from '../models/DesktopBridge.types';
+import {
+	RemoteProjectResponseValidator,
+	responseRecord
+} from '../validators/RemoteProjectResponseValidator';
+import { ImageBytesValidator } from '../validators/ImageBytesValidator';
+import { HostedHttpAdapter } from './HostedHttpAdapter';
+import { RemoteProjectionService } from '../services/RemoteProjectionService';
+import type { HostedReadOptions } from '../services/HostedReadService';
+
+export type { NativeHostedCredential } from './HostedHttpAdapter';
+export class RemoteHttpProjectAdapter implements RemoteProjectPort {
+	private http: HostedHttpAdapter;
+	private projections: RemoteProjectionService;
+	private validator = new RemoteProjectResponseValidator();
+	constructor(private options: HostedReadOptions) {
+		let denied = 0;
+		const authorityOptions = {
+			...options,
+			authorityVersion: () => (options.authorityVersion?.() ?? 0) + denied
+		};
+		this.http = new HostedHttpAdapter({
+			...authorityOptions,
+			onDenied: async (principal, project) => {
+				denied++;
+				options.onCacheStatus?.({ projectId: project ?? '$projects', status: 'denied' });
+				await options.cache?.purge(principal, project);
+			}
+		});
+		this.projections = new RemoteProjectionService(this.http, authorityOptions);
+	}
+	async available() {
+		return Boolean(await this.options.credentials());
+	}
+	async listProjects() {
+		return this.projections.projects();
+	}
+	async snapshot(input: { projectId: string; branch: string | null; commit: string | null }) {
+		const snapshot = await this.projections.snapshot(input);
+		return snapshot.cache?.status === 'offline'
+			? snapshot
+			: { ...snapshot, capabilities: await this.capabilities(input.projectId) };
+	}
+	async entity(input: EntityQuery & { projectId: string }) {
+		return this.projections.read(
+			{ ...input, branch: this.projections.branch(input.projectId) },
+			'entity',
+			(value) => this.validator.entity(value, input.entityId)
+		);
+	}
+	async source(input: SourceQuery & { projectId: string }) {
+		return this.projections.read(input, 'source', (value) => {
+			const source = responseRecord(value);
+			if (source.path !== input.path || typeof source.text !== 'string')
+				throw new Error('Invalid hosted source.');
+			return { path: input.path, text: source.text };
+		});
+	}
+	async image(input: ImageQuery & { projectId: string }) {
+		const validate = (value: unknown) => {
+			if (typeof value !== 'string') throw new Error('Invalid cached image.');
+			const bytes = new Uint8Array(Buffer.from(value, 'base64'));
+			if (
+				bytes.length > 25000000 ||
+				createHash('sha256').update(bytes).digest('hex') !== input.sha256
+			)
+				throw new Error('Hosted image hash mismatch.');
+			return new ImageBytesValidator().validate(bytes);
+		};
+		const encoded = await this.projections.read(
+			input,
+			'image',
+			(value) => {
+				validate(value);
+				return value as string;
+			},
+			async () => {
+				const credential = await this.http.authorize();
+				await this.imageAnchor(input);
+				const response = await this.http.request(
+					this.path(input.projectId, 'image', input),
+					credential
+				);
+				return Buffer.from(await response.arrayBuffer()).toString('base64');
+			}
+		);
+		return validate(encoded);
+	}
+	async messages(input: ThreadQuery & { projectId: string }) {
+		return this.projections.read(input, 'messages', (value) => this.validator.messages(value));
+	}
+	async history(input: EntityQuery & { projectId: string; page: number; branch?: string }) {
+		return this.projections.read(input, 'history', (value) => this.validator.history(value));
+	}
+	async capabilities(projectId: string): Promise<ProjectCapabilities> {
+		const project = responseRecord(await this.http.json(this.path(projectId, '')));
+		if (
+			project.id !== projectId ||
+			!['owner', 'commenter', 'viewer'].includes(String(project.role))
+		)
+			throw new Error('Unknown hosted project access.');
+		return {
+			comments: project.role !== 'viewer',
+			agents: false,
+			planning: false,
+			approval: false,
+			source: 'github',
+			reason: 'Shared comments require server acknowledgment; agents run only in local projects.'
+		};
+	}
+	async addComment(input: AddCommentInput) {
+		const credential = await this.http.authorize();
+		const response = await this.http.request(this.path(input.projectId, 'comments'), credential, {
+			method: 'POST',
+			body: JSON.stringify(input)
+		});
+		return this.validator.comment(await response.json(), input, credential.principalId);
+	}
+	private async imageAnchor(input: ImageQuery & { projectId: string }): Promise<void> {
+		const entity = await this.entity(input);
+		if (
+			!entity.versions
+				.find((version) => version.version === input.version)
+				?.images.some((image) => image.sha256 === input.sha256)
+		)
+			throw new Error('Unknown hosted image anchor.');
+	}
+	private path(projectId: string, operation: string, input: object = {}): string {
+		return this.projections.path(projectId, operation, input);
+	}
+}

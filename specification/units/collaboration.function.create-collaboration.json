@@ -1,0 +1,82 @@
+{
+	"schemaVersion": 1,
+	"id": "collaboration.function.create-collaboration",
+	"kind": "function",
+	"title": "createCollaboration",
+	"responsibility": "Owns the createCollaboration shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/collaboration/src/utils/createCollaboration.ts"],
+		"symbols": ["createCollaboration"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "createCollaboration.deps",
+				"type": "CollaborationDependencies"
+			}
+		],
+		"outputs": [
+			{
+				"name": "createCollaboration",
+				"type": "CollaborationApi"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "collaboration.function.add-comment",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.function.create-invitation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.function.create-project",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.function.current-project",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.function.parse-collaboration-input",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.function.records-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.model.collaboration-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/collaboration/src/utils/createCollaboration.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/collaboration/src/utils/createCollaboration.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -54,6 +54,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.service.hosted-project",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.service.project-session",
 			"via": "import",
 			"origin": "derived"

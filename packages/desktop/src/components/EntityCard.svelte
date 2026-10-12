@@ -1,31 +1,16 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
 	import type { CatalogEntity } from '../models/Desktop.types';
 	import type { Workspace } from '../lib/stores/workspace.svelte';
+	import { imageUrl } from '../utils/imageUrl';
 	import PlanBadge from './PlanBadge.svelte';
 	import StatusIcon from './StatusIcon.svelte';
+	import WorkspaceLink from './WorkspaceLink.svelte';
 	let { entity, workspace }: { entity: CatalogEntity; workspace: Workspace } = $props();
 	let image = $state('');
 	$effect(() => {
-		let disposed = false;
-		let url = '';
 		const thumb = entity.thumbnail;
-		const bridge = workspace.bridge;
-		const commit = workspace.snapshot?.revision.commit;
-		image = '';
-		if (thumb && bridge && commit)
-			void bridge
-				.image({ entityId: entity.id, commit, version: thumb.version, sha256: thumb.sha256 })
-				.then((bytes) => {
-					url = URL.createObjectURL(new Blob([new Uint8Array(bytes)], { type: 'image/png' }));
-					if (!disposed) image = url;
-					else URL.revokeObjectURL(url);
-				})
-				.catch(() => {});
-		return () => {
-			disposed = true;
-			if (url) URL.revokeObjectURL(url);
-		};
+		const request = thumb && { entityId: entity.id, version: thumb.version, sha256: thumb.sha256 };
+		return imageUrl(workspace, request, (url) => (image = url));
 	});
 </script>
 
@@ -49,14 +34,7 @@
 			reason={entity.verificationNote}
 		/>
 	</div>
-	<a
-		class="outline gold"
-		href={resolve('/harness/[...path]', {
-			path: workspace.path(entity.category, entity.id).slice(9)
-		})}
-		onclick={(e) => {
-			e.preventDefault();
-			void workspace.navigate(workspace.path(entity.category, entity.id));
-		}}>{entity.hasPlan ? 'Review designs' : 'Open ' + entity.kind} <span>→</span></a
+	<WorkspaceLink {workspace} to={workspace.path(entity.category, entity.id)} class="outline gold"
+		>{entity.hasPlan ? 'Review designs' : 'Open ' + entity.kind} <span>→</span></WorkspaceLink
 	>
 </article>

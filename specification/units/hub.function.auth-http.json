@@ -1,0 +1,145 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.auth-http",
+	"kind": "function",
+	"title": "authHttp",
+	"responsibility": "Owns the authHttp shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/authHttp.ts"],
+		"symbols": [
+			"AuthHttpOptions",
+			"authHttp",
+			"authRedirect",
+			"authFailure",
+			"sameOrigin",
+			"hasAuthorization",
+			"bearerToken",
+			"boundedText",
+			"readJson",
+			"AuthRoute",
+			"AuthRoutes",
+			"authPath"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "authHttp.body",
+				"type": "unknown"
+			},
+			{
+				"name": "authHttp.options",
+				"type": "AuthHttpOptions"
+			},
+			{
+				"name": "authRedirect.location",
+				"type": "string"
+			},
+			{
+				"name": "authRedirect.cookies",
+				"type": "string[]"
+			},
+			{
+				"name": "authFailure.error",
+				"type": "unknown"
+			},
+			{
+				"name": "sameOrigin.request",
+				"type": "Request"
+			},
+			{
+				"name": "sameOrigin.origin",
+				"type": "string"
+			},
+			{
+				"name": "hasAuthorization.request",
+				"type": "Request"
+			},
+			{
+				"name": "bearerToken.request",
+				"type": "Request"
+			},
+			{
+				"name": "boundedText.body",
+				"type": "ReadableStream<Uint8Array> | null"
+			},
+			{
+				"name": "boundedText.limit",
+				"type": "number"
+			},
+			{
+				"name": "readJson.request",
+				"type": "Request"
+			},
+			{
+				"name": "authPath.request",
+				"type": "Request"
+			}
+		],
+		"outputs": [
+			{
+				"name": "authHttp",
+				"type": "Response"
+			},
+			{
+				"name": "authRedirect",
+				"type": "Response"
+			},
+			{
+				"name": "authFailure",
+				"type": "Response"
+			},
+			{
+				"name": "sameOrigin",
+				"type": "boolean"
+			},
+			{
+				"name": "hasAuthorization",
+				"type": "boolean"
+			},
+			{
+				"name": "bearerToken",
+				"type": "string | null"
+			},
+			{
+				"name": "boundedText",
+				"type": "Promise<string | null>"
+			},
+			{
+				"name": "readJson",
+				"type": "Promise<Record<string, unknown>>"
+			},
+			{
+				"name": "authPath",
+				"type": "string | null"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.auth-fail",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/authHttp.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/authHttp.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

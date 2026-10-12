@@ -16,6 +16,10 @@
 			{
 				"name": "NavBar.workspace",
 				"type": "Workspace"
+			},
+			{
+				"name": "NavBar.account",
+				"type": "Snippet"
 			}
 		],
 		"outputs": [
@@ -33,7 +37,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.component.project-switcher",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.component.revision-picker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.workspace-link",
 			"via": "import",
 			"origin": "derived"
 		},

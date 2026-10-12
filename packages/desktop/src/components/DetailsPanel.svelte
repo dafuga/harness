@@ -14,7 +14,8 @@
 				await workspace.bridge!.source({
 					entityId: entity.id,
 					commit: workspace.snapshot!.revision.commit,
-					path
+					path,
+					...workspace.context
 				})
 			).text;
 		} catch (cause) {

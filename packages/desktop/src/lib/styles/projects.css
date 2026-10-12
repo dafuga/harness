@@ -1,0 +1,190 @@
+/* Project switcher: the project name of the top bar, as a control. */
+.project-switcher {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	border-inline: 1px solid var(--line);
+	padding: 8px 14px;
+	min-width: 0;
+}
+.project-switcher label {
+	display: block;
+	min-width: 0;
+}
+.project-switcher select {
+	height: 36px;
+	min-height: 36px !important;
+	max-width: 190px;
+	font-size: 14px;
+	border-color: transparent;
+	background: transparent;
+	padding-block: 0;
+	text-overflow: ellipsis;
+}
+.project-switcher select:hover,
+.project-switcher select:focus-visible {
+	border-color: var(--line);
+}
+.add-project {
+	width: 30px;
+	height: 30px;
+	padding: 0;
+	font-size: 18px;
+	line-height: 1;
+	color: var(--muted);
+}
+.account {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	border-left: 1px solid var(--line);
+	padding-left: 16px;
+	font-size: 12px;
+}
+.go-to-tip {
+	align-self: center;
+	font-size: 12px;
+	padding: 8px 10px;
+	white-space: nowrap;
+}
+.revision-picker small.historical,
+.status-bar .cache-state,
+.message-note {
+	color: var(--gold);
+}
+.recent-projects {
+	display: grid;
+	gap: 8px;
+	margin-top: 28px;
+	text-align: left;
+}
+.recent-projects h2 {
+	font-size: 13px;
+	font-weight: 500;
+	color: var(--muted);
+}
+.recent-projects button {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	text-align: left;
+}
+.recent-projects small {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/* Entity base views. */
+.base-panels {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 14px;
+	align-items: start;
+}
+.base-panels .panel {
+	margin: 0;
+}
+.measures-panel dl {
+	margin-bottom: 0;
+}
+.measures-panel dd.measured {
+	color: inherit;
+}
+.before-after {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 14px;
+	align-items: end;
+}
+.prior-image {
+	margin: 0;
+}
+.prior-image figcaption {
+	display: flex;
+	align-items: center;
+	min-height: 33px;
+	margin: 12px 0;
+	font-size: 12px;
+	font-weight: 600;
+}
+.prior-image img {
+	display: block;
+	width: 100%;
+	border: 1px solid var(--line);
+	border-radius: 6px;
+}
+.image-caption {
+	margin-right: auto;
+	align-self: center;
+	font-size: 12px;
+}
+
+/* Human comments. */
+.message.pending {
+	border-left: 2px dashed #6f8798;
+	padding-left: 10px;
+}
+.comment-saved {
+	margin: 8px 0 0;
+	font-size: 12px;
+	color: #7fe3c0;
+}
+.composer-hint {
+	flex: 1;
+	font-size: 11px;
+}
+.thread-links small {
+	flex-basis: 100%;
+	font-size: 10px;
+}
+
+/* This device's connection to shared projects, and the paged history of a shared entity. */
+.hosted-connection {
+	display: grid;
+	gap: 8px;
+	justify-items: start;
+	margin-top: 28px;
+	padding-top: 20px;
+	border-top: 1px solid var(--line);
+	text-align: left;
+	font-size: 13px;
+}
+.hosted-connection.compact {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 12px;
+}
+.hosted-connection.compact button {
+	font-size: 11px;
+	padding: 3px 8px;
+}
+.hosted-connection .error {
+	padding: 6px 10px;
+	border-radius: 5px;
+}
+.user-code {
+	font:
+		600 22px ui-monospace,
+		monospace;
+	letter-spacing: 3px;
+	color: var(--gold);
+}
+.hosted-connection.compact .user-code {
+	font-size: 14px;
+	letter-spacing: 1px;
+}
+.hosted-address {
+	font-family: ui-monospace, monospace;
+	overflow-wrap: anywhere;
+	user-select: all;
+}
+.history-more {
+	margin: 4px 8px 12px;
+}

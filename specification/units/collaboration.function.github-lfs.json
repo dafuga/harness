@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "collaboration.function.github-lfs",
+	"kind": "function",
+	"title": "githubLfs",
+	"responsibility": "Owns the githubLfs shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/collaboration/src/utils/githubLfs.ts"],
+		"symbols": ["githubLfs"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "githubLfs.options",
+				"type": "GitHubOptions"
+			},
+			{
+				"name": "githubLfs.bytes",
+				"type": "Uint8Array"
+			}
+		],
+		"outputs": [
+			{
+				"name": "githubLfs",
+				"type": "Promise<Uint8Array>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "collaboration.function.github-transport",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.function.parse-collaboration-input",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.model.collaboration-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/collaboration/src/utils/githubLfs.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/collaboration/src/utils/githubLfs.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -16,6 +16,14 @@
 		{
 			"name": "desktop",
 			"root": "packages/desktop"
+		},
+		{
+			"name": "collaboration",
+			"root": "packages/collaboration"
+		},
+		{
+			"name": "hub",
+			"root": "packages/hub"
 		}
 	],
 	"tests": ["test/", "tests/"],

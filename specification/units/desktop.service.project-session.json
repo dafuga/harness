@@ -10,6 +10,8 @@
 		"source": ["packages/desktop/src/services/ProjectSessionService.ts"],
 		"symbols": [
 			"ProjectSessionService",
+			"ProjectSessionService.constructor",
+			"ProjectSessionService.assertProject",
 			"ProjectSessionService.open",
 			"ProjectSessionService.snapshot",
 			"ProjectSessionService.requireProject",
@@ -20,6 +22,14 @@
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "ProjectSessionService.constructor.options",
+				"type": "{ registry?: ProjectRegistryService; outbox?: CommentOutboxService; cache?: ProjectionCacheService; remote?: RemoteProjectPort; auth?: NativeAuthService; }"
+			},
+			{
+				"name": "ProjectSessionService.assertProject.projectId",
+				"type": "string"
+			},
 			{
 				"name": "ProjectSessionService.open.directory",
 				"type": "string"
@@ -34,6 +44,10 @@
 			}
 		],
 		"outputs": [
+			{
+				"name": "ProjectSessionService.assertProject",
+				"type": "unknown"
+			},
 			{
 				"name": "ProjectSessionService.open",
 				"type": "Promise<ProjectSnapshot>"
@@ -89,7 +103,32 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.model.project-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.service.catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.comment-outbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.native-auth",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.project-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.projection-cache",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -1,0 +1,73 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.hub-source",
+	"kind": "function",
+	"title": "hubSource",
+	"responsibility": "Owns the hubSource shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/hubSource.ts"],
+		"symbols": ["HubSourceContext", "hubSource", "hubRead"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hubSource.input",
+				"type": "{ source: SourceHistoryAdapter; cache: CollaborationCache; actor: Actor; project: Project & { collaborationCommit?: string }; ref: string; }"
+			},
+			{
+				"name": "hubRead.context",
+				"type": "HubSourceContext"
+			},
+			{
+				"name": "hubRead.path",
+				"type": "string"
+			},
+			{
+				"name": "hubRead.hash",
+				"type": "string | null"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hubSource",
+				"type": "Promise<HubSourceContext>"
+			},
+			{
+				"name": "hubRead",
+				"type": "Promise<Uint8Array>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.hub-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-raw",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/hubSource.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/hubSource.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

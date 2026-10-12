@@ -1,0 +1,89 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.hub-raw",
+	"kind": "function",
+	"title": "hubRaw",
+	"responsibility": "Owns the hubRaw shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/hubRaw.ts"],
+		"symbols": ["hubRaw", "hubMaterializedHash", "hubBlobProfile"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hubRaw.context",
+				"type": "HubSourceContext"
+			},
+			{
+				"name": "hubRaw.entry",
+				"type": "SourceEntry"
+			},
+			{
+				"name": "hubMaterializedHash.raw",
+				"type": "Uint8Array"
+			},
+			{
+				"name": "hubMaterializedHash.expected",
+				"type": "string | null"
+			},
+			{
+				"name": "hubBlobProfile.kind",
+				"type": "string"
+			},
+			{
+				"name": "hubBlobProfile.path",
+				"type": "string"
+			},
+			{
+				"name": "hubBlobProfile.sha",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hubRaw",
+				"type": "Promise<Uint8Array>"
+			},
+			{
+				"name": "hubMaterializedHash",
+				"type": "unknown"
+			},
+			{
+				"name": "hubBlobProfile",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.hub-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-source",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/hubRaw.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/hubRaw.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

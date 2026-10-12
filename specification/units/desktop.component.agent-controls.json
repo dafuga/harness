@@ -1,0 +1,65 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.agent-controls",
+	"kind": "component",
+	"title": "AgentControls",
+	"responsibility": "Owns the AgentControls Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/AgentControls.svelte"],
+		"symbols": ["AgentControls"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "AgentControls.providers",
+				"type": "ProviderState[]"
+			},
+			{
+				"name": "AgentControls.choice",
+				"type": "AgentChoice | null"
+			},
+			{
+				"name": "AgentControls.action",
+				"type": "Snippet"
+			}
+		],
+		"outputs": [
+			{
+				"name": "AgentControls",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.compose-modes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/AgentControls.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/AgentControls.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

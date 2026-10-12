@@ -14,8 +14,12 @@
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "HistoryPanel.events",
-				"type": "HistoryEvent[]"
+				"name": "HistoryPanel.entity",
+				"type": "EntityDetail"
+			},
+			{
+				"name": "HistoryPanel.workspace",
+				"type": "Workspace"
 			}
 		],
 		"outputs": [
@@ -28,7 +32,22 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.function.history-pages",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.time-label",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.workspace",
 			"via": "import",
 			"origin": "derived"
 		}

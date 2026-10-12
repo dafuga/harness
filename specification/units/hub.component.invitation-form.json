@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.invitation-form",
+	"kind": "component",
+	"title": "InvitationForm",
+	"responsibility": "Owns the InvitationForm Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/components/InvitationForm.svelte"],
+		"symbols": ["InvitationForm"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "InvitationForm.projectId",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "InvitationForm",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.browser-projects",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/InvitationForm.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/InvitationForm.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

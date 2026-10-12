@@ -2,11 +2,10 @@
 	import { onMount } from 'svelte';
 	import type { DesktopBridge } from '../models/DesktopBridge.types';
 	import { createWorkspaceStore } from '../lib/stores/workspace.svelte';
-	import NavBar from '../components/NavBar.svelte';
+	import { isWorkspacePath } from '../utils/workspaceRoute';
+	import HostedConnection from '../components/HostedConnection.svelte';
 	import ProjectGate from '../components/ProjectGate.svelte';
-	import CatalogView from '../components/CatalogView.svelte';
-	import EntityView from '../components/EntityView.svelte';
-	import StatusBar from '../components/StatusBar.svelte';
+	import WorkspaceShell from '../components/WorkspaceShell.svelte';
 	import '../lib/styles/workspace.css';
 	import '../lib/styles/design.css';
 	const workspace = createWorkspaceStore();
@@ -15,11 +14,18 @@
 		const bridge = (window as Window & { harness?: DesktopBridge }).harness;
 		workspace.connect(bridge);
 		available = Boolean(bridge);
-		if (bridge && location.pathname.startsWith('/harness/'))
-			void workspace.navigate(location.pathname, false);
-		const pop = () => void workspace.navigate(location.pathname, false);
-		window.addEventListener('popstate', pop);
-		return () => window.removeEventListener('popstate', pop);
+		const show = () => {
+			if (isWorkspacePath(location.pathname)) void workspace.navigate(location.pathname, false);
+		};
+		if (bridge) {
+			void workspace.loadProjects();
+			show();
+		}
+		window.addEventListener('popstate', show);
+		return () => {
+			window.removeEventListener('popstate', show);
+			workspace.connect(undefined);
+		};
 	});
 </script>
 
@@ -27,14 +33,11 @@
 	><title>Harness{workspace.snapshot ? ' · ' + workspace.snapshot.project.name : ''}</title
 	></svelte:head
 >
-{#if workspace.snapshot}<div class="workspace">
-		<NavBar {workspace} />{#if workspace.error}<p class="error" role="alert">
-				{workspace.error}
-			</p>{/if}{#if workspace.entity}{#key workspace.entity.id}<EntityView
-					{workspace}
-				/>{/key}{:else}<CatalogView {workspace} />{/if}<StatusBar {workspace} />
-	</div>{:else}<ProjectGate
+{#if workspace.snapshot}<WorkspaceShell {workspace} />{:else}<ProjectGate
 		{available}
 		busy={workspace.busy}
 		open={() => void workspace.openProject()}
-	/>{#if workspace.error}<p class="error" role="alert">{workspace.error}</p>{/if}{/if}
+		projects={workspace.projects}
+		choose={(projectId) => void workspace.switchProject(projectId)}
+		>{#if available}<HostedConnection {workspace} />{/if}</ProjectGate
+	>{#if workspace.error}<p class="error" role="alert">{workspace.error}</p>{/if}{/if}

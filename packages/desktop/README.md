@@ -11,7 +11,7 @@ bun run build
 bun run desktop
 ```
 
-`build` creates the static Svelte renderer and Electron main/preload bundles. Rebuild after source changes before reopening the native app. `bun run dev` serves the browser preview on port 5796; without Electron's bridge, this preview is read-only and cannot open a local project.
+`build` creates the static Svelte renderer and Electron main/preload bundles. Rebuild after source changes before reopening the native app. `bun run dev` serves the browser preview on port 5799; without Electron's bridge, this preview is read-only and cannot open a local project.
 
 On macOS, after a successful build:
 
@@ -21,6 +21,14 @@ open dist/mac/Harness.app
 ```
 
 The packaging script creates a local, ad-hoc-signed app. It does not notarize, publish, or install a production release.
+
+## Projects and shared collaboration
+
+The top-left picker switches between saved local projects and shared GitHub projects. Local projects retain Plan/Change controls; shared projects support human comments only. Launch with the dedicated `HARNESS_HUB_ORIGIN` to connect through a browser sign-in and one-time desktop code. The main process stores the session through Electron safeStorage; credentials never enter the renderer.
+
+Project URLs start with `/projects/{projectId}/harness/branch/{encodedBranch}/`, with an optional `/commit/{fullSha}/` before the entity category. Cached shared views display their saved time while offline and disable mutations. Access denial clears protected cached views; pending drafts stay distinct from acknowledged GitHub comments.
+
+Provider registration and hosted publication remain separate setup steps. See [Harness Hub](../hub/README.md).
 
 ## Prepare the selected repository
 

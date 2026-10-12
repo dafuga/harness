@@ -1,30 +1,29 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
+	import type { Snippet } from 'svelte';
 	import { categories } from '../models/Desktop.types';
 	import type { Workspace } from '../lib/stores/workspace.svelte';
 	import Icon from './Icon.svelte';
+	import ProjectSwitcher from './ProjectSwitcher.svelte';
 	import RevisionPicker from './RevisionPicker.svelte';
-	let { workspace }: { workspace: Workspace } = $props();
+	import WorkspaceLink from './WorkspaceLink.svelte';
+	/** `account` is the place of a host app for who is signed in; the desktop app has none. */
+	let { workspace, account }: { workspace: Workspace; account?: Snippet } = $props();
 </script>
 
 <header class="topbar">
-	<a
-		class="brand"
-		href={resolve('/')}
-		onclick={(e) => {
-			e.preventDefault();
-			void workspace.openProject();
-		}}><span class="brand-mark">◈</span> Harness</a
-	><span class="project-name">{workspace.snapshot?.project.name}</span>
+	<WorkspaceLink {workspace} to={workspace.path('pages')} class="brand"
+		><span class="brand-mark">◈</span> Harness</WorkspaceLink
+	>
+	<ProjectSwitcher {workspace} />
 	<nav aria-label="Catalog categories">
-		{#each categories as category (category)}<a
-				class:active={workspace.category === category}
-				href={resolve('/harness/[...path]', { path: workspace.path(category).slice(9) })}
-				onclick={(e) => {
-					e.preventDefault();
-					void workspace.navigate(workspace.path(category));
-				}}><Icon name={category} /><span>{category[0].toUpperCase() + category.slice(1)}</span></a
+		{#each categories as category (category)}<WorkspaceLink
+				{workspace}
+				to={workspace.path(category)}
+				class={workspace.category === category ? 'active' : ''}
+				><Icon name={category} /><span>{category[0].toUpperCase() + category.slice(1)}</span
+				></WorkspaceLink
 			>{/each}
 	</nav>
 	<RevisionPicker {workspace} />
+	{#if account}<div class="account">{@render account()}</div>{/if}
 </header>

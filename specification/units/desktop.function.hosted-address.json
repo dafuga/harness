@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.hosted-address",
+	"kind": "function",
+	"title": "hostedAddress",
+	"responsibility": "Owns the hostedAddress shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/hostedAddress.ts"],
+		"symbols": ["hostedAddress"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hostedAddress.value",
+				"type": "string | undefined"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hostedAddress",
+				"type": "string | null"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/hostedAddress.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/hostedAddress.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

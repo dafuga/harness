@@ -1,0 +1,69 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.thread-links",
+	"kind": "component",
+	"title": "ThreadLinks",
+	"responsibility": "Owns the ThreadLinks Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/ThreadLinks.svelte"],
+		"symbols": ["ThreadLinks"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ThreadLinks.threads",
+				"type": "ThreadInfo[]"
+			},
+			{
+				"name": "ThreadLinks.thread",
+				"type": "ThreadInfo | null"
+			},
+			{
+				"name": "ThreadLinks.aim",
+				"type": "ThreadTarget"
+			},
+			{
+				"name": "ThreadLinks.select",
+				"type": "(thread: ThreadInfo) => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ThreadLinks",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.thread-anchor",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/ThreadLinks.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/ThreadLinks.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

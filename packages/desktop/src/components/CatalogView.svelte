@@ -38,7 +38,8 @@
 			const entity = await workspace.bridge.createPlan({
 				category: workspace.category,
 				title: title.trim(),
-				goal: goal.trim()
+				goal: goal.trim(),
+				...workspace.context
 			});
 			creating = false;
 			await workspace.refresh();
@@ -58,11 +59,11 @@
 			<h1>{heading}</h1>
 			<p>Browse {workspace.category} and understand your project.</p>
 		</div>
-		<button
-			class="outline gold"
-			disabled={!workspace.snapshot?.writable}
-			onclick={() => (creating = true)}>+ New {workspace.category.slice(0, -1)}</button
-		>
+		{#if workspace.capabilities.planning}<button
+				class="outline gold"
+				disabled={!workspace.snapshot?.writable}
+				onclick={() => (creating = true)}>+ New {workspace.category.slice(0, -1)}</button
+			>{/if}
 	</div>
 	<div class="catalog-tools">
 		<input

@@ -1,3 +1,4 @@
+import { HostedProjectService } from './HostedProjectService';
 import type { ProjectSessionService } from './ProjectSessionService';
 import type { ProviderDiscoveryService } from './ProviderDiscoveryService';
 import type { DesktopRunService } from './DesktopRunService';
@@ -10,11 +11,14 @@ export class DesktopBridgeService {
 		private choose: () => Promise<string | null>
 	) {}
 	bridge() {
-		return desktopBridge({
+		const local = desktopBridge({
 			session: this.session,
 			providers: this.providers,
 			runs: this.runs,
 			choose: this.choose
 		});
+		return this.session.remote
+			? new HostedProjectService(this.session, this.session.remote).wrap(local)
+			: local;
 	}
 }

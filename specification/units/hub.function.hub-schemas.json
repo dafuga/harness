@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.hub-schemas",
+	"kind": "function",
+	"title": "hubSchemas",
+	"responsibility": "Owns the hubSchemas shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/hubSchemas.ts"],
+		"symbols": [
+			"hubContractSchema",
+			"hubPlanSchema",
+			"hubDesignSchema",
+			"hubApprovalSchema",
+			"HubPlan",
+			"HubDesign",
+			"hubSchemas"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hubSchemas.schema",
+				"type": "z.ZodType<T>"
+			},
+			{
+				"name": "hubSchemas.value",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hubContractSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "hubPlanSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "hubDesignSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "hubApprovalSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "hubSchemas",
+				"type": "T"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/hubSchemas.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/hubSchemas.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

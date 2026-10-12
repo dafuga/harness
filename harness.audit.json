@@ -21,6 +21,14 @@
 		{
 			"path": "packages/desktop/",
 			"reason": "Electron workspace runs its own strict app audit and browser acceptance through check:desktop in the root check."
+		},
+		{
+			"path": "packages/collaboration/",
+			"reason": "Portable collaboration workspace runs its strict library audit in root check:collaboration."
+		},
+		{
+			"path": "packages/hub/",
+			"reason": "Hosted collaboration workspace runs its strict app audit and browser acceptance in root check:hub."
 		}
 	]
 }

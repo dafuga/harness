@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.email-proof-panel",
+	"kind": "component",
+	"title": "EmailProofPanel",
+	"responsibility": "Owns the EmailProofPanel Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/components/EmailProofPanel.svelte"],
+		"symbols": ["EmailProofPanel"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "EmailProofPanel.proof",
+				"type": "EmailProofStatus"
+			}
+		],
+		"outputs": [
+			{
+				"name": "EmailProofPanel",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.model.hub-auth-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/EmailProofPanel.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/EmailProofPanel.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

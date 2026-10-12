@@ -74,6 +74,15 @@ function entityPayload(channel: string, x: Record<string, unknown>) {
 	if (channel === 'design:approve') return { entityId, ...approvalPayload(x) };
 	const commit = textField(x.commit, 40, commitPattern);
 	const base = { entityId, commit };
+	if (channel === 'entity:history') {
+		if (!Number.isInteger(x.page) || Number(x.page) < 1 || Number(x.page) > 10000)
+			throw new Error('Invalid history page.');
+		return {
+			...base,
+			page: Number(x.page),
+			...(x.branch === undefined ? {} : { branch: textField(x.branch) })
+		};
+	}
 	if (channel === 'entity:source') return { ...base, path: textField(x.path, 1000) };
 	if (channel === 'image:read')
 		return {

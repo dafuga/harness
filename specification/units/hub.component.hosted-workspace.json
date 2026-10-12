@@ -1,0 +1,62 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.hosted-workspace",
+	"kind": "component",
+	"title": "HostedWorkspace",
+	"responsibility": "Owns the HostedWorkspace Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/components/HostedWorkspace.svelte"],
+		"symbols": ["HostedWorkspace"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "HostedWorkspace",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.component.account-menu",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.hub-frame",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.browser-bridge",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/HostedWorkspace.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/HostedWorkspace.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

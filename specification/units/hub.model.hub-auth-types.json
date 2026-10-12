@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.model.hub-auth-types",
+	"kind": "model",
+	"title": "HubAuth",
+	"responsibility": "Owns the HubAuth data model.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/models/HubAuth.types.ts"],
+		"symbols": [
+			"HubEnvironment",
+			"EMAIL_CODE_LENGTH",
+			"AuthEnv",
+			"InstallationTokenInput",
+			"HubAuth",
+			"AuthFailureCode",
+			"EmailProofStatus",
+			"AuthStatus",
+			"SignInResult",
+			"EmailProofMessage",
+			"EmailProofDelivery",
+			"AuthChallenge",
+			"GoogleSignInInput",
+			"GithubStatus",
+			"GithubRepositoryOption",
+			"GithubRepositories",
+			"NATIVE_AUDIENCE",
+			"NATIVE_ACTION",
+			"NativeStartInput",
+			"NativeStartResult",
+			"NativeApproveInput",
+			"NativePollResult",
+			"NativeExchangeInput",
+			"NativeAuthorization"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "EMAIL_CODE_LENGTH",
+				"type": "unknown"
+			},
+			{
+				"name": "NATIVE_AUDIENCE",
+				"type": "unknown"
+			},
+			{
+				"name": "NATIVE_ACTION",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/models/HubAuth.types.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/models/HubAuth.types.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

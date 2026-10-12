@@ -1,7 +1,22 @@
+import type { CacheStatus } from '../models/ProjectContext.types';
 import { contextBridge, ipcRenderer } from 'electron';
-import { channels, runEventChannel } from '../models/DesktopBridge.types';
+import { channels, runEventChannel, cacheEventChannel } from '../models/DesktopBridge.types';
 import type { DesktopBridge, RunEvent } from '../models/DesktopBridge.types';
 const bridge: DesktopBridge = {
+	history: (input) => ipcRenderer.invoke(channels.history, input),
+	onCacheStatus: (listener) => {
+		const handler = (_event: unknown, value: CacheStatus) => listener(value);
+		ipcRenderer.on(cacheEventChannel, handler);
+		return () => ipcRenderer.removeListener(cacheEventChannel, handler);
+	},
+	hostedStatus: () => ipcRenderer.invoke(channels.hostedStatus),
+	connectHosted: () => ipcRenderer.invoke(channels.connectHosted),
+	disconnectHosted: () => ipcRenderer.invoke(channels.disconnectHosted),
+	listProjects: () => ipcRenderer.invoke(channels.listProjects),
+	selectProject: (input) => ipcRenderer.invoke(channels.selectProject, input),
+	capabilities: (input) => ipcRenderer.invoke(channels.capabilities, input),
+	addComment: (input) => ipcRenderer.invoke(channels.addComment, input),
+	pendingComments: (input) => ipcRenderer.invoke(channels.pendingComments, input),
 	openProject: () => ipcRenderer.invoke(channels.openProject),
 	snapshot: (input) => ipcRenderer.invoke(channels.snapshot, input),
 	entity: (input) => ipcRenderer.invoke(channels.entity, input),

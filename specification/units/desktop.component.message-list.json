@@ -15,7 +15,7 @@
 		"inputs": [
 			{
 				"name": "MessageList.messages",
-				"type": "ThreadMessage[]"
+				"type": "ThreadEntry[]"
 			}
 		],
 		"outputs": [
@@ -28,7 +28,12 @@
 	},
 	"dependencies": [
 		{
-			"unit": "desktop.model.desktop-types",
+			"unit": "desktop.function.comment-entries",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.time-label",
 			"via": "import",
 			"origin": "derived"
 		}

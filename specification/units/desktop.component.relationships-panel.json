@@ -20,6 +20,10 @@
 			{
 				"name": "RelationshipsPanel.workspace",
 				"type": "Workspace"
+			},
+			{
+				"name": "RelationshipsPanel.title",
+				"type": "string"
 			}
 		],
 		"outputs": [
@@ -43,6 +47,11 @@
 		},
 		{
 			"unit": "desktop.component.status-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.workspace-link",
 			"via": "import",
 			"origin": "derived"
 		},

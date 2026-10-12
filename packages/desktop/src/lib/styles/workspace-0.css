@@ -140,11 +140,6 @@ small {
 	color: var(--gold);
 	font-size: 40px;
 }
-.project-name {
-	border-inline: 1px solid var(--line);
-	padding: 12px 22px;
-	font-size: 14px;
-}
 .topbar nav {
 	display: flex;
 	align-self: stretch;
@@ -184,4 +179,5 @@ small {
 	height: 34px;
 	min-height: 34px !important;
 	font-size: 13px;
+	padding-block: 0;
 }

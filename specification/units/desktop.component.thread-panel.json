@@ -26,6 +26,10 @@
 				"type": "ThreadInfo | null"
 			},
 			{
+				"name": "ThreadPanel.target",
+				"type": "ThreadTarget | null"
+			},
+			{
 				"name": "ThreadPanel.version",
 				"type": "string"
 			},
@@ -43,6 +47,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.component.approval-button",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.component.composer",
 			"via": "import",
@@ -64,12 +73,42 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.component.thread-links",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.comment-entries",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.compose-modes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.thread-anchor",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.desktop-bridge-types",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.thread-comments",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.thread-run",
 			"via": "import",
 			"origin": "derived"
 		},

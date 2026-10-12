@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.hub-frame",
+	"kind": "component",
+	"title": "HubFrame",
+	"responsibility": "Owns the HubFrame Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/components/HubFrame.svelte"],
+		"symbols": ["HubFrame"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HubFrame.children",
+				"type": "Snippet"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubFrame",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.component.account-menu",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/HubFrame.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/HubFrame.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

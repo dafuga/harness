@@ -1,0 +1,132 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.hub-catalog",
+	"kind": "function",
+	"title": "hubCatalog",
+	"responsibility": "Owns the hubCatalog shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/hubCatalog.ts"],
+		"symbols": ["hubCatalog", "hubAttestPlan", "hubRelationships", "hubOwnedPaths"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hubCatalog.context",
+				"type": "HubSourceContext"
+			},
+			{
+				"name": "hubAttestPlan.plan",
+				"type": "HubPlan"
+			},
+			{
+				"name": "hubAttestPlan.unit",
+				"type": "ComponentManifest | undefined"
+			},
+			{
+				"name": "hubRelationships.unit",
+				"type": "ComponentManifest"
+			},
+			{
+				"name": "hubRelationships.units",
+				"type": "ComponentManifest[]"
+			},
+			{
+				"name": "hubRelationships.items",
+				"type": "CatalogEntity[]"
+			},
+			{
+				"name": "hubOwnedPaths.context",
+				"type": "HubSourceContext"
+			},
+			{
+				"name": "hubOwnedPaths.unit",
+				"type": "ComponentManifest"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hubCatalog",
+				"type": "unknown"
+			},
+			{
+				"name": "hubAttestPlan",
+				"type": "unknown"
+			},
+			{
+				"name": "hubRelationships",
+				"type": "Relationship[]"
+			},
+			{
+				"name": "hubOwnedPaths",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.catalog-unit",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.category-of",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-plans",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-records",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-schemas",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-source",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/hubCatalog.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/hubCatalog.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

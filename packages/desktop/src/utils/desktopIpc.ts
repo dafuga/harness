@@ -24,6 +24,7 @@ export function desktopIpc(
 			if (!trustedSender(event, window)) throw new Error('Untrusted renderer.');
 			const value = validator.parse(channel, input);
 			const method = bridge[name as keyof typeof bridge] as (value: unknown) => Promise<unknown>;
+			if (typeof method !== 'function') throw new Error('Desktop operation unavailable.');
 			return method(value);
 		});
 	});
