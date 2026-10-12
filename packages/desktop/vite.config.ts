@@ -4,6 +4,8 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
 	plugins: [sveltekit()],
 	test: {
-		include: ['test/**/*.test.ts']
+		include: ['test/**/*.test.ts'],
+		// Run files sequentially to reduce contention between Git/process-heavy integration fixtures.
+		fileParallelism: false
 	}
 });
