@@ -36,8 +36,15 @@ jobs:
         run: rustup show
       - name: Install dependencies exactly as locked
         run: bun install --frozen-lockfile
+      - name: Install the locked browser and Linux display dependencies
+        run: node node_modules/@playwright/test/cli.js install --with-deps chromium
+      - name: Prepare the pinned PDF runtime
+        run: |
+          python3 -m venv "$RUNNER_TEMP/harness-pdf"
+          "$RUNNER_TEMP/harness-pdf/bin/python" -m pip install reportlab==4.4.9 Pillow==12.3.0
+          echo "PROJECT_REPORTS_PYTHON=$RUNNER_TEMP/harness-pdf/bin/python" >> "$GITHUB_ENV"
       - name: Format, types, lint, Rust native and Wasm, tests, build, package and audits
-        run: bun run check
+        run: xvfb-run -a bun run check
 
   verify:
     name: Verify the exact commit
@@ -58,6 +65,13 @@ jobs:
         run: rustup show
       - name: Install dependencies exactly as locked
         run: bun install --frozen-lockfile
+      - name: Install the locked browser and Linux display dependencies
+        run: node node_modules/@playwright/test/cli.js install --with-deps chromium
+      - name: Prepare the pinned PDF runtime
+        run: |
+          python3 -m venv "$RUNNER_TEMP/harness-pdf"
+          "$RUNNER_TEMP/harness-pdf/bin/python" -m pip install reportlab==4.4.9 Pillow==12.3.0
+          echo "PROJECT_REPORTS_PYTHON=$RUNNER_TEMP/harness-pdf/bin/python" >> "$GITHUB_ENV"
       - name: Read existing notes, evidence and media
         # Read-only. Without them nothing is proven, and the whole revision is verified.
         env:
@@ -73,7 +87,7 @@ jobs:
         # baseline and nothing here establishes or approves one.
         id: verify
         continue-on-error: true
-        run: bun run dev -- verify run --commit "$COMMIT"
+        run: xvfb-run -a bun run dev -- verify run --commit "$COMMIT"
       - name: Keep the record and its evidence, pass or fail
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
