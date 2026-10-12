@@ -87,3 +87,90 @@ test('a message file loses what Git itself leaves out of the commit, and nothing
 		})
 	).toBe('fix: a\n\n# kept');
 });
+
+const unprefixed = 'subject does not start with feat:, fix:, chore: or cleanup:.';
+const cleaned = ['strip', 'whitespace', 'scissors'];
+const cut = '# ------------------------ >8 ------------------------';
+const diff = `diff --git a/file b/file\n+${'x'.repeat(900)}\n`;
+
+test('a message file is cleaned as Git cleans it: whitespace Git never stores is not counted', () => {
+	// What was refused as 420 characters: five letters, 410 spaces after them, and a second line.
+	const padded = `feat: parity\n\nalpha${' '.repeat(410)}\nbeta\n`;
+	for (const cleanup of cleaned) {
+		const stored = writtenMessage(padded, { cleanup });
+		expect([cleanup, stored, commitMessage(stored)]).toEqual([
+			cleanup,
+			'feat: parity\n\nalpha\nbeta',
+			[]
+		]);
+	}
+	// Blank lines before, after and in a row go; a line of spaces is a blank line; what a line
+	// begins with stays.
+	const untidy = '\n \n\t\nfeat: tidy \t\r\n\n\n  \n  indented stays \n\n\n\nlast\r\n\n \n';
+	for (const cleanup of cleaned)
+		expect([cleanup, writtenMessage(untidy, { cleanup })]).toEqual([
+			cleanup,
+			'feat: tidy\n\n  indented stays\n\nlast'
+		]);
+	// A comment that is left out leaves no line behind, and the blank lines around one are one.
+	expect(writtenMessage('fix: a \n# gone\nb\n\n# gone\n\nc\n')).toBe('fix: a\nb\n\nc');
+	// Only a space, a tab and a line ending end a line for Git: other blanks are content.
+	const odd = 'fix: a\n\nb\u00a0\nc\f\nd\n';
+	expect(writtenMessage(odd, { cleanup: 'whitespace' })).toBe('fix: a\n\nb\u00a0\nc\f\nd');
+});
+
+test('what is left after the cleaning is still measured, and a prefix is still required', () => {
+	const body = (letters: number) => `fix: short \n\n\n${'b'.repeat(letters)}   \n\n\n`;
+	expect(commitMessage(writtenMessage(body(400)))).toEqual([]);
+	expect(commitMessage(writtenMessage(body(401)))).toEqual([
+		'body has 401 characters; the limit is 400.'
+	]);
+	const spaced = `fix: short\n\n${words(61).replaceAll(' ', '  \n\n\n')}\n`;
+	expect(commitMessage(writtenMessage(spaced))).toEqual(['body has 61 words; the limit is 60.']);
+	expect(commitMessage(writtenMessage('\n\nadd the navbar   \n\n'))).toEqual([unprefixed]);
+	// A stored message is read without what is blank at its two ends, and so is the file: what
+	// the subject is indented by is not held against it, by the hook or by the verification.
+	expect(commitMessage(writtenMessage('  feat: indented\n'))).toEqual([]);
+	expect(writtenMessage(' \n\t feat: a\n\n  b \n\u00a0\n')).toBe('feat: a\n\n  b');
+	expect(commitMessage(writtenMessage(' \n# only a comment\n\t\n'))).toEqual(['subject is empty.']);
+});
+
+test('a repository that keeps messages as written is measured as written', () => {
+	const padded = `feat: parity\n\nalpha${' '.repeat(410)}\nbeta\n`;
+	expect(writtenMessage(padded, { cleanup: 'verbatim' })).toBe(padded.trim());
+	expect(commitMessage(writtenMessage(padded, { cleanup: 'verbatim' }))).toEqual([
+		'body has 420 characters; the limit is 400.'
+	]);
+	expect(writtenMessage('fix: a\n\n\n# kept  \n\n\nb', { cleanup: 'verbatim' })).toBe(
+		'fix: a\n\n\n# kept  \n\n\nb'
+	);
+});
+
+test('the scissors are the whole line Git writes, in every mode that cleans', () => {
+	for (const cleanup of cleaned)
+		expect([cleanup, writtenMessage(`fix: a\n\nwhy  \n${cut}\n${diff}`, { cleanup })]).toEqual([
+			cleanup,
+			'fix: a\n\nwhy'
+		]);
+	expect(writtenMessage(`${cut}\n${diff}`, { cleanup: 'scissors' })).toBe('');
+	// A line that only begins like the scissors cuts nothing: it is a comment, or it is content.
+	const near = `fix: a\n\n${cut} more\nkept  \n`;
+	expect(writtenMessage(near)).toBe('fix: a\n\nkept');
+	expect(writtenMessage(near, { cleanup: 'scissors' })).toBe(`fix: a\n\n${cut} more\nkept`);
+	// Another comment character moves the scissors with it, and then a hash is content.
+	const other = `fix: a\n\n; gone\n# kept\n;${cut.slice(1)}\n${diff}`;
+	expect(writtenMessage(other, { comment: ';' })).toBe('fix: a\n\n# kept');
+	expect(writtenMessage(`fix: a\n\n${cut}\nkept\n`, { comment: ';' })).toBe(
+		`fix: a\n\n${cut}\nkept`
+	);
+});
+
+test('a long run of spaces inside a line costs no more than the line is long', () => {
+	const run = ' '.repeat(200_000);
+	const started = performance.now();
+	expect(writtenMessage(`fix: a\n\nb${run}c${run}\n`, { cleanup: 'whitespace' })).toBe(
+		`fix: a\n\nb${run}c`
+	);
+	// Rescanning the run from each of its spaces took twenty seconds; one pass takes milliseconds.
+	expect(performance.now() - started).toBeLessThan(2_000);
+});
