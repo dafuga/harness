@@ -203,6 +203,9 @@ export interface HarnessRevision {
 	/** Path of the stored side of this revision's source tree; null when it could not be read. */
 	side?: string | null;
 	records: HarnessRecord[];
+	/** The reasons for what this commit itself changed against its first parent. */
 	explanations: HarnessExplanation[];
+	/** How many more its notes and records hold for other commits of a range verified here. */
+	rangeReasons?: number;
 }
 export type HarnessMark = 'direct' | 'indirect' | 'added' | 'removed';

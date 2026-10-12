@@ -61,7 +61,8 @@
 			"revisionChanges",
 			"writingLimits",
 			"commitMessage",
-			"CommitMessageService"
+			"CommitMessageService",
+			"revisionReasons"
 		]
 	},
 	"contract": {
@@ -223,6 +224,11 @@
 		},
 		{
 			"unit": "function.revision-changes",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.revision-reasons",
 			"via": "reexport",
 			"origin": "derived"
 		},

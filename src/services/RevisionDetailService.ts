@@ -7,8 +7,8 @@ import type { Explanation } from '../core/explanationTypes';
 import type { VerificationRecord } from '../core/verificationTypes';
 import { ScenarioRepository } from '../repositories/ScenarioRepository';
 import { UnitRegistryRepository } from '../repositories/UnitRegistryRepository';
-import { canonicalJson } from '../utils/canonicalJson';
 import { recordView, type RecordView, type ResolvedMedia } from '../utils/recordView';
+import { revisionReasons, type RevisionReasons } from '../utils/revisionReasons';
 import { revisionRegistry, type RevisionRegistry } from '../utils/revisionRegistry';
 import type { AttachedRecord } from './AttachedRecordService';
 import type { HistoryMediaService } from './HistoryMediaService';
@@ -42,7 +42,13 @@ export interface RevisionDetail {
 	 */
 	side: string | null;
 	records: RecordView[];
+	/** The reasons for what this commit itself changed against its first parent. */
 	explanations: Explanation[];
+	/**
+	 * How many more reasons its notes and records hold that are not this commit's: a record may
+	 * verify a longer range. They stay where they were written and are dated to no commit here.
+	 */
+	rangeReasons: number;
 }
 
 interface Stored {
@@ -97,6 +103,7 @@ export class RevisionDetailService {
 		const side = await this.source.stored(commit);
 		const tree = await this.git.attempt(['rev-parse', '--verify', '--quiet', `${commit}^{tree}`]);
 		const stored = await this.registry(commit);
+		const reasons = await this.reasons(commit, sound);
 		const detail: RevisionDetail = {
 			schemaVersion: 1,
 			commit,
@@ -105,7 +112,8 @@ export class RevisionDetailService {
 			sourceImpact: (await this.source.of(commit)) ?? null,
 			side: side && tree ? `sides/${tree}.json` : null,
 			records,
-			explanations: await this.explanations(commit, sound)
+			explanations: reasons.explanations,
+			rangeReasons: reasons.range
 		};
 		return { detail, status, sound, ledger: stored.ledger, ...(side ? { side } : {}) };
 	}
@@ -167,15 +175,21 @@ export class RevisionDetailService {
 		return { registry, ledger };
 	}
 
-	/** Reasons noted on the commit and those that satisfied its records, each listed once. */
-	private async explanations(commit: string, sound: VerificationRecord[]): Promise<Explanation[]> {
+	/**
+	 * The reasons of this commit among those noted on it and those that satisfied its records. A
+	 * record of a longer range holds the reasons of earlier commits too; those are not its own.
+	 */
+	private async reasons(commit: string, sound: VerificationRecord[]): Promise<RevisionReasons> {
 		const note = (await this.history.all()).get(commit);
 		const noted = (note?.entries ?? []).flatMap((entry) =>
 			entry.kind === 'reason' ? [entry.explanation] : []
 		);
-		const used = sound.flatMap((record) => record.reasons.entries ?? []);
-		const unique = new Map([...noted, ...used].map((entry) => [canonicalJson(entry), entry]));
-		return [...unique.keys()].sort().map((key) => unique.get(key) as Explanation);
+		const records = sound.map((record) => ({
+			base: record.source.base,
+			entries: record.reasons.entries ?? []
+		}));
+		const parent = (await this.source.parent(commit)) ?? null;
+		return revisionReasons({ parent, own: await this.source.reasons(commit), noted, records });
 	}
 }
 

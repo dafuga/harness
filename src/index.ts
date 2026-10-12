@@ -84,3 +84,4 @@ export { revisionChanges } from './utils/revisionChanges';
 export { writingLimits } from './utils/writingLimits';
 export { commitMessage } from './utils/commitMessage';
 export { CommitMessageService } from './services/CommitMessageService';
+export { revisionReasons } from './utils/revisionReasons';

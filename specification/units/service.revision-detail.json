@@ -3,7 +3,7 @@
 	"id": "service.revision-detail",
 	"kind": "service",
 	"title": "RevisionDetailService",
-	"responsibility": "Builds the detail of one revision: its stored registry graph, its attached records with resolved media and inherited provenance, and its reasons.",
+	"responsibility": "Builds the detail of one revision: its stored registry graph, its attached records with resolved media and inherited provenance, and the reasons for what its commit itself changed.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -61,17 +61,17 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "function.canonical-json",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "function.explanation-types",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "function.record-view",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.revision-reasons",
 			"via": "import",
 			"origin": "derived"
 		},
