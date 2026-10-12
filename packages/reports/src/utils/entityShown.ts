@@ -26,7 +26,8 @@ export function entityShown(host: Shown, entity: ExplorerEntity): EntityShown {
 	const contract = entityContract(entity.unit, {
 		category: entity.category,
 		appRoute: entity.appRoute,
-		states: requiredStates(entity.unit, held.registry.scenarios)
+		// The registry that holds the entity says what it is made into, so which states apply.
+		states: requiredStates(entity.unit, held.registry.scenarios, held.registry.units)
 	});
 	return { contract, measure: entityMeasure(entity.unit, record), record };
 }

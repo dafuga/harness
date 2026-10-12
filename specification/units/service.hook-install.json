@@ -3,12 +3,13 @@
 	"id": "service.hook-install",
 	"kind": "service",
 	"title": "HookInstallService",
-	"responsibility": "Installs, removes and reports the opt-in pre-push and commit-msg hooks, chaining any existing hook and restoring it byte for byte.",
+	"responsibility": "Installs, removes and reports the opt-in pre-push and commit-msg hooks, with an opt-in of its own for each stage and worktree, chaining any existing hook and restoring it byte for byte.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/services/HookInstallService.ts"],
 		"symbols": [
+			"HookStageStatus",
 			"HookStatus",
 			"HookInstallService",
 			"HookInstallService.constructor",

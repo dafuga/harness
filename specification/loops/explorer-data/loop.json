@@ -2,7 +2,7 @@
 	"name": "explorer-data",
 	"goal": "The Harness console is an entity explorer whose address, data and verdicts are exact: /harness/branch/{branch}/... shows the branch tip and /harness/branch/{branch}/commit/{sha}/... a selected commit, across five categories (Pages, Components, Functions, Configs, Services) with entity Overview, Details and History; earlier map, compare, history, growth, activity, query and slash-branch addresses lead into it; a unit is green only when every required test, state, viewport and commit-bound capture passed at the viewed revision; a selected commit is compared with its first parent and a branch tip shows one current capture",
 	"createdAt": "2026-10-11T15:36:59.584Z",
-	"updatedAt": "2026-10-12T00:31:21.322Z",
+	"updatedAt": "2026-10-12T05:23:18.894Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"steps": [
@@ -30,7 +30,9 @@
 		{
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-12T05:23:18.894Z",
+			"evidence": "Full root, Rust, Wasm and installer checks passed; focused browser, state-scope and real legacy-hook guards passed. Source-bound proof follows."
 		},
 		{
 			"id": "third-pass",

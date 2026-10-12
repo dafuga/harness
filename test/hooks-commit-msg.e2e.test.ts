@@ -11,7 +11,7 @@ interface HookStatus {
 	enabled: boolean;
 	stage: string;
 	chained: boolean;
-	stages: Array<{ stage: string; installed: boolean; chained: boolean }>;
+	stages: Array<{ stage: string; installed: boolean; chained: boolean; enabled: boolean }>;
 	limitations: string[];
 }
 
@@ -113,8 +113,8 @@ test('hooks that were there run first for both stages, and both return byte for 
 		chained: true
 	});
 	expect(installed.stages).toEqual([
-		{ stage: 'pre-push', installed: true, chained: true },
-		{ stage: 'commit-msg', installed: true, chained: true }
+		{ stage: 'pre-push', installed: true, chained: true, enabled: true },
+		{ stage: 'commit-msg', installed: true, chained: true, enabled: true }
 	]);
 	expect(installed.limitations.join(' ')).toContain('git commit --no-verify');
 	expect(await install(repo)).toEqual(installed);

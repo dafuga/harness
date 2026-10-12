@@ -2,7 +2,7 @@
 	"name": "explorer-entities",
 	"goal": "A person reviews the app as Pages, Components, Functions, Configs and Services: each entity shows its contract, size, performance and the evidence that proves it, with binary verification and no source unless Details Source is opened.",
 	"createdAt": "2026-10-11T15:38:04.907Z",
-	"updatedAt": "2026-10-12T00:35:07.330Z",
+	"updatedAt": "2026-10-12T05:23:18.665Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"steps": [
@@ -30,7 +30,9 @@
 		{
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-12T05:23:18.665Z",
+			"evidence": "Full root, Rust, Wasm and installer checks passed; focused browser, state-scope and real legacy-hook guards passed. Source-bound proof follows."
 		},
 		{
 			"id": "repair-reading",

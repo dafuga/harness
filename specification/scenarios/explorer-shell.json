@@ -79,22 +79,22 @@
 		{
 			"id": "bar",
 			"kind": "e2e",
-			"runner": "playwright",
-			"target": "tests/e2e/explorer-shell.spec.ts",
+			"runner": "command",
+			"target": "bun x playwright test --config src/config/shellPlaywrightConfig.ts tests/e2e/explorer-shell.spec.ts",
 			"cwd": "packages/reports"
 		},
 		{
 			"id": "pieces",
 			"kind": "e2e",
-			"runner": "playwright",
-			"target": "tests/e2e/explorer-shell-pieces.spec.ts",
+			"runner": "command",
+			"target": "bun x playwright test --config src/config/shellPlaywrightConfig.ts tests/e2e/explorer-shell-pieces.spec.ts",
 			"cwd": "packages/reports"
 		},
 		{
 			"id": "verdict",
 			"kind": "e2e",
-			"runner": "playwright",
-			"target": "tests/e2e/explorer-shell-verdict.spec.ts",
+			"runner": "command",
+			"target": "bun x playwright test --config src/config/shellPlaywrightConfig.ts tests/e2e/explorer-shell-verdict.spec.ts",
 			"cwd": "packages/reports"
 		}
 	],

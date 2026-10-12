@@ -2,6 +2,7 @@ import { expect, test } from 'vitest';
 import { entityShown } from '../../src/utils/entityShown';
 import { record, revision } from '../entityFixture';
 import { hostProps } from '../entityRender';
+import { both, namedRevision, namedUnits, otherPage } from '../entityStates';
 import { commits, ids, scenarios } from '../entityUnits';
 
 const value = (rows: Array<{ label: string; value: string }>, label: string) =>
@@ -26,4 +27,33 @@ test('an entity the commit removed keeps the states its parent required of it', 
 	expect(value(entityShown(host, page).contract, 'Required states')).toBe('None declared');
 	const removed = { ...page, change: 'removed' as const, lastAt: commits.first };
 	expect(value(entityShown(host, removed).contract, 'Required states')).toBe('default, empty');
+});
+
+const states = (host: ReturnType<typeof hostProps>, id: string, changed = {}) => {
+	const entity = { ...host.entities.find((item) => item.id === id)!, ...changed };
+	return value(
+		entityShown(host, entity).contract,
+		entity.category === 'pages' ? 'Required states' : 'States'
+	);
+};
+
+test('a page and what it is made of are required in the states of that page only', () => {
+	const host = hostProps('commit', { category: 'pages', entity: ids.page }, both());
+	// The scenario also has a required state of another page; it is no requirement of this one.
+	expect(states(host, ids.page)).toBe('default, empty');
+	expect(states(host, ids.list)).toBe('default, empty');
+	expect(states(host, ids.card)).toBe('default, empty');
+	expect(states(host, otherPage)).toBe('returns');
+});
+
+test('an entity the commit removed is required as the registry of its parent says', () => {
+	// At the commit nothing uses the list any more, so its own registry cannot place it.
+	const unused = namedUnits.map((unit) =>
+		unit.id === ids.page ? { ...unit, dependencies: [] } : unit
+	);
+	const head = namedRevision(commits.middle, { units: unused });
+	const host = hostProps('commit', { category: 'components' }, { ...both(), head });
+	expect(states(host, ids.list)).toBe('default, empty, returns');
+	const removed = { change: 'removed' as const, lastAt: commits.first };
+	expect(states(host, ids.list, removed)).toBe('default, empty');
 });

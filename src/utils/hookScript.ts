@@ -2,11 +2,23 @@
 export const hookMarker = 'harness-managed hook';
 /** Suffix under which a hook that was already installed is kept, unchanged, and still run. */
 export const chainedSuffix = '.harness-chained';
-/** File in a worktree's own Git directory that turns the hooks on for that worktree. */
+/**
+ * File in a worktree's own Git directory that opts it into the push stage and holds its command.
+ * Every version of Harness has written this one file, so it means a push and nothing else.
+ */
 export const enabledFile = 'harness-hooks';
 /** The stages Harness offers: a push is verified, and the message of a commit is measured. */
 export const hookStages = ['pre-push', 'commit-msg'] as const;
 export type HookStage = (typeof hookStages)[number];
+
+/**
+ * The file that opts a worktree into one stage. The hooks directory is shared, so a stage that
+ * is offered later is installed for worktrees that asked an earlier Harness for pushes only:
+ * it has a file of its own, and is never started by the file of another stage.
+ */
+export function stageFile(stage: string): string {
+	return stage === 'pre-push' ? enabledFile : `${enabledFile}-${stage}`;
+}
 
 /**
  * How a stage hands on what Git gave it. A push arrives as lines of input, which are read once
@@ -28,11 +40,13 @@ function passing(stage: string): { read: string[]; chained: string; harness: str
 
 /**
  * The hook wrapper. It first runs the hook that was there before, with the same arguments and
- * input, and stops if that fails. Harness then runs only in a worktree that opted in, using the
- * command that worktree recorded, so other worktrees of the repository behave as before.
+ * input, and stops if that fails. Harness then runs only in a worktree that opted into this
+ * stage, using the command that worktree recorded for it, so other worktrees of the repository
+ * behave as before.
  */
 export function hookScript(stage: string): string {
 	const { read, chained, harness } = passing(stage);
+	const optIn = stageFile(stage);
 	return [
 		'#!/bin/sh',
 		`# ${hookMarker}: ${stage}. Written by "harness hooks install"; remove it with`,
@@ -45,8 +59,8 @@ export function hookScript(stage: string): string {
 		chained,
 		'fi',
 		'git_dir=$(git rev-parse --absolute-git-dir 2>/dev/null) || exit 0',
-		`[ -f "$git_dir/${enabledFile}" ] || exit 0`,
-		`harness=$(cat "$git_dir/${enabledFile}")`,
+		`[ -f "$git_dir/${optIn}" ] || exit 0`,
+		`harness=$(cat "$git_dir/${optIn}")`,
 		harness,
 		''
 	].join('\n');

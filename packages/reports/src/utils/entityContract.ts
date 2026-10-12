@@ -1,5 +1,6 @@
 import type { HarnessScenario, HarnessUnit } from '../models/Harness.types';
 import type { ExplorerCategory } from '../models/Explorer.types';
+import { scenarioFor } from './explorerState';
 
 export interface ContractRow {
 	label: string;
@@ -33,11 +34,20 @@ export function humanize(name: string): string {
 		.toLowerCase();
 }
 
-/** The states a unit has to be proven in: the required states of the scenarios that name it. */
-export function requiredStates(unit: HarnessUnit, scenarios: HarnessScenario[]): string[] {
+/**
+ * The states a unit has to be proven in: the required states of the scenarios that name it, as
+ * each applies to the unit. Which states of a scenario show a unit is the host's one answer
+ * (`scenarioFor`), read with the units of the same registry, so the states listed are those its
+ * proof judges and its captures are picked from. What that answer cannot narrow stays whole.
+ */
+export function requiredStates(
+	unit: HarnessUnit,
+	scenarios: HarnessScenario[],
+	units: HarnessUnit[]
+): string[] {
 	const states = scenarios
 		.filter((scenario) => scenario.units.includes(unit.id))
-		.flatMap((scenario) => scenario.states)
+		.flatMap((scenario) => scenarioFor(scenario, unit.id, units).states)
 		.filter((state) => state.coverage === 'required')
 		.map((state) => state.id);
 	return [...new Set(states)];

@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest';
 import { record, revision } from '../entityFixture';
 import { content, count, verdicts, words } from '../entityRender';
+import { both } from '../entityStates';
 import { commits, ids, scenarios } from '../entityUnits';
 
 const page = { category: 'pages' as const, entity: ids.page };
@@ -140,4 +141,29 @@ test('a config shows what it provides and who uses it, with no screenshot and no
 			}
 		)
 	).toContain('Values at');
+});
+
+/** The states the screenshot selector of an overview offers. */
+const offered = (body: string) => {
+	const select = /<select[^>]*aria-label="State"[^>]*>(.*?)<\/select>/s.exec(body)?.[1] ?? '';
+	return [...select.matchAll(/<option[^>]*value="([^"]*)"/g)].map((found) => found[1]);
+};
+
+test('the required states an overview and the details list are those its selector offers', () => {
+	for (const entity of [ids.page, ids.list]) {
+		const at = {
+			category: entity === ids.page ? ('pages' as const) : ('components' as const),
+			entity
+		};
+		const overview = content('commit', at, both());
+		expect(offered(overview), entity).toEqual(['default', 'empty']);
+		// The scenario has a required state of another page too: it is not asked of this entity.
+		const label = entity === ids.page ? 'Required states' : 'States';
+		expect(words(overview), entity).toContain(`${label} ${offered(overview).join(', ')} Size`);
+		const details = content('commit', { ...at, section: 'details' }, both());
+		expect(words(details), entity).toContain(`${label} default, empty Size`);
+		for (const body of [overview, details]) {
+			expect(words(body), entity).not.toMatch(/returns|src\/|\.ts\b|\.svelte\b/);
+		}
+	}
 });

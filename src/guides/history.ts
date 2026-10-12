@@ -82,8 +82,14 @@ const hooksGuide: Guide = {
 			'uncommitted work in the worktree is never part of it.',
 		'A failed or incomplete verification blocks the push and its record is attached as failed.',
 		'An existing hook is kept beside the wrapper and runs first; if it fails, the push stops.',
-		'The hooks directory is shared by all worktrees. The wrapper acts only in worktrees that ' +
-			'ran harness hooks install; the others behave as before.',
+		'The hooks directory is shared by all worktrees. A wrapper acts only in a worktree that ' +
+			'opted into its stage; the others behave as before.',
+		'Each stage has an opt-in file of its own in the Git directory of the worktree: ' +
+			'harness-hooks for pre-push, as every version wrote it, and harness-hooks-<stage> for a ' +
+			'stage offered later. The opt-in of one stage never starts another.',
+		'A worktree that ran harness hooks install under an earlier Harness keeps the stages it ' +
+			'asked for then. A stage offered later starts there only after the command is run there ' +
+			'again; harness hooks status says which stages are enabled.',
 		'Pushes of evidence, notes, archived source, tags and deletions are not verified.',
 		'When core.hooksPath points into the working tree, another tool owns the hooks and nothing ' +
 			'is installed.'

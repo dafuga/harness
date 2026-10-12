@@ -25,6 +25,7 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 - Behaviour note of a reason: 30 words and 200 characters. Each attempt: 20 words and 140 characters.
 - Commit subject: 72 characters, starting with `feat:`, `fix:`, `chore:` or `cleanup:`. Optional body with trailers: 60 words and 400 characters.
 - `harness explain add` and the commit-msg hook refuse more; verification checks both again.
+- Hooks are shared by every worktree; a stage acts only where that stage was opted into. A change to the wrappers passes `test/hooks-shared-stages.e2e.test.ts` first.
 - Say what changed here and what was tried. Never shorten tests, contracts or evidence to fit.
 
 ## Hard Limits

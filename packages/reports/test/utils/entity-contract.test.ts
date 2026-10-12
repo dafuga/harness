@@ -1,5 +1,7 @@
 import { expect, test } from 'vitest';
+import type { HarnessScenario, HarnessUnit } from '../../src/models/Harness.types';
 import { entityContract, humanize, requiredStates } from '../../src/utils/entityContract';
+import { scenarioFor } from '../../src/utils/explorerState';
 import { ids, scenarios, units } from '../entityUnits';
 
 const find = (id: string) => units.find((unit) => unit.id === id)!;
@@ -15,7 +17,7 @@ test('a contract reads as inputs and output in plain words, without the symbol t
 });
 
 test('a page contract has its purpose, its web address and the states it must be proven in', () => {
-	const states = requiredStates(find(ids.page), scenarios);
+	const states = requiredStates(find(ids.page), scenarios, units);
 	const rows = entityContract(find(ids.page), { category: 'pages', appRoute: '/orders', states });
 	expect(rows.map((item) => item.label)).toEqual([
 		'Purpose',
@@ -48,7 +50,7 @@ test('names of any casing become words, and required states leave out the unprov
 	expect(humanize('page_size')).toBe('page size');
 	expect(humanize('on-select')).toBe('on select');
 	expect(humanize('HTTPStatus')).toBe('http status');
-	expect(requiredStates(find(ids.filter), scenarios)).toEqual(['match', 'no-match']);
+	expect(requiredStates(find(ids.filter), scenarios, units)).toEqual(['match', 'no-match']);
 });
 
 test('what a page or a component draws is called rendered markup, not by the name of its file', () => {
@@ -106,4 +108,60 @@ test('a declared contract says what each item is, and a derived one only names i
 	});
 	const derived = entityContract(find(ids.filter), { category: 'functions' });
 	expect(derived.every((item) => item.items === undefined)).toBe(true);
+});
+
+/** A unit of a small registry: what it uses is all that matters of it here. */
+const made = (id: string, uses: string[] = []): HarnessUnit => ({
+	...find(ids.page),
+	id,
+	dependencies: uses.map((unit) => ({ unit, via: 'import' }))
+});
+// Three pages: two are made of one shared component, and an endpoint is behind none of them.
+const registry = [
+	made('page.a', ['shared']),
+	made('page.b', ['shared']),
+	made('page.c'),
+	made('shared', ['helper']),
+	made('helper'),
+	made('endpoint')
+];
+const screens: HarnessScenario = {
+	...scenarios[0],
+	id: 'screens',
+	units: registry.map((unit) => unit.id),
+	states: [
+		{ id: 'a', coverage: 'required', units: ['page.a'] },
+		{ id: 'a-empty', coverage: 'required', units: ['page.a'] },
+		{ id: 'a-denied', coverage: 'inapplicable', reason: 'no sign-in', units: ['page.a'] },
+		{ id: 'b', coverage: 'required', units: ['page.b'] },
+		{ id: 'c', coverage: 'required', units: ['page.c'] }
+	]
+};
+const required = (id: string, units = registry) =>
+	requiredStates(units.find((unit) => unit.id === id) ?? made(id), [screens], units);
+
+test('a page that states name is required in those states, and in no state of another page', () => {
+	expect(required('page.a')).toEqual(['a', 'a-empty']);
+	expect(required('page.c')).toEqual(['c']);
+});
+
+test('a shared component is required in the states of every page that is made of it', () => {
+	expect(required('shared')).toEqual(['a', 'a-empty', 'b']);
+	// Through what uses what uses it, to any depth.
+	expect(required('helper')).toEqual(['a', 'a-empty', 'b']);
+});
+
+test('a unit that nothing named is made of stays required in every state, as its proof keeps it', () => {
+	expect(required('endpoint')).toEqual(['a', 'a-empty', 'b', 'c']);
+	// A registry that holds no units cannot say what is made of what: nothing is narrowed by it.
+	expect(required('shared', [])).toEqual(['a', 'a-empty', 'b', 'c']);
+});
+
+test('the states listed are the required ones of exactly what the proof judges a unit in', () => {
+	for (const unit of registry) {
+		const judged = scenarioFor(screens, unit.id, registry)
+			.states.filter((state) => state.coverage === 'required')
+			.map((state) => state.id);
+		expect(requiredStates(unit, [screens], registry), unit.id).toEqual(judged);
+	}
 });

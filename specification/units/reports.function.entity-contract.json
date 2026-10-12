@@ -26,6 +26,10 @@
 				"type": "HarnessScenario[]"
 			},
 			{
+				"name": "requiredStates.units",
+				"type": "HarnessUnit[]"
+			},
+			{
 				"name": "entityContract.unit",
 				"type": "HarnessUnit"
 			},
@@ -51,6 +55,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.function.explorer-state",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.model.explorer-types",
 			"via": "import",

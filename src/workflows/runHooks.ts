@@ -47,14 +47,16 @@ export async function checkMessage(file: string | undefined, root?: string): Pro
 }
 
 export function renderHooks(status: HookStatus): string {
-	const installed = status.installed ? 'installed' : 'not installed';
-	const enabled = status.enabled ? 'enabled for this worktree' : 'not enabled for this worktree';
+	const installed = (there?: boolean) => (there ? 'installed' : 'not installed');
+	const here = (asked?: boolean) => `${asked ? 'enabled' : 'not enabled'} for this worktree`;
 	const chained = status.chained ? ' An existing hook is kept and runs first.' : '';
 	const message = status.stages.find((stage) => stage.stage === 'commit-msg');
-	const measured = message?.installed ? 'installed' : 'not installed';
+	// A wrapper another worktree installed is there for this one too, and asks nothing of it.
+	const adopt =
+		message?.installed && !message.enabled ? ' Run harness hooks install here to adopt it.' : '';
 	return [
-		`The ${status.stage} hook is ${installed} in ${status.hooksDirectory} and ${enabled}.${chained}`,
-		`The commit-msg hook is ${measured}; it measures a commit message where the repository declares the writing limits.`,
+		`The ${status.stage} hook is ${installed(status.installed)} in ${status.hooksDirectory} and ${here(status.enabled)}.${chained}`,
+		`The commit-msg hook is ${installed(message?.installed)} and ${here(message?.enabled)}.${adopt} It measures a commit message where the repository declares the writing limits.`,
 		'Limits of a local hook:',
 		...status.limitations.map((limit) => `  - ${limit}`)
 	].join('\n');
