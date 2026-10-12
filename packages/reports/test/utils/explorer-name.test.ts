@@ -87,3 +87,17 @@ test('a route page is named for the screen its address ends in, not for its para
 	expect(named('reports.page.harness-view', 'page', '/harness/[...view]')).toBe('Harness view');
 	expect(named('page.titles', 'page', '/titles')).toBe('Titles');
 });
+
+test('only a collection of the explorer is named in the singular before a parameter', () => {
+	const nested = '/projects/[projectId]/harness/[...path]';
+	expect(named('desktop.page.projects-project-id-harness-path', 'page', nested)).toBe('Harness');
+	expect(named('hub.page.projects-project-id-harness-path', 'page', nested)).toBe('Harness');
+	// Any other route word keeps its last letter, whatever follows it.
+	const route = (title: string) => named('reports.page.x', 'page', title);
+	expect(route('/teams/[team]/settings/[tab]')).toBe('Settings');
+	expect(route('/teams/[team]/status/[id]/details')).toBe('Status details');
+	expect(route('/teams/[team]/members/[member]')).toBe('Members');
+	const mount = '/harness/branch/[branch]/[...at]';
+	expect(route(`${mount}/components/[entity]/details`)).toBe('Component details');
+	expect(route(`${mount}/configs/[entity]`)).toBe('Config');
+});

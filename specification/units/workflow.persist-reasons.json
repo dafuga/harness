@@ -46,27 +46,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "function.required-reasons",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "repository.explanation",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "repository.history-note",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "service.explanation",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "workflow.load-revisions",
+			"unit": "workflow.run-explain",
 			"via": "import",
 			"origin": "derived"
 		},
