@@ -107,17 +107,28 @@ export class CheckRunService {
 	}
 }
 
+/** What became of the processes a check left: stopped, signalled in vain, left alone, not known. */
+function leftRunning(name: string, result: IsolatedResult): string[] {
+	const stopped = result.stopped ?? result.survivors.length;
+	const resisted = result.resisted ?? 0;
+	const kept = result.survivors.length - stopped - resisted;
+	const some = (count: number) => `${count} ${count === 1 ? 'process' : 'processes'}`;
+	const were = (count: number) => (count === 1 ? 'it was' : 'they were');
+	const lines = [
+		`test ${name} left ${some(stopped)} running after it ended; ${were(stopped)} stopped`,
+		`test ${name} left ${some(resisted)} running after it ended; ${were(resisted)} signalled and did not end`,
+		`test ${name} left ${some(kept)} running that may belong to a shared service or could not be shown to be its own; ${were(kept)} not signalled and may still run`,
+		`test ${name} left processes that could not be established; nothing more was signalled`
+	];
+	const said = [stopped > 0, resisted > 0, kept > 0, result.unknown === true];
+	return lines.filter((_line, index) => said[index]);
+}
+
 function outcomeFailures(check: PlannedCheck, result: IsolatedResult): string[] {
 	if (result.timedOut) return [`test ${check.name} timed out after ${check.timeoutMs} ms`];
 	if (result.status === 'passed') return [];
-	const left = result.survivors.length;
 	// Whatever the check itself reported, a process it left running is a failure of its own.
-	const leaked =
-		left > 0
-			? [
-					`test ${check.name} left ${left} ${left === 1 ? 'process' : 'processes'} running after it ended; ${left === 1 ? 'it was' : 'they were'} stopped`
-				]
-			: [];
+	const leaked = leftRunning(check.name, result);
 	const failed =
 		result.exitCode === 0
 			? []

@@ -1,3 +1,4 @@
+import { followed } from './ios-build-processes';
 import { iosBuildPlan, simulatorSigning } from './ios-build-options';
 import type { IosBuildPlan } from './ios-build-options';
 import {
@@ -7,6 +8,7 @@ import {
 	derivedData,
 	fixtureProduct,
 	inspectable,
+	succeeded,
 	tool,
 	verifiedSignature
 } from './ios-products';
@@ -22,11 +24,14 @@ import {
  * `--fixture` is TEST ONLY and Debug only; with `--release` it is refused before anything is
  * built. It leaves the Debug product as built and makes a copy beside it that may reach the
  * local test relay and be read by a check, signed again ad hoc.
+ *
+ * xcodebuild is followed while it runs, and what it starts and leaves behind is ended with it,
+ * whether it succeeds or fails: the build leaves no process running.
  */
-function build(plan: IosBuildPlan): void {
+async function build(plan: IosBuildPlan): Promise<void> {
 	const product = builtProduct(plan.configuration);
 	if (plan.sync) tool(['bun', 'run', 'cap:sync']);
-	tool([
+	const built = await followed([
 		'xcodebuild',
 		'-project',
 		'ios/App/App.xcodeproj',
@@ -44,6 +49,8 @@ function build(plan: IosBuildPlan): void {
 		...simulatorSigning,
 		'build'
 	]);
+	if (built.left) console.error(built.left);
+	succeeded('xcodebuild', built);
 	if (allowsLocalNetworking(product) || inspectable(product))
 		throw new Error('A normal product must have no networking exception and no web inspection.');
 	console.log(`${plan.configuration} simulator build; signature ${verifiedSignature(product)}.`);
@@ -63,7 +70,7 @@ if ('error' in plan) {
 	process.exit(2);
 }
 try {
-	build(plan);
+	await build(plan);
 } catch (error) {
 	console.error(error instanceof Error ? error.message : error);
 	process.exit(1);

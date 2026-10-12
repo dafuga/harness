@@ -28,7 +28,32 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.cleanup-deadline",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.group-teardown",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.platform-services",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.process-descendants",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.process-probes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.settle-processes",
 			"via": "import",
 			"origin": "derived"
 		}

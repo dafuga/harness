@@ -8,7 +8,16 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/processDescendants.ts"],
-		"symbols": ["TrackedProcess", "processDescendants", "signalProcesses"]
+		"symbols": [
+			"TrackedProcess",
+			"ProcessRow",
+			"FollowedProcess",
+			"ProcessTable",
+			"processTable",
+			"Descendants",
+			"processDescendants",
+			"signalProcesses"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -16,6 +25,10 @@
 			{
 				"name": "processDescendants.root",
 				"type": "number"
+			},
+			{
+				"name": "processDescendants.read",
+				"type": "ProcessTable"
 			},
 			{
 				"name": "signalProcesses.known",
@@ -28,8 +41,12 @@
 		],
 		"outputs": [
 			{
+				"name": "processTable",
+				"type": "Promise<Row[] | null>"
+			},
+			{
 				"name": "processDescendants",
-				"type": "{ /** Looks once; overlapping looks are skipped. */ look(): Promise<void>; /** Followed processes that still exist, the command itself excluded. */ survivors(): Promise<TrackedProcess[]>; }"
+				"type": "Descendants"
 			},
 			{
 				"name": "signalProcesses",

@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"id": "function.cleanup-deadline",
+	"kind": "function",
+	"title": "cleanupDeadline",
+	"responsibility": "One bound for a piece of cleanup: work under it is raced, paused and cancelled together, and nothing acts once it is over.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/cleanupDeadline.ts"],
+		"symbols": ["CleanupDeadline", "cleanupDeadline"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "cleanupDeadline.milliseconds",
+				"type": "number"
+			}
+		],
+		"outputs": [
+			{
+				"name": "cleanupDeadline",
+				"type": "CleanupDeadline"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/cleanupDeadline.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/cleanupDeadline.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

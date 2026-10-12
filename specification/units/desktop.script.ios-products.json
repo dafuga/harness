@@ -14,6 +14,7 @@
 			"fixtureProduct",
 			"builtProduct",
 			"tried",
+			"succeeded",
 			"tool",
 			"fileDigest",
 			"contents",
@@ -35,6 +36,14 @@
 			{
 				"name": "tried.command",
 				"type": "string[]"
+			},
+			{
+				"name": "succeeded.name",
+				"type": "string"
+			},
+			{
+				"name": "succeeded.ended",
+				"type": "{ code: number; output: string }"
 			},
 			{
 				"name": "tool.command",
@@ -97,6 +106,10 @@
 			{
 				"name": "tried",
 				"type": "{ code: number; output: string }"
+			},
+			{
+				"name": "succeeded",
+				"type": "string"
 			},
 			{
 				"name": "tool",

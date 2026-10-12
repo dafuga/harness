@@ -1,8 +1,9 @@
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { mkdtemp, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
+import { processTable } from '../../src/utils/processDescendants';
 import { runIsolated } from '../../src/utils/runIsolated';
 
 const node = process.execPath;
@@ -22,6 +23,28 @@ afterEach(() => {
 	for (const pid of started.splice(0)) if (alive(pid)) process.kill(pid, 'SIGKILL');
 });
 
+/**
+ * The processes as the runner reads them. Once a look shows the child that a command named in
+ * `family` under that command, `seen` is written: the command may wait for it before it ends.
+ */
+function observing(directory: string) {
+	return async () => {
+		const rows = await processTable();
+		const family = join(directory, 'family');
+		const [parent, child] = existsSync(family) ? readFileSync(family, 'utf8').split(' ') : [];
+		const shown = rows?.find((row) => row.pid === Number(child));
+		const under = shown?.parent === Number(parent) && rows?.some((row) => row.pid === shown.parent);
+		if (under) writeFileSync(join(directory, 'seen'), '');
+		return rows;
+	};
+}
+/** For a command: names itself and its child `kid`, and ends once the runner saw both. */
+const leaveOnceSeen =
+	'const fs = require("fs"), at = (name) => require("path").join(process.argv[1], name); ' +
+	'fs.writeFileSync(at("family.part"), process.pid + " " + kid.pid); ' +
+	'fs.renameSync(at("family.part"), at("family")); ' +
+	'setInterval(() => fs.existsSync(at("seen")) && process.exit(0), 10);';
+
 async function run(script: string, timeoutMs = 5000, maxLogBytes = 64_000) {
 	const directory = await mkdtemp(join(tmpdir(), 'harness-isolated-'));
 	const log = join(directory, 'run.log');
@@ -32,7 +55,8 @@ async function run(script: string, timeoutMs = 5000, maxLogBytes = 64_000) {
 		env: { ...process.env },
 		timeoutMs,
 		log,
-		maxLogBytes
+		maxLogBytes,
+		platform: { table: observing(directory) }
 	});
 	return { directory, log, result };
 }
@@ -65,12 +89,13 @@ test('a command that ignores termination is still stopped at its limit', async (
 
 test('children of a timed-out or finished command are torn down with it', async () => {
 	const child = (name: string, delay: number) =>
-		`require("child_process").spawn(process.execPath, ["-e", ` +
+		`const kid = require("child_process").spawn(process.execPath, ["-e", ` +
 		`"setTimeout(() => require('fs').writeFileSync(process.argv[1], 'late'), ${delay})", ` +
 		`require("path").join(process.argv[1], "${name}")], { stdio: "ignore" });`;
 	const hung = await run(`${child('hung.txt', 1200)} setInterval(() => {}, 1000)`, 300);
 	expect(hung.result.status).toBe('timeout');
-	const finished = await run(`${child('finished.txt', 1200)} process.exit(0)`);
+	// A child counts as the command's once it was seen under it: the command ends only then.
+	const finished = await run(`${child('finished.txt', 1200)} ${leaveOnceSeen}`);
 	expect(finished.result.status).toBe('passed');
 	await sleep(2000);
 	expect(existsSync(join(hung.directory, 'hung.txt'))).toBe(false);

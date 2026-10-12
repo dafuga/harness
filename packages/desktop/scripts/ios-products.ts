@@ -24,12 +24,16 @@ export function tried(command: string[]): { code: number; output: string } {
 	return { code: result.status ?? 1, output: `${result.stdout ?? ''}${result.stderr ?? ''}` };
 }
 
+/** The output of a tool that ended and must have succeeded; else an error with its last words. */
+export function succeeded(name: string, ended: { code: number; output: string }): string {
+	if (ended.code === 0) return ended.output;
+	const last = ended.output.trim().split('\n').slice(-25).join('\n');
+	throw new Error(`${name} failed (${ended.code}):\n${last}`);
+}
+
 /** The output of a tool that must succeed; a failure is an error with the tool's last words. */
 export function tool(command: string[]): string {
-	const { code, output } = tried(command);
-	if (code === 0) return output;
-	const last = output.trim().split('\n').slice(-25).join('\n');
-	throw new Error(`${command[0]} failed (${code}):\n${last}`);
+	return succeeded(command[0], tried(command));
 }
 
 export function fileDigest(file: string): string {
