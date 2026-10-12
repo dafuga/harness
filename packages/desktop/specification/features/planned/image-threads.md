@@ -19,6 +19,7 @@ The renderer uses the typed preload bridge. It has no filesystem, process, crede
 - An initial Plan request can create a thread with no image. Change requires a current exact approval; headless approval binds behavior notes and contract without a fabricated image.
 - Approval alone never runs code. Agent success and approval never imply runtime verification.
 - Public run messages, status, cancellation and failures are shown faithfully. Successful artifact commits refresh the selected entity.
+- Agent instructions require behavior notes of at most 30 words and 200 characters, and each simplification/performance attempt of at most 15 words and 140 characters.
 - Verification uses an accessible binary icon with a reason; the Plan badge is independent. Size/performance availability reflects the supplied evidence.
 - Native renderer isolation, constrained project IPC, blocked remote navigation and denied child windows are verified against a test-owned Electron process.
 - Visual acceptance uses fresh, decoded-image/font-ready screenshots, kept outside Git.

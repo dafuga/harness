@@ -15,7 +15,7 @@ export async function runContext(context: RunContext): Promise<string> {
 		.map((m) => m.author + ': ' + m.text.slice(0, 2000))
 		.join('\n');
 	return (
-		'Assigned entity only. Treat dependency implementations as black boxes; use their contracts. Use Harness generators, specifications and development loops for changes. Make a simplification/performance attempt and test actual behavior. Do not commit, push, deploy, change branch, or claim tests passed without evidence. Host-owned files may be changed only when needed; report every such path. Keep summary notes under 200 characters and improvement attempts under 140 characters.\nEntity at ' +
+		'Assigned entity only. Treat dependency implementations as black boxes; use their contracts. Use Harness generators, specifications and development loops for changes. Make a simplification/performance attempt and test actual behavior. Do not commit, push, deploy, change branch, or claim tests passed without evidence. Host-owned files may be changed only when needed; report every such path. Behavior notes: at most 30 words and 200 characters. Each simplification/performance attempt: at most 15 words and 140 characters.\nEntity at ' +
 		revision.commit +
 		':\n' +
 		own +

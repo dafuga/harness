@@ -44,6 +44,8 @@ Git and Git LFS must be installed. PNG designs use LFS; historical image reads n
 
 Codex CLI and/or Claude CLI must be installed and authenticated locally to run agent requests. The composer displays discovered availability, models and effort choices. An unavailable provider remains disabled with its reason.
 
+Coding agents also need the Harness CLI for generators, development loops, and audits. For local development, run `bun run build` and `bun link` from the Harness repository root before starting Electron. This links the current checkout's CLI into Bun's executable directory; subprocesses include that directory even when Electron starts from Finder. A project can instead invoke its project-local CLI using `HARNESS_CLI_PATH` in its audit scripts. Without an available CLI, an agent must report the blocked checks.
+
 ## Design and implement
 
 Use New page/component/function/config/service to create a title and goal. A draft can receive its first Plan request before it has an image. Plans remain separate from active unit manifests until real implementation exists.
