@@ -2,7 +2,7 @@
 	"name": "linux-ci-runtime",
 	"goal": "Run unchanged full checks on clean Linux runners with browser, PDF and native display dependencies",
 	"createdAt": "2026-10-12T02:58:02.752Z",
-	"updatedAt": "2026-10-12T02:58:35.314Z",
+	"updatedAt": "2026-10-12T04:15:06.685Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"steps": [
@@ -30,12 +30,16 @@
 		{
 			"id": "green",
 			"title": "Repeat repair and the same unchanged regression test until it passes; record passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-12T04:15:06.424Z",
+			"evidence": "CI 38201726487/job114656389697 passed the unchanged full check at cd2f6f9; media tests keep their 5s deadline."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots; keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-12T04:15:06.685Z",
+			"evidence": "Full Linux CI, local full checks and packaged Mac acceptance pass. UI code unchanged; inspected captures retained outside Git."
 		}
 	],
 	"evaluators": [
