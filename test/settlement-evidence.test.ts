@@ -113,6 +113,9 @@ test.skipIf(!mac)(
 			"const child = spawn(program, args, { stdio: 'ignore' });",
 			"const when = execFileSync('/bin/ps', ['-p', String(child.pid), '-o', 'lstart=']).toString().trim();",
 			"fs.writeFileSync(dir + '/child', child.pid + ' ' + when);",
+			// Keep the parent alive until every initial signal has been attempted. If it exits
+			// on TERM, settling cancels the slower child observation before that child is asked.
+			"process.on('SIGTERM', () => {});",
 			'setInterval(() => {}, 1000);'
 		].join('\n');
 		const started = () => {
@@ -122,7 +125,12 @@ test.skipIf(!mac)(
 		// Once the child has written down a signal its program can no longer be read: it was
 		// asked to end at the limit, and is neither forced nor known after that.
 		const asked = () => (journal(join(dir, 'journal')) === '' ? -1 : started().pid);
-		const executable = async (pid: number) => (pid === asked() ? null : realProbes.executable(pid));
+		const executable = async (pid: number) => {
+			// Model a child observation that completes after its parent's. This ordering must
+			// still reach the intended surviving, signalled child state.
+			if (existsSync(join(dir, 'child')) && pid === started().pid) await pause(200);
+			return pid === asked() ? null : realProbes.executable(pid);
+		};
 		// No look is answered before the child says that it runs: the limit finds it ready.
 		const table = async () => {
 			const ready = () => existsSync(join(dir, 'ready'));

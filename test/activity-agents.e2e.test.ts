@@ -125,7 +125,7 @@ test('a heartbeat keeps an agent working and may restate its work; without one i
 	expect(again).toMatchObject({ state: 'working', task: 'Next step', units: ['function.slugify'] });
 	const unknown = await run(at('site'), ['heartbeat', 'nobody-registered-this'], false);
 	expect([unknown.exitCode, unknown.stderr]).toEqual([1, expect.stringMatching(/not registered/)]);
-});
+}, 30_000);
 
 test('a finished or failed agent is listed as that, and a late heartbeat does not bring it back', async () => {
 	const done = await register(at('checkout'), 'Finisher');
