@@ -1,0 +1,46 @@
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at emitWarning (internal:tty:33:24)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+
+Running 9 tests using 1 worker
+
+(node:72555) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/harness-explorer-evidence.spec.ts:31:1 › a page leads to its components, those to components, and those to functions (928ms)
+  ✓  2 tests/e2e/harness-explorer-evidence.spec.ts:55:1 › source is not shown until Details and then Source are opened, on a page too (1.3s)
+  ✓  3 tests/e2e/harness-explorer-evidence.spec.ts:78:1 › a verdict is a green check for complete passing evidence and a red cross for anything else (1.4s)
+  ✓  4 tests/e2e/harness-explorer-evidence.spec.ts:105:1 › a branch tip shows one current screenshot and a selected commit shows parent and selected (1.3s)
+  ✓  5 tests/e2e/harness-explorer-evidence.spec.ts:125:1 › a component is shown with the states that show it, not every state of its scenario (699ms)
+  ✓  6 tests/e2e/harness-explorer-evidence.spec.ts:141:1 › a function shows its end-to-end run before and after, and says whether behaviour changed (1.3s)
+  ✓  7 tests/e2e/harness-explorer-evidence.spec.ts:162:1 › the history of an entity lists the commits behind the shown one, with growth and approvals (747ms)
+  ✓  8 tests/e2e/harness-explorer-evidence.spec.ts:182:2 › the explorer is usable at tablet width without scrolling sideways (1.8s)
+  ✓  9 tests/e2e/harness-explorer-evidence.spec.ts:182:2 › the explorer is usable at mobile width without scrolling sideways (1.8s)
+
+  9 passed (1.7m)
