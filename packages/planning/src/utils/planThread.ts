@@ -69,6 +69,13 @@ function validateReference(reference: ThreadMessage['references'][number], plan:
 	if (reference.kind === 'approval' && plan.approvals.some((a) => a.id === reference.approvalId))
 		return;
 	if (
+		reference.kind === 'notes' &&
+		plan.versions.some(
+			(v) => v.version === reference.version && v.notes && v.notes.sha256 === reference.sha256
+		)
+	)
+		return;
+	if (
 		reference.kind === 'image' &&
 		plan.versions.some(
 			(v) =>

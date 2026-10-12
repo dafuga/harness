@@ -131,6 +131,7 @@ export interface ThreadAnchor {
 
 export type ArtifactReference =
 	| { kind: 'image'; version: string; file: string; sha256: Sha256 }
+	| { kind: 'notes'; version: string; sha256: Sha256 }
 	| { kind: 'approval'; approvalId: string };
 
 export interface ThreadMessage {

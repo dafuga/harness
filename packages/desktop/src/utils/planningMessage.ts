@@ -13,17 +13,27 @@ export async function planningMessage(context: PlanningContext, draft: MessageDr
 		mode: draft.mode ?? 'plan',
 		agent: draft.provider && draft.model ? { provider: draft.provider, model: draft.model } : null,
 		body: draft.text,
-		references: imageReferences(plan, draft)
+		references: artifactReferences(plan, draft)
 	};
 	if (draft.mode === 'change') input.change = changeTarget(plan, draft);
 	return messageInfo((await context.api.appendMessage(input)).value);
 }
-function imageReferences(plan: PlanDetail, draft: MessageDraft): AppendMessageInput['references'] {
+function artifactReferences(
+	plan: PlanDetail,
+	draft: MessageDraft
+): AppendMessageInput['references'] {
 	const version = plan.versions.find((v) => v.version === draft.version),
 		image = version?.images.find((i) => i.sha256 === draft.imageSha256);
-	return image && version
-		? [{ kind: 'image', version: version.version, file: image.file, sha256: image.sha256 }]
-		: [];
+	if (image && version)
+		return [{ kind: 'image', version: version.version, file: image.file, sha256: image.sha256 }];
+	if (
+		version?.notes &&
+		version.images.length === 0 &&
+		draft.imageSha256 === null &&
+		['function', 'service', 'config'].includes(plan.category)
+	)
+		return [{ kind: 'notes', version: version.version, sha256: version.notes.sha256 }];
+	return [];
 }
 function changeTarget(plan: PlanDetail, draft: MessageDraft): AppendMessageInput['change'] {
 	const approval = plan.approval;

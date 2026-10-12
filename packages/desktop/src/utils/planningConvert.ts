@@ -65,5 +65,6 @@ export function messageInfo(message: StoredMessage): ThreadMessage {
 }
 function messageVersion(message: StoredMessage) {
 	const image = message.references.find((r) => r.kind === 'image');
-	return image?.kind === 'image' ? image.version : (message.change?.target.version ?? null);
+	const notes = message.references.find((r) => r.kind === 'notes');
+	return image?.version ?? notes?.version ?? message.change?.target.version ?? null;
 }
