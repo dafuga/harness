@@ -1,3 +1,4 @@
+import { explorerCategories } from '../../../../src/utils/explorerRoute';
 import type { HarnessUnit } from '../models/Harness.types';
 
 type Named = Pick<HarnessUnit, 'id' | 'kind' | 'title'>;
@@ -5,6 +6,8 @@ const initials = new Set(['api', 'cli', 'cpu', 'css', 'e2e', 'html', 'id', 'json
 const more = ['pdf', 'r2', 'sdk', 'ui', 'url', 'wasm', 'wav', 'zip'];
 for (const word of more) initials.add(word);
 const identifier = /^[A-Za-z][A-Za-z0-9]*$/;
+/** The route words that name many of one thing: the collections the explorer lists. */
+const collections = new Set<string>(explorerCategories);
 /** A title a person wrote: several words, and no address, file ending or dotted id in it. */
 const written = /^(?=.*\s)(?!.*[/\\[\]+])(?!.*\.[a-z0-9]+(\s|$))[^.]*$/i;
 
@@ -27,9 +30,10 @@ function sentence(parts: string[]): string {
 
 /**
  * The words of the screen a route address ends in: what follows its first parameter, without
- * the parameters. A collection followed by one of its members is named in the singular, so
- * `…/functions/[entity]/details` is function, details. Empty for an address without parameters
- * and for one that ends in them.
+ * the parameters. A collection of the explorer followed by one of its members is named in the
+ * singular, so `…/functions/[entity]/details` is function, details. Any other word stays as it
+ * is written: `…/harness/[...path]` is harness. Empty for an address without parameters and for
+ * one that ends in them.
  */
 function screenOf(title: string): string[] {
 	const parts = title.split('/').filter(Boolean);
@@ -38,8 +42,8 @@ function screenOf(title: string): string[] {
 	const after = parts.slice(first);
 	return after.flatMap((part, at) => {
 		if (part.startsWith('[')) return [];
-		const one = after[at + 1]?.startsWith('[') ? part.replace(/s$/, '') : part;
-		return words(one);
+		const member = collections.has(part) && after[at + 1]?.startsWith('[');
+		return words(member ? part.replace(/s$/, '') : part);
 	});
 }
 
