@@ -155,6 +155,9 @@
 		font-size: 12px;
 		padding: 12px;
 	}
+	.entity-heading > div {
+		flex-basis: 100%;
+	}
 	.entity-heading .row {
 		flex-wrap: wrap;
 		gap: 8px;
