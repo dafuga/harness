@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-entity-source",
+	"kind": "component",
+	"title": "EntitySource",
+	"responsibility": "Lists the files, symbols and execution targets an entity owns; it is mounted only for the source tab of details.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/EntitySource.svelte"],
+		"symbols": ["EntitySource"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "EntitySource.unit",
+				"type": "HarnessUnit"
+			}
+		],
+		"outputs": [
+			{
+				"name": "EntitySource",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/EntitySource.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/EntitySource.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

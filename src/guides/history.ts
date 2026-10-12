@@ -55,15 +55,29 @@ const historyGuide: Guide = {
 
 const hooksGuide: Guide = {
 	topic: 'hooks',
-	summary: 'An opt-in pre-push hook that requires a passing verification of what is pushed.',
+	summary:
+		'Opt-in hooks: a pushed commit needs a passing verification, and a commit message keeps the writing limits.',
 	steps: [
 		'Run harness hooks install --command "<how this worktree starts harness>".',
+		'Commit as usual; a message over the limits or without its prefix is refused before the commit exists.',
 		'Push as usual; each pushed branch tip is checked, and verified in a clean snapshot if needed.',
 		'Run harness history sync origin to publish the attached evidence; the hook does not.',
 		'Run harness hooks status to see what is installed, and harness hooks uninstall to remove it.'
 	],
 	rules: [
-		'Only pre-push is offered. Before a commit exists there is no exact revision to verify.',
+		'Two stages are offered: pre-push and commit-msg. Before a commit exists there is no exact ' +
+			'revision to verify, so commit-msg measures the message and nothing else.',
+		'A commit message has a subject of at most 72 characters that starts with feat:, fix:, ' +
+			'chore: or cleanup:, and an optional body, trailers included, of at most 60 words and 400 ' +
+			'characters.',
+		'A message is measured only where the repository declares "writing": 1 in harness.verify.json; ' +
+			'commits of evidence are never measured.',
+		'The commit-msg hook reads the message file as Git will store it and reads no input: ' +
+			'comments are left out of a message an editor was opened for, and a line that starts with ' +
+			'a hash is counted in one given with -m. A cleanup mode given on the command line is not ' +
+			'told to a hook.',
+		'Verification measures the stored message of every source commit it newly reaches, also ' +
+			'those a merge brings in, and counts every line of it.',
 		'The hook verifies the commit being pushed, exported from Git into a clean directory, so ' +
 			'uncommitted work in the worktree is never part of it.',
 		'A failed or incomplete verification blocks the push and its record is attached as failed.',
@@ -75,7 +89,9 @@ const hooksGuide: Guide = {
 			'is installed.'
 	],
 	antiPatterns: [
-		'Do not rely on the hook alone: git push --no-verify skips it. CI checks every push.',
+		'Do not rely on the hooks alone: --no-verify skips them. CI checks every push, and a ' +
+			'message that skipped the hook fails the verification of its commit.',
+		'Do not put an inventory of the change into a commit body: say what changed and why, briefly.',
 		'Do not install it in a checkout you do not own.'
 	],
 	exampleCommands: [

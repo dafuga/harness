@@ -1,0 +1,206 @@
+/* What proves an entity: its screenshots, its end-to-end results and what it relates to. */
+.ex-content .ex-evidence-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 12px 16px;
+}
+.ex-content .ex-evidence-head > div:first-child {
+	display: grid;
+	gap: 4px;
+	flex: 1 1 280px;
+	min-width: 0;
+}
+.ex-content .ex-facts {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: end;
+	gap: 12px 20px;
+	padding: 12px 14px;
+	border: 1px solid var(--ex-line);
+	border-radius: 8px;
+}
+.ex-content .ex-facts label {
+	display: grid;
+	gap: 4px;
+	flex: 1 1 200px;
+	min-width: 0;
+	color: var(--ex-soft);
+	font-size: 0.85rem;
+}
+.ex-content .ex-segments {
+	display: inline-flex;
+	border: 1px solid var(--ex-line-strong);
+	border-radius: 8px;
+	overflow: hidden;
+}
+.ex-content .ex-segments button {
+	min-height: 44px;
+	padding: 0 18px;
+	border: 0;
+	border-left: 1px solid var(--ex-line-strong);
+	background: none;
+	color: var(--ex-soft);
+	font: inherit;
+	cursor: pointer;
+}
+.ex-content .ex-segments button:first-child {
+	border-left: 0;
+}
+.ex-content .ex-segments button[aria-pressed='true'] {
+	background: color-mix(in srgb, var(--ex-gold) 14%, transparent);
+	box-shadow: inset 0 0 0 1px var(--ex-gold);
+	color: var(--ex-gold);
+}
+.ex-content .ex-panes {
+	display: grid;
+	gap: 16px;
+	min-width: 0;
+}
+.ex-content .ex-panes.paired {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.ex-content .ex-pane {
+	display: grid;
+	gap: 10px;
+	align-content: start;
+	min-width: 0;
+	padding: 14px;
+	border: 1px solid var(--ex-line);
+	border-radius: 8px;
+	background: color-mix(in srgb, var(--ex-raised) 45%, transparent);
+}
+.ex-content .ex-pane figcaption,
+.ex-content .ex-pane-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px 12px;
+	font-size: 1.08rem;
+}
+.ex-content .ex-pane figcaption .ex-text-button,
+.ex-content .ex-pane-head .hx-verdict {
+	margin-left: auto;
+	font-size: 0.92rem;
+}
+.ex-content .ex-shot {
+	display: block;
+	width: 100%;
+	padding: 0;
+	border: 1px solid var(--ex-line);
+	border-radius: 6px;
+	background: var(--ex-surface);
+	overflow: hidden;
+	cursor: zoom-in;
+}
+.ex-content .ex-shot img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+.ex-content .ex-standing {
+	color: var(--ex-muted);
+	font-size: 0.85rem;
+}
+.ex-content .ex-standing.stale {
+	color: var(--ex-fail);
+}
+.ex-content .ex-change {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px 14px;
+	padding: 14px 16px;
+	border: 1px solid var(--ex-line);
+	border-radius: 8px;
+	color: var(--ex-soft);
+}
+.ex-content .ex-change strong {
+	color: var(--ex-text);
+	font-size: 1.05rem;
+}
+.ex-content .ex-inline {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px 24px;
+	margin-left: auto;
+}
+.ex-content .ex-inline > div {
+	display: flex;
+	gap: 8px;
+}
+.ex-content .ex-inline dt {
+	color: var(--ex-muted);
+}
+.ex-content .ex-state {
+	display: grid;
+	gap: 6px;
+	padding-top: 10px;
+	border-top: 1px solid var(--ex-line);
+}
+.ex-content .ex-state h3,
+.ex-content .ex-result p,
+.ex-content .ex-checks li {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px 12px;
+}
+.ex-content .ex-result,
+.ex-content .ex-checks {
+	display: grid;
+	gap: 8px;
+}
+.ex-content .ex-kind {
+	min-width: 86px;
+	color: var(--ex-soft);
+	text-transform: capitalize;
+}
+/* The reasons in full take the row under their summary once they are opened. */
+.ex-content .ex-change .ex-full[open] {
+	flex: 1 0 100%;
+}
+/* Laid out as a column of blocks: a scrolling box must not squeeze what it holds to one line. */
+.ex-content .ex-artifact > * + * {
+	margin-top: 8px;
+}
+.ex-content .ex-artifact {
+	flex: 1 1 100%;
+	max-height: 640px;
+	margin: 0;
+	padding: 12px;
+	overflow: auto;
+	border: 1px solid var(--ex-line);
+	border-radius: 6px;
+	background: var(--ex-surface);
+	font-size: 0.86rem;
+}
+.ex-content .ex-artifact pre {
+	margin: 8px 0 0;
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+}
+.ex-content .ex-artifact summary {
+	color: var(--ex-soft);
+	cursor: pointer;
+}
+.ex-content .ex-artifact h4 {
+	margin: 6px 0 0;
+	color: var(--ex-soft);
+	font-size: 0.86rem;
+}
+.ex-content .ex-steps {
+	display: grid;
+	gap: 4px;
+	padding-left: 22px;
+	list-style: decimal;
+}
+@media (max-width: 900px) {
+	.ex-content .ex-panes.paired {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.ex-content .ex-inline,
+	.ex-content .ex-pane figcaption .ex-text-button {
+		margin-left: 0;
+	}
+}

@@ -1,0 +1,90 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-harness-action",
+	"kind": "component",
+	"title": "HarnessAction",
+	"responsibility": "An outlined action of the explorer: a link when it has an address, so a new tab can open it, a button otherwise, and a disabled button when it leads nowhere.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/HarnessAction.svelte"],
+		"symbols": ["HarnessAction"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HarnessAction.href",
+				"type": "string"
+			},
+			{
+				"name": "HarnessAction.onclick",
+				"type": "(event: MouseEvent) => void"
+			},
+			{
+				"name": "HarnessAction.disabled",
+				"type": "boolean"
+			},
+			{
+				"name": "HarnessAction.tone",
+				"type": "'gold' | 'plain'"
+			},
+			{
+				"name": "HarnessAction.icon",
+				"type": "HarnessIconName"
+			},
+			{
+				"name": "HarnessAction.lead",
+				"type": "HarnessIconName"
+			},
+			{
+				"name": "HarnessAction.label",
+				"type": "string"
+			},
+			{
+				"name": "HarnessAction.children",
+				"type": "Snippet"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HarnessAction",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-icons",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-shell",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/HarnessAction.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/HarnessAction.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -19,10 +19,23 @@ export class ScenarioManifestValidator {
 			...(scenario.id === label ? [] : [`${label}: id "${scenario.id}" must match its file name`]),
 			...this.undeclaredStates(scenario),
 			...this.stateCoverage(scenario),
+			...this.stateUnits(scenario),
 			...this.evidenceReferences(scenario),
 			...this.viewportRules(scenario)
 		];
 		return { value: scenario, errors };
+	}
+
+	/** A state shows only units the scenario covers: it cannot name one from outside it. */
+	private stateUnits(scenario: ScenarioManifest): string[] {
+		return scenario.states.flatMap((state) =>
+			(state.units ?? [])
+				.filter((unit) => !scenario.units.includes(unit))
+				.map(
+					(unit) =>
+						`${scenario.id}: state ${state.id} shows ${unit}, which the scenario does not cover`
+				)
+		);
 	}
 
 	/** A state that is not covered must say why instead of silently disappearing. */

@@ -9,6 +9,7 @@ import { join } from 'node:path';
 import { legacyRun } from '../../../test/support/legacyStore';
 import { e2eFixtures } from '../src/utils/e2eFixtures';
 import { seedEmitted } from './harness-emitted-seed';
+import { explorerBranch, explorerUnits, seedExplorer } from './harness-explorer-seed';
 import { writeScaleData } from './harness-scale-data';
 import { baselineRepo, reviewer, type VerifyRepo } from '../../../test/support/verifyRepo';
 
@@ -46,7 +47,7 @@ const verified = async (
 
 await rm(root, { recursive: true, force: true });
 await mkdir(root, { recursive: true });
-const repo = await baselineRepo();
+const repo = await baselineRepo(seedExplorer);
 const commits: Record<string, string> = {};
 commits.unbaselined = await repo.git(['rev-parse', 'HEAD~1']);
 await attach(repo, ['--commit', commits.unbaselined]);
@@ -199,6 +200,7 @@ await legacyRun(legacy, 'unlinked-run', {
 });
 await repo.harness(['history', 'import-reports', '--from', legacy.store]);
 
+await repo.git(['branch', '-q', explorerBranch, commits.approved]);
 const refs = await repo.git(['for-each-ref', '--format=%(refname) %(objectname)']);
 await repo.harness(['history', 'build', '--out', join(root, 'data')]);
 await writeScaleData(join(root, 'data'), join(root, 'scale'), {
@@ -207,6 +209,10 @@ await writeScaleData(join(root, 'data'), join(root, 'scale'), {
 });
 await writeFile(
 	join(root, 'meta.json'),
-	JSON.stringify({ repository: repo.root, commits, refs, keptBranch }, null, '\t')
+	JSON.stringify(
+		{ repository: repo.root, commits, refs, keptBranch, explorerBranch, explorerUnits },
+		null,
+		'\t'
+	)
 );
 console.log(`Synthetic history at ${repo.root}; console data in ${join(root, 'data')}`);

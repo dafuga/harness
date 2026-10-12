@@ -1,0 +1,86 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.explorer-artifact",
+	"kind": "function",
+	"title": "explorerArtifact",
+	"responsibility": "Reads the bytes of one recorded artifact, checks them against the recorded hash and says what the artifact states about a run.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/explorerArtifact.ts"],
+		"symbols": ["artifactText", "artifactBehavior", "ArtifactFetcher", "explorerArtifact"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "artifactText.value",
+				"type": "unknown"
+			},
+			{
+				"name": "artifactBehavior.document",
+				"type": "unknown"
+			},
+			{
+				"name": "explorerArtifact.capture",
+				"type": "HarnessCapture"
+			},
+			{
+				"name": "explorerArtifact.mediaBase",
+				"type": "string"
+			},
+			{
+				"name": "explorerArtifact.fetcher",
+				"type": "ArtifactFetcher"
+			}
+		],
+		"outputs": [
+			{
+				"name": "artifactText",
+				"type": "string"
+			},
+			{
+				"name": "artifactBehavior",
+				"type": "ExplorerArtifactBehavior | null"
+			},
+			{
+				"name": "explorerArtifact",
+				"type": "Promise<ExplorerArtifact>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.harness-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/explorerArtifact.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/explorerArtifact.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

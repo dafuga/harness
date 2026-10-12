@@ -20,6 +20,13 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 - Record failing and passing commands, assertions, and results as step evidence. Keep green/guard/verification steps pending while proof fails; the agent retries repairs and checks. Harness does not launch an AI repair runner or automatically complete steps.
 - For affected UI paths, exercise the browser flow and capture fresh screenshots, then inspect the images before recording proof. Report blockers without claiming completion.
 
+## Concise Writing
+
+- Behaviour note of a reason: 30 words and 200 characters. Each attempt: 20 words and 140 characters.
+- Commit subject: 72 characters, starting with `feat:`, `fix:`, `chore:` or `cleanup:`. Optional body with trailers: 60 words and 400 characters.
+- `harness explain add` and the commit-msg hook refuse more; verification checks both again.
+- Say what changed here and what was tried. Never shorten tests, contracts or evidence to fit.
+
 ## Hard Limits
 
 - Files: 220 lines.

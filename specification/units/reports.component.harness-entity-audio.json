@@ -1,0 +1,85 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-entity-audio",
+	"kind": "component",
+	"title": "EntityAudio",
+	"responsibility": "Shows the audio clips recorded for an entity on its overview with the existing player and transcript: the clips of the branch tip, or the parent and the commit side by side.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/EntityAudio.svelte"],
+		"symbols": ["EntityAudio"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "EntityAudio.evidence",
+				"type": "ExplorerEvidence"
+			},
+			{
+				"name": "EntityAudio.scope",
+				"type": "ExplorerScope"
+			},
+			{
+				"name": "EntityAudio.mediaBase",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "EntityAudio",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.audio-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-verdict",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-screens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/EntityAudio.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/EntityAudio.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

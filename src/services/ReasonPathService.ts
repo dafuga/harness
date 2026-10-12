@@ -33,13 +33,14 @@ export class ReasonPathService {
 	) {}
 
 	async report(range: ReasonRange, known: Explanation[]): Promise<ReasonReport> {
-		const direct = this.explanations.report(requiredReasons(range.base, range.head), known);
+		const { base, head } = range;
+		const direct = this.explanations.report(requiredReasons(base, head), known, head.limited);
 		if (direct.failures.length === 0) return direct;
 		const between = await this.between(range);
 		const entries = between.length > 0 ? await this.walked(range, between, known) : undefined;
 		if (!entries) return direct;
 		const required = direct.required.map((status) => ({ ...status, state: 'explained' as const }));
-		return { required, entries, failures: [] };
+		return { required, entries, overlong: [], failures: [] };
 	}
 
 	/** Commits strictly between the two ends on the first-parent path, oldest first. */
@@ -70,7 +71,8 @@ export class ReasonPathService {
 		];
 		const step = (side: ReasonSide): Explanation[] | undefined => {
 			for (const from of [...reached].reverse()) {
-				const told = this.explanations.report(requiredReasons(from.side, side), known);
+				const required = requiredReasons(from.side, side);
+				const told = this.explanations.report(required, known, side.limited);
 				if (told.failures.length === 0) return [...from.entries, ...told.entries];
 			}
 			return undefined;

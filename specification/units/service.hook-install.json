@@ -3,7 +3,7 @@
 	"id": "service.hook-install",
 	"kind": "service",
 	"title": "HookInstallService",
-	"responsibility": "Installs, removes and reports the opt-in pre-push hook, chaining any existing hook.",
+	"responsibility": "Installs, removes and reports the opt-in pre-push and commit-msg hooks, chaining any existing hook and restoring it byte for byte.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {

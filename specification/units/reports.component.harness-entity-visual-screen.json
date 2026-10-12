@@ -1,0 +1,135 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-entity-visual-screen",
+	"kind": "component",
+	"title": "EntityVisualScreen",
+	"responsibility": "The screen of a page or a component: opens on its screenshots, one at the tip or a pair at a commit, with any recorded clip below.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/EntityVisualScreen.svelte"],
+		"symbols": ["EntityVisualScreen"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ExplorerScreenProps.route",
+				"type": "ExplorerLocation",
+				"description": "The address shown: category, entity, section and tab."
+			},
+			{
+				"name": "ExplorerScreenProps.scope",
+				"type": "ExplorerScope",
+				"description": "The branch and commit shown, and whether that is the branch tip or a selected commit."
+			},
+			{
+				"name": "ExplorerScreenProps.head",
+				"type": "HarnessRevision",
+				"description": "The revision every contract, measurement and capture on the screen is bound to."
+			},
+			{
+				"name": "ExplorerScreenProps.parent",
+				"type": "HarnessRevision | null",
+				"description": "The first parent of a selected commit; none at the branch tip and for a first commit."
+			},
+			{
+				"name": "ExplorerScreenProps.entities",
+				"type": "ExplorerEntity[]",
+				"description": "The units of the shown revision as the explorer lists them."
+			},
+			{
+				"name": "ExplorerScreenProps.lens",
+				"type": "EntityLens",
+				"description": "What the host answers about an entity: relations, evidence, end-to-end results and history."
+			},
+			{
+				"name": "ExplorerScreenProps.mediaBase",
+				"type": "string",
+				"description": "Where the protected media of recorded captures is served from."
+			},
+			{
+				"name": "ExplorerScreenProps.onroute",
+				"type": "(to: ExplorerLocation) => void",
+				"description": "Goes to another address of the explorer in the same branch and revision mode."
+			},
+			{
+				"name": "ExplorerScreenProps.exportHref",
+				"type": "string",
+				"description": "Where a record is downloaded from; empty where the host serves none."
+			}
+		],
+		"outputs": [
+			{
+				"name": "EntityVisualScreen.screenshotOverview",
+				"type": "markup",
+				"description": "A page or a component with its summary and screenshots: one at the tip, parent and commit at a commit. Relationships and tests by tab."
+			}
+		],
+		"errors": [
+			{
+				"name": "no-registry",
+				"type": "stated",
+				"description": "A revision that stores no unit registry says so; nothing of another revision is shown."
+			},
+			{
+				"name": "entity-missing",
+				"type": "stated",
+				"description": "An entity the shown revision does not hold is said to be missing, with the way back to its collection."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-entity-audio",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-entity-frame",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-entity-screens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-screens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-shown",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-screen-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/EntityVisualScreen.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/EntityVisualScreen.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

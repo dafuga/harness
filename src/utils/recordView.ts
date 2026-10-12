@@ -34,6 +34,11 @@ export interface RecordView {
 		inherited: boolean;
 		/** The record and commit that actually produced the evidence. */
 		origin: { record: string; commit: string };
+		/**
+		 * For inherited evidence: the checks of this scenario as its origin record ran them, by
+		 * their scoped names. Absent when that record could not be read, and for a fresh result.
+		 */
+		originTests?: Array<{ id: string; status: string }>;
 		states: Array<
 			Omit<Scenario['states'][number], 'captures'> & { captures: Array<Capture & ResolvedMedia> }
 		>;
@@ -49,15 +54,25 @@ export interface RecordView {
  */
 export function recordView(
 	record: VerificationRecord,
-	context: { valid: boolean; problems: string[]; resolve: MediaResolver }
+	context: {
+		valid: boolean;
+		problems: string[];
+		resolve: MediaResolver;
+		/** The checks an earlier record ran, by its id; undefined when it cannot be read. */
+		origins?: (record: string) => Array<{ id: string; status: string }> | undefined;
+	}
 ): RecordView {
 	const scenarios = record.scenarios.map((scenario) => {
 		const origin = scenario.referencedRecord ?? record.id;
+		const inherited = scenario.status === 'referenced';
+		const ran = inherited ? context.origins?.(origin) : undefined;
+		const scoped = ran?.filter((test) => test.id.startsWith(`${scenario.id}:`));
 		return {
+			...(scoped ? { originTests: scoped.map(({ id, status }) => ({ id, status })) } : {}),
 			id: scenario.id,
 			status: scenario.status,
 			testedRevision: scenario.testedRevision,
-			inherited: scenario.status === 'referenced',
+			inherited,
 			origin: { record: origin, commit: scenario.testedRevision },
 			states: scenario.states.map((state) => ({
 				...state,

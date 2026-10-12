@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.entity-measure",
+	"kind": "function",
+	"title": "entityMeasure",
+	"responsibility": "Reads the size and the performance profile of a unit from the record of a revision; what nothing measured is Not measured, never zero.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/entityMeasure.ts"],
+		"symbols": [
+			"notMeasured",
+			"tolerancePolicy",
+			"MeasureRow",
+			"PerformanceRow",
+			"EntityMeasure",
+			"byteSize",
+			"entityMeasure"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "byteSize.count",
+				"type": "number"
+			},
+			{
+				"name": "entityMeasure.unit",
+				"type": "HarnessUnit"
+			},
+			{
+				"name": "entityMeasure.record",
+				"type": "HarnessRecord | null"
+			}
+		],
+		"outputs": [
+			{
+				"name": "notMeasured",
+				"type": "unknown"
+			},
+			{
+				"name": "tolerancePolicy",
+				"type": "unknown"
+			},
+			{
+				"name": "byteSize",
+				"type": "string"
+			},
+			{
+				"name": "entityMeasure",
+				"type": "EntityMeasure"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.entity-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-emitted",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/entityMeasure.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/entityMeasure.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

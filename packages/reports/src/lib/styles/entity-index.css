@@ -1,0 +1,202 @@
+/* A collection of the explorer: its controls, the grid of page cards and the tables. */
+.ex-content .ex-index {
+	display: grid;
+	gap: 14px;
+	min-width: 0;
+}
+.ex-content .ex-controls {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 12px 24px;
+	margin-top: 6px;
+}
+.ex-content .ex-search {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	flex: 1 1 320px;
+	min-width: 0;
+	min-height: 48px;
+	padding: 0 16px;
+	border: 1px solid var(--ex-line-strong);
+	border-radius: 8px;
+	background: var(--ex-surface);
+	color: var(--ex-muted);
+}
+.ex-content .ex-search input {
+	flex: 1;
+	min-width: 0;
+	border: 0;
+	background: none;
+	color: var(--ex-text);
+	font: inherit;
+}
+.ex-content .ex-search input::placeholder {
+	color: var(--ex-muted);
+}
+.ex-content .ex-search input:focus-visible {
+	outline: none;
+}
+.ex-content .ex-search:focus-within {
+	border-color: var(--ex-gold);
+}
+.ex-content .ex-toggle {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	min-height: 44px;
+	cursor: pointer;
+}
+/* The switch itself is the whole control: it is pressed wherever the control is pressed. */
+.ex-content .ex-toggle input {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	opacity: 0;
+	cursor: pointer;
+}
+.ex-content .ex-toggle-track {
+	position: relative;
+	width: 46px;
+	height: 26px;
+	border: 1px solid var(--ex-line-strong);
+	border-radius: 999px;
+	background: var(--ex-raised);
+	transition: background 0.15s;
+}
+.ex-content .ex-toggle-track::after {
+	content: '';
+	position: absolute;
+	top: 3px;
+	left: 3px;
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	background: var(--ex-soft);
+	transition: transform 0.15s;
+}
+.ex-content .ex-toggle input:checked + .ex-toggle-track {
+	border-color: var(--ex-gold);
+	background: color-mix(in srgb, var(--ex-gold) 30%, transparent);
+}
+.ex-content .ex-toggle input:checked + .ex-toggle-track::after {
+	background: var(--ex-gold);
+	transform: translateX(20px);
+}
+.ex-content .ex-toggle input:focus-visible + .ex-toggle-track {
+	outline: 2px solid var(--ex-gold);
+	outline-offset: 2px;
+}
+.ex-content .ex-order {
+	flex: 0 1 260px;
+	min-width: 200px;
+	margin-left: auto;
+}
+.ex-content .ex-order .report-select,
+.ex-content .ex-facts .report-select,
+.ex-content .ex-profile .report-select {
+	display: block;
+}
+.ex-content .report-select select {
+	width: 100%;
+	padding-inline-start: 14px;
+	border: 1px solid var(--ex-line-strong);
+	border-radius: 8px;
+	background: var(--ex-surface);
+	color: var(--ex-text);
+	font: inherit;
+}
+.ex-content .ex-empty {
+	padding: 28px;
+	border: 1px dashed var(--ex-line-strong);
+	border-radius: var(--ex-radius);
+	color: var(--ex-soft);
+	text-align: center;
+}
+.ex-content .ex-page-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 520px), 1fr));
+	gap: 18px;
+}
+.ex-content .ex-page-card {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+	gap: 22px;
+	padding: 16px;
+	border: 1px solid var(--ex-line);
+	border-radius: var(--ex-radius);
+	background: var(--ex-surface);
+}
+.ex-content .ex-thumb {
+	display: block;
+	aspect-ratio: 16 / 10;
+	overflow: hidden;
+	border: 1px solid var(--ex-line);
+	border-radius: 8px;
+	background: var(--ex-raised);
+}
+.ex-content .ex-thumb img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: top left;
+}
+.ex-content .ex-thumb-gap {
+	display: grid;
+	place-content: center;
+	justify-items: center;
+	gap: 10px;
+	height: 100%;
+	padding: 16px;
+	color: var(--ex-muted);
+	font-size: 0.9rem;
+	text-align: center;
+}
+.ex-content .ex-page-body {
+	display: grid;
+	gap: 12px;
+	align-content: start;
+	justify-items: start;
+	min-width: 0;
+}
+.ex-content .ex-page-body h2 {
+	font-size: 1.5rem;
+}
+.ex-content .ex-fact {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px 14px;
+	color: var(--ex-soft);
+}
+.ex-content .ex-legend {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 14px 28px;
+	padding: 14px 18px;
+	border: 1px solid var(--ex-line);
+	border-radius: var(--ex-radius);
+}
+.ex-content .ex-hint,
+.ex-content .ex-key {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 12px 24px;
+}
+@media (max-width: 760px) {
+	.ex-content .ex-page-card {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.ex-content .ex-order {
+		flex: 1 1 100%;
+		margin-left: 0;
+	}
+}

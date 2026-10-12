@@ -12,7 +12,7 @@ const short = (id: string): string => id.slice(0, 12);
 /**
  * Validates everything a record inherits: the base record it was judged against and the record
  * behind each referenced scenario, each followed to its own root. A dependency that is absent,
- * unsound, failed or part of a cycle makes the record unproven.
+ * unsound, failed as a whole or part of a cycle makes the record unproven.
  */
 export function recordLineage(
 	record: VerificationRecord,
@@ -62,6 +62,9 @@ function scenarioProblems(
 			tested.testedRevision === scenario.testedRevision &&
 			found.source.commit === scenario.testedRevision;
 		if (!same) return [`${subject} did not test it`];
+		// A scenario that passed inside a record that failed is not proof: only a record that
+		// passed as a whole is one a later record may inherit from.
+		if (found.status !== 'passed') return [`${subject} did not pass`];
 		const problem = sound(found);
 		return problem ? [`${subject} is not sound: ${problem}`] : [];
 	});

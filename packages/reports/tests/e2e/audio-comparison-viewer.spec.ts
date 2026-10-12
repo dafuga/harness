@@ -3,6 +3,7 @@ import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { audioPairFixture } from '../../test/audioPairFixture';
 import { fixtures } from './support/fixtures';
+import { reportView } from './support/portableReport';
 
 async function capture(page: Page, region: Locator, name: string) {
 	await page.evaluate(async () => {
@@ -18,7 +19,7 @@ test('switching a phase and closing the viewer stop hidden audio without autopla
 	page
 }) => {
 	const { run } = await audioPairFixture(fixtures.reports, fixtures.site('audio-comparison'));
-	await page.goto('/reports/' + run.id);
+	await page.goto(await reportView(run.id));
 	const opener = page.getByRole('button', {
 		name: 'Open audio comparison: Paired recording',
 		exact: true
@@ -86,7 +87,7 @@ test('opening pauses gallery audio and the Close button pauses the viewer and re
 			status: 'passed'
 		}
 	});
-	await page.goto('/reports/' + run.id);
+	await page.goto(await reportView(run.id));
 	const galleryClip = page.getByLabel('Audio: Gallery recording', { exact: true });
 	await galleryClip.evaluate((clip: HTMLAudioElement) => clip.play());
 	await expect
@@ -122,7 +123,7 @@ for (const width of [1440, 920, 390]) {
 	}) => {
 		const { run } = await audioPairFixture(fixtures.reports, fixtures.site('audio-comparison'));
 		await page.setViewportSize({ width, height: 1100 });
-		await page.goto('/reports/' + run.id);
+		await page.goto(await reportView(run.id));
 		await page
 			.getByRole('group', { name: 'Media type' })
 			.getByRole('button', { name: /^Audio/ })

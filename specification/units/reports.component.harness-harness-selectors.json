@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-harness-selectors",
 	"kind": "component",
 	"title": "HarnessSelectors",
-	"responsibility": "Offers the branch, the commit and the comparison base of the page that is shown.",
+	"responsibility": "Offers the branch, the commit and the comparison base of the page that is shown; in the bar of the explorer it also says where the tip of the branch is, what the viewed commit is to it, and leads back to the tip.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -48,6 +48,10 @@
 			{
 				"name": "HarnessSelectors.onbase",
 				"type": "(commit: string) => void"
+			},
+			{
+				"name": "HarnessSelectors.tip",
+				"type": "{ note: string; viewed: string; href: string | null; onfollow: () => void } | null"
 			}
 		],
 		"outputs": [
@@ -59,6 +63,16 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.harness-harness-action",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.select",
 			"via": "import",

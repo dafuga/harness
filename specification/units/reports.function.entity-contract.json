@@ -1,0 +1,81 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.entity-contract",
+	"kind": "function",
+	"title": "entityContract",
+	"responsibility": "Reads the contract of a unit as rows of plain words for its kind, and names the states it has to be proven in.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/entityContract.ts"],
+		"symbols": ["ContractRow", "ContractFacts", "humanize", "requiredStates", "entityContract"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "humanize.name",
+				"type": "string"
+			},
+			{
+				"name": "requiredStates.unit",
+				"type": "HarnessUnit"
+			},
+			{
+				"name": "requiredStates.scenarios",
+				"type": "HarnessScenario[]"
+			},
+			{
+				"name": "entityContract.unit",
+				"type": "HarnessUnit"
+			},
+			{
+				"name": "entityContract.facts",
+				"type": "ContractFacts"
+			}
+		],
+		"outputs": [
+			{
+				"name": "humanize",
+				"type": "string"
+			},
+			{
+				"name": "requiredStates",
+				"type": "string[]"
+			},
+			{
+				"name": "entityContract",
+				"type": "ContractRow[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/entityContract.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/entityContract.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

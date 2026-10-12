@@ -1,0 +1,180 @@
+/* The body of the explorer. Every rule is under .ex-content, so no other viewer is restyled. */
+.ex-content {
+	--ex-surface: var(--hx-surface, #101f2d);
+	--ex-raised: var(--hx-raised, #14273a);
+	--ex-line: var(--hx-line, #1f3144);
+	--ex-line-strong: var(--hx-line-strong, #2c4259);
+	--ex-text: var(--hx-text, #f2f5fa);
+	--ex-soft: var(--hx-soft, #cbd5e1);
+	--ex-muted: var(--hx-muted, #8fa1b8);
+	--ex-gold: var(--hx-gold, #f3c33b);
+	--ex-pass: var(--hx-pass, #34d399);
+	--ex-fail: var(--hx-fail, #f2545b);
+	--ex-radius: var(--hx-radius, 10px);
+	display: grid;
+	gap: 18px;
+	min-width: 0;
+	color: var(--ex-text);
+	font-size: 1rem;
+	line-height: 1.45;
+}
+/* A column never grows past its container: what is wider scrolls inside its own frame. */
+.ex-content,
+.ex-content .ex-index,
+.ex-content .ex-card,
+.ex-content .ex-stack,
+.ex-content .ex-pane,
+.ex-content .ex-panes,
+.ex-content .ex-page-body {
+	grid-template-columns: minmax(0, 1fr);
+}
+.ex-content h1,
+.ex-content h2,
+.ex-content h3,
+.ex-content p,
+.ex-content dl,
+.ex-content dd,
+.ex-content ul,
+.ex-content ol,
+.ex-content figure {
+	margin: 0;
+	padding: 0;
+}
+.ex-content ul,
+.ex-content ol {
+	list-style: none;
+}
+.ex-content h1 {
+	font-size: clamp(1.9rem, 1.2rem + 2vw, 2.6rem);
+	line-height: 1.1;
+	letter-spacing: -0.01em;
+}
+.ex-content h2 {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 1.2rem;
+}
+.ex-content h3 {
+	font-size: 0.95rem;
+	color: var(--ex-soft);
+}
+.ex-content a {
+	color: var(--ex-text);
+	text-decoration: none;
+}
+.ex-content a:hover,
+.ex-content .ex-link,
+.ex-content .ex-open a {
+	color: var(--ex-gold);
+}
+.ex-content a:focus-visible,
+.ex-content button:focus-visible,
+.ex-content input:focus-visible {
+	outline: 2px solid var(--ex-gold);
+	outline-offset: 2px;
+}
+.ex-content .ex-lead {
+	color: var(--ex-soft);
+	font-size: 1.12rem;
+}
+.ex-content .ex-soft,
+.ex-content .ex-note {
+	color: var(--ex-muted);
+}
+.ex-content .ex-note {
+	font-size: 0.86rem;
+}
+.ex-content .ex-block {
+	display: block;
+}
+.ex-content .ex-mono,
+.ex-content code {
+	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+	font-size: 0.92em;
+}
+.ex-content .ex-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+.ex-content .ex-crumbs ol {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	color: var(--ex-muted);
+	font-size: 0.95rem;
+}
+.ex-content .ex-crumbs li + li::before {
+	content: '›';
+	margin-right: 8px;
+	color: var(--ex-muted);
+}
+.ex-content .ex-crumbs [aria-current] {
+	color: var(--ex-text);
+}
+.ex-content .ex-card {
+	display: grid;
+	gap: 12px;
+	align-content: start;
+	min-width: 0;
+	padding: 18px 20px;
+	border: 1px solid var(--ex-line);
+	border-radius: var(--ex-radius);
+	background: var(--ex-surface);
+}
+.ex-content .ex-stack {
+	display: grid;
+	gap: 16px;
+	min-width: 0;
+}
+/* What each item of a contract is, under the names of its row. */
+.ex-content .ex-items {
+	display: grid;
+	gap: 6px;
+	margin-top: 8px;
+	color: var(--ex-soft);
+	font-size: 0.92rem;
+}
+.ex-content .ex-items strong {
+	margin-right: 6px;
+	color: var(--ex-text);
+	font-weight: 600;
+}
+.ex-content .ex-pill {
+	display: inline-flex;
+	align-items: center;
+	padding: 2px 10px;
+	border: 1px solid var(--ex-line-strong);
+	border-radius: 999px;
+	background: var(--ex-raised);
+	color: var(--ex-soft);
+	font-size: 0.8rem;
+	font-weight: 500;
+	white-space: nowrap;
+}
+.ex-content .ex-pill.gold {
+	border-color: color-mix(in srgb, var(--ex-gold) 60%, transparent);
+	background: color-mix(in srgb, var(--ex-gold) 12%, transparent);
+	color: var(--ex-gold);
+}
+.ex-content .ex-tile {
+	display: grid;
+	place-items: center;
+	flex: none;
+	width: 72px;
+	height: 72px;
+	border: 1px solid var(--ex-line);
+	border-radius: var(--ex-radius);
+	background: var(--ex-surface);
+	color: var(--ex-text);
+}
+.ex-content .ex-tile.small {
+	width: 44px;
+	height: 44px;
+	border-radius: 8px;
+}

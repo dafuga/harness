@@ -3,7 +3,7 @@
 	"id": "reports.page.root",
 	"kind": "page",
 	"title": "/",
-	"responsibility": "Redirects the former report hub route to /harness/reports.",
+	"responsibility": "Redirects the root of this server to the explorer.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -12,12 +12,7 @@
 	},
 	"contract": {
 		"origin": "derived",
-		"inputs": [
-			{
-				"name": "load.input",
-				"type": "{ url: URL }"
-			}
-		],
+		"inputs": [],
 		"outputs": [
 			{
 				"name": "load",

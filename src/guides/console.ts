@@ -45,6 +45,10 @@ const consoleGuide: Guide = {
 			'source of both commits as harness impact does. No verification record is needed for it.',
 		'Each capture shows the build and revision it names, its standing and the attempt it ' +
 			'belongs to. A rejected or inherited capture is never shown as tested at the selected commit.',
+		'Two recorded results are compared field by field, whatever a field is called. A run states ' +
+			'what is about itself under harnessRun, an object with version 1, at the root of its result ' +
+			'and on an entry of its trace. Of that only startedAt, finishedAt, at, durationMs and pid ' +
+			'are left out; without a declaration nothing is.',
 		'A bundled history counts against the size of a Worker script: 3 MiB compressed on the free ' +
 			'plan, 10 MiB on a paid one. The installer reports the compressed size of what it bundles. ' +
 			'With --bucket nothing is bundled: the store is opened from the binding of a request the ' +

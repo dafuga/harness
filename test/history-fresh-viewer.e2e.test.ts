@@ -170,17 +170,19 @@ test('the viewer serves that history with no report store, no analytics and no c
 	const detail = await fetch(`${origin}/harness/data/revisions/${head}.json`);
 	expect(await detail.json()).toMatchObject({ commit: head, records: [{ id: made.record }] });
 	const page = await fetch(`${origin}/harness`);
-	expect([page.status, new URL(page.url).pathname]).toEqual([
-		200,
-		`/harness/branch/main/commit/${head}/map`
-	]);
-	// The hub and the dashboard answer from empty stores and name no other project.
-	const hub = await (await fetch(`${origin}/harness/reports`)).text();
+	// The root opens Pages at the tip of the branch: the address names no commit.
+	expect([page.status, new URL(page.url).pathname]).toEqual([200, '/harness/branch/main/pages']);
+	// The addresses of the earlier hub and dashboard lead into the explorer of this repository;
+	// what answers them is built from empty stores and names no other project.
+	const hub = await fetch(`${origin}/harness/reports`);
 	const dashboard = await fetch(`${origin}/harness/analytics`);
-	expect([hub.includes(foreign), hub.includes('other-project'), dashboard.status]).toEqual([
-		false,
-		false,
-		200
-	]);
+	for (const answer of [hub, dashboard]) {
+		expect([answer.status, new URL(answer.url).pathname]).toEqual([
+			200,
+			'/harness/branch/main/pages'
+		]);
+		const text = await answer.text();
+		expect([text.includes(foreign), text.includes('other-project')]).toEqual([false, false]);
+	}
 	expect(await (await fetch(`${origin}/api/reports`)).json()).toEqual([]);
 });

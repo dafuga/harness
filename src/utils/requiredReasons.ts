@@ -8,6 +8,8 @@ import { stableJson } from './stableJson';
 export interface ReasonSide {
 	index: { files: Map<string, SourceFile> };
 	manifests: ComponentManifest[];
+	/** True when the revision declares the writing limits, so its reasons are held to them. */
+	limited?: boolean;
 }
 
 interface Symbol {

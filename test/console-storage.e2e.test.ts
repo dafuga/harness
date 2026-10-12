@@ -107,6 +107,9 @@ test('nothing that depends on the session may be kept by a shared cache', async 
 	).branches.find((branch) => branch.name === 'main')?.head;
 	expect(await kept('/harness')).toEqual([308, 'no-store']);
 	expect(await kept(`/harness?commit=${target.commit}`)).toEqual([308, 'no-store']);
+	// A page of the explorer and a page path of the earlier console are both the console document.
+	for (const page of ['/harness/branch/main/pages', `/harness/branch/main/commit/${head}/pages`])
+		expect([page, ...(await kept(page))]).toEqual([page, 200, 'private, no-store']);
 	expect(await kept(`/harness/branch/main/commit/${head}/map`)).toEqual([200, 'private, no-store']);
 	expect(await kept('/harness/data/index.json')).toEqual([200, 'no-store']);
 	expect(await kept('/harness/data/build.json')).toEqual([200, 'no-store']);
@@ -151,11 +154,11 @@ test('a capture from an earlier bundle is rejected although it is labelled with 
 	expect(judgeHost(fresh, commit, stamps.current)).toEqual([]);
 	const stale = await captureHost(earlier, old, commit);
 	expect(judgeHost(old, commit, stamps.current)).toEqual([
-		`console-host: capture map-desktop.png was served by build ${stamps.earlier.slice(0, 12)}, not the console-host build ${stamps.current.slice(0, 12)} compiled from this revision`
+		`console-host: capture pages-desktop.png was served by build ${stamps.earlier.slice(0, 12)}, not the console-host build ${stamps.current.slice(0, 12)} compiled from this revision`
 	]);
 	// The same pixels of the right build under another commit's label are refused as well.
 	expect(judgeHost(fresh, 'd'.repeat(40), stamps.current)).toEqual([
-		`console-host: capture map-desktop.png was produced by revision ${commit}, not ${'d'.repeat(40)}`
+		`console-host: capture pages-desktop.png was produced by revision ${commit}, not ${'d'.repeat(40)}`
 	]);
 	const facts = { sourceCommit: commit, artifact: stamps.current, storage: installed.storage };
 	await keepCapture('installed-host-bucket-desktop', current, facts);

@@ -1,17 +1,8 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { page } from '$app/state';
-	import '../../../lib/styles/harness.css';
-	import HarnessConsole from '../../../components/harness/HarnessConsole.svelte';
-	const base = '/harness';
-	const links = [
-		{ label: 'Reports', href: '/harness/reports' },
-		{ label: 'Analytics', href: '/harness/analytics' }
-	];
-	// Each branch, commit and view is a path of this route, so the router keeps its history.
-	const navigate = (path: string, replace: boolean) =>
-		goto(base + path, { replaceState: replace, noScroll: true, keepFocus: true });
+	import ExplorerContent from '../../../components/harness/ExplorerContent.svelte';
+	import HarnessScreen from '../../../components/HarnessScreen.svelte';
 </script>
 
-<svelte:head><title>Harness</title></svelte:head>
-<HarnessConsole {base} path={page.url.pathname.slice(base.length)} {navigate} {links} />
+<!-- An address no page of its own serves: the host corrects or refuses it, and what it may yet
+     show is not known here, so this entry alone names the renderer of every screen. -->
+<HarnessScreen title="Explorer" content={ExplorerContent} />

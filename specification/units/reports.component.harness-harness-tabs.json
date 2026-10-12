@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-harness-tabs",
 	"kind": "component",
 	"title": "HarnessTabs",
-	"responsibility": "The row of views of the console.",
+	"responsibility": "A row of tabs: the views the console had, or the tabs of an entity it is given, each a link where it has an address.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -15,11 +15,19 @@
 		"inputs": [
 			{
 				"name": "HarnessTabs.view",
-				"type": "ConsoleView"
+				"type": "View"
 			},
 			{
 				"name": "HarnessTabs.onview",
-				"type": "(view: ConsoleView) => void"
+				"type": "(view: View) => void"
+			},
+			{
+				"name": "HarnessTabs.tabs",
+				"type": "Array<HarnessTab<View>>"
+			},
+			{
+				"name": "HarnessTabs.label",
+				"type": "string"
 			}
 		],
 		"outputs": [
@@ -32,7 +40,7 @@
 	},
 	"dependencies": [
 		{
-			"unit": "function.console-route",
+			"unit": "reports.function.harness-shell",
 			"via": "import",
 			"origin": "derived"
 		}

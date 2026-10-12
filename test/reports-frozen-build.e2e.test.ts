@@ -15,7 +15,7 @@ import { freePort } from './support/workers';
 const reports = resolve('packages/reports');
 const scratch = resolve('.cache', `frozen-build-test-${process.pid}`);
 const standIn = join(scratch, 'build');
-const page = `/harness/branch/main/commit/${'a'.repeat(40)}/map`;
+const page = `/harness/branch/main/commit/${'a'.repeat(40)}/pages`;
 const servers: ChildProcess[] = [];
 let run: string;
 

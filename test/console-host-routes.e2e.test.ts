@@ -20,7 +20,16 @@ const admin = { cookie: `session=${sessions.admin}` };
 const get = (path: string, headers: Record<string, string> = {}) =>
 	fetch(worker.url + path, { headers, redirect: 'manual' });
 const main = (commit: string, rest: string) => `/harness/branch/main/commit/${commit}/${rest}`;
+const tip = (rest: string) => `/harness/branch/main/${rest}`;
+/** The whole branch is one segment of an explorer address. */
+const slashed = `/harness/branch/${encodeURIComponent(slashBranch)}`;
+const categories = ['Pages', 'Components', 'Functions', 'Configs', 'Services'];
 const pathOf = (page: Page) => new URL(page.url()).pathname;
+const bar = (page: Page) => page.getByRole('banner');
+const field = (page: Page, name: string) => bar(page).getByRole('combobox', { name, exact: true });
+/** A commit of the main branch other than its tip, so choosing it is a change of address. */
+const earlier = () =>
+	target.index.revisions.map((revision) => revision.commit).find((commit) => commit !== head) ?? '';
 
 beforeAll(async () => {
 	target = await syntheticHost();
@@ -43,17 +52,19 @@ async function adminPage(): Promise<Page> {
 
 test('the host redirects the root and the query form to page paths, for the administrator only', async () => {
 	const root = await get('/harness', admin);
-	expect([root.status, root.headers.get('location')]).toEqual([308, main(head, 'map')]);
+	expect([root.status, root.headers.get('location')]).toEqual([308, tip('pages')]);
 	const legacy = await get(
 		`/harness?view=history&commit=${target.commit}&unit=service.title`,
 		admin
 	);
 	expect([legacy.status, legacy.headers.get('location')]).toEqual([
 		308,
-		main(target.commit, 'history/unit/service.title')
+		main(target.commit, 'services/service.title/history')
 	]);
-	const encoded = `/harness/branch/release/1.0%23rc/commit/${head}/map`;
-	for (const path of [main(head, 'map'), encoded, `/harness/commit/${head}/growth`]) {
+	// Pages of the explorer, and page paths of the earlier console, which the console leads on.
+	const explorer = [tip('pages'), main(head, 'functions'), `${slashed}/pages`];
+	const before = [main(head, 'map'), `/harness/branch/release/1.0%23rc/commit/${head}/map`];
+	for (const path of [...explorer, ...before, `/harness/commit/${head}/growth`]) {
 		expect([path, (await get(path, admin)).status]).toEqual([path, 200]);
 		const strangers: Array<Record<string, string>> = [{}, { cookie: `session=${sessions.member}` }];
 		for (const stranger of strangers) {
@@ -65,30 +76,50 @@ test('the host redirects the root and the query form to page paths, for the admi
 	expect([unasked.status, unasked.headers.get('location')]).toEqual([403, null]);
 });
 
-test('in a browser each branch, commit and view of the installed console is its own path', async () => {
+test('in a browser each branch, commit and category of the installed console is its own path', async () => {
 	const page = await adminPage();
+	const [commit, other] = [field(page, 'Commit'), earlier()];
+	expect(other).not.toBe('');
 	await page.goto(`${worker.url}/harness`);
-	await page.getByRole('heading', { level: 1, name: 'Harness' }).waitFor();
-	expect(pathOf(page)).toBe(main(head, 'map'));
-	await page.getByRole('tab', { name: 'History' }).click();
-	await page.waitForURL(`**${main(head, 'history')}`);
-	await page.getByRole('combobox', { name: 'Commit' }).selectOption(target.commit);
-	await page.waitForURL(`**${main(target.commit, 'history')}`);
-	await page.getByRole('region', { name: 'Recorded verification' }).waitFor();
+	await page.getByRole('heading', { level: 1, name: 'Pages' }).waitFor();
+	expect(pathOf(page)).toBe(tip('pages'));
+	const links = bar(page).getByRole('navigation', { name: 'Harness categories' }).getByRole('link');
+	expect(await links.allInnerTexts()).toEqual(categories);
+	expect(await page.getByRole('link', { name: /Reports|Analytics|Activity|Growth/ }).count()).toBe(
+		0
+	);
+	await links.filter({ hasText: 'Functions' }).click();
+	await page.waitForURL(`**${tip('functions')}`);
+	expect(await commit.inputValue()).toBe(head);
+	await commit.selectOption(other);
+	await page.waitForURL(`**${main(other, 'functions')}`);
+	await page.getByRole('heading', { level: 1, name: 'Functions' }).waitFor();
 
 	// A reload keeps the page, and back and forward return to the pages that were visited.
 	await page.reload();
-	await page.getByRole('region', { name: 'Recorded verification' }).waitFor();
-	expect(await page.getByRole('tab', { selected: true }).innerText()).toBe('History');
+	await page.getByRole('heading', { level: 1, name: 'Functions' }).waitFor();
+	expect(await commit.inputValue()).toBe(other);
 	await page.goBack();
-	await page.waitForURL(`**${main(head, 'history')}`);
-	expect(await page.getByRole('combobox', { name: 'Commit' }).inputValue()).toBe(head);
+	await page.waitForURL(`**${tip('functions')}`);
+	expect(await commit.inputValue()).toBe(head);
 	await page.goForward();
-	await page.waitForURL(`**${main(target.commit, 'history')}`);
+	await page.waitForURL(`**${main(other, 'functions')}`);
+	await bar(page).getByRole('link', { name: 'Go to tip' }).click();
+	await page.waitForURL(`**${tip('functions')}`);
 
-	await page.getByRole('combobox', { name: 'Branch' }).selectOption(slashBranch);
-	await page.waitForURL(`**/harness/branch/release/1.0%23rc/commit/${head}/history`);
-	await page.goto(`${worker.url}${main('0'.repeat(40), 'map')}`);
+	await field(page, 'Branch').selectOption(slashBranch);
+	await page.waitForURL(`**${slashed}/functions`);
+	// The tab of a section is part of the address: a reload of the installed console keeps it.
+	const source = `${main(target.commit, 'pages/page.titles/details')}?tab=source`;
+	await page.goto(worker.url + source);
+	await page.getByRole('tab', { name: 'Source', selected: true }).waitFor();
+	await page.reload();
+	await page.getByRole('tab', { name: 'Source', selected: true }).waitFor();
+	expect(pathOf(page) + new URL(page.url()).search).toBe(source);
+	// A page path of the earlier console is led to the page of the explorer it stands for.
+	await page.goto(`${worker.url}${main(head, 'map')}`);
+	await page.waitForURL(`**${main(head, 'pages')}`);
+	await page.goto(`${worker.url}${main('0'.repeat(40), 'pages')}`);
 	await page.getByRole('alert').waitFor();
 	expect(await page.getByRole('alert').innerText()).toContain(
 		'Commit 0000000 is not in this history.'
@@ -97,22 +128,26 @@ test('in a browser each branch, commit and view of the installed console is its 
 });
 
 test('the installed console shows recorded media and exports a record, for the administrator only', async () => {
+	const entity = main(target.commit, 'pages/page.titles');
 	const stranger = await browser.newPage();
-	await stranger.goto(`${worker.url}${main(target.commit, 'history')}`);
+	await stranger.goto(worker.url + entity);
 	expect(await stranger.locator('body').innerText()).toBe('Forbidden');
 	await stranger.close();
 	const page = await adminPage();
-	await page.goto(`${worker.url}${main(target.commit, 'history')}`);
-	const image = page.locator('.evidence-card:not(.audio-card) img').first();
+	await page.goto(worker.url + entity);
+	// A selected commit shows what was captured of the page at that commit.
+	const image = page.getByRole('region', { name: 'Commit comparison' }).locator('img').first();
 	await image.scrollIntoViewIfNeeded();
 	await expect
 		.poll(() => image.evaluate((element: HTMLImageElement) => element.naturalWidth))
 		.toBeGreaterThan(0);
-	// The export it links to opens as a complete report with the same provenance.
-	const link = page.getByRole('link', { name: 'Download this record as a portable report' });
-	const href = new URL((await link.getAttribute('href')) ?? '', worker.url).href;
+	// The export its tests link to opens as a complete report with the same provenance.
+	await page.goto(`${worker.url}${entity}?tab=tests`);
+	const link = page.getByRole('link', { name: 'Download this record' }).first();
+	const address = new URL((await link.getAttribute('href')) ?? '', worker.url);
+	expect(address.pathname).toBe(`/harness/export/${target.commit}`);
 	const viewer = await page.context().newPage();
-	await viewer.setContent(await (await page.request.get(href)).text());
+	await viewer.setContent(await (await page.request.get(address.href)).text());
 	await viewer.locator('.evidence-card').first().waitFor();
 	expect(await viewer.locator('.evidence-card:not(.audio-card)').count()).toBe(6);
 	expect(await viewer.locator('.evidence-card').first().innerText()).toContain('Fresh capture');
@@ -124,23 +159,26 @@ test('the installed console shows recorded media and exports a record, for the a
 	await page.context().close();
 }, 120_000);
 
-test('the installed console shows the activity recorded with its history, to the administrator only', async () => {
+test('the installed console names the repository of its recorded history, to the administrator only', async () => {
 	const data = '/harness/data/activity.json';
 	const member = { cookie: `session=${sessions.member}` };
 	expect([(await get(data)).status, (await get(data, member)).status]).toEqual([403, 403]);
 	const answered = await get(data, admin);
 	expect(answered.status).toBe(200);
-	const recorded = (await answered.json()) as { kind: string; repository: { head: string } };
+	const recorded = (await answered.json()) as {
+		kind: string;
+		repository: { head: string; name: string };
+	};
 	expect([recorded.kind, recorded.repository.head]).toEqual(['recorded', head]);
 	const page = await adminPage();
-	await page.goto(worker.url + main(head, 'map'));
-	await page.getByRole('tab', { name: 'Activity', exact: true }).click();
-	expect(pathOf(page)).toBe(main(head, 'activity'));
-	const work = page.getByRole('region', { name: 'Recent work', exact: true });
-	await work.getByRole('link', { name: head.slice(0, 7) }).waitFor();
-	// The host has no checkout and no agents to ask: live activity is said to be absent.
-	const agents = page.getByRole('region', { name: 'Working agents', exact: true });
-	expect(await agents.innerText()).toContain('not part of a recorded history');
+	// The address of the earlier activity view leads to Pages: the explorer has five categories.
+	await page.goto(worker.url + main(head, 'activity'));
+	await page.waitForURL(`**${main(head, 'pages')}`);
+	await bar(page).getByText(recorded.repository.name, { exact: true }).waitFor();
+	const links = bar(page).getByRole('navigation', { name: 'Harness categories' }).getByRole('link');
+	expect(await links.allInnerTexts()).toEqual(categories);
+	// Nothing in the installed console asks for agents: a host has no checkout to read them from.
+	expect(await page.getByRole('tab', { name: 'Activity' }).count()).toBe(0);
 	expect(await page.getByTestId('agents-working').count()).toBe(0);
 	await page.context().close();
 });

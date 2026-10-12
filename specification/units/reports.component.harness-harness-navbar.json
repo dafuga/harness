@@ -1,0 +1,67 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-harness-navbar",
+	"kind": "component",
+	"title": "HarnessNavbar",
+	"responsibility": "The one bar of every explorer route: the brand and the repository, five category links with an icon above each label and the active one marked, and the revision controls, each link and choice an address the host formats and follows.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/HarnessNavbar.svelte"],
+		"symbols": ["HarnessNavbar"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HarnessNavbar.props",
+				"type": "HarnessNavbarInput"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HarnessNavbar",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-selectors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-shell",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/HarnessNavbar.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/HarnessNavbar.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

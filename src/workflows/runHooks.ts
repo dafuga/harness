@@ -1,6 +1,7 @@
 import { resolve } from 'node:path';
 import { GitAdapter } from '../adapters/GitAdapter';
 import { fail } from '../core/errors';
+import { CommitMessageService } from '../services/CommitMessageService';
 import { HookInstallService, type HookStatus } from '../services/HookInstallService';
 import { HookRunService, type HookOutcome } from '../services/HookRunService';
 
@@ -17,7 +18,7 @@ async function repository(root = process.cwd()): Promise<string> {
 	return absolute;
 }
 
-/** Installs, removes or reports the opt-in pre-push hook of this worktree. */
+/** Installs, removes or reports the opt-in hooks of this worktree. */
 export async function manageHooks(
 	action: Action,
 	command = 'harness',
@@ -31,17 +32,29 @@ export async function manageHooks(
 /** Runs the gate for one hook stage with the input Git gave the hook. */
 export async function runHook(stage: string, input: string, root?: string): Promise<HookOutcome> {
 	if (stage !== 'pre-push')
-		return fail(`Unsupported hook stage "${stage}"; only pre-push is offered.`);
+		return fail(`Unsupported hook stage "${stage}"; pre-push and commit-msg are offered.`);
 	for (const name of gitHookVariables) delete process.env[name];
 	return new HookRunService(await repository(root)).prePush(input);
+}
+
+/**
+ * The commit-msg gate: what is wrong with the message in the file Git gave the hook. The
+ * variables Git set stay as they are, because the index they name is the commit in the making.
+ */
+export async function checkMessage(file: string | undefined, root?: string): Promise<string[]> {
+	if (!file) return fail('The commit-msg hook is given the path of the message file.');
+	return new CommitMessageService(await repository(root)).written(file);
 }
 
 export function renderHooks(status: HookStatus): string {
 	const installed = status.installed ? 'installed' : 'not installed';
 	const enabled = status.enabled ? 'enabled for this worktree' : 'not enabled for this worktree';
 	const chained = status.chained ? ' An existing hook is kept and runs first.' : '';
+	const message = status.stages.find((stage) => stage.stage === 'commit-msg');
+	const measured = message?.installed ? 'installed' : 'not installed';
 	return [
 		`The ${status.stage} hook is ${installed} in ${status.hooksDirectory} and ${enabled}.${chained}`,
+		`The commit-msg hook is ${measured}; it measures a commit message where the repository declares the writing limits.`,
 		'Limits of a local hook:',
 		...status.limitations.map((limit) => `  - ${limit}`)
 	].join('\n');

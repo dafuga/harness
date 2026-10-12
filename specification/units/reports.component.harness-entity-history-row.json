@@ -1,0 +1,129 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-entity-history-row",
+	"kind": "component",
+	"title": "EntityHistoryRow",
+	"responsibility": "Shows one commit of the history of an entity as a row: its reasons held to the length of one, what it did to the entity, size, complexity, one timing and its verdict.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/EntityHistoryRow.svelte"],
+		"symbols": ["EntityHistoryRow"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "EntityHistoryRow.row",
+				"type": "ExplorerHistoryRow"
+			},
+			{
+				"name": "EntityHistoryRow.detail",
+				"type": "ExplorerHistoryDetail | undefined"
+			},
+			{
+				"name": "EntityHistoryRow.timing",
+				"type": "HistoryTiming | undefined"
+			},
+			{
+				"name": "EntityHistoryRow.verdict",
+				"type": "Pick<ExplorerVerdict, 'passed' | 'label'> & { reasons?: string[] }"
+			},
+			{
+				"name": "EntityHistoryRow.selected",
+				"type": "boolean"
+			},
+			{
+				"name": "EntityHistoryRow.viewed",
+				"type": "boolean"
+			},
+			{
+				"name": "EntityHistoryRow.to",
+				"type": "ExplorerLocation"
+			},
+			{
+				"name": "EntityHistoryRow.nav",
+				"type": "EntityNav"
+			},
+			{
+				"name": "EntityHistoryRow.onselect",
+				"type": "(full: boolean) => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "EntityHistoryRow",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.writing-limits",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-entity-link",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-verdict",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-history",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-measure",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-reasons",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/EntityHistoryRow.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/EntityHistoryRow.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

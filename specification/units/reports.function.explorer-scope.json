@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.explorer-scope",
+	"kind": "function",
+	"title": "explorerScope",
+	"responsibility": "Resolves an explorer address against a history: the branch, its actual tip, the commit shown and that commit's first parent.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/explorerScope.ts"],
+		"symbols": ["ExplorerResolved", "explorerScope"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "explorerScope.index",
+				"type": "HarnessIndex"
+			},
+			{
+				"name": "explorerScope.location",
+				"type": "ExplorerLocation"
+			}
+		],
+		"outputs": [
+			{
+				"name": "explorerScope",
+				"type": "ExplorerResolved"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/explorerScope.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/explorerScope.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

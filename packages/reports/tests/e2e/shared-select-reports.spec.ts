@@ -1,55 +1,34 @@
 import { expect, test, type Page } from '@playwright/test';
+import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ReportRepository } from '../../src/repositories/ReportRepository';
 import { fixtures, seededId } from './support/fixtures';
+import { expectRetired, reportView, servedReport } from './support/portableReport';
 import { fits, pictured, screens, sharedField, typed } from './support/sharedSelect';
 
 /**
- * Every choice on the report pages is the one shared select: the same caret, size and keyboard
- * on the hub filters and the comparison uploader as on the fields that were shared before.
+ * The report hub, its filters and the comparison uploader are gone with the report pages. What
+ * is left of them is guarded here: the addresses lead into the explorer, every choice of the
+ * report viewer is still the one shared select, and the screen size a pair is uploaded for is
+ * the one its request names.
  */
-const card = (page: Page, title: string) => page.locator('.run-card').filter({ hasText: title });
 const combo = (page: Page, name: string) => page.getByRole('combobox', { name, exact: true });
-const upload = '**/api/report-screenshot-upload';
+
+test('the report hub and its filters are gone: their addresses lead into the explorer', async ({
+	page
+}) => {
+	await expectRetired(page, '/harness/reports');
+	await expect(combo(page, 'Report mode')).toHaveCount(0);
+	await expect(page.getByRole('textbox', { name: 'Search reports' })).toHaveCount(0);
+	await expectRetired(page, `/harness/reports/${await seededId()}`);
+	await expect(page.getByText('Add before/after comparison', { exact: true })).toHaveCount(0);
+});
 
 for (const [screen, width, height] of screens) {
-	test(`the report filters are the shared select and narrow the reports at ${screen} width`, async ({
-		page
-	}) => {
-		await page.setViewportSize({ width, height });
-		await page.goto('/harness/reports');
-		const status = combo(page, 'Status');
-		const mode = combo(page, 'Report mode');
-		await expect(card(page, 'Whole-site review')).toBeVisible();
-		await pictured(page, `hub-filters-${screen}`);
-		await sharedField(status);
-		await sharedField(mode);
-
-		// Reached from the search field by Tab, and chosen by typing how the option begins.
-		await page.getByRole('textbox', { name: 'Search reports' }).focus();
-		await page.keyboard.press('Tab');
-		await expect(status).toBeFocused();
-		await page.keyboard.type('R');
-		await expect(status).toHaveValue('running');
-		await expect(card(page, 'Whole-site review')).toBeVisible();
-		await expect(page.locator('.run-card .card-kicker .badge:not(.running)')).toHaveCount(0);
-		await pictured(page, `hub-status-chosen-${screen}`);
-		await status.selectOption('');
-
-		await page.keyboard.press('Tab');
-		await expect(mode).toBeFocused();
-		await page.keyboard.type('Fu');
-		await expect(mode).toHaveValue('suite');
-		await expect(card(page, 'Whole-site review')).toBeVisible();
-		await expect(card(page, 'Account settings review')).toHaveCount(0);
-		await mode.selectOption('feature');
-		await expect(card(page, 'Account settings review')).toBeVisible();
-		await expect(card(page, 'Whole-site review')).toHaveCount(0);
-		expect(await fits(page)).toBe(true);
-	});
-
-	test(`the upload viewport is the shared select, held during an upload and sent with it at ${screen} width`, async ({
-		page
+	test(`the screen size of an uploaded pair is the one its request named, shown at ${screen} width`, async ({
+		page,
+		request,
+		baseURL
 	}) => {
 		const run = await new ReportRepository(fixtures.reports).begin({
 			project: fixtures.site('alpha-project'),
@@ -57,67 +36,50 @@ for (const [screen, width, height] of screens) {
 			mode: 'feature',
 			environment: 'local fixture'
 		});
+		const image = await readFile(join(fixtures.reports, 'fixture.png'));
+		const pair = (viewport: string) =>
+			request.post('/api/report-screenshot-upload', {
+				headers: { Origin: baseURL! },
+				multipart: {
+					reportId: run.id,
+					title: 'Tablet pair',
+					viewport,
+					before: { name: 'before.png', mimeType: 'image/png', buffer: image },
+					after: { name: 'after.png', mimeType: 'image/png', buffer: image }
+				}
+			});
+		// A size the uploader never offered is refused, and nothing is added for it.
+		expect((await pair('watch')).status()).toBe(400);
+		expect((await pair('tablet')).status()).toBe(201);
 		await page.setViewportSize({ width, height });
-		await page.goto(`/harness/reports/${run.id}`);
-		await page.getByText('Add before/after comparison', { exact: true }).click();
-		const form = page.locator('.upload-comparison');
-		const viewport = form.getByRole('combobox', { name: 'Viewport', exact: true });
-		await expect(viewport).toHaveValue('');
-		await pictured(page, `upload-viewport-${screen}`);
-		await sharedField(viewport);
-		// The word above the field is its label: pressing it puts the keyboard in the field.
-		await form.locator('label', { hasText: 'Viewport' }).click({ position: { x: 6, y: 6 } });
-		await expect(viewport).toBeFocused();
-		await page.keyboard.type('9');
-		await expect(viewport).toHaveValue('tablet');
-		await pictured(page, `upload-viewport-chosen-${screen}`);
-
-		let release = () => {};
-		const held = new Promise<void>((resolve) => (release = resolve));
-		await page.route(upload, async (route) => {
-			await held;
-			await route.continue();
-		});
-		await form.getByLabel('Comparison title').fill('Tablet pair');
-		const image = join(fixtures.reports, 'fixture.png');
-		await form.locator('input[name="before"]').setInputFiles(image);
-		await form.locator('input[name="after"]').setInputFiles(image);
-		await form.getByRole('button', { name: 'Upload comparison' }).click();
-		// While the pair is on its way the choice cannot change, and the field shows that.
-		await expect(viewport).toBeDisabled();
-		await expect(viewport).toHaveValue('tablet');
-		await pictured(page, `upload-viewport-held-${screen}`);
-		expect(await viewport.locator('..').evaluate((held) => getComputedStyle(held).opacity)).toBe(
-			'0.5'
-		);
-		release();
-		await expect(form.getByRole('status')).toContainText('Added to gallery');
-		// The pair kept the viewport that was chosen, and the form is clear for the next one.
-		const pair = page.locator('.evidence-card').filter({ hasText: 'Tablet pair' });
-		await expect(pair.first().locator('.evidence-meta')).toContainText('920px tablet');
-		await expect(viewport).toBeEnabled();
-		await expect(viewport).toHaveValue('');
+		await page.goto(await servedReport(run.id, baseURL!));
+		const card = page.locator('.evidence-card').filter({ hasText: 'Tablet pair' });
+		await expect(card).toHaveCount(1);
+		await expect(card.first().locator('.evidence-meta')).toContainText('920px tablet');
+		await pictured(page, `upload-viewport-kept-${screen}`);
 		expect(await fits(page)).toBe(true);
 	});
 
-	test(`the fields that were the shared select before are the same field at ${screen} width`, async ({
+	test(`the fields of the report viewer are the shared select at ${screen} width`, async ({
 		page
 	}) => {
 		await page.setViewportSize({ width, height });
-		await page.goto(`/harness/reports/${await seededId()}`);
+		await page.goto(await reportView(await seededId()));
 		const speed = combo(page, 'Playback speed');
 		await sharedField(speed);
 		await typed(page, speed, '16');
 		await expect(speed).toHaveValue('16');
-		await sharedField(combo(page, 'Status'));
-		await page.getByText('Add audio', { exact: true }).click();
-		const audio = combo(page, 'Audio upload mode');
-		await expect(audio).toBeEnabled();
-		await sharedField(audio);
+		const status = combo(page, 'Status');
+		await sharedField(status);
 		await pictured(page, `report-shared-before-${screen}`);
-		await typed(page, audio, 'B');
-		await expect(audio).toHaveValue('comparison');
-		await expect(page.getByLabel('Before audio file', { exact: true })).toHaveCount(1);
+		// Chosen by typing how the option begins, and the gallery follows the choice.
+		const cards = page.locator('.evidence-grid .evidence-card');
+		const all = await cards.count();
+		await typed(page, status, 'F');
+		await expect(status).toHaveValue('failed');
+		await expect.poll(() => cards.count()).toBeLessThan(all);
+		await status.selectOption('');
+		await expect(cards).toHaveCount(all);
 		expect(await fits(page)).toBe(true);
 	});
 }

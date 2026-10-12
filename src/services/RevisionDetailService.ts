@@ -87,11 +87,11 @@ export class RevisionDetailService {
 			const loaded = await this.history.attached.load(item.evidence);
 			if (!loaded.record) continue;
 			const resolved = await this.media(loaded, media);
+			const ran = await this.ran(loaded.record);
 			const resolve = (capture: { path: string }, origin: string): ResolvedMedia =>
 				resolved.get(`${origin}\n${capture.path}`) ?? { media: null, gap: 'not resolved' };
-			records.push(
-				recordView(loaded.record, { valid: item.valid, problems: item.problems, resolve })
-			);
+			const context = { valid: item.valid, problems: item.problems, resolve };
+			records.push(recordView(loaded.record, { ...context, origins: (id) => ran.get(id) }));
 			if (item.valid) sound.push(loaded.record);
 		}
 		const side = await this.source.stored(commit);
@@ -127,6 +127,17 @@ export class RevisionDetailService {
 			}
 		}
 		return resolved;
+	}
+
+	/** The checks each record that this one inherits from ran, for the origins that can be read. */
+	private async ran(record: VerificationRecord): Promise<Map<string, VerificationRecord['tests']>> {
+		const origins = new Set(record.scenarios.flatMap((item) => item.referencedRecord ?? []));
+		const found = new Map<string, VerificationRecord['tests']>();
+		for (const id of origins) {
+			const origin = (await this.origin(id))?.record;
+			if (origin) found.set(id, origin.tests);
+		}
+		return found;
 	}
 
 	/** The attached record with this id, wherever in history it was attached. */

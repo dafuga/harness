@@ -85,3 +85,14 @@ test('lineage is followed to its root and a cycle is refused', () => {
 		'base record bbbbbbbbbbbb is not sound: base record aaaaaaaaaaaa is not sound: inherited records form a cycle'
 	]);
 });
+
+test('a record that failed proves nothing that is inherited from it, even a scenario it passed', () => {
+	// The origin tested the scenario and passed it, and failed as a whole for another reason.
+	const origin = { ...record('a', {}, [tested('a')]), status: 'failed' as const };
+	const child = record('b', {}, [inherited('a')]);
+	expect(lineage(child, [origin])).toEqual([
+		'scenario clock is inherited from record aaaaaaaaaaaa, which did not pass'
+	]);
+	// The same origin, passed and intact, still proves the scenario it is inherited for.
+	expect(lineage(child, [{ ...origin, status: 'passed' as const }])).toEqual([]);
+});

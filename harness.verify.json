@@ -1,5 +1,6 @@
 {
 	"schemaVersion": 1,
+	"writing": 1,
 	"setup": [
 		{
 			"command": "bun install --frozen-lockfile",
@@ -8,6 +9,10 @@
 		{
 			"command": "bun run build",
 			"timeoutMs": 1200000
+		},
+		{
+			"command": "bun run --cwd packages/reports build:shell",
+			"timeoutMs": 300000
 		}
 	],
 	"link": [],
@@ -35,6 +40,22 @@
 		{
 			"path": "packages/reports/tests/e2e/provider-picker.spec.ts",
 			"command": "bun x playwright test --config src/config/pickerPlaywrightConfig.ts"
+		},
+		{
+			"path": "packages/reports/tests/e2e/explorer-shell.spec.ts",
+			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell.spec.ts"
+		},
+		{
+			"path": "packages/reports/tests/e2e/explorer-shell-pieces.spec.ts",
+			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-pieces.spec.ts"
+		},
+		{
+			"path": "packages/reports/tests/e2e/explorer-shell-verdict.spec.ts",
+			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-verdict.spec.ts"
+		},
+		{
+			"path": "packages/reports/test/entity-preview.spec.ts",
+			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts"
 		}
 	],
 	"tools": [
@@ -78,6 +99,10 @@
 		{
 			"id": "reports",
 			"directory": "packages/reports/build"
+		},
+		{
+			"id": "shell-fixture",
+			"directory": "packages/reports/output/shell-fixture"
 		}
 	]
 }
