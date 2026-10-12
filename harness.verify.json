@@ -10,6 +10,10 @@
 			"timeoutMs": 1200000
 		},
 		{
+			"command": "bun run --cwd packages/reports build:shell",
+			"timeoutMs": 300000
+		},
+		{
 			"command": "bun run build:desktop",
 			"timeoutMs": 600000
 		},
@@ -189,6 +193,30 @@
 			"path": "packages/planning/test/planning-registry.test.ts",
 			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
 			"timeoutMs": 180000
+		},
+		{
+			"path": "packages/reports/tests/e2e/explorer-shell.spec.ts",
+			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell.spec.ts"
+		},
+		{
+			"path": "packages/reports/tests/e2e/explorer-shell-pieces.spec.ts",
+			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-pieces.spec.ts"
+		},
+		{
+			"path": "packages/reports/tests/e2e/explorer-shell-verdict.spec.ts",
+			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-verdict.spec.ts"
+		},
+		{
+			"path": "packages/reports/test/entity-preview.spec.ts",
+			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
+		},
+		{
+			"path": "packages/reports/test/entity-preview-marks.spec.ts",
+			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
+		},
+		{
+			"path": "packages/reports/test/entity-preview-words.spec.ts",
+			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
 		}
 	],
 	"tools": [
@@ -244,6 +272,11 @@
 		{
 			"id": "desktop-main",
 			"directory": "packages/desktop/dist"
+		},
+		{
+			"id": "shell-fixture",
+			"directory": "packages/reports/output/shell-fixture"
 		}
-	]
+	],
+	"writing": 1
 }

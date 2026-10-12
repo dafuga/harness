@@ -1,0 +1,126 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-entity-history",
+	"kind": "component",
+	"title": "EntityHistory",
+	"responsibility": "Lists the commits that changed an entity through the shown commit, reads the reasons of a commit only when it is listed, and opens the reasons of one in full on request.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/EntityHistory.svelte"],
+		"symbols": ["EntityHistory"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "EntityHistory.entity",
+				"type": "ExplorerEntity"
+			},
+			{
+				"name": "EntityHistory.rows",
+				"type": "ExplorerHistoryRow[]"
+			},
+			{
+				"name": "EntityHistory.index",
+				"type": "HarnessIndex"
+			},
+			{
+				"name": "EntityHistory.scope",
+				"type": "ExplorerScope"
+			},
+			{
+				"name": "EntityHistory.known",
+				"type": "HarnessRevision[]"
+			},
+			{
+				"name": "EntityHistory.client",
+				"type": "Pick<HarnessClient, 'revision'>"
+			},
+			{
+				"name": "EntityHistory.nav",
+				"type": "EntityNav"
+			}
+		],
+		"outputs": [
+			{
+				"name": "EntityHistory",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-entity-change",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-entity-history-row",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-verdict",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-history",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-history",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-client",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/EntityHistory.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/EntityHistory.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

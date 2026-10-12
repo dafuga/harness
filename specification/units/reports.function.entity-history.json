@@ -1,0 +1,146 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.entity-history",
+	"kind": "function",
+	"title": "entityHistory",
+	"responsibility": "Decides which commits of a history are listed as changes, and reads their timings by profile, each beside the earlier value of its own series.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/entityHistory.ts"],
+		"symbols": [
+			"HistoryTiming",
+			"historyVerdict",
+			"historyListed",
+			"entityHistory",
+			"historyProfiles",
+			"reviewChanges",
+			"signedBytes",
+			"signedCount"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "historyVerdict.coverage",
+				"type": "Coverage"
+			},
+			{
+				"name": "historyListed.rows",
+				"type": "ExplorerHistoryRow[]"
+			},
+			{
+				"name": "historyListed.read",
+				"type": "Pick<Map<string, ExplorerHistoryDetail>, 'get'>"
+			},
+			{
+				"name": "entityHistory.index",
+				"type": "HarnessIndex"
+			},
+			{
+				"name": "entityHistory.unit",
+				"type": "string"
+			},
+			{
+				"name": "entityHistory.rows",
+				"type": "ExplorerHistoryRow[]"
+			},
+			{
+				"name": "historyProfiles.timings",
+				"type": "Map<string, HistoryTiming[]>"
+			},
+			{
+				"name": "reviewChanges.review",
+				"type": "HarnessReview"
+			},
+			{
+				"name": "signedBytes.delta",
+				"type": "number | null | undefined"
+			},
+			{
+				"name": "signedCount.delta",
+				"type": "number | null | undefined"
+			}
+		],
+		"outputs": [
+			{
+				"name": "historyVerdict",
+				"type": "{ passed: boolean; label: string }"
+			},
+			{
+				"name": "historyListed",
+				"type": "{ listed: ExplorerHistoryRow[]; unread: ExplorerHistoryRow[] }"
+			},
+			{
+				"name": "entityHistory",
+				"type": "Map<string, HistoryTiming[]>"
+			},
+			{
+				"name": "historyProfiles",
+				"type": "string[]"
+			},
+			{
+				"name": "reviewChanges",
+				"type": "string[]"
+			},
+			{
+				"name": "signedBytes",
+				"type": "string"
+			},
+			{
+				"name": "signedCount",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.entity-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-measure",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-emitted",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-budget-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/entityHistory.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/entityHistory.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

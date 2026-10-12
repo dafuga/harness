@@ -224,7 +224,9 @@ and measured by `harness kernel bench --boundary`. The loop for this feature run
 - Verification blocks missing required evidence, wrong revisions, stale server builds and exceeded
   budgets, and skips updates that touch only notes or evidence.
 - Hooks are added without overwriting existing hooks and compose with hooks shared across
-  worktrees. The CI publish stage never runs pull request code with write credentials.
+  worktrees: a stage acts only in a worktree that opted into that stage, so a stage offered
+  later is never started where an earlier Harness was asked for pushes only. The CI publish
+  stage never runs pull request code with write credentials.
 - A fresh clone recovers notes, evidence and media. Missing notes, missing LFS objects, rewritten
   commits, malformed records and tampered artifacts are reported as such.
 - A record is accepted into history only if its schema, seal, every file and its source commit

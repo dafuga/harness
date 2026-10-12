@@ -1,5 +1,5 @@
 import { redirect } from '@sveltejs/kit';
-/** Analytics moved into the console; old links keep working. */
-export function load({ url }: { url: URL }) {
-	redirect(308, '/harness/analytics' + url.search);
+/** Analytics is not a page of the console any more; old links open the explorer. */
+export function load() {
+	redirect(308, '/harness');
 }

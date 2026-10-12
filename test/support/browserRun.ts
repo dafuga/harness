@@ -33,6 +33,9 @@ export interface SeededHistory {
 	home: string;
 	file: string;
 	commits: Record<string, string>;
+	/** The branch whose commits record a page before and after a change, and that page's unit. */
+	branch: string;
+	page: string;
 }
 
 /** What a run wrote into its report file; readable once it has finished. */
@@ -160,27 +163,32 @@ function metadataFiles(directory: string, depth = 3): string[] {
 /** Every seeded console history found below `scratch`, wherever a run chose to keep it. */
 export function seededHistories(scratch: string): SeededHistory[] {
 	return metadataFiles(scratch).flatMap((file) => {
-		let meta: { commits?: Record<string, string> } = {};
+		let meta: {
+			commits?: Record<string, string>;
+			keptBranch?: string;
+			explorerUnits?: { page?: string };
+		} = {};
 		try {
 			meta = JSON.parse(readFileSync(file, 'utf8')) as typeof meta;
 		} catch {
 			return [];
 		}
 		const [top] = relative(scratch, file).split(sep);
+		const [branch, page] = [meta.keptBranch ?? '', meta.explorerUnits?.page ?? ''];
 		return meta.commits?.baseline
-			? [{ home: join(scratch, top), file, commits: meta.commits }]
+			? [{ home: join(scratch, top), file, commits: meta.commits, branch, page }]
 			: [];
 	});
 }
 
 /** Polls until `ready` returns a value, or fails after the given time with what `ready` meant. */
 export async function eventually<Found>(
-	ready: () => Found | undefined,
+	ready: () => Found | undefined | Promise<Found | undefined>,
 	wanted: string,
 	seconds = 180
 ): Promise<Found> {
 	for (let attempt = 0; attempt < seconds * 2; attempt += 1) {
-		const found = ready();
+		const found = await ready();
 		if (found !== undefined) return found;
 		await new Promise((done) => setTimeout(done, 500));
 	}

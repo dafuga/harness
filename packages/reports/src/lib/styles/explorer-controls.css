@@ -1,0 +1,190 @@
+/* The pieces every explorer screen shares: actions, the verdict, tabs and the revision fields. */
+.hx-action {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	min-height: 44px;
+	padding: 0 16px;
+	border: 1px solid var(--hx-gold, #f3c33b);
+	border-radius: var(--hx-radius-small, 8px);
+	background: transparent;
+	color: var(--hx-gold, #f3c33b);
+	font: inherit;
+	font-weight: 500;
+	line-height: 1.2;
+	white-space: nowrap;
+	cursor: pointer;
+}
+.hx-action:hover {
+	border-color: var(--hx-gold, #f3c33b);
+	background: rgba(243, 195, 59, 0.1);
+	text-decoration: none;
+}
+.hx-action.plain,
+.hx-action.plain:hover {
+	border-color: var(--hx-line-strong, #2c4259);
+	color: var(--hx-text, #f2f5fa);
+}
+.hx-action.plain:hover {
+	background: rgba(255, 255, 255, 0.05);
+}
+.hx-action:disabled,
+.hx-action:disabled:hover {
+	border-color: var(--hx-line-strong, #2c4259);
+	background: transparent;
+	color: var(--hx-muted, #8fa1b8);
+	opacity: 0.7;
+	cursor: not-allowed;
+}
+/* Said to a screen reader and not drawn. */
+.hx-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+/* The tabs of an entity: the one that is shown is gold, with the gold line under it. */
+.hx-tabs {
+	display: flex;
+	gap: 6px;
+	border-bottom: 1px solid var(--hx-line);
+	overflow-x: auto;
+}
+.hx-tabs a,
+.hx-tabs button {
+	display: inline-flex;
+	flex: none;
+	align-items: center;
+	min-height: 44px;
+	padding: 0 16px;
+	border: 0;
+	border-bottom: 2px solid transparent;
+	border-radius: 0;
+	background: none;
+	color: var(--hx-soft);
+	font: inherit;
+	white-space: nowrap;
+	outline-offset: -4px;
+	cursor: pointer;
+}
+.hx-tabs a:hover,
+.hx-tabs button:hover {
+	border-bottom-color: var(--hx-line-strong);
+	color: var(--hx-text);
+	text-decoration: none;
+}
+.hx-tabs [aria-selected='true'],
+.hx-tabs [aria-selected='true']:hover {
+	border-bottom-color: var(--hx-gold);
+	color: var(--hx-gold);
+}
+.hx-tabs button:disabled,
+.hx-tabs button:disabled:hover {
+	border-bottom-color: transparent;
+	color: var(--hx-muted);
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+/* The branch with its tip, the commit that is viewed, and the way back to the tip. */
+.hx-revision {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 10px clamp(10px, 1vw, 20px);
+	min-width: 0;
+	margin-left: auto;
+	padding: 4px 0 4px clamp(12px, 1.3vw, 26px);
+}
+.hx-revision::before {
+	content: '';
+	position: absolute;
+	inset: 18px auto 18px 0;
+	width: 1px;
+	background: var(--hx-line-strong);
+}
+.hx-revision label {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	flex: none;
+	gap: 3px;
+	width: 128px;
+	min-width: 0;
+	color: var(--hx-soft);
+	font-size: 0.92rem;
+	line-height: 1.25;
+}
+/* The branch field gives way first when a long name and a narrow screen meet. */
+.hx-revision label:first-of-type {
+	flex: 0 1 clamp(168px, 14vw, 232px);
+	width: auto;
+	min-width: 132px;
+}
+.hx-revision label > * {
+	grid-column: 1;
+}
+.hx-revision label > span:first-child {
+	display: flex;
+	grid-row: 1;
+	align-items: center;
+	gap: 8px;
+}
+.hx-revision .report-select {
+	grid-row: 2;
+}
+.hx-revision select {
+	width: 100%;
+	min-height: 44px;
+	padding: 0 42px 0 14px;
+	border: 1px solid var(--hx-line-strong);
+	border-radius: var(--hx-radius-small);
+	background: var(--hx-bg);
+	color: var(--hx-text);
+	font: inherit;
+	font-size: 1rem;
+	font-weight: 450;
+	text-overflow: ellipsis;
+}
+.hx-revision select:hover {
+	border-color: var(--hx-muted);
+}
+.hx-revision small {
+	grid-row: 3;
+	justify-self: start;
+	min-width: max-content;
+	padding-left: 14px;
+	color: var(--hx-muted);
+	font-size: 0.85rem;
+	white-space: nowrap;
+}
+/* The closed commit field shows the short hash; the line of each commit is in its option. */
+.hx-revision .hx-shown {
+	position: relative;
+	z-index: 1;
+	grid-area: 2 / 1;
+	align-self: center;
+	justify-self: start;
+	margin-left: 15px;
+	color: var(--hx-text);
+	font-size: 1rem;
+	font-weight: 450;
+	pointer-events: none;
+}
+.hx-revision label:has(.hx-shown) select {
+	color: transparent;
+}
+.hx-revision label:has(.hx-shown) option {
+	background: var(--hx-surface);
+	color: var(--hx-text);
+}
+.hx-revision .hx-action {
+	flex: none;
+}
+@media (forced-colors: active) {
+	.hx-revision .hx-shown {
+		display: none;
+	}
+}

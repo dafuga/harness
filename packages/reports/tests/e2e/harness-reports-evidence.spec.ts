@@ -1,13 +1,12 @@
 import { expect, test, type Page } from '@playwright/test';
-import { execFileSync } from 'node:child_process';
 import { readFileSync, rmSync } from 'node:fs';
+import { join } from 'node:path';
 import { scenarioManifestSchema } from '../../../../src/core/unitTypes';
 import { gatherCaptures } from '../../../../src/utils/gatherCaptures';
 import { scenarioCoverage } from '../../../../src/utils/scenarioCoverage';
 import { ReportRepository } from '../../src/repositories/ReportRepository';
 import { ReportExportService } from '../../src/services/ReportExportService';
 import { audioPairFixture } from '../../test/audioPairFixture';
-import { activityReady, activityStates } from './support/activityStates';
 import {
 	captureAudio,
 	captureScreen,
@@ -18,95 +17,105 @@ import {
 	type Viewport
 } from './support/harnessCapture';
 import { fixtures } from './support/fixtures';
+import { servedReport } from './support/portableReport';
 
+/**
+ * The evidence of what is left of the reports of a site. The hub, the report page and the
+ * analytics dashboard are gone: their addresses are captured where they lead now. A report is
+ * shown by the page its export builds, which the server under test serves, and its recordings
+ * are played from the bytes that server serves.
+ */
 const port = Number(process.env.HARNESS_CONSOLE_E2E_EXPOSED_PORT || 5592);
-test.use({ baseURL: `http://127.0.0.1:${port}` });
+const origin = `http://127.0.0.1:${port}`;
+test.use({ baseURL: origin });
 test.describe.configure({ mode: 'serial' });
 
 const root = fixtures.reports;
 const evidence = evidenceOf('reports');
-const fixture = readFileSync(`${root}/fixture-id`, 'utf8');
-const made = { paired: '', exported: '', restore: () => {} };
-const reportPage = async (page: Page, id: string, title: string) => {
-	await page.goto(`/harness/reports/${id}`);
+const title = 'Exported settings review';
+const made = { paired: '', exported: '' };
+
+/** An address of a removed screen, followed to the page of the explorer it leads to. */
+async function retired(page: Page, address: string) {
+	await page.goto(address);
+	await expect(page).toHaveURL(/\/harness\/branch\/[^/]+\/(commit\/[0-9a-f]{40}\/)?pages$/);
+	await expect(page.getByRole('heading', { level: 1, name: 'Pages' })).toBeVisible();
+}
+
+/** The page the export of the finished report built, as the server under test serves it. */
+async function exported(page: Page) {
+	const served = await page.request.get(`/api/reports/${made.exported}/exports/index.html`);
+	expect(served.status()).toBe(200);
+	await page.setContent(await served.text());
 	await expect(page.getByRole('heading', { name: title, exact: true })).toBeVisible();
-};
+}
 
 /** Each state the scenario declares: how to reach it and what must be on screen before capture. */
 const states: Record<string, (page: Page) => Promise<void>> = {
-	async hub(page) {
-		await page.goto('/harness/reports');
-		await expect(page.getByRole('heading', { name: 'Project reports', exact: true })).toBeVisible();
-		await expect(page.getByText('Account settings review').first()).toBeVisible();
-	},
-	report: (page) => reportPage(page, fixture, 'Account settings review'),
+	'retired-hub': (page) => retired(page, '/harness/reports'),
+	'retired-report': (page) => retired(page, `/harness/reports/${made.exported}`),
+	'retired-analytics': (page) => retired(page, '/harness/analytics'),
+	exported,
 	async gallery(page) {
-		await reportPage(page, fixture, 'Account settings review');
+		await exported(page);
 		await page.locator('.gallery-section').first().scrollIntoViewIfNeeded();
 	},
 	async viewer(page) {
-		await reportPage(page, fixture, 'Account settings review');
+		await exported(page);
 		await page.getByRole('button', { name: 'Open Tall report page' }).click();
 		await expect(page.getByRole('dialog', { name: 'Tall report page' })).toBeVisible();
 	},
 	async comparison(page) {
-		await reportPage(page, fixture, 'Account settings review');
+		await exported(page);
 		await page.getByRole('button', { name: 'Open Settings after', exact: true }).first().click();
 		const dialog = page.getByRole('dialog');
 		await expect(dialog.getByRole('button', { name: 'View before screenshot' })).toBeVisible();
 	},
+	// The recordings are read from the report API of the server, so what is played is what it serves.
 	async audio(page) {
-		await reportPage(page, made.paired, 'Audio comparison review');
+		await page.goto(await servedReport(made.paired, origin));
 		const open = { name: 'Open audio comparison: Paired recording', exact: true };
 		await page.getByRole('button', open).click();
 		await expect(page.getByRole('dialog').locator('audio').first()).toBeVisible();
-	},
-	async analytics(page) {
-		// Evidence holds no sample of this machine: the live CPU panel says it has none.
-		await page.route('**/api/analytics-cpu', (route) =>
-			route.fulfill({ status: 503, json: { status: 'unavailable' } })
-		);
-		await page.goto('/harness/analytics');
-		await expect(
-			page.getByRole('heading', { name: 'Harness Analytics', exact: true })
-		).toBeVisible();
-		await expect(page.getByTestId('response-first-try')).toContainText('50%');
-		await expect(page.getByText('CPU usage unavailable', { exact: true })).toBeVisible();
-		await page.unroute('**/api/analytics-cpu');
-	},
-	// The portable report the server exports, opened as the file a reader downloads.
-	async exported(page) {
-		await reportPage(page, made.exported, 'Exported settings review');
-		// The link sits in the collapsed run details; its address is what matters here.
-		const link = page.locator('a.button', { hasText: 'Portable gallery' });
-		const href = await link.getAttribute('href');
-		await page.setContent(await (await page.request.get(href ?? '')).text());
-		await expect(page.getByRole('heading', { name: 'Exported settings review' })).toBeVisible();
 	}
 };
 
-test.beforeAll(async () => {
-	rmSync(evidence, { recursive: true, force: true });
-	execFileSync('bun', ['db/seed-data/analytics-e2e.ts']);
-	made.paired = (await audioPairFixture(root)).run.id;
-	// A finished report of this site: only a finalized report has exports to download.
+/** A finished report of this site with a tall capture and a before and after at every size. */
+async function finished(): Promise<string> {
 	const store = new ReportRepository(root);
-	const input = { project: fixtures.site('alpha-project'), title: 'Exported settings review' };
+	const input = { project: fixtures.site('alpha-project'), title };
 	const run = await store.begin({ ...input, mode: 'feature', environment: 'local fixture' });
 	const check = { id: 'save', title: 'Save settings', status: 'passed' as const };
 	await store.record(run.id, { kind: 'check', data: check });
-	const shown = { id: 'dialog', title: 'Captured dialog', category: 'Settings' };
-	const screenshot = { ...shown, path: `${root}/fixture.png`, status: 'passed' as const };
-	await store.record(run.id, { kind: 'evidence', data: screenshot });
+	const shown = { status: 'passed' as const, path: join(root, 'fixture.png') };
+	const tall = { id: 'tall', title: 'Tall report page', category: 'Details' };
+	await store.record(run.id, {
+		kind: 'evidence',
+		data: { ...tall, ...shown, path: join(root, 'tall.png'), viewport: '1440px desktop' }
+	});
+	for (const viewport of ['390px mobile', '920px tablet', '1440px desktop']) {
+		for (const phase of ['before', 'after'] as const) {
+			const pair = { title: `Settings ${phase}`, category: 'Settings', comparison: 'settings' };
+			const id = `${viewport.split(' ')[1]}-${phase}`;
+			await store.record(run.id, {
+				kind: 'evidence',
+				data: { id, ...pair, ...shown, phase, viewport }
+			});
+		}
+	}
 	await new ReportExportService(store).finalize(run.id);
-	made.exported = run.id;
-	made.restore = await activityReady();
+	return run.id;
+}
+
+test.beforeAll(async () => {
+	rmSync(evidence, { recursive: true, force: true });
+	made.paired = (await audioPairFixture(root, fixtures.site('alpha-project'))).run.id;
+	// Only a finalized report has an export for the server to serve.
+	made.exported = await finished();
 });
-// The fixture application is left as it was found, for the suites that come after this one.
-test.afterAll(() => made.restore());
 
 for (const viewport of viewports) {
-	test(`every report and analytics state is captured at the ${viewport.id} viewport`, async ({
+	test(`every state of the reports of a site is captured at the ${viewport.id} viewport`, async ({
 		page
 	}) => {
 		await page.setViewportSize({ width: viewport.width, height: viewport.height });
@@ -117,24 +126,14 @@ for (const viewport of viewports) {
 	});
 }
 
-// The activity of the site is captured apart: its last states hold the clock of their page.
-for (const viewport of viewports) {
-	test(`every project activity state is captured at the ${viewport.id} viewport`, async ({
-		page
-	}) => {
-		await page.setViewportSize({ width: viewport.width, height: viewport.height });
-		for (const [state, reach] of Object.entries(activityStates)) {
-			await reach(page);
-			await captureScreen(page, state, viewport as Viewport, evidence);
-		}
-	});
-}
-
-test('a paired recording plays in the report viewer and is captured as it was served', async ({
+test('a paired recording plays in the viewer and is captured as the server served it', async ({
 	page
 }) => {
 	await states.audio(page);
 	const player = page.getByRole('dialog').locator('audio').first();
+	expect(await player.evaluate((clip: HTMLAudioElement) => clip.currentSrc)).toContain(
+		`${origin}/api/reports/${made.paired}/assets/`
+	);
 	expect(await captureAudio(page, 'audio', player, evidence)).toBeCloseTo(6, 0);
 });
 
@@ -145,7 +144,7 @@ test('what was captured satisfies the reports scenario, served by the build unde
 		JSON.parse(readFileSync('../../specification/scenarios/harness-reports.json', 'utf8'))
 	);
 	const { gathered, failures } = gatherCaptures(evidence, 'evidence');
-	const declared = [...Object.keys(states), ...Object.keys(activityStates)];
+	const declared = Object.keys(states);
 	expect(failures).toEqual([]);
 	expect(gathered).toHaveLength(declared.length * viewports.length + 1);
 	const served = await servedBuild(page);

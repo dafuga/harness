@@ -3,12 +3,12 @@
 	"id": "workflow.run-hooks",
 	"kind": "workflow",
 	"title": "runHooks",
-	"responsibility": "Installs, removes, reports and runs the opt-in pre-push hook for a worktree.",
+	"responsibility": "Installs, removes, reports and runs the opt-in hooks of a worktree: the pre-push verification gate and the commit-msg gate that measures a commit message.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/workflows/runHooks.ts"],
-		"symbols": ["manageHooks", "runHook", "renderHooks", "renderHookOutcome"]
+		"symbols": ["manageHooks", "runHook", "checkMessage", "renderHooks", "renderHookOutcome"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -38,6 +38,14 @@
 				"type": "string"
 			},
 			{
+				"name": "checkMessage.file",
+				"type": "string | undefined"
+			},
+			{
+				"name": "checkMessage.root",
+				"type": "string"
+			},
+			{
 				"name": "renderHooks.status",
 				"type": "HookStatus"
 			},
@@ -54,6 +62,10 @@
 			{
 				"name": "runHook",
 				"type": "Promise<HookOutcome>"
+			},
+			{
+				"name": "checkMessage",
+				"type": "Promise<string[]>"
 			},
 			{
 				"name": "renderHooks",
@@ -79,6 +91,11 @@
 		},
 		{
 			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.commit-message",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -1,0 +1,117 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.explorer-state",
+	"kind": "function",
+	"title": "explorerState",
+	"responsibility": "Judges one declared state of a scenario against a record, and says which states of a scenario show a unit: those that name it, else those that name something made of it.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/explorerState.ts"],
+		"symbols": [
+			"Told",
+			"Judged",
+			"reasonText",
+			"scenarioFor",
+			"coverageWorst",
+			"captureUnbound",
+			"explorerState"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "reasonText.text",
+				"type": "string"
+			},
+			{
+				"name": "scenarioFor.declared",
+				"type": "HarnessScenario"
+			},
+			{
+				"name": "scenarioFor.unit",
+				"type": "string"
+			},
+			{
+				"name": "scenarioFor.units",
+				"type": "HarnessUnit[]"
+			},
+			{
+				"name": "coverageWorst.standings",
+				"type": "CoverageStanding[]"
+			},
+			{
+				"name": "captureUnbound.capture",
+				"type": "HarnessCapture"
+			},
+			{
+				"name": "captureUnbound.commit",
+				"type": "string"
+			},
+			{
+				"name": "explorerState.judged",
+				"type": "Judged | null"
+			},
+			{
+				"name": "explorerState.declared",
+				"type": "HarnessScenario['states'][number]"
+			},
+			{
+				"name": "explorerState.absent",
+				"type": "Told"
+			}
+		],
+		"outputs": [
+			{
+				"name": "reasonText",
+				"type": "string"
+			},
+			{
+				"name": "scenarioFor",
+				"type": "HarnessScenario"
+			},
+			{
+				"name": "coverageWorst",
+				"type": "CoverageStanding"
+			},
+			{
+				"name": "captureUnbound",
+				"type": "string | null"
+			},
+			{
+				"name": "explorerState",
+				"type": "ExplorerStateCoverage"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/explorerState.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/explorerState.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

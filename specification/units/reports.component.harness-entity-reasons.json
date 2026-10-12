@@ -1,0 +1,60 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-entity-reasons",
+	"kind": "component",
+	"title": "EntityReasons",
+	"responsibility": "Offers the reasons one commit recorded for an entity in full, as they were written: each note and each attempt once, with what it is about and each outcome it had.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/EntityReasons.svelte"],
+		"symbols": ["EntityReasons"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "EntityReasons.reasons",
+				"type": "EntityReasons"
+			},
+			{
+				"name": "EntityReasons.open",
+				"type": "boolean"
+			},
+			{
+				"name": "EntityReasons.id",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "EntityReasons",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.entity-reasons",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/EntityReasons.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/EntityReasons.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,16 +1,10 @@
 {
 	"schemaVersion": 1,
 	"id": "harness-console",
-	"title": "Harness console over a fixed synthetic history",
+	"title": "Harness explorer over a fixed synthetic history",
 	"kind": "ui",
 	"units": [
 		"reports.component.harness-harness-console",
-		"reports.component.harness-harness-map",
-		"reports.component.harness-harness-unit",
-		"reports.component.harness-harness-compare",
-		"reports.component.harness-harness-history",
-		"reports.component.harness-harness-legacy",
-		"reports.component.harness-harness-growth",
 		"reports.component.evidence-provenance",
 		"reports.endpoint.harness-data-path",
 		"reports.endpoint.harness-media-file",
@@ -22,128 +16,307 @@
 		"reports.function.harness-page",
 		"function.console-route",
 		"function.console-canonical",
-		"reports.component.harness-harness-compare-media",
 		"reports.component.harness-harness-header",
-		"reports.function.harness-comparison",
-		"reports.function.harness-impact",
 		"function.side-impact",
 		"reports.function.harness-budget",
-		"reports.function.harness-growth",
 		"function.complexity-coverage",
 		"function.unit-measurements",
 		"function.history-series",
 		"function.budget-findings",
-		"reports.component.harness-harness-failures",
-		"reports.function.harness-failures",
 		"reports.function.harness-emitted",
-		"reports.function.harness-emitted-growth",
-		"reports.component.harness-harness-emitted-growth",
-		"reports.component.harness-harness-activity",
 		"reports.component.harness-harness-tabs",
-		"reports.component.project-activity",
-		"reports.component.activity-agents",
-		"reports.component.activity-loops",
-		"reports.component.activity-work",
-		"reports.component.activity-files",
-		"reports.function.activity-display",
-		"reports.component.activity-list",
-		"reports.function.activity-reading"
+		"function.explorer-legacy",
+		"function.explorer-route",
+		"function.revision-changes",
+		"reports.component.harness-entity-artifact",
+		"reports.component.harness-entity-audio",
+		"reports.component.harness-entity-behavior",
+		"reports.component.harness-entity-change",
+		"reports.component.harness-entity-config",
+		"reports.component.harness-entity-details",
+		"reports.component.harness-entity-header",
+		"reports.component.harness-entity-history",
+		"reports.component.harness-entity-link",
+		"reports.component.harness-entity-measures",
+		"reports.component.harness-entity-missing",
+		"reports.component.harness-entity-overview",
+		"reports.component.harness-entity-relations",
+		"reports.component.harness-entity-screens",
+		"reports.component.harness-entity-source",
+		"reports.component.harness-entity-summary",
+		"reports.component.harness-entity-tests",
+		"reports.component.harness-explorer-content",
+		"reports.component.harness-explorer-controls",
+		"reports.component.harness-explorer-index",
+		"reports.component.harness-explorer-page-card",
+		"reports.component.harness-explorer-table",
+		"reports.component.harness-harness-action",
+		"reports.component.harness-harness-icon",
+		"reports.component.harness-harness-navbar",
+		"reports.component.harness-harness-verdict",
+		"reports.function.entity-behavior",
+		"reports.function.entity-catalog",
+		"reports.function.entity-contract",
+		"reports.function.entity-history",
+		"reports.function.entity-lens",
+		"reports.function.entity-measure",
+		"reports.function.entity-screens",
+		"reports.function.explorer-artifact",
+		"reports.function.explorer-behavior",
+		"reports.function.explorer-category",
+		"reports.function.explorer-coverage",
+		"reports.function.explorer-entities",
+		"reports.function.explorer-evidence",
+		"reports.function.explorer-history",
+		"reports.function.explorer-name",
+		"reports.function.explorer-reading",
+		"reports.function.explorer-relations",
+		"reports.function.explorer-scope",
+		"reports.function.explorer-state",
+		"reports.function.explorer-verdict",
+		"reports.function.harness-icons",
+		"reports.function.harness-shell",
+		"reports.function.report-destination",
+		"reports.style.entity",
+		"reports.style.entity-evidence",
+		"reports.style.entity-history",
+		"reports.style.entity-index",
+		"reports.style.entity-summary",
+		"reports.style.explorer",
+		"reports.style.explorer-controls",
+		"reports.style.explorer-navbar",
+		"reports.component.harness-entity-behavior-screen",
+		"reports.component.harness-entity-config-screen",
+		"reports.component.harness-entity-details-screen",
+		"reports.component.harness-entity-frame",
+		"reports.component.harness-entity-history-screen",
+		"reports.component.harness-entity-sections",
+		"reports.component.harness-entity-visual-screen",
+		"reports.component.harness-explorer-catalog-screen",
+		"reports.component.harness-explorer-frame",
+		"reports.component.harness-explorer-pages-screen",
+		"reports.function.entity-shown",
+		"reports.component.harness-screen",
+		"reports.function.harness-client",
+		"reports.page.harness-branch-branch-at-components",
+		"reports.page.harness-branch-branch-at-components-entity",
+		"reports.page.harness-branch-branch-at-components-entity-details",
+		"reports.page.harness-branch-branch-at-components-entity-history",
+		"reports.page.harness-branch-branch-at-configs",
+		"reports.page.harness-branch-branch-at-configs-entity",
+		"reports.page.harness-branch-branch-at-configs-entity-details",
+		"reports.page.harness-branch-branch-at-configs-entity-history",
+		"reports.page.harness-branch-branch-at-functions",
+		"reports.page.harness-branch-branch-at-functions-entity",
+		"reports.page.harness-branch-branch-at-functions-entity-details",
+		"reports.page.harness-branch-branch-at-functions-entity-history",
+		"reports.page.harness-branch-branch-at-pages",
+		"reports.page.harness-branch-branch-at-pages-entity",
+		"reports.page.harness-branch-branch-at-pages-entity-details",
+		"reports.page.harness-branch-branch-at-pages-entity-history",
+		"reports.page.harness-branch-branch-at-services",
+		"reports.page.harness-branch-branch-at-services-entity",
+		"reports.page.harness-branch-branch-at-services-entity-details",
+		"reports.page.harness-branch-branch-at-services-entity-history",
+		"reports.component.harness-entity-run",
+		"reports.component.harness-entity-reasons",
+		"reports.component.harness-entity-history-row",
+		"reports.function.entity-reasons",
+		"reports.function.entity-removed",
+		"reports.component.select"
 	],
 	"states": [
 		{
-			"id": "map",
-			"title": "Component map with one unit selected",
-			"coverage": "required"
+			"id": "pages",
+			"title": "The five categories, pages first, at a verified commit",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-pages"]
 		},
 		{
-			"id": "compare",
-			"title": "Base and head comparison with affected units",
-			"coverage": "required"
+			"id": "page-current",
+			"title": "One current screenshot of a page at a verified branch tip",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-pages-entity"]
 		},
 		{
-			"id": "aligned",
-			"title": "One state before and after a change, side by side",
-			"coverage": "required"
+			"id": "page-commit",
+			"title": "A page before and after a selected commit, each side from its own record",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-pages-entity"]
 		},
 		{
-			"id": "removed",
-			"title": "A removed unit inspected in a comparison",
-			"coverage": "required"
+			"id": "relationships",
+			"title": "A page with its components, configs and services in sections of their own",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-pages-entity"]
+		},
+		{
+			"id": "component",
+			"title": "A component of a page",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-components-entity"]
+		},
+		{
+			"id": "function",
+			"title": "A function whose recorded end-to-end result changed against its parent",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-functions-entity"]
+		},
+		{
+			"id": "service",
+			"title": "A service with its recorded end-to-end result",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-services-entity"]
+		},
+		{
+			"id": "config",
+			"title": "A config with its consumers",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-configs-entity"]
+		},
+		{
+			"id": "details",
+			"title": "Details of an entity on its contract, with no file shown",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-functions-entity-details"]
+		},
+		{
+			"id": "source",
+			"title": "Source ownership, shown only after it was asked for",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-functions-entity-details"]
 		},
 		{
 			"id": "history",
-			"title": "Records of a verified commit",
-			"coverage": "required"
+			"title": "The commits that changed an entity, with its growth and the approval of it",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-functions-entity-history"]
 		},
 		{
 			"id": "media",
-			"title": "Recorded screenshots and audio of one record",
-			"coverage": "required"
+			"title": "Recorded audio with its transcript in the tests of a service",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-services-entity"]
 		},
 		{
 			"id": "rejected",
-			"title": "A rejected stale capture in the viewer",
-			"coverage": "required"
+			"title": "Audio the newest record rejected, kept in view and failing its service",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-services-entity"]
 		},
 		{
 			"id": "gap",
-			"title": "A commit with no verification record",
-			"coverage": "required"
+			"title": "A tip nobody verified: evidence missing and nothing assumed",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-functions-entity"]
 		},
 		{
-			"id": "growth",
-			"title": "Growth and timings of one component",
-			"coverage": "required"
+			"id": "removed",
+			"title": "A unit a commit removed, listed from its parent where it last was",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-functions"]
+		},
+		{
+			"id": "missing",
+			"title": "An entity absent at a revision, with no other revision shown in its place",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-functions-entity"]
 		},
 		{
 			"id": "unavailable",
-			"title": "Component whose complexity is not counted: unavailable and not frozen",
-			"coverage": "required"
-		},
-		{
-			"id": "partial",
-			"title": "Component with counted and uncounted code: a partial complexity",
-			"coverage": "required"
-		},
-		{
-			"id": "unavailable-growth",
-			"title": "Growth of a component whose complexity is not counted",
-			"coverage": "required"
-		},
-		{
-			"id": "hundreds",
-			"title": "A map of several hundred generated units with one selected",
-			"coverage": "required"
-		},
-		{
-			"id": "failures",
-			"title": "A failed record with hundreds of failures, told by cause and count, with every failure behind a disclosure",
-			"coverage": "required"
+			"title": "Complexity that is not counted: unavailable and not frozen",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-functions-entity-details"]
 		},
 		{
 			"id": "emitted",
-			"title": "The panel of a unit built for two targets: each emitted size with its own approved limit",
-			"coverage": "required"
+			"title": "Each emitted size with the limit of its own target",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-functions-entity-details"]
 		},
 		{
 			"id": "emitted-gone",
-			"title": "The panel at a commit that no longer builds one output: unavailable with its reason, never zero",
-			"coverage": "required"
+			"title": "An output that is no longer built: unavailable with its reason, never zero",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-functions-entity-details"]
 		},
 		{
-			"id": "emitted-growth",
-			"title": "Emitted sizes commit by commit for each target, with limits, the baseline, the approval and the reason",
-			"coverage": "required"
+			"id": "hundreds",
+			"title": "A catalog of several hundred generated units",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-functions"]
 		},
 		{
-			"id": "unreviewed",
-			"title": "The panel of a unit before any review: measured values, a declared freeze and no reviewed limit",
-			"coverage": "required"
+			"id": "page-details",
+			"title": "Details of a page on its contract",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-pages-entity-details"]
 		},
 		{
-			"id": "activity",
-			"title": "The activity recorded with the history: loop types, recent work and changed files, with live activity said to be absent",
-			"coverage": "required"
+			"id": "page-history",
+			"title": "The commits that changed a page",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-pages-entity-history"]
+		},
+		{
+			"id": "components",
+			"title": "The components of the repository at a verified commit",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-components"]
+		},
+		{
+			"id": "component-details",
+			"title": "Details of a component",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-components-entity-details"]
+		},
+		{
+			"id": "component-history",
+			"title": "The commits that changed a component",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-components-entity-history"]
+		},
+		{
+			"id": "configs",
+			"title": "The configs of the repository",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-configs"]
+		},
+		{
+			"id": "config-details",
+			"title": "Details of a config",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-configs-entity-details"]
+		},
+		{
+			"id": "config-history",
+			"title": "The commits that changed a config",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-configs-entity-history"]
+		},
+		{
+			"id": "services",
+			"title": "The services of the repository",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-services"]
+		},
+		{
+			"id": "service-details",
+			"title": "Details of a service",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-services-entity-details"]
+		},
+		{
+			"id": "service-history",
+			"title": "The commits that changed a service",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-services-entity-history"]
+		},
+		{
+			"id": "retained",
+			"title": "A commit that no branch reaches, shown without a branch",
+			"coverage": "required",
+			"units": ["reports.page.harness-view"]
 		}
 	],
 	"viewports": [
@@ -177,25 +350,38 @@
 			"id": "screens",
 			"kind": "screenshot",
 			"states": [
-				"map",
-				"compare",
-				"aligned",
-				"removed",
+				"pages",
+				"page-current",
+				"page-commit",
+				"relationships",
+				"component",
+				"function",
+				"service",
+				"config",
+				"details",
+				"source",
 				"history",
 				"media",
 				"rejected",
 				"gap",
-				"growth",
+				"removed",
+				"missing",
 				"unavailable",
-				"partial",
-				"unavailable-growth",
-				"hundreds",
-				"failures",
 				"emitted",
 				"emitted-gone",
-				"emitted-growth",
-				"unreviewed",
-				"activity"
+				"hundreds",
+				"page-details",
+				"page-history",
+				"components",
+				"component-details",
+				"component-history",
+				"configs",
+				"config-details",
+				"config-history",
+				"services",
+				"service-details",
+				"service-history",
+				"retained"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",
@@ -206,6 +392,24 @@
 			"id": "tone",
 			"kind": "audio",
 			"states": ["media"],
+			"viewports": [],
+			"provenance": "actual-capture",
+			"build": "reports",
+			"required": true
+		},
+		{
+			"id": "flow",
+			"kind": "output",
+			"states": ["pages", "function", "history", "gap", "missing", "source"],
+			"viewports": [],
+			"provenance": "actual-capture",
+			"build": "reports",
+			"required": true
+		},
+		{
+			"id": "checks",
+			"kind": "assertions",
+			"states": ["pages", "function", "history", "gap", "missing", "source"],
 			"viewports": [],
 			"provenance": "actual-capture",
 			"build": "reports",

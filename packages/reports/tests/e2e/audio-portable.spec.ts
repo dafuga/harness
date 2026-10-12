@@ -10,6 +10,7 @@ import { reportPdf } from '../../src/utils/reportPdf';
 import { audioFixture } from '../../test/audioFixture';
 import type { Page } from '@playwright/test';
 import { fixtures } from './support/fixtures';
+import { reportView } from './support/portableReport';
 
 async function reportAppearance(page: Page) {
 	return page.evaluate(() =>
@@ -56,14 +57,15 @@ async function offlineReport(root: string) {
 	expect(result.code).toBe(0);
 	return target;
 }
-test('portable report preserves the canonical website theme, badges and outcome layout', async ({
+// The report page is gone; the theme an export must keep is the one of the viewer this build ships.
+test('an extracted export keeps the theme, badges and outcome layout of the viewer of this build', async ({
 	page
 }) => {
 	const root = await mkdtemp(join(tmpdir(), 'portable-report-appearance-'));
 	try {
 		const target = await offlineReport(root);
 		const fixtureId = await readFile(join(fixtures.reports, 'fixture-id'), 'utf8');
-		await page.goto('/reports/' + fixtureId);
+		await page.goto(await reportView(fixtureId));
 		const canonical = await reportAppearance(page);
 		await page.goto(pathToFileURL(join(target, 'index.html')).toString());
 		await page.evaluate(() => document.fonts.ready);

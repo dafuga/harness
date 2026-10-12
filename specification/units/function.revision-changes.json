@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "function.revision-changes",
+	"kind": "function",
+	"title": "revisionChanges",
+	"responsibility": "Says which units a commit changed against its first parent, from the stored source impact and the registry versions of both revisions.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/revisionChanges.ts"],
+		"symbols": [
+			"UnitVersions",
+			"ChangedUnits",
+			"RevisionChanges",
+			"ChangesInput",
+			"revisionChanges"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "revisionChanges.input",
+				"type": "ChangesInput"
+			}
+		],
+		"outputs": [
+			{
+				"name": "revisionChanges",
+				"type": "RevisionChanges | null"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/revisionChanges.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/revisionChanges.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

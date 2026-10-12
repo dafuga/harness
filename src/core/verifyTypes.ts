@@ -14,6 +14,11 @@ const identifier = z.string().regex(unitIdPattern);
 /** How this repository's checks run inside a verification snapshot. */
 export const verifyConfigSchema = z.strictObject({
 	schemaVersion: z.literal(1),
+	/**
+	 * The version of the writing limits this revision is held to: its reasons must be as short
+	 * as the limits say. A revision that declares none is held to none.
+	 */
+	writing: z.literal(1).optional(),
 	/** Commands run in the snapshot before any check, for example a locked install. */
 	setup: z.array(
 		z.strictObject({ command: text, timeoutMs: z.number().int().positive().optional() })

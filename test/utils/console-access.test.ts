@@ -110,7 +110,7 @@ test('a portable report is built only for an admitted request, from the data the
 	expect(missing.map((response) => response.status)).toEqual([404, 404, 404, 404]);
 });
 
-test('the root and the earlier query form are redirected to a page path, after the policy', async () => {
+test('the root and the earlier query form are redirected into the explorer, after the policy', async () => {
 	const head = 'd'.repeat(40);
 	const history = consoleBundle({
 		json: {
@@ -128,13 +128,18 @@ test('the root and the earlier query form are redirected to a page path, after t
 	const root = await admitted.entry(event('/harness'), '/harness');
 	expect([root?.status, root?.headers.get('location')]).toEqual([
 		308,
-		`/harness/branch/feat/x/commit/${head}/map`
+		'/harness/branch/feat%2Fx/pages'
 	]);
 	const legacy = await admitted.entry(event(`/harness?view=history&commit=${head}`), '/harness');
-	expect(legacy?.headers.get('location')).toBe(`/harness/branch/feat/x/commit/${head}/history`);
-	// A page path is served as it is, and a stranger learns nothing from either form.
-	const page = `/harness/branch/feat/x/commit/${head}/map`;
+	expect(legacy?.headers.get('location')).toBe(`/harness/branch/feat%2Fx/commit/${head}/pages`);
+	// An explorer address is served as it is, with its tab, and so is an earlier page path: the
+	// viewer leads on from it. A stranger learns nothing from any form.
+	const page = '/harness/branch/feat%2Fx/pages';
 	expect(await admitted.entry(event(page), '/harness')).toBeUndefined();
+	const source = `/harness/branch/feat%2Fx/commit/${head}/pages/page.titles/details?tab=source`;
+	expect(await admitted.entry(event(source), '/harness')).toBeUndefined();
+	const earlier = `/harness/branch/feat/x/commit/${head}/map`;
+	expect(await admitted.entry(event(earlier), '/harness')).toBeUndefined();
 	const closed = consoleAccess({ policy: () => false, data: history });
 	for (const address of ['/harness', page, `/harness?commit=${head}`]) {
 		const refused = await closed.entry(event(address), '/harness');

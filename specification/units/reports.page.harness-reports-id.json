@@ -3,15 +3,12 @@
 	"id": "reports.page.harness-reports-id",
 	"kind": "page",
 	"title": "/harness/reports/[id]",
-	"responsibility": "Shows one project report with its gallery, checks and exports under the console.",
+	"responsibility": "Redirects a former report page to the explorer: Pages at the commit the report names when this history holds it, else Pages at the branch tip.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/routes/harness/reports/[id]/+page.server.ts",
-			"packages/reports/src/routes/harness/reports/[id]/+page.svelte"
-		],
-		"symbols": ["load", "+page"]
+		"source": ["packages/reports/src/routes/harness/reports/[id]/+page.server.ts"],
+		"symbols": ["load"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -19,36 +16,24 @@
 			{
 				"name": "load.input",
 				"type": "{ params: { id: string } }"
-			},
-			{
-				"name": "+page.data",
-				"type": "{report:Report}"
 			}
 		],
 		"outputs": [
 			{
 				"name": "load",
 				"type": "unknown"
-			},
-			{
-				"name": "+page",
-				"type": "markup"
 			}
 		],
-		"errors": [
-			{
-				"name": "Error",
-				"type": "thrown"
-			},
-			{
-				"name": "HttpError 404",
-				"type": "thrown"
-			}
-		]
+		"errors": []
 	},
 	"dependencies": [
 		{
-			"unit": "reports.component.report-view",
+			"unit": "reports.function.console-server",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-destination",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -58,23 +43,18 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.function.report-locale",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.model.report-types",
+			"unit": "reports.model.harness-types",
 			"via": "import",
 			"origin": "derived"
 		}
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/routes/harness/reports/[id]/+page.svelte",
+		"entry": "packages/reports/src/routes/harness/reports/[id]/+page.server.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/routes/harness/reports/[id]/+page.svelte"
+				"entry": "packages/reports/src/routes/harness/reports/[id]/+page.server.ts"
 			}
 		]
 	},

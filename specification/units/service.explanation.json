@@ -22,6 +22,10 @@
 				"type": "Explanation[]"
 			},
 			{
+				"name": "ExplanationService.report.limited",
+				"type": "unknown"
+			},
+			{
 				"name": "describe.status",
 				"type": "ReasonStatus"
 			}
@@ -41,6 +45,11 @@
 	"dependencies": [
 		{
 			"unit": "function.explanation-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.writing-limits",
 			"via": "import",
 			"origin": "derived"
 		}

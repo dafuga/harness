@@ -1,0 +1,126 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-entity-behavior",
+	"kind": "component",
+	"title": "EntityBehavior",
+	"responsibility": "Shows the recorded end-to-end results of an entity state by state and reads them when it opens: one run at the branch tip, both sides at a selected commit, and whether behaviour is unchanged, changed or unknown.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/EntityBehavior.svelte"],
+		"symbols": ["EntityBehavior"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "EntityBehavior.behavior",
+				"type": "ExplorerBehavior"
+			},
+			{
+				"name": "EntityBehavior.read",
+				"type": "ExplorerBehavior | null"
+			},
+			{
+				"name": "EntityBehavior.scope",
+				"type": "ExplorerScope"
+			},
+			{
+				"name": "EntityBehavior.mediaBase",
+				"type": "string"
+			},
+			{
+				"name": "EntityBehavior.nav",
+				"type": "EntityNav"
+			},
+			{
+				"name": "EntityBehavior.reasons",
+				"type": "Reasons"
+			},
+			{
+				"name": "EntityBehavior.duration",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "EntityBehavior",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-entity-reasons",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-entity-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-action",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-verdict",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-behavior",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-measure",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-reasons",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-reading",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/EntityBehavior.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/EntityBehavior.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

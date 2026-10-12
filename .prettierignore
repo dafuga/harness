@@ -46,3 +46,6 @@ target
 **/src/configs/*/threads/*/thread.json
 **/ios/App/App/public
 **/ios/App/App/capacitor.config.json
+
+# What the checks of the reports package generate: fixture builds, previews and captures.
+packages/reports/output

@@ -59,7 +59,9 @@ const scale = `${owner} HARNESS_CONSOLE_DATA=${consoleHome}/scale`;
 export default defineConfig({
 	testDir: 'tests/e2e',
 	// The provider picker has its own preview server; it runs under src/config/pickerPlaywrightConfig.ts.
-	testIgnore: 'provider-picker.spec.ts',
+	// The explorer shell needs no server at all; it runs under src/config/shellPlaywrightConfig.ts.
+	// Its specs are named by their file, so a checkout in a directory of a like name loses none.
+	testIgnore: ['provider-picker.spec.ts', /[\\/]explorer-shell[^\\/]*\.spec\.ts$/],
 	workers: 1,
 	globalTeardown: './tests/e2e/support/removeFixtures.ts',
 	use: { baseURL: `http://127.0.0.1:${port}`, screenshot: 'only-on-failure' },

@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { mkdir } from 'node:fs/promises';
 import { seededId } from './support/fixtures';
+import { expectRetired, reportView } from './support/portableReport';
 async function capture(page: import('@playwright/test').Page, name: string, fullPage = true) {
 	if (process.env.TAKE_SCREENSHOT !== 'true') return;
 	const directory = `output/evidence/${process.env.SCREENSHOT_LABEL || 'current'}`;
@@ -20,7 +21,7 @@ for (const width of [1440, 390])
 	test(`report details open as separate modals at ${width}px`, async ({ page }) => {
 		await page.setViewportSize({ width, height: 1000 });
 		const id = await seededId();
-		await page.goto(`/reports/${id}`);
+		await page.goto(await reportView(id));
 		await page.waitForLoadState('networkidle');
 		await capture(page, `details-default-${width}`);
 		await expect(page.locator('.review-grid')).toHaveCount(0);
@@ -50,7 +51,7 @@ for (const width of [1104, 390])
 	test(`report header keeps audit details on demand at ${width}px`, async ({ page }) => {
 		await page.setViewportSize({ width, height: 998 });
 		const id = await seededId();
-		await page.goto(`/reports/${id}`);
+		await page.goto(await reportView(id));
 		await page.waitForLoadState('networkidle');
 		await capture(page, `header-default-${width}`);
 		const galleryTop = await page
@@ -71,19 +72,17 @@ for (const width of [1104, 390])
 			expect(box?.height).toBeGreaterThanOrEqual(44);
 		}
 	});
-test('hub finds reports across projects and filters search', async ({ page }) => {
-	await page.goto('/');
-	await capture(page, 'hub');
-	await expect(page.getByRole('heading', { name: 'Project reports', exact: true })).toBeVisible();
-	await expect(page.getByText('Account settings review', { exact: true })).toBeVisible();
-	await page.getByPlaceholder('Search reports').fill('Whole-site');
-	await expect(page.getByText('Account settings review', { exact: true })).toHaveCount(0);
-	await expect(page.getByText('Whole-site review', { exact: true })).toBeVisible();
+// What the hub listed is asserted on the report API in harness-site-scope.spec.ts.
+test('the report hub is gone: its addresses lead into the explorer', async ({ page }) => {
+	for (const address of ['/', '/harness/reports', `/reports/${await seededId()}`]) {
+		await expectRetired(page, address);
+	}
+	await expect(page.getByPlaceholder('Search reports')).toHaveCount(0);
 });
 test('screen-size controls remain comfortably tappable on mobile', async ({ page }) => {
 	await page.setViewportSize({ width: 390, height: 844 });
 	const id = await seededId();
-	await page.goto(`/reports/${id}`);
+	await page.goto(await reportView(id));
 	await page.waitForLoadState('networkidle');
 	await page
 		.locator('.gallery-section')
@@ -97,7 +96,7 @@ test('screen-size controls remain comfortably tappable on mobile', async ({ page
 test('viewer switches a standalone capture to another available screen size', async ({ page }) => {
 	await page.setViewportSize({ width: 1440, height: 1000 });
 	const id = await seededId();
-	await page.goto(`/reports/${id}`);
+	await page.goto(await reportView(id));
 	await page.waitForLoadState('networkidle');
 	await page.getByRole('button', { name: 'Open Camera controls' }).click();
 	const dialog = page.getByRole('dialog', { name: 'Camera controls' });
@@ -114,7 +113,7 @@ test('viewer switches a standalone capture to another available screen size', as
 test('viewer marks uncaptured screen sizes unavailable', async ({ page }) => {
 	await page.setViewportSize({ width: 390, height: 844 });
 	const id = await seededId('mobile-id');
-	await page.goto(`/reports/${id}`);
+	await page.goto(await reportView(id));
 	await page.waitForLoadState('networkidle');
 	await page.getByRole('button', { name: 'Open Mobile field view' }).click();
 	const dialog = page.getByRole('dialog', { name: 'Mobile field view' });
@@ -126,7 +125,7 @@ test('viewer marks uncaptured screen sizes unavailable', async ({ page }) => {
 });
 test('viewer size controls omit screenshot totals', async ({ page }) => {
 	const id = await seededId();
-	await page.goto(`/reports/${id}`);
+	await page.goto(await reportView(id));
 	await page.waitForLoadState('networkidle');
 	await page.getByRole('button', { name: 'Open Settings after' }).first().click();
 	const dialog = page.getByRole('dialog', { name: 'Settings after' });
@@ -141,7 +140,7 @@ for (const width of [1104, 390])
 	test(`screenshot viewer has no outer modal frame at ${width}px`, async ({ page }) => {
 		await page.setViewportSize({ width, height: 998 });
 		const id = await seededId();
-		await page.goto(`/reports/${id}`);
+		await page.goto(await reportView(id));
 		await page.waitForLoadState('networkidle');
 		await page.getByRole('button', { name: 'Open Settings after' }).first().click();
 		const dialog = page.getByRole('dialog', { name: 'Settings after' });
@@ -178,7 +177,7 @@ for (const width of [1440, 920, 390])
 	test(`report filters, compares and handles keyboard at ${width}px`, async ({ page }) => {
 		await page.setViewportSize({ width, height: 1000 });
 		const id = await seededId();
-		await page.goto(`/reports/${id}`);
+		await page.goto(await reportView(id));
 		await page.waitForLoadState('networkidle');
 		await capture(page, `report-${width}`);
 		await expect(

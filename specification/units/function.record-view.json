@@ -19,7 +19,7 @@
 			},
 			{
 				"name": "recordView.context",
-				"type": "{ valid: boolean; problems: string[]; resolve: MediaResolver }"
+				"type": "{ valid: boolean; problems: string[]; resolve: MediaResolver; /** The checks an earlier record ran, by its id; undefined when it cannot be read. */ origins?: (record: string) => Array<{ id: string; status: string }> | undefined; }"
 			}
 		],
 		"outputs": [

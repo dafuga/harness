@@ -7,8 +7,8 @@ import type { Explanation } from '../core/explanationTypes';
 import type { VerificationRecord } from '../core/verificationTypes';
 import { ScenarioRepository } from '../repositories/ScenarioRepository';
 import { UnitRegistryRepository } from '../repositories/UnitRegistryRepository';
-import { canonicalJson } from '../utils/canonicalJson';
 import { recordView, type RecordView, type ResolvedMedia } from '../utils/recordView';
+import { revisionReasons, type RevisionReasons } from '../utils/revisionReasons';
 import { revisionRegistry, type RevisionRegistry } from '../utils/revisionRegistry';
 import type { AttachedRecord } from './AttachedRecordService';
 import type { HistoryMediaService } from './HistoryMediaService';
@@ -42,7 +42,13 @@ export interface RevisionDetail {
 	 */
 	side: string | null;
 	records: RecordView[];
+	/** The reasons for what this commit itself changed against its first parent. */
 	explanations: Explanation[];
+	/**
+	 * How many more reasons its notes and records hold that are not this commit's: a record may
+	 * verify a longer range. They stay where they were written and are dated to no commit here.
+	 */
+	rangeReasons: number;
 }
 
 interface Stored {
@@ -87,16 +93,17 @@ export class RevisionDetailService {
 			const loaded = await this.history.attached.load(item.evidence);
 			if (!loaded.record) continue;
 			const resolved = await this.media(loaded, media);
+			const ran = await this.ran(loaded.record);
 			const resolve = (capture: { path: string }, origin: string): ResolvedMedia =>
 				resolved.get(`${origin}\n${capture.path}`) ?? { media: null, gap: 'not resolved' };
-			records.push(
-				recordView(loaded.record, { valid: item.valid, problems: item.problems, resolve })
-			);
+			const context = { valid: item.valid, problems: item.problems, resolve };
+			records.push(recordView(loaded.record, { ...context, origins: (id) => ran.get(id) }));
 			if (item.valid) sound.push(loaded.record);
 		}
 		const side = await this.source.stored(commit);
 		const tree = await this.git.attempt(['rev-parse', '--verify', '--quiet', `${commit}^{tree}`]);
 		const stored = await this.registry(commit);
+		const reasons = await this.reasons(commit, sound);
 		const detail: RevisionDetail = {
 			schemaVersion: 1,
 			commit,
@@ -105,7 +112,8 @@ export class RevisionDetailService {
 			sourceImpact: (await this.source.of(commit)) ?? null,
 			side: side && tree ? `sides/${tree}.json` : null,
 			records,
-			explanations: await this.explanations(commit, sound)
+			explanations: reasons.explanations,
+			rangeReasons: reasons.range
 		};
 		return { detail, status, sound, ledger: stored.ledger, ...(side ? { side } : {}) };
 	}
@@ -127,6 +135,17 @@ export class RevisionDetailService {
 			}
 		}
 		return resolved;
+	}
+
+	/** The checks each record that this one inherits from ran, for the origins that can be read. */
+	private async ran(record: VerificationRecord): Promise<Map<string, VerificationRecord['tests']>> {
+		const origins = new Set(record.scenarios.flatMap((item) => item.referencedRecord ?? []));
+		const found = new Map<string, VerificationRecord['tests']>();
+		for (const id of origins) {
+			const origin = (await this.origin(id))?.record;
+			if (origin) found.set(id, origin.tests);
+		}
+		return found;
 	}
 
 	/** The attached record with this id, wherever in history it was attached. */
@@ -156,15 +175,21 @@ export class RevisionDetailService {
 		return { registry, ledger };
 	}
 
-	/** Reasons noted on the commit and those that satisfied its records, each listed once. */
-	private async explanations(commit: string, sound: VerificationRecord[]): Promise<Explanation[]> {
+	/**
+	 * The reasons of this commit among those noted on it and those that satisfied its records. A
+	 * record of a longer range holds the reasons of earlier commits too; those are not its own.
+	 */
+	private async reasons(commit: string, sound: VerificationRecord[]): Promise<RevisionReasons> {
 		const note = (await this.history.all()).get(commit);
 		const noted = (note?.entries ?? []).flatMap((entry) =>
 			entry.kind === 'reason' ? [entry.explanation] : []
 		);
-		const used = sound.flatMap((record) => record.reasons.entries ?? []);
-		const unique = new Map([...noted, ...used].map((entry) => [canonicalJson(entry), entry]));
-		return [...unique.keys()].sort().map((key) => unique.get(key) as Explanation);
+		const records = sound.map((record) => ({
+			base: record.source.base,
+			entries: record.reasons.entries ?? []
+		}));
+		const parent = (await this.source.parent(commit)) ?? null;
+		return revisionReasons({ parent, own: await this.source.reasons(commit), noted, records });
 	}
 }
 

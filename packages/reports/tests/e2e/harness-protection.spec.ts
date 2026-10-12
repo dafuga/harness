@@ -22,25 +22,20 @@ const protectedPaths = [
 	'/api/reports'
 ];
 
-test('former report and analytics routes lead into the console', async ({ page }) => {
+test('former report and analytics routes lead into the explorer, which links to neither', async ({
+	page
+}) => {
 	const id = await seededId();
-	await page.goto('/');
-	await expect(page).toHaveURL(/\/harness\/reports$/);
-	await expect(page.getByRole('heading', { level: 1, name: 'Project reports' })).toBeVisible();
-	await page.goto(`/reports/${id}`);
-	await expect(page).toHaveURL(new RegExp(`/harness/reports/${id}$`));
-	await expect(page.locator('.gallery-section')).toBeVisible();
-	await page.goto('/analytics?days=30');
-	await expect(page).toHaveURL(/\/harness\/analytics\?days=30$/);
-	await page.goto('/harness');
-	await expect(page.getByRole('link', { name: 'Reports' })).toHaveAttribute(
-		'href',
-		'/harness/reports'
-	);
-	await expect(page.getByRole('link', { name: 'Analytics' })).toHaveAttribute(
-		'href',
-		'/harness/analytics'
-	);
+	const pages = /\/harness\/branch\/main\/pages$/;
+	for (const address of ['/', `/reports/${id}`, `/harness/reports/${id}`, '/analytics?days=30']) {
+		await page.goto(address);
+		await expect(page, address).toHaveURL(pages);
+		await expect(page.getByRole('navigation', { name: 'Harness categories' })).toBeVisible();
+	}
+	await expect(page.getByRole('link', { name: /^(reports|analytics)$/i })).toHaveCount(0);
+	// What a report recorded is still read where the command line reads it.
+	const stored = await page.request.get(`/api/reports/${id}`);
+	expect(stored.status()).toBe(200);
 });
 
 test('the local owner reaches every page and file from the loopback address', async ({
@@ -114,7 +109,12 @@ test('history and media are fetched on demand and are not part of the page or it
 test('looking at history changes nothing in the repository that is inspected', async ({ page }) => {
 	for (const view of ['map', 'compare', 'history', 'growth']) {
 		await page.goto(`/harness?view=${view}&commit=${commits.reordered}`);
-		await expect(page.getByRole('tab', { selected: true })).toBeVisible();
+		await expect(page).toHaveURL(new RegExp(`/commit/${commits.reordered}/pages$`));
+		await expect(page.getByRole('combobox', { name: 'Commit' })).toHaveValue(commits.reordered);
+	}
+	for (const rest of ['functions/function.slugify', 'functions/function.slugify/history']) {
+		await page.goto(`/harness/branch/main/commit/${commits.reordered}/${rest}`);
+		await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 	}
 	const download = await page.request.get(`/harness/export/${commits.reordered}`);
 	expect(download.status()).toBe(200);

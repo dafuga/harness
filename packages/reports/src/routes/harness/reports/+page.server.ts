@@ -1,5 +1,5 @@
-import { repository } from '../../../utils/reportHttp';
-import { reportSite } from '../../../utils/reportSite';
-export async function load() {
-	return { reports: await repository.list(), site: reportSite().name };
+import { redirect } from '@sveltejs/kit';
+/** The console has no report hub; its address opens the explorer. */
+export function load() {
+	redirect(308, '/harness');
 }

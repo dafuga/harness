@@ -3,7 +3,7 @@
 	"id": "reports.page.analytics",
 	"kind": "page",
 	"title": "/analytics",
-	"responsibility": "Redirects the former analytics route to /harness/analytics, keeping its filters.",
+	"responsibility": "Redirects the former analytics address to the explorer; the console has no analytics page.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -12,12 +12,7 @@
 	},
 	"contract": {
 		"origin": "derived",
-		"inputs": [
-			{
-				"name": "load.input",
-				"type": "{ url: URL }"
-			}
-		],
+		"inputs": [],
 		"outputs": [
 			{
 				"name": "load",

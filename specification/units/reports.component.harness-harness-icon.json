@@ -1,0 +1,60 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-harness-icon",
+	"kind": "component",
+	"title": "HarnessIcon",
+	"responsibility": "Draws one icon of the shared outline set at an asked size: decoration beside words, or a named image when it stands alone.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/HarnessIcon.svelte"],
+		"symbols": ["HarnessIcon"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HarnessIcon.name",
+				"type": "HarnessIconName"
+			},
+			{
+				"name": "HarnessIcon.size",
+				"type": "number"
+			},
+			{
+				"name": "HarnessIcon.label",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HarnessIcon",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.harness-icons",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/HarnessIcon.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/HarnessIcon.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

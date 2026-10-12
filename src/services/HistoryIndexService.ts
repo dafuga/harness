@@ -11,6 +11,8 @@ import {
 } from '../repositories/SourceHistoryRepository';
 import { budgetReviews } from '../utils/budgetReviews';
 import { historySeries, unitGrowth } from '../utils/historySeries';
+import { revisionChanges, type RevisionChanges } from '../utils/revisionChanges';
+import type { RevisionRegistry } from '../utils/revisionRegistry';
 import { stableJson } from '../utils/stableJson';
 import { HistoryMediaService } from './HistoryMediaService';
 import { HistoryStatusService } from './HistoryStatusService';
@@ -79,7 +81,7 @@ export class HistoryIndexService {
 				notes: (await tree.tip(notesRef)) ?? null
 			},
 			branches: source.branches,
-			revisions: built.map((item) => summary(item.revision, item.result, entries)),
+			revisions: summaries(built, entries),
 			units: unitGrowth(sound, budgetReviews(built.map((item) => item.result.ledger).reverse())),
 			benchmarks: historySeries(sound),
 			profiles: profiles(sound),
@@ -111,10 +113,34 @@ function detailPath(commit: string): string {
 	return `revisions/${commit}.json`;
 }
 
+type Built = Array<{ revision: SourceRevision; result: BuiltRevision }>;
+
+/** Each built revision as the index lists it, with what its commit changed against its parent. */
+function summaries(built: Built, legacy: LegacyEntry[]): IndexedRevision[] {
+	const registries = new Map(
+		built.map((item) => [item.revision.commit, item.result.detail.registry])
+	);
+	return built.map((item) =>
+		summary(item.revision, item.result, legacy, changed(item, registries))
+	);
+}
+
+/** What a commit changed itself, from its stored impact and the registry of its first parent. */
+function changed(
+	item: Built[number],
+	registries: Map<string, RevisionRegistry>
+): RevisionChanges | null {
+	const base = item.revision.parents[0] ?? null;
+	const { sourceImpact, registry } = item.result.detail;
+	const parent = base === null ? undefined : registries.get(base);
+	return revisionChanges({ impact: sourceImpact, registry, parent, base });
+}
+
 function summary(
 	revision: SourceRevision,
 	built: BuiltRevision,
-	legacy: LegacyEntry[]
+	legacy: LegacyEntry[],
+	changes: RevisionChanges | null
 ): IndexedRevision {
 	const { status, detail } = built;
 	const records = status.records.map((item) => {
@@ -146,6 +172,7 @@ function summary(
 		records,
 		reasons: detail.explanations.length,
 		legacy: legacy.filter((entry) => entry.linked === revision.commit).map((entry) => entry.id),
+		changes,
 		detail: detailPath(revision.commit)
 	};
 }

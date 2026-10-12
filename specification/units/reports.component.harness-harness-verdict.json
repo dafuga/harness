@@ -1,0 +1,73 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-harness-verdict",
+	"kind": "component",
+	"title": "HarnessVerdict",
+	"responsibility": "The binary verification badge: the green check only for a verdict that passed and the red cross for every other value, drawn as an icon alone, with its status and reasons in a tooltip that opens on hover, focus or tap.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/HarnessVerdict.svelte"],
+		"symbols": ["HarnessVerdict"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HarnessVerdict.passed",
+				"type": "boolean"
+			},
+			{
+				"name": "HarnessVerdict.label",
+				"type": "string"
+			},
+			{
+				"name": "HarnessVerdict.reasons",
+				"type": "string[]"
+			},
+			{
+				"name": "HarnessVerdict.framed",
+				"type": "boolean"
+			},
+			{
+				"name": "HarnessVerdict.bare",
+				"type": "boolean"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HarnessVerdict",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.tooltip-place",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/HarnessVerdict.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/HarnessVerdict.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

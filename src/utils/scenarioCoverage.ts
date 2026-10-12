@@ -73,7 +73,12 @@ function problem(input: CoverageInput, item: Gathered): string | undefined {
 	const evidence = input.scenario.evidence.find((entry) => entry.id === item.line.evidence);
 	if (item.line.kind === 'screenshot') return imageProblem(input, item, evidence);
 	if (item.line.kind === 'audio') return audioProblem(input, item, evidence);
-	return item.line.kind === 'benchmark' ? benchmarkProblem(item) : undefined;
+	if (item.line.kind === 'benchmark') return benchmarkProblem(item);
+	// An output, assertions or a trace that says it was captured from running software is bound
+	// to the build that served it, as a screenshot is; one that claims none is taken as given.
+	return item.line.provenance === 'actual-capture'
+		? stampProblem(input, item, evidence)
+		: undefined;
 }
 
 /** A benchmark capture must be measurements Harness can read, each context valid if stated. */

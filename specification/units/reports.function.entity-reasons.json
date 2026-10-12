@@ -1,0 +1,100 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.entity-reasons",
+	"kind": "function",
+	"title": "entityReasons",
+	"responsibility": "Summarises the reasons one commit recorded for an entity to the length of a single reason under the shared writing limits, and keeps every original beside the summary.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/entityReasons.ts"],
+		"symbols": [
+			"BoundedText",
+			"ReasonKind",
+			"ReasonAttempts",
+			"ReasonUse",
+			"EntityReasons",
+			"boundedText",
+			"entityReasons",
+			"reasonsTried",
+			"reasonUses"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "boundedText.notes",
+				"type": "string[]"
+			},
+			{
+				"name": "boundedText.limit",
+				"type": "WritingLimit"
+			},
+			{
+				"name": "entityReasons.reasons",
+				"type": "HarnessExplanation[]"
+			},
+			{
+				"name": "reasonsTried.reasons",
+				"type": "EntityReasons"
+			},
+			{
+				"name": "reasonUses.uses",
+				"type": "ReasonUse[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "boundedText",
+				"type": "BoundedText"
+			},
+			{
+				"name": "entityReasons",
+				"type": "EntityReasons"
+			},
+			{
+				"name": "reasonsTried",
+				"type": "string[]"
+			},
+			{
+				"name": "reasonUses",
+				"type": "Array<{ kind: ReasonKind; outcome: string; subjects: string[] }>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.writing-limits",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/entityReasons.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/entityReasons.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

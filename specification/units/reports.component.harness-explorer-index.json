@@ -1,0 +1,90 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-explorer-index",
+	"kind": "component",
+	"title": "ExplorerIndex",
+	"responsibility": "Shows one collection of the explorer with its search, changed-only and order controls, empty results in words and a footer of the two marks; how its rows are listed is given to it.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/ExplorerIndex.svelte"],
+		"symbols": ["ExplorerIndex"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ExplorerIndex.category",
+				"type": "ExplorerCategory"
+			},
+			{
+				"name": "ExplorerIndex.rows",
+				"type": "CatalogRow[]"
+			},
+			{
+				"name": "ExplorerIndex.list",
+				"type": "Snippet<[CatalogRow[]]>"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ExplorerIndex",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-explorer-controls",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-verdict",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-icons",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/ExplorerIndex.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/ExplorerIndex.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

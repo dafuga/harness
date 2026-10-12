@@ -1,0 +1,94 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-explorer-page-card",
+	"kind": "component",
+	"title": "ExplorerPageCard",
+	"responsibility": "Shows one page as a card: its own screenshot at the shown revision or the gap, its purpose, how many components it contains and its binary verdict.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/ExplorerPageCard.svelte"],
+		"symbols": ["ExplorerPageCard"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ExplorerPageCard.row",
+				"type": "CatalogRow"
+			},
+			{
+				"name": "ExplorerPageCard.shot",
+				"type": "Evidence | null"
+			},
+			{
+				"name": "ExplorerPageCard.mediaBase",
+				"type": "string"
+			},
+			{
+				"name": "ExplorerPageCard.nav",
+				"type": "EntityNav"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ExplorerPageCard",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-entity-link",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-action",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-verdict",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/ExplorerPageCard.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/ExplorerPageCard.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

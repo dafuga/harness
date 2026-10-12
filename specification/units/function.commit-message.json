@@ -1,0 +1,68 @@
+{
+	"schemaVersion": 1,
+	"id": "function.commit-message",
+	"kind": "function",
+	"title": "commitMessage",
+	"responsibility": "States what is wrong with a commit message as it is stored: a subject that is empty, over its limit or without its prefix, and a body over its limits; and reads a message file as Git will store it.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/commitMessage.ts"],
+		"symbols": ["commitPrefixes", "MessageCleanup", "writtenMessage", "commitMessage"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "writtenMessage.file",
+				"type": "string"
+			},
+			{
+				"name": "writtenMessage.options",
+				"type": "MessageCleanup"
+			},
+			{
+				"name": "commitMessage.message",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "commitPrefixes",
+				"type": "unknown"
+			},
+			{
+				"name": "writtenMessage",
+				"type": "string"
+			},
+			{
+				"name": "commitMessage",
+				"type": "string[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.writing-limits",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/commitMessage.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/commitMessage.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

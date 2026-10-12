@@ -1,0 +1,155 @@
+/* The bar every explorer route shares: the brand, five categories, the revision that is viewed. */
+.hx-nav {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: stretch;
+	gap: 0 clamp(10px, 1.1vw, 22px);
+	min-height: 92px;
+	padding: 0 var(--hx-gutter);
+	border-bottom: 1px solid var(--hx-line);
+	background: var(--hx-surface);
+}
+.hx-nav a:hover {
+	text-decoration: none;
+}
+.hx-brand {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	min-height: 56px;
+	color: var(--hx-text);
+	font-size: 1.65rem;
+	font-weight: 700;
+	letter-spacing: -0.01em;
+}
+.hx-mark {
+	flex: none;
+	fill: var(--hx-gold);
+}
+.hx-mark path:first-child {
+	fill: #d7a021;
+}
+.hx-repository {
+	flex: 0 1 auto;
+	align-self: center;
+	min-width: 0;
+	max-width: 22ch;
+	padding-left: clamp(10px, 1.1vw, 22px);
+	border-left: 1px solid var(--hx-line-strong);
+	overflow: hidden;
+	color: var(--hx-soft);
+	font-size: 1.05rem;
+	line-height: 36px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.hx-categories {
+	display: flex;
+	flex: none;
+	align-items: stretch;
+	min-width: 0;
+}
+/* The taller rule between what the console is and where one can go in it. */
+.hx-categories::before {
+	content: '';
+	align-self: center;
+	width: 1px;
+	height: 56px;
+	margin-right: clamp(6px, 0.8vw, 14px);
+	background: var(--hx-line-strong);
+}
+.hx-categories a,
+.hx-category {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 9px;
+	min-width: 72px;
+	min-height: 64px;
+	padding: 6px clamp(8px, 1.25vw, 22px);
+	color: var(--hx-soft);
+	font-size: 1.02rem;
+	font-weight: 450;
+	line-height: 1.2;
+	white-space: nowrap;
+	outline-offset: -4px;
+}
+.hx-categories a:hover {
+	color: var(--hx-text);
+}
+.hx-category {
+	opacity: 0.55;
+}
+.hx-categories a[aria-current='page'],
+.hx-categories a[aria-current='page']:hover {
+	color: var(--hx-gold);
+}
+.hx-categories a[aria-current='page']::after {
+	content: '';
+	position: absolute;
+	inset: auto 6px 0;
+	height: 3px;
+	border-radius: 3px 3px 0 0;
+	background: var(--hx-gold);
+}
+/* Wide enough for one row: nothing wraps, and a long name gives way instead. */
+@media (min-width: 1321px) {
+	.hx-nav {
+		flex-wrap: nowrap;
+	}
+}
+/* Narrower than one row: the revision takes a row of its own, under the categories. */
+@media (max-width: 1320px) {
+	.hx-nav .hx-revision {
+		flex: 1 0 100%;
+		margin-left: 0;
+		padding: 10px 0 12px;
+		border-top: 1px solid var(--hx-line);
+	}
+	.hx-nav .hx-revision::before {
+		display: none;
+	}
+	.hx-nav .hx-revision label:first-of-type {
+		flex: 0 1 280px;
+	}
+}
+/* A phone: the brand, then the five categories across the screen, then the fields. */
+@media (max-width: 720px) {
+	.hx-nav {
+		min-height: 0;
+	}
+	.hx-brand {
+		font-size: 1.3rem;
+	}
+	.hx-repository {
+		flex: 1 1 0;
+		max-width: none;
+	}
+	.hx-categories {
+		flex: 1 1 100%;
+		border-top: 1px solid var(--hx-line);
+		overflow-x: auto;
+	}
+	.hx-categories::before {
+		display: none;
+	}
+	.hx-categories a,
+	.hx-category {
+		flex: 1 0 auto;
+		min-width: 0;
+		min-height: 60px;
+		padding: 6px;
+		font-size: 0.78rem;
+	}
+	.hx-nav .hx-revision {
+		flex-wrap: wrap;
+	}
+	.hx-nav .hx-revision label:first-of-type {
+		flex: 1 0 100%;
+	}
+	.hx-nav .hx-revision label {
+		flex: 1 1 0;
+	}
+}

@@ -7,7 +7,9 @@ import type { Report } from '../../src/models/Report.types';
 import { ReportRepository } from '../../src/repositories/ReportRepository';
 import { ReportExportService } from '../../src/services/ReportExportService';
 import { audioFixture } from '../../test/audioFixture';
-import { fixtures } from './support/fixtures';
+import { analytics, type Models } from './support/analyticsCli';
+import { fixtures, sites } from './support/fixtures';
+import { expectRetired } from './support/portableReport';
 
 const home = fixtures.reports;
 const id = (name: string) => readFileSync(join(home, name), 'utf8').trim();
@@ -20,26 +22,32 @@ test.beforeAll(() => {
 	execFileSync('bun', ['db/seed-data/analytics-e2e.ts']);
 });
 
-test('the report hub is about the hosting application only, whatever the address asks for', async ({
-	page
+test('what lists reports is about the hosting application only, whatever the address asks for', async ({
+	page,
+	request
 }) => {
 	const foreign = await store.get(id('foreign-id'));
 	expect(foreign.project.path).toBe(foreignProject);
+	// The hub is gone: each of its addresses leads into the explorer and shows nothing foreign.
 	for (const address of [
 		'/harness/reports',
 		`/harness/reports?project=${foreign.project.id}`,
 		`/?project=${foreign.project.id}`
 	]) {
-		await page.goto(address);
-		await expect(page.getByText('Account settings review', { exact: true })).toBeVisible();
-		await expect(page.getByText('Whole-site review', { exact: true })).toBeVisible();
+		await expectRetired(page, address);
 		await expect(page.getByText(foreignTitle)).toHaveCount(0);
 		await expect(page.locator('body')).not.toContainText('beta-project');
 	}
-	// One application, so nothing offers to choose or count projects.
 	await expect(page.getByRole('combobox', { name: 'Project' })).toHaveCount(0);
-	await expect(page.locator('.hub-stats, .stats')).not.toContainText(/projects/i);
-	await expect(page.getByText('Reports of alpha-project')).toBeVisible();
+	// What the hub listed is the answer of the report API: this application's reports and no other's.
+	for (const query of ['', `?project=${foreign.project.id}`, '?project=all']) {
+		const listed = (await (await request.get(`/api/reports${query}`)).json()) as Report[];
+		const titles = listed.map((run) => run.title);
+		expect(titles).toContain('Account settings review');
+		expect(titles).toContain('Whole-site review');
+		expect(titles).not.toContain(foreignTitle);
+		expect(JSON.stringify(listed)).not.toContain('beta-project');
+	}
 });
 
 /** A finished report with a screenshot and built exports, recorded for the given application. */
@@ -86,7 +94,8 @@ test("every route serves the application's own report and none serves the other 
 	for (const address of routes(mine)) {
 		expect([address, (await request.get(address)).status()]).toEqual([address, 200]);
 	}
-	for (const address of routes(theirs)) {
+	const pages = (run: Report) => [`/harness/reports/${run.id}`, `/reports/${run.id}`];
+	for (const address of routes(theirs).filter((route) => !pages(theirs).includes(route))) {
 		const response = await request.get(address);
 		expect([address, response.status()]).toEqual([address, 404]);
 		const body = await response.text();
@@ -95,6 +104,20 @@ test("every route serves the application's own report and none serves the other 
 			false,
 			false
 		]);
+	}
+	// A page address of the other application's report leads where one that names no report leads.
+	const once = (address: string) => request.get(address, { maxRedirects: 0 });
+	const unknown = (await once('/harness/reports/no-such-report')).headers().location;
+	expect((await once(`/harness/reports/${theirs.id}`)).headers().location).toBe(unknown);
+	for (const address of pages(theirs)) {
+		const followed = await request.get(address);
+		const body = await followed.text();
+		expect([
+			address,
+			followed.status(),
+			body.includes('Foreign'),
+			body.includes('beta-project')
+		]).toEqual([address, 200, false, false]);
 	}
 	// The list is the same whatever project the address names.
 	const own = (await (await request.get('/api/reports')).json()) as Report[];
@@ -108,8 +131,11 @@ test("every route serves the application's own report and none serves the other 
 		expect([query, listed.map((run) => run.id)]).toEqual([query, own.map((run) => run.id)]);
 		expect(JSON.stringify(listed)).not.toContain('beta-project');
 	}
-	await page.goto(`/harness/reports/${theirs.id}`);
+	await expectRetired(page, `/harness/reports/${theirs.id}`);
 	await expect(page.locator('body')).not.toContainText('Foreign finished review');
+	// The own report is still read, as the page its export built and the API serves.
+	const served = await request.get(`/api/reports/${mine.id}/exports/${mine.exports?.html}`);
+	expect(await served.text()).toContain('Own finished review');
 });
 
 test("what this site accepts for its own report it refuses for the other application's", async ({
@@ -166,27 +192,28 @@ test("what this site accepts for its own report it refuses for the other applica
 test('analytics count the hosting application only, and a project parameter changes nothing', async ({
 	page
 }) => {
+	// The dashboard is gone: its addresses lead into the explorer whatever project they name.
 	for (const address of [
 		'/harness/analytics',
 		`/harness/analytics?project=${encodeURIComponent(foreignProject)}`,
 		`/analytics?project=${encodeURIComponent(foreignProject)}`
 	]) {
-		await page.goto(address);
-		await expect(page.getByTestId('response-first-try')).toContainText('50%');
-		await expect(page.getByText('fixture-author').first()).toBeVisible();
-		await expect(page.getByText('foreign-author')).toHaveCount(0);
-		// Loops and tasks of the other application are not counted or listed either.
-		await expect(page.locator('body')).not.toContainText('storefront');
-		await expect(page.locator('body')).not.toContainText('foreign-one');
+		await expectRetired(page, address);
+		await expect(page.locator('body')).not.toContainText('foreign-author');
 		await expect(page.locator('body')).not.toContainText('beta-project');
-		await expect(page.locator('body')).not.toContainText('foreign-report');
 	}
 	await expect(page.getByLabel('Project', { exact: true })).toHaveCount(0);
-	// The CPU panel says what is the whole machine and what is this application's.
-	await expect(
-		page.getByRole('heading', { name: 'Agents working in this repository' })
-	).toBeVisible();
-	await expect(
-		page.getByText('The machine total above covers everything on this computer.')
-	).toBeVisible();
+	// The figures are read with the command line, scoped to the checkouts of this application.
+	const scoped = analytics<Models>('models', '--site', sites.own);
+	expect(scoped.models.firstTryByAuthor['fixture-author'].response.firstTry.rate).toBe(0.5);
+	expect(Object.keys(scoped.models.authors)).toEqual(['fixture-author']);
+	// Loops, tasks and reports of the other application are not counted or listed either.
+	for (const command of ['models', 'jev', 'loops', 'events']) {
+		const text = JSON.stringify(analytics<unknown>(command, '--site', sites.own));
+		expect([
+			command,
+			/storefront|foreign-one|beta-project|foreign-report|foreign-author/.test(text)
+		]).toEqual([command, false]);
+	}
+	expect(Object.keys(analytics<Models>('models').models.authors)).toContain('foreign-author');
 });

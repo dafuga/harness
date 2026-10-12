@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -46,9 +47,7 @@ test('packed installation serves and finalizes media without a source checkout',
 	await withReportServer(install, async (server) => {
 		expect((await fetch(`${server.url}/api/health`)).status).toBe(200);
 		await verifyPackagedAnalytics(server.url);
-		const html = await (await fetch(`${server.url}/reports/${report}`)).text();
-		expect(html).toContain('Matched fixture transcript');
-		expect(html).toContain('<audio');
+		await verifyPackagedReport(server.url, report, exports);
 	});
 }, 120_000);
 
@@ -138,12 +137,54 @@ async function recordMedia(
 	}
 }
 
+/** An address of the earlier website answers with a redirect, and what it leads to is the explorer. */
+async function ledToExplorer(url: string, path: string, first: string): Promise<string> {
+	const old = await fetch(url + path, { redirect: 'manual' });
+	expect([path, old.status, old.headers.get('location')]).toEqual([path, 308, first]);
+	const opened = await fetch(url + path);
+	expect([path, opened.status, new URL(opened.url).pathname]).toEqual([path, 200, '/harness']);
+	const html = await opened.text();
+	expect(html).toContain('aria-label="Harness categories"');
+	return html;
+}
+
+/**
+ * A report has no page of its own any more. Its address leads into the explorer, and what it
+ * recorded is still answered to a client and kept whole in its portable export.
+ */
+async function verifyPackagedReport(url: string, id: string, exports: string): Promise<void> {
+	const page = await ledToExplorer(url, `/reports/${id}`, `/harness/reports/${id}`);
+	expect(page).not.toContain('Matched fixture transcript');
+	const stored = (await (await fetch(`${url}/api/reports/${id}`)).json()) as {
+		state: string;
+		evidence: Array<{ mediaType: string; mimeType: string; transcript: string; file: string }>;
+	};
+	const voice = stored.evidence.find((item) => item.mediaType === 'audio');
+	expect([stored.state, stored.evidence.length]).toEqual(['finalized', 2]);
+	expect(voice).toMatchObject({ transcript: 'Matched fixture transcript', mimeType: 'audio/wav' });
+	// The recording is served under the name of its own content.
+	const media = await fetch(`${url}/api/reports/${id}/assets/${voice?.file}`);
+	const heard = createHash('sha256')
+		.update(Buffer.from(await media.arrayBuffer()))
+		.digest('hex');
+	expect([media.status, `${heard}.wav`]).toEqual([200, voice?.file]);
+	// The portable export is the viewer of a report now: it is answered as a download, whole.
+	const portable = await readFile(join(exports, 'index.html'), 'utf8');
+	const download = await fetch(`${url}/api/reports/${id}/exports/index.html`);
+	expect([download.status, await download.text()]).toEqual([200, portable]);
+	for (const part of [
+		'window.projectReport=',
+		'Matched fixture transcript',
+		'<audio',
+		'data:audio/'
+	])
+		expect([part, portable.includes(part)]).toEqual([part, true]);
+}
+
 async function verifyPackagedAnalytics(url: string): Promise<void> {
-	const page = await fetch(`${url}/analytics`);
-	expect(page.status).toBe(200);
-	const html = await page.text();
-	expect(html).toContain('Harness Analytics');
-	expect(html).toContain('Live CPU usage');
+	// The dashboard is not a page any more; what it measured is still answered to a client.
+	const html = await ledToExplorer(url, '/analytics', '/harness');
+	for (const gone of ['Harness Analytics', 'Live CPU usage']) expect(html).not.toContain(gone);
 	if (!['darwin', 'linux'].includes(process.platform)) return;
 	const response = await fetch(`${url}/api/analytics-cpu`);
 	expect(response.status).toBe(200);

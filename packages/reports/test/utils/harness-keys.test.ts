@@ -19,7 +19,10 @@ const unique = new Set([
 	'item.id',
 	'item.commit',
 	'report.id',
-	"edge.from + '>' + edge.to"
+	"edge.from + '>' + edge.to",
+	// An explorer list of entities is keyed by the entity, and a history by its commit.
+	'row.id',
+	'row.commit'
 ]);
 
 test('console lists are keyed only by what cannot repeat, never by recorded text', () => {

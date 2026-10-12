@@ -105,10 +105,15 @@ const explainGuide: Guide = {
 		'Added and removed units need a unit-wide reason; so do files the index cannot split.',
 		'A performance rationale is required for every changed unit, including validation, ' +
 			'serialization and adapters at an invocation boundary, even when nothing improved.',
-		'Reasons are kept outside the source tree in .cache/harness until they are stored as notes.'
+		'Reasons are kept outside the source tree in .cache/harness until they are stored as notes.',
+		'A reason is short: its behaviour note has at most 30 words and 200 characters, each attempt ' +
+			'at most 20 words and 140 characters. harness explain add refuses a longer one, and a ' +
+			'repository that declares "writing": 1 in harness.verify.json fails its check and its ' +
+			'verification on one.'
 	],
 	antiPatterns: [
 		'Do not write a blanket reason for unrelated changes.',
+		'Do not list everything a change touched: explain this unit, the attempt and its result.',
 		'Do not claim an improvement that was not measured.'
 	],
 	exampleCommands: [

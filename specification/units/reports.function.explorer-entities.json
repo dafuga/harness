@@ -1,0 +1,105 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.explorer-entities",
+	"kind": "function",
+	"title": "explorerEntities",
+	"responsibility": "Lists the units of a revision as explorer entities with category, name, verdict and change, and the units the shown commit removed from its first parent.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/explorerEntities.ts"],
+		"symbols": ["explorerChange", "explorerEntity", "explorerEntities"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "explorerChange.head",
+				"type": "HarnessRevision"
+			},
+			{
+				"name": "explorerChange.unit",
+				"type": "string"
+			},
+			{
+				"name": "explorerEntity.head",
+				"type": "HarnessRevision"
+			},
+			{
+				"name": "explorerEntity.unit",
+				"type": "HarnessUnit"
+			},
+			{
+				"name": "explorerEntities.head",
+				"type": "HarnessRevision"
+			},
+			{
+				"name": "explorerEntities.parent",
+				"type": "HarnessRevision | null"
+			}
+		],
+		"outputs": [
+			{
+				"name": "explorerChange",
+				"type": "HarnessMark | null"
+			},
+			{
+				"name": "explorerEntity",
+				"type": "ExplorerEntity | null"
+			},
+			{
+				"name": "explorerEntities",
+				"type": "ExplorerEntity[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.explorer-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-category",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-name",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-verdict",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/explorerEntities.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/explorerEntities.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

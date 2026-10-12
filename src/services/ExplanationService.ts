@@ -1,9 +1,12 @@
 import type { Explanation, ReasonStatus, RequiredReason } from '../core/explanationTypes';
+import { explanationProblems } from '../utils/writingLimits';
 
 export interface ReasonReport {
 	required: ReasonStatus[];
 	/** The reasons that satisfy a requirement, in requirement order. */
 	entries: Explanation[];
+	/** Changes whose reason exceeds the writing limits: explained, and open to a shorter reason. */
+	overlong: RequiredReason[];
 	failures: string[];
 }
 
@@ -11,22 +14,26 @@ const verbs = { added: 'added', modified: 'modified', removed: 'removed' };
 
 /**
  * Matches recorded reasons to the changes that need them, by exact content fingerprints. A
- * change made in several steps is explained by the reasons of every step, in order.
+ * change made in several steps is explained by the reasons of every step, in order. Where the
+ * limits apply, a reason that is relied on and exceeds them is a failure, however it was stored.
  */
 export class ExplanationService {
-	report(required: RequiredReason[], explanations: Explanation[]): ReasonReport {
+	report(required: RequiredReason[], explanations: Explanation[], limited = false): ReasonReport {
 		const entries: Explanation[] = [];
+		const overlong: RequiredReason[] = [];
 		const statuses = required.map((reason): ReasonStatus => {
 			const subject = explanations.filter((entry) => sameSubject(entry, reason));
 			const steps = chain(subject, reason.from, reason.to);
 			entries.push(...(steps ?? []));
+			if (steps?.some((entry) => explanationProblems(entry).length > 0)) overlong.push(reason);
 			// A reason for the same starting point but other content was written before a later edit.
 			const started = subject.some((entry) => entry.from === reason.from);
 			const open = started ? 'stale' : 'missing';
 			return { ...reason, state: steps ? 'explained' : open };
 		});
 		const open = statuses.filter((status) => status.state !== 'explained');
-		return { required: statuses, entries, failures: open.map(describe) };
+		const long = limited ? [...new Set(entries.flatMap(explanationProblems))] : [];
+		return { required: statuses, entries, overlong, failures: [...open.map(describe), ...long] };
 	}
 }
 

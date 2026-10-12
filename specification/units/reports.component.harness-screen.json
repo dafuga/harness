@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-screen",
+	"kind": "component",
+	"title": "HarnessScreen",
+	"responsibility": "Mounts the explorer on one route page: gives the console the address of the page, the router to move with and the screen the page names, and titles the document.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/HarnessScreen.svelte"],
+		"symbols": ["HarnessScreen"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HarnessScreen.title",
+				"type": "string"
+			},
+			{
+				"name": "HarnessScreen.content",
+				"type": "ExplorerScreen"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HarnessScreen",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-harness-console",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-screen-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.harness",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/HarnessScreen.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/HarnessScreen.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -55,7 +55,14 @@
 			"desktopPatchConfig",
 			"DesktopIntegrityAdapter",
 			"NativePickerDefaultsService",
-			"NativePickerIdleValidator"
+			"NativePickerIdleValidator",
+			"explorerRoute",
+			"explorerLegacy",
+			"revisionChanges",
+			"writingLimits",
+			"commitMessage",
+			"CommitMessageService",
+			"revisionReasons"
 		]
 	},
 	"contract": {
@@ -116,6 +123,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.commit-message",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.cpu-metrics",
 			"via": "reexport",
 			"origin": "derived"
@@ -128,6 +140,16 @@
 		{
 			"unit": "function.errors",
 			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.explorer-legacy",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.explorer-route",
+			"via": "reexport",
 			"origin": "derived"
 		},
 		{
@@ -201,6 +223,21 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.revision-changes",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.revision-reasons",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.writing-limits",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.codex-session",
 			"via": "reexport",
 			"origin": "derived"
@@ -237,6 +274,11 @@
 		},
 		{
 			"unit": "service.codex-picker-mcp",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.commit-message",
 			"via": "reexport",
 			"origin": "derived"
 		},

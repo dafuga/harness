@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-explorer-controls",
+	"kind": "component",
+	"title": "ExplorerControls",
+	"responsibility": "Offers the search field, the changed-only switch and the order of a collection, and holds none of what they filter.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/ExplorerControls.svelte"],
+		"symbols": ["ExplorerControls"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ExplorerControls.noun",
+				"type": "string"
+			},
+			{
+				"name": "ExplorerControls.filter",
+				"type": "CatalogFilter"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ExplorerControls",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-catalog",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/ExplorerControls.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/ExplorerControls.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

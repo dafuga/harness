@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.entity-removed",
+	"kind": "function",
+	"title": "entityRemoved",
+	"responsibility": "Names the scenarios and states the parent of a selected commit declared for an entity and the commit no longer does.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/entityRemoved.ts"],
+		"symbols": ["entityRemoved"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "entityRemoved.evidence",
+				"type": "ExplorerEvidence"
+			}
+		],
+		"outputs": [
+			{
+				"name": "entityRemoved",
+				"type": "string[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/entityRemoved.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/entityRemoved.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

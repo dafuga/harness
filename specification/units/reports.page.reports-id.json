@@ -3,7 +3,7 @@
 	"id": "reports.page.reports-id",
 	"kind": "page",
 	"title": "/reports/[id]",
-	"responsibility": "Redirects a former report route to the same report under /harness/reports.",
+	"responsibility": "Redirects a former report address to the console, which opens the explorer where that report belongs.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -15,7 +15,7 @@
 		"inputs": [
 			{
 				"name": "load.input",
-				"type": "{ params: { id: string }; url: URL }"
+				"type": "{ params: { id: string } }"
 			}
 		],
 		"outputs": [

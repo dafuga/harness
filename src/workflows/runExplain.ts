@@ -8,6 +8,7 @@ import {
 import { ExplanationRepository } from '../repositories/ExplanationRepository';
 import { ExplanationService, type ReasonReport } from '../services/ExplanationService';
 import { requiredReasons } from '../utils/requiredReasons';
+import { explanationProblems } from '../utils/writingLimits';
 import { GitAdapter } from '../adapters/GitAdapter';
 import { ReasonPathService } from '../services/ReasonPathService';
 import { commitLoader, openRange, type RevisionRange } from './loadRevisions';
@@ -21,6 +22,8 @@ export interface ExplainInput extends RevisionRange {
 	simplificationOutcome?: string;
 	performance?: string;
 	performanceOutcome?: string;
+	/** Also writes a reason for a change whose stored reason exceeds the writing limits. */
+	replace?: boolean;
 	now?: () => string;
 }
 
@@ -32,7 +35,7 @@ export async function explainReport(
 ): Promise<ReasonReport & { root: string }> {
 	const { root, base, head } = await openRange(range);
 	const known = await new ExplanationRepository(root).all();
-	const report = new ExplanationService().report(requiredReasons(base, head), known);
+	const report = new ExplanationService().report(requiredReasons(base, head), known, head.limited);
 	return { ...report, root };
 }
 
@@ -57,11 +60,20 @@ export function listed(report: ReasonReport): Listed[] {
 	return report.required.map(({ from: _from, to: _to, ...status }) => status);
 }
 
-/** Records a reason for the named symbols, or for everything still unexplained with `all`. */
+/**
+ * Records a reason for the named symbols, or for everything still unexplained with `all`. With
+ * `replace`, a change whose stored reason exceeds the writing limits is open again.
+ */
 export async function explainAdd(input: ExplainInput): Promise<Explanation[]> {
 	const text = reasonText(input);
 	const report = await explainReport(input);
-	const open = report.required.filter((status) => status.state !== 'explained');
+	const unexplained = report.required.filter((status) => status.state !== 'explained');
+	// A reason over the limits is replaced by a later one for the same exact change: the store
+	// only grows, and the latest reason for a change is the one a check relies on.
+	const again = input.replace
+		? report.overlong.map((reason) => ({ ...reason, state: 'explained' as const }))
+		: [];
+	const open = [...unexplained, ...again];
 	const chosen = input.all ? open : open.filter((status) => selected(status, input));
 	if (chosen.length === 0) {
 		return fail(
@@ -76,6 +88,9 @@ export async function explainAdd(input: ExplainInput): Promise<Explanation[]> {
 		...text,
 		recordedAt
 	}));
+	// A new reason is held to the limits wherever it is written, and nothing is stored if it is not.
+	const long = [...new Set(entries.flatMap(explanationProblems))];
+	if (long.length > 0) return fail(long.join('\n'));
 	await new ExplanationRepository(report.root).append(entries);
 	return entries;
 }

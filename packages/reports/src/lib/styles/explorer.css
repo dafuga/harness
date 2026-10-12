@@ -1,0 +1,184 @@
+/* The explorer: one palette, published once on its root, and the frame every route shares. */
+.hx-shell {
+	--hx-bg: #0d1a26;
+	--hx-surface: #101f2d;
+	--hx-raised: #14273a;
+	--hx-line: #1f3144;
+	--hx-line-strong: #2c4259;
+	--hx-text: #f2f5fa;
+	--hx-soft: #cbd5e1;
+	--hx-muted: #8fa1b8;
+	--hx-gold: #f3c33b;
+	--hx-pass: #34d399;
+	--hx-fail: #f2545b;
+	--hx-radius: 10px;
+	--hx-radius-small: 8px;
+	--hx-gutter: clamp(16px, 2.2vw, 28px);
+	/* What the console and the galleries read, so everything they draw in here is navy and gold. */
+	--gold: var(--hx-gold);
+	--muted: var(--hx-muted);
+	--line: var(--hx-line);
+	--panel: var(--hx-surface);
+	--ink: var(--hx-bg);
+	min-height: 100vh;
+	background: var(--hx-bg);
+	color: var(--hx-text);
+}
+/* The page behind the explorer is the explorer's own colour, also where a scroll overshoots. */
+:root:has(.hx-shell) {
+	background: #0d1a26;
+}
+/* The column of a route: inside the gutters of the bar, and never wider than the screen. */
+.hx-main {
+	min-width: 0;
+	padding: 20px var(--hx-gutter) 64px;
+	overflow-wrap: anywhere;
+}
+/* What a host puts under the bar without a column of its own keeps the same gutters. */
+.hx-shell > :not(.hx-nav, .hx-main) {
+	margin-right: var(--hx-gutter);
+	margin-left: var(--hx-gutter);
+	overflow-wrap: anywhere;
+}
+.hx-shell > .hx-nav + :not(.hx-main) {
+	margin-top: 20px;
+}
+.hx-shell > :not(.hx-nav, .hx-main):last-child {
+	margin-bottom: 64px;
+}
+/* Notices of the shell, under the bar and inside the gutters of the page. */
+.hx-shell > .hc-notice,
+.hx-nav > .hc-notice {
+	margin: 16px var(--hx-gutter) 0;
+	border-radius: 0 var(--hx-radius-small) var(--hx-radius-small) 0;
+}
+.hx-nav > .hc-notice {
+	flex: 1 0 100%;
+	order: 9;
+	margin: 0 0 12px;
+}
+.hx-notice {
+	margin: 0 0 16px;
+	padding: 12px 14px;
+	border: 1px solid var(--hx-line-strong);
+	border-left: 3px solid var(--hx-gold);
+	border-radius: 0 var(--hx-radius-small) var(--hx-radius-small) 0;
+	background: var(--hx-surface);
+	overflow-wrap: anywhere;
+}
+.hx-notice.fail {
+	border-left-color: var(--hx-fail);
+}
+.hx-muted {
+	color: var(--hx-muted);
+}
+.hx-mono {
+	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+	font-size: 0.92em;
+}
+/* What is wider than the screen scrolls inside itself; the page never does. */
+.hx-scroll-x {
+	max-width: 100%;
+	overflow-x: auto;
+}
+.hx-card {
+	min-width: 0;
+	padding: 20px;
+	border: 1px solid var(--hx-line);
+	border-radius: var(--hx-radius);
+	background: var(--hx-surface);
+}
+.hx-pill {
+	display: inline-flex;
+	align-items: center;
+	min-height: 26px;
+	padding: 0 12px;
+	border: 1px solid var(--hx-line-strong);
+	border-radius: 999px;
+	color: var(--hx-soft);
+	font-size: 0.82rem;
+	white-space: nowrap;
+}
+.hx-pill.gold {
+	border-color: var(--hx-gold);
+	border-radius: var(--hx-radius-small);
+	color: var(--hx-gold);
+}
+/* Where a route is: the trail from its category, a chevron between its steps. */
+.hx-crumbs ol {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 4px 10px;
+	margin: 0 0 12px;
+	padding: 0;
+	list-style: none;
+	color: var(--hx-soft);
+	font-size: 0.95rem;
+}
+.hx-crumbs li {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 0;
+	line-height: 1.4;
+}
+.hx-crumbs li + li::before {
+	content: '›';
+	color: var(--hx-muted);
+}
+.hx-crumbs [aria-current='page'] {
+	color: var(--hx-text);
+}
+/* A search box with its icon inside it, and a switch; both keep the size of a finger. */
+.hx-field {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	min-width: 0;
+	min-height: 46px;
+	padding: 0 14px;
+	border: 1px solid var(--hx-line-strong);
+	border-radius: var(--hx-radius-small);
+	background: var(--hx-surface);
+	color: var(--hx-muted);
+}
+.hx-field input {
+	flex: 1;
+	min-width: 0;
+	min-height: 44px;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: none;
+	color: var(--hx-text);
+}
+.hx-field:focus-within {
+	border-color: var(--hx-gold);
+}
+.hx-toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	min-height: 44px;
+	cursor: pointer;
+}
+.hx-toggle input {
+	flex: none;
+	width: 46px;
+	min-width: 0;
+	height: 26px;
+	margin: 0;
+	padding: 0;
+	border: 1px solid var(--hx-line-strong);
+	border-radius: 999px;
+	background: var(--hx-raised)
+		radial-gradient(circle at 12px 50%, var(--hx-soft) 8px, transparent 9px);
+	appearance: none;
+	cursor: pointer;
+}
+.hx-toggle input:checked {
+	border-color: var(--hx-gold);
+	background: rgba(243, 195, 59, 0.2)
+		radial-gradient(circle at 32px 50%, var(--hx-gold) 8px, transparent 9px);
+}

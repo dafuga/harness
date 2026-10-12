@@ -1,0 +1,105 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-explorer-catalog-screen",
+	"kind": "component",
+	"title": "ExplorerCatalogScreen",
+	"responsibility": "The collection screen of components, functions, configs or services: a table with the columns of the kind.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/ExplorerCatalogScreen.svelte"],
+		"symbols": ["ExplorerCatalogScreen"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ExplorerScreenProps.route",
+				"type": "ExplorerLocation",
+				"description": "The address shown: category, entity, section and tab."
+			},
+			{
+				"name": "ExplorerScreenProps.scope",
+				"type": "ExplorerScope",
+				"description": "The branch and commit shown, and whether that is the branch tip or a selected commit."
+			},
+			{
+				"name": "ExplorerScreenProps.head",
+				"type": "HarnessRevision",
+				"description": "The revision every contract, measurement and capture on the screen is bound to."
+			},
+			{
+				"name": "ExplorerScreenProps.entities",
+				"type": "ExplorerEntity[]",
+				"description": "The units of the shown revision as the explorer lists them."
+			},
+			{
+				"name": "ExplorerScreenProps.lens",
+				"type": "EntityLens",
+				"description": "What the host answers about an entity: relations, evidence, end-to-end results and history."
+			},
+			{
+				"name": "ExplorerScreenProps.onroute",
+				"type": "(to: ExplorerLocation) => void",
+				"description": "Goes to another address of the explorer in the same branch and revision mode."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ExplorerCatalogScreen.collectionTable",
+				"type": "markup",
+				"description": "The components, functions, configs or services of the revision as a table, with search, changed-only and order."
+			}
+		],
+		"errors": [
+			{
+				"name": "no-registry",
+				"type": "stated",
+				"description": "A revision that stores no unit registry says so; nothing of another revision is shown."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-explorer-frame",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-explorer-index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-explorer-table",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-screen-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/ExplorerCatalogScreen.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/ExplorerCatalogScreen.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
