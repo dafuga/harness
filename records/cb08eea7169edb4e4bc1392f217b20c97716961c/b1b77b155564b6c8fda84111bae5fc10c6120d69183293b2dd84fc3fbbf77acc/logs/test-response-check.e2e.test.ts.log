@@ -1,0 +1,271 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad
+
+ ❯ test/response-check.e2e.test.ts (21 tests | 21 failed) 2887ms
+   × CLI reports all standard and custom judgments without raw input 178ms
+     → expected 1 to be +0 // Object.is equality
+   × gate rejects violates while advisory completes 136ms
+     → Unexpected end of JSON input
+   × gate rejects uncertain while advisory completes 137ms
+     → Unexpected end of JSON input
+   × dry run is offline and describes coverage 140ms
+     → expected 1 to be +0 // Object.is equality
+   × provider authentication failure is incomplete and sanitized 140ms
+     → expected 1 to be 2 // Object.is equality
+   × guide documents strict gating 140ms
+     → expected 1 to be +0 // Object.is equality
+   × CLI returns incomplete for missing request 140ms
+     → expected 1 to be 2 // Object.is equality
+   × CLI returns incomplete for invalid threshold 135ms
+     → expected 1 to be 2 // Object.is equality
+   × CLI returns incomplete for invalid model 135ms
+     → expected 1 to be 2 // Object.is equality
+   × CLI returns incomplete for missing credential 130ms
+     → expected 1 to be 2 // Object.is equality
+   × CLI rejects malformed criteria 135ms
+     → expected 1 to be 2 // Object.is equality
+   × CLI rejects malformed criteria 133ms
+     → expected 1 to be 2 // Object.is equality
+   × CLI rejects malformed criteria 136ms
+     → expected 1 to be 2 // Object.is equality
+   × CLI rejects empty or oversized request without an API call 134ms
+     → expected 1 to be 2 // Object.is equality
+   × CLI rejects empty or oversized request without an API call 136ms
+     → expected 1 to be 2 // Object.is equality
+   × CLI rejects empty or oversized request without an API call 139ms
+     → expected 1 to be 2 // Object.is equality
+   × combined serialized size is bounded and invalid UTF-8 is rejected 134ms
+     → expected 1 to be 2 // Object.is equality
+   × empty answer has a deterministic failure in gate mode without an API call 132ms
+     → Unexpected end of JSON input
+   × existing command-based loops reject uncertain response checks 135ms
+     → Unexpected end of JSON input
+   × provider malformed response is incomplete and sanitized 132ms
+     → expected 1 to be 2 // Object.is equality
+   × provider wrong-model response is incomplete and sanitized 131ms
+     → expected 1 to be 2 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 21 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/response-check.e2e.test.ts > CLI reports all standard and custom judgments without raw input
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ test/response-check.e2e.test.ts:35:26
+     33|   '--gate'
+     34|  ]);
+     35|  expect(result.exitCode).toBe(0);
+       |                          ^
+     36|  const report = JSON.parse(result.stdout);
+     37|  expect(report.status).toBe('satisfied');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/21]⎯
+
+ FAIL  test/response-check.e2e.test.ts > gate rejects violates while advisory completes
+ FAIL  test/response-check.e2e.test.ts > gate rejects uncertain while advisory completes
+SyntaxError: Unexpected end of JSON input
+ ❯ test/response-check.e2e.test.ts:51:15
+     49|   const gate = await runJevCli(root, [...args, '--gate'], scenario);
+     50|   expect(gate.exitCode).toBe(1);
+     51|   expect(JSON.parse(gate.stdout).status).toBe(
+       |               ^
+     52|    scenario === 'violates' ? 'violations' : 'needs-review'
+     53|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/21]⎯
+
+ FAIL  test/response-check.e2e.test.ts > dry run is offline and describes coverage
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ test/response-check.e2e.test.ts:60:26
+     58| test('dry run is offline and describes coverage', async () => {
+     59|  const result = await runJevCli(await fixture(), [...args, '--dry-run'…
+     60|  expect(result.exitCode).toBe(0);
+       |                          ^
+     61|  expect(JSON.parse(result.stdout).status).toBe('dry-run');
+     62| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/21]⎯
+
+ FAIL  test/response-check.e2e.test.ts > provider authentication failure is incomplete and sanitized
+AssertionError: expected 1 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ test/response-check.e2e.test.ts:66:26
+     64| test('provider authentication failure is incomplete and sanitized', as…
+     65|  const result = await runJevCli(await fixture(), args, 'unauthorized');
+     66|  expect(result.exitCode).toBe(2);
+       |                          ^
+     67|  expect(JSON.parse(result.stdout).status).toBe('incomplete');
+     68|  expect(result.stdout + result.stderr).not.toContain('synthetic-test-k…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/21]⎯
+
+ FAIL  test/response-check.e2e.test.ts > guide documents strict gating
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ test/response-check.e2e.test.ts:77:26
+     75|   'offline-only'
+     76|  );
+     77|  expect(result.exitCode).toBe(0);
+       |                          ^
+     78|  expect(JSON.parse(result.stdout).topic).toBe('response-check');
+     79| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/21]⎯
+
+ FAIL  test/response-check.e2e.test.ts > CLI returns incomplete for missing request
+ FAIL  test/response-check.e2e.test.ts > CLI returns incomplete for invalid threshold
+ FAIL  test/response-check.e2e.test.ts > CLI returns incomplete for invalid model
+ FAIL  test/response-check.e2e.test.ts > CLI returns incomplete for missing credential
+AssertionError: expected 1 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ test/response-check.e2e.test.ts:88:26
+     86| ])('CLI returns incomplete for %s', async (_name, extra) => {
+     87|  const result = await runJevCli(await fixture(), [...args, ...extra]);
+     88|  expect(result.exitCode).toBe(2);
+       |                          ^
+     89|  expect(JSON.parse(result.stdout).status).toBe('incomplete');
+     90| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/21]⎯
+
+ FAIL  test/response-check.e2e.test.ts > CLI rejects malformed criteria
+ FAIL  test/response-check.e2e.test.ts > CLI rejects malformed criteria
+ FAIL  test/response-check.e2e.test.ts > CLI rejects malformed criteria
+AssertionError: expected 1 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ test/response-check.e2e.test.ts:102:27
+    100|    'offline-only'
+    101|   );
+    102|   expect(result.exitCode).toBe(2);
+       |                           ^
+    103|  }
+    104| );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/21]⎯
+
+ FAIL  test/response-check.e2e.test.ts > CLI rejects empty or oversized request without an API call
+ FAIL  test/response-check.e2e.test.ts > CLI rejects empty or oversized request without an API call
+ FAIL  test/response-check.e2e.test.ts > CLI rejects empty or oversized request without an API call
+AssertionError: expected 1 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ test/response-check.e2e.test.ts:112:27
+    110|   await writeFile(join(root, 'request.txt'), text);
+    111|   const result = await runJevCli(root, args, 'offline-only');
+    112|   expect(result.exitCode).toBe(2);
+       |                           ^
+    113|   expect(JSON.parse(result.stdout).status).toBe('incomplete');
+    114|  }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/21]⎯
+
+ FAIL  test/response-check.e2e.test.ts > combined serialized size is bounded and invalid UTF-8 is rejected
+AssertionError: expected 1 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ test/response-check.e2e.test.ts:122:4
+    120|  expect(
+    121|   (await runJevCli(root, [...args, '--context', 'context.txt'], 'offli…
+    122|  ).toBe(2);
+       |    ^
+    123|  await writeFile(join(root, 'answer.txt'), Buffer.from([0xff]));
+    124|  expect((await runJevCli(root, args, 'offline-only')).exitCode).toBe(2…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/21]⎯
+
+ FAIL  test/response-check.e2e.test.ts > empty answer has a deterministic failure in gate mode without an API call
+SyntaxError: Unexpected end of JSON input
+ ❯ test/response-check.e2e.test.ts:132:14
+    130|  const result = await runJevCli(root, [...args, '--gate'], 'offline-on…
+    131|  expect(result.exitCode).toBe(1);
+    132|  expect(JSON.parse(result.stdout).status).toBe('violations');
+       |              ^
+    133| });
+    134| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/21]⎯
+
+ FAIL  test/response-check.e2e.test.ts > existing command-based loops reject uncertain response checks
+SyntaxError: Unexpected end of JSON input
+ ❯ test/response-check.e2e.test.ts:152:14
+    150|  const result = await runJevCli(root, ['loop', 'evaluate', 'answer', '…
+    151|  expect(result.exitCode).toBe(1);
+    152|  expect(JSON.parse(result.stdout).passed).toBe(false);
+       |              ^
+    153|  expect(JSON.parse(result.stdout).results[0].exitCode).toBe(1);
+    154| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/21]⎯
+
+ FAIL  test/response-check.e2e.test.ts > provider malformed response is incomplete and sanitized
+ FAIL  test/response-check.e2e.test.ts > provider wrong-model response is incomplete and sanitized
+AssertionError: expected 1 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ test/response-check.e2e.test.ts:160:27
+    158|  async (scenario) => {
+    159|   const result = await runJevCli(await fixture(), args, scenario);
+    160|   expect(result.exitCode).toBe(2);
+       |                           ^
+    161|   expect(JSON.parse(result.stdout).status).toBe('incomplete');
+    162|   expect(result.stdout + result.stderr).not.toContain('synthetic-test-…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/21]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  21 failed (21)
+   Start at  03:42:51
+   Duration  3.11s (transform 24ms, setup 9ms, collect 14ms, tests 2.89s, environment 0ms, prepare 58ms)
+

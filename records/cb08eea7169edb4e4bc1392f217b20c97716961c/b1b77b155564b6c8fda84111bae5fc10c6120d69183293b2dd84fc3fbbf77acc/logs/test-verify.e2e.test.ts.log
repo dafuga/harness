@@ -1,0 +1,49 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad
+
+ ❯ test/verify.e2e.test.ts (4 tests | 4 skipped) 135ms
+   ↓ the fixture baseline verifies clean on an exact commit and tree
+   ↓ a shared function change re-verifies its service, page and audio scenarios with fresh evidence
+   ↓ each tested revision regenerates evidence even when the bytes are identical
+   ↓ scenario contracts list their states, viewports, tests and evidence
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/verify.e2e.test.ts [ test/verify.e2e.test.ts ]
+Error: bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/src/index.ts new lib demo failed with 1
+
+error: Cannot find module './classic/external.js' from '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/node_modules/zod/v4/index.js'
+
+Bun v1.2.18 (macOS arm64)
+
+ ❯ runCommand test/support/cli.ts:72:9
+     70| 
+     71|  if (expectSuccess && exitCode !== 0) {
+     72|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     73|  }
+     74| 
+ ❯ unitProject test/support/unitProject.ts:17:2
+ ❯ baselineRepo test/support/verifyRepo.ts:95:18
+ ❯ test/verify.e2e.test.ts:8:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/verify.e2e.test.ts [ test/verify.e2e.test.ts ]
+TypeError: Cannot read properties of undefined (reading 'dispose')
+ ❯ test/verify.e2e.test.ts:10:25
+      8|  baseline = await baselineRepo();
+      9| }, 120_000);
+     10| afterAll(() => baseline.dispose());
+       |                         ^
+     11| 
+     12| const scenarioOf = (record: { scenarios: Array<{ id: string }> }, id: …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 skipped (4)
+   Start at  03:44:28
+   Duration  377ms (transform 28ms, setup 8ms, collect 23ms, tests 135ms, environment 0ms, prepare 52ms)
+
