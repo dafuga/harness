@@ -60,6 +60,10 @@
 		{
 			"path": "packages/reports/test/entity-preview-marks.spec.ts",
 			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
+		},
+		{
+			"path": "packages/reports/test/entity-preview-words.spec.ts",
+			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
 		}
 	],
 	"tools": [
