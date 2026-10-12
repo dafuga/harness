@@ -18,7 +18,8 @@
 		"reports.style.explorer-navbar",
 		"reports.style.explorer-controls",
 		"reports.config.shell-vite",
-		"reports.config.shell-playwright"
+		"reports.config.shell-playwright",
+		"reports.component.select"
 	],
 	"states": [
 		{
@@ -58,9 +59,21 @@
 		}
 	],
 	"viewports": [
-		{ "id": "desktop", "width": 1440, "height": 1000 },
-		{ "id": "tablet", "width": 920, "height": 800 },
-		{ "id": "mobile", "width": 390, "height": 844 }
+		{
+			"id": "desktop",
+			"width": 1440,
+			"height": 1000
+		},
+		{
+			"id": "tablet",
+			"width": 920,
+			"height": 800
+		},
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 844
+		}
 	],
 	"tests": [
 		{
