@@ -1,0 +1,83 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.validator.remote-host",
+	"kind": "validator",
+	"title": "RemoteHostValidator",
+	"responsibility": "Owns the RemoteHostValidator input validation.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/validators/RemoteHostValidator.ts"],
+		"symbols": [
+			"RemoteHostValidator",
+			"RemoteHostValidator.registration",
+			"RemoteHostValidator.hostId",
+			"RemoteHostValidator.deviceId"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "RemoteHostValidator.registration.body",
+				"type": "Body"
+			},
+			{
+				"name": "RemoteHostValidator.hostId.value",
+				"type": "unknown"
+			},
+			{
+				"name": "RemoteHostValidator.deviceId.value",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "RemoteHostValidator.registration",
+				"type": "Promise<RemoteHostRegisterInput>"
+			},
+			{
+				"name": "RemoteHostValidator.hostId",
+				"type": "string"
+			},
+			{
+				"name": "RemoteHostValidator.deviceId",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.hub-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.remote-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.remote-relay-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/validators/RemoteHostValidator.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/validators/RemoteHostValidator.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

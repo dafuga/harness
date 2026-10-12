@@ -18,7 +18,7 @@
 <div class="project-switcher">
 	<label onchange={() => void choose()}
 		><Select label="Project" bind:value
-			>{#if local.length}<optgroup label="On this device"
+			>{#if local.length}<optgroup label={workspace.local ? 'On this device' : 'On your computer'}
 					>{#each local as item (item.id)}<option value={item.id}>{item.name}</option
 						>{/each}</optgroup
 				>{/if}{#if shared.length}<optgroup label="Shared"

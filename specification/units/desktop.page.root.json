@@ -33,7 +33,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.component.remote-connection",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.component.workspace-shell",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.select-environment",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -43,7 +53,17 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.model.desktop-bridge-types",
+			"unit": "desktop.model.environment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.remote-host",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.remote-phone",
 			"via": "import",
 			"origin": "derived"
 		},

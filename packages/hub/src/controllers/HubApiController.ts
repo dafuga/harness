@@ -1,6 +1,7 @@
 import type { Actor, CollaborationApi, AddCommentInput } from 'collaboration';
 import type { HubApiRuntime } from '../utils/hubRuntime';
 import type { HubProjectionService } from '../services/HubProjectionService';
+import { HubRemoteController } from './HubRemoteController';
 import { hubBody, hubHttp, hubHttpFailure, hubQuery } from '../utils/hubHttp';
 import { hubFail } from '../utils/hubJson';
 interface Context {
@@ -25,6 +26,8 @@ export class HubApiController {
 	}
 	private async projects(request: Request, actor: Actor) {
 		const parts = new URL(request.url).pathname.split('/').filter(Boolean).map(decodeURIComponent);
+		if (parts[1] === 'remote')
+			return new HubRemoteController(this.runtime.remote).handle(request, actor);
 		if (parts[0] !== 'api' || parts[1] !== 'projects') return hubHttp({ error: 'not-found' }, 404);
 		const { api, projection } = this.runtime.connect(),
 			projectId = parts[2] ?? '';

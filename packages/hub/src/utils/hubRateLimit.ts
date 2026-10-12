@@ -7,7 +7,8 @@ const limits: Record<string, number> = {
 	'/api/auth/native/start': 10,
 	'/api/auth/native/poll': 60,
 	'/api/auth/native/approve': 10,
-	'/api/auth/native/exchange': 10
+	'/api/auth/native/exchange': 10,
+	'/api/remote/hosts': 10
 };
 /** Cloudflare supplies the IP; tests/local runs use an isolated default key. No IP is stored. */
 export async function hubRateLimit(input: {

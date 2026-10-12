@@ -12,5 +12,16 @@
 			"migrations_dir": "db/migrations"
 		}
 	],
-	"r2_buckets": [{ "binding": "CACHE", "bucket_name": "harness-hub-development-cache" }]
+	"r2_buckets": [{ "binding": "CACHE", "bucket_name": "harness-hub-development-cache" }],
+	// Local placeholder, like the names above: the host objects of the relay Worker (packages/relay).
+	// Owner management of remote hosts reaches them through this binding and no public route.
+	"durable_objects": {
+		"bindings": [
+			{
+				"name": "REMOTE_HOSTS",
+				"class_name": "RemoteHostObject",
+				"script_name": "harness-relay-development"
+			}
+		]
+	}
 }

@@ -1,0 +1,153 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.script.ios-acceptance-run",
+	"kind": "script",
+	"title": "ios-acceptance-run",
+	"responsibility": "Owns the ios-acceptance-run build or maintenance script.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/scripts/ios-acceptance-run.ts"],
+		"symbols": [
+			"FixtureView",
+			"PairingOffer",
+			"Acceptance",
+			"computerName",
+			"panelText",
+			"footerText",
+			"pause",
+			"control",
+			"offered",
+			"restart",
+			"shot",
+			"openDesign"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "pause.milliseconds",
+				"type": "number"
+			},
+			{
+				"name": "control.run",
+				"type": "Acceptance"
+			},
+			{
+				"name": "control.path",
+				"type": "string"
+			},
+			{
+				"name": "control.body",
+				"type": "object"
+			},
+			{
+				"name": "offered.run",
+				"type": "Acceptance"
+			},
+			{
+				"name": "restart.run",
+				"type": "Acceptance"
+			},
+			{
+				"name": "restart.fixture",
+				"type": "unknown"
+			},
+			{
+				"name": "shot.run",
+				"type": "Acceptance"
+			},
+			{
+				"name": "shot.name",
+				"type": "string"
+			},
+			{
+				"name": "openDesign.run",
+				"type": "Acceptance"
+			}
+		],
+		"outputs": [
+			{
+				"name": "computerName",
+				"type": "unknown"
+			},
+			{
+				"name": "panelText",
+				"type": "unknown"
+			},
+			{
+				"name": "footerText",
+				"type": "unknown"
+			},
+			{
+				"name": "pause",
+				"type": "unknown"
+			},
+			{
+				"name": "control",
+				"type": "Promise<T>"
+			},
+			{
+				"name": "offered",
+				"type": "Promise<PairingOffer>"
+			},
+			{
+				"name": "restart",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "shot",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "openDesign",
+				"type": "Promise<string>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.script.ios-acceptance-guards",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.script.ios-acceptance-page",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.script.ios-acceptance-record",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.script.ios-acceptance-simulator",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/scripts/ios-acceptance-run.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/scripts/ios-acceptance-run.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

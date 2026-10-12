@@ -1,32 +1,25 @@
-import type { BrowserWindow, IpcMainInvokeEvent } from 'electron';
-import { ipcMain } from 'electron';
-import { channels } from '../models/DesktopBridge.types';
-import type { DesktopBridge } from '../models/DesktopBridge.types';
-import { NavigationValidator } from '../validators/NavigationValidator';
-import { IpcRequestValidator } from '../validators/IpcRequestValidator';
-export function trustedSender(
-	event: Pick<IpcMainInvokeEvent, 'sender' | 'senderFrame'>,
-	window: BrowserWindow
-): boolean {
-	return (
-		event.sender === window.webContents &&
-		event.senderFrame === window.webContents.mainFrame &&
-		new NavigationValidator().validate(event.senderFrame?.url)
-	);
+import type { LocalBootstrap } from '../../../remote/src/index';
+
+/**
+ * The one channel the main process answers over IPC: the bootstrap of the caller's own loopback
+ * socket. Every project operation and the control port travel over that socket.
+ */
+export const bootstrapChannel = 'transport:bootstrap';
+/** `ipcMain`, or a stand-in. */
+export interface DesktopIpcPort {
+	handle(channel: string, listener: (event: unknown) => Promise<unknown>): unknown;
+	removeHandler(channel: string): unknown;
 }
+
+/** `bootstrap` answers for the trusted top frame of a window and returns null for anyone else. */
 export function desktopIpc(
-	window: BrowserWindow,
-	bridge: Omit<DesktopBridge, 'onRunEvent'>
+	port: DesktopIpcPort,
+	bootstrap: (event: unknown) => LocalBootstrap | null
 ): () => void {
-	const validator = new IpcRequestValidator();
-	Object.entries(channels).forEach(([name, channel]) => {
-		ipcMain.handle(channel, async (event, input: unknown) => {
-			if (!trustedSender(event, window)) throw new Error('Untrusted renderer.');
-			const value = validator.parse(channel, input);
-			const method = bridge[name as keyof typeof bridge] as (value: unknown) => Promise<unknown>;
-			if (typeof method !== 'function') throw new Error('Desktop operation unavailable.');
-			return method(value);
-		});
+	port.handle(bootstrapChannel, async (event) => {
+		const answer = bootstrap(event);
+		if (!answer) throw new Error('Untrusted renderer.');
+		return answer;
 	});
-	return () => Object.values(channels).forEach((channel) => ipcMain.removeHandler(channel));
+	return () => port.removeHandler(bootstrapChannel);
 }

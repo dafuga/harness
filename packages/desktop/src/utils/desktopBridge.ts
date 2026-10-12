@@ -9,13 +9,23 @@ interface BridgeContext {
 	providers: ProviderDiscoveryService;
 	runs: DesktopRunService;
 	choose: () => Promise<string | null>;
+	/** False once the client this bridge serves has ended: nothing more is written for it. */
+	alive?: () => boolean;
 }
-async function writable(session: ProjectSessionService) {
-	if (session.busy) throw new Error('Wait for the current run before changing planning artifacts.');
-	return session.mutable();
+async function writable(context: BridgeContext) {
+	const { session } = context;
+	if (session.busy || session.arbiter.held(session.root))
+		throw new Error('Wait for the current run before changing planning artifacts.');
+	const project = await session.mutable();
+	if (context.alive && !context.alive()) throw new Error('This session has ended.');
+	return project;
+}
+/** Planning writes of one repository happen one at a time, whichever client asks. */
+function exclusive<T>(session: ProjectSessionService, work: () => Promise<T>): Promise<T> {
+	return session.arbiter.exclusive(session.requireProject().root, work);
 }
 async function thread(context: BridgeContext, input: Parameters<DesktopBridge['openThread']>[0]) {
-	const p = await writable(context.session),
+	const p = await writable(context),
 		plan = (await p.planning.plans(p.revision.commit)).find((item) => item.id === input.entityId);
 	if (!plan) {
 		const unit = (await p.source.units(p.revision.commit)).find((u) => u.id === input.entityId);
@@ -31,7 +41,7 @@ async function source(context: BridgeContext, input: Parameters<DesktopBridge['s
 	return adapter.source(unit, input.commit, input.path);
 }
 async function create(context: BridgeContext, input: Parameters<DesktopBridge['createPlan']>[0]) {
-	const p = await writable(context.session),
+	const p = await writable(context),
 		plan = await p.planning.createPlan(input),
 		revision = await p.source.revision({ branch: p.revision.branch, commit: null });
 	return p.catalog.entity(plan.id, revision.commit);
@@ -61,11 +71,12 @@ export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRu
 		entity: (input) => session.requireProject().catalog.entity(input.entityId, input.commit),
 		source: (input) => source(context, input),
 		image: (input) => new ProjectImageCacheService(session).read(input),
-		createPlan: (input) => create(context, input),
-		openThread: (input) => thread(context, input),
+		createPlan: (input) => exclusive(session, () => create(context, input)),
+		openThread: (input) => exclusive(session, () => thread(context, input)),
 		messages: (input) =>
 			session.requireProject().planning.messages(input.entityId, input.threadId, input.commit),
-		approve: async (input) => (await writable(session)).planning.approve(input),
+		approve: (input) =>
+			exclusive(session, async () => (await writable(context)).planning.approve(input)),
 		providers: () => providers.list(),
 		startRun: (input) => runs.start(input),
 		cancelRun: async (input) => runs.cancel(input.runId)

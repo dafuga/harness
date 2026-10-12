@@ -1,5 +1,6 @@
 import type { DesktopBridge } from '../../models/DesktopBridge.types';
 import type { Category, EntityDetail, ProjectSnapshot } from '../../models/Desktop.types';
+import type { RemotePorts } from '../../models/Environment.types';
 import type { DesktopProject, ProjectCapabilities } from '../../models/ProjectContext.types';
 import { cacheStatus, type OfflineView } from '../../utils/cacheStatus';
 import { loadWorkspace, type LoadedWorkspace } from '../../utils/loadWorkspace';
@@ -24,23 +25,29 @@ class WorkspaceState {
 	busy = $state(false);
 	bridge: DesktopBridge | undefined;
 	/** Whether the bridge can add a folder of this device as a project. */
-	local = true;
+	local = $state(true);
+	/** The control port of the environment: phone access on a desktop, the computer on a phone. */
+	remote = $state.raw<RemotePorts>({});
 	/** The project a navigation is under way to; the one the bridge was last told to select. */
 	target: string | null = null;
 	readonly selection = { id: null as string | null };
 	private serial = 0;
+	private listing = 0;
 	private queue: Promise<unknown> = Promise.resolve();
 	private release: (() => void) | undefined;
 	/** Cache events are heard from here on; connecting nothing ends the subscription. */
-	connect(value: DesktopBridge | undefined, options: { local?: boolean } = {}) {
+	connect(value: DesktopBridge | undefined, options: { local?: boolean } & RemotePorts = {}) {
 		this.release?.();
 		this.bridge = value;
 		this.local = options.local ?? true;
+		const { host, phone, links } = options;
+		this.remote = { host, phone, links };
 		this.release = value?.onCacheStatus?.((event) => cacheStatus(this, event));
 	}
-	/** A read that is under way is no longer shown when it answers. */
+	/** A read or a listing that is under way is no longer shown when it answers. */
 	invalidate() {
 		this.serial++;
+		this.listing++;
 		this.busy = false;
 	}
 	get projectId(): string | null {
@@ -110,10 +117,12 @@ class WorkspaceState {
 	}
 	async loadProjects() {
 		if (!this.bridge) return;
+		const listing = ++this.listing;
 		try {
-			this.projects = await listedProjects(this.bridge);
+			const listed = await listedProjects(this.bridge);
+			if (listing === this.listing) this.projects = listed;
 		} catch (cause) {
-			this.error = String(cause);
+			if (listing === this.listing) this.error = String(cause);
 		}
 	}
 	async refresh() {

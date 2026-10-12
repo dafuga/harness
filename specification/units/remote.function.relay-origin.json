@@ -1,0 +1,69 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.relay-origin",
+	"kind": "function",
+	"title": "relayOrigin",
+	"responsibility": "Owns the relayOrigin shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/utils/relayOrigin.ts"],
+		"symbols": ["relayOrigin", "relaySocketUrl"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "relayOrigin.value",
+				"type": "string | undefined"
+			},
+			{
+				"name": "relaySocketUrl.origin",
+				"type": "string"
+			},
+			{
+				"name": "relaySocketUrl.hostId",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "relayOrigin",
+				"type": "string | null"
+			},
+			{
+				"name": "relaySocketUrl",
+				"type": "string"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.remote-identity",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/relayOrigin.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/relayOrigin.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

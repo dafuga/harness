@@ -1,3 +1,5 @@
+import { remoteVerificationScopes } from './remote-verification-scopes';
+
 export interface VerificationTarget {
 	scenario: string;
 	package: string;
@@ -6,12 +8,13 @@ export interface VerificationTarget {
 	tests: Record<string, string>;
 	states: string[];
 }
-interface Scope {
+export interface VerificationScope {
 	package: string;
 	vitest: Record<string, Record<string, string>>;
 	playwright: Record<string, string[]>;
 }
-const scopes: Record<string, Scope> = {
+const scopes: Record<string, VerificationScope> = {
+	...remoteVerificationScopes,
 	'planning-artifacts': {
 		package: 'planning',
 		vitest: {

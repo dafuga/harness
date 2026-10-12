@@ -51,7 +51,7 @@
 	"scripts": {
 		"dev": "bun run src/index.ts",
 		"build": "bun run build:kernel && bun run build:cli && bun run build:api && bun run --cwd packages/reports build && bun scripts/package-reports.ts && bun run build:picker",
-		"check": "bun run format:check && bun run typecheck && bun run lint && bun run check:kernel && bun run build:kernel && bun run test:unit && bun run test:e2e && bun run build && bun run test:package && bun run dev -- audit . && bun run dev -- units check && bun run --cwd packages/reports check && bun run check:planning && bun run check:desktop && bun run check:collaboration && bun run check:hub",
+		"check": "bun run format:check && bun run typecheck && bun run lint && bun run check:kernel && bun run build:kernel && bun run test:unit && bun run test:e2e && bun run build && bun run test:package && bun run dev -- audit . && bun run dev -- units check && bun run --cwd packages/reports check && bun run check:planning && bun run check:desktop && bun run check:collaboration && bun run check:hub && bun run check:remote && bun run check:relay",
 		"typecheck": "tsc --noEmit",
 		"test": "bun run test:unit",
 		"test:unit": "vitest run --exclude \"test/**/*.e2e.test.ts\" --exclude \"test/packaged-reports.e2e.test.ts\"",
@@ -75,7 +75,10 @@
 		"build:api": "bun scripts/build-api.ts",
 		"check:kernel": "cargo fmt --check && cargo clippy --locked --all-targets -- -D warnings && cargo test --locked",
 		"check:collaboration": "HARNESS_CLI_PATH=../../src/index.ts bun run --cwd packages/collaboration check",
-		"check:hub": "HARNESS_CLI_PATH=../../src/index.ts bun run --cwd packages/hub check && bun run --cwd packages/hub test:e2e"
+		"check:hub": "HARNESS_CLI_PATH=../../src/index.ts bun run --cwd packages/hub check && bun run --cwd packages/hub test:e2e",
+		"check:remote": "HARNESS_CLI_PATH=../../src/index.ts bun run --cwd packages/remote check",
+		"check:relay": "HARNESS_CLI_PATH=../../src/index.ts bun run --cwd packages/relay check",
+		"check:ios": "bun run --cwd packages/desktop ios:check:vectors && bun run --cwd packages/desktop ios:check:native && bun run --cwd packages/desktop ios:check:limits"
 	},
 	"dependencies": {
 		"@anthropic-ai/claude-agent-sdk": "^0.3.292",

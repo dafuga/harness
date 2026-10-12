@@ -1,0 +1,75 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.remote-devices",
+	"kind": "component",
+	"title": "RemoteDevices",
+	"responsibility": "Owns the RemoteDevices Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/RemoteDevices.svelte"],
+		"symbols": ["RemoteDevices"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "RemoteDevices.devices",
+				"type": "RemoteDeviceInfo[]"
+			},
+			{
+				"name": "RemoteDevices.projects",
+				"type": "{ id: string; name: string }[]"
+			},
+			{
+				"name": "RemoteDevices.store",
+				"type": "RemoteHost"
+			}
+		],
+		"outputs": [
+			{
+				"name": "RemoteDevices",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.remote-labels",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.time-label",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.environment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.remote-host",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/RemoteDevices.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/RemoteDevices.svelte"
+			}
+		]
+	},
+	"scenarios": ["remote-mobile-ui"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

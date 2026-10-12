@@ -1,29 +1,48 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import type { DesktopBridge } from '../models/DesktopBridge.types';
+	import { onMount, setContext } from 'svelte';
+	import { createRemoteHostStore } from '../lib/stores/remoteHost.svelte';
+	import { createRemotePhoneStore } from '../lib/stores/remotePhone.svelte';
 	import { createWorkspaceStore } from '../lib/stores/workspace.svelte';
+	import { remoteContext } from '../models/Environment.types';
+	import type { EnvironmentHost, EnvironmentKind } from '../models/Environment.types';
+	import { selectEnvironment } from '../utils/selectEnvironment';
 	import { isWorkspacePath } from '../utils/workspaceRoute';
 	import HostedConnection from '../components/HostedConnection.svelte';
 	import ProjectGate from '../components/ProjectGate.svelte';
+	import RemoteConnection from '../components/RemoteConnection.svelte';
 	import WorkspaceShell from '../components/WorkspaceShell.svelte';
 	import '../lib/styles/workspace.css';
 	import '../lib/styles/design.css';
 	const workspace = createWorkspaceStore();
+	const remote = {
+		host: createRemoteHostStore(workspace),
+		phone: createRemotePhoneStore(workspace)
+	};
+	setContext(remoteContext, remote);
 	let available = $state(false);
+	let kind = $state<EnvironmentKind>('web');
 	onMount(() => {
-		const bridge = (window as Window & { harness?: DesktopBridge }).harness;
-		workspace.connect(bridge);
-		available = Boolean(bridge);
+		/** One adapter per runtime: the desktop preload, the phone's native plugin, or neither. */
+		const environment = selectEnvironment(window as unknown as EnvironmentHost);
+		kind = environment.kind;
+		document.documentElement.dataset.environment = kind;
+		workspace.connect(environment.bridge, environment);
+		available = Boolean(environment.bridge);
 		const show = () => {
 			if (isWorkspacePath(location.pathname)) void workspace.navigate(location.pathname, false);
 		};
-		if (bridge) {
+		/** A phone reads nothing before its computer is reached; its connection starts the reads. */
+		if (environment.bridge && !environment.phone) {
 			void workspace.loadProjects();
 			show();
 		}
+		void remote.host.start();
+		void remote.phone.start();
 		window.addEventListener('popstate', show);
 		return () => {
 			window.removeEventListener('popstate', show);
+			remote.host.dispose();
+			remote.phone.dispose();
 			workspace.connect(undefined);
 		};
 	});
@@ -35,9 +54,12 @@
 >
 {#if workspace.snapshot}<WorkspaceShell {workspace} />{:else}<ProjectGate
 		{available}
+		local={kind !== 'capacitor'}
 		busy={workspace.busy}
 		open={() => void workspace.openProject()}
 		projects={workspace.projects}
 		choose={(projectId) => void workspace.switchProject(projectId)}
-		>{#if available}<HostedConnection {workspace} />{/if}</ProjectGate
+		>{#if available}<HostedConnection {workspace} /><RemoteConnection
+				{workspace}
+			/>{/if}</ProjectGate
 	>{#if workspace.error}<p class="error" role="alert">{workspace.error}</p>{/if}{/if}

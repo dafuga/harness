@@ -2,6 +2,7 @@
 	import type { Workspace } from '../lib/stores/workspace.svelte';
 	import { timeLabel } from '../utils/timeLabel';
 	import HostedConnection from './HostedConnection.svelte';
+	import RemoteConnection from './RemoteConnection.svelte';
 	let { workspace }: { workspace: Workspace } = $props();
 	const place = $derived(
 		workspace.capabilities.source === 'github' ? 'Shared project · GitHub' : 'Local project'
@@ -31,5 +32,7 @@
 	<span>{state}</span>{#if cache}<span class="cache-state">{cache}</span>{/if}<HostedConnection
 		{workspace}
 		compact
-	/><span>{workspace.snapshot?.revision.commit.slice(0, 7)}</span>
+	/><RemoteConnection {workspace} compact /><span
+		>{workspace.snapshot?.revision.commit.slice(0, 7)}</span
+	>
 </footer>

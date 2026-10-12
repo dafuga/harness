@@ -4,6 +4,7 @@ import type { ProviderDiscoveryService } from '../services/ProviderDiscoveryServ
 import type { RunEvent, RunRequest } from '../models/DesktopBridge.types';
 import type { RunContext } from '../models/RunContext.types';
 import type { ImageGenerator } from '../models/AgentRunner.types';
+import { RunCancelled } from '../models/AgentRunner.types';
 import { approvalMatch } from './approvalMatch';
 interface Preparation {
 	session: ProjectSessionService;
@@ -45,6 +46,8 @@ export async function prepareRun(
 		imageModel: await imageModel(preparation, request, entity.category),
 		signal: controller.signal
 	};
+	/* Cancelled or revoked while it was prepared: nothing is written and no CLI starts. */
+	if (controller.signal.aborted) throw new RunCancelled();
 	await project.planning.appendMessage(messageFor(context, 'user', request.text));
 	return context;
 }

@@ -1,0 +1,218 @@
+{
+	"schemaVersion": 1,
+	"id": "remote-mobile-ui",
+	"title": "Shared remote connection controls and cached phone workspace",
+	"kind": "ui",
+	"units": [
+		"desktop.adapter.capacitor-bridge",
+		"desktop.adapter.capacitor-environment",
+		"desktop.adapter.electron-environment",
+		"desktop.component.project-gate",
+		"desktop.component.project-switcher",
+		"desktop.component.remote-approval",
+		"desktop.component.remote-connection",
+		"desktop.component.remote-devices",
+		"desktop.component.remote-host-panel",
+		"desktop.component.remote-phone-panel",
+		"desktop.component.status-bar",
+		"desktop.function.select-environment",
+		"desktop.model.environment-types",
+		"desktop.store.remote-host",
+		"desktop.store.remote-phone",
+		"desktop.store.workspace",
+		"desktop.style.remote"
+	],
+	"states": [
+		{
+			"id": "phone-interaction",
+			"title": "phone interaction",
+			"coverage": "required"
+		},
+		{
+			"id": "desktop-interaction",
+			"title": "desktop interaction",
+			"coverage": "required"
+		},
+		{
+			"id": "cached-interaction",
+			"title": "cached interaction",
+			"coverage": "required"
+		},
+		{
+			"id": "link-interaction",
+			"title": "link interaction",
+			"coverage": "required"
+		},
+		{
+			"id": "phone-start",
+			"title": "phone start",
+			"coverage": "required"
+		},
+		{
+			"id": "phone-pending",
+			"title": "phone pending",
+			"coverage": "required"
+		},
+		{
+			"id": "phone-connected",
+			"title": "phone connected",
+			"coverage": "required"
+		},
+		{
+			"id": "phone-workspace",
+			"title": "phone workspace",
+			"coverage": "required"
+		},
+		{
+			"id": "phone-offline",
+			"title": "phone offline",
+			"coverage": "required"
+		},
+		{
+			"id": "phone-revoked",
+			"title": "phone revoked",
+			"coverage": "required"
+		},
+		{
+			"id": "desktop-start",
+			"title": "desktop start",
+			"coverage": "required"
+		},
+		{
+			"id": "desktop-approval",
+			"title": "desktop approval",
+			"coverage": "required"
+		},
+		{
+			"id": "desktop-access",
+			"title": "desktop access",
+			"coverage": "required"
+		},
+		{
+			"id": "tablet-interaction",
+			"title": "Tablet workspace and approval layout",
+			"coverage": "required"
+		},
+		{
+			"id": "tablet-phone-workspace",
+			"title": "tablet phone workspace",
+			"coverage": "required"
+		},
+		{
+			"id": "tablet-desktop-approval",
+			"title": "tablet desktop approval",
+			"coverage": "required"
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 1440,
+			"height": 900
+		},
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 844
+		},
+		{
+			"id": "tablet",
+			"width": 820,
+			"height": 1180
+		}
+	],
+	"tests": [
+		{
+			"id": "phone",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-remote-phone.spec.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 240000
+		},
+		{
+			"id": "host",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-remote-host.spec.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 240000
+		},
+		{
+			"id": "cache",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-remote-cache.spec.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 240000
+		},
+		{
+			"id": "links",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-remote-links.spec.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 240000
+		},
+		{
+			"id": "tablet",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-remote-tablet.spec.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 240000
+		}
+	],
+	"evidence": [
+		{
+			"id": "remote-mobile-ui-output",
+			"kind": "output",
+			"states": [
+				"phone-interaction",
+				"desktop-interaction",
+				"cached-interaction",
+				"link-interaction",
+				"tablet-interaction"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "remote-screens-mobile",
+			"kind": "screenshot",
+			"states": [
+				"phone-start",
+				"phone-pending",
+				"phone-connected",
+				"phone-workspace",
+				"phone-offline",
+				"phone-revoked"
+			],
+			"viewports": ["mobile"],
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "viewport",
+			"required": true
+		},
+		{
+			"id": "remote-screens-desktop",
+			"kind": "screenshot",
+			"states": ["desktop-start", "desktop-approval", "desktop-access"],
+			"viewports": ["desktop"],
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "viewport",
+			"required": true
+		},
+		{
+			"id": "remote-screens-tablet",
+			"kind": "screenshot",
+			"states": ["tablet-phone-workspace", "tablet-desktop-approval"],
+			"viewports": ["tablet"],
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "viewport",
+			"required": true
+		}
+	]
+}

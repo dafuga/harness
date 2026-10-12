@@ -1,0 +1,70 @@
+{
+	"schemaVersion": 1,
+	"id": "relay.service.rate-limit",
+	"kind": "service",
+	"title": "RateLimitService",
+	"responsibility": "Owns the RateLimitService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/relay/src/services/RateLimitService.ts"],
+		"symbols": [
+			"RateStore",
+			"RateLimitService",
+			"RateLimitService.constructor",
+			"RateLimitService.hit"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "RateLimitService.constructor.store",
+				"type": "RateStore"
+			},
+			{
+				"name": "RateLimitService.hit.bucket",
+				"type": "RateBucket"
+			},
+			{
+				"name": "RateLimitService.hit.limit",
+				"type": "number"
+			}
+		],
+		"outputs": [
+			{
+				"name": "RateLimitService.hit",
+				"type": "boolean"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "relay.config.relay",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.model.relay-host-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/relay/src/services/RateLimitService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/relay/src/services/RateLimitService.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

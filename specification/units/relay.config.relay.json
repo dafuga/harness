@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "relay.config.relay",
+	"kind": "config",
+	"title": "relayConfig",
+	"responsibility": "Owns the relayConfig typed configuration.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/relay/src/config/relayConfig.ts"],
+		"symbols": ["relayConfig"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "relayConfig",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/relay/src/config/relayConfig.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/relay/src/config/relayConfig.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

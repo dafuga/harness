@@ -8,32 +8,24 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/desktopIpc.ts"],
-		"symbols": ["trustedSender", "desktopIpc"]
+		"symbols": ["bootstrapChannel", "DesktopIpcPort", "desktopIpc"]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "trustedSender.event",
-				"type": "Pick<IpcMainInvokeEvent, 'sender' | 'senderFrame'>"
+				"name": "desktopIpc.port",
+				"type": "DesktopIpcPort"
 			},
 			{
-				"name": "trustedSender.window",
-				"type": "BrowserWindow"
-			},
-			{
-				"name": "desktopIpc.window",
-				"type": "BrowserWindow"
-			},
-			{
-				"name": "desktopIpc.bridge",
-				"type": "Omit<DesktopBridge, 'onRunEvent'>"
+				"name": "desktopIpc.bootstrap",
+				"type": "(event: unknown) => LocalBootstrap | null"
 			}
 		],
 		"outputs": [
 			{
-				"name": "trustedSender",
-				"type": "boolean"
+				"name": "bootstrapChannel",
+				"type": "unknown"
 			},
 			{
 				"name": "desktopIpc",
@@ -49,17 +41,7 @@
 	},
 	"dependencies": [
 		{
-			"unit": "desktop.model.desktop-bridge-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "desktop.validator.ipc-request",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "desktop.validator.navigation",
+			"unit": "remote.entry.index",
 			"via": "import",
 			"origin": "derived"
 		}
@@ -74,7 +56,7 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"scenarios": ["desktop-native", "desktop-project-runs", "remote-desktop-boundaries"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

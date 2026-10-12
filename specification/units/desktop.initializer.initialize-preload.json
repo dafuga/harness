@@ -23,12 +23,32 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.function.desktop-ipc",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.remote-binary",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.desktop-bridge-types",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "desktop.model.project-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.local-transport-client",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.entry.index",
 			"via": "import",
 			"origin": "derived"
 		}

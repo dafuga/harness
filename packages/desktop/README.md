@@ -88,4 +88,24 @@ Screenshots are opt-in with `TAKE_SCREENSHOT=true` and go to `test-results/`; do
 
 The separate core explorer task still owns verification-index and runtime-screenshot integration. Until that integration supplies complete evidence for the selected entity/revision, the desktop must show unavailable or unverified states. Design approval, a readable PNG and agent completion cannot fill that gap.
 
+## iOS app on a simulator
+
+The iOS shell under `ios/` (Capacitor 7, bundle `com.dafuga.harness`) loads this same renderer. The commands below run on a simulator of this Mac only. A build for a device needs a signing team and provisioning; none is named here and no such build is made.
+
+```sh
+bun run ios:build:simulator --sync       # Debug; --release for Release; --sync rebuilds and copies the renderer first
+bun run ios:check:vectors                # Swift reproduces the crypto vectors of the protocol
+bun run ios:check:native                 # the app's real Swift logic in a driver, Debug and Release
+bun run ios:check:limits                 # size limits of the Swift source, which harness audit cannot read
+bunx vite-node scripts/ios-acceptance.ts # TEST ONLY native acceptance, several minutes
+```
+
+Every simulator product is signed ad hoc with the entitlements of `ios/App/Simulator.entitlements`, the app's identifier alone. Xcode would otherwise put a team of whatever account is signed in to it into the product; the build reads each product back and fails if it names a team, an account or a provisioning profile, if it allows plain http to this machine, or if it can be inspected. Without a signature the simulator's Keychain refuses to keep a pairing (`-34018`).
+
+`--fixture` is TEST ONLY and Debug only; with `--release` it is refused before anything is built. It leaves the Debug product as built and makes a copy in `.cache/ios/fixture/` that may reach a relay on this machine and be read by WebKit's inspector. That copy accepts such a relay only when it is started with `-HarnessRemoteLoopback`; a Release product has no code that does. `bun run remote:fixture` starts a disposable computer to pair it with by hand.
+
+The native acceptance needs nothing running. It removes the earlier products and builds them again from the working tree, starts a fixture computer of its own on free ports of `127.0.0.1` (the real relay Worker in workerd and the real host service over a synthetic project), and creates, erases and boots a simulator of its own named `Harness Native Acceptance`; no other simulator and no other fixture is touched. It then drives the app's real web view through WebKit's inspector (`appium-remote-debugger`): pairing, Keychain, relaunch, the design image, lock state, saved copies while the computer is away, reconnect, revocation, the safe area and status bar of a scrolled page, and the refusal of a Release product in the page and in Swift. It exits with 1 when any assertion fails.
+
+Its screenshots and `report.json` go to `work/mobile/ios-acceptance/`, which Git ignores. The report names the revision, a digest over each set of source files it was made from (renderer, native shell, fixture computer), the digest of the renderer that was built and is in every product, each product's executable and signature, and every assertion. A file of that source that changes while the run is going fails the run and is named, so run it in a tree nobody else is editing. It is automation by a tool: nothing the system draws is pressed, so the "Open in Harness" prompt of a pairing link is not covered, and it proves nothing about a deployed relay, a real computer, a physical phone or a build signed for a device. It prints no pairing code and no key.
+
 See the [feature specification](specification/features/planned/image-threads.md) and [UI/native loop evidence](../../specification/loops/harness-image-threads/desktop-ui-native-evidence.md).

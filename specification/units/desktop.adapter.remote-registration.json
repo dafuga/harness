@@ -1,0 +1,76 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.adapter.remote-registration",
+	"kind": "adapter",
+	"title": "RemoteRegistrationAdapter",
+	"responsibility": "Owns the RemoteRegistrationAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/adapters/RemoteRegistrationAdapter.ts"],
+		"symbols": [
+			"RemoteRegistrationAdapterConfig",
+			"RemoteRegistrationAdapter",
+			"RemoteRegistrationAdapter.constructor",
+			"RemoteRegistrationAdapter.register"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "RemoteRegistrationAdapter.constructor.config",
+				"type": "RemoteRegistrationAdapterConfig"
+			},
+			{
+				"name": "RemoteRegistrationAdapter.register.input",
+				"type": "RemoteHostRegisterInput"
+			}
+		],
+		"outputs": [
+			{
+				"name": "RemoteRegistrationAdapter.register",
+				"type": "Promise<RemoteHostRegistration>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.adapter.hosted-http",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.validator.hosted-failure",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/adapters/RemoteRegistrationAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/adapters/RemoteRegistrationAdapter.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

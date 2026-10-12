@@ -3,6 +3,7 @@ import type { RemoteProjectPort } from '../models/ProjectContext.types';
 import { CommentOutboxService } from './CommentOutboxService';
 import type { ProjectionCacheService } from './ProjectionCacheService';
 import { ProjectRegistryService } from './ProjectRegistryService';
+import { RepositoryArbiterService } from './RepositoryArbiterService';
 import { realpath } from 'node:fs/promises';
 import { basename } from 'node:path';
 import { GitSourceAdapter } from '../adapters/GitSourceAdapter';
@@ -21,6 +22,8 @@ export class ProjectSessionService {
 	readonly cache?: ProjectionCacheService;
 	readonly remote?: RemoteProjectPort;
 	readonly auth?: NativeAuthService;
+	/** Shared by every session of this computer: who runs in a repository, and write order. */
+	readonly arbiter: RepositoryArbiterService;
 	constructor(
 		options: {
 			registry?: ProjectRegistryService;
@@ -28,6 +31,7 @@ export class ProjectSessionService {
 			cache?: ProjectionCacheService;
 			remote?: RemoteProjectPort;
 			auth?: NativeAuthService;
+			arbiter?: RepositoryArbiterService;
 		} = {}
 	) {
 		this.registry = options.registry ?? new ProjectRegistryService();
@@ -35,6 +39,7 @@ export class ProjectSessionService {
 		this.cache = options.cache;
 		this.remote = options.remote;
 		this.auth = options.auth;
+		this.arbiter = options.arbiter ?? new RepositoryArbiterService();
 	}
 	assertProject(projectId?: string) {
 		if (projectId !== undefined && projectId !== this.projectId)

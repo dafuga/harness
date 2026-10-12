@@ -33,6 +33,26 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.adapter.native-session",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.adapter.relay-socket",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.adapter.remote-host-store",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.adapter.remote-registration",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.function.desktop-ipc",
 			"via": "import",
 			"origin": "derived"
@@ -43,7 +63,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.model.desktop-bridge-types",
+			"unit": "desktop.function.trusted-sender",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -53,12 +73,17 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.service.desktop-bridge",
+			"unit": "desktop.service.local-client",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.service.desktop-run",
+			"unit": "desktop.service.local-operations",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.local-transport",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -73,11 +98,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.service.project-session",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "desktop.service.projection-cache",
 			"via": "import",
 			"origin": "derived"
@@ -88,7 +108,27 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.service.remote-host",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.remote-lifecycle",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.repository-arbiter",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.validator.navigation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.entry.index",
 			"via": "import",
 			"origin": "derived"
 		}

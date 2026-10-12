@@ -2,7 +2,7 @@
 	"schemaVersion": 1,
 	"setup": [
 		{
-			"command": "bun install --frozen-lockfile",
+			"command": "bun install --frozen-lockfile --backend=copyfile",
 			"timeoutMs": 600000
 		},
 		{
@@ -16,6 +16,10 @@
 		{
 			"command": "bun src/index.ts verify stamp packages/desktop/build",
 			"timeoutMs": 60000
+		},
+		{
+			"command": "bun run --cwd packages/desktop cap copy ios",
+			"timeoutMs": 120000
 		}
 	],
 	"link": [],
@@ -49,7 +53,42 @@
 		"packages/planning/node_modules/",
 		"packages/planning/coverage/",
 		"packages/planning/test-results/",
-		"packages/planning/playwright-report/"
+		"packages/planning/playwright-report/",
+		"packages/remote/.cache/",
+		"packages/remote/coverage/",
+		"packages/remote/node_modules/",
+		"packages/remote/dist/",
+		"packages/remote/build/",
+		"packages/remote/.svelte-kit/",
+		"packages/remote/test-results/",
+		"packages/remote/playwright-report/",
+		"packages/relay/.cache/",
+		"packages/relay/coverage/",
+		"packages/relay/node_modules/",
+		"packages/relay/dist/",
+		"packages/relay/build/",
+		"packages/relay/.svelte-kit/",
+		"packages/relay/test-results/",
+		"packages/relay/playwright-report/",
+		"packages/collaboration/.cache/",
+		"packages/collaboration/coverage/",
+		"packages/collaboration/node_modules/",
+		"packages/collaboration/dist/",
+		"packages/collaboration/build/",
+		"packages/collaboration/.svelte-kit/",
+		"packages/collaboration/test-results/",
+		"packages/collaboration/playwright-report/",
+		"packages/hub/.cache/",
+		"packages/hub/coverage/",
+		"packages/hub/node_modules/",
+		"packages/hub/dist/",
+		"packages/hub/build/",
+		"packages/hub/.svelte-kit/",
+		"packages/hub/test-results/",
+		"packages/hub/playwright-report/",
+		"packages/desktop/ios/App/App/public/",
+		"packages/desktop/ios/App/App/capacitor.config.json",
+		"packages/desktop/ios/App/App/config.xml"
 	],
 	"runners": {
 		"vitest": "bun x vitest run {target}",

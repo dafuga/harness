@@ -1,0 +1,60 @@
+import { registerPlugin } from '@capacitor/core';
+import { CapacitorBridgeAdapter } from './CapacitorBridgeAdapter';
+import type {
+	Environment,
+	PairingLinks,
+	RemoteMobileControl,
+	RemoteNativeEvents,
+	RemoteNativePlugin,
+	RemoteNativeStatus
+} from '../models/Environment.types';
+
+export interface CapacitorEnvironmentAdapterConfig {
+	/** A test hands in a plugin; the app registers the native one. */
+	plugin?: RemoteNativePlugin;
+}
+
+export const remotePluginName = 'HarnessRemote';
+
+/**
+ * The iOS shell. One native plugin gives both the product interface and this phone's connection
+ * to a computer; the page holds no socket, key or credential of its own.
+ */
+export class CapacitorEnvironmentAdapter {
+	private readonly plugin: RemoteNativePlugin;
+	constructor(config: CapacitorEnvironmentAdapterConfig = {}) {
+		this.plugin = config.plugin ?? registerPlugin<RemoteNativePlugin>(remotePluginName);
+	}
+
+	connect(): Environment {
+		const plugin = this.plugin;
+		const bridge = new CapacitorBridgeAdapter({ plugin });
+		/** What the bridge offers follows each status before anyone else hears of it. */
+		const note = (status: RemoteNativeStatus) => {
+			bridge.allow(status);
+			return status;
+		};
+		const phone: RemoteMobileControl = {
+			status: async () => note(await plugin.status()),
+			pair: async (input) => note(await plugin.pair(input)),
+			disconnect: async () => note(await plugin.disconnect()),
+			onStatus: (listener) => this.listen('status', (status) => listener(note(status)))
+		};
+		/** Only the text of a link is handed on; whether it is one is decided where it is used. */
+		const links: PairingLinks = {
+			onPairingLink: (listener) =>
+				this.listen('pairingLink', (value) => {
+					if (typeof value?.link === 'string') listener(value.link);
+				})
+		};
+		return { kind: 'capacitor', bridge: bridge.connect(), local: false, phone, links };
+	}
+
+	private listen<K extends keyof RemoteNativeEvents>(
+		name: K,
+		listener: (value: RemoteNativeEvents[K]) => void
+	): () => void {
+		const handle = this.plugin.addListener(name, listener);
+		return () => void handle.then((item) => item.remove());
+	}
+}

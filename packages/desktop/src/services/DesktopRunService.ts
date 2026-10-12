@@ -7,6 +7,7 @@ import type { ProviderDiscoveryService } from './ProviderDiscoveryService';
 import { PlanRunService } from './PlanRunService';
 import { ChangeRunService } from './ChangeRunService';
 import { prepareRun, recordRunFailure } from '../utils/prepareRun';
+/** The runs of one client. Its events and its cancel belong to that client alone. */
 export class DesktopRunService {
 	private active: { id: string; controller: AbortController } | null = null;
 	constructor(
@@ -16,27 +17,21 @@ export class DesktopRunService {
 		private emit: (event: RunEvent) => void
 	) {}
 	async start(request: RunRequest): Promise<{ runId: string }> {
-		if (this.session.busy) throw new Error('A run is already active in this project.');
+		const root = this.session.root;
+		if (this.session.busy || !this.claim(root))
+			throw new Error('A run is already active in this project.');
 		this.session.busy = true;
 		try {
 			const controller = new AbortController();
-			const context = await prepareRun(
-				{
-					session: this.session,
-					providers: this.providers,
-					generator: this.generator,
-					emit: this.emit
-				},
-				request,
-				controller
-			);
+			this.active = { id: '', controller };
+			const context = await this.prepared(request, controller);
 			this.active = { id: context.id, controller };
 			setTimeout(() => {
 				void this.execute(context);
 			}, 0);
 			return { runId: context.id };
 		} catch (error) {
-			this.session.busy = false;
+			this.release(root);
 			throw error;
 		}
 	}
@@ -48,6 +43,21 @@ export class DesktopRunService {
 		if (this.active?.id !== runId) return false;
 		this.active.controller.abort();
 		return true;
+	}
+	/** One run per repository across every client of this computer. Cancellable while preparing. */
+	private claim(root: string | null): boolean {
+		return root === null || this.session.arbiter.hold(root, this);
+	}
+	private release(root: string | null): void {
+		this.active = null;
+		this.session.busy = false;
+		if (root !== null) this.session.arbiter.release(root, this);
+	}
+	/** The first write of a run waits for a planning write another client still has in flight. */
+	private prepared(request: RunRequest, controller: AbortController): Promise<RunContext> {
+		const { session, providers, generator, emit } = this;
+		const prepare = () => prepareRun({ session, providers, generator, emit }, request, controller);
+		return session.root === null ? prepare() : session.arbiter.exclusive(session.root, prepare);
 	}
 	private async execute(context: RunContext): Promise<void> {
 		try {
@@ -73,8 +83,7 @@ export class DesktopRunService {
 					message: error instanceof Error ? error.message : 'Run failed.'
 				});
 		} finally {
-			this.active = null;
-			this.session.busy = false;
+			this.release(context.root);
 		}
 	}
 }

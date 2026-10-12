@@ -1,0 +1,131 @@
+{
+	"schemaVersion": 1,
+	"id": "relay.function.host-runtime",
+	"kind": "function",
+	"title": "hostRuntime",
+	"responsibility": "Owns the hostRuntime shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/relay/src/utils/hostRuntime.ts"],
+		"symbols": ["HostRuntime", "hostRuntime"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hostRuntime.state",
+				"type": "DurableObjectState"
+			},
+			{
+				"name": "hostRuntime.env",
+				"type": "RelayEnv"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hostRuntime",
+				"type": "HostRuntime"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "relay.adapter.host-sockets",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.adapter.host-storage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.controller.host-object",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.controller.manage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.controller.pairing",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.model.relay-host-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.service.device-revocation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.service.host-command",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.service.host-link",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.service.host-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.service.pairing-access",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.service.pairing-exchange",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.service.pairing-offer",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.service.rate-limit",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.service.socket-accept",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.service.socket-frame",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/relay/src/utils/hostRuntime.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/relay/src/utils/hostRuntime.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

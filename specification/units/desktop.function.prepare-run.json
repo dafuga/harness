@@ -64,6 +64,10 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			},
+			{
+				"name": "RunCancelled",
+				"type": "thrown"
 			}
 		]
 	},
@@ -109,7 +113,7 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"scenarios": ["desktop-native", "desktop-project-runs", "remote-desktop-boundaries"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

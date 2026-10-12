@@ -1,0 +1,121 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.remote-keys",
+	"kind": "function",
+	"title": "remoteKeys",
+	"responsibility": "Owns the remoteKeys shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/utils/remoteKeys.ts"],
+		"symbols": [
+			"remoteKeys",
+			"sharedSecret",
+			"importRemoteKeys",
+			"exportRemoteKeys",
+			"deriveBytes",
+			"aesKey"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "sharedSecret.privateKey",
+				"type": "CryptoKey"
+			},
+			{
+				"name": "sharedSecret.publicKey",
+				"type": "Uint8Array"
+			},
+			{
+				"name": "importRemoteKeys.stored",
+				"type": "StoredRemoteKeys"
+			},
+			{
+				"name": "exportRemoteKeys.pair",
+				"type": "RemoteKeyPair"
+			},
+			{
+				"name": "deriveBytes.ikm",
+				"type": "Uint8Array"
+			},
+			{
+				"name": "deriveBytes.salt",
+				"type": "Uint8Array"
+			},
+			{
+				"name": "deriveBytes.info",
+				"type": "Uint8Array | string"
+			},
+			{
+				"name": "deriveBytes.length",
+				"type": "number"
+			},
+			{
+				"name": "aesKey.bytes",
+				"type": "Uint8Array"
+			}
+		],
+		"outputs": [
+			{
+				"name": "remoteKeys",
+				"type": "Promise<RemoteKeyPair>"
+			},
+			{
+				"name": "sharedSecret",
+				"type": "Promise<Uint8Array>"
+			},
+			{
+				"name": "importRemoteKeys",
+				"type": "Promise<RemoteKeyPair>"
+			},
+			{
+				"name": "exportRemoteKeys",
+				"type": "Promise<StoredRemoteKeys>"
+			},
+			{
+				"name": "deriveBytes",
+				"type": "Promise<Uint8Array>"
+			},
+			{
+				"name": "aesKey",
+				"type": "Promise<CryptoKey>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.remote-secure-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/remoteKeys.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/remoteKeys.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

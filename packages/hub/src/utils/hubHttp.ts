@@ -56,6 +56,7 @@ const publicErrors: Record<string, number> = {
 	'github-unavailable': 503,
 	'repository-denied': 403,
 	'collaboration-disabled': 503,
+	'remote-disabled': 503,
 	'artifact-corrupt': 409,
 	'blob-integrity': 409,
 	'truncated-tree': 503,

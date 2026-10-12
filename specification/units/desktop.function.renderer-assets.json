@@ -18,12 +18,20 @@
 				"type": "string"
 			},
 			{
+				"name": "rendererPolicy.connect",
+				"type": "unknown"
+			},
+			{
 				"name": "rendererAssets.root",
 				"type": "string"
 			},
 			{
 				"name": "rendererAssets.url",
 				"type": "string"
+			},
+			{
+				"name": "rendererAssets.connect",
+				"type": "unknown"
 			}
 		],
 		"outputs": [

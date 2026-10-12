@@ -6,14 +6,19 @@ import { createHubAuth, createD1AuthStore } from '../lib/server/auth';
 import type { HubAuth } from '../lib/server/auth';
 import { hubCache } from './hubCache';
 import { hubFail } from './hubJson';
+import { hubRemote } from './hubRemote';
+import type { HubRemoteRuntime } from './hubRemote';
 export interface HubApiRuntime {
 	auth: Pick<HubAuth, 'actor' | 'handle'>;
 	connect(): { api: CollaborationApi; projection: HubProjectionService };
+	/** Null or absent when the relay binding or its origin is not configured. */
+	remote?: HubRemoteRuntime | null;
 }
 export function hubRuntime(env: HubEnv): HubApiRuntime {
 	const auth = createHubAuth(env, env.DB ? createD1AuthStore(env.DB) : null);
 	return {
 		auth,
+		remote: hubRemote(env),
 		connect: () => {
 			const repository = {
 				id: Number(env.HARNESS_COLLABORATION_REPOSITORY_ID),

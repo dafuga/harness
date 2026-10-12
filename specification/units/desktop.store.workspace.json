@@ -63,6 +63,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.model.environment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.project-context-types",
 			"via": "import",
 			"origin": "derived"
@@ -78,7 +83,7 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-renderer"],
+	"scenarios": ["desktop-native", "desktop-renderer", "remote-mobile-ui"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

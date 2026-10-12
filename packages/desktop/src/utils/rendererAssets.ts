@@ -11,14 +11,17 @@ const types: Record<string, string> = {
 	'.ico': 'image/x-icon',
 	'.woff2': 'font/woff2'
 };
-export function rendererPolicy(html: string): string {
+/** `connect` names the one address beside the app itself that a page may open: its own socket. */
+export function rendererPolicy(html: string, connect = ''): string {
 	const hashes = [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].map(
 		(m) => "'sha256-" + createHash('sha256').update(m[1]).digest('base64') + "'"
 	);
 	return (
 		"default-src 'self'; script-src 'self' " +
 		hashes.join(' ') +
-		"; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; font-src 'self'; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'none'"
+		"; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; font-src 'self'; connect-src 'self'" +
+		(connect ? ' ' + connect : '') +
+		"; frame-src 'none'; object-src 'none'; base-uri 'none'"
 	);
 }
 function assetPath(url: string): string | null {
@@ -28,7 +31,7 @@ function assetPath(url: string): string | null {
 	if (path.includes('\0') || path.split('/').includes('..')) return null;
 	return path;
 }
-export async function rendererAssets(root: string, url: string): Promise<Response> {
+export async function rendererAssets(root: string, url: string, connect = ''): Promise<Response> {
 	const path = assetPath(url);
 	if (path === null) return new Response('Refused', { status: 403 });
 	let file = resolve(root, '.' + path);
@@ -46,7 +49,7 @@ export async function rendererAssets(root: string, url: string): Promise<Respons
 	return new Response(bytes, {
 		headers: {
 			'Content-Type': types[extname(actual)] ?? 'application/octet-stream',
-			'Content-Security-Policy': rendererPolicy(html ? bytes.toString() : ''),
+			'Content-Security-Policy': rendererPolicy(html ? bytes.toString() : '', connect),
 			'X-Content-Type-Options': 'nosniff'
 		}
 	});

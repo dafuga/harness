@@ -24,7 +24,7 @@
 		"inputs": [
 			{
 				"name": "ProjectSessionService.constructor.options",
-				"type": "{ registry?: ProjectRegistryService; outbox?: CommentOutboxService; cache?: ProjectionCacheService; remote?: RemoteProjectPort; auth?: NativeAuthService; }"
+				"type": "{ registry?: ProjectRegistryService; outbox?: CommentOutboxService; cache?: ProjectionCacheService; remote?: RemoteProjectPort; auth?: NativeAuthService; arbiter?: RepositoryArbiterService; }"
 			},
 			{
 				"name": "ProjectSessionService.assertProject.projectId",
@@ -131,6 +131,11 @@
 			"unit": "desktop.service.projection-cache",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.repository-arbiter",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
@@ -143,7 +148,7 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"scenarios": ["desktop-native", "desktop-project-runs", "remote-desktop-boundaries"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

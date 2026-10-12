@@ -1,0 +1,62 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.session-keys",
+	"kind": "function",
+	"title": "sessionKeys",
+	"responsibility": "Owns the sessionKeys shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/utils/sessionKeys.ts"],
+		"symbols": ["SessionKeyInput", "sessionKeys"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "sessionKeys.input",
+				"type": "SessionKeyInput"
+			}
+		],
+		"outputs": [
+			{
+				"name": "sessionKeys",
+				"type": "Promise<SessionKeys>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.remote-keys",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.remote-secure-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/sessionKeys.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/sessionKeys.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

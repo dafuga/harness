@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"id": "relay.function.read-json-body",
+	"kind": "function",
+	"title": "readJsonBody",
+	"responsibility": "Owns the readJsonBody shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/relay/src/utils/readJsonBody.ts"],
+		"symbols": ["readJsonBody"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "readJsonBody.request",
+				"type": "Request"
+			},
+			{
+				"name": "readJsonBody.typed",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "readJsonBody",
+				"type": "Promise<Record<string, unknown> | undefined>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "relay.config.relay",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.function.is-record",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/relay/src/utils/readJsonBody.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/relay/src/utils/readJsonBody.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.remote-host-identity",
+	"kind": "function",
+	"title": "remoteHostIdentity",
+	"responsibility": "Owns the remoteHostIdentity shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/remoteHostIdentity.ts"],
+		"symbols": ["RegisterRemoteHost", "remoteHostIdentity", "registerRemoteHost"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "registerRemoteHost.state",
+				"type": "RemoteHostState"
+			},
+			{
+				"name": "registerRemoteHost.name",
+				"type": "string"
+			},
+			{
+				"name": "registerRemoteHost.register",
+				"type": "RegisterRemoteHost"
+			}
+		],
+		"outputs": [
+			{
+				"name": "remoteHostIdentity",
+				"type": "Promise<RemoteHostState>"
+			},
+			{
+				"name": "registerRemoteHost",
+				"type": "Promise<RemoteKeyPair>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.adapter.remote-host-store",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/remoteHostIdentity.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/remoteHostIdentity.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

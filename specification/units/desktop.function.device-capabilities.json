@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.device-capabilities",
+	"kind": "function",
+	"title": "deviceCapabilities",
+	"responsibility": "Owns the deviceCapabilities shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/deviceCapabilities.ts"],
+		"symbols": ["deviceCapabilities"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "deviceCapabilities.agents",
+				"type": "boolean"
+			}
+		],
+		"outputs": [
+			{
+				"name": "deviceCapabilities",
+				"type": "ProjectCapabilities"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.project-context-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/deviceCapabilities.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/deviceCapabilities.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

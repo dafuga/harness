@@ -1,0 +1,166 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.remote-bytes",
+	"kind": "function",
+	"title": "remoteBytes",
+	"responsibility": "Owns the remoteBytes shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/utils/remoteBytes.ts"],
+		"symbols": [
+			"CryptoSource",
+			"cryptoSource",
+			"remoteBytes",
+			"bytesText",
+			"toBase64",
+			"fromBase64",
+			"toBase64Url",
+			"fromBase64Url",
+			"toHex",
+			"concatBytes",
+			"sha256",
+			"randomBytes",
+			"safeEqual",
+			"stableJson"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "cryptoSource.bytes",
+				"type": "Uint8Array"
+			},
+			{
+				"name": "remoteBytes.text",
+				"type": "string"
+			},
+			{
+				"name": "bytesText.bytes",
+				"type": "Uint8Array"
+			},
+			{
+				"name": "toBase64.bytes",
+				"type": "Uint8Array"
+			},
+			{
+				"name": "fromBase64.text",
+				"type": "string"
+			},
+			{
+				"name": "toBase64Url.bytes",
+				"type": "Uint8Array"
+			},
+			{
+				"name": "fromBase64Url.text",
+				"type": "string"
+			},
+			{
+				"name": "toHex.bytes",
+				"type": "Uint8Array"
+			},
+			{
+				"name": "concatBytes.parts",
+				"type": "Uint8Array[]"
+			},
+			{
+				"name": "sha256.bytes",
+				"type": "Uint8Array"
+			},
+			{
+				"name": "randomBytes.length",
+				"type": "number"
+			},
+			{
+				"name": "safeEqual.left",
+				"type": "string"
+			},
+			{
+				"name": "safeEqual.right",
+				"type": "string"
+			},
+			{
+				"name": "stableJson.value",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "cryptoSource",
+				"type": "CryptoSource"
+			},
+			{
+				"name": "remoteBytes",
+				"type": "Uint8Array"
+			},
+			{
+				"name": "bytesText",
+				"type": "string"
+			},
+			{
+				"name": "toBase64",
+				"type": "string"
+			},
+			{
+				"name": "fromBase64",
+				"type": "Uint8Array"
+			},
+			{
+				"name": "toBase64Url",
+				"type": "string"
+			},
+			{
+				"name": "fromBase64Url",
+				"type": "Uint8Array"
+			},
+			{
+				"name": "toHex",
+				"type": "string"
+			},
+			{
+				"name": "concatBytes",
+				"type": "Uint8Array"
+			},
+			{
+				"name": "sha256",
+				"type": "Promise<Uint8Array>"
+			},
+			{
+				"name": "randomBytes",
+				"type": "Uint8Array"
+			},
+			{
+				"name": "safeEqual",
+				"type": "boolean"
+			},
+			{
+				"name": "stableJson",
+				"type": "string"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/remoteBytes.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/remoteBytes.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

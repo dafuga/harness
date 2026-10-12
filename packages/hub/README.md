@@ -38,6 +38,10 @@ R2 stores disposable source/media bytes and rendered snapshot/entity/history pro
 
 Launch the Electron workspace with the exact trusted `HARNESS_HUB_ORIGIN`. Connect prompts a browser sign-in and one-time code approval. PKCE verifier and bearer session stay in the main process; the session is encrypted using Electron safeStorage. Plan/Change controls are available only in local agent-capable contexts. Shared projects use human comments and acknowledge only actual GitHub commits.
 
+## Remote hosts
+
+The desktop of a signed-in owner registers its Mac for phone access with `POST /api/remote/hosts` and manages it with `GET` or `DELETE /api/remote/hosts/{hostId}` and `DELETE /api/remote/hosts/{hostId}/devices/{deviceId}`. The owner is always the verified session, never a request field, and every call is forwarded to the relay's per-host Durable Object through the `REMOTE_HOSTS` binding. Without that binding or `HARNESS_RELAY_ORIGIN`, the relay's exact origin, these routes answer `503 remote-disabled`. The hub runs nothing for a phone, and a phone never calls the hub.
+
 ## Validation
 
 `bun run check:collaboration`, `bun run check:hub` and `bun run check:desktop` are included in the root check. Security tests use generated keys and synthetic provider/HTTP fixtures, without live credentials or invitations. Browser/native screenshots are external evidence and are not committed. Live provider registration and authorized hosted publication are separate acceptance layers.

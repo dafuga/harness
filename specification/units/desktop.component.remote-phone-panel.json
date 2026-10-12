@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.remote-phone-panel",
+	"kind": "component",
+	"title": "RemotePhonePanel",
+	"responsibility": "Owns the RemotePhonePanel Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/RemotePhonePanel.svelte"],
+		"symbols": ["RemotePhonePanel"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "RemotePhonePanel.store",
+				"type": "RemotePhone"
+			},
+			{
+				"name": "RemotePhonePanel.compact",
+				"type": "boolean"
+			}
+		],
+		"outputs": [
+			{
+				"name": "RemotePhonePanel",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.remote-labels",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.remote-phone",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/RemotePhonePanel.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/RemotePhonePanel.svelte"
+			}
+		]
+	},
+	"scenarios": ["remote-mobile-ui"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

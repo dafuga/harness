@@ -40,7 +40,9 @@
 		"prettier-plugin-svelte": "^3.4.0",
 		"eslint-plugin-svelte": "^3.0.0",
 		"svelte-eslint-parser": "^1.0.0",
-		"globals": "^16.0.0"
+		"globals": "^16.0.0",
+		"miniflare": "5.20261006.1-alpha",
+		"esbuild": "0.28.2"
 	},
 	"dependencies": {
 		"jose": "6.2.12",

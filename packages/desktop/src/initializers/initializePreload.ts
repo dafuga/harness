@@ -1,41 +1,72 @@
 import type { CacheStatus } from '../models/ProjectContext.types';
 import { contextBridge, ipcRenderer } from 'electron';
-import { channels, runEventChannel, cacheEventChannel } from '../models/DesktopBridge.types';
 import type { DesktopBridge, RunEvent } from '../models/DesktopBridge.types';
+import type {
+	LocalBootstrap,
+	RemoteBinary,
+	RemoteConnectionEvent,
+	RemoteDesktopControl,
+	RemoteMethod
+} from '../../../remote/src/index';
+import { LocalTransportClientService } from '../services/LocalTransportClientService';
+import type { LocalSocketPort } from '../services/LocalTransportClientService';
+import { bootstrapChannel } from '../utils/desktopIpc';
+import { remoteBinary } from '../utils/remoteBinary';
+/**
+ * The page talks to the main process over a loopback socket. Its one-use ticket is asked for
+ * here, over IPC, and stays in this isolated world: the page gets the two objects below only.
+ */
+const transport = new LocalTransportClientService({
+	bootstrap: () => ipcRenderer.invoke(bootstrapChannel) as Promise<LocalBootstrap>,
+	open: (url, protocols) => new WebSocket(url, protocols) as unknown as LocalSocketPort
+});
+type Input = object | undefined;
+const call =
+	<T>(method: RemoteMethod) =>
+	(input?: Input): Promise<T> =>
+		transport.request<T>(method, { ...input });
 const bridge: DesktopBridge = {
-	history: (input) => ipcRenderer.invoke(channels.history, input),
-	onCacheStatus: (listener) => {
-		const handler = (_event: unknown, value: CacheStatus) => listener(value);
-		ipcRenderer.on(cacheEventChannel, handler);
-		return () => ipcRenderer.removeListener(cacheEventChannel, handler);
-	},
-	hostedStatus: () => ipcRenderer.invoke(channels.hostedStatus),
-	connectHosted: () => ipcRenderer.invoke(channels.connectHosted),
-	disconnectHosted: () => ipcRenderer.invoke(channels.disconnectHosted),
-	listProjects: () => ipcRenderer.invoke(channels.listProjects),
-	selectProject: (input) => ipcRenderer.invoke(channels.selectProject, input),
-	capabilities: (input) => ipcRenderer.invoke(channels.capabilities, input),
-	addComment: (input) => ipcRenderer.invoke(channels.addComment, input),
-	pendingComments: (input) => ipcRenderer.invoke(channels.pendingComments, input),
-	openProject: () => ipcRenderer.invoke(channels.openProject),
-	snapshot: (input) => ipcRenderer.invoke(channels.snapshot, input),
-	entity: (input) => ipcRenderer.invoke(channels.entity, input),
-	source: (input) => ipcRenderer.invoke(channels.source, input),
-	image: async (input) => new Uint8Array(await ipcRenderer.invoke(channels.image, input)),
-	createPlan: (input) => ipcRenderer.invoke(channels.createPlan, input),
-	openThread: (input) => ipcRenderer.invoke(channels.openThread, input),
-	messages: (input) => ipcRenderer.invoke(channels.messages, input),
-	approve: (input) => ipcRenderer.invoke(channels.approve, input),
-	providers: () => ipcRenderer.invoke(channels.providers),
-	startRun: (input) => ipcRenderer.invoke(channels.startRun, input),
-	cancelRun: (input) => ipcRenderer.invoke(channels.cancelRun, input),
-	onRunEvent: (listener) => {
-		const handler = (_event: unknown, value: RunEvent) => listener(value);
-		ipcRenderer.on(runEventChannel, handler);
-		return () => ipcRenderer.removeListener(runEventChannel, handler);
-	}
+	history: call('history'),
+	onCacheStatus: (listener) => transport.on('cache', (value) => listener(value as CacheStatus)),
+	hostedStatus: call('hostedStatus'),
+	connectHosted: call('connectHosted'),
+	disconnectHosted: call('disconnectHosted'),
+	listProjects: call('listProjects'),
+	selectProject: call('selectProject'),
+	capabilities: call('capabilities'),
+	addComment: call('addComment'),
+	pendingComments: call('pendingComments'),
+	openProject: call('openProject'),
+	snapshot: call('snapshot'),
+	entity: call('entity'),
+	source: call('source'),
+	image: async (input) => remoteBinary(await call<RemoteBinary>('image')(input)),
+	createPlan: call('createPlan'),
+	openThread: call('openThread'),
+	messages: call('messages'),
+	approve: call('approve'),
+	providers: call('providers'),
+	startRun: call('startRun'),
+	cancelRun: call('cancelRun'),
+	onRunEvent: (listener) => transport.on('run', (value) => listener(value as RunEvent))
+};
+/** The control port of remote access: public metadata in, public metadata out. */
+const remote: RemoteDesktopControl = {
+	status: call('remote.status'),
+	enable: call('remote.enable'),
+	disable: call('remote.disable'),
+	createPairing: call('remote.createPairing'),
+	approvePairing: call('remote.approvePairing'),
+	denyPairing: call('remote.denyPairing'),
+	revokeDevice: call('remote.revokeDevice'),
+	onStatus: (listener) =>
+		transport.on('connection', (value) => {
+			const event = value as RemoteConnectionEvent;
+			if (event.kind === 'remote-status') listener(event.status);
+		})
 };
 export function initializePreload(): void {
 	contextBridge.exposeInMainWorld('harness', Object.freeze(bridge));
+	contextBridge.exposeInMainWorld('harnessRemote', Object.freeze(remote));
 }
 initializePreload();

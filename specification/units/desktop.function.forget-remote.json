@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.forget-remote",
+	"kind": "function",
+	"title": "forgetRemote",
+	"responsibility": "Owns the forgetRemote shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/forgetRemote.ts"],
+		"symbols": ["forgetRemote"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "forgetRemote.workspace",
+				"type": "Workspace"
+			},
+			{
+				"name": "forgetRemote.notice",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "forgetRemote",
+				"type": "void"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.project-capabilities",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/forgetRemote.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/forgetRemote.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

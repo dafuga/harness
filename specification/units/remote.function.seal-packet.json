@@ -1,0 +1,78 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.seal-packet",
+	"kind": "function",
+	"title": "sealPacket",
+	"responsibility": "Owns the sealPacket shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/utils/sealPacket.ts"],
+		"symbols": ["SealContext", "sealPacket", "openPacket"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "sealPacket.context",
+				"type": "SealContext"
+			},
+			{
+				"name": "sealPacket.plaintext",
+				"type": "Uint8Array"
+			},
+			{
+				"name": "openPacket.context",
+				"type": "SealContext"
+			},
+			{
+				"name": "openPacket.data",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "sealPacket",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "openPacket",
+				"type": "Promise<Uint8Array>"
+			}
+		],
+		"errors": [
+			{
+				"name": "SecureFailure",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.remote-secure-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/sealPacket.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/sealPacket.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
