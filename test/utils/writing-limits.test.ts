@@ -50,25 +50,25 @@ test('exactly the limit passes, and one word or one character more does not', ()
 });
 
 test('a reason is held to the limit of each of its three parts, and names what it is about', () => {
-	expect(explanationProblems(reason())).toEqual([]);
+	expect(explanationProblems(reason(), 1)).toEqual([]);
 	const edge = reason({
 		behavior: words(30, 'ab'),
 		simplification: { attempt: words(20, 'ab'), outcome: 'improved' },
 		performance: { attempt: 'y'.repeat(140), outcome: 'not-applicable' }
 	});
-	expect(explanationProblems(edge)).toEqual([]);
+	expect(explanationProblems(edge, 1)).toEqual([]);
 	const long = reason({
 		behavior: words(31),
 		simplification: { attempt: words(21), outcome: 'improved' },
 		performance: { attempt: 'y'.repeat(141), outcome: 'not-applicable' }
 	});
-	expect(explanationProblems(long)).toEqual([
+	expect(explanationProblems(long, 1)).toEqual([
 		'function.slugify slugify: behavior has 31 words; the limit is 30.',
 		'function.slugify slugify: simplification attempt has 21 words; the limit is 20.',
 		'function.slugify slugify: performance attempt has 141 characters; the limit is 140.'
 	]);
 	const whole = reason({ symbol: '*', behavior: ' ' });
-	expect(explanationProblems(whole)).toEqual(['function.slugify: behavior is empty.']);
+	expect(explanationProblems(whole, 1)).toEqual(['function.slugify: behavior is empty.']);
 });
 
 test('a repository adopts the limits by what its verification config declares', () => {

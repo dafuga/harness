@@ -195,6 +195,11 @@
 			"timeoutMs": 180000
 		},
 		{
+			"path": "packages/planning/test/notes-reference.test.ts",
+			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+			"timeoutMs": 180000
+		},
+		{
 			"path": "packages/reports/tests/e2e/explorer-shell.spec.ts",
 			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell.spec.ts"
 		},
@@ -278,5 +283,5 @@
 			"directory": "packages/reports/output/shell-fixture"
 		}
 	],
-	"writing": 1
+	"writing": 2
 }

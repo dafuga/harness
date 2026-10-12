@@ -8,7 +8,7 @@ import {
 import { ExplanationRepository } from '../repositories/ExplanationRepository';
 import { ExplanationService, type ReasonReport } from '../services/ExplanationService';
 import { requiredReasons } from '../utils/requiredReasons';
-import { explanationProblems } from '../utils/writingLimits';
+import { explanationProblems, writingVersions, type WritingVersion } from '../utils/writingLimits';
 import { GitAdapter } from '../adapters/GitAdapter';
 import { ReasonPathService } from '../services/ReasonPathService';
 import { commitLoader, openRange, type RevisionRange } from './loadRevisions';
@@ -29,14 +29,18 @@ export interface ExplainInput extends RevisionRange {
 
 type Listed = Omit<ReasonStatus, 'from' | 'to'>;
 
-/** Which changes in a range need a reason, and whether each one has it. */
+/**
+ * Which changes in a range need a reason, and whether each one has it, with the version of the
+ * writing limits the head of the range declares: the one a reason for these changes is held to.
+ */
 export async function explainReport(
 	range: RevisionRange
-): Promise<ReasonReport & { root: string }> {
+): Promise<ReasonReport & { root: string; writing: WritingVersion | null }> {
 	const { root, base, head } = await openRange(range);
 	const known = await new ExplanationRepository(root).all();
-	const report = new ExplanationService().report(requiredReasons(base, head), known, head.limited);
-	return { ...report, root };
+	const writing = head.writing ?? null;
+	const report = new ExplanationService().report(requiredReasons(base, head), known, writing);
+	return { ...report, root, writing };
 }
 
 /**
@@ -75,24 +79,26 @@ export async function explainAdd(input: ExplainInput): Promise<Explanation[]> {
 		: [];
 	const open = [...unexplained, ...again];
 	const chosen = input.all ? open : open.filter((status) => selected(status, input));
-	if (chosen.length === 0) {
-		return fail(
-			input.all
-				? 'Nothing in this range needs a reason.'
-				: `No unexplained change matches ${input.unit ?? '--unit'} ${(input.symbol ?? []).join(', ')}.`
-		);
-	}
+	if (chosen.length === 0) return fail(nothingSelected(input));
 	const recordedAt = input.now?.() ?? new Date().toISOString();
 	const entries = chosen.map(({ state: _state, ...reason }) => ({
 		...reason,
 		...text,
 		recordedAt
 	}));
-	// A new reason is held to the limits wherever it is written, and nothing is stored if it is not.
-	const long = [...new Set(entries.flatMap(explanationProblems))];
+	// A new reason is held to the version the revision it explains declares, the first where it
+	// declares none, wherever and whenever it is written; nothing is stored if it does not keep it.
+	const held = report.writing ?? writingVersions[0];
+	const long = [...new Set(entries.flatMap((entry) => explanationProblems(entry, held)))];
 	if (long.length > 0) return fail(long.join('\n'));
 	await new ExplanationRepository(report.root).append(entries);
 	return entries;
+}
+
+function nothingSelected(input: ExplainInput): string {
+	return input.all
+		? 'Nothing in this range needs a reason.'
+		: `No unexplained change matches ${input.unit ?? '--unit'} ${(input.symbol ?? []).join(', ')}.`;
 }
 
 function selected(status: ReasonStatus, input: ExplainInput): boolean {

@@ -2,8 +2,8 @@
 
 ## Overview
 
-A repository that declares `"writing": 1` in `harness.verify.json` holds its commit messages to
-the writing limits. The subject has at most 72 characters and starts with `feat:`, `fix:`,
+A repository that declares `"writing"` in `harness.verify.json`, as 1 or 2, holds its commit
+messages to the writing limits. The subject has at most 72 characters and starts with `feat:`, `fix:`,
 `chore:` or `cleanup:`. An optional body, trailers included, has at most 60 words and 400
 characters. An opt-in commit-msg hook refuses a message before the commit exists, and
 verification measures the stored messages of the commits it verifies, so a commit made with

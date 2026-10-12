@@ -4,12 +4,13 @@ import type { SourceFile } from '../core/sourceTypes';
 import type { ComponentManifest } from '../core/unitTypes';
 import { componentVersion } from './componentVersion';
 import { stableJson } from './stableJson';
+import type { WritingVersion } from './writingLimits';
 
 export interface ReasonSide {
 	index: { files: Map<string, SourceFile> };
 	manifests: ComponentManifest[];
-	/** True when the revision declares the writing limits, so its reasons are held to them. */
-	limited?: boolean;
+	/** The version of the writing limits the revision declares; its reasons are held to that one. */
+	writing?: WritingVersion | null;
 }
 
 interface Symbol {

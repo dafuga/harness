@@ -10,7 +10,7 @@ import type { ComponentManifest } from '../core/unitTypes';
 import { defaultUnitsConfig } from '../core/unitsConfig';
 import { verifyConfigFile } from '../core/verifyTypes';
 import { SourceIndexService, type SourceIndex } from '../services/SourceIndexService';
-import { writingDeclared } from '../utils/writingLimits';
+import { writingHeld, type WritingVersion } from '../utils/writingLimits';
 import { graphOf, loadUnits } from './loadUnits';
 
 /** One revision with everything impact, reasons and measurements read from it. */
@@ -19,8 +19,8 @@ export interface RevisionSide extends ImpactSide {
 	/** Manifests exactly as stored at the revision, before reconciliation with source. */
 	stored: ComponentManifest[];
 	tree?: SourceTree;
-	/** True when the verification config of the revision declares the writing limits. */
-	limited?: boolean;
+	/** The version of the writing limits the verification config of the revision declares. */
+	writing?: WritingVersion | null;
 }
 
 export interface RevisionRange {
@@ -40,7 +40,7 @@ export async function loadSide(
 	const loaded = await loadUnits(root, tree, indexer);
 	const verification = await tree.read(verifyConfigFile).catch(() => undefined);
 	return {
-		limited: writingDeclared(verification),
+		writing: writingHeld(verification),
 		revision: tree.revision,
 		config: loaded.config,
 		entries: await tree.list(),

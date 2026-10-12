@@ -70,8 +70,8 @@ const hooksGuide: Guide = {
 		'A commit message has a subject of at most 72 characters that starts with feat:, fix:, ' +
 			'chore: or cleanup:, and an optional body, trailers included, of at most 60 words and 400 ' +
 			'characters.',
-		'A message is measured only where the repository declares "writing": 1 in harness.verify.json; ' +
-			'commits of evidence are never measured.',
+		'A message is measured only where the repository declares "writing" in harness.verify.json, ' +
+			'as 1 or 2: both hold a message to the same limits. Commits of evidence are never measured.',
 		'The commit-msg hook reads the message file as Git will store it and reads no input: ' +
 			'comments are left out of a message an editor was opened for, and a line that starts with ' +
 			'a hash is counted in one given with -m. A cleanup mode given on the command line is not ' +

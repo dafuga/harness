@@ -16,7 +16,8 @@ This is a Harness SvelteKit app. Treat Harness as the operating contract for eve
 
 ## Concise Writing
 
-- A reason says what changed in this unit in at most 30 words and 200 characters. Each simplification or performance attempt has at most 20 words and 140 characters. `harness explain add` refuses more.
+- A reason says what changed in this unit in at most 30 words and 200 characters. Each simplification or performance attempt has at most 15 words and 140 characters. `harness explain add` refuses more.
+- These are the limits of `"writing": 2` in `harness.verify.json`. A revision that declares `"writing": 1` keeps 20 words an attempt. A reason is held to the version of the revision it explains, never to one read from its date.
 - A commit subject has at most 72 characters and starts with `feat:`, `fix:`, `chore:` or `cleanup:`. An optional body, trailers included, has at most 60 words and 400 characters.
 - `harness hooks install` adds a commit-msg hook that refuses a longer message. Verification measures the stored messages again, so `--no-verify` does not pass.
 - Explain the specific change, the actual attempt and its result. Do not repeat an inventory of the repository.

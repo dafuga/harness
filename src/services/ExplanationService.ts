@@ -1,5 +1,5 @@
 import type { Explanation, ReasonStatus, RequiredReason } from '../core/explanationTypes';
-import { explanationProblems } from '../utils/writingLimits';
+import { explanationProblems, writingVersions, type WritingVersion } from '../utils/writingLimits';
 
 export interface ReasonReport {
 	required: ReasonStatus[];
@@ -14,25 +14,34 @@ const verbs = { added: 'added', modified: 'modified', removed: 'removed' };
 
 /**
  * Matches recorded reasons to the changes that need them, by exact content fingerprints. A
- * change made in several steps is explained by the reasons of every step, in order. Where the
- * limits apply, a reason that is relied on and exceeds them is a failure, however it was stored.
+ * change made in several steps is explained by the reasons of every step, in order. `writing`
+ * is the version of the limits the revision these changes lead to declares: a reason that is
+ * relied on and exceeds that version is a failure, however and whenever it was stored. A
+ * revision that declares none fails on no length; what the first version would refuse is still
+ * named as open to a shorter reason, as it was before there were versions.
  */
 export class ExplanationService {
-	report(required: RequiredReason[], explanations: Explanation[], limited = false): ReasonReport {
+	report(
+		required: RequiredReason[],
+		explanations: Explanation[],
+		writing: WritingVersion | null = null
+	): ReasonReport {
+		const problems = (entry: Explanation) =>
+			explanationProblems(entry, writing ?? writingVersions[0]);
 		const entries: Explanation[] = [];
 		const overlong: RequiredReason[] = [];
 		const statuses = required.map((reason): ReasonStatus => {
 			const subject = explanations.filter((entry) => sameSubject(entry, reason));
 			const steps = chain(subject, reason.from, reason.to);
 			entries.push(...(steps ?? []));
-			if (steps?.some((entry) => explanationProblems(entry).length > 0)) overlong.push(reason);
+			if (steps?.some((entry) => problems(entry).length > 0)) overlong.push(reason);
 			// A reason for the same starting point but other content was written before a later edit.
 			const started = subject.some((entry) => entry.from === reason.from);
 			const open = started ? 'stale' : 'missing';
 			return { ...reason, state: steps ? 'explained' : open };
 		});
 		const open = statuses.filter((status) => status.state !== 'explained');
-		const long = limited ? [...new Set(entries.flatMap(explanationProblems))] : [];
+		const long = writing === null ? [] : [...new Set(entries.flatMap(problems))];
 		return { required: statuses, entries, overlong, failures: [...open.map(describe), ...long] };
 	}
 }

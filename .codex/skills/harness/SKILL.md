@@ -22,7 +22,8 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 
 ## Concise Writing
 
-- Behaviour note of a reason: 30 words and 200 characters. Each attempt: 20 words and 140 characters.
+- Behaviour note of a reason: 30 words and 200 characters. Each attempt: 15 words and 140 characters.
+- That is `"writing": 2` in `harness.verify.json`; a revision that declares 1 keeps 20 words an attempt. The revision a reason explains decides, not its date.
 - Commit subject: 72 characters, starting with `feat:`, `fix:`, `chore:` or `cleanup:`. Optional body with trailers: 60 words and 400 characters.
 - `harness explain add` and the commit-msg hook refuse more; verification checks both again.
 - Hooks are shared by every worktree; a stage acts only where that stage was opted into. A change to the wrappers passes `test/hooks-shared-stages.e2e.test.ts` first.

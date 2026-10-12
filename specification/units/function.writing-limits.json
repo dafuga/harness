@@ -3,15 +3,20 @@
 	"id": "function.writing-limits",
 	"kind": "function",
 	"title": "writingLimits",
-	"responsibility": "States the length limits of change notes and commit messages, counts words and characters the one way all checks do, and says what exceeds them.",
+	"responsibility": "States the length limits of change notes and commit messages in each version a repository can declare, counts words and characters the one way all checks do, and says what exceeds them.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/writingLimits.ts"],
 		"symbols": [
 			"WritingLimit",
-			"writingLimits",
+			"writingVersions",
+			"WritingVersion",
 			"writingVersion",
+			"writingLimits",
+			"WritingPolicy",
+			"writingPolicy",
+			"writingHeld",
 			"writingDeclared",
 			"writingCount",
 			"writingProblems",
@@ -22,6 +27,14 @@
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "writingPolicy.version",
+				"type": "WritingVersion"
+			},
+			{
+				"name": "writingHeld.config",
+				"type": "string | undefined"
+			},
 			{
 				"name": "writingDeclared.config",
 				"type": "string | undefined"
@@ -45,16 +58,32 @@
 			{
 				"name": "explanationProblems.reason",
 				"type": "WrittenReason"
+			},
+			{
+				"name": "explanationProblems.version",
+				"type": "WritingVersion"
 			}
 		],
 		"outputs": [
+			{
+				"name": "writingVersions",
+				"type": "unknown"
+			},
+			{
+				"name": "writingVersion",
+				"type": "WritingVersion"
+			},
 			{
 				"name": "writingLimits",
 				"type": "unknown"
 			},
 			{
-				"name": "writingVersion",
-				"type": "unknown"
+				"name": "writingPolicy",
+				"type": "WritingPolicy"
+			},
+			{
+				"name": "writingHeld",
+				"type": "WritingVersion | null"
 			},
 			{
 				"name": "writingDeclared",

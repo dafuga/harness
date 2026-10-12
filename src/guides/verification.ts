@@ -107,9 +107,12 @@ const explainGuide: Guide = {
 			'serialization and adapters at an invocation boundary, even when nothing improved.',
 		'Reasons are kept outside the source tree in .cache/harness until they are stored as notes.',
 		'A reason is short: its behaviour note has at most 30 words and 200 characters, each attempt ' +
-			'at most 20 words and 140 characters. harness explain add refuses a longer one, and a ' +
-			'repository that declares "writing": 1 in harness.verify.json fails its check and its ' +
-			'verification on one.'
+			'at most 15 words and 140 characters. harness explain add refuses a longer one, and a ' +
+			'repository that declares "writing": 2 in harness.verify.json fails its check and its ' +
+			'verification on one.',
+		'A revision that declares "writing": 1 keeps 20 words an attempt. A reason is held to the ' +
+			'version of the revision it explains, each step of a range to its own and a reason for ' +
+			'the whole range to that of its head; the date a reason carries decides nothing.'
 	],
 	antiPatterns: [
 		'Do not write a blanket reason for unrelated changes.',
