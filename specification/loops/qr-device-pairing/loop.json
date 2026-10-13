@@ -2,7 +2,7 @@
 	"name": "qr-device-pairing",
 	"goal": "A phone pairs by scanning the QR code Electron shows and a person approves it on the computer; the QR holds only the short-lived single-use offer, the phone takes no typed connection values, and grants, revocation and the sealed challenge stay as they are",
 	"createdAt": "2026-10-13T06:26:28.600Z",
-	"updatedAt": "2026-10-13T08:43:35.270Z",
+	"updatedAt": "2026-10-13T10:08:03.056Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"steps": [
@@ -66,6 +66,20 @@
 			"status": "complete",
 			"completedAt": "2026-10-13T08:43:35.270Z",
 			"evidence": "Red, committed tree 4426491, compiled renderer stamped 0e6622ad: the scenario command for tests/e2e/ui-remote-links.spec.ts ends with Playwright 'No tests found', exit 1, and the scenario fails (scenario-repair/logs/scenario-RED.log). Repair: the scan-endings test moved to the generated tests/e2e/ui-remote-scan.spec.ts; state link-interaction became scan-interaction; required screenshot states phone-scan-denied, -cancelled, -invalid, -expired and desktop-code-hidden, -expired added, desktop-access is the QR shown; units remote-offer-code, qr-symbol, scan-notice and remote-labels bound both ways; scope mapping updated. Green with the same real commands and validators: 5 tests pass, 22 of 22 required captures present, each screenshot at its viewport size with build 0e6622ad and revision 4426491; all 17 images inspected (scenario-repair/logs/scenario-GREEN.log, green-coverage-table.txt). scenarios check, units check, explain check (4 reasons), audits, type checks, lint and format pass. No runtime byte changed."
+		},
+		{
+			"id": "readme",
+			"title": "The Desktop README says what the native acceptance run does now: it pairs by a synthetic scan in an isolated copy; no runtime byte changes.",
+			"status": "complete",
+			"completedAt": "2026-10-13T10:03:44.679Z",
+			"evidence": "Docs only. The last paragraph of packages/desktop/README.md (f13569ff to 7998f917, 1 line) no longer says the run is not adapted and stops at pairing. It says: every scan of the run comes from the TEST ONLY synthetic scanner, built by --scan-fixture only into an isolated copy of the native source; the run fails if a real-source product holds it; real-source Debug and Release products given the same argument scan with their camera only; the run sets its own simulator's camera permission with simctl privacy and presses no prompt; no physical camera scan and no system prompt is proven. Basis: native/acceptance-run-2.log, 78 passed, 0 failed, nothing rerun. prettier check passes; units check 1195 units; scenarios check 16; explain list empty, explain check 0 reasons; 38 frozen product hashes match; git diff against 04e3689 names only the README and this loop record. Earlier steps unchanged."
+		},
+		{
+			"id": "readme-final",
+			"title": "Confirm the final native acceptance description",
+			"status": "complete",
+			"completedAt": "2026-10-13T10:08:03.056Z",
+			"evidence": "Final README fb57cb797cc30e6fd2e552ebb83d94bc740c55b0edd995145e856a3552e3063d scopes synthetic scans to the isolated fixture. Format and scope checks passed; product bytes unchanged."
 		}
 	],
 	"evaluators": [
