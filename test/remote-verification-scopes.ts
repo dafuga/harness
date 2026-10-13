@@ -82,7 +82,7 @@ export const remoteVerificationScopes: Record<string, VerificationScope> = {
 			'tests/e2e/ui-remote-phone.spec.ts': ['phone-interaction'],
 			'tests/e2e/ui-remote-host.spec.ts': ['desktop-interaction'],
 			'tests/e2e/ui-remote-cache.spec.ts': ['cached-interaction'],
-			'tests/e2e/ui-remote-links.spec.ts': ['link-interaction'],
+			'tests/e2e/ui-remote-scan.spec.ts': ['scan-interaction'],
 			'tests/e2e/ui-remote-tablet.spec.ts': ['tablet-interaction']
 		}
 	}

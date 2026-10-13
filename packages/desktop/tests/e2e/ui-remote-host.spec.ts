@@ -68,6 +68,10 @@ test('the Electron environment turns phone access on and shows a one-time pairin
 	await panel.getByRole('button', { name: 'Hide code', exact: true }).click();
 	await expect(code(page)).toHaveCount(0);
 	expect((await made(page, 'remote.closePairing')).length).toBe(1);
+	await expect(panel.getByRole('button', { name: 'Pair a phone', exact: true })).toBeVisible();
+	await expect(panel.getByRole('button', { name: 'New code', exact: true })).toHaveCount(0);
+	await panel.scrollIntoViewIfNeeded();
+	await remoteEvidence(page, testInfo, 'desktop-code-hidden');
 	await panel.getByRole('button', { name: 'Pair a phone', exact: true }).click();
 	await expect(code(page)).toBeVisible();
 	await panel.getByRole('button', { name: 'Turn off phone access', exact: true }).click();
@@ -151,7 +155,8 @@ test('a phone that is denied is not approved, and a code that ran out is no long
 	await expect(panel.getByText('This code has expired.')).toBeVisible({ timeout: 8000 });
 	await expect(code(page)).toHaveCount(0);
 	await expect(panel.getByRole('button', { name: 'Hide code', exact: true })).toHaveCount(0);
-	await captured(page, testInfo, 'desktop-code-expired', panel);
+	await panel.scrollIntoViewIfNeeded();
+	await remoteEvidence(page, testInfo, 'desktop-code-expired');
 	await panel.getByRole('button', { name: 'New code', exact: true }).click();
 	await expect(code(page)).toBeVisible();
 	expect(await scannedText(code(page))).toContain(`pairing=${laterPairings[1]};`);
