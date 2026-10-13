@@ -15,9 +15,39 @@ import type { LocalTransportOptions } from '../src/services/LocalTransportServic
 import { remoteFixture } from './remote-fixture';
 
 const closing: (() => unknown)[] = [];
-afterEach(async () => {
-	await Promise.all(closing.splice(0).map((close) => close()));
-});
+/**
+ * Ends what the tests opened and waits for all of it. What any of it raised that the teardown
+ * did not cause is thrown here, once everything has ended.
+ */
+export async function settle(): Promise<void> {
+	const ended = await Promise.allSettled(closing.splice(0).map(async (close) => close()));
+	const raised = ended.flatMap((item) => (item.status === 'rejected' ? [item.reason] : []));
+	if (raised.length === 1) throw raised[0];
+	if (raised.length) throw new AggregateError(raised, 'Several things failed to end.');
+}
+afterEach(settle);
+/** What `ws` raises of a socket that is ended before its handshake was answered. */
+const cancelled = 'WebSocket was closed before the connection was established';
+/**
+ * A socket a test opened is ended by the teardown, which waits until it has closed. Ended while
+ * it is still connecting, it raises that it was closed early: that one error is the teardown's
+ * own doing. Any other error, before the teardown or during it, is thrown by the teardown.
+ */
+function owned(socket: SocketClient): void {
+	const raised: Error[] = [],
+		gone = closed(socket);
+	let cancelling = false;
+	socket.on('error', (error: Error) => {
+		if (cancelling && error.message === cancelled) cancelling = false;
+		else raised.push(error);
+	});
+	closing.push(async () => {
+		cancelling = socket.readyState === SocketClient.CONNECTING;
+		socket.terminate();
+		await gone;
+		if (raised.length) throw raised[0];
+	});
+}
 export const appOrigin = 'harness://app';
 /** A PNG of noise: deflate cannot shrink it, so it is well over a mebibyte. */
 export function largeImage(): Uint8Array {
@@ -59,7 +89,11 @@ export function attempt(port: number, options: Attempt = {}) {
 			...(origin === null ? {} : { origin }),
 			...(host ? { headers: { host } } : {})
 		});
-		closing.push(() => socket.terminate());
+		const gone = closed(socket);
+		closing.push(async () => {
+			socket.terminate();
+			await gone;
+		});
 		socket.on('open', () => resolve({ status: 101, socket }));
 		socket.on('unexpected-response', (_request, response) =>
 			resolve({ status: response.statusCode ?? 0, socket: null })
@@ -79,7 +113,8 @@ export async function localFixture(
 		transport = new LocalTransportService(options),
 		port = await transport.listen(),
 		control = fakeControl(),
-		frames: string[] = [];
+		frames: string[] = [],
+		sockets: SocketClient[] = [];
 	closing.push(() => transport.close());
 	const { registry, arbiter, providers, generator } = f,
 		shared = { registry, arbiter, providers, generator, outbox: new CommentOutboxService() };
@@ -93,7 +128,8 @@ export async function localFixture(
 	const open = (url: string, protocols: string[]) => {
 		const socket = new SocketClient(url, protocols, { origin: appOrigin });
 		socket.on('message', (data) => frames.push(data.toString()));
-		closing.push(() => socket.terminate());
+		owned(socket);
+		sockets.push(socket);
 		return socket as unknown as LocalSocketPort;
 	};
 	/** What the preload of that window does: a ticket over IPC, then the socket. */
@@ -107,5 +143,5 @@ export async function localFixture(
 		'harness.v1',
 		'ticket.' + transport.bootstrap(target).ticket
 	];
-	return { ...f, transport, port, control, frames, window, connect, ticketed };
+	return { ...f, transport, port, control, frames, sockets, window, connect, ticketed };
 }
