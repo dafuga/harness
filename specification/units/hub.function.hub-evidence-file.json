@@ -1,0 +1,86 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.hub-evidence-file",
+	"kind": "function",
+	"title": "hubEvidenceFile",
+	"responsibility": "Owns the hubEvidenceFile shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/hubEvidenceFile.ts"],
+		"symbols": ["evidenceFileLimit", "hubEvidenceFile"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "hubEvidenceFile.base",
+				"type": "HubSourceContext"
+			},
+			{
+				"name": "hubEvidenceFile.input",
+				"type": "Input"
+			}
+		],
+		"outputs": [
+			{
+				"name": "evidenceFileLimit",
+				"type": "unknown"
+			},
+			{
+				"name": "hubEvidenceFile",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "evidence-file-too-large",
+				"type": "refused",
+				"description": "A declared or stored file over 50,000,000 bytes."
+			},
+			{
+				"name": "cache-hash-mismatch",
+				"type": "refused",
+				"description": "A materialized object that is not what its pointer states."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.history-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-raw",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-source",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/hubEvidenceFile.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/hubEvidenceFile.ts"
+			}
+		]
+	},
+	"scenarios": ["hub-recorded-evidence"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

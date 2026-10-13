@@ -15,6 +15,7 @@
 			"ProjectionCacheService.put",
 			"ProjectionCacheService.remember",
 			"ProjectionCacheService.lookup",
+			"ProjectionCacheService.discard",
 			"ProjectionCacheService.purge",
 			"ProjectionCacheService.clear"
 		]
@@ -63,6 +64,10 @@
 				"type": "string"
 			},
 			{
+				"name": "ProjectionCacheService.discard.scope",
+				"type": "string"
+			},
+			{
 				"name": "ProjectionCacheService.purge.principalId",
 				"type": "string"
 			},
@@ -86,7 +91,11 @@
 			},
 			{
 				"name": "ProjectionCacheService.lookup",
-				"type": "Promise<{ value: unknown; identity: CacheIdentity; cachedAt: string } | null>"
+				"type": "Promise<{ value: unknown; identity: CacheIdentity; cachedAt: string; } | null>"
+			},
+			{
+				"name": "ProjectionCacheService.discard",
+				"type": "Promise<void>"
 			},
 			{
 				"name": "ProjectionCacheService.purge",
@@ -107,6 +116,16 @@
 	"dependencies": [
 		{
 			"unit": "collaboration.model.collaboration-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.projection-cache-discard",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.projection-cache-purge",
 			"via": "import",
 			"origin": "derived"
 		}

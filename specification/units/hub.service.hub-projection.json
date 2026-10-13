@@ -11,6 +11,8 @@
 		"symbols": [
 			"HubProjectionService",
 			"HubProjectionService.constructor",
+			"HubProjectionService.evidence",
+			"HubProjectionService.artifact",
 			"HubProjectionService.snapshot",
 			"HubProjectionService.entity",
 			"HubProjectionService.history",
@@ -25,6 +27,30 @@
 			{
 				"name": "HubProjectionService.constructor.context",
 				"type": "Dependencies"
+			},
+			{
+				"name": "HubProjectionService.evidence.actor",
+				"type": "Actor"
+			},
+			{
+				"name": "HubProjectionService.evidence.projectId",
+				"type": "string"
+			},
+			{
+				"name": "HubProjectionService.evidence.query",
+				"type": "EntityEvidenceQuery"
+			},
+			{
+				"name": "HubProjectionService.artifact.actor",
+				"type": "Actor"
+			},
+			{
+				"name": "HubProjectionService.artifact.projectId",
+				"type": "string"
+			},
+			{
+				"name": "HubProjectionService.artifact.query",
+				"type": "EvidenceArtifactQuery"
 			},
 			{
 				"name": "HubProjectionService.snapshot.actor",
@@ -84,7 +110,7 @@
 			},
 			{
 				"name": "HubProjectionService.image.query",
-				"type": "{ entityId: string; commit: string; version: string; sha256: string }"
+				"type": "{ entityId: string; commit: string; version: string; sha256: string; }"
 			},
 			{
 				"name": "HubProjectionService.messages.actor",
@@ -100,6 +126,14 @@
 			}
 		],
 		"outputs": [
+			{
+				"name": "HubProjectionService.evidence",
+				"type": "unknown"
+			},
+			{
+				"name": "HubProjectionService.artifact",
+				"type": "unknown"
+			},
 			{
 				"name": "HubProjectionService.snapshot",
 				"type": "unknown"
@@ -128,6 +162,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.model.desktop-types",
 			"via": "import",
@@ -192,6 +231,11 @@
 			"unit": "hub.function.hub-threads",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "hub.service.hub-evidence",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
@@ -204,7 +248,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["hub-recorded-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

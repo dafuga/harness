@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Select from '$shared/Select.svelte';
+	import { explorerName } from '../../../reports/src/utils/explorerName';
 	import type { Workspace } from '../lib/stores/workspace.svelte';
 	import EntityCard from './EntityCard.svelte';
 	let { workspace }: { workspace: Workspace } = $props();
@@ -21,12 +22,12 @@
 			.filter(
 				(e) =>
 					e.category === workspace.category &&
-					`${e.title} ${e.summary}`.toLowerCase().includes(search.toLowerCase()) &&
+					`${explorerName(e)} ${e.summary}`.toLowerCase().includes(search.toLowerCase()) &&
 					(!changed || e.changed)
 			)
 			.sort((a, b) =>
 				sort === 'title'
-					? a.title.localeCompare(b.title)
+					? explorerName(a).localeCompare(explorerName(b))
 					: (b.latestVersion || '').localeCompare(a.latestVersion || '')
 			)
 	);

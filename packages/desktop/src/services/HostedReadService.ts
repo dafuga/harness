@@ -7,11 +7,18 @@ export interface HostedReadOptions extends RemoteHttpOptions {
 	cache?: ProjectionCacheService;
 	onCacheStatus?: (status: CacheStatus) => void;
 }
+/** One read: whose it is, where it is kept, and the check that its authority still stands. */
+interface ReadContext {
+	scope: string;
+	principalId: string;
+	projectId: string;
+	guard: () => Promise<void>;
+}
 export class HostedReadService {
 	constructor(private options: HostedReadOptions) {}
 	async read<T>(
 		query: { projectId: string; key: string },
-		load: () => Promise<{ value: T; identity?: CacheIdentity }>,
+		load: () => Promise<{ value: T; identity?: CacheIdentity; principalId?: string }>,
 		validate: (value: unknown) => T
 	) {
 		const generation = this.generation();
@@ -63,10 +70,12 @@ export class HostedReadService {
 		return credential;
 	}
 	private async fresh<T>(
-		context: { scope: string; principalId: string; projectId: string; guard: () => Promise<void> },
-		result: { value: T; identity?: CacheIdentity }
+		context: ReadContext,
+		result: { value: T; identity?: CacheIdentity; principalId?: string }
 	) {
 		await context.guard();
+		if (result.principalId !== undefined && result.principalId !== context.principalId)
+			throw new Error('Hosted cache identity mismatch.');
 		if (result.identity) validateIdentity(result.identity, context);
 		const cachedAt = result.identity
 			? await this.options.cache?.remember(context.scope, result.identity, result.value)
@@ -75,22 +84,14 @@ export class HostedReadService {
 		this.options.onCacheStatus?.({ projectId: context.projectId, status: 'fresh', cachedAt });
 		return { value: result.value, cachedAt, offline: false };
 	}
-	private async offline<T>(
-		context: { scope: string; principalId: string; projectId: string; guard: () => Promise<void> },
-		error: unknown,
-		validate: (value: unknown) => T
-	) {
-		if (error instanceof HostedFailureValidator && error.category === 'denied')
-			await this.options.cache?.purge(
-				context.principalId,
-				error.status === 401 ? undefined : context.projectId
-			);
+	private async offline<T>(context: ReadContext, error: unknown, validate: (value: unknown) => T) {
+		await this.purged(context, error);
 		if (!(error instanceof HostedFailureValidator) || error.category !== 'offline') throw error;
 		await context.guard();
 		const entry = await this.options.cache?.lookup(context.scope);
 		if (!entry) throw error;
 		validateIdentity(entry.identity, context);
-		const value = validate(entry.value);
+		const value = await this.kept(context.scope, entry.value, validate);
 		await context.guard();
 		this.options.onCacheStatus?.({
 			projectId: context.projectId,
@@ -98,6 +99,21 @@ export class HostedReadService {
 			cachedAt: entry.cachedAt
 		});
 		return { value, cachedAt: entry.cachedAt, offline: true };
+	}
+	/** A denial removes what was kept: all of the principal's at 401, else this project's. */
+	private async purged(context: ReadContext, error: unknown) {
+		if (!(error instanceof HostedFailureValidator) || error.category !== 'denied') return;
+		const all = error.status === 401;
+		await this.options.cache?.purge(context.principalId, all ? undefined : context.projectId);
+	}
+	/** A kept value this app no longer accepts is discarded, and its refusal is what fails. */
+	private async kept<T>(scope: string, value: unknown, validate: (value: unknown) => T) {
+		try {
+			return validate(value);
+		} catch (error) {
+			await this.options.cache?.discard(scope);
+			throw error;
+		}
 	}
 }
 function validateIdentity(

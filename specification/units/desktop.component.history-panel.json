@@ -32,6 +32,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.component.workspace-link",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.function.history-pages",
 			"via": "import",
 			"origin": "derived"

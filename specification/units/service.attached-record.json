@@ -23,6 +23,10 @@
 				"type": "string"
 			},
 			{
+				"name": "AttachedRecordService.constructor.within",
+				"type": "string | null"
+			},
+			{
 				"name": "AttachedRecordService.load.pointer",
 				"type": "EvidencePointer"
 			}
@@ -87,7 +91,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["desktop-recorded-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

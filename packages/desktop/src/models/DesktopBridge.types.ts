@@ -1,4 +1,10 @@
 import type {
+	EntityEvidenceQuery,
+	EntityEvidenceResult,
+	EvidenceArtifactQuery,
+	EvidenceArtifactResult
+} from './DesktopEvidence.types';
+import type {
 	NativeHostedStatus,
 	CacheStatus,
 	ProjectContext,
@@ -39,6 +45,8 @@ export const channels = {
 	history: 'entity:history',
 	source: 'entity:source',
 	image: 'image:read',
+	evidence: 'evidence:read',
+	artifact: 'evidence:artifact',
 	createPlan: 'plan:create',
 	openThread: 'thread:open',
 	messages: 'thread:messages',
@@ -138,6 +146,10 @@ export interface DesktopBridge {
 	selectProject?(input: { projectId: string }): Promise<ProjectSnapshot>;
 	capabilities?(input?: ProjectContext): Promise<ProjectCapabilities>;
 	addComment?(input: HumanCommentDraft): Promise<HumanCommentResult>;
+	/** Recorded runtime evidence of an entity; absent where a backend cannot read it. */
+	evidence?(input: EntityEvidenceQuery): Promise<EntityEvidenceResult>;
+	/** The checked bytes of one capture that an evidence answer named. */
+	artifact?(input: EvidenceArtifactQuery): Promise<EvidenceArtifactResult>;
 	openProject(): Promise<ProjectSnapshot | null>;
 	snapshot(input: RevisionQuery): Promise<ProjectSnapshot>;
 	entity(input: EntityQuery): Promise<EntityDetail>;

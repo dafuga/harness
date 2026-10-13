@@ -1,0 +1,105 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.hub-evidence-revision",
+	"kind": "function",
+	"title": "hubEvidenceRevision",
+	"responsibility": "Owns the hubEvidenceRevision shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/hubEvidenceRevision.ts"],
+		"symbols": ["hubEvidenceRevision"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hubEvidenceRevision.base",
+				"type": "HubSourceContext"
+			},
+			{
+				"name": "hubEvidenceRevision.history",
+				"type": "HubRecordStatusService"
+			},
+			{
+				"name": "hubEvidenceRevision.commit",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hubEvidenceRevision",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.revision-reasons",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.revision-summary",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-evidence-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-evidence-views",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-pinned-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.service.hub-record-status",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/hubEvidenceRevision.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/hubEvidenceRevision.ts"
+			}
+		]
+	},
+	"scenarios": ["hub-recorded-evidence"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

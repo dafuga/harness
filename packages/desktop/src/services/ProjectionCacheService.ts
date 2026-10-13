@@ -1,3 +1,5 @@
+import { projectionCacheDiscard } from '../utils/projectionCacheDiscard';
+import { projectionCachePurge } from '../utils/projectionCachePurge';
 import { mkdir, readFile, readdir, unlink, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
@@ -45,6 +47,10 @@ export class ProjectionCacheService {
 	}
 	async remember(scope: string, identity: CacheIdentity, value: unknown): Promise<string> {
 		const generation = this.generation;
+		const oldPath = join(this.directory, `lookup-${digest(scope)}.json`);
+		const previous = await readFile(oldPath, 'utf8')
+			.then((text) => JSON.parse(text))
+			.catch(() => null);
 		const bytes = Buffer.from(JSON.stringify(value));
 		const hash = digest(bytes),
 			cachedAt = new Date().toISOString();
@@ -61,11 +67,15 @@ export class ProjectionCacheService {
 			{ mode: 0o600 }
 		);
 		await this.checkGeneration(generation, join(this.directory, `lookup-${digest(scope)}.json`));
+		if (previous?.identity && identityKey(previous.identity) !== identityKey(bound))
+			await unlink(this.path(previous.identity)).catch(() => undefined);
 		return cachedAt;
 	}
-	async lookup(
-		scope: string
-	): Promise<{ value: unknown; identity: CacheIdentity; cachedAt: string } | null> {
+	async lookup(scope: string): Promise<{
+		value: unknown;
+		identity: CacheIdentity;
+		cachedAt: string;
+	} | null> {
 		try {
 			const entry = JSON.parse(
 				await readFile(join(this.directory, `lookup-${digest(scope)}.json`), 'utf8')
@@ -78,6 +88,10 @@ export class ProjectionCacheService {
 			};
 			if (identityKey(expected) !== identityKey(entry.identity)) return null;
 			const bytes = await this.get(entry.identity, entry.hash);
+			if (!bytes) {
+				await unlink(this.path(entry.identity)).catch(() => undefined);
+				await unlink(join(this.directory, `lookup-${digest(scope)}.json`)).catch(() => undefined);
+			}
 			return bytes
 				? {
 						value: JSON.parse(Buffer.from(bytes).toString()),
@@ -89,26 +103,12 @@ export class ProjectionCacheService {
 			return null;
 		}
 	}
+	async discard(scope: string): Promise<void> {
+		await projectionCacheDiscard(this.directory, scope);
+	}
 	async purge(principalId: string, projectId?: string): Promise<void> {
 		this.generation++;
-		const names = await readdir(this.directory).catch(() => []);
-		for (const name of names) {
-			if (!/^(projection|lookup)-[a-f0-9]{64}\.json$/.test(name)) continue;
-			const path = join(this.directory, name);
-			const entry = await readFile(path, 'utf8')
-				.then((text) => JSON.parse(text))
-				.catch(() => ({}));
-			const identity = cacheIdentity(entry.identity);
-			if (!identity) {
-				await unlink(path);
-				continue;
-			}
-			if (
-				identity?.principalId === principalId &&
-				(!projectId || identity.projectId === projectId || identity.projectId === '$projects')
-			)
-				await unlink(path);
-		}
+		await projectionCachePurge(this.directory, principalId, projectId);
 	}
 	async clear(): Promise<void> {
 		this.generation++;
@@ -127,15 +127,5 @@ export class ProjectionCacheService {
 	}
 	private path(identity: CacheIdentity): string {
 		return join(this.directory, `projection-${digest(identityKey(identity))}.json`);
-	}
-}
-
-function cacheIdentity(value: unknown): CacheIdentity | null {
-	try {
-		return (
-			typeof value === 'string' ? Object.fromEntries(JSON.parse(value)) : value
-		) as CacheIdentity | null;
-	} catch {
-		return null;
 	}
 }

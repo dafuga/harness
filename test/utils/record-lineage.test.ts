@@ -2,6 +2,8 @@ import { expect, test } from 'vitest';
 import type { VerificationRecord } from '../../src/core/verificationTypes';
 import { recordLineage } from '../../src/utils/recordLineage';
 import { verificationSample } from '../support/verificationSample';
+import { evidenceHistory } from '../../packages/hub/test/support/evidenceHistory';
+import { recordIntact, sealRecord } from '../../src/utils/sealRecord';
 
 const commitOf = (letter: string) => letter.repeat(40);
 const idOf = (letter: string) => letter.repeat(64);
@@ -95,4 +97,44 @@ test('a record that failed proves nothing that is inherited from it, even a scen
 	]);
 	// The same origin, passed and intact, still proves the scenario it is inherited for.
 	expect(lineage(child, [{ ...origin, status: 'passed' as const }])).toEqual([]);
+});
+
+test('sealed inherited states and capture bindings must equal their tested origin, also transitively', () => {
+	const fixture = evidenceHistory();
+	const origin = fixture.records.first.record;
+	const child = fixture.records.second.record;
+	expect(lineage(child, [origin])).toEqual([]);
+	const mutations = [
+		(s: Scenario) => {
+			s.states[0].id = 'never-tested-state';
+		},
+		(s: Scenario) => {
+			s.states[0].captures[0].state = 'never-tested-state';
+		},
+		(s: Scenario) => {
+			s.states[0].captures[0].sha256 = 'f'.repeat(64);
+		},
+		(s: Scenario) => {
+			s.states[0].captures[0].path = 'captures/another.txt';
+		},
+		(s: Scenario) => {
+			s.states[0].captures[0].status = 'failed';
+		}
+	];
+	for (const mutate of mutations) {
+		const draft = JSON.parse(JSON.stringify(child)) as VerificationRecord;
+		const inherited = draft.scenarios.find((s) => s.status === 'referenced')!;
+		mutate(inherited);
+		const { id, ...body } = draft;
+		expect(id).toBe(child.id);
+		const forged = sealRecord(body);
+		expect(recordIntact(forged)).toBe(true);
+		expect(lineage(forged, [origin])).toContain(
+			`scenario ${inherited.id} differs from the states and captures in its inherited record`
+		);
+		const leaf = record('c', { base: forged.source.commit, baseRecord: forged.id });
+		expect(lineage(leaf, [origin, forged]).join('\n')).toContain(
+			'differs from the states and captures'
+		);
+	}
 });

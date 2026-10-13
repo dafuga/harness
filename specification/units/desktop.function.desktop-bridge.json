@@ -61,6 +61,11 @@
 			"unit": "desktop.service.provider-discovery",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.recorded-evidence",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
@@ -73,7 +78,7 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"scenarios": ["desktop-native", "desktop-project-runs", "desktop-recorded-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

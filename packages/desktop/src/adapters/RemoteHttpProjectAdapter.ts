@@ -1,4 +1,8 @@
-import { createHash } from 'node:crypto';
+import { hostedImage } from '../utils/hostedImage';
+import { hostedCapabilities } from '../utils/hostedCapabilities';
+import { HostedEvidenceAdapter } from './HostedEvidenceAdapter';
+import { HostedEvidenceService } from '../services/HostedEvidenceService';
+import type { EntityEvidenceQuery, EvidenceArtifactQuery } from '../models/DesktopEvidence.types';
 import type { AddCommentInput } from '../../../collaboration/src/models/Collaboration.types';
 import type { RemoteProjectPort, ProjectCapabilities } from '../models/ProjectContext.types';
 import type {
@@ -11,7 +15,6 @@ import {
 	RemoteProjectResponseValidator,
 	responseRecord
 } from '../validators/RemoteProjectResponseValidator';
-import { ImageBytesValidator } from '../validators/ImageBytesValidator';
 import { HostedHttpAdapter } from './HostedHttpAdapter';
 import { RemoteProjectionService } from '../services/RemoteProjectionService';
 import type { HostedReadOptions } from '../services/HostedReadService';
@@ -20,6 +23,7 @@ export type { NativeHostedCredential } from './HostedHttpAdapter';
 export class RemoteHttpProjectAdapter implements RemoteProjectPort {
 	private http: HostedHttpAdapter;
 	private projections: RemoteProjectionService;
+	private recorded: HostedEvidenceService;
 	private validator = new RemoteProjectResponseValidator();
 	constructor(private options: HostedReadOptions) {
 		let denied = 0;
@@ -31,11 +35,24 @@ export class RemoteHttpProjectAdapter implements RemoteProjectPort {
 			...authorityOptions,
 			onDenied: async (principal, project) => {
 				denied++;
-				options.onCacheStatus?.({ projectId: project ?? '$projects', status: 'denied' });
+				options.onCacheStatus?.({
+					projectId: project ?? '$projects',
+					status: 'denied'
+				});
 				await options.cache?.purge(principal, project);
 			}
 		});
 		this.projections = new RemoteProjectionService(this.http, authorityOptions);
+		this.recorded = new HostedEvidenceService(
+			new HostedEvidenceAdapter(this.http),
+			authorityOptions
+		);
+	}
+	evidence(input: EntityEvidenceQuery & { projectId: string }) {
+		return this.recorded.evidence(input);
+	}
+	artifact(input: EvidenceArtifactQuery & { projectId: string }) {
+		return this.recorded.artifact(input);
 	}
 	async available() {
 		return Boolean(await this.options.credentials());
@@ -65,16 +82,7 @@ export class RemoteHttpProjectAdapter implements RemoteProjectPort {
 		});
 	}
 	async image(input: ImageQuery & { projectId: string }) {
-		const validate = (value: unknown) => {
-			if (typeof value !== 'string') throw new Error('Invalid cached image.');
-			const bytes = new Uint8Array(Buffer.from(value, 'base64'));
-			if (
-				bytes.length > 25000000 ||
-				createHash('sha256').update(bytes).digest('hex') !== input.sha256
-			)
-				throw new Error('Hosted image hash mismatch.');
-			return new ImageBytesValidator().validate(bytes);
-		};
+		const validate = (value: unknown) => hostedImage(value, input.sha256);
 		const encoded = await this.projections.read(
 			input,
 			'image',
@@ -101,20 +109,7 @@ export class RemoteHttpProjectAdapter implements RemoteProjectPort {
 		return this.projections.read(input, 'history', (value) => this.validator.history(value));
 	}
 	async capabilities(projectId: string): Promise<ProjectCapabilities> {
-		const project = responseRecord(await this.http.json(this.path(projectId, '')));
-		if (
-			project.id !== projectId ||
-			!['owner', 'commenter', 'viewer'].includes(String(project.role))
-		)
-			throw new Error('Unknown hosted project access.');
-		return {
-			comments: project.role !== 'viewer',
-			agents: false,
-			planning: false,
-			approval: false,
-			source: 'github',
-			reason: 'Shared comments require server acknowledgment; agents run only in local projects.'
-		};
+		return hostedCapabilities(await this.http.json(this.path(projectId, '')), projectId);
 	}
 	async addComment(input: AddCommentInput) {
 		const credential = await this.http.authorize();

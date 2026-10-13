@@ -11,7 +11,11 @@ const types: Record<string, string> = {
 	'.ico': 'image/x-icon',
 	'.woff2': 'font/woff2'
 };
-/** `connect` names the one address beside the app itself that a page may open: its own socket. */
+/**
+ * `connect` names the one address beside the app itself that a page may open: its own socket.
+ * A picture or a recorded clip may come from an object URL the page made of bytes it checked;
+ * no script, frame or object may, and nothing may come from another origin.
+ */
 export function rendererPolicy(html: string, connect = ''): string {
 	const hashes = [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].map(
 		(m) => "'sha256-" + createHash('sha256').update(m[1]).digest('base64') + "'"
@@ -19,7 +23,7 @@ export function rendererPolicy(html: string, connect = ''): string {
 	return (
 		"default-src 'self'; script-src 'self' " +
 		hashes.join(' ') +
-		"; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; font-src 'self'; connect-src 'self'" +
+		"; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; font-src 'self'; connect-src 'self'" +
 		(connect ? ' ' + connect : '') +
 		"; frame-src 'none'; object-src 'none'; base-uri 'none'"
 	);

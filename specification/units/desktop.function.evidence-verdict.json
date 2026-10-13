@@ -1,0 +1,80 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.evidence-verdict",
+	"kind": "function",
+	"title": "evidenceVerdict",
+	"responsibility": "Owns the evidenceVerdict shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/evidenceVerdict.ts"],
+		"symbols": ["EvidenceRead", "EntityVerdict", "evidenceVerdict"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "evidenceVerdict.read",
+				"type": "EvidenceRead"
+			},
+			{
+				"name": "evidenceVerdict.entity",
+				"type": "Judged"
+			},
+			{
+				"name": "evidenceVerdict.commit",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "evidenceVerdict",
+				"type": "EntityVerdict"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.evidence-notice",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-verdict",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/evidenceVerdict.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/evidenceVerdict.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -84,3 +84,14 @@ test('an abbreviated commit, an unknown category and a foreign address are refus
 	expect(isWorkspacePath('/projects/p/members')).toBe(false);
 	expect(isWorkspacePath('/')).toBe(false);
 });
+
+test('every section of an entity has an address of its own, and its overview has none', () => {
+	const entity = '/projects/p/harness/branch/main/pages/page%3Aactivity';
+	for (const suffix of ['designs', 'relationships', 'evidence', 'history', 'details'] as const) {
+		const route = workspaceRoute(`${entity}/${suffix}`);
+		expect(route.suffix).toBe(suffix);
+		expect(workspacePath(route)).toBe(`${entity}/${suffix}`);
+	}
+	expect(workspaceRoute(entity).suffix).toBeNull();
+	expect(workspaceRoute(`${entity}/contract`).suffix).toBeNull();
+});

@@ -3,6 +3,7 @@
 	import type { EntityDetail, HistoryEvent } from '../models/Desktop.types';
 	import { historyPages } from '../utils/historyPages';
 	import { timeLabel } from '../utils/timeLabel';
+	import WorkspaceLink from './WorkspaceLink.svelte';
 	let { entity, workspace }: { entity: EntityDetail; workspace: Workspace } = $props();
 	let later = $state<HistoryEvent[]>([]);
 	let next = $state<number | null>(null);
@@ -22,6 +23,18 @@
 		next = coverage ? coverage.nextPage : null;
 	});
 	const events = $derived(historyPages(entity.history, later));
+	/**
+	 * The commits the shown branch is known to contain. Only such a commit of an event is a link:
+	 * one of a planning branch, or one this list does not reach, stays text and proves nothing.
+	 */
+	const contained = $derived(new Set((workspace.snapshot?.commits ?? []).map((item) => item.hash)));
+	const there = (commit: string) =>
+		workspace.link({
+			branch: workspace.snapshot?.revision.branch,
+			commit,
+			category: entity.category,
+			entityId: entity.id
+		});
 	const more = $derived(!complete && next !== null && Boolean(workspace.bridge?.history));
 	async function load() {
 		const revision = workspace.snapshot?.revision;
@@ -53,7 +66,14 @@
 	<h2>Entity history</h2>
 	{#each events as event (event.id)}<article>
 			<span class="timeline-dot"></span><strong>{event.title}</strong><small
-				>{timeLabel(event.at)} {event.commit ? '· ' + event.commit.slice(0, 7) : ''}</small
+				>{timeLabel(event.at)}
+				{#if event.commit}·
+					{#if contained.has(event.commit)}<WorkspaceLink
+							{workspace}
+							to={there(event.commit)}
+							label={`Show at commit ${event.commit.slice(0, 7)}`}
+							>{event.commit.slice(0, 7)}</WorkspaceLink
+						>{:else}{event.commit.slice(0, 7)}{/if}{/if}</small
 			>
 			<p>{event.detail}</p>
 		</article>{:else}<p class="muted">No history recorded for this entity.</p>{/each}

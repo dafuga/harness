@@ -10,7 +10,7 @@ import Foundation
 /// is never kept and never answered from here.
 final class RemoteCache {
     static let kept: Set<String> = [
-        "listProjects", "snapshot", "entity", "messages", "image", "source", "history"
+        "listProjects", "snapshot", "entity", "messages", "image", "source", "history", "evidence", "artifact"
     ]
     let budget: RemoteCacheBudget
     private let root: URL

@@ -1,0 +1,55 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.browser-artifact",
+	"kind": "function",
+	"title": "browserArtifact",
+	"responsibility": "Owns the browserArtifact shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/browserArtifact.ts"],
+		"symbols": ["browserArtifact"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "browserArtifact.media",
+				"type": "{ bytes: Uint8Array; mediaType: string }"
+			},
+			{
+				"name": "browserArtifact.sha256",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "browserArtifact",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/browserArtifact.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/browserArtifact.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

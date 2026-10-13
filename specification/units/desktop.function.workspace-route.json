@@ -9,6 +9,7 @@
 	"owns": {
 		"source": ["packages/desktop/src/utils/workspaceRoute.ts"],
 		"symbols": [
+			"routeSuffixes",
 			"RouteSuffix",
 			"WorkspaceRoute",
 			"WorkspaceTarget",
@@ -34,6 +35,10 @@
 			}
 		],
 		"outputs": [
+			{
+				"name": "routeSuffixes",
+				"type": "unknown"
+			},
 			{
 				"name": "isWorkspacePath",
 				"type": "boolean"

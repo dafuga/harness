@@ -1,4 +1,10 @@
 import type {
+	EntityEvidenceQuery,
+	EntityEvidenceResult,
+	EvidenceArtifactQuery,
+	EvidenceArtifactResult
+} from './DesktopEvidence.types';
+import type {
 	AddCommentInput,
 	CacheIdentity,
 	CommittedThread
@@ -56,9 +62,13 @@ export type HumanCommentResult =
 	| { kind: 'shared'; projectId: string; thread: CommittedThread };
 /** Main-process injected transport. It owns verified Google session handling; no renderer Actor. */
 export interface RemoteProjectPort {
-	history?(
-		input: EntityQuery & { projectId: string; page: number; branch?: string }
-	): Promise<{ entries: HistoryEvent[]; complete: boolean; nextPage: number | null }>;
+	evidence?(input: EntityEvidenceQuery & { projectId: string }): Promise<EntityEvidenceResult>;
+	artifact?(input: EvidenceArtifactQuery & { projectId: string }): Promise<EvidenceArtifactResult>;
+	history?(input: EntityQuery & { projectId: string; page: number; branch?: string }): Promise<{
+		entries: HistoryEvent[];
+		complete: boolean;
+		nextPage: number | null;
+	}>;
 	available?(): Promise<boolean>;
 	listProjects(): Promise<DesktopProject[]>;
 	entity(input: EntityQuery & { projectId: string }): Promise<EntityDetail>;
@@ -77,5 +87,10 @@ export interface NativeHostedStatus {
 	configured: boolean;
 	state: 'signed-out' | 'pending' | 'signed-in';
 	actor?: { id: string; name: string; email: string };
-	handoff?: { userCode: string; verificationUrl: string; expiresAt: string; interval: number };
+	handoff?: {
+		userCode: string;
+		verificationUrl: string;
+		expiresAt: string;
+		interval: number;
+	};
 }

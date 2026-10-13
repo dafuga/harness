@@ -89,6 +89,13 @@ export interface SourceCommit {
 	commit: string;
 	tree: string;
 }
+/** One commit as Git states it: its parents in their order, its title and who made it when. */
+export interface SourceCommitFacts extends SourceCommit {
+	parents: string[];
+	subject: string;
+	author: string;
+	committedAt: string;
+}
 export interface SourceEntry {
 	path: string;
 	sha: string;
@@ -198,6 +205,8 @@ export interface SourceHistoryPage {
 	nextPage: number | null;
 }
 export interface SourceHistoryAdapter extends SourceAdapter {
+	/** Release only memoized bytes after sequential validation; commit/tree authority is unchanged. */
+	releaseBytes?(repository: RepositoryIdentity, input: { commit: string; path: string }): void;
 	rawMany?(
 		repository: RepositoryIdentity,
 		input: { commit: string; paths: string[] }
@@ -214,4 +223,11 @@ export interface SourceHistoryAdapter extends SourceAdapter {
 	): Promise<Array<{ hash: string; subject: string; authoredAt: string }>>;
 	changed(repository: RepositoryIdentity, commit: string): Promise<string[]>;
 	optionalRef(repository: RepositoryIdentity, ref: string): Promise<SourceCommit | null>;
+	/** The commit as the repository states it; null when it holds no such commit. */
+	facts?(repository: RepositoryIdentity, commit: string): Promise<SourceCommitFacts | null>;
+	/** True when `commit` is `tip` or one of its ancestors; false when either is not held. */
+	reaches?(
+		repository: RepositoryIdentity,
+		input: { tip: string; commit: string }
+	): Promise<boolean>;
 }

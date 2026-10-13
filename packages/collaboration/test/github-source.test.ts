@@ -141,3 +141,19 @@ test('raw reads attest exact LFS pointers without downloads and share immutable 
 		code: 'blob-integrity'
 	});
 });
+
+for (const method of ['raw', 'read'] as const) {
+	test(`sequential readers release ${method} byte memo while preserving immutable tree facts`, async () => {
+		const fixture = await sourceFixture(),
+			adapter = fixture.adapter();
+		const input = { commit, path: 'src/old.ts' };
+		await adapter[method](sourceRepository, input);
+		adapter.releaseBytes!(sourceRepository, input);
+		fixture.state.corrupt = true;
+		await expect(adapter[method](sourceRepository, input)).rejects.toMatchObject({
+			code: 'blob-integrity'
+		});
+		expect(fixture.state.calls.filter((url) => url.includes('/git/blobs/'))).toHaveLength(2);
+		expect(fixture.state.calls.filter((url) => url.includes('/git/trees/'))).toHaveLength(1);
+	});
+}

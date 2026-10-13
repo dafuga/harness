@@ -67,6 +67,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.model.desktop-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.desktop-types",
 			"via": "import",
 			"origin": "derived"
@@ -107,7 +112,7 @@
 			}
 		]
 	},
-	"scenarios": ["remote-desktop-boundaries"],
+	"scenarios": ["desktop-recorded-evidence", "remote-desktop-boundaries"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

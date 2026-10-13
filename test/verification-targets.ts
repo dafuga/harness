@@ -1,3 +1,4 @@
+import { recordedEvidenceScopes } from './recorded-evidence-scopes';
 import { remoteVerificationScopes } from './remote-verification-scopes';
 
 export interface VerificationTarget {
@@ -15,6 +16,17 @@ export interface VerificationScope {
 }
 const scopes: Record<string, VerificationScope> = {
 	...remoteVerificationScopes,
+	...recordedEvidenceScopes,
+	'runtime-evidence-ui': {
+		package: 'desktop',
+		vitest: {},
+		playwright: {
+			'tests/e2e/ui-evidence-screens.spec.ts': ['screen-interaction'],
+			'tests/e2e/ui-evidence-behavior.spec.ts': ['behavior-interaction'],
+			'tests/e2e/ui-evidence-states.spec.ts': ['state-interaction'],
+			'tests/e2e/ui-evidence-review.spec.ts': ['review-interaction']
+		}
+	},
 	'planning-artifacts': {
 		package: 'planning',
 		vitest: {

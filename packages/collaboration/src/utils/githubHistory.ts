@@ -1,5 +1,7 @@
 import { z } from 'zod';
+import { githubCommitFacts } from './githubCommitFacts';
 import { githubHistoryPage } from './githubHistoryPage';
+import { githubReaches } from './githubReaches';
 import type {
 	GitHubOptions,
 	RepositoryIdentity,
@@ -123,6 +125,8 @@ export function githubHistory(
 			const api = client(repository);
 			await api.check();
 			return optionalRef(adapter, api, repository, ref);
-		}
+		},
+		facts: (repository, commit) => githubCommitFacts(client(repository), commit),
+		reaches: (repository, input) => githubReaches(client(repository), input)
 	};
 }

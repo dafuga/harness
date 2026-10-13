@@ -1,0 +1,76 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.runtime-audio",
+	"kind": "component",
+	"title": "RuntimeAudio",
+	"responsibility": "Owns the RuntimeAudio Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/RuntimeAudio.svelte"],
+		"symbols": ["RuntimeAudio"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "RuntimeAudio.result",
+				"type": "EntityEvidenceResult"
+			},
+			{
+				"name": "RuntimeAudio.evidence",
+				"type": "EntityEvidence"
+			}
+		],
+		"outputs": [
+			{
+				"name": "RuntimeAudio",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.status-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.entity-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-screens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/RuntimeAudio.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/RuntimeAudio.svelte"
+			}
+		]
+	},
+	"scenarios": ["runtime-evidence-ui"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

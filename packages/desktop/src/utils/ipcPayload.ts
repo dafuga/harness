@@ -1,3 +1,4 @@
+import { evidencePayload } from './evidencePayload';
 import { categories } from '../models/Desktop.types';
 import {
 	commitPattern,
@@ -67,7 +68,7 @@ export function ipcPayload(channel: string, input: unknown): unknown {
 	if (channel === 'thread:open') return threadPayload(x);
 	if (channel === 'run:start') return runPayload(x);
 	if (channel === 'run:cancel') return { runId: textField(x.runId, 80) };
-	return entityPayload(channel, x);
+	return channel.startsWith('evidence:') ? evidencePayload(channel, x) : entityPayload(channel, x);
 }
 function entityPayload(channel: string, x: Record<string, unknown>) {
 	const entityId = textField(x.entityId, 120, idPattern);

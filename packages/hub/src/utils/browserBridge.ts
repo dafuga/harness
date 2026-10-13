@@ -1,3 +1,4 @@
+import { browserEvidenceReads } from './browserEvidenceReads';
 import type { CommittedThread, ProjectSummary } from 'collaboration';
 import type { DesktopBridge, SourceFile } from '$desktop/models/DesktopBridge.types';
 import type { EntityDetail, ProjectSnapshot } from '$desktop/models/Desktop.types';
@@ -13,7 +14,7 @@ type Reads = Pick<
 	DesktopBridge,
 	'listProjects' | 'selectProject' | 'capabilities' | 'snapshot' | 'entity' | 'source'
 > &
-	Pick<DesktopBridge, 'image' | 'messages' | 'history'>;
+	Pick<DesktopBridge, 'image' | 'messages' | 'history' | 'evidence' | 'artifact'>;
 type Listener = (event: CacheStatus) => void;
 /** Runs a read of one project and, when it is refused, says so before the refusal is thrown. */
 type Guard = <T>(context: ProjectContext, read: (base: string) => Promise<T>) => Promise<T>;
@@ -87,6 +88,7 @@ function reads(api: BrowserApi, guard: Guard): Reads {
 		capabilities: async (input = {}) =>
 			(await snapshot({ ...input, branch: null, commit: null })).capabilities!,
 		snapshot,
+		...browserEvidenceReads(api, guard),
 		entity: async ({ entityId, commit, ...context }) => {
 			const branch = branches.get(context.projectId ?? '');
 			return guard(context, (path) =>
@@ -109,7 +111,12 @@ function reads(api: BrowserApi, guard: Guard): Reads {
 		/** Further pages of an entity's history, along the branch and at the commit in view. */
 		history: async ({ entityId, commit, page, branch, ...context }) =>
 			guard(context, (path) =>
-				api.get(`${path}/history`, { entityId, commit, branch, page: String(page) })
+				api.get(`${path}/history`, {
+					entityId,
+					commit,
+					branch,
+					page: String(page)
+				})
 			)
 	};
 }
@@ -144,7 +151,13 @@ export function browserBridge(api: BrowserApi): DesktopBridge {
 		pendingComments: async () => [],
 		addComment: async (input) => {
 			const { projectId, requestId, threadId, anchor, text } = input;
-			const body = { projectId, requestId, anchor, text, ...(threadId ? { threadId } : {}) };
+			const body = {
+				projectId,
+				requestId,
+				anchor,
+				text,
+				...(threadId ? { threadId } : {})
+			};
 			const thread = await api.send<CommittedThread>('POST', `${base(input)}/comments`, body);
 			return { kind: 'shared', projectId: projectId!, thread };
 		},

@@ -3,14 +3,17 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { setTimeout as wait } from 'node:timers/promises';
 import { afterAll, beforeAll, expect, test } from 'vitest';
+import { AgentRegistryRepository } from '../src/repositories/AgentRegistryRepository';
 import { runHarness } from './support/cli';
 
 /**
  * Who is working in a repository now is what agents say about themselves while they work: a
  * registration, heartbeats and an end. Every checkout of the repository sees the same agents,
  * another repository sees none of them, and what is not known is said instead of counted.
+ * Every case may take 60 seconds: each starts several CLI processes, and a loaded machine starts
+ * each slowly. That bounds the work of a test. It says nothing of how long an agent may be
+ * quiet, which each agent states for itself and which no case here waits out.
  */
 interface Entry {
 	id: string;
@@ -33,6 +36,8 @@ interface Roster {
 	unreadable: number;
 	roster: Entry[];
 }
+/** What a live agent allows between heartbeats here, in seconds: far longer than a case runs. */
+const allowed = 600;
 let scratch: string;
 const at = (name: string) => join(scratch, name);
 const git = (cwd: string, args: string[]) =>
@@ -58,6 +63,17 @@ const register = async (cwd: string, label: string, more: string[] = []) =>
 	(await json<{ id: string; branch: string | null }>(cwd, ['register', '--label', label, ...more]))
 		.id;
 const named = (list: Roster, label: string) => list.roster.find((item) => item.label === label);
+/**
+ * Leaves an agent as it would be after being quiet for so long: its stored heartbeat gets that
+ * age through the registry itself. The CLI then judges it by its own clock and its allowance.
+ */
+async function quietFor(checkout: string, id: string, seconds: number) {
+	const registry = new AgentRegistryRepository(at(checkout));
+	const stored = await registry.read(id);
+	if (!stored) throw new Error(`Agent ${id} is not registered in ${checkout}.`);
+	const since = new Date(Date.now() - seconds * 1000).toISOString();
+	await registry.beat(id, { ...stored.beat, at: since });
+}
 
 beforeAll(async () => {
 	scratch = await mkdtemp(join(tmpdir(), 'harness-agents-'));
@@ -75,7 +91,7 @@ test('a repository where no agent ever registered says it does not know, not zer
 		unreadable: 0,
 		roster: []
 	});
-});
+}, 60_000);
 
 test('an agent states who it is, and every checkout of its repository sees it; another repository does not', async () => {
 	const stated = ['--provider', 'anthropic', '--model', 'claude-opus-5-5'];
@@ -111,11 +127,15 @@ test('an agent states who it is, and every checkout of its repository sees it; a
 	}
 	const other = await roster(at('foreign'));
 	expect(other.roster.map((item) => item.label)).toEqual(['Foreign agent']);
-});
+}, 60_000);
 
 test('a heartbeat keeps an agent working and may restate its work; without one it is stale and not counted', async () => {
-	const id = await register(at('site'), 'Short lived', ['--ttl', '1', '--units', 'service.title']);
-	await wait(1300);
+	const stated = ['--ttl', String(allowed), '--units', 'service.title'];
+	const id = await register(at('site'), 'Short lived', stated);
+	// Quiet for half of what it allowed, it still counts; quiet for longer than that, it does not.
+	await quietFor('site', id, allowed / 2);
+	expect(named(await roster(at('site')), 'Short lived')?.state).toBe('working');
+	await quietFor('site', id, allowed + 1);
 	const quiet = await roster(at('site'));
 	expect(named(quiet, 'Short lived')?.state).toBe('stale');
 	expect(named(quiet, 'Short lived')?.detail).toMatch(/heartbeat/i);
@@ -123,9 +143,13 @@ test('a heartbeat keeps an agent working and may restate its work; without one i
 	await run(at('site'), ['heartbeat', id, '--task', 'Next step', '--units', 'function.slugify']);
 	const again = named(await roster(at('site')), 'Short lived');
 	expect(again).toMatchObject({ state: 'working', task: 'Next step', units: ['function.slugify'] });
+	// The heartbeat was what kept it: left quiet again for too long, it is stale again.
+	await quietFor('site', id, allowed + 1);
+	const later = named(await roster(at('site')), 'Short lived');
+	expect(later).toMatchObject({ state: 'stale', task: 'Next step' });
 	const unknown = await run(at('site'), ['heartbeat', 'nobody-registered-this'], false);
 	expect([unknown.exitCode, unknown.stderr]).toEqual([1, expect.stringMatching(/not registered/)]);
-}, 30_000);
+}, 60_000);
 
 test('a finished or failed agent is listed as that, and a late heartbeat does not bring it back', async () => {
 	const done = await register(at('checkout'), 'Finisher');
@@ -138,7 +162,7 @@ test('a finished or failed agent is listed as that, and a late heartbeat does no
 	expect(named(seen, 'Finisher')).toMatchObject({ state: 'completed', outcome: 'Handed over' });
 	expect(named(seen, 'Breaker')).toMatchObject({ state: 'failed', outcome: 'Tests stayed red' });
 	expect(seen.working).toBe(seen.roster.filter((item) => item.state === 'working').length);
-});
+}, 60_000);
 
 test('an agent whose process ended is not counted, whatever its heartbeat says', async () => {
 	const child = spawn(process.execPath, ['-e', 'setTimeout(() => {}, 60000)'], { stdio: 'ignore' });
@@ -154,7 +178,7 @@ test('an agent whose process ended is not counted, whatever its heartbeat says',
 	// A process that does not exist cannot be registered as the agent.
 	const absent = await run(at('site'), ['register', '--label', 'Nobody', '--pid', '999999'], false);
 	expect([absent.exitCode, absent.stderr]).toEqual([1, expect.stringMatching(/999999/)]);
-});
+}, 60_000);
 
 test('many agents register, beat and finish at once without losing or damaging a registration', async () => {
 	const labels = Array.from({ length: 12 }, (_, index) => `Parallel ${index + 1}`);
@@ -191,4 +215,4 @@ test('what an owner may state is bounded, and an assignment the registry does no
 	expect((await roster(at('quiet'))).tracking).toBe('never-used');
 	await register(at('foreign'), 'Assigned', ['--units', 'service.nothing']);
 	expect(named(await roster(at('foreign')), 'Assigned')?.unknownUnits).toEqual(['service.nothing']);
-});
+}, 60_000);

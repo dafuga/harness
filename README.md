@@ -140,7 +140,9 @@ functions; declare a `process` or `http` target only for a unit that is deployed
 
 The impact kernel has a TypeScript reference (`src/utils/impactKernel.ts`) and a Rust
 implementation (`crates/impact-kernel`) built for the native host and for
-`wasm32-unknown-unknown` with the toolchain pinned in `rust-toolchain.toml`.
+`wasm32-unknown-unknown` with the toolchain pinned in `rust-toolchain.toml`. The two commands
+below select that toolchain through rustup, whatever `cargo` is first on `PATH`; without rustup
+or the pinned toolchain they fail and say what is missing.
 
 ```bash
 bun run build:kernel            # native process and core Wasm into target/kernel

@@ -1,0 +1,144 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.hub-evidence-scope",
+	"kind": "function",
+	"title": "hubEvidenceScope",
+	"responsibility": "Owns the hubEvidenceScope shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/hubEvidenceScope.ts"],
+		"symbols": [
+			"HubEvidenceDependencies",
+			"hubEvidenceContext",
+			"hubEvidencePins",
+			"hubEvidenceScope"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "hubEvidenceContext.deps",
+				"type": "HubEvidenceDependencies"
+			},
+			{
+				"name": "hubEvidenceContext.actor",
+				"type": "Actor"
+			},
+			{
+				"name": "hubEvidenceContext.query",
+				"type": "EntityEvidenceQuery"
+			},
+			{
+				"name": "hubEvidencePins.base",
+				"type": "HubSourceContext"
+			},
+			{
+				"name": "hubEvidencePins.query",
+				"type": "Pick<EvidenceArtifactQuery, 'notesRevision' | 'evidenceRevision'>"
+			},
+			{
+				"name": "hubEvidenceScope.base",
+				"type": "HubSourceContext"
+			},
+			{
+				"name": "hubEvidenceScope.query",
+				"type": "EntityEvidenceQuery"
+			},
+			{
+				"name": "hubEvidenceScope.tip",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hubEvidenceContext",
+				"type": "unknown"
+			},
+			{
+				"name": "hubEvidencePins",
+				"type": "unknown"
+			},
+			{
+				"name": "hubEvidenceScope",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "forbidden",
+				"type": "refused",
+				"description": "No project is named."
+			},
+			{
+				"name": "evidence-stale",
+				"type": "refused",
+				"description": "Current mode without the branch tip, or a pinned revision its ref never held."
+			},
+			{
+				"name": "evidence-unreadable",
+				"type": "refused",
+				"description": "Unknown branch, commit off the branch, or unregistered entity."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.recorded-scope",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-evidence-revision",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-notes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.service.hub-attached",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.service.hub-record-status",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/hubEvidenceScope.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/hubEvidenceScope.ts"
+			}
+		]
+	},
+	"scenarios": ["hub-recorded-evidence"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -28,7 +28,17 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.script.ios-build-observation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.script.ios-products",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.script.ios-service-observers",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.runtime-pane",
+	"kind": "component",
+	"title": "RuntimePane",
+	"responsibility": "Owns the RuntimePane Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/RuntimePane.svelte"],
+		"symbols": ["RuntimePane"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "RuntimePane.item",
+				"type": "Evidence"
+			},
+			{
+				"name": "RuntimePane.title",
+				"type": "string"
+			},
+			{
+				"name": "RuntimePane.role",
+				"type": "string"
+			},
+			{
+				"name": "RuntimePane.evidence",
+				"type": "EntityEvidence"
+			}
+		],
+		"outputs": [
+			{
+				"name": "RuntimePane",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.status-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.entity-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/RuntimePane.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/RuntimePane.svelte"
+			}
+		]
+	},
+	"scenarios": ["runtime-evidence-ui"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

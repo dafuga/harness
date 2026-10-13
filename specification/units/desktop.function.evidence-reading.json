@@ -1,0 +1,85 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.evidence-reading",
+	"kind": "function",
+	"title": "evidenceReading",
+	"responsibility": "Owns the evidenceReading shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/evidenceReading.ts"],
+		"symbols": ["EvidenceRead", "evidenceReading"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "evidenceReading.bridge",
+				"type": "Pick<DesktopBridge, 'artifact'>"
+			},
+			{
+				"name": "evidenceReading.result",
+				"type": "EntityEvidenceResult"
+			},
+			{
+				"name": "evidenceReading.scope",
+				"type": "EntityEvidenceQuery"
+			}
+		],
+		"outputs": [
+			{
+				"name": "evidenceReading",
+				"type": "Promise<EvidenceRead>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.artifact-query",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-artifact",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-reading",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/evidenceReading.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/evidenceReading.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

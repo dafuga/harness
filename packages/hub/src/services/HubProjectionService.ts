@@ -1,3 +1,8 @@
+import { HubEvidenceService } from './HubEvidenceService';
+import type {
+	EntityEvidenceQuery,
+	EvidenceArtifactQuery
+} from '../../../desktop/src/models/DesktopEvidence.types';
 import { hubHistory } from '../utils/hubHistory';
 import type {
 	Actor,
@@ -23,7 +28,16 @@ interface Dependencies {
 	cache: CollaborationCache;
 }
 export class HubProjectionService {
-	constructor(private context: Dependencies) {}
+	private readonly recorded: HubEvidenceService;
+	constructor(private context: Dependencies) {
+		this.recorded = new HubEvidenceService(context);
+	}
+	evidence(actor: Actor, projectId: string, query: EntityEvidenceQuery) {
+		return this.recorded.evidence(actor, projectId, query);
+	}
+	artifact(actor: Actor, projectId: string, query: EvidenceArtifactQuery) {
+		return this.recorded.artifact(actor, projectId, query);
+	}
 	private async load(actor: Actor, projectId: string, ref: string) {
 		const project = await this.context.api.getProject(actor, projectId);
 		return hubSource({ ...this.context, actor, project, ref });
@@ -81,7 +95,6 @@ export class HubProjectionService {
 				})
 		);
 	}
-
 	async source(
 		actor: Actor,
 		projectId: string,
@@ -91,12 +104,20 @@ export class HubProjectionService {
 			data = await hubCatalog(context),
 			unit = data.units.find((u) => u.id === query.entityId);
 		if (!unit || !hubOwnedPaths(context, unit).includes(query.path)) return hubFail('forbidden');
-		return { path: query.path, text: new TextDecoder().decode(await hubRead(context, query.path)) };
+		return {
+			path: query.path,
+			text: new TextDecoder().decode(await hubRead(context, query.path))
+		};
 	}
 	async image(
 		actor: Actor,
 		projectId: string,
-		query: { entityId: string; commit: string; version: string; sha256: string }
+		query: {
+			entityId: string;
+			commit: string;
+			version: string;
+			sha256: string;
+		}
 	) {
 		const context = await this.load(actor, projectId, query.commit),
 			plan = (await hubPlans(context)).find((p) => p.unitId === query.entityId);

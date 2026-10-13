@@ -1,5 +1,6 @@
 import { ProjectImageCacheService } from '../services/ProjectImageCacheService';
 import { ProjectOperationsService } from '../services/ProjectOperationsService';
+import { RecordedEvidenceService } from '../services/RecordedEvidenceService';
 import type { DesktopBridge } from '../models/DesktopBridge.types';
 import type { ProjectSessionService } from '../services/ProjectSessionService';
 import type { ProviderDiscoveryService } from '../services/ProviderDiscoveryService';
@@ -49,6 +50,7 @@ async function create(context: BridgeContext, input: Parameters<DesktopBridge['c
 export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRunEvent'> {
 	const { session, providers, runs, choose } = context;
 	const operations = new ProjectOperationsService(session);
+	const recorded = new RecordedEvidenceService(session);
 	const bridge: Omit<DesktopBridge, 'onRunEvent'> = {
 		hostedStatus: () =>
 			session.auth?.status() ?? Promise.resolve({ configured: false, state: 'signed-out' }),
@@ -71,6 +73,8 @@ export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRu
 		entity: (input) => session.requireProject().catalog.entity(input.entityId, input.commit),
 		source: (input) => source(context, input),
 		image: (input) => new ProjectImageCacheService(session).read(input),
+		evidence: (input) => recorded.evidence(input),
+		artifact: (input) => recorded.artifact(input),
 		createPlan: (input) => exclusive(session, () => create(context, input)),
 		openThread: (input) => exclusive(session, () => thread(context, input)),
 		messages: (input) =>

@@ -73,7 +73,7 @@
 		"build:picker": "bun run --cwd packages/reports build:picker && bun scripts/build-picker.ts",
 		"build:kernel": "bun scripts/build-kernel.ts",
 		"build:api": "bun scripts/build-api.ts",
-		"check:kernel": "cargo fmt --check && cargo clippy --locked --all-targets -- -D warnings && cargo test --locked",
+		"check:kernel": "bun scripts/rust.ts cargo fmt --check && bun scripts/rust.ts cargo clippy --locked --all-targets -- -D warnings && bun scripts/rust.ts cargo test --locked",
 		"check:collaboration": "HARNESS_CLI_PATH=../../src/index.ts bun run --cwd packages/collaboration check",
 		"check:hub": "HARNESS_CLI_PATH=../../src/index.ts bun run --cwd packages/hub check && bun run --cwd packages/hub test:e2e",
 		"check:remote": "HARNESS_CLI_PATH=../../src/index.ts bun run --cwd packages/remote check",

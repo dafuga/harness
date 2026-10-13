@@ -13,6 +13,7 @@ import { budgetReviews } from '../utils/budgetReviews';
 import { historySeries, unitGrowth } from '../utils/historySeries';
 import { revisionChanges, type RevisionChanges } from '../utils/revisionChanges';
 import type { RevisionRegistry } from '../utils/revisionRegistry';
+import { revisionSummary } from '../utils/revisionSummary';
 import { stableJson } from '../utils/stableJson';
 import { HistoryMediaService } from './HistoryMediaService';
 import { HistoryStatusService } from './HistoryStatusService';
@@ -29,8 +30,6 @@ export interface BuiltHistory {
 }
 
 export type LegacyReader = (media: HistoryMediaService) => Promise<LegacyEntry[]>;
-
-const unverified = 'no verification record is attached to this commit';
 
 /**
  * Builds the history index: a deterministic, self-contained set of files made only from Git.
@@ -143,45 +142,14 @@ function summary(
 	changes: RevisionChanges | null
 ): IndexedRevision {
 	const { status, detail } = built;
-	const records = status.records.map((item) => {
-		const view = detail.records.find((record) => record.id === item.record);
-		return {
-			id: item.record,
-			status: item.status,
-			profile: view?.profile ?? 'unknown',
-			finishedAt: view?.finishedAt ?? 'unknown',
-			base: view?.source.base ?? null,
-			valid: item.valid,
-			problems: item.problems
-		};
-	});
-	const usable = records.filter((record) => record.valid);
-	const coverage = coverageOf(
-		records.length,
-		usable.map((record) => record.status)
-	);
-	const invalid = records
-		.filter((record) => !record.valid)
-		.flatMap((record) =>
-			record.problems.map((problem) => `record ${short(record.id)}: ${problem}`)
-		);
 	return {
 		...revision,
-		coverage,
-		gaps: records.length === 0 ? [unverified] : invalid,
-		records,
+		...revisionSummary(status, detail.records),
 		reasons: detail.explanations.length,
 		legacy: legacy.filter((entry) => entry.linked === revision.commit).map((entry) => entry.id),
 		changes,
 		detail: detailPath(revision.commit)
 	};
-}
-
-/** Verified needs a usable passing record; records that cannot be used prove nothing. */
-function coverageOf(attached: number, usable: string[]): IndexedRevision['coverage'] {
-	if (attached === 0) return 'unverified';
-	if (usable.includes('passed')) return 'verified';
-	return usable.length > 0 ? 'failed' : 'invalid';
 }
 
 function profiles(records: VerificationRecord[]): HistoryIndex['profiles'] {

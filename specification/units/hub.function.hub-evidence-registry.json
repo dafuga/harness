@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.hub-evidence-registry",
+	"kind": "function",
+	"title": "hubEvidenceRegistry",
+	"responsibility": "Owns the hubEvidenceRegistry shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/hubEvidenceRegistry.ts"],
+		"symbols": ["hubEvidenceRegistry"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hubEvidenceRegistry.context",
+				"type": "HubSourceContext"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hubEvidenceRegistry",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.budget-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.revision-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.units-config",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-records",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.budget",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/hubEvidenceRegistry.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/hubEvidenceRegistry.ts"
+			}
+		]
+	},
+	"scenarios": ["hub-recorded-evidence"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

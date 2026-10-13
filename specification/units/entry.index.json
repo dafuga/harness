@@ -62,7 +62,8 @@
 			"writingLimits",
 			"commitMessage",
 			"CommitMessageService",
-			"revisionReasons"
+			"revisionReasons",
+			"verificationNoteIdentity"
 		]
 	},
 	"contract": {
@@ -229,6 +230,11 @@
 		},
 		{
 			"unit": "function.revision-reasons",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-note-identity",
 			"via": "reexport",
 			"origin": "derived"
 		},

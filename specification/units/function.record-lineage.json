@@ -36,6 +36,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.canonical-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.verification-types",
 			"via": "import",
 			"origin": "derived"
@@ -51,7 +56,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["desktop-recorded-evidence", "hub-recorded-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -1,7 +1,7 @@
 /**
  * TEST ONLY. Runs the disposable remote fixture until it is told to stop.
  *
- *   cd packages/desktop && bunx vite-node scripts/remote-fixture.ts
+ *   cd packages/desktop && bun run remote:fixture
  *
  * Ports: HARNESS_FIXTURE_RELAY_PORT (8791) and HARNESS_FIXTURE_CONTROL_PORT (8792), both on
  * 127.0.0.1. Control, from this machine only: GET /status, POST /pairing (a new one-time offer;

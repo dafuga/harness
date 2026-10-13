@@ -28,7 +28,7 @@
 			},
 			{
 				"name": "HostedReadService.read.load",
-				"type": "() => Promise<{ value: T; identity?: CacheIdentity }>"
+				"type": "() => Promise<{ value: T; identity?: CacheIdentity; principalId?: string }>"
 			},
 			{
 				"name": "HostedReadService.read.validate",

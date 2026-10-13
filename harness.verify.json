@@ -239,11 +239,11 @@
 		},
 		{
 			"id": "cargo",
-			"command": "cargo --version"
+			"command": "bun scripts/rust.ts cargo --version"
 		},
 		{
 			"id": "rustc",
-			"command": "rustc --version"
+			"command": "bun scripts/rust.ts rustc --version"
 		},
 		{
 			"id": "playwright",

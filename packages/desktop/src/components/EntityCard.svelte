@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { explorerName } from '../../../reports/src/utils/explorerName';
 	import type { CatalogEntity } from '../models/Desktop.types';
 	import type { Workspace } from '../lib/stores/workspace.svelte';
 	import { imageUrl } from '../utils/imageUrl';
@@ -16,7 +17,7 @@
 
 <article class="entity-card" class:planned={entity.hasPlan}>
 	<div class="row">
-		<h2>{entity.title}</h2>
+		<h2>{explorerName(entity)}</h2>
 		{#if entity.hasPlan}<PlanBadge />{/if}
 	</div>
 	<p>{entity.summary}</p>
@@ -34,7 +35,11 @@
 			reason={entity.verificationNote}
 		/>
 	</div>
-	<WorkspaceLink {workspace} to={workspace.path(entity.category, entity.id)} class="outline gold"
+	<!-- A proposal is reviewed where its designs are; anything else opens on its overview. -->
+	<WorkspaceLink
+		{workspace}
+		to={workspace.path(entity.category, entity.id, entity.hasPlan ? 'designs' : '')}
+		class="outline gold"
 		>{entity.hasPlan ? 'Review designs' : 'Open ' + entity.kind} <span>→</span></WorkspaceLink
 	>
 </article>

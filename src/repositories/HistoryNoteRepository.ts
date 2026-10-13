@@ -9,6 +9,7 @@ import { mergeNoteLines, noteLines, readNoteLines, type ReadNote } from '../util
 const notes = ['notes', `--ref=${notesRef}`];
 const absent = '0'.repeat(40);
 const attempts = 20;
+const commitId = /^[0-9a-f]{40}$/;
 
 /** The Harness note of a commit: lines are only ever added, and each names its commit. */
 export class HistoryNoteRepository {
@@ -77,15 +78,35 @@ export class HistoryNoteRepository {
 		return fail('The Harness notes kept changing while a line was being added; try again.');
 	}
 
-	/** Every commit that has a note, with the note read for that commit. */
-	async all(): Promise<Map<string, ReadNote>> {
+	/**
+	 * Every commit that has a note, with the note read for that commit. With a notes commit, the
+	 * notes are read as that commit holds them, wherever the ref is by now; null holds none.
+	 */
+	async all(at?: string | null): Promise<Map<string, ReadNote>> {
+		const pairs = at === undefined ? await this.listed() : await this.held(at);
+		const texts = await this.blobs(pairs.map(([blob]) => blob));
+		return new Map(pairs.map(([, commit], index) => [commit, readNoteLines(texts[index], commit)]));
+	}
+
+	/** The note blob of every noted commit, as the notes ref lists them now. */
+	private async listed(): Promise<string[][]> {
 		const listed = (await this.git.attempt([...notes, 'list'])) ?? '';
-		const pairs = listed
+		return listed
 			.split('\n')
 			.filter(Boolean)
 			.map((line) => line.split(' '));
-		const texts = await this.blobs(pairs.map(([blob]) => blob));
-		return new Map(pairs.map(([, commit], index) => [commit, readNoteLines(texts[index], commit)]));
+	}
+
+	/** The same of one notes commit: its tree names each noted commit, split into directories. */
+	private async held(at: string | null): Promise<string[][]> {
+		if (at === null) return [];
+		if (!commitId.test(at)) return fail('A notes revision must be a full commit hash.');
+		const tree = await this.git.run(['ls-tree', '-r', `${at}^{commit}`]);
+		return tree.split('\n').flatMap((line) => {
+			const [, blob, path = ''] = /^\d+ blob ([0-9a-f]+)\t(.+)$/.exec(line) ?? [];
+			const commit = path.replaceAll('/', '');
+			return commitId.test(commit) ? [[blob, commit]] : [];
+		});
 	}
 
 	/** Reads many blobs with one `git cat-file --batch`. */

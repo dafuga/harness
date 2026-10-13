@@ -10,6 +10,7 @@ import type {
 } from '../../../remote/src/index';
 import { LocalTransportClientService } from '../services/LocalTransportClientService';
 import type { LocalSocketPort } from '../services/LocalTransportClientService';
+import { binaryArtifact } from '../utils/binaryArtifact';
 import { bootstrapChannel } from '../utils/desktopIpc';
 import { remoteBinary } from '../utils/remoteBinary';
 /**
@@ -41,6 +42,8 @@ const bridge: DesktopBridge = {
 	entity: call('entity'),
 	source: call('source'),
 	image: async (input) => remoteBinary(await call<RemoteBinary>('image')(input)),
+	evidence: call('evidence'),
+	artifact: async (input) => binaryArtifact(await call<RemoteBinary>('artifact')(input)),
 	createPlan: call('createPlan'),
 	openThread: call('openThread'),
 	messages: call('messages'),

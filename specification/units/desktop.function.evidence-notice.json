@@ -1,0 +1,68 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.evidence-notice",
+	"kind": "function",
+	"title": "evidenceNotice",
+	"responsibility": "Owns the evidenceNotice shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/evidenceNotice.ts"],
+		"symbols": [
+			"EvidenceStatus",
+			"unavailableEvidence",
+			"readingEvidence",
+			"EvidenceNotice",
+			"evidenceNotice"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "evidenceNotice.status",
+				"type": "EvidenceStatus"
+			},
+			{
+				"name": "evidenceNotice.error",
+				"type": "string"
+			},
+			{
+				"name": "evidenceNotice.kind",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "unavailableEvidence",
+				"type": "unknown"
+			},
+			{
+				"name": "readingEvidence",
+				"type": "unknown"
+			},
+			{
+				"name": "evidenceNotice",
+				"type": "EvidenceNotice | null"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/evidenceNotice.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/evidenceNotice.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

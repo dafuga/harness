@@ -50,6 +50,10 @@
 			{
 				"name": "HostedHttpAdapter.request.init",
 				"type": "RequestInit"
+			},
+			{
+				"name": "HostedHttpAdapter.request.publicFailure",
+				"type": "unknown"
 			}
 		],
 		"outputs": [
@@ -78,14 +82,15 @@
 			{
 				"name": "Error",
 				"type": "thrown"
-			},
-			{
-				"name": "HostedFailureValidator",
-				"type": "thrown"
 			}
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.function.hosted-public-failure",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.validator.hosted-failure",
 			"via": "import",

@@ -49,10 +49,10 @@ async function put(root: string, path: string, content = path): Promise<void> {
 	await writeFile(join(root, path), content);
 }
 /** A clean export of a commit that holds Hub source, guarded by this repository's own outputs. */
-async function hubSnapshot(): Promise<SnapshotAdapter> {
+async function hubSnapshot(extraTracked: string[] = []): Promise<SnapshotAdapter> {
 	const root = await mkdtemp(join(tmpdir(), 'harness-hub-state-'));
 	made.push(() => rm(root, { recursive: true, force: true }));
-	for (const path of tracked) await put(root, path);
+	for (const path of [...tracked, ...extraTracked]) await put(root, path);
 	const git = (...given: string[]) => execFileSync('git', given, { cwd: root, stdio: 'pipe' });
 	git('init', '-q', '-b', 'main');
 	git('add', '.');
@@ -69,13 +69,15 @@ test('the local Cloudflare state of the Hub dev server is a declared output', as
 	expect(snapshot.misdeclared()).toEqual([]);
 });
 
-test('exactly that state is declared, and no tracked file of this repository lies in it', () => {
+test('exactly that state is declared, and tracked state is rejected by the exported snapshot', async () => {
 	const about = declared().filter((output) => output.includes('wrangler'));
 	expect(about).toEqual(['packages/hub/.wrangler/state/']);
-	const listed = execFileSync('git', ['ls-files', '--', 'packages/hub/.wrangler'], {
-		encoding: 'utf8'
-	});
-	expect(listed).toBe('');
+	expect((await hubSnapshot()).misdeclared()).toEqual([]);
+	const file = runtimeState[0];
+	const invalid = await hubSnapshot([file]);
+	expect(invalid.misdeclared()).toEqual([{ output: about[0], file }]);
+	await put(invalid.directory, file, 'modified tracked state');
+	expect((await invalid.drift()).mutated).toEqual([file]);
 });
 
 test('any other file a check leaves still fails: beside the state, ignored, or elsewhere', async () => {
