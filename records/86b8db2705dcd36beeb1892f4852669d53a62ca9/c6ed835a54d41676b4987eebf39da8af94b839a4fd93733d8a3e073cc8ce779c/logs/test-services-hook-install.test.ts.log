@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-RKAYsZ
+
+ ✓ test/services/hook-install.test.ts (3 tests) 868ms
+   ✓ a worktree with only the file of an earlier Harness is in the push stage and no other  313ms
+   ✓ a stage stays installed for as long as any worktree asks for it  353ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  06:35:26
+   Duration  1.18s (transform 46ms, setup 13ms, collect 43ms, tests 868ms, environment 0ms, prepare 43ms)
+
