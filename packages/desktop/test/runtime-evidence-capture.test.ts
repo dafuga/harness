@@ -2,7 +2,8 @@ import { afterEach, expect, test, vi } from 'vitest';
 import type { Page, TestInfo } from '@playwright/test';
 import type * as Capture from '../../../src/utils/recordCapture';
 import { recordCapture } from '../../../src/utils/recordCapture';
-import { runtimeEvidence } from '../tests/e2e/runtime-evidence';
+import { runtimeAudio, runtimeEvidence } from '../tests/e2e/runtime-evidence';
+import { evidenceData, recordedClip } from '../tests/e2e/ui-evidence-fixture';
 
 vi.mock('../../../src/utils/recordCapture', async (original) => ({
 	...(await original<typeof Capture>()),
@@ -14,12 +15,13 @@ afterEach(() => {
 });
 const build = '1234567890abcdef'.repeat(4);
 const revision = 'abcdef1234'.repeat(4);
-function page(stamp = `harness-build:${build}`, width = 1440): Page {
+/** `played` stands for what the page's one clip plays; a browser run reads the real object. */
+function page(stamp = `harness-build:${build}`, width = 1440, played: number[] = []): Page {
 	return {
 		evaluate: vi.fn(),
 		mouse: { move: vi.fn() },
 		viewportSize: () => ({ width, height: 900 }),
-		locator: () => ({ getAttribute: async () => stamp }),
+		locator: () => ({ getAttribute: async () => stamp, evaluate: async () => played }),
 		screenshot: async () => Buffer.from('captured pixels')
 	} as unknown as Page;
 }
@@ -62,6 +64,36 @@ test('ordinary runs do not emit verification evidence and unknown states are ref
 	expect(recordCapture).not.toHaveBeenCalled();
 	requested();
 	await expect(runtimeEvidence(page(), info, 'invented')).rejects.toThrow(/state/i);
+	expect(recordCapture).not.toHaveBeenCalled();
+});
+test('the clip is kept as the exact bytes the sealed history records for it', async () => {
+	requested();
+	const data = evidenceData();
+	const clip = data.bytes[recordedClip(data)].data;
+	await runtimeAudio(page(undefined, undefined, clip));
+	expect(recordCapture).toHaveBeenCalledWith(
+		expect.objectContaining({
+			evidence: 'runtime-audio-fixture',
+			kind: 'audio',
+			state: 'audio-current',
+			mediaType: 'audio/wav',
+			provenance: 'fixture',
+			server: { buildId: build, revision },
+			transcript: expect.stringContaining('silence')
+		}),
+		Uint8Array.from(clip)
+	);
+});
+test('bytes that are not the recorded clip are never kept as it', async () => {
+	requested();
+	const data = evidenceData();
+	const clip = data.bytes[recordedClip(data)].data;
+	const damaged = clip.map((value, at) => (at === clip.length - 1 ? value ^ 1 : value));
+	const picture = Object.values(data.bytes).find((kept) => kept.mediaType === 'image/png')!.data;
+	for (const other of [damaged, clip.slice(0, -1), picture, []])
+		await expect(runtimeAudio(page(undefined, undefined, other))).rejects.toThrow(
+			/recorded SHA-256/
+		);
 	expect(recordCapture).not.toHaveBeenCalled();
 });
 
