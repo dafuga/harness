@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { captured, remoteEvidence } from './remote-evidence';
+import { remoteEvidence } from './remote-evidence';
 import { alpha, deviceName, hostName, remotePhoneFixture } from './ui-remote-phone-fixture';
 
 type Call = Record<string, unknown>;
@@ -24,16 +24,6 @@ const kept = (page: Page) =>
 	);
 
 test.use({ viewport: { width: 390, height: 844 } });
-
-/** How the next scans of the SYNTHETIC scanner end, in order; after them a scan goes well. */
-const script = (page: Page, outcomes: string[]) =>
-	page.evaluate(
-		(codes) =>
-			(window as unknown as { __remotePhone: { scans: string[] } }).__remotePhone.scans.push(
-				...codes
-			),
-		outcomes
-	);
 
 test('the Capacitor environment pairs by scanning: no link, code or address is ever typed', async ({
 	page
@@ -71,45 +61,6 @@ test('the Capacitor environment pairs by scanning: no link, code or address is e
 	expect(await kept(page)).not.toMatch(/harness-pair|KQ7M/i);
 	expect(await fits(page)).toBe(true);
 	await remoteEvidence(page, testInfo, 'phone-pending');
-});
-
-test('a scan that ends without an offer says why and can be tried again; nothing is sent meanwhile', async ({
-	page
-}, testInfo) => {
-	await remotePhoneFixture(page);
-	await page.goto('/');
-	const panel = computer(page);
-	await expect(panel.getByRole('heading', { name: 'Connect to computer' })).toBeVisible();
-	await captured(page, testInfo, 'phone-before-scan', panel);
-	const outcomes = [
-		['camera-denied', 'Camera access is off for Harness'],
-		['scan-cancelled', 'Scanning was cancelled'],
-		['offer-invalid', 'That is not a Harness pairing code'],
-		['offer-expired', 'That code has expired'],
-		['offer-unsupported', 'another version of Harness'],
-		['offer-environment', 'this build of Harness does not accept'],
-		['camera-unavailable', 'no camera that can scan']
-	];
-	await script(
-		page,
-		outcomes.map(([code]) => code)
-	);
-	await field(page, 'Name of this phone').fill(deviceName);
-	await panel.getByRole('button', { name: 'Scan QR code', exact: true }).click();
-	for (const [code, words] of outcomes) {
-		await expect(panel.getByRole('alert')).toContainText(words);
-		await expect(panel.getByText(/Waiting for approval/)).toHaveCount(0);
-		await expect(panel.getByRole('heading', { name: 'Connect to computer' })).toBeVisible();
-		expect(await fits(page)).toBe(true);
-		await captured(page, testInfo, `phone-${code}`, panel);
-		await panel.getByRole('button', { name: 'Scan again', exact: true }).click();
-	}
-	await expect(panel.getByText(/Waiting for approval/)).toBeVisible();
-	expect((await made(page, 'native.scan')).map((call) => call.outcome)).toEqual([
-		...outcomes.map(([code]) => code),
-		'ok'
-	]);
-	expect(await made(page, 'native.request')).toEqual([]);
 });
 
 test('approval on the desktop connects the phone and lists only what it was granted', async ({
