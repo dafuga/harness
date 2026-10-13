@@ -20,7 +20,7 @@ function shown(change: object = {}) {
 		capabilities: { agents: true },
 		snapshot: { writable: true },
 		projectId: 'local-1',
-		get context() {
+		get context(): { projectId: string } {
 			return { projectId: this.projectId };
 		},
 		refresh: vi.fn(async () => {}),
