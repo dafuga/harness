@@ -51,17 +51,22 @@ test('actual planning metadata stays outside active indexing for all five draft 
 			contract
 		});
 		if (category === 'page') expect(plan.paths).toContain('harness.units.json');
+		// A function plan holds notes and no image; every other category keeps its picture.
+		const notesOnly = category === 'function';
 		await api.addDesign({
 			unitId,
 			prompt: 'Test image',
 			generator: { provider: 'fixture', model: 'none' },
-			images: [
-				{
-					state: 'default',
-					viewport: 'desktop',
-					bytes: PNG.sync.write(new PNG({ width: 2, height: 2 }))
-				}
-			]
+			images: notesOnly
+				? []
+				: [
+						{
+							state: 'default',
+							viewport: 'desktop',
+							bytes: PNG.sync.write(new PNG({ width: 2, height: 2 }))
+						}
+					],
+			...(notesOnly ? { notes: 'Test behavior' } : {})
 		});
 		await api.openThread({
 			unitId,
