@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rBWHPX/packages/desktop
+
+ ✓ test/remote-sessions.test.ts (3 tests) 12527ms
+   ✓ a run of one client refuses runs and planning writes of every other client of the repository  6773ms
+   ✓ each client keeps its own project and revision  3108ms
+   ✓ a device run reports to its device only, and only that device can cancel it  2645ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  21:24:16
+   Duration  13.15s (transform 312ms, setup 0ms, collect 485ms, tests 12.53s, environment 0ms, prepare 25ms)
+
