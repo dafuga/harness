@@ -168,7 +168,9 @@ const scopes: Record<string, VerificationScope> = {
 		playwright: {
 			'tests/e2e/ui-workspace.spec.ts': ['renderer-fixtures'],
 			'tests/e2e/ui-catalog-listing.spec.ts': ['catalog-listing'],
-			'tests/e2e/ui-designs.spec.ts': ['renderer-fixtures']
+			'tests/e2e/ui-designs.spec.ts': ['renderer-fixtures'],
+			'tests/e2e/ui-entity-usage.spec.ts': ['entity-usage'],
+			'tests/e2e/ui-entity-usage-viewports.spec.ts': ['entity-usage']
 		}
 	},
 	'desktop-native': {

@@ -68,6 +68,7 @@ test('Used In and Uses have addresses of their own, and the former address still
 	await expect(current(page)).toHaveText('Overview');
 	await expect(panel(page, 'Used In')).toBeVisible();
 	await expect(panel(page, 'Uses')).toBeVisible();
+	await pictured(page, info, 'workspace-former-address');
 	await panel(page, 'Used In').getByRole('link', { name: 'Order list' }).click();
 	await expect.poll(() => path(page)).toBe(at(`components/${ids.list}`));
 });

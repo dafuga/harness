@@ -1,5 +1,9 @@
 import { join } from 'node:path';
 import type { Page, TestInfo } from '@playwright/test';
+import type { ScenarioManifest } from '../../../../src/core/unitTypes';
+import scenarioData from '../../../../specification/scenarios/desktop-renderer.json' with { type: 'json' };
+import { buildStamp } from '../../../../src/utils/buildStamp';
+import { evidenceRequested, recordCapture } from '../../../../src/utils/recordCapture';
 import { ids } from './ui-evidence-fixture';
 
 /**
@@ -40,12 +44,81 @@ export async function related(page: Page): Promise<void> {
 	);
 }
 
+const scenario: ScenarioManifest = scenarioData as ScenarioManifest;
+const both = ['Used In', 'Uses'];
+/** The scenario state each picture of a run stands for, and the sections it has to show first. */
+const pictures: Record<string, { state: string; shown: string[] }> = {
+	'workspace-overview': { state: 'usage-overview', shown: both },
+	'workspace-overview-tablet': { state: 'usage-overview', shown: both },
+	'workspace-overview-mobile': { state: 'usage-overview', shown: both },
+	'workspace-used-in': { state: 'usage-used-in', shown: ['Used In'] },
+	'workspace-uses': { state: 'usage-uses', shown: ['Uses'] },
+	'workspace-former-address': { state: 'usage-former-address', shown: both },
+	'workspace-nothing-recorded': { state: 'usage-nothing-recorded', shown: both }
+};
+const note =
+	'Actual compiled renderer over a SYNTHETIC project: its orders, history and the relationships added to one function are fixtures. Only the build and revision identify tested software.';
+
+/** The build the page was compiled as and the revision being verified, or no capture at all. */
+async function served(page: Page) {
+	const stamp = await page.locator('meta[name="harness-build"]').getAttribute('content');
+	const buildId = buildStamp(stamp ?? undefined);
+	const revision = process.env.HARNESS_VERIFY_REVISION ?? '';
+	if (!buildId) throw new Error('The rendered build has no compiled identity stamp');
+	if (process.env.HARNESS_VERIFY !== '1' || !/^[a-f0-9]{40}$/.test(revision))
+		throw new Error('A verification revision is required to record a usage capture');
+	return { buildId, revision };
+}
+
+/**
+ * In a verification, a picture that stands for a state is recorded as that state's evidence:
+ * the whole page of the stamped build, at a viewport and a state the scenario declares, taken
+ * once the sections it is of are shown and fonts and images are ready.
+ */
+async function evidenced(page: Page, name: string): Promise<void> {
+	const picture = pictures[name];
+	if (!picture || !evidenceRequested()) return;
+	for (const section of picture.shown)
+		await page.getByRole('region', { name: section, exact: true }).waitFor();
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		await Promise.all([...document.images].map((image) => image.decode()));
+	});
+	await page.mouse.move(0, 0);
+	const server = await served(page);
+	const size = page.viewportSize();
+	const viewport = scenario.viewports.find(
+		(item) => item.width === size?.width && item.height === size.height
+	)?.id;
+	if (!viewport) throw new Error('The capture viewport is not declared by desktop-renderer');
+	const { state } = picture;
+	const evidence = scenario.evidence.find(
+		(item) => item.id === `usage-screens-${viewport}` && item.states.includes(state)
+	);
+	if (!evidence) throw new Error(`The state ${state} is not declared for ${viewport}`);
+	recordCapture(
+		{
+			evidence: evidence.id,
+			kind: 'screenshot',
+			state,
+			viewport,
+			file: `ui-${state}-${viewport}.png`,
+			mediaType: 'image/png',
+			provenance: 'actual-capture',
+			server,
+			note
+		},
+		await page.screenshot({ fullPage: true, animations: 'disabled', caret: 'hide' })
+	);
+}
+
 /**
  * The opt-in picture of a run, whole page, taken once fonts and images are ready and before what
  * it shows is judged. SCREENSHOT_LABEL names the phase and ENTITY_USAGE_SHOTS the folder, so a
  * run before a change and one after it never write the same file.
  */
 export async function pictured(page: Page, info: TestInfo, name: string): Promise<void> {
+	await evidenced(page, name);
 	if (process.env.TAKE_SCREENSHOT !== 'true') return;
 	await page.evaluate(async () => {
 		await document.fonts.ready;

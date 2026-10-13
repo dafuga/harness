@@ -28,6 +28,7 @@
 		"desktop.component.thread-history",
 		"desktop.component.thread-panel",
 		"desktop.function.catalog-unit",
+		"desktop.function.workspace-route",
 		"desktop.layout.root",
 		"desktop.model.desktop-bridge-types",
 		"desktop.page.harness-path",
@@ -123,6 +124,36 @@
 			"id": "listing-loader-opened",
 			"title": "A route loader opened by its identity",
 			"coverage": "required"
+		},
+		{
+			"id": "entity-usage",
+			"title": "Used In and Uses of an entity in the workspace, as both specs ran",
+			"coverage": "required"
+		},
+		{
+			"id": "usage-overview",
+			"title": "Overview of an entity holding Used In and Uses",
+			"coverage": "required"
+		},
+		{
+			"id": "usage-used-in",
+			"title": "Used In at an address of its own",
+			"coverage": "required"
+		},
+		{
+			"id": "usage-uses",
+			"title": "Uses at an address of its own",
+			"coverage": "required"
+		},
+		{
+			"id": "usage-former-address",
+			"title": "The former relationships address opening the overview with both sections",
+			"coverage": "required"
+		},
+		{
+			"id": "usage-nothing-recorded",
+			"title": "An entity with nothing recorded, saying so in both sections",
+			"coverage": "required"
 		}
 	],
 	"viewports": [
@@ -174,13 +205,29 @@
 			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-catalog-listing.spec.ts",
 			"cwd": "packages/desktop",
 			"timeoutMs": 180000
+		},
+		{
+			"id": "ui-entity-usage",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-entity-usage.spec.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		},
+		{
+			"id": "ui-entity-usage-viewports",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-entity-usage-viewports.spec.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
 		}
 	],
 	"evidence": [
 		{
 			"id": "desktop-renderer-output",
 			"kind": "output",
-			"states": ["renderer-fixtures", "workspace-state", "catalog-listing"],
+			"states": ["renderer-fixtures", "workspace-state", "catalog-listing", "entity-usage"],
 			"viewports": [],
 			"required": true
 		},
@@ -224,6 +271,42 @@
 			"provenance": "actual-capture",
 			"build": "desktop-renderer",
 			"capture": "viewport",
+			"required": true
+		},
+		{
+			"id": "usage-screens-desktop",
+			"kind": "screenshot",
+			"states": [
+				"usage-overview",
+				"usage-used-in",
+				"usage-uses",
+				"usage-former-address",
+				"usage-nothing-recorded"
+			],
+			"viewports": ["desktop"],
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "full-page",
+			"required": true
+		},
+		{
+			"id": "usage-screens-tablet",
+			"kind": "screenshot",
+			"states": ["usage-overview"],
+			"viewports": ["tablet"],
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "full-page",
+			"required": true
+		},
+		{
+			"id": "usage-screens-mobile",
+			"kind": "screenshot",
+			"states": ["usage-overview"],
+			"viewports": ["mobile"],
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "full-page",
 			"required": true
 		},
 		{
