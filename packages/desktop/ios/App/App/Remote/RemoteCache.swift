@@ -12,6 +12,10 @@ final class RemoteCache {
     static let kept: Set<String> = [
         "listProjects", "snapshot", "entity", "messages", "image", "source", "history", "evidence", "artifact"
     ]
+    /// The rule a kept answer was made by, where the computer makes it by one: a snapshot lists a
+    /// catalog. A copy kept under another rule shows what is no longer listed and does not say
+    /// what an entity owns, so it cannot be corrected here: it is let go of and not answered.
+    static let projections = ["snapshot": "catalog:pages-render"]
     let budget: RemoteCacheBudget
     private let root: URL
     private let files = FileManager.default
@@ -72,7 +76,8 @@ final class RemoteCache {
         guard scope == entered, Self.kept.contains(method), RemoteMedia.verified(method, input, value),
             let file = file(scope, method, input), files.fileExists(atPath: folder(scope).path)
         else { return }
-        let entry: [String: Any] = ["savedAt": RemoteCoding.now(), "method": method, "input": input, "value": value]
+        var entry: [String: Any] = ["savedAt": RemoteCoding.now(), "method": method, "input": input, "value": value]
+        entry["projection"] = Self.projections[method]
         guard let data = RemoteCoding.json(entry), data.count <= budget.bytes,
             (try? data.write(to: file, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])) != nil
         else { return }
@@ -84,8 +89,10 @@ final class RemoteCache {
     /// counts as used, so that what a person looks at is the last to be evicted.
     func read(scope: String, method: String, input: [String: Any]) -> RemoteAnswer? {
         guard scope == entered, Self.kept.contains(method), let file = file(scope, method, input),
-            let entry = (try? Data(contentsOf: file)).flatMap(RemoteCoding.object),
-            entry["method"] as? String == method, let saved = entry["savedAt"] as? String,
+            let entry = (try? Data(contentsOf: file)).flatMap(RemoteCoding.object)
+        else { return nil }
+        guard entry["projection"] as? String == Self.projections[method] else { return forget(file) }
+        guard entry["method"] as? String == method, let saved = entry["savedAt"] as? String,
             let value = entry["value"], let asked = RemoteCoding.json(input),
             (entry["input"] as? [String: Any]).flatMap(RemoteCoding.json) == asked,
             RemoteMedia.verified(method, input, value)
@@ -93,6 +100,13 @@ final class RemoteCache {
         index.touch(file.lastPathComponent)
         try? files.setAttributes([.modificationDate: Date()], ofItemAtPath: file.path)
         return RemoteAnswer(value: value, cachedAt: saved)
+    }
+
+    /// Lets go of one copy that is not an answer of this build; every other copy stays.
+    private func forget(_ file: URL) -> RemoteAnswer? {
+        try? files.removeItem(at: file)
+        index.forget(file.lastPathComponent)
+        return nil
     }
 
     private func folder(_ scope: String) -> URL {

@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/catalogUnit.ts"],
-		"symbols": ["catalogUnit", "planCatalog"]
+		"symbols": ["catalogUnit", "catalogListed", "planCatalog"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -20,6 +20,14 @@
 			{
 				"name": "catalogUnit.changed",
 				"type": "Set<string>"
+			},
+			{
+				"name": "catalogListed.units",
+				"type": "ComponentManifest[]"
+			},
+			{
+				"name": "catalogListed.items",
+				"type": "CatalogEntity[]"
 			},
 			{
 				"name": "planCatalog.plan",
@@ -38,6 +46,10 @@
 			{
 				"name": "catalogUnit",
 				"type": "CatalogEntity | null"
+			},
+			{
+				"name": "catalogListed",
+				"type": "CatalogEntity[]"
 			},
 			{
 				"name": "planCatalog",
@@ -78,7 +90,7 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"scenarios": ["desktop-native", "desktop-project-runs", "desktop-renderer", "hosted-catalog"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

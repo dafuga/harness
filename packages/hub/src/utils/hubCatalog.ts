@@ -1,4 +1,4 @@
-import { catalogUnit, planCatalog } from '../../../desktop/src/utils/catalogUnit';
+import { catalogListed, catalogUnit, planCatalog } from '../../../desktop/src/utils/catalogUnit';
 import { categoryOf } from '../../../desktop/src/utils/categoryOf';
 import type { ComponentManifest } from '../../../../src/core/unitTypes';
 import type { CatalogEntity, Relationship } from '../../../desktop/src/models/Desktop.types';
@@ -29,12 +29,8 @@ export async function hubCatalog(context: HubSourceContext) {
 	records.forEach((plan) =>
 		items.set(plan.id, planCatalog(plan, items.get(plan.id) ?? null, changed))
 	);
-	return {
-		items: [...items.values()].sort((a, b) => a.title.localeCompare(b.title)),
-		units,
-		plans,
-		records
-	};
+	const all = [...items.values()].sort((a, b) => a.title.localeCompare(b.title));
+	return { items: all, listed: catalogListed(units, all), units, plans, records };
 }
 export function hubAttestPlan(plan: HubPlan, unit: ComponentManifest | undefined) {
 	if (unit && unit.kind !== plan.category) return hubFail();

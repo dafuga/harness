@@ -3,6 +3,8 @@ import type { ProjectSnapshot } from '../models/Desktop.types';
 import type { HostedHttpAdapter } from '../adapters/HostedHttpAdapter';
 import { RemoteProjectResponseValidator } from '../validators/RemoteProjectResponseValidator';
 import { HostedReadService, type HostedReadOptions } from './HostedReadService';
+/** Names the rule a kept snapshot was listed by; one kept under another rule is not looked up. */
+const listed = 'listed:';
 export class RemoteProjectionService {
 	private reads: HostedReadService;
 	private validator = new RemoteProjectResponseValidator();
@@ -30,7 +32,7 @@ export class RemoteProjectionService {
 			return snapshot;
 		};
 		const result = await this.reads.read(
-			{ projectId: input.projectId, key: this.path(input.projectId, 'snapshot', input) },
+			{ projectId: input.projectId, key: listed + this.path(input.projectId, 'snapshot', input) },
 			async () => {
 				const value = validate(await this.http.json(this.path(input.projectId, 'snapshot', input)));
 				return { value, identity: value.cache?.identity };
