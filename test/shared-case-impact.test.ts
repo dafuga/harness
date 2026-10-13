@@ -22,7 +22,7 @@ test('the shared case table is an actual dependency of both artifact viewers, wi
 		expect(references.filter((reference) => reference.path === path)).toHaveLength(1);
 		expect(
 			references.filter(
-				(reference) => reference.uncertain || reference.external?.includes('EntityCases')
+				(reference) => reference.uncertain ?? reference.external?.includes('EntityCases')
 			)
 		).toEqual([]);
 	}
