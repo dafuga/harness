@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-fByx75/packages/desktop
+
+ ✓ test/remote-review.test.ts (4 tests) 8387ms
+   ✓ a view pinned to a commit is read-only even at the tip: a change needs a branch view  2268ms
+   ✓ a comment-only phone can open the thread a comment needs, and nothing more  1759ms
+   ✓ a change that does not name the session epoch is refused before anything runs  3270ms
+   ✓ a phone is told the lock state once the computer knows it, and never a guess  1090ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  11:16:36
+   Duration  9.31s (transform 470ms, setup 0ms, collect 737ms, tests 8.39s, environment 0ms, prepare 34ms)
+

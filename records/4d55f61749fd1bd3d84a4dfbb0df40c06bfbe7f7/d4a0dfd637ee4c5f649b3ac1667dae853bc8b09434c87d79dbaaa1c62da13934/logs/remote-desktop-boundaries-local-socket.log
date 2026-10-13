@@ -1,0 +1,61 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-fByx75/packages/desktop
+
+ ✓ test/local-transport.test.ts (6 tests) 14642ms
+   ✓ the bridge works over a socket that only this machine can reach  2028ms
+   ✓ an image of more than a mebibyte crosses the socket in bounded frames and arrives intact  2841ms
+   ✓ two large answers take turns on the socket and a small one does not wait for them  3011ms
+   ✓ each window is its own client: its own project, its own run events, one repository lock  3277ms
+   ✓ a reload keeps the session of its window; closing the window ends its socket and its run only  2494ms
+   ✓ the control port travels over the same socket, with exactly what the page gave  990ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+     Errors  1 error
+   Start at  12:46:46
+   Duration  15.26s (transform 302ms, setup 0ms, collect 469ms, tests 14.64s, environment 0ms, prepare 29ms)
+
+JSON report written to /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-runner-ixrDW5/report.json
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 1 unhandled error during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+Error: WebSocket was closed before the connection was established
+ ❯ WebSocket.terminate ../../node_modules/ws/lib/websocket.js:496:7
+ ❯ test/local-transport-fixture.ts:96:29
+     94|   const socket = new SocketClient(url, protocols, { origin: appOrigin …
+     95|   socket.on('message', (data) => frames.push(data.toString()));
+     96|   closing.push(() => socket.terminate());
+       |                             ^
+     97|   return socket as unknown as LocalSocketPort;
+     98|  };
+ ❯ test/local-transport-fixture.ts:19:53
+ ❯ test/local-transport-fixture.ts:19:38
+ ❯ ../../node_modules/@vitest/runner/dist/chunk-hooks.js:155:11
+ ❯ ../../node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20
+ ❯ runWithTimeout ../../node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10
+ ❯ runHook ../../node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51
+
+This error originated in "test/local-transport.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "a reload keeps the session of its window; closing the window ends its socket and its run only". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+57 | 	status: number | null;
+58 | }
+59 | /** Runner success alone is insufficient: each expected test must have complete actual observations. */
+60 | export function verifiedAssertions(target: VerificationTarget, input: AssertionInput) {
+61 | 	if (input.status !== 0)
+62 | 		throw new Error('Failed or incomplete runner cannot report passed behavior');
+             ^
+error: Failed or incomplete runner cannot report passed behavior
+      at verifiedAssertions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-fByx75/test/verification-assertions.ts:62:9)
+      at collect (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-fByx75/test/verification-output.ts:117:15)
+      at run (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-fByx75/test/verification-output.ts:98:15)
+      at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-fByx75/test/verification-output.ts:129:20
+      at loadAndEvaluateModule (2:1)
+
+Bun v1.2.18 (macOS arm64)
