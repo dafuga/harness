@@ -45,6 +45,14 @@
 			"timeoutMs": 240000
 		},
 		{
+			"id": "ios-cache-listing",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/ios-cache-listing.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 240000
+		},
+		{
 			"id": "native-profile",
 			"kind": "integration",
 			"runner": "command",

@@ -26,6 +26,22 @@ export function catalogUnit(unit: ComponentManifest, changed: Set<string>): Cata
 		thumbnail: null
 	};
 }
+/** The route files that load for an address and render nothing of it. */
+const loader = /(^|\/)\+page(\.server)?\.[jt]s$/;
+/**
+ * What a catalog lists of a revision. A page manifest whose every file there is a page loader
+ * only answers a request: the explorer calls it a route loader, not a page. It is left out and
+ * stays an entity that is opened by its identity. A title or a sentence is never read.
+ */
+export function catalogListed(units: ComponentManifest[], items: CatalogEntity[]): CatalogEntity[] {
+	const loaders = new Set(
+		units
+			.filter((unit) => unit.kind === 'page' && unit.owns.source.length > 0)
+			.filter((unit) => unit.owns.source.every((path) => loader.test(path)))
+			.map((unit) => unit.id)
+	);
+	return items.filter((item) => !loaders.has(item.id));
+}
 function draftCatalog(plan: PlanRecord): CatalogEntity {
 	return {
 		id: plan.id,

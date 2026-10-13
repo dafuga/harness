@@ -20,6 +20,10 @@ export const remoteVerificationScopes: Record<string, VerificationScope> = {
 			},
 			'test/ios-cache-authority.test.ts': {
 				'native late reads and denial cannot retain project access': 'native-authority'
+			},
+			'test/ios-cache-listing.test.ts': {
+				'a catalog the phone kept before route loaders were left out is not answered, and nothing else is lost':
+					'native-authority'
 			}
 		},
 		playwright: {}

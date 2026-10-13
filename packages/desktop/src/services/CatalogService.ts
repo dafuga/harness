@@ -1,14 +1,26 @@
 import type { CatalogEntity } from '../models/Desktop.types';
 import type { PlanningPort } from '../models/PlanningPort.types';
 import type { GitSourceAdapter } from '../adapters/GitSourceAdapter';
-import { catalogUnit, planCatalog } from '../utils/catalogUnit';
+import { catalogListed, catalogUnit, planCatalog } from '../utils/catalogUnit';
 import { catalogDetail } from '../utils/catalogDetail';
 export class CatalogService {
 	constructor(
 		private source: GitSourceAdapter,
 		private planning: PlanningPort
 	) {}
+	/** What a catalog shows of a revision; `entity` still opens what is left out of it. */
 	async list(revision: string): Promise<CatalogEntity[]> {
+		const { units, items } = await this.held(revision);
+		return catalogListed(units, items);
+	}
+	async entity(id: string, revision: string) {
+		const { units, items } = await this.held(revision);
+		return catalogDetail(
+			{ source: this.source, planning: this.planning },
+			{ id, revision, items, units }
+		);
+	}
+	private async held(revision: string) {
 		const [units, plans, changed] = await Promise.all([
 			this.source.units(revision),
 			this.planning.plans(revision),
@@ -23,13 +35,7 @@ export class CatalogService {
 		plans.forEach((plan) =>
 			catalog.set(plan.id, planCatalog(plan, catalog.get(plan.id) ?? null, changed))
 		);
-		return [...catalog.values()].sort((a, b) => a.title.localeCompare(b.title));
-	}
-	async entity(id: string, revision: string) {
-		const [items, units] = await Promise.all([this.list(revision), this.source.units(revision)]);
-		return catalogDetail(
-			{ source: this.source, planning: this.planning },
-			{ id, revision, items, units }
-		);
+		const items = [...catalog.values()].sort((a, b) => a.title.localeCompare(b.title));
+		return { units, items };
 	}
 }

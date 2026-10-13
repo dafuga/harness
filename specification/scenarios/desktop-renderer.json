@@ -27,10 +27,12 @@
 		"desktop.component.status-icon",
 		"desktop.component.thread-history",
 		"desktop.component.thread-panel",
+		"desktop.function.catalog-unit",
 		"desktop.layout.root",
 		"desktop.model.desktop-bridge-types",
 		"desktop.page.harness-path",
 		"desktop.page.root",
+		"desktop.service.catalog",
 		"desktop.store.workspace",
 		"desktop.style.design",
 		"desktop.style.design-0",
@@ -96,6 +98,31 @@
 			"id": "tablet",
 			"title": "tablet",
 			"coverage": "required"
+		},
+		{
+			"id": "catalog-listing",
+			"title": "Catalog the real session listed, shown by the renderer: no route loader, every ordinary page, the same identity where an earlier commit renders it",
+			"coverage": "required"
+		},
+		{
+			"id": "listing-pages-tip",
+			"title": "Pages of the tip without a card for an address that only redirects",
+			"coverage": "required"
+		},
+		{
+			"id": "listing-pages-earlier",
+			"title": "Pages of the earlier commit with the same identity as the page it was",
+			"coverage": "required"
+		},
+		{
+			"id": "listing-pages-tip-selected",
+			"title": "Pages of the tip commit selected again, still without that card",
+			"coverage": "required"
+		},
+		{
+			"id": "listing-loader-opened",
+			"title": "A route loader opened by its identity",
+			"coverage": "required"
 		}
 	],
 	"viewports": [
@@ -139,13 +166,21 @@
 			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-designs.spec.ts",
 			"cwd": "packages/desktop",
 			"timeoutMs": 180000
+		},
+		{
+			"id": "ui-catalog-listing",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-catalog-listing.spec.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
 		}
 	],
 	"evidence": [
 		{
 			"id": "desktop-renderer-output",
 			"kind": "output",
-			"states": ["renderer-fixtures", "workspace-state"],
+			"states": ["renderer-fixtures", "workspace-state", "catalog-listing"],
 			"viewports": [],
 			"required": true
 		},
@@ -159,7 +194,11 @@
 				"headless-before-change",
 				"headless-after-change",
 				"failed-history",
-				"cancelled-history"
+				"cancelled-history",
+				"listing-pages-tip",
+				"listing-pages-earlier",
+				"listing-pages-tip-selected",
+				"listing-loader-opened"
 			],
 			"viewports": ["desktop"],
 			"provenance": "actual-capture",

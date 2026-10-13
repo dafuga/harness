@@ -118,6 +118,14 @@
 			"target": "bun ../../test/verification-output.ts vitest test/backend-boundaries.test.ts",
 			"cwd": "packages/desktop",
 			"timeoutMs": 180000
+		},
+		{
+			"id": "catalog-listing",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/catalog-listing.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
 		}
 	],
 	"evidence": [

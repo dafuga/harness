@@ -1,3 +1,4 @@
+import { hostedVerificationScopes } from './hosted-verification-scopes';
 import { recordedEvidenceScopes } from './recorded-evidence-scopes';
 import { remoteVerificationScopes } from './remote-verification-scopes';
 
@@ -17,6 +18,7 @@ export interface VerificationScope {
 const scopes: Record<string, VerificationScope> = {
 	...remoteVerificationScopes,
 	...recordedEvidenceScopes,
+	...hostedVerificationScopes,
 	'runtime-evidence-ui': {
 		package: 'desktop',
 		vitest: {},
@@ -105,6 +107,16 @@ const scopes: Record<string, VerificationScope> = {
 				'Claude uses requested model, project cwd, stdin and subscription-only environment':
 					'cli-boundaries'
 			},
+			'test/catalog-listing.test.ts': {
+				'the tip lists every ordinary entity and no page manifest that only loads for an address':
+					'project-scope',
+				'what is left out of the list is still opened by its identity, with its sources and history':
+					'project-scope',
+				'the same identity is listed at the earlier commit where it renders, as it was there':
+					'project-scope',
+				'of the registry of this repository, the pages the explorer lists are listed and its route loaders are not':
+					'project-scope'
+			},
 			'test/project-integration.test.ts': {
 				'project selection and slash branches retain full ancestry and explicit historical views are immutable':
 					'project-scope',
@@ -155,6 +167,7 @@ const scopes: Record<string, VerificationScope> = {
 		},
 		playwright: {
 			'tests/e2e/ui-workspace.spec.ts': ['renderer-fixtures'],
+			'tests/e2e/ui-catalog-listing.spec.ts': ['catalog-listing'],
 			'tests/e2e/ui-designs.spec.ts': ['renderer-fixtures']
 		}
 	},

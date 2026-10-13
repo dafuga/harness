@@ -31,7 +31,9 @@ export async function hubSnapshot(
 	return hubProjectionCache<ProjectSnapshot>(
 		context,
 		{
-			profile: 'snapshot:' + (await hubHash(new TextEncoder().encode(JSON.stringify(branches)))),
+			// Named for what is listed: a snapshot cached with route loaders in it is not read.
+			profile:
+				'snapshot:listed:' + (await hubHash(new TextEncoder().encode(JSON.stringify(branches)))),
 			accept: (value) => new RemoteProjectResponseValidator().snapshot(value, project.id)
 		},
 		async () => {
@@ -45,7 +47,7 @@ export async function hubSnapshot(
 				revision: { branch: branch.name, commit, tip: branch.tip, atTip: commit === branch.tip },
 				branches: branches.map((b) => ({ ...b, current: b.name === branch.name })),
 				commits,
-				entities: catalog.items,
+				entities: catalog.listed,
 				writable: false,
 				capabilities: {
 					comments: project.role !== 'viewer',
