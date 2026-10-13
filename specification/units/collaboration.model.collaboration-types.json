@@ -25,7 +25,6 @@
 			"RecordSnapshot",
 			"CollaborationRepository",
 			"SourceCommit",
-			"SourceCommitFacts",
 			"SourceEntry",
 			"SourceAdapter",
 			"CacheIdentity",
@@ -36,10 +35,11 @@
 			"CollaborationApi",
 			"GitHubOptions",
 			"GitHubRepositoryOptions",
+			"SourceCommitFacts",
+			"SourceHistoryAdapter",
 			"SourceHistoryCommit",
-			"SourceHistoryPageInput",
 			"SourceHistoryPage",
-			"SourceHistoryAdapter"
+			"SourceHistoryPageInput"
 		]
 	},
 	"contract": {
@@ -48,7 +48,13 @@
 		"outputs": [],
 		"errors": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "collaboration.model.source-history-types",
+			"via": "reexport",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/collaboration/src/models/Collaboration.types.ts",
