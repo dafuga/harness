@@ -32,6 +32,16 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.style.design",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.style.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.function.browser-context",
 			"via": "import",
 			"origin": "derived"

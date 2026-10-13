@@ -28,6 +28,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.function.time-label",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.function.browser-context",
 			"via": "import",
 			"origin": "derived"
