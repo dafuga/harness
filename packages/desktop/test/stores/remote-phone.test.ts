@@ -2,7 +2,7 @@ import { afterEach, expect, test, vi } from 'vitest';
 import { createRemotePhoneStore } from '../../src/lib/stores/remotePhone.svelte';
 import type { Workspace } from '../../src/lib/stores/workspace.svelte';
 import type { RemoteMobileStatus } from '../../src/models/Environment.types';
-import { linkNotice } from '../../src/utils/pairingInput';
+import { nameNotice, scanFailures, scanNotices } from '../../src/utils/scanNotice';
 
 const grant = { projects: [{ id: 'local-1', name: 'One' }], agents: true };
 const at = (state: RemoteMobileStatus['state'], change: Partial<RemoteMobileStatus> = {}) =>
@@ -16,13 +16,12 @@ const at = (state: RemoteMobileStatus['state'], change: Partial<RemoteMobileStat
 		lastOnlineAt: '2026-10-12T08:00:00.000Z',
 		...change
 	}) satisfies RemoteMobileStatus;
-const link = `harnessremote://pair?origin=${encodeURIComponent('https://relay.example.invalid')}&host=${'a1'.repeat(20)}&pairing=${'b2'.repeat(16)}`;
 
 function phone(first: RemoteMobileStatus, shown = false) {
 	let listener: (status: RemoteMobileStatus) => void = () => {};
 	const port = {
 		status: vi.fn(async () => first),
-		pair: vi.fn(async () => at('pending-approval')),
+		scan: vi.fn(async () => at('pending-approval')),
 		disconnect: vi.fn(async () => at('unpaired', { host: null, device: null })),
 		onStatus: vi.fn((next: typeof listener) => {
 			listener = next;
@@ -49,17 +48,32 @@ function phone(first: RemoteMobileStatus, shown = false) {
 }
 afterEach(() => vi.unstubAllGlobals());
 
-test('a malformed link or code never reaches the plugin', async () => {
-	const { store, port } = phone(at('unpaired'));
+test('scanning asks the plugin with a name only, and what the scanner refuses is said in words', async () => {
+	const { store, port } = phone(at('unpaired', { host: null, device: null }));
 	await store.start();
-	const unsafe = link.replace('https%3A', 'http%3A');
-	expect(await store.pair({ link: unsafe, code: 'KQ7M2XWP', deviceName: 'Ada' })).toBe(false);
-	expect(store.error).toBe(linkNotice);
-	expect(await store.pair({ link, code: 'KQ7', deviceName: 'Ada' })).toBe(false);
-	expect(port.pair).not.toHaveBeenCalled();
-	expect(await store.pair({ link, code: 'kq7m-2xwp', deviceName: 'Ada' })).toBe(true);
-	expect(port.pair).toHaveBeenCalledWith(expect.objectContaining({ code: 'KQ7M2XWP' }));
+	expect(await store.scan('   ')).toBe(false);
+	expect(store.error).toBe(nameNotice);
+	expect(port.scan).not.toHaveBeenCalled();
+	for (const code of scanFailures) {
+		port.scan.mockRejectedValueOnce(Object.assign(new Error('native words'), { code }));
+		expect(await store.scan('Ada')).toBe(false);
+		expect([store.scanFailure, store.error]).toEqual([code, scanNotices[code]]);
+		expect(store.status?.state).toBe('unpaired');
+	}
+	expect(await store.scan(' Ada iPhone ')).toBe(true);
+	expect(port.scan).toHaveBeenLastCalledWith({ deviceName: 'Ada iPhone' });
+	expect([store.scanFailure, store.error]).toEqual([null, '']);
 	expect(store.status?.state).toBe('pending-approval');
+});
+
+test('a failure that is no scan failure is said as it is, and the phone store takes no link or code', async () => {
+	const { store, port } = phone(at('unpaired', { host: null, device: null }));
+	await store.start();
+	port.scan.mockRejectedValueOnce(new Error('The bridge is gone.'));
+	expect(await store.scan('Ada')).toBe(false);
+	expect([store.scanFailure, store.error]).toEqual([null, 'Error: The bridge is gone.']);
+	expect('pair' in store).toBe(false);
+	expect('offered' in store).toBe(false);
 });
 
 test('reaching the computer lists its projects and reloads what is shown, once', async () => {
@@ -117,40 +131,20 @@ test('a phone opened while its computer is away reads what it kept, once', async
 	expect(workspace.loadProjects).toHaveBeenCalledTimes(2);
 });
 
-test('an offered pairing link is kept only when it is one, and never while a computer is paired', async () => {
-	let offer: (link: string) => void = () => {};
-	const { store, workspace } = phone(at('unpaired'));
-	const links = {
-		onPairingLink: (next: typeof offer) => {
-			offer = next;
-			return () => {};
-		}
-	};
-	Object.assign(workspace.remote, { links });
+test('a pairing link the phone is opened with is nothing to this page: it listens for none', async () => {
+	const { store, workspace } = phone(at('unpaired', { host: null, device: null }));
+	const onPairingLink = vi.fn(() => () => {});
+	Object.assign(workspace.remote, { links: { onPairingLink } });
 	await store.start();
-	offer(link.replace('https%3A', 'http%3A'));
-	offer(`${link}&code=KQ7M2XWP`);
-	expect(store.offered).toBe('');
-	offer(link);
-	expect(store.offered).toBe(link);
-	expect(await store.pair({ link, code: 'KQ7M2XWP', deviceName: 'Ada' })).toBe(true);
-	expect(store.offered).toBe('');
-	offer(link);
-	expect(store.offered).toBe('');
+	expect(onPairingLink).not.toHaveBeenCalled();
+	expect(store.status?.state).toBe('unpaired');
 });
 
-test('only a status that states a test fixture build lets a relay on this machine through', async () => {
-	const remote = encodeURIComponent('https://relay.example.invalid');
-	const local = link.replace(remote, encodeURIComponent('http://127.0.0.1:8791'));
+test('only a status that states a test fixture build is shown as one', async () => {
 	const plain = phone(at('unpaired'));
 	await plain.store.start();
-	expect(await plain.store.pair({ link: local, code: 'KQ7M2XWP', deviceName: 'Ada' })).toBe(false);
-	expect(plain.port.pair).not.toHaveBeenCalled();
+	expect(plain.store.fixture).toBe(false);
 	const debug = phone({ ...at('unpaired'), fixture: true } as never);
 	await debug.store.start();
 	expect(debug.store.fixture).toBe(true);
-	expect(await debug.store.pair({ link: local, code: 'KQ7M2XWP', deviceName: 'Ada' })).toBe(true);
-	expect(debug.port.pair).toHaveBeenCalledWith(
-		expect.objectContaining({ origin: 'http://127.0.0.1:8791' })
-	);
 });

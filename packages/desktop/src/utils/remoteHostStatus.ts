@@ -1,4 +1,4 @@
-import { pairingLink } from '../../../remote/src/index';
+import { pairingOffer } from '../../../remote/src/index';
 import type {
 	RemoteDeviceInfo,
 	RemoteHostStatus,
@@ -37,12 +37,12 @@ function offerOf(
 	const offer = runtime.pairing.offer(),
 		{ hostId, origin } = state;
 	if (!offer || !origin) return null;
-	return {
-		...offer,
-		hostId,
-		origin,
-		link: pairingLink({ origin, hostId, pairingId: offer.pairingId })
-	};
+	/** What cannot be written as the text of a QR code is not offered at all. */
+	try {
+		return { ...offer, hostId, origin, scan: pairingOffer({ ...offer, hostId, origin }) };
+	} catch {
+		return null;
+	}
 }
 function deviceOf(
 	device: RemoteHostDevice,

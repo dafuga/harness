@@ -1,5 +1,6 @@
 import { rmSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { scanMarker } from './ios-acceptance-guards';
 import type { AcceptanceRecord } from './ios-acceptance-record';
 import { pause, shot } from './ios-acceptance-run';
 import type { Acceptance } from './ios-acceptance-run';
@@ -24,6 +25,7 @@ import {
 	tool,
 	tried
 } from './ios-products';
+import { holds, scanFixtureProduct } from './ios-scan-fixture';
 
 const build = ['bun', 'scripts/build-ios-simulator.ts'];
 const releaseCopy = resolve(desktopRoot, '.cache/ios/acceptance/Release/App.app');
@@ -67,6 +69,7 @@ function built(record: AcceptanceRecord, read: SourceReading) {
 	steady(record, moved(read.renderer, sourceFiles(rendererSources)), 'source of the renderer');
 	tool([...build, '--fixture']);
 	tool([...build, '--release']);
+	tool([...build, '--scan-fixture']);
 	steady(record, moved(read.native, sourceFiles(nativeSources)), 'source of the native shell');
 	changedCopy(builtProduct('Release'), releaseCopy, { localNetworking: true, inspection: true });
 	record.check(
@@ -78,7 +81,8 @@ function built(record: AcceptanceRecord, read: SourceReading) {
 
 /**
  * TEST ONLY. Builds what the run tests and reads every product back: the two normal products
- * as they are, and the two copies that a check may read.
+ * as they are, the two copies of them that a check may read, and the copy of an isolated source
+ * whose scanner is the synthetic one.
  */
 export function acceptanceProducts(record: AcceptanceRecord, read: SourceReading) {
 	record.begin('Products');
@@ -92,15 +96,21 @@ export function acceptanceProducts(record: AcceptanceRecord, read: SourceReading
 		debug: productFacts(normal[0]),
 		release: productFacts(normal[1]),
 		fixtureCopy: productFacts(fixtureProduct),
-		releaseCopy: productFacts(releaseCopy)
+		releaseCopy: productFacts(releaseCopy),
+		scanFixtureCopy: productFacts(scanFixtureProduct)
 	};
+	const real = [...normal, fixtureProduct, releaseCopy];
+	record.check(
+		holds(scanFixtureProduct, scanMarker) && !real.some((product) => holds(product, scanMarker)),
+		'only the scan fixture copy holds the synthetic scanner: no product of the real source does'
+	);
 	const plain = [facts.debug, facts.release].every(
 		(product) => !product.localNetworking && !product.inspectable
 	);
 	record.check(plain, 'the normal Debug and Release products allow no local relay, no inspection');
 	const signed = Object.values(facts).every((product) => product.signature.includes('no account'));
-	record.check(signed, 'all four are signed ad hoc and name no team and no account anywhere');
-	const renderer = rendererProof(record, [...normal, fixtureProduct, releaseCopy]);
+	record.check(signed, 'all five are signed ad hoc and name no team and no account anywhere');
+	const renderer = rendererProof(record, [...real, scanFixtureProduct]);
 	return { facts, renderer, releaseCopy };
 }
 

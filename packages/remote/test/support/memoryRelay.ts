@@ -93,6 +93,9 @@ export function memoryRelay(input: RelayInput) {
 		open: (offer: { pairingId: string; expiresAt: string }) =>
 			state.pairings.set(offer.pairingId, { state: 'open', expiresAt: offer.expiresAt }),
 		approve: (pairingId: string, approval: { deviceId: string; sealed: string }) =>
-			Object.assign(state.pairings.get(pairingId)!, { state: 'approved', approval })
+			Object.assign(state.pairings.get(pairingId)!, { state: 'approved', approval }),
+		deny: (pairingId: string) => Object.assign(state.pairings.get(pairingId)!, { state: 'denied' }),
+		/** The host withdrew the offer: the relay no longer knows it. */
+		close: (pairingId: string) => state.pairings.delete(pairingId)
 	};
 }

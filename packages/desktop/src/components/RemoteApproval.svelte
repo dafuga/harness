@@ -38,7 +38,7 @@
 		<button type="button" class="primary" disabled={store.busy || !chosen.length} onclick={approve}
 			>Approve</button
 		><button type="button" disabled={store.busy} onclick={() => void store.deny(request.pairingId)}
-			>Decline</button
+			>Deny</button
 		>
 	</div>
 </fieldset>

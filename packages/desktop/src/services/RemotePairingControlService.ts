@@ -1,6 +1,7 @@
-import { RemoteInputValidator } from '../../../remote/src/index';
+import { RemoteInputValidator, offerEnvironment } from '../../../remote/src/index';
 import type {
 	HostPairingApproved,
+	RemoteApprovalInput,
 	RemoteGrant,
 	RemoteHostStatus,
 	RemotePairingOffer
@@ -18,6 +19,7 @@ export interface RemoteHostAccess {
 	name(): string;
 }
 const unreachable = ['The relay is not connected.', 'The relay did not answer.'];
+const replaced = 'A newer pairing code replaced this one.';
 
 function deviceOf(
 	approved: HostPairingApproved,
@@ -38,9 +40,39 @@ function deviceOf(
 	};
 }
 
+/** The approval as given, with the projects it names: each is opened on this computer. */
+async function scoped(
+	registry: Pick<ProjectRegistryService, 'list'>,
+	approval: RemoteApprovalInput
+) {
+	const known = await registry.list(),
+		projects = known
+			.filter((project) => approval.projectIds.includes(project.id))
+			.map(({ id, name }) => ({ id, name }));
+	if (projects.length !== approval.projectIds.length)
+		throw new Error('Only projects opened on this computer can be shared.');
+	return { ...approval, projects };
+}
+
+/**
+ * Opens a new offer on the host and at the relay, and answers its id. The call owns the offer
+ * it opened and no other: when the relay refuses, it closes that offer only while it is still
+ * the open one, so a newer offer is never ended by the failure of an older opening.
+ */
+async function openedOffer(runtime: RemoteHostRuntimeService): Promise<string> {
+	const { pairingId, expiresAt } = runtime.pairing.open();
+	try {
+		await runtime.link.command({ type: 'pairing-open', pairingId, expiresAt });
+	} catch (error) {
+		if (runtime.pairing.offer()?.pairingId === pairingId) runtime.pairing.close();
+		throw error;
+	}
+	return pairingId;
+}
+
 /**
  * Pairing and approved phones: every change here is made by the person at the computer.
- * `createPairing` opens a new one-time offer; an earlier one stops working.
+ * `createPairing` opens a new one-time offer, shown as a QR code; an earlier one stops working.
  */
 export class RemotePairingControlService {
 	private readonly inputs = new RemoteInputValidator();
@@ -49,26 +81,31 @@ export class RemotePairingControlService {
 		private readonly registry: Pick<ProjectRegistryService, 'list'>
 	) {}
 	async createPairing(): Promise<RemotePairingOffer> {
-		const { runtime } = this.host.current(),
+		const { runtime, state } = this.host.current(),
 			earlier = runtime.pairing.offer();
+		if (!offerEnvironment(state.origin ?? ''))
+			throw new Error('The relay of this computer cannot be shown to a phone as a QR code.');
 		if (earlier) void this.tell(runtime, { type: 'pairing-close', pairingId: earlier.pairingId });
-		const { pairingId, expiresAt } = runtime.pairing.open();
-		try {
-			await runtime.link.command({ type: 'pairing-open', pairingId, expiresAt });
-		} catch (error) {
-			runtime.pairing.close();
-			throw error;
-		}
+		const pairingId = await openedOffer(runtime);
 		const { pairing } = await this.host.published();
-		if (!pairing) throw new Error('The pairing offer could not be opened.');
-		return pairing;
+		if (pairing?.pairingId === pairingId) return pairing;
+		throw new Error(runtime.pairing.offer() ? replaced : 'The pairing offer could not be opened.');
+	}
+	/** Withdraws the open offer and whoever asked with it: neither can be used any more. */
+	async closePairing(): Promise<RemoteHostStatus> {
+		const { runtime } = this.host.current(),
+			open = runtime.pairing.offer();
+		runtime.pairing.close();
+		if (open) await this.tell(runtime, { type: 'pairing-close', pairingId: open.pairingId });
+		return this.host.published();
 	}
 	/**
 	 * Grants exactly the named local projects to exactly the phone the person was shown. The
 	 * request is looked up after every wait: it must still be that phone's, or nothing is approved.
 	 */
 	async approvePairing(input: unknown): Promise<RemoteHostStatus> {
-		const { pairingId, deviceId: shown, projects, agents } = await this.scope(input),
+		const approval = await scoped(this.registry, this.inputs.approval(input)),
+			{ pairingId, deviceId: shown, projects, agents } = approval,
 			{ state, runtime } = this.host.current(),
 			waiting = runtime.pairing
 				.requests()
@@ -91,17 +128,6 @@ export class RemotePairingControlService {
 		const approve = { type: 'pairing-approve', pairingId, deviceId, sealed, challenge } as const;
 		await runtime.link.command(approve).catch((error: unknown) => this.unapprove(before, error));
 		return this.host.published();
-	}
-	/** The approval as given, with the projects it names: each is opened on this computer. */
-	private async scope(input: unknown) {
-		const approval = this.inputs.approval(input),
-			known = await this.registry.list(),
-			projects = known
-				.filter((project) => approval.projectIds.includes(project.id))
-				.map(({ id, name }) => ({ id, name }));
-		if (projects.length !== approval.projectIds.length)
-			throw new Error('Only projects opened on this computer can be shared.');
-		return { ...approval, projects };
 	}
 	/**
 	 * The relay did not take the approval, for one because another request replaced the approved

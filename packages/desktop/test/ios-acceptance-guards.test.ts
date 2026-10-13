@@ -1,5 +1,12 @@
 import { expect, test } from 'vitest';
-import { linkFields, localOrigin, redacted } from '../scripts/ios-acceptance-guards';
+import {
+	expiredOffer,
+	localOrigin,
+	otherVersion,
+	redacted,
+	scanArgument
+} from '../scripts/ios-acceptance-guards';
+import { readPairingOffer } from '../../remote/src/index';
 import { AcceptanceRecord } from '../scripts/ios-acceptance-record';
 
 test('the run talks only to plain http on this machine, by number and with a port', () => {
@@ -24,18 +31,16 @@ test('a one-time code is hidden with and without its separators, wherever it app
 	expect(redacted('a short one stays: ab', ['ab'])).toBe('a short one stays: ab');
 });
 
-test('the fields taken from a pairing link are its three public ones, never a code', () => {
-	const link = 'harnessremote://pair?origin=http%3A%2F%2F127.0.0.1%3A8891&host=h1&pairing=p1';
-	expect(linkFields(link)).toEqual({
-		origin: 'http://127.0.0.1:8891',
-		hostId: 'h1',
-		pairingId: 'p1'
-	});
-	expect(Object.keys(linkFields(`${link}&code=ABCDEFGH`))).toEqual([
-		'origin',
-		'hostId',
-		'pairingId'
-	]);
+test('the offers a run makes wrong are the same offer, refused for exactly the named reason', () => {
+	const now = Date.parse('2026-10-13T12:00:00.000Z');
+	const fields = `host=${'a'.repeat(40)};pairing=${'b'.repeat(32)};code=KQ7M2XWP`;
+	const scan = `harness-pair:v1;aud=harness-phone;env=local;exp=1791893040;${fields};origin=http://127.0.0.1:8891`;
+	const read = (text: string) => readPairingOffer(text, { now, environments: ['local'] });
+	expect(read(scan)).toHaveProperty('offer');
+	expect(read(expiredOffer(scan, now))).toEqual({ refused: 'expired' });
+	expect(read(otherVersion(scan))).toEqual({ refused: 'unsupported' });
+	expect(expiredOffer(scan, now).replace(/exp=\d+/, '')).toBe(scan.replace(/exp=\d+/, ''));
+	expect(scanArgument).toBe('-HarnessSyntheticScans');
 });
 
 test('the record counts every assertion and never prints or keeps a code it was told', () => {

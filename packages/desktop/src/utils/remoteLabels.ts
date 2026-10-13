@@ -23,9 +23,10 @@ export function relayName(origin: string | null): string {
 		return '';
 	}
 }
-/** The one-time code as it is read aloud: two groups of four. */
-export function shownCode(code: string): string {
-	return code.length === 8 ? `${code.slice(0, 4)}-${code.slice(4)}` : code;
+/** The time an offer has left, as minutes and seconds; never less than nothing. */
+export function timeLeft(milliseconds: number): string {
+	const seconds = Math.max(0, Math.ceil(milliseconds / 1000));
+	return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
 }
 /** The start of a device identity, which is the hash of its key, in groups a person can compare. */
 export function keyLabel(deviceId: string): string {

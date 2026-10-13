@@ -2,7 +2,6 @@ import { registerPlugin } from '@capacitor/core';
 import { CapacitorBridgeAdapter } from './CapacitorBridgeAdapter';
 import type {
 	Environment,
-	PairingLinks,
 	RemoteMobileControl,
 	RemoteNativeEvents,
 	RemoteNativePlugin,
@@ -36,18 +35,11 @@ export class CapacitorEnvironmentAdapter {
 		};
 		const phone: RemoteMobileControl = {
 			status: async () => note(await plugin.status()),
-			pair: async (input) => note(await plugin.pair(input)),
+			scan: async (input) => note(await plugin.scan(input)),
 			disconnect: async () => note(await plugin.disconnect()),
 			onStatus: (listener) => this.listen('status', (status) => listener(note(status)))
 		};
-		/** Only the text of a link is handed on; whether it is one is decided where it is used. */
-		const links: PairingLinks = {
-			onPairingLink: (listener) =>
-				this.listen('pairingLink', (value) => {
-					if (typeof value?.link === 'string') listener(value.link);
-				})
-		};
-		return { kind: 'capacitor', bridge: bridge.connect(), local: false, phone, links };
+		return { kind: 'capacitor', bridge: bridge.connect(), local: false, phone };
 	}
 
 	private listen<K extends keyof RemoteNativeEvents>(

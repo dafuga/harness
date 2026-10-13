@@ -8,7 +8,15 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/scripts/ios-acceptance-guards.ts"],
-		"symbols": ["loopbackArgument", "localOrigin", "redacted", "linkFields"]
+		"symbols": [
+			"loopbackArgument",
+			"localOrigin",
+			"redacted",
+			"scanMarker",
+			"scanArgument",
+			"expiredOffer",
+			"otherVersion"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -26,7 +34,15 @@
 				"type": "string[]"
 			},
 			{
-				"name": "linkFields.link",
+				"name": "expiredOffer.scan",
+				"type": "string"
+			},
+			{
+				"name": "expiredOffer.now",
+				"type": "unknown"
+			},
+			{
+				"name": "otherVersion.scan",
 				"type": "string"
 			}
 		],
@@ -44,8 +60,20 @@
 				"type": "string"
 			},
 			{
-				"name": "linkFields",
-				"type": "{ origin: string; hostId: string; pairingId: string }"
+				"name": "scanMarker",
+				"type": "unknown"
+			},
+			{
+				"name": "scanArgument",
+				"type": "unknown"
+			},
+			{
+				"name": "expiredOffer",
+				"type": "string"
+			},
+			{
+				"name": "otherVersion",
+				"type": "string"
 			}
 		],
 		"errors": []

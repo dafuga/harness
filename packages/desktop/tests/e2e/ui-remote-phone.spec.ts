@@ -1,14 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
-import { remoteEvidence } from './remote-evidence';
-import {
-	alpha,
-	deviceName,
-	hostName,
-	pairing,
-	pairingLink,
-	relayOrigin,
-	remotePhoneFixture
-} from './ui-remote-phone-fixture';
+import { captured, remoteEvidence } from './remote-evidence';
+import { alpha, deviceName, hostName, remotePhoneFixture } from './ui-remote-phone-fixture';
 
 type Call = Record<string, unknown>;
 type Phone = { __remotePhone: { set: (state: string) => void } };
@@ -33,50 +25,91 @@ const kept = (page: Page) =>
 
 test.use({ viewport: { width: 390, height: 844 } });
 
-test('the Capacitor environment pairs through the native adapter, never with an unsafe address', async ({
+/** How the next scans of the SYNTHETIC scanner end, in order; after them a scan goes well. */
+const script = (page: Page, outcomes: string[]) =>
+	page.evaluate(
+		(codes) =>
+			(window as unknown as { __remotePhone: { scans: string[] } }).__remotePhone.scans.push(
+				...codes
+			),
+		outcomes
+	);
+
+test('the Capacitor environment pairs by scanning: no link, code or address is ever typed', async ({
 	page
 }, testInfo) => {
 	await remotePhoneFixture(page);
 	await page.goto('/');
-	await remoteEvidence(page, testInfo, 'phone-start');
 	await expect(page.locator('html')).toHaveAttribute('data-environment', 'capacitor');
 	const panel = computer(page);
 	await expect(panel.getByRole('heading', { name: 'Connect to computer' })).toBeVisible();
+	await remoteEvidence(page, testInfo, 'phone-start');
 	await expect(page.getByRole('button', { name: 'Open Project', exact: true })).toHaveCount(0);
 	await expect(page.getByRole('region', { name: 'Phone access' })).toHaveCount(0);
 	await expect(page.getByRole('region', { name: 'Shared projects' })).toHaveCount(0);
 	await expect(projects(page)).toHaveCount(0);
-	const connect = panel.getByRole('button', { name: 'Connect', exact: true });
+	await expect(panel.getByRole('textbox')).toHaveCount(1);
+	await expect(field(page, 'Name of this phone')).toHaveValue('iPhone');
+	for (const name of ['Pairing link', 'Pairing code'])
+		await expect(field(page, name)).toHaveCount(0);
+	await expect(panel.getByRole('button', { name: 'Connect', exact: true })).toHaveCount(0);
+	const scan = panel.getByRole('button', { name: 'Scan QR code', exact: true });
+	await field(page, 'Name of this phone').fill('   ');
+	await scan.click();
+	await expect(panel.getByRole('alert')).toContainText('Give this phone a name');
+	expect(await made(page, 'native.scan')).toEqual([]);
 	await field(page, 'Name of this phone').fill(deviceName);
-	await field(page, 'Pairing code').fill('kq7m-2xwp');
-	const unsafe = [
-		pairingLink.replace('https%3A', 'http%3A'),
-		pairingLink.replace('relay.example.invalid', 'localhost%3A8787'),
-		`${relayOrigin}/pair?host=${pairing.hostId}&pairing=${pairing.pairingId}`
-	];
-	for (const value of unsafe) {
-		await field(page, 'Pairing link').fill(value);
-		await connect.click();
-		await expect(panel.getByRole('alert')).toContainText('pairing link your computer shows');
-	}
-	await field(page, 'Pairing link').fill(pairingLink);
-	await field(page, 'Pairing code').fill('KQ7M');
-	await connect.click();
-	await expect(panel.getByRole('alert')).toContainText('8-character code');
-	expect(await made(page, 'native.pair')).toEqual([]);
-	await field(page, 'Pairing code').fill('kq7m-2xwp');
-	await connect.click();
-	expect(await made(page, 'native.pair')).toEqual([
-		{ op: 'native.pair', origin: relayOrigin, ...pairing, deviceName }
+	await scan.click();
+	expect(await made(page, 'native.scan')).toEqual([
+		{ op: 'native.scan', deviceName, outcome: 'ok' }
 	]);
 	await expect(panel.getByText(/Waiting for approval/)).toBeVisible();
 	await expect(panel.getByText('Approve this phone in Harness on your computer.')).toBeVisible();
-	await expect(field(page, 'Pairing link')).toHaveCount(0);
+	await expect(panel.getByRole('textbox')).toHaveCount(0);
 	await expect(projects(page)).toHaveCount(0);
-	expect(page.url()).not.toContain(pairing.code);
-	expect((await kept(page)).toUpperCase()).not.toContain('KQ7M');
+	expect(await made(page, 'native.request')).toEqual([]);
+	expect(await kept(page)).not.toMatch(/harness-pair|KQ7M/i);
 	expect(await fits(page)).toBe(true);
 	await remoteEvidence(page, testInfo, 'phone-pending');
+});
+
+test('a scan that ends without an offer says why and can be tried again; nothing is sent meanwhile', async ({
+	page
+}, testInfo) => {
+	await remotePhoneFixture(page);
+	await page.goto('/');
+	const panel = computer(page);
+	await expect(panel.getByRole('heading', { name: 'Connect to computer' })).toBeVisible();
+	await captured(page, testInfo, 'phone-before-scan', panel);
+	const outcomes = [
+		['camera-denied', 'Camera access is off for Harness'],
+		['scan-cancelled', 'Scanning was cancelled'],
+		['offer-invalid', 'That is not a Harness pairing code'],
+		['offer-expired', 'That code has expired'],
+		['offer-unsupported', 'another version of Harness'],
+		['offer-environment', 'this build of Harness does not accept'],
+		['camera-unavailable', 'no camera that can scan']
+	];
+	await script(
+		page,
+		outcomes.map(([code]) => code)
+	);
+	await field(page, 'Name of this phone').fill(deviceName);
+	await panel.getByRole('button', { name: 'Scan QR code', exact: true }).click();
+	for (const [code, words] of outcomes) {
+		await expect(panel.getByRole('alert')).toContainText(words);
+		await expect(panel.getByText(/Waiting for approval/)).toHaveCount(0);
+		await expect(panel.getByRole('heading', { name: 'Connect to computer' })).toBeVisible();
+		expect(await fits(page)).toBe(true);
+		await captured(page, testInfo, `phone-${code}`, panel);
+		await panel.getByRole('button', { name: 'Scan again', exact: true }).click();
+	}
+	await expect(panel.getByText(/Waiting for approval/)).toBeVisible();
+	expect((await made(page, 'native.scan')).map((call) => call.outcome)).toEqual([
+		...outcomes.map(([code]) => code),
+		'ok'
+	]);
+	expect(await made(page, 'native.request')).toEqual([]);
 });
 
 test('approval on the desktop connects the phone and lists only what it was granted', async ({

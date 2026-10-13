@@ -3,7 +3,7 @@
 	"id": "desktop.adapter.ios-remote",
 	"kind": "adapter",
 	"title": "iOS remote bridge",
-	"responsibility": "Provide the native iOS remote bridge and protected cache.",
+	"responsibility": "Provide the native iOS remote bridge, its camera pairing scan and protected cache.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -19,12 +19,14 @@
 			"packages/desktop/ios/App/App/Remote/RemoteLink.swift",
 			"packages/desktop/ios/App/App/Remote/RemoteMedia.swift",
 			"packages/desktop/ios/App/App/Remote/RemoteModels.swift",
+			"packages/desktop/ios/App/App/Remote/RemoteOffer.swift",
 			"packages/desktop/ios/App/App/Remote/RemotePairing.swift",
 			"packages/desktop/ios/App/App/Remote/RemotePairingMaterial.swift",
 			"packages/desktop/ios/App/App/Remote/RemotePolicy.swift",
 			"packages/desktop/ios/App/App/Remote/RemotePulse.swift",
 			"packages/desktop/ios/App/App/Remote/RemoteRelayClient.swift",
 			"packages/desktop/ios/App/App/Remote/RemoteRequests.swift",
+			"packages/desktop/ios/App/App/Remote/RemoteScan.swift",
 			"packages/desktop/ios/App/App/Remote/RemoteSecureState.swift",
 			"packages/desktop/ios/App/App/Remote/RemoteSession.swift",
 			"packages/desktop/ios/App/App/Remote/RemoteSessionAuthority.swift",
@@ -32,7 +34,10 @@
 			"packages/desktop/ios/App/App/Remote/RemoteSessionLink.swift",
 			"packages/desktop/ios/App/App/Remote/RemoteSessionPairing.swift",
 			"packages/desktop/ios/App/App/Remote/RemoteSessionReads.swift",
-			"packages/desktop/ios/App/App/Remote/RemoteSocketDelegate.swift"
+			"packages/desktop/ios/App/App/Remote/RemoteSessionScan.swift",
+			"packages/desktop/ios/App/App/Remote/RemoteSocketDelegate.swift",
+			"packages/desktop/ios/App/App/Scanner/RemoteCameraScanner.swift",
+			"packages/desktop/ios/App/App/Scanner/RemoteScannerViewController.swift"
 		],
 		"symbols": []
 	},
@@ -44,8 +49,12 @@
 				"type": "RemoteMethod + explicit project/revision input"
 			},
 			{
-				"name": "pair",
-				"type": "Public pairing IDs and separately entered code"
+				"name": "scan",
+				"type": "Device name only; the offer is read by the camera of this phone, never handed in"
+			},
+			{
+				"name": "offer",
+				"type": "QR text of one short-lived single-use pairing offer, read by the rule of pairingOffer"
 			},
 			{
 				"name": "relay",
@@ -70,6 +79,14 @@
 			{
 				"name": "uncertain",
 				"type": "disconnected mutation is never re-sent"
+			},
+			{
+				"name": "scan-failure",
+				"type": "camera or offer refusal by its remoteScanFailures code; nothing is sent"
+			},
+			{
+				"name": "scan-ended",
+				"type": "Disconnect ends an open scan; a late camera answer begins no pairing"
 			}
 		]
 	},
@@ -96,13 +113,19 @@
 			"unit": "remote.model.remote-control-types",
 			"via": "contract",
 			"origin": "declared",
-			"contract": "Remote approval and control messages"
+			"contract": "Remote approval and control messages; scan input and failure codes"
 		},
 		{
 			"unit": "remote.model.remote-local-types",
 			"via": "contract",
 			"origin": "declared",
 			"contract": "Local contract shared by adapters"
+		},
+		{
+			"unit": "remote.function.pairing-offer",
+			"via": "contract",
+			"origin": "declared",
+			"contract": "QR offer text grammar and refusals, held to the shared offer vectors"
 		},
 		{
 			"unit": "remote.script.secure-vectors",

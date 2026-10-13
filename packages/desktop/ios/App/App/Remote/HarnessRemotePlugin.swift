@@ -11,7 +11,7 @@ public class HarnessRemotePlugin: CAPPlugin, CAPBridgedPlugin {
     public let jsName = "HarnessRemote"
     public let pluginMethods: [CAPPluginMethod] = [
         CAPPluginMethod(name: "status", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "pair", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "scan", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "disconnect", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "request", returnType: CAPPluginReturnPromise)
     ]
@@ -24,38 +24,27 @@ public class HarnessRemotePlugin: CAPPlugin, CAPBridgedPlugin {
         let center = NotificationCenter.default
         center.addObserver(
             self, selector: #selector(active), name: UIApplication.didBecomeActiveNotification, object: nil)
-        center.addObserver(self, selector: #selector(opened(_:)), name: .capacitorOpenURL, object: nil)
         session.start()
-        #if DEBUG
-        if let url = RemoteDebug.openURL { center.post(name: .capacitorOpenURL, object: ["url": url]) }
-        #endif
     }
 
     @objc private func active() {
         session.resume()
     }
 
-    /// The phone was opened with a `harnessremote://pair` link. Its text goes to the page, which
-    /// asks for the code: a link holds public identifiers only. It is kept until the page listens.
-    @objc private func opened(_ notification: Notification) {
-        guard let object = notification.object as? [String: Any], let url = object["url"] as? URL,
-            let link = RemotePolicy.pairingLink(url)
-        else { return }
-        notifyListeners("pairingLink", data: ["link": link], retainUntilConsumed: true)
-    }
-
     @objc func status(_ call: CAPPluginCall) {
         session.status { call.resolve($0) }
     }
 
-    @objc func pair(_ call: CAPPluginCall) {
-        guard let origin = call.getString("origin"), let hostId = call.getString("hostId"),
-            let pairingId = call.getString("pairingId"), let code = call.getString("code"),
-            let deviceName = call.getString("deviceName")
-        else { return call.reject(RemoteFailure.invalid.message, RemoteFailure.invalid.code) }
-        let input = RemotePairing.Input(
-            origin: origin, hostId: hostId, pairingId: pairingId, code: code, deviceName: deviceName)
-        session.pair(input) { result in
+    /// Opens the camera for the QR code a computer shows and asks with the offer it reads. The
+    /// page gives a name and nothing else: it hands over no offer and no address, and is handed
+    /// none. Nothing connects here; the phone waits for a person to approve it on the computer.
+    /// The session owns the scan: Disconnect ends it, and a camera that answers late asks nobody.
+    @objc func scan(_ call: CAPPluginCall) {
+        guard let name = RemoteScanFlow.name(call.getString("deviceName")) else {
+            return call.reject(RemoteFailure.invalid.message, RemoteFailure.invalid.code)
+        }
+        let scanner = RemoteCameraScanner(presenter: { [weak self] in self?.bridge?.viewController })
+        session.scan(scanner, deviceName: name) { result in
             switch result {
             case .success(let status): call.resolve(status)
             case .failure(let failure): call.reject(failure.message, failure.code)

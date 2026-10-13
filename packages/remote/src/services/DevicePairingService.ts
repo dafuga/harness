@@ -13,6 +13,8 @@ import type {
 	StoredRemoteKeys
 } from '../models/RemoteSecure.types';
 import { openPairing, pairingEnvelope, sealPairing } from '../utils/pairingEnvelope';
+import { readPairingOffer } from '../utils/pairingOffer';
+import type { OfferReading } from '../utils/pairingOffer';
 import { relayOrigin } from '../utils/relayOrigin';
 import { fromBase64Url, randomBytes, toBase64Url } from '../utils/remoteBytes';
 import { normalizeCode, pkceChallenge, remoteIdentity } from '../utils/remoteIdentity';
@@ -20,6 +22,11 @@ import { remotePatterns } from '../utils/remoteIdentity';
 import { exportRemoteKeys, remoteKeys, sharedSecret } from '../utils/remoteKeys';
 
 export interface DevicePairingInput extends RemotePairInput {
+	platform?: PairingSecret['platform'];
+}
+/** How a device names itself when it scans: it gives no address and no code. */
+export interface ScanningDevice {
+	deviceName: string;
 	platform?: PairingSecret['platform'];
 }
 /** What a phone holds between its request and the exchange. Nothing here is sent anywhere. */
@@ -62,6 +69,15 @@ function checked(input: DevicePairingInput): string {
 /** The phone's side of pairing, as the native app implements it: reference and test client. */
 export class DevicePairingService {
 	constructor(private readonly options: { fetch?: typeof fetch } = {}) {}
+	/**
+	 * What the app does with a scanned code. Only a current offer for this build is asked with;
+	 * anything else fails by its name, such as `offer-expired`, before a relay hears of it.
+	 */
+	scanned(text: string, device: ScanningDevice, reading: OfferReading): Promise<PendingPairing> {
+		const read = readPairingOffer(text, reading);
+		if ('refused' in read) return Promise.reject(new Error(`offer-${read.refused}`));
+		return this.request({ ...read.offer, ...device });
+	}
 	/** Pins the host key by its identifier, then asks with the code sealed to that key. */
 	async request(input: DevicePairingInput, keys?: RemoteKeyPair): Promise<PendingPairing> {
 		const origin = checked(input),

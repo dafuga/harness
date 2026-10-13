@@ -71,11 +71,13 @@ test('the status is public metadata: no key, no credential, no folder', () => {
 		projects: [project],
 		devices: [{ deviceId, name: 'Phone', projectIds: [project.id], agents: true, online: true }]
 	});
+	const seconds = Math.floor(Date.parse(offer.expiresAt) / 1000);
+	const fields = `exp=${seconds};host=${hostId};pairing=${offer.pairingId};code=${offer.code.replace('-', '')}`;
 	expect(status.pairing).toEqual({
 		...offer,
 		hostId,
 		origin: 'https://relay.example',
-		link: `harnessremote://pair?origin=https%3A%2F%2Frelay.example&host=${hostId}&pairing=${offer.pairingId}`
+		scan: `harness-pair:v1;aud=harness-phone;env=production;${fields};origin=https://relay.example`
 	});
 });
 test('the state follows support, registration, enablement and the link, with words when not online', () => {

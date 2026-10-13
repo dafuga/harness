@@ -19,12 +19,19 @@ export function redacted(text: string, secrets: string[]): string {
 	return forms.reduce((value, form) => value.split(form).join('[hidden]'), text);
 }
 
-/** The public fields of a pairing link, as the native plugin takes them. Never the code. */
-export function linkFields(link: string): { origin: string; hostId: string; pairingId: string } {
-	const fields = new URL(link).searchParams;
-	return {
-		origin: fields.get('origin') ?? '',
-		hostId: fields.get('host') ?? '',
-		pairingId: fields.get('pairing') ?? ''
-	};
+/**
+ * The launch argument that tells the TEST ONLY scan fixture copy what its scans answer, and the
+ * words by which a product is known to hold that scanner. No product of the real source does.
+ */
+export const scanMarker = 'HarnessSyntheticScans';
+export const scanArgument = `-${scanMarker}`;
+
+/** The same offer with its time passed: what a phone must refuse as expired. */
+export function expiredOffer(scan: string, now = Date.now()): string {
+	return scan.replace(/;exp=\d+;/, `;exp=${Math.floor(now / 1000) - 60};`);
+}
+
+/** The same offer under a version no phone knows: what a phone must refuse as unsupported. */
+export function otherVersion(scan: string): string {
+	return scan.replace('harness-pair:v1;', 'harness-pair:v2;');
 }

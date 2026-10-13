@@ -9,7 +9,7 @@ import {
 	keyLabel,
 	relayName,
 	remoteLabels,
-	shownCode
+	timeLeft
 } from '../../src/utils/remoteLabels';
 
 const phone = (state: RemoteMobileStatus['state'], reason: string | null = null) =>
@@ -56,8 +56,13 @@ test('a lost computer says why in its own words, and a pending phone names where
 });
 
 test('codes, key identities and relays are shown in a form a person can compare', () => {
-	expect(shownCode('KQ7M2XWP')).toBe('KQ7M-2XWP');
-	expect(shownCode('short')).toBe('short');
+	expect([240_000, 65_000, 999, 0, -5].map(timeLeft)).toEqual([
+		'4:00',
+		'1:05',
+		'0:01',
+		'0:00',
+		'0:00'
+	]);
 	expect(keyLabel('4f2a91c07b3e' + 'd'.repeat(28))).toBe('4f2a 91c0 7b3e');
 	expect(relayName('https://relay.example.invalid/path')).toBe('relay.example.invalid');
 	expect(relayName(null)).toBe('');

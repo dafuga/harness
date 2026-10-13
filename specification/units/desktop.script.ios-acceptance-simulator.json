@@ -14,6 +14,7 @@
 			"acceptanceDevice",
 			"install",
 			"launch",
+			"cameraAccess",
 			"running",
 			"screenshot",
 			"inspectorSocket",
@@ -39,6 +40,14 @@
 			{
 				"name": "launch.args",
 				"type": "string[]"
+			},
+			{
+				"name": "cameraAccess.udid",
+				"type": "string"
+			},
+			{
+				"name": "cameraAccess.access",
+				"type": "'grant' | 'revoke'"
 			},
 			{
 				"name": "running.udid",
@@ -84,6 +93,10 @@
 			},
 			{
 				"name": "launch",
+				"type": "void"
+			},
+			{
+				"name": "cameraAccess",
 				"type": "void"
 			},
 			{

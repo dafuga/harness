@@ -59,6 +59,7 @@ const remote: RemoteDesktopControl = {
 	enable: call('remote.enable'),
 	disable: call('remote.disable'),
 	createPairing: call('remote.createPairing'),
+	closePairing: call('remote.closePairing'),
 	approvePairing: call('remote.approvePairing'),
 	denyPairing: call('remote.denyPairing'),
 	revokeDevice: call('remote.revokeDevice'),

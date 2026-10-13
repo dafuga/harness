@@ -2,7 +2,7 @@ import type { Page } from '@playwright/test';
 import { alpha, beta, projectFixture } from './ui-project-fixture';
 import { pairing, phone, relayOrigin } from './ui-remote-host-fixture';
 export * from './ui-project-fixture';
-export { pairing, pairingLink, relayOrigin, shownCode } from './ui-remote-host-fixture';
+export { pairing, relayOrigin } from './ui-remote-host-fixture';
 
 /**
  * SYNTHETIC ADAPTER FIXTURE. A page that believes it runs in the Capacitor iOS shell: the native
@@ -27,6 +27,8 @@ interface PhoneOptions {
 interface PhoneState {
 	options: PhoneOptions;
 	phone: { state: string; deviceName: string | null };
+	/** How the next scans end: a failure code of the plugin each, then success. */
+	scans: string[];
 	computer: Record<string, Operation>;
 	listeners: Map<string, { eventName: string; callback: Callback }>;
 	status: () => Record<string, unknown>;
@@ -67,7 +69,7 @@ function installPhoneState(options: PhoneOptions) {
 		});
 	};
 	const request = async () => undefined;
-	host.__remotePhone = { options, phone, computer, listeners, status, set, request };
+	host.__remotePhone = { options, phone, scans: [], computer, listeners, status, set, request };
 }
 
 /** SYNTHETIC host answers: explicit project per request, granted projects only, `RemoteBinary`. */
@@ -102,11 +104,15 @@ function installPhoneRequests() {
 /** SYNTHETIC native bridge of Capacitor iOS with the one plugin the renderer uses. */
 function installPhonePlugin() {
 	const host = window as unknown as PhoneHost;
-	const { phone, listeners, status, set, request } = host.__remotePhone;
+	const { phone, scans, listeners, status, set, request } = host.__remotePhone;
 	const methods: Record<string, (input: never) => Promise<unknown>> = {
 		status: async () => status(),
-		pair: async (input: { deviceName: string }) => {
-			host.__calls.push({ op: 'native.pair', ...input });
+		/** SYNTHETIC scanner: no camera and no code; it ends the way the test says, or well. */
+		scan: async (input: { deviceName: string }) => {
+			const outcome = scans.shift() ?? 'ok';
+			host.__calls.push({ op: 'native.scan', ...input, outcome });
+			if (outcome !== 'ok')
+				throw Object.assign(new Error('SYNTHETIC native words'), { code: outcome });
 			phone.deviceName = input.deviceName;
 			set('pending-approval');
 			return status();

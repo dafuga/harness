@@ -40,8 +40,8 @@ class WorkspaceState {
 		this.release?.();
 		this.bridge = value;
 		this.local = options.local ?? true;
-		const { host, phone, links } = options;
-		this.remote = { host, phone, links };
+		const { host, phone } = options;
+		this.remote = { host, phone };
 		this.release = value?.onCacheStatus?.((event) => cacheStatus(this, event));
 	}
 	/** A read or a listing that is under way is no longer shown when it answers. */

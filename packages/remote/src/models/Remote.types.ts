@@ -57,6 +57,7 @@ export const controlMethods = [
 	'remote.enable',
 	'remote.disable',
 	'remote.createPairing',
+	'remote.closePairing',
 	'remote.approvePairing',
 	'remote.denyPairing',
 	'remote.revokeDevice'
@@ -95,6 +96,7 @@ export const mutationMethods: readonly RemoteMethod[] = [
 	'remote.enable',
 	'remote.disable',
 	'remote.createPairing',
+	'remote.closePairing',
 	'remote.approvePairing',
 	'remote.denyPairing',
 	'remote.revokeDevice'

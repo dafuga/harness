@@ -72,6 +72,14 @@ export function launch(udid: string, args: string[] = []): void {
 	simctl('launch', '--terminate-running-process', udid, bundleId, ...args);
 }
 
+/**
+ * What the system of this simulator answers when the app asks for the camera. It is set here so
+ * that no prompt of the system has to be pressed: the run presses nothing the system draws.
+ */
+export function cameraAccess(udid: string, access: 'grant' | 'revoke'): void {
+	simctl('privacy', udid, access, 'camera', bundleId);
+}
+
 export function running(udid: string): boolean {
 	return simctl('spawn', udid, 'launchctl', 'list').includes(`UIKitApplication:${bundleId}`);
 }

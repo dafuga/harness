@@ -23,6 +23,9 @@ final class RemoteSession {
     var locked: Bool?
     var pending: RemotePairing.Input?
     var pairing: RemotePairing?
+    /// The look through the camera that is under way, and how many there have been.
+    var look: RemoteLook?
+    var looks = 0
     var link: RemoteLink?
     var attachId: String?
     var attempts = 0
@@ -59,8 +62,10 @@ final class RemoteSession {
     }
 
     /// Forgets the computer: the credential and the keys leave the Keychain before anything else.
+    /// A scan that is open ends with it: what its camera reads afterwards asks nobody.
     func disconnect(_ done: @escaping ([String: Any]) -> Void) {
         queue.async {
+            self.endLook()
             self.forget()
             self.move("unpaired")
             done(self.snapshot)

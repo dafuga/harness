@@ -18,6 +18,7 @@ const controls: Record<string, keyof LocalControl> = {
 	'remote.enable': 'enable',
 	'remote.disable': 'disable',
 	'remote.createPairing': 'createPairing',
+	'remote.closePairing': 'closePairing',
 	'remote.approvePairing': 'approvePairing',
 	'remote.denyPairing': 'denyPairing',
 	'remote.revokeDevice': 'revokeDevice'

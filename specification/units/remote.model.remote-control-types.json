@@ -19,13 +19,21 @@
 			"RemoteMobileState",
 			"RemoteMobileStatus",
 			"RemotePairInput",
+			"RemoteScanInput",
+			"remoteScanFailures",
+			"RemoteScanFailure",
 			"RemoteMobileControl"
 		]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [],
-		"outputs": [],
+		"outputs": [
+			{
+				"name": "remoteScanFailures",
+				"type": "unknown"
+			}
+		],
 		"errors": []
 	},
 	"dependencies": [

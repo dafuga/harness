@@ -1,5 +1,5 @@
 import { resolve } from 'node:path';
-import { localOrigin, loopbackArgument } from './ios-acceptance-guards';
+import { localOrigin, loopbackArgument, scanArgument } from './ios-acceptance-guards';
 import type { SimulatorPage } from './ios-acceptance-page';
 import type { AcceptanceRecord } from './ios-acceptance-record';
 import { launch, screenshot } from './ios-acceptance-simulator';
@@ -8,13 +8,15 @@ import { launch, screenshot } from './ios-acceptance-simulator';
 export interface FixtureView {
 	state: string;
 	locked: boolean | null;
-	requests: unknown[];
+	requests: { deviceId: string; deviceName: string }[];
 	devices: { deviceId: string; name: string; online: boolean }[];
 }
-/** A one-time offer. Its code is handed to the record to be hidden as soon as it arrives. */
+/** A one-time offer. Its code and its QR text are hidden by the record as soon as it arrives. */
 export interface PairingOffer {
-	link: string;
+	pairingId: string;
 	code: string;
+	/** The text of the QR code: what a camera would read from the computer. */
+	scan: string;
 }
 
 /** TEST ONLY. Everything one phase of the native acceptance run works with. */
@@ -53,17 +55,34 @@ export async function control<T = FixtureView>(
 	return (await response.json()) as T;
 }
 
-/** A new one-time offer of the fixture; its code is hidden from everything the run writes. */
+/** A new one-time offer of the fixture; code and QR text are hidden from all the run writes. */
 export async function offered(run: Acceptance): Promise<PairingOffer> {
 	const offer = await control<PairingOffer>(run, '/pairing');
 	run.record.hide(offer.code);
+	run.record.hide(offer.scan);
 	return offer;
 }
 
-/** Starts the app again and forgets the page of the one that ran. */
-export async function restart(run: Acceptance, fixture = true): Promise<void> {
+/**
+ * Starts the app again and forgets the page of the one that ran. `scans` is what the scans of
+ * this launch answer, in order; only the TEST ONLY scan fixture copy understands it.
+ */
+export async function restart(
+	run: Acceptance,
+	fixture = true,
+	scans: string[] = []
+): Promise<void> {
 	await run.page.reset();
-	launch(run.udid, fixture ? [loopbackArgument] : []);
+	const answers = scans.length ? [scanArgument, scans.join('|')] : [];
+	launch(run.udid, [...(fixture ? [loopbackArgument] : []), ...answers]);
+}
+
+/** Names the phone when asked to, and presses the scan button, whatever it is called now. */
+export function scanPressed(run: Acceptance, name?: string): Promise<string> {
+	const named = name ? `fill('Name of this phone', ${JSON.stringify(name)}) && ` : '';
+	return run.page.evaluate(
+		`return String(${named}(press('Scan QR code') || press('Scan again')));`
+	);
 }
 
 /** A screenshot of the simulator, once the page had time to paint what was just asked of it. */

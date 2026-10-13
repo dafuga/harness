@@ -13,6 +13,7 @@
 			"RemotePairingControlService",
 			"RemotePairingControlService.constructor",
 			"RemotePairingControlService.createPairing",
+			"RemotePairingControlService.closePairing",
 			"RemotePairingControlService.approvePairing",
 			"RemotePairingControlService.denyPairing",
 			"RemotePairingControlService.revokeDevice",
@@ -57,6 +58,10 @@
 			{
 				"name": "RemotePairingControlService.createPairing",
 				"type": "Promise<RemotePairingOffer>"
+			},
+			{
+				"name": "RemotePairingControlService.closePairing",
+				"type": "Promise<RemoteHostStatus>"
 			},
 			{
 				"name": "RemotePairingControlService.approvePairing",

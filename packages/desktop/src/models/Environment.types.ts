@@ -24,18 +24,12 @@ export type {
 } from '../../../remote/src/models/RemoteControl.types';
 
 export type EnvironmentKind = 'electron' | 'capacitor' | 'web';
-/** A pairing link the phone was opened with: public identifiers, never a code or a credential. */
-export interface PairingLinks {
-	onPairingLink(listener: (link: string) => void): () => void;
-}
 /** The control port of this runtime, if it has one: never both. */
 export interface RemotePorts {
 	/** Electron only: phone access to this computer. Public metadata, no credential. */
 	host?: RemoteDesktopControl;
 	/** Capacitor only: this phone's connection to a computer. */
 	phone?: RemoteMobileControl;
-	/** Capacitor only. */
-	links?: PairingLinks;
 }
 /** What one runtime gives the one renderer. Exactly one adapter is chosen when a page starts. */
 export interface Environment extends RemotePorts {
@@ -52,7 +46,8 @@ export interface EnvironmentHost {
 	Capacitor?: { isNativePlatform?: () => boolean };
 }
 
-export type PairingInput = Parameters<RemoteMobileControl['pair']>[0];
+/** All the page hands the scanner: the name of this phone. It never holds an offer. */
+export type ScanInput = Parameters<RemoteMobileControl['scan']>[0];
 /**
  * What the plugin reports: the published status, and beside it what the computer said when it
  * attached this phone: the methods it allowed, and whether its screen is locked. Each is absent
@@ -78,7 +73,6 @@ export interface RemoteNativeEvent {
 export interface RemoteNativeEvents {
 	status: RemoteNativeStatus;
 	event: RemoteNativeEvent;
-	pairingLink: { link: string };
 }
 /**
  * The `HarnessRemote` plugin as the page sees it. The Swift side owns the socket, the keys, the
@@ -86,7 +80,8 @@ export interface RemoteNativeEvents {
  */
 export interface RemoteNativePlugin {
 	status(): Promise<RemoteNativeStatus>;
-	pair(input: PairingInput): Promise<RemoteNativeStatus>;
+	/** Rejects with one of `remoteScanFailures` as its code when a scan ends without an offer. */
+	scan(input: ScanInput): Promise<RemoteNativeStatus>;
 	disconnect(): Promise<RemoteNativeStatus>;
 	request(call: { method: string; input: Record<string, unknown> }): Promise<RemoteNativeAnswer>;
 	addListener<K extends keyof RemoteNativeEvents>(

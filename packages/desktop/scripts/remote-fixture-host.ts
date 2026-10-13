@@ -22,6 +22,11 @@ export interface RemoteFixtureOptions {
 	/** Where public facts of the fixture are written: addresses and ids, never a code or a key. */
 	publicDirectory: string;
 	log: (line: string) => void;
+	/**
+	 * Who approves a phone that asks. By default the fixture does, as it has no person at it;
+	 * `asked` leaves every request waiting until the control is told to approve or deny it.
+	 */
+	approval?: 'automatic' | 'asked';
 }
 const owner = { id: 'fixture:synthetic-owner' };
 const notice =
@@ -106,7 +111,24 @@ async function online(host: RemoteHostService): Promise<string> {
 	}
 	throw new Error('The fixture host did not reach the fixture relay.');
 }
-/** What the control answers: public facts and state. A code is given once, to who asked for it. */
+/** The person at the computer, stood in for by who runs the fixture: answers whoever waits. */
+function decisions(running: Running, view: () => Promise<object>): Record<string, FixtureAction> {
+	const { host, facts } = running,
+		waiting = async () => (await host.status()).requests;
+	return {
+		'POST /approve': async (body) => {
+			const grant = { projectIds: [facts.project.id], agents: body.agents !== false };
+			for (const { pairingId, deviceId } of await waiting())
+				await host.devices.approvePairing({ pairingId, deviceId, ...grant });
+			return view();
+		},
+		'POST /deny': async () => {
+			for (const { pairingId } of await waiting()) await host.devices.denyPairing({ pairingId });
+			return view();
+		}
+	};
+}
+/** What the control answers: public facts and state. An offer is given once, to who asked for it. */
 function fixtureActions(running: Running, options: RemoteFixtureOptions) {
 	const { host, screen, facts } = running,
 		save = (file: string, value: object) =>
@@ -116,7 +138,7 @@ function fixtureActions(running: Running, options: RemoteFixtureOptions) {
 			);
 	const view = async () => {
 		const { state: reached, pairing, requests, devices } = await host.status(),
-			offer = pairing && { ...pairing, code: undefined };
+			offer = pairing && { ...pairing, code: undefined, scan: undefined };
 		return { ...facts, state: reached, locked: screen.locked ?? null, offer, requests, devices };
 	};
 	const screened = (locked: boolean) => {
@@ -125,11 +147,12 @@ function fixtureActions(running: Running, options: RemoteFixtureOptions) {
 		return view();
 	};
 	const actions: Record<string, FixtureAction> = {
+		...decisions(running, view),
 		'GET /status': view,
 		'POST /pairing': async () => {
 			const offer = await host.devices.createPairing();
-			options.log(`Pairing code ${offer.code} for ${offer.link} (until ${offer.expiresAt}).`);
-			await save('offer.json', { ...offer, code: undefined });
+			options.log(`Pairing offer ${offer.pairingId} is open until ${offer.expiresAt}.`);
+			await save('offer.json', { ...offer, code: undefined, scan: undefined });
 			return offer;
 		},
 		'POST /suspend': () => (host.suspend(), view()),
@@ -156,7 +179,7 @@ export async function startRemoteFixture(options: RemoteFixtureOptions) {
 		project = await remoteFixtureProject(),
 		state = await mkdtemp(join(tmpdir(), 'harness-remote-fixture-state-')),
 		built = await fixtureHost(relay, state, project.root);
-	autoApprove(built.host, built.project.id, options.log);
+	if (options.approval !== 'asked') autoApprove(built.host, built.project.id, options.log);
 	const hostId = await online(built.host),
 		facts = { relayOrigin: relay.origin, hostId, project: built.project },
 		{ actions, save } = fixtureActions({ ...built, facts }, options),

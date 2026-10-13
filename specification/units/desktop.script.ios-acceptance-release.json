@@ -28,12 +28,12 @@
 	},
 	"dependencies": [
 		{
-			"unit": "desktop.script.ios-acceptance-guards",
+			"unit": "desktop.script.ios-acceptance-run",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.script.ios-acceptance-run",
+			"unit": "desktop.script.ios-acceptance-scanning",
 			"via": "import",
 			"origin": "derived"
 		}
