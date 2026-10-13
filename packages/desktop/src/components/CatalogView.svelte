@@ -7,15 +7,6 @@
 	let search = $state('');
 	let sort = $state('title');
 	let changed = $state(false);
-	let creating = $state(false);
-	let title = $state('');
-	let goal = $state('');
-	let error = $state('');
-	let saving = $state(false);
-	let dialog = $state<HTMLDialogElement>();
-	$effect(() => {
-		if (creating && dialog && !dialog.open) dialog.showModal();
-	});
 	const heading = $derived(workspace.category[0].toUpperCase() + workspace.category.slice(1));
 	const entities = $derived(
 		(workspace.snapshot?.entities || [])
@@ -31,26 +22,6 @@
 					: (b.latestVersion || '').localeCompare(a.latestVersion || '')
 			)
 	);
-	async function create() {
-		if (!workspace.bridge || !title.trim() || !goal.trim()) return;
-		saving = true;
-		error = '';
-		try {
-			const entity = await workspace.bridge.createPlan({
-				category: workspace.category,
-				title: title.trim(),
-				goal: goal.trim(),
-				...workspace.context
-			});
-			creating = false;
-			await workspace.refresh();
-			await workspace.navigate(workspace.path(entity.category, entity.id));
-		} catch (cause) {
-			error = String(cause);
-		} finally {
-			saving = false;
-		}
-	}
 </script>
 
 <main class="catalog">
@@ -60,11 +31,6 @@
 			<h1>{heading}</h1>
 			<p>Browse {workspace.category} and understand your project.</p>
 		</div>
-		{#if workspace.capabilities.planning}<button
-				class="outline gold"
-				disabled={!workspace.snapshot?.writable}
-				onclick={() => (creating = true)}>+ New {workspace.category.slice(0, -1)}</button
-			>{/if}
 	</div>
 	<div class="catalog-tools">
 		<input
@@ -84,30 +50,3 @@
 			</p>{/each}
 	</div>
 </main>
-{#if creating}<div class="modal-backdrop">
-		<dialog
-			bind:this={dialog}
-			oncancel={() => (creating = false)}
-			class="modal"
-			aria-modal="true"
-			aria-label="New plan"
-		>
-			<h2>New {workspace.category.slice(0, -1)}</h2>
-			<form
-				onsubmit={(e) => {
-					e.preventDefault();
-					void create();
-				}}
-			>
-				<label>Title<input bind:value={title} required maxlength="160" /></label><label
-					>Goal<textarea bind:value={goal} required rows="4"></textarea></label
-				>{#if error}<p role="alert">{error}</p>{/if}
-				<div class="row">
-					<button type="button" onclick={() => (creating = false)}>Cancel</button><button
-						class="primary"
-						disabled={saving}>Create plan</button
-					>
-				</div>
-			</form>
-		</dialog>
-	</div>{/if}

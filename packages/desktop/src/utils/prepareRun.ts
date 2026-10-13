@@ -6,13 +6,17 @@ import type { RunContext } from '../models/RunContext.types';
 import type { ImageGenerator } from '../models/AgentRunner.types';
 import { RunCancelled } from '../models/AgentRunner.types';
 import { approvalMatch } from './approvalMatch';
-interface Preparation {
+export interface Preparation {
 	session: ProjectSessionService;
 	providers: ProviderDiscoveryService;
 	generator: ImageGenerator;
 	emit: (event: RunEvent) => void;
 }
-async function imageModel(preparation: Preparation, request: RunRequest, category: string) {
+export async function imageModel(
+	preparation: Preparation,
+	request: Pick<RunRequest, 'mode'>,
+	category: string
+) {
 	if (request.mode !== 'plan' || !['pages', 'components'].includes(category)) return '';
 	const state = (await preparation.providers.list()).find((p) => p.id === 'codex');
 	if (!state?.available || !state.imageGeneration)
@@ -51,7 +55,11 @@ export async function prepareRun(
 	await project.planning.appendMessage(messageFor(context, 'user', request.text));
 	return context;
 }
-export function messageFor(context: RunContext, author: 'user' | 'agent', text: string) {
+export function messageFor(
+	context: Pick<RunContext, 'request'>,
+	author: 'user' | 'agent',
+	text: string
+) {
 	const request = context.request,
 		version = request.approval?.version ?? null,
 		imageSha256 = request.approval?.imageHashes[0] ?? null;
@@ -67,7 +75,7 @@ export function messageFor(context: RunContext, author: 'user' | 'agent', text: 
 		imageSha256
 	};
 }
-export async function recordRunFailure(context: RunContext, error: unknown) {
+export async function recordRunFailure(context: Omit<RunContext, 'entity'>, error: unknown) {
 	if (context.failureRecorded) return;
 	await context.session.atBranch(context.revision.branch);
 	const change =

@@ -16,6 +16,7 @@ import type {
 import type {
 	ApprovalInfo,
 	Category,
+	ContractField,
 	DesignImage,
 	EntityDetail,
 	HistoryEvent,
@@ -79,10 +80,18 @@ export interface ImageQuery extends EntityQuery {
 	version: string;
 	sha256: string;
 }
+/** What a new plan is proposed to take, give and refuse; states and viewports are not proposed. */
+export interface ProposedContract {
+	inputs: ContractField[];
+	outputs: ContractField[];
+	errors: string[];
+}
 export interface PlanDraft extends ProjectContext {
 	category: Category;
 	title: string;
 	goal: string;
+	/** A contract that was checked before it came here; without one the plan starts with none. */
+	contract?: ProposedContract;
 }
 export interface ThreadDraft extends ProjectContext {
 	entityId: string;
@@ -116,6 +125,34 @@ export interface RunRequest extends ProjectContext {
 	approval: Omit<ApprovalDraft, 'entityId'> | null;
 }
 
+/** A request for something new. The agent proposes what it is, and a plan is made of that. */
+export interface ProjectRunRequest extends ProjectContext {
+	intent: 'create';
+	/** Always stated: something new is never added to whichever project happens to be open. */
+	projectId: string;
+	/** The catalog the request was made in: a hint for the agent, never a decision. */
+	category: Category;
+	/** A Change implements the approved design of an entity that exists; this is a Plan. */
+	mode: 'plan';
+	provider: ProviderId;
+	/** An identifier the provider itself listed. It is never replaced by another. */
+	model: string;
+	effort: string | null;
+	text: string;
+}
+/**
+ * The plan a creation request became, named so that what asked for it can open it. A run that
+ * failed or was cancelled after a draft was written names that draft too, however far it got.
+ */
+export interface CreatedEntity {
+	category: Category;
+	entityId: string;
+	/** Null while the draft has no thread. */
+	threadId: string | null;
+	/** True once the original request is written in that thread; only then does it stand for it. */
+	requestSaved: boolean;
+}
+
 export type RunPhase = 'queued' | 'prompting' | 'generating' | 'saving' | 'changing' | 'recording';
 
 /**
@@ -127,9 +164,9 @@ export type RunEvent = { runId: string } & (
 	| { kind: 'text'; text: string }
 	| { kind: 'design'; version: string; images: DesignImage[] }
 	| { kind: 'changes'; files: SourceChange[] }
-	| { kind: 'failed'; message: string }
-	| { kind: 'cancelled' }
-	| { kind: 'finished'; summary: string; verified: false }
+	| { kind: 'failed'; message: string; created?: CreatedEntity }
+	| { kind: 'cancelled'; created?: CreatedEntity }
+	| { kind: 'finished'; summary: string; verified: false; created?: CreatedEntity }
 );
 
 /** What the preload script exposes as `window.harness`. Without it a page is a preview. */
@@ -160,7 +197,7 @@ export interface DesktopBridge {
 	messages(input: ThreadQuery): Promise<ThreadMessage[]>;
 	approve(input: ApprovalDraft): Promise<ApprovalInfo>;
 	providers(): Promise<ProviderState[]>;
-	startRun(input: RunRequest): Promise<{ runId: string }>;
+	startRun(input: RunRequest | ProjectRunRequest): Promise<{ runId: string }>;
 	cancelRun(input: { runId: string; projectId?: string }): Promise<boolean>;
 	onRunEvent(listener: (event: RunEvent) => void): () => void;
 }

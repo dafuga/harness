@@ -20,11 +20,12 @@ export async function planningWrites(context: PlanningContext, draft: PlanDraft)
 		title: draft.title,
 		goal: draft.goal,
 		author: reviewer,
+		// A proposed contract is kept as it was authored; its states and viewports are never proposed.
 		contract: {
 			responsibility: draft.goal,
-			inputs: [],
-			outputs: [],
-			errors: [],
+			inputs: draft.contract?.inputs ?? [],
+			outputs: draft.contract?.outputs ?? [],
+			errors: draft.contract?.errors ?? [],
 			states: ['default'],
 			viewports: visual(category) ? ['desktop'] : ['diagram']
 		}

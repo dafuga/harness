@@ -8,11 +8,23 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/prepareRun.ts"],
-		"symbols": ["prepareRun", "messageFor", "recordRunFailure"]
+		"symbols": ["Preparation", "imageModel", "prepareRun", "messageFor", "recordRunFailure"]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "imageModel.preparation",
+				"type": "Preparation"
+			},
+			{
+				"name": "imageModel.request",
+				"type": "Pick<RunRequest, 'mode'>"
+			},
+			{
+				"name": "imageModel.category",
+				"type": "string"
+			},
 			{
 				"name": "prepareRun.preparation",
 				"type": "Preparation"
@@ -27,7 +39,7 @@
 			},
 			{
 				"name": "messageFor.context",
-				"type": "RunContext"
+				"type": "Pick<RunContext, 'request'>"
 			},
 			{
 				"name": "messageFor.author",
@@ -39,7 +51,7 @@
 			},
 			{
 				"name": "recordRunFailure.context",
-				"type": "RunContext"
+				"type": "Omit<RunContext, 'entity'>"
 			},
 			{
 				"name": "recordRunFailure.error",
@@ -47,6 +59,10 @@
 			}
 		],
 		"outputs": [
+			{
+				"name": "imageModel",
+				"type": "unknown"
+			},
 			{
 				"name": "prepareRun",
 				"type": "Promise<RunContext>"

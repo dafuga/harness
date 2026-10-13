@@ -18,11 +18,14 @@
 			"SourceQuery",
 			"SourceFile",
 			"ImageQuery",
+			"ProposedContract",
 			"PlanDraft",
 			"ThreadDraft",
 			"ThreadQuery",
 			"ApprovalDraft",
 			"RunRequest",
+			"ProjectRunRequest",
+			"CreatedEntity",
 			"RunPhase",
 			"RunEvent",
 			"DesktopBridge"
@@ -80,7 +83,7 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs", "desktop-renderer"],
+	"scenarios": ["desktop-native", "desktop-project-runs", "desktop-renderer", "agent-creation"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

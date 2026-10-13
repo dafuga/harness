@@ -6,6 +6,7 @@
 	import type { ThreadInfo } from '../models/Desktop.types';
 	import { evidenceQuery } from '../utils/evidenceQuery';
 	import { evidenceVerdict } from '../utils/evidenceVerdict';
+	import { createdThread } from '../utils/createdThread';
 	import type { ThreadTarget } from '../utils/threadAnchor';
 	import CoveragePanel from './CoveragePanel.svelte';
 	import DesignPanel from './DesignPanel.svelte';
@@ -93,6 +94,8 @@
 	);
 	onMount(() => {
 		if (window.innerWidth <= 850) conversation = false;
+		const created = createdThread(workspace, entity);
+		if (created) select(created);
 	});
 	function select(value: ThreadInfo) {
 		thread = value;

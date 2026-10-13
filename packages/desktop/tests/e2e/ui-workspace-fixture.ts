@@ -123,6 +123,9 @@ function installProject(data: {
 	Object.assign(window, { harness: bridge, __calls: calls });
 }
 
-export async function fakeProject(page: import('@playwright/test').Page) {
-	await page.addInitScript(installProject, { snapshot, item, providers, thread });
+export async function fakeProject(page: import('@playwright/test').Page, identified = false) {
+	const shown = identified
+		? { ...snapshot, project: { ...snapshot.project, id: 'local-' + 'a'.repeat(64) } }
+		: snapshot;
+	await page.addInitScript(installProject, { snapshot: shown, item, providers, thread });
 }

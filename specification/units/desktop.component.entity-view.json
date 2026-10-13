@@ -93,6 +93,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.function.created-thread",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.function.evidence-query",
 			"via": "import",
 			"origin": "derived"
@@ -138,7 +143,7 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-renderer", "shared-test-cases"],
+	"scenarios": ["desktop-native", "desktop-renderer", "shared-test-cases", "agent-creation"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -47,7 +47,7 @@ test('designless Plan preserves truthful status and branch/commit paths', async 
 		.toContain('Create the first Activity design');
 	await page.getByLabel('Commit', { exact: true }).selectOption('b'.repeat(40));
 	await expect(page).toHaveURL(/branch\/feat%2Factivity\/commit\/b{40}\/pages/);
-	await expect(page.getByRole('button', { name: 'New page' })).toBeDisabled();
+	await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toHaveCount(0);
 	await expect(page.getByRole('link', { name: 'Review designs' })).toHaveAttribute(
 		'href',
 		`/harness/branch/feat%2Factivity/commit/${'b'.repeat(40)}/pages/page%3Aactivity/designs`
@@ -59,8 +59,8 @@ test('designless Plan preserves truthful status and branch/commit paths', async 
 	).toHaveAttribute('href', `/harness/branch/feat%2Factivity/commit/${'b'.repeat(40)}/components`);
 });
 
-test('catalog search, changed filter and new plan draft', async ({ page }) => {
-	await fakeProject(page);
+test('catalog search, changed filter and conversational plan request', async ({ page }) => {
+	await fakeProject(page, true);
 	await page.goto('/');
 	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
 	await expect(page.getByRole('heading', { name: 'Overview', exact: true })).toBeVisible();
@@ -68,26 +68,27 @@ test('catalog search, changed filter and new plan draft', async ({ page }) => {
 	await expect(page.getByRole('heading', { name: 'Overview', exact: true })).toHaveCount(0);
 	await page.getByRole('textbox', { name: 'Search pages', exact: true }).fill('missing');
 	await expect(page.getByText('No pages match this view.')).toBeVisible();
-	await page.getByRole('button', { name: 'New page' }).click();
-	await page.getByRole('textbox', { name: 'Title', exact: true }).fill('Activity');
-	await page.getByRole('textbox', { name: 'Goal', exact: true }).fill('Make work visible');
-	await page.getByRole('button', { name: 'Create plan', exact: true }).click();
+	await page.getByRole('button', { name: 'Work with agent', exact: true }).click();
+	await page
+		.getByRole('textbox', { name: 'Message', exact: true })
+		.fill('Add an Activity page to make work visible');
+	await page.getByRole('button', { name: 'Send plan', exact: true }).click();
 	await expect
 		.poll(() =>
 			page.evaluate(() => JSON.stringify((window as unknown as { __calls: unknown[] }).__calls))
 		)
-		.toContain('Make work visible');
+		.toContain('Add an Activity page to make work visible');
 	await expect(page.getByRole('textbox', { name: 'Message', exact: true })).toBeVisible();
 });
 
 test('Go to tip exits both historical and explicitly pinned tip revisions', async ({ page }) => {
-	await fakeProject(page);
+	await fakeProject(page, true);
 	await page.goto('/');
 	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
 	for (const commit of ['b'.repeat(40), 'a'.repeat(40)]) {
 		await page.getByLabel('Commit', { exact: true }).selectOption(commit);
 		await expect(page).toHaveURL(new RegExp(`/commit/${commit}/pages$`));
-		await expect(page.getByRole('button', { name: 'New page' })).toBeDisabled();
+		await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toHaveCount(0);
 		if (process.env.TAKE_SCREENSHOT === 'true') {
 			await page.evaluate(() => document.fonts.ready);
 			await page.mouse.move(0, 0);
@@ -98,7 +99,7 @@ test('Go to tip exits both historical and explicitly pinned tip revisions', asyn
 		await page.getByRole('button', { name: 'Go to tip', exact: true }).click();
 		await expect(page).toHaveURL(/\/harness\/branch\/feat%2Factivity\/pages$/);
 		await expect(page.getByLabel('Commit', { exact: true })).toHaveValue('a'.repeat(40));
-		await expect(page.getByRole('button', { name: 'New page' })).toBeEnabled();
+		await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toBeEnabled();
 		if (process.env.TAKE_SCREENSHOT === 'true') {
 			await page.evaluate(() => document.fonts.ready);
 			await page.mouse.move(0, 0);

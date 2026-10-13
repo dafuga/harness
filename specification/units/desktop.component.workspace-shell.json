@@ -47,6 +47,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.component.project-agent",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.component.status-bar",
 			"via": "import",
 			"origin": "derived"
@@ -67,7 +72,7 @@
 			}
 		]
 	},
-	"scenarios": ["shared-test-cases"],
+	"scenarios": ["shared-test-cases", "agent-creation"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

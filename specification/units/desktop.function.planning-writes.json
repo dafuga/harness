@@ -136,7 +136,7 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"scenarios": ["desktop-native", "desktop-project-runs", "agent-creation"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

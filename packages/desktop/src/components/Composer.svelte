@@ -8,6 +8,7 @@
 		approved,
 		running,
 		notice = '',
+		placeholder = '',
 		comment,
 		send
 	}: {
@@ -17,6 +18,8 @@
 		approved: boolean;
 		running: boolean;
 		notice?: string;
+		/** What an agent request is asked to describe here, where it is not the next design. */
+		placeholder?: string;
 		comment: (text: string) => Promise<boolean>;
 		send: (request: RunDraft) => Promise<boolean>;
 	} = $props();
@@ -49,7 +52,7 @@
 >
 	<textarea
 		aria-label="Message"
-		placeholder={request ? 'Describe the next design…' : 'Leave a comment…'}
+		placeholder={request ? placeholder || 'Describe the next design…' : 'Leave a comment…'}
 		bind:value={text}
 		rows="3"
 		disabled={!mode || running}

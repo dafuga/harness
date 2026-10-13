@@ -64,7 +64,7 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-renderer"],
+	"scenarios": ["desktop-native", "desktop-renderer", "agent-creation"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

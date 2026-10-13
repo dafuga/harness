@@ -1,0 +1,94 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.prepare-project-run",
+	"kind": "function",
+	"title": "prepareProjectRun",
+	"responsibility": "Owns the prepareProjectRun shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/prepareProjectRun.ts"],
+		"symbols": ["ProjectRunContext", "prepareProjectRun"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "prepareProjectRun.preparation",
+				"type": "Preparation"
+			},
+			{
+				"name": "prepareProjectRun.request",
+				"type": "ProjectRunRequest"
+			},
+			{
+				"name": "prepareProjectRun.controller",
+				"type": "AbortController"
+			}
+		],
+		"outputs": [
+			{
+				"name": "prepareProjectRun",
+				"type": "Promise<ProjectRunContext>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			},
+			{
+				"name": "RunCancelled",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.ipc-payload",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.prepare-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.agent-runner-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.run-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.project-session",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/prepareProjectRun.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/prepareProjectRun.ts"
+			}
+		]
+	},
+	"scenarios": ["agent-creation"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

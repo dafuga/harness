@@ -37,7 +37,7 @@
 			},
 			{
 				"name": "DesktopRunService.start.request",
-				"type": "RunRequest"
+				"type": "RunRequest | ProjectRunRequest"
 			},
 			{
 				"name": "DesktopRunService.cancel.runId",
@@ -66,6 +66,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.function.prepare-project-run",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.function.prepare-run",
 			"via": "import",
@@ -97,6 +102,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.service.project-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.service.project-session",
 			"via": "import",
 			"origin": "derived"
@@ -117,7 +127,12 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs", "remote-desktop-boundaries"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-project-runs",
+		"remote-desktop-boundaries",
+		"agent-creation"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

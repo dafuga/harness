@@ -1,0 +1,62 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.project-agent",
+	"kind": "component",
+	"title": "ProjectAgent",
+	"responsibility": "Owns the ProjectAgent Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/ProjectAgent.svelte"],
+		"symbols": ["ProjectAgent"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ProjectAgent.workspace",
+				"type": "Workspace"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ProjectAgent",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.composer",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.project-agent",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/ProjectAgent.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/ProjectAgent.svelte"
+			}
+		]
+	},
+	"scenarios": ["agent-creation"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

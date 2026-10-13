@@ -8,6 +8,7 @@ import { join, resolve, isAbsolute } from 'node:path';
 import { createRequire } from 'node:module';
 import { createPlanning } from '../../../planning/src/index';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
+import { PlanningFacadeAdapter } from '../../src/adapters/PlanningFacadeAdapter';
 
 const desktopRoot = resolve(import.meta.dirname, '../..');
 const electronBinary = createRequire(import.meta.url)('electron') as string;
@@ -66,15 +67,20 @@ async function isolation(app: ElectronApplication, page: Page) {
 		)
 	).toBe('function');
 }
-async function createThroughUi(page: Page, root: string) {
+/** Seed the review fixture through the real facade; creation now belongs to the agent flow. */
+async function openDraftThroughUi(page: Page, root: string) {
+	await (
+		await PlanningFacadeAdapter.open(root)
+	).createPlan({
+		category: 'pages',
+		title: 'Native activity',
+		goal: 'Review committed images through the native bridge.'
+	});
 	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
 	await expect(page.getByLabel('Branch', { exact: true })).toHaveValue('feat/native');
-	await page.getByRole('button', { name: 'New page' }).click();
-	await page.getByRole('textbox', { name: 'Title', exact: true }).fill('Native activity');
-	await page
-		.getByRole('textbox', { name: 'Goal', exact: true })
-		.fill('Review committed images through the native bridge.');
-	await page.getByRole('button', { name: 'Create plan', exact: true }).click();
+	await expect(page.getByRole('button', { name: 'New page' })).toHaveCount(0);
+	await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toBeVisible();
+	await page.getByRole('link', { name: 'Review designs →', exact: true }).click();
 	const sections = page.getByRole('navigation', { name: 'Entity sections' });
 	await sections.getByRole('button', { name: 'Designs', exact: true }).click();
 	await capture(page, 'draft');
@@ -134,7 +140,7 @@ async function committedImage(page: Page, root: string, unitId: string) {
 async function historical(page: Page, commit: string) {
 	await page.getByLabel('Commit', { exact: true }).selectOption(commit);
 	await expect(page).toHaveURL(new RegExp(`/branch/feat%2Fnative/commit/${commit}/pages$`));
-	await expect(page.getByRole('button', { name: 'New page' })).toBeDisabled();
+	await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toHaveCount(0);
 	await page.getByRole('link', { name: 'Review designs' }).click();
 	await capture(page, 'history');
 	await expect(page.getByRole('button', { name: 'Approve v001', exact: true })).toBeDisabled();
@@ -201,7 +207,7 @@ test('native isolated window uses real Git LFS planning and rejects historical w
 		const page = await app.firstWindow();
 		await page.waitForLoadState('domcontentloaded');
 		await isolation(app, page);
-		const unitId = await createThroughUi(page, root);
+		const unitId = await openDraftThroughUi(page, root);
 		const imageCommit = await committedImage(page, root, unitId);
 		await historical(page, imageCommit);
 		await blockedNavigation(app, page);

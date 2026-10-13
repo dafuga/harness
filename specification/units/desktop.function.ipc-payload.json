@@ -8,7 +8,14 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/ipcPayload.ts"],
-		"symbols": ["approvalPayload", "threadPayload", "runPayload", "ipcPayload"]
+		"symbols": [
+			"approvalPayload",
+			"threadPayload",
+			"creationProject",
+			"creationPayload",
+			"runPayload",
+			"ipcPayload"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -19,6 +26,14 @@
 			},
 			{
 				"name": "threadPayload.x",
+				"type": "Record<string, unknown>"
+			},
+			{
+				"name": "creationProject.value",
+				"type": "unknown"
+			},
+			{
+				"name": "creationPayload.x",
 				"type": "Record<string, unknown>"
 			},
 			{
@@ -41,6 +56,14 @@
 			},
 			{
 				"name": "threadPayload",
+				"type": "unknown"
+			},
+			{
+				"name": "creationProject",
+				"type": "string"
+			},
+			{
+				"name": "creationPayload",
 				"type": "unknown"
 			},
 			{
@@ -86,7 +109,7 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"scenarios": ["desktop-native", "desktop-project-runs", "agent-creation"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

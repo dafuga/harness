@@ -39,7 +39,31 @@ export function threadPayload(x: Record<string, unknown>) {
 		region
 	};
 }
+/** A project as this computer or the hub names one; nothing else names a project to add to. */
+const project = /^(?:local-[a-f0-9]{64}|[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12})$/i;
+export function creationProject(value: unknown): string {
+	if (typeof value !== 'string' || !project.test(value))
+		throw new Error('A creation request names its project.');
+	return value;
+}
+const creation = ['intent', 'category', 'mode', 'provider', 'model', 'effort', 'text', 'projectId'];
+/** A request for something new: a Plan with a catalog as its hint, and no entity of its own. */
+export function creationPayload(x: Record<string, unknown>) {
+	if (Object.keys(x).some((key) => !creation.includes(key)))
+		throw new Error('A creation request names no entity, thread or approval.');
+	return {
+		intent: enumField(x.intent, ['create']),
+		projectId: creationProject(x.projectId),
+		category: enumField(x.category, categories),
+		mode: enumField(x.mode, ['plan']),
+		provider: enumField(x.provider, ['codex', 'claude']),
+		model: textField(x.model),
+		effort: nullableText(x.effort),
+		text: textField(x.text, 20000)
+	};
+}
 export function runPayload(x: Record<string, unknown>) {
+	if (x.intent !== undefined) return creationPayload(x);
 	const mode = enumField(x.mode, ['plan', 'change']);
 	const approval = x.approval === null ? null : approvalPayload(x.approval);
 	if (mode === 'change' && !approval) throw new Error('A Change request needs an approved design.');

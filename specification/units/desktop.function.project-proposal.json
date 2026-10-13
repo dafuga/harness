@@ -1,0 +1,65 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.project-proposal",
+	"kind": "function",
+	"title": "projectProposal",
+	"responsibility": "Owns the projectProposal shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/projectProposal.ts"],
+		"symbols": ["ProjectProposal", "projectProposal", "proposalPrompt"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "projectProposal.answer",
+				"type": "string"
+			},
+			{
+				"name": "proposalPrompt.request",
+				"type": "Pick<ProjectRunRequest, 'category' | 'text'>"
+			}
+		],
+		"outputs": [
+			{
+				"name": "projectProposal",
+				"type": "ProjectProposal"
+			},
+			{
+				"name": "proposalPrompt",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/projectProposal.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/projectProposal.ts"
+			}
+		]
+	},
+	"scenarios": ["agent-creation"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
