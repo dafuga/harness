@@ -104,6 +104,144 @@
 			"specifier": "$desktop/utils/workspaceRoute",
 			"to": "packages/desktop/src/utils/workspaceRoute.ts",
 			"reason": "The hub's build alias $desktop is packages/desktop/src: the Web workspace reads the same workspace addresses."
+		},
+		{
+			"from": "packages/hub/src/components/EmailProofPanel.svelte",
+			"specifier": "$desktop/utils/timeLabel",
+			"to": "packages/desktop/src/utils/timeLabel.ts",
+			"reason": "The hub's build alias $desktop is packages/desktop/src: the proof panel imports timeLabel from this file."
+		},
+		{
+			"from": "packages/hub/src/routes/+layout.svelte",
+			"specifier": "$desktop/lib/styles/workspace.css",
+			"to": "packages/desktop/src/lib/styles/workspace.css",
+			"reason": "The hub's build alias $desktop is packages/desktop/src: the hub layout loads this workspace style sheet."
+		},
+		{
+			"from": "packages/hub/src/routes/+layout.svelte",
+			"specifier": "$desktop/lib/styles/design.css",
+			"to": "packages/desktop/src/lib/styles/design.css",
+			"reason": "The hub's build alias $desktop is packages/desktop/src: the hub layout loads this design style sheet."
+		},
+		{
+			"from": "packages/hub/src/utils/browserApi.ts",
+			"specifier": "$desktop/utils/hostedResponse",
+			"to": "packages/desktop/src/utils/hostedResponse.ts",
+			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser API imports hostedResponse from this file."
+		},
+		{
+			"from": "packages/hub/src/utils/browserApi.ts",
+			"specifier": "$desktop/utils/artifactMedia",
+			"to": "packages/desktop/src/utils/artifactMedia.ts",
+			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser API imports artifactLimit from this file."
+		},
+		{
+			"from": "packages/hub/src/utils/browserArtifact.ts",
+			"specifier": "$desktop/utils/remoteArtifact",
+			"to": "packages/desktop/src/utils/remoteArtifact.ts",
+			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser artifact reader imports artifactMediaTypes from this file."
+		},
+		{
+			"from": "packages/hub/src/utils/browserArtifact.ts",
+			"specifier": "$desktop/utils/hostedArtifact",
+			"to": "packages/desktop/src/utils/hostedArtifact.ts",
+			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser artifact reader imports hostedArtifact from this file."
+		},
+		{
+			"from": "packages/hub/src/utils/browserBridge.ts",
+			"specifier": "$desktop/models/DesktopBridge.types",
+			"to": "packages/desktop/src/models/DesktopBridge.types.ts",
+			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser bridge is typed by DesktopBridge and SourceFile from this file."
+		},
+		{
+			"from": "packages/hub/src/utils/browserBridge.ts",
+			"specifier": "$desktop/models/Desktop.types",
+			"to": "packages/desktop/src/models/Desktop.types.ts",
+			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser bridge is typed by EntityDetail and ProjectSnapshot from this file."
+		},
+		{
+			"from": "packages/hub/src/utils/browserBridge.ts",
+			"specifier": "$desktop/models/ProjectContext.types",
+			"to": "packages/desktop/src/models/ProjectContext.types.ts",
+			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser bridge is typed by the project context types of this file."
+		},
+		{
+			"from": "packages/hub/src/utils/browserBridge.ts",
+			"specifier": "$desktop/utils/commentEntries",
+			"to": "packages/desktop/src/utils/commentEntries.ts",
+			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser bridge imports commentEntries from this file."
+		},
+		{
+			"from": "packages/hub/src/utils/browserEvidenceReads.ts",
+			"specifier": "$desktop/utils/evidencePayload",
+			"to": "packages/desktop/src/utils/evidencePayload.ts",
+			"reason": "The hub's build alias $desktop is packages/desktop/src: the evidence reads import evidencePayload from this file."
+		},
+		{
+			"from": "packages/hub/src/utils/browserEvidenceReads.ts",
+			"specifier": "$desktop/models/DesktopEvidence.types",
+			"to": "packages/desktop/src/models/DesktopEvidence.types.ts",
+			"reason": "The hub's build alias $desktop is packages/desktop/src: the evidence reads are typed by EntityEvidenceResult from this file."
+		},
+		{
+			"from": "packages/hub/src/utils/browserEvidenceReads.ts",
+			"specifier": "$desktop/models/DesktopBridge.types",
+			"to": "packages/desktop/src/models/DesktopBridge.types.ts",
+			"reason": "The hub's build alias $desktop is packages/desktop/src: the evidence reads are typed by DesktopBridge from this file."
+		},
+		{
+			"from": "packages/hub/src/utils/browserEvidenceReads.ts",
+			"specifier": "$desktop/models/ProjectContext.types",
+			"to": "packages/desktop/src/models/ProjectContext.types.ts",
+			"reason": "The hub's build alias $desktop is packages/desktop/src: the evidence reads are typed by ProjectContext from this file."
+		},
+		{
+			"from": "packages/desktop/src/components/AgentControls.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "The desktop's build alias $shared is packages/reports/src/components: the agent controls render the Select of the reports package."
+		},
+		{
+			"from": "packages/desktop/src/components/CatalogView.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "The desktop's build alias $shared is packages/reports/src/components: the catalog view renders the Select of the reports package."
+		},
+		{
+			"from": "packages/desktop/src/components/DesignPanel.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "The desktop's build alias $shared is packages/reports/src/components: the design panel renders the Select of the reports package."
+		},
+		{
+			"from": "packages/desktop/src/components/ProjectSwitcher.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "The desktop's build alias $shared is packages/reports/src/components: the project switcher renders the Select of the reports package."
+		},
+		{
+			"from": "packages/desktop/src/components/RevisionPicker.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "The desktop's build alias $shared is packages/reports/src/components: the revision picker renders the Select of the reports package."
+		},
+		{
+			"from": "packages/desktop/src/components/RuntimeScreens.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "The desktop's build alias $shared is packages/reports/src/components: the runtime screens render the Select of the reports package."
+		},
+		{
+			"from": "packages/hub/src/components/InvitationForm.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "The hub's build alias $shared is packages/reports/src/components: the invitation form renders the Select of the reports package."
+		},
+		{
+			"from": "packages/hub/src/components/ProjectCreate.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "The hub's build alias $shared is packages/reports/src/components: the project form renders the Select of the reports package."
 		}
 	]
 }

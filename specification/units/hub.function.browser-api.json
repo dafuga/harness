@@ -37,6 +37,16 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.function.artifact-media",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.hosted-response",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.function.browser-error",
 			"via": "import",
 			"origin": "derived"

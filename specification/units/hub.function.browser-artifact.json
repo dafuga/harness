@@ -35,7 +35,18 @@
 			}
 		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "desktop.function.hosted-artifact",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.remote-artifact",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/hub/src/utils/browserArtifact.ts",
