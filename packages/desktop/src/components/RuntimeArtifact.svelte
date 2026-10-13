@@ -18,7 +18,7 @@
 		lost: boolean;
 		/** What the backend said when it gave no bytes for this result. */
 		refusal?: string;
-		/** The function this result is shown for: its inputs and observed outputs are rows. */
+		/** The function this result is shown for: only its own calls are rows. */
 		unit?: string;
 	} = $props();
 	/** What a person reads at once; a longer result is shortened and says so. */
@@ -28,6 +28,8 @@
 		return whole.length > most ? `${whole.slice(0, most)}\n… (shortened)` : whole;
 	};
 	const run = $derived(cell.read?.verified ? cell.read.behavior : null);
+	/** Whether the recorded text was asked for: it is drawn only then, and never twice at once. */
+	let asked = $state(false);
 	const facts = (stated: ExplorerArtifactBehavior) =>
 		[
 			['Scenario', stated.scenario],
@@ -37,7 +39,7 @@
 	const unverified = 'It could not be read and checked against its hash.';
 </script>
 
-{#snippet recorded(stated: ExplorerArtifactBehavior, pair: boolean)}
+{#snippet recorded(stated: ExplorerArtifactBehavior)}
 	{#if facts(stated).length}<dl class="runtime-facts">
 			{#each facts(stated) as [name, value] (name)}<dt>{name}</dt>
 				<dd>{value}</dd>{/each}
@@ -46,10 +48,6 @@
 		<ol>
 			{#each stated.steps as step, position (position)}<li>{text(step)}</li>{/each}
 		</ol>{/if}
-	{#if pair && stated.input !== undefined}<h5>Input</h5>
-		<pre>{text(stated.input)}</pre>{/if}
-	{#if pair && stated.output !== undefined}<h5>Actual output</h5>
-		<pre>{text(stated.output)}</pre>{/if}
 	{#if stated.assertions.length}<h5>Assertions</h5>
 		<ul class="runtime-checks">
 			{#each stated.assertions as item, position (position)}<li>
@@ -84,13 +82,18 @@
 					>{refusal ?? cell.read?.problem ?? unverified}</span
 				>
 			</p>
-		{:else if unit !== undefined}
-			<!-- A function is shown by its rows; what else was recorded stays behind a disclosure. -->
-			<EntityCases document={cell.read.document} {unit} />
+		{:else}
+			<!-- A result is shown by its rows; what else was recorded stays behind a disclosure. -->
+			<EntityCases document={cell.read.document} {unit} callable={unit !== undefined} />
 			<details>
 				<summary>Assertions and recorded result</summary>
-				{#if run}{@render recorded(run, false)}{:else}<pre>{text(cell.read.text)}</pre>{/if}
+				{#if run}{@render recorded(run)}{/if}
+				{#if cell.read.document === null}<pre>{text(cell.read.text)}</pre>{:else}
+					<!-- All that was read and checked, as it was recorded: a field no row shows is here. -->
+					<details bind:open={asked}>
+						<summary>Recorded JSON</summary>
+						{#if asked}<pre>{text(cell.read.text)}</pre>{/if}
+					</details>{/if}
 			</details>
-		{:else if run}{@render recorded(run, true)}
-		{:else}<pre>{text(cell.read.text)}</pre>{/if}
+		{/if}
 	</div>{/if}

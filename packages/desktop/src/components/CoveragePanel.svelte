@@ -6,12 +6,14 @@
 	import type { EntityEvidence } from '../lib/stores/entityEvidence.svelte';
 	import type { EntityDetail } from '../models/Desktop.types';
 	import { evidenceNotice } from '../utils/evidenceNotice';
+	import RuntimeBehavior from './RuntimeBehavior.svelte';
 	import StatusIcon from './StatusIcon.svelte';
 	let { entity, evidence }: { entity: EntityDetail; evidence: EntityEvidence } = $props();
 	const short = (commit: string) => commit.slice(0, 7);
 	const notice = $derived(evidenceNotice(evidence.status, evidence.error, entity.kind));
+	const result = $derived(evidence.status === 'ready' ? evidence.result : null);
 	/** The shown revision as the one record that judges it stands; nothing is judged here. */
-	const side = $derived(evidence.status === 'ready' ? evidence.result?.evidence.after : null);
+	const side = $derived(result?.evidence.after);
 	const mark = (standing: CoverageStanding) => (standing === 'passed' ? 'verified' : 'failed');
 	const told = (standing: string, reasons: string[]) =>
 		[standing, reasons.filter(Boolean).join(' ')].filter(Boolean).join(': ');
@@ -64,4 +66,13 @@
 					</tbody>
 				</table>
 			</article>{/each}{/if}
+	<!-- What the tests were given and what they observed, as the overview shows it; never made up. -->
+	{#if !notice && result}{#if result.behavior.rows.length}<RuntimeBehavior
+				{result}
+				{evidence}
+				unit={entity.category === 'functions' ? entity.id : undefined}
+			/>{:else}<p class="empty">
+				No test recorded an input and an observed output for this entity at
+				{short(result.scope.commit)}.
+			</p>{/if}{/if}
 </section>

@@ -2,6 +2,7 @@ import { hostedVerificationScopes } from './hosted-verification-scopes';
 import { functionVerificationScopes } from './function-verification-scopes';
 import { recordedEvidenceScopes } from './recorded-evidence-scopes';
 import { remoteVerificationScopes } from './remote-verification-scopes';
+import { sharedCaseVerificationScopes } from './shared-case-verification-scopes';
 
 export interface VerificationTarget {
 	scenario: string;
@@ -21,6 +22,7 @@ const scopes: Record<string, VerificationScope> = {
 	...recordedEvidenceScopes,
 	...hostedVerificationScopes,
 	...functionVerificationScopes,
+	...sharedCaseVerificationScopes,
 	'runtime-evidence-ui': {
 		package: 'desktop',
 		vitest: {},

@@ -3,8 +3,8 @@
 	"id": "reports.component.entity-cases",
 	"kind": "component",
 	"title": "EntityCases",
-	"responsibility": "Owns the EntityCases Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Shows recorded test inputs beside their observed outputs or errors, with explicit gaps, in every Harness viewer.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/components/EntityCases.svelte"],
@@ -20,6 +20,10 @@
 			{
 				"name": "EntityCases.unit",
 				"type": "string"
+			},
+			{
+				"name": "EntityCases.callable",
+				"type": "boolean"
 			}
 		],
 		"outputs": [
@@ -47,7 +51,7 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-renderer", "harness-console"],
+	"scenarios": ["desktop-renderer", "harness-console", "shared-test-cases"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

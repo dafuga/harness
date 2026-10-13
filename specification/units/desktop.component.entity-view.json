@@ -138,7 +138,7 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-renderer"],
+	"scenarios": ["desktop-native", "desktop-renderer", "shared-test-cases"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

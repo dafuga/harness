@@ -51,7 +51,7 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-renderer", "harness-console"],
+	"scenarios": ["desktop-renderer", "harness-console", "shared-test-cases"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

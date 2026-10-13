@@ -2,10 +2,11 @@ import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
 import EntityBehavior from '../../src/components/harness/EntityBehavior.svelte';
 import { explorerReading } from '../../src/utils/explorerReading';
+import { flat, rows } from '../artifactCaseDocs';
 import { servedArtifacts } from '../entityArtifacts';
 import { record, revision } from '../entityFixture';
 import { answers, nav, place, view, type View } from '../entityPlaces';
-import { count, words } from '../entityRender';
+import { count, disclosed, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';
 
 const filter = { category: 'functions' as const, entity: ids.filter };
@@ -29,21 +30,32 @@ test('nothing is called unchanged before the results were read, and nothing cras
 	expect(words(bare)).toContain('No end-to-end result is recorded for this entity at ccccccc.');
 });
 
-test('both sides show what their run did at once: steps, input, output and assertions', async () => {
+test('both sides show what their run was given and observed as rows, and its steps and assertions on request', async () => {
 	const at = view('commit');
 	const body = await panel(at, servedArtifacts([at.head, at.parent!]));
 	expect(words(body)).toContain('Behavior unchanged');
-	for (const side of ['Before · aaaaaaa', 'After · bbbbbbb']) {
-		const pane = body.slice(body.indexOf(`aria-label="${side}"`));
-		expect(words(pane)).toContain('Open the orders page');
+	const sides = ['Before · aaaaaaa', 'After · bbbbbbb'];
+	const from = (side: string) => body.indexOf(`aria-label="${side}"`);
+	const said = (value: unknown) => flat(JSON.stringify(value));
+	for (const [position, side] of sides.entries()) {
+		const pane = body.slice(from(side), position === 0 ? from(sides[1]) : undefined);
+		// The input and what was observed for it are a row that is read at once, on each side.
+		expect(rows(pane)).toEqual([
+			['Case', 'Input', 'Observedoutput'],
+			['Testobservation', said({ searchText: 'SERVICE' }), said(['Order 1042 · Service call'])]
+		]);
 		expect(words(pane)).toContain('"searchText": "SERVICE"');
 		expect(words(pane)).toContain('Order 1042 · Service call');
-		expect(words(pane)).toContain('Matching order is listed');
+		expect(words(pane)).not.toContain('Actual output');
+		// What else the run recorded is under one disclosure of that side, named for what it holds.
+		expect(pane).toContain('<summary>Assertions and recorded result</summary>');
+		expect(disclosed(pane)).toContain('Open the orders page');
+		expect(disclosed(pane)).toContain('Matching order is listed');
+		// A structured step stays structured, and what an assertion expected is beside it.
+		expect(disclosed(pane)).toContain('"action": "search"');
+		expect(disclosed(pane)).toContain('"expected": 12');
 	}
-	// A structured step stays structured, and what an assertion expected is beside it.
-	expect(words(body)).toContain('"action": "search"');
-	expect(words(body)).toContain('"expected": 12');
-	// Nothing has to be pressed to see any of it.
+	// The rows need nothing pressed, and no button loads anything.
 	expect(count(body, /<button[^>]*>\s*(Show|Load|Open)\b/g)).toBe(0);
 	expect(words(body)).not.toContain('Reading what it holds…');
 });
