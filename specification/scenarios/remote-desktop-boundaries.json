@@ -169,6 +169,14 @@
 			"timeoutMs": 240000
 		},
 		{
+			"id": "local-teardown",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/local-transport-teardown.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 120000
+		},
+		{
 			"id": "host-authority",
 			"kind": "integration",
 			"runner": "command",

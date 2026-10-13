@@ -71,6 +71,17 @@ export const remoteVerificationScopes: Record<string, VerificationScope> = {
 					'local-socket',
 				'the control port travels over the same socket, with exactly what the page gave':
 					'local-socket'
+			},
+			'test/local-transport-teardown.test.ts': {
+				'a page socket whose handshake is never answered is still connecting when its test ends':
+					'local-socket',
+				'the teardown of that test cancelled the socket and told its page that the backend is gone':
+					'local-socket',
+				'the teardown returns only once the socket it cancelled has closed': 'local-socket',
+				'an error the teardown did not cause is thrown by it, once the socket has closed':
+					'local-socket',
+				'the same error raised before the teardown is not its doing, and is thrown as well':
+					'local-socket'
 			}
 		},
 		playwright: {}
