@@ -1,0 +1,15 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz[39m
+
+ [32m✓[39m test/activity-project.e2e.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 10275[2mms[22m[39m
+   [33m[2m✓[22m[39m it names the repository and how often each loop type was used and finished [33m 437[2mms[22m[39m
+   [33m[2m✓[22m[39m recent work is the commits, newest first, with their branch, components and noted reasons [33m 1316[2mms[22m[39m
+   [33m[2m✓[22m[39m each changed file is listed once, at its latest commit, with the components that own it [33m 445[2mms[22m[39m
+   [33m[2m✓[22m[39m what is not committed is told apart, for each checkout, and never listed as committed work [33m 438[2mms[22m[39m
+   [33m[2m✓[22m[39m a working agent is shown with its checkout and the components it says it works on [33m 1678[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m5 passed[39m[22m[90m (5)[39m
+[2m   Start at [22m 15:53:52
+[2m   Duration [22m 10.62s[2m (transform 80ms, setup 25ms, collect 63ms, tests 10.27s, environment 0ms, prepare 80ms)[22m
+

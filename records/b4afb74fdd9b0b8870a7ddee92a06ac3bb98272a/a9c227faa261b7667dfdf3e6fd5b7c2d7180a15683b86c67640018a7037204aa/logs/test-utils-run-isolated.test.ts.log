@@ -1,0 +1,13 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz[39m
+
+ [32m✓[39m test/utils/run-isolated.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 7764[2mms[22m[39m
+   [33m[2m✓[22m[39m a command that ignores termination is still stopped at its limit [33m 868[2mms[22m[39m
+   [33m[2m✓[22m[39m children of a timed-out or finished command are torn down with it [33m 2460[2mms[22m[39m
+   [33m[2m✓[22m[39m a process that left the group of a finished command is stopped and reported, never left running [33m 4092[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m5 passed[39m[22m[90m (5)[39m
+[2m   Start at [22m 16:12:57
+[2m   Duration [22m 8.10s[2m (transform 59ms, setup 22ms, collect 45ms, tests 7.76s, environment 0ms, prepare 63ms)[22m
+

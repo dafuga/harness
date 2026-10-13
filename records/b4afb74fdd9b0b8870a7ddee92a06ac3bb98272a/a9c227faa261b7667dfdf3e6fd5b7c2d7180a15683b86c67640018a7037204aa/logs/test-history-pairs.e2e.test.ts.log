@@ -1,0 +1,15 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz[39m
+
+ [32m✓[39m test/history-pairs.e2e.test.ts [2m([22m[2m7 tests[22m[2m)[22m[33m 8464[2mms[22m[39m
+   [33m[2m✓[22m[39m two commits apart on one branch the stored sides give what the impact command gives [33m 536[2mms[22m[39m
+   [33m[2m✓[22m[39m across a change that was reverted the stored sides give what the impact command gives [33m 514[2mms[22m[39m
+   [33m[2m✓[22m[39m between diverged branches the stored sides give what the impact command gives [33m 513[2mms[22m[39m
+   [33m[2m✓[22m[39m between the same change made on two branches the stored sides give what the impact command gives [33m 523[2mms[22m[39m
+   [33m[2m✓[22m[39m backwards, from a later commit to an earlier one the stored sides give what the impact command gives [33m 533[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m7 passed[39m[22m[90m (7)[39m
+[2m   Start at [22m 16:03:46
+[2m   Duration [22m 8.96s[2m (transform 146ms, setup 24ms, collect 200ms, tests 8.46s, environment 0ms, prepare 87ms)[22m
+

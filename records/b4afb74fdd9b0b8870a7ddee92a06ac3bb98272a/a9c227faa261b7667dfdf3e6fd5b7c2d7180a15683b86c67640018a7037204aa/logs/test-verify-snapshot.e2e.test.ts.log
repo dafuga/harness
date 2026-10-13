@@ -1,0 +1,15 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz[39m
+
+ [32m✓[39m test/verify-snapshot.e2e.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 29272[2mms[22m[39m
+   [33m[2m✓[22m[39m a check that adds a new source file fails the snapshot gate and keeps its record [33m 8708[2mms[22m[39m
+   [33m[2m✓[22m[39m removing or renaming tracked source fails the snapshot gate [33m 4413[2mms[22m[39m
+   [33m[2m✓[22m[39m a file that one check adds and a later check removes is still caught [33m 2185[2mms[22m[39m
+   [33m[2m✓[22m[39m a declared output may be written, and nothing else may be [33m 7385[2mms[22m[39m
+   [33m[2m✓[22m[39m an output declaration cannot cover tracked source [33m 1740[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m5 passed[39m[22m[90m (5)[39m
+[2m   Start at [22m 16:15:08
+[2m   Duration [22m 29.63s[2m (transform 92ms, setup 26ms, collect 68ms, tests 29.27s, environment 0ms, prepare 85ms)[22m
+

@@ -1,0 +1,14 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz[39m
+
+ [32m✓[39m test/budget-comparability.e2e.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 32763[2mms[22m[39m
+   [33m[2m✓[22m[39m a measurement reported in another unit is incompatible, whatever its number [33m 4971[2mms[22m[39m
+   [33m[2m✓[22m[39m a generic capture needs an explicit valid context: a label, a method or a request alone does not compare [33m 9381[2mms[22m[39m
+   [33m[2m✓[22m[39m the same workload name with a cheaper request is incompatible until a reviewer approves the new definition [33m 5835[2mms[22m[39m
+   [33m[2m✓[22m[39m fewer samples under the same workload name are incompatible too [33m 2700[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m   Start at [22m 15:55:11
+[2m   Duration [22m 33.12s[2m (transform 92ms, setup 24ms, collect 76ms, tests 32.76s, environment 0ms, prepare 85ms)[22m
+
