@@ -46,6 +46,7 @@ test('a function at its branch tip shows the one run that was recorded, with wha
 	await expect(output.getByText('"searchText": "SERVICE"')).toBeVisible();
 	await expect(output.getByText('Order 1042 · Service call')).toBeVisible();
 	await expect(output.getByText('Order 1077 · Service plan')).toBeVisible();
+	await output.getByText('Assertions and recorded result').click();
 	await expect(output.getByText('Matching order is listed')).toBeVisible();
 	await expect(shown.getByText(/Before ·|After ·/)).toHaveCount(0);
 	await expect(shown.getByRole('heading', { name: /screenshot/i })).toHaveCount(0);

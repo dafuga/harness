@@ -13,6 +13,8 @@
 		version: string;
 		select: (version: string) => void;
 	} = $props();
+	/** A function has plans and no design: no picture of a version is asked for. */
+	const headless = $derived(entity.category === 'functions');
 </script>
 
 <details class="thread-history">
@@ -25,12 +27,14 @@
 	{#each entity.versions as item (item.version)}<button
 			class:active={version === item.version}
 			onclick={() => select(item.version)}
-			>{#if item.images[0]}<ImageThumbnail
+			>{#if item.images[0] && !headless}<ImageThumbnail
 					{workspace}
 					entityId={entity.id}
 					version={item.version}
 					sha256={item.images[0].sha256}
 					title={`${entity.title} ${item.version}`}
-				/>{/if}{item.version}<small>{item.approval ? 'Approved' : 'Design'}</small></button
+				/>{/if}{item.version}<small
+				>{item.approval ? 'Approved' : headless ? 'Plan' : 'Design'}</small
+			></button
 		>{/each}
 </div>

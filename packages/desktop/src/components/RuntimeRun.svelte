@@ -8,7 +8,8 @@
 		title,
 		role,
 		lost,
-		refusals
+		refusals,
+		unit
 	}: {
 		shown: EntityBehavior;
 		/** Which side this run is; a branch tip has only the after side. */
@@ -18,6 +19,8 @@
 		/** True when the results could not be read: each then says so instead of being awaited. */
 		lost: boolean;
 		refusals: Record<string, string>;
+		/** The function the results are shown for, when they are shown as its rows. */
+		unit?: string;
 	} = $props();
 	const said: Record<BehaviorOutcome, string> = {
 		passed: 'Passed',
@@ -55,6 +58,7 @@
 						label={`${line.kind} of ${group.state}`}
 						{lost}
 						refusal={refusals[line[side].capture?.sha256 ?? '']}
+						{unit}
 					/>
 				</div>{/each}
 		</div>{/each}

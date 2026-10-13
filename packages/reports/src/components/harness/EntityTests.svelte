@@ -185,7 +185,13 @@
 	{/if}
 	{#if behavior.rows.length}
 		{#key entity.id + scope.commit}
-			<EntityBehavior {behavior} {scope} {mediaBase} {nav} />
+			<EntityBehavior
+				{behavior}
+				{scope}
+				{mediaBase}
+				{nav}
+				unit={entity.category === 'functions' ? entity.id : undefined}
+			/>
 		{/key}
 	{/if}
 	{#if media.length}

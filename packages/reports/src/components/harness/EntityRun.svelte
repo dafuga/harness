@@ -8,7 +8,8 @@
 		title,
 		role,
 		mediaBase,
-		lost = false
+		lost = false,
+		unit
 	}: {
 		shown: EntityBehavior;
 		/** Which side of the comparison this run is; the branch tip has only the after side. */
@@ -18,6 +19,8 @@
 		mediaBase: string;
 		/** True when the results could not be read: each then says so instead of being awaited. */
 		lost?: boolean;
+		/** The function the results are shown for, when they are shown as its rows. */
+		unit?: string;
 	} = $props();
 	const said: Record<BehaviorOutcome, string> = {
 		passed: 'Passed',
@@ -57,6 +60,7 @@
 						label={`${line.kind} of ${group.state}`}
 						{mediaBase}
 						{lost}
+						{unit}
 					/>
 				</div>
 			{/each}

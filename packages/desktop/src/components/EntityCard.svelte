@@ -8,8 +8,11 @@
 	import WorkspaceLink from './WorkspaceLink.svelte';
 	let { entity, workspace }: { entity: CatalogEntity; workspace: Workspace } = $props();
 	let image = $state('');
+	/** A function has a plan and no design: no picture is asked for it or left room for. */
+	const headless = $derived(entity.category === 'functions');
+	const reviewed = $derived(headless ? 'plan' : 'designs');
 	$effect(() => {
-		const thumb = entity.thumbnail;
+		const thumb = headless ? null : entity.thumbnail;
 		const request = thumb && { entityId: entity.id, version: thumb.version, sha256: thumb.sha256 };
 		return imageUrl(workspace, request, (url) => (image = url));
 	});
@@ -21,25 +24,25 @@
 		{#if entity.hasPlan}<PlanBadge />{/if}
 	</div>
 	<p>{entity.summary}</p>
-	<div class="thumbnail">
-		{#if image}<img
-				src={image}
-				alt={`${entity.title} design ${entity.thumbnail?.version}`}
-			/>{:else}<span class="muted"
-				>{entity.thumbnail ? 'Design preview unavailable' : 'No design image yet'}</span
-			>{/if}
-	</div>
+	{#if !headless}<div class="thumbnail">
+			{#if image}<img
+					src={image}
+					alt={`${entity.title} design ${entity.thumbnail?.version}`}
+				/>{:else}<span class="muted"
+					>{entity.thumbnail ? 'Design preview unavailable' : 'No design image yet'}</span
+				>{/if}
+		</div>{/if}
 	<div class="row card-meta">
 		<span>{entity.latestVersion || entity.kind}</span><StatusIcon
 			status={entity.verification}
 			reason={entity.verificationNote}
 		/>
 	</div>
-	<!-- A proposal is reviewed where its designs are; anything else opens on its overview. -->
+	<!-- A proposal is reviewed where its designs are, a function's where its plan is. -->
 	<WorkspaceLink
 		{workspace}
-		to={workspace.path(entity.category, entity.id, entity.hasPlan ? 'designs' : '')}
+		to={workspace.path(entity.category, entity.id, entity.hasPlan ? reviewed : '')}
 		class="outline gold"
-		>{entity.hasPlan ? 'Review designs' : 'Open ' + entity.kind} <span>→</span></WorkspaceLink
+		>{entity.hasPlan ? `Review ${reviewed}` : 'Open ' + entity.kind} <span>→</span></WorkspaceLink
 	>
 </article>

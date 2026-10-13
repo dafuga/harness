@@ -45,7 +45,7 @@ test('the address decides the section, also when the entity stays the same', asy
 	await expect(runtime(page)).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'Entity history' })).toHaveCount(0);
 	await visit(page, at(filter, undefined, '/designs'));
-	await expect(current(page)).toHaveText('Designs');
+	await expect(current(page)).toHaveText('Plan');
 	await visit(page, at(filter));
 	await expect(current(page)).toHaveText('Overview');
 	// Details is left with its address: the section that is named next is shown without it.

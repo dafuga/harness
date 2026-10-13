@@ -28,6 +28,10 @@
 			{
 				"name": "EntityArtifact.lost",
 				"type": "boolean"
+			},
+			{
+				"name": "EntityArtifact.unit",
+				"type": "string"
 			}
 		],
 		"outputs": [
@@ -39,6 +43,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.entity-cases",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.harness-harness-verdict",
 			"via": "import",
@@ -56,6 +65,11 @@
 		},
 		{
 			"unit": "reports.function.harness-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-evidence-types",
 			"via": "import",
 			"origin": "derived"
 		}

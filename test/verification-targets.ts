@@ -1,4 +1,5 @@
 import { hostedVerificationScopes } from './hosted-verification-scopes';
+import { functionVerificationScopes } from './function-verification-scopes';
 import { recordedEvidenceScopes } from './recorded-evidence-scopes';
 import { remoteVerificationScopes } from './remote-verification-scopes';
 
@@ -19,6 +20,7 @@ const scopes: Record<string, VerificationScope> = {
 	...remoteVerificationScopes,
 	...recordedEvidenceScopes,
 	...hostedVerificationScopes,
+	...functionVerificationScopes,
 	'runtime-evidence-ui': {
 		package: 'desktop',
 		vitest: {},
@@ -170,7 +172,8 @@ const scopes: Record<string, VerificationScope> = {
 			'tests/e2e/ui-catalog-listing.spec.ts': ['catalog-listing'],
 			'tests/e2e/ui-designs.spec.ts': ['renderer-fixtures'],
 			'tests/e2e/ui-entity-usage.spec.ts': ['entity-usage'],
-			'tests/e2e/ui-entity-usage-viewports.spec.ts': ['entity-usage']
+			'tests/e2e/ui-entity-usage-viewports.spec.ts': ['entity-usage'],
+			'tests/e2e/ui-function-examples.spec.ts': ['function-examples-ui']
 		}
 	},
 	'desktop-native': {

@@ -7,6 +7,7 @@ import type { Category } from '../models/Desktop.types';
  */
 export const routeSuffixes = [
 	'designs',
+	'plan',
 	'used-in',
 	'uses',
 	'relationships',

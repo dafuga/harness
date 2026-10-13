@@ -42,7 +42,9 @@
 		"desktop.style.responsive",
 		"desktop.style.workspace",
 		"desktop.style.workspace-0",
-		"desktop.style.workspace-1"
+		"desktop.style.workspace-1",
+		"reports.component.entity-cases",
+		"reports.function.artifact-cases"
 	],
 	"states": [
 		{
@@ -154,6 +156,31 @@
 			"id": "usage-nothing-recorded",
 			"title": "An entity with nothing recorded, saying so in both sections",
 			"coverage": "required"
+		},
+		{
+			"id": "function-examples-ui",
+			"title": "function examples ui",
+			"coverage": "required"
+		},
+		{
+			"id": "function-card",
+			"title": "function card",
+			"coverage": "required"
+		},
+		{
+			"id": "function-plan-legacy",
+			"title": "function plan legacy",
+			"coverage": "required"
+		},
+		{
+			"id": "function-results-current",
+			"title": "function results current",
+			"coverage": "required"
+		},
+		{
+			"id": "function-results-commit",
+			"title": "function results commit",
+			"coverage": "required"
 		}
 	],
 	"viewports": [
@@ -221,13 +248,27 @@
 			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-entity-usage-viewports.spec.ts",
 			"cwd": "packages/desktop",
 			"timeoutMs": 180000
+		},
+		{
+			"id": "function-examples-ui",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-function-examples.spec.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 240000
 		}
 	],
 	"evidence": [
 		{
 			"id": "desktop-renderer-output",
 			"kind": "output",
-			"states": ["renderer-fixtures", "workspace-state", "catalog-listing", "entity-usage"],
+			"states": [
+				"renderer-fixtures",
+				"workspace-state",
+				"catalog-listing",
+				"entity-usage",
+				"function-examples-ui"
+			],
 			"viewports": [],
 			"required": true
 		},
@@ -314,6 +355,41 @@
 			"kind": "assertions",
 			"states": ["workspace-state"],
 			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "function-screens-desktop",
+			"kind": "screenshot",
+			"states": [
+				"function-card",
+				"function-plan-legacy",
+				"function-results-current",
+				"function-results-commit"
+			],
+			"viewports": ["desktop"],
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "full-page",
+			"required": true
+		},
+		{
+			"id": "function-screens-tablet",
+			"kind": "screenshot",
+			"states": ["function-results-current"],
+			"viewports": ["tablet"],
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "full-page",
+			"required": true
+		},
+		{
+			"id": "function-screens-mobile",
+			"kind": "screenshot",
+			"states": ["function-results-current"],
+			"viewports": ["mobile"],
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "full-page",
 			"required": true
 		}
 	]

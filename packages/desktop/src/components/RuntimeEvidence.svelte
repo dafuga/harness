@@ -18,6 +18,8 @@
 	const notice = $derived(evidenceNotice(evidence.status, evidence.error, entity.kind));
 	/** A page or a component is seen; anything else is known by what it did. */
 	const visual = $derived(['pages', 'components'].includes(entity.category));
+	/** A function is shown by the rows its tests recorded, and never by a picture of a run. */
+	const headless = $derived(entity.category === 'functions');
 	const options = $derived(result ? screenOptions(result.evidence.scenarios) : []);
 	const where = $derived.by(() => {
 		if (!result) return '';
@@ -43,12 +45,13 @@
 		</p>{/if}
 	{#if notice}<p class={notice.alert ? 'error' : 'empty'} role={notice.alert ? 'alert' : 'status'}>
 			{notice.text}
-		</p>{:else if result}{#if visual || options.length}<RuntimeScreens
+		</p>{:else if result}{#if !headless && (visual || options.length)}<RuntimeScreens
 				{result}
 				{options}
 				{evidence}
 			/>{/if}{#if !visual || result.behavior.rows.length}<RuntimeBehavior
 				{result}
 				{evidence}
+				unit={headless ? entity.id : undefined}
 			/>{/if}<RuntimeAudio {result} {evidence} />{/if}
 </section>

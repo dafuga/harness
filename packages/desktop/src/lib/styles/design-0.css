@@ -28,6 +28,7 @@
 }
 .entity-tabs {
 	display: flex;
+	flex-wrap: wrap;
 	gap: 10px;
 	border-bottom: 1px solid var(--line);
 	margin: 16px 0;
@@ -142,7 +143,7 @@
 	display: grid;
 	gap: 14px;
 }
-/* A section name of two words stays on one line; the row scrolls when it is too narrow. */
+/* Each label stays on one line; buttons wrap within the entity beside an open thread. */
 .entity-tabs button {
 	white-space: nowrap;
 }

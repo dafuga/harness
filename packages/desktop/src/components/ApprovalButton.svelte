@@ -10,6 +10,8 @@
 		$props();
 	let approving = $state(false);
 	let error = $state('');
+	/** What is approved: the plan of a function, the design of anything else. */
+	const named = $derived(entity.category === 'functions' ? 'Plan' : 'Design');
 	const imageless = $derived(
 		['pages', 'components'].includes(entity.category) && !design.images.length
 	);
@@ -47,7 +49,7 @@
 	class="primary approve"
 	disabled={blocked}
 	onclick={() => void approve()}
-	>{approved ? 'Design ' + design.version + ' approved' : 'Approve ' + design.version}</button
+	>{approved ? `${named} ${design.version} approved` : 'Approve ' + design.version}</button
 ><small class="approval-note"
-	>Approval saves the exact design. Code starts with a Change request.</small
+	>Approval saves the exact {named.toLowerCase()}. Code starts with a Change request.</small
 >

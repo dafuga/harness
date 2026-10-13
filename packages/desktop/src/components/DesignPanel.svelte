@@ -30,7 +30,11 @@
 	let error = $state('');
 	const current = $derived(entity.versions.find((v) => v.version === version));
 	const images = $derived(current?.images || []);
-	const selected = $derived(images.find((i) => i.viewport === viewport && i.state === imageState));
+	/** The plan of a function is notes and cases: no image of it is chosen, asked for or drawn. */
+	const headless = $derived(entity.category === 'functions');
+	const selected = $derived(
+		headless ? undefined : images.find((i) => i.viewport === viewport && i.state === imageState)
+	);
 	/** Only a commit view has a commit whose change can be shown as before and after. */
 	const viewed = $derived(workspace.pinned ? (workspace.snapshot?.revision.commit ?? null) : null);
 	const before = $derived(priorImage(entity.versions, { version, image: selected }, viewed));
@@ -63,6 +67,21 @@
 			error = String(cause);
 		}
 	}
+	const proposed = 'A plan is what is proposed. What the tests observed is under Overview.';
+	const earlier =
+		' This version also recorded a picture; it stays in the history and is not shown for a function.';
+	/** What an entity without a version says: how to start one, or that none was committed. */
+	const empty = $derived(
+		headless
+			? {
+					planning: 'Use Plan to describe the behavior and its cases.',
+					committed: 'No plan has been committed for this function.'
+				}
+			: {
+					planning: 'Use Plan to describe the first design.',
+					committed: 'No design has been committed for this entity.'
+				}
+	);
 	function imageLabel(v: DesignVersion) {
 		return `${v.version}${v.approval?.current ? ' · Approved' : ''}`;
 	}
@@ -70,13 +89,13 @@
 
 <section class="panel design-panel">
 	<div class="row">
-		<h2>{entity.planned ? 'Proposed ' + entity.kind : 'Design'}</h2>
-		{#if current}<span class="chip">{current.generator}</span><Select
-				label="Design version"
+		<h2>{headless ? 'Plan' : entity.planned ? 'Proposed ' + entity.kind : 'Design'}</h2>
+		{#if current}{#if !headless}<span class="chip">{current.generator}</span>{/if}<Select
+				label={headless ? 'Plan version' : 'Design version'}
 				bind:value={version}
 				>{#each entity.versions as v (v.version)}<option value={v.version}>{imageLabel(v)}</option
 					>{/each}</Select
-			><small>Committed design · {version}</small>{/if}
+			><small>Committed {headless ? 'plan' : 'design'} · {version}</small>{/if}
 	</div>
 	{#if current && selected}<div class="design-controls">
 			<SegmentedChoice
@@ -113,13 +132,10 @@
 		</div>{:else if current}<article class="behavior-notes">
 			<h3>Planned behavior</h3>
 			<p>{current.notes || 'No behavior notes recorded for this version.'}</p>
+			{#if headless}<p class="muted">{proposed}{current.images.length ? earlier : ''}</p>{/if}
 		</article>{:else}<div class="empty">
-			<h3>No design image yet</h3>
-			<p>
-				{workspace.capabilities.planning
-					? 'Use Plan to describe the first design.'
-					: 'No design has been committed for this entity.'}
-			</p>
+			<h3>{headless ? 'No plan yet' : 'No design image yet'}</h3>
+			<p>{workspace.capabilities.planning ? empty.planning : empty.committed}</p>
 		</div>{/if}
 	{#if error && url}<p class="error" role="alert">{error}</p>{/if}
 	{#if entity.category === 'pages'}<div class="row measures">

@@ -3,7 +3,16 @@
 	import type { EntityEvidence } from '../lib/stores/entityEvidence.svelte';
 	import type { EntityEvidenceResult } from '../models/DesktopEvidence.types';
 	import RuntimeRun from './RuntimeRun.svelte';
-	let { result, evidence }: { result: EntityEvidenceResult; evidence: EntityEvidence } = $props();
+	let {
+		result,
+		evidence,
+		unit
+	}: {
+		result: EntityEvidenceResult;
+		evidence: EntityEvidence;
+		/** The function the results are shown for, when they are shown as its rows. */
+		unit?: string;
+	} = $props();
 	const short = (commit: string) => commit.slice(0, 7);
 	const behavior = $derived(result.behavior);
 	/** Undefined while the results are being read; null when reading them failed. */
@@ -56,6 +65,7 @@
 					role="Parent commit"
 					lost={known === null}
 					refusals={evidence.refusals}
+					{unit}
 				/>{/if}<RuntimeRun
 				{shown}
 				side="after"
@@ -63,6 +73,7 @@
 				role={paired ? 'Selected commit' : 'Branch tip'}
 				lost={known === null}
 				refusals={evidence.refusals}
+				{unit}
 			/>
 		</div>{/if}
 	<dl class="runtime-facts">

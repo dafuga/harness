@@ -26,6 +26,7 @@
 						{nav}
 						reasons={entityChanged(host, entity.id)}
 						duration={behaviorDuration(evidence.after.record, ran) ?? undefined}
+						unit={entity.category === 'functions' ? entity.id : undefined}
 					/>
 				{/key}
 				<EntityAudio {evidence} scope={host.scope} mediaBase={host.mediaBase} />

@@ -28,6 +28,10 @@
 			{
 				"name": "RuntimeArtifact.refusal",
 				"type": "string"
+			},
+			{
+				"name": "RuntimeArtifact.unit",
+				"type": "string"
 			}
 		],
 		"outputs": [
@@ -45,12 +49,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.entity-cases",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.entity-behavior",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.function.explorer-artifact",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-evidence-types",
 			"via": "import",
 			"origin": "derived"
 		}

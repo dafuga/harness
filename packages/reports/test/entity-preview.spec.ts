@@ -106,6 +106,13 @@ test('a function shows its recorded run: steps, input, output and assertions', a
 	// Both sides show what the run did without anything to press.
 	for (const side of ['Before · aaaaaaa', 'After · bbbbbbb']) {
 		const pane = tab.getByRole('region', { name: side });
+		await expect(pane.getByRole('table').first()).toBeVisible();
+		await pane
+			.locator('details')
+			.filter({ hasText: 'Matching order is listed' })
+			.first()
+			.locator(':scope > summary')
+			.click();
 		await expect(pane.getByText('Search SERVICE').first()).toBeVisible();
 		await expect(pane.getByText('Order 1042 · Service call')).toBeVisible();
 		await expect(pane.getByText('Matching order is listed').first()).toBeVisible();

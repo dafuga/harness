@@ -18,7 +18,8 @@
 		mediaBase,
 		nav,
 		reasons,
-		duration = notMeasured
+		duration = notMeasured,
+		unit
 	}: {
 		/** The recorded results of both sides as the host found them, before any is read. */
 		behavior: ExplorerBehavior;
@@ -31,6 +32,8 @@
 		reasons?: Reasons;
 		/** How long the end-to-end checks of the shown revision ran, when its record says. */
 		duration?: string;
+		/** The function the results are shown for, when they are shown as its rows. */
+		unit?: string;
 	} = $props();
 	// A reading belongs to the recorded results it read, whichever object lists them.
 	const sign = (of: ExplorerBehavior) =>
@@ -119,6 +122,7 @@
 					role="Parent commit"
 					{mediaBase}
 					lost={known === null}
+					{unit}
 				/>
 			{/if}
 			<EntityRun
@@ -128,6 +132,7 @@
 				role={paired ? 'Selected commit' : 'Branch tip'}
 				{mediaBase}
 				lost={known === null}
+				{unit}
 			/>
 		</div>
 	{/if}

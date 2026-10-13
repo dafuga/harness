@@ -2,12 +2,15 @@
 	import type { BehaviorCell } from '../../utils/entityBehavior';
 	import { artifactText } from '../../utils/explorerArtifact';
 	import { mediaFile } from '../../utils/harnessEvidence';
+	import type { ExplorerArtifactBehavior } from '../../models/ExplorerEvidence.types';
+	import EntityCases from '../EntityCases.svelte';
 	import HarnessVerdict from './HarnessVerdict.svelte';
 	let {
 		cell,
 		label,
 		mediaBase,
-		lost = false
+		lost = false,
+		unit
 	}: {
 		/** One recorded result with what it holds, once the host read and checked it. */
 		cell: BehaviorCell;
@@ -16,6 +19,8 @@
 		mediaBase: string;
 		/** True when reading the results failed, so nothing more is coming for this one. */
 		lost?: boolean;
+		/** The function this result is shown for: its inputs and observed outputs are rows. */
+		unit?: string;
 	} = $props();
 	// What a person reads at once; the whole of a larger result is the recorded file.
 	const most = 12_000;
@@ -26,16 +31,70 @@
 			: text;
 	};
 	let run = $derived(cell.read?.verified ? cell.read.behavior : null);
-	let facts = $derived(
-		run
-			? [
-					['Scenario', run.scenario],
-					['Environment', run.environment],
-					['Test data', run.fixture]
-				].filter(([, value]) => value)
-			: []
-	);
+	const facts = (run: ExplorerArtifactBehavior) =>
+		[
+			['Scenario', run.scenario],
+			['Environment', run.environment],
+			['Test data', run.fixture]
+		].filter(([, value]) => value);
 </script>
+
+{#snippet recorded(run: ExplorerArtifactBehavior, pair: boolean)}
+	{#if facts(run).length}
+		<dl class="ex-rows">
+			{#each facts(run) as [name, value] (name)}
+				<div>
+					<dt>{name}</dt>
+					<dd>{value}</dd>
+				</div>
+			{/each}
+		</dl>
+	{/if}
+	{#if run.steps.length}
+		<h4>Steps</h4>
+		<ol class="ex-steps">
+			{#each run.steps as step, position (position)}<li>{shown(step)}</li>{/each}
+		</ol>
+	{/if}
+	{#if pair}
+		{#if run.input !== undefined}
+			<h4>Input</h4>
+			<pre>{shown(run.input)}</pre>
+		{/if}
+		{#if run.output !== undefined}
+			<h4>Actual output</h4>
+			<pre class="ex-output">{shown(run.output)}</pre>
+		{/if}
+	{/if}
+	{#if run.assertions.length}
+		<h4>Assertions</h4>
+		<ul class="ex-checks">
+			{#each run.assertions as item, position (position)}
+				<li>
+					{#if item.passed === null}
+						<span class="ex-soft">Not stated</span>
+					{:else}
+						<HarnessVerdict passed={item.passed} label={item.passed ? 'Held' : 'Failed'} />
+					{/if}
+					<span>{item.name}</span>
+					{#if item.detail}<pre>{shown(item.detail)}</pre>{/if}
+				</li>
+			{/each}
+		</ul>
+	{/if}
+	{#if run.trace.length}
+		<details>
+			<summary>Trace · {run.trace.length} {run.trace.length === 1 ? 'entry' : 'entries'}</summary>
+			<pre>{shown(run.trace)}</pre>
+		</details>
+	{/if}
+	{#if Object.keys(run.other).length}
+		<details>
+			<summary>Also recorded</summary>
+			<pre>{shown(run.other)}</pre>
+		</details>
+	{/if}
+{/snippet}
 
 {#if !cell.capture}
 	<p class="ex-soft">Not recorded</p>
@@ -53,61 +112,15 @@
 				<HarnessVerdict passed={false} label="Not verified" />
 				<span>{cell.read?.problem ?? 'It could not be read and checked against its hash.'}</span>
 			</p>
+		{:else if unit !== undefined}
+			<!-- A function is shown by its rows; what else was recorded stays behind a disclosure. -->
+			<EntityCases document={cell.read.document} {unit} />
+			<details>
+				<summary>Assertions and recorded result</summary>
+				{#if run}{@render recorded(run, false)}{:else}<pre>{shown(cell.read.text)}</pre>{/if}
+			</details>
 		{:else if run}
-			{#if facts.length}
-				<dl class="ex-rows">
-					{#each facts as [name, value] (name)}
-						<div>
-							<dt>{name}</dt>
-							<dd>{value}</dd>
-						</div>
-					{/each}
-				</dl>
-			{/if}
-			{#if run.steps.length}
-				<h4>Steps</h4>
-				<ol class="ex-steps">
-					{#each run.steps as step, position (position)}<li>{shown(step)}</li>{/each}
-				</ol>
-			{/if}
-			{#if run.input !== undefined}
-				<h4>Input</h4>
-				<pre>{shown(run.input)}</pre>
-			{/if}
-			{#if run.output !== undefined}
-				<h4>Actual output</h4>
-				<pre class="ex-output">{shown(run.output)}</pre>
-			{/if}
-			{#if run.assertions.length}
-				<h4>Assertions</h4>
-				<ul class="ex-checks">
-					{#each run.assertions as item, position (position)}
-						<li>
-							{#if item.passed === null}
-								<span class="ex-soft">Not stated</span>
-							{:else}
-								<HarnessVerdict passed={item.passed} label={item.passed ? 'Held' : 'Failed'} />
-							{/if}
-							<span>{item.name}</span>
-							{#if item.detail}<pre>{shown(item.detail)}</pre>{/if}
-						</li>
-					{/each}
-				</ul>
-			{/if}
-			{#if run.trace.length}
-				<details>
-					<summary
-						>Trace · {run.trace.length} {run.trace.length === 1 ? 'entry' : 'entries'}</summary
-					>
-					<pre>{shown(run.trace)}</pre>
-				</details>
-			{/if}
-			{#if Object.keys(run.other).length}
-				<details>
-					<summary>Also recorded</summary>
-					<pre>{shown(run.other)}</pre>
-				</details>
-			{/if}
+			{@render recorded(run, true)}
 		{:else}
 			<pre>{shown(cell.read.text)}</pre>
 		{/if}

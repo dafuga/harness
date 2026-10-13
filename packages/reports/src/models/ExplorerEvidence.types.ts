@@ -158,3 +158,25 @@ export interface ExplorerArtifact {
 	document: unknown;
 	behavior: ExplorerArtifactBehavior | null;
 }
+
+/** One recorded case of a function: what it was given, and what was observed for that. */
+export interface ExplorerArtifactCase {
+	name: string;
+	input: unknown;
+	/** What was returned; absent when the call threw. */
+	output?: unknown;
+	/** What was thrown; an observed error is never an output. */
+	error?: unknown;
+	failed: boolean;
+}
+
+/** The cases a recorded result holds, or why it shows none. */
+export type ExplorerArtifactCases =
+	| {
+			kind: 'cases';
+			/** Calls of one symbol, or the one input and output a test observed end to end. */
+			source: 'invocations' | 'observation';
+			symbol: string | null;
+			cases: ExplorerArtifactCase[];
+	  }
+	| { kind: 'gap'; why: string };

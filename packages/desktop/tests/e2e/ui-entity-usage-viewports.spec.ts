@@ -36,6 +36,19 @@ for (const viewport of widths)
 			'Order store'
 		]);
 		await expect(page.getByText(/relationship|used by/i)).toHaveCount(0);
+		const hidden = await page
+			.getByRole('navigation', { name: 'Entity sections' })
+			.getByRole('button')
+			.evaluateAll((buttons) => {
+				const bounds = buttons[0].parentElement!.getBoundingClientRect();
+				return buttons
+					.filter((button) => {
+						const box = button.getBoundingClientRect();
+						return box.left < bounds.left - 1 || box.right > bounds.right + 1;
+					})
+					.map((button) => button.textContent);
+			});
+		expect(hidden).toEqual([]);
 		const sideways = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
 		expect(sideways).toBeLessThanOrEqual(0);
 	});

@@ -28,13 +28,18 @@
 	const sections = {
 		Overview: '',
 		Designs: 'designs',
+		Plan: 'plan',
 		'Used In': 'used-in',
 		Uses: 'uses',
 		Evidence: 'evidence',
 		History: 'history'
 	} as const;
 	type Section = keyof typeof sections;
-	const names = Object.keys(sections) as Section[];
+	/** A function has a plan and no designs; every other entity has designs and no plan section. */
+	const headless = $derived(workspace.entity?.category === 'functions');
+	const names = $derived(
+		(Object.keys(sections) as Section[]).filter((name) => name !== (headless ? 'Designs' : 'Plan'))
+	);
 	let tab = $state<Section>('Overview');
 	let details = $state(false);
 	let conversation = $state(true);
@@ -54,8 +59,9 @@
 		const read = { suffix: workspace.suffix, entity: workspace.entity };
 		untrack(() => {
 			details = read.suffix === 'details';
-			if (!details)
-				tab = names.find((name) => sections[name] === (read.suffix ?? '')) ?? 'Overview';
+			// The former address of the designs of a function opens its plan.
+			const asked = headless && read.suffix === 'designs' ? 'plan' : (read.suffix ?? '');
+			if (!details) tab = names.find((name) => sections[name] === asked) ?? 'Overview';
 		});
 	});
 	/** Words for the name; a route address is a fact of a page, never its name. */
@@ -169,7 +175,11 @@
 					<RelationshipsPanel relationships={entity.relationships} {workspace} direction="uses" />
 				</div>
 			</div>
-			<RuntimeEvidence {entity} {workspace} {evidence} />{:else if tab === 'Designs'}<DesignPanel
+			<RuntimeEvidence
+				{entity}
+				{workspace}
+				{evidence}
+			/>{:else if tab === 'Designs' || tab === 'Plan'}<DesignPanel
 				{entity}
 				{workspace}
 				{annotatable}

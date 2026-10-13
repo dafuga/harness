@@ -47,7 +47,11 @@
 	const modes = $derived(
 		composeModes(workspace.capabilities, Boolean(workspace.snapshot?.writable))
 	);
-	const aim = $derived<ThreadTarget>(thread ?? target ?? designTarget(design));
+	/** A comment on a function is on the function: no earlier picture of a plan is aimed at. */
+	const headless = $derived(entity.category === 'functions');
+	const aim = $derived<ThreadTarget>(
+		thread ?? target ?? designTarget(headless ? undefined : design)
+	);
 	const entries = $derived([
 		...messages,
 		...pendingEntries(comments.pending, entity.id, entity.threads)

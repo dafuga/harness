@@ -36,6 +36,10 @@
 			{
 				"name": "RuntimeRun.refusals",
 				"type": "Record<string, string>"
+			},
+			{
+				"name": "RuntimeRun.unit",
+				"type": "string"
 			}
 		],
 		"outputs": [
