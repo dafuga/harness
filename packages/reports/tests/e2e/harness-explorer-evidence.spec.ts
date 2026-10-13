@@ -34,19 +34,19 @@ test('a page leads to its components, those to components, and those to function
 	await page.goto(main('pages'));
 	await open(page, 'Titles');
 	await expect(heading(page, 'Titles')).toBeVisible();
-	await page.getByRole('tab', { name: 'Relationships' }).click();
-	await checkpoint(page, 'evidence-page-relationships');
-	for (const section of ['Components', 'Configs', 'Services']) {
+	await page.getByRole('tab', { name: 'Uses', exact: true }).click();
+	await checkpoint(page, 'evidence-page-uses');
+	for (const section of ['Components', 'Services']) {
 		const named = new RegExp(`^${section}`);
 		await expect(content(page).getByRole('heading', { name: named })).toBeVisible();
 	}
 	await expect(content(page).getByText(/sub-?components|^related/i)).toHaveCount(0);
 	await open(page, 'Title list');
 	await expectPath(page, main(`components/${units.list}`));
-	await page.getByRole('tab', { name: 'Relationships' }).click();
+	await page.getByRole('tab', { name: 'Uses', exact: true }).click();
 	await open(page, 'Title row');
 	await expectPath(page, main(`components/${units.row}`));
-	await page.getByRole('tab', { name: 'Relationships' }).click();
+	await page.getByRole('tab', { name: 'Uses', exact: true }).click();
 	await open(page, 'Slugify');
 	await expectPath(page, main(`functions/${units.slugify}`));
 	await expect(heading(page, 'Slugify')).toBeVisible();

@@ -20,7 +20,8 @@
 	// History is a screen of its own, reached from either row of tabs.
 	const places: Record<string, Place> = {
 		overview: {},
-		relationships: { tab: 'relationships' },
+		'used-in': { tab: 'used-in' },
+		uses: { tab: 'uses' },
 		tests: { tab: 'tests' },
 		contract: { section: 'details' },
 		measurements: { section: 'details', tab: 'measurements' },
@@ -28,18 +29,18 @@
 		history: { section: 'history' }
 	};
 	const rows = {
-		overview: ['Overview', 'Relationships', 'Tests', 'History'],
+		overview: ['Overview', 'Used In', 'Uses', 'Tests', 'History'],
 		details: ['Contract', 'Measurements', 'Source', 'History']
 	};
 	let tabs = $derived(
 		rows[details ? 'details' : 'overview'].map((title) => {
-			const id = title.toLowerCase();
+			const id = title.toLowerCase().replace(' ', '-');
 			return { id, label: title, href: nav.href(at(places[id])) };
 		})
 	);
-	let active = $derived(
-		nav.route.section === 'history' ? 'history' : (nav.route.tab ?? tabs[0].id)
-	);
+	// A tab the row does not have, as the former one of both lists, is shown on the first.
+	let asked = $derived(tabs.find((tab) => tab.id === nav.route.tab)?.id ?? tabs[0].id);
+	let active = $derived(nav.route.section === 'history' ? 'history' : asked);
 	// A route with a parameter is a pattern, not an address a person can open.
 	let openable = $derived(Boolean(entity.appRoute) && !/[[\]:*]/.test(entity.appRoute ?? ''));
 </script>

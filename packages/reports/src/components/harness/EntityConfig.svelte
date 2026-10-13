@@ -1,26 +1,18 @@
 <script lang="ts">
-	import type {
-		ExplorerEntity,
-		ExplorerRelations,
-		ExplorerScope
-	} from '../../models/Explorer.types';
+	import type { ExplorerEntity, ExplorerScope } from '../../models/Explorer.types';
 	import { humanize } from '../../utils/entityContract';
 	import { entityLens, shortCommit, type EntityNav } from '../../utils/entityLens';
-	import EntityLink from './EntityLink.svelte';
 	import HarnessAction from './HarnessAction.svelte';
 	let {
 		entity,
-		relations,
 		scope,
 		nav
 	}: {
 		entity: ExplorerEntity;
-		relations: ExplorerRelations;
 		scope: ExplorerScope;
 		nav: EntityNav;
 	} = $props();
 	let current = $derived(scope.mode === 'current');
-	let users = $derived([...relations.pages, ...relations.usedBy]);
 	let commit = $derived(
 		entityLens(nav.route, { category: 'configs', entity: entity.id, commit: scope.commit })
 	);
@@ -60,20 +52,6 @@
 					</div>
 				{/each}
 			</dl>
-		</div>
-		<div>
-			<h3>Used by</h3>
-			{#if users.length === 0}<p class="ex-soft">Nothing in the registry uses it.</p>{/if}
-			<ul class="ex-links">
-				{#each users as item (item.id)}
-					<li>
-						<EntityLink
-							to={entityLens(nav.route, { category: item.category, entity: item.id })}
-							{nav}>{item.name}</EntityLink
-						>
-					</li>
-				{/each}
-			</ul>
 		</div>
 	</div>
 	<p class="ex-note">

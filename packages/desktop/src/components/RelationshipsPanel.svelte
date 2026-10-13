@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { explorerName } from '../../../reports/src/utils/explorerName';
-	import type { Relationship } from '../models/Desktop.types';
+	import type { Category, Relationship } from '../models/Desktop.types';
 	import type { Workspace } from '../lib/stores/workspace.svelte';
 	import PlanBadge from './PlanBadge.svelte';
 	import StatusIcon from './StatusIcon.svelte';
@@ -9,29 +9,70 @@
 	let {
 		relationships,
 		workspace,
-		title = 'Relationships'
-	}: { relationships: Relationship[]; workspace: Workspace; title?: string } = $props();
+		direction
+	}: {
+		relationships: Relationship[];
+		workspace: Workspace;
+		/** Which side is listed: what uses the entity, or what it uses. */
+		direction: Relationship['direction'];
+	} = $props();
+	/** Each kind as a group of what is used is headed, and as one user of the entity is badged. */
+	const kinds: Record<Category, [string, string]> = {
+		pages: ['Pages', 'Page'],
+		components: ['Components', 'Component'],
+		functions: ['Functions', 'Function'],
+		configs: ['Configs', 'Config'],
+		services: ['Services', 'Service']
+	};
+	const other: [string, string] = ['Other', 'Other'];
+	const kind = (item: Relationship) => (item.category ? kinds[item.category] : other);
 	/** A related entity is named in words, as it is where it is listed and opened. */
 	const named = (item: Relationship) => explorerName({ id: item.id, kind: '', title: item.title });
+	const title = $derived(direction === 'uses' ? 'Uses' : 'Used In');
+	/** What was recorded on this side, each entity once. */
+	const items = $derived([
+		...new Map(
+			relationships
+				.filter((item) => item.direction === direction)
+				.map((item) => [item.id, item] as const)
+		).values()
+	]);
+	/** What the entity uses stays apart by kind; what uses it is one list, each with its kind. */
+	const groups = $derived(
+		direction === 'uses'
+			? [...Object.values(kinds), other]
+					.map(([many]) => ({ title: many, items: items.filter((item) => kind(item)[0] === many) }))
+					.filter((group) => group.items.length > 0)
+			: [{ title: '', items }]
+	);
 </script>
 
-<section class="panel">
-	<h2>{title}</h2>
-	<div class="relationships">
-		{#each relationships as item (`${item.direction}:${item.id}`)}<article class="relationship">
-				<Icon name={item.category || 'components'} />
-				<div>
-					<small>{item.direction === 'uses' ? 'Uses' : 'Used by'}</small
-					>{#if item.category}<WorkspaceLink {workspace} to={workspace.path(item.category, item.id)}
-							>{named(item)}</WorkspaceLink
-						>{:else}<span>{named(item)}</span>{/if}
-				</div>
-				{#if item.hasPlan}<PlanBadge />{/if}<StatusIcon
-					status={item.verification}
-					reason={item.verification === 'verified'
-						? 'Verification recorded for this revision.'
-						: 'No passing verification recorded for this revision.'}
-				/>
-			</article>{:else}<p class="muted">No relationships recorded.</p>{/each}
-	</div>
+<section class="panel" aria-label={title}>
+	<h2>{title} <span class="count">{items.length}</span></h2>
+	{#if items.length === 0}
+		<p class="muted">
+			{direction === 'uses' ? 'No dependency is recorded.' : 'Nothing recorded uses it.'}
+		</p>
+	{/if}
+	{#each groups as group (group.title)}
+		{#if group.title}<h3>{group.title} <span class="count">{group.items.length}</span></h3>{/if}
+		<div class="relationships">
+			{#each group.items as item (item.id)}<article class="relationship">
+					<Icon name={item.category || 'components'} />
+					<div>
+						{#if item.category}<WorkspaceLink
+								{workspace}
+								to={workspace.path(item.category, item.id)}>{named(item)}</WorkspaceLink
+							>{:else}<span>{named(item)}</span>{/if}
+					</div>
+					{#if direction === 'used-by'}<span class="chip">{kind(item)[1]}</span>{/if}
+					{#if item.hasPlan}<PlanBadge />{/if}<StatusIcon
+						status={item.verification}
+						reason={item.verification === 'verified'
+							? 'Verification recorded for this revision.'
+							: 'No passing verification recorded for this revision.'}
+					/>
+				</article>{/each}
+		</div>
+	{/each}
 </section>

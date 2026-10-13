@@ -1,99 +1,98 @@
 <script lang="ts">
 	import type { ExplorerEntity, ExplorerRelations } from '../../models/Explorer.types';
 	import { entityLens, type EntityNav } from '../../utils/entityLens';
-	import { categoryIcon, type HarnessIconName } from '../../utils/harnessIcons';
+	import { entityUsage } from '../../utils/entityUsage';
 	import EntityLink from './EntityLink.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
 	import HarnessVerdict from './HarnessVerdict.svelte';
-	let { relations, nav }: { relations: ExplorerRelations; nav: EntityNav } = $props();
-	interface Section {
-		title: string;
-		icon: HarnessIconName;
-		items: ExplorerEntity[];
-		/** What the section says when it is empty. */
-		none: string;
-	}
-	// Each kind is a section of its own; a component of a component is a component like any other.
-	let sections = $derived<Section[]>([
-		{
-			title: 'Components',
-			icon: categoryIcon.components,
-			items: relations.components,
-			none: 'It contains no component.'
-		},
-		{
-			title: 'Functions',
-			icon: categoryIcon.functions,
-			items: relations.functions,
-			none: 'It uses no function.'
-		},
-		{
-			title: 'Configs',
-			icon: categoryIcon.configs,
-			items: relations.configs,
-			none: 'It reads no config.'
-		},
-		{
-			title: 'Services',
-			icon: categoryIcon.services,
-			items: relations.services,
-			none: 'It calls no service.'
-		},
-		{
-			title: 'Used on pages',
-			icon: categoryIcon.pages,
-			items: relations.pages,
-			none: 'No page shows it.'
-		},
-		{
-			title: 'Used by',
-			icon: 'relationships',
-			items: relations.usedBy,
-			none: 'Nothing else uses it.'
-		}
-	]);
+	let {
+		relations,
+		nav,
+		show = 'both',
+		compact = false,
+		removed = false
+	}: {
+		relations: ExplorerRelations;
+		nav: EntityNav;
+		/** Which of the two sections is drawn; an overview draws both. */
+		show?: 'both' | 'used-in' | 'uses';
+		/** Names only, as an overview lists them; a section of its own adds verdict and purpose. */
+		compact?: boolean;
+		/** The shown commit removed the entity: its revision holds no relation of it. */
+		removed?: boolean;
+	} = $props();
+	let usage = $derived(entityUsage(relations));
 	const changed = ['direct', 'added'];
+	const gone = 'Removed at this commit: ';
 </script>
 
+{#snippet row(item: ExplorerEntity, badge: boolean)}
+	<li>
+		{#if !compact}<HarnessVerdict {...item.verdict} />{/if}
+		<span>
+			<EntityLink to={entityLens(nav.route, { category: item.category, entity: item.id })} {nav}
+				>{item.name}</EntityLink
+			>
+			{#if badge}<span class="ex-pill">{item.role}</span>{/if}
+			{#if changed.includes(item.change ?? '')}<span class="ex-pill gold">Changed</span>{/if}
+			{#if !compact}<span class="ex-soft ex-block">{item.purpose}</span>{/if}
+		</span>
+	</li>
+{/snippet}
+
+<!-- What uses the entity and what it uses are two sections; neither names a file. -->
 <div class="ex-relations">
-	{#each sections as section, position (position)}
-		<section class="ex-card" aria-label={section.title}>
+	{#if show !== 'uses'}
+		<section class="ex-card" aria-label="Used In">
 			<h2>
-				<HarnessIcon name={section.icon} size={22} />
-				{section.title}
-				<span class="ex-count">{section.items.length}</span>
+				<HarnessIcon name="relationships" size={22} /> Used In
+				<span class="ex-count">{usage.usedIn.length}</span>
 			</h2>
-			{#if section.items.length === 0}<p class="ex-soft">{section.none}</p>{/if}
+			{#if usage.usedIn.length === 0}
+				<p class="ex-soft">
+					{removed
+						? `${gone}nothing of this commit uses it.`
+						: 'No page shows it and nothing else uses it.'}
+				</p>
+			{/if}
 			<ul class="ex-related">
-				{#each section.items as item (item.id)}
-					<li>
-						<HarnessVerdict {...item.verdict} />
-						<span>
-							<EntityLink
-								to={entityLens(nav.route, { category: item.category, entity: item.id })}
-								{nav}>{item.name}</EntityLink
-							>
-							{#if changed.includes(item.change ?? '')}<span class="ex-pill gold">Changed</span
-								>{/if}
-							<span class="ex-soft ex-block">{item.purpose}</span>
-						</span>
-					</li>
-				{/each}
+				{#each usage.usedIn as item (item.id)}{@render row(item, true)}{/each}
 			</ul>
 		</section>
-	{/each}
-	{#if relations.support.length}
-		<section class="ex-card" aria-label="Other dependencies">
+	{/if}
+	{#if show !== 'used-in'}
+		<section class="ex-card" aria-label="Uses">
 			<h2>
-				<HarnessIcon name="file" size={22} /> Other dependencies
-				<span class="ex-count">{relations.support.length}</span>
+				<HarnessIcon name="layers" size={22} /> Uses
+				<span class="ex-count">{usage.count}</span>
 			</h2>
-			<p class="ex-soft">What it depends on that is not one of the five kinds.</p>
-			<ul class="ex-related">
-				{#each relations.support as item (item.id)}
-					<li><span>{item.name} <span class="ex-pill">{item.role}</span></span></li>
-				{/each}
-			</ul>
+			{#if usage.count === 0}
+				<p class="ex-soft">
+					{removed
+						? `${gone}what it used is not listed here.`
+						: 'It uses no component, function, config or service.'}
+				</p>
+			{/if}
+			{#each usage.uses as group, position (position)}
+				<h3>
+					<HarnessIcon name={group.icon} size={18} />
+					{group.title} <span class="ex-count">{group.items.length}</span>
+				</h3>
+				<ul class="ex-related">
+					{#each group.items as item (item.id)}{@render row(item, false)}{/each}
+				</ul>
+			{/each}
+			{#if usage.other.length}
+				<h3>
+					<HarnessIcon name="file" size={18} /> Other
+					<span class="ex-count">{usage.other.length}</span>
+				</h3>
+				<ul class="ex-related">
+					{#each usage.other as item (item.id)}
+						<li><span>{item.name} <span class="ex-pill">{item.role}</span></span></li>
+					{/each}
+				</ul>
+			{/if}
 		</section>
 	{/if}
 </div>

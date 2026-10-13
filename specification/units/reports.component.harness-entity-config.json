@@ -18,10 +18,6 @@
 				"type": "ExplorerEntity"
 			},
 			{
-				"name": "EntityConfig.relations",
-				"type": "ExplorerRelations"
-			},
-			{
 				"name": "EntityConfig.scope",
 				"type": "ExplorerScope"
 			},
@@ -39,11 +35,6 @@
 		"errors": []
 	},
 	"dependencies": [
-		{
-			"unit": "reports.component.harness-entity-link",
-			"via": "import",
-			"origin": "derived"
-		},
 		{
 			"unit": "reports.component.harness-harness-action",
 			"via": "import",

@@ -1,9 +1,14 @@
 import { categories } from '../models/Desktop.types';
 import type { Category } from '../models/Desktop.types';
 
-/** The sections of an entity that have an address of their own; its overview has none. */
+/**
+ * The sections of an entity that have an address of their own; its overview has none.
+ * `relationships` is the former address of what `used-in` and `uses` show: it is still read.
+ */
 export const routeSuffixes = [
 	'designs',
+	'used-in',
+	'uses',
 	'relationships',
 	'evidence',
 	'history',

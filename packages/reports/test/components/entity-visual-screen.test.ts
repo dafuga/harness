@@ -17,12 +17,12 @@ test('a page and a component open on their screenshots: a pair at a commit, one 
 		expect(words(tip), at.entity).toContain('Current screenshot');
 		expect(count(tip, /<img\b/g), at.entity).toBe(1);
 	}
-	expect(words(screen(EntityVisualScreen, 'commit', page))).toContain('Components on this page');
+	expect(words(screen(EntityVisualScreen, 'commit', page))).toMatch(/Uses\s+3\s+Components\s+2/);
 });
 
-test('the tabs of the address open relationships and tests on the same screen', () => {
-	const related = screen(EntityVisualScreen, 'commit', { ...page, tab: 'relationships' });
-	expect(related).toContain('aria-label="Orders page relationships"');
+test('the tabs of the address open what it uses and its tests on the same screen', () => {
+	const related = screen(EntityVisualScreen, 'commit', { ...page, tab: 'uses' });
+	expect(related).toContain('aria-label="Orders page uses"');
 	expect(words(related)).toContain('Order list');
 	expect(count(related, /<img\b/g)).toBe(0);
 	const tests = screen(EntityVisualScreen, 'commit', { ...page, tab: 'tests' });

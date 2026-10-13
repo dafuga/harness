@@ -52,9 +52,12 @@ export function explorerKindCategory(kind: string): ExplorerCategory | null {
 export const explorerSections = ['details', 'history'] as const;
 export type ExplorerSection = (typeof explorerSections)[number];
 
-/** The tabs a section keeps in the query; the first of each is its default and is not written. */
+/**
+ * The tabs a section keeps in the query; the first of each is its default and is not written.
+ * `relationships` is the former address of what `used-in` and `uses` show: it is still read.
+ */
 export const explorerTabs = {
-	overview: ['overview', 'relationships', 'tests'],
+	overview: ['overview', 'used-in', 'uses', 'relationships', 'tests'],
 	details: ['contract', 'measurements', 'source'],
 	history: []
 } as const satisfies Record<string, readonly string[]>;

@@ -83,7 +83,7 @@ test('a component no visual scenario names keeps the screenshot pane, as a state
 
 test('a page lists its components as components, each a link in the same scope', () => {
 	const body = content('commit', page);
-	expect(words(body)).toContain('Components on this page');
+	expect(words(body)).toMatch(/Uses\s+3\s+Components\s+2\s+Order list/);
 	expect(body).toContain(`/commit/${commits.middle}/components/${ids.list}`);
 	expect(words(body)).toContain('App route');
 	expect(words(body)).toContain('/orders');
@@ -127,7 +127,7 @@ test('a config shows what it provides and who uses it, with no screenshot and no
 	const body = content('current', { category: 'configs', entity: ids.settings });
 	expect(words(body)).toContain('Current configuration');
 	expect(words(body)).toContain('page size');
-	expect(words(body)).toContain('Used by');
+	expect(words(body)).toContain('Used In');
 	expect(words(body)).toContain('Orders page');
 	expect(count(body, /<img/g)).toBe(0);
 	expect(words(body)).not.toMatch(/End-to-end|Current screenshot/);

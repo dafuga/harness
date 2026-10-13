@@ -8,7 +8,7 @@ const settings = { category: 'configs' as const, entity: ids.settings };
 test('a config opens on what it provides and who uses it, with no picture, run or clip', () => {
 	const body = screen(EntityConfigScreen, 'current', settings);
 	expect(words(body)).toContain('Current configuration');
-	expect(words(body)).toContain('Used by');
+	expect(words(body)).toContain('Used In');
 	expect(words(body)).toContain('Orders page');
 	expect(count(body, /<img\b|<audio\b/g)).toBe(0);
 	expect(words(body)).not.toMatch(/End-to-end|Current screenshot|Current audio/);
@@ -17,8 +17,8 @@ test('a config opens on what it provides and who uses it, with no picture, run o
 });
 
 test('its tabs and a missing config behave as on every entity screen', () => {
-	const related = screen(EntityConfigScreen, 'commit', { ...settings, tab: 'relationships' });
-	expect(related).toContain('aria-label="Order settings relationships"');
+	const related = screen(EntityConfigScreen, 'commit', { ...settings, tab: 'used-in' });
+	expect(related).toContain('aria-label="Order settings used in"');
 	const tests = screen(EntityConfigScreen, 'commit', { ...settings, tab: 'tests' });
 	expect(words(tests)).toContain('Verification at bbbbbbb');
 	const gone = { category: 'configs' as const, entity: 'app.config.gone' };

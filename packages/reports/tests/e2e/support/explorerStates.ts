@@ -49,10 +49,20 @@ const reaches: Record<string, (page: Page) => Promise<void>> = {
 			page.getByRole('figure', { name: `After · ${short(commits.twin)}` })
 		).toBeVisible();
 	},
-	// A page leads to components, configs and services in sections of their own.
+	// The former address of both lists still opens them, on the overview of a page.
 	async relationships(page) {
 		await page.goto(at('main', commits.approved, `pages/${units.page}?tab=relationships`));
 		await expect(content(page).getByRole('heading', { name: /^Components/ })).toBeVisible();
+	},
+	// What uses a component, the page that shows it too, in a section of its own.
+	async 'used-in'(page) {
+		await page.goto(at('main', commits.approved, `components/${units.list}?tab=used-in`));
+		await expect(content(page).getByRole('region', { name: 'Used In', exact: true })).toBeVisible();
+	},
+	// What a page uses, kind by kind, in a section of its own.
+	async uses(page) {
+		await page.goto(at('main', commits.approved, `pages/${units.page}?tab=uses`));
+		await expect(content(page).getByRole('region', { name: 'Uses', exact: true })).toBeVisible();
 	},
 	async component(page) {
 		await page.goto(at('main', commits.approved, `components/${units.list}`));

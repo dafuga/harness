@@ -36,8 +36,8 @@ test('a clip recorded for what is run is heard under its results', () => {
 test('its tabs and a missing entity behave as on every entity screen', () => {
 	const tests = screen(EntityBehaviorScreen, 'commit', { ...filter, tab: 'tests' });
 	expect(words(tests)).toContain('Verification at bbbbbbb');
-	const related = screen(EntityBehaviorScreen, 'commit', { ...filter, tab: 'relationships' });
-	expect(related).toContain('aria-label="Filter orders relationships"');
+	const related = screen(EntityBehaviorScreen, 'commit', { ...filter, tab: 'used-in' });
+	expect(related).toContain('aria-label="Filter orders used in"');
 	const gone = { category: 'functions' as const, entity: 'app.function.gone' };
 	expect(words(screen(EntityBehaviorScreen, 'commit', gone))).toContain('Not at this revision');
 });

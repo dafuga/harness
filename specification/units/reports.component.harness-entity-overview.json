@@ -48,17 +48,12 @@
 	},
 	"dependencies": [
 		{
-			"unit": "reports.component.harness-entity-link",
+			"unit": "reports.component.harness-entity-relations",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.component.harness-entity-summary",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-harness-icon",
 			"via": "import",
 			"origin": "derived"
 		},

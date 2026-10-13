@@ -13,7 +13,6 @@
 			{#snippet pane()}
 				<EntityConfig
 					{entity}
-					relations={host.lens.relations(entity.id)}
 					scope={host.scope}
 					{nav}
 				/>

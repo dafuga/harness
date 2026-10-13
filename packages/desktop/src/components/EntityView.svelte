@@ -21,11 +21,15 @@
 	import Icon from './Icon.svelte';
 	import WorkspaceLink from './WorkspaceLink.svelte';
 	let { workspace }: { workspace: Workspace } = $props();
-	/** Each section with the end of its address; the overview is the address of the entity. */
+	/**
+	 * Each section with the end of its address; the overview is the address of the entity. An
+	 * address no section has, as the former one of both lists, shows the overview that holds them.
+	 */
 	const sections = {
 		Overview: '',
 		Designs: 'designs',
-		Relationships: 'relationships',
+		'Used In': 'used-in',
+		Uses: 'uses',
 		Evidence: 'evidence',
 		History: 'history'
 	} as const;
@@ -155,7 +159,15 @@
 				<ContractPanel contract={entity.contract} /><MeasuresPanel
 					size={entity.size}
 					performance={entity.performance}
-				/><RelationshipsPanel relationships={entity.relationships} {workspace} />
+				/>
+				<div class="usage-panels">
+					<RelationshipsPanel
+						relationships={entity.relationships}
+						{workspace}
+						direction="used-by"
+					/>
+					<RelationshipsPanel relationships={entity.relationships} {workspace} direction="uses" />
+				</div>
 			</div>
 			<RuntimeEvidence {entity} {workspace} {evidence} />{:else if tab === 'Designs'}<DesignPanel
 				{entity}
@@ -164,9 +176,10 @@
 				bind:version
 				onthread={select}
 				onannotate={annotate}
-			/>{:else if tab === 'Relationships'}<RelationshipsPanel
+			/>{:else if tab === 'Used In' || tab === 'Uses'}<RelationshipsPanel
 				relationships={entity.relationships}
 				{workspace}
+				direction={tab === 'Uses' ? 'uses' : 'used-by'}
 			/>{:else if tab === 'Evidence'}<CoveragePanel {entity} {evidence} />{:else}<HistoryPanel
 				{entity}
 				{workspace}

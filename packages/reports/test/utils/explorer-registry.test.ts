@@ -106,7 +106,7 @@ test('a page is under its own states, and a screen under the states of the pages
 
 test('what every page is made of is under every state, and each state names a page there is', () => {
 	const every = scenario.states.map((state) => state.id);
-	expect(every).toHaveLength(32);
+	expect(every).toHaveLength(34);
 	expect(statesOf(`${part}harness-header`)).toEqual(every);
 	expect(statesOf(`${part}harness-console`)).toEqual(every);
 	const pages = new Set(units.filter((unit) => unit.kind === 'page').map((unit) => unit.id));

@@ -20,6 +20,18 @@
 			{
 				"name": "EntityRelations.nav",
 				"type": "EntityNav"
+			},
+			{
+				"name": "EntityRelations.show",
+				"type": "'both' | 'used-in' | 'uses'"
+			},
+			{
+				"name": "EntityRelations.compact",
+				"type": "boolean"
+			},
+			{
+				"name": "EntityRelations.removed",
+				"type": "boolean"
 			}
 		],
 		"outputs": [
@@ -52,7 +64,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.function.harness-icons",
+			"unit": "reports.function.entity-usage",
 			"via": "import",
 			"origin": "derived"
 		},

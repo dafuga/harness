@@ -63,7 +63,8 @@ test('evidence is read only where it is shown, and each section has its own addr
 	await expect(runtime(page).getByRole('figure')).toHaveCount(1);
 	expect((await asked(page, 'evidence')).length).toBe(1);
 	for (const [name, suffix] of [
-		['Relationships', '/relationships'],
+		['Used In', '/used-in'],
+		['Uses', '/uses'],
 		['History', '/history']
 	]) {
 		await tabs(page).getByRole('button', { name }).click();
@@ -167,7 +168,8 @@ test('a phone shows the same overview, and says that its connection does not rea
 	await expect(tabs(page).getByRole('button')).toHaveText([
 		'Overview',
 		'Designs',
-		'Relationships',
+		'Used In',
+		'Uses',
 		'Evidence',
 		'History'
 	]);

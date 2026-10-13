@@ -127,13 +127,13 @@ test('links walk page to component to function, and keep the branch and the comm
 	page: tab
 }) => {
 	await open(tab, { ...page, commit: commits.middle });
-	await tab.getByRole('tab', { name: 'Relationships' }).click();
+	await tab.getByRole('tab', { name: 'Uses', exact: true }).click();
 	expect(await where(tab)).toMatchObject({
 		entity: ids.page,
-		tab: 'relationships',
+		tab: 'uses',
 		commit: commits.middle
 	});
-	await capture(tab, 'page-relationships-desktop');
+	await capture(tab, 'page-uses-desktop');
 	await tab.getByRole('link', { name: 'Order list' }).click();
 	expect(await where(tab)).toEqual({
 		branch: 'feature/orders',
@@ -141,7 +141,7 @@ test('links walk page to component to function, and keep the branch and the comm
 		category: 'components',
 		entity: ids.list
 	});
-	await tab.getByRole('tab', { name: 'Relationships' }).click();
+	await tab.getByRole('tab', { name: 'Uses', exact: true }).click();
 	await tab.getByRole('link', { name: 'Filter orders' }).click();
 	expect(await where(tab)).toMatchObject({
 		category: 'functions',

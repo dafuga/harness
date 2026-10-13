@@ -178,3 +178,13 @@
 	height: 44px;
 	border-radius: 8px;
 }
+/* What uses an entity and what it uses: set apart from what is above and below, kinds in a row. */
+.ex-content * + .ex-relations,
+.ex-content .ex-relations + * {
+	margin-top: 16px;
+}
+.ex-content .ex-relations h3 {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}

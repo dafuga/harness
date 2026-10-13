@@ -137,6 +137,26 @@
 	color: var(--muted);
 	justify-content: space-between;
 }
+/* What uses an entity and what it uses: two panels, one under the other on an overview. */
+.usage-panels {
+	display: grid;
+	gap: 14px;
+}
+/* A section name of two words stays on one line; the row scrolls when it is too narrow. */
+.entity-tabs button {
+	white-space: nowrap;
+}
+.panel .count {
+	margin-left: 6px;
+	color: var(--muted);
+	font-size: 0.85em;
+	font-weight: 500;
+}
+.panel h3 {
+	margin: 14px 0 0;
+	color: var(--muted);
+	font-size: 13px;
+}
 .relationships {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));

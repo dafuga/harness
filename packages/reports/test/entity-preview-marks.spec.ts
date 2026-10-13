@@ -68,7 +68,8 @@ test('every collection, a header, the tests and a history show marks without sta
 		{ category: 'services' as const, commit: commits.middle },
 		page,
 		{ ...page, tab: 'tests' as const },
-		{ ...page, tab: 'relationships' as const },
+		{ ...page, tab: 'uses' as const },
+		{ ...page, tab: 'used-in' as const },
 		{ ...filter, section: 'history' as const, commit: commits.middle }
 	];
 	for (const [position, place] of places.entries()) {

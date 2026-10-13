@@ -58,8 +58,8 @@ test('the address decides the section, also when the entity stays the same', asy
 	// A section chosen on the page has its address, and Details closes when another is chosen.
 	await page.getByRole('button', { name: 'Details →', exact: true }).click();
 	await expect.poll(() => path(page)).toBe(at(filter, undefined, '/details'));
-	await tabs(page).getByRole('button', { name: 'Relationships' }).click();
-	await expect.poll(() => path(page)).toBe(at(filter, undefined, '/relationships'));
+	await tabs(page).getByRole('button', { name: 'Used In' }).click();
+	await expect.poll(() => path(page)).toBe(at(filter, undefined, '/used-in'));
 	await expect(page.getByRole('heading', { name: 'Details', exact: true })).toHaveCount(0);
 });
 

@@ -22,8 +22,8 @@
 				"type": "Workspace"
 			},
 			{
-				"name": "RelationshipsPanel.title",
-				"type": "string"
+				"name": "RelationshipsPanel.direction",
+				"type": "Relationship['direction']"
 			}
 		],
 		"outputs": [
