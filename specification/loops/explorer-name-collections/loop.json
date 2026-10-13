@@ -2,7 +2,7 @@
 	"name": "explorer-name-collections",
 	"goal": "A route word before a parameter keeps its letters unless it is an explorer collection: /projects/[projectId]/harness/[...path] is named Harness.",
 	"createdAt": "2026-10-12T22:33:00.508Z",
-	"updatedAt": "2026-10-12T22:35:37.191Z",
+	"updatedAt": "2026-10-13T00:04:16.869Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"steps": [
@@ -37,7 +37,9 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots; keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-13T00:04:16.869Z",
+			"evidence": "Independent 29 assertions passed. Browser inspection confirmed clean Harness titles and branch navigation. Types, lint and formatting passed at 697023c; full repository check passed at 5a36336."
 		}
 	],
 	"evaluators": [
