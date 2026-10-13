@@ -1,0 +1,82 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.artifact-answer",
+	"kind": "function",
+	"title": "artifactAnswer",
+	"responsibility": "Owns the artifactAnswer shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/artifactAnswer.ts"],
+		"symbols": ["artifactAnswer"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "artifactAnswer.capture",
+				"type": "Listed"
+			},
+			{
+				"name": "artifactAnswer.bytes",
+				"type": "Uint8Array | undefined"
+			}
+		],
+		"outputs": [
+			{
+				"name": "artifactAnswer",
+				"type": "Promise<EvidenceArtifactResult>"
+			}
+		],
+		"errors": [
+			{
+				"name": "not-stored",
+				"type": "refused",
+				"description": "The capture has no stored bytes."
+			},
+			{
+				"name": "too-large",
+				"type": "refused",
+				"description": "More than 11 MiB."
+			},
+			{
+				"name": "hash-mismatch",
+				"type": "refused",
+				"description": "The stored bytes do not have the recorded SHA-256."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.artifact-media",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/artifactAnswer.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/artifactAnswer.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-recorded-evidence", "hub-recorded-evidence"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

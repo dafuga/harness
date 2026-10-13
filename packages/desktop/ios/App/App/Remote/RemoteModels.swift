@@ -45,14 +45,16 @@ enum RemoteLimits {
     static let pingSeconds = 25.0
     static let pollSeconds = 2.0
     static let pairingSeconds = 300.0
+    /// The most raw bytes of one recorded artifact: a larger one is neither kept nor served.
+    static let artifactBytes = 11 * 1024 * 1024
 }
 
 /// What a phone may ask of a computer at most. Folders and hosted sign-in stay on the computer;
 /// what a session really offers is what the computer attached, within these.
 enum RemoteMethods {
     static let reads: Set<String> = [
-        "listProjects", "capabilities", "snapshot", "entity", "history", "source", "image", "messages",
-        "pendingComments", "providers"
+        "listProjects", "capabilities", "snapshot", "entity", "history", "source", "image", "evidence",
+        "artifact", "messages", "pendingComments", "providers"
     ]
     static let changes: Set<String> = [
         "addComment", "createPlan", "openThread", "approve", "startRun", "cancelRun"

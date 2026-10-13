@@ -37,6 +37,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "hub.function.hub-evidence-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.function.hub-http",
 			"via": "import",
 			"origin": "derived"
@@ -67,7 +72,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["hub-recorded-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

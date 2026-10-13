@@ -4,6 +4,7 @@ import type { HubProjectionService } from '../services/HubProjectionService';
 import { HubRemoteController } from './HubRemoteController';
 import { hubBody, hubHttp, hubHttpFailure, hubQuery } from '../utils/hubHttp';
 import { hubFail } from '../utils/hubJson';
+import { hubEvidenceRead } from '../utils/hubEvidenceRead';
 interface Context {
 	api: CollaborationApi;
 	projection: HubProjectionService;
@@ -34,6 +35,7 @@ export class HubApiController {
 		if (!projectId) return collection({ api, request, actor });
 		if (!/^[a-f0-9-]{36}$/.test(projectId)) return hubFail('invalid-input');
 		const context = { api, projection, actor, request, projectId };
+		if (['evidence', 'artifact'].includes(parts[3])) return hubEvidenceRead(context, parts[3]);
 		if (request.method === 'GET') return readProject(context, parts[3] ?? '');
 		return mutateProject(context, parts.slice(3));
 	}

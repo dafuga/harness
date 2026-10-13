@@ -1,7 +1,15 @@
 import { categories } from '../models/Desktop.types';
 import type { Category } from '../models/Desktop.types';
 
-export type RouteSuffix = 'history' | 'details' | null;
+/** The sections of an entity that have an address of their own; its overview has none. */
+export const routeSuffixes = [
+	'designs',
+	'relationships',
+	'evidence',
+	'history',
+	'details'
+] as const;
+export type RouteSuffix = (typeof routeSuffixes)[number] | null;
 /** What a workspace address names. A legacy `/harness` address names no project. */
 export interface WorkspaceRoute {
 	projectId: string | null;
@@ -31,7 +39,7 @@ function revision(rest: string[]) {
 	return { branch, commit: null, offset: 1 };
 }
 function suffix(value: string | undefined): RouteSuffix {
-	return value === 'history' || value === 'details' ? value : null;
+	return routeSuffixes.find((known) => known === value) ?? null;
 }
 
 export function isWorkspacePath(path: string): boolean {

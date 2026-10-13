@@ -18,8 +18,9 @@ const message = (page: Page) => page.getByRole('textbox', { name: 'Message', exa
 const modes = (page: Page) => page.getByRole('group', { name: 'Request mode' });
 const agentOnly = ['startRun', 'createPlan', 'approve', 'cancelRun'];
 const uuid = /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/;
+/** Where the designs of the page are: an entity opens on its overview, its designs are a section. */
 const entity = (project: string, revision: string) =>
-	`/projects/${project}/harness/branch/${revision}/pages/page%3Aactivity`;
+	`/projects/${project}/harness/branch/${revision}/pages/page%3Aactivity/designs`;
 
 async function comment(page: Page, text: string) {
 	await message(page).fill(text);
@@ -85,6 +86,7 @@ test('a shared project acknowledges the collaboration commit and offers no agent
 	await expect(page.getByLabel('Model', { exact: true })).toHaveCount(0);
 	await expect(page.getByLabel('Reasoning effort', { exact: true })).toHaveCount(0);
 	await expect(page.getByRole('button', { name: /Approve/ })).toHaveCount(0);
+	await page.getByRole('button', { name: 'Designs', exact: true }).click();
 	await page.getByRole('button', { name: 'Comment on image', exact: true }).click();
 	await comment(page, 'Looks right on desktop');
 	await expect(page.getByText('Saved to GitHub · fffffff', { exact: true })).toBeVisible();

@@ -43,6 +43,11 @@ export async function hubBody(request: Request): Promise<Record<string, unknown>
 	return hubFail('invalid-input');
 }
 const publicErrors: Record<string, number> = {
+	'evidence-stale': 409,
+	'evidence-unreadable': 404,
+	'artifact-refused': 404,
+	'artifact-too-large': 413,
+	'invalid-evidence-revision': 409,
 	forbidden: 403,
 	'not-found': 404,
 	'invalid-input': 400,

@@ -1,0 +1,50 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.projection-cache-discard",
+	"kind": "function",
+	"title": "projectionCacheDiscard",
+	"responsibility": "Owns the projectionCacheDiscard shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/projectionCacheDiscard.ts"],
+		"symbols": ["projectionCacheDiscard"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "projectionCacheDiscard.directory",
+				"type": "string"
+			},
+			{
+				"name": "projectionCacheDiscard.scope",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "projectionCacheDiscard",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/projectionCacheDiscard.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/projectionCacheDiscard.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

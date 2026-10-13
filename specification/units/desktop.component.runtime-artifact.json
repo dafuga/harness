@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.runtime-artifact",
+	"kind": "component",
+	"title": "RuntimeArtifact",
+	"responsibility": "Owns the RuntimeArtifact Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/RuntimeArtifact.svelte"],
+		"symbols": ["RuntimeArtifact"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "RuntimeArtifact.cell",
+				"type": "BehaviorCell"
+			},
+			{
+				"name": "RuntimeArtifact.label",
+				"type": "string"
+			},
+			{
+				"name": "RuntimeArtifact.lost",
+				"type": "boolean"
+			},
+			{
+				"name": "RuntimeArtifact.refusal",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "RuntimeArtifact",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.status-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-behavior",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-artifact",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/RuntimeArtifact.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/RuntimeArtifact.svelte"
+			}
+		]
+	},
+	"scenarios": ["runtime-evidence-ui"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -13,7 +13,8 @@
 			"SourceHistory",
 			"SourceHistoryRepository",
 			"SourceHistoryRepository.constructor",
-			"SourceHistoryRepository.read"
+			"SourceHistoryRepository.read",
+			"SourceHistoryRepository.revision"
 		]
 	},
 	"contract": {
@@ -26,12 +27,24 @@
 			{
 				"name": "SourceHistoryRepository.read.limit",
 				"type": "number"
+			},
+			{
+				"name": "SourceHistoryRepository.revision.commit",
+				"type": "string"
+			},
+			{
+				"name": "SourceHistoryRepository.revision.branches",
+				"type": "string[]"
 			}
 		],
 		"outputs": [
 			{
 				"name": "SourceHistoryRepository.read",
 				"type": "Promise<SourceHistory>"
+			},
+			{
+				"name": "SourceHistoryRepository.revision",
+				"type": "Promise<SourceRevision | undefined>"
 			}
 		],
 		"errors": []
@@ -63,7 +76,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["desktop-recorded-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -7,8 +7,9 @@
 		"kind": "app"
 	},
 	"scripts": {
-		"dev": "vite dev --host 127.0.0.1 --port 5798 --strictPort",
-		"build": "vite build",
+		"dev": "bun run sync:shared && vite dev --host 127.0.0.1 --port 5798 --strictPort",
+		"build": "bun run sync:shared && vite build",
+		"sync:shared": "bun run --cwd ../desktop svelte-kit sync && bun run --cwd ../reports svelte-kit sync",
 		"check": "bun run format:check && bun run typecheck && bun run lint && bun run test && bun run build && bun run audit",
 		"typecheck": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"format:check": "prettier --check .",
@@ -16,7 +17,7 @@
 		"lint": "svelte-kit sync && eslint .",
 		"audit": "bun scripts/harness-audit.ts",
 		"test": "bun run test:unit",
-		"test:unit": "vitest run",
+		"test:unit": "bun run sync:shared && vitest run",
 		"test:e2e": "playwright test"
 	},
 	"devDependencies": {

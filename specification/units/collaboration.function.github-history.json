@@ -53,7 +53,17 @@
 	},
 	"dependencies": [
 		{
+			"unit": "collaboration.function.github-commit-facts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "collaboration.function.github-history-page",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.function.github-reaches",
 			"via": "import",
 			"origin": "derived"
 		},

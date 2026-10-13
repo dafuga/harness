@@ -16,6 +16,10 @@
 			{
 				"name": "binaryAnswer.bytes",
 				"type": "Uint8Array"
+			},
+			{
+				"name": "binaryAnswer.mediaType",
+				"type": "unknown"
 			}
 		],
 		"outputs": [
@@ -43,7 +47,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["desktop-recorded-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

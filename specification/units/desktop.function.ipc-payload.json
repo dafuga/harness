@@ -61,6 +61,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.function.evidence-payload",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.function.ipc-fields",
 			"via": "import",
 			"origin": "derived"

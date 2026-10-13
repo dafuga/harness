@@ -1,7 +1,7 @@
 /**
  * TEST ONLY. The native acceptance of the iOS app, repeatable on one machine:
  *
- *   cd packages/desktop && bunx vite-node scripts/ios-acceptance.ts
+ *   cd packages/desktop && bun run ios:acceptance
  *
  * It builds the simulator products from the working tree, starts a fixture computer of its own
  * (the real relay Worker in workerd and the real RemoteHostService over a synthetic project, on

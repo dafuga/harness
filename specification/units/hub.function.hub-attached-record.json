@@ -1,0 +1,75 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.hub-attached-record",
+	"kind": "function",
+	"title": "hubAttachedRecord",
+	"responsibility": "Owns the hubAttachedRecord shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/hubAttachedRecord.ts"],
+		"symbols": ["HubAttachedRecord", "hubRecordJson", "hubAttachedRecord"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hubRecordJson.bytes",
+				"type": "Uint8Array"
+			},
+			{
+				"name": "hubAttachedRecord.result",
+				"type": "HubAttachedRecord"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hubRecordJson",
+				"type": "unknown"
+			},
+			{
+				"name": "hubAttachedRecord",
+				"type": "HubAttachedRecord"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.history-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.seal-record",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.attached-record",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.verification-record",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/hubAttachedRecord.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/hubAttachedRecord.ts"
+			}
+		]
+	},
+	"scenarios": ["hub-recorded-evidence"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

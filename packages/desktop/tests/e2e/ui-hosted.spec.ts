@@ -57,7 +57,7 @@ test('an offline event makes the shown shared project read-only before anything 
 	page
 }) => {
 	await hostedFixture(page);
-	await page.goto(entity(gamma, 'main'));
+	await page.goto(entity(gamma, 'main', '/designs'));
 	await expect(message(page)).toBeEnabled();
 	await cache(page, { projectId: alpha, status: 'offline', cachedAt: saved });
 	await expect(message(page)).toBeEnabled();
@@ -125,7 +125,7 @@ test('history loads further pages for the shown branch and commit, and comments 
 		{ ...asked, page: 2 },
 		{ ...asked, page: 3 }
 	]);
-	await page.getByRole('button', { name: 'Design', exact: true }).click();
+	await page.getByRole('button', { name: 'Designs', exact: true }).click();
 	await page.getByRole('button', { name: 'Comment on image', exact: true }).click();
 	await message(page).fill('Looks right');
 	await page.getByRole('button', { name: 'Send comment', exact: true }).click();

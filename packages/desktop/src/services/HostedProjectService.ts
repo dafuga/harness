@@ -2,6 +2,8 @@ import type { DesktopBridge } from '../models/DesktopBridge.types';
 import type { ProjectSessionService } from './ProjectSessionService';
 import type { RemoteProjectPort, HumanCommentDraft } from '../models/ProjectContext.types';
 type Bridge = Omit<DesktopBridge, 'onRunEvent'>;
+/** A shared project dispatches only the reads its hosted port offers. */
+const unread = 'Recorded evidence of a shared project is not read on this computer yet.';
 export class HostedProjectService {
 	private selected: string | null = null;
 	constructor(
@@ -40,7 +42,11 @@ export class HostedProjectService {
 		}
 		this.session.pending++;
 		try {
-			const snapshot = await this.remote.snapshot({ projectId, branch: null, commit: null });
+			const snapshot = await this.remote.snapshot({
+				projectId,
+				branch: null,
+				commit: null
+			});
 			this.selected = projectId;
 			return snapshot;
 		} finally {
@@ -71,7 +77,18 @@ export class HostedProjectService {
 			);
 			return { kind: 'shared', projectId: input.projectId, thread };
 		}
-		const methods = ['snapshot', 'entity', 'source', 'image', 'messages', 'history'] as const;
+		if (['evidence', 'artifact'].includes(key) && !this.remote[key as 'evidence' | 'artifact'])
+			throw new Error(unread);
+		const methods = [
+			'snapshot',
+			'entity',
+			'source',
+			'image',
+			'messages',
+			'history',
+			'evidence',
+			'artifact'
+		] as const;
 		if (!(methods as readonly string[]).includes(key))
 			throw new Error('Agent runs and source mutations are unavailable in shared projects.');
 		const method = this.remote[key as (typeof methods)[number]] as (

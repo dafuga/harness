@@ -6,8 +6,16 @@
 		workspace,
 		to,
 		class: style = '',
+		label,
 		children
-	}: { workspace: Workspace; to: string; class?: string; children: Snippet } = $props();
+	}: {
+		workspace: Workspace;
+		to: string;
+		class?: string;
+		/** What the link does, where its text alone does not say it. */
+		label?: string;
+		children: Snippet;
+	} = $props();
 	/**
 	 * Every workspace link is built by the workspace and resolved here against the base of the
 	 * app that renders it, so no component cuts a prefix off a path.
@@ -18,6 +26,7 @@
 <a
 	class={style}
 	{href}
+	aria-label={label}
 	onclick={(event) => {
 		event.preventDefault();
 		void workspace.navigate(to);

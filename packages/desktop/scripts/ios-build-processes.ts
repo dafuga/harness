@@ -4,30 +4,21 @@ import { basename, sep } from 'node:path';
 import { classifyProcess, platformServices } from '../../../src/utils/platformServices';
 import { processDescendants, signalProcesses } from '../../../src/utils/processDescendants';
 import type { TrackedProcess } from '../../../src/utils/processDescendants';
+import { buildObservation, finishObservation } from './ios-build-observation';
+import { observeIosServices } from './ios-service-observers';
 import { desktopRoot, tried } from './ios-products';
 
 /**
- * Runs a build tool and settles what it leaves behind. xcodebuild starts Interface Builder
- * daemons (`ibtoold`) through `ibtool` and `actool`; they leave its process group and stay for
- * minutes. Such a daemon is shared: an idle one is taken up by any other build of the same
- * person, so having started one is no right to end it. Neither tool documents a way to run
- * without it.
- *
- * So a process that runs from the developer tools or from the system's own services is the
- * platform's and is never signalled here, whoever started it. Under a Harness verification,
- * where a command may not return while something it started still runs, it is waited for until
- * it retires by itself; only the deadline of the caller ends that wait. A vetted service that
- * has left the build is not waited for: the runner hands it to the system. Whatever else the
- * tool started and left is this build's own and is ended, each process by its id and the time
- * it started.
- *
- * Nothing is concluded and nothing is signalled when the processes cannot be observed, when a
- * process cannot be told apart, or while another build's `ibtool` or `actool` is running.
+ * Shared Apple services are never owned or signalled. Under verification, observe reused
+ * services too and await helper retirement; only a vetted delegated daemon may remain.
+ * Private cleanup retains pid/start checks and pauses while foreign build clients run.
  */
 const lookMs = 100;
 /** How long what the tool started may take to end by itself once the tool has ended. */
 const settleMs = 300;
 const graceMs = 1000;
+/** Extra observers are bounded; owned descendants retain the original caller deadline. */
+const retirementMs = 30_000;
 const sharedClients = ['ibtool', 'actool'];
 /** Where Apple's developer tools and system services run from, beside the selected Xcode. */
 const platformRoots = ['/Library/Developer/', '/System/Library/', '/usr/libexec/'];
@@ -65,12 +56,21 @@ function pause(milliseconds: number): Promise<void> {
 function table(): Promise<Map<number, Row> | null> {
 	const row = /^\s*(\d+)\s+(\w+\s+\w+\s+\d+\s+[\d:]+\s+\d+)\s+(.+?)\s*$/;
 	return new Promise((done) => {
-		execFile('ps', ['-A', '-o', 'pid=,lstart=,comm='], { maxBuffer: 16_000_000 }, (error, out) => {
-			const rows = new Map<number, Row>();
-			for (const found of (error ? '' : out).split('\n').map((line) => row.exec(line)))
-				if (found) rows.set(Number(found[1]), { started: found[2], executable: found[3] });
-			done(rows.has(process.pid) ? rows : null);
-		});
+		execFile(
+			'ps',
+			['-A', '-o', 'pid=,lstart=,comm='],
+			{ maxBuffer: 16_000_000, timeout: 5000 },
+			(error, out) => {
+				const rows = new Map<number, Row>();
+				for (const found of (error ? '' : out).split('\n').map((line) => row.exec(line)))
+					if (found)
+						rows.set(Number(found[1]), {
+							started: found[2],
+							executable: found[3]
+						});
+				done(rows.has(process.pid) ? rows : null);
+			}
+		);
 	});
 }
 
@@ -145,26 +145,30 @@ async function nothingLeft(
 async function settled(
 	known: Map<number, TrackedProcess>,
 	standing: Standing,
-	stopped: () => boolean
+	stopped: () => boolean,
+	services: () => Promise<boolean>
 ) {
 	const state = { ...standing, asked: new Map<number, number>() };
+	const began = Date.now();
 	await pause(settleMs);
 	while (!stopped()) {
 		const rows = await table();
-		if (rows && (await nothingLeft(rows, known, state))) return null;
+		const ownSettled = rows && (await nothingLeft(rows, known, state));
+		if (ownSettled && (await services())) return null;
+		if ((!rows || ownSettled) && Date.now() - began >= retirementMs)
+			return 'Build helpers did not retire within 30 seconds; shared or unknown processes were not signalled.';
 		await pause(lookMs);
 	}
 	return stoppedEarly;
 }
 
-/**
- * The tool's exit code and output, once it has ended and what it started has been settled. A
- * tool that fails or cannot be started is settled in the same way. When this process is told to
- * stop, the tool is stopped and nothing else is signalled.
- */
-export function followed(command: string[]): Promise<FollowedResult> {
+/** Settles success and failure alike; interruption stops the tool, never shared helpers. */
+export async function followed(command: string[]): Promise<FollowedResult> {
 	const group = Number(tried(['ps', '-o', 'pgid=', '-p', String(process.pid)]).output);
 	const standing = { developer: developerDirectory(), group };
+	const services = verifying
+		? await observeIosServices(await table(), group)
+		: buildObservation(async () => true);
 	const child = spawn(command[0], command.slice(1), {
 		cwd: desktopRoot,
 		stdio: ['ignore', 'pipe', 'pipe']
@@ -173,14 +177,18 @@ export function followed(command: string[]): Promise<FollowedResult> {
 	const known = new Map<number, TrackedProcess>();
 	const output: Buffer[] = [];
 	let stopped = false;
-	const look = async () => {
-		for (const item of await descendants.survivors()) known.set(item.pid, item);
-	};
+	const observation = buildObservation(async (signal) => {
+		const found = await descendants.survivors();
+		if (signal.aborted) return false;
+		for (const item of found) known.set(item.pid, item);
+		await services.look();
+		return true;
+	});
 	const stop = () => {
 		stopped = true;
 		child.kill('SIGTERM');
 	};
-	const looking = setInterval(() => void look(), lookMs);
+	const looking = setInterval(() => void observation.look(), lookMs);
 	child.stdout.on('data', (chunk: Buffer) => output.push(chunk));
 	child.stderr.on('data', (chunk: Buffer) => output.push(chunk));
 	process.once('SIGTERM', stop).once('SIGINT', stop);
@@ -190,11 +198,20 @@ export function followed(command: string[]): Promise<FollowedResult> {
 			if (ended) return;
 			ended = true;
 			descendants.closed();
-			await look();
-			const left = await settled(known, standing, () => stopped);
+			const left = await finishObservation(
+				() =>
+					settled(
+						known,
+						standing,
+						() => stopped,
+						() => services.look()
+					),
+				[observation, services]
+			);
 			clearInterval(looking);
 			process.off('SIGTERM', stop).off('SIGINT', stop);
-			resolve({ code: left ? code || 1 : code, output: Buffer.concat(output).toString(), left });
+			const text = Buffer.concat(output).toString();
+			resolve({ code: left ? code || 1 : code, output: text, left });
 		};
 		child.once('error', () => void finish(1));
 		child.once('close', (code) => void finish(code ?? 1));

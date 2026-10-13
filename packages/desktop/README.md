@@ -99,7 +99,8 @@ bun run ios:build:simulator --sync       # Debug; --release for Release; --sync 
 bun run ios:check:vectors                # Swift reproduces the crypto vectors of the protocol
 bun run ios:check:native                 # the app's real Swift logic in a driver, Debug and Release
 bun run ios:check:limits                 # size limits of the Swift source, which harness audit cannot read
-bunx vite-node scripts/ios-acceptance.ts # TEST ONLY native acceptance, several minutes
+bun run ios:acceptance                   # TEST ONLY native acceptance, several minutes
+bun run remote:fixture                   # TEST ONLY fixture computer on 127.0.0.1, until stopped
 ```
 
 Every simulator product is signed ad hoc with the entitlements of `ios/App/Simulator.entitlements`, the app's identifier alone. Xcode would otherwise put a team of whatever account is signed in to it into the product; the build reads each product back and fails if it names a team, an account or a provisioning profile, if it allows plain http to this machine, or if it can be inspected. Without a signature the simulator's Keychain refuses to keep a pairing (`-34018`).

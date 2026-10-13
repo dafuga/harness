@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { explorerName } from '../../../reports/src/utils/explorerName';
 	import type { Relationship } from '../models/Desktop.types';
 	import type { Workspace } from '../lib/stores/workspace.svelte';
 	import PlanBadge from './PlanBadge.svelte';
@@ -10,6 +11,8 @@
 		workspace,
 		title = 'Relationships'
 	}: { relationships: Relationship[]; workspace: Workspace; title?: string } = $props();
+	/** A related entity is named in words, as it is where it is listed and opened. */
+	const named = (item: Relationship) => explorerName({ id: item.id, kind: '', title: item.title });
 </script>
 
 <section class="panel">
@@ -20,8 +23,8 @@
 				<div>
 					<small>{item.direction === 'uses' ? 'Uses' : 'Used by'}</small
 					>{#if item.category}<WorkspaceLink {workspace} to={workspace.path(item.category, item.id)}
-							>{item.title}</WorkspaceLink
-						>{:else}<span>{item.title}</span>{/if}
+							>{named(item)}</WorkspaceLink
+						>{:else}<span>{named(item)}</span>{/if}
 				</div>
 				{#if item.hasPlan}<PlanBadge />{/if}<StatusIcon
 					status={item.verification}

@@ -1,0 +1,104 @@
+import type { Page, TestInfo } from '@playwright/test';
+import type { ScenarioManifest } from '../../../../src/core/unitTypes';
+import scenarioData from '../../../../specification/scenarios/runtime-evidence-ui.json' with { type: 'json' };
+import { buildStamp } from '../../../../src/utils/buildStamp';
+import { evidenceRequested, recordCapture } from '../../../../src/utils/recordCapture';
+
+const scenario: ScenarioManifest = scenarioData as ScenarioManifest;
+const note =
+	'Actual renderer over SYNTHETIC orders, history, record IDs, hashes and clips. Only the outer build and revision identify tested software; fixture history is not real sealed evidence.';
+
+/** Wait for final pixels before either smoke or verification captures. */
+async function settled(page: Page): Promise<void> {
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		await Promise.all(
+			[...document.images].map(async (image) => {
+				await image.decode();
+				if (!image.complete || image.naturalWidth <= 0 || image.naturalHeight <= 0)
+					throw new Error(`Image not ready: ${image.alt}`);
+			})
+		);
+	});
+	await page.mouse.move(0, 0);
+}
+
+async function provenance(page: Page) {
+	const buildId = buildStamp(
+		(await page.locator('meta[name="harness-build"]').getAttribute('content')) ?? undefined
+	);
+	const revision = process.env.HARNESS_VERIFY_REVISION;
+	if (!buildId) throw new Error('The rendered build has no compiled identity stamp');
+	if (process.env.HARNESS_VERIFY !== '1' || !/^[a-f0-9]{40}$/.test(revision ?? ''))
+		throw new Error(
+			'A verification revision is required; fixture commits cannot identify the renderer'
+		);
+	return { buildId, revision: revision! };
+}
+
+/** Record required scenario evidence, or an explicitly opted-in unsealed local smoke PNG. */
+export async function runtimeEvidence(page: Page, info: TestInfo, state: string): Promise<void> {
+	const requested = evidenceRequested();
+	if (!requested && process.env.TAKE_SCREENSHOT !== 'true') return;
+	await settled(page);
+	if (!requested) {
+		await page.screenshot({
+			path: info.outputPath(`runtime-smoke-${state}.png`),
+			fullPage: true,
+			animations: 'disabled',
+			caret: 'hide'
+		});
+		return;
+	}
+	const server = await provenance(page);
+	const size = page.viewportSize();
+	const viewport = scenario.viewports.find(
+		(item) => item.width === size?.width && item.height === size?.height
+	)?.id;
+	if (!viewport) throw new Error('The capture viewport is not declared by runtime-evidence-ui');
+	const evidence = scenario.evidence.find(
+		(item) =>
+			item.kind === 'screenshot' && item.viewports.includes(viewport) && item.states.includes(state)
+	);
+	if (!evidence) throw new Error(`The capture state ${state} is not declared for ${viewport}`);
+	recordCapture(
+		{
+			evidence: evidence.id,
+			kind: 'screenshot',
+			state,
+			viewport,
+			file: `runtime-${state}-${viewport}.png`,
+			mediaType: 'image/png',
+			provenance: 'actual-capture',
+			server,
+			note
+		},
+		await page.screenshot({ fullPage: true, animations: 'disabled', caret: 'hide' })
+	);
+}
+
+/** Keep the exact playable fixture bytes, with an honest transcript of their silent content. */
+export async function runtimeAudio(page: Page): Promise<void> {
+	if (!evidenceRequested()) return;
+	const server = await provenance(page);
+	const data = await page.locator('audio').evaluate(async (audio: HTMLAudioElement) => {
+		if (!Number.isFinite(audio.duration) || audio.duration <= 0)
+			throw new Error('Fixture audio is not playable');
+		return [...new Uint8Array(await (await fetch(audio.currentSrc)).arrayBuffer())];
+	});
+	recordCapture(
+		{
+			evidence: 'runtime-audio-fixture',
+			kind: 'audio',
+			state: 'audio-current',
+			file: 'runtime-silent-fixture.wav',
+			mediaType: 'audio/wav',
+			provenance: 'fixture',
+			server,
+			transcript:
+				'[One second of silence. The displayed "Order filed." transcript is synthetic fixture metadata, not audible speech.]',
+			note
+		},
+		Uint8Array.from(data)
+	);
+}

@@ -158,16 +158,18 @@ test.skipIf(!mac)(
 test.skipIf(!mac)(
 	'when the processes cannot be observed nothing is signalled and the build does not call itself done',
 	async () => {
-		const { home, journal: file, started } = scene('blind', 30);
+		const { home, journal: file } = scene('blind', 30);
 		writeFileSync(join(home, 'bin/ps'), '#!/bin/sh\nexit 1\n');
 		chmodSync(join(home, 'bin/ps'), 0o755);
-		const running = verified(home, 7000, `${join(home, 'bin')}:${process.env.PATH}`);
-		await pause(5000);
-		const { shared, own } = started();
-		const before = { journal: journal(file), shared: alive(shared), own: alive(own) };
-		const result = await running;
-		expect(before).toEqual({ journal: '', shared: true, own: true });
-		expect(result.timedOut).toBe(true);
+		const result = await verified(home, 7000, `${join(home, 'bin')}:${process.env.PATH}`);
+		expect(result.exitCode).toBe(1);
+		expect(result.timedOut).toBe(false);
+		expect(result.survivors).toEqual([]);
+		expect(existsSync(join(home, 'started'))).toBe(false);
+		expect(journal(file)).toBe('');
+		expect(readFileSync(join(home, 'log'), 'utf8')).toContain(
+			'services before the build could not be observed'
+		);
 	},
 	90_000
 );

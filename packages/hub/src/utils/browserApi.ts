@@ -1,7 +1,10 @@
+import { hostedResponse } from '$desktop/utils/hostedResponse';
+import { artifactLimit } from '$desktop/utils/artifactMedia';
 import { browserError } from './browserError';
 
 export type Query = Record<string, string | null | undefined>;
 export interface BrowserApi {
+	media(path: string, query?: Query): Promise<{ bytes: Uint8Array; mediaType: string }>;
 	get<T>(path: string, query?: Query): Promise<T>;
 	send<T>(method: 'POST' | 'DELETE', path: string, body?: unknown): Promise<T>;
 	bytes(path: string, query?: Query): Promise<Uint8Array>;
@@ -51,7 +54,10 @@ export function browserApi(
 			body: write ? JSON.stringify(body ?? {}) : undefined,
 			signal: AbortSignal.timeout(patience)
 		}).catch(() => {
-			throw Object.assign(new Error(browserError('', 0)), { status: 0, code: '' });
+			throw Object.assign(new Error(browserError('', 0)), {
+				status: 0,
+				code: ''
+			});
 		});
 		if (response.ok) return response;
 		const refused = await failure(response);
@@ -63,6 +69,13 @@ export function browserApi(
 			(await (await call('GET', address(path, query))).json()) as T,
 		send: async <T>(method: 'POST' | 'DELETE', path: string, body?: unknown) =>
 			(await (await call(method, address(path), body)).json()) as T,
+		media: async (path: string, query?: Query) => {
+			const response = await call('GET', address(path, query));
+			return {
+				bytes: await hostedResponse(response, artifactLimit),
+				mediaType: response.headers.get('content-type') ?? ''
+			};
+		},
 		bytes: async (path: string, query?: Query) =>
 			new Uint8Array(await (await call('GET', address(path, query))).arrayBuffer())
 	};

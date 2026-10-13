@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import { copyFile, mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { pinnedToolchain } from '../src/utils/pinnedToolchain';
 
 const out = 'target/kernel';
 const rawWasm = 'target/wasm32-unknown-unknown/release/impact_kernel.wasm';
@@ -12,10 +13,16 @@ const reference = [
 	'portableJson.ts'
 ].map((file) => `src/utils/${file}`);
 
-function run(command: string[]): string {
-	const result = Bun.spawnSync(command, { stdout: 'pipe', stderr: 'inherit' });
+function run(command: string[], env?: Record<string, string | undefined>): string {
+	const result = Bun.spawnSync(command, { stdout: 'pipe', stderr: 'inherit', env });
 	if (result.exitCode !== 0) throw new Error(`${command.join(' ')} failed`);
 	return result.stdout.toString().trim();
+}
+
+/** Runs cargo or rustc of the toolchain rust-toolchain.toml pins; what is recorded is that one. */
+function rust(tool: 'cargo' | 'rustc', args: string[]): string {
+	const pinned = pinnedToolchain(tool);
+	return run([pinned.command, ...args], pinned.env);
 }
 
 /** Shrinks the module when wasm-opt is installed; otherwise ships the compiler output as is. */
@@ -40,8 +47,8 @@ async function sources(files: string[]) {
 	return { bytes: described.reduce((total, file) => total + file.bytes, 0), files: described };
 }
 
-run(['cargo', 'build', '--release', '--locked', '--bin', 'impact-kernel']);
-run(['cargo', 'build', '--release', '--locked', '--lib', '--target', 'wasm32-unknown-unknown']);
+rust('cargo', ['build', '--release', '--locked', '--bin', 'impact-kernel']);
+rust('cargo', ['build', '--release', '--locked', '--lib', '--target', 'wasm32-unknown-unknown']);
 await mkdir(out, { recursive: true });
 const wasmOpt = await optimize(join(out, 'impact-kernel.wasm'));
 await copyFile('target/release/impact-kernel', join(out, 'impact-kernel'));
@@ -50,8 +57,8 @@ const crate = (await readdir('crates/impact-kernel/src')).map(
 );
 const build = {
 	contract: 'impact-kernel/1',
-	rustc: run(['rustc', '--version']),
-	host: run(['rustc', '--print', 'host-tuple']),
+	rustc: rust('rustc', ['--version']),
+	host: rust('rustc', ['--print', 'host-tuple']),
 	wasmOpt,
 	rawWasmBytes: (await describe(rawWasm)).bytes,
 	wasm: await describe(join(out, 'impact-kernel.wasm')),

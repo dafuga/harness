@@ -1,4 +1,5 @@
 import type { VerificationRecord } from '../core/verificationTypes';
+import { canonicalJson } from './canonicalJson';
 
 export interface LineageSource {
 	/** The stored record with this id, if there is one. */
@@ -56,16 +57,26 @@ function scenarioProblems(
 		const subject = `scenario ${scenario.id} is inherited from record ${short(scenario.referencedRecord)}, which`;
 		const found = source.find(scenario.referencedRecord);
 		if (!found) return [`${subject} is not available`];
-		const tested = found.scenarios.find((item) => item.id === scenario.id);
-		const same =
-			tested?.status === 'passed' &&
-			tested.testedRevision === scenario.testedRevision &&
-			found.source.commit === scenario.testedRevision;
-		if (!same) return [`${subject} did not test it`];
+		const tested = testedOrigin(found, scenario);
+		if (!tested) return [`${subject} did not test it`];
+		if (canonicalJson(scenario.states) !== canonicalJson(tested.states))
+			return [
+				`scenario ${scenario.id} differs from the states and captures in its inherited record`
+			];
 		// A scenario that passed inside a record that failed is not proof: only a record that
 		// passed as a whole is one a later record may inherit from.
 		if (found.status !== 'passed') return [`${subject} did not pass`];
 		const problem = sound(found);
 		return problem ? [`${subject} is not sound: ${problem}`] : [];
 	});
+}
+
+function testedOrigin(
+	record: VerificationRecord,
+	scenario: VerificationRecord['scenarios'][number]
+) {
+	const tested = record.scenarios.find((item) => item.id === scenario.id);
+	if (tested?.status !== 'passed') return undefined;
+	if (tested.testedRevision !== scenario.testedRevision) return undefined;
+	return record.source.commit === scenario.testedRevision ? tested : undefined;
 }

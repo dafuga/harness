@@ -11,6 +11,7 @@ import type {
 	WireChannel
 } from '../models/Environment.types';
 import { cachedSnapshot } from '../utils/cachedSnapshot';
+import { remoteArtifact } from '../utils/remoteArtifact';
 import { remoteBinary } from '../utils/remoteBinary';
 import { remoteGrant } from '../utils/remoteGrant';
 
@@ -18,7 +19,14 @@ export interface CapacitorBridgeAdapterConfig {
 	plugin: RemoteNativePlugin;
 }
 
-type Input = { projectId?: string; revision?: RemoteRevision; commit?: string | null };
+/** What this bridge reads from an input, or adds to it; `sha256` names an artifact asked for. */
+type Input = {
+	projectId?: string;
+	revision?: RemoteRevision;
+	commit?: string | null;
+	sha256?: string;
+};
+type Operation = (input?: object) => unknown;
 const noFolder = 'A phone has no folders to open. Add the project on your computer.';
 const noRevision = 'Open the project at its branch tip before changing it.';
 const notAttached = 'This operation is not available on this connection.';
@@ -58,26 +66,27 @@ export class CapacitorBridgeAdapter {
 
 	/**
 	 * Operations the page finds only while the computer allows them. Drafts, permissions and
-	 * comments are never answered from a saved copy, so they are found only while it is reached.
+	 * comments have no saved copy, so they are found only while it is reached; evidence has one.
 	 */
 	private offered(): PropertyDescriptorMap {
-		type Operation = (input?: object) => unknown;
 		const when = (method: RemoteMethod, operation: Operation, live = false) => ({
 			enumerable: true,
 			get: () => (this.granted.has(method) && (this.reached || !live) ? operation : undefined)
 		});
+		const ask = (method: RemoteMethod, live = false) =>
+			when(method, (input) => this.request(method, input), live);
 		const select = (input?: object) => this.snapshot({ ...input, branch: null, commit: null });
+		const artifact = async (input?: object) =>
+			remoteArtifact(await this.request<RemoteBinary>('artifact', input), (input as Input).sha256);
 		return {
 			listProjects: when('listProjects', () => this.request('listProjects')),
 			selectProject: when('snapshot', select),
-			capabilities: when('capabilities', (input) => this.request('capabilities', input), true),
-			addComment: when('addComment', (input) => this.request('addComment', input), true),
-			pendingComments: when(
-				'pendingComments',
-				(input) => this.request('pendingComments', input),
-				true
-			),
-			history: when('history', (input) => this.request('history', input))
+			capabilities: ask('capabilities', true),
+			addComment: ask('addComment', true),
+			pendingComments: ask('pendingComments', true),
+			history: ask('history'),
+			evidence: ask('evidence'),
+			artifact: when('artifact', artifact)
 		};
 	}
 

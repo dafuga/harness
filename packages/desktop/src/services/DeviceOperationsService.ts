@@ -10,6 +10,7 @@ import {
 import type { RemoteGrant, RemoteMethod, WireRequest } from '../../../remote/src/index';
 import type { ProjectSnapshot } from '../models/Desktop.types';
 import { channels } from '../models/DesktopBridge.types';
+import type { EvidenceArtifactResult as Artifact } from '../models/DesktopEvidence.types';
 import { binaryAnswer } from '../utils/binaryAnswer';
 import { deviceCapabilities } from '../utils/deviceCapabilities';
 import { gitRead } from '../utils/gitRead';
@@ -44,7 +45,9 @@ export class DeviceOperationsService {
 	private readonly payloads = new IpcRequestValidator();
 	constructor(private readonly options: DeviceOperationsOptions) {}
 	methods(): RemoteMethod[] {
-		const reads = readMethods.filter((method) => method !== 'history'),
+		// Recorded evidence is read here for a phone; the history of an entity is not served yet.
+		const kept = ['history'],
+			reads = readMethods.filter((method) => !kept.includes(method)),
 			agents = this.options.grant().agents ? agentMethods : [];
 		return [attachMethod, ...reads, ...commentMethods, ...agents];
 	}
@@ -110,6 +113,8 @@ export class DeviceOperationsService {
 		const capabilities = deviceCapabilities(this.options.grant().agents);
 		if (method === 'capabilities') return capabilities;
 		if (method === 'image') return binaryAnswer(value as Uint8Array);
+		if (method === 'artifact')
+			return binaryAnswer((value as Artifact).bytes, (value as Artifact).mediaType);
 		if (method !== 'snapshot') return value;
 		const snapshot = value as ProjectSnapshot,
 			project = { ...snapshot.project, root: '' };

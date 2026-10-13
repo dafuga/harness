@@ -21,7 +21,7 @@ test('designless Plan preserves truthful status and branch/commit paths', async 
 	).toHaveCount(5);
 	await expect(page.getByRole('link', { name: 'Review designs' })).toHaveAttribute(
 		'href',
-		'/harness/branch/feat%2Factivity/pages/page%3Aactivity'
+		'/harness/branch/feat%2Factivity/pages/page%3Aactivity/designs'
 	);
 	await page.getByRole('link', { name: 'Review designs' }).click();
 	if (process.env.TAKE_SCREENSHOT === 'true') {
@@ -31,7 +31,7 @@ test('designless Plan preserves truthful status and branch/commit paths', async 
 		});
 		await page.screenshot({ path: 'test-results/ui-initial-plan.png', fullPage: true });
 	}
-	await expect(page).toHaveURL(/branch\/feat%2Factivity\/pages\/page%3Aactivity$/);
+	await expect(page).toHaveURL(/branch\/feat%2Factivity\/pages\/page%3Aactivity\/designs$/);
 	await expect(page.getByRole('heading', { name: 'No design image yet' })).toBeVisible();
 	await expect(page.getByRole('button', { name: 'Change', exact: true })).toBeDisabled();
 	await expect(page.getByRole('button', { name: 'Claude CLI', exact: true })).toBeDisabled();
@@ -50,7 +50,7 @@ test('designless Plan preserves truthful status and branch/commit paths', async 
 	await expect(page.getByRole('button', { name: 'New page' })).toBeDisabled();
 	await expect(page.getByRole('link', { name: 'Review designs' })).toHaveAttribute(
 		'href',
-		`/harness/branch/feat%2Factivity/commit/${'b'.repeat(40)}/pages/page%3Aactivity`
+		`/harness/branch/feat%2Factivity/commit/${'b'.repeat(40)}/pages/page%3Aactivity/designs`
 	);
 	await expect(
 		page

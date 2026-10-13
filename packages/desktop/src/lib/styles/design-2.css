@@ -31,3 +31,16 @@ pre {
 	overflow-wrap: anywhere;
 	color: var(--muted);
 }
+/* The address a page is served at: a fact beside its name, never the name itself. */
+.app-route {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	align-items: center;
+	margin: 6px 0 0;
+	font-size: 12px;
+	color: var(--muted);
+}
+.app-route code {
+	overflow-wrap: anywhere;
+}

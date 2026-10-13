@@ -58,6 +58,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.model.desktop-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.validator.ipc-request",
 			"via": "import",
 			"origin": "derived"
@@ -78,7 +83,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["desktop-recorded-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

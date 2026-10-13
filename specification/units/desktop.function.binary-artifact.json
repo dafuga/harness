@@ -1,0 +1,67 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.binary-artifact",
+	"kind": "function",
+	"title": "binaryArtifact",
+	"responsibility": "Owns the binaryArtifact shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/binaryArtifact.ts"],
+		"symbols": ["binaryArtifact"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "binaryArtifact.value",
+				"type": "RemoteBinary"
+			}
+		],
+		"outputs": [
+			{
+				"name": "binaryArtifact",
+				"type": "Promise<EvidenceArtifactResult>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.remote-binary",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/binaryArtifact.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/binaryArtifact.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -23,6 +23,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.function.binary-artifact",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.function.desktop-ipc",
 			"via": "import",
 			"origin": "derived"

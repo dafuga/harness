@@ -1,0 +1,251 @@
+{
+	"schemaVersion": 1,
+	"id": "runtime-evidence-ui",
+	"title": "Compiled runtime evidence viewer over explicit synthetic history fixtures",
+	"kind": "ui",
+	"units": [
+		"desktop.component.runtime-pane",
+		"desktop.component.runtime-screens",
+		"desktop.component.runtime-behavior",
+		"desktop.component.runtime-audio",
+		"desktop.component.runtime-artifact",
+		"desktop.component.runtime-run",
+		"desktop.component.runtime-evidence",
+		"desktop.component.coverage-panel",
+		"desktop.store.entity-evidence",
+		"desktop.style.evidence"
+	],
+	"states": [
+		{
+			"id": "current",
+			"title": "current",
+			"coverage": "required"
+		},
+		{
+			"id": "commit",
+			"title": "commit",
+			"coverage": "required"
+		},
+		{
+			"id": "inherited",
+			"title": "inherited",
+			"coverage": "required"
+		},
+		{
+			"id": "not-alike",
+			"title": "not alike",
+			"coverage": "required"
+		},
+		{
+			"id": "missing",
+			"title": "missing",
+			"coverage": "required"
+		},
+		{
+			"id": "rejected",
+			"title": "rejected",
+			"coverage": "required"
+		},
+		{
+			"id": "first-commit",
+			"title": "first commit",
+			"coverage": "required"
+		},
+		{
+			"id": "function-current",
+			"title": "function current",
+			"coverage": "required"
+		},
+		{
+			"id": "function-commit",
+			"title": "function commit",
+			"coverage": "required"
+		},
+		{
+			"id": "behavior-unknown",
+			"title": "behavior unknown",
+			"coverage": "required"
+		},
+		{
+			"id": "refused",
+			"title": "refused",
+			"coverage": "required"
+		},
+		{
+			"id": "audio-current",
+			"title": "audio current",
+			"coverage": "required"
+		},
+		{
+			"id": "audio-commit",
+			"title": "audio commit",
+			"coverage": "required"
+		},
+		{
+			"id": "coverage",
+			"title": "coverage",
+			"coverage": "required"
+		},
+		{
+			"id": "old-host-gap",
+			"title": "old host gap",
+			"coverage": "required"
+		},
+		{
+			"id": "shared-saved",
+			"title": "shared saved",
+			"coverage": "required"
+		},
+		{
+			"id": "status-missing",
+			"title": "status missing",
+			"coverage": "required"
+		},
+		{
+			"id": "screen-interaction",
+			"title": "screen interaction",
+			"coverage": "required"
+		},
+		{
+			"id": "behavior-interaction",
+			"title": "behavior interaction",
+			"coverage": "required"
+		},
+		{
+			"id": "state-interaction",
+			"title": "state interaction",
+			"coverage": "required"
+		},
+		{
+			"id": "review-interaction",
+			"title": "review interaction",
+			"coverage": "required"
+		},
+		{
+			"id": "phone-gap",
+			"title": "phone gap",
+			"coverage": "required"
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 1440,
+			"height": 900
+		},
+		{
+			"id": "tablet",
+			"width": 820,
+			"height": 1180
+		},
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 844
+		}
+	],
+	"tests": [
+		{
+			"id": "screens",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-evidence-screens.spec.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 240000
+		},
+		{
+			"id": "behavior",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-evidence-behavior.spec.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 240000
+		},
+		{
+			"id": "states",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-evidence-states.spec.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 240000
+		},
+		{
+			"id": "review",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-evidence-review.spec.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 240000
+		}
+	],
+	"evidence": [
+		{
+			"id": "runtime-evidence-output",
+			"kind": "output",
+			"states": [
+				"screen-interaction",
+				"behavior-interaction",
+				"state-interaction",
+				"review-interaction"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "runtime-screens-desktop",
+			"kind": "screenshot",
+			"states": [
+				"current",
+				"commit",
+				"inherited",
+				"not-alike",
+				"missing",
+				"rejected",
+				"first-commit",
+				"function-current",
+				"function-commit",
+				"behavior-unknown",
+				"refused",
+				"audio-current",
+				"audio-commit",
+				"coverage",
+				"old-host-gap",
+				"shared-saved",
+				"status-missing"
+			],
+			"viewports": ["desktop"],
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "full-page",
+			"required": true
+		},
+		{
+			"id": "runtime-screens-tablet",
+			"kind": "screenshot",
+			"states": ["current", "commit"],
+			"viewports": ["tablet"],
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "full-page",
+			"required": true
+		},
+		{
+			"id": "runtime-screens-mobile",
+			"kind": "screenshot",
+			"states": ["current", "commit", "phone-gap"],
+			"viewports": ["mobile"],
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "full-page",
+			"required": true
+		},
+		{
+			"id": "runtime-audio-fixture",
+			"kind": "audio",
+			"states": ["audio-current"],
+			"viewports": [],
+			"provenance": "fixture",
+			"required": true
+		}
+	]
+}

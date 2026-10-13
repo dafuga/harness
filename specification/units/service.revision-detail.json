@@ -11,6 +11,7 @@
 		"symbols": [
 			"RevisionDetail",
 			"BuiltRevision",
+			"revisionSources",
 			"RevisionDetailService",
 			"RevisionDetailService.constructor",
 			"RevisionDetailService.build"
@@ -20,6 +21,10 @@
 		"origin": "derived",
 		"inputs": [
 			{
+				"name": "revisionSources.root",
+				"type": "string"
+			},
+			{
 				"name": "RevisionDetailService.constructor.root",
 				"type": "string"
 			},
@@ -28,15 +33,23 @@
 				"type": "HistoryStatusService"
 			},
 			{
+				"name": "RevisionDetailService.constructor.kept",
+				"type": "unknown"
+			},
+			{
 				"name": "RevisionDetailService.build.commit",
 				"type": "string"
 			},
 			{
 				"name": "RevisionDetailService.build.media",
-				"type": "HistoryMediaService"
+				"type": "MediaPlacer"
 			}
 		],
 		"outputs": [
+			{
+				"name": "revisionSources",
+				"type": "unknown"
+			},
 			{
 				"name": "RevisionDetailService.build",
 				"type": "Promise<BuiltRevision>"
@@ -62,6 +75,11 @@
 		},
 		{
 			"unit": "function.explanation-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.media-place",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -116,11 +134,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "service.history-media",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "service.history-status",
 			"via": "import",
 			"origin": "derived"
@@ -141,7 +154,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["desktop-recorded-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

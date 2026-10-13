@@ -33,6 +33,8 @@ export const readMethods = [
 	'history',
 	'source',
 	'image',
+	'evidence',
+	'artifact',
 	'messages',
 	'pendingComments',
 	'providers'
@@ -191,7 +193,8 @@ export interface RemoteAttachment {
 }
 export interface RemoteBinary {
 	encoding: 'base64';
-	mediaType: 'image/png';
+	/** `image/png` for a design image; a recorded artifact carries its own. */
+	mediaType: string;
 	byteLength: number;
 	sha256: string;
 	data: string;

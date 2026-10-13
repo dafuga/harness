@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.hosted-public-failure",
+	"kind": "function",
+	"title": "hostedPublicFailure",
+	"responsibility": "Owns the hostedPublicFailure shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/hostedPublicFailure.ts"],
+		"symbols": ["hostedPublicFailure"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hostedPublicFailure.response",
+				"type": "Response"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hostedPublicFailure",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.hosted-response",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.validator.hosted-failure",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/hostedPublicFailure.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/hostedPublicFailure.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

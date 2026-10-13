@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount, untrack } from 'svelte';
+	import { explorerName } from '../../../reports/src/utils/explorerName';
 	import type { EntityDetail, ProviderState, ThreadInfo } from '../models/Desktop.types';
 	import type { RunEvent } from '../models/DesktopBridge.types';
 	import type { Workspace } from '../lib/stores/workspace.svelte';
@@ -141,7 +142,7 @@
 
 <aside class="thread-panel" aria-label="Design conversation">
 	<div class="row">
-		<h2>{entity.title} · {heading}</h2>
+		<h2>{explorerName(entity)} · {heading}</h2>
 		<button class="icon-button" aria-label="Close conversation" onclick={close}>×</button>
 	</div>
 	<p class="muted">

@@ -15,6 +15,8 @@ const execution = /\/(runs|plans|approve|changes)(\/|$)/;
 const message = (page: Page) => page.getByRole('textbox', { name: 'Message', exact: true });
 const entity = (project: string, revision: string) =>
 	`/projects/${project}/harness/branch/${revision}/pages/page.activity`;
+/** An entity opens on its overview; its designs and their threads are a section of it. */
+const designs = (project: string, revision: string) => `${entity(project, revision)}/designs`;
 const writes = (state: HostedState) => state.calls.filter((call) => call.method !== 'GET');
 
 async function noAgentControls(page: Page) {
@@ -39,6 +41,9 @@ test('the hosted workspace has no agent control and a comment never calls a run'
 	const open = page.getByRole('link', { name: /Open page/ });
 	await expect(open).toHaveAttribute('href', entity(atlas, 'main'));
 	await open.click();
+	// The hosted page is the same viewer: an entity opens on its overview, with its evidence.
+	await expect(page.getByRole('region', { name: 'Recorded runtime evidence' })).toBeVisible();
+	await page.getByRole('button', { name: 'Designs', exact: true }).click();
 	await expect(
 		page.getByRole('img', { name: 'Atlas activity v001 desktop default' })
 	).toBeVisible();
@@ -70,7 +75,7 @@ test('the hosted workspace has no agent control and a comment never calls a run'
 
 test('a comment on a historical commit names that commit', async ({ page }) => {
 	const state = await hostedFixture(page);
-	await page.goto(entity(atlas, `main/commit/${earlier}`));
+	await page.goto(designs(atlas, `main/commit/${earlier}`));
 	await expect(
 		page.getByText(`Historical commit · ${earlier.slice(0, 7)}`, { exact: true })
 	).toBeVisible();
@@ -89,7 +94,7 @@ test('changing project leaves nothing of the previous one and reads only the new
 	page
 }) => {
 	const state = await hostedFixture(page);
-	await page.goto(entity(atlas, 'main'));
+	await page.goto(designs(atlas, 'main'));
 	await page.getByRole('button', { name: 'Open thread 1', exact: true }).click();
 	await expect(page.getByText('Atlas: align the filters.')).toBeVisible();
 	const project = page.getByLabel('Project', { exact: true });

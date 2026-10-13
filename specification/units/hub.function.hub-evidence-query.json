@@ -1,0 +1,78 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.hub-evidence-query",
+	"kind": "function",
+	"title": "hubEvidenceQuery",
+	"responsibility": "Owns the hubEvidenceQuery shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/hubEvidenceQuery.ts"],
+		"symbols": ["hubEvidenceQuery", "hubArtifactQuery"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hubEvidenceQuery.request",
+				"type": "Request"
+			},
+			{
+				"name": "hubEvidenceQuery.projectId",
+				"type": "string"
+			},
+			{
+				"name": "hubArtifactQuery.request",
+				"type": "Request"
+			},
+			{
+				"name": "hubArtifactQuery.projectId",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hubEvidenceQuery",
+				"type": "EntityEvidenceQuery"
+			},
+			{
+				"name": "hubArtifactQuery",
+				"type": "EvidenceArtifactQuery"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.evidence-payload",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-json",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/hubEvidenceQuery.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/hubEvidenceQuery.ts"
+			}
+		]
+	},
+	"scenarios": ["hub-recorded-evidence"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

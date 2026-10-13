@@ -1,0 +1,98 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.remote-artifact",
+	"kind": "function",
+	"title": "remoteArtifact",
+	"responsibility": "Owns the remoteArtifact shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/remoteArtifact.ts"],
+		"symbols": [
+			"artifactLimit",
+			"artifactMediaTypes",
+			"unshownArtifact",
+			"largeArtifact",
+			"otherArtifact",
+			"remoteArtifact"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "remoteArtifact.value",
+				"type": "RemoteBinary"
+			},
+			{
+				"name": "remoteArtifact.asked",
+				"type": "string | undefined"
+			}
+		],
+		"outputs": [
+			{
+				"name": "artifactLimit",
+				"type": "unknown"
+			},
+			{
+				"name": "artifactMediaTypes",
+				"type": "readonly string[]"
+			},
+			{
+				"name": "unshownArtifact",
+				"type": "unknown"
+			},
+			{
+				"name": "largeArtifact",
+				"type": "unknown"
+			},
+			{
+				"name": "otherArtifact",
+				"type": "unknown"
+			},
+			{
+				"name": "remoteArtifact",
+				"type": "Promise<EvidenceArtifactResult>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.remote-binary",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.environment-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/remoteArtifact.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/remoteArtifact.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

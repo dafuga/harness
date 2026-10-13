@@ -1,3 +1,4 @@
+import { hostedPublicFailure } from '../utils/hostedPublicFailure';
 import { HostedFailureValidator } from '../validators/HostedFailureValidator';
 import { RemoteProjectResponseValidator } from '../validators/RemoteProjectResponseValidator';
 export interface NativeHostedCredential {
@@ -72,7 +73,8 @@ export class HostedHttpAdapter {
 	async request(
 		path: string,
 		credential: NativeHostedCredential,
-		init: RequestInit = {}
+		init: RequestInit = {},
+		publicFailure = false
 	): Promise<Response> {
 		if (!path.startsWith('/api/') || new URL(path, this.origin).origin !== this.origin)
 			throw new Error('Untrusted hosted request path.');
@@ -86,7 +88,7 @@ export class HostedHttpAdapter {
 					'content-type': 'application/json'
 				}
 			});
-			await this.checkResponse(response, credential, path);
+			await this.checkResponse(response, credential, path, publicFailure);
 			return response;
 		} catch (error) {
 			throw HostedFailureValidator.classify(error);
@@ -95,7 +97,8 @@ export class HostedHttpAdapter {
 	private async checkResponse(
 		response: Response,
 		credential: NativeHostedCredential,
-		path: string
+		path: string,
+		publicFailure: boolean
 	) {
 		const denied = [401, 403].includes(response.status);
 		if (denied)
@@ -104,6 +107,8 @@ export class HostedHttpAdapter {
 				response.status === 401 ? undefined : /^\/api\/projects\/([^/?]+)/.exec(path)?.[1]
 			);
 		if (!response.ok)
-			throw new HostedFailureValidator(denied ? 'denied' : 'failed', response.status);
+			throw publicFailure
+				? await hostedPublicFailure(response)
+				: new HostedFailureValidator(denied ? 'denied' : 'failed', response.status);
 	}
 }

@@ -12,6 +12,8 @@
 			"NativeHostedCredential",
 			"RemoteHttpProjectAdapter",
 			"RemoteHttpProjectAdapter.constructor",
+			"RemoteHttpProjectAdapter.evidence",
+			"RemoteHttpProjectAdapter.artifact",
 			"RemoteHttpProjectAdapter.available",
 			"RemoteHttpProjectAdapter.listProjects",
 			"RemoteHttpProjectAdapter.snapshot",
@@ -30,6 +32,14 @@
 			{
 				"name": "RemoteHttpProjectAdapter.constructor.options",
 				"type": "HostedReadOptions"
+			},
+			{
+				"name": "RemoteHttpProjectAdapter.evidence.input",
+				"type": "EntityEvidenceQuery & { projectId: string }"
+			},
+			{
+				"name": "RemoteHttpProjectAdapter.artifact.input",
+				"type": "EvidenceArtifactQuery & { projectId: string }"
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.snapshot.input",
@@ -65,6 +75,14 @@
 			}
 		],
 		"outputs": [
+			{
+				"name": "RemoteHttpProjectAdapter.evidence",
+				"type": "unknown"
+			},
+			{
+				"name": "RemoteHttpProjectAdapter.artifact",
+				"type": "unknown"
+			},
 			{
 				"name": "RemoteHttpProjectAdapter.available",
 				"type": "unknown"
@@ -120,7 +138,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.adapter.hosted-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.adapter.hosted-http",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.hosted-capabilities",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.hosted-image",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -130,7 +163,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.model.desktop-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.project-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.hosted-evidence",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -141,11 +184,6 @@
 		},
 		{
 			"unit": "desktop.service.remote-projection",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "desktop.validator.image-bytes",
 			"via": "import",
 			"origin": "derived"
 		},

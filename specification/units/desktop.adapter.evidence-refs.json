@@ -1,0 +1,88 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.adapter.evidence-refs",
+	"kind": "adapter",
+	"title": "EvidenceRefsAdapter",
+	"responsibility": "Owns the EvidenceRefsAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/adapters/EvidenceRefsAdapter.ts"],
+		"symbols": [
+			"PinnedRevisions",
+			"CurrentRefs",
+			"notesRef",
+			"evidenceRef",
+			"EvidenceRefsAdapter",
+			"EvidenceRefsAdapter.constructor",
+			"EvidenceRefsAdapter.current",
+			"EvidenceRefsAdapter.pinned"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "EvidenceRefsAdapter.constructor.root",
+				"type": "string"
+			},
+			{
+				"name": "EvidenceRefsAdapter.pinned.wanted",
+				"type": "PinnedRevisions"
+			}
+		],
+		"outputs": [
+			{
+				"name": "notesRef",
+				"type": "unknown"
+			},
+			{
+				"name": "evidenceRef",
+				"type": "unknown"
+			},
+			{
+				"name": "EvidenceRefsAdapter.current",
+				"type": "Promise<CurrentRefs>"
+			},
+			{
+				"name": "EvidenceRefsAdapter.pinned",
+				"type": "Promise<PinnedRevisions>"
+			}
+		],
+		"errors": [
+			{
+				"name": "pin-not-held",
+				"type": "refused",
+				"description": "A repeated notes or evidence revision that its ref never held."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.git-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.ipc-fields",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/adapters/EvidenceRefsAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/adapters/EvidenceRefsAdapter.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-recorded-evidence"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

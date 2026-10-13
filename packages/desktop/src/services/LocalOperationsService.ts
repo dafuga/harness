@@ -2,6 +2,7 @@ import { remoteMethods } from '../../../remote/src/index';
 import type { RemoteDesktopControl, RemoteMethod, WireRequest } from '../../../remote/src/index';
 import { channels } from '../models/DesktopBridge.types';
 import type { DesktopBridge } from '../models/DesktopBridge.types';
+import type { EvidenceArtifactResult as Artifact } from '../models/DesktopEvidence.types';
 import { binaryAnswer } from '../utils/binaryAnswer';
 import { IpcRequestValidator } from '../validators/IpcRequestValidator';
 
@@ -42,6 +43,8 @@ export class LocalOperationsService {
 			operation = (this.options.bridge as Fields)[method];
 		if (typeof operation !== 'function') throw new Error('Desktop operation unavailable.');
 		const value = await (operation as Operation)(payload);
+		if (method === 'artifact')
+			return binaryAnswer((value as Artifact).bytes, (value as Artifact).mediaType);
 		return method === 'image' ? binaryAnswer(value as Uint8Array) : value;
 	}
 	/** The services behind the control port validate what they are given. */

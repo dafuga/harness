@@ -128,6 +128,11 @@ export function createGitHubSource(options: Options): SourceHistoryAdapter {
 		...adapter,
 		raw,
 		rawMany: githubRawMany({ adapter, options, cache: blobs, key }),
+		releaseBytes(repo, input) {
+			const id = key(repo, `${input.commit}:${input.path}`);
+			blobs.delete(id);
+			materialized.delete(id);
+		},
 		...githubHistory(adapter, options)
 	};
 }

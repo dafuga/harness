@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.hosted-image",
+	"kind": "function",
+	"title": "hostedImage",
+	"responsibility": "Owns the hostedImage shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/hostedImage.ts"],
+		"symbols": ["hostedImage"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hostedImage.value",
+				"type": "unknown"
+			},
+			{
+				"name": "hostedImage.sha256",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hostedImage",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.validator.image-bytes",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/hostedImage.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/hostedImage.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
