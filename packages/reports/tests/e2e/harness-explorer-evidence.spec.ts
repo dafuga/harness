@@ -17,10 +17,32 @@ const main = (rest: string) => at('main', commits.approved, rest);
 const content = (page: Page) => page.locator('.ex-content');
 const heading = (page: Page, name: string) => page.getByRole('heading', { level: 1, name });
 const passed = (page: Page) => verdict(page, 'Full coverage passed').first();
+const result = 'Assertions and recorded result';
 /** Opens every recorded result a panel keeps behind a control; one that shows them needs none. */
 async function reveal(page: Page): Promise<void> {
 	const closed = content(page).getByRole('button', { name: /^Show / });
 	for (let left = await closed.count(); left > 0; left -= 1) await closed.first().click();
+	// Results are read in the browser, and it says so: then a closed one is clicked, its JSON never.
+	const said = content(page).getByRole('status');
+	await expect(said.filter({ hasNotText: /^Reading / }).first()).toBeVisible();
+	await expect(said.filter({ hasText: /^Reading / })).toHaveCount(0);
+	const results = content(page).locator('details > summary', { hasText: result });
+	for (const summary of await results.all()) {
+		const shown = await summary.evaluate((node) => (node.parentElement as HTMLDetailsElement).open);
+		if (!shown) await summary.click();
+	}
+}
+// Kept only by a run with TAKE_SCREENSHOT=true and a before or after label; fonts and images wait.
+async function proof(page: Page, name: string): Promise<void> {
+	if (process.env.TAKE_SCREENSHOT !== 'true') return;
+	const label = process.env.SCREENSHOT_LABEL;
+	if (label !== 'before' && label !== 'after') throw new Error('SCREENSHOT_LABEL: before or after');
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		await Promise.all([...document.images].map((image) => image.decode()));
+	});
+	const folder = process.env.HARNESS_EXPLORER_SHOTS ?? test.info().outputDir;
+	await page.screenshot({ path: `${folder}/${label}-${name}.png`, fullPage: true });
 }
 /** What the comparison of the recorded results came to, as the panel says it in words. */
 const told = (page: Page, label: string) =>
@@ -146,6 +168,7 @@ test('a function shows its end-to-end run before and after, and says whether beh
 	await expect(told(page, 'Behavior changed')).toBeVisible();
 	await expect(content(page).getByText(`Before · ${short(commits.baseline)}`)).toBeVisible();
 	await reveal(page);
+	await proof(page, 'evidence-behavior-revealed');
 	await expect(content(page).getByText('hello world').first()).toBeVisible();
 	await expect(content(page).getByText('HELLO WORLD').first()).toBeVisible();
 	await expect(content(page).getByText('Surrounding spaces are removed').first()).toBeVisible();
@@ -156,6 +179,7 @@ test('a function shows its end-to-end run before and after, and says whether beh
 	await page.goto(tip(explorerBranch, `functions/${units.slugify}`));
 	await expect(content(page).getByText(/^Before ·/)).toHaveCount(0);
 	await reveal(page);
+	await proof(page, 'evidence-tip-revealed');
 	await expect(content(page).getByText('Slugify each title').first()).toBeVisible();
 });
 
