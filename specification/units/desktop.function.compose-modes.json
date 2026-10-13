@@ -3,8 +3,8 @@
 	"id": "desktop.function.compose-modes",
 	"kind": "function",
 	"title": "composeModes",
-	"responsibility": "Owns the composeModes shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Chooses what the composer offers: Comment wherever people may comment, Plan and Change only where the project allows agents at a writable tip.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/composeModes.ts"],
