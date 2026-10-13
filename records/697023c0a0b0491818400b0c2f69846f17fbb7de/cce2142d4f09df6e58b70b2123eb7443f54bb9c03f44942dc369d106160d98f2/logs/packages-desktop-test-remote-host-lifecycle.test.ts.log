@@ -1,0 +1,15 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-HUXF1L/packages/desktop
+
+ ✓ test/remote-host-lifecycle.test.ts (5 tests) 15223ms
+   ✓ a locked screen changes nothing: the paired phone reads and its run goes on  4871ms
+   ✓ suspension is offline, never success; waking resumes the session without repeating the run  4522ms
+   ✓ revoking a phone closes its socket, cancels its run and voids its credential  3251ms
+   ✓ closing the window keeps an enabled backend; disabling and quitting end it  1308ms
+   ✓ the approval survives a restart of the app, and a new process is a visible gap  1270ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  00:05:29
+   Duration  15.82s (transform 263ms, setup 0ms, collect 427ms, tests 15.22s, environment 0ms, prepare 31ms)
+
