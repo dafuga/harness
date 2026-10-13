@@ -1,0 +1,46 @@
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at emitWarning (internal:tty:33:24)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+
+Running 9 tests using 1 worker
+
+(node:35643) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/harness-explorer-catalog.spec.ts:22:1 › a catalog is searchable, and a click on a listed entity opens it in the same scope (891ms)
+  ✓  2 tests/e2e/harness-explorer-catalog.spec.ts:40:1 › the keyboard reaches the controls, changes the order and opens an entity (202ms)
+  ✓  3 tests/e2e/harness-explorer-catalog.spec.ts:59:1 › a selected commit lists what it added, and what it removed from its first parent (759ms)
+  ✓  4 tests/e2e/harness-explorer-catalog.spec.ts:76:1 › a commit nobody verified still marks what its source changed, and proves none of it (695ms)
+  ✓  5 tests/e2e/harness-explorer-catalog.spec.ts:92:2 › branch, commit and order are shared fields and each choice is a path at desktop width (232ms)
+  ✓  6 tests/e2e/harness-explorer-catalog.spec.ts:92:2 › branch, commit and order are shared fields and each choice is a path at tablet width (242ms)
+  ✓  7 tests/e2e/harness-explorer-catalog.spec.ts:92:2 › branch, commit and order are shared fields and each choice is a path at mobile width (241ms)
+  ✓  8 tests/e2e/harness-explorer-catalog.spec.ts:117:2 › a registry of several hundred units › stays searchable, ordered and keyboard operable (495ms)
+  ✓  9 tests/e2e/harness-explorer-catalog.spec.ts:133:2 › a registry of several hundred units › on a phone the list reaches any unit without scrolling sideways (513ms)
+
+  9 passed (1.8m)

@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-xCGYgj
+
+ ✓ test/hooks-shared-stages.e2e.test.ts (3 tests) 8067ms
+   ✓ a worktree that opted into pushes under an earlier Harness is not handed commit-msg  3044ms
+   ✓ each worktree is told its own stages, and leaving restores what was there byte for byte  2345ms
+   ✓ installing again replaces the first commit-msg wrapper, which asked the push opt-in  2677ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  07:48:02
+   Duration  8.27s (transform 23ms, setup 9ms, collect 17ms, tests 8.07s, environment 0ms, prepare 39ms)
+

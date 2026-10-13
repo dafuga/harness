@@ -1,0 +1,31 @@
+
+Running 5 tests using 1 worker
+
+(node:18614) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/ui-evidence-behavior.spec.ts:34:1 › a function at its branch tip shows the one run that was recorded, with what it was asked and answered (558ms)
+  ✓  2 tests/e2e/ui-evidence-behavior.spec.ts:65:1 › a commit says what changed in the behaviour only once both results were read (615ms)
+  ✓  3 tests/e2e/ui-evidence-behavior.spec.ts:93:1 › bytes that do not have the recorded hash are not read, and the behaviour stays unknown (616ms)
+  ✓  4 tests/e2e/ui-evidence-behavior.spec.ts:113:1 › a request the backend refuses is shown as refused, never as an empty result (405ms)
+  ✘  5 tests/e2e/ui-evidence-behavior.spec.ts:129:1 › a clip is played from checked bytes: one at the tip, and at a commit its absence is said (884ms)
+
+
+  1) tests/e2e/ui-evidence-behavior.spec.ts:129:1 › a clip is played from checked bytes: one at the tip, and at a commit its absence is said 
+
+    Error: locator.evaluate: TypeError: Failed to fetch
+        at window.fetch (http://127.0.0.1:5797/_app/immutable/chunks/p9btrFxd.js:1:1700)
+        at eval (eval at evaluate (:311:30), <anonymous>:3:44)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at window.fetch (http://127.0.0.1:5797/_app/immutable/chunks/p9btrFxd.js:1:1700)
+        at eval (eval at evaluate (:311:30), <anonymous>:3:44)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at runtimeAudio (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-xCGYgj/packages/desktop/tests/e2e/runtime-evidence.ts:84:43)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-xCGYgj/packages/desktop/tests/e2e/ui-evidence-behavior.spec.ts:148:2
+
+    Error Context: test-results/ui-evidence-behavior-a-cli-f88da--commit-its-absence-is-said/error-context.md
+
+  1 failed
+    tests/e2e/ui-evidence-behavior.spec.ts:129:1 › a clip is played from checked bytes: one at the tip, and at a commit its absence is said 
+  4 passed (4.1s)
