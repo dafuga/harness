@@ -31,18 +31,14 @@ func policyChecks() {
     #endif
     let socket = RemotePolicy.origin("https://relay.example.invalid").flatMap { RemotePolicy.socket($0, hostId: "abc") }
     check(socket?.absoluteString == "wss://relay.example.invalid/v1/hosts/abc/connect", "the socket address holds no credential")
-
-    let link = "harnessremote://pair?origin=https%3A%2F%2Frelay.example.invalid&host=a1&pairing=b2"
-    check(URL(string: link).flatMap(RemotePolicy.pairingLink) == link, "a pairing link with its three public fields is handed on as it is")
-    let others = [
-        "\(link)&code=KQ7M2XWP", "harnessremote://open?origin=x&host=a&pairing=b", "https://relay.example.invalid/pair?origin=x&host=a&pairing=b",
-        "harnessremote://pair?origin=x&host=a", "\(link)#code"
-    ]
-    check(others.allSatisfy { URL(string: $0).flatMap(RemotePolicy.pairingLink) == nil }, "a link with a code, another target or a missing field is not a pairing link")
 }
 
 print("Harness native checks (\(flavor))")
 policyChecks()
+offerChecks()
+scanChecks()
+scanLifecycleChecks()
+scanHandoffChecks()
 attachChecks()
 lockChecks()
 staleChecks()

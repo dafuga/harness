@@ -19,6 +19,7 @@
 			"control",
 			"offered",
 			"restart",
+			"scanPressed",
 			"shot",
 			"openDesign"
 		]
@@ -53,6 +54,18 @@
 			{
 				"name": "restart.fixture",
 				"type": "unknown"
+			},
+			{
+				"name": "restart.scans",
+				"type": "string[]"
+			},
+			{
+				"name": "scanPressed.run",
+				"type": "Acceptance"
+			},
+			{
+				"name": "scanPressed.name",
+				"type": "string"
 			},
 			{
 				"name": "shot.run",
@@ -95,6 +108,10 @@
 			{
 				"name": "restart",
 				"type": "Promise<void>"
+			},
+			{
+				"name": "scanPressed",
+				"type": "Promise<string>"
 			},
 			{
 				"name": "shot",

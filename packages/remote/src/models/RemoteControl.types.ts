@@ -1,16 +1,19 @@
 import type { RemoteGrant } from './Remote.types';
 
-/** A one-time offer shown on the computer. `code` is typed on the phone; it is no credential. */
+/**
+ * A one-time offer shown on the computer as a QR code. It lets a phone ask; it is no credential,
+ * and asking grants nothing until the person approves the phone that asked.
+ */
 export interface RemotePairingOffer {
 	pairingId: string;
 	hostId: string;
 	origin: string;
 	code: string;
-	/** Public identifiers only: no code, no credential. */
-	link: string;
+	/** The exact text of the QR code: this offer in the form a phone reads, and nothing else. */
+	scan: string;
 	expiresAt: string;
 }
-/** A phone that proved the code and waits for the person to approve its exact key. */
+/** A phone that scanned the offer and waits for the person to approve its exact key. */
 export interface RemotePairingRequest {
 	pairingId: string;
 	deviceId: string;
@@ -62,7 +65,10 @@ export interface RemoteDesktopControl {
 	status(): Promise<RemoteHostStatus>;
 	enable(): Promise<RemoteHostStatus>;
 	disable(): Promise<RemoteHostStatus>;
+	/** Opens a new offer. An earlier one stops working. */
 	createPairing(): Promise<RemotePairingOffer>;
+	/** Withdraws the open offer and whoever asked with it. */
+	closePairing(): Promise<RemoteHostStatus>;
 	approvePairing(input: RemoteApprovalInput): Promise<RemoteHostStatus>;
 	denyPairing(input: { pairingId: string }): Promise<RemoteHostStatus>;
 	revokeDevice(input: { deviceId: string }): Promise<RemoteHostStatus>;
@@ -86,6 +92,7 @@ export interface RemoteMobileStatus {
 	reason: string | null;
 	lastOnlineAt: string | null;
 }
+/** What a device asks with once it read an offer. No page ever holds or sends this. */
 export interface RemotePairInput {
 	origin: string;
 	hostId: string;
@@ -93,10 +100,29 @@ export interface RemotePairInput {
 	code: string;
 	deviceName: string;
 }
+/** All a page gives the scanner: how this phone is named to the person who approves it. */
+export interface RemoteScanInput {
+	deviceName: string;
+}
+/** Every way a scan ends without an offer; the plugin rejects with one of these as its code. */
+export const remoteScanFailures = [
+	'camera-denied',
+	'camera-unavailable',
+	'scan-cancelled',
+	'offer-invalid',
+	'offer-unsupported',
+	'offer-environment',
+	'offer-expired'
+] as const;
+export type RemoteScanFailure = (typeof remoteScanFailures)[number];
 /** The phone's control port, implemented by the native plugin. */
 export interface RemoteMobileControl {
 	status(): Promise<RemoteMobileStatus>;
-	pair(input: RemotePairInput): Promise<RemoteMobileStatus>;
+	/**
+	 * Opens the camera and asks with the offer it reads. It answers once a request is under way;
+	 * the phone is connected only after the person approved it on the computer.
+	 */
+	scan(input: RemoteScanInput): Promise<RemoteMobileStatus>;
 	disconnect(): Promise<RemoteMobileStatus>;
 	onStatus(listener: (status: RemoteMobileStatus) => void): () => void;
 }

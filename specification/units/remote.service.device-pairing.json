@@ -10,10 +10,12 @@
 		"source": ["packages/remote/src/services/DevicePairingService.ts"],
 		"symbols": [
 			"DevicePairingInput",
+			"ScanningDevice",
 			"PendingPairing",
 			"DeviceCredentials",
 			"DevicePairingService",
 			"DevicePairingService.constructor",
+			"DevicePairingService.scanned",
 			"DevicePairingService.request",
 			"DevicePairingService.poll",
 			"DevicePairingService.exchange"
@@ -25,6 +27,18 @@
 			{
 				"name": "DevicePairingService.constructor.options",
 				"type": "{ fetch?: typeof fetch }"
+			},
+			{
+				"name": "DevicePairingService.scanned.text",
+				"type": "string"
+			},
+			{
+				"name": "DevicePairingService.scanned.device",
+				"type": "ScanningDevice"
+			},
+			{
+				"name": "DevicePairingService.scanned.reading",
+				"type": "OfferReading"
 			},
 			{
 				"name": "DevicePairingService.request.input",
@@ -44,6 +58,10 @@
 			}
 		],
 		"outputs": [
+			{
+				"name": "DevicePairingService.scanned",
+				"type": "Promise<PendingPairing>"
+			},
 			{
 				"name": "DevicePairingService.request",
 				"type": "Promise<PendingPairing>"
@@ -67,6 +85,11 @@
 	"dependencies": [
 		{
 			"unit": "remote.function.pairing-envelope",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.pairing-offer",
 			"via": "import",
 			"origin": "derived"
 		},

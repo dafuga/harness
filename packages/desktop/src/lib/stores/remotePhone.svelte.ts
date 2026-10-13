@@ -6,13 +6,14 @@ import type {
 } from '../../models/Environment.types';
 import { cacheStatus } from '../../utils/cacheStatus';
 import { forgetRemote } from '../../utils/forgetRemote';
-import { pairingInput, pairingTarget, type PairingFields } from '../../utils/pairingInput';
 import {
 	authorityChange,
 	excludes,
 	noAuthority,
 	remoteAuthority
 } from '../../utils/remoteAuthority';
+import { nameNotice, phoneName, scanFailure, scanNotice } from '../../utils/scanNotice';
+import type { ScanFailure } from '../../utils/scanNotice';
 import { isWorkspacePath } from '../../utils/workspaceRoute';
 
 type State = RemoteMobileStatus['state'];
@@ -32,12 +33,10 @@ class RemotePhoneState {
 	status = $state<RemoteMobileStatus | null>(null);
 	error = $state('');
 	busy = $state(false);
-	/** A pairing link the phone was opened with, while nothing is paired; it holds no code. */
-	offered = $state('');
-	private waiting = '';
+	/** How the last scan ended without an offer, while that is what the page says; or null. */
+	scanFailure = $state<ScanFailure | null>(null);
 	private kept = false;
 	private release: (() => void) | undefined;
-	private unlink: (() => void) | undefined;
 	/** Counts every accepted state and every end; an answer asked for before it is stale. */
 	private version = 0;
 	/** The identity and the grant under which what is on the page was read. */
@@ -55,30 +54,26 @@ class RemotePhoneState {
 		const port = this.port;
 		if (!port || this.release) return;
 		this.release = port.onStatus((status) => this.accept(status));
-		this.unlink = this.workspace.remote.links?.onPairingLink((link) => this.offer(link));
 		await this.ask(() => port.status());
 	}
 	/** Whatever is still under way is not shown when it answers. */
 	dispose() {
 		this.version++;
 		this.release?.();
-		this.unlink?.();
-		this.release = this.unlink = undefined;
+		this.release = undefined;
 	}
-	/** Only a real link is kept, and only for a phone that is not paired; it may come early. */
-	private offer(link: string) {
-		if (!pairingTarget(link, this.fixture)) return;
-		if (!this.status) this.waiting = link;
-		else if (this.status.state === 'unpaired') this.offered = link;
-	}
-	/** Nothing reaches the plugin unless the link, the code and the name are all well-formed. */
-	async pair(fields: PairingFields) {
-		const parsed = pairingInput(fields, this.fixture);
-		if ('error' in parsed) {
-			this.error = parsed.error;
+	/**
+	 * Opens the scanner of the phone under this name. The page hands over nothing else and is
+	 * handed no offer: the plugin reads the code, checks it and asks the computer by itself.
+	 */
+	async scan(name: string) {
+		const deviceName = phoneName(name);
+		this.scanFailure = null;
+		if (!deviceName) {
+			this.error = nameNotice;
 			return false;
 		}
-		return this.ask((port) => port.pair(parsed.input));
+		return this.ask((port) => port.scan({ deviceName }));
 	}
 	/** Forgets the computer; the plugin deletes the credential and keys it held for it. */
 	disconnect() {
@@ -89,6 +84,7 @@ class RemotePhoneState {
 		if (!port || this.busy) return false;
 		this.busy = true;
 		this.error = '';
+		this.scanFailure = null;
 		const asked = this.version;
 		try {
 			const status = await call(port);
@@ -96,7 +92,8 @@ class RemotePhoneState {
 			if (asked === this.version) this.accept(status);
 			return true;
 		} catch (cause) {
-			this.error = String(cause);
+			this.scanFailure = scanFailure(cause);
+			this.error = scanNotice(cause);
 			return false;
 		} finally {
 			this.busy = false;
@@ -106,8 +103,6 @@ class RemotePhoneState {
 		const before = this.status;
 		this.version++;
 		this.status = status;
-		this.offered = status.state === 'unpaired' ? this.offered || this.waiting : '';
-		this.waiting = '';
 		if (away.includes(status.state)) return this.lost(status);
 		this.kept = false;
 		if (status.state === 'online') return this.reached(before, status);

@@ -79,5 +79,7 @@ check(request == text(pairing, "requestSealed"), "pairing request seals to the v
 let approval = pairingKeys.flatMap { try? RemoteCrypto.openApproval(text(pairing, "approvalSealed"), key: $0.approval) }
 check(approval == Data(text(pairing, "approvalPlain").utf8), "pairing approval opens to the plaintext")
 
+if CommandLine.arguments.count > 2 { offerVectors(CommandLine.arguments[2]) } else { check(false, "no offer vectors were given") }
+
 print(failures == 0 ? "All vectors reproduced." : "\(failures) vector checks failed.")
 exit(failures == 0 ? 0 : 1)

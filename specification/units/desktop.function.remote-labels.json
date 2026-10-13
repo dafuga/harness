@@ -17,7 +17,7 @@
 			"awayNote",
 			"revokedNote",
 			"relayName",
-			"shownCode",
+			"timeLeft",
 			"keyLabel",
 			"identityLabel",
 			"grantLabel",
@@ -35,8 +35,8 @@
 				"type": "string | null"
 			},
 			{
-				"name": "shownCode.code",
-				"type": "string"
+				"name": "timeLeft.milliseconds",
+				"type": "number"
 			},
 			{
 				"name": "keyLabel.deviceId",
@@ -101,7 +101,7 @@
 				"type": "string"
 			},
 			{
-				"name": "shownCode",
+				"name": "timeLeft",
 				"type": "string"
 			},
 			{

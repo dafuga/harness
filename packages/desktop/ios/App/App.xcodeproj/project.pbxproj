@@ -23,6 +23,11 @@
 		D3FD449FC69C21BE97FB5408 /* RemoteCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF200ED8232B8B47AC57BA0 /* RemoteCache.swift */; };
 		964BC5623A827D1BE251D3B4 /* RemoteSecureState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB37CB51FE991D10D1B52A04 /* RemoteSecureState.swift */; };
 		0D16E62573A5AA245BD0301C /* RemotePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14FB9519A3F3027F59F09AD /* RemotePolicy.swift */; };
+		72D9314FBBD18DAD0D3E84F4 /* RemoteOffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352A79F4CA204B149A9B5872 /* RemoteOffer.swift */; };
+		EB38BECD3F3CD41838AA2902 /* RemoteScan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F7192ECF6343F1A90F8CE4 /* RemoteScan.swift */; };
+		D2E210B78A35AE9828A0CED0 /* RemoteSessionScan.swift in Sources */ = {isa = PBXBuildFile; fileRef = E768C46B94C58FCF256F036A /* RemoteSessionScan.swift */; };
+		E8243B831350FA7D83F80CB1 /* RemoteCameraScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253E1FA7EAFB2DBE951215A3 /* RemoteCameraScanner.swift */; };
+		D97EBEA3E16FAE00C8CB9816 /* RemoteScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDF63E30EBC27901EC8CF83 /* RemoteScannerViewController.swift */; };
 		E639C426BF66311903B58174 /* RemoteLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27617805AC0847FACEC8EEEB /* RemoteLink.swift */; };
 		314A746D4564898F03A0697D /* RemoteSessionLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ABD42DE296604A6441E9D3 /* RemoteSessionLink.swift */; };
 		0CE34E901FFB2435752FF2AE /* HarnessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BEB4F63930D50425734A43 /* HarnessViewController.swift */; };
@@ -59,6 +64,11 @@
 		3EF200ED8232B8B47AC57BA0 /* RemoteCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/RemoteCache.swift; sourceTree = "<group>"; };
 		BB37CB51FE991D10D1B52A04 /* RemoteSecureState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/RemoteSecureState.swift; sourceTree = "<group>"; };
 		B14FB9519A3F3027F59F09AD /* RemotePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/RemotePolicy.swift; sourceTree = "<group>"; };
+		352A79F4CA204B149A9B5872 /* RemoteOffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/RemoteOffer.swift; sourceTree = "<group>"; };
+		44F7192ECF6343F1A90F8CE4 /* RemoteScan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/RemoteScan.swift; sourceTree = "<group>"; };
+		E768C46B94C58FCF256F036A /* RemoteSessionScan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/RemoteSessionScan.swift; sourceTree = "<group>"; };
+		253E1FA7EAFB2DBE951215A3 /* RemoteCameraScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scanner/RemoteCameraScanner.swift; sourceTree = "<group>"; };
+		4BDF63E30EBC27901EC8CF83 /* RemoteScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scanner/RemoteScannerViewController.swift; sourceTree = "<group>"; };
 		27617805AC0847FACEC8EEEB /* RemoteLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/RemoteLink.swift; sourceTree = "<group>"; };
 		43ABD42DE296604A6441E9D3 /* RemoteSessionLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/RemoteSessionLink.swift; sourceTree = "<group>"; };
 		42BEB4F63930D50425734A43 /* HarnessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarnessViewController.swift; sourceTree = "<group>"; };
@@ -126,6 +136,11 @@
 				3EF200ED8232B8B47AC57BA0 /* RemoteCache.swift */,
 				BB37CB51FE991D10D1B52A04 /* RemoteSecureState.swift */,
 				B14FB9519A3F3027F59F09AD /* RemotePolicy.swift */,
+				352A79F4CA204B149A9B5872 /* RemoteOffer.swift */,
+				44F7192ECF6343F1A90F8CE4 /* RemoteScan.swift */,
+				E768C46B94C58FCF256F036A /* RemoteSessionScan.swift */,
+				253E1FA7EAFB2DBE951215A3 /* RemoteCameraScanner.swift */,
+				4BDF63E30EBC27901EC8CF83 /* RemoteScannerViewController.swift */,
 				27617805AC0847FACEC8EEEB /* RemoteLink.swift */,
 				43ABD42DE296604A6441E9D3 /* RemoteSessionLink.swift */,
 				42BEB4F63930D50425734A43 /* HarnessViewController.swift */,
@@ -243,6 +258,11 @@
 				D3FD449FC69C21BE97FB5408 /* RemoteCache.swift in Sources */,
 				964BC5623A827D1BE251D3B4 /* RemoteSecureState.swift in Sources */,
 				0D16E62573A5AA245BD0301C /* RemotePolicy.swift in Sources */,
+				72D9314FBBD18DAD0D3E84F4 /* RemoteOffer.swift in Sources */,
+				EB38BECD3F3CD41838AA2902 /* RemoteScan.swift in Sources */,
+				D2E210B78A35AE9828A0CED0 /* RemoteSessionScan.swift in Sources */,
+				E8243B831350FA7D83F80CB1 /* RemoteCameraScanner.swift in Sources */,
+				D97EBEA3E16FAE00C8CB9816 /* RemoteScannerViewController.swift in Sources */,
 				E639C426BF66311903B58174 /* RemoteLink.swift in Sources */,
 				314A746D4564898F03A0697D /* RemoteSessionLink.swift in Sources */,
 				0CE34E901FFB2435752FF2AE /* HarnessViewController.swift in Sources */,

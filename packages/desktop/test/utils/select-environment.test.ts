@@ -9,6 +9,7 @@ const names = [
 	'enable',
 	'disable',
 	'createPairing',
+	'closePairing',
 	'approvePairing',
 	'denyPairing',
 	'revokeDevice',
@@ -30,6 +31,13 @@ test('the preload bridge selects Electron, with phone access only when its port 
 	expect(plain.phone).toBeUndefined();
 	const harnessRemote = control();
 	expect(selectEnvironment({ harness, harnessRemote }).host).toBe(harnessRemote);
+	for (const name of names) {
+		const lacking = { ...control(), [name]: undefined };
+		expect([name, selectEnvironment({ harness, harnessRemote: lacking }).host]).toEqual([
+			name,
+			undefined
+		]);
+	}
 	const partial = { ...control(), denyPairing: undefined };
 	expect(selectEnvironment({ harness, harnessRemote: partial }).host).toBeUndefined();
 });

@@ -25,7 +25,7 @@ function native(first: RemoteNativeStatus = unpaired) {
 	const listeners = new Map<string, Listener>();
 	const plugin = {
 		status: vi.fn(async () => first),
-		pair: vi.fn(async () => ({ ...unpaired, state: 'pairing' as const })),
+		scan: vi.fn(async () => ({ ...unpaired, state: 'pairing' as const })),
 		disconnect: vi.fn(async () => unpaired),
 		request: vi.fn(),
 		addListener: vi.fn(async (name: string, listener: Listener) => {
@@ -44,16 +44,10 @@ test('the phone control port is the native plugin, and nothing of the desktop is
 	const { plugin, environment } = native();
 	expect(environment).toMatchObject({ kind: 'capacitor', local: false });
 	expect(environment.host).toBeUndefined();
-	const input = {
-		origin: 'https://relay.example.invalid',
-		hostId: 'a1'.repeat(20),
-		pairingId: 'b2'.repeat(16),
-		code: 'KQ7M2XWP',
-		deviceName: 'Ada iPhone'
-	};
 	expect(await environment.phone!.status()).toBe(unpaired);
-	expect((await environment.phone!.pair(input)).state).toBe('pairing');
-	expect(plugin.pair).toHaveBeenCalledWith(input);
+	expect((await environment.phone!.scan({ deviceName: 'Ada iPhone' })).state).toBe('pairing');
+	expect(plugin.scan).toHaveBeenCalledExactlyOnceWith({ deviceName: 'Ada iPhone' });
+	expect('pair' in environment.phone!).toBe(false);
 	await environment.phone!.disconnect();
 	expect(plugin.disconnect).toHaveBeenCalledOnce();
 });
@@ -84,14 +78,11 @@ test('each status decides at once what the bridge offers, before anyone acts on 
 	expect(bridge.listProjects).toBeUndefined();
 });
 
-test('a pairing link the phone was opened with is handed on as text, nothing else', async () => {
-	const { plugin, emit, environment } = native();
-	const links: string[] = [];
-	const release = environment.links!.onPairingLink((link) => links.push(link));
-	expect(plugin.addListener).toHaveBeenCalledWith('pairingLink', expect.any(Function));
-	emit('pairingLink', { link: 'harnessremote://pair?origin=x' });
-	emit('pairingLink', { link: 42 });
-	emit('pairingLink', null);
-	expect(links).toEqual(['harnessremote://pair?origin=x']);
-	release();
+test('what the scanner refuses reaches the page with its code, and no pairing link is listened for', async () => {
+	const { plugin, environment } = native();
+	const refusal = Object.assign(new Error('Camera access is off.'), { code: 'camera-denied' });
+	plugin.scan.mockRejectedValueOnce(refusal);
+	await expect(environment.phone!.scan({ deviceName: 'Ada iPhone' })).rejects.toBe(refusal);
+	expect('links' in environment).toBe(false);
+	expect(plugin.addListener).not.toHaveBeenCalledWith('pairingLink', expect.any(Function));
 });

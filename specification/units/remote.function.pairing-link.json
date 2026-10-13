@@ -5,7 +5,11 @@
 	"title": "pairingLink",
 	"responsibility": "Owns the pairingLink shared function.",
 	"responsibilityOrigin": "derived",
-	"status": "active",
+	"status": "retired",
+	"retired": {
+		"reason": "Pairing links are gone: a phone pairs by scanning the QR offer, which pairingOffer writes and reads.",
+		"at": "2026-10-13T07:03:33.845Z"
+	},
 	"owns": {
 		"source": ["packages/remote/src/utils/pairingLink.ts"],
 		"symbols": ["PairingLink", "pairingLink", "parsePairingLink"]

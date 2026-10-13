@@ -1,0 +1,88 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.scan-notice",
+	"kind": "function",
+	"title": "scanNotice",
+	"responsibility": "Owns the scanNotice shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/scanNotice.ts"],
+		"symbols": [
+			"ScanFailure",
+			"scanFailures",
+			"nameNotice",
+			"scanNotices",
+			"scanFailure",
+			"scanNotice",
+			"phoneName"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "scanFailure.cause",
+				"type": "unknown"
+			},
+			{
+				"name": "scanNotice.cause",
+				"type": "unknown"
+			},
+			{
+				"name": "phoneName.value",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "scanFailures",
+				"type": "readonly ScanFailure[]"
+			},
+			{
+				"name": "nameNotice",
+				"type": "unknown"
+			},
+			{
+				"name": "scanNotices",
+				"type": "Record<RemoteScanFailure, string>"
+			},
+			{
+				"name": "scanFailure",
+				"type": "RemoteScanFailure | null"
+			},
+			{
+				"name": "scanNotice",
+				"type": "string"
+			},
+			{
+				"name": "phoneName",
+				"type": "string | null"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.model.remote-control-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/scanNotice.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/scanNotice.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

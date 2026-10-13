@@ -5,11 +5,16 @@ export interface IosBuildPlan {
 	configuration: 'Debug' | 'Release';
 	/** TEST ONLY: a Debug product prepared for the local test relay. Never a Release product. */
 	fixture: boolean;
+	/**
+	 * TEST ONLY: the Debug product of an isolated copy of the native source whose scanner is the
+	 * synthetic one. The real source is only read; never a Release product.
+	 */
+	scanFixture: boolean;
 	/** Build the renderer and copy it into the native project first. */
 	sync: boolean;
 }
 
-const known = ['--sync', '--fixture', '--release'];
+const known = ['--sync', '--fixture', '--scan-fixture', '--release'];
 export const fixtureNeedsDebug =
 	'A fixture build is a Debug build: --fixture cannot be combined with --release. A Release product never accepts a local relay.';
 
@@ -21,9 +26,11 @@ export function iosBuildPlan(args: string[]): IosBuildPlan | { error: string } {
 	const unknown = args.find((item) => !known.includes(item));
 	if (unknown) return { error: `Unknown option ${unknown}. Known: ${known.join(', ')}.` };
 	const fixture = args.includes('--fixture');
+	const scanFixture = args.includes('--scan-fixture');
 	const release = args.includes('--release');
-	if (fixture && release) return { error: fixtureNeedsDebug };
-	return { configuration: release ? 'Release' : 'Debug', fixture, sync: args.includes('--sync') };
+	if ((fixture || scanFixture) && release) return { error: fixtureNeedsDebug };
+	const configuration = release ? 'Release' : 'Debug';
+	return { configuration, fixture, scanFixture, sync: args.includes('--sync') };
 }
 
 /**

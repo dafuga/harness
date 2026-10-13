@@ -1,60 +1,116 @@
-import { computerName, control, offered, panelText, restart, shot } from './ios-acceptance-run';
-import type { Acceptance } from './ios-acceptance-run';
+import {
+	computerName,
+	control,
+	offered,
+	panelText,
+	pause,
+	restart,
+	scanPressed,
+	shot
+} from './ios-acceptance-run';
+import type { Acceptance, PairingOffer } from './ios-acceptance-run';
 import { bundleId, keychainGroups } from './ios-acceptance-simulator';
 
 const phone = 'Acceptance iPhone';
-const text = (value: string) => JSON.stringify(value);
-const refusal = 'Its relay must be an https:// address.';
+const refusal = 'That code is for a relay this build of Harness does not accept.';
+/** The panel once the phone is neither asking nor waiting any more; empty until then. */
+const settled =
+	"const now = panel(); return /Contacting|Waiting for approval/.test(now) ? '' : now;";
 
-/** A Debug product accepts the relay on this machine only when it was started to do so. */
-async function optIn(run: Acceptance, link: string): Promise<void> {
+/** A Debug product asks the relay on this machine only when it was started to do so. */
+async function optIn(run: Acceptance, offer: PairingOffer): Promise<void> {
 	const { record, page } = run;
-	await restart(run, false);
+	await restart(run, false, [offer.scan]);
 	const environment = "return document.documentElement.dataset.environment + ' | ' + panel();";
 	const plain = await page.until(environment, 'Connect to computer', 120);
 	record.check(plain.startsWith('capacitor'), 'the app starts unpaired, in the Capacitor shell');
 	record.check(
+		plain.includes('Scan QR code') && !/Pairing link|Pairing code/.test(plain),
+		'it offers Scan QR code and has no field for a link, a code or an address'
+	);
+	record.check(
 		keychainGroups(run.udid).length === 0,
 		'before pairing the app keeps nothing in the Keychain of the simulator'
 	);
-	await page.evaluate(`fill('Pairing link', ${text(link)}); press('Connect'); return 'ok';`);
-	const refused = await page.until(panelText, 'https://', 30);
+	await scanPressed(run, phone);
+	const refused = await page.until(panelText, 'does not accept', 30);
 	record.check(
 		refused.includes(refusal) && !plain.includes('Debug build for a test fixture'),
-		'started without the launch argument, the Debug product refuses the relay on this machine'
+		'started without the launch argument, the Debug product does not ask the relay on this machine'
 	);
-	await restart(run);
+	const { requests } = await control(run, '/status');
+	record.check(requests.length === 0, 'and nothing reached the computer');
+}
+
+/** A scanned offer is a request and nothing more, for as long as nobody approves it. */
+async function waits(run: Acceptance, offer: PairingOffer): Promise<void> {
+	const { record, page } = run;
+	await restart(run, true, [offer.scan, offer.scan]);
 	const asked = await page.until(panelText, 'Debug build for a test fixture', 120);
 	record.check(
 		asked.includes('Connect to computer'),
 		'started with it, the page states that this is a Debug build for a test fixture'
 	);
+	await scanPressed(run, phone);
+	await page.until(panelText, 'Waiting for approval', 60);
+	const first = await control(run, '/status');
+	record.check(
+		first.requests.length === 1 && first.requests[0].deviceName === phone,
+		'the scan made exactly this phone a request on the computer'
+	);
+	await pause(7000);
+	const still = await page.evaluate(panelText);
+	const { devices } = await control(run, '/status');
+	record.check(
+		still.includes('Waiting for approval') && !still.includes('Connected to') && !devices.length,
+		'the scan alone connects nothing: the phone waits and the computer lists no phone'
+	);
+	record.check(
+		keychainGroups(run.udid).length === 0,
+		'while it waits the app keeps nothing in the Keychain'
+	);
+	await shot(run, 'pending-approval');
+}
+
+/** Denied on the computer, the phone is unpaired; the same code, scanned again, pairs nobody. */
+async function deniedAndSpent(run: Acceptance): Promise<void> {
+	const { record, page } = run;
+	await control(run, '/deny');
+	const denied = await page.until(panelText, 'declined on your computer', 60);
+	record.check(denied.includes('Connect to computer'), 'denied on the computer, it says so');
+	await scanPressed(run);
+	await pause(1500);
+	const again = await page.until(settled, 'Connect to computer', 60);
+	const { requests, devices } = await control(run, '/status');
+	record.check(
+		!again.includes('Connected to') && requests.length === 0 && devices.length === 0,
+		'the denied code, scanned again, pairs nobody: no request and no phone on the computer'
+	);
+	record.check(keychainGroups(run.udid).length === 0, 'and the Keychain is still empty');
 }
 
 /**
- * TEST ONLY. A real pairing of the app with the fixture computer: pairing over HTTP, a sealed
- * request, the approval, the exchange, the Keychain, the socket with its headers, the handshake
- * and the attach, all by the Swift plugin of the product.
+ * TEST ONLY. A real pairing of the app with the fixture computer, begun by a scan: the offer is
+ * read by the Swift of the product, the request is sealed, a person's approval is stood in for
+ * by the control of the fixture, and only then the exchange, the Keychain, the socket with its
+ * headers, the handshake and the attach happen. The scan itself comes from the synthetic
+ * scanner of the test copy; no camera was used.
  */
 export async function pairing(run: Acceptance): Promise<void> {
 	const { record, page } = run;
-	record.begin('Pairing with the fixture computer');
-	const offer = await offered(run);
-	record.check(
-		offer.link.startsWith('harnessremote://pair?origin=http%3A%2F%2F127.0.0.1'),
-		'the fixture offers a pairing link for its relay on this machine'
-	);
-	await optIn(run, offer.link);
-	const fields = `fill('Pairing link', ${text(offer.link)}), fill('Pairing code', ${text(offer.code)})`;
-	const entered = await page.evaluate(
-		`return [${fields}, fill('Name of this phone', ${text(phone)}), press('Connect')].join(',');`
-	);
-	record.check(
-		entered === 'true,true,true,true',
-		'link, code and name are entered in the form and Connect is pressed'
-	);
+	record.begin('Pairing with the fixture computer by scanning');
+	const first = await offered(run);
+	await optIn(run, first);
+	await waits(run, first);
+	await deniedAndSpent(run);
+	const second = await offered(run);
+	await restart(run, true, [second.scan]);
+	await page.until(panelText, 'Connect to computer', 120);
+	await scanPressed(run, phone);
+	await page.until(panelText, 'Waiting for approval', 60);
+	await control(run, '/approve');
 	const shown = await page.until(panelText, 'Connected to', 120);
-	record.check(shown.includes(`Connected to ${computerName}`), 'the page is connected to it');
+	record.check(shown.includes(`Connected to ${computerName}`), 'approved, the page is connected');
 	record.check(
 		shown.includes(phone) && shown.includes('Key '),
 		'the phone shows its own name and the identity of its key'
@@ -71,11 +127,11 @@ export async function pairing(run: Acceptance): Promise<void> {
 	);
 	const stores = '...Object.values(localStorage), ...Object.values(sessionStorage)';
 	const kept = await page.evaluate(
-		`return [document.cookie, ${stores}, location.href].join(' | ');`
+		`return [document.cookie, ${stores}, location.href, document.body.innerText].join(' | ');`
 	);
 	record.check(
 		record.safe(kept) === kept,
-		'the code is in no storage of the page and not in its address'
+		'neither the code nor the QR text is in the page, its storage or its address'
 	);
 	record.check(
 		keychainGroups(run.udid).join() === bundleId,

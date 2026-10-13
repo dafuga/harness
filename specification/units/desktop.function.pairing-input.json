@@ -5,7 +5,11 @@
 	"title": "pairingInput",
 	"responsibility": "Owns the pairingInput shared function.",
 	"responsibilityOrigin": "derived",
-	"status": "active",
+	"status": "retired",
+	"retired": {
+		"reason": "The phone has no typed link or code any more: it scans, and scanNotice holds what a scan can say.",
+		"at": "2026-10-13T07:03:35.618Z"
+	},
 	"owns": {
 		"source": ["packages/desktop/src/utils/pairingInput.ts"],
 		"symbols": [

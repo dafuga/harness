@@ -5,16 +5,10 @@ import Foundation
 /// there can turn a local relay on.
 enum RemoteDebug {
     static var loopback = ProcessInfo.processInfo.arguments.contains("-HarnessRemoteLoopback")
-
-    /// A link to hand to the app as the system would, from `-HarnessRemoteOpenURL <link>`: it
-    /// goes through the same check and the same path as a link the phone was opened with.
-    static var openURL: URL? {
-        UserDefaults.standard.string(forKey: "HarnessRemoteOpenURL").flatMap { URL(string: $0) }
-    }
 }
 #endif
 
-/// Which addresses and links this phone accepts at all.
+/// Which relays this phone asks at all.
 enum RemotePolicy {
     private static func local(_ host: String) -> Bool {
         ["localhost", "::1", "0.0.0.0"].contains(host) || host.hasPrefix("127.")
@@ -41,13 +35,12 @@ enum RemotePolicy {
         return parts?.url
     }
 
-    /// The text of a pairing link the phone was opened with, or nil. It is `harnessremote://pair`
-    /// with exactly its three public fields: a link that also carries a code is not one.
-    static func pairingLink(_ url: URL) -> String? {
-        let fields = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []
-        guard url.scheme == "harnessremote", url.host == "pair", url.fragment == nil,
-            fields.map({ $0.name }).sorted() == ["host", "origin", "pairing"]
-        else { return nil }
-        return url.absoluteString
+    /// The kinds of relay whose offers this build asks with: those on the internet, and, in a
+    /// Debug build that was started for a local fixture, the one on this machine.
+    static var environments: [String] {
+        #if DEBUG
+        if RemoteDebug.loopback { return ["production", "local"] }
+        #endif
+        return ["production"]
     }
 }

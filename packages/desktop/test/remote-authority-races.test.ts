@@ -28,7 +28,7 @@ function fixture(initial: Promise<RemoteMobileStatus> = Promise.resolve(online))
 	let announce: (status: RemoteMobileStatus) => void = () => {};
 	const port = {
 		status: () => initial,
-		pair: async () => online,
+		scan: async () => online,
 		disconnect: async () => revoked,
 		onStatus: (listener: typeof announce) => {
 			announce = listener;

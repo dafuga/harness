@@ -1,18 +1,24 @@
 <script lang="ts">
 	import type { RemoteHost } from '../lib/stores/remoteHost.svelte';
-	import { hostLine, hostSummary, lockNote, shownCode } from '../utils/remoteLabels';
-	import { timeLabel } from '../utils/timeLabel';
+	import { hostLine, hostSummary, lockNote } from '../utils/remoteLabels';
 	import RemoteApproval from './RemoteApproval.svelte';
 	import RemoteDevices from './RemoteDevices.svelte';
+	import RemoteOfferCode from './RemoteOfferCode.svelte';
 	let { store, compact = false }: { store: RemoteHost; compact?: boolean } = $props();
 	/**
 	 * Phone access to this computer. Nothing here takes an address or a command: the relay is the
-	 * one the app was set up with, and a phone gets only the projects chosen for it.
+	 * one the app was set up with, a phone pairs by scanning the code that is shown, and it gets
+	 * only the projects chosen for it.
 	 */
 	let open = $state(false);
 	const status = $derived(store.status);
 	const unavailable = 'Phone access is not available in this app.';
-	const offerNote = 'Open this link on the phone and type the code there:';
+	/** A code that a phone already scanned is spent: the request takes its place. */
+	const scannable = $derived(
+		status?.pairing && !status.requests.some((item) => item.pairingId === status.pairing?.pairingId)
+			? status.pairing
+			: null
+	);
 </script>
 
 {#if status}<section class="remote-connection" class:compact aria-label="Phone access">
@@ -30,21 +36,20 @@
 					>{:else}<span>{hostLine(status)}</span
 					>{#if status.reason && status.state !== 'online'}<small class="remote-note"
 							>{status.reason}</small
-						>{/if}<small class="muted">{lockNote}</small>{#if status.pairing}<span>{offerNote}</span
-						><strong class="user-code">{shownCode(status.pairing.code)}</strong><span
-							class="hosted-address">{status.pairing.link}</span
-						><small class="muted">Expires {timeLabel(status.pairing.expiresAt)}</small
-						>{/if}{#each status.requests as item (item.pairingId)}<RemoteApproval
+						>{/if}<small class="muted">{lockNote}</small>{#if scannable}<RemoteOfferCode
+							offer={scannable}
+							{store}
+						/>{/if}{#each status.requests as item (item.pairingId)}<RemoteApproval
 							request={item}
 							projects={status.projects}
 							{store}
 						/>{/each}<RemoteDevices devices={status.devices} projects={status.projects} {store} />
 					<div class="remote-actions">
-						<button
-							type="button"
-							disabled={store.busy || status.state !== 'online'}
-							onclick={() => void store.createPairing()}>Pair a phone</button
-						><button type="button" disabled={store.busy} onclick={() => void store.disable()}
+						{#if !scannable}<button
+								type="button"
+								disabled={store.busy || status.state !== 'online'}
+								onclick={() => void store.createPairing()}>Pair a phone</button
+							>{/if}<button type="button" disabled={store.busy} onclick={() => void store.disable()}
 							>Turn off phone access</button
 						>
 					</div>{/if}{#if store.error}<span class="error" role="alert">{store.error}</span>{/if}

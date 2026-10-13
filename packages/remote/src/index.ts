@@ -9,7 +9,7 @@ export * from './utils/remoteKeys';
 export * from './utils/sessionKeys';
 export * from './utils/sealPacket';
 export * from './utils/pairingEnvelope';
-export * from './utils/pairingLink';
+export * from './utils/pairingOffer';
 export * from './utils/relayOrigin';
 export * from './utils/wireDispatch';
 export { WireMessageValidator } from './validators/WireMessageValidator';

@@ -1,3 +1,4 @@
+import { scanMarker } from './ios-acceptance-guards';
 import { followed } from './ios-build-processes';
 import { iosBuildPlan, simulatorSigning } from './ios-build-options';
 import type { IosBuildPlan } from './ios-build-options';
@@ -12,6 +13,7 @@ import {
 	tool,
 	verifiedSignature
 } from './ios-products';
+import { buildScanFixture, holds, scanFixtureProduct } from './ios-scan-fixture';
 
 /**
  * Builds the iOS app for a simulator: Debug by default, `--release` for the Release
@@ -25,12 +27,19 @@ import {
  * built. It leaves the Debug product as built and makes a copy beside it that may reach the
  * local test relay and be read by a check, signed again ad hoc.
  *
+ * `--scan-fixture` is TEST ONLY and Debug only as well. It builds nothing of the real source: it
+ * builds an isolated copy whose scanner is the synthetic one, for a simulator that has no camera.
+ *
  * xcodebuild is followed while it runs, and what it starts and leaves behind is ended with it,
  * whether it succeeds or fails: the build leaves no process running.
  */
 async function build(plan: IosBuildPlan): Promise<void> {
 	const product = builtProduct(plan.configuration);
 	if (plan.sync) tool(['bun', 'run', 'cap:sync']);
+	if (plan.scanFixture) {
+		console.log(`TEST ONLY scan fixture copy; signature ${await buildScanFixture()}.`);
+		return console.log(scanFixtureProduct);
+	}
 	const built = await followed([
 		'xcodebuild',
 		'-project',
@@ -53,6 +62,8 @@ async function build(plan: IosBuildPlan): Promise<void> {
 	succeeded('xcodebuild', built);
 	if (allowsLocalNetworking(product) || inspectable(product))
 		throw new Error('A normal product must have no networking exception and no web inspection.');
+	if (holds(product, scanMarker))
+		throw new Error('A normal product must not hold the synthetic scanner of a test copy.');
 	console.log(`${plan.configuration} simulator build; signature ${verifiedSignature(product)}.`);
 	console.log(product);
 	if (!plan.fixture) return;

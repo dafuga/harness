@@ -13,8 +13,8 @@ export const pairing = {
 	pairingId: 'b2'.repeat(16),
 	code: 'KQ7M2XWP'
 };
-export const shownCode = 'KQ7M-2XWP';
-export const pairingLink = `harnessremote://pair?origin=${encodeURIComponent(relayOrigin)}&host=${pairing.hostId}&pairing=${pairing.pairingId}`;
+/** The pairing a second and a third offer are given: each new code is another pairing. */
+export const laterPairings = ['c3'.repeat(16), 'd4'.repeat(16)];
 export const phone = {
 	deviceId: '4f2a91c07b3e' + 'd'.repeat(28),
 	name: 'Ada iPhone',
@@ -26,7 +26,9 @@ type Grant = { deviceId: string; projectIds: string[]; agents: boolean };
 interface HostOptions {
 	enabled: boolean;
 	origin: string;
-	link: string;
+	/** How long each synthetic offer claims to live. */
+	ttlMs: number;
+	later: string[];
 	pairing: typeof pairing;
 	phone: typeof phone;
 	projects: { id: string; name: string }[];
@@ -70,14 +72,13 @@ function installHostState(options: HostOptions) {
 	};
 	const at = new Date(Date.now() + 300000).toISOString();
 	const { deviceId, name } = options.phone;
-	const asking = { pairingId: options.pairing.pairingId, deviceId, deviceName: name };
-	/** A phone used the offer: the desktop now shows who asks, with the identity of its key. */
-	const request = () =>
-		void done(
-			'fixture.request',
-			{},
-			{ requests: [{ ...asking, platform: 'ios', requestedAt: at, expiresAt: at }] }
-		);
+	const asking = { deviceId, deviceName: name, platform: 'ios', requestedAt: at, expiresAt: at };
+	/** A phone scanned the offer: the desktop now shows who asks, with the identity of its key. */
+	const request = () => {
+		const open = status.pairing as { pairingId: string } | null;
+		const pairingId = open?.pairingId ?? options.pairing.pairingId;
+		void done('fixture.request', {}, { requests: [{ pairingId, ...asking }] });
+	};
 	host.__remoteHost = { status, listeners, copy, done, request };
 }
 
@@ -86,7 +87,17 @@ function installHostPort(options: HostOptions) {
 	const host = window as unknown as RemoteHost;
 	const { status, listeners, copy, done } = host.__remoteHost;
 	const expiresAt = new Date(Date.now() + 300000).toISOString();
-	const offer = { ...options.pairing, origin: options.origin, link: options.link, expiresAt };
+	const ids = [options.pairing.pairingId, ...options.later];
+	/** SYNTHETIC offer: the text a QR code holds, for a host and a relay that do not exist. */
+	const offered = () => {
+		const { hostId, code } = options.pairing;
+		const pairingId = ids.shift() ?? 'e5'.repeat(16);
+		const ends = Date.now() + options.ttlMs;
+		const fields = `exp=${Math.floor(ends / 1000)};host=${hostId};pairing=${pairingId};code=${code}`;
+		const scan = `harness-pair:v1;aud=harness-phone;env=production;${fields};origin=${options.origin}`;
+		const { origin } = options;
+		return { hostId, pairingId, code, origin, scan, expiresAt: new Date(ends).toISOString() };
+	};
 	const { deviceId, name } = options.phone;
 	const approved = { deviceId, name, platform: 'ios', approvedAt: expiresAt, lastSeenAt: null };
 	const closed = { enabled: false, state: 'disabled', pairing: null, requests: [] };
@@ -95,9 +106,11 @@ function installHostPort(options: HostOptions) {
 		enable: () => done('remote.enable', {}, { enabled: true, state: 'online' }),
 		disable: () => done('remote.disable', {}, closed),
 		createPairing: async () => {
-			await done('remote.createPairing', {}, { pairing: offer });
+			const offer = offered();
+			await done('remote.createPairing', {}, { pairing: offer, requests: [] });
 			return offer;
 		},
+		closePairing: () => done('remote.closePairing', {}, { pairing: null, requests: [] }),
 		/** Like the host: an approval that does not name the phone that was shown is refused. */
 		approvePairing: (input: Grant) =>
 			done(
@@ -111,7 +124,9 @@ function installHostPort(options: HostOptions) {
 							devices: [{ ...approved, ...input, pairingId: undefined, online: true }]
 						}
 			),
-		denyPairing: (input: object) => done('remote.denyPairing', input, { requests: [] }),
+		/** Like the host: a denied request spends the offer it came with. */
+		denyPairing: (input: object) =>
+			done('remote.denyPairing', input, { requests: [], pairing: null }),
 		revokeDevice: (input: { deviceId: string }) =>
 			done('remote.revokeDevice', input, {
 				devices: status.devices.filter((item) => item.deviceId !== input.deviceId)
@@ -124,7 +139,7 @@ function installHostPort(options: HostOptions) {
 }
 
 /** The two-local-one-shared Electron bridge, with the synthetic desktop control port beside it. */
-export async function remoteHostFixture(page: Page, enabled = false) {
+export async function remoteHostFixture(page: Page, enabled = false, ttlMs = 300000) {
 	const outbox = await projectFixture(page);
 	const projects = [
 		{ id: alpha, name: 'Alpha' },
@@ -133,7 +148,8 @@ export async function remoteHostFixture(page: Page, enabled = false) {
 	const options: HostOptions = {
 		enabled,
 		origin: relayOrigin,
-		link: pairingLink,
+		ttlMs,
+		later: laterPairings,
 		pairing,
 		phone,
 		projects

@@ -115,16 +115,23 @@ test('the control locks, suspends and resumes the host, for a caller on this mac
 	expect((await control('POST', '/shell')).status).toBe(404);
 }, 60000);
 
-test('no credential or key is printed or written; the code is shown only where it was asked for', async () => {
-	const status = await (await control('GET', '/status')).text(),
+test('no credential, key or pairing code is printed or written; the offer is given only where it was asked for', async () => {
+	/** An offer is open while everything public is read: what would leak it is on the table. */
+	const open = (await (await control('POST', '/pairing')).json()) as RemotePairingOffer,
+		status = await (await control('GET', '/status')).text(),
 		saved = await readFile(join(publicDirectory, 'offer.json'), 'utf8'),
 		facts = await readFile(join(publicDirectory, 'fixture.json'), 'utf8'),
-		quiet = lines.filter((line) => !line.startsWith('Pairing code')),
-		exposed = [status, saved, facts, ...quiet].join('\n');
-	for (const secret of [credentials.credential, credentials.keys.d, offer.code])
+		exposed = [status, saved, facts, ...lines].join('\n'),
+		codes = [offer, open].flatMap((item) => [item.code, item.code.replace('-', ''), item.scan]);
+	for (const secret of [credentials.credential, credentials.keys.d, ...codes])
 		expect(exposed).not.toContain(secret);
-	expect(lines.join('\n')).not.toContain(credentials.credential);
-	expect(lines.some((line) => line.startsWith('Pairing code ' + offer.code))).toBe(true);
+	expect(open.scan).toContain(`code=${open.code.replace('-', '')};`);
+	expect(JSON.parse(status).offer).toMatchObject({ pairingId: open.pairingId });
+	expect(JSON.parse(saved)).toMatchObject({ pairingId: open.pairingId });
+	for (const item of [offer, open]) {
+		const said = `Pairing offer ${item.pairingId} is open until`;
+		expect(lines.some((line) => line.startsWith(said))).toBe(true);
+	}
 	expect(JSON.parse(facts)).toMatchObject({
 		relayOrigin: fixture.relayOrigin,
 		hostId: offer.hostId,

@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import {
 	DevicePairingService,
 	credentialHash,
-	parsePairingLink,
+	readPairingOffer,
 	remoteIdentity
 } from '../../../remote/src/index';
 import { RemoteHostService } from '../../src/services/RemoteHostService';
@@ -69,12 +69,10 @@ test('a phone is paired only after the person approves it with explicit projects
 	await f.host.enable();
 	await f.online();
 	const offer = await f.host.devices.createPairing();
-	expect(parsePairingLink(offer.link)).toEqual({
-		origin: offer.origin,
-		hostId: offer.hostId,
-		pairingId: offer.pairingId
-	});
-	expect(offer.link).not.toContain(offer.code.replace('-', ''));
+	const { origin, hostId, pairingId } = offer;
+	expect(
+		readPairingOffer(offer.scan, { now: Date.now(), environments: ['production'] })
+	).toMatchObject({ offer: { origin, hostId, pairingId, code: offer.code.replace('-', '') } });
 	expect((await f.host.status()).pairing).toEqual(offer);
 	const pairing = new DevicePairingService({ fetch: f.relay.fetch }),
 		input = { ...offer, deviceName: 'Fixture phone', platform: 'test' as const };
