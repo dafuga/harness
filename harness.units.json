@@ -86,6 +86,24 @@
 			"specifier": "../../../../.cache/reports-e2e/",
 			"external": "browser-run-build",
 			"reason": "Where a browser run keeps its copy of the finished build: a generated directory in the checkout cache, never source."
+		},
+		{
+			"from": "packages/hub/src/components/HostedWorkspace.svelte",
+			"specifier": "$desktop/components/WorkspaceShell.svelte",
+			"to": "packages/desktop/src/components/WorkspaceShell.svelte",
+			"reason": "The hub's build alias $desktop is packages/desktop/src: the Web workspace renders the very shell the Electron and iOS workspace renders."
+		},
+		{
+			"from": "packages/hub/src/components/HostedWorkspace.svelte",
+			"specifier": "$desktop/lib/stores/workspace.svelte",
+			"to": "packages/desktop/src/lib/stores/workspace.svelte.ts",
+			"reason": "The hub's build alias $desktop is packages/desktop/src: the Web workspace keeps its state in the same workspace store."
+		},
+		{
+			"from": "packages/hub/src/components/HostedWorkspace.svelte",
+			"specifier": "$desktop/utils/workspaceRoute",
+			"to": "packages/desktop/src/utils/workspaceRoute.ts",
+			"reason": "The hub's build alias $desktop is packages/desktop/src: the Web workspace reads the same workspace addresses."
 		}
 	]
 }

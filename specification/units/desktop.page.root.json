@@ -2,9 +2,9 @@
 	"schemaVersion": 1,
 	"id": "desktop.page.root",
 	"kind": "page",
-	"title": "/",
-	"responsibility": "Owns the / route page.",
-	"responsibilityOrigin": "derived",
+	"title": "Electron and iOS workspace",
+	"responsibility": "Opens the shared workspace shell in the Electron and iOS apps, over each runtime's bridge. Plan and Change appear only where a project allows agents at its writable tip.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/routes/+page.svelte"],
