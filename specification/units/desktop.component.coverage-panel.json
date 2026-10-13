@@ -32,6 +32,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.component.runtime-behavior",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.component.status-icon",
 			"via": "import",
 			"origin": "derived"
@@ -67,7 +72,7 @@
 			}
 		]
 	},
-	"scenarios": ["runtime-evidence-ui"],
+	"scenarios": ["runtime-evidence-ui", "shared-test-cases"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

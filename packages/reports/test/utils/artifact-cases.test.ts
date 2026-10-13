@@ -50,3 +50,24 @@ test('what is not in the recorded form, or is of another unit, is a gap that say
 	const most = { ...calls, cases: Array.from({ length: caseForm.most }, () => calls.cases[0]) };
 	expect(artifactCases(most, unit).kind).toBe('cases');
 });
+
+test('recorded request and response aliases keep observed types and canonical-field precedence', () => {
+	for (const item of [
+		{ document: { request: false, response: 0 }, input: false, output: 0 },
+		{ document: { inputs: [], outputs: null }, input: [], output: null },
+		{
+			document: { input: null, request: 'fallback', output: false, response: 'fallback' },
+			input: null,
+			output: false
+		}
+	]) {
+		const read = artifactCases(item.document);
+		expect(read.kind).toBe('cases');
+		if (read.kind !== 'cases') throw new Error('No recorded pair was read');
+		expect(read.cases[0]).toMatchObject({
+			input: item.input,
+			output: item.output
+		});
+	}
+	expect(artifactCases({ input: 1, actual: 2, expected: 2 }).kind).toBe('gap');
+});

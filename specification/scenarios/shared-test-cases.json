@@ -1,0 +1,158 @@
+{
+	"schemaVersion": 1,
+	"id": "shared-test-cases",
+	"title": "Shared test input and observed output views",
+	"kind": "ui",
+	"units": [
+		"desktop.component.coverage-panel",
+		"desktop.component.entity-view",
+		"desktop.component.runtime-artifact",
+		"desktop.component.runtime-behavior",
+		"desktop.component.runtime-evidence",
+		"desktop.component.runtime-run",
+		"desktop.component.workspace-shell",
+		"reports.component.entity-cases",
+		"reports.function.artifact-cases"
+	],
+	"states": [
+		{
+			"id": "case-unit-tests",
+			"title": "case-unit-tests",
+			"coverage": "required"
+		},
+		{
+			"id": "component-current",
+			"title": "component-current",
+			"coverage": "required"
+		},
+		{
+			"id": "service-current",
+			"title": "service-current",
+			"coverage": "required"
+		},
+		{
+			"id": "page-current",
+			"title": "page-current",
+			"coverage": "required"
+		},
+		{
+			"id": "config-current",
+			"title": "config-current",
+			"coverage": "required"
+		},
+		{
+			"id": "component-commit",
+			"title": "component-commit",
+			"coverage": "required"
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 1440,
+			"height": 900
+		},
+		{
+			"id": "tablet",
+			"width": 920,
+			"height": 1100
+		},
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 844
+		}
+	],
+	"tests": [
+		{
+			"id": "case-units",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/shared-test-cases.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		},
+		{
+			"id": "case-ui",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-test-cases.spec.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 240000
+		}
+	],
+	"evidence": [
+		{
+			"id": "case-runner-output",
+			"kind": "output",
+			"states": [
+				"case-unit-tests",
+				"component-current",
+				"service-current",
+				"page-current",
+				"config-current",
+				"component-commit"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "case-unit-assertions",
+			"kind": "assertions",
+			"states": ["case-unit-tests"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "test-cases-observations",
+			"kind": "trace",
+			"states": [
+				"component-current",
+				"service-current",
+				"page-current",
+				"config-current",
+				"component-commit"
+			],
+			"viewports": [],
+			"required": true,
+			"provenance": "actual-capture",
+			"build": "desktop-renderer"
+		},
+		{
+			"id": "test-cases-desktop",
+			"kind": "screenshot",
+			"states": [
+				"component-current",
+				"service-current",
+				"page-current",
+				"config-current",
+				"component-commit"
+			],
+			"viewports": ["desktop"],
+			"required": true,
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "full-page"
+		},
+		{
+			"id": "test-cases-tablet",
+			"kind": "screenshot",
+			"states": ["component-current"],
+			"viewports": ["tablet"],
+			"required": true,
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "full-page"
+		},
+		{
+			"id": "test-cases-mobile",
+			"kind": "screenshot",
+			"states": ["component-current"],
+			"viewports": ["mobile"],
+			"required": true,
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "full-page"
+		}
+	]
+}

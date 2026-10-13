@@ -19,7 +19,7 @@
 		mediaBase: string;
 		/** True when reading the results failed, so nothing more is coming for this one. */
 		lost?: boolean;
-		/** The function this result is shown for: its inputs and observed outputs are rows. */
+		/** The function this result is shown for: only its own calls are rows. */
 		unit?: string;
 	} = $props();
 	// What a person reads at once; the whole of a larger result is the recorded file.
@@ -31,6 +31,8 @@
 			: text;
 	};
 	let run = $derived(cell.read?.verified ? cell.read.behavior : null);
+	/** Whether the recorded text was asked for: it is drawn only then, and never twice at once. */
+	let asked = $state(false);
 	const facts = (run: ExplorerArtifactBehavior) =>
 		[
 			['Scenario', run.scenario],
@@ -39,7 +41,7 @@
 		].filter(([, value]) => value);
 </script>
 
-{#snippet recorded(run: ExplorerArtifactBehavior, pair: boolean)}
+{#snippet recorded(run: ExplorerArtifactBehavior)}
 	{#if facts(run).length}
 		<dl class="ex-rows">
 			{#each facts(run) as [name, value] (name)}
@@ -55,16 +57,6 @@
 		<ol class="ex-steps">
 			{#each run.steps as step, position (position)}<li>{shown(step)}</li>{/each}
 		</ol>
-	{/if}
-	{#if pair}
-		{#if run.input !== undefined}
-			<h4>Input</h4>
-			<pre>{shown(run.input)}</pre>
-		{/if}
-		{#if run.output !== undefined}
-			<h4>Actual output</h4>
-			<pre class="ex-output">{shown(run.output)}</pre>
-		{/if}
 	{/if}
 	{#if run.assertions.length}
 		<h4>Assertions</h4>
@@ -112,17 +104,22 @@
 				<HarnessVerdict passed={false} label="Not verified" />
 				<span>{cell.read?.problem ?? 'It could not be read and checked against its hash.'}</span>
 			</p>
-		{:else if unit !== undefined}
-			<!-- A function is shown by its rows; what else was recorded stays behind a disclosure. -->
-			<EntityCases document={cell.read.document} {unit} />
+		{:else}
+			<!-- A result is shown by its rows; what else was recorded stays behind a disclosure. -->
+			<EntityCases document={cell.read.document} {unit} callable={unit !== undefined} />
 			<details>
 				<summary>Assertions and recorded result</summary>
-				{#if run}{@render recorded(run, false)}{:else}<pre>{shown(cell.read.text)}</pre>{/if}
+				{#if run}{@render recorded(run)}{/if}
+				{#if cell.read.document === null}
+					<pre>{shown(cell.read.text)}</pre>
+				{:else}
+					<!-- All that was read and checked, as it was recorded: a field no row shows is here. -->
+					<details bind:open={asked}>
+						<summary>Recorded JSON</summary>
+						{#if asked}<pre>{shown(cell.read.text)}</pre>{/if}
+					</details>
+				{/if}
 			</details>
-		{:else if run}
-			{@render recorded(run, true)}
-		{:else}
-			<pre>{shown(cell.read.text)}</pre>
 		{/if}
 		<a class="ex-link" href={mediaBase + mediaFile(cell.capture)} target="_blank" rel="noreferrer"
 			>Open the recorded {label}</a

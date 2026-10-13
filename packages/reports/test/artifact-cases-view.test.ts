@@ -73,9 +73,10 @@ test('a result that is absent, not stored, unread or not what its hash says show
 	expect(words(lost)).toContain('It could not be read and checked against its hash.');
 });
 
-test('outside a function a recorded result is drawn as it was', () => {
+test('outside a function a recorded result is the same row, and nothing is said of a function', () => {
 	const body = drawn(stored(observed));
-	expect(rows(body)).toEqual([]);
-	expect(words(body)).toContain('Actual output');
+	expect(rows(body)).toEqual(observedRows);
+	expect(words(body)).toContain('What a test observed end to end.');
+	expect(words(body)).not.toMatch(/Actual output|this function/);
 	expect(words(body)).toContain('Matching order is listed');
 });

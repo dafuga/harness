@@ -2,14 +2,22 @@
 	import { artifactCases } from '../utils/artifactCases';
 	let {
 		document,
-		unit
+		unit,
+		callable = true
 	}: {
 		/** A recorded result, parsed, after its bytes were read and checked. */
 		document: unknown;
 		/** The unit whose calls are shown; calls recorded for another one are not. */
 		unit?: string;
+		/** False for a page, a component, a config or a service: nothing a test calls directly. */
+		callable?: boolean;
 	} = $props();
 	let read = $derived(artifactCases(document, unit));
+	const seen = 'What a test observed end to end';
+	// Only of a function is it worth saying that what a test saw was no call of it.
+	let observed = $derived(
+		callable ? `${seen}; it is not a direct call of this function.` : `${seen}.`
+	);
 	/** What a person reads at once of one value. */
 	const most = 4000;
 	// A value is written as it was recorded, a string in quotes: false is never taken for "false".
@@ -25,9 +33,7 @@
 {:else}
 	<div class="cases">
 		<p class="cases-note">
-			{read.source === 'invocations'
-				? `Calls of ${read.symbol} recorded by a test.`
-				: 'What a test observed end to end; it is not a direct call of this function.'}
+			{read.source === 'invocations' ? `Calls of ${read.symbol} recorded by a test.` : observed}
 		</p>
 		<table>
 			<thead>
@@ -84,10 +90,12 @@
 		white-space: nowrap;
 	}
 	tbody th {
-		min-width: 9ch;
+		min-width: 12ch;
 		font-weight: 600;
 	}
 	pre {
+		/* A value keeps a line that can be read: where there is no room the table scrolls. */
+		min-width: 20ch;
 		margin: 0;
 		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
 		font-size: 0.8rem;

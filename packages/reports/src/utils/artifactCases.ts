@@ -13,6 +13,9 @@ const fields = (value: unknown): Fields | null =>
 const word = (value: unknown, most: number) =>
 	typeof value === 'string' && value.length > 0 && value.length <= most;
 
+/** Existing request/response names denote observations; matcher actual/expected fields do not. */
+const named = (stated: Fields, names: string[]) => names.find((name) => name in stated);
+
 /** One call as it was recorded: an input, and either what was returned or what was thrown. */
 function recorded(item: unknown): ExplorerArtifactCase | null {
 	const call = fields(item);
@@ -52,8 +55,10 @@ export function artifactCases(document: unknown, unit?: string): ExplorerArtifac
 			return gap(`Its cases are of another unit, ${String(stated.unitId)}.`);
 		return { kind: 'cases', source: 'invocations', symbol: stated.symbol as string, cases: read };
 	}
-	if (!('input' in stated) || !('output' in stated)) return none;
-	const seen = { name: 'Test observation', input: stated.input, output: stated.output };
+	const input = named(stated, ['input', 'inputs', 'request']);
+	const output = named(stated, ['output', 'outputs', 'response']);
+	if (!input || !output) return none;
+	const seen = { name: 'Test observation', input: stated[input], output: stated[output] };
 	return {
 		kind: 'cases',
 		source: 'observation',
