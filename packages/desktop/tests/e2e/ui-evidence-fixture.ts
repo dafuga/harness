@@ -1,10 +1,10 @@
-import type { Page } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
 import type {
 	EntityEvidenceQuery,
 	EvidenceArtifactQuery
 } from '../../src/models/DesktopEvidence.types';
-import { evidenceData, type EvidenceData } from './ui-evidence-data';
+import { commits, evidenceData, ids, soundScenario, type EvidenceData } from './ui-evidence-data';
 export * from './ui-evidence-data';
 
 /**
@@ -25,6 +25,8 @@ export interface EvidenceState {
 	/** The pinned evidence moved on: every request for bytes of the old pin is refused. */
 	moved: boolean;
 	urls: { made: string[]; revoked: string[] };
+	/** The object behind each URL the page made and has not let go. */
+	objects: Map<string, Blob | MediaSource>;
 	cache: (event: { projectId: string; status: string; cachedAt?: string }) => void;
 }
 interface Host {
@@ -35,17 +37,20 @@ type Settings = Pick<EvidenceState, 'delay' | 'corrupt' | 'moved'> & { hold: boo
 
 function installState(settings: Settings) {
 	const urls = { made: [] as string[], revoked: [] as string[] };
+	const objects = new Map<string, Blob | MediaSource>();
 	const [make, revoke] = [URL.createObjectURL.bind(URL), URL.revokeObjectURL.bind(URL)];
 	URL.createObjectURL = (value: Blob | MediaSource) => {
 		const made = make(value);
 		urls.made.push(made);
+		objects.set(made, value);
 		return made;
 	};
 	URL.revokeObjectURL = (value: string) => {
 		urls.revoked.push(value);
+		objects.delete(value);
 		revoke(value);
 	};
-	const state = { calls: [], ...settings, held: settings.hold ? [] : null, urls };
+	const state = { calls: [], ...settings, held: settings.hold ? [] : null, urls, objects };
 	Object.assign(window, { __evidence: { ...state, cache: () => {} }, harness: {} });
 }
 
@@ -171,3 +176,26 @@ export const evidenceRelease = (page: Page) =>
 /** What the cache channel of a backend says about the shown project. */
 export const evidenceCache = (page: Page, event: Parameters<EvidenceState['cache']>[0]) =>
 	page.evaluate((value) => (window as unknown as Host).__evidence.cache(value), event);
+
+/**
+ * The bytes of the object behind what a media element plays, read from that object itself: the
+ * renderer's policy lets an object URL be played and not fetched, and a capture needs no more.
+ */
+export const evidencePlayed = (media: Locator) =>
+	media.evaluate(async (node: HTMLMediaElement) => {
+		if (!Number.isFinite(node.duration) || node.duration <= 0)
+			throw new Error('Fixture audio is not playable');
+		const made = (window as unknown as Host).__evidence.objects.get(node.currentSrc);
+		if (!(made instanceof Blob)) throw new Error('The page made no object for what it plays');
+		return [...new Uint8Array(await made.arrayBuffer())];
+	});
+
+/** The SHA-256 the sealed history states for the one clip of the search box at the branch tip. */
+export function recordedClip(data: EvidenceData = evidenceData()): string {
+	const { evidence } = data.results[`${ids.search}|current|${commits.tip}`];
+	const clips = (evidence.after?.captures ?? []).filter(
+		(found) => found.scenario === soundScenario
+	);
+	if (clips.length !== 1) throw new Error('The sealed history does not keep exactly one such clip');
+	return clips[0].capture.sha256;
+}

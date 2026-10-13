@@ -1,8 +1,10 @@
+import { createHash } from 'node:crypto';
 import type { Page, TestInfo } from '@playwright/test';
 import type { ScenarioManifest } from '../../../../src/core/unitTypes';
 import scenarioData from '../../../../specification/scenarios/runtime-evidence-ui.json' with { type: 'json' };
 import { buildStamp } from '../../../../src/utils/buildStamp';
 import { evidenceRequested, recordCapture } from '../../../../src/utils/recordCapture';
+import { evidencePlayed, recordedClip } from './ui-evidence-fixture';
 
 const scenario: ScenarioManifest = scenarioData as ScenarioManifest;
 const note =
@@ -81,11 +83,10 @@ export async function runtimeEvidence(page: Page, info: TestInfo, state: string)
 export async function runtimeAudio(page: Page): Promise<void> {
 	if (!evidenceRequested()) return;
 	const server = await provenance(page);
-	const data = await page.locator('audio').evaluate(async (audio: HTMLAudioElement) => {
-		if (!Number.isFinite(audio.duration) || audio.duration <= 0)
-			throw new Error('Fixture audio is not playable');
-		return [...new Uint8Array(await (await fetch(audio.currentSrc)).arrayBuffer())];
-	});
+	const bytes = Uint8Array.from(await evidencePlayed(page.locator('audio')));
+	// The transcript below is true of the recorded clip alone: no other bytes are kept under it.
+	if (createHash('sha256').update(bytes).digest('hex') !== recordedClip())
+		throw new Error('The clip the page plays does not have the recorded SHA-256');
 	recordCapture(
 		{
 			evidence: 'runtime-audio-fixture',
@@ -99,6 +100,6 @@ export async function runtimeAudio(page: Page): Promise<void> {
 				'[One second of silence. The displayed "Order filed." transcript is synthetic fixture metadata, not audible speech.]',
 			note
 		},
-		Uint8Array.from(data)
+		bytes
 	);
 }
