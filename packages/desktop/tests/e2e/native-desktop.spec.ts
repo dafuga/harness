@@ -75,6 +75,8 @@ async function createThroughUi(page: Page, root: string) {
 		.getByRole('textbox', { name: 'Goal', exact: true })
 		.fill('Review committed images through the native bridge.');
 	await page.getByRole('button', { name: 'Create plan', exact: true }).click();
+	const sections = page.getByRole('navigation', { name: 'Entity sections' });
+	await sections.getByRole('button', { name: 'Designs', exact: true }).click();
 	await capture(page, 'draft');
 	await expect(page.getByRole('heading', { name: 'No design image yet' })).toBeVisible();
 	const tip = git(root, 'rev-parse', 'HEAD');

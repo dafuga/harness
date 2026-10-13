@@ -45,3 +45,5 @@ The desktop of a signed-in owner registers its Mac for phone access with `POST /
 ## Validation
 
 `bun run check:collaboration`, `bun run check:hub` and `bun run check:desktop` are included in the root check. Security tests use generated keys and synthetic provider/HTTP fixtures, without live credentials or invitations. Browser/native screenshots are external evidence and are not committed. Live provider registration and authorized hosted publication are separate acceptance layers.
+
+The browser suite (`bun run --cwd packages/hub test:e2e`) starts its own preview on `127.0.0.1:5795` and refuses a server that is already there; it never uses the development server on 5798. `HARNESS_HUB_TEST_PORT=<port>` names another free port from 1024 to 65535.

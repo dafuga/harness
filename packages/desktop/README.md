@@ -42,7 +42,7 @@ git lfs install --local
 
 Git and Git LFS must be installed. PNG designs use LFS; historical image reads need the corresponding local LFS objects. The app does not fetch missing objects automatically or alter global Git identity. Planning writes create commits in the selected repository and preserve unrelated staged and unstaged work; conflicting changes to planning artifacts are refused.
 
-Codex CLI and/or Claude CLI must be installed and authenticated locally to run agent requests. The composer displays discovered availability, models and effort choices. An unavailable provider remains disabled with its reason.
+Codex CLI and/or Claude CLI must be installed and authenticated locally to run agent requests. For Plan and Change the composer displays discovered availability, models and effort choices. An unavailable provider remains disabled with its reason.
 
 Coding agents also need the Harness CLI for generators, development loops, and audits. For local development, run `bun run build` and `bun link` from the Harness repository root before starting Electron. This links the current checkout's CLI into Bun's executable directory; subprocesses include that directory even when Electron starts from Finder. A project can instead invoke its project-local CLI using `HARNESS_CLI_PATH` in its audit scripts. Without an available CLI, an agent must report the blocked checks.
 
@@ -50,24 +50,24 @@ Coding agents also need the Harness CLI for generators, development loops, and a
 
 Use New page/component/function/config/service to create a title and goal. A draft can receive its first Plan request before it has an image. Plans remain separate from active unit manifests until real implementation exists.
 
-Within the entity conversation, choose **Plan** or **Change**, the CLI provider, its reported model, and an available reasoning effort. These controls stay inside the message input. Plan creates or revises a design; visual image generation uses the signed-in Codex GPT Image capability. The selected CLI/model receives the planning request. A highlighted rectangle or whole-image comment binds its thread to that exact image hash and version. Numbered pins, image versions and history belong to the selected entity. Headless designs can contain committed behavior notes instead of an image.
+The entity conversation opens on **Comment** wherever comments are permitted; a person writes it for people and it never starts an agent. **Plan** and **Change** are offered only in a local project with agents, at the checked-out branch tip. Choosing either shows the CLI provider, its reported model and an available reasoning effort inside the message input. Plan creates or revises the committed design; visual image generation uses the signed-in Codex GPT Image capability. The selected CLI/model receives the planning request. A highlighted rectangle or whole-image comment binds its thread to that exact image hash and version. Numbered pins, image versions and history belong to the selected entity. Headless designs can contain committed behavior notes instead of an image.
 
-**Approve version** records approval for the current exact design and contract. It neither starts code changes nor verifies running behavior. Send a separate Change message to implement an approved version. A later design version needs its own approval. Run status, public agent text, failures and cancellation appear in the conversation; a finished agent run is not a passing test result.
+**Approve version** records approval for the current exact design and contract. It neither starts code changes nor verifies running behavior. Send a separate Change message to implement it: Change needs the exact current version to be the approved one, so a later design version needs its own approval. Run status, public agent text, failures and cancellation appear in the conversation; a finished agent run is not a passing test result.
 
-Ordinary views show design, contract, relationships and entity history. Source filenames and contents are exposed only through **Details → Source**. Binary verification icons explain their evidence or missing evidence on hover, focus or tap; a Plan badge is independent of verification.
+An entity opens on its **Overview**: contract, size and performance, relationships, and the runtime evidence recorded for the shown revision where there is any. **Designs** holds the committed planning design; **Relationships**, **Evidence** and **History** are sections of their own. Source filenames and contents are exposed only through **Details → Source**. Binary verification icons explain their evidence or missing evidence on hover, focus or tap; a Plan badge is independent of verification.
 
 Change records preserve actual project source deltas and observed structured CLI operations on host files. Host operations include absolute paths and available before/after hashes. Shell writes outside the repository are not fully observable through these CLI APIs; this record is not a complete host filesystem audit.
 
 ## Revisions and files
 
-Branch selection shows that branch's actual tip. Only the checked-out branch tip is writable. Other branches, explicit commit views and the `harness-evidence` branch are read-only.
+Branch selection shows that branch's actual tip. Source, planning and agent writes happen only at the checked-out branch tip: other branches and explicit commit views, even of that tip, are read-only for them, and so is the `harness-evidence` branch. A human comment may still attach to a historical revision when the project's capabilities permit comments. That is no promise for the `harness-evidence` branch, nor for a project that is offline or no longer authorized.
 
 Canonical routes preserve branch names with percent encoding:
 
 - `/harness/branch/feat%2Factivity/pages`
 - `/harness/branch/feat%2Factivity/commit/<full-sha>/pages/<encoded-entity-id>`
 
-Entity base routes open the design; `/details` and `/history` identify those views. Historical data is read from the selected commit without substituting newer images.
+An entity's base route opens its Overview. `/designs` is the committed planning design, and `/relationships`, `/evidence`, `/history` and `/details` identify those views. Historical data is read from the selected commit without substituting newer images.
 
 Planning artifacts live under `src/<category>/<slug>/`, including `plan.json`, immutable `designs/v001/`, `designs/v002/` directories, approval records and entity threads. PNG bytes are stored through Git LFS. Versions preserve their exact hashes and creation commits; revision history is not an overwrite of the previous version.
 
@@ -86,9 +86,11 @@ HARNESS_CLI_PATH=../../src/index.ts bun run check
 
 The UI suites inject a deterministic bridge only into their test pages. The native suite launches its own Electron process/profile, stubs only the directory chooser, uses a disposable real Git/LFS repository and the public planning API, verifies native IPC, approval and history, and closes only that test-owned app. It checks sandboxing and blocked remote navigation/popups. It does not run coding or image-generation jobs. Actual CLI adapter smoke evidence is separate from these fixtures.
 
-Screenshots are opt-in with `TAKE_SCREENSHOT=true` and go to `test-results/`; do not commit generated visual evidence. The browser preview has no writable mock backend.
+Outside a verification the browser suites start their own preview on `127.0.0.1:5796` and refuse a server that is already there; `HARNESS_DESKTOP_TEST_PORT=<port>` names another free port. Screenshots are opt-in with `TAKE_SCREENSHOT=true` and go to `test-results/`; do not commit generated visual evidence. The browser preview has no writable mock backend.
 
-The separate core explorer task still owns verification-index and runtime-screenshot integration. Until that integration supplies complete evidence for the selected entity/revision, the desktop must show unavailable or unverified states. Design approval, a readable PNG and agent completion cannot fill that gap.
+Recorded runtime evidence is read for local projects and for shared ones, and is shown in Overview and Evidence. A branch view shows what is recorded for its tip; an explicit commit is compared with its actual first parent. Evidence that is missing, invalid or incompatible is shown as that gap, and a connection that cannot read evidence says so. A passing test, a design approval, a readable PNG or agent completion does not stand in for recorded evidence.
+
+These readers and views are exercised against fixtures. A final clean verification, the baseline review, manual and native acceptance, and any live hosted service are separate proof; this package claims neither a complete delivery nor a live hosted setup.
 
 ## iOS app on a simulator
 
