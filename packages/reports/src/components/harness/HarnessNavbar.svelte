@@ -1,11 +1,16 @@
 <script lang="ts">
 	import type { ExplorerLocation } from '../../models/Explorer.types';
+	import type { SearchEntry } from '../../utils/entitySearch';
 	import { harnessShell, plainClick, type HarnessNavbarInput } from '../../utils/harnessShell';
+	import { navbarSearch } from '../../utils/navbarSearch';
+	import EntitySearch from '../EntitySearch.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
 	import HarnessSelectors from './HarnessSelectors.svelte';
 	let input: HarnessNavbarInput = $props();
 	let view = $derived(harnessShell(input));
 	let revision = $derived(view.revision);
+	let search = $derived(navbarSearch(input.scope, input.search?.entries));
+	const found = (entry: SearchEntry) => search.at(entry);
 	// A plain click stays in the application; any other is the link it is.
 	function follow(event: MouseEvent, to: ExplorerLocation | null) {
 		if (!to || !plainClick(event)) return;
@@ -57,5 +62,22 @@
 				onfollow: () => revision.tip && input.onroute(revision.tip.to)
 			}}
 		/>
+	{/if}
+	<!-- A bar without an address offers nothing to choose, so it has nothing to search either. -->
+	{#if input.scope}
+		<div class="hx-search">
+			<EntitySearch
+				entries={search.entries}
+				scope={search.scope}
+				href={(entry) => {
+					const to = found(entry);
+					return to ? input.href(to) : input.base;
+				}}
+				open={(entry) => {
+					const to = found(entry);
+					if (to) input.onroute(to);
+				}}
+			/>
+		</div>
 	{/if}
 </header>

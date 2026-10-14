@@ -131,7 +131,12 @@
 		"reports.page.harness-branch-branch-at-shells-entity",
 		"reports.page.harness-branch-branch-at-shells-entity-details",
 		"reports.page.harness-branch-branch-at-shells-entity-history",
-		"reports.function.corrected-location"
+		"reports.function.corrected-location",
+		"reports.function.explorer-search-entries",
+		"reports.function.navbar-search",
+		"reports.function.entity-search",
+		"reports.component.entity-search",
+		"reports.component.entity-search-results"
 	],
 	"states": [
 		{
@@ -391,6 +396,32 @@
 			"title": "A shell at a commit that no branch reaches, shown without a branch",
 			"coverage": "required",
 			"units": ["reports.page.harness-view"]
+		},
+		{
+			"id": "search",
+			"title": "The search of the bar over the entities the console read for a branch tip that holds a shell",
+			"coverage": "required",
+			"units": [
+				"reports.page.harness-branch-branch-at-shells",
+				"reports.function.explorer-search-entries",
+				"reports.function.navbar-search",
+				"reports.function.entity-search",
+				"reports.component.entity-search",
+				"reports.component.entity-search-results"
+			]
+		},
+		{
+			"id": "search-pinned",
+			"title": "The search of the bar at a selected commit, which it names and searches alone",
+			"coverage": "required",
+			"units": [
+				"reports.page.harness-branch-branch-at-functions",
+				"reports.function.explorer-search-entries",
+				"reports.function.navbar-search",
+				"reports.function.entity-search",
+				"reports.component.entity-search",
+				"reports.component.entity-search-results"
+			]
 		}
 	],
 	"viewports": [
@@ -465,7 +496,9 @@
 				"shell-history",
 				"shell-redirect",
 				"shell-earlier",
-				"shell-retained"
+				"shell-retained",
+				"search",
+				"search-pinned"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",

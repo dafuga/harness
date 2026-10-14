@@ -9,12 +9,30 @@
 		shellMount,
 		shellScope
 	} from '../shellData';
+	import { shellSearchEntries } from '../shellSearch';
 	// The host of the shell in miniature: one address, kept in the browser history, and the header
 	// the console calls. It gives the header what a host gives it and decides nothing else.
 	const start: ExplorerLocation = { branch: shellBranch, commit: null, category: 'pages' };
 	const kept = (): ExplorerLocation => (history.state as ExplorerLocation | null) ?? start;
 	let location = $state(kept());
 	let scope = $derived(shellScope(location));
+	// A host reads a revision before it hands its entities over. `__searchLag` makes that read take
+	// time, during which this host still hands over what it read before; `__searchExtra` adds rows.
+	const { __searchLag: lag = 0, __searchExtra: extra = [] } = globalThis as unknown as {
+		__searchLag?: number;
+		__searchExtra?: Array<Record<string, string>>;
+	};
+	const read = (at: typeof scope) => [
+		...shellSearchEntries(at),
+		...extra.map((row) => ({ terms: [], ...row, commit: at.commit }))
+	];
+	let entries = $state(read(shellScope(kept())));
+	$effect(() => {
+		const fresh = read(scope);
+		if (!lag) return void (entries = fresh);
+		const timer = setTimeout(() => (entries = fresh), lag);
+		return () => clearTimeout(timer);
+	});
 	// The links a host page of the console gave its header before the explorer.
 	const links = [
 		{ label: 'Reports', href: `${shellMount}/reports` },
@@ -30,7 +48,8 @@
 		index: shellIndex,
 		commits: shellCommits(location.branch),
 		href: shellHref,
-		onroute
+		onroute,
+		search: { entries }
 	});
 </script>
 

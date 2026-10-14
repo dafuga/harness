@@ -1,6 +1,7 @@
 import { expect, type Page } from '@playwright/test';
 import { at, explorer, tip, verdict } from './explorer';
 import { screenStates } from './explorerScreens';
+import { searchStates } from './explorerSearch';
 import { shellStates } from './explorerShells';
 import { seeded, short } from './harnessHistory';
 
@@ -159,6 +160,7 @@ const reaches: Record<string, (page: Page) => Promise<void>> = {
 	},
 	...screenStates,
 	...shellStates,
+	...searchStates,
 	// A catalog of several hundred generated units.
 	async hundreds(page) {
 		await page.goto(`${scale}${tip('main', 'functions')}`);

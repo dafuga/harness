@@ -19,7 +19,11 @@
 		"reports.style.explorer-controls",
 		"reports.config.shell-vite",
 		"reports.config.shell-playwright",
-		"reports.component.select"
+		"reports.component.select",
+		"reports.component.entity-search",
+		"reports.component.entity-search-results",
+		"reports.function.entity-search",
+		"reports.function.navbar-search"
 	],
 	"states": [
 		{
@@ -56,6 +60,17 @@
 			"id": "pieces-tabs",
 			"title": "The shared pieces with the last tab of each row shown after the screen changed its width: the tab is whole in its strip, and the page is no wider than the screen",
 			"coverage": "required"
+		},
+		{
+			"id": "search-results",
+			"title": "The search of the bar with results of every category of the revision in view, the first one active",
+			"coverage": "required",
+			"units": [
+				"reports.component.entity-search",
+				"reports.component.entity-search-results",
+				"reports.function.entity-search",
+				"reports.function.navbar-search"
+			]
 		}
 	],
 	"viewports": [
@@ -96,6 +111,13 @@
 			"runner": "command",
 			"target": "bun x playwright test --config src/config/shellPlaywrightConfig.ts tests/e2e/explorer-shell-verdict.spec.ts",
 			"cwd": "packages/reports"
+		},
+		{
+			"id": "search",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test --config src/config/shellPlaywrightConfig.ts tests/e2e/explorer-shell-search.spec.ts",
+			"cwd": "packages/reports"
 		}
 	],
 	"evidence": [
@@ -109,7 +131,8 @@
 				"pieces",
 				"pieces-verdict",
 				"pieces-used",
-				"pieces-tabs"
+				"pieces-tabs",
+				"search-results"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",

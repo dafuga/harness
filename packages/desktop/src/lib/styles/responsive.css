@@ -6,6 +6,23 @@
 		grid-template-columns: repeat(4, minmax(0, 1fr));
 	}
 }
+/* Wide enough for one row, the search included: the gaps narrow as those of the explorer bar do. */
+@media (min-width: 1410px) {
+	.topbar:has(.topbar-search) {
+		column-gap: clamp(10px, 1.1vw, 22px);
+	}
+}
+/* Narrower than one row: the search takes a row of its own after the revision, as in the explorer bar. */
+@media (max-width: 1409px) {
+	.topbar-search {
+		flex: 1 0 100%;
+		max-width: none;
+		padding-bottom: 12px;
+	}
+	.topbar-search .entity-search {
+		max-width: 420px;
+	}
+}
 @media (max-width: 1250px) {
 	.topbar {
 		flex-wrap: wrap;
@@ -20,6 +37,10 @@
 	}
 	.revision-picker {
 		margin-left: auto;
+	}
+	/* The categories end the bar here, a row-gap under the search. */
+	.topbar-search {
+		padding-bottom: 0;
 	}
 	.project-switcher {
 		border-inline: 0;
@@ -92,6 +113,9 @@
 @media (max-width: 560px) {
 	.topbar {
 		padding: 10px 12px 0;
+	}
+	.topbar-search .entity-search {
+		max-width: none;
 	}
 	.brand {
 		width: 100%;
