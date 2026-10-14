@@ -83,7 +83,13 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-renderer", "remote-mobile-ui", "shells-shared-app"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-renderer",
+		"remote-mobile-ui",
+		"shells-shared-app",
+		"search-shared-app"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

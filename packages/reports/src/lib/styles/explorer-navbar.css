@@ -94,6 +94,11 @@
 	border-radius: 3px 3px 0 0;
 	background: var(--hx-gold);
 }
+/* The search of the revision in view comes after the revision, in reading and focus order. */
+.hx-search {
+	display: flex;
+	align-items: center;
+}
 /* Wide enough for one row: nothing wraps, and a long name gives way instead. */
 @media (min-width: 1321px) {
 	.hx-nav {
@@ -113,6 +118,52 @@
 	}
 	.hx-nav .hx-revision label:first-of-type {
 		flex: 0 1 280px;
+	}
+}
+/* A bar with a search is one row from 1420px: the revision keeps the whole width of its fields,
+   the search and a long repository name give way, and the spacing narrows near the threshold. */
+@media (min-width: 1420px) {
+	.hx-nav:has(.hx-search) {
+		column-gap: clamp(10px, 2.2vw - 21px, 22px);
+	}
+	.hx-nav:has(.hx-search) .hx-revision {
+		flex-shrink: 0;
+		column-gap: clamp(10px, 2vw - 19px, 20px);
+	}
+	.hx-nav:has(.hx-search) .hx-repository {
+		flex-shrink: 2;
+	}
+	.hx-nav:has(.hx-search) :is(.hx-categories a, .hx-category) {
+		padding-inline: clamp(8px, 2.8vw - 32px, 22px);
+	}
+	.hx-search {
+		flex: 0 1 200px;
+		min-width: 150px;
+	}
+}
+/* Narrower, a bar with a search gives the revision a row of its own, and the search one under it. */
+@media (max-width: 1419px) {
+	.hx-nav:has(.hx-search) {
+		flex-wrap: wrap;
+	}
+	.hx-nav:has(.hx-search) .hx-revision {
+		flex: 1 0 100%;
+		margin-left: 0;
+		padding: 10px 0 12px;
+		border-top: 1px solid var(--hx-line);
+	}
+	.hx-nav:has(.hx-search) .hx-revision::before {
+		display: none;
+	}
+	.hx-nav:has(.hx-search) .hx-revision label:first-of-type {
+		flex: 0 1 280px;
+	}
+	.hx-search {
+		flex: 1 0 100%;
+		padding: 0 0 12px;
+	}
+	.hx-search .entity-search {
+		max-width: 420px;
 	}
 }
 /* A phone: the brand, then the six categories across the screen, then the fields. */
@@ -151,5 +202,11 @@
 	}
 	.hx-nav .hx-revision label {
 		flex: 1 1 0;
+	}
+	.hx-search .entity-search {
+		max-width: none;
+	}
+	.hx-nav:has(.hx-search) .hx-revision label:first-of-type {
+		flex: 1 0 100%;
 	}
 }

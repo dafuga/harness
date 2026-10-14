@@ -28,6 +28,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.component.entity-search",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-harness-icon",
 			"via": "import",
 			"origin": "derived"
@@ -38,7 +43,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.function.entity-search",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.harness-shell",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.navbar-search",
 			"via": "import",
 			"origin": "derived"
 		},

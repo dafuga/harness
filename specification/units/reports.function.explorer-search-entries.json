@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.explorer-search-entries",
+	"kind": "function",
+	"title": "explorerSearchEntries",
+	"responsibility": "Turns the entities the explorer shows at a commit into search entries with name, purpose and contract names; never a source path, never a removed unit.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/explorerSearchEntries.ts"],
+		"symbols": ["explorerSearchEntries"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "explorerSearchEntries.entities",
+				"type": "ExplorerEntity[]"
+			},
+			{
+				"name": "explorerSearchEntries.commit",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "explorerSearchEntries",
+				"type": "SearchEntry[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.entity-search",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/explorerSearchEntries.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/explorerSearchEntries.ts"
+			}
+		]
+	},
+	"scenarios": ["harness-console"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

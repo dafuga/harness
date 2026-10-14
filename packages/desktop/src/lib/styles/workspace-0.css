@@ -161,7 +161,20 @@ small {
 .topbar nav a.active {
 	border-bottom-color: var(--gold);
 }
+/* The search of the shown revision follows the revision picker, in reading and focus order, and has
+   only the room the bar leaves: it never squeezes the picker. */
+.topbar-search {
+	display: flex;
+	flex: 1 1 0;
+	min-width: 120px;
+	max-width: 340px;
+}
+/* A bar with a search wraps rather than squeeze a control; one without keeps its own line. */
+.topbar:has(.topbar-search) {
+	flex-wrap: wrap;
+}
 .revision-picker {
+	flex-shrink: 0;
 	margin-left: auto;
 	display: flex;
 	gap: 16px;

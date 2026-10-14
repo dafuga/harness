@@ -1,9 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import {
-		explorerRoutePath,
-		type ExplorerLocation
-	} from '../../../../../src/utils/explorerRoute';
+	import { explorerRoutePath, type ExplorerLocation } from '../../../../../src/utils/explorerRoute';
 	import type { ExplorerBehavior, ExplorerEvidence } from '../../models/Explorer.types';
 	import type { ExplorerScreen } from '../../models/ExplorerScreen.types';
 	import type { HarnessIndex, HarnessRevision, HarnessUnit } from '../../models/Harness.types';
@@ -11,6 +8,7 @@
 	import type { EntityLens } from '../../utils/entityLens';
 	import { explorerBehavior } from '../../utils/explorerBehavior';
 	import { explorerEntities } from '../../utils/explorerEntities';
+	import { explorerSearchEntries } from '../../utils/explorerSearchEntries';
 	import { explorerEvidence } from '../../utils/explorerEvidence';
 	import { explorerHistory } from '../../utils/explorerHistory';
 	import { explorerRelations } from '../../utils/explorerRelations';
@@ -93,6 +91,10 @@
 		return { index: history, scope: at, head: detail, parent, lens };
 	});
 	let entities = $derived(shown ? explorerEntities(shown.head, shown.parent) : []);
+	// The search of the bar holds the entities of exactly the revision shown; none while it is read.
+	let searchCatalog = $derived({
+		entries: shown ? explorerSearchEntries(entities, shown.scope.commit) : null
+	});
 
 	onMount(async () => {
 		try {
@@ -147,7 +149,7 @@
 		{base}
 		{problem}
 		missing={page?.kind === 'missing' ? page : null}
-		navbar={{ repository, scope, index, commits, href, onroute }}
+		navbar={{ repository, scope, index, commits, href, onroute, search: searchCatalog }}
 	/>
 	<main class="hx-main">
 		{#if !index && !problem}<p class="hc-muted" role="status">Loading history…</p>{/if}
@@ -162,8 +164,8 @@
 		{#if shown}
 			{#if !shown.head.registry.available}
 				<p class="hc-notice" role="status">
-					{shown.head.registry.gap ?? 'No unit registry is stored at this revision'}. The registry of
-					another revision is not shown in its place.
+					{shown.head.registry.gap ?? 'No unit registry is stored at this revision'}. The registry
+					of another revision is not shown in its place.
 				</p>
 			{/if}
 			<Content
