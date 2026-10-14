@@ -1,4 +1,5 @@
 <script lang="ts">
+	import BrandMark from '$shared/BrandMark.svelte';
 	import type { Snippet } from 'svelte';
 	import type { DesktopProject } from '../models/ProjectContext.types';
 	let {
@@ -30,7 +31,7 @@
 </script>
 
 <main class="project-gate">
-	<div class="brand-mark">◈</div>
+	<div class="brand-mark"><BrandMark /></div>
 	<h1>Harness</h1>
 	<p>Understand your project. Design what comes next.</p>
 	{#if local}<button class="primary" disabled={!available || busy} onclick={open}

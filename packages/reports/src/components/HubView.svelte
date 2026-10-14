@@ -1,4 +1,5 @@
 <script lang="ts">
+	import BrandMark from './BrandMark.svelte';
 	import type { Report } from '../models/Report.types';
 	import { t } from '../utils/reportLocale';
 	import { dateLabel, reportStale } from '../utils/reportDisplay';
@@ -46,7 +47,7 @@
 
 <main class="report-shell">
 	<nav class="topbar">
-		<a href="/harness/reports" class="brand"><span class="brand-symbol">◈</span> {$t('hub')}</a>
+		<a href="/harness/reports" class="brand"><span class="brand-symbol"><BrandMark /></span> {$t('hub')}</a>
 		<a class="text-link" href="/harness/analytics">Harness Analytics</a>
 		<a class="text-link" href="/harness">Harness console</a>
 		<span class="workspace-label">{$t('local')}</span>

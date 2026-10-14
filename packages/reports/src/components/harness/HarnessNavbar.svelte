@@ -1,4 +1,5 @@
 <script lang="ts">
+	import BrandMark from '../BrandMark.svelte';
 	import type { ExplorerLocation } from '../../models/Explorer.types';
 	import type { SearchEntry } from '../../utils/entitySearch';
 	import { harnessShell, plainClick, type HarnessNavbarInput } from '../../utils/harnessShell';
@@ -21,10 +22,7 @@
 
 <header class="hx-nav">
 	<a class="hx-brand" href={view.home.href} onclick={(event) => follow(event, view.home.to)}>
-		<svg class="hx-mark" viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
-			<path d="M17 29 30 16 17 3l-3.5 3.5L23 16l-9.5 9.5z" />
-			<path d="M15 3 2 16l13 13 3.5-3.5L9 16l9.5-9.5z" />
-		</svg>
+		<span class="hx-mark"><BrandMark size={30} /></span>
 		<span>Harness</span>
 	</a>
 	{#if input.repository}<span class="hx-repository">{input.repository}</span>{/if}

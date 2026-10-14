@@ -1,4 +1,5 @@
 <script lang="ts">
+	import BrandMark from './BrandMark.svelte';
 	import { tick } from 'svelte';
 	import type { Report } from '../models/Report.types';
 	import { t } from '../utils/reportLocale';
@@ -33,7 +34,7 @@
 
 <main class="report-shell">
 	<nav class="topbar">
-		<a class="brand" href={portable ? '#' : '/harness/reports'}><span class="brand-symbol">◈</span> {$t('hub')}</a>
+		<a class="brand" href={portable ? '#' : '/harness/reports'}><span class="brand-symbol"><BrandMark /></span> {$t('hub')}</a>
 		<span class="workspace-label">{$t(portable ? 'html' : 'local')}</span>
 	</nav>
 	{#if !portable}<a class="back-link" href={'/harness/reports?project=' + report.project.id}>← {$t('history')}</a

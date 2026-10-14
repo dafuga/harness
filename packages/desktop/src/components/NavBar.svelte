@@ -1,4 +1,5 @@
 <script lang="ts">
+	import BrandMark from '$shared/BrandMark.svelte';
 	import { resolve } from '$app/paths';
 	import EntitySearch from '$shared/EntitySearch.svelte';
 	import type { Snippet } from 'svelte';
@@ -17,7 +18,7 @@
 
 <header class="topbar">
 	<WorkspaceLink {workspace} to={workspace.path('pages')} class="brand"
-		><span class="brand-mark">◈</span> Harness</WorkspaceLink
+		><span class="brand-mark"><BrandMark /></span> Harness</WorkspaceLink
 	>
 	<ProjectSwitcher {workspace} />
 	<nav aria-label="Catalog categories">

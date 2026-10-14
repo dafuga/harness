@@ -44,6 +44,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.component.brand-mark",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.coverage-list",
 			"via": "import",
 			"origin": "derived"

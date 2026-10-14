@@ -1,16 +1,4 @@
-import { hostedVerificationScopes } from './hosted-verification-scopes';
-import { functionVerificationScopes } from './function-verification-scopes';
-import { recordedEvidenceScopes } from './recorded-evidence-scopes';
-import { remoteVerificationScopes } from './remote-verification-scopes';
-import { sharedCaseVerificationScopes } from './shared-case-verification-scopes';
-import { agentCreationVerificationScopes } from './agent-creation-verification-scopes';
-import { searchVerificationScopes } from './search-verification-scopes';
-import { shellsVerificationScopes } from './shells-verification-scopes';
-import { referenceVerificationScopes } from './reference-verification-scopes';
-import { designOptionVerificationScopes } from './design-option-verification-scopes';
-import { planFixtureVerificationScopes } from './plan-fixture-verification-scopes';
-import { hubDesignVerificationScopes } from './hub-design-verification-scopes';
-
+import { registeredVerificationScopes } from './registered-verification-scopes';
 export interface VerificationTarget {
 	scenario: string;
 	package: string;
@@ -25,18 +13,7 @@ export interface VerificationScope {
 	playwright: Record<string, string[]>;
 }
 const scopes: Record<string, VerificationScope> = {
-	...remoteVerificationScopes,
-	...recordedEvidenceScopes,
-	...hostedVerificationScopes,
-	...functionVerificationScopes,
-	...sharedCaseVerificationScopes,
-	...agentCreationVerificationScopes,
-	...searchVerificationScopes,
-	...shellsVerificationScopes,
-	...referenceVerificationScopes,
-	...designOptionVerificationScopes,
-	...planFixtureVerificationScopes,
-	...hubDesignVerificationScopes,
+	...registeredVerificationScopes,
 	'runtime-evidence-ui': {
 		package: 'desktop',
 		vitest: {},
