@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { afterAll, beforeAll, test } from 'vitest';
 import { SeedAttacher } from '../packages/reports/scripts/harness-seed-attacher';
 import { VerificationStoreRepository } from '../src/repositories/VerificationStoreRepository';
+import { noteLine } from '../src/utils/noteLines';
 import { attach, evidenceRef, noteLines, notesRef } from './support/historyRepo';
 import { baselineRepo, cloneRepo, type VerifyOutcome, type VerifyRepo } from './support/verifyRepo';
 
@@ -55,7 +56,11 @@ async function history(repo: VerifyRepo) {
 		const shown = await noteLines(repo, commit);
 		for (const line of shown)
 			if (line.evidence) line.evidence.commit = await tree(line.evidence.commit);
-		notes.push({ commit, lines: shown });
+		// Evidence commit hashes carry time. Re-sort the full entries after replacing them.
+		notes.push({
+			commit,
+			lines: shown.sort((left, right) => noteLine(left).localeCompare(noteLine(right)))
+		});
 	}
 	const refs = await lines(repo, ['for-each-ref', '--format=%(refname) %(objectname)']);
 	const kept = refs.filter(
