@@ -2,7 +2,7 @@
 	"name": "evidence-disclosure-reveal",
 	"goal": "The explorer evidence spec opens each closed 'Assertions and recorded result' disclosure by a normal click before it asserts what a run asserted.",
 	"createdAt": "2026-10-13T21:22:09.524Z",
-	"updatedAt": "2026-10-13T21:58:52.161Z",
+	"updatedAt": "2026-10-14T01:37:54.220Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"steps": [
@@ -37,7 +37,9 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots; keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-14T01:37:54.220Z",
+			"evidence": "0dc9663: all normal check groups passed; three original desktop deadline failures passed unchanged retries. Clean record 69f82925: 889 checks and 21 scenarios passed; budgets reviewed separately. Fresh screenshots inspected. Test-helper assertions unchanged."
 		}
 	],
 	"evaluators": [
