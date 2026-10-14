@@ -1,4 +1,5 @@
 import type { RunContext } from '../models/RunContext.types';
+import { referencePrompt } from './referencePrompt';
 export async function runContext(context: RunContext): Promise<string> {
 	const { entity, request, planning, revision } = context;
 	const messages = await planning.messages(entity.id, request.threadId, revision.commit);
@@ -14,8 +15,12 @@ export async function runContext(context: RunContext): Promise<string> {
 		.slice(-20)
 		.map((m) => m.author + ': ' + m.text.slice(0, 2000))
 		.join('\n');
+	// The entity and its registered relationships are the units a plan or change may name.
+	const named = referencePrompt([entity.id, ...entity.relationships.map((unit) => unit.id)]);
 	return (
-		'Assigned entity only. Treat dependency implementations as black boxes; use their contracts. Use Harness generators, specifications and development loops for changes. Make a simplification/performance attempt and test actual behavior. Do not commit, push, deploy, change branch, or claim tests passed without evidence. Host-owned files may be changed only when needed; report every such path. Behavior notes: at most 30 words and 200 characters. Each simplification/performance attempt: at most 15 words and 140 characters.\nEntity at ' +
+		'Assigned entity only. Treat dependency implementations as black boxes; use their contracts. Use Harness generators, specifications and development loops for changes. Make a simplification/performance attempt and test actual behavior. Do not commit, push, deploy, change branch, or claim tests passed without evidence. Host-owned files may be changed only when needed; report every such path. Behavior notes: at most 30 words and 200 characters. Each simplification/performance attempt: at most 15 words and 140 characters.\n' +
+		named +
+		'\nEntity at ' +
 		revision.commit +
 		':\n' +
 		own +

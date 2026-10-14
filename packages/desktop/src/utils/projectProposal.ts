@@ -1,5 +1,6 @@
 import { categories, type Category, type ContractField } from '../models/Desktop.types';
 import type { ProjectRunRequest, ProposedContract } from '../models/DesktopBridge.types';
+import { referencePrompt } from './referencePrompt';
 
 /** What an agent may propose for something new: its kind, name, goal, notes and contract. */
 export interface ProjectProposal {
@@ -97,8 +98,14 @@ export function projectProposal(answer: string): ProjectProposal {
 	};
 }
 
-/** The one question of a creation run: an answer in a fixed form, and nothing written. */
-export function proposalPrompt(request: Pick<ProjectRunRequest, 'category' | 'text'>): string {
+/**
+ * The one question of a creation run: an answer in a fixed form, and nothing written. `known`
+ * are registered ids of the catalog the request was made in; the notes may name them.
+ */
+export function proposalPrompt(
+	request: Pick<ProjectRunRequest, 'category' | 'text'>,
+	known: string[] = []
+): string {
 	return [
 		'Propose one new unit for this project. Write nothing.',
 		'You may read AGENTS.md, the specifications and the unit registry with its contracts. Do not',
@@ -112,6 +119,8 @@ export function proposalPrompt(request: Pick<ProjectRunRequest, 'category' | 'te
 		'The title is a name, never a path or a file name. The notes hold no source code, no file',
 		'paths, no instruction to write files and no claim that anything was built, run or verified.',
 		'Code is written only after a person approves the plan.',
+		referencePrompt(known),
+		'The notes may name existing units so; the title names the new unit in plain words.',
 		`The request was made in the ${request.category} catalog. That is a hint: choose the kind`,
 		'the request describes.',
 		'Request:',

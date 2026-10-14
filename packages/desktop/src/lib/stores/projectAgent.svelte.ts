@@ -21,6 +21,8 @@ class ProjectAgentState {
 	error = $state('');
 	/** The request that is under way or was answered last, as it was written. */
 	asked = $state('');
+	/** What the agent said in public of that request: its checked notes, or its question. */
+	said = $state('');
 	/** A draft the last run left without the request in it: it is linked, never opened. */
 	saved = $state.raw<CreatedEntity | null>(null);
 	providers = $state.raw<ProviderState[]>([]);
@@ -54,7 +56,7 @@ class ProjectAgentState {
 		const projectId = this.workspace.projectId;
 		if (this.active || draft.mode !== 'plan' || !this.allowed || !projectId) return false;
 		this.starting = true;
-		[this.error, this.status, this.asked, this.saved] = ['', '', draft.text, null];
+		[this.error, this.status, this.asked, this.saved, this.said] = ['', '', draft.text, null, ''];
 		try {
 			const { provider, model, effort, text } = draft;
 			const run = await this.workspace.bridge!.startRun({
@@ -74,6 +76,7 @@ class ProjectAgentState {
 	/** What an event says of the run, in words; a failure is said as an error. */
 	private told(value: RunEvent) {
 		if (value.kind === 'status') this.status = value.detail;
+		if (value.kind === 'text') this.said += value.text;
 		if (value.kind === 'failed') [this.error, this.status] = [value.message, ''];
 		if (value.kind === 'cancelled')
 			this.status = value.created
