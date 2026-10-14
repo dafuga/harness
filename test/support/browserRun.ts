@@ -3,6 +3,7 @@ import { readdirSync, readFileSync, type Dirent } from 'node:fs';
 import { join, relative, resolve, sep } from 'node:path';
 import { ownEnvironment } from './cli';
 import { runFailures, type RunReport } from './runFailures';
+import { teardownGate } from './runGate';
 import { freePort } from './workers';
 
 const reports = resolve(import.meta.dirname, '../../packages/reports');
@@ -63,14 +64,17 @@ function reported(file: string): Pick<BrowserRun, 'results' | 'failures'> {
  * Starts the reports browser suite on a few specs as an independent run: its own free ports, the
  * compiled server a verification uses, and its results kept apart. Where the run keeps its
  * fixtures is not said to it: it only has `scratch` as the temporary directory of its processes.
- * With `repeat` every test runs that many times, which keeps the run and its servers going.
+ * With `repeat` every test runs that many times, which keeps the run and its servers going. With
+ * `gate` its teardown keeps its fixtures until the observer holding that gate lets them go.
  */
 export async function browserRun(
 	name: string,
 	scratch: string,
 	specs: string[],
-	repeat = 1
+	lasting: number | { repeat: number; gate?: string } = 1
 ): Promise<BrowserRun> {
+	const { repeat, gate } =
+		typeof lasting === 'number' ? { repeat: lasting, gate: undefined } : lasting;
 	const assigned: Record<string, string> = {};
 	for (const port of ports) assigned[port] = String(await freePort());
 	const results = join(scratch, `${name}-results.json`);
@@ -84,7 +88,8 @@ export async function browserRun(
 		HARNESS_CONSOLE_E2E_HOME: undefined,
 		HARNESS_ANALYTICS_HOME: undefined,
 		HARNESS_VERIFY: '1',
-		PLAYWRIGHT_JSON_OUTPUT_FILE: results
+		PLAYWRIGHT_JSON_OUTPUT_FILE: results,
+		[teardownGate]: gate
 	};
 	const args = ['x', 'playwright', 'test', ...specs, '--reporter=json', `--repeat-each=${repeat}`];
 	const child = spawn('bun', [...args, '--output', join(scratch, `${name}-output`)], {
