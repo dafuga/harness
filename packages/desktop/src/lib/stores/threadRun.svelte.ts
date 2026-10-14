@@ -8,6 +8,8 @@ class ThreadRunState {
 	streaming = $state('');
 	error = $state('');
 	private starting = $state(false);
+	/** A Change writes what its agent said into its notice; a Plan's text stays here. */
+	private mode: RunRequest['mode'] | null = null;
 	constructor(private workspace: Workspace) {}
 	get active() {
 		return Boolean(this.runId) || this.starting;
@@ -19,8 +21,9 @@ class ThreadRunState {
 		this.error = '';
 		this.streaming = '';
 		try {
-			const run = await this.workspace.bridge!.startRun(await build());
-			this.runId = run.runId;
+			const request = await build();
+			const run = await this.workspace.bridge!.startRun(request);
+			[this.runId, this.mode] = [run.runId, request.mode];
 			this.status = 'Request accepted';
 			return true;
 		} catch (cause) {
@@ -37,11 +40,16 @@ class ThreadRunState {
 		if (value.kind === 'text') this.streaming += value.text;
 		if (value.kind === 'failed') this.error = value.message;
 		if (value.kind === 'cancelled') this.status = 'Run cancelled';
-		if (value.kind === 'finished') this.status = value.summary;
+		if (value.kind === 'finished') this.finished(value.summary);
 		if (!['failed', 'cancelled', 'finished'].includes(value.kind)) return false;
 		this.runId = '';
 		await this.workspace.refresh();
 		return value.kind === 'finished';
+	}
+	/** A finished Change wrote what its agent said into its notice; a failed one keeps it here. */
+	private finished(summary: string) {
+		this.status = summary;
+		if (this.mode === 'change') this.streaming = '';
 	}
 	async cancel() {
 		try {

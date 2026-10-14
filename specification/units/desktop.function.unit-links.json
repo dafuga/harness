@@ -1,0 +1,76 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.unit-links",
+	"kind": "function",
+	"title": "unitLinks",
+	"responsibility": "Resolves unit references against the project, branch and commit in view when it was made.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/unitLinks.ts"],
+		"symbols": ["UnitLink", "unitLinks"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "unitLinks.workspace",
+				"type": "Workspace"
+			},
+			{
+				"name": "unitLinks.current",
+				"type": "CatalogEntity | null"
+			}
+		],
+		"outputs": [
+			{
+				"name": "unitLinks",
+				"type": "(id: string)"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.entity-references",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.workspace-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-name",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/unitLinks.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/unitLinks.ts"
+			}
+		]
+	},
+	"scenarios": ["agent-references"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

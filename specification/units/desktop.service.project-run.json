@@ -66,6 +66,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.function.proposal-units",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.function.source-changes",
 			"via": "import",
 			"origin": "derived"
@@ -101,7 +106,7 @@
 			}
 		]
 	},
-	"scenarios": ["agent-creation"],
+	"scenarios": ["agent-creation", "agent-references"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

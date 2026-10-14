@@ -21,14 +21,13 @@
 	 * app that renders it, so no component cuts a prefix off a path.
 	 */
 	const href = $derived(resolve(to as '/'));
-</script>
-
-<a
-	class={style}
-	{href}
-	aria-label={label}
-	onclick={(event) => {
+	/** A plain click opens the address here; a modified one is the browser's, such as a new tab. */
+	function open(event: MouseEvent) {
+		const modified = event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
+		if (event.defaultPrevented || event.button !== 0 || modified) return;
 		event.preventDefault();
 		void workspace.navigate(to);
-	}}>{@render children()}</a
->
+	}
+</script>
+
+<a class={style} {href} aria-label={label} onclick={open}>{@render children()}</a>

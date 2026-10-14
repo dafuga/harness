@@ -33,6 +33,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.component.reference-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.store.project-agent",
 			"via": "import",
 			"origin": "derived"
@@ -53,7 +58,7 @@
 			}
 		]
 	},
-	"scenarios": ["agent-creation"],
+	"scenarios": ["agent-creation", "agent-references"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -3,6 +3,7 @@
 	import { createProjectAgentStore } from '../lib/stores/projectAgent.svelte';
 	import type { Workspace } from '../lib/stores/workspace.svelte';
 	import Composer from './Composer.svelte';
+	import ReferenceText from './ReferenceText.svelte';
 	let { workspace }: { workspace: Workspace } = $props();
 	// The shell rebuilds this for another project; the workspace itself is one object throughout.
 	// svelte-ignore state_referenced_locally
@@ -47,10 +48,16 @@
 					>×</button
 				>
 			</header>
-			{#if agent.asked}<p class="agent-asked">{agent.asked}</p>{/if}
+			{#if agent.asked}<p class="agent-asked">
+					<ReferenceText text={agent.asked} {workspace} />
+				</p>{/if}
+			{#if agent.said}<p class="agent-said">
+					<ReferenceText text={agent.said} {workspace} />
+				</p>{/if}
 			{#if agent.status}<p class="agent-status" role="status">
-					<span>{agent.status}</span>{#if agent.runId}<button type="button" onclick={agent.cancel}
-							>Cancel</button
+					<span><ReferenceText text={agent.status} {workspace} /></span>{#if agent.runId}<button
+							type="button"
+							onclick={agent.cancel}>Cancel</button
 						>{/if}
 				</p>{/if}
 			{#if agent.error}<p class="error" role="alert">{agent.error}</p>{/if}
@@ -148,12 +155,16 @@
 		font-size: 18px;
 		line-height: 1.4;
 	}
-	.agent-asked {
+	.agent-asked,
+	.agent-said {
 		padding: 10px 12px;
 		border: 1px solid var(--line);
 		border-radius: 12px;
 		overflow-wrap: anywhere;
 		white-space: pre-wrap;
+	}
+	.agent-said {
+		border-color: var(--gold);
 	}
 	/* The request is what is read here: it is set as large as the words around it. */
 	.project-agent :global(.composer textarea) {

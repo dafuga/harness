@@ -49,6 +49,16 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.function.changed-units",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.entity-references",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.function.host-changes",
 			"via": "import",
 			"origin": "derived"
@@ -77,6 +87,11 @@
 			"unit": "desktop.model.run-context-types",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-owners",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
@@ -89,7 +104,7 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"scenarios": ["agent-references", "desktop-native", "desktop-project-runs"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -6,6 +6,7 @@ import { planDesign } from '../utils/planDesign';
 import type { ProjectRunContext } from '../utils/prepareProjectRun';
 import { imageModel, messageFor, recordRunFailure } from '../utils/prepareRun';
 import { projectProposal, proposalPrompt, type ProjectProposal } from '../utils/projectProposal';
+import { proposalUnits } from '../utils/proposalUnits';
 import { sourceChanges } from '../utils/sourceChanges';
 import { sourceSnapshot, type SourceSnapshot } from '../utils/sourceSnapshot';
 
@@ -18,6 +19,28 @@ interface Progress {
 	thread: Omit<RunContext, 'entity'> | null;
 }
 type Host = ReturnType<typeof hostChanges>;
+/** Registered ids the notes may name, those of the request first; no source goes with them. */
+async function known({ project, revision, request }: ProjectRunContext): Promise<string[]> {
+	return proposalUnits(await project.catalog.list(revision.commit), request);
+}
+
+/**
+ * The checked proposal, whose notes are then said in public. An answer that is no proposal is
+ * refused as before; when it is plain words, such as a question, they are said first. Raw or
+ * partial JSON and code are never said.
+ */
+function answered(context: ProjectRunContext, text: string): ProjectProposal {
+	const say = (words: string) => context.emit({ runId: context.id, kind: 'text', text: words });
+	try {
+		const proposal = projectProposal(text);
+		say(proposal.proposal);
+		return proposal;
+	} catch (error) {
+		const plain = text.trim();
+		if (plain.length <= 6000 && /^[^{}`]+$/.test(plain)) say(plain);
+		throw error;
+	}
+}
 
 /**
  * A creation run: the chosen agent is asked once, read-only, what the new unit is. Only a
@@ -61,10 +84,11 @@ export class ProjectRunService {
 		const { request, runner, signal, emit, id, root } = context;
 		const detail = `Asking ${request.provider} / ${request.model} what to plan`;
 		emit({ runId: id, kind: 'status', phase: 'prompting', detail });
+		const prompt = proposalPrompt(request, await known(context));
 		const [before, host] = [await sourceSnapshot(root), hostChanges(root)];
 		const asked = runner.run({
 			...{ model: request.model, effort: request.effort, cwd: root, signal },
-			prompt: proposalPrompt(request),
+			prompt,
 			access: 'read-only',
 			onText: () => {},
 			onStatus: () => {},
@@ -79,7 +103,7 @@ export class ProjectRunService {
 		if ('failure' in answer) throw this.failed(context, answer.failure, written);
 		if (signal.aborted) throw new RunCancelled();
 		if (written) throw new Error(written);
-		return projectProposal(answer.result.text);
+		return answered(context, answer.result.text);
 	}
 
 	/** A cancellation stays one; any other failure also says what the agent wrote. */

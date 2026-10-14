@@ -13,6 +13,7 @@
 	import ApprovalButton from './ApprovalButton.svelte';
 	import Composer from './Composer.svelte';
 	import MessageList from './MessageList.svelte';
+	import ReferenceText from './ReferenceText.svelte';
 	import RunStatus from './RunStatus.svelte';
 	import ThreadHistory from './ThreadHistory.svelte';
 	import ThreadLinks from './ThreadLinks.svelte';
@@ -166,11 +167,20 @@
 				target = null;
 			}}
 		/>
-		<MessageList messages={entries} />{#if run.streaming}<p class="streaming" aria-live="polite">
-				{run.streaming}
+		<MessageList messages={entries} {workspace} {entity} />{#if run.streaming}<p
+				class="streaming"
+				aria-live="polite"
+			>
+				<ReferenceText text={run.streaming} {workspace} {entity} />
 			</p>{/if}
 	</div>
-	<RunStatus text={run.status} active={Boolean(run.runId)} cancel={() => void run.cancel()} />
+	<RunStatus
+		text={run.status}
+		active={Boolean(run.runId)}
+		cancel={() => void run.cancel()}
+		{workspace}
+		{entity}
+	/>
 	{#if error}<p class="error" role="alert">{error}</p>{/if}{#if comments.acknowledged}<p
 			class="comment-saved"
 			role="status"
