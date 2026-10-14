@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-4Tk9NY
+
+ ✓ test/budget.e2e.test.ts (3 tests) 13680ms
+   ✓ a new unit needs a reviewer to establish its baseline from a clean passing record  2806ms
+   ✓ size and complexity are frozen until a reviewer approves the new limits  4274ms
+   ✓ retiring and recreating a unit cannot reset its budget, and identities cannot vanish  3024ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  10:34:18
+   Duration  13.88s (transform 27ms, setup 9ms, collect 22ms, tests 13.68s, environment 0ms, prepare 30ms)
+

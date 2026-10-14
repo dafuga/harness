@@ -1,0 +1,10 @@
+
+Running 3 tests using 1 worker
+
+(node:68102) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/entity-preview-words.spec.ts:23:1 › a long word in a narrow column of a collection stays whole, and the table scrolls (136ms)
+  ✓  2 test/entity-preview-words.spec.ts:38:1 › a long word in a row of a history stays whole too (106ms)
+  ✓  3 test/entity-preview-words.spec.ts:54:1 › the details of a declared contract say what each item is, and fit a phone (172ms)
+
+  3 passed (2.0s)

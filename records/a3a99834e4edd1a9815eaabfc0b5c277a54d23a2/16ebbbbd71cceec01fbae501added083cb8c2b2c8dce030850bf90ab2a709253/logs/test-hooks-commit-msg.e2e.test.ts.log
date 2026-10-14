@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-4Tk9NY
+
+ ✓ test/hooks-commit-msg.e2e.test.ts (4 tests) 16725ms
+   ✓ a message over a limit or without its prefix is refused before the commit exists  3054ms
+   ✓ hooks that were there run first for both stages, and both return byte for byte  2130ms
+   ✓ a sibling worktree and a repository that declares no limits are left as they were  1968ms
+   ✓ a message that skipped the hook does not pass verification of the commit that carries it  2244ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  10:42:06
+   Duration  16.94s (transform 28ms, setup 8ms, collect 25ms, tests 16.73s, environment 0ms, prepare 37ms)
+
