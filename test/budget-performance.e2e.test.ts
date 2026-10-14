@@ -4,9 +4,24 @@ import { afterAll, beforeAll, expect, test } from 'vitest';
 import { baselineRepo, cloneRepo, type VerifyOutcome, type VerifyRepo } from './support/verifyRepo';
 import { rankScenario, rankSource, rankWorkload, slowRankSource } from './support/verifyFixture';
 
+/**
+ * The rule fixtures verify the SYNTHETIC title cost alone. Only the real operation case prepares
+ * the rank function with its workload and scenario, inside that test and its bound, so no other
+ * case carries its findings or waits for its benchmark.
+ */
 let baseline: VerifyRepo;
-beforeAll(async () => {
-	baseline = await baselineRepo(async (repo) => {
+/** Every repository prepared or cloned here for afterAll, tracked before anything on it can fail. */
+const prepared: VerifyRepo[] = [];
+/** A prepared baseline, tracked before its extension and its verifications run. */
+function prepare(extend: (repo: VerifyRepo) => Promise<void> = () => Promise.resolve()) {
+	return baselineRepo(async (repo) => {
+		prepared.push(repo);
+		await extend(repo);
+	});
+}
+/** The baseline with the rank function, prepared when the real operation case asks for it. */
+async function prepareRanked() {
+	return prepare(async (repo) => {
 		await repo.write('src/utils/rank.ts', rankSource);
 		await repo.write('specification/workloads/rank-20k.json', JSON.stringify(rankWorkload));
 		await repo.write('specification/scenarios/rank-boundary.json', JSON.stringify(rankScenario));
@@ -25,8 +40,11 @@ beforeAll(async () => {
 		);
 		await repo.harness(['units', 'index', '--write']);
 	});
+}
+beforeAll(async () => {
+	baseline = await prepare();
 }, 180_000);
-afterAll(() => baseline.dispose());
+afterAll(() => Promise.all(prepared.map((repo) => repo.dispose())));
 
 const cost = (value: string) => (source: string) =>
 	source.replace('titleCost = 10.0', `titleCost = ${value}`);
@@ -84,7 +102,9 @@ test('rule fixture: another profile is incompatible and a missing measurement ne
 }, 240_000);
 
 test('a real operation that is slowed without changing its result fails the end-to-end gate', async () => {
-	const repo = await cloneRepo(baseline);
+	const ranked = await prepareRanked();
+	const repo = await cloneRepo(ranked);
+	prepared.push(repo);
 	const before = await repo.verify(['--commit', 'HEAD~1']);
 	const digest = async (outcome: VerifyOutcome) => {
 		const capture = outcome.record.scenarios.find((scenario) => scenario.id === 'rank-boundary')

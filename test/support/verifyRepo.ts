@@ -86,8 +86,29 @@ function projectHarness(root: string, args: string[], env: Record<string, string
 }
 
 /**
- * A committed fixture whose second commit establishes every baseline, so it verifies clean.
- * `extend` may add more source before the first commit.
+ * A prepared fixture whose own verification did not pass. Its repository is kept, with the record
+ * that failed, for the caller to inspect or export before the caller disposes of it.
+ */
+export class PreparationFailed extends Error {
+	readonly repo: VerifyRepo;
+	readonly outcome: VerifyOutcome;
+	constructor(repo: VerifyRepo, outcome: VerifyOutcome) {
+		const failures = outcome.record.failures.join('; ') || 'no failure is listed';
+		const record = `record ${outcome.record.id} in ${outcome.directory}`;
+		super(
+			`The prepared baseline did not verify clean (exit ${outcome.exitCode}, ${record}): ${failures}`
+		);
+		this.name = 'PreparationFailed';
+		this.repo = repo;
+		this.outcome = outcome;
+	}
+}
+
+/**
+ * A committed fixture whose second commit establishes every baseline, so it verifies clean. It is
+ * returned only once that verification has passed; otherwise `PreparationFailed` is thrown, and
+ * the repository is left for the caller to dispose. `extend` may add more source before the first
+ * commit.
  */
 export async function baselineRepo(
 	extend: (repo: VerifyRepo) => Promise<void> = () => Promise.resolve()
@@ -114,7 +135,9 @@ export async function baselineRepo(
 	const first = await repo.verify();
 	await repo.harness(['budget', 'establish', '--all', '--record', first.record.id, ...reviewer]);
 	await repo.commit('chore: establish baselines');
-	await repo.verify();
+	const prepared = await repo.verify();
+	if (prepared.exitCode !== 0 || prepared.record.failures.length > 0)
+		throw new PreparationFailed(repo, prepared);
 	return repo;
 }
 
