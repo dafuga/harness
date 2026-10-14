@@ -1,5 +1,5 @@
 import { nativeImageFixture } from './native-image-fixture';
-import { desktopEvidence } from './desktop-evidence';
+import { nativeCapture } from './native-capture';
 import { test, expect, _electron, type ElectronApplication, type Page } from '@playwright/test';
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
@@ -30,23 +30,6 @@ async function project(root: string) {
 	git(root, 'add', 'README.md');
 	git(root, 'commit', '-m', 'chore: seed native acceptance');
 	return git(root, 'rev-parse', 'HEAD');
-}
-async function capture(page: Page, name: string) {
-	await desktopEvidence(page, name, true);
-	if (process.env.TAKE_SCREENSHOT !== 'true') return;
-	if (name !== 'draft') {
-		await page.locator('.image-canvas img').waitFor({ state: 'visible' });
-		await page.locator('.version-thumbnail').waitFor({ state: 'visible' });
-	}
-	await page.evaluate(async () => {
-		await document.fonts.ready;
-		await Promise.all([...document.images].map((image) => image.decode().catch(() => {})));
-	});
-	await page.mouse.move(0, 0);
-	await page.screenshot({
-		path: join(desktopRoot, 'test-results', `native-${name}.png`),
-		fullPage: true
-	});
 }
 async function isolation(app: ElectronApplication, page: Page) {
 	const preferences = await app.evaluate(({ BrowserWindow }) => {
@@ -83,7 +66,6 @@ async function openDraftThroughUi(page: Page, root: string) {
 	await page.getByRole('link', { name: 'Review designs →', exact: true }).click();
 	const sections = page.getByRole('navigation', { name: 'Entity sections' });
 	await sections.getByRole('button', { name: 'Designs', exact: true }).click();
-	await capture(page, 'draft');
 	await expect(page.getByRole('heading', { name: 'No design image yet' })).toBeVisible();
 	const tip = git(root, 'rev-parse', 'HEAD');
 	await expect(page.getByLabel('Commit', { exact: true })).toHaveValue(tip);
@@ -92,6 +74,7 @@ async function openDraftThroughUi(page: Page, root: string) {
 		plans = await api.listPlans();
 	expect(plans).toHaveLength(1);
 	expect(plans[0].title).toBe('Native activity');
+	await nativeCapture(page, { state: 'draft', unitId: plans[0].unitId, commit: tip });
 	return plans[0].unitId;
 }
 async function committedImage(page: Page, root: string, unitId: string) {
@@ -125,7 +108,7 @@ async function committedImage(page: Page, root: string, unitId: string) {
 		{ unitId, imageCommit }
 	);
 	expect(received).toEqual(Array.from(bytes));
-	await capture(page, 'design');
+	await nativeCapture(page, { state: 'design', unitId, commit: imageCommit });
 	await page.getByRole('button', { name: 'Approve v001', exact: true }).click();
 	await expect(
 		page.getByRole('button', { name: 'Design v001 approved', exact: true })
@@ -134,16 +117,16 @@ async function committedImage(page: Page, root: string, unitId: string) {
 	expect(detail.approval?.current).toBe(true);
 	expect(detail.approval?.images).toHaveLength(1);
 	expect(git(root, 'status', '--porcelain')).toBe('');
-	await capture(page, 'approved');
+	await nativeCapture(page, { state: 'approved', unitId, commit: git(root, 'rev-parse', 'HEAD') });
 	return imageCommit;
 }
-async function historical(page: Page, commit: string) {
+async function historical(page: Page, commit: string, unitId: string) {
 	await page.getByLabel('Commit', { exact: true }).selectOption(commit);
 	await expect(page).toHaveURL(new RegExp(`/branch/feat%2Fnative/commit/${commit}/pages$`));
 	await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toHaveCount(0);
 	await page.getByRole('link', { name: 'Review designs' }).click();
-	await capture(page, 'history');
 	await expect(page.getByRole('button', { name: 'Approve v001', exact: true })).toBeDisabled();
+	await nativeCapture(page, { state: 'history', unitId, commit });
 	const rejected = await page.evaluate(async () => {
 		try {
 			await (window as unknown as { harness: DesktopBridge }).harness.createPlan({
@@ -209,7 +192,7 @@ test('native isolated window uses real Git LFS planning and rejects historical w
 		await isolation(app, page);
 		const unitId = await openDraftThroughUi(page, root);
 		const imageCommit = await committedImage(page, root, unitId);
-		await historical(page, imageCommit);
+		await historical(page, imageCommit, unitId);
 		await blockedNavigation(app, page);
 	} finally {
 		await app?.close();
