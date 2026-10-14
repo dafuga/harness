@@ -1,3 +1,4 @@
+import { resolve } from 'node:path';
 import { registeredVerificationScopes } from './registered-verification-scopes';
 export interface VerificationTarget {
 	scenario: string;
@@ -185,7 +186,7 @@ export function verificationTarget(
 	const tests = runner === 'vitest' ? scope?.vitest[target] : undefined;
 	let states = tests ? [...new Set(Object.values(tests))] : undefined;
 	if (runner === 'playwright') states = scope?.playwright[target];
-	if (!scope || !states || !cwd.replaceAll('\\', '/').endsWith(`/packages/${scope.package}`))
+	if (!scope || !states || !atVerificationPackage(scope, cwd))
 		throw new Error('Unknown verification scenario, runner, target or package');
 	return {
 		scenario,
@@ -195,4 +196,10 @@ export function verificationTarget(
 		tests: tests ?? {},
 		states
 	};
+}
+
+/** Root evidence belongs to this checkout; workspace evidence retains its declared package. */
+function atVerificationPackage(scope: VerificationScope, cwd: string): boolean {
+	if (scope.package === 'root') return resolve(cwd) === resolve(import.meta.dirname, '..');
+	return cwd.replaceAll('\\', '/').endsWith(`/packages/${scope.package}`);
 }

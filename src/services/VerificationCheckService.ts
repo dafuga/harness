@@ -23,7 +23,14 @@ export interface CheckReport {
 
 /** Decides whether a stored record really proves one commit: identity, integrity, outcome. */
 export class VerificationCheckService {
-	constructor(private readonly root: string) {}
+	/**
+	 * `indexer` may be shared by checks of several commits: it reuses only what it parsed of a file
+	 * with the very same content, and every commit is still indexed and compared in full.
+	 */
+	constructor(
+		private readonly root: string,
+		private readonly indexer: SourceIndexService = new SourceIndexService()
+	) {}
 
 	async check(commit: string, stored: StoredRecord): Promise<CheckReport> {
 		const { record } = stored;
@@ -81,7 +88,7 @@ export class VerificationCheckService {
 	/** Recomputes each recorded unit version from the commit itself. */
 	private async components(commit: string, record: VerificationRecord): Promise<string[]> {
 		const tree = await CommitTreeAdapter.open(this.root, commit);
-		const head = await loadSide(this.root, tree, new SourceIndexService());
+		const head = await loadSide(this.root, tree, this.indexer);
 		return record.components
 			.filter((component) => component.change !== 'removed')
 			.filter((component) => {

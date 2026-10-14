@@ -24,6 +24,10 @@
 				"type": "string"
 			},
 			{
+				"name": "VerificationCheckService.constructor.indexer",
+				"type": "SourceIndexService"
+			},
+			{
 				"name": "VerificationCheckService.check.commit",
 				"type": "string"
 			},
@@ -109,7 +113,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["history-fixture-integrity"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
