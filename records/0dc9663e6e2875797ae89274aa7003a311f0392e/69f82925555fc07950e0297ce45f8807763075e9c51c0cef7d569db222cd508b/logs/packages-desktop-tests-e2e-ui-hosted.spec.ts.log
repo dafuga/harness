@@ -1,0 +1,11 @@
+
+Running 4 tests using 1 worker
+
+(node:54311) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/ui-hosted.spec.ts:23:1 › connecting shows a code and the validated address, asks no faster than told, and takes no address (3.4s)
+  ✓  2 tests/e2e/ui-hosted.spec.ts:56:1 › an offline event makes the shown shared project read-only before anything else changes (162ms)
+  ✓  3 tests/e2e/ui-hosted.spec.ts:81:1 › a refused source read clears the whole shared view, and nothing late brings it back (643ms)
+  ✓  4 tests/e2e/ui-hosted.spec.ts:109:1 › history loads further pages for the shown branch and commit, and comments carry their author (336ms)
+
+  4 passed (5.1s)

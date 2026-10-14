@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ljai0H/packages/desktop
+
+ ✓ test/remote-pairing-binding.test.ts (3 tests) 4337ms
+   ✓ an approval the relay refuses, because the request was replaced, approves no device  1389ms
+   ✓ a refused re-approval leaves the earlier approval of that phone as it was  1565ms
+   ✓ the approval names the phone that was shown: another identity approves nothing  1382ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  00:33:19
+   Duration  5.27s (transform 486ms, setup 0ms, collect 780ms, tests 4.34s, environment 0ms, prepare 32ms)
+

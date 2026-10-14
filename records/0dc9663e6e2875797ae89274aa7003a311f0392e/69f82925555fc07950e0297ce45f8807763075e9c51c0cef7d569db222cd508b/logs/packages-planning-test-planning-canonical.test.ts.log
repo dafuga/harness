@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ljai0H/packages/planning
+
+ ✓ test/planning-canonical.test.ts (2 tests) 1920ms
+   ✓ canonical IDs stay exact across plans, threads and revision history  1268ms
+   ✓ refuses unattested IDs, canonical category mismatches and traversal  651ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  00:42:00
+   Duration  2.23s (transform 73ms, setup 5ms, collect 120ms, tests 1.92s, environment 0ms, prepare 36ms)
+
