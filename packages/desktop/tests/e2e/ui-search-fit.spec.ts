@@ -34,7 +34,11 @@ async function opened(page: Page, width: number): Promise<number[]> {
 	await page.goto(at('pages'));
 	await expect(page.getByRole('navigation', { name: 'Catalog categories' })).toBeVisible();
 	await page.evaluate(() => document.fonts.ready.then(() => undefined));
-	const searched = page.getByRole('combobox', { name: 'Search entities', exact: true });
+	const searched = page.getByRole('combobox', {
+		name: 'Search entities',
+		exact: true,
+		includeHidden: true
+	});
 	const place = bar(page).locator(':scope > *').filter({ has: searched });
 	await place.evaluate((element: HTMLElement) => (element.style.display = 'none'));
 	const without = await Promise.all(revision(page).map(async (one) => (await box(one)).width));
