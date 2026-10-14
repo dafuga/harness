@@ -8,6 +8,7 @@ import { searchVerificationScopes } from './search-verification-scopes';
 import { shellsVerificationScopes } from './shells-verification-scopes';
 import { referenceVerificationScopes } from './reference-verification-scopes';
 import { designOptionVerificationScopes } from './design-option-verification-scopes';
+import { planFixtureVerificationScopes } from './plan-fixture-verification-scopes';
 
 export interface VerificationTarget {
 	scenario: string;
@@ -33,6 +34,7 @@ const scopes: Record<string, VerificationScope> = {
 	...shellsVerificationScopes,
 	...referenceVerificationScopes,
 	...designOptionVerificationScopes,
+	...planFixtureVerificationScopes,
 	'runtime-evidence-ui': {
 		package: 'desktop',
 		vitest: {},

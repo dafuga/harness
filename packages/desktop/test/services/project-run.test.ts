@@ -28,8 +28,8 @@ const answers = (f: Fixture, before: (turn: AgentTurn) => Promise<void> | void =
 		await before(turn);
 		return { text: JSON.stringify(badge), model: turn.model };
 	});
-async function settled(f: Fixture) {
-	const started = await f.service.start(asked(f));
+async function settled(f: Fixture, request = asked(f)) {
+	const started = await f.service.start(request);
 	await expect.poll(() => f.session.busy, { timeout: 12000 }).toBe(false);
 	return started;
 }
@@ -44,7 +44,8 @@ const owned = (f: Fixture) => join(f.root, 'src/owned.ts');
 test('the agent decides the kind: a component asked for among functions is planned with its contract', async () => {
 	const f = await fixture();
 	answers(f);
-	const started = await settled(f);
+	// A case of one design: it asks for a single design option.
+	const started = await settled(f, { ...asked(f), designOptions: 1 });
 	const plan = (await planned(f))!;
 	expect(plan.category).toBe('components');
 	expect([plan.contract.inputs, plan.contract.outputs]).toEqual([

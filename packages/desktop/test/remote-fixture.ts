@@ -10,8 +10,27 @@ import { ProjectSessionService } from '../src/services/ProjectSessionService';
 import { ProviderDiscoveryService } from '../src/services/ProviderDiscoveryService';
 import { RepositoryArbiterService } from '../src/services/RepositoryArbiterService';
 import { desktopBridge } from '../src/utils/desktopBridge';
-import { fixture, git } from './run-fixture';
+import { PNG } from 'pngjs';
+import { vi } from 'vitest';
+import { bytes, fixture, git } from './run-fixture';
 
+/**
+ * Each image this computer generates is its own valid 2×2 PNG, so the options of one Plan never
+ * repeat an image. The first is exactly the shared fixture's image; each later one is opaque and of
+ * its own colour. The sequence is per fixture.
+ */
+function distinctImages() {
+	let made = 0;
+	return async () => {
+		const at = made++;
+		if (at === 0) return { bytes: Uint8Array.from(bytes), revisedPrompt: null };
+		const png = new PNG({ width: 2, height: 2 });
+		// Opaque and of a colour of its own: a visibly different picture, not a hidden pixel.
+		const colour = [(at * 47) % 256, (at * 89) % 256, (at * 131) % 256, 255];
+		for (let pixel = 0; pixel < 4; pixel++) png.data.set(colour, pixel * 4);
+		return { bytes: PNG.sync.write(png), revisedPrompt: null };
+	};
+}
 export function deferred() {
 	let resolve!: () => void;
 	const promise = new Promise<void>((done) => {
@@ -40,6 +59,7 @@ export async function connect(session: DeviceSessionService) {
  */
 export async function remoteFixture(action: (turn: AgentTurn) => Promise<void> = async () => {}) {
 	const f = await fixture(action);
+	vi.mocked(f.generator.generateImage).mockImplementation(distinctImages());
 	const registry = new ProjectRegistryService(),
 		outbox = new CommentOutboxService(),
 		arbiter = new RepositoryArbiterService();

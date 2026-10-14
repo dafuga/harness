@@ -11,13 +11,16 @@ import { ProjectSessionService } from '../src/services/ProjectSessionService';
 const model = 'fixture-model';
 const git = (root: string, ...args: string[]) =>
 	execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
-/** A picture with a visible gradient, so a cached copy is recognisable on a screen. */
-export function fixtureImage(size = 96): Uint8Array {
+/**
+ * A picture with a visible gradient, so a cached copy is recognisable on a screen. A `variant`
+ * other than 0 shifts its blue, so each generated picture differs; 0 is the picture it always was.
+ */
+export function fixtureImage(size = 96, variant = 0): Uint8Array {
 	const png = new PNG({ width: size, height: size });
 	for (let index = 0; index < size * size; index++) {
 		const x = index % size,
 			y = Math.floor(index / size);
-		png.data.set([(x * 255) / size, (y * 255) / size, 160, 255], index * 4);
+		png.data.set([(x * 255) / size, (y * 255) / size, 160 + 9 * variant, 255], index * 4);
 	}
 	return PNG.sync.write(png);
 }
@@ -79,8 +82,10 @@ export function fixtureProviders(): Record<ProviderId, AgentRunner> & {
 		discover: async () => discovered(id),
 		run: syntheticTurn
 	});
+	// Each generation is a picture of its own, the first the one it always was.
+	let made = 0;
 	const generator: ImageGenerator = {
-		generateImage: async () => ({ bytes: fixtureImage(128), revisedPrompt: null })
+		generateImage: async () => ({ bytes: fixtureImage(128, made++), revisedPrompt: null })
 	};
 	return { codex: runner('codex'), claude: runner('claude'), generator };
 }
