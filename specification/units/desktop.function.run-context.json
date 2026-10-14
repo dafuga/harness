@@ -28,6 +28,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.function.reference-prompt",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.run-context-types",
 			"via": "import",
 			"origin": "derived"
@@ -43,7 +48,7 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"scenarios": ["agent-references", "desktop-native", "desktop-project-runs"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

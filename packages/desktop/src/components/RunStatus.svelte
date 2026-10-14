@@ -1,7 +1,24 @@
 <script lang="ts">
-	let { text, active, cancel }: { text: string; active: boolean; cancel: () => void } = $props();
+	import type { Workspace } from '../lib/stores/workspace.svelte';
+	import type { CatalogEntity } from '../models/Desktop.types';
+	import ReferenceText from './ReferenceText.svelte';
+	let {
+		text,
+		active,
+		cancel,
+		workspace,
+		entity = null
+	}: {
+		text: string;
+		active: boolean;
+		cancel: () => void;
+		workspace: Workspace;
+		entity?: CatalogEntity | null;
+	} = $props();
 </script>
 
 {#if text}<div class="run-status" role="status">
-		<span>{text}</span>{#if active}<button onclick={cancel}>Cancel run</button>{/if}
+		<span><ReferenceText {text} {workspace} {entity} /></span>{#if active}<button onclick={cancel}
+				>Cancel run</button
+			>{/if}
 	</div>{/if}

@@ -1,7 +1,14 @@
 <script lang="ts">
+	import type { Workspace } from '../lib/stores/workspace.svelte';
+	import type { CatalogEntity } from '../models/Desktop.types';
 	import type { ThreadEntry } from '../utils/commentEntries';
 	import { timeLabel } from '../utils/timeLabel';
-	let { messages }: { messages: ThreadEntry[] } = $props();
+	import ReferenceText from './ReferenceText.svelte';
+	let {
+		messages,
+		workspace,
+		entity = null
+	}: { messages: ThreadEntry[]; workspace: Workspace; entity?: CatalogEntity | null } = $props();
 	function name(message: ThreadEntry) {
 		if (message.author === 'user') return message.authorName || 'You';
 		return message.provider ? message.provider + ' CLI' : 'Harness';
@@ -26,7 +33,7 @@
 					<strong>{name(message)}</strong><small>{timeLabel(message.at)}</small>
 				</div>
 				{#if message.note}<small class="message-note">{message.note}</small>{/if}
-				<p>{message.text}</p>
+				<p><ReferenceText text={message.text} {workspace} {entity} /></p>
 				{#if message.detail}<small>{message.detail}</small>{/if}{#if message.version}<small
 						>Design · {message.version}</small
 					>{/if}

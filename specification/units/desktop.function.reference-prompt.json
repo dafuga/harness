@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.reference-prompt",
+	"kind": "function",
+	"title": "referencePrompt",
+	"responsibility": "Asks an agent to name units as references and lists the registered ids it may name.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/referencePrompt.ts"],
+		"symbols": ["referencePrompt"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "referencePrompt.ids",
+				"type": "string[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "referencePrompt",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.entity-references",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/referencePrompt.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/referencePrompt.ts"
+			}
+		]
+	},
+	"scenarios": ["agent-references"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

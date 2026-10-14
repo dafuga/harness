@@ -1,0 +1,85 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.reference-text",
+	"kind": "component",
+	"title": "ReferenceText",
+	"responsibility": "Renders agent and person text with registered unit references as links to the shown revision, and all else as text.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/ReferenceText.svelte"],
+		"symbols": ["ReferenceText"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ReferenceText.text",
+				"type": "string"
+			},
+			{
+				"name": "ReferenceText.workspace",
+				"type": "Workspace"
+			},
+			{
+				"name": "ReferenceText.entity",
+				"type": "CatalogEntity | null"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ReferenceText",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.workspace-link",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.entity-references",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.unit-links",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/ReferenceText.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/ReferenceText.svelte"
+			}
+		]
+	},
+	"scenarios": ["agent-references"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
