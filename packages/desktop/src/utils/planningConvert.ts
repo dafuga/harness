@@ -26,7 +26,8 @@ export function approvalInfo(record: ApprovalRecord): ApprovalInfo {
 		imageHashes: record.images.map((i) => i.sha256),
 		contractHash: record.contractHash,
 		approvedAt: record.approvedAt,
-		current: record.current
+		current: record.current,
+		...(record.option ? { option: record.option } : {})
 	};
 }
 export function threadInfo(thread: PlanThread): ThreadInfo {
@@ -45,6 +46,7 @@ export function threadInfo(thread: PlanThread): ThreadInfo {
 		state: anchor.state,
 		viewport: anchor.viewport,
 		region: anchor.region,
+		...(thread.anchor?.option ? { option: thread.anchor.option } : {}),
 		messageCount: thread.messages.length
 	};
 }

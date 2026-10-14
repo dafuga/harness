@@ -9,6 +9,10 @@
 	"owns": {
 		"source": ["packages/desktop/src/models/Desktop.types.ts"],
 		"symbols": [
+			"DesignImage",
+			"DesignOptionInfo",
+			"DesignRevision",
+			"DesignVersion",
 			"categories",
 			"Category",
 			"ProviderId",
@@ -20,9 +24,7 @@
 			"BranchInfo",
 			"CommitInfo",
 			"Revision",
-			"DesignImage",
 			"ApprovalInfo",
-			"DesignVersion",
 			"ThreadInfo",
 			"ThreadMessage",
 			"ContractField",
@@ -49,6 +51,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.model.design-version-types",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.model.project-context-types",
 			"via": "import",

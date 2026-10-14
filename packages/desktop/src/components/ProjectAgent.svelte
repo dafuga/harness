@@ -2,6 +2,7 @@
 	import { onMount, tick } from 'svelte';
 	import { createProjectAgentStore } from '../lib/stores/projectAgent.svelte';
 	import type { Workspace } from '../lib/stores/workspace.svelte';
+	import { visualCategory } from '../utils/composeModes';
 	import Composer from './Composer.svelte';
 	import ReferenceText from './ReferenceText.svelte';
 	let { workspace }: { workspace: Workspace } = $props();
@@ -69,6 +70,7 @@
 				</p>{/if}
 			<Composer
 				modes={['plan', 'change']}
+				visual={visualCategory(workspace.category)}
 				providers={agent.providers}
 				approved={false}
 				running={agent.active}

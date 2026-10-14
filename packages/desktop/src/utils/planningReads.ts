@@ -4,7 +4,7 @@ import type {
 	DesignVersion as StoredVersion
 } from '../../../planning/src/index';
 import type { PlanRecord, PlanImageQuery } from '../models/PlanningPort.types';
-import type { DesignVersion } from '../models/Desktop.types';
+import type { DesignRevision, DesignVersion } from '../models/Desktop.types';
 import { approvalInfo, messageInfo, planningConvert, threadInfo } from './planningConvert';
 import { gitText } from './gitRead';
 export interface PlanningContext {
@@ -57,9 +57,12 @@ export async function planVersion(
 			state: i.state,
 			viewport: i.viewport,
 			sha256: i.sha256,
-			bytes: i.bytes
+			bytes: i.bytes,
+			...held(version, i.file)
 		})),
-		approval: approval ? approvalInfo(approval) : null
+		approval: approval ? approvalInfo(approval) : null,
+		...(await optionInfos(context, revision, directory, version)),
+		...(version.revises ? { revises: revisionOf(version.revises) } : {})
 	};
 }
 export async function readPlanMessages(
@@ -83,6 +86,7 @@ export async function readPlanImage(context: PlanningContext, query: PlanImageQu
 			version: query.version,
 			file: image.file,
 			sha256: query.sha256,
+			option: query.option,
 			revision: query.revision
 		})
 	).bytes;
@@ -102,4 +106,41 @@ export async function readPlanHistory(
 		commit: entry.commit,
 		version: null
 	}));
+}
+/** The option holding a file, as a field of its image; nothing in a single design. */
+function held(version: StoredVersion, file: string) {
+	const option = version.options?.find((o) => o.images.some((i) => i.file === file))?.id;
+	return option ? { option } : {};
+}
+/** The design options of a version with their exact prompts; nothing for a single design. */
+async function optionInfos(
+	context: PlanningContext,
+	revision: string,
+	directory: string,
+	version: StoredVersion
+) {
+	if (!version.options) return {};
+	const options = await Promise.all(
+		version.options.map(async (option) => ({
+			id: option.id,
+			direction: option.direction,
+			prompt: option.prompt
+				? await gitText(context.root, revision, directory + option.prompt.file)
+				: null,
+			revisedPrompt: option.revisedPrompt,
+			generator: option.generator.provider + ' · ' + option.generator.model,
+			imageHashes: option.images.map((image) => image.sha256)
+		}))
+	);
+	return { options };
+}
+/** The exact image a version revises, as the desktop names it. */
+function revisionOf(source: NonNullable<StoredVersion['revises']>): DesignRevision {
+	return {
+		version: source.version,
+		imageSha256: source.imageSha256,
+		region: source.region,
+		threadId: source.threadId,
+		...(source.option ? { option: source.option } : {})
+	};
 }

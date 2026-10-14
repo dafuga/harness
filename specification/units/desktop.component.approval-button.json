@@ -28,6 +28,10 @@
 			{
 				"name": "ApprovalButton.approved",
 				"type": "boolean"
+			},
+			{
+				"name": "ApprovalButton.option",
+				"type": "string"
 			}
 		],
 		"outputs": [
@@ -39,6 +43,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.function.thread-anchor",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.model.desktop-types",
 			"via": "import",

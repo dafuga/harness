@@ -39,7 +39,19 @@ export interface DesignDraft {
 		imageSha256: string;
 		region: Region | null;
 		threadId: string | null;
+		/** The design option holding that image, when its version has options. */
+		option?: string;
 	};
+	/** Separately generated alternatives saved together; `bytes` is then null. */
+	options?: DesignOptionDraft[];
+}
+
+export interface DesignOptionDraft {
+	direction: string;
+	bytes: Uint8Array;
+	/** The exact prompt the image was generated from, and the one the generator reports. */
+	prompt: string;
+	revisedPrompt: string | null;
 }
 
 export interface MessageDraft extends Omit<ThreadMessage, 'id' | 'at'> {
@@ -58,6 +70,8 @@ export interface PlanImageQuery {
 	version: string;
 	sha256: string;
 	revision: string;
+	/** When given, the image must belong to this design option. */
+	option?: string;
 }
 
 /**

@@ -1,4 +1,11 @@
 import type { ProjectCapabilities, CacheProvenance } from './ProjectContext.types';
+import type { DesignVersion } from './DesignVersion.types';
+export type {
+	DesignImage,
+	DesignOptionInfo,
+	DesignRevision,
+	DesignVersion
+} from './DesignVersion.types';
 /**
  * What the Electron main process tells the renderer about a project. Every value here is
  * serializable: it crosses the preload bridge by structured clone.
@@ -67,13 +74,6 @@ export interface Revision {
 	atTip: boolean;
 }
 
-export interface DesignImage {
-	state: string;
-	viewport: string;
-	sha256: string;
-	bytes: number;
-}
-
 export interface ApprovalInfo {
 	id: string;
 	version: string;
@@ -82,19 +82,8 @@ export interface ApprovalInfo {
 	approvedAt: string;
 	/** False once a later version exists: that version needs its own approval. */
 	current: boolean;
-}
-
-export interface DesignVersion {
-	version: string;
-	createdAt: string;
-	/** The commit that contains the version, derived from Git; null when not found. */
-	commit: string | null;
-	generator: string;
-	prompt: string;
-	notes?: string;
-	baseRevision: string;
-	images: DesignImage[];
-	approval: ApprovalInfo | null;
+	/** The one design option approved, when the version has options. */
+	option?: string;
 }
 
 export interface ThreadInfo {
@@ -105,6 +94,8 @@ export interface ThreadInfo {
 	state: string | null;
 	viewport: string | null;
 	region: Region | null;
+	/** The design option of the anchored image, when its version has options. */
+	option?: string;
 	messageCount: number;
 }
 

@@ -37,7 +37,9 @@ test('an agent asked from Shells proposes a shell, and it is planned with an ima
 		provider: 'codex',
 		model: 'selected',
 		effort: 'high',
-		text: 'Add a frame for hosts'
+		text: 'Add a frame for hosts',
+		// A case of one design: it asks for a single design option.
+		designOptions: 1
 	});
 	await expect.poll(() => f.session.busy, { timeout: 12000 }).toBe(false);
 	const plans = await f.planning.plans(git(f.root, 'rev-parse', 'HEAD'));

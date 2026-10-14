@@ -4,22 +4,33 @@ import { randomUUID } from 'node:crypto';
 import type {
 	AddDesignInput,
 	ApproveDesignInput,
+	DesignImageInput,
 	ReadImageInput
 } from '../models/PlanningBridge.types';
-import type { DesignImage, DesignVersion, ApprovalRecord } from '../models/Planning.types';
+import type {
+	DesignImage,
+	DesignOption,
+	DesignVersion,
+	ApprovalRecord
+} from '../models/Planning.types';
+import { approvable, heldBy, planOptions } from './planOptions';
 import type { Git } from './planGit';
 import { imageBlob, revision } from './planGit';
 import { planRead, approvalMatches } from './planRead';
 import { clean, commitFiles, type Files } from './planWrite';
 import { fail, hash, json, now, planData } from './planData';
 import { contractHash, filename, region, slug, text, version } from './planValidate';
-function imageFiles(input: AddDesignInput, base: string, files: Files): DesignImage[] {
-	if (!Array.isArray(input.images)) fail('invalid-input', 'Images must be an array');
-	return input.images.map((image) => {
+function imageFiles(
+	images: DesignImageInput[],
+	base: string,
+	files: Files,
+	prefix: string
+): DesignImage[] {
+	return images.map((image) => {
 		slug(image.state);
 		if (!['desktop', 'tablet', 'mobile', 'diagram'].includes(image.viewport))
 			fail('invalid-input', 'Invalid viewport');
-		const file = `${image.state}-${image.viewport}.png`;
+		const file = `${prefix}${image.state}-${image.viewport}.png`;
 		if (files[`${base}/${file}`]) fail('invalid-input', 'Duplicate image');
 		const size = decode(image.bytes);
 		files[`${base}/${file}`] = image.bytes;
@@ -43,6 +54,7 @@ export async function readImage(git: Git, input: ReadImageInput) {
 	const design = plan.versions.find((v) => v.version === input.version);
 	const image = design?.images.find((i) => i.file === input.file);
 	if (!design || !image) fail('not-found', 'Image not found');
+	const held = heldBy(design, image.file, input.option);
 	if (input.sha256 && input.sha256 !== image.sha256)
 		fail('artifact-tampered', 'Image hash mismatch');
 	const bytes = await imageBlob(git, rev, `${plan.path}/designs/${input.version}/${input.file}`);
@@ -59,14 +71,22 @@ export async function readImage(git: Git, input: ReadImageInput) {
 		unitId: input.unitId,
 		version: input.version,
 		bytes: new Uint8Array(bytes),
-		commit: design.commit
+		commit: design.commit,
+		...held
 	};
 }
-function validateContent(input: AddDesignInput, category: string): void {
+function validateContent(
+	input: AddDesignInput,
+	category: string,
+	images: DesignImage[],
+	options?: DesignOption[]
+): void {
+	const visual = ['page', 'shell', 'component'].includes(category);
+	if (options && !visual) fail('invalid-input', 'Only a visual plan has design options');
 	// A function is planned in notes and cases. Earlier versions that hold an image are still read.
-	if (category === 'function' && input.images.length)
+	if (category === 'function' && images.length)
 		fail('invalid-image', 'A function plan holds notes, not images');
-	if (!input.images.length && (!input.notes || ['page', 'shell', 'component'].includes(category)))
+	if (!images.length && (!input.notes || visual))
 		fail('invalid-image', 'A visual design needs images; headless designs need notes');
 	if (input.notes !== undefined) text(input.notes);
 }
@@ -85,8 +105,9 @@ export async function planDesign(git: Git, input: AddDesignInput) {
 	const version = `v${String(plan.versions.length + 1).padStart(3, '0')}`;
 	const base = `${path}/designs/${version}`;
 	const files: Files = {};
-	const images = imageFiles(input, base, files);
-	validateContent(input, plan.category);
+	const write = (list: DesignImageInput[], prefix: string) => imageFiles(list, base, files, prefix);
+	const { images, ...grouped } = planOptions(input, base, files, write);
+	validateContent(input, plan.category, images, grouped.options);
 	if (input.revises) await validateSource(git, input);
 	const prompt = { file: 'prompt.md', sha256: hash(input.prompt) };
 	files[`${base}/prompt.md`] = input.prompt;
@@ -103,7 +124,8 @@ export async function planDesign(git: Git, input: AddDesignInput) {
 		images,
 		contract,
 		contractHash: digest,
-		revises: input.revises ?? null
+		revises: input.revises ?? null,
+		...grouped
 	};
 	files[`${base}/design.json`] = json(value);
 	files[`${path}/.gitattributes`] = 'designs/**/*.png filter=lfs diff=lfs merge=lfs -text\n';
@@ -118,6 +140,7 @@ async function validateSource(git: Git, input: AddDesignInput): Promise<void> {
 		version: source.version,
 		file: source.file,
 		sha256: source.imageSha256,
+		option: source.option,
 		revision: input.baseRevision
 	});
 	if (source.threadId) {
@@ -131,6 +154,7 @@ async function validateSource(git: Git, input: AddDesignInput): Promise<void> {
 					file: source.file,
 					imageSha256: source.imageSha256,
 					region: region(source.region),
+					option: source.option,
 					state: undefined,
 					viewport: undefined
 				})
@@ -146,10 +170,13 @@ export async function approve(git: Git, input: ApproveDesignInput) {
 	const latest = plan.versions.at(-1);
 	if (!latest || latest.version !== input.version)
 		fail('stale-version', 'Only latest design can be approved');
+	const bound = approvable(latest, input.option);
+	if (!bound) fail('approval-mismatch', 'Approval does not name an option of the current design');
 	const value = {
 		id: randomUUID(),
 		unitId: input.unitId,
 		version: input.version,
+		...(input.option !== undefined ? { option: input.option } : {}),
 		images: input.images,
 		notesSha256: input.notesSha256 ?? null,
 		contractHash: input.contractHash,
@@ -158,7 +185,7 @@ export async function approve(git: Git, input: ApproveDesignInput) {
 	};
 	if (!Array.isArray(input.images) || !approvalMatches(value as ApprovalRecord, latest))
 		fail('approval-mismatch', 'Approval does not bind exact current design');
-	for (const image of latest.images)
+	for (const image of bound)
 		await readImage(git, { unitId: input.unitId, version: latest.version, file: image.file });
 	const committed = await commitFiles(
 		git,

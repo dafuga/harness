@@ -12,6 +12,8 @@
 			"HostFileChange",
 			"ChangeTarget",
 			"ChangeRecord",
+			"DesignOption",
+			"DesignOptionInput",
 			"PlanCategory",
 			"PlanViewport",
 			"PlanLifecycle",
@@ -46,6 +48,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "planning.model.design-option-types",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "planning.model.host-file-change-types",
 			"via": "import",

@@ -53,7 +53,8 @@ test.each(['functions', 'services', 'configs'] as const)(
 
 test('visual comments keep image links and cannot fall back to their design notes', async () => {
 	const f = await fixture();
-	await settled(f);
+	// A case of one design: it asks for a single design option.
+	await settled(f, { ...f.request, designOptions: 1 });
 	const api = await createPlanning(f.root);
 	const plan = await api.readPlan({ unitId: f.request.entityId });
 	const version = plan.versions[0];

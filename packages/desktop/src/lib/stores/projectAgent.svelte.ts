@@ -58,10 +58,12 @@ class ProjectAgentState {
 		this.starting = true;
 		[this.error, this.status, this.asked, this.saved, this.said] = ['', '', draft.text, null, ''];
 		try {
-			const { provider, model, effort, text } = draft;
+			const { provider, model, effort, text, designOptions } = draft;
 			const run = await this.workspace.bridge!.startRun({
 				...{ intent: 'create', category: this.workspace.category, mode: 'plan' },
-				...{ provider, model, effort, text, projectId }
+				...{ provider, model, effort, text, projectId },
+				// The count the person chose; a headless proposal is planned without images.
+				...(designOptions === undefined ? {} : { designOptions })
 			});
 			this.runId = run.runId;
 			this.status = 'Request accepted';

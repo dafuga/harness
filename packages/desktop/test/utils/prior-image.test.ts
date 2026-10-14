@@ -37,3 +37,38 @@ test('nothing is compared where the data does not support it', () => {
 	expect(priorImage(versions, { version: 'v002', image: undefined }, second)).toBeNull();
 	expect(priorImage(versions, shown('v009', 0), second)).toBeNull();
 });
+
+test('a version of options compares with the exact image it revises, never by option order', () => {
+	const shown = { state: 'default', viewport: 'desktop', sha256: 'new-o1', bytes: 1, option: 'o1' };
+	const before = {
+		...{ version: 'v002', createdAt: '', commit: 'c1', generator: 'GPT Image', prompt: '' },
+		...{ baseRevision: '', approval: null },
+		images: [
+			{ ...shown, sha256: 'old-o1' },
+			{ ...shown, sha256: 'old-o2', option: 'o2' }
+		]
+	} as DesignVersion;
+	const revises = {
+		version: 'v002',
+		imageSha256: 'old-o2',
+		option: 'o2',
+		region: null,
+		threadId: null
+	};
+	const after = {
+		...before,
+		version: 'v003',
+		commit: 'c2',
+		images: [shown],
+		revises
+	} as DesignVersion;
+	const options = [
+		{ id: 'o1', direction: '', prompt: null, revisedPrompt: null, generator: '', imageHashes: [] }
+	];
+	expect(priorImage([before, after], { version: 'v003', image: shown }, 'c2')).toEqual({
+		version: 'v002',
+		sha256: 'old-o2'
+	});
+	const unrecorded = { ...after, revises: null, options } as DesignVersion;
+	expect(priorImage([before, unrecorded], { version: 'v003', image: shown }, 'c2')).toBeNull();
+});

@@ -12,6 +12,7 @@ import type { Git } from './planGit';
 import { blob, containing, paths, imageBlob } from './planGit';
 import { fail, hash, parse, planData } from './planData';
 import { contractHash, filename } from './planValidate';
+import { approvable, checkOptions } from './planOptions';
 async function immutable<T>(git: Git, rev: string, path: string): Promise<T & { commit: string }> {
 	const data = await blob(git, rev, path);
 	const commit = await containing(git, rev, path);
@@ -36,6 +37,9 @@ async function readVersion(git: Git, rev: string, path: string): Promise<DesignV
 	await stored(git, rev, base + version.prompt.file, version.prompt.sha256);
 	if (version.notes) await stored(git, rev, base + version.notes.file, version.notes.sha256);
 	for (const image of version.images) await checkImage(git, rev, base, image);
+	checkOptions(version);
+	for (const option of version.options ?? [])
+		if (option.prompt) await stored(git, rev, base + option.prompt.file, option.prompt.sha256);
 	return version;
 }
 async function readThread(git: Git, rev: string, path: string): Promise<PlanThread> {
@@ -74,8 +78,9 @@ export function approvalMatches(
 	record: ApprovalRecord,
 	latest: DesignVersion | undefined
 ): boolean {
-	if (!latest) return false;
-	const bindings = latest.images
+	const images = latest ? approvable(latest, record.option) : null;
+	if (!latest || !images) return false;
+	const bindings = images
 		.map(({ file, sha256 }) => ({ file, sha256 }))
 		.sort((a, b) => a.file.localeCompare(b.file));
 	const recorded = [...record.images].sort((a, b) => a.file.localeCompare(b.file));

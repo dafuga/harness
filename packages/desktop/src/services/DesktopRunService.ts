@@ -1,4 +1,5 @@
 import type { ProjectRunRequest, RunEvent, RunRequest } from '../models/DesktopBridge.types';
+import { designCount } from '../utils/designCount';
 import type { RunContext } from '../models/RunContext.types';
 import type { ImageGenerator } from '../models/AgentRunner.types';
 import { RunCancelled } from '../models/AgentRunner.types';
@@ -24,6 +25,7 @@ export class DesktopRunService {
 		private emit: (event: RunEvent) => void
 	) {}
 	async start(request: RunRequest | ProjectRunRequest): Promise<{ runId: string }> {
+		designCount(request);
 		const root = this.session.root;
 		if (this.session.busy || !this.claim(root))
 			throw new Error('A run is already active in this project.');

@@ -18,7 +18,8 @@ export function approvalPayload(value: unknown) {
 	return {
 		version: textField(x.version, 20, versionPattern),
 		imageHashes: x.imageHashes.map((v) => textField(v, 64, hashPattern)),
-		contractHash: textField(x.contractHash, 64, hashPattern)
+		contractHash: textField(x.contractHash, 64, hashPattern),
+		...optionField(x.option)
 	};
 }
 export function threadPayload(x: Record<string, unknown>) {
@@ -36,7 +37,8 @@ export function threadPayload(x: Record<string, unknown>) {
 		imageSha256,
 		state,
 		viewport,
-		region
+		region,
+		...optionField(x.option)
 	};
 }
 /** A project as this computer or the hub names one; nothing else names a project to add to. */
@@ -46,7 +48,10 @@ export function creationProject(value: unknown): string {
 		throw new Error('A creation request names its project.');
 	return value;
 }
-const creation = ['intent', 'category', 'mode', 'provider', 'model', 'effort', 'text', 'projectId'];
+const creation = [
+	...['intent', 'category', 'mode', 'provider', 'model', 'effort', 'text', 'projectId'],
+	'designOptions'
+];
 /** A request for something new: a Plan with a catalog as its hint, and no entity of its own. */
 export function creationPayload(x: Record<string, unknown>) {
 	if (Object.keys(x).some((key) => !creation.includes(key)))
@@ -59,7 +64,8 @@ export function creationPayload(x: Record<string, unknown>) {
 		provider: enumField(x.provider, ['codex', 'claude']),
 		model: textField(x.model),
 		effort: nullableText(x.effort),
-		text: textField(x.text, 20000)
+		text: textField(x.text, 20000),
+		...countField(x.designOptions)
 	};
 }
 export function runPayload(x: Record<string, unknown>) {
@@ -67,6 +73,8 @@ export function runPayload(x: Record<string, unknown>) {
 	const mode = enumField(x.mode, ['plan', 'change']);
 	const approval = x.approval === null ? null : approvalPayload(x.approval);
 	if (mode === 'change' && !approval) throw new Error('A Change request needs an approved design.');
+	if (mode === 'change' && x.designOptions !== undefined)
+		throw new Error('A Change makes no design options.');
 	return {
 		mode,
 		approval,
@@ -75,8 +83,20 @@ export function runPayload(x: Record<string, unknown>) {
 		effort: nullableText(x.effort),
 		entityId: textField(x.entityId, 120, idPattern),
 		threadId: textField(x.threadId),
-		text: textField(x.text, 20000)
+		text: textField(x.text, 20000),
+		...countField(x.designOptions)
 	};
+}
+/** A Plan's design options: left out, or a whole number from 1 to 10. */
+function countField(value: unknown) {
+	if (value === undefined) return {};
+	if (!Number.isInteger(value) || (value as number) < 1 || (value as number) > 10)
+		throw new Error('Design options must be a whole number from 1 to 10.');
+	return { designOptions: value as number };
+}
+/** A design option of a version, `o1` to `o10`, when one is named. */
+function optionField(value: unknown) {
+	return value === undefined ? {} : { option: textField(value, 3, /^o(?:[1-9]|10)$/) };
 }
 export function ipcPayload(channel: string, input: unknown): unknown {
 	if (channel === 'project:open' || channel === 'providers:list') return null;

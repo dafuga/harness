@@ -7,7 +7,7 @@
 	import { evidenceQuery } from '../utils/evidenceQuery';
 	import { evidenceVerdict } from '../utils/evidenceVerdict';
 	import { createdThread } from '../utils/createdThread';
-	import type { ThreadTarget } from '../utils/threadAnchor';
+	import { versionOption, type ThreadTarget } from '../utils/threadAnchor';
 	import CoveragePanel from './CoveragePanel.svelte';
 	import DesignPanel from './DesignPanel.svelte';
 	import ThreadPanel from './ThreadPanel.svelte';
@@ -47,7 +47,15 @@
 	let thread = $state<ThreadInfo | null>(null);
 	let target = $state<ThreadTarget | null>(null);
 	let version = $state('');
+	let option = $state('');
 	const entity = $derived(workspace.entity!);
+	/** The option in view: the one chosen when the version holds it, else approved or first. */
+	const shown = $derived(versionOption(entity.versions, version, option));
+	/** Another project, revision, entity or version shows its open thread's option, if any. */
+	$effect(() => {
+		void [workspace.projectId, workspace.snapshot?.revision.commit, entity.id, version];
+		untrack(() => (option = thread?.version === version ? (thread.option ?? '') : ''));
+	});
 	const agents = $derived(workspace.capabilities.agents && Boolean(workspace.snapshot?.writable));
 	const annotatable = $derived(agents || workspace.capabilities.comments);
 	/**
@@ -98,9 +106,8 @@
 		if (created) select(created);
 	});
 	function select(value: ThreadInfo) {
-		thread = value;
-		target = null;
-		conversation = true;
+		[thread, target, conversation] = [value, null, true];
+		if (value.version === version && value.option) option = value.option;
 	}
 	/**
 	 * Where agents may run, a selection opens a planning thread as before. Elsewhere it only aims
@@ -187,6 +194,7 @@
 				{workspace}
 				{annotatable}
 				bind:version
+				bind:option={() => shown, (value) => (option = value)}
 				onthread={select}
 				onannotate={annotate}
 			/>{:else if tab === 'Used In' || tab === 'Uses'}<RelationshipsPanel
@@ -204,6 +212,7 @@
 			bind:thread
 			bind:target
 			bind:version
+			bind:option={() => shown, (value) => (option = value)}
 			close={() => (conversation = false)}
 		/>{/if}
 </div>

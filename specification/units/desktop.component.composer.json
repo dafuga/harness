@@ -38,6 +38,10 @@
 				"type": "string"
 			},
 			{
+				"name": "Composer.visual",
+				"type": "boolean"
+			},
+			{
 				"name": "Composer.comment",
 				"type": "(text: string) => Promise<boolean>"
 			},

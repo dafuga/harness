@@ -13,6 +13,11 @@
 			"CommentAnchor",
 			"entityTarget",
 			"imageTarget",
+			"optionImages",
+			"designOption",
+			"shownApproval",
+			"versionOption",
+			"otherOption",
 			"designTarget",
 			"threadAnchor",
 			"sameImage"
@@ -34,8 +39,64 @@
 				"type": "ThreadTarget['region']"
 			},
 			{
+				"name": "optionImages.design",
+				"type": "DesignVersion | undefined"
+			},
+			{
+				"name": "optionImages.option",
+				"type": "string"
+			},
+			{
+				"name": "designOption.design",
+				"type": "DesignVersion | undefined"
+			},
+			{
+				"name": "designOption.wanted",
+				"type": "unknown"
+			},
+			{
+				"name": "shownApproval.design",
+				"type": "DesignVersion | undefined"
+			},
+			{
+				"name": "shownApproval.latest",
+				"type": "string | null"
+			},
+			{
+				"name": "shownApproval.option",
+				"type": "unknown"
+			},
+			{
+				"name": "versionOption.versions",
+				"type": "DesignVersion[]"
+			},
+			{
+				"name": "versionOption.version",
+				"type": "string"
+			},
+			{
+				"name": "versionOption.wanted",
+				"type": "unknown"
+			},
+			{
+				"name": "otherOption.item",
+				"type": "ThreadTarget | null"
+			},
+			{
+				"name": "otherOption.version",
+				"type": "string"
+			},
+			{
+				"name": "otherOption.option",
+				"type": "string"
+			},
+			{
 				"name": "designTarget.design",
 				"type": "DesignVersion | undefined"
+			},
+			{
+				"name": "designTarget.option",
+				"type": "unknown"
 			},
 			{
 				"name": "threadAnchor.revision",
@@ -66,6 +127,26 @@
 			{
 				"name": "imageTarget",
 				"type": "ThreadTarget"
+			},
+			{
+				"name": "optionImages",
+				"type": "DesignImage[]"
+			},
+			{
+				"name": "designOption",
+				"type": "string"
+			},
+			{
+				"name": "shownApproval",
+				"type": "boolean"
+			},
+			{
+				"name": "versionOption",
+				"type": "string"
+			},
+			{
+				"name": "otherOption",
+				"type": "unknown"
 			},
 			{
 				"name": "designTarget",

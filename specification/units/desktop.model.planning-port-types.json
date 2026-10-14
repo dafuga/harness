@@ -8,7 +8,14 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/models/PlanningPort.types.ts"],
-		"symbols": ["PlanRecord", "DesignDraft", "MessageDraft", "PlanImageQuery", "PlanningPort"]
+		"symbols": [
+			"PlanRecord",
+			"DesignDraft",
+			"DesignOptionDraft",
+			"MessageDraft",
+			"PlanImageQuery",
+			"PlanningPort"
+		]
 	},
 	"contract": {
 		"origin": "derived",
