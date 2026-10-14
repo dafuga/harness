@@ -1,0 +1,60 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.entity-search",
+	"kind": "function",
+	"title": "entitySearch",
+	"responsibility": "Finds the entities of one revision whose names, ids, purposes or declared contract names match every word of a query, best matches first.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/entitySearch.ts"],
+		"symbols": ["SearchEntry", "entitySearch"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "entitySearch.entries",
+				"type": "SearchEntry[]"
+			},
+			{
+				"name": "entitySearch.query",
+				"type": "string"
+			},
+			{
+				"name": "entitySearch.limit",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "entitySearch",
+				"type": "SearchEntry[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.explorer-route",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/entitySearch.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/entitySearch.ts"
+			}
+		]
+	},
+	"scenarios": ["explorer-shell", "harness-console", "search-shared-app"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

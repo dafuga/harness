@@ -125,16 +125,30 @@ const shellStates: Array<[string, string[]]> = [
 	['shell-earlier', [`${at}components-entity`, corrected]],
 	['shell-retained', ['reports.page.harness-view']]
 ];
+// What each search state shows, written out here: the catalog it is typed on, the adapter of the
+// console, the search of the bar and the shared field with its results.
+const searching = [
+	'reports.function.explorer-search-entries',
+	'reports.function.navbar-search',
+	'reports.function.entity-search',
+	'reports.component.entity-search',
+	'reports.component.entity-search-results'
+];
+const searchStates: Array<[string, string[]]> = [
+	['search', [`${at}shells`, ...searching]],
+	['search-pinned', [`${at}functions`, ...searching]]
+];
+const written = [...shellStates, ...searchStates];
 
 test('what every page is made of is under every state, and each state names a page there is', () => {
 	const every = scenario.states.map((state) => state.id);
-	expect(every).toHaveLength(42);
+	expect(every).toHaveLength(44);
 	expect(statesOf(`${part}harness-header`)).toEqual(every);
 	expect(statesOf(`${part}harness-console`)).toEqual(every);
 	const pages = new Set(units.filter((unit) => unit.kind === 'page').map((unit) => unit.id));
-	const shell = new Set(shellStates.map(([id]) => id));
-	// Every state from before Shells names exactly one page and nothing else.
-	const earlier = scenario.states.filter((state) => !shell.has(state.id));
+	const named = new Set(written.map(([id]) => id));
+	// Every state from before Shells and search names exactly one page and nothing else.
+	const earlier = scenario.states.filter((state) => !named.has(state.id));
 	expect(earlier).toHaveLength(34);
 	for (const state of earlier) {
 		expect([state.id, state.units?.length, state.units?.every((id) => pages.has(id))]).toEqual([
@@ -143,9 +157,9 @@ test('what every page is made of is under every state, and each state names a pa
 			true
 		]);
 	}
-	// The Shells states are exactly these, in this order, each naming exactly what it shows.
-	const shells = scenario.states.filter((state) => shell.has(state.id));
-	expect(shells.map((state) => [state.id, state.units])).toEqual(shellStates);
+	// The Shells and search states are exactly these, in this order, each naming what it shows.
+	const later = scenario.states.filter((state) => named.has(state.id));
+	expect(later.map((state) => [state.id, state.units])).toEqual(written);
 	const registered = new Set(units.map((unit) => unit.id));
-	expect(shellStates.flatMap(([, named]) => named).filter((id) => !registered.has(id))).toEqual([]);
+	expect(written.flatMap(([, ids]) => ids).filter((id) => !registered.has(id))).toEqual([]);
 });

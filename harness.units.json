@@ -220,6 +220,12 @@
 			"reason": "The desktop's build alias $shared is packages/reports/src/components: the project switcher renders the Select of the reports package."
 		},
 		{
+			"from": "packages/desktop/src/components/NavBar.svelte",
+			"specifier": "$shared/EntitySearch.svelte",
+			"to": "packages/reports/src/components/EntitySearch.svelte",
+			"reason": "The desktop's build alias $shared is packages/reports/src/components: the top bar renders the entity search of the reports package."
+		},
+		{
 			"from": "packages/desktop/src/components/RevisionPicker.svelte",
 			"specifier": "$shared/Select.svelte",
 			"to": "packages/reports/src/components/Select.svelte",

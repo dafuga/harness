@@ -182,8 +182,9 @@ test('a change of Select reaches every unit, test and scenario that a change of 
 }, 60_000);
 
 test('declaring the Select imports moves those references alone: packages and uncertainties stay', async () => {
+	// Only the Select imports are undeclared; every other declaration, the shared search included, stays.
 	const kept = loaded.config.references.filter(
-		(entry) => !entry.specifier.startsWith(`${shared}/`)
+		(entry) => entry.specifier !== `${shared}/Select.svelte`
 	);
 	const bare = await indexer.index(new WorkingTreeAdapter(loaded.root), {
 		...loaded.config,

@@ -2,6 +2,7 @@ import type { ExplorerCategory, ExplorerLocation, ExplorerScope } from '../model
 import type { HarnessIndex, HarnessRevisionSummary } from '../models/Harness.types';
 import { branchCommits, retainedBranch } from './harnessAncestry';
 import { categoryIcon, type HarnessIconName } from './harnessIcons';
+import type { SearchEntry } from './entitySearch';
 
 /** What a host gives the bar of the explorer. */
 export interface HarnessNavbarInput {
@@ -18,6 +19,8 @@ export interface HarnessNavbarInput {
 	href: (to: ExplorerLocation) => string;
 	/** A plain click on a link of the bar, or a choice in one of its fields. */
 	onroute: (to: ExplorerLocation) => void;
+	/** Every entity of the revision in view to search, or null while the host reads it. */
+	search?: { entries: SearchEntry[] | null };
 }
 /** One tab of a row of tabs; with an address it is a link that a new tab can open. */
 export interface HarnessTab<View extends string = string> {

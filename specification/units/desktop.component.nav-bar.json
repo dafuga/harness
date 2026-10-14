@@ -52,12 +52,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.function.workspace-search",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.desktop-types",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.entity-search",
 			"via": "import",
 			"origin": "derived"
 		}
@@ -72,7 +82,7 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-renderer", "shells-shared-app"],
+	"scenarios": ["desktop-native", "desktop-renderer", "shells-shared-app", "search-shared-app"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
