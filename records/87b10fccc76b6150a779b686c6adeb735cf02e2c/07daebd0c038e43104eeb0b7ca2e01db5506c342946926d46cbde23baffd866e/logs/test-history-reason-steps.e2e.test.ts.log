@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-4RKl8N
+
+ ✓ test/history-reason-steps.e2e.test.ts (3 tests) 11922ms
+   ✓ the reasons of every explained step are kept, and a fresh clone with the notes explains the range  3615ms
+   ✓ a step keeps the writing limits of its own revision when a later one declares limits  1981ms
+   ✓ a step without a reason keeps the range open: nothing is kept for it and the failure is said  2649ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  04:12:53
+   Duration  12.18s (transform 35ms, setup 9ms, collect 53ms, tests 11.92s, environment 0ms, prepare 38ms)
+
