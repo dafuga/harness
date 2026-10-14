@@ -18,6 +18,7 @@ import type { Git } from './planGit';
 import { blob, revision } from './planGit';
 import { planRead } from './planRead';
 import { readImage } from './planDesign';
+import { optionOf } from './planOptions';
 import { clean, commitFiles, type Files } from './planWrite';
 import { fail, hash, json, now, planData } from './planData';
 import { author, filename, region, text } from './planValidate';
@@ -80,7 +81,8 @@ function validateReference(reference: ThreadMessage['references'][number], plan:
 		plan.versions.some(
 			(v) =>
 				v.version === reference.version &&
-				v.images.some((i) => i.file === reference.file && i.sha256 === reference.sha256)
+				v.images.some((i) => i.file === reference.file && i.sha256 === reference.sha256) &&
+				(reference.option === undefined || optionOf(v, reference.file) === reference.option)
 		)
 	)
 		return;
@@ -139,6 +141,7 @@ async function anchor(
 		version: input.version,
 		file: input.file,
 		sha256: input.imageSha256,
+		option: input.option,
 		revision: viewedRevision
 	});
 	return {
@@ -147,7 +150,8 @@ async function anchor(
 		imageSha256: input.imageSha256,
 		state: image.state,
 		viewport: image.viewport,
-		region: region(input.region)
+		region: region(input.region),
+		...(image.option ? { option: image.option } : {})
 	};
 }
 export async function planThread(git: Git, input: OpenThreadInput) {
@@ -164,7 +168,8 @@ export async function planThread(git: Git, input: OpenThreadInput) {
 			unitId: input.unitId,
 			version: target.version,
 			file: target.file,
-			sha256: target.imageSha256
+			sha256: target.imageSha256,
+			option: target.option
 		});
 	const value = {
 		id: randomUUID(),

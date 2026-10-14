@@ -5,7 +5,7 @@
 	import type { Workspace } from '../lib/stores/workspace.svelte';
 	import { imageUrl } from '../utils/imageUrl';
 	import { priorImage } from '../utils/priorImage';
-	import { imageTarget, type ThreadTarget } from '../utils/threadAnchor';
+	import { imageTarget, optionImages, type ThreadTarget } from '../utils/threadAnchor';
 	import AnnotatedImage from './AnnotatedImage.svelte';
 	import PriorImage from './PriorImage.svelte';
 	let {
@@ -13,6 +13,7 @@
 		workspace,
 		annotatable,
 		version = $bindable(''),
+		option = $bindable(''),
 		onthread,
 		onannotate
 	}: {
@@ -21,6 +22,8 @@
 		/** Whether an image or a region of it can start a thread here. */
 		annotatable: boolean;
 		version?: string;
+		/** The design option shown, of a version that has options; empty otherwise. */
+		option?: string;
 		onthread: (thread: ThreadInfo) => void;
 		onannotate: (target: ThreadTarget) => Promise<void>;
 	} = $props();
@@ -29,7 +32,12 @@
 	let url = $state('');
 	let error = $state('');
 	const current = $derived(entity.versions.find((v) => v.version === version));
-	const images = $derived(current?.images || []);
+	/** Options are alternatives of one version: only the images of the option shown are offered. */
+	const choices = $derived(current?.options ?? []);
+	const images = $derived(optionImages(current, option));
+	const named = (id: string) => `Option ${choices.findIndex((item) => item.id === id) + 1}`;
+	const chosen = $derived(choices.find((item) => item.id === option));
+	const caption = $derived(chosen ? ` ${named(chosen.id)}` : '');
 	/** The plan of a function is notes and cases: no image of it is chosen, asked for or drawn. */
 	const headless = $derived(entity.category === 'functions');
 	const selected = $derived(
@@ -97,6 +105,16 @@
 					>{/each}</Select
 			><small>Committed {headless ? 'plan' : 'design'} · {version}</small>{/if}
 	</div>
+	{#if current && choices.length}<div class="design-options">
+			<SegmentedChoice
+				label="Design option"
+				options={choices.map((item) => named(item.id))}
+				bind:value={
+					() => (chosen ? named(chosen.id) : ''),
+					(value) => (option = choices[Number(value.slice(7)) - 1]?.id ?? option)
+				}
+			/>{#if chosen}<small class="option-direction">{chosen.direction}</small>{/if}
+		</div>{/if}
 	{#if current && selected}<div class="design-controls">
 			<SegmentedChoice
 				label="Viewport"
@@ -122,7 +140,7 @@
 					title={`${entity.title} ${before.version} ${selected.viewport} ${selected.state}`}
 				/>{/if}{#if url}<AnnotatedImage
 					src={url}
-					title={`${entity.title} ${version} ${selected.viewport} ${selected.state}`}
+					title={`${entity.title} ${version}${caption} ${selected.viewport} ${selected.state}`}
 					caption={before ? `After · ${version}` : ''}
 					{threads}
 					writable={annotatable}

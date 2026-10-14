@@ -5,6 +5,7 @@
  * or written.
  */
 
+import type { DesignOptionInput } from './DesignOption.types';
 import type {
 	AgentRef,
 	ApprovalRecord,
@@ -71,7 +72,10 @@ export interface AddDesignInput {
 	unitId: string;
 	prompt: string;
 	generator: AgentRef;
-	images: DesignImageInput[];
+	/** The images of a single design; with options, left out or exactly the union of theirs. */
+	images?: DesignImageInput[];
+	/** 1 to 10 separately generated alternatives of a visual design, saved as one version. */
+	options?: DesignOptionInput[];
 	/** Written behaviour or examples; a headless unit may have this instead of images. */
 	notes?: string;
 	/** A revised proposed contract. Left out, the version keeps the current one. */
@@ -109,6 +113,8 @@ export interface OpenThreadInput {
 	/** Must equal the recorded hash of that image. */
 	imageSha256: Sha256 | null;
 	region: NormalizedRegion | null;
+	/** Checked against the option holding the image when given; derived from it otherwise. */
+	option?: string;
 	title?: string;
 	author: PlanAuthor;
 	/** The revision the reviewer was looking at; the checked-out commit otherwise. */
@@ -126,7 +132,9 @@ export interface ApproveDesignInput {
 	unitId: string;
 	/** Must be the latest version. */
 	version: string;
-	/** Every image of the version with its exact hash, no more and no fewer. */
+	/** Required when that version has options: the one option approved. */
+	option?: string;
+	/** Every image of the version, or of its approved option, with its exact hash. */
 	images: ImageBinding[];
 	notesSha256?: Sha256 | null;
 	contractHash: Sha256;
@@ -139,6 +147,8 @@ export interface ReadImageInput extends RevisionInput {
 	file: string;
 	/** When given, the image is refused unless it has this hash. */
 	sha256?: Sha256;
+	/** When given, the image is refused unless it belongs to this option. */
+	option?: string;
 }
 
 export interface ReadPlanInput extends RevisionInput {

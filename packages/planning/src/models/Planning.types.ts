@@ -1,5 +1,7 @@
 import type { ChangeRecord } from './HostFileChange.types';
 export type { HostFileChange, ChangeTarget, ChangeRecord } from './HostFileChange.types';
+import type { DesignOption } from './DesignOption.types';
+export type { DesignOption, DesignOptionInput } from './DesignOption.types';
 /**
  * Planning artifacts as they are stored in Git and returned by the facade.
  * Every type here is plain data: it survives JSON and structured clone unchanged,
@@ -83,6 +85,8 @@ export interface DesignSource {
 	imageSha256: Sha256;
 	region: NormalizedRegion | null;
 	threadId: string | null;
+	/** The option of the version that holds that image, when it has options. */
+	option?: string;
 }
 
 export interface DesignVersion {
@@ -100,6 +104,8 @@ export interface DesignVersion {
 	contract: PlanContract;
 	contractHash: Sha256;
 	revises: DesignSource | null;
+	/** Separately generated alternatives; a single design has none. */
+	options?: DesignOption[];
 	/** Derived from history: the commit that added this version. Never stored in the version. */
 	commit: CommitId;
 }
@@ -113,6 +119,8 @@ export interface ApprovalRecord {
 	contractHash: Sha256;
 	reviewer: string;
 	approvedAt: IsoTime;
+	/** The one option approved, when the version has options; no other option is. */
+	option?: string;
 	/** Derived: the commit that added the record. */
 	commit: CommitId;
 	/** Derived: it binds the latest version, its exact files and its contract. */
@@ -127,10 +135,12 @@ export interface ThreadAnchor {
 	viewport: PlanViewport;
 	/** `null` anchors the whole image. */
 	region: NormalizedRegion | null;
+	/** The option holding the image, derived from the stored version, when it has options. */
+	option?: string;
 }
 
 export type ArtifactReference =
-	| { kind: 'image'; version: string; file: string; sha256: Sha256 }
+	| { kind: 'image'; version: string; file: string; sha256: Sha256; option?: string }
 	| { kind: 'notes'; version: string; sha256: Sha256 }
 	| { kind: 'approval'; approvalId: string };
 

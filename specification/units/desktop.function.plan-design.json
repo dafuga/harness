@@ -37,6 +37,16 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.function.design-count",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.design-directions",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.function.design-prompt",
 			"via": "import",
 			"origin": "derived"

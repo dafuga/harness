@@ -67,6 +67,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.function.design-count",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.function.prepare-project-run",
 			"via": "import",
 			"origin": "derived"

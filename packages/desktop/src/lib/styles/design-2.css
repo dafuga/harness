@@ -44,3 +44,26 @@ pre {
 .app-route code {
 	overflow-wrap: anywhere;
 }
+/* The alternatives of one version: the option shown and the direction it was asked to take. */
+.design-options {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px 12px;
+	margin-top: 12px;
+	min-width: 0;
+}
+.option-direction {
+	flex: 1 1 16rem;
+	min-width: 0;
+	color: var(--muted);
+	overflow-wrap: anywhere;
+}
+/* A visual Plan adds its design count: the choices wrap two to a row, each shown whole. */
+.composer-bottom.counted {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.composer-bottom.counted .send {
+	justify-self: end;
+}

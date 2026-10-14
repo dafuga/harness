@@ -30,6 +30,10 @@
 				"type": "string"
 			},
 			{
+				"name": "DesignPanel.option",
+				"type": "string"
+			},
+			{
 				"name": "DesignPanel.onthread",
 				"type": "(thread: ThreadInfo) => void"
 			},

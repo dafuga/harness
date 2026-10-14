@@ -82,7 +82,8 @@ test('visual creation reuses GPT Image and saves a reviewable committed version'
 		}),
 		model: turn.model
 	}));
-	await f.service.start(request(f));
+	// A case of one design: it asks for a single design option.
+	await f.service.start({ ...request(f), designOptions: 1 });
 	await expect.poll(() => f.session.busy, { timeout: 12000 }).toBe(false);
 	const plan = (await f.planning.plans(git(f.root, 'rev-parse', 'HEAD'))).find(
 		(item) => item.title === 'Elapsed badge'

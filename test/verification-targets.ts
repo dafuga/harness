@@ -7,6 +7,7 @@ import { agentCreationVerificationScopes } from './agent-creation-verification-s
 import { searchVerificationScopes } from './search-verification-scopes';
 import { shellsVerificationScopes } from './shells-verification-scopes';
 import { referenceVerificationScopes } from './reference-verification-scopes';
+import { designOptionVerificationScopes } from './design-option-verification-scopes';
 
 export interface VerificationTarget {
 	scenario: string;
@@ -31,6 +32,7 @@ const scopes: Record<string, VerificationScope> = {
 	...searchVerificationScopes,
 	...shellsVerificationScopes,
 	...referenceVerificationScopes,
+	...designOptionVerificationScopes,
 	'runtime-evidence-ui': {
 		package: 'desktop',
 		vitest: {},

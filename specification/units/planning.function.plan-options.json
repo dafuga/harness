@@ -1,0 +1,137 @@
+{
+	"schemaVersion": 1,
+	"id": "planning.function.plan-options",
+	"kind": "function",
+	"title": "planOptions",
+	"responsibility": "Owns the planOptions shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/planning/src/utils/planOptions.ts"],
+		"symbols": ["WriteImages", "planOptions", "checkOptions", "optionOf", "heldBy", "approvable"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "planOptions.input",
+				"type": "AddDesignInput"
+			},
+			{
+				"name": "planOptions.base",
+				"type": "string"
+			},
+			{
+				"name": "planOptions.files",
+				"type": "Files"
+			},
+			{
+				"name": "planOptions.write",
+				"type": "WriteImages"
+			},
+			{
+				"name": "checkOptions.version",
+				"type": "DesignVersion"
+			},
+			{
+				"name": "optionOf.version",
+				"type": "DesignVersion"
+			},
+			{
+				"name": "optionOf.file",
+				"type": "string"
+			},
+			{
+				"name": "heldBy.version",
+				"type": "DesignVersion"
+			},
+			{
+				"name": "heldBy.file",
+				"type": "string"
+			},
+			{
+				"name": "heldBy.wanted",
+				"type": "string"
+			},
+			{
+				"name": "approvable.version",
+				"type": "DesignVersion"
+			},
+			{
+				"name": "approvable.option",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "planOptions",
+				"type": "unknown"
+			},
+			{
+				"name": "checkOptions",
+				"type": "void"
+			},
+			{
+				"name": "optionOf",
+				"type": "string | undefined"
+			},
+			{
+				"name": "heldBy",
+				"type": "{ option?: string }"
+			},
+			{
+				"name": "approvable",
+				"type": "ImageBinding[] | null"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "planning.function.plan-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-validate",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-write",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.model.planning-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.model.planning-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/planning/src/utils/planOptions.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/planning/src/utils/planOptions.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

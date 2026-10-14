@@ -8,11 +8,23 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/composeModes.ts"],
-		"symbols": ["ComposeMode", "AgentChoice", "RunDraft", "composeModes"]
+		"symbols": [
+			"ComposeMode",
+			"AgentChoice",
+			"RunDraft",
+			"designCounts",
+			"defaultDesignCount",
+			"visualCategory",
+			"composeModes"
+		]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "visualCategory.category",
+				"type": "string"
+			},
 			{
 				"name": "composeModes.capabilities",
 				"type": "ProjectCapabilities"
@@ -23,6 +35,18 @@
 			}
 		],
 		"outputs": [
+			{
+				"name": "designCounts",
+				"type": "unknown"
+			},
+			{
+				"name": "defaultDesignCount",
+				"type": "unknown"
+			},
+			{
+				"name": "visualCategory",
+				"type": "boolean"
+			},
 			{
 				"name": "composeModes",
 				"type": "ComposeMode[]"

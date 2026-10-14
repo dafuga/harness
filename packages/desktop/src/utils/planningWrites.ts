@@ -57,20 +57,22 @@ export async function ensurePlan(context: PlanningContext, unit: ComponentManife
 }
 export async function addPlanDesign(context: PlanningContext, draft: DesignDraft) {
 	const plan = await context.api.readPlan({ unitId: draft.entityId });
-	const anchor = plan.versions
-		.find((v) => v.version === draft.revises?.version)
-		?.images.find((i) => i.sha256 === draft.revises?.imageSha256);
+	const revised = plan.versions.find((v) => v.version === draft.revises?.version);
+	const anchor = revised?.images.find((i) => i.sha256 === draft.revises?.imageSha256);
+	// The option of the revised image comes from the stored version, never from the caller.
+	const option = revised?.options?.find((o) => o.images.some((i) => i.file === anchor?.file))?.id;
 	const result = await context.api.addDesign({
 		unitId: draft.entityId,
 		prompt: draft.prompt,
 		generator: draft.generator,
 		baseRevision: draft.baseRevision,
 		expectedLatest: draft.expectedLatest === undefined ? plan.latestVersion : draft.expectedLatest,
-		images: draft.bytes
-			? [{ state: draft.state, viewport: draft.viewport as PlanViewport, bytes: draft.bytes }]
-			: [],
+		...designImages(draft),
 		notes: draft.notes,
-		revises: anchor && draft.revises ? { ...draft.revises, file: anchor.file } : undefined
+		revises:
+			anchor && draft.revises
+				? { ...draft.revises, file: anchor.file, ...(option ? { option } : {}) }
+				: undefined
 	});
 	return planVersion(context, {
 		version: result.value,
@@ -94,6 +96,7 @@ export async function openPlanThread(context: PlanningContext, draft: ThreadDraf
 				file: image?.file ?? null,
 				imageSha256: draft.imageSha256,
 				region: draft.region,
+				option: draft.option,
 				author: reviewer
 			})
 		).value
@@ -103,7 +106,8 @@ export async function approvePlanDesign(context: PlanningContext, draft: Approva
 	const plan = await context.api.readPlan({ unitId: draft.entityId }),
 		version = plan.versions.find((v) => v.version === draft.version);
 	if (!version) throw new Error('Unknown design version.');
-	const images = version.images
+	const group = version.options?.find((o) => o.id === draft.option)?.images ?? version.images;
+	const images = group
 		.filter((i) => draft.imageHashes.includes(i.sha256))
 		.map((i) => ({ file: i.file, sha256: i.sha256 }));
 	if (images.length !== draft.imageHashes.length)
@@ -113,6 +117,7 @@ export async function approvePlanDesign(context: PlanningContext, draft: Approva
 			await context.api.approveDesign({
 				unitId: draft.entityId,
 				version: draft.version,
+				...(draft.option ? { option: draft.option } : {}),
 				images,
 				notesSha256: version.notes?.sha256 ?? null,
 				contractHash: draft.contractHash,
@@ -120,6 +125,18 @@ export async function approvePlanDesign(context: PlanningContext, draft: Approva
 			})
 		).value
 	);
+}
+/** A single design's one image, or each separately generated option with its own image. */
+function designImages(draft: DesignDraft) {
+	const image = (bytes: Uint8Array) => [
+		{ state: draft.state, viewport: draft.viewport as PlanViewport, bytes }
+	];
+	if (!draft.options) return { images: draft.bytes ? image(draft.bytes) : [] };
+	const options = draft.options.map(({ direction, bytes, prompt, revisedPrompt }) => ({
+		...{ direction, prompt, revisedPrompt, generator: draft.generator },
+		images: image(bytes)
+	}));
+	return { options };
 }
 function visual(category: string) {
 	return ['page', 'shell', 'component'].includes(category);

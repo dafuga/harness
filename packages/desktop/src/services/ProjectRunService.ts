@@ -151,9 +151,10 @@ export class ProjectRunService {
 		progress.created = created;
 		const thread = await project.planning.openThread({ entityId: plan.id, ...unanchored });
 		created.threadId = thread.id;
-		const { provider, model, effort, text, projectId } = request;
+		const { provider, model, effort, text, projectId, designOptions } = request;
 		const scoped: RunRequest = {
 			...{ projectId, mode: 'plan', provider, model, effort, text, approval: null },
+			...(designOptions === undefined ? {} : { designOptions }),
 			entityId: plan.id,
 			threadId: thread.id
 		};

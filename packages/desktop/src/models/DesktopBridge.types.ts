@@ -100,6 +100,8 @@ export interface ThreadDraft extends ProjectContext {
 	state: string | null;
 	viewport: string | null;
 	region: Region | null;
+	/** Checked against the option holding the image when given; derived from it otherwise. */
+	option?: string;
 }
 export interface ThreadQuery extends EntityQuery {
 	threadId: string;
@@ -110,6 +112,8 @@ export interface ApprovalDraft extends ProjectContext {
 	version: string;
 	imageHashes: string[];
 	contractHash: string;
+	/** The one design option approved, required when the version has options. */
+	option?: string;
 }
 
 export interface RunRequest extends ProjectContext {
@@ -123,6 +127,8 @@ export interface RunRequest extends ProjectContext {
 	text: string;
 	/** Change only: the approved design the code request implements, stated in full. */
 	approval: Omit<ApprovalDraft, 'entityId'> | null;
+	/** Plan only: separately generated design options of a visual unit, 1 to 10; 3 if left out. */
+	designOptions?: number;
 }
 
 /** A request for something new. The agent proposes what it is, and a plan is made of that. */
@@ -139,6 +145,8 @@ export interface ProjectRunRequest extends ProjectContext {
 	model: string;
 	effort: string | null;
 	text: string;
+	/** Separately generated design options when the plan is visual, 1 to 10; 3 if left out. */
+	designOptions?: number;
 }
 /**
  * The plan a creation request became, named so that what asked for it can open it. A run that

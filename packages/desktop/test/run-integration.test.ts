@@ -7,7 +7,8 @@ import { RunCancelled } from '../src/models/AgentRunner.types';
 import { fixture, settled, approve, records, git, bytes } from './run-fixture';
 test('Plan uses read-only CLI and saves a committed immutable version without claiming verification', async () => {
 	const f = await fixture();
-	await settled(f);
+	// A case of one design: it asks for a single design option.
+	await settled(f, { ...f.request, designOptions: 1 });
 	expect(f.run).toHaveBeenCalledOnce();
 	expect(f.run.mock.calls[0][0]).toMatchObject({
 		access: 'read-only',
@@ -155,7 +156,8 @@ test('visual provenance stores actual image orchestration model and exact full g
 			]
 		};
 	};
-	await settled(f, { ...f.request, provider: 'claude', model: 'director' });
+	// A case of one design: it asks for a single design option.
+	await settled(f, { ...f.request, provider: 'claude', model: 'director', designOptions: 1 });
 	const imageCall = vi.mocked(f.generator.generateImage).mock.calls[0][0];
 	const plan = (await f.planning.plans(git(f.root, 'rev-parse', 'HEAD')))[0];
 	const version = plan.versions[0];

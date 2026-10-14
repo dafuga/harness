@@ -103,6 +103,8 @@ export interface ImageContent {
 	height: number;
 	mediaType: 'image/png';
 	bytes: Uint8Array;
+	/** The option holding the image, when its version has options. */
+	option?: string;
 	/** The commit that added the version. */
 	commit: CommitId;
 }

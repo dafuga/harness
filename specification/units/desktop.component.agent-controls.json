@@ -22,6 +22,14 @@
 				"type": "AgentChoice | null"
 			},
 			{
+				"name": "AgentControls.count",
+				"type": "number"
+			},
+			{
+				"name": "AgentControls.counted",
+				"type": "boolean"
+			},
+			{
 				"name": "AgentControls.action",
 				"type": "Snippet"
 			}

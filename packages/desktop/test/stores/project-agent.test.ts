@@ -131,3 +131,12 @@ test('nothing is asked for a Change, in a hosted project or at a past commit', a
 	}
 	expect(local.bridge.startRun).not.toHaveBeenCalled();
 });
+
+test('a creation request carries the count of design options that was chosen', async () => {
+	const f = shown();
+	void f.agent.send({ ...draft, designOptions: 2 });
+	await vi.waitFor(() => expect(f.agent.runId).toBe('run-1'));
+	expect(f.bridge.startRun.mock.calls).toEqual([
+		[{ intent: 'create', category: 'functions', ...draft, designOptions: 2, projectId: 'local-1' }]
+	]);
+});

@@ -1,19 +1,28 @@
 <script lang="ts">
 	import type { DesignVersion, EntityDetail } from '../models/Desktop.types';
 	import type { Workspace } from '../lib/stores/workspace.svelte';
+	import { optionImages } from '../utils/threadAnchor';
 	let {
 		entity,
 		workspace,
 		design,
-		approved
-	}: { entity: EntityDetail; workspace: Workspace; design: DesignVersion; approved: boolean } =
-		$props();
+		approved,
+		option = ''
+	}: {
+		entity: EntityDetail;
+		workspace: Workspace;
+		design: DesignVersion;
+		approved: boolean;
+		/** The design option shown; an approval binds it and its images, never another option. */
+		option?: string;
+	} = $props();
+	const images = $derived(optionImages(design, option));
 	let approving = $state(false);
 	let error = $state('');
 	/** What is approved: the plan of a function, the design of anything else. */
 	const named = $derived(entity.category === 'functions' ? 'Plan' : 'Design');
 	const imageless = $derived(
-		['pages', 'shells', 'components'].includes(entity.category) && !design.images.length
+		['pages', 'shells', 'components'].includes(entity.category) && !images.length
 	);
 	const blocked = $derived(
 		!workspace.snapshot?.writable ||
@@ -32,8 +41,9 @@
 			await workspace.bridge!.approve({
 				entityId: entity.id,
 				version: design.version,
-				imageHashes: design.images.map((image) => image.sha256),
+				imageHashes: images.map((image) => image.sha256),
 				contractHash: entity.contract.hash,
+				...(design.options?.length ? { option } : {}),
 				...workspace.context
 			});
 			await workspace.refresh();

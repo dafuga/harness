@@ -8,8 +8,9 @@
 	import { createThreadRunStore } from '../lib/stores/threadRun.svelte';
 	import { pendingEntries, requestEntry, threadInfo } from '../utils/commentEntries';
 	import type { ThreadEntry } from '../utils/commentEntries';
-	import { composeModes, type RunDraft } from '../utils/composeModes';
-	import { designTarget, threadAnchor, type ThreadTarget } from '../utils/threadAnchor';
+	import { composeModes, visualCategory, type RunDraft } from '../utils/composeModes';
+	import { designTarget, otherOption, shownApproval, threadAnchor } from '../utils/threadAnchor';
+	import type { ThreadTarget } from '../utils/threadAnchor';
 	import ApprovalButton from './ApprovalButton.svelte';
 	import Composer from './Composer.svelte';
 	import MessageList from './MessageList.svelte';
@@ -23,6 +24,7 @@
 		thread = $bindable(null),
 		target = $bindable(null),
 		version = $bindable(''),
+		option = $bindable(''),
 		close
 	}: {
 		entity: EntityDetail;
@@ -31,6 +33,8 @@
 		/** A region or image that was selected where no thread is opened for it yet. */
 		target?: ThreadTarget | null;
 		version?: string;
+		/** The design option in view; empty for a design without options. */
+		option?: string;
 		close: () => void;
 	} = $props();
 	/** One workspace store lives as long as the page; its run and comments belong to this view. */
@@ -42,17 +46,23 @@
 	let failure = $state('');
 	let scroller = $state<HTMLDivElement>();
 	const design = $derived(entity.versions.find((v) => v.version === version));
-	const approved = $derived(
-		Boolean(design?.approval?.current && design.version === entity.latestVersion)
-	);
+	const approved = $derived(shownApproval(design, entity.latestVersion, option));
 	const modes = $derived(
 		composeModes(workspace.capabilities, Boolean(workspace.snapshot?.writable))
 	);
 	/** A comment on a function is on the function: no earlier picture of a plan is aimed at. */
 	const headless = $derived(entity.category === 'functions');
 	const aim = $derived<ThreadTarget>(
-		thread ?? target ?? designTarget(headless ? undefined : design)
+		thread ?? target ?? designTarget(headless ? undefined : design, option)
 	);
+	/** A thread or selection on another option of this version is left; the draft stays. */
+	$effect(() => {
+		const shown = option;
+		untrack(() => {
+			if (otherOption(thread, version, shown)) thread = null;
+			if (otherOption(target, version, shown)) target = null;
+		});
+	});
 	const entries = $derived([
 		...messages,
 		...pendingEntries(comments.pending, entity.id, entity.threads)
@@ -121,7 +131,8 @@
 					? {
 							version: design!.version,
 							imageHashes: approval.imageHashes,
-							contractHash: approval.contractHash
+							contractHash: approval.contractHash,
+							...(approval.option ? { option: approval.option } : {})
 						}
 					: null,
 				...workspace.context
@@ -156,15 +167,15 @@
 			: ''}
 	</p>
 	<div class="thread-scroll" bind:this={scroller}>
-		<ThreadHistory {entity} {workspace} {version} select={(value) => (version = value)} />
+		<ThreadHistory {entity} {workspace} {version} {option} select={(value) => (version = value)} />
 		<h3>Conversation</h3>
 		<ThreadLinks
 			threads={entity.threads}
 			{thread}
 			{aim}
 			select={(value) => {
-				thread = value;
-				target = null;
+				if (value.version === version && value.option) option = value.option;
+				[thread, target] = [value, null];
 			}}
 		/>
 		<MessageList messages={entries} {workspace} {entity} />{#if run.streaming}<p
@@ -192,6 +203,7 @@
 		{approved}
 		running={run.active || comments.busy}
 		{notice}
+		visual={visualCategory(entity.category)}
 		{comment}
 		{send}
 	/>{#if design && workspace.capabilities.approval}<ApprovalButton
@@ -199,5 +211,6 @@
 			{workspace}
 			{design}
 			{approved}
+			{option}
 		/>{/if}
 </aside>

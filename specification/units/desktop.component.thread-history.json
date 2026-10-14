@@ -26,6 +26,10 @@
 				"type": "string"
 			},
 			{
+				"name": "ThreadHistory.option",
+				"type": "string"
+			},
+			{
 				"name": "ThreadHistory.select",
 				"type": "(version: string) => void"
 			}
@@ -41,6 +45,11 @@
 	"dependencies": [
 		{
 			"unit": "desktop.component.image-thumbnail",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.thread-anchor",
 			"via": "import",
 			"origin": "derived"
 		},
