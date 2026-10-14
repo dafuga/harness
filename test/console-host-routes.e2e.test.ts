@@ -23,7 +23,7 @@ const main = (commit: string, rest: string) => `/harness/branch/main/commit/${co
 const tip = (rest: string) => `/harness/branch/main/${rest}`;
 /** The whole branch is one segment of an explorer address. */
 const slashed = `/harness/branch/${encodeURIComponent(slashBranch)}`;
-const categories = ['Pages', 'Components', 'Functions', 'Configs', 'Services'];
+const categories = ['Pages', 'Shells', 'Components', 'Functions', 'Configs', 'Services'];
 const pathOf = (page: Page) => new URL(page.url()).pathname;
 const bar = (page: Page) => page.getByRole('banner');
 const field = (page: Page, name: string) => bar(page).getByRole('combobox', { name, exact: true });
@@ -62,7 +62,13 @@ test('the host redirects the root and the query form to page paths, for the admi
 		main(target.commit, 'services/service.title/history')
 	]);
 	// Pages of the explorer, and page paths of the earlier console, which the console leads on.
-	const explorer = [tip('pages'), main(head, 'functions'), `${slashed}/pages`];
+	const explorer = [
+		tip('pages'),
+		main(head, 'functions'),
+		`${slashed}/pages`,
+		tip('shells'),
+		main(head, 'shells')
+	];
 	const before = [main(head, 'map'), `/harness/branch/release/1.0%23rc/commit/${head}/map`];
 	for (const path of [...explorer, ...before, `/harness/commit/${head}/growth`]) {
 		expect([path, (await get(path, admin)).status]).toEqual([path, 200]);
@@ -88,6 +94,10 @@ test('in a browser each branch, commit and category of the installed console is 
 	expect(await page.getByRole('link', { name: /Reports|Analytics|Activity|Growth/ }).count()).toBe(
 		0
 	);
+	await links.filter({ hasText: 'Shells' }).click();
+	await page.waitForURL(`**${tip('shells')}`);
+	await page.getByRole('heading', { level: 1, name: 'Shells' }).waitFor();
+	expect(await commit.inputValue()).toBe(head);
 	await links.filter({ hasText: 'Functions' }).click();
 	await page.waitForURL(`**${tip('functions')}`);
 	expect(await commit.inputValue()).toBe(head);
