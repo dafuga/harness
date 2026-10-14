@@ -97,30 +97,55 @@ test('a page is under its own states, and a screen under the states of the pages
 	expect(statesOf(`${at}configs-entity`)).toEqual(['config']);
 	expect(statesOf(`${at}functions-entity-history`)).toEqual(['history']);
 	// The page of no screen can draw any of them, so its one state shows every screen too.
-	expect(statesOf(`${part}explorer-pages-screen`)).toEqual(['pages', 'retained']);
-	expect(statesOf(`${part}entity-config-screen`)).toEqual(['config', 'retained']);
+	expect(statesOf(`${part}explorer-pages-screen`)).toEqual(['pages', 'retained', 'shell-retained']);
+	expect(statesOf(`${part}entity-config-screen`)).toEqual(['config', 'retained', 'shell-retained']);
 	expect(statesOf(`${part}entity-history-screen`)).toEqual([
 		'history',
 		'page-history',
 		'component-history',
 		'config-history',
 		'service-history',
-		'retained'
+		'retained',
+		'shell-history',
+		'shell-retained'
 	]);
 	expect(statesOf(`${part}entity-history`)).toEqual(statesOf(`${part}entity-history-screen`));
 });
 
+// What each Shells state shows, written out here rather than read from the scenario: the page it
+// is reached on and, where an old Components address is corrected, the correction too.
+const corrected = 'reports.function.corrected-location';
+const shellStates: Array<[string, string[]]> = [
+	['shells', [`${at}shells`]],
+	['shells-tip', [`${at}shells`]],
+	['shell', [`${at}shells-entity`]],
+	['shell-details', [`${at}shells-entity-details`]],
+	['shell-history', [`${at}shells-entity-history`]],
+	['shell-redirect', [`${at}shells-entity-details`, corrected]],
+	['shell-earlier', [`${at}components-entity`, corrected]],
+	['shell-retained', ['reports.page.harness-view']]
+];
+
 test('what every page is made of is under every state, and each state names a page there is', () => {
 	const every = scenario.states.map((state) => state.id);
-	expect(every).toHaveLength(34);
+	expect(every).toHaveLength(42);
 	expect(statesOf(`${part}harness-header`)).toEqual(every);
 	expect(statesOf(`${part}harness-console`)).toEqual(every);
 	const pages = new Set(units.filter((unit) => unit.kind === 'page').map((unit) => unit.id));
-	for (const state of scenario.states) {
+	const shell = new Set(shellStates.map(([id]) => id));
+	// Every state from before Shells names exactly one page and nothing else.
+	const earlier = scenario.states.filter((state) => !shell.has(state.id));
+	expect(earlier).toHaveLength(34);
+	for (const state of earlier) {
 		expect([state.id, state.units?.length, state.units?.every((id) => pages.has(id))]).toEqual([
 			state.id,
 			1,
 			true
 		]);
 	}
+	// The Shells states are exactly these, in this order, each naming exactly what it shows.
+	const shells = scenario.states.filter((state) => shell.has(state.id));
+	expect(shells.map((state) => [state.id, state.units])).toEqual(shellStates);
+	const registered = new Set(units.map((unit) => unit.id));
+	expect(shellStates.flatMap(([, named]) => named).filter((id) => !registered.has(id))).toEqual([]);
 });
