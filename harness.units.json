@@ -248,6 +248,24 @@
 			"specifier": "$shared/Select.svelte",
 			"to": "packages/reports/src/components/Select.svelte",
 			"reason": "The hub's build alias $shared is packages/reports/src/components: the project form renders the Select of the reports package."
+		},
+		{
+			"from": "packages/desktop/src/components/NavBar.svelte",
+			"specifier": "$shared/BrandMark.svelte",
+			"to": "packages/reports/src/components/BrandMark.svelte",
+			"reason": "The desktop navbar renders the shared brand component through its configured $shared alias."
+		},
+		{
+			"from": "packages/desktop/src/components/ProjectGate.svelte",
+			"specifier": "$shared/BrandMark.svelte",
+			"to": "packages/reports/src/components/BrandMark.svelte",
+			"reason": "The desktop project gate renders the shared brand component through its configured $shared alias."
+		},
+		{
+			"from": "packages/hub/src/components/HubFrame.svelte",
+			"specifier": "$shared/BrandMark.svelte",
+			"to": "packages/reports/src/components/BrandMark.svelte",
+			"reason": "The hosted frame renders the shared brand component through its configured $shared alias."
 		}
 	]
 }

@@ -9,6 +9,7 @@ This is a Harness CLI project. Treat Harness as the operating contract for every
 - Ask `bun run dev -- info <topic>` before adding unfamiliar code or choosing a scaffold shape.
 - For non-trivial work, ask what the loop should prove, search templates, then create or continue a `harness loop`.
 - Add or update focused unit and E2E coverage for changes to audit rules, generators, or CLI behavior.
+- When adding shared UI imports, declare their source reference bindings and run `test/shared-select-impact.test.ts`, `test/shared-search-impact.test.ts` and `test/shared-alias-index.test.ts` before handing off the component.
 - Keep files small, focused, and aligned with `harness.audit.json` limits.
 - Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `harness audit`.
 - An agent that works here says so: `bun run dev -- activity register --label <who> --task <what> --units <ids>`, then `activity heartbeat <id>` as it goes (or `HARNESS_AGENT_ID=<id>` on its Harness commands) and `activity finish <id>` at the end. `bun run dev -- info activity` has the rules.

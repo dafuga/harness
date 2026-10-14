@@ -55,7 +55,10 @@ const reached = (report: ImpactReport) => [...report.units.direct, ...report.uni
 
 test('the top bar imports the search as declared, and the registry stores it as derived and fresh', () => {
 	const declared = loaded.config.references.filter((entry) => entry.from === bar);
-	expect(declared.map((entry) => [entry.specifier, entry.to])).toEqual([[specifier, search]]);
+	expect(declared.map((entry) => [entry.specifier, entry.to])).toEqual([
+		[specifier, search],
+		['$shared/BrandMark.svelte', 'packages/reports/src/components/BrandMark.svelte']
+	]);
 	const written = loaded.index.files.get(bar)?.references ?? [];
 	expect(written.filter((item) => item.path === search)).toHaveLength(1);
 	expect(written.filter((item) => item.external === '$shared')).toEqual([]);
