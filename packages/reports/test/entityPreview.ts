@@ -15,6 +15,7 @@ import {
 	declaredContract,
 	legacyReasons,
 	previewRecord,
+	withFrame,
 	type PreviewVariant
 } from './entityPreviewData';
 import { commits, ids } from './entityUnits';
@@ -50,6 +51,13 @@ if (variant === 'declared') {
 		unit.id === ids.page ? { ...unit, contract: declaredContract } : unit
 	);
 	stored[commits.middle] = { ...stored[commits.middle], registry: { ...registry, units } };
+}
+
+if (variant === 'shells') {
+	// The frame was recorded as a component; the tip's manifest declares it a shell.
+	stored[commits.first] = withFrame(stored[commits.first], 'component');
+	stored[commits.middle] = withFrame(stored[commits.middle], 'component');
+	stored[commits.tip] = withFrame(stored[commits.tip], 'shell');
 }
 
 const parents: Record<string, string | null> = {

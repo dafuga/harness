@@ -21,6 +21,7 @@ export interface EntityUsage {
 }
 
 const kinds = [
+	['Shells', 'shells'],
 	['Components', 'components'],
 	['Functions', 'functions'],
 	['Configs', 'configs'],

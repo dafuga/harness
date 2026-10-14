@@ -17,7 +17,7 @@
 	const result = $derived(evidence.status === 'ready' ? evidence.result : null);
 	const notice = $derived(evidenceNotice(evidence.status, evidence.error, entity.kind));
 	/** A page or a component is seen; anything else is known by what it did. */
-	const visual = $derived(['pages', 'components'].includes(entity.category));
+	const visual = $derived(['pages', 'shells', 'components'].includes(entity.category));
 	/** A function is shown by the rows its tests recorded, and never by a picture of a run. */
 	const headless = $derived(entity.category === 'functions');
 	const options = $derived(result ? screenOptions(result.evidence.scenarios) : []);

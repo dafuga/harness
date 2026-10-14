@@ -105,6 +105,7 @@ test('an entity nothing uses, one that uses nothing and one that was removed eac
 	);
 	const none: ExplorerRelations = {
 		pages: [],
+		shells: [],
 		components: [],
 		functions: [],
 		configs: [],

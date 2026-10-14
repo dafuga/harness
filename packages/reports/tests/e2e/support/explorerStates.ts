@@ -1,6 +1,7 @@
 import { expect, type Page } from '@playwright/test';
 import { at, explorer, tip, verdict } from './explorer';
 import { screenStates } from './explorerScreens';
+import { shellStates } from './explorerShells';
 import { seeded, short } from './harnessHistory';
 
 const { commits, keptBranch } = seeded();
@@ -26,11 +27,15 @@ export const explorerFlows: Record<string, { expects: string; source?: boolean }
 	history: { expects: 'Wait for the commits that changed the function' },
 	gap: { expects: 'Wait for the mark of a function nobody verified' },
 	missing: { expects: 'Wait for the notice that the entity is absent' },
-	source: { expects: 'Wait for the source ownership that was asked for', source: true }
+	source: { expects: 'Wait for the source ownership that was asked for', source: true },
+	'shell-redirect': {
+		expects: 'Wait for the shell under Shells, with the source that was asked for',
+		source: true
+	}
 };
 
 const reaches: Record<string, (page: Page) => Promise<void>> = {
-	// The five categories, pages first, at a verified commit.
+	// The six categories, pages first, at a verified commit.
 	async pages(page) {
 		await page.goto(at('main', commits.approved, 'pages'));
 		await titled(page, 'Pages');
@@ -153,6 +158,7 @@ const reaches: Record<string, (page: Page) => Promise<void>> = {
 		await measured(page);
 	},
 	...screenStates,
+	...shellStates,
 	// A catalog of several hundred generated units.
 	async hundreds(page) {
 		await page.goto(`${scale}${tip('main', 'functions')}`);

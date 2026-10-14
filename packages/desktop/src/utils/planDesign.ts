@@ -7,7 +7,7 @@ import { RunCancelled } from '../models/AgentRunner.types';
 import { designPrompt } from './designPrompt';
 function draftFor(context: RunContext, prompt: string): DesignDraft {
 	const thread = context.entity.threads.find((t) => t.id === context.request.threadId),
-		visual = ['pages', 'components'].includes(context.entity.category);
+		visual = ['pages', 'shells', 'components'].includes(context.entity.category);
 	const draft: DesignDraft = {
 		entityId: context.entity.id,
 		prompt,

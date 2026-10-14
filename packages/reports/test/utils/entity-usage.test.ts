@@ -7,6 +7,7 @@ const support = (id: string) =>
 	({ id, role: 'Model', name: id }) as ExplorerRelations['support'][0];
 const none: ExplorerRelations = {
 	pages: [],
+	shells: [],
 	components: [],
 	functions: [],
 	configs: [],

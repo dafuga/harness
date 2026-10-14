@@ -61,6 +61,7 @@ export interface HarnessShellView {
 
 const labels: Array<[ExplorerCategory, string]> = [
 	['pages', 'Pages'],
+	['shells', 'Shells'],
 	['components', 'Components'],
 	['functions', 'Functions'],
 	['configs', 'Configs'],

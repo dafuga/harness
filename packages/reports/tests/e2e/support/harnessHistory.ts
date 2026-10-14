@@ -33,7 +33,11 @@ export interface SeededHistory {
 		| 'reordered'
 		| 'restated'
 		| 'unverified'
-		| 'sourceOnly',
+		| 'sourceOnly'
+		| 'framed'
+		| 'framedBaseline'
+		| 'shelled'
+		| 'shellRetained',
 		string
 	>;
 }

@@ -64,7 +64,7 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-renderer", "agent-creation"],
+	"scenarios": ["desktop-native", "desktop-renderer", "agent-creation", "shells-shared-app"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

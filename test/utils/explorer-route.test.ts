@@ -55,8 +55,15 @@ const shapes: Array<[string, Partial<ExplorerLocation>]> = [
 	]
 ];
 
-test('has exactly five categories, pages first', () => {
-	expect(explorerCategories).toEqual(['pages', 'components', 'functions', 'configs', 'services']);
+test('has exactly six categories, pages then shells first', () => {
+	expect(explorerCategories).toEqual([
+		'pages',
+		'shells',
+		'components',
+		'functions',
+		'configs',
+		'services'
+	]);
 });
 
 test.each(shapes)('current branch %s', (tail, selected) => {

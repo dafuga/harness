@@ -13,6 +13,7 @@
 	type Screen = Component<ExplorerScreenProps>;
 	const overviews: Record<ExplorerCategory, Screen> = {
 		pages: EntityVisualScreen,
+		shells: EntityVisualScreen,
 		components: EntityVisualScreen,
 		functions: EntityBehaviorScreen,
 		services: EntityBehaviorScreen,

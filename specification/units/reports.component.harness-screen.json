@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "reports.component.harness-screen",
-	"kind": "component",
+	"kind": "shell",
 	"title": "HarnessScreen",
 	"responsibility": "Mounts the explorer on one route page: gives the console the address of the page, the router to move with and the screen the page names, and titles the document.",
 	"responsibilityOrigin": "declared",
@@ -57,7 +57,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["harness-console"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

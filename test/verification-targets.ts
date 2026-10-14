@@ -4,6 +4,7 @@ import { recordedEvidenceScopes } from './recorded-evidence-scopes';
 import { remoteVerificationScopes } from './remote-verification-scopes';
 import { sharedCaseVerificationScopes } from './shared-case-verification-scopes';
 import { agentCreationVerificationScopes } from './agent-creation-verification-scopes';
+import { shellsVerificationScopes } from './shells-verification-scopes';
 
 export interface VerificationTarget {
 	scenario: string;
@@ -25,6 +26,7 @@ const scopes: Record<string, VerificationScope> = {
 	...functionVerificationScopes,
 	...sharedCaseVerificationScopes,
 	...agentCreationVerificationScopes,
+	...shellsVerificationScopes,
 	'runtime-evidence-ui': {
 		package: 'desktop',
 		vitest: {},

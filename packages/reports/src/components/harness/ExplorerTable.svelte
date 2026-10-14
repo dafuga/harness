@@ -13,11 +13,13 @@
 	/** What uses a row: the entities that use it directly, else the pages it is shown on. */
 	const users = (row: CatalogRow) => listed(row.usedBy.length ? row.usedBy : row.usedOn);
 	const targets = (row: CatalogRow) => row.targets.map(humanize).join(' · ') || 'none';
+	const composed: Array<[string, (row: CatalogRow) => string]> = [
+		['Used on', (row) => listed(row.usedOn)],
+		['Contains', (row) => listed(row.contains, 2)]
+	];
 	const columns: Record<Kind, Array<[string, (row: CatalogRow) => string]>> = {
-		components: [
-			['Used on', (row) => listed(row.usedOn)],
-			['Contains', (row) => listed(row.contains, 2)]
-		],
+		shells: composed,
+		components: composed,
 		functions: [
 			['Responsibility', (row) => row.summary],
 			['Used by', users]
@@ -35,8 +37,8 @@
 	};
 	let shown = $derived(columns[category]);
 	let one = $derived(entityLabels[category].one);
-	// A component is described under its name; the other kinds have a column for it.
-	let described = $derived(category === 'components');
+	// A shell or a component is described under its name; the other kinds have a column for it.
+	let described = $derived(category === 'shells' || category === 'components');
 	const open = (row: CatalogRow) => entityLens(nav.route, { category, entity: row.id });
 </script>
 

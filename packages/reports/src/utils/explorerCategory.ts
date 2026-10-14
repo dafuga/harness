@@ -5,6 +5,7 @@ type Classified = Pick<HarnessUnit, 'kind' | 'owns'>;
 
 /** What a unit of each kind is called; a kind that is not here is called by its own words. */
 const roles = new Map<string, string>([
+	['shell', 'Shell'],
 	['component', 'Component'],
 	['partial', 'Component'],
 	['layout', 'Layout'],
@@ -22,7 +23,7 @@ const renders = (unit: Classified) =>
 	unit.owns.source.some((path) => /(^|\/)\+page\.svelte$/.test(path));
 
 /**
- * The one category a unit is listed under, or null for a unit that is none of the five. A page
+ * The one category a unit is listed under, or null for a unit that is none of the six. A page
  * is what renders an address, whatever kind it was registered as; a route file that renders
  * nothing answers a request, as a service does, and a layout frames pages, as a component does.
  * A rule, a guide, a template, a model, a script or a style sheet has no category: it is not

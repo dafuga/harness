@@ -122,5 +122,5 @@ export async function approvePlanDesign(context: PlanningContext, draft: Approva
 	);
 }
 function visual(category: string) {
-	return ['page', 'component'].includes(category);
+	return ['page', 'shell', 'component'].includes(category);
 }

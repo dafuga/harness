@@ -55,12 +55,12 @@ const historical: ExplorerLocation = {
 	tab: 'source'
 };
 
-test('one bar holds the brand, the repository and five categories with an icon above each label', () => {
+test('one bar holds the brand, the repository and six categories with an icon above each label', () => {
 	const html = body(historical);
 	expect(html).toMatch(/^\s*<header class="hx-nav"/);
 	expect(html.match(/<header\b/g)).toHaveLength(1);
 	expect(links(html)).toEqual(
-		['Pages', 'Components', 'Functions', 'Configs', 'Services'].map((label) => ({
+		['Pages', 'Shells', 'Components', 'Functions', 'Configs', 'Services'].map((label) => ({
 			label,
 			href: `${scoped}/commit/${sha(4)}/${label.toLowerCase()}`,
 			current: label === 'Functions',
@@ -100,7 +100,7 @@ test('at the tip of a branch the commit is the tip, said as current, and Go to t
 			.filter((item) => item.current)
 			.map((item) => item.label)
 	).toEqual(['Pages']);
-	expect(links(html)[2].href).toBe(`${scoped}/functions`);
+	expect(links(html)[3].href).toBe(`${scoped}/functions`);
 });
 
 test('at a selected commit the tip and the viewed hash differ, and Go to tip is the current route', () => {
@@ -124,11 +124,11 @@ test('both selectors are the shared select, and the bar writes no field of its o
 	expect(field(html, 'Branch')).toContain('<option value="main">main</option>');
 });
 
-test('without a resolved address the bar keeps the five categories and offers nothing to choose', () => {
+test('without a resolved address the bar keeps the six categories and offers nothing to choose', () => {
 	const html = body(null, { repository: null, index: null });
-	expect(text(categories(html))).toBe('Pages Components Functions Configs Services');
+	expect(text(categories(html))).toBe('Pages Shells Components Functions Configs Services');
 	expect(links(html)).toEqual([]);
-	expect(categories(html).match(/aria-disabled="true"/g)).toHaveLength(5);
+	expect(categories(html).match(/aria-disabled="true"/g)).toHaveLength(6);
 	expect(html).not.toMatch(/<select\b|Go to tip|hx-repository/);
 	expect(html).toMatch(new RegExp(`<a\\b[^>]*class="hx-brand"[^>]*href="${shellMount}"`));
 });

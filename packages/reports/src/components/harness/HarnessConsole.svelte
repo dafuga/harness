@@ -7,6 +7,7 @@
 	import type { ExplorerBehavior, ExplorerEvidence } from '../../models/Explorer.types';
 	import type { ExplorerScreen } from '../../models/ExplorerScreen.types';
 	import type { HarnessIndex, HarnessRevision, HarnessUnit } from '../../models/Harness.types';
+	import { correctedLocation } from '../../utils/correctedLocation';
 	import type { EntityLens } from '../../utils/entityLens';
 	import { explorerBehavior } from '../../utils/explorerBehavior';
 	import { explorerEntities } from '../../utils/explorerEntities';
@@ -29,7 +30,7 @@
 		path: string;
 		/** Goes to another page; `replace` when the address only becomes more exact. */
 		navigate: (path: string, replace: boolean) => void;
-		/** Accepted from earlier hosts and not drawn: the explorer has five categories and no more. */
+		/** Accepted from earlier hosts and not drawn: the explorer has six categories and no more. */
 		links?: Array<{ label: string; href: string }>;
 		/** False where the host serves no export endpoint, so no dead link is offered. */
 		exportable?: boolean;
@@ -136,11 +137,8 @@
 	});
 	// An entity is addressed under the category it has at this revision; the address is corrected.
 	$effect(() => {
-		const at = scope?.location;
-		const found = at?.entity ? entities.find((item) => item.id === at.entity) : undefined;
-		if (at && found && found.category !== at.category) {
-			navigate(explorerRoutePath({ ...at, category: found.category }), true);
-		}
+		const corrected = scope?.location ? correctedLocation(scope.location, entities) : null;
+		if (corrected) navigate(explorerRoutePath(corrected), true);
 	});
 </script>
 

@@ -1,9 +1,14 @@
-import type { HarnessExplanation, HarnessRecord } from '../src/models/Harness.types';
+import type {
+	HarnessExplanation,
+	HarnessRecord,
+	HarnessRevision,
+	HarnessUnit
+} from '../src/models/Harness.types';
 import { record } from './entityFixture';
-import { capture, ids } from './entityUnits';
+import { capture, ids, units } from './entityUnits';
 
 /** What a preview is asked to show beside the plain history: named in the address it opens at. */
-export type PreviewVariant = '' | 'legacy' | 'partial' | 'declared';
+export type PreviewVariant = '' | 'legacy' | 'partial' | 'declared' | 'shells';
 
 /**
  * The record of a commit as the preview shows it: the search scenario also recorded a spoken
@@ -60,3 +65,30 @@ export const declaredContract = {
 		}
 	]
 };
+
+/** A frame of the orders workspace: the page mounts it, and it holds the order list. */
+export const frameId = 'app.component.order-frame';
+
+/**
+ * A revision with the orders page mounted inside the frame, of the kind that commit declared it:
+ * a component where it was recorded as one, a shell where its manifest says so.
+ */
+export function withFrame(head: HarnessRevision, kind: string): HarnessRevision {
+	const list = units.find((unit) => unit.id === ids.list)!;
+	const frame: HarnessUnit = {
+		...list,
+		id: frameId,
+		kind,
+		title: 'OrderFrame',
+		responsibility: 'Frames the orders workspace: its bar, its list and its status.',
+		owns: { source: ['src/shells/OrderFrame.svelte'], symbols: ['OrderFrame'] },
+		dependencies: [{ unit: ids.list, via: 'import' }],
+		version: `v-${frameId}`
+	};
+	const mounted = head.registry.units.map((unit) =>
+		unit.id === ids.page
+			? { ...unit, dependencies: [...unit.dependencies, { unit: frameId, via: 'import' }] }
+			: unit
+	);
+	return { ...head, registry: { ...head.registry, units: [...mounted, frame] } };
+}

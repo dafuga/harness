@@ -9,7 +9,7 @@ import { hubMetadata } from './hubMetadata';
 export async function hubPlans(context: HubSourceContext): Promise<HubPlan[]> {
 	await hubMetadata(context);
 	const paths = context.entries.filter((e) =>
-		/^src\/(pages|components|functions|configs|services)\/[^/]+\/plan.json$/.test(e.path)
+		/^src\/(pages|shells|components|functions|configs|services)\/[^/]+\/plan.json$/.test(e.path)
 	);
 	const plans = await Promise.all(
 		paths.map(async (e) => {

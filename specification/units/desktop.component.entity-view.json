@@ -143,7 +143,13 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-renderer", "shared-test-cases", "agent-creation"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-renderer",
+		"shared-test-cases",
+		"agent-creation",
+		"shells-shared-app"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

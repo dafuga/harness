@@ -8,7 +8,7 @@ export function hubMetadataPaths(entries: SourceEntry[]): string[] {
 		.filter(
 			(path) =>
 				/^specification\/units\/[^/]+\.json$/.test(path) ||
-				/^src\/(pages|components|functions|configs|services)\/[^/]+\/(plan\.json|designs\/.*\.(json|md))$/.test(
+				/^src\/(pages|shells|components|functions|configs|services)\/[^/]+\/(plan\.json|designs\/.*\.(json|md))$/.test(
 					path
 				)
 		);

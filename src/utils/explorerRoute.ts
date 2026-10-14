@@ -1,6 +1,7 @@
-/** The five kinds of entity the explorer shows, in the order of its navigation. */
+/** The six kinds of entity the explorer shows, in the order of its navigation. */
 export const explorerCategories = [
 	'pages',
+	'shells',
 	'components',
 	'functions',
 	'configs',
@@ -12,6 +13,8 @@ export type ExplorerCategory = (typeof explorerCategories)[number];
 const kinds = new Map<string, ExplorerCategory>([
 	['page', 'pages'],
 	['view', 'pages'],
+	// Only a unit whose manifest declares it a shell: nothing is read from an id or a file name.
+	['shell', 'shells'],
 	['component', 'components'],
 	['partial', 'components'],
 	['layout', 'components'],
@@ -41,7 +44,7 @@ const kinds = new Map<string, ExplorerCategory>([
 ]);
 
 /**
- * The category a kind of unit is listed under. Null for a kind that is none of the five: a rule,
+ * The category a kind of unit is listed under. Null for a kind that is none of the six: a rule,
  * a guide, a template, a model, a script or anything unknown is not presented as a function.
  */
 export function explorerKindCategory(kind: string): ExplorerCategory | null {

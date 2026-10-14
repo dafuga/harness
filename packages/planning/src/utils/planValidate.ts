@@ -2,6 +2,7 @@ import type { PlanContract, NormalizedRegion, PlanAuthor } from '../models/Plann
 import { fail, hash, planData } from './planData';
 export const categories = {
 	page: 'pages',
+	shell: 'shells',
 	component: 'components',
 	function: 'functions',
 	config: 'configs',

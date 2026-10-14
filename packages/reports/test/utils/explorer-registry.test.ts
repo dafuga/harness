@@ -18,11 +18,12 @@ const scenario = stored<HarnessScenario>('scenarios/harness-console.json');
 const head = revision(units, [scenario], []);
 const at = 'reports.page.harness-branch-branch-at-';
 const part = 'reports.component.harness-';
-const categories = ['pages', 'components', 'functions', 'configs', 'services'];
-const drawn = (id: string) =>
-	explorerRelations(head, id)
-		.components.map((item) => item.id.replace(part, ''))
-		.sort();
+const categories = ['pages', 'shells', 'components', 'functions', 'configs', 'services'];
+// What a unit is made of: the shells it mounts and the components it holds.
+const drawn = (id: string) => {
+	const { shells, components } = explorerRelations(head, id);
+	return [...shells, ...components].map((item) => item.id.replace(part, '')).sort();
+};
 const statesOf = (id: string) => scenarioFor(scenario, id, units).states.map((state) => state.id);
 const pagesOf = (id: string) =>
 	explorerRelations(head, id)
@@ -32,6 +33,7 @@ const pagesOf = (id: string) =>
 test('the registry records each page as made of the host and the one screen it mounts', () => {
 	const overview: Record<string, string> = {
 		pages: 'entity-visual-screen',
+		shells: 'entity-visual-screen',
 		components: 'entity-visual-screen',
 		functions: 'entity-behavior-screen',
 		configs: 'entity-config-screen',
@@ -76,7 +78,11 @@ test('a screen is recorded on the pages that mount it and on no other route page
 		categories.filter((category) => category !== 'pages').sort()
 	);
 	expect(routed(`${part}entity-config-screen`)).toEqual(['configs-entity']);
-	expect(routed(`${part}entity-visual-screen`)).toEqual(['components-entity', 'pages-entity']);
+	expect(routed(`${part}entity-visual-screen`)).toEqual([
+		'components-entity',
+		'pages-entity',
+		'shells-entity'
+	]);
 	expect(routed(`${part}entity-behavior-screen`)).toEqual(['functions-entity', 'services-entity']);
 	expect(routed(`${part}entity-history-screen`)).toEqual(
 		entity.map((page) => `${page}-history`).sort()

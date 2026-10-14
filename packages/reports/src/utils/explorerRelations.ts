@@ -91,6 +91,7 @@ export function explorerRelations(head: HarnessRevision, id: string): ExplorerRe
 	const of = (category: string) => inside.filter((entity) => entity.category === category);
 	return {
 		pages: entities(units.has(id) ? pagesOf(units, consumers, id) : []),
+		shells: of('shells'),
 		components: of('components'),
 		functions: of('functions'),
 		configs: of('configs'),

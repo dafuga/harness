@@ -38,9 +38,14 @@ export interface EntityLabel {
 	subtitle: string;
 }
 
-/** The five collections, pages first, with what each is called and described as. */
+/** The six collections, pages first, with what each is called and described as. */
 export const entityLabels: Record<ExplorerCategory, EntityLabel> = {
 	pages: { title: 'Pages', one: 'Page', subtitle: 'Start with the pages people use.' },
+	shells: {
+		title: 'Shells',
+		one: 'Shell',
+		subtitle: 'How the app is put together for each host: navigation around the content.'
+	},
 	components: {
 		title: 'Components',
 		one: 'Component',

@@ -32,10 +32,11 @@ const historical: ExplorerLocation = {
 	tab: 'source'
 };
 
-test('the bar has exactly five categories, pages first, each scoped to the branch and commit that are viewed', () => {
+test('the bar has exactly six categories, pages then shells first, each scoped to the branch and commit that are viewed', () => {
 	const { categories } = view(historical);
 	expect(categories.map((item) => [item.id, item.label, item.icon])).toEqual([
 		['pages', 'Pages', 'pages'],
+		['shells', 'Shells', 'shells'],
 		['components', 'Components', 'components'],
 		['functions', 'Functions', 'functions'],
 		['configs', 'Configs', 'configs'],
@@ -43,11 +44,11 @@ test('the bar has exactly five categories, pages first, each scoped to the branc
 	]);
 	// The whole branch is one segment, and a category opens its index: no entity, section or tab.
 	expect(categories.map((item) => item.href)).toEqual(
-		['pages', 'components', 'functions', 'configs', 'services'].map(
+		['pages', 'shells', 'components', 'functions', 'configs', 'services'].map(
 			(category) => `${scoped}/commit/${sha(4)}/${category}`
 		)
 	);
-	expect(categories[4].to).toEqual({ branch: shellBranch, commit: sha(4), category: 'services' });
+	expect(categories[5].to).toEqual({ branch: shellBranch, commit: sha(4), category: 'services' });
 	// Details of a function keep Functions active, and nothing else is.
 	expect(categories.filter((item) => item.active).map((item) => item.id)).toEqual(['functions']);
 });
@@ -62,7 +63,7 @@ test('on a current branch route the viewed commit is the tip, and there is no ti
 		href: `${scoped}/pages`,
 		to: { branch: shellBranch, commit: null, category: 'pages' }
 	});
-	expect(categories[1].href).toBe(`${scoped}/components`);
+	expect(categories[2].href).toBe(`${scoped}/components`);
 	expect(revision).toMatchObject({
 		branch: shellBranch,
 		commit: sha(5),
@@ -131,12 +132,13 @@ test('a commit no branch reaches has no tip, says so, and is listed although no 
 	});
 });
 
-test('without a resolved address the bar keeps its five categories and offers no revision', () => {
+test('without a resolved address the bar keeps its six categories and offers no revision', () => {
 	const { revision, categories, home } = view(null);
 	expect(revision).toBeNull();
 	expect(home).toEqual({ href: shellMount, to: null });
 	expect(categories.map((item) => item.label)).toEqual([
 		'Pages',
+		'Shells',
 		'Components',
 		'Functions',
 		'Configs',

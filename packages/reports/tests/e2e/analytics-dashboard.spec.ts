@@ -95,7 +95,7 @@ test('local CPU API returns the real server process sample', async ({ request })
 	);
 });
 
-test('the root fits mobile, has five categories and offers no way to analytics', async ({
+test('the root fits mobile, has six categories and offers no way to analytics', async ({
 	page
 }) => {
 	await page.setViewportSize({ width: 390, height: 844 });
@@ -105,7 +105,7 @@ test('the root fits mobile, has five categories and offers no way to analytics',
 	});
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 	const categories = page.getByRole('navigation', { name: 'Harness categories' });
-	await expect(categories.getByRole('link')).toHaveCount(5);
+	await expect(categories.getByRole('link')).toHaveCount(6);
 	await expect(page.getByRole('link', { name: 'Harness Analytics', exact: true })).toHaveCount(0);
 	// The categories are reachable on a phone: one press goes to another collection.
 	await categories.getByRole('link', { name: 'Functions', exact: true }).click();

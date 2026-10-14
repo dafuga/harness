@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.component.workspace-shell",
-	"kind": "component",
+	"kind": "shell",
 	"title": "Shared workspace shell",
 	"responsibility": "Lays out the one workspace every Harness app shows: navigation, catalog, entity view and status bar. The Web, Electron and iOS apps render this same component.",
 	"responsibilityOrigin": "declared",
@@ -72,7 +72,7 @@
 			}
 		]
 	},
-	"scenarios": ["shared-test-cases", "agent-creation"],
+	"scenarios": ["shared-test-cases", "agent-creation", "shells-shared-app"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

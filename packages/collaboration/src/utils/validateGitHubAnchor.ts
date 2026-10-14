@@ -4,7 +4,7 @@ import type { Anchor, RepositoryIdentity, SourceAdapter } from '../models/Collab
 import type { GitHubTransport } from './githubTransport';
 import { anchorSchema, digest, fail, hash, parse, safePath } from './parseCollaborationInput';
 import { ensureAncestry } from './githubHistory';
-const categorySchema = z.enum(['page', 'component', 'function', 'config', 'service']);
+const categorySchema = z.enum(['page', 'shell', 'component', 'function', 'config', 'service']);
 const image = z.object({ file: z.string(), sha256: hash, state: z.string(), viewport: z.string() });
 async function json(
 	adapter: SourceAdapter,
@@ -32,7 +32,7 @@ async function entityPlan(adapter: SourceAdapter, repository: RepositoryIdentity
 		category = manifest.kind;
 	}
 	const plans = entries.filter((e) =>
-		/^src\/(?:pages|components|functions|configs|services)\/[^/]+\/plan\.json$/.test(e.path)
+		/^src\/(?:pages|shells|components|functions|configs|services)\/[^/]+\/plan\.json$/.test(e.path)
 	);
 	const matched: string[] = [];
 	for (const entry of plans) {

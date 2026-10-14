@@ -76,7 +76,7 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-renderer"],
+	"scenarios": ["desktop-renderer", "shells-shared-app"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

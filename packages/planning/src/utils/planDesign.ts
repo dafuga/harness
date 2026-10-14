@@ -66,7 +66,7 @@ function validateContent(input: AddDesignInput, category: string): void {
 	// A function is planned in notes and cases. Earlier versions that hold an image are still read.
 	if (category === 'function' && input.images.length)
 		fail('invalid-image', 'A function plan holds notes, not images');
-	if (!input.images.length && (!input.notes || ['page', 'component'].includes(category)))
+	if (!input.images.length && (!input.notes || ['page', 'shell', 'component'].includes(category)))
 		fail('invalid-image', 'A visual design needs images; headless designs need notes');
 	if (input.notes !== undefined) text(input.notes);
 }

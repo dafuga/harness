@@ -51,7 +51,7 @@ test('a commit on no branch keeps no branch', () => {
 	);
 });
 
-test('a kind is one of the five categories or none; nothing else becomes a function', () => {
+test('a kind is one of the six categories or none; nothing else becomes a function', () => {
 	const expected: Record<string, string[]> = {
 		pages: ['page', 'view'],
 		components: ['component', 'partial', 'layout'],

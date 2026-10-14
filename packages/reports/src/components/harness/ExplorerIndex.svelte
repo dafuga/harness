@@ -36,6 +36,8 @@
 	<p class="ex-lead">{label.subtitle}</p>
 	{#if category === 'components'}
 		<p class="ex-soft">A component can contain other components.</p>
+	{:else if category === 'shells'}
+		<p class="ex-soft">A shell frames the pages of a host and holds the components they show.</p>
 	{/if}
 	<ExplorerControls {noun} bind:filter />
 	<p class="ex-hidden" role="status">{listed.length} of {rows.length} {noun} shown</p>

@@ -3,9 +3,10 @@ import { entityLabels, entityLens } from '../../src/utils/entityLens';
 import { place } from '../entityPlaces';
 import { commits, ids } from '../entityUnits';
 
-test('there are exactly five collections and pages come first', () => {
+test('there are exactly six collections and pages come first', () => {
 	expect(Object.keys(entityLabels)).toEqual([
 		'pages',
+		'shells',
 		'components',
 		'functions',
 		'configs',

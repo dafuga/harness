@@ -3,7 +3,14 @@ import type { ProjectCapabilities, CacheProvenance } from './ProjectContext.type
  * What the Electron main process tells the renderer about a project. Every value here is
  * serializable: it crosses the preload bridge by structured clone.
  */
-export const categories = ['pages', 'components', 'functions', 'configs', 'services'] as const;
+export const categories = [
+	'pages',
+	'shells',
+	'components',
+	'functions',
+	'configs',
+	'services'
+] as const;
 export type Category = (typeof categories)[number];
 export type ProviderId = 'codex' | 'claude';
 export type RunMode = 'plan' | 'change';

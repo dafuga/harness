@@ -129,7 +129,12 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs", "remote-desktop-boundaries"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-project-runs",
+		"remote-desktop-boundaries",
+		"shells-shared-app"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

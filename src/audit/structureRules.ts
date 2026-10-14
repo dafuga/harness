@@ -184,7 +184,7 @@ function pathSegments(path: string): string[] {
 function auditPlanningFiles(files: string[], artifacts: Set<string>): AuditFinding[] {
 	return files.flatMap((path) => {
 		const match =
-			/^(src\/(?:pages|components|functions|configs|services)\/[^/]+)\/(?:plan\.json$|(?:designs|threads)\/)/.exec(
+			/^(src\/(?:pages|shells|components|functions|configs|services)\/[^/]+)\/(?:plan\.json$|(?:designs|threads)\/)/.exec(
 				path
 			);
 		if (!match || artifacts.has(path)) return [];

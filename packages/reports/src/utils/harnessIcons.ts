@@ -18,9 +18,11 @@ const cog =
 	'L4.4 6.7L6.7 4.4L8.9 5.6z';
 
 export const harnessIcons = {
-	// The five categories.
+	// The six categories.
 	pages:
 		'M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM8 8h8M8 12h8M8 16h5',
+	// A frame: the bar across the top, a side and the content beside it.
+	shells: 'M3 4h18v16H3zM3 9h18M8 9v11',
 	components: cube,
 	functions:
 		'M3.5 20c2 0 2.7-1 3.1-3L9 6.6C9.4 4.7 10.3 4 12 4M5.5 10.5h7M14.5 13l5 6M19.5 13l-5 6',
@@ -86,6 +88,7 @@ export const solidIcons: ReadonlySet<HarnessIconName> = new Set(['passed', 'fail
 /** The icon each category has in the bar, in the lists and at the head of an entity. */
 export const categoryIcon: Record<ExplorerCategory, HarnessIconName> = {
 	pages: 'pages',
+	shells: 'shells',
 	components: 'components',
 	functions: 'functions',
 	configs: 'configs',

@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "reports.component.harness-harness-console",
-	"kind": "component",
+	"kind": "shell",
 	"title": "HarnessConsole",
 	"responsibility": "Hosts the explorer: resolves the address against the history, reads the shown revision and, at a selected commit, its first parent, and gives the bar and the screen its mounter names the scope, the entities and the answers they render.",
 	"responsibilityOrigin": "declared",
@@ -54,6 +54,11 @@
 		},
 		{
 			"unit": "reports.component.harness-harness-header",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.corrected-location",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -128,7 +133,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["harness-console"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

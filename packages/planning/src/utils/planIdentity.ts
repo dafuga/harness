@@ -22,7 +22,7 @@ export async function attest(
 }
 export async function planFiles(git: Git, rev: string): Promise<string[]> {
 	return (await paths(git, rev, 'src')).filter((path) =>
-		/^src\/(pages|components|functions|configs|services)\/[^/]+\/plan.json$/.test(path)
+		/^src\/(pages|shells|components|functions|configs|services)\/[^/]+\/plan.json$/.test(path)
 	);
 }
 export async function findIdentity(git: Git, rev: string, unitId: string): Promise<string | null> {

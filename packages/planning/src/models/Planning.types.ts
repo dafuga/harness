@@ -6,7 +6,7 @@ export type { HostFileChange, ChangeTarget, ChangeRecord } from './HostFileChang
  * except `ImageContent.bytes`, which needs structured clone (Electron IPC).
  */
 
-export type PlanCategory = 'page' | 'component' | 'function' | 'config' | 'service';
+export type PlanCategory = 'page' | 'shell' | 'component' | 'function' | 'config' | 'service';
 /** Pages and components use the three screen viewports; headless units use `diagram`. */
 export type PlanViewport = 'desktop' | 'tablet' | 'mobile' | 'diagram';
 /** Derived, never stored: no version, latest version unapproved, latest version approved. */

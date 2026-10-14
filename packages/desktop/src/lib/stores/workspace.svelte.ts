@@ -96,16 +96,16 @@ class WorkspaceState {
 		this.queue = run.catch(() => undefined);
 		return run;
 	}
-	/** All of it changes together, so nothing of another project stays; returns the shown address. */
+	/** All of it changes at once, an entity under its category here; returns the shown address. */
 	private show(route: WorkspaceRoute, loaded: LoadedWorkspace) {
 		this.snapshot = loaded.snapshot;
 		this.pinned = route.commit !== null;
 		this.entity = loaded.entity;
 		this.capabilities = loaded.capabilities;
 		this.offline = loaded.offline;
-		this.category = route.category;
+		this.category = loaded.entity?.category ?? route.category;
 		this.suffix = route.suffix;
-		return this.path(route.category, route.entityId ?? undefined, route.suffix ?? '');
+		return this.path(this.category, route.entityId ?? undefined, route.suffix ?? '');
 	}
 	openProject() {
 		return openProject(this);

@@ -11,11 +11,11 @@ import {
 } from './support/shellFixture';
 
 /**
- * The bar of the explorer, looked at alone over a made-up history: the brand, five categories
+ * The bar of the explorer, looked at alone over a made-up history: the brand, six categories
  * and the revision that is viewed. Its page is built by this run and answered from its own
  * files; no server is started.
  */
-const categories = ['Pages', 'Components', 'Functions', 'Configs', 'Services'];
+const categories = ['Pages', 'Shells', 'Components', 'Functions', 'Configs', 'Services'];
 const scoped = `${shellMount}/branch/feature%2Fshell%231`;
 const earlier = `${scoped}/commit/${sha(3)}`;
 const at = (path: string) => `${shellOrigin}${path}`;
@@ -54,7 +54,7 @@ async function earlierFunctions(page: Page, bar: Locator): Promise<Locator> {
 }
 
 for (const [screen, width, height] of screens) {
-	test(`the bar shows five categories with an icon above each label at ${screen} width`, async ({
+	test(`the bar shows six categories with an icon above each label at ${screen} width`, async ({
 		page
 	}) => {
 		const bar = await opened(page, width, height);
@@ -80,7 +80,7 @@ for (const [screen, width, height] of screens) {
 		const line = await underline(links.nth(0));
 		expect(line?.[0]).toBeGreaterThanOrEqual(2);
 		expect(line?.[1]).toBe(colours[0]);
-		for (const other of [1, 2, 3, 4]) {
+		for (const other of [1, 2, 3, 4, 5]) {
 			await expect(links.nth(other)).not.toHaveAttribute('aria-current', 'page');
 			expect(await underline(links.nth(other))).toBeNull();
 		}
@@ -96,7 +96,7 @@ for (const [screen, width, height] of screens) {
 			await page.keyboard.press('Tab');
 			await expect(links.filter({ hasText: name })).toBeFocused();
 		}
-		expect(await styled(links.nth(4), 'outline-style')).not.toBe('none');
+		expect(await styled(links.nth(5), 'outline-style')).not.toBe('none');
 		for (const name of ['Branch', 'Commit']) {
 			await page.keyboard.press('Tab');
 			await expect(combo(bar, name)).toBeFocused();

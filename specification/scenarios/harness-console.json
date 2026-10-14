@@ -126,12 +126,17 @@
 		"reports.style.entity-summary",
 		"reports.style.explorer",
 		"reports.style.explorer-controls",
-		"reports.style.explorer-navbar"
+		"reports.style.explorer-navbar",
+		"reports.page.harness-branch-branch-at-shells",
+		"reports.page.harness-branch-branch-at-shells-entity",
+		"reports.page.harness-branch-branch-at-shells-entity-details",
+		"reports.page.harness-branch-branch-at-shells-entity-history",
+		"reports.function.corrected-location"
 	],
 	"states": [
 		{
 			"id": "pages",
-			"title": "The five categories, pages first, at a verified commit",
+			"title": "The six categories, pages first, at a verified commit",
 			"coverage": "required",
 			"units": ["reports.page.harness-branch-branch-at-pages"]
 		},
@@ -332,6 +337,60 @@
 			"title": "A commit that no branch reaches, shown without a branch",
 			"coverage": "required",
 			"units": ["reports.page.harness-view"]
+		},
+		{
+			"id": "shells",
+			"title": "The shells of a branch at a selected commit: the frame its manifest declares a shell",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-shells"]
+		},
+		{
+			"id": "shells-tip",
+			"title": "The shells at the tip of the branch of the frame",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-shells"]
+		},
+		{
+			"id": "shell",
+			"title": "The overview of a shell, with what it uses",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-shells-entity"]
+		},
+		{
+			"id": "shell-details",
+			"title": "Details of a shell on its contract",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-shells-entity-details"]
+		},
+		{
+			"id": "shell-history",
+			"title": "The commits that changed a shell",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-shells-entity-history"]
+		},
+		{
+			"id": "shell-redirect",
+			"title": "The Components address of a shell, led to Shells with its branch, commit, section and tab",
+			"coverage": "required",
+			"units": [
+				"reports.page.harness-branch-branch-at-shells-entity-details",
+				"reports.function.corrected-location"
+			]
+		},
+		{
+			"id": "shell-earlier",
+			"title": "The same unit at a commit that recorded it as a component, still under Components",
+			"coverage": "required",
+			"units": [
+				"reports.page.harness-branch-branch-at-components-entity",
+				"reports.function.corrected-location"
+			]
+		},
+		{
+			"id": "shell-retained",
+			"title": "A shell at a commit that no branch reaches, shown without a branch",
+			"coverage": "required",
+			"units": ["reports.page.harness-view"]
 		}
 	],
 	"viewports": [
@@ -398,7 +457,15 @@
 				"services",
 				"service-details",
 				"service-history",
-				"retained"
+				"retained",
+				"shells",
+				"shells-tip",
+				"shell",
+				"shell-details",
+				"shell-history",
+				"shell-redirect",
+				"shell-earlier",
+				"shell-retained"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",
@@ -417,7 +484,7 @@
 		{
 			"id": "flow",
 			"kind": "output",
-			"states": ["pages", "function", "history", "gap", "missing", "source"],
+			"states": ["pages", "function", "history", "gap", "missing", "source", "shell-redirect"],
 			"viewports": [],
 			"provenance": "actual-capture",
 			"build": "reports",
@@ -426,7 +493,7 @@
 		{
 			"id": "checks",
 			"kind": "assertions",
-			"states": ["pages", "function", "history", "gap", "missing", "source"],
+			"states": ["pages", "function", "history", "gap", "missing", "source", "shell-redirect"],
 			"viewports": [],
 			"provenance": "actual-capture",
 			"build": "reports",

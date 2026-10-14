@@ -11,6 +11,7 @@ const text = z
 	.refine((value) => Boolean(value.trim()));
 const categories = {
 	page: 'pages',
+	shell: 'shells',
 	component: 'components',
 	function: 'functions',
 	config: 'configs',
@@ -28,7 +29,7 @@ const contract = z.strictObject({
 });
 const planSchema = z.strictObject({
 	unitId: z.string().regex(/^[a-z][a-z0-9-]*(?:\.[a-z][a-z0-9-]*)+$/),
-	category: z.enum(['page', 'component', 'function', 'config', 'service']),
+	category: z.enum(['page', 'shell', 'component', 'function', 'config', 'service']),
 	slug: z
 		.string()
 		.max(64)
@@ -42,7 +43,7 @@ const planSchema = z.strictObject({
 	contract,
 	contractHash: z.string().regex(/^[a-f0-9]{64}$/)
 });
-const planFile = /^src\/(pages|components|functions|configs|services)\/[^/]+\/plan\.json$/;
+const planFile = /^src\/(pages|shells|components|functions|configs|services)\/[^/]+\/plan\.json$/;
 const artifact =
 	/^(?:plan\.json|\.gitattributes|designs\/v\d{3,}\/(?:design\.json|prompt\.md|notes\.md|[a-z0-9][a-z0-9-]*\.png)|designs\/approvals\/[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}\.json|threads\/[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}\/(?:thread\.json|messages\.ndjson))$/;
 /** Exact artifact paths and their ancestors; never a blanket exclusion of an entity folder. */

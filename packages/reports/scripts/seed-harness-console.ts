@@ -11,6 +11,7 @@ import { e2eFixtures } from '../src/utils/e2eFixtures';
 import { seedEmitted } from './harness-emitted-seed';
 import { explorerBranch, explorerUnits, seedExplorer } from './harness-explorer-seed';
 import { writeScaleData } from './harness-scale-data';
+import { seedShells } from './harness-shells-seed';
 import { baselineRepo, reviewer, type VerifyRepo } from '../../../test/support/verifyRepo';
 
 const root = e2eFixtures().console;
@@ -199,8 +200,8 @@ await legacyRun(legacy, 'unlinked-run', {
 	state: 'active'
 });
 await repo.harness(['history', 'import-reports', '--from', legacy.store]);
-
 await repo.git(['branch', '-q', explorerBranch, commits.approved]);
+Object.assign(commits, await seedShells(repo, { verified, explain }, commits.approved));
 const refs = await repo.git(['for-each-ref', '--format=%(refname) %(objectname)']);
 await repo.harness(['history', 'build', '--out', join(root, 'data')]);
 await writeScaleData(join(root, 'data'), join(root, 'scale'), {

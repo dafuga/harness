@@ -82,7 +82,7 @@ for (const viewport of [
 		await expect(page.getByRole('img', { name: 'Activity v002 desktop default' })).toBeVisible();
 		await expect(
 			page.getByRole('navigation', { name: 'Catalog categories' }).getByRole('link')
-		).toHaveCount(5);
+		).toHaveCount(6);
 		if (viewport.width <= 850)
 			await page.getByRole('button', { name: 'Conversation', exact: true }).click();
 		await page.getByRole('textbox', { name: 'Message', exact: true }).scrollIntoViewIfNeeded();

@@ -6,26 +6,37 @@ import { fail, json } from './planData';
 import { assertClean, type Files } from './planWrite';
 
 /** Artifact folders are planning history, never active implementation units. */
-export const planningIgnores = ['pages', 'components', 'functions', 'services', 'configs'].flatMap(
-	(category) => [
-		`**/src/${category}/*/plan.json`,
-		`**/src/${category}/*/.gitattributes`,
-		`**/src/${category}/*/designs/**/*`,
-		`**/src/${category}/*/threads/**/*`
-	]
-);
+export const planningIgnores = [
+	'pages',
+	'shells',
+	'components',
+	'functions',
+	'services',
+	'configs'
+].flatMap((category) => [
+	`**/src/${category}/*/plan.json`,
+	`**/src/${category}/*/.gitattributes`,
+	`**/src/${category}/*/designs/**/*`,
+	`**/src/${category}/*/threads/**/*`
+]);
 
 /** Exact immutable artifact names only; neighboring implementation remains formatted. */
-const formatterIgnores = ['pages', 'components', 'functions', 'services', 'configs'].flatMap(
-	(category) =>
-		[
-			'plan.json',
-			'designs/v*/design.json',
-			'designs/v*/prompt.md',
-			'designs/v*/notes.md',
-			'designs/approvals/*.json',
-			'threads/*/thread.json'
-		].map((name) => `**/src/${category}/*/${name}`)
+const formatterIgnores = [
+	'pages',
+	'shells',
+	'components',
+	'functions',
+	'services',
+	'configs'
+].flatMap((category) =>
+	[
+		'plan.json',
+		'designs/v*/design.json',
+		'designs/v*/prompt.md',
+		'designs/v*/notes.md',
+		'designs/approvals/*.json',
+		'threads/*/thread.json'
+	].map((name) => `**/src/${category}/*/${name}`)
 );
 
 async function formatterConfig(git: Git, revision: string): Promise<Files> {

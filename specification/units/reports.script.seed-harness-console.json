@@ -36,6 +36,11 @@
 			"unit": "reports.script.harness-scale-data",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.script.harness-shells-seed",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
