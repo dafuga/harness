@@ -16,6 +16,10 @@
 			{
 				"name": "fixtureImage.size",
 				"type": "unknown"
+			},
+			{
+				"name": "fixtureImage.variant",
+				"type": "unknown"
 			}
 		],
 		"outputs": [
@@ -66,7 +70,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["plan-fixture-contracts"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
