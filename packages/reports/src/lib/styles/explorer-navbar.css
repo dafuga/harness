@@ -23,11 +23,9 @@
 	letter-spacing: -0.01em;
 }
 .hx-mark {
+	display: inline-flex;
 	flex: none;
-	fill: var(--hx-gold);
-}
-.hx-mark path:first-child {
-	fill: #d7a021;
+	color: var(--hx-gold);
 }
 .hx-repository {
 	flex: 0 1 auto;

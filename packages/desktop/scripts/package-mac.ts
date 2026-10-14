@@ -2,6 +2,7 @@ import electron from 'electron';
 import { cp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 import { execFileSync } from 'node:child_process';
+import { macIcon } from './mac-icon';
 if (process.platform !== 'darwin') throw new Error('This package target requires macOS.');
 const original = resolve(dirname(electron as unknown as string), '../..');
 const output = resolve('dist/mac/Harness.app');
@@ -25,5 +26,6 @@ execFileSync('/usr/libexec/PlistBuddy', [
 	'Set :CFBundleIdentifier dev.harness.desktop',
 	plist
 ]);
+await macIcon(output);
 execFileSync('codesign', ['--force', '--deep', '--sign', '-', output], { stdio: 'inherit' });
 console.log(output);

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import BrandMark from '../BrandMark.svelte';
 	import type { HarnessNavbarInput } from '../../utils/harnessShell';
 	import HarnessNavbar from './HarnessNavbar.svelte';
 	let {
@@ -23,7 +24,7 @@
 	<HarnessNavbar {base} {...navbar} />
 {:else}
 	<header class="hc-top">
-		<span class="brand-symbol" aria-hidden="true">◈</span>
+		<span class="brand-symbol" aria-hidden="true"><BrandMark /></span>
 		<h1>Harness</h1>
 		<span class="hc-muted">Components, impact and recorded evidence of this repository</span>
 		<nav aria-label="Other views">

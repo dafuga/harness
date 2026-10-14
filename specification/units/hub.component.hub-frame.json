@@ -31,6 +31,11 @@
 			"unit": "hub.component.account-menu",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.brand-mark",
+			"via": "import",
+			"origin": "declared"
 		}
 	],
 	"runtime": {

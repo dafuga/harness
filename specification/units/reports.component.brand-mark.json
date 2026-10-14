@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.brand-mark",
+	"kind": "component",
+	"title": "BrandMark",
+	"responsibility": "Owns the BrandMark Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/BrandMark.svelte"],
+		"symbols": ["BrandMark"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "BrandMark.size",
+				"type": "number | string"
+			},
+			{
+				"name": "BrandMark.label",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "BrandMark",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.brand-mark",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/BrandMark.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/BrandMark.svelte"
+			}
+		]
+	},
+	"scenarios": ["desktop-renderer", "explorer-shell", "modular-h-branding-contract"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
