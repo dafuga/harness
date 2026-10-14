@@ -1,0 +1,103 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.hub-options",
+	"kind": "function",
+	"title": "hubOptions",
+	"responsibility": "Checks that stored design options divide their version exactly and keep the writer rules, and projects them as the desktop reads them.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/hubOptions.ts"],
+		"symbols": ["hubOptions", "hubImageOption", "hubOptionInfos", "hubRevision"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hubOptions.value",
+				"type": "HubDesign"
+			},
+			{
+				"name": "hubImageOption.value",
+				"type": "HubDesign"
+			},
+			{
+				"name": "hubImageOption.file",
+				"type": "string"
+			},
+			{
+				"name": "hubOptionInfos.context",
+				"type": "HubSourceContext"
+			},
+			{
+				"name": "hubOptionInfos.base",
+				"type": "string"
+			},
+			{
+				"name": "hubOptionInfos.value",
+				"type": "HubDesign"
+			},
+			{
+				"name": "hubRevision.value",
+				"type": "HubDesign"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hubOptions",
+				"type": "HubDesign"
+			},
+			{
+				"name": "hubImageOption",
+				"type": "{ option?: string }"
+			},
+			{
+				"name": "hubOptionInfos",
+				"type": "Promise<{ options?: DesignOptionInfo[] }>"
+			},
+			{
+				"name": "hubRevision",
+				"type": "{ revises?: DesignRevision }"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-schemas",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-source",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/hubOptions.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/hubOptions.ts"
+			}
+		]
+	},
+	"scenarios": ["hosted-design-options"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

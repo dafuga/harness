@@ -72,7 +72,12 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs", "shells-shared-app"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-project-runs",
+		"shells-shared-app",
+		"hosted-design-options"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

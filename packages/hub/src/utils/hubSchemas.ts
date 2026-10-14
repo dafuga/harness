@@ -27,6 +27,34 @@ export const hubPlanSchema = z.object({
 	contractHash: hash
 });
 const stored = z.object({ file, sha256: hash });
+const optionId = z.string().regex(/^o([1-9]|10)$/);
+const words = z.string().refine((value) => value.trim().length > 0);
+/** A rectangle of an image as planning writes it: never empty and never past an edge. */
+const region = z
+	.object({
+		...{ x: z.number().min(0), y: z.number().min(0) },
+		...{ width: z.number().positive(), height: z.number().positive() }
+	})
+	.refine((value) => value.x + value.width <= 1 && value.y + value.height <= 1);
+/** A design option as planning stores it: direction, exact prompt, generator and own images. */
+const hubOptionSchema = z.strictObject({
+	id: optionId,
+	direction: words,
+	prompt: stored.nullable(),
+	revisedPrompt: words.nullable(),
+	generator: z.strictObject({ provider: words, model: words }),
+	images: z.array(stored).min(1)
+});
+/** The exact earlier image, and the rectangle of it, that a version was made from. */
+// Records written before options are read as before: a key this reader does not use is ignored.
+const hubRevisionSchema = z.object({
+	version: z.string().regex(/^v\d{3,}$/),
+	file,
+	imageSha256: hash,
+	region: region.nullable(),
+	threadId: z.string().uuid().nullable(),
+	option: optionId.optional()
+});
 export const hubDesignSchema = z.object({
 	unitId: z.string(),
 	version: z.string().regex(/^v\d{3,}$/),
@@ -47,7 +75,10 @@ export const hubDesignSchema = z.object({
 			width: z.number().int().positive(),
 			height: z.number().int().positive()
 		})
-	)
+	),
+	/** Left out by a version written before revisions or options were recorded. */
+	revises: hubRevisionSchema.nullable().optional(),
+	options: z.array(hubOptionSchema).min(1).max(10).optional()
 });
 export const hubApprovalSchema = z.object({
 	id: z.string().uuid(),
@@ -56,10 +87,13 @@ export const hubApprovalSchema = z.object({
 	images: z.array(stored),
 	notesSha256: hash.nullable(),
 	contractHash: hash,
-	approvedAt: z.string().datetime()
+	approvedAt: z.string().datetime(),
+	/** The one option approved, when its version has options. */
+	option: optionId.optional()
 });
 export type HubPlan = z.infer<typeof hubPlanSchema>;
 export type HubDesign = z.infer<typeof hubDesignSchema>;
+export type HubApproval = z.infer<typeof hubApprovalSchema>;
 export function hubSchemas<T>(schema: z.ZodType<T>, value: unknown): T {
 	const parsed = schema.safeParse(value);
 	if (!parsed.success)
