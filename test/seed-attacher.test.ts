@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { afterAll, beforeAll, test } from 'vitest';
 import { SeedAttacher } from '../packages/reports/scripts/harness-seed-attacher';
 import { VerificationStoreRepository } from '../src/repositories/VerificationStoreRepository';
-import { noteLine } from '../src/utils/noteLines';
+import { canonicalJson } from '../src/utils/canonicalJson';
 import { attach, evidenceRef, noteLines, notesRef } from './support/historyRepo';
 import { baselineRepo, cloneRepo, type VerifyOutcome, type VerifyRepo } from './support/verifyRepo';
 
@@ -59,7 +59,7 @@ async function history(repo: VerifyRepo) {
 		// Evidence commit hashes carry time. Re-sort the full entries after replacing them.
 		notes.push({
 			commit,
-			lines: shown.sort((left, right) => noteLine(left).localeCompare(noteLine(right)))
+			lines: shown.sort((left, right) => canonicalJson(left).localeCompare(canonicalJson(right)))
 		});
 	}
 	const refs = await lines(repo, ['for-each-ref', '--format=%(refname) %(objectname)']);
