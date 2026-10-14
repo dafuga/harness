@@ -15,6 +15,7 @@
 			"hubApprovalSchema",
 			"HubPlan",
 			"HubDesign",
+			"HubApproval",
 			"hubSchemas"
 		]
 	},
@@ -65,7 +66,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["hosted-design-options"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

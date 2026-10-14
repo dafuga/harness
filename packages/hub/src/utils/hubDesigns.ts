@@ -4,6 +4,7 @@ import { hubRead } from './hubSource';
 import type { HubSourceContext } from './hubSource';
 import { hubJson, hubContractHash, hubFail } from './hubJson';
 import { hubSchemas, hubDesignSchema } from './hubSchemas';
+import { hubImageOption, hubOptionInfos, hubOptions, hubRevision } from './hubOptions';
 import type { HubPlan, HubDesign } from './hubSchemas';
 import type { DesignVersion } from '../../../desktop/src/models/Desktop.types';
 async function design(context: HubSourceContext, plan: HubPlan, path: string): Promise<HubDesign> {
@@ -14,7 +15,7 @@ async function design(context: HubSourceContext, plan: HubPlan, path: string): P
 		(await hubContractHash(value.contract)) !== value.contractHash
 	)
 		return hubFail();
-	return value;
+	return hubOptions(value);
 }
 async function version(
 	context: HubSourceContext,
@@ -38,11 +39,9 @@ async function version(
 		prompt,
 		notes,
 		baseRevision: value.baseRevision,
-		images: value.images.map(({ state, viewport, sha256, bytes }) => ({
-			state,
-			viewport,
-			sha256,
-			bytes
+		images: value.images.map(({ file, state, viewport, sha256, bytes }) => ({
+			...{ state, viewport, sha256, bytes },
+			...hubImageOption(value, file)
 		})),
 		approval: approval
 			? {
@@ -51,9 +50,12 @@ async function version(
 					imageHashes: approval.images.map((i) => i.sha256),
 					contractHash: approval.contractHash,
 					approvedAt: approval.approvedAt,
-					current: value.version === latest
+					current: value.version === latest,
+					...(approval.option ? { option: approval.option } : {})
 				}
-			: null
+			: null,
+		...(await hubOptionInfos(context, base, value)),
+		...hubRevision(value)
 	};
 }
 export async function hubDesigns(context: HubSourceContext, plan: HubPlan) {
