@@ -11,6 +11,7 @@ import {
 	type BrowserRun,
 	type SeededHistory
 } from './support/browserRun';
+import { openRunGate, type RunGate } from './support/runGate';
 
 /**
  * Two browser runs at once, as an independent check and a verification snapshot are. Each seeds
@@ -19,6 +20,7 @@ import {
  */
 let scratch: string;
 const runs: BrowserRun[] = [];
+const gates: RunGate[] = [];
 // Specs of the explorer that read the seeded history of their own run: its addresses, its
 // catalogue, and the media and data only its own server may give out.
 const quick = ['tests/e2e/harness-cache.spec.ts'];
@@ -48,16 +50,29 @@ beforeAll(async () => {
 	scratch = await mkdtemp(join(tmpdir(), 'harness-concurrent-runs-'));
 }, 60_000);
 afterAll(async () => {
+	// A teardown still held at its gate is let go first, so that each run removes its own fixtures.
+	await Promise.all(gates.map((gate) => gate.close()));
 	await Promise.all(runs.map((run) => run.stop()));
 	await rm(scratch, { recursive: true, force: true });
 });
 
 test('two runs at once each keep their own history, media and results, through the teardown of the other', async () => {
 	// The longer run starts first and goes on while the shorter one seeds, runs and clears away.
-	const second = await browserRun('second', scratch, longer, lasting);
+	// Each run keeps its history after its specs until the observer has seen what it needs of it.
+	const gated = async (name: string) => {
+		const gate = await openRunGate(scratch, name);
+		gates.push(gate);
+		return gate;
+	};
+	const secondGate = await gated('second');
+	const second = await browserRun('second', scratch, longer, {
+		repeat: lasting,
+		gate: secondGate.path
+	});
 	runs.push(second);
 	await histories(1, 'the longer run to seed its history');
-	const first = await browserRun('first', scratch, quick);
+	const firstGate = await gated('first');
+	const first = await browserRun('first', scratch, quick, { repeat: 1, gate: firstGate.path });
 	runs.push(first);
 	const both = await histories(2, 'both runs to seed a history each');
 	// Two runs, two places, two histories: no commit of one is a commit of the other.
@@ -71,11 +86,14 @@ test('two runs at once each keep their own history, media and results, through t
 	expect(before.every((history) => history.media > 0)).toBe(true);
 
 	// The shorter run ends and removes what it made. Nothing of the other is touched by that.
+	firstGate.release();
 	await passed(first, 'first');
 	const left = both.filter((history) => existsSync(history.home));
 	expect(left).toHaveLength(1);
 	expect(kept(left[0])).toEqual(before[both.indexOf(left[0])]);
 
+	// Its peer gone and its own history seen to be untouched, the longer run may clear away too.
+	secondGate.release();
 	await passed(second, 'second');
 	const [quickly, fully] = [first.results(), second.results()];
 	expect([quickly.unexpected, fully.unexpected]).toEqual([0, 0]);
