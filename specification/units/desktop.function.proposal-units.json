@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.proposal-units",
+	"kind": "function",
+	"title": "proposalUnits",
+	"responsibility": "Orders the registered ids a creation prompt lists, those the request names first.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/proposalUnits.ts"],
+		"symbols": ["proposalUnits"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "proposalUnits.listed",
+				"type": "CatalogEntity[]"
+			},
+			{
+				"name": "proposalUnits.request",
+				"type": "Pick<ProjectRunRequest, 'category' | 'text'>"
+			}
+		],
+		"outputs": [
+			{
+				"name": "proposalUnits",
+				"type": "string[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/proposalUnits.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/proposalUnits.ts"
+			}
+		]
+	},
+	"scenarios": ["agent-references"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

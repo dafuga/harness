@@ -20,6 +20,10 @@
 			{
 				"name": "proposalPrompt.request",
 				"type": "Pick<ProjectRunRequest, 'category' | 'text'>"
+			},
+			{
+				"name": "proposalPrompt.known",
+				"type": "string[]"
 			}
 		],
 		"outputs": [
@@ -35,6 +39,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.function.reference-prompt",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.model.desktop-bridge-types",
 			"via": "import",
@@ -56,7 +65,7 @@
 			}
 		]
 	},
-	"scenarios": ["agent-creation"],
+	"scenarios": ["agent-creation", "agent-references"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

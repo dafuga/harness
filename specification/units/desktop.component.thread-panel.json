@@ -63,6 +63,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.component.reference-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.component.run-status",
 			"via": "import",
 			"origin": "derived"
@@ -133,7 +138,7 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-renderer"],
+	"scenarios": ["agent-references", "desktop-native", "desktop-renderer"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
