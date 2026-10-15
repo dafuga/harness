@@ -11,6 +11,17 @@ export const planReadsVerificationTests: Record<string, Record<string, string>> 
 		'each answer is its own copy of the bytes': 'operation-read-isolation',
 		'HEAD, branches, short ids and a new operation read again': 'operation-read-isolation',
 		'a read that failed runs again': 'operation-read-isolation',
-		'input, environment and writes always reach Git': 'operation-read-isolation'
+		'input, environment and writes always reach Git': 'operation-read-isolation',
+		'a Git that states no format, or the other width, reads every name again':
+			'operation-read-isolation'
+	},
+	'test/plan-reads-format.test.ts': {
+		'in a SHA-1 repository a branch named like a SHA-256 id is read again after it moves':
+			'operation-read-isolation',
+		'in a SHA-256 repository a branch named like a SHA-1 id is read again after it moves':
+			'operation-read-isolation',
+		'a Git that states no object format reads even a full id again': 'operation-read-isolation',
+		'planGit states the object format of a SHA-1 and of a SHA-256 repository':
+			'operation-read-isolation'
 	}
 };

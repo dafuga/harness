@@ -8,6 +8,8 @@ export interface Git {
 	root: string;
 	dir: string;
 	transactionHead?: string;
+	/** The object format the repository itself states; absent when Git states none known here. */
+	objectFormat?: 'sha1' | 'sha256';
 	run(args: string[], input?: Uint8Array | string, env?: Record<string, string>): Promise<Buffer>;
 }
 export async function planGit(root: string): Promise<Git> {
@@ -40,7 +42,15 @@ export async function planGit(root: string): Promise<Git> {
 	const top = (await run(['rev-parse', '--show-toplevel'])).toString().trim();
 	if (top !== canonical) fail('not-a-repository', 'Select the repository root');
 	const dir = (await run(['rev-parse', '--absolute-git-dir'])).toString().trim();
-	return { root: canonical, dir, run };
+	return { root: canonical, dir, run, ...(await objectFormat(run)) };
+}
+/** The format the repository names its objects in, when Git states one known here. */
+async function objectFormat(run: Git['run']): Promise<Pick<Git, 'objectFormat'>> {
+	const stated = await run(['rev-parse', '--show-object-format']).then(
+		(bytes) => bytes.toString().trim(),
+		() => ''
+	);
+	return stated === 'sha1' || stated === 'sha256' ? { objectFormat: stated } : {};
 }
 export async function revision(git: Git, value = 'HEAD'): Promise<string> {
 	if (typeof value !== 'string' || !value || value.startsWith('-') || /[\0\r\n]/.test(value))

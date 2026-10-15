@@ -13,11 +13,12 @@ import { planReads } from '../src/utils/planReads';
 const sha = 'a'.repeat(40);
 const plan = ['show', `${sha}:page.home/plan.json`];
 type Case = { name: string; input: unknown; output: unknown };
-function port(fails = 0) {
+function port(fails = 0, objectFormat: Git['objectFormat'] | null = 'sha1') {
 	const calls: string[][] = [];
 	const git: Git = {
 		root: '/fixture',
 		dir: '/fixture/.git',
+		...(objectFormat ? { objectFormat } : {}),
 		run: async (args) => {
 			calls.push(args);
 			if (fails-- > 0) throw new Error('transient Git failure');
@@ -129,4 +130,23 @@ test('input, environment and writes always reach Git', async () => {
 	}
 	expect(calls).toHaveLength(8);
 	trace('plan-reads-bypass.json', cases, calls);
+});
+
+test('a Git that states no format, or the other width, reads every name again', async () => {
+	const cases: Case[] = [];
+	const reached: string[][][] = [];
+	const wide = ['show', `${'c'.repeat(64)}:page.home/plan.json`];
+	for (const [objectFormat, args] of [
+		[null, plan],
+		['sha256', plan],
+		['sha256', wide]
+	] as Array<[Git['objectFormat'] | null, string[]]>) {
+		const { git, calls } = port(0, objectFormat);
+		const reads = planReads(git);
+		await call(cases, reads, args);
+		await call(cases, reads, args);
+		reached.push(calls);
+	}
+	expect(reached.map((calls) => calls.length)).toEqual([2, 2, 1]);
+	trace('plan-reads-formats-port.json', cases, reached.flat());
 });

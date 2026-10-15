@@ -40,7 +40,11 @@
 			"id": "operation-read-isolation",
 			"title": "One planning operation reads each pinned Git object once; the next operation reads again",
 			"coverage": "required",
-			"units": ["planning.function.plan-reads", "planning.service.planning"]
+			"units": [
+				"planning.function.plan-reads",
+				"planning.service.planning",
+				"planning.function.plan-git"
+			]
 		}
 	],
 	"viewports": [],
@@ -138,6 +142,14 @@
 			"kind": "integration",
 			"runner": "command",
 			"target": "bun ../../test/verification-output.ts vitest test/plan-reads-port.test.ts",
+			"cwd": "packages/planning",
+			"timeoutMs": 180000
+		},
+		{
+			"id": "plan-reads-format",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/plan-reads-format.test.ts",
 			"cwd": "packages/planning",
 			"timeoutMs": 180000
 		}
