@@ -1,0 +1,16 @@
+
+Running 9 tests using 1 worker
+
+  ✓  1 tests/e2e/ui-design-options.spec.ts:32:1 › an entity Plan offers three design options and sends the count that was chosen (485ms)
+  ✓  2 tests/e2e/ui-design-options.spec.ts:43:1 › an entity Plan that keeps the default asks for three design options (400ms)
+  ✓  3 tests/e2e/ui-design-options.spec.ts:53:1 › a comment offers no design option count (379ms)
+  ✓  4 tests/e2e/ui-design-options.spec.ts:60:1 › the project agent sends the count chosen with its creation request (385ms)
+  ✓  5 tests/e2e/ui-design-options.spec.ts:77:1 › a headless function plans notes and cases with no design option count (276ms)
+  ✓  6 tests/e2e/ui-design-options.spec.ts:89:1 › a legacy single design is shown as it was recorded, with no alternatives (284ms)
+  ✓  7 tests/e2e/ui-design-options.spec.ts:107:2 › desktop: the options fit and are switched with the keyboard (328ms)
+  ✓  8 tests/e2e/ui-design-options.spec.ts:107:2 › tablet: the options fit and are switched with the keyboard (300ms)
+  ✓  9 tests/e2e/ui-design-options.spec.ts:107:2 › phone: the options fit and are switched with the keyboard (324ms)
+
+  9 passed (4.1s)
+(node:38358) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

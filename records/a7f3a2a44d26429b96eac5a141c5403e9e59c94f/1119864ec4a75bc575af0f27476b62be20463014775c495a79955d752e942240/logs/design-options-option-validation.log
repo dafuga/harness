@@ -1,0 +1,30 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-VmT9RE/packages/desktop
+
+ ✓ test/design-options-validation.test.ts (6 tests) 4ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  02:53:19
+   Duration  360ms (transform 51ms, setup 0ms, collect 59ms, tests 4ms, environment 0ms, prepare 59ms)
+
+JSON report written to /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-runner-KL4AKv/report.json
+114 | 	const scenario = scenarioManifestSchema.parse(JSON.parse(readFileSync(path, 'utf8')));
+115 | 	captureOutput(target, scenario, result.output);
+116 | 	if (target.runner !== 'vitest') return;
+117 | 	const data = verifiedAssertions(target, {
+118 | 		report: JSON.parse(readFileSync(result.report, 'utf8')),
+119 | 		observations: readFileSync(
+                      ^
+ENOENT: no such file or directory, open '/Users/danielfugere/projects/harness-integration/.cache/harness/verifications/a7f3a2a44d26429b96eac5a141c5403e9e59c94f/20261014232739160/evidence/a7f3a2a44d26429b96eac5a141c5403e9e59c94f/design-options/option-validation/assertions.ndjson'
+    path: "/Users/danielfugere/projects/harness-integration/.cache/harness/verifications/a7f3a2a44d26429b96eac5a141c5403e9e59c94f/20261014232739160/evidence/a7f3a2a44d26429b96eac5a141c5403e9e59c94f/design-options/option-validation/assertions.ndjson",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at collect (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-VmT9RE/test/verification-output.ts:119:17)
+      at run (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-VmT9RE/test/verification-output.ts:98:15)
+      at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-VmT9RE/test/verification-output.ts:129:20
+      at loadAndEvaluateModule (2:1)
+
+Bun v1.2.18 (macOS arm64)

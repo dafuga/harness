@@ -1,0 +1,15 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-VmT9RE
+
+ ✓ test/console-update.e2e.test.ts (5 tests) 13568ms
+   ✓ an install that would overwrite the host route stops and changes nothing  324ms
+   ✓ a requested update is a tracked change: saved, recorded, in the Git diff and in the impact  3165ms
+   ✓ later edits by the agent are kept or replaced on request, never lost  907ms
+   ✓ restoring brings the host route back exactly, and repeated installs then leave it alone  881ms
+   ✓ uninstalling removes what was generated, keeps the record, and the console installs again  657ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  02:09:48
+   Duration  13.83s (transform 39ms, setup 13ms, collect 35ms, tests 13.57s, environment 0ms, prepare 31ms)
+

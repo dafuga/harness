@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-VmT9RE
+
+ ✓ test/seed-attacher.test.ts (2 tests) 18285ms
+   ✓ records attached through one seed attacher leave the history the CLI leaves  5198ms
+   ✓ a seed attacher refuses another repository, a second attacher, a changed record and use once closed  1138ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  02:38:36
+   Duration  18.77s (transform 168ms, setup 12ms, collect 268ms, tests 18.28s, environment 0ms, prepare 32ms)
+

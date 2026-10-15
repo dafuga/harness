@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-VmT9RE
+
+ ✓ test/verify-tools.e2e.test.ts (2 tests) 13181ms
+   ✓ a record names the verifier, the runtime and every declared tool as it answered in the snapshot  4150ms
+   ✓ a declared tool that cannot say what it is fails the verification before any check runs  1566ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  02:47:40
+   Duration  13.59s (transform 63ms, setup 26ms, collect 51ms, tests 13.18s, environment 0ms, prepare 76ms)
+

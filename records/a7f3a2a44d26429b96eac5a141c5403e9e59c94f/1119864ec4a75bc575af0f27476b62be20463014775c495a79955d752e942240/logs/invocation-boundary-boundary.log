@@ -1,0 +1,186 @@
+{
+  "unit": "service.unit-runtime",
+  "workload": "graph-1k",
+  "measurements": [
+    {
+      "unit": "service.unit-runtime",
+      "metric": "latency-floor-ms",
+      "unitOfMeasure": "ms",
+      "value": 0.3539589999999748,
+      "method": "Fastest of 5 rounds of 50 end-to-end calls through the module runtime, including request validation, serialization and response parsing.",
+      "workload": "graph-1k",
+      "target": "module",
+      "samples": 250,
+      "comparison": {
+        "request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+        "boundary": "public-invocation",
+        "protocol": "harness-rounds/1",
+        "sampling": {
+          "warmup": 3,
+          "rounds": 5,
+          "iterations": 50
+        }
+      }
+    },
+    {
+      "unit": "service.unit-runtime",
+      "metric": "latency-warm-ms",
+      "unitOfMeasure": "ms",
+      "value": 0.42347899999998617,
+      "method": "Median of the round medians over 5 rounds of 50 end-to-end calls through the module runtime, including request validation, serialization and response parsing.",
+      "workload": "graph-1k",
+      "target": "module",
+      "samples": 250,
+      "comparison": {
+        "request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+        "boundary": "public-invocation",
+        "protocol": "harness-rounds/1",
+        "sampling": {
+          "warmup": 3,
+          "rounds": 5,
+          "iterations": 50
+        }
+      }
+    },
+    {
+      "unit": "service.unit-runtime",
+      "metric": "throughput-ops",
+      "unitOfMeasure": "ops/s",
+      "value": 2361.392182375118,
+      "method": "Calls per second at the median over 5 rounds of 50 end-to-end calls through the module runtime, including request validation, serialization and response parsing.",
+      "workload": "graph-1k",
+      "target": "module",
+      "samples": 250,
+      "comparison": {
+        "request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+        "boundary": "public-invocation",
+        "protocol": "harness-rounds/1",
+        "sampling": {
+          "warmup": 3,
+          "rounds": 5,
+          "iterations": 50
+        }
+      }
+    },
+    {
+      "unit": "service.unit-runtime",
+      "metric": "latency-floor-ms",
+      "unitOfMeasure": "ms",
+      "value": 0.7745830000000069,
+      "method": "Fastest of 5 rounds of 50 end-to-end calls through the wasm runtime, including request validation, serialization and response parsing.",
+      "workload": "graph-1k",
+      "target": "wasm",
+      "samples": 250,
+      "comparison": {
+        "request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+        "boundary": "public-invocation",
+        "protocol": "harness-rounds/1",
+        "sampling": {
+          "warmup": 3,
+          "rounds": 5,
+          "iterations": 50
+        }
+      }
+    },
+    {
+      "unit": "service.unit-runtime",
+      "metric": "latency-warm-ms",
+      "unitOfMeasure": "ms",
+      "value": 1.0184380000000033,
+      "method": "Median of the round medians over 5 rounds of 50 end-to-end calls through the wasm runtime, including request validation, serialization and response parsing.",
+      "workload": "graph-1k",
+      "target": "wasm",
+      "samples": 250,
+      "comparison": {
+        "request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+        "boundary": "public-invocation",
+        "protocol": "harness-rounds/1",
+        "sampling": {
+          "warmup": 3,
+          "rounds": 5,
+          "iterations": 50
+        }
+      }
+    },
+    {
+      "unit": "service.unit-runtime",
+      "metric": "throughput-ops",
+      "unitOfMeasure": "ops/s",
+      "value": 981.8958051447381,
+      "method": "Calls per second at the median over 5 rounds of 50 end-to-end calls through the wasm runtime, including request validation, serialization and response parsing.",
+      "workload": "graph-1k",
+      "target": "wasm",
+      "samples": 250,
+      "comparison": {
+        "request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+        "boundary": "public-invocation",
+        "protocol": "harness-rounds/1",
+        "sampling": {
+          "warmup": 3,
+          "rounds": 5,
+          "iterations": 50
+        }
+      }
+    },
+    {
+      "unit": "service.unit-runtime",
+      "metric": "latency-floor-ms",
+      "unitOfMeasure": "ms",
+      "value": 0.7897500000000264,
+      "method": "Fastest of 5 rounds of 50 end-to-end calls through the process runtime, including request validation, serialization and response parsing.",
+      "workload": "graph-1k",
+      "target": "process",
+      "samples": 250,
+      "comparison": {
+        "request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+        "boundary": "public-invocation",
+        "protocol": "harness-rounds/1",
+        "sampling": {
+          "warmup": 3,
+          "rounds": 5,
+          "iterations": 50
+        }
+      }
+    },
+    {
+      "unit": "service.unit-runtime",
+      "metric": "latency-warm-ms",
+      "unitOfMeasure": "ms",
+      "value": 1.0299170000000117,
+      "method": "Median of the round medians over 5 rounds of 50 end-to-end calls through the process runtime, including request validation, serialization and response parsing.",
+      "workload": "graph-1k",
+      "target": "process",
+      "samples": 250,
+      "comparison": {
+        "request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+        "boundary": "public-invocation",
+        "protocol": "harness-rounds/1",
+        "sampling": {
+          "warmup": 3,
+          "rounds": 5,
+          "iterations": 50
+        }
+      }
+    },
+    {
+      "unit": "service.unit-runtime",
+      "metric": "throughput-ops",
+      "unitOfMeasure": "ops/s",
+      "value": 970.9520281731329,
+      "method": "Calls per second at the median over 5 rounds of 50 end-to-end calls through the process runtime, including request validation, serialization and response parsing.",
+      "workload": "graph-1k",
+      "target": "process",
+      "samples": 250,
+      "comparison": {
+        "request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+        "boundary": "public-invocation",
+        "protocol": "harness-rounds/1",
+        "sampling": {
+          "warmup": 3,
+          "rounds": 5,
+          "iterations": 50
+        }
+      }
+    }
+  ]
+}

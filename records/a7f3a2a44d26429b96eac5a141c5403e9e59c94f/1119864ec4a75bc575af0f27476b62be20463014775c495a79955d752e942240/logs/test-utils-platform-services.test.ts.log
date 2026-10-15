@@ -1,0 +1,17 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-VmT9RE
+
+ ✓ test/utils/platform-services.test.ts (9 tests) 4263ms
+   ✓ the vetted service, vouched for, departed and adopted, is delegated  397ms
+   ✓ a service under another identity earns nothing, though it sits at the path  343ms
+   ✓ a look-alike elsewhere and a link at the vetted path earn nothing  524ms
+   ✓ tools that nothing vouches for cannot vouch for their service  350ms
+   ✓ a service that has not left its command is not delegated  515ms
+   ✓ a process whose program cannot be read is protected, never private  492ms
+   ✓ other tools are the command's own, Apple-signed or not; a launcher is not  753ms
+
+ Test Files  1 passed (1)
+      Tests  9 passed (9)
+   Start at  02:42:00
+   Duration  4.63s (transform 41ms, setup 15ms, collect 76ms, tests 4.26s, environment 0ms, prepare 46ms)
+
