@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2DPal2
+
+ ✓ test/history-retention.e2e.test.ts (3 tests) 34556ms
+   ✓ a verified commit survives branch deletion, history rewriting and garbage collection  12131ms
+   ✓ a note copied to a rewritten commit does not verify it  7251ms
+   ✓ evidence and notes are not source: they change no branch, impact or verification  8109ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  11:30:45
+   Duration  34.87s (transform 43ms, setup 14ms, collect 44ms, tests 34.56s, environment 0ms, prepare 48ms)
+

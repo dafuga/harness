@@ -1,0 +1,12 @@
+
+Running 5 tests using 1 worker
+
+  ✓  1 tests/e2e/ui-remote-host.spec.ts:31:1 › the Electron environment turns phone access on and shows a one-time pairing as a QR code (2.3s)
+  ✓  2 tests/e2e/ui-remote-host.spec.ts:84:1 › a phone is approved on the desktop for chosen local projects, and can be revoked (462ms)
+  ✓  3 tests/e2e/ui-remote-host.spec.ts:132:1 › a phone that is denied is not approved, and a code that ran out is no longer shown (3.8s)
+  ✓  4 tests/e2e/ui-remote-host.spec.ts:165:1 › phone access stays reachable in the workspace, and a hosted project offers no agent (371ms)
+  ✓  5 tests/e2e/ui-remote-host.spec.ts:192:1 › an ordinary page selects the web environment and has neither connection (142ms)
+
+  5 passed (7.9s)
+(node:56985) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

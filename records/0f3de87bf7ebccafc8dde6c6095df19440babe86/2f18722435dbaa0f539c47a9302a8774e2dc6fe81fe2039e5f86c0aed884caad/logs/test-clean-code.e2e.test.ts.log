@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2DPal2
+
+ ✓ test/clean-code.e2e.test.ts (6 tests) 1707ms
+   ✓ CLI reports violations as advisory and blocks them only in gate mode  423ms
+   ✓ configured gate activates review and clean-code guidance is discoverable  405ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  11:19:59
+   Duration  1.93s (transform 23ms, setup 10ms, collect 15ms, tests 1.71s, environment 0ms, prepare 29ms)
+

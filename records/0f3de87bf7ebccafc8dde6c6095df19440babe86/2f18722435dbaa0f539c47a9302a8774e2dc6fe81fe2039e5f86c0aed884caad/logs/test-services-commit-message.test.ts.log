@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2DPal2
+
+ ✓ test/services/commit-message.test.ts (4 tests) 1013ms
+   ✓ stored messages are measured from the commit that declares the limits on, each by its name  348ms
+   ✓ every new commit a merge brings in is measured, not only the line of first parents  328ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  11:51:32
+   Duration  1.38s (transform 56ms, setup 14ms, collect 91ms, tests 1.01s, environment 0ms, prepare 47ms)
+

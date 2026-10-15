@@ -1,0 +1,10 @@
+
+Running 3 tests using 1 worker
+
+(node:44554) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/explorer-shell-search-scope.spec.ts:47:1 › while the host still holds the tip, a selected commit offers none of its results (1.5s)
+  ✓  2 tests/e2e/explorer-shell-search-scope.spec.ts:76:1 › a result opened with a modifier is its own address in another tab (154ms)
+  ✓  3 tests/e2e/explorer-shell-search-scope.spec.ts:97:1 › a long name wraps inside the results on a phone, which stay inside the screen (332ms)
+
+  3 passed (2.5s)

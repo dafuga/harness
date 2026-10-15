@@ -1,0 +1,24 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2DPal2/packages/desktop
+
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+ ✓ test/project-integration.test.ts (4 tests) 18798ms
+   ✓ project selection and slash branches retain full ancestry and explicit historical views are immutable  5092ms
+   ✓ catalog shows source size and relationships without leaking source bodies or inventing verification  2371ms
+   ✓ planning drafts stay separate from canonical registry and immutable approvals bind only their original version  8338ms
+   ✓ existing canonical entities gain bound plans without duplicate draft identities  2996ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  09:45:18
+   Duration  19.33s (transform 176ms, setup 0ms, collect 305ms, tests 18.80s, environment 0ms, prepare 40ms)
+

@@ -1,0 +1,11 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2DPal2/packages/desktop
+
+ ✓ test/local-transport-streams.test.ts (1 test) 10240ms
+   ✓ nine large answers asked at once all arrive, within the stream bound of the socket  10239ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  09:43:40
+   Duration  11.42s (transform 549ms, setup 0ms, collect 925ms, tests 10.24s, environment 0ms, prepare 36ms)
+

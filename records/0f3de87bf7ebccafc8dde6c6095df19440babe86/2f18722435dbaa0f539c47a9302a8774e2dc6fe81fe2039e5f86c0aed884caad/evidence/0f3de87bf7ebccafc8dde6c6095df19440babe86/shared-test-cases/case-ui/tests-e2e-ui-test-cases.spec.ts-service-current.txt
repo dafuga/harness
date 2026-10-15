@@ -1,0 +1,14 @@
+
+Running 7 tests using 1 worker
+
+  ✓  1 tests/e2e/ui-test-cases.spec.ts:15:2 › component-current uses the common input and observed output table (688ms)
+  ✓  2 tests/e2e/ui-test-cases.spec.ts:15:2 › service-current uses the common input and observed output table (594ms)
+  ✓  3 tests/e2e/ui-test-cases.spec.ts:15:2 › page-current uses the common input and observed output table (665ms)
+  ✓  4 tests/e2e/ui-test-cases.spec.ts:15:2 › config-current uses the common input and observed output table (586ms)
+  ✓  5 tests/e2e/ui-test-cases.spec.ts:36:1 › component-commit separates parent and selected-commit input and output (670ms)
+  ✓  6 tests/e2e/ui-test-cases.spec.ts:64:2 › component-current shows recorded input and output at tablet width (563ms)
+  ✓  7 tests/e2e/ui-test-cases.spec.ts:64:2 › component-current shows recorded input and output at mobile width (500ms)
+
+  7 passed (5.3s)
+(node:69079) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

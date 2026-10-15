@@ -1,0 +1,10 @@
+
+Running 3 tests using 1 worker
+
+(node:86099) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/ui-shells.spec.ts:37:2 › Shells follows Pages and lists the shared workspace shell at desktop width (776ms)
+  ✓  2 tests/e2e/ui-shells.spec.ts:37:2 › Shells follows Pages and lists the shared workspace shell at mobile width (701ms)
+  ✓  3 tests/e2e/ui-shells.spec.ts:58:1 › an old Components address of the shell opens it under Shells, keeping its section (733ms)
+
+  3 passed (2.8s)
