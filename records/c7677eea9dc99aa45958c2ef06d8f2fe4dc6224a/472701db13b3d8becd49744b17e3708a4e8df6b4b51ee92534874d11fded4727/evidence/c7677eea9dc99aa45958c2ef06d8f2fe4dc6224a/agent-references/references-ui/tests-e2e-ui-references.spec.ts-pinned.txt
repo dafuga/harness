@@ -1,0 +1,12 @@
+
+Running 5 tests using 1 worker
+
+  ✓  1 tests/e2e/ui-references.spec.ts:35:1 › the units an agent question names are links, and following one opens a shell under Shells (242ms)
+  ✓  2 tests/e2e/ui-references.spec.ts:51:1 › at a pinned commit a reference leads to the unit at that commit (120ms)
+  ✓  3 tests/e2e/ui-references.spec.ts:59:1 › streamed text shows a reference split across events as text until it is whole, then as a link (195ms)
+  ✓  4 tests/e2e/ui-references.spec.ts:83:1 › the project agent shows the unit its run is working on as a link (225ms)
+  ✓  5 tests/e2e/ui-references.spec.ts:109:1 › a shared project renders a reference in a comment and offers no agent control (121ms)
+
+  5 passed (1.4s)
+(node:81295) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

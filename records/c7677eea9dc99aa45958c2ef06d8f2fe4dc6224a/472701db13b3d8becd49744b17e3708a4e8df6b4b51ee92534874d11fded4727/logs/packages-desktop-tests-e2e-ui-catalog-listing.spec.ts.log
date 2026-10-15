@@ -1,0 +1,37 @@
+
+Running 3 tests using 1 worker
+
+(node:55384) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+      at warnOnDeactivatedColors (internal:tty:33:24)
+      at getColorDepth (internal:tty:42:39)
+      at shouldColorize (internal:util/colors:14:109)
+      at refresh (internal:util/colors:18:31)
+      at internal:util/colors (internal:util/colors:24:16)
+      at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+      at loadAssertionError (node:assert:28:96)
+
+  ✓  1 tests/e2e/ui-catalog-listing.spec.ts:28:1 › Pages of the tip show every ordinary page and no card for an address that only redirects (741ms)
+Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+      at warnOnDeactivatedColors (internal:tty:33:24)
+      at getColorDepth (internal:tty:42:39)
+      at shouldColorize (internal:util/colors:14:109)
+      at refresh (internal:util/colors:18:31)
+      at internal:util/colors (internal:util/colors:24:16)
+      at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+      at loadAssertionError (node:assert:28:96)
+
+  ✓  2 tests/e2e/ui-catalog-listing.spec.ts:46:1 › the identity that only redirects at the tip is a card at the earlier commit that renders it (818ms)
+Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+      at warnOnDeactivatedColors (internal:tty:33:24)
+      at getColorDepth (internal:tty:42:39)
+      at shouldColorize (internal:util/colors:14:109)
+      at refresh (internal:util/colors:18:31)
+      at internal:util/colors (internal:util/colors:24:16)
+      at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+      at loadAssertionError (node:assert:28:96)
+
+  ✓  3 tests/e2e/ui-catalog-listing.spec.ts:61:1 › an address that only redirects is still opened by its identity, at the tip and earlier (733ms)
+
+  3 passed (2.9s)

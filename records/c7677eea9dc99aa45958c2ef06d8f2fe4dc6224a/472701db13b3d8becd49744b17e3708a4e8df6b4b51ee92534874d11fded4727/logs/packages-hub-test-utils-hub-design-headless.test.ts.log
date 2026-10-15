@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-o9Pri5/packages/hub
+
+ ✓ test/utils/hub-design-headless.test.ts (2 tests) 3363ms
+   ✓ a headless version keeps its notes, has no image or option, and its approval is current  1857ms
+   ✓ an approval of other notes approves nothing  1506ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  18:33:17
+   Duration  3.98s (transform 279ms, setup 0ms, collect 442ms, tests 3.36s, environment 0ms, prepare 32ms)
+

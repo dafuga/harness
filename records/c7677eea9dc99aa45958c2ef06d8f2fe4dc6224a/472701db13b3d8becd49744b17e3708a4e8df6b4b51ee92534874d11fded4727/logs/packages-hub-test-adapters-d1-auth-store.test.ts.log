@@ -1,0 +1,16 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-o9Pri5/packages/hub
+
+ ✓ test/adapters/d1-auth-store.test.ts (41 tests) 18ms
+
+ Test Files  1 passed (1)
+      Tests  41 passed (41)
+   Start at  18:31:24
+   Duration  256ms (transform 44ms, setup 0ms, collect 54ms, tests 18ms, environment 0ms, prepare 31ms)
+
