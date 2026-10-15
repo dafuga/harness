@@ -14,10 +14,10 @@ export class CatalogService {
 		return catalogListed(units, items);
 	}
 	async entity(id: string, revision: string) {
-		const { units, items } = await this.held(revision);
+		const { units, items, plans } = await this.held(revision);
 		return catalogDetail(
 			{ source: this.source, planning: this.planning },
-			{ id, revision, items, units }
+			{ id, revision, items, units, plan: plans.find((p) => p.id === id) }
 		);
 	}
 	private async held(revision: string) {
@@ -36,6 +36,6 @@ export class CatalogService {
 			catalog.set(plan.id, planCatalog(plan, catalog.get(plan.id) ?? null, changed))
 		);
 		const items = [...catalog.values()].sort((a, b) => a.title.localeCompare(b.title));
-		return { units, items };
+		return { units, items, plans };
 	}
 }

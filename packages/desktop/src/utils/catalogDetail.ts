@@ -1,6 +1,6 @@
 import type { ComponentManifest } from '../../../../src/lib/contracts';
 import type { CatalogEntity, EntityDetail, Relationship } from '../models/Desktop.types';
-import type { PlanningPort } from '../models/PlanningPort.types';
+import type { PlanningPort, PlanRecord } from '../models/PlanningPort.types';
 import type { GitSourceAdapter } from '../adapters/GitSourceAdapter';
 import { catalogHistory } from './catalogHistory';
 import { categoryOf } from './categoryOf';
@@ -13,17 +13,17 @@ interface DetailData {
 	revision: string;
 	items: CatalogEntity[];
 	units: ComponentManifest[];
+	plan: PlanRecord | undefined;
 }
 export async function catalogDetail(
 	context: DetailContext,
 	data: DetailData
 ): Promise<EntityDetail> {
-	const { id, revision, items, units } = data,
-		{ source, planning } = context;
+	const { id, revision, items, units, plan } = data,
+		{ source } = context;
 	const item = items.find((i) => i.id === id),
 		unit = units.find((u) => u.id === id);
 	if (!item) throw new Error('Entity not found at this revision.');
-	const plan = (await planning.plans(revision)).find((p) => p.id === id);
 	const history = await entityHistory(context, { id, revision, unit, hasPlan: Boolean(plan) });
 	const contract = plan?.contract ?? unitContract(source, unit);
 	return {
