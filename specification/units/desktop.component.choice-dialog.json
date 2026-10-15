@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.choice-dialog",
+	"kind": "component",
+	"title": "Choice dialog",
+	"responsibility": "Owns the compact picker trigger, native modal lifecycle, focus restoration and shared dialog styling.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/ChoiceDialog.svelte"],
+		"symbols": ["ChoiceDialog"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ChoiceDialog.label",
+				"type": "string"
+			},
+			{
+				"name": "ChoiceDialog.title",
+				"type": "string"
+			},
+			{
+				"name": "ChoiceDialog.disabled",
+				"type": "boolean"
+			},
+			{
+				"name": "ChoiceDialog.width",
+				"type": "number"
+			},
+			{
+				"name": "ChoiceDialog.maxHeight",
+				"type": "number"
+			},
+			{
+				"name": "ChoiceDialog.gap",
+				"type": "number"
+			},
+			{
+				"name": "ChoiceDialog.icon",
+				"type": "Snippet"
+			},
+			{
+				"name": "ChoiceDialog.children",
+				"type": "Snippet<[close: () => void]>"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ChoiceDialog",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/ChoiceDialog.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/ChoiceDialog.svelte"
+			}
+		]
+	},
+	"scenarios": ["agent-settings"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

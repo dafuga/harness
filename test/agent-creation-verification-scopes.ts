@@ -36,6 +36,19 @@ export const agentCreationVerificationScopes: Record<string, VerificationScope> 
 	'agent-settings': {
 		package: 'desktop',
 		vitest: {
+			'test/agent-picker-cleanup.test.ts': {
+				'both pickers reach one shared dialog that alone owns the modal lifecycle':
+					'cleanup-ownership',
+				'the picker import graph opens a modal dialog through its shared owner only':
+					'cleanup-ownership',
+				'every class the composer row is styled with is applied by some markup':
+					'cleanup-ownership',
+				'the retired HubView keeps its history as a retired manifest, not as active source':
+					'cleanup-ownership',
+				'nothing in any package imports, mounts or exports HubView': 'cleanup-ownership',
+				'no test or verification scope still compiles the retired view': 'cleanup-ownership',
+				'retiring HubView changes no legacy redirect': 'cleanup-ownership'
+			},
 			'test/adapters/agent-settings.test.ts': {
 				'a missing preference defaults to three; each allowed count survives a fresh adapter':
 					'preference-storage',
@@ -52,6 +65,7 @@ export const agentCreationVerificationScopes: Record<string, VerificationScope> 
 		},
 		playwright: {
 			'tests/e2e/agent-model-choices.spec.ts': ['compact-controls', 'model-picker'],
+			'tests/e2e/agent-picker-focus.spec.ts': ['model-picker'],
 			'tests/e2e/agent-settings.spec.ts': ['settings'],
 			'tests/e2e/agent-settings-availability.spec.ts': ['provider-boundaries', 'model-picker']
 		}
