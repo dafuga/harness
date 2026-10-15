@@ -38,10 +38,11 @@
 	});
 </script>
 
-<div class="provider-options">
+<div class="provider-options" role="group" aria-label="Agent">
 	{#each providers as item (item.id)}<button
 			type="button"
 			class:active={provider === item.id}
+			aria-pressed={provider === item.id}
 			disabled={!item.available}
 			title={item.reason || item.label}
 			onclick={() => (provider = item.id)}>{item.label}</button
