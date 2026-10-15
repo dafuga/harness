@@ -12,6 +12,7 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 6. Keep generated and hand-edited files inside the configured Harness rule limits.
 7. Verify with `bun run check` before handing work back.
 8. Git answer caches: establish the object format first; hex shape is not immutability. Test refs named like the other width and unknown formats.
+9. Config changes: name owned helpers from the owning config file; run root and every inheriting workspace's test entrypoint before a full check.
 
 ## Bug and Regression Loops
 

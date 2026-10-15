@@ -44,3 +44,4 @@ This is a Harness CLI project. Treat Harness as the operating contract for every
 - Prefer one class per file.
 - Keep command modules thin; put orchestration in workflows and reusable logic in focused modules.
 - A cache of Git answers keys only names proven immutable: establish the repository's object format first, since hexadecimal shape alone is not immutability. Its tests move refs named like ids of each other supported width and give a Git whose format is unknown.
+- A test or build config names each helper it owns from its own file: a workspace without a config inherits it and resolves relative paths from itself. Before a full check, run the root and each inheriting workspace's normal test entrypoint.
