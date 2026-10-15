@@ -1028,5 +1028,101 @@
 				"message": "request is not valid JSON"
 			}
 		}
+	},
+	{
+		"name": "ids keep their exact JSON escapes in every list of the answer",
+		"request": {
+			"operation": "impact",
+			"input": {
+				"base": {
+					"nodes": ["q\"uote", "back\\slash", "tab\tctl\u0001\u001f", "line sep", "😀é"],
+					"edges": [
+						[1, 0],
+						[2, 1],
+						[3, 2],
+						[4, 3]
+					]
+				},
+				"head": {
+					"nodes": ["q\"uote", "back\\slash", "tab\tctl\u0001\u001f", "line sep", "😀é"],
+					"edges": [
+						[1, 0],
+						[2, 1],
+						[3, 2],
+						[4, 3]
+					]
+				},
+				"changed": ["q\"uote", "line sep", "ab\u0000sent"],
+				"uncertain": [],
+				"sinks": ["back\\slash"]
+			}
+		},
+		"response": {
+			"ok": true,
+			"output": {
+				"affected": [
+					{ "id": "q\"uote", "distance": 0, "via": "both", "presence": "both", "seed": "changed" },
+					{ "id": "back\\slash", "distance": 1, "via": "both", "presence": "both", "seed": null },
+					{
+						"id": "tab\tctl\u0001\u001f",
+						"distance": 2,
+						"via": "both",
+						"presence": "both",
+						"seed": null
+					},
+					{ "id": "line sep", "distance": 0, "via": "both", "presence": "both", "seed": "changed" },
+					{ "id": "😀é", "distance": 1, "via": "both", "presence": "both", "seed": null }
+				],
+				"uncovered": ["line sep"],
+				"unknown": ["ab\u0000sent"]
+			}
+		}
+	},
+	{
+		"name": "self-loops and repeated edges change no distance, coverage or order",
+		"request": {
+			"operation": "impact",
+			"input": {
+				"base": {
+					"nodes": ["a", "b", "c", "d"],
+					"edges": [
+						[1, 0],
+						[1, 0],
+						[0, 0],
+						[2, 1],
+						[2, 2],
+						[3, 1],
+						[3, 0],
+						[3, 0]
+					]
+				},
+				"head": {
+					"nodes": ["d", "c", "b", "a"],
+					"edges": [
+						[2, 3],
+						[2, 3],
+						[1, 2],
+						[0, 2],
+						[0, 0]
+					]
+				},
+				"changed": ["a"],
+				"uncertain": ["d"],
+				"sinks": ["c"]
+			}
+		},
+		"response": {
+			"ok": true,
+			"output": {
+				"affected": [
+					{ "id": "d", "distance": 0, "via": "both", "presence": "both", "seed": "uncertain" },
+					{ "id": "c", "distance": 2, "via": "both", "presence": "both", "seed": null },
+					{ "id": "b", "distance": 1, "via": "both", "presence": "both", "seed": null },
+					{ "id": "a", "distance": 0, "via": "both", "presence": "both", "seed": "changed" }
+				],
+				"uncovered": [],
+				"unknown": []
+			}
+		}
 	}
 ]
