@@ -1,6 +1,6 @@
 # Harness desktop
 
-A local Electron workspace for browsing Pages, Components, Functions, Configs and Services, reviewing committed designs, and sending entity-specific Plan or Change requests to installed agent CLIs.
+A local Electron workspace for browsing Pages, Shells, Components, Functions, Configs and Services, finding any of them with the global search in the top bar, reviewing committed designs, and sending Plan or Change requests to installed agent CLIs.
 
 ## Run locally
 
@@ -48,13 +48,13 @@ Coding agents also need the Harness CLI for generators, development loops, and a
 
 ## Design and implement
 
-Use New page/component/function/config/service to create a title and goal. A draft can receive its first Plan request before it has an image. Plans remain separate from active unit manifests until real implementation exists.
+To add an entity, open its category and use **Work with agent** at the bottom right, offered where agents are allowed. Describe the page, shell, component, function, config or service to add; the agent proposes a plan for you to review, and a draft left without a request is linked as **Open the saved draft**. Plans remain separate from active unit manifests until real implementation exists.
 
-The entity conversation opens on **Comment** wherever comments are permitted; a person writes it for people and it never starts an agent. **Plan** and **Change** are offered only in a local project with agents, at the checked-out branch tip. Choosing either shows the CLI provider, its reported model and an available reasoning effort inside the message input. Plan creates or revises the committed design; visual image generation uses the signed-in Codex GPT Image capability. The selected CLI/model receives the planning request. A highlighted rectangle or whole-image comment binds its thread to that exact image hash and version. Numbered pins, image versions and history belong to the selected entity. Headless designs can contain committed behavior notes instead of an image.
+The entity conversation opens on **Comment** wherever comments are permitted; a person writes it for people and it never starts an agent. **Plan** and **Change** are offered only in a local project with agents, at the checked-out branch tip. Choosing either shows the CLI provider, its reported model and an available reasoning effort inside the message input; a Plan of a page, shell or component also chooses **Design options**, three separately directed designs by default and any count from 1 to 10. Plan creates or revises the committed design; visual image generation uses the signed-in Codex GPT Image capability. The selected CLI/model receives the planning request. A highlighted rectangle or whole-image comment binds its thread to that exact image hash and version. Numbered pins, image versions and history belong to the selected entity. A function has a **Plan** instead: committed behavior notes and cases, and no images.
 
 **Approve version** records approval for the current exact design and contract. It neither starts code changes nor verifies running behavior. Send a separate Change message to implement it: Change needs the exact current version to be the approved one, so a later design version needs its own approval. Run status, public agent text, failures and cancellation appear in the conversation; a finished agent run is not a passing test result.
 
-An entity opens on its **Overview**: contract, size and performance, relationships, and the runtime evidence recorded for the shown revision where there is any. **Designs** holds the committed planning design; **Relationships**, **Evidence** and **History** are sections of their own. Source filenames and contents are exposed only through **Details → Source**. Binary verification icons explain their evidence or missing evidence on hover, focus or tap; a Plan badge is independent of verification.
+An entity opens on its **Overview**: contract, size and performance, what it is used in and what it uses, and the runtime evidence recorded for the shown revision where there is any, before and after at an explicit commit. **Designs** holds the committed designs of a page, shell or component, and a function has **Plan** in its place; **Used In**, **Uses**, **Evidence** and **History** are sections of their own. Source filenames and contents are exposed only through **Details → Source**. Binary verification icons explain their evidence or missing evidence on hover, focus or tap; a Plan badge is independent of verification.
 
 Change records preserve actual project source deltas and observed structured CLI operations on host files. Host operations include absolute paths and available before/after hashes. Shell writes outside the repository are not fully observable through these CLI APIs; this record is not a complete host filesystem audit.
 
@@ -67,7 +67,7 @@ Canonical routes preserve branch names with percent encoding:
 - `/harness/branch/feat%2Factivity/pages`
 - `/harness/branch/feat%2Factivity/commit/<full-sha>/pages/<encoded-entity-id>`
 
-An entity's base route opens its Overview. `/designs` is the committed planning design, and `/relationships`, `/evidence`, `/history` and `/details` identify those views. Historical data is read from the selected commit without substituting newer images.
+An entity's base route opens its Overview. `/designs` (`/plan` for a function) is the committed planning design, and `/used-in`, `/uses`, `/evidence`, `/history` and `/details` identify those views; the former `/relationships` address is still read. Historical data is read from the selected commit without substituting newer images.
 
 Planning artifacts live under `src/<category>/<slug>/`, including `plan.json`, immutable `designs/v001/`, `designs/v002/` directories, approval records and entity threads. PNG bytes are stored through Git LFS. Versions preserve their exact hashes and creation commits; revision history is not an overwrite of the previous version.
 
