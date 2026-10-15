@@ -1,4 +1,5 @@
-import { expect, test } from 'vitest';
+import { expect } from '../../../../test/verificationExpect';
+import { test } from 'vitest';
 import { designDirections } from '../../src/utils/designDirections';
 
 /** Every count from 1 to 10 has as many directions, each unlike the others, the first the plainest. */

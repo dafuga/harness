@@ -1,4 +1,5 @@
-import { expect, test } from 'vitest';
+import { expect } from '../../../test/verificationExpect';
+import { test } from 'vitest';
 import type { EntityDetail, ThreadInfo } from '../src/models/Desktop.types';
 import type { RunRequest } from '../src/models/DesktopBridge.types';
 import { approvalMatch } from '../src/utils/approvalMatch';

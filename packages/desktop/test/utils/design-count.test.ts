@@ -1,4 +1,5 @@
-import { expect, test } from 'vitest';
+import { expect } from '../../../../test/verificationExpect';
+import { test } from 'vitest';
 import type { RunRequest } from '../../src/models/DesktopBridge.types';
 import { designCount } from '../../src/utils/designCount';
 

@@ -1,4 +1,5 @@
-import { expect, test } from 'vitest';
+import { expect } from '../../../../test/verificationExpect';
+import { test } from 'vitest';
 import type { AddDesignInput, DesignImageInput } from '../../src/models/PlanningBridge.types';
 import type { DesignImage, DesignVersion } from '../../src/models/Planning.types';
 import { hash } from '../../src/utils/planData';
