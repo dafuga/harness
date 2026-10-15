@@ -32,5 +32,28 @@ export const agentCreationVerificationScopes: Record<string, VerificationScope> 
 			'tests/e2e/ui-agent-creation.spec.ts': ['catalog', 'request', 'conversation'],
 			'tests/e2e/compact-agent.spec.ts': ['compact-agent-functions', 'compact-agent-components']
 		}
+	},
+	'agent-settings': {
+		package: 'desktop',
+		vitest: {
+			'test/adapters/agent-settings.test.ts': {
+				'a missing preference defaults to three; each allowed count survives a fresh adapter':
+					'preference-storage',
+				'malformed or out-of-range stored preferences fall back to three': 'preference-storage',
+				'invalid writes preserve the stored preference': 'preference-storage',
+				'denied reads use the default and failed writes report failure': 'preference-storage'
+			},
+			'test/stores/agent-settings.test.ts': {
+				'load reads once and a valid preference updates all consumers of the store':
+					'preference-storage',
+				'invalid preferences are refused and persistence failure stays visible':
+					'preference-storage'
+			}
+		},
+		playwright: {
+			'tests/e2e/agent-model-choices.spec.ts': ['compact-controls', 'model-picker'],
+			'tests/e2e/agent-settings.spec.ts': ['settings'],
+			'tests/e2e/agent-settings-availability.spec.ts': ['provider-boundaries', 'model-picker']
+		}
 	}
 };

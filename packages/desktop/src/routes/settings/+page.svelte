@@ -1,0 +1,53 @@
+<script lang="ts">
+	import { resolve } from '$app/paths';
+	import { onMount } from 'svelte';
+	import AgentSettings from '../../components/AgentSettings.svelte';
+	import { isWorkspacePath } from '../../utils/workspaceRoute';
+	import '../../lib/styles/workspace.css';
+	import '../../lib/styles/design.css';
+	const title = 'Settings';
+	let back = $state('/');
+	/** Only a workspace path of this app is returned to; any other address goes home. */
+	function internal(from: string | null): string {
+		if (!from || !/^\/(?![/\\])/.test(from)) return '/';
+		try {
+			const url = new URL(from, location.href);
+			if (url.origin !== location.origin || url.host !== location.host) return '/';
+			return isWorkspacePath(url.pathname) ? url.pathname + url.search : '/';
+		} catch {
+			return '/';
+		}
+	}
+	onMount(() => {
+		back = internal(new URLSearchParams(location.search).get('from'));
+	});
+</script>
+
+<svelte:head>
+	<title>{title}</title>
+</svelte:head>
+
+<main class="settings-page" data-harness-view="settings">
+	<a class="settings-back" href={resolve(back as '/')}
+		><span aria-hidden="true">←</span> Back to project</a
+	>
+	<h1>{title}</h1>
+	<AgentSettings />
+</main>
+
+<style>
+	.settings-page {
+		display: grid;
+		gap: 18px;
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 32px 24px;
+	}
+	h1 {
+		margin: 0;
+	}
+	.settings-back {
+		justify-self: start;
+		color: var(--gold);
+	}
+</style>

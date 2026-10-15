@@ -14,6 +14,8 @@
 	let { workspace, account }: { workspace: Workspace; account?: Snippet } = $props();
 	// Results open only from the projection that listed them; one left from another is refused.
 	const search = $derived(workspaceSearch(workspace));
+	/** Settings are of this device's agents, so they are offered only where agents can run. */
+	const settings = $derived(`/settings?from=${encodeURIComponent(workspace.path())}`);
 </script>
 
 <header class="topbar">
@@ -40,7 +42,45 @@
 				const path = search.at(entry);
 				if (path) void workspace.navigate(path);
 			}}
-		/>
+		/>{#if workspace.capabilities.agents}<a
+				class="topbar-settings"
+				href={resolve(settings as '/')}
+				aria-label="Settings"
+				title="Settings"><Icon name="settings" /></a
+			>{/if}
 	</div>
 	{#if account}<div class="account">{@render account()}</div>{/if}
 </header>
+
+<style>
+	/* Settings end the search's own place, so they never take a row of their own. */
+	.topbar-search {
+		gap: 8px;
+	}
+	.topbar-settings {
+		display: inline-grid;
+		place-items: center;
+		flex: none;
+		align-self: center;
+		margin-inline-start: auto;
+		width: 40px;
+		height: 40px;
+		border: 1px solid var(--line);
+		border-radius: 8px;
+		color: inherit;
+	}
+	.topbar-settings:hover {
+		color: var(--gold);
+		border-color: var(--gold);
+	}
+	/* One row: the gaps start at their least, giving the search back the room of the settings,
+	   and meet the bar's own near 1650px, where the search has room to spare. */
+	@media (min-width: 1410px) {
+		.topbar:has(.topbar-settings) {
+			column-gap: clamp(10px, 3.4vw - 38px, 22px);
+		}
+		.topbar-search:has(.topbar-settings) {
+			max-width: 388px;
+		}
+	}
+</style>

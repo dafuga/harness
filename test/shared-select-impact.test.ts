@@ -12,7 +12,7 @@ import { scanImports } from '../src/utils/scanImports';
 import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
 
 /**
- * ONE SELECT, EIGHT CONSUMERS IN TWO APPS. The desktop and the hub import the Select of the
+ * ONE SELECT, NINE CONSUMERS IN TWO APPS. The desktop and the hub import the Select of the
  * reports package through a build alias. This reads this very repository through the index,
  * the graph and the impact analysis and holds them to every alias the packages' own builds
  * declare: all that is simulated is the content hash of the one file said to have changed.
@@ -107,10 +107,10 @@ test('no import written through a build alias of any package is left as a packag
 	expect(outside.map((file) => file.path)).toEqual([]);
 });
 
-test('the registry stores Select as a derived dependency of each of its eight consumers, and is not stale', () => {
+test('the registry stores Select as a derived dependency of each of its nine consumers, and is not stale', () => {
 	const units = consumers().map((item) => owner(item.from));
 	expect(units.sort()).toEqual([
-		...['agent-controls', 'catalog-view', 'design-panel'].map(
+		...['agent-controls', 'agent-settings', 'catalog-view', 'design-panel'].map(
 			(name) => `desktop.component.${name}`
 		),
 		...['project-switcher', 'revision-picker', 'runtime-screens'].map(
@@ -132,7 +132,12 @@ test('a change of Select reaches its consumers, the pages that show them, and th
 	expect(report.units.indirect).toEqual(
 		expect.arrayContaining(consumers().map((item) => owner(item.from)))
 	);
-	const shown = ['desktop.page.root', 'hub.page.projects-project-id-harness-path', 'hub.page.root'];
+	const shown = [
+		'desktop.page.root',
+		'desktop.page.settings',
+		'hub.page.projects-project-id-harness-path',
+		'hub.page.root'
+	];
 	const between = ['desktop.component.runtime-evidence', 'hub.component.members-panel'];
 	expect(report.units.indirect).toEqual(
 		expect.arrayContaining([...shown, 'hub.page.projects-project-id-members', ...between])
@@ -147,6 +152,7 @@ test('a change of Select reaches its consumers, the pages that show them, and th
 		)
 	);
 	const scenarios = [
+		'agent-settings',
 		'desktop-native',
 		'desktop-renderer',
 		'remote-mobile-ui',

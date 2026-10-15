@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import { mkdirSync } from 'node:fs';
 import { projectFixture, alpha } from './ui-project-fixture';
 import type { ScenarioManifest } from '../../../../src/core/unitTypes';
@@ -15,9 +15,11 @@ for (const width of [1440, 390]) {
 			const panel = page.getByRole('complementary', { name: 'Project agent', exact: true });
 			const message = panel.getByRole('textbox', { name: 'Message', exact: true });
 			await message.fill('Add a shared elapsed-time formatter.');
-			await expect(panel.getByLabel('Model', { exact: true })).toBeVisible();
-			await expect(panel.getByLabel('Reasoning effort', { exact: true })).toBeVisible();
-			if (category === 'components') await expect(panel.getByLabel('Design options')).toBeVisible();
+			await expect(panel.getByRole('button', { name: 'Choose model', exact: true })).toBeVisible();
+			await expect(
+				panel.getByRole('button', { name: 'Reasoning effort', exact: true })
+			).toBeVisible();
+			await expect(panel.getByLabel('Design options')).toHaveCount(0);
 			await page.evaluate(async () => {
 				await document.fonts.ready;
 				await Promise.all([...document.images].map((image) => image.decode()));
@@ -48,9 +50,7 @@ for (const width of [1440, 390]) {
 	}
 }
 
-test('compact controls send the selected provider, model, effort and design count', async ({
-	page
-}) => {
+async function compactProviders(page: Page) {
 	await projectFixture(page);
 	await page.addInitScript(() => {
 		const host = window as unknown as { harness: Record<string, unknown>; __calls: unknown[] };
@@ -73,13 +73,28 @@ test('compact controls send the selected provider, model, effort and design coun
 			return { runId: 'compact-run' };
 		};
 	});
-	await page.goto(`/projects/${alpha}/harness/branch/feat%2Falpha/components`);
+}
+
+test('compact controls send the selected provider, model, effort and design count', async ({
+	page
+}) => {
+	await compactProviders(page);
+	const project = `/projects/${alpha}/harness/branch/feat%2Falpha/components`;
+	await page.goto(`/settings?from=${encodeURIComponent(project)}`);
+	await page.getByLabel('Design options', { exact: true }).selectOption('2');
+	await page.getByRole('link', { name: 'Back to project', exact: true }).click();
 	await page.getByRole('button', { name: 'Work with agent', exact: true }).click();
 	const panel = page.getByRole('complementary', { name: 'Project agent', exact: true });
-	await panel.getByRole('button', { name: 'Claude CLI', exact: true }).click();
-	await panel.getByLabel('Model', { exact: true }).selectOption('claude-second');
-	await panel.getByLabel('Reasoning effort', { exact: true }).selectOption('high');
-	await panel.getByLabel('Design options').selectOption('2');
+	await panel.getByRole('button', { name: 'Choose model', exact: true }).click();
+	await page
+		.getByRole('dialog', { name: 'Choose model', exact: true })
+		.getByRole('button', { name: 'claude second', exact: true })
+		.click();
+	await panel.getByRole('button', { name: 'Reasoning effort', exact: true }).click();
+	await page
+		.getByRole('dialog', { name: 'Reasoning effort', exact: true })
+		.getByRole('button', { name: 'high', exact: true })
+		.click();
 	await panel
 		.getByRole('textbox', { name: 'Message', exact: true })
 		.fill('Add an elapsed time badge.');

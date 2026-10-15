@@ -75,6 +75,12 @@
 			"unit": "reports.component.entity-search",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "desktop.page.settings",
+			"via": "url",
+			"origin": "declared",
+			"contract": "The Settings icon opens /settings for an agent-capable workspace and keeps its internal return path."
 		}
 	],
 	"runtime": {

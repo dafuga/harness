@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.agent-effort-picker",
+	"kind": "component",
+	"title": "Agent reasoning picker",
+	"responsibility": "Selects only the reasoning efforts supported by the selected CLI model.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/AgentEffortPicker.svelte"],
+		"symbols": ["AgentEffortPicker"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "AgentEffortPicker.efforts",
+				"type": "string[]"
+			},
+			{
+				"name": "AgentEffortPicker.effort",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "AgentEffortPicker",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.icon",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/AgentEffortPicker.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/AgentEffortPicker.svelte"
+			}
+		]
+	},
+	"scenarios": ["agent-settings"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

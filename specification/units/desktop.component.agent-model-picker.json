@@ -1,0 +1,65 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.agent-model-picker",
+	"kind": "component",
+	"title": "Agent model picker",
+	"responsibility": "Selects a discovered model across Codex CLI and Claude CLI without inventing availability.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/AgentModelPicker.svelte"],
+		"symbols": ["AgentModelPicker"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "AgentModelPicker.providers",
+				"type": "ProviderState[]"
+			},
+			{
+				"name": "AgentModelPicker.provider",
+				"type": "ProviderId"
+			},
+			{
+				"name": "AgentModelPicker.model",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "AgentModelPicker",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/AgentModelPicker.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/AgentModelPicker.svelte"
+			}
+		]
+	},
+	"scenarios": ["agent-settings"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

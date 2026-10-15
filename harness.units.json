@@ -266,6 +266,12 @@
 			"specifier": "$shared/BrandMark.svelte",
 			"to": "packages/reports/src/components/BrandMark.svelte",
 			"reason": "The hosted frame renders the shared brand component through its configured $shared alias."
+		},
+		{
+			"from": "packages/desktop/src/components/AgentSettings.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "The desktop Settings page reuses the shared Select through the configured $shared alias."
 		}
 	]
 }

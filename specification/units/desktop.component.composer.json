@@ -79,6 +79,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.store.agent-settings",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.select",
 			"via": "contract",
 			"origin": "declared",

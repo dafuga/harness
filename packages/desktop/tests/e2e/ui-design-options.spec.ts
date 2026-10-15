@@ -14,15 +14,18 @@ import {
 
 /**
  * A Plan of a page, shell or component asks for a number of design options: three unless the
- * person chooses another, in the Plan composer of a thread and of the project agent alike. A
+ * person chooses another on Settings, for a thread and the project agent alike. A
  * comment, a Change and a headless plan have no such choice, and one legacy design offers none.
  * SYNTHETIC fixture: no image is generated and no agent runs.
  */
-async function planIn(page: Page) {
+async function planIn(page: Page, selected?: string) {
 	await designOptionsFixture(page);
+	await page.goto(`/settings?from=${encodeURIComponent(at(activity))}`);
+	await expect(count(page)).toHaveValue('3');
+	if (selected) await count(page).selectOption(selected);
 	await page.goto(at(activity));
 	await modes(page).getByRole('button', { name: 'Plan', exact: true }).click();
-	await expect(count(page)).toHaveValue('3');
+	await expect(count(page)).toHaveCount(0);
 }
 async function sentRun(page: Page) {
 	await expect.poll(async () => (await calls(page, 'startRun')).length).toBe(1);
@@ -32,8 +35,7 @@ async function sentRun(page: Page) {
 test('an entity Plan offers three design options and sends the count that was chosen', async ({
 	page
 }, info) => {
-	await planIn(page);
-	await count(page).selectOption('2');
+	await planIn(page, '2');
 	await remember(page, info, 'thread-count');
 	await page.getByRole('textbox', { name: 'Message', exact: true }).fill('Two directions, please');
 	await page.getByRole('button', { name: 'Send plan', exact: true }).click();
@@ -61,11 +63,13 @@ test('the project agent sends the count chosen with its creation request', async
 	page
 }, info) => {
 	await designOptionsFixture(page);
+	await page.goto(`/settings?from=${encodeURIComponent(at('pages'))}`);
+	await expect(count(page)).toHaveValue('3');
+	await count(page).selectOption('2');
 	await page.goto(at('pages'));
 	await page.getByRole('button', { name: 'Work with agent', exact: true }).click();
 	const agent = page.getByRole('complementary', { name: 'Project agent', exact: true });
-	await expect(count(agent)).toHaveValue('3');
-	await count(agent).selectOption('2');
+	await expect(count(agent)).toHaveCount(0);
 	await remember(page, info, 'creation-count');
 	await agent.getByRole('textbox', { name: 'Message', exact: true }).fill('Add a refunds page');
 	await agent.getByRole('button', { name: 'Send plan', exact: true }).click();

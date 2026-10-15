@@ -22,11 +22,7 @@
 				"type": "AgentChoice | null"
 			},
 			{
-				"name": "AgentControls.count",
-				"type": "number"
-			},
-			{
-				"name": "AgentControls.counted",
+				"name": "AgentControls.compact",
 				"type": "boolean"
 			},
 			{
@@ -43,6 +39,16 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.component.agent-effort-picker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.agent-model-picker",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.function.compose-modes",
 			"via": "import",

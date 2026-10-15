@@ -81,7 +81,7 @@ for (const category of ['components', 'functions']) {
 		await expect(panel.getByRole('textbox', { name: 'Message', exact: true })).toBeVisible();
 		await expect(page.getByRole('textbox', { name: 'Title', exact: true })).toHaveCount(0);
 		await expect(page.getByRole('textbox', { name: 'Goal', exact: true })).toHaveCount(0);
-		await expect(panel.getByLabel('Model', { exact: true })).toBeVisible();
+		await expect(panel.getByRole('button', { name: 'Choose model', exact: true })).toBeVisible();
 	});
 }
 
