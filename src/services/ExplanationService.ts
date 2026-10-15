@@ -48,19 +48,18 @@ export class ExplanationService {
 
 type Fingerprint = Explanation['from'];
 
-/** The reasons leading from one content to another: the latest exact one, else step by step. */
+/** The fewest reasons from one content to another, exact first, each step by the last one given. */
 function chain(
 	entries: Explanation[],
 	from: Fingerprint,
 	to: Fingerprint
 ): Explanation[] | undefined {
-	const exact = [...entries].reverse().find((entry) => entry.from === from && entry.to === to);
-	if (exact) return [exact];
+	const latest = [...entries].reverse();
 	const reached = new Set<Fingerprint>([from]);
 	let frontier: Array<{ at: Fingerprint; steps: Explanation[] }> = [{ at: from, steps: [] }];
 	while (frontier.length > 0) {
 		const next = frontier.flatMap(({ at, steps }) =>
-			entries
+			latest
 				.filter((entry) => entry.from === at && !reached.has(entry.to))
 				.map((entry) => ({ at: entry.to, steps: [...steps, entry] }))
 		);

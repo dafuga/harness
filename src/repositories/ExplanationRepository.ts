@@ -18,14 +18,22 @@ export class ExplanationRepository {
 		this.path = join(root, file);
 	}
 
-	/** Every reason known here: those kept in Git notes, then those still in the scratch file. */
+	/** Every reason known here: noted ones once each, by when they were recorded, then scratch. */
 	async all(): Promise<Explanation[]> {
 		// Outside a repository, or before any note exists, there is nothing persisted to read.
 		const notes = await new HistoryNoteRepository(this.root).all().catch(() => undefined);
 		const persisted = [...(notes?.values() ?? [])].flatMap((note) =>
 			note.entries.flatMap((entry) => (entry.kind === 'reason' ? [entry.explanation] : []))
 		);
-		return [...persisted, ...this.read()];
+		// Notes keep no order: by UTC date, then content; text without one sorts first.
+		const held = new Map(
+			persisted.map((entry) => {
+				const time = utc.test(entry.recordedAt) ? entry.recordedAt.slice(0, -1) : '';
+				return [`${time} ${JSON.stringify(entry)}`, entry];
+			})
+		);
+		const order = [...held.keys()].sort().map((key) => held.get(key) as Explanation);
+		return [...order, ...this.read()];
 	}
 
 	/** Reads the scratch file; a damaged line is ignored and therefore explains nothing. */
@@ -45,6 +53,8 @@ export class ExplanationRepository {
 		await appendFile(this.path, entries.map((entry) => `${JSON.stringify(entry)}\n`).join(''));
 	}
 }
+
+const utc = /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?Z$/;
 
 function parseLine(line: string): unknown {
 	try {
