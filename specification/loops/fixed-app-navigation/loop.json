@@ -2,7 +2,7 @@
 	"name": "fixed-app-navigation",
 	"goal": "The shared app navigation stays at the viewport top while desktop, tablet and phone catalogs scroll, preserving responsive content clearance and working links",
 	"createdAt": "2026-10-15T13:36:37.272Z",
-	"updatedAt": "2026-10-15T14:34:02.385Z",
+	"updatedAt": "2026-10-15T15:31:45.921662Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"steps": [
@@ -37,9 +37,7 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots; keep pending until proof passes.",
-			"status": "complete",
-			"completedAt": "2026-10-15T14:34:02.385Z",
-			"evidence": "Full verification scope completed. bun run check first hit a root late-cleanup startup deadline; unchanged isolated retry and full-scope root retry passed (777 units, 225 CLI E2Es, 27 package plus 5 concurrency tests). Reports 546 and Planning 50 passed. Desktop full suite had 806 pass, 3 skips and 4 deadline failures; unchanged isolated retry of both affected files passed all 11 tests without changed limits. Resumed every remaining command: desktop build, audit, iOS limits, 156 browser tests; Collaboration 43; Hub 460 plus 26 browser tests; Remote 135; Relay 159 all passed. Manual desktop/phone scrolling, category links and all six responsive before/after images inspected. Original command failures retained in /tmp/fixed-navigation-check.log and /tmp/fixed-navigation-check-retry.log; continuation passes in /tmp/fixed-navigation-resume.log. Native installation and application production deployment not performed."
+			"status": "pending"
 		}
 	],
 	"evaluators": [

@@ -169,7 +169,8 @@ const scopes: Record<string, VerificationScope> = {
 			'tests/e2e/ui-designs.spec.ts': ['renderer-fixtures'],
 			'tests/e2e/ui-entity-usage.spec.ts': ['entity-usage'],
 			'tests/e2e/ui-entity-usage-viewports.spec.ts': ['entity-usage'],
-			'tests/e2e/ui-function-examples.spec.ts': ['function-examples-ui']
+			'tests/e2e/ui-function-examples.spec.ts': ['function-examples-ui'],
+			'tests/e2e/fixed-navigation.spec.ts': ['fixed-navigation']
 		}
 	},
 	'desktop-native': {

@@ -29,7 +29,8 @@ export const agentCreationVerificationScopes: Record<string, VerificationScope> 
 			}
 		},
 		playwright: {
-			'tests/e2e/ui-agent-creation.spec.ts': ['catalog', 'request', 'conversation']
+			'tests/e2e/ui-agent-creation.spec.ts': ['catalog', 'request', 'conversation'],
+			'tests/e2e/compact-agent.spec.ts': ['compact-agent-functions', 'compact-agent-components']
 		}
 	}
 };

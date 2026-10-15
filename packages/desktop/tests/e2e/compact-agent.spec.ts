@@ -1,6 +1,9 @@
 import { expect, test } from '@playwright/test';
 import { mkdirSync } from 'node:fs';
 import { projectFixture, alpha } from './ui-project-fixture';
+import type { ScenarioManifest } from '../../../../src/core/unitTypes';
+import scenario from '../../../../specification/scenarios/agent-creation.json' with { type: 'json' };
+import { scenarioCapture } from './scenario-capture';
 
 for (const width of [1440, 390]) {
 	for (const category of ['functions', 'components']) {
@@ -36,6 +39,11 @@ for (const width of [1440, 390]) {
 			expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
 			await expect(panel.getByRole('button', { name: 'Send plan', exact: true })).toBeEnabled();
 			await expect(panel.getByRole('button', { name: 'Change', exact: true })).toBeDisabled();
+			await scenarioCapture(page, scenario as ScenarioManifest, {
+				state: `compact-agent-${category}`,
+				name: `${width}`,
+				note: 'Actual compiled renderer over a SYNTHETIC project with fixture providers; no live agent run.'
+			});
 		});
 	}
 }

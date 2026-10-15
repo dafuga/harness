@@ -1,6 +1,9 @@
 import { expect, test } from '@playwright/test';
 import { mkdirSync } from 'node:fs';
 import { projectFixture, alpha } from './ui-project-fixture';
+import type { ScenarioManifest } from '../../../../src/core/unitTypes';
+import scenario from '../../../../specification/scenarios/desktop-renderer.json' with { type: 'json' };
+import { scenarioCapture } from './scenario-capture';
 
 for (const width of [1440, 920, 390]) {
 	test(`app navigation stays at the top while scrolling at ${width}px`, async ({ page }) => {
@@ -40,6 +43,11 @@ for (const width of [1440, 920, 390]) {
 		}
 		expect((await nav.boundingBox())!.y).toBeCloseTo(0, 1);
 		await expect(nav).toBeInViewport();
+		await scenarioCapture(page, scenario as ScenarioManifest, {
+			state: 'fixed-navigation',
+			name: `scrolled-${width}`,
+			note: 'Actual compiled renderer scrolled 1000 px over a SYNTHETIC project of 24 components.'
+		});
 		await nav.getByRole('link', { name: 'Functions', exact: true }).click();
 		await expect(
 			page.getByRole('heading', { name: 'Functions', exact: true, level: 1 })

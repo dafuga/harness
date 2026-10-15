@@ -4,20 +4,21 @@
 	"title": "Conversational creation of reviewable entities",
 	"kind": "ui",
 	"units": [
+		"desktop.component.agent-controls",
 		"desktop.component.catalog-view",
 		"desktop.component.composer",
+		"desktop.component.entity-view",
 		"desktop.component.project-agent",
 		"desktop.component.workspace-shell",
+		"desktop.function.created-thread",
 		"desktop.function.ipc-payload",
+		"desktop.function.planning-writes",
 		"desktop.function.prepare-project-run",
 		"desktop.function.project-proposal",
 		"desktop.model.desktop-bridge-types",
 		"desktop.service.desktop-run",
 		"desktop.service.project-run",
-		"desktop.store.project-agent",
-		"desktop.function.created-thread",
-		"desktop.function.planning-writes",
-		"desktop.component.entity-view"
+		"desktop.store.project-agent"
 	],
 	"states": [
 		{
@@ -39,6 +40,26 @@
 			"id": "conversation",
 			"title": "Responsive agent conversation",
 			"coverage": "required"
+		},
+		{
+			"id": "compact-agent-functions",
+			"title": "Adding a function, the project agent composer keeps at most 115 px below the message, with model and effort",
+			"coverage": "required",
+			"units": [
+				"desktop.component.composer",
+				"desktop.component.agent-controls",
+				"desktop.component.project-agent"
+			]
+		},
+		{
+			"id": "compact-agent-components",
+			"title": "Adding a component, the composer keeps at most 115 px below the message, with model, effort and design count; it sends what was chosen",
+			"coverage": "required",
+			"units": [
+				"desktop.component.composer",
+				"desktop.component.agent-controls",
+				"desktop.component.project-agent"
+			]
 		}
 	],
 	"viewports": [
@@ -56,6 +77,11 @@
 			"id": "mobile",
 			"width": 390,
 			"height": 844
+		},
+		{
+			"id": "agent-phone",
+			"width": 390,
+			"height": 900
 		}
 	],
 	"tests": [
@@ -90,13 +116,28 @@
 			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-agent-creation.spec.ts",
 			"cwd": "packages/desktop",
 			"timeoutMs": 240000
+		},
+		{
+			"id": "compact-agent-ui",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/compact-agent.spec.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 240000
 		}
 	],
 	"evidence": [
 		{
 			"id": "creation-runner-output",
 			"kind": "output",
-			"states": ["boundary-tests", "catalog", "request", "conversation"],
+			"states": [
+				"boundary-tests",
+				"catalog",
+				"request",
+				"conversation",
+				"compact-agent-functions",
+				"compact-agent-components"
+			],
 			"viewports": [],
 			"required": true
 		},
@@ -136,6 +177,15 @@
 			"provenance": "actual-capture",
 			"build": "desktop-renderer",
 			"capture": "full-page"
+		},
+		{
+			"id": "creation-compact",
+			"kind": "screenshot",
+			"states": ["compact-agent-functions", "compact-agent-components"],
+			"viewports": ["desktop", "agent-phone"],
+			"required": true,
+			"build": "desktop-renderer",
+			"capture": "viewport"
 		}
 	]
 }
