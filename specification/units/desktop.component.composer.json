@@ -42,6 +42,10 @@
 				"type": "boolean"
 			},
 			{
+				"name": "Composer.compact",
+				"type": "boolean"
+			},
+			{
 				"name": "Composer.comment",
 				"type": "(text: string) => Promise<boolean>"
 			},

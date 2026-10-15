@@ -43,7 +43,7 @@
 			<header>
 				<div>
 					<h2>Work with agent</h2>
-					<p>Describe the {kind} to add. The agent proposes a plan for you to review.</p>
+					<p>The agent proposes a plan for you to review.</p>
 				</div>
 				<button type="button" class="agent-close" aria-label="Close project agent" onclick={toggle}
 					>×</button
@@ -71,6 +71,7 @@
 			<Composer
 				modes={['plan', 'change']}
 				visual={visualCategory(workspace.category)}
+				compact
 				providers={agent.providers}
 				approved={false}
 				running={agent.active}
@@ -124,11 +125,11 @@
 	.project-agent {
 		bottom: 120px;
 		display: grid;
-		gap: 12px;
+		gap: 10px;
 		width: min(440px, calc(100vw - 40px));
 		max-height: calc(100dvh - 150px);
 		overflow-y: auto;
-		padding: 18px;
+		padding: 14px;
 		border-radius: 18px;
 		background: var(--panel);
 	}
