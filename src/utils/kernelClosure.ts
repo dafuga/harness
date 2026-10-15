@@ -24,8 +24,8 @@ export function kernelClosure(input: ImpactInput): ImpactOutput {
 	const baseOnly = base.graph.ids.filter((id) => !head.graph.index.has(id));
 	const affected: AffectedNode[] = [];
 	for (const id of [...head.graph.ids, ...baseOnly]) {
-		const node = merge(id, base, head);
-		if (node) affected.push({ ...node, seed: seedOf(node, changed) });
+		const node = merge(id, base, head, changed);
+		if (node) affected.push(node);
 	}
 	const unique = [...changed];
 	return {
@@ -35,24 +35,34 @@ export function kernelClosure(input: ImpactInput): ImpactOutput {
 	};
 }
 
-function seedOf(node: Omit<AffectedNode, 'seed'>, changed: Set<string>): AffectedNode['seed'] {
-	if (changed.has(node.id)) return 'changed';
-	return node.distance === 0 ? 'uncertain' : null;
+function seedOf(id: string, distance: number, changed: Set<string>): AffectedNode['seed'] {
+	if (changed.has(id)) return 'changed';
+	return distance === 0 ? 'uncertain' : null;
 }
 
-function merge(id: string, base: Reached, head: Reached): Omit<AffectedNode, 'seed'> | undefined {
+function merge(
+	id: string,
+	base: Reached,
+	head: Reached,
+	changed: Set<string>
+): AffectedNode | undefined {
 	const inBase = base.graph.index.get(id);
 	const inHead = head.graph.index.get(id);
 	const fromBase = inBase === undefined ? -1 : base.distance[inBase];
 	const fromHead = inHead === undefined ? -1 : head.distance[inHead];
-	const reachedIn = [fromBase, fromHead].filter((distance) => distance >= 0);
-	if (reachedIn.length === 0) return undefined;
-	const single = fromBase >= 0 ? 'base' : 'head';
+	const hasBase = fromBase >= 0;
+	const hasHead = fromHead >= 0;
+	if (!hasBase && !hasHead) return undefined;
+	const both = hasBase && hasHead;
+	const single = hasBase ? 'base' : 'head';
+	const singleDistance = hasBase ? fromBase : fromHead;
+	const distance = both ? Math.min(fromBase, fromHead) : singleDistance;
 	return {
 		id,
-		distance: Math.min(...reachedIn),
-		via: reachedIn.length === 2 ? 'both' : single,
-		presence: presence(inBase, inHead)
+		distance,
+		via: both ? 'both' : single,
+		presence: presence(inBase, inHead),
+		seed: seedOf(id, distance, changed)
 	};
 }
 
