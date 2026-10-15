@@ -18,7 +18,6 @@ const surfaces = [
 	'hub/src/components/HubFrame.svelte',
 	'reports/src/components/harness/HarnessNavbar.svelte',
 	'reports/src/components/harness/HarnessHeader.svelte',
-	'reports/src/components/HubView.svelte',
 	'reports/src/components/ReportView.svelte'
 ];
 

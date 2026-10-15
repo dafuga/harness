@@ -59,11 +59,3 @@ pre {
 	color: var(--muted);
 	overflow-wrap: anywhere;
 }
-/* A visual Plan adds its design count: the choices wrap two to a row, each shown whole. */
-.composer-bottom.counted {
-	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-.composer-bottom.counted .send {
-	justify-self: end;
-}

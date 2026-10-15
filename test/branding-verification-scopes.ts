@@ -28,8 +28,6 @@ export const brandingVerificationScopes: Record<string, VerificationScope> = {
 					'shared-surfaces',
 				'reports/src/components/harness/HarnessHeader.svelte compiles to the shared mark, not the old one':
 					'shared-surfaces',
-				'reports/src/components/HubView.svelte compiles to the shared mark, not the old one':
-					'shared-surfaces',
 				'reports/src/components/ReportView.svelte compiles to the shared mark, not the old one':
 					'shared-surfaces'
 			}
