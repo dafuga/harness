@@ -14,7 +14,7 @@
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "planningService.git",
+				"name": "planningService.base",
 				"type": "Git"
 			}
 		],
@@ -59,6 +59,11 @@
 		},
 		{
 			"unit": "planning.function.plan-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-reads",
 			"via": "import",
 			"origin": "derived"
 		},

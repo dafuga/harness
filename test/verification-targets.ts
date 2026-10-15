@@ -1,5 +1,6 @@
 import { resolve } from 'node:path';
 import { registeredVerificationScopes } from './registered-verification-scopes';
+import { planReadsVerificationTests } from './plan-reads-verification-scopes';
 export interface VerificationTarget {
 	scenario: string;
 	package: string;
@@ -28,6 +29,7 @@ const scopes: Record<string, VerificationScope> = {
 	'planning-artifacts': {
 		package: 'planning',
 		vitest: {
+			...planReadsVerificationTests,
 			'test/planning-canonical.test.ts': {
 				'canonical IDs stay exact across plans, threads and revision history':
 					'repository-isolation',

@@ -5,6 +5,7 @@ import type { ProjectSnapshot, PlanningErrorCode } from '../models/PlanningView.
 import type { PlanSummary } from '../models/Planning.types';
 import type { Git } from '../utils/planGit';
 import { paths, revision, blob } from '../utils/planGit';
+import { planReads } from '../utils/planReads';
 import { fail, hash, json, now, planData, parse } from '../utils/planData';
 import { author, contractHash, planValidate, text } from '../utils/planValidate';
 import { clean, commitFiles, planWrite } from '../utils/planWrite';
@@ -94,19 +95,23 @@ function write<T, R>(git: Git, input: T, action: (value: T) => Promise<R>): Prom
 	const copied = globalThis.structuredClone(input);
 	return planWrite(git, () => action(copied));
 }
-export function planningService(git: Git): PlanningApi {
+export function planningService(base: Git): PlanningApi {
+	// Each operation reads through its own Git: a pinned read runs once within it, never across.
+	const op = <R>(work: (git: Git) => R): R => work(planReads(base));
 	return {
-		snapshot: (input) => snapshot(git, input?.revision),
-		listPlans: async (input) => (await snapshot(git, input?.revision)).plans,
-		readPlan: async (input) => planRead(git, await revision(git, input.revision), input.unitId),
-		listBranches: () => branches(git),
-		listCommits: async (input) => commits(git, await revision(git, input?.revision), input?.limit),
-		createPlan: (input) => write(git, input, (value) => create(git, value)),
-		addDesign: (input) => write(git, input, (value) => planDesign(git, value)),
-		openThread: (input) => write(git, input, (value) => planThread(git, value)),
-		appendMessage: (input) => write(git, input, (value) => append(git, value)),
-		approveDesign: (input) => write(git, input, (value) => approve(git, value)),
-		readImage: (input) => readImage(git, input),
-		entityHistory: (input) => planHistory(git, input)
+		snapshot: (input) => op((git) => snapshot(git, input?.revision)),
+		listPlans: (input) => op(async (git) => (await snapshot(git, input?.revision)).plans),
+		readPlan: (input) =>
+			op(async (git) => planRead(git, await revision(git, input.revision), input.unitId)),
+		listBranches: () => op((git) => branches(git)),
+		listCommits: (input) =>
+			op(async (git) => commits(git, await revision(git, input?.revision), input?.limit)),
+		createPlan: (input) => op((git) => write(git, input, (value) => create(git, value))),
+		addDesign: (input) => op((git) => write(git, input, (value) => planDesign(git, value))),
+		openThread: (input) => op((git) => write(git, input, (value) => planThread(git, value))),
+		appendMessage: (input) => op((git) => write(git, input, (value) => append(git, value))),
+		approveDesign: (input) => op((git) => write(git, input, (value) => approve(git, value))),
+		readImage: (input) => op((git) => readImage(git, input)),
+		entityHistory: (input) => op((git) => planHistory(git, input))
 	};
 }

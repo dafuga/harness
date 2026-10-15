@@ -13,6 +13,7 @@
 		"planning.function.plan-identity",
 		"planning.function.plan-image-codec",
 		"planning.function.plan-read",
+		"planning.function.plan-reads",
 		"planning.function.plan-registry",
 		"planning.function.plan-thread",
 		"planning.function.plan-validate",
@@ -34,6 +35,12 @@
 			"id": "repository-isolation",
 			"title": "Canonical identities, Git index isolation, collisions and malformed artifacts",
 			"coverage": "required"
+		},
+		{
+			"id": "operation-read-isolation",
+			"title": "One planning operation reads each pinned Git object once; the next operation reads again",
+			"coverage": "required",
+			"units": ["planning.function.plan-reads", "planning.service.planning"]
 		}
 	],
 	"viewports": [],
@@ -117,20 +124,43 @@
 			"target": "bun ../../test/verification-output.ts vitest test/planning-registry.test.ts",
 			"cwd": "packages/planning",
 			"timeoutMs": 180000
+		},
+		{
+			"id": "plan-reads",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/utils/plan-reads.test.ts",
+			"cwd": "packages/planning",
+			"timeoutMs": 180000
+		},
+		{
+			"id": "plan-reads-port",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/plan-reads-port.test.ts",
+			"cwd": "packages/planning",
+			"timeoutMs": 180000
 		}
 	],
 	"evidence": [
 		{
 			"id": "planning-artifacts-output",
 			"kind": "output",
-			"states": ["immutable-history", "repository-isolation"],
+			"states": ["immutable-history", "repository-isolation", "operation-read-isolation"],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "planning-artifacts-assertions",
 			"kind": "assertions",
-			"states": ["immutable-history", "repository-isolation"],
+			"states": ["immutable-history", "repository-isolation", "operation-read-isolation"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "planning-artifacts-reads",
+			"kind": "trace",
+			"states": ["operation-read-isolation"],
 			"viewports": [],
 			"required": true
 		}

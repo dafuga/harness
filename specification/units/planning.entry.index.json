@@ -15,7 +15,8 @@
 			"planImageCodec",
 			"planCommit",
 			"planIdentity",
-			"planOptions"
+			"planOptions",
+			"planReads"
 		]
 	},
 	"contract": {
@@ -69,6 +70,11 @@
 		},
 		{
 			"unit": "planning.function.plan-options",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-reads",
 			"via": "reexport",
 			"origin": "derived"
 		},

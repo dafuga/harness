@@ -34,3 +34,4 @@ export { planImageCodec } from './utils/planImageCodec';
 export { planCommit } from './utils/planCommit';
 export { planIdentity } from './utils/planIdentity';
 export { planOptions } from './utils/planOptions';
+export { planReads } from './utils/planReads';
