@@ -83,12 +83,19 @@ export class SourceHistoryRepository {
 			});
 	}
 
-	/** For every commit, the branches that contain it. */
+	/**
+	 * For every commit, the branches that contain it, in branch order. Branches that Git lists at
+	 * the same head share one walk of it within this read; the next read walks every head again.
+	 */
 	private async reach(branches: SourceHistory['branches']): Promise<Map<string, string[]>> {
 		const reach = new Map<string, string[]>();
+		const walks = new Map<string, string[]>();
 		for (const branch of branches) {
-			const commits = await this.git.run(['rev-list', branch.head]);
-			for (const commit of commits.split('\n').filter(Boolean)) {
+			const commits =
+				walks.get(branch.head) ??
+				(await this.git.run(['rev-list', branch.head])).split('\n').filter(Boolean);
+			walks.set(branch.head, commits);
+			for (const commit of commits) {
 				reach.set(commit, [...(reach.get(commit) ?? []), branch.name]);
 			}
 		}
