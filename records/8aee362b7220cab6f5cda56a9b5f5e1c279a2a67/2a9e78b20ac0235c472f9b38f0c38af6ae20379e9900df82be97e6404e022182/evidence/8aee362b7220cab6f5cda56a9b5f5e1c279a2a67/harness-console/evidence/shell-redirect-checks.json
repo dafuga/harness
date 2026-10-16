@@ -1,0 +1,21 @@
+{
+  "scenario": "Harness explorer over a fixed synthetic history",
+  "assertions": [
+    {
+      "name": "The screen stays in the branch and commit that were asked for",
+      "passed": true
+    },
+    {
+      "name": "Exactly the six categories are offered, pages first",
+      "passed": true
+    },
+    {
+      "name": "The screen has a heading",
+      "passed": true
+    },
+    {
+      "name": "Source is shown because it was asked for",
+      "passed": true
+    }
+  ]
+}

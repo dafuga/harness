@@ -1,0 +1,13 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-MhJrGW/packages/desktop[39m
+
+ [32m✓[39m test/remote-replay.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 9630[2mms[22m[39m
+   [33m[2m✓[22m[39m a start request re-sent after a reconnect does not start a second run [33m 3919[2mms[22m[39m
+   [33m[2m✓[22m[39m a second connection of a device takes over events without repeating them [33m 3640[2mms[22m[39m
+   [33m[2m✓[22m[39m ending a device session cancels its run and delivers nothing more [33m 2071[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+[2m   Start at [22m 19:37:32
+[2m   Duration [22m 10.59s[2m (transform 491ms, setup 0ms, collect 762ms, tests 9.63s, environment 0ms, prepare 50ms)[22m
+

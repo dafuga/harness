@@ -1,0 +1,16 @@
+
+Running 11 tests using 1 worker
+
+  ✓   1 test/entity-preview-test-cases.spec.ts:7:1 › the default test view explains input and output without requiring JSON (668ms)
+  ✓   2 test/entity-preview-test-cases.spec.ts:19:2 › service Tests show recorded input and output at desktop width (469ms)
+  ✓   3 test/entity-preview-test-cases.spec.ts:19:2 › service Tests show recorded input and output at tablet width (487ms)
+  ✓   4 test/entity-preview-test-cases.spec.ts:19:2 › service Tests show recorded input and output at mobile width (386ms)
+  ✓   5 test/entity-preview-test-cases.spec.ts:35:1 › service Tests keep parent and selected-commit cases separate (437ms)
+  ✓   6 test/entity-preview-test-cases.spec.ts:49:1 › mobile test values have readable columns without widening the page (491ms)
+  ✓   7 test/entity-preview-test-cases.spec.ts:72:1 › the full recorded result is available even when it has no input and output pair (736ms)
+  ✓   8 test/entity-preview-test-cases.spec.ts:88:1 › the mobile output panel is visible beneath its input (628ms)
+  ✓   9 test/entity-preview-test-cases.spec.ts:114:2 › case names lead roomy input and output panels at desktop width (693ms)
+  ✓  10 test/entity-preview-test-cases.spec.ts:114:2 › case names lead roomy input and output panels at tablet width (643ms)
+  ✓  11 test/entity-preview-test-cases.spec.ts:114:2 › case names lead roomy input and output panels at mobile width (736ms)
+
+  11 passed (9.6s)
