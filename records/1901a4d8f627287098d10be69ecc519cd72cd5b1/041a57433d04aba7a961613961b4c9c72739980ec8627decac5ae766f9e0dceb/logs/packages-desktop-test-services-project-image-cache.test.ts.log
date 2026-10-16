@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-PkpOjJ/packages/desktop
+
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+ ✓ test/services/project-image-cache.test.ts (1 test) 3960ms
+   ✓ real image reads revalidate project ownership and rebuild corrupt cache without changing canonical bytes  3960ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  20:52:53
+   Duration  4.38s (transform 145ms, setup 0ms, collect 248ms, tests 3.96s, environment 0ms, prepare 35ms)
+

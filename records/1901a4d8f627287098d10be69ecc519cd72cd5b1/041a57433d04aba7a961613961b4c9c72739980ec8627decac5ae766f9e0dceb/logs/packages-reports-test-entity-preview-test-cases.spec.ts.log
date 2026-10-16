@@ -1,0 +1,18 @@
+
+Running 11 tests using 1 worker
+
+(node:97643) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 test/entity-preview-test-cases.spec.ts:7:1 › the default test view explains input and output without requiring JSON (255ms)
+  ✓   2 test/entity-preview-test-cases.spec.ts:19:2 › service Tests show recorded input and output at desktop width (290ms)
+  ✓   3 test/entity-preview-test-cases.spec.ts:19:2 › service Tests show recorded input and output at tablet width (243ms)
+  ✓   4 test/entity-preview-test-cases.spec.ts:19:2 › service Tests show recorded input and output at mobile width (206ms)
+  ✓   5 test/entity-preview-test-cases.spec.ts:35:1 › service Tests keep parent and selected-commit cases separate (238ms)
+  ✓   6 test/entity-preview-test-cases.spec.ts:49:1 › mobile test values have readable columns without widening the page (203ms)
+  ✓   7 test/entity-preview-test-cases.spec.ts:72:1 › the full recorded result is available even when it has no input and output pair (329ms)
+  ✓   8 test/entity-preview-test-cases.spec.ts:88:1 › the mobile output panel is visible beneath its input (253ms)
+  ✓   9 test/entity-preview-test-cases.spec.ts:114:2 › case names lead roomy input and output panels at desktop width (341ms)
+  ✓  10 test/entity-preview-test-cases.spec.ts:114:2 › case names lead roomy input and output panels at tablet width (322ms)
+  ✓  11 test/entity-preview-test-cases.spec.ts:114:2 › case names lead roomy input and output panels at mobile width (324ms)
+
+  11 passed (5.6s)
