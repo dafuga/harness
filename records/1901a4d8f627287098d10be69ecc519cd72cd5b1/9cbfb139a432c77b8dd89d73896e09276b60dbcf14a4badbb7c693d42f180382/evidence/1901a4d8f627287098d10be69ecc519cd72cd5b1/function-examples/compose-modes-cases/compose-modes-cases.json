@@ -1,0 +1,72 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.compose-modes",
+	"symbol": "composeModes",
+	"cases": [
+		{
+			"name": "hosted project, comments only",
+			"input": [
+				{
+					"comments": true,
+					"agents": false,
+					"planning": false,
+					"approval": false,
+					"source": "github"
+				},
+				false
+			],
+			"output": [
+				"comment"
+			]
+		},
+		{
+			"name": "local project at a writable tip",
+			"input": [
+				{
+					"comments": true,
+					"agents": true,
+					"planning": true,
+					"approval": true,
+					"source": "local"
+				},
+				true
+			],
+			"output": [
+				"comment",
+				"plan",
+				"change"
+			]
+		},
+		{
+			"name": "local project at a historical commit",
+			"input": [
+				{
+					"comments": true,
+					"agents": true,
+					"planning": true,
+					"approval": true,
+					"source": "local"
+				},
+				false
+			],
+			"output": [
+				"comment"
+			]
+		},
+		{
+			"name": "project without comments or agents",
+			"input": [
+				{
+					"comments": false,
+					"agents": false,
+					"planning": false,
+					"approval": false,
+					"source": "github"
+				},
+				false
+			],
+			"output": []
+		}
+	]
+}

@@ -1,0 +1,15 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-0UFg8p/packages/desktop[39m
+
+ [32m✓[39m test/services/remote-host.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 7341[2mms[22m[39m
+   [33m[2m✓[22m[39m enabling registers a hash under the hosted identity and connects by header [33m 1510[2mms[22m[39m
+   [33m[2m✓[22m[39m without OS encryption, or without a hosted session, remote access stays off [33m 1498[2mms[22m[39m
+   [33m[2m✓[22m[39m a phone is paired only after the person approves it with explicit projects [33m 1709[2mms[22m[39m
+   [33m[2m✓[22m[39m approval grants exactly the chosen local projects to exactly that phone [33m 1263[2mms[22m[39m
+   [33m[2m✓[22m[39m a wrong code, or a denied request, never becomes a device [33m 1360[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m5 passed[39m[22m[90m (5)[39m
+[2m   Start at [22m 20:10:19
+[2m   Duration [22m 9.82s[2m (transform 1.28s, setup 0ms, collect 2.09s, tests 7.34s, environment 0ms, prepare 84ms)[22m
+

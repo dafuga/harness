@@ -1,0 +1,14 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-0UFg8p/packages/desktop[39m
+
+Overwriting existing notes for object 798da724554c18353966786f0edb129b1d5c08ef
+ [32m✓[39m test/recorded-artifact-limits.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 27663[2mms[22m[39m
+   [33m[2m✓[22m[39m a capture of exactly 11 MiB is read, and one byte more is refused and stays listed [33m 1692[2mms[22m[39m
+   [33m[2m✓[22m[39m tampered capture bytes are never returned as verified [33m 1788[2mms[22m[39m
+   [33m[2m✓[22m[39m a corrupted record is never returned as verified [33m 2018[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m   Start at [22m 20:02:53
+[2m   Duration [22m 28.90s[2m (transform 618ms, setup 0ms, collect 995ms, tests 27.66s, environment 0ms, prepare 44ms)[22m
+
