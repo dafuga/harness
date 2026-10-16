@@ -83,7 +83,7 @@ test('a recorded note that names a file is shown without it on measurements and 
 	}
 });
 
-test('a declared contract explains each item on the details, and stays names on the overview', () => {
+test('a declared contract explains each item in both the overview and details', () => {
 	const head = revision(commits.middle, [record(commits.middle)]);
 	const told = {
 		inputs: [{ name: 'branch', type: 'string', description: 'The branch, as one path segment.' }],
@@ -101,8 +101,7 @@ test('a declared contract explains each item on the details, and stays names on 
 		'Fails with not at revision not at revision A missing page is said.'
 	);
 	const overview = content('commit', { category: 'pages', entity: ids.page }, { head });
-	expect(words(overview)).toContain(
-		'Inputs branch Output rendered markup Fails with not at revision'
-	);
-	expect(words(overview)).not.toContain('The branch, as one path segment.');
+	expect(words(overview)).toContain('Inputs branch branch The branch, as one path segment.');
+	expect(words(overview)).toContain('rendered markup The page with its verdict.');
+	expect(words(overview)).toContain('not at revision A missing page is said.');
 });

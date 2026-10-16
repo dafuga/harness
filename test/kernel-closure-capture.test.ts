@@ -19,38 +19,41 @@ const root = resolve(import.meta.dirname, '..');
 const source = 'src/utils/kernelClosure.ts';
 type Case = { name: string; input: ImpactInput; expected: ImpactOutput };
 
-/** b depends on a, c on b and the sink t on c. */
+/** The label uses the formatter, the page uses the label, and the test uses the page. */
 const chain: KernelGraph = {
-	nodes: ['a', 'b', 'c', 't'],
+	nodes: ['Price formatter', 'Price label', 'Product page', 'Page test'],
 	edges: [
 		[1, 0],
 		[2, 1],
 		[3, 2]
 	]
 };
-/** app depends on old and on lib; in head old is gone and app depends on lib alone. */
+/** The app uses a shared library and a helper that the next version removes. */
 const withOld: KernelGraph = {
-	nodes: ['lib', 'app', 'old'],
+	nodes: ['Shared library', 'App', 'Removed helper'],
 	edges: [
 		[1, 2],
 		[1, 0]
 	]
 };
-const withoutOld: KernelGraph = { nodes: ['lib', 'app'], edges: [[1, 0]] };
-/** The sink t depends on y; nothing depends on x and x depends on nothing. */
-const apart: KernelGraph = { nodes: ['x', 'y', 't'], edges: [[2, 1]] };
-/** api depends on cfg, the sink t on api and on core. */
+const withoutOld: KernelGraph = { nodes: ['Shared library', 'App'], edges: [[1, 0]] };
+/** The page test uses page data; the untested helper has no connections. */
+const apart: KernelGraph = {
+	nodes: ['Untested helper', 'Page data', 'Page test'],
+	edges: [[2, 1]]
+};
+/** The API uses settings; the page test uses the API and shared core. */
 const layered: KernelGraph = {
-	nodes: ['cfg', 'api', 'core', 't'],
+	nodes: ['Settings', 'API', 'Shared core', 'Page test'],
 	edges: [
 		[1, 0],
 		[3, 1],
 		[3, 2]
 	]
 };
-/** The same graph with new, added in head, depending on api. */
+/** The same dependencies, with a new page that also uses the API. */
 const extended: KernelGraph = {
-	nodes: ['cfg', 'api', 'core', 't', 'new'],
+	nodes: ['Settings', 'API', 'Shared core', 'Page test', 'New page'],
 	edges: [
 		[1, 0],
 		[3, 1],
@@ -61,62 +64,76 @@ const extended: KernelGraph = {
 
 const cases: Case[] = [
 	{
-		name: 'a changed seed reaches its dependents one, two and three hops away in both graphs',
-		input: { base: chain, head: chain, changed: ['a'], uncertain: [], sinks: ['t'] },
+		name: 'Changing the price formatter affects its label, product page and page test',
+		input: {
+			base: chain,
+			head: chain,
+			changed: ['Price formatter'],
+			uncertain: [],
+			sinks: ['Page test']
+		},
 		expected: {
 			affected: [
-				{ id: 'a', distance: 0, via: 'both', presence: 'both', seed: 'changed' },
-				{ id: 'b', distance: 1, via: 'both', presence: 'both', seed: null },
-				{ id: 'c', distance: 2, via: 'both', presence: 'both', seed: null },
-				{ id: 't', distance: 3, via: 'both', presence: 'both', seed: null }
+				{ id: 'Price formatter', distance: 0, via: 'both', presence: 'both', seed: 'changed' },
+				{ id: 'Price label', distance: 1, via: 'both', presence: 'both', seed: null },
+				{ id: 'Product page', distance: 2, via: 'both', presence: 'both', seed: null },
+				{ id: 'Page test', distance: 3, via: 'both', presence: 'both', seed: null }
 			],
 			uncovered: [],
 			unknown: []
 		}
 	},
 	{
-		name: 'a removed seed follows the head nodes; its surviving dependent is reached through base',
+		name: 'Removing a helper still affects the app that used it',
 		input: {
 			base: withOld,
 			head: withoutOld,
-			changed: ['old'],
+			changed: ['Removed helper'],
 			uncertain: [],
-			sinks: ['app']
+			sinks: ['App']
 		},
 		expected: {
 			affected: [
-				{ id: 'app', distance: 1, via: 'base', presence: 'both', seed: null },
-				{ id: 'old', distance: 0, via: 'base', presence: 'removed', seed: 'changed' }
+				{ id: 'App', distance: 1, via: 'base', presence: 'both', seed: null },
+				{ id: 'Removed helper', distance: 0, via: 'base', presence: 'removed', seed: 'changed' }
 			],
 			uncovered: [],
 			unknown: []
 		}
 	},
 	{
-		name: 'a changed id no sink depends on is uncovered; one in neither graph is unknown',
-		input: { base: apart, head: apart, changed: ['x', 'ghost'], uncertain: [], sinks: ['t'] },
-		expected: {
-			affected: [{ id: 'x', distance: 0, via: 'both', presence: 'both', seed: 'changed' }],
-			uncovered: ['x'],
-			unknown: ['ghost']
-		}
-	},
-	{
-		name: 'an uncertain id seeds its dependents beside a changed seed, up to a node added in head',
+		name: 'An untested helper has no coverage; a missing unit cannot be located',
 		input: {
-			base: layered,
-			head: extended,
-			changed: ['core'],
-			uncertain: ['cfg'],
-			sinks: ['t']
+			base: apart,
+			head: apart,
+			changed: ['Untested helper', 'Missing unit'],
+			uncertain: [],
+			sinks: ['Page test']
 		},
 		expected: {
 			affected: [
-				{ id: 'cfg', distance: 0, via: 'both', presence: 'both', seed: 'uncertain' },
-				{ id: 'api', distance: 1, via: 'both', presence: 'both', seed: null },
-				{ id: 'core', distance: 0, via: 'both', presence: 'both', seed: 'changed' },
-				{ id: 't', distance: 1, via: 'both', presence: 'both', seed: null },
-				{ id: 'new', distance: 2, via: 'head', presence: 'added', seed: null }
+				{ id: 'Untested helper', distance: 0, via: 'both', presence: 'both', seed: 'changed' }
+			],
+			uncovered: ['Untested helper'],
+			unknown: ['Missing unit']
+		}
+	},
+	{
+		name: 'Uncertain settings also affect the API, page test and newly added page',
+		input: {
+			base: layered,
+			head: extended,
+			changed: ['Shared core'],
+			uncertain: ['Settings'],
+			sinks: ['Page test']
+		},
+		expected: {
+			affected: [
+				{ id: 'Settings', distance: 0, via: 'both', presence: 'both', seed: 'uncertain' },
+				{ id: 'API', distance: 1, via: 'both', presence: 'both', seed: null },
+				{ id: 'Shared core', distance: 0, via: 'both', presence: 'both', seed: 'changed' },
+				{ id: 'Page test', distance: 1, via: 'both', presence: 'both', seed: null },
+				{ id: 'New page', distance: 2, via: 'head', presence: 'added', seed: null }
 			],
 			uncovered: [],
 			unknown: []

@@ -36,12 +36,12 @@
 	},
 	"dependencies": [
 		{
-			"unit": "reports.function.artifact-cases",
+			"unit": "reports.component.recorded-value",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.function.compact-recorded-value",
+			"unit": "reports.function.artifact-cases",
 			"via": "import",
 			"origin": "derived"
 		}

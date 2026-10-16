@@ -2,7 +2,7 @@
 	"name": "readable-test-cases",
 	"goal": "Recorded test cases stay readable at desktop tablet and mobile sizes, with exact input and output available on demand",
 	"createdAt": "2026-10-16T17:13:52.344Z",
-	"updatedAt": "2026-10-16T17:28:40.900Z",
+	"updatedAt": "2026-10-16T19:06:50.769Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"steps": [
@@ -37,7 +37,9 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots; keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-16T19:06:50.769Z",
+			"evidence": "Every normal repository check stage passed for the first card layout after repairing test diagnostics. Ten browser cases and inspected desktop/tablet/mobile captures passed. Later human-readable refinement continues in readable-contracts-and-tests."
 		}
 	],
 	"evaluators": [

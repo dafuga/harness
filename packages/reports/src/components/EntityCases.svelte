@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { artifactCases } from '../utils/artifactCases';
-	import { compactRecordedValue } from '../utils/compactRecordedValue';
+	import RecordedValue from './RecordedValue.svelte';
 	let {
 		document,
 		unit,
@@ -20,11 +20,6 @@
 		callable ? `${seen}; it is not a direct call of this function.` : `${seen}.`
 	);
 	let expanded = $state(false);
-	const most = 4000;
-	const said = (value: unknown) => {
-		const text = compactRecordedValue(value);
-		return text.length > most ? `${text.slice(0, most)}\n… (shortened)` : text;
-	};
 </script>
 
 <!-- Each input beside what was observed for it; a result that holds none says why. -->
@@ -46,13 +41,15 @@
 				{#each read.cases as item, position (position)}
 					<tr>
 						<th scope="row">{item.name}</th>
-						<td data-label="Input"><pre>{said(item.input)}</pre></td>
+						<td data-label="Input"
+							><div class="case-value"><RecordedValue value={item.input} /></div></td
+						>
 						<td data-label="Observed output">
 							{#if item.failed}
 								<span class="cases-error">Observed error</span>
-								<pre>{said(item.error)}</pre>
+								<div class="case-value"><RecordedValue value={item.error} /></div>
 							{:else}
-								<pre>{said(item.output)}</pre>
+								<div class="case-value"><RecordedValue value={item.output} /></div>
 							{/if}
 						</td>
 					</tr>
@@ -141,6 +138,10 @@
 			monospace;
 		color: #d5e4ef;
 	}
+	.case-value {
+		max-height: 25rem;
+		overflow: auto;
+	}
 	.cases-error {
 		display: block;
 		margin-bottom: 6px;
@@ -156,6 +157,14 @@
 	@container (max-width: 800px) {
 		tbody tr {
 			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+	@container (max-width: 400px) {
+		tbody tr {
+			padding: 8px;
+		}
+		td {
+			padding: 8px;
 		}
 	}
 </style>

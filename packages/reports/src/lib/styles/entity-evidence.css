@@ -180,6 +180,11 @@
 	white-space: pre-wrap;
 	overflow-wrap: anywhere;
 }
+/* Cases follow the page's scroll; only large individual values need their own scroller. */
+.ex-content .ex-artifact:has(> .cases) {
+	max-height: none;
+	overflow: visible;
+}
 .ex-content .ex-artifact summary {
 	color: var(--ex-soft);
 	cursor: pointer;

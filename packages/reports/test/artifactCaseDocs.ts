@@ -114,16 +114,16 @@ export function rows(body: string): string[][] {
 }
 export const words = (body: string) => plain(body).replace(/\s+/g, ' ').trim();
 const head = ['Case', 'Input', 'Observedoutput'];
-const said = (value: unknown) => flat(JSON.stringify(value));
 export const callRows = [
 	head,
-	...calls.cases.map((item) => [
-		flat(item.name),
-		said(item.input),
-		'error' in item ? `Observederror${said(item.error)}` : said(item.output)
-	])
+	['commentsonly', 'CommentsBooleantrueAgentsBooleanfalseBooleanfalse', 'Textcomment'],
+	['nothingallowed', 'CommentsBooleanfalseAgentsBooleanfalseBooleanfalse', 'Emptylist'],
+	['aflagthatisoff', 'Textflag', 'Booleanfalse'],
+	['noneleft', 'Number3', 'Number0'],
+	['novalue', 'Textmissing', 'Nullnull'],
+	['refused', 'Textbad', 'ObservederrorNameTextTypeErrorMessageTextNotacapability']
 ];
 export const observedRows = [
 	head,
-	['Testobservation', said(observed.input), said(observed.output)]
+	['Testobservation', 'SearchtextTextSERVICE', 'TextOrder1042·Servicecall']
 ];
