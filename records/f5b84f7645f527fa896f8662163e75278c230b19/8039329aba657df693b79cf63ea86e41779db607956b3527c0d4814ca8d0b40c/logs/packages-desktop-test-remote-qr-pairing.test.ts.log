@@ -1,0 +1,16 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-X30BiD/packages/desktop[39m
+
+ [32m✓[39m test/remote-qr-pairing.test.ts [2m([22m[2m6 tests[22m[2m)[22m[33m 8378[2mms[22m[39m
+   [33m[2m✓[22m[39m the computer offers one QR text that reads back to its open offer and holds nothing else [33m 1462[2mms[22m[39m
+   [33m[2m✓[22m[39m a phone that scanned is a request until the person approves it for chosen projects [33m 1321[2mms[22m[39m
+   [33m[2m✓[22m[39m a new code stops the earlier one, and a withdrawn code leaves none [33m 1308[2mms[22m[39m
+   [33m[2m✓[22m[39m denied on the computer, the phone has nothing to exchange and is no device [33m 1429[2mms[22m[39m
+   [33m[2m✓[22m[39m an offer the clock has passed is neither shown nor asked with [33m 1374[2mms[22m[39m
+   [33m[2m✓[22m[39m an approved phone can be revoked, and its spent code pairs nobody again [33m 1482[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m6 passed[39m[22m[90m (6)[39m
+[2m   Start at [22m 19:54:41
+[2m   Duration [22m 10.22s[2m (transform 904ms, setup 0ms, collect 1.48s, tests 8.38s, environment 0ms, prepare 63ms)[22m
+

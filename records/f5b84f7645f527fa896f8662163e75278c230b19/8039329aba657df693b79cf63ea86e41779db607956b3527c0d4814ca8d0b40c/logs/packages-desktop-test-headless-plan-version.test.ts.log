@@ -1,0 +1,14 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-X30BiD/packages/desktop[39m
+
+ [32m✓[39m test/headless-plan-version.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 44665[2mms[22m[39m
+   [33m[2m✓[22m[39m functions Plan comments retain the exact notes version through later revisions [33m 12141[2mms[22m[39m
+   [33m[2m✓[22m[39m services Plan comments retain the exact notes version through later revisions [33m 12021[2mms[22m[39m
+   [33m[2m✓[22m[39m configs Plan comments retain the exact notes version through later revisions [33m 13064[2mms[22m[39m
+   [33m[2m✓[22m[39m visual comments keep image links and cannot fall back to their design notes [33m 7438[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m   Start at [22m 19:44:23
+[2m   Duration [22m 45.57s[2m (transform 341ms, setup 0ms, collect 612ms, tests 44.67s, environment 0ms, prepare 60ms)[22m
+

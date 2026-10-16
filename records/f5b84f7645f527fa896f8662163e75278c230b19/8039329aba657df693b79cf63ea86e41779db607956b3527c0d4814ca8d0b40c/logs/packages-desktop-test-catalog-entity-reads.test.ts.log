@@ -1,0 +1,19 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-X30BiD/packages/desktop[39m
+
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+ [32m✓[39m test/catalog-entity-reads.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 19025[2mms[22m[39m
+   [33m[2m✓[22m[39m an entity request reads the planning snapshot once and shows the plan of that read [33m 5771[2mms[22m[39m
+   [33m[2m✓[22m[39m each request reads again, so a design saved between two requests is in the second [33m 8042[2mms[22m[39m
+   [33m[2m✓[22m[39m an entity that is not held and a corrupt plan fail as they did, after one read [33m 5211[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+[2m   Start at [22m 19:40:51
+[2m   Duration [22m 19.76s[2m (transform 251ms, setup 0ms, collect 446ms, tests 19.03s, environment 0ms, prepare 54ms)[22m
+

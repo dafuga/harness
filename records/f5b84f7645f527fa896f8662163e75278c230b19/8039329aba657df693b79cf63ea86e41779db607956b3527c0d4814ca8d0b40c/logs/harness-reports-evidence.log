@@ -1,0 +1,36 @@
+
+Running 5 tests using 1 worker
+
+  ✓  1 tests/e2e/harness-reports-evidence.spec.ts:118:2 › every state of the reports of a site is captured at the desktop viewport (7.1s)
+  ✓  2 tests/e2e/harness-reports-evidence.spec.ts:118:2 › every state of the reports of a site is captured at the tablet viewport (5.7s)
+  ✓  3 tests/e2e/harness-reports-evidence.spec.ts:118:2 › every state of the reports of a site is captured at the mobile viewport (5.8s)
+  ✘  4 tests/e2e/harness-reports-evidence.spec.ts:129:1 › a paired recording plays in the viewer and is captured as the server served it (373ms)
+  -  5 tests/e2e/harness-reports-evidence.spec.ts:140:1 › what was captured satisfies the reports scenario, served by the build under test
+
+
+  1) tests/e2e/harness-reports-evidence.spec.ts:129:1 › a paired recording plays in the viewer and is captured as the server served it 
+
+    Error: expect(received).toContain(expected) // indexOf
+
+    Expected substring: "http://127.0.0.1:63800/api/reports/3e473a9e-4042-46c1-851e-490eaa3068ad/assets/"
+    Received string:    ""
+
+      132 | 	await states.audio(page);
+      133 | 	const player = page.getByRole('dialog').locator('audio').first();
+    > 134 | 	expect(await player.evaluate((clip: HTMLAudioElement) => clip.currentSrc)).toContain(
+          | 	                                                                           ^
+      135 | 		`${origin}/api/reports/${made.paired}/assets/`
+      136 | 	);
+      137 | 	expect(await captureAudio(page, 'audio', player, evidence)).toBeCloseTo(6, 0);
+        at /private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-X30BiD/packages/reports/tests/e2e/harness-reports-evidence.spec.ts:134:77
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/harness-reports-evidence-a-236e8-red-as-the-server-served-it/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/harness-reports-evidence-a-236e8-red-as-the-server-served-it/error-context.md
+
+  1 failed
+    tests/e2e/harness-reports-evidence.spec.ts:129:1 › a paired recording plays in the viewer and is captured as the server served it 
+  1 did not run
+  3 passed (2.3m)

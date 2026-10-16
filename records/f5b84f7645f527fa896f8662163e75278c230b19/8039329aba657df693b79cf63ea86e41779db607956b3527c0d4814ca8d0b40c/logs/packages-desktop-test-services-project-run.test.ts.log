@@ -1,0 +1,19 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-X30BiD/packages/desktop[39m
+
+ [32m✓[39m test/services/project-run.test.ts [2m([22m[2m9 tests[22m[2m)[22m[33m 22886[2mms[22m[39m
+   [33m[2m✓[22m[39m the agent decides the kind: a component asked for among functions is planned with its contract [33m 5877[2mms[22m[39m
+   [33m[2m✓[22m[39m a draft is named when its thread could not be opened, and it is not removed [33m 1730[2mms[22m[39m
+   [33m[2m✓[22m[39m a draft is named when the request could not be written, and it is not removed [33m 2549[2mms[22m[39m
+   [33m[2m✓[22m[39m a draft is named when its image could not be made, and it is not removed [33m 4015[2mms[22m[39m
+   [33m[2m✓[22m[39m a draft whose entity could not be read back holds the request and says what failed [33m 3428[2mms[22m[39m
+   [33m[2m✓[22m[39m what the agent wrote is told when it answered, and nothing is planned or undone [33m 1219[2mms[22m[39m
+   [33m[2m✓[22m[39m what the agent wrote is told when it failed, and nothing is planned or undone [33m 1271[2mms[22m[39m
+   [33m[2m✓[22m[39m what the agent wrote is told when it was cancelled, and nothing is planned or undone [33m 1375[2mms[22m[39m
+   [33m[2m✓[22m[39m a file the CLI said it wrote outside the project is told with its hash, and nothing is planned [33m 1421[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m9 passed[39m[22m[90m (9)[39m
+[2m   Start at [22m 19:57:41
+[2m   Duration [22m 23.63s[2m (transform 301ms, setup 0ms, collect 500ms, tests 22.89s, environment 0ms, prepare 44ms)[22m
+
