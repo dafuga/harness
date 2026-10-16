@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-tA718W/packages/reports
+
+ ✓ test/components/explorer-composition.test.ts (5 tests) 1441ms
+   ✓ every page mounts the host with one screen of its own, and none draws every screen  336ms
+   ✓ the four screens of a category are made of different components  318ms
+   ✓ a catalog draws no entity view, and each entity view draws its own and not the others  750ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  19:19:55
+   Duration  1.90s (transform 51ms, setup 0ms, collect 58ms, tests 1.44s, environment 0ms, prepare 58ms)
+

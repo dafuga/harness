@@ -1,0 +1,18 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-tA718W/packages/desktop
+
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+ ✓ test/services/project-operations.test.ts (2 tests) 5674ms
+   ✓ a historical human comment saves a pending draft without Git mutation or agent execution  1979ms
+   ✓ every explicit request refuses stale project context before reading or starting an agent  3694ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  19:17:03
+   Duration  6.83s (transform 580ms, setup 0ms, collect 944ms, tests 5.67s, environment 0ms, prepare 45ms)
+
