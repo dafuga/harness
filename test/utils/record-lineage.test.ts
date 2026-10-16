@@ -44,6 +44,73 @@ test('a record with no base and no inherited scenario depends on nothing', () =>
 	expect(lineage(record('a'), [])).toEqual([]);
 });
 
+test('shared ancestry validates each distinct inherited record once per call', () => {
+	const states = Array.from({ length: 20 }, (_, index) => ({
+		...tested('a'),
+		id: `root-${index}`
+	}));
+	const root = record('a', {}, states);
+	const parent = record('b', { base: root.source.commit, baseRecord: root.id }, [
+		...states.map((state) => ({
+			...state,
+			status: 'referenced' as const,
+			referencedRecord: root.id
+		})),
+		...states.map((state) => ({
+			...state,
+			id: `parent-${state.id}`,
+			testedRevision: commitOf('b')
+		}))
+	]);
+	const child = record(
+		'c',
+		{ base: parent.source.commit, baseRecord: parent.id },
+		parent.scenarios.map((state) => ({
+			...state,
+			status: 'referenced' as const,
+			referencedRecord: state.referencedRecord ?? parent.id
+		}))
+	);
+	const stored = new Map([root, parent].map((item) => [item.id, item]));
+	const checked: string[] = [];
+	expect(
+		recordLineage(child, {
+			find: (id) => stored.get(id),
+			problems: (item) => {
+				checked.push(item.id);
+				return [];
+			}
+		})
+	).toEqual([]);
+	expect(checked.sort()).toEqual([root.id, parent.id].sort());
+});
+
+test('a later call rechecks evidence even for the same stored objects', () => {
+	const parent = record('a');
+	const child = record('b', { base: parent.source.commit, baseRecord: parent.id });
+	let damaged = false;
+	const source = { find: () => parent, problems: () => (damaged ? ['damaged evidence'] : []) };
+	expect(recordLineage(child, source)).toEqual([]);
+	damaged = true;
+	expect(recordLineage(child, source)).toEqual([
+		'base record aaaaaaaaaaaa is not sound: damaged evidence'
+	]);
+});
+
+test('distinct objects claiming the same id are checked separately', () => {
+	const parent = record('a', {}, [tested('a')]);
+	const forged = { ...parent, source: { ...parent.source, tree: commitOf('e') } };
+	const child = record('b', { base: parent.source.commit, baseRecord: parent.id }, [
+		inherited('a')
+	]);
+	let reads = 0;
+	const problems = recordLineage(child, {
+		find: () => (reads++ === 0 ? parent : forged),
+		problems: (item) => (item === forged ? ['record content does not match its id'] : [])
+	});
+	expect(problems.join('\n')).toContain('which is not sound: record content does not match its id');
+});
+
 test('the base record and the record behind an inherited scenario must be present and sound', () => {
 	const parent = record('a', {}, [tested('a')]);
 	const child = record('b', { base: commitOf('a'), baseRecord: idOf('a') }, [inherited('a')]);
