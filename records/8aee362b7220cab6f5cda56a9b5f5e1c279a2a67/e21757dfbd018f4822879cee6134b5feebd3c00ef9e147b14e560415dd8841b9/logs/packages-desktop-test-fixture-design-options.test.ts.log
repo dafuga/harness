@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-0QU0x2/packages/desktop
+
+ ✓ test/fixture-design-options.test.ts (3 tests) 19999ms
+   ✓ remote: a phone starts a Plan stating no count over the wire; it finishes with three distinct pictures  5557ms
+   ✓ local: a window opens its project and starts a Plan stating no count; it finishes with three distinct pictures  5487ms
+   ✓ native: the fixture project plans with its stand-in providers, stating no count; it finishes with three distinct pictures  8955ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  20:15:57
+   Duration  21.02s (transform 515ms, setup 0ms, collect 832ms, tests 20.00s, environment 0ms, prepare 38ms)
+

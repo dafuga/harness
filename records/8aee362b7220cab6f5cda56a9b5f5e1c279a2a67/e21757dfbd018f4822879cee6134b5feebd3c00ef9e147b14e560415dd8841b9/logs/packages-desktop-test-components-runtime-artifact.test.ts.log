@@ -1,0 +1,46 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-0QU0x2/packages/desktop
+
+ ❯ test/components/runtime-artifact.test.ts (3 tests | 1 failed) 266ms
+   × a read and checked result shows what it was asked, what it answered and what held 60ms
+     → expected [ [ 'Case', 'Input', …(1) ], …(1) ] to deeply equal [ [ 'Case', 'Input', …(1) ], …(1) ]
+   ✓ a result that was not read says why, in the words of the backend when it refused 155ms
+   ✓ what was not recorded or is not stored is said, and nothing stands in for it 51ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/runtime-artifact.test.ts > a read and checked result shows what it was asked, what it answered and what held
+AssertionError: expected [ [ 'Case', 'Input', …(1) ], …(1) ] to deeply equal [ [ 'Case', 'Input', …(1) ], …(1) ]
+
+- Expected
++ Received
+
+@@ -4,9 +4,9 @@
+      "Input",
+      "Observedoutput",
+    ],
+    [
+      "Testobservation",
+-     "{\"searchText\":\"SERVICE\"}",
+-     "[\"Order1042·Servicecall\",\"Order1077·Serviceplan\"]",
++     "SearchtextTextSERVICE",
++     "TextOrder1042·ServicecallTextOrder1077·Serviceplan",
+    ],
+  ]
+
+ ❯ test/components/runtime-artifact.test.ts:23:21
+     21|  // What it was asked and what it answered are one row of the shared t…
+     22|  const said = (value: unknown) => flat(JSON.stringify(value));
+     23|  expect(rows(body)).toEqual([
+       |                     ^
+     24|   ['Case', 'Input', 'Observedoutput'],
+     25|   [
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  20:14:56
+   Duration  825ms (transform 258ms, setup 0ms, collect 399ms, tests 266ms, environment 0ms, prepare 31ms)
+
