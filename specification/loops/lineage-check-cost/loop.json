@@ -2,7 +2,7 @@
 	"name": "lineage-check-cost",
 	"goal": "Validate shared inherited verification records once per check, preserving cycle, tampering and stale-evidence failures; prevent history growth from delaying or disconnecting normal source pushes.",
 	"createdAt": "2026-10-16T13:15:36.965Z",
-	"updatedAt": "2026-10-16T13:26:20.428Z",
+	"updatedAt": "2026-10-16T15:34:26.232Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"steps": [
@@ -51,7 +51,9 @@
 		{
 			"id": "verify",
 			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and keep pending while proof fails.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-16T15:34:26.232Z",
+			"evidence": "Local full: 3,477 cases passed. Exact aff45afc record 70043084dbfa: seven gates passed. Frozen guard rejects original source; fresh fixture screenshots inspected."
 		}
 	],
 	"evaluators": [
