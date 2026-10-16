@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { entityBehavior, type BehaviorCell } from '../../../reports/src/utils/entityBehavior';
-import { flat, rows } from '../../../reports/test/artifactCaseDocs';
+import { rows, words } from '../../../reports/test/artifactCaseDocs';
 import RuntimeArtifact from '../../src/components/RuntimeArtifact.svelte';
 import { commits, drawn, ids, refusal, scopeOf, shownEvidence } from '../evidence-fixture';
 
@@ -19,17 +19,16 @@ test('a read and checked result shows what it was asked, what it answered and wh
 	expect(body).toContain('role="group" aria-label="output of match"');
 	for (const heading of ['Steps', 'Assertions']) expect(body).toContain(`<h5>${heading}</h5>`);
 	// What it was asked and what it answered are one row of the shared table, under no heading.
-	const said = (value: unknown) => flat(JSON.stringify(value));
 	expect(rows(body)).toEqual([
 		['Case', 'Input', 'Observedoutput'],
 		[
 			'Testobservation',
-			said({ searchText: 'SERVICE' }),
-			said(['Order 1042 · Service call', 'Order 1077 · Service plan'])
+			'SearchtextTextSERVICE',
+			'TextOrder1042·ServicecallTextOrder1077·Serviceplan'
 		]
 	]);
 	expect(body).not.toMatch(/<h5>Input<\/h5>|Actual output/);
-	expect(body).toContain('"searchText": "SERVICE"');
+	expect(words(body)).toContain('Search text Text SERVICE');
 	expect(body).toContain('Order 1077 · Service plan');
 	expect(body).toContain('Matching order is listed');
 	expect(body).toContain('aria-label="Held"');
