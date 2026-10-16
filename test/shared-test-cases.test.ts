@@ -22,11 +22,13 @@ test('shared case browser checks and recorded UI observations are required', () 
 		'service-current',
 		'page-current',
 		'config-current',
-		'component-commit'
+		'component-commit',
+		'nested-values',
+		'readable-contracts'
 	]);
 	const { required } = scenarioRequirements(scenario);
-	expect(required.filter((item) => item.kind === 'screenshot')).toHaveLength(7);
-	expect(required.filter((item) => item.kind === 'trace')).toHaveLength(5);
+	expect(required.filter((item) => item.kind === 'screenshot')).toHaveLength(13);
+	expect(required.filter((item) => item.kind === 'trace')).toHaveLength(7);
 	expect(scenario.units).toContain('desktop.component.workspace-shell');
 	expect(unit.scenarios).toContain(scenario.id);
 });

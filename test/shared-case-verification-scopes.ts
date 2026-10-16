@@ -22,7 +22,9 @@ export const sharedCaseVerificationScopes: Record<string, VerificationScope> = {
 				'service-current',
 				'page-current',
 				'config-current',
-				'component-commit'
+				'component-commit',
+				'nested-values',
+				'readable-contracts'
 			]
 		}
 	}

@@ -53,6 +53,16 @@
 			"id": "component-commit",
 			"title": "component-commit",
 			"coverage": "required"
+		},
+		{
+			"id": "nested-values",
+			"title": "Nested input and output remain readable",
+			"coverage": "required"
+		},
+		{
+			"id": "readable-contracts",
+			"title": "Contract fields remain readable",
+			"coverage": "required"
 		}
 	],
 	"viewports": [
@@ -116,7 +126,9 @@
 				"service-current",
 				"page-current",
 				"config-current",
-				"component-commit"
+				"component-commit",
+				"nested-values",
+				"readable-contracts"
 			],
 			"viewports": [],
 			"required": true
@@ -143,7 +155,9 @@
 				"service-current",
 				"page-current",
 				"config-current",
-				"component-commit"
+				"component-commit",
+				"nested-values",
+				"readable-contracts"
 			],
 			"viewports": [],
 			"required": true,
@@ -158,7 +172,9 @@
 				"service-current",
 				"page-current",
 				"config-current",
-				"component-commit"
+				"component-commit",
+				"nested-values",
+				"readable-contracts"
 			],
 			"viewports": ["desktop"],
 			"required": true,
@@ -169,7 +185,7 @@
 		{
 			"id": "test-cases-tablet",
 			"kind": "screenshot",
-			"states": ["component-current"],
+			"states": ["component-current", "nested-values", "readable-contracts"],
 			"viewports": ["tablet"],
 			"required": true,
 			"provenance": "actual-capture",
@@ -179,7 +195,7 @@
 		{
 			"id": "test-cases-mobile",
 			"kind": "screenshot",
-			"states": ["component-current"],
+			"states": ["component-current", "nested-values", "readable-contracts"],
 			"viewports": ["mobile"],
 			"required": true,
 			"provenance": "actual-capture",

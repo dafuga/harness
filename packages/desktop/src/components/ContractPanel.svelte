@@ -34,6 +34,7 @@
 
 <style>
 	dl {
+		display: block;
 		margin: 0 0 18px;
 	}
 	dl > div {

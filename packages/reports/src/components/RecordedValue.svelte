@@ -72,6 +72,7 @@
 		color: #d5e4ef;
 	}
 	.fields {
+		display: block;
 		margin: 0;
 	}
 	.fields > div {

@@ -8,7 +8,7 @@ import { index } from '../../../reports/test/entityFixture';
 import { commits, ids, units } from '../../../reports/test/entityUnits';
 import type { EntityEvidenceResult } from '../../src/models/DesktopEvidence.types';
 import { nativeImageFixture } from './native-image-fixture';
-import { sealedHistory } from './ui-evidence-history';
+import { sealedHistory, type Example } from './ui-evidence-history';
 
 export { commits, ids };
 export { cardScenario, soundScenario, tones } from './ui-evidence-history';
@@ -167,8 +167,8 @@ function observe(history: ReturnType<typeof sealedHistory>, observedUnits: strin
 	}
 }
 
-export function evidenceData(shared = false, observedUnits: string[] = []) {
-	const history = sealedHistory();
+export function evidenceData(shared = false, observedUnits: string[] = [], example?: Example) {
+	const history = sealedHistory(example);
 	observe(history, observedUnits);
 	const design = Array.from(nativeImageFixture());
 	const results: Record<string, EntityEvidenceResult> = {};
