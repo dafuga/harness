@@ -2,7 +2,7 @@
 	"name": "kernel-closure-cases",
 	"goal": "Record actual ordinary JSON kernelClosure calls under its own unit and reject missing or misattributed captures without altering semantics",
 	"createdAt": "2026-10-16T02:01:15.412Z",
-	"updatedAt": "2026-10-16T02:13:14.129Z",
+	"updatedAt": "2026-10-16T10:25:21.322Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"steps": [
@@ -51,7 +51,9 @@
 		{
 			"id": "verify",
 			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and keep pending while proof fails.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-16T10:25:21.322Z",
+			"evidence": "Full check: 3473 passed. Exact 4e668297 passed seven gates. Four own-unit input/output cases render in the actual browser; screenshot inspected. Independent Opus review found no blockers."
 		}
 	],
 	"evaluators": [
