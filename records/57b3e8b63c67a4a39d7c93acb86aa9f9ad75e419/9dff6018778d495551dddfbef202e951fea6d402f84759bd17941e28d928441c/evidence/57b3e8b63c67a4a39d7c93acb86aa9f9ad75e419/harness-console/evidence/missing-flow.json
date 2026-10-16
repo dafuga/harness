@@ -1,0 +1,32 @@
+{
+  "scenario": "Harness explorer over a fixed synthetic history",
+  "environment": "Chromium against the built reports server",
+  "fixture": "Synthetic Git history seeded for the console",
+  "steps": [
+    "Open /harness/branch/main/commit/68e2a35312b1947af77dcf62eb881882921731e3/functions/function.extra",
+    "Wait for the notice that the entity is absent",
+    "Read the address, the heading, the categories and the verification marks"
+  ],
+  "input": {
+    "address": "/harness/branch/main/commit/68e2a35312b1947af77dcf62eb881882921731e3/functions/function.extra"
+  },
+  "output": {
+    "address": "/harness/branch/main/commit/68e2a35312b1947af77dcf62eb881882921731e3/functions/function.extra",
+    "heading": "Not at this revision",
+    "categories": [
+      "Pages",
+      "Shells",
+      "Components",
+      "Functions",
+      "Configs",
+      "Services"
+    ],
+    "category": "Functions",
+    "branch": "main",
+    "commit": "68e2a35312b1947af77dcf62eb881882921731e3",
+    "marks": [
+      "Not shown"
+    ],
+    "paths": []
+  }
+}

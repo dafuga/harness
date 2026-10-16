@@ -1,0 +1,7 @@
+
+Running 2 tests using 1 worker
+
+  ✓  1 tests/e2e/analytics.spec.ts:8:1 › the analytics address leads into the explorer, which has no analytics screen (324ms)
+  ✓  2 tests/e2e/analytics.spec.ts:36:1 › the analytics route still responds successfully, with the page it leads to (370ms)
+
+  2 passed (1.8m)

@@ -1,0 +1,15 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-ElRlB1[39m
+
+ [32m✓[39m test/history-pairs.e2e.test.ts [2m([22m[2m7 tests[22m[2m)[22m[33m 9422[2mms[22m[39m
+   [33m[2m✓[22m[39m two commits apart on one branch the stored sides give what the impact command gives [33m 524[2mms[22m[39m
+   [33m[2m✓[22m[39m across a change that was reverted the stored sides give what the impact command gives [33m 497[2mms[22m[39m
+   [33m[2m✓[22m[39m between diverged branches the stored sides give what the impact command gives [33m 516[2mms[22m[39m
+   [33m[2m✓[22m[39m between the same change made on two branches the stored sides give what the impact command gives [33m 499[2mms[22m[39m
+   [33m[2m✓[22m[39m backwards, from a later commit to an earlier one the stored sides give what the impact command gives [33m 527[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m7 passed[39m[22m[90m (7)[39m
+[2m   Start at [22m 21:51:55
+[2m   Duration [22m 9.82s[2m (transform 94ms, setup 12ms, collect 142ms, tests 9.42s, environment 0ms, prepare 38ms)[22m
+

@@ -1,0 +1,10 @@
+
+Running 5 tests using 1 worker
+
+  ✓  1 tests/e2e/project-activity-live.spec.ts:17:1 › the page that read activity live is gone: its address leads into the explorer (588ms)
+  ✓  2 tests/e2e/project-activity-live.spec.ts:25:1 › a reading says when it was taken and is taken anew on every request (541ms)
+  ✓  3 tests/e2e/project-activity-live.spec.ts:35:1 › an agent counts only until the time it states, and a quiet one is not working (150ms)
+  ✓  4 tests/e2e/project-activity-live.spec.ts:52:1 › a busy repository can be shown briefly: each list says how much there is beside it (137ms)
+  ✓  5 tests/e2e/project-activity-live.spec.ts:69:1 › the CPU sample says which figures are the machine and which are this repository (1.2s)
+
+  5 passed (2.7m)

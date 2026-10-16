@@ -1,0 +1,16 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-ElRlB1/packages/desktop[39m
+
+ [32m✓[39m test/remote-host-races.test.ts [2m([22m[2m6 tests[22m[2m)[22m[33m 7164[2mms[22m[39m
+   [33m[2m✓[22m[39m disabling while the enabled record is being written leaves it stored as off [33m 986[2mms[22m[39m
+   [33m[2m✓[22m[39m quitting while the enabled record is being written lets it land and starts nothing [33m 1110[2mms[22m[39m
+   [33m[2m✓[22m[39m quitting waits for a record that is being written [33m 1031[2mms[22m[39m
+   [33m[2m✓[22m[39m a registration that fails after turning off leaves no error behind [33m 1954[2mms[22m[39m
+   [33m[2m✓[22m[39m a registration that answers late does not replace the one in use [33m 1079[2mms[22m[39m
+   [33m[2m✓[22m[39m turning on changes nothing when the record cannot be written [33m 1003[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m6 passed[39m[22m[90m (6)[39m
+[2m   Start at [22m 20:46:22
+[2m   Duration [22m 8.56s[2m (transform 734ms, setup 0ms, collect 1.15s, tests 7.16s, environment 0ms, prepare 50ms)[22m
+

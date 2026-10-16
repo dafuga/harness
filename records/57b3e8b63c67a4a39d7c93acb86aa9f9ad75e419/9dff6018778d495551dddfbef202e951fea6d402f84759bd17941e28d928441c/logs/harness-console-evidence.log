@@ -1,0 +1,43 @@
+
+Running 5 tests using 1 worker
+
+  ✘  1 tests/e2e/harness-evidence.spec.ts:27:2 › every explorer state is captured at the desktop viewport (30.1s)
+  -  2 tests/e2e/harness-evidence.spec.ts:27:2 › every explorer state is captured at the tablet viewport
+  -  3 tests/e2e/harness-evidence.spec.ts:27:2 › every explorer state is captured at the mobile viewport
+  -  4 tests/e2e/harness-evidence.spec.ts:39:1 › the recorded tone plays through the explorer player and is captured as it was served
+  -  5 tests/e2e/harness-evidence.spec.ts:47:1 › what was captured satisfies the scenario contract, and another build would not
+
+
+  1) tests/e2e/harness-evidence.spec.ts:27:2 › every explorer state is captured at the desktop viewport 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: page.screenshot: Test timeout of 30000ms exceeded.
+    Call log:
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+
+
+       at support/harnessCapture.ts:86
+
+      84 | ): Promise<void> {
+      85 | 	await settled(page);
+    > 86 | 	const bytes = await page.screenshot({ animations: 'disabled', caret: 'hide' });
+         | 	                         ^
+      87 | 	const file = `${state}-${viewport.id}.png`;
+      88 | 	const server = await servedBuild(page);
+      89 | 	const stamp = server ? { server } : {};
+        at captureScreen (/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-ElRlB1/packages/reports/tests/e2e/support/harnessCapture.ts:86:27)
+        at /private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-ElRlB1/packages/reports/tests/e2e/harness-evidence.spec.ts:31:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/harness-evidence-every-exp-0ce89-red-at-the-desktop-viewport/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/harness-evidence-every-exp-0ce89-red-at-the-desktop-viewport/error-context.md
+
+  1 failed
+    tests/e2e/harness-evidence.spec.ts:27:2 › every explorer state is captured at the desktop viewport 
+  4 did not run
