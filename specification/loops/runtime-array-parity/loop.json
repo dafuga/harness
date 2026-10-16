@@ -2,7 +2,7 @@
 	"name": "runtime-array-parity",
 	"goal": "The unshipped kernel closure candidate returns the c767 output for every input portableJson and kernelRequest admit, including in-memory arrays with their own iterator or species",
 	"createdAt": "2026-10-15T21:40:19.120Z",
-	"updatedAt": "2026-10-15T22:10:23.920Z",
+	"updatedAt": "2026-10-16T01:05:19.966Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"steps": [
@@ -51,8 +51,9 @@
 		{
 			"id": "verify",
 			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and keep pending while proof fails.",
-			"status": "pending",
-			"evidence": "\nReopened 2026-10-15T22:06:10.614Z: newly demonstrated admitted mapped-array out-of-range index disproves c1b nonnegative distance assumption; retained prior evidence is historical, not clearance."
+			"status": "complete",
+			"evidence": "Exact54cb: bun run check passed3470 tests; frozen array guards and combined26 runtime tests pass. Immutable35d4502a passed1040 checks/33scenarios; independent Opus approved only seven static limits. Original runtime floors unchanged and passing.",
+			"completedAt": "2026-10-16T01:05:19.966Z"
 		}
 	],
 	"evaluators": [

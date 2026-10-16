@@ -2,7 +2,7 @@
 	"name": "runtime-kernel-adjacency",
 	"goal": "The impact kernel packs each graph's neighbours into one vector with byte-identical answers and errors",
 	"createdAt": "2026-10-15T21:33:24.336Z",
-	"updatedAt": "2026-10-15T21:37:37.084Z",
+	"updatedAt": "2026-10-16T01:05:20.524Z",
 	"template": "refactor",
 	"templateLineage": ["feature", "refactor"],
 	"steps": [
@@ -30,7 +30,9 @@
 		{
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-16T01:05:20.524Z",
+			"evidence": "Exact54cb full bun run check passed; 41 vectors and saved551-case parity support correctness. Immutable35d4502a passed all non-budget gates; seven exact static limits independently approved. Original runtime floor baselines unchanged."
 		}
 	],
 	"evaluators": [

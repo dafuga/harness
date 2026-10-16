@@ -2,7 +2,7 @@
 	"name": "agent-picker-cleanup",
 	"goal": "One shared picker dialog preserves model and effort behavior; dead counted CSS and unreachable HubView stay retired.",
 	"createdAt": "2026-10-15T19:54:05.548Z",
-	"updatedAt": "2026-10-15T20:26:01.636Z",
+	"updatedAt": "2026-10-16T01:05:20.779Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"steps": [
@@ -51,8 +51,9 @@
 		{
 			"id": "verify",
 			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and keep pending while proof fails.",
-			"status": "pending",
-			"evidence": "Focused proof: 21 browser; 19 desktop unit, 8 reports branding, 13 shared-impact and 2 scenario-coverage tests passed; desktop/reports typechecks and focused lint passed. Fresh inspected fixture screenshots retained. Full bun run check evaluator remains pending root integration. Original completion and its 3-coverage typo preserved in trace; actual count is 2."
+			"status": "complete",
+			"evidence": "Exact54cb unmodified bun run check passed3470 tests, including198browser cases. Immutable35d4502a passed1040 checks/33scenarios; fresh inspected picker screenshots retained. Actual Opus approved three exact dialog baselines and remaining styles; native user profile preserved.",
+			"completedAt": "2026-10-16T01:05:20.779Z"
 		}
 	],
 	"evaluators": [

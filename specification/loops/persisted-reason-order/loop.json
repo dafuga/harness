@@ -2,7 +2,7 @@
 	"name": "persisted-reason-order",
 	"goal": "Persisted notes alone select the latest recorded reason per exact step, independent of note enumeration order, keeping every original.",
 	"createdAt": "2026-10-15T20:03:42.693Z",
-	"updatedAt": "2026-10-15T20:42:30.933Z",
+	"updatedAt": "2026-10-16T01:05:21.026Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"steps": [
@@ -37,7 +37,9 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots; keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-16T01:05:21.026Z",
+			"evidence": "Exact54cb bun run check passed3470 tests. Immutable35d4502a passed six non-budget gates,1040checks/33scenarios; real notes-only866 required steps resolved without scratch. Independent Opus approved2352B/12points/5dependencies; original reasons and dates preserved."
 		},
 		{
 			"id": "guard",
