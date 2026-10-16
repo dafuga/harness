@@ -1,9 +1,11 @@
 import { spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { mkdtempSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, resolve } from 'node:path';
 import { afterAll, expect, test, vi } from 'vitest';
 import { pinnedToolchain, type ToolRun } from '../../src/utils/pinnedToolchain';
+import { recordCapture } from '../../src/utils/recordCapture';
 
 /**
  * Which Rust tool an entry point of this project runs. It is the one of the toolchain that
@@ -47,10 +49,38 @@ test('the tool is the one rustup names for this directory, with its own director
 	expect(pinned.command).toBe(`${bin}/cargo`);
 	expect(pinned.env.PATH).toBe(`${bin}:/opt/elsewhere/bin:/usr/bin`);
 	expect(pinned.env.HOME).toBe('/made/up/home');
+	expect(pinned.env.DYLD_LIBRARY_PATH).toBe('/made/up/toolchains/pinned-host/lib');
 	// Explicit selection must override both environment and rustup directory overrides.
 	expect(calls).toEqual([
 		{ command: 'rustup', args: ['which', '--toolchain', channel, 'cargo'], cwd: root }
 	]);
+	const source = 'src/utils/pinnedToolchain.ts';
+	const sha256 = createHash('sha256')
+		.update(readFileSync(`${root}/${source}`))
+		.digest('hex');
+	recordCapture(
+		{
+			evidence: 'selection',
+			kind: 'assertions',
+			state: 'child-environment',
+			file: 'pinned-toolchain-cases.json',
+			mediaType: 'application/json'
+		},
+		JSON.stringify({
+			schemaVersion: 1,
+			kind: 'function-invocations',
+			unitId: 'function.pinned-toolchain',
+			symbol: 'pinnedToolchain',
+			source: { path: source, sha256 },
+			cases: [
+				{
+					name: 'Select cargo from a synthetic Rustup result',
+					input: { tool: 'cargo', environment: env, resolvedTool: `${bin}/cargo` },
+					output: pinned
+				}
+			]
+		})
+	);
 });
 
 test('without rustup nothing is run in its place, and the failure says what is missing', () => {

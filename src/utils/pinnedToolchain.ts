@@ -2,12 +2,12 @@ import { spawnSync } from 'node:child_process';
 import { readFileSync, statSync } from 'node:fs';
 import { delimiter, dirname, join, resolve } from 'node:path';
 
-/** A tool of the pinned toolchain, with the environment it has to be started in. */
+/** A pinned tool and its child environment. */
 export interface PinnedTool {
 	command: string;
 	env: Record<string, string | undefined>;
 }
-/** What asking a tool gave; `failed` when the tool could not be started at all. */
+/** Tool selection, including launch failures. */
 export interface ToolAnswer {
 	status: number | null;
 	stdout: string;
@@ -42,7 +42,6 @@ function asked(command: string, args: string[], cwd: string, env: PinnedTool['en
 	};
 }
 
-/** Parse TOML with the same runtime as the Rust script entry points. */
 function parseChannel(text: string, file: string): string {
 	try {
 		const parsed = Bun.TOML.parse(text) as { toolchain?: { channel?: unknown } };
@@ -55,7 +54,7 @@ function parseChannel(text: string, file: string): string {
 	}
 }
 
-/** Locate a real TOML pin; malformed nearer pins must never fall back to an ancestor. */
+/** A nearer malformed pin cannot fall back to an ancestor. */
 function declaredChannel(cwd: string): string {
 	let directory = resolve(cwd);
 	if (!statSync(directory, { throwIfNoEntry: false })?.isDirectory())
@@ -76,7 +75,7 @@ function declaredChannel(cwd: string): string {
 	}
 }
 
-/** Select the declared toolchain explicitly, isolating child compilers from host overrides. */
+/** Select the pin and isolate child compilers from host overrides. */
 export function pinnedToolchain(tool: string, options: PinnedOptions = {}): PinnedTool {
 	const { cwd = process.cwd(), env = process.env, run = asked } = options;
 	if (!plain.test(tool)) throw new Error(`"${tool}" is not a Rust tool name.`);
@@ -103,12 +102,16 @@ export function pinnedToolchain(tool: string, options: PinnedOptions = {}): Pinn
 		);
 	}
 	if (!path) throw new Error(`rustup named no ${tool} for the toolchain pinned in ${pin}.`);
+	const directory = dirname(path);
 	return {
 		command: path,
 		env: {
 			...childEnv,
-			RUSTC: join(dirname(path), compiler),
-			PATH: `${dirname(path)}${delimiter}${env.PATH ?? ''}`
+			RUSTC: join(directory, compiler),
+			PATH: `${directory}${delimiter}${env.PATH ?? ''}`,
+			DYLD_LIBRARY_PATH: [join(directory, '..', 'lib'), env.DYLD_LIBRARY_PATH]
+				.filter(Boolean)
+				.join(delimiter)
 		}
 	};
 }
