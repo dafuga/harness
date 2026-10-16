@@ -1,0 +1,10 @@
+
+Running 3 tests using 1 worker
+
+  ✓  1 tests/e2e/agent-settings.spec.ts:12:2 › Settings owns the persistent design count at 1440px (277ms)
+  ✓  2 tests/e2e/agent-settings.spec.ts:12:2 › Settings owns the persistent design count at 390px (257ms)
+  ✓  3 tests/e2e/agent-settings.spec.ts:39:1 › the workspace links to Settings and a headless Plan omits the design count (230ms)
+
+  3 passed (1.2s)
+(node:75090) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

@@ -1,0 +1,11 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-itDi5c
+
+ ✓ test/verify-leak.e2e.test.ts (1 test) 10563ms
+   ✓ a check that leaves a daemon running cannot pass, and the daemon is stopped  5932ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  03:53:12
+   Duration  10.75s (transform 24ms, setup 5ms, collect 18ms, tests 10.56s, environment 0ms, prepare 21ms)
+

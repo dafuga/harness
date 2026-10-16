@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "planning.function.plan-reads",
+	"symbol": "planReads",
+	"cases": [
+		{
+			"name": "before an approval",
+			"input": {
+				"unitId": "page.home",
+				"head": "1c5c531d4e3e7ed7438bab1b7beb9347a268c447"
+			},
+			"output": {
+				"plan": "6e05204344ccd57f909884ccca59556dca5546b8f909eec952094f2c8fb9a060"
+			}
+		},
+		{
+			"name": "after the approval",
+			"input": {
+				"unitId": "page.home",
+				"head": "561e6a7c85d07ff630c917698f4fd607826f274a"
+			},
+			"output": {
+				"plan": "6fc419438e2bca889162b1ef03d91580b99a6de7275549264f421b3e0966dbcb"
+			}
+		},
+		{
+			"name": "after an external commit",
+			"input": {
+				"unitId": "page.home",
+				"head": "88975d23729af9feed0fe7d021c17706b76c2daf"
+			},
+			"output": {
+				"plan": "6fc419438e2bca889162b1ef03d91580b99a6de7275549264f421b3e0966dbcb"
+			}
+		}
+	]
+}
