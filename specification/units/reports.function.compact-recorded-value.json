@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.compact-recorded-value",
+	"kind": "function",
+	"title": "Format recorded values",
+	"responsibility": "Formats recorded JSON compactly without changing its values, keeping short arrays and objects together.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/compactRecordedValue.ts"],
+		"symbols": ["compactRecordedValue"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "compactRecordedValue.value",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "compactRecordedValue",
+				"type": "string"
+			}
+		],
+		"errors": [
+			{
+				"name": "serialization",
+				"type": "thrown",
+				"description": "Values JSON cannot serialize, including cycles and BigInt, throw."
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/compactRecordedValue.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/compactRecordedValue.ts"
+			}
+		]
+	},
+	"scenarios": ["shared-test-cases"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

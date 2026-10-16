@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { artifactCases } from '../utils/artifactCases';
+	import { compactRecordedValue } from '../utils/compactRecordedValue';
 	let {
 		document,
 		unit,
@@ -18,11 +19,10 @@
 	let observed = $derived(
 		callable ? `${seen}; it is not a direct call of this function.` : `${seen}.`
 	);
-	/** What a person reads at once of one value. */
+	let expanded = $state(false);
 	const most = 4000;
-	// A value is written as it was recorded, a string in quotes: false is never taken for "false".
 	const said = (value: unknown) => {
-		const text = JSON.stringify(value, null, 2) ?? 'Not recorded';
+		const text = compactRecordedValue(value);
 		return text.length > most ? `${text.slice(0, most)}\n… (shortened)` : text;
 	};
 </script>
@@ -46,8 +46,8 @@
 				{#each read.cases as item, position (position)}
 					<tr>
 						<th scope="row">{item.name}</th>
-						<td><pre>{said(item.input)}</pre></td>
-						<td>
+						<td data-label="Input"><pre>{said(item.input)}</pre></td>
+						<td data-label="Observed output">
 							{#if item.failed}
 								<span class="cases-error">Observed error</span>
 								<pre>{said(item.error)}</pre>
@@ -59,55 +59,103 @@
 				{/each}
 			</tbody>
 		</table>
+		<details bind:open={expanded}>
+			<summary>Full recorded values</summary>
+			{#if expanded}<pre>{JSON.stringify(document, null, 2)}</pre>{/if}
+		</details>
 	</div>
 {/if}
 
 <style>
 	.cases {
-		overflow-x: auto;
+		container-type: inline-size;
 	}
 	.cases-note {
-		margin: 0 0 8px;
+		margin: 0 0 12px;
 		font-size: 0.85rem;
-		opacity: 0.8;
+		opacity: 0.75;
 	}
 	table {
 		width: 100%;
-		border-collapse: collapse;
-		font-size: 0.85rem;
+		border-collapse: separate;
 	}
-	th,
-	td {
-		padding: 8px 10px 8px 0;
-		border-top: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+	thead {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+	}
+	tbody {
+		counter-reset: cases;
+	}
+	tbody tr {
+		counter-increment: cases;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		gap: 14px;
+		margin: 0 0 14px;
+		padding: 16px;
+		border: 1px solid #2c4254;
+		border-radius: 12px;
+		background: #10212e;
+	}
+	th {
+		grid-column: 1 / -1;
 		text-align: left;
-		vertical-align: top;
+		font-size: 0.95rem;
+		line-height: 1.5;
 	}
-	thead th {
-		border-top: 0;
-		font-weight: 600;
-		opacity: 0.8;
-		white-space: nowrap;
+	tbody th::before {
+		content: 'Case ' counter(cases, decimal-leading-zero);
+		display: block;
+		margin-bottom: 4px;
+		font-size: 0.7rem;
+		font-weight: 500;
+		color: #9aafc0;
 	}
-	tbody th {
-		min-width: 12ch;
-		font-weight: 600;
+	td {
+		min-width: 0;
+		padding: 14px;
+		border: 1px solid #263d4d;
+		border-radius: 8px;
+		background: #0b1821;
 	}
-	pre {
-		/* A value keeps a line that can be read: where there is no room the table scrolls. */
-		min-width: 20ch;
+	td::before {
+		content: attr(data-label);
+		display: block;
+		margin-bottom: 10px;
+		font: 600 0.75rem system-ui;
+		color: #a9bfd0;
+	}
+	.cases pre {
 		margin: 0;
-		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-		font-size: 0.8rem;
+		max-height: 19rem;
+		overflow: auto;
 		white-space: pre-wrap;
-		overflow-wrap: anywhere;
+		overflow-wrap: normal;
+		font:
+			0.78rem/1.6 ui-monospace,
+			SFMono-Regular,
+			Menlo,
+			monospace;
+		color: #d5e4ef;
 	}
 	.cases-error {
-		display: inline-block;
-		margin-bottom: 4px;
-		padding: 1px 8px;
-		border: 1px solid currentColor;
-		border-radius: 999px;
+		display: block;
+		margin-bottom: 6px;
+		color: #f5bd69;
 		font-size: 0.75rem;
+	}
+	summary {
+		cursor: pointer;
+		padding: 8px 0;
+		font-size: 0.8rem;
+		color: #b6cad9;
+	}
+	@container (max-width: 800px) {
+		tbody tr {
+			grid-template-columns: minmax(0, 1fr);
+		}
 	}
 </style>
