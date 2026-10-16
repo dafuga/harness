@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pL90hZ/packages/desktop
+
+ ✓ test/catalog-listing.test.ts (4 tests) 1301ms
+   ✓ what is left out of the list is still opened by its identity, with its sources and history  528ms
+   ✓ the same identity is listed at the earlier commit where it renders, as it was there  443ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  23:55:07
+   Duration  1.64s (transform 109ms, setup 0ms, collect 176ms, tests 1.30s, environment 0ms, prepare 26ms)
+

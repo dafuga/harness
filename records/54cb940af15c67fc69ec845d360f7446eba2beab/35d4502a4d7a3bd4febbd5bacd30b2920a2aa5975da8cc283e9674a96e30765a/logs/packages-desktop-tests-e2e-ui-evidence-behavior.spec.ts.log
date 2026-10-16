@@ -1,0 +1,12 @@
+
+Running 5 tests using 1 worker
+
+(node:7154) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/ui-evidence-behavior.spec.ts:34:1 › a function at its branch tip shows the one run that was recorded, with what it was asked and answered (419ms)
+  ✓  2 tests/e2e/ui-evidence-behavior.spec.ts:66:1 › a commit says what changed in the behaviour only once both results were read (353ms)
+  ✓  3 tests/e2e/ui-evidence-behavior.spec.ts:94:1 › bytes that do not have the recorded hash are not read, and the behaviour stays unknown (356ms)
+  ✓  4 tests/e2e/ui-evidence-behavior.spec.ts:114:1 › a request the backend refuses is shown as refused, never as an empty result (313ms)
+  ✓  5 tests/e2e/ui-evidence-behavior.spec.ts:130:1 › a clip is played from checked bytes: one at the tip, and at a commit its absence is said (960ms)
+
+  5 passed (2.9s)

@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pL90hZ
+
+ ✓ test/budget-baseline-preparation.test.ts (2 tests) 8522ms
+   ✓ a prepared baseline whose second verification fails is refused, its failed record kept  4306ms
+   ✓ a valid prepared baseline is returned once its second verification passed  4215ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  01:07:38
+   Duration  8.71s (transform 24ms, setup 5ms, collect 19ms, tests 8.52s, environment 0ms, prepare 20ms)
+

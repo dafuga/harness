@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pL90hZ
+
+ ✓ test/history-index.e2e.test.ts (4 tests) 20879ms
+   ✓ the index is deterministic and names every commit, verified or not  2019ms
+   ✓ a revision carries its graph, comparison, inherited provenance, media and reasons  1003ms
+   ✓ growth and benchmarks are kept per unit, and another profile is a separate series  3428ms
+   ✓ a fresh clone rebuilds the same index from Git alone, and missing media is a stated gap  4931ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  01:15:33
+   Duration  21.08s (transform 30ms, setup 6ms, collect 26ms, tests 20.88s, environment 0ms, prepare 21ms)
+

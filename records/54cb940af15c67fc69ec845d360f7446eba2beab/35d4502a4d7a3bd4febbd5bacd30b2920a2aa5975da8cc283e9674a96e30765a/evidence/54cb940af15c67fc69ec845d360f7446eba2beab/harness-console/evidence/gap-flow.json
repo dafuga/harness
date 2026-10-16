@@ -1,0 +1,33 @@
+{
+  "scenario": "Harness explorer over a fixed synthetic history",
+  "environment": "Chromium against the built reports server",
+  "fixture": "Synthetic Git history seeded for the console",
+  "steps": [
+    "Open /harness/branch/main/functions/function.slugify",
+    "Wait for the mark of a function nobody verified",
+    "Read the address, the heading, the categories and the verification marks"
+  ],
+  "input": {
+    "address": "/harness/branch/main/functions/function.slugify"
+  },
+  "output": {
+    "address": "/harness/branch/main/functions/function.slugify",
+    "heading": "Slugify",
+    "categories": [
+      "Pages",
+      "Shells",
+      "Components",
+      "Functions",
+      "Configs",
+      "Services"
+    ],
+    "category": "Functions",
+    "branch": "main",
+    "commit": "4fba56b3b26c903c662a02f894a51887c8c2286c",
+    "marks": [
+      "Evidence missing",
+      "No end-to-end result is recorded"
+    ],
+    "paths": []
+  }
+}

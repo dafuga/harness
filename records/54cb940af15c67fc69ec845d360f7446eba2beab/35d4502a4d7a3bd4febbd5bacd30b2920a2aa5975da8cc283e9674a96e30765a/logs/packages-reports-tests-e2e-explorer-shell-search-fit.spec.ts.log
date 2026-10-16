@@ -1,0 +1,21 @@
+
+Running 14 tests using 1 worker
+
+(node:57846) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/explorer-shell-search-fit.spec.ts:84:2 › at 1440 pixels the search, closed, focused or open, leaves the revision controls whole (186ms)
+  ✓   2 tests/e2e/explorer-shell-search-fit.spec.ts:103:2 › at 1440 pixels a result opens in place, and with a modifier in another tab (197ms)
+  ✓   3 tests/e2e/explorer-shell-search-fit.spec.ts:84:2 › at 1379 pixels the search, closed, focused or open, leaves the revision controls whole (131ms)
+  ✓   4 tests/e2e/explorer-shell-search-fit.spec.ts:103:2 › at 1379 pixels a result opens in place, and with a modifier in another tab (178ms)
+  ✓   5 tests/e2e/explorer-shell-search-fit.spec.ts:84:2 › at 1300 pixels the search, closed, focused or open, leaves the revision controls whole (119ms)
+  ✓   6 tests/e2e/explorer-shell-search-fit.spec.ts:103:2 › at 1300 pixels a result opens in place, and with a modifier in another tab (176ms)
+  ✓   7 tests/e2e/explorer-shell-search-fit.spec.ts:84:2 › at 1251 pixels the search, closed, focused or open, leaves the revision controls whole (115ms)
+  ✓   8 tests/e2e/explorer-shell-search-fit.spec.ts:103:2 › at 1251 pixels a result opens in place, and with a modifier in another tab (180ms)
+  ✓   9 tests/e2e/explorer-shell-search-fit.spec.ts:84:2 › at 920 pixels the search, closed, focused or open, leaves the revision controls whole (113ms)
+  ✓  10 tests/e2e/explorer-shell-search-fit.spec.ts:103:2 › at 920 pixels a result opens in place, and with a modifier in another tab (175ms)
+  ✓  11 tests/e2e/explorer-shell-search-fit.spec.ts:84:2 › at 768 pixels the search, closed, focused or open, leaves the revision controls whole (109ms)
+  ✓  12 tests/e2e/explorer-shell-search-fit.spec.ts:103:2 › at 768 pixels a result opens in place, and with a modifier in another tab (172ms)
+  ✓  13 tests/e2e/explorer-shell-search-fit.spec.ts:84:2 › at 390 pixels the search, closed, focused or open, leaves the revision controls whole (108ms)
+  ✓  14 tests/e2e/explorer-shell-search-fit.spec.ts:103:2 › at 390 pixels a result opens in place, and with a modifier in another tab (173ms)
+
+  14 passed (2.6s)

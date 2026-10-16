@@ -1,0 +1,13 @@
+
+Running 6 tests using 1 worker
+
+(node:7347) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/ui-function-examples.spec.ts:25:1 › a function is listed and opened without a design picture, and no image is read for it (454ms)
+  ✓  2 tests/e2e/ui-function-examples.spec.ts:56:1 › a function shows what its tests observed, an input beside the output, one row for each (332ms)
+  ✓  3 tests/e2e/ui-function-examples.spec.ts:82:1 › at a selected commit the parent and the commit each have their own rows, or say why not (336ms)
+  ✓  4 tests/e2e/ui-function-examples.spec.ts:97:1 › a page keeps its design picture and its Designs section (188ms)
+  ✓  5 tests/e2e/ui-function-examples.spec.ts:110:2 › in a hosted project a function shows its rows at tablet width, with comments only (326ms)
+  ✓  6 tests/e2e/ui-function-examples.spec.ts:110:2 › in a hosted project a function shows its rows at mobile width, with comments only (281ms)
+
+  6 passed (2.5s)
