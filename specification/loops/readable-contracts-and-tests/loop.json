@@ -2,7 +2,7 @@
 	"name": "readable-contracts-and-tests",
 	"goal": "People understand contracts and recorded input to output without reading JSON; exact data, errors, and evidence gaps stay available",
 	"createdAt": "2026-10-16T18:45:29.943Z",
-	"updatedAt": "2026-10-16T18:57:51.300Z",
+	"updatedAt": "2026-10-16T19:39:56.889Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"steps": [
@@ -37,7 +37,9 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots; keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-16T19:39:56.889Z",
+			"evidence": "Normal repository check stages passed in resumed runs. All 172 desktop browser checks, 14 report browser checks, 13 shared-import guards and 12 evidence-wiring checks pass. Fresh desktop, tablet and mobile captures inspected. Exact source verification follows separately."
 		}
 	],
 	"evaluators": [

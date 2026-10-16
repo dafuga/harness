@@ -21,7 +21,7 @@
 	"states": [
 		{
 			"id": "formatted-values",
-			"title": "Recorded value formatting preserves JSON types",
+			"title": "Readable values preserve their recorded types",
 			"coverage": "required"
 		},
 		{
@@ -77,7 +77,7 @@
 			"id": "recorded-values",
 			"kind": "unit",
 			"runner": "command",
-			"target": "bun ../../test/verification-output.ts vitest test/utils/recorded-value.test.ts test/utils/artifact-cases.test.ts test/components/recorded-value.test.ts test/components/entity-cases.test.ts test/components/entity-behavior.test.ts",
+			"target": "bun x vitest run test/utils/recorded-value.test.ts test/utils/artifact-cases.test.ts test/components/recorded-value.test.ts test/components/entity-cases.test.ts test/components/entity-behavior.test.ts",
 			"cwd": "packages/reports",
 			"timeoutMs": 180000
 		},
@@ -85,7 +85,15 @@
 			"id": "case-units",
 			"kind": "integration",
 			"runner": "command",
-			"target": "bun ../../test/verification-output.ts vitest test/shared-test-cases.test.ts test/contract-panel.test.ts",
+			"target": "bun ../../test/verification-output.ts vitest test/shared-test-cases.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		},
+		{
+			"id": "readable-contracts",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/contract-panel.test.ts",
 			"cwd": "packages/desktop",
 			"timeoutMs": 180000
 		},
@@ -103,7 +111,6 @@
 			"id": "case-runner-output",
 			"kind": "output",
 			"states": [
-				"formatted-values",
 				"case-unit-tests",
 				"component-current",
 				"service-current",
