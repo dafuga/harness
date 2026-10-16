@@ -2,7 +2,7 @@
 	"name": "rust-bundled-library",
 	"goal": "Pinned Rust tools load bundled LLVM on clean macOS without host-owned symlinks; native and Wasm builds retain the pinned compiler and existing budgets.",
 	"createdAt": "2026-10-16T10:53:31.425Z",
-	"updatedAt": "2026-10-16T11:04:11.155Z",
+	"updatedAt": "2026-10-16T12:52:36.100Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"steps": [
@@ -51,7 +51,9 @@
 		{
 			"id": "verify",
 			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and keep pending while proof fails.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-16T12:52:36.100Z",
+			"evidence": "Full check: 3,474 passed. Snapshot be54116e passed seven gates (record 203752e044fd). Cold Rust/Wasm build and prevention guard passed."
 		}
 	],
 	"evaluators": [
