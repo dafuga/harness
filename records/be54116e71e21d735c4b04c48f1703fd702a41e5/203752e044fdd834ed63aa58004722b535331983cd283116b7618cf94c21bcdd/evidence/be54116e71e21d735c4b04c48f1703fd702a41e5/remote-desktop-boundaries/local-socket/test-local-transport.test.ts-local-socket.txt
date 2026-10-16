@@ -1,0 +1,17 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-w9L9y3/packages/desktop
+
+ ✓ test/local-transport.test.ts (6 tests) 14754ms
+   ✓ the bridge works over a socket that only this machine can reach  1828ms
+   ✓ an image of more than a mebibyte crosses the socket in bounded frames and arrives intact  2753ms
+   ✓ two large answers take turns on the socket and a small one does not wait for them  3577ms
+   ✓ each window is its own client: its own project, its own run events, one repository lock  3930ms
+   ✓ a reload keeps the session of its window; closing the window ends its socket and its run only  1785ms
+   ✓ the control port travels over the same socket, with exactly what the page gave  880ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  13:41:00
+   Duration  15.57s (transform 404ms, setup 0ms, collect 652ms, tests 14.75s, environment 0ms, prepare 33ms)
+
+JSON report written to /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-runner-4Yay5j/report.json
