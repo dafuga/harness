@@ -1,0 +1,15 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-MhJrGW/packages/hub[39m
+
+ [32m✓[39m test/utils/hub-design-region.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 17817[2mms[22m[39m
+   [33m[2m✓[22m[39m a revision rectangle reaching the right and bottom edges is kept exactly [33m 3422[2mms[22m[39m
+   [33m[2m✓[22m[39m a revision rectangle that has no width is refused [33m 3354[2mms[22m[39m
+   [33m[2m✓[22m[39m a revision rectangle that has no height is refused [33m 3853[2mms[22m[39m
+   [33m[2m✓[22m[39m a revision rectangle that passes the right edge is refused [33m 3850[2mms[22m[39m
+   [33m[2m✓[22m[39m a revision rectangle that passes the bottom edge is refused [33m 3337[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m5 passed[39m[22m[90m (5)[39m
+[2m   Start at [22m 19:46:35
+[2m   Duration [22m 18.70s[2m (transform 410ms, setup 0ms, collect 666ms, tests 17.82s, environment 0ms, prepare 42ms)[22m
+

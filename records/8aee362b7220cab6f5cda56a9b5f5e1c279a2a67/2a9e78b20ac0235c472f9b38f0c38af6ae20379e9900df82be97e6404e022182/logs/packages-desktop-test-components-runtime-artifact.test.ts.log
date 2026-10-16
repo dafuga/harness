@@ -1,0 +1,48 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-MhJrGW/packages/desktop[39m
+
+ [31m❯[39m test/components/runtime-artifact.test.ts [2m([22m[2m3 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 275[2mms[22m[39m
+[31m   [31m×[31m a read and checked result shows what it was asked, what it answered and what held[39m[32m 62[2mms[22m[39m
+[31m     → expected [ [ 'Case', 'Input', …(1) ], …(1) ] to deeply equal [ [ 'Case', 'Input', …(1) ], …(1) ][39m
+   [32m✓[39m a result that was not read says why, in the words of the backend when it refused[32m 159[2mms[22m[39m
+   [32m✓[39m what was not recorded or is not stored is said, and nothing stands in for it[32m 53[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m test/components/runtime-artifact.test.ts[2m > [22ma read and checked result shows what it was asked, what it answered and what held
+[31m[1mAssertionError[22m: expected [ [ 'Case', 'Input', …(1) ], …(1) ] to deeply equal [ [ 'Case', 'Input', …(1) ], …(1) ][39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[33m@@ -4,9 +4,9 @@[39m
+[2m      "Input",[22m
+[2m      "Observedoutput",[22m
+[2m    ],[22m
+[2m    [[22m
+[2m      "Testobservation",[22m
+[32m-     "{\"searchText\":\"SERVICE\"}",[39m
+[32m-     "[\"Order1042·Servicecall\",\"Order1077·Serviceplan\"]",[39m
+[31m+     "SearchtextTextSERVICE",[39m
+[31m+     "TextOrder1042·ServicecallTextOrder1077·Serviceplan",[39m
+[2m    ],[22m
+[2m  ][22m
+
+[36m [2m❯[22m test/components/runtime-artifact.test.ts:[2m23:21[22m[39m
+    [90m 21| [39m // What it was asked and what it answered are one row of the shared t…
+    [90m 22| [39m [35mconst[39m said [33m=[39m (value[33m:[39m unknown) [33m=>[39m [34mflat[39m([33mJSON[39m[33m.[39m[34mstringify[39m(value))[33m;[39m
+    [90m 23| [39m [34mexpect[39m([34mrows[39m(body))[33m.[39m[34mtoEqual[39m([
+    [90m   | [39m                    [31m^[39m
+    [90m 24| [39m  [[32m'Case'[39m[33m,[39m [32m'Input'[39m[33m,[39m [32m'Observedoutput'[39m][33m,[39m
+    [90m 25| [39m  [
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m2 passed[39m[22m[90m (3)[39m
+[2m   Start at [22m 19:26:57
+[2m   Duration [22m 994ms[2m (transform 342ms, setup 0ms, collect 523ms, tests 275ms, environment 0ms, prepare 39ms)[22m
+
+
+::error file=/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-MhJrGW/packages/desktop/test/components/runtime-artifact.test.ts,title=test/components/runtime-artifact.test.ts > a read and checked result shows what it was asked%2C what it answered and what held,line=23,column=21::AssertionError: expected [ [ 'Case', 'Input', …(1) ], …(1) ] to deeply equal [ [ 'Case', 'Input', …(1) ], …(1) ]%0A%0A- Expected%0A+ Received%0A%0A@@ -4,9 +4,9 @@%0A      "Input",%0A      "Observedoutput",%0A    ],%0A    [%0A      "Testobservation",%0A-     "{\"searchText\":\"SERVICE\"}",%0A-     "[\"Order1042·Servicecall\",\"Order1077·Serviceplan\"]",%0A+     "SearchtextTextSERVICE",%0A+     "TextOrder1042·ServicecallTextOrder1077·Serviceplan",%0A    ],%0A  ]%0A%0A ❯ test/components/runtime-artifact.test.ts:23:21%0A%0A
