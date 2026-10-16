@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Rcsnv9
+
+ ✓ test/cli.e2e.test.ts (4 tests) 34671ms
+   ✓ CLI scaffolds and checks a lib project  12373ms
+   ✓ CLI scaffolds and checks an app project with routes  18141ms
+   ✓ CLI reports edge errors cleanly  1313ms
+   ✓ CLI supports force overwrites and generated lint failures  2843ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  10:49:15
+   Duration  34.88s (transform 24ms, setup 5ms, collect 14ms, tests 34.67s, environment 0ms, prepare 21ms)
+

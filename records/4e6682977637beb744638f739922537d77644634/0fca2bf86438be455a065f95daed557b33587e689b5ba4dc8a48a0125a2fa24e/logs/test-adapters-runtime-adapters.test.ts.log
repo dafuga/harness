@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Rcsnv9
+
+ ✓ test/adapters/runtime-adapters.test.ts (5 tests) 1503ms
+   ✓ process runtime reports malformed output, crashes, timeouts and missing binaries  486ms
+   ✓ persistent process runtime keeps one process, and recovers after a timeout  492ms
+   ✓ HTTP runtime reports bad status, malformed bodies, timeouts and refused connections  319ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  10:49:08
+   Duration  1.73s (transform 36ms, setup 5ms, collect 35ms, tests 1.50s, environment 0ms, prepare 22ms)
+

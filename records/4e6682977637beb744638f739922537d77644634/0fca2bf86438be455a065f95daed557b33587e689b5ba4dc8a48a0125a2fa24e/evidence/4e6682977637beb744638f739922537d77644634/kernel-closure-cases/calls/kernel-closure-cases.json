@@ -1,0 +1,323 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.kernel-closure",
+	"symbol": "kernelClosure",
+	"source": {
+		"path": "src/utils/kernelClosure.ts",
+		"sha256": "db211bceddb4c01c09e53fb4c797c499c8bdd84333c306cfc5039d7806feddb0"
+	},
+	"cases": [
+		{
+			"name": "a changed seed reaches its dependents one, two and three hops away in both graphs",
+			"input": {
+				"base": {
+					"nodes": [
+						"a",
+						"b",
+						"c",
+						"t"
+					],
+					"edges": [
+						[
+							1,
+							0
+						],
+						[
+							2,
+							1
+						],
+						[
+							3,
+							2
+						]
+					]
+				},
+				"head": {
+					"nodes": [
+						"a",
+						"b",
+						"c",
+						"t"
+					],
+					"edges": [
+						[
+							1,
+							0
+						],
+						[
+							2,
+							1
+						],
+						[
+							3,
+							2
+						]
+					]
+				},
+				"changed": [
+					"a"
+				],
+				"uncertain": [],
+				"sinks": [
+					"t"
+				]
+			},
+			"output": {
+				"affected": [
+					{
+						"id": "a",
+						"distance": 0,
+						"via": "both",
+						"presence": "both",
+						"seed": "changed"
+					},
+					{
+						"id": "b",
+						"distance": 1,
+						"via": "both",
+						"presence": "both",
+						"seed": null
+					},
+					{
+						"id": "c",
+						"distance": 2,
+						"via": "both",
+						"presence": "both",
+						"seed": null
+					},
+					{
+						"id": "t",
+						"distance": 3,
+						"via": "both",
+						"presence": "both",
+						"seed": null
+					}
+				],
+				"uncovered": [],
+				"unknown": []
+			}
+		},
+		{
+			"name": "a removed seed follows the head nodes; its surviving dependent is reached through base",
+			"input": {
+				"base": {
+					"nodes": [
+						"lib",
+						"app",
+						"old"
+					],
+					"edges": [
+						[
+							1,
+							2
+						],
+						[
+							1,
+							0
+						]
+					]
+				},
+				"head": {
+					"nodes": [
+						"lib",
+						"app"
+					],
+					"edges": [
+						[
+							1,
+							0
+						]
+					]
+				},
+				"changed": [
+					"old"
+				],
+				"uncertain": [],
+				"sinks": [
+					"app"
+				]
+			},
+			"output": {
+				"affected": [
+					{
+						"id": "app",
+						"distance": 1,
+						"via": "base",
+						"presence": "both",
+						"seed": null
+					},
+					{
+						"id": "old",
+						"distance": 0,
+						"via": "base",
+						"presence": "removed",
+						"seed": "changed"
+					}
+				],
+				"uncovered": [],
+				"unknown": []
+			}
+		},
+		{
+			"name": "a changed id no sink depends on is uncovered; one in neither graph is unknown",
+			"input": {
+				"base": {
+					"nodes": [
+						"x",
+						"y",
+						"t"
+					],
+					"edges": [
+						[
+							2,
+							1
+						]
+					]
+				},
+				"head": {
+					"nodes": [
+						"x",
+						"y",
+						"t"
+					],
+					"edges": [
+						[
+							2,
+							1
+						]
+					]
+				},
+				"changed": [
+					"x",
+					"ghost"
+				],
+				"uncertain": [],
+				"sinks": [
+					"t"
+				]
+			},
+			"output": {
+				"affected": [
+					{
+						"id": "x",
+						"distance": 0,
+						"via": "both",
+						"presence": "both",
+						"seed": "changed"
+					}
+				],
+				"uncovered": [
+					"x"
+				],
+				"unknown": [
+					"ghost"
+				]
+			}
+		},
+		{
+			"name": "an uncertain id seeds its dependents beside a changed seed, up to a node added in head",
+			"input": {
+				"base": {
+					"nodes": [
+						"cfg",
+						"api",
+						"core",
+						"t"
+					],
+					"edges": [
+						[
+							1,
+							0
+						],
+						[
+							3,
+							1
+						],
+						[
+							3,
+							2
+						]
+					]
+				},
+				"head": {
+					"nodes": [
+						"cfg",
+						"api",
+						"core",
+						"t",
+						"new"
+					],
+					"edges": [
+						[
+							1,
+							0
+						],
+						[
+							3,
+							1
+						],
+						[
+							3,
+							2
+						],
+						[
+							4,
+							1
+						]
+					]
+				},
+				"changed": [
+					"core"
+				],
+				"uncertain": [
+					"cfg"
+				],
+				"sinks": [
+					"t"
+				]
+			},
+			"output": {
+				"affected": [
+					{
+						"id": "cfg",
+						"distance": 0,
+						"via": "both",
+						"presence": "both",
+						"seed": "uncertain"
+					},
+					{
+						"id": "api",
+						"distance": 1,
+						"via": "both",
+						"presence": "both",
+						"seed": null
+					},
+					{
+						"id": "core",
+						"distance": 0,
+						"via": "both",
+						"presence": "both",
+						"seed": "changed"
+					},
+					{
+						"id": "t",
+						"distance": 1,
+						"via": "both",
+						"presence": "both",
+						"seed": null
+					},
+					{
+						"id": "new",
+						"distance": 2,
+						"via": "head",
+						"presence": "added",
+						"seed": null
+					}
+				],
+				"uncovered": [],
+				"unknown": []
+			}
+		}
+	]
+}

@@ -1,0 +1,18 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Rcsnv9/packages/hub
+
+ ✓ test/test-preview-refusal.test.ts (3 tests) 1733ms
+   ✓ a server that already answers on the preview port is refused, and no test is run on it  475ms
+   ✓ a port override that is no port is refused by its name before anything starts  1022ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  10:02:44
+   Duration  1.92s (transform 15ms, setup 0ms, collect 14ms, tests 1.73s, environment 0ms, prepare 26ms)
+

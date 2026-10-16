@@ -1,0 +1,20 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Rcsnv9/packages/desktop
+
+ ✓ test/run-integration.test.ts (9 tests) 35052ms
+   ✓ Plan uses read-only CLI and saves a committed immutable version without claiming verification  3339ms
+   ✓ approval alone never runs and Change records untracked and previously dirty source deltas  5475ms
+   ✓ stale approval is rejected before agent execution  4017ms
+   ✓ image generation failure creates no invented image or successful completion  2216ms
+   ✓ failed Change never records a completed outcome  4269ms
+   ✓ cancelled Change records cancellation and cannot cancel another run ID  4422ms
+   ✓ observed host writes retain actual absolute path and hashes in committed change history  4192ms
+   ✓ visual provenance stores actual image orchestration model and exact full generator prompt  2992ms
+   ✓ Plan refuses a generation whose expected latest version changed while the image was running  4130ms
+
+ Test Files  1 passed (1)
+      Tests  9 passed (9)
+   Start at  11:06:29
+   Duration  35.49s (transform 142ms, setup 0ms, collect 252ms, tests 35.05s, environment 0ms, prepare 26ms)
+
+JSON report written to /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-runner-jG7Xgm/report.json
