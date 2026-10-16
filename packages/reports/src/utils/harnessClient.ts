@@ -15,7 +15,18 @@ export interface HarnessClient {
  * Fetches console data on demand from the protected endpoints. The index is one request; a
  * revision's detail is fetched only when that revision is looked at, and media only when shown.
  */
-export function harnessClient(base: string, fetcher: typeof fetch = fetch): HarnessClient {
+export function harnessClient(base: string, fetcher?: typeof fetch): HarnessClient {
+	// Each screen of the explorer is a page of its own: they share what one of them has read.
+	const shared = fetcher ? undefined : clients.get(base);
+	if (shared) return shared;
+	const client = reading(base, fetcher ?? fetch);
+	if (!fetcher) clients.set(base, client);
+	return client;
+}
+
+const clients = new Map<string, HarnessClient>();
+
+function reading(base: string, fetcher: typeof fetch): HarnessClient {
 	const cache = new Map<string, Promise<unknown>>();
 	const load = <Result>(path: string): Promise<Result> => {
 		const pending =

@@ -1,0 +1,81 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.planning-convert",
+	"kind": "function",
+	"title": "planningConvert",
+	"responsibility": "Owns the planningConvert shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/planningConvert.ts"],
+		"symbols": ["planningConvert", "approvalInfo", "threadInfo", "messageInfo"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "planningConvert.plan",
+				"type": "PlanDetail"
+			},
+			{
+				"name": "approvalInfo.record",
+				"type": "ApprovalRecord"
+			},
+			{
+				"name": "threadInfo.thread",
+				"type": "PlanThread"
+			},
+			{
+				"name": "messageInfo.message",
+				"type": "StoredMessage"
+			}
+		],
+		"outputs": [
+			{
+				"name": "planningConvert",
+				"type": "EntityContract"
+			},
+			{
+				"name": "approvalInfo",
+				"type": "ApprovalInfo"
+			},
+			{
+				"name": "threadInfo",
+				"type": "ThreadInfo"
+			},
+			{
+				"name": "messageInfo",
+				"type": "ThreadMessage"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/planningConvert.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/planningConvert.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

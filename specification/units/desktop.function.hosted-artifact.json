@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.hosted-artifact",
+	"kind": "function",
+	"title": "hostedArtifact",
+	"responsibility": "Owns the hostedArtifact shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/hostedArtifact.ts"],
+		"symbols": ["hostedArtifact"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hostedArtifact.media",
+				"type": "{ bytes: Uint8Array; mediaType: string }"
+			},
+			{
+				"name": "hostedArtifact.sha256",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hostedArtifact",
+				"type": "Promise<EvidenceArtifactResult>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.artifact-answer",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/hostedArtifact.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/hostedArtifact.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,145 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.planning-writes",
+	"kind": "function",
+	"title": "planningWrites",
+	"responsibility": "Owns the planningWrites shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/planningWrites.ts"],
+		"symbols": [
+			"reviewer",
+			"planningWrites",
+			"ensurePlan",
+			"addPlanDesign",
+			"openPlanThread",
+			"approvePlanDesign"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "planningWrites.context",
+				"type": "PlanningContext"
+			},
+			{
+				"name": "planningWrites.draft",
+				"type": "PlanDraft"
+			},
+			{
+				"name": "ensurePlan.context",
+				"type": "PlanningContext"
+			},
+			{
+				"name": "ensurePlan.unit",
+				"type": "ComponentManifest"
+			},
+			{
+				"name": "addPlanDesign.context",
+				"type": "PlanningContext"
+			},
+			{
+				"name": "addPlanDesign.draft",
+				"type": "DesignDraft"
+			},
+			{
+				"name": "openPlanThread.context",
+				"type": "PlanningContext"
+			},
+			{
+				"name": "openPlanThread.draft",
+				"type": "ThreadDraft"
+			},
+			{
+				"name": "approvePlanDesign.context",
+				"type": "PlanningContext"
+			},
+			{
+				"name": "approvePlanDesign.draft",
+				"type": "ApprovalDraft"
+			}
+		],
+		"outputs": [
+			{
+				"name": "reviewer",
+				"type": "unknown"
+			},
+			{
+				"name": "planningWrites",
+				"type": "unknown"
+			},
+			{
+				"name": "ensurePlan",
+				"type": "unknown"
+			},
+			{
+				"name": "addPlanDesign",
+				"type": "unknown"
+			},
+			{
+				"name": "openPlanThread",
+				"type": "unknown"
+			},
+			{
+				"name": "approvePlanDesign",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.planning-convert",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.planning-reads",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.planning-port-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "module.contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/planningWrites.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/planningWrites.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-project-runs", "agent-creation", "shells-shared-app"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

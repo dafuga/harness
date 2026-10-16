@@ -1,0 +1,80 @@
+import { expect } from '../../../test/verificationExpect';
+import { test, vi } from 'vitest';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import { PNG } from 'pngjs';
+import { fixture, git } from './project-fixture';
+
+/**
+ * One entity request reads the complete planning snapshot of its revision once, and its listing
+ * and its plan come from that one read. Nothing is kept between requests: the next one reads again.
+ */
+async function planned() {
+	const f = await fixture();
+	const plan = await f.planning.createPlan({ category: 'pages', title: 'Proposal', goal: 'Page' });
+	const draft = {
+		...{ entityId: plan.id, prompt: 'Image proposal', baseRevision: f.tip, state: 'default' },
+		generator: { provider: 'codex' as const, model: 'fixture' },
+		...{ viewport: 'desktop', bytes: PNG.sync.write(new PNG({ width: 2, height: 2 })) }
+	};
+	const design = await f.planning.addDesign(draft);
+	const [image] = design.images;
+	await f.planning.openThread({
+		...{ entityId: plan.id, version: design.version, imageSha256: image.sha256 },
+		...{ state: 'default', viewport: 'desktop', region: null }
+	});
+	const record = await f.planning.plans(git(f.root, 'rev-parse', 'HEAD'));
+	const contractHash = record.find((p) => p.id === plan.id)!.contract.hash!;
+	const imageHashes = [image.sha256];
+	await f.planning.approve({
+		entityId: plan.id,
+		version: design.version,
+		imageHashes,
+		contractHash
+	});
+	return { ...f, plan, draft, design, head: git(f.root, 'rev-parse', 'HEAD') };
+}
+
+test('an entity request reads the planning snapshot once and shows the plan of that read', async () => {
+	const f = await planned();
+	const held = (await f.planning.plans(f.head)).find((p) => p.id === f.plan.id)!;
+	const reads = vi.spyOn(f.planning, 'plans');
+	const detail = await f.catalog.entity(f.plan.id, f.head);
+	const home = await f.catalog.entity('page.home', f.head);
+	expect(detail).toMatchObject({ id: held.id, planned: true, approvedVersion: f.design.version });
+	expect(detail).toMatchObject({ contract: held.contract, versions: held.versions });
+	expect([detail.threads, detail.threads.length]).toEqual([held.threads, 1]);
+	expect(detail.history.map((h) => h.commit)).toContain(f.head);
+	expect(home).toMatchObject({ versions: [], threads: [], sources: ['src/pages/Home.ts'] });
+	// One complete read for each of the two requests.
+	expect(reads.mock.calls).toEqual([[f.head], [f.head]]);
+}, 20000);
+
+test('each request reads again, so a design saved between two requests is in the second', async () => {
+	const f = await planned();
+	const reads = vi.spyOn(f.planning, 'plans');
+	const first = await f.catalog.entity(f.plan.id, f.head);
+	await f.planning.addDesign({ ...f.draft, prompt: 'Second proposal', baseRevision: f.head });
+	const latest = git(f.root, 'rev-parse', 'HEAD');
+	const second = await f.catalog.entity(f.plan.id, latest);
+	const again = await f.catalog.entity(f.plan.id, f.head);
+	expect(second.versions.map((v) => v.version)).toEqual([f.design.version, 'v002']);
+	expect([second.approvedVersion, second.versions[0].approval?.current]).toEqual([null, false]);
+	expect(again).toEqual(first);
+	expect(reads.mock.calls).toEqual([[f.head], [latest], [f.head]]);
+}, 20000);
+
+test('an entity that is not held and a corrupt plan fail as they did, after one read', async () => {
+	const f = await planned();
+	const reads = vi.spyOn(f.planning, 'plans');
+	const missing = f.catalog.entity('page.never-held', f.head);
+	await expect(missing).rejects.toThrow('Entity not found at this revision.');
+	await mkdir(join(f.root, 'src/functions/broken'), { recursive: true });
+	await writeFile(join(f.root, 'src/functions/broken/plan.json'), '{');
+	git(f.root, 'add', '.');
+	git(f.root, 'commit', '-m', 'corrupt plan');
+	const broken = git(f.root, 'rev-parse', 'HEAD');
+	const corrupt = f.catalog.entity(f.plan.id, broken);
+	await expect(corrupt).rejects.toThrow(/^src\/functions\/broken\/plan\.json: /);
+	expect(reads.mock.calls).toEqual([[f.head], [broken]]);
+}, 20000);

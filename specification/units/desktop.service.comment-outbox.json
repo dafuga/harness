@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.service.comment-outbox",
+	"kind": "service",
+	"title": "CommentOutboxService",
+	"responsibility": "Owns the CommentOutboxService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/services/CommentOutboxService.ts"],
+		"symbols": [
+			"CommentOutboxService",
+			"CommentOutboxService.constructor",
+			"CommentOutboxService.save",
+			"CommentOutboxService.list"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "CommentOutboxService.constructor.file",
+				"type": "string"
+			},
+			{
+				"name": "CommentOutboxService.save.input",
+				"type": "HumanCommentDraft"
+			},
+			{
+				"name": "CommentOutboxService.list.projectId",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "CommentOutboxService.save",
+				"type": "Promise<PendingComment>"
+			},
+			{
+				"name": "CommentOutboxService.list",
+				"type": "Promise<PendingComment[]>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.adapter.local-document",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.project-context-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/services/CommentOutboxService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/services/CommentOutboxService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

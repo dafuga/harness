@@ -1,5 +1,8 @@
 import type { HarnessReview, HarnessUnitLimits } from './HarnessBudget.types';
+import type { HarnessLegacyReport } from './HarnessLegacy.types';
 import type { Status } from './Report.types';
+
+export type * from './HarnessLegacy.types';
 
 /** The parts of the history index and revision files the console reads. */
 export interface HarnessRecordSummary {
@@ -23,6 +26,11 @@ export interface HarnessRevisionSummary {
 	gaps: string[];
 	records: HarnessRecordSummary[];
 	legacy: string[];
+	/**
+	 * The units the commit changed itself against its first parent. Null when that could not be
+	 * read; absent in a history built before it was kept, which then does not say.
+	 */
+	changes?: { base: string | null; direct: string[]; added: string[]; removed: string[] } | null;
 }
 export interface HarnessSeries {
 	profile: string;
@@ -49,32 +57,6 @@ export interface HarnessGrowthPoint {
 	/** Per metric: why it has no value here, or what its value leaves out. */
 	notes?: Record<string, string>;
 }
-export interface HarnessLegacyMedia {
-	id: string;
-	title: string;
-	status: string;
-	mediaType?: string;
-	capturedAt?: string;
-	viewport?: string;
-	media: string | null;
-	gap?: string;
-}
-/** A report from before Git-backed records, exactly as it was recorded. */
-export interface HarnessLegacyReport {
-	id: string;
-	title: string;
-	mode: string;
-	environment: string;
-	status: string;
-	startedAt: string;
-	revision: string | null;
-	/** The commit of this repository the report names, or null with `gap`. */
-	linked: string | null;
-	gap?: string;
-	summary: string;
-	checks: Array<{ id: string; title: string; status: string }>;
-	media: HarnessLegacyMedia[];
-}
 export interface HarnessIndex {
 	branches: Array<{ name: string; head: string }>;
 	revisions: HarnessRevisionSummary[];
@@ -94,7 +76,11 @@ export interface HarnessUnit extends HarnessUnitLimits {
 	dependencies: Array<{ unit: string; via: string }>;
 	scenarios: string[];
 	owns: { source: string[]; symbols: string[] };
-	contract: Record<'inputs' | 'outputs' | 'errors', Array<{ name: string; type: string }>>;
+	/** Each item may say in words what it is: a declared contract does, a derived one does not. */
+	contract: Record<
+		'inputs' | 'outputs' | 'errors',
+		Array<{ name: string; type: string; description?: string }>
+	>;
 	runtime: { kind: string; targets: Array<{ kind: string; entry: string }> };
 	budgets: {
 		size: string;
@@ -108,9 +94,12 @@ export interface HarnessScenario {
 	title: string;
 	kind: string;
 	units: string[];
-	states: Array<{ id: string; coverage: string; reason?: string }>;
+	/** `units` names what a state shows; a unit no state names is under every state. */
+	states: Array<{ id: string; coverage: string; reason?: string; units?: string[] }>;
 	viewports: Array<{ id: string; width: number; height: number }>;
 	tests: Array<{ id: string; kind: string; runner: string }>;
+	/** What each state must be recorded with; absent in a history built before it was kept. */
+	evidence?: Array<{ id: string; kind: string; states: string[]; viewports: string[] }>;
 }
 export interface HarnessCapture {
 	evidence: string;
@@ -148,6 +137,8 @@ export interface HarnessRecord {
 		testedRevision: string;
 		inherited: boolean;
 		origin: { record: string; commit: string };
+		/** For inherited evidence: the checks its origin record ran; absent when not recorded. */
+		originTests?: Array<{ id: string; status: string }>;
 		states: Array<{ id: string; coverage: string; reason?: string; captures: HarnessCapture[] }>;
 	}>;
 	measurements: Array<{
@@ -212,6 +203,9 @@ export interface HarnessRevision {
 	/** Path of the stored side of this revision's source tree; null when it could not be read. */
 	side?: string | null;
 	records: HarnessRecord[];
+	/** The reasons for what this commit itself changed against its first parent. */
 	explanations: HarnessExplanation[];
+	/** How many more its notes and records hold for other commits of a range verified here. */
+	rangeReasons?: number;
 }
 export type HarnessMark = 'direct' | 'indirect' | 'added' | 'removed';

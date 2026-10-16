@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.invite-accept",
+	"kind": "component",
+	"title": "InviteAccept",
+	"responsibility": "Owns the InviteAccept Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/components/InviteAccept.svelte"],
+		"symbols": ["InviteAccept"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "InviteAccept.projectId",
+				"type": "string"
+			},
+			{
+				"name": "InviteAccept.invitationId",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "InviteAccept",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/InviteAccept.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/InviteAccept.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

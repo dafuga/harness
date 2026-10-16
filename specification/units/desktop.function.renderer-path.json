@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.renderer-path",
+	"kind": "function",
+	"title": "rendererPath",
+	"responsibility": "Owns the rendererPath shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/rendererPath.ts"],
+		"symbols": ["RendererRoute", "rendererPath"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "rendererPath.path",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "rendererPath",
+				"type": "RendererRoute"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/rendererPath.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/rendererPath.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

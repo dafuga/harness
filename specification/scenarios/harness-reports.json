@@ -1,13 +1,12 @@
 {
 	"schemaVersion": 1,
 	"id": "harness-reports",
-	"title": "Report hub, report pages and analytics of the hosting site",
+	"title": "Reports of the hosting site as their export shows them, and where the removed report and analytics screens lead",
 	"kind": "ui",
 	"units": [
 		"reports.page.harness-reports",
 		"reports.page.harness-reports-id",
 		"reports.page.harness-analytics",
-		"reports.component.hub-view",
 		"reports.component.report-view",
 		"reports.component.report-summary",
 		"reports.component.report-checks",
@@ -19,40 +18,35 @@
 		"reports.component.audio-comparison",
 		"reports.component.audio-comparison-viewer",
 		"reports.component.audio-evidence",
-		"reports.component.analytics-history",
-		"reports.component.analytics-filters",
-		"reports.component.analytics-cpu",
 		"reports.repository.site-report",
-		"reports.service.harness-analytics",
 		"reports.service.report-export",
 		"reports.serializer.report-export",
-		"reports.component.project-activity",
-		"reports.component.activity-agents",
-		"reports.component.activity-loops",
-		"reports.component.activity-work",
-		"reports.component.activity-files",
-		"reports.function.site-activity",
-		"reports.endpoint.api-project-activity",
-		"reports.component.activity-list",
-		"reports.component.site-activity",
-		"reports.function.activity-reading",
-		"reports.function.activity-client",
-		"reports.function.activity-display"
+		"reports.endpoint.api-reports-id-type-file"
 	],
 	"states": [
 		{
-			"id": "hub",
-			"title": "Report hub listing the reports of this site",
+			"id": "retired-hub",
+			"title": "The explorer page that the address of the removed report hub leads to",
 			"coverage": "required"
 		},
 		{
-			"id": "report",
-			"title": "Report page with its summary, checks and coverage",
+			"id": "retired-report",
+			"title": "The explorer page that the address of a removed report page leads to",
+			"coverage": "required"
+		},
+		{
+			"id": "retired-analytics",
+			"title": "The explorer page that the address of the removed analytics dashboard leads to",
+			"coverage": "required"
+		},
+		{
+			"id": "exported",
+			"title": "Exported report with its summary, checks and coverage, as the server serves it",
 			"coverage": "required"
 		},
 		{
 			"id": "gallery",
-			"title": "Evidence gallery of a report",
+			"title": "Evidence gallery of the exported report",
 			"coverage": "required"
 		},
 		{
@@ -67,62 +61,7 @@
 		},
 		{
 			"id": "audio",
-			"title": "Paired recording in the audio comparison viewer",
-			"coverage": "required"
-		},
-		{
-			"id": "analytics",
-			"title": "Analytics dashboard of this site",
-			"coverage": "required"
-		},
-		{
-			"id": "exported",
-			"title": "Exported portable report opened as a file",
-			"coverage": "required"
-		},
-		{
-			"id": "activity-agents",
-			"title": "Activity of the fixture application as its server reads it: one agent working with its assignment, one stale and one finished, counted as one",
-			"coverage": "required"
-		},
-		{
-			"id": "activity-files",
-			"title": "Activity of the fixture application as its server reads it: files not committed in a checkout and committed files, with their components",
-			"coverage": "required"
-		},
-		{
-			"id": "activity-work",
-			"title": "Activity of the fixture application as its server reads it: recent commits, the newest with its components and noted reason disclosed",
-			"coverage": "required"
-		},
-		{
-			"id": "activity-loops",
-			"title": "Activity of the fixture application as its server reads it: the loop types the project uses with their outcomes",
-			"coverage": "required"
-		},
-		{
-			"id": "activity-busy",
-			"title": "A busy repository as a short first view, from a made-up reading served to the page: twelve agents, forty-four uncommitted files, bounded lists",
-			"coverage": "required"
-		},
-		{
-			"id": "activity-assignments",
-			"title": "A busy repository, from a made-up reading served to the page: the forty assignments of one agent opened",
-			"coverage": "required"
-		},
-		{
-			"id": "activity-expanded",
-			"title": "A busy repository, from a made-up reading served to the page: every commit shown and a change of hundreds of components opened",
-			"coverage": "required"
-		},
-		{
-			"id": "activity-unrefreshed",
-			"title": "A reading that could not be renewed, with the answers of the server withheld: the last one stands and is marked",
-			"coverage": "required"
-		},
-		{
-			"id": "activity-unknown",
-			"title": "A reading older than a minute on a held clock, with the answers of the server withheld: nobody is counted and the owner is not confirmed",
+			"title": "Paired recording in the audio comparison viewer, played from the bytes the report API serves",
 			"coverage": "required"
 		}
 	],
@@ -157,23 +96,14 @@
 			"id": "screens",
 			"kind": "screenshot",
 			"states": [
-				"hub",
-				"report",
+				"retired-hub",
+				"retired-report",
+				"retired-analytics",
+				"exported",
 				"gallery",
 				"viewer",
 				"comparison",
-				"audio",
-				"analytics",
-				"exported",
-				"activity-agents",
-				"activity-files",
-				"activity-work",
-				"activity-loops",
-				"activity-busy",
-				"activity-assignments",
-				"activity-expanded",
-				"activity-unrefreshed",
-				"activity-unknown"
+				"audio"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",

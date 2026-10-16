@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.artifact-bytes",
+	"kind": "function",
+	"title": "artifactBytes",
+	"responsibility": "Owns the artifactBytes shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/artifactBytes.ts"],
+		"symbols": ["unreadArtifact", "damagedArtifact", "artifactBytes"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "artifactBytes.bridge",
+				"type": "Pick<DesktopBridge, 'artifact'>"
+			},
+			{
+				"name": "artifactBytes.query",
+				"type": "EvidenceArtifactQuery"
+			}
+		],
+		"outputs": [
+			{
+				"name": "unreadArtifact",
+				"type": "unknown"
+			},
+			{
+				"name": "damagedArtifact",
+				"type": "unknown"
+			},
+			{
+				"name": "artifactBytes",
+				"type": "Promise<EvidenceArtifactResult>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/artifactBytes.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/artifactBytes.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

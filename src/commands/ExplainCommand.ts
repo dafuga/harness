@@ -20,6 +20,10 @@ export function registerExplainCommand(program: Command): void {
 		.option('--unit <id>', 'Unit whose change is being explained.')
 		.option('--symbol <name>', 'Changed function or symbol; repeat for several.', collect)
 		.option('--all', 'Explain every unexplained change in the range with this one reason.')
+		.option(
+			'--replace',
+			'Also replace a reason that exceeds the writing limits; the earlier one stays stored.'
+		)
 		.option('--behavior <text>', 'What changed in behaviour.')
 		.option('--simplification <text>', 'What was tried to make it simpler.')
 		.option('--simplification-outcome <outcome>', 'improved, not-improved or not-applicable.')

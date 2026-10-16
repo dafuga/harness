@@ -10,6 +10,7 @@ import {
 import { createHash } from 'node:crypto';
 import { statSync } from 'node:fs';
 import { Readable } from 'node:stream';
+import { finished } from 'node:stream/promises';
 
 export class DesktopArchiveAdapter {
 	read(source: string, paths: string[]): Map<string, string> {
@@ -23,7 +24,7 @@ export class DesktopArchiveAdapter {
 		for (const [path, content] of changes) {
 			if (!paths.includes(path)) streams.push(this.file(source, path, Buffer.from(content), {}));
 		}
-		await createPackageFromStreams(target, streams);
+		await finished(await createPackageFromStreams(target, streams), { cleanup: true });
 		return createHash('sha256').update(getRawHeader(target).headerString).digest('hex');
 	}
 

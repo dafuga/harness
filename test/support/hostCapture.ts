@@ -15,7 +15,7 @@ const hostScenario: ScenarioManifest = {
 	title: 'Console installed in a Cloudflare host',
 	kind: 'ui',
 	units: ['function.console-access'],
-	states: [{ id: 'map', title: 'Component map', coverage: 'required' }],
+	states: [{ id: 'pages', title: 'Pages of the explorer', coverage: 'required' }],
 	viewports: [{ id: 'desktop', width: 1440, height: 900 }],
 	tests: [
 		{ id: 'host', kind: 'e2e', runner: 'vitest', target: 'test/console-storage.e2e.test.ts' }
@@ -24,7 +24,7 @@ const hostScenario: ScenarioManifest = {
 		{
 			id: 'screens',
 			kind: 'screenshot',
-			states: ['map'],
+			states: ['pages'],
 			viewports: ['desktop'],
 			provenance: 'actual-capture',
 			build: 'console-host',
@@ -56,8 +56,12 @@ export async function captureHost(
 		await context.addCookies([{ name: 'session', value: sessions.admin, url: worker.url }]);
 		const page = await context.newPage();
 		await page.goto(worker.url + path);
-		await page.getByRole('heading', { level: 1, name: 'Harness' }).waitFor();
-		await page.getByRole('group', { name: 'Component map' }).waitFor();
+		// The explorer opens on Pages: the bar marks that category once the address is resolved.
+		const categories = page
+			.getByRole('banner')
+			.getByRole('navigation', { name: 'Harness categories' });
+		await categories.locator('a[aria-current="page"]', { hasText: 'Pages' }).waitFor();
+		await page.getByRole('heading', { level: 1, name: 'Pages' }).waitFor();
 		const answer = await page.request.get(`${worker.url}/harness/data/build.json`);
 		const reported = (await answer.json()) as HostCapture['reported'];
 		const screenshot = await page.screenshot();
@@ -66,9 +70,9 @@ export async function captureHost(
 			{
 				evidence: 'screens',
 				kind: 'screenshot',
-				state: 'map',
+				state: 'pages',
 				viewport: 'desktop',
-				file: 'map-desktop.png',
+				file: 'pages-desktop.png',
 				mediaType: 'image/png',
 				provenance: 'actual-capture',
 				server

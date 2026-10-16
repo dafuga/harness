@@ -35,7 +35,21 @@
 			"commitBranch",
 			"consoleCanonical",
 			"defaultCommit",
+			"explorerAddress",
+			"explorerExact",
+			"explorerHome",
 			"IndexedHistory",
+			"explorerLegacy",
+			"explorerCategories",
+			"explorerKindCategory",
+			"explorerRoute",
+			"explorerRoutePath",
+			"explorerSections",
+			"explorerTabs",
+			"ExplorerCategory",
+			"ExplorerLocation",
+			"ExplorerSection",
+			"ExplorerTab",
 			"consoleRoute",
 			"consoleRoutePath",
 			"consoleViews",
@@ -87,6 +101,16 @@
 		},
 		{
 			"unit": "function.console-store",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.explorer-legacy",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.explorer-route",
 			"via": "reexport",
 			"origin": "derived"
 		}

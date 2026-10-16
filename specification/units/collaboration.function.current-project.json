@@ -1,0 +1,107 @@
+{
+	"schemaVersion": 1,
+	"id": "collaboration.function.current-project",
+	"kind": "function",
+	"title": "currentProject",
+	"responsibility": "Owns the currentProject shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/collaboration/src/utils/currentProject.ts"],
+		"symbols": ["currentProject", "readRecords", "transaction", "now"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "currentProject.records",
+				"type": "CollaborationRecords"
+			},
+			{
+				"name": "currentProject.actor",
+				"type": "Actor"
+			},
+			{
+				"name": "currentProject.projectId",
+				"type": "string"
+			},
+			{
+				"name": "currentProject.roles",
+				"type": "Role[]"
+			},
+			{
+				"name": "readRecords.deps",
+				"type": "CollaborationDependencies"
+			},
+			{
+				"name": "transaction.deps",
+				"type": "CollaborationDependencies"
+			},
+			{
+				"name": "transaction.operation",
+				"type": "(records: CollaborationRecords) => Promise<T>"
+			},
+			{
+				"name": "now.deps",
+				"type": "CollaborationDependencies"
+			}
+		],
+		"outputs": [
+			{
+				"name": "currentProject",
+				"type": "ProjectSummary"
+			},
+			{
+				"name": "readRecords",
+				"type": "Promise<CollaborationRecords>"
+			},
+			{
+				"name": "transaction",
+				"type": "Promise<{ value: T; revision: string }>"
+			},
+			{
+				"name": "now",
+				"type": "Date"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "collaboration.function.parse-collaboration-input",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.function.records-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.model.collaboration-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/collaboration/src/utils/currentProject.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/collaboration/src/utils/currentProject.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

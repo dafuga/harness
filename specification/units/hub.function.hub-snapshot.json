@@ -1,0 +1,81 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.hub-snapshot",
+	"kind": "function",
+	"title": "hubSnapshot",
+	"responsibility": "Owns the hubSnapshot shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/hubSnapshot.ts"],
+		"symbols": ["hubSnapshot"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hubSnapshot.input",
+				"type": "{ actor: Actor; source: SourceHistoryAdapter; cache: CollaborationCache; project: ProjectSummary; }"
+			},
+			{
+				"name": "hubSnapshot.query",
+				"type": "{ branch: string | null; commit: string | null }"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hubSnapshot",
+				"type": "Promise<ProjectSnapshot>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.validator.remote-project-response",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-projection-cache",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-source",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/hubSnapshot.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/hubSnapshot.ts"
+			}
+		]
+	},
+	"scenarios": ["hosted-catalog"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

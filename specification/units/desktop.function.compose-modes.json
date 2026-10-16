@@ -1,0 +1,85 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.compose-modes",
+	"kind": "function",
+	"title": "composeModes",
+	"responsibility": "Chooses what the composer offers: Comment wherever people may comment, Plan and Change only where the project allows agents at a writable tip.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/composeModes.ts"],
+		"symbols": [
+			"ComposeMode",
+			"AgentChoice",
+			"RunDraft",
+			"designCounts",
+			"defaultDesignCount",
+			"visualCategory",
+			"composeModes"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "visualCategory.category",
+				"type": "string"
+			},
+			{
+				"name": "composeModes.capabilities",
+				"type": "ProjectCapabilities"
+			},
+			{
+				"name": "composeModes.writable",
+				"type": "boolean"
+			}
+		],
+		"outputs": [
+			{
+				"name": "designCounts",
+				"type": "unknown"
+			},
+			{
+				"name": "defaultDesignCount",
+				"type": "unknown"
+			},
+			{
+				"name": "visualCategory",
+				"type": "boolean"
+			},
+			{
+				"name": "composeModes",
+				"type": "ComposeMode[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.project-context-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/composeModes.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/composeModes.ts"
+			}
+		]
+	},
+	"scenarios": ["function-examples"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

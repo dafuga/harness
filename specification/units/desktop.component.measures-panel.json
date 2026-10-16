@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.measures-panel",
+	"kind": "component",
+	"title": "MeasuresPanel",
+	"responsibility": "Owns the MeasuresPanel Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/MeasuresPanel.svelte"],
+		"symbols": ["MeasuresPanel"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "MeasuresPanel.size",
+				"type": "Measure"
+			},
+			{
+				"name": "MeasuresPanel.performance",
+				"type": "Measure"
+			}
+		],
+		"outputs": [
+			{
+				"name": "MeasuresPanel",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/MeasuresPanel.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/MeasuresPanel.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

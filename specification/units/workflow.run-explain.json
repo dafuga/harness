@@ -33,7 +33,7 @@
 		"outputs": [
 			{
 				"name": "explainReport",
-				"type": "Promise<ReasonReport & { root: string }>"
+				"type": "Promise<ReasonReport & { root: string; writing: WritingVersion | null }>"
 			},
 			{
 				"name": "explainedRange",
@@ -73,6 +73,11 @@
 		},
 		{
 			"unit": "function.required-reasons",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.writing-limits",
 			"via": "import",
 			"origin": "derived"
 		},

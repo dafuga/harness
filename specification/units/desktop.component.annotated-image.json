@@ -1,0 +1,76 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.annotated-image",
+	"kind": "component",
+	"title": "AnnotatedImage",
+	"responsibility": "Owns the AnnotatedImage Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/AnnotatedImage.svelte"],
+		"symbols": ["AnnotatedImage"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "AnnotatedImage.src",
+				"type": "string"
+			},
+			{
+				"name": "AnnotatedImage.title",
+				"type": "string"
+			},
+			{
+				"name": "AnnotatedImage.caption",
+				"type": "string"
+			},
+			{
+				"name": "AnnotatedImage.threads",
+				"type": "ThreadInfo[]"
+			},
+			{
+				"name": "AnnotatedImage.writable",
+				"type": "boolean"
+			},
+			{
+				"name": "AnnotatedImage.comment",
+				"type": "(region: Region | null) => void"
+			},
+			{
+				"name": "AnnotatedImage.select",
+				"type": "(thread: ThreadInfo) => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "AnnotatedImage",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/AnnotatedImage.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/AnnotatedImage.svelte"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-renderer"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

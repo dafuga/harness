@@ -1,0 +1,50 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.icon",
+	"kind": "component",
+	"title": "Icon",
+	"responsibility": "Owns the Icon Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/Icon.svelte"],
+		"symbols": ["Icon"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "Icon.name",
+				"type": "string"
+			},
+			{
+				"name": "Icon.size",
+				"type": "number"
+			}
+		],
+		"outputs": [
+			{
+				"name": "Icon",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/Icon.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/Icon.svelte"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-renderer", "shells-shared-app"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

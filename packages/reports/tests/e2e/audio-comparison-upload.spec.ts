@@ -4,6 +4,8 @@ import { join } from 'node:path';
 import { ReportRepository } from '../../src/repositories/ReportRepository';
 import { audioFixture } from '../../test/audioFixture';
 import { fixtures } from './support/fixtures';
+import { expectRetired, reportView } from './support/portableReport';
+// The form of the removed report page posted to this service; the service and the viewer remain.
 test('paired upload validates both originals, attaches phases and protects finalized history', async ({
 	page,
 	request,
@@ -16,33 +18,29 @@ test('paired upload validates both originals, attaches phases and protects final
 		mode: 'feature',
 		environment: 'Synthetic transport fixture'
 	});
-	await page.goto('/reports/' + run.id);
-	await page.getByText('Add audio', { exact: true }).click();
-	const form = page.locator('.upload-audio');
+	await expectRetired(page, '/reports/' + run.id);
+	const uploaded = await request.post('/api/report-audio-comparison', {
+		headers: { Origin: baseURL! },
+		multipart: {
+			reportId: run.id,
+			title: 'Uploaded comparison',
+			source: 'Synthetic tone test',
+			before: { name: 'before.wav', mimeType: 'audio/wav', buffer: audioFixture(6, 220) },
+			after: { name: 'after.wav', mimeType: 'audio/wav', buffer: audioFixture(6, 440) }
+		}
+	});
+	expect(uploaded.status()).toBe(201);
+	await page.goto(await reportView(run.id));
 	await page.evaluate(async () => {
 		await document.fonts.ready;
 	});
 	if (process.env.TAKE_SCREENSHOT === 'true') {
 		const directory = 'output/evidence/' + (process.env.SCREENSHOT_LABEL || 'current');
 		await mkdir(directory, { recursive: true });
-		await form.screenshot({ path: join(directory, 'audio-paired-upload.png') });
+		await page
+			.locator('.evidence-grid')
+			.screenshot({ path: join(directory, 'audio-paired-upload.png') });
 	}
-	await expect(
-		form.getByRole('combobox', { name: 'Audio upload mode', exact: true })
-	).toBeVisible();
-	await form
-		.getByRole('combobox', { name: 'Audio upload mode', exact: true })
-		.selectOption('comparison');
-	await form.getByLabel('Audio title', { exact: true }).fill('Uploaded comparison');
-	await form.getByLabel('Source', { exact: true }).fill('Synthetic tone test');
-	await form
-		.getByLabel('Before audio file', { exact: true })
-		.setInputFiles({ name: 'before.wav', mimeType: 'audio/wav', buffer: audioFixture(6, 220) });
-	await form
-		.getByLabel('After audio file', { exact: true })
-		.setInputFiles({ name: 'after.wav', mimeType: 'audio/wav', buffer: audioFixture(6, 440) });
-	await form.getByRole('button', { name: 'Upload audio comparison', exact: true }).click();
-	await expect(form.getByRole('status')).toContainText('Audio comparison added to gallery');
 	await page
 		.getByRole('button', {
 			name: 'Open audio comparison: Uploaded comparison',

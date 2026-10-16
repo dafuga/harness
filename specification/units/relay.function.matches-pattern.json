@@ -1,0 +1,50 @@
+{
+	"schemaVersion": 1,
+	"id": "relay.function.matches-pattern",
+	"kind": "function",
+	"title": "matchesPattern",
+	"responsibility": "Owns the matchesPattern shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/relay/src/utils/matchesPattern.ts"],
+		"symbols": ["matchesPattern"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "matchesPattern.value",
+				"type": "unknown"
+			},
+			{
+				"name": "matchesPattern.pattern",
+				"type": "RegExp"
+			}
+		],
+		"outputs": [
+			{
+				"name": "matchesPattern",
+				"type": "value is string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/relay/src/utils/matchesPattern.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/relay/src/utils/matchesPattern.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

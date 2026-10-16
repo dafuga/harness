@@ -1,0 +1,65 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.desktop-ipc",
+	"kind": "function",
+	"title": "desktopIpc",
+	"responsibility": "Owns the desktopIpc shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/desktopIpc.ts"],
+		"symbols": ["bootstrapChannel", "DesktopIpcPort", "desktopIpc"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "desktopIpc.port",
+				"type": "DesktopIpcPort"
+			},
+			{
+				"name": "desktopIpc.bootstrap",
+				"type": "(event: unknown) => LocalBootstrap | null"
+			}
+		],
+		"outputs": [
+			{
+				"name": "bootstrapChannel",
+				"type": "unknown"
+			},
+			{
+				"name": "desktopIpc",
+				"type": "()"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/desktopIpc.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/desktopIpc.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-project-runs", "remote-desktop-boundaries"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,36 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.style.explorer",
+	"kind": "style",
+	"title": "explorer",
+	"responsibility": "Publishes the explorer palette and sizes on its root, re-points the colours the console reads inside it, and styles the page column, notices, cards, pills, breadcrumbs, the search field and the switch.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/lib/styles/explorer.css"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/styles/explorer.css",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/styles/explorer.css"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

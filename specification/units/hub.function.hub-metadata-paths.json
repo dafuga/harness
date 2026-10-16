@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.hub-metadata-paths",
+	"kind": "function",
+	"title": "hubMetadataPaths",
+	"responsibility": "Owns the hubMetadataPaths shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/hubMetadataPaths.ts"],
+		"symbols": ["hubMetadataPaths"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hubMetadataPaths.entries",
+				"type": "SourceEntry[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hubMetadataPaths",
+				"type": "string[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/hubMetadataPaths.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/hubMetadataPaths.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

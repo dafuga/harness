@@ -1,0 +1,77 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.hub-runtime",
+	"kind": "function",
+	"title": "hubRuntime",
+	"responsibility": "Owns the hubRuntime shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/hubRuntime.ts"],
+		"symbols": ["HubApiRuntime", "hubRuntime"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hubRuntime.env",
+				"type": "HubEnv"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hubRuntime",
+				"type": "HubApiRuntime"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.config.hub-env",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-cache",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-remote",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.module.server-auth",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.service.hub-projection",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/hubRuntime.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/hubRuntime.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

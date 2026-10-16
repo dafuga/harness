@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "relay.function.frame-too-large",
+	"kind": "function",
+	"title": "frameTooLarge",
+	"responsibility": "Owns the frameTooLarge shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/relay/src/utils/frameTooLarge.ts"],
+		"symbols": ["frameTooLarge"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "frameTooLarge.message",
+				"type": "string | ArrayBuffer"
+			},
+			{
+				"name": "frameTooLarge.limit",
+				"type": "number"
+			}
+		],
+		"outputs": [
+			{
+				"name": "frameTooLarge",
+				"type": "boolean"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/relay/src/utils/frameTooLarge.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/relay/src/utils/frameTooLarge.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

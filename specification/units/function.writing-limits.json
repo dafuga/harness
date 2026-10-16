@@ -1,0 +1,124 @@
+{
+	"schemaVersion": 1,
+	"id": "function.writing-limits",
+	"kind": "function",
+	"title": "writingLimits",
+	"responsibility": "States the length limits of change notes and commit messages in each version a repository can declare, counts words and characters the one way all checks do, and says what exceeds them.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/writingLimits.ts"],
+		"symbols": [
+			"WritingLimit",
+			"writingVersions",
+			"WritingVersion",
+			"writingVersion",
+			"writingLimits",
+			"WritingPolicy",
+			"writingPolicy",
+			"writingHeld",
+			"writingDeclared",
+			"writingCount",
+			"writingProblems",
+			"WrittenReason",
+			"explanationProblems"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "writingPolicy.version",
+				"type": "WritingVersion"
+			},
+			{
+				"name": "writingHeld.config",
+				"type": "string | undefined"
+			},
+			{
+				"name": "writingDeclared.config",
+				"type": "string | undefined"
+			},
+			{
+				"name": "writingCount.text",
+				"type": "string"
+			},
+			{
+				"name": "writingProblems.field",
+				"type": "string"
+			},
+			{
+				"name": "writingProblems.text",
+				"type": "string"
+			},
+			{
+				"name": "writingProblems.limit",
+				"type": "WritingLimit"
+			},
+			{
+				"name": "explanationProblems.reason",
+				"type": "WrittenReason"
+			},
+			{
+				"name": "explanationProblems.version",
+				"type": "WritingVersion"
+			}
+		],
+		"outputs": [
+			{
+				"name": "writingVersions",
+				"type": "unknown"
+			},
+			{
+				"name": "writingVersion",
+				"type": "WritingVersion"
+			},
+			{
+				"name": "writingLimits",
+				"type": "unknown"
+			},
+			{
+				"name": "writingPolicy",
+				"type": "WritingPolicy"
+			},
+			{
+				"name": "writingHeld",
+				"type": "WritingVersion | null"
+			},
+			{
+				"name": "writingDeclared",
+				"type": "boolean"
+			},
+			{
+				"name": "writingCount",
+				"type": "{ words: number; characters: number }"
+			},
+			{
+				"name": "writingProblems",
+				"type": "string[]"
+			},
+			{
+				"name": "explanationProblems",
+				"type": "string[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/writingLimits.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/writingLimits.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

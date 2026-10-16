@@ -1,0 +1,90 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.load-workspace",
+	"kind": "function",
+	"title": "loadWorkspace",
+	"responsibility": "Owns the loadWorkspace shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/loadWorkspace.ts"],
+		"symbols": ["LoadedWorkspace", "ProjectSelection", "loadWorkspace"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "loadWorkspace.bridge",
+				"type": "DesktopBridge"
+			},
+			{
+				"name": "loadWorkspace.route",
+				"type": "WorkspaceRoute"
+			},
+			{
+				"name": "loadWorkspace.selection",
+				"type": "ProjectSelection"
+			}
+		],
+		"outputs": [
+			{
+				"name": "loadWorkspace",
+				"type": "Promise<LoadedWorkspace>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.cache-status",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.project-capabilities",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.workspace-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.project-context-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/loadWorkspace.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/loadWorkspace.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

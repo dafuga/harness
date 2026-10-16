@@ -1,0 +1,69 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.entity-search",
+	"kind": "component",
+	"title": "EntitySearch",
+	"responsibility": "The shared search field of both top bars: a keyboard-driven combobox over the entities of the revision in view that names a pinned commit.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/EntitySearch.svelte"],
+		"symbols": ["EntitySearch"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "EntitySearch.entries",
+				"type": "SearchEntry[] | null"
+			},
+			{
+				"name": "EntitySearch.scope",
+				"type": "{ label: string; pinned: string | null }"
+			},
+			{
+				"name": "EntitySearch.href",
+				"type": "(entry: SearchEntry) => string"
+			},
+			{
+				"name": "EntitySearch.open",
+				"type": "(entry: SearchEntry) => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "EntitySearch",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.entity-search-results",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-search",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/EntitySearch.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/EntitySearch.svelte"
+			}
+		]
+	},
+	"scenarios": ["explorer-shell", "harness-console", "search-shared-app"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

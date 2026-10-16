@@ -1,0 +1,93 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-entity-relations",
+	"kind": "component",
+	"title": "EntityRelations",
+	"responsibility": "Lists what an entity contains and what uses it as separate sections for components, functions, configs, services, pages and consumers, each entry a link.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/EntityRelations.svelte"],
+		"symbols": ["EntityRelations"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "EntityRelations.relations",
+				"type": "ExplorerRelations"
+			},
+			{
+				"name": "EntityRelations.nav",
+				"type": "EntityNav"
+			},
+			{
+				"name": "EntityRelations.show",
+				"type": "'both' | 'used-in' | 'uses'"
+			},
+			{
+				"name": "EntityRelations.compact",
+				"type": "boolean"
+			},
+			{
+				"name": "EntityRelations.removed",
+				"type": "boolean"
+			}
+		],
+		"outputs": [
+			{
+				"name": "EntityRelations",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-entity-link",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-verdict",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-usage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/EntityRelations.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/EntityRelations.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,84 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.remote-authority",
+	"kind": "function",
+	"title": "remoteAuthority",
+	"responsibility": "Owns the remoteAuthority shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/remoteAuthority.ts"],
+		"symbols": ["Authority", "noAuthority", "remoteAuthority", "authorityChange", "excludes"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "remoteAuthority.status",
+				"type": "RemoteMobileStatus"
+			},
+			{
+				"name": "authorityChange.known",
+				"type": "Authority"
+			},
+			{
+				"name": "authorityChange.next",
+				"type": "Authority"
+			},
+			{
+				"name": "authorityChange.steady",
+				"type": "boolean"
+			},
+			{
+				"name": "excludes.status",
+				"type": "RemoteMobileStatus"
+			},
+			{
+				"name": "excludes.projectId",
+				"type": "string | null"
+			}
+		],
+		"outputs": [
+			{
+				"name": "noAuthority",
+				"type": "Authority"
+			},
+			{
+				"name": "remoteAuthority",
+				"type": "Authority"
+			},
+			{
+				"name": "authorityChange",
+				"type": "unknown"
+			},
+			{
+				"name": "excludes",
+				"type": "boolean"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.environment-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/remoteAuthority.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/remoteAuthority.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

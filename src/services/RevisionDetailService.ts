@@ -7,11 +7,11 @@ import type { Explanation } from '../core/explanationTypes';
 import type { VerificationRecord } from '../core/verificationTypes';
 import { ScenarioRepository } from '../repositories/ScenarioRepository';
 import { UnitRegistryRepository } from '../repositories/UnitRegistryRepository';
-import { canonicalJson } from '../utils/canonicalJson';
+import type { MediaPlacer } from '../utils/mediaPlace';
 import { recordView, type RecordView, type ResolvedMedia } from '../utils/recordView';
+import { revisionReasons, type RevisionReasons } from '../utils/revisionReasons';
 import { revisionRegistry, type RevisionRegistry } from '../utils/revisionRegistry';
 import type { AttachedRecord } from './AttachedRecordService';
-import type { HistoryMediaService } from './HistoryMediaService';
 import type { CommitStatus, HistoryStatusService } from './HistoryStatusService';
 import type { StoredSide } from '../utils/sideImpact';
 import { SourceImpactService, type SourceImpact } from './SourceImpactService';
@@ -42,7 +42,13 @@ export interface RevisionDetail {
 	 */
 	side: string | null;
 	records: RecordView[];
+	/** The reasons for what this commit itself changed against its first parent. */
 	explanations: Explanation[];
+	/**
+	 * How many more reasons its notes and records hold that are not this commit's: a record may
+	 * verify a longer range. They stay where they were written and are dated to no commit here.
+	 */
+	rangeReasons: number;
 }
 
 interface Stored {
@@ -61,25 +67,30 @@ export interface BuiltRevision {
 	ledger: BudgetEvent[];
 }
 
+/** What the source of a commit says, whatever is noted on it: shared, it is read only once. */
+export const revisionSources = (root: string) => ({
+	source: new SourceImpactService(root),
+	registries: new Map<string, Stored>()
+});
+
 /**
  * Everything the history shows for one commit, taken from what is stored for that commit: its
  * own registry, the records attached to it and the reasons noted on it. Nothing is recomputed
- * from, or replaced by, the current state of the repository.
+ * from, or replaced by, the current state of the repository. The placer given to `build` says
+ * where the bytes of each capture are; one that writes nothing only checks them.
  */
 export class RevisionDetailService {
-	private readonly registries = new Map<string, Stored>();
 	private readonly git: GitAdapter;
-	private readonly source: SourceImpactService;
 
 	constructor(
 		private readonly root: string,
-		private readonly history: HistoryStatusService
+		private readonly history: HistoryStatusService,
+		private readonly kept = revisionSources(root)
 	) {
 		this.git = new GitAdapter(root);
-		this.source = new SourceImpactService(root);
 	}
 
-	async build(commit: string, media: HistoryMediaService): Promise<BuiltRevision> {
+	async build(commit: string, media: MediaPlacer): Promise<BuiltRevision> {
 		const status = await this.history.status(commit);
 		const records: RecordView[] = [];
 		const sound: VerificationRecord[] = [];
@@ -87,25 +98,27 @@ export class RevisionDetailService {
 			const loaded = await this.history.attached.load(item.evidence);
 			if (!loaded.record) continue;
 			const resolved = await this.media(loaded, media);
+			const ran = await this.ran(loaded.record);
 			const resolve = (capture: { path: string }, origin: string): ResolvedMedia =>
 				resolved.get(`${origin}\n${capture.path}`) ?? { media: null, gap: 'not resolved' };
-			records.push(
-				recordView(loaded.record, { valid: item.valid, problems: item.problems, resolve })
-			);
+			const context = { valid: item.valid, problems: item.problems, resolve };
+			records.push(recordView(loaded.record, { ...context, origins: (id) => ran.get(id) }));
 			if (item.valid) sound.push(loaded.record);
 		}
-		const side = await this.source.stored(commit);
+		const side = await this.kept.source.stored(commit);
 		const tree = await this.git.attempt(['rev-parse', '--verify', '--quiet', `${commit}^{tree}`]);
 		const stored = await this.registry(commit);
+		const reasons = await this.reasons(commit, sound);
 		const detail: RevisionDetail = {
 			schemaVersion: 1,
 			commit,
 			registry: stored.registry,
 			comparison: comparison(sound),
-			sourceImpact: (await this.source.of(commit)) ?? null,
+			sourceImpact: (await this.kept.source.of(commit)) ?? null,
 			side: side && tree ? `sides/${tree}.json` : null,
 			records,
-			explanations: await this.explanations(commit, sound)
+			explanations: reasons.explanations,
+			rangeReasons: reasons.range
 		};
 		return { detail, status, sound, ledger: stored.ledger, ...(side ? { side } : {}) };
 	}
@@ -113,7 +126,7 @@ export class RevisionDetailService {
 	/** Every capture is looked up in the record that produced it, which may be an earlier one. */
 	private async media(
 		loaded: AttachedRecord,
-		media: HistoryMediaService
+		media: MediaPlacer
 	): Promise<Map<string, ResolvedMedia>> {
 		const resolved = new Map<string, ResolvedMedia>();
 		const own = loaded.record?.id ?? '';
@@ -129,6 +142,17 @@ export class RevisionDetailService {
 		return resolved;
 	}
 
+	/** The checks each record that this one inherits from ran, for the origins that can be read. */
+	private async ran(record: VerificationRecord): Promise<Map<string, VerificationRecord['tests']>> {
+		const origins = new Set(record.scenarios.flatMap((item) => item.referencedRecord ?? []));
+		const found = new Map<string, VerificationRecord['tests']>();
+		for (const id of origins) {
+			const origin = (await this.origin(id))?.record;
+			if (origin) found.set(id, origin.tests);
+		}
+		return found;
+	}
+
 	/** The attached record with this id, wherever in history it was attached. */
 	private async origin(id: string): Promise<AttachedRecord | undefined> {
 		const line = (await this.history.verifications()).find((item) => item.record === id);
@@ -136,14 +160,13 @@ export class RevisionDetailService {
 	}
 
 	/**
-	 * Revisions with the same tree share one parsed registry. The ledger is part of that tree:
-	 * the limits a unit view states are those this revision itself freezes.
+	 * Revisions with the same tree share one parsed registry: unit versions cover owned files, so
+	 * the tree identifies it. The ledger is part of it: a unit states the limits frozen there.
 	 */
 	private async registry(commit: string): Promise<Stored> {
-		// Unit versions cover owned files, so the whole tree identifies a registry view.
 		const key =
 			(await this.git.attempt(['rev-parse', '--verify', '--quiet', `${commit}^{tree}`])) ?? commit;
-		const known = this.registries.get(key);
+		const known = this.kept.registries.get(key);
 		if (known) return known;
 		const tree = await CommitTreeAdapter.open(this.root, commit);
 		const units = await new UnitRegistryRepository(this.root).read(tree);
@@ -152,19 +175,25 @@ export class RevisionDetailService {
 		const ledger = (await new BudgetLedgerRepository(this.root).read(tree)).events;
 		const limits = new BudgetService().baselines(ledger, units.manifests);
 		const registry = revisionRegistry(units.manifests, scenarios.manifests, blobs, limits);
-		this.registries.set(key, { registry, ledger });
+		this.kept.registries.set(key, { registry, ledger });
 		return { registry, ledger };
 	}
 
-	/** Reasons noted on the commit and those that satisfied its records, each listed once. */
-	private async explanations(commit: string, sound: VerificationRecord[]): Promise<Explanation[]> {
+	/**
+	 * The reasons of this commit among those noted on it and those that satisfied its records. A
+	 * record of a longer range holds the reasons of earlier commits too; those are not its own.
+	 */
+	private async reasons(commit: string, sound: VerificationRecord[]): Promise<RevisionReasons> {
 		const note = (await this.history.all()).get(commit);
 		const noted = (note?.entries ?? []).flatMap((entry) =>
 			entry.kind === 'reason' ? [entry.explanation] : []
 		);
-		const used = sound.flatMap((record) => record.reasons.entries ?? []);
-		const unique = new Map([...noted, ...used].map((entry) => [canonicalJson(entry), entry]));
-		return [...unique.keys()].sort().map((key) => unique.get(key) as Explanation);
+		const records = sound.map((record) => ({
+			base: record.source.base,
+			entries: record.reasons.entries ?? []
+		}));
+		const parent = (await this.kept.source.parent(commit)) ?? null;
+		return revisionReasons({ parent, own: await this.kept.source.reasons(commit), noted, records });
 	}
 }
 

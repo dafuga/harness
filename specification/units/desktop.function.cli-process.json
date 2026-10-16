@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.cli-process",
+	"kind": "function",
+	"title": "cliProcess",
+	"responsibility": "Owns the cliProcess shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/cliProcess.ts"],
+		"symbols": ["ProcessOptions", "killOwnedProcess", "cliProcess"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "killOwnedProcess.pid",
+				"type": "number | undefined"
+			},
+			{
+				"name": "cliProcess.command",
+				"type": "CliCommand"
+			},
+			{
+				"name": "cliProcess.options",
+				"type": "ProcessOptions"
+			}
+		],
+		"outputs": [
+			{
+				"name": "killOwnedProcess",
+				"type": "void"
+			},
+			{
+				"name": "cliProcess",
+				"type": "Promise<string>"
+			}
+		],
+		"errors": [
+			{
+				"name": "RunCancelled",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.cli-environment",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.stream-lines",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.agent-runner-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/cliProcess.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/cliProcess.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

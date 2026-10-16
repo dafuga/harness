@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.brand-icon",
+	"kind": "function",
+	"title": "brandIcon",
+	"responsibility": "Owns the brandIcon shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/brandIcon.ts"],
+		"symbols": ["BrandIconVariant", "brandIcon"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "brandIcon.size",
+				"type": "number"
+			},
+			{
+				"name": "brandIcon.variant",
+				"type": "BrandIconVariant"
+			}
+		],
+		"outputs": [
+			{
+				"name": "brandIcon",
+				"type": "Uint8Array"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.brand-mark",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/brandIcon.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/brandIcon.ts"
+			}
+		]
+	},
+	"scenarios": ["modular-h-native-contract"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

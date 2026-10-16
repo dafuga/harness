@@ -1,0 +1,91 @@
+{
+	"schemaVersion": 1,
+	"id": "function.settle-processes",
+	"kind": "function",
+	"title": "settleProcesses",
+	"responsibility": "Stops what a finished or timed-out command left, one verified process at a time, never a delegated or possible shared service.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/settleProcesses.ts"],
+		"symbols": ["Settlement", "Watched", "SettleTiming", "haltProcesses", "settleProcesses"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "haltProcesses.watch",
+				"type": "Watched"
+			},
+			{
+				"name": "haltProcesses.context",
+				"type": "ServiceContext"
+			},
+			{
+				"name": "haltProcesses.limit",
+				"type": "{ graceMs: number; deadline: CleanupDeadline }"
+			},
+			{
+				"name": "settleProcesses.watch",
+				"type": "Watched"
+			},
+			{
+				"name": "settleProcesses.context",
+				"type": "ServiceContext"
+			},
+			{
+				"name": "settleProcesses.timing",
+				"type": "SettleTiming"
+			}
+		],
+		"outputs": [
+			{
+				"name": "haltProcesses",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "settleProcesses",
+				"type": "Promise<Settlement>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.cleanup-deadline",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.platform-services",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.process-descendants",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.settlement-report",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/settleProcesses.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/settleProcesses.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

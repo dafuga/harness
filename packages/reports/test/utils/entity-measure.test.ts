@@ -1,0 +1,108 @@
+import { expect, test } from 'vitest';
+import { byteSize, entityMeasure, notMeasured } from '../../src/utils/entityMeasure';
+import { record } from '../entityFixture';
+import { commits, ids, units } from '../entityUnits';
+
+const find = (id: string) => units.find((unit) => unit.id === id)!;
+const taken = record(commits.middle);
+const value = (rows: Array<{ label: string; value: string }>, label: string) =>
+	rows.find((item) => item.label === label)?.value;
+
+test('a size is read in bytes, kilobytes or megabytes, and never rounded to nothing', () => {
+	expect(byteSize(800)).toBe('800 B');
+	expect(byteSize(2400)).toBe('2.4 KB');
+	expect(byteSize(18000)).toBe('18 KB');
+	expect(byteSize(3_400_000)).toBe('3.4 MB');
+	expect(byteSize(0)).toBe('0 B');
+});
+
+test('a measured size is shown and one nothing measured reads Not measured, never zero', () => {
+	const list = entityMeasure(find(ids.list), taken);
+	expect(value(list.size, 'Source size')).toBe('2.4 KB');
+	expect(value(list.size, 'Complexity')).toBe('3');
+	expect(value(list.size, 'Emitted size')).toBe(notMeasured);
+	const card = entityMeasure(find(ids.card), taken);
+	expect(value(card.size, 'Source size')).toBe(notMeasured);
+	expect(JSON.stringify(card)).not.toMatch(/"0( B)?"/);
+});
+
+test('each execution target has its own emitted size, with the reason one could not be built', () => {
+	const store = entityMeasure(find(ids.store), taken);
+	expect(value(store.size, 'Emitted size · Wasm')).toBe('18 KB');
+	const native = store.size.find((item) => item.label === 'Emitted size · process (native)');
+	expect(native?.value).toBe(notMeasured);
+	expect(native?.note).toContain('no toolchain');
+});
+
+test('a timing names its workload and profile and its tolerance as a percentage', () => {
+	const [timing] = entityMeasure(find(ids.filter), taken).performance;
+	expect(timing).toMatchObject({
+		workload: 'thousand orders',
+		metric: 'p95 ms',
+		profile: 'bun-reference',
+		value: '0.12 ms',
+		tolerance: '5%',
+		over: false
+	});
+});
+
+test('timings of two profiles stay two rows, and a declared budget nothing measured is not measured', () => {
+	const second = {
+		...taken,
+		measurements: [
+			...taken.measurements,
+			{
+				unit: ids.filter,
+				metric: 'p95-ms',
+				unitOfMeasure: 'ms',
+				value: 0.31,
+				workload: 'thousand-orders',
+				profile: 'ci-linux'
+			}
+		]
+	};
+	const rows = entityMeasure(find(ids.filter), second).performance;
+	expect(rows.map((item) => [item.profile, item.value])).toEqual([
+		['bun-reference', '0.12 ms'],
+		['ci-linux', '0.31 ms']
+	]);
+	const [none] = entityMeasure(find(ids.filter), null).performance;
+	expect(none.value).toBe(notMeasured);
+	expect(none.profile).toBe('');
+});
+
+test('a tolerance above the five percent policy is marked, not clamped', () => {
+	const loose = {
+		...find(ids.filter),
+		budgets: {
+			...find(ids.filter).budgets,
+			performance: [{ workload: 'thousand-orders', metric: 'p95-ms', tolerance: 0.2 }]
+		}
+	};
+	const [timing] = entityMeasure(loose, taken).performance;
+	expect(timing.tolerance).toBe('20%');
+	expect(timing.over).toBe(true);
+});
+
+test('why a figure is unavailable is told without the file a recorded note names', () => {
+	const noted = record(commits.middle);
+	const said = 'the build of crates/kernel/src/lib.rs produced no output';
+	noted.measurements = noted.measurements.map((item) =>
+		item.unit === ids.store && item.value === null ? { ...item, unavailable: said } : item
+	);
+	noted.measurements.push({
+		unit: ids.store,
+		metric: 'source-bytes',
+		unitOfMeasure: 'bytes',
+		value: null,
+		workload: null,
+		profile: null,
+		unavailable: 'unreadable in src/services/OrderStore.ts'
+	});
+	const store = entityMeasure(find(ids.store), noted);
+	const notes = store.size.map((row) => row.note ?? '').join(' | ');
+	expect(notes).toContain('the build of a file produced no output');
+	expect(notes).toContain('unreadable');
+	// Where a file is stays under Details, Source and in the stored record.
+	expect(notes).not.toMatch(/crates\/|src\/|\.rs\b|\.ts\b/);
+});

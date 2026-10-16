@@ -1,0 +1,130 @@
+{
+	"schemaVersion": 1,
+	"id": "planning.function.plan-design",
+	"kind": "function",
+	"title": "planDesign",
+	"responsibility": "Owns the planDesign shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/planning/src/utils/planDesign.ts"],
+		"symbols": ["readImage", "planDesign", "approve"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "readImage.git",
+				"type": "Git"
+			},
+			{
+				"name": "readImage.input",
+				"type": "ReadImageInput"
+			},
+			{
+				"name": "planDesign.git",
+				"type": "Git"
+			},
+			{
+				"name": "planDesign.input",
+				"type": "AddDesignInput"
+			},
+			{
+				"name": "approve.git",
+				"type": "Git"
+			},
+			{
+				"name": "approve.input",
+				"type": "ApproveDesignInput"
+			}
+		],
+		"outputs": [
+			{
+				"name": "readImage",
+				"type": "unknown"
+			},
+			{
+				"name": "planDesign",
+				"type": "unknown"
+			},
+			{
+				"name": "approve",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "planning.function.plan-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-image-codec",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-options",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-validate",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-write",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.model.planning-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.model.planning-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/planning/src/utils/planDesign.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/planning/src/utils/planDesign.ts"
+			}
+		]
+	},
+	"scenarios": ["planning-artifacts", "shells-shared-app", "hosted-design-options"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,97 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-entity-overview",
+	"kind": "component",
+	"title": "EntityOverview",
+	"responsibility": "Draws the overview of an entity: its summary, the components of a page, then the evidence pane its screen gives it.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/EntityOverview.svelte"],
+		"symbols": ["EntityOverview"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "EntityOverview.entity",
+				"type": "ExplorerEntity"
+			},
+			{
+				"name": "EntityOverview.relations",
+				"type": "ExplorerRelations"
+			},
+			{
+				"name": "EntityOverview.contract",
+				"type": "ContractRow[]"
+			},
+			{
+				"name": "EntityOverview.measure",
+				"type": "EntityMeasure"
+			},
+			{
+				"name": "EntityOverview.nav",
+				"type": "EntityNav"
+			},
+			{
+				"name": "EntityOverview.children",
+				"type": "Snippet"
+			}
+		],
+		"outputs": [
+			{
+				"name": "EntityOverview",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-entity-summary",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-measure",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/EntityOverview.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/EntityOverview.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

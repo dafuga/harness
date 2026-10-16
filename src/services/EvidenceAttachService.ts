@@ -46,6 +46,8 @@ export class EvidenceAttachService {
 	private readonly evidence: EvidenceBranchRepository;
 	private readonly notes: HistoryNoteRepository;
 	private readonly lfs: LfsAdapter;
+	/** One checker for every record of this attach: a file parsed once is not parsed again. */
+	private readonly checker: VerificationCheckService;
 	private readonly done = new Map<string, Attached>();
 
 	constructor(private readonly root: string) {
@@ -53,6 +55,7 @@ export class EvidenceAttachService {
 		this.evidence = new EvidenceBranchRepository(root);
 		this.notes = new HistoryNoteRepository(root);
 		this.lfs = new LfsAdapter(root);
+		this.checker = new VerificationCheckService(root);
 	}
 
 	/** Attaches a record of `commit`, first attaching every record it inherits from. */
@@ -60,7 +63,7 @@ export class EvidenceAttachService {
 		const { record } = stored;
 		const known = this.done.get(record.id);
 		if (known) return known;
-		const problems = await new VerificationCheckService(this.root).integrity(commit, stored);
+		const problems = await this.checker.integrity(commit, stored);
 		if (problems.length > 0) {
 			return fail(`Record ${short(record.id)} cannot be attached: ${problems.join('\n')}`);
 		}

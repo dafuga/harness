@@ -1,0 +1,70 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.remote-approval",
+	"kind": "component",
+	"title": "RemoteApproval",
+	"responsibility": "Owns the RemoteApproval Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/RemoteApproval.svelte"],
+		"symbols": ["RemoteApproval"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "RemoteApproval.request",
+				"type": "RemotePairingRequest"
+			},
+			{
+				"name": "RemoteApproval.projects",
+				"type": "{ id: string; name: string }[]"
+			},
+			{
+				"name": "RemoteApproval.store",
+				"type": "RemoteHost"
+			}
+		],
+		"outputs": [
+			{
+				"name": "RemoteApproval",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.remote-labels",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.environment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.remote-host",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/RemoteApproval.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/RemoteApproval.svelte"
+			}
+		]
+	},
+	"scenarios": ["remote-mobile-ui"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

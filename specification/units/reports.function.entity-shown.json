@@ -1,0 +1,98 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.entity-shown",
+	"kind": "function",
+	"title": "entityShown",
+	"responsibility": "Works out what an overview and a details screen say about an entity: its contract, measures and judging record, and the reasons its commit recorded.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/entityShown.ts"],
+		"symbols": ["EntityShown", "entityShown", "entityChanged"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "entityShown.host",
+				"type": "Shown"
+			},
+			{
+				"name": "entityShown.entity",
+				"type": "ExplorerEntity"
+			},
+			{
+				"name": "entityChanged.host",
+				"type": "Pick<Shown, 'head'>"
+			},
+			{
+				"name": "entityChanged.unit",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "entityShown",
+				"type": "EntityShown"
+			},
+			{
+				"name": "entityChanged",
+				"type": "EntityReasons"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.entity-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-measure",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-reasons",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-verdict",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-screen-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/entityShown.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/entityShown.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

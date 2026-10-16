@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.history-pages",
+	"kind": "function",
+	"title": "historyPages",
+	"responsibility": "Owns the historyPages shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/historyPages.ts"],
+		"symbols": ["historyPages"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "historyPages.pages",
+				"type": "HistoryEvent[][]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "historyPages",
+				"type": "HistoryEvent[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/historyPages.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/historyPages.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

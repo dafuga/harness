@@ -59,6 +59,17 @@ export class SourceHistoryRepository {
 		return { branches, revisions: revisions.slice(0, limit), truncated: revisions.length > limit };
 	}
 
+	/**
+	 * One commit as the history lists it, without reading any other: `branches` are those a
+	 * caller already knows reach it. Undefined when the repository holds no such commit.
+	 */
+	async revision(commit: string, branches: string[]): Promise<SourceRevision | undefined> {
+		const show = ['show', '--no-patch', `--format=${fields}`, '--end-of-options'];
+		const shown = await this.git.attempt([...show, `${commit}^{commit}`]);
+		const entry = shown?.split('\x1f') ?? [];
+		return entry.length === 7 ? revision(entry, new Map([[entry[0], branches]])) : undefined;
+	}
+
 	/** Every ref with its tip; a symbolic one, such as a remote's HEAD, says what it points to. */
 	private async refs(): Promise<ListedRef[]> {
 		const format = '--format=%(refname)%09%(objectname)%09%(symref)';
@@ -72,12 +83,19 @@ export class SourceHistoryRepository {
 			});
 	}
 
-	/** For every commit, the branches that contain it. */
+	/**
+	 * For every commit, the branches that contain it, in branch order. Branches that Git lists at
+	 * the same head share one walk of it within this read; the next read walks every head again.
+	 */
 	private async reach(branches: SourceHistory['branches']): Promise<Map<string, string[]>> {
 		const reach = new Map<string, string[]>();
+		const walks = new Map<string, string[]>();
 		for (const branch of branches) {
-			const commits = await this.git.run(['rev-list', branch.head]);
-			for (const commit of commits.split('\n').filter(Boolean)) {
+			const commits =
+				walks.get(branch.head) ??
+				(await this.git.run(['rev-list', branch.head])).split('\n').filter(Boolean);
+			walks.set(branch.head, commits);
+			for (const commit of commits) {
 				reach.set(commit, [...(reach.get(commit) ?? []), branch.name]);
 			}
 		}

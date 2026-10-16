@@ -1,0 +1,85 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.hub-http",
+	"kind": "function",
+	"title": "hubHttp",
+	"responsibility": "Owns the hubHttp shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/hubHttp.ts"],
+		"symbols": ["hubHttp", "hubQuery", "hubBody", "hubHttpFailure"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hubHttp.value",
+				"type": "unknown"
+			},
+			{
+				"name": "hubHttp.status",
+				"type": "unknown"
+			},
+			{
+				"name": "hubQuery.request",
+				"type": "Request"
+			},
+			{
+				"name": "hubBody.request",
+				"type": "Request"
+			},
+			{
+				"name": "hubHttpFailure.error",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hubHttp",
+				"type": "unknown"
+			},
+			{
+				"name": "hubQuery",
+				"type": "unknown"
+			},
+			{
+				"name": "hubBody",
+				"type": "Promise<Record<string, unknown>>"
+			},
+			{
+				"name": "hubHttpFailure",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.hub-body-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-json",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/hubHttp.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/hubHttp.ts"
+			}
+		]
+	},
+	"scenarios": ["hub-recorded-evidence"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

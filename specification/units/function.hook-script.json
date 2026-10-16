@@ -3,16 +3,29 @@
 	"id": "function.hook-script",
 	"kind": "function",
 	"title": "hookScript",
-	"responsibility": "Renders the managed Git hook wrapper that chains an existing hook, and recognises it.",
+	"responsibility": "Renders the managed Git hook wrapper for a stage and names the opt-in file of that stage: it chains an existing hook, reads the pushed references for pre-push and no input for commit-msg, acts only where its own stage was opted into, and is recognised as managed.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/hookScript.ts"],
-		"symbols": ["hookMarker", "chainedSuffix", "enabledFile", "hookScript", "managedHook"]
+		"symbols": [
+			"hookMarker",
+			"chainedSuffix",
+			"enabledFile",
+			"hookStages",
+			"HookStage",
+			"stageFile",
+			"hookScript",
+			"managedHook"
+		]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "stageFile.stage",
+				"type": "string"
+			},
 			{
 				"name": "hookScript.stage",
 				"type": "string"
@@ -34,6 +47,14 @@
 			{
 				"name": "enabledFile",
 				"type": "unknown"
+			},
+			{
+				"name": "hookStages",
+				"type": "unknown"
+			},
+			{
+				"name": "stageFile",
+				"type": "string"
 			},
 			{
 				"name": "hookScript",

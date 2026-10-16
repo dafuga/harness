@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.design-directions",
+	"kind": "function",
+	"title": "designDirections",
+	"responsibility": "Owns the designDirections shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/designDirections.ts"],
+		"symbols": ["designDirections"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "designDirections.count",
+				"type": "number"
+			}
+		],
+		"outputs": [
+			{
+				"name": "designDirections",
+				"type": "string[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/designDirections.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/designDirections.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -27,7 +27,7 @@
 			},
 			{
 				"name": "HistoryMediaService.place.file",
-				"type": "{ path: string; sha256: string }"
+				"type": "MediaFile"
 			},
 			{
 				"name": "HistoryMediaService.place.gap",
@@ -43,6 +43,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.media-place",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.record-view",
 			"via": "import",

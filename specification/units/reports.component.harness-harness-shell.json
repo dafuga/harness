@@ -1,9 +1,9 @@
 {
 	"schemaVersion": 1,
 	"id": "reports.component.harness-harness-shell",
-	"kind": "component",
+	"kind": "shell",
 	"title": "HarnessShell",
-	"responsibility": "Keeps the console place in the browser history when no application router does.",
+	"responsibility": "Keeps the console place in the browser history, address and query, when no application router does.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -35,6 +35,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.harness-explorer-content",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.harness-harness-console",
 			"via": "import",

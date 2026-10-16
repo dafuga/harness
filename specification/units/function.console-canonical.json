@@ -3,12 +3,20 @@
 	"id": "function.console-canonical",
 	"kind": "function",
 	"title": "consoleCanonical",
-	"responsibility": "Finds the canonical path a root or query-style console address stands for, from the history index.",
+	"responsibility": "Says which explorer address a console address stands for: the root, a branch or commit alone, an earlier page or query, and the report and analytics addresses.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/consoleCanonical.ts"],
-		"symbols": ["IndexedHistory", "defaultCommit", "commitBranch", "consoleCanonical"]
+		"symbols": [
+			"IndexedHistory",
+			"defaultCommit",
+			"commitBranch",
+			"explorerHome",
+			"explorerExact",
+			"explorerAddress",
+			"consoleCanonical"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -28,6 +36,30 @@
 			{
 				"name": "commitBranch.commit",
 				"type": "string"
+			},
+			{
+				"name": "explorerHome.index",
+				"type": "IndexedHistory"
+			},
+			{
+				"name": "explorerExact.path",
+				"type": "string"
+			},
+			{
+				"name": "explorerExact.search",
+				"type": "unknown"
+			},
+			{
+				"name": "explorerAddress.index",
+				"type": "IndexedHistory"
+			},
+			{
+				"name": "explorerAddress.path",
+				"type": "string"
+			},
+			{
+				"name": "explorerAddress.search",
+				"type": "unknown"
 			},
 			{
 				"name": "consoleCanonical.index",
@@ -52,6 +84,18 @@
 				"type": "string | null"
 			},
 			{
+				"name": "explorerHome",
+				"type": "ExplorerLocation | undefined"
+			},
+			{
+				"name": "explorerExact",
+				"type": "boolean"
+			},
+			{
+				"name": "explorerAddress",
+				"type": "string | undefined"
+			},
+			{
 				"name": "consoleCanonical",
 				"type": "string | undefined"
 			}
@@ -61,6 +105,16 @@
 	"dependencies": [
 		{
 			"unit": "function.console-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.explorer-legacy",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.explorer-route",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -1,0 +1,75 @@
+{
+	"schemaVersion": 1,
+	"id": "collaboration.function.add-comment",
+	"kind": "function",
+	"title": "addComment",
+	"responsibility": "Owns the addComment shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/collaboration/src/utils/addComment.ts"],
+		"symbols": ["addComment"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "addComment.deps",
+				"type": "CollaborationDependencies"
+			},
+			{
+				"name": "addComment.actor",
+				"type": "Actor"
+			},
+			{
+				"name": "addComment.input",
+				"type": "AddCommentInput"
+			}
+		],
+		"outputs": [
+			{
+				"name": "addComment",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "collaboration.function.current-project",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.function.parse-collaboration-input",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.model.collaboration-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/collaboration/src/utils/addComment.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/collaboration/src/utils/addComment.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

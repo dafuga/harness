@@ -42,6 +42,7 @@ test('persistent process runtime keeps one process, and recovers after a timeout
 	expect(code(await persistent.invoke({ operation: 'garbage' }))).toBe('invalid-response');
 	expect(code(await persistent.invoke({ operation: 'hang' }))).toBe('runtime-timeout');
 	const third = (await persistent.invoke({ operation: 'c' })) as { output: { pid: number } };
+	expect(third).toMatchObject({ ok: true, output: { pid: expect.any(Number) } });
 	expect(third.output.pid).not.toBe(first.output.pid);
 	await persistent.close();
 }, 30_000);

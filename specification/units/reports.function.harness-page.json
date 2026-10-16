@@ -3,7 +3,7 @@
 	"id": "reports.function.harness-page",
 	"kind": "function",
 	"title": "harnessPage",
-	"responsibility": "Decides what a console path shows in a history: a page, a redirect to one, or nothing.",
+	"responsibility": "Decides what a console path shows in a history: an explorer page bound to a branch tip or a selected commit, a redirect to one, or nothing.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -24,6 +24,10 @@
 			{
 				"name": "harnessPage.path",
 				"type": "string"
+			},
+			{
+				"name": "harnessPage.search",
+				"type": "unknown"
 			}
 		],
 		"outputs": [
@@ -45,7 +49,17 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "function.console-route",
+			"unit": "function.explorer-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-scope",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
 			"via": "import",
 			"origin": "derived"
 		},

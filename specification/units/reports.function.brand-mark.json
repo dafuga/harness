@@ -1,0 +1,53 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.brand-mark",
+	"kind": "function",
+	"title": "brandMark",
+	"responsibility": "Owns the brandMark shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/brandMark.ts"],
+		"symbols": ["brandGrid", "brandTiles", "brandColors", "brandMark"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "brandGrid",
+				"type": "unknown"
+			},
+			{
+				"name": "brandTiles",
+				"type": "unknown"
+			},
+			{
+				"name": "brandColors",
+				"type": "unknown"
+			},
+			{
+				"name": "brandMark",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/brandMark.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/brandMark.ts"
+			}
+		]
+	},
+	"scenarios": ["modular-h-branding-contract"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

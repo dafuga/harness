@@ -1,0 +1,194 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.thread-anchor",
+	"kind": "function",
+	"title": "threadAnchor",
+	"responsibility": "Owns the threadAnchor shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/threadAnchor.ts"],
+		"symbols": [
+			"ThreadTarget",
+			"CommentAnchor",
+			"entityTarget",
+			"imageTarget",
+			"optionImages",
+			"designOption",
+			"shownApproval",
+			"versionOption",
+			"otherOption",
+			"designTarget",
+			"threadAnchor",
+			"sameImage"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "imageTarget.version",
+				"type": "string"
+			},
+			{
+				"name": "imageTarget.image",
+				"type": "DesignImage"
+			},
+			{
+				"name": "imageTarget.region",
+				"type": "ThreadTarget['region']"
+			},
+			{
+				"name": "optionImages.design",
+				"type": "DesignVersion | undefined"
+			},
+			{
+				"name": "optionImages.option",
+				"type": "string"
+			},
+			{
+				"name": "designOption.design",
+				"type": "DesignVersion | undefined"
+			},
+			{
+				"name": "designOption.wanted",
+				"type": "unknown"
+			},
+			{
+				"name": "shownApproval.design",
+				"type": "DesignVersion | undefined"
+			},
+			{
+				"name": "shownApproval.latest",
+				"type": "string | null"
+			},
+			{
+				"name": "shownApproval.option",
+				"type": "unknown"
+			},
+			{
+				"name": "versionOption.versions",
+				"type": "DesignVersion[]"
+			},
+			{
+				"name": "versionOption.version",
+				"type": "string"
+			},
+			{
+				"name": "versionOption.wanted",
+				"type": "unknown"
+			},
+			{
+				"name": "otherOption.item",
+				"type": "ThreadTarget | null"
+			},
+			{
+				"name": "otherOption.version",
+				"type": "string"
+			},
+			{
+				"name": "otherOption.option",
+				"type": "string"
+			},
+			{
+				"name": "designTarget.design",
+				"type": "DesignVersion | undefined"
+			},
+			{
+				"name": "designTarget.option",
+				"type": "unknown"
+			},
+			{
+				"name": "threadAnchor.revision",
+				"type": "Revision"
+			},
+			{
+				"name": "threadAnchor.entityId",
+				"type": "string"
+			},
+			{
+				"name": "threadAnchor.target",
+				"type": "ThreadTarget"
+			},
+			{
+				"name": "sameImage.left",
+				"type": "ThreadTarget | null"
+			},
+			{
+				"name": "sameImage.right",
+				"type": "ThreadTarget"
+			}
+		],
+		"outputs": [
+			{
+				"name": "entityTarget",
+				"type": "ThreadTarget"
+			},
+			{
+				"name": "imageTarget",
+				"type": "ThreadTarget"
+			},
+			{
+				"name": "optionImages",
+				"type": "DesignImage[]"
+			},
+			{
+				"name": "designOption",
+				"type": "string"
+			},
+			{
+				"name": "shownApproval",
+				"type": "boolean"
+			},
+			{
+				"name": "versionOption",
+				"type": "string"
+			},
+			{
+				"name": "otherOption",
+				"type": "unknown"
+			},
+			{
+				"name": "designTarget",
+				"type": "ThreadTarget"
+			},
+			{
+				"name": "threadAnchor",
+				"type": "CommentAnchor"
+			},
+			{
+				"name": "sameImage",
+				"type": "boolean"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.project-context-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/threadAnchor.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/threadAnchor.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

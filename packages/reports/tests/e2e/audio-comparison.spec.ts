@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { audioPairFixture } from '../../test/audioPairFixture';
 import { audioFixture } from '../../test/audioFixture';
 import { fixtures } from './support/fixtures';
+import { expectRetired, portableReport } from './support/portableReport';
 const root = fixtures.reports;
 async function capture(page: Page, width: number) {
 	await page.evaluate(async () => {
@@ -21,9 +22,9 @@ for (const width of [1440, 920, 390]) {
 	test(`paired audio compares, seeks and downloads both originals at ${width}px`, async ({
 		page
 	}) => {
-		const { run } = await audioPairFixture(root);
+		const { store, run } = await audioPairFixture(root);
 		await page.setViewportSize({ width, height: 1100 });
-		await page.goto('/reports/' + run.id);
+		await page.goto(await portableReport(store, run.id));
 		await page
 			.getByRole('group', { name: 'Media type' })
 			.getByRole('button', { name: /^Audio/ })
@@ -100,7 +101,7 @@ test('a missing Before recording leaves a usable After with independent status',
 	await store.mutateActive(run.id, async (report) => {
 		report.evidence[0].missing = true;
 	});
-	await page.goto('/reports/' + run.id);
+	await page.goto(await portableReport(store, run.id));
 	await page
 		.getByRole('button', {
 			name: 'Open audio comparison: Paired recording',
@@ -114,4 +115,12 @@ test('a missing Before recording leaves a usable After with independent status',
 	await expect(pair.getByRole('group', { name: 'Before recording' })).toContainText('Not proven');
 	await expect(pair.getByRole('group', { name: 'After recording' }).locator('audio')).toBeVisible();
 	await expect(pair.getByRole('group', { name: 'After recording' })).toContainText('Passed');
+});
+
+test('the address of a report page leads into the explorer; the report stays in its viewer', async ({
+	page
+}) => {
+	const { run } = await audioPairFixture(root, fixtures.site('alpha-project'));
+	await expectRetired(page, '/reports/' + run.id);
+	await expectRetired(page, '/harness/reports/' + run.id);
 });

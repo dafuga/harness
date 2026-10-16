@@ -1,0 +1,78 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-entity-link",
+	"kind": "component",
+	"title": "EntityLink",
+	"responsibility": "Renders a link to another place of the explorer that a plain click follows in place and any other click leaves to the browser.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/EntityLink.svelte"],
+		"symbols": ["EntityLink"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "EntityLink.to",
+				"type": "ExplorerLocation"
+			},
+			{
+				"name": "EntityLink.nav",
+				"type": "EntityNav"
+			},
+			{
+				"name": "EntityLink.label",
+				"type": "string"
+			},
+			{
+				"name": "EntityLink.children",
+				"type": "Snippet"
+			},
+			{
+				"name": "EntityLink.class",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "EntityLink",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-shell",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/EntityLink.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/EntityLink.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

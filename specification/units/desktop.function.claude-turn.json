@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.claude-turn",
+	"kind": "function",
+	"title": "claudeTurn",
+	"responsibility": "Owns the claudeTurn shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/claudeTurn.ts"],
+		"symbols": ["claudeTurn"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "claudeTurn.command",
+				"type": "CliCommand"
+			},
+			{
+				"name": "claudeTurn.turn",
+				"type": "AgentTurn"
+			}
+		],
+		"outputs": [
+			{
+				"name": "claudeTurn",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.cli-process",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.public-cli-events",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.agent-runner-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/claudeTurn.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/claudeTurn.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

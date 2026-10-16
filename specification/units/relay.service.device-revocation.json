@@ -1,0 +1,83 @@
+{
+	"schemaVersion": 1,
+	"id": "relay.service.device-revocation",
+	"kind": "service",
+	"title": "DeviceRevocationService",
+	"responsibility": "Owns the DeviceRevocationService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/relay/src/services/DeviceRevocationService.ts"],
+		"symbols": [
+			"DeviceRevocationService",
+			"DeviceRevocationService.constructor",
+			"DeviceRevocationService.revoke"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "DeviceRevocationService.constructor.store",
+				"type": "HostStorageAdapter"
+			},
+			{
+				"name": "DeviceRevocationService.constructor.sockets",
+				"type": "HostSocketsAdapter"
+			},
+			{
+				"name": "DeviceRevocationService.constructor.link",
+				"type": "HostLinkService"
+			},
+			{
+				"name": "DeviceRevocationService.revoke.deviceId",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "DeviceRevocationService.revoke",
+				"type": "void"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "relay.adapter.host-sockets",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.adapter.host-storage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.service.host-link",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/relay/src/services/DeviceRevocationService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/relay/src/services/DeviceRevocationService.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.renderer-assets",
+	"kind": "function",
+	"title": "rendererAssets",
+	"responsibility": "Owns the rendererAssets shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/rendererAssets.ts"],
+		"symbols": ["rendererPolicy", "rendererAssets"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "rendererPolicy.html",
+				"type": "string"
+			},
+			{
+				"name": "rendererPolicy.connect",
+				"type": "unknown"
+			},
+			{
+				"name": "rendererAssets.root",
+				"type": "string"
+			},
+			{
+				"name": "rendererAssets.url",
+				"type": "string"
+			},
+			{
+				"name": "rendererAssets.connect",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "rendererPolicy",
+				"type": "string"
+			},
+			{
+				"name": "rendererAssets",
+				"type": "Promise<Response>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/rendererAssets.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/rendererAssets.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

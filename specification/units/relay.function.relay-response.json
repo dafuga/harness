@@ -1,0 +1,76 @@
+{
+	"schemaVersion": 1,
+	"id": "relay.function.relay-response",
+	"kind": "function",
+	"title": "relayResponse",
+	"responsibility": "Owns the relayResponse shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/relay/src/utils/relayResponse.ts"],
+		"symbols": ["relayResponse", "relayError"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "relayResponse.status",
+				"type": "number"
+			},
+			{
+				"name": "relayResponse.body",
+				"type": "unknown"
+			},
+			{
+				"name": "relayResponse.headers",
+				"type": "Record<string, string>"
+			},
+			{
+				"name": "relayError.status",
+				"type": "number"
+			},
+			{
+				"name": "relayError.error",
+				"type": "RelayErrorCode"
+			},
+			{
+				"name": "relayError.headers",
+				"type": "Record<string, string>"
+			}
+		],
+		"outputs": [
+			{
+				"name": "relayResponse",
+				"type": "Response"
+			},
+			{
+				"name": "relayError",
+				"type": "Response"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/relay/src/utils/relayResponse.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/relay/src/utils/relayResponse.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

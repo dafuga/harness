@@ -1,0 +1,89 @@
+{
+	"schemaVersion": 1,
+	"id": "function.explorer-route",
+	"kind": "function",
+	"title": "explorerRoute",
+	"responsibility": "Parses and formats one address of the entity explorer: its branch, the selected commit or the branch tip, the category, the entity and the section shown.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/explorerRoute.ts"],
+		"symbols": [
+			"explorerCategories",
+			"ExplorerCategory",
+			"explorerKindCategory",
+			"explorerSections",
+			"ExplorerSection",
+			"explorerTabs",
+			"ExplorerTab",
+			"ExplorerLocation",
+			"explorerRoute",
+			"explorerRoutePath"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "explorerKindCategory.kind",
+				"type": "string"
+			},
+			{
+				"name": "explorerRoute.path",
+				"type": "string"
+			},
+			{
+				"name": "explorerRoute.search",
+				"type": "unknown"
+			},
+			{
+				"name": "explorerRoutePath.location",
+				"type": "ExplorerLocation"
+			}
+		],
+		"outputs": [
+			{
+				"name": "explorerCategories",
+				"type": "unknown"
+			},
+			{
+				"name": "explorerKindCategory",
+				"type": "ExplorerCategory | null"
+			},
+			{
+				"name": "explorerSections",
+				"type": "unknown"
+			},
+			{
+				"name": "explorerTabs",
+				"type": "unknown"
+			},
+			{
+				"name": "explorerRoute",
+				"type": "ExplorerLocation | undefined"
+			},
+			{
+				"name": "explorerRoutePath",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/explorerRoute.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/explorerRoute.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

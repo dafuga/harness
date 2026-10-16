@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.hub-history",
+	"kind": "function",
+	"title": "hubHistory",
+	"responsibility": "Owns the hubHistory shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/hubHistory.ts"],
+		"symbols": ["HubHistoryPage", "hubHistory"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hubHistory.context",
+				"type": "HubSourceContext"
+			},
+			{
+				"name": "hubHistory.input",
+				"type": "{ branch?: string; paths: string[]; page?: number }"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hubHistory",
+				"type": "Promise<HubHistoryPage>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-source",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/hubHistory.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/hubHistory.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

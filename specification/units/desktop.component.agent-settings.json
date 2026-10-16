@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.agent-settings",
+	"kind": "component",
+	"title": "Agent settings preference",
+	"responsibility": "Configures the device design count from one to ten and shows persistence failures.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/AgentSettings.svelte"],
+		"symbols": ["AgentSettings"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "AgentSettings",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.compose-modes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.agent-settings",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/AgentSettings.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/AgentSettings.svelte"
+			}
+		]
+	},
+	"scenarios": ["agent-settings"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

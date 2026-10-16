@@ -1,0 +1,69 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.page.settings",
+	"kind": "page",
+	"title": "Agent settings",
+	"responsibility": "Shows device planning preferences in the shared renderer and returns to the selected project.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/routes/settings/+page.svelte"],
+		"symbols": ["+page"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "from",
+				"type": "string | null",
+				"description": "An internal workspace return path; other values return to the app root."
+			}
+		],
+		"outputs": [
+			{
+				"name": "+page",
+				"type": "markup",
+				"description": "Shared Settings UI for the renderer; no agent execution or project mutation."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.agent-settings",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.workspace-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.style.design",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.style.workspace",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/routes/settings/+page.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/routes/settings/+page.svelte"
+			}
+		]
+	},
+	"scenarios": ["agent-settings"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

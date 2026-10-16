@@ -1,0 +1,80 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.entity-lens",
+	"kind": "function",
+	"title": "entityLens",
+	"responsibility": "Declares what the host answers for the explorer content and how its components navigate, names the six collections, and builds the location of another place in the same branch and revision.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/entityLens.ts"],
+		"symbols": [
+			"EntityLens",
+			"EntityNav",
+			"EntityLabel",
+			"entityLabels",
+			"entityLens",
+			"shortCommit"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "entityLens.from",
+				"type": "ExplorerLocation"
+			},
+			{
+				"name": "entityLens.to",
+				"type": "Target"
+			},
+			{
+				"name": "shortCommit.commit",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "entityLabels",
+				"type": "Record<ExplorerCategory, EntityLabel>"
+			},
+			{
+				"name": "entityLens",
+				"type": "ExplorerLocation"
+			},
+			{
+				"name": "shortCommit",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/entityLens.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/entityLens.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,59 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.corrected-location",
+	"kind": "function",
+	"title": "correctedLocation",
+	"responsibility": "Says where an explorer address of an entity belongs at its revision: under the category the entity has there, with its branch, commit, section and tab kept.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/correctedLocation.ts"],
+		"symbols": ["correctedLocation"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "correctedLocation.at",
+				"type": "ExplorerLocation",
+				"description": "The address that was asked for."
+			},
+			{
+				"name": "correctedLocation.entities",
+				"type": "Pick<ExplorerEntity, 'id' | 'category'>[]",
+				"description": "The entities of the shown revision, each with the category its manifest declares there."
+			}
+		],
+		"outputs": [
+			{
+				"name": "correctedLocation",
+				"type": "ExplorerLocation | null",
+				"description": "The same address under the category of the entity at this revision; null when it is already there, names no entity or the revision does not hold it."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/correctedLocation.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/correctedLocation.ts"
+			}
+		]
+	},
+	"scenarios": ["harness-console"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

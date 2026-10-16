@@ -1,0 +1,86 @@
+{
+	"schemaVersion": 1,
+	"id": "planning.function.plan-registry",
+	"kind": "function",
+	"title": "planRegistry",
+	"responsibility": "Keep planning metadata outside the active unit registry by atomically extending only existing clean validated Harness configuration.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/planning/src/utils/planRegistry.ts"],
+		"symbols": ["planningIgnores", "planRegistry"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "planRegistry.git",
+				"type": "Git"
+			},
+			{
+				"name": "planRegistry.revision",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "planningIgnores",
+				"type": "unknown"
+			},
+			{
+				"name": "planRegistry",
+				"type": "Promise<Files>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "module.contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-write",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "module.contracts",
+			"via": "contract",
+			"origin": "declared",
+			"contract": "Validate existing Harness unit configuration with the public unitsConfigSchema before additive ignores."
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/planning/src/utils/planRegistry.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/planning/src/utils/planRegistry.ts"
+			}
+		]
+	},
+	"scenarios": ["planning-artifacts", "shells-shared-app"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,65 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.remote-binary",
+	"kind": "function",
+	"title": "remoteBinary",
+	"responsibility": "Owns the remoteBinary shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/remoteBinary.ts"],
+		"symbols": ["unreadableMedia", "damagedMedia", "remoteBinary"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "remoteBinary.value",
+				"type": "RemoteBinary"
+			}
+		],
+		"outputs": [
+			{
+				"name": "unreadableMedia",
+				"type": "unknown"
+			},
+			{
+				"name": "damagedMedia",
+				"type": "unknown"
+			},
+			{
+				"name": "remoteBinary",
+				"type": "Promise<Uint8Array>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.environment-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/remoteBinary.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/remoteBinary.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-recorded-evidence", "remote-mobile-native"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

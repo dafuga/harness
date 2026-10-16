@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.model.remote-secure-types",
+	"kind": "model",
+	"title": "RemoteSecure",
+	"responsibility": "Owns the RemoteSecure data model.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/models/RemoteSecure.types.ts"],
+		"symbols": [
+			"RemoteKeyPair",
+			"StoredRemoteKeys",
+			"SecureRole",
+			"SecureDirection",
+			"SessionKeys",
+			"SecureHello",
+			"SecureAccept",
+			"SecureReject",
+			"SecureSealed",
+			"SecurePacket",
+			"PairingSecret",
+			"PairingApproval",
+			"SecureFailureReason",
+			"SecureFailure",
+			"SecureFailure.constructor"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "SecureFailure.constructor.reason",
+				"type": "SecureFailureReason"
+			}
+		],
+		"outputs": [],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.model.remote-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/models/RemoteSecure.types.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/models/RemoteSecure.types.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

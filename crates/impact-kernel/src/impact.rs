@@ -32,22 +32,40 @@ pub fn compute(input: &Input) -> String {
         .ids
         .iter()
         .filter(|id| !head.index.contains_key(id.as_str()));
-    let mut affected = Vec::new();
+    // One string for the whole answer, not a string per node joined and then copied again.
+    let mut text = String::from("{\"affected\":[");
     for id in head.ids.iter().chain(base_only) {
         if let Some(node) = merge(id, &base, &head, &changed) {
-            affected.push(node);
+            if !text.ends_with('[') {
+                text.push(',');
+            }
+            node.write(&mut text, id);
         }
     }
     let (uncovered, unknown) = coverage(&input.changed, &base, &head);
-    format!(
-        "{{\"affected\":[{}],\"uncovered\":{},\"unknown\":{}}}",
-        affected.join(","),
-        Value::from(uncovered),
-        Value::from(unknown)
-    )
+    let (uncovered, unknown) = (Value::from(uncovered), Value::from(unknown));
+    let _ = write!(text, "],\"uncovered\":{uncovered},\"unknown\":{unknown}}}");
+    text
 }
 
-fn merge(id: &str, base: &Reached, head: &Reached, changed: &HashSet<&str>) -> Option<String> {
+/// One affected node; `seed` is already JSON.
+struct Node {
+    distance: i32,
+    via: &'static str,
+    presence: &'static str,
+    seed: &'static str,
+}
+
+impl Node {
+    fn write(&self, text: &mut String, id: &str) {
+        let (distance, via, presence, seed) = (self.distance, self.via, self.presence, self.seed);
+        let _ = write!(text, "{{\"id\":{},", Value::from(id));
+        let _ = write!(text, "\"distance\":{distance},\"via\":\"{via}\",");
+        let _ = write!(text, "\"presence\":\"{presence}\",\"seed\":{seed}}}");
+    }
+}
+
+fn merge(id: &str, base: &Reached, head: &Reached, changed: &HashSet<&str>) -> Option<Node> {
     let in_base = base.index.get(id).copied();
     let in_head = head.index.get(id).copied();
     let from_base = in_base.map_or(-1, |position| base.distance[position]);
@@ -68,10 +86,12 @@ fn merge(id: &str, base: &Reached, head: &Reached, changed: &HashSet<&str>) -> O
         (false, 0) => "\"uncertain\"",
         _ => "null",
     };
-    let mut node = format!("{{\"id\":{},", Value::from(id));
-    let _ = write!(node, "\"distance\":{distance},\"via\":\"{via}\",");
-    let _ = write!(node, "\"presence\":\"{presence}\",\"seed\":{seed}}}");
-    Some(node)
+    Some(Node {
+        distance,
+        via,
+        presence,
+        seed,
+    })
 }
 
 /// Splits the changed ids into those no sink depends on and those in neither graph.
@@ -96,12 +116,8 @@ fn coverage(changed: &[String], base: &Reached, head: &Reached) -> (Vec<String>,
 
 fn reach<'a>(graph: &'a Graph, seeds: &[&str], sinks: &[String]) -> Reached<'a> {
     let size = graph.nodes.len();
-    let mut dependents = vec![Vec::new(); size];
-    let mut dependencies = vec![Vec::new(); size];
-    for &(from, to) in &graph.edges {
-        dependents[to].push(from);
-        dependencies[from].push(to);
-    }
+    let dependents = Adjacency::new(size, &graph.edges, true);
+    let dependencies = Adjacency::new(size, &graph.edges, false);
     let positions = graph.nodes.iter().enumerate();
     let index: HashMap<&str, usize> = positions.map(|(at, id)| (id.as_str(), at)).collect();
     let sinks: Vec<&str> = sinks.iter().map(String::as_str).collect();
@@ -113,8 +129,8 @@ fn reach<'a>(graph: &'a Graph, seeds: &[&str], sinks: &[String]) -> Reached<'a> 
     }
 }
 
-fn breadth_first(index: &HashMap<&str, usize>, starts: &[&str], next: &[Vec<usize>]) -> Vec<i32> {
-    let mut distance = vec![-1; next.len()];
+fn breadth_first(index: &HashMap<&str, usize>, starts: &[&str], next: &Adjacency) -> Vec<i32> {
+    let mut distance = vec![-1; next.offsets.len() - 1];
     let mut queue = Vec::new();
     for position in starts.iter().filter_map(|id| index.get(id).copied()) {
         if distance[position] != 0 {
@@ -126,7 +142,7 @@ fn breadth_first(index: &HashMap<&str, usize>, starts: &[&str], next: &[Vec<usiz
     while cursor < queue.len() {
         let current = queue[cursor];
         cursor += 1;
-        for &neighbor in &next[current] {
+        for &neighbor in next.of(current) {
             if distance[neighbor] == -1 {
                 distance[neighbor] = distance[current] + 1;
                 queue.push(neighbor);
@@ -134,4 +150,35 @@ fn breadth_first(index: &HashMap<&str, usize>, starts: &[&str], next: &[Vec<usiz
         }
     }
     distance
+}
+
+/// Each node's neighbours in edge order, packed into one vector instead of one vector per node.
+struct Adjacency {
+    offsets: Vec<usize>,
+    targets: Vec<usize>,
+}
+
+impl Adjacency {
+    /// Neighbours along `(from, to)` edges, or against them when `reverse` is set.
+    fn new(size: usize, edges: &[(usize, usize)], reverse: bool) -> Self {
+        let ends = |&(from, to): &(usize, usize)| if reverse { (to, from) } else { (from, to) };
+        let mut offsets = vec![0; size + 1];
+        for (node, _) in edges.iter().map(ends) {
+            offsets[node + 1] += 1;
+        }
+        for at in 0..size {
+            offsets[at + 1] += offsets[at];
+        }
+        let mut cursor = offsets.clone();
+        let mut targets = vec![0; offsets[size]];
+        for (node, neighbour) in edges.iter().map(ends) {
+            targets[cursor[node]] = neighbour;
+            cursor[node] += 1;
+        }
+        Adjacency { offsets, targets }
+    }
+
+    fn of(&self, node: usize) -> &[usize] {
+        &self.targets[self.offsets[node]..self.offsets[node + 1]]
+    }
 }

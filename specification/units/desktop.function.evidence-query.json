@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.evidence-query",
+	"kind": "function",
+	"title": "evidenceQuery",
+	"responsibility": "Owns the evidenceQuery shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/evidenceQuery.ts"],
+		"symbols": ["EvidenceView", "evidenceQuery"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "evidenceQuery.view",
+				"type": "EvidenceView"
+			},
+			{
+				"name": "evidenceQuery.entityId",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "evidenceQuery",
+				"type": "EntityEvidenceQuery | null"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.project-context-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/evidenceQuery.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/evidenceQuery.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

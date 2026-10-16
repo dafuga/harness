@@ -123,3 +123,29 @@ test('a changed dependency, an unresolved reference and a removal are each visib
 		expect.objectContaining({ path: 'src/utils/loader.ts', status: 'removed' })
 	]);
 });
+
+test('the index lists what each commit changed itself, verified or not, and nothing for the rest', async () => {
+	interface Listed {
+		commit: string;
+		changes?: { base: string | null; direct: string[]; added: string[]; removed: string[] } | null;
+	}
+	const index = JSON.parse(await readFile(join(out, 'index.json'), 'utf8')) as {
+		revisions: Listed[];
+	};
+	const listed = (name: string) =>
+		index.revisions.find((item) => item.commit === commits[name].commit)?.changes;
+	// The same number of bytes before and after: only the source says that it changed.
+	expect(listed('edited')).toEqual({
+		base: commits.edited.parent,
+		direct: ['function.slugify'],
+		added: [],
+		removed: []
+	});
+	expect(listed('rewired')?.direct).toEqual(['service.title']);
+	const added = listed('unresolved')?.added ?? [];
+	expect(added).toHaveLength(1);
+	expect(listed('removed')).toMatchObject({ direct: [], added: [], removed: added });
+	// What only depends on a changed unit is not listed as changed by that commit.
+	expect(listed('edited')?.direct).not.toContain('service.title');
+	for (const item of index.revisions) expect(item.changes).not.toBeUndefined();
+});

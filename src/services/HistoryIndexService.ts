@@ -11,6 +11,9 @@ import {
 } from '../repositories/SourceHistoryRepository';
 import { budgetReviews } from '../utils/budgetReviews';
 import { historySeries, unitGrowth } from '../utils/historySeries';
+import { revisionChanges, type RevisionChanges } from '../utils/revisionChanges';
+import type { RevisionRegistry } from '../utils/revisionRegistry';
+import { revisionSummary } from '../utils/revisionSummary';
 import { stableJson } from '../utils/stableJson';
 import { HistoryMediaService } from './HistoryMediaService';
 import { HistoryStatusService } from './HistoryStatusService';
@@ -27,8 +30,6 @@ export interface BuiltHistory {
 }
 
 export type LegacyReader = (media: HistoryMediaService) => Promise<LegacyEntry[]>;
-
-const unverified = 'no verification record is attached to this commit';
 
 /**
  * Builds the history index: a deterministic, self-contained set of files made only from Git.
@@ -79,7 +80,7 @@ export class HistoryIndexService {
 				notes: (await tree.tip(notesRef)) ?? null
 			},
 			branches: source.branches,
-			revisions: built.map((item) => summary(item.revision, item.result, entries)),
+			revisions: summaries(built, entries),
 			units: unitGrowth(sound, budgetReviews(built.map((item) => item.result.ledger).reverse())),
 			benchmarks: historySeries(sound),
 			profiles: profiles(sound),
@@ -111,50 +112,44 @@ function detailPath(commit: string): string {
 	return `revisions/${commit}.json`;
 }
 
+type Built = Array<{ revision: SourceRevision; result: BuiltRevision }>;
+
+/** Each built revision as the index lists it, with what its commit changed against its parent. */
+function summaries(built: Built, legacy: LegacyEntry[]): IndexedRevision[] {
+	const registries = new Map(
+		built.map((item) => [item.revision.commit, item.result.detail.registry])
+	);
+	return built.map((item) =>
+		summary(item.revision, item.result, legacy, changed(item, registries))
+	);
+}
+
+/** What a commit changed itself, from its stored impact and the registry of its first parent. */
+function changed(
+	item: Built[number],
+	registries: Map<string, RevisionRegistry>
+): RevisionChanges | null {
+	const base = item.revision.parents[0] ?? null;
+	const { sourceImpact, registry } = item.result.detail;
+	const parent = base === null ? undefined : registries.get(base);
+	return revisionChanges({ impact: sourceImpact, registry, parent, base });
+}
+
 function summary(
 	revision: SourceRevision,
 	built: BuiltRevision,
-	legacy: LegacyEntry[]
+	legacy: LegacyEntry[],
+	changes: RevisionChanges | null
 ): IndexedRevision {
 	const { status, detail } = built;
-	const records = status.records.map((item) => {
-		const view = detail.records.find((record) => record.id === item.record);
-		return {
-			id: item.record,
-			status: item.status,
-			profile: view?.profile ?? 'unknown',
-			finishedAt: view?.finishedAt ?? 'unknown',
-			base: view?.source.base ?? null,
-			valid: item.valid,
-			problems: item.problems
-		};
-	});
-	const usable = records.filter((record) => record.valid);
-	const coverage = coverageOf(
-		records.length,
-		usable.map((record) => record.status)
-	);
-	const invalid = records
-		.filter((record) => !record.valid)
-		.flatMap((record) =>
-			record.problems.map((problem) => `record ${short(record.id)}: ${problem}`)
-		);
 	return {
 		...revision,
-		coverage,
-		gaps: records.length === 0 ? [unverified] : invalid,
-		records,
+		...revisionSummary(status, detail.records),
 		reasons: detail.explanations.length,
 		legacy: legacy.filter((entry) => entry.linked === revision.commit).map((entry) => entry.id),
+		changes,
 		detail: detailPath(revision.commit)
 	};
-}
-
-/** Verified needs a usable passing record; records that cannot be used prove nothing. */
-function coverageOf(attached: number, usable: string[]): IndexedRevision['coverage'] {
-	if (attached === 0) return 'unverified';
-	if (usable.includes('passed')) return 'verified';
-	return usable.length > 0 ? 'failed' : 'invalid';
 }
 
 function profiles(records: VerificationRecord[]): HistoryIndex['profiles'] {

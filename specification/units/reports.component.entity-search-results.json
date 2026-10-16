@@ -1,0 +1,89 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.entity-search-results",
+	"kind": "component",
+	"title": "EntitySearchResults",
+	"responsibility": "The results of the shared search: each a link with a category badge, its name and purpose; the active one marked; loading and nothing found said.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/EntitySearchResults.svelte"],
+		"symbols": ["EntitySearchResults"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "EntitySearchResults.id",
+				"type": "string"
+			},
+			{
+				"name": "EntitySearchResults.found",
+				"type": "SearchEntry[]"
+			},
+			{
+				"name": "EntitySearchResults.active",
+				"type": "number"
+			},
+			{
+				"name": "EntitySearchResults.loading",
+				"type": "boolean"
+			},
+			{
+				"name": "EntitySearchResults.query",
+				"type": "string"
+			},
+			{
+				"name": "EntitySearchResults.scope",
+				"type": "string"
+			},
+			{
+				"name": "EntitySearchResults.shift",
+				"type": "number"
+			},
+			{
+				"name": "EntitySearchResults.href",
+				"type": "(entry: SearchEntry) => string"
+			},
+			{
+				"name": "EntitySearchResults.choose",
+				"type": "(entry: SearchEntry) => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "EntitySearchResults",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-search",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/EntitySearchResults.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/EntitySearchResults.svelte"
+			}
+		]
+	},
+	"scenarios": ["explorer-shell", "harness-console", "search-shared-app"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

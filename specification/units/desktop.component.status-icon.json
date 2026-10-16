@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.status-icon",
+	"kind": "component",
+	"title": "StatusIcon",
+	"responsibility": "Owns the StatusIcon Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/StatusIcon.svelte"],
+		"symbols": ["StatusIcon"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "StatusIcon.status",
+				"type": "Verification"
+			},
+			{
+				"name": "StatusIcon.reason",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "StatusIcon",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/StatusIcon.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/StatusIcon.svelte"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-renderer"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

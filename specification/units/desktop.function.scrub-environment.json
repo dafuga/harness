@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.scrub-environment",
+	"kind": "function",
+	"title": "scrubEnvironment",
+	"responsibility": "Owns the scrubEnvironment shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/scrubEnvironment.ts"],
+		"symbols": ["scrubEnvironment"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "scrubEnvironment.env",
+				"type": "NodeJS.ProcessEnv"
+			}
+		],
+		"outputs": [
+			{
+				"name": "scrubEnvironment",
+				"type": "NodeJS.ProcessEnv"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/scrubEnvironment.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/scrubEnvironment.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

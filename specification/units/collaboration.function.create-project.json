@@ -1,0 +1,91 @@
+{
+	"schemaVersion": 1,
+	"id": "collaboration.function.create-project",
+	"kind": "function",
+	"title": "createProject",
+	"responsibility": "Owns the createProject shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/collaboration/src/utils/createProject.ts"],
+		"symbols": ["createProject", "removeMember"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "createProject.deps",
+				"type": "CollaborationDependencies"
+			},
+			{
+				"name": "createProject.actor",
+				"type": "Actor"
+			},
+			{
+				"name": "createProject.input",
+				"type": "Parameters<CollaborationApi['createProject']>[1]"
+			},
+			{
+				"name": "removeMember.deps",
+				"type": "CollaborationDependencies"
+			},
+			{
+				"name": "removeMember.actor",
+				"type": "Actor"
+			},
+			{
+				"name": "removeMember.input",
+				"type": "Parameters<CollaborationApi['removeMember']>[1]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "createProject",
+				"type": "unknown"
+			},
+			{
+				"name": "removeMember",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "collaboration.function.current-project",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.function.parse-collaboration-input",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.model.collaboration-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/collaboration/src/utils/createProject.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/collaboration/src/utils/createProject.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

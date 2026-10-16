@@ -1,0 +1,73 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.catalog-view",
+	"kind": "component",
+	"title": "CatalogView",
+	"responsibility": "Owns the CatalogView Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/CatalogView.svelte"],
+		"symbols": ["CatalogView"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "CatalogView.workspace",
+				"type": "Workspace"
+			}
+		],
+		"outputs": [
+			{
+				"name": "CatalogView",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.entity-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-name",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.select",
+			"via": "contract",
+			"origin": "declared",
+			"contract": "The shared Select component supplies keyboard and value selection behavior through the $shared alias."
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/CatalogView.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/CatalogView.svelte"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-renderer", "agent-creation", "shells-shared-app"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,75 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-entity-config",
+	"kind": "component",
+	"title": "EntityConfig",
+	"responsibility": "Shows what a config provides and which entities use it, with no screenshot and no benchmark of its own.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/EntityConfig.svelte"],
+		"symbols": ["EntityConfig"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "EntityConfig.entity",
+				"type": "ExplorerEntity"
+			},
+			{
+				"name": "EntityConfig.scope",
+				"type": "ExplorerScope"
+			},
+			{
+				"name": "EntityConfig.nav",
+				"type": "EntityNav"
+			}
+		],
+		"outputs": [
+			{
+				"name": "EntityConfig",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-harness-action",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/EntityConfig.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/EntityConfig.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

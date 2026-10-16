@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.members-panel",
+	"kind": "component",
+	"title": "MembersPanel",
+	"responsibility": "Owns the MembersPanel Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/components/MembersPanel.svelte"],
+		"symbols": ["MembersPanel"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "MembersPanel.projectId",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "MembersPanel",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.component.invitation-form",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/MembersPanel.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/MembersPanel.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

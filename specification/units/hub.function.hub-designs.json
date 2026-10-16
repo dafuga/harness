@@ -1,0 +1,102 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.hub-designs",
+	"kind": "function",
+	"title": "hubDesigns",
+	"responsibility": "Owns the hubDesigns shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/hubDesigns.ts"],
+		"symbols": ["hubDesigns", "hubDesignImage"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hubDesigns.context",
+				"type": "HubSourceContext"
+			},
+			{
+				"name": "hubDesigns.plan",
+				"type": "HubPlan"
+			},
+			{
+				"name": "hubDesignImage.context",
+				"type": "HubSourceContext"
+			},
+			{
+				"name": "hubDesignImage.plan",
+				"type": "HubPlan"
+			},
+			{
+				"name": "hubDesignImage.input",
+				"type": "{ version: string; sha256: string }"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hubDesigns",
+				"type": "unknown"
+			},
+			{
+				"name": "hubDesignImage",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-approval",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-options",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-png",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-schemas",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-source",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/hubDesigns.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/hubDesigns.ts"
+			}
+		]
+	},
+	"scenarios": ["hosted-design-options"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

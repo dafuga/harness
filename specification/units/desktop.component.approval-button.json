@@ -1,0 +1,78 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.approval-button",
+	"kind": "component",
+	"title": "ApprovalButton",
+	"responsibility": "Owns the ApprovalButton Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/ApprovalButton.svelte"],
+		"symbols": ["ApprovalButton"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ApprovalButton.entity",
+				"type": "EntityDetail"
+			},
+			{
+				"name": "ApprovalButton.workspace",
+				"type": "Workspace"
+			},
+			{
+				"name": "ApprovalButton.design",
+				"type": "DesignVersion"
+			},
+			{
+				"name": "ApprovalButton.approved",
+				"type": "boolean"
+			},
+			{
+				"name": "ApprovalButton.option",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ApprovalButton",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.thread-anchor",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/ApprovalButton.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/ApprovalButton.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

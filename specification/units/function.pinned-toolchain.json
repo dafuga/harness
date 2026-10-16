@@ -1,0 +1,55 @@
+{
+	"schemaVersion": 1,
+	"id": "function.pinned-toolchain",
+	"kind": "function",
+	"title": "pinnedToolchain",
+	"responsibility": "Owns the pinnedToolchain shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/pinnedToolchain.ts"],
+		"symbols": ["PinnedTool", "ToolAnswer", "ToolRun", "PinnedOptions", "pinnedToolchain"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "pinnedToolchain.tool",
+				"type": "string"
+			},
+			{
+				"name": "pinnedToolchain.options",
+				"type": "PinnedOptions"
+			}
+		],
+		"outputs": [
+			{
+				"name": "pinnedToolchain",
+				"type": "PinnedTool"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/pinnedToolchain.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/pinnedToolchain.ts"
+			}
+		]
+	},
+	"scenarios": ["pinned-toolchain-runtime"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

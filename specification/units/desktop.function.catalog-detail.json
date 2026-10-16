@@ -1,0 +1,86 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.catalog-detail",
+	"kind": "function",
+	"title": "catalogDetail",
+	"responsibility": "Owns the catalogDetail shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/catalogDetail.ts"],
+		"symbols": ["catalogDetail"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "catalogDetail.context",
+				"type": "DetailContext"
+			},
+			{
+				"name": "catalogDetail.data",
+				"type": "DetailData"
+			}
+		],
+		"outputs": [
+			{
+				"name": "catalogDetail",
+				"type": "Promise<EntityDetail>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.adapter.git-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.catalog-history",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.category-of",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.planning-port-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "module.contracts",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/catalogDetail.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/catalogDetail.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

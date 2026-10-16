@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "collaboration.function.github-commit-facts",
+	"kind": "function",
+	"title": "githubCommitFacts",
+	"responsibility": "Owns the githubCommitFacts shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/collaboration/src/utils/githubCommitFacts.ts"],
+		"symbols": ["githubCommitFacts"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "githubCommitFacts.client",
+				"type": "GitHubTransport"
+			},
+			{
+				"name": "githubCommitFacts.commit",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "githubCommitFacts",
+				"type": "Promise<SourceCommitFacts | null>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "collaboration.function.github-transport",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.function.parse-collaboration-input",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.model.collaboration-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/collaboration/src/utils/githubCommitFacts.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/collaboration/src/utils/githubCommitFacts.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

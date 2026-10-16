@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.account-menu",
+	"kind": "component",
+	"title": "AccountMenu",
+	"responsibility": "Owns the AccountMenu Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/components/AccountMenu.svelte"],
+		"symbols": ["AccountMenu"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "AccountMenu.projectId",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "AccountMenu",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/AccountMenu.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/AccountMenu.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

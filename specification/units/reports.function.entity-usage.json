@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.entity-usage",
+	"kind": "function",
+	"title": "entityUsage",
+	"responsibility": "Owns the entityUsage shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/entityUsage.ts"],
+		"symbols": ["UsageGroup", "EntityUsage", "entityUsage"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "entityUsage.relations",
+				"type": "ExplorerRelations"
+			}
+		],
+		"outputs": [
+			{
+				"name": "entityUsage",
+				"type": "EntityUsage"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.harness-icons",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/entityUsage.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/entityUsage.ts"
+			}
+		]
+	},
+	"scenarios": ["harness-console"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

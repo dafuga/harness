@@ -1,29 +1,35 @@
 import type { VerificationRecord } from '../core/verificationTypes';
+import { canonicalJson } from './canonicalJson';
 
 export interface LineageSource {
 	/** The stored record with this id, if there is one. */
 	find(id: string): VerificationRecord | undefined;
-	/** What is wrong with a record on its own: identity, seal and evidence. */
+	/** Identity, seal and evidence problems of one record. */
 	problems(record: VerificationRecord): string[];
 }
 
 const short = (id: string): string => id.slice(0, 12);
 
-/**
- * Validates everything a record inherits: the base record it was judged against and the record
- * behind each referenced scenario, each followed to its own root. A dependency that is absent,
- * unsound, failed or part of a cycle makes the record unproven.
- */
+/** Checks base and scenario ancestry, refusing missing, damaged, failed or cyclic records. */
 export function recordLineage(
 	record: VerificationRecord,
 	source: LineageSource,
 	path: string[] = []
 ): string[] {
-	if (path.includes(record.id)) return ['inherited records form a cycle'];
-	const next = [...path, record.id];
-	const sound = (dependency: VerificationRecord): string | undefined =>
-		[...source.problems(dependency), ...recordLineage(dependency, source, next)][0];
-	return [...baseProblems(record, source, sound), ...scenarioProblems(record, source, sound)];
+	// Cache per call and stored object: equal ids alone never share results.
+	const checked = new WeakMap<VerificationRecord, string | undefined>();
+	const visit = (current: VerificationRecord, trail: string[]): string[] => {
+		if (trail.includes(current.id)) return ['inherited records form a cycle'];
+		const next = [...trail, current.id];
+		const sound = (dependency: VerificationRecord): string | undefined => {
+			if (!checked.has(dependency)) {
+				checked.set(dependency, [...source.problems(dependency), ...visit(dependency, next)][0]);
+			}
+			return checked.get(dependency);
+		};
+		return [...baseProblems(current, source, sound), ...scenarioProblems(current, source, sound)];
+	};
+	return visit(record, path);
 }
 
 type Soundness = (dependency: VerificationRecord) => string | undefined;
@@ -51,17 +57,26 @@ function scenarioProblems(
 	source: LineageSource,
 	sound: Soundness
 ): string[] {
-	return record.scenarios.flatMap((scenario) => {
-		if (scenario.status !== 'referenced' || !scenario.referencedRecord) return [];
+	const referenced = record.scenarios.filter((scenario) => scenario.status === 'referenced');
+	return referenced.flatMap((scenario) => {
+		if (!scenario.referencedRecord) return [];
 		const subject = `scenario ${scenario.id} is inherited from record ${short(scenario.referencedRecord)}, which`;
 		const found = source.find(scenario.referencedRecord);
 		if (!found) return [`${subject} is not available`];
 		const tested = found.scenarios.find((item) => item.id === scenario.id);
-		const same =
-			tested?.status === 'passed' &&
-			tested.testedRevision === scenario.testedRevision &&
-			found.source.commit === scenario.testedRevision;
-		if (!same) return [`${subject} did not test it`];
+		if (
+			tested?.status !== 'passed' ||
+			tested.testedRevision !== scenario.testedRevision ||
+			found.source.commit !== scenario.testedRevision
+		)
+			return [`${subject} did not test it`];
+		if (canonicalJson(scenario.states) !== canonicalJson(tested.states))
+			return [
+				`scenario ${scenario.id} differs from the states and captures in its inherited record`
+			];
+		// A scenario that passed inside a record that failed is not proof: only a record that
+		// passed as a whole is one a later record may inherit from.
+		if (found.status !== 'passed') return [`${subject} did not pass`];
 		const problem = sound(found);
 		return problem ? [`${subject} is not sound: ${problem}`] : [];
 	});

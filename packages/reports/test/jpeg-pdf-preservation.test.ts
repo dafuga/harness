@@ -6,6 +6,12 @@ import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { reportPdf } from '../src/utils/reportPdf';
 
+/**
+ * Each case may take 30 seconds: it starts Python several times, to make a picture, to build the
+ * PDF and to read it back, and a loaded machine starts each slowly. That bounds the work of a
+ * test and is no measure of the PDF.
+ */
+
 function fixture(directory: string, height = 720) {
 	const assets = join(directory, 'assets');
 	mkdirSync(assets);
@@ -91,7 +97,7 @@ test('full JPEG screenshots retain original bytes without inflating the PDF', ()
 	} finally {
 		rmSync(directory, { recursive: true, force: true });
 	}
-});
+}, 30_000);
 
 test('tall JPEG screenshots retain all vertical content across PDF pages', () => {
 	const directory = mkdtempSync(join(tmpdir(), 'jpeg-pdf-tall-'));
@@ -113,4 +119,4 @@ test('tall JPEG screenshots retain all vertical content across PDF pages', () =>
 	} finally {
 		rmSync(directory, { recursive: true, force: true });
 	}
-});
+}, 30_000);

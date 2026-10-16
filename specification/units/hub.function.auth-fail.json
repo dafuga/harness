@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.auth-fail",
+	"kind": "function",
+	"title": "authFail",
+	"responsibility": "Owns the authFail shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/authFail.ts"],
+		"symbols": ["AuthFailure", "AuthFailure.constructor", "authFail"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "AuthFailure.constructor.code",
+				"type": "AuthFailureCode"
+			},
+			{
+				"name": "authFail.code",
+				"type": "AuthFailureCode"
+			}
+		],
+		"outputs": [
+			{
+				"name": "authFail",
+				"type": "never"
+			}
+		],
+		"errors": [
+			{
+				"name": "AuthFailure",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "hub.model.hub-auth-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/authFail.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/authFail.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

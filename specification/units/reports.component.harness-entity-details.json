@@ -1,0 +1,98 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-entity-details",
+	"kind": "component",
+	"title": "EntityDetails",
+	"responsibility": "Shows the details of an entity on the tab that is open: the contract by default, the measurements, or the source only when the source tab is the open one.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/EntityDetails.svelte"],
+		"symbols": ["EntityDetails"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "EntityDetails.entity",
+				"type": "ExplorerEntity"
+			},
+			{
+				"name": "EntityDetails.contract",
+				"type": "ContractRow[]"
+			},
+			{
+				"name": "EntityDetails.measure",
+				"type": "EntityMeasure"
+			},
+			{
+				"name": "EntityDetails.record",
+				"type": "HarnessRecord | null"
+			},
+			{
+				"name": "EntityDetails.tab",
+				"type": "ExplorerTab"
+			}
+		],
+		"outputs": [
+			{
+				"name": "EntityDetails",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-entity-measures",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-entity-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-entity-summary",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-measure",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/EntityDetails.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/EntityDetails.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

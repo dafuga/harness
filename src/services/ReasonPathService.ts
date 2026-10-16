@@ -22,7 +22,9 @@ const maxSteps = 200;
  * Decides whether a range is explained. It is when every change has a reason for the range as a
  * whole, or when the range can be walked along its first-parent history in steps that are each
  * explained in full: units as they were added, then every later change. A step without a reason
- * is never covered by the steps around it, so nothing can be left out this way.
+ * is never covered by the steps around it, so nothing can be left out this way. Each step is held
+ * to the writing limits its own revision declares and the range as a whole to those of its head,
+ * so a later, stricter version neither refuses an earlier note nor is escaped by a longer range.
  */
 export class ReasonPathService {
 	private readonly explanations = new ExplanationService();
@@ -33,13 +35,14 @@ export class ReasonPathService {
 	) {}
 
 	async report(range: ReasonRange, known: Explanation[]): Promise<ReasonReport> {
-		const direct = this.explanations.report(requiredReasons(range.base, range.head), known);
+		const { base, head } = range;
+		const direct = this.explanations.report(requiredReasons(base, head), known, head.writing);
 		if (direct.failures.length === 0) return direct;
 		const between = await this.between(range);
 		const entries = between.length > 0 ? await this.walked(range, between, known) : undefined;
 		if (!entries) return direct;
 		const required = direct.required.map((status) => ({ ...status, state: 'explained' as const }));
-		return { required, entries, failures: [] };
+		return { required, entries, overlong: [], failures: [] };
 	}
 
 	/** Commits strictly between the two ends on the first-parent path, oldest first. */
@@ -70,7 +73,8 @@ export class ReasonPathService {
 		];
 		const step = (side: ReasonSide): Explanation[] | undefined => {
 			for (const from of [...reached].reverse()) {
-				const told = this.explanations.report(requiredReasons(from.side, side), known);
+				const required = requiredReasons(from.side, side);
+				const told = this.explanations.report(required, known, side.writing);
 				if (told.failures.length === 0) return [...from.entries, ...told.entries];
 			}
 			return undefined;

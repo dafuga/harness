@@ -38,6 +38,19 @@ export const indexedRevisionSchema = z.strictObject({
 	records: z.array(indexedRecordSchema),
 	reasons: z.number().int().nonnegative(),
 	legacy: z.array(text),
+	/**
+	 * The units the commit changed itself against its first parent, whether or not it was
+	 * verified. Null when that could not be read; absent in an index built before it was kept.
+	 */
+	changes: z
+		.strictObject({
+			base: commit.nullable(),
+			direct: z.array(text),
+			added: z.array(text),
+			removed: z.array(text)
+		})
+		.nullable()
+		.optional(),
 	/** Path of the revision's detail file, relative to the index. */
 	detail: text
 });

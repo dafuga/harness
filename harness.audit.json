@@ -13,6 +13,34 @@
 		{
 			"path": "packages/reports/",
 			"reason": "Reporting workspace is audited separately by its own strict app configuration in bun run check."
+		},
+		{
+			"path": "packages/planning/",
+			"reason": "Planning workspace runs its own strict library audit through check:planning in the root check."
+		},
+		{
+			"path": "packages/desktop/",
+			"reason": "Electron workspace runs its own strict app audit and browser acceptance through check:desktop in the root check."
+		},
+		{
+			"path": "packages/collaboration/",
+			"reason": "Portable collaboration workspace runs its strict library audit in root check:collaboration."
+		},
+		{
+			"path": "packages/hub/",
+			"reason": "Hosted collaboration workspace runs its strict app audit and browser acceptance in root check:hub."
+		},
+		{
+			"path": "work/mobile/",
+			"reason": "Ignored simulator captures, fixture output and red/green diagnostics. Production code and repeatable native checks live in packages/desktop and are audited there."
+		},
+		{
+			"path": "packages/remote/",
+			"reason": "This workspace runs its strict library audit through root check:remote."
+		},
+		{
+			"path": "packages/relay/",
+			"reason": "This workspace runs its strict library audit through root check:relay."
 		}
 	]
 }

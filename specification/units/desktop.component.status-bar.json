@@ -1,0 +1,67 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.status-bar",
+	"kind": "component",
+	"title": "StatusBar",
+	"responsibility": "Owns the StatusBar Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/StatusBar.svelte"],
+		"symbols": ["StatusBar"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "StatusBar.workspace",
+				"type": "Workspace"
+			}
+		],
+		"outputs": [
+			{
+				"name": "StatusBar",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.hosted-connection",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.remote-connection",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.time-label",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/StatusBar.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/StatusBar.svelte"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-renderer", "remote-mobile-ui"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

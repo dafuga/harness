@@ -1,0 +1,94 @@
+{
+	"schemaVersion": 1,
+	"id": "function.platform-services",
+	"kind": "function",
+	"title": "platformServices",
+	"responsibility": "Tells whether a process is a vetted, authenticated OS-managed service that left its command, a possible one, or the command's own.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/platformServices.ts"],
+		"symbols": [
+			"ServiceAuthority",
+			"Standing",
+			"Verdict",
+			"ServiceContext",
+			"macAuthority",
+			"platformServices",
+			"classifyProcess",
+			"stillPrivate"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "classifyProcess.known",
+				"type": "TrackedProcess"
+			},
+			{
+				"name": "classifyProcess.context",
+				"type": "ServiceContext"
+			},
+			{
+				"name": "stillPrivate.known",
+				"type": "TrackedProcess"
+			},
+			{
+				"name": "stillPrivate.judgedAs",
+				"type": "string | null"
+			},
+			{
+				"name": "stillPrivate.context",
+				"type": "ServiceContext"
+			}
+		],
+		"outputs": [
+			{
+				"name": "macAuthority",
+				"type": "ServiceAuthority | null"
+			},
+			{
+				"name": "platformServices",
+				"type": "Promise<ServiceAuthority | null>"
+			},
+			{
+				"name": "classifyProcess",
+				"type": "Promise<Verdict>"
+			},
+			{
+				"name": "stillPrivate",
+				"type": "Promise<boolean>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.process-descendants",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.process-probes",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/platformServices.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/platformServices.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

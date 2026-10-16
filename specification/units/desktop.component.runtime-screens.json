@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.runtime-screens",
+	"kind": "component",
+	"title": "RuntimeScreens",
+	"responsibility": "Owns the RuntimeScreens Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/RuntimeScreens.svelte"],
+		"symbols": ["RuntimeScreens"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "RuntimeScreens.result",
+				"type": "EntityEvidenceResult"
+			},
+			{
+				"name": "RuntimeScreens.options",
+				"type": "ScreenOption[]"
+			},
+			{
+				"name": "RuntimeScreens.evidence",
+				"type": "EntityEvidence"
+			}
+		],
+		"outputs": [
+			{
+				"name": "RuntimeScreens",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.runtime-pane",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.segmented-choice",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.status-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.entity-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-screens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/RuntimeScreens.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/RuntimeScreens.svelte"
+			}
+		]
+	},
+	"scenarios": ["runtime-evidence-ui"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

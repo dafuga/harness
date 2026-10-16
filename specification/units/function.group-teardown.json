@@ -1,0 +1,72 @@
+{
+	"schemaVersion": 1,
+	"id": "function.group-teardown",
+	"kind": "function",
+	"title": "groupTeardown",
+	"responsibility": "Stops what a command left by signalling its process group, where no shared service can be in that group.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/groupTeardown.ts"],
+		"symbols": ["GroupTiming", "signalGroup", "groupTeardown"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "signalGroup.child",
+				"type": "ChildProcess"
+			},
+			{
+				"name": "signalGroup.signal",
+				"type": "'SIGTERM' | 'SIGKILL'"
+			},
+			{
+				"name": "groupTeardown.child",
+				"type": "ChildProcess"
+			},
+			{
+				"name": "groupTeardown.descendants",
+				"type": "Descendants"
+			},
+			{
+				"name": "groupTeardown.timing",
+				"type": "GroupTiming"
+			}
+		],
+		"outputs": [
+			{
+				"name": "signalGroup",
+				"type": "void"
+			},
+			{
+				"name": "groupTeardown",
+				"type": "Promise<TrackedProcess[]>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.process-descendants",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/groupTeardown.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/groupTeardown.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

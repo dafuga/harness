@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "collaboration.function.github-reaches",
+	"kind": "function",
+	"title": "githubReaches",
+	"responsibility": "Owns the githubReaches shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/collaboration/src/utils/githubReaches.ts"],
+		"symbols": ["githubReaches"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "githubReaches.client",
+				"type": "GitHubTransport"
+			},
+			{
+				"name": "githubReaches.input",
+				"type": "{ tip: string; commit: string }"
+			}
+		],
+		"outputs": [
+			{
+				"name": "githubReaches",
+				"type": "Promise<boolean>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "collaboration.function.github-transport",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.function.parse-collaboration-input",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/collaboration/src/utils/githubReaches.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/collaboration/src/utils/githubReaches.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

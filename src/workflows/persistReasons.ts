@@ -1,11 +1,8 @@
 import { resolve } from 'node:path';
 import { GitAdapter } from '../adapters/GitAdapter';
 import type { HistoryNote } from '../core/historyTypes';
-import { ExplanationRepository } from '../repositories/ExplanationRepository';
 import { HistoryNoteRepository } from '../repositories/HistoryNoteRepository';
-import { ExplanationService } from '../services/ExplanationService';
-import { requiredReasons } from '../utils/requiredReasons';
-import { openRange } from './loadRevisions';
+import { explainedRange } from './runExplain';
 import { sourceCommit } from './runHistory';
 
 export interface PersistedReasons {
@@ -20,7 +17,8 @@ export interface PersistedReasons {
 
 /**
  * Keeps the reasons of a committed range in the notes of its last commit, so they explain the
- * change in every clone and worktree. Only reasons that match the committed content are kept.
+ * change in every clone and worktree. Only reasons that match the committed content are kept:
+ * those of the range as a whole, or of every step when each step of its history is explained.
  */
 export async function persistReasons(
 	options: { root?: string; commit?: string; base?: string } = {}
@@ -35,9 +33,9 @@ export async function persistReasons(
 	]);
 	const from = options.base ?? parent ?? 'none';
 	const baseCommit = from === 'none' ? null : await sourceCommit(root, from);
-	const { base, head } = await openRange({ root, base: baseCommit ?? 'none', head: commit });
-	const known = await new ExplanationRepository(root).all();
-	const report = new ExplanationService().report(requiredReasons(base, head), known);
+	// The question `explain check` asks, so what it accepts is what is kept: a range explained
+	// step by step keeps the reasons of every step, each held to its own revision's limits.
+	const report = await explainedRange({ root, base: baseCommit ?? 'none', head: commit });
 	const lines = report.entries.map(
 		(explanation): HistoryNote => ({ schemaVersion: 1, kind: 'reason', commit, explanation })
 	);

@@ -9,6 +9,7 @@ import type {
 } from '../core/verificationTypes';
 import { BudgetLedgerRepository } from '../repositories/BudgetLedgerRepository';
 import type { VerificationStoreRepository } from '../repositories/VerificationStoreRepository';
+import { recordedBuilds } from '../utils/recordedBuilds';
 import { benchmarkMeasurements, recordComponents, sealRecord } from '../utils/sealRecord';
 import { emittedTargets, unitMeasurements } from '../utils/unitMeasurements';
 import type { RevisionSide } from '../workflows/loadRevisions';
@@ -76,7 +77,7 @@ export class RecordAssemblyService {
 				.filter((item) => !item.check.id.startsWith('setup-'))
 				.map((item) => item.entry),
 			scenarios: judgedScenarios(input),
-			...(input.executed.builds ? { builds: input.executed.builds } : {}),
+			...recordedBuilds(input.executed.builds),
 			budgets: { status: outcome(budgets.report.failures), findings: budgets.report.findings },
 			reasons: recordedReasons(reasons),
 			gates: Object.fromEntries(Object.entries(gates).map(([gate, list]) => [gate, outcome(list)])),

@@ -21,7 +21,29 @@ export { consoleBundle } from '../utils/consoleBundle';
 export type { ConsoleModules } from '../utils/consoleBundle';
 export { consoleDocument } from '../utils/consoleDocument';
 export type { ConsoleAssets, ConsoleDocumentOptions } from '../utils/consoleDocument';
-export { commitBranch, consoleCanonical, defaultCommit } from '../utils/consoleCanonical';
+export {
+	commitBranch,
+	consoleCanonical,
+	defaultCommit,
+	explorerAddress,
+	explorerExact,
+	explorerHome
+} from '../utils/consoleCanonical';
 export type { IndexedHistory } from '../utils/consoleCanonical';
+export { explorerLegacy } from '../utils/explorerLegacy';
+export {
+	explorerCategories,
+	explorerKindCategory,
+	explorerRoute,
+	explorerRoutePath,
+	explorerSections,
+	explorerTabs
+} from '../utils/explorerRoute';
+export type {
+	ExplorerCategory,
+	ExplorerLocation,
+	ExplorerSection,
+	ExplorerTab
+} from '../utils/explorerRoute';
 export { consoleRoute, consoleRoutePath, consoleViews } from '../utils/consoleRoute';
 export type { ConsoleRoute, ConsoleView } from '../utils/consoleRoute';

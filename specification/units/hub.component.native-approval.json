@@ -1,0 +1,62 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.native-approval",
+	"kind": "component",
+	"title": "NativeApproval",
+	"responsibility": "Owns the NativeApproval Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/components/NativeApproval.svelte"],
+		"symbols": ["NativeApproval"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "NativeApproval.handoffId",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "NativeApproval",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.browser-auth",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.native-scope",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/NativeApproval.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/NativeApproval.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

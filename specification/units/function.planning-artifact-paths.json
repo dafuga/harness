@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "function.planning-artifact-paths",
+	"kind": "function",
+	"title": "planningArtifactPaths",
+	"responsibility": "Owns the planningArtifactPaths shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/planningArtifactPaths.ts"],
+		"symbols": ["planningArtifactPaths"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "planningArtifactPaths.root",
+				"type": "string | undefined"
+			},
+			{
+				"name": "planningArtifactPaths.files",
+				"type": "string[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "planningArtifactPaths",
+				"type": "Set<string>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.canonical-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/planningArtifactPaths.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/planningArtifactPaths.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

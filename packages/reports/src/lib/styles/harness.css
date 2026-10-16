@@ -1,9 +1,13 @@
-.hc-shell {
+@import './explorer.css';
+@import './explorer-navbar.css';
+@import './explorer-controls.css';
+/* The frame and title of the console that was; the explorer has a frame of its own. */
+.hc-shell:not(.hx-shell) {
 	max-width: 1480px;
 	margin: 0 auto;
 	padding: 0 20px 64px;
 }
-.hc-shell h1 {
+.hc-shell:not(.hx-shell) h1 {
 	margin: 0;
 	font-size: 1.35rem;
 }

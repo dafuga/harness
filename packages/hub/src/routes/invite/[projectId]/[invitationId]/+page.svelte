@@ -1,0 +1,19 @@
+<script lang="ts">
+	import { page } from '$app/state';
+	import HubFrame from '../../../../components/HubFrame.svelte';
+	import InviteAccept from '../../../../components/InviteAccept.svelte';
+	import LoginPanel from '../../../../components/LoginPanel.svelte';
+	import { browserContext } from '../../../../utils/browserContext';
+	const { session } = browserContext();
+</script>
+
+<svelte:head><title>Harness · Invitation</title></svelte:head>
+<HubFrame>
+	<h1>Join a shared project</h1>
+	{#if session.actor}<InviteAccept
+			projectId={page.params.projectId ?? ''}
+			invitationId={page.params.invitationId ?? ''}
+		/>{:else}<LoginPanel
+			reason="Sign in with the Google account the invitation was made for. You then enter its code."
+		/>{/if}
+</HubFrame>

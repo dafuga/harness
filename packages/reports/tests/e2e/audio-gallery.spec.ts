@@ -6,6 +6,7 @@ import { ReportRepository } from '../../src/repositories/ReportRepository';
 import { atomicJson } from '../../src/utils/reportFiles';
 import { audioFixture } from '../../test/audioFixture';
 import { fixtures } from './support/fixtures';
+import { expectRetired, reportView, servedReport } from './support/portableReport';
 const root = fixtures.reports;
 async function audioReport() {
 	const store = new ReportRepository(root);
@@ -67,7 +68,7 @@ async function snapshot(page: Page, name: string) {
 for (const width of [1440, 920, 390]) {
 	test(`mixed media plays, seeks and downloads original audio at ${width}px`, async ({ page }) => {
 		await page.setViewportSize({ width, height: 1000 });
-		await page.goto('/reports/' + (await audioReport()));
+		await page.goto(await reportView(await audioReport()));
 		await page.locator('.gallery-section').scrollIntoViewIfNeeded();
 		await capture(page, `audio-gallery-${width}`);
 		await expect(page.locator('#evidence-audio .audio-transcript')).toBeVisible();
@@ -110,15 +111,15 @@ for (const width of [1440, 920, 390]) {
 }
 
 test('a browser playback failure keeps the original download and reports not-proven playback', async ({
-	page
+	page,
+	baseURL
 }) => {
 	const source = '**/api/reports/*/assets/*.wav';
 	await page.route(source, (route) =>
 		route.fulfill({ status: 404, body: 'Unavailable in this browser test' })
 	);
-	await page.goto('/reports/' + (await audioReport()));
-	await page.getByText('Add audio', { exact: true }).click();
-	await expect(page.getByRole('button', { name: 'Upload audio' })).toBeEnabled();
+	// The clip is read from the report API here, so that its failure can be the API's.
+	await page.goto(await servedReport(await audioReport(), baseURL!));
 	const audio = page.locator('#evidence-audio audio');
 	const failedRequest = page.waitForResponse((response) => response.url().endsWith('.wav'));
 	await audio.evaluate(async (element: HTMLAudioElement) => {
@@ -127,12 +128,19 @@ test('a browser playback failure keeps the original download and reports not-pro
 	expect((await failedRequest).status()).toBe(404);
 	await expect(page.locator('#evidence-audio')).toContainText('Audio unavailable');
 	await expect(page.locator('#evidence-audio')).toContainText('Not proven');
-	await expect(
-		page.locator('#evidence-audio').getByRole('link', { name: 'Download audio' })
-	).toBeVisible();
+	const link = page.locator('#evidence-audio').getByRole('link', { name: 'Download audio' });
+	await expect(link).toBeVisible();
 	await page.unroute(source);
-	const download = page.waitForEvent('download');
-	await page.locator('#evidence-audio').getByRole('link', { name: 'Download audio' }).click();
-	const original = await download;
-	expect(await readFile((await original.path())!)).toEqual(audioFixture());
+	// The link still names the original, and the API still serves its exact bytes.
+	const original = await page.request.get((await link.getAttribute('href'))!);
+	expect(original.status()).toBe(200);
+	expect(await original.body()).toEqual(audioFixture());
+});
+
+test('the report page and its upload form are gone: the address leads into the explorer', async ({
+	page
+}) => {
+	const id = await audioReport();
+	await expectRetired(page, '/reports/' + id);
+	await expect(page.getByText('Add audio', { exact: true })).toHaveCount(0);
 });

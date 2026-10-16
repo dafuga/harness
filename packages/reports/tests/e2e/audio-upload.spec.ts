@@ -3,7 +3,10 @@ import { readFile } from 'node:fs/promises';
 import { ReportRepository } from '../../src/repositories/ReportRepository';
 import { audioFixture } from '../../test/audioFixture';
 import { fixtures } from './support/fixtures';
-test('the active report form uploads a real audio file and preserves uncertain status', async ({
+import { expectRetired, reportView } from './support/portableReport';
+// The report page and its form are gone. What the form posted to is the upload service of the
+// API, which a command line or another client still uses; the viewer still shows what it stored.
+test('the upload service adds a real audio file to an active report and preserves uncertain status', async ({
 	page,
 	request,
 	baseURL
@@ -15,17 +18,21 @@ test('the active report form uploads a real audio file and preserves uncertain s
 		mode: 'feature',
 		environment: 'synthetic fixture'
 	});
-	await page.goto('/reports/' + run.id);
-	await page.getByText('Add audio', { exact: true }).click();
-	const form = page.locator('.upload-audio');
-	await form.getByLabel('Audio title').fill('Form recording');
-	await form.getByLabel('Source', { exact: true }).fill('Synthetic test tone');
-	await form.getByLabel('Notes', { exact: true }).fill('Uploading is not acceptance proof.');
-	await form
-		.getByLabel('Audio file')
-		.setInputFiles({ name: 'voice.wav', mimeType: 'audio/wav', buffer: audioFixture() });
-	await form.getByRole('button', { name: 'Upload audio', exact: true }).click();
-	await expect(form.getByRole('status')).toContainText('Audio added to gallery');
+	await expectRetired(page, '/reports/' + run.id);
+	await expect(page.getByText('Add audio', { exact: true })).toHaveCount(0);
+	const uploaded = await request.post('/api/report-audio-upload', {
+		headers: { Origin: baseURL! },
+		multipart: {
+			reportId: run.id,
+			title: 'Form recording',
+			source: 'Synthetic test tone',
+			note: 'Uploading is not acceptance proof.',
+			audio: { name: 'voice.wav', mimeType: 'audio/wav', buffer: audioFixture() }
+		}
+	});
+	expect(uploaded.status()).toBe(201);
+	expect((await uploaded.json()).evidence).toHaveLength(1);
+	await page.goto(await reportView(run.id));
 	const card = page.locator('.audio-card');
 	await expect(card).toContainText('Form recording');
 	await expect(card).toContainText('Not proven');
@@ -68,8 +75,9 @@ test('the active report form uploads a real audio file and preserves uncertain s
 	});
 	expect(sealed.status()).toBe(409);
 	expect((await store.get(run.id)).evidence).toHaveLength(1);
-	await page.reload();
-	await expect(page.getByText('Add audio', { exact: true })).toHaveCount(0);
+	// The sealed report is still shown, with the one recording it had when it was sealed.
+	await page.goto(await reportView(run.id));
+	await expect(page.locator('.audio-card')).toHaveCount(1);
 	expect(await readFile(store.directory(run.id) + '/assets/' + saved.evidence[0].file)).toEqual(
 		audioFixture()
 	);

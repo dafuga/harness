@@ -1,0 +1,65 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.explorer-category",
+	"kind": "function",
+	"title": "explorerCategory",
+	"responsibility": "Says which of the six explorer categories a unit belongs to, from its kind.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/explorerCategory.ts"],
+		"symbols": ["explorerCategory", "explorerRole"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "explorerCategory.unit",
+				"type": "Classified"
+			},
+			{
+				"name": "explorerRole.unit",
+				"type": "Classified"
+			}
+		],
+		"outputs": [
+			{
+				"name": "explorerCategory",
+				"type": "ExplorerCategory | null"
+			},
+			{
+				"name": "explorerRole",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.explorer-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/explorerCategory.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/explorerCategory.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

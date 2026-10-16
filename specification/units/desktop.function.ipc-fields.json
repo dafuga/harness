@@ -1,0 +1,131 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.ipc-fields",
+	"kind": "function",
+	"title": "ipcFields",
+	"responsibility": "Owns the ipcFields shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/ipcFields.ts"],
+		"symbols": [
+			"ipcFields",
+			"textField",
+			"nullableText",
+			"hashPattern",
+			"commitPattern",
+			"idPattern",
+			"versionPattern",
+			"enumField",
+			"regionField"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ipcFields.value",
+				"type": "unknown"
+			},
+			{
+				"name": "textField.value",
+				"type": "unknown"
+			},
+			{
+				"name": "textField.max",
+				"type": "unknown"
+			},
+			{
+				"name": "textField.pattern",
+				"type": "RegExp"
+			},
+			{
+				"name": "nullableText.value",
+				"type": "unknown"
+			},
+			{
+				"name": "nullableText.pattern",
+				"type": "RegExp"
+			},
+			{
+				"name": "enumField.value",
+				"type": "unknown"
+			},
+			{
+				"name": "enumField.allowed",
+				"type": "readonly T[]"
+			},
+			{
+				"name": "regionField.value",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ipcFields",
+				"type": "Record<string, unknown>"
+			},
+			{
+				"name": "textField",
+				"type": "string"
+			},
+			{
+				"name": "nullableText",
+				"type": "string | null"
+			},
+			{
+				"name": "hashPattern",
+				"type": "unknown"
+			},
+			{
+				"name": "commitPattern",
+				"type": "unknown"
+			},
+			{
+				"name": "idPattern",
+				"type": "unknown"
+			},
+			{
+				"name": "versionPattern",
+				"type": "unknown"
+			},
+			{
+				"name": "enumField",
+				"type": "T"
+			},
+			{
+				"name": "regionField",
+				"type": "Region | null"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/ipcFields.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/ipcFields.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

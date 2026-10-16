@@ -5,7 +5,11 @@
 	"title": "HubView",
 	"responsibility": "Owns the HubView Svelte component.",
 	"responsibilityOrigin": "derived",
-	"status": "active",
+	"status": "retired",
+	"retired": {
+		"reason": "No production importer, mount or export; legacy report routes use the live Harness console.",
+		"at": "2026-10-15T20:06:30.210Z"
+	},
 	"owns": {
 		"source": ["packages/reports/src/components/HubView.svelte"],
 		"symbols": ["HubView"]
@@ -31,6 +35,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.brand-mark",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.select",
 			"via": "import",

@@ -1,0 +1,62 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.project-create",
+	"kind": "component",
+	"title": "ProjectCreate",
+	"responsibility": "Owns the ProjectCreate Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/components/ProjectCreate.svelte"],
+		"symbols": ["ProjectCreate"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ProjectCreate.created",
+				"type": "(projectId: string) => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ProjectCreate",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.model.hub-auth-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/ProjectCreate.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/ProjectCreate.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

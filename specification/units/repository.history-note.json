@@ -44,6 +44,10 @@
 			{
 				"name": "HistoryNoteRepository.merge.other",
 				"type": "string"
+			},
+			{
+				"name": "HistoryNoteRepository.all.at",
+				"type": "string | null"
 			}
 		],
 		"outputs": [
@@ -112,7 +116,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["desktop-recorded-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

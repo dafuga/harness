@@ -1,0 +1,70 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.model.remote-relay-types",
+	"kind": "model",
+	"title": "RemoteRelay",
+	"responsibility": "Owns the RemoteRelay data model.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/models/RemoteRelay.types.ts"],
+		"symbols": [
+			"relayCloseCodes",
+			"relayHeaders",
+			"RelayErrorCode",
+			"RelayPairingState",
+			"RelayPairingInfo",
+			"RelayPairingRequest",
+			"RelayPairingPoll",
+			"RelayPairingExchange",
+			"RelayNotice",
+			"RelayHostFrame",
+			"RelayHostCommand",
+			"RelayManageOwner",
+			"RelayManageRegister",
+			"RelayManageDevice",
+			"RelayRegistered",
+			"RemoteHostRegistration",
+			"RemoteHostRegisterInput",
+			"RemoteHostSummary"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "relayCloseCodes",
+				"type": "unknown"
+			},
+			{
+				"name": "relayHeaders",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.model.remote-secure-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/models/RemoteRelay.types.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/models/RemoteRelay.types.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,75 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.hub-pinned-source",
+	"kind": "function",
+	"title": "hubPinnedSource",
+	"responsibility": "Owns the hubPinnedSource shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/hubPinnedSource.ts"],
+		"symbols": ["hubPinnedSource", "hubEvidencePath"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "hubPinnedSource.base",
+				"type": "HubSourceContext"
+			},
+			{
+				"name": "hubPinnedSource.commit",
+				"type": "string"
+			},
+			{
+				"name": "hubEvidencePath.path",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hubPinnedSource",
+				"type": "Promise<HubSourceContext>"
+			},
+			{
+				"name": "hubEvidencePath",
+				"type": "boolean"
+			}
+		],
+		"errors": [
+			{
+				"name": "invalid-evidence-revision",
+				"type": "refused",
+				"description": "Not a full commit hash, or not resolved as that very commit."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.hub-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-source",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/hubPinnedSource.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/hubPinnedSource.ts"
+			}
+		]
+	},
+	"scenarios": ["hub-recorded-evidence"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

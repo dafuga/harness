@@ -1,0 +1,78 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.run-status",
+	"kind": "component",
+	"title": "RunStatus",
+	"responsibility": "Owns the RunStatus Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/RunStatus.svelte"],
+		"symbols": ["RunStatus"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "RunStatus.text",
+				"type": "string"
+			},
+			{
+				"name": "RunStatus.active",
+				"type": "boolean"
+			},
+			{
+				"name": "RunStatus.cancel",
+				"type": "() => void"
+			},
+			{
+				"name": "RunStatus.workspace",
+				"type": "Workspace"
+			},
+			{
+				"name": "RunStatus.entity",
+				"type": "CatalogEntity | null"
+			}
+		],
+		"outputs": [
+			{
+				"name": "RunStatus",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.reference-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/RunStatus.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/RunStatus.svelte"
+			}
+		]
+	},
+	"scenarios": ["agent-references", "desktop-native", "desktop-renderer"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

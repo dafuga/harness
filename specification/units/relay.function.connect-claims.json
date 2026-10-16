@@ -1,0 +1,62 @@
+{
+	"schemaVersion": 1,
+	"id": "relay.function.connect-claims",
+	"kind": "function",
+	"title": "connectClaims",
+	"responsibility": "Owns the connectClaims shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/relay/src/utils/connectClaims.ts"],
+		"symbols": ["connectClaims"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "connectClaims.headers",
+				"type": "Headers"
+			}
+		],
+		"outputs": [
+			{
+				"name": "connectClaims",
+				"type": "ConnectClaims | undefined"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "relay.function.matches-pattern",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.model.relay-host-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/relay/src/utils/connectClaims.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/relay/src/utils/connectClaims.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

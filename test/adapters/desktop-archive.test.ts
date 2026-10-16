@@ -4,6 +4,7 @@ import { mkdtemp, mkdir, writeFile, symlink, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createPackageWithOptions, statFile, extractFile } from '@electron/asar';
+import { finished } from 'node:stream/promises';
 
 test('archive patch preserves native unpacked files and links and adds the bridge module', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-desktop-archive-'));
@@ -13,7 +14,7 @@ test('archive patch preserves native unpacked files and links and adds the bridg
 	await writeFile(join(input, 'native.node'), 'native fixture');
 	await symlink('main.js', join(input, 'linked.js'));
 	const source = join(root, 'original.asar');
-	await createPackageWithOptions(input, source, { unpack: '*.node' });
+	await finished(await createPackageWithOptions(input, source, { unpack: '*.node' }));
 	const target = join(root, 'patched.asar');
 	await new DesktopArchiveAdapter().patch(
 		source,

@@ -1,0 +1,70 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.hub-approval",
+	"kind": "function",
+	"title": "hubApproval",
+	"responsibility": "Owns the hubApproval shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/hubApproval.ts"],
+		"symbols": ["hubApproval"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hubApproval.context",
+				"type": "HubSourceContext"
+			},
+			{
+				"name": "hubApproval.plan",
+				"type": "HubPlan"
+			},
+			{
+				"name": "hubApproval.value",
+				"type": "HubDesign"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hubApproval",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.hub-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-schemas",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-source",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/hubApproval.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/hubApproval.ts"
+			}
+		]
+	},
+	"scenarios": ["hosted-design-options"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -12,6 +12,7 @@ import {
 	type StoredRecord
 } from '../repositories/VerificationStoreRepository';
 import { BuildIdentityService, type IdentifiedBuild } from '../services/BuildIdentityService';
+import { CommitMessageService } from '../services/CommitMessageService';
 import { EvidenceRestoreService } from '../services/EvidenceRestoreService';
 import { ExplanationRepository } from '../repositories/ExplanationRepository';
 import { ImpactService } from '../services/ImpactService';
@@ -80,10 +81,16 @@ export async function verifyRun(options: VerifyOptions = {}): Promise<StoredReco
 		config: await verifyConfig(head),
 		testTimeoutMs: options.testTimeout ? Number(options.testTimeout) : undefined,
 		env: process.env,
+		// What was written about the range is held to the writing limits: its reasons, and the
+		// stored messages of its commits, so a commit made past the hook does not pass.
 		explained: async () =>
-			new ReasonPathService(root, commitLoader(root)).report(
-				{ base, head, baseCommit, headCommit: commit },
-				await new ExplanationRepository(root).all()
+			new CommitMessageService(root).reported(
+				await new ReasonPathService(root, commitLoader(root)).report(
+					{ base, head, baseCommit, headCommit: commit },
+					await new ExplanationRepository(root).all()
+				),
+				baseCommit,
+				commit
 			)
 	}).run();
 }

@@ -1,0 +1,214 @@
+@media (min-width: 1650px) {
+	.entity-layout.with-thread {
+		grid-template-columns: minmax(0, 1fr) 440px;
+	}
+	.card-grid {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}
+/* Wide enough for one row, the search included: the gaps narrow as those of the explorer bar do. */
+@media (min-width: 1410px) {
+	.topbar:has(.topbar-search) {
+		column-gap: clamp(10px, 1.1vw, 22px);
+	}
+}
+/* Narrower than one row: the search takes a row of its own after the revision, as in the explorer bar. */
+@media (max-width: 1409px) {
+	.topbar-search {
+		flex: 1 0 100%;
+		max-width: none;
+		padding-bottom: 12px;
+	}
+	.topbar-search .entity-search {
+		max-width: 420px;
+	}
+}
+@media (max-width: 1250px) {
+	.topbar {
+		flex-wrap: wrap;
+		gap: 12px;
+		padding-top: 12px;
+	}
+	.topbar nav {
+		order: 3;
+		width: 100%;
+		justify-content: center;
+		height: 70px;
+	}
+	.revision-picker {
+		margin-left: auto;
+	}
+	/* The categories end the bar here, a row-gap under the search. */
+	.topbar-search {
+		padding-bottom: 0;
+	}
+	.project-switcher {
+		border-inline: 0;
+		padding: 0;
+	}
+	.base-panels {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.entity-layout.with-thread {
+		grid-template-columns: minmax(0, 1fr) 330px;
+	}
+	.entity-main {
+		padding: 20px;
+	}
+	.entity-heading {
+		flex-wrap: wrap;
+	}
+	.entity-heading h1 {
+		font-size: 27px;
+	}
+	.entity-symbol {
+		display: none;
+	}
+	.card-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+	.thread-panel {
+		max-height: calc(100vh - 180px);
+	}
+}
+@media (max-width: 850px) {
+	.entity-layout.with-thread {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.thread-panel {
+		position: fixed;
+		inset: 15vh 0 0;
+		z-index: 40;
+		max-height: 85vh;
+		box-shadow: 0 -30px 80px #00111a;
+		border-top: 1px solid var(--line);
+		border-left: 0;
+	}
+	.thread-scroll {
+		max-height: 380px;
+	}
+	.catalog-tools {
+		flex-wrap: wrap;
+	}
+	.catalog-tools > input {
+		flex-basis: 100%;
+	}
+	.entity-main {
+		padding: 18px;
+	}
+	.brand {
+		font-size: 20px;
+	}
+	.revision-picker {
+		gap: 8px;
+		padding-left: 12px;
+	}
+	.revision-picker label {
+		max-width: 155px;
+	}
+	.before-after {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+@media (max-width: 560px) {
+	.topbar {
+		padding: 10px 12px 0;
+	}
+	.topbar-search .entity-search {
+		max-width: none;
+	}
+	.brand {
+		width: 100%;
+		justify-content: center;
+	}
+	.project-switcher {
+		width: 100%;
+		justify-content: center;
+	}
+	.revision-picker {
+		flex-wrap: wrap;
+	}
+	.account {
+		width: 100%;
+		justify-content: center;
+		border: 0;
+		padding: 0;
+	}
+	.revision-picker {
+		margin: 0;
+		border: 0;
+		padding: 0;
+		width: 100%;
+	}
+	.revision-picker label {
+		flex: 1;
+		max-width: none;
+		width: 45%;
+	}
+	.topbar nav {
+		height: 65px;
+		overflow-x: auto;
+		justify-content: flex-start;
+		gap: 2px;
+	}
+	.topbar nav a {
+		min-width: 68px;
+		font-size: 11px;
+	}
+	.catalog {
+		padding: 18px;
+	}
+	.catalog > .row {
+		align-items: flex-start;
+		gap: 12px;
+	}
+	.catalog h1 {
+		font-size: 28px;
+	}
+	.catalog > .row p {
+		font-size: 13px;
+	}
+	.card-grid {
+		grid-template-columns: 1fr;
+	}
+	.entity-tabs {
+		gap: 0;
+		overflow: auto;
+	}
+	.entity-tabs button {
+		font-size: 12px;
+		padding: 12px;
+	}
+	.entity-heading > div {
+		flex-basis: 100%;
+	}
+	.entity-heading .row {
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+	.entity-heading h1 {
+		width: 100%;
+		font-size: 27px;
+	}
+	.panel {
+		padding: 12px;
+	}
+	.measures {
+		flex-wrap: wrap;
+	}
+	.entity-card p {
+		min-height: 0;
+	}
+	.modal {
+		padding: 20px;
+	}
+	.image-actions {
+		justify-content: flex-start;
+	}
+	.image-actions button {
+		font-size: 11px;
+	}
+	.status-bar {
+		padding: 12px 18px;
+	}
+}

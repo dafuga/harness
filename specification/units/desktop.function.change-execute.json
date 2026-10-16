@@ -1,0 +1,113 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.change-execute",
+	"kind": "function",
+	"title": "changeExecute",
+	"responsibility": "Owns the changeExecute shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/changeExecute.ts"],
+		"symbols": ["changeExecute", "recordChange"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "changeExecute.context",
+				"type": "RunContext"
+			},
+			{
+				"name": "changeExecute.options",
+				"type": "{ directory: string; observe: (path: string) => void; }"
+			},
+			{
+				"name": "recordChange.context",
+				"type": "RunContext"
+			},
+			{
+				"name": "recordChange.outcome",
+				"type": "{ before: SourceSnapshot; host: ReturnType<typeof hostChanges>; failure: Error | null; }"
+			}
+		],
+		"outputs": [
+			{
+				"name": "changeExecute",
+				"type": "unknown"
+			},
+			{
+				"name": "recordChange",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "RunCancelled",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.changed-units",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.entity-references",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.host-changes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.run-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.source-changes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.source-snapshot",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.agent-runner-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.run-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-owners",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/changeExecute.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/changeExecute.ts"
+			}
+		]
+	},
+	"scenarios": ["agent-references", "desktop-native", "desktop-project-runs"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

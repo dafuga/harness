@@ -1,0 +1,145 @@
+{
+	"schemaVersion": 1,
+	"id": "collaboration.function.parse-collaboration-input",
+	"kind": "function",
+	"title": "parseCollaborationInput",
+	"responsibility": "Owns the parseCollaborationInput shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/collaboration/src/utils/parseCollaborationInput.ts"],
+		"symbols": [
+			"id",
+			"sha",
+			"hash",
+			"label",
+			"email",
+			"actorSchema",
+			"repositorySchema",
+			"branch",
+			"entityId",
+			"anchorSchema",
+			"fail",
+			"parseCollaborationInput",
+			"digest",
+			"safePath",
+			"parse"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "fail.code",
+				"type": "string"
+			},
+			{
+				"name": "parseCollaborationInput.schema",
+				"type": "z.ZodType<T>"
+			},
+			{
+				"name": "parseCollaborationInput.value",
+				"type": "unknown"
+			},
+			{
+				"name": "digest.bytes",
+				"type": "Uint8Array"
+			},
+			{
+				"name": "digest.algorithm",
+				"type": "unknown"
+			},
+			{
+				"name": "safePath.value",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "id",
+				"type": "unknown"
+			},
+			{
+				"name": "sha",
+				"type": "unknown"
+			},
+			{
+				"name": "hash",
+				"type": "unknown"
+			},
+			{
+				"name": "label",
+				"type": "unknown"
+			},
+			{
+				"name": "email",
+				"type": "unknown"
+			},
+			{
+				"name": "actorSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "repositorySchema",
+				"type": "unknown"
+			},
+			{
+				"name": "branch",
+				"type": "unknown"
+			},
+			{
+				"name": "entityId",
+				"type": "unknown"
+			},
+			{
+				"name": "anchorSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "fail",
+				"type": "never"
+			},
+			{
+				"name": "parseCollaborationInput",
+				"type": "T"
+			},
+			{
+				"name": "digest",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "safePath",
+				"type": "string"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "module.contracts",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/collaboration/src/utils/parseCollaborationInput.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/collaboration/src/utils/parseCollaborationInput.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

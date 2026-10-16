@@ -11,6 +11,7 @@
 		"symbols": [
 			"RecordStatus",
 			"CommitStatus",
+			"PinnedHistory",
 			"HistoryStatusService",
 			"HistoryStatusService.constructor",
 			"HistoryStatusService.all",
@@ -25,6 +26,10 @@
 			{
 				"name": "HistoryStatusService.constructor.root",
 				"type": "string"
+			},
+			{
+				"name": "HistoryStatusService.constructor.pinned",
+				"type": "PinnedHistory"
 			},
 			{
 				"name": "HistoryStatusService.status.commit",
@@ -77,6 +82,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.verification-note-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.verification-types",
 			"via": "import",
 			"origin": "derived"
@@ -102,7 +112,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["desktop-recorded-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

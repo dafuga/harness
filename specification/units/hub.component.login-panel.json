@@ -1,0 +1,62 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.login-panel",
+	"kind": "component",
+	"title": "LoginPanel",
+	"responsibility": "Owns the LoginPanel Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/components/LoginPanel.svelte"],
+		"symbols": ["LoginPanel"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "LoginPanel.reason",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "LoginPanel",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.component.email-proof-panel",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.google-button",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/LoginPanel.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/LoginPanel.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

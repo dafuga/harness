@@ -3,7 +3,7 @@
 	"id": "service.source-impact",
 	"kind": "service",
 	"title": "SourceImpactService",
-	"responsibility": "Computes what a commit changed against its first parent from the two stored trees, with no record or working tree involved.",
+	"responsibility": "Computes what a commit changed against its first parent from the two stored trees, and which of those changes need a reason, with no record or working tree involved.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -13,6 +13,8 @@
 			"SourceImpactService",
 			"SourceImpactService.constructor",
 			"SourceImpactService.of",
+			"SourceImpactService.reasons",
+			"SourceImpactService.parent",
 			"SourceImpactService.stored"
 		]
 	},
@@ -28,6 +30,14 @@
 				"type": "string"
 			},
 			{
+				"name": "SourceImpactService.reasons.commit",
+				"type": "string"
+			},
+			{
+				"name": "SourceImpactService.parent.commit",
+				"type": "string"
+			},
+			{
 				"name": "SourceImpactService.stored.commit",
 				"type": "string"
 			}
@@ -36,6 +46,14 @@
 			{
 				"name": "SourceImpactService.of",
 				"type": "Promise<SourceImpact | undefined>"
+			},
+			{
+				"name": "SourceImpactService.reasons",
+				"type": "Promise<RequiredReason[] | undefined>"
+			},
+			{
+				"name": "SourceImpactService.parent",
+				"type": "Promise<string | undefined>"
 			},
 			{
 				"name": "SourceImpactService.stored",
@@ -61,7 +79,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.explanation-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.impact-kernel",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.required-reasons",
 			"via": "import",
 			"origin": "derived"
 		},

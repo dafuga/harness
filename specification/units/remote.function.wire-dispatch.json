@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.wire-dispatch",
+	"kind": "function",
+	"title": "wireDispatch",
+	"responsibility": "Owns the wireDispatch shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/utils/wireDispatch.ts"],
+		"symbols": ["WireDispatchContext", "wireDispatch"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "wireDispatch.context",
+				"type": "WireDispatchContext"
+			},
+			{
+				"name": "wireDispatch.request",
+				"type": "WireRequest"
+			}
+		],
+		"outputs": [
+			{
+				"name": "wireDispatch",
+				"type": "Promise<WireResponse>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.remote-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.remote-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.service.response-ledger",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/wireDispatch.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/wireDispatch.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,108 @@
+{
+	"schemaVersion": 1,
+	"id": "planning.function.plan-history",
+	"kind": "function",
+	"title": "planHistory",
+	"responsibility": "Owns the planHistory shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/planning/src/utils/planHistory.ts"],
+		"symbols": ["commits", "revisionInfo", "planHistory"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "commits.git",
+				"type": "Git"
+			},
+			{
+				"name": "commits.rev",
+				"type": "string"
+			},
+			{
+				"name": "commits.limit",
+				"type": "unknown"
+			},
+			{
+				"name": "commits.path",
+				"type": "string"
+			},
+			{
+				"name": "revisionInfo.git",
+				"type": "Git"
+			},
+			{
+				"name": "revisionInfo.requested",
+				"type": "string"
+			},
+			{
+				"name": "planHistory.git",
+				"type": "Git"
+			},
+			{
+				"name": "planHistory.input",
+				"type": "{ unitId: string; revision?: string; limit?: number }"
+			}
+		],
+		"outputs": [
+			{
+				"name": "commits",
+				"type": "Promise<CommitInfo[]>"
+			},
+			{
+				"name": "revisionInfo",
+				"type": "Promise<RevisionInfo>"
+			},
+			{
+				"name": "planHistory",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "planning.function.plan-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.model.planning-view-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/planning/src/utils/planHistory.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/planning/src/utils/planHistory.ts"
+			}
+		]
+	},
+	"scenarios": ["planning-artifacts"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

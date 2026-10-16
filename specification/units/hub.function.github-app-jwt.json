@@ -1,0 +1,60 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.github-app-jwt",
+	"kind": "function",
+	"title": "githubAppJwt",
+	"responsibility": "Owns the githubAppJwt shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/githubAppJwt.ts"],
+		"symbols": ["GithubAppJwtInput", "githubAppKey", "githubAppJwt"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "githubAppKey.pem",
+				"type": "string"
+			},
+			{
+				"name": "githubAppJwt.input",
+				"type": "GithubAppJwtInput"
+			}
+		],
+		"outputs": [
+			{
+				"name": "githubAppKey",
+				"type": "Promise<CryptoKey>"
+			},
+			{
+				"name": "githubAppJwt",
+				"type": "Promise<string>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.auth-fail",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/githubAppJwt.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/githubAppJwt.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

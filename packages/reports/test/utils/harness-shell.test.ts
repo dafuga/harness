@@ -1,0 +1,172 @@
+import { expect, test } from 'vitest';
+import type { ExplorerLocation } from '../../src/models/Explorer.types';
+import { retainedBranch } from '../../src/utils/harnessAncestry';
+import { harnessShell, plainClick, type HarnessNavbarInput } from '../../src/utils/harnessShell';
+import {
+	sha,
+	shellBranch,
+	shellCommits,
+	shellHref,
+	shellIndex,
+	shellMount,
+	shellScope
+} from '../../tests/e2e/support/shellData';
+
+const input = (location: ExplorerLocation | null): HarnessNavbarInput => ({
+	base: shellMount,
+	repository: 'synthetic-repository',
+	scope: location ? shellScope(location) : null,
+	index: shellIndex,
+	commits: shellCommits(location?.branch ?? null),
+	href: shellHref,
+	onroute: () => {}
+});
+const view = (location: ExplorerLocation | null) => harnessShell(input(location));
+const scoped = `${shellMount}/branch/feature%2Fshell%231`;
+const historical: ExplorerLocation = {
+	branch: shellBranch,
+	commit: sha(4),
+	category: 'functions',
+	entity: 'function.slugify',
+	section: 'details',
+	tab: 'source'
+};
+
+test('the bar has exactly six categories, pages then shells first, each scoped to the branch and commit that are viewed', () => {
+	const { categories } = view(historical);
+	expect(categories.map((item) => [item.id, item.label, item.icon])).toEqual([
+		['pages', 'Pages', 'pages'],
+		['shells', 'Shells', 'shells'],
+		['components', 'Components', 'components'],
+		['functions', 'Functions', 'functions'],
+		['configs', 'Configs', 'configs'],
+		['services', 'Services', 'services']
+	]);
+	// The whole branch is one segment, and a category opens its index: no entity, section or tab.
+	expect(categories.map((item) => item.href)).toEqual(
+		['pages', 'shells', 'components', 'functions', 'configs', 'services'].map(
+			(category) => `${scoped}/commit/${sha(4)}/${category}`
+		)
+	);
+	expect(categories[5].to).toEqual({ branch: shellBranch, commit: sha(4), category: 'services' });
+	// Details of a function keep Functions active, and nothing else is.
+	expect(categories.filter((item) => item.active).map((item) => item.id)).toEqual(['functions']);
+});
+
+test('on a current branch route the viewed commit is the tip, and there is no tip to go to', () => {
+	const { revision, home, categories } = view({
+		branch: shellBranch,
+		commit: null,
+		category: 'pages'
+	});
+	expect(home).toEqual({
+		href: `${scoped}/pages`,
+		to: { branch: shellBranch, commit: null, category: 'pages' }
+	});
+	expect(categories[2].href).toBe(`${scoped}/components`);
+	expect(revision).toMatchObject({
+		branch: shellBranch,
+		commit: sha(5),
+		note: 'Tip · 0505050',
+		viewed: 'Current · branch tip',
+		tip: null
+	});
+	expect(revision?.commits.map((item) => item.commit)).toEqual([5, 4, 3, 2, 1].map(sha));
+});
+
+test('on a selected commit the tip and the viewed commit are told apart, and Go to tip keeps the place', () => {
+	const { revision, home } = view(historical);
+	expect(revision).toMatchObject({
+		commit: sha(4),
+		note: 'Tip · 0505050',
+		viewed: 'Historical commit'
+	});
+	// The equivalent route of the current branch: the same entity, section and tab, no commit.
+	expect(revision?.tip).toEqual({
+		href: `${scoped}/functions/function.slugify/details?tab=source`,
+		to: { ...historical, commit: null }
+	});
+	// The brand opens Pages at the tip of the branch, whatever is viewed.
+	expect(home.href).toBe(`${scoped}/pages`);
+});
+
+test('a selected commit that is the tip says both, and still leads to the current branch route', () => {
+	const { revision } = view({ branch: shellBranch, commit: sha(5), category: 'configs' });
+	expect(revision?.viewed).toBe('Selected commit · branch tip');
+	expect(revision?.tip?.href).toBe(`${scoped}/configs`);
+});
+
+test('a branch stays in current mode on the same entity, and a commit is always an explicit route', () => {
+	const { revision } = view(historical);
+	expect(revision?.branchTo('main')).toEqual({ ...historical, branch: 'main', commit: null });
+	expect(revision?.commitTo(sha(2))).toEqual({ ...historical, commit: sha(2) });
+	const current = view({ branch: shellBranch, commit: null, category: 'pages' }).revision;
+	// Choosing the tip itself from the current branch still names the commit in the address.
+	expect(current?.commitTo(sha(5))).toEqual({
+		branch: shellBranch,
+		commit: sha(5),
+		category: 'pages'
+	});
+});
+
+test('a commit no branch reaches has no tip, says so, and is listed although no branch lists it', () => {
+	const retained: ExplorerLocation = { branch: null, commit: sha(9), category: 'services' };
+	const { revision, categories, home } = harnessShell({ ...input(retained), commits: [] });
+	expect(revision).toMatchObject({
+		branch: retainedBranch,
+		commit: sha(9),
+		note: 'No branch tip',
+		viewed: 'Retained commit',
+		tip: null
+	});
+	expect(revision?.commits.map((item) => item.commit)).toEqual([sha(9)]);
+	expect(categories[0].href).toBe(`${shellMount}/commit/${sha(9)}/pages`);
+	// Without a branch there is no tip to open: the brand leads to the mount.
+	expect(home).toEqual({ href: shellMount, to: null });
+	// Leaving a branch for the retained commits opens the newest of them, on no branch.
+	const branched = view(historical).revision;
+	expect(branched?.branchTo(retainedBranch)).toEqual({
+		...historical,
+		branch: null,
+		commit: sha(9)
+	});
+});
+
+test('without a resolved address the bar keeps its six categories and offers no revision', () => {
+	const { revision, categories, home } = view(null);
+	expect(revision).toBeNull();
+	expect(home).toEqual({ href: shellMount, to: null });
+	expect(categories.map((item) => item.label)).toEqual([
+		'Pages',
+		'Shells',
+		'Components',
+		'Functions',
+		'Configs',
+		'Services'
+	]);
+	expect(categories.every((item) => item.href === null && item.to === null && !item.active)).toBe(
+		true
+	);
+});
+
+test('only a plain left click is followed inside the application', () => {
+	const click = (changes: Partial<MouseEvent> = {}) =>
+		({
+			button: 0,
+			metaKey: false,
+			ctrlKey: false,
+			shiftKey: false,
+			altKey: false,
+			...changes
+		}) as MouseEvent;
+	expect(plainClick(click())).toBe(true);
+	for (const changed of [
+		{ button: 1 },
+		{ metaKey: true },
+		{ ctrlKey: true },
+		{ shiftKey: true },
+		{ altKey: true },
+		{ defaultPrevented: true }
+	])
+		expect([changed, plainClick(click(changed))]).toEqual([changed, false]);
+});

@@ -1,0 +1,85 @@
+{
+	"schemaVersion": 1,
+	"id": "collaboration.function.validate-git-hub-anchor",
+	"kind": "function",
+	"title": "validateGitHubAnchor",
+	"responsibility": "Owns the validateGitHubAnchor shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/collaboration/src/utils/validateGitHubAnchor.ts"],
+		"symbols": ["validateGitHubAnchor"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "validateGitHubAnchor.deps",
+				"type": "{ adapter: SourceAdapter; client: GitHubTransport }"
+			},
+			{
+				"name": "validateGitHubAnchor.repository",
+				"type": "RepositoryIdentity"
+			},
+			{
+				"name": "validateGitHubAnchor.input",
+				"type": "Anchor"
+			}
+		],
+		"outputs": [
+			{
+				"name": "validateGitHubAnchor",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "collaboration.function.github-history",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.function.github-transport",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.function.parse-collaboration-input",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.model.collaboration-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "module.contracts",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/collaboration/src/utils/validateGitHubAnchor.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/collaboration/src/utils/validateGitHubAnchor.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

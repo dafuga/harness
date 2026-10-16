@@ -1,0 +1,60 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.artifact-cases",
+	"kind": "function",
+	"title": "artifactCases",
+	"responsibility": "Owns the artifactCases shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/artifactCases.ts"],
+		"symbols": ["caseForm", "artifactCases"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "artifactCases.document",
+				"type": "unknown"
+			},
+			{
+				"name": "artifactCases.unit",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "caseForm",
+				"type": "unknown"
+			},
+			{
+				"name": "artifactCases",
+				"type": "ExplorerArtifactCases"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.model.explorer-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/artifactCases.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/artifactCases.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-renderer", "harness-console", "shared-test-cases"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

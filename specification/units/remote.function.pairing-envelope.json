@@ -1,0 +1,96 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.pairing-envelope",
+	"kind": "function",
+	"title": "pairingEnvelope",
+	"responsibility": "Owns the pairingEnvelope shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/utils/pairingEnvelope.ts"],
+		"symbols": [
+			"PairingContext",
+			"PairingKind",
+			"PairingKeys",
+			"pairingEnvelope",
+			"sealPairing",
+			"openPairing"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "pairingEnvelope.context",
+				"type": "PairingContext"
+			},
+			{
+				"name": "sealPairing.key",
+				"type": "CryptoKey"
+			},
+			{
+				"name": "sealPairing.kind",
+				"type": "PairingKind"
+			},
+			{
+				"name": "sealPairing.value",
+				"type": "unknown"
+			},
+			{
+				"name": "openPairing.key",
+				"type": "CryptoKey"
+			},
+			{
+				"name": "openPairing.kind",
+				"type": "PairingKind"
+			},
+			{
+				"name": "openPairing.sealed",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "pairingEnvelope",
+				"type": "Promise<PairingKeys>"
+			},
+			{
+				"name": "sealPairing",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "openPairing",
+				"type": "Promise<unknown>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.remote-keys",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/pairingEnvelope.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/pairingEnvelope.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

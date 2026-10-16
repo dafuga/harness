@@ -4,6 +4,7 @@ import type { VerificationRecord } from '../core/verificationTypes';
 import { HistoryNoteRepository } from '../repositories/HistoryNoteRepository';
 import type { ReadNote } from '../utils/noteLines';
 import { recordLineage } from '../utils/recordLineage';
+import { verificationNoteIdentity } from '../utils/verificationNoteIdentity';
 import { AttachedRecordService, type AttachedRecord } from './AttachedRecordService';
 
 type VerificationNote = Extract<HistoryNote, { kind: 'verification' }>;
@@ -25,6 +26,12 @@ export interface CommitStatus {
 	problems: string[];
 }
 
+/** The notes commit and the evidence commit a history is read at; null where there is none. */
+export interface PinnedHistory {
+	notes: string | null;
+	evidence: string | null;
+}
+
 /**
  * What Git alone proves about a commit: the records attached to it, whether each is intact
  * together with everything it inherits, and every line or file that could not be used.
@@ -35,15 +42,19 @@ export class HistoryStatusService {
 	private readonly git: GitAdapter;
 	private everything: Promise<Map<string, ReadNote>> | undefined;
 
-	constructor(root: string) {
-		this.attached = new AttachedRecordService(root);
+	/** Pinned, everything is read at exactly those two commits, wherever the refs are by now. */
+	constructor(
+		root: string,
+		private readonly pinned?: PinnedHistory
+	) {
+		this.attached = new AttachedRecordService(root, pinned?.evidence);
 		this.notes = new HistoryNoteRepository(root);
 		this.git = new GitAdapter(root);
 	}
 
 	/** Every note in the repository, read once. */
 	all(): Promise<Map<string, ReadNote>> {
-		this.everything ??= this.notes.all();
+		this.everything ??= this.notes.all(this.pinned?.notes);
 		return this.everything;
 	}
 
@@ -91,14 +102,7 @@ export class HistoryStatusService {
 		const { record } = loaded;
 		if (!record) return loaded.problems;
 		const tree = await this.git.attempt(['rev-parse', '--verify', `${line.source.commit}^{tree}`]);
-		const identity = [
-			...(record.id === line.record ? [] : ['record is not the one the note names']),
-			...(record.source.commit === line.source.commit
-				? []
-				: [`record is for commit ${record.source.commit}, not ${line.source.commit}`]),
-			...(record.source.tree === tree ? [] : ['record tree does not match the commit tree']),
-			...(record.status === line.status ? [] : ['record outcome differs from the note'])
-		];
+		const identity = verificationNoteIdentity(record, line, tree);
 		return [...loaded.problems, ...identity];
 	}
 

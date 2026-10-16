@@ -1,0 +1,99 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.catalog-unit",
+	"kind": "function",
+	"title": "catalogUnit",
+	"responsibility": "Owns the catalogUnit shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/catalogUnit.ts"],
+		"symbols": ["catalogUnit", "catalogListed", "planCatalog"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "catalogUnit.unit",
+				"type": "ComponentManifest"
+			},
+			{
+				"name": "catalogUnit.changed",
+				"type": "Set<string>"
+			},
+			{
+				"name": "catalogListed.units",
+				"type": "ComponentManifest[]"
+			},
+			{
+				"name": "catalogListed.items",
+				"type": "CatalogEntity[]"
+			},
+			{
+				"name": "planCatalog.plan",
+				"type": "PlanRecord"
+			},
+			{
+				"name": "planCatalog.unit",
+				"type": "CatalogEntity | null"
+			},
+			{
+				"name": "planCatalog.changed",
+				"type": "Set<string>"
+			}
+		],
+		"outputs": [
+			{
+				"name": "catalogUnit",
+				"type": "CatalogEntity | null"
+			},
+			{
+				"name": "catalogListed",
+				"type": "CatalogEntity[]"
+			},
+			{
+				"name": "planCatalog",
+				"type": "CatalogEntity"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.category-of",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.planning-port-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "module.contracts",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/catalogUnit.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/catalogUnit.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-project-runs", "desktop-renderer", "hosted-catalog"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

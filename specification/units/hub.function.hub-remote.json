@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.hub-remote",
+	"kind": "function",
+	"title": "hubRemote",
+	"responsibility": "Owns the hubRemote shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/hubRemote.ts"],
+		"symbols": ["HubRemoteRuntime", "hubRemote"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hubRemote.env",
+				"type": "HubEnv"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hubRemote",
+				"type": "HubRemoteRuntime | null"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.adapter.relay-manage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.config.hub-env",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/hubRemote.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/hubRemote.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

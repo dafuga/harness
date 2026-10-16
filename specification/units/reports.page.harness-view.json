@@ -3,7 +3,7 @@
 	"id": "reports.page.harness-view",
 	"kind": "page",
 	"title": "/harness/[...view]",
-	"responsibility": "Mounts the console for the local owner on the path of each branch, commit and view, and redirects the root and query addresses to one.",
+	"responsibility": "Leads the root, a branch or commit alone and every earlier console address to the explorer page it stands for, and shows a commit that no branch reaches.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -40,17 +40,17 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.harness-harness-console",
+			"unit": "reports.component.harness-explorer-content",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-screen",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.function.console-server",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.style.harness",
 			"via": "import",
 			"origin": "derived"
 		}

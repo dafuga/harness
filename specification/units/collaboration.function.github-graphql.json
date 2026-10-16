@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"id": "collaboration.function.github-graphql",
+	"kind": "function",
+	"title": "githubGraphql",
+	"responsibility": "Owns the githubGraphql shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/collaboration/src/utils/githubGraphql.ts"],
+		"symbols": ["githubGraphql"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "githubGraphql.options",
+				"type": "GitHubOptions"
+			},
+			{
+				"name": "githubGraphql.input",
+				"type": "{ commit: string; entries: SourceEntry[] }"
+			}
+		],
+		"outputs": [
+			{
+				"name": "githubGraphql",
+				"type": "Promise<Map<string, Uint8Array>>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "collaboration.function.parse-collaboration-input",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.model.collaboration-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/collaboration/src/utils/githubGraphql.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/collaboration/src/utils/githubGraphql.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,125 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.remote-identity",
+	"kind": "function",
+	"title": "remoteIdentity",
+	"responsibility": "Owns the remoteIdentity shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/utils/remoteIdentity.ts"],
+		"symbols": [
+			"remotePatterns",
+			"remoteIdentity",
+			"CredentialBinding",
+			"credentialHash",
+			"pkceChallenge",
+			"randomId",
+			"randomCredential",
+			"pairingCode",
+			"normalizeCode",
+			"requestDigest"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "remoteIdentity.publicKey",
+				"type": "Uint8Array | string"
+			},
+			{
+				"name": "credentialHash.binding",
+				"type": "CredentialBinding"
+			},
+			{
+				"name": "pkceChallenge.verifier",
+				"type": "string"
+			},
+			{
+				"name": "randomId.bytes",
+				"type": "unknown"
+			},
+			{
+				"name": "normalizeCode.value",
+				"type": "string"
+			},
+			{
+				"name": "requestDigest.request",
+				"type": "WireRequest"
+			}
+		],
+		"outputs": [
+			{
+				"name": "remotePatterns",
+				"type": "unknown"
+			},
+			{
+				"name": "remoteIdentity",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "credentialHash",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "pkceChallenge",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "randomId",
+				"type": "string"
+			},
+			{
+				"name": "randomCredential",
+				"type": "string"
+			},
+			{
+				"name": "pairingCode",
+				"type": "string"
+			},
+			{
+				"name": "normalizeCode",
+				"type": "string"
+			},
+			{
+				"name": "requestDigest",
+				"type": "Promise<string>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.remote-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/remoteIdentity.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/remoteIdentity.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

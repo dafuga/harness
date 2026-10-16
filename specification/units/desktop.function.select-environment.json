@@ -1,0 +1,62 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.select-environment",
+	"kind": "function",
+	"title": "selectEnvironment",
+	"responsibility": "Owns the selectEnvironment shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/selectEnvironment.ts"],
+		"symbols": ["selectEnvironment"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "selectEnvironment.host",
+				"type": "EnvironmentHost"
+			}
+		],
+		"outputs": [
+			{
+				"name": "selectEnvironment",
+				"type": "Environment"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.adapter.capacitor-environment",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.adapter.electron-environment",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.environment-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/selectEnvironment.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/selectEnvironment.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-mobile-ui"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

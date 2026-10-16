@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.layout.root",
+	"kind": "layout",
+	"title": "/",
+	"responsibility": "Owns the / route layout.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/routes/+layout.svelte", "packages/hub/src/routes/+layout.ts"],
+		"symbols": ["+layout", "ssr"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "+layout.children",
+				"type": "Snippet"
+			}
+		],
+		"outputs": [
+			{
+				"name": "+layout",
+				"type": "markup"
+			},
+			{
+				"name": "ssr",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.style.design",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.style.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.style.hub",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/routes/+layout.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/routes/+layout.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

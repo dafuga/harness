@@ -1,5 +1,5 @@
 import { redirect } from '@sveltejs/kit';
-/** Report pages moved into the console; old links keep working. */
-export function load({ params, url }: { params: { id: string }; url: URL }) {
-	redirect(308, '/harness/reports/' + encodeURIComponent(params.id) + url.search);
+/** An earlier report link is answered where the console answers it: in the explorer. */
+export function load({ params }: { params: { id: string } }) {
+	redirect(308, '/harness/reports/' + encodeURIComponent(params.id));
 }

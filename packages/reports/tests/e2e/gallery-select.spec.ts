@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { seededId } from './support/fixtures';
+import { reportView } from './support/portableReport';
 
 for (const width of [1440, 920, 390]) {
 	test(`gallery status caret is comfortably inset and selection filters at ${width}px`, async ({
@@ -9,7 +10,7 @@ for (const width of [1440, 920, 390]) {
 	}) => {
 		await page.setViewportSize({ width, height: 1000 });
 		const id = await seededId();
-		await page.goto(`/reports/${id}`);
+		await page.goto(await reportView(id));
 		await page.waitForLoadState('networkidle');
 		const filter = page.getByRole('combobox', { name: 'Status', exact: true });
 		await filter.scrollIntoViewIfNeeded();

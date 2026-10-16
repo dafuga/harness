@@ -1,0 +1,161 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.remote-labels",
+	"kind": "function",
+	"title": "remoteLabels",
+	"responsibility": "Owns the remoteLabels shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/remoteLabels.ts"],
+		"symbols": [
+			"lockNote",
+			"awakeNote",
+			"lockedNote",
+			"unlockedNote",
+			"approveNote",
+			"awayNote",
+			"revokedNote",
+			"relayName",
+			"timeLeft",
+			"keyLabel",
+			"identityLabel",
+			"grantLabel",
+			"grantSummary",
+			"hostLine",
+			"hostSummary",
+			"remoteLabels"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "relayName.origin",
+				"type": "string | null"
+			},
+			{
+				"name": "timeLeft.milliseconds",
+				"type": "number"
+			},
+			{
+				"name": "keyLabel.deviceId",
+				"type": "string"
+			},
+			{
+				"name": "identityLabel.deviceId",
+				"type": "string"
+			},
+			{
+				"name": "grantLabel.grant",
+				"type": "{ agents: boolean }"
+			},
+			{
+				"name": "grantSummary.grant",
+				"type": "{ projects: unknown[]; agents: boolean }"
+			},
+			{
+				"name": "hostLine.status",
+				"type": "RemoteHostStatus"
+			},
+			{
+				"name": "hostSummary.status",
+				"type": "RemoteHostStatus"
+			},
+			{
+				"name": "remoteLabels.status",
+				"type": "RemoteNativeStatus"
+			}
+		],
+		"outputs": [
+			{
+				"name": "lockNote",
+				"type": "unknown"
+			},
+			{
+				"name": "awakeNote",
+				"type": "unknown"
+			},
+			{
+				"name": "lockedNote",
+				"type": "unknown"
+			},
+			{
+				"name": "unlockedNote",
+				"type": "unknown"
+			},
+			{
+				"name": "approveNote",
+				"type": "unknown"
+			},
+			{
+				"name": "awayNote",
+				"type": "unknown"
+			},
+			{
+				"name": "revokedNote",
+				"type": "unknown"
+			},
+			{
+				"name": "relayName",
+				"type": "string"
+			},
+			{
+				"name": "timeLeft",
+				"type": "string"
+			},
+			{
+				"name": "keyLabel",
+				"type": "string"
+			},
+			{
+				"name": "identityLabel",
+				"type": "string"
+			},
+			{
+				"name": "grantLabel",
+				"type": "string"
+			},
+			{
+				"name": "grantSummary",
+				"type": "string"
+			},
+			{
+				"name": "hostLine",
+				"type": "string"
+			},
+			{
+				"name": "hostSummary",
+				"type": "string"
+			},
+			{
+				"name": "remoteLabels",
+				"type": "{ title: string; detail: string }"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.environment-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/remoteLabels.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/remoteLabels.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-mobile-ui"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

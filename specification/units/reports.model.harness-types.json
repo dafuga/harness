@@ -14,8 +14,6 @@
 			"HarnessSeries",
 			"HarnessBenchmark",
 			"HarnessGrowthPoint",
-			"HarnessLegacyMedia",
-			"HarnessLegacyReport",
 			"HarnessIndex",
 			"HarnessUnit",
 			"HarnessScenario",
@@ -35,6 +33,11 @@
 	"dependencies": [
 		{
 			"unit": "reports.model.harness-budget-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-legacy-types",
 			"via": "import",
 			"origin": "derived"
 		},

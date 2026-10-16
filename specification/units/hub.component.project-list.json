@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.project-list",
+	"kind": "component",
+	"title": "ProjectList",
+	"responsibility": "Owns the ProjectList Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/components/ProjectList.svelte"],
+		"symbols": ["ProjectList"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ProjectList.projects",
+				"type": "ProjectSummary[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ProjectList",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/ProjectList.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/ProjectList.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,103 @@
+{
+	"schemaVersion": 1,
+	"id": "planning.function.plan-commit",
+	"kind": "function",
+	"title": "planCommit",
+	"responsibility": "Owns the planCommit shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/planning/src/utils/planCommit.ts"],
+		"symbols": ["stageFiles", "CommitContext", "planCommit", "requireLfsFilters"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "stageFiles.git",
+				"type": "Git"
+			},
+			{
+				"name": "stageFiles.files",
+				"type": "Files"
+			},
+			{
+				"name": "stageFiles.index",
+				"type": "string"
+			},
+			{
+				"name": "planCommit.git",
+				"type": "Git"
+			},
+			{
+				"name": "planCommit.files",
+				"type": "Files"
+			},
+			{
+				"name": "planCommit.context",
+				"type": "CommitContext"
+			},
+			{
+				"name": "requireLfsFilters.git",
+				"type": "Git"
+			}
+		],
+		"outputs": [
+			{
+				"name": "stageFiles",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "planCommit",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "requireLfsFilters",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "planning.function.plan-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.function.plan-write",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/planning/src/utils/planCommit.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/planning/src/utils/planCommit.ts"
+			}
+		]
+	},
+	"scenarios": ["planning-artifacts"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

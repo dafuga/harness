@@ -3,6 +3,7 @@ import { readdirSync, readFileSync, type Dirent } from 'node:fs';
 import { join, relative, resolve, sep } from 'node:path';
 import { ownEnvironment } from './cli';
 import { runFailures, type RunReport } from './runFailures';
+import { teardownGate } from './runGate';
 import { freePort } from './workers';
 
 const reports = resolve(import.meta.dirname, '../../packages/reports');
@@ -33,6 +34,9 @@ export interface SeededHistory {
 	home: string;
 	file: string;
 	commits: Record<string, string>;
+	/** The branch whose commits record a page before and after a change, and that page's unit. */
+	branch: string;
+	page: string;
 }
 
 /** What a run wrote into its report file; readable once it has finished. */
@@ -60,14 +64,17 @@ function reported(file: string): Pick<BrowserRun, 'results' | 'failures'> {
  * Starts the reports browser suite on a few specs as an independent run: its own free ports, the
  * compiled server a verification uses, and its results kept apart. Where the run keeps its
  * fixtures is not said to it: it only has `scratch` as the temporary directory of its processes.
- * With `repeat` every test runs that many times, which keeps the run and its servers going.
+ * With `repeat` every test runs that many times, which keeps the run and its servers going. With
+ * `gate` its teardown keeps its fixtures until the observer holding that gate lets them go.
  */
 export async function browserRun(
 	name: string,
 	scratch: string,
 	specs: string[],
-	repeat = 1
+	lasting: number | { repeat: number; gate?: string } = 1
 ): Promise<BrowserRun> {
+	const { repeat, gate } =
+		typeof lasting === 'number' ? { repeat: lasting, gate: undefined } : lasting;
 	const assigned: Record<string, string> = {};
 	for (const port of ports) assigned[port] = String(await freePort());
 	const results = join(scratch, `${name}-results.json`);
@@ -81,7 +88,8 @@ export async function browserRun(
 		HARNESS_CONSOLE_E2E_HOME: undefined,
 		HARNESS_ANALYTICS_HOME: undefined,
 		HARNESS_VERIFY: '1',
-		PLAYWRIGHT_JSON_OUTPUT_FILE: results
+		PLAYWRIGHT_JSON_OUTPUT_FILE: results,
+		[teardownGate]: gate
 	};
 	const args = ['x', 'playwright', 'test', ...specs, '--reporter=json', `--repeat-each=${repeat}`];
 	const child = spawn('bun', [...args, '--output', join(scratch, `${name}-output`)], {
@@ -160,27 +168,32 @@ function metadataFiles(directory: string, depth = 3): string[] {
 /** Every seeded console history found below `scratch`, wherever a run chose to keep it. */
 export function seededHistories(scratch: string): SeededHistory[] {
 	return metadataFiles(scratch).flatMap((file) => {
-		let meta: { commits?: Record<string, string> } = {};
+		let meta: {
+			commits?: Record<string, string>;
+			keptBranch?: string;
+			explorerUnits?: { page?: string };
+		} = {};
 		try {
 			meta = JSON.parse(readFileSync(file, 'utf8')) as typeof meta;
 		} catch {
 			return [];
 		}
 		const [top] = relative(scratch, file).split(sep);
+		const [branch, page] = [meta.keptBranch ?? '', meta.explorerUnits?.page ?? ''];
 		return meta.commits?.baseline
-			? [{ home: join(scratch, top), file, commits: meta.commits }]
+			? [{ home: join(scratch, top), file, commits: meta.commits, branch, page }]
 			: [];
 	});
 }
 
 /** Polls until `ready` returns a value, or fails after the given time with what `ready` meant. */
 export async function eventually<Found>(
-	ready: () => Found | undefined,
+	ready: () => Found | undefined | Promise<Found | undefined>,
 	wanted: string,
 	seconds = 180
 ): Promise<Found> {
 	for (let attempt = 0; attempt < seconds * 2; attempt += 1) {
-		const found = ready();
+		const found = await ready();
 		if (found !== undefined) return found;
 		await new Promise((done) => setTimeout(done, 500));
 	}

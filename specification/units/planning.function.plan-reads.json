@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "planning.function.plan-reads",
+	"kind": "function",
+	"title": "planReads",
+	"responsibility": "Answers each Git read pinned to a full object id once within one planning operation.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/planning/src/utils/planReads.ts"],
+		"symbols": ["planReads"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "planReads.git",
+				"type": "Git"
+			}
+		],
+		"outputs": [
+			{
+				"name": "planReads",
+				"type": "Git"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "planning.function.plan-git",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/planning/src/utils/planReads.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/planning/src/utils/planReads.ts"
+			}
+		]
+	},
+	"scenarios": ["planning-artifacts"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

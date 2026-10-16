@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "collaboration.function.create-git-hub-source",
+	"kind": "function",
+	"title": "createGitHubSource",
+	"responsibility": "Owns the createGitHubSource shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/collaboration/src/utils/createGitHubSource.ts"],
+		"symbols": ["createGitHubSource"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "createGitHubSource.options",
+				"type": "Options"
+			}
+		],
+		"outputs": [
+			{
+				"name": "createGitHubSource",
+				"type": "SourceHistoryAdapter"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "collaboration.function.github-history",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.function.github-lfs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.function.github-raw-many",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.function.github-transport",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.function.parse-collaboration-input",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.function.validate-git-hub-anchor",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.model.collaboration-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/collaboration/src/utils/createGitHubSource.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/collaboration/src/utils/createGitHubSource.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -79,6 +79,7 @@ async function auditStaticProject(root: string, options: AuditOptions): Promise<
 		)
 	);
 	const structureFindings = auditProjectStructure(activeAdapters, {
+		root,
 		profile,
 		files: files.map((file) => file.relativePath),
 		dirs: collected.dirs

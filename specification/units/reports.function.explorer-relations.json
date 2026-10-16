@@ -1,0 +1,76 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.explorer-relations",
+	"kind": "function",
+	"title": "explorerRelations",
+	"responsibility": "Says what an entity contains and what contains it: pages, shells, components, functions, configs and services, each in its own section.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/explorerRelations.ts"],
+		"symbols": ["explorerRelations"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "explorerRelations.head",
+				"type": "HarnessRevision"
+			},
+			{
+				"name": "explorerRelations.id",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "explorerRelations",
+				"type": "ExplorerRelations"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.explorer-category",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-entities",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-name",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/explorerRelations.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/explorerRelations.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,143 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.prepare-run",
+	"kind": "function",
+	"title": "prepareRun",
+	"responsibility": "Owns the prepareRun shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/prepareRun.ts"],
+		"symbols": ["Preparation", "imageModel", "prepareRun", "messageFor", "recordRunFailure"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "imageModel.preparation",
+				"type": "Preparation"
+			},
+			{
+				"name": "imageModel.request",
+				"type": "Pick<RunRequest, 'mode'>"
+			},
+			{
+				"name": "imageModel.category",
+				"type": "string"
+			},
+			{
+				"name": "prepareRun.preparation",
+				"type": "Preparation"
+			},
+			{
+				"name": "prepareRun.request",
+				"type": "RunRequest"
+			},
+			{
+				"name": "prepareRun.controller",
+				"type": "AbortController"
+			},
+			{
+				"name": "messageFor.context",
+				"type": "Pick<RunContext, 'request'>"
+			},
+			{
+				"name": "messageFor.author",
+				"type": "'user' | 'agent'"
+			},
+			{
+				"name": "messageFor.text",
+				"type": "string"
+			},
+			{
+				"name": "recordRunFailure.context",
+				"type": "Omit<RunContext, 'entity'>"
+			},
+			{
+				"name": "recordRunFailure.error",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "imageModel",
+				"type": "unknown"
+			},
+			{
+				"name": "prepareRun",
+				"type": "Promise<RunContext>"
+			},
+			{
+				"name": "messageFor",
+				"type": "unknown"
+			},
+			{
+				"name": "recordRunFailure",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			},
+			{
+				"name": "RunCancelled",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.approval-match",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.agent-runner-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.run-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.project-session",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.provider-discovery",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/prepareRun.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/prepareRun.ts"
+			}
+		]
+	},
+	"scenarios": [
+		"desktop-native",
+		"desktop-project-runs",
+		"remote-desktop-boundaries",
+		"shells-shared-app"
+	],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

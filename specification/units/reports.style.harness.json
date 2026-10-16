@@ -3,7 +3,7 @@
 	"id": "reports.style.harness",
 	"kind": "style",
 	"title": "harness",
-	"responsibility": "Styles the console views in the reports design.",
+	"responsibility": "Styles the console views in the reports design, and brings in the stylesheets of the explorer.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -16,7 +16,23 @@
 		"outputs": [],
 		"errors": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "reports.style.explorer",
+			"via": "style-import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.explorer-controls",
+			"via": "style-import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.explorer-navbar",
+			"via": "style-import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/reports/src/lib/styles/harness.css",

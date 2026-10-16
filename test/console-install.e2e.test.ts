@@ -25,6 +25,8 @@ beforeAll(async () => {
 	target = await syntheticHost();
 	protectedPaths = [
 		'/harness',
+		'/harness/branch/main/pages',
+		`/harness/branch/main/commit/${target.commit}/pages/page.titles/details?tab=source`,
 		`/harness/commit/${target.commit}/map`,
 		'/harness/data/index.json',
 		`/harness/data/revisions/${target.commit}.json`,
@@ -102,9 +104,16 @@ test('in workerd only the host administrator reaches the console, its data and i
 		}
 	}
 	const admin = cookie(sessions.admin);
+	// A page of the explorer and a page path of the earlier console are the same closed document.
+	const explorer = await get(`/harness/branch/main/commit/${commit}/pages`, admin);
 	const page = await get(`/harness/branch/main/commit/${commit}/map`, admin);
-	expect([page.status, page.headers.get('cache-control')]).toEqual([200, 'private, no-store']);
+	for (const served of [explorer, page])
+		expect([served.status, served.headers.get('cache-control')]).toEqual([
+			200,
+			'private, no-store'
+		]);
 	const html = await page.text();
+	expect(await explorer.text()).toBe(html);
 	expect(html).toContain('window.harnessConsole={"exportable":true,"base":"/harness"}');
 	expect(html).not.toContain(commit);
 	expect(await (await get('/harness/data/index.json', admin)).json()).toEqual(index);

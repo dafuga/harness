@@ -140,7 +140,9 @@ functions; declare a `process` or `http` target only for a unit that is deployed
 
 The impact kernel has a TypeScript reference (`src/utils/impactKernel.ts`) and a Rust
 implementation (`crates/impact-kernel`) built for the native host and for
-`wasm32-unknown-unknown` with the toolchain pinned in `rust-toolchain.toml`.
+`wasm32-unknown-unknown` with the toolchain pinned in `rust-toolchain.toml`. The two commands
+below select that toolchain through rustup, whatever `cargo` is first on `PATH`; without rustup
+or the pinned toolchain they fail and say what is missing.
 
 ```bash
 bun run build:kernel            # native process and core Wasm into target/kernel
@@ -409,6 +411,9 @@ repository with their original dates, outcome and revision: a run that was still
 an existing hook and runs it first, verifies each pushed branch tip in a clean snapshot when no
 passing record proves it, attaches the record and blocks the push if it failed. It is a local
 aid: `git push --no-verify` skips it, and other worktrees are unaffected until they opt in.
+The same command adds a commit-msg hook that measures a commit message. Each stage is opted
+into on its own, so a worktree that asked an earlier Harness for pushes only is never handed a
+stage that was offered later; run `harness hooks install` there again to adopt it.
 
 **CI.** `.github/workflows/harness-verify.yml` runs the full check and verifies the exact
 commit with read-only access and no secrets. `harness-evidence.yml` runs trusted code from the

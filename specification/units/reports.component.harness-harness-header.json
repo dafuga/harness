@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-harness-header",
 	"kind": "component",
 	"title": "HarnessHeader",
-	"responsibility": "Shows the console title, a stated problem and the notice for an address that names nothing in the history.",
+	"responsibility": "Shows the head of the console: the bar of the explorer when it is given one, otherwise the title row the console had, and after either a stated problem and the notice for an address that names nothing in the history.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -28,6 +28,10 @@
 			{
 				"name": "HarnessHeader.missing",
 				"type": "{ message: string; home: string | null } | null"
+			},
+			{
+				"name": "HarnessHeader.navbar",
+				"type": "Omit<HarnessNavbarInput, 'base'> | null"
 			}
 		],
 		"outputs": [
@@ -38,7 +42,23 @@
 		],
 		"errors": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "reports.component.brand-mark",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-shell",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/reports/src/components/harness/HarnessHeader.svelte",

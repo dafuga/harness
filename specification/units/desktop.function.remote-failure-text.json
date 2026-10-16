@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.remote-failure-text",
+	"kind": "function",
+	"title": "remoteFailureText",
+	"responsibility": "Owns the remoteFailureText shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/remoteFailureText.ts"],
+		"symbols": ["remoteFailureText"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "remoteFailureText.error",
+				"type": "unknown"
+			},
+			{
+				"name": "remoteFailureText.roots",
+				"type": "string[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "remoteFailureText",
+				"type": "RemoteError"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/remoteFailureText.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/remoteFailureText.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

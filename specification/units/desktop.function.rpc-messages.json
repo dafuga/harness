@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.rpc-messages",
+	"kind": "function",
+	"title": "rpcMessages",
+	"responsibility": "Owns the rpcMessages shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/rpcMessages.ts"],
+		"symbols": ["RpcEvent", "RpcPending", "rpcMessages", "rpcRequest"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "rpcMessages.state",
+				"type": "RpcState"
+			},
+			{
+				"name": "rpcMessages.line",
+				"type": "string"
+			},
+			{
+				"name": "rpcRequest.state",
+				"type": "RpcState"
+			},
+			{
+				"name": "rpcRequest.frame",
+				"type": "{ id: number; method: string; params: unknown }"
+			},
+			{
+				"name": "rpcRequest.timeoutMs",
+				"type": "number"
+			}
+		],
+		"outputs": [
+			{
+				"name": "rpcMessages",
+				"type": "void"
+			},
+			{
+				"name": "rpcRequest",
+				"type": "Promise<unknown>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/rpcMessages.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/rpcMessages.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

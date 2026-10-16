@@ -1,0 +1,65 @@
+{
+	"schemaVersion": 1,
+	"id": "function.verification-note-identity",
+	"kind": "function",
+	"title": "verificationNoteIdentity",
+	"responsibility": "Validate every verification note identity against its original sealed record and actual tree",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/verificationNoteIdentity.ts"],
+		"symbols": ["verificationNoteIdentity"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "verificationNoteIdentity.record",
+				"type": "VerificationRecord"
+			},
+			{
+				"name": "verificationNoteIdentity.note",
+				"type": "Note"
+			},
+			{
+				"name": "verificationNoteIdentity.tree",
+				"type": "string | null | undefined"
+			}
+		],
+		"outputs": [
+			{
+				"name": "verificationNoteIdentity",
+				"type": "string[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.history-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/verificationNoteIdentity.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/verificationNoteIdentity.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-recorded-evidence", "hub-recorded-evidence"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

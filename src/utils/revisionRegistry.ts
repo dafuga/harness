@@ -38,7 +38,8 @@ export interface RevisionRegistry {
 		title: string;
 		kind: string;
 		units: string[];
-		states: Array<{ id: string; coverage: string; reason?: string }>;
+		/** `units` names what a state shows, when the scenario says so for that state. */
+		states: Array<{ id: string; coverage: string; reason?: string; units?: string[] }>;
 		viewports: ScenarioManifest['viewports'];
 		tests: Array<{ id: string; kind: string; runner: string }>;
 		evidence: Array<{ id: string; kind: string; states: string[]; viewports: string[] }>;
@@ -135,10 +136,11 @@ function scenarioView(scenario: ScenarioManifest): RevisionRegistry['scenarios']
 		title: scenario.title,
 		kind: scenario.kind,
 		units: scenario.units,
-		states: scenario.states.map(({ id, coverage, reason }) => ({
+		states: scenario.states.map(({ id, coverage, reason, units }) => ({
 			id,
 			coverage,
-			...(reason ? { reason } : {})
+			...(reason ? { reason } : {}),
+			...(units ? { units } : {})
 		})),
 		viewports: scenario.viewports,
 		tests: scenario.tests.map(({ id, kind, runner }) => ({ id, kind, runner })),

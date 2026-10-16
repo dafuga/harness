@@ -1,0 +1,83 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.harness-entity-missing",
+	"kind": "component",
+	"title": "EntityMissing",
+	"responsibility": "Says that an entity or a registry is not at the shown revision and that nothing of another revision is shown in its place.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/harness/EntityMissing.svelte"],
+		"symbols": ["EntityMissing"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "EntityMissing.title",
+				"type": "string"
+			},
+			{
+				"name": "EntityMissing.message",
+				"type": "string"
+			},
+			{
+				"name": "EntityMissing.nav",
+				"type": "EntityNav"
+			},
+			{
+				"name": "EntityMissing.to",
+				"type": "ExplorerLocation"
+			},
+			{
+				"name": "EntityMissing.action",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "EntityMissing",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-harness-action",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-verdict",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/harness/EntityMissing.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/harness/EntityMissing.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

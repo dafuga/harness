@@ -1,0 +1,84 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.service.local-transport-client",
+	"kind": "service",
+	"title": "LocalTransportClientService",
+	"responsibility": "Owns the LocalTransportClientService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/services/LocalTransportClientService.ts"],
+		"symbols": [
+			"LocalSocketPort",
+			"LocalTransportClientOptions",
+			"LocalTransportClientService",
+			"LocalTransportClientService.constructor",
+			"LocalTransportClientService.request",
+			"LocalTransportClientService.on",
+			"LocalTransportClientService.close"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "LocalTransportClientService.constructor.options",
+				"type": "LocalTransportClientOptions"
+			},
+			{
+				"name": "LocalTransportClientService.request.method",
+				"type": "RemoteMethod"
+			},
+			{
+				"name": "LocalTransportClientService.request.input",
+				"type": "object"
+			},
+			{
+				"name": "LocalTransportClientService.on.channel",
+				"type": "WireChannel"
+			},
+			{
+				"name": "LocalTransportClientService.on.listener",
+				"type": "(value: unknown) => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "LocalTransportClientService.request",
+				"type": "Promise<T>"
+			},
+			{
+				"name": "LocalTransportClientService.on",
+				"type": "()"
+			},
+			{
+				"name": "LocalTransportClientService.close",
+				"type": "void"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/services/LocalTransportClientService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/services/LocalTransportClientService.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.report-destination",
+	"kind": "function",
+	"title": "reportDestination",
+	"responsibility": "Says where in the explorer an earlier report address leads: Pages at the commit the report names when this history holds it, else Pages at the branch tip.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/reportDestination.ts"],
+		"symbols": ["NamedReport", "reportDestination"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "reportDestination.index",
+				"type": "HarnessIndex | null"
+			},
+			{
+				"name": "reportDestination.report",
+				"type": "NamedReport | null"
+			}
+		],
+		"outputs": [
+			{
+				"name": "reportDestination",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.console-canonical",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.explorer-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/reportDestination.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/reportDestination.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

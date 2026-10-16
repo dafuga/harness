@@ -1,0 +1,81 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.coverage-panel",
+	"kind": "component",
+	"title": "CoveragePanel",
+	"responsibility": "Owns the CoveragePanel Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/CoveragePanel.svelte"],
+		"symbols": ["CoveragePanel"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "CoveragePanel.entity",
+				"type": "EntityDetail"
+			},
+			{
+				"name": "CoveragePanel.evidence",
+				"type": "EntityEvidence"
+			}
+		],
+		"outputs": [
+			{
+				"name": "CoveragePanel",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.runtime-behavior",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.status-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.evidence-notice",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.entity-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/CoveragePanel.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/CoveragePanel.svelte"
+			}
+		]
+	},
+	"scenarios": ["runtime-evidence-ui", "shared-test-cases"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

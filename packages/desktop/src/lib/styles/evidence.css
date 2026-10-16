@@ -1,0 +1,194 @@
+/* Recorded runtime evidence: what was captured from running software, apart from designs. */
+.runtime-chip {
+	border-color: var(--gold);
+	color: var(--gold);
+}
+.runtime-evidence > .row,
+.coverage-panel > .row {
+	flex-wrap: wrap;
+	padding-bottom: 14px;
+	border-bottom: 1px solid var(--line);
+}
+.runtime-card {
+	padding: 16px 0;
+	border-bottom: 1px solid var(--line);
+}
+.runtime-card:last-child {
+	border-bottom: 0;
+	padding-bottom: 0;
+}
+.runtime-card h3 {
+	margin: 0 0 4px;
+}
+.runtime-controls {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	align-items: flex-end;
+	margin: 12px 0;
+}
+.runtime-controls label {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	font-size: 12px;
+	min-width: 0;
+}
+.runtime-panes {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 14px;
+}
+.runtime-panes.paired {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.runtime-pane {
+	margin: 0;
+	min-width: 0;
+	border: 1px solid var(--line);
+	border-radius: 8px;
+	padding: 12px;
+}
+.runtime-pane figcaption,
+.runtime-pane-head {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	align-items: center;
+	margin: 0 0 10px;
+}
+.runtime-pane img {
+	display: block;
+	width: 100%;
+	border: 1px solid var(--line);
+	border-radius: 6px;
+	background: #031823;
+}
+.runtime-pane audio {
+	width: 100%;
+}
+.runtime-standing {
+	margin: 8px 0 0;
+	font-size: 12px;
+	color: var(--muted);
+}
+.runtime-standing.stale {
+	color: var(--gold);
+}
+.runtime-gap {
+	display: flex;
+	gap: 8px;
+	align-items: flex-start;
+	margin: 8px 0;
+	padding: 0;
+	list-style: none;
+	flex-wrap: wrap;
+}
+.runtime-gap li {
+	display: flex;
+	gap: 8px;
+	align-items: flex-start;
+}
+.runtime-gap span {
+	flex: 1;
+	min-width: 0;
+	overflow-wrap: anywhere;
+}
+.runtime-verdict {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	align-items: baseline;
+}
+.runtime-state h4 {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+	margin: 14px 0 6px;
+}
+.runtime-result > p {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	align-items: center;
+	margin: 8px 0;
+}
+.runtime-artifact h5 {
+	margin: 10px 0 4px;
+	font-size: 12px;
+	color: var(--muted);
+}
+.runtime-artifact pre,
+.runtime-artifact li {
+	overflow-wrap: anywhere;
+	white-space: pre-wrap;
+}
+.runtime-artifact pre {
+	margin: 0;
+	padding: 10px;
+	border: 1px solid var(--line);
+	border-radius: 6px;
+	background: #031823;
+	font-size: 12px;
+}
+.runtime-checks {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+.runtime-checks li {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	align-items: center;
+	margin: 6px 0;
+}
+.runtime-checks pre {
+	flex-basis: 100%;
+}
+.runtime-facts {
+	display: grid;
+	grid-template-columns: max-content minmax(0, 1fr);
+	gap: 4px 14px;
+	margin: 10px 0;
+	font-size: 13px;
+}
+.runtime-facts dt {
+	color: var(--muted);
+}
+.runtime-facts dd {
+	margin: 0;
+	overflow-wrap: anywhere;
+}
+.coverage-scenario h3 {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	align-items: center;
+	margin: 16px 0 4px;
+}
+.coverage-scenario p span + span::before {
+	content: ' · ';
+}
+.coverage-scenario table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 13px;
+}
+.coverage-scenario th,
+.coverage-scenario td {
+	text-align: left;
+	vertical-align: top;
+	padding: 8px 10px 8px 0;
+	border-top: 1px solid var(--line);
+	overflow-wrap: anywhere;
+}
+@media (max-width: 850px) {
+	.runtime-panes.paired {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.coverage-scenario table {
+		display: block;
+		overflow-x: auto;
+	}
+}

@@ -1,0 +1,85 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.workspace-route",
+	"kind": "function",
+	"title": "workspaceRoute",
+	"responsibility": "Owns the workspaceRoute shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/workspaceRoute.ts"],
+		"symbols": [
+			"routeSuffixes",
+			"RouteSuffix",
+			"WorkspaceRoute",
+			"WorkspaceTarget",
+			"isWorkspacePath",
+			"workspaceRoute",
+			"workspacePath"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "isWorkspacePath.path",
+				"type": "string"
+			},
+			{
+				"name": "workspaceRoute.path",
+				"type": "string"
+			},
+			{
+				"name": "workspacePath.target",
+				"type": "WorkspaceTarget"
+			}
+		],
+		"outputs": [
+			{
+				"name": "routeSuffixes",
+				"type": "unknown"
+			},
+			{
+				"name": "isWorkspacePath",
+				"type": "boolean"
+			},
+			{
+				"name": "workspaceRoute",
+				"type": "WorkspaceRoute"
+			},
+			{
+				"name": "workspacePath",
+				"type": "string"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/workspaceRoute.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/workspaceRoute.ts"
+			}
+		]
+	},
+	"scenarios": ["desktop-renderer", "shells-shared-app"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,91 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.plan-design",
+	"kind": "function",
+	"title": "planDesign",
+	"responsibility": "Owns the planDesign shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/planDesign.ts"],
+		"symbols": ["planDesign"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "planDesign.context",
+				"type": "RunContext"
+			},
+			{
+				"name": "planDesign.prompt",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "planDesign",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "RunCancelled",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.design-count",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.design-directions",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.design-prompt",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.agent-runner-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.planning-port-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.run-context-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/planDesign.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/planDesign.ts"
+			}
+		]
+	},
+	"scenarios": [
+		"desktop-native",
+		"desktop-project-runs",
+		"shells-shared-app",
+		"plan-fixture-contracts"
+	],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

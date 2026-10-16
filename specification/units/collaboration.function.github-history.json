@@ -1,0 +1,102 @@
+{
+	"schemaVersion": 1,
+	"id": "collaboration.function.github-history",
+	"kind": "function",
+	"title": "githubHistory",
+	"responsibility": "Owns the githubHistory shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/collaboration/src/utils/githubHistory.ts"],
+		"symbols": ["ensureAncestry", "githubHistory"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ensureAncestry.client",
+				"type": "GitHubTransport"
+			},
+			{
+				"name": "ensureAncestry.commit",
+				"type": "string"
+			},
+			{
+				"name": "ensureAncestry.tip",
+				"type": "string"
+			},
+			{
+				"name": "githubHistory.adapter",
+				"type": "SourceAdapter"
+			},
+			{
+				"name": "githubHistory.options",
+				"type": "Omit<GitHubOptions, 'repository'>"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ensureAncestry",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "githubHistory",
+				"type": "Omit<SourceHistoryAdapter, keyof SourceAdapter | 'raw' | 'rawMany'>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "collaboration.function.github-commit-facts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.function.github-history-page",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.function.github-reaches",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.function.github-transport",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.function.parse-collaboration-input",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.model.collaboration-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/collaboration/src/utils/githubHistory.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/collaboration/src/utils/githubHistory.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

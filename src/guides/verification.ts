@@ -52,10 +52,13 @@ const verifyGuide: Guide = {
 			'passing, intact record proves it; otherwise the nearest proven ancestor is used, or ' +
 			'nothing, and everything since then is checked. --base, an empty commit or an ' +
 			'unverified parent therefore cannot leave a change out.',
-		'Every check runs in its own process group under a hard limit and is killed with its children.',
-		'A process a check started that is still running after the check ended, also one that left ' +
-			'the group or session as a daemon does, is stopped and fails the check. Processes are ' +
-			'followed by their parent links every 200 ms and signalled only by id and start time.',
+		'Every check runs in its own process group under a hard limit. On macOS only a verified ' +
+			'private process is signalled; other systems stop the process group.',
+		'Parent links are observed every 200 ms. On macOS ownership is bound to id and start ' +
+			'time, and identity and program are checked again before each signal. A vetted ' +
+			'released system service is handed over; protected or unproven leftovers receive ' +
+			'no further signals and fail the check. Unreadable state or an expired cleanup deadline ' +
+			'fails as unknown. Logs distinguish stopped, signalled-but-running and unsignalled processes.',
 		'Affected scenarios are captured afresh for each commit, even when the bytes are identical.',
 		'An unaffected scenario keeps the evidence of the commit that last tested it, and says so; ' +
 			'evidence is inherited only from a record that passed.',
@@ -102,10 +105,18 @@ const explainGuide: Guide = {
 		'Added and removed units need a unit-wide reason; so do files the index cannot split.',
 		'A performance rationale is required for every changed unit, including validation, ' +
 			'serialization and adapters at an invocation boundary, even when nothing improved.',
-		'Reasons are kept outside the source tree in .cache/harness until they are stored as notes.'
+		'Reasons are kept outside the source tree in .cache/harness until they are stored as notes.',
+		'A reason is short: its behaviour note has at most 30 words and 200 characters, each attempt ' +
+			'at most 15 words and 140 characters. harness explain add refuses a longer one, and a ' +
+			'repository that declares "writing": 2 in harness.verify.json fails its check and its ' +
+			'verification on one.',
+		'A revision that declares "writing": 1 keeps 20 words an attempt. A reason is held to the ' +
+			'version of the revision it explains, each step of a range to its own and a reason for ' +
+			'the whole range to that of its head; the date a reason carries decides nothing.'
 	],
 	antiPatterns: [
 		'Do not write a blanket reason for unrelated changes.',
+		'Do not list everything a change touched: explain this unit, the attempt and its result.',
 		'Do not claim an improvement that was not measured.'
 	],
 	exampleCommands: [

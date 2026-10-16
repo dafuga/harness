@@ -1,0 +1,208 @@
+.entity-layout {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	min-height: calc(100vh - 152px);
+}
+.entity-layout.with-thread {
+	grid-template-columns: minmax(0, 1fr) 380px;
+}
+.entity-main {
+	padding: 24px 28px;
+	min-width: 0;
+}
+.entity-heading {
+	display: flex;
+	gap: 18px;
+	align-items: center;
+}
+.entity-heading > div {
+	flex: 1;
+}
+.entity-heading h1 {
+	font-size: 32px;
+}
+.entity-symbol {
+	background: #254457;
+	border-radius: 14px;
+	padding: 15px;
+}
+.entity-tabs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	border-bottom: 1px solid var(--line);
+	margin: 16px 0;
+}
+.entity-tabs button {
+	border: 0;
+	border-bottom: 3px solid transparent;
+	border-radius: 0;
+	background: transparent;
+	padding: 13px 18px;
+}
+.panel {
+	border: 1px solid var(--line);
+	border-radius: 8px;
+	padding: 18px;
+	margin: 14px 0;
+}
+.design-panel > .row {
+	flex-wrap: wrap;
+	padding-bottom: 14px;
+	border-bottom: 1px solid var(--line);
+}
+.design-controls {
+	display: flex;
+	gap: 12px;
+	margin-top: 12px;
+}
+.image-actions {
+	display: flex;
+	gap: 8px;
+	justify-content: flex-end;
+	flex-wrap: wrap;
+	margin: 12px 0;
+}
+.image-actions button {
+	font-size: 12px;
+	padding: 8px 10px;
+}
+.image-canvas {
+	position: relative;
+	touch-action: none;
+	border: 1px solid var(--line);
+	border-radius: 6px;
+	overflow: hidden;
+	line-height: 0;
+	background: #031823;
+}
+.image-canvas > img {
+	width: 100%;
+	display: block;
+	user-select: none;
+}
+.image-pin {
+	position: absolute;
+	transform: translate(-20%, -20%);
+	background: var(--gold);
+	color: #14242c;
+	border: 0;
+	border-radius: 50%;
+	width: 28px;
+	height: 28px;
+	padding: 0;
+	z-index: 2;
+	font-weight: 700;
+}
+.image-region {
+	position: absolute;
+	border: 2px solid var(--gold);
+	background: #ffcd1510;
+	pointer-events: none;
+}
+.region-comment {
+	position: absolute;
+	bottom: 12px;
+	right: 12px;
+	border-color: var(--gold);
+	line-height: 1.3;
+}
+.region-form {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	padding: 12px 0;
+}
+.region-form label {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	font-size: 12px;
+}
+.region-form input {
+	width: 80px;
+}
+.fullscreen {
+	position: fixed;
+	inset: 12px;
+	background: #031a28;
+	z-index: 60;
+	overflow: auto;
+	padding: 20px;
+	border: 1px solid var(--line);
+	border-radius: 8px;
+}
+.measures {
+	margin-top: 16px;
+	font-size: 12px;
+	color: var(--muted);
+	justify-content: space-between;
+}
+/* What uses an entity and what it uses: two panels, one under the other on an overview. */
+.usage-panels {
+	display: grid;
+	gap: 14px;
+}
+/* Each label stays on one line; buttons wrap within the entity beside an open thread. */
+.entity-tabs button {
+	white-space: nowrap;
+}
+.panel .count {
+	margin-left: 6px;
+	color: var(--muted);
+	font-size: 0.85em;
+	font-weight: 500;
+}
+.panel h3 {
+	margin: 14px 0 0;
+	color: var(--muted);
+	font-size: 13px;
+}
+.relationships {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+	gap: 10px;
+	margin-top: 12px;
+}
+.relationship {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	border: 1px solid var(--line);
+	padding: 12px;
+	border-radius: 6px;
+	font-size: 13px;
+}
+.relationship > div {
+	flex: 1;
+}
+.relationship a {
+	display: block;
+	margin-top: 4px;
+}
+.thread-panel {
+	border-left: 1px solid var(--line);
+	padding: 22px 18px;
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	max-height: calc(100vh - 151px);
+	position: sticky;
+	top: 0;
+	background: #06202e;
+}
+.thread-panel h2 {
+	font-size: 18px;
+}
+.icon-button {
+	font-size: 24px;
+	border: 0;
+	background: transparent;
+	padding: 0 5px;
+}
+.thread-scroll {
+	flex: 1;
+	overflow: auto;
+	min-height: 140px;
+	padding-right: 4px;
+}

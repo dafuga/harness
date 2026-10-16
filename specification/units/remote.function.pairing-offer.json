@@ -1,0 +1,96 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.pairing-offer",
+	"kind": "function",
+	"title": "pairingOffer",
+	"responsibility": "Owns the pairingOffer shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/utils/pairingOffer.ts"],
+		"symbols": [
+			"PairingOffer",
+			"OfferEnvironment",
+			"OfferRefusal",
+			"OfferReading",
+			"OfferRead",
+			"offerRules",
+			"offerEnvironment",
+			"pairingOffer",
+			"readPairingOffer"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "offerEnvironment.origin",
+				"type": "string"
+			},
+			{
+				"name": "pairingOffer.offer",
+				"type": "PairingOffer"
+			},
+			{
+				"name": "readPairingOffer.text",
+				"type": "string"
+			},
+			{
+				"name": "readPairingOffer.reading",
+				"type": "OfferReading"
+			}
+		],
+		"outputs": [
+			{
+				"name": "offerRules",
+				"type": "unknown"
+			},
+			{
+				"name": "offerEnvironment",
+				"type": "OfferEnvironment | null"
+			},
+			{
+				"name": "pairingOffer",
+				"type": "string"
+			},
+			{
+				"name": "readPairingOffer",
+				"type": "OfferRead"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.remote-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.remote-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/pairingOffer.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/pairingOffer.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

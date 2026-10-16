@@ -1,9 +1,9 @@
 {
 	"schemaVersion": 1,
 	"id": "reports.component.harness-harness-console",
-	"kind": "component",
+	"kind": "shell",
 	"title": "HarnessConsole",
-	"responsibility": "Loads the history index on demand and lets the reader move between branches, commits and the console views.",
+	"responsibility": "Hosts the explorer: resolves the address against the history, reads the shown revision and, at a selected commit, its first parent, and gives the bar and the screen its mounter names the scope, the entities and the answers they render.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -32,6 +32,10 @@
 			{
 				"name": "HarnessConsole.exportable",
 				"type": "boolean"
+			},
+			{
+				"name": "HarnessConsole.content",
+				"type": "ExplorerScreen"
 			}
 		],
 		"outputs": [
@@ -44,27 +48,7 @@
 	},
 	"dependencies": [
 		{
-			"unit": "function.console-canonical",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.console-route",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-harness-activity",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-harness-compare",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-harness-growth",
+			"unit": "function.explorer-route",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -74,32 +58,42 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.harness-harness-history",
+			"unit": "reports.function.corrected-location",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.harness-harness-legacy",
+			"unit": "reports.function.entity-lens",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.harness-harness-map",
+			"unit": "reports.function.explorer-behavior",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.harness-harness-selectors",
+			"unit": "reports.function.explorer-entities",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.harness-harness-tabs",
+			"unit": "reports.function.explorer-evidence",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.harness-harness-unit",
+			"unit": "reports.function.explorer-history",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-relations",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-search-entries",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -119,6 +113,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.model.explorer-screen-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.model.harness-types",
 			"via": "import",
 			"origin": "derived"
@@ -134,7 +138,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["harness-console"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.browser-context",
+	"kind": "function",
+	"title": "browserContext",
+	"responsibility": "Owns the browserContext shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/browserContext.ts"],
+		"symbols": ["HostedBrowser", "provideBrowser", "browserContext"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "provideBrowser",
+				"type": "HostedBrowser"
+			},
+			{
+				"name": "browserContext",
+				"type": "HostedBrowser"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.browser-api",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.browser-auth",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.browser-projects",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.store.session",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/browserContext.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/browserContext.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

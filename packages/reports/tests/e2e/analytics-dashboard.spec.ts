@@ -1,92 +1,84 @@
 import { expect, test } from '@playwright/test';
 import { execFileSync } from 'node:child_process';
 import { mkdir } from 'node:fs/promises';
+import { analytics, type Assessments, type Models } from './support/analyticsCli';
+import { sites } from './support/fixtures';
+import { expectRetired } from './support/portableReport';
+
 test.beforeAll(() => {
 	execFileSync('bun', ['db/seed-data/analytics-e2e.ts']);
 });
+/**
+ * The analytics dashboard is gone. Its figures are still answered by the analytics command line
+ * and the live CPU sample by the API; the addresses of the dashboard lead into the explorer.
+ */
 async function capture(page: import('@playwright/test').Page, name: string) {
 	await page.evaluate(async () => {
 		await document.fonts.ready;
 	});
 	if (process.env.TAKE_SCREENSHOT !== 'true') return;
-	if (await page.getByRole('heading', { name: 'Live CPU usage', exact: true }).count()) {
-		await page.waitForFunction(() => !document.body.textContent?.includes('Sampling CPU'));
-	}
 	await mkdir('/tmp/harness-analytics-dashboard', { recursive: true });
 	await page.screenshot({
 		path: `/tmp/harness-analytics-dashboard/${name}-${process.env.SCREENSHOT_LABEL ?? 'test'}.png`,
 		fullPage: true
 	});
-	if (name === 'mobile' && (await page.locator('[data-harness-component="analytics-cpu"]').count()))
-		await page.locator('[data-harness-component="analytics-cpu"]').screenshot({
-			path: `/tmp/harness-analytics-dashboard/mobile-cpu-${process.env.SCREENSHOT_LABEL ?? 'test'}.png`
-		});
 }
-test('history shows known first-try rates, model attribution and working filters', async ({
+type Sample = {
+	status: string;
+	sampledAt: string;
+	machinePercent: number;
+	groups: Array<{ id: string; label: string; machinePercent: number; processes: number }>;
+	agents: unknown[];
+};
+
+test('history has known first-try rates, model attribution and working filters', async ({
 	page
 }) => {
-	await page.goto('/analytics');
+	await expectRetired(page, '/analytics');
 	await capture(page, 'history');
-	await expect(page.getByRole('heading', { name: 'Harness Analytics', exact: true })).toBeVisible();
-	await expect(page.getByTestId('response-first-try')).toContainText('50%');
-	await expect(page.getByTestId('clean-code-first-try')).toContainText('100%');
-	await expect(page.getByText('fixture-author').first()).toBeVisible();
-	await expect(page.getByText('fixture-evaluator').first()).toBeVisible();
-	await expect(page.locator('a[href="/harness/reports/fixture-report"]').first()).toBeVisible();
-	await page.getByLabel('Model', { exact: true }).fill('absent-model');
-	await page.getByRole('button', { name: 'Apply filters' }).click();
-	await expect(page).toHaveURL(/model=absent-model/);
-	await expect(page.getByTestId('response-first-try')).toContainText('No assessments');
-	await page.getByRole('link', { name: 'Reset filters' }).click();
-	await expect(page.getByTestId('response-first-try')).toContainText('50%');
-	await page.getByRole('link', { name: 'Project reports', exact: true }).click();
-	await page.getByRole('link', { name: 'Harness Analytics', exact: true }).click();
-	await expect(page).toHaveURL(/analytics/);
+	const { models } = analytics<Models>('models', '--site', sites.own);
+	const author = models.firstTryByAuthor['fixture-author'];
+	expect(author.response.firstTry.rate).toBe(0.5);
+	expect(author.cleanCode.firstTry.rate).toBe(1);
+	expect(Object.keys(models.authors)).toContain('fixture-author');
+	expect(Object.keys(models.evaluators)).toContain('fixture-evaluator');
+	// The task that passed first is still tied to the report that recorded it.
+	expect(author.response.tasks.find((task) => task.report)?.report).toBe('fixture-report');
+	// A filter that matches nothing leaves no assessment, and no rate is invented for it.
+	const none = analytics<{ jev: Assessments }>('jev', '--model', 'absent-model').jev;
+	expect(none.response.checks).toBe(0);
+	expect(none.response.firstTry.rate).toBeNull();
+	// The address that carried the filter leads into the explorer like any other.
+	await expectRetired(page, '/analytics?model=absent-model');
 });
-test('live CPU shows host, Codex, Harness and agents and refreshes', async ({ page }) => {
-	let samples = 0;
-	await page.route('**/api/analytics-cpu', (route) => {
-		samples++;
-		return route.fulfill({
-			json: {
-				status: 'available',
-				sampledAt: '2026-10-07T13:10:00Z',
-				intervalMs: 1000,
-				logicalCores: 8,
-				machinePercent: 25,
-				trackedPercent: 10,
-				groups: [
-					{ id: 'codex', label: 'Codex app', corePercent: 40, machinePercent: 5, processes: 3 },
-					{ id: 'harness', label: 'Harness', corePercent: 16, machinePercent: 2, processes: 2 },
-					{ id: 'agents', label: 'Local agents', corePercent: 24, machinePercent: 3, processes: 1 }
-				],
-				agents: [{ pid: 42, label: 'Claude', corePercent: 24, machinePercent: 3, processes: 1 }]
-			}
-		});
-	});
-	await page.goto('/analytics');
-	// The missing heading fails here on the old page; the before image still captures that exact state.
-	await capture(page, 'cpu');
-	await expect(page.getByRole('heading', { name: 'Live CPU usage', exact: true })).toBeVisible();
-	await expect(page.getByTestId('cpu-machine')).toContainText('25.0%');
-	await expect(page.getByTestId('cpu-codex')).toContainText('5.0%');
-	await expect(page.getByTestId('cpu-harness')).toContainText('2.0%');
-	await expect(page.getByRole('cell', { name: 'Claude', exact: true })).toBeVisible();
-	await page.getByRole('button', { name: 'Refresh CPU' }).click();
-	await expect.poll(() => samples).toBeGreaterThan(1);
-	await page.unroute('**/api/analytics-cpu');
-	await page.route('**/api/analytics-cpu', (route) =>
-		route.fulfill({ status: 503, json: { status: 'unavailable' } })
-	);
-	await page.getByRole('button', { name: 'Refresh CPU' }).click();
-	await expect(page.getByText('CPU usage unavailable', { exact: true })).toBeVisible();
-	await expect(page.getByTestId('cpu-machine')).toHaveCount(0);
+
+test('the live CPU sample names host, Codex, Harness and agents and is taken anew each time', async ({
+	request
+}) => {
+	const sample = async () => (await (await request.get('/api/analytics-cpu')).json()) as Sample;
+	const first = await sample();
+	expect(first.status).toBe('available');
+	expect(first.groups.map((group) => group.id)).toEqual(['codex', 'harness', 'agents']);
+	for (const group of first.groups) {
+		expect(group.machinePercent).toBeGreaterThanOrEqual(0);
+		expect(group.processes).toBeGreaterThanOrEqual(0);
+	}
+	expect(Array.isArray(first.agents)).toBe(true);
+	// A second request is a second sample, not the first one kept.
+	const second = await sample();
+	expect(Date.parse(second.sampledAt)).toBeGreaterThan(Date.parse(first.sampledAt));
+	// The command line takes the same sample, in the same shape.
+	const local = analytics<Sample>('cpu');
+	expect(local.groups.map((group) => group.id)).toEqual(['codex', 'harness', 'agents']);
 });
-test('dashboard fits a narrow mobile viewport', async ({ page }) => {
+
+test('the page the dashboard address leads to fits a narrow mobile viewport', async ({ page }) => {
 	await page.setViewportSize({ width: 390, height: 844 });
-	await page.goto('/analytics');
+	await expectRetired(page, '/analytics');
 	await capture(page, 'mobile');
-	await expect(page.getByRole('heading', { name: 'Harness Analytics', exact: true })).toBeVisible();
+	await expect(page.getByRole('heading', { name: 'Harness Analytics', exact: true })).toHaveCount(
+		0
+	);
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 });
 
@@ -103,39 +95,31 @@ test('local CPU API returns the real server process sample', async ({ request })
 	);
 });
 
-test('reports hub navigation fits mobile and reaches analytics', async ({ page }) => {
+test('the root fits mobile, has six categories and offers no way to analytics', async ({
+	page
+}) => {
 	await page.setViewportSize({ width: 390, height: 844 });
-	await page.goto('/');
+	await expectRetired(page, '/');
 	await page.evaluate(async () => {
 		await document.fonts.ready;
 	});
-	if (process.env.TAKE_SCREENSHOT === 'true') {
-		await mkdir('/tmp/harness-analytics-dashboard', { recursive: true });
-		await page.locator('.topbar').screenshot({
-			path: `/tmp/harness-analytics-dashboard/hub-mobile-${process.env.SCREENSHOT_LABEL ?? 'test'}.png`
-		});
-	}
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
-	await page.getByRole('link', { name: 'Harness Analytics', exact: true }).click();
-	await expect(page.getByRole('heading', { name: 'Harness Analytics', exact: true })).toBeVisible();
+	const categories = page.getByRole('navigation', { name: 'Harness categories' });
+	await expect(categories.getByRole('link')).toHaveCount(6);
+	await expect(page.getByRole('link', { name: 'Harness Analytics', exact: true })).toHaveCount(0);
+	// The categories are reachable on a phone: one press goes to another collection.
+	await categories.getByRole('link', { name: 'Functions', exact: true }).click();
+	await expect(page).toHaveURL(/\/functions$/);
+	await expect(page.getByRole('heading', { level: 1, name: 'Functions' })).toBeVisible();
 });
 
-test('desktop dashboard shows the overview and live CPU together', async ({ page }) => {
+test('the page the dashboard address leads to fits a desktop and shows no CPU panel', async ({
+	page
+}) => {
 	await page.setViewportSize({ width: 1440, height: 1550 });
-	await page.goto('/analytics');
-	await page.evaluate(async () => {
-		await document.fonts.ready;
-	});
-	if (await page.getByRole('heading', { name: 'Live CPU usage', exact: true }).count())
-		await page.waitForFunction(() => !document.body.textContent?.includes('Sampling CPU'));
-	if (process.env.TAKE_SCREENSHOT === 'true') {
-		await mkdir('/tmp/harness-analytics-dashboard', { recursive: true });
-		const phase = process.env.SCREENSHOT_LABEL ?? 'test';
-		await page.screenshot({ path: `/tmp/harness-analytics-dashboard/desktop-${phase}.png` });
-		await page
-			.locator('[data-harness-component="analytics-models"]')
-			.screenshot({ path: `/tmp/harness-analytics-dashboard/models-${phase}.png` });
-	}
-	await expect(page.getByTestId('cpu-machine')).toBeVisible();
+	await expectRetired(page, '/harness/analytics');
+	await capture(page, 'desktop');
+	await expect(page.getByTestId('cpu-machine')).toHaveCount(0);
+	await expect(page.getByRole('heading', { name: 'Live CPU usage', exact: true })).toHaveCount(0);
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(1440);
 });

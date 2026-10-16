@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.browser-api",
+	"kind": "function",
+	"title": "browserApi",
+	"responsibility": "Owns the browserApi shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/browserApi.ts"],
+		"symbols": ["Query", "BrowserApi", "ApiFailure", "browserApi"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "browserApi.fetcher",
+				"type": "typeof fetch"
+			},
+			{
+				"name": "browserApi.failed",
+				"type": "(failure: ApiFailure) => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "browserApi",
+				"type": "BrowserApi"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.artifact-media",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.hosted-response",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.browser-error",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/browserApi.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/browserApi.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,23 @@
+<script lang="ts">
+	import { getContext } from 'svelte';
+	import type { RemoteHost } from '../lib/stores/remoteHost.svelte';
+	import type { RemotePhone } from '../lib/stores/remotePhone.svelte';
+	import type { Workspace } from '../lib/stores/workspace.svelte';
+	import { remoteContext } from '../models/Environment.types';
+	import RemoteHostPanel from './RemoteHostPanel.svelte';
+	import RemotePhonePanel from './RemotePhonePanel.svelte';
+	let { workspace, compact = false }: { workspace: Workspace; compact?: boolean } = $props();
+	/**
+	 * The environment decides which side this is: a desktop sets up phone access, a phone connects
+	 * to a computer. A host app without either, such as a hosted page, renders nothing here.
+	 */
+	const stores = getContext<{ host: RemoteHost; phone: RemotePhone } | undefined>(remoteContext);
+</script>
+
+{#if stores && workspace.remote.host}<RemoteHostPanel
+		store={stores.host}
+		{compact}
+	/>{:else if stores && workspace.remote.phone}<RemotePhonePanel
+		store={stores.phone}
+		{compact}
+	/>{/if}

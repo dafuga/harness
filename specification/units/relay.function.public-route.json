@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"id": "relay.function.public-route",
+	"kind": "function",
+	"title": "publicRoute",
+	"responsibility": "Owns the publicRoute shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/relay/src/utils/publicRoute.ts"],
+		"symbols": ["publicRoute"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "publicRoute.method",
+				"type": "string"
+			},
+			{
+				"name": "publicRoute.pathname",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "publicRoute",
+				"type": "PublicRoute | undefined"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "relay.function.matches-pattern",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.model.relay-host-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/relay/src/utils/publicRoute.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/relay/src/utils/publicRoute.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

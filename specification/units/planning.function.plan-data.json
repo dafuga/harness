@@ -1,0 +1,97 @@
+{
+	"schemaVersion": 1,
+	"id": "planning.function.plan-data",
+	"kind": "function",
+	"title": "planData",
+	"responsibility": "Owns the planData shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/planning/src/utils/planData.ts"],
+		"symbols": ["planData", "hash", "fail", "json", "now", "parse"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "planData.value",
+				"type": "unknown"
+			},
+			{
+				"name": "hash.value",
+				"type": "string | Uint8Array"
+			},
+			{
+				"name": "fail.code",
+				"type": "PlanningErrorCode"
+			},
+			{
+				"name": "fail.message",
+				"type": "string"
+			},
+			{
+				"name": "json.value",
+				"type": "unknown"
+			},
+			{
+				"name": "parse.value",
+				"type": "Uint8Array"
+			}
+		],
+		"outputs": [
+			{
+				"name": "planData",
+				"type": "string"
+			},
+			{
+				"name": "hash",
+				"type": "unknown"
+			},
+			{
+				"name": "fail",
+				"type": "never"
+			},
+			{
+				"name": "json",
+				"type": "unknown"
+			},
+			{
+				"name": "now",
+				"type": "unknown"
+			},
+			{
+				"name": "parse",
+				"type": "T"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "planning.model.planning-view-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/planning/src/utils/planData.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/planning/src/utils/planData.ts"
+			}
+		]
+	},
+	"scenarios": ["planning-artifacts"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

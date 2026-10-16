@@ -9,14 +9,15 @@ import { join } from 'node:path';
 import { legacyRun } from '../../../test/support/legacyStore';
 import { e2eFixtures } from '../src/utils/e2eFixtures';
 import { seedEmitted } from './harness-emitted-seed';
+import { SeedAttacher } from './harness-seed-attacher';
+import { explorerBranch, explorerUnits, seedExplorer } from './harness-explorer-seed';
 import { writeScaleData } from './harness-scale-data';
+import { seedShells } from './harness-shells-seed';
 import { baselineRepo, reviewer, type VerifyRepo } from '../../../test/support/verifyRepo';
 
 const root = e2eFixtures().console;
 const keptBranch = 'feature/kept#1';
 const tone = { FIXTURE_TRANSCRIPT: 'Synthetic test tone. No speech.' };
-const attach = (repo: VerifyRepo, args: string[] = []) =>
-	repo.harness(['history', 'attach', ...args]);
 const head = (repo: VerifyRepo) => repo.git(['rev-parse', 'HEAD']);
 const explain = (repo: VerifyRepo, behavior: string) =>
 	repo.harness([
@@ -40,16 +41,16 @@ const verified = async (
 	args: string[] = []
 ) => {
 	const outcome = await repo.verify(args, { ...tone, ...env });
-	await attach(repo, ['--record', outcome.record.id]);
+	await attacher.attach(repo.root, { record: outcome.record.id });
 	return outcome;
 };
 
 await rm(root, { recursive: true, force: true });
 await mkdir(root, { recursive: true });
-const repo = await baselineRepo();
-const commits: Record<string, string> = {};
-commits.unbaselined = await repo.git(['rev-parse', 'HEAD~1']);
-await attach(repo, ['--commit', commits.unbaselined]);
+const repo = await baselineRepo(seedExplorer);
+const attacher = await SeedAttacher.open(repo.root);
+const commits: Record<string, string> = { unbaselined: await repo.git(['rev-parse', 'HEAD~1']) };
+await attacher.attach(repo.root, { commit: commits.unbaselined });
 commits.baseline = await head(repo);
 await verified(repo);
 
@@ -198,7 +199,9 @@ await legacyRun(legacy, 'unlinked-run', {
 	state: 'active'
 });
 await repo.harness(['history', 'import-reports', '--from', legacy.store]);
-
+await repo.git(['branch', '-q', explorerBranch, commits.approved]);
+Object.assign(commits, await seedShells(repo, { verified, explain }, commits.approved));
+await attacher.close();
 const refs = await repo.git(['for-each-ref', '--format=%(refname) %(objectname)']);
 await repo.harness(['history', 'build', '--out', join(root, 'data')]);
 await writeScaleData(join(root, 'data'), join(root, 'scale'), {
@@ -207,6 +210,10 @@ await writeScaleData(join(root, 'data'), join(root, 'scale'), {
 });
 await writeFile(
 	join(root, 'meta.json'),
-	JSON.stringify({ repository: repo.root, commits, refs, keptBranch }, null, '\t')
+	JSON.stringify(
+		{ repository: repo.root, commits, refs, keptBranch, explorerBranch, explorerUnits },
+		null,
+		'\t'
+	)
 );
 console.log(`Synthetic history at ${repo.root}; console data in ${join(root, 'data')}`);
