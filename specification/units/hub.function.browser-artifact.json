@@ -2,36 +2,40 @@
 	"schemaVersion": 1,
 	"id": "hub.function.browser-artifact",
 	"kind": "function",
-	"title": "browserArtifact",
-	"responsibility": "Owns the browserArtifact shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Validate browser evidence bytes",
+	"responsibility": "Accept only supported, intact evidence media and explain refused content.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/browserArtifact.ts"],
 		"symbols": ["browserArtifact"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "browserArtifact.media",
-				"type": "{ bytes: Uint8Array; mediaType: string }"
+				"type": "{ bytes: Uint8Array; mediaType: string }",
+				"description": "Bytes and exact declared media type; only the supported evidence media-type list is accepted."
 			},
 			{
 				"name": "browserArtifact.sha256",
-				"type": "string"
+				"type": "string",
+				"description": "Expected SHA-256 of the requested artifact."
 			}
 		],
 		"outputs": [
 			{
 				"name": "browserArtifact",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Validated artifact from the hosted-artifact reader."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects unsupported kinds, mismatched SHA-256, oversized files or failed media validation; size and unsupported-type messages are rewritten for the browser."
 			}
 		]
 	},

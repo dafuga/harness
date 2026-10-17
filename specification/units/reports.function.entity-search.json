@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.entity-search",
 	"kind": "function",
-	"title": "entitySearch",
-	"responsibility": "Finds the entities of one revision whose names, ids, purposes or declared contract names match every word of a query, best matches first.",
+	"title": "Entity text search",
+	"responsibility": "Ranks revision-bound entity search results using names, identifiers, purpose and contract terms.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,25 +11,29 @@
 		"symbols": ["SearchEntry", "entitySearch"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "entitySearch.entries",
-				"type": "SearchEntry[]"
+				"type": "SearchEntry[]",
+				"description": "Searchable entities retaining their category and commit."
 			},
 			{
 				"name": "entitySearch.query",
-				"type": "string"
+				"type": "string",
+				"description": "Whitespace-separated query words, matched case-insensitively. Every word must match an entry."
 			},
 			{
 				"name": "entitySearch.limit",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Maximum returned results, defaulting to 20; applied with array slicing."
 			}
 		],
 		"outputs": [
 			{
 				"name": "entitySearch",
-				"type": "SearchEntry[]"
+				"type": "SearchEntry[]",
+				"description": "Matching entries ranked by exact name/id, name prefix, id-part prefix, name-word prefix, name/id substring, purpose and contract-term matches. Ties use category order then name. Blank queries return no results."
 			}
 		],
 		"errors": []

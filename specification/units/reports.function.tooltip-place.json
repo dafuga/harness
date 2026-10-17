@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.tooltip-place",
 	"kind": "function",
-	"title": "tooltipPlace",
-	"responsibility": "Works out where a tooltip goes on the screen: under its mark and centred on it, kept wholly on the screen, above the mark when only there it has room, and cut to the larger side when neither has.",
+	"title": "Tooltip placement",
+	"responsibility": "Chooses a tooltip position and optional height based on its anchor and available viewport room.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,25 +11,29 @@
 		"symbols": ["TooltipMark", "TooltipSize", "tooltipPlace"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "tooltipPlace.mark",
-				"type": "TooltipMark"
+				"type": "TooltipMark",
+				"description": "Anchor rectangle in viewport coordinates."
 			},
 			{
 				"name": "tooltipPlace.tip",
-				"type": "TooltipSize"
+				"type": "TooltipSize",
+				"description": "Tooltip width and height."
 			},
 			{
 				"name": "tooltipPlace.view",
-				"type": "TooltipSize"
+				"type": "TooltipSize",
+				"description": "Viewport width and height."
 			}
 		],
 		"outputs": [
 			{
 				"name": "tooltipPlace",
-				"type": "{ left: number; top: number; height?: number }"
+				"type": "{ left: number; top: number; height?: number }",
+				"description": "Centered horizontal position constrained toward eight-pixel margins. Prefers below when it fits, otherwise above; when neither fits, uses the roomier side and supplies its available height for scrolling."
 			}
 		],
 		"errors": []

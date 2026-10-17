@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.revision-changes",
 	"kind": "function",
-	"title": "revisionChanges",
-	"responsibility": "Says which units a commit changed against its first parent, from the stored source impact and the registry versions of both revisions.",
+	"title": "Direct revision changes",
+	"responsibility": "Combines recorded impact with registry-version differences to identify what a commit itself changed.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -17,17 +17,19 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "revisionChanges.input",
-				"type": "ChangesInput"
+				"type": "ChangesInput",
+				"description": "Stored impact or null, current registry, optional parent registry and fallback parent commit. Registry comparison requires both registries to be available."
 			}
 		],
 		"outputs": [
 			{
 				"name": "revisionChanges",
-				"type": "RevisionChanges | null"
+				"type": "RevisionChanges | null",
+				"description": "Sorted direct, added and removed unit ids with the parent commit, or null when neither impact nor comparable registries exist. Indirect dependents are excluded; added/removed ids are removed from direct."
 			}
 		],
 		"errors": []

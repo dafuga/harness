@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.harness-impact",
 	"kind": "function",
-	"title": "harnessImpact",
-	"responsibility": "Derives what changed between two revisions, from a record when one compared them and from the registries otherwise.",
+	"title": "Revision impact selection",
+	"responsibility": "Chooses recorded or source-derived impact and falls back to active-registry dependency comparison.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,41 +11,49 @@
 		"symbols": ["HarnessImpact", "harnessImpact", "ComparedSides", "comparedSides"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "harnessImpact.base",
-				"type": "HarnessRevision | undefined"
+				"type": "HarnessRevision | undefined",
+				"description": "Earlier revision, or undefined when no base is selected."
 			},
 			{
 				"name": "harnessImpact.head",
-				"type": "HarnessRevision"
+				"type": "HarnessRevision",
+				"description": "Later revision containing recorded comparison and source impact."
 			},
 			{
 				"name": "harnessImpact.compared",
-				"type": "ComparedSides | null"
+				"type": "ComparedSides | null",
+				"description": "Optional precomputed source-side comparison, used only when its commit pair matches."
 			},
 			{
 				"name": "comparedSides.client",
-				"type": "HarnessClient"
+				"type": "HarnessClient",
+				"description": "Client able to load stored source sides."
 			},
 			{
 				"name": "comparedSides.base",
-				"type": "HarnessRevision"
+				"type": "HarnessRevision",
+				"description": "Earlier revision naming its stored side."
 			},
 			{
 				"name": "comparedSides.head",
-				"type": "HarnessRevision"
+				"type": "HarnessRevision",
+				"description": "Later revision naming its stored side."
 			}
 		],
 		"outputs": [
 			{
 				"name": "harnessImpact",
-				"type": "HarnessImpact"
+				"type": "HarnessImpact",
+				"description": "Impact groups, scenarios, uncertainty and marks. Prefers a record comparing the exact base, then matching source impact, then version changes and transitive consumers across both active registries. Marks prioritize removed over added, direct and indirect."
 			},
 			{
 				"name": "comparedSides",
-				"type": "Promise<ComparedSides | undefined>"
+				"type": "Promise<ComparedSides | undefined>",
+				"description": "Loads both stored sides and delegates their comparison, returning the commit pair and impact; undefined if either side reference is absent."
 			}
 		],
 		"errors": []

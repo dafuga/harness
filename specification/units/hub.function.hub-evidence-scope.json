@@ -2,9 +2,9 @@
 	"schemaVersion": 1,
 	"id": "hub.function.hub-evidence-scope",
 	"kind": "function",
-	"title": "hubEvidenceScope",
-	"responsibility": "Owns the hubEvidenceScope shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Pin and scope hosted evidence",
+	"responsibility": "Bind authorized evidence reads to a project, branch and immutable notes/evidence revisions.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/hubEvidenceScope.ts"],
@@ -20,66 +20,77 @@
 		"inputs": [
 			{
 				"name": "hubEvidenceContext.deps",
-				"type": "HubEvidenceDependencies"
+				"type": "HubEvidenceDependencies",
+				"description": "Collaboration API, source adapter and cache."
 			},
 			{
 				"name": "hubEvidenceContext.actor",
-				"type": "Actor"
+				"type": "Actor",
+				"description": "Authenticated actor whose project access is checked."
 			},
 			{
 				"name": "hubEvidenceContext.query",
-				"type": "EntityEvidenceQuery"
+				"type": "EntityEvidenceQuery",
+				"description": "Project, entity, branch, commit and current-or-commit viewing mode."
 			},
 			{
 				"name": "hubEvidencePins.base",
-				"type": "HubSourceContext"
+				"type": "HubSourceContext",
+				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubEvidencePins.query",
-				"type": "Pick<EvidenceArtifactQuery, 'notesRevision' | 'evidenceRevision'>"
+				"type": "Pick<EvidenceArtifactQuery, 'notesRevision' | 'evidenceRevision'>",
+				"description": "Requested notes and evidence revisions, each nullable."
 			},
 			{
 				"name": "hubEvidenceScope.base",
-				"type": "HubSourceContext"
+				"type": "HubSourceContext",
+				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubEvidenceScope.query",
-				"type": "EntityEvidenceQuery"
+				"type": "EntityEvidenceQuery",
+				"description": "Entity, branch, commit and viewing mode."
 			},
 			{
 				"name": "hubEvidenceScope.tip",
-				"type": "string"
+				"type": "string",
+				"description": "Known branch tip commit."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubEvidenceContext",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Authorized source context, branch tip and repository; current-mode requests require the selected commit to remain the tip."
 			},
 			{
 				"name": "hubEvidencePins",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns nothing after accepting identical pins or reachable older revisions and replacing the context’s notes/evidence identity with the requested pins."
 			},
 			{
 				"name": "hubEvidenceScope",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Explorer scope, head and optional first-parent revision detail, plus pinned history service. Historical commits must be reachable from the branch tip."
 			}
 		],
 		"errors": [
 			{
 				"name": "forbidden",
 				"type": "refused",
-				"description": "No project is named."
+				"description": "Project ID is missing; project-access failures can also propagate."
 			},
 			{
 				"name": "evidence-stale",
 				"type": "refused",
-				"description": "Current mode without the branch tip, or a pinned revision its ref never held."
+				"description": "Current branch tip moved, or requested notes/evidence pins cannot be justified from the current pins."
 			},
 			{
 				"name": "evidence-unreadable",
 				"type": "refused",
-				"description": "Unknown branch, commit off the branch, or unregistered entity."
+				"description": "Branch, commit facts, reachability or entity registration cannot support the requested evidence view."
 			}
 		]
 	},

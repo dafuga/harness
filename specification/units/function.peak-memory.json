@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.peak-memory",
 	"kind": "function",
-	"title": "peakMemory",
-	"responsibility": "Measures the peak resident memory of one process run where the system allows it.",
+	"title": "Process peak memory",
+	"responsibility": "Runs a command under the system time utility and extracts its peak resident memory when available.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,25 +11,29 @@
 		"symbols": ["PeakMemory", "peakMemory"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "peakMemory.command",
-				"type": "string"
+				"type": "string",
+				"description": "Executable to run under /usr/bin/time."
 			},
 			{
 				"name": "peakMemory.args",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Arguments passed to that executable."
 			},
 			{
 				"name": "peakMemory.input",
-				"type": "string"
+				"type": "string",
+				"description": "Text sent to the process standard input."
 			}
 		],
 		"outputs": [
 			{
 				"name": "peakMemory",
-				"type": "PeakMemory"
+				"type": "PeakMemory",
+				"description": "Peak resident bytes from a successful BSD/GNU time report, converting GNU kilobytes by 1024; otherwise an unavailable explanation. Execution is synchronous and the command actually runs."
 			}
 		],
 		"errors": []

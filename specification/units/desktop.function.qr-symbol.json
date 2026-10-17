@@ -2,36 +2,40 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.qr-symbol",
 	"kind": "function",
-	"title": "qrSymbol",
-	"responsibility": "Owns the qrSymbol shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Build a bounded QR symbol",
+	"responsibility": "Encodes short printable ASCII text as QR modules and a drawing path.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/qrSymbol.ts"],
 		"symbols": ["QrSymbol", "qrLimits", "qrSymbol"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "qrSymbol.text",
-				"type": "string"
+				"type": "string",
+				"description": "Nonempty text of at most 320 characters using printable ASCII from ! through ~; spaces, control characters and non-ASCII text are refused."
 			}
 		],
 		"outputs": [
 			{
 				"name": "qrLimits",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Limits of 320 input bytes, four quiet modules around the symbol, at most 77 modules per side and error-correction level M."
 			},
 			{
 				"name": "qrSymbol",
-				"type": "QrSymbol"
+				"type": "QrSymbol",
+				"description": "The module count per side, quiet-margin size and SVG-style path of dark horizontal runs offset by the margin. The caller draws the symbol; no image file is written."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Throws when text fails the allowed character/length checks or the generated symbol exceeds 77 modules. QR-library failures can also propagate."
 			}
 		]
 	},

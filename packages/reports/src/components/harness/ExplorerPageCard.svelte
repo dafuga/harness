@@ -3,7 +3,6 @@
 	import type { CatalogRow } from '../../utils/entityCatalog';
 	import { entityLens, type EntityNav } from '../../utils/entityLens';
 	import EntityLink from './EntityLink.svelte';
-	import HarnessAction from './HarnessAction.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
 	import HarnessVerdict from './HarnessVerdict.svelte';
 	let {
@@ -52,8 +51,18 @@
 			<HarnessIcon name="tests" size={22} />
 			<HarnessVerdict {...row.verdict} framed />
 		</p>
-		<HarnessAction href={nav.href(to)} onclick={() => nav.go(to)} icon="arrow-right"
-			>Open page</HarnessAction
-		>
+		<EntityLink {to} {nav} class="hx-action gold ex-open-page" label="Open page" title="Open page">
+			<HarnessIcon name="arrow-right" size={18} />
+		</EntityLink>
 	</div>
 </article>
+
+<style>
+	.ex-page-body > :global(.ex-open-page) {
+		justify-self: end;
+		width: 36px;
+		height: 36px;
+		min-height: 36px;
+		padding: 8px;
+	}
+</style>

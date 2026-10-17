@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.report-destination",
 	"kind": "function",
-	"title": "reportDestination",
-	"responsibility": "Says where in the explorer an earlier report address leads: Pages at the commit the report names when this history holds it, else Pages at the branch tip.",
+	"title": "Legacy report destination",
+	"responsibility": "Routes an older report link to its stored revision or the explorer home.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,21 +11,24 @@
 		"symbols": ["NamedReport", "reportDestination"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "reportDestination.index",
-				"type": "HarnessIndex | null"
+				"type": "HarnessIndex | null",
+				"description": "History index or null."
 			},
 			{
 				"name": "reportDestination.report",
-				"type": "NamedReport | null"
+				"type": "NamedReport | null",
+				"description": "Report identifier and optional recorded revision, or null."
 			}
 		],
 		"outputs": [
 			{
 				"name": "reportDestination",
-				"type": "string"
+				"type": "string",
+				"description": "Console-relative Pages address for the first stored match among the report revision and imported legacy linkage; otherwise canonical home. Empty when there is no index or home."
 			}
 		],
 		"errors": []

@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.console-data-modules",
 	"kind": "function",
-	"title": "consoleDataModules",
-	"responsibility": "Turns the files of a history index into server-only modules a bundler can load on demand.",
+	"title": "Console data module generation",
+	"responsibility": "Turns recognized history-index files into server module text and estimates the resulting bundled size.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,25 +11,29 @@
 		"symbols": ["IndexFile", "consoleDataModules", "BundledSize", "bundledSize"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "consoleDataModules.files",
-				"type": "IndexFile[]"
+				"type": "IndexFile[]",
+				"description": "History-index files with relative paths and bytes. Recognized JSON records and hash-named media are converted; unrelated paths are ignored."
 			},
 			{
 				"name": "bundledSize.modules",
-				"type": "HostFile[]"
+				"type": "HostFile[]",
+				"description": "Generated host files whose text sizes and individually gzipped sizes should be summed."
 			}
 		],
 		"outputs": [
 			{
 				"name": "consoleDataModules",
-				"type": "HostFile[]"
+				"type": "HostFile[]",
+				"description": "Host file entries under src/lib/server/harness/data: JSON default-exports its text; media default-exports base64 and exports its extension-derived MIME type. This function does not write files."
 			},
 			{
 				"name": "bundledSize",
-				"type": "BundledSize | null"
+				"type": "BundledSize | null",
+				"description": "File count, total contents string length and sum of gzipped byte lengths, or null for an empty list."
 			}
 		],
 		"errors": []

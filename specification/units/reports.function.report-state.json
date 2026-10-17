@@ -2,48 +2,55 @@
 	"schemaVersion": 1,
 	"id": "reports.function.report-state",
 	"kind": "function",
-	"title": "reportState",
-	"responsibility": "Owns the reportState shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Report initialization and outcome",
+	"responsibility": "Creates an active report and derives an outcome from its recorded items.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/utils/reportState.ts"],
 		"symbols": ["reportState", "resultStatus", "interrupted"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "reportState.input",
-				"type": "BeginInput"
+				"type": "BeginInput",
+				"description": "Project, title and feature/suite mode, with optional environment, revision, historical flag, summary and acceptance."
 			},
 			{
 				"name": "resultStatus.report",
-				"type": "Report"
+				"type": "Report",
+				"description": "Report whose checks, findings, coverage and evidence determine the result."
 			},
 			{
 				"name": "interrupted.report",
-				"type": "Report"
+				"type": "Report",
+				"description": "Report whose unfinished inactivity should be detected."
 			}
 		],
 		"outputs": [
 			{
 				"name": "reportState",
-				"type": "Report"
+				"type": "Report",
+				"description": "Sanitized new report with UUID, project identity derived from the resolved path, matching creation/update timestamps, running/active state and empty result arrays. Environment defaults to local, summary to empty and acceptance to an empty array."
 			},
 			{
 				"name": "resultStatus",
-				"type": "Status"
+				"type": "Status",
+				"description": "Failed if any item failed; otherwise blocked if any item is blocked, not-proven, interrupted or running. With no checks returns not-proven; all skipped checks return skipped; otherwise passed."
 			},
 			{
 				"name": "interrupted",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "True for a nonfinalized report whose last update was more than fifteen minutes ago, using the current clock."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Throws when project or title is falsy, or mode is neither feature nor suite."
 			}
 		]
 	},

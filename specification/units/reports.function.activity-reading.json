@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.activity-reading",
 	"kind": "function",
-	"title": "activityReading",
-	"responsibility": "Says what a reading of the roster still tells at a given moment: who counts as working, and when nobody can be said to be.",
+	"title": "Activity freshness",
+	"responsibility": "Determines which registered agents a sampled roster can still describe as working.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,29 +11,34 @@
 		"symbols": ["readingAge", "ActivityReading", "activityReading"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "activityReading.agents",
-				"type": "AgentRoster"
+				"type": "AgentRoster",
+				"description": "Roster and its reported working count."
 			},
 			{
 				"name": "activityReading.sampledAt",
-				"type": "string"
+				"type": "string",
+				"description": "Time the roster was sampled."
 			},
 			{
 				"name": "activityReading.now",
-				"type": "number"
+				"type": "number",
+				"description": "Current time in milliseconds since the epoch."
 			}
 		],
 		"outputs": [
 			{
 				"name": "readingAge",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Freshness allowance of 60,000 milliseconds."
 			},
 			{
 				"name": "activityReading",
-				"type": "ActivityReading"
+				"type": "ActivityReading",
+				"description": "Returns whether the reading is at most one minute old, a working count reduced by expired working entries or null when unknown/old, and a labeling function. Finished states retain their labels; old working observations become Not confirmed and individually expired ones become Stale."
 			}
 		],
 		"errors": []

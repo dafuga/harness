@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.history-refs",
 	"kind": "function",
-	"title": "historyRefs",
-	"responsibility": "Names the Git refs that Harness history uses and tells source branches from evidence, notes and archived source.",
+	"title": "History reference classification",
+	"responsibility": "Names evidence and archive references and distinguishes source branches from history and internal refs.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,29 +11,34 @@
 		"symbols": ["RefKind", "sourceArchiveRef", "refKind", "historyRefs"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "sourceArchiveRef.commit",
-				"type": "string"
+				"type": "string",
+				"description": "Tested commit id to append to the source archive prefix; shape is not validated here."
 			},
 			{
 				"name": "refKind.ref",
-				"type": "string"
+				"type": "string",
+				"description": "Full Git reference name to classify by exact evidence/notes names and known prefixes."
 			}
 		],
 		"outputs": [
 			{
 				"name": "sourceArchiveRef",
-				"type": "string"
+				"type": "string",
+				"description": "Reference refs/harness/source/ followed by the supplied commit."
 			},
 			{
 				"name": "refKind",
-				"type": "RefKind"
+				"type": "RefKind",
+				"description": "Source, evidence, notes, archive, internal, tag, remote or other classification. Evidence is recognized before the general branch prefix."
 			},
 			{
 				"name": "historyRefs",
-				"type": "{ evidence: string; notes: string; archives: string }"
+				"type": "{ evidence: string; notes: string; archives: string }",
+				"description": "Evidence and notes refs plus the source archive wildcard used to select Harness history."
 			}
 		],
 		"errors": []

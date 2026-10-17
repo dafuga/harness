@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.harness-page",
 	"kind": "function",
-	"title": "harnessPage",
-	"responsibility": "Decides what a console path shows in a history: an explorer page bound to a branch tip or a selected commit, a redirect to one, or nothing.",
+	"title": "Explorer page resolution",
+	"responsibility": "Resolves console paths into canonical redirects, revision-scoped pages or explicit missing results.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,33 +11,39 @@
 		"symbols": ["HarnessPage", "homePath", "harnessPage"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "homePath.index",
-				"type": "HarnessIndex"
+				"type": "HarnessIndex",
+				"description": "History index used to find the canonical home."
 			},
 			{
 				"name": "harnessPage.index",
-				"type": "HarnessIndex"
+				"type": "HarnessIndex",
+				"description": "History index used for canonicalization and scope resolution."
 			},
 			{
 				"name": "harnessPage.path",
-				"type": "string"
+				"type": "string",
+				"description": "Console-relative path."
 			},
 			{
 				"name": "harnessPage.search",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Optional query string, defaulting to empty."
 			}
 		],
 		"outputs": [
 			{
 				"name": "homePath",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "Canonical home route or null when no home can be resolved."
 			},
 			{
 				"name": "harnessPage",
-				"type": "HarnessPage"
+				"type": "HarnessPage",
+				"description": "Redirect for a canonical alternative; page with validated scope for a stored branch/commit; otherwise missing message and optional home link. Root with no history and invalid explorer addresses remain missing."
 			}
 		],
 		"errors": []

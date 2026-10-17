@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.snapshot-additions",
 	"kind": "function",
-	"title": "snapshotAdditions",
-	"responsibility": "Lists files in a verification snapshot that the commit does not contain and no declared output covers.",
+	"title": "Undeclared snapshot files",
+	"responsibility": "Finds files created outside tracked source, declared outputs and shared links in a verification snapshot.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,37 +11,44 @@
 		"symbols": ["SnapshotBounds", "declaredOutput", "snapshotAdditions"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "declaredOutput.path",
-				"type": "string"
+				"type": "string",
+				"description": "Snapshot-relative file or directory path to test against output patterns."
 			},
 			{
 				"name": "declaredOutput.outputs",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Declared output glob patterns."
 			},
 			{
 				"name": "snapshotAdditions.directory",
-				"type": "string"
+				"type": "string",
+				"description": "Snapshot root directory to walk recursively."
 			},
 			{
 				"name": "snapshotAdditions.bounds",
-				"type": "SnapshotBounds"
+				"type": "SnapshotBounds",
+				"description": "Tracked paths, declared output patterns and shared-link paths that are allowed."
 			},
 			{
 				"name": "snapshotAdditions.prefix",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Optional relative subtree prefix ending in slash when nonempty; defaults to empty."
 			}
 		],
 		"outputs": [
 			{
 				"name": "declaredOutput",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when a pattern matches the path or its directory form with a trailing slash."
 			},
 			{
 				"name": "snapshotAdditions",
-				"type": "Promise<string[]>"
+				"type": "Promise<string[]>",
+				"description": "Sorted paths of untracked non-directory entries outside allowed outputs/links. Allowed directories are not entered; filesystem errors reject."
 			}
 		],
 		"errors": []

@@ -2,50 +2,58 @@
 	"schemaVersion": 1,
 	"id": "function.case",
 	"kind": "function",
-	"title": "case",
-	"responsibility": "Owns the case shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Code name casing",
+	"responsibility": "Converts names into kebab, Pascal, camel or snake case using the same word boundaries.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/core/case.ts"],
 		"symbols": ["toKebabCase", "toPascalCase", "toCamelCase", "toSnakeCase"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "toKebabCase.value",
-				"type": "string"
+				"type": "string",
+				"description": "Text to split at lowercase-or-digit to uppercase transitions and non-alphanumeric separators."
 			},
 			{
 				"name": "toPascalCase.value",
-				"type": "string"
+				"type": "string",
+				"description": "Text to split into normalized lowercase words before capitalizing each word."
 			},
 			{
 				"name": "toCamelCase.value",
-				"type": "string"
+				"type": "string",
+				"description": "Text to split into words before building Pascal case and lowering its first character."
 			},
 			{
 				"name": "toSnakeCase.value",
-				"type": "string"
+				"type": "string",
+				"description": "Text to split at case transitions and non-alphanumeric separators."
 			}
 		],
 		"outputs": [
 			{
 				"name": "toKebabCase",
-				"type": "string"
+				"type": "string",
+				"description": "Lowercase words joined by hyphens; empty or separator-only input becomes an empty string."
 			},
 			{
 				"name": "toPascalCase",
-				"type": "string"
+				"type": "string",
+				"description": "Words joined with each first letter capitalized; empty input becomes an empty string."
 			},
 			{
 				"name": "toCamelCase",
-				"type": "string"
+				"type": "string",
+				"description": "Joined words with a lowercase first character and capitalized later word initials."
 			},
 			{
 				"name": "toSnakeCase",
-				"type": "string"
+				"type": "string",
+				"description": "Lowercase words joined by underscores; empty or separator-only input becomes an empty string."
 			}
 		],
 		"errors": []

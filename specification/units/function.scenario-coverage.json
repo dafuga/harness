@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.scenario-coverage",
 	"kind": "function",
-	"title": "scenarioCoverage",
-	"responsibility": "Judges gathered captures against a scenario contract: completeness, validity and freshness.",
+	"title": "Scenario evidence coverage",
+	"responsibility": "Judges gathered captures against required states, media validity and the verified revision/build identity.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,17 +11,19 @@
 		"symbols": ["CoverageInput", "CoverageResult", "scenarioCoverage"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "scenarioCoverage.input",
-				"type": "CoverageInput"
+				"type": "CoverageInput",
+				"description": "Scenario contract, exact verified commit, gathered captures, whether the producing check failed, and optionally declared/compiled build identities."
 			}
 		],
 		"outputs": [
 			{
 				"name": "scenarioCoverage",
-				"type": "CoverageResult"
+				"type": "CoverageResult",
+				"description": "Scenario states with capture statuses plus prefixed failure messages for missing/unproven requirements or invalid evidence. Screenshots require valid dimensions and revision/build provenance; audio requires valid duration/transcript and stated provenance; benchmarks must match their schema."
 			}
 		],
 		"errors": []

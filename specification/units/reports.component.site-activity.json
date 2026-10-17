@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.site-activity",
 	"kind": "component",
-	"title": "SiteActivity",
-	"responsibility": "Keeps the activity of the hosting site current on an open page: it reads again and lets time pass over what it last read.",
+	"title": "Live site activity",
+	"responsibility": "Keeps a supplied project activity snapshot visible while refreshing its live observations.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,17 +11,19 @@
 		"symbols": ["SiteActivity"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "SiteActivity.shown",
-				"type": "Shown"
+				"type": "Shown",
+				"description": "Required initial recorded and live activity snapshot. Remains visible until a newer read arrives."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SiteActivity",
-				"type": "markup"
+				"type": "markup",
+				"description": "Project activity for the most recent successful read, with reading age, failure state and refresh control. On mount starts the activity client and a five-second age clock; on destruction stops both. A failed refresh retains prior data and marks the read as failed."
 			}
 		],
 		"errors": []

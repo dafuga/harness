@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "function.cpu-processes",
 	"kind": "function",
-	"title": "cpuProcesses",
-	"responsibility": "Owns the cpuProcesses shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Process CPU parsing",
+	"responsibility": "Parses process-list rows into CPU totals and recognized application roles without returning command arguments.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/cpuProcesses.ts"],
 		"symbols": ["CpuRole", "CpuProcess", "cpuProcesses"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "cpuProcesses.value",
-				"type": "string"
+				"type": "string",
+				"description": "Process-list text whose rows contain pid, parent pid, cumulative CPU time and command. Malformed rows are skipped; time may include a day prefix and fractional seconds."
 			},
 			{
 				"name": "cpuProcesses.monitorPid",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Pid to classify as Harness regardless of its command; defaults to the current process id."
 			}
 		],
 		"outputs": [
 			{
 				"name": "cpuProcesses",
-				"type": "CpuProcess[]"
+				"type": "CpuProcess[]",
+				"description": "Parsed processes with numeric pids and CPU milliseconds, plus an optional Codex, Harness or agent role and safe label. Command strings are used only for classification and are not returned."
 			}
 		],
 		"errors": []

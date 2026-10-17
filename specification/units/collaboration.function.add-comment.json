@@ -2,40 +2,45 @@
 	"schemaVersion": 1,
 	"id": "collaboration.function.add-comment",
 	"kind": "function",
-	"title": "addComment",
-	"responsibility": "Owns the addComment shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Add a project comment",
+	"responsibility": "Authorize and validate a comment, then append it once per project request ID.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/collaboration/src/utils/addComment.ts"],
 		"symbols": ["addComment"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "addComment.deps",
-				"type": "CollaborationDependencies"
+				"type": "CollaborationDependencies",
+				"description": "Repository, source-anchor validator and optional clock used by the transaction."
 			},
 			{
 				"name": "addComment.actor",
-				"type": "Actor"
+				"type": "Actor",
+				"description": "Verified actor who must be an owner or commenter of the project."
 			},
 			{
 				"name": "addComment.input",
-				"type": "AddCommentInput"
+				"type": "AddCommentInput",
+				"description": "Project and request UUIDs, optional thread UUID, source anchor and trimmed comment text of 1–20,000 characters."
 			}
 		],
 		"outputs": [
 			{
 				"name": "addComment",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Promise of the updated thread and committed collaboration revision; an identical repeated request returns its existing thread."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects invalid input, denied membership, invalid source anchors, missing threads, conflicting request or anchor reuse, and exhausted write retries."
 			}
 		]
 	},

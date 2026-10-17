@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-harness-growth",
 	"kind": "component",
-	"title": "HarnessGrowth",
-	"responsibility": "Shows when one component grew, the commit and reason behind it, and its timings kept apart by context.",
+	"title": "Unit measurement history",
+	"responsibility": "Displays recorded source, build-output and timing changes for a selected unit.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,12 +11,39 @@
 		"symbols": ["HarnessGrowth"]
 	},
 	"contract": {
-		"origin": "derived",
-		"inputs": [],
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HarnessGrowth.index",
+				"type": "HarnessIndex",
+				"description": "Required repository measurements, unit choices, revisions and benchmark profiles used to build the history."
+			},
+			{
+				"name": "HarnessGrowth.client",
+				"type": "HarnessClient",
+				"description": "Required client used to read recorded explanations for revisions where source or emitted measurements changed. Those asynchronous reads have no local failure handler."
+			},
+			{
+				"name": "HarnessGrowth.unit",
+				"type": "string | null",
+				"description": "Required selected unit identifier or null. Null selects the first indexed unit, or an empty identifier when there are no units."
+			},
+			{
+				"name": "HarnessGrowth.onunit",
+				"type": "(id: string) => void",
+				"description": "Required callback receiving the unit chosen in the selector."
+			},
+			{
+				"name": "HarnessGrowth.oncompare",
+				"type": "(commit: string) => void",
+				"description": "Optional callback for opening before-and-after evidence at a changed commit. Defaults to doing nothing."
+			}
+		],
 		"outputs": [
 			{
 				"name": "HarnessGrowth",
-				"type": "markup"
+				"type": "markup",
+				"description": "Source size, complexity and dependency history, recorded explanations, build-target size history and timings grouped by compatible profile. Missing measurements stay unavailable. Uses the selected unit or the first indexed unit and fetches revision explanations for changed rows."
 			}
 		],
 		"errors": []

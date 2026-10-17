@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-harness-activity",
 	"kind": "component",
-	"title": "HarnessActivity",
-	"responsibility": "Shows in the console the activity recorded with the history it was built from.",
+	"title": "Recorded project activity",
+	"responsibility": "Loads and displays the activity captured when a repository history was built.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,21 +11,24 @@
 		"symbols": ["HarnessActivity"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HarnessActivity.client",
-				"type": "HarnessClient"
+				"type": "HarnessClient",
+				"description": "Required history client whose activity operation supplies the stored snapshot."
 			},
 			{
 				"name": "HarnessActivity.base",
-				"type": "string"
+				"type": "string",
+				"description": "Required base passed to activity commit links."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HarnessActivity",
-				"type": "markup"
+				"type": "markup",
+				"description": "Loading message, recorded activity with as-of commit and explicit nonlive notice, or missing-record/rebuild guidance when reading fails. Never calls recorded activity live."
 			}
 		],
 		"errors": []

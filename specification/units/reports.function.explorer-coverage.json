@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.explorer-coverage",
 	"kind": "function",
-	"title": "explorerCoverage",
-	"responsibility": "Judges one scenario that covers a unit against a record: its tests, its result and lineage, and every declared state, as typed standings.",
+	"title": "Scenario coverage evaluation",
+	"responsibility": "Judges declared scenario coverage against a selected record and recorded change impact.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,45 +11,54 @@
 		"symbols": ["coverageAffected", "explorerCoverage"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "coverageAffected.detail",
-				"type": "HarnessRevision"
+				"type": "HarnessRevision",
+				"description": "Revision with record-specific comparison and first-parent source impact."
 			},
 			{
 				"name": "coverageAffected.record",
-				"type": "HarnessRecord"
+				"type": "HarnessRecord",
+				"description": "Record whose applicable impact should be inspected."
 			},
 			{
 				"name": "coverageAffected.unit",
-				"type": "string"
+				"type": "string",
+				"description": "Unit identifier to look for in direct, indirect or added impact."
 			},
 			{
 				"name": "explorerCoverage.detail",
-				"type": "HarnessRevision"
+				"type": "HarnessRevision",
+				"description": "Revision supplying registry units and comparison evidence."
 			},
 			{
 				"name": "explorerCoverage.record",
-				"type": "HarnessRecord | null"
+				"type": "HarnessRecord | null",
+				"description": "Selected record, or null for absent evidence."
 			},
 			{
 				"name": "explorerCoverage.unit",
-				"type": "string"
+				"type": "string",
+				"description": "Unit whose applicable scenario states should be judged."
 			},
 			{
 				"name": "explorerCoverage.absent",
-				"type": "Told"
+				"type": "Told",
+				"description": "Optional absent-record standing and reason, defaulting to missing with no verification record attached."
 			}
 		],
 		"outputs": [
 			{
 				"name": "coverageAffected",
-				"type": "boolean | null"
+				"type": "boolean | null",
+				"description": "True when applicable impact includes the unit, false when that impact exists and excludes it, or null when no applicable impact is recorded. Prefers comparison for this record, otherwise source impact with the record’s base."
 			},
 			{
 				"name": "explorerCoverage",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns a scenario-evaluation function. It narrows states to the unit, checks declarations, test outcomes, result lineage and required captures, then returns tests, state details, inheritance and worst standing. Inherited results require a bound origin and recorded proof that the unit was unaffected; missing origin test evidence stays incomplete."
 			}
 		],
 		"errors": []

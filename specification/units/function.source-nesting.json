@@ -2,70 +2,83 @@
 	"schemaVersion": 1,
 	"id": "function.source-nesting",
 	"kind": "function",
-	"title": "sourceNesting",
-	"responsibility": "Owns the sourceNesting shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Masked source boundaries",
+	"responsibility": "Tracks bracket depths and finds approximate statement and function-body bounds in masked source.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/sourceNesting.ts"],
 		"symbols": ["SourceNesting", "sourceNesting", "matchingBrace", "statementEnd", "bodyEnd"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "sourceNesting.masked",
-				"type": "string"
+				"type": "string",
+				"description": "Masked source whose literal/comment contents no longer contribute brackets."
 			},
 			{
 				"name": "matchingBrace.nesting",
-				"type": "SourceNesting"
+				"type": "SourceNesting",
+				"description": "Depth arrays previously computed from the same masked source."
 			},
 			{
 				"name": "matchingBrace.open",
-				"type": "number"
+				"type": "number",
+				"description": "Offset of an opening curly brace."
 			},
 			{
 				"name": "statementEnd.masked",
-				"type": "string"
+				"type": "string",
+				"description": "Masked source containing the statement."
 			},
 			{
 				"name": "statementEnd.nesting",
-				"type": "SourceNesting"
+				"type": "SourceNesting",
+				"description": "Matching depth arrays for the source."
 			},
 			{
 				"name": "statementEnd.start",
-				"type": "number"
+				"type": "number",
+				"description": "Offset at which statement scanning begins."
 			},
 			{
 				"name": "bodyEnd.masked",
-				"type": "string"
+				"type": "string",
+				"description": "Masked source containing a signature and possible body."
 			},
 			{
 				"name": "bodyEnd.nesting",
-				"type": "SourceNesting"
+				"type": "SourceNesting",
+				"description": "Matching depth arrays for the source."
 			},
 			{
 				"name": "bodyEnd.from",
-				"type": "number"
+				"type": "number",
+				"description": "Offset after which to look for a function body."
 			}
 		],
 		"outputs": [
 			{
 				"name": "sourceNesting",
-				"type": "SourceNesting"
+				"type": "SourceNesting",
+				"description": "Curly and parenthesis/square-bracket depths before every character, with one trailing position."
 			},
 			{
 				"name": "matchingBrace",
-				"type": "number"
+				"type": "number",
+				"description": "Inclusive closing-brace offset when depth returns to its opening level; last source offset if no close is found."
 			},
 			{
 				"name": "statementEnd",
-				"type": "number"
+				"type": "number",
+				"description": "Inclusive statement end at a same-depth semicolon, recognized next statement or closing brace, otherwise the final source offset."
 			},
 			{
 				"name": "bodyEnd",
-				"type": "number"
+				"type": "number",
+				"description": "Inclusive function-body end, skipping recognized return-type braces, or -1 for a bodiless/unrecognized signature."
 			}
 		],
 		"errors": []

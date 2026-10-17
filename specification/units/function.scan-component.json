@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "function.scan-component",
 	"kind": "function",
-	"title": "scanComponent",
-	"responsibility": "Owns the scanComponent shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Svelte component contract scan",
+	"responsibility": "Derives a component’s props, markup output and nested script exports from its source.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/scanComponent.ts"],
 		"symbols": ["scanComponent"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "scanComponent.code",
-				"type": "string"
+				"type": "string",
+				"description": "Svelte source containing script blocks and markup."
 			},
 			{
 				"name": "scanComponent.name",
-				"type": "string"
+				"type": "string",
+				"description": "Component symbol name used to prefix prop inputs."
 			}
 		],
 		"outputs": [
 			{
 				"name": "scanComponent",
-				"type": "ExportScan"
+				"type": "ExportScan",
+				"description": "Export scan containing a component symbol with props and markup output, followed by script exports and sorted unique detected error names. Inline $props object types become fields; named/untyped props remain a single props input."
 			}
 		],
 		"errors": []

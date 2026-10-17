@@ -2,36 +2,40 @@
 	"schemaVersion": 1,
 	"id": "reports.function.audio-asset",
 	"kind": "function",
-	"title": "audioAsset",
-	"responsibility": "Owns the audioAsset shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Audio asset validation",
+	"responsibility": "Checks supported audio content and derives a content-addressed filename and metadata.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/utils/audioAsset.ts"],
 		"symbols": ["audioAsset"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "audioAsset.bytes",
-				"type": "Buffer"
+				"type": "Buffer",
+				"description": "Nonempty audio bytes, limited to 50,000,000 bytes."
 			},
 			{
 				"name": "audioAsset.filename",
-				"type": "string"
+				"type": "string",
+				"description": "Original filename whose lowercase extension selects the format."
 			}
 		],
 		"outputs": [
 			{
 				"name": "audioAsset",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "SHA-256 filename with the original lowercase extension, audio MIME type and media kind, plus WAV metadata when applicable. MP3, Ogg and M4A undergo header/container checks; no file is written."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects empty/oversized data, unsupported formats and content that fails the selected format check. WAV parser failures propagate."
 			}
 		]
 	},

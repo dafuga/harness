@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.evidence-query",
 	"kind": "function",
-	"title": "evidenceQuery",
-	"responsibility": "Owns the evidenceQuery shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Select evidence for the shown revision",
+	"responsibility": "Builds the evidence request for an entity at the displayed revision, distinguishing a branch view from a specifically selected commit.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/evidenceQuery.ts"],
 		"symbols": ["EvidenceView", "evidenceQuery"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "evidenceQuery.view",
-				"type": "EvidenceView"
+				"type": "EvidenceView",
+				"description": "The displayed snapshot, whether the address pins a commit, and the optional project identity. Pinning remains true even when the selected commit happens to be the branch tip."
 			},
 			{
 				"name": "evidenceQuery.entityId",
-				"type": "string"
+				"type": "string",
+				"description": "The entity identity to include unchanged in the request."
 			}
 		],
 		"outputs": [
 			{
 				"name": "evidenceQuery",
-				"type": "EntityEvidenceQuery | null"
+				"type": "EntityEvidenceQuery | null",
+				"description": "A request with the entity, displayed commit and branch, and project context; null when no snapshot revision is available. A pinned view uses commit mode, which asks for comparison with the first parent. An unpinned view uses current mode for the shown branch view."
 			}
 		],
 		"errors": []

@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-entity-header",
 	"kind": "component",
-	"title": "EntityHeader",
-	"responsibility": "Names one entity: its breadcrumb, role, verdict and purpose, the way to its details or back, the address of a page, and the tabs of its screens.",
+	"title": "Entity header",
+	"responsibility": "Shows entity identity, verification and navigation between overview, details and history.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,25 +11,29 @@
 		"symbols": ["EntityHeader"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EntityHeader.entity",
-				"type": "ExplorerEntity"
+				"type": "ExplorerEntity",
+				"description": "Required name, category, role, purpose, verdict and optional app route/change. Removed entities receive a removed-at-commit badge. Page route links are enabled only for nonempty routes without bracket, colon, asterisk or parameter-pattern characters checked here."
 			},
 			{
 				"name": "EntityHeader.nav",
-				"type": "EntityNav"
+				"type": "EntityNav",
+				"description": "Required current route and link/navigation functions. Section selects the overview/details tab row; unrecognized tabs fall back to the first, while history remains selected in its section."
 			},
 			{
 				"name": "EntityHeader.shared",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional flag, false by default, displaying a Shared badge."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityHeader",
-				"type": "markup"
+				"type": "markup",
+				"description": "Breadcrumbs, category icon, name/role/verdict and purpose or details summary. Pages show an openable app route or nonlinked pattern/Not recorded. Offers Details or Back to overview and the appropriate tab row. Navigation retains context through the route helper."
 			}
 		],
 		"errors": []

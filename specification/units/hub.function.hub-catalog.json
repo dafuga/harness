@@ -2,66 +2,78 @@
 	"schemaVersion": 1,
 	"id": "hub.function.hub-catalog",
 	"kind": "function",
-	"title": "hubCatalog",
-	"responsibility": "Owns the hubCatalog shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Build the hosted unit catalog",
+	"responsibility": "Combine committed unit manifests and plans into catalog entries and relationships.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/hubCatalog.ts"],
 		"symbols": ["hubCatalog", "hubAttestPlan", "hubRelationships", "hubOwnedPaths"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hubCatalog.context",
-				"type": "HubSourceContext"
+				"type": "HubSourceContext",
+				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubAttestPlan.plan",
-				"type": "HubPlan"
+				"type": "HubPlan",
+				"description": "Plan to attest against a registered unit or draft identity."
 			},
 			{
 				"name": "hubAttestPlan.unit",
-				"type": "ComponentManifest | undefined"
+				"type": "ComponentManifest | undefined",
+				"description": "Matching manifest, or undefined for an unregistered draft."
 			},
 			{
 				"name": "hubRelationships.unit",
-				"type": "ComponentManifest"
+				"type": "ComponentManifest",
+				"description": "Unit whose dependencies are shown."
 			},
 			{
 				"name": "hubRelationships.units",
-				"type": "ComponentManifest[]"
+				"type": "ComponentManifest[]",
+				"description": "Candidate unit manifests."
 			},
 			{
 				"name": "hubRelationships.items",
-				"type": "CatalogEntity[]"
+				"type": "CatalogEntity[]",
+				"description": "Catalog entries supplying related plan and verification status."
 			},
 			{
 				"name": "hubOwnedPaths.context",
-				"type": "HubSourceContext"
+				"type": "HubSourceContext",
+				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubOwnedPaths.unit",
-				"type": "ComponentManifest"
+				"type": "ComponentManifest",
+				"description": "Manifest declaring source paths."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubCatalog",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Combined title-sorted items, listed entries, units, plans and plan records, with changed paths reflected in catalog metadata."
 			},
 			{
 				"name": "hubAttestPlan",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns nothing when kinds match, or when an unregistered plan uses category.slug; otherwise rejects as artifact-corrupt."
 			},
 			{
 				"name": "hubRelationships",
-				"type": "Relationship[]"
+				"type": "Relationship[]",
+				"description": "Related units with uses/used-by direction, category, plan presence and verification; a reciprocal dependency is shown as used-by."
 			},
 			{
 				"name": "hubOwnedPaths",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Blob paths equal to or beneath the unit’s declared source paths."
 			}
 		],
 		"errors": []

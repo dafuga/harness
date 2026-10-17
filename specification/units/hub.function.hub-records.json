@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "hub.function.hub-records",
 	"kind": "function",
-	"title": "hubRecords",
-	"responsibility": "Owns the hubRecords shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Read hosted unit manifests",
+	"responsibility": "Load and validate committed unit manifests at the pinned revision.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/hubRecords.ts"],
 		"symbols": ["hubRecords"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hubRecords.context",
-				"type": "HubSourceContext"
+				"type": "HubSourceContext",
+				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubRecords",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Parsed unit manifests after schema, filename/ID and duplicate-ID checks, using a metadata bundle when available."
 			}
 		],
 		"errors": []

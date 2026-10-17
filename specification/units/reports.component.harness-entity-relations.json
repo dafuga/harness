@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-entity-relations",
 	"kind": "component",
-	"title": "EntityRelations",
-	"responsibility": "Lists what an entity contains and what uses it as separate sections for components, functions, configs, services, pages and consumers, each entry a link.",
+	"title": "Used In and Uses",
+	"responsibility": "Shows what uses an entity and what that entity uses.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,33 +11,39 @@
 		"symbols": ["EntityRelations"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EntityRelations.relations",
-				"type": "ExplorerRelations"
+				"type": "ExplorerRelations",
+				"description": "Required relationship data organized by the usage helper."
 			},
 			{
 				"name": "EntityRelations.nav",
-				"type": "EntityNav"
+				"type": "EntityNav",
+				"description": "Required route context for related-entity links."
 			},
 			{
 				"name": "EntityRelations.show",
-				"type": "'both' | 'used-in' | 'uses'"
+				"type": "'both' | 'used-in' | 'uses'",
+				"description": "Optional both, used-in or uses, default both. Selects which sections appear."
 			},
 			{
 				"name": "EntityRelations.compact",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional flag, false by default. True omits verdicts and purpose text but keeps names and badges."
 			},
 			{
 				"name": "EntityRelations.removed",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional flag, false by default, changing empty-state wording to explain removal at this commit."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityRelations",
-				"type": "markup"
+				"type": "markup",
+				"description": "Counted Used In list and categorized Uses groups. Directly changed/added entities receive Changed badges. Unknown-category others remain unlinked. Empty sections state what is absent; removed mode does not substitute old relationships."
 			}
 		],
 		"errors": []

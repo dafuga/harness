@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-harness-action",
 	"kind": "component",
-	"title": "HarnessAction",
-	"responsibility": "An outlined action of the explorer: a link when it has an address, so a new tab can open it, a button otherwise, and a disabled button when it leads nowhere.",
+	"title": "Explorer action",
+	"responsibility": "Renders a button or real navigation link with optional icons.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,45 +11,54 @@
 		"symbols": ["HarnessAction"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HarnessAction.href",
-				"type": "string"
+				"type": "string",
+				"description": "Optional address. Nonempty and enabled renders an anchor; otherwise a button."
 			},
 			{
 				"name": "HarnessAction.onclick",
-				"type": "(event: MouseEvent) => void"
+				"type": "(event: MouseEvent) => void",
+				"description": "Optional handler. For links, only plain clicks are intercepted; other clicks remain native. Buttons invoke it directly if supplied."
 			},
 			{
 				"name": "HarnessAction.disabled",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional flag, false by default. True renders a disabled button even when href exists."
 			},
 			{
 				"name": "HarnessAction.tone",
-				"type": "'gold' | 'plain'"
+				"type": "'gold' | 'plain'",
+				"description": "Optional gold or plain styling, default gold."
 			},
 			{
 				"name": "HarnessAction.icon",
-				"type": "HarnessIconName"
+				"type": "HarnessIconName",
+				"description": "Optional trailing icon."
 			},
 			{
 				"name": "HarnessAction.lead",
-				"type": "HarnessIconName"
+				"type": "HarnessIconName",
+				"description": "Optional leading icon."
 			},
 			{
 				"name": "HarnessAction.label",
-				"type": "string"
+				"type": "string",
+				"description": "Optional fuller accessible name."
 			},
 			{
 				"name": "HarnessAction.children",
-				"type": "Snippet"
+				"type": "Snippet",
+				"description": "Required visible action content."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HarnessAction",
-				"type": "markup"
+				"type": "markup",
+				"description": "Styled action with leading/trailing icons at size 18. Buttons have type button. Handler failures are not caught."
 			}
 		],
 		"errors": []

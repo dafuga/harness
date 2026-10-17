@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-entity-change",
 	"kind": "component",
-	"title": "EntityChange",
-	"responsibility": "Shows one change of a history: its reasons held to the length of one with the originals to open, the reviewed budget approvals and each figure before and after under its own profile.",
+	"title": "Entity change",
+	"responsibility": "Explains a selected historical change with recorded reasons, review notes and before/after measurements.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,33 +11,39 @@
 		"symbols": ["EntityChange"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EntityChange.row",
-				"type": "ExplorerHistoryRow"
+				"type": "ExplorerHistoryRow",
+				"description": "Required history row with commit, subject/date, predecessor, measured size/complexity, changes and budget reviews. Earlier size/complexity are derived as current minus recorded delta only when both exist."
 			},
 			{
 				"name": "EntityChange.timings",
-				"type": "HistoryTiming[]"
+				"type": "HistoryTiming[]",
+				"description": "Required measurements, one per profile/target, with before/after values and units. Missing before displays unmeasured and no delta; numeric delta is rounded to four decimal places."
 			},
 			{
 				"name": "EntityChange.detail",
-				"type": "ExplorerHistoryDetail | null"
+				"type": "ExplorerHistoryDetail | null",
+				"description": "Required revision detail or null while reading. Distinguishes unavailable registry/impact from a known revision with no reasons."
 			},
 			{
 				"name": "EntityChange.nav",
-				"type": "EntityNav"
+				"type": "EntityNav",
+				"description": "Required route/navigation context used to open this entity at the row’s commit. Both captured-state and comparison actions use that destination."
 			},
 			{
 				"name": "EntityChange.full",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional bindable flag, false by default, controlling expansion of original reason text."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityChange",
-				"type": "markup"
+				"type": "markup",
+				"description": "Selected-change panel with commit/date/subject, summarized behavior/simplification/performance reasons and original disclosures. Shows budget/baseline reviews with long notes expandable. Measurement table separates source size, complexity and profile timings and labels missing measurements explicitly."
 			}
 		],
 		"errors": []

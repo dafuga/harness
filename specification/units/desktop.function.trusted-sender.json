@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.trusted-sender",
 	"kind": "function",
-	"title": "trustedSender",
-	"responsibility": "Owns the trustedSender shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Check a desktop IPC sender",
+	"responsibility": "Accept messages only from the expected window main frame at an allowed URL.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/trustedSender.ts"],
 		"symbols": ["trustedSender"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "trustedSender.event",
-				"type": "Pick<IpcMainInvokeEvent, 'sender' | 'senderFrame'>"
+				"type": "Pick<IpcMainInvokeEvent, 'sender' | 'senderFrame'>",
+				"description": "IPC event with sender and sender frame."
 			},
 			{
 				"name": "trustedSender.window",
-				"type": "BrowserWindow"
+				"type": "BrowserWindow",
+				"description": "Expected window and its web contents."
 			}
 		],
 		"outputs": [
 			{
 				"name": "trustedSender",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True only when sender and frame are the exact window objects and the frame URL passes navigation validation."
 			}
 		],
 		"errors": []

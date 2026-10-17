@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.entity-search",
 	"kind": "component",
-	"title": "EntitySearch",
-	"responsibility": "The shared search field of both top bars: a keyboard-driven combobox over the entities of the revision in view that names a pinned commit.",
+	"title": "Entity search",
+	"responsibility": "Searches supplied revision entities and offers keyboard or link navigation.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,29 +11,34 @@
 		"symbols": ["EntitySearch"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EntitySearch.entries",
-				"type": "SearchEntry[] | null"
+				"type": "SearchEntry[] | null",
+				"description": "Required list of entities, or null while the host loads them. Null yields no matches and loading wording; the component does not fetch entries."
 			},
 			{
 				"name": "EntitySearch.scope",
-				"type": "{ label: string; pinned: string | null }"
+				"type": "{ label: string; pinned: string | null }",
+				"description": "Required label and optional pinned commit. Label names searched scope; pinned takes precedence in placeholder wording over loading."
 			},
 			{
 				"name": "EntitySearch.href",
-				"type": "(entry: SearchEntry) => string"
+				"type": "(entry: SearchEntry) => string",
+				"description": "Required callback providing complete result link targets."
 			},
 			{
 				"name": "EntitySearch.open",
-				"type": "(entry: SearchEntry) => void"
+				"type": "(entry: SearchEntry) => void",
+				"description": "Required callback for chosen results within the host. Choosing clears the query and closes the popup before calling it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntitySearch",
-				"type": "markup"
+				"type": "markup",
+				"description": "Combobox with up to 12 helper-ranked results for a nonblank query while expanded. Input resets active index; arrows wrap, Enter opens active result, Escape first closes then clears and stops propagation. Losing external focus closes results. Popup shifts left to fit the viewport and adjusts on resize."
 			}
 		],
 		"errors": []

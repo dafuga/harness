@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.pushed-refs",
 	"kind": "function",
-	"title": "pushedRefs",
-	"responsibility": "Reads what a push is about to update and returns the source commits that need a verification.",
+	"title": "Pushed source commits",
+	"responsibility": "Selects new source-branch tips from the lines Git supplies to a pre-push hook.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,17 +11,19 @@
 		"symbols": ["pushedRefs"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "pushedRefs.input",
-				"type": "string"
+				"type": "string",
+				"description": "Git pre-push input containing four whitespace-separated fields per reference line."
 			}
 		],
 		"outputs": [
 			{
 				"name": "pushedRefs",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Unique local commit strings in encounter order for nondeleted updates to source branches. Malformed lines, deletions, evidence/notes/archive refs, tags and other refs are omitted."
 			}
 		],
 		"errors": []

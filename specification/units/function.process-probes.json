@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.process-probes",
 	"kind": "function",
-	"title": "processProbes",
-	"responsibility": "Looks at one process with the system's read-only tools, each bounded in time, cancellable, and few at once.",
+	"title": "Bounded process probes",
+	"responsibility": "Provides bounded system-tool calls for reading process state and executable paths, with shared concurrency control.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,17 +11,19 @@
 		"symbols": ["ProcessFacts", "ProcessProbes", "ProbeLimits", "processProbes"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "processProbes.limits",
-				"type": "ProbeLimits"
+				"type": "ProbeLimits",
+				"description": "Optional cancellation signal and per-tool timeout in milliseconds; default timeout is 3000."
 			}
 		],
 		"outputs": [
 			{
 				"name": "processProbes",
-				"type": "ProcessProbes"
+				"type": "ProcessProbes",
+				"description": "Probe methods for running tools, reading process facts with ps and resolving executable paths with lsof. At most eight tools run concurrently process-wide; timeout/cancellation/failure yields not-ok, and unreadable facts or paths yield null."
 			}
 		],
 		"errors": []

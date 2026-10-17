@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.stream-lines",
 	"kind": "function",
-	"title": "streamLines",
-	"responsibility": "Owns the streamLines shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Split an output stream into lines",
+	"responsibility": "Decode UTF-8 chunks and deliver complete lines while bounding the buffered text.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/streamLines.ts"],
 		"symbols": ["streamLines"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "streamLines.options",
-				"type": "{ onLine: (line: string) => void; maxBytes: number; onOverflow: () => void; }"
+				"type": "{ onLine: (line: string) => void; maxBytes: number; onOverflow: () => void; }",
+				"description": "Line and overflow callbacks plus maximum buffered byte count."
 			}
 		],
 		"outputs": [
 			{
 				"name": "streamLines",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "write accepts byte chunks and emits newline-delimited strings; end flushes any remaining text. Oversized buffered text invokes the overflow callback and clears the buffer."
 			}
 		],
 		"errors": []

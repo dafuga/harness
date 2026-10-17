@@ -2,36 +2,40 @@
 	"schemaVersion": 1,
 	"id": "hub.function.browser-api",
 	"kind": "function",
-	"title": "browserApi",
-	"responsibility": "Owns the browserApi shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Same-site browser API",
+	"responsibility": "Create browser request helpers for the hub API using the existing same-origin session cookie.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/browserApi.ts"],
 		"symbols": ["Query", "BrowserApi", "ApiFailure", "browserApi"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "browserApi.fetcher",
-				"type": "typeof fetch"
+				"type": "typeof fetch",
+				"description": "Fetch implementation; defaults to the global fetch."
 			},
 			{
 				"name": "browserApi.failed",
-				"type": "(failure: ApiFailure) => void"
+				"type": "(failure: ApiFailure) => void",
+				"description": "Callback for non-success HTTP responses; defaults to a no-op. Network failures do not call it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "browserApi",
-				"type": "BrowserApi"
+				"type": "BrowserApi",
+				"description": "get/send return parsed JSON, bytes returns raw bytes, and media returns bounded bytes plus Content-Type. Calls require /api/ paths, omit empty query values, disable caching and use a 30-second abort signal. Writes send JSON."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects non-API paths, coded HTTP failures, network/timeouts, invalid response JSON and media read failures. HTTP failures include status/code and readable wording."
 			}
 		]
 	},

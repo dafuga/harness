@@ -2,9 +2,9 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.recorded-scope",
 	"kind": "function",
-	"title": "recordedScope",
-	"responsibility": "Owns the recordedScope shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Recorded evidence scope",
+	"responsibility": "Build the selected entity and revision scope from recorded facts, refusing a stale current view or an unregistered entity.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/recordedScope.ts"],
@@ -15,41 +15,47 @@
 		"inputs": [
 			{
 				"name": "recordedTip.query",
-				"type": "Asked"
+				"type": "Asked",
+				"description": "Entity ID, branch, commit and current-or-commit viewing mode to check."
 			},
 			{
 				"name": "recordedTip.tip",
-				"type": "string"
+				"type": "string",
+				"description": "Actual tip commit of the selected branch."
 			},
 			{
 				"name": "recordedScope.query",
-				"type": "Asked"
+				"type": "Asked",
+				"description": "Entity ID, branch, commit and viewing mode to describe."
 			},
 			{
 				"name": "recordedScope.facts",
-				"type": "ScopeFacts"
+				"type": "ScopeFacts",
+				"description": "Branch tip, registered kind, commit metadata, judged evidence and legacy record IDs."
 			}
 		],
 		"outputs": [
 			{
 				"name": "recordedTip",
-				"type": "void"
+				"type": "void",
+				"description": "Returns nothing when the requested current commit is still the branch tip; otherwise throws."
 			},
 			{
 				"name": "recordedScope",
-				"type": "ExplorerScope"
+				"type": "ExplorerScope",
+				"description": "Scope containing the selected location, tip comparison, first parent or null and supplied evidence summary."
 			}
 		],
 		"errors": [
 			{
 				"name": "stale-tip",
 				"type": "refused",
-				"description": "In current mode the commit is not the tip of the branch."
+				"description": "The current-mode commit no longer equals the supplied branch tip."
 			},
 			{
 				"name": "entity-unregistered",
 				"type": "refused",
-				"description": "The entity is not registered at the commit."
+				"description": "The supplied entity kind is absent or has no supported explorer category."
 			}
 		]
 	},

@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "reports.function.entity-usage",
 	"kind": "function",
-	"title": "entityUsage",
-	"responsibility": "Owns the entityUsage shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Entity relationship sections",
+	"responsibility": "Arranges resolved relations into users and categorized dependencies for display.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/utils/entityUsage.ts"],
 		"symbols": ["UsageGroup", "EntityUsage", "entityUsage"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "entityUsage.relations",
-				"type": "ExplorerRelations"
+				"type": "ExplorerRelations",
+				"description": "Host-derived pages, consumers, categorized dependencies and support units."
 			}
 		],
 		"outputs": [
 			{
 				"name": "entityUsage",
-				"type": "EntityUsage"
+				"type": "EntityUsage",
+				"description": "Deduplicated users with pages first, nonempty dependency groups with icons, support units and total dependency count. Deduplication uses identifiers and preserves their first position; later duplicate values replace earlier values."
 			}
 		],
 		"errors": []

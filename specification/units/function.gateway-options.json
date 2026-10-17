@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "function.gateway-options",
 	"kind": "function",
-	"title": "gatewayOptions",
-	"responsibility": "Owns the gatewayOptions shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Gateway SDK options",
+	"responsibility": "Builds isolated SDK options for a local Claude gateway session.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/gatewayOptions.ts"],
 		"symbols": ["gatewayOptions"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "gatewayOptions.session",
-				"type": "GatewaySession"
+				"type": "GatewaySession",
+				"description": "Session whose abort controller should control the SDK request."
 			}
 		],
 		"outputs": [
 			{
 				"name": "gatewayOptions",
-				"type": "Options"
+				"type": "Options",
+				"description": "SDK options using a copied environment with Anthropic and Claude provider overrides removed, no built-in tools or setting sources, no persistent session, Opus 5.5 with xhigh effort, dontAsk mode and /tmp working directory. The executable comes from HARNESS_CLAUDE_EXECUTABLE or the home-local Claude binary."
 			}
 		],
 		"errors": []

@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.index-files",
 	"kind": "function",
-	"title": "indexFiles",
-	"responsibility": "Reads the files of a history index directory for bundling into a host.",
+	"title": "History index file reading",
+	"responsibility": "Reads every regular file of an existing history-index directory in stable path order.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,23 +11,26 @@
 		"symbols": ["indexFiles"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "indexFiles.directory",
-				"type": "string"
+				"type": "string",
+				"description": "Directory containing index.json and the index’s files."
 			}
 		],
 		"outputs": [
 			{
 				"name": "indexFiles",
-				"type": "Promise<IndexFile[]>"
+				"type": "Promise<IndexFile[]>",
+				"description": "Sorted relative forward-slash paths and original bytes of every regular file found recursively."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown when index.json is absent, with the history-build command needed to create an index."
 			}
 		]
 	},

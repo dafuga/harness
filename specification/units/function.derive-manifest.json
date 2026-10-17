@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "function.derive-manifest",
 	"kind": "function",
-	"title": "deriveManifest",
-	"responsibility": "Owns the deriveManifest shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Manifest derivation",
+	"responsibility": "Builds an active unit manifest from source facts while retaining declared contracts, responsibilities, dependencies and runtime choices.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/deriveManifest.ts"],
 		"symbols": ["DeriveInput", "deriveManifest"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "deriveManifest.input",
-				"type": "DeriveInput"
+				"type": "DeriveInput",
+				"description": "Unit id and kind, nonempty owned source-file facts, source-path owner map, optional predecessor ids and previous manifest. The previous manifest supplies declarations to preserve."
 			}
 		],
 		"outputs": [
 			{
 				"name": "deriveManifest",
-				"type": "ComponentManifest"
+				"type": "ComponentManifest",
+				"description": "Active manifest with sorted source paths, exported symbols, derived or preserved contract, source-based dependencies plus declared dependencies, merged predecessor lineage, runtime, scenarios, preview and budgets. This function returns data without writing the registry."
 			}
 		],
 		"errors": []

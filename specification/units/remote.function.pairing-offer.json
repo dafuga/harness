@@ -2,9 +2,9 @@
 	"schemaVersion": 1,
 	"id": "remote.function.pairing-offer",
 	"kind": "function",
-	"title": "pairingOffer",
-	"responsibility": "Owns the pairingOffer shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Encode and read pairing offers",
+	"responsibility": "Write the exact QR offer format and validate scanned offers against environment and expiry rules.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/remote/src/utils/pairingOffer.ts"],
@@ -21,47 +21,56 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "offerEnvironment.origin",
-				"type": "string"
+				"type": "string",
+				"description": "Exact relay origin with no path; supported forms are named HTTPS origins or HTTP loopback origins."
 			},
 			{
 				"name": "pairingOffer.offer",
-				"type": "PairingOffer"
+				"type": "PairingOffer",
+				"description": "Relay origin, host and pairing IDs, human pairing code and expiry time to serialize."
 			},
 			{
 				"name": "readPairingOffer.text",
-				"type": "string"
+				"type": "string",
+				"description": "Scanned offer text in the fixed protocol field order."
 			},
 			{
 				"name": "readPairingOffer.reading",
-				"type": "OfferReading"
+				"type": "OfferReading",
+				"description": "Current time in milliseconds and allowed local or production environments."
 			}
 		],
 		"outputs": [
 			{
 				"name": "offerRules",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Protocol version 1, harness-phone audience, 320-character limit and 60-second clock-skew allowance."
 			},
 			{
 				"name": "offerEnvironment",
-				"type": "OfferEnvironment | null"
+				"type": "OfferEnvironment | null",
+				"description": "Production for a permitted named HTTPS origin, local for permitted HTTP loopback, otherwise null."
 			},
 			{
 				"name": "pairingOffer",
-				"type": "string"
+				"type": "string",
+				"description": "Canonical offer text with normalized code and expiry rounded down to whole seconds."
 			},
 			{
 				"name": "readPairingOffer",
-				"type": "OfferRead"
+				"type": "OfferRead",
+				"description": "Parsed offer or invalid, unsupported, environment or expired refusal; accepted expiry must be within the pairing TTL plus clock allowance."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The writer throws Invalid pairing offer for an unsupported origin or malformed or oversized serialized fields."
 			}
 		]
 	},

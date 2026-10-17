@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.explorer-history",
 	"kind": "function",
-	"title": "explorerHistory",
-	"responsibility": "Lists the commits that changed one entity on the ancestry of the shown commit, from the changes the history records for each commit, with their sizes and reviews.",
+	"title": "Entity change history",
+	"responsibility": "Builds ancestor-only entity history with recorded measurements, reviews and revision detail.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,37 +11,44 @@
 		"symbols": ["explorerHistory", "historyDetail"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "explorerHistory.index",
-				"type": "HarnessIndex"
+				"type": "HarnessIndex",
+				"description": "History index with revision summaries, unit growth and reviews."
 			},
 			{
 				"name": "explorerHistory.scope",
-				"type": "ExplorerScope"
+				"type": "ExplorerScope",
+				"description": "Resolved scope whose commit bounds the ancestry search."
 			},
 			{
 				"name": "explorerHistory.unit",
-				"type": "string"
+				"type": "string",
+				"description": "Unit identifier whose direct changes are listed."
 			},
 			{
 				"name": "historyDetail.detail",
-				"type": "HarnessRevision"
+				"type": "HarnessRevision",
+				"description": "Stored revision to inspect for this entity."
 			},
 			{
 				"name": "historyDetail.unit",
-				"type": "string"
+				"type": "string",
+				"description": "Unit identifier to inspect in that revision."
 			}
 		],
 		"outputs": [
 			{
 				"name": "explorerHistory",
-				"type": "ExplorerHistoryRow[]"
+				"type": "ExplorerHistoryRow[]",
+				"description": "Newest-first rows for the shown commit and known ancestors that directly changed, added or removed the entity, plus rows whose change status is unknown. Each retains first-parent identity, measured values, changes from the preceding retained measurement and reviews at that commit. Known unchanged or indirectly affected commits are omitted."
 			},
 			{
 				"name": "historyDetail",
-				"type": "ExplorerHistoryDetail"
+				"type": "ExplorerHistoryDetail",
+				"description": "Whether registry/impact information is available, active presence, change mark, version, matching explanations and the entity verdict when present."
 			}
 		],
 		"errors": []

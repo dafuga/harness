@@ -30,9 +30,9 @@ const requested = (directory: string) => ({
 	TAKE_SCREENSHOT: '1'
 });
 
-/** Resolves once fonts, images, canvases and pending requests have settled. */
+/** Call after the state-specific UI assertion; wait for its fonts, decoded images and paint. */
 export async function settled(page: Page): Promise<void> {
-	await page.waitForLoadState('networkidle');
+	await page.waitForLoadState('domcontentloaded');
 	const broken = await page.evaluate(async () => {
 		await document.fonts.ready;
 		const images = [...document.images];
@@ -45,12 +45,24 @@ export async function settled(page: Page): Promise<void> {
 				image.addEventListener('error', () => resolve(), { once: true });
 				setTimeout(resolve, 5_000);
 			});
-		await Promise.all(images.map(loaded));
+		const failures = await Promise.all(
+			images.map(async (image) => {
+				await loaded(image);
+				const source = image.currentSrc || image.src;
+				if (!image.complete || image.naturalWidth <= 0 || image.naturalHeight <= 0) return source;
+				try {
+					await image.decode();
+					return null;
+				} catch {
+					return source;
+				}
+			})
+		);
 		// One frame for layout after the last image, one more for canvas and SVG painting.
 		await new Promise<void>((resolve) =>
 			requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
 		);
-		return images.filter((image) => image.naturalWidth === 0).map((image) => image.src);
+		return failures.filter((source) => source !== null);
 	});
 	expect(broken).toEqual([]);
 }

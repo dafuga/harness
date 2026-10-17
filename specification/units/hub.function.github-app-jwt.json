@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "hub.function.github-app-jwt",
 	"kind": "function",
-	"title": "githubAppJwt",
-	"responsibility": "Owns the githubAppJwt shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Sign a Git Hub App assertion",
+	"responsibility": "Import an RSA app key and sign a short-lived GitHub App JWT.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/githubAppJwt.ts"],
 		"symbols": ["GithubAppJwtInput", "githubAppKey", "githubAppJwt"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "githubAppKey.pem",
-				"type": "string"
+				"type": "string",
+				"description": "PKCS#1 or PKCS#8 PEM, accepting real or escaped newlines."
 			},
 			{
 				"name": "githubAppJwt.input",
-				"type": "GithubAppJwtInput"
+				"type": "GithubAppJwtInput",
+				"description": "App ID, imported signing key and current time in milliseconds."
 			}
 		],
 		"outputs": [
 			{
 				"name": "githubAppKey",
-				"type": "Promise<CryptoKey>"
+				"type": "Promise<CryptoKey>",
+				"description": "Nonextractable RSA SHA-256 signing key; invalid PEM or import failure rejects with github-disabled."
 			},
 			{
 				"name": "githubAppJwt",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "RS256 JWT with app ID issuer, issued-at one minute before the supplied time and expiration nine minutes after it."
 			}
 		],
 		"errors": []

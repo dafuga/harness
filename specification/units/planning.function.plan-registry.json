@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "planning.function.plan-registry",
 	"kind": "function",
-	"title": "planRegistry",
-	"responsibility": "Keep planning metadata outside the active unit registry by atomically extending only existing clean validated Harness configuration.",
+	"title": "Prepare planning ignore rules",
+	"responsibility": "Prepare additions to existing clean registry and formatter ignore files for planning artifacts.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,31 +11,36 @@
 		"symbols": ["planningIgnores", "planRegistry"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "planRegistry.git",
-				"type": "Git"
+				"type": "Git",
+				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "planRegistry.revision",
-				"type": "string"
+				"type": "string",
+				"description": "Revision containing the existing configuration files."
 			}
 		],
 		"outputs": [
 			{
 				"name": "planningIgnores",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Planning artifact glob patterns for all six supported categories."
 			},
 			{
 				"name": "planRegistry",
-				"type": "Promise<Files>"
+				"type": "Promise<Files>",
+				"description": "Map of only the configuration files needing additions; absent configurations are not created. This helper returns proposed bytes without writing them."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects unsafe or dirty configuration paths and invalid existing registry JSON/schema; read failures propagate."
 			}
 		]
 	},

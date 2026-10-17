@@ -2,44 +2,50 @@
 	"schemaVersion": 1,
 	"id": "reports.function.replay-video",
 	"kind": "function",
-	"title": "replayVideo",
-	"responsibility": "Owns the replayVideo shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Screenshot replay video",
+	"responsibility": "Creates or reuses a cached silent MP4 of the report’s available replay screenshots.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/utils/replayVideo.ts"],
 		"symbols": ["replayVideoKey", "replayVideo"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "replayVideoKey.report",
-				"type": "Report"
+				"type": "Report",
+				"description": "Report whose ordered replay frame identifiers and filenames determine the cache key."
 			},
 			{
 				"name": "replayVideo.report",
-				"type": "Report"
+				"type": "Report",
+				"description": "Report providing screenshots and registered evidence files."
 			},
 			{
 				"name": "replayVideo.directory",
-				"type": "string"
+				"type": "string",
+				"description": "Report directory containing assets and the replay cache."
 			}
 		],
 		"outputs": [
 			{
 				"name": "replayVideoKey",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "SHA-256 key of ordered frame identifiers/filenames and the fixed three-second, 1280-by-720 versioned encoding recipe."
 			},
 			{
 				"name": "replayVideo",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Promise resolving to an existing regular cached MP4 or a newly encoded file. Frames are rendered in batches of four, fitted/padded to 1280 by 720, then encoded at ten frames per second with three seconds per screenshot. Temporary encoding files are removed in finally."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects zero or over 500 frames, symlinked replay cache/artifact, screenshot conversion failure and encoding failure. Asset validation, subprocess and filesystem failures may also propagate."
 			}
 		]
 	},

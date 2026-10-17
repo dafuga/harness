@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "hub.function.hub-entity",
 	"kind": "function",
-	"title": "hubEntity",
-	"responsibility": "Owns the hubEntity shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Read hosted entity details",
+	"responsibility": "Combine a catalog entity with its contract, sources, designs, shared threads and first history page.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/hubEntity.ts"],
 		"symbols": ["hubEntity"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hubEntity.context",
-				"type": "HubSourceContext"
+				"type": "HubSourceContext",
+				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubEntity.query",
-				"type": "{ entityId: string; commit: string; branch: string; shared: CommittedThread[] }"
+				"type": "{ entityId: string; commit: string; branch: string; shared: CommittedThread[] }",
+				"description": "Entity ID, commit, branch and already-authorized shared threads."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubEntity",
-				"type": "Promise<EntityDetail>"
+				"type": "Promise<EntityDetail>",
+				"description": "Entity detail with source sizes, relationships, design introduction commits, shared-thread count and history coverage; performance is explicitly not measured."
 			}
 		],
 		"errors": []

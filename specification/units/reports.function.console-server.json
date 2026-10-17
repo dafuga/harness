@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.console-server",
 	"kind": "function",
-	"title": "consoleServer",
-	"responsibility": "Binds the local owner policy to the history directory this server was given.",
+	"title": "Local console access",
+	"responsibility": "Supplies local history files and the cached access guard used by the reports server.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,20 +11,23 @@
 		"symbols": ["consoleDirectory", "consoleData", "consoleServer"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "consoleDirectory",
-				"type": "string | undefined"
+				"type": "string | undefined",
+				"description": "Resolved history directory from the trimmed console-data environment setting, or undefined when unset."
 			},
 			{
 				"name": "consoleData",
-				"type": "ConsoleData"
+				"type": "ConsoleData",
+				"description": "Disk-backed JSON and media readers. Rejects lexical paths outside the history directory and returns undefined for missing or unreadable files; media includes MIME type. Intended for server code that has already passed its guard."
 			},
 			{
 				"name": "consoleServer",
-				"type": "ConsoleAccess"
+				"type": "ConsoleAccess",
+				"description": "Lazily cached ConsoleAccess configured from owner mode, bind address and address-header settings, with local data and portable export support."
 			}
 		],
 		"errors": []

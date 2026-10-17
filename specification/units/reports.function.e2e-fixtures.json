@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.e2e-fixtures",
 	"kind": "function",
-	"title": "e2eFixtures",
-	"responsibility": "Gives each browser run a directory and ports of its own for everything it seeds, names them to its servers, seeds and specs, and removes only what that run made.",
+	"title": "Isolated browser-run fixtures",
+	"responsibility": "Resolves, creates and cleans per-run fixture locations and assigns browser-test ports.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -18,55 +18,66 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "e2eFixtures.env",
-				"type": "Environment"
+				"type": "Environment",
+				"description": "Optional environment map, defaulting to process.env; requires HARNESS_E2E_ROOT."
 			},
 			{
 				"name": "freePorts.count",
-				"type": "number"
+				"type": "number",
+				"description": "Number of loopback ports to sample; zero returns an empty list."
 			},
 			{
 				"name": "openE2eRun.env",
-				"type": "Environment"
+				"type": "Environment",
+				"description": "Optional mutable environment map, defaulting to process.env. Existing directory and named ports are retained; unnamed ports are assigned."
 			},
 			{
 				"name": "namedE2eRun.env",
-				"type": "Environment"
+				"type": "Environment",
+				"description": "Optional environment map, defaulting to process.env, inspected for a named root without an owner."
 			},
 			{
 				"name": "closeE2eRun.env",
-				"type": "Environment"
+				"type": "Environment",
+				"description": "Optional environment map, defaulting to process.env; cleanup requires this process to own its root."
 			}
 		],
 		"outputs": [
 			{
 				"name": "e2eFixtures",
-				"type": "E2eFixtures"
+				"type": "E2eFixtures",
+				"description": "Run root, report/console/analytics/build locations and a site-path function. Console and analytics environment overrides are honored."
 			},
 			{
 				"name": "freePorts",
-				"type": "number[]"
+				"type": "number[]",
+				"description": "Ports that were available when a child process briefly listened, then released them. They are not reserved for later use."
 			},
 			{
 				"name": "openE2eRun",
-				"type": "E2eFixtures"
+				"type": "E2eFixtures",
+				"description": "Creates a temporary run directory and records this process as owner when none was named, assigns missing port variables, and returns fixture locations."
 			},
 			{
 				"name": "namedE2eRun",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when a root is set without an owner marker."
 			},
 			{
 				"name": "closeE2eRun",
-				"type": "void"
+				"type": "void",
+				"description": "Removes the owned run directory and its frozen build cache. Does nothing when another process owns the run or no root exists."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Missing HARNESS_E2E_ROOT throws explicit guidance. Filesystem, child-process and parsing failures may propagate."
 			}
 		]
 	},

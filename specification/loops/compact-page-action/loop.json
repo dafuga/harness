@@ -2,7 +2,7 @@
 	"name": "compact-page-action",
 	"goal": "Page cards open through a compact icon with an accessible label, tooltip and unchanged navigation.",
 	"createdAt": "2026-10-17T10:29:48.338Z",
-	"updatedAt": "2026-10-17T10:32:35.584Z",
+	"updatedAt": "2026-10-17T21:27:48.486Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"steps": [
@@ -38,6 +38,20 @@
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots; keep pending until proof passes.",
 			"status": "pending"
+		},
+		{
+			"id": "embedded-red",
+			"title": "Prove embedded page cards have a 36px accessible icon action at each viewport.",
+			"status": "complete",
+			"completedAt": "2026-10-17T21:23:30.356Z",
+			"evidence": "The three embedded viewer viewport regressions fail on visible Open page text. Fresh test-owned before screenshots retain decoded images and fonts. Log: /tmp/harness-embedded-icon-red-20261017.log."
+		},
+		{
+			"id": "embedded-green",
+			"title": "Pass the same embedded icon action and keyboard navigation checks.",
+			"status": "complete",
+			"completedAt": "2026-10-17T21:27:48.486Z",
+			"evidence": "All 13 embedded viewer browser checks pass. Desktop, tablet and mobile keep a 36px icon, accessible label, tooltip, Enter navigation and decoded previews. Fresh desktop and mobile screenshots inspected. Log: /tmp/harness-embedded-icon-green-20261017.log."
 		}
 	],
 	"evaluators": [

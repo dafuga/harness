@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.console-host-files",
 	"kind": "function",
-	"title": "consoleHostFiles",
-	"responsibility": "Lists the server module and route files a SvelteKit host needs to serve the console behind its own policy.",
+	"title": "Console host integration files",
+	"responsibility": "Produces SvelteKit server modules and routes that connect the console to a host policy and bundled or private-bucket history.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,21 +11,24 @@
 		"symbols": ["HostFile", "ConsoleHostOptions", "consoleServerDirectory", "consoleHostFiles"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "consoleHostFiles.options",
-				"type": "ConsoleHostOptions"
+				"type": "ConsoleHostOptions",
+				"description": "Console base route, policy module and export name, and optionally a bucket binding and prefix. These values are inserted into generated source and should already be validated by the caller."
 			}
 		],
 		"outputs": [
 			{
 				"name": "consoleServerDirectory",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Server-only output directory src/lib/server/harness."
 			},
 			{
 				"name": "consoleHostFiles",
-				"type": "HostFile[]"
+				"type": "HostFile[]",
+				"description": "Six path/content entries: server module, root and catch-all document routes, and JSON, export and media endpoints. All endpoints use protected console access; no filesystem writes occur here."
 			}
 		],
 		"errors": []

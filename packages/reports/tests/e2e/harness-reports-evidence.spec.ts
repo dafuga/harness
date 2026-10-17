@@ -131,9 +131,9 @@ test('a paired recording plays in the viewer and is captured as the server serve
 }) => {
 	await states.audio(page);
 	const player = page.getByRole('dialog').locator('audio').first();
-	expect(await player.evaluate((clip: HTMLAudioElement) => clip.currentSrc)).toContain(
-		`${origin}/api/reports/${made.paired}/assets/`
-	);
+	await expect
+		.poll(() => player.evaluate((clip: HTMLAudioElement) => clip.currentSrc))
+		.toContain(`${origin}/api/reports/${made.paired}/assets/`);
 	expect(await captureAudio(page, 'audio', player, evidence)).toBeCloseTo(6, 0);
 });
 

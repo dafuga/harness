@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.settle-processes",
 	"kind": "function",
-	"title": "settleProcesses",
-	"responsibility": "Stops what a finished or timed-out command left, one verified process at a time, never a delegated or possible shared service.",
+	"title": "Protected descendant settlement",
+	"responsibility": "Stops proven private command processes under a deadline while leaving shared or uncertain processes untouched and recording the outcome.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,41 +11,49 @@
 		"symbols": ["Settlement", "Watched", "SettleTiming", "haltProcesses", "settleProcesses"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "haltProcesses.watch",
-				"type": "Watched"
+				"type": "Watched",
+				"description": "Tracker whose alive method returns followed identities or null when unreadable."
 			},
 			{
 				"name": "haltProcesses.context",
-				"type": "ServiceContext"
+				"type": "ServiceContext",
+				"description": "Command group, service authority and probes used to classify each process."
 			},
 			{
 				"name": "haltProcesses.limit",
-				"type": "{ graceMs: number; deadline: CleanupDeadline }"
+				"type": "{ graceMs: number; deadline: CleanupDeadline }",
+				"description": "Grace duration and shared deadline for timeout termination."
 			},
 			{
 				"name": "settleProcesses.watch",
-				"type": "Watched"
+				"type": "Watched",
+				"description": "Tracker of the ended command and descendants to settle."
 			},
 			{
 				"name": "settleProcesses.context",
-				"type": "ServiceContext"
+				"type": "ServiceContext",
+				"description": "Classification context for private versus delegated/protected processes."
 			},
 			{
 				"name": "settleProcesses.timing",
-				"type": "SettleTiming"
+				"type": "SettleTiming",
+				"description": "Optional settling/grace periods, default 2000/500 ms, and optional whole-cleanup bound; default bound adds 10000 ms slack."
 			}
 		],
 		"outputs": [
 			{
 				"name": "haltProcesses",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves after bounded TERM then KILL attempts on freshly rechecked private processes only. Unreadable or expired observations cause no further signal."
 			},
 			{
 				"name": "settleProcesses",
-				"type": "Promise<Settlement>"
+				"type": "Promise<Settlement>",
+				"description": "Settlement with counted survivors, stopped/resisted totals, unknown flag and log report. Vetted delegated services are handed over; protected/unproven processes remain and fail the check; errors or deadline exhaustion return unknown."
 			}
 		],
 		"errors": []

@@ -2,42 +2,48 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.image-thumbnail",
 	"kind": "component",
-	"title": "ImageThumbnail",
-	"responsibility": "Owns the ImageThumbnail Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Image thumbnail",
+	"responsibility": "Loads a small preview of one recorded design image.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/ImageThumbnail.svelte"],
 		"symbols": ["ImageThumbnail"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ImageThumbnail.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Workspace supplied to the image-URL helper for preview retrieval and effect cleanup."
 			},
 			{
 				"name": "ImageThumbnail.entityId",
-				"type": "string"
+				"type": "string",
+				"description": "Required entity identifier in the image request."
 			},
 			{
 				"name": "ImageThumbnail.version",
-				"type": "string"
+				"type": "string",
+				"description": "Required design-version identifier in the image request."
 			},
 			{
 				"name": "ImageThumbnail.sha256",
-				"type": "string"
+				"type": "string",
+				"description": "Required image hash in the request; this view does not independently verify bytes."
 			},
 			{
 				"name": "ImageThumbnail.title",
-				"type": "string"
+				"type": "string",
+				"description": "Required alternative text for the thumbnail."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ImageThumbnail",
-				"type": "markup"
+				"type": "markup",
+				"description": "Image when the helper supplies a nonempty URL; otherwise Preview unavailable, including while loading. Ignores the helper’s error argument, so loading and failure are not distinguished."
 			}
 		],
 		"errors": []

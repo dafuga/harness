@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.site-processes",
 	"kind": "function",
-	"title": "siteProcesses",
-	"responsibility": "Limits a CPU sample to agents working in a checkout of the hosting application, keeping the machine totals.",
+	"title": "Site-scoped CPU observations",
+	"responsibility": "Filters agent CPU observations to processes attributed to the hosted repository.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,21 +11,24 @@
 		"symbols": ["siteProcesses"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "siteProcesses.snapshot",
-				"type": "CpuSnapshot"
+				"type": "CpuSnapshot",
+				"description": "CPU sample with machine totals, groups and optional agent entries."
 			},
 			{
 				"name": "siteProcesses.directoryOf",
-				"type": "(pid: number) => string | undefined"
+				"type": "(pid: number) => string | undefined",
+				"description": "Optional PID-to-working-directory lookup. Defaults to reading the process directory, falling back to lsof; unknown directories exclude the agent."
 			}
 		],
 		"outputs": [
 			{
 				"name": "siteProcesses",
-				"type": "CpuSnapshot"
+				"type": "CpuSnapshot",
+				"description": "Snapshot preserving machine data and non-agent groups, with only site-owned agents, recalculated agent totals and recalculated tracked percentage unless it was null. Samples lacking agents or groups are returned unchanged."
 			}
 		],
 		"errors": []

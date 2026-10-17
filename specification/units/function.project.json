@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "function.project",
 	"kind": "function",
-	"title": "project",
-	"responsibility": "Owns the project shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Project kind detection",
+	"responsibility": "Infers whether a directory is a Harness app or library from explicit metadata and conventional local files.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/core/project.ts"],
 		"symbols": ["DetectedProjectKind", "detectProjectKind"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "detectProjectKind.root",
-				"type": "string"
+				"type": "string",
+				"description": "Project directory to inspect for package.json, svelte.config.js and src/index.ts."
 			}
 		],
 		"outputs": [
 			{
 				"name": "detectProjectKind",
-				"type": "Promise<DetectedProjectKind>"
+				"type": "Promise<DetectedProjectKind>",
+				"description": "App or lib from explicit package harness.kind first; otherwise app for Svelte configuration/dependency/check script, lib for a readable package and src/index.ts, or unknown. Read/parse/access failures are treated as missing evidence."
 			}
 		],
 		"errors": []

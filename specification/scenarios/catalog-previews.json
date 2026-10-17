@@ -82,6 +82,13 @@
 			"capture": "viewport"
 		},
 		{
+			"id": "preview-assertions",
+			"kind": "assertions",
+			"states": ["preview-safety"],
+			"viewports": [],
+			"required": true
+		},
+		{
 			"id": "preview-output",
 			"kind": "output",
 			"states": [

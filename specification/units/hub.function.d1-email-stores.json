@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "hub.function.d1-email-stores",
 	"kind": "function",
-	"title": "d1EmailStores",
-	"responsibility": "Owns the d1EmailStores shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Email proof database operations",
+	"responsibility": "Provide email proof, send-rate and verified-address storage methods.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/d1EmailStores.ts"],
 		"symbols": ["D1EmailStores", "EMAIL_PURGES", "d1EmailStores"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "d1EmailStores.db",
-				"type": "D1Like"
+				"type": "D1Like",
+				"description": "D1-compatible database handle; queries run only when the returned store methods are called."
 			},
 			{
 				"name": "d1EmailStores.records",
-				"type": "AuthRecordValidator"
+				"type": "AuthRecordValidator",
+				"description": "Validator used to turn stored database rows into typed records."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EMAIL_PURGES",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "SQL statements to remove expired proofs and verified addresses and send-ledger rows at least two days old; callers supply the current time and execute them."
 			},
 			{
 				"name": "d1EmailStores",
-				"type": "D1EmailStores"
+				"type": "D1EmailStores",
+				"description": "Proof store supports creation, lookup, live-code replacement, bounded attempts, single claimed-proof completion and removal. Ledger supports atomic interval/day-cap checks and verified-address lookup/replacement."
 			}
 		],
 		"errors": []

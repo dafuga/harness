@@ -2,38 +2,43 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.runtime-pane",
 	"kind": "component",
-	"title": "RuntimePane",
-	"responsibility": "Owns the RuntimePane Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Runtime pane",
+	"responsibility": "Shows one recorded screenshot or the reason its capture is unavailable.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/RuntimePane.svelte"],
 		"symbols": ["RuntimePane"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RuntimePane.item",
-				"type": "Evidence"
+				"type": "Evidence",
+				"description": "Evidence item with file, phase, missing flag/note and display facts. Missing items are not fetched. Before phase reads before; other phases read after."
 			},
 			{
 				"name": "RuntimePane.title",
-				"type": "string"
+				"type": "string",
+				"description": "Required figure heading and accessible name."
 			},
 			{
 				"name": "RuntimePane.role",
-				"type": "string"
+				"type": "string",
+				"description": "Required descriptive badge such as Parent commit or Branch tip."
 			},
 			{
 				"name": "RuntimePane.evidence",
-				"type": "EntityEvidence"
+				"type": "EntityEvidence",
+				"description": "URL-reading state. Failed promises become displayed problems; callbacks from superseded requests are ignored."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RuntimePane",
-				"type": "markup"
+				"type": "markup",
+				"description": "Figure with screenshot after URL resolution, plus standing/status. Missing capture, failed verification and loading have separate messages. Non-Fresh capture standings receive stale styling."
 			}
 		],
 		"errors": []

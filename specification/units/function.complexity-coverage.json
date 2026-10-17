@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.complexity-coverage",
 	"kind": "function",
-	"title": "complexityCoverage",
-	"responsibility": "Says for one file whether its decision points are counted, whether it has none to count, or whether its language is not counted, and names that language.",
+	"title": "Complexity coverage classification",
+	"responsibility": "States whether a file’s decision points can be counted, are absent by file kind, or belong to an unsupported language.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,29 +11,34 @@
 		"symbols": ["ComplexityCoverage", "complexityCoverage", "uncountedLanguage"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "complexityCoverage.path",
-				"type": "string"
+				"type": "string",
+				"description": "File path whose lowercased extension determines the supported language or declarative format."
 			},
 			{
 				"name": "complexityCoverage.scripted",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Whether an HTML file contains script; defaults to false and has no effect on other extensions."
 			},
 			{
 				"name": "uncountedLanguage.path",
-				"type": "string"
+				"type": "string",
+				"description": "Path of an unsupported file to label by its lowercased extension."
 			}
 		],
 		"outputs": [
 			{
 				"name": "complexityCoverage",
-				"type": "ComplexityCoverage"
+				"type": "ComplexityCoverage",
+				"description": "Counted for supported JavaScript, TypeScript and Svelte files; declarative for supported data or presentation formats and scriptless HTML; unsupported otherwise."
 			},
 			{
 				"name": "uncountedLanguage",
-				"type": "string"
+				"type": "string",
+				"description": "Known language name, an extension followed by files, or files without an extension when no extension exists."
 			}
 		],
 		"errors": []

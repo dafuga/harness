@@ -2,42 +2,48 @@
 	"schemaVersion": 1,
 	"id": "hub.function.hub-evidence-query",
 	"kind": "function",
-	"title": "hubEvidenceQuery",
-	"responsibility": "Owns the hubEvidenceQuery shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Read public evidence query fields",
+	"responsibility": "Reconstruct approved evidence query fields and bind the project from the route.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/hubEvidenceQuery.ts"],
 		"symbols": ["hubEvidenceQuery", "hubArtifactQuery"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hubEvidenceQuery.request",
-				"type": "Request"
+				"type": "Request",
+				"description": "Request URL containing evidence query parameters."
 			},
 			{
 				"name": "hubEvidenceQuery.projectId",
-				"type": "string"
+				"type": "string",
+				"description": "Authorized route project ID to use."
 			},
 			{
 				"name": "hubArtifactQuery.request",
-				"type": "Request"
+				"type": "Request",
+				"description": "Request URL containing artifact query parameters."
 			},
 			{
 				"name": "hubArtifactQuery.projectId",
-				"type": "string"
+				"type": "string",
+				"description": "Authorized route project ID to use."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubEvidenceQuery",
-				"type": "EntityEvidenceQuery"
+				"type": "EntityEvidenceQuery",
+				"description": "Validated public entity-evidence query with the route project ID."
 			},
 			{
 				"name": "hubArtifactQuery",
-				"type": "EvidenceArtifactQuery"
+				"type": "EvidenceArtifactQuery",
+				"description": "Validated public artifact query with the route project ID and absent viewport/notes/evidence revisions supplied as null."
 			}
 		],
 		"errors": []

@@ -2,21 +2,22 @@
 	"schemaVersion": 1,
 	"id": "reports.function.provider-picker-entry",
 	"kind": "function",
-	"title": "providerPickerEntry",
-	"responsibility": "Owns the providerPickerEntry shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Model picker mount",
+	"responsibility": "Mounts the model-picker component into its standalone browser container.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/utils/providerPickerEntry.ts"],
 		"symbols": ["providerPickerEntry"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "providerPickerEntry",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Svelte mount result for the picker in the element named app. The module also invokes this function immediately on import."
 			}
 		],
 		"errors": []

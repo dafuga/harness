@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.comparison-types",
 	"kind": "function",
-	"title": "comparisonTypes",
-	"responsibility": "Defines the comparison context that makes two measurements comparable and the unit of each budgeted metric.",
+	"title": "Measurement comparison schema",
+	"responsibility": "Defines the protocol, units and complete context required to compare benchmark measurements.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -18,28 +18,33 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "roundsProtocol",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Protocol id harness-rounds/1 for warmed rounds of complete invocations."
 			},
 			{
 				"name": "warmupCalls",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Three calls made before timed benchmark rounds."
 			},
 			{
 				"name": "measurementBoundaries",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Allowed boundaries: public-invocation for the whole runtime call, or fixture for a declared test value."
 			},
 			{
 				"name": "metricUnits",
-				"type": "Record<string, string>"
+				"type": "Record<string, string>",
+				"description": "Expected units: milliseconds for cold, warm and floor latency; ops/s for throughput; bytes for memory."
 			},
 			{
 				"name": "comparisonSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Strict Zod schema for a 64-character lowercase SHA-256 request digest, supported boundary, nonempty trimmed protocol and strict sampling counts with nonnegative warm-up and positive rounds and iterations."
 			}
 		],
 		"errors": []

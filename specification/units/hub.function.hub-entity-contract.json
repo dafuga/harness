@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "hub.function.hub-entity-contract",
 	"kind": "function",
-	"title": "hubEntityContract",
-	"responsibility": "Owns the hubEntityContract shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Choose a hosted entity contract",
+	"responsibility": "Prefer the plan contract, otherwise hash the registered unit contract.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/hubEntityContract.ts"],
 		"symbols": ["hubEntityContract"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hubEntityContract.unit",
-				"type": "Pick<ComponentManifest, 'contract'>"
+				"type": "Pick<ComponentManifest, 'contract'>",
+				"description": "Optional unit contract."
 			},
 			{
 				"name": "hubEntityContract.plan",
-				"type": "Pick<PlanRecord, 'contract'>"
+				"type": "Pick<PlanRecord, 'contract'>",
+				"description": "Optional plan contract, which takes precedence."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubEntityContract",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Plan contract unchanged, or unit contract with a computed hash; when neither exists, empty input/output/error lists with hash null."
 			}
 		],
 		"errors": []

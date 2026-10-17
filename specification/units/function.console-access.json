@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.console-access",
 	"kind": "function",
-	"title": "consoleAccess",
-	"responsibility": "Guards every console page, data and media request with the host policy before anything is read.",
+	"title": "Protected console handlers",
+	"responsibility": "Creates console handlers that check host policy before releasing stored JSON, media, build identity or downloadable reports.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -19,17 +19,19 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "consoleAccess.options",
-				"type": "{ policy: ConsolePolicy; data: ConsoleSource; exporter?: ConsoleExporter; host?: ConsoleHost; }"
+				"type": "{ policy: ConsolePolicy; data: ConsoleSource; exporter?: ConsoleExporter; host?: ConsoleHost; }",
+				"description": "Host policy and data source, with optional report exporter and build identity. Data may be shared or opened from each admitted request; policy must return exactly true to admit it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "consoleAccess",
-				"type": "ConsoleAccess"
+				"type": "ConsoleAccess",
+				"description": "Guard, page entry, JSON, media and report handlers. Denials return 403, absent or invalid resources return 404, legacy addresses may redirect with 308, and media supports byte-range 206 or 416 responses. Policy exceptions deny access; data is opened only after admission."
 			}
 		],
 		"errors": []

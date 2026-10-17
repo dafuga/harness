@@ -2,9 +2,9 @@
 	"schemaVersion": 1,
 	"id": "function.validation",
 	"kind": "function",
-	"title": "validation",
-	"responsibility": "Owns the validation shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Scaffold name validation",
+	"responsibility": "Validates safe project/code/field names and derives valid route, kebab-case and export names.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/core/validation.ts"],
@@ -18,67 +18,81 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "validateProjectName.name",
-				"type": "string"
+				"type": "string",
+				"description": "Project name to trim and validate as a safe single name."
 			},
 			{
 				"name": "validateCodeName.name",
-				"type": "string"
+				"type": "string",
+				"description": "Code name to trim and validate as a safe single name."
 			},
 			{
 				"name": "validateFieldName.name",
-				"type": "string"
+				"type": "string",
+				"description": "Field name to trim and validate as a safe single name."
 			},
 			{
 				"name": "validateRouteName.name",
-				"type": "string"
+				"type": "string",
+				"description": "Safe code name to convert to kebab-case route text."
 			},
 			{
 				"name": "validateKebabName.name",
-				"type": "string"
+				"type": "string",
+				"description": "Name expected to already use lowercase alphanumeric segments separated by hyphens."
 			},
 			{
 				"name": "validateKebabName.label",
-				"type": "string"
+				"type": "string",
+				"description": "Human-readable field label used in a kebab-case failure message."
 			},
 			{
 				"name": "validateExportName.name",
-				"type": "string"
+				"type": "string",
+				"description": "Safe code name to convert to camelCase and validate as a TypeScript identifier."
 			}
 		],
 		"outputs": [
 			{
 				"name": "validateProjectName",
-				"type": "string"
+				"type": "string",
+				"description": "Trimmed safe project name."
 			},
 			{
 				"name": "validateCodeName",
-				"type": "string"
+				"type": "string",
+				"description": "Trimmed safe code name."
 			},
 			{
 				"name": "validateFieldName",
-				"type": "string"
+				"type": "string",
+				"description": "Trimmed safe field name."
 			},
 			{
 				"name": "validateRouteName",
-				"type": "string"
+				"type": "string",
+				"description": "Nonempty kebab-case route name."
 			},
 			{
 				"name": "validateKebabName",
-				"type": "string"
+				"type": "string",
+				"description": "Trimmed lowercase kebab-case name."
 			},
 			{
 				"name": "validateExportName",
-				"type": "string"
+				"type": "string",
+				"description": "CamelCase export name satisfying TypeScript identifier shape."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown for empty names, traversal/separators, unsafe characters, invalid kebab case or an invalid generated export identifier."
 			}
 		]
 	},

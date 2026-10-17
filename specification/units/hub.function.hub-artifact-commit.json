@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "hub.function.hub-artifact-commit",
 	"kind": "function",
-	"title": "hubArtifactCommit",
-	"responsibility": "Owns the hubArtifactCommit shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Find an artifact introduction",
+	"responsibility": "Report a creation commit only when bounded artifact history shows one complete introduction.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/hubArtifactCommit.ts"],
 		"symbols": ["hubArtifactCommit"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hubArtifactCommit.context",
-				"type": "HubSourceContext"
+				"type": "HubSourceContext",
+				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubArtifactCommit.path",
-				"type": "string"
+				"type": "string",
+				"description": "Artifact path to inspect in the pinned history."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubArtifactCommit",
-				"type": "Promise<string | null>"
+				"type": "Promise<string | null>",
+				"description": "The sole history commit hash when the two-entry history request is complete and contains exactly one commit; otherwise null, including adapters without history support."
 			}
 		],
 		"errors": []

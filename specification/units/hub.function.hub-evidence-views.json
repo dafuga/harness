@@ -2,42 +2,48 @@
 	"schemaVersion": 1,
 	"id": "hub.function.hub-evidence-views",
 	"kind": "function",
-	"title": "hubEvidenceViews",
-	"responsibility": "Owns the hubEvidenceViews shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Project evidence record views",
+	"responsibility": "Resolve record captures and inherited origins into displayable evidence views with explicit gaps.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/hubEvidenceViews.ts"],
 		"symbols": ["hubEvidenceOrigin", "hubEvidenceViews"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hubEvidenceOrigin.history",
-				"type": "HubRecordStatusService"
+				"type": "HubRecordStatusService",
+				"description": "Pinned record history service."
 			},
 			{
 				"name": "hubEvidenceOrigin.id",
-				"type": "string"
+				"type": "string",
+				"description": "Original record ID to locate."
 			},
 			{
 				"name": "hubEvidenceViews.history",
-				"type": "HubRecordStatusService"
+				"type": "HubRecordStatusService",
+				"description": "Pinned record history service."
 			},
 			{
 				"name": "hubEvidenceViews.items",
-				"type": "RecordStatus[]"
+				"type": "RecordStatus[]",
+				"description": "Record statuses, including validity and problems, to project."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubEvidenceOrigin",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Loaded attachment when a verification line resolves to the requested record ID, otherwise undefined."
 			},
 			{
 				"name": "hubEvidenceViews",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Projected record views, retaining invalid-record problems and missing-capture gaps; attachments with no parsed record are omitted. Media references require matching validated hash and length."
 			}
 		],
 		"errors": []

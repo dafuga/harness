@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "hub.function.hub-metadata-paths",
 	"kind": "function",
-	"title": "hubMetadataPaths",
-	"responsibility": "Owns the hubMetadataPaths shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Select hosted metadata files",
+	"responsibility": "Select committed text metadata paths for bundled reads.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/hubMetadataPaths.ts"],
 		"symbols": ["hubMetadataPaths"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hubMetadataPaths.entries",
-				"type": "SourceEntry[]"
+				"type": "SourceEntry[]",
+				"description": "Source tree entries with type, mode and path."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubMetadataPaths",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Regular/executable blob paths for unit manifests and plan/design JSON or Markdown under the six supported category folders; images, threads and implementation files are excluded."
 			}
 		],
 		"errors": []

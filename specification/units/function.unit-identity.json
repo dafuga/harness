@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "function.unit-identity",
 	"kind": "function",
-	"title": "unitIdentity",
-	"responsibility": "Owns the unitIdentity shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Conventional unit identity",
+	"responsibility": "Derives a unit kind and name from a workspace-relative conventional source path.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/unitIdentity.ts"],
 		"symbols": ["UnitIdentity", "unitIdentity"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "unitIdentity.path",
-				"type": "string"
+				"type": "string",
+				"description": "Forward-slash path relative to its workspace, using supported src, scripts, db or crates conventions."
 			},
 			{
 				"name": "unitIdentity.workspace",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Optional workspace prefix, default empty."
 			}
 		],
 		"outputs": [
 			{
 				"name": "unitIdentity",
-				"type": "UnitIdentity | undefined"
+				"type": "UnitIdentity | undefined",
+				"description": "Kind, kebab-case name and dotted id, or undefined for unrecognized/empty identities. Rust crate files share one kernel id; route files and conventional folder suffixes follow their specific naming rules."
 			}
 		],
 		"errors": []

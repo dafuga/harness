@@ -2,38 +2,43 @@
 	"schemaVersion": 1,
 	"id": "hub.function.hub-threads",
 	"kind": "function",
-	"title": "hubThreads",
-	"responsibility": "Owns the hubThreads shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Display shared discussions",
+	"responsibility": "Convert shared threads and comments into desktop display records.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/hubThreads.ts"],
 		"symbols": ["hubThreads", "hubMessages"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hubThreads.threads",
-				"type": "CommittedThread[]"
+				"type": "CommittedThread[]",
+				"description": "Committed shared threads to display."
 			},
 			{
 				"name": "hubThreads.offset",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Pin-number offset; defaults to zero."
 			},
 			{
 				"name": "hubMessages.thread",
-				"type": "CommittedThread"
+				"type": "CommittedThread",
+				"description": "Committed thread whose comments should be displayed."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubThreads",
-				"type": "ThreadInfo[]"
+				"type": "ThreadInfo[]",
+				"description": "Thread summaries sorted by ID, with sequential pins starting at offset plus one, image anchors and comment counts."
 			},
 			{
 				"name": "hubMessages",
-				"type": "ThreadMessage[]"
+				"type": "ThreadMessage[]",
+				"description": "Comments in supplied order as user messages, retaining author identity/name, timestamp, text and version/image anchor; agent mode/provider/model are null."
 			}
 		],
 		"errors": []

@@ -2,32 +2,35 @@
 	"schemaVersion": 1,
 	"id": "function.gateway-tool-definitions",
 	"kind": "function",
-	"title": "gatewayToolDefinitions",
-	"responsibility": "Owns the gatewayToolDefinitions shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Gateway tool flattening",
+	"responsibility": "Flattens tool namespaces and rejects tools the experimental gateway cannot host.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/gatewayToolDefinitions.ts"],
 		"symbols": ["gatewayToolDefinitions"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "gatewayToolDefinitions.definitions",
-				"type": "GatewayItem[]"
+				"type": "GatewayItem[]",
+				"description": "Tool definitions containing function/custom entries or namespace entries with a tools array."
 			}
 		],
 		"outputs": [
 			{
 				"name": "gatewayToolDefinitions",
-				"type": "GatewayItem[]"
+				"type": "GatewayItem[]",
+				"description": "Flattened function/custom tool entries with enclosing namespace names attached; direct supported entries are returned unchanged."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown when namespace.tools is not an array or a tool type is neither function nor custom."
 			}
 		]
 	},

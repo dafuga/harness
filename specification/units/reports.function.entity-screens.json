@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.entity-screens",
 	"kind": "function",
-	"title": "entityScreens",
-	"responsibility": "Picks the screenshot of one state and viewport out of the evidence the host gave, one at the tip or a pair at a commit, states the gap of what has none, and turns captures into gallery items.",
+	"title": "Entity screenshot selection",
+	"responsibility": "Selects matching recorded screenshots and builds gallery items while retaining capture provenance and explicit gaps.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -19,49 +19,59 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "screenOptions.scenarios",
-				"type": "HarnessScenario[]"
+				"type": "HarnessScenario[]",
+				"description": "Scenario declarations; only those with viewports become screenshot choices."
 			},
 			{
 				"name": "screenPick.options",
-				"type": "ScreenOption[]"
+				"type": "ScreenOption[]",
+				"description": "Available scenario/state/viewport options."
 			},
 			{
 				"name": "screenPick.wanted",
-				"type": "Partial<ScreenPick>"
+				"type": "Partial<ScreenPick>",
+				"description": "Partial requested selection; unknown choices fall back to the first available choice at each level."
 			},
 			{
 				"name": "entityScreens.evidence",
-				"type": "ExplorerEvidence"
+				"type": "ExplorerEvidence",
+				"description": "Host-selected evidence for the current revision or compared revisions."
 			},
 			{
 				"name": "entityScreens.pick",
-				"type": "ScreenPick | null"
+				"type": "ScreenPick | null",
+				"description": "Selected scenario, state and viewport, or null when there is no visual scenario."
 			},
 			{
 				"name": "galleryItems.evidence",
-				"type": "ExplorerEvidence"
+				"type": "ExplorerEvidence",
+				"description": "Evidence whose screenshot and audio captures should become gallery items."
 			}
 		],
 		"outputs": [
 			{
 				"name": "screenOptions",
-				"type": "ScreenOption[]"
+				"type": "ScreenOption[]",
+				"description": "Scenario choices with required states and labeled viewport dimensions."
 			},
 			{
 				"name": "screenPick",
-				"type": "ScreenPick | null"
+				"type": "ScreenPick | null",
+				"description": "Resolved choice, or null when no scenarios exist. Missing state or viewport choices become an empty string."
 			},
 			{
 				"name": "entityScreens",
-				"type": "EntityScreens"
+				"type": "EntityScreens",
+				"description": "After screenshot or explicit gap, plus before at a selected commit. Matches scenario/state/viewport exactly; current mode rejects a non-current capture rather than borrowing it. Includes freshness and inherited-origin information."
 			},
 			{
 				"name": "galleryItems",
-				"type": "Evidence[]"
+				"type": "Evidence[]",
+				"description": "Before media then after media in commit mode, or current media alone, with sequence order, status, provenance and media details. Includes recorded screenshot/audio items even when unusable or inherited, retaining their labels."
 			}
 		],
 		"errors": []

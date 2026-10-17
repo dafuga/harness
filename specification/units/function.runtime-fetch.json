@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.runtime-fetch",
 	"kind": "function",
-	"title": "runtimeFetch",
-	"responsibility": "Serves a unit from a fetch handler with the same wire contract as the Node runtime server.",
+	"title": "Fetch runtime handler",
+	"responsibility": "Wraps a unit runtime in the common HTTP JSON request and response protocol.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,17 +11,19 @@
 		"symbols": ["runtimeFetch"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "runtimeFetch.runtime",
-				"type": "UnitRuntime"
+				"type": "UnitRuntime",
+				"description": "Unit runtime to invoke for accepted POST requests."
 			}
 		],
 		"outputs": [
 			{
 				"name": "runtimeFetch",
-				"type": "(request: Request)"
+				"type": "(request: Request)",
+				"description": "Async Request handler returning JSON with no-store headers and the status supplied by runtimeReply. Creating the handler does not start a server or close the runtime."
 			}
 		],
 		"errors": []

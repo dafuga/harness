@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.harness-emitted-growth",
 	"kind": "function",
-	"title": "harnessEmittedGrowth",
-	"responsibility": "Derives the emitted size of one unit commit by commit for each execution target, with the limit each commit was verified under and the reviews that measured it.",
+	"title": "Build-output growth history",
+	"responsibility": "Builds per-target emitted-size history with the limits and reviews associated with each commit.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -17,21 +17,24 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "harnessEmittedGrowth.index",
-				"type": "HarnessIndex"
+				"type": "HarnessIndex",
+				"description": "Index with unit growth, review ledger and newest-first revisions."
 			},
 			{
 				"name": "harnessEmittedGrowth.unit",
-				"type": "string"
+				"type": "string",
+				"description": "Unit identifier."
 			}
 		],
 		"outputs": [
 			{
 				"name": "harnessEmittedGrowth",
-				"type": "EmittedGrowth"
+				"type": "EmittedGrowth",
+				"description": "Targets and oldest-first rows, with measured size, nonzero delta from the last available size, missing notes and prior-review limit. Reviews at the row’s commit are attached separately. changed compares current availability/value to the immediately preceding row; the first row is not marked changed."
 			}
 		],
 		"errors": []

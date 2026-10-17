@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.explorer-behavior",
 	"kind": "function",
-	"title": "explorerBehavior",
-	"responsibility": "Says from the hashes of the recorded end-to-end results of both sides which are the same bytes, which differ, and which appeared or went.",
+	"title": "Recorded behavior comparison",
+	"responsibility": "Aligns headless results from selected evidence and distinguishes byte differences from established behavior changes.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,29 +11,34 @@
 		"symbols": ["behaviorKinds", "behaviorSummary", "explorerBehavior"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "behaviorSummary.found",
-				"type": "ExplorerBehaviorRow[]"
+				"type": "ExplorerBehaviorRow[]",
+				"description": "Aligned behavior rows to summarize."
 			},
 			{
 				"name": "explorerBehavior.evidence",
-				"type": "ExplorerEvidence"
+				"type": "ExplorerEvidence",
+				"description": "Host-selected before/after evidence and scenario context."
 			}
 		],
 		"outputs": [
 			{
 				"name": "behaviorKinds",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Output, assertions and trace capture kinds; benchmark captures are excluded."
 			},
 			{
 				"name": "behaviorSummary",
-				"type": "[ExplorerChange, string | null]"
+				"type": "[ExplorerChange, string | null]",
+				"description": "Summary and optional reason, with unknown taking precedence over unread byte differences. Empty rows are unknown; all unchanged rows are unchanged; other resolved differences are changed."
 			},
 			{
 				"name": "explorerBehavior",
-				"type": "ExplorerBehavior"
+				"type": "ExplorerBehavior",
+				"description": "Union of result rows matched by scenario, state, evidence and kind, with after-side order first and before-only rows afterward. Unusable captures become absent cells and unknown changes. Equal hashes are provisionally unchanged; different hashes only differ until read. No before side yields not-compared, while missing records or incompatibility prevent comparison."
 			}
 		],
 		"errors": []

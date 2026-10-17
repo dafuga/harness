@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.entity-reasons",
 	"kind": "function",
-	"title": "entityReasons",
-	"responsibility": "Summarises the reasons one commit recorded for an entity to the length of a single reason under the shared writing limits, and keeps every original beside the summary.",
+	"title": "Recorded change explanations",
+	"responsibility": "Summarizes recorded reasons within writing limits while retaining full notes, attempts and outcomes.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -21,45 +21,54 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "boundedText.notes",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Notes to normalize, deduplicate and join."
 			},
 			{
 				"name": "boundedText.limit",
-				"type": "WritingLimit"
+				"type": "WritingLimit",
+				"description": "Maximum character count and optional word limit for the combined text."
 			},
 			{
 				"name": "entityReasons.reasons",
-				"type": "HarnessExplanation[]"
+				"type": "HarnessExplanation[]",
+				"description": "Recorded explanations with behavior, simplification and performance attempts and outcomes."
 			},
 			{
 				"name": "reasonsTried.reasons",
-				"type": "EntityReasons"
+				"type": "EntityReasons",
+				"description": "Prepared reasons whose attempts should be summarized for a history row."
 			},
 			{
 				"name": "reasonUses.uses",
-				"type": "ReasonUse[]"
+				"type": "ReasonUse[]",
+				"description": "Subject/kind/outcome uses of an attempt to group."
 			}
 		],
 		"outputs": [
 			{
 				"name": "boundedText",
-				"type": "BoundedText"
+				"type": "BoundedText",
+				"description": "Combined normalized text and whether it was cut. Truncation uses whole words and an ellipsis when possible; an overlong first word is cut by Unicode characters."
 			},
 			{
 				"name": "entityReasons",
-				"type": "EntityReasons"
+				"type": "EntityReasons",
+				"description": "Bounded behavior and attempt summaries, distinct outcomes and original full notes/attempts grouped by normalized text with subjects. long is true for multiple reasons or any truncation."
 			},
 			{
 				"name": "reasonsTried",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Nonempty attempt summaries for simplification then performance, omitting exact duplicate attempts already represented by simplification."
 			},
 			{
 				"name": "reasonUses",
-				"type": "Array<{ kind: ReasonKind; outcome: string; subjects: string[] }>"
+				"type": "Array<{ kind: ReasonKind; outcome: string; subjects: string[] }>",
+				"description": "Groups by reason kind and outcome, listing their subjects."
 			}
 		],
 		"errors": []

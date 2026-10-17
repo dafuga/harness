@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "reports.component.report-summary",
 	"kind": "component",
-	"title": "ReportSummary",
-	"responsibility": "Owns the ReportSummary Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Report overview and downloads",
+	"responsibility": "Summarizes the report’s recorded outcome, evidence gaps, lifecycle and available exports.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/components/ReportSummary.svelte"],
 		"symbols": ["ReportSummary"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ReportSummary.report",
-				"type": "Report"
+				"type": "Report",
+				"description": "Required report supplying status, summary, findings, coverage, checks, revision, timestamps and export availability. The gap count includes failed, blocked or not-proven findings and coverage plus a missing revision; it does not count failed checks."
 			},
 			{
 				"name": "ReportSummary.downloadBase",
-				"type": "string"
+				"type": "string",
+				"description": "Required address prefix used to build available PDF, ZIP and HTML download links."
 			},
 			{
 				"name": "ReportSummary.portable",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional portable-view flag, defaulting to false. Hides ZIP and HTML downloads while retaining an available PDF link."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ReportSummary",
-				"type": "markup"
+				"type": "markup",
+				"description": "Outcome and summary, passed-check and evidence-gap counts, lifecycle and historical/stale notices, and expandable run metadata. Missing revisions remain not proven. Exports are shown only when available, otherwise as pending; finalizing receives its own notice."
 			}
 		],
 		"errors": []

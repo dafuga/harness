@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "hub.component.login-panel",
 	"kind": "component",
-	"title": "LoginPanel",
-	"responsibility": "Owns the LoginPanel Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Login panel",
+	"responsibility": "Shows sign-in availability, a Google sign-in button or the pending email-confirmation step.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/components/LoginPanel.svelte"],
 		"symbols": ["LoginPanel"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "LoginPanel.reason",
-				"type": "string"
+				"type": "string",
+				"description": "Optional introductory text, defaulting to guidance to sign in with Google to open invited projects. Used only in the ordinary sign-in view."
 			}
 		],
 		"outputs": [
 			{
 				"name": "LoginPanel",
-				"type": "markup"
+				"type": "markup",
+				"description": "Shows checking/error state before session status, configuration guidance when disabled, or email confirmation when pending. Otherwise renders a Google button only when a configured client ID, no actor, no pending proof and a holder are available. Obtains a fresh challenge and ignores stale challenge completion; challenge/button failures and session errors become alerts."
 			}
 		],
 		"errors": []

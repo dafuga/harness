@@ -2,48 +2,55 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.provider-models",
 	"kind": "function",
-	"title": "providerModels",
-	"responsibility": "Owns the providerModels shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Prepare and check model choices",
+	"responsibility": "Converts listed provider models for display and checks the requested model and effort.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/providerModels.ts"],
 		"symbols": ["providerModels", "validateModel"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "providerModels.models",
-				"type": "CodexModel[]"
+				"type": "CodexModel[]",
+				"description": "The provider’s models with identifiers, display names, hidden flags, effort choices, default effort and default-model flag."
 			},
 			{
 				"name": "validateModel.models",
-				"type": "ModelChoice[]"
+				"type": "ModelChoice[]",
+				"description": "The model choices available for selection."
 			},
 			{
 				"name": "validateModel.model",
-				"type": "string"
+				"type": "string",
+				"description": "The exact model identity requested."
 			},
 			{
 				"name": "validateModel.effort",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "The optional effort to check. Null or an empty string skips effort validation."
 			}
 		],
 		"outputs": [
 			{
 				"name": "providerModels",
-				"type": "ModelChoice[]"
+				"type": "ModelChoice[]",
+				"description": "Visible models in input order, with identifiers and effort values retained and hidden models removed."
 			},
 			{
 				"name": "validateModel",
-				"type": "void"
+				"type": "void",
+				"description": "No return value when the model exists and any nonempty requested effort is supported. No default model or effort is substituted."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Throws when the requested model is absent or its requested effort is unsupported."
 			}
 		]
 	},

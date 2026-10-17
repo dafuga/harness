@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.workspace-search",
 	"kind": "function",
-	"title": "workspaceSearch",
-	"responsibility": "Gives the top bar's search the entities of the shown project and revision, none while another is read, and an address only for results it listed.",
+	"title": "Build workspace search entries",
+	"responsibility": "List searchable units for the shown project and revision and resolve only those result objects.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,17 +11,19 @@
 		"symbols": ["WorkspaceSearch", "workspaceSearch"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "workspaceSearch.shown",
-				"type": "{ snapshot: ProjectSnapshot | null; pinned: boolean; busy: boolean; }"
+				"type": "{ snapshot: ProjectSnapshot | null; pinned: boolean; busy: boolean; }",
+				"description": "Snapshot, busy flag and pinned flag for the view."
 			}
 		],
 		"outputs": [
 			{
 				"name": "workspaceSearch",
-				"type": "WorkspaceSearch"
+				"type": "WorkspaceSearch",
+				"description": "Entries with names, purpose and commit, scope wording, and an at function returning routes only for the exact listed entry objects; loading returns null entries and no routes."
 			}
 		],
 		"errors": []

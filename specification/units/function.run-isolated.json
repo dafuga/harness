@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.run-isolated",
 	"kind": "function",
-	"title": "runIsolated",
-	"responsibility": "Runs a command in its own process group under a hard limit and tears the group down.",
+	"title": "Isolated verification command",
+	"responsibility": "Runs a bounded command, captures its log and settles descendants before deciding whether the check passed.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,17 +11,19 @@
 		"symbols": ["IsolatedRun", "IsolatedResult", "runIsolated"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "runIsolated.run",
-				"type": "IsolatedRun"
+				"type": "IsolatedRun",
+				"description": "Executable, arguments, working directory, environment, timeout, log path and output-byte cap, with optional process-observation hooks and cleanup bound for tests."
 			}
 		],
 		"outputs": [
 			{
 				"name": "runIsolated",
-				"type": "Promise<IsolatedResult>"
+				"type": "Promise<IsolatedResult>",
+				"description": "Result with passed/failed/timeout status, exit code, duration, descendant settlement and log path/size/SHA-256. Writes the merged output log; passing requires exit zero, no counted survivors and known cleanup. macOS signals only judged private processes; other platforms clean the process group."
 			}
 		],
 		"errors": []

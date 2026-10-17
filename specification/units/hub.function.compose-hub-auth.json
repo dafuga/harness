@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "hub.function.compose-hub-auth",
 	"kind": "function",
-	"title": "composeHubAuth",
-	"responsibility": "Owns the composeHubAuth shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Assemble hub authentication",
+	"responsibility": "Wire configured session, sign-in, email proof, native handoff and optional GitHub services.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/composeHubAuth.ts"],
 		"symbols": ["HubAuthParts", "composeHubAuth"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "composeHubAuth.parts",
-				"type": "HubAuthParts"
+				"type": "HubAuthParts",
+				"description": "Validated configuration, auth storage, trusted Google identity service, fetch, clock, token cache and optional email delivery adapter."
 			}
 		],
 		"outputs": [
 			{
 				"name": "composeHubAuth",
-				"type": "HubAuth"
+				"type": "HubAuth",
+				"description": "Detached-call-safe authentication interface for actor resolution, route handling, repository authorization and scoped token acquisition. Missing GitHub configuration makes the last two reject with github-disabled."
 			}
 		],
 		"errors": []

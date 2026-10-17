@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.line-process",
 	"kind": "function",
-	"title": "lineProcess",
-	"responsibility": "Keeps one child process alive and exchanges newline-delimited JSON with it.",
+	"title": "Persistent line process",
+	"responsibility": "Keeps a lazily started child process for sequential line exchanges and converts startup, exit and timeout failures to runtime responses.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,45 +11,54 @@
 		"symbols": ["ProcessReply", "LineProcess", "lineProcess", "unavailable", "exited"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "lineProcess.command",
-				"type": "string"
+				"type": "string",
+				"description": "Executable to spawn on the first exchange or after the previous child stops."
 			},
 			{
 				"name": "lineProcess.args",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Arguments passed directly to the child process with piped standard streams."
 			},
 			{
 				"name": "unavailable.command",
-				"type": "string"
+				"type": "string",
+				"description": "Executable name to identify in a startup-failure message."
 			},
 			{
 				"name": "unavailable.error",
-				"type": "Error"
+				"type": "Error",
+				"description": "Startup error whose message should be included."
 			},
 			{
 				"name": "exited.code",
-				"type": "number | null"
+				"type": "number | null",
+				"description": "Exit status, or null when no numeric status is known."
 			},
 			{
 				"name": "exited.stderr",
-				"type": "string"
+				"type": "string",
+				"description": "Error-output text to trim and include up to its last 200 characters."
 			}
 		],
 		"outputs": [
 			{
 				"name": "lineProcess",
-				"type": "LineProcess"
+				"type": "LineProcess",
+				"description": "Handle with exchange and close methods. Exchange writes one normalized line and waits for a response line or timeout; close kills the child with SIGKILL and clears its buffer."
 			},
 			{
 				"name": "unavailable",
-				"type": "RuntimeResponse"
+				"type": "RuntimeResponse",
+				"description": "Runtime failure with code runtime-unavailable and the command/startup error message."
 			},
 			{
 				"name": "exited",
-				"type": "RuntimeResponse"
+				"type": "RuntimeResponse",
+				"description": "Runtime failure with code runtime-failed, exit status and optional trimmed stderr detail."
 			}
 		],
 		"errors": []

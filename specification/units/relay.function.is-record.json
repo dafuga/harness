@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "relay.function.is-record",
 	"kind": "function",
-	"title": "isRecord",
-	"responsibility": "Owns the isRecord shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Object shape guard",
+	"responsibility": "Distinguishes non-null, non-array objects from scalar values.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/relay/src/utils/isRecord.ts"],
 		"symbols": ["isRecord"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "isRecord.value",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Unknown value to inspect."
 			}
 		],
 		"outputs": [
 			{
 				"name": "isRecord",
-				"type": "value is Record<string, unknown>"
+				"type": "value is Record<string, unknown>",
+				"description": "True for a non-null object that is not an array, narrowing its static type to a string-keyed record."
 			}
 		],
 		"errors": []

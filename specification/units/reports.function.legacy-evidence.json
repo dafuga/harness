@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.legacy-evidence",
 	"kind": "function",
-	"title": "legacyEvidence",
-	"responsibility": "Maps the files of a report from before Git-backed records onto gallery items, as what they are.",
+	"title": "Historical report media",
+	"responsibility": "Converts older report references and media without presenting them as build-bound verification.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,29 +11,34 @@
 		"symbols": ["legacyLink", "legacyEvidence"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "legacyLink.report",
-				"type": "HarnessLegacyReport"
+				"type": "HarnessLegacyReport",
+				"description": "Historical report with linked commit or gap."
 			},
 			{
 				"name": "legacyLink.commit",
-				"type": "string"
+				"type": "string",
+				"description": "Currently viewed commit."
 			},
 			{
 				"name": "legacyEvidence.report",
-				"type": "HarnessLegacyReport"
+				"type": "HarnessLegacyReport",
+				"description": "Historical report and its media entries."
 			}
 		],
 		"outputs": [
 			{
 				"name": "legacyLink",
-				"type": "string"
+				"type": "string",
+				"description": "Text identifying this commit, another linked commit, or the report’s missing-commit explanation."
 			},
 			{
 				"name": "legacyEvidence",
-				"type": "Evidence[]"
+				"type": "Evidence[]",
+				"description": "Ordered gallery items labeled legacy, with no recorded build, original report attribution and missing-media markers. Unknown statuses become not-proven; MIME types beginning with audio select audio presentation."
 			}
 		],
 		"errors": []

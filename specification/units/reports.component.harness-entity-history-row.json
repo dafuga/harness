@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-entity-history-row",
 	"kind": "component",
-	"title": "EntityHistoryRow",
-	"responsibility": "Shows one commit of the history of an entity as a row: its reasons held to the length of one, what it did to the entity, size, complexity, one timing and its verdict.",
+	"title": "Entity history row",
+	"responsibility": "Shows a selectable commit row with recorded change reasons, metrics and verification.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,49 +11,59 @@
 		"symbols": ["EntityHistoryRow"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EntityHistoryRow.row",
-				"type": "ExplorerHistoryRow"
+				"type": "ExplorerHistoryRow",
+				"description": "Required commit history row with date, subject, measured size/complexity, deltas, reviews and change classification."
 			},
 			{
 				"name": "EntityHistoryRow.detail",
-				"type": "ExplorerHistoryDetail | undefined"
+				"type": "ExplorerHistoryDetail | undefined",
+				"description": "Required loaded detail or undefined. Its explanations supply summarized reasons and attempts; subject is the fallback when behavior text is absent."
 			},
 			{
 				"name": "EntityHistoryRow.timing",
-				"type": "HistoryTiming | undefined"
+				"type": "HistoryTiming | undefined",
+				"description": "Required selected-profile timing or undefined. Displays before-to-after when before exists, otherwise after only; missing timing is Not measured."
 			},
 			{
 				"name": "EntityHistoryRow.verdict",
-				"type": "Pick<ExplorerVerdict, 'passed' | 'label'> & { reasons?: string[] }"
+				"type": "Pick<ExplorerVerdict, 'passed' | 'label'> & { reasons?: string[] }",
+				"description": "Required passing flag, label and optional reasons forwarded to the verification marker without reevaluation."
 			},
 			{
 				"name": "EntityHistoryRow.selected",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Required flag applying row selection styling and pressed state to the commit button."
 			},
 			{
 				"name": "EntityHistoryRow.viewed",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Required flag marking this as the currently viewed commit and adding its badge."
 			},
 			{
 				"name": "EntityHistoryRow.to",
-				"type": "ExplorerLocation"
+				"type": "ExplorerLocation",
+				"description": "Required destination for opening this entity at this row’s commit."
 			},
 			{
 				"name": "EntityHistoryRow.nav",
-				"type": "EntityNav"
+				"type": "EntityNav",
+				"description": "Required navigation context passed to the revision link."
 			},
 			{
 				"name": "EntityHistoryRow.onselect",
-				"type": "(full: boolean) => void"
+				"type": "(full: boolean) => void",
+				"description": "Required callback: commit button passes false for the summary, Full reasons passes true for original text. Does not itself navigate."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityHistoryRow",
-				"type": "markup"
+				"type": "markup",
+				"description": "Table row with date, short commit, change/viewed badges, bounded reason or subject, attempts, metrics/deltas, optional budget approval, timing and verdict. Long reasons expose a Full reasons button. View revision uses the supplied destination; missing measurements remain explicit."
 			}
 		],
 		"errors": []

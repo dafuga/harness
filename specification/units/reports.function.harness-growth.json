@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.harness-growth",
 	"kind": "function",
-	"title": "harnessGrowth",
-	"responsibility": "Derives the growth steps of one unit and the commit behind each.",
+	"title": "Recorded measurement trends",
+	"responsibility": "Builds source-size, complexity and dependency trends while keeping benchmark profiles separate.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -18,45 +18,54 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "harnessGrowth.index",
-				"type": "HarnessIndex"
+				"type": "HarnessIndex",
+				"description": "Index holding unit growth and revision order."
 			},
 			{
 				"name": "harnessGrowth.unit",
-				"type": "string"
+				"type": "string",
+				"description": "Unit whose growth is requested."
 			},
 			{
 				"name": "unitTimings.index",
-				"type": "HarnessIndex"
+				"type": "HarnessIndex",
+				"description": "Index containing benchmark series."
 			},
 			{
 				"name": "unitTimings.unit",
-				"type": "string"
+				"type": "string",
+				"description": "Unit whose benchmark entries are requested."
 			},
 			{
 				"name": "signed.delta",
-				"type": "number | undefined"
+				"type": "number | undefined",
+				"description": "Optional numeric difference to format."
 			}
 		],
 		"outputs": [
 			{
 				"name": "growthMetrics",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The source-bytes, complexity and dependencies metric keys."
 			},
 			{
 				"name": "harnessGrowth",
-				"type": "GrowthRow[]"
+				"type": "GrowthRow[]",
+				"description": "Oldest-first growth rows with values, notes and differences from the immediately preceding growth point when both values exist. Missing metrics stay undefined; changed is true only for a nonzero numeric delta."
 			},
 			{
 				"name": "unitTimings",
-				"type": "HarnessBenchmark[]"
+				"type": "HarnessBenchmark[]",
+				"description": "Matching benchmark entries unchanged, preserving their independent series."
 			},
 			{
 				"name": "signed",
-				"type": "string"
+				"type": "string",
+				"description": "Empty for zero, undefined or other falsy numeric values; a plus sign for positive differences, otherwise the numeric string."
 			}
 		],
 		"errors": []

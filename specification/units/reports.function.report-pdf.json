@@ -2,21 +2,22 @@
 	"schemaVersion": 1,
 	"id": "reports.function.report-pdf",
 	"kind": "function",
-	"title": "reportPdf",
-	"responsibility": "Owns the reportPdf shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "PDF Python executable",
+	"responsibility": "Chooses the Python executable used by report PDF generation.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/utils/reportPdf.ts"],
 		"symbols": ["reportPdf"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "reportPdf",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "PROJECT_REPORTS_PYTHON when set; otherwise the bundled Codex-runtime Python if its path exists, or python3. This chooses a command and does not execute it."
 			}
 		],
 		"errors": []

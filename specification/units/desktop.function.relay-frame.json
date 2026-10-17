@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.relay-frame",
 	"kind": "function",
-	"title": "relayFrame",
-	"responsibility": "Owns the relayFrame shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Read a relay message",
+	"responsibility": "Parse a relay message and check its recognized message shape.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/relayFrame.ts"],
 		"symbols": ["relayFrame"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "relayFrame.text",
-				"type": "string"
+				"type": "string",
+				"description": "JSON text; text longer than the configured frame allowance plus 4096 characters is refused."
 			}
 		],
 		"outputs": [
 			{
 				"name": "relayFrame",
-				"type": "RelayHostFrame | null"
+				"type": "RelayHostFrame | null",
+				"description": "The parsed ready, device-open, device-close, packet, pairing-request, device-revoked or ack frame; null for invalid JSON or failed checks."
 			}
 		],
 		"errors": []

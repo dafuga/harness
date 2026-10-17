@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-harness-legacy",
 	"kind": "component",
-	"title": "HarnessLegacy",
-	"responsibility": "Lists the reports made before records were kept in Git, with their original outcome, date and link.",
+	"title": "Historical report references",
+	"responsibility": "Shows older reports as historical context without presenting them as build-bound verification.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,33 +11,39 @@
 		"symbols": ["HarnessLegacy"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HarnessLegacy.reports",
-				"type": "HarnessLegacyReport[]"
+				"type": "HarnessLegacyReport[]",
+				"description": "Required historical reports. Reports linked to the selected commit appear first."
 			},
 			{
 				"name": "HarnessLegacy.commit",
-				"type": "string"
+				"type": "string",
+				"description": "Required currently selected commit, used for ordering and link behavior."
 			},
 			{
 				"name": "HarnessLegacy.known",
-				"type": "Set<string>"
+				"type": "Set<string>",
+				"description": "Required set of commits available to the explorer. Only a different known commit receives a navigation control."
 			},
 			{
 				"name": "HarnessLegacy.mediaBase",
-				"type": "string"
+				"type": "string",
+				"description": "Required media prefix for historical report evidence."
 			},
 			{
 				"name": "HarnessLegacy.onselect",
-				"type": "(commit: string) => void"
+				"type": "(commit: string) => void",
+				"description": "Required callback for opening a different known report commit."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HarnessLegacy",
-				"type": "markup"
+				"type": "markup",
+				"description": "Report outcomes, dates, environments, summaries and expandable checks, with an evidence gallery for one expanded report at a time. Explicitly labels these reports as historical context rather than verified evidence for the current build."
 			}
 		],
 		"errors": []

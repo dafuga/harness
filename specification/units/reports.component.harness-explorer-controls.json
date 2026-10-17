@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-explorer-controls",
 	"kind": "component",
-	"title": "ExplorerControls",
-	"responsibility": "Offers the search field, the changed-only switch and the order of a collection, and holds none of what they filter.",
+	"title": "Catalog controls",
+	"responsibility": "Edits search, changed-only and ordering choices for a catalog.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,21 +11,24 @@
 		"symbols": ["ExplorerControls"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ExplorerControls.noun",
-				"type": "string"
+				"type": "string",
+				"description": "Required lowercase plural entity name used in search labels and placeholder."
 			},
 			{
 				"name": "ExplorerControls.filter",
-				"type": "CatalogFilter"
+				"type": "CatalogFilter",
+				"description": "Required bindable filter object whose search, changedOnly and order are updated directly."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerControls",
-				"type": "markup"
+				"type": "markup",
+				"description": "Search field, changed-only switch and order dropdown populated from supported catalog orders. Does not filter records itself."
 			}
 		],
 		"errors": []

@@ -2,9 +2,9 @@
 	"schemaVersion": 1,
 	"id": "remote.function.pairing-envelope",
 	"kind": "function",
-	"title": "pairingEnvelope",
-	"responsibility": "Owns the pairingEnvelope shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Seal one-time pairing messages",
+	"responsibility": "Derive separate pairing request and approval keys and encrypt or decrypt their JSON payloads.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/remote/src/utils/pairingEnvelope.ts"],
@@ -18,49 +18,59 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "pairingEnvelope.context",
-				"type": "PairingContext"
+				"type": "PairingContext",
+				"description": "Host and pairing IDs, phone ephemeral public key, host public key and their ECDH secret."
 			},
 			{
 				"name": "sealPairing.key",
-				"type": "CryptoKey"
+				"type": "CryptoKey",
+				"description": "Single-use AES-GCM key derived for the specified message kind."
 			},
 			{
 				"name": "sealPairing.kind",
-				"type": "PairingKind"
+				"type": "PairingKind",
+				"description": "Message purpose: request or approval."
 			},
 			{
 				"name": "sealPairing.value",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "JSON-serializable pairing payload."
 			},
 			{
 				"name": "openPairing.key",
-				"type": "CryptoKey"
+				"type": "CryptoKey",
+				"description": "Matching AES-GCM key for this message purpose."
 			},
 			{
 				"name": "openPairing.kind",
-				"type": "PairingKind"
+				"type": "PairingKind",
+				"description": "Expected purpose: request or approval."
 			},
 			{
 				"name": "openPairing.sealed",
-				"type": "string"
+				"type": "string",
+				"description": "Unpadded base64url ciphertext and authentication tag."
 			}
 		],
 		"outputs": [
 			{
 				"name": "pairingEnvelope",
-				"type": "Promise<PairingKeys>"
+				"type": "Promise<PairingKeys>",
+				"description": "Separate nonextractable AES keys for request and approval, bound to the pairing identities and public keys."
 			},
 			{
 				"name": "sealPairing",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Base64url authenticated ciphertext of the JSON value using a zero nonce and purpose-specific associated data."
 			},
 			{
 				"name": "openPairing",
-				"type": "Promise<unknown>"
+				"type": "Promise<unknown>",
+				"description": "Parsed JSON payload after authentication and strict UTF-8 decoding."
 			}
 		],
 		"errors": []

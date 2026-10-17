@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-entity-tests",
 	"kind": "component",
-	"title": "EntityTests",
-	"responsibility": "Shows how an entity is proven from the typed coverage of its host: its verdict and reasons, each scenario with its states and checks, what the commit no longer declares, its results and captures.",
+	"title": "Entity verification details",
+	"responsibility": "Explains recorded coverage, test outcomes and media for one entity revision.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,41 +11,49 @@
 		"symbols": ["EntityTests"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EntityTests.entity",
-				"type": "ExplorerEntity"
+				"type": "ExplorerEntity",
+				"description": "Required entity with name, identifier, category and supplied verdict."
 			},
 			{
 				"name": "EntityTests.scope",
-				"type": "ExplorerScope"
+				"type": "ExplorerScope",
+				"description": "Required displayed commit/parent context."
 			},
 			{
 				"name": "EntityTests.evidence",
-				"type": "ExplorerEvidence"
+				"type": "ExplorerEvidence",
+				"description": "Required coverage, scenarios, records and media. After-side coverage judges the displayed revision; removed declarations are listed separately."
 			},
 			{
 				"name": "EntityTests.behavior",
-				"type": "ExplorerBehavior"
+				"type": "ExplorerBehavior",
+				"description": "Required behavior results; nonempty rows render a behavior panel keyed to entity and commit."
 			},
 			{
 				"name": "EntityTests.nav",
-				"type": "EntityNav"
+				"type": "EntityNav",
+				"description": "Required context for behavior-panel navigation."
 			},
 			{
 				"name": "EntityTests.mediaBase",
-				"type": "string"
+				"type": "string",
+				"description": "Required base for recorded artifacts and media gallery."
 			},
 			{
 				"name": "EntityTests.exportHref",
-				"type": "string"
+				"type": "string",
+				"description": "Optional record-download base, empty by default. A record and nonempty base produce a link with its record ID as query."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityTests",
-				"type": "markup"
+				"type": "markup",
+				"description": "Verdict and reasons, scenario/state coverage and underlying check outcomes/durations, removed declarations, behavior and media. Missing records/scenarios remain explicit. Inapplicable states are labeled, and repeated slot reasons are suppressed when the state already says them."
 			}
 		],
 		"errors": []

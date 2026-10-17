@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.console-bundle",
 	"kind": "function",
-	"title": "consoleBundle",
-	"responsibility": "Serves console data and media from modules bundled into the server, so no public file path exists.",
+	"title": "Bundled console data",
+	"responsibility": "Reads console JSON and media lazily from modules compiled into a server bundle.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,17 +11,19 @@
 		"symbols": ["ConsoleModules", "consoleBundle"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "consoleBundle.modules",
-				"type": "ConsoleModules"
+				"type": "ConsoleModules",
+				"description": "Maps of JSON and media module loaders. JSON modules default-export text; media modules default-export base64 and export a MIME type string. Loader paths end in the requested filename plus .ts."
 			}
 		],
 		"outputs": [
 			{
 				"name": "consoleBundle",
-				"type": "ConsoleData"
+				"type": "ConsoleData",
+				"description": "Data reader with async json and media methods. Missing loaders or wrong export types yield undefined; media is decoded into original bytes with its MIME type. No module loads until requested."
 			}
 		],
 		"errors": []

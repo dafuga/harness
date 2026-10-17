@@ -106,6 +106,8 @@ const scopes: Record<string, VerificationScope> = {
 					'cli-boundaries'
 			},
 			'test/catalog-listing.test.ts': {
+				'implemented pages select their declared screenshot rather than an absent planning image':
+					'project-scope',
 				'the tip lists every ordinary entity and no page manifest that only loads for an address':
 					'project-scope',
 				'what is left out of the list is still opened by its identity, with its sources and history':

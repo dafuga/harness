@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "collaboration.function.commit-records",
 	"kind": "function",
-	"title": "commitRecords",
-	"responsibility": "Owns the commitRecords shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Create a collaboration records commit",
+	"responsibility": "Write serialized records as a Git blob and tree, then create a commit without moving a branch.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/collaboration/src/utils/commitRecords.ts"],
 		"symbols": ["commitRecords"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "commitRecords.client",
-				"type": "GitHubTransport"
+				"type": "GitHubTransport",
+				"description": "Repository-scoped GitHub transport with permission to write Git objects."
 			},
 			{
 				"name": "commitRecords.input",
-				"type": "{ parent: string | null; path: string; records: unknown }"
+				"type": "{ parent: string | null; path: string; records: unknown }",
+				"description": "Optional parent commit, destination file path and JSON-serializable records."
 			}
 		],
 		"outputs": [
 			{
 				"name": "commitRecords",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "New commit SHA after creating its blob and tree; the parent tree is reused when a parent is supplied."
 			}
 		],
 		"errors": []

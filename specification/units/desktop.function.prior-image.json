@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.prior-image",
 	"kind": "function",
-	"title": "priorImage",
-	"responsibility": "Owns the priorImage shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Find the image a design replaced",
+	"responsibility": "Finds a supported before-image for a design shown at the commit that introduced it.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/priorImage.ts"],
 		"symbols": ["PriorImage", "priorImage"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "priorImage.versions",
-				"type": "DesignVersion[]"
+				"type": "DesignVersion[]",
+				"description": "The design versions in historical order."
 			},
 			{
 				"name": "priorImage.shown",
-				"type": "{ version: string; image: DesignImage | undefined }"
+				"type": "{ version: string; image: DesignImage | undefined }",
+				"description": "The displayed version identity and optional selected image."
 			},
 			{
 				"name": "priorImage.commit",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "The selected commit, or null for a branch view."
 			}
 		],
 		"outputs": [
 			{
 				"name": "priorImage",
-				"type": "PriorImage | null"
+				"type": "PriorImage | null",
+				"description": "The prior version and image hash, or null without a selected image or matching introducing commit. Uses an explicit revised-image binding first. Without one, versions with design options are not paired; a single design falls back to the preceding version’s image with the same state and viewport."
 			}
 		],
 		"errors": []

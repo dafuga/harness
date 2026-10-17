@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "hub.component.invite-accept",
 	"kind": "component",
-	"title": "InviteAccept",
-	"responsibility": "Owns the InviteAccept Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Invite accept",
+	"responsibility": "Accepts a project invitation using the signed-in account and the separately supplied code.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/components/InviteAccept.svelte"],
 		"symbols": ["InviteAccept"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "InviteAccept.projectId",
-				"type": "string"
+				"type": "string",
+				"description": "Required project identifier sent with acceptance and used for the destination workspace."
 			},
 			{
 				"name": "InviteAccept.invitationId",
-				"type": "string"
+				"type": "string",
+				"description": "Required invitation identifier submitted alongside the trimmed code."
 			}
 		],
 		"outputs": [
 			{
 				"name": "InviteAccept",
-				"type": "markup"
+				"type": "markup",
+				"description": "Invitation-code form showing the session email. Blocks empty or concurrent submissions, calls acceptance, then performs document navigation to the project Pages catalog. Failure displays an alert and allows retry. The code is passed as an operation argument, not inserted into the destination URL."
 			}
 		],
 		"errors": []

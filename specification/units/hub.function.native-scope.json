@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "hub.function.native-scope",
 	"kind": "function",
-	"title": "nativeScope",
-	"responsibility": "Owns the nativeScope shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Describe native access scope",
+	"responsibility": "Explain the project access requested by a native device before approval.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/nativeScope.ts"],
 		"symbols": ["nativeScope"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "nativeScope.resource",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "projects for all current/future shared projects, project: followed by an ID for one project, or null/other text."
 			},
 			{
 				"name": "nativeScope.projects",
-				"type": "Pick<BrowserProjects, 'get'>"
+				"type": "Pick<BrowserProjects, 'get'>",
+				"description": "Project lookup used only for a nonempty single-project ID."
 			}
 		],
 		"outputs": [
 			{
 				"name": "nativeScope",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Readable scope wording: all projects, the fetched project name only, or an unavailable-project message when lookup fails. Missing or unrecognized scope is described conservatively as all projects with an ambiguity note."
 			}
 		],
 		"errors": []

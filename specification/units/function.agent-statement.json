@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.agent-statement",
 	"kind": "function",
-	"title": "agentStatement",
-	"responsibility": "Checks the few short facts an owner may state about an agent and gives them in the form they are kept.",
+	"title": "Agent statement validation",
+	"responsibility": "Validates and normalizes the short facts an owner supplies about an agent before those facts are stored.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,23 +11,26 @@
 		"symbols": ["AgentInput", "AgentStatement", "agentStatement"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "agentStatement.input",
-				"type": "AgentInput"
+				"type": "AgentInput",
+				"description": "Optional CLI strings for agent identity and work. Ids use 1–64 letters, digits, dots, dashes or underscores and begin alphanumerically; units are comma-separated lowercase unit ids; pid and ttl must be positive whole numbers."
 			}
 		],
 		"outputs": [
 			{
 				"name": "agentStatement",
-				"type": "AgentStatement"
+				"type": "AgentStatement",
+				"description": "Normalized statement with trimmed text, sorted unique unit ids, numeric pid or null, and ttlSeconds defaulting to 900. Text limits are label 120, provider/model/loop 80, task/outcome 200 characters; units are at most 40, ttl at most 86400, and pid at most 2147483647."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown when the id or unit list has an invalid shape, a text field contains controls or exceeds its limit, or pid or ttl is outside its whole-number range. The message names the offending option."
 			}
 		]
 	},

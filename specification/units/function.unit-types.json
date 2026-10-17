@@ -2,9 +2,9 @@
 	"schemaVersion": 1,
 	"id": "function.unit-types",
 	"kind": "function",
-	"title": "unitTypes",
-	"responsibility": "Owns the unitTypes shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Unit and scenario schemas",
+	"responsibility": "Defines validated unit contracts, execution targets, dependency kinds and scenario evidence requirements.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/core/unitTypes.ts"],
@@ -29,52 +29,63 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "unitIdPattern",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Pattern for lowercase alphanumeric identifiers separated by single dots or dashes."
 			},
 			{
 				"name": "dependencyVias",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Allowed dependency relations, including imports, reexports, dynamic imports, require, URL/style references, process, HTTP, Wasm and contract."
 			},
 			{
 				"name": "runtimeKinds",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Execution kinds module, wasm, process and http."
 			},
 			{
 				"name": "performanceMetrics",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Budgeted latency, throughput and memory metric names."
 			},
 			{
 				"name": "performanceTolerance",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Maximum unreviewed performance tolerance, 0.05."
 			},
 			{
 				"name": "contractItemSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Strict name/type contract-item schema with optional description. Name/type are trimmed and nonempty."
 			},
 			{
 				"name": "unitDependencySchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Strict dependency schema naming a unit, allowed relation and declared/derived origin, with optional contract."
 			},
 			{
 				"name": "performanceBudgetSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Strict performance budget schema with workload, supported metric, optional target and tolerance from zero through 0.05."
 			},
 			{
 				"name": "executionTargetSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Strict execution-target schema with supported kind, nonempty entry and optional environment/handler."
 			},
 			{
 				"name": "componentManifestSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Strict version 1 unit schema covering identity, declared/derived responsibility, active/retired state, ownership, contract, dependencies, runtime targets, scenarios, optional preview/lineage and frozen budgets."
 			},
 			{
 				"name": "scenarioManifestSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Strict version 1 scenario schema for UI/headless/audio cases, units, state coverage, viewports, tests and evidence requirements."
 			}
 		],
 		"errors": []

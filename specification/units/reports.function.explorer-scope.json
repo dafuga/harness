@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.explorer-scope",
 	"kind": "function",
-	"title": "explorerScope",
-	"responsibility": "Resolves an explorer address against a history: the branch, its actual tip, the commit shown and that commit's first parent.",
+	"title": "Explorer address resolution",
+	"responsibility": "Resolves an explorer address to the exact stored branch and revision or an explicit missing result.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,21 +11,24 @@
 		"symbols": ["ExplorerResolved", "explorerScope"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "explorerScope.index",
-				"type": "HarnessIndex"
+				"type": "HarnessIndex",
+				"description": "Stored branches and revision summaries."
 			},
 			{
 				"name": "explorerScope.location",
-				"type": "ExplorerLocation"
+				"type": "ExplorerLocation",
+				"description": "Requested branch, optional selected commit and screen address."
 			}
 		],
 		"outputs": [
 			{
 				"name": "explorerScope",
-				"type": "ExplorerResolved"
+				"type": "ExplorerResolved",
+				"description": "Resolved scope with current/commit mode, branch tip, viewed commit, at-tip flag, first parent and summary. Returns a missing message for an unknown branch, unstored tip or commit, or a commit not recorded on the requested branch; never substitutes a different revision."
 			}
 		],
 		"errors": []

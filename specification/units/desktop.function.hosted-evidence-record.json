@@ -2,21 +2,22 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.hosted-evidence-record",
 	"kind": "function",
-	"title": "hostedEvidenceRecord",
-	"responsibility": "Owns the hostedEvidenceRecord shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Define hosted verification records",
+	"responsibility": "Defines the accepted structure of a hosted verification record and its recorded results.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/hostedEvidenceRecord.ts"],
 		"symbols": ["hostedEvidenceRecord"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "hostedEvidenceRecord",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "A strict validation schema for record identity, passed/failed status, validity and problems; source commit and optional base; profile and timestamps; optional gate statuses; failures; tests; scenarios and captures; measurements; and budget findings. Test and scenario status values are constrained, numeric values must be finite, and shared list and text limits apply. The schema does not establish that a record is truthful."
 			}
 		],
 		"errors": []

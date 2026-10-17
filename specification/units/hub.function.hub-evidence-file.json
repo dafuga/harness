@@ -2,9 +2,9 @@
 	"schemaVersion": 1,
 	"id": "hub.function.hub-evidence-file",
 	"kind": "function",
-	"title": "hubEvidenceFile",
-	"responsibility": "Owns the hubEvidenceFile shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Check one evidence file",
+	"responsibility": "Read one declared evidence file, verify its stored identity and content, and release memoized source bytes afterward.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/hubEvidenceFile.ts"],
@@ -15,33 +15,37 @@
 		"inputs": [
 			{
 				"name": "hubEvidenceFile.base",
-				"type": "HubSourceContext"
+				"type": "HubSourceContext",
+				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubEvidenceFile.input",
-				"type": "Input"
+				"type": "Input",
+				"description": "Evidence pointer path and file declaration with path, storage, hash and byte length."
 			}
 		],
 		"outputs": [
 			{
 				"name": "evidenceFileLimit",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Maximum file size: 50000000 bytes."
 			},
 			{
 				"name": "hubEvidenceFile",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Bytes and an immutable file fact when intact, or explicit problem text for missing/mismatched declarations. A fact includes the verified storage blob ID."
 			}
 		],
 		"errors": [
 			{
 				"name": "evidence-file-too-large",
 				"type": "refused",
-				"description": "A declared or stored file over 50,000,000 bytes."
+				"description": "Declared, stored or returned raw file exceeds the 50000000-byte ceiling."
 			},
 			{
 				"name": "cache-hash-mismatch",
 				"type": "refused",
-				"description": "A materialized object that is not what its pointer states."
+				"description": "Materialized Git LFS bytes do not match the pointer’s declared content."
 			}
 		]
 	},

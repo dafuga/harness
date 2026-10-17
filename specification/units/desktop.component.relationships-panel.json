@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.relationships-panel",
 	"kind": "component",
-	"title": "RelationshipsPanel",
-	"responsibility": "Owns the RelationshipsPanel Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Used In and Uses",
+	"responsibility": "Shows recorded dependencies or the entities recorded as using the current entity.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/RelationshipsPanel.svelte"],
 		"symbols": ["RelationshipsPanel"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RelationshipsPanel.relationships",
-				"type": "Relationship[]"
+				"type": "Relationship[]",
+				"description": "Required relationships filtered by direction and deduplicated by identifier; the last matching duplicate supplies displayed values. Includes category, title, plan flag and verification state."
 			},
 			{
 				"name": "RelationshipsPanel.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Workspace used to link known-category entities. Records without a category remain plain text."
 			},
 			{
 				"name": "RelationshipsPanel.direction",
-				"type": "Relationship['direction']"
+				"type": "Relationship['direction']",
+				"description": "Required uses or used-by. Uses groups dependencies by category; used-by produces one Used In list with kind badges."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RelationshipsPanel",
-				"type": "markup"
+				"type": "markup",
+				"description": "Counted relationship list with readable names, category icons, optional plan badges and recorded verification markers. Dependencies are grouped by Pages, Shells, Components, Functions, Configs, Services and Other. Empty lists explicitly state no recorded dependencies or users."
 			}
 		],
 		"errors": []

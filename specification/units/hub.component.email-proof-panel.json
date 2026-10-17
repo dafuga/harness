@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "hub.component.email-proof-panel",
 	"kind": "component",
-	"title": "EmailProofPanel",
-	"responsibility": "Owns the EmailProofPanel Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Email proof panel",
+	"responsibility": "Collects the emailed verification code needed to finish sign-in.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/components/EmailProofPanel.svelte"],
 		"symbols": ["EmailProofPanel"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EmailProofPanel.proof",
-				"type": "EmailProofStatus"
+				"type": "EmailProofStatus",
+				"description": "Required email-proof status with target email, sent flag and optional expiry. Input is disabled until sent; the sent flag also chooses Send or Resend wording."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EmailProofPanel",
-				"type": "markup"
+				"type": "markup",
+				"description": "Email confirmation form with send/resend, numeric code entry, Verify and Cancel. Verify requires exactly the configured number of digits and a nonbusy session, and clears code on reported success. Cancel clears code then signs out. Session errors are shown; successful verification does not itself assume a signed-in actor."
 			}
 		],
 		"errors": []

@@ -33,7 +33,15 @@
 			"id": "batch",
 			"kind": "integration",
 			"runner": "command",
-			"target": "bun test/verification-output.ts vitest test/evidence-batch.test.ts test/utils/read-tree-texts.test.ts",
+			"target": "bun test/verification-output.ts vitest test/evidence-batch.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		},
+		{
+			"id": "metadata",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/utils/read-tree-texts.test.ts",
 			"cwd": ".",
 			"timeoutMs": 180000
 		}

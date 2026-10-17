@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.site-activity",
 	"kind": "function",
-	"title": "siteActivity",
-	"responsibility": "Reads the activity of the application this server is hosted for, whatever a request asks.",
+	"title": "Hosted site activity",
+	"responsibility": "Reads activity only for the application to which the reports server is bound.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,12 +11,13 @@
 		"symbols": ["siteActivity"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "siteActivity",
-				"type": "Promise<Shown | undefined>"
+				"type": "Promise<Shown | undefined>",
+				"description": "Promise resolving to the site’s activity and live observations from the activity service, requesting twenty commits; undefined when any part of the read fails. Undefined means unavailable, not an empty activity result."
 			}
 		],
 		"errors": []

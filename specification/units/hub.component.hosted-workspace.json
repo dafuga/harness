@@ -3,7 +3,7 @@
 	"id": "hub.component.hosted-workspace",
 	"kind": "shell",
 	"title": "Web workspace",
-	"responsibility": "Shows the shared workspace shell in a browser for shared projects, read through the hub. It offers human comments only: never Plan or Change.",
+	"responsibility": "Hosts the shared desktop-style workspace in the browser without local-folder access.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,12 +11,13 @@
 		"symbols": ["HostedWorkspace"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "HostedWorkspace",
-				"type": "markup"
+				"type": "markup",
+				"description": "On mount connects the browser bridge in nonlocal mode, loads projects and opens matching workspace paths. Follows browser back/forward events and removes its listener and bridge on cleanup. Shows the workspace and project account menu when a snapshot exists, otherwise loading or project-open error content. Document title includes the loaded project name."
 			}
 		],
 		"errors": []

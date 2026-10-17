@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.explorer-artifact",
 	"kind": "function",
-	"title": "explorerArtifact",
-	"responsibility": "Reads the bytes of one recorded artifact, checks them against the recorded hash and says what the artifact states about a run.",
+	"title": "Verified artifact reader",
+	"responsibility": "Reads stored artifact bytes, checks their recorded hash and extracts structured run observations.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,41 +11,49 @@
 		"symbols": ["artifactText", "artifactBehavior", "ArtifactFetcher", "explorerArtifact"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "artifactText.value",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Recorded value to render as text."
 			},
 			{
 				"name": "artifactBehavior.document",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Parsed document to interpret as run observations."
 			},
 			{
 				"name": "explorerArtifact.capture",
-				"type": "HarnessCapture"
+				"type": "HarnessCapture",
+				"description": "Recorded capture with media location, expected SHA-256 and optional gap explanation."
 			},
 			{
 				"name": "explorerArtifact.mediaBase",
-				"type": "string"
+				"type": "string",
+				"description": "Address prefix prepended to the capture media filename."
 			},
 			{
 				"name": "explorerArtifact.fetcher",
-				"type": "ArtifactFetcher"
+				"type": "ArtifactFetcher",
+				"description": "Optional byte-fetching function, defaulting to browser fetch."
 			}
 		],
 		"outputs": [
 			{
 				"name": "artifactText",
-				"type": "string"
+				"type": "string",
+				"description": "Not recorded for undefined, strings unchanged, otherwise indented JSON."
 			},
 			{
 				"name": "artifactBehavior",
-				"type": "ExplorerArtifactBehavior | null"
+				"type": "ExplorerArtifactBehavior | null",
+				"description": "Structured scenario/environment/fixture, steps, input/output, assertions, trace and remaining fields, or null for a non-object or array. Uses the first recognized input and output aliases; assertions retain named status and additional details."
 			},
 			{
 				"name": "explorerArtifact",
-				"type": "Promise<ExplorerArtifact>"
+				"type": "Promise<ExplorerArtifact>",
+				"description": "Resolves to verified text/document/behavior when bytes match the hash. Missing media, unsuccessful HTTP responses and hash mismatches return an unverified result with a problem; mismatched bytes remain text only. Non-JSON text may still be hash-verified."
 			}
 		],
 		"errors": []

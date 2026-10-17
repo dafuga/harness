@@ -224,6 +224,14 @@
 			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-search-fit.spec.ts"
 		},
 		{
+			"path": "packages/reports/tests/e2e/explorer-shell-capture-readiness.spec.ts",
+			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts {target}"
+		},
+		{
+			"path": "packages/reports/test/entity-preview-actions.spec.ts",
+			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
+		},
+		{
 			"path": "packages/reports/test/entity-preview.spec.ts",
 			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
 		},

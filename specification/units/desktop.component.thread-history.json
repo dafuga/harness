@@ -2,42 +2,48 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.thread-history",
 	"kind": "component",
-	"title": "ThreadHistory",
-	"responsibility": "Owns the ThreadHistory Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Thread history",
+	"responsibility": "Shows entity events and lets a person choose a plan or design version.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/ThreadHistory.svelte"],
 		"symbols": ["ThreadHistory"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ThreadHistory.entity",
-				"type": "EntityDetail"
+				"type": "EntityDetail",
+				"description": "Entity history, versions, category, identifier and title. Functions show plan versions without image requests; other categories may show each version’s first relevant image."
 			},
 			{
 				"name": "ThreadHistory.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Workspace supplied to version thumbnails for image retrieval."
 			},
 			{
 				"name": "ThreadHistory.version",
-				"type": "string"
+				"type": "string",
+				"description": "Required current version for highlighting and choosing its currently viewed option thumbnail."
 			},
 			{
 				"name": "ThreadHistory.option",
-				"type": "string"
+				"type": "string",
+				"description": "Optional current-version option, empty by default. Other versions use their approved or first option through the helper."
 			},
 			{
 				"name": "ThreadHistory.select",
-				"type": "(version: string) => void"
+				"type": "(version: string) => void",
+				"description": "Required callback receiving the clicked version. Does not itself mutate the version prop."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ThreadHistory",
-				"type": "markup"
+				"type": "markup",
+				"description": "Expandable event history with titles, raw recorded timestamps and details, plus a selectable version strip. Empty history is explicit. Versions show thumbnails where applicable and Plan/Design or approval labels. An approval tied to a known option names that option."
 			}
 		],
 		"errors": []

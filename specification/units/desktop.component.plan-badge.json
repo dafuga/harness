@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.plan-badge",
 	"kind": "component",
-	"title": "PlanBadge",
-	"responsibility": "Owns the PlanBadge Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Plan badge",
+	"responsibility": "Marks content with a short plan label.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/PlanBadge.svelte"],
 		"symbols": ["PlanBadge"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "PlanBadge.label",
-				"type": "string"
+				"type": "string",
+				"description": "Optional badge text, defaulting to Plan. Explicitly empty text stays empty."
 			}
 		],
 		"outputs": [
 			{
 				"name": "PlanBadge",
-				"type": "markup"
+				"type": "markup",
+				"description": "A styled span with the given label; it does not inspect plan or approval state."
 			}
 		],
 		"errors": []

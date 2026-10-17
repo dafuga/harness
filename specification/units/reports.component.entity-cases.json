@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.entity-cases",
 	"kind": "component",
-	"title": "EntityCases",
-	"responsibility": "Shows recorded test inputs beside their observed outputs or errors, with explicit gaps, in every Harness viewer.",
+	"title": "Entity cases",
+	"responsibility": "Shows recorded case inputs beside observed outputs or errors.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,25 +11,29 @@
 		"symbols": ["EntityCases"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EntityCases.document",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Required parsed recorded result passed to the case extractor. Caller is responsible for reading and checking its bytes before supplying it."
 			},
 			{
 				"name": "EntityCases.unit",
-				"type": "string"
+				"type": "string",
+				"description": "Optional unit identifier limiting direct invocation rows to that function."
 			},
 			{
 				"name": "EntityCases.callable",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional flag, true by default. Controls wording distinguishing observed end-to-end behavior from a direct function call; false is suitable for noncallable entities."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityCases",
-				"type": "markup"
+				"type": "markup",
+				"description": "Gap explanation when cases cannot be extracted, otherwise a Case/Input/Observed output table using recorded values. Failed cases show the recorded error. Full recorded JSON is serialized only when its disclosure opens; does not invent missing outputs."
 			}
 		],
 		"errors": []

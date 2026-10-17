@@ -2,9 +2,9 @@
 	"schemaVersion": 1,
 	"id": "collaboration.function.github-transport",
 	"kind": "function",
-	"title": "githubTransport",
-	"responsibility": "Owns the githubTransport shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Build scoped Git Hub requests",
+	"responsibility": "Provide repository-scoped API requests, exact ref resolution and base64 conversion.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/collaboration/src/utils/githubTransport.ts"],
@@ -19,75 +19,91 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "githubTransport.options",
-				"type": "GitHubOptions"
+				"type": "GitHubOptions",
+				"description": "Repository identity, scoped token callback and optional fetch implementation."
 			},
 			{
 				"name": "githubTransport.permission",
-				"type": "'read' | 'write'"
+				"type": "'read' | 'write'",
+				"description": "Contents permission requested for each token: read or write."
 			},
 			{
 				"name": "refPath.ref",
-				"type": "string"
+				"type": "string",
+				"description": "Full heads, notes or tags ref with a safe path and valid ref characters."
 			},
 			{
 				"name": "readRef.client",
-				"type": "GitHubTransport"
+				"type": "GitHubTransport",
+				"description": "Transport used to resolve the ref."
 			},
 			{
 				"name": "readRef.ref",
-				"type": "string"
+				"type": "string",
+				"description": "Full ref to look up exactly, including notes refs."
 			},
 			{
 				"name": "exactRef.client",
-				"type": "GitHubTransport"
+				"type": "GitHubTransport",
+				"description": "Transport used to require an existing exact ref."
 			},
 			{
 				"name": "exactRef.ref",
-				"type": "string"
+				"type": "string",
+				"description": "Full ref that must exist."
 			},
 			{
 				"name": "base64.bytes",
-				"type": "Uint8Array"
+				"type": "Uint8Array",
+				"description": "Bytes to encode as standard base64."
 			},
 			{
 				"name": "decode64.value",
-				"type": "string"
+				"type": "string",
+				"description": "Base64 text to decode; whitespace is ignored."
 			}
 		],
 		"outputs": [
 			{
 				"name": "githubTransport",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Request and repository-check methods; requests reject redirects and can return explicitly accepted statuses with null data."
 			},
 			{
 				"name": "refPath",
-				"type": "string"
+				"type": "string",
+				"description": "Encoded API ref path with the refs/ prefix removed."
 			},
 			{
 				"name": "readRef",
-				"type": "Promise<string | null>"
+				"type": "Promise<string | null>",
+				"description": "Exact matching ref SHA, or null for a missing ref."
 			},
 			{
 				"name": "exactRef",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Exact matching ref SHA; a missing ref rejects."
 			},
 			{
 				"name": "base64",
-				"type": "string"
+				"type": "string",
+				"description": "Standard base64 text."
 			},
 			{
 				"name": "decode64",
-				"type": "Uint8Array"
+				"type": "Uint8Array",
+				"description": "Decoded bytes."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects invalid paths, refs or content, missing or mismatched refs, denied repository identity or privacy and unavailable GitHub requests."
 			}
 		]
 	},

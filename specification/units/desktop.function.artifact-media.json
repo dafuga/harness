@@ -2,9 +2,9 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.artifact-media",
 	"kind": "function",
-	"title": "artifactMedia",
-	"responsibility": "Owns the artifactMedia shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Choose a capture’s media type",
+	"responsibility": "Chooses an allowed media type from the capture kind, recorded type and byte signatures.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/artifactMedia.ts"],
@@ -15,28 +15,32 @@
 		"inputs": [
 			{
 				"name": "artifactMedia.capture",
-				"type": "Recorded"
+				"type": "Recorded",
+				"description": "The capture kind and recorded media type. Supported kinds are screenshot, audio, output, assertions and trace."
 			},
 			{
 				"name": "artifactMedia.bytes",
-				"type": "Uint8Array"
+				"type": "Uint8Array",
+				"description": "The bytes to inspect. Screenshots need a PNG or JPEG signature. Audio needs a supported recorded type and matching signature. Text results must be valid UTF-8 without a null character."
 			}
 		],
 		"outputs": [
 			{
 				"name": "artifactLimit",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The shared maximum artifact size, 11 MiB or 11,534,336 bytes. This function exports the limit; media-type selection does not itself enforce it."
 			},
 			{
 				"name": "artifactMedia",
-				"type": "string"
+				"type": "string",
+				"description": "PNG or JPEG for screenshots; WAV, MPEG, MP4 or Ogg for supported audio. Results use application/json only when recorded as JSON and successfully parsed; otherwise they use UTF-8 plain text. No HTML type is returned."
 			}
 		],
 		"errors": [
 			{
 				"name": "type-not-attested",
 				"type": "refused",
-				"description": "The capture kind and its bytes give no media type from the fixed list."
+				"description": "Throws when the capture kind is unsupported, screenshot or audio signatures do not match an accepted format, the recorded audio type is unsupported, or a result is not valid text. Invalid JSON falls back to plain text."
 			}
 		]
 	},

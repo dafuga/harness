@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.project-agent",
 	"kind": "component",
-	"title": "ProjectAgent",
-	"responsibility": "Owns the ProjectAgent Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Project agent",
+	"responsibility": "Offers a catalog-level agent conversation for proposing a new entity and presents the request, response, progress and recoverable saved draft.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/ProjectAgent.svelte"],
 		"symbols": ["ProjectAgent"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProjectAgent.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Workspace used to create the project-agent state and provide category context and navigation. The component is intended to be recreated when the project changes. Its launcher is shown only when the agent state allows it and no entity is open."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectAgent",
-				"type": "markup"
+				"type": "markup",
+				"description": "Initially closed “Work with agent” launcher and an expandable conversation panel. Opening focuses the message box; closing or Escape restores focus to the launcher. Shows recorded request, response, status, errors and a cancel button when a status and run identifier exist. Links a saved draft for explicit opening. The compact composer offers Plan and a disabled Change choice because approval is false; active work blocks sending and the current category informs the request prompt."
 			}
 		],
 		"errors": []

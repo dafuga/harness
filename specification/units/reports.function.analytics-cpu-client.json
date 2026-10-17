@@ -2,32 +2,35 @@
 	"schemaVersion": 1,
 	"id": "reports.function.analytics-cpu-client",
 	"kind": "function",
-	"title": "analyticsCpuClient",
-	"responsibility": "Owns the analyticsCpuClient shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "CPU sampling client",
+	"responsibility": "Refreshes browser CPU observations and explicitly reports unavailable samples.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/utils/analyticsCpuClient.ts"],
 		"symbols": ["CpuState", "analyticsCpuClient"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "analyticsCpuClient.update",
-				"type": "(sample: CpuState) => void"
+				"type": "(sample: CpuState) => void",
+				"description": "Callback receiving a parsed CPU snapshot, or null when an active request fails."
 			}
 		],
 		"outputs": [
 			{
 				"name": "analyticsCpuClient",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns refresh and stop. Starts one request immediately and polls every five seconds while visible; overlapping requests are skipped. Stop cancels the timer and aborts the request, suppressing subsequent delivery."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "A non-success HTTP response creates CPU sample unavailable. internally; refresh catches failures and delivers null while active."
 			}
 		]
 	},

@@ -2,32 +2,35 @@
 	"schemaVersion": 1,
 	"id": "hub.function.browser-bridge",
 	"kind": "function",
-	"title": "browserBridge",
-	"responsibility": "Owns the browserBridge shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Hosted workspace bridge",
+	"responsibility": "Adapt hosted project reads and human comments to the desktop workspace interface.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/browserBridge.ts"],
 		"symbols": ["browserBridge"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "browserBridge.api",
-				"type": "BrowserApi"
+				"type": "BrowserApi",
+				"description": "Same-site API client for project data and comments."
 			}
 		],
 		"outputs": [
 			{
 				"name": "browserBridge",
-				"type": "DesktopBridge"
+				"type": "DesktopBridge",
+				"description": "Bridge for shared project listing, snapshots, entities, source, images, threads, history and evidence, plus comment posting. Snapshots force writable, agents, planning and approval off; comments follow the server flag. Read refusals notify listeners on 401/403. Local project opening returns null and pending comments are empty."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects requests without a project and all plan/approval/provider/agent operations; API read and comment failures propagate."
 			}
 		]
 	},

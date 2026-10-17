@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.coverage-panel",
 	"kind": "component",
-	"title": "CoveragePanel",
-	"responsibility": "Owns the CoveragePanel Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Coverage panel",
+	"responsibility": "Shows recorded evidence coverage and observed test behavior for the displayed entity without calculating a new verification verdict.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/CoveragePanel.svelte"],
 		"symbols": ["CoveragePanel"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CoveragePanel.entity",
-				"type": "EntityDetail"
+				"type": "EntityDetail",
+				"description": "Entity whose kind informs evidence notices and whose category and identifier scope the behavior display. Function entities pass their identifier to the behavior panel; other categories leave that filter unset."
 			},
 			{
 				"name": "CoveragePanel.evidence",
-				"type": "EntityEvidence"
+				"type": "EntityEvidence",
+				"description": "Evidence state supplying loading or failure notices and, only when ready, the recorded result. Uses the result’s after side for coverage, including its commit, record, gaps, scenario and state standings, test statuses and capture slots."
 			}
 		],
 		"outputs": [
 			{
 				"name": "CoveragePanel",
-				"type": "markup"
+				"type": "markup",
+				"description": "Evidence panel with a runtime-capture label, recorded commit and record identifier when available, and any evidence notice. When no notice blocks it, shows coverage gaps, scenarios, states and captures from the record. Only passed coverage receives a check mark; other standings receive a cross with recorded reasons. Shows observed behavior when rows exist, otherwise explicitly says no input and observed output were recorded at that commit."
 			}
 		],
 		"errors": []

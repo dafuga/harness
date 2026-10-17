@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.explorer-reading",
 	"kind": "function",
-	"title": "explorerReading",
-	"responsibility": "Reads the recorded results of both sides of a behaviour comparison and says, from every field they hold except what a run declares about itself, whether the behaviour changed.",
+	"title": "Behavior artifact comparison",
+	"responsibility": "Reads and verifies behavior artifacts, then compares recorded content while excluding explicitly declared run metadata.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,41 +11,49 @@
 		"symbols": ["artifactRun", "artifactDifferences", "explorerReading"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "artifactDifferences.before",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Earlier recorded value or document."
 			},
 			{
 				"name": "artifactDifferences.after",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Later recorded value or document."
 			},
 			{
 				"name": "explorerReading.behavior",
-				"type": "ExplorerBehavior"
+				"type": "ExplorerBehavior",
+				"description": "Initial behavior comparison with capture references and uncertainty state."
 			},
 			{
 				"name": "explorerReading.mediaBase",
-				"type": "string"
+				"type": "string",
+				"description": "Media address prefix used to read artifacts."
 			},
 			{
 				"name": "explorerReading.fetcher",
-				"type": "ArtifactFetcher"
+				"type": "ArtifactFetcher",
+				"description": "Optional artifact byte loader, forwarded to the verified artifact reader."
 			}
 		],
 		"outputs": [
 			{
 				"name": "artifactRun",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Run metadata declaration: harnessRun, version 1, and the recognized startedAt, finishedAt, at, durationMs and pid keys."
 			},
 			{
 				"name": "artifactDifferences",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Paths where values differ, comparing arrays by index and objects by sorted key union. Properly typed metadata is excluded only inside a supported run declaration; undeclared times and process IDs remain behavior. Trace-entry declarations are considered when the root has a supported declaration."
 			},
 			{
 				"name": "explorerReading",
-				"type": "Promise<ExplorerBehavior>"
+				"type": "Promise<ExplorerBehavior>",
+				"description": "Resolves to rows carrying verified reads and content differences. Different-byte rows become changed or unchanged from their content; unverified reads become unknown. Existing not-compared or explained unknown summaries are retained. Reads within one invocation are cached by SHA-256."
 			}
 		],
 		"errors": []

@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-explorer-page-card",
 	"kind": "component",
-	"title": "ExplorerPageCard",
-	"responsibility": "Shows one page as a card: its own screenshot at the shown revision or the gap, its purpose, how many components it contains and its binary verdict.",
+	"title": "Page catalog card",
+	"responsibility": "Summarizes a page with its own recorded screenshot and verification.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,29 +11,34 @@
 		"symbols": ["ExplorerPageCard"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ExplorerPageCard.row",
-				"type": "CatalogRow"
+				"type": "CatalogRow",
+				"description": "Required page catalog facts including identity/name, summary, component count, changed flag and verdict."
 			},
 			{
 				"name": "ExplorerPageCard.shot",
-				"type": "Evidence | null"
+				"type": "Evidence | null",
+				"description": "Required screenshot or null. Image appears only with nonmissing file and no load failure."
 			},
 			{
 				"name": "ExplorerPageCard.mediaBase",
-				"type": "string"
+				"type": "string",
+				"description": "Required screenshot asset prefix."
 			},
 			{
 				"name": "ExplorerPageCard.nav",
-				"type": "EntityNav"
+				"type": "EntityNav",
+				"description": "Required page navigation context."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerPageCard",
-				"type": "markup"
+				"type": "markup",
+				"description": "Linked page card with lazy screenshot or no-recorded-screenshot fallback, summary, component count, Changed badge and verdict. Provides Open page action. Image-load failure uses the same fallback as missing data. The 36-pixel arrow link keeps its Open page accessible name and hover tooltip."
 			}
 		],
 		"errors": []
@@ -41,11 +46,6 @@
 	"dependencies": [
 		{
 			"unit": "reports.component.harness-entity-link",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-harness-action",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.message-list",
 	"kind": "component",
-	"title": "MessageList",
-	"responsibility": "Owns the MessageList Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Message list",
+	"responsibility": "Shows conversation entries with authors, timestamps, optional status details and entity-reference links.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/MessageList.svelte"],
 		"symbols": ["MessageList"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "MessageList.messages",
-				"type": "ThreadEntry[]"
+				"type": "ThreadEntry[]",
+				"description": "Required entries in display order. User names fall back to You; other authors display their provider followed by CLI, or Harness. Optional pending state, note, detail and version are displayed."
 			},
 			{
 				"name": "MessageList.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Workspace for resolving references within the shown project and revision."
 			},
 			{
 				"name": "MessageList.entity",
-				"type": "CatalogEntity | null"
+				"type": "CatalogEntity | null",
+				"description": "Optional viewed entity for reference resolution before the catalog lists it; defaults to null."
 			}
 		],
 		"outputs": [
 			{
 				"name": "MessageList",
-				"type": "markup"
+				"type": "markup",
+				"description": "Polite live list with author badges, formatted timestamps and reference-aware text. Shows pending styling and optional note/detail/design version. Empty lists prompt a conversation about the design."
 			}
 		],
 		"errors": []

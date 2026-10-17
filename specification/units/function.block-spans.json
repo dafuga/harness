@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "function.block-spans",
 	"kind": "function",
-	"title": "blockSpans",
-	"responsibility": "Owns the blockSpans shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Named code block spans",
+	"responsibility": "Finds named top-level functions and class methods in masked JavaScript or TypeScript source.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/blockSpans.ts"],
 		"symbols": ["BlockSpan", "blockSpans"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "blockSpans.masked",
-				"type": "string"
+				"type": "string",
+				"description": "JavaScript or TypeScript text with non-code contents masked while preserving offsets and grouping punctuation."
 			}
 		],
 		"outputs": [
 			{
 				"name": "blockSpans",
-				"type": "BlockSpan[]"
+				"type": "BlockSpan[]",
+				"description": "Spans sorted by start offset, each naming a function or Class.method with its kind and source bounds. Supported declarations and assigned function values are included; unrecognized or incomplete bodies are omitted."
 			}
 		],
 		"errors": []

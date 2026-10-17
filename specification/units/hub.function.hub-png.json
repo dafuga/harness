@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "hub.function.hub-png",
 	"kind": "function",
-	"title": "hubPng",
-	"responsibility": "Owns the hubPng shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Validate hosted PNG content",
+	"responsibility": "Check PNG structure and bounded decompressed scanlines before exposing dimensions.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/hubPng.ts"],
 		"symbols": ["hubPng"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hubPng.bytes",
-				"type": "Uint8Array"
+				"type": "Uint8Array",
+				"description": "PNG bytes satisfying chunk validation, legal color/depth combinations and positive dimensions; both input and expected decompressed scanlines are capped at 32 MiB."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubPng",
-				"type": "Promise<{ width: number; height: number }>"
+				"type": "Promise<{ width: number; height: number }>",
+				"description": "Image width and height after complete deflate data, scanline lengths and filter bytes are checked, including interlaced passes."
 			}
 		],
 		"errors": []

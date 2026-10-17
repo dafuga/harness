@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "hub.component.invitation-form",
 	"kind": "component",
-	"title": "InvitationForm",
-	"responsibility": "Owns the InvitationForm Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Invitation form",
+	"responsibility": "Creates a project invitation and presents its link and one-time code for the owner to share.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/components/InvitationForm.svelte"],
 		"symbols": ["InvitationForm"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "InvitationForm.projectId",
-				"type": "string"
+				"type": "string",
+				"description": "Required project identifier sent to the invitation operation. Authorization and invitation validity remain server responsibilities."
 			}
 		],
 		"outputs": [
 			{
 				"name": "InvitationForm",
-				"type": "markup"
+				"type": "markup",
+				"description": "Email and role form, initially Commenter, also offering Viewer. Trims email and blocks empty or concurrent submissions. On success shows the invitation link, code and expiry with separate-copy actions and a reminder that no email is sent here. Errors clear the invitation and appear as alerts. Clipboard failure gives manual-copy guidance; success shows a copied status."
 			}
 		],
 		"errors": []

@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.harness-emitted",
 	"kind": "function",
-	"title": "harnessEmitted",
-	"responsibility": "Reads the size of what a unit emits at a revision, one line for each execution target with its own bytes and its own limit, and the sizes on both sides of a comparison; a missing size is said to be missing, never shown as zero.",
+	"title": "Build-output measurements",
+	"responsibility": "Formats native/Wasm build sizes, reviewed limits and comparisons separately by target.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -20,69 +20,84 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "emittedBytes.count",
-				"type": "number"
+				"type": "number",
+				"description": "Number of bytes to format."
 			},
 			{
 				"name": "emittedLabel.target",
-				"type": "string"
+				"type": "string",
+				"description": "Target kind to label."
 			},
 			{
 				"name": "emittedKey.target",
-				"type": "string"
+				"type": "string",
+				"description": "Target kind for the ledger key."
 			},
 			{
 				"name": "harnessEmitted.unit",
-				"type": "HarnessUnit"
+				"type": "HarnessUnit",
+				"description": "Unit with declared execution targets and emitted limits."
 			},
 			{
 				"name": "harnessEmitted.record",
-				"type": "HarnessRecord | null"
+				"type": "HarnessRecord | null",
+				"description": "Record whose unprofiled, workload-free build measurement is used, or null."
 			},
 			{
 				"name": "emittedChange.unit",
-				"type": "string"
+				"type": "string",
+				"description": "Unit identifier to compare."
 			},
 			{
 				"name": "emittedChange.sides",
-				"type": "Array<{ units: HarnessUnit[]; record: HarnessRecord | null }>"
+				"type": "Array<{ units: HarnessUnit[]; record: HarnessRecord | null }>",
+				"description": "Comparison sides in before/after order; targets are gathered from supplied unit definitions."
 			},
 			{
 				"name": "emittedTargets.index",
-				"type": "HarnessIndex"
+				"type": "HarnessIndex",
+				"description": "Index with emitted growth values and notes."
 			},
 			{
 				"name": "emittedTargets.unit",
-				"type": "string"
+				"type": "string",
+				"description": "Unit identifier whose targets are requested."
 			}
 		],
 		"outputs": [
 			{
 				"name": "emittedBytes",
-				"type": "string"
+				"type": "string",
+				"description": "Count followed by byte for one, otherwise bytes."
 			},
 			{
 				"name": "emittedLabel",
-				"type": "string"
+				"type": "string",
+				"description": "Friendly native-process or Wasm label, otherwise the original target."
 			},
 			{
 				"name": "emittedKey",
-				"type": "string"
+				"type": "string",
+				"description": "artifact-bytes followed by a colon and target kind."
 			},
 			{
 				"name": "harnessEmitted",
-				"type": "EmittedLine[]"
+				"type": "EmittedLine[]",
+				"description": "One line per declared process/Wasm target with size, limit and findings. Units declaring neither receive an explicit no-output line. Missing measurements remain unavailable."
 			},
 			{
 				"name": "emittedChange",
-				"type": "EmittedChange[]"
+				"type": "EmittedChange[]",
+				"description": "Before and after numeric sizes or null, separately for process and Wasm targets declared on either side."
 			},
 			{
 				"name": "emittedTargets",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Process/Wasm targets found in growth values or notes, in fixed target order."
 			}
 		],
 		"errors": []

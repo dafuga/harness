@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.entity-catalog",
 	"kind": "function",
-	"title": "entityCatalog",
-	"responsibility": "Turns the entities of one category into the rows of a collection with their relations and verdict, and filters and orders them as a person asked.",
+	"title": "Entity collection rows",
+	"responsibility": "Builds readable collection rows and applies search, change filtering and ordering.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -21,65 +21,79 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "isShared.related",
-				"type": "ExplorerRelations"
+				"type": "ExplorerRelations",
+				"description": "Resolved relations to inspect for shared use."
 			},
 			{
 				"name": "entityCatalog.entities",
-				"type": "ExplorerEntity[]"
+				"type": "ExplorerEntity[]",
+				"description": "Entities available at the shown revision."
 			},
 			{
 				"name": "entityCatalog.category",
-				"type": "ExplorerCategory"
+				"type": "ExplorerCategory",
+				"description": "Category to list."
 			},
 			{
 				"name": "entityCatalog.relations",
-				"type": "(id: string) => ExplorerRelations"
+				"type": "(id: string) => ExplorerRelations",
+				"description": "Lookup called once for each entity in the requested category."
 			},
 			{
 				"name": "catalogFilter.rows",
-				"type": "CatalogRow[]"
+				"type": "CatalogRow[]",
+				"description": "Collection rows to filter without mutating the original array."
 			},
 			{
 				"name": "catalogFilter.filter",
-				"type": "CatalogFilter"
+				"type": "CatalogFilter",
+				"description": "Search text, changed-only flag and supported ordering choice. Search matches name and purpose case-insensitively after trimming."
 			},
 			{
 				"name": "listed.names",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Names to summarize in a table cell."
 			},
 			{
 				"name": "listed.most",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Maximum names to show before the remainder count; defaults to one."
 			}
 		],
 		"outputs": [
 			{
 				"name": "catalogOrders",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Supported orders: name, name-desc, changed and failed."
 			},
 			{
 				"name": "orderLabels",
-				"type": "Record<CatalogOrder, string>"
+				"type": "Record<CatalogOrder, string>",
+				"description": "Readable labels for the supported orders."
 			},
 			{
 				"name": "isShared",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when more than one entity uses the unit or more than one page shows it."
 			},
 			{
 				"name": "entityCatalog",
-				"type": "CatalogRow[]"
+				"type": "CatalogRow[]",
+				"description": "Rows sorted by English name, including purpose, verdict, relation names, target kinds and component count. Only direct or added changes count as changed."
 			},
 			{
 				"name": "catalogFilter",
-				"type": "CatalogRow[]"
+				"type": "CatalogRow[]",
+				"description": "Matching rows in the requested order. Changed-first and failed-first ties sort by name; failed-first includes every verdict that is not passed."
 			},
 			{
 				"name": "listed",
-				"type": "string"
+				"type": "string",
+				"description": "none for an empty list; otherwise names joined by middle dots, with a remainder count when the limit is exceeded."
 			}
 		],
 		"errors": []

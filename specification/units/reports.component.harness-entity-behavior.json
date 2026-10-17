@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-entity-behavior",
 	"kind": "component",
-	"title": "EntityBehavior",
-	"responsibility": "Shows the recorded end-to-end results of an entity state by state and reads them when it opens: one run at the branch tip, both sides at a selected commit, and whether behaviour is unchanged, changed or unknown.",
+	"title": "Entity behavior",
+	"responsibility": "Reads recorded behavior artifacts and presents current or compared end-to-end results with entity reasons.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,45 +11,54 @@
 		"symbols": ["EntityBehavior"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EntityBehavior.behavior",
-				"type": "ExplorerBehavior"
+				"type": "ExplorerBehavior",
+				"description": "Required metadata for recorded rows before their contents are read. Row before/after hashes form the identity used to retain a completed reading."
 			},
 			{
 				"name": "EntityBehavior.read",
-				"type": "ExplorerBehavior | null"
+				"type": "ExplorerBehavior | null",
+				"description": "Optional already-read behavior, default null. Non-null bypasses local reading; null means no preloaded result and does not itself indicate failure."
 			},
 			{
 				"name": "EntityBehavior.scope",
-				"type": "ExplorerScope"
+				"type": "ExplorerScope",
+				"description": "Required mode, commit and parent context. Paired panes require commit behavior with a parent."
 			},
 			{
 				"name": "EntityBehavior.mediaBase",
-				"type": "string"
+				"type": "string",
+				"description": "Required base used by the artifact-reading helper and passed to run panels."
 			},
 			{
 				"name": "EntityBehavior.nav",
-				"type": "EntityNav"
+				"type": "EntityNav",
+				"description": "Required route context and navigation callbacks for full tests and selected-commit links."
 			},
 			{
 				"name": "EntityBehavior.reasons",
-				"type": "Reasons"
+				"type": "Reasons",
+				"description": "Optional entity change reasons, displayed separately from test observations. Their behavior summary takes precedence over derived comparison explanation."
 			},
 			{
 				"name": "EntityBehavior.duration",
-				"type": "string"
+				"type": "string",
+				"description": "Optional displayed end-to-end duration, defaulting to Not measured; the component does not calculate it."
 			},
 			{
 				"name": "EntityBehavior.unit",
-				"type": "string"
+				"type": "string",
+				"description": "Optional function identifier passed to run/artifact case rendering."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityBehavior",
-				"type": "markup"
+				"type": "markup",
+				"description": "Current or before/after test panel. Reads artifacts when not supplied, ignores completion whose row-hash signature no longer matches, and shows pending or unknown rather than premature comparison. Missing groups are explicit. Shows scenario outcomes, duration, original reasons and navigation. A passing current/unchanged verdict is shown only when the helper also reports passing results."
 			}
 		],
 		"errors": []

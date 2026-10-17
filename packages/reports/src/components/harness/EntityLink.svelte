@@ -16,6 +16,7 @@
 		label?: string;
 		children: Snippet;
 		class?: string;
+		title?: string;
 	} = $props();
 	// A modified click, or any other button, stays the browser's: it may open another tab.
 	function follow(event: MouseEvent) {

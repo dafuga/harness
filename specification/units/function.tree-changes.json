@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.tree-changes",
 	"kind": "function",
-	"title": "treeChanges",
-	"responsibility": "Compares two tree listings by content hash into added, modified and removed paths.",
+	"title": "Tree content differences",
+	"responsibility": "Compares file paths and content hashes to identify added, modified and removed files.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,21 +11,24 @@
 		"symbols": ["TreeChange", "treeChanges"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "treeChanges.base",
-				"type": "TreeEntry[]"
+				"type": "TreeEntry[]",
+				"description": "Earlier path/hash tree listing."
 			},
 			{
 				"name": "treeChanges.head",
-				"type": "TreeEntry[]"
+				"type": "TreeEntry[]",
+				"description": "Later path/hash tree listing."
 			}
 		],
 		"outputs": [
 			{
 				"name": "treeChanges",
-				"type": "TreeChange[]"
+				"type": "TreeChange[]",
+				"description": "Changes sorted by path. Equal hashes at equal paths are unchanged; renames appear as removal plus addition. Duplicate paths within a listing use the last hash."
 			}
 		],
 		"errors": []

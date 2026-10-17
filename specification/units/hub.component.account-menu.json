@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "hub.component.account-menu",
 	"kind": "component",
-	"title": "AccountMenu",
-	"responsibility": "Owns the AccountMenu Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Account menu",
+	"responsibility": "Shows the signed-in person and links for leaving the workspace, managing project members and signing out.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/components/AccountMenu.svelte"],
 		"symbols": ["AccountMenu"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "AccountMenu.projectId",
-				"type": "string"
+				"type": "string",
+				"description": "Optional project identifier. When a person is signed in and this value is nonempty, adds a Members link for that project; otherwise omits that link."
 			}
 		],
 		"outputs": [
 			{
 				"name": "AccountMenu",
-				"type": "markup"
+				"type": "markup",
+				"description": "When a person is signed in, shows their name with their email as a tooltip, a Projects link, an optional Members link and a Sign out button. Projects and Members use full document navigation. Sign out calls the session operation and is disabled while the session is busy. Renders nothing when there is no signed-in person."
 			}
 		],
 		"errors": []

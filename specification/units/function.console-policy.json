@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.console-policy",
 	"kind": "function",
-	"title": "consolePolicy",
-	"responsibility": "Decides who may open the console; Harness's own server admits only a loopback peer of a server explicitly bound to loopback.",
+	"title": "Local console access policy",
+	"responsibility": "Admits local owner requests only when owner mode, loopback binding and the actual peer address all qualify.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -18,29 +18,34 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "loopbackAddress.address",
-				"type": "string | undefined"
+				"type": "string | undefined",
+				"description": "Possible loopback address; undefined becomes empty, then whitespace is trimmed and casing normalized."
 			},
 			{
 				"name": "consolePolicy.owner",
-				"type": "OwnerMode"
+				"type": "OwnerMode",
+				"description": "Owner configuration: mode must be loopback, bind must match a loopback address, and no nonblank addressHeader may be configured."
 			}
 		],
 		"outputs": [
 			{
 				"name": "loopbackAddress",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True for localhost, ::1, and supported 127.* IPv4 or IPv4-mapped forms after normalization."
 			},
 			{
 				"name": "consolePolicy",
-				"type": "ConsolePolicy"
+				"type": "ConsolePolicy",
+				"description": "Policy returning true only for an enabled loopback owner server whose request supplies a matching getClientAddress result. Missing or throwing address lookup denies access; client headers are ignored."
 			},
 			{
 				"name": "denyAll",
-				"type": "ConsolePolicy"
+				"type": "ConsolePolicy",
+				"description": "Policy that always returns false."
 			}
 		],
 		"errors": []

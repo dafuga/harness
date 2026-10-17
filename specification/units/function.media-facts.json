@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.media-facts",
 	"kind": "function",
-	"title": "mediaFacts",
-	"responsibility": "Decodes PNG and WAV evidence far enough to prove it is real media and report its size or duration.",
+	"title": "Capture media inspection",
+	"responsibility": "Checks PNG and WAV evidence structure and returns image dimensions, audio duration or a reason it cannot be read.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,29 +11,34 @@
 		"symbols": ["MediaFacts", "pngChecksum", "mediaFacts"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "pngChecksum.bytes",
-				"type": "Buffer"
+				"type": "Buffer",
+				"description": "Bytes over which to compute the PNG-style CRC-32."
 			},
 			{
 				"name": "mediaFacts.bytes",
-				"type": "Buffer"
+				"type": "Buffer",
+				"description": "Original image or audio bytes to inspect."
 			},
 			{
 				"name": "mediaFacts.mediaType",
-				"type": "string"
+				"type": "string",
+				"description": "Declared MIME type: image/png, audio/wav or audio/x-wav are supported."
 			}
 		],
 		"outputs": [
 			{
 				"name": "pngChecksum",
-				"type": "number"
+				"type": "number",
+				"description": "Unsigned CRC-32 checksum of the supplied bytes."
 			},
 			{
 				"name": "mediaFacts",
-				"type": "MediaFacts"
+				"type": "MediaFacts",
+				"description": "Image width/height or audio duration in seconds rounded to six decimals; otherwise an error description for unsupported type, damaged container, checksum, compressed pixels or audio format."
 			}
 		],
 		"errors": []

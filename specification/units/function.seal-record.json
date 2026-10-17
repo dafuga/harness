@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.seal-record",
 	"kind": "function",
-	"title": "sealRecord",
-	"responsibility": "Assembles record parts and seals a verification record with the hash of its content.",
+	"title": "Verification record identity",
+	"responsibility": "Records tested component versions, attributes benchmark measurements, references earlier scenarios and seals complete verification records.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -17,65 +17,79 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "recordComponents.impact",
-				"type": "ImpactReport"
+				"type": "ImpactReport",
+				"description": "Impact report identifying direct, indirect, added and removed units."
 			},
 			{
 				"name": "recordComponents.sides",
-				"type": "{ base: Side; head: Side }"
+				"type": "{ base: Side; head: Side }",
+				"description": "Base and head manifests/source facts used to identify the tested version, using base for removed units."
 			},
 			{
 				"name": "recordComponents.measured",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Additional measured unit ids to include even when not reached by impact."
 			},
 			{
 				"name": "benchmarkMeasurements.gathered",
-				"type": "Gathered[]"
+				"type": "Gathered[]",
+				"description": "Gathered captures whose parsed benchmark payloads may supply measurements."
 			},
 			{
 				"name": "benchmarkMeasurements.context",
-				"type": "{ profile: string; commit: string }"
+				"type": "{ profile: string; commit: string }",
+				"description": "Current machine profile id and verified commit to attach to benchmark measurements."
 			},
 			{
 				"name": "referencedScenario.prior",
-				"type": "VerificationRecord"
+				"type": "VerificationRecord",
+				"description": "Earlier verification record from which unaffected scenario evidence may be referenced."
 			},
 			{
 				"name": "referencedScenario.id",
-				"type": "string"
+				"type": "string",
+				"description": "Scenario id to find in the prior record."
 			},
 			{
 				"name": "sealRecord.draft",
-				"type": "Omit<VerificationRecord, 'id'>"
+				"type": "Omit<VerificationRecord, 'id'>",
+				"description": "Verification record fields except id, to hash canonically."
 			},
 			{
 				"name": "recordIntact.record",
-				"type": "VerificationRecord"
+				"type": "VerificationRecord",
+				"description": "Record whose stored id should be compared with its current contents."
 			}
 		],
 		"outputs": [
 			{
 				"name": "recordComponents",
-				"type": "RecordedComponent[]"
+				"type": "RecordedComponent[]",
+				"description": "Sorted unique tested/measured components with source, manifest, contract and runtime hashes, files, target and change classification. Missing manifests are omitted."
 			},
 			{
 				"name": "benchmarkMeasurements",
-				"type": "Measurement[]"
+				"type": "Measurement[]",
+				"description": "Measurements from valid benchmark payloads, attributed to the supplied profile/commit with empty artifacts; invalid payloads contribute nothing."
 			},
 			{
 				"name": "referencedScenario",
-				"type": "ScenarioResult | undefined"
+				"type": "ScenarioResult | undefined",
+				"description": "Earlier nonfailed scenario marked referenced with its original referencedRecord retained, or the prior record id; undefined for missing/failed scenarios."
 			},
 			{
 				"name": "sealRecord",
-				"type": "VerificationRecord"
+				"type": "VerificationRecord",
+				"description": "Record with id set to the SHA-256 of canonical draft JSON; no storage write occurs."
 			},
 			{
 				"name": "recordIntact",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when recomputing the canonical record hash matches its id."
 			}
 		],
 		"errors": []

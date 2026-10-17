@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "function.unit-lineage",
 	"kind": "function",
-	"title": "unitLineage",
-	"responsibility": "Owns the unitLineage shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Retired unit continuity",
+	"responsibility": "Finds retired identities continued through identical symbol lists or reuse of a name with a numeric suffix.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/unitLineage.ts"],
 		"symbols": ["LineageSubject", "unitLineage"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "unitLineage.unit",
-				"type": "LineageSubject"
+				"type": "LineageSubject",
+				"description": "Current unit id and ordered exported-symbol list."
 			},
 			{
 				"name": "unitLineage.retired",
-				"type": "ComponentManifest[]"
+				"type": "ComponentManifest[]",
+				"description": "Candidate manifests to examine for retired predecessors."
 			}
 		],
 		"outputs": [
 			{
 				"name": "unitLineage",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Sorted predecessor ids, excluding the current id, whose nonempty symbols match in order or whose id is reused with a numeric suffix."
 			}
 		],
 		"errors": []

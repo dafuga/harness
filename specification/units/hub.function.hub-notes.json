@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "hub.function.hub-notes",
 	"kind": "function",
-	"title": "hubNotes",
-	"responsibility": "Owns the hubNotes shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Read pinned evidence notes",
+	"responsibility": "Read commit-keyed notes from an immutable revision and memoize within one authorized context.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/hubNotes.ts"],
 		"symbols": ["hubNotes"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hubNotes.base",
-				"type": "HubSourceContext"
+				"type": "HubSourceContext",
+				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubNotes.pinned",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "Exact notes revision, or null for no notes."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubNotes",
-				"type": "Promise<Map<string, ReadNote>>"
+				"type": "Promise<Map<string, ReadNote>>",
+				"description": "Map from 40-character commit IDs to parsed note lines; null pin yields an empty map. Reads for the same context and pin share a promise."
 			}
 		],
 		"errors": []

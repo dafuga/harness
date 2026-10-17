@@ -2,38 +2,43 @@
 	"schemaVersion": 1,
 	"id": "hub.function.hub-plans",
 	"kind": "function",
-	"title": "hubPlans",
-	"responsibility": "Owns the hubPlans shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Read hosted plans",
+	"responsibility": "Validate committed plans and turn their current designs into catalog planning records.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/hubPlans.ts"],
 		"symbols": ["hubPlans", "hubPlanRecord"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hubPlans.context",
-				"type": "HubSourceContext"
+				"type": "HubSourceContext",
+				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubPlanRecord.context",
-				"type": "HubSourceContext"
+				"type": "HubSourceContext",
+				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubPlanRecord.plan",
-				"type": "HubPlan"
+				"type": "HubPlan",
+				"description": "Validated plan whose design versions and current contract are needed."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubPlans",
-				"type": "Promise<HubPlan[]>"
+				"type": "Promise<HubPlan[]>",
+				"description": "Plans from the supported category folders after schema, path, contract-hash and duplicate-identity checks."
 			},
 			{
 				"name": "hubPlanRecord",
-				"type": "Promise<PlanRecord>"
+				"type": "Promise<PlanRecord>",
+				"description": "Plan record with versions, latest contract fields/hash, empty local threads and draft/review/approved lifecycle determined by its latest design and current approval."
 			}
 		],
 		"errors": []

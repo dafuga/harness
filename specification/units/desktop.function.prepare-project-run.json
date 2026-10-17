@@ -2,44 +2,50 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.prepare-project-run",
 	"kind": "function",
-	"title": "prepareProjectRun",
-	"responsibility": "Owns the prepareProjectRun shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Prepare a new-unit Plan",
+	"responsibility": "Checks a creation request’s selected project and runner before returning a context for proposing a new unit.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/prepareProjectRun.ts"],
 		"symbols": ["ProjectRunContext", "prepareProjectRun"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "prepareProjectRun.preparation",
-				"type": "Preparation"
+				"type": "Preparation",
+				"description": "The project session, provider discovery, image generator and event callback."
 			},
 			{
 				"name": "prepareProjectRun.request",
-				"type": "ProjectRunRequest"
+				"type": "ProjectRunRequest",
+				"description": "A creation request with create intent, plan mode, explicit project identity and chosen provider, model and effort."
 			},
 			{
 				"name": "prepareProjectRun.controller",
-				"type": "AbortController"
+				"type": "AbortController",
+				"description": "The cancellation controller whose signal will govern the run."
 			}
 		],
 		"outputs": [
 			{
 				"name": "prepareProjectRun",
-				"type": "Promise<ProjectRunContext>"
+				"type": "Promise<ProjectRunContext>",
+				"description": "A promise for a fresh run identity, selected mutable project and revision, planning access, exact chosen runner and cancellation signal. No entity or design is created by this helper."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects a non-Plan creation request, invalid or unselected project, non-writable project, unavailable provider/model/effort or underlying preparation failure."
 			},
 			{
 				"name": "RunCancelled",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects when the controller is already aborted after project and provider preparation, before returning the context."
 			}
 		]
 	},

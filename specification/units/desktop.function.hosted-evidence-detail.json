@@ -2,21 +2,22 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.hosted-evidence-detail",
 	"kind": "function",
-	"title": "hostedEvidenceDetail",
-	"responsibility": "Owns the hostedEvidenceDetail shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Define hosted revision details",
+	"responsibility": "Defines the accepted structure of a revision’s registry, comparisons, records and explanations.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/hostedEvidenceDetail.ts"],
 		"symbols": ["hostedEvidenceDetail"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "hostedEvidenceDetail",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "A strict validation schema for a 40-character commit hash; registry availability, units, scenarios and graph; nullable comparison; optional source impact and side; verification records; explanations; and optional range-reason count. Uses the shared field limits and rejects undeclared keys. It defines structure only and performs no read by itself."
 			}
 		],
 		"errors": []

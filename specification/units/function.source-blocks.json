@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "function.source-blocks",
 	"kind": "function",
-	"title": "sourceBlocks",
-	"responsibility": "Owns the sourceBlocks shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Source change blocks",
+	"responsibility": "Splits source into named functions/methods and remainder blocks with line bounds, fingerprints and decision counts.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/sourceBlocks.ts"],
 		"symbols": ["SourceBlock", "sourceBlocks"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "sourceBlocks.code",
-				"type": "string"
+				"type": "string",
+				"description": "Original source text to divide into blocks."
 			},
 			{
 				"name": "sourceBlocks.language",
-				"type": "SourceLanguage"
+				"type": "SourceLanguage",
+				"description": "Source family; ts scans script blocks, svelte also emits template and first style remainder, and other families produce one module remainder."
 			}
 		],
 		"outputs": [
 			{
 				"name": "sourceBlocks",
-				"type": "SourceBlock[]"
+				"type": "SourceBlock[]",
+				"description": "Blocks with name, kind, line bounds, 16-character normalized-content hash and complexity. Script fingerprints ignore masked comments and normalize whitespace; named functions start complexity at one, module decisions at zero."
 			}
 		],
 		"errors": []

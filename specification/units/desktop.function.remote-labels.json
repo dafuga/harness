@@ -2,9 +2,9 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.remote-labels",
 	"kind": "function",
-	"title": "remoteLabels",
-	"responsibility": "Owns the remoteLabels shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Phone-access wording",
+	"responsibility": "Format connection, identity, permission and lock-state wording for phone access.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/remoteLabels.ts"],
@@ -28,109 +28,134 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "relayName.origin",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "Relay origin to display; invalid URLs produce an empty label."
 			},
 			{
 				"name": "timeLeft.milliseconds",
-				"type": "number"
+				"type": "number",
+				"description": "Remaining milliseconds; rounded up to seconds and clamped at zero."
 			},
 			{
 				"name": "keyLabel.deviceId",
-				"type": "string"
+				"type": "string",
+				"description": "Device ID whose first 12 characters are grouped in fours."
 			},
 			{
 				"name": "identityLabel.deviceId",
-				"type": "string"
+				"type": "string",
+				"description": "Full device ID to group in fours."
 			},
 			{
 				"name": "grantLabel.grant",
-				"type": "{ agents: boolean }"
+				"type": "{ agents: boolean }",
+				"description": "Grant whose agents flag determines permission wording."
 			},
 			{
 				"name": "grantSummary.grant",
-				"type": "{ projects: unknown[]; agents: boolean }"
+				"type": "{ projects: unknown[]; agents: boolean }",
+				"description": "Grant containing project list and agents flag."
 			},
 			{
 				"name": "hostLine.status",
-				"type": "RemoteHostStatus"
+				"type": "RemoteHostStatus",
+				"description": "Host status used for relay and connection-state wording."
 			},
 			{
 				"name": "hostSummary.status",
-				"type": "RemoteHostStatus"
+				"type": "RemoteHostStatus",
+				"description": "Host status used for enabled state and approved-phone count."
 			},
 			{
 				"name": "remoteLabels.status",
-				"type": "RemoteNativeStatus"
+				"type": "RemoteNativeStatus",
+				"description": "Mobile connection status used for heading and supporting text."
 			}
 		],
 		"outputs": [
 			{
 				"name": "lockNote",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Explanation that approved phones work while the computer is locked and awake, but not asleep."
 			},
 			{
 				"name": "awakeNote",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Wording for an awake computer."
 			},
 			{
 				"name": "lockedNote",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Wording for a locked, awake computer."
 			},
 			{
 				"name": "unlockedNote",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Wording for an unlocked, awake computer."
 			},
 			{
 				"name": "approveNote",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Instruction to approve the phone on the computer."
 			},
 			{
 				"name": "awayNote",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Explanation that an offline computer is asleep or disconnected and nothing is sent until it returns."
 			},
 			{
 				"name": "revokedNote",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Instruction to pair again after revocation."
 			},
 			{
 				"name": "relayName",
-				"type": "string"
+				"type": "string",
+				"description": "Relay host and optional port, or an empty string for an invalid URL."
 			},
 			{
 				"name": "timeLeft",
-				"type": "string"
+				"type": "string",
+				"description": "Minutes and two-digit seconds remaining."
 			},
 			{
 				"name": "keyLabel",
-				"type": "string"
+				"type": "string",
+				"description": "Short grouped device identifier."
 			},
 			{
 				"name": "identityLabel",
-				"type": "string"
+				"type": "string",
+				"description": "Full grouped device identifier."
 			},
 			{
 				"name": "grantLabel",
-				"type": "string"
+				"type": "string",
+				"description": "Plan and Change allowed, or Read and comment only."
 			},
 			{
 				"name": "grantSummary",
-				"type": "string"
+				"type": "string",
+				"description": "Project count followed by permission wording."
 			},
 			{
 				"name": "hostLine",
-				"type": "string"
+				"type": "string",
+				"description": "Phone-access-on line with relay and applicable registering, connecting or offline suffix."
 			},
 			{
 				"name": "hostSummary",
-				"type": "string"
+				"type": "string",
+				"description": "Phone access off, or the approved-phone count."
 			},
 			{
 				"name": "remoteLabels",
-				"type": "{ title: string; detail: string }"
+				"type": "{ title: string; detail: string }",
+				"description": "Heading and supporting text for the mobile state, using host name and lock state where available."
 			}
 		],
 		"errors": []

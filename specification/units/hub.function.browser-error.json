@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "hub.function.browser-error",
 	"kind": "function",
-	"title": "browserError",
-	"responsibility": "Owns the browserError shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Explain browser API failures",
+	"responsibility": "Map known API failure codes to readable wording without exposing unknown server messages.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/browserError.ts"],
 		"symbols": ["browserError"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "browserError.code",
-				"type": "string"
+				"type": "string",
+				"description": "Server error code to look up."
 			},
 			{
 				"name": "browserError.status",
-				"type": "number"
+				"type": "number",
+				"description": "HTTP status, or zero for an unreachable server."
 			}
 		],
 		"outputs": [
 			{
 				"name": "browserError",
-				"type": "string"
+				"type": "string",
+				"description": "Known code wording; otherwise a generic failure containing a nonzero status, or server-unreachable wording for zero."
 			}
 		],
 		"errors": []

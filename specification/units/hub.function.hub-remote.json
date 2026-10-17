@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "hub.function.hub-remote",
 	"kind": "function",
-	"title": "hubRemote",
-	"responsibility": "Owns the hubRemote shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Configure the relay connection",
+	"responsibility": "Create the remote-host runtime only when its origin and object binding are usable.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/hubRemote.ts"],
 		"symbols": ["HubRemoteRuntime", "hubRemote"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hubRemote.env",
-				"type": "HubEnv"
+				"type": "HubEnv",
+				"description": "Environment containing relay origin, optional environment name and remote-host object binding."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubRemote",
-				"type": "HubRemoteRuntime | null"
+				"type": "HubRemoteRuntime | null",
+				"description": "Normalized origin and relay-management adapter, or null. Accepts exact HTTPS origins, plus HTTP localhost or 127.0.0.1 outside production; binding must expose idFromName and get functions."
 			}
 		],
 		"errors": []

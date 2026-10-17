@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-entity-summary",
 	"kind": "component",
-	"title": "EntitySummary",
-	"responsibility": "Shows the contract, the size and the performance profile of an entity, or the last contract of one the commit removed; a figure nothing measured reads Not measured.",
+	"title": "Contract and measurement summary",
+	"responsibility": "Shows readable contract rows, size and performance facts.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,29 +11,34 @@
 		"symbols": ["EntitySummary"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EntitySummary.contract",
-				"type": "ContractRow[]"
+				"type": "ContractRow[]",
+				"description": "Required prepared rows containing labels and either item lists or a value."
 			},
 			{
 				"name": "EntitySummary.measure",
-				"type": "EntityMeasure"
+				"type": "EntityMeasure",
+				"description": "Required prepared size and performance rows including notes, environment, tolerance and over-policy flags."
 			},
 			{
 				"name": "EntitySummary.compact",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional flag, false by default. True removes Purpose from contract rows and hides inline size notes while keeping tooltips."
 			},
 			{
 				"name": "EntitySummary.last",
-				"type": "string"
+				"type": "string",
+				"description": "Optional parent commit identifying a removed entity’s last contract. Nonempty switches the heading and adds removal context."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntitySummary",
-				"type": "markup"
+				"type": "markup",
+				"description": "Contract, size and performance cards. Zero performance rows show unmeasured latency/memory and no-budget guidance; one row gets a fact layout, multiple rows a table. Uses supplied over flags for the above-5%-policy label; does not assess the policy itself."
 			}
 		],
 		"errors": []

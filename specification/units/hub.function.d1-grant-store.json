@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "hub.function.d1-grant-store",
 	"kind": "function",
-	"title": "d1GrantStore",
-	"responsibility": "Owns the d1GrantStore shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Git Hub grant database operations",
+	"responsibility": "Store versioned GitHub grants and coordinate refreshes and revocation with conditional updates.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/d1GrantStore.ts"],
 		"symbols": ["EXPIRE_GRANTS", "d1GrantStore"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "d1GrantStore.db",
-				"type": "D1Like"
+				"type": "D1Like",
+				"description": "D1-compatible database handle; queries run only when the returned store methods are called."
 			},
 			{
 				"name": "d1GrantStore.records",
-				"type": "AuthRecordValidator"
+				"type": "AuthRecordValidator",
+				"description": "Validator used to turn stored database rows into typed records."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EXPIRE_GRANTS",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "SQL statement that erases expired grant tokens, increments generation and retains a revoked row; caller supplies time and executes it."
 			},
 			{
 				"name": "d1GrantStore",
-				"type": "GrantStore"
+				"type": "GrantStore",
+				"description": "Store for reading grant state, connecting at an expected generation, leasing refresh, rotating held tokens and revoking grants. Conditional mutations return whether a row matched. Missing records read as generation zero with no grant or lease."
 			}
 		],
 		"errors": []

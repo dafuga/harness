@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "hub.function.hub-evidence-revision",
 	"kind": "function",
-	"title": "hubEvidenceRevision",
-	"responsibility": "Owns the hubEvidenceRevision shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Assemble revision evidence",
+	"responsibility": "Build evidence detail and judgment for an exact commit from pinned records and notes.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/hubEvidenceRevision.ts"],
 		"symbols": ["hubEvidenceRevision"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hubEvidenceRevision.base",
-				"type": "HubSourceContext"
+				"type": "HubSourceContext",
+				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubEvidenceRevision.history",
-				"type": "HubRecordStatusService"
+				"type": "HubRecordStatusService",
+				"description": "Pinned record-status service used to load statuses, notes and original records."
 			},
 			{
 				"name": "hubEvidenceRevision.commit",
-				"type": "string"
+				"type": "string",
+				"description": "Exact commit whose facts and evidence are required."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubEvidenceRevision",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Commit facts, registry/detail, summary judgment and legacy IDs. Comparison uses the first passed original record, otherwise the first available record; sourceImpact remains null."
 			}
 		],
 		"errors": []

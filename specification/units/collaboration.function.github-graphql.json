@@ -2,36 +2,40 @@
 	"schemaVersion": 1,
 	"id": "collaboration.function.github-graphql",
 	"kind": "function",
-	"title": "githubGraphql",
-	"responsibility": "Owns the githubGraphql shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Fetch a verified blob batch",
+	"responsibility": "Read a bounded batch of GitHub text blobs and verify their sizes and Git hashes.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/collaboration/src/utils/githubGraphql.ts"],
 		"symbols": ["githubGraphql"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "githubGraphql.options",
-				"type": "GitHubOptions"
+				"type": "GitHubOptions",
+				"description": "Repository identity, scoped read-token callback and optional fetch implementation."
 			},
 			{
 				"name": "githubGraphql.input",
-				"type": "{ commit: string; entries: SourceEntry[] }"
+				"type": "{ commit: string; entries: SourceEntry[] }",
+				"description": "Commit and 1–64 tree-attested regular-file entries with expected paths, Git SHAs and optional sizes."
 			}
 		],
 		"outputs": [
 			{
 				"name": "githubGraphql",
-				"type": "Promise<Map<string, Uint8Array>>"
+				"type": "Promise<Map<string, Uint8Array>>",
+				"description": "Map from paths to verified UTF-8 blob bytes; the response must stay below 16 MiB."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "All failures, including invalid batches and integrity or repository mismatches, are converted to github-unavailable."
 			}
 		]
 	},

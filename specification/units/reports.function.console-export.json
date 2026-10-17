@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.console-export",
 	"kind": "function",
-	"title": "consoleExport",
-	"responsibility": "Builds the portable report page of one recorded verification from stored JSON and media.",
+	"title": "Portable verification export",
+	"responsibility": "Builds a standalone HTML report for one recorded verification with available media embedded.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,21 +11,24 @@
 		"symbols": ["ConsoleExportInput", "consoleExport"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "consoleExport.input",
-				"type": "ConsoleExportInput"
+				"type": "ConsoleExportInput",
+				"description": "Commit, optional record identifier, index/detail JSON and asynchronous media loader. Requested records fall back to a valid passed record, then the first record."
 			},
 			{
 				"name": "consoleExport.assets",
-				"type": "PortableAssets"
+				"type": "PortableAssets",
+				"description": "Compiled viewer assets used by the portable page renderer."
 			}
 		],
 		"outputs": [
 			{
 				"name": "consoleExport",
-				"type": "Promise<string | undefined>"
+				"type": "Promise<string | undefined>",
+				"description": "Resolves to portable HTML, or undefined when the requested commit summary or any usable record choice is absent. Media bytes become data URLs; missing media is marked missing."
 			}
 		],
 		"errors": []

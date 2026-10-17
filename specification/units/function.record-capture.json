@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.record-capture",
 	"kind": "function",
-	"title": "recordCapture",
-	"responsibility": "Writes one capture and its index line when evidence was requested, and nothing otherwise.",
+	"title": "Capture evidence writing",
+	"responsibility": "Writes a requested evidence file and appends its metadata to the capture index.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,33 +11,39 @@
 		"symbols": ["evidenceRequested", "recordCapture"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "evidenceRequested.env",
-				"type": "Environment"
+				"type": "Environment",
+				"description": "Environment to check, default process.env; HARNESS_EVIDENCE_DIR must be nonempty and TAKE_SCREENSHOT exactly 1."
 			},
 			{
 				"name": "recordCapture.line",
-				"type": "CaptureLine"
+				"type": "CaptureLine",
+				"description": "Capture metadata whose file names the output under the evidence directory."
 			},
 			{
 				"name": "recordCapture.bytes",
-				"type": "Uint8Array | string"
+				"type": "Uint8Array | string",
+				"description": "Raw bytes or text to write as the capture."
 			},
 			{
 				"name": "recordCapture.env",
-				"type": "Environment"
+				"type": "Environment",
+				"description": "Optional environment supplying the evidence directory and opt-in flag."
 			}
 		],
 		"outputs": [
 			{
 				"name": "evidenceRequested",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True only when both evidence directory and screenshot flag request evidence."
 			},
 			{
 				"name": "recordCapture",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "False with no writes when evidence is not requested; otherwise creates the evidence directory, writes the file, appends its JSON index line and returns true."
 			}
 		],
 		"errors": []

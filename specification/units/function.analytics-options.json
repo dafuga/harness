@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "function.analytics-options",
 	"kind": "function",
-	"title": "analyticsOptions",
-	"responsibility": "Owns the analyticsOptions shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Analytics command options",
+	"responsibility": "Adds the shared analytics attribution options to an existing Commander command.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/analyticsOptions.ts"],
 		"symbols": ["analyticsOptions"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "analyticsOptions.command",
-				"type": "Command"
+				"type": "Command",
+				"description": "Commander command to extend in place with --loop, --step, --task, --agent-model and --report value options."
 			}
 		],
 		"outputs": [
 			{
 				"name": "analyticsOptions",
-				"type": "Command"
+				"type": "Command",
+				"description": "The same command after the five attribution options have been registered, allowing further command configuration."
 			}
 		],
 		"errors": []

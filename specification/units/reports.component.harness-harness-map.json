@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-harness-map",
 	"kind": "component",
-	"title": "HarnessMap",
-	"responsibility": "Draws the component map with search, zoom, pan, keyboard movement and a text list of the same units.",
+	"title": "Unit dependency map",
+	"responsibility": "Lets users inspect, search and select units in a dependency diagram or list.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,29 +11,34 @@
 		"symbols": ["HarnessMap"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HarnessMap.units",
-				"type": "HarnessUnit[]"
+				"type": "HarnessUnit[]",
+				"description": "Required units supplying diagram nodes, dependencies and searchable identifiers, kinds and responsibilities."
 			},
 			{
 				"name": "HarnessMap.marks",
-				"type": "Map<string, HarnessMark>"
+				"type": "Map<string, HarnessMark>",
+				"description": "Optional map of added, removed, directly changed or indirectly affected units, defaulting to an empty map. Marks add styling and a legend."
 			},
 			{
 				"name": "HarnessMap.selected",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "Optional selected unit identifier, defaulting to null. Highlights its neighborhood and controls relevant dependency edges."
 			},
 			{
 				"name": "HarnessMap.onselect",
-				"type": "(id: string) => void"
+				"type": "(id: string) => void",
+				"description": "Required callback invoked when a diagram node or list entry is selected."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HarnessMap",
-				"type": "markup"
+				"type": "markup",
+				"description": "Searchable dependency diagram with pan, pinch, zoom and fit controls, plus a sorted unit list. Search dims unmatched nodes; arrow keys move among nodes and Enter or Space selects. Long displayed identifiers are shortened without changing the identifiers passed to callbacks."
 			}
 		],
 		"errors": []

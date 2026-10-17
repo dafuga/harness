@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "function.planning-artifact-paths",
 	"kind": "function",
-	"title": "planningArtifactPaths",
-	"responsibility": "Owns the planningArtifactPaths shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Validated planning artifact paths",
+	"responsibility": "Recognizes exact planning files and their ancestor directories only when the containing plan and contract hash are valid.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/planningArtifactPaths.ts"],
 		"symbols": ["planningArtifactPaths"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "planningArtifactPaths.root",
-				"type": "string | undefined"
+				"type": "string | undefined",
+				"description": "Repository root used to read plan and optional unit manifests; undefined returns an empty set."
 			},
 			{
 				"name": "planningArtifactPaths.files",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Repository-relative paths to examine for supported plan, design, approval and thread artifacts."
 			}
 		],
 		"outputs": [
 			{
 				"name": "planningArtifactPaths",
-				"type": "Set<string>"
+				"type": "Set<string>",
+				"description": "Set of accepted artifact paths and ancestor directory paths ending in slash. Invalid plans, mismatched locations/hashes and unrelated files contribute nothing; no files are changed."
 			}
 		],
 		"errors": []

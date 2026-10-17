@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "remote.function.wire-dispatch",
 	"kind": "function",
-	"title": "wireDispatch",
-	"responsibility": "Owns the wireDispatch shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Dispatch authorized wire requests",
+	"responsibility": "Apply connection policy and deadlines, then execute requests with mutation replay tracking.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/remote/src/utils/wireDispatch.ts"],
 		"symbols": ["WireDispatchContext", "wireDispatch"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "wireDispatch.context",
-				"type": "WireDispatchContext"
+				"type": "WireDispatchContext",
+				"description": "Attachment and allowed methods, pending-request count, limits, response ledger, handler and error translator, plus optional session epoch binding."
 			},
 			{
 				"name": "wireDispatch.request",
-				"type": "WireRequest"
+				"type": "WireRequest",
+				"description": "Already validated request with ID, method and input."
 			}
 		],
 		"outputs": [
 			{
 				"name": "wireDispatch",
-				"type": "Promise<WireResponse>"
+				"type": "Promise<WireResponse>",
+				"description": "Response with the same ID, a value or null on success, or a declared failure. Mutations join ledger work by ID and input digest; timeouts do not cancel that work."
 			}
 		],
 		"errors": []

@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.history-panel",
 	"kind": "component",
-	"title": "HistoryPanel",
-	"responsibility": "Owns the HistoryPanel Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "History panel",
+	"responsibility": "Displays entity history and retrieves earlier pages without mixing different project or revision views.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/HistoryPanel.svelte"],
 		"symbols": ["HistoryPanel"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HistoryPanel.entity",
-				"type": "EntityDetail"
+				"type": "EntityDetail",
+				"description": "Initial history and optional coverage metadata. Without metadata, history is treated as complete. Changes of view or coverage reset additionally loaded pages."
 			},
 			{
 				"name": "HistoryPanel.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Workspace supplying project/revision identity, known commits, navigation and an optional history bridge. Only event commits present in the snapshot’s commit list become links."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HistoryPanel",
-				"type": "markup"
+				"type": "markup",
+				"description": "Timeline with names, formatted dates, details and commit references, or an empty-history message. Load more requires incomplete history, a next page and bridge support and is disabled during loading. Discards responses for another view; displays current-view errors as alerts. Incomplete history without a usable next-page operation is explicitly labeled not loaded."
 			}
 		],
 		"errors": []

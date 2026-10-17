@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-harness-failures",
 	"kind": "component",
-	"title": "HarnessFailures",
-	"responsibility": "Shows the failures of one record: few as they are, many as a count told by cause, with every recorded failure behind a disclosure in a box that scrolls by itself.",
+	"title": "Verification failure details",
+	"responsibility": "Presents verification failure causes while keeping the original failure list accessible.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,25 +11,29 @@
 		"symbols": ["HarnessFailures"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HarnessFailures.record",
-				"type": "string"
+				"type": "string",
+				"description": "Required caller-provided record label used in accessible names for the original failure list."
 			},
 			{
 				"name": "HarnessFailures.failures",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Required original failure messages. The grouping helper determines whether to present plain failures or grouped subjects and causes."
 			},
 			{
 				"name": "HarnessFailures.problems",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Optional additional record problems, defaulting to an empty list. These remain visible separately from grouped failures."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HarnessFailures",
-				"type": "markup"
+				"type": "markup",
+				"description": "Plain or grouped failure explanations, counts and an expandable complete original list in a focusable scrolling region, followed by any record problems."
 			}
 		],
 		"errors": []

@@ -2,38 +2,43 @@
 	"schemaVersion": 1,
 	"id": "function.scan-imports",
 	"kind": "function",
-	"title": "scanImports",
-	"responsibility": "Owns the scanImports shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Source dependency scanning",
+	"responsibility": "Extracts literal and uncertain module references from script, Svelte and CSS source.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/scanImports.ts"],
 		"symbols": ["ReferenceVia", "SourceLanguage", "SourceReference", "scanImports", "svelteScripts"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "scanImports.code",
-				"type": "string"
+				"type": "string",
+				"description": "Source text to scan for module references."
 			},
 			{
 				"name": "scanImports.language",
-				"type": "SourceLanguage"
+				"type": "SourceLanguage",
+				"description": "Source family: ts scans scripts, svelte scans its script blocks, css scans quoted @import references, and other returns no references."
 			},
 			{
 				"name": "svelteScripts.code",
-				"type": "string"
+				"type": "string",
+				"description": "Svelte source from which script-block contents should be extracted."
 			}
 		],
 		"outputs": [
 			{
 				"name": "scanImports",
-				"type": "SourceReference[]"
+				"type": "SourceReference[]",
+				"description": "References with specifier or null, via and typeOnly, plus a short detail for computed calls. Script references are source-ordered and deduplicated by kind/specifier or detail; member calls are excluded."
 			},
 			{
 				"name": "svelteScripts",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Contents of matched script blocks in source order, excluding tags."
 			}
 		],
 		"errors": []

@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.remote-failure-text",
 	"kind": "function",
-	"title": "remoteFailureText",
-	"responsibility": "Owns the remoteFailureText shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Remote failure wording",
+	"responsibility": "Convert failures to remote error codes and messages, suppressing unsafe ordinary error text.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/remoteFailureText.ts"],
 		"symbols": ["remoteFailureText"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "remoteFailureText.error",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Failure to describe; declared RemoteFailure values retain their code and message."
 			},
 			{
 				"name": "remoteFailureText.roots",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Project roots to hide when inspecting ordinary errors; defaults to an empty list, with the home directory also considered."
 			}
 		],
 		"outputs": [
 			{
 				"name": "remoteFailureText",
-				"type": "RemoteError"
+				"type": "RemoteError",
+				"description": "Declared remote failure unchanged, or code failed with an ordinary message only when short, nonempty and free of detected paths; otherwise generic failure wording."
 			}
 		],
 		"errors": []

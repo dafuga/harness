@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.select",
 	"kind": "component",
-	"title": "Select",
-	"responsibility": "The one select field of the website: a labelled native select with its caret, its size and its disabled look in one place, holding the options a surface gives it.",
+	"title": "Report select control",
+	"responsibility": "Provides a labeled native selection control with shared report styling.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,41 +11,49 @@
 		"symbols": ["Select"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "Select.value",
-				"type": "string"
+				"type": "string",
+				"description": "Optional bindable selected value, defaulting to an empty string."
 			},
 			{
 				"name": "Select.label",
-				"type": "string"
+				"type": "string",
+				"description": "Required accessible label for the select."
 			},
 			{
 				"name": "Select.id",
-				"type": "string"
+				"type": "string",
+				"description": "Optional HTML identifier."
 			},
 			{
 				"name": "Select.name",
-				"type": "string"
+				"type": "string",
+				"description": "Optional form field name."
 			},
 			{
 				"name": "Select.required",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional native required flag, omitted by default."
 			},
 			{
 				"name": "Select.disabled",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional disabled state, defaulting to false."
 			},
 			{
 				"name": "Select.children",
-				"type": "Snippet"
+				"type": "Snippet",
+				"description": "Required snippet supplying the option markup."
 			}
 		],
 		"outputs": [
 			{
 				"name": "Select",
-				"type": "markup"
+				"type": "markup",
+				"description": "Native select with a decorative arrow. Binding updates its selected value; disabled and required behavior follow the browser. Forced-color mode restores the native appearance."
 			}
 		],
 		"errors": []

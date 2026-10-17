@@ -2,36 +2,40 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.hosted-artifact",
 	"kind": "function",
-	"title": "hostedArtifact",
-	"responsibility": "Owns the hostedArtifact shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Check hosted artifact bytes",
+	"responsibility": "Checks a hosted capture’s supported media type, size and expected hash before returning it.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/hostedArtifact.ts"],
 		"symbols": ["hostedArtifact"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hostedArtifact.media",
-				"type": "{ bytes: Uint8Array; mediaType: string }"
+				"type": "{ bytes: Uint8Array; mediaType: string }",
+				"description": "The received bytes and declared media type. Supported types are PNG, JPEG, WAV, MPEG audio, MP4 audio, Ogg, JSON and plain text; this helper lowercases the base type and discards parameters before checking."
 			},
 			{
 				"name": "hostedArtifact.sha256",
-				"type": "string"
+				"type": "string",
+				"description": "The expected SHA-256 hash of the requested file."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hostedArtifact",
-				"type": "Promise<EvidenceArtifactResult>"
+				"type": "Promise<EvidenceArtifactResult>",
+				"description": "A promise for the checked bytes, hash and serving type. Bytes must be at most 11 MiB, match the hash, and identify the declared base media type. Plain text is returned with UTF-8 charset."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects unsupported or mismatched media, a different hash or excessive size. Hash errors explain that the file differs from the requested recording; unsupported content receives the shared unsupported-kind message."
 			}
 		]
 	},

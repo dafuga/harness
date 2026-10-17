@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "hub.function.hub-runtime",
 	"kind": "function",
-	"title": "hubRuntime",
-	"responsibility": "Owns the hubRuntime shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Assemble the hosted API",
+	"responsibility": "Create authentication and optional relay services and a connector for GitHub-backed collaboration.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/hubRuntime.ts"],
 		"symbols": ["HubApiRuntime", "hubRuntime"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hubRuntime.env",
-				"type": "HubEnv"
+				"type": "HubEnv",
+				"description": "Hub environment with optional authentication database, cache, relay binding and collaboration repository settings."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubRuntime",
-				"type": "HubApiRuntime"
+				"type": "HubApiRuntime",
+				"description": "Runtime with auth, nullable remote access and connect(). Connecting creates collaboration and projection services using configured repository identity and auth-provided tokens. Missing required repository settings throw collaboration-disabled."
 			}
 		],
 		"errors": []

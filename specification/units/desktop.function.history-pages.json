@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.history-pages",
 	"kind": "function",
-	"title": "historyPages",
-	"responsibility": "Owns the historyPages shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Combine history pages",
+	"responsibility": "Combines loaded history pages while keeping the first occurrence of each event.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/historyPages.ts"],
 		"symbols": ["historyPages"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "historyPages.pages",
-				"type": "HistoryEvent[][]"
+				"type": "HistoryEvent[][]",
+				"description": "The history pages supplied as separate arguments, in the order they were read."
 			}
 		],
 		"outputs": [
 			{
 				"name": "historyPages",
-				"type": "HistoryEvent[]"
+				"type": "HistoryEvent[]",
+				"description": "One list in page order, with duplicate event identities removed. The first event with each identity is retained; no timestamp sorting is performed."
 			}
 		],
 		"errors": []

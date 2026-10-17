@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.catalog-history",
 	"kind": "function",
-	"title": "catalogHistory",
-	"responsibility": "Owns the catalogHistory shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Read an entity’s source history",
+	"responsibility": "Reads up to 100 Git commits affecting a unit’s owned source paths at the requested revision.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/catalogHistory.ts"],
 		"symbols": ["catalogHistory"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "catalogHistory.root",
-				"type": "string"
+				"type": "string",
+				"description": "The repository directory in which to read Git history."
 			},
 			{
 				"name": "catalogHistory.revision",
-				"type": "string"
+				"type": "string",
+				"description": "The Git revision from which to read history, passed as supplied to Git."
 			},
 			{
 				"name": "catalogHistory.unit",
-				"type": "ComponentManifest"
+				"type": "ComponentManifest",
+				"description": "The unit definition whose owned source paths restrict the history. No owned paths means an empty history without running Git."
 			}
 		],
 		"outputs": [
 			{
 				"name": "catalogHistory",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "A promise for commit history entries containing the hash, author timestamp and subject, with no design version. Each entry states that source changed and verification is recorded separately. Git read failures reject the promise."
 			}
 		],
 		"errors": []

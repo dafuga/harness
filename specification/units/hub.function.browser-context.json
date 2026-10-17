@@ -2,25 +2,27 @@
 	"schemaVersion": 1,
 	"id": "hub.function.browser-context",
 	"kind": "function",
-	"title": "browserContext",
-	"responsibility": "Owns the browserContext shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Provide browser services",
+	"responsibility": "Create and retrieve page-scoped API, session and project services through Svelte context.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/browserContext.ts"],
 		"symbols": ["HostedBrowser", "provideBrowser", "browserContext"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "provideBrowser",
-				"type": "HostedBrowser"
+				"type": "HostedBrowser",
+				"description": "New services stored in the current Svelte context; a 401 refreshes the session when an actor was known."
 			},
 			{
 				"name": "browserContext",
-				"type": "HostedBrowser"
+				"type": "HostedBrowser",
+				"description": "Services previously provided in the current component context."
 			}
 		],
 		"errors": []

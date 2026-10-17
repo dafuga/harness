@@ -2,32 +2,35 @@
 	"schemaVersion": 1,
 	"id": "function.fields",
 	"kind": "function",
-	"title": "fields",
-	"responsibility": "Owns the fields shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Scaffold field parsing",
+	"responsibility": "Converts field specifications into normalized code names, database columns and supported language types.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/core/fields.ts"],
 		"symbols": ["FieldType", "Field", "parseFields"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "parseFields.rawFields",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Field strings in name:type form; omitted type defaults to string. Supported types are string, text, number, boolean, date and json."
 			}
 		],
 		"outputs": [
 			{
 				"name": "parseFields",
-				"type": "Field[]"
+				"type": "Field[]",
+				"description": "Fields in input order with camelCase name, snake_case column, normalized type and TypeScript/SQL types. String/text/date use TEXT, number/boolean use INTEGER, and json uses Record<string, unknown> stored as TEXT."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown for malformed field syntax, invalid field names, unsupported types or duplicate normalized names."
 			}
 		]
 	},

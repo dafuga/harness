@@ -2,9 +2,9 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.recorded-answer",
 	"kind": "function",
-	"title": "recordedAnswer",
-	"responsibility": "Owns the recordedAnswer shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Build an entity’s evidence answer",
+	"responsibility": "Builds the entity-specific evidence and behavior answer and refuses a response too large for transport.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/recordedAnswer.ts"],
@@ -15,20 +15,22 @@
 		"inputs": [
 			{
 				"name": "recordedAnswer.input",
-				"type": "AnswerInput"
+				"type": "AnswerInput",
+				"description": "The history scope naming the entity, the identity of the read, and already-read and validated current/parent revision details. This helper assumes those inputs belong together."
 			}
 		],
 		"outputs": [
 			{
 				"name": "recordedAnswer",
-				"type": "EntityEvidenceResult"
+				"type": "EntityEvidenceResult",
+				"description": "The supplied scope and identity with projected evidence for the named entity and behavior derived from the original evidence. Current mode yields no before comparison. The answer is serialized for size checking and is never truncated to fit."
 			}
 		],
 		"errors": [
 			{
 				"name": "answer-too-large",
 				"type": "refused",
-				"description": "The projected answer is over 16 MiB."
+				"description": "Throws when the serialized answer exceeds the transport message limit minus 1,024 bytes reserved for its wrapper, approximately 16 MiB."
 			}
 		]
 	},

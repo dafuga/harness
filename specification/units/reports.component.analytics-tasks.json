@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "reports.component.analytics-tasks",
 	"kind": "component",
-	"title": "AnalyticsTasks",
-	"responsibility": "Owns the AnalyticsTasks Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Analytics tasks",
+	"responsibility": "Displays response and clean-code assessment history by task.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/components/AnalyticsTasks.svelte"],
 		"symbols": ["AnalyticsTasks"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "AnalyticsTasks.jev",
-				"type": "Jev"
+				"type": "Jev",
+				"description": "Required Jev summary containing response and clean-code task arrays. Each row supplies task, loop/step, author model, assessed attempts, first-pass flag, attempts-to-pass and optional report identifier."
 			}
 		],
 		"outputs": [
 			{
 				"name": "AnalyticsTasks",
-				"type": "markup"
+				"type": "markup",
+				"description": "Two task tables with missing text as a dash and links for supplied report IDs. First pass shows Yes when flagged, otherwise No for assessed attempts or Not assessed for none. Null attempts-to-pass is Not yet passed. Describes excluded cached/dry/incomplete runs; relies on supplied assessed counts."
 			}
 		],
 		"errors": []

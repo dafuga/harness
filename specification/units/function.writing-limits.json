@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.writing-limits",
 	"kind": "function",
-	"title": "writingLimits",
-	"responsibility": "States the length limits of change notes and commit messages in each version a repository can declare, counts words and characters the one way all checks do, and says what exceeds them.",
+	"title": "Versioned writing limits",
+	"responsibility": "Counts note and commit text consistently and reports length violations under the revision’s declared writing policy.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -25,81 +25,99 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "writingPolicy.version",
-				"type": "WritingVersion"
+				"type": "WritingVersion",
+				"description": "Supported writing-policy version, 1 or 2."
 			},
 			{
 				"name": "writingHeld.config",
-				"type": "string | undefined"
+				"type": "string | undefined",
+				"description": "Verification-config JSON text, or undefined when absent."
 			},
 			{
 				"name": "writingDeclared.config",
-				"type": "string | undefined"
+				"type": "string | undefined",
+				"description": "Verification-config JSON text to check for an applicable numeric writing version."
 			},
 			{
 				"name": "writingCount.text",
-				"type": "string"
+				"type": "string",
+				"description": "Text to trim, normalize line endings and count."
 			},
 			{
 				"name": "writingProblems.field",
-				"type": "string"
+				"type": "string",
+				"description": "Field label to include in any violation message."
 			},
 			{
 				"name": "writingProblems.text",
-				"type": "string"
+				"type": "string",
+				"description": "Text to measure against the supplied bounds."
 			},
 			{
 				"name": "writingProblems.limit",
-				"type": "WritingLimit"
+				"type": "WritingLimit",
+				"description": "Character limit and optional word limit; null word limit means no word-count cap."
 			},
 			{
 				"name": "explanationProblems.reason",
-				"type": "WrittenReason"
+				"type": "WrittenReason",
+				"description": "Unit/symbol reason with behavior and simplification/performance attempt text."
 			},
 			{
 				"name": "explanationProblems.version",
-				"type": "WritingVersion"
+				"type": "WritingVersion",
+				"description": "Policy version of the revision the reason explains."
 			}
 		],
 		"outputs": [
 			{
 				"name": "writingVersions",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Supported writing versions 1 and 2."
 			},
 			{
 				"name": "writingVersion",
-				"type": "WritingVersion"
+				"type": "WritingVersion",
+				"description": "Current writing version, 2."
 			},
 			{
 				"name": "writingLimits",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Shared bounds: behavior 30 words/200 characters; legacy attempt 20/140; subject 72 characters; body 60/400."
 			},
 			{
 				"name": "writingPolicy",
-				"type": "WritingPolicy"
+				"type": "WritingPolicy",
+				"description": "Bounds for the requested version, reducing attempt words to 15 under version 2."
 			},
 			{
 				"name": "writingHeld",
-				"type": "WritingVersion | null"
+				"type": "WritingVersion | null",
+				"description": "Highest supported version not above the numeric declaration, or null for absent/invalid/below-one declarations; future versions use the newest supported policy."
 			},
 			{
 				"name": "writingDeclared",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when writingHeld finds an applicable policy."
 			},
 			{
 				"name": "writingCount",
-				"type": "{ words: number; characters: number }"
+				"type": "{ words: number; characters: number }",
+				"description": "Whitespace-delimited words and Unicode-code-point characters after trimming and CR/LF normalization."
 			},
 			{
 				"name": "writingProblems",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Empty-field or exceeded word/character messages, or an empty list when within bounds."
 			},
 			{
 				"name": "explanationProblems",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Behavior and attempt violations prefixed with unit and symbol, using whole-unit naming for *."
 			}
 		],
 		"errors": []

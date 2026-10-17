@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "reports.component.audio-comparison",
 	"kind": "component",
-	"title": "AudioComparison",
-	"responsibility": "Owns the AudioComparison Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Audio comparison",
+	"responsibility": "Summarizes two related recordings as one gallery card while keeping their statuses separate.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/components/AudioComparison.svelte"],
 		"symbols": ["AudioComparison"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "AudioComparison.before",
-				"type": "Evidence"
+				"type": "Evidence",
+				"description": "Required original recording whose identity preserves its gallery anchor. Missing flag or empty file marks its side unavailable."
 			},
 			{
 				"name": "AudioComparison.after",
-				"type": "Evidence"
+				"type": "Evidence",
+				"description": "Required updated recording supplying the card title, category and main anchor. Missing flag or empty file marks its side unavailable."
 			},
 			{
 				"name": "AudioComparison.onopen",
-				"type": "() => void"
+				"type": "() => void",
+				"description": "Required callback for opening the comparison viewer. Its button is disabled until mount completes."
 			}
 		],
 		"outputs": [
 			{
 				"name": "AudioComparison",
-				"type": "markup"
+				"type": "markup",
+				"description": "Paired-audio card with independent before/after badges and positive finite duration labels. Unavailable sides show not-proven. Does not create a combined passing result or play audio itself."
 			}
 		],
 		"errors": []

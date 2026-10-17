@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "function.gateway-replay",
 	"kind": "function",
-	"title": "gatewayReplay",
-	"responsibility": "Owns the gatewayReplay shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Gateway replay identity",
+	"responsibility": "Hashes the serialized gateway request for replay lookup.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/gatewayReplay.ts"],
 		"symbols": ["gatewayReplay"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "gatewayReplay.request",
-				"type": "GatewayRequest"
+				"type": "GatewayRequest",
+				"description": "Complete gateway request to serialize in its existing property order."
 			}
 		],
 		"outputs": [
 			{
 				"name": "gatewayReplay",
-				"type": "string"
+				"type": "string",
+				"description": "Lowercase SHA-256 digest of JSON.stringify(request). No session or replay store is modified."
 			}
 		],
 		"errors": []

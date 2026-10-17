@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-harness-compare",
 	"kind": "component",
-	"title": "HarnessCompare",
-	"responsibility": "Shows what changed between a base and a head revision: units, scenarios, reasons and measurements.",
+	"title": "Revision impact comparison",
+	"responsibility": "Presents changed and affected units, recorded reasons, measurements and media for two revisions.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,37 +11,44 @@
 		"symbols": ["HarnessCompare"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HarnessCompare.mediaBase",
-				"type": "string"
+				"type": "string",
+				"description": "Required media prefix for the paired gallery."
 			},
 			{
 				"name": "HarnessCompare.base",
-				"type": "HarnessRevision | undefined"
+				"type": "HarnessRevision | undefined",
+				"description": "Required comparison base or undefined. No base receives explicit guidance. Removed units come from this registry."
 			},
 			{
 				"name": "HarnessCompare.head",
-				"type": "HarnessRevision"
+				"type": "HarnessRevision",
+				"description": "Required selected revision supplying active units, reasons and records."
 			},
 			{
 				"name": "HarnessCompare.client",
-				"type": "HarnessClient"
+				"type": "HarnessClient",
+				"description": "Required source-comparison client used to derive compared sides when base exists. Failure falls back to null comparison data."
 			},
 			{
 				"name": "HarnessCompare.selected",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "Required unit identifier or null, selecting a unit-detail panel when found."
 			},
 			{
 				"name": "HarnessCompare.onselect",
-				"type": "(id: string) => void"
+				"type": "(id: string) => void",
+				"description": "Required callback for selecting impact-list or map units."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HarnessCompare",
-				"type": "markup"
+				"type": "markup",
+				"description": "Impact groups and uncertainty/source explanations, reasons for directly touched units, before/after measured metrics and emitted sizes, media, dependency map and selected-unit detail. Removed units use base records/scenarios. Missing measurements stay unavailable."
 			}
 		],
 		"errors": []

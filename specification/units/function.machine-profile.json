@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.machine-profile",
 	"kind": "function",
-	"title": "machineProfile",
-	"responsibility": "Identifies the hardware and runtime profile a measurement belongs to.",
+	"title": "Benchmark machine profile",
+	"responsibility": "Captures machine and runtime facts and derives a repeatable profile identity for measurement comparison.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,12 +11,13 @@
 		"symbols": ["machineProfile"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "machineProfile",
-				"type": "VerificationProfile"
+				"type": "VerificationProfile",
+				"description": "Profile with platform, architecture, CPU model, logical core count, total memory and Bun/Node version, plus a 16-character SHA-256-derived id. A nonblank HARNESS_PROFILE_LABEL is included in the runtime label and therefore the identity."
 			}
 		],
 		"errors": []

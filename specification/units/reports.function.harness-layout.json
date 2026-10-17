@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.harness-layout",
 	"kind": "function",
-	"title": "harnessLayout",
-	"responsibility": "Places units in dependency layers so the same revision always draws the same map.",
+	"title": "Dependency map layout",
+	"responsibility": "Places units in dependency layers and builds deduplicated connecting edges.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,33 +11,39 @@
 		"symbols": ["PlacedUnit", "HarnessLayout", "nodeSize", "mapColumns", "harnessLayout"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "mapColumns.count",
-				"type": "number"
+				"type": "number",
+				"description": "Unit count used to choose a row width."
 			},
 			{
 				"name": "harnessLayout.units",
-				"type": "HarnessUnit[]"
+				"type": "HarnessUnit[]",
+				"description": "Units and their declared dependencies to lay out."
 			},
 			{
 				"name": "harnessLayout.perRow",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Optional units per row, defaulting to mapColumns for the supplied count."
 			}
 		],
 		"outputs": [
 			{
 				"name": "nodeSize",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Node dimensions of 176 by 34, with horizontal gap 16 and vertical gap 46."
 			},
 			{
 				"name": "mapColumns",
-				"type": "number"
+				"type": "number",
+				"description": "Ceiling of the square root of 0.75 times count, clamped between six and 24."
 			},
 			{
 				"name": "harnessLayout",
-				"type": "HarnessLayout"
+				"type": "HarnessLayout",
+				"description": "Nodes grouped by dependency depth and sorted by identifier within layers, wrapped into rows, with dimensions and one edge per known dependency pair. Cycle traversal is bounded and missing dependency nodes are ignored."
 			}
 		],
 		"errors": []

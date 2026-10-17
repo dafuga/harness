@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "reports.component.report-findings",
 	"kind": "component",
-	"title": "ReportFindings",
-	"responsibility": "Owns the ReportFindings Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Report findings",
+	"responsibility": "Shows recorded findings and links to their supporting evidence.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/components/ReportFindings.svelte"],
 		"symbols": ["ReportFindings"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ReportFindings.findings",
-				"type": "Finding[]"
+				"type": "Finding[]",
+				"description": "Required findings, supplying each status, title, detail and optional evidence identifiers."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ReportFindings",
-				"type": "markup"
+				"type": "markup",
+				"description": "A findings section and cards when the list is nonempty. Evidence identifiers become anchor links; an empty list renders no section."
 			}
 		],
 		"errors": []

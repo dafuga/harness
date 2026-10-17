@@ -2,36 +2,40 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.hosted-evidence-path",
 	"kind": "function",
-	"title": "hostedEvidencePath",
-	"responsibility": "Owns the hostedEvidencePath shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Build a hosted evidence URL",
+	"responsibility": "Validates evidence-request fields and builds their ordered hosted API address.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/hostedEvidencePath.ts"],
 		"symbols": ["hostedEvidencePath"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hostedEvidencePath.input",
-				"type": "EntityEvidenceQuery & { projectId: string }"
+				"type": "EntityEvidenceQuery & { projectId: string }",
+				"description": "The project and evidence scope; artifact operations also need the capture-binding fields at runtime. Project IDs are 1–128 characters, beginning with a letter or digit and continuing with letters, digits, dots, underscores or hyphens."
 			},
 			{
 				"name": "hostedEvidencePath.operation",
-				"type": "'evidence' | 'artifact'"
+				"type": "'evidence' | 'artifact'",
+				"description": "Choose evidence for metadata or artifact for capture bytes."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hostedEvidencePath",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "A relative API URL for the encoded project and operation, with validated fields in a fixed query order. Null values are omitted and extra input fields are discarded. No network call is made."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Throws for an invalid project identity or missing or invalid evidence/artifact fields."
 			}
 		]
 	},

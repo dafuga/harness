@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-entity-history",
 	"kind": "component",
-	"title": "EntityHistory",
-	"responsibility": "Lists the commits that changed an entity through the shown commit, reads the reasons of a commit only when it is listed, and opens the reasons of one in full on request.",
+	"title": "Entity history",
+	"responsibility": "Explores recorded changes to one entity and reads additional revision details on demand.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,41 +11,49 @@
 		"symbols": ["EntityHistory"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EntityHistory.entity",
-				"type": "ExplorerEntity"
+				"type": "ExplorerEntity",
+				"description": "Required entity identity/name used for revision details and navigation. Caller is expected to recreate this view for a new entity or commit."
 			},
 			{
 				"name": "EntityHistory.rows",
-				"type": "ExplorerHistoryRow[]"
+				"type": "ExplorerHistoryRow[]",
+				"description": "Required newest-first history through the shown commit, including known changes and unread candidates."
 			},
 			{
 				"name": "EntityHistory.index",
-				"type": "HarnessIndex"
+				"type": "HarnessIndex",
+				"description": "Required index used to derive historical timings and profiles."
 			},
 			{
 				"name": "EntityHistory.scope",
-				"type": "ExplorerScope"
+				"type": "ExplorerScope",
+				"description": "Required viewed commit used for labels and preferred initial selection."
 			},
 			{
 				"name": "EntityHistory.known",
-				"type": "HarnessRevision[]"
+				"type": "HarnessRevision[]",
+				"description": "Required revisions already read, used to seed the detail map once at creation. Later prop replacements do not reseed it."
 			},
 			{
 				"name": "EntityHistory.client",
-				"type": "Pick<HarnessClient, 'revision'>"
+				"type": "Pick<HarnessClient, 'revision'>",
+				"description": "Required revision reader. Failures are swallowed, leaving revision detail unknown rather than supplying false evidence."
 			},
 			{
 				"name": "EntityHistory.nav",
-				"type": "EntityNav"
+				"type": "EntityNav",
+				"description": "Required context for links to this entity at historical commits."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityHistory",
-				"type": "markup"
+				"type": "markup",
+				"description": "History table with selected-profile timings, verdicts and a selected-change panel. Defaults selection to the viewed commit or first listed change and profile to the first valid choice. Reads details for listed changes and up to ten unread commits on demand. Unknown changes and empty known history are explicit. Full-reason selection focuses its disclosure after rendering."
 			}
 		],
 		"errors": []

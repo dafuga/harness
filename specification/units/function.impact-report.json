@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.impact-report",
 	"kind": "function",
-	"title": "impactReport",
-	"responsibility": "Shapes a kernel answer into affected units, selected tests and scenarios, widening it when uncertain.",
+	"title": "Impact report assembly",
+	"responsibility": "Turns kernel reachability into affected units, tests and scenarios, widening selection when changes cannot be safely bounded.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,25 +11,29 @@
 		"symbols": ["graphTests", "impactReport"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "graphTests.graph",
-				"type": "SourceGraph"
+				"type": "SourceGraph",
+				"description": "Source graph whose test nodes should be extracted."
 			},
 			{
 				"name": "impactReport.input",
-				"type": "Assembly"
+				"type": "Assembly",
+				"description": "Base/head snapshots, classified change seeds and kernel output to combine into a report."
 			}
 		],
 		"outputs": [
 			{
 				"name": "graphTests",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Paths of graph nodes marked test and matching a supported .test or .spec JavaScript/TypeScript filename."
 			},
 			{
 				"name": "impactReport",
-				"type": "Omit<ImpactReport, 'base' | 'head' | 'runtime'>"
+				"type": "Omit<ImpactReport, 'base' | 'head' | 'runtime'>",
+				"description": "Report fields excluding base/head/runtime: changed files, direct/indirect/added/removed units, selected/excluded/removed tests, affected/unaffected scenarios and deduplicated uncertainty. Global, unclassified or uncovered source changes select all current tests and scenarios."
 			}
 		],
 		"errors": []

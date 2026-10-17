@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.remote-host-panel",
 	"kind": "component",
-	"title": "RemoteHostPanel",
-	"responsibility": "Owns the RemoteHostPanel Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Remote host panel",
+	"responsibility": "Manages computer-side phone access, pairing offers, pending approvals and approved devices.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/RemoteHostPanel.svelte"],
 		"symbols": ["RemoteHostPanel"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RemoteHostPanel.store",
-				"type": "RemoteHost"
+				"type": "RemoteHost",
+				"description": "Host store with status, busy/errors and access/pairing operations. Missing status renders nothing; unsupported or disabled status shows its explanation."
 			},
 			{
 				"name": "RemoteHostPanel.compact",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional flag, false by default. True initially shows only summary and Manage; opening reveals controls in a sheet. False displays controls directly."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RemoteHostPanel",
-				"type": "markup"
+				"type": "markup",
+				"description": "Access panel with enable/disable actions, status, an unspent pairing code, pending requests and approved devices. An offer already represented by a request is not shown as scannable. Pair a phone appears without a scannable offer and requires online/not busy. Store errors appear only inside the expanded body."
 			}
 		],
 		"errors": []

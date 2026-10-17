@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "function.recorded-builds",
 	"kind": "function",
-	"title": "recordedBuilds",
-	"responsibility": "Owns the recordedBuilds shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Recorded build projection",
+	"responsibility": "Keeps only the declared build identity fields in a verification record.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/recordedBuilds.ts"],
 		"symbols": ["recordedBuilds"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "recordedBuilds.observed",
-				"type": "RecordedBuild[]"
+				"type": "RecordedBuild[]",
+				"description": "Optional observed build entries; undefined means the project declared no build."
 			}
 		],
 		"outputs": [
 			{
 				"name": "recordedBuilds",
-				"type": "Pick<VerificationRecord, 'builds'>"
+				"type": "Pick<VerificationRecord, 'builds'>",
+				"description": "Empty object when observations are undefined, otherwise builds containing only id, directory, buildId and files. An explicitly empty array remains builds: []."
 			}
 		],
 		"errors": []

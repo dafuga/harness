@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "hub.component.native-approval",
 	"kind": "component",
-	"title": "NativeApproval",
-	"responsibility": "Owns the NativeApproval Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Native approval",
+	"responsibility": "Lets a signed-in person review a desktop connection request and submit its displayed code.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/components/NativeApproval.svelte"],
 		"symbols": ["NativeApproval"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "NativeApproval.handoffId",
-				"type": "string"
+				"type": "string",
+				"description": "Required identifier used to read the native request and approve it. Loading occurs on mount; prop changes alone do not reload."
 			}
 		],
 		"outputs": [
 			{
 				"name": "NativeApproval",
-				"type": "markup"
+				"type": "markup",
+				"description": "When framed, offers only guidance to open a standalone tab. Otherwise shows reading, expired, already-approved or pending request content. Pending form describes scope and account, then submits a trimmed uppercase code while blocking empty/concurrent requests. Success clears code and shows return-to-desktop guidance; errors are alerts. A failed initial request read falls back to pending after obtaining a fallback scope."
 			}
 		],
 		"errors": []

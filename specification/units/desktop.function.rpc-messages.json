@@ -2,46 +2,53 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.rpc-messages",
 	"kind": "function",
-	"title": "rpcMessages",
-	"responsibility": "Owns the rpcMessages shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Process agent RPC messages",
+	"responsibility": "Match incoming replies to requests and manage request sending and timeouts.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/rpcMessages.ts"],
 		"symbols": ["RpcEvent", "RpcPending", "rpcMessages", "rpcRequest"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "rpcMessages.state",
-				"type": "RpcState"
+				"type": "RpcState",
+				"description": "Pending-request map, notification listeners and sender."
 			},
 			{
 				"name": "rpcMessages.line",
-				"type": "string"
+				"type": "string",
+				"description": "One JSON message line; invalid JSON is ignored."
 			},
 			{
 				"name": "rpcRequest.state",
-				"type": "RpcState"
+				"type": "RpcState",
+				"description": "Pending-request map and sender used for the new request."
 			},
 			{
 				"name": "rpcRequest.frame",
-				"type": "{ id: number; method: string; params: unknown }"
+				"type": "{ id: number; method: string; params: unknown }",
+				"description": "Request ID, method and parameters to send."
 			},
 			{
 				"name": "rpcRequest.timeoutMs",
-				"type": "number"
+				"type": "number",
+				"description": "Milliseconds before the pending request is rejected as timed out."
 			}
 		],
 		"outputs": [
 			{
 				"name": "rpcMessages",
-				"type": "void"
+				"type": "void",
+				"description": "Settles matching requests, dispatches notifications or rejects incoming interactive requests as unavailable; returns nothing."
 			},
 			{
 				"name": "rpcRequest",
-				"type": "Promise<unknown>"
+				"type": "Promise<unknown>",
+				"description": "Reply result, or rejection from the remote error, send failure or timeout."
 			}
 		],
 		"errors": []

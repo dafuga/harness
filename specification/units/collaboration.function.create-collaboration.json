@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "collaboration.function.create-collaboration",
 	"kind": "function",
-	"title": "createCollaboration",
-	"responsibility": "Owns the createCollaboration shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Build the collaboration API",
+	"responsibility": "Connect project, membership, invitation and comment operations to shared persistence and authorization dependencies.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/collaboration/src/utils/createCollaboration.ts"],
 		"symbols": ["createCollaboration"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "createCollaboration.deps",
-				"type": "CollaborationDependencies"
+				"type": "CollaborationDependencies",
+				"description": "Repository, source and cache adapters, repository authorization callback and optional clock."
 			}
 		],
 		"outputs": [
 			{
 				"name": "createCollaboration",
-				"type": "CollaborationApi"
+				"type": "CollaborationApi",
+				"description": "API whose methods check membership, read committed records and perform project, member, invitation and comment transactions. Construction itself performs no network access."
 			}
 		],
 		"errors": []

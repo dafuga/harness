@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.remote-grant",
 	"kind": "function",
-	"title": "remoteGrant",
-	"responsibility": "Owns the remoteGrant shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Available remote methods",
+	"responsibility": "Determine which remote methods a paired phone may offer from its current status.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/remoteGrant.ts"],
 		"symbols": ["remoteGrant"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "remoteGrant.status",
-				"type": "RemoteNativeStatus | null"
+				"type": "RemoteNativeStatus | null",
+				"description": "Native status or null; a grant and connecting, online or offline state are required."
 			}
 		],
 		"outputs": [
 			{
 				"name": "remoteGrant",
-				"type": "Set<string>"
+				"type": "Set<string>",
+				"description": "Set of allowed attached methods, or grant-derived read/comment methods and optional agent methods when no explicit list exists; otherwise an empty set."
 			}
 		],
 		"errors": []

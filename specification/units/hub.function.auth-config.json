@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "hub.function.auth-config",
 	"kind": "function",
-	"title": "authConfig",
-	"responsibility": "Owns the authConfig shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Read authentication configuration",
+	"responsibility": "Validate supplied authentication settings and disable unavailable integrations without fallback credentials.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/authConfig.ts"],
 		"symbols": ["CollaborationScope", "GithubAppConfig", "AuthConfig", "authConfig"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "authConfig.env",
-				"type": "AuthEnv"
+				"type": "AuthEnv",
+				"description": "Environment settings for Google sign-in, session secret, public origin, deployment environment and optional GitHub App."
 			}
 		],
 		"outputs": [
 			{
 				"name": "authConfig",
-				"type": "AuthConfig | null"
+				"type": "AuthConfig | null",
+				"description": "Configuration when client ID is valid, secret has at least 32 characters and environment is local, staging or production; otherwise null. Origin must be HTTPS, or loopback HTTP in local mode, without credentials, path, query or fragment. GitHub and collaboration settings are independently nullable."
 			}
 		],
 		"errors": []
