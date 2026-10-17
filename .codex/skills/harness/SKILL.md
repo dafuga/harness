@@ -13,7 +13,7 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 7. Verify with `bun run check` before handing work back.
 8. Git answer caches: establish the object format first; hex shape is not immutability. Test refs named like the other width and unknown formats.
 9. Config changes: name owned helpers from the owning config file; run root and every inheriting workspace's test entrypoint before a full check.
-10. Shared browser fixtures must preserve lazy setup: when their dependencies change, run an API-only case with an unavailable browser executable alongside actual browser cases.
+10. Shared browser fixtures must preserve lazy setup: when their dependencies change, run an API-only case with an unavailable browser executable alongside actual browser cases. Characterize diagnostics before page announcement and overlapping context/page delivery without duplicates.
 
 ## Bug and Regression Loops
 

@@ -32,6 +32,14 @@ shared browser fixture dependencies change. The case runs in the existing E2E ch
 alongside real browser error cases, preventing optional runtime dependencies from
 spreading to unrelated test scopes. Its cost is one short browser-free runner launch.
 
+Shared browser collectors observe context-level console and unhandled-error events:
+a popup's initial script can run before its page is announced. Collector changes
+must characterize pre-page diagnostics and overlapping context/page delivery in
+normal unit verification, alongside real popup and browser-free API cases. This
+acceptance checkpoint prevents timing-dependent browser passes from being trusted
+as lifecycle coverage. Merge verification exposed this gap in 776e98aa; the same
+deterministic lifecycle assertions reject that original collector.
+
 ## Future Enhancements
 
 - Server-side logs and application deployment are outside this browser guard.

@@ -23,6 +23,7 @@ test('generated browser tests reject errors in normal flows and pass after the e
 			'unexpected',
 			'unexpected',
 			'unexpected',
+			'unexpected',
 			'unexpected'
 		]);
 		for (const item of report.suites[0].specs.slice(1)) {
@@ -36,11 +37,11 @@ test('generated browser tests reject errors in normal flows and pass after the e
 			spec,
 			normalFlows(imports)
 				.replaceAll('console.error', 'console.info')
-				.replace('throw new Error', 'console.info')
+				.replaceAll('throw new Error', 'console.info')
 		);
 		const repaired = await browserRun(project);
 		expect(repaired.exitCode).toBe(0);
-		expect(outcomes(JSON.parse(repaired.stdout))).toEqual(Array(5).fill('expected'));
+		expect(outcomes(JSON.parse(repaired.stdout))).toEqual(Array(6).fill('expected'));
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}
@@ -76,6 +77,14 @@ test('additional page error', async ({ context }) => {
 });
 test('popup navigation error', async ({ page, context }) => {
  await context.route('https://popup.harness.test/**', route => route.fulfill({ contentType: 'text/html', body: '<h1>Popup ready</h1><script>console.error("popup navigation failed")</script>' }));
+ const opened = page.waitForEvent('popup');
+ await page.evaluate(() => { window.open('https://popup.harness.test/'); });
+ const popup = await opened;
+ await expect(popup.getByRole('heading')).toHaveText('Popup ready');
+ await popup.close();
+});
+test('popup navigation exception', async ({ page, context }) => {
+ await context.route('https://popup.harness.test/**', route => route.fulfill({ contentType: 'text/html', body: '<h1>Popup ready</h1><script>throw new Error("popup exception")</script>' }));
  const opened = page.waitForEvent('popup');
  await page.evaluate(() => { window.open('https://popup.harness.test/'); });
  const popup = await opened;

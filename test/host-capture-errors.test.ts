@@ -8,11 +8,14 @@ test('a host flow failure preserves both its original exception and browser diag
 	const page = Object.assign(new EventEmitter(), {
 		url: () => 'https://fixture.test/harness',
 		goto: async () => {
-			page.emit('console', {
+			const message = {
 				type: () => 'error',
 				text: () => 'backend failed',
+				page: () => page,
 				location: () => ({ url: 'https://fixture.test/api', lineNumber: 0, columnNumber: 0 })
-			});
+			};
+			context.emit('console', message);
+			page.emit('console', message);
 			throw new Error('Navigation failed');
 		}
 	});
@@ -41,6 +44,8 @@ test('a host flow failure preserves both its original exception and browser diag
 		expect(close).toHaveBeenCalledOnce();
 		expect(page.listenerCount('console')).toBe(0);
 		expect(context.listenerCount('page')).toBe(0);
+		expect(context.listenerCount('console')).toBe(0);
+		expect(context.listenerCount('weberror')).toBe(0);
 	} finally {
 		launch.mockRestore();
 	}
