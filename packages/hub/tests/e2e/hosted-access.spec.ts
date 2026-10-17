@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../../../test/support/browserTest';
 import { atlas, clientId, code, credential, hostedFixture, invitation } from './hosted-fixture';
 
 const signIn = { name: 'Sign in with Google' };
@@ -88,7 +88,17 @@ test('an owner invites by a link and a code that are shown apart, and no email i
 	expect(page.url()).not.toContain(code);
 });
 
-test('an invitation asks for sign-in and the code, then opens the project', async ({ page }) => {
+test('an invitation asks for sign-in and the code, then opens the project', async ({
+	page,
+	browserErrors,
+	baseURL
+}) => {
+	browserErrors.expectError({
+		type: 'console',
+		message: 'Failed to load resource: the server responded with a status of 400 (Bad Request)',
+		source: new URL(`/api/projects/${atlas}/invitations/${invitation}/accept`, baseURL).href,
+		reason: 'Deliberately submitting an invalid invitation code verifies rejection.'
+	});
 	const state = await hostedFixture(page, { signedIn: false });
 	await page.goto(`/invite/${atlas}/${invitation}`);
 	await expect(page.getByRole('heading', { name: 'Join a shared project' })).toBeVisible();

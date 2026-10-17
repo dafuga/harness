@@ -2,17 +2,20 @@ import { e2eFixtures } from '../src/utils/e2eFixtures';
 import { mkdir, writeFile, rm } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
 import { chromium } from '@playwright/test';
+import { browserErrorCollector } from '../../../test/support/browserTest';
 import { ReportRepository } from '../src/repositories/ReportRepository';
 const { reports: root, site } = e2eFixtures();
 await rm(root, { recursive: true, force: true });
 await mkdir(root, { recursive: true });
 const image = join(root, 'fixture.png');
 const browser = await chromium.launch();
+const errors = browserErrorCollector();
 try {
 	const page = await browser.newPage({
 		viewport: { width: 960, height: 600 },
 		deviceScaleFactor: 1
 	});
+	errors.watch(page.context());
 	await page.setContent(`
 		<style>
 			*{box-sizing:border-box}body{margin:0;background:#0a1220;color:#eaf0f1;font:16px Arial}
@@ -63,6 +66,7 @@ try {
 	await writeFile(join(root, 'large.png'), Buffer.from(large, 'base64'));
 } finally {
 	await browser.close();
+	await errors.finish();
 }
 const store = new ReportRepository(root);
 const report = await store.begin({

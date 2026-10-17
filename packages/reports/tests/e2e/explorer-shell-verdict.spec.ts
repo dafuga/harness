@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../../../test/support/browserTest';
 import { fits, pictured, screens } from './support/sharedSelect';
 import { box } from './support/shellChecks';
 import {
@@ -23,10 +23,12 @@ test.afterAll(() => removeShellFixture(home));
 
 for (const [screen, width, height] of screens) {
 	test(`a verdict tells its status and reasons when pointed at, focused or tapped at ${screen} width`, async ({
-		browser
+		browser,
+		browserErrors
 	}) => {
 		// A screen that is touched as well as pointed at, as a tablet or a phone is.
 		const context = await browser.newContext({ hasTouch: true, viewport: { width, height } });
+		browserErrors.watch(context);
 		const page = await context.newPage();
 		await openShellPage(page, home, 'primitives');
 		const [group, tooltip] = [page.getByLabel('Verdicts'), page.getByRole('tooltip')];

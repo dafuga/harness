@@ -1,10 +1,10 @@
 import type { PlannedFile } from '../core/files';
 import { auditConfigFiles } from './auditConfig';
 import { auditRunnerFiles } from './auditRunner';
+import { browserTestFiles } from './browserTest';
 import { formatConfigFiles } from './formatConfig';
 import { lintConfigFiles } from './lintConfig';
 import { agentRules, skillRules } from './projectGuidance';
-
 export type ProjectKind = 'app' | 'lib';
 
 export interface ProjectTemplateInput {
@@ -93,6 +93,7 @@ function appSourceFiles(name: string): PlannedFile[] {
 
 function appTestFiles(): PlannedFile[] {
 	return [
+		...browserTestFiles(),
 		{
 			path: 'test/smoke.test.ts',
 			contents:

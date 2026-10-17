@@ -1,5 +1,5 @@
 import { fakeProject } from './ui-workspace-fixture';
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../../../test/support/browserTest';
 
 test('browser preview exposes no writable backend', async ({ page }) => {
 	await page.goto('/');

@@ -3,7 +3,8 @@ import { createHash } from 'node:crypto';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { afterAll, beforeAll, expect, test } from 'vitest';
+import { afterAll, afterEach, beforeAll, beforeEach, expect, test } from 'vitest';
+import { browserErrorCollector } from './support/browserTest';
 import {
 	browserRun,
 	eventually,
@@ -22,6 +23,13 @@ import {
  */
 let scratch: string;
 let browser: Browser;
+let browserErrors: ReturnType<typeof browserErrorCollector>;
+beforeEach(() => {
+	browserErrors = browserErrorCollector();
+});
+afterEach(async () => {
+	await browserErrors.finish();
+});
 const runs: BrowserRun[] = [];
 const quick = ['tests/e2e/harness-cache.spec.ts'];
 /**
@@ -74,6 +82,7 @@ test('a page one run has open keeps what was opened on it when another run start
 	}, 'the first run to seed its history');
 
 	const page = await browser.newPage();
+	browserErrors.watch(page.context());
 	const { branch, commits } = history;
 	const address = `/harness/branch/${encodeURIComponent(branch)}/commit/${commits.twin}`;
 	await page.goto(`${first.url}${address}/pages/${history.page}`);

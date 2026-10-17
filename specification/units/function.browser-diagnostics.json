@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "function.browser-diagnostics",
+	"kind": "function",
+	"title": "browserDiagnostics",
+	"responsibility": "Owns the browserDiagnostics shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/browserDiagnostics.ts"],
+		"symbols": ["browserDiagnosticSchema", "BrowserDiagnostic"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "browserDiagnosticSchema",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/browserDiagnostics.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/browserDiagnostics.ts"
+			}
+		]
+	},
+	"scenarios": ["browser-error-evidence"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

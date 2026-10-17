@@ -140,6 +140,8 @@ function removeEvidence() {
 }
 
 export interface EvidenceOptions extends Partial<Settings> {
+	/** Browser diagnostics held by the tip record's first check; synthetic test data only. */
+	browserErrors?: unknown[];
 	/** Extra entities declared by the synthetic history to have the recorded search observations. */
 	observedUnits?: string[];
 	/** A shared project read through a hosted connection: comments only, and a cache channel. */
@@ -150,7 +152,7 @@ export interface EvidenceOptions extends Partial<Settings> {
 
 /** The synthetic backend, as it answers after every load of the page. */
 export async function evidenceFixture(page: Page, options: EvidenceOptions = {}) {
-	const data = evidenceData(options.shared, options.observedUnits);
+	const data = evidenceData(options.shared, options.observedUnits, options.browserErrors);
 	const { delay = {}, corrupt = [], moved = false, hold = false } = options;
 	await page.addInitScript(installState, { delay, corrupt, moved, hold });
 	await page.addInitScript(installProject, data);

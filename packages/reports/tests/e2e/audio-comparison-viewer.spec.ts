@@ -1,4 +1,4 @@
-import { expect, test, type Page, type Locator } from '@playwright/test';
+import { expect, test, type Page, type Locator } from '../../../../test/support/browserTest';
 import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { audioPairFixture } from '../../test/audioPairFixture';

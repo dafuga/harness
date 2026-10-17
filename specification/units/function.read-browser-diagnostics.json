@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "function.read-browser-diagnostics",
+	"kind": "function",
+	"title": "readBrowserDiagnostics",
+	"responsibility": "Owns the readBrowserDiagnostics shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/readBrowserDiagnostics.ts"],
+		"symbols": ["readBrowserDiagnostics"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "readBrowserDiagnostics.directory",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "readBrowserDiagnostics",
+				"type": "Read"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.browser-diagnostics",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/readBrowserDiagnostics.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/readBrowserDiagnostics.ts"
+			}
+		]
+	},
+	"scenarios": ["browser-error-evidence"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

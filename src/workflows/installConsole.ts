@@ -40,7 +40,7 @@ export interface ConsoleObjectEntry {
 }
 
 const indexed =
-	/^(index\.json|(revisions|sides)\/[0-9a-f]{40}\.json|media\/[0-9a-f]{64}\.[a-z0-9]+)$/;
+	/^((?:index|activity)\.json|(revisions|sides)\/[0-9a-f]{40}\.json|media\/[0-9a-f]{64}\.[a-z0-9]+)$/;
 
 /**
  * The objects a private bucket must hold for a console installed with --bucket: every file of

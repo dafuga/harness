@@ -1,4 +1,4 @@
-import { expect, test, type Locator, type Page } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '../../../../test/support/browserTest';
 import { fits, pictured, screens, sharedField, typed } from './support/sharedSelect';
 import { box, channels, combo, reachable, styled } from './support/shellChecks';
 import { sha, shellBranch, shellMount } from './support/shellData';

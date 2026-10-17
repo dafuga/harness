@@ -1,4 +1,10 @@
-import { expect, test, type Locator, type Page, type TestInfo } from '@playwright/test';
+import {
+	expect,
+	test,
+	type Locator,
+	type Page,
+	type TestInfo
+} from '../../../../test/support/browserTest';
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { alpha, searchFixture } from './ui-search-fixture';

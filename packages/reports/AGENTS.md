@@ -24,6 +24,8 @@ This is a Harness SvelteKit app. Treat Harness as the operating contract for eve
 - The limits bound notes and commit messages only. They never shorten tests, contracts, assertions, traces, transcripts or evidence.
 - `harness info hooks` and `harness info explain` have the rules.
 
+- Browser normal flows, including screenshot/video runs, must have no unexpected console.error or pageerror events. Use the shared browserTest fixture and watch extra contexts before navigation. Preserve logs for expected errors and declare their exact messages and reasons in that test. For unexpected errors, prove a failing log assertion before repair, then rerun the same unchanged regression until the error disappears.
+
 ## Code Rules
 
 - Files stay at or below 220 lines.

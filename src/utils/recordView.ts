@@ -1,7 +1,9 @@
 import type { VerificationRecord } from '../core/verificationTypes';
+import type { BrowserDiagnostic } from '../core/browserDiagnostics';
 
 type Scenario = VerificationRecord['scenarios'][number];
 type Capture = Scenario['states'][number]['captures'][number];
+type DiagnosticTest = { id: string; status: string; browserErrors?: BrowserDiagnostic[] };
 
 export interface ResolvedMedia {
 	/** Path of the original bytes in the output, or null when they are not available. */
@@ -23,7 +25,7 @@ export interface RecordView {
 	finishedAt: string;
 	gates: VerificationRecord['gates'];
 	failures: string[];
-	tests: Array<{ id: string; kind: string; target: string; status: string; durationMs: number }>;
+	tests: Array<DiagnosticTest & { kind: string; target: string; durationMs: number }>;
 	/** Identity of each declared build as compiled for this record, when any is declared. */
 	builds?: VerificationRecord['builds'];
 	scenarios: Array<{
@@ -38,7 +40,7 @@ export interface RecordView {
 		 * For inherited evidence: the checks of this scenario as its origin record ran them, by
 		 * their scoped names. Absent when that record could not be read, and for a fresh result.
 		 */
-		originTests?: Array<{ id: string; status: string }>;
+		originTests?: DiagnosticTest[];
 		states: Array<
 			Omit<Scenario['states'][number], 'captures'> & { captures: Array<Capture & ResolvedMedia> }
 		>;
@@ -59,16 +61,52 @@ export function recordView(
 		problems: string[];
 		resolve: MediaResolver;
 		/** The checks an earlier record ran, by its id; undefined when it cannot be read. */
-		origins?: (record: string) => Array<{ id: string; status: string }> | undefined;
+		origins?: (record: string) => DiagnosticTest[] | undefined;
 	}
 ): RecordView {
-	const scenarios = record.scenarios.map((scenario) => {
+	return {
+		id: record.id,
+		status: record.status,
+		valid: context.valid,
+		problems: context.problems,
+		source: record.source,
+		profile: record.profile.id,
+		startedAt: record.startedAt,
+		finishedAt: record.finishedAt,
+		gates: record.gates,
+		failures: record.failures,
+		tests: record.tests.map(({ id, kind, target, status, durationMs, browserErrors }) => ({
+			id,
+			kind,
+			target,
+			status,
+			durationMs,
+			...(browserErrors ? { browserErrors } : {})
+		})),
+		...(record.builds ? { builds: record.builds } : {}),
+		scenarios: recordedScenarios(record, context),
+		measurements: record.measurements,
+		budgets: record.budgets,
+		reasons: { status: record.reasons.status, missing: record.reasons.missing }
+	};
+}
+
+function recordedScenarios(record: VerificationRecord, context: Parameters<typeof recordView>[1]) {
+	return record.scenarios.map((scenario) => {
 		const origin = scenario.referencedRecord ?? record.id;
 		const inherited = scenario.status === 'referenced';
 		const ran = inherited ? context.origins?.(origin) : undefined;
 		const scoped = ran?.filter((test) => test.id.startsWith(`${scenario.id}:`));
 		return {
-			...(scoped ? { originTests: scoped.map(({ id, status }) => ({ id, status })) } : {}),
+			...(scoped
+				? {
+						originTests: scoped.map(({ id, status, browserErrors }) => ({
+							id,
+							status,
+							...(browserErrors ? { browserErrors } : {})
+						}))
+					}
+				: {}),
 			id: scenario.id,
 			status: scenario.status,
 			testedRevision: scenario.testedRevision,
@@ -83,28 +121,4 @@ export function recordView(
 			}))
 		};
 	});
-	return {
-		id: record.id,
-		status: record.status,
-		valid: context.valid,
-		problems: context.problems,
-		source: record.source,
-		profile: record.profile.id,
-		startedAt: record.startedAt,
-		finishedAt: record.finishedAt,
-		gates: record.gates,
-		failures: record.failures,
-		tests: record.tests.map(({ id, kind, target, status, durationMs }) => ({
-			id,
-			kind,
-			target,
-			status,
-			durationMs
-		})),
-		...(record.builds ? { builds: record.builds } : {}),
-		scenarios,
-		measurements: record.measurements,
-		budgets: record.budgets,
-		reasons: { status: record.reasons.status, missing: record.reasons.missing }
-	};
 }

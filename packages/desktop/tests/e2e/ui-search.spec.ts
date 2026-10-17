@@ -1,4 +1,4 @@
-import { expect, test, type Page, type TestInfo } from '@playwright/test';
+import { expect, test, type Page, type TestInfo } from '../../../../test/support/browserTest';
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { hostedFixture } from './ui-hosted-fixture';

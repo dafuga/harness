@@ -1,6 +1,12 @@
 import { nativeImageFixture } from './native-image-fixture';
 import { nativeCapture } from './native-capture';
-import { test, expect, _electron, type ElectronApplication, type Page } from '@playwright/test';
+import {
+	test,
+	expect,
+	_electron,
+	type ElectronApplication,
+	type Page
+} from '../../../../test/support/browserTest';
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
@@ -168,7 +174,9 @@ async function blockedNavigation(app: ElectronApplication, page: Page) {
 	).toBe(true);
 	expect(await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows().length)).toBe(1);
 }
-test('native isolated window uses real Git LFS planning and rejects historical writes/navigation', async () => {
+test('native isolated window uses real Git LFS planning and rejects historical writes/navigation', async ({
+	browserErrors
+}) => {
 	const temp = await mkdtemp(join(tmpdir(), 'harness-native-')),
 		root = join(temp, 'repo');
 	let app: ElectronApplication | undefined;
@@ -184,6 +192,7 @@ test('native isolated window uses real Git LFS planning and rejects historical w
 			args: [...(packagedApp ? [] : [desktopRoot]), `--user-data-dir=${join(temp, 'profile')}`],
 			env
 		});
+		browserErrors.watch(app.context());
 		await app.evaluate(({ dialog }, directory) => {
 			dialog.showOpenDialog = async () => ({ canceled: false, filePaths: [directory] });
 		}, root);

@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { alpha, gamma, hostedFixture, tip, userCode, verificationUrl } from './ui-hosted-fixture';
 
 type Call = Record<string, unknown>;

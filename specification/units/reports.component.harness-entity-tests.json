@@ -52,6 +52,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.component.browser-errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.evidence-grid",
 			"via": "import",
 			"origin": "derived"
@@ -97,7 +102,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["browser-error-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

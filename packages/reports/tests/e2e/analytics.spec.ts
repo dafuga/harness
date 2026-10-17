@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../../../test/support/browserTest';
 import { mkdir } from 'node:fs/promises';
 import { expectRetired } from './support/portableReport';
 const evidence = '/tmp/harness-analytics-evidence';

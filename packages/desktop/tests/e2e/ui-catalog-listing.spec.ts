@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { analytics, charted, former, idsOf, ordinary } from '../../test/catalog-listing-manifests';
 import { listedIds, listedProject, pictured } from './ui-catalog-listing-fixture';
 

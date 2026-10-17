@@ -1,4 +1,4 @@
-import { expect, test, type Page, type TestInfo } from '@playwright/test';
+import { expect, test, type Page, type TestInfo } from '../../../../test/support/browserTest';
 import { alpha, reopenAway, remoteCacheFixture } from './ui-remote-cache-fixture';
 
 type Call = Record<string, unknown>;

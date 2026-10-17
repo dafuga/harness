@@ -1,7 +1,6 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page } from '../../../test/support/browserTest';
 import { capture, fits, open, shown, viewports, where } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
-
 const filter = { category: 'functions' as const, entity: ids.filter };
 const components = { category: 'components' as const, commit: commits.middle };
 const why = 'Orders page over synthetic orders: empty has no result in the record.';
@@ -13,7 +12,6 @@ async function inside(tab: Page, size: { width: number; height: number }): Promi
 	const across = box.x >= 0 && box.x + box.width <= size.width;
 	return across && box.y >= 0 && box.y + box.height <= size.height;
 }
-
 for (const [name, size] of Object.entries(viewports)) {
 	test(`components at ${name}: a verdict is the mark alone, told on hover and by the keyboard`, async ({
 		page: tab
@@ -44,8 +42,12 @@ for (const [name, size] of Object.entries(viewports)) {
 	});
 }
 
-test('a tap opens what a mark tells, and a tap elsewhere closes it', async ({ browser }) => {
+test('a tap opens what a mark tells, and a tap elsewhere closes it', async ({
+	browser,
+	browserErrors
+}) => {
 	const context = await browser.newContext({ hasTouch: true, viewport: viewports.mobile });
+	browserErrors.watch(context);
 	const tab = await context.newPage();
 	await open(tab, components, 'partial');
 	const row = tab.locator('.ex-table tbody tr').filter({ hasText: 'Order list' });

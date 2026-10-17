@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../../../test/support/browserTest';
 import { networkInterfaces } from 'node:os';
 import { currentRefs, revision, seeded } from './support/harnessHistory';
 import { seededId } from './support/fixtures';

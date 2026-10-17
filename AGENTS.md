@@ -41,6 +41,8 @@ This is a Harness CLI project. Treat Harness as the operating contract for every
 - The limits bound notes and commit messages only. They never shorten tests, contracts, assertions, traces, transcripts or evidence.
 - `bun run dev -- info hooks` and `bun run dev -- info explain` have the rules.
 
+- Browser normal flows, including screenshot/video runs, must have no unexpected console.error or pageerror events. Use the shared browserTest fixture and watch extra contexts before navigation. Preserve logs for expected errors and declare their exact messages and reasons in that test. For unexpected errors, prove a failing log assertion before repair, then rerun the same unchanged regression until the error disappears.
+
 ## Code Rules
 
 - Files should stay focused and under 220 lines unless a local audit baseline explicitly tracks existing debt.
@@ -52,3 +54,4 @@ This is a Harness CLI project. Treat Harness as the operating contract for every
 - Keep command modules thin; put orchestration in workflows and reusable logic in focused modules.
 - A cache of Git answers keys only names proven immutable: establish the repository's object format first, since hexadecimal shape alone is not immutability. Its tests move refs named like ids of each other supported width and give a Git whose format is unknown.
 - A test or build config names each helper it owns from its own file: a workspace without a config inherits it and resolves relative paths from itself. Before a full check, run the root and each inheriting workspace's normal test entrypoint.
+- When shared browser fixture dependencies change, prove API-only tests still run with an unavailable browser executable, alongside the actual browser cases. Characterize diagnostics before page announcement and overlapping context/page delivery without duplicates. Monitoring must preserve lazy browser setup.

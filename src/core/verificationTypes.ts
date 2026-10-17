@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { browserDiagnosticSchema } from './browserDiagnostics';
 import { comparisonSchema } from './comparisonTypes';
 import { explanationSchema } from './explanationTypes';
 import { runtimeKinds, unitIdPattern } from './unitTypes';
@@ -159,6 +160,7 @@ export const verificationRecordSchema = z.strictObject({
 			target: text,
 			status: outcome,
 			durationMs: z.number().nonnegative(),
+			browserErrors: z.array(browserDiagnosticSchema).optional(),
 			log: artifactSchema
 		})
 	),

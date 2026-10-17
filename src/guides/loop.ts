@@ -19,6 +19,7 @@ export const loopGuide: Guide = {
 		'For prevention, wire the guard into normal verification and prove reintroducing the original failure makes it fail in isolation, then restore and prove it passes.',
 		'Agents perform retries; Harness evaluators do not launch an AI runner or automatically complete steps.',
 		'For affected UI flows, exercise the browser and capture fresh inspected screenshots.',
+		'Browser normal flows, including screenshots and videos, require no unexpected console.error or pageerror events. Preserve diagnostics for expected errors and assert their exact messages in that test; fix unexpected errors with the same unchanged red-green regression.',
 		'Project templates can extend one parent loop and override steps by id.',
 		'Normal tests, browser checks, audit, build, and deployment proof remain source of truth.'
 	],

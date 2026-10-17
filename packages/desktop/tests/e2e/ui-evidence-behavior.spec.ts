@@ -1,5 +1,5 @@
 import { runtimeEvidence, runtimeAudio } from './runtime-evidence';
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page } from '../../../../test/support/browserTest';
 import {
 	branch,
 	commits,

@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../../../test/support/browserTest';
 import { mkdirSync } from 'node:fs';
 import { projectFixture, alpha } from './ui-project-fixture';
 import type { ScenarioManifest } from '../../../../src/core/unitTypes';
