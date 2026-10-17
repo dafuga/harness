@@ -86,6 +86,10 @@ export const componentManifestSchema = z.strictObject({
 	/** `kind` and `entry` name the default execution target; `targets` lists every applicable one. */
 	runtime: executionTargetSchema.extend({ targets: z.array(executionTargetSchema).min(1) }),
 	scenarios: z.array(identifier),
+	/** The one recorded state used to preview a visual unit; never a planning design. */
+	preview: z
+		.strictObject({ scenario: identifier, state: identifier, viewport: identifier })
+		.optional(),
 	budgets: z.strictObject({
 		size: z.literal('frozen'),
 		complexity: z.literal('frozen'),

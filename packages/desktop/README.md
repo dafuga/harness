@@ -20,7 +20,13 @@ bun run package:mac
 open dist/mac/Harness.app
 ```
 
-The packaging script creates a local, ad-hoc-signed app. It does not notarize, publish, or install a production release.
+By default packaging signs the local app ad hoc. Rebuilds that change its code can change its signing requirement, which can make macOS ask for access to Harness's existing Keychain item again. Use the same project-authorized certificate for successive builds to keep a stable identity:
+
+```sh
+HARNESS_MAC_SIGN_IDENTITY=<exact-certificate-SHA1> bun run package:mac
+```
+
+The fingerprint selects an identity already available to `security find-identity -v -p codesigning`; it is not a password or private key. For repeated local builds, Bun can read this setting from this package's ignored `.env.local` file. An invalid or unavailable selection fails before the app is written. Signing is verified after packaging. Moving from ad-hoc signing can still require Keychain approval; compare the designated requirement of successive builds before assuming access is stable. This setting does not change Keychain permissions or disable encryption. Packaging does not notarize, publish, or install a production release.
 
 ## Projects and shared collaboration
 

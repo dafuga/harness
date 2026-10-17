@@ -1,11 +1,21 @@
 import { expect, test } from 'vitest';
-import type { ComponentManifest } from '../../src/core/unitTypes';
+import { componentManifestSchema, type ComponentManifest } from '../../src/core/unitTypes';
 import { SourceGraphService } from '../../src/services/SourceGraphService';
 import { UnitRegistryValidator } from '../../src/validators/UnitRegistryValidator';
 import { indexFiles, retire, unitOf } from '../support/memoryTree';
 
 const slugify = 'export function slugify(input: string): string {\n\treturn input.trim();\n}\n';
 const other = 'export function slugifyTitle(input: string): string {\n\treturn input;\n}\n';
+
+test('an explicitly selected page preview survives source re-indexing', async () => {
+	const files = { 'src/components/Panel.svelte': '<p>Sales</p>' };
+	const first = unitOf(await indexFiles(files), 'component.panel');
+	const preview = { scenario: 'sales', state: 'loaded', viewport: 'desktop' };
+	const declared = componentManifestSchema.parse({ ...first, preview });
+	const again = await indexFiles(files, [declared]);
+	expect(unitOf(again, first.id).preview).toEqual(preview);
+	expect(again.result.updated).toEqual([]);
+});
 
 async function retiredSlugify(path: string): Promise<ComponentManifest> {
 	return retire(unitOf(await indexFiles({ [path]: slugify }), 'function.slugify'));

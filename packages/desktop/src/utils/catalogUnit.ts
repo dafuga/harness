@@ -8,6 +8,7 @@ function ownsChange(paths: string[], changed: Set<string>) {
 export function catalogUnit(unit: ComponentManifest, changed: Set<string>): CatalogEntity | null {
 	const category = categoryOf(unit.kind);
 	if (!category || unit.status !== 'active') return null;
+	const preview = category === 'pages' || category === 'components' ? unit.preview : undefined;
 	return {
 		id: unit.id,
 		category,
@@ -23,7 +24,7 @@ export function catalogUnit(unit: ComponentManifest, changed: Set<string>): Cata
 		latestVersion: null,
 		approvedVersion: null,
 		threadCount: 0,
-		thumbnail: null
+		thumbnail: preview || category === 'pages' ? { source: 'recorded', ...preview } : null
 	};
 }
 /** The route files that load for an address and render nothing of it. */

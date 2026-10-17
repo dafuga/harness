@@ -5,6 +5,32 @@ import type { VerificationScope } from './verification-targets';
  * synthetic repositories and a synthetic source: this proves the readers, not a live service.
  */
 export const recordedEvidenceScopes: Record<string, VerificationScope> = {
+	'catalog-previews': {
+		package: 'desktop',
+		vitest: {
+			'test/utils/recorded-preview.test.ts': {
+				'a runtime thumbnail reads the precisely bound capture at pinned revisions':
+					'preview-safety',
+				'a different state is unavailable instead of borrowing another screenshot':
+					'preview-safety',
+				'identical screenshot bytes in two states keep the exact selected state': 'preview-safety',
+				'an older page can use a state that explicitly names it in the recorded contract':
+					'preview-safety',
+				'a response for another project is refused before reading any artifact': 'preview-safety',
+				'damaged image bytes are rejected before an object URL exists': 'preview-safety',
+				'a response arriving after project navigation cannot paint the previous project image':
+					'preview-safety'
+			}
+		},
+		playwright: {
+			'tests/e2e/catalog-previews.spec.ts': [
+				'local-catalog',
+				'hosted-catalog',
+				'history-catalog',
+				'missing-catalog'
+			]
+		}
+	},
 	'desktop-recorded-evidence': {
 		package: 'desktop',
 		vitest: {

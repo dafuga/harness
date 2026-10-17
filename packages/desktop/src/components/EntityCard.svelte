@@ -6,14 +6,19 @@
 	import PlanBadge from './PlanBadge.svelte';
 	import StatusIcon from './StatusIcon.svelte';
 	import WorkspaceLink from './WorkspaceLink.svelte';
+	import RecordedPreview from './RecordedPreview.svelte';
 	let { entity, workspace }: { entity: CatalogEntity; workspace: Workspace } = $props();
 	let image = $state('');
 	/** A function has a plan and no design: no picture is asked for it or left room for. */
 	const headless = $derived(entity.category === 'functions');
 	const reviewed = $derived(headless ? 'plan' : 'designs');
+	const recorded = $derived(entity.thumbnail?.source === 'recorded' ? entity.thumbnail : null);
 	$effect(() => {
 		const thumb = headless ? null : entity.thumbnail;
-		const request = thumb && { entityId: entity.id, version: thumb.version, sha256: thumb.sha256 };
+		const request =
+			thumb && thumb.source !== 'recorded'
+				? { entityId: entity.id, version: thumb.version, sha256: thumb.sha256 }
+				: null;
 		return imageUrl(workspace, request, (url) => (image = url));
 	});
 </script>
@@ -24,16 +29,26 @@
 		{#if entity.hasPlan}<PlanBadge />{/if}
 	</div>
 	<p>{entity.summary}</p>
-	{#if !headless}<div class="thumbnail">
-			{#if image}<img
+	{#if !headless}<div class="thumbnail" class:runtime={recorded !== null}>
+			{#if recorded}<RecordedPreview
+					{workspace}
+					entityId={entity.id}
+					title={explorerName(entity)}
+					thumbnail={recorded}
+				/>
+			{:else if image}<img
 					src={image}
-					alt={`${entity.title} design ${entity.thumbnail?.version}`}
+					alt={`${entity.title} design ${entity.latestVersion ?? ''}`}
 				/>{:else}<span class="muted"
-					>{entity.thumbnail ? 'Design preview unavailable' : 'No design image yet'}</span
+					>{entity.thumbnail
+						? 'Design preview unavailable'
+						: entity.hasPlan
+							? 'No design image yet'
+							: 'No screenshot recorded'}</span
 				>{/if}
 		</div>{/if}
 	<div class="row card-meta">
-		<span>{entity.latestVersion || entity.kind}</span><StatusIcon
+		<span>{recorded ? entity.kind : entity.latestVersion || entity.kind}</span><StatusIcon
 			status={entity.verification}
 			reason={entity.verificationNote}
 		/>
@@ -46,3 +61,9 @@
 		>{entity.hasPlan ? `Review ${reviewed}` : 'Open ' + entity.kind} <span>→</span></WorkspaceLink
 	>
 </article>
+
+<style>
+	.thumbnail.runtime {
+		aspect-ratio: 16 / 11;
+	}
+</style>

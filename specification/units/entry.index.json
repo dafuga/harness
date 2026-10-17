@@ -63,7 +63,8 @@
 			"commitMessage",
 			"CommitMessageService",
 			"revisionReasons",
-			"verificationNoteIdentity"
+			"verificationNoteIdentity",
+			"previewBinding"
 		]
 	},
 	"contract": {
@@ -221,6 +222,11 @@
 		{
 			"unit": "function.piped-output",
 			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.preview-binding",
+			"via": "reexport",
 			"origin": "derived"
 		},
 		{
