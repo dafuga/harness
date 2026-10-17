@@ -71,19 +71,21 @@ export class AttachedRecordService {
 		const manifest = evidenceManifestSchema.safeParse(parseJson(text));
 		if (!manifest.success) return { ...result, problems: ['manifest is not valid'] };
 		result.manifest = manifest.data;
+		const paths = manifest.data.files.map((file) => `${pointer.path}/${file.path}`);
+		const blobs = await tree.readMany(pointer.commit, paths);
 		for (const file of manifest.data.files) {
-			result.problems.push(...(await this.file(pointer, file, result.files)));
+			const blob = blobs.get(`${pointer.path}/${file.path}`);
+			result.problems.push(...(await this.file(blob, file, result.files)));
 		}
 		return this.withRecord(result);
 	}
 
 	/** Reads one file and compares it with the manifest; media comes from its LFS object. */
 	private async file(
-		pointer: EvidencePointer,
+		blob: Buffer | undefined,
 		file: EvidenceFile,
 		files: Map<string, Buffer>
 	): Promise<string[]> {
-		const blob = await this.evidence.tree.read(pointer.commit, `${pointer.path}/${file.path}`);
 		if (!blob) return [`${file.path} is missing from the evidence branch`];
 		if (file.storage === 'git') {
 			files.set(file.path, blob);

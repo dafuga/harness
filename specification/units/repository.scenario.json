@@ -46,6 +46,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.read-tree-texts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.source-types",
 			"via": "import",
 			"origin": "derived"

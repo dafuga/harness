@@ -64,7 +64,8 @@
 			"CommitMessageService",
 			"revisionReasons",
 			"verificationNoteIdentity",
-			"previewBinding"
+			"previewBinding",
+			"readTreeTexts"
 		]
 	},
 	"contract": {
@@ -226,6 +227,11 @@
 		},
 		{
 			"unit": "function.preview-binding",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.read-tree-texts",
 			"via": "reexport",
 			"origin": "derived"
 		},
