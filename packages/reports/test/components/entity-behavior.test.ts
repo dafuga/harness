@@ -2,7 +2,7 @@ import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
 import EntityBehavior from '../../src/components/harness/EntityBehavior.svelte';
 import { explorerReading } from '../../src/utils/explorerReading';
-import { flat, rows } from '../artifactCaseDocs';
+import { observedRows, rows } from '../artifactCaseDocs';
 import { servedArtifacts } from '../entityArtifacts';
 import { record, revision } from '../entityFixture';
 import { answers, nav, place, view, type View } from '../entityPlaces';
@@ -36,15 +36,11 @@ test('both sides show what their run was given and observed as rows, and its ste
 	expect(words(body)).toContain('Behavior unchanged');
 	const sides = ['Before · aaaaaaa', 'After · bbbbbbb'];
 	const from = (side: string) => body.indexOf(`aria-label="${side}"`);
-	const said = (value: unknown) => flat(JSON.stringify(value));
 	for (const [position, side] of sides.entries()) {
 		const pane = body.slice(from(side), position === 0 ? from(sides[1]) : undefined);
 		// The input and what was observed for it are a row that is read at once, on each side.
-		expect(rows(pane)).toEqual([
-			['Case', 'Input', 'Observedoutput'],
-			['Testobservation', said({ searchText: 'SERVICE' }), said(['Order 1042 · Service call'])]
-		]);
-		expect(words(pane)).toContain('"searchText": "SERVICE"');
+		expect(rows(pane)).toEqual(observedRows);
+		expect(words(pane)).toContain('Search text Text SERVICE');
 		expect(words(pane)).toContain('Order 1042 · Service call');
 		expect(words(pane)).not.toContain('Actual output');
 		// What else the run recorded is under one disclosure of that side, named for what it holds.

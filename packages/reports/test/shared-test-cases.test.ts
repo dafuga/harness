@@ -17,9 +17,15 @@ test('a nonfunction test shows its recorded input beside its observed output', (
 });
 
 test('zero, false and null are recorded test values, not missing evidence', () => {
-	for (const output of [0, false, null, []]) {
+	const examples = [
+		[0, 'Number0'],
+		[false, 'Booleanfalse'],
+		[null, 'Nullnull'],
+		[[], 'Emptylist']
+	] as const;
+	for (const [output, shown] of examples) {
 		const body = draw({ input: { request: 'example' }, output });
-		expect(rows(body)[1]?.[2]).toBe(JSON.stringify(output));
+		expect(rows(body)[1]?.[2]).toBe(shown);
 	}
 });
 

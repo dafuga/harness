@@ -118,6 +118,8 @@ export interface ThreadMessage {
 export interface ContractField {
 	name: string;
 	type: string;
+	/** What this field means to someone reviewing the behaviour. */
+	description?: string;
 }
 
 export interface EntityContract {

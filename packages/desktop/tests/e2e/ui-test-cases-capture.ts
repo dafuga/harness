@@ -20,6 +20,10 @@ async function observed(page: Page) {
 	const region = page.getByRole('region', { name: 'Evidence coverage' });
 	return {
 		heading: await page.getByRole('heading', { level: 1 }).innerText(),
+		contracts: await page
+			.getByRole('heading', { name: 'Contract', exact: true })
+			.locator('..')
+			.allTextContents(),
 		tables: await region
 			.getByRole('table')
 			.filter({ hasText: 'Observed output' })

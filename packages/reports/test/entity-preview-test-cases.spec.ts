@@ -4,6 +4,17 @@ import { commits, ids } from './entityUnits';
 
 const entity = { category: 'services' as const, entity: ids.store, tab: 'tests' as const };
 
+test('the default test view explains input and output without requiring JSON', async ({ page }) => {
+	await open(page, entity);
+	const item = page.locator('.cases > table > tbody > tr').first();
+	await expect(item.locator('dt')).toHaveText(['Search text']);
+	await expect(item.locator('dd')).toHaveText('TextSERVICE');
+	await expect(item.locator('td[data-label="Observed output"] .value-list')).toContainText(
+		'Order 1042 · Service call'
+	);
+	await expect(item.locator('pre')).toHaveCount(0);
+});
+
 for (const [viewport, size] of Object.entries(viewports)) {
 	test(`service Tests show recorded input and output at ${viewport} width`, async ({ page }) => {
 		await page.setViewportSize(size);
@@ -44,7 +55,7 @@ test('mobile test values have readable columns without widening the page', async
 	const capacities = await cases
 		.locator('tbody tr')
 		.first()
-		.locator('td pre')
+		.locator(':scope > td > .case-value > .recorded-value')
 		.evaluateAll((blocks) =>
 			blocks.map((block) => {
 				const canvas = document.createElement('canvas');
@@ -53,6 +64,7 @@ test('mobile test values have readable columns without widening the page', async
 				return block.getBoundingClientRect().width / context.measureText('M').width;
 			})
 		);
+	expect(capacities).toHaveLength(2);
 	for (const characters of capacities) expect(characters).toBeGreaterThanOrEqual(18);
 	expect(await fits(page)).toBe(true);
 });
@@ -73,21 +85,52 @@ test('the full recorded result is available even when it has no input and output
 	await expect(artifact.locator('details[open] details[open] pre')).toContainText('"searchText"');
 });
 
-test('the mobile output column is reachable inside its table scroller', async ({ page }) => {
+test('the mobile output panel is visible beneath its input', async ({ page }) => {
 	await page.setViewportSize(viewports.mobile);
 	await open(page, entity);
 	const cases = page.locator('.cases').first();
 	await expect(cases).toBeVisible();
-	await cases.evaluate((node) => {
-		node.scrollLeft = node.scrollWidth - node.clientWidth;
-	});
-	const output = cases.getByRole('columnheader', { name: 'Observed output' });
+	const row = cases.locator('tbody tr').first();
+	const output = row.locator('td[data-label="Observed output"]');
+	await output.scrollIntoViewIfNeeded();
 	await expect(output).toBeVisible();
+	await expect(output.locator('.recorded-value')).toContainText('Order 1042 · Service call');
+	expect(await output.evaluate((node) => getComputedStyle(node, '::before').content)).toBe(
+		'"Observed output"'
+	);
 	const bounds = await output.boundingBox();
+	const input = await row.locator('td[data-label="Input"]').boundingBox();
 	expect(bounds).not.toBeNull();
+	expect(bounds!.y).toBeGreaterThan(input!.y);
+	expect(bounds!.y).toBeGreaterThanOrEqual(0);
+	expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(viewports.mobile.height + 1);
 	expect(bounds!.x).toBeGreaterThanOrEqual(0);
 	expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(viewports.mobile.width + 1);
-	await expect(cases).toContainText('Order 1042 · Service call');
 	await capture(page, `${process.env.SCREENSHOT_LABEL ?? 'run'}-tests-output-mobile`);
 	expect(await fits(page)).toBe(true);
 });
+
+for (const [viewport, size] of Object.entries(viewports)) {
+	test(`case names lead roomy input and output panels at ${viewport} width`, async ({ page }) => {
+		await page.setViewportSize(size);
+		await open(page, entity);
+		const cases = page.locator('.cases').first();
+		const row = cases.locator('tbody tr').first();
+		await row.scrollIntoViewIfNeeded();
+		await capture(page, `${process.env.SCREENSHOT_LABEL ?? 'run'}-case-flow-${viewport}`);
+		const heading = await row.getByRole('rowheader').boundingBox();
+		const values = await row.locator('td').all();
+		const input = await values[0].boundingBox();
+		const output = await values[1].boundingBox();
+		const frame = await row.boundingBox();
+		expect(heading!.y + heading!.height).toBeLessThanOrEqual(input!.y + 1);
+		const minimum = viewport === 'mobile' ? 0.85 : 0.4;
+		expect(input!.width / frame!.width).toBeGreaterThan(minimum);
+		expect(output!.width / frame!.width).toBeGreaterThan(minimum);
+		if (viewport === 'mobile') expect(output!.y).toBeGreaterThan(input!.y);
+		expect(await fits(page)).toBe(true);
+		await cases.getByText('Full recorded values', { exact: true }).click();
+		await expect(cases.locator('details[open] pre')).toContainText('"searchText"');
+		await expect(cases.locator('details[open] pre')).toContainText('Order 1042 · Service call');
+	});
+}

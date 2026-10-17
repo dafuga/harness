@@ -4,6 +4,24 @@ import { remember } from './ui-test-cases-capture';
 
 const root = `/projects/${sharedProject}/harness/branch/${encodeURIComponent(branch)}`;
 const extra = [ids.list, ids.page, ids.settings];
+const graph = { nodes: ['Price formatter', 'Product page'], edges: [[1, 0]] };
+const example = {
+	input: {
+		base: graph,
+		head: graph,
+		changed: ['Price formatter'],
+		uncertain: [],
+		sinks: ['Product page']
+	},
+	output: {
+		affected: [
+			{ id: 'Price formatter', distance: 0, via: 'both', presence: 'both', seed: 'changed' },
+			{ id: 'Product page', distance: 1, via: 'both', presence: 'both', seed: null }
+		],
+		uncovered: [],
+		unknown: []
+	}
+};
 const cases = [
 	{ category: 'components', id: ids.list, state: 'component-current' },
 	{ category: 'services', id: ids.store, state: 'service-current' },
@@ -30,6 +48,74 @@ for (const shown of cases) {
 		await expect(
 			page.getByRole('group', { name: 'Request mode' }).getByRole('button', { name: /Plan|Change/ })
 		).toHaveCount(0);
+	});
+}
+
+for (const viewport of [
+	{ id: 'desktop', width: 1440, height: 900 },
+	{ id: 'tablet', width: 920, height: 1100 },
+	{ id: 'mobile', width: 390, height: 844 }
+]) {
+	test(`nested values stay readable under the host styles at ${viewport.id} width`, async ({
+		page
+	}, info) => {
+		await page.setViewportSize(viewport);
+		await evidenceFixture(page, { shared: true, observedUnits: extra, example });
+		const address = `${root}/components/${ids.list}/evidence`;
+		await page.goto(address);
+		const output = page.getByRole('group', { name: 'output of match' });
+		await expect(output.getByText('Price formatter', { exact: true }).first()).toBeVisible();
+		await remember(page, info, 'nested-values', { address, mode: 'current' });
+		for (const fields of await output.locator('.recorded-value > dl').all()) {
+			const layout = await fields.locator(':scope > div').evaluateAll((rows) =>
+				rows.map((row) => {
+					const rect = row.getBoundingClientRect();
+					return {
+						y: rect.y,
+						bottom: rect.bottom,
+						width: rect.width,
+						parent: row.parentElement!.getBoundingClientRect().width
+					};
+				})
+			);
+			expect(layout.length).toBeGreaterThan(1);
+			expect(layout[0].width).toBeGreaterThan(layout[0].parent * 0.95);
+			for (let i = 1; i < layout.length; i++)
+				expect(layout[i].y).toBeGreaterThanOrEqual(layout[i - 1].bottom);
+		}
+		expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(
+			true
+		);
+	});
+
+	test(`contract fields stay readable under the host styles at ${viewport.id} width`, async ({
+		page
+	}, info) => {
+		await page.setViewportSize(viewport);
+		await evidenceFixture(page, { shared: true });
+		const address = `${root}/functions/${ids.filter}`;
+		await page.goto(address);
+		const contract = page.getByRole('heading', { name: 'Contract', exact: true }).locator('..');
+		await expect(contract.getByRole('heading', { name: 'Accepts', exact: true })).toBeVisible();
+		await remember(page, info, 'readable-contracts', { address, mode: 'current' });
+		const rows = await contract
+			.locator('dl')
+			.first()
+			.locator(':scope > div')
+			.evaluateAll((items) =>
+				items.map((item) => {
+					const rect = item.getBoundingClientRect();
+					return {
+						y: rect.y,
+						bottom: rect.bottom,
+						width: rect.width,
+						parent: item.parentElement!.getBoundingClientRect().width
+					};
+				})
+			);
+		expect(rows).toHaveLength(2);
+		expect(rows[0].width).toBeGreaterThan(rows[0].parent * 0.95);
+		expect(rows[1].y).toBeGreaterThanOrEqual(rows[0].bottom);
 	});
 }
 

@@ -63,7 +63,7 @@ test('the details of a declared contract say what each item is, and fit a phone'
 	await tab.setViewportSize(viewports.mobile);
 	expect(await fits(tab)).toBe(true);
 	await capture(tab, 'details-declared-mobile');
-	// The overview names the items and leaves what each is to the details.
+	// The overview explains the contract too; people do not need technical details to understand it.
 	await open(tab, { category: 'pages', entity: ids.page, commit: commits.middle }, 'declared');
-	await expect(tab.getByText('The branch, as one encoded path segment.')).toHaveCount(0);
+	await expect(tab.getByText('The branch, as one encoded path segment.')).toBeVisible();
 });
