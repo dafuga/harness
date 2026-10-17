@@ -58,7 +58,11 @@ function tests(declared: HarnessScenario, record: HarnessRecord | null, result?:
 	const ran = inherited ? result?.originTests : record?.tests;
 	const list = declared.tests.map((test) => {
 		const found = ran?.find((item) => item.id === `${declared.id}:${test.id}`);
-		return { id: test.id, status: found?.status ?? null };
+		return {
+			id: test.id,
+			status: found?.status ?? null,
+			...(found?.browserErrors ? { browserErrors: found.browserErrors } : {})
+		};
 	});
 	const undeclared: Told[] =
 		declared.tests.length === 0 ? [['incomplete', `${declared.title} declares no test.`]] : [];

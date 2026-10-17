@@ -1,6 +1,7 @@
 import type { HarnessReview, HarnessUnitLimits } from './HarnessBudget.types';
 import type { HarnessLegacyReport } from './HarnessLegacy.types';
 import type { Status } from './Report.types';
+import type { BrowserDiagnostic } from '../../../../src/core/browserDiagnostics';
 
 export type * from './HarnessLegacy.types';
 
@@ -130,7 +131,14 @@ export interface HarnessRecord {
 	finishedAt: string;
 	gates?: Record<string, 'passed' | 'failed'>;
 	failures: string[];
-	tests: Array<{ id: string; kind: string; target: string; status: Status; durationMs: number }>;
+	tests: Array<{
+		id: string;
+		kind: string;
+		target: string;
+		status: Status;
+		durationMs: number;
+		browserErrors?: BrowserDiagnostic[];
+	}>;
 	scenarios: Array<{
 		id: string;
 		status: 'passed' | 'failed' | 'referenced';
@@ -138,7 +146,7 @@ export interface HarnessRecord {
 		inherited: boolean;
 		origin: { record: string; commit: string };
 		/** For inherited evidence: the checks its origin record ran; absent when not recorded. */
-		originTests?: Array<{ id: string; status: string }>;
+		originTests?: Array<{ id: string; status: string; browserErrors?: BrowserDiagnostic[] }>;
 		states: Array<{ id: string; coverage: string; reason?: string; captures: HarnessCapture[] }>;
 	}>;
 	measurements: Array<{

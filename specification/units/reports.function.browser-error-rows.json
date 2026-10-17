@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.browser-error-rows",
+	"kind": "function",
+	"title": "browserErrorRows",
+	"responsibility": "Owns the browserErrorRows shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/browserErrorRows.ts"],
+		"symbols": ["BrowserErrorRow", "browserErrorRows"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "browserErrorRows.diagnostic",
+				"type": "BrowserDiagnostic"
+			}
+		],
+		"outputs": [
+			{
+				"name": "browserErrorRows",
+				"type": "BrowserErrorRow[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.browser-diagnostics",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/browserErrorRows.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/browserErrorRows.ts"
+			}
+		]
+	},
+	"scenarios": ["browser-error-evidence"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

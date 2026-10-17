@@ -62,6 +62,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.browser-diagnostics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.comparison-types",
 			"via": "import",
 			"origin": "derived"

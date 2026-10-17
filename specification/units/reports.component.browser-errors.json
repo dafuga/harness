@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.browser-errors",
+	"kind": "component",
+	"title": "BrowserErrors",
+	"responsibility": "Displays recorded browser errors with their expectations, test identity, retry and diagnostic context in every component viewer.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/BrowserErrors.svelte"],
+		"symbols": ["BrowserErrors"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "BrowserErrors.diagnostics",
+				"type": "BrowserDiagnostic[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "BrowserErrors",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.browser-diagnostics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.browser-error-rows",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/BrowserErrors.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/BrowserErrors.svelte"
+			}
+		]
+	},
+	"scenarios": ["browser-error-evidence"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

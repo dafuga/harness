@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { browserDiagnosticSchema } from '../../../../src/core/browserDiagnostics';
 import { hostedEvidenceFields } from './hostedEvidenceFields';
 const { s, name, sha, array, names, obj, bool, num, passed, capture } = hostedEvidenceFields;
 export const hostedEvidenceRecord = obj({
@@ -26,7 +27,8 @@ export const hostedEvidenceRecord = obj({
 				'not-proven',
 				'interrupted'
 			]),
-			durationMs: num
+			durationMs: num,
+			browserErrors: array(browserDiagnosticSchema).optional()
 		}).strict()
 	),
 	scenarios: array(
@@ -36,7 +38,9 @@ export const hostedEvidenceRecord = obj({
 			testedRevision: sha,
 			inherited: bool,
 			origin: obj({ record: s, commit: sha }).strict(),
-			originTests: array(obj({ id: s, status: s }).strict()).optional(),
+			originTests: array(
+				obj({ id: s, status: s, browserErrors: array(browserDiagnosticSchema).optional() }).strict()
+			).optional(),
 			states: array(
 				obj({
 					id: name,

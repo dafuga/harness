@@ -1,5 +1,7 @@
 import { test as base, expect } from '@playwright/test';
 import type { BrowserContext, ConsoleMessage, Page, TestInfo } from '@playwright/test';
+import { appendFileSync, mkdirSync } from 'node:fs';
+import { join, relative } from 'node:path';
 
 export * from '@playwright/test';
 
@@ -18,6 +20,8 @@ interface ExpectedBrowserError {
 	reason: string;
 	source?: string;
 }
+type DiagnosticInfo = Pick<TestInfo, 'attach'> &
+	Partial<Pick<TestInfo, 'titlePath' | 'file' | 'config' | 'project' | 'retry'>>;
 
 /** Normal flows require no errors. Deliberate failures declare exact expected diagnostics. */
 export const test = base.extend<{ browserErrors: ReturnType<typeof browserErrorCollector> }>({
@@ -55,13 +59,22 @@ export function browserErrorCollector(browser?: string) {
 			contexts.add(context);
 			cleanup.push(observeContext(context, errors));
 		},
-		async finish(testInfo?: Pick<TestInfo, 'attach'>) {
+		async finish(testInfo?: DiagnosticInfo) {
 			for (const dispose of cleanup) dispose();
-			if (errors.length && testInfo)
+			if ((errors.length || expected.length) && testInfo) {
+				const diagnostic = { ...identity(testInfo), browser, errors, expected };
+				if (process.env.HARNESS_EVIDENCE_DIR) {
+					mkdirSync(process.env.HARNESS_EVIDENCE_DIR, { recursive: true });
+					appendFileSync(
+						join(process.env.HARNESS_EVIDENCE_DIR, 'browser-errors.ndjson'),
+						`${JSON.stringify(diagnostic)}\n`
+					);
+				}
 				await testInfo.attach('browser-errors', {
-					body: JSON.stringify({ browser, errors, expected }, null, 2),
+					body: JSON.stringify(diagnostic, null, 2),
 					contentType: 'application/json'
 				});
+			}
 			expect(
 				unmatchedErrors(errors, expected),
 				'Unexpected browser errors or missing expected errors'
@@ -70,6 +83,15 @@ export function browserErrorCollector(browser?: string) {
 				missing: []
 			});
 		}
+	};
+}
+
+function identity(info: DiagnosticInfo) {
+	return {
+		test: info.titlePath?.join(' › ') ?? 'Browser test',
+		file: info.file && info.config ? relative(info.config.rootDir, info.file) : '',
+		project: info.project?.name ?? '',
+		retry: info.retry ?? 0
 	};
 }
 

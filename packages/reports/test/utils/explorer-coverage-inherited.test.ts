@@ -67,3 +67,30 @@ test('inherited proof needs the checks its origin ran: all of them, passed, and 
 	const [covered] = verdictCoverage(page, revision([page], [declared()], [elsewhere], known));
 	expect(covered.tests).toEqual([{ id: 'page', status: 'passed' }]);
 });
+
+test('inherited diagnostics belong to the origin check, never a different run at this commit', () => {
+	const diagnostic = {
+		test: 'Expected retry',
+		file: 'orders.spec.ts',
+		project: '',
+		retry: 0,
+		errors: [{ type: 'console' as const, message: 'Service unavailable', page: '/orders' }],
+		expected: [{ type: 'console' as const, message: 'Service unavailable', reason: 'Tests retry.' }]
+	};
+	const originTests = [{ id: 'titles-page:page', status: 'passed', browserErrors: [diagnostic] }];
+	const current = inherited({ originTests });
+	current.tests.push({
+		id: 'titles-page:page',
+		kind: 'e2e',
+		target: 'orders.spec.ts',
+		status: 'failed',
+		durationMs: 5,
+		browserErrors: [{ ...diagnostic, test: 'Different run' }]
+	});
+	const [coverage] = verdictCoverage(
+		page,
+		revision([page], [declared()], [current], { sourceImpact: impacted(sha('b')) })
+	);
+	expect(coverage.inheritedFrom).toBe(sha('b'));
+	expect(coverage.tests[0].browserErrors).toEqual([diagnostic]);
+});

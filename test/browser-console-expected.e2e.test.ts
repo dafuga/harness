@@ -21,7 +21,8 @@ test('intentional errors retain diagnostics and cannot hide missing, duplicate o
 		const result = await runCommand(
 			['bun', resolve('node_modules/@playwright/test/cli.js'), 'test'],
 			project,
-			false
+			false,
+			{ HARNESS_EVIDENCE_DIR: join(root, 'evidence') }
 		);
 		expect(result.exitCode).toBe(1);
 		const results = JSON.parse(result.stdout).suites[0].specs.map((spec: Spec) => spec.tests[0]);
@@ -50,10 +51,28 @@ test('intentional errors retain diagnostics and cannot hide missing, duplicate o
 		expect(results[5].results[0].errors).toHaveLength(2);
 		expect(diagnostic(results[7]).errors[0].message).toBe('manual context error');
 		expect(diagnostic(results[8]).errors[0].message).toBe('unhandled rejection');
+		await assertPersisted(results, root);
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}
 }, 120_000);
+
+async function assertPersisted(results: Execution[], root: string) {
+	expect(diagnostic(results[3])).toMatchObject({
+		errors: [],
+		expected: [expect.objectContaining({ message: 'expected failure' })]
+	});
+	const kept = (await readFile(join(root, 'evidence/browser-errors.ndjson'), 'utf8'))
+		.trim()
+		.split('\n')
+		.map((line) => JSON.parse(line));
+	expect(kept).toHaveLength(8);
+	expect(kept.find((item) => item.test.includes('missing expected error'))).toMatchObject({
+		errors: [],
+		retry: 0,
+		file: 'expected.spec.ts'
+	});
+}
 
 interface Execution {
 	status: string;

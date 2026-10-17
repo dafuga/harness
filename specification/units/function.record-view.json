@@ -19,7 +19,7 @@
 			},
 			{
 				"name": "recordView.context",
-				"type": "{ valid: boolean; problems: string[]; resolve: MediaResolver; /** The checks an earlier record ran, by its id; undefined when it cannot be read. */ origins?: (record: string) => Array<{ id: string; status: string }> | undefined; }"
+				"type": "{ valid: boolean; problems: string[]; resolve: MediaResolver; /** The checks an earlier record ran, by its id; undefined when it cannot be read. */ origins?: (record: string) => DiagnosticTest[] | undefined; }"
 			}
 		],
 		"outputs": [
@@ -31,6 +31,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.browser-diagnostics",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.verification-types",
 			"via": "import",
@@ -47,7 +52,7 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-recorded-evidence", "hub-recorded-evidence"],
+	"scenarios": ["browser-error-evidence", "desktop-recorded-evidence", "hub-recorded-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

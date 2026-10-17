@@ -26,6 +26,11 @@
 			"unit": "desktop.function.hosted-evidence-fields",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "function.browser-diagnostics",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
@@ -38,7 +43,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["browser-error-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

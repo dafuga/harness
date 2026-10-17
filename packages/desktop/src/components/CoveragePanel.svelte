@@ -1,4 +1,5 @@
 <script lang="ts">
+	import BrowserErrors from '../../../reports/src/components/BrowserErrors.svelte';
 	import type {
 		CoverageStanding,
 		ExplorerStateCoverage
@@ -47,6 +48,9 @@
 							>{test.id} · {test.status ?? 'not in the record'}</span
 						>{/each}
 				</p>
+				{#each item.tests as check, position (position)}<BrowserErrors
+						diagnostics={check.browserErrors}
+					/>{/each}
 				<table>
 					<thead>
 						<tr><th>State</th><th>Declared</th><th>Standing</th><th>Captures</th></tr>
