@@ -36,6 +36,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.bug-repair-policy",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.catalog",
 			"via": "import",
 			"origin": "derived"

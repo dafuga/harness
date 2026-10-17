@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "function.bug-repair-policy",
+	"kind": "function",
+	"title": "bugRepairPolicy",
+	"responsibility": "Share coverage-first standardized bug repair rules between framework guidance and app agents.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/bugRepairPolicy.ts"],
+		"symbols": ["bugRepairPolicy"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "bugRepairPolicy",
+				"type": "string[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/bugRepairPolicy.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/bugRepairPolicy.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

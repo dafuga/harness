@@ -97,44 +97,23 @@ async function writeTemplate(root: string): Promise<void> {
 	);
 }
 
-test.each(['bug-fix', 'regression-prevention'])(
+test.each(['bug-fix', 'fix', 'regression-prevention'])(
 	'%s CLI records proof and leaves verification pending across failed and passing checks',
 	async (template) => {
 		const root = await mkdtemp(join(tmpdir(), 'harness-regression-cli-'));
 		try {
-			await writeFile(
-				join(root, 'package.json'),
-				JSON.stringify({ scripts: { check: 'bun proof.ts' } })
+			await prepareRepair(root, template);
+			const skipped = await runHarness(
+				['loop', 'complete', 'repair', 'implement', '--evidence', 'Skip the diagnosis'],
+				root,
+				false
 			);
-			await writeFile(join(root, 'proof.ts'), 'process.exit(2);');
-			await runHarness(
-				['loop', 'create', 'repair', '--from', template, '--goal', 'Repair the defect'],
-				root
-			);
+			expect(skipped.exitCode).toBe(1);
+			expect(skipped.stderr).toContain('before');
 			const status = await runHarness(['loop', 'status', 'repair', '--json'], root);
 			const steps = JSON.parse(status.stdout).state.steps as { id: string }[];
-			for (const step of steps.filter((item) => item.id !== 'verify')) {
-				const next = await runHarness(['loop', 'next', 'repair', '--json'], root);
-				expect(JSON.parse(next.stdout).step.id).toBe(step.id);
-				await runHarness(
-					[
-						'loop',
-						'complete',
-						'repair',
-						step.id,
-						'--evidence',
-						`${step.id}: command and assertion proof`
-					],
-					root
-				);
-			}
-			const failed = await runHarness(['loop', 'evaluate', 'repair', '--json'], root, false);
-			expect(failed.exitCode).toBe(1);
-			expect(JSON.parse(failed.stdout).passed).toBe(false);
-			await expectPendingVerification(root);
-			await writeFile(join(root, 'proof.ts'), 'process.exit(0);');
-			const passed = await runHarness(['loop', 'evaluate', 'repair', '--json'], root);
-			expect(JSON.parse(passed.stdout).passed).toBe(true);
+			expect(steps.map((step) => step.id)).toContain('coverage');
+			await exerciseRepair(root, steps);
 			await expectPendingVerification(root);
 			await runHarness(
 				['loop', 'complete', 'repair', 'verify', '--evidence', 'bun run check passed after repair'],
@@ -145,13 +124,53 @@ test.each(['bug-fix', 'regression-prevention'])(
 			const trace = await readFile(join(root, 'specification/loops/repair/trace.ndjson'), 'utf8');
 			expect(trace).toContain('"passed":false');
 			expect(trace).toContain('"passed":true');
-			expect(trace).toContain('red: command and assertion proof');
+			expect(trace).toContain('existing test checked only positivity');
 		} finally {
 			await rm(root, { recursive: true, force: true });
 		}
 	},
 	120_000
 );
+
+async function prepareRepair(root: string, template: string): Promise<void> {
+	await writeFile(
+		join(root, 'package.json'),
+		JSON.stringify({ scripts: { check: 'bun proof.ts' } })
+	);
+	await writeFile(join(root, 'source.ts'), 'export const value = 1;');
+	await writeFile(
+		join(root, 'proof.ts'),
+		"import { value } from './source'; if (value < 0) process.exit(1);"
+	);
+	await runHarness(
+		['loop', 'create', 'repair', '--from', template, '--goal', 'Persist the selected value'],
+		root
+	);
+	const old = await runHarness(['loop', 'evaluate', 'repair', '--json'], root);
+	expect(JSON.parse(old.stdout).passed).toBe(true);
+	await writeFile(
+		join(root, 'proof.ts'),
+		"import { strict as assert } from 'node:assert'; import { value } from './source'; assert.equal(value, 3);"
+	);
+}
+
+async function exerciseRepair(root: string, steps: { id: string }[]): Promise<void> {
+	const frozen = await readFile(join(root, 'proof.ts'), 'utf8');
+	for (const step of steps.filter((item) => item.id !== 'verify')) {
+		const next = await runHarness(['loop', 'next', 'repair', '--json'], root);
+		expect(JSON.parse(next.stdout).step.id).toBe(step.id);
+		if (step.id === 'red' || step.id === 'green') {
+			const result = await runHarness(['loop', 'evaluate', 'repair', '--json'], root, false);
+			expect(JSON.parse(result.stdout).passed).toBe(step.id === 'green');
+			expect(result.exitCode).toBe(step.id === 'green' ? 0 : 1);
+			expect(await readFile(join(root, 'proof.ts'), 'utf8')).toBe(frozen);
+		}
+		if (step.id === 'implement')
+			await writeFile(join(root, 'source.ts'), 'export const value = 3;');
+		const evidence = `${step.id}: existing test checked only positivity; strengthen the shared selected-value assertion; bun run check fails at 1 versus 3, passes unchanged after repairing source.`;
+		await runHarness(['loop', 'complete', 'repair', step.id, '--evidence', evidence], root);
+	}
+}
 
 async function expectPendingVerification(root: string): Promise<void> {
 	const next = await runHarness(['loop', 'next', 'repair', '--json'], root);

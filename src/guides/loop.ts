@@ -1,4 +1,5 @@
 import type { Guide } from './guide';
+import { bugRepairPolicy } from '../utils/bugRepairPolicy';
 
 export const loopGuide: Guide = {
 	topic: 'loop',
@@ -11,6 +12,7 @@ export const loopGuide: Guide = {
 		'Run loop evaluators as a repeatable proof layer, not as a substitute for judgment.'
 	],
 	rules: [
+		...bugRepairPolicy(),
 		'Built-in loops cover feature, fix, bug-fix, regression-prevention, refactor, and visual-change work.',
 		'Choose bug-fix for failing-test-first repairs; choose regression-prevention for root-cause repairs with enforced guards.',
 		'Record failing and passing proof from the same unchanged regression test; retry repairs and keep verification pending while checks fail.',

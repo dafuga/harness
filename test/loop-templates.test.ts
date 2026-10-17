@@ -13,8 +13,15 @@ test('loop templates inherit parent steps and override by id', async () => {
 	try {
 		const template = await resolveLoopTemplate(root, 'fix');
 
-		expect(template.lineage).toEqual(['feature', 'fix']);
-		expect(template.steps.map((step) => step.id)).toEqual(['spec', 'implement', 'test', 'verify']);
+		expect(template.lineage).toEqual(['bug-fix', 'fix']);
+		expect(template.steps.map((step) => step.id)).toEqual([
+			'spec',
+			'coverage',
+			'red',
+			'implement',
+			'green',
+			'verify'
+		]);
 		expect(template.steps[0].title).toContain('failing behavior');
 		expect(template.evaluators[0]).toMatchObject({ id: 'check', step: 'verify' });
 	} finally {
@@ -41,12 +48,17 @@ test('project loop templates extend built-ins and append child steps', async () 
 
 		expect(template.steps.map((step) => step.id)).toEqual([
 			'spec',
+			'coverage',
+			'red',
 			'implement',
-			'test',
+			'green',
 			'verify',
+			'test',
 			'release'
 		]);
-		expect(template.steps[2].title).toBe('Add regression coverage.');
+		expect(template.steps.find((step) => step.id === 'test')?.title).toBe(
+			'Add regression coverage.'
+		);
 		expect(template.evaluators.map((evaluator) => evaluator.id)).toEqual(['check', 'release-note']);
 	} finally {
 		await rm(root, { recursive: true, force: true });

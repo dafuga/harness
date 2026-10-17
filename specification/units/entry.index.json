@@ -63,7 +63,8 @@
 			"commitMessage",
 			"CommitMessageService",
 			"revisionReasons",
-			"verificationNoteIdentity"
+			"verificationNoteIdentity",
+			"bugRepairPolicy"
 		]
 	},
 	"contract": {
@@ -116,6 +117,11 @@
 		{
 			"unit": "entry.program",
 			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.bug-repair-policy",
+			"via": "reexport",
 			"origin": "derived"
 		},
 		{
