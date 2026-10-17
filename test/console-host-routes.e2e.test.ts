@@ -1,7 +1,8 @@
 import { chromium, type Browser, type Page } from '@playwright/test';
 import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
-import { afterAll, beforeAll, expect, test } from 'vitest';
+import { afterAll, afterEach, beforeAll, beforeEach, expect, test } from 'vitest';
+import { browserErrorCollector } from './support/browserTest';
 import { sessions } from './support/consoleHost';
 import {
 	installAndBuild,
@@ -16,6 +17,13 @@ let target: SyntheticHost;
 let worker: LocalWorker;
 let browser: Browser;
 let head: string;
+let browserErrors: ReturnType<typeof browserErrorCollector>;
+beforeEach(() => {
+	browserErrors = browserErrorCollector();
+});
+afterEach(async () => {
+	await browserErrors.finish();
+});
 const admin = { cookie: `session=${sessions.admin}` };
 const get = (path: string, headers: Record<string, string> = {}) =>
 	fetch(worker.url + path, { headers, redirect: 'manual' });
@@ -46,6 +54,7 @@ afterAll(async () => {
 
 async function adminPage(): Promise<Page> {
 	const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+	browserErrors.watch(context);
 	await context.addCookies([{ name: 'session', value: sessions.admin, url: worker.url }]);
 	return context.newPage();
 }
@@ -140,6 +149,13 @@ test('in a browser each branch, commit and category of the installed console is 
 test('the installed console shows recorded media and exports a record, for the administrator only', async () => {
 	const entity = main(target.commit, 'pages/page.titles');
 	const stranger = await browser.newPage();
+	browserErrors.watch(stranger.context());
+	browserErrors.expectError({
+		type: 'console',
+		message: 'Failed to load resource: the server responded with a status of 403 (Forbidden)',
+		source: worker.url + entity,
+		reason: 'An unauthenticated browser deliberately proves access is refused.'
+	});
 	await stranger.goto(worker.url + entity);
 	expect(await stranger.locator('body').innerText()).toBe('Forbidden');
 	await stranger.close();

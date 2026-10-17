@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../../../test/support/browserTest';
 import { seeded } from './support/harnessHistory';
 
 const { commits } = seeded();

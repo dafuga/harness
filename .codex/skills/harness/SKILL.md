@@ -13,6 +13,7 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 7. Verify with `bun run check` before handing work back.
 8. Git answer caches: establish the object format first; hex shape is not immutability. Test refs named like the other width and unknown formats.
 9. Config changes: name owned helpers from the owning config file; run root and every inheriting workspace's test entrypoint before a full check.
+10. Shared browser fixtures must preserve lazy setup: when their dependencies change, run an API-only case with an unavailable browser executable alongside actual browser cases.
 
 ## Bug and Regression Loops
 
@@ -30,6 +31,8 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 - `harness explain add` and the commit-msg hook refuse more; verification checks both again.
 - Hooks are shared by every worktree; a stage acts only where that stage was opted into. A change to the wrappers passes `test/hooks-shared-stages.e2e.test.ts` first.
 - Say what changed here and what was tried. Never shorten tests, contracts or evidence to fit.
+
+- Browser normal flows, including screenshot/video runs, must have no unexpected console.error or pageerror events. Use the shared browserTest fixture and watch extra contexts before navigation. Preserve logs for expected errors and declare their exact messages and reasons in that test. For unexpected errors, prove a failing log assertion before repair, then rerun the same unchanged regression until the error disappears.
 
 ## Hard Limits
 

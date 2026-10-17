@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page } from '../../../test/support/browserTest';
 import { capture, fits, open, viewports } from './entityPreviewPage';
 import { frameId } from './entityPreviewData';
 import { commits, ids } from './entityUnits';

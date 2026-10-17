@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { designOptionsFixture, imageSha, options } from './ui-design-options-fixture';
 import {
 	activity,

@@ -827,6 +827,9 @@ do not inflate usage counts.
 - Prove the guard rejects reintroducing the original failure in an isolated fixture or temporary workspace; restore the repair and prove the guard passes.
 - Record failing and passing commands, assertions, and results as step evidence. Keep green/guard/verification steps pending while proof fails; the agent retries repairs and checks. Harness does not launch an AI repair runner or automatically complete steps.
 - For affected UI paths, exercise the browser flow and capture fresh screenshots, then inspect the images before recording proof. Report blockers without claiming completion.
+- Normal browser flows, including screenshot and video runs, require zero unexpected `console.error` or `pageerror` events. Generated apps use `tests/e2e/support/browserTest.ts`; Harness suites use `test/support/browserTest.ts`. The automatic fixture saves a `browser-errors` JSON attachment when errors occur, and adds nothing on a clean run.
+- Deliberate error cases call `browserErrors.expectError({ type: 'console', message: 'exact message', source: 'exact source URL', reason: 'what this test deliberately fails' })` before the action. `source` is optional; each declaration permits exactly one event. Missing, additional and unrelated errors fail. Keep application logging intact and repair unexpected errors with the same unchanged red-green regression.
+- Call `browserErrors.watch(context)` before navigating manually created contexts or Electron windows. Tests using Playwright directly outside its test runner can create `browserErrorCollector()`, watch their contexts, and call `finish()` in teardown; failures include the captured diagnostics.
 
 ### Experimental Codex gateway
 

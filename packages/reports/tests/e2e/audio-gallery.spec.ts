@@ -1,4 +1,4 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect, type Page } from '../../../../test/support/browserTest';
 import { mkdir, writeFile, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
@@ -112,8 +112,14 @@ for (const width of [1440, 920, 390]) {
 
 test('a browser playback failure keeps the original download and reports not-proven playback', async ({
 	page,
-	baseURL
+	baseURL,
+	browserErrors
 }) => {
+	browserErrors.expectError({
+		type: 'console',
+		message: 'Failed to load resource: the server responded with a status of 404 (Not Found)',
+		reason: 'This test deliberately returns 404 for the audio asset to verify playback failure.'
+	});
 	const source = '**/api/reports/*/assets/*.wav';
 	await page.route(source, (route) =>
 		route.fulfill({ status: 404, body: 'Unavailable in this browser test' })

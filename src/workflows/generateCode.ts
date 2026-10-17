@@ -1,4 +1,6 @@
 import { applyExports } from '../core/exports';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import type { ExportPlan } from '../core/exports';
 import { fail } from '../core/errors';
 import {
@@ -11,6 +13,7 @@ import { detectProjectKind } from '../core/project';
 import { validateCodeName } from '../core/validation';
 import { parseFields } from '../core/fields';
 import { adapterTypeFiles } from '../templates/adapterTypes';
+import { browserTestFiles } from '../templates/browserTest';
 import { modelFiles, type AdapterName } from '../templates/model';
 import { pieceFiles, type PieceKind } from '../templates/pieces';
 import { isAppOnlyScaffold, scaffoldKinds } from '../templates/scaffoldTypes';
@@ -71,7 +74,10 @@ export async function generatePiece(input: GeneratePieceInput): Promise<Generate
 		fail(`The ${input.kind} scaffold is only available in Harness app projects.`);
 	}
 
-	const files = pieceFiles(input.kind, name);
+	const support = ['e2e', 'resource'].includes(input.kind)
+		? browserTestFiles().filter((file) => !existsSync(join(root, file.path)))
+		: [];
+	const files = [...pieceFiles(input.kind, name), ...support];
 	await ensureParents(root, files);
 	const writes = await writePlannedFiles(root, files, { force: input.force });
 	const exportsUpdated =

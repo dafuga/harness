@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../../../test/support/browserTest';
 import { execFileSync } from 'node:child_process';
 import { mkdir } from 'node:fs/promises';
 import { analytics, type Assessments, type Models } from './support/analyticsCli';

@@ -102,7 +102,7 @@ export function e2eFiles(name: string): PlannedFile[] {
 	return [
 		{
 			path: `tests/e2e/${route}.spec.ts`,
-			contents: `import { expect, test } from '@playwright/test';\n\ntest('${route} page loads', async ({ page }) => {\n\tawait page.goto('/${route}');\n\tawait expect(page.locator('[data-harness-view="${route}"]')).toBeVisible();\n});\n`
+			contents: `import { expect, test } from './support/browserTest';\n\ntest('${route} page loads', async ({ page }) => {\n\tawait page.goto('/${route}');\n\tawait expect(page.locator('[data-harness-view="${route}"]')).toBeVisible();\n});\n`
 		}
 	];
 }

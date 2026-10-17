@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../../../test/support/browserTest';
 import { readFileSync, rmSync } from 'node:fs';
 import { scenarioManifestSchema } from '../../../../src/core/unitTypes';
 import { gatherCaptures } from '../../../../src/utils/gatherCaptures';

@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../../../test/support/browserTest';
 import { atlas, hostedFixture } from './hosted-fixture';
 import { handoff, userCode } from './hosted-native';
 
@@ -6,8 +6,16 @@ const field = { name: 'Code shown in the desktop app', exact: true };
 const approve = { name: 'Approve this device', exact: true };
 
 test('the approval page names what is asked, and takes the typed code in a body, never an address', async ({
-	page
+	page,
+	browserErrors,
+	baseURL
 }) => {
+	browserErrors.expectError({
+		type: 'console',
+		message: 'Failed to load resource: the server responded with a status of 400 (Bad Request)',
+		source: new URL(`/api/auth/native/approve`, baseURL).href,
+		reason: 'Deliberately submitting the wrong desktop approval code verifies rejection.'
+	});
 	const state = await hostedFixture(page, { signedIn: false });
 	await page.goto(`/native/${handoff}`);
 	await expect(page.getByRole('heading', { name: 'Connect the desktop app' })).toBeVisible();

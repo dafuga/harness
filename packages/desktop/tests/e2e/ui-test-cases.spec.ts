@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../../../test/support/browserTest';
 import { branch, commits, evidenceFixture, ids, sharedProject } from './ui-evidence-fixture';
 import { remember } from './ui-test-cases-capture';
 

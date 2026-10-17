@@ -1,4 +1,5 @@
-import { chromium } from '@playwright/test';
+import { chromium, type Page } from '@playwright/test';
+import { browserErrorCollector } from './browserTest';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { ScenarioManifest } from '../../src/core/unitTypes';
@@ -51,39 +52,95 @@ export async function captureHost(
 	path = '/harness'
 ): Promise<HostCapture> {
 	const browser = await chromium.launch();
+	const errors = browserErrorCollector();
+	let failure: unknown;
 	try {
 		const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+		errors.watch(context);
 		await context.addCookies([{ name: 'session', value: sessions.admin, url: worker.url }]);
 		const page = await context.newPage();
 		await page.goto(worker.url + path);
-		// The explorer opens on Pages: the bar marks that category once the address is resolved.
+		await settledHost(page);
+		const answer = await page.request.get(`${worker.url}/harness/data/build.json`);
+		const reported = (await answer.json()) as HostCapture['reported'];
+		const screenshot = await page.screenshot();
+		const capture = { reported, screenshot };
+		await keepHostCapture(capture);
 		const categories = page
 			.getByRole('banner')
 			.getByRole('navigation', { name: 'Harness categories' });
 		await categories.locator('a[aria-current="page"]', { hasText: 'Pages' }).waitFor();
-		await page.getByRole('heading', { level: 1, name: 'Pages' }).waitFor();
-		const answer = await page.request.get(`${worker.url}/harness/data/build.json`);
-		const reported = (await answer.json()) as HostCapture['reported'];
-		const screenshot = await page.screenshot();
-		const server = { buildId: reported.buildId ?? 'unstamped', revision };
-		recordCapture(
-			{
-				evidence: 'screens',
-				kind: 'screenshot',
-				state: 'pages',
-				viewport: 'desktop',
-				file: 'pages-desktop.png',
-				mediaType: 'image/png',
-				provenance: 'actual-capture',
-				server
-			},
-			screenshot,
-			{ HARNESS_EVIDENCE_DIR: evidence, TAKE_SCREENSHOT: '1' }
-		);
-		return { reported, screenshot };
+		recordHostCapture(capture, { evidence, revision });
+		return capture;
+	} catch (error) {
+		failure = error;
+		throw error;
 	} finally {
 		await browser.close();
+		await finishHostErrors(errors, failure);
 	}
+}
+
+function recordHostCapture(capture: HostCapture, target: { evidence: string; revision: string }) {
+	const server = { buildId: capture.reported.buildId ?? 'unstamped', revision: target.revision };
+	recordCapture(
+		{
+			evidence: 'screens',
+			kind: 'screenshot',
+			state: 'pages',
+			viewport: 'desktop',
+			file: 'pages-desktop.png',
+			mediaType: 'image/png',
+			provenance: 'actual-capture',
+			server
+		},
+		capture.screenshot,
+		{ HARNESS_EVIDENCE_DIR: target.evidence, TAKE_SCREENSHOT: '1' }
+	);
+}
+
+async function finishHostErrors(
+	errors: ReturnType<typeof browserErrorCollector>,
+	failure: unknown
+) {
+	try {
+		await errors.finish();
+	} catch (error) {
+		if (failure !== undefined)
+			throw new AggregateError(
+				[failure, error],
+				`Host flow failed with browser errors\n${errorDetails(failure)}\n${errorDetails(error)}`
+			);
+		throw error;
+	}
+}
+
+function errorDetails(error: unknown): string {
+	return error instanceof Error ? (error.stack ?? error.message) : String(error);
+}
+
+async function settledHost(page: Page): Promise<void> {
+	await page.getByRole('heading', { level: 1, name: 'Pages', exact: true }).waitFor();
+	await page.evaluate(async () => {
+		await globalThis.document.fonts.ready;
+		const images = [...globalThis.document.images].filter((image) => {
+			const box = image.getBoundingClientRect();
+			return box.width > 0 && box.height > 0 && box.top < globalThis.innerHeight && box.bottom > 0;
+		});
+		await Promise.all(
+			images.map(async (image) => {
+				await image.decode();
+				if (!image.complete || !image.naturalWidth || !image.naturalHeight)
+					throw new Error('Host screenshot image is not ready.');
+			})
+		);
+	});
+}
+
+async function keepHostCapture(capture: HostCapture): Promise<void> {
+	const phase = process.env.SCREENSHOT_LABEL ?? 'current';
+	const build = capture.reported.buildId?.slice(0, 12) ?? 'unstamped';
+	await keepCapture(`host-${phase}-${build}`, capture, {});
 }
 
 /** What the verifier's capture judge says about that evidence, for the build setup compiled. */

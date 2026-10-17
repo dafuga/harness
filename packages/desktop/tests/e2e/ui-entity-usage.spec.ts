@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { pictured, related } from './ui-entity-usage-fixture';
 import { branch, evidenceFixture, ids, sharedProject } from './ui-evidence-fixture';
 

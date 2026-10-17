@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { gamma, hostedFixture } from './ui-hosted-fixture';
 import { evidenced, shell, withShell } from './ui-shells-fixture';
 

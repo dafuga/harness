@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { remoteEvidence } from './remote-evidence';
 import { alpha, deviceName, hostName, remotePhoneFixture } from './ui-remote-phone-fixture';
 

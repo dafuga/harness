@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { scannedText } from './qr-read';
 import { captured, remoteEvidence } from './remote-evidence';
 import {

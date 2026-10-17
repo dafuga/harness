@@ -1,6 +1,7 @@
 import { code, image, invitation, sharedCommit, tip, earlier } from './hosted-data';
 import type { HostedProject } from './hosted-data';
 import type { Answer, HostedCall, HostedState } from './hosted-fixture';
+import { hostedEvidence } from './hosted-evidence';
 
 const denied = ['runs', 'plans', 'approve', 'changes'];
 const missing: Answer = { status: 404, json: { error: 'not-found' } };
@@ -89,6 +90,7 @@ function read(state: HostedState, project: HostedProject, call: HostedCall): Ans
 	if (operation === 'members')
 		return { json: state.data.members.filter((item) => item.projectId === project.id) };
 	if (operation === 'snapshot') return snapshot(project, call);
+	if (operation === 'evidence') return { json: hostedEvidence(project, call) };
 	if (operation === 'image') return { bytes: image };
 	if (operation === 'threads') return { json: threads };
 	if (operation === 'source') return { json: { path: call.query.path, text: project.name } };

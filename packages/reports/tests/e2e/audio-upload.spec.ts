@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../../../../test/support/browserTest';
 import { readFile } from 'node:fs/promises';
 import { ReportRepository } from '../../src/repositories/ReportRepository';
 import { audioFixture } from '../../test/audioFixture';

@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { ada, atlas, hostedFixture, type HostedState } from './hosted-fixture';
 import { emailCode, thirdPartyCredential, unsent } from './hosted-email';
 import { emailCode as serverEmailCode } from '../../src/utils/authSecrets';
@@ -36,8 +36,16 @@ async function thirdParty(page: Page) {
 }
 
 test('another address is pending and reads no project until its code is verified', async ({
-	page
+	page,
+	browserErrors,
+	baseURL
 }) => {
+	browserErrors.expectError({
+		type: 'console',
+		message: 'Failed to load resource: the server responded with a status of 400 (Bad Request)',
+		source: new URL(`/api/auth/email/verify`, baseURL).href,
+		reason: 'Deliberately submitting the wrong email code verifies rejection.'
+	});
 	const state = await thirdParty(page);
 	await expect(page.getByText(ada.email).first()).toBeVisible();
 	await expect(page.getByRole('button', signIn)).toHaveCount(0);
@@ -101,7 +109,18 @@ test('a pending address opens no project, member list or desktop approval', asyn
 	expect(asked(state, '/api/auth/email/')).toEqual([]);
 });
 
-test('a deployment that cannot send email says so and marks nothing as sent', async ({ page }) => {
+test('a deployment that cannot send email says so and marks nothing as sent', async ({
+	page,
+	browserErrors,
+	baseURL
+}) => {
+	browserErrors.expectError({
+		type: 'console',
+		message:
+			'Failed to load resource: the server responded with a status of 503 (Service Unavailable)',
+		source: new URL(`/api/auth/email/start`, baseURL).href,
+		reason: 'Deliberately disabled email delivery verifies the unavailable state.'
+	});
 	const email = { proof: unsent, delivery: false };
 	await hostedFixture(page, { signedIn: false, email });
 	await page.goto('/');

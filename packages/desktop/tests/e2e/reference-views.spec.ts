@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { hostedFixture } from './ui-hosted-fixture';
 import { capture, scenario } from './ui-reference-capture';
 import {
