@@ -63,7 +63,7 @@
 			{
 				"name": "planCatalog",
 				"type": "CatalogEntity",
-				"description": "A catalog entry with the plan goal, lifecycle, thread count and latest design information. A new planned entry starts unverified; approval alone does not verify behavior. The latest version is marked approved only when its approval is current. No versions means null version and thumbnail fields; no image in the latest version means a null thumbnail."
+				"description": "A catalog entry with the plan goal, lifecycle, thread count and latest design information. A latest design image takes priority; without one, the existing implemented screenshot selection is retained. Planned-only entries without an image keep an explicit gap. Approval alone does not verify behavior, and only a current approval marks the latest version approved."
 			}
 		],
 		"errors": []

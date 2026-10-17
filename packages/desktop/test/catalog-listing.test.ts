@@ -4,9 +4,9 @@ import { expect } from '../../../test/verificationExpect';
 import type { ComponentManifest } from '../../../src/lib/contracts';
 import { explorerCategory, explorerRole } from '../../reports/src/utils/explorerCategory';
 import { CatalogService } from '../src/services/CatalogService';
-import { catalogUnit } from '../src/utils/catalogUnit';
+import { catalogUnit, planCatalog } from '../src/utils/catalogUnit';
 import { manifest } from './catalog-listing-manifests';
-import { listingProject } from './catalog-listing-fixture';
+import { imagelessDesign, listingProject, pagePlan } from './catalog-listing-fixture';
 import {
 	analytics,
 	charted,
@@ -36,13 +36,34 @@ const ids = (entities: { id: string }[]) => entities.map((entity) => entity.id).
 const kept = idsOf([...ordinary, twin]);
 const redirects = ['analytics', 'harness-analytics', 'harness-reports', 'harness-reports-id'];
 
-test('implemented pages select their declared screenshot rather than an absent planning image', () => {
+test('implemented pages select their declared screenshot rather than an absent planning image', async () => {
 	const preview = { scenario: 'orders', state: 'loaded', viewport: 'desktop' };
 	const unit = {
 		...manifest(['page.orders', 'Orders', 'Shows orders.', ['src/routes/orders/+page.svelte']]),
 		preview
 	} as ComponentManifest;
 	expect(catalogUnit(unit, new Set())?.thumbnail).toEqual({ source: 'recorded', ...preview });
+	const source = { units: async () => [unit], changed: async () => new Set<string>() };
+	for (const versions of [[], [imagelessDesign]]) {
+		const plan = pagePlan(unit, versions);
+		const planning = { plans: async () => [plan] };
+		const catalog = new CatalogService(source as never, planning as never);
+		expect((await catalog.list('HEAD'))[0]).toMatchObject({
+			planned: false,
+			hasPlan: true,
+			thumbnail: { source: 'recorded', ...preview }
+		});
+		// A plan with no implementation still has no screenshot to display.
+		expect(planCatalog(plan, null, new Set()).thumbnail).toBeNull();
+	}
+	const image = { state: 'default', viewport: 'desktop', sha256: 'b'.repeat(64), bytes: 100 };
+	const designed = pagePlan(unit, [{ ...imagelessDesign, images: [image] }]);
+	expect(planCatalog(designed, catalogUnit(unit, new Set()), new Set()).thumbnail).toEqual({
+		version: 'v001',
+		sha256: image.sha256,
+		state: image.state,
+		viewport: image.viewport
+	});
 	// A backend cannot make a headless unit reserve room for a design or screenshot.
 	expect(catalogUnit({ ...unit, kind: 'function' }, new Set())?.thumbnail).toBeNull();
 });

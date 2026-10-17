@@ -84,6 +84,7 @@ export function planCatalog(
 	changed: Set<string>
 ): CatalogEntity {
 	const base = unit ?? draftCatalog(plan);
+	const design = latestDesign(plan.versions.at(-1));
 	return {
 		...base,
 		summary: plan.goal,
@@ -91,6 +92,7 @@ export function planCatalog(
 		hasPlan: true,
 		lifecycle: plan.lifecycle,
 		threadCount: plan.threads.length,
-		...latestDesign(plan.versions.at(-1))
+		...design,
+		thumbnail: design.thumbnail ?? base.thumbnail
 	};
 }
