@@ -85,6 +85,9 @@ export async function completeLoopStep(input: CompleteLoopStepInput): Promise<Lo
 
 	if (!item) fail(`Loop step "${step}" does not exist.`);
 	if (item.status === 'complete') fail(`Loop step "${step}" is already complete.`);
+	const pending = state.steps.find((candidate) => candidate.status === 'pending');
+	if (state.enforceOrder && pending && pending.id !== step)
+		fail(`Complete loop step "${pending.id}" before "${step}".`);
 
 	const completedAt = timestamp(input.now);
 	Object.assign(item, { status: 'complete' as const, completedAt, evidence });
@@ -135,6 +138,9 @@ async function newLoopState(
 		updatedAt: input.createdAt,
 		template: inherited?.id,
 		templateLineage: inherited?.lineage,
+		enforceOrder: inherited?.lineage.some((id) =>
+			['bug-fix', 'regression-prevention'].includes(id)
+		),
 		steps: inherited?.steps.map((step) => ({ ...step, status: 'pending' as const })) ?? [],
 		evaluators: inherited?.evaluators
 	};
