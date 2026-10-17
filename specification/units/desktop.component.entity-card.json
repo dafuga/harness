@@ -2,35 +2,43 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.entity-card",
 	"kind": "component",
-	"title": "EntityCard",
-	"responsibility": "Owns the EntityCard Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Catalog card",
+	"responsibility": "Shows a page or other project item with its summary, preview, verification status and link to open or review it.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/EntityCard.svelte"],
 		"symbols": ["EntityCard"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EntityCard.entity",
-				"type": "CatalogEntity"
+				"type": "CatalogEntity",
+				"description": "The project item to show, including its summary, preview and recorded verification status."
 			},
 			{
 				"name": "EntityCard.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "The selected project and revision, used to load the preview and open the item."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityCard",
-				"type": "markup"
+				"type": "markup",
+				"description": "A catalog card. Implemented pages have a compact open icon; planned items link to their design or behavior review."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.component.icon",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.component.plan-badge",
 			"via": "import",

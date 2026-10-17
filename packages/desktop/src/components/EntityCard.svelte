@@ -7,10 +7,12 @@
 	import StatusIcon from './StatusIcon.svelte';
 	import WorkspaceLink from './WorkspaceLink.svelte';
 	import RecordedPreview from './RecordedPreview.svelte';
+	import Icon from './Icon.svelte';
 	let { entity, workspace }: { entity: CatalogEntity; workspace: Workspace } = $props();
 	let image = $state('');
 	/** A function has a plan and no design: no picture is asked for it or left room for. */
 	const headless = $derived(entity.category === 'functions');
+	const compact = $derived(entity.category === 'pages' && !entity.hasPlan);
 	const reviewed = $derived(headless ? 'plan' : 'designs');
 	const recorded = $derived(entity.thumbnail?.source === 'recorded' ? entity.thumbnail : null);
 	$effect(() => {
@@ -57,12 +59,23 @@
 	<WorkspaceLink
 		{workspace}
 		to={workspace.path(entity.category, entity.id, entity.hasPlan ? reviewed : '')}
-		class="outline gold"
-		>{entity.hasPlan ? `Review ${reviewed}` : 'Open ' + entity.kind} <span>→</span></WorkspaceLink
+		class={compact ? 'outline gold open-page' : 'outline gold'}
+		label={compact ? 'Open page' : undefined}
+		title={compact ? 'Open page' : undefined}
+		>{#if compact}<Icon name="open" size={18} />{:else}{entity.hasPlan
+				? `Review ${reviewed}`
+				: 'Open ' + entity.kind} <span>→</span>{/if}</WorkspaceLink
 	>
 </article>
 
 <style>
+	:global(.entity-card .open-page) {
+		align-self: flex-end;
+		justify-content: center;
+		width: 36px;
+		height: 36px;
+		padding: 8px;
+	}
 	.thumbnail.runtime {
 		aspect-ratio: 16 / 11;
 	}

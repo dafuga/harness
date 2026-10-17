@@ -7,6 +7,7 @@
 		to,
 		class: style = '',
 		label,
+		title,
 		children
 	}: {
 		workspace: Workspace;
@@ -14,6 +15,8 @@
 		class?: string;
 		/** What the link does, where its text alone does not say it. */
 		label?: string;
+		/** Short hover text for an icon-only link. */
+		title?: string;
 		children: Snippet;
 	} = $props();
 	/**
@@ -30,4 +33,4 @@
 	}
 </script>
 
-<a class={style} {href} aria-label={label} onclick={open}>{@render children()}</a>
+<a class={style} {href} {title} aria-label={label} onclick={open}>{@render children()}</a>

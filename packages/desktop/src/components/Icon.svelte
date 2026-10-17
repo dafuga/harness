@@ -1,6 +1,7 @@
 <script lang="ts">
 	let { name, size = 22 }: { name: string; size?: number } = $props();
 	const paths: Record<string, string> = {
+		open: 'M5 12h14 M12 5l7 7-7 7',
 		pages: 'M6 3h9l4 4v14H6z M14 3v5h5 M9 12h7 M9 16h7',
 		shells: 'M3 4h18v16H3z M3 9h18 M8 9v11',
 		components: 'm12 2 9 5v10l-9 5-9-5V7z M3 7l9 5 9-5 M12 12v10',

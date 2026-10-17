@@ -2,42 +2,53 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.workspace-link",
 	"kind": "component",
-	"title": "WorkspaceLink",
-	"responsibility": "Owns the WorkspaceLink Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Workspace link",
+	"responsibility": "Opens an address within the selected project while preserving normal browser behavior for modified clicks.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/WorkspaceLink.svelte"],
 		"symbols": ["WorkspaceLink"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "WorkspaceLink.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "The selected project and the navigation action used when the link is opened here."
 			},
 			{
 				"name": "WorkspaceLink.to",
-				"type": "string"
+				"type": "string",
+				"description": "The destination address within the app. The hosting app adds its own address prefix."
 			},
 			{
 				"name": "WorkspaceLink.class",
-				"type": "string"
+				"type": "string",
+				"description": "Optional appearance classes for the link."
 			},
 			{
 				"name": "WorkspaceLink.label",
-				"type": "string"
+				"type": "string",
+				"description": "Optional screen-reader name when the visible content does not explain the action."
+			},
+			{
+				"name": "WorkspaceLink.title",
+				"type": "string",
+				"description": "Optional short tooltip shown when the pointer rests over the link."
 			},
 			{
 				"name": "WorkspaceLink.children",
-				"type": "Snippet"
+				"type": "Snippet",
+				"description": "The visible text or icon inside the link."
 			}
 		],
 		"outputs": [
 			{
 				"name": "WorkspaceLink",
-				"type": "markup"
+				"type": "markup",
+				"description": "A navigation link. Ordinary clicks open here; modified clicks keep the browser’s usual behavior."
 			}
 		],
 		"errors": []

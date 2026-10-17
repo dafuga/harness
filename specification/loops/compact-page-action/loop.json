@@ -1,0 +1,51 @@
+{
+	"name": "compact-page-action",
+	"goal": "Page cards open through a compact icon with an accessible label, tooltip and unchanged navigation.",
+	"createdAt": "2026-10-17T10:29:48.338Z",
+	"updatedAt": "2026-10-17T10:32:35.584Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-17T10:30:10.060Z",
+			"evidence": "Page cards currently use a full-width text link. Keep a single compact icon, an accessible Open page label, a hover tooltip and the same destination at each viewport."
+		},
+		{
+			"id": "red",
+			"title": "Write and run a failing regression test; record the defect assertion and command.",
+			"status": "complete",
+			"completedAt": "2026-10-17T10:30:41.717Z",
+			"evidence": "The unchanged local desktop regression fails: the full-width Open page arrow link has no concise accessible name or hover title. The same checkpoint screenshot was saved before asserting."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-17T10:32:00.164Z",
+			"evidence": "Reused WorkspaceLink and Icon for a 36px page action; added hover title support and readable contracts for the three edited components. Planned review links retain text."
+		},
+		{
+			"id": "green",
+			"title": "Repeat repair and the same unchanged regression test until it passes; record passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-17T10:32:35.584Z",
+			"evidence": "All 18 renderer browser checks pass, including unchanged compact-action assertions in local and hosted modes at desktop, tablet and mobile sizes; Enter opens the same page."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots; keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

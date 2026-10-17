@@ -96,6 +96,12 @@ for (const shared of [false, true]) {
 				.filter({ has: page.getByRole('heading', { name: pageTitle, exact: true }) });
 			await expect(card.locator('img')).toBeVisible();
 			await capture(page, info, `${mode}-${size.id}`);
+			const open = card.getByRole('link', { name: 'Open page', exact: true });
+			await expect(open).toHaveAttribute('title', 'Open page');
+			await expect(open).toHaveText('');
+			const bounds = await open.boundingBox();
+			expect(bounds?.width).toBeLessThanOrEqual(40);
+			expect(bounds?.height).toBeLessThanOrEqual(40);
 			await expect(card.getByRole('img', { name: `Screenshot of ${pageTitle}` })).toBeVisible();
 			await expect(card).toContainText('Screenshot');
 			const calls = (await evidenceState(page)).calls;
@@ -111,6 +117,9 @@ for (const shared of [false, true]) {
 			expect(
 				await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)
 			).toBe(true);
+			await open.press('Enter');
+			await expect(page).toHaveURL(`${root}/pages/${ids.page}`);
+			await expect(page.getByRole('heading', { name: pageTitle, level: 1 })).toBeVisible();
 		});
 	}
 }
