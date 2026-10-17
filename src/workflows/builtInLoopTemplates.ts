@@ -24,7 +24,7 @@ export const builtInTemplates: LoopTemplate[] = [
 		id: 'fix',
 		title: 'Bug Fix',
 		summary: 'Reproduce, repair, and prove a behavioral defect is fixed.',
-		extends: 'feature',
+		extends: 'bug-fix',
 		steps: [
 			{ id: 'spec', title: 'Identify the failing behavior and expected replacement behavior.' },
 			{ id: 'implement', title: 'Patch the defect without broad refactors.' }
@@ -64,12 +64,19 @@ export const builtInTemplates: LoopTemplate[] = [
 	{
 		id: 'bug-fix',
 		title: 'Regression-First Bug Fix',
-		summary: 'Reproduce a bug with a failing test, repair it, and repeat until proof passes.',
+		summary:
+			'Diagnose missed coverage, strengthen existing standardized tests, repair, and prove unchanged passing tests.',
 		steps: [
 			{ id: 'spec', title: 'Identify the failing behavior, expected behavior, and reproduction.' },
 			{
+				id: 'coverage',
+				title:
+					'Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.'
+			},
+			{
 				id: 'red',
-				title: 'Write and run a failing regression test; record the defect assertion and command.'
+				title:
+					'Strengthen the existing standardized test and shared coverage; run it failing before repair and record the command, assertion and result.'
 			},
 			{
 				id: 'implement',
@@ -106,9 +113,14 @@ export const builtInTemplates: LoopTemplate[] = [
 				title: 'Identify the regression, prior working behavior, root cause, and evidence.'
 			},
 			{
+				id: 'coverage',
+				title:
+					'Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.'
+			},
+			{
 				id: 'red',
 				title:
-					'Write and run a failing regression test that faithfully reproduces the defect; record proof.'
+					'Strengthen the existing standardized test and shared coverage; run it failing before repair and record the command, assertion and result.'
 			},
 			{
 				id: 'propose',

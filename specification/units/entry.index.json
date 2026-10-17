@@ -65,7 +65,8 @@
 			"revisionReasons",
 			"verificationNoteIdentity",
 			"previewBinding",
-			"readTreeTexts"
+			"readTreeTexts",
+			"bugRepairPolicy"
 		]
 	},
 	"contract": {
@@ -118,6 +119,11 @@
 		{
 			"unit": "entry.program",
 			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.bug-repair-policy",
+			"via": "reexport",
 			"origin": "derived"
 		},
 		{

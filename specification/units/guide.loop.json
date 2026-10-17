@@ -23,6 +23,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.bug-repair-policy",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "guide.guide",
 			"via": "import",
 			"origin": "derived"

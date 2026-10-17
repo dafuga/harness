@@ -23,7 +23,7 @@
 			{
 				"name": "runContext",
 				"type": "Promise<string>",
-				"description": "Prompt with entity contract and relationships, up to 20 recent messages truncated to 2000 characters each, reference instructions and requested work."
+				"description": "Prompt with entity contract, its uses and consumers, up to 20 recent messages truncated to 2000 characters each, reference instructions and requested work. Includes the shared coverage-first bug repair rules; assembling the prompt runs no repair or test."
 			}
 		],
 		"errors": []
@@ -36,6 +36,11 @@
 		},
 		{
 			"unit": "desktop.model.run-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.bug-repair-policy",
 			"via": "import",
 			"origin": "derived"
 		}
