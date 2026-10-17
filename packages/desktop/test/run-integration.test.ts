@@ -15,6 +15,10 @@ test('Plan uses read-only CLI and saves a committed immutable version without cl
 		cwd: f.root,
 		model: 'selected'
 	});
+	expect(f.run.mock.calls[0][0].prompt).toMatch(/why.*existing.*tests.*missed/i);
+	expect(f.run.mock.calls[0][0].prompt).toContain('existing standardized test');
+	expect(f.run.mock.calls[0][0].prompt).toContain('one-off');
+	expect(f.run.mock.calls[0][0].prompt).toContain('missing coverage category');
 	const plans = await f.planning.plans(git(f.root, 'rev-parse', 'HEAD'));
 	expect(plans[0].versions).toHaveLength(1);
 	expect(plans[0].versions[0].commit).toMatch(/^[a-f0-9]{40}$/);
@@ -32,6 +36,10 @@ test('approval alone never runs and Change records untracked and previously dirt
 	await writeFile(join(f.root, 'src/owned.ts'), 'already dirty');
 	await settled(f, request);
 	expect(f.run.mock.calls[0][0].access).toBe('write');
+	expect(f.run.mock.calls[0][0].prompt).toMatch(/why.*existing.*tests.*missed/i);
+	expect(f.run.mock.calls[0][0].prompt).toContain('existing standardized test');
+	expect(f.run.mock.calls[0][0].prompt).toContain('same unchanged');
+	expect(f.run.mock.calls[0][0].prompt).toContain('one-off');
 	expect(f.events).toContainEqual(
 		expect.objectContaining({
 			kind: 'changes',

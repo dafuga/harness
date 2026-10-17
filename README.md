@@ -822,6 +822,9 @@ do not inflate usage counts.
 
 ## Bug and Regression Loops
 
+- First explain why existing tests missed a reported bug. Identify the responsible standardized test or scenario and the missing inputs, lifecycle, fixture or assertion.
+- Strengthen that existing test and its shared coverage in Harness's normal format. If a category is missing, extend reusable standardized coverage; do not add a one-off bug-specific test.
+- Prove the strengthened test fails before repairing the product, then prove the same unchanged test passes afterward. New `bug-fix`, `fix`, and `regression-prevention` loops enforce step order, including coverage diagnosis before repair; existing loop records keep their history.
 - Use `harness loop create <name> --from bug-fix --goal <text>` for bug repairs: reproduce with a failing test before implementation, then repeat repair and the same unchanged test until it passes.
 - Use `--from regression-prevention` for regressions requiring durable prevention: identify the root cause, propose the repair and guard, implement both, and include the guard in normal project verification.
 - Prove the guard rejects reintroducing the original failure in an isolated fixture or temporary workspace; restore the repair and prove the guard passes.

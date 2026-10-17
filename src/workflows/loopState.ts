@@ -26,6 +26,7 @@ export interface LoopState {
 	updatedAt: string;
 	template?: string;
 	templateLineage?: string[];
+	enforceOrder?: boolean;
 	steps: LoopStep[];
 	evaluators?: LoopEvaluator[];
 }

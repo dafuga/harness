@@ -1,4 +1,5 @@
 import { harnessRuleLimits, harnessRuleSummaries } from '../rules/catalog';
+import { bugRepairPolicy } from '../utils/bugRepairPolicy';
 
 export function agentRules(projectType: string): string {
 	return `# AGENTS.md\n\nThis is a Harness ${projectType}. Treat Harness as the operating contract for every code change in this project.\n\n## Required Harness Workflow\n\n- Read this file and the \`.codex/skills/harness/SKILL.md\` skill before changing code.\n- Use Harness generators for supported code shapes instead of hand-rolling new structure.\n- Ask \`harness info <topic>\` before adding unfamiliar code or choosing a scaffold shape.\n- For non-trivial work, ask what the loop should prove, search templates, then create or continue a \`harness loop\`.\n- Add or update a feature spec before implementation.\n- Keep files small, focused, and aligned with \`harness.audit.json\` limits.\n- Run \`bun run check\` before handing work back; it includes formatting, type checks, lint, tests, build, and \`bun run audit\`.\n\n## Clean Code Review\n\n- Use \`harness info clean-code\` for optional Jev reviews.\n- Preview with \`harness audit . --clean-code --dry-run\`; reviews remain disabled until enabled.\n- Configure a project-owned credential and assess advisory results before enabling the gate.\n- Keep uncertain judgments visible and never call incomplete reviews clean.\n\n${regressionLoopRules()}\n## Code Rules\n\n${harnessRuleSummaries.map((rule) => `- ${rule}`).join('\n')}\n\nHard limits: files ${harnessRuleLimits.maxFileLines}, functions ${harnessRuleLimits.maxFunctionLines}, classes ${harnessRuleLimits.maxClassLines}, methods ${harnessRuleLimits.maxMethodLines}, nesting ${harnessRuleLimits.maxNestingDepth}.\n`;
@@ -11,6 +12,9 @@ export function skillRules(projectType: string): string {
 function regressionLoopRules(): string {
 	return `## Bug and Regression Loops
 
+${bugRepairPolicy()
+	.map((rule) => `- ${rule}`)
+	.join('\n')}
 - Use \`harness loop create <name> --from bug-fix --goal <text>\` for bug repairs: reproduce with a failing test before implementation, then repeat repair and the same unchanged test until it passes.
 - Use \`--from regression-prevention\` for regressions requiring durable prevention: identify the root cause, propose the repair and guard, implement both, and include the guard in normal project verification.
 - Prove the guard rejects reintroducing the original failure in an isolated fixture or temporary workspace; restore the repair and prove the guard passes.

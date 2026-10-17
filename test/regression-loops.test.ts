@@ -8,8 +8,18 @@ import { projectFiles } from '../src/templates/project';
 import { findGuide } from '../src/guides/guide';
 
 const orders = {
-	'bug-fix': ['spec', 'red', 'implement', 'green', 'verify'],
-	'regression-prevention': ['spec', 'red', 'propose', 'implement', 'green', 'guard', 'verify']
+	'bug-fix': ['spec', 'coverage', 'red', 'implement', 'green', 'verify'],
+	fix: ['spec', 'coverage', 'red', 'implement', 'green', 'verify'],
+	'regression-prevention': [
+		'spec',
+		'coverage',
+		'red',
+		'propose',
+		'implement',
+		'green',
+		'guard',
+		'verify'
+	]
 };
 
 test.each(Object.entries(orders))(
@@ -17,7 +27,7 @@ test.each(Object.entries(orders))(
 	async (id, order) => {
 		const template = await resolveLoopTemplate(process.cwd(), id);
 		expect(template.steps.map((step) => step.id)).toEqual(order);
-		expect(template.lineage).toEqual([id]);
+		expect(template.lineage).toEqual(id === 'fix' ? ['bug-fix', 'fix'] : [id]);
 		expect(template.evaluators).toEqual([
 			{
 				id: 'check',
@@ -27,6 +37,12 @@ test.each(Object.entries(orders))(
 			}
 		]);
 		expect(template.steps.find((step) => step.id === 'red')?.title).toContain('failing');
+		expect(template.steps.find((step) => step.id === 'coverage')?.title).toMatch(
+			/why.*existing.*tests.*missed/i
+		);
+		expect(template.steps.find((step) => step.id === 'red')?.title).toContain(
+			'existing standardized test'
+		);
 		expect(template.steps.find((step) => step.id === 'green')?.title).toContain('same unchanged');
 		expect((await searchLoops({ query: id })).map((item) => item.id)).toContain(id);
 	}
@@ -49,7 +65,7 @@ test('project templates can extend regression prevention and override its guard'
 		const template = await resolveLoopTemplate(root, 'custom');
 		expect(template.lineage).toEqual(['regression-prevention', 'custom']);
 		expect(template.steps.map((step) => step.id)).toEqual(orders['regression-prevention']);
-		expect(template.steps[5].title).toContain('project guard');
+		expect(template.steps.find((step) => step.id === 'guard')?.title).toContain('project guard');
 		expect(template.evaluators[0].command).toBe('bun run check');
 	} finally {
 		await rm(root, { recursive: true, force: true });
@@ -67,6 +83,10 @@ test.each(['app', 'lib'] as const)(
 			expect(text).toContain('pending');
 			expect(text).toContain('reintroducing');
 			expect(text).toContain('screenshots');
+			expect(text).toMatch(/why.*existing.*tests.*missed/i);
+			expect(text).toContain('existing standardized test');
+			expect(text).toContain('one-off');
+			expect(text).toContain('missing coverage category');
 		}
 	}
 );
@@ -78,7 +98,10 @@ test('loop guide explains red-green evidence, prevention guards, and agent retri
 		'regression-prevention',
 		'unchanged',
 		'pending',
-		'reintroducing'
+		'reintroducing',
+		'existing standardized test',
+		'coverage gap',
+		'one-off'
 	]) {
 		expect(guide).toContain(term);
 	}
