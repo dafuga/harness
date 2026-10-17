@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.kernel-closure",
 	"kind": "function",
-	"title": "kernelClosure",
-	"responsibility": "Computes the reverse transitive closure over base and head graphs for the reference kernel.",
+	"title": "Find affected units",
+	"responsibility": "Finds everything that may be affected by a change, using dependencies before and after the change.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,17 +11,19 @@
 		"symbols": ["kernelClosure"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "kernelClosure.input",
-				"type": "ImpactInput"
+				"type": "ImpactInput",
+				"description": "The dependency graphs before and after a change, changed or uncertain units, and the tests or scenarios that can verify them. Each edge means the first node depends on the second."
 			}
 		],
 		"outputs": [
 			{
-				"name": "kernelClosure",
-				"type": "ImpactOutput"
+				"name": "affectedUnits",
+				"type": "ImpactOutput",
+				"description": "Affected units and their fewest dependency steps from a changed or uncertain unit. Also lists changed units with no covering test, and changed units absent from both graphs."
 			}
 		],
 		"errors": []

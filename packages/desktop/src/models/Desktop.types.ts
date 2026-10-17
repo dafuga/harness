@@ -1,5 +1,6 @@
 import type { ProjectCapabilities, CacheProvenance } from './ProjectContext.types';
 import type { DesignVersion } from './DesignVersion.types';
+import type { ComponentManifest } from '../../../../src/lib/contracts';
 export type {
 	DesignImage,
 	DesignOptionInfo,
@@ -117,6 +118,8 @@ export interface ThreadMessage {
 export interface ContractField {
 	name: string;
 	type: string;
+	/** What this field means to someone reviewing the behaviour. */
+	description?: string;
 }
 
 export interface EntityContract {
@@ -146,12 +149,16 @@ export interface HistoryEvent {
 	version: string | null;
 }
 
-export interface Thumbnail {
+export interface DesignThumbnail {
+	source?: 'design';
 	version: string;
 	sha256: string;
 	state: string;
 	viewport: string;
 }
+export type Thumbnail =
+	| DesignThumbnail
+	| ({ source: 'recorded' } & Partial<NonNullable<ComponentManifest['preview']>>);
 
 export interface CatalogEntity {
 	id: string;

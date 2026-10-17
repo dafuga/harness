@@ -124,11 +124,12 @@ test('the card of a function has no design picture or placeholder, and opens its
 	expect(words(plain)).toContain('Open function');
 });
 
-test('the card of a page keeps its design picture and its designs link', () => {
+test('the card of a planned page keeps its design picture and its designs link', () => {
 	const page = { id: 'page.orders', category: 'pages', kind: 'page', title: 'OrdersPage' } as const;
-	expect(words(card(page))).toContain('No design image yet');
+	expect(words(card(page))).toContain('No screenshot recorded');
+	expect(words(card({ ...page, hasPlan: true }))).toContain('No design image yet');
 	const planned = card({ ...page, hasPlan: true, latestVersion: 'v001', thumbnail });
-	expect(planned).toContain('class="thumbnail"');
+	expect(planned).toMatch(/class="thumbnail(?:\s[^"]*)?"/);
 	expect(planned).toContain('href="/harness/pages/page.orders/designs"');
 });
 

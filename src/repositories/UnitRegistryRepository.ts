@@ -11,6 +11,7 @@ import {
 } from '../core/unitsConfig';
 import { fail } from '../core/errors';
 import { stableJson } from '../utils/stableJson';
+import { readTreeTexts } from '../utils/readTreeTexts';
 import { ComponentManifestValidator, schemaErrors } from '../validators/ComponentManifestValidator';
 
 export interface RegistryRead {
@@ -40,8 +41,9 @@ export class UnitRegistryRepository {
 			.map((entry) => entry.path)
 			.filter((path) => path.startsWith(`${unitsDirectory}/`) && path.endsWith('.json'));
 		const result: RegistryRead = { manifests: [], errors: [], unformatted: [] };
-		for (const path of paths) {
-			const text = await tree.read(path);
+		const texts = await readTreeTexts(tree, paths);
+		for (const [index, path] of paths.entries()) {
+			const text = texts[index];
 			const checked = this.validator.validate(parseJson(text), path);
 			result.errors.push(...checked.errors);
 			if (!checked.value) continue;

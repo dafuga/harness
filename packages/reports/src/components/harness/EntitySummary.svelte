@@ -33,14 +33,14 @@
 				<div>
 					<dt>{row.label}</dt>
 					<dd>
-						{row.value}
-						<!-- Where a contract says what each item is, the details say it; an overview names. -->
-						{#if !compact && row.items}
+						{#if row.items}
 							<ul class="ex-items">
 								{#each row.items as item}
 									<li><strong>{item.name}</strong> <span>{item.text}</span></li>
 								{/each}
 							</ul>
+						{:else}
+							{row.value}
 						{/if}
 					</dd>
 				</div>

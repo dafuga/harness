@@ -19,6 +19,7 @@ export function deriveManifest(input: DeriveInput): ComponentManifest {
 	const { files } = input;
 	const source = files.map((file) => file.path).sort();
 	const kept = input.previous ?? defaults(input);
+	const preview = kept.preview;
 	return {
 		schemaVersion: 1,
 		id: input.id,
@@ -36,6 +37,7 @@ export function deriveManifest(input: DeriveInput): ComponentManifest {
 		dependencies: [...derivedDependencies(input), ...declaredDependencies(input.previous)],
 		runtime: runtime(input.previous, source),
 		scenarios: kept.scenarios,
+		...(preview ? { preview } : {}),
 		budgets: kept.budgets
 	};
 }
@@ -48,6 +50,7 @@ type Declared = Pick<
 	| 'responsibilityOrigin'
 	| 'contract'
 	| 'scenarios'
+	| 'preview'
 	| 'budgets'
 >;
 

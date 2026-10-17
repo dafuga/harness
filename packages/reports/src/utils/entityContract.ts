@@ -73,11 +73,17 @@ function row(label: string, fields: Field, none: string, unit?: HarnessUnit): Co
 		const itself = field.type === 'markup' && unit !== undefined && own(unit).includes(name);
 		return itself ? 'rendered markup' : humanize(name);
 	});
-	const items = fields.flatMap((field, position) =>
-		field.description ? [{ name: names[position], text: field.description }] : []
-	);
+	let described = false;
+	const items = fields.flatMap((field, position) => {
+		const item = { name: names[position], text: 'No description recorded.' };
+		if (field.description) {
+			described = true;
+			item.text = field.description;
+		}
+		return [item];
+	});
 	const value = [...new Set(names)].join(', ') || none;
-	return { label, value, ...(items.length > 0 ? { items } : {}) };
+	return { label, value, ...(described ? { items } : {}) };
 }
 
 function runsAs(unit: HarnessUnit): string {

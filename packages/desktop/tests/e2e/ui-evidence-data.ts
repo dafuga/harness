@@ -7,8 +7,9 @@ import { explorerScope } from '../../../reports/src/utils/explorerScope';
 import { index } from '../../../reports/test/entityFixture';
 import { commits, ids, units } from '../../../reports/test/entityUnits';
 import type { EntityEvidenceResult } from '../../src/models/DesktopEvidence.types';
+import type { Thumbnail } from '../../src/models/Desktop.types';
 import { nativeImageFixture } from './native-image-fixture';
-import { sealedHistory } from './ui-evidence-history';
+import { sealedHistory, type Example } from './ui-evidence-history';
 
 export { commits, ids };
 export { cardScenario, soundScenario, tones } from './ui-evidence-history';
@@ -91,7 +92,7 @@ function entity(unit: HarnessUnit, image: number) {
 		latestVersion: designed ? 'v001' : null,
 		approvedVersion: null,
 		threadCount: 0,
-		thumbnail: designed ? thumbnail : null,
+		thumbnail: (designed ? thumbnail : null) as Thumbnail | null,
 		contract: { ...unit.contract, hash: null },
 		relationships: [],
 		versions: designed ? [design] : [],
@@ -167,8 +168,8 @@ function observe(history: ReturnType<typeof sealedHistory>, observedUnits: strin
 	}
 }
 
-export function evidenceData(shared = false, observedUnits: string[] = []) {
-	const history = sealedHistory();
+export function evidenceData(shared = false, observedUnits: string[] = [], example?: Example) {
+	const history = sealedHistory(example);
 	observe(history, observedUnits);
 	const design = Array.from(nativeImageFixture());
 	const results: Record<string, EntityEvidenceResult> = {};

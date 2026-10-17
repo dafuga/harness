@@ -44,6 +44,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.preview-binding",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.unit-types",
 			"via": "import",
 			"origin": "derived"

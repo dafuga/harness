@@ -5,6 +5,54 @@ import type { VerificationScope } from './verification-targets';
  * synthetic repositories and a synthetic source: this proves the readers, not a live service.
  */
 export const recordedEvidenceScopes: Record<string, VerificationScope> = {
+	'git-evidence-read': {
+		package: 'root',
+		vitest: {
+			'test/evidence-batch.test.ts': {
+				'one batch reads exact binary evidence, duplicate blobs and unusual paths at a pinned commit':
+					'binary-read',
+				'a malformed, mismatched, truncated or non-blob batch never yields evidence': 'boundaries',
+				'empty requests and absent paths do not start a blob reader': 'boundaries',
+				'a Git read failure is reported rather than returned as empty successful evidence':
+					'boundaries'
+			},
+			'test/utils/read-tree-texts.test.ts': {
+				'metadata reads preserve every requested position while limiting concurrent reads to 64':
+					'metadata-read',
+				'completion order does not change the order of returned metadata': 'metadata-read',
+				'an empty metadata request performs no read': 'metadata-read',
+				'unreadable metadata rejects the whole read instead of silently omitting a file':
+					'metadata-read'
+			}
+		},
+		playwright: {}
+	},
+	'catalog-previews': {
+		package: 'desktop',
+		vitest: {
+			'test/utils/recorded-preview.test.ts': {
+				'a runtime thumbnail reads the precisely bound capture at pinned revisions':
+					'preview-safety',
+				'a different state is unavailable instead of borrowing another screenshot':
+					'preview-safety',
+				'identical screenshot bytes in two states keep the exact selected state': 'preview-safety',
+				'an older page can use a state that explicitly names it in the recorded contract':
+					'preview-safety',
+				'a response for another project is refused before reading any artifact': 'preview-safety',
+				'damaged image bytes are rejected before an object URL exists': 'preview-safety',
+				'a response arriving after project navigation cannot paint the previous project image':
+					'preview-safety'
+			}
+		},
+		playwright: {
+			'tests/e2e/catalog-previews.spec.ts': [
+				'local-catalog',
+				'hosted-catalog',
+				'history-catalog',
+				'missing-catalog'
+			]
+		}
+	},
 	'desktop-recorded-evidence': {
 		package: 'desktop',
 		vitest: {

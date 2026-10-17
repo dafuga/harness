@@ -86,3 +86,5 @@ export { commitMessage } from './utils/commitMessage';
 export { CommitMessageService } from './services/CommitMessageService';
 export { revisionReasons } from './utils/revisionReasons';
 export { verificationNoteIdentity } from './utils/verificationNoteIdentity';
+export { previewBinding } from './utils/previewBinding';
+export { readTreeTexts } from './utils/readTreeTexts';

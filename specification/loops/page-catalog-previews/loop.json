@@ -1,0 +1,51 @@
+{
+	"name": "page-catalog-previews",
+	"goal": "Implemented page cards show their own recorded screenshot at the selected revision; planned pages keep their design preview.",
+	"createdAt": "2026-10-17T07:44:09.179Z",
+	"updatedAt": "2026-10-17T08:32:47.075Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-17T07:51:38.821Z",
+			"evidence": "The catalog selects only plan images and leaves implemented pages blank despite existing sealed screenshots. Bind each visual unit to scenario, state and viewport; retain tested-commit provenance and plan previews."
+		},
+		{
+			"id": "red",
+			"title": "Write and run a failing regression test; record the defect assertion and command.",
+			"status": "complete",
+			"completedAt": "2026-10-17T07:54:02.974Z",
+			"evidence": "Unchanged catalog regression returns null instead of the recorded thumbnail; the manifest rejects preview bindings. Logs: page-preview-images/catalog-red.log and manifest-red.log."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-17T08:30:32.505Z",
+			"evidence": "Bound page cards to exact recorded screenshots, kept planning designs, and added pinned-state validation, cleanup and signature selection guards."
+		},
+		{
+			"id": "green",
+			"title": "Repeat repair and the same unchanged regression test until it passes; record passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-17T08:32:47.075Z",
+			"evidence": "Catalog, manifest, binding and collision regressions pass. Browser: 7 passed across local/hosted desktop, tablet, mobile, historical and missing evidence. Strict gate tests reject invalid previews; Mac signing rejects unavailable identities."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots; keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

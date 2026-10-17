@@ -4,6 +4,8 @@ import { expect } from '../../../test/verificationExpect';
 import type { ComponentManifest } from '../../../src/lib/contracts';
 import { explorerCategory, explorerRole } from '../../reports/src/utils/explorerCategory';
 import { CatalogService } from '../src/services/CatalogService';
+import { catalogUnit } from '../src/utils/catalogUnit';
+import { manifest } from './catalog-listing-manifests';
 import { listingProject } from './catalog-listing-fixture';
 import {
 	analytics,
@@ -33,6 +35,17 @@ async function project() {
 const ids = (entities: { id: string }[]) => entities.map((entity) => entity.id).sort();
 const kept = idsOf([...ordinary, twin]);
 const redirects = ['analytics', 'harness-analytics', 'harness-reports', 'harness-reports-id'];
+
+test('implemented pages select their declared screenshot rather than an absent planning image', () => {
+	const preview = { scenario: 'orders', state: 'loaded', viewport: 'desktop' };
+	const unit = {
+		...manifest(['page.orders', 'Orders', 'Shows orders.', ['src/routes/orders/+page.svelte']]),
+		preview
+	} as ComponentManifest;
+	expect(catalogUnit(unit, new Set())?.thumbnail).toEqual({ source: 'recorded', ...preview });
+	// A backend cannot make a headless unit reserve room for a design or screenshot.
+	expect(catalogUnit({ ...unit, kind: 'function' }, new Set())?.thumbnail).toBeNull();
+});
 
 test('the tip lists every ordinary entity and no page manifest that only loads for an address', async () => {
 	const f = await project();

@@ -1,0 +1,59 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.recorded-value",
+	"kind": "component",
+	"title": "Recorded test value",
+	"responsibility": "Presents recorded values as labelled fields, typed values, lists and result tables.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/RecordedValue.svelte"],
+		"symbols": ["RecordedValue"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "RecordedValue.value",
+				"type": "unknown",
+				"description": "The input, observed output or error exactly as read from verified evidence."
+			}
+		],
+		"outputs": [
+			{
+				"name": "RecordedValue",
+				"type": "markup",
+				"description": "A readable, bounded preview. Full original data stays available in its recording."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.entity-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.recorded-value",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/RecordedValue.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/RecordedValue.svelte"
+			}
+		]
+	},
+	"scenarios": ["shared-test-cases"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
