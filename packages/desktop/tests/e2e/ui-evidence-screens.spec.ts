@@ -1,5 +1,5 @@
 import { runtimeEvidence } from './runtime-evidence';
-import { expect, test, type Locator, type Page } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '../../../../test/support/browserTest';
 import {
 	branch,
 	cardScenario,

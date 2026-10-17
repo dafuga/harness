@@ -21,14 +21,14 @@
 			{
 				"name": "CoveragePanel.evidence",
 				"type": "EntityEvidence",
-				"description": "Evidence state supplying loading or failure notices and, only when ready, the recorded result. Uses the result’s after side for coverage, including its commit, record, gaps, scenario and state standings, test statuses and capture slots."
+				"description": "Evidence state supplying loading or failure notices and, only when ready, the recorded result. Uses the result’s after side for coverage, including its commit, record, gaps, scenario and state standings, test statuses and capture slots. Coverage checks may carry browser-error diagnostics from the test attempt that produced their result."
 			}
 		],
 		"outputs": [
 			{
 				"name": "CoveragePanel",
 				"type": "markup",
-				"description": "Evidence panel with a runtime-capture label, recorded commit and record identifier when available, and any evidence notice. When no notice blocks it, shows coverage gaps, scenarios, states and captures from the record. Only passed coverage receives a check mark; other standings receive a cross with recorded reasons. Shows observed behavior when rows exist, otherwise explicitly says no input and observed output were recorded at that commit."
+				"description": "Evidence panel with a runtime-capture label, recorded commit and record identifier when available, and any evidence notice. When no notice blocks it, shows coverage gaps, scenarios, states and captures from the record. Only passed coverage receives a check mark; other standings receive a cross with recorded reasons. Shows observed behavior when rows exist, otherwise explicitly says no input and observed output were recorded at that commit. Each check with recorded diagnostics also offers an expandable browser-error display with observations, expectations and test-attempt context."
 			}
 		],
 		"errors": []
@@ -60,6 +60,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.browser-errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.model.explorer-types",
 			"via": "import",
 			"origin": "derived"
@@ -75,7 +80,7 @@
 			}
 		]
 	},
-	"scenarios": ["runtime-evidence-ui", "shared-test-cases"],
+	"scenarios": ["browser-error-evidence", "runtime-evidence-ui", "shared-test-cases"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

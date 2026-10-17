@@ -1,5 +1,5 @@
 import { desktopEvidence } from './desktop-evidence';
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect, type Page } from '../../../../test/support/browserTest';
 import { fixture } from './ui-design-fixture';
 import type { DesktopBridge, RunEvent } from '../../src/models/DesktopBridge.types';
 

@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../../../test/support/browserTest';
 import { agentSettingsFixture, openAgent } from './agent-settings-fixture';
 
 for (const width of [1440, 390]) {

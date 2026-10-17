@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { mkdir } from 'node:fs/promises';
 import { seededId } from './support/fixtures';
 import { reportView } from './support/portableReport';

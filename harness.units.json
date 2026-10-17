@@ -272,6 +272,18 @@
 			"specifier": "$shared/Select.svelte",
 			"to": "packages/reports/src/components/Select.svelte",
 			"reason": "The desktop Settings page reuses the shared Select through the configured $shared alias."
+		},
+		{
+			"from": "packages/desktop/src/components/CoveragePanel.svelte",
+			"specifier": "../../../reports/src/components/BrowserErrors.svelte",
+			"to": "packages/reports/src/components/BrowserErrors.svelte",
+			"reason": "Component evidence and console tests render the same recorded browser diagnostics."
+		},
+		{
+			"from": "packages/desktop/src/utils/hostedEvidenceRecord.ts",
+			"specifier": "../../../../src/core/browserDiagnostics",
+			"to": "src/core/browserDiagnostics.ts",
+			"reason": "Hosted evidence validates the same recorded browser diagnostic contract as the verification runner."
 		}
 	]
 }

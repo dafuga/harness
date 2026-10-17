@@ -37,6 +37,32 @@ test('the answer of the hub to exactly what was asked is accepted as it is', () 
 	expect(validator.evidence(legacy, asked)).toBe(legacy);
 });
 
+test('hosted records retain current and inherited browser diagnostics and reject malformed logs', () => {
+	const answer = hubAnswer();
+	const record = answer.evidence.after.record!;
+	const browserErrors = [
+		{
+			test: 'Home error state',
+			file: 'home.spec.ts',
+			project: 'chromium',
+			retry: 0,
+			errors: [
+				{ type: 'console' as const, message: 'Home unavailable', page: 'https://fixture.test' }
+			],
+			expected: [
+				{ type: 'console' as const, message: 'Home unavailable', reason: 'Tests recovery.' }
+			]
+		}
+	];
+	record.tests[0].browserErrors = browserErrors;
+	record.scenarios[0].originTests = [{ id: 'home-page:run', status: 'passed', browserErrors }];
+	const accepted = validator.evidence(answer, asked).evidence.after.record!;
+	expect(accepted.tests[0].browserErrors).toEqual(browserErrors);
+	expect(accepted.scenarios[0].originTests?.[0].browserErrors).toEqual(browserErrors);
+	browserErrors[0].expected[0].reason = '';
+	expect(() => validator.evidence(answer, asked)).toThrow(unaccepted);
+});
+
 test('an answer of another read than the one that was asked is refused', () => {
 	const other: Array<[string, unknown]> = [
 		['scope.commit', earlier],

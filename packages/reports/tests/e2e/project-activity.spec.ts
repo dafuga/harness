@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../../../test/support/browserTest';
 import { activityAnswer } from './support/activityAnswer';
 import { activityFixture, type ActivityFixture } from './support/activityFixture';
 import { fixtures } from './support/fixtures';

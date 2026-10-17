@@ -199,3 +199,25 @@ export function sealedHistory(example?: Example): SealedHistory {
 function withoutCard(item: HarnessRecord): HarnessRecord {
 	return { ...item, scenarios: item.scenarios.filter((found) => found.id !== cardScenario) };
 }
+
+/** Only this fixture adds entities and diagnostics to its synthetic recorded observations. */
+export function observedHistory(
+	observedUnits: string[],
+	browserErrors?: unknown[],
+	example?: Example
+) {
+	const history = sealedHistory(example);
+	for (const revision of Object.values(history.revisions)) {
+		revision.registry = {
+			...revision.registry,
+			scenarios: revision.registry.scenarios.map((scenario) =>
+				scenario.id === 'order-filter'
+					? { ...scenario, units: [...new Set([...scenario.units, ...observedUnits])] }
+					: scenario
+			)
+		};
+	}
+	if (browserErrors)
+		Object.assign(history.revisions[commits.tip].records[0].tests[0], { browserErrors });
+	return history;
+}

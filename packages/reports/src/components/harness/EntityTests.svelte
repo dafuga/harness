@@ -10,6 +10,7 @@
 	import { entityRemoved } from '../../utils/entityRemoved';
 	import { galleryItems } from '../../utils/entityScreens';
 	import EvidenceGrid from '../EvidenceGrid.svelte';
+	import BrowserErrors from '../BrowserErrors.svelte';
 	import EntityBehavior from './EntityBehavior.svelte';
 	import HarnessVerdict from './HarnessVerdict.svelte';
 	let {
@@ -169,6 +170,9 @@
 					</li>
 				{/each}
 			</ul>
+			{#each scenario.tests as check, position (position)}<BrowserErrors
+					diagnostics={check.browserErrors}
+				/>{/each}
 		</section>
 	{/each}
 	{#if gone.length}

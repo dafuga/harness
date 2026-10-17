@@ -9,7 +9,7 @@ import { commits, ids, units } from '../../../reports/test/entityUnits';
 import type { EntityEvidenceResult } from '../../src/models/DesktopEvidence.types';
 import type { Thumbnail } from '../../src/models/Desktop.types';
 import { nativeImageFixture } from './native-image-fixture';
-import { sealedHistory, type Example } from './ui-evidence-history';
+import { observedHistory, type Example } from './ui-evidence-history';
 
 export { commits, ids };
 export { cardScenario, soundScenario, tones } from './ui-evidence-history';
@@ -153,24 +153,13 @@ function bound(result: EntityEvidenceResult, mode: Mode, unit: string) {
 	);
 }
 
-/** Only the test fixture assigns extra entities to these recorded observations. */
-function observe(history: ReturnType<typeof sealedHistory>, observedUnits: string[]) {
-	// Only this synthetic fixture opts extra entities into the recorded search observations.
-	for (const revision of Object.values(history.revisions)) {
-		revision.registry = {
-			...revision.registry,
-			scenarios: revision.registry.scenarios.map((scenario) =>
-				scenario.id === 'order-filter'
-					? { ...scenario, units: [...new Set([...scenario.units, ...observedUnits])] }
-					: scenario
-			)
-		};
-	}
-}
-
-export function evidenceData(shared = false, observedUnits: string[] = [], example?: Example) {
-	const history = sealedHistory(example);
-	observe(history, observedUnits);
+export function evidenceData(
+	shared = false,
+	observedUnits: string[] = [],
+	example?: Example,
+	browserErrors?: unknown[]
+) {
+	const history = observedHistory(observedUnits, browserErrors, example);
 	const design = Array.from(nativeImageFixture());
 	const results: Record<string, EntityEvidenceResult> = {};
 	const bindings: Record<string, string> = {};

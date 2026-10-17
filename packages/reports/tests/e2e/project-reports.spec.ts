@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../../../../test/support/browserTest';
 import { mkdir } from 'node:fs/promises';
 import { seededId } from './support/fixtures';
 import { expectRetired, reportView } from './support/portableReport';

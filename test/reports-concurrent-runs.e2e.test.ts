@@ -40,11 +40,17 @@ const media = (home: string) =>
 		(entry) => entry.isFile() && /^[0-9a-f]{64}\.(png|wav)$/.test(entry.name)
 	).length;
 /** Waits until exactly this many runs have seeded a history somewhere below the scratch. */
-const histories = (count: number, wanted: string): Promise<SeededHistory[]> =>
-	eventually(() => {
-		const found = seededHistories(scratch);
-		return found.length === count ? found : undefined;
-	}, wanted);
+const histories = async (count: number, wanted: string): Promise<SeededHistory[]> => {
+	try {
+		return await eventually(() => {
+			const found = seededHistories(scratch);
+			return found.length === count ? found : undefined;
+		}, wanted);
+	} catch (error) {
+		const output = runs.map((run) => run.output().slice(-6000)).join('\n');
+		throw new Error(`${String(error)}\nBrowser run diagnostics:\n${output}`, { cause: error });
+	}
+};
 
 beforeAll(async () => {
 	scratch = await mkdtemp(join(tmpdir(), 'harness-concurrent-runs-'));

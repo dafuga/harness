@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { at, branch, checkpoint, commit, expectPath, explorer, tip } from './support/explorer';

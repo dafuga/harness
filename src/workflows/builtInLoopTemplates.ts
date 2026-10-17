@@ -46,7 +46,11 @@ export const builtInTemplates: LoopTemplate[] = [
 		summary: 'Ship a UI change with automated checks and screenshot evidence.',
 		extends: 'feature',
 		steps: [
-			{ id: 'browser-proof', title: 'Exercise the affected UI path and capture fresh evidence.' }
+			{
+				id: 'browser-proof',
+				title:
+					'Exercise the affected UI path, require no unexpected browser errors, and capture fresh evidence with error diagnostics.'
+			}
 		],
 		evaluators: [
 			{
@@ -79,7 +83,7 @@ export const builtInTemplates: LoopTemplate[] = [
 			{
 				id: 'verify',
 				title:
-					'Run relevant project checks and affected UI browser flows with fresh inspected screenshots; keep pending until proof passes.'
+					'Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.'
 			}
 		],
 		evaluators: [
@@ -128,7 +132,7 @@ export const builtInTemplates: LoopTemplate[] = [
 			{
 				id: 'verify',
 				title:
-					'Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and keep pending while proof fails.'
+					'Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.'
 			}
 		],
 		evaluators: [

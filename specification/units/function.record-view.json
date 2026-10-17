@@ -16,24 +16,29 @@
 			{
 				"name": "recordView.record",
 				"type": "VerificationRecord",
-				"description": "Stored verification record to project without changing its results."
+				"description": "Stored verification record to project without changing its results. Optional browser diagnostics on its tests are retained."
 			},
 			{
 				"name": "recordView.context",
-				"type": "{ valid: boolean; problems: string[]; resolve: MediaResolver; /** The checks an earlier record ran, by its id; undefined when it cannot be read. */ origins?: (record: string) => Array<{ id: string; status: string }> | undefined; }",
-				"description": "Validity and problems supplied by the caller, a media resolver, and optional lookup for origin-record test summaries."
+				"type": "{ valid: boolean; problems: string[]; resolve: MediaResolver; /** The checks an earlier record ran, by its id; undefined when it cannot be read. */ origins?: (record: string) => DiagnosticTest[] | undefined; }",
+				"description": "Validity and problems supplied by the caller, a media resolver, and optional lookup for origin-record test summaries and browser diagnostics."
 			}
 		],
 		"outputs": [
 			{
 				"name": "recordView",
 				"type": "RecordView",
-				"description": "Record view retaining source, timings, gates, measurements, budgets and reason status, with concise tests and captures augmented by resolved media/gaps. Inherited scenarios name their actual origin and scoped origin tests when available."
+				"description": "Record view retaining source, timings, gates, measurements, budgets and reason status, with concise tests and captures augmented by resolved media/gaps. Inherited scenarios name their actual origin and scoped origin tests when available. Current test summaries and available scenario-scoped origin tests retain their optional browser diagnostics, without substituting current-run diagnostics for inherited evidence."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.browser-diagnostics",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.verification-types",
 			"via": "import",
@@ -50,7 +55,7 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-recorded-evidence", "hub-recorded-evidence"],
+	"scenarios": ["browser-error-evidence", "desktop-recorded-evidence", "hub-recorded-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

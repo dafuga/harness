@@ -1,4 +1,5 @@
 import type { CaptureStanding } from '../utils/captureProvenance';
+import type { BrowserDiagnostic } from '../../../../src/core/browserDiagnostics';
 import type {
 	HarnessCapture,
 	HarnessRecord,
@@ -45,7 +46,7 @@ export interface ExplorerScenarioCoverage {
 	/** What is wrong with the scenario itself: no result, a failure, its lineage, its tests. */
 	reasons: string[];
 	/** Each declared test with its status in this record; null when the record does not hold it. */
-	tests: Array<{ id: string; status: string | null }>;
+	tests: Array<{ id: string; status: string | null; browserErrors?: BrowserDiagnostic[] }>;
 	/** The commit whose record produced the result, when it was inherited. */
 	inheritedFrom: string | null;
 	states: ExplorerStateCoverage[];

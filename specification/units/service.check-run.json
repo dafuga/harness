@@ -52,6 +52,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.read-browser-diagnostics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.run-isolated",
 			"via": "import",
 			"origin": "derived"
@@ -77,7 +82,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["browser-error-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

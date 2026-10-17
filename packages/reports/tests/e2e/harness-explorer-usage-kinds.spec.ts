@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { at, checkpoint, expectNoOverflow, explorer } from './support/explorer';
 import { viewports } from './support/harnessCapture';
 import { seeded } from './support/harnessHistory';

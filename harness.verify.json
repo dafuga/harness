@@ -250,6 +250,11 @@
 		{
 			"path": "packages/reports/test/entity-preview-shells.spec.ts",
 			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
+		},
+		{
+			"path": "packages/reports/tests/e2e/explorer-shell-browser-errors.spec.ts",
+			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-browser-errors.spec.ts",
+			"timeoutMs": 180000
 		}
 	],
 	"tools": [

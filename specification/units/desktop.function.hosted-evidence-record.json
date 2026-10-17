@@ -17,7 +17,7 @@
 			{
 				"name": "hostedEvidenceRecord",
 				"type": "unknown",
-				"description": "A strict validation schema for record identity, passed/failed status, validity and problems; source commit and optional base; profile and timestamps; optional gate statuses; failures; tests; scenarios and captures; measurements; and budget findings. Test and scenario status values are constrained, numeric values must be finite, and shared list and text limits apply. The schema does not establish that a record is truthful."
+				"description": "A strict validation schema for record identity, passed/failed status, validity and problems; source commit and optional base; profile and timestamps; optional gate statuses; failures; tests; scenarios and captures; measurements; and budget findings. Test and scenario status values are constrained, numeric values must be finite, and shared list and text limits apply to the surrounding record fields. The schema does not establish that a record is truthful. Tests and inherited origin-test summaries may include optional browserErrors arrays validated by the shared browser-diagnostic schema."
 			}
 		],
 		"errors": []
@@ -25,6 +25,11 @@
 	"dependencies": [
 		{
 			"unit": "desktop.function.hosted-evidence-fields",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.browser-diagnostics",
 			"via": "import",
 			"origin": "derived"
 		}
@@ -39,7 +44,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["browser-error-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

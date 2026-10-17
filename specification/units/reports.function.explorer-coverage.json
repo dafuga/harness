@@ -36,7 +36,7 @@
 			{
 				"name": "explorerCoverage.record",
 				"type": "HarnessRecord | null",
-				"description": "Selected record, or null for absent evidence."
+				"description": "Selected record, or null for absent evidence. Current tests and inherited origin-test summaries may include browser diagnostics."
 			},
 			{
 				"name": "explorerCoverage.unit",
@@ -58,7 +58,7 @@
 			{
 				"name": "explorerCoverage",
 				"type": "unknown",
-				"description": "Returns a scenario-evaluation function. It narrows states to the unit, checks declarations, test outcomes, result lineage and required captures, then returns tests, state details, inheritance and worst standing. Inherited results require a bound origin and recorded proof that the unit was unaffected; missing origin test evidence stays incomplete."
+				"description": "Returns a scenario-evaluation function. It narrows states to the unit, checks declarations, test outcomes, result lineage and required captures, then returns tests, state details, inheritance and worst standing. Inherited results require a bound origin and recorded proof that the unit was unaffected; missing origin test evidence stays incomplete. Each listed check retains optional diagnostics from the record where it ran: the current record for fresh results and the origin-test summary for inherited results. Diagnostics are carried for display; this helper judges check outcomes from their recorded status."
 			}
 		],
 		"errors": []
@@ -90,7 +90,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["browser-error-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

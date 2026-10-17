@@ -62,12 +62,17 @@
 			{
 				"name": "verificationRecordSchema",
 				"type": "unknown",
-				"description": "Strict version 1 complete record schema joining source/base, profile/tools, times/outcome, components, measurements, impact, tests, scenarios/builds, budgets, reasons, gates and failures."
+				"description": "Strict version 1 complete record schema joining source/base, profile/tools, times/outcome, components, measurements, impact, tests, scenarios/builds, budgets, reasons, gates and failures. Each test may also include browser diagnostics with observed console errors or uncaught exceptions and declared expectations; omission remains valid for older records."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.browser-diagnostics",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.comparison-types",
 			"via": "import",

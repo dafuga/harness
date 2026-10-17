@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../../../test/support/browserTest';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -53,7 +53,16 @@ test('ready images can be captured while the app continues polling in the backgr
 	await expect.poll(() => page.evaluate(() => Reflect.get(window, 'polls'))).toBeGreaterThan(0);
 });
 
-test('an image that failed to load is rejected as capture evidence', async ({ page }) => {
+test('an image that failed to load is rejected as capture evidence', async ({
+	page,
+	browserErrors
+}) => {
+	browserErrors.expectError({
+		type: 'console',
+		message: 'Failed to load resource: the server responded with a status of 404 (Not Found)',
+		source: 'http://harness-readiness.test/missing.png',
+		reason: 'The capture must refuse this intentionally missing image.'
+	});
 	await page.route('http://harness-readiness.test/**', (route) =>
 		route.fulfill({
 			status: route.request().url().endsWith('.png') ? 404 : 200,

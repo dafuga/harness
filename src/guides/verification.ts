@@ -19,6 +19,7 @@ const scenarioGuide: Guide = {
 			'the evidence declares a full-page capture. Audio is WAV, must be playable, and ' +
 			'carries a transcript and its fixture or actual-capture provenance.',
 		'A capture of running software carries a build stamp naming the verified commit.',
+		'The shared browser fixture keeps error diagnostics with each recorded check, including expected errors and missing expected errors. Component Evidence and Tests show these with their test, retry and original revision.',
 		'Declare compiled output in harness.verify.json builds and name it in the evidence: the ' +
 			'stamp must then carry the identity of exactly the files setup compiled in the snapshot. ' +
 			'An old bundle relabelled with the current revision is rejected.',

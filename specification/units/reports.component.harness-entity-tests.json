@@ -26,7 +26,7 @@
 			{
 				"name": "EntityTests.evidence",
 				"type": "ExplorerEvidence",
-				"description": "Required coverage, scenarios, records and media. After-side coverage judges the displayed revision; removed declarations are listed separately."
+				"description": "Required coverage, scenarios, records and media. After-side coverage judges the displayed revision; removed declarations are listed separately. Coverage tests may carry diagnostics from their own run or the origin of an inherited result."
 			},
 			{
 				"name": "EntityTests.behavior",
@@ -53,12 +53,17 @@
 			{
 				"name": "EntityTests",
 				"type": "markup",
-				"description": "Verdict and reasons, scenario/state coverage and underlying check outcomes/durations, removed declarations, behavior and media. Missing records/scenarios remain explicit. Inapplicable states are labeled, and repeated slot reasons are suppressed when the state already says them."
+				"description": "Verdict and reasons, scenario/state coverage and underlying check outcomes/durations, removed declarations, behavior and media. Missing records/scenarios remain explicit. Inapplicable states are labeled, and repeated slot reasons are suppressed when the state already says them. Each check with recorded browser diagnostics shows expandable expected, unexpected and missing-expected errors with test-attempt context."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.browser-errors",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.evidence-grid",
 			"via": "import",
@@ -105,7 +110,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["browser-error-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

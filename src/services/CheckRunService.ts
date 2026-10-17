@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { join, relative } from 'node:path';
 import type { VerificationRecord } from '../core/verificationTypes';
 import { gatherCaptures, type Gathered } from '../utils/gatherCaptures';
+import { readBrowserDiagnostics } from '../utils/readBrowserDiagnostics';
 import { runIsolated, type IsolatedResult } from '../utils/runIsolated';
 import type { PlannedCheck } from '../utils/verifyPlan';
 
@@ -50,10 +51,15 @@ export class CheckRunService {
 			: gatherCaptures(join(directory, evidencePath), evidencePath);
 		const prefix = check.scenario ? `${check.scenario}: ` : '';
 		const written = captures.failures.map((failure) => `${prefix}check ${check.name} ${failure}`);
+		const diagnostics = result.timedOut
+			? {}
+			: readBrowserDiagnostics(join(directory, evidencePath));
+		const passed = result.status === 'passed' && !diagnostics.failure;
+		if (diagnostics.failure) written.push(`${prefix}check ${check.name}: ${diagnostics.failure}`);
 		return {
 			check,
-			passed: result.status === 'passed',
-			entry: this.entry(check, result),
+			passed,
+			entry: this.entry(check, result, diagnostics),
 			gathered: captures.gathered,
 			failures: [...outcomeFailures(check, result).map((failure) => prefix + failure), ...written]
 		};
@@ -79,13 +85,18 @@ export class CheckRunService {
 			?.trim();
 	}
 
-	private entry(check: PlannedCheck, result: IsolatedResult): CheckOutcome['entry'] {
+	private entry(
+		check: PlannedCheck,
+		result: IsolatedResult,
+		diagnostics: ReturnType<typeof readBrowserDiagnostics>
+	): CheckOutcome['entry'] {
 		return {
 			id: check.id,
 			kind: check.kind,
 			runner: check.runner,
 			target: check.target,
-			status: result.status === 'passed' ? 'passed' : 'failed',
+			status: result.status === 'passed' && !diagnostics.failure ? 'passed' : 'failed',
+			...(diagnostics.browserErrors ? { browserErrors: diagnostics.browserErrors } : {}),
 			durationMs: Math.round(result.durationMs),
 			log: { ...result.log, path: relative(this.context.directory, result.log.path) }
 		};

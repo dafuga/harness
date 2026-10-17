@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../../test/support/browserTest';
 import { capture, open, viewports, where } from './entityPreviewPage';
 import { ids } from './entityUnits';
 

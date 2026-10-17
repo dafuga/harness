@@ -1,4 +1,4 @@
-import { expect, test, type Locator } from '@playwright/test';
+import { expect, test, type Locator } from '../../../test/support/browserTest';
 import { capture, fits, open, viewports } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 

@@ -1,4 +1,4 @@
-import { expect, test, type Locator } from '@playwright/test';
+import { expect, test, type Locator } from '../../../../test/support/browserTest';
 import { fits, pictured, screens, sharedField } from './support/sharedSelect';
 import { box, channels, combo, reachable, styled } from './support/shellChecks';
 import {
