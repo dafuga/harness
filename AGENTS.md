@@ -45,6 +45,10 @@ This is a Harness CLI project. Treat Harness as the operating contract for every
 
 ## Code Rules
 
+- Keep Harness, its coding agents and active checks below the combined 10 GB RAM target. Measure attributed process memory; report shared or unmeasurable usage separately.
+- Run one broad check, build or history prebuild at a time. Use focused standardized tests while editing and reuse running servers.
+- Vitest defaults to one worker across workspaces. Increasing concurrency requires measuring the combined peak first. Stop only verified task-owned leftover processes; preserve other sessions and servers.
+
 - Files should stay focused and under 220 lines unless a local audit baseline explicitly tracks existing debt.
 - Functions should stay under 55 lines.
 - Classes should stay under 120 lines.
