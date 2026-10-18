@@ -111,7 +111,7 @@ export async function componentScreens(page: Page, info: TestInfo, phase: string
 	const sources = await panel
 		.getByRole('img')
 		.evaluateAll((images) => images.map((image) => image.getAttribute('src')));
-	for (const name of ['Overview', 'Designs', 'Used In', 'Uses', 'Evidence', 'History', 'Details']) {
+	for (const name of ['Overview', 'Designs', 'Used In', 'Uses', 'States', 'History', 'Details']) {
 		if (name === 'Details')
 			await page.getByRole('button', { name: 'Details →', exact: true }).click();
 		else await tabs.getByRole('button', { name, exact: true }).click();

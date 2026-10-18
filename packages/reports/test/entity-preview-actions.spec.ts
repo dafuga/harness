@@ -1,5 +1,13 @@
 import { expect, test } from '../../../test/support/browserTest';
-import { capture, fits, open, viewports, where, reviewVisual } from './entityPreviewPage';
+import {
+	capture,
+	fits,
+	open,
+	viewports,
+	where,
+	reviewVisual,
+	reviewStates
+} from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 
 const page = { category: 'pages' as const, entity: ids.page };
@@ -8,6 +16,7 @@ for (const [name, size] of Object.entries(viewports)) {
 		await tab.setViewportSize(size);
 		for (const route of [page, { category: 'components' as const, entity: ids.list }]) {
 			for (const commit of [null, commits.middle]) {
+				if (route.category === 'components') await reviewStates(tab, route, commit, name);
 				await reviewVisual(tab, route, commit, name);
 			}
 		}

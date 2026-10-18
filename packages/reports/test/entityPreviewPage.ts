@@ -76,6 +76,18 @@ export async function capture(page: Page, name: string): Promise<void> {
 	await page.screenshot({ path: join(directory, `${name}.png`), fullPage: true });
 }
 
+/** Wait for the visible capture to render without forcing offscreen lazy images to load. */
+async function ready(page: Page): Promise<void> {
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		const visible = [...document.images].filter((image) => {
+			const box = image.getBoundingClientRect();
+			return box.width > 0 && box.height > 0 && box.top < innerHeight && box.bottom > 0;
+		});
+		await Promise.all(visible.map((image) => image.decode()));
+	});
+}
+
 /** Visual evidence leads its overview; a component retains it above every row of tabs. */
 export async function reviewVisual(
 	page: Page,
@@ -85,10 +97,7 @@ export async function reviewVisual(
 ): Promise<void> {
 	const mode = commit ? 'commit' : 'tip';
 	await open(page, { ...route, commit });
-	await page.evaluate(async () => {
-		await document.fonts.ready;
-		await Promise.all([...document.images].map((image) => image.decode()));
-	});
+	await ready(page);
 	await capture(page, `overview-${route.category}-${mode}-${viewport}`);
 	const title = commit ? 'Commit comparison' : 'Current screenshot';
 	const evidence = page.getByRole('heading', { name: title, exact: true });
@@ -100,12 +109,9 @@ export async function reviewVisual(
 		if (details) await page.getByRole('link', { name: 'Details', exact: true }).click();
 		for (const name of details
 			? ['Contract', 'Measurements', 'Source', 'History']
-			: ['Overview', 'Contract', 'Used In', 'Uses', 'Tests', 'History']) {
+			: ['Overview', 'Contract', 'Used In', 'Uses', 'States', 'History']) {
 			await page.getByRole('tab', { name, exact: true }).click();
-			await page.evaluate(async () => {
-				await document.fonts.ready;
-				await Promise.all([...document.images].map((image) => image.decode()));
-			});
+			await ready(page);
 			await capture(page, `header-${details ? 'details' : 'base'}-${name}-${mode}-${viewport}`);
 			await expect(evidence, 'component screenshot persists across tabs').toHaveCount(1);
 			const tabs = await page.getByRole('tablist').boundingBox();
@@ -125,4 +131,43 @@ export async function reviewVisual(
 			expect(await fits(page)).toBe(true);
 		}
 	}
+}
+
+/** Every supported visual state has its own revision-bound picture, including errors. */
+export async function reviewStates(
+	page: Page,
+	route: Pick<ExplorerLocation, 'category' | 'entity'>,
+	commit: string | null,
+	viewport: string
+): Promise<void> {
+	await open(page, { ...route, commit }, 'states');
+	await ready(page);
+	await capture(page, `states-entry-${commit ? 'commit' : 'tip'}-${viewport}`);
+	const states = page.getByRole('tab', { name: 'States', exact: true });
+	await expect(states, 'visual entities expose a States tab').toHaveCount(1);
+	await expect(page.getByRole('tab', { name: 'Tests', exact: true })).toHaveCount(0);
+	await states.click();
+	const panel = page.getByRole('tabpanel', { name: 'Order list states', exact: true });
+	await expect(panel).toBeVisible();
+	expect(await where(page)).toMatchObject({ ...route, commit, tab: 'states' });
+	for (const state of ['Default', 'Empty', 'Error']) {
+		const card = panel.getByRole('article', { name: state, exact: true });
+		await expect(card).toBeVisible();
+		const images = card.getByRole('img');
+		await expect(images).toHaveCount(commit ? 2 : 1);
+		const revisions = commit ? ['aaaaaaa', 'bbbbbbb'] : ['ccccccc'];
+		expect(
+			await images.evaluateAll((all) => all.map((image) => image.getAttribute('src')))
+		).toEqual(revisions.map((at) => `/media/${at}-${state.toLowerCase()}-desktop.png`));
+		for (const image of await images.all()) {
+			await image.scrollIntoViewIfNeeded();
+			await image.evaluate((node: HTMLImageElement) => node.decode());
+		}
+	}
+	await capture(page, `states-gallery-${commit ? 'commit' : 'tip'}-${viewport}`);
+	await panel.getByRole('combobox', { name: 'Viewport', exact: true }).selectOption('mobile');
+	await expect(
+		panel.getByRole('article', { name: 'Error', exact: true }).getByRole('img').last()
+	).toHaveAttribute('src', `/media/${commit ? 'bbbbbbb' : 'ccccccc'}-error-mobile.png`);
+	expect(await fits(page)).toBe(true);
 }

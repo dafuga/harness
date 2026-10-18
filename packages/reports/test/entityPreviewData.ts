@@ -15,7 +15,34 @@ export type PreviewVariant =
 	| 'declared'
 	| 'shells'
 	| 'console'
-	| 'inherited';
+	| 'inherited'
+	| 'states';
+
+/** A visual error state in the same standardized synthetic history as its ordinary states. */
+export function stateRecord(commit: string): HarnessRecord {
+	const taken = previewRecord(commit);
+	taken.scenarios[0].states.push({
+		id: 'error',
+		coverage: 'required',
+		captures: ['desktop', 'mobile'].map((viewport) =>
+			capture(commit, { kind: 'screenshot', state: 'error', viewport })
+		)
+	});
+	return taken;
+}
+
+export function withStates(detail: HarnessRevision): HarnessRevision {
+	const scenarios = detail.registry.scenarios.map((scenario) =>
+		scenario.id === 'orders-page'
+			? { ...scenario, states: [...scenario.states, { id: 'error', coverage: 'required' }] }
+			: scenario
+	);
+	return {
+		...detail,
+		registry: { ...detail.registry, scenarios },
+		records: [stateRecord(detail.commit)]
+	};
+}
 
 /** Valid unchanged visual evidence: the target keeps the capture's tested origin and build. */
 export function withInherited(detail: HarnessRevision, origin: string): HarnessRevision {

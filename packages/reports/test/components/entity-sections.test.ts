@@ -26,7 +26,7 @@ test('what it uses and its tests replace the overview, and its evidence pane wit
 	expect(related).toContain('aria-label="Orders page uses"');
 	expect(words(related)).not.toContain('the evidence of its kind');
 	const tests = sections('tests');
-	expect(tests).toContain('aria-label="Orders page tests"');
+	expect(tests).toContain('aria-label="Orders page states"');
 	expect(words(tests)).toContain('Verification at bbbbbbb');
 	expect(words(tests)).not.toContain('the evidence of its kind');
 });

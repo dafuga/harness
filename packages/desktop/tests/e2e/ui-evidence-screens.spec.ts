@@ -44,7 +44,7 @@ test('a page at its branch tip shows one current screenshot beside its contract,
 	await evidenceFixture(page);
 	await page.goto(pageAt());
 	const tabs = page.getByRole('navigation', { name: 'Entity sections' });
-	const names = ['Overview', 'Designs', 'Used In', 'Uses', 'Evidence', 'History'];
+	const names = ['Overview', 'Designs', 'Used In', 'Uses', 'States', 'History'];
 	await expect(tabs.getByRole('button')).toHaveText(names);
 	await expect(tabs.getByRole('button', { name: 'Overview' })).toHaveAttribute(
 		'aria-current',
