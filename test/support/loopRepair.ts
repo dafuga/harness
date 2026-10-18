@@ -105,7 +105,7 @@ async function phaseProof(root: string, phase: string, frozen: string): Promise<
 			root,
 			false
 		);
-		expect(missing.exitCode).toBe(1);
+		expect(missing.exitCode, 'A regression step needs a committed failing test').toBe(1);
 		expect(missing.stderr).toContain('committed failing test');
 	}
 	const result = await runHarness(['loop', 'evaluate', 'repair', '--json'], root, false);
