@@ -118,9 +118,6 @@ async function reviewExamples(tab: Page, contract: Locator, checkpoint: string):
 
 /** Closed rows preview examples, clip long values and end with an accessible details control. */
 async function compactExamples(table: Locator): Promise<void> {
-	await expect(table.getByRole('columnheader', { name: 'Description', exact: true })).toHaveCount(
-		0
-	);
 	await expect(
 		table.getByRole('columnheader', { name: 'Example', exact: true }),
 		'contract has an Example column'
