@@ -33,7 +33,9 @@ export const performanceTolerance = 0.05;
 export const contractItemSchema = z.strictObject({
 	name: text,
 	type: text,
-	description: z.string().optional()
+	description: z.string().optional(),
+	/** Values a person declared as examples of the item; any JSON, kept exactly as written. */
+	examples: z.array(z.json()).optional()
 });
 
 export const unitDependencySchema = z.strictObject({

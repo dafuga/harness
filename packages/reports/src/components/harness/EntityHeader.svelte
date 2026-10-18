@@ -17,25 +17,33 @@
 	let details = $derived(nav.route.section === 'details');
 	const at = (place: Place = {}) =>
 		entityLens(nav.route, { category: entity.category, entity: entity.id, ...place });
-	// History is a screen of its own, reached from either row of tabs.
-	const places: Record<string, Place> = {
-		overview: {},
-		'used-in': { tab: 'used-in' },
-		uses: { tab: 'uses' },
-		tests: { tab: 'tests' },
-		contract: { section: 'details' },
-		measurements: { section: 'details', tab: 'measurements' },
-		source: { section: 'details', tab: 'source' },
-		history: { section: 'history' }
+	// History is a screen of its own, reached from either row of tabs. Contract is a tab of each
+	// row: the typed contract of the overview, and the first tab of Details, which its action opens.
+	const places: Record<'overview' | 'details', Record<string, Place>> = {
+		overview: {
+			overview: {},
+			contract: { tab: 'contract' },
+			'used-in': { tab: 'used-in' },
+			uses: { tab: 'uses' },
+			tests: { tab: 'tests' },
+			history: { section: 'history' }
+		},
+		details: {
+			contract: { section: 'details' },
+			measurements: { section: 'details', tab: 'measurements' },
+			source: { section: 'details', tab: 'source' },
+			history: { section: 'history' }
+		}
 	};
 	const rows = {
-		overview: ['Overview', 'Used In', 'Uses', 'Tests', 'History'],
+		overview: ['Overview', 'Contract', 'Used In', 'Uses', 'Tests', 'History'],
 		details: ['Contract', 'Measurements', 'Source', 'History']
 	};
+	let row = $derived(details ? places.details : places.overview);
 	let tabs = $derived(
 		rows[details ? 'details' : 'overview'].map((title) => {
 			const id = title.toLowerCase().replace(' ', '-');
-			return { id, label: title, href: nav.href(at(places[id])) };
+			return { id, label: title, href: nav.href(at(row[id])) };
 		})
 	);
 	// A tab the row does not have, as the former one of both lists, is shown on the first.
@@ -92,8 +100,8 @@
 			>
 		{:else}
 			<HarnessAction
-				href={nav.href(at(places.contract))}
-				onclick={() => nav.go(at(places.contract))}
+				href={nav.href(at(places.details.contract))}
+				onclick={() => nav.go(at(places.details.contract))}
 				icon="arrow-right">Details</HarnessAction
 			>
 		{/if}
@@ -102,6 +110,6 @@
 <HarnessTabs
 	label={`${entity.name} sections`}
 	view={active}
-	onview={(id) => nav.go(at(places[id]))}
+	onview={(id) => nav.go(at(row[id]))}
 	{tabs}
 />
