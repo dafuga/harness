@@ -34,7 +34,13 @@ export function stateRecord(commit: string): HarnessRecord {
 export function withStates(detail: HarnessRevision): HarnessRevision {
 	const scenarios = detail.registry.scenarios.map((scenario) =>
 		scenario.id === 'orders-page'
-			? { ...scenario, states: [...scenario.states, { id: 'error', coverage: 'required' }] }
+			? {
+					...scenario,
+					states: [...scenario.states, { id: 'error', coverage: 'required' }],
+					evidence: scenario.evidence?.map((item) =>
+						item.kind === 'screenshot' ? { ...item, states: [...item.states, 'error'] } : item
+					)
+				}
 			: scenario
 	);
 	return {
