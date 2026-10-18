@@ -4,7 +4,7 @@ import { record, revision } from '../entityFixture';
 import { commits, ids } from '../entityUnits';
 
 const route = { category: 'components' as const, entity: ids.list, tab: 'contract' as const };
-test('a dedicated contract lists typed fields in tables and keeps examples behind info buttons', () => {
+test('a dedicated contract lists types and example previews with full details behind info buttons', () => {
 	for (const mode of ['current', 'commit'] as const) {
 		const commit = mode === 'current' ? commits.tip : commits.middle;
 		const head = revision(commit, [record(commit)]);
@@ -31,14 +31,15 @@ test('a dedicated contract lists typed fields in tables and keeps examples behin
 					}
 		);
 		const body = content(mode, route, { head });
-		for (const text of ['boolean', 'number', 'Whether the list is active.'])
+		for (const text of ['boolean', 'number', 'false', '0', 'null'])
 			expect(words(body)).toContain(text);
 		expect(body).toContain('aria-label="Inputs"');
 		expect(body).toContain('aria-label="Outputs"');
 		expect(body).toMatch(/<table\b/);
 		expect(body).toContain('aria-haspopup="dialog"');
 		expect(body).toContain('View example for Enabled');
-		expect(body).not.toContain('Safe &lt;tag');
+		expect(body).toMatch(/Safe &lt;tag(?:&gt;|>)/);
+		expect(body).not.toContain('Whether the list is active.');
 		expect(body).not.toContain('<tag>');
 		expect(body).not.toMatch(/src\/|\.svelte\b/);
 	}

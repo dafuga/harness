@@ -104,7 +104,14 @@ export const declaredContract = {
 		{ name: 'limit', type: 'number', examples: [0] },
 		{ name: 'empty', type: 'unknown', examples: [null] },
 		{ name: 'query', type: 'string', examples: [''] },
-		{ name: 'settings', type: 'object', examples: [{ label: 'Safe <tag>' }, { label: 'Other' }] },
+		{
+			name: 'settings',
+			type: 'object',
+			examples: [
+				{ label: 'Safe <tag> ' + 'a long readable contract example '.repeat(40) },
+				{ label: 'Other' }
+			]
+		},
 		{ name: 'label', type: 'string' }
 	],
 	outputs: [

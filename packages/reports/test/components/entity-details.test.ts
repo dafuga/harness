@@ -97,15 +97,17 @@ test('a declared contract explains each item in its dedicated tab and details', 
 	);
 	head.registry = { ...head.registry, units };
 	const details = content('commit', page, { head });
-	expect(words(details)).toContain('The branch, as one path segment.');
-	expect(words(details)).toContain('The page with its verdict.');
-	expect(words(details)).toContain('A missing page is said.');
-	const overview = content(
+	const contract = content(
 		'commit',
 		{ category: 'pages', entity: ids.page, tab: 'contract' },
 		{ head }
 	);
-	expect(words(overview)).toContain('The branch, as one path segment.');
-	expect(words(overview)).toContain('The page with its verdict.');
-	expect(words(overview)).toContain('Not at revision notice A missing page is said.');
+	for (const body of [details, contract]) {
+		for (const type of ['string', 'markup', 'notice']) expect(words(body)).toContain(type);
+		expect(body).toContain('View example for Branch');
+		expect(words(body)).toContain('Example not recorded');
+		expect(words(body)).not.toContain('The branch, as one path segment.');
+		expect(words(body)).not.toContain('The page with its verdict.');
+		expect(words(body)).not.toContain('A missing page is said.');
+	}
 });
