@@ -4,9 +4,7 @@
 	"createdAt": "2026-10-18T22:22:19.847Z",
 	"updatedAt": "2026-10-18T22:31:59.048Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -48,7 +46,8 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Reports and affected browser checks pass. Native checks remain paused; full workspace lint still flags pre-existing iOS-test debt, so aggregate verification stays pending."
 		}
 	],
 	"evaluators": [

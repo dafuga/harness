@@ -21,7 +21,7 @@
 			{
 				"name": "EntityHeader.nav",
 				"type": "EntityNav",
-				"description": "Required current route and link/navigation functions. Section selects the overview/details tab row; unrecognized tabs fall back to the first, while history remains selected in its section."
+				"description": "The branch, commit and selected tab, with functions for links and navigation."
 			},
 			{
 				"name": "EntityHeader.shared",
@@ -31,14 +31,14 @@
 			{
 				"name": "EntityHeader.preview",
 				"type": "Snippet",
-				"description": "Optional persistent preview rendered between entity identity and the tabs, including Details and History."
+				"description": "Optional component screenshot shown above every tab."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityHeader",
 				"type": "markup",
-				"description": "Breadcrumbs, category icon, name/role/verdict and purpose or details summary. Pages show an openable app route or nonlinked pattern/Not recorded. Offers Details or Back to overview and the appropriate tab row. Navigation retains context through the route helper. An optional preview remains above every tab row."
+				"description": "Entity identity, verification and one tab bar. Pages also show their app route. Source is optional; navigation keeps the branch and commit. Component screenshots stay above every tab."
 			}
 		],
 		"errors": []

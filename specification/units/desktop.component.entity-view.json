@@ -23,7 +23,7 @@
 			{
 				"name": "EntityView",
 				"type": "markup",
-				"description": "Entity identity, verification, tabs and selected content with optional details and conversation. Components retain runtime screenshots above every tab and read evidence on direct section entry. Other entities read evidence on Overview, Evidence and History. Existing routing, annotation and teardown behavior is preserved."
+				"description": "Entity identity, verification and the selected tab, with optional Source and conversation. Components keep their runtime screenshot above every tab; existing evidence and annotation rules remain in force."
 			}
 		],
 		"errors": []

@@ -16,7 +16,7 @@
 			{
 				"name": "DetailsPanel.entity",
 				"type": "EntityDetail",
-				"description": "Entity supplying its kind, size and performance text, owned source paths and identifier. A source request is scoped to this identifier. An empty source list produces \u201cNo source files recorded.\u201d"
+				"description": "Entity supplying its kind, size and performance text, owned source paths and identifier. A source request is scoped to this identifier. An empty source list produces “No source files recorded.”"
 			},
 			{
 				"name": "DetailsPanel.workspace",
@@ -28,7 +28,7 @@
 			{
 				"name": "DetailsPanel",
 				"type": "markup",
-				"description": "Details with kind and measurement text, using \u201cNot measured\u201d when an unavailable measure has no text. An expandable Source section lists recorded files. Selecting one clears the previous text and error, requests that file at the displayed commit and shows its returned text; a failed request displays an alert."
+				"description": "Source files for the displayed entity and revision. Choosing a file clears old text and errors, requests its contents and shows the result. A failed read displays an alert."
 			}
 		],
 		"errors": []

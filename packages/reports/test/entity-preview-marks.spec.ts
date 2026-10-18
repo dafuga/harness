@@ -75,7 +75,9 @@ test('every collection, a header, the tests and a history show marks without sta
 	for (const [position, place] of places.entries()) {
 		await open(tab, place, 'partial');
 		const marks = await shown(tab, '.hx-verdict');
-		expect(marks.length, `marks at place ${position}`).toBeGreaterThan(0);
+		if (place.category === 'functions' && !('entity' in place))
+			expect(marks, 'compact function cards omit verification marks').toHaveLength(0);
+		else expect(marks.length, `marks at place ${position}`).toBeGreaterThan(0);
 		expect(marks.join(''), `words beside a mark at place ${position}`).toBe('');
 		expect(await fits(tab)).toBe(true);
 	}

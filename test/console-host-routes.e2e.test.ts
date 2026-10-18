@@ -169,6 +169,7 @@ test('the installed console shows recorded media and exports a record, for the a
 		.toBeGreaterThan(0);
 	// The export its tests link to opens as a complete report with the same provenance.
 	await page.goto(`${worker.url}${entity}?tab=tests`);
+	await page.getByText('Verification details', { exact: true }).click();
 	const link = page.getByRole('link', { name: 'Download this record' }).first();
 	const address = new URL((await link.getAttribute('href')) ?? '', worker.url);
 	expect(address.pathname).toBe(`/harness/export/${target.commit}`);

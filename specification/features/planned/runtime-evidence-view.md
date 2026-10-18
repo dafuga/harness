@@ -2,7 +2,7 @@
 
 ## Overview
 
-The shared viewer of the desktop app, the hosted page and the phone shows what verification recorded from running software beside what was planned. An entity opens on an Overview with its contract, size and performance, its relationships and its recorded runtime evidence. Designs keep a section of their own, with their image threads. A design is never shown as a runtime capture, and a runtime capture is never open to comment.
+The shared viewer of the desktop app, the hosted page and the phone shows what verification recorded from running software beside what was planned. Each entity has one tab bar. Overview shows size, performance and runtime evidence; Contract, Used In, Uses, States or Tests, History and optional Source have their own tabs. Designs keep a section of their own, with their image threads. A design is never shown as a runtime capture, and a runtime capture is never open to comment.
 
 Evidence is read through the two optional bridge reads `evidence` and `artifact`. The viewer takes no address or path from an answer: bytes are asked for by the binding the answer gave, hashed again in the page, and shown from an object URL that is revoked when it is no longer shown.
 
@@ -71,3 +71,11 @@ Agent host-file changes, tracked as metadata only:
 - Function cards contain only a name, a description capped at 80 Unicode characters and a 36px open icon. Longer descriptions end with an ellipsis; contracts stay on the entity page.
 - Clean-snapshot regression: failing tests at `dfee79a6`, passing fix at `fa315247`. Red `d57ca4ac` and green `f6f408b2` use identical frozen inputs and commands.
 - Reports formatting, types, lint, unit tests, builds and audit pass. Three browser cases prove desktop, tablet and phone layouts, revision navigation and access to the Contract tab. Native testing remains paused.
+
+## One Entity Page
+
+- Removed the extra Details action from the explorer and the shared workspace renderer. Source uses the existing entity tab bar; components keep their screenshot above it.
+- Legacy explorer Details links open Contract, measurements links open Overview, and source links open Source. The workspace renderer maps its former source-details route to Source. Branches, commits and project scope remain intact.
+- Regression: failing source `07a8e45e`, record `19dc4825`; passing product `d76eec05`, record `3c629665`. The unchanged browser case covers desktop, tablet and phone widths; all frozen inputs match. Later test maintenance aligns older navigation expectations with the new tabs and existing States disclosures.
+- Reports checks pass with 574 unit tests, builds and audit. Browser coverage passes 62 explorer, 31 shared-workspace and four installed-host cases; root route and shared-import checks pass 85 cases.
+- Workspace formatting, types and lint of changed files pass. Full workspace lint remains blocked by an existing nested ternary in `test/ios-simulator-build.test.ts:25`. Native Electron and iOS testing stay paused; the root aggregate includes those layers.
