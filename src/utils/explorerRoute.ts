@@ -61,7 +61,7 @@ export type ExplorerSection = (typeof explorerSections)[number];
  * `contract` of an overview is its typed contract; the contract of Details is that section's own.
  */
 export const explorerTabs = {
-	overview: ['overview', 'contract', 'used-in', 'uses', 'relationships', 'tests'],
+	overview: ['overview', 'contract', 'used-in', 'uses', 'relationships', 'tests', 'states'],
 	details: ['contract', 'measurements', 'source'],
 	history: []
 } as const satisfies Record<string, readonly string[]>;
@@ -129,7 +129,10 @@ function scope(parts: string[]): Scope | undefined {
 function tabOf(location: ExplorerLocation, search: string): ExplorerTab | undefined {
 	if (!location.entity) return undefined;
 	const [, ...others] = explorerTabs[location.section ?? 'overview'] as readonly ExplorerTab[];
-	const asked = new URLSearchParams(search).get('tab');
+	let asked = new URLSearchParams(search).get('tab');
+	const visual = ['pages', 'components', 'shells'].includes(location.category);
+	if (visual && asked === 'tests') asked = 'states';
+	if (!visual && asked === 'states') return undefined;
 	return others.find((known) => known === asked);
 }
 
