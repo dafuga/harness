@@ -25,7 +25,7 @@ import {
  */
 type Box = { x: number; y: number; width: number; height: number };
 const scoped = `${shellMount}/branch/feature%2Fshell%231`;
-const widths = [1440, 1379, 1300, 1251, 920, 768, 390];
+const widths = [1440, 1379, 1300, 1251, 1024, 920, 834, 768, 685, 390];
 const bar = (page: Page) => page.getByRole('banner');
 const field = (page: Page) =>
 	bar(page).getByRole('combobox', { name: 'Search entities', exact: true });
@@ -77,6 +77,18 @@ async function fits(page: Page, width: number, without: number[]): Promise<void>
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
 		width
 	);
+	if (width >= 600 && width <= 1024) {
+		expect(Math.abs(placed[0].y - placed[1].y), 'tablet revision fields share a row').toBeLessThan(
+			2
+		);
+		const revision = await box(bar(page).locator('.hx-revision'));
+		const searchRow = await box(bar(page).locator('.hx-search'));
+		expect(
+			searchRow.y + searchRow.height - revision.y,
+			'tablet revision and search controls use at most 120 pixels'
+		).toBeLessThanOrEqual(120);
+		for (const control of [...placed, search]) expect(control.height).toBeGreaterThanOrEqual(44);
+	}
 }
 async function remember(page: Page, info: TestInfo, name: string): Promise<void> {
 	if (process.env.TAKE_SCREENSHOT !== 'true') return;

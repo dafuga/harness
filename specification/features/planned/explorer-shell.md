@@ -65,6 +65,9 @@ to the formatted address, and a plain click or a choice in a field is handed to 
   mounts the console with its own screen depends on no generic renderer.
 - At 1440, 920 and 390 pixels the page is never wider than the screen, every control of the bar
   is at least 44 pixels high and wholly on the screen, and at 1440 the bar is one row.
+- At tablet widths from 600 to 1024 pixels, Branch and Commit share a row. Revision controls
+  and search together use at most 120 pixels vertically, retaining 44-pixel controls, visible
+  labels and revision status, keyboard navigation and search results without overlap.
 - The keyboard reaches the brand, the five categories, the branch and the commit in that order,
   shows where it is, and Enter on a category follows it.
 
