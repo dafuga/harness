@@ -92,12 +92,10 @@
 	border-radius: 3px 3px 0 0;
 	background: var(--hx-gold);
 }
-/* The search of the revision in view comes after the revision, in reading and focus order. */
 .hx-search {
 	display: flex;
 	align-items: center;
 }
-/* Wide enough for one row: nothing wraps, and a long name gives way instead. */
 @media (min-width: 1321px) {
 	.hx-nav {
 		flex-wrap: nowrap;
@@ -206,5 +204,15 @@
 	}
 	.hx-nav:has(.hx-search) .hx-revision label:first-of-type {
 		flex: 1 0 100%;
+	}
+}
+@media (min-width: 600px) and (max-width: 1024px) {
+	.hx-nav .hx-revision,
+	.hx-nav:has(.hx-search) .hx-revision {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+		align-items: end;
+		gap: 8px;
+		padding: 4px 0;
 	}
 }

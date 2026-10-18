@@ -188,3 +188,27 @@
 		display: none;
 	}
 }
+@media (min-width: 600px) and (max-width: 1024px) {
+	.hx-nav .hx-revision label {
+		width: auto;
+		gap: 2px;
+	}
+	.hx-nav .hx-revision label > span:first-child {
+		font-size: 0.75rem;
+	}
+	.hx-nav .hx-revision small {
+		grid-row: 1;
+		justify-self: end;
+		padding: 0;
+		font-size: 0.6875rem;
+	}
+	.hx-nav .hx-search {
+		padding: 0 0 3px;
+	}
+	.hx-nav .hx-search .entity-search {
+		max-width: none;
+	}
+	.hx-nav .hx-search [role='combobox'] {
+		min-height: 44px;
+	}
+}
