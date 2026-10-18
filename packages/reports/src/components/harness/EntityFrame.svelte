@@ -4,8 +4,11 @@
 	import { isShared } from '../../utils/entityCatalog';
 	import type { ExplorerScreenProps } from '../../models/ExplorerScreen.types';
 	import { entityLens, shortCommit, type EntityNav } from '../../utils/entityLens';
+	import { screenOptions } from '../../utils/entityScreens';
+	import { entityChanged } from '../../utils/entityShown';
 	import EntityHeader from './EntityHeader.svelte';
 	import EntityMissing from './EntityMissing.svelte';
+	import EntityScreens from './EntityScreens.svelte';
 	import ExplorerFrame from './ExplorerFrame.svelte';
 	let {
 		host,
@@ -20,8 +23,27 @@
 
 <ExplorerFrame {host}>
 	{#snippet children(nav)}
+		<!-- A component keeps the screenshots of its revision between its name and every row of tabs. -->
+		{#snippet screens()}
+			{#if entity?.category === 'components'}
+				{@const evidence = host.lens.evidence(entity.unit)}
+				<EntityScreens
+					options={screenOptions(evidence.scenarios)}
+					{evidence}
+					scope={host.scope}
+					mediaBase={host.mediaBase}
+					{nav}
+					reasons={entityChanged(host, entity.id)}
+				/>
+			{/if}
+		{/snippet}
 		{#if entity}
-			<EntityHeader {entity} {nav} shared={isShared(host.lens.relations(entity.id))} />
+			<EntityHeader
+				{entity}
+				{nav}
+				shared={isShared(host.lens.relations(entity.id))}
+				preview={screens}
+			/>
 			{@render screen(entity, nav)}
 		{:else}
 			<EntityMissing

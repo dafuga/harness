@@ -3,7 +3,7 @@
 	"id": "desktop.component.entity-view",
 	"kind": "component",
 	"title": "Entity view",
-	"responsibility": "Coordinates an entity’s overview, design or plan, its uses and consumers, evidence, history, details and conversation within the current workspace.",
+	"responsibility": "Coordinates an entity\u2019s overview, design or plan, its uses and consumers, evidence, history, details and conversation within the current workspace.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -23,7 +23,7 @@
 			{
 				"name": "EntityView",
 				"type": "markup",
-				"description": "Entity heading and verification reason, navigation tabs, the selected content panel and optional details and conversation panels. Functions have Plan instead of Designs. Loads recorded evidence for Overview or Evidence and resets it on destruction. Section choices update the current address. Conversation initially hides on screens at most 850 pixels wide. Annotation opens and refreshes an agent thread where permitted; otherwise it selects a target for the next comment without writing yet."
+				"description": "Entity identity, verification, tabs and selected content with optional details and conversation. Components retain runtime screenshots above every tab and read evidence on direct section entry. Other entities read evidence on Overview, Evidence and History. Existing routing, annotation and teardown behavior is preserved."
 			}
 		],
 		"errors": []
