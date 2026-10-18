@@ -7,13 +7,15 @@ import { indexFiles, retire, unitOf } from '../support/memoryTree';
 const slugify = 'export function slugify(input: string): string {\n\treturn input.trim();\n}\n';
 const other = 'export function slugifyTitle(input: string): string {\n\treturn input;\n}\n';
 
-test('an explicitly selected page preview survives source re-indexing', async () => {
-	const files = { 'src/components/Panel.svelte': '<p>Sales</p>' };
+test('declared preview and documentation survive source re-indexing', async () => {
+	const documentation = 'src/components/Panel.md';
+	const files = { 'src/components/Panel.svelte': '<p>Sales</p>', [documentation]: '# Sales' };
 	const first = unitOf(await indexFiles(files), 'component.panel');
 	const preview = { scenario: 'sales', state: 'loaded', viewport: 'desktop' };
-	const declared = componentManifestSchema.parse({ ...first, preview });
+	const declared = componentManifestSchema.parse({ ...first, preview, documentation });
 	const again = await indexFiles(files, [declared]);
 	expect(unitOf(again, first.id).preview).toEqual(preview);
+	expect(unitOf(again, first.id).documentation).toBe(documentation);
 	expect(again.result.updated).toEqual([]);
 });
 
