@@ -135,7 +135,7 @@
 		margin: 6px 0 0;
 		font-size: 1.05rem;
 	}
-	/* On a phone the table keeps its columns and scrolls in this frame; its actions stay pinned. */
+	/* Keep all columns visible on phones and leave room for the trailing touch target. */
 	.frame {
 		min-width: 0;
 		overflow-x: auto;
@@ -145,13 +145,13 @@
 	}
 	table {
 		width: 100%;
-		min-width: 32rem;
+		min-width: 0;
 		border-collapse: collapse;
 		table-layout: fixed;
 	}
 	th,
 	td {
-		padding: 8px 14px;
+		padding: 8px 6px;
 		text-align: start;
 		border-bottom: 1px solid var(--ex-line);
 		vertical-align: middle;
@@ -166,10 +166,10 @@
 		font-weight: 600;
 	}
 	thead th:nth-child(-n + 2) {
-		width: 25%;
+		width: 30%;
 	}
 	.type {
-		padding: 2px 8px;
+		padding: 2px 4px;
 		border: 1px solid color-mix(in srgb, var(--ex-gold) 45%, transparent);
 		border-radius: 6px;
 		color: var(--ex-gold);
@@ -184,8 +184,9 @@
 	.act {
 		position: sticky;
 		inset-inline-end: 0;
-		width: 32px;
+		width: 60px;
 		padding: 2px 8px;
+		text-align: end;
 		background: var(--ex-surface);
 	}
 	.info {
@@ -210,7 +211,6 @@
 		outline-offset: 1px;
 	}
 	@media (pointer: coarse) {
-		.act,
 		.info {
 			width: 44px;
 			height: 44px;
