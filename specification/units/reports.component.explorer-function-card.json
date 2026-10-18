@@ -1,0 +1,84 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.explorer-function-card",
+	"kind": "component",
+	"title": "Function card",
+	"responsibility": "Shows one function as a compact card with its contract, consumers, verification mark and links to its overview and recorded tests.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/ExplorerFunctionCard.svelte"],
+		"symbols": ["ExplorerFunctionCard"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ExplorerFunctionCard.row",
+				"type": "CatalogRow",
+				"description": "The function at the viewed revision: its name, purpose, contract, consumers and verification result."
+			},
+			{
+				"name": "ExplorerFunctionCard.nav",
+				"type": "EntityNav",
+				"description": "The selected branch and commit, with navigation that keeps both when opening the function or its tests."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ExplorerFunctionCard",
+				"type": "markup",
+				"description": "A readable function card with declared inputs and output, no design image, an icon to open it and a link to its recorded input-to-output tests."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-entity-link",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-verdict",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/ExplorerFunctionCard.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/ExplorerFunctionCard.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

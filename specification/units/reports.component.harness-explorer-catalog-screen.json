@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-explorer-catalog-screen",
 	"kind": "component",
 	"title": "ExplorerCatalogScreen",
-	"responsibility": "Lists visual components as screenshot cards and other unit kinds as searchable tables.",
+	"responsibility": "Lists components and functions in searchable card grids, and shells, configs and services in tables.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -48,7 +48,7 @@
 			{
 				"name": "ExplorerCatalogScreen.collection",
 				"type": "markup",
-				"description": "Visual component cards with recorded in-context screenshots, original capture commits, used-on and contained-component facts. Functions, configs, services and shells remain tables. Search, changed-only, ordering and links preserve the selected branch and commit."
+				"description": "Responsive grids show components with revision-bound screenshots and functions with readable input and output contracts. Search, changed-only, ordering, overview links and test links preserve the selected branch and commit. Shells, configs and services use tables."
 			}
 		],
 		"errors": [
@@ -60,6 +60,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.explorer-function-card",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.harness-explorer-frame",
 			"via": "import",
@@ -82,6 +87,11 @@
 		},
 		{
 			"unit": "reports.function.entity-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
 			"via": "import",
 			"origin": "derived"
 		},

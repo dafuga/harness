@@ -2,7 +2,7 @@
 	"name": "catalog-grids",
 	"goal": "Present components and functions as responsive card grids while preserving revision links, evidence and responsive filtering.",
 	"createdAt": "2026-10-18T16:54:42.028Z",
-	"updatedAt": "2026-10-18T16:56:45.394Z",
+	"updatedAt": "2026-10-18T17:07:22.073Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T17:01:46.989Z",
+			"evidence": "Committed test revision 7143d0d2 fails the new standardized grid cases in all three viewports. Record ef9f0b8c seals the command and 1256 test/config inputs."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T17:07:22.073Z",
+			"evidence": "Opus 5.5 implemented responsive component and function grids using shared navigation, contract and verdict components. Sixteen focused unit tests, fourteen browser checks and Svelte checks pass."
 		},
 		{
 			"id": "green",
