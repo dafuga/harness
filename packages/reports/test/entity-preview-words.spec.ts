@@ -24,7 +24,7 @@ test('a long word in a narrow column of a collection stays whole, and the table 
 	page: tab
 }) => {
 	await tab.setViewportSize(viewports.mobile);
-	await open(tab, { category: 'functions', commit: commits.middle });
+	await open(tab, { category: 'services', commit: commits.middle });
 	const cells = tab.locator('.ex-table tbody tr').first().locator('td');
 	for (const position of [0, 1]) {
 		await cells.nth(position).evaluate((cell, text) => (cell.textContent = text), long);

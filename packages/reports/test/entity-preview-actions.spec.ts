@@ -4,6 +4,33 @@ import { commits, ids } from './entityUnits';
 
 const page = { category: 'pages' as const, entity: ids.page };
 for (const [name, size] of Object.entries(viewports)) {
+	test(`component and function lists use a card grid at ${name} width`, async ({ page: tab }) => {
+		await tab.setViewportSize(size);
+		for (const category of ['components', 'functions'] as const) {
+			await open(tab, { category });
+			await tab.evaluate(async () => {
+				await document.fonts.ready;
+				await Promise.all([...document.images].map((image) => image.decode()));
+			});
+			await capture(tab, `grid-${category}-${name}`);
+			const cards = tab.getByRole('article');
+			await expect(cards, 'both catalogs use cards').toHaveCount(category === 'components' ? 3 : 1);
+			const card = (await cards.first().boundingBox())!;
+			const available = (await tab.locator('.ex-index').boundingBox())!;
+			if (name !== 'mobile') {
+				expect(card.width, 'cards leave room for neighbors').toBeLessThan(available.width * 0.6);
+			}
+			expect(await fits(tab)).toBe(true);
+			if (category === 'functions') {
+				await expect(cards.getByRole('img')).toHaveCount(0);
+				await expect(cards.first()).toContainText('Inputs');
+				await expect(cards.first()).toContainText('Output');
+				await cards.getByRole('link', { name: 'Open function', exact: true }).press('Enter');
+				expect(await where(tab)).toMatchObject({ category, entity: ids.filter, commit: null });
+			}
+		}
+	});
+
 	test(`component screenshot cards follow the shown revision at ${name} width`, async ({
 		page: tab
 	}) => {

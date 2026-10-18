@@ -1,0 +1,54 @@
+{
+	"name": "catalog-grids",
+	"goal": "Present components and functions as responsive card grids while preserving revision links, evidence and responsive filtering.",
+	"createdAt": "2026-10-18T16:54:42.028Z",
+	"updatedAt": "2026-10-18T16:56:45.394Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-18T16:56:43.897Z",
+			"evidence": "Components and functions need neighboring card grids on desktop/tablet and one column on mobile. Component cards retain screenshots; function cards summarize contracts and link to recorded tests."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-18T16:56:45.394Z",
+			"evidence": "Existing catalog checks enforced a function table and only counted component cards. Extend the standardized catalog, navigation and responsive cases to assert both grids, contract summaries and revision-safe links."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

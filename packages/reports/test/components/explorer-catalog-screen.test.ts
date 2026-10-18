@@ -5,7 +5,6 @@ import { content, drawn, count, screen, words } from '../entityRender';
 import { commits } from '../entityUnits';
 
 const kinds = {
-	functions: ['Functions', 'Filter orders'],
 	configs: ['Configs', 'Order settings'],
 	services: ['Services', 'Order store']
 } as const;

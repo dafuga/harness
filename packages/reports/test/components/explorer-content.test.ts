@@ -33,11 +33,10 @@ test('the pages collection is cards with the page own screenshot, a verdict and 
 	expect(words(body)).not.toMatch(banned);
 });
 
-test('nonvisual collections keep their columns; component cards expose no file names', () => {
+test('configs and services keep columns; component and function grids expose no file names', () => {
 	const headers = (body: string) =>
 		[...body.matchAll(/<th scope="col">(.*?)<\/th>/gs)].map((match) => words(match[1]).trim());
 	const expected = {
-		functions: ['Function', 'Responsibility', 'Used by', 'Verification', 'Open'],
 		configs: ['Config', 'Purpose', 'Used by', 'Changed', 'Verification', 'Open'],
 		services: ['Service', 'Responsibility', 'Execution target', 'Consumers', 'Verification', 'Open']
 	};
@@ -56,6 +55,11 @@ test('nonvisual collections keep their columns; component cards expose no file n
 	expect(words(components)).toContain('Orders page');
 	// A link from a selected commit stays at that commit.
 	expect(components).toContain(`/commit/${commits.middle}/components/${ids.list}`);
+	const functions = content('commit', { category: 'functions' });
+	expect(count(functions, /<article\b/g)).toBe(1);
+	expect(count(functions, /<img\b/g)).toBe(0);
+	expect(words(functions)).not.toMatch(source);
+	expect(words(functions)).not.toMatch(banned);
 });
 
 test('a collection offers search, changed only and an order, and says how many it lists', () => {

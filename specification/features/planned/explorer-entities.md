@@ -14,8 +14,10 @@ props name; the host decides the address and supplies the data.
 
 ## Acceptance Criteria
 
-- Pages comes first. Pages and visual Components use the same screenshot cards; Functions,
-  Configs, Services and Shells remain tables. No collection, column or
+- Pages comes first. Components and Functions use responsive card grids, with neighboring cards
+  on desktop and tablet and a single column on mobile. Pages and visual Components share
+  screenshot cards. Function cards show readable contract summaries and links to their recorded
+  input/output tests, with no design images. Configs, Services and Shells remain tables. No collection, column or
   heading is called Sub-components, Related or Reports.
 - Each component catalog card shows a usable screenshot declared to cover that component at
   the selected branch tip or commit. Prefer fresh captures; validated unchanged captures may
