@@ -2,11 +2,9 @@
 	"name": "compact-function-catalog",
 	"goal": "Function cards show only a name, a description of at most 80 characters and the small open icon; contracts stay on the entity page.",
 	"createdAt": "2026-10-18T22:13:34.710Z",
-	"updatedAt": "2026-10-18T22:16:27.962Z",
+	"updatedAt": "2026-10-18T22:18:23.449Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,12 +39,15 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T22:18:23.449Z",
+			"evidence": "Clean snapshots dfee79a6 and fa315247 run identical frozen tests: red d57ca4ac fails, green passes all three viewport cases with contracts still reachable."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Reports formatting, types, lint, all unit tests, builds and audit pass; three viewport browser cases pass. Native checks stay paused, so the root aggregate is not claimed."
 		}
 	],
 	"evaluators": [

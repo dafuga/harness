@@ -65,3 +65,9 @@ Agent host-file changes, tracked as metadata only:
 - Shared-workspace browser acceptance passes 11 cases. Electron and simulator testing remain paused. The full root aggregate includes native work, so the loop's aggregate verification step remains pending.
 - The shared preview fixture keeps one asset route per page across navigation; pending lazy images cannot fall through a route teardown. Browser error assertions remain enabled.
 - Runtime captures use the existing clean-snapshot runner, build identities, artifact hashing, Git notes and LFS evidence branch. A scoped capture explicitly marks other scenarios unverified and never claims whole-repository verification passed.
+
+## Compact Function Catalog
+
+- Function cards contain only a name, a description capped at 80 Unicode characters and a 36px open icon. Longer descriptions end with an ellipsis; contracts stay on the entity page.
+- Clean-snapshot regression: failing tests at `dfee79a6`, passing fix at `fa315247`. Red `d57ca4ac` and green `f6f408b2` use identical frozen inputs and commands.
+- Reports formatting, types, lint, unit tests, builds and audit pass. Three browser cases prove desktop, tablet and phone layouts, revision navigation and access to the Contract tab. Native testing remains paused.
