@@ -8,6 +8,7 @@ import { index } from '../../../reports/test/entityFixture';
 import { commits, ids, units } from '../../../reports/test/entityUnits';
 import type { EntityEvidenceResult } from '../../src/models/DesktopEvidence.types';
 import type { Thumbnail } from '../../src/models/Desktop.types';
+import type { UnitDocumentation } from '../../../../src/utils/unitDocumentation';
 import { nativeImageFixture } from './native-image-fixture';
 import { cardScenario, observedHistory, type Example } from './ui-evidence-history';
 
@@ -78,6 +79,7 @@ function entity(unit: HarnessUnit, image: number) {
 	};
 	const thumbnail = { version: 'v001', sha256: designSha, state: 'default', viewport: 'desktop' };
 	return {
+		documentation: undefined as UnitDocumentation | undefined,
 		id: unit.id,
 		category: categories[unit.kind],
 		kind: unit.kind,

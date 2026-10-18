@@ -1,4 +1,4 @@
-import { expect, test } from '../../../../test/support/browserTest';
+import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { branch, commits, evidenceFixture, ids, sharedProject } from './ui-evidence-fixture';
 import { remember } from './ui-test-cases-capture';
 
@@ -33,7 +33,7 @@ for (const shown of cases) {
 	test(`${shown.state} uses the common input and observed output table`, async ({ page }, info) => {
 		await evidenceFixture(page, { shared: true, observedUnits: extra });
 		const address = `${root}/${shown.category}/${shown.id}/evidence`;
-		await page.goto(address);
+		await openCoverage(page, address);
 		const region = page.getByRole('region', { name: 'Evidence coverage' });
 		await expect(
 			region.getByRole('heading', { name: /Search across synthetic orders/ }).first()
@@ -62,7 +62,7 @@ for (const viewport of [
 		await page.setViewportSize(viewport);
 		await evidenceFixture(page, { shared: true, observedUnits: extra, example });
 		const address = `${root}/components/${ids.list}/evidence`;
-		await page.goto(address);
+		await openCoverage(page, address);
 		const output = page.getByRole('group', { name: 'output of match' });
 		await expect(output.getByText('Price formatter', { exact: true }).first()).toBeVisible();
 		await remember(page, info, 'nested-values', { address, mode: 'current' });
@@ -94,7 +94,7 @@ for (const viewport of [
 		await page.setViewportSize(viewport);
 		await evidenceFixture(page, { shared: true });
 		const address = `${root}/functions/${ids.filter}`;
-		await page.goto(address);
+		await openCoverage(page, address);
 		const contract = page.getByRole('heading', { name: 'Contract', exact: true }).locator('..');
 		await expect(contract.getByRole('heading', { name: 'Accepts', exact: true })).toBeVisible();
 		await remember(page, info, 'readable-contracts', { address, mode: 'current' });
@@ -124,7 +124,7 @@ test('component-commit separates parent and selected-commit input and output', a
 }, info) => {
 	await evidenceFixture(page, { shared: true, observedUnits: extra });
 	const address = `${root}/commit/${commits.tip}/components/${ids.list}/evidence`;
-	await page.goto(address);
+	await openCoverage(page, address);
 	const region = page.getByRole('region', { name: 'Evidence coverage' });
 	await expect(
 		region.getByRole('heading', { name: /Search across synthetic orders/ }).first()
@@ -153,7 +153,7 @@ for (const viewport of [
 		await page.setViewportSize({ width: viewport.width, height: viewport.height });
 		await evidenceFixture(page, { shared: true, observedUnits: extra });
 		const address = `${root}/components/${ids.list}/evidence`;
-		await page.goto(address);
+		await openCoverage(page, address);
 		const region = page.getByRole('region', { name: 'Evidence coverage' });
 		await expect(
 			region.getByRole('heading', { name: /Search across synthetic orders/ }).first()
@@ -169,4 +169,13 @@ for (const viewport of [
 			true
 		);
 	});
+}
+
+/** Visual entities keep diagnostics inside the existing States disclosure. */
+async function openCoverage(page: Page, address: string): Promise<void> {
+	await page.goto(address);
+	const tabs = page.getByRole('navigation', { name: 'Entity sections' });
+	await tabs.waitFor();
+	if (await tabs.getByRole('button', { name: 'States', exact: true }).count())
+		await page.getByText('Verification details', { exact: true }).click();
 }

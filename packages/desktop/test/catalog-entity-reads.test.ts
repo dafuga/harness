@@ -1,6 +1,6 @@
 import { expect } from '../../../test/verificationExpect';
 import { test, vi } from 'vitest';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, writeFile, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { PNG } from 'pngjs';
 import { fixture, git } from './project-fixture';
@@ -77,4 +77,35 @@ test('an entity that is not held and a corrupt plan fail as they did, after one 
 	const corrupt = f.catalog.entity(f.plan.id, broken);
 	await expect(corrupt).rejects.toThrow(/^src\/functions\/broken\/plan\.json: /);
 	expect(reads.mock.calls).toEqual([[f.head], [broken]]);
+}, 20000);
+
+test('local entity documents follow committed Git history and ignore uncommitted edits', async () => {
+	const f = await fixture();
+	const file = join(f.root, 'specification/units/function.filter.json');
+	const manifest = JSON.parse(await readFile(file, 'utf8'));
+	const path = 'usage.md';
+	const doc = (name: string) =>
+		'# Usage\n```harness-examples\n' +
+		JSON.stringify({
+			schemaVersion: 1,
+			unitId: manifest.id,
+			examples: [{ name, input: false, output: 0 }]
+		}) +
+		'\n```';
+	await writeFile(file, JSON.stringify({ ...manifest, documentation: path }));
+	await writeFile(join(f.root, path), doc('First use'));
+	git(f.root, 'add', '.');
+	git(f.root, 'commit', '-m', 'committed usage');
+	const before = git(f.root, 'rev-parse', 'HEAD');
+	await writeFile(join(f.root, path), doc('Second use'));
+	git(f.root, 'add', '.');
+	git(f.root, 'commit', '-m', 'revised usage');
+	const after = git(f.root, 'rev-parse', 'HEAD');
+	await writeFile(join(f.root, path), doc('Uncommitted use'));
+	const first = await f.catalog.entity(manifest.id, before);
+	const second = await f.catalog.entity(manifest.id, after);
+	expect(first.documentation?.examples[0].name).toBe('First use');
+	expect(second.documentation?.examples[0].name).toBe('Second use');
+	expect(second.history.map((entry) => entry.commit)).toContain(after);
+	expect(second.documentation?.text).not.toContain('Uncommitted use');
 }, 20000);

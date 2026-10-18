@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { unitDocumentation } from '../../../../src/utils/unitDocumentation';
 import { expect, test } from 'vitest';
 import { activityReading } from '../../src/utils/activityReading';
 import { activityPayload, manyAgents } from '../../tests/e2e/support/activityPayload';
@@ -30,4 +32,36 @@ test('a reading that grew old stops saying who is working', () => {
 	]);
 	// A recorded outcome is not live state and does not age.
 	expect(old.label({ ...agents.roster[0], state: 'completed' } as never)).toBe('Finished');
+});
+
+test('committed activity examples describe the function’s actual behavior', () => {
+	const text = readFileSync(new URL('../../src/utils/activityReading.md', import.meta.url), 'utf8');
+	const doc = unitDocumentation(text, 'reports.function.activity-reading');
+	expect(doc.gap).toBeUndefined();
+	expect(doc.examples).toHaveLength(4);
+	for (const example of doc.examples) {
+		const input = example.input as {
+			sampleAgeSeconds: number;
+			agentAllowanceSeconds: number;
+			reportedWorking: number;
+			agentState: string;
+		};
+		const { agents, sampledAt } = activityPayload(at, [
+			{
+				label: 'Example agent',
+				state: input.agentState,
+				expiresAt: new Date(at + input.agentAllowanceSeconds * 1000).toISOString()
+			}
+		]).live;
+		agents.working = input.reportedWorking;
+		const result = activityReading(agents as never, sampledAt, at + input.sampleAgeSeconds * 1000);
+		expect(
+			{
+				current: result.current,
+				working: result.working,
+				labels: agents.roster.map((agent) => result.label(agent as never))
+			},
+			example.name
+		).toEqual(example.output);
+	}
 });

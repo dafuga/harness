@@ -15,8 +15,13 @@
 		"inputs": [
 			{
 				"name": "EntityExamples.documentation",
-				"type": "UnitDocumentation",
+				"type": "UnitDocumentation | undefined",
 				"description": "Documentation read from this entity at the selected commit; absent or invalid content shows a gap."
+			},
+			{
+				"name": "EntityExamples.verification",
+				"type": "Snippet | undefined",
+				"description": "Optional recorded verification content, mounted only when the disclosure opens."
 			}
 		],
 		"outputs": [

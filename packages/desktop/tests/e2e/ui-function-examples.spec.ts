@@ -39,8 +39,9 @@ test('a function is listed and opened without a design picture, and no image is 
 		'Plan',
 		'Used In',
 		'Uses',
-		'Evidence',
-		'History'
+		'Examples',
+		'History',
+		'Source'
 	]);
 	await expect(current(page)).toHaveText('Plan');
 	await expect(page.getByText('Returns the orders whose name contains the search')).toBeVisible();
@@ -120,4 +121,50 @@ for (const viewport of [
 		await expect(page.getByRole('button', { name: 'Change', exact: true })).toHaveCount(0);
 		const sideways = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
 		expect(sideways).toBeLessThanOrEqual(0);
+	});
+
+for (const viewport of [
+	{ id: 'desktop', width: 1440, height: 900 },
+	{ id: 'tablet', width: 920, height: 1100 },
+	{ id: 'mobile', width: 390, height: 844 }
+])
+	test(`committed function uses share the Examples view at ${viewport.id} width`, async ({
+		page
+	}) => {
+		await page.setViewportSize(viewport);
+		for (const shared of [false, true]) {
+			await evidenceFixture(page, {
+				shared,
+				documentation: {
+					[ids.filter]: {
+						path: 'usage.md',
+						text: '# Committed usage',
+						examples: [
+							{ name: 'Search by name', input: { search: 'SERVICE' }, output: ['Service call'] },
+							{ name: 'No match', input: { search: 'none' }, output: [] }
+						]
+					}
+				}
+			});
+			await page.goto(`${filter}/examples`);
+			await expect(current(page)).toHaveText('Examples');
+			await expect(page.locator('.cases > table > tbody > tr')).toHaveCount(2);
+			await expect(page.getByRole('columnheader')).toHaveText([
+				'Example',
+				'Input',
+				'Expected output'
+			]);
+			await expect(page.locator('.cases')).toContainText('Service call');
+			await expect(page.getByRole('region', { name: 'Evidence coverage' })).toHaveCount(0);
+			if (process.env.TAKE_SCREENSHOT === '1')
+				await page.screenshot({
+					path: `/tmp/harness-shared-examples-${viewport.id}-${shared ? 'hosted' : 'local'}.png`,
+					fullPage: true
+				});
+			await page.getByText('Recorded tests and verification', { exact: true }).click();
+			await expect(page.getByRole('region', { name: 'Evidence coverage' })).toBeVisible();
+			expect(
+				await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)
+			).toBeLessThanOrEqual(0);
+		}
 	});

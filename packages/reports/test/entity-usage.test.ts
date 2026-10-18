@@ -42,7 +42,7 @@ test('the sections of an entity are named Used In and Uses, and none is a relati
 			'Contract',
 			'Used In',
 			'Uses',
-			entity.category === 'functions' ? 'Tests' : 'States',
+			entity.category === 'functions' ? 'Examples' : 'States',
 			'History',
 			'Source'
 		]);

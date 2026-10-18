@@ -98,7 +98,8 @@ export class GitSourceAdapter {
 			throw new Error('This file is outside the selected entity source contract.');
 		return { path, text: await gitText(this.root, revision, path) };
 	}
-	async documentation(unit: ComponentManifest, revision: string) {
+	async documentation(unit: ComponentManifest | undefined, revision: string) {
+		if (!unit?.documentation) return undefined;
 		const commit = await gitRevision(this.root, revision);
 		return readUnitDocumentation({ read: (path) => gitText(this.root, commit, path) }, unit);
 	}

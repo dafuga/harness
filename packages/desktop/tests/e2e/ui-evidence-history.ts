@@ -9,7 +9,6 @@ import type {
 import { runDocument } from '../../../reports/test/entityArtifacts';
 import { record, revision, tested } from '../../../reports/test/entityFixture';
 import { commits, ids, scenarios } from '../../../reports/test/entityUnits';
-
 /**
  * SYNTHETIC SEALED HISTORY. The invented orders application of the reports tests at its three
  * commits, with real bytes behind every capture: each capture states the SHA-256 of the bytes
@@ -25,7 +24,6 @@ export const tones: Record<string, [number, number, number]> = {
 	[commits.middle]: [40, 90, 200],
 	[commits.tip]: [230, 170, 40]
 };
-
 /** The order card alone; its viewport was narrowed at the tip, so the two sides are not alike. */
 const card = (commit: string): HarnessScenario => ({
 	id: cardScenario,
@@ -37,7 +35,6 @@ const card = (commit: string): HarnessScenario => ({
 	tests: [{ id: 'card-browser', kind: 'e2e', runner: 'playwright' }],
 	evidence: [{ id: 'screens', kind: 'screenshot', states: ['default'], viewports: ['desktop'] }]
 });
-
 const sound: HarnessScenario = {
 	id: soundScenario,
 	title: 'Search box announcement',
@@ -48,7 +45,6 @@ const sound: HarnessScenario = {
 	tests: [{ id: 'sound-flow', kind: 'e2e', runner: 'vitest' }],
 	evidence: [{ id: 'audio', kind: 'audio', states: ['announced'], viewports: [] }]
 };
-
 const job = (id: string) => ({
 	id,
 	kind: 'e2e',

@@ -151,8 +151,10 @@ test('the tab of a section is kept in the query and only where it exists', () =>
 	}
 	for (const category of ['functions', 'services', 'configs']) {
 		const path = `/branch/main/${category}/headless`;
-		expect(explorerRoute(path, '?tab=tests')?.tab).toBe('tests');
-		expect(explorerRoute(path, '?tab=states')?.tab).toBeUndefined();
+		expect(explorerRoute(path, '?tab=tests')!.tab).toBe(
+			category === 'functions' ? 'examples' : 'tests'
+		);
+		expect(explorerRoute(path, '?tab=states')!.tab).toBeUndefined();
 	}
 	expect(explorerRoute('/branch/main/pages', '?tab=tests')?.tab).toBeUndefined();
 	expect(explorerRoute('/branch/main/pages/reports.page.titles', '?tab=contract')?.tab).toBe(

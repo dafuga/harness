@@ -68,7 +68,7 @@
 			},
 			{
 				"name": "GitSourceAdapter.documentation.unit",
-				"type": "ComponentManifest"
+				"type": "ComponentManifest | undefined"
 			},
 			{
 				"name": "GitSourceAdapter.documentation.revision",

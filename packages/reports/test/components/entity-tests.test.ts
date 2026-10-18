@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { record, revision } from '../entityFixture';
-import { content, count, disclosed, verdicts, words } from '../entityRender';
+import { content, count, disclosed, verdicts, words, verificationPanel } from '../entityRender';
 import { commits, ids, scenarios } from '../entityUnits';
 
 const page = { category: 'pages' as const, entity: ids.page, tab: 'tests' as const };
@@ -74,8 +74,8 @@ test('the full comparison is the existing gallery, which pairs each capture with
 
 test('a function lists its end-to-end results in full, and a revision without a record says so', () => {
 	const filter = { category: 'functions' as const, entity: ids.filter, tab: 'tests' as const };
-	expect(words(content('commit', filter))).toContain('End-to-end test comparison');
-	const bare = content('current', filter, { head: revision(commits.tip, []) });
+	expect(words(verificationPanel('commit', filter))).toContain('End-to-end test comparison');
+	const bare = verificationPanel('current', filter, { head: revision(commits.tip, []) });
 	expect(words(bare)).toContain('No usable verification record judges this revision.');
 	expect(words(bare)).toContain('No verification record is attached to this commit.');
 	expect(words(bare)).toContain('filter-flow not in the record');

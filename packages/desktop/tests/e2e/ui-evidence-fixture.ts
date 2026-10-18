@@ -1,5 +1,6 @@
 import type { Locator, Page } from '@playwright/test';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
+import type { UnitDocumentation } from '../../../../src/utils/unitDocumentation';
 import type { ComponentManifest } from '../../../../src/lib/contracts';
 import type {
 	EntityEvidenceQuery,
@@ -141,9 +142,8 @@ function removeEvidence() {
 }
 
 export interface EvidenceOptions extends Partial<Settings> {
-	/** Explicit runtime thumbnail bindings supplied by the synthetic catalog. */
+	documentation?: Record<string, UnitDocumentation>;
 	previews?: Record<string, NonNullable<ComponentManifest['preview']>>;
-	/** Alternate synthetic observations, sealed before their hashes and bindings are generated. */
 	example?: Parameters<typeof evidenceData>[2];
 	/** Browser diagnostics held by the tip record's first check; synthetic test data only. */
 	browserErrors?: unknown[];
@@ -157,13 +157,13 @@ export interface EvidenceOptions extends Partial<Settings> {
 	reads?: boolean;
 }
 
-/** The synthetic backend, as it answers after every load of the page. */
 export async function evidenceFixture(page: Page, options: EvidenceOptions = {}) {
 	const data = evidenceData(options.shared, options.observedUnits, options.example, {
 		browserErrors: options.browserErrors,
 		inheritedOnly: options.inheritedOnly
 	});
 	for (const entity of data.entities) {
+		entity.documentation = options.documentation?.[entity.id];
 		const preview = options.previews?.[entity.id];
 		if (preview) entity.thumbnail = { source: 'recorded', ...preview };
 	}

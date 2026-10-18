@@ -16,3 +16,12 @@ A function's Examples tab explains uses with named input → expected output cas
 ## Coverage diagnosis
 
 The standardized `entity-preview-test-cases.spec.ts` checks recorded service inputs and outputs, but no committed usage documentation or function Examples tab. Extend its synthetic-history fixture and viewport matrix to cover current and historical examples, missing documentation, safe values and separate verification. The manifest validator must also admit safe document paths and reject traversal. Preserve failing-test and fix commits separately.
+
+## Verification
+
+- Failing checkpoint: `756510da`. Fix: `a776a015`. The unchanged command and frozen inputs failed before the repair and passed after it; both observations are retained in Harness evidence.
+- Reports: 577 unit checks and 65 responsive browser checks passed. Formatting, Svelte types, lint, builds and audit passed; the audit was rerun after removing an extra blank line at its file limit.
+- Hosted web: full `bun run check` passed, including 461 unit checks, build and audit.
+- Shared browser renderer: 22 cases passed across local and hosted modes. Local Git-reader checks prove historical docs ignore uncommitted edits; hosted checks exercise the source cache.
+- Root types, lint, audit, manifest validation, route checks and shared-import impact checks passed.
+- Native app testing and the aggregate check that includes native work remain paused at the user's request. No native app was launched or rebuilt.

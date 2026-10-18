@@ -6,7 +6,6 @@ import type { RegressionView } from '../../../../src/core/regressionTypes';
 import type { UnitDocumentation } from '../../../../src/utils/unitDocumentation';
 
 export type * from './HarnessLegacy.types';
-
 export interface HarnessRecordSummary {
 	id: string;
 	status: 'passed' | 'failed';
