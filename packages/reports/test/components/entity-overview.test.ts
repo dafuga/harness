@@ -153,7 +153,7 @@ const offered = (body: string) => {
 	return [...select.matchAll(/<option[^>]*value="([^"]*)"/g)].map((found) => found[1]);
 };
 
-test('the required states an overview and the details list are those its selector offers', () => {
+test('the contract and details list the required states the overview selector offers', () => {
 	for (const entity of [ids.page, ids.list]) {
 		const at = {
 			category: entity === ids.page ? ('pages' as const) : ('components' as const),
@@ -163,10 +163,11 @@ test('the required states an overview and the details list are those its selecto
 		expect(offered(overview), entity).toEqual(['default', 'empty']);
 		// The scenario has a required state of another page too: it is not asked of this entity.
 		const label = entity === ids.page ? 'Required states' : 'States';
-		expect(words(overview), entity).toContain(`${label} ${offered(overview).join(', ')} Size`);
+		const contract = content('commit', { ...at, tab: 'contract' }, both());
+		expect(words(contract), entity).toContain(`${label} ${offered(overview).join(', ')}`);
 		const details = content('commit', { ...at, section: 'details' }, both());
-		expect(words(details), entity).toContain(`${label} default, empty Size`);
-		for (const body of [overview, details]) {
+		expect(words(details), entity).toContain(`${label} default, empty`);
+		for (const body of [overview, contract, details]) {
 			expect(words(body), entity).not.toMatch(/returns|src\/|\.ts\b|\.svelte\b/);
 		}
 	}

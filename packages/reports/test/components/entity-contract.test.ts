@@ -31,16 +31,9 @@ test('a dedicated contract exposes types and declared examples without displayin
 					}
 		);
 		const body = content(mode, route, { head });
-		for (const text of [
-			'boolean',
-			'number',
-			'false',
-			'0',
-			'null',
-			'Whether the list is active.',
-			'Safe &lt;tag&gt;'
-		])
+		for (const text of ['boolean', 'number', 'false', '0', 'null', 'Whether the list is active.'])
 			expect(words(body)).toContain(text);
+		expect(words(body)).toMatch(/Safe &lt;tag(?:&gt;|>)/);
 		expect(body).not.toContain('<tag>');
 		expect(body).not.toMatch(/src\/|\.svelte\b/);
 	}

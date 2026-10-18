@@ -107,5 +107,5 @@ test('a declared contract explains each item in its dedicated tab and details', 
 	);
 	expect(words(overview)).toContain('The branch, as one path segment.');
 	expect(words(overview)).toContain('The page with its verdict.');
-	expect(words(overview)).toContain('not at revision A missing page is said.');
+	expect(words(overview)).toContain('Not at revision notice A missing page is said.');
 });
