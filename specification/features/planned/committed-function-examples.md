@@ -25,3 +25,5 @@ The standardized `entity-preview-test-cases.spec.ts` checks recorded service inp
 - Shared browser renderer: 22 cases passed across local and hosted modes. Local Git-reader checks prove historical docs ignore uncommitted edits; hosted checks exercise the source cache.
 - Root types, lint, audit, manifest validation, route checks and shared-import impact checks passed.
 - Native app testing and the aggregate check that includes native work remain paused at the user's request. No native app was launched or rebuilt.
+
+The live integration check also found that registry re-indexing dropped the documentation pointer. The standardized metadata-preservation test now covers that path: failing commit `f5ae4225`, passing repair `b9365207`. Both records retain the same tests and command. Re-indexing now preserves the pointer and remains idempotent.
