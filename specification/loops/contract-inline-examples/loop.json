@@ -2,7 +2,7 @@
 	"name": "contract-inline-examples",
 	"goal": "Read compact examples beside contract field types, with ellipsis for long values and a trailing info action for full details.",
 	"createdAt": "2026-10-18T19:35:01.352Z",
-	"updatedAt": "2026-10-18T19:48:02.032Z",
+	"updatedAt": "2026-10-18T19:57:52.078Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T19:57:52.078Z",
+			"evidence": "Sealed red e3119d67 at 057c0240 exposes hidden examples and clipped actions. Unchanged green beef845c at 890e82c0 passes across three viewports; the same 1,257 inputs and environment are frozen."
 		},
 		{
 			"id": "verify",
