@@ -120,8 +120,11 @@ test('the runtime scenario refuses missing current, comparison, inherited and au
 		'function-commit',
 		'audio-current',
 		'old-host-gap',
-		'phone-gap'
+		'phone-gap',
+		'regression-proof',
+		'regression-proof-output',
+		'regression-proof-before'
 	])
 		expect(empty.failures.some((item) => item.includes(`state ${state}`))).toBe(true);
-	expect(empty.failures).toHaveLength(27);
+	expect(empty.failures).toHaveLength(36);
 });

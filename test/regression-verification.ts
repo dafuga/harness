@@ -1,7 +1,14 @@
 /** Run the existing loop, transport and shared-renderer checks in sequence, including on red. */
 const jobs = [
 	['x', 'vitest', 'run', 'test/regression-loops.test.ts', 'test/loop.e2e.test.ts'],
-	['run', '--cwd', 'packages/desktop', 'test:unit', 'test/utils/recorded-projection.test.ts'],
+	[
+		'run',
+		'--cwd',
+		'packages/desktop',
+		'test:unit',
+		'test/utils/recorded-projection.test.ts',
+		'test/runtime-evidence-capture.test.ts'
+	],
 	[
 		'run',
 		'--cwd',
