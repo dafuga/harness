@@ -10,12 +10,14 @@
 		workspace,
 		entityId,
 		title,
-		thumbnail
+		thumbnail,
+		compact = false
 	}: {
 		workspace: Workspace;
 		entityId: string;
 		title: string;
 		thumbnail: RecordedThumbnail;
+		compact?: boolean;
 	} = $props();
 	let container: HTMLElement;
 	let visible = $state(false);
@@ -43,10 +45,14 @@
 	});
 </script>
 
-<figure bind:this={container} aria-label={`Recorded preview of ${title}`}>
+<figure
+	bind:this={container}
+	aria-label={`Recorded preview of ${title}`}
+	title={view.caption || view.reason}
+>
 	{#if view.url}
 		<img src={view.url} alt={`Screenshot of ${title}`} loading="lazy" decoding="async" />
-		<figcaption>{view.caption}</figcaption>
+		{#if !compact}<figcaption>{view.caption}</figcaption>{/if}
 	{:else}
 		<div class="placeholder muted" role="status">
 			<span>{view.status === 'loading' ? 'Loading screenshot…' : 'Screenshot unavailable'}</span>

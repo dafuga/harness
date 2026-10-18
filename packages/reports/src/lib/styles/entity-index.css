@@ -119,7 +119,7 @@
 }
 .ex-content .ex-page-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(min(100%, 520px), 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
 	gap: 18px;
 }
 .ex-content .ex-page-card {
