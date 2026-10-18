@@ -20,16 +20,19 @@ const origin = { record: 'r0', commit: sha('b') };
 const older = () =>
 	complete().map((item) => ({ ...item, server: { buildId: 'build-0', revision: sha('b') } }));
 const inherited = (extra: Parameters<typeof result>[1] = {}) =>
-	record([
-		result(older(), {
-			status: 'referenced',
-			inherited: true,
-			originTests: [{ id: 'titles-page:page', status: 'passed' }],
-			testedRevision: sha('b'),
-			origin,
-			...extra
-		})
-	]);
+	record(
+		[
+			result(older(), {
+				status: 'referenced',
+				inherited: true,
+				originTests: [{ id: 'titles-page:page', status: 'passed' }],
+				testedRevision: sha('b'),
+				origin,
+				...extra
+			})
+		],
+		{ tests: [] }
+	);
 
 test('inherited proof needs the checks its origin ran: all of them, passed, and recorded at all', () => {
 	const known = { sourceImpact: impacted(sha('b')) };
@@ -60,12 +63,17 @@ test('inherited proof needs the checks its origin ran: all of them, passed, and 
 			})
 		],
 		{
-			tests: [{ id: 't1', kind: 'unit', target: 't1', status: 'passed', durationMs: 1 }]
+			tests: []
 		}
 	);
 	expect(proven([elsewhere], known).passed).toBe(true);
 	const [covered] = verdictCoverage(page, revision([page], [declared()], [elsewhere], known));
 	expect(covered.tests).toEqual([{ id: 'page', status: 'passed' }]);
+	expect(covered.inheritedFrom).toBe(origin.commit);
+	expect(elsewhere.tests).toEqual([]);
+	expect(proven([{ ...elsewhere, valid: false }], known).passed).toBe(false);
+	expect(proven([elsewhere], {}).passed).toBe(false);
+	expect(proven([elsewhere], { sourceImpact: impacted(sha('b'), [page.id]) }).passed).toBe(false);
 });
 
 test('inherited diagnostics belong to the origin check, never a different run at this commit', () => {

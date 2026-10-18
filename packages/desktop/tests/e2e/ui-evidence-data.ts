@@ -9,7 +9,7 @@ import { commits, ids, units } from '../../../reports/test/entityUnits';
 import type { EntityEvidenceResult } from '../../src/models/DesktopEvidence.types';
 import type { Thumbnail } from '../../src/models/Desktop.types';
 import { nativeImageFixture } from './native-image-fixture';
-import { observedHistory, type Example } from './ui-evidence-history';
+import { cardScenario, observedHistory, type Example } from './ui-evidence-history';
 
 export { commits, ids };
 export { cardScenario, soundScenario, tones } from './ui-evidence-history';
@@ -153,13 +153,22 @@ function bound(result: EntityEvidenceResult, mode: Mode, unit: string) {
 	);
 }
 
+/** One incremental record: only the unchanged card and the checks it actually inherited. */
+function onlyInherited(history: ReturnType<typeof observedHistory>): void {
+	const tip = history.revisions[commits.tip];
+	tip.registry.scenarios = tip.registry.scenarios.filter((item) => item.id === cardScenario);
+	tip.records[0].scenarios = tip.records[0].scenarios.filter((item) => item.id === cardScenario);
+	tip.records[0].tests = [];
+}
+
 export function evidenceData(
 	shared = false,
 	observedUnits: string[] = [],
 	example?: Example,
-	browserErrors?: unknown[]
+	options: { browserErrors?: unknown[]; inheritedOnly?: boolean } = {}
 ) {
-	const history = observedHistory(observedUnits, browserErrors, example);
+	const history = observedHistory(observedUnits, options.browserErrors, example);
+	if (options.inheritedOnly) onlyInherited(history);
 	const design = Array.from(nativeImageFixture());
 	const results: Record<string, EntityEvidenceResult> = {};
 	const bindings: Record<string, string> = {};

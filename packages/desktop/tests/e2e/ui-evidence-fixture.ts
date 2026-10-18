@@ -147,6 +147,8 @@ export interface EvidenceOptions extends Partial<Settings> {
 	example?: Parameters<typeof evidenceData>[2];
 	/** Browser diagnostics held by the tip record's first check; synthetic test data only. */
 	browserErrors?: unknown[];
+	/** An incremental record whose only applicable scenario reuses its earlier passing checks. */
+	inheritedOnly?: boolean;
 	/** Extra entities declared by the synthetic history to have the recorded search observations. */
 	observedUnits?: string[];
 	/** A shared project read through a hosted connection: comments only, and a cache channel. */
@@ -157,12 +159,10 @@ export interface EvidenceOptions extends Partial<Settings> {
 
 /** The synthetic backend, as it answers after every load of the page. */
 export async function evidenceFixture(page: Page, options: EvidenceOptions = {}) {
-	const data = evidenceData(
-		options.shared,
-		options.observedUnits,
-		options.example,
-		options.browserErrors
-	);
+	const data = evidenceData(options.shared, options.observedUnits, options.example, {
+		browserErrors: options.browserErrors,
+		inheritedOnly: options.inheritedOnly
+	});
 	for (const entity of data.entities) {
 		const preview = options.previews?.[entity.id];
 		if (preview) entity.thumbnail = { source: 'recorded', ...preview };
