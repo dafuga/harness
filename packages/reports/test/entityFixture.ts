@@ -117,7 +117,7 @@ const summary = (commit: string, parents: string[], subject: string, day: string
 	subject,
 	author: 'Fixture',
 	committedAt: `2026-10-${day}T09:00:00.000Z`,
-	branches: ['feature/orders'],
+	branches: commit === commits.first ? ['feature/orders', 'release/orders'] : ['feature/orders'],
 	retained: false,
 	coverage: 'verified' as const,
 	gaps: [],
