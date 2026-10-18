@@ -14,7 +14,7 @@ test('collections: search, changed only and order change what is listed', async 
 	expect(await thumb.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBe(1440);
 	await capture(tab, 'pages-desktop');
 	await open(tab, { category: 'components', commit: commits.middle });
-	const rows = tab.locator('.ex-table tbody tr');
+	const rows = tab.getByRole('article');
 	await expect(rows).toHaveCount(3);
 	await capture(tab, 'components-desktop');
 	// The footer explains the two marks by showing them; what each means is told on request.

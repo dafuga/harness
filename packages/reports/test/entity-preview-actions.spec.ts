@@ -1,9 +1,36 @@
 import { expect, test } from '../../../test/support/browserTest';
-import { capture, open, viewports, where } from './entityPreviewPage';
-import { ids } from './entityUnits';
+import { capture, fits, open, viewports, where } from './entityPreviewPage';
+import { commits, ids } from './entityUnits';
 
 const page = { category: 'pages' as const, entity: ids.page };
 for (const [name, size] of Object.entries(viewports)) {
+	test(`component screenshot cards follow the shown revision at ${name} width`, async ({
+		page: tab
+	}) => {
+		await tab.setViewportSize(size);
+		for (const commit of [null, commits.middle, commits.first]) {
+			await open(tab, { category: 'components', commit });
+			await tab.evaluate(async () => {
+				await document.fonts.ready;
+				await Promise.all([...document.images].map((image) => image.decode()));
+			});
+			await capture(tab, `component-cards-${commit?.slice(0, 7) ?? 'tip'}-${name}`);
+			const cards = tab.getByRole('article');
+			await expect(cards, 'components show screenshot cards').toHaveCount(3);
+			const shot = cards.getByRole('img', { name: 'Screenshot of Order card', exact: true });
+			const viewed = (commit ?? commits.tip).slice(0, 7);
+			await expect(shot).toHaveAttribute('src', `/media/${viewed}-default-desktop.png`);
+			expect(await shot.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBe(1440);
+			await expect(cards.first()).toContainText('Used on');
+			expect(await fits(tab)).toBe(true);
+			const action = cards.first().getByRole('link', { name: 'Open component', exact: true });
+			expect((await action.innerText()).trim()).toBe('');
+			expect(await action.boundingBox()).toMatchObject({ width: 36, height: 36 });
+			await action.press('Enter');
+			expect(await where(tab)).toMatchObject({ commit, category: 'components', entity: ids.card });
+		}
+	});
+
 	test(`a page card opens with one compact icon at ${name} width`, async ({ page: tab }) => {
 		await tab.setViewportSize(size);
 		await open(tab);
@@ -63,3 +90,40 @@ for (const [name, size] of Object.entries(viewports)) {
 		}
 	});
 }
+
+test('the component catalog labels reused screenshots with their original commit', async ({
+	page: tab
+}) => {
+	await open(tab, { category: 'components' }, 'inherited');
+	await capture(tab, 'component-cards-reused-desktop');
+	const card = tab.getByRole('article', { name: 'Order card', exact: true });
+	await expect(card.getByRole('img')).toHaveAttribute('src', '/media/bbbbbbb-default-desktop.png');
+	await expect(card).toContainText('Reused from bbbbbbb');
+	await expect(card).not.toContainText('Captured at ccccccc');
+});
+
+test('branch and commit selection replace component screenshots with that revision', async ({
+	page: tab
+}) => {
+	await open(tab, { category: 'components' }, 'console');
+	const card = tab.getByRole('article', { name: 'Order card', exact: true });
+	await expect(card.getByRole('img')).toHaveAttribute(
+		'src',
+		'/harness/media/ccccccc-default-desktop.png'
+	);
+	await tab.getByRole('combobox', { name: 'Commit', exact: true }).selectOption(commits.middle);
+	await expect(card.getByRole('img')).toHaveAttribute(
+		'src',
+		'/harness/media/bbbbbbb-default-desktop.png'
+	);
+	await tab.getByRole('combobox', { name: 'Branch', exact: true }).selectOption('release/orders');
+	await expect(card.getByRole('img')).toHaveAttribute(
+		'src',
+		'/harness/media/aaaaaaa-default-desktop.png'
+	);
+	await tab.getByRole('combobox', { name: 'Branch', exact: true }).selectOption('feature/orders');
+	await expect(card.getByRole('img')).toHaveAttribute(
+		'src',
+		'/harness/media/ccccccc-default-desktop.png'
+	);
+});

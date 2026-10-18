@@ -18,6 +18,7 @@ import {
 	legacyReasons,
 	previewRecord,
 	withFrame,
+	withInherited,
 	withScale,
 	type PreviewVariant
 } from './entityPreviewData';
@@ -35,6 +36,8 @@ const stored: Record<string, HarnessRevision> = {
 	},
 	[commits.tip]: recorded(commits.tip)
 };
+if (variant === 'inherited')
+	stored[commits.tip] = withInherited(stored[commits.tip], commits.middle);
 const hashes = (window as unknown as { artifactHashes?: Record<string, string> }).artifactHashes;
 // A recorded hash is the hash of the bytes the page is served, as a real history has it.
 for (const detail of Object.values(stored)) {

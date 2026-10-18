@@ -18,7 +18,7 @@ for (const [name, size] of Object.entries(viewports)) {
 	}) => {
 		await tab.setViewportSize(size);
 		await open(tab, components, 'partial');
-		const row = tab.locator('.ex-table tbody tr').filter({ hasText: 'Order list' });
+		const row = tab.getByRole('article', { name: 'Order list', exact: true });
 		const mark = row.getByRole('button', { name: 'Coverage incomplete' });
 		await expect(mark).toBeVisible();
 		// No status is written beside any mark, and nothing is told before it is asked for.
@@ -50,7 +50,7 @@ test('a tap opens what a mark tells, and a tap elsewhere closes it', async ({
 	browserErrors.watch(context);
 	const tab = await context.newPage();
 	await open(tab, components, 'partial');
-	const row = tab.locator('.ex-table tbody tr').filter({ hasText: 'Order list' });
+	const row = tab.getByRole('article', { name: 'Order list', exact: true });
 	await row.getByRole('button', { name: 'Coverage incomplete' }).tap();
 	await expect(tip(tab)).toContainText(why);
 	expect(await inside(tab, viewports.mobile)).toBe(true);
@@ -187,7 +187,7 @@ test('a title that wraps onto two lines is one solid area to press', async ({ pa
 	await tab.setViewportSize(viewports.mobile);
 	await open(tab, components);
 	// A narrow name column wraps the title, as a long name does in a real registry.
-	await tab.addStyleTag({ content: '.ex-row-name > span { width: 4.2em; }' });
+	await tab.addStyleTag({ content: '.ex-page-body h2 a { width: 4.2em; display: block; }' });
 	const title = tab.getByRole('link', { name: 'Order list', exact: true });
 	const box = (await title.boundingBox()) as {
 		x: number;
@@ -207,7 +207,7 @@ test('a title that wraps onto two lines is one solid area to press', async ({ pa
 	});
 	// So does a press at the end of the shorter line, where a line of text alone would be empty.
 	await open(tab, components);
-	await tab.addStyleTag({ content: '.ex-row-name > span { width: 4.2em; }' });
+	await tab.addStyleTag({ content: '.ex-page-body h2 a { width: 4.2em; display: block; }' });
 	const again = (await title.boundingBox()) as {
 		x: number;
 		y: number;

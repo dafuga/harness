@@ -8,7 +8,32 @@ import { record } from './entityFixture';
 import { capture, ids, units } from './entityUnits';
 
 /** What a preview is asked to show beside the plain history: named in the address it opens at. */
-export type PreviewVariant = '' | 'legacy' | 'partial' | 'declared' | 'shells' | 'console';
+export type PreviewVariant =
+	| ''
+	| 'legacy'
+	| 'partial'
+	| 'declared'
+	| 'shells'
+	| 'console'
+	| 'inherited';
+
+/** Valid unchanged visual evidence: the target keeps the capture's tested origin and build. */
+export function withInherited(detail: HarnessRevision, origin: string): HarnessRevision {
+	const taken = detail.records[0];
+	const original = previewRecord(origin);
+	const scenario = original.scenarios[0];
+	const inherited = {
+		...scenario,
+		status: 'referenced' as const,
+		inherited: true,
+		origin: { record: original.id, commit: origin },
+		originTests: original.tests.map(({ id, status }) => ({ id, status }))
+	};
+	return {
+		...detail,
+		records: [{ ...taken, scenarios: [inherited, ...taken.scenarios.slice(1)] }]
+	};
+}
 
 /** The same recorded project at repository scale; generated units describe no real source. */
 export function withScale(detail: HarnessRevision): HarnessRevision {

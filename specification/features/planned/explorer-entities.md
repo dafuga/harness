@@ -14,9 +14,16 @@ props name; the host decides the address and supplies the data.
 
 ## Acceptance Criteria
 
-- Exactly five collections are offered and Pages comes first. Pages is a grid of cards with a
-  thumbnail; Components, Functions, Configs and Services are tables. No collection, column or
+- Pages comes first. Pages and visual Components use the same screenshot cards; Functions,
+  Configs, Services and Shells remain tables. No collection, column or
   heading is called Sub-components, Related or Reports.
+- Each component catalog card shows a usable screenshot declared to cover that component at
+  the selected branch tip or commit. Prefer fresh captures; validated unchanged captures may
+  be reused with their original commit visibly labelled. A missing, rejected, unvalidated,
+  wrong-build or unrelated capture stays an explicit gap, never another revision's image.
+  Scenario screenshots are identified as in-context evidence, not isolated component crops.
+  Search, ordering, change filtering, verification tooltips and the compact icon action remain
+  available. Switching branches or commits replaces the screenshots and preserves navigation.
 - Search, Changed only and Order each change what a collection lists, and an empty result says
   so instead of showing nothing.
 - An entity is named by its title and described by its responsibility. No file name, path,
