@@ -28,7 +28,7 @@
 			{
 				"name": "EntityFrame.entityHeaderAndScreen",
 				"type": "markup",
-				"description": "The header of the entity, then its screen."
+				"description": "Entity identity, the persistent component screenshot above its tabs, then the selected section. Captures use the selected revision and retain explicit gaps."
 			}
 		],
 		"errors": [
@@ -56,6 +56,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.harness-entity-screens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-explorer-frame",
 			"via": "import",
 			"origin": "derived"
@@ -67,6 +72,16 @@
 		},
 		{
 			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-screens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-shown",
 			"via": "import",
 			"origin": "derived"
 		},
