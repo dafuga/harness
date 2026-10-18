@@ -122,16 +122,14 @@ if (variant === 'console') {
 	window.fetch = Object.assign(
 		(input: Parameters<typeof fetch>[0], init?: Parameters<typeof fetch>[1]) => {
 			const path = String(input);
-			const data = path.endsWith('/data/index.json')
-				? index
-				: path.endsWith('/data/activity.json')
-					? { repository: { name: 'Synthetic orders' } }
-					: Object.entries(stored).find(([commit]) =>
-							path.endsWith(`/revisions/${commit}.json`)
-						)?.[1];
-			return data
-				? Promise.resolve(Response.json('registry' in data ? withScale(data) : data))
-				: fetcher(input, init);
+			if (path.endsWith('/data/index.json')) return Promise.resolve(Response.json(index));
+			if (path.endsWith('/data/activity.json')) {
+				return Promise.resolve(Response.json({ repository: { name: 'Synthetic orders' } }));
+			}
+			const data = Object.entries(stored).find(([commit]) =>
+				path.endsWith(`/revisions/${commit}.json`)
+			)?.[1];
+			return data ? Promise.resolve(Response.json(withScale(data))) : fetcher(input, init);
 		},
 		fetcher
 	);
