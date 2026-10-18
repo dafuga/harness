@@ -164,6 +164,9 @@ function problems(
 ): string[] {
 	const found = built.flatMap(({ revision, result }) => [
 		...result.status.problems.map((problem) => `commit ${short(revision.commit)}: ${problem}`),
+		...(result.detail.regressions ?? []).flatMap((proof) =>
+			proof.gap ? [`regression ${proof.loop} at ${short(revision.commit)}: ${proof.gap}`] : []
+		),
 		...result.status.records.flatMap((record) =>
 			record.problems.map((problem) => `record ${short(record.record)}: ${problem}`)
 		)

@@ -15,6 +15,9 @@ import type { AttachedRecord } from './AttachedRecordService';
 import type { CommitStatus, HistoryStatusService } from './HistoryStatusService';
 import type { StoredSide } from '../utils/sideImpact';
 import { SourceImpactService, type SourceImpact } from './SourceImpactService';
+import { RegressionProofRepository } from '../repositories/RegressionProofRepository';
+import { regressionHistory } from '../utils/regressionHistory';
+import type { RegressionView } from '../core/regressionTypes';
 
 export interface RevisionDetail {
 	schemaVersion: 1;
@@ -49,6 +52,8 @@ export interface RevisionDetail {
 	 * verify a longer range. They stay where they were written and are dated to no commit here.
 	 */
 	rangeReasons: number;
+	/** Separate failing-test and fix commits, without granting a verification verdict. */
+	regressions?: RegressionView[];
 }
 
 interface Stored {
@@ -73,12 +78,7 @@ export const revisionSources = (root: string) => ({
 	registries: new Map<string, Stored>()
 });
 
-/**
- * Everything the history shows for one commit, taken from what is stored for that commit: its
- * own registry, the records attached to it and the reasons noted on it. Nothing is recomputed
- * from, or replaced by, the current state of the repository. The placer given to `build` says
- * where the bytes of each capture are; one that writes nothing only checks them.
- */
+/** A commit's own registry, records and reasons, with captures placed by the caller. */
 export class RevisionDetailService {
 	private readonly git: GitAdapter;
 
@@ -118,7 +118,8 @@ export class RevisionDetailService {
 			side: side && tree ? `sides/${tree}.json` : null,
 			records,
 			explanations: reasons.explanations,
-			rangeReasons: reasons.range
+			rangeReasons: reasons.range,
+			regressions: await regressionProofs(this.root, this.history, commit)
 		};
 		return { detail, status, sound, ledger: stored.ledger, ...(side ? { side } : {}) };
 	}
@@ -159,10 +160,7 @@ export class RevisionDetailService {
 		return line ? this.history.attached.load(line.evidence) : undefined;
 	}
 
-	/**
-	 * Revisions with the same tree share one parsed registry: unit versions cover owned files, so
-	 * the tree identifies it. The ledger is part of it: a unit states the limits frozen there.
-	 */
+	/** Revisions with one tree share its registry and frozen budget ledger. */
 	private async registry(commit: string): Promise<Stored> {
 		const key =
 			(await this.git.attempt(['rev-parse', '--verify', '--quiet', `${commit}^{tree}`])) ?? commit;
@@ -179,10 +177,7 @@ export class RevisionDetailService {
 		return { registry, ledger };
 	}
 
-	/**
-	 * The reasons of this commit among those noted on it and those that satisfied its records. A
-	 * record of a longer range holds the reasons of earlier commits too; those are not its own.
-	 */
+	/** Reasons of this commit itself, excluding the earlier commits of a verified range. */
 	private async reasons(commit: string, sound: VerificationRecord[]): Promise<RevisionReasons> {
 		const note = (await this.history.all()).get(commit);
 		const noted = (note?.entries ?? []).flatMap((entry) =>
@@ -216,4 +211,9 @@ function comparison(sound: VerificationRecord[]): RevisionDetail['comparison'] {
 
 function short(id: string): string {
 	return id.slice(0, 12);
+}
+
+async function regressionProofs(root: string, history: HistoryStatusService, commit: string) {
+	const repository = new RegressionProofRepository(root, history.pinned?.evidence);
+	return regressionHistory(commit, await history.all(), repository.load.bind(repository));
 }

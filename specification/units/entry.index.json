@@ -66,7 +66,13 @@
 			"verificationNoteIdentity",
 			"previewBinding",
 			"readTreeTexts",
-			"bugRepairPolicy"
+			"bugRepairPolicy",
+			"RegressionProofService",
+			"RegressionProofRepository",
+			"regressionFiles",
+			"regressionRecordSchema",
+			"recordRegression",
+			"regressionHistory"
 		]
 	},
 	"contract": {
@@ -242,6 +248,26 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.record-regression",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.regression-files",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.regression-history",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.regression-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.revision-changes",
 			"via": "reexport",
 			"origin": "derived"
@@ -268,6 +294,11 @@
 		},
 		{
 			"unit": "repository.provider-switch",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.regression-proof",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -348,6 +379,11 @@
 		},
 		{
 			"unit": "service.provider-switch-apply",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.regression-proof",
 			"via": "reexport",
 			"origin": "derived"
 		},

@@ -49,3 +49,5 @@ export type { LineageSource } from '../utils/recordLineage';
 export { pushedRefs } from '../utils/pushedRefs';
 export type { RecordView, ResolvedMedia } from '../utils/recordView';
 export type { RevisionRegistry } from '../utils/revisionRegistry';
+export { regressionRecordSchema, regressionViewSchema } from '../core/regressionTypes';
+export type { RegressionRecord, RegressionPoint, RegressionView } from '../core/regressionTypes';

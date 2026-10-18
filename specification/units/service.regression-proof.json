@@ -1,0 +1,115 @@
+{
+	"schemaVersion": 1,
+	"id": "service.regression-proof",
+	"kind": "service",
+	"title": "Run a committed regression",
+	"responsibility": "Run one test command on an isolated export of an exact source commit.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/RegressionProofService.ts"],
+		"symbols": [
+			"RegressionRun",
+			"RegressionProofService",
+			"RegressionProofService.constructor",
+			"RegressionProofService.run"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "Request",
+				"type": "Regression inputs",
+				"description": "A committed revision, frozen test command and expected failure"
+			}
+		],
+		"outputs": [
+			{
+				"name": "Result",
+				"type": "Regression result",
+				"description": "The observed exit status, assertion and hashed output"
+			}
+		],
+		"errors": [
+			{
+				"name": "Invalid proof",
+				"type": "Explicit rejection or gap",
+				"description": "Rejects timeouts, missing commands, snapshot drift and unfinished processes."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.commit-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.snapshot",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.canonical-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.regression-files",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.regression-history",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.regression-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.run-isolated",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verify-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.regression-proof",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/RegressionProofService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/RegressionProofService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

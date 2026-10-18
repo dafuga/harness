@@ -49,6 +49,9 @@ function record(whole: HarnessRecord, entity: string, shown: Shown): HarnessReco
 
 function detail(whole: HarnessRevision, entity: string, shown: Shown): HarnessRevision {
 	const { registry, comparison, sourceImpact } = whole;
+	const proofs = (whole.regressions ?? []).filter(
+		(proof) => !proof.units.length || proof.units.includes(entity)
+	);
 	const ran = (ids: string[]) => ids.filter((id) => shown.has(id));
 	const impact = (stated: Pick<Impact, 'base' | 'units' | 'scenarios'>) => ({
 		base: stated.base,
@@ -69,7 +72,8 @@ function detail(whole: HarnessRevision, entity: string, shown: Shown): HarnessRe
 		comparison: comparison && { ...impact(comparison), record: comparison.record },
 		...(changed === undefined ? {} : { sourceImpact: changed && { ...changed, changed: [] } }),
 		records: whole.records.map((item) => record(item, entity, shown)),
-		explanations: whole.explanations.filter((reason) => reason.unit === entity)
+		explanations: whole.explanations.filter((reason) => reason.unit === entity),
+		...(proofs.length ? { regressions: proofs } : {})
 	};
 }
 

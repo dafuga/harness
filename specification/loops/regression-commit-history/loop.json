@@ -2,7 +2,7 @@
 	"name": "regression-commit-history",
 	"goal": "Commit the failing regression test before the fix, and show both exact results in Harness history",
 	"createdAt": "2026-10-18T08:32:47.943Z",
-	"updatedAt": "2026-10-18T08:38:24.781Z",
+	"updatedAt": "2026-10-18T10:06:41.609Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -31,12 +31,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T10:06:41.360Z",
+			"evidence": "Recorded 1df403ae failing on unchanged product. Added clean snapshot recording, immutable Git notes, commit guards and shared proof cards; test inputs remain unchanged."
 		},
 		{
 			"id": "green",
 			"title": "Repeat repair and the same unchanged regression test until it passes; record passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T10:06:41.609Z",
+			"evidence": "Working-tree core 13, projection 5 and capture 6 checks pass. Browser acceptance passes 47 checks, including proof links and three viewports. Exact committed snapshot proof follows the fix commit."
 		},
 		{
 			"id": "verify",

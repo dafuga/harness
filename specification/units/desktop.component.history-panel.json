@@ -55,7 +55,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.store.entity-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.regression-proof",
 			"via": "import",
 			"origin": "derived"
 		}

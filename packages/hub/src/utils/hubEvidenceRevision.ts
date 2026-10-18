@@ -8,6 +8,7 @@ import { hubPinnedSource } from './hubPinnedSource';
 import { hubEvidenceRegistry } from './hubEvidenceRegistry';
 import { hubEvidenceViews } from './hubEvidenceViews';
 import { hubFail } from './hubJson';
+import { regressionHistory } from '../../../../src/utils/regressionHistory';
 
 export async function hubEvidenceRevision(
 	base: HubSourceContext,
@@ -42,7 +43,10 @@ export async function hubEvidenceRevision(
 		comparison: comparison(records),
 		sourceImpact: null,
 		records: views,
-		explanations: reasons.explanations
+		explanations: reasons.explanations,
+		regressions: await regressionHistory(commit, await history.all(), (note) =>
+			history.attached.regression(note)
+		)
 	} as unknown as HarnessRevision;
 	return {
 		facts,

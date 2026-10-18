@@ -76,7 +76,7 @@ export const builtInTemplates: LoopTemplate[] = [
 			{
 				id: 'red',
 				title:
-					'Strengthen the existing standardized test and shared coverage; run it failing before repair and record the command, assertion and result.'
+					'Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.'
 			},
 			{
 				id: 'implement',
@@ -85,7 +85,7 @@ export const builtInTemplates: LoopTemplate[] = [
 			{
 				id: 'green',
 				title:
-					'Repeat repair and the same unchanged regression test until it passes; record passing proof.'
+					'Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.'
 			},
 			{
 				id: 'verify',
@@ -120,7 +120,7 @@ export const builtInTemplates: LoopTemplate[] = [
 			{
 				id: 'red',
 				title:
-					'Strengthen the existing standardized test and shared coverage; run it failing before repair and record the command, assertion and result.'
+					'Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.'
 			},
 			{
 				id: 'propose',
@@ -134,7 +134,7 @@ export const builtInTemplates: LoopTemplate[] = [
 			{
 				id: 'green',
 				title:
-					'Repeat repair and the same unchanged regression test until it passes; record passing proof.'
+					'Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.'
 			},
 			{
 				id: 'guard',

@@ -6,7 +6,8 @@
 		ExplorerEvidence,
 		ExplorerScope
 	} from '../../models/Explorer.types';
-	import { shortCommit, type EntityNav } from '../../utils/entityLens';
+	import { entityLens, shortCommit, type EntityNav } from '../../utils/entityLens';
+	import RegressionProof from '../RegressionProof.svelte';
 	import { entityRemoved } from '../../utils/entityRemoved';
 	import { galleryItems } from '../../utils/entityScreens';
 	import EvidenceGrid from '../EvidenceGrid.svelte';
@@ -64,6 +65,28 @@
 </script>
 
 <div role="tabpanel" aria-label={`${entity.name} tests`} class="ex-stack">
+	<RegressionProof
+		items={evidence.after.detail?.regressions ?? []}
+		unit={entity.id}
+		href={(commit) =>
+			nav.href(
+				entityLens(nav.route, {
+					commit,
+					category: entity.category,
+					entity: entity.id,
+					tab: 'tests'
+				})
+			)}
+		follow={(commit) =>
+			nav.go(
+				entityLens(nav.route, {
+					commit,
+					category: entity.category,
+					entity: entity.id,
+					tab: 'tests'
+				})
+			)}
+	/>
 	<section class="ex-card" aria-labelledby="ex-verdict-title">
 		<h2 id="ex-verdict-title">Verification at {shortCommit(scope.commit)}</h2>
 		<p><HarnessVerdict {...entity.verdict} /></p>

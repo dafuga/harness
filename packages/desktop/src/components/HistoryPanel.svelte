@@ -4,7 +4,16 @@
 	import { historyPages } from '../utils/historyPages';
 	import { timeLabel } from '../utils/timeLabel';
 	import WorkspaceLink from './WorkspaceLink.svelte';
-	let { entity, workspace }: { entity: EntityDetail; workspace: Workspace } = $props();
+	import RegressionProof from '../../../reports/src/components/RegressionProof.svelte';
+	import type { EntityEvidence } from '../lib/stores/entityEvidence.svelte';
+	let {
+		entity,
+		workspace,
+		evidence
+	}: { entity: EntityDetail; workspace: Workspace; evidence: EntityEvidence } = $props();
+	const proofs = $derived(
+		evidence.status === 'ready' ? (evidence.result?.evidence.after.detail?.regressions ?? []) : []
+	);
 	let later = $state<HistoryEvent[]>([]);
 	let next = $state<number | null>(null);
 	let complete = $state(true);
@@ -64,6 +73,12 @@
 
 <section class="history">
 	<h2>Entity history</h2>
+	<RegressionProof
+		items={proofs}
+		unit={entity.id}
+		href={there}
+		follow={(commit) => void workspace.navigate(there(commit))}
+	/>
 	{#each events as event (event.id)}<article>
 			<span class="timeline-dot"></span><strong>{event.title}</strong><small
 				>{timeLabel(event.at)}

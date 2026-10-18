@@ -9,7 +9,13 @@
 	import { evidenceNotice } from '../utils/evidenceNotice';
 	import RuntimeBehavior from './RuntimeBehavior.svelte';
 	import StatusIcon from './StatusIcon.svelte';
-	let { entity, evidence }: { entity: EntityDetail; evidence: EntityEvidence } = $props();
+	import RegressionProof from '../../../reports/src/components/RegressionProof.svelte';
+	import type { Workspace } from '../lib/stores/workspace.svelte';
+	let {
+		entity,
+		evidence,
+		workspace
+	}: { entity: EntityDetail; evidence: EntityEvidence; workspace?: Workspace } = $props();
 	const short = (commit: string) => commit.slice(0, 7);
 	const notice = $derived(evidenceNotice(evidence.status, evidence.error, entity.kind));
 	const result = $derived(evidence.status === 'ready' ? evidence.result : null);
@@ -26,6 +32,15 @@
 </script>
 
 <section class="panel coverage-panel" aria-label="Evidence coverage">
+	{#if workspace}<RegressionProof
+			items={side?.detail?.regressions ?? []}
+			unit={entity.id}
+			href={(commit) => workspace.link({ commit, category: entity.category, entityId: entity.id })}
+			follow={(commit) =>
+				void workspace.navigate(
+					workspace.link({ commit, category: entity.category, entityId: entity.id })
+				)}
+		/>{/if}
 	<div class="row">
 		<h2>Evidence</h2>
 		<span class="chip runtime-chip">Runtime capture</span>{#if side}<small

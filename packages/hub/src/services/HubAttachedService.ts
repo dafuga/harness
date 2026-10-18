@@ -14,6 +14,8 @@ import {
 	hubRecordJson,
 	type HubAttachedRecord
 } from '../utils/hubAttachedRecord';
+import { readRegression } from '../../../../src/utils/regressionHistory';
+import type { RegressionNote } from '../../../../src/repositories/RegressionProofRepository';
 
 interface Context {
 	base: HubSourceContext;
@@ -31,6 +33,22 @@ export class HubAttachedService {
 		const pending = this.loaded.get(key) ?? this.queue(() => this.read(held));
 		this.loaded.set(key, pending);
 		return pending;
+	}
+	/** Focused regression evidence follows the same authorized, pinned repository boundary. */
+	async regression(note: RegressionNote) {
+		const { within, reaches, base } = this.context;
+		if (!within || !(await reaches(within, note.evidence.commit)))
+			return hubFail('evidence-unreadable');
+		const source = await hubPinnedSource(base, note.evidence.commit);
+		const loaded = await readRegression(note, async (path) => {
+			const entry = source.entries.find(
+				(item) => item.path === `${note.evidence.path}/${path}` && item.type === 'blob'
+			);
+			return entry ? Buffer.from(await hubRaw(source, entry)) : undefined;
+		});
+		const facts = await base.source.facts?.(base.repository, note.commit);
+		if (facts?.tree !== loaded.record.source.tree) return hubFail('evidence-unreadable');
+		return loaded;
 	}
 	private queue<T>(read: () => Promise<T>): Promise<T> {
 		const pending = this.sequential.then(read);

@@ -100,6 +100,7 @@ export function historyDetail(detail: HarnessRevision, unit: string): ExplorerHi
 	const found = detail.registry.units.find((item) => item.id === unit && item.status === 'active');
 	return {
 		known: detail.registry.available && Boolean(detail.sourceImpact),
+		...(detail.regressions?.length ? { regressions: detail.regressions } : {}),
 		present: Boolean(found),
 		change: explorerChange(detail, unit),
 		version: found?.version ?? null,

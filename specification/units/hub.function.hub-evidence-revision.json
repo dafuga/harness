@@ -40,6 +40,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.regression-history",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.revision-reasons",
 			"via": "import",
 			"origin": "derived"

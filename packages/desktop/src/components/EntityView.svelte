@@ -92,7 +92,7 @@
 		const stamp = `${pin?.notesRevision ?? ''}|${pin?.evidenceRevision ?? ''}`;
 		const scope = evidenceQuery(workspace, workspace.entity?.id ?? '');
 		const planned = Boolean(workspace.entity?.planned);
-		if (tab === 'Overview' || tab === 'Evidence')
+		if (tab === 'Overview' || tab === 'Evidence' || tab === 'History')
 			evidence.show(workspace.bridge, { scope, planned, stamp });
 	});
 	onDestroy(() => evidence.reset());
@@ -201,10 +201,11 @@
 				relationships={entity.relationships}
 				{workspace}
 				direction={tab === 'Uses' ? 'uses' : 'used-by'}
-			/>{:else if tab === 'Evidence'}<CoveragePanel {entity} {evidence} />{:else}<HistoryPanel
+			/>{:else if tab === 'Evidence'}<CoveragePanel
 				{entity}
+				{evidence}
 				{workspace}
-			/>{/if}
+			/>{:else}<HistoryPanel {entity} {workspace} {evidence} />{/if}
 	</main>
 	{#if conversation}<ThreadPanel
 			{entity}

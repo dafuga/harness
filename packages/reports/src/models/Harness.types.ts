@@ -2,6 +2,7 @@ import type { HarnessReview, HarnessUnitLimits } from './HarnessBudget.types';
 import type { HarnessLegacyReport } from './HarnessLegacy.types';
 import type { Status } from './Report.types';
 import type { BrowserDiagnostic } from '../../../../src/core/browserDiagnostics';
+import type { RegressionView } from '../../../../src/core/regressionTypes';
 
 export type * from './HarnessLegacy.types';
 
@@ -184,6 +185,7 @@ export interface HarnessExplanation {
 	performance: { attempt: string; outcome: string };
 }
 export interface HarnessRevision {
+	regressions?: RegressionView[];
 	commit: string;
 	registry: {
 		available: boolean;

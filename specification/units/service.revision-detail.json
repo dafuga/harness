@@ -89,6 +89,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.regression-history",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.regression-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.revision-reasons",
 			"via": "import",
 			"origin": "derived"
@@ -110,6 +120,11 @@
 		},
 		{
 			"unit": "repository.budget-ledger",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.regression-proof",
 			"via": "import",
 			"origin": "derived"
 		},

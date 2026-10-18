@@ -27,6 +27,8 @@ export interface LoopState {
 	template?: string;
 	templateLineage?: string[];
 	enforceOrder?: boolean;
+	/** Versioned opt-in: older loop evidence remains visible without inventing missing commits. */
+	regressionCommits?: 1;
 	steps: LoopStep[];
 	evaluators?: LoopEvaluator[];
 }

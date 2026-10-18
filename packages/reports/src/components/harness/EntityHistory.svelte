@@ -22,6 +22,7 @@
 	import EntityHistoryRow from './EntityHistoryRow.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
 	import HarnessVerdict from './HarnessVerdict.svelte';
+	import RegressionProof from '../RegressionProof.svelte';
 	let {
 		entity,
 		rows,
@@ -94,6 +95,28 @@
 </script>
 
 <div role="tabpanel" aria-label={`${entity.name} history`} class="ex-stack">
+	<RegressionProof
+		items={read.get(scope.commit)?.regressions ?? []}
+		unit={entity.id}
+		href={(commit) =>
+			nav.href(
+				entityLens(nav.route, {
+					commit,
+					category: entity.category,
+					entity: entity.id,
+					tab: 'tests'
+				})
+			)}
+		follow={(commit) =>
+			nav.go(
+				entityLens(nav.route, {
+					commit,
+					category: entity.category,
+					entity: entity.id,
+					tab: 'tests'
+				})
+			)}
+	/>
 	<section class="ex-card" aria-labelledby="ex-history-title">
 		<header class="ex-evidence-head">
 			<div>
@@ -163,6 +186,28 @@
 		{/if}
 	</section>
 	{#if selected}
+		{#if selected.commit !== scope.commit}<RegressionProof
+				items={read.get(selected.commit)?.regressions ?? []}
+				unit={entity.id}
+				href={(commit) =>
+					nav.href(
+						entityLens(nav.route, {
+							commit,
+							category: entity.category,
+							entity: entity.id,
+							tab: 'tests'
+						})
+					)}
+				follow={(commit) =>
+					nav.go(
+						entityLens(nav.route, {
+							commit,
+							category: entity.category,
+							entity: entity.id,
+							tab: 'tests'
+						})
+					)}
+			/>{/if}
 		<EntityChange
 			row={selected}
 			timings={timings.get(selected.commit) ?? []}

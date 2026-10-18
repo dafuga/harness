@@ -45,7 +45,7 @@ export class HistoryStatusService {
 	/** Pinned, everything is read at exactly those two commits, wherever the refs are by now. */
 	constructor(
 		root: string,
-		private readonly pinned?: PinnedHistory
+		readonly pinned?: PinnedHistory
 	) {
 		this.attached = new AttachedRecordService(root, pinned?.evidence);
 		this.notes = new HistoryNoteRepository(root);
