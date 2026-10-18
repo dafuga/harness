@@ -2,7 +2,7 @@
 	"name": "usage-list-status",
 	"goal": "Show clean Used In and Uses lists while retaining the verification mark on each entity page.",
 	"createdAt": "2026-10-18T20:04:19.263Z",
-	"updatedAt": "2026-10-18T20:10:38.852Z",
+	"updatedAt": "2026-10-18T20:12:38.831Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T20:12:37.729Z",
+			"evidence": "Both shared renderers omit per-row status components. Links, purpose text and kind/change/plan badges remain; entity header status stays available."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T20:12:38.831Z",
+			"evidence": "Green f410dd83 at 5da392e0 passes the unchanged usage browser cases at three widths and both renderer unit suites. Red 685c4ee7 uses the same 1,257 frozen inputs and environment."
 		},
 		{
 			"id": "verify",
