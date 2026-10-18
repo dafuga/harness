@@ -3,7 +3,7 @@
 	"id": "reports.component.entity-contract",
 	"kind": "component",
 	"title": "Typed contract",
-	"responsibility": "Lists the typed inputs, outputs and errors of one entity in tables, with examples available through an info icon.",
+	"responsibility": "Lists typed inputs, outputs and errors with compact example previews and full details in a shared modal.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -38,7 +38,7 @@
 			{
 				"name": "EntityContract",
 				"type": "markup",
-				"description": "Compact field tables with public types and descriptions. An info icon opens one example in the shared modal; examples are unmounted until requested."
+				"description": "Name, type and example tables with ellipsis for long previews. Trailing info controls open all examples and the field description in the shared modal."
 			}
 		],
 		"errors": []

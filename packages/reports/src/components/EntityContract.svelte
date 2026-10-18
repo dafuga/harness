@@ -20,11 +20,11 @@
 		/** For an entity the shown commit removed: the parent commit this contract was last held at. */
 		last?: string;
 	} = $props();
-	// Only the entity that is open is read this closely.
 	let groups = $derived(contractFields(unit, category));
 	let facts = $derived(contractFacts(contract, unit, category));
 	let title = $derived(last ? `Last contract · ${last.slice(0, 7)}` : 'Contract');
-	// Examples stay out of the page until one field's is opened, and focus returns to its button.
+	// A row previews its first example, cut short, and names placeholders; the modal shows all.
+	const labels = { illustrative: 'Illustrative', missing: 'Example not recorded' };
 	let chosen = $state<ContractField | null>(null);
 	let opener: HTMLButtonElement | null = null;
 	function openExample(field: ContractField, event: MouseEvent) {
@@ -70,30 +70,34 @@
 				<div class="frame">
 					<table aria-label={group.title}>
 						<thead>
-							<tr
-								><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Description</th
-								></tr
-							>
+							<tr>
+								<th scope="col">Name</th>
+								<th scope="col">Type</th>
+								<th scope="col">Example</th>
+								<th scope="col" class="act" aria-label="Actions"></th>
+							</tr>
 						</thead>
 						<tbody>
 							{#each group.fields as field, position (position)}
+								{@const sample = field.examples[0]}
 								<tr>
 									<th scope="row">{field.name}</th>
-									<td>
-										<div class="typed">
-											<code>{field.type}</code>
-											<button
-												type="button"
-												class="info"
-												aria-label={`View example for ${field.name}`}
-												aria-haspopup="dialog"
-												onclick={(event) => openExample(field, event)}
-												><HarnessIcon name="info" size={18} /></button
-											>
-										</div>
+									<td><code class="type">{field.type}</code></td>
+									<td class="example">
+										{#if field.source !== 'declared'}<i>{labels[field.source]}</i>{/if}
+										{#if sample}<code
+												>{sample.text.slice(0, 240)}{sample.text.length > 240 ? '...' : ''}</code
+											>{/if}
 									</td>
-									<td class:none={!field.description}>
-										{field.description ?? 'No description recorded.'}
+									<td class="act">
+										<button
+											type="button"
+											class="info"
+											aria-label={`View example for ${field.name}`}
+											aria-haspopup="dialog"
+											onclick={(event) => openExample(field, event)}
+											><HarnessIcon name="info" size={18} /></button
+										>
 									</td>
 								</tr>
 							{/each}
@@ -131,7 +135,7 @@
 		margin: 6px 0 0;
 		font-size: 1.05rem;
 	}
-	/* On a phone the table keeps its columns and scrolls inside this frame, not the page. */
+	/* On a phone the table keeps its columns and scrolls in this frame; its actions stay pinned. */
 	.frame {
 		min-width: 0;
 		overflow-x: auto;
@@ -150,7 +154,7 @@
 		padding: 8px 14px;
 		text-align: start;
 		border-bottom: 1px solid var(--ex-line);
-		vertical-align: baseline;
+		vertical-align: middle;
 		overflow-wrap: break-word;
 	}
 	tbody tr:last-child > * {
@@ -161,30 +165,31 @@
 		font-size: 0.8rem;
 		font-weight: 600;
 	}
-	thead th:first-child {
-		width: 22%;
+	thead th:nth-child(-n + 2) {
+		width: 25%;
 	}
-	thead th:nth-child(2) {
-		width: 30%;
-	}
-	.typed {
-		display: flex;
-		align-items: center;
-		gap: 6px;
-		min-width: 0;
-	}
-	code {
-		min-width: 0;
+	.type {
 		padding: 2px 8px;
 		border: 1px solid color-mix(in srgb, var(--ex-gold) 45%, transparent);
 		border-radius: 6px;
 		color: var(--ex-gold);
 		font-size: 0.88rem;
-		overflow-wrap: anywhere;
+	}
+	.example {
+		color: var(--ex-soft);
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+	.act {
+		position: sticky;
+		inset-inline-end: 0;
+		width: 32px;
+		padding: 2px 8px;
+		background: var(--ex-surface);
 	}
 	.info {
 		display: inline-grid;
-		flex: none;
 		place-items: center;
 		width: 32px;
 		height: 32px;
@@ -205,12 +210,10 @@
 		outline-offset: 1px;
 	}
 	@media (pointer: coarse) {
+		.act,
 		.info {
 			width: 44px;
 			height: 44px;
 		}
-	}
-	.none {
-		color: var(--ex-soft);
 	}
 </style>
