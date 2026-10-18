@@ -61,7 +61,7 @@ test('legacy contract tables retain types and example controls for opaque fields
 					}
 				}
 	);
-	const body = words(content('current', route, { head }));
+	const body = content('current', route, { head });
 	expect(body).toContain('View example for Label');
 	expect(body).toContain('View example for Context');
 	expect(body).toContain('PrivateContext');

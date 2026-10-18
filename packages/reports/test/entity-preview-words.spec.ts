@@ -98,13 +98,13 @@ async function reviewExamples(tab: Page, contract: Locator, checkpoint: string):
 		await expect(dialog.locator('tag')).toHaveCount(0);
 		if (name === 'Settings') await expect(dialog).toContainText('Other');
 		expect(await fits(tab)).toBe(true);
-		await dialog.getByRole('button', { name: 'Close', exact: true }).click();
+		await dialog.getByRole('button', { name: 'Close viewer', exact: true }).click();
 	}
 	const output = contract.getByRole('table', { name: 'Outputs', exact: true });
 	await output.getByRole('button').click();
 	await expect(dialog).toContainText('<main>Orders</main>');
 	await expect(dialog.locator('main')).toHaveCount(0);
-	await dialog.getByRole('button', { name: 'Close', exact: true }).click();
+	await dialog.getByRole('button', { name: 'Close viewer', exact: true }).click();
 }
 
 for (const [width, size] of Object.entries(viewports)) {
