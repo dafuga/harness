@@ -46,8 +46,8 @@ test('CLI exposes execution targets and component versions, and refuses relaxed 
 			}
 		})
 	);
-	await project.harness(['units', 'check']);
 	await project.harness(['units', 'index', '--write']);
+	await project.harness(['units', 'check']);
 	const documented = await project.harnessJson<Shown>(['units', 'show', 'function.slugify']);
 	expect(documented.manifest.contract.inputs[0].examples).toEqual(examples);
 	expect(documented.version.contract).not.toBe(shown.version.contract);
