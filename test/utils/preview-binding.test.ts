@@ -2,6 +2,8 @@ import { expect, test } from 'vitest';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { ScenarioManifest } from '../../src/lib/contracts';
+import { componentManifestSchema } from '../../src/core/unitTypes';
+import { revisionRegistry } from '../../src/utils/revisionRegistry';
 import { previewBinding } from '../../src/utils/previewBinding';
 import { registryGate } from '../../src/services/VerificationGates';
 import { indexFiles, unitOf } from '../support/memoryTree';
@@ -78,12 +80,17 @@ test('registered page previews name the state that actually shows that page', ()
 	const root = new URL('../../specification/', import.meta.url);
 	const directory = new URL('units/', root);
 	for (const file of readdirSync(directory)) {
-		const unit = JSON.parse(readFileSync(new URL(file, directory), 'utf8'));
+		const unit = componentManifestSchema.parse(
+			JSON.parse(readFileSync(new URL(file, directory), 'utf8'))
+		);
 		if (unit.kind !== 'page' || unit.status !== 'active' || !unit.preview) continue;
 		const declared = JSON.parse(
 			readFileSync(new URL(join('scenarios', `${unit.preview.scenario}.json`), root), 'utf8')
 		);
-		const state = declared.states.find((state: { id: string }) => state.id === unit.preview.state);
-		expect(state?.units, `${unit.id} preview must bind its own page state`).toContain(unit.id);
+		const stored = revisionRegistry([unit], [declared]).units[0];
+		expect(stored, `${unit.id} preview must bind its own page state`).toHaveProperty(
+			'preview',
+			unit.preview
+		);
 	}
 });

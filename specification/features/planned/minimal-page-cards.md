@@ -26,7 +26,7 @@ Keep broader unrun verification failures explicit; do not claim native acceptanc
 
 ## Page-state binding
 
-A page preview must be named by its scenario state. The shared workspace reads the explicit preview
-binding, while the Reports catalog derives the state from the committed scenario's unit membership.
-The committed preview guard must exercise real page declarations, not only ideal synthetic inputs.
-Agent settings must select its Settings screenshot, rather than its scenario's compact agent panel.
+A page's committed preview binding must survive serialization into the revision registry. Both
+catalog renderers must use that exact scenario, state and viewport without selecting another state's
+image when it is missing. The guard exercises real declarations and multiple usable screenshot
+states. Agent settings selects its Settings page rather than the compact agent panel.
