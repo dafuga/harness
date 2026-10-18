@@ -33,7 +33,7 @@ test('a page at a selected commit shows the parent and the commit for one state 
 	// The later tip is never a side of the comparison.
 	expect(body).not.toContain('ccccccc');
 	expect(words(body)).toContain('Behavior change');
-	expect(body).toContain(`/commit/${commits.middle}/pages/${ids.page}?tab=tests`);
+	expect(body).toContain(`/commit/${commits.middle}/pages/${ids.page}?tab=states`);
 });
 
 test('a page at the branch tip shows exactly one screenshot and no before or after', () => {

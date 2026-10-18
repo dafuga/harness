@@ -38,10 +38,14 @@
 				state: state.id,
 				viewport: screen?.id ?? ''
 			});
+			const title = state.title ?? words(state.id);
 			return {
 				state,
-				title: state.title ?? words(state.id),
-				items: [...(shown.before ? [shown.before] : []), shown.after]
+				title,
+				items: [...(shown.before ? [shown.before] : []), shown.after].map((item) => ({
+					...item,
+					title: `${title} · ${phase(item)}`
+				}))
 			};
 		})
 	);
@@ -150,7 +154,7 @@
 									</p>
 								{:else}<EvidenceCard
 										compact
-										item={{ ...shown, title: `${row.title} · ${phase(item)}` }}
+										item={shown}
 										{assetBase}
 										onopen={() => (viewing = shown)}
 									/>{/if}

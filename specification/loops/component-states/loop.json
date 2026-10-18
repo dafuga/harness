@@ -2,7 +2,7 @@
 	"name": "component-states",
 	"goal": "Show supported visual states as revision-bound screenshots, including error states.",
 	"createdAt": "2026-10-18T21:16:11.534Z",
-	"updatedAt": "2026-10-18T21:43:57.238Z",
+	"updatedAt": "2026-10-18T21:47:47.782Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -27,7 +27,7 @@
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
 			"status": "complete",
 			"completedAt": "2026-10-18T21:38:08.897Z",
-			"evidence": "Committed visual matrix fails at the missing States tab: 150277c0. The complete error-state fixture and unchanged command will prove the fix."
+			"evidence": "Committed visual matrix fails at 51f5137c: b325dd70. The same 1,262 frozen inputs pass at af13ab15: 530afede."
 		},
 		{
 			"id": "implement",
@@ -39,12 +39,15 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T21:47:47.782Z",
+			"evidence": "Clean snapshots prove missing States at 51f5137c and passing states at af13ab15 using identical frozen inputs and command."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Reports checks and browser acceptance pass; root types, lint and unit checks pass. Full aggregate verification includes paused native Electron work, so this step stays pending."
 		}
 	],
 	"evaluators": [

@@ -4,6 +4,7 @@
 		ExplorerBehavior,
 		ExplorerEntity,
 		ExplorerEvidence,
+		ExplorerSlotCoverage as Slot,
 		ExplorerScope
 	} from '../../models/Explorer.types';
 	import { entityLens, shortCommit, type EntityNav } from '../../utils/entityLens';
@@ -29,10 +30,8 @@
 		behavior: ExplorerBehavior;
 		nav: EntityNav;
 		mediaBase: string;
-		/** Where a record is downloaded from, when the host serves it. */
 		exportHref?: string;
 	} = $props();
-	// How each scenario, test and state stands is the host's judgement, from the record the badge reads.
 	let coverage = $derived(evidence.after.coverage);
 	let record = $derived(evidence.after.record);
 	let media = $derived(galleryItems(evidence));
@@ -45,12 +44,6 @@
 		incomplete: 'Coverage incomplete',
 		inapplicable: 'Not applicable'
 	};
-	type Slot = {
-		kind: string;
-		viewport: string | null;
-		standing: CoverageStanding;
-		reason: string | null;
-	};
 	const where = (slot: Slot) => `${slot.kind}${slot.viewport ? ` at ${slot.viewport}` : ''}`;
 	const untold = (reasons: string[], slot: Slot) =>
 		slot.standing !== 'passed' && !reasons.includes(slot.reason ?? '');
@@ -59,7 +52,6 @@
 		evidence.scenarios
 			.find((item) => item.id === scenario)
 			?.states.find((item) => item.id === state)?.reason;
-	// The job a record ran for a test of a scenario; the host names it `<scenario>:<test>`.
 	const job = (scenario: string, test: string) =>
 		record?.tests.find((item) => item.id === `${scenario}:${test}`);
 </script>

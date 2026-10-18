@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { record, revision } from '../entityFixture';
-import { content, count, verdicts, words } from '../entityRender';
+import { content, count, disclosed, verdicts, words } from '../entityRender';
 import { commits, ids, scenarios } from '../entityUnits';
 
 const page = { category: 'pages' as const, entity: ids.page, tab: 'tests' as const };
@@ -14,12 +14,12 @@ const missing = 'No capture of Orders page over synthetic orders: empty at mobil
 
 test('tests show the verdict, each scenario with its states, and the checks that ran', () => {
 	const body = content('commit', page);
-	expect(words(body)).toContain('Verification at bbbbbbb');
+	expect(disclosed(body)).toContain('Verification at bbbbbbb');
 	expect(names(body)).toContain('Full coverage passed');
 	expect(names(body)).toContain('Every required state is proven');
 	// A badge is its icon: what it says is its name and its tooltip, not words on the page.
 	expect(words(body)).not.toMatch(/Full coverage passed|Every required state is proven/);
-	expect(words(body)).toContain('Orders page over synthetic orders');
+	expect(disclosed(body)).toContain('Orders page over synthetic orders');
 	expect(words(row(body, 'default'))).toContain('default required');
 	expect(verdicts(row(body, 'default'))).toEqual([{ passed: true, name: 'Proven', reasons: [] }]);
 	// A state the scenario says does not apply keeps its declared reason and has no badge.
@@ -27,7 +27,7 @@ test('tests show the verdict, each scenario with its states, and the checks that
 		'denied inapplicable: the orders page has no sign-in Not applicable'
 	);
 	expect(verdicts(row(body, 'denied'))).toEqual([]);
-	expect(words(body)).toContain('orders-browser passed e2e · 900 ms');
+	expect(disclosed(body)).toContain('orders-browser passed e2e · 900 ms');
 	expect(words(body)).not.toMatch(/src\/|\.ts\b/);
 });
 
@@ -62,13 +62,13 @@ test('one capture of a state that needs two viewports is a cross on that state, 
 
 test('the full comparison is the existing gallery, which pairs each capture with its before', () => {
 	const body = content('commit', page);
-	expect(words(body)).toContain('Screenshot gallery');
+	expect(disclosed(body)).toContain('Screenshot gallery');
 	// Four states and viewports: each after is listed once, its before is opened beside it.
-	expect(words(body)).toContain('4 / 4');
+	expect(disclosed(body)).toContain('4 / 4');
 	for (const file of ['bbbbbbb-default-desktop.png', 'bbbbbbb-empty-mobile.png']) {
 		expect(body).toContain(`/harness/media/${file}`);
 	}
-	expect(words(body)).toContain('Fresh capture');
+	expect(disclosed(body)).toContain('Fresh capture');
 	expect(body).not.toContain('ccccccc');
 });
 
@@ -91,7 +91,7 @@ test('what the commit no longer declares is shown as gone, with a result before 
 	}));
 	head.registry = { ...head.registry, scenarios: kept };
 	const body = content('commit', page, { head });
-	expect(words(body)).toContain('No longer declared at bbbbbbb');
-	expect(words(body)).toContain('Orders page over synthetic orders: the state empty.');
+	expect(disclosed(body)).toContain('No longer declared at bbbbbbb');
+	expect(disclosed(body)).toContain('Orders page over synthetic orders: the state empty.');
 	expect(words(content('commit', page))).not.toContain('No longer declared');
 });

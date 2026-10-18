@@ -52,3 +52,15 @@ Agent host-file changes, tracked as metadata only:
 - The same file, for the script integration: three more notes by the same owner. Before SHA256 `446e1e4f4f174352b92515cab0188714e97f81fbcd1b75812d5a87de47b8aecb`; after SHA256 `46fc8d96618a71744fc98272b36899db8d860b3592ee96890ad2e1f77af05a2c`, 7933 bytes. Contents remain private.
 - The same file, for the audio policy repair: two notes changed or added. Before SHA256 `46fc8d96618a71744fc98272b36899db8d860b3592ee96890ad2e1f77af05a2c`; after SHA256 `4fb14ee826d6806a9d1afcaf40026163fe745aca1e34cf69a3335163f08d63c0`, 8388 bytes. Contents remain private.
 - Task-owned and outside the repository: isolated exports with their own installed dependencies under `/tmp/harness-fresh-checkout.*` and `/tmp/harness-audio-export.*`, and logs under `/tmp/harness-fresh-*.log` and `/tmp/harness-audio-*.log`. No other host file was changed.
+
+## Supported Visual States
+
+- Pages, components and shells expose States; functions, services and configs keep their recorded input/output tests. Legacy visual Tests/Evidence links remain usable.
+- One shared gallery lists every declared state, including explicit missing and inapplicable coverage. Viewport selection keeps the selected revision; branch tips show current captures and named commits show both sides.
+- Activity List declares six states at three viewports: collapsed, expanded, short, empty, ordered and caller-supplied error content. The component has no internal network-error API; its row snippet renders the error fixture.
+- Capture provenance and verification diagnostics stay in disclosures. The persistent component preview remains above every tab.
+- Regression: failing test commit `51f5137c`, record `b325dd70`; passing source `af13ab15`, record `530afede`. The same command and all 1,262 frozen inputs match.
+- Reports checks pass: formatting, types, lint, 570 unit tests, builds and audit. Root types, lint and 847 unit tests pass; 25 live-provider cases remain skipped by their existing configuration.
+- Shared-workspace browser acceptance passes 11 cases. Electron and simulator testing remain paused. The full root aggregate includes native work, so the loop's aggregate verification step remains pending.
+- The shared preview fixture keeps one asset route per page across navigation; pending lazy images cannot fall through a route teardown. Browser error assertions remain enabled.
+- Runtime captures use the existing clean-snapshot runner, build identities, artifact hashing, Git notes and LFS evidence branch. A scoped capture explicitly marks other scenarios unverified and never claims whole-repository verification passed.

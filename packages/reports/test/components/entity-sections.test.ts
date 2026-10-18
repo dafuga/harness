@@ -3,7 +3,7 @@ import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
 import EntitySections from '../../src/components/harness/EntitySections.svelte';
 import { explorerEntities } from '../../src/utils/explorerEntities';
-import { hostProps, words } from '../entityRender';
+import { disclosed, hostProps, words } from '../entityRender';
 import { nav } from '../entityPlaces';
 import { ids } from '../entityUnits';
 
@@ -27,6 +27,8 @@ test('what it uses and its tests replace the overview, and its evidence pane wit
 	expect(words(related)).not.toContain('the evidence of its kind');
 	const tests = sections('tests');
 	expect(tests).toContain('aria-label="Orders page states"');
-	expect(words(tests)).toContain('Verification at bbbbbbb');
+	expect(words(tests)).toContain('States');
+	expect(words(tests)).not.toContain('Verification at bbbbbbb');
+	expect(disclosed(tests)).toContain('Verification at bbbbbbb');
 	expect(words(tests)).not.toContain('the evidence of its kind');
 });

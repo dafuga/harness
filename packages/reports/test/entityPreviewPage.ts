@@ -12,6 +12,7 @@ export const viewports = {
 	tablet: { width: 834, height: 1112 },
 	mobile: { width: 390, height: 844 }
 };
+const served = new WeakSet<Page>();
 const types: Record<string, string> = {
 	'.js': 'text/javascript',
 	'.css': 'text/css',
@@ -40,14 +41,18 @@ export async function open(
 	variant: PreviewVariant = ''
 ): Promise<void> {
 	const home = previewHome();
-	await page.unrouteAll();
-	await page.route(`${origin}/**`, (request) => {
-		const path = new URL(request.request().url()).pathname;
-		const file = join(home, path.replace(/^\/harness\/media\//, 'media/'));
-		if (path === '/') return request.fulfill({ contentType: 'text/html', body: shell(home) });
-		if (!existsSync(file)) return request.fulfill({ status: 404, body: 'not in the preview' });
-		return request.fulfill({ contentType: types[extname(file)], body: readFileSync(file) });
-	});
+	// Keep asset routes installed while this page switches views, including pending lazy reads.
+	await page.goto('about:blank');
+	if (!served.has(page)) {
+		await page.route(`${origin}/**`, (request) => {
+			const path = new URL(request.request().url()).pathname;
+			const file = join(home, path.replace(/^\/harness\/media\//, 'media/'));
+			if (path === '/') return request.fulfill({ contentType: 'text/html', body: shell(home) });
+			if (!existsSync(file)) return request.fulfill({ status: 404, body: 'not in the preview' });
+			return request.fulfill({ contentType: types[extname(file)], body: readFileSync(file) });
+		});
+		served.add(page);
+	}
 	const address = { branch: 'feature/orders', commit: null, category: 'pages', ...route };
 	const asked = variant ? `?variant=${variant}` : '';
 	await page.goto(`${origin}/${asked}#${encodeURIComponent(JSON.stringify(address))}`);
