@@ -139,7 +139,9 @@
 		"reports.component.entity-search",
 		"reports.component.entity-search-results",
 		"reports.component.entity-contract",
-		"reports.function.contract-fields"
+		"reports.function.contract-fields",
+		"reports.component.contract-example",
+		"reports.component.modal"
 	],
 	"states": [
 		{
@@ -445,6 +447,30 @@
 				"reports.function.contract-fields",
 				"reports.page.harness-branch-branch-at-functions-entity"
 			]
+		},
+		{
+			"id": "contract-example",
+			"title": "A contract example modal at a branch tip",
+			"coverage": "required",
+			"units": [
+				"reports.component.entity-contract",
+				"reports.function.contract-fields",
+				"reports.page.harness-branch-branch-at-functions-entity",
+				"reports.component.contract-example",
+				"reports.component.modal"
+			]
+		},
+		{
+			"id": "contract-example-commit",
+			"title": "A contract example modal at a selected commit",
+			"coverage": "required",
+			"units": [
+				"reports.component.entity-contract",
+				"reports.function.contract-fields",
+				"reports.page.harness-branch-branch-at-functions-entity",
+				"reports.component.contract-example",
+				"reports.component.modal"
+			]
 		}
 	],
 	"viewports": [
@@ -523,7 +549,9 @@
 				"search",
 				"search-pinned",
 				"contract",
-				"contract-commit"
+				"contract-commit",
+				"contract-example",
+				"contract-example-commit"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",
@@ -551,7 +579,9 @@
 				"source",
 				"shell-redirect",
 				"contract",
-				"contract-commit"
+				"contract-commit",
+				"contract-example",
+				"contract-example-commit"
 			],
 			"viewports": [],
 			"provenance": "actual-capture",
@@ -570,7 +600,9 @@
 				"source",
 				"shell-redirect",
 				"contract",
-				"contract-commit"
+				"contract-commit",
+				"contract-example",
+				"contract-example-commit"
 			],
 			"viewports": [],
 			"provenance": "actual-capture",

@@ -2,7 +2,7 @@
 	"name": "contract-example-dialog",
 	"goal": "Read typed contract inputs and outputs as compact tables; open honest examples in an accessible shared modal.",
 	"createdAt": "2026-10-18T18:55:46.237Z",
-	"updatedAt": "2026-10-18T19:12:35.935Z",
+	"updatedAt": "2026-10-18T19:18:56.361Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -27,7 +27,7 @@
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
 			"status": "complete",
 			"completedAt": "2026-10-18T18:59:52.112Z",
-			"evidence": "Committed checkpoint 0a05c433 fails all three responsive cases because contract inputs are not a table; immutable record a725a055 preserves output and screenshots."
+			"evidence": "Final sealed red c2219832 at b474b54d fails the missing-table assertion at all three widths. Earlier checkpoint a725a055 is retained; corrected assertions use DOM labels and the shared modal Close name."
 		},
 		{
 			"id": "implement",
@@ -39,12 +39,15 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T19:18:56.361Z",
+			"evidence": "Red c2219832 at b474b54d and green abc0e99a at 719238c7 use the same 1,257 inputs, command and environment. The responsive table/modal cases and unit checks pass."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "All 569 web unit tests, 62 responsive preview checks, 11 integration/evidence checks and 144 required captures pass. Live table/dialog screenshots inspected; Escape restores focus. Web audit still reports three existing file-size findings; full root check running. Electron tests remain paused."
 		}
 	],
 	"evaluators": [

@@ -28,6 +28,8 @@ export const explorerFlows: Record<string, { expects: string; source?: boolean }
 	pages: { expects: 'Wait for the Pages catalog' },
 	contract: { expects: 'Wait for the contract fields at the branch tip' },
 	'contract-commit': { expects: 'Wait for the contract fields at the selected commit' },
+	'contract-example': { expects: 'Open an example from the branch tip contract table' },
+	'contract-example-commit': { expects: 'Open an example from the selected commit contract table' },
 	function: { expects: 'Wait until the behaviour of the function is compared with its parent' },
 	history: { expects: 'Wait for the commits that changed the function' },
 	gap: { expects: 'Wait for the mark of a function nobody verified' },
@@ -39,15 +41,24 @@ export const explorerFlows: Record<string, { expects: string; source?: boolean }
 	}
 };
 
+async function showContract(page: Page, commit = false, example = false): Promise<void> {
+	const path = `functions/${units.slugify}?tab=contract`;
+	await page.goto(commit ? at('main', commits.approved, path) : tip(explorerBranch, path));
+	const contract = page.getByRole('region', { name: 'Contract', exact: true });
+	await expect(contract).toBeVisible();
+	if (!example) return;
+	await contract
+		.getByRole('button', { name: /^View example for / })
+		.first()
+		.click();
+	await expect(page.getByRole('dialog')).toBeVisible();
+}
+
 const reaches: Record<string, (page: Page) => Promise<void>> = {
-	async contract(page) {
-		await page.goto(tip(explorerBranch, `functions/${units.slugify}?tab=contract`));
-		await expect(page.getByRole('region', { name: 'Contract', exact: true })).toBeVisible();
-	},
-	async 'contract-commit'(page) {
-		await page.goto(at('main', commits.approved, `functions/${units.slugify}?tab=contract`));
-		await expect(page.getByRole('region', { name: 'Contract', exact: true })).toBeVisible();
-	},
+	contract: (page) => showContract(page),
+	'contract-commit': (page) => showContract(page, true),
+	'contract-example': (page) => showContract(page, false, true),
+	'contract-example-commit': (page) => showContract(page, true, true),
 	// The six categories, pages first, at a verified commit.
 	async pages(page) {
 		await page.goto(at('main', commits.approved, 'pages'));

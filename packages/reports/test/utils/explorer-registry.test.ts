@@ -145,13 +145,21 @@ const contracts = [
 ];
 const contractStates: Array<[string, string[]]> = [
 	['contract', contracts],
-	['contract-commit', contracts]
+	['contract-commit', contracts],
+	[
+		'contract-example',
+		[...contracts, 'reports.component.contract-example', 'reports.component.modal']
+	],
+	[
+		'contract-example-commit',
+		[...contracts, 'reports.component.contract-example', 'reports.component.modal']
+	]
 ];
 const written = [...shellStates, ...searchStates, ...contractStates];
 
 test('what every page is made of is under every state, and each state names a page there is', () => {
 	const every = scenario.states.map((state) => state.id);
-	expect(every).toHaveLength(46);
+	expect(every).toHaveLength(48);
 	expect(statesOf(`${part}harness-header`)).toEqual(every);
 	expect(statesOf(`${part}harness-console`)).toEqual(every);
 	const pages = new Set(units.filter((unit) => unit.kind === 'page').map((unit) => unit.id));
