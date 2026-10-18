@@ -187,8 +187,9 @@ test('a title that wraps onto two lines is one solid area to press', async ({ pa
 	await tab.setViewportSize(viewports.mobile);
 	await open(tab, components);
 	// A narrow name column wraps the title, as a long name does in a real registry.
-	await tab.addStyleTag({ content: '.ex-page-body h2 a { width: 4.2em; display: block; }' });
+	await tab.addStyleTag({ content: '.ex-page-body h2 a { width: 3em; display: block; }' });
 	const title = tab.getByRole('link', { name: 'Order list', exact: true });
+	await title.scrollIntoViewIfNeeded();
 	const box = (await title.boundingBox()) as {
 		x: number;
 		y: number;
@@ -207,7 +208,8 @@ test('a title that wraps onto two lines is one solid area to press', async ({ pa
 	});
 	// So does a press at the end of the shorter line, where a line of text alone would be empty.
 	await open(tab, components);
-	await tab.addStyleTag({ content: '.ex-page-body h2 a { width: 4.2em; display: block; }' });
+	await tab.addStyleTag({ content: '.ex-page-body h2 a { width: 3em; display: block; }' });
+	await title.scrollIntoViewIfNeeded();
 	const again = (await title.boundingBox()) as {
 		x: number;
 		y: number;
