@@ -66,6 +66,7 @@ export const harnessIcons = {
 	external: 'M14 4h6v6M20 4l-9 9M18 13.5V19a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5.5',
 	expand: 'M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5',
 	help: `${ring}M9.6 9.5a2.5 2.5 0 1 1 3.6 2.2c-.8.4-1.2 1-1.2 1.8M12 16.6v.1`,
+	info: `${ring}M12 11v5.5M12 7.6v.1`,
 	grid: 'M4 4h6.5v6.5H4zM13.5 4H20v6.5h-6.5zM4 13.5h6.5V20H4zM13.5 13.5H20V20h-6.5z',
 	list: 'M8.5 6H20M8.5 12H20M8.5 18H20M4 6h.5M4 12h.5M4 18h.5',
 	link:

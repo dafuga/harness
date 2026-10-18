@@ -3,7 +3,7 @@
 	"id": "reports.component.entity-contract",
 	"kind": "component",
 	"title": "Typed contract",
-	"responsibility": "Explains the inputs, outputs and errors of one entity with public types, descriptions and labelled examples.",
+	"responsibility": "Lists the typed inputs, outputs and errors of one entity in tables, with examples available through an info icon.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -38,19 +38,24 @@
 			{
 				"name": "EntityContract",
 				"type": "markup",
-				"description": "Field cards with types, descriptions and declared or illustrative examples. Opaque fields without examples show an explicit gap; no source files or test outcomes are inferred."
+				"description": "Compact field tables with public types and descriptions. An info icon opens one example in the shared modal; examples are unmounted until requested."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
 		{
+			"unit": "reports.component.contract-example",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-harness-icon",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.recorded-value",
+			"unit": "reports.component.modal",
 			"via": "import",
 			"origin": "derived"
 		},

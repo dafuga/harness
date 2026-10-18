@@ -1,10 +1,12 @@
 <script lang="ts">
+	import { tick } from 'svelte';
 	import type { ExplorerCategory } from '../models/Explorer.types';
 	import type { HarnessUnit } from '../models/Harness.types';
 	import type { ContractRow } from '../utils/entityContract';
-	import { contractFacts, contractFields, type ContractExample } from '../utils/contractFields';
+	import { contractFacts, contractFields, type ContractField } from '../utils/contractFields';
+	import ContractExample from './ContractExample.svelte';
 	import HarnessIcon from './harness/HarnessIcon.svelte';
-	import RecordedValue from './RecordedValue.svelte';
+	import Modal from './Modal.svelte';
 	let {
 		unit,
 		category,
@@ -22,21 +24,19 @@
 	let groups = $derived(contractFields(unit, category));
 	let facts = $derived(contractFacts(contract, unit, category));
 	let title = $derived(last ? `Last contract · ${last.slice(0, 7)}` : 'Contract');
+	// Examples stay out of the page until one field's is opened, and focus returns to its button.
+	let chosen = $state<ContractField | null>(null);
+	let opener: HTMLButtonElement | null = null;
+	function openExample(field: ContractField, event: MouseEvent) {
+		opener = event.currentTarget as HTMLButtonElement;
+		chosen = field;
+	}
+	async function closeExample() {
+		chosen = null;
+		await tick();
+		opener?.focus();
+	}
 </script>
-
-{#snippet example(item: ContractExample)}
-	{#if item.form === 'structure'}
-		<RecordedValue value={item.value} />
-		<details class="whole">
-			<summary>Full example as JSON</summary>
-			<pre class="literal">{item.text}</pre>
-		</details>
-	{:else if item.form === 'markup'}
-		<pre class="literal">{item.text}</pre>
-	{:else}
-		<code class="literal">{item.text}</code>
-	{/if}
-{/snippet}
 
 <section
 	class="ex-card ex-contract"
@@ -67,40 +67,51 @@
 			{#if group.fields.length === 0}
 				<p class="ex-note">{group.none}</p>
 			{:else}
-				<ul class="fields">
-					{#each group.fields as field, position (position)}
-						<li class="field">
-							<div class="head">
-								<strong>{field.name}</strong>
-								<code class="type">{field.type}</code>
-							</div>
-							{#if field.description}
-								<p>{field.description}</p>
-							{:else}
-								<p class="ex-note">No description recorded.</p>
-							{/if}
-							<div class="examples">
-								{#if field.source === 'missing'}
-									<p class="ex-note">Example not recorded</p>
-								{:else}
-									<p class="said">
-										<span class={field.source}
-											>{field.source === 'declared' ? 'Declared' : 'Illustrative'}</span
-										>
-										{field.examples.length > 1 ? 'examples' : 'example'}
-									</p>
-									<ul>
-										{#each field.examples as item, at (at)}<li>{@render example(item)}</li>{/each}
-									</ul>
-								{/if}
-							</div>
-						</li>
-					{/each}
-				</ul>
+				<div class="frame">
+					<table aria-label={group.title}>
+						<thead>
+							<tr
+								><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Description</th
+								></tr
+							>
+						</thead>
+						<tbody>
+							{#each group.fields as field, position (position)}
+								<tr>
+									<th scope="row">{field.name}</th>
+									<td>
+										<div class="typed">
+											<code>{field.type}</code>
+											<button
+												type="button"
+												class="info"
+												aria-label={`View example for ${field.name}`}
+												aria-haspopup="dialog"
+												onclick={(event) => openExample(field, event)}
+												><HarnessIcon name="info" size={18} /></button
+											>
+										</div>
+									</td>
+									<td class:none={!field.description}>
+										{field.description ?? 'No description recorded.'}
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
 			{/if}
 		</div>
 	{/each}
 </section>
+<Modal
+	open={chosen !== null}
+	title={chosen ? `Example for ${chosen.name}` : ''}
+	variant="text"
+	onClose={closeExample}
+>
+	{#if chosen}<ContractExample field={chosen} />{/if}
+</Modal>
 
 <style>
 	.ex-contract {
@@ -120,89 +131,86 @@
 		margin: 6px 0 0;
 		font-size: 1.05rem;
 	}
-	ul {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-	.fields {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
-		gap: 12px;
-	}
-	.field {
-		display: grid;
-		gap: 10px;
-		align-content: start;
+	/* On a phone the table keeps its columns and scrolls inside this frame, not the page. */
+	.frame {
 		min-width: 0;
-		padding: 14px 16px;
+		overflow-x: auto;
 		border: 1px solid var(--ex-line);
 		border-radius: 8px;
 		background: var(--ex-surface);
-		overflow-wrap: anywhere;
 	}
-	.head {
+	table {
+		width: 100%;
+		min-width: 32rem;
+		border-collapse: collapse;
+		table-layout: fixed;
+	}
+	th,
+	td {
+		padding: 8px 14px;
+		text-align: start;
+		border-bottom: 1px solid var(--ex-line);
+		vertical-align: baseline;
+		overflow-wrap: break-word;
+	}
+	tbody tr:last-child > * {
+		border-bottom: 0;
+	}
+	thead th {
+		color: var(--ex-soft);
+		font-size: 0.8rem;
+		font-weight: 600;
+	}
+	thead th:first-child {
+		width: 22%;
+	}
+	thead th:nth-child(2) {
+		width: 30%;
+	}
+	.typed {
 		display: flex;
-		flex-wrap: wrap;
-		align-items: baseline;
-		gap: 6px 10px;
+		align-items: center;
+		gap: 6px;
+		min-width: 0;
 	}
-	.type {
+	code {
+		min-width: 0;
 		padding: 2px 8px;
 		border: 1px solid color-mix(in srgb, var(--ex-gold) 45%, transparent);
 		border-radius: 6px;
 		color: var(--ex-gold);
 		font-size: 0.88rem;
-	}
-	.examples {
-		display: grid;
-		gap: 8px;
-		min-width: 0;
-		padding-top: 10px;
-		border-top: 1px solid var(--ex-line);
-	}
-	.examples ul {
-		display: grid;
-		gap: 8px;
-	}
-	.examples li {
-		min-width: 0;
-	}
-	.said {
-		color: var(--ex-soft);
-		font-size: 0.85rem;
-	}
-	.said .declared {
-		color: var(--ex-gold);
-		font-weight: 600;
-	}
-	.said .illustrative {
-		font-style: italic;
-		font-weight: 600;
-	}
-	.literal {
-		display: block;
-		margin: 0;
-		padding: 8px 10px;
-		border-radius: 6px;
-		background: var(--ex-raised);
-		font:
-			0.88rem/1.5 ui-monospace,
-			SFMono-Regular,
-			Menlo,
-			monospace;
-		white-space: pre-wrap;
 		overflow-wrap: anywhere;
 	}
-	.whole {
-		margin-top: 6px;
-	}
-	.whole summary {
-		color: var(--ex-gold);
-		font-size: 0.85rem;
+	.info {
+		display: inline-grid;
+		flex: none;
+		place-items: center;
+		width: 32px;
+		height: 32px;
+		padding: 0;
+		border: 1px solid transparent;
+		border-radius: 6px;
+		background: none;
+		color: var(--ex-soft);
 		cursor: pointer;
 	}
-	.whole .literal {
-		margin-top: 6px;
+	.info:hover,
+	.info:focus-visible {
+		border-color: var(--ex-line);
+		color: var(--ex-gold);
+	}
+	.info:focus-visible {
+		outline: 2px solid var(--ex-gold);
+		outline-offset: 1px;
+	}
+	@media (pointer: coarse) {
+		.info {
+			width: 44px;
+			height: 44px;
+		}
+	}
+	.none {
+		color: var(--ex-soft);
 	}
 </style>

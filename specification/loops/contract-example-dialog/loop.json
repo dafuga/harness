@@ -2,7 +2,7 @@
 	"name": "contract-example-dialog",
 	"goal": "Read typed contract inputs and outputs as compact tables; open honest examples in an accessible shared modal.",
 	"createdAt": "2026-10-18T18:55:46.237Z",
-	"updatedAt": "2026-10-18T18:55:57.102Z",
+	"updatedAt": "2026-10-18T19:12:35.935Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T18:59:52.112Z",
+			"evidence": "Committed checkpoint 0a05c433 fails all three responsive cases because contract inputs are not a table; immutable record a725a055 preserves output and screenshots."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T19:12:35.935Z",
+			"evidence": "Opus 5.5 implemented typed tables, shared-modal examples and one-field lazy mounting. Focused unit and responsive browser cases pass; web build, types and lint pass."
 		},
 		{
 			"id": "green",
