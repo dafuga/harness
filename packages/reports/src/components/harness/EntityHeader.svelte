@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
 	import type { ExplorerEntity, ExplorerLocation } from '../../models/Explorer.types';
 	import { entityLabels, entityLens, type EntityNav } from '../../utils/entityLens';
 	import { categoryIcon } from '../../utils/harnessIcons';
@@ -11,15 +10,8 @@
 	let {
 		entity,
 		nav,
-		shared = false,
-		preview
-	}: {
-		entity: ExplorerEntity;
-		nav: EntityNav;
-		shared?: boolean;
-		/** What stays between the identity and the tabs on every tab: the screenshots of a component. */
-		preview?: Snippet;
-	} = $props();
+		shared = false
+	}: { entity: ExplorerEntity; nav: EntityNav; shared?: boolean } = $props();
 	type Place = Pick<ExplorerLocation, 'section' | 'tab'>;
 	let label = $derived(entityLabels[entity.category]);
 	let details = $derived(nav.route.section === 'details');
@@ -115,7 +107,6 @@
 		{/if}
 	</div>
 </header>
-{@render preview?.()}
 <HarnessTabs
 	label={`${entity.name} sections`}
 	view={active}

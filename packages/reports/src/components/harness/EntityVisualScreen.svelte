@@ -9,23 +9,20 @@
 	let host: ExplorerScreenProps = $props();
 </script>
 
-<!-- What is seen: a page or a shell opens on its screenshots, which a component keeps above its
-	tabs instead; a clip of it is heard below. -->
+<!-- What is seen: a page or a component opens on its screenshots; a clip of it is heard below. -->
 <EntityFrame {host}>
 	{#snippet children(entity, nav)}
 		<EntitySections {host} {entity} {nav}>
 			{#snippet pane()}
 				{@const evidence = host.lens.evidence(entity.unit)}
-				{#if entity.category !== 'components'}
-					<EntityScreens
-						options={screenOptions(evidence.scenarios)}
-						{evidence}
-						scope={host.scope}
-						mediaBase={host.mediaBase}
-						{nav}
-						reasons={entityChanged(host, entity.id)}
-					/>
-				{/if}
+				<EntityScreens
+					options={screenOptions(evidence.scenarios)}
+					{evidence}
+					scope={host.scope}
+					mediaBase={host.mediaBase}
+					{nav}
+					reasons={entityChanged(host, entity.id)}
+				/>
 				<EntityAudio {evidence} scope={host.scope} mediaBase={host.mediaBase} />
 			{/snippet}
 		</EntitySections>

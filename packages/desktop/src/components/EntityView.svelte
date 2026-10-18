@@ -38,8 +38,6 @@
 	type Section = keyof typeof sections;
 	/** A function has a plan and no designs; every other entity has designs and no plan section. */
 	const headless = $derived(workspace.entity?.category === 'functions');
-	/** A component keeps its runtime evidence between its name and every section it opens. */
-	const pictured = $derived(workspace.entity?.category === 'components');
 	const names = $derived(
 		(Object.keys(sections) as Section[]).filter((name) => name !== (headless ? 'Designs' : 'Plan'))
 	);
@@ -85,8 +83,8 @@
 		})
 	);
 	/**
-	 * Recorded evidence is read where it is shown, on every tab of a component, and again when the
-	 * entity, revision or pinned notes and evidence change. Designs are read without it.
+	 * Recorded evidence is read where it is shown, and again when the entity, the revision or the
+	 * pinned notes and evidence of the project change. Designs are read without it.
 	 */
 	const evidence = createEntityEvidenceStore();
 	$effect(() => {
@@ -94,7 +92,7 @@
 		const stamp = `${pin?.notesRevision ?? ''}|${pin?.evidenceRevision ?? ''}`;
 		const scope = evidenceQuery(workspace, workspace.entity?.id ?? '');
 		const planned = Boolean(workspace.entity?.planned);
-		if (pictured || tab === 'Overview' || tab === 'Evidence' || tab === 'History')
+		if (tab === 'Overview' || tab === 'Evidence' || tab === 'History')
 			evidence.show(workspace.bridge, { scope, planned, stamp });
 	});
 	onDestroy(() => evidence.reset());
@@ -160,7 +158,6 @@
 				}}>Details →</button
 			>{#if !conversation}<button onclick={() => (conversation = true)}>Conversation</button>{/if}
 		</div>
-		{#if pictured}<RuntimeEvidence {entity} {workspace} {evidence} />{/if}
 		<nav class="entity-tabs" aria-label="Entity sections">
 			{#each names as value (value)}<button
 					class:active={tab === value}
@@ -188,8 +185,11 @@
 					<RelationshipsPanel relationships={entity.relationships} {workspace} direction="uses" />
 				</div>
 			</div>
-			{#if !pictured}<RuntimeEvidence {entity} {workspace} {evidence} />{/if}
-		{:else if tab === 'Designs' || tab === 'Plan'}<DesignPanel
+			<RuntimeEvidence
+				{entity}
+				{workspace}
+				{evidence}
+			/>{:else if tab === 'Designs' || tab === 'Plan'}<DesignPanel
 				{entity}
 				{workspace}
 				{annotatable}

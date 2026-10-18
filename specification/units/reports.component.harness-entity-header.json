@@ -27,18 +27,13 @@
 				"name": "EntityHeader.shared",
 				"type": "boolean",
 				"description": "Optional flag, false by default, displaying a Shared badge."
-			},
-			{
-				"name": "EntityHeader.preview",
-				"type": "Snippet",
-				"description": "Optional persistent preview rendered between entity identity and the tabs, including Details and History."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityHeader",
 				"type": "markup",
-				"description": "Breadcrumbs, category icon, name/role/verdict and purpose or details summary. Pages show an openable app route or nonlinked pattern/Not recorded. Offers Details or Back to overview and the appropriate tab row. Navigation retains context through the route helper. An optional preview remains above every tab row."
+				"description": "Breadcrumbs, category icon, name/role/verdict and purpose or details summary. Pages show an openable app route or nonlinked pattern/Not recorded. Offers Details or Back to overview and the appropriate tab row. Navigation retains context through the route helper."
 			}
 		],
 		"errors": []

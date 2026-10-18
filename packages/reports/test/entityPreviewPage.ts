@@ -118,11 +118,8 @@ export async function reviewVisual(
 				.evaluateAll((images) => images.map((image) => image.getAttribute('src')));
 			expect(files).toEqual(
 				commit
-					? [
-							'/harness/media/aaaaaaa-default-desktop.png',
-							'/harness/media/bbbbbbb-default-desktop.png'
-						]
-					: ['/harness/media/ccccccc-default-desktop.png']
+					? ['/media/aaaaaaa-default-desktop.png', '/media/bbbbbbb-default-desktop.png']
+					: ['/media/ccccccc-default-desktop.png']
 			);
 			expect(await fits(page)).toBe(true);
 		}
