@@ -65,7 +65,10 @@ test('historical cards keep their screenshot and a commit without evidence stays
 		.locator('article.entity-card')
 		.filter({ has: page.getByRole('heading', { name: pageTitle, exact: true }) });
 	await expect(card.getByRole('img', { name: `Screenshot of ${pageTitle}` })).toBeVisible();
-	await expect(card.locator('figcaption')).toContainText(commits.middle.slice(0, 7));
+	await expect(card.locator('figure')).toHaveAttribute(
+		'title',
+		expect.stringContaining(commits.middle.slice(0, 7))
+	);
 	expect((await evidenceState(page)).calls.find((call) => call.op === 'artifact')).toMatchObject({
 		commit: commits.middle,
 		mode: 'commit',
@@ -96,14 +99,12 @@ for (const shared of [false, true]) {
 				.filter({ has: page.getByRole('heading', { name: pageTitle, exact: true }) });
 			await expect(card.locator('img')).toBeVisible();
 			await capture(page, info, `${mode}-${size.id}`);
-			const open = card.getByRole('link', { name: 'Open page', exact: true });
-			await expect(open).toHaveAttribute('title', 'Open page');
-			await expect(open).toHaveText('');
-			const bounds = await open.boundingBox();
-			expect(bounds?.width).toBeLessThanOrEqual(40);
-			expect(bounds?.height).toBeLessThanOrEqual(40);
-			await expect(card.getByRole('img', { name: `Screenshot of ${pageTitle}` })).toBeVisible();
-			await expect(card).toContainText('Screenshot');
+			expect((await card.innerText()).trim(), 'page cards show only their title').toBe(pageTitle);
+			await expect(card.locator('.card-meta, .plan-badge, .verification-wrap')).toHaveCount(0);
+			const open = card.getByRole('link', { name: `Open ${pageTitle}`, exact: true });
+			await expect(open).toHaveCount(1);
+			await expect(open.getByRole('heading', { name: pageTitle })).toBeVisible();
+			await expect(open.getByRole('img', { name: `Screenshot of ${pageTitle}` })).toBeVisible();
 			const calls = (await evidenceState(page)).calls;
 			expect(calls.find((call) => call.op === 'artifact')).toMatchObject({
 				projectId: sharedProject,

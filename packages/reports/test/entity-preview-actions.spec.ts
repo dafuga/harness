@@ -120,20 +120,23 @@ for (const [name, size] of Object.entries(viewports)) {
 		}
 	});
 
-	test(`a page card opens with one compact icon at ${name} width`, async ({ page: tab }) => {
+	test(`page cards show only a title and screenshot at ${name} width`, async ({ page: tab }) => {
 		await tab.setViewportSize(size);
 		await open(tab);
-		const action = tab.getByRole('link', { name: 'Open page', exact: true });
-		await expect(action).toBeVisible();
 		await tab.evaluate(async () => {
 			await document.fonts.ready;
 			await Promise.all([...document.images].map((image) => image.decode()));
 		});
 		await capture(tab, `compact-page-${name}`);
-		expect((await action.innerText()).trim()).toBe('');
-		await expect(action).toHaveAttribute('title', 'Open page');
-		await expect(action.locator('svg')).toHaveCount(1);
-		expect(await action.boundingBox()).toMatchObject({ width: 36, height: 36 });
+		const card = tab.getByRole('article', { name: 'Orders page', exact: true });
+		expect((await card.innerText()).trim(), 'page cards show only their title').toBe('Orders page');
+		await expect(card.locator('button, .hx-verdict, .ex-fact')).toHaveCount(0);
+		const action = card.getByRole('link', { name: 'Open Orders page', exact: true });
+		await expect(action).toHaveCount(1);
+		await expect(action.getByRole('img')).toHaveAttribute(
+			'src',
+			'/media/ccccccc-default-desktop.png'
+		);
 		await action.focus();
 		await tab.keyboard.press('Enter');
 		expect(await where(tab)).toEqual({ branch: 'feature/orders', commit: null, ...page });

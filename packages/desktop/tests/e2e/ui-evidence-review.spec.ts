@@ -176,7 +176,7 @@ test('an entity is named in words, and a page states its address as a fact', asy
 	await expect(
 		page.getByRole('heading', { level: 2, name: 'Orders page', exact: true })
 	).toBeVisible();
-	await page.getByRole('link', { name: 'Open page' }).click();
+	await page.getByRole('link', { name: 'Open Orders page' }).click();
 	await expect(
 		page.getByRole('heading', { level: 1, name: 'Orders page', exact: true })
 	).toBeVisible();
