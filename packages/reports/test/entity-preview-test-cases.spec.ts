@@ -134,3 +134,54 @@ for (const [viewport, size] of Object.entries(viewports)) {
 		await expect(cases.locator('details[open] pre')).toContainText('Order 1042 · Service call');
 	});
 }
+
+// Extend the existing revision/viewport case matrix to authored function usage, without a run.
+for (const [viewport, size] of Object.entries(viewports)) {
+	test(`function Examples show committed uses at ${viewport} width`, async ({ page }) => {
+		await page.setViewportSize(size);
+		for (const commit of [null, commits.middle]) {
+			await open(
+				page,
+				{ category: 'functions', entity: ids.filter, commit, tab: 'tests' },
+				'documented'
+			);
+			await capture(page, `examples-entry-${commit ? 'commit' : 'tip'}-${viewport}`);
+			const examples = page.getByRole('tab', { name: 'Examples', exact: true });
+			await expect(examples, 'functions expose Examples instead of Tests').toHaveCount(1);
+			await expect(page.getByRole('tab', { name: 'Tests', exact: true })).toHaveCount(0);
+			await examples.click();
+			const pane = page.getByRole('tabpanel', { name: 'Filter orders examples', exact: true });
+			await expect(pane).toBeVisible();
+			const rows = pane.locator('.cases > table > tbody > tr');
+			await expect(rows).toHaveCount(3);
+			await expect(rows.first()).toContainText(
+				commit ? 'Search the earlier catalog' : 'Find a matching order'
+			);
+			await expect(rows.first()).toContainText('SERVICE');
+			await expect(rows.first()).toContainText('Service call');
+			await expect(rows.last()).toContainText('false');
+			await expect(rows.last()).toContainText('0');
+			await expect(rows.last()).toContainText('null');
+			await expect(pane.getByRole('columnheader')).toHaveText([
+				'Example',
+				'Input',
+				'Expected output'
+			]);
+			await expect(pane.locator('tag')).toHaveCount(0);
+			await expect(
+				pane.getByText('No usable verification record judges this revision.')
+			).not.toBeVisible();
+			await pane.getByText('Committed document', { exact: true }).click();
+			await expect(pane.locator('pre').last()).toContainText('Committed usage documentation');
+			await pane.getByText('Committed document', { exact: true }).click();
+			await capture(page, `examples-cases-${commit ? 'commit' : 'tip'}-${viewport}`);
+			expect(await fits(page)).toBe(true);
+		}
+		await open(page, { category: 'functions', entity: ids.filter, tab: 'tests' });
+		const pane = page.getByRole('tabpanel', { name: 'Filter orders examples', exact: true });
+		await expect(pane).toContainText('No usage examples are documented at this commit.');
+		await expect(pane.locator('.cases')).toHaveCount(0);
+		await pane.getByText('Recorded tests and verification', { exact: true }).click();
+		await expect(pane.getByRole('heading', { name: /Verification at/ })).toBeVisible();
+	});
+}

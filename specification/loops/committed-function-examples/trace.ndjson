@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-18T22:51:19.327Z","name":"committed-function-examples","goal":"Show versioned human-readable usage examples from committed documents, with test evidence separate","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-18T22:54:47.068Z","loop":"committed-function-examples","step":"spec","evidence":"Reproduced function Tests showing verification gaps without usage examples; feature spec records committed-doc behavior."}
+{"event":"step.completed","timestamp":"2026-10-18T22:54:47.490Z","loop":"committed-function-examples","step":"coverage","evidence":"Extend the standardized case-view viewport matrix and manifest validator; existing fixtures cover recorded service results only."}

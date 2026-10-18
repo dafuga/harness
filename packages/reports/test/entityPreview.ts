@@ -18,6 +18,7 @@ import {
 	legacyReasons,
 	previewRecord,
 	withFrame,
+	withDocumentation,
 	withInherited,
 	withScale,
 	withStates,
@@ -39,6 +40,8 @@ const stored: Record<string, HarnessRevision> = {
 };
 if (variant === 'inherited')
 	stored[commits.tip] = withInherited(stored[commits.tip], commits.middle);
+if (variant === 'documented')
+	for (const commit of Object.keys(stored)) stored[commit] = withDocumentation(stored[commit]);
 if (variant === 'states')
 	for (const commit of Object.keys(stored)) stored[commit] = withStates(stored[commit]);
 const hashes = (window as unknown as { artifactHashes?: Record<string, string> }).artifactHashes;

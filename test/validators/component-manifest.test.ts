@@ -107,3 +107,18 @@ test('a derived responsibility is labelled derived and cannot be edited without 
 	]);
 	expect(errorsOf({ ...edited, responsibilityOrigin: 'declared' })).toEqual([]);
 });
+
+test('a unit can name a committed Markdown document, but never escape its repository', async () => {
+	const base = await manifest();
+	const check = (documentation: string) =>
+		new ComponentManifestValidator().validate({ ...base, documentation }, file);
+	expect(check('src/functions/rank/README.md').errors).toEqual([]);
+	for (const path of [
+		'/tmp/rank.md',
+		'../rank.md',
+		'src/../rank.md',
+		'https://example.com/doc.md'
+	]) {
+		expect(check(path).errors.length).toBeGreaterThan(0);
+	}
+});
