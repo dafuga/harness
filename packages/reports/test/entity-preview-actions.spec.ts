@@ -22,7 +22,7 @@ for (const [name, size] of Object.entries(viewports)) {
 					})
 					.boundingBox();
 				const contract = await pane
-					.getByRole('region', { name: 'Contract', exact: true })
+					.getByRole('region', { name: 'Size', exact: true })
 					.boundingBox();
 				expect(evidence!.y, 'screenshots lead the overview').toBeLessThan(contract!.y);
 				await expect(pane.getByRole('region', { name: /^(Used In|Uses)$/ })).toHaveCount(0);

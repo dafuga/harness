@@ -14,7 +14,7 @@ const main = (rest: string) => at('main', commits.approved, rest);
 const content = (page: Page) => page.locator('.ex-content');
 const card = (page: Page, name: string) => content(page).getByRole('region', { name, exact: true });
 const heading = (page: Page, name: string) => page.getByRole('heading', { level: 1, name });
-const named = ['Overview', 'Used In', 'Uses', 'Tests', 'History'];
+const named = ['Overview', 'Contract', 'Used In', 'Uses', 'Tests', 'History'];
 
 for (const viewport of viewports)
 	test(`a config lists what uses it once, under Used In, at ${viewport.id} width`, async ({

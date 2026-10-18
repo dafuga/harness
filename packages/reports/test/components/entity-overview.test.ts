@@ -11,10 +11,11 @@ const shots = (body: string) =>
 
 test('an overview shows contract, size and performance, and nothing of the source', () => {
 	const body = content('commit', filter);
-	for (const heading of ['Contract', 'Size', 'Performance profile']) {
+	for (const heading of ['Size', 'Performance profile']) {
 		expect(body).toContain(`aria-label="${heading}"`);
 	}
-	expect(words(body)).toContain('Inputs orders, search text');
+	expect(body).not.toContain('aria-label="Contract"');
+	expect(words(content('commit', { ...filter, tab: 'contract' }))).toContain('orders');
 	expect(words(body)).toContain('Source size 800 B');
 	expect(words(body)).toContain('Not measured');
 	expect(words(body)).toContain('thousand orders');

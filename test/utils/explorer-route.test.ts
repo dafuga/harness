@@ -141,6 +141,18 @@ test('the tab of a section is kept in the query and only where it exists', () =>
 	expect(plain?.tab).toBeUndefined();
 	expect(explorerRoute('/branch/main/pages/reports.page.titles', '?tab=tests')?.tab).toBe('tests');
 	expect(explorerRoute('/branch/main/pages', '?tab=tests')?.tab).toBeUndefined();
+	expect(explorerRoute('/branch/main/pages/reports.page.titles', '?tab=contract')?.tab).toBe(
+		'contract'
+	);
+	expect(
+		explorerRoutePath({
+			branch: 'main',
+			commit: sha,
+			category: 'pages',
+			entity: 'reports.page.titles',
+			tab: 'contract'
+		})
+	).toBe(`/branch/main/commit/${sha}/pages/reports.page.titles?tab=contract`);
 });
 
 test('an entity id is one encoded segment', () => {

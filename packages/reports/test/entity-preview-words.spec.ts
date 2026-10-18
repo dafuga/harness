@@ -1,5 +1,5 @@
 import { expect, test, type Locator } from '../../../test/support/browserTest';
-import { capture, fits, open, viewports } from './entityPreviewPage';
+import { capture, fits, open, viewports, where } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 
 /** How many words of an element are drawn across more than one line. */
@@ -63,7 +63,43 @@ test('the details of a declared contract say what each item is, and fit a phone'
 	await tab.setViewportSize(viewports.mobile);
 	expect(await fits(tab)).toBe(true);
 	await capture(tab, 'details-declared-mobile');
-	// The overview explains the contract too; people do not need technical details to understand it.
+	// The dedicated Contract tab explains it without requiring technical details.
 	await open(tab, { category: 'pages', entity: ids.page, commit: commits.middle }, 'declared');
+	await expect(tab.getByRole('region', { name: 'Contract', exact: true })).toHaveCount(0);
+	await tab.getByRole('tab', { name: 'Contract', exact: true }).click();
 	await expect(tab.getByText('The branch, as one encoded path segment.')).toBeVisible();
 });
+
+for (const [width, size] of Object.entries(viewports)) {
+	test(`contract has its own typed example view at ${width} width`, async ({ page: tab }) => {
+		await tab.setViewportSize(size);
+		for (const commit of [null, commits.middle]) {
+			await open(tab, { category: 'pages', entity: ids.page, commit }, 'declared');
+			await capture(tab, `contract-overview-${commit ? 'commit' : 'tip'}-${width}`);
+			await expect(
+				tab.getByRole('tab', { name: 'Contract', exact: true }),
+				'contract has its own tab'
+			).toHaveCount(1);
+			await expect(tab.getByRole('region', { name: 'Contract', exact: true })).toHaveCount(0);
+			await tab.getByRole('tab', { name: 'Contract', exact: true }).click();
+			const contract = tab.getByRole('region', { name: 'Contract', exact: true });
+			await expect(contract).toBeVisible();
+			await tab.evaluate(async () => {
+				await document.fonts.ready;
+			});
+			await capture(tab, `contract-fields-${commit ? 'commit' : 'tip'}-${width}`);
+			await expect(contract.getByText('string', { exact: true })).toBeVisible();
+			await expect(contract).toContainText('feature/orders');
+			await expect(contract).toContainText('<main>Orders</main>');
+			await expect(contract).toContainText('The branch, as one encoded path segment.');
+			await expect(contract.getByRole('img')).toHaveCount(0);
+			expect(await where(tab)).toMatchObject({
+				commit,
+				category: 'pages',
+				entity: ids.page,
+				tab: 'contract'
+			});
+			expect(await fits(tab)).toBe(true);
+		}
+	});
+}

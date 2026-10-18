@@ -37,7 +37,7 @@ const times = (text: string, part: string) => text.split(part).length - 1;
 test('the sections of an entity are named Used In and Uses, and none is a relationship', () => {
 	for (const entity of [list, filter, page]) {
 		const body = content('commit', entity);
-		expect(tabs(body)).toEqual(['Overview', 'Used In', 'Uses', 'Tests', 'History']);
+		expect(tabs(body)).toEqual(['Overview', 'Contract', 'Used In', 'Uses', 'Tests', 'History']);
 		expect(words(body)).not.toMatch(/relationship|\brelated\b|Used by|Used on pages/i);
 		expect(sections(body).filter((name) => /^Use/.test(name))).toEqual([]);
 	}

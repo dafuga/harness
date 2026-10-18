@@ -18,9 +18,7 @@ test('a visual overview leads with evidence and keeps usage in its dedicated tab
 	const body = sections();
 	expect(body).toContain('aria-label="Orders page overview"');
 	expect(body).not.toMatch(/aria-label="(?:Used In|Uses)"/);
-	expect(body.indexOf('the evidence of its kind')).toBeLessThan(
-		body.indexOf('aria-label="Contract"')
-	);
+	expect(body.indexOf('the evidence of its kind')).toBeLessThan(body.indexOf('aria-label="Size"'));
 });
 
 test('what it uses and its tests replace the overview, and its evidence pane with it', () => {

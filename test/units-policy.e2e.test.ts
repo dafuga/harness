@@ -6,6 +6,7 @@ import { slugifySource, unitProject } from './support/unitProject';
 interface Shown {
 	manifest: {
 		id: string;
+		contract: { inputs: Array<{ name: string; type: string; examples?: unknown[] }> };
 		runtime: { kind: string; entry: string; targets: Array<{ kind: string; entry: string }> };
 		lineage?: { predecessors: string[] };
 		budgets: { performance: unknown[] };
@@ -29,6 +30,28 @@ test('CLI exposes execution targets and component versions, and refuses relaxed 
 	}
 
 	const path = 'specification/units/function.slugify.json';
+	const examples = [0, false, null, 'A title', { label: 'An item' }];
+	await project.write(
+		path,
+		JSON.stringify({
+			...shown.manifest,
+			contract: {
+				...shown.manifest.contract,
+				origin: 'declared',
+				inputs: shown.manifest.contract.inputs.map((field) => ({
+					...field,
+					type: 'unknown',
+					examples
+				}))
+			}
+		})
+	);
+	await project.harness(['units', 'check']);
+	await project.harness(['units', 'index', '--write']);
+	const documented = await project.harnessJson<Shown>(['units', 'show', 'function.slugify']);
+	expect(documented.manifest.contract.inputs[0].examples).toEqual(examples);
+	expect(documented.version.contract).not.toBe(shown.version.contract);
+
 	const budget = { workload: 'slugify-1k', metric: 'latency-warm-ms', tolerance: 0.25 };
 	const relaxed = {
 		...shown.manifest,

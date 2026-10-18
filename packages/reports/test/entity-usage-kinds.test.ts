@@ -10,7 +10,7 @@ import { commits, ids } from './entityUnits';
 const base = `/harness/branch/feature%2Forders/commit/${commits.middle}`;
 const settings = { category: 'configs', entity: ids.settings } as const;
 const store = { category: 'services', entity: ids.store } as const;
-const named = ['Overview', 'Used In', 'Uses', 'Tests', 'History'];
+const named = ['Overview', 'Contract', 'Used In', 'Uses', 'Tests', 'History'];
 const sections = (body: string) =>
 	[...body.matchAll(/<section class="ex-card[^"]*" aria-label="([^"]+)"/g)].map(
 		(match) => match[1]

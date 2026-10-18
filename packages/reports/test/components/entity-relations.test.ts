@@ -36,5 +36,5 @@ test('a page leads to its components and a component to the components inside it
 	const tabs = [...page.matchAll(/role="tab"[^>]*>(.*?)<\/(?:a|button)>/gs)].map((match) =>
 		words(match[1]).trim()
 	);
-	expect(tabs).toEqual(['Overview', 'Used In', 'Uses', 'Tests', 'History']);
+	expect(tabs).toEqual(['Overview', 'Contract', 'Used In', 'Uses', 'Tests', 'History']);
 });

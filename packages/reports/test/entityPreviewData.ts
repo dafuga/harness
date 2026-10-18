@@ -89,14 +89,26 @@ export const legacyReasons: HarnessExplanation[] = [
 /** A contract as a person declared it for the page: each item says in words what it is. */
 export const declaredContract = {
 	inputs: [
-		{ name: 'branch', type: 'string', description: 'The branch, as one encoded path segment.' },
+		{
+			name: 'branch',
+			type: 'string',
+			description: 'The branch, as one encoded path segment.',
+			examples: ['feature/orders']
+		},
 		{
 			name: 'commit',
 			type: 'hash | absent',
 			description: 'The selected commit; absent at the tip.'
 		}
 	],
-	outputs: [{ name: '+page', type: 'markup', description: 'The orders of an account as a list.' }],
+	outputs: [
+		{
+			name: '+page',
+			type: 'markup',
+			description: 'The orders of an account as a list.',
+			examples: ['<main>Orders</main>']
+		}
+	],
 	errors: [
 		{
 			name: 'not-at-revision',
