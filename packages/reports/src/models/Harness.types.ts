@@ -78,10 +78,10 @@ export interface HarnessUnit extends HarnessUnitLimits {
 	dependencies: Array<{ unit: string; via: string }>;
 	scenarios: string[];
 	owns: { source: string[]; symbols: string[] };
-	/** Each item may say in words what it is: a declared contract does, a derived one does not. */
+	/** Described fields may declare JSON examples; older contracts need neither optional field. */
 	contract: Record<
 		'inputs' | 'outputs' | 'errors',
-		Array<{ name: string; type: string; description?: string }>
+		Array<{ name: string; type: string; description?: string; examples?: unknown[] }>
 	>;
 	runtime: { kind: string; targets: Array<{ kind: string; entry: string }> };
 	budgets: {

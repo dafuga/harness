@@ -58,9 +58,10 @@ export type ExplorerSection = (typeof explorerSections)[number];
 /**
  * The tabs a section keeps in the query; the first of each is its default and is not written.
  * `relationships` is the former address of what `used-in` and `uses` show: it is still read.
+ * `contract` of an overview is its typed contract; the contract of Details is that section's own.
  */
 export const explorerTabs = {
-	overview: ['overview', 'used-in', 'uses', 'relationships', 'tests'],
+	overview: ['overview', 'contract', 'used-in', 'uses', 'relationships', 'tests'],
 	details: ['contract', 'measurements', 'source'],
 	history: []
 } as const satisfies Record<string, readonly string[]>;

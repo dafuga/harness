@@ -4,6 +4,7 @@
 	import type { ExplorerScreenProps } from '../../models/ExplorerScreen.types';
 	import type { EntityNav } from '../../utils/entityLens';
 	import { entityShown } from '../../utils/entityShown';
+	import EntityContract from '../EntityContract.svelte';
 	import EntityOverview from './EntityOverview.svelte';
 	import EntityRelations from './EntityRelations.svelte';
 	import EntityTests from './EntityTests.svelte';
@@ -25,6 +26,8 @@
 		host.route.tab === 'used-in' || host.route.tab === 'uses' ? host.route.tab : null
 	);
 	let removed = $derived(entity.change === 'removed');
+	// The purpose is the sentence under the name of an overview tab; it is not said twice there.
+	let contract = $derived(summary.contract.filter((row) => row.label !== 'Purpose'));
 </script>
 
 <!-- The tab of the address decides what an entity screen shows; any other shows its overview. -->
@@ -42,8 +45,12 @@
 		mediaBase={host.mediaBase}
 		exportHref={host.exportHref}
 	/>
+{:else if host.route.tab === 'contract'}
+	<div role="tabpanel" aria-label={`${entity.name} contract`}>
+		<EntityContract unit={entity.unit} category={entity.category} {contract} last={entity.lastAt} />
+	</div>
 {:else}
-	<EntityOverview {entity} contract={summary.contract} measure={summary.measure}>
+	<EntityOverview {entity} measure={summary.measure}>
 		{@render pane()}
 	</EntityOverview>
 {/if}

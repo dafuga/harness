@@ -16,27 +16,43 @@
 			{
 				"name": "ActivityList.items",
 				"type": "Item[]",
-				"description": "Required list of generic items in display order. Every row is rendered; rows beyond the preview are hidden while collapsed."
+				"description": "Required list of generic items in display order. Every row is rendered; rows beyond the preview are hidden while collapsed.",
+				"examples": [
+					[
+						{
+							"id": "item-1",
+							"label": "First activity"
+						},
+						{
+							"id": "item-2",
+							"label": "Second activity"
+						}
+					]
+				]
 			},
 			{
 				"name": "ActivityList.label",
 				"type": "string",
-				"description": "Required accessible list name, also normalized into the list ID used by the expansion control."
+				"description": "Required accessible list name, also normalized into the list ID used by the expansion control.",
+				"examples": ["Recent activity"]
 			},
 			{
 				"name": "ActivityList.noun",
 				"type": "string",
-				"description": "Required item name used in Show all/Show fewer button text."
+				"description": "Required item name used in Show all/Show fewer button text.",
+				"examples": ["activities"]
 			},
 			{
 				"name": "ActivityList.preview",
 				"type": "number",
-				"description": "Required number of initial visible positions. Used directly without clamping or integer validation."
+				"description": "Required number of initial visible positions. Used directly without clamping or integer validation.",
+				"examples": [3]
 			},
 			{
 				"name": "ActivityList.ordered",
 				"type": "boolean",
-				"description": "Optional flag, false by default. True renders an ordered list, false an unordered list."
+				"description": "Optional flag, false by default. True renders an ordered list, false an unordered list.",
+				"examples": [false]
 			},
 			{
 				"name": "ActivityList.row",
@@ -48,7 +64,10 @@
 			{
 				"name": "ActivityList",
 				"type": "markup",
-				"description": "Accessible list with hidden overflow rows and a toggle only when item count exceeds preview. Starts collapsed. Row content is not lazily created on expansion."
+				"description": "Accessible list with hidden overflow rows and a toggle only when item count exceeds preview. Starts collapsed. Row content is not lazily created on expansion.",
+				"examples": [
+					"<ul aria-label=\"Recent activity\"><li>First activity</li><li>Second activity</li></ul>"
+				]
 			}
 		],
 		"errors": []
