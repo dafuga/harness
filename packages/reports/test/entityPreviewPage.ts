@@ -111,8 +111,11 @@ export async function reviewVisual(
 			);
 			await expect(evidence, 'component screenshot persists across tabs').toHaveCount(1);
 			const tabs = await page.getByRole('tablist').boundingBox();
-			const shot = await evidence.boundingBox();
-			expect(shot!.y, 'component screenshot stays above its tabs').toBeLessThan(tabs!.y);
+			const shot = await page.locator('section[aria-labelledby="ex-screens-title"]').boundingBox();
+			expect(
+				shot!.y + shot!.height,
+				'component screenshot stays above its tabs'
+			).toBeLessThanOrEqual(tabs!.y);
 			const files = await page
 				.locator('section[aria-labelledby="ex-screens-title"] img')
 				.evaluateAll((images) => images.map((image) => image.getAttribute('src')));

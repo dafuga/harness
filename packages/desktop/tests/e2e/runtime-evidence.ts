@@ -123,10 +123,10 @@ export async function componentScreens(page: Page, info: TestInfo, phase: string
 			});
 		}
 		await expect(panel, 'component screenshot persists across tabs').toHaveCount(1);
-		expect(
-			(await panel.boundingBox())!.y,
-			'component screenshot stays above its tabs'
-		).toBeLessThan((await tabs.boundingBox())!.y);
+		const shot = (await panel.boundingBox())!;
+		expect(shot.y + shot.height, 'component screenshot stays above its tabs').toBeLessThanOrEqual(
+			(await tabs.boundingBox())!.y
+		);
 		expect(
 			await panel
 				.getByRole('img')
