@@ -138,16 +138,25 @@ const searchStates: Array<[string, string[]]> = [
 	['search', [`${at}shells`, ...searching]],
 	['search-pinned', [`${at}functions`, ...searching]]
 ];
-const written = [...shellStates, ...searchStates];
+const contracts = [
+	'reports.component.entity-contract',
+	'reports.function.contract-fields',
+	`${at}functions-entity`
+];
+const contractStates: Array<[string, string[]]> = [
+	['contract', contracts],
+	['contract-commit', contracts]
+];
+const written = [...shellStates, ...searchStates, ...contractStates];
 
 test('what every page is made of is under every state, and each state names a page there is', () => {
 	const every = scenario.states.map((state) => state.id);
-	expect(every).toHaveLength(44);
+	expect(every).toHaveLength(46);
 	expect(statesOf(`${part}harness-header`)).toEqual(every);
 	expect(statesOf(`${part}harness-console`)).toEqual(every);
 	const pages = new Set(units.filter((unit) => unit.kind === 'page').map((unit) => unit.id));
 	const named = new Set(written.map(([id]) => id));
-	// Every state from before Shells and search names exactly one page and nothing else.
+	// Earlier states name exactly one page; later states also name the shared pieces they show.
 	const earlier = scenario.states.filter((state) => !named.has(state.id));
 	expect(earlier).toHaveLength(34);
 	for (const state of earlier) {
@@ -157,7 +166,7 @@ test('what every page is made of is under every state, and each state names a pa
 			true
 		]);
 	}
-	// The Shells and search states are exactly these, in this order, each naming what it shows.
+	// The later states are exactly these, in this order, each naming what it shows.
 	const later = scenario.states.filter((state) => named.has(state.id));
 	expect(later.map((state) => [state.id, state.units])).toEqual(written);
 	const registered = new Set(units.map((unit) => unit.id));

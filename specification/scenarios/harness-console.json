@@ -137,7 +137,9 @@
 		"reports.function.navbar-search",
 		"reports.function.entity-search",
 		"reports.component.entity-search",
-		"reports.component.entity-search-results"
+		"reports.component.entity-search-results",
+		"reports.component.entity-contract",
+		"reports.function.contract-fields"
 	],
 	"states": [
 		{
@@ -423,6 +425,26 @@
 				"reports.component.entity-search",
 				"reports.component.entity-search-results"
 			]
+		},
+		{
+			"id": "contract",
+			"title": "Typed contract examples at a branch tip",
+			"coverage": "required",
+			"units": [
+				"reports.component.entity-contract",
+				"reports.function.contract-fields",
+				"reports.page.harness-branch-branch-at-functions-entity"
+			]
+		},
+		{
+			"id": "contract-commit",
+			"title": "Typed contract examples at a selected commit",
+			"coverage": "required",
+			"units": [
+				"reports.component.entity-contract",
+				"reports.function.contract-fields",
+				"reports.page.harness-branch-branch-at-functions-entity"
+			]
 		}
 	],
 	"viewports": [
@@ -499,7 +521,9 @@
 				"shell-earlier",
 				"shell-retained",
 				"search",
-				"search-pinned"
+				"search-pinned",
+				"contract",
+				"contract-commit"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",
@@ -518,7 +542,17 @@
 		{
 			"id": "flow",
 			"kind": "output",
-			"states": ["pages", "function", "history", "gap", "missing", "source", "shell-redirect"],
+			"states": [
+				"pages",
+				"function",
+				"history",
+				"gap",
+				"missing",
+				"source",
+				"shell-redirect",
+				"contract",
+				"contract-commit"
+			],
 			"viewports": [],
 			"provenance": "actual-capture",
 			"build": "reports",
@@ -527,7 +561,17 @@
 		{
 			"id": "checks",
 			"kind": "assertions",
-			"states": ["pages", "function", "history", "gap", "missing", "source", "shell-redirect"],
+			"states": [
+				"pages",
+				"function",
+				"history",
+				"gap",
+				"missing",
+				"source",
+				"shell-redirect",
+				"contract",
+				"contract-commit"
+			],
 			"viewports": [],
 			"provenance": "actual-capture",
 			"build": "reports",
