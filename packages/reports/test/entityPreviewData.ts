@@ -99,7 +99,13 @@ export const declaredContract = {
 			name: 'commit',
 			type: 'hash | absent',
 			description: 'The selected commit; absent at the tip.'
-		}
+		},
+		{ name: 'enabled', type: 'boolean', examples: [false] },
+		{ name: 'limit', type: 'number', examples: [0] },
+		{ name: 'empty', type: 'unknown', examples: [null] },
+		{ name: 'query', type: 'string', examples: [''] },
+		{ name: 'settings', type: 'object', examples: [{ label: 'Safe <tag>' }, { label: 'Other' }] },
+		{ name: 'label', type: 'string' }
 	],
 	outputs: [
 		{
