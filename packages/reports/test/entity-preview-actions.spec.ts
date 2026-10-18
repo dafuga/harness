@@ -52,6 +52,12 @@ for (const [name, size] of Object.entries(viewports)) {
 			] as const) {
 				await tab.getByRole('tab', { name: label, exact: true }).click();
 				await expect(tab.getByRole('region', { name: label, exact: true })).toBeVisible();
+				await capture(tab, `usage-${category}-${value}-${name}`);
+				await expect(
+					tab.getByRole('region', { name: label, exact: true }).getByRole('button'),
+					'usage lists have no verification controls'
+				).toHaveCount(0);
+				await expect(tab.locator('.ex-head .hx-verdict')).toHaveCount(1);
 				await expect(
 					tab.getByRole('region', { name: label === 'Uses' ? 'Used In' : 'Uses', exact: true })
 				).toHaveCount(0);
