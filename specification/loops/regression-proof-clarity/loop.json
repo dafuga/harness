@@ -2,7 +2,7 @@
 	"name": "regression-proof-clarity",
 	"goal": "Show historical failure and passing fix clearly without claiming full verification",
 	"createdAt": "2026-10-18T13:07:59.723Z",
-	"updatedAt": "2026-10-18T13:13:24.474Z",
+	"updatedAt": "2026-10-18T13:17:12.680Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,12 +39,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T13:17:11.943Z",
+			"evidence": "Harness sealed 0273faf6 failed -> 471d75c9 passed. Identical command, environment profile and 1255 frozen inputs. The existing browser regression passes at all three declared viewports."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T13:17:12.680Z",
+			"evidence": "24 relevant unit checks and 8 browser acceptance checks pass; types, lint, formatting, audit, registry and explanations pass. Manually verified actual historical logs and no future fix on red revision; fresh screenshots inspected. Full repository/Electron acceptance remains paused and unchanged simulator-test lint debt remains outside this scope."
 		}
 	],
 	"evaluators": [
