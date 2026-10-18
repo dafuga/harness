@@ -14,12 +14,12 @@ function sections(tab?: 'uses' | 'tests') {
 	return render(EntitySections, { props: { host, entity, nav: nav(host.route), pane } }).body;
 }
 
-test('the overview is the summary of the entity, then the evidence of its kind', () => {
+test('a visual overview leads with evidence and keeps usage in its dedicated tabs', () => {
 	const body = sections();
 	expect(body).toContain('aria-label="Orders page overview"');
-	expect(words(body)).toMatch(/Uses\s+3\s+Components\s+2\s+Order list/);
-	expect(body.indexOf('aria-label="Contract"')).toBeLessThan(
-		body.indexOf('the evidence of its kind')
+	expect(body).not.toMatch(/aria-label="(?:Used In|Uses)"/);
+	expect(body.indexOf('the evidence of its kind')).toBeLessThan(
+		body.indexOf('aria-label="Contract"')
 	);
 });
 

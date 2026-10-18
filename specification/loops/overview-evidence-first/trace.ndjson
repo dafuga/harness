@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-18T17:19:50.160Z","name":"overview-evidence-first","goal":"Lead visual overviews with revision-bound screenshots and show usage only in its dedicated tabs.","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-18T17:19:50.586Z","loop":"overview-evidence-first","step":"spec","evidence":"Visual overview evidence comes first; Used In and Uses appear only in their own tabs for every entity."}
+{"event":"step.completed","timestamp":"2026-10-18T17:19:50.864Z","loop":"overview-evidence-first","step":"coverage","evidence":"Standard overview tests asserted summary-first ordering and embedded relations. Extend those tests and responsive browser cases to enforce the new hierarchy."}

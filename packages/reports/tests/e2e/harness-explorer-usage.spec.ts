@@ -4,8 +4,8 @@ import { seeded } from './support/harnessHistory';
 
 /**
  * What an entity is shown with of the things around it, in the seeded history: a section named
- * Used In and one named Uses, each on the overview and each at an address of its own. Nothing is
- * called a relationship, and an address of the former section still opens both.
+ * Used In and one named Uses, each at an address of its own. The overview holds neither;
+ * an address of the former relationships section falls back to that overview.
  */
 const { commits } = seeded();
 const { explorerUnits: units } = explorer();
@@ -17,18 +17,15 @@ const named = ['Overview', 'Used In', 'Uses', 'Tests', 'History'];
 const sectionsOf = (page: Page, entity: string) =>
 	page.getByRole('tablist', { name: `${entity} sections` }).getByRole('tab');
 
-test('an address of the former relationships section still opens both sections, under their names', async ({
+test('a former relationships address opens the overview without embedded usage sections', async ({
 	page
 }) => {
 	await page.goto(main(`pages/${units.page}?tab=relationships`));
 	await expect(heading(page, 'Titles')).toBeVisible();
 	await checkpoint(page, 'usage-former-address');
 	await expect(sectionsOf(page, 'Titles')).toHaveText(named);
-	await expect(card(page, 'Used In')).toBeVisible();
-	await expect(card(page, 'Uses')).toBeVisible();
-	await expect(
-		card(page, 'Uses').getByRole('link', { name: 'Title list', exact: true })
-	).toBeVisible();
+	await expect(card(page, 'Used In')).toHaveCount(0);
+	await expect(card(page, 'Uses')).toHaveCount(0);
 	await expect(page.getByRole('tab', { name: 'Overview' })).toHaveAttribute(
 		'aria-selected',
 		'true'
@@ -67,10 +64,13 @@ test('a function says where it is used, down from the page that shows it', async
 	await page.goto(main(`functions/${units.slugify}`));
 	await expect(heading(page, 'Slugify')).toBeVisible();
 	await checkpoint(page, 'usage-function-overview');
+	await expect(card(page, 'Used In')).toHaveCount(0);
+	await page.getByRole('tab', { name: 'Used In', exact: true }).click();
+	await expectPath(page, main(`functions/${units.slugify}?tab=used-in`));
 	const used = card(page, 'Used In');
 	await expect(used.getByRole('link', { name: 'Titles', exact: true })).toHaveCount(1);
 	await expect(used.getByRole('link', { name: 'Title row', exact: true })).toHaveCount(1);
-	await expect(card(page, 'Uses')).toBeVisible();
+	await expect(card(page, 'Uses')).toHaveCount(0);
 	await used.getByRole('link', { name: 'Title row', exact: true }).click();
 	await expectPath(page, main(`components/${units.row}`));
 });

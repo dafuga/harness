@@ -4,6 +4,66 @@ import { commits, ids } from './entityUnits';
 
 const page = { category: 'pages' as const, entity: ids.page };
 for (const [name, size] of Object.entries(viewports)) {
+	test(`visual overviews lead with screenshots at ${name} width`, async ({ page: tab }) => {
+		await tab.setViewportSize(size);
+		for (const route of [page, { category: 'components' as const, entity: ids.list }]) {
+			for (const commit of [null, commits.middle]) {
+				await open(tab, { ...route, commit });
+				await tab.evaluate(async () => {
+					await document.fonts.ready;
+					await Promise.all([...document.images].map((image) => image.decode()));
+				});
+				await capture(tab, `overview-${route.category}-${commit ? 'commit' : 'tip'}-${name}`);
+				const pane = tab.getByRole('tabpanel');
+				const evidence = await pane
+					.getByRole('heading', {
+						name: commit ? 'Commit comparison' : 'Current screenshot',
+						exact: true
+					})
+					.boundingBox();
+				const contract = await pane
+					.getByRole('region', { name: 'Contract', exact: true })
+					.boundingBox();
+				expect(evidence!.y, 'screenshots lead the overview').toBeLessThan(contract!.y);
+				await expect(pane.getByRole('region', { name: /^(Used In|Uses)$/ })).toHaveCount(0);
+				expect(await fits(tab)).toBe(true);
+			}
+		}
+	});
+
+	test(`usage stays in dedicated tabs at ${name} width`, async ({ page: tab }) => {
+		await tab.setViewportSize(size);
+		for (const [category, entity] of [
+			['pages', ids.page],
+			['components', ids.list],
+			['functions', ids.filter],
+			['services', ids.store],
+			['configs', ids.settings]
+		] as const) {
+			await open(tab, { category, entity, commit: commits.middle });
+			await capture(tab, `overview-usage-${category}-${name}`);
+			await expect(
+				tab.getByRole('region', { name: /^(Used In|Uses)$/ }),
+				'overview excludes usage sections'
+			).toHaveCount(0);
+			for (const [label, value] of [
+				['Used In', 'used-in'],
+				['Uses', 'uses']
+			] as const) {
+				await tab.getByRole('tab', { name: label, exact: true }).click();
+				await expect(tab.getByRole('region', { name: label, exact: true })).toBeVisible();
+				await expect(
+					tab.getByRole('region', { name: label === 'Uses' ? 'Used In' : 'Uses', exact: true })
+				).toHaveCount(0);
+				expect(await where(tab)).toMatchObject({
+					category,
+					entity,
+					commit: commits.middle,
+					tab: value
+				});
+			}
+		}
+	});
 	test(`component and function lists use a card grid at ${name} width`, async ({ page: tab }) => {
 		await tab.setViewportSize(size);
 		for (const category of ['components', 'functions'] as const) {
