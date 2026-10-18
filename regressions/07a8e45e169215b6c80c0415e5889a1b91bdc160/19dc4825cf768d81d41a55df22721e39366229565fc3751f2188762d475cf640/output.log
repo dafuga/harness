@@ -1,0 +1,68 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [612.00ms]
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts test/entity-preview.spec.ts --grep "one entity page"
+
+Running 1 test using 1 worker
+
+  ✘  1 test/entity-preview.spec.ts:160:1 › one entity page keeps source optional without a duplicate Details page (5.4s)
+
+
+  1) test/entity-preview.spec.ts:160:1 › one entity page keeps source optional without a duplicate Details page 
+
+    Error: no second Details page
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('link', { name: 'Details', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - no second Details page getByRole('link', { name: 'Details', exact: true }) with timeout 5000ms
+      - waiting for getByRole('link', { name: 'Details', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      171 | 			tab.getByRole('link', { name: 'Details', exact: true }),
+      172 | 			'no second Details page'
+    > 173 | 		).toHaveCount(0);
+          | 		  ^
+      174 | 		await expect(tab.getByText('Source ownership')).toHaveCount(0);
+      175 | 		await tab.getByRole('tab', { name: 'Source', exact: true }).click();
+      176 | 		expect(await where(tab)).toEqual({
+        at /private/tmp/harness-snapshot-Ul0rPp/packages/reports/test/entity-preview.spec.ts:173:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-one-entity--a10c1-ut-a-duplicate-Details-page/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-one-entity--a10c1-ut-a-duplicate-Details-page/error-context.md
+
+  1 failed
+    test/entity-preview.spec.ts:160:1 › one entity page keeps source optional without a duplicate Details page 
+error: script "test:entities" exited with code 1
