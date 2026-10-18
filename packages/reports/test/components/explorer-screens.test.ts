@@ -61,9 +61,12 @@ test('no entry reaches the content that shows every screen, or the host that mou
 	}
 });
 
-test('a collection reaches its own listing: cards for pages, a table for every other kind', () => {
+test('collections reuse visual cards and tables without loading entity detail panes', () => {
 	expect(has(entries.cards, ['ExplorerPageCard', 'ExplorerTable'])).toEqual(['ExplorerPageCard']);
-	expect(has(entries.table, ['ExplorerPageCard', 'ExplorerTable'])).toEqual(['ExplorerTable']);
+	expect(has(entries.table, ['ExplorerPageCard', 'ExplorerTable'])).toEqual([
+		'ExplorerPageCard',
+		'ExplorerTable'
+	]);
 	for (const entry of [entries.cards, entries.table]) {
 		expect(has(entry, ['ExplorerControls', 'EntityMissing']), entry).toHaveLength(2);
 		expect(has(entry, ['EntityHeader', 'EntityScreens', 'EntityHistory']), entry).toEqual([]);

@@ -2,7 +2,7 @@
 	"name": "component-catalog-screenshots",
 	"goal": "Show visual component screenshots bound to the selected revision, retaining validated capture origins and explicit gaps.",
 	"createdAt": "2026-10-18T16:16:03.023Z",
-	"updatedAt": "2026-10-18T16:34:42.029Z",
+	"updatedAt": "2026-10-18T16:43:06.553Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,12 +39,15 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T16:43:06.553Z",
+			"evidence": "At 79a89bae, sealed record 33497369 passes the unchanged command and 1255 frozen inputs from failing-test commit e8cc97a8."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "566 unit tests, 50 browser tests, web build, types, lint, audit and registry pass. Full verification awaits frozen-budget review and resumed Electron checks."
 		}
 	],
 	"evaluators": [

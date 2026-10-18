@@ -33,11 +33,10 @@ test('the pages collection is cards with the page own screenshot, a verdict and 
 	expect(words(body)).not.toMatch(banned);
 });
 
-test('the other four collections are tables with their own columns and no file names', () => {
+test('nonvisual collections keep their columns; component cards expose no file names', () => {
 	const headers = (body: string) =>
 		[...body.matchAll(/<th scope="col">(.*?)<\/th>/gs)].map((match) => words(match[1]).trim());
 	const expected = {
-		components: ['Component', 'Used on', 'Contains', 'Verification', 'Open'],
 		functions: ['Function', 'Responsibility', 'Used by', 'Verification', 'Open'],
 		configs: ['Config', 'Purpose', 'Used by', 'Changed', 'Verification', 'Open'],
 		services: ['Service', 'Responsibility', 'Execution target', 'Consumers', 'Verification', 'Open']
@@ -49,6 +48,10 @@ test('the other four collections are tables with their own columns and no file n
 		expect(words(body)).not.toMatch(banned);
 	}
 	const components = content('commit', { category: 'components' });
+	expect(count(components, /<article\b/g)).toBe(3);
+	expect(count(components, /<img\b/g)).toBe(3);
+	expect(words(components)).not.toMatch(source);
+	expect(words(components)).not.toMatch(banned);
 	expect(words(components)).toContain('Order list');
 	expect(words(components)).toContain('Orders page');
 	// A link from a selected commit stays at that commit.
