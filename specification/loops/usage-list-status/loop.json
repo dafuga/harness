@@ -2,7 +2,7 @@
 	"name": "usage-list-status",
 	"goal": "Show clean Used In and Uses lists while retaining the verification mark on each entity page.",
 	"createdAt": "2026-10-18T20:04:19.263Z",
-	"updatedAt": "2026-10-18T20:04:31.564Z",
+	"updatedAt": "2026-10-18T20:10:38.852Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T20:10:38.852Z",
+			"evidence": "Red 685c4ee7 at 2149299b fails the no-row-marks assertion at desktop, tablet and mobile widths. The failing test commit precedes the product repair."
 		},
 		{
 			"id": "implement",

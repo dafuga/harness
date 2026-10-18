@@ -4,7 +4,6 @@
 	import { entityUsage } from '../../utils/entityUsage';
 	import EntityLink from './EntityLink.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
-	import HarnessVerdict from './HarnessVerdict.svelte';
 	let {
 		relations,
 		nav,
@@ -16,7 +15,7 @@
 		nav: EntityNav;
 		/** Which of the two sections is drawn; an overview draws both. */
 		show?: 'both' | 'used-in' | 'uses';
-		/** Names only, as an overview lists them; a section of its own adds verdict and purpose. */
+		/** Names only; a section of its own also shows each entity's purpose. */
 		compact?: boolean;
 		/** The shown commit removed the entity: its revision holds no relation of it. */
 		removed?: boolean;
@@ -28,7 +27,6 @@
 
 {#snippet row(item: ExplorerEntity, badge: boolean)}
 	<li>
-		{#if !compact}<HarnessVerdict {...item.verdict} />{/if}
 		<span>
 			<EntityLink to={entityLens(nav.route, { category: item.category, entity: item.id })} {nav}
 				>{item.name}</EntityLink

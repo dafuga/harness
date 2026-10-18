@@ -16,7 +16,7 @@
 			{
 				"name": "RelationshipsPanel.relationships",
 				"type": "Relationship[]",
-				"description": "Required relationships filtered by direction and deduplicated by identifier; the last matching duplicate supplies displayed values. Includes category, title, plan flag and verification state."
+				"description": "Required relationships filtered by direction and deduplicated by identifier; the last matching duplicate supplies displayed values. Includes category, title and plan flag."
 			},
 			{
 				"name": "RelationshipsPanel.workspace",
@@ -33,7 +33,7 @@
 			{
 				"name": "RelationshipsPanel",
 				"type": "markup",
-				"description": "Counted relationship list with readable names, category icons, optional plan badges and recorded verification markers. Dependencies are grouped by Pages, Shells, Components, Functions, Configs, Services and Other. Empty lists explicitly state no recorded dependencies or users."
+				"description": "Lists dependencies or users with names, category icons and optional plan badges. Verification marks stay on entity pages. Dependencies are grouped by kind; empty lists explain missing records."
 			}
 		],
 		"errors": []
@@ -46,11 +46,6 @@
 		},
 		{
 			"unit": "desktop.component.plan-badge",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "desktop.component.status-icon",
 			"via": "import",
 			"origin": "derived"
 		},

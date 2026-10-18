@@ -31,7 +31,7 @@
 			{
 				"name": "EntityRelations.compact",
 				"type": "boolean",
-				"description": "Optional flag, false by default. True omits verdicts and purpose text but keeps names and badges."
+				"description": "Optional flag, false by default. True hides purpose text while keeping names and badges."
 			},
 			{
 				"name": "EntityRelations.removed",
@@ -43,7 +43,7 @@
 			{
 				"name": "EntityRelations",
 				"type": "markup",
-				"description": "Counted Used In list and categorized Uses groups. Directly changed/added entities receive Changed badges. Unknown-category others remain unlinked. Empty sections state what is absent; removed mode does not substitute old relationships."
+				"description": "Counted Used In list and categorized Uses groups without verification marks. Changed or added entities receive Changed badges. Unknown-category others remain unlinked. Empty sections explain missing records; removed mode does not substitute old relationships."
 			}
 		],
 		"errors": []
@@ -56,11 +56,6 @@
 		},
 		{
 			"unit": "reports.component.harness-harness-icon",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-harness-verdict",
 			"via": "import",
 			"origin": "derived"
 		},

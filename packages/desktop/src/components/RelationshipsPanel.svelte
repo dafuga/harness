@@ -3,7 +3,6 @@
 	import type { Category, Relationship } from '../models/Desktop.types';
 	import type { Workspace } from '../lib/stores/workspace.svelte';
 	import PlanBadge from './PlanBadge.svelte';
-	import StatusIcon from './StatusIcon.svelte';
 	import Icon from './Icon.svelte';
 	import WorkspaceLink from './WorkspaceLink.svelte';
 	let {
@@ -67,12 +66,7 @@
 							>{:else}<span>{named(item)}</span>{/if}
 					</div>
 					{#if direction === 'used-by'}<span class="chip">{kind(item)[1]}</span>{/if}
-					{#if item.hasPlan}<PlanBadge />{/if}<StatusIcon
-						status={item.verification}
-						reason={item.verification === 'verified'
-							? 'Verification recorded for this revision.'
-							: 'No passing verification recorded for this revision.'}
-					/>
+					{#if item.hasPlan}<PlanBadge />{/if}
 				</article>{/each}
 		</div>
 	{/each}
