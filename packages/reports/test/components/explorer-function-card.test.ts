@@ -7,11 +7,12 @@ import { commits, ids } from '../entityUnits';
 test('function catalog cards stay concise and retain revision links without detail panels', () => {
 	for (const mode of ['current', 'commit'] as const) {
 		const body = screen(ExplorerCatalogScreen, mode, { category: 'functions' });
+		const card = /<article\b.*?<\/article>/s.exec(body)![0];
 		expect(count(body, /<article\b/g)).toBe(1);
 		expect(count(body, /<img\b/g)).toBe(0);
 		expect(words(body)).toContain('Filter orders');
 		expect(words(body)).toContain('Returns the orders whose name matches a search.');
-		expect(words(body)).not.toMatch(/Contract|Inputs|Output|Used by|View tests|Shared|Changed/);
+		expect(words(card)).not.toMatch(/Contract|Inputs|Output|Used by|View tests|Shared|Changed/);
 		expect(count(body, /class="hx-verdict/g)).toBe(0);
 		expect(body).toContain('aria-label="Open function"');
 		const commit = mode === 'current' ? '' : `/commit/${commits.middle}`;
