@@ -2,11 +2,9 @@
 	"name": "page-preview-state",
 	"goal": "Each declared page preview selects its own recorded state in both renderers",
 	"createdAt": "2026-10-18T23:50:21.481Z",
-	"updatedAt": "2026-10-18T23:52:30.675Z",
+	"updatedAt": "2026-10-18T23:53:08.717Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -34,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T23:53:08.142Z",
+			"evidence": "aea3edc3 preserves the manifest preview in revision data and passes its exact scenario, state and viewport to catalog screenshot selection. Missing selected states return a gap rather than another screenshot."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T23:53:08.717Z",
+			"evidence": "The unchanged root declaration guard and Reports screenshot selector tests pass at aea3edc3. Green 14966d0bba2e7fb6d60ff1c9246d2b2b9209c32c3c7b5bf0e1ae7b51acbc0957 pairs with red c76e6376 at 360ca8c2."
 		},
 		{
 			"id": "verify",

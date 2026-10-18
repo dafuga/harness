@@ -32,6 +32,12 @@
 				"name": "thumbnail",
 				"type": "RecordedThumbnail",
 				"description": "The recorded scenario, state and viewport; older pages may name their state in the recorded contract."
+			},
+			{
+				"name": "RecordedPreview.compact",
+				"type": "boolean",
+				"description": "Defaults to false. Hide the caption for minimal page cards; keep capture origin and missing-image details available on hover.",
+				"examples": [true, false]
 			}
 		],
 		"outputs": [

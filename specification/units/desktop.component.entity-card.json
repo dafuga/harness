@@ -3,7 +3,7 @@
 	"id": "desktop.component.entity-card",
 	"kind": "component",
 	"title": "Catalog card",
-	"responsibility": "Shows a page or other project item with its summary, preview, verification status and link to open or review it.",
+	"responsibility": "Shows one catalog entity; page cards contain only a title and its recorded screenshot or planned design.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -28,7 +28,7 @@
 			{
 				"name": "EntityCard",
 				"type": "markup",
-				"description": "A catalog card. Implemented pages have a compact open icon; planned items link to their design or behavior review."
+				"description": "Pages use one title-and-image navigation link. Other entities retain their summary, plan marker, verification and open action. Recorded screenshots and planned designs keep separate identity and accessible labels."
 			}
 		],
 		"errors": []

@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-explorer-page-card",
 	"kind": "component",
 	"title": "Visual catalog card",
-	"responsibility": "Summarizes a page or visual component with its recorded screenshot, capture origin and verification.",
+	"responsibility": "Shows a page title and screenshot, or a visual component with its screenshot and usage facts.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -43,7 +43,7 @@
 			{
 				"name": "ExplorerPageCard",
 				"type": "markup",
-				"description": "A linked screenshot card with readable purpose, component count or usages, shared/changed markers and icon-only verification. Captions identify in-context evidence and its captured commit, using Reused from for inherited proof. A 36-pixel icon opens the page or component. Image errors show a gap and reset when the file changes."
+				"description": "Pages show only their title and screenshot in one keyboard-accessible link. Capture origin appears on hover. Components retain purpose, usages, provenance and verification. A missing or broken image shows a gap."
 			}
 		],
 		"errors": []

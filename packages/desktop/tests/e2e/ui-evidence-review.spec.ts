@@ -53,7 +53,8 @@ test('the address decides the section, also when the entity stays the same', asy
 	await visit(page, at(filter, undefined, '/details'));
 	await expect(page.getByRole('heading', { name: 'Source files', exact: true })).toBeVisible();
 	await visit(page, at(filter, undefined, '/evidence'));
-	await expect(current(page)).toHaveText('Evidence');
+	await expect(current(page)).toHaveText('Examples');
+	await page.getByText('Recorded tests and verification', { exact: true }).click();
 	await expect(page.getByRole('region', { name: 'Evidence coverage' })).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'Source files', exact: true })).toHaveCount(0);
 	// A section chosen on the page has its address, and Details closes when another is chosen.

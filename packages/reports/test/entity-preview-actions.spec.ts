@@ -9,7 +9,6 @@ import {
 	reviewStates
 } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
-
 const page = { category: 'pages' as const, entity: ids.page };
 for (const [name, size] of Object.entries(viewports)) {
 	test(`visual overviews lead with screenshots at ${name} width`, async ({ page: tab }) => {
@@ -21,7 +20,6 @@ for (const [name, size] of Object.entries(viewports)) {
 			}
 		}
 	});
-
 	test(`usage stays in dedicated tabs at ${name} width`, async ({ page: tab }) => {
 		await tab.setViewportSize(size);
 		for (const [category, entity] of [
@@ -92,7 +90,6 @@ for (const [name, size] of Object.entries(viewports)) {
 			}
 		}
 	});
-
 	test(`component screenshot cards follow the shown revision at ${name} width`, async ({
 		page: tab
 	}) => {
@@ -119,7 +116,6 @@ for (const [name, size] of Object.entries(viewports)) {
 			expect(await where(tab)).toMatchObject({ commit, category: 'components', entity: ids.card });
 		}
 	});
-
 	test(`page cards show only a title and screenshot at ${name} width`, async ({ page: tab }) => {
 		await tab.setViewportSize(size);
 		await open(tab);

@@ -56,6 +56,18 @@
 				"name": "catalogShot.evidence",
 				"type": "ExplorerEvidence",
 				"description": "The host-selected evidence for one entity at the shown revision. Captures from other states or entities must already be excluded by its declared coverage."
+			},
+			{
+				"name": "catalogShot.preview",
+				"type": "ScreenPick | undefined",
+				"description": "Optional exact scenario, state and viewport for the catalog image. If absent, choose usable evidence with fresh captures first. If specified but missing, return no image.",
+				"examples": [
+					{
+						"scenario": "agent-settings",
+						"state": "settings",
+						"viewport": "desktop"
+					}
+				]
 			}
 		],
 		"outputs": [
