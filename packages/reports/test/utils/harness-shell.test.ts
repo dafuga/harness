@@ -31,6 +31,8 @@ const historical: ExplorerLocation = {
 	section: 'details',
 	tab: 'source'
 };
+const canonical = { ...historical };
+delete canonical.section;
 
 test('the bar has exactly six categories, pages then shells first, each scoped to the branch and commit that are viewed', () => {
 	const { categories } = view(historical);
@@ -83,8 +85,8 @@ test('on a selected commit the tip and the viewed commit are told apart, and Go 
 	});
 	// The equivalent route of the current branch: the same entity, section and tab, no commit.
 	expect(revision?.tip).toEqual({
-		href: `${scoped}/functions/function.slugify/details?tab=source`,
-		to: { ...historical, commit: null }
+		href: `${scoped}/functions/function.slugify?tab=source`,
+		to: { ...canonical, commit: null }
 	});
 	// The brand opens Pages at the tip of the branch, whatever is viewed.
 	expect(home.href).toBe(`${scoped}/pages`);
@@ -98,8 +100,8 @@ test('a selected commit that is the tip says both, and still leads to the curren
 
 test('a branch stays in current mode on the same entity, and a commit is always an explicit route', () => {
 	const { revision } = view(historical);
-	expect(revision?.branchTo('main')).toEqual({ ...historical, branch: 'main', commit: null });
-	expect(revision?.commitTo(sha(2))).toEqual({ ...historical, commit: sha(2) });
+	expect(revision?.branchTo('main')).toEqual({ ...canonical, branch: 'main', commit: null });
+	expect(revision?.commitTo(sha(2))).toEqual({ ...canonical, commit: sha(2) });
 	const current = view({ branch: shellBranch, commit: null, category: 'pages' }).revision;
 	// Choosing the tip itself from the current branch still names the commit in the address.
 	expect(current?.commitTo(sha(5))).toEqual({
@@ -126,7 +128,7 @@ test('a commit no branch reaches has no tip, says so, and is listed although no 
 	// Leaving a branch for the retained commits opens the newest of them, on no branch.
 	const branched = view(historical).revision;
 	expect(branched?.branchTo(retainedBranch)).toEqual({
-		...historical,
+		...canonical,
 		branch: null,
 		commit: sha(9)
 	});

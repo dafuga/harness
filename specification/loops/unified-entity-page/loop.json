@@ -2,7 +2,7 @@
 	"name": "unified-entity-page",
 	"goal": "Each entity has one page with its existing tabs and optional Source tab; remove the duplicate Details action and canonicalize old Details links.",
 	"createdAt": "2026-10-18T22:22:19.847Z",
-	"updatedAt": "2026-10-18T22:31:16.962Z",
+	"updatedAt": "2026-10-18T22:31:59.048Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -41,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T22:31:59.048Z",
+			"evidence": "Unchanged clean-snapshot browser test passes at d76eec05: record 3c629665 matches failing record 19dc4825, including every frozen test input."
 		},
 		{
 			"id": "verify",

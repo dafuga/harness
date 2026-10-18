@@ -43,7 +43,8 @@ test('the sections of an entity are named Used In and Uses, and none is a relati
 			'Used In',
 			'Uses',
 			entity.category === 'functions' ? 'Tests' : 'States',
-			'History'
+			'History',
+			'Source'
 		]);
 		expect(words(body)).not.toMatch(/relationship|\brelated\b|Used by|Used on pages/i);
 		expect(sections(body).filter((name) => /^Use/.test(name))).toEqual([]);
