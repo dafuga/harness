@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-entity-header",
 	"kind": "component",
 	"title": "Entity header",
-	"responsibility": "Shows entity identity, verification and navigation between overview, details and history.",
+	"responsibility": "Shows entity identity and one tab bar for overview, contract, usage, states or tests, history and optional source.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -46,11 +46,6 @@
 	"dependencies": [
 		{
 			"unit": "reports.component.harness-entity-link",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-harness-action",
 			"via": "import",
 			"origin": "derived"
 		},

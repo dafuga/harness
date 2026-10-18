@@ -1,3 +1,4 @@
+import { canonicalExplorerLocation } from '../../../../src/utils/explorerRoute';
 import type { ExplorerCategory, ExplorerLocation, ExplorerScope } from '../models/Explorer.types';
 import type { HarnessIndex, HarnessRevisionSummary } from '../models/Harness.types';
 import { branchCommits, retainedBranch } from './harnessAncestry';
@@ -91,7 +92,7 @@ function branched(input: HarnessNavbarInput, from: ExplorerLocation, name: strin
 }
 
 function revision(input: HarnessNavbarInput, scope: ExplorerScope): HarnessShellRevision {
-	const { location } = scope;
+	const location = canonicalExplorerLocation(scope.location);
 	const listed = input.commits.some((item) => item.commit === scope.commit);
 	const current = { ...location, commit: null };
 	const there = scope.mode === 'current' || scope.tip === null;

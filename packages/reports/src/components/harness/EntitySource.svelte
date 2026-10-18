@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { HarnessUnit } from '../../models/Harness.types';
-	// Mounted only when a person opens Details → Source; no other screen renders what a unit owns.
+	// Mounted only when a person opens Source; other tabs keep ownership paths out of view.
 	let { unit }: { unit: HarnessUnit } = $props();
 </script>
 

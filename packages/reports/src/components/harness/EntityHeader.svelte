@@ -4,7 +4,6 @@
 	import { entityLabels, entityLens, type EntityNav } from '../../utils/entityLens';
 	import { categoryIcon } from '../../utils/harnessIcons';
 	import EntityLink from './EntityLink.svelte';
-	import HarnessAction from './HarnessAction.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
 	import HarnessTabs from './HarnessTabs.svelte';
 	import HarnessVerdict from './HarnessVerdict.svelte';
@@ -22,36 +21,22 @@
 	} = $props();
 	type Place = Pick<ExplorerLocation, 'section' | 'tab'>;
 	let label = $derived(entityLabels[entity.category]);
-	let details = $derived(nav.route.section === 'details');
 	let visual = $derived(['pages', 'components', 'shells'].includes(entity.category));
 	const at = (place: Place = {}) =>
 		entityLens(nav.route, { category: entity.category, entity: entity.id, ...place });
-	// History is a screen of its own, reached from either row of tabs. Contract is a tab of each
-	// row: the typed contract of the overview, and the first tab of Details, which its action opens.
-	const places: Record<'overview' | 'details', Record<string, Place>> = {
-		overview: {
-			overview: {},
-			contract: { tab: 'contract' },
-			'used-in': { tab: 'used-in' },
-			uses: { tab: 'uses' },
-			tests: { tab: 'tests' },
-			states: { tab: 'states' },
-			history: { section: 'history' }
-		},
-		details: {
-			contract: { section: 'details' },
-			measurements: { section: 'details', tab: 'measurements' },
-			source: { section: 'details', tab: 'source' },
-			history: { section: 'history' }
-		}
+	const row: Record<string, Place> = {
+		overview: {},
+		contract: { tab: 'contract' },
+		'used-in': { tab: 'used-in' },
+		uses: { tab: 'uses' },
+		tests: { tab: 'tests' },
+		states: { tab: 'states' },
+		history: { section: 'history' },
+		source: { tab: 'source' }
 	};
-	const rows = {
-		overview: ['Overview', 'Contract', 'Used In', 'Uses', 'Tests', 'History'],
-		details: ['Contract', 'Measurements', 'Source', 'History']
-	};
-	let row = $derived(details ? places.details : places.overview);
+	const labels = ['Overview', 'Contract', 'Used In', 'Uses', 'Tests', 'History', 'Source'];
 	let tabs = $derived(
-		rows[details ? 'details' : 'overview'].map((label) => {
+		labels.map((label) => {
 			const title = visual && label === 'Tests' ? 'States' : label;
 			const id = title.toLowerCase().replace(' ', '-');
 			return { id, label: title, href: nav.href(at(row[id])) };
@@ -74,9 +59,9 @@
 				>{label.title}</EntityLink
 			>
 		</li>
-		{#if nav.route.section}
+		{#if nav.route.section === 'history'}
 			<li><EntityLink to={at()} {nav}>{entity.name}</EntityLink></li>
-			<li aria-current="page">{details ? 'Details' : 'History'}</li>
+			<li aria-current="page">History</li>
 		{:else}
 			<li aria-current="page">{entity.name}</li>
 		{/if}
@@ -92,7 +77,7 @@
 			{#if entity.change === 'removed'}<span class="ex-pill">Removed at this commit</span>{/if}
 			<HarnessVerdict {...entity.verdict} />
 		</div>
-		<p class="ex-lead">{details ? 'Contract and measurements' : entity.purpose}</p>
+		<p class="ex-lead">{entity.purpose}</p>
 	</div>
 	<div class="ex-head-actions">
 		{#if entity.category === 'pages'}
@@ -107,17 +92,6 @@
 					<code>{entity.appRoute ?? 'Not recorded'}</code>
 				{/if}
 			</p>
-		{/if}
-		{#if details}
-			<HarnessAction href={nav.href(at())} onclick={() => nav.go(at())} lead="arrow-left"
-				>Back to overview</HarnessAction
-			>
-		{:else}
-			<HarnessAction
-				href={nav.href(at(places.details.contract))}
-				onclick={() => nav.go(at(places.details.contract))}
-				icon="arrow-right">Details</HarnessAction
-			>
 		{/if}
 	</div>
 </header>

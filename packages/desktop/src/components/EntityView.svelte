@@ -31,7 +31,8 @@
 		Uses: 'uses',
 		Evidence: 'evidence',
 		States: 'states',
-		History: 'history'
+		History: 'history',
+		Source: 'source'
 	} as const;
 	type Section = keyof typeof sections;
 	/** A function has a plan and no designs; every other entity has designs and no plan section. */
@@ -48,7 +49,6 @@
 		)
 	);
 	let tab = $state<Section>('Overview');
-	let details = $state(false);
 	let conversation = $state(true);
 	let thread = $state<ThreadInfo | null>(null);
 	let target = $state<ThreadTarget | null>(null);
@@ -67,12 +67,11 @@
 	$effect(() => {
 		const read = { suffix: workspace.suffix, entity: workspace.entity };
 		untrack(() => {
-			details = read.suffix === 'details';
 			// The former address of the designs of a function opens its plan.
-			let asked = read.suffix ?? '';
+			let asked = read.suffix === 'details' ? 'source' : (read.suffix ?? '');
 			if (headless && asked === 'designs') asked = 'plan';
 			if (visual && asked === 'evidence') asked = 'states';
-			if (!details) tab = names.find((name) => sections[name] === asked) ?? 'Overview';
+			tab = names.find((name) => sections[name] === asked) ?? 'Overview';
 		});
 	});
 	const name = $derived(explorerName(entity));
@@ -152,12 +151,7 @@
 				<p>{entity.summary}</p>
 				{#if route}<p class="app-route"><span>App route</span><code>{route}</code></p>{/if}
 			</div>
-			<button
-				onclick={() => {
-					details = !details;
-					section(details ? 'details' : sections[tab]);
-				}}>Details →</button
-			>{#if !conversation}<button onclick={() => (conversation = true)}>Conversation</button>{/if}
+			{#if !conversation}<button onclick={() => (conversation = true)}>Conversation</button>{/if}
 		</div>
 		{#if pictured}<RuntimeEvidence {entity} {workspace} {evidence} />{/if}
 		<nav class="entity-tabs" aria-label="Entity sections">
@@ -166,14 +160,16 @@
 					aria-current={tab === value ? 'page' : undefined}
 					onclick={() => {
 						tab = value;
-						details = false;
 						section(sections[value]);
 					}}>{value}</button
 				>{/each}
 		</nav>
-		{#if details}<DetailsPanel {entity} {workspace} />{/if}{#if tab === 'Overview'}<div
-				class="base-panels"
-			>
+		{#if tab === 'Source'}
+			{#key `${entity.id}:${workspace.snapshot?.revision.commit}`}<DetailsPanel
+					{entity}
+					{workspace}
+				/>{/key}
+		{:else if tab === 'Overview'}<div class="base-panels">
 				<ContractPanel contract={entity.contract} /><MeasuresPanel
 					size={entity.size}
 					performance={entity.performance}

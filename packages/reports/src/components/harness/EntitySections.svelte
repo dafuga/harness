@@ -5,6 +5,7 @@
 	import type { EntityNav } from '../../utils/entityLens';
 	import { entityShown } from '../../utils/entityShown';
 	import EntityContract from '../EntityContract.svelte';
+	import EntitySource from './EntitySource.svelte';
 	import EntityOverview from './EntityOverview.svelte';
 	import EntityRelations from './EntityRelations.svelte';
 	import EntityTests from './EntityTests.svelte';
@@ -49,6 +50,10 @@
 			<details><summary>Verification details</summary>{@render verification()}</details>
 		</div>
 	{:else}{@render verification()}{/if}
+{:else if host.route.tab === 'source'}
+	<div role="tabpanel" aria-label={`${entity.name} source`}>
+		<EntitySource unit={entity.unit} />
+	</div>
 {:else if host.route.tab === 'contract'}
 	<div role="tabpanel" aria-label={`${entity.name} contract`}>
 		<EntityContract unit={entity.unit} category={entity.category} {contract} last={entity.lastAt} />

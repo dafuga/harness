@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.details-panel",
 	"kind": "component",
-	"title": "Details panel",
-	"responsibility": "Shows an entity’s kind and measurements and lets a person read its recorded source files at the displayed revision.",
+	"title": "Source files",
+	"responsibility": "Lets a person read source files from the displayed entity and revision, only on the Source tab.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -16,7 +16,7 @@
 			{
 				"name": "DetailsPanel.entity",
 				"type": "EntityDetail",
-				"description": "Entity supplying its kind, size and performance text, owned source paths and identifier. A source request is scoped to this identifier. An empty source list produces “No source files recorded.”"
+				"description": "Entity supplying its kind, size and performance text, owned source paths and identifier. A source request is scoped to this identifier. An empty source list produces \u201cNo source files recorded.\u201d"
 			},
 			{
 				"name": "DetailsPanel.workspace",
@@ -28,7 +28,7 @@
 			{
 				"name": "DetailsPanel",
 				"type": "markup",
-				"description": "Details with kind and measurement text, using “Not measured” when an unavailable measure has no text. An expandable Source section lists recorded files. Selecting one clears the previous text and error, requests that file at the displayed commit and shows its returned text; a failed request displays an alert."
+				"description": "Details with kind and measurement text, using \u201cNot measured\u201d when an unavailable measure has no text. An expandable Source section lists recorded files. Selecting one clears the previous text and error, requests that file at the displayed commit and shows its returned text; a failed request displays an alert."
 			}
 		],
 		"errors": []

@@ -58,10 +58,19 @@ export type ExplorerSection = (typeof explorerSections)[number];
 /**
  * The tabs a section keeps in the query; the first of each is its default and is not written.
  * `relationships` is the former address of what `used-in` and `uses` show: it is still read.
- * `contract` of an overview is its typed contract; the contract of Details is that section's own.
+ * Source is optional on the entity page; Details is accepted only as a legacy address.
  */
 export const explorerTabs = {
-	overview: ['overview', 'contract', 'used-in', 'uses', 'relationships', 'tests', 'states'],
+	overview: [
+		'overview',
+		'contract',
+		'used-in',
+		'uses',
+		'relationships',
+		'tests',
+		'states',
+		'source'
+	],
 	details: ['contract', 'measurements', 'source'],
 	history: []
 } as const satisfies Record<string, readonly string[]>;
@@ -164,8 +173,19 @@ export function explorerRoute(path: string, search = ''): ExplorerLocation | und
 	return tab ? { ...location, tab } : location;
 }
 
+/** Legacy Details links keep their scope and open a tab of the existing entity page. */
+export function canonicalExplorerLocation(location: ExplorerLocation): ExplorerLocation {
+	if (location.section !== 'details') return location;
+	const canonical = { ...location };
+	delete canonical.section;
+	if (location.tab === 'measurements') delete canonical.tab;
+	else canonical.tab = location.tab === 'source' ? 'source' : 'contract';
+	return canonical;
+}
+
 /** The canonical path of an address, with its tab as a query; every part is one segment. */
 export function explorerRoutePath(location: ExplorerLocation): string {
+	location = canonicalExplorerLocation(location);
 	const branch = location.branch === null ? '' : `/branch/${encodeURIComponent(location.branch)}`;
 	const commit = location.commit === null ? '' : `/commit/${location.commit}`;
 	const entity = location.entity ? `/${encodeURIComponent(location.entity)}` : '';
