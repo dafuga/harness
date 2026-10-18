@@ -1,0 +1,77 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [786.00ms]
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+Loading svelte-check in workspace: /private/tmp/harness-snapshot-fBEH8c/packages/reports
+Getting Svelte diagnostics...
+
+[32msvelte-check found 0 errors and 0 warnings
+[39m$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts test/entity-preview-words.spec.ts --grep "contract has its own typed" "--reporter=list,json" --output "/tmp/harness-contract-sealed-browser-20261018"
+
+Running 3 tests using 1 worker
+
+  ✓  1 test/entity-preview-words.spec.ts:74:2 › contract has its own typed example view at desktop width (546ms)
+  ✓  2 test/entity-preview-words.spec.ts:74:2 › contract has its own typed example view at tablet width (480ms)
+  ✓  3 test/entity-preview-words.spec.ts:74:2 › contract has its own typed example view at mobile width (420ms)
+
+  3 passed (4.2s)
+$ vitest run test/components/entity-contract.test.ts test/components/entity-overview.test.ts test/components/entity-sections.test.ts test/components/entity-details.test.ts
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/tmp/harness-snapshot-fBEH8c/packages/reports[39m
+
+ [32m✓[39m test/components/entity-overview.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 37[2mms[22m[39m
+ [32m✓[39m test/components/entity-details.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m test/components/entity-contract.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m test/components/entity-sections.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m      Tests [22m [1m[32m22 passed[39m[22m[90m (22)[39m
+[2m   Start at [22m 19:08:32
+[2m   Duration [22m 2.10s[2m (transform 646ms, setup 0ms, collect 1.20s, tests 82ms, environment 0ms, prepare 134ms)[22m
+
+$ vitest run --exclude "test/**/*.e2e.test.ts" --exclude "test/packaged-reports.e2e.test.ts" test/utils/explorer-route.test.ts
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/tmp/harness-snapshot-fBEH8c[39m
+
+ [32m✓[39m test/utils/explorer-route.test.ts [2m([22m[2m60 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m60 passed[39m[22m[90m (60)[39m
+[2m   Start at [22m 19:08:35
+[2m   Duration [22m 2.10s[2m (transform 35ms, setup 13ms, collect 21ms, tests 8ms, environment 0ms, prepare 50ms)[22m
+
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/tmp/harness-snapshot-fBEH8c[39m
+
+ [32m✓[39m test/units-policy.e2e.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 5072[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI exposes execution targets and component versions, and refuses relaxed tolerance [33m 1948[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI records lineage when retired source is recreated under a new identity [33m 2131[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI labels a supplied responsibility as declared and a generated one as derived [33m 992[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+[2m   Start at [22m 19:08:38
+[2m   Duration [22m 5.33s[2m (transform 31ms, setup 7ms, collect 15ms, tests 5.07s, environment 0ms, prepare 27ms)[22m
+
