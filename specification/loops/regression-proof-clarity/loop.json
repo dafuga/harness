@@ -2,11 +2,9 @@
 	"name": "regression-proof-clarity",
 	"goal": "Show historical failure and passing fix clearly without claiming full verification",
 	"createdAt": "2026-10-18T13:07:59.723Z",
-	"updatedAt": "2026-10-18T13:08:24.530Z",
+	"updatedAt": "2026-10-18T13:13:24.474Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T13:11:22.669Z",
+			"evidence": "Committed 0273faf6 before product repair. The unchanged runtime-evidence-ui review fails because Regression fixed is absent. Harness sealed record f7c6a17a55d709e96a0c859ad75108ce13b4602cd66daf40452f6df344aea2ce with 1255 frozen inputs."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T13:13:24.474Z",
+			"evidence": "Updated the shared proof card: historical failure, passing fix and per-revision resolution. Preserved outputs, links and verification boundaries. The unchanged browser regression passes all three viewports in the working tree."
 		},
 		{
 			"id": "green",

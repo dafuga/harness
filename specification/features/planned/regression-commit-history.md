@@ -26,6 +26,8 @@ app displays the failure, passing result, exact commit links, command and record
 - History and test/evidence views reuse one responsive component in the web, Electron and
   iOS renderer. A red commit shows only its failure; the fix links back to that exact result.
   Missing, copied or damaged evidence produces an explicit gap.
+- A paired result says the regression is fixed and labels its historical failure "Before fix"
+  and its passing result "After fix". A red-only revision cannot claim a passing fix.
 - Agent instructions require this sequence and preserving both commits when landing. The
   final source head must still pass normal verification; intermediate expected failures are
   never relabeled as passing commits.

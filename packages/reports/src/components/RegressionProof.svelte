@@ -38,18 +38,24 @@
 	>
 		<header>
 			<h2>Regression proof</h2>
-			<p>Two commits. The same tests.</p>
+			<p>Recorded tests before and after a fix.</p>
 		</header>
 		{#each shown as item, index (index)}
 			<article>
 				<h3>{item.loop.replaceAll('-', ' ')}</h3>
 				{#if item.gap}<p role="alert">{item.gap}</p>{:else if item.red}
+					<p><strong>{item.green ? 'Regression fixed' : 'Failing at this commit'}</strong></p>
+					<p class="proof-context">
+						{item.green
+							? 'The failure below is historical. The same tests pass at the fix commit.'
+							: 'This records the bug before repair. No passing fix is recorded here.'}
+					</p>
 					<div class="proof-steps">
 						<div class="proof-step failed">
 							<div class="step-heading">
-								<span>1 · Failing test</span><HarnessVerdict
+								<span>Before fix · failed as expected</span><HarnessVerdict
 									passed={false}
-									label="The committed regression reproduced the defect"
+									label="Historical test result: failed before the fix"
 								/>
 							</div>
 							<p class="assertion">{item.red.assertion}</p>
@@ -57,15 +63,15 @@
 								href={href(item.red.commit)}
 								aria-label="View failing test commit"
 								onclick={(event) => open(event, item.red!.commit)}
-								><code>{item.red.commit.slice(0, 7)}</code><span>View failing test commit →</span
-								></a
+								><code>{item.red.commit.slice(0, 7)}</code><span>View before-fix commit →</span></a
 							>
 						</div>
 						<div class="proof-step" class:passed={Boolean(item.green)}>
 							<div class="step-heading">
-								<span>2 · Fix</span>{#if item.green}<HarnessVerdict
+								<span>{item.green ? 'After fix · passed' : 'After fix · pending'}</span
+								>{#if item.green}<HarnessVerdict
 										passed={true}
-										label="The same regression passed on the separate fix commit"
+										label="The same regression tests passed at the fix commit"
 									/>{/if}
 							</div>
 							{#if item.green}<p class="assertion">Same tests and command</p>
@@ -82,11 +88,11 @@
 						{#if expanded[index]}<code class="command">{item.red.command}</code>
 							<div class="proof-steps">
 								<div>
-									<h4>Failing test · {item.red.commit.slice(0, 7)}</h4>
+									<h4>Before fix · {item.red.commit.slice(0, 7)}</h4>
 									<pre>{item.red.output}</pre>
 								</div>
 								{#if item.green}<div>
-										<h4>Fix · {item.green.commit.slice(0, 7)}</h4>
+										<h4>After fix · {item.green.commit.slice(0, 7)}</h4>
 										<pre>{item.green.output}</pre>
 									</div>{/if}
 							</div>
@@ -110,6 +116,7 @@
 		background: var(--hx-surface, #0a2230);
 		min-width: 0;
 	}
+	.proof-context,
 	header p,
 	.footnote {
 		color: var(--hx-muted, #9bb2c1);
@@ -194,6 +201,9 @@
 	}
 	.footnote {
 		margin: 18px 0 0;
+	}
+	.proof-context {
+		margin: 0 0 16px;
 	}
 	@media (max-width: 700px) {
 		.proof-steps {
