@@ -88,7 +88,8 @@ test('a page lists its components as components, each a link in the same scope',
 	expect(body).toContain(`/commit/${commits.middle}/components/${ids.list}`);
 	expect(words(body)).toContain('App route');
 	expect(words(body)).toContain('/orders');
-	expect(words(body)).toContain('Details');
+	expect(words(body)).not.toContain('Details');
+	expect(words(body)).toContain('Source');
 });
 
 test('a function at a selected commit shows its end-to-end results before and after', () => {

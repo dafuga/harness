@@ -119,7 +119,7 @@ test('a paired phone shows the same workspace through the native adapter', async
 	const heading = await page.locator('.entity-heading').boundingBox();
 	const summary = await page.locator('.entity-heading p').boundingBox();
 	expect(summary!.width).toBeGreaterThanOrEqual(heading!.width * 0.9);
-	for (const name of ['Details →', 'Conversation']) {
+	for (const name of ['Conversation']) {
 		const action = await page.getByRole('button', { name, exact: true }).boundingBox();
 		expect(action!.y).toBeGreaterThanOrEqual(summary!.y + summary!.height);
 	}

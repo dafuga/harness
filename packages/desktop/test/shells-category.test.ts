@@ -44,9 +44,9 @@ test('a shell has a workspace address with its project, branch, commit and secti
 		commit,
 		category: 'shells',
 		entityId: shell,
-		suffix: 'details'
+		suffix: 'source'
 	});
-	expect(workspacePath(route)).toBe(path);
+	expect(workspacePath(route)).toBe(path.replace(/\/details$/, '/source'));
 	expect(isWorkspacePath('/harness/shells')).toBe(true);
 	expect(workspaceRoute('/harness/branch/main/shells').category).toBe('shells');
 });
@@ -76,7 +76,7 @@ test('an old Components address of a shell opens it under Shells, keeping its se
 	expect(history.pushState).toHaveBeenCalledWith(
 		{},
 		'',
-		`/harness/branch/main/shells/${shell}/details`
+		`/harness/branch/main/shells/${shell}/source`
 	);
 	await store.navigate(`/harness/branch/main/components/${shell}/history`, false);
 	expect(history.replaceState).toHaveBeenCalledWith(

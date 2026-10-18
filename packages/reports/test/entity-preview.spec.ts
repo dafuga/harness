@@ -5,7 +5,6 @@ import { commits, ids } from './entityUnits';
 const page = { category: 'pages' as const, entity: ids.page };
 const filter = { category: 'functions' as const, entity: ids.filter };
 const shots = '.ex-evidence .ex-shot img';
-
 test('collections: search, changed only and order change what is listed', async ({ page: tab }) => {
 	await open(tab);
 	await expect(tab.getByRole('heading', { level: 1, name: 'Pages' })).toBeVisible();
@@ -158,17 +157,32 @@ test('links walk page to component to function, and keep the branch and the comm
 	await expect(tab.getByRole('heading', { level: 1, name: 'Filter orders' })).toBeVisible();
 });
 
-test('details hide the source until the source tab is opened', async ({ page: tab }) => {
-	await open(tab, page);
-	await tab.getByRole('link', { name: 'Details' }).click();
-	expect(await where(tab)).toMatchObject({ section: 'details', commit: null });
-	await expect(tab.getByText('Contract and measurements')).toBeVisible();
-	await expect(tab.getByText('+page.svelte')).toHaveCount(0);
-	await capture(tab, 'page-details-desktop');
-	await tab.getByRole('tab', { name: 'Source' }).click();
-	await expect(tab.getByText('src/routes/orders/+page.svelte', { exact: true })).toBeVisible();
-	await tab.getByRole('link', { name: 'Back to overview' }).click();
-	expect(await where(tab)).toEqual({ branch: 'feature/orders', commit: null, ...page });
+test('one entity page keeps source optional without a duplicate Details page', async ({
+	page: tab
+}) => {
+	for (const [name, size] of Object.entries(viewports)) {
+		await tab.setViewportSize(size);
+		await open(tab, filter);
+		await tab.evaluate(async () => {
+			await document.fonts.ready;
+		});
+		await capture(tab, `unified-function-${name}`);
+		await expect(
+			tab.getByRole('link', { name: 'Details', exact: true }),
+			'no second Details page'
+		).toHaveCount(0);
+		await expect(tab.getByText('Source ownership')).toHaveCount(0);
+		await tab.getByRole('tab', { name: 'Source', exact: true }).click();
+		expect(await where(tab)).toEqual({
+			branch: 'feature/orders',
+			commit: null,
+			...filter,
+			tab: 'source'
+		});
+		await expect(tab.getByText('src/functions/filterOrders.ts', { exact: true })).toBeVisible();
+		await tab.getByRole('tab', { name: 'Overview', exact: true }).click();
+		expect(await where(tab)).toEqual({ branch: 'feature/orders', commit: null, ...filter });
+	}
 });
 
 test('history lists changes, keeps profiles apart and opens a revision', async ({ page: tab }) => {
@@ -193,7 +207,7 @@ for (const [name, size] of Object.entries(viewports)) {
 			{ ...page, commit: commits.middle },
 			{ ...filter, commit: commits.middle },
 			{ ...filter, section: 'history' as const, commit: commits.middle },
-			{ ...page, section: 'details' as const },
+			{ ...page, tab: 'source' as const },
 			{ category: 'configs' as const, entity: ids.settings }
 		];
 		for (const [position, route] of routes.entries()) {

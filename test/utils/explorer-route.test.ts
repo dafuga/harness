@@ -70,14 +70,14 @@ test.each(shapes)('current branch %s', (tail, selected) => {
 	const location = { branch, commit: null, ...selected } as ExplorerLocation;
 	const path = `/branch/${encoded}${tail}`;
 	expect(explorerRoute(path)).toEqual(location);
-	expect(explorerRoutePath(location)).toBe(path);
+	expect(explorerRoutePath(location)).toBe(path.replace(/\/details$/, '?tab=contract'));
 });
 
 test.each(shapes)('selected commit %s', (tail, selected) => {
 	const location = { branch, commit: sha, ...selected } as ExplorerLocation;
 	const path = `/branch/${encoded}/commit/${sha}${tail}`;
 	expect(explorerRoute(path)).toEqual(location);
-	expect(explorerRoutePath(location)).toBe(path);
+	expect(explorerRoutePath(location)).toBe(path.replace(/\/details$/, '?tab=contract'));
 });
 
 test('there are nineteen designed shapes in each scope, and a Page has a history too', () => {
@@ -131,11 +131,15 @@ test('the tab of a section is kept in the query and only where it exists', () =>
 		section: 'details',
 		tab: 'source'
 	};
-	expect(explorerRoutePath(source)).toBe(
-		'/branch/main/pages/reports.page.titles/details?tab=source'
-	);
+	expect(explorerRoutePath(source)).toBe('/branch/main/pages/reports.page.titles?tab=source');
 	expect(explorerRoute('/branch/main/pages/reports.page.titles/details', '?tab=source')).toEqual(
 		source
+	);
+	expect(explorerRoute('/branch/main/pages/reports.page.titles', '?tab=source')?.tab).toBe(
+		'source'
+	);
+	expect(explorerRoutePath({ ...source, tab: 'measurements' })).toBe(
+		'/branch/main/pages/reports.page.titles'
 	);
 	const plain = explorerRoute('/branch/main/pages/reports.page.titles/details', '?tab=tests');
 	expect(plain?.tab).toBeUndefined();

@@ -55,11 +55,10 @@ test('exact image region, approval, Change, public stream and source disclosure'
 	await expect(page.getByText('Working on the approved design.')).toBeVisible();
 	await page.getByRole('button', { name: 'Cancel run', exact: true }).click();
 	await expect(page.getByText('Run cancelled', { exact: true })).toBeVisible();
-	await page.getByRole('button', { name: 'Details →', exact: true }).click();
-	await expect(
-		page.getByRole('button', { name: 'src/activity.svelte', exact: true })
-	).not.toBeVisible();
-	await page.getByText('Source', { exact: true }).click();
+	await page
+		.getByRole('navigation', { name: 'Entity sections' })
+		.getByRole('button', { name: 'Source', exact: true })
+		.click();
 	await page.getByRole('button', { name: 'src/activity.svelte', exact: true }).click();
 	await expect(page.getByLabel('src/activity.svelte', { exact: true })).toContainText(
 		'<h1>Activity</h1>'

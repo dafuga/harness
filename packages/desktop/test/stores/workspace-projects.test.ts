@@ -90,7 +90,7 @@ test('a project link selects its project before any read and names it in every r
 		`/projects/one/harness/branch/feat%2Fx/commit/${earlier}/components`
 	);
 	expect(store.path('pages', 'page:a', 'details')).toBe(
-		`/projects/one/harness/branch/feat%2Fx/commit/${earlier}/pages/page%3Aa/details`
+		`/projects/one/harness/branch/feat%2Fx/commit/${earlier}/pages/page%3Aa/source`
 	);
 	expect(store.capabilities).toEqual(open);
 });

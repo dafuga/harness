@@ -12,12 +12,21 @@ const tabs = (body: string) =>
 
 test('details opens on the contract with size and performance, and shows no source', () => {
 	const body = content('commit', page);
-	expect(tabs(body)).toEqual(['Contract', 'Measurements', 'Source', 'History']);
-	expect(words(body)).toContain('Contract and measurements');
+	expect(tabs(body)).toEqual([
+		'Overview',
+		'Contract',
+		'Used In',
+		'Uses',
+		'States',
+		'History',
+		'Source'
+	]);
+	expect(words(body)).toContain('Lists the orders of an account.');
 	for (const heading of ['Contract', 'Size', 'Performance profile']) {
 		expect(body).toContain(`aria-label="${heading}"`);
 	}
-	expect(words(body)).toContain('Back to overview');
+	expect(words(body)).not.toContain('Back to overview');
+	expect(words(body)).not.toContain('Details');
 	expect(words(body)).not.toMatch(owned);
 	expect(words(body)).not.toMatch(/Source ownership|provenance/i);
 });
@@ -44,7 +53,7 @@ test('source is shown only when the source tab is the open one', () => {
 	const body = content('commit', { ...page, tab: 'source' });
 	expect(words(body)).toContain('Source ownership');
 	expect(words(body)).toContain('src/routes/orders/+page.svelte');
-	expect(body).toContain(`/commit/${commits.middle}/pages/${ids.page}/details?tab=source`);
+	expect(body).toContain(`/commit/${commits.middle}/pages/${ids.page}?tab=source`);
 });
 
 test('measurements name the limit each figure is frozen at, or that none is recorded', () => {

@@ -104,17 +104,15 @@ export async function runtimeAudio(page: Page): Promise<void> {
 	);
 }
 
-/** Component captures stay above all sections, including Details, without re-reading bytes. */
+/** Component captures stay above all sections, including Source, without re-reading bytes. */
 export async function componentScreens(page: Page, info: TestInfo, phase: string): Promise<void> {
 	const tabs = page.getByRole('navigation', { name: 'Entity sections' });
 	const panel = page.getByRole('region', { name: 'Recorded runtime evidence', exact: true });
 	const sources = await panel
 		.getByRole('img')
 		.evaluateAll((images) => images.map((image) => image.getAttribute('src')));
-	for (const name of ['Overview', 'Designs', 'Used In', 'Uses', 'States', 'History', 'Details']) {
-		if (name === 'Details')
-			await page.getByRole('button', { name: 'Details →', exact: true }).click();
-		else await tabs.getByRole('button', { name, exact: true }).click();
+	for (const name of ['Overview', 'Designs', 'Used In', 'Uses', 'States', 'History', 'Source']) {
+		await tabs.getByRole('button', { name, exact: true }).click();
 		if (process.env.TAKE_SCREENSHOT === 'true') {
 			await settled(page);
 			await page.screenshot({

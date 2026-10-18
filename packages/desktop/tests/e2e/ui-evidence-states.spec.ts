@@ -71,8 +71,10 @@ test('evidence is read only where it is shown, and each section has its own addr
 		await tabs(page).getByRole('button', { name }).click();
 		await expect.poll(() => path(page)).toBe(at(orders, undefined, suffix));
 	}
-	await page.getByRole('button', { name: 'Details →', exact: true }).click();
-	await page.getByText('Source', { exact: true }).click();
+	await page
+		.getByRole('navigation', { name: 'Entity sections' })
+		.getByRole('button', { name: 'Source', exact: true })
+		.click();
 	await expect(
 		page.getByRole('button', { name: 'src/routes/orders/+page.svelte', exact: true })
 	).toBeVisible();

@@ -16,7 +16,7 @@ test('details of every kind open on the contract, size and performance, with no 
 	for (const place of places) {
 		const at = { ...place, section: 'details' as const };
 		const body = screen(EntityDetailsScreen, 'commit', at);
-		expect(words(body), place.entity).toContain('Contract and measurements');
+		expect(words(body), place.entity).not.toContain('Details');
 		for (const heading of ['Contract', 'Size', 'Performance profile']) {
 			expect(body, place.entity).toContain(`aria-label="${heading}"`);
 		}

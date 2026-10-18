@@ -113,7 +113,7 @@ test('at a selected commit the tip and the viewed hash differ, and Go to tip is 
 	expect(text(html)).toContain('Historical commit');
 	expect(text(html)).not.toContain('Current · branch tip');
 	const tip = /<a\b([^>]*)>(?:(?!<\/a>).)*Go to tip/s.exec(html)?.[1];
-	expect(tip).toContain(`href="${scoped}/functions/function.slugify/details?tab=source"`);
+	expect(tip).toContain(`href="${scoped}/functions/function.slugify?tab=source"`);
 	expect(html).not.toMatch(/<button\b[^>]*\sdisabled/);
 });
 

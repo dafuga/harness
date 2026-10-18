@@ -51,7 +51,7 @@ test('a shell has an address at a branch tip and at a selected commit, with its 
 		tab: 'source'
 	});
 	expect(explorerRoutePath(at!)).toBe(
-		`/branch/feat%2Fx/commit/${commit}/shells/${shell}/details?tab=source`
+		`/branch/feat%2Fx/commit/${commit}/shells/${shell}?tab=source`
 	);
 	expect(explorerRoute('/branch/main/shells')).toEqual({
 		branch: 'main',

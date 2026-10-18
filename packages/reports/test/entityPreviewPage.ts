@@ -110,31 +110,25 @@ export async function reviewVisual(
 	expect((await evidence.boundingBox())!.y).toBeLessThan((await size.boundingBox())!.y);
 	expect(await fits(page)).toBe(true);
 	if (route.category !== 'components') return;
-	for (const details of [false, true]) {
-		if (details) await page.getByRole('link', { name: 'Details', exact: true }).click();
-		for (const name of details
-			? ['Contract', 'Measurements', 'Source', 'History']
-			: ['Overview', 'Contract', 'Used In', 'Uses', 'States', 'History']) {
-			await page.getByRole('tab', { name, exact: true }).click();
-			await ready(page);
-			await capture(page, `header-${details ? 'details' : 'base'}-${name}-${mode}-${viewport}`);
-			await expect(evidence, 'component screenshot persists across tabs').toHaveCount(1);
-			const tabs = await page.getByRole('tablist').boundingBox();
-			const shot = await page.locator('section[aria-labelledby="ex-screens-title"]').boundingBox();
-			expect(
-				shot!.y + shot!.height,
-				'component screenshot stays above its tabs'
-			).toBeLessThanOrEqual(tabs!.y);
-			const files = await page
-				.locator('section[aria-labelledby="ex-screens-title"] img')
-				.evaluateAll((images) => images.map((image) => image.getAttribute('src')));
-			expect(files).toEqual(
-				commit
-					? ['/media/aaaaaaa-default-desktop.png', '/media/bbbbbbb-default-desktop.png']
-					: ['/media/ccccccc-default-desktop.png']
-			);
-			expect(await fits(page)).toBe(true);
-		}
+	for (const name of ['Overview', 'Contract', 'Used In', 'Uses', 'States', 'History', 'Source']) {
+		await page.getByRole('tab', { name, exact: true }).click();
+		await ready(page);
+		await capture(page, `header-base-${name}-${mode}-${viewport}`);
+		await expect(evidence, 'component screenshot persists across tabs').toHaveCount(1);
+		const tabs = await page.getByRole('tablist').boundingBox();
+		const shot = await page.locator('section[aria-labelledby="ex-screens-title"]').boundingBox();
+		expect(shot!.y + shot!.height, 'component screenshot stays above its tabs').toBeLessThanOrEqual(
+			tabs!.y
+		);
+		const files = await page
+			.locator('section[aria-labelledby="ex-screens-title"] img')
+			.evaluateAll((images) => images.map((image) => image.getAttribute('src')));
+		expect(files).toEqual(
+			commit
+				? ['/media/aaaaaaa-default-desktop.png', '/media/bbbbbbb-default-desktop.png']
+				: ['/media/ccccccc-default-desktop.png']
+		);
+		expect(await fits(page)).toBe(true);
 	}
 }
 

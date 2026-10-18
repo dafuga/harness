@@ -83,8 +83,10 @@ test('a refused source read clears the whole shared view, and nothing late bring
 }) => {
 	await hostedFixture(page);
 	await page.goto(entity(gamma, 'main'));
-	await page.getByRole('button', { name: 'Details →', exact: true }).click();
-	await page.getByText('Source', { exact: true }).click();
+	await page
+		.getByRole('navigation', { name: 'Entity sections' })
+		.getByRole('button', { name: 'Source', exact: true })
+		.click();
 	await page.evaluate(() => Object.assign(window, { __deny: true }));
 	await page.getByRole('button', { name: 'src/activity.svelte', exact: true }).click();
 	await expect(page.getByRole('alert')).toContainText('Access to this shared project ended');

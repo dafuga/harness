@@ -97,9 +97,11 @@ test('an explorer address is left alone, with its tab', () => {
 	expect(
 		canonical(`/harness/branch/feature%2Fkept%231/commit/${id('b')}/functions`)
 	).toBeUndefined();
-	expect(canonical('/harness/branch/main/pages/page.titles/details?tab=source')).toBeUndefined();
+	expect(canonical('/harness/branch/main/pages/page.titles/details?tab=source')).toBe(
+		'/harness/branch/main/pages/page.titles?tab=source'
+	);
 	expect(canonical('/harness/branch/main/pages/page.titles/details?tab=nothing')).toBe(
-		'/harness/branch/main/pages/page.titles/details'
+		'/harness/branch/main/pages/page.titles?tab=contract'
 	);
 });
 
