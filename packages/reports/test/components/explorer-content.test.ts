@@ -6,17 +6,17 @@ import { commits, ids } from '../entityUnits';
 const source = /src\/|\+page\.svelte|\.ts\b|OrdersPage|filterOrders/;
 const banned = /sub-?components|\brelated\b|\breports?\b|dashboard|analytics/i;
 
-test('the pages collection is cards with the page own screenshot, a verdict and a real link', () => {
+test('the pages collection is cards with only the page title and its screenshot', () => {
 	const body = content('current');
 	expect(words(body)).toContain('Pages Start with the pages people use.');
 	expect(body).toContain('aria-label="Orders page"');
 	// The tip shows the tip's capture, and the link stays on the branch without a commit.
 	expect(body).toContain('src="/harness/media/ccccccc-default-desktop.png"');
 	expect(body).toContain('href="/harness/branch/feature%2Forders/pages/app.page.orders"');
-	expect(words(body)).toContain('2 components');
-	// The verdict of a card is the icon alone; its words are its name, not text on the card.
+	expect(words(body)).not.toContain('2 components');
+	// Verification belongs to the page itself, never a catalog card.
 	const card = body.slice(0, body.indexOf('class="ex-legend"'));
-	expect(verdicts(card)).toEqual([{ passed: true, name: 'Full coverage passed', reasons: [] }]);
+	expect(verdicts(card)).toEqual([]);
 	// The footer explains the two marks by showing them: no status word is written beside either.
 	const footer = body.slice(body.indexOf('class="ex-legend"'));
 	expect(verdicts(footer).map((mark) => `${mark.passed} ${mark.name}`)).toEqual([
@@ -73,7 +73,7 @@ test('a collection offers search, changed only and an order, and says how many i
 
 test('verification is a check or a cross with its reason, and never a share', () => {
 	const partial = revision(commits.middle, [record(commits.middle, false)]);
-	const body = content('commit', {}, { head: partial });
+	const body = content('commit', { category: 'pages', entity: ids.page }, { head: partial });
 	const [badge] = verdicts(body);
 	expect(badge).toEqual({
 		passed: false,

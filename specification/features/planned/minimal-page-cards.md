@@ -23,3 +23,10 @@ At the reported branch tip 269b85ca, the history cache contains no attached veri
 Agent settings declares a capture hook, but no run is attached for the catalog to read. Run the
 existing browser scenarios against the final committed source and attach their sealed captures.
 Keep broader unrun verification failures explicit; do not claim native acceptance or full proof.
+
+## Page-state binding
+
+A page preview must be named by its scenario state. The shared workspace reads the explicit preview
+binding, while the Reports catalog derives the state from the committed scenario's unit membership.
+The committed preview guard must exercise real page declarations, not only ideal synthetic inputs.
+Agent settings must select its Settings screenshot, rather than its scenario's compact agent panel.

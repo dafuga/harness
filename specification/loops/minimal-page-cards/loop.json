@@ -2,7 +2,7 @@
 	"name": "minimal-page-cards",
 	"goal": "Page cards show only their title and revision-bound screenshot",
 	"createdAt": "2026-10-18T23:43:39.466Z",
-	"updatedAt": "2026-10-18T23:47:28.973Z",
+	"updatedAt": "2026-10-18T23:48:35.062Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T23:48:34.484Z",
+			"evidence": "64ee5cbb makes each page title and screenshot one existing navigation link in Reports and the shared local/hosted renderer. Descriptions, counts, status marks and extra actions are removed for pages; screenshot provenance remains available on hover."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T23:48:35.062Z",
+			"evidence": "Unchanged tests at 64ee5cbb pass all three Reports widths and six shared local/hosted widths. Record ba592bacb18431709f2fab02c62de14a8a086c89c84f27a40364188f6f29c3b6 pairs with red e9cfa0dc at 0d44843e. After screenshots captured."
 		},
 		{
 			"id": "verify",

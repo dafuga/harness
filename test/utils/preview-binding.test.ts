@@ -1,4 +1,6 @@
 import { expect, test } from 'vitest';
+import { readdirSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import type { ScenarioManifest } from '../../src/lib/contracts';
 import { previewBinding } from '../../src/utils/previewBinding';
 import { registryGate } from '../../src/services/VerificationGates';
@@ -69,4 +71,19 @@ test('strict verification rejects a preview that names no recorded page state', 
 	expect(
 		registryGate({ stored: [] }, { stored: [{ ...stored[0], status: 'retired' }], scenarios: [] })
 	).toEqual([]);
+});
+
+// Exercise every committed page preview, not a synthetic manifest whose state bindings are ideal.
+test('registered page previews name the state that actually shows that page', () => {
+	const root = new URL('../../specification/', import.meta.url);
+	const directory = new URL('units/', root);
+	for (const file of readdirSync(directory)) {
+		const unit = JSON.parse(readFileSync(new URL(file, directory), 'utf8'));
+		if (unit.kind !== 'page' || unit.status !== 'active' || !unit.preview) continue;
+		const declared = JSON.parse(
+			readFileSync(new URL(join('scenarios', `${unit.preview.scenario}.json`), root), 'utf8')
+		);
+		const state = declared.states.find((state: { id: string }) => state.id === unit.preview.state);
+		expect(state?.units, `${unit.id} preview must bind its own page state`).toContain(unit.id);
+	}
 });
