@@ -2,7 +2,7 @@
 	"name": "responsive-explorer",
 	"goal": "Keep same-revision navigation responsive with complete test and evidence semantics",
 	"createdAt": "2026-10-18T15:33:14.688Z",
-	"updatedAt": "2026-10-18T16:00:59.268Z",
+	"updatedAt": "2026-10-18T16:04:05.956Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -27,24 +27,27 @@
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
 			"status": "complete",
 			"completedAt": "2026-10-18T15:41:07.545Z",
-			"evidence": "4c47462b: sealed e45efca8. Same-revision tabs detach content; Functions navigation 4463–4663 ms across three viewports. No browser errors."
+			"evidence": "4c47462b: sealed e45efca8. Same-revision tabs detach content; Functions navigation 4463\u20134663 ms across three viewports. No browser errors."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
 			"status": "complete",
 			"completedAt": "2026-10-18T16:00:59.268Z",
-			"evidence": "Opus-authored raw revision state, primitive fetch keys and scoped graph readers. Codex review preserved revision and evidence semantics. Scale navigation 229–278 ms; all 559 unit and 45 browser tests passed."
+			"evidence": "Opus-authored raw revision state, primitive fetch keys and scoped graph readers. Codex review preserved revision and evidence semantics. Scale navigation 229\u2013278 ms; all 559 unit and 45 browser tests passed."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T16:04:05.956Z",
+			"evidence": "c06a64d2 passed sealed record 814b1839 against 741f842d red record 1270ca73: identical 1255 frozen inputs, command and environment. Category navigation 239\u2013252 ms at three viewports."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "559 unit and 45 browser tests, type checks, lint, build, audit and registry checks passed. Full Harness verification remains pending while Electron checks are paused. Cache code exceeds frozen source-size and complexity budgets; limits remain unchanged pending review."
 		}
 	],
 	"evaluators": [
