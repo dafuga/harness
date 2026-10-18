@@ -2,7 +2,7 @@
 	"name": "catalog-grids",
 	"goal": "Present components and functions as responsive card grids while preserving revision links, evidence and responsive filtering.",
 	"createdAt": "2026-10-18T16:54:42.028Z",
-	"updatedAt": "2026-10-18T17:07:22.073Z",
+	"updatedAt": "2026-10-18T17:15:42.042Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,12 +39,15 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T17:10:25.575Z",
+			"evidence": "Fix commit 0b74ae04 passes the unchanged command and all 1256 frozen inputs from failing commit 7143d0d2. Green record d4a3ad28 matches the red environment profile."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "567 unit and 69 browser checks pass; builds, types and lint pass. Full verification awaits three unchanged audit violations, frozen budget review and paused Electron checks."
 		}
 	],
 	"evaluators": [

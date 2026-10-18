@@ -165,7 +165,8 @@ const reaches: Record<string, (page: Page) => Promise<void>> = {
 	async hundreds(page) {
 		await page.goto(`${scale}${tip('main', 'functions')}`);
 		await titled(page, 'Functions');
-		await expect(page.getByRole('table', { name: 'Functions' })).toBeVisible();
+		await expect(content(page).getByRole('article').first()).toBeVisible();
+		expect(await content(page).getByRole('article').count()).toBeGreaterThan(400);
 	}
 };
 

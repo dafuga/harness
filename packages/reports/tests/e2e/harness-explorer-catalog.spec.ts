@@ -8,16 +8,16 @@ import { fits, screens, sharedField, typed } from './support/sharedSelect';
 const { commits, keptBranch } = seeded();
 const { explorerUnits: units } = explorer();
 const scale = `http://127.0.0.1:${Number(process.env.HARNESS_CONSOLE_E2E_SCALE_PORT || 5593)}`;
-const rows = (page: Page, name = 'Functions') =>
-	page.getByRole('table', { name }).locator('tbody tr');
+const cards = (page: Page) => page.getByRole('main').getByRole('article');
 const shown = (page: Page) => page.getByRole('main').getByRole('status');
 const search = (page: Page) => page.getByRole('searchbox', { name: /^Search / });
 const order = (page: Page) => page.getByRole('combobox', { name: 'Order' });
 const changedOnly = (page: Page) => page.getByRole('switch', { name: 'Changed only' });
-/** The name of the entity a row lists: its link, without the pills beside it. */
-const titled = (page: Page) => rows(page).first().getByRole('rowheader').getByRole('link');
+/** The name link of a card, apart from its test and open actions. */
+const titled = (page: Page) =>
+	cards(page).first().getByRole('heading', { level: 2 }).getByRole('link');
 const named = (page: Page, name: string) =>
-	rows(page).filter({ has: page.getByRole('rowheader', { name }) });
+	cards(page).filter({ has: page.getByRole('heading', { name, exact: true }) });
 
 test('a catalog is searchable, and a click on a listed entity opens it in the same scope', async ({
 	page
@@ -26,10 +26,13 @@ test('a catalog is searchable, and a click on a listed entity opens it in the sa
 	await expect(shown(page)).toHaveText('2 of 2 functions shown');
 	await search(page).fill('slug');
 	await expect(shown(page)).toHaveText('1 of 2 functions shown');
-	await expect(rows(page)).toHaveCount(1);
+	await expect(cards(page)).toHaveCount(1);
 	await checkpoint(page, 'catalog-search');
 	// The title itself is clicked, as a reader does, not an address that the test put together.
-	await rows(page).getByRole('rowheader').getByRole('link', { name: 'Slugify' }).click();
+	await cards(page)
+		.getByRole('heading', { level: 2 })
+		.getByRole('link', { name: 'Slugify' })
+		.click();
 	await expectPath(page, at('main', commits.approved, `functions/${units.slugify}`));
 	await expect(commit(page)).toHaveValue(commits.approved);
 	await expect(page.getByRole('heading', { level: 1, name: 'Slugify' })).toBeVisible();
@@ -63,7 +66,9 @@ test('a selected commit lists what it added, and what it removed from its first 
 	await expect(named(page, 'Extra')).toHaveCount(0);
 	await page.goto(at('main', commits.added, 'functions'));
 	await changedOnly(page).click();
-	await expect(rows(page).getByRole('rowheader').getByRole('link')).toHaveText(['Extra']);
+	await expect(cards(page).getByRole('heading', { level: 2 }).getByRole('link')).toHaveText([
+		'Extra'
+	]);
 	await page.goto(at('main', commits.removed, 'functions'));
 	await checkpoint(page, 'catalog-removed');
 	await expect(named(page, 'Extra')).toContainText('Removed at this commit');
@@ -80,8 +85,10 @@ test('a commit nobody verified still marks what its source changed, and proves n
 	await expect(commit(page)).toHaveValue(commits.sourceOnly);
 	await changedOnly(page).click();
 	await checkpoint(page, 'catalog-unverified-change');
-	await expect(rows(page).getByRole('rowheader').getByRole('link')).toHaveText(['Clock']);
-	await expect(rows(page).first()).toContainText('Evidence missing');
+	await expect(cards(page).getByRole('heading', { level: 2 }).getByRole('link')).toHaveText([
+		'Clock'
+	]);
+	await expect(cards(page).first()).toContainText('Evidence missing');
 	// What only depends on the changed function was not changed by this commit itself.
 	await page.goto(tip('main', 'services'));
 	await changedOnly(page).click();
@@ -118,11 +125,11 @@ test.describe('a registry of several hundred units', () => {
 		expect(functions).toBeGreaterThan(400);
 		await page.goto(tip('main', 'functions'));
 		await expect(shown(page)).toHaveText(`${functions} of ${functions} functions shown`);
-		await expect(rows(page)).toHaveCount(functions);
+		await expect(cards(page)).toHaveCount(functions);
 		await search(page).fill('generated 30');
 		// Ten units are numbered 300 to 309; a few more may say 30 in what they are for.
-		expect(await rows(page).count()).toBeGreaterThanOrEqual(10);
-		expect(await rows(page).count()).toBeLessThan(20);
+		expect(await cards(page).count()).toBeGreaterThanOrEqual(10);
+		expect(await cards(page).count()).toBeLessThan(20);
 		await typed(page, order(page), 'Order: Name (Z');
 		await expect(titled(page)).toHaveText('Generated 309');
 		await titled(page).focus();
@@ -134,9 +141,9 @@ test.describe('a registry of several hundred units', () => {
 		await page.setViewportSize({ width: 390, height: 844 });
 		await page.goto(tip('main', 'functions'));
 		await search(page).fill('generated 477');
-		await expect(rows(page)).toHaveCount(1);
+		await expect(cards(page)).toHaveCount(1);
 		expect(await fits(page)).toBe(true);
-		await rows(page).getByRole('link', { name: 'Open Generated 477' }).click();
+		await cards(page).getByRole('link', { name: 'Open function', exact: true }).click();
 		await expectPath(page, tip('main', 'functions/function.generated-477'));
 	});
 });
