@@ -12,12 +12,26 @@ export const routeSuffixes = [
 	'uses',
 	'relationships',
 	'evidence',
+	'examples',
 	'states',
 	'history',
 	'source',
 	'details'
 ] as const;
 export type RouteSuffix = (typeof routeSuffixes)[number] | null;
+/** Labels and addresses of the shared entity page sections. */
+export const workspaceSections = {
+	Overview: '',
+	Designs: 'designs',
+	Plan: 'plan',
+	'Used In': 'used-in',
+	Uses: 'uses',
+	Evidence: 'evidence',
+	Examples: 'examples',
+	States: 'states',
+	History: 'history',
+	Source: 'source'
+} as const;
 /** What a workspace address names. A legacy `/harness` address names no project. */
 export interface WorkspaceRoute {
 	projectId: string | null;

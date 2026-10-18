@@ -1,7 +1,16 @@
 <script lang="ts">
 	import { humanize } from '../utils/entityContract';
 	import { recordedValue, type RecordedNode } from '../utils/recordedValue';
-	let { value }: { value: unknown } = $props();
+	let {
+		value,
+		fullValuesLabel = 'Full recorded values',
+		rowsLabel = 'Recorded rows'
+	}: {
+		value: unknown;
+		/** Where a shortened value can be read whole; an authored example was never recorded. */
+		fullValuesLabel?: string;
+		rowsLabel?: string;
+	} = $props();
 	let view = $derived(recordedValue(value));
 	const label = (name: string) => {
 		const words = humanize(name);
@@ -12,8 +21,7 @@
 {#snippet present(node: RecordedNode)}
 	{#if node.kind === 'scalar'}
 		<span class="scalar"><span class="value-type">{node.type}</span><span>{node.text}</span></span>
-		{#if node.shortened}<span class="value-note"
-				>… Preview shortened; see Full recorded values.</span
+		{#if node.shortened}<span class="value-note">… Preview shortened; see {fullValuesLabel}.</span
 			>{/if}
 	{:else if node.kind === 'notice'}
 		<span class="value-note">{node.text}</span>
@@ -27,18 +35,18 @@
 			{/each}
 		</dl>
 		{#if node.remaining}<p class="value-note">
-				{node.remaining} more fields in Full recorded values.
+				{node.remaining} more fields in {fullValuesLabel}.
 			</p>{/if}
 	{:else if node.kind === 'list'}
 		<ol class="value-list">
 			{#each node.items as item, position (position)}<li>{@render present(item)}</li>{/each}
 		</ol>
 		{#if node.remaining}<p class="value-note">
-				{node.remaining} more items in Full recorded values.
+				{node.remaining} more items in {fullValuesLabel}.
 			</p>{/if}
 	{:else}
 		<!-- svelte-ignore a11y_no_noninteractive_tabindex (Keyboard users need to scroll this data table.) -->
-		<div class="value-scroll" tabindex="0" role="region" aria-label="Recorded rows">
+		<div class="value-scroll" tabindex="0" role="region" aria-label={rowsLabel}>
 			<table>
 				<thead
 					><tr
@@ -57,7 +65,7 @@
 			</table>
 		</div>
 		{#if node.remaining}<p class="value-note">
-				{node.remaining} more rows in Full recorded values.
+				{node.remaining} more rows in {fullValuesLabel}.
 			</p>{/if}
 	{/if}
 {/snippet}

@@ -1,6 +1,7 @@
 import type { ProjectCapabilities, CacheProvenance } from './ProjectContext.types';
 import type { DesignVersion } from './DesignVersion.types';
 import type { ComponentManifest } from '../../../../src/lib/contracts';
+import type { UnitDocumentation } from '../../../../src/utils/unitDocumentation';
 export type {
 	DesignImage,
 	DesignOptionInfo,
@@ -186,6 +187,7 @@ export interface Measure {
 }
 
 export interface EntityDetail extends CatalogEntity {
+	documentation?: UnitDocumentation;
 	historyCoverage?: { complete: boolean; nextPage: number | null; loadedPages: number };
 	contract: EntityContract;
 	relationships: Relationship[];

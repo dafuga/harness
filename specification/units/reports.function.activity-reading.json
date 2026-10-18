@@ -32,8 +32,9 @@
 		"outputs": [
 			{
 				"name": "readingAge",
-				"type": "unknown",
-				"description": "Freshness allowance of 60,000 milliseconds."
+				"type": "number",
+				"description": "Freshness allowance of 60,000 milliseconds.",
+				"examples": [60000]
 			},
 			{
 				"name": "activityReading",

@@ -21,19 +21,9 @@
 	import StatusIcon from './StatusIcon.svelte';
 	import Icon from './Icon.svelte';
 	import WorkspaceLink from './WorkspaceLink.svelte';
+	import EntityExamples from '../../../reports/src/components/EntityExamples.svelte';
+	import { workspaceSections as sections } from '../utils/workspaceRoute';
 	let { workspace }: { workspace: Workspace } = $props();
-	/** Each section keeps its own address. */
-	const sections = {
-		Overview: '',
-		Designs: 'designs',
-		Plan: 'plan',
-		'Used In': 'used-in',
-		Uses: 'uses',
-		Evidence: 'evidence',
-		States: 'states',
-		History: 'history',
-		Source: 'source'
-	} as const;
 	type Section = keyof typeof sections;
 	/** A function has a plan and no designs; every other entity has designs and no plan section. */
 	const headless = $derived(workspace.entity?.category === 'functions');
@@ -45,7 +35,9 @@
 	const names = $derived(
 		(Object.keys(sections) as Section[]).filter(
 			(name) =>
-				name !== (headless ? 'Designs' : 'Plan') && name !== (visual ? 'Evidence' : 'States')
+				name !== (headless ? 'Designs' : 'Plan') &&
+				name !== (visual ? 'Evidence' : 'States') &&
+				name !== (headless ? 'Evidence' : 'Examples')
 		)
 	);
 	let tab = $state<Section>('Overview');
@@ -71,6 +63,7 @@
 			let asked = read.suffix === 'details' ? 'source' : (read.suffix ?? '');
 			if (headless && asked === 'designs') asked = 'plan';
 			if (visual && asked === 'evidence') asked = 'states';
+			if (headless && asked === 'evidence') asked = 'examples';
 			tab = names.find((name) => sections[name] === asked) ?? 'Overview';
 		});
 	});
@@ -93,6 +86,7 @@
 			pictured ||
 			tab === 'Overview' ||
 			tab === 'Evidence' ||
+			tab === 'Examples' ||
 			tab === 'States' ||
 			tab === 'History'
 		)
@@ -196,7 +190,10 @@
 				relationships={entity.relationships}
 				{workspace}
 				direction={tab === 'Uses' ? 'uses' : 'used-by'}
-			/>{:else if tab === 'Evidence' || tab === 'States'}<CoveragePanel
+			/>{:else if tab === 'Examples'}<EntityExamples documentation={entity.documentation}>
+				{#snippet verification()}<CoveragePanel {entity} {evidence} {workspace} />{/snippet}
+			</EntityExamples>
+		{:else if tab === 'Evidence' || tab === 'States'}<CoveragePanel
 				{entity}
 				{evidence}
 				{workspace}

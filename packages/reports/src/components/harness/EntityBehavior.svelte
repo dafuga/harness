@@ -96,7 +96,7 @@
 			</p>
 		</div>
 		<HarnessAction href={nav.href(tests)} onclick={() => nav.go(tests)} icon="arrow-right"
-			>{paired ? 'View full comparison' : 'View full test'}</HarnessAction
+			>{unit ? 'View examples' : paired ? 'View full comparison' : 'View full test'}</HarnessAction
 		>
 		{#if scope.mode === 'current'}
 			<HarnessAction

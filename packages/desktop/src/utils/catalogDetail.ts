@@ -29,6 +29,7 @@ export async function catalogDetail(
 	return {
 		...item,
 		contract,
+		documentation: unit?.documentation ? await source.documentation(unit, revision) : undefined,
 		relationships: unit ? relationships({ units, items, unit }) : [],
 		versions: plan?.versions ?? [],
 		threads: plan?.threads ?? [],

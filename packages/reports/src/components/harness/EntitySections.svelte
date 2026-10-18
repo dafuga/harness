@@ -10,6 +10,7 @@
 	import EntityRelations from './EntityRelations.svelte';
 	import EntityTests from './EntityTests.svelte';
 	import EntityStates from '../EntityStates.svelte';
+	import EntityExamples from '../EntityExamples.svelte';
 	let {
 		host,
 		entity,
@@ -38,6 +39,12 @@
 	<div role="tabpanel" aria-label={`${entity.name} ${said[direction]}`}>
 		<EntityRelations relations={host.lens.relations(entity.id)} {nav} show={direction} {removed} />
 	</div>
+{:else if entity.category === 'functions' && (host.route.tab === 'examples' || host.route.tab === 'tests')}
+	<div role="tabpanel" aria-label={`${entity.name} examples`} class="ex-stack">
+		<EntityExamples documentation={entity.unit.documentation}>
+			{#snippet verification()}{@render verificationPanel()}{/snippet}
+		</EntityExamples>
+	</div>
 {:else if host.route.tab === 'states' || host.route.tab === 'tests'}
 	{#if visual}
 		<div role="tabpanel" aria-label={`${entity.name} states`}>
@@ -47,9 +54,9 @@
 				scope={host.scope}
 				mediaBase={host.mediaBase}
 			/>
-			<details><summary>Verification details</summary>{@render verification()}</details>
+			<details><summary>Verification details</summary>{@render verificationPanel()}</details>
 		</div>
-	{:else}{@render verification()}{/if}
+	{:else}{@render verificationPanel()}{/if}
 {:else if host.route.tab === 'source'}
 	<div role="tabpanel" aria-label={`${entity.name} source`}>
 		<EntitySource unit={entity.unit} />
@@ -64,7 +71,7 @@
 	</EntityOverview>
 {/if}
 
-{#snippet verification()}
+{#snippet verificationPanel()}
 	<EntityTests
 		{entity}
 		scope={host.scope}

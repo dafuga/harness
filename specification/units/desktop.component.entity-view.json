@@ -115,6 +115,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.function.workspace-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.desktop-types",
 			"via": "import",
 			"origin": "derived"
@@ -126,6 +131,11 @@
 		},
 		{
 			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.entity-examples",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -22,6 +22,11 @@
 	type Place = Pick<ExplorerLocation, 'section' | 'tab'>;
 	let label = $derived(entityLabels[entity.category]);
 	let visual = $derived(['pages', 'components', 'shells'].includes(entity.category));
+	let evidenceTab: 'states' | 'examples' | 'tests' = $derived.by(() => {
+		if (visual) return 'states';
+		return entity.category === 'functions' ? 'examples' : 'tests';
+	});
+	const evidenceLabels = { states: 'States', examples: 'Examples', tests: 'Tests' };
 	const at = (place: Place = {}) =>
 		entityLens(nav.route, { category: entity.category, entity: entity.id, ...place });
 	const row: Record<string, Place> = {
@@ -30,6 +35,7 @@
 		'used-in': { tab: 'used-in' },
 		uses: { tab: 'uses' },
 		tests: { tab: 'tests' },
+		examples: { tab: 'examples' },
 		states: { tab: 'states' },
 		history: { section: 'history' },
 		source: { tab: 'source' }
@@ -37,15 +43,15 @@
 	const labels = ['Overview', 'Contract', 'Used In', 'Uses', 'Tests', 'History', 'Source'];
 	let tabs = $derived(
 		labels.map((label) => {
-			const title = visual && label === 'Tests' ? 'States' : label;
+			const title = label === 'Tests' ? evidenceLabels[evidenceTab] : label;
 			const id = title.toLowerCase().replace(' ', '-');
 			return { id, label: title, href: nav.href(at(row[id])) };
 		})
 	);
 	// A tab the row does not have, as the former one of both lists, is shown on the first.
 	let asked = $derived(
-		tabs.find((tab) => tab.id === (visual && nav.route.tab === 'tests' ? 'states' : nav.route.tab))
-			?.id ?? tabs[0].id
+		tabs.find((tab) => tab.id === (nav.route.tab === 'tests' ? evidenceTab : nav.route.tab))?.id ??
+			tabs[0].id
 	);
 	let active = $derived(nav.route.section === 'history' ? 'history' : asked);
 	// A route with a parameter is a pattern, not an address a person can open.

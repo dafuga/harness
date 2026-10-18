@@ -18,6 +18,7 @@ import { SourceImpactService, type SourceImpact } from './SourceImpactService';
 import { RegressionProofRepository } from '../repositories/RegressionProofRepository';
 import { regressionHistory } from '../utils/regressionHistory';
 import type { RegressionView } from '../core/regressionTypes';
+import { hydrateUnitDocumentation } from '../utils/unitDocumentation';
 
 export interface RevisionDetail {
 	schemaVersion: 1;
@@ -159,7 +160,6 @@ export class RevisionDetailService {
 		const line = (await this.history.verifications()).find((item) => item.record === id);
 		return line ? this.history.attached.load(line.evidence) : undefined;
 	}
-
 	/** Revisions with one tree share its registry and frozen budget ledger. */
 	private async registry(commit: string): Promise<Stored> {
 		const key =
@@ -173,10 +173,10 @@ export class RevisionDetailService {
 		const ledger = (await new BudgetLedgerRepository(this.root).read(tree)).events;
 		const limits = new BudgetService().baselines(ledger, units.manifests);
 		const registry = revisionRegistry(units.manifests, scenarios.manifests, blobs, limits);
+		await hydrateUnitDocumentation(tree, registry.units);
 		this.kept.registries.set(key, { registry, ledger });
 		return { registry, ledger };
 	}
-
 	/** Reasons of this commit itself, excluding the earlier commits of a verified range. */
 	private async reasons(commit: string, sound: VerificationRecord[]): Promise<RevisionReasons> {
 		const note = (await this.history.all()).get(commit);

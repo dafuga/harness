@@ -8,6 +8,7 @@ import {
 	type FrozenLimits
 } from './budgetReviews';
 import { canonicalJson } from './canonicalJson';
+import type { UnitDocumentation } from './unitDocumentation';
 
 export interface RevisionRegistry {
 	/** False when the revision stores no unit registry; nothing is substituted for it. */
@@ -24,6 +25,7 @@ export interface RevisionRegistry {
 		/** What the unit owns and promises, as its manifest states it at this revision. */
 		owns: ComponentManifest['owns'];
 		contract: Pick<ComponentManifest['contract'], 'inputs' | 'outputs' | 'errors'>;
+		documentation?: UnitDocumentation;
 		runtime: { kind: string; targets: Array<{ kind: string; entry: string }> };
 		budgets: ComponentManifest['budgets'];
 		/** For a unit that emits an output: the limit each target has in the ledger of this revision. */
@@ -113,7 +115,8 @@ function unitView(
 	blobs: Map<string, string>
 ): RevisionRegistry['units'][number] {
 	const { inputs, outputs, errors } = unit.contract;
-	const files = unit.owns.source.map((path) => `${path}:${blobs.get(path) ?? 'absent'}`);
+	const paths = [...unit.owns.source, ...(unit.documentation ? [unit.documentation] : [])];
+	const files = paths.map((path) => `${path}:${blobs.get(path) ?? 'absent'}`);
 	return {
 		id: unit.id,
 		kind: unit.kind,
@@ -124,6 +127,9 @@ function unitView(
 		scenarios: unit.scenarios,
 		owns: unit.owns,
 		contract: { inputs, outputs, errors },
+		...(unit.documentation
+			? { documentation: { path: unit.documentation, examples: [], gap: 'Document not loaded.' } }
+			: {}),
 		runtime: {
 			kind: unit.runtime.kind,
 			targets: unit.runtime.targets.map(({ kind, entry }) => ({ kind, entry }))

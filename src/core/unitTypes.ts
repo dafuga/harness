@@ -74,6 +74,11 @@ export const componentManifestSchema = z.strictObject({
 	/** `derived` marks the generated placeholder; `declared` marks a statement a person wrote. */
 	responsibilityOrigin: z.enum(['derived', 'declared']),
 	status: z.enum(['active', 'retired']),
+	/** Committed usage documentation, read from the same source tree as this manifest. */
+	documentation: z
+		.string()
+		.regex(/^(?!\/)(?!.*(?:^|\/)\.{1,2}(?:\/|$))[a-zA-Z0-9_./-]+\.md$/)
+		.optional(),
 	retired: z.strictObject({ reason: text, at: text }).optional(),
 	/** Retired identities this unit continues; their baselines and history carry over. */
 	lineage: z.strictObject({ predecessors: z.array(identifier).min(1) }).optional(),

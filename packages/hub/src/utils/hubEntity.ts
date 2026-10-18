@@ -1,6 +1,7 @@
 import type { CommittedThread } from 'collaboration';
 import type { EntityDetail } from '../../../desktop/src/models/Desktop.types';
-import type { HubSourceContext } from './hubSource';
+import { hubRead, type HubSourceContext } from './hubSource';
+import { readUnitDocumentation } from '../../../../src/utils/unitDocumentation';
 import { hubCatalog, hubRelationships, hubOwnedPaths } from './hubCatalog';
 import { hubFail } from './hubJson';
 import { hubThreads } from './hubThreads';
@@ -21,12 +22,24 @@ export async function hubEntity(
 	const contract = await hubEntityContract(unit, plan);
 	const history = await hubHistory(context, {
 		branch: query.branch,
-		paths: [...(unit?.owns.source ?? []), ...(plan ? [plan.path] : [])]
+		paths: [
+			...(unit?.owns.source ?? []),
+			...(unit?.documentation ? [unit.documentation] : []),
+			...(plan ? [plan.path] : [])
+		]
 	});
 	return {
 		...item,
 		threadCount: query.shared.length,
 		contract,
+		documentation: unit
+			? await readUnitDocumentation(
+					{
+						read: async (path) => new TextDecoder().decode(await hubRead(context, path))
+					},
+					unit
+				)
+			: undefined,
 		sources,
 		size: hubSize(context, sources),
 		performance: { available: false, text: 'Not measured' },

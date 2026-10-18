@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.entity-cases",
 	"kind": "component",
-	"title": "Entity cases",
-	"responsibility": "Shows recorded case inputs beside observed outputs or errors.",
+	"title": "Input and output examples",
+	"responsibility": "Shows documented uses beside expected outcomes, or recorded calls beside observed results.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -16,7 +16,7 @@
 			{
 				"name": "EntityCases.document",
 				"type": "unknown",
-				"description": "Required parsed recorded result passed to the case extractor. Caller is responsible for reading and checking its bytes before supplying it."
+				"description": "Optional parsed test result. Used when no documented examples are supplied."
 			},
 			{
 				"name": "EntityCases.unit",
@@ -27,18 +27,28 @@
 				"name": "EntityCases.callable",
 				"type": "boolean",
 				"description": "Optional flag, true by default. Controls wording distinguishing observed end-to-end behavior from a direct function call; false is suitable for noncallable entities."
+			},
+			{
+				"name": "EntityCases.examples",
+				"type": "UsageExample[] | undefined",
+				"description": "Documented uses with input and one expected output or error. These are never recorded test results."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityCases",
 				"type": "markup",
-				"description": "Gap explanation when cases cannot be extracted, otherwise a Case/Input/Observed output table using recorded values. Failed cases show the recorded error. Full recorded JSON is serialized only when its disclosure opens; does not invent missing outputs."
+				"description": "Readable input and output rows. Authored examples show expected outcomes; test records show observed outcomes. Full values remain available in a disclosure."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.unit-documentation",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.recorded-value",
 			"via": "import",

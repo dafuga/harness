@@ -1,14 +1,15 @@
 import type { ComponentManifest } from '../../../../src/lib/contracts';
 import { gitRead } from './gitRead';
 export async function catalogHistory(root: string, revision: string, unit: ComponentManifest) {
-	if (!unit.owns.source.length) return [];
+	const paths = [...unit.owns.source, ...(unit.documentation ? [unit.documentation] : [])];
+	if (!paths.length) return [];
 	const raw = await gitRead(root, [
 		'log',
 		'-100',
 		'--format=%H%x00%aI%x00%s',
 		revision,
 		'--',
-		...unit.owns.source
+		...paths
 	]);
 	return raw
 		.trim()

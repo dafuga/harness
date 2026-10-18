@@ -68,6 +68,7 @@ export const explorerTabs = {
 		'uses',
 		'relationships',
 		'tests',
+		'examples',
 		'states',
 		'source'
 	],
@@ -141,6 +142,7 @@ function tabOf(location: ExplorerLocation, search: string): ExplorerTab | undefi
 	let asked = new URLSearchParams(search).get('tab');
 	const visual = ['pages', 'components', 'shells'].includes(location.category);
 	if (visual && asked === 'tests') asked = 'states';
+	if (location.category === 'functions' && asked === 'tests') asked = 'examples';
 	if (!visual && asked === 'states') return undefined;
 	return others.find((known) => known === asked);
 }

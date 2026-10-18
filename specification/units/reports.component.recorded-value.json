@@ -17,6 +17,16 @@
 				"name": "RecordedValue.value",
 				"type": "unknown",
 				"description": "The input, observed output or error exactly as read from verified evidence."
+			},
+			{
+				"name": "RecordedValue.fullValuesLabel",
+				"type": "string | undefined",
+				"description": "Name of the disclosure containing complete values; defaults to Full recorded values."
+			},
+			{
+				"name": "RecordedValue.rowsLabel",
+				"type": "string | undefined",
+				"description": "Accessible name for nested rows, distinguishing authored examples from recorded data."
 			}
 		],
 		"outputs": [

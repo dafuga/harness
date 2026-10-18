@@ -5,6 +5,7 @@ import { gitBlobs } from '../utils/gitBlobs';
 import type { ComponentManifest } from '../../../../src/lib/contracts';
 import type { BranchInfo, CommitInfo, Revision } from '../models/Desktop.types';
 import { gitFiles, gitRead, gitRevision, gitText } from '../utils/gitRead';
+import { readUnitDocumentation } from '../../../../src/utils/unitDocumentation';
 export class GitSourceAdapter {
 	constructor(readonly root: string) {}
 	async branches(): Promise<BranchInfo[]> {
@@ -96,6 +97,10 @@ export class GitSourceAdapter {
 		if (!(await this.sources(unit, revision)).includes(path))
 			throw new Error('This file is outside the selected entity source contract.');
 		return { path, text: await gitText(this.root, revision, path) };
+	}
+	async documentation(unit: ComponentManifest, revision: string) {
+		const commit = await gitRevision(this.root, revision);
+		return readUnitDocumentation({ read: (path) => gitText(this.root, commit, path) }, unit);
 	}
 	async size(unit: ComponentManifest, revision: string) {
 		const sizes = await Promise.all(

@@ -72,7 +72,8 @@
 			"regressionFiles",
 			"regressionRecordSchema",
 			"recordRegression",
-			"regressionHistory"
+			"regressionHistory",
+			"unitDocumentation"
 		]
 	},
 	"contract": {
@@ -274,6 +275,11 @@
 		},
 		{
 			"unit": "function.revision-reasons",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-documentation",
 			"via": "reexport",
 			"origin": "derived"
 		},

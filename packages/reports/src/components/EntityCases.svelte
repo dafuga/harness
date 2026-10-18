@@ -1,64 +1,102 @@
 <script lang="ts">
+	import type { UsageExample } from '../../../../src/utils/unitDocumentation';
 	import { artifactCases } from '../utils/artifactCases';
 	import RecordedValue from './RecordedValue.svelte';
 	let {
 		document,
+		examples,
 		unit,
 		callable = true
 	}: {
-		/** A recorded result, parsed, after its bytes were read and checked. */
-		document: unknown;
-		/** The unit whose calls are shown; calls recorded for another one are not. */
+		document?: unknown;
+		examples?: UsageExample[];
 		unit?: string;
-		/** False for a page, a component, a config or a service: nothing a test calls directly. */
 		callable?: boolean;
 	} = $props();
-	let read = $derived(artifactCases(document, unit));
+	type Row = {
+		name: string;
+		description?: string;
+		input: unknown;
+		failed: boolean;
+		result: unknown;
+	};
 	const seen = 'What a test observed end to end';
-	// Only of a function is it worth saying that what a test saw was no call of it.
 	let observed = $derived(
 		callable ? `${seen}; it is not a direct call of this function.` : `${seen}.`
 	);
+	let documented = $derived(examples !== undefined);
+	let verb = $derived(documented ? 'Expected' : 'Observed');
+	let fullValuesLabel = $derived(documented ? 'Full example values' : 'Full recorded values');
+	let rowsLabel = $derived(documented ? 'Example rows' : 'Recorded rows');
+	let view = $derived.by((): { gap?: string; note?: string; rows: Row[] } => {
+		if (examples) {
+			const none = 'No usage examples are documented at this commit.';
+			if (!examples.length) return { gap: none, rows: [] };
+			return {
+				rows: examples.map(({ name, description, input, output, error }) => ({
+					name,
+					description,
+					input,
+					failed: error !== undefined,
+					result: error !== undefined ? error : output
+				}))
+			};
+		}
+		const read = artifactCases(document, unit);
+		if (read.kind === 'gap') return { gap: read.why, rows: [] };
+		return {
+			note:
+				read.source === 'invocations' ? `Calls of ${read.symbol} recorded by a test.` : observed,
+			rows: read.cases.map((item) => ({
+				name: item.name,
+				input: item.input,
+				failed: Boolean(item.failed),
+				result: item.failed ? item.error : item.output
+			}))
+		};
+	});
 	let expanded = $state(false);
 </script>
 
-<!-- Each input beside what was observed for it; a result that holds none says why. -->
-{#if read.kind === 'gap'}
-	<p class="cases-note">{read.why}</p>
+<!-- Each input beside what was observed for it, or is documented to give; none says why. -->
+{#if view.gap !== undefined}
+	<p class="cases-note">{view.gap}</p>
 {:else}
-	<div class="cases">
-		<p class="cases-note">
-			{read.source === 'invocations' ? `Calls of ${read.symbol} recorded by a test.` : observed}
-		</p>
+	<div class="cases" class:documented>
+		{#if view.note}<p class="cases-note">{view.note}</p>{/if}
 		<table>
 			<thead>
 				<tr
-					><th scope="col">Case</th><th scope="col">Input</th><th scope="col">Observed output</th
+					><th scope="col">{documented ? 'Example' : 'Case'}</th><th scope="col">Input</th><th
+						scope="col">{verb} output</th
 					></tr
 				>
 			</thead>
 			<tbody>
-				{#each read.cases as item, position (position)}
+				{#each view.rows as item, position (position)}
 					<tr>
-						<th scope="row">{item.name}</th>
+						<th scope="row">
+							{item.name}
+							{#if item.description}<span class="case-description">{item.description}</span>{/if}
+						</th>
 						<td data-label="Input"
-							><div class="case-value"><RecordedValue value={item.input} /></div></td
+							><div class="case-value">
+								<RecordedValue value={item.input} {fullValuesLabel} {rowsLabel} />
+							</div></td
 						>
-						<td data-label="Observed output">
-							{#if item.failed}
-								<span class="cases-error">Observed error</span>
-								<div class="case-value"><RecordedValue value={item.error} /></div>
-							{:else}
-								<div class="case-value"><RecordedValue value={item.output} /></div>
-							{/if}
+						<td data-label="{verb} output">
+							{#if item.failed}<span class="cases-error">{verb} error</span>{/if}
+							<div class="case-value">
+								<RecordedValue value={item.result} {fullValuesLabel} {rowsLabel} />
+							</div>
 						</td>
 					</tr>
 				{/each}
 			</tbody>
 		</table>
 		<details bind:open={expanded}>
-			<summary>Full recorded values</summary>
-			{#if expanded}<pre>{JSON.stringify(document, null, 2)}</pre>{/if}
+			<summary>{fullValuesLabel}</summary>
+			{#if expanded}<pre>{JSON.stringify(documented ? examples : document, null, 2)}</pre>{/if}
 		</details>
 	</div>
 {/if}
@@ -110,6 +148,16 @@
 		font-size: 0.7rem;
 		font-weight: 500;
 		color: #9aafc0;
+	}
+	.documented tbody th::before {
+		content: 'Example ' counter(cases, decimal-leading-zero);
+	}
+	.case-description {
+		display: block;
+		margin-top: 4px;
+		font-size: 0.85rem;
+		font-weight: 400;
+		color: #b6cad9;
 	}
 	td {
 		min-width: 0;
