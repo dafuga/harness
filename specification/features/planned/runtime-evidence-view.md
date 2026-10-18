@@ -8,6 +8,7 @@ Evidence is read through the two optional bridge reads `evidence` and `artifact`
 
 ## Acceptance Criteria
 
+- Function catalog cards show only the name, a description capped at 80 characters including any ellipsis, and a compact open icon. Contracts, usage, verification and test results remain on the function page.
 - Visual pages, components and shells have a States tab. It shows every declared state as a screenshot, including error and empty states, with a viewport selector. Headless entities retain recorded input/output Tests or Evidence.
 - Each state shows one current capture at a branch tip or its before/after pair at a selected commit. Missing, rejected, inherited and inapplicable states stay explicit. Detailed verification remains in a disclosure; it never replaces the gallery.
 - Used In and Uses have separate sections. Each section has an address; legacy visual Tests/Evidence addresses open States. Details opens only at its own address. Source stays under Details, then Source.
