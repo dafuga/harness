@@ -93,3 +93,13 @@ to the formatted address, and a plain click or a choice in a field is handed to 
 
 - A custom list for the commit field that shows the subject and the verdict of each commit as
   rows, when a native select can be styled that far in every supported browser.
+
+## Tablet Compaction Verification
+
+- Codex implemented two scoped CSS changes after the bounded Opus attempt returned no edits in seven minutes. Existing Select, Search and Action components remain unchanged.
+- The standardized search-fit test now covers 685, 834 and 1024 pixels alongside its other widths and guards compactness, touch targets, focus, popup fit and navigation.
+- Failing test commit: `1952fe5126db1dddfdff10c763da302ae93d7a75`. Fix commit: `2c42b8736231c7b142cafed2290f13da4b9c13fd`.
+- Sealed red `7bef4f6578a757bea47b5fd0edb60f1024dc9cc7f363bbb1a8fcd02a57e89ef3` and green `8c31aed076fda6a0d3e2e37bcaf0eed98454f07cdf9924341b68e3a76c33b0cb` share 1,257 frozen inputs, command and environment.
+- All 569 web unit tests and 58 shell browser cases pass, with web formatting, types, lint and builds. Registry validation and change explanations pass.
+- Reports audit retains the existing file-length failures in `entity-preview-marks.spec.ts`, `Harness.types.ts` and `EntityTests.svelte`; full verification remains pending. Native Electron testing and its aggregate checks remain paused.
+- Manual browser checks cover historical selection, Go to tip and search at tablet width. The 685-pixel toolbar uses 120 pixels vertically, down from 256; captures remain under `/tmp`.
