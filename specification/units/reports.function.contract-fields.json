@@ -1,0 +1,106 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.contract-fields",
+	"kind": "function",
+	"title": "Prepare typed contract fields",
+	"responsibility": "Prepares public types, readable field groups and honest example labels for one opened entity.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/contractFields.ts"],
+		"symbols": [
+			"ContractExample",
+			"ContractField",
+			"ContractGroup",
+			"typeLabel",
+			"contractFields",
+			"contractFacts"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "typeLabel.type",
+				"type": "string",
+				"description": "A public type expression that may contain an inferred module import."
+			},
+			{
+				"name": "contractFields.unit",
+				"type": "HarnessUnit",
+				"description": "The entity whose contract fields and declared JSON examples will be displayed."
+			},
+			{
+				"name": "contractFields.category",
+				"type": "ExplorerCategory",
+				"description": "The entity category; configs call their outputs Provides."
+			},
+			{
+				"name": "contractFacts.rows",
+				"type": "ContractRow[]",
+				"description": "Prepared readable contract rows, including facts beyond individual fields."
+			},
+			{
+				"name": "contractFacts.unit",
+				"type": "HarnessUnit",
+				"description": "The entity whose execution targets may be listed as contract facts."
+			},
+			{
+				"name": "contractFacts.category",
+				"type": "ExplorerCategory",
+				"description": "The entity category; functions also expose execution targets."
+			}
+		],
+		"outputs": [
+			{
+				"name": "typeLabel",
+				"type": "string",
+				"description": "The type expression with inferred import paths removed."
+			},
+			{
+				"name": "contractFields",
+				"type": "ContractGroup[]",
+				"description": "Input, output and error groups with descriptions and declared examples. Safe simple types may get labelled placeholders; opaque types keep explicit gaps."
+			},
+			{
+				"name": "contractFacts",
+				"type": "ContractRow[]",
+				"description": "Whole-contract facts without duplicate field summaries, plus execution targets for functions."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.entity-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/contractFields.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/contractFields.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

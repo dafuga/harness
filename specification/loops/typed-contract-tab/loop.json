@@ -2,7 +2,7 @@
 	"name": "typed-contract-tab",
 	"goal": "Give every entity a dedicated, revision-scoped Contract tab with types, descriptions and honest examples.",
 	"createdAt": "2026-10-18T17:40:54.247Z",
-	"updatedAt": "2026-10-18T17:40:54.830Z",
+	"updatedAt": "2026-10-18T17:58:04.635Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T17:45:12.964Z",
+			"evidence": "Commit 3776f47b fails the dedicated-tab checks at all three widths. Record 0a9e0da9 freezes the test corpus, command and environment."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T17:58:04.635Z",
+			"evidence": "Opus implemented the typed Contract tab; focused component checks pass. Optional examples preserve false, zero, null and escaped markup."
 		},
 		{
 			"id": "green",

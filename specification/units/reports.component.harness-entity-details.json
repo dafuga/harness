@@ -50,6 +50,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.component.entity-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-entity-measures",
 			"via": "import",
 			"origin": "derived"
