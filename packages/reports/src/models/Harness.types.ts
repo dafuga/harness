@@ -4,7 +4,6 @@ import type { Status } from './Report.types';
 import type { BrowserDiagnostic } from '../../../../src/core/browserDiagnostics';
 import type { RegressionView } from '../../../../src/core/regressionTypes';
 import type { UnitDocumentation } from '../../../../src/utils/unitDocumentation';
-
 export type * from './HarnessLegacy.types';
 export interface HarnessRecordSummary {
 	id: string;
@@ -65,6 +64,7 @@ export interface HarnessIndex {
 }
 export interface HarnessUnit extends HarnessUnitLimits {
 	documentation?: UnitDocumentation;
+	preview?: { scenario: string; state: string; viewport: string };
 	id: string;
 	kind: string;
 	status: string;

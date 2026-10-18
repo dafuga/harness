@@ -20,7 +20,7 @@
 		<ExplorerPageCard
 			{row}
 			category="components"
-			shot={catalogShot(host.lens.evidence(row.entity.unit))}
+			shot={catalogShot(host.lens.evidence(row.entity.unit), row.entity.unit.preview)}
 			mediaBase={host.mediaBase}
 			{nav}
 		/>

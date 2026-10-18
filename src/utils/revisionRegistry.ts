@@ -26,6 +26,7 @@ export interface RevisionRegistry {
 		owns: ComponentManifest['owns'];
 		contract: Pick<ComponentManifest['contract'], 'inputs' | 'outputs' | 'errors'>;
 		documentation?: UnitDocumentation;
+		preview?: ComponentManifest['preview'];
 		runtime: { kind: string; targets: Array<{ kind: string; entry: string }> };
 		budgets: ComponentManifest['budgets'];
 		/** For a unit that emits an output: the limit each target has in the ledger of this revision. */
@@ -127,6 +128,7 @@ function unitView(
 		scenarios: unit.scenarios,
 		owns: unit.owns,
 		contract: { inputs, outputs, errors },
+		...(unit.preview ? { preview: unit.preview } : {}),
 		...(unit.documentation
 			? { documentation: { path: unit.documentation, examples: [], gap: 'Document not loaded.' } }
 			: {}),

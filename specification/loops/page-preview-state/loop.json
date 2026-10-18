@@ -2,7 +2,7 @@
 	"name": "page-preview-state",
 	"goal": "Each declared page preview selects its own recorded state in both renderers",
 	"createdAt": "2026-10-18T23:50:21.481Z",
-	"updatedAt": "2026-10-18T23:50:22.021Z",
+	"updatedAt": "2026-10-18T23:52:30.675Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T23:52:30.675Z",
+			"evidence": "360ca8c2; red c76e6376f785a5f7db57efceec0fc82148de8109a9fff99de553187fc5cd6c5f. The registry drops real page preview bindings and catalogShot ignores the exact requested state/viewport. Both standardized utility assertions fail on unchanged product."
 		},
 		{
 			"id": "implement",

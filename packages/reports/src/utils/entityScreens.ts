@@ -3,7 +3,6 @@ import type { HarnessScenario } from '../models/Harness.types';
 import type { Evidence } from '../models/Report.types';
 import { captureProvenance } from './captureProvenance';
 import { mediaFile } from './harnessEvidence';
-
 export interface ScreenOption {
 	scenario: string;
 	title: string;
@@ -11,13 +10,11 @@ export interface ScreenOption {
 	states: string[];
 	viewports: Array<{ id: string; label: string; size: string }>;
 }
-
 export interface ScreenPick {
 	scenario: string;
 	state: string;
 	viewport: string;
 }
-
 export interface EntityScreens {
 	/** The parent's capture at a selected commit; absent at the branch tip. */
 	before?: Evidence;
@@ -28,12 +25,10 @@ export interface EntityScreens {
 	/** The revision an inherited capture was taken at. */
 	origin?: string;
 }
-
 type Phase = NonNullable<Evidence['phase']>;
 const media = ['screenshot', 'audio'];
 const title = (id: string) => id.charAt(0).toUpperCase() + id.slice(1);
 const short = (commit: string) => commit.slice(0, 7);
-
 /** The scenarios of an entity that are seen: those with a viewport, with what each declares. */
 export function screenOptions(scenarios: HarnessScenario[]): ScreenOption[] {
 	return scenarios
@@ -51,7 +46,6 @@ export function screenOptions(scenarios: HarnessScenario[]): ScreenOption[] {
 			}))
 		}));
 }
-
 /** What is shown: what a person picked where the scenario has it, else its first of each. */
 export function screenPick(
 	options: ScreenOption[],
@@ -68,9 +62,7 @@ export function screenPick(
 		viewport: pick(viewports, wanted.viewport)
 	};
 }
-
 const unrecorded = { standing: null, label: undefined, facts: undefined, note: undefined };
-
 /** What the record of a side says produced a capture; nothing when the side has no such record. */
 function told(side: ExplorerSide, found: ExplorerCapture) {
 	const tested = side.record?.scenarios.find((entry) => entry.id === found.scenario);
@@ -195,9 +187,13 @@ export function entityScreens(evidence: ExplorerEvidence, pick: ScreenPick | nul
 }
 
 /** A catalog preview of this entity's shown version: fresh first, else validated unchanged proof. */
-export function catalogShot(evidence: ExplorerEvidence): Evidence | null {
+export function catalogShot(evidence: ExplorerEvidence, preview?: ScreenPick): Evidence | null {
 	const usable = evidence.after.captures.filter(
-		(entry) => entry.usable && entry.capture.kind === 'screenshot' && entry.capture.media !== null
+		(entry) =>
+			entry.usable &&
+			entry.capture.kind === 'screenshot' &&
+			entry.capture.media !== null &&
+			(!preview || matches(entry, preview))
 	);
 	const found = usable.find((entry) => entry.current) ?? usable[0];
 	if (!found) return null;

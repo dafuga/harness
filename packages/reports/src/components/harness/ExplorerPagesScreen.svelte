@@ -18,7 +18,7 @@
 					{#each listed as row (row.id)}
 						<ExplorerPageCard
 							{row}
-							shot={catalogShot(host.lens.evidence(row.entity.unit))}
+							shot={catalogShot(host.lens.evidence(row.entity.unit), row.entity.unit.preview)}
 							mediaBase={host.mediaBase}
 							{nav}
 						/>
