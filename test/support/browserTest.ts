@@ -1,5 +1,5 @@
 import { test as base, expect } from '@playwright/test';
-import type { BrowserContext, ConsoleMessage, Page, TestInfo } from '@playwright/test';
+import type { BrowserContext, ConsoleMessage, TestInfo, WebError } from '@playwright/test';
 import { appendFileSync, mkdirSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
@@ -96,41 +96,33 @@ function identity(info: DiagnosticInfo) {
 }
 
 function observeContext(context: BrowserContext, errors: BrowserError[]): () => void {
-	const cleanup: (() => void)[] = [];
-	const watch = (page: Page) => cleanup.push(observePage(page, errors));
-	context.on('page', watch);
-	for (const page of context.pages()) watch(page);
-	return () => {
-		context.off('page', watch);
-		for (const dispose of cleanup) dispose();
-	};
-}
-
-function observePage(page: Page, errors: BrowserError[]): () => void {
+	// A popup's first script can run before the context announces its page.
 	const consoleError = (message: ConsoleMessage) => {
 		if (message.type() !== 'error') return;
 		const location = message.location();
 		errors.push({
 			type: 'console',
 			message: message.text(),
-			page: page.url(),
+			page: message.page()?.url() ?? '',
 			source: location.url,
 			line: location.lineNumber,
 			column: location.columnNumber
 		});
 	};
-	const pageError = (error: Error) =>
+	const pageError = (event: WebError) => {
+		const error = event.error();
 		errors.push({
 			type: 'pageerror' as const,
 			message: error.message,
-			page: page.url(),
+			page: event.page()?.url() ?? '',
 			stack: error.stack
 		});
-	page.on('console', consoleError);
-	page.on('pageerror', pageError);
+	};
+	context.on('console', consoleError);
+	context.on('weberror', pageError);
 	return () => {
-		page.off('console', consoleError);
-		page.off('pageerror', pageError);
+		context.off('console', consoleError);
+		context.off('weberror', pageError);
 	};
 }
 

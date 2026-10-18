@@ -2,7 +2,7 @@
 	"name": "page-catalog-previews",
 	"goal": "Implemented page cards show their own recorded screenshot at the selected revision; planned pages keep their design preview.",
 	"createdAt": "2026-10-17T07:44:09.179Z",
-	"updatedAt": "2026-10-17T21:43:25.384Z",
+	"updatedAt": "2026-10-18T08:24:54.679Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"steps": [
@@ -56,7 +56,9 @@
 		{
 			"id": "plan-overlay-green",
 			"title": "Pass unchanged catalog overlay and shared app preview checks.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T08:24:54.679Z",
+			"evidence": "The same historical case now passes under the lower-memory workload. After integrating latest main monitoring, all 43 shared-renderer browser cases pass, including all seven catalog preview cases, historical/no-evidence states, input-output examples and desktop/tablet/mobile layouts. No native Electron app was launched. Fresh synthetic-fixture captures are in /tmp/harness-previews-20261018; browser log /tmp/harness-main-integration-ui-20261018.log."
 		}
 	],
 	"evaluators": [
