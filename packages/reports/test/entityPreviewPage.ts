@@ -43,7 +43,7 @@ export async function open(
 	await page.unrouteAll();
 	await page.route(`${origin}/**`, (request) => {
 		const path = new URL(request.request().url()).pathname;
-		const file = join(home, path);
+		const file = join(home, path.replace(/^\/harness\/media\//, 'media/'));
 		if (path === '/') return request.fulfill({ contentType: 'text/html', body: shell(home) });
 		if (!existsSync(file)) return request.fulfill({ status: 404, body: 'not in the preview' });
 		return request.fulfill({ contentType: types[extname(file)], body: readFileSync(file) });

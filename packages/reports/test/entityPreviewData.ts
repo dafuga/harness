@@ -8,7 +8,22 @@ import { record } from './entityFixture';
 import { capture, ids, units } from './entityUnits';
 
 /** What a preview is asked to show beside the plain history: named in the address it opens at. */
-export type PreviewVariant = '' | 'legacy' | 'partial' | 'declared' | 'shells';
+export type PreviewVariant = '' | 'legacy' | 'partial' | 'declared' | 'shells' | 'console';
+
+/** The same recorded project at repository scale; generated units describe no real source. */
+export function withScale(detail: HarnessRevision): HarnessRevision {
+	const template = detail.registry.units.find((unit) => unit.id === ids.filter)!;
+	const generated = Array.from({ length: 1000 }, (_, at) => ({
+		...template,
+		id: `function.generated-${at}`,
+		title: `Generated ${at}`,
+		dependencies: [{ unit: ids.filter, via: 'import' }]
+	}));
+	return {
+		...detail,
+		registry: { ...detail.registry, units: [...detail.registry.units, ...generated] }
+	};
+}
 
 /**
  * The record of a commit as the preview shows it: the search scenario also recorded a spoken
