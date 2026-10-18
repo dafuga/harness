@@ -255,6 +255,10 @@
 			"path": "packages/reports/tests/e2e/explorer-shell-browser-errors.spec.ts",
 			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-browser-errors.spec.ts",
 			"timeoutMs": 180000
+		},
+		{
+			"path": "packages/reports/tests/e2e/explorer-shell-activity-list.spec.ts",
+			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-activity-list.spec.ts"
 		}
 	],
 	"tools": [
