@@ -47,7 +47,7 @@
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
 			"status": "pending",
-			"evidence": "All 569 web unit tests, 62 responsive preview checks, 11 integration/evidence checks and 144 required captures pass. Live table/dialog screenshots inspected; Escape restores focus. Web audit still reports three existing file-size findings; full root check running. Electron tests remain paused."
+			"evidence": "569 web unit, 62 preview and 11 integration/evidence checks pass, with 144 required screenshots. Live desktop/mobile images inspected. Root format/types/lint/Rust and 847 unit tests pass; aggregate run stopped before paused Electron checks. Three existing web file-size findings block full verification. RAM peak 7.1 GB."
 		}
 	],
 	"evaluators": [
