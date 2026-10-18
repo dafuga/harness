@@ -1,0 +1,54 @@
+{
+	"name": "component-preview-header",
+	"goal": "Keep the selected revision component screenshots above the tabs on every component screen.",
+	"createdAt": "2026-10-18T20:22:24.389Z",
+	"updatedAt": "2026-10-18T20:23:34.456Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-18T20:23:34.061Z",
+			"evidence": "Component captures stay between identity and tabs on every component tab, History and Details. Keep current-vs-commit comparison, provenance and missing-capture states; functions gain no images."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-18T20:23:34.456Z",
+			"evidence": "Existing visual checks inspect Overview only. Extend their shared responsive helper across component tabs and Details; extend workspace evidence navigation coverage without native Electron tests."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

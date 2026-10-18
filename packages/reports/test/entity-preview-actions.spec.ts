@@ -1,5 +1,5 @@
 import { expect, test } from '../../../test/support/browserTest';
-import { capture, fits, open, viewports, where } from './entityPreviewPage';
+import { capture, fits, open, viewports, where, reviewVisual } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 
 const page = { category: 'pages' as const, entity: ids.page };
@@ -8,25 +8,7 @@ for (const [name, size] of Object.entries(viewports)) {
 		await tab.setViewportSize(size);
 		for (const route of [page, { category: 'components' as const, entity: ids.list }]) {
 			for (const commit of [null, commits.middle]) {
-				await open(tab, { ...route, commit });
-				await tab.evaluate(async () => {
-					await document.fonts.ready;
-					await Promise.all([...document.images].map((image) => image.decode()));
-				});
-				await capture(tab, `overview-${route.category}-${commit ? 'commit' : 'tip'}-${name}`);
-				const pane = tab.getByRole('tabpanel');
-				const evidence = await pane
-					.getByRole('heading', {
-						name: commit ? 'Commit comparison' : 'Current screenshot',
-						exact: true
-					})
-					.boundingBox();
-				const contract = await pane
-					.getByRole('region', { name: 'Size', exact: true })
-					.boundingBox();
-				expect(evidence!.y, 'screenshots lead the overview').toBeLessThan(contract!.y);
-				await expect(pane.getByRole('region', { name: /^(Used In|Uses)$/ })).toHaveCount(0);
-				expect(await fits(tab)).toBe(true);
+				await reviewVisual(tab, route, commit, name);
 			}
 		}
 	});

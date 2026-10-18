@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import type { Page, TestInfo } from '@playwright/test';
+import { expect, type Page, type TestInfo } from '@playwright/test';
 import type { ScenarioManifest } from '../../../../src/core/unitTypes';
 import scenarioData from '../../../../specification/scenarios/runtime-evidence-ui.json' with { type: 'json' };
 import { buildStamp } from '../../../../src/utils/buildStamp';
@@ -102,4 +102,36 @@ export async function runtimeAudio(page: Page): Promise<void> {
 		},
 		bytes
 	);
+}
+
+/** Component captures stay above all sections, including Details, without re-reading bytes. */
+export async function componentScreens(page: Page, info: TestInfo, phase: string): Promise<void> {
+	const tabs = page.getByRole('navigation', { name: 'Entity sections' });
+	const panel = page.getByRole('region', { name: 'Recorded runtime evidence', exact: true });
+	const sources = await panel
+		.getByRole('img')
+		.evaluateAll((images) => images.map((image) => image.getAttribute('src')));
+	for (const name of ['Overview', 'Designs', 'Used In', 'Uses', 'Evidence', 'History', 'Details']) {
+		if (name === 'Details')
+			await page.getByRole('button', { name: 'Details →', exact: true }).click();
+		else await tabs.getByRole('button', { name, exact: true }).click();
+		if (process.env.TAKE_SCREENSHOT === 'true') {
+			await settled(page);
+			await page.screenshot({
+				path: info.outputPath(`header-${phase}-${name}.png`),
+				fullPage: true
+			});
+		}
+		await expect(panel, 'component screenshot persists across tabs').toHaveCount(1);
+		expect(
+			(await panel.boundingBox())!.y,
+			'component screenshot stays above its tabs'
+		).toBeLessThan((await tabs.boundingBox())!.y);
+		expect(
+			await panel
+				.getByRole('img')
+				.evaluateAll((images) => images.map((image) => image.getAttribute('src')))
+		).toEqual(sources);
+	}
+	await tabs.getByRole('button', { name: 'Overview', exact: true }).click();
 }

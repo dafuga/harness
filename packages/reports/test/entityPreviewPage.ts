@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test';
+import { expect, type Page } from '@playwright/test';
 import { existsSync, mkdirSync, readdirSync, readFileSync } from 'node:fs';
 import { extname, join } from 'node:path';
 import type { ExplorerLocation } from '../src/models/Explorer.types';
@@ -74,4 +74,57 @@ export async function capture(page: Page, name: string): Promise<void> {
 	const directory = process.env.ENTITY_PREVIEW_SHOTS ?? '/tmp/harness-entity-preview-shots';
 	mkdirSync(directory, { recursive: true });
 	await page.screenshot({ path: join(directory, `${name}.png`), fullPage: true });
+}
+
+/** Visual evidence leads its overview; a component retains it above every row of tabs. */
+export async function reviewVisual(
+	page: Page,
+	route: Pick<ExplorerLocation, 'category' | 'entity'>,
+	commit: string | null,
+	viewport: string
+): Promise<void> {
+	await open(page, { ...route, commit });
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		await Promise.all([...document.images].map((image) => image.decode()));
+	});
+	await capture(page, `overview-${route.category}-${commit ? 'commit' : 'tip'}-${viewport}`);
+	const title = commit ? 'Commit comparison' : 'Current screenshot';
+	const evidence = page.getByRole('heading', { name: title, exact: true });
+	const size = page.getByRole('region', { name: 'Size', exact: true });
+	expect((await evidence.boundingBox())!.y).toBeLessThan((await size.boundingBox())!.y);
+	expect(await fits(page)).toBe(true);
+	if (route.category !== 'components') return;
+	for (const details of [false, true]) {
+		if (details) await page.getByRole('link', { name: 'Details', exact: true }).click();
+		for (const name of details
+			? ['Contract', 'Measurements', 'Source', 'History']
+			: ['Overview', 'Contract', 'Used In', 'Uses', 'Tests', 'History']) {
+			await page.getByRole('tab', { name, exact: true }).click();
+			await page.evaluate(async () => {
+				await document.fonts.ready;
+				await Promise.all([...document.images].map((image) => image.decode()));
+			});
+			await capture(
+				page,
+				`header-${details ? 'details' : 'base'}-${name}-${commit ? 'commit' : 'tip'}-${viewport}`
+			);
+			await expect(evidence, 'component screenshot persists across tabs').toHaveCount(1);
+			const tabs = await page.getByRole('tablist').boundingBox();
+			const shot = await evidence.boundingBox();
+			expect(shot!.y, 'component screenshot stays above its tabs').toBeLessThan(tabs!.y);
+			const files = await page
+				.locator('section[aria-labelledby="ex-screens-title"] img')
+				.evaluateAll((images) => images.map((image) => image.getAttribute('src')));
+			expect(files).toEqual(
+				commit
+					? [
+							'/harness/media/aaaaaaa-default-desktop.png',
+							'/harness/media/bbbbbbb-default-desktop.png'
+						]
+					: ['/harness/media/ccccccc-default-desktop.png']
+			);
+			expect(await fits(page)).toBe(true);
+		}
+	}
 }

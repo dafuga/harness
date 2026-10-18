@@ -18,7 +18,11 @@ test('what an entity uses is one section of kinds of their own, and what uses it
 		expect(words(uses + used)).not.toMatch(/sub-?components|\brelated\b/i);
 		expect(words(uses + used)).not.toMatch(/src\/|\.ts\b/);
 		for (const body of [uses, used]) {
-			expect(verdicts(body), 'only the entity header has a verification mark').toHaveLength(1);
+			expect(
+				verdicts(body.slice(body.indexOf('class="ex-relations"'))),
+				'usage rows omit verification marks'
+			).toHaveLength(0);
+			expect(verdicts(/<header class="ex-head"[^]*?<\/header>/.exec(body)![0])).toHaveLength(1);
 		}
 	}
 });

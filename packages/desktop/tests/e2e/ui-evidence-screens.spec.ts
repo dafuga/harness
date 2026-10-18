@@ -1,4 +1,4 @@
-import { runtimeEvidence } from './runtime-evidence';
+import { componentScreens, runtimeEvidence } from './runtime-evidence';
 import { expect, test, type Locator, type Page } from '../../../../test/support/browserTest';
 import {
 	branch,
@@ -166,6 +166,7 @@ test('an inherited capture is not the current one, and sides that are not alike 
 	).toBeVisible();
 	await expect(current.getByRole('img')).toHaveCount(0);
 	await runtimeEvidence(page, info, 'inherited');
+	await componentScreens(page, info, 'current');
 	await expect(page.locator('.entity-heading .verification')).toHaveAccessibleName(
 		'Full coverage passed'
 	);
@@ -179,6 +180,7 @@ test('an inherited capture is not the current one, and sides that are not alike 
 	await expect(after.getByText('Inherited capture · passed')).toBeVisible();
 	expect((await drawn(after.getByRole('img'))).tone).toEqual(tones[commits.middle]);
 	await runtimeEvidence(page, info, 'not-alike');
+	await componentScreens(page, info, 'commit');
 });
 
 for (const viewport of [

@@ -13,7 +13,8 @@ Evidence is read through the two optional bridge reads `evidence` and `artifact`
 - A side that is missing, rejected, inherited or not recorded alike says so in the words of the record. An inherited capture names the commit it was made at and is not said to be captured at the tip.
 - A function or a service shows its recorded steps, input, output, assertions and trace. A change of behaviour is stated only after both results were read and checked; damaged or refused bytes leave it unknown.
 - A clip is one at a branch tip and a pair at a commit; a side or a declaration without a clip says so.
-- Evidence is read only on Overview and Evidence. An answer for an entity or a scope that is no longer shown is dropped.
+- Component runtime screenshots sit between entity identity and its tabs on every component screen, including History and Details. Overview does not duplicate this preview. Functions never gain screenshot headers.
+- Component evidence is read on every tab; other entities read it on Overview, Evidence and History. An answer for an entity or a scope that is no longer shown is dropped.
 - A connection without the reads, a planned entity, a failed read and a saved copy each say what they are.
 - The mark beside the name of an entity is the verdict of the reports explorer over the record that was read; otherwise it is unknown and says why.
 - An incremental record may have no fresh tests. Its validated inherited checks count for the unchanged units they cover and keep their original tested revision. Missing, failed, stale, unrelated or invalid proof never grants a passing mark.
