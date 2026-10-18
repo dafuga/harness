@@ -20,6 +20,7 @@ export function deriveManifest(input: DeriveInput): ComponentManifest {
 	const source = files.map((file) => file.path).sort();
 	const kept = input.previous ?? defaults(input);
 	const preview = kept.preview;
+	const documentation = kept.documentation;
 	return {
 		schemaVersion: 1,
 		id: input.id,
@@ -38,6 +39,7 @@ export function deriveManifest(input: DeriveInput): ComponentManifest {
 		runtime: runtime(input.previous, source),
 		scenarios: kept.scenarios,
 		...(preview ? { preview } : {}),
+		...(documentation ? { documentation } : {}),
 		budgets: kept.budgets
 	};
 }
@@ -51,6 +53,7 @@ type Declared = Pick<
 	| 'contract'
 	| 'scenarios'
 	| 'preview'
+	| 'documentation'
 	| 'budgets'
 >;
 

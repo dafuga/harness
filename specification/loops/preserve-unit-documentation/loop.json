@@ -2,11 +2,9 @@
 	"name": "preserve-unit-documentation",
 	"goal": "Keep declared documentation links during registry re-indexing",
 	"createdAt": "2026-10-18T23:32:46.908Z",
-	"updatedAt": "2026-10-18T23:32:47.434Z",
+	"updatedAt": "2026-10-18T23:33:58.835Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T23:33:58.835Z",
+			"evidence": "The committed metadata-preservation test fails because documentation becomes undefined; proof c53dfeff4d343914278d630a23cf879556c9b7ced76c8048178b5dedc63d33f5."
 		},
 		{
 			"id": "implement",
