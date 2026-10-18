@@ -174,7 +174,8 @@ test('a phone shows the same overview, and says that its connection does not rea
 		'Used In',
 		'Uses',
 		'States',
-		'History'
+		'History',
+		'Source'
 	]);
 	await expect(page.getByRole('heading', { name: 'Contract', exact: true })).toBeVisible();
 	await expect(
