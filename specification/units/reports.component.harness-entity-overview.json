@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-entity-overview",
 	"kind": "component",
 	"title": "Entity overview",
-	"responsibility": "Shows the contract, measurements, what uses this entity, what it uses, and supplied evidence.",
+	"responsibility": "Shows visual evidence before the contract and measurements; usage belongs in its dedicated tabs.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -16,12 +16,7 @@
 			{
 				"name": "EntityOverview.entity",
 				"type": "ExplorerEntity",
-				"description": "Required entity name, removal state and optional last-held commit."
-			},
-			{
-				"name": "EntityOverview.relations",
-				"type": "ExplorerRelations",
-				"description": "Required relationship data passed to compact relationship panels."
+				"description": "The entity name, category and removal state at the viewed revision."
 			},
 			{
 				"name": "EntityOverview.contract",
@@ -34,11 +29,6 @@
 				"description": "Required prepared measurements passed to the summary."
 			},
 			{
-				"name": "EntityOverview.nav",
-				"type": "EntityNav",
-				"description": "Required relationship navigation context."
-			},
-			{
 				"name": "EntityOverview.children",
 				"type": "Snippet",
 				"description": "Required content snippet for evidence appropriate to this entity."
@@ -48,17 +38,12 @@
 			{
 				"name": "EntityOverview",
 				"type": "markup",
-				"description": "Named overview tabpanel with compact summary, compact relationships and the supplied evidence content. Removed entities identify their last contract and removed-state relationships."
+				"description": "Visual overviews begin with screenshots, a commit comparison or an explicit capture gap, then contract, size and performance. Other entities retain summary-first evidence. Usage appears only in dedicated tabs."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
-		{
-			"unit": "reports.component.harness-entity-relations",
-			"via": "import",
-			"origin": "derived"
-		},
 		{
 			"unit": "reports.component.harness-entity-summary",
 			"via": "import",
@@ -66,11 +51,6 @@
 		},
 		{
 			"unit": "reports.function.entity-contract",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.function.entity-lens",
 			"via": "import",
 			"origin": "derived"
 		},

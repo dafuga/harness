@@ -16,10 +16,9 @@
 		host: ExplorerScreenProps;
 		entity: ExplorerEntity;
 		nav: EntityNav;
-		/** The evidence an entity of this kind is first shown with, under its summary. */
+		/** The evidence an entity of this kind is shown with: above its summary when it is seen. */
 		pane: Snippet;
 	} = $props();
-	let relations = $derived(host.lens.relations(entity.id));
 	let summary = $derived(entityShown(host, entity));
 	const said = { 'used-in': 'used in', uses: 'uses' } as const;
 	let direction = $derived(
@@ -31,7 +30,7 @@
 <!-- The tab of the address decides what an entity screen shows; any other shows its overview. -->
 {#if direction}
 	<div role="tabpanel" aria-label={`${entity.name} ${said[direction]}`}>
-		<EntityRelations {relations} {nav} show={direction} {removed} />
+		<EntityRelations relations={host.lens.relations(entity.id)} {nav} show={direction} {removed} />
 	</div>
 {:else if host.route.tab === 'tests'}
 	<EntityTests
@@ -44,7 +43,7 @@
 		exportHref={host.exportHref}
 	/>
 {:else}
-	<EntityOverview {entity} {relations} contract={summary.contract} measure={summary.measure} {nav}>
+	<EntityOverview {entity} contract={summary.contract} measure={summary.measure}>
 		{@render pane()}
 	</EntityOverview>
 {/if}

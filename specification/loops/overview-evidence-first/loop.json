@@ -2,7 +2,7 @@
 	"name": "overview-evidence-first",
 	"goal": "Lead visual overviews with revision-bound screenshots and show usage only in its dedicated tabs.",
 	"createdAt": "2026-10-18T17:19:50.160Z",
-	"updatedAt": "2026-10-18T17:19:50.864Z",
+	"updatedAt": "2026-10-18T17:24:29.484Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T17:22:05.288Z",
+			"evidence": "Committed 3f922e19 fails six hierarchy checks across all viewports. Record 00f0faa8 freezes tests and confirms screenshot order and embedded-usage failures."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T17:24:29.484Z",
+			"evidence": "Opus updated the two shared components. Eighteen focused unit checks and Svelte checks pass; existing screenshot and scoped usage controls are reused."
 		},
 		{
 			"id": "green",
