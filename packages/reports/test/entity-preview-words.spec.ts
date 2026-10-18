@@ -131,6 +131,24 @@ async function compactExamples(table: Locator): Promise<void> {
 		'aria-haspopup',
 		'dialog'
 	);
+	const available = await branch
+		.getByRole('cell')
+		.nth(1)
+		.locator('code')
+		.evaluate((code) => {
+			const end = code.closest('tr')!.lastElementChild!.getBoundingClientRect().left;
+			return Math.min(innerWidth, end) - code.getBoundingClientRect().left;
+		});
+	expect(available, 'example preview is visible beside the action').toBeGreaterThan(24);
+	const contained = await branch
+		.getByRole('cell')
+		.last()
+		.evaluate((cell) => {
+			const button = cell.querySelector('button')!.getBoundingClientRect();
+			const box = cell.getBoundingClientRect();
+			return button.left >= box.left && button.right <= box.right + 1;
+		});
+	expect(contained, 'info button fits within its trailing cell').toBe(true);
 	const settings = table.getByRole('row').filter({ hasText: 'Settings' });
 	const clipped = await settings
 		.getByRole('cell')
