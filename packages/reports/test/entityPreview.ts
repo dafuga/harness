@@ -51,12 +51,14 @@ for (const detail of Object.values(stored)) {
 }
 
 if (variant === 'declared') {
-	// The page of the selected commit carries a contract that says what each of its items is.
-	const { registry } = stored[commits.middle];
-	const units = registry.units.map((unit) =>
-		unit.id === ids.page ? { ...unit, contract: declaredContract } : unit
-	);
-	stored[commits.middle] = { ...stored[commits.middle], registry: { ...registry, units } };
+	// Every viewed revision, including the branch tip, declares the same example contract.
+	for (const [commit, detail] of Object.entries(stored)) {
+		const { registry } = detail;
+		const units = registry.units.map((unit) =>
+			unit.id === ids.page ? { ...unit, contract: declaredContract } : unit
+		);
+		stored[commit] = { ...detail, registry: { ...registry, units } };
+	}
 }
 
 if (variant === 'shells') {
