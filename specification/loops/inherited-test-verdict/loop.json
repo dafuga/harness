@@ -2,7 +2,7 @@
 	"name": "inherited-test-verdict",
 	"goal": "Count validated inherited checks in entity verdicts without inventing fresh test runs",
 	"createdAt": "2026-10-18T15:00:04.846Z",
-	"updatedAt": "2026-10-18T15:00:05.958Z",
+	"updatedAt": "2026-10-18T15:10:06.154Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T15:06:43.149Z",
+			"evidence": "Committed strengthened standardized tests as 5c30b86f. Two existing verdict tests fail on zero-fresh-test records; the existing browser inheritance flow reports Coverage incomplete: The record ran no test. Harness archived red record 0b0245bfbdd375827e01d0fea6190b4ef406b299e5d85c7bc2e86738a926acbf with 1255 frozen inputs."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T15:10:06.154Z",
+			"evidence": "The shared verdict reads inherited checks from existing unit-scoped coverage. Missing, failed, stale and invalid origins remain unproven. Fresh test arrays and origin identities remain unchanged; the same 15 unit tests and browser inheritance flow now pass."
 		},
 		{
 			"id": "green",

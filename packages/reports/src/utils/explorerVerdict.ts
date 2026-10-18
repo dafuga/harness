@@ -59,9 +59,12 @@ function gates(record: HarnessRecord): Reason[] {
 	return [...absent, ...failed];
 }
 
-/** What fails for every unit of the commit: the index does not say which units a test covers. */
-function tests(record: HarnessRecord): Reason[] {
-	if (record.tests.length === 0) return [['incomplete', 'The record ran no test.']];
+/** Direct failures affect every unit; inherited checks are judged within their owning scenario. */
+function tests(record: HarnessRecord, coverage: ExplorerScenarioCoverage[]): Reason[] {
+	const inherited = coverage.some(
+		(item) => item.inheritedFrom && item.tests.some((test) => test.status !== null)
+	);
+	if (record.tests.length === 0 && !inherited) return [['incomplete', 'The record ran no test.']];
 	const open = record.tests.filter((test) => test.status !== 'passed');
 	// A check of a scenario has a logical name; a test file is counted, and located elsewhere.
 	const files = open.filter((test) => test.id.includes('/')).length;
@@ -132,8 +135,8 @@ export function verdictCoverage(
 
 /**
  * Whether a unit is proven at a revision. It is only when the newest usable record of that
- * commit states its gates and passed them, ran tests and passed them all, at least one scenario
- * covers the unit, every such scenario stands as explorerCoverage requires, the record says no
+ * commit states its gates and passed them, holds fresh or inherited checks that passed where they
+ * ran, at least one scenario covers the unit, every such scenario stands as explorerCoverage requires, the record says no
  * failure of the unit, and no limit of the unit is open. Anything missing, stale, failed, undeclared or unknown is not proven; nothing is
  * a share. No kind of unit is exempt: what no scenario covers is not proven by tests alone,
  * because the history does not record which tests cover which unit.
@@ -153,7 +156,7 @@ export function explorerVerdict(unit: HarnessUnit, detail: HarnessRevision): Exp
 			: [];
 	return judge([
 		...gates(record),
-		...tests(record),
+		...tests(record, coverage),
 		...uncovered,
 		...vacuous,
 		...unproven(coverage),

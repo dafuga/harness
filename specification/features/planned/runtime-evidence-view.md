@@ -16,6 +16,7 @@ Evidence is read through the two optional bridge reads `evidence` and `artifact`
 - Evidence is read only on Overview and Evidence. An answer for an entity or a scope that is no longer shown is dropped.
 - A connection without the reads, a planned entity, a failed read and a saved copy each say what they are.
 - The mark beside the name of an entity is the verdict of the reports explorer over the record that was read; otherwise it is unknown and says why.
+- An incremental record may have no fresh tests. Its validated inherited checks count for the unchanged units they cover and keep their original tested revision. Missing, failed, stale, unrelated or invalid proof never grants a passing mark.
 - An entity is named in words; the address a page is served at is shown as a fact. A commit of the history is a link only when the shown branch lists it.
 - Proof: `packages/desktop/tests/e2e/ui-evidence-*.spec.ts` over a synthetic sealed history, the unit tests of the new units, and the hosted workspace spec of the hub.
 
