@@ -1,4 +1,5 @@
 import { runtimeEvidence } from './runtime-evidence';
+import { reviewRegression } from './ui-regression-fixture';
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import {
 	branch,
@@ -97,6 +98,12 @@ test('a commit of the history is a link only where the shown branch is known to 
 	await expect(page.getByRole('heading', { name: 'Entity history' })).toHaveCount(0);
 	const after = runtime(page).getByRole('group', { name: `After · ${short(commits.middle)}` });
 	await expect(after).toBeVisible();
+});
+
+test('regression history links the committed failing test and unchanged passing fix', async ({
+	page
+}, info) => {
+	await reviewRegression(page, info);
 });
 
 test('the status beside the name is the verdict of the record that was read, or says why there is none', async ({

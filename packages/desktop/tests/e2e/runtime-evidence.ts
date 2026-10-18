@@ -45,7 +45,7 @@ export async function runtimeEvidence(page: Page, info: TestInfo, state: string)
 	await settled(page);
 	if (!requested) {
 		await page.screenshot({
-			path: info.outputPath(`runtime-smoke-${state}.png`),
+			path: info.outputPath(`runtime-smoke-${state}-${page.viewportSize()?.width}.png`),
 			fullPage: true,
 			animations: 'disabled',
 			caret: 'hide'
