@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-explorer-page-card",
 	"kind": "component",
-	"title": "Page catalog card",
-	"responsibility": "Summarizes a page with its own recorded screenshot and verification.",
+	"title": "Visual catalog card",
+	"responsibility": "Summarizes a page or visual component with its recorded screenshot, capture origin and verification.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -16,12 +16,12 @@
 			{
 				"name": "ExplorerPageCard.row",
 				"type": "CatalogRow",
-				"description": "Required page catalog facts including identity/name, summary, component count, changed flag and verdict."
+				"description": "Facts for one page or visual component: its name, purpose, usages, contained components, changed flag and verification."
 			},
 			{
 				"name": "ExplorerPageCard.shot",
 				"type": "Evidence | null",
-				"description": "Required screenshot or null. Image appears only with nonmissing file and no load failure."
+				"description": "A usable screenshot or null. Includes its original captured commit and whether the shown revision reuses validated unchanged evidence. Missing media or image-load failure shows an explicit gap."
 			},
 			{
 				"name": "ExplorerPageCard.mediaBase",
@@ -31,14 +31,19 @@
 			{
 				"name": "ExplorerPageCard.nav",
 				"type": "EntityNav",
-				"description": "Required page navigation context."
+				"description": "The selected branch, commit and navigation actions; opening the card keeps that scope."
+			},
+			{
+				"name": "ExplorerPageCard.category",
+				"type": "'pages' | 'components'",
+				"description": "Defaults to pages. Components retain the same screenshot card while showing their consumers and contained components, with an Open component icon."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerPageCard",
 				"type": "markup",
-				"description": "Linked page card with lazy screenshot or no-recorded-screenshot fallback, summary, component count, Changed badge and verdict. Provides Open page action. Image-load failure uses the same fallback as missing data. The 36-pixel arrow link keeps its Open page accessible name and hover tooltip."
+				"description": "A linked screenshot card with readable purpose, component count or usages, shared/changed markers and icon-only verification. Captions identify in-context evidence and its captured commit, using Reused from for inherited proof. A 36-pixel icon opens the page or component. Image errors show a gap and reset when the file changes."
 			}
 		],
 		"errors": []
@@ -66,6 +71,11 @@
 		},
 		{
 			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-icons",
 			"via": "import",
 			"origin": "derived"
 		},

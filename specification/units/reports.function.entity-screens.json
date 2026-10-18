@@ -15,6 +15,7 @@
 			"screenOptions",
 			"screenPick",
 			"entityScreens",
+			"catalogShot",
 			"galleryItems"
 		]
 	},
@@ -50,6 +51,11 @@
 				"name": "galleryItems.evidence",
 				"type": "ExplorerEvidence",
 				"description": "Evidence whose screenshot and audio captures should become gallery items."
+			},
+			{
+				"name": "catalogShot.evidence",
+				"type": "ExplorerEvidence",
+				"description": "The host-selected evidence for one entity at the shown revision. Captures from other states or entities must already be excluded by its declared coverage."
 			}
 		],
 		"outputs": [
@@ -71,7 +77,12 @@
 			{
 				"name": "galleryItems",
 				"type": "Evidence[]",
-				"description": "Before media then after media in commit mode, or current media alone, with sequence order, status, provenance and media details. Includes recorded screenshot/audio items even when unusable or inherited, retaining their labels."
+				"description": "Before media then after media in commit mode, or current media alone, with sequence order, status, provenance and media details. Includes recorded screenshot/audio items even when unusable or inherited, retaining their labels. Source identifies the capture build revision, never the target of inherited proof."
+			},
+			{
+				"name": "catalogShot",
+				"type": "Evidence | null",
+				"description": "A usable screenshot of the shown version, preferring a fresh capture. Validated unchanged evidence keeps its original captured commit, standing and explanation. Returns null for missing, rejected, unvalidated, wrong-build or unrelated evidence; never borrows from the parent."
 			}
 		],
 		"errors": []

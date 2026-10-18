@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-explorer-catalog-screen",
 	"kind": "component",
 	"title": "ExplorerCatalogScreen",
-	"responsibility": "The collection screen of components, functions, configs or services: a table with the columns of the kind.",
+	"responsibility": "Lists visual components as screenshot cards and other unit kinds as searchable tables.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -46,9 +46,9 @@
 		],
 		"outputs": [
 			{
-				"name": "ExplorerCatalogScreen.collectionTable",
+				"name": "ExplorerCatalogScreen.collection",
 				"type": "markup",
-				"description": "The components, functions, configs or services of the revision as a table, with search, changed-only and order."
+				"description": "Visual component cards with recorded in-context screenshots, original capture commits, used-on and contained-component facts. Functions, configs, services and shells remain tables. Search, changed-only, ordering and links preserve the selected branch and commit."
 			}
 		],
 		"errors": [
@@ -71,12 +71,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.harness-explorer-page-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-explorer-table",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.function.entity-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-screens",
 			"via": "import",
 			"origin": "derived"
 		},

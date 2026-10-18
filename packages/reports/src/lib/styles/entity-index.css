@@ -131,6 +131,13 @@
 	border-radius: var(--ex-radius);
 	background: var(--ex-surface);
 }
+.ex-content .ex-card-shot {
+	display: grid;
+	gap: 8px;
+	align-content: start;
+	min-width: 0;
+	margin: 0;
+}
 .ex-content .ex-thumb {
 	display: block;
 	aspect-ratio: 16 / 10;
@@ -139,12 +146,21 @@
 	border-radius: 8px;
 	background: var(--ex-raised);
 }
+/* The whole capture is shown, never cut: a component may sit anywhere in its screen. */
 .ex-content .ex-thumb img {
 	display: block;
 	width: 100%;
 	height: 100%;
-	object-fit: cover;
-	object-position: top left;
+	object-fit: contain;
+}
+.ex-content .ex-card-shot figcaption {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 2px 12px;
+	color: var(--ex-muted);
+	font-size: 0.8rem;
+	overflow-wrap: anywhere;
 }
 .ex-content .ex-thumb-gap {
 	display: grid;
@@ -166,6 +182,7 @@
 }
 .ex-content .ex-page-body h2 {
 	font-size: 1.5rem;
+	overflow-wrap: anywhere;
 }
 .ex-content .ex-fact {
 	display: flex;
