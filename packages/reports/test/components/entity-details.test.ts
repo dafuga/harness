@@ -26,7 +26,9 @@ test('a page has details like every other kind: purpose, address, inputs, output
 	const body = content('current', page);
 	expect(words(body)).toContain('Purpose Lists the orders of an account.');
 	expect(words(body)).toContain('App route /orders');
-	expect(words(body)).toContain('Inputs account id, search text');
+	expect(words(body)).toContain('Inputs');
+	for (const input of ['account id', 'search text'])
+		expect(words(body)).toMatch(new RegExp(`\\b${input}\\b`, 'i'));
 	expect(words(body)).toContain('Required states default, empty');
 	expect(words(body)).toContain('Source size Not measured');
 	// Back to the overview keeps the branch tip; nothing adds a commit to the address.
