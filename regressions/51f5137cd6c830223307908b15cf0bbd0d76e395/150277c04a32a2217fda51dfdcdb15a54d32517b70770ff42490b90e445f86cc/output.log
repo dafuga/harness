@@ -1,0 +1,153 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [730.00ms]
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts test/entity-preview-actions.spec.ts --grep "visual overviews"
+
+Running 3 tests using 1 worker
+
+(node:84107) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at desktop width (5.5s)
+(node:84210) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at tablet width (5.3s)
+(node:84270) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at mobile width (5.3s)
+
+
+  1) test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at desktop width 
+
+    Error: visual entities expose a States tab
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('tab', { name: 'States', exact: true })
+    Expected: 1
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - visual entities expose a States tab getByRole('tab', { name: 'States', exact: true }) with timeout 5000ms
+      - waiting for getByRole('tab', { name: 'States', exact: true })
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+       at entityPreviewPage.ts:147
+
+      145 | 	await capture(page, `states-entry-${commit ? 'commit' : 'tip'}-${viewport}`);
+      146 | 	const states = page.getByRole('tab', { name: 'States', exact: true });
+    > 147 | 	await expect(states, 'visual entities expose a States tab').toHaveCount(1);
+          | 	                                                            ^
+      148 | 	await expect(page.getByRole('tab', { name: 'Tests', exact: true })).toHaveCount(0);
+      149 | 	await states.click();
+      150 | 	const panel = page.getByRole('tabpanel', { name: 'Order list states', exact: true });
+        at reviewStates (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-BBAz8X/packages/reports/test/entityPreviewPage.ts:147:62)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-BBAz8X/packages/reports/test/entity-preview-actions.spec.ts:19:42
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-vis-6e20f-creenshots-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-vis-6e20f-creenshots-at-desktop-width/error-context.md
+
+  2) test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at tablet width 
+
+    Error: visual entities expose a States tab
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('tab', { name: 'States', exact: true })
+    Expected: 1
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - visual entities expose a States tab getByRole('tab', { name: 'States', exact: true }) with timeout 5000ms
+      - waiting for getByRole('tab', { name: 'States', exact: true })
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+       at entityPreviewPage.ts:147
+
+      145 | 	await capture(page, `states-entry-${commit ? 'commit' : 'tip'}-${viewport}`);
+      146 | 	const states = page.getByRole('tab', { name: 'States', exact: true });
+    > 147 | 	await expect(states, 'visual entities expose a States tab').toHaveCount(1);
+          | 	                                                            ^
+      148 | 	await expect(page.getByRole('tab', { name: 'Tests', exact: true })).toHaveCount(0);
+      149 | 	await states.click();
+      150 | 	const panel = page.getByRole('tabpanel', { name: 'Order list states', exact: true });
+        at reviewStates (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-BBAz8X/packages/reports/test/entityPreviewPage.ts:147:62)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-BBAz8X/packages/reports/test/entity-preview-actions.spec.ts:19:42
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-vis-ec3df-screenshots-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-vis-ec3df-screenshots-at-tablet-width/error-context.md
+
+  3) test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at mobile width 
+
+    Error: visual entities expose a States tab
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('tab', { name: 'States', exact: true })
+    Expected: 1
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - visual entities expose a States tab getByRole('tab', { name: 'States', exact: true }) with timeout 5000ms
+      - waiting for getByRole('tab', { name: 'States', exact: true })
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+       at entityPreviewPage.ts:147
+
+      145 | 	await capture(page, `states-entry-${commit ? 'commit' : 'tip'}-${viewport}`);
+      146 | 	const states = page.getByRole('tab', { name: 'States', exact: true });
+    > 147 | 	await expect(states, 'visual entities expose a States tab').toHaveCount(1);
+          | 	                                                            ^
+      148 | 	await expect(page.getByRole('tab', { name: 'Tests', exact: true })).toHaveCount(0);
+      149 | 	await states.click();
+      150 | 	const panel = page.getByRole('tabpanel', { name: 'Order list states', exact: true });
+        at reviewStates (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-BBAz8X/packages/reports/test/entityPreviewPage.ts:147:62)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-BBAz8X/packages/reports/test/entity-preview-actions.spec.ts:19:42
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-vis-5375c-screenshots-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-vis-5375c-screenshots-at-mobile-width/error-context.md
+
+  3 failed
+    test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at desktop width 
+    test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at tablet width 
+    test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at mobile width 
+error: script "test:entities" exited with code 1
