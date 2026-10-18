@@ -2,9 +2,11 @@
 	"name": "preserve-unit-documentation",
 	"goal": "Keep declared documentation links during registry re-indexing",
 	"createdAt": "2026-10-18T23:32:46.908Z",
-	"updatedAt": "2026-10-18T23:33:58.835Z",
+	"updatedAt": "2026-10-18T23:35:07.834Z",
 	"template": "bug-fix",
-	"templateLineage": ["bug-fix"],
+	"templateLineage": [
+		"bug-fix"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -32,7 +34,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T23:35:07.834Z",
+			"evidence": "Derivation now retains the declared Markdown pointer. Activity freshness points to its committed usage document."
 		},
 		{
 			"id": "green",

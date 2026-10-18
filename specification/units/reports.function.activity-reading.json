@@ -6,6 +6,7 @@
 	"responsibility": "Determines which registered agents a sampled roster can still describe as working.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"documentation": "packages/reports/src/utils/activityReading.md",
 	"owns": {
 		"source": ["packages/reports/src/utils/activityReading.ts"],
 		"symbols": ["readingAge", "ActivityReading", "activityReading"]
@@ -67,7 +68,6 @@
 		]
 	},
 	"scenarios": [],
-	"documentation": "packages/reports/src/utils/activityReading.md",
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

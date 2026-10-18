@@ -32,6 +32,7 @@ export function deriveManifest(input: DeriveInput): ComponentManifest {
 				: derivedResponsibility(kept.kind, kept.title),
 		responsibilityOrigin: kept.responsibilityOrigin,
 		status: 'active',
+		...(documentation ? { documentation } : {}),
 		...lineage(input),
 		owns: { source, symbols: files.flatMap((file) => file.exports.map((symbol) => symbol.name)) },
 		contract: kept.contract.origin === 'declared' ? kept.contract : derivedContract(files),
@@ -39,7 +40,6 @@ export function deriveManifest(input: DeriveInput): ComponentManifest {
 		runtime: runtime(input.previous, source),
 		scenarios: kept.scenarios,
 		...(preview ? { preview } : {}),
-		...(documentation ? { documentation } : {}),
 		budgets: kept.budgets
 	};
 }
