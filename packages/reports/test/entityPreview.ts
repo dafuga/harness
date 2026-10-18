@@ -119,19 +119,22 @@ if (variant === 'console') {
 	// The real console and client, over this same fixture. Each response is a fresh JSON tree,
 	// as it is over the network; no in-memory Svelte data is substituted for the host.
 	const fetcher = window.fetch;
-	window.fetch = (input, init) => {
-		const path = String(input);
-		const data = path.endsWith('/data/index.json')
-			? index
-			: path.endsWith('/data/activity.json')
-				? { repository: { name: 'Synthetic orders' } }
-				: Object.entries(stored).find(([commit]) =>
-						path.endsWith(`/revisions/${commit}.json`)
-					)?.[1];
-		return data
-			? Promise.resolve(Response.json('registry' in data ? withScale(data) : data))
-			: fetcher(input, init);
-	};
+	window.fetch = Object.assign(
+		(input: Parameters<typeof fetch>[0], init?: Parameters<typeof fetch>[1]) => {
+			const path = String(input);
+			const data = path.endsWith('/data/index.json')
+				? index
+				: path.endsWith('/data/activity.json')
+					? { repository: { name: 'Synthetic orders' } }
+					: Object.entries(stored).find(([commit]) =>
+							path.endsWith(`/revisions/${commit}.json`)
+						)?.[1];
+			return data
+				? Promise.resolve(Response.json('registry' in data ? withScale(data) : data))
+				: fetcher(input, init);
+		},
+		fetcher
+	);
 	history.replaceState(null, '', '/harness' + explorerRoutePath(asked()));
 	mount(HarnessShell, { target, props: { base: '/harness', exportable: false } });
 } else show(asked());
