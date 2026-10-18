@@ -45,7 +45,7 @@
 	let size = $derived(option?.viewports.find((item) => item.id === pick?.viewport)?.size ?? '');
 	const choose = (changed: Partial<ScreenPick>) => (wanted = { ...pick, ...changed });
 	const entity = () => ({ category: nav.route.category, entity: nav.route.entity });
-	let tests = $derived(entityLens(nav.route, { ...entity(), tab: 'tests' }));
+	let tests = $derived(entityLens(nav.route, { ...entity(), tab: 'states' }));
 	let commit = $derived(entityLens(nav.route, { ...entity(), commit: scope.commit }));
 	/** Who a pane is: the parent, the selected commit, or the one snapshot of the branch tip. */
 	function heading(item: Evidence): { title: string; role: string } {

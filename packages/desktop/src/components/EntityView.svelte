@@ -22,10 +22,7 @@
 	import Icon from './Icon.svelte';
 	import WorkspaceLink from './WorkspaceLink.svelte';
 	let { workspace }: { workspace: Workspace } = $props();
-	/**
-	 * Each section with the end of its address; the overview is the address of the entity. An
-	 * address no section has, as the former one of both lists, shows the overview that holds them.
-	 */
+	/** Each section keeps its own address. */
 	const sections = {
 		Overview: '',
 		Designs: 'designs',
@@ -33,6 +30,7 @@
 		'Used In': 'used-in',
 		Uses: 'uses',
 		Evidence: 'evidence',
+		States: 'states',
 		History: 'history'
 	} as const;
 	type Section = keyof typeof sections;
@@ -40,8 +38,14 @@
 	const headless = $derived(workspace.entity?.category === 'functions');
 	/** A component keeps its runtime evidence between its name and every section it opens. */
 	const pictured = $derived(workspace.entity?.category === 'components');
+	const visual = $derived(
+		['pages', 'components', 'shells'].includes(workspace.entity?.category ?? '')
+	);
 	const names = $derived(
-		(Object.keys(sections) as Section[]).filter((name) => name !== (headless ? 'Designs' : 'Plan'))
+		(Object.keys(sections) as Section[]).filter(
+			(name) =>
+				name !== (headless ? 'Designs' : 'Plan') && name !== (visual ? 'Evidence' : 'States')
+		)
 	);
 	let tab = $state<Section>('Overview');
 	let details = $state(false);
@@ -51,7 +55,6 @@
 	let version = $state('');
 	let option = $state('');
 	const entity = $derived(workspace.entity!);
-	/** The option in view: the one chosen when the version holds it, else approved or first. */
 	const shown = $derived(versionOption(entity.versions, version, option));
 	/** Another project, revision, entity or version shows its open thread's option, if any. */
 	$effect(() => {
@@ -60,22 +63,18 @@
 	});
 	const agents = $derived(workspace.capabilities.agents && Boolean(workspace.snapshot?.writable));
 	const annotatable = $derived(agents || workspace.capabilities.comments);
-	/**
-	 * The address decides what is shown each time it is read, also when the entity stays the
-	 * same: the section it names, or the overview when it names none. Details is open only at its
-	 * own address, over the section it was opened on. A section chosen on the page writes its
-	 * address, so reading the address again does not take it back.
-	 */
+	/** Read the addressed section again when the scope or entity changes. */
 	$effect(() => {
 		const read = { suffix: workspace.suffix, entity: workspace.entity };
 		untrack(() => {
 			details = read.suffix === 'details';
 			// The former address of the designs of a function opens its plan.
-			const asked = headless && read.suffix === 'designs' ? 'plan' : (read.suffix ?? '');
+			let asked = read.suffix ?? '';
+			if (headless && asked === 'designs') asked = 'plan';
+			if (visual && asked === 'evidence') asked = 'states';
 			if (!details) tab = names.find((name) => sections[name] === asked) ?? 'Overview';
 		});
 	});
-	/** Words for the name; a route address is a fact of a page, never its name. */
 	const name = $derived(explorerName(entity));
 	const route = $derived(
 		explorerAppRoute({
@@ -84,17 +83,20 @@
 			owns: { source: entity.sources, symbols: [] }
 		})
 	);
-	/**
-	 * Recorded evidence is read where it is shown, on every tab of a component, and again when the
-	 * entity, revision or pinned notes and evidence change. Designs are read without it.
-	 */
+	/** Read evidence where shown; discard answers for superseded scopes. */
 	const evidence = createEntityEvidenceStore();
 	$effect(() => {
 		const pin = workspace.snapshot?.cache?.identity;
 		const stamp = `${pin?.notesRevision ?? ''}|${pin?.evidenceRevision ?? ''}`;
 		const scope = evidenceQuery(workspace, workspace.entity?.id ?? '');
 		const planned = Boolean(workspace.entity?.planned);
-		if (pictured || tab === 'Overview' || tab === 'Evidence' || tab === 'History')
+		if (
+			pictured ||
+			tab === 'Overview' ||
+			tab === 'Evidence' ||
+			tab === 'States' ||
+			tab === 'History'
+		)
 			evidence.show(workspace.bridge, { scope, planned, stamp });
 	});
 	onDestroy(() => evidence.reset());
@@ -111,10 +113,7 @@
 		[thread, target, conversation] = [value, null, true];
 		if (value.version === version && value.option) option = value.option;
 	}
-	/**
-	 * Where agents may run, a selection opens a planning thread as before. Elsewhere it only aims
-	 * the next comment at that image: nothing is written until a person sends one.
-	 */
+	/** A selection opens an agent thread or aims the next hosted comment. */
 	async function annotate(value: ThreadTarget) {
 		if (!agents) {
 			thread = null;
@@ -201,7 +200,7 @@
 				relationships={entity.relationships}
 				{workspace}
 				direction={tab === 'Uses' ? 'uses' : 'used-by'}
-			/>{:else if tab === 'Evidence'}<CoveragePanel
+			/>{:else if tab === 'Evidence' || tab === 'States'}<CoveragePanel
 				{entity}
 				{evidence}
 				{workspace}

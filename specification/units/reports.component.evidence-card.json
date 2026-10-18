@@ -32,6 +32,12 @@
 				"name": "EvidenceCard.onopen",
 				"type": "() => void",
 				"description": "Required callback invoked by screenshot or paired-audio opening controls. Individual audio playback uses its own controls."
+			},
+			{
+				"name": "EvidenceCard.compact",
+				"type": "boolean",
+				"description": "Optional screenshot presentation: false by default. True keeps provenance in a Capture details disclosure beneath the image. Audio rendering is unchanged.",
+				"examples": [true]
 			}
 		],
 		"outputs": [

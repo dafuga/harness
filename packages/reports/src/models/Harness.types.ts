@@ -6,7 +6,6 @@ import type { RegressionView } from '../../../../src/core/regressionTypes';
 
 export type * from './HarnessLegacy.types';
 
-/** The parts of the history index and revision files the console reads. */
 export interface HarnessRecordSummary {
 	id: string;
 	status: 'passed' | 'failed';
@@ -28,10 +27,7 @@ export interface HarnessRevisionSummary {
 	gaps: string[];
 	records: HarnessRecordSummary[];
 	legacy: string[];
-	/**
-	 * The units the commit changed itself against its first parent. Null when that could not be
-	 * read; absent in a history built before it was kept, which then does not say.
-	 */
+	/** Directly changed units; null when unread, absent in older histories. */
 	changes?: { base: string | null; direct: string[]; added: string[]; removed: string[] } | null;
 }
 export interface HarnessSeries {
@@ -54,9 +50,7 @@ export interface HarnessGrowthPoint {
 	'source-bytes'?: number;
 	complexity?: number;
 	dependencies?: number;
-	/** The size of what the unit emits, by execution target. */
 	emitted?: Record<string, number>;
-	/** Per metric: why it has no value here, or what its value leaves out. */
 	notes?: Record<string, string>;
 }
 export interface HarnessIndex {
@@ -78,7 +72,6 @@ export interface HarnessUnit extends HarnessUnitLimits {
 	dependencies: Array<{ unit: string; via: string }>;
 	scenarios: string[];
 	owns: { source: string[]; symbols: string[] };
-	/** Described fields may declare JSON examples; older contracts need neither optional field. */
 	contract: Record<
 		'inputs' | 'outputs' | 'errors',
 		Array<{ name: string; type: string; description?: string; examples?: unknown[] }>
@@ -96,11 +89,15 @@ export interface HarnessScenario {
 	title: string;
 	kind: string;
 	units: string[];
-	/** `units` names what a state shows; a unit no state names is under every state. */
-	states: Array<{ id: string; coverage: string; reason?: string; units?: string[] }>;
+	states: Array<{
+		id: string;
+		title?: string;
+		coverage: string;
+		reason?: string;
+		units?: string[];
+	}>;
 	viewports: Array<{ id: string; width: number; height: number }>;
 	tests: Array<{ id: string; kind: string; runner: string }>;
-	/** What each state must be recorded with; absent in a history built before it was kept. */
 	evidence?: Array<{ id: string; kind: string; states: string[]; viewports: string[] }>;
 }
 export interface HarnessCapture {

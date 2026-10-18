@@ -12,6 +12,7 @@ export const routeSuffixes = [
 	'uses',
 	'relationships',
 	'evidence',
+	'states',
 	'history',
 	'details'
 ] as const;
