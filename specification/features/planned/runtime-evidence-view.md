@@ -31,6 +31,17 @@ Evidence is read through the two optional bridge reads `evidence` and `artifact`
 - The verdict beside the name needs `evidence.after.detail` to hold the unit and the whole judging record. Where an answer does not, the mark stays unknown.
 - Root's manual browser and native checks, and captures of the new states for a scenario, are not part of this unit of work.
 
+## Persistent Component Header Verification
+
+- Opus 5.5 implemented the shared component preview above tabs in both renderers. History and Details retain it; Overview has no duplicate.
+- Failing test commit: `116739e51cceeb56e9fe849804f248dec4d3c97f`. Passing implementation: `2d8bf583f04326c53d325395f1ed23b7103a1354`.
+- Harness regression records: red `dfdaa19e0af6e48592ed7a9a9a98a2d9cce435d6652bba1579f6a81bbbdbafba`; green `1c26838bf84f8d835b9f277a83e12460fe6ad7938e88483a887fe690bd569836`. All 1,257 frozen inputs match.
+- Later maintenance reuses a test screenshot label, updates import-graph expectations and normalizes JSON quoting. Product source remains identical to the passing implementation.
+- Reports formatting, types, lint, 569 unit tests and all builds pass. Browser checks: 62 explorer cases and five shared-workspace screenshot cases pass. The 13 shared-import tests and registry validation also pass.
+- Browser inspection confirms the real historical navbar capture persists on Used In, History and Details. Activity List has no recorded capture at the selected current revision; its missing-evidence message stays explicit above tabs.
+- Full Reports verification remains blocked by existing file-length violations in `entity-preview-marks.spec.ts`, `Harness.types.ts` and `EntityTests.svelte`. Existing Desktop lint debt remains in `ios-simulator-build.test.ts`. Native Electron testing is paused; the root aggregate check includes paused native work. The loop's final verification step remains pending.
+- Fresh browser images and task logs stay under `/tmp`; no captures are committed.
+
 ## Host Files
 
 Agent host-file changes, tracked as metadata only:

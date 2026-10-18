@@ -83,12 +83,13 @@ export async function reviewVisual(
 	commit: string | null,
 	viewport: string
 ): Promise<void> {
+	const mode = commit ? 'commit' : 'tip';
 	await open(page, { ...route, commit });
 	await page.evaluate(async () => {
 		await document.fonts.ready;
 		await Promise.all([...document.images].map((image) => image.decode()));
 	});
-	await capture(page, `overview-${route.category}-${commit ? 'commit' : 'tip'}-${viewport}`);
+	await capture(page, `overview-${route.category}-${mode}-${viewport}`);
 	const title = commit ? 'Commit comparison' : 'Current screenshot';
 	const evidence = page.getByRole('heading', { name: title, exact: true });
 	const size = page.getByRole('region', { name: 'Size', exact: true });
@@ -105,10 +106,7 @@ export async function reviewVisual(
 				await document.fonts.ready;
 				await Promise.all([...document.images].map((image) => image.decode()));
 			});
-			await capture(
-				page,
-				`header-${details ? 'details' : 'base'}-${name}-${commit ? 'commit' : 'tip'}-${viewport}`
-			);
+			await capture(page, `header-${details ? 'details' : 'base'}-${name}-${mode}-${viewport}`);
 			await expect(evidence, 'component screenshot persists across tabs').toHaveCount(1);
 			const tabs = await page.getByRole('tablist').boundingBox();
 			const shot = await page.locator('section[aria-labelledby="ex-screens-title"]').boundingBox();

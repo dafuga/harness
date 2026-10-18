@@ -82,9 +82,9 @@ test('an overview names the evidence of its kind itself, and no pane of another 
 	expect(named(entries.visual)).toEqual(['EntityAudio', 'EntityScreens']);
 	expect(named(entries.behavior)).toEqual(['EntityAudio', 'EntityBehavior']);
 	expect(named(entries.config)).toEqual(['EntityConfig']);
-	// A config is neither seen nor heard; what is run is not pictured.
-	expect(has(entries.config, ['EntityScreens', 'EntityAudio'])).toEqual([]);
-	expect(has(entries.behavior, ['EntityScreens', 'EntityConfig'])).toEqual([]);
+	// The shared frame reaches component captures; each overview still owns only its kind of evidence.
+	expect(has(entries.config, ['EntityAudio'])).toEqual([]);
+	expect(has(entries.behavior, ['EntityConfig'])).toEqual([]);
 	expect(has(entries.visual, ['EntityConfig'])).toEqual([]);
 	for (const entry of [entries.visual, entries.behavior, entries.config]) {
 		const tabs = [
@@ -99,15 +99,15 @@ test('an overview names the evidence of its kind itself, and no pane of another 
 	}
 });
 
-test('details and history each reach their own screen and not the evidence of an overview', () => {
-	const evidence = ['EntityScreens', 'EntityBehavior', 'EntityTests', 'EntityRelations'];
+test('details and history share component captures while keeping their own screen content', () => {
+	const evidence = ['EntityBehavior', 'EntityTests', 'EntityRelations'];
 	expect(has(entries.details, ['EntitySummary', 'EntityMeasures', 'EntitySource'])).toHaveLength(3);
 	expect(has(entries.details, [...evidence, 'EntityHistory'])).toEqual([]);
 	const rows = ['EntityHistory', 'EntityHistoryRow', 'EntityChange', 'EntityReasons'];
 	expect(has(entries.history, rows)).toHaveLength(4);
 	expect(has(entries.history, [...evidence, 'EntitySource', 'EntityMeasures'])).toEqual([]);
 	for (const entry of [entries.details, entries.history]) {
-		expect(has(entry, ['EntityHeader', 'EntityMissing']), entry).toHaveLength(2);
+		expect(has(entry, ['EntityHeader', 'EntityMissing', 'EntityScreens']), entry).toHaveLength(3);
 	}
 });
 
