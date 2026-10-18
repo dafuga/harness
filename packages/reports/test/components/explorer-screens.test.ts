@@ -92,10 +92,11 @@ test('an overview names the evidence of its kind itself, and no pane of another 
 			'EntityMissing',
 			'EntityRelations',
 			'EntitySummary',
-			'EntityTests'
+			'EntityTests',
+			'EntitySource'
 		];
-		expect(has(entry, tabs), entry).toHaveLength(5);
-		expect(has(entry, ['EntityHistory', 'EntitySource', 'ExplorerTable']), entry).toEqual([]);
+		expect(has(entry, tabs), entry).toHaveLength(6);
+		expect(has(entry, ['EntityHistory', 'ExplorerTable']), entry).toEqual([]);
 	}
 });
 
