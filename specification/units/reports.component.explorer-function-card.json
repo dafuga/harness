@@ -3,7 +3,7 @@
 	"id": "reports.component.explorer-function-card",
 	"kind": "component",
 	"title": "Function card",
-	"responsibility": "Shows one function as a compact card with its contract, consumers, verification mark and links to its overview and recorded tests.",
+	"responsibility": "Shows a function name, a description of at most 80 characters and a compact link to its page.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -16,19 +16,19 @@
 			{
 				"name": "ExplorerFunctionCard.row",
 				"type": "CatalogRow",
-				"description": "The function at the viewed revision: its name, purpose, contract, consumers and verification result."
+				"description": "The function at the viewed revision: its name and purpose."
 			},
 			{
 				"name": "ExplorerFunctionCard.nav",
 				"type": "EntityNav",
-				"description": "The selected branch and commit, with navigation that keeps both when opening the function or its tests."
+				"description": "Navigation that keeps the selected branch and commit when opening the function."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerFunctionCard",
 				"type": "markup",
-				"description": "A readable function card with declared inputs and output, no design image, an icon to open it and a link to its recorded input-to-output tests."
+				"description": "A function name, a description capped at 80 characters and an open icon. Full details stay on the function page."
 			}
 		],
 		"errors": []
@@ -45,17 +45,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.harness-harness-verdict",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.function.entity-catalog",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.function.entity-contract",
 			"via": "import",
 			"origin": "derived"
 		},

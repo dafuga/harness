@@ -2,7 +2,7 @@
 	"name": "compact-function-catalog",
 	"goal": "Function cards show only a name, a description of at most 80 characters and the small open icon; contracts stay on the entity page.",
 	"createdAt": "2026-10-18T22:13:34.710Z",
-	"updatedAt": "2026-10-18T22:13:57.652Z",
+	"updatedAt": "2026-10-18T22:16:27.962Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T22:16:27.578Z",
+			"evidence": "Clean snapshot dfee79a6 fails the existing grid assertions at all three widths. Red record d57ca4ac preserves the unchanged test corpus."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-18T22:16:27.962Z",
+			"evidence": "Removed contract, consumers, badges and test controls. The shared function card caps descriptions at 80 Unicode characters and retains revision-safe navigation."
 		},
 		{
 			"id": "green",
