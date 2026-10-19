@@ -47,6 +47,21 @@
 				"name": "Select.children",
 				"type": "Snippet",
 				"description": "Required snippet supplying the option markup."
+			},
+			{
+				"name": "Select.compact",
+				"type": "boolean",
+				"description": "Optional compact size for dense navigation. Defaults to false; coarse-pointer targets remain larger."
+			},
+			{
+				"name": "Select.display",
+				"type": "string | undefined",
+				"description": "Optional closed-field label. Names over 16 characters show their first and last six characters. Native options and bound values stay complete."
+			},
+			{
+				"name": "Select.title",
+				"type": "string | undefined",
+				"description": "Optional hover text. Defaults to the full display label."
 			}
 		],
 		"outputs": [

@@ -2,7 +2,7 @@
 	"name": "compact-revision-controls",
 	"goal": "Branch and commit controls use one compact row with middle-shortened long values and full accessible values",
 	"createdAt": "2026-10-19T09:01:47.832Z",
-	"updatedAt": "2026-10-19T09:03:51.296Z",
+	"updatedAt": "2026-10-19T09:12:08.066Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T09:04:38.054Z",
+			"evidence": "Test-only 81c74c19; both existing shell and shared-renderer cases fail the compact revision row height assertion before repair."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T09:12:08.066Z",
+			"evidence": "Shared Select adds compact display without changing native values. Both navbars use inline icons, hover details and one bounded revision row. Opus returned no edits after four minutes; authorized fallback completed styling."
 		},
 		{
 			"id": "green",

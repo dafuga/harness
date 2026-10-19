@@ -68,7 +68,7 @@
 			{
 				"name": "HarnessSelectors",
 				"type": "markup",
-				"description": "Branch and revision controls, an optional base control and branch-tip action, and a notice when the index retains only part of the history."
+				"description": "Native branch, commit and optional base selectors. In the navbar they form one compact row with middle-shortened names, short hashes and full hover details. Selecting a value invokes its matching callback."
 			}
 		],
 		"errors": []

@@ -177,24 +177,3 @@ small {
 .topbar:has(.topbar-search) {
 	flex-wrap: wrap;
 }
-.revision-picker {
-	flex-shrink: 0;
-	margin-left: auto;
-	display: flex;
-	gap: 16px;
-	border-left: 1px solid var(--line);
-	padding-left: 24px;
-}
-.revision-picker label {
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
-	font-size: 12px;
-	max-width: 205px;
-}
-.revision-picker select {
-	height: 34px;
-	min-height: 34px !important;
-	font-size: 13px;
-	padding-block: 0;
-}

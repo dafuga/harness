@@ -23,7 +23,7 @@
 			{
 				"name": "RevisionPicker",
 				"type": "markup",
-				"description": "Branch/commit dropdowns when snapshot and revision exist, with shortened hashes, subjects and tip. Distinguishes historical, pinned-tip and current-tip views. Offers Go to tip for pinned or historical views. This component does not catch or display navigation errors."
+				"description": "One compact row of native branch and commit dropdowns. Long names are shortened in the middle; full names and current, pinned or historical status appear on hover. Go to tip returns pinned or historical views to the current branch."
 			}
 		],
 		"errors": []

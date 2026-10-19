@@ -14,10 +14,10 @@
 	}
 	.revision-picker {
 		order: 1;
-		flex: 1 0 100%;
+		flex: none;
 		margin-left: 0;
 		border-left: 0;
-		padding: 0 0 12px;
+		padding: 0 0 4px;
 	}
 }
 @media (max-width: 1250px) {
@@ -94,9 +94,6 @@
 	.revision-picker {
 		gap: 8px;
 	}
-	.revision-picker label {
-		max-width: 155px;
-	}
 	.before-after {
 		grid-template-columns: minmax(0, 1fr);
 	}
@@ -111,9 +108,6 @@
 		width: 100%;
 		justify-content: center;
 	}
-	.revision-picker {
-		flex-wrap: wrap;
-	}
 	.account {
 		order: 2;
 		width: 100%;
@@ -125,12 +119,7 @@
 		margin: 0;
 		border: 0;
 		padding: 0;
-		width: 100%;
-	}
-	.revision-picker label {
-		flex: 1;
-		max-width: none;
-		width: 45%;
+		max-width: 100%;
 	}
 	.topbar nav {
 		height: 65px;

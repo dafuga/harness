@@ -7,6 +7,9 @@
 		name,
 		required,
 		disabled = false,
+		compact = false,
+		display,
+		title,
 		children
 	}: {
 		value?: string;
@@ -15,17 +18,25 @@
 		name?: string;
 		required?: boolean;
 		disabled?: boolean;
+		compact?: boolean;
+		display?: string;
+		title?: string;
 		children: Snippet;
 	} = $props();
+	const shown = $derived(
+		display && display.length > 16 ? `${display.slice(0, 6)}…${display.slice(-6)}` : display
+	);
 </script>
 
-<span class="report-select" class:disabled>
-	<select bind:value aria-label={label} {id} {name} {required} {disabled}>
+<span class="report-select" class:disabled class:compact class:has-display={display !== undefined}>
+	<select bind:value aria-label={label} {id} {name} {required} {disabled} title={title ?? display}>
 		{@render children()}
 	</select>
 	<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
 		<path d="m4 6 4 4 4-4" />
 	</svg>
+	{#if display !== undefined}<span class="report-select-value" aria-hidden="true">{shown}</span
+		>{/if}
 </span>
 
 <style>
@@ -64,7 +75,50 @@
 	select:disabled {
 		cursor: not-allowed;
 	}
+
+	.compact select {
+		min-height: 32px;
+		height: 32px;
+		padding-block: 0;
+		padding-inline-end: 30px;
+	}
+	.compact svg {
+		inset-inline-end: 9px;
+		width: 12px;
+		height: 12px;
+	}
+	.has-display select {
+		color: transparent;
+	}
+	.has-display option {
+		color: var(--text, #eef2f8);
+		background: var(--panel, #102131);
+	}
+	.report-select-value {
+		position: absolute;
+		inset-inline: 12px 32px;
+		top: 50%;
+		transform: translateY(-50%);
+		overflow: hidden;
+		white-space: nowrap;
+		pointer-events: none;
+		font: inherit;
+		color: inherit;
+	}
+	@media (pointer: coarse) {
+		.compact select {
+			min-height: 44px;
+			height: 44px;
+		}
+	}
+
 	@media (forced-colors: active) {
+		.has-display select {
+			color: CanvasText;
+		}
+		.report-select-value {
+			display: none;
+		}
 		.report-select select {
 			appearance: auto;
 		}
