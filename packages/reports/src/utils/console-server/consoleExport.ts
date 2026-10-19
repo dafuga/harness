@@ -1,6 +1,6 @@
 import type { ConsoleExportInput } from '../consoleExport';
 import type { HarnessIndex, HarnessRevision } from '../../models/Harness.types';
-import { harnessReport } from './harnessEvidence';
+import { harnessReport } from './harnessReport';
 import { portablePage } from './portablePage';
 import { type PortableAssets } from '../portablePage';
 

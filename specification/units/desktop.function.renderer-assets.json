@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/initializers/initialize-desktop/rendererAssets.ts",
+			"packages/desktop/src/lib/initialize-desktop/rendererAssets.ts",
 			"packages/desktop/src/utils/rendererAssets.ts"
 		],
 		"symbols": ["rendererPolicy", "rendererAssets", "rendererPolicy", "rendererAssets"]

@@ -3,7 +3,7 @@ import type { ComponentManifest } from '../../../../../src/core/unitTypes';
 import type { CatalogEntity } from '../../../../desktop/src/models/Desktop.types';
 import type { HubSourceContext } from '../hubSource';
 import { hubPlans } from '../hubPlans';
-import { hubPlanRecord } from './hubPlans';
+import { hubPlanRecord } from './hubPlanRecord';
 import { hubRecords } from '../hubRecords';
 import { hubFail } from '../hubJson';
 import type { HubPlan } from '../hubSchemas';

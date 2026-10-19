@@ -1,5 +1,5 @@
 import { bodyEnd, matchingBrace, sourceNesting, type SourceNesting } from '../sourceNesting';
-import { statementEnd } from './sourceNesting';
+import { statementEnd } from './statementEnd';
 
 export interface BlockSpan {
 	name: string;

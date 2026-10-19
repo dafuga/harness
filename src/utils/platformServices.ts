@@ -199,4 +199,4 @@ export async function classifyProcess(
 	return { standing: 'private', reason: "the command's own", executable: live };
 }
 
-export { stillPrivate } from './run-isolated/platformServices';
+export { stillPrivate } from './run-isolated/stillPrivate';

@@ -48,4 +48,4 @@ export async function planIdentity(git: Git, rev: string, unitId: string): Promi
 	return (await findIdentity(git, rev, unitId)) ?? fail('not-found', 'Plan not found');
 }
 
-export { validateIdentity } from './plan-read/planIdentity';
+export { validateIdentity } from './plan-read/validateIdentity';

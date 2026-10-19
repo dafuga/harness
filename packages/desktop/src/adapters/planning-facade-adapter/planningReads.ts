@@ -1,5 +1,5 @@
-import type { PlanningContext } from '../../utils/planning-reads/planningReads';
-import { planRecord } from '../../utils/planning-reads/planningReads';
+import type { PlanningContext } from '../../utils/planning-reads/planRecord';
+import { planRecord } from '../../utils/planning-reads/planRecord';
 import type { PlanImageQuery } from '../../models/PlanningPort.types';
 import { messageInfo } from '../../utils/planningConvert';
 

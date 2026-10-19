@@ -44,3 +44,5 @@ function exportLines(plan: ExportPlan): string[] {
 
 	return lines;
 }
+
+export type { ExportPlan } from '../../core/exports';

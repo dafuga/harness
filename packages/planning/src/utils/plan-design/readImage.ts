@@ -1,12 +1,12 @@
 import { planImageCodec as decode } from '../planImageCodec';
 import type { ReadImageInput } from '../../models/PlanningBridge.types';
-import { heldBy } from './planOptions';
+import { heldBy } from './heldBy';
 import type { Git } from '../planGit';
 import { imageBlob, revision } from '../planGit';
 import { planRead } from '../plan-read/planRead';
 import { fail, hash } from '../planData';
 import { filename } from '../planValidate';
-import { version } from './planValidate';
+import { version } from './version';
 
 export async function readImage(git: Git, input: ReadImageInput) {
 	version(input.version);

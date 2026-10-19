@@ -9,7 +9,7 @@
 	"documentation": "packages/reports/specification/features/planned/managed-preview-server.md",
 	"owns": {
 		"source": [
-			"packages/reports/src/initializers/initialize-preview/initializePreview.ts",
+			"packages/reports/src/lib/initialize-preview/initializePreview.ts",
 			"packages/reports/src/initializers/initializePreview.ts"
 		],
 		"symbols": ["initializePreview", "initializePreview"]
@@ -76,11 +76,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/initializers/initialize-preview/initializePreview.ts",
+		"entry": "packages/reports/src/lib/initialize-preview/initializePreview.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/initializers/initialize-preview/initializePreview.ts"
+				"entry": "packages/reports/src/lib/initialize-preview/initializePreview.ts"
 			}
 		]
 	},

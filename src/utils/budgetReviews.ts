@@ -29,4 +29,4 @@ export interface FrozenLimits {
 }
 
 export { budgetReviews } from '../services/history-index-service/budgetReviews';
-export { frozenLimits, emittedLimits } from './revision-registry/budgetReviews';
+export { frozenLimits, emittedLimits } from './revision-registry/frozenLimits';

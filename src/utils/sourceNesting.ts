@@ -45,4 +45,4 @@ function delta(char: string, open: string, close: string): number {
 	return char === close ? -1 : 0;
 }
 
-export { statementEnd } from './block-spans/sourceNesting';
+export { statementEnd } from './block-spans/statementEnd';

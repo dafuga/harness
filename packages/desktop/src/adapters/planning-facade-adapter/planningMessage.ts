@@ -1,6 +1,6 @@
 import type { PlanDetail, AppendMessageInput } from '../../../../planning/src/lib/planning/index';
 import type { MessageDraft } from '../../models/PlanningPort.types';
-import type { PlanningContext } from '../../utils/planning-reads/planningReads';
+import type { PlanningContext } from '../../utils/planning-reads/planRecord';
 import { messageInfo } from '../../utils/planningConvert';
 import { reviewer } from '../../utils/planningWrites';
 

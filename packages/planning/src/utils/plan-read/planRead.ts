@@ -1,5 +1,5 @@
 import { planIdentity } from '../planIdentity';
-import { validateIdentity } from './planIdentity';
+import { validateIdentity } from './validateIdentity';
 import { Buffer } from 'node:buffer';
 import type {
 	PlanDetail,
@@ -11,11 +11,11 @@ import type {
 import { planImageCodec } from '../planImageCodec';
 import type { Git } from '../planGit';
 import { blob, paths, imageBlob } from '../planGit';
-import { containing } from './planGit';
+import { containing } from './containing';
 import { fail, hash, parse, planData } from '../planData';
 import { contractHash, filename } from '../planValidate';
 import { approvable } from '../planOptions';
-import { checkOptions } from './planOptions';
+import { checkOptions } from './checkOptions';
 
 async function immutable<T>(git: Git, rev: string, path: string): Promise<T & { commit: string }> {
 	const data = await blob(git, rev, path);

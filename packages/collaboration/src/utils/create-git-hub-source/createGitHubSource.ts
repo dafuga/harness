@@ -9,7 +9,7 @@ import type {
 } from '../../models/Collaboration.types';
 import { digest, fail, parse, safePath, sha } from '../parseCollaborationInput';
 import { decode64, githubTransport } from '../githubTransport';
-import { exactRef } from './githubTransport';
+import { exactRef } from './exactRef';
 import { githubLfs } from './githubLfs';
 import { githubHistory } from './githubHistory';
 import { githubRawMany } from './githubRawMany';

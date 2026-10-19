@@ -1,4 +1,4 @@
-export { type ReadNote, noteCommit, readNoteLines } from './note-lines/noteLines';
+export { type ReadNote, noteCommit, readNoteLines } from './note-lines/noteCommit';
 export {
 	noteLine,
 	noteLines,

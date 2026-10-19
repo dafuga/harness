@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/block-spans/sourceNesting.ts", "src/utils/sourceNesting.ts"],
+		"source": ["src/utils/block-spans/statementEnd.ts", "src/utils/sourceNesting.ts"],
 		"symbols": [
 			"statementEnd",
 			"SourceNesting",

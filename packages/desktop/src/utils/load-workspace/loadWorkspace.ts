@@ -1,5 +1,5 @@
 import { offlineCapabilities, type OfflineView } from '../cache-status/cacheStatus';
-import { offlineView } from './cacheStatus';
+import { offlineView } from './offlineView';
 import { projectCapabilities } from './projectCapabilities';
 import type { WorkspaceRoute } from '../workspaceRoute';
 import type { DesktopBridge } from '../../models/DesktopBridge.types';

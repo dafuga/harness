@@ -10,7 +10,7 @@ import {
 	textField,
 	versionPattern
 } from '../ipcFields';
-import { regionField } from './ipcFields';
+import { regionField } from './regionField';
 
 export function approvalPayload(value: unknown) {
 	const x = ipcFields(value);

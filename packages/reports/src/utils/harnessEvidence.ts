@@ -56,4 +56,4 @@ export function harnessEvidence(detail: HarnessRevision, record: HarnessRecord):
 	return items;
 }
 
-export { harnessReport } from './console-server/harnessEvidence';
+export { harnessReport } from './console-server/harnessReport';

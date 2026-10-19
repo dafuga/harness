@@ -5,7 +5,7 @@ import type { RegressionRecord } from '../core/regressionTypes';
 import { readRegression, regressionHash } from '../utils/regressionHistory';
 import { canonicalJson } from '../utils/canonicalJson';
 import { sourceArchiveRef } from '../utils/historyRefs';
-import type { ReadNote } from '../utils/note-lines/noteLines';
+import type { ReadNote } from '../utils/note-lines/noteCommit';
 import { EvidenceBranchRepository } from './evidence-branch-repository/EvidenceBranchRepository';
 import { HistoryNoteRepository } from './history-note-repository/HistoryNoteRepository';
 

@@ -1,9 +1,9 @@
-import { design } from '../hub-designs/hubDesigns';
+import { design } from '../hub-designs/design';
 import { hubApproval } from './hubApproval';
 import { hubRead } from '../hubSource';
 import type { HubSourceContext } from '../hubSource';
 import { hubFail } from '../hubJson';
-import { hubImageOption, hubOptionInfos, hubRevision } from './hubOptions';
+import { hubImageOption, hubOptionInfos, hubRevision } from './hubImageOption';
 import type { HubPlan, HubDesign } from '../hubSchemas';
 import type { DesignVersion } from '../../../../desktop/src/models/Desktop.types';
 

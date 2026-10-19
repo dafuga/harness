@@ -119,11 +119,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/core/validation.ts",
+		"entry": "src/workflows/create-project/validation.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/core/validation.ts"
+				"entry": "src/workflows/create-project/validation.ts"
 			}
 		]
 	},

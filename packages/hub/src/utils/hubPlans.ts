@@ -26,4 +26,4 @@ export async function hubPlans(context: HubSourceContext): Promise<HubPlan[]> {
 	return plans;
 }
 
-export { hubPlanRecord } from './hub-catalog/hubPlans';
+export { hubPlanRecord } from './hub-catalog/hubPlanRecord';

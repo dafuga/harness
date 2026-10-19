@@ -1,4 +1,4 @@
-import { Buffer } from 'node:buffer';
+import type { Buffer } from 'node:buffer';
 import { lstat, readFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { fail, hash } from './planData';
@@ -76,4 +76,4 @@ export async function safePath(git: Git, path: string): Promise<void> {
 }
 
 export { planGit } from '../lib/planning/planGit';
-export { containing } from './plan-read/planGit';
+export { containing } from './plan-read/containing';

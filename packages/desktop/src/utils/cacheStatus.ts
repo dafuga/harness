@@ -7,4 +7,4 @@ export {
 	forgetShared,
 	cacheStatus
 } from './cache-status/cacheStatus';
-export { offlineView } from './load-workspace/cacheStatus';
+export { offlineView } from './load-workspace/offlineView';

@@ -8,5 +8,5 @@ export interface Aim {
 
 export const pending = new WeakMap<Workspace, Aim>();
 
-export { rememberCreatedThread } from './project-agent-events/createdThread';
+export { rememberCreatedThread } from './project-agent-events/rememberCreatedThread';
 export { createdThread } from '../components/entity-view/createdThread';

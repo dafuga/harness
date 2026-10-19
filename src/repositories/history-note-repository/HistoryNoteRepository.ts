@@ -5,7 +5,7 @@ import { fail } from '../../core/errors';
 import { notesRef, type HistoryNote } from '../../core/historyTypes';
 import { commitIdentity } from '../../utils/commitIdentity';
 import { mergeNoteLines, noteLines } from './noteLines';
-import { readNoteLines, type ReadNote } from '../../utils/note-lines/noteLines';
+import { readNoteLines, type ReadNote } from '../../utils/note-lines/noteCommit';
 
 const notes = ['notes', `--ref=${notesRef}`];
 

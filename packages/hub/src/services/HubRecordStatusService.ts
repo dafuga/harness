@@ -1,7 +1,7 @@
 import { verificationNoteIdentity } from '../../../../src/utils/verificationNoteIdentity';
 import type { HistoryNote } from '../../../../src/core/historyTypes';
 import type { VerificationRecord } from '../../../../src/core/verificationTypes';
-import type { ReadNote } from '../../../../src/utils/note-lines/noteLines';
+import type { ReadNote } from '../../../../src/utils/note-lines/noteCommit';
 import { recordLineage } from '../../../../src/utils/recordLineage';
 import type { HubAttachedRecord } from '../utils/hubAttachedRecord';
 import type { CommitStatus, RecordStatus } from '../../../../src/services/HistoryStatusService';

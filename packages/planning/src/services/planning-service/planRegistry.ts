@@ -4,7 +4,7 @@ import { unitsConfigSchema } from '../../../../../src/lib/contracts';
 import type { Git } from '../../utils/planGit';
 import { blob, paths, safePath } from '../../utils/planGit';
 import { fail, json } from '../../utils/planData';
-import { assertClean, type Files } from '../../utils/plan-write/planWrite';
+import { assertClean, type Files } from '../../utils/plan-write/clean';
 
 /** Exact immutable artifact names only; neighboring implementation remains formatted. */
 const formatterIgnores = [

@@ -3,8 +3,8 @@ import type { ComponentManifest } from '../../../../../src/lib/contracts';
 import type { PlanDetail, PlanViewport } from '../../../../planning/src/lib/planning/index';
 import type { ApprovalDraft, PlanDraft, ThreadDraft } from '../../models/DesktopBridge.types';
 import type { DesignDraft } from '../../models/PlanningPort.types';
-import type { PlanningContext } from '../../utils/planning-reads/planningReads';
-import { planRecord, planVersion } from '../../utils/planning-reads/planningReads';
+import type { PlanningContext } from '../../utils/planning-reads/planRecord';
+import { planRecord, planVersion } from '../../utils/planning-reads/planRecord';
 import { approvalInfo, threadInfo } from '../../utils/planningConvert';
 
 export async function planningWrites(context: PlanningContext, draft: PlanDraft) {

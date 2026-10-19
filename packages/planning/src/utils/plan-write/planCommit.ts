@@ -5,7 +5,7 @@ import { copyFile, mkdir, mkdtemp, open, readFile, rename, rm, writeFile } from 
 import { dirname, join } from 'node:path';
 import type { Git } from '../planGit';
 import { safePath } from '../planGit';
-import type { Files } from './planWrite';
+import type { Files } from './clean';
 import { fail, hash } from '../planData';
 import { tmpdir } from 'node:os';
 

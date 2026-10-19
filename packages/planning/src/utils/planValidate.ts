@@ -73,4 +73,4 @@ export function filename(value: string): void {
 		fail('unsafe-path', 'Invalid artifact filename');
 }
 
-export { version } from './plan-design/planValidate';
+export { version } from './plan-design/version';

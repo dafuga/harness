@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import type { ComponentManifest, ScenarioManifest } from '../../core/unitTypes';
 import type { BudgetBaseline } from '../budgetFindings';
-import { emittedLimits, frozenLimits } from './budgetReviews';
+import { emittedLimits, frozenLimits } from './frozenLimits';
 import { type EmittedLimits, type FrozenLimits } from '../budgetReviews';
 import { canonicalJson } from '../canonicalJson';
 import type { PublicHelper } from '../unitMetadata';

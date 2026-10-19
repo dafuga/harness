@@ -115,4 +115,4 @@ async function unavailable(response: Response): Promise<never> {
 	return fail('github-unavailable');
 }
 
-export { exactRef } from './create-git-hub-source/githubTransport';
+export { exactRef } from './create-git-hub-source/exactRef';

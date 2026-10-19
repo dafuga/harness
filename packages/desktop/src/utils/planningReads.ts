@@ -1,4 +1,4 @@
-export { type PlanningContext, planRecord, planVersion } from './planning-reads/planningReads';
+export { type PlanningContext, planRecord, planVersion } from './planning-reads/planRecord';
 export {
 	planningReads,
 	readPlanMessages,

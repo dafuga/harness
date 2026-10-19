@@ -58,7 +58,7 @@ if (
 	import.meta.main ||
 	resolve(process.argv[1] ?? '') === fileURLToPath(import.meta.url) ||
 	resolve(process.argv[1] ?? '') ===
-		fileURLToPath(new URL('../initializePreview.ts', import.meta.url))
+		fileURLToPath(new URL('../../initializers/initializePreview.ts', import.meta.url))
 ) {
 	const work = process.versions.bun
 		? previewNode(process.argv.slice(2)).then((code) => {

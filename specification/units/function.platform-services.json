@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/platformServices.ts", "src/utils/run-isolated/platformServices.ts"],
+		"source": ["src/utils/platformServices.ts", "src/utils/run-isolated/stillPrivate.ts"],
 		"symbols": [
 			"ServiceAuthority",
 			"Standing",

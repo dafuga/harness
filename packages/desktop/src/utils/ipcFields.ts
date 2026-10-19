@@ -28,4 +28,4 @@ export function enumField<T extends string>(value: unknown, allowed: readonly T[
 	return value as T;
 }
 
-export { regionField } from './ipc-payload/ipcFields';
+export { regionField } from './ipc-payload/regionField';

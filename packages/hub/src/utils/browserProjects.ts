@@ -1,4 +1,4 @@
-import { browserProjects } from '../routes/browserProjects';
+import type { browserProjects } from '../routes/browserProjects';
 
 export type BrowserProjects = ReturnType<typeof browserProjects>;
 

@@ -31,11 +31,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/core/project.ts",
+		"entry": "src/workflows/generate-code/project.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/core/project.ts"
+				"entry": "src/workflows/generate-code/project.ts"
 			}
 		]
 	},

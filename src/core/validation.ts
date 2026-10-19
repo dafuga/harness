@@ -47,6 +47,4 @@ export function validateName(name: string, label: string): string {
 	return value;
 }
 
-export { validateProjectName } from '../workflows/create-project/validation';
 export { validateFieldName } from './fields/validation';
-export { validateKebabName } from '../workflows/loop-state/validation';

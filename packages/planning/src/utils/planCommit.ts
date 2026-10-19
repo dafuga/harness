@@ -1,6 +1,6 @@
 import type { Git } from './planGit';
 import { safePath } from './planGit';
-import type { Files } from './plan-write/planWrite';
+import type { Files } from './plan-write/clean';
 
 export async function stageFiles(git: Git, files: Files, index: string): Promise<void> {
 	for (const [path, content] of Object.entries(files)) {

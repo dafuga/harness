@@ -1,7 +1,7 @@
 import type { SettleTiming } from '../settleProcesses';
 import { cleanupDeadline, type CleanupDeadline } from '../cleanupDeadline';
 import { classifyProcess, type ServiceContext, type Verdict } from '../platformServices';
-import { stillPrivate } from './platformServices';
+import { stillPrivate } from './stillPrivate';
 import type { FollowedProcess, TrackedProcess } from '../processDescendants';
 import { settlementReport } from './settlementReport';
 import { unknownSettlement, type Judged, type Settlement, type Watched } from '../settlementReport';

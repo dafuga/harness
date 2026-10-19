@@ -65,3 +65,5 @@ function hasSvelteKit(manifest: PackageManifest | undefined): boolean {
 	const deps = { ...manifest?.dependencies, ...manifest?.devDependencies };
 	return '@sveltejs/kit' in deps || Boolean(manifest?.scripts?.check?.includes('svelte-kit'));
 }
+
+export type { DetectedProjectKind } from '../../core/project';

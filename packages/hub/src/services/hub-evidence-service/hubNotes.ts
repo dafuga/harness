@@ -1,4 +1,4 @@
-import { readNoteLines, type ReadNote } from '../../../../../src/utils/note-lines/noteLines';
+import { readNoteLines, type ReadNote } from '../../../../../src/utils/note-lines/noteCommit';
 import type { HubSourceContext } from '../../utils/hubSource';
 import { hubRaw } from '../../utils/hubRaw';
 import { hubFail } from '../../utils/hubJson';

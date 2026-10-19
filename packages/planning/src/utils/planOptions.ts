@@ -29,5 +29,5 @@ export function approvable(version: DesignVersion, option?: string): ImageBindin
 }
 
 export { planOptions } from '../services/planning-service/planOptions';
-export { checkOptions } from './plan-read/planOptions';
-export { heldBy } from './plan-design/planOptions';
+export { checkOptions } from './plan-read/checkOptions';
+export { heldBy } from './plan-design/heldBy';

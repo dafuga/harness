@@ -1,4 +1,4 @@
-import { design } from '../../utils/hub-designs/hubDesigns';
+import { design } from '../../utils/hub-designs/design';
 import { hubPng } from './hubPng';
 import { hubRead } from '../../utils/hubSource';
 import type { HubSourceContext } from '../../utils/hubSource';

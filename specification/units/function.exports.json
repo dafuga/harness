@@ -57,11 +57,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/core/exports.ts",
+		"entry": "src/workflows/generate-code/exports.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/core/exports.ts"
+				"entry": "src/workflows/generate-code/exports.ts"
 			}
 		]
 	},

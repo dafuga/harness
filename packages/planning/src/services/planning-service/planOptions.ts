@@ -4,7 +4,7 @@ import type { AddDesignInput, DesignImageInput } from '../../models/PlanningBrid
 import type { DesignImage, DesignOption, StoredFile } from '../../models/Planning.types';
 import { fail, hash } from '../../utils/planData';
 import { text } from '../../utils/planValidate';
-import type { Files } from '../../utils/plan-write/planWrite';
+import type { Files } from '../../utils/plan-write/clean';
 
 /**
  * The images and options of a design input. A single design is written as it always was. Options

@@ -45,4 +45,4 @@ export function now(deps: CollaborationDependencies): Date {
 	return deps.now?.() ?? new Date();
 }
 
-export { readRecords } from './create-collaboration/currentProject';
+export { readRecords } from './create-collaboration/readRecords';

@@ -1,4 +1,4 @@
-import { readImage } from '../../utils/plan-design/planDesign';
+import { readImage } from '../../utils/plan-design/readImage';
 import { planIdentity } from '../../utils/planIdentity';
 import { planImageCodec as decode } from '../../utils/planImageCodec';
 import { randomUUID } from 'node:crypto';
@@ -18,7 +18,7 @@ import { planOptions } from './planOptions';
 import type { Git } from '../../utils/planGit';
 import { revision } from '../../utils/planGit';
 import { planRead, approvalMatches } from '../../utils/plan-read/planRead';
-import { clean, commitFiles, type Files } from '../../utils/plan-write/planWrite';
+import { clean, commitFiles, type Files } from '../../utils/plan-write/clean';
 import { fail, hash, json, now, planData } from '../../utils/planData';
 import { contractHash, region, slug, text } from '../../utils/planValidate';
 

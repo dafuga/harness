@@ -8,7 +8,7 @@ import {
 } from '../core/regressionTypes';
 import type { HistoryNote } from '../core/historyTypes';
 import { canonicalJson } from './canonicalJson';
-import type { ReadNote } from './note-lines/noteLines';
+import type { ReadNote } from './note-lines/noteCommit';
 
 type RegressionNote = Extract<HistoryNote, { kind: 'regression' }>;
 export const regressionHash = (bytes: string | Buffer) =>
