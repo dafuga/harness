@@ -12,9 +12,9 @@ import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join, resolve, isAbsolute } from 'node:path';
 import { createRequire } from 'node:module';
-import { createPlanning } from '../../../planning/src/index';
+import { createPlanning } from '../../../planning/src/index/index';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
-import { PlanningFacadeAdapter } from '../../src/adapters/PlanningFacadeAdapter';
+import { PlanningFacadeAdapter } from '../../src/adapters/planning-facade-adapter/PlanningFacadeAdapter';
 
 const desktopRoot = resolve(import.meta.dirname, '../..');
 const electronBinary = createRequire(import.meta.url)('electron') as string;

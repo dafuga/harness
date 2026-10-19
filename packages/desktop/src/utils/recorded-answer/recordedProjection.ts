@@ -1,5 +1,5 @@
 import { side } from '../recordedProjection';
-import type { ExplorerEvidence } from '../../../../reports/src/models/Explorer.types.ts';
+import type { ExplorerEvidence } from '../../../../reports/src/models/Explorer.types';
 
 /**
  * The evidence of one entity with only what that entity needs. Each side keeps its captures and

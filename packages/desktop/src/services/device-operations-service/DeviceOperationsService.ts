@@ -8,9 +8,9 @@ import {
 	revisionMethods
 } from '../../../../remote/src/index';
 import type { RemoteGrant, RemoteMethod, WireRequest } from '../../../../remote/src/index';
-import type { ProjectSnapshot } from '../../models/Desktop.types.ts';
-import { channels } from '../../models/DesktopBridge.types.ts';
-import type { EvidenceArtifactResult as Artifact } from '../../models/DesktopEvidence.types.ts';
+import type { ProjectSnapshot } from '../../models/Desktop.types';
+import { channels } from '../../models/DesktopBridge.types';
+import type { EvidenceArtifactResult as Artifact } from '../../models/DesktopEvidence.types';
 import { binaryAnswer } from '../../utils/binaryAnswer';
 import { deviceCapabilities } from './deviceCapabilities';
 import { gitRead } from '../../utils/gitRead';

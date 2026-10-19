@@ -1,7 +1,7 @@
-import { WorkspaceSearch } from '../../utils/workspaceSearch';
+import type { WorkspaceSearch } from '../../utils/workspaceSearch';
 import type { SearchEntry } from '../../../../reports/src/utils/entitySearch';
 import { explorerName } from '../../../../reports/src/utils/explorerName';
-import type { CatalogEntity, ProjectSnapshot } from '../../models/Desktop.types.ts';
+import type { CatalogEntity, ProjectSnapshot } from '../../models/Desktop.types';
 import { workspacePath } from '../../utils/workspaceRoute';
 
 /** The catalog keeps no contract, so a workspace entry has no contract names to search. */

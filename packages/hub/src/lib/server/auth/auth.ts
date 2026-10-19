@@ -1,7 +1,7 @@
 import { createRemoteJWKSet } from 'jose';
 import { createResendDelivery } from '../../../adapters/ResendEmailAdapter';
-import type { AuthEnv, EmailProofDelivery, HubAuth } from '../../../models/HubAuth.types.ts';
-import type { AuthStore } from '../../../models/HubAuthStore.types.ts';
+import type { AuthEnv, EmailProofDelivery, HubAuth } from '../../../models/HubAuth.types';
+import type { AuthStore } from '../../../models/HubAuthStore.types';
 import { GOOGLE_JWKS_URL, GoogleIdentityService } from '../../../services/GoogleIdentityService';
 import type { CachedInstallationToken } from '../../../services/installation-token-service/InstallationTokenService';
 import { authConfig } from './authConfig';
@@ -41,6 +41,6 @@ export { type D1Like } from '../../../adapters/d1-auth-store-adapter/D1AuthStore
 
 export { AuthFailure } from '../../../utils/authFail';
 
-export type * from '../../../models/HubAuth.types.ts';
+export type * from '../../../models/HubAuth.types';
 
-export type { AuthStore } from '../../../models/HubAuthStore.types.ts';
+export type { AuthStore } from '../../../models/HubAuthStore.types';

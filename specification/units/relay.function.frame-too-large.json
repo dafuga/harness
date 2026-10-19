@@ -45,11 +45,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/services/socket-frame-service/frameTooLarge.ts",
+		"entry": "packages/relay/src/utils/frameTooLarge.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/services/socket-frame-service/frameTooLarge.ts"
+				"entry": "packages/relay/src/utils/frameTooLarge.ts"
 			}
 		]
 	},

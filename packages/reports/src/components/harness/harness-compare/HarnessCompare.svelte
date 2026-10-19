@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { emittedChange } from './harnessEmitted';
-	import type { HarnessRevision, HarnessUnit } from '../../../models/Harness.types.ts';
+	import type { HarnessRevision, HarnessUnit } from '../../../models/Harness.types';
 	import type { HarnessClient } from '../../../utils/harnessClient';
 	import { comparedSides, harnessImpact } from './harnessImpact';
 	import { type ComparedSides } from '../../../utils/harnessImpact';

@@ -71,11 +71,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/adapters/planning-facade-adapter/planningMessage.ts",
+		"entry": "packages/desktop/src/utils/planningMessage.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/adapters/planning-facade-adapter/planningMessage.ts"
+				"entry": "packages/desktop/src/utils/planningMessage.ts"
 			}
 		]
 	},

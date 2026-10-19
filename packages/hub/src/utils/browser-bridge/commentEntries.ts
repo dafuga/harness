@@ -1,5 +1,5 @@
-import { ThreadEntry } from '../../../../desktop/src/utils/commentEntries';
-import type { CommittedThread } from '../../../../collaboration/src/models/Collaboration.types.ts';
+import type { ThreadEntry } from '../../../../desktop/src/utils/commentEntries';
+import type { CommittedThread } from '../../../../collaboration/src/models/Collaboration.types';
 
 export function commentEntries(thread: CommittedThread): ThreadEntry[] {
 	return thread.comments.map((comment) => ({

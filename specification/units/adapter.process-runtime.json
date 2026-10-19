@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/adapters/ProcessRuntimeAdapter.ts",
-			"src/adapters/process-runtime-adapter/ProcessRuntimeAdapter.ts"
-		],
+		"source": ["src/adapters/process-runtime-adapter/ProcessRuntimeAdapter.ts"],
 		"symbols": [
-			"ProcessRuntimeConfig",
-			"ProcessRuntimeAdapter",
 			"ProcessRuntimeConfig",
 			"ProcessRuntimeAdapter",
 			"ProcessRuntimeAdapter.constructor",

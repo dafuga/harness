@@ -3,7 +3,10 @@ import { expect, type Page, type TestInfo } from '@playwright/test';
 import type { ScenarioManifest } from '../../../../src/core/unitTypes';
 import scenarioData from '../../../../specification/scenarios/runtime-evidence-ui.json' with { type: 'json' };
 import { buildStamp } from '../../../../src/utils/buildStamp';
-import { evidenceRequested, recordCapture } from '../../../../src/utils/recordCapture';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../../../../src/utils/record-capture/recordCapture';
 import { evidencePlayed, recordedClip } from './ui-evidence-fixture';
 
 const scenario: ScenarioManifest = scenarioData as ScenarioManifest;

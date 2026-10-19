@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/AnalyticsCpu.svelte",
-			"packages/reports/src/components/analytics-cpu/AnalyticsCpu.svelte"
-		],
-		"symbols": ["AnalyticsCpu", "AnalyticsCpu"]
+		"source": ["packages/reports/src/components/analytics-cpu/AnalyticsCpu.svelte"],
+		"symbols": ["AnalyticsCpu"]
 	},
 	"contract": {
 		"origin": "declared",

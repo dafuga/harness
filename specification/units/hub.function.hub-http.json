@@ -90,11 +90,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hub-http/hubHttp.ts",
+		"entry": "packages/hub/src/utils/hubHttp.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/hub-http/hubHttp.ts"
+				"entry": "packages/hub/src/utils/hubHttp.ts"
 			}
 		]
 	},

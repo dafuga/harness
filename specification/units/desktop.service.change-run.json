@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/services/ChangeRunService.ts",
-			"packages/desktop/src/services/change-run-service/ChangeRunService.ts"
-		],
-		"symbols": ["ChangeRunService", "ChangeRunService", "ChangeRunService.run"]
+		"source": ["packages/desktop/src/services/change-run-service/ChangeRunService.ts"],
+		"symbols": ["ChangeRunService", "ChangeRunService.run"]
 	},
 	"contract": {
 		"origin": "derived",

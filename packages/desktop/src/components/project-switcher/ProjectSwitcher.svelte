@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Select from '$shared/Select.svelte';
-	import type { Workspace } from '../../lib/stores/workspace.svelte.ts';
+	import type { Workspace } from '../../lib/stores/workspace.svelte';
 	import { projectList } from './projectList';
 	let { workspace }: { workspace: Workspace } = $props();
 	/** Follows the shown project; a choice is held only until the switch has ended. */

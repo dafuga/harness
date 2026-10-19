@@ -1,8 +1,8 @@
 import { reviewer } from '../../utils/planningWrites';
 import type { ComponentManifest } from '../../../../../src/lib/contracts';
 import type { PlanDetail, PlanViewport } from '../../../../planning/src/index/index';
-import type { ApprovalDraft, PlanDraft, ThreadDraft } from '../../models/DesktopBridge.types.ts';
-import type { DesignDraft } from '../../models/PlanningPort.types.ts';
+import type { ApprovalDraft, PlanDraft, ThreadDraft } from '../../models/DesktopBridge.types';
+import type { DesignDraft } from '../../models/PlanningPort.types';
 import type { PlanningContext } from '../../utils/planning-reads/planningReads';
 import { planRecord, planVersion } from '../../utils/planning-reads/planningReads';
 import { approvalInfo, threadInfo } from '../../utils/planningConvert';

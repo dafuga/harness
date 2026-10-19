@@ -5,7 +5,7 @@
 
 <script lang="ts">
 	import '../../lib/styles/replay.css';
-	import type { Report } from '../../models/Report.types.ts';
+	import type { Report } from '../../models/Report.types';
 	import { reportDisplay } from './reportDisplay';
 	import { t } from '../../utils/reportLocale';
 	import { FRAME_SECONDS, replayFrames, type ReplayFrame as Frame } from '../../utils/replayFrames';

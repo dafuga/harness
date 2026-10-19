@@ -2,10 +2,10 @@ import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { readFileSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { scenarioManifestSchema } from '../../../../src/core/unitTypes';
-import { gatherCaptures } from '../../../../src/utils/gatherCaptures';
-import { scenarioCoverage } from '../../../../src/utils/scenarioCoverage';
-import { ReportRepository } from '../../src/repositories/ReportRepository';
-import { ReportExportService } from '../../src/services/ReportExportService';
+import { gatherCaptures } from '../../../../src/services/check-run-service/gatherCaptures';
+import { scenarioCoverage } from '../../../../src/services/verification-service/scenarioCoverage';
+import { ReportRepository } from '../../src/repositories/report-repository/ReportRepository';
+import { ReportExportService } from '../../src/services/report-export-service/ReportExportService';
 import { audioPairFixture } from '../../test/audioPairFixture';
 import {
 	captureAudio,

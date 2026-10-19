@@ -1,7 +1,7 @@
 import { replayVideoKey } from '../../utils/replayVideo';
 import { writeFile, mkdir, mkdtemp, rename, rm, lstat } from 'node:fs/promises';
 import { join } from 'node:path';
-import type { Report } from '../../models/Report.types.ts';
+import type { Report } from '../../models/Report.types';
 import { replayFrames, FRAME_SECONDS } from '../../utils/replayFrames';
 import { registeredAsset } from '../../utils/reportAssets';
 import { reportProcess } from '../../utils/reportProcess';

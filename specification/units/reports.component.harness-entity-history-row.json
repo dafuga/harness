@@ -8,10 +8,9 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/components/harness/EntityHistoryRow.svelte",
 			"packages/reports/src/components/harness/entity-history-row/EntityHistoryRow.svelte"
 		],
-		"symbols": ["EntityHistoryRow", "EntityHistoryRow"]
+		"symbols": ["EntityHistoryRow"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/harness/EntityChange.svelte",
-			"packages/reports/src/components/harness/entity-change/EntityChange.svelte"
-		],
-		"symbols": ["EntityChange", "EntityChange"]
+		"source": ["packages/reports/src/components/harness/entity-change/EntityChange.svelte"],
+		"symbols": ["EntityChange"]
 	},
 	"contract": {
 		"origin": "declared",

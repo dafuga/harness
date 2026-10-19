@@ -1,4 +1,4 @@
-import { RemoteHostStatusInput } from '../../utils/remoteHostStatus';
+import type { RemoteHostStatusInput } from '../../utils/remoteHostStatus';
 import { pairingOffer } from '../../../../remote/src/index';
 import type {
 	RemoteDeviceInfo,

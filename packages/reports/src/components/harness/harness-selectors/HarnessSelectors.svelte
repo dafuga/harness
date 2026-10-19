@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { HarnessIndex, HarnessRevisionSummary } from '../../../models/Harness.types.ts';
+	import type { HarnessIndex, HarnessRevisionSummary } from '../../../models/Harness.types';
 	import { branchNames } from '../../../utils/harnessAncestry';
 	import { revisionLabel } from './harnessAncestry';
 	import Select from '../../Select.svelte';

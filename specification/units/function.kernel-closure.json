@@ -37,11 +37,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/impact-kernel/kernelClosure.ts",
+		"entry": "src/utils/kernelClosure.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/impact-kernel/kernelClosure.ts"
+				"entry": "src/utils/kernelClosure.ts"
 			}
 		]
 	},

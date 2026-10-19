@@ -2,9 +2,9 @@ import { offlineCapabilities, type OfflineView } from '../cache-status/cacheStat
 import { offlineView } from './cacheStatus';
 import { projectCapabilities } from './projectCapabilities';
 import type { WorkspaceRoute } from '../workspaceRoute';
-import type { DesktopBridge } from '../../models/DesktopBridge.types.ts';
-import type { EntityDetail, ProjectSnapshot } from '../../models/Desktop.types.ts';
-import type { ProjectCapabilities } from '../../models/ProjectContext.types.ts';
+import type { DesktopBridge } from '../../models/DesktopBridge.types';
+import type { EntityDetail, ProjectSnapshot } from '../../models/Desktop.types';
+import type { ProjectCapabilities } from '../../models/ProjectContext.types';
 
 export interface LoadedWorkspace {
 	snapshot: ProjectSnapshot;

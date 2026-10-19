@@ -1,7 +1,7 @@
 import type {
 	EntityEvidenceQuery,
 	EvidenceArtifactQuery
-} from '../../models/DesktopEvidence.types.ts';
+} from '../../models/DesktopEvidence.types';
 import {
 	HostedHttpAdapter,
 	type RemoteHttpOptions

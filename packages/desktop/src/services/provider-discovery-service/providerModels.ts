@@ -1,4 +1,4 @@
-import type { ModelChoice } from '../../models/Desktop.types.ts';
+import type { ModelChoice } from '../../models/Desktop.types';
 
 export function validateModel(models: ModelChoice[], model: string, effort: string | null): void {
 	const selected = models.find((m) => m.id === model);

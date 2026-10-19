@@ -1,7 +1,7 @@
 import { revisionInfo, commits } from '../../utils/planHistory';
 import type { Git } from '../../utils/planGit';
 import { planIdentity } from '../../utils/planIdentity';
-import type { HistoryEvent } from '../../models/PlanningView.types.ts';
+import type { HistoryEvent } from '../../models/PlanningView.types';
 
 function event(path: string): HistoryEvent {
 	if (path === 'plan.json') return { kind: 'plan-created' };

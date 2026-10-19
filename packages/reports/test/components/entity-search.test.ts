@@ -1,6 +1,6 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import EntitySearch from '../../src/components/EntitySearch.svelte';
+import EntitySearch from '../../src/components/entity-search/EntitySearch.svelte';
 import type { SearchEntry } from '../../src/utils/entitySearch';
 
 /**

@@ -1,12 +1,12 @@
-import type { CacheIdentity } from '../../../../collaboration/src/models/Collaboration.types.ts';
-import type { ExplorerScope } from '../../../../reports/src/models/Explorer.types.ts';
+import type { CacheIdentity } from '../../../../collaboration/src/models/Collaboration.types';
+import type { ExplorerScope } from '../../../../reports/src/models/Explorer.types';
 import { explorerBehavior } from '../../../../reports/src/utils/explorerBehavior';
 import {
 	explorerEvidence,
 	type ExplorerRevisions
 } from '../../../../reports/src/utils/explorerEvidence';
 import { remoteLimits } from '../../../../remote/src/index';
-import type { EntityEvidenceResult } from '../../models/DesktopEvidence.types.ts';
+import type { EntityEvidenceResult } from '../../models/DesktopEvidence.types';
 import { recordedProjection } from './recordedProjection';
 
 export interface AnswerInput {

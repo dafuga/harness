@@ -1,6 +1,6 @@
 import { catalogListed, catalogUnit, planCatalog } from '../../../../desktop/src/utils/catalogUnit';
 import type { ComponentManifest } from '../../../../../src/core/unitTypes';
-import type { CatalogEntity } from '../../../../desktop/src/models/Desktop.types.ts';
+import type { CatalogEntity } from '../../../../desktop/src/models/Desktop.types';
 import type { HubSourceContext } from '../hubSource';
 import { hubPlans } from '../hubPlans';
 import { hubPlanRecord } from './hubPlans';

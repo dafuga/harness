@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { explorerLegacy } from '../../src/utils/explorerLegacy';
+import { explorerLegacy } from '../../src/utils/console-canonical/explorerLegacy';
 import { explorerKindCategory, explorerRoutePath } from '../../src/utils/explorerRoute';
 
 const sha = 'a'.repeat(40);

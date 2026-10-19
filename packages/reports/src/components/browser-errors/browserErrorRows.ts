@@ -1,4 +1,4 @@
-import { BrowserErrorRow, Observed } from '../../utils/browserErrorRows';
+import type { BrowserErrorRow, Observed } from '../../utils/browserErrorRows';
 import type { BrowserDiagnostic } from '../../../../../src/core/browserDiagnostics';
 
 type Expected = BrowserDiagnostic['expected'][number];

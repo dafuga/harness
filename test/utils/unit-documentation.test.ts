@@ -1,10 +1,10 @@
 import { expect, test } from 'vitest';
 import {
 	unitDocumentation,
-	readUnitDocumentation,
-	hydrateUnitDocumentation
-} from '../../src/utils/unitDocumentation';
-import { revisionRegistry } from '../../src/utils/revisionRegistry';
+	readUnitDocumentation
+} from '../../src/utils/unit-documentation/unitDocumentation';
+import { hydrateUnitDocumentation } from '../../src/services/revision-detail-service/unitDocumentation';
+import { revisionRegistry } from '../../src/utils/revision-registry/revisionRegistry';
 import { indexFiles, memoryTree, unitOf } from '../support/memoryTree';
 
 const id = 'function.rank',

@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
-import { unitDocumentation } from '../../../../src/utils/unitDocumentation';
+import { unitDocumentation } from '../../../../src/utils/unit-documentation/unitDocumentation';
 import { expect, test } from 'vitest';
-import { activityReading } from '../../src/utils/activityReading';
+import { activityReading } from '../../src/components/activity-agents/activityReading';
 import { activityPayload, manyAgents } from '../../tests/e2e/support/activityPayload';
 
 const at = Date.parse('2026-10-11T12:00:00.000Z');

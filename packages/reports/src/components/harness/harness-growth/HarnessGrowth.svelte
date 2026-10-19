@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { HarnessExplanation, HarnessIndex } from '../../../models/Harness.types.ts';
+	import type { HarnessExplanation, HarnessIndex } from '../../../models/Harness.types';
 	import type { HarnessClient } from '../../../utils/harnessClient';
 	import { harnessEmittedGrowth } from './harnessEmittedGrowth';
 	import { growthMetrics, signed } from '../../../utils/harnessGrowth';

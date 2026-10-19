@@ -2,7 +2,7 @@ import { caseForm } from '../../utils/artifactCases';
 import type {
 	ExplorerArtifactCase,
 	ExplorerArtifactCases
-} from '../../models/ExplorerEvidence.types.ts';
+} from '../../models/ExplorerEvidence.types';
 
 type Fields = Record<string, unknown>;
 

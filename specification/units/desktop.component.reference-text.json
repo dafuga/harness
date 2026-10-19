@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/ReferenceText.svelte",
-			"packages/desktop/src/components/reference-text/ReferenceText.svelte"
-		],
-		"symbols": ["ReferenceText", "ReferenceText"]
+		"source": ["packages/desktop/src/components/reference-text/ReferenceText.svelte"],
+		"symbols": ["ReferenceText"]
 	},
 	"contract": {
 		"origin": "declared",

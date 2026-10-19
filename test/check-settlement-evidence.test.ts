@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import type { IsolatedResult } from '../src/utils/runIsolated';
+import type { IsolatedResult } from '../src/utils/run-isolated/runIsolated';
 
 test('a failed check says which processes it stopped, which outlasted a signal, which it left', async () => {
 	const identities = [1, 2, 3].map((pid) => ({ pid, started: 'Mon Oct 12 10:00:00 2026' }));

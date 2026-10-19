@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/services/DeviceSessionService.ts",
-			"packages/desktop/src/services/device-session-service/DeviceSessionService.ts"
-		],
+		"source": ["packages/desktop/src/services/device-session-service/DeviceSessionService.ts"],
 		"symbols": [
-			"DeviceSessionOptions",
-			"DeviceSessionService",
 			"DeviceSessionOptions",
 			"DeviceSessionService",
 			"DeviceSessionService.constructor",

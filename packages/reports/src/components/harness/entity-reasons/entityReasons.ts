@@ -1,4 +1,5 @@
-import { ReasonUse, ReasonKind, alike } from '../../../utils/entityReasons';
+import type { ReasonUse, ReasonKind } from '../../../utils/entityReasons';
+import { alike } from '../../../utils/entityReasons';
 
 /** The uses of one attempt by kind and outcome, every subject under the outcome it had. */
 export function reasonUses(

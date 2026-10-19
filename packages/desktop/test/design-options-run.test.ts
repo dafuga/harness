@@ -1,7 +1,7 @@
 import { expect } from '../../../test/verificationExpect';
 import { test, vi } from 'vitest';
 import { PNG } from 'pngjs';
-import { createPlanning } from '../../planning/src';
+import { createPlanning } from '../../planning/src/index/index';
 import type { RunRequest } from '../src/models/DesktopBridge.types';
 import { fixture, git, settled } from './run-fixture';
 

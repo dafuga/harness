@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { onDestroy, onMount, untrack } from 'svelte';
 	import { explorerAppRoute, explorerName } from '../../../../reports/src/utils/explorerName';
-	import { createEntityEvidenceStore } from '../../lib/stores/entityEvidence.svelte.ts';
-	import type { Workspace } from '../../lib/stores/workspace.svelte.ts';
-	import type { ThreadInfo } from '../../models/Desktop.types.ts';
+	import { createEntityEvidenceStore } from '../../lib/stores/entityEvidence.svelte';
+	import type { Workspace } from '../../lib/stores/workspace.svelte';
+	import type { ThreadInfo } from '../../models/Desktop.types';
 	import { evidenceQuery } from '../../utils/evidenceQuery';
 	import { evidenceVerdict } from './evidenceVerdict';
 	import { createdThread } from './createdThread';

@@ -4,7 +4,7 @@ import type { HubDesign } from '../hubSchemas';
 import type {
 	DesignOptionInfo,
 	DesignRevision
-} from '../../../../desktop/src/models/Desktop.types.ts';
+} from '../../../../desktop/src/models/Desktop.types';
 
 /** The option holding a file, as a field of its image; nothing in a single design. */
 export function hubImageOption(value: HubDesign, file: string): { option?: string } {

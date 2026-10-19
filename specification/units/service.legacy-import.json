@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/LegacyImportService.ts",
-			"src/services/legacy-import-service/LegacyImportService.ts"
-		],
+		"source": ["src/services/legacy-import-service/LegacyImportService.ts"],
 		"symbols": [
-			"LegacyImport",
-			"LegacyImportService",
 			"LegacyImport",
 			"LegacyImportService",
 			"LegacyImportService.constructor",

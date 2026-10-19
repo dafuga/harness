@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/AttachedRecordService.ts",
-			"src/services/attached-record-service/AttachedRecordService.ts"
-		],
+		"source": ["src/services/attached-record-service/AttachedRecordService.ts"],
 		"symbols": [
-			"AttachedRecord",
-			"AttachedRecordService",
 			"AttachedRecord",
 			"AttachedRecordService",
 			"AttachedRecordService.constructor",

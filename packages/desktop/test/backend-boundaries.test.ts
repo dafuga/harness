@@ -2,8 +2,8 @@ import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import { IpcRequestValidator } from '../src/validators/IpcRequestValidator';
 import { NavigationValidator } from '../src/validators/NavigationValidator';
-import { scrubEnvironment } from '../src/utils/scrubEnvironment';
-import { publicCliEvents } from '../src/utils/publicCliEvents';
+import { scrubEnvironment } from '../src/utils/cli-environment/scrubEnvironment';
+import { publicCliEvents } from '../src/adapters/claude-cli-adapter/publicCliEvents';
 
 test('remote pages and child frames cannot use the project bridge', () => {
 	const gate = new NavigationValidator();

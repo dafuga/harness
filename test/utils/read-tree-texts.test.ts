@@ -1,6 +1,6 @@
 import { test, vi } from 'vitest';
 import { readTreeTexts } from '../../src/utils/readTreeTexts';
-import { recordCapture } from '../../src/utils/recordCapture';
+import { recordCapture } from '../../src/utils/record-capture/recordCapture';
 import { expect } from '../verificationExpect';
 
 test('metadata reads preserve every requested position while limiting concurrent reads to 64', async () => {

@@ -1,6 +1,6 @@
-import { ArtifactFetcher } from '../explorerArtifact';
-import type { ExplorerArtifact, ExplorerArtifactBehavior } from '../../models/Explorer.types.ts';
-import type { HarnessCapture } from '../../models/Harness.types.ts';
+import type { ArtifactFetcher } from '../explorerArtifact';
+import type { ExplorerArtifact, ExplorerArtifactBehavior } from '../../models/Explorer.types';
+import type { HarnessCapture } from '../../models/Harness.types';
 import { mediaFile } from '../harnessEvidence';
 
 type Fields = Record<string, unknown>;

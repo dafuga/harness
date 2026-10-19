@@ -1,4 +1,4 @@
-import { RegisterRemoteHost } from '../../utils/remoteHostIdentity';
+import type { RegisterRemoteHost } from '../../utils/remoteHostIdentity';
 import {
 	credentialHash,
 	exportRemoteKeys,

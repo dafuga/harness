@@ -1,4 +1,4 @@
-import type { HistoryEvent } from '../../models/Desktop.types.ts';
+import type { HistoryEvent } from '../../models/Desktop.types';
 
 /** Pages of one entity's history in the order they were read; an event is listed once. */
 export function historyPages(...pages: HistoryEvent[][]): HistoryEvent[] {

@@ -1,4 +1,4 @@
-import type { HarnessIndex } from '../../models/Harness.types.ts';
+import type { HarnessIndex } from '../../models/Harness.types';
 
 /** Commits that are ancestors of a commit, following recorded parents; the commit is excluded. */
 export function harnessAncestry(index: HarnessIndex, commit: string): Set<string> {

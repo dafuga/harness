@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { Workspace } from '../../lib/stores/workspace.svelte.ts';
+	import type { Workspace } from '../../lib/stores/workspace.svelte';
 	import { recordedPreview } from './recordedPreview';
 	import { type RecordedThumbnail, type PreviewState } from '../../utils/recordedPreview';
 	let {

@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { HostedEvidenceAdapter } from '../../src/adapters/HostedEvidenceAdapter';
+import { HostedEvidenceAdapter } from '../../src/adapters/hosted-evidence-adapter/HostedEvidenceAdapter';
 import { artifactLimit } from '../../src/utils/artifactMedia';
 import { HostedFailureValidator } from '../../src/validators/HostedFailureValidator';
 

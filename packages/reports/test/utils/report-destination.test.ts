@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import type { HarnessLegacyReport } from '../../src/models/Harness.types';
-import { reportDestination } from '../../src/utils/reportDestination';
+import { reportDestination } from '../../src/routes/harness/reports/[id]/-page-server/reportDestination';
 import { history, sha, summary } from '../explorerFixture';
 
 const imported = (id: string, linked: string | null) =>

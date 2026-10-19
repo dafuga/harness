@@ -2,7 +2,7 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, expect, test, vi } from 'vitest';
-import { reportsEnvironment } from '../src/utils/reportsEnvironment';
+import { reportsEnvironment } from '../src/workflows/run-report/reportsEnvironment';
 afterEach(() => vi.unstubAllEnvs());
 test('report settings preserve configuration references and explicit env takes precedence', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-report-settings-'));

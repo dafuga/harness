@@ -6,8 +6,8 @@
 		ExplorerHistoryDetail,
 		ExplorerHistoryRow,
 		ExplorerScope
-	} from '../../../models/Explorer.types.ts';
-	import type { HarnessIndex, HarnessRevision } from '../../../models/Harness.types.ts';
+	} from '../../../models/Explorer.types';
+	import type { HarnessIndex, HarnessRevision } from '../../../models/Harness.types';
 	import { entityHistory, historyListed, historyProfiles, historyVerdict } from './entityHistory';
 	import { entityLens, shortCommit, type EntityNav } from '../../../utils/entityLens';
 	import { historyDetail } from './explorerHistory';

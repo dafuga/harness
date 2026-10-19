@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GitAdapter } from '../src/adapters/GitAdapter';
-import { SourceHistoryRepository } from '../src/repositories/SourceHistoryRepository';
+import { SourceHistoryRepository } from '../src/repositories/source-history-repository/SourceHistoryRepository';
 
 /**
  * A source history read walks each distinct head Git lists once, however many branches name it,

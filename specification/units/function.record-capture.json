@@ -57,11 +57,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/record-capture/recordCapture.ts",
+		"entry": "src/utils/recordCapture.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/record-capture/recordCapture.ts"
+				"entry": "src/utils/recordCapture.ts"
 			}
 		]
 	},

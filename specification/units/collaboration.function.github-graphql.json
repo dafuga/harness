@@ -56,11 +56,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/collaboration/src/utils/create-git-hub-source/githubGraphql.ts",
+		"entry": "packages/collaboration/src/utils/githubGraphql.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/collaboration/src/utils/create-git-hub-source/githubGraphql.ts"
+				"entry": "packages/collaboration/src/utils/githubGraphql.ts"
 			}
 		]
 	},

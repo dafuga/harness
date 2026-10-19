@@ -1,9 +1,6 @@
-import { RecordedThumbnail, PreviewState } from '../../utils/recordedPreview';
-import type { Workspace } from '../../lib/stores/workspace.svelte.ts';
-import type {
-	EntityEvidenceQuery,
-	EntityEvidenceResult
-} from '../../models/DesktopEvidence.types.ts';
+import type { RecordedThumbnail, PreviewState } from '../../utils/recordedPreview';
+import type { Workspace } from '../../lib/stores/workspace.svelte';
+import type { EntityEvidenceQuery, EntityEvidenceResult } from '../../models/DesktopEvidence.types';
 import { artifactBytes } from './artifactBytes';
 import { artifactQuery } from '../../utils/artifactQuery';
 import { evidenceQuery } from '../../utils/evidenceQuery';

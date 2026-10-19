@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/components/NativeApproval.svelte",
-			"packages/hub/src/components/native-approval/NativeApproval.svelte"
-		],
-		"symbols": ["NativeApproval", "NativeApproval"]
+		"source": ["packages/hub/src/components/native-approval/NativeApproval.svelte"],
+		"symbols": ["NativeApproval"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -3,7 +3,7 @@ import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { EvidenceTreeAdapter } from '../src/adapters/EvidenceTreeAdapter';
-import { recordCapture } from '../src/utils/recordCapture';
+import { recordCapture } from '../src/utils/record-capture/recordCapture';
 import { expect } from './verificationExpect';
 
 afterEach(() => vi.restoreAllMocks());

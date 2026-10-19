@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { RemoteHost } from '../../lib/stores/remoteHost.svelte.ts';
+	import type { RemoteHost } from '../../lib/stores/remoteHost.svelte';
 	import { hostLine, hostSummary } from './remoteLabels';
 	import { lockNote } from '../../utils/remoteLabels';
 	import RemoteApproval from '../RemoteApproval.svelte';

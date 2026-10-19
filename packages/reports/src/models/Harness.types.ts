@@ -4,7 +4,7 @@ import type { Status } from './Report.types';
 import type { BrowserDiagnostic } from '../../../../src/core/browserDiagnostics';
 import type { RegressionView } from '../../../../src/core/regressionTypes';
 import type { UnitMetadata } from '../../../../src/utils/unitMetadata';
-export type * from './HarnessLegacy.types.ts';
+export type * from './HarnessLegacy.types';
 export interface HarnessRecordSummary {
 	id: string;
 	status: 'passed' | 'failed';

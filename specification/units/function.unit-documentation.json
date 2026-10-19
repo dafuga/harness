@@ -154,11 +154,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/unit-documentation/unitDocumentation.ts",
+		"entry": "src/utils/unitDocumentation.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/unit-documentation/unitDocumentation.ts"
+				"entry": "src/utils/unitDocumentation.ts"
 			}
 		]
 	},

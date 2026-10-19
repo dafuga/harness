@@ -1,6 +1,6 @@
-import { D1CredentialStores } from '../../utils/d1CredentialStores';
+import type { D1CredentialStores } from '../../utils/d1CredentialStores';
 import type { D1Like } from './D1AuthStoreAdapter';
-import type { SessionStore } from '../../models/HubAuthStore.types.ts';
+import type { SessionStore } from '../../models/HubAuthStore.types';
 import type { AuthRecordValidator } from '../../validators/AuthRecordValidator';
 
 const SESSION_COLUMNS =

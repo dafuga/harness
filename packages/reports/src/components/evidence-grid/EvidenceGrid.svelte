@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { Evidence } from '../../models/Report.types.ts';
-	import type { Report } from '../../models/Report.types.ts';
+	import type { Evidence } from '../../models/Report.types';
+	import type { Report } from '../../models/Report.types';
 	import { evidenceMedia } from '../../utils/evidenceMedia';
 	import { audioPairs } from '../../utils/audioPairs';
 	import { t } from '../../utils/reportLocale';

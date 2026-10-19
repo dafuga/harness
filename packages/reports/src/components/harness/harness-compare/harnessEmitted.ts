@@ -1,11 +1,6 @@
-import {
-	EmittedChange,
-	targetsOf,
-	order,
-	emittedLabel,
-	built
-} from '../../../utils/harnessEmitted';
-import type { HarnessRecord, HarnessUnit } from '../../../models/Harness.types.ts';
+import type { EmittedChange } from '../../../utils/harnessEmitted';
+import { targetsOf, order, emittedLabel, built } from '../../../utils/harnessEmitted';
+import type { HarnessRecord, HarnessUnit } from '../../../models/Harness.types';
 
 /** The emitted size of each target of a unit on both sides of a comparison. */
 export function emittedChange(

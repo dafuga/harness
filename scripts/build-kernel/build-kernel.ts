@@ -1,7 +1,7 @@
-import { createHash } from "node:crypto";
-import { copyFile, mkdir, readdir, readFile, writeFile } from "node:fs/promises";
-import { join } from "node:path";
-import { pinnedToolchain } from "./pinnedToolchain";
+import { createHash } from 'node:crypto';
+import { copyFile, mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import { pinnedToolchain } from './pinnedToolchain';
 
 const out = 'target/kernel';
 
@@ -10,11 +10,13 @@ const rawWasm = 'target/wasm32-unknown-unknown/release/impact_kernel.wasm';
 const features = ['--enable-bulk-memory', '--enable-sign-ext', '--enable-nontrapping-float-to-int'];
 
 const reference = [
-	'impactKernel.ts',
-	'kernelRequest.ts',
-	'kernelClosure.ts',
-	'portableJson.ts'
-].map((file) => `src/utils/${file}`);
+	'src/utils/impact-kernel/impactKernel.ts',
+	'src/utils/impact-kernel/kernelClosure.ts',
+	'src/utils/impact-kernel/kernelRequest.ts',
+	'src/utils/kernelRequest.ts',
+	'src/utils/portableJson.ts',
+	'src/workflows/run-kernel/impactKernel.ts'
+];
 
 function run(command: string[], env?: Record<string, string | undefined>): string {
 	const result = Bun.spawnSync(command, { stdout: 'pipe', stderr: 'inherit', env });

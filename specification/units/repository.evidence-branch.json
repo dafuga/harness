@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/repositories/EvidenceBranchRepository.ts",
-			"src/repositories/evidence-branch-repository/EvidenceBranchRepository.ts"
-		],
+		"source": ["src/repositories/evidence-branch-repository/EvidenceBranchRepository.ts"],
 		"symbols": [
-			"StoredDirectory",
-			"EvidenceBranchRepository",
 			"StoredDirectory",
 			"EvidenceBranchRepository",
 			"EvidenceBranchRepository.constructor",

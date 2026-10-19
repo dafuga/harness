@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { browserApi } from '../../src/utils/browserApi';
+import { browserApi } from '../../src/routes/-layout/browserApi';
 
 test('a coded refusal is told to the page before it is thrown, and a success is not', async () => {
 	const answers = [

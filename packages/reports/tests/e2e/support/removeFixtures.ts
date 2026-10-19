@@ -1,5 +1,5 @@
 import { createConnection, type Socket } from 'node:net';
-import { closeE2eRun } from '../../../src/utils/e2eFixtures';
+import { closeE2eRun } from '../../../src/utils/e2e-fixtures/e2eFixtures';
 
 /** The longest line a gate sends; a gate that sends more is not waited for. */
 const longest = 4096;

@@ -5,7 +5,7 @@ import type {
 	Evidence,
 	Finding,
 	Coverage
-} from '../../models/Report.types.ts';
+} from '../../models/Report.types';
 import { cleanData } from '../../utils/sanitize';
 import { reportAssets } from './reportAssets';
 

@@ -111,11 +111,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/planning/src/services/planning-service/planThread.ts",
+		"entry": "packages/planning/src/utils/planThread.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/planning/src/services/planning-service/planThread.ts"
+				"entry": "packages/planning/src/utils/planThread.ts"
 			}
 		]
 	},

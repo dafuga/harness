@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/ProviderPicker.svelte",
-			"packages/reports/src/components/provider-picker/ProviderPicker.svelte"
-		],
-		"symbols": ["ProviderPicker", "ProviderPicker"]
+		"source": ["packages/reports/src/components/provider-picker/ProviderPicker.svelte"],
+		"symbols": ["ProviderPicker"]
 	},
 	"contract": {
 		"origin": "declared",

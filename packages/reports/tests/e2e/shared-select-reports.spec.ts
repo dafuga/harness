@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { ReportRepository } from '../../src/repositories/ReportRepository';
+import { ReportRepository } from '../../src/repositories/report-repository/ReportRepository';
 import { fixtures, seededId } from './support/fixtures';
 import { expectRetired, reportView, servedReport } from './support/portableReport';
 import { fits, pictured, screens, sharedField, typed } from './support/sharedSelect';

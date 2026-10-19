@@ -1,6 +1,6 @@
 import type { RemotePairingRequest } from '../../src/models/RemoteControl.types';
 import type { RelayPairingRequest, RelayPairingState } from '../../src/models/RemoteRelay.types';
-import type { HostPairingService } from '../../src/services/HostPairingService';
+import type { HostPairingService } from '../../src/services/host-pairing-service/HostPairingService';
 import { pkceChallenge, randomCredential } from '../../src/utils/remoteIdentity';
 
 interface Entry {

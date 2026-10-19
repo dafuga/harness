@@ -1,4 +1,4 @@
-import { TooltipMark, TooltipSize } from '../../../utils/tooltipPlace';
+import type { TooltipMark, TooltipSize } from '../../../utils/tooltipPlace';
 
 /** The space kept between a tooltip and its mark, and between a tooltip and the screen's edge. */
 const gap = 8;

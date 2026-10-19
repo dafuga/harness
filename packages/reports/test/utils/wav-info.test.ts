@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { wavInfo } from '../../src/utils/wavInfo';
+import { wavInfo } from '../../src/utils/audio-asset/wavInfo';
 import { audioFixture } from '../audioFixture';
 test('derives duration from actual PCM data and tolerates non-audio chunks', () => {
 	const wave = audioFixture(1.25);

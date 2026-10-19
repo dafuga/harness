@@ -7,14 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/repositories/SourceHistoryRepository.ts",
-			"src/repositories/source-history-repository/SourceHistoryRepository.ts"
-		],
+		"source": ["src/repositories/source-history-repository/SourceHistoryRepository.ts"],
 		"symbols": [
-			"SourceRevision",
-			"SourceHistory",
-			"SourceHistoryRepository",
 			"SourceRevision",
 			"SourceHistory",
 			"SourceHistoryRepository",

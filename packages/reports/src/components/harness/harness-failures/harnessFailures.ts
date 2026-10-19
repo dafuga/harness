@@ -1,4 +1,4 @@
-import { FailureSummary, FailureCause } from '../../../utils/harnessFailures';
+import type { FailureSummary, FailureCause } from '../../../utils/harnessFailures';
 
 const few = 5;
 

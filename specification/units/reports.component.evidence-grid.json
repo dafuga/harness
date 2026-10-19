@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/EvidenceGrid.svelte",
-			"packages/reports/src/components/evidence-grid/EvidenceGrid.svelte"
-		],
-		"symbols": ["EvidenceGrid", "EvidenceGrid"]
+		"source": ["packages/reports/src/components/evidence-grid/EvidenceGrid.svelte"],
+		"symbols": ["EvidenceGrid"]
 	},
 	"contract": {
 		"origin": "declared",

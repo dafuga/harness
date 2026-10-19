@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import { mkdtemp, mkdir, writeFile, utimes, symlink, stat, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { reportLocalCleanup } from '../../src/utils/reportLocalCleanup';
+import { reportLocalCleanup } from '../../src/services/report-retention-service/reportLocalCleanup';
 test('old loose caches and orphan runs expire without following links or deleting fresh files', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'report-loose-'));
 	const external = await mkdtemp(join(tmpdir(), 'external-source-'));

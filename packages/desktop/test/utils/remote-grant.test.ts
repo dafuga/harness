@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { agentMethods, commentMethods } from '../../../remote/src/models/Remote.types';
 import type { RemoteNativeStatus } from '../../src/models/Environment.types';
-import { remoteGrant } from '../../src/utils/remoteGrant';
+import { remoteGrant } from '../../src/adapters/capacitor-bridge-adapter/remoteGrant';
 
 const at = (state: RemoteNativeStatus['state'], change: Partial<RemoteNativeStatus> = {}) =>
 	({

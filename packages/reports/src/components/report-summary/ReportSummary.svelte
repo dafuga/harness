@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Report } from '../../models/Report.types.ts';
+	import type { Report } from '../../models/Report.types';
 	import { t } from '../../utils/reportLocale';
 	import { dateLabel } from './reportDisplay';
 	import { reportStale } from '../../utils/reportDisplay';

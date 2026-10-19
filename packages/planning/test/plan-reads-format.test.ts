@@ -4,9 +4,10 @@ import { execFileSync } from 'node:child_process';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { recordCapture } from '../../../src/utils/recordCapture';
-import { planGit, type Git } from '../src/utils/planGit';
-import { planReads } from '../src/utils/planReads';
+import { recordCapture } from '../../../src/utils/record-capture/recordCapture';
+import { planGit } from '../src/index/planGit';
+import { type Git } from '../src/utils/planGit';
+import { planReads } from '../src/services/planning-service/planReads';
 
 /**
  * Real SHA-1 and SHA-256 repositories. A name is answered again within one operation only when

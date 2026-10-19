@@ -1,5 +1,5 @@
 import { plural } from '../../utils/remoteLabels';
-import type { RemoteHostStatus } from '../../models/Environment.types.ts';
+import type { RemoteHostStatus } from '../../models/Environment.types';
 
 /** A relay as a person recognises it: its host, never a path or a query. */
 export function relayName(origin: string | null): string {

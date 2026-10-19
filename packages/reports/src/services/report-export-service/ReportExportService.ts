@@ -1,7 +1,7 @@
 import { mkdir, copyFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { reportRuntimeRoot } from '../../utils/reportRuntimeRoot';
-import type { Report, Exports } from '../../models/Report.types.ts';
+import type { Report, Exports } from '../../models/Report.types';
 import { ReportRepository } from '../../repositories/report-repository/ReportRepository';
 import { ReportExportSerializer } from '../../serializers/ReportExportSerializer';
 import { reportLock } from '../../utils/reportLock';

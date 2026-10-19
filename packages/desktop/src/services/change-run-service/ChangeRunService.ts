@@ -1,7 +1,7 @@
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import type { RunContext } from '../../models/RunContext.types.ts';
+import type { RunContext } from '../../models/RunContext.types';
 import { sourceSnapshot } from '../../utils/sourceSnapshot';
 import { hostChanges } from '../../utils/hostChanges';
 import { changeExecute, recordChange } from './changeExecute';

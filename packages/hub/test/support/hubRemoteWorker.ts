@@ -1,7 +1,7 @@
 import type { Actor } from 'collaboration';
 import { hubEnvConfig } from '../../src/config/hubEnvConfig';
-import { HubApiController } from '../../src/controllers/HubApiController';
-import { hubRemote } from '../../src/utils/hubRemote';
+import { HubApiController } from '../../src/controllers/hub-api-controller/HubApiController';
+import { hubRemote } from '../../src/routes/api/[...path]/-server/hubRemote';
 
 /**
  * TEST ONLY. The hub's own API controller as a Worker, for a test that runs it in workerd beside

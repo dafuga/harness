@@ -1,5 +1,5 @@
-import { Shown, EntityShown } from '../../../utils/entityShown';
-import type { ExplorerEntity } from '../../../models/Explorer.types.ts';
+import type { Shown, EntityShown } from '../../../utils/entityShown';
+import type { ExplorerEntity } from '../../../models/Explorer.types';
 import { entityContract, requiredStates } from './entityContract';
 import { entityMeasure } from './entityMeasure';
 import { verdictRecord } from '../../../utils/explorer-verdict/explorerVerdict';

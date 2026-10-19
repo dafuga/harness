@@ -1,5 +1,5 @@
 import { metric, order } from '../../../utils/harnessEmitted';
-import type { HarnessIndex } from '../../../models/Harness.types.ts';
+import type { HarnessIndex } from '../../../models/Harness.types';
 
 /** The targets a unit has a size, a note or a review for anywhere in the history. */
 export function emittedTargets(index: HarnessIndex, unit: string): string[] {

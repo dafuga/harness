@@ -1,6 +1,6 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import HarnessVerdict from '../../src/components/harness/HarnessVerdict.svelte';
+import HarnessVerdict from '../../src/components/harness/harness-verdict/HarnessVerdict.svelte';
 import { harnessIcons } from '../../src/utils/harnessIcons';
 
 const markup = (props: Record<string, unknown>) =>

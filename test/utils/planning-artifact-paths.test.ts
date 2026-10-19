@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { planningArtifactPaths } from '../../src/utils/planningArtifactPaths';
+import { planningArtifactPaths } from '../../src/audit/structure-rules/planningArtifactPaths';
 
 test('shape names alone cannot exempt files without validated on-disk metadata', () => {
 	expect(

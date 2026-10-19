@@ -3,8 +3,8 @@ import { readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { test } from 'vitest';
 import type { ImpactInput, ImpactOutput, KernelGraph } from '../src/core/kernelTypes';
-import { kernelClosure } from '../src/utils/kernelClosure';
-import { recordCapture } from '../src/utils/recordCapture';
+import { kernelClosure } from '../src/utils/impact-kernel/kernelClosure';
+import { recordCapture } from '../src/utils/record-capture/recordCapture';
 import { expect } from './verificationExpect';
 
 /**

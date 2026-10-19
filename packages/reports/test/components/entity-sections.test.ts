@@ -1,7 +1,7 @@
 import { createRawSnippet } from 'svelte';
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import EntitySections from '../../src/components/harness/EntitySections.svelte';
+import EntitySections from '../../src/components/harness/entity-sections/EntitySections.svelte';
 import { explorerEntities } from '../../src/utils/explorerEntities';
 import { disclosed, hostProps, words } from '../entityRender';
 import { nav } from '../entityPlaces';

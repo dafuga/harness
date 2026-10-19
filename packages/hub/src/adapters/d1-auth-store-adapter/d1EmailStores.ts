@@ -1,6 +1,6 @@
-import { D1EmailStores } from '../../utils/d1EmailStores';
+import type { D1EmailStores } from '../../utils/d1EmailStores';
 import type { D1Like } from './D1AuthStoreAdapter';
-import type { EmailLedgerStore, EmailProofStore } from '../../models/HubAuthStore.types.ts';
+import type { EmailLedgerStore, EmailProofStore } from '../../models/HubAuthStore.types';
 import type { AuthRecordValidator } from '../../validators/AuthRecordValidator';
 
 const CREATE =

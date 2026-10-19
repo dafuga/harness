@@ -1,4 +1,5 @@
-import { previewOwnerPath, PreviewOwner } from '../../utils/previewOwner';
+import type { PreviewOwner } from '../../utils/previewOwner';
+import { previewOwnerPath } from '../../utils/previewOwner';
 
 /** A bound slot is never assumed to be ours merely because it answers HTTP. */
 export async function previewOwner(port: number, identity: string): Promise<string> {

@@ -1,4 +1,4 @@
-import { CliOptions } from '../../utils/reportCli';
+import type { CliOptions } from '../../utils/reportCli';
 import { parseArgs } from 'node:util';
 import { readFile } from 'node:fs/promises';
 

@@ -1,10 +1,10 @@
 import { harnessEvidence } from '../harnessEvidence';
-import type { Report } from '../../models/Report.types.ts';
+import type { Report } from '../../models/Report.types';
 import type {
 	HarnessRecord,
 	HarnessRevision,
 	HarnessRevisionSummary
-} from '../../models/Harness.types.ts';
+} from '../../models/Harness.types';
 import { scenarioOrigin } from '../captureProvenance';
 
 const short = (commit: string) => commit.slice(0, 7);

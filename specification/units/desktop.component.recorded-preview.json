@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/RecordedPreview.svelte",
-			"packages/desktop/src/components/recorded-preview/RecordedPreview.svelte"
-		],
-		"symbols": ["RecordedPreview", "RecordedPreview"]
+		"source": ["packages/desktop/src/components/recorded-preview/RecordedPreview.svelte"],
+		"symbols": ["RecordedPreview"]
 	},
 	"contract": {
 		"origin": "declared",

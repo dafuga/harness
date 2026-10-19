@@ -127,11 +127,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/planning/src/utils/plan-design/planDesign.ts",
+		"entry": "packages/planning/src/utils/planDesign.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/planning/src/utils/plan-design/planDesign.ts"
+				"entry": "packages/planning/src/utils/planDesign.ts"
 			}
 		]
 	},

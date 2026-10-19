@@ -1,5 +1,5 @@
+import type { PairingOffer } from '../../../../remote/src/utils/pairingOffer';
 import {
-	PairingOffer,
 	offerEnvironment,
 	written,
 	offerRules,

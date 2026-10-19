@@ -1,5 +1,5 @@
-import { ConsoleExportInput } from '../consoleExport';
-import type { HarnessIndex, HarnessRevision } from '../../models/Harness.types.ts';
+import type { ConsoleExportInput } from '../consoleExport';
+import type { HarnessIndex, HarnessRevision } from '../../models/Harness.types';
 import { harnessReport } from './harnessEvidence';
 import { portablePage } from './portablePage';
 import { type PortableAssets } from '../portablePage';

@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { expect, test, vi } from 'vitest';
-import { CapacitorBridgeAdapter } from '../../src/adapters/CapacitorBridgeAdapter';
+import { CapacitorBridgeAdapter } from '../../src/adapters/capacitor-bridge-adapter/CapacitorBridgeAdapter';
 import type {
 	EntityEvidenceQuery,
 	EvidenceArtifactQuery

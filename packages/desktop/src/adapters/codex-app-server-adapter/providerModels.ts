@@ -1,4 +1,4 @@
-import type { ModelChoice } from '../../models/Desktop.types.ts';
+import type { ModelChoice } from '../../models/Desktop.types';
 
 interface CodexModel {
 	model: string;

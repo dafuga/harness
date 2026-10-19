@@ -4,7 +4,7 @@ import type {
 	SourceAdapter,
 	SourceHistoryAdapter,
 	SourceEntry
-} from '../../models/Collaboration.types.ts';
+} from '../../models/Collaboration.types';
 import { fail, parse, safePath, sha } from '../parseCollaborationInput';
 import { githubGraphql } from './githubGraphql';
 

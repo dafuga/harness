@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/DesignPanel.svelte",
-			"packages/desktop/src/components/design-panel/DesignPanel.svelte"
-		],
-		"symbols": ["DesignPanel", "DesignPanel"]
+		"source": ["packages/desktop/src/components/design-panel/DesignPanel.svelte"],
+		"symbols": ["DesignPanel"]
 	},
 	"contract": {
 		"origin": "declared",

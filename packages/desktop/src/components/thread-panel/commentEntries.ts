@@ -1,7 +1,7 @@
-import { PendingComment, ThreadEntry } from '../../utils/commentEntries';
-import type { CommittedThread } from '../../../../collaboration/src/models/Collaboration.types.ts';
-import type { DesignVersion, ThreadInfo } from '../../models/Desktop.types.ts';
-import type { HumanCommentResult } from '../../models/ProjectContext.types.ts';
+import type { PendingComment, ThreadEntry } from '../../utils/commentEntries';
+import type { CommittedThread } from '../../../../collaboration/src/models/Collaboration.types';
+import type { DesignVersion, ThreadInfo } from '../../models/Desktop.types';
+import type { HumanCommentResult } from '../../models/ProjectContext.types';
 import type { RunDraft } from '../../utils/composeModes';
 
 const pendingNote = 'Pending on this device · not shared';

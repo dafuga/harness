@@ -1,4 +1,5 @@
-import { CatalogRow, byName, CatalogOrder, CatalogFilter } from '../../../utils/entityCatalog';
+import type { CatalogRow, CatalogOrder, CatalogFilter } from '../../../utils/entityCatalog';
+import { byName } from '../../../utils/entityCatalog';
 
 const first = (flag: (row: CatalogRow) => boolean) => (left: CatalogRow, right: CatalogRow) =>
 	Number(flag(right)) - Number(flag(left)) || byName(left, right);

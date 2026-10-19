@@ -1,5 +1,5 @@
-import type { ProjectSnapshot } from '../../models/Desktop.types.ts';
-import type { DesktopProject } from '../../models/ProjectContext.types.ts';
+import type { ProjectSnapshot } from '../../models/Desktop.types';
+import type { DesktopProject } from '../../models/ProjectContext.types';
 
 /** The switcher always holds the shown project, also when the bridge does not list it. */
 export function projectList(

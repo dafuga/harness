@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
-import { unitMetadata } from '../../src/utils/unitMetadata';
-import { revisionRegistry } from '../../src/utils/revisionRegistry';
+import { unitMetadata } from '../../src/services/revision-detail-service/unitMetadata';
+import { revisionRegistry } from '../../src/utils/revision-registry/revisionRegistry';
 import { indexFiles, memoryTree } from '../support/memoryTree';
 
 const source = [

@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest';
-import { artifactCases, caseForm } from '../../src/utils/artifactCases';
+import { artifactCases } from '../../src/components/entity-cases/artifactCases';
+import { caseForm } from '../../src/utils/artifactCases';
 import { calls, compared, elsewhere, gaps, malformed, observed, unit } from '../artifactCaseDocs';
 
 test('recorded calls are read as they were recorded: false, zero, null, an empty list and an error', () => {

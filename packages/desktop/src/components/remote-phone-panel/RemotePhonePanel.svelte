@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { RemotePhone } from '../../lib/stores/remotePhone.svelte.ts';
+	import type { RemotePhone } from '../../lib/stores/remotePhone.svelte';
 	import { grantSummary, remoteLabels } from './remoteLabels';
 	import { identityLabel } from '../../utils/remoteLabels';
 	let { store, compact = false }: { store: RemotePhone; compact?: boolean } = $props();

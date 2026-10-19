@@ -1,4 +1,5 @@
-import { encoder, AuthSecrets } from '../../../utils/authSecrets';
+import type { AuthSecrets } from '../../../utils/authSecrets';
+import { encoder } from '../../../utils/authSecrets';
 import { base64url } from 'jose';
 
 const SALT = 'harness-hub-auth-v1';

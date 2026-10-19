@@ -2,7 +2,7 @@ import { relayCloseCodes, SecurePacketValidator } from '../../../../remote/src/i
 import type { RelayNotice, SecureHello, SecureSealed } from '../../../../remote/src/index';
 import type { HostSocketsAdapter } from '../../adapters/HostSocketsAdapter';
 import { relayConfig } from '../../config/relayConfig';
-import type { DeviceAttachment, RateRecord } from '../../models/RelayHost.types.ts';
+import type { DeviceAttachment, RateRecord } from '../../models/RelayHost.types';
 import { frameTooLarge } from './frameTooLarge';
 import type { HostCommandService } from '../HostCommandService';
 import type { HostLinkService } from '../HostLinkService';

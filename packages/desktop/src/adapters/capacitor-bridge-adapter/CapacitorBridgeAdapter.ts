@@ -1,6 +1,6 @@
-import { projectlessMethods, revisionMethods } from '../../../../remote/src/models/Remote.types.ts';
-import type { DesktopBridge } from '../../models/DesktopBridge.types.ts';
-import type { ProjectSnapshot } from '../../models/Desktop.types.ts';
+import { projectlessMethods, revisionMethods } from '../../../../remote/src/models/Remote.types';
+import type { DesktopBridge } from '../../models/DesktopBridge.types';
+import type { ProjectSnapshot } from '../../models/Desktop.types';
 import type {
 	RemoteBinary,
 	RemoteMethod,
@@ -9,7 +9,7 @@ import type {
 	RemoteNativeStatus,
 	RemoteRevision,
 	WireChannel
-} from '../../models/Environment.types.ts';
+} from '../../models/Environment.types';
 import { cachedSnapshot } from './cachedSnapshot';
 import { remoteArtifact } from './remoteArtifact';
 import { remoteBinary } from '../../utils/remoteBinary';

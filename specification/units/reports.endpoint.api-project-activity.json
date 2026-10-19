@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/routes/api/project-activity/+server.ts",
-			"packages/reports/src/routes/api/project-activity/-server/+server.ts"
-		],
-		"symbols": ["GET", "GET"]
+		"source": ["packages/reports/src/routes/api/project-activity/-server/+server.ts"],
+		"symbols": ["GET"]
 	},
 	"contract": {
 		"origin": "derived",

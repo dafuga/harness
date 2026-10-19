@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { tick } from 'svelte';
-	import type { ExplorerCategory } from '../../models/Explorer.types.ts';
-	import type { HarnessUnit } from '../../models/Harness.types.ts';
+	import type { ExplorerCategory } from '../../models/Explorer.types';
+	import type { HarnessUnit } from '../../models/Harness.types';
 	import type { ContractRow } from '../../utils/entityContract';
 	import { contractFacts, contractFields } from './contractFields';
 	import { type ContractField } from '../../utils/contractFields';

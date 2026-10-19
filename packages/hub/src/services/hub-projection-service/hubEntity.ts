@@ -1,6 +1,6 @@
 import type { CommittedThread } from 'collaboration';
 import type { ComponentManifest } from '../../../../../src/core/unitTypes';
-import type { EntityDetail } from '../../../../desktop/src/models/Desktop.types.ts';
+import type { EntityDetail } from '../../../../desktop/src/models/Desktop.types';
 import { hubRead, type HubSourceContext } from '../../utils/hubSource';
 import { readUnitDocumentation } from '../../../../../src/utils/unit-documentation/unitDocumentation';
 import { hubCatalog, hubOwnedPaths } from '../../utils/hub-catalog/hubCatalog';

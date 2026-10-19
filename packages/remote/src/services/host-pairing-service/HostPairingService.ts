@@ -1,8 +1,8 @@
-import { remoteLimits } from '../../models/Remote.types.ts';
-import type { RemoteGrant } from '../../models/Remote.types.ts';
-import type { RemotePairingRequest } from '../../models/RemoteControl.types.ts';
-import type { RelayPairingRequest } from '../../models/RemoteRelay.types.ts';
-import type { PairingSecret, RemoteKeyPair } from '../../models/RemoteSecure.types.ts';
+import { remoteLimits } from '../../models/Remote.types';
+import type { RemoteGrant } from '../../models/Remote.types';
+import type { RemotePairingRequest } from '../../models/RemoteControl.types';
+import type { RelayPairingRequest } from '../../models/RemoteRelay.types';
+import type { PairingSecret, RemoteKeyPair } from '../../models/RemoteSecure.types';
 import { openPairing, pairingEnvelope, sealPairing } from '../../utils/pairingEnvelope';
 import { fromBase64Url, safeEqual } from '../../utils/remoteBytes';
 import { normalizeCode, randomId, remoteIdentity } from '../../utils/remoteIdentity';

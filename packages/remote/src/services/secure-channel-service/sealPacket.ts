@@ -1,5 +1,5 @@
-import { SealContext } from '../../utils/sealPacket';
-import { SecureFailure } from '../../models/RemoteSecure.types.ts';
+import type { SealContext } from '../../utils/sealPacket';
+import { SecureFailure } from '../../models/RemoteSecure.types';
 import { cryptoSource, fromBase64Url, remoteBytes, toBase64Url } from '../../utils/remoteBytes';
 
 /** Four zero bytes, then the counter as an unsigned 64-bit big-endian integer. */

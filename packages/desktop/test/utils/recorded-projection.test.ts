@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { explorerEvidence } from '../../../reports/src/utils/explorerEvidence';
-import { explorerVerdict } from '../../../reports/src/utils/explorerVerdict';
-import { recordedProjection } from '../../src/utils/recordedProjection';
+import { explorerVerdict } from '../../../reports/src/utils/explorer-verdict/explorerVerdict';
+import { recordedProjection } from '../../src/utils/recorded-answer/recordedProjection';
 import { feed, head, held, home, parent, sampleDetail, sampleScope } from '../recorded-sample';
 
 const revisions = () => ({ head: sampleDetail(head), parent: sampleDetail(parent) });

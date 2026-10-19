@@ -8,7 +8,7 @@ import type {
 	RepositoryIdentity,
 	SourceAdapter,
 	SourceHistoryAdapter
-} from '../../models/Collaboration.types.ts';
+} from '../../models/Collaboration.types';
 import type { GitHubTransport } from '../githubTransport';
 import { githubTransport, readRef } from '../githubTransport';
 import { branch, fail, parse, sha } from '../parseCollaborationInput';

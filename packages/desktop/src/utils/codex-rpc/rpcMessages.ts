@@ -1,4 +1,4 @@
-import { RpcPending, RpcEvent } from '../rpcMessages';
+import type { RpcPending, RpcEvent } from '../rpcMessages';
 
 interface RpcState {
 	pending: Map<number, RpcPending>;

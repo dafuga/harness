@@ -6,13 +6,13 @@ import type {
 	AddDesignInput,
 	ApproveDesignInput,
 	DesignImageInput
-} from '../../models/PlanningBridge.types.ts';
+} from '../../models/PlanningBridge.types';
 import type {
 	DesignImage,
 	DesignOption,
 	DesignVersion,
 	ApprovalRecord
-} from '../../models/Planning.types.ts';
+} from '../../models/Planning.types';
 import { approvable } from '../../utils/planOptions';
 import { planOptions } from './planOptions';
 import type { Git } from '../../utils/planGit';

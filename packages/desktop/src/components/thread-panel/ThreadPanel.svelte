@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { onMount, untrack } from 'svelte';
 	import { explorerName } from '../../../../reports/src/utils/explorerName';
-	import type { EntityDetail, ProviderState, ThreadInfo } from '../../models/Desktop.types.ts';
-	import type { RunEvent } from '../../models/DesktopBridge.types.ts';
-	import type { Workspace } from '../../lib/stores/workspace.svelte.ts';
-	import { createThreadCommentsStore } from '../../lib/stores/threadComments.svelte.ts';
-	import { createThreadRunStore } from '../../lib/stores/threadRun.svelte.ts';
+	import type { EntityDetail, ProviderState, ThreadInfo } from '../../models/Desktop.types';
+	import type { RunEvent } from '../../models/DesktopBridge.types';
+	import type { Workspace } from '../../lib/stores/workspace.svelte';
+	import { createThreadCommentsStore } from '../../lib/stores/threadComments.svelte';
+	import { createThreadRunStore } from '../../lib/stores/threadRun.svelte';
 	import { pendingEntries, requestEntry, threadInfo } from './commentEntries';
 	import type { ThreadEntry } from '../../utils/commentEntries';
 	import { composeModes } from './composeModes';

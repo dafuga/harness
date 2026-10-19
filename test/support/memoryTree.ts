@@ -2,8 +2,14 @@ import { createHash } from 'node:crypto';
 import type { SourceTree } from '../../src/core/sourceTypes';
 import type { ComponentManifest } from '../../src/core/unitTypes';
 import { defaultUnitsConfig } from '../../src/core/unitsConfig';
-import { SourceIndexService, type SourceIndex } from '../../src/services/SourceIndexService';
-import { UnitIndexService, type UnitIndexResult } from '../../src/services/UnitIndexService';
+import {
+	SourceIndexService,
+	type SourceIndex
+} from '../../src/services/source-index-service/SourceIndexService';
+import {
+	UnitIndexService,
+	type UnitIndexResult
+} from '../../src/services/unit-index-service/UnitIndexService';
 
 export function memoryTree(files: Record<string, string>): SourceTree {
 	return {

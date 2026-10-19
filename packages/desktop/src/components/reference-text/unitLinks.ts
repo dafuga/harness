@@ -1,7 +1,7 @@
-import { UnitLink } from '../../utils/unitLinks';
+import type { UnitLink } from '../../utils/unitLinks';
 import { explorerName } from '../../../../reports/src/utils/explorerName';
-import type { Workspace } from '../../lib/stores/workspace.svelte.ts';
-import type { CatalogEntity } from '../../models/Desktop.types.ts';
+import type { Workspace } from '../../lib/stores/workspace.svelte';
+import type { CatalogEntity } from '../../models/Desktop.types';
 import { isUnitId } from '../../utils/entityReferences';
 import { workspacePath } from '../../utils/workspaceRoute';
 

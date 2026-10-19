@@ -2,8 +2,8 @@ import { afterEach, expect, test } from 'vitest';
 import { mkdtemp, readFile, rm, writeFile, symlink, unlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { ReportRepository } from '../src/repositories/ReportRepository';
-import { ReportExportService } from '../src/services/ReportExportService';
+import { ReportRepository } from '../src/repositories/report-repository/ReportRepository';
+import { ReportExportService } from '../src/services/report-export-service/ReportExportService';
 import { audioFixture } from './audioFixture';
 const roots: string[] = [];
 async function fixture() {

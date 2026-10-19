@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/EntityCases.svelte",
-			"packages/reports/src/components/entity-cases/EntityCases.svelte"
-		],
-		"symbols": ["EntityCases", "EntityCases"]
+		"source": ["packages/reports/src/components/entity-cases/EntityCases.svelte"],
+		"symbols": ["EntityCases"]
 	},
 	"contract": {
 		"origin": "declared",

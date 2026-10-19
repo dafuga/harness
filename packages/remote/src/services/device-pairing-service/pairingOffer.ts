@@ -1,12 +1,6 @@
-import {
-	OfferReading,
-	OfferRefusal,
-	offerEnvironment,
-	offerRules,
-	OfferRead,
-	shape
-} from '../../utils/pairingOffer';
-import { remoteLimits } from '../../models/Remote.types.ts';
+import type { OfferReading, OfferRefusal, OfferRead } from '../../utils/pairingOffer';
+import { offerEnvironment, offerRules, shape } from '../../utils/pairingOffer';
+import { remoteLimits } from '../../models/Remote.types';
 
 const versioned = /^harness-pair:v([0-9]{1,3});/;
 

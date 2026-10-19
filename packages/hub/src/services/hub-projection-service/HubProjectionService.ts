@@ -2,7 +2,7 @@ import { HubEvidenceService } from '../hub-evidence-service/HubEvidenceService';
 import type {
 	EntityEvidenceQuery,
 	EvidenceArtifactQuery
-} from '../../../../desktop/src/models/DesktopEvidence.types.ts';
+} from '../../../../desktop/src/models/DesktopEvidence.types';
 import { hubHistory } from '../../utils/hubHistory';
 import type {
 	Actor,
@@ -10,7 +10,7 @@ import type {
 	CollaborationCache,
 	SourceHistoryAdapter
 } from 'collaboration';
-import type { ThreadMessage } from '../../../../desktop/src/models/Desktop.types.ts';
+import type { ThreadMessage } from '../../../../desktop/src/models/Desktop.types';
 import { hubSource, hubRead } from '../../utils/hubSource';
 import { hubCatalog, hubOwnedPaths, hubAttestPlan } from '../../utils/hub-catalog/hubCatalog';
 import { hubRecords } from '../../utils/hubRecords';

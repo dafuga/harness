@@ -7,19 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/services/EmailProofService.ts",
-			"packages/hub/src/services/email-proof-service/EmailProofService.ts"
-		],
+		"source": ["packages/hub/src/services/email-proof-service/EmailProofService.ts"],
 		"symbols": [
-			"PENDING_TTL",
-			"CODE_TTL",
-			"MAX_ATTEMPTS",
-			"SEND_INTERVAL",
-			"DAILY_SENDS",
-			"PROOF_TTL",
-			"EmailProofOptions",
-			"EmailProofService",
 			"PENDING_TTL",
 			"CODE_TTL",
 			"MAX_ATTEMPTS",

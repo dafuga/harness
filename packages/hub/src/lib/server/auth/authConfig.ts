@@ -1,5 +1,5 @@
-import { CollaborationScope, GithubAppConfig, AuthConfig } from '../../../utils/authConfig';
-import type { AuthEnv, HubEnvironment } from '../../../models/HubAuth.types.ts';
+import type { CollaborationScope, GithubAppConfig, AuthConfig } from '../../../utils/authConfig';
+import type { AuthEnv, HubEnvironment } from '../../../models/HubAuth.types';
 
 const environments: readonly string[] = ['local', 'staging', 'production'];
 

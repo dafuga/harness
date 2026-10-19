@@ -3,8 +3,8 @@ import type {
 	EmailProofDelivery,
 	EmailProofMessage,
 	EmailProofStatus
-} from '../../models/HubAuth.types.ts';
-import type { AuthStore, EmailProofRecord } from '../../models/HubAuthStore.types.ts';
+} from '../../models/HubAuth.types';
+import type { AuthStore, EmailProofRecord } from '../../models/HubAuthStore.types';
 import type { IssuedSession, SessionRepository } from '../../repositories/SessionRepository';
 import { authFail } from '../../utils/authFail';
 import { emailCode } from './authSecrets';

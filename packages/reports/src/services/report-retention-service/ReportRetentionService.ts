@@ -8,7 +8,7 @@ import { reportLock } from '../../utils/reportLock';
 import { reportRetention, reportLifetimeMs } from '../../utils/reportRetention';
 import { reportLocalCleanup } from './reportLocalCleanup';
 import type { StorageSyncOptions } from '../ReportStorageSyncService';
-import type { Report } from '../../models/Report.types.ts';
+import type { Report } from '../../models/Report.types';
 import { reportCleanupLog } from './reportCleanupLog';
 
 function retentionResult(dryRun: boolean) {

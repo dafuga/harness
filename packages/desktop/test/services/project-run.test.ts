@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { expect, test, vi } from 'vitest';
 import { RunCancelled, type AgentTurn } from '../../src/models/AgentRunner.types';
 import type { ProjectRunRequest } from '../../src/models/DesktopBridge.types';
-import { createPlanning } from '../../../planning/src';
+import { createPlanning } from '../../../planning/src/index/index';
 import { fixture, git } from '../run-fixture';
 
 type Fixture = Awaited<ReturnType<typeof fixture>>;

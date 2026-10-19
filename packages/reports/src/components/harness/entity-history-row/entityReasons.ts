@@ -1,4 +1,5 @@
-import { EntityReasons, ReasonKind, boundedText } from '../../../utils/entityReasons';
+import type { EntityReasons, ReasonKind } from '../../../utils/entityReasons';
+import { boundedText } from '../../../utils/entityReasons';
 import { writingLimits } from '../../../../../../src/utils/writing-limits/writingLimits';
 
 /**

@@ -1,6 +1,6 @@
 import { ERASE } from '../../utils/d1GrantStore';
 import type { D1Like } from './D1AuthStoreAdapter';
-import type { GithubGrantRecord, GrantLease, GrantStore } from '../../models/HubAuthStore.types.ts';
+import type { GithubGrantRecord, GrantLease, GrantStore } from '../../models/HubAuthStore.types';
 import type { AuthRecordValidator } from '../../validators/AuthRecordValidator';
 
 const COLUMNS =

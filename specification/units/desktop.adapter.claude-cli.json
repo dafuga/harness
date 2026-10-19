@@ -7,12 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/adapters/ClaudeCliAdapter.ts",
-			"packages/desktop/src/adapters/claude-cli-adapter/ClaudeCliAdapter.ts"
-		],
+		"source": ["packages/desktop/src/adapters/claude-cli-adapter/ClaudeCliAdapter.ts"],
 		"symbols": [
-			"ClaudeCliAdapter",
 			"ClaudeCliAdapter",
 			"ClaudeCliAdapter.constructor",
 			"ClaudeCliAdapter.discover",

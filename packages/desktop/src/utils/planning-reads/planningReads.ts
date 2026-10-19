@@ -3,8 +3,8 @@ import type {
 	PlanDetail,
 	DesignVersion as StoredVersion
 } from '../../../../planning/src/index/index';
-import type { PlanRecord } from '../../models/PlanningPort.types.ts';
-import type { DesignRevision, DesignVersion } from '../../models/Desktop.types.ts';
+import type { PlanRecord } from '../../models/PlanningPort.types';
+import type { DesignRevision, DesignVersion } from '../../models/Desktop.types';
 import { approvalInfo, threadInfo } from '../planningConvert';
 import { planningConvert } from './planningConvert';
 import { gitText } from '../gitRead';

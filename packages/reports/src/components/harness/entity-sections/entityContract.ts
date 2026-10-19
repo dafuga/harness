@@ -1,5 +1,6 @@
-import { ContractRow, humanize, ContractFacts } from '../../../utils/entityContract';
-import type { HarnessScenario, HarnessUnit } from '../../../models/Harness.types.ts';
+import type { ContractRow, ContractFacts } from '../../../utils/entityContract';
+import { humanize } from '../../../utils/entityContract';
+import type { HarnessScenario, HarnessUnit } from '../../../models/Harness.types';
 import { scenarioFor } from '../../../utils/explorerState';
 
 const targets: Record<string, string> = {

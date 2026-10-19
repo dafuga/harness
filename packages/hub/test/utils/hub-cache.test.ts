@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { hubCache } from '../../src/utils/hubCache';
+import { hubCache } from '../../src/routes/api/[...path]/-server/hubCache';
 import { cacheKey, readCache, writeCache } from 'collaboration';
 const identity = {
 	principalId: 'google:one',

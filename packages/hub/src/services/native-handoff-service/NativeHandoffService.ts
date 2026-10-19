@@ -1,4 +1,4 @@
-import { NATIVE_ACTION, NATIVE_AUDIENCE } from '../../models/HubAuth.types.ts';
+import { NATIVE_ACTION, NATIVE_AUDIENCE } from '../../models/HubAuth.types';
 import type {
 	HubEnvironment,
 	NativeApproveInput,
@@ -7,12 +7,12 @@ import type {
 	NativePollResult,
 	NativeStartInput,
 	NativeStartResult
-} from '../../models/HubAuth.types.ts';
+} from '../../models/HubAuth.types';
 import type {
 	ExchangeStore,
 	NativeExchangeRecord,
 	SessionRecord
-} from '../../models/HubAuthStore.types.ts';
+} from '../../models/HubAuthStore.types';
 import type { SessionRepository } from '../../repositories/SessionRepository';
 import { authFail } from '../../utils/authFail';
 import { normalizeCode, userCode } from './authSecrets';

@@ -39,11 +39,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/unit-index-service/derivedResponsibility.ts",
+		"entry": "src/utils/derivedResponsibility.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/unit-index-service/derivedResponsibility.ts"
+				"entry": "src/utils/derivedResponsibility.ts"
 			}
 		]
 	},

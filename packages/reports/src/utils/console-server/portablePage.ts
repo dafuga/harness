@@ -1,5 +1,5 @@
-import { PortableAssets } from '../portablePage';
-import type { Report } from '../../models/Report.types.ts';
+import type { PortableAssets } from '../portablePage';
+import type { Report } from '../../models/Report.types';
 
 function escapeHtml(value: string): string {
 	return value.replace(

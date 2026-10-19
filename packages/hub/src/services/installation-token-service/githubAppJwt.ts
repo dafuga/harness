@@ -1,4 +1,4 @@
-import { GithubAppJwtInput } from '../../utils/githubAppJwt';
+import type { GithubAppJwtInput } from '../../utils/githubAppJwt';
 import { SignJWT } from 'jose';
 import { authFail } from '../../utils/authFail';
 

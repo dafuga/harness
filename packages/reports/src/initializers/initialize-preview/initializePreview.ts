@@ -54,7 +54,12 @@ export async function initializePreview(args: string[] = process.argv.slice(2)):
 	}
 }
 
-if (import.meta.main || resolve(process.argv[1] ?? '') === fileURLToPath(import.meta.url)) {
+if (
+	import.meta.main ||
+	resolve(process.argv[1] ?? '') === fileURLToPath(import.meta.url) ||
+	resolve(process.argv[1] ?? '') ===
+		fileURLToPath(new URL('../initializePreview.ts', import.meta.url))
+) {
 	const work = process.versions.bun
 		? previewNode(process.argv.slice(2)).then((code) => {
 				process.exitCode = code;

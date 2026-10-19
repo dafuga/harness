@@ -1,9 +1,9 @@
 import { beforeAll, expect, test } from 'vitest';
 import { HandlerRuntimeAdapter } from '../src/adapters/HandlerRuntimeAdapter';
 import type { ImpactSide } from '../src/core/impactTypes';
-import { ImpactService } from '../src/services/ImpactService';
+import { ImpactService } from '../src/services/impact-service/ImpactService';
 import { SourceGraphService } from '../src/services/SourceGraphService';
-import { impactKernel } from '../src/utils/impactKernel';
+import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
 import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
 
 let loaded: LoadedUnits;

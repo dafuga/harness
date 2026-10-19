@@ -1,5 +1,5 @@
-import { categories, type CatalogEntity } from '../../models/Desktop.types.ts';
-import type { ProjectRunRequest } from '../../models/DesktopBridge.types.ts';
+import { categories, type CatalogEntity } from '../../models/Desktop.types';
+import type { ProjectRunRequest } from '../../models/DesktopBridge.types';
 
 /** Every word of a text that has the unit id grammar, a reference marker's id included. */
 const written = /[a-z][a-z0-9-]*(?:\.[a-z][a-z0-9-]*)+/g;

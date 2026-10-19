@@ -1,6 +1,7 @@
-import { ContractExample, ContractField, guess, ContractGroup } from '../../utils/contractFields';
-import type { ExplorerCategory } from '../../models/Explorer.types.ts';
-import type { HarnessUnit } from '../../models/Harness.types.ts';
+import type { ContractExample, ContractField, ContractGroup } from '../../utils/contractFields';
+import { guess } from '../../utils/contractFields';
+import type { ExplorerCategory } from '../../models/Explorer.types';
+import type { HarnessUnit } from '../../models/Harness.types';
 import { humanize, type ContractRow } from '../../utils/entityContract';
 
 type Item = HarnessUnit['contract']['inputs'][number];

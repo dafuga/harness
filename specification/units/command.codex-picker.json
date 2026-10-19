@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/commands/CodexPickerCommand.ts",
-			"src/commands/codex-picker-command/CodexPickerCommand.ts"
-		],
-		"symbols": ["registerCodexPickerCommand", "registerCodexPickerCommand"]
+		"source": ["src/commands/codex-picker-command/CodexPickerCommand.ts"],
+		"symbols": ["registerCodexPickerCommand"]
 	},
 	"contract": {
 		"origin": "derived",

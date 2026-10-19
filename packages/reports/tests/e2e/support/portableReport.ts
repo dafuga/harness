@@ -2,7 +2,7 @@ import { expect, type Page } from '@playwright/test';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { ReportRepository } from '../../../src/repositories/ReportRepository';
+import { ReportRepository } from '../../../src/repositories/report-repository/ReportRepository';
 import { ReportExportSerializer } from '../../../src/serializers/ReportExportSerializer';
 import { reportRuntimeRoot } from '../../../src/utils/reportRuntimeRoot';
 import { fixtures } from './fixtures';

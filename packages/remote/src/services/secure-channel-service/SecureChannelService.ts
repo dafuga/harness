@@ -1,5 +1,5 @@
-import { remoteLimits } from '../../models/Remote.types.ts';
-import { SecureFailure } from '../../models/RemoteSecure.types.ts';
+import { remoteLimits } from '../../models/Remote.types';
+import { SecureFailure } from '../../models/RemoteSecure.types';
 import type {
 	RemoteKeyPair,
 	SecureDirection,
@@ -7,7 +7,7 @@ import type {
 	SecurePacket,
 	SecureRole,
 	SessionKeys
-} from '../../models/RemoteSecure.types.ts';
+} from '../../models/RemoteSecure.types';
 import { bytesText, concatBytes, fromBase64Url, randomBytes } from '../../utils/remoteBytes';
 import { remoteBytes, toBase64Url } from '../../utils/remoteBytes';
 import { remoteKeys } from '../../utils/remoteKeys';

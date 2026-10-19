@@ -1,5 +1,5 @@
 import { optionOf } from '../planOptions';
-import type { DesignVersion } from '../../models/Planning.types.ts';
+import type { DesignVersion } from '../../models/Planning.types';
 import { fail } from '../planData';
 
 /** The option holding `file`, as a field of the image; refused when the caller named another. */

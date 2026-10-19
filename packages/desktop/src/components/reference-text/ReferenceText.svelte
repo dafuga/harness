@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { Workspace } from '../../lib/stores/workspace.svelte.ts';
-	import type { CatalogEntity } from '../../models/Desktop.types.ts';
+	import type { Workspace } from '../../lib/stores/workspace.svelte';
+	import type { CatalogEntity } from '../../models/Desktop.types';
 	import { entityReferences } from './entityReferences';
 	import { unitLinks } from './unitLinks';
 	import Icon from '../Icon.svelte';

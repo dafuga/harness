@@ -1,5 +1,5 @@
-import type { CliCommand } from '../../models/AgentRunner.types.ts';
-import type { ProviderState } from '../../models/Desktop.types.ts';
+import type { CliCommand } from '../../models/AgentRunner.types';
+import type { ProviderState } from '../../models/Desktop.types';
 import { cliProcess } from '../../utils/cliProcess';
 
 export async function claudeState(command: CliCommand): Promise<ProviderState> {

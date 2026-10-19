@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { browserBridge } from '../../src/utils/browserBridge';
+import { browserBridge } from '../../src/utils/browser-bridge/browserBridge';
 import type { BrowserApi } from '../../src/utils/browserApi';
 
 const projectId = '6f1d2c3b-4a59-4e68-9f70-8a1b2c3d4e5f';

@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/harness/HarnessMap.svelte",
-			"packages/reports/src/components/harness/harness-map/HarnessMap.svelte"
-		],
-		"symbols": ["HarnessMap", "HarnessMap"]
+		"source": ["packages/reports/src/components/harness/harness-map/HarnessMap.svelte"],
+		"symbols": ["HarnessMap"]
 	},
 	"contract": {
 		"origin": "declared",

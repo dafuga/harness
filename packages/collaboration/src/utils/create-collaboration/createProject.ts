@@ -3,7 +3,7 @@ import type {
 	Actor,
 	CollaborationApi,
 	CollaborationDependencies
-} from '../../models/Collaboration.types.ts';
+} from '../../models/Collaboration.types';
 import { actorSchema, id, label, parse, repositorySchema, fail } from '../parseCollaborationInput';
 import { currentProject, now, transaction } from '../currentProject';
 

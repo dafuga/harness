@@ -1,5 +1,5 @@
 import { expect, type Page } from '@playwright/test';
-import { recordCapture } from '../../../../src/utils/recordCapture';
+import { recordCapture } from '../../../../src/utils/record-capture/recordCapture';
 import { buildStamp } from '../../../../src/utils/buildStamp';
 
 /** Record real rendered pixels; fixture data does not claim a live provider run. */

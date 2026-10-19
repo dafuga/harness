@@ -143,7 +143,7 @@
 		},
 		{
 			"from": "packages/hub/src/utils/browser-bridge/browserArtifact.ts",
-			"specifier": "$desktop/utils/hostedArtifact",
+			"specifier": "./hostedArtifact",
 			"to": "packages/hub/src/utils/browser-bridge/hostedArtifact.ts",
 			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser artifact reader imports hostedArtifact from this file."
 		},
@@ -167,8 +167,8 @@
 		},
 		{
 			"from": "packages/hub/src/utils/browser-bridge/browserBridge.ts",
-			"specifier": "$desktop/utils/commentEntries",
-			"to": "packages/desktop/src/utils/commentEntries.ts",
+			"specifier": "./commentEntries",
+			"to": "packages/hub/src/utils/browser-bridge/commentEntries.ts",
 			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser bridge imports commentEntries from this file."
 		},
 		{
@@ -221,7 +221,7 @@
 		},
 		{
 			"from": "packages/desktop/src/components/nav-bar/NavBar.svelte",
-			"specifier": "$shared/EntitySearch.svelte",
+			"specifier": "$shared/entity-search/EntitySearch.svelte",
 			"to": "packages/reports/src/components/entity-search/EntitySearch.svelte",
 			"reason": "The desktop's build alias $shared is packages/reports/src/components: the top bar renders the entity search of the reports package."
 		},
@@ -290,6 +290,18 @@
 			"specifier": "$shared/FilterDialog.svelte",
 			"to": "packages/reports/src/components/FilterDialog.svelte",
 			"reason": "The shared catalog uses the same filter dialog on Web, Electron and iOS."
+		},
+		{
+			"from": "packages/hub/src/routes/-layout/browserApi.ts",
+			"specifier": "$desktop/utils/hostedResponse",
+			"to": "packages/desktop/src/utils/hostedResponse.ts",
+			"reason": "The declared source binding matches this platform build alias and current owner-local path."
+		},
+		{
+			"from": "packages/hub/src/routes/-layout/browserApi.ts",
+			"specifier": "$desktop/utils/artifactMedia",
+			"to": "packages/desktop/src/utils/artifactMedia.ts",
+			"reason": "The declared source binding matches this platform build alias and current owner-local path."
 		}
 	]
 }

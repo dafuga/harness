@@ -1,6 +1,6 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import BrowserErrors from '../../src/components/BrowserErrors.svelte';
+import BrowserErrors from '../../src/components/browser-errors/BrowserErrors.svelte';
 
 test('old and clean records do not invent a logging result', () => {
 	expect(render(BrowserErrors, { props: {} }).body).not.toContain('Browser errors');

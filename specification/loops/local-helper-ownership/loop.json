@@ -2,11 +2,9 @@
 	"name": "local-helper-ownership",
 	"goal": "Move every confirmed single-consumer helper beside its owner using the complete runtime consumer inventory, preserving definitions, shared access and registered history.",
 	"createdAt": "2026-10-19T17:50:47.275Z",
-	"updatedAt": "2026-10-19T18:11:37.650Z",
+	"updatedAt": "2026-10-19T18:14:38.060Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T18:14:38.060Z",
+			"evidence": "Unchanged owner-placement test and explicitly frozen migration ledger pass at 93318952. Immutable green 12e428788f81b6858c508a1668b47b9f21a038174fc455fa4db2a19df9242658 pairs with red 6bd8dbaf7702f0d4def2518d67c934f264229bf45f53ab3480ac8617e7ee2894."
 		},
 		{
 			"id": "verify",

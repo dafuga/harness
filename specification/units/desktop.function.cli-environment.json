@@ -34,11 +34,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/cli-environment/cliEnvironment.ts",
+		"entry": "packages/desktop/src/utils/cliEnvironment.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/cli-environment/cliEnvironment.ts"
+				"entry": "packages/desktop/src/utils/cliEnvironment.ts"
 			}
 		]
 	},

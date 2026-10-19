@@ -1,9 +1,9 @@
 import { mkdtemp, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import type { RunContext } from '../../models/RunContext.types.ts';
-import type { DesignDraft } from '../../models/PlanningPort.types.ts';
-import { RunCancelled } from '../../models/AgentRunner.types.ts';
+import type { RunContext } from '../../models/RunContext.types';
+import type { DesignDraft } from '../../models/PlanningPort.types';
+import { RunCancelled } from '../../models/AgentRunner.types';
 import { designPrompt } from '../designPrompt';
 import { designCount } from '../designCount';
 import { designDirections } from './designDirections';

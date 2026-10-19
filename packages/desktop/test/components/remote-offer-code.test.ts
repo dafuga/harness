@@ -1,5 +1,5 @@
 import { afterEach, expect, test, vi } from 'vitest';
-import RemoteOfferCode from '../../src/components/RemoteOfferCode.svelte';
+import RemoteOfferCode from '../../src/components/remote-offer-code/RemoteOfferCode.svelte';
 import type { RemoteHost } from '../../src/lib/stores/remoteHost.svelte';
 import { drawn } from '../evidence-fixture';
 import { decoded, offerVectors } from '../qr-fixture';

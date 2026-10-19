@@ -1,11 +1,6 @@
-import {
-	optionImages,
-	ThreadTarget,
-	imageTarget,
-	entityTarget,
-	CommentAnchor
-} from '../../utils/threadAnchor';
-import type { DesignVersion, Revision } from '../../models/Desktop.types.ts';
+import type { ThreadTarget, CommentAnchor } from '../../utils/threadAnchor';
+import { optionImages, imageTarget, entityTarget } from '../../utils/threadAnchor';
+import type { DesignVersion, Revision } from '../../models/Desktop.types';
 
 function sameHashes(left: string[], right: string[]): boolean {
 	return left.length === right.length && left.every((sha) => right.includes(sha));

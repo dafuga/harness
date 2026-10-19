@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import type { HarnessRecord, HarnessRevision } from '../../src/models/Harness.types';
-import { explorerVerdict, verdictRecord } from '../../src/utils/explorerVerdict';
+import { explorerVerdict, verdictRecord } from '../../src/utils/explorer-verdict/explorerVerdict';
 import {
 	capture,
 	complete,

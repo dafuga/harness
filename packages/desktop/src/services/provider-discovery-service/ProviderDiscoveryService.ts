@@ -1,5 +1,5 @@
-import type { AgentRunner } from '../../models/AgentRunner.types.ts';
-import type { ProviderId } from '../../models/Desktop.types.ts';
+import type { AgentRunner } from '../../models/AgentRunner.types';
+import type { ProviderId } from '../../models/Desktop.types';
 import { validateModel } from './providerModels';
 
 export class ProviderDiscoveryService {

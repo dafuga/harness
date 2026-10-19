@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { HarnessMark, HarnessUnit } from '../../../models/Harness.types.ts';
+	import type { HarnessMark, HarnessUnit } from '../../../models/Harness.types';
 	import { harnessLayout } from './harnessLayout';
 	import { nodeSize } from '../../../utils/harnessLayout';
 	import { drawnEdges, focusOn, nextNode, panView, zoomView } from './focusView';

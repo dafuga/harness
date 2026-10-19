@@ -1,8 +1,9 @@
 import { expect, test } from 'vitest';
 import type { BudgetEvent } from '../../src/core/budgetTypes';
 import type { ComponentManifest } from '../../src/core/unitTypes';
-import { BudgetService } from '../../src/services/BudgetService';
-import { budgetFindings, type BudgetBaseline } from '../../src/utils/budgetFindings';
+import { BudgetService } from '../../src/services/budget-service/BudgetService';
+import { budgetFindings } from '../../src/services/budget-service/budgetFindings';
+import { type BudgetBaseline } from '../../src/utils/budgetFindings';
 import { emittedKey, emittedSizes } from '../../src/utils/emittedSizes';
 import { unitMeasurements, type BuiltArtifacts } from '../../src/utils/unitMeasurements';
 

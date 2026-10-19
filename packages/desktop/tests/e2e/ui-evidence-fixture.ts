@@ -1,6 +1,6 @@
 import type { Locator, Page } from '@playwright/test';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
-import type { UnitDocumentation } from '../../../../src/utils/unitDocumentation';
+import type { UnitDocumentation } from '../../../../src/utils/unit-documentation/unitDocumentation';
 import type { ComponentManifest } from '../../../../src/lib/contracts';
 import type {
 	EntityEvidenceQuery,

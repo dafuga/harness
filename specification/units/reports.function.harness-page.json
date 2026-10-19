@@ -80,11 +80,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/harness-page/harnessPage.ts",
+		"entry": "packages/reports/src/utils/harnessPage.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/harness-page/harnessPage.ts"
+				"entry": "packages/reports/src/utils/harnessPage.ts"
 			}
 		]
 	},

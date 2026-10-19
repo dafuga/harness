@@ -1,5 +1,5 @@
 import { id, most, provenance } from '../planOptions';
-import type { DesignVersion, ImageBinding } from '../../models/Planning.types.ts';
+import type { DesignVersion, ImageBinding } from '../../models/Planning.types';
 import { fail } from '../planData';
 import { filename, text } from '../planValidate';
 

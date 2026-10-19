@@ -1,8 +1,8 @@
 import { expect, test } from '../../../../test/support/browserTest';
 import { readFileSync, rmSync } from 'node:fs';
 import { scenarioManifestSchema } from '../../../../src/core/unitTypes';
-import { gatherCaptures } from '../../../../src/utils/gatherCaptures';
-import { scenarioCoverage } from '../../../../src/utils/scenarioCoverage';
+import { gatherCaptures } from '../../../../src/services/check-run-service/gatherCaptures';
+import { scenarioCoverage } from '../../../../src/services/verification-service/scenarioCoverage';
 import { reportBuildIdentity } from '../../src/utils/reportBuildIdentity';
 import { captureFlow } from './support/explorerFlow';
 import { askedFor, explorerFlows, explorerStates as states } from './support/explorerStates';

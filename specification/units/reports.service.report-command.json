@@ -7,12 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/services/ReportCommandService.ts",
-			"packages/reports/src/services/report-command-service/ReportCommandService.ts"
-		],
+		"source": ["packages/reports/src/services/report-command-service/ReportCommandService.ts"],
 		"symbols": [
-			"ReportCommandService",
 			"ReportCommandService",
 			"ReportCommandService.constructor",
 			"ReportCommandService.execute"

@@ -1,5 +1,6 @@
-import { HarnessLayout, PlacedUnit, nodeSize } from '../../../utils/harnessLayout';
-import type { HarnessUnit } from '../../../models/Harness.types.ts';
+import type { HarnessLayout, PlacedUnit } from '../../../utils/harnessLayout';
+import { nodeSize } from '../../../utils/harnessLayout';
+import type { HarnessUnit } from '../../../models/Harness.types';
 
 /** How far a unit is from the units that depend on nothing: its layer in the map. */
 function depths(units: HarnessUnit[]): Map<string, number> {

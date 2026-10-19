@@ -1,5 +1,5 @@
-import type { HarnessLegacyReport } from '../../../models/Harness.types.ts';
-import type { Evidence, Status } from '../../../models/Report.types.ts';
+import type { HarnessLegacyReport } from '../../../models/Harness.types';
+import type { Evidence, Status } from '../../../models/Report.types';
 
 const statuses = ['running', 'passed', 'failed', 'blocked', 'skipped', 'not-proven', 'interrupted'];
 

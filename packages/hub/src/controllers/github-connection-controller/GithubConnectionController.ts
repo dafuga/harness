@@ -1,4 +1,4 @@
-import type { GithubStatus } from '../../models/HubAuth.types.ts';
+import type { GithubStatus } from '../../models/HubAuth.types';
 import type { GithubGrantService } from '../../services/GithubGrantService';
 import type { GithubOwnerService } from '../../services/GithubOwnerService';
 import type { RequestSessionService } from '../../services/request-session-service/RequestSessionService';

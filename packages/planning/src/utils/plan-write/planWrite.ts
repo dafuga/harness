@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import type { Git } from '../planGit';
 import { revision, safePath } from '../planGit';
 import { fail } from '../planData';
-import type { Committed } from '../../models/PlanningView.types.ts';
+import type { Committed } from '../../models/PlanningView.types';
 
 export type Files = Record<string, string | Uint8Array>;
 

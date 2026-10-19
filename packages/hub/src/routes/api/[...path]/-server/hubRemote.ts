@@ -1,4 +1,4 @@
-import { HubRemoteRuntime } from '../../../../utils/hubRemote';
+import type { HubRemoteRuntime } from '../../../../utils/hubRemote';
 import { RelayManageAdapter } from '../../../../adapters/RelayManageAdapter';
 import type { HubEnv } from '../../../../config/hubEnvConfig';
 

@@ -1,7 +1,7 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
 import { explorerRoute } from '../../../src/utils/explorerRoute';
-import EntityRelations from '../src/components/harness/EntityRelations.svelte';
+import EntityRelations from '../src/components/harness/entity-relations/EntityRelations.svelte';
 import type { ExplorerRelations } from '../src/models/Explorer.types';
 import type { EntityNav } from '../src/utils/entityLens';
 import { content, words } from './entityRender';

@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/routes/api/analytics-cpu/+server.ts",
-			"packages/reports/src/routes/api/analytics-cpu/-server/+server.ts"
-		],
-		"symbols": ["GET", "GET"]
+		"source": ["packages/reports/src/routes/api/analytics-cpu/-server/+server.ts"],
+		"symbols": ["GET"]
 	},
 	"contract": {
 		"origin": "derived",

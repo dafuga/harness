@@ -5,7 +5,7 @@ import type { HubSourceContext } from '../hubSource';
 import { hubFail } from '../hubJson';
 import { hubImageOption, hubOptionInfos, hubRevision } from './hubOptions';
 import type { HubPlan, HubDesign } from '../hubSchemas';
-import type { DesignVersion } from '../../../../desktop/src/models/Desktop.types.ts';
+import type { DesignVersion } from '../../../../desktop/src/models/Desktop.types';
 
 async function version(
 	context: HubSourceContext,

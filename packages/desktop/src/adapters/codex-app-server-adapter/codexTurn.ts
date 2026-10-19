@@ -1,5 +1,5 @@
-import type { AgentTurn, CliCommand } from '../../models/AgentRunner.types.ts';
-import { RunCancelled } from '../../models/AgentRunner.types.ts';
+import type { AgentTurn, CliCommand } from '../../models/AgentRunner.types';
+import { RunCancelled } from '../../models/AgentRunner.types';
 import { codexRpc } from '../../utils/codex-rpc/codexRpc';
 
 interface TurnItem {

@@ -70,11 +70,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/services/hub-projection-service/hubSnapshot.ts",
+		"entry": "packages/hub/src/utils/hubSnapshot.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/services/hub-projection-service/hubSnapshot.ts"
+				"entry": "packages/hub/src/utils/hubSnapshot.ts"
 			}
 		]
 	},

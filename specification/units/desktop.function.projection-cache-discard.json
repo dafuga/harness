@@ -39,11 +39,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/projection-cache-service/projectionCacheDiscard.ts",
+		"entry": "packages/desktop/src/utils/projectionCacheDiscard.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/projection-cache-service/projectionCacheDiscard.ts"
+				"entry": "packages/desktop/src/utils/projectionCacheDiscard.ts"
 			}
 		]
 	},

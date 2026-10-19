@@ -1,4 +1,5 @@
-import { googleIdentityScript, GoogleButton } from '../../utils/googleButton';
+import type { GoogleButton } from '../../utils/googleButton';
+import { googleIdentityScript } from '../../utils/googleButton';
 
 interface GoogleIdentity {
 	initialize(options: {

@@ -1,5 +1,5 @@
 import { ipcFields } from '../ipcFields';
-import type { Region } from '../../models/Desktop.types.ts';
+import type { Region } from '../../models/Desktop.types';
 
 export function regionField(value: unknown): Region | null {
 	if (value === null) return null;

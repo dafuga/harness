@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { hubRateLimit } from '../../src/utils/hubRateLimit';
+import { hubRateLimit } from '../../src/routes/api/[...path]/-server/hubRateLimit';
 
 const hosts = 'https://fixture.example/api/remote/hosts';
 

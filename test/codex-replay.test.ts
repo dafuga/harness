@@ -1,6 +1,6 @@
 import { expect, test, vi } from 'vitest';
-import { CodexSessionRepository } from '../src/repositories/CodexSessionRepository';
-import { CodexGatewayService } from '../src/services/CodexGatewayService';
+import { CodexSessionRepository } from '../src/repositories/codex-session-repository/CodexSessionRepository';
+import { CodexGatewayService } from '../src/services/codex-gateway-service/CodexGatewayService';
 const runs = vi.hoisted(() => ({ count: 0 }));
 vi.mock('../src/services/ClaudeQueryService', () => ({
 	ClaudeQueryService: class {

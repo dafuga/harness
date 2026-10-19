@@ -2,7 +2,7 @@ import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import type { RunRequest } from '../src/models/DesktopBridge.types';
 import { fixture, git } from './run-fixture';
-import { createPlanning } from '../../planning/src';
+import { createPlanning } from '../../planning/src/index/index';
 
 const proposal = {
 	category: 'functions',

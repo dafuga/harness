@@ -2,8 +2,8 @@ import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { appendMissingExports, applyExports } from '../src/core/exports';
-import { detectProjectKind } from '../src/core/project';
+import { appendMissingExports, applyExports } from '../src/workflows/generate-code/exports';
+import { detectProjectKind } from '../src/workflows/generate-code/project';
 
 test('detects explicit Harness project kinds', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-project-'));

@@ -1,4 +1,4 @@
-import { PublicationFile, PublicationBundle } from '../../utils/reportPublication';
+import type { PublicationFile, PublicationBundle } from '../../utils/reportPublication';
 import { readFile, mkdir, writeFile, mkdtemp } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { createHash } from 'node:crypto';

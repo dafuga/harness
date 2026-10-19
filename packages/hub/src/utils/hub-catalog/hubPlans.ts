@@ -4,7 +4,7 @@ import { hubJson, hubContractHash } from '../hubJson';
 import { hubDesigns } from './hubDesigns';
 import type { HubSourceContext } from '../hubSource';
 import type { HubPlan } from '../hubSchemas';
-import type { PlanRecord } from '../../../../desktop/src/models/PlanningPort.types.ts';
+import type { PlanRecord } from '../../../../desktop/src/models/PlanningPort.types';
 import { z } from 'zod';
 import { hubContractSchema } from '../hubSchemas';
 

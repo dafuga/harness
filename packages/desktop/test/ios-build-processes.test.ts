@@ -13,7 +13,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { afterAll, expect, test } from 'vitest';
 import { signalProcesses, type TrackedProcess } from '../../../src/utils/processDescendants';
-import { runIsolated } from '../../../src/utils/runIsolated';
+import { runIsolated } from '../../../src/utils/run-isolated/runIsolated';
 
 /**
  * The simulator build under the Harness runner, which fails a command that leaves a process

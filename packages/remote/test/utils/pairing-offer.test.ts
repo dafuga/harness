@@ -1,6 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { expect, test } from 'vitest';
-import { offerRules, pairingOffer, readPairingOffer } from '../../src/utils/pairingOffer';
+import { offerRules } from '../../src/utils/pairingOffer';
+import { pairingOffer } from '../../../desktop/src/services/remote-host-service/pairingOffer';
+import { readPairingOffer } from '../../src/services/device-pairing-service/pairingOffer';
 import type { OfferEnvironment, PairingOffer } from '../../src/utils/pairingOffer';
 
 interface OfferVectors {

@@ -1,4 +1,5 @@
-import { RecordedNode, read } from '../../utils/recordedValue';
+import type { RecordedNode } from '../../utils/recordedValue';
+import { read } from '../../utils/recordedValue';
 
 /** At most four levels, twelve items per collection and 120 expanded values. */
 export function recordedValue(value: unknown): RecordedNode {

@@ -2,8 +2,8 @@ import type {
 	ExplorerArtifact,
 	ExplorerBehavior,
 	ExplorerBehaviorRow
-} from '../../models/Explorer.types.ts';
-import type { HarnessCapture } from '../../models/Harness.types.ts';
+} from '../../models/Explorer.types';
+import type { HarnessCapture } from '../../models/Harness.types';
 import { explorerArtifact } from './explorerArtifact';
 import { type ArtifactFetcher } from '../explorerArtifact';
 import { behaviorSummary } from '../explorerBehavior';

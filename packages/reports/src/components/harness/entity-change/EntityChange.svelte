@@ -1,8 +1,5 @@
 <script lang="ts">
-	import type {
-		ExplorerHistoryDetail,
-		ExplorerHistoryRow
-	} from '../../../models/Explorer.types.ts';
+	import type { ExplorerHistoryDetail, ExplorerHistoryRow } from '../../../models/Explorer.types';
 	import { humanize } from '../../../utils/entityContract';
 	import { reviewChanges } from './entityHistory';
 	import { signedBytes, signedCount, type HistoryTiming } from '../../../utils/entityHistory';

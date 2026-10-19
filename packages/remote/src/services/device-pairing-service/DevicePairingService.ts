@@ -1,17 +1,17 @@
-import type { RemoteGrant } from '../../models/Remote.types.ts';
-import type { RemotePairInput } from '../../models/RemoteControl.types.ts';
+import type { RemoteGrant } from '../../models/Remote.types';
+import type { RemotePairInput } from '../../models/RemoteControl.types';
 import type {
 	RelayPairingExchange,
 	RelayPairingInfo,
 	RelayPairingPoll,
 	RelayPairingState
-} from '../../models/RemoteRelay.types.ts';
+} from '../../models/RemoteRelay.types';
 import type {
 	PairingApproval,
 	PairingSecret,
 	RemoteKeyPair,
 	StoredRemoteKeys
-} from '../../models/RemoteSecure.types.ts';
+} from '../../models/RemoteSecure.types';
 import { openPairing, pairingEnvelope, sealPairing } from '../../utils/pairingEnvelope';
 import { readPairingOffer } from './pairingOffer';
 import type { OfferReading } from '../../utils/pairingOffer';

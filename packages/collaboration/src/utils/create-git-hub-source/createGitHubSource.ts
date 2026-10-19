@@ -6,7 +6,7 @@ import type {
 	SourceHistoryAdapter,
 	SourceCommit,
 	SourceEntry
-} from '../../models/Collaboration.types.ts';
+} from '../../models/Collaboration.types';
 import { digest, fail, parse, safePath, sha } from '../parseCollaborationInput';
 import { decode64, githubTransport } from '../githubTransport';
 import { exactRef } from './githubTransport';

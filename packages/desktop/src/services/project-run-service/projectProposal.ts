@@ -1,6 +1,6 @@
-import { ProjectProposal } from '../../utils/projectProposal';
-import { categories, type Category, type ContractField } from '../../models/Desktop.types.ts';
-import type { ProjectRunRequest, ProposedContract } from '../../models/DesktopBridge.types.ts';
+import type { ProjectProposal } from '../../utils/projectProposal';
+import { categories, type Category, type ContractField } from '../../models/Desktop.types';
+import type { ProjectRunRequest, ProposedContract } from '../../models/DesktopBridge.types';
 import { referencePrompt } from '../../utils/referencePrompt';
 
 const most = { answer: 20_000, title: 160, goal: 600, proposal: 6000 } as const;

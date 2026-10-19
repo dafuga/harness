@@ -6,8 +6,8 @@ import { createServer } from 'node:http';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { ProjectionCacheService } from '../src/services/ProjectionCacheService';
-import { RemoteHttpProjectAdapter } from '../src/adapters/RemoteHttpProjectAdapter';
+import { ProjectionCacheService } from '../src/services/projection-cache-service/ProjectionCacheService';
+import { RemoteHttpProjectAdapter } from '../src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter';
 export async function remoteCacheFixture() {
 	const root = await mkdtemp(join(tmpdir(), 'hosted-cache-'));
 	const state = {

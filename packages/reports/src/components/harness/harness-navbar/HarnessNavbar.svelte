@@ -1,6 +1,6 @@
 <script lang="ts">
 	import BrandMark from '../../BrandMark.svelte';
-	import type { ExplorerLocation } from '../../../models/Explorer.types.ts';
+	import type { ExplorerLocation } from '../../../models/Explorer.types';
 	import type { SearchEntry } from '../../../utils/entitySearch';
 	import { harnessShell } from './harnessShell';
 	import { plainClick, type HarnessNavbarInput } from '../../../utils/harnessShell';

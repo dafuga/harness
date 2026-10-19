@@ -6,15 +6,15 @@ import { HostedEvidenceService } from '../../services/HostedEvidenceService';
 import type {
 	EntityEvidenceQuery,
 	EvidenceArtifactQuery
-} from '../../models/DesktopEvidence.types.ts';
-import type { AddCommentInput } from '../../../../collaboration/src/models/Collaboration.types.ts';
-import type { RemoteProjectPort, ProjectCapabilities } from '../../models/ProjectContext.types.ts';
+} from '../../models/DesktopEvidence.types';
+import type { AddCommentInput } from '../../../../collaboration/src/models/Collaboration.types';
+import type { RemoteProjectPort, ProjectCapabilities } from '../../models/ProjectContext.types';
 import type {
 	EntityQuery,
 	SourceQuery,
 	ImageQuery,
 	ThreadQuery
-} from '../../models/DesktopBridge.types.ts';
+} from '../../models/DesktopBridge.types';
 import {
 	RemoteProjectResponseValidator,
 	responseRecord

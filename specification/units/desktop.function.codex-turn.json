@@ -61,11 +61,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/adapters/codex-app-server-adapter/codexTurn.ts",
+		"entry": "packages/desktop/src/utils/codexTurn.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/adapters/codex-app-server-adapter/codexTurn.ts"
+				"entry": "packages/desktop/src/utils/codexTurn.ts"
 			}
 		]
 	},

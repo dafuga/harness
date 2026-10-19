@@ -70,11 +70,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/controllers/hub-api-controller/hubEvidenceQuery.ts",
+		"entry": "packages/hub/src/utils/hubEvidenceQuery.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/controllers/hub-api-controller/hubEvidenceQuery.ts"
+				"entry": "packages/hub/src/utils/hubEvidenceQuery.ts"
 			}
 		]
 	},

@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/harness/HarnessSelectors.svelte",
-			"packages/reports/src/components/harness/harness-selectors/HarnessSelectors.svelte"
-		],
-		"symbols": ["HarnessSelectors", "HarnessSelectors"]
+		"source": ["packages/reports/src/components/harness/harness-selectors/HarnessSelectors.svelte"],
+		"symbols": ["HarnessSelectors"]
 	},
 	"contract": {
 		"origin": "declared",

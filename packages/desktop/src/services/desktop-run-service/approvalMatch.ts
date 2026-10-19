@@ -1,5 +1,5 @@
-import type { EntityDetail, ApprovalInfo } from '../../models/Desktop.types.ts';
-import type { RunRequest } from '../../models/DesktopBridge.types.ts';
+import type { EntityDetail, ApprovalInfo } from '../../models/Desktop.types';
+import type { RunRequest } from '../../models/DesktopBridge.types';
 
 function exactBinding(
 	entity: EntityDetail,

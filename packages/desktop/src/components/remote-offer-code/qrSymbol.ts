@@ -1,4 +1,5 @@
-import { qrLimits, QrSymbol } from '../../utils/qrSymbol';
+import type { QrSymbol } from '../../utils/qrSymbol';
+import { qrLimits } from '../../utils/qrSymbol';
 import { create } from 'qrcode';
 
 const plain = /^[!-~]+$/;

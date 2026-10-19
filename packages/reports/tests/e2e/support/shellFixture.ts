@@ -3,7 +3,10 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { BuildIdentityService } from '../../../../../src/services/BuildIdentityService';
-import { evidenceRequested, recordCapture } from '../../../../../src/utils/recordCapture';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../../../../../src/utils/record-capture/recordCapture';
 
 /** The address the fixture pages are opened at; nothing listens there. */
 export const shellOrigin = 'http://shell.fixture';

@@ -1,6 +1,6 @@
-import { HistoryTiming } from '../../../utils/entityHistory';
-import type { ExplorerHistoryDetail, ExplorerHistoryRow } from '../../../models/Explorer.types.ts';
-import type { HarnessIndex } from '../../../models/Harness.types.ts';
+import type { HistoryTiming } from '../../../utils/entityHistory';
+import type { ExplorerHistoryDetail, ExplorerHistoryRow } from '../../../models/Explorer.types';
+import type { HarnessIndex } from '../../../models/Harness.types';
 
 type Coverage = ExplorerHistoryRow['coverage'];
 

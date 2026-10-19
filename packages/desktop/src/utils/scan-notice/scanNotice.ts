@@ -1,5 +1,5 @@
-import { remoteScanFailures } from '../../../../remote/src/models/RemoteControl.types.ts';
-import type { RemoteScanFailure } from '../../../../remote/src/models/RemoteControl.types.ts';
+import { remoteScanFailures } from '../../../../remote/src/models/RemoteControl.types';
+import type { RemoteScanFailure } from '../../../../remote/src/models/RemoteControl.types';
 
 export type ScanFailure = RemoteScanFailure;
 

@@ -8,7 +8,7 @@ import type {
 	GrantStore,
 	OneTimeStore,
 	SessionStore
-} from '../../models/HubAuthStore.types.ts';
+} from '../../models/HubAuthStore.types';
 import { d1CredentialStores } from './d1CredentialStores';
 import { EMAIL_PURGES } from '../../utils/d1EmailStores';
 import { d1EmailStores } from './d1EmailStores';

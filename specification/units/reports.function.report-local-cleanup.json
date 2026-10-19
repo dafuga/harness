@@ -55,11 +55,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/services/report-retention-service/reportLocalCleanup.ts",
+		"entry": "packages/reports/src/utils/reportLocalCleanup.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/services/report-retention-service/reportLocalCleanup.ts"
+				"entry": "packages/reports/src/utils/reportLocalCleanup.ts"
 			}
 		]
 	},

@@ -1,9 +1,9 @@
-import { HubEvidenceDependencies } from '../../utils/hubEvidenceScope';
+import type { HubEvidenceDependencies } from '../../utils/hubEvidenceScope';
 import type { Actor } from 'collaboration';
 import type {
 	EntityEvidenceQuery,
 	EvidenceArtifactQuery
-} from '../../../../desktop/src/models/DesktopEvidence.types.ts';
+} from '../../../../desktop/src/models/DesktopEvidence.types';
 import { recordedScope } from '../../../../desktop/src/utils/recordedScope';
 import { hubSource, type HubSourceContext } from '../../utils/hubSource';
 import { hubNotes } from './hubNotes';

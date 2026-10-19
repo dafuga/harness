@@ -1,6 +1,6 @@
-import { ExplorerResolved } from '../explorerScope';
-import type { ExplorerLocation, ExplorerScope } from '../../models/Explorer.types.ts';
-import type { HarnessIndex, HarnessRevisionSummary } from '../../models/Harness.types.ts';
+import type { ExplorerResolved } from '../explorerScope';
+import type { ExplorerLocation, ExplorerScope } from '../../models/Explorer.types';
+import type { HarnessIndex, HarnessRevisionSummary } from '../../models/Harness.types';
 
 const short = (commit: string) => commit.slice(0, 7);
 

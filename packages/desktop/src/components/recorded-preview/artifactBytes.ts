@@ -1,9 +1,9 @@
 import { unreadArtifact, damagedArtifact } from '../../utils/artifactBytes';
-import type { DesktopBridge } from '../../models/DesktopBridge.types.ts';
+import type { DesktopBridge } from '../../models/DesktopBridge.types';
 import type {
 	EvidenceArtifactQuery,
 	EvidenceArtifactResult
-} from '../../models/DesktopEvidence.types.ts';
+} from '../../models/DesktopEvidence.types';
 
 const hex = (bytes: Uint8Array) =>
 	[...bytes].map((value) => value.toString(16).padStart(2, '0')).join('');

@@ -1,6 +1,6 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import ProjectActivity from '../../src/components/ProjectActivity.svelte';
+import ProjectActivity from '../../src/components/project-activity/ProjectActivity.svelte';
 
 function sha(letter: string): string {
 	return letter.repeat(40);

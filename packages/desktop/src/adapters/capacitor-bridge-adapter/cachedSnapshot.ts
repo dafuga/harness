@@ -1,5 +1,5 @@
-import { SavedCopy } from '../../utils/cachedSnapshot';
-import type { ProjectSnapshot } from '../../models/Desktop.types.ts';
+import type { SavedCopy } from '../../utils/cachedSnapshot';
+import type { ProjectSnapshot } from '../../models/Desktop.types';
 
 /**
  * A snapshot the phone kept, as the page has to show it: dated, read-only, and with nothing

@@ -88,12 +88,12 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/impact-kernel/impactKernel.ts",
+		"entry": "src/utils/impactKernel.ts",
 		"handler": "impactKernel",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/impact-kernel/impactKernel.ts",
+				"entry": "src/utils/impactKernel.ts",
 				"handler": "impactKernel"
 			}
 		]

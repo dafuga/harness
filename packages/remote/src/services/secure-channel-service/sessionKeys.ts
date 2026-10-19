@@ -1,5 +1,5 @@
-import { SessionKeyInput } from '../../utils/sessionKeys';
-import type { SessionKeys } from '../../models/RemoteSecure.types.ts';
+import type { SessionKeyInput } from '../../utils/sessionKeys';
+import type { SessionKeys } from '../../models/RemoteSecure.types';
 import { concatBytes, remoteBytes, sha256 } from '../../utils/remoteBytes';
 import { aesKey, deriveBytes, sharedSecret } from '../../utils/remoteKeys';
 

@@ -109,11 +109,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/note-lines/noteLines.ts",
+		"entry": "src/utils/noteLines.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/note-lines/noteLines.ts"
+				"entry": "src/utils/noteLines.ts"
 			}
 		]
 	},

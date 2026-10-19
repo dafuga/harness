@@ -1,7 +1,7 @@
 import type {
 	EntityEvidenceQuery,
 	EvidenceArtifactQuery
-} from '../../../../desktop/src/models/DesktopEvidence.types.ts';
+} from '../../../../desktop/src/models/DesktopEvidence.types';
 import { evidencePayload } from '../../../../desktop/src/utils/evidencePayload';
 import { hubFail } from '../../utils/hubJson';
 

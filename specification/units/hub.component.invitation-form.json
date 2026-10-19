@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/components/InvitationForm.svelte",
-			"packages/hub/src/components/invitation-form/InvitationForm.svelte"
-		],
-		"symbols": ["InvitationForm", "InvitationForm"]
+		"source": ["packages/hub/src/components/invitation-form/InvitationForm.svelte"],
+		"symbols": ["InvitationForm"]
 	},
 	"contract": {
 		"origin": "declared",

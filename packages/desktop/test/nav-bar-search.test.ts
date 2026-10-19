@@ -1,6 +1,6 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import NavBar from '../src/components/NavBar.svelte';
+import NavBar from '../src/components/nav-bar/NavBar.svelte';
 import { createWorkspaceStore } from '../src/lib/stores/workspace.svelte';
 import type { ProjectSnapshot } from '../src/models/Desktop.types';
 

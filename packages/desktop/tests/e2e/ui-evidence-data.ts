@@ -3,12 +3,12 @@ import type { ExplorerSide } from '../../../reports/src/models/Explorer.types';
 import type { HarnessUnit } from '../../../reports/src/models/Harness.types';
 import { explorerBehavior } from '../../../reports/src/utils/explorerBehavior';
 import { explorerEvidence } from '../../../reports/src/utils/explorerEvidence';
-import { explorerScope } from '../../../reports/src/utils/explorerScope';
+import { explorerScope } from '../../../reports/src/utils/harness-page/explorerScope';
 import { index } from '../../../reports/test/entityFixture';
 import { commits, ids, units } from '../../../reports/test/entityUnits';
 import type { EntityEvidenceResult } from '../../src/models/DesktopEvidence.types';
 import type { Thumbnail } from '../../src/models/Desktop.types';
-import type { UnitDocumentation } from '../../../../src/utils/unitDocumentation';
+import type { UnitDocumentation } from '../../../../src/utils/unit-documentation/unitDocumentation';
 import { nativeImageFixture } from './native-image-fixture';
 import { cardScenario, observedHistory, type Example } from './ui-evidence-history';
 

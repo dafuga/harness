@@ -1,4 +1,4 @@
-import { Point } from '../../utils/trackpadZoom';
+import type { Point } from '../../utils/trackpadZoom';
 
 export function imageAnchor(image: HTMLImageElement, pointer: Point): Point {
 	const rect = image.getBoundingClientRect();

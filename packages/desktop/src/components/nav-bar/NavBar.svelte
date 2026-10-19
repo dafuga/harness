@@ -1,10 +1,10 @@
 <script lang="ts">
 	import BrandMark from '$shared/BrandMark.svelte';
 	import { resolve } from '$app/paths';
-	import EntitySearch from '$shared/EntitySearch.svelte';
+	import EntitySearch from '$shared/entity-search/EntitySearch.svelte';
 	import type { Snippet } from 'svelte';
-	import { categories } from '../../models/Desktop.types.ts';
-	import type { Workspace } from '../../lib/stores/workspace.svelte.ts';
+	import { categories } from '../../models/Desktop.types';
+	import type { Workspace } from '../../lib/stores/workspace.svelte';
 	import Icon from '../Icon.svelte';
 	import ProjectSwitcher from '../project-switcher/ProjectSwitcher.svelte';
 	import RevisionPicker from '../RevisionPicker.svelte';

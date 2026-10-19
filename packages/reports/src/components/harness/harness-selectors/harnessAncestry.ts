@@ -1,4 +1,4 @@
-import type { HarnessRevisionSummary } from '../../../models/Harness.types.ts';
+import type { HarnessRevisionSummary } from '../../../models/Harness.types';
 
 const coverage = {
 	verified: 'verified',

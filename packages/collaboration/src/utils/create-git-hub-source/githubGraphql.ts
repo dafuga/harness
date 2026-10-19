@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { GitHubOptions, SourceEntry } from '../../models/Collaboration.types.ts';
+import type { GitHubOptions, SourceEntry } from '../../models/Collaboration.types';
 import { digest, fail, parse, sha } from '../parseCollaborationInput';
 
 const LIMIT = 16 * 1024 * 1024;

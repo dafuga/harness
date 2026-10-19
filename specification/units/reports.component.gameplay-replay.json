@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/GameplayReplay.svelte",
-			"packages/reports/src/components/gameplay-replay/GameplayReplay.svelte"
-		],
-		"symbols": ["GameplayReplay", "GameplayReplay"]
+		"source": ["packages/reports/src/components/gameplay-replay/GameplayReplay.svelte"],
+		"symbols": ["GameplayReplay"]
 	},
 	"contract": {
 		"origin": "declared",

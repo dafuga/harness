@@ -37,11 +37,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/block-spans/blockSpans.ts",
+		"entry": "src/utils/blockSpans.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/block-spans/blockSpans.ts"
+				"entry": "src/utils/blockSpans.ts"
 			}
 		]
 	},

@@ -2,8 +2,8 @@ import {
 	agentMethods,
 	commentMethods,
 	readMethods
-} from '../../../../remote/src/models/Remote.types.ts';
-import type { RemoteNativeStatus } from '../../models/Environment.types.ts';
+} from '../../../../remote/src/models/Remote.types';
+import type { RemoteNativeStatus } from '../../models/Environment.types';
 
 const reads: readonly string[] = [...readMethods, ...commentMethods];
 

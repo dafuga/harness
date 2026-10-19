@@ -8,14 +8,8 @@
 	"status": "active",
 	"documentation": "packages/reports/specification/features/planned/managed-preview-server.md",
 	"owns": {
-		"source": [
-			"packages/reports/src/services/PreviewServerService.ts",
-			"packages/reports/src/services/preview-server-service/PreviewServerService.ts"
-		],
+		"source": ["packages/reports/src/services/preview-server-service/PreviewServerService.ts"],
 		"symbols": [
-			"PreviewHandle",
-			"PreviewResult",
-			"PreviewServerService",
 			"PreviewHandle",
 			"PreviewResult",
 			"PreviewServerService",

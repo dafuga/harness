@@ -1,4 +1,5 @@
-import { PreviewHealth, path } from '../../utils/previewHealth';
+import type { PreviewHealth } from '../../utils/previewHealth';
+import { path } from '../../utils/previewHealth';
 
 export async function readPreviewHealth(url: string, token: string): Promise<PreviewHealth> {
 	const response = await fetch(url + path, {

@@ -51,11 +51,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/site-activity/activityClient.ts",
+		"entry": "packages/reports/src/utils/activityClient.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/site-activity/activityClient.ts"
+				"entry": "packages/reports/src/utils/activityClient.ts"
 			}
 		]
 	},

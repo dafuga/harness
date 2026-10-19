@@ -1,4 +1,4 @@
-import { Git } from '../utils/planGit';
+import type { Git } from '../utils/planGit';
 import process from 'node:process';
 import { Buffer } from 'node:buffer';
 import { spawn } from 'node:child_process';

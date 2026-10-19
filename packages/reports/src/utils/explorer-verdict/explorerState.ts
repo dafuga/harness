@@ -1,6 +1,7 @@
-import { Judged, Told, reasonText, coverageWorst } from '../explorerState';
-import type { ExplorerSlotCoverage, ExplorerStateCoverage } from '../../models/Explorer.types.ts';
-import type { HarnessCapture, HarnessScenario } from '../../models/Harness.types.ts';
+import type { Judged, Told } from '../explorerState';
+import { reasonText, coverageWorst } from '../explorerState';
+import type { ExplorerSlotCoverage, ExplorerStateCoverage } from '../../models/Explorer.types';
+import type { HarnessCapture, HarnessScenario } from '../../models/Harness.types';
 
 const short = (commit: string) => commit.slice(0, 7);
 

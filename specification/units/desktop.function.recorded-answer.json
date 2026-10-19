@@ -76,11 +76,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/recorded-answer/recordedAnswer.ts",
+		"entry": "packages/desktop/src/utils/recordedAnswer.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/recorded-answer/recordedAnswer.ts"
+				"entry": "packages/desktop/src/utils/recordedAnswer.ts"
 			}
 		]
 	},

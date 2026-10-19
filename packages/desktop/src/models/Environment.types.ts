@@ -12,7 +12,7 @@ export type {
 	RemoteMethod,
 	RemoteRevision,
 	WireChannel
-} from '../../../remote/src/models/Remote.types.ts';
+} from '../../../remote/src/models/Remote.types';
 export type {
 	RemoteDesktopControl,
 	RemoteDeviceInfo,
@@ -21,7 +21,7 @@ export type {
 	RemoteMobileStatus,
 	RemotePairingOffer,
 	RemotePairingRequest
-} from '../../../remote/src/models/RemoteControl.types.ts';
+} from '../../../remote/src/models/RemoteControl.types';
 
 export type EnvironmentKind = 'electron' | 'capacitor' | 'web';
 /** The control port of this runtime, if it has one: never both. */

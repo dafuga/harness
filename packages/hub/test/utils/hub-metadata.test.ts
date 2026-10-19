@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { hubMetadata } from '../../src/utils/hubMetadata';
+import { hubMetadata } from '../../src/utils/hub-metadata/hubMetadata';
 import { hubSource } from '../../src/utils/hubSource';
 import { hubRecords } from '../../src/utils/hubRecords';
 import {

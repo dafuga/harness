@@ -1,7 +1,8 @@
 import { expect, test } from 'vitest';
 import type { HarnessIndex, HarnessRecord, HarnessUnit } from '../../src/models/Harness.types';
-import { emittedChange, harnessEmitted } from '../../src/utils/harnessEmitted';
-import { harnessEmittedGrowth } from '../../src/utils/harnessEmittedGrowth';
+import { emittedChange } from '../../src/components/harness/harness-compare/harnessEmitted';
+import { harnessEmitted } from '../../src/utils/harnessEmitted';
+import { harnessEmittedGrowth } from '../../src/components/harness/harness-growth/harnessEmittedGrowth';
 
 const kernel = (emitted?: HarnessUnit['emitted'], kinds = ['process', 'wasm']) =>
 	({

@@ -1,6 +1,6 @@
 import { pending } from '../../utils/createdThread';
-import type { Workspace } from '../../lib/stores/workspace.svelte.ts';
-import type { EntityDetail, ThreadInfo } from '../../models/Desktop.types.ts';
+import type { Workspace } from '../../lib/stores/workspace.svelte';
+import type { EntityDetail, ThreadInfo } from '../../models/Desktop.types';
 
 /** Consume only a thread belonging to the exact entity and project that completed the request. */
 export function createdThread(workspace: Workspace, entity: EntityDetail): ThreadInfo | null {

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { RemoteHost } from '../../lib/stores/remoteHost.svelte.ts';
-	import type { RemotePairingOffer } from '../../models/Environment.types.ts';
+	import type { RemoteHost } from '../../lib/stores/remoteHost.svelte';
+	import type { RemotePairingOffer } from '../../models/Environment.types';
 	import { qrSymbol } from './qrSymbol';
 	import { timeLeft } from './remoteLabels';
 	let { offer, store }: { offer: RemotePairingOffer; store: RemoteHost } = $props();

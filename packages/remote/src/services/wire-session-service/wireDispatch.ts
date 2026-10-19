@@ -1,11 +1,11 @@
-import { WireDispatchContext } from '../../utils/wireDispatch';
-import { RemoteFailure, mutationMethods, remoteErrorMessages } from '../../models/Remote.types.ts';
+import type { WireDispatchContext } from '../../utils/wireDispatch';
+import { RemoteFailure, mutationMethods, remoteErrorMessages } from '../../models/Remote.types';
 import type {
 	RemoteError,
 	RemoteErrorCode,
 	WireRequest,
 	WireResponse
-} from '../../models/Remote.types.ts';
+} from '../../models/Remote.types';
 import { requestDigest } from './remoteIdentity';
 
 function refusal(context: WireDispatchContext, request: WireRequest): RemoteErrorCode | null {

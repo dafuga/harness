@@ -1,4 +1,4 @@
-import type { WireRequest } from '../../models/Remote.types.ts';
+import type { WireRequest } from '../../models/Remote.types';
 import { remoteBytes, sha256, toHex } from '../../utils/remoteBytes';
 import { stableJson } from './remoteBytes';
 

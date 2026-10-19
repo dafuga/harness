@@ -3,7 +3,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { ScenarioManifest } from '../../src/lib/contracts';
 import { componentManifestSchema } from '../../src/core/unitTypes';
-import { revisionRegistry } from '../../src/utils/revisionRegistry';
+import { revisionRegistry } from '../../src/utils/revision-registry/revisionRegistry';
 import { previewBinding } from '../../src/utils/previewBinding';
 import { registryGate } from '../../src/services/VerificationGates';
 import { indexFiles, unitOf } from '../support/memoryTree';

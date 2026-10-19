@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { SourceCommitFacts } from '../../models/Collaboration.types.ts';
+import type { SourceCommitFacts } from '../../models/Collaboration.types';
 import type { GitHubTransport } from '../githubTransport';
 import { fail, parse, sha } from '../parseCollaborationInput';
 

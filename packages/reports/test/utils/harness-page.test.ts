@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { harnessPage, homePath } from '../../src/utils/harnessPage';
+import { harnessPage, homePath } from '../../src/utils/harness-page/harnessPage';
 import { history, sha, summary } from '../explorerFixture';
 
 const kept = 'feature/kept#1';

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { CpuUsageService } from '../../src/services/CpuUsageService';
+import { CpuUsageService } from '../../src/services/cpu-usage-service/CpuUsageService';
 test('concurrent CPU requests share one sampler', async () => {
 	let calls = 0;
 	const adapter = {

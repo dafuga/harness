@@ -7,14 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/remote/src/services/WireSessionService.ts",
-			"packages/remote/src/services/wire-session-service/WireSessionService.ts"
-		],
+		"source": ["packages/remote/src/services/wire-session-service/WireSessionService.ts"],
 		"symbols": [
-			"WireSessionOptions",
-			"WireLink",
-			"WireSessionService",
 			"WireSessionOptions",
 			"WireLink",
 			"WireSessionService",

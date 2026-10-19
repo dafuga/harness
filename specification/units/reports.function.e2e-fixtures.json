@@ -93,11 +93,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/e2e-fixtures/e2eFixtures.ts",
+		"entry": "packages/reports/src/utils/e2eFixtures.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/e2e-fixtures/e2eFixtures.ts"
+				"entry": "packages/reports/src/utils/e2eFixtures.ts"
 			}
 		]
 	},

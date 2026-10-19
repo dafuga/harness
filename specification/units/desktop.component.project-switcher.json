@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/ProjectSwitcher.svelte",
-			"packages/desktop/src/components/project-switcher/ProjectSwitcher.svelte"
-		],
-		"symbols": ["ProjectSwitcher", "ProjectSwitcher"]
+		"source": ["packages/desktop/src/components/project-switcher/ProjectSwitcher.svelte"],
+		"symbols": ["ProjectSwitcher"]
 	},
 	"contract": {
 		"origin": "declared",

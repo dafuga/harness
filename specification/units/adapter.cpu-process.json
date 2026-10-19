@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/adapters/CpuProcessAdapter.ts",
-			"src/adapters/cpu-process-adapter/CpuProcessAdapter.ts"
-		],
-		"symbols": ["CpuProcessAdapter", "CpuProcessAdapter", "CpuProcessAdapter.sample"]
+		"source": ["src/adapters/cpu-process-adapter/CpuProcessAdapter.ts"],
+		"symbols": ["CpuProcessAdapter", "CpuProcessAdapter.sample"]
 	},
 	"contract": {
 		"origin": "derived",

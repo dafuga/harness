@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import type { ExplorerEntity } from '../../../models/Explorer.types.ts';
-	import type { ExplorerScreenProps } from '../../../models/ExplorerScreen.types.ts';
+	import type { ExplorerEntity } from '../../../models/Explorer.types';
+	import type { ExplorerScreenProps } from '../../../models/ExplorerScreen.types';
 	import type { EntityNav } from '../../../utils/entityLens';
 	import { entityShown } from './entityShown';
 	import EntityContract from '../../entity-contract/EntityContract.svelte';

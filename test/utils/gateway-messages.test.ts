@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { gatewayMessages } from '../../src/utils/gatewayMessages';
+import { gatewayMessages } from '../../src/services/claude-query-service/gatewayMessages';
 
 test('SDK receives one user envelope containing ordered role-labelled history', async () => {
 	const input = [

@@ -70,11 +70,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/collaboration/src/utils/create-collaboration/createCollaboration.ts",
+		"entry": "packages/collaboration/src/utils/createCollaboration.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/collaboration/src/utils/create-collaboration/createCollaboration.ts"
+				"entry": "packages/collaboration/src/utils/createCollaboration.ts"
 			}
 		]
 	},

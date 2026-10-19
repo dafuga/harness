@@ -7,12 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/BudgetService.ts", "src/services/budget-service/BudgetService.ts"],
+		"source": ["src/services/budget-service/BudgetService.ts"],
 		"symbols": [
-			"UnitBaseline",
-			"BudgetSubject",
-			"BudgetReport",
-			"BudgetService",
 			"UnitBaseline",
 			"BudgetSubject",
 			"BudgetReport",

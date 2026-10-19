@@ -1,4 +1,4 @@
-import type { SessionRecord } from '../../models/HubAuthStore.types.ts';
+import type { SessionRecord } from '../../models/HubAuthStore.types';
 import type { SessionRepository } from '../../repositories/SessionRepository';
 import { SESSION_COOKIE, authCookies } from '../../utils/authCookies';
 import { authFail } from '../../utils/authFail';

@@ -7,14 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/HookInstallService.ts",
-			"src/services/hook-install-service/HookInstallService.ts"
-		],
+		"source": ["src/services/hook-install-service/HookInstallService.ts"],
 		"symbols": [
-			"HookStageStatus",
-			"HookStatus",
-			"HookInstallService",
 			"HookStageStatus",
 			"HookStatus",
 			"HookInstallService",

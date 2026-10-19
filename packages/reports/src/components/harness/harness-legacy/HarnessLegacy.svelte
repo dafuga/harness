@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { HarnessLegacyReport } from '../../../models/Harness.types.ts';
+	import type { HarnessLegacyReport } from '../../../models/Harness.types';
 	import { legacyEvidence, legacyLink } from './legacyEvidence';
 	import EvidenceGrid from '../../evidence-grid/EvidenceGrid.svelte';
 	let {

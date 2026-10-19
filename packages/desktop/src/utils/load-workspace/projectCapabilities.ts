@@ -1,7 +1,7 @@
 import { closedCapabilities } from '../projectCapabilities';
-import type { DesktopBridge } from '../../models/DesktopBridge.types.ts';
-import type { ProjectSnapshot } from '../../models/Desktop.types.ts';
-import type { ProjectCapabilities } from '../../models/ProjectContext.types.ts';
+import type { DesktopBridge } from '../../models/DesktopBridge.types';
+import type { ProjectSnapshot } from '../../models/Desktop.types';
+import type { ProjectCapabilities } from '../../models/ProjectContext.types';
 
 /** A bridge from before capabilities has its required agent operations and nothing newer. */
 function legacyCapabilities(): ProjectCapabilities {

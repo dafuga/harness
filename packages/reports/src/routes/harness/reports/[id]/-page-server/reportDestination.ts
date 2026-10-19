@@ -1,10 +1,10 @@
-import { NamedReport } from '../../../../../utils/reportDestination';
+import type { NamedReport } from '../../../../../utils/reportDestination';
 import {
 	commitBranch,
 	explorerHome
 } from '../../../../../../../../src/utils/console-canonical/consoleCanonical';
 import { explorerRoutePath } from '../../../../../../../../src/utils/explorerRoute';
-import type { HarnessIndex } from '../../../../../models/Harness.types.ts';
+import type { HarnessIndex } from '../../../../../models/Harness.types';
 
 /**
  * Where an earlier report address leads in the explorer, as the path after the route the console

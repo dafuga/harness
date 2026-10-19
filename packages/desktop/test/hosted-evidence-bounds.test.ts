@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { hostedResponse } from '../src/utils/hostedResponse';
-import { hostedArtifact } from '../src/utils/hostedArtifact';
+import { hostedArtifact } from '../../hub/src/utils/browser-bridge/hostedArtifact';
 import { HostedEvidenceValidator } from '../src/validators/HostedEvidenceValidator';
 import { asked, hubAnswer } from './hosted-evidence-fixture';
 

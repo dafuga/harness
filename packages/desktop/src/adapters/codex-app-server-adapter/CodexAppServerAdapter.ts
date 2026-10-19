@@ -5,7 +5,7 @@ import type {
 	GeneratedImage,
 	ImageGenerator,
 	ImageRequest
-} from '../../models/AgentRunner.types.ts';
+} from '../../models/AgentRunner.types';
 import { codexState } from './codexState';
 import { codexTurn } from './codexTurn';
 import { ImageBytesValidator } from '../../validators/ImageBytesValidator';

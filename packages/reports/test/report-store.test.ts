@@ -2,9 +2,9 @@ import { afterEach, expect, test } from 'vitest';
 import { mkdtemp, rm, writeFile, symlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { ReportRepository } from '../src/repositories/ReportRepository';
+import { ReportRepository } from '../src/repositories/report-repository/ReportRepository';
 import type { RecordInput } from '../src/models/Report.types';
-import { reportDisplay } from '../src/utils/reportDisplay';
+import { reportDisplay } from '../src/components/gameplay-replay/reportDisplay';
 
 const roots: string[] = [];
 async function fixture() {

@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import { registeredAsset } from '../../../../../../../utils/reportAssets';
 import { R2ScreenshotStoreAdapter } from '../../../../../../../adapters/R2ScreenshotStoreAdapter';
 import { R2EvidenceStoreAdapter } from '../../../../../../../adapters/R2EvidenceStoreAdapter';
-import type { Report } from '../../../../../../../models/Report.types.ts';
+import type { Report } from '../../../../../../../models/Report.types';
 import { mediaMime } from '../../../../../../../utils/evidenceMedia';
 import { mediaResponse } from '../../../../../../../utils/mediaResponse';
 

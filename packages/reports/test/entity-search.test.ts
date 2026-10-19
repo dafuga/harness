@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import type { SearchEntry } from '../src/utils/entitySearch';
-import { entitySearch } from '../src/utils/entitySearch';
+import { entitySearch } from '../src/components/entity-search/entitySearch';
 
 /**
  * One search over the entities of one revision: every category, matched on display names, ids,

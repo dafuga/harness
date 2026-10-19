@@ -1,10 +1,6 @@
 import { componentManifestSchema } from '../../../../../src/lib/contracts';
 import { z } from 'zod';
-import type {
-	Anchor,
-	RepositoryIdentity,
-	SourceAdapter
-} from '../../models/Collaboration.types.ts';
+import type { Anchor, RepositoryIdentity, SourceAdapter } from '../../models/Collaboration.types';
 import type { GitHubTransport } from '../githubTransport';
 import { anchorSchema, digest, fail, hash, parse, safePath } from '../parseCollaborationInput';
 import { ensureAncestry } from '../githubHistory';

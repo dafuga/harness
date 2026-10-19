@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import type { ExplorerCategory } from '../../../models/Explorer.types.ts';
+	import type { ExplorerCategory } from '../../../models/Explorer.types';
 	import { catalogFilter } from './entityCatalog';
 	import { type CatalogFilter, type CatalogRow } from '../../../utils/entityCatalog';
 	import { entityLabels } from '../../../utils/entityLens';

@@ -25,11 +25,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/commands/codex-picker-command/pickerPaths.ts",
+		"entry": "src/utils/pickerPaths.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/commands/codex-picker-command/pickerPaths.ts"
+				"entry": "src/utils/pickerPaths.ts"
 			}
 		]
 	},

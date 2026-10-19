@@ -1,4 +1,5 @@
-import { ActivityReading, readingAge } from '../../utils/activityReading';
+import type { ActivityReading } from '../../utils/activityReading';
+import { readingAge } from '../../utils/activityReading';
 import type { AgentEntry, AgentRoster } from '../../../../../src/core/activityTypes';
 import { agentStates } from '../../utils/activityDisplay';
 

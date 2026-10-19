@@ -3,12 +3,12 @@ import type {
 	ProjectTaskRequest,
 	RunEvent,
 	RunRequest
-} from '../../models/DesktopBridge.types.ts';
+} from '../../models/DesktopBridge.types';
 import { repositoryLease, type RepositoryLease } from '../../utils/repositoryLease';
 import { designCount } from '../../utils/designCount';
-import type { RunContext } from '../../models/RunContext.types.ts';
-import type { ImageGenerator } from '../../models/AgentRunner.types.ts';
-import { RunCancelled } from '../../models/AgentRunner.types.ts';
+import type { RunContext } from '../../models/RunContext.types';
+import type { ImageGenerator } from '../../models/AgentRunner.types';
+import { RunCancelled } from '../../models/AgentRunner.types';
 import type { ProjectSessionService } from '../ProjectSessionService';
 import type { ProviderDiscoveryService } from '../provider-discovery-service/ProviderDiscoveryService';
 import { PlanRunService } from '../PlanRunService';

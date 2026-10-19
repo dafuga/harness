@@ -1,6 +1,6 @@
-import { RunCancelled } from '../../models/AgentRunner.types.ts';
-import type { CreatedEntity, RunRequest } from '../../models/DesktopBridge.types.ts';
-import type { RunContext } from '../../models/RunContext.types.ts';
+import { RunCancelled } from '../../models/AgentRunner.types';
+import type { CreatedEntity, RunRequest } from '../../models/DesktopBridge.types';
+import type { RunContext } from '../../models/RunContext.types';
 import { hostChanges } from '../../utils/hostChanges';
 import { planDesign } from '../../utils/plan-design/planDesign';
 import type { ProjectRunContext } from '../../utils/prepareProjectRun';

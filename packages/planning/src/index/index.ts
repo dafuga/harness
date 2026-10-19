@@ -1,17 +1,13 @@
-import type {
-	PlanningApi,
-	PlanningRequest,
-	PlanningResult
-} from '../models/PlanningBridge.types.ts';
-import type { PlanningErrorCode } from '../models/PlanningView.types.ts';
+import type { PlanningApi, PlanningRequest, PlanningResult } from '../models/PlanningBridge.types';
+import type { PlanningErrorCode } from '../models/PlanningView.types';
 import { planGit } from './planGit';
 import { planningService } from '../services/planning-service/PlanningService';
 
-export type * from '../models/Planning.types.ts';
+export type * from '../models/Planning.types';
 
-export type * from '../models/PlanningBridge.types.ts';
+export type * from '../models/PlanningBridge.types';
 
-export type * from '../models/PlanningView.types.ts';
+export type * from '../models/PlanningView.types';
 
 export async function createPlanning(root: string): Promise<PlanningApi> {
 	return planningService(await planGit(root));

@@ -3,7 +3,7 @@ import { basename } from 'node:path';
 import { componentManifestSchema } from '../../../../../src/lib/contracts';
 import { gitBlobs } from './gitBlobs';
 import type { ComponentManifest } from '../../../../../src/lib/contracts';
-import type { BranchInfo, CommitInfo, Revision } from '../../models/Desktop.types.ts';
+import type { BranchInfo, CommitInfo, Revision } from '../../models/Desktop.types';
 import { gitFiles } from './gitRead';
 import { gitRead, gitRevision, gitText } from '../../utils/gitRead';
 import { readUnitDocumentation } from '../../../../../src/utils/unit-documentation/unitDocumentation';

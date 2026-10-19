@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/VerificationService.ts",
-			"src/services/verification-service/VerificationService.ts"
-		],
+		"source": ["src/services/verification-service/VerificationService.ts"],
 		"symbols": [
-			"VerifyContext",
-			"VerificationService",
 			"VerifyContext",
 			"VerificationService",
 			"VerificationService.constructor",

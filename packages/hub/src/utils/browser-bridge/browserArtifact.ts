@@ -1,5 +1,5 @@
 import { artifactMediaTypes } from '$desktop/utils/remoteArtifact';
-import { hostedArtifact } from '$desktop/utils/hostedArtifact';
+import { hostedArtifact } from './hostedArtifact';
 
 /** Browsers accept only the exact attested media names and the bytes bound to the capture. */
 export async function browserArtifact(

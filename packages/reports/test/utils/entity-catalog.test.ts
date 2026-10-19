@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest';
-import { catalogFilter, entityCatalog, listed } from '../../src/utils/entityCatalog';
+import { catalogFilter } from '../../src/components/harness/explorer-index/entityCatalog';
+import { entityCatalog, listed } from '../../src/utils/entityCatalog';
 import { explorerEntities } from '../../src/utils/explorerEntities';
 import { explorerRelations } from '../../src/utils/explorerRelations';
 import { record, revision } from '../entityFixture';

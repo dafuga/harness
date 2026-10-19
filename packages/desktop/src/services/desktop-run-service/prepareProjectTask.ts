@@ -1,8 +1,8 @@
-import { ProjectTaskContext } from '../../utils/prepareProjectTask';
+import type { ProjectTaskContext } from '../../utils/prepareProjectTask';
 import { randomUUID } from 'node:crypto';
-import type { ProjectTaskRequest } from '../../models/DesktopBridge.types.ts';
+import type { ProjectTaskRequest } from '../../models/DesktopBridge.types';
 import type { Preparation } from '../../utils/prepareRun';
-import { RunCancelled } from '../../models/AgentRunner.types.ts';
+import { RunCancelled } from '../../models/AgentRunner.types';
 
 /** Rechecks project and revision before selecting a runner. No client can choose its cwd. */
 export async function prepareProjectTask(

@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/remote/src/services/SecureChannelService.ts",
-			"packages/remote/src/services/secure-channel-service/SecureChannelService.ts"
-		],
+		"source": ["packages/remote/src/services/secure-channel-service/SecureChannelService.ts"],
 		"symbols": [
-			"SecureChannelOptions",
-			"SecureChannelService",
 			"SecureChannelOptions",
 			"SecureChannelService",
 			"SecureChannelService.constructor",

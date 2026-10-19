@@ -2,7 +2,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { expect, test } from 'vitest';
 import { unitsConfigFile, unitsConfigSchema } from '../src/core/unitsConfig';
 import { verifyConfigFile, verifyConfigSchema } from '../src/core/verifyTypes';
-import { verifyPlan } from '../src/utils/verifyPlan';
+import { verifyPlan } from '../src/services/verification-service/verifyPlan';
 
 /**
  * The checks verification plans for this repository's own declared configuration: an entity

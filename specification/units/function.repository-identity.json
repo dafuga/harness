@@ -71,11 +71,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/repository-identity/repositoryIdentity.ts",
+		"entry": "src/utils/repositoryIdentity.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/repository-identity/repositoryIdentity.ts"
+				"entry": "src/utils/repositoryIdentity.ts"
 			}
 		]
 	},

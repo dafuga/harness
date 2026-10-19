@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/ReportSummary.svelte",
-			"packages/reports/src/components/report-summary/ReportSummary.svelte"
-		],
-		"symbols": ["ReportSummary", "ReportSummary"]
+		"source": ["packages/reports/src/components/report-summary/ReportSummary.svelte"],
+		"symbols": ["ReportSummary"]
 	},
 	"contract": {
 		"origin": "declared",

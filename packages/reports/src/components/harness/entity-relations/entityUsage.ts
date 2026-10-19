@@ -1,5 +1,5 @@
-import { EntityUsage } from '../../../utils/entityUsage';
-import type { ExplorerRelations } from '../../../models/Explorer.types.ts';
+import type { EntityUsage } from '../../../utils/entityUsage';
+import type { ExplorerRelations } from '../../../models/Explorer.types';
 import { categoryIcon } from '../../../utils/harnessIcons';
 
 const kinds = [

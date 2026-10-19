@@ -45,11 +45,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/adapters/git-source-adapter/gitBlobs.ts",
+		"entry": "packages/desktop/src/utils/gitBlobs.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/adapters/git-source-adapter/gitBlobs.ts"
+				"entry": "packages/desktop/src/utils/gitBlobs.ts"
 			}
 		]
 	},

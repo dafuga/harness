@@ -1,8 +1,8 @@
 import { planRegistry } from './planRegistry';
 import { attest, findIdentity, planFiles } from '../../utils/planIdentity';
-import type { PlanningApi, CreatePlanInput } from '../../models/PlanningBridge.types.ts';
-import type { ProjectSnapshot, PlanningErrorCode } from '../../models/PlanningView.types.ts';
-import type { PlanSummary } from '../../models/Planning.types.ts';
+import type { PlanningApi, CreatePlanInput } from '../../models/PlanningBridge.types';
+import type { ProjectSnapshot, PlanningErrorCode } from '../../models/PlanningView.types';
+import type { PlanSummary } from '../../models/Planning.types';
 import type { Git } from '../../utils/planGit';
 import { paths, revision, blob } from '../../utils/planGit';
 import { planReads } from './planReads';

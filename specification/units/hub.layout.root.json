@@ -8,11 +8,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/routes/+layout.svelte",
 			"packages/hub/src/routes/+layout.ts",
 			"packages/hub/src/routes/-layout/+layout.svelte"
 		],
-		"symbols": ["+layout", "ssr", "+layout"]
+		"symbols": ["ssr", "+layout"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -23,10 +22,6 @@
 			}
 		],
 		"outputs": [
-			{
-				"name": "+layout",
-				"type": "markup"
-			},
 			{
 				"name": "ssr",
 				"type": "unknown"

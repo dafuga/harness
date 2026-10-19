@@ -5,8 +5,8 @@ import {
 	largeArtifact,
 	otherArtifact
 } from '../../utils/remoteArtifact';
-import type { EvidenceArtifactResult } from '../../models/DesktopEvidence.types.ts';
-import type { RemoteBinary } from '../../models/Environment.types.ts';
+import type { EvidenceArtifactResult } from '../../models/DesktopEvidence.types';
+import type { RemoteBinary } from '../../models/Environment.types';
 import { remoteBinary } from '../../utils/remoteBinary';
 
 /**

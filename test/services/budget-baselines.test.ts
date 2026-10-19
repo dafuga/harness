@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import type { BudgetEvent, PerformanceBaselineEntry } from '../../src/core/budgetTypes';
-import { BudgetService } from '../../src/services/BudgetService';
-import { comparisonContext } from '../../src/utils/comparisonContext';
+import { BudgetService } from '../../src/services/budget-service/BudgetService';
+import { comparisonContext } from '../../src/utils/comparison-context/comparisonContext';
 
 const sampling = { rounds: 5, iterations: 30 };
 const original = comparisonContext({ operation: 'rank', input: { size: 20000 } }, sampling);

@@ -28,11 +28,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/gameplay-replay/replayLocale.ts",
+		"entry": "packages/reports/src/utils/replayLocale.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/gameplay-replay/replayLocale.ts"
+				"entry": "packages/reports/src/utils/replayLocale.ts"
 			}
 		]
 	},

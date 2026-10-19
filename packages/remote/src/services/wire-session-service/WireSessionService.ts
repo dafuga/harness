@@ -4,7 +4,7 @@ import {
 	attachMethod,
 	remoteErrorMessages,
 	remoteLimits
-} from '../../models/Remote.types.ts';
+} from '../../models/Remote.types';
 import type {
 	RemoteAttachment,
 	RemoteError,
@@ -13,7 +13,7 @@ import type {
 	WireChannel,
 	WireMessage,
 	WireRequest
-} from '../../models/Remote.types.ts';
+} from '../../models/Remote.types';
 import { wireDispatch } from './wireDispatch';
 import { RemoteInputValidator } from '../../validators/RemoteInputValidator';
 import { WireMessageValidator } from '../../validators/WireMessageValidator';

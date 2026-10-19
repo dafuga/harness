@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { consoleHostFiles } from '../../src/utils/consoleHostFiles';
+import { consoleHostFiles } from '../../src/services/console-install-service/consoleHostFiles';
 
 const files = consoleHostFiles({
 	base: '/harness',

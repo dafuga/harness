@@ -1,11 +1,11 @@
-import {
+import type {
 	EmittedReview,
 	EmittedCell,
 	EmittedGrowth,
 	EmittedRow
 } from '../../../utils/harnessEmittedGrowth';
-import type { HarnessIndex } from '../../../models/Harness.types.ts';
-import type { HarnessReview } from '../../../models/HarnessBudget.types.ts';
+import type { HarnessIndex } from '../../../models/Harness.types';
+import type { HarnessReview } from '../../../models/HarnessBudget.types';
 import { emittedKey, emittedLabel } from '../../../utils/harnessEmitted';
 import { emittedTargets } from './harnessEmitted';
 

@@ -1,5 +1,6 @@
-import { PlanningContext, planRecord } from '../../utils/planning-reads/planningReads';
-import type { PlanImageQuery } from '../../models/PlanningPort.types.ts';
+import type { PlanningContext } from '../../utils/planning-reads/planningReads';
+import { planRecord } from '../../utils/planning-reads/planningReads';
+import type { PlanImageQuery } from '../../models/PlanningPort.types';
 import { messageInfo } from '../../utils/planningConvert';
 
 export async function planningReads(context: PlanningContext, revision: string) {

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { GitHubOptions } from '../../models/Collaboration.types.ts';
+import type { GitHubOptions } from '../../models/Collaboration.types';
 import { digest, fail, hash, parse } from '../parseCollaborationInput';
 import { base64 } from '../githubTransport';
 

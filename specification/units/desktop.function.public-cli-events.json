@@ -34,11 +34,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/adapters/claude-cli-adapter/publicCliEvents.ts",
+		"entry": "packages/desktop/src/utils/publicCliEvents.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/adapters/claude-cli-adapter/publicCliEvents.ts"
+				"entry": "packages/desktop/src/utils/publicCliEvents.ts"
 			}
 		]
 	},

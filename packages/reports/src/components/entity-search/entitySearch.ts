@@ -1,4 +1,4 @@
-import { SearchEntry } from '../../utils/entitySearch';
+import type { SearchEntry } from '../../utils/entitySearch';
 import { explorerCategories } from '../../../../../src/utils/explorerRoute';
 
 const order = new Map<string, number>(

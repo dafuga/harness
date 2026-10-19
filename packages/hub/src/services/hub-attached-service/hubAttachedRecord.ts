@@ -1,4 +1,5 @@
-import { HubAttachedRecord, hubRecordJson } from '../../utils/hubAttachedRecord';
+import type { HubAttachedRecord } from '../../utils/hubAttachedRecord';
+import { hubRecordJson } from '../../utils/hubAttachedRecord';
 import { recordIntact } from '../../../../../src/utils/sealRecord';
 import { VerificationRecordValidator } from '../../../../../src/validators/VerificationRecordValidator';
 

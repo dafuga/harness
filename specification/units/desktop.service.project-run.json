@@ -7,17 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/services/ProjectRunService.ts",
-			"packages/desktop/src/services/project-run-service/ProjectRunService.ts"
-		],
-		"symbols": [
-			"plannedBefore",
-			"ProjectRunService",
-			"plannedBefore",
-			"ProjectRunService",
-			"ProjectRunService.run"
-		]
+		"source": ["packages/desktop/src/services/project-run-service/ProjectRunService.ts"],
+		"symbols": ["plannedBefore", "ProjectRunService", "ProjectRunService.run"]
 	},
 	"contract": {
 		"origin": "derived",

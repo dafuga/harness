@@ -1,6 +1,6 @@
 import { mkdir, readdir, lstat } from 'node:fs/promises';
 import { join } from 'node:path';
-import type { BeginInput, RecordInput, Report, Exports } from '../../models/Report.types.ts';
+import type { BeginInput, RecordInput, Report, Exports } from '../../models/Report.types';
 import { atomicJson, readJson, safeId } from '../../utils/reportFiles';
 import { reportFiles } from './reportFiles';
 import { reportLock } from '../../utils/reportLock';

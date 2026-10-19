@@ -5,7 +5,7 @@ import type {
 } from '../../src/models/HubAuth.types';
 import { GoogleIdentityService } from '../../src/services/GoogleIdentityService';
 import type { AuthConfig } from '../../src/utils/authConfig';
-import { composeHubAuth } from '../../src/utils/composeHubAuth';
+import { composeHubAuth } from '../../src/lib/server/auth/composeHubAuth';
 import { ORIGIN, SECRET } from './authFixture';
 import { githubFake } from './githubFake';
 import { COLLABORATION_REPOSITORY, OWNER_INSTALLATION } from './githubFakeState';

@@ -1,8 +1,11 @@
 import { readFileSync } from 'node:fs';
 import type { D1Database } from '@cloudflare/workers-types';
 import { expect, test } from 'vitest';
-import { createD1AuthStore } from '../../src/adapters/D1AuthStoreAdapter';
-import type { D1Like, D1Statement } from '../../src/adapters/D1AuthStoreAdapter';
+import { createD1AuthStore } from '../../src/adapters/d1-auth-store-adapter/D1AuthStoreAdapter';
+import type {
+	D1Like,
+	D1Statement
+} from '../../src/adapters/d1-auth-store-adapter/D1AuthStoreAdapter';
 import { emailStoreContract } from '../support/authEmailContract';
 import { grantStoreContract } from '../support/authGrantContract';
 import { authStoreContract, sessionRecord } from '../support/authStoreContract';

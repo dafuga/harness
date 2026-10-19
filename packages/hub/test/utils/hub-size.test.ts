@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { hubSize } from '../../src/utils/hubSize';
+import { hubSize } from '../../src/services/hub-projection-service/hubSize';
 import type { HubSourceContext } from '../../src/utils/hubSource';
 
 test('missing source sizes stay explicitly unavailable rather than counting as zero', () => {

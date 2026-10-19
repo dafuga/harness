@@ -1,5 +1,5 @@
-import type { HarnessCapture } from '../../../../reports/src/models/Harness.types.ts';
-import type { EvidenceArtifactResult } from '../../models/DesktopEvidence.types.ts';
+import type { HarnessCapture } from '../../../../reports/src/models/Harness.types';
+import type { EvidenceArtifactResult } from '../../models/DesktopEvidence.types';
 import { artifactLimit } from '../artifactMedia';
 import { artifactMedia } from './artifactMedia';
 

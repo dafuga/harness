@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { expect, test, vi } from 'vitest';
 import type { BrowserApi } from '../../src/utils/browserApi';
-import { browserBridge } from '../../src/utils/browserBridge';
+import { browserBridge } from '../../src/utils/browser-bridge/browserBridge';
 
 const projectId = '6f1d2c3b-4a59-4e68-9f70-8a1b2c3d4e5f';
 const commit = 'a'.repeat(40);

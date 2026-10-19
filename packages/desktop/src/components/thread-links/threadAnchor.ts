@@ -1,4 +1,4 @@
-import { ThreadTarget } from '../../utils/threadAnchor';
+import type { ThreadTarget } from '../../utils/threadAnchor';
 
 export function sameImage(left: ThreadTarget | null, right: ThreadTarget): boolean {
 	return Boolean(

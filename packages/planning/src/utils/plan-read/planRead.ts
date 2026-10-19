@@ -7,7 +7,7 @@ import type {
 	ApprovalRecord,
 	PlanThread,
 	ThreadMessage
-} from '../../models/Planning.types.ts';
+} from '../../models/Planning.types';
 import { planImageCodec } from '../planImageCodec';
 import type { Git } from '../planGit';
 import { blob, paths, imageBlob } from '../planGit';

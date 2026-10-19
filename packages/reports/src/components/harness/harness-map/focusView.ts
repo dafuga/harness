@@ -1,4 +1,5 @@
-import { MapView, wholeView, pad } from '../../../utils/focusView';
+import type { MapView } from '../../../utils/focusView';
+import { wholeView, pad } from '../../../utils/focusView';
 import { nodeSize, type HarnessLayout, type PlacedUnit } from '../../../utils/harnessLayout';
 
 const cell = { width: nodeSize.width + nodeSize.gapX, height: nodeSize.height + nodeSize.gapY };

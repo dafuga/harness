@@ -1,5 +1,5 @@
-import { NavbarSearch } from '../../../utils/navbarSearch';
-import type { ExplorerScope } from '../../../models/Explorer.types.ts';
+import type { NavbarSearch } from '../../../utils/navbarSearch';
+import type { ExplorerScope } from '../../../models/Explorer.types';
 import type { SearchEntry } from '../../../utils/entitySearch';
 
 /** One result as the search knows it: the same id, category and commit are the same result. */

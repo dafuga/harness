@@ -34,11 +34,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hub-metadata/hubMetadataPaths.ts",
+		"entry": "packages/hub/src/utils/hubMetadataPaths.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/hub-metadata/hubMetadataPaths.ts"
+				"entry": "packages/hub/src/utils/hubMetadataPaths.ts"
 			}
 		]
 	},

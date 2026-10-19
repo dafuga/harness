@@ -1,7 +1,7 @@
-import { EntityVerdict, EvidenceRead } from '../../utils/evidenceVerdict';
-import type { ExplorerSide } from '../../../../reports/src/models/Explorer.types.ts';
+import type { EntityVerdict, EvidenceRead } from '../../utils/evidenceVerdict';
+import type { ExplorerSide } from '../../../../reports/src/models/Explorer.types';
 import { explorerVerdict } from '../../../../reports/src/utils/explorer-verdict/explorerVerdict';
-import type { CatalogEntity } from '../../models/Desktop.types.ts';
+import type { CatalogEntity } from '../../models/Desktop.types';
 import { evidenceNotice, readingEvidence } from '../../utils/evidenceNotice';
 
 type Judged = Pick<CatalogEntity, 'id' | 'kind' | 'verification' | 'verificationNote'>;

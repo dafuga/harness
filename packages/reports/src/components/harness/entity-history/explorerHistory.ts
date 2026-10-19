@@ -1,5 +1,5 @@
-import type { ExplorerHistoryDetail } from '../../../models/Explorer.types.ts';
-import type { HarnessRevision } from '../../../models/Harness.types.ts';
+import type { ExplorerHistoryDetail } from '../../../models/Explorer.types';
+import type { HarnessRevision } from '../../../models/Harness.types';
 import { explorerChange } from '../../../utils/explorerEntities';
 import { explorerVerdict } from '../../../utils/explorer-verdict/explorerVerdict';
 

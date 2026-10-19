@@ -1,6 +1,6 @@
-import { ComparedSide, StateChoice, AlignedState } from '../../../utils/harnessComparison';
-import type { HarnessCapture, HarnessRecord } from '../../../models/Harness.types.ts';
-import type { Evidence } from '../../../models/Report.types.ts';
+import type { ComparedSide, StateChoice, AlignedState } from '../../../utils/harnessComparison';
+import type { HarnessCapture, HarnessRecord } from '../../../models/Harness.types';
+import type { Evidence } from '../../../models/Report.types';
 import { captureProvenance } from '../../../utils/captureProvenance';
 import { mediaFile } from '../../../utils/harnessEvidence';
 

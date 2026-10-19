@@ -1,4 +1,4 @@
-import { RunCancelled } from '../../models/AgentRunner.types.ts';
+import { RunCancelled } from '../../models/AgentRunner.types';
 import type { ProjectTaskContext } from '../../utils/prepareProjectTask';
 import { sourceSnapshot } from '../../utils/sourceSnapshot';
 import { sourceChanges } from '../../utils/sourceChanges';

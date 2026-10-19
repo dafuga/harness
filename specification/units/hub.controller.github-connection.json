@@ -8,13 +8,9 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/controllers/GithubConnectionController.ts",
 			"packages/hub/src/controllers/github-connection-controller/GithubConnectionController.ts"
 		],
 		"symbols": [
-			"GithubConnection",
-			"GithubConnectionControllerOptions",
-			"GithubConnectionController",
 			"GithubConnection",
 			"GithubConnectionControllerOptions",
 			"GithubConnectionController",

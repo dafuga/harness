@@ -1,4 +1,4 @@
-import { recordCapture } from '../src/utils/recordCapture';
+import { recordCapture } from '../src/utils/record-capture/recordCapture';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';

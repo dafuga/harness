@@ -50,11 +50,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/claude-query-service/gatewayMessages.ts",
+		"entry": "src/utils/gatewayMessages.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/claude-query-service/gatewayMessages.ts"
+				"entry": "src/utils/gatewayMessages.ts"
 			}
 		]
 	},

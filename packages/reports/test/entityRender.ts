@@ -4,7 +4,7 @@ import type { ExplorerLocation } from '../src/models/Explorer.types';
 import type { ExplorerScreenProps } from '../src/models/ExplorerScreen.types';
 import type { HarnessIndex } from '../src/models/Harness.types';
 import ExplorerContent from '../src/components/harness/ExplorerContent.svelte';
-import EntityTests from '../src/components/harness/EntityTests.svelte';
+import EntityTests from '../src/components/harness/entity-tests/EntityTests.svelte';
 import { explorerRoutePath } from '../../../src/utils/explorerRoute';
 import { explorerEntities } from '../src/utils/explorerEntities';
 import { index } from './entityFixture';

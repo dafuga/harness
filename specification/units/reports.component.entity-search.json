@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/EntitySearch.svelte",
-			"packages/reports/src/components/entity-search/EntitySearch.svelte"
-		],
-		"symbols": ["EntitySearch", "EntitySearch"]
+		"source": ["packages/reports/src/components/entity-search/EntitySearch.svelte"],
+		"symbols": ["EntitySearch"]
 	},
 	"contract": {
 		"origin": "declared",

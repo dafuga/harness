@@ -1,5 +1,5 @@
 import { evidencePayload } from '../evidencePayload';
-import { categories } from '../../models/Desktop.types.ts';
+import { categories } from '../../models/Desktop.types';
 import {
 	commitPattern,
 	enumField,

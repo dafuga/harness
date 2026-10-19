@@ -142,11 +142,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/writing-limits/writingLimits.ts",
+		"entry": "src/utils/writingLimits.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/writing-limits/writingLimits.ts"
+				"entry": "src/utils/writingLimits.ts"
 			}
 		]
 	},

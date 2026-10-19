@@ -1,4 +1,4 @@
-import type { ProjectCapabilities } from '../../models/ProjectContext.types.ts';
+import type { ProjectCapabilities } from '../../models/ProjectContext.types';
 
 /** What an approved phone may do in a granted project: everything, or reading and comments. */
 export function deviceCapabilities(agents: boolean, comments = true): ProjectCapabilities {

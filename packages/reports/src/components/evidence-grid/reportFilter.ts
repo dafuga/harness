@@ -1,5 +1,5 @@
-import { Filters } from '../../utils/reportFilter';
-import type { Evidence } from '../../models/Report.types.ts';
+import type { Filters } from '../../utils/reportFilter';
+import type { Evidence } from '../../models/Report.types';
 
 export function reportFilter(
 	items: Evidence[],

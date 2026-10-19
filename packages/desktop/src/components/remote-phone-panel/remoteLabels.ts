@@ -8,7 +8,7 @@ import {
 	awayNote,
 	revokedNote
 } from '../../utils/remoteLabels';
-import type { RemoteMobileStatus, RemoteNativeStatus } from '../../models/Environment.types.ts';
+import type { RemoteMobileStatus, RemoteNativeStatus } from '../../models/Environment.types';
 
 export function grantSummary(grant: { projects: unknown[]; agents: boolean }): string {
 	return `${plural(grant.projects.length, 'project')} · ${grantLabel(grant)}`;

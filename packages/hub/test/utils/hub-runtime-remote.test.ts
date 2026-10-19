@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
-import { HubApiController } from '../../src/controllers/HubApiController';
-import { hubHttpFailure } from '../../src/utils/hubHttp';
-import { hubRuntime } from '../../src/utils/hubRuntime';
+import { HubApiController } from '../../src/controllers/hub-api-controller/HubApiController';
+import { hubHttpFailure } from '../../src/controllers/hub-api-controller/hubHttp';
+import { hubRuntime } from '../../src/routes/api/[...path]/-server/hubRuntime';
 import { hostIdentity, outcome, registration, remoteRequest } from '../support/remoteFixture';
 import { remoteHostsFake } from '../support/remoteHostsFake';
 

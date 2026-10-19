@@ -1,4 +1,4 @@
-import { Query, ApiFailure, BrowserApi } from '../../utils/browserApi';
+import type { Query, ApiFailure, BrowserApi } from '../../utils/browserApi';
 import { hostedResponse } from '$desktop/utils/hostedResponse';
 import { artifactLimit } from '$desktop/utils/artifactMedia';
 import { browserError } from '../../utils/browserError';

@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
 import { resolve } from 'node:path';
-import { rendererAssets } from '../../src/utils/rendererAssets';
+import { rendererAssets } from '../../src/initializers/initialize-desktop/rendererAssets';
 
 /** Serve exactly the stamped static build, using the same asset resolver as Electron. */
 const root = resolve(import.meta.dirname, '../../build');

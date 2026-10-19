@@ -1,4 +1,5 @@
-import { StoredSide, SourceImpact, impactView } from '../../../../../../src/utils/sideImpact';
+import type { StoredSide, SourceImpact } from '../../../../../../src/utils/sideImpact';
+import { impactView } from '../../../../../../src/utils/sideImpact';
 import { HandlerRuntimeAdapter } from '../../../../../../src/adapters/HandlerRuntimeAdapter';
 import type { ImpactSide } from '../../../../../../src/core/impactTypes';
 import type { SourceGraph, TreeEntry } from '../../../../../../src/core/sourceTypes';

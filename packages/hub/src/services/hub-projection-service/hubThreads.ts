@@ -1,5 +1,5 @@
 import type { CommittedThread } from 'collaboration';
-import type { ThreadMessage } from '../../../../desktop/src/models/Desktop.types.ts';
+import type { ThreadMessage } from '../../../../desktop/src/models/Desktop.types';
 
 export function hubMessages(thread: CommittedThread): ThreadMessage[] {
 	return thread.comments.map((c) => ({

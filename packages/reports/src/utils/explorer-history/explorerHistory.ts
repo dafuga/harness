@@ -1,9 +1,9 @@
-import type { ExplorerHistoryRow, ExplorerScope } from '../../models/Explorer.types.ts';
+import type { ExplorerHistoryRow, ExplorerScope } from '../../models/Explorer.types';
 import type {
 	HarnessGrowthPoint,
 	HarnessIndex,
 	HarnessRevisionSummary
-} from '../../models/Harness.types.ts';
+} from '../../models/Harness.types';
 import { harnessAncestry } from './harnessAncestry';
 
 type Measured = NonNullable<ExplorerHistoryRow['measured']>;

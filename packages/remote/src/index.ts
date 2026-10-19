@@ -1,8 +1,8 @@
-export * from './models/Remote.types.ts';
-export * from './models/RemoteSecure.types.ts';
-export * from './models/RemoteRelay.types.ts';
-export * from './models/RemoteControl.types.ts';
-export * from './models/RemoteLocal.types.ts';
+export * from './models/Remote.types';
+export * from './models/RemoteSecure.types';
+export * from './models/RemoteRelay.types';
+export * from './models/RemoteControl.types';
+export * from './models/RemoteLocal.types';
 export {
 	type CryptoSource,
 	cryptoSource,

@@ -1,4 +1,5 @@
-import { DesktopIpcPort, bootstrapChannel } from '../../utils/desktopIpc';
+import type { DesktopIpcPort } from '../../utils/desktopIpc';
+import { bootstrapChannel } from '../../utils/desktopIpc';
 import type { LocalBootstrap } from '../../../../remote/src/index';
 
 /** `bootstrap` answers for the trusted top frame of a window and returns null for anyone else. */

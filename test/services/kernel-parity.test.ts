@@ -1,14 +1,15 @@
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import type { RuntimeRequest, UnitRuntime } from '../../src/core/runtimeTypes';
 import { HttpRuntimeAdapter } from '../../src/adapters/HttpRuntimeAdapter';
-import { ProcessRuntimeAdapter } from '../../src/adapters/ProcessRuntimeAdapter';
+import { ProcessRuntimeAdapter } from '../../src/adapters/process-runtime-adapter/ProcessRuntimeAdapter';
 import { WasmRuntimeAdapter } from '../../src/adapters/WasmRuntimeAdapter';
 import { RuntimeServerService, type ServedRuntime } from '../../src/services/RuntimeServerService';
 import { UnitRuntimeService } from '../../src/services/UnitRuntimeService';
-import { impactKernel } from '../../src/utils/impactKernel';
+import { impactKernel } from '../../src/utils/impact-kernel/impactKernel';
 import { kernelArtifacts } from '../../src/utils/kernelArtifacts';
-import { kernelMutations, kernelWorkload } from '../../src/utils/kernelWorkload';
-import { recordCapture } from '../../src/utils/recordCapture';
+import { kernelMutations } from '../../src/workflows/run-kernel/kernelWorkload';
+import { kernelWorkload } from '../../src/utils/kernelWorkload';
+import { recordCapture } from '../../src/utils/record-capture/recordCapture';
 import { kernelVectors, vectorText } from '../support/kernelVectors';
 
 const artifacts = kernelArtifacts();

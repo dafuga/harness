@@ -6,7 +6,7 @@ import { ReportRetentionService } from '../report-retention-service/ReportRetent
 import { ReportStorageSyncService } from '../ReportStorageSyncService';
 import { ReportPublishService } from '../report-publish-service/ReportPublishService';
 import { reportCli, inputData, required } from './reportCli';
-import type { BeginInput, RecordInput } from '../../models/Report.types.ts';
+import type { BeginInput, RecordInput } from '../../models/Report.types';
 
 export class ReportCommandService {
 	constructor(private readonly repository = new ReportRepository()) {}

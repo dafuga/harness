@@ -1,4 +1,4 @@
-import type { Report, Status } from '../../models/Report.types.ts';
+import type { Report, Status } from '../../models/Report.types';
 
 export function reportDisplay(report: Report): Status {
 	if (report.state === 'finalized') return report.status;

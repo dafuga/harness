@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ThreadInfo } from '../../models/Desktop.types.ts';
+	import type { ThreadInfo } from '../../models/Desktop.types';
 	import { sameImage } from './threadAnchor';
 	import { type ThreadTarget } from '../../utils/threadAnchor';
 	let {

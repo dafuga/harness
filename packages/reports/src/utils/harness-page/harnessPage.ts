@@ -4,8 +4,8 @@ import {
 	explorerHome
 } from '../../../../../src/utils/console-canonical/consoleCanonical';
 import { explorerRoute, explorerRoutePath } from '../../../../../src/utils/explorerRoute';
-import type { ExplorerScope } from '../../models/Explorer.types.ts';
-import type { HarnessIndex } from '../../models/Harness.types.ts';
+import type { ExplorerScope } from '../../models/Explorer.types';
+import type { HarnessIndex } from '../../models/Harness.types';
 import { explorerScope } from './explorerScope';
 
 export type HarnessPage =

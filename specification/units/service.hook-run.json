@@ -7,10 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/HookRunService.ts", "src/services/hook-run-service/HookRunService.ts"],
+		"source": ["src/services/hook-run-service/HookRunService.ts"],
 		"symbols": [
-			"HookOutcome",
-			"HookRunService",
 			"HookOutcome",
 			"HookRunService",
 			"HookRunService.constructor",

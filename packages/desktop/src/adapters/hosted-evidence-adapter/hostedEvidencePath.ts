@@ -1,4 +1,4 @@
-import type { EntityEvidenceQuery } from '../../models/DesktopEvidence.types.ts';
+import type { EntityEvidenceQuery } from '../../models/DesktopEvidence.types';
 import { evidencePayload } from '../../utils/evidencePayload';
 
 export function hostedEvidencePath(

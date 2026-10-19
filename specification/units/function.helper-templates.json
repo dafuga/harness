@@ -38,11 +38,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/revision-detail-service/helperTemplates.ts",
+		"entry": "src/utils/helperTemplates.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/revision-detail-service/helperTemplates.ts"
+				"entry": "src/utils/helperTemplates.ts"
 			}
 		]
 	},

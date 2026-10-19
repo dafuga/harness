@@ -1,12 +1,6 @@
-import {
-	MeasureRow,
-	notMeasured,
-	byteSize,
-	PerformanceRow,
-	tolerancePolicy,
-	EntityMeasure
-} from '../../../utils/entityMeasure';
-import type { HarnessRecord, HarnessUnit } from '../../../models/Harness.types.ts';
+import type { MeasureRow, PerformanceRow, EntityMeasure } from '../../../utils/entityMeasure';
+import { notMeasured, byteSize, tolerancePolicy } from '../../../utils/entityMeasure';
+import type { HarnessRecord, HarnessUnit } from '../../../models/Harness.types';
 import { humanize } from '../../../utils/entityContract';
 import { reasonText } from '../../../utils/explorerState';
 import { harnessEmitted } from '../../../utils/harnessEmitted';

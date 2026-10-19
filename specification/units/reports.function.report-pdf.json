@@ -28,11 +28,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/services/report-export-service/reportPdf.ts",
+		"entry": "packages/reports/src/utils/reportPdf.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/services/report-export-service/reportPdf.ts"
+				"entry": "packages/reports/src/utils/reportPdf.ts"
 			}
 		]
 	},

@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { GatewayContentSerializer } from '../../src/serializers/GatewayContentSerializer';
 import { ClaudeGatewayAdapter } from '../../src/adapters/ClaudeGatewayAdapter';
-import { CodexSessionRepository } from '../../src/repositories/CodexSessionRepository';
+import { CodexSessionRepository } from '../../src/repositories/codex-session-repository/CodexSessionRepository';
 
 const png =
 	'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/l9sAAAAASUVORK5CYII=';

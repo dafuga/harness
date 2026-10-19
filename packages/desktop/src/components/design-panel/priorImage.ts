@@ -1,5 +1,5 @@
-import { PriorImage } from '../../utils/priorImage';
-import type { DesignImage, DesignVersion } from '../../models/Desktop.types.ts';
+import type { PriorImage } from '../../utils/priorImage';
+import type { DesignImage, DesignVersion } from '../../models/Desktop.types';
 
 /**
  * The committed image a commit replaced. There is one only in a commit view, when that commit

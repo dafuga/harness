@@ -7,17 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/run-kernel/runKernel.ts", "src/workflows/runKernel.ts"],
+		"source": ["src/workflows/run-kernel/runKernel.ts"],
 		"symbols": [
-			"ParityReport",
-			"kernelParity",
-			"parityProblems",
-			"DefaultReport",
-			"kernelDefault",
-			"renderDefault",
-			"runtimeKind",
-			"serveKernelRuntime",
-			"kernelSample",
 			"ParityReport",
 			"kernelParity",
 			"parityProblems",

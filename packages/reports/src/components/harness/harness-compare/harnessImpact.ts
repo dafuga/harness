@@ -1,6 +1,6 @@
-import { ComparedSides, HarnessImpact } from '../../../utils/harnessImpact';
+import type { ComparedSides, HarnessImpact } from '../../../utils/harnessImpact';
 import { sideImpact } from './sideImpact';
-import type { HarnessMark, HarnessRevision, HarnessUnit } from '../../../models/Harness.types.ts';
+import type { HarnessMark, HarnessRevision, HarnessUnit } from '../../../models/Harness.types';
 import type { HarnessClient } from '../../../utils/harnessClient';
 
 /**

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ExplorerEntity, ExplorerRelations } from '../../../models/Explorer.types.ts';
+	import type { ExplorerEntity, ExplorerRelations } from '../../../models/Explorer.types';
 	import { entityLens, type EntityNav } from '../../../utils/entityLens';
 	import { entityUsage } from './entityUsage';
 	import EntityLink from '../EntityLink.svelte';

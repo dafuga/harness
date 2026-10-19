@@ -1,7 +1,7 @@
 import { spawn } from 'node:child_process';
 import { killOwnedProcess } from '../cliProcess';
 import { cliEnvironment } from '../cli-environment/cliEnvironment';
-import type { CliCommand } from '../../models/AgentRunner.types.ts';
+import type { CliCommand } from '../../models/AgentRunner.types';
 import { rpcMessages, rpcRequest } from './rpcMessages';
 import type { RpcEvent, RpcPending } from '../rpcMessages';
 import { streamLines } from '../streamLines';

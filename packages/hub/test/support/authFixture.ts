@@ -1,6 +1,6 @@
 import type { Actor } from 'collaboration';
 import { SessionRepository } from '../../src/repositories/SessionRepository';
-import { authSecrets } from '../../src/utils/authSecrets';
+import { authSecrets } from '../../src/lib/server/auth/authSecrets';
 import type { AuthSecrets } from '../../src/utils/authSecrets';
 import { START } from './googleFixture';
 import { memoryAuthStore } from './memoryAuthStore';

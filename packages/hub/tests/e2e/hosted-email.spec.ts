@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { ada, atlas, hostedFixture, type HostedState } from './hosted-fixture';
 import { emailCode, thirdPartyCredential, unsent } from './hosted-email';
-import { emailCode as serverEmailCode } from '../../src/utils/authSecrets';
+import { emailCode as serverEmailCode } from '../../src/services/email-proof-service/authSecrets';
 
 const signIn = { name: 'Sign in with Google' };
 const heading = { name: 'Confirm your email address' };

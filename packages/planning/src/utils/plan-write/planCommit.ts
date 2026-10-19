@@ -1,4 +1,5 @@
-import { CommitContext, stageFiles } from '../planCommit';
+import type { CommitContext } from '../planCommit';
+import { stageFiles } from '../planCommit';
 import { Buffer } from 'node:buffer';
 import { copyFile, mkdir, mkdtemp, open, readFile, rename, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';

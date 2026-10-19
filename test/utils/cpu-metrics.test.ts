@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { cpuMetrics } from '../../src/utils/cpuMetrics';
+import { cpuMetrics } from '../../src/services/cpu-usage-service/cpuMetrics';
 test('does not count lifetime CPU for a newly started agent', () => {
 	const before = { at: 1000, cpu: { idle: 0, total: 1000, cores: 1 }, processes: [] };
 	const after = {

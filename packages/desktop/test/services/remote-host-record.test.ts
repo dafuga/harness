@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { RemoteHostStoreAdapter } from '../../src/adapters/RemoteHostStoreAdapter';
 import { RemoteHostRecordService } from '../../src/services/RemoteHostRecordService';
-import { remoteHostIdentity } from '../../src/utils/remoteHostIdentity';
+import { remoteHostIdentity } from '../../src/services/remote-host-switch-service/remoteHostIdentity';
 import { deferred } from '../remote-fixture';
 import { fakeEncryption } from '../remote-host-fixture';
 

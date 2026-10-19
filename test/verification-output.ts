@@ -4,7 +4,7 @@ import { readFileSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { scenarioManifestSchema, type ScenarioManifest } from '../src/core/unitTypes';
-import { recordCapture } from '../src/utils/recordCapture';
+import { recordCapture } from '../src/utils/record-capture/recordCapture';
 import { verificationTarget, type VerificationTarget } from './verification-targets';
 import { verifiedAssertions } from './verification-assertions';
 

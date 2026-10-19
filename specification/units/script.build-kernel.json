@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["scripts/build-kernel/build-kernel.ts"],
+		"source": ["scripts/build-kernel.ts", "scripts/build-kernel/build-kernel.ts"],
 		"symbols": []
 	},
 	"contract": {

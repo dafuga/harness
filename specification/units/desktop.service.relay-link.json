@@ -7,15 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/services/RelayLinkService.ts",
-			"packages/desktop/src/services/relay-link-service/RelayLinkService.ts"
-		],
+		"source": ["packages/desktop/src/services/relay-link-service/RelayLinkService.ts"],
 		"symbols": [
-			"RelayLinkState",
-			"RelayCommandInput",
-			"RelayLinkOptions",
-			"RelayLinkService",
 			"RelayLinkState",
 			"RelayCommandInput",
 			"RelayLinkOptions",

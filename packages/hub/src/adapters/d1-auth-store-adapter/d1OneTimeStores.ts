@@ -1,11 +1,11 @@
-import { D1OneTimeStores } from '../../utils/d1OneTimeStores';
+import type { D1OneTimeStores } from '../../utils/d1OneTimeStores';
 import type { D1Like } from './D1AuthStoreAdapter';
 import type {
 	ChallengeRecord,
 	ExchangeStore,
 	GithubStateRecord,
 	OneTimeStore
-} from '../../models/HubAuthStore.types.ts';
+} from '../../models/HubAuthStore.types';
 import type { AuthRecordValidator } from '../../validators/AuthRecordValidator';
 
 /** DELETE ... RETURNING removes and returns in one statement, so only one caller gets the row. */

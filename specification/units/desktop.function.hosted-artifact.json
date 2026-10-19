@@ -56,11 +56,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/browser-bridge/hostedArtifact.ts",
+		"entry": "packages/desktop/src/utils/hostedArtifact.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/browser-bridge/hostedArtifact.ts"
+				"entry": "packages/desktop/src/utils/hostedArtifact.ts"
 			}
 		]
 	},

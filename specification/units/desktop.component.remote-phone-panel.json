@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/RemotePhonePanel.svelte",
-			"packages/desktop/src/components/remote-phone-panel/RemotePhonePanel.svelte"
-		],
-		"symbols": ["RemotePhonePanel", "RemotePhonePanel"]
+		"source": ["packages/desktop/src/components/remote-phone-panel/RemotePhonePanel.svelte"],
+		"symbols": ["RemotePhonePanel"]
 	},
 	"contract": {
 		"origin": "declared",

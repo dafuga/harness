@@ -1,5 +1,6 @@
-import { GrowthRow, GrowthMetric, growthMetrics } from '../../../utils/harnessGrowth';
-import type { HarnessBenchmark, HarnessIndex } from '../../../models/Harness.types.ts';
+import type { GrowthRow, GrowthMetric } from '../../../utils/harnessGrowth';
+import { growthMetrics } from '../../../utils/harnessGrowth';
+import type { HarnessBenchmark, HarnessIndex } from '../../../models/Harness.types';
 
 /**
  * The measured size of one unit commit by commit, oldest first, with the change each commit

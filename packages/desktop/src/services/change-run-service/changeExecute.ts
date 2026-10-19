@@ -1,8 +1,8 @@
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { unitOwners } from '../../../../../src/utils/unitOwners';
-import type { RunContext } from '../../models/RunContext.types.ts';
-import { RunCancelled } from '../../models/AgentRunner.types.ts';
+import type { RunContext } from '../../models/RunContext.types';
+import { RunCancelled } from '../../models/AgentRunner.types';
 import { changedUnits } from '../../utils/changedUnits';
 import { isUnitId } from '../../utils/entityReferences';
 import { runContext } from '../../utils/runContext';

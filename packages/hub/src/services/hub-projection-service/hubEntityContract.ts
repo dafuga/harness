@@ -1,5 +1,5 @@
 import type { ComponentManifest } from '../../../../../src/core/unitTypes';
-import type { PlanRecord } from '../../../../desktop/src/models/PlanningPort.types.ts';
+import type { PlanRecord } from '../../../../desktop/src/models/PlanningPort.types';
 import { hubContractHash } from '../../utils/hubJson';
 
 export async function hubEntityContract(

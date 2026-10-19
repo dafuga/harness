@@ -420,6 +420,10 @@ Nested private call chains follow their terminal owner. Types and constants reta
 | [keepPointerInPlace](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.function.trackpad-zoom/history)                   | reports.component.image-zoom                                      | `packages/reports/src/utils/trackpadZoom.ts`               | `packages/reports/src/components/image-zoom/trackpadZoom.ts`                         |
 | [wavInfo](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.function.wav-info/history)                                   | reports.function.audio-asset · audioAsset                         | `packages/reports/src/utils/wavInfo.ts`                    | `packages/reports/src/utils/audio-asset/wavInfo.ts`                                  |
 
+## Registered module contracts
+
+Helper definitions live in the owner-local files listed above. Existing registered module entry points retain forwarding exports so their contracts, public imports and history remain valid. These entry modules do not duplicate the relocated helper implementations. Component and class imports use their new source paths.
+
 ## Other units whose imports change
 
 Import consumers retain their existing behavior; only module addresses change. The registry is re-indexed with existing identities, never recreated to discard history.
@@ -725,23 +729,23 @@ Import consumers retain their existing behavior; only module addresses change. T
 - [Read verified Git Hub source](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/collaboration.function.create-git-hub-source/history): imports follow relocated definitions.
 - [DesktopRunService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/desktop.service.desktop-run/history): imports follow relocated definitions.
 - [Check stored capture bytes](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.function.artifact-answer/history): imports follow relocated definitions.
-- [mac-icon](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.script.mac-icon/history): imports follow relocated definitions.
+- [mac-icon](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/desktop/scripts/mac-icon/mac-icon.ts) (source; no explorer category): imports follow relocated definitions.
 - [Load the selected workspace](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.function.load-workspace/history): imports follow relocated definitions.
-- [CapacitorBridgeAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.adapter.capacitor-bridge/history): imports follow relocated definitions.
+- [CapacitorBridgeAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/desktop.adapter.capacitor-bridge/history): imports follow relocated definitions.
 - [CatalogService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/desktop.service.catalog/history): imports follow relocated definitions.
 - [ChangeRunService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/desktop.service.change-run/history): imports follow relocated definitions.
-- [ClaudeCliAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.adapter.claude-cli/history): imports follow relocated definitions.
-- [CodexAppServerAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.adapter.codex-app-server/history): imports follow relocated definitions.
+- [ClaudeCliAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/desktop.adapter.claude-cli/history): imports follow relocated definitions.
+- [CodexAppServerAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/desktop.adapter.codex-app-server/history): imports follow relocated definitions.
 - [Hosted workspace bridge](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/hub.function.browser-bridge/history): imports follow relocated definitions.
 - [Follow project replies](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.function.project-agent-events/history): imports follow relocated definitions.
 - [Save a proposed design version](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.function.plan-design/history): imports follow relocated definitions.
-- [initializeDesktop](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.initializer.initialize-desktop/history): imports follow relocated definitions.
+- [initializeDesktop](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/configs/desktop.initializer.initialize-desktop/history): imports follow relocated definitions.
 - [DeviceOperationsService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/desktop.service.device-operations/history): imports follow relocated definitions.
-- [GitSourceAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.adapter.git-source/history): imports follow relocated definitions.
-- [HostedEvidenceAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.adapter.hosted-evidence/history): imports follow relocated definitions.
-- [RemoteHttpProjectAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.adapter.remote-http-project/history): imports follow relocated definitions.
-- [HostedHttpAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.adapter.hosted-http/history): imports follow relocated definitions.
-- [PlanningFacadeAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.adapter.planning-facade/history): imports follow relocated definitions.
+- [GitSourceAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/desktop.adapter.git-source/history): imports follow relocated definitions.
+- [HostedEvidenceAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/desktop.adapter.hosted-evidence/history): imports follow relocated definitions.
+- [RemoteHttpProjectAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/desktop.adapter.remote-http-project/history): imports follow relocated definitions.
+- [HostedHttpAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/desktop.adapter.hosted-http/history): imports follow relocated definitions.
+- [PlanningFacadeAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/desktop.adapter.planning-facade/history): imports follow relocated definitions.
 - [ProjectRunService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/desktop.service.project-run/history): imports follow relocated definitions.
 - [ProjectionCacheService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/desktop.service.projection-cache/history): imports follow relocated definitions.
 - [Run a project request](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/desktop.service.project-task/history): imports follow relocated definitions.
@@ -754,7 +758,7 @@ Import consumers retain their existing behavior; only module addresses change. T
 - [Connect to Codex app-server](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.function.codex-rpc/history): imports follow relocated definitions.
 - [Prepare a CLI environment](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.function.cli-environment/history): imports follow relocated definitions.
 - [AgentActivityService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.agent-activity/history): imports follow relocated definitions.
-- [runKernelBench](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.run-kernel-bench/history): imports follow relocated definitions.
+- [runKernelBench](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.run-kernel-bench/history): imports follow relocated definitions.
 - [KernelBenchmarkService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.kernel-benchmark/history): imports follow relocated definitions.
 - [SourceIndexService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.source-index/history): imports follow relocated definitions.
 - [BudgetService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.budget/history): imports follow relocated definitions.
@@ -764,59 +768,59 @@ Import consumers retain their existing behavior; only module addresses change. T
 - [ConsoleInstallService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.console-install/history): imports follow relocated definitions.
 - [Canonical explorer addresses](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/function.console-canonical/history): imports follow relocated definitions.
 - [CpuUsageService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.cpu-usage/history): imports follow relocated definitions.
-- [CpuProcessAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/adapter.cpu-process/history): imports follow relocated definitions.
+- [CpuProcessAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/adapter.cpu-process/history): imports follow relocated definitions.
 - [UnitIndexService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.unit-index/history): imports follow relocated definitions.
 - [EvidenceAttachService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.evidence-attach/history): imports follow relocated definitions.
-- [generateCode](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.generate-code/history): imports follow relocated definitions.
+- [generateCode](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.generate-code/history): imports follow relocated definitions.
 - [ClaudeQueryService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.claude-query/history): imports follow relocated definitions.
 - [CodexGatewayService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.codex-gateway/history): imports follow relocated definitions.
-- [CodexSessionRepository](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/repository.codex-session/history): imports follow relocated definitions.
+- [CodexSessionRepository](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/repository.codex-session/history): imports follow relocated definitions.
 - [CheckRunService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.check-run/history): imports follow relocated definitions.
 - [Isolated verification command](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/function.run-isolated/history): imports follow relocated definitions.
 - [RevisionDetailService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.revision-detail/history): imports follow relocated definitions.
 - [HistorySyncService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.history-sync/history): imports follow relocated definitions.
 - [HookInstallService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.hook-install/history): imports follow relocated definitions.
-- [runKernel](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.run-kernel/history): imports follow relocated definitions.
+- [runKernel](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.run-kernel/history): imports follow relocated definitions.
 - [ImpactService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.impact/history): imports follow relocated definitions.
 - [LegacyImportService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.legacy-import/history): imports follow relocated definitions.
 - [AttachedRecordService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.attached-record/history): imports follow relocated definitions.
-- [EvidenceBranchRepository](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/repository.evidence-branch/history): imports follow relocated definitions.
-- [ProcessRuntimeAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/adapter.process-runtime/history): imports follow relocated definitions.
+- [EvidenceBranchRepository](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/repository.evidence-branch/history): imports follow relocated definitions.
+- [ProcessRuntimeAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/adapter.process-runtime/history): imports follow relocated definitions.
 - [ProjectActivityService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.project-activity/history): imports follow relocated definitions.
 - [HistoryMediaService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.history-media/history): imports follow relocated definitions.
-- [HistoryNoteRepository](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/repository.history-note/history): imports follow relocated definitions.
-- [CodexPickerCommand](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/command.codex-picker/history): imports follow relocated definitions.
-- [build-kernel](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/script.build-kernel/history): imports follow relocated definitions.
-- [structureRules](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/audit.structure-rules/history): imports follow relocated definitions.
+- [HistoryNoteRepository](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/repository.history-note/history): imports follow relocated definitions.
+- [CodexPickerCommand](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/command.codex-picker/history): imports follow relocated definitions.
+- [build-kernel](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/scripts/build-kernel/build-kernel.ts) (source; no explorer category): imports follow relocated definitions.
+- [structureRules](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/src/audit/structure-rules/structureRules.ts) (source; no explorer category): imports follow relocated definitions.
 - [HookRunService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.hook-run/history): imports follow relocated definitions.
 - [RecordAssemblyService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.record-assembly/history): imports follow relocated definitions.
 - [Record a regression](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/function.record-regression/history): imports follow relocated definitions.
-- [runReport](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.run-report/history): imports follow relocated definitions.
+- [runReport](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.run-report/history): imports follow relocated definitions.
 - [VerificationService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.verification/history): imports follow relocated definitions.
 - [SourceImpactService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.source-impact/history): imports follow relocated definitions.
-- [SnapshotAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/adapter.snapshot/history): imports follow relocated definitions.
-- [SourceHistoryRepository](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/repository.source-history/history): imports follow relocated definitions.
+- [SnapshotAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/adapter.snapshot/history): imports follow relocated definitions.
+- [SourceHistoryRepository](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/repository.source-history/history): imports follow relocated definitions.
 - [Named code block spans](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/function.block-spans/history): imports follow relocated definitions.
 - [Repository path classification](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/function.classify-path/history): imports follow relocated definitions.
-- [createProject](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.create-project/history): imports follow relocated definitions.
+- [createProject](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.create-project/history): imports follow relocated definitions.
 - [Scaffold field parsing](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/function.fields/history): imports follow relocated definitions.
-- [loopState](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.loop-state/history): imports follow relocated definitions.
-- [auth](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/hub.module.server-auth/history): imports follow relocated definitions.
-- [GithubConnectionController](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/hub.controller.github-connection/history): imports follow relocated definitions.
+- [loopState](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.loop-state/history): imports follow relocated definitions.
+- [auth](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/hub/src/lib/server/auth/auth.ts) (source; no explorer category): imports follow relocated definitions.
+- [GithubConnectionController](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/hub.controller.github-connection/history): imports follow relocated definitions.
 - [RequestSessionService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/hub.service.request-session/history): imports follow relocated definitions.
 - [NativeHandoffService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/hub.service.native-handoff/history): imports follow relocated definitions.
 - [EmailProofService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/hub.service.email-proof/history): imports follow relocated definitions.
-- [D1AuthStoreAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/hub.adapter.d1-auth-store/history): imports follow relocated definitions.
+- [D1AuthStoreAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/hub.adapter.d1-auth-store/history): imports follow relocated definitions.
 - [InstallationTokenService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/hub.service.installation-token/history): imports follow relocated definitions.
 - [HubProjectionService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/hub.service.hub-projection/history): imports follow relocated definitions.
 - [HubAttachedService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/hub.service.hub-attached/history): imports follow relocated definitions.
 - [/api/[...path]](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/hub.endpoint.api-path/history): imports follow relocated definitions.
-- [HubApiController](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/hub.controller.hub-api/history): imports follow relocated definitions.
+- [HubApiController](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/hub.controller.hub-api/history): imports follow relocated definitions.
 - [Assemble revision evidence](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/hub.function.hub-evidence-revision/history): imports follow relocated definitions.
 - [HubEvidenceService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/hub.service.hub-evidence/history): imports follow relocated definitions.
 - [Load a metadata bundle](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/hub.function.hub-metadata/history): imports follow relocated definitions.
 - [PlanningService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/planning.service.planning/history): imports follow relocated definitions.
-- [index](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/planning.entry.index/history): imports follow relocated definitions.
+- [index](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/planning/src/index/index.ts) (source; no explorer category): imports follow relocated definitions.
 - [Read a checked planning record](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/planning.function.plan-read/history): imports follow relocated definitions.
 - [SocketFrameService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/relay.service.socket-frame/history): imports follow relocated definitions.
 - [DevicePairingService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/remote.service.device-pairing/history): imports follow relocated definitions.
@@ -824,31 +828,31 @@ Import consumers retain their existing behavior; only module addresses change. T
 - [HostPairingService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/remote.service.host-pairing/history): imports follow relocated definitions.
 - [SecureChannelService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/remote.service.secure-channel/history): imports follow relocated definitions.
 - [Entity verification verdict](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.function.explorer-verdict/history): imports follow relocated definitions.
-- [Start or reuse the preview](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.initializer.initialize-preview/history): imports follow relocated definitions.
+- [Start or reuse the preview](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/configs/reports.initializer.initialize-preview/history): imports follow relocated definitions.
 - [Recover the owned preview worker](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/reports.service.preview-worker/history): imports follow relocated definitions.
 - [Manage one local preview](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/reports.service.preview-server/history): imports follow relocated definitions.
 - [ReplayVideoService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/reports.service.replay-video/history): imports follow relocated definitions.
-- [ReportRepository](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.repository.report/history): imports follow relocated definitions.
+- [ReportRepository](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/reports.repository.report/history): imports follow relocated definitions.
 - [ReportRetentionService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/reports.service.report-retention/history): imports follow relocated definitions.
 - [ReportCommandService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/reports.service.report-command/history): imports follow relocated definitions.
 - [/harness/reports/[id]](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/pages/reports.page.harness-reports-id/history): imports follow relocated definitions.
-- [/api/health](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.endpoint.api-health/history): imports follow relocated definitions.
+- [/api/health](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/reports.endpoint.api-health/history): imports follow relocated definitions.
 - [/api/reports/[id]/[type]/[file]](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.endpoint.api-reports-id-type-file/history): imports follow relocated definitions.
 - [ReportPublishService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/reports.service.report-publish/history): imports follow relocated definitions.
 - [ReportExportService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/reports.service.report-export/history): imports follow relocated definitions.
 - [ReportServerService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/reports.service.report-server/history): imports follow relocated definitions.
-- [/api/project-activity](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.endpoint.api-project-activity/history): imports follow relocated definitions.
-- [/api/analytics-cpu](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.endpoint.api-analytics-cpu/history): imports follow relocated definitions.
+- [/api/project-activity](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/reports.endpoint.api-project-activity/history): imports follow relocated definitions.
+- [/api/analytics-cpu](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/reports.endpoint.api-analytics-cpu/history): imports follow relocated definitions.
 - [Audio asset validation](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.function.audio-asset/history): imports follow relocated definitions.
-- [index](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/collaboration.entry.index/history): imports follow relocated definitions.
-- [Collaboration](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/collaboration.model.collaboration-types/history): imports follow relocated definitions.
-- [brand-assets](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.script.brand-assets/history): imports follow relocated definitions.
-- [package-mac](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.script.package-mac/history): imports follow relocated definitions.
-- [remote-fixture-host](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.script.remote-fixture-host/history): imports follow relocated definitions.
-- [CapacitorEnvironmentAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.adapter.capacitor-environment/history): imports follow relocated definitions.
-- [NativeSessionAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.adapter.native-session/history): imports follow relocated definitions.
-- [PinnedHistoryAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.adapter.pinned-history/history): imports follow relocated definitions.
-- [RemoteRegistrationAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.adapter.remote-registration/history): imports follow relocated definitions.
+- [index](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/collaboration/src/index.ts) (source; no explorer category): imports follow relocated definitions.
+- [Collaboration](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/collaboration/src/models/Collaboration.types.ts) (source; no explorer category): imports follow relocated definitions.
+- [brand-assets](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/desktop/scripts/brand-assets.ts) (source; no explorer category): imports follow relocated definitions.
+- [package-mac](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/desktop/scripts/package-mac.ts) (source; no explorer category): imports follow relocated definitions.
+- [remote-fixture-host](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/desktop/scripts/remote-fixture-host.ts) (source; no explorer category): imports follow relocated definitions.
+- [CapacitorEnvironmentAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/desktop.adapter.capacitor-environment/history): imports follow relocated definitions.
+- [NativeSessionAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/desktop.adapter.native-session/history): imports follow relocated definitions.
+- [PinnedHistoryAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/desktop.adapter.pinned-history/history): imports follow relocated definitions.
+- [RemoteRegistrationAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/desktop.adapter.remote-registration/history): imports follow relocated definitions.
 - [Coverage panel](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/components/desktop.component.coverage-panel/history): imports follow relocated definitions.
 - [Design panel](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/components/desktop.component.design-panel/history): imports follow relocated definitions.
 - [Catalog card](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/components/desktop.component.entity-card/history): imports follow relocated definitions.
@@ -869,15 +873,15 @@ Import consumers retain their existing behavior; only module addresses change. T
 - [Thread links](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/components/desktop.component.thread-links/history): imports follow relocated definitions.
 - [Thread panel](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/components/desktop.component.thread-panel/history): imports follow relocated definitions.
 - [Shared workspace shell](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/shells/desktop.component.workspace-shell/history): imports follow relocated definitions.
-- [entityEvidence](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.store.entity-evidence/history): imports follow relocated definitions.
-- [hostedConnection](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.store.hosted-connection/history): imports follow relocated definitions.
-- [projectAgent](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.store.project-agent/history): imports follow relocated definitions.
-- [remotePhone](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.store.remote-phone/history): imports follow relocated definitions.
-- [workspace](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.store.workspace/history): imports follow relocated definitions.
-- [Desktop](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.model.desktop-types/history): imports follow relocated definitions.
-- [DesktopBridge](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.model.desktop-bridge-types/history): imports follow relocated definitions.
-- [Environment](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.model.environment-types/history): imports follow relocated definitions.
-- [PlanningPort](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/desktop.model.planning-port-types/history): imports follow relocated definitions.
+- [entityEvidence](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/desktop/src/lib/stores/entityEvidence.svelte.ts) (source; no explorer category): imports follow relocated definitions.
+- [hostedConnection](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/desktop/src/lib/stores/hostedConnection.svelte.ts) (source; no explorer category): imports follow relocated definitions.
+- [projectAgent](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/desktop/src/lib/stores/projectAgent.svelte.ts) (source; no explorer category): imports follow relocated definitions.
+- [remotePhone](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/desktop/src/lib/stores/remotePhone.svelte.ts) (source; no explorer category): imports follow relocated definitions.
+- [workspace](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/desktop/src/lib/stores/workspace.svelte.ts) (source; no explorer category): imports follow relocated definitions.
+- [Desktop](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/desktop/src/models/Desktop.types.ts) (source; no explorer category): imports follow relocated definitions.
+- [DesktopBridge](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/desktop/src/models/DesktopBridge.types.ts) (source; no explorer category): imports follow relocated definitions.
+- [Environment](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/desktop/src/models/Environment.types.ts) (source; no explorer category): imports follow relocated definitions.
+- [PlanningPort](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/desktop/src/models/PlanningPort.types.ts) (source; no explorer category): imports follow relocated definitions.
 - [ClientProjectsService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/desktop.service.client-projects/history): imports follow relocated definitions.
 - [DesktopBridgeService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/desktop.service.desktop-bridge/history): imports follow relocated definitions.
 - [HostedReadService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/desktop.service.hosted-read/history): imports follow relocated definitions.
@@ -904,12 +908,12 @@ Import consumers retain their existing behavior; only module addresses change. T
 - [Login panel](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/components/hub.component.login-panel/history): imports follow relocated definitions.
 - [Members panel](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/components/hub.component.members-panel/history): imports follow relocated definitions.
 - [Native approval](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/components/hub.component.native-approval/history): imports follow relocated definitions.
-- [EmailProofController](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/hub.controller.email-proof/history): imports follow relocated definitions.
-- [Authorize shared AI requests](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/hub.controller.hub-agent/history): imports follow relocated definitions.
-- [HubAuthController](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/hub.controller.hub-auth/history): imports follow relocated definitions.
-- [HubRemoteController](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/hub.controller.hub-remote/history): imports follow relocated definitions.
-- [NativeHandoffController](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/hub.controller.native-handoff/history): imports follow relocated definitions.
-- [/](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/hub.layout.root/history): imports follow relocated definitions.
+- [EmailProofController](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/hub.controller.email-proof/history): imports follow relocated definitions.
+- [Authorize shared AI requests](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/hub.controller.hub-agent/history): imports follow relocated definitions.
+- [HubAuthController](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/hub.controller.hub-auth/history): imports follow relocated definitions.
+- [HubRemoteController](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/hub.controller.hub-remote/history): imports follow relocated definitions.
+- [NativeHandoffController](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/hub.controller.native-handoff/history): imports follow relocated definitions.
+- [/](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/components/hub.layout.root/history): imports follow relocated definitions.
 - [/](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/pages/hub.page.root/history): imports follow relocated definitions.
 - [/invite/[projectId]/[invitationId]](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/pages/hub.page.invite-project-id-invitation-id/history): imports follow relocated definitions.
 - [/native/[handoffId]](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/pages/hub.page.native-handoff-id/history): imports follow relocated definitions.
@@ -919,21 +923,21 @@ Import consumers retain their existing behavior; only module addresses change. T
 - [HubRecordStatusService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/hub.service.hub-record-status/history): imports follow relocated definitions.
 - [Read hosted unit manifests](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/hub.function.hub-records/history): imports follow relocated definitions.
 - [AuthRequestValidator](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/hub.validator.auth-request/history): imports follow relocated definitions.
-- [Planning](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/planning.model.planning-types/history): imports follow relocated definitions.
+- [Planning](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/planning/src/models/Planning.types.ts) (source; no explorer category): imports follow relocated definitions.
 - [Relay host runtime wiring](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/relay.function.host-runtime/history): imports follow relocated definitions.
-- [index](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/remote.entry.index/history): imports follow relocated definitions.
+- [index](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/remote/src/index.ts) (source; no explorer category): imports follow relocated definitions.
 - [DeviceConnectionService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/remote.service.device-connection/history): imports follow relocated definitions.
-- [analytics-e2e](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.seeder.analytics-e2e/history): imports follow relocated definitions.
-- [freeze-build](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.script.freeze-build/history): imports follow relocated definitions.
-- [harness-seed-attacher](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.script.harness-seed-attacher/history): imports follow relocated definitions.
-- [seed-e2e](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.script.seed-e2e/history): imports follow relocated definitions.
-- [seed-harness-console](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.script.seed-harness-console/history): imports follow relocated definitions.
-- [seed-sites](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.script.seed-sites/history): imports follow relocated definitions.
-- [MiraReportAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.adapter.mira-report/history): imports follow relocated definitions.
-- [PlaywrightReportAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.adapter.playwright-report/history): imports follow relocated definitions.
-- [VitestReportAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.adapter.vitest-report/history): imports follow relocated definitions.
-- [index](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.entry.index/history): imports follow relocated definitions.
-- [ReportCommand](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.command.report/history): imports follow relocated definitions.
+- [analytics-e2e](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/reports/db/seed-data/analytics-e2e.ts) (source; no explorer category): imports follow relocated definitions.
+- [freeze-build](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/reports/scripts/freeze-build.ts) (source; no explorer category): imports follow relocated definitions.
+- [harness-seed-attacher](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/reports/scripts/harness-seed-attacher.ts) (source; no explorer category): imports follow relocated definitions.
+- [seed-e2e](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/reports/scripts/seed-e2e.ts) (source; no explorer category): imports follow relocated definitions.
+- [seed-harness-console](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/reports/scripts/seed-harness-console.ts) (source; no explorer category): imports follow relocated definitions.
+- [seed-sites](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/reports/scripts/seed-sites.ts) (source; no explorer category): imports follow relocated definitions.
+- [MiraReportAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/reports.adapter.mira-report/history): imports follow relocated definitions.
+- [PlaywrightReportAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/reports.adapter.playwright-report/history): imports follow relocated definitions.
+- [VitestReportAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/reports.adapter.vitest-report/history): imports follow relocated definitions.
+- [index](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/reports/src/cli/index.ts) (source; no explorer category): imports follow relocated definitions.
+- [ReportCommand](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/reports.command.report/history): imports follow relocated definitions.
 - [Activity agents](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/components/reports.component.activity-agents/history): imports follow relocated definitions.
 - [Analytics cpu](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/components/reports.component.analytics-cpu/history): imports follow relocated definitions.
 - [Recorded browser errors](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/components/reports.component.browser-errors/history): imports follow relocated definitions.
@@ -992,11 +996,11 @@ Import consumers retain their existing behavior; only module addresses change. T
 - [Branch and revision selectors](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/components/reports.component.harness-harness-selectors/history): imports follow relocated definitions.
 - [Verification verdict indicator](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/components/reports.component.harness-harness-verdict/history): imports follow relocated definitions.
 - [pickerPlaywrightConfig](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/configs/reports.config.picker-playwright/history): imports follow relocated definitions.
-- [hooks](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.entry.hooks-server/history): imports follow relocated definitions.
-- [Explorer](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.model.explorer-types/history): imports follow relocated definitions.
-- [Harness](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.model.harness-types/history): imports follow relocated definitions.
-- [SiteReportRepository](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.repository.site-report/history): imports follow relocated definitions.
-- [/api/replay-video](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.endpoint.api-replay-video/history): imports follow relocated definitions.
+- [hooks](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/reports/src/hooks.server.ts) (source; no explorer category): imports follow relocated definitions.
+- [Explorer](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/reports/src/models/Explorer.types.ts) (source; no explorer category): imports follow relocated definitions.
+- [Harness](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/packages/reports/src/models/Harness.types.ts) (source; no explorer category): imports follow relocated definitions.
+- [SiteReportRepository](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/reports.repository.site-report/history): imports follow relocated definitions.
+- [/api/replay-video](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/reports.endpoint.api-replay-video/history): imports follow relocated definitions.
 - [/harness/[...view]](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/pages/reports.page.harness-view/history): imports follow relocated definitions.
 - [/harness/data/[...path]](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.endpoint.harness-data-path/history): imports follow relocated definitions.
 - [/harness/export/[commit]](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.endpoint.harness-export-commit/history): imports follow relocated definitions.
@@ -1013,25 +1017,25 @@ Import consumers retain their existing behavior; only module addresses change. T
 - [Run the managed preview with Node](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.function.preview-node/history): imports follow relocated definitions.
 - [Model picker mount](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.function.provider-picker-entry/history): imports follow relocated definitions.
 - [Reports site ownership](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/reports.function.report-site/history): imports follow relocated definitions.
-- [rust](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/script.rust/history): imports follow relocated definitions.
-- [ClaudeGatewayAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/adapter.claude-gateway/history): imports follow relocated definitions.
-- [typescript](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/audit.adapters-typescript/history): imports follow relocated definitions.
-- [picker](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/entry.picker/history): imports follow relocated definitions.
-- [AnalyticsCommand](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/command.analytics/history): imports follow relocated definitions.
-- [CodexCommand](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/command.codex/history): imports follow relocated definitions.
-- [KernelCommand](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/command.kernel/history): imports follow relocated definitions.
-- [ReportCommand](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/command.report/history): imports follow relocated definitions.
-- [generate](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/command.generate/history): imports follow relocated definitions.
-- [loop](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/command.loop/history): imports follow relocated definitions.
-- [new](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/command.new/history): imports follow relocated definitions.
-- [index](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/entry.index/history): imports follow relocated definitions.
-- [console](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/module.console/history): imports follow relocated definitions.
-- [history](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/module.history/history): imports follow relocated definitions.
-- [runtime](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/module.runtime/history): imports follow relocated definitions.
-- [verification](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/module.verification/history): imports follow relocated definitions.
-- [ExplanationRepository](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/repository.explanation/history): imports follow relocated definitions.
-- [ProjectWorkRepository](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/repository.project-work/history): imports follow relocated definitions.
-- [Regression evidence store](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/repository.regression-proof/history): imports follow relocated definitions.
+- [rust](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/scripts/rust.ts) (source; no explorer category): imports follow relocated definitions.
+- [ClaudeGatewayAdapter](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/adapter.claude-gateway/history): imports follow relocated definitions.
+- [typescript](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/src/audit/adapters/typescript.ts) (source; no explorer category): imports follow relocated definitions.
+- [picker](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/src/cli/picker.ts) (source; no explorer category): imports follow relocated definitions.
+- [AnalyticsCommand](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/command.analytics/history): imports follow relocated definitions.
+- [CodexCommand](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/command.codex/history): imports follow relocated definitions.
+- [KernelCommand](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/command.kernel/history): imports follow relocated definitions.
+- [ReportCommand](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/command.report/history): imports follow relocated definitions.
+- [generate](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/command.generate/history): imports follow relocated definitions.
+- [loop](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/command.loop/history): imports follow relocated definitions.
+- [new](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/command.new/history): imports follow relocated definitions.
+- [index](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/src/index.ts) (source; no explorer category): imports follow relocated definitions.
+- [console](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/src/lib/console.ts) (source; no explorer category): imports follow relocated definitions.
+- [history](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/src/lib/history.ts) (source; no explorer category): imports follow relocated definitions.
+- [runtime](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/src/lib/runtime.ts) (source; no explorer category): imports follow relocated definitions.
+- [verification](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/src/lib/verification.ts) (source; no explorer category): imports follow relocated definitions.
+- [ExplanationRepository](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/repository.explanation/history): imports follow relocated definitions.
+- [ProjectWorkRepository](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/repository.project-work/history): imports follow relocated definitions.
+- [Regression evidence store](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/repository.regression-proof/history): imports follow relocated definitions.
 - [ClaudeToolsSerializer](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/serializer.claude-tools/history): imports follow relocated definitions.
 - [AnalyticsService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.analytics/history): imports follow relocated definitions.
 - [ExplanationService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.explanation/history): imports follow relocated definitions.
@@ -1044,33 +1048,33 @@ Import consumers retain their existing behavior; only module addresses change. T
 - [UnitBenchmarkService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.unit-benchmark/history): imports follow relocated definitions.
 - [UnitRuntimeService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.unit-runtime/history): imports follow relocated definitions.
 - [VerificationCheckService](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/service.verification-check/history): imports follow relocated definitions.
-- [model](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/template.model/history): imports follow relocated definitions.
-- [railsPieces](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/template.rails-pieces/history): imports follow relocated definitions.
+- [model](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/src/templates/model.ts) (source; no explorer category): imports follow relocated definitions.
+- [railsPieces](/Users/danielfugere/.codex/worktrees/regression-commit-history/harness/src/templates/railsPieces.ts) (source; no explorer category): imports follow relocated definitions.
 - [Read regression history](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/function.regression-history/history): imports follow relocated definitions.
 - [Export signature scan](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/function.scan-exports/history): imports follow relocated definitions.
 - [ComponentManifestValidator](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/validator.component-manifest/history): imports follow relocated definitions.
 - [UnitRegistryValidator](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/validator.unit-registry/history): imports follow relocated definitions.
-- [analyticsRecord](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.analytics-record/history): imports follow relocated definitions.
-- [buildHistory](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.build-history/history): imports follow relocated definitions.
-- [generateUnit](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.generate-unit/history): imports follow relocated definitions.
-- [importAnalytics](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.import-analytics/history): imports follow relocated definitions.
-- [importReports](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.import-reports/history): imports follow relocated definitions.
-- [installConsole](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.install-console/history): imports follow relocated definitions.
-- [loadRevisions](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.load-revisions/history): imports follow relocated definitions.
-- [loadUnits](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.load-units/history): imports follow relocated definitions.
-- [loopEvaluate](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.loop-evaluate/history): imports follow relocated definitions.
-- [loopNext](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.loop-next/history): imports follow relocated definitions.
-- [loopSearch](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.loop-search/history): imports follow relocated definitions.
-- [loopTemplates](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.loop-templates/history): imports follow relocated definitions.
-- [manageLoop](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.manage-loop/history): imports follow relocated definitions.
-- [manageUnits](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.manage-units/history): imports follow relocated definitions.
-- [persistReasons](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.persist-reasons/history): imports follow relocated definitions.
-- [runActivity](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.run-activity/history): imports follow relocated definitions.
-- [runBudget](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.run-budget/history): imports follow relocated definitions.
-- [runExplain](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.run-explain/history): imports follow relocated definitions.
-- [runHistory](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.run-history/history): imports follow relocated definitions.
-- [runHooks](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.run-hooks/history): imports follow relocated definitions.
-- [runImpact](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.run-impact/history): imports follow relocated definitions.
-- [runKernelBoundary](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.run-kernel-boundary/history): imports follow relocated definitions.
-- [runVerify](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.run-verify/history): imports follow relocated definitions.
-- [syncHistory](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/functions/workflow.sync-history/history): imports follow relocated definitions.
+- [analyticsRecord](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.analytics-record/history): imports follow relocated definitions.
+- [buildHistory](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.build-history/history): imports follow relocated definitions.
+- [generateUnit](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.generate-unit/history): imports follow relocated definitions.
+- [importAnalytics](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.import-analytics/history): imports follow relocated definitions.
+- [importReports](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.import-reports/history): imports follow relocated definitions.
+- [installConsole](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.install-console/history): imports follow relocated definitions.
+- [loadRevisions](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.load-revisions/history): imports follow relocated definitions.
+- [loadUnits](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.load-units/history): imports follow relocated definitions.
+- [loopEvaluate](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.loop-evaluate/history): imports follow relocated definitions.
+- [loopNext](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.loop-next/history): imports follow relocated definitions.
+- [loopSearch](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.loop-search/history): imports follow relocated definitions.
+- [loopTemplates](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.loop-templates/history): imports follow relocated definitions.
+- [manageLoop](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.manage-loop/history): imports follow relocated definitions.
+- [manageUnits](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.manage-units/history): imports follow relocated definitions.
+- [persistReasons](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.persist-reasons/history): imports follow relocated definitions.
+- [runActivity](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.run-activity/history): imports follow relocated definitions.
+- [runBudget](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.run-budget/history): imports follow relocated definitions.
+- [runExplain](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.run-explain/history): imports follow relocated definitions.
+- [runHistory](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.run-history/history): imports follow relocated definitions.
+- [runHooks](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.run-hooks/history): imports follow relocated definitions.
+- [runImpact](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.run-impact/history): imports follow relocated definitions.
+- [runKernelBoundary](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.run-kernel-boundary/history): imports follow relocated definitions.
+- [runVerify](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.run-verify/history): imports follow relocated definitions.
+- [syncHistory](http://127.0.0.1:5688/harness/branch/dafuga%2Fregression-commit-history/services/workflow.sync-history/history): imports follow relocated definitions.

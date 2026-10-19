@@ -1,4 +1,4 @@
-import {
+import type {
 	HarnessNavbarInput,
 	HarnessShellRevision,
 	HarnessShellView
@@ -8,7 +8,7 @@ import type {
 	ExplorerCategory,
 	ExplorerLocation,
 	ExplorerScope
-} from '../../../models/Explorer.types.ts';
+} from '../../../models/Explorer.types';
 import { branchCommits } from './harnessAncestry';
 import { retainedBranch } from '../../../utils/harnessAncestry';
 import { categoryIcon } from '../../../utils/harnessIcons';

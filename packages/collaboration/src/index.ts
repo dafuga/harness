@@ -1,4 +1,4 @@
-export type * from './models/Collaboration.types.ts';
+export type * from './models/Collaboration.types';
 export { createCollaboration } from './utils/create-collaboration/createCollaboration';
 export { createGitHubRepository } from './utils/create-git-hub-repository/createGitHubRepository';
 export { createGitHubSource } from './utils/create-git-hub-source/createGitHubSource';

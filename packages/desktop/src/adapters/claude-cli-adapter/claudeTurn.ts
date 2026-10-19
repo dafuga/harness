@@ -1,4 +1,4 @@
-import type { AgentTurn, CliCommand } from '../../models/AgentRunner.types.ts';
+import type { AgentTurn, CliCommand } from '../../models/AgentRunner.types';
 import { cliProcess } from '../../utils/cliProcess';
 import { publicCliEvents } from './publicCliEvents';
 

@@ -1,6 +1,6 @@
 import type { ComponentManifest } from '../../../../../src/lib/contracts';
-import type { CatalogEntity, EntityDetail, Relationship } from '../../models/Desktop.types.ts';
-import type { PlanningPort, PlanRecord } from '../../models/PlanningPort.types.ts';
+import type { CatalogEntity, EntityDetail, Relationship } from '../../models/Desktop.types';
+import type { PlanningPort, PlanRecord } from '../../models/PlanningPort.types';
 import type { GitSourceAdapter } from '../../adapters/git-source-adapter/GitSourceAdapter';
 import { catalogHistory } from './catalogHistory';
 import { categoryOf } from '../../utils/categoryOf';

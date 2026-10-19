@@ -1,7 +1,7 @@
-import { ProjectRunContext } from '../../utils/prepareProjectRun';
+import type { ProjectRunContext } from '../../utils/prepareProjectRun';
 import { randomUUID } from 'node:crypto';
-import { RunCancelled } from '../../models/AgentRunner.types.ts';
-import type { ProjectRunRequest } from '../../models/DesktopBridge.types.ts';
+import { RunCancelled } from '../../models/AgentRunner.types';
+import type { ProjectRunRequest } from '../../models/DesktopBridge.types';
 import { creationProject } from '../../utils/ipc-payload/ipcPayload';
 import type { Preparation } from '../../utils/prepareRun';
 

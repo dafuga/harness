@@ -1,5 +1,5 @@
 import { planImageCodec as decode } from '../planImageCodec';
-import type { ReadImageInput } from '../../models/PlanningBridge.types.ts';
+import type { ReadImageInput } from '../../models/PlanningBridge.types';
 import { heldBy } from './planOptions';
 import type { Git } from '../planGit';
 import { imageBlob, revision } from '../planGit';

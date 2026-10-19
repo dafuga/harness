@@ -1,5 +1,5 @@
 import { retainedBranch } from '../../../utils/harnessAncestry';
-import type { HarnessIndex, HarnessRevisionSummary } from '../../../models/Harness.types.ts';
+import type { HarnessIndex, HarnessRevisionSummary } from '../../../models/Harness.types';
 
 /** The commits a branch contains, newest first; evidence and notes are never among them. */
 export function branchCommits(index: HarnessIndex, branch: string): HarnessRevisionSummary[] {

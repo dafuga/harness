@@ -1,6 +1,6 @@
 import { readFile, readdir, unlink } from 'node:fs/promises';
 import { join } from 'node:path';
-import type { CacheIdentity } from '../../../../collaboration/src/models/Collaboration.types.ts';
+import type { CacheIdentity } from '../../../../collaboration/src/models/Collaboration.types';
 
 export async function projectionCachePurge(
 	directory: string,

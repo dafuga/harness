@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/routes/harness/reports/[id]/+page.server.ts",
-			"packages/reports/src/routes/harness/reports/[id]/-page-server/+page.server.ts"
-		],
-		"symbols": ["load", "load"]
+		"source": ["packages/reports/src/routes/harness/reports/[id]/-page-server/+page.server.ts"],
+		"symbols": ["load"]
 	},
 	"contract": {
 		"origin": "derived",

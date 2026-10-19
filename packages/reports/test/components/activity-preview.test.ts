@@ -1,6 +1,6 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import ProjectActivity from '../../src/components/ProjectActivity.svelte';
+import ProjectActivity from '../../src/components/project-activity/ProjectActivity.svelte';
 import { activityPayload } from '../../tests/e2e/support/activityPayload';
 
 const at = Date.parse('2026-10-11T12:00:00.000Z');

@@ -4,7 +4,7 @@ import type {
 	SourceAdapter,
 	SourceHistoryPageInput,
 	SourceHistoryPage
-} from '../../models/Collaboration.types.ts';
+} from '../../models/Collaboration.types';
 import type { GitHubTransport } from '../githubTransport';
 import { parse, safePath, sha } from '../parseCollaborationInput';
 

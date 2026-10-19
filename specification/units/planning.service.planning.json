@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/planning/src/services/PlanningService.ts",
-			"packages/planning/src/services/planning-service/PlanningService.ts"
-		],
-		"symbols": ["planningService", "planningService"]
+		"source": ["packages/planning/src/services/planning-service/PlanningService.ts"],
+		"symbols": ["planningService"]
 	},
 	"contract": {
 		"origin": "derived",

@@ -61,11 +61,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/collaboration/src/utils/create-git-hub-source/githubLfs.ts",
+		"entry": "packages/collaboration/src/utils/githubLfs.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/collaboration/src/utils/create-git-hub-source/githubLfs.ts"
+				"entry": "packages/collaboration/src/utils/githubLfs.ts"
 			}
 		]
 	},

@@ -5,8 +5,8 @@
 		ExplorerHistoryRow,
 		ExplorerLocation,
 		ExplorerVerdict
-	} from '../../../models/Explorer.types.ts';
-	import type { HarnessMark } from '../../../models/Harness.types.ts';
+	} from '../../../models/Explorer.types';
+	import type { HarnessMark } from '../../../models/Harness.types';
 	import { signedBytes, signedCount, type HistoryTiming } from '../../../utils/entityHistory';
 	import { shortCommit, type EntityNav } from '../../../utils/entityLens';
 	import { byteSize, notMeasured } from '../../../utils/entityMeasure';

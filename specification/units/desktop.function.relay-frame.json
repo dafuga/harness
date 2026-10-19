@@ -40,11 +40,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/relay-link-service/relayFrame.ts",
+		"entry": "packages/desktop/src/utils/relayFrame.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/relay-link-service/relayFrame.ts"
+				"entry": "packages/desktop/src/utils/relayFrame.ts"
 			}
 		]
 	},

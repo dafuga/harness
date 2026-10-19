@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { parseFields } from '../src/core/fields';
+import { parseFields } from '../src/core/fields/fields';
 import { modelFiles } from '../src/templates/model';
 
 test('model generator creates model, migration, adapter, and test files', () => {

@@ -1,4 +1,4 @@
-import type { ExplorerEvidence } from '../../../models/Explorer.types.ts';
+import type { ExplorerEvidence } from '../../../models/Explorer.types';
 
 /**
  * What the parent of a selected commit declared for an entity and the commit no longer does:

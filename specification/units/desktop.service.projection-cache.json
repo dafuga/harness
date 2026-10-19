@@ -7,12 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/services/ProjectionCacheService.ts",
-			"packages/desktop/src/services/projection-cache-service/ProjectionCacheService.ts"
-		],
+		"source": ["packages/desktop/src/services/projection-cache-service/ProjectionCacheService.ts"],
 		"symbols": [
-			"ProjectionCacheService",
 			"ProjectionCacheService",
 			"ProjectionCacheService.constructor",
 			"ProjectionCacheService.get",

@@ -2,7 +2,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
 import { createWorkspaceStore, type Workspace } from '../../src/lib/stores/workspace.svelte';
 import type { CatalogEntity, EntityDetail, ProjectSnapshot } from '../../src/models/Desktop.types';
-import { unitLinks } from '../../src/utils/unitLinks';
+import { unitLinks } from '../../src/components/reference-text/unitLinks';
 
 /**
  * A resolver reads the project and revision in view when it is made. It never builds an address

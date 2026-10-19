@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/harness/EntityHistory.svelte",
-			"packages/reports/src/components/harness/entity-history/EntityHistory.svelte"
-		],
-		"symbols": ["EntityHistory", "EntityHistory"]
+		"source": ["packages/reports/src/components/harness/entity-history/EntityHistory.svelte"],
+		"symbols": ["EntityHistory"]
 	},
 	"contract": {
 		"origin": "declared",

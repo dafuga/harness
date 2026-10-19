@@ -1,11 +1,11 @@
 <script lang="ts">
-	import type { Workspace } from '../../lib/stores/workspace.svelte.ts';
-	import type { EntityDetail, HistoryEvent } from '../../models/Desktop.types.ts';
+	import type { Workspace } from '../../lib/stores/workspace.svelte';
+	import type { EntityDetail, HistoryEvent } from '../../models/Desktop.types';
 	import { historyPages } from './historyPages';
 	import { timeLabel } from '../../utils/timeLabel';
 	import WorkspaceLink from '../WorkspaceLink.svelte';
 	import RegressionProof from '../../../../reports/src/components/RegressionProof.svelte';
-	import type { EntityEvidence } from '../../lib/stores/entityEvidence.svelte.ts';
+	import type { EntityEvidence } from '../../lib/stores/entityEvidence.svelte';
 	let {
 		entity,
 		workspace,

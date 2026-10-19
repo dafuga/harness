@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/EntityView.svelte",
-			"packages/desktop/src/components/entity-view/EntityView.svelte"
-		],
-		"symbols": ["EntityView", "EntityView"]
+		"source": ["packages/desktop/src/components/entity-view/EntityView.svelte"],
+		"symbols": ["EntityView"]
 	},
 	"contract": {
 		"origin": "declared",

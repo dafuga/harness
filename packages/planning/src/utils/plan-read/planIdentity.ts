@@ -2,7 +2,7 @@ import { identity, attest } from '../planIdentity';
 import type { Git } from '../planGit';
 import { fail } from '../planData';
 import { planValidate } from '../planValidate';
-import type { PlanSummary } from '../../models/Planning.types.ts';
+import type { PlanSummary } from '../../models/Planning.types';
 
 export async function validateIdentity(git: Git, rev: string, plan: PlanSummary): Promise<void> {
 	identity(plan.unitId);

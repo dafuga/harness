@@ -1,13 +1,8 @@
 <script lang="ts">
 	import Select from '$shared/Select.svelte';
 	import SegmentedChoice from '../SegmentedChoice.svelte';
-	import type {
-		DesignVersion,
-		EntityDetail,
-		Region,
-		ThreadInfo
-	} from '../../models/Desktop.types.ts';
-	import type { Workspace } from '../../lib/stores/workspace.svelte.ts';
+	import type { DesignVersion, EntityDetail, Region, ThreadInfo } from '../../models/Desktop.types';
+	import type { Workspace } from '../../lib/stores/workspace.svelte';
 	import { imageUrl } from '../../utils/imageUrl';
 	import { priorImage } from './priorImage';
 	import { imageTarget, optionImages, type ThreadTarget } from '../../utils/threadAnchor';

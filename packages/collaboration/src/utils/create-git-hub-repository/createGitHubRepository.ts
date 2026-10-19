@@ -3,7 +3,7 @@ import type {
 	CollaborationRepository,
 	GitHubRepositoryOptions,
 	CollaborationRecords
-} from '../../models/Collaboration.types.ts';
+} from '../../models/Collaboration.types';
 import type { GitHubTransport } from '../githubTransport';
 import { fail, parse, safePath, sha } from '../parseCollaborationInput';
 import { recordsSchema } from '../recordsSchema';

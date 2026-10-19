@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { HarnessRevision } from '../../../models/Harness.types.ts';
+	import type { HarnessRevision } from '../../../models/Harness.types';
 	import { comparisonChoices, harnessComparison } from './harnessComparison';
 	import EvidenceGrid from '../../evidence-grid/EvidenceGrid.svelte';
 	import Select from '../../Select.svelte';

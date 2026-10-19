@@ -6,7 +6,7 @@ import { replayVideoKey } from '../../utils/replayVideo';
 import { reportRetention } from '../../utils/reportRetention';
 import { reportLock } from '../../utils/reportLock';
 import { ReplayStorageService } from '../ReplayStorageService';
-import type { Report } from '../../models/Report.types.ts';
+import type { Report } from '../../models/Report.types';
 
 const jobs = new Map<string, Promise<Buffer>>();
 

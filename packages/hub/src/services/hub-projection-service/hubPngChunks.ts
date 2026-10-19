@@ -1,4 +1,4 @@
-import { Header, State } from '../../utils/hubPngChunks';
+import type { Header, State } from '../../utils/hubPngChunks';
 import { hubFail } from '../../utils/hubJson';
 
 const SIGNATURE = [137, 80, 78, 71, 13, 10, 26, 10];

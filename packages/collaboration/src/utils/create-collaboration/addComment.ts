@@ -4,7 +4,7 @@ import type {
 	AddCommentInput,
 	CollaborationDependencies,
 	Thread
-} from '../../models/Collaboration.types.ts';
+} from '../../models/Collaboration.types';
 import { actorSchema, anchorSchema, fail, id, parse } from '../parseCollaborationInput';
 import { currentProject, now, transaction } from '../currentProject';
 

@@ -1,5 +1,5 @@
-import type { CatalogEntity } from '../../models/Desktop.types.ts';
-import type { PlanningPort } from '../../models/PlanningPort.types.ts';
+import type { CatalogEntity } from '../../models/Desktop.types';
+import type { PlanningPort } from '../../models/PlanningPort.types';
 import type { GitSourceAdapter } from '../../adapters/git-source-adapter/GitSourceAdapter';
 import { catalogListed, catalogUnit, planCatalog } from '../../utils/catalogUnit';
 import { catalogDetail } from './catalogDetail';

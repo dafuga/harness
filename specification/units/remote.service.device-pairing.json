@@ -7,16 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/remote/src/services/DevicePairingService.ts",
-			"packages/remote/src/services/device-pairing-service/DevicePairingService.ts"
-		],
+		"source": ["packages/remote/src/services/device-pairing-service/DevicePairingService.ts"],
 		"symbols": [
-			"DevicePairingInput",
-			"ScanningDevice",
-			"PendingPairing",
-			"DeviceCredentials",
-			"DevicePairingService",
 			"DevicePairingInput",
 			"ScanningDevice",
 			"PendingPairing",

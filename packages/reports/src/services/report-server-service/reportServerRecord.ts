@@ -1,4 +1,5 @@
-import { StoppedServer, reportServerRecord, processStarted } from '../../utils/reportServerRecord';
+import type { StoppedServer } from '../../utils/reportServerRecord';
+import { reportServerRecord, processStarted } from '../../utils/reportServerRecord';
 
 /** Ends the server this store recorded on the port, waits until it is gone, and forgets it. */
 export async function stopReportServer(root: string, port: number): Promise<StoppedServer> {

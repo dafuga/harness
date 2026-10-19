@@ -2,7 +2,7 @@ import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
-import { createPlanning } from '../../planning/src';
+import { createPlanning } from '../../planning/src/index/index';
 import { approve, fixture, git, settled } from './run-fixture';
 
 /**

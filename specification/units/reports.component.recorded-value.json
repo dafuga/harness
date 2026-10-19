@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/RecordedValue.svelte",
-			"packages/reports/src/components/recorded-value/RecordedValue.svelte"
-		],
-		"symbols": ["RecordedValue", "RecordedValue"]
+		"source": ["packages/reports/src/components/recorded-value/RecordedValue.svelte"],
+		"symbols": ["RecordedValue"]
 	},
 	"contract": {
 		"origin": "declared",

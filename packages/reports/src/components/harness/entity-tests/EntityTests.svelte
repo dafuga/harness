@@ -6,7 +6,7 @@
 		ExplorerEvidence,
 		ExplorerSlotCoverage as Slot,
 		ExplorerScope
-	} from '../../../models/Explorer.types.ts';
+	} from '../../../models/Explorer.types';
 	import { entityLens, shortCommit, type EntityNav } from '../../../utils/entityLens';
 	import RegressionProof from '../../RegressionProof.svelte';
 	import { entityRemoved } from './entityRemoved';

@@ -1,4 +1,4 @@
-import { HubApiRuntime } from '../../../../utils/hubRuntime';
+import type { HubApiRuntime } from '../../../../utils/hubRuntime';
 import { createCollaboration, createGitHubRepository, createGitHubSource } from 'collaboration';
 import type { HubEnv } from '../../../../config/hubEnvConfig';
 import { HubProjectionService } from '../../../../services/hub-projection-service/HubProjectionService';

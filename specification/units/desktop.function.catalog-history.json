@@ -55,11 +55,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/catalog-service/catalogHistory.ts",
+		"entry": "packages/desktop/src/utils/catalogHistory.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/catalog-service/catalogHistory.ts"
+				"entry": "packages/desktop/src/utils/catalogHistory.ts"
 			}
 		]
 	},

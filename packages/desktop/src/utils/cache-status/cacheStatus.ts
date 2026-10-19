@@ -1,5 +1,5 @@
-import type { Workspace } from '../../lib/stores/workspace.svelte.ts';
-import type { CacheStatus, ProjectCapabilities } from '../../models/ProjectContext.types.ts';
+import type { Workspace } from '../../lib/stores/workspace.svelte';
+import type { CacheStatus, ProjectCapabilities } from '../../models/ProjectContext.types';
 import { closedCapabilities } from '../projectCapabilities';
 
 /** The project id of an event about discovery or the whole session, not one project. */

@@ -1,4 +1,4 @@
-import type { EvidenceArtifactResult } from '../../../../desktop/src/models/DesktopEvidence.types.ts';
+import type { EvidenceArtifactResult } from '../../../../desktop/src/models/DesktopEvidence.types';
 import { artifactAnswer } from '../../../../desktop/src/utils/artifact-answer/artifactAnswer';
 
 /** The kinds this app shows, each with the media types the hosted service may attest for it. */

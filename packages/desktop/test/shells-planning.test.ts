@@ -1,6 +1,6 @@
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
-import { createPlanning } from '../../planning/src';
+import { createPlanning } from '../../planning/src/index/index';
 import { fixture, git } from './run-fixture';
 
 /**

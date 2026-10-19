@@ -1,4 +1,4 @@
-import { OwnerMode, ConsolePolicy } from '../../../../../src/utils/consolePolicy';
+import type { OwnerMode, ConsolePolicy } from '../../../../../src/utils/consolePolicy';
 
 const loopback = /^(127(\.\d{1,3}){3}|::1|::ffff:127(\.\d{1,3}){3}|localhost)$/;
 

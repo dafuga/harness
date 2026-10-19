@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { scenarioManifestSchema } from '../../src/core/unitTypes';
-import { revisionRegistry } from '../../src/utils/revisionRegistry';
+import { revisionRegistry } from '../../src/utils/revision-registry/revisionRegistry';
 import { ScenarioManifestValidator } from '../../src/validators/ScenarioManifestValidator';
 
 const scenario = (states: object[]) =>

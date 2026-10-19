@@ -1,7 +1,7 @@
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import type { RunContext } from '../src/models/RunContext.types';
-import { proposalPrompt } from '../src/utils/projectProposal';
+import { proposalPrompt } from '../src/services/project-run-service/projectProposal';
 import { runContext } from '../src/utils/runContext';
 
 /**

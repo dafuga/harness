@@ -3,13 +3,9 @@ import { test } from 'vitest';
 import type { AddDesignInput, DesignImageInput } from '../../src/models/PlanningBridge.types';
 import type { DesignImage, DesignVersion } from '../../src/models/Planning.types';
 import { hash } from '../../src/utils/planData';
-import {
-	approvable,
-	checkOptions,
-	optionOf,
-	planOptions,
-	type WriteImages
-} from '../../src/utils/planOptions';
+import { approvable, optionOf, type WriteImages } from '../../src/utils/planOptions';
+import { checkOptions } from '../../src/utils/plan-read/planOptions';
+import { planOptions } from '../../src/services/planning-service/planOptions';
 
 /**
  * The rules of design options apart from Git: how options are numbered and written, what they

@@ -3,7 +3,7 @@ import type {
 	EntityEvidenceQuery,
 	EntityEvidenceResult,
 	EvidenceArtifactQuery
-} from '../../../../desktop/src/models/DesktopEvidence.types.ts';
+} from '../../../../desktop/src/models/DesktopEvidence.types';
 import { evidencePayload } from '../../../../desktop/src/utils/evidencePayload';
 import { artifactAnswer } from '../../../../desktop/src/utils/artifact-answer/artifactAnswer';
 import { artifactLimit } from '../../../../desktop/src/utils/artifactMedia';

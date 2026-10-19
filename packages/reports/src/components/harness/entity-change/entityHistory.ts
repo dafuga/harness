@@ -1,4 +1,4 @@
-import type { HarnessReview } from '../../../models/HarnessBudget.types.ts';
+import type { HarnessReview } from '../../../models/HarnessBudget.types';
 import { humanize } from '../../../utils/entityContract';
 import { emittedLabel } from '../../../utils/harnessEmitted';
 

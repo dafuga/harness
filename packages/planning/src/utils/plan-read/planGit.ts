@@ -1,4 +1,4 @@
-import { Git } from '../planGit';
+import type { Git } from '../planGit';
 import { fail } from '../planData';
 
 export async function containing(git: Git, rev: string, path: string): Promise<string> {

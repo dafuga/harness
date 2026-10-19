@@ -1,8 +1,5 @@
 import { z } from 'zod';
-import type {
-	CollaborationApi,
-	CollaborationDependencies
-} from '../../models/Collaboration.types.ts';
+import type { CollaborationApi, CollaborationDependencies } from '../../models/Collaboration.types';
 import { actorSchema, entityId, id, parse, sha } from '../parseCollaborationInput';
 import { currentProject } from '../currentProject';
 import { readRecords } from './currentProject';

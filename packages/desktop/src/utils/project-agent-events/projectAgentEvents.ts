@@ -1,5 +1,5 @@
-import type { ProjectAgent } from '../../lib/stores/projectAgent.svelte.ts';
-import type { RunEvent } from '../../models/DesktopBridge.types.ts';
+import type { ProjectAgent } from '../../lib/stores/projectAgent.svelte';
+import type { RunEvent } from '../../models/DesktopBridge.types';
 import { rememberCreatedThread } from './createdThread';
 
 const ended = ['failed', 'cancelled', 'finished'];

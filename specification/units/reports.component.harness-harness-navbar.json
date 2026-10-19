@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/harness/HarnessNavbar.svelte",
-			"packages/reports/src/components/harness/harness-navbar/HarnessNavbar.svelte"
-		],
-		"symbols": ["HarnessNavbar", "HarnessNavbar"]
+		"source": ["packages/reports/src/components/harness/harness-navbar/HarnessNavbar.svelte"],
+		"symbols": ["HarnessNavbar"]
 	},
 	"contract": {
 		"origin": "declared",

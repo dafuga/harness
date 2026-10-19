@@ -172,11 +172,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/planning-reads/planningReads.ts",
+		"entry": "packages/desktop/src/utils/planningReads.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/planning-reads/planningReads.ts"
+				"entry": "packages/desktop/src/utils/planningReads.ts"
 			}
 		]
 	},

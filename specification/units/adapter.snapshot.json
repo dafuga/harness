@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/adapters/SnapshotAdapter.ts",
-			"src/adapters/snapshot-adapter/SnapshotAdapter.ts"
-		],
+		"source": ["src/adapters/snapshot-adapter/SnapshotAdapter.ts"],
 		"symbols": [
-			"SnapshotDrift",
-			"SnapshotAdapter",
 			"SnapshotDrift",
 			"SnapshotAdapter",
 			"SnapshotAdapter.create",

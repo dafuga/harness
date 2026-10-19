@@ -2,8 +2,8 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
-import { recordCapture } from '../../../../src/utils/recordCapture';
-import { recordedValue } from '../../src/utils/recordedValue';
+import { recordCapture } from '../../../../src/utils/record-capture/recordCapture';
+import { recordedValue } from '../../src/components/recorded-value/recordedValue';
 
 test('a bounded preview leaves its input intact and makes shortening explicit', () => {
 	const value = { long: 'x'.repeat(1000), rows: Array.from({ length: 500 }, (_, id) => ({ id })) };

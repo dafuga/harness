@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/BrowserErrors.svelte",
-			"packages/reports/src/components/browser-errors/BrowserErrors.svelte"
-		],
-		"symbols": ["BrowserErrors", "BrowserErrors"]
+		"source": ["packages/reports/src/components/browser-errors/BrowserErrors.svelte"],
+		"symbols": ["BrowserErrors"]
 	},
 	"contract": {
 		"origin": "declared",

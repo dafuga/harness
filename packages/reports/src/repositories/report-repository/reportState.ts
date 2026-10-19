@@ -1,4 +1,4 @@
-import type { BeginInput, Report } from '../../models/Report.types.ts';
+import type { BeginInput, Report } from '../../models/Report.types';
 import { basename, resolve } from 'node:path';
 import { createHash, randomUUID } from 'node:crypto';
 import { cleanData } from '../../utils/sanitize';

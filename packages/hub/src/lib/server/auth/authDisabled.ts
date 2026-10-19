@@ -1,4 +1,4 @@
-import type { AuthStatus, GithubStatus, HubAuth } from '../../../models/HubAuth.types.ts';
+import type { AuthStatus, GithubStatus, HubAuth } from '../../../models/HubAuth.types';
 import { AuthFailure } from '../../../utils/authFail';
 import { authFailure, authHttp, authPath } from '../../../utils/authHttp';
 

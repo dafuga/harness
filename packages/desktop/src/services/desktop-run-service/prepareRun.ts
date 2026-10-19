@@ -1,8 +1,9 @@
-import { Preparation, imageModel, messageFor } from '../../utils/prepareRun';
+import type { Preparation } from '../../utils/prepareRun';
+import { imageModel, messageFor } from '../../utils/prepareRun';
 import { randomUUID } from 'node:crypto';
-import type { RunRequest } from '../../models/DesktopBridge.types.ts';
-import type { RunContext } from '../../models/RunContext.types.ts';
-import { RunCancelled } from '../../models/AgentRunner.types.ts';
+import type { RunRequest } from '../../models/DesktopBridge.types';
+import type { RunContext } from '../../models/RunContext.types';
+import { RunCancelled } from '../../models/AgentRunner.types';
 import { approvalMatch } from './approvalMatch';
 
 export async function prepareRun(

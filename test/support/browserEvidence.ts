@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test';
 import { BuildIdentityService } from '../../src/services/BuildIdentityService';
 import { buildStamp } from '../../src/utils/buildStamp';
-import { evidenceRequested, recordCapture } from '../../src/utils/recordCapture';
+import { evidenceRequested, recordCapture } from '../../src/utils/record-capture/recordCapture';
 
 /** The diagnostic viewer's real pixels over synthetic records, bound to the compiled viewer. */
 export async function browserEvidence(page: Page, shown: { state: string; home?: string }) {

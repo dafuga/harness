@@ -7,15 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/workflows/record-regression/recordRegression.ts",
-			"src/workflows/recordRegression.ts"
-		],
+		"source": ["src/workflows/record-regression/recordRegression.ts"],
 		"symbols": [
-			"RecordRegressionInput",
-			"recordRegression",
-			"requireRegressionProof",
-			"enforceRegressionStep",
 			"RecordRegressionInput",
 			"recordRegression",
 			"requireRegressionProof",

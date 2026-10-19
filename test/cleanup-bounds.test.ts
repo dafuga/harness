@@ -3,8 +3,8 @@ import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { classifyProcess } from '../src/utils/platformServices';
 import type { FollowedProcess, TrackedProcess } from '../src/utils/processDescendants';
-import { runIsolated } from '../src/utils/runIsolated';
-import { settleProcesses } from '../src/utils/settleProcesses';
+import { runIsolated } from '../src/utils/run-isolated/runIsolated';
+import { settleProcesses } from '../src/utils/run-isolated/settleProcesses';
 import { realProbes } from './support/realProbes';
 import {
 	adopted,

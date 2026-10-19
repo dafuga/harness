@@ -1,10 +1,10 @@
-import { HubAuthParts } from '../../../utils/composeHubAuth';
+import type { HubAuthParts } from '../../../utils/composeHubAuth';
 import { GithubApiAdapter } from '../../../adapters/GithubApiAdapter';
 import { EmailProofController } from '../../../controllers/EmailProofController';
 import { GithubConnectionController } from '../../../controllers/github-connection-controller/GithubConnectionController';
 import { HubAuthController } from '../../../controllers/HubAuthController';
 import { NativeHandoffController } from '../../../controllers/NativeHandoffController';
-import type { HubAuth } from '../../../models/HubAuth.types.ts';
+import type { HubAuth } from '../../../models/HubAuth.types';
 import { SessionRepository } from '../../../repositories/SessionRepository';
 import { EmailProofService } from '../../../services/email-proof-service/EmailProofService';
 import { GithubGrantService } from '../../../services/GithubGrantService';

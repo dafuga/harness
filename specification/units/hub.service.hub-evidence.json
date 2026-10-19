@@ -7,12 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/services/HubEvidenceService.ts",
-			"packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts"
-		],
+		"source": ["packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts"],
 		"symbols": [
-			"HubEvidenceService",
 			"HubEvidenceService",
 			"HubEvidenceService.constructor",
 			"HubEvidenceService.evidence",

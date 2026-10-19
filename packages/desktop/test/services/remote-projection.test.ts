@@ -1,6 +1,6 @@
 import { test, expect } from 'vitest';
 import { remoteCacheFixture } from '../remote-cache-fixture';
-import { RemoteHttpProjectAdapter } from '../../src/adapters/RemoteHttpProjectAdapter';
+import { RemoteHttpProjectAdapter } from '../../src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter';
 test('cached project discovery survives disconnect and cache deletion requires online rebuild', async () => {
 	const f = await remoteCacheFixture();
 	try {

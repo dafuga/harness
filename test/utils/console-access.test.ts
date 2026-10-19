@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { consoleAccess } from '../../src/utils/consoleAccess';
+import { consoleAccess } from '../../packages/reports/src/utils/console-server/consoleAccess';
 import { consoleBundle } from '../../src/utils/consoleBundle';
 
 const commit = 'a'.repeat(40);

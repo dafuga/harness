@@ -1,12 +1,5 @@
-import type {
-	ExplorerScenarioCoverage,
-	ExplorerStateCoverage
-} from '../../models/Explorer.types.ts';
-import type {
-	HarnessRecord,
-	HarnessRevision,
-	HarnessScenario
-} from '../../models/Harness.types.ts';
+import type { ExplorerScenarioCoverage, ExplorerStateCoverage } from '../../models/Explorer.types';
+import type { HarnessRecord, HarnessRevision, HarnessScenario } from '../../models/Harness.types';
 import { coverageWorst, scenarioFor, type Judged, type Told } from '../explorerState';
 import { explorerState } from './explorerState';
 

@@ -1,4 +1,4 @@
-import { CpuState } from '../../utils/analyticsCpuClient';
+import type { CpuState } from '../../utils/analyticsCpuClient';
 import type { CpuSnapshot } from '../../../../../src/utils/cpuMetrics';
 
 export function analyticsCpuClient(update: (sample: CpuState) => void) {

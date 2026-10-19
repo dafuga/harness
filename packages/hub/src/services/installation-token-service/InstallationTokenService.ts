@@ -1,6 +1,6 @@
 import type { RepositoryIdentity } from 'collaboration';
 import type { GithubApiAdapter, InstallationScope } from '../../adapters/GithubApiAdapter';
-import type { InstallationTokenInput } from '../../models/HubAuth.types.ts';
+import type { InstallationTokenInput } from '../../models/HubAuth.types';
 import type { GithubAppConfig } from '../../utils/authConfig';
 import { authFail } from '../../utils/authFail';
 import { githubAppJwt, githubAppKey } from './githubAppJwt';

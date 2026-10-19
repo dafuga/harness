@@ -4,7 +4,7 @@ import {
 	NATIVE_TTL,
 	SessionRepository
 } from '../../src/repositories/SessionRepository';
-import { authSecrets } from '../../src/utils/authSecrets';
+import { authSecrets } from '../../src/lib/server/auth/authSecrets';
 import { ada, authFixture, browserGrant } from '../support/authFixture';
 
 test('a session credential is opaque and only its keyed hash is stored', async () => {

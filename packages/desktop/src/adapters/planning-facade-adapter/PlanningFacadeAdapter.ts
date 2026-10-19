@@ -6,8 +6,8 @@ import type {
 	DesignDraft,
 	MessageDraft,
 	PlanImageQuery
-} from '../../models/PlanningPort.types.ts';
-import type { ApprovalDraft, PlanDraft, ThreadDraft } from '../../models/DesktopBridge.types.ts';
+} from '../../models/PlanningPort.types';
+import type { ApprovalDraft, PlanDraft, ThreadDraft } from '../../models/DesktopBridge.types';
 import { planningReads, readPlanImage, readPlanMessages, readPlanHistory } from './planningReads';
 import {
 	planningWrites,

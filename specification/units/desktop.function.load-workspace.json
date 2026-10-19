@@ -88,11 +88,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/load-workspace/loadWorkspace.ts",
+		"entry": "packages/desktop/src/utils/loadWorkspace.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/load-workspace/loadWorkspace.ts"
+				"entry": "packages/desktop/src/utils/loadWorkspace.ts"
 			}
 		]
 	},

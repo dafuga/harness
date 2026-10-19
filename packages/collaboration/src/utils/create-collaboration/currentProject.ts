@@ -1,7 +1,7 @@
 import type {
 	CollaborationDependencies,
 	CollaborationRecords
-} from '../../models/Collaboration.types.ts';
+} from '../../models/Collaboration.types';
 import { parse } from '../parseCollaborationInput';
 import { recordsSchema } from '../recordsSchema';
 

@@ -1,6 +1,6 @@
 import { categoryOf } from '../../../../desktop/src/utils/categoryOf';
 import type { ComponentManifest } from '../../../../../src/core/unitTypes';
-import type { CatalogEntity, Relationship } from '../../../../desktop/src/models/Desktop.types.ts';
+import type { CatalogEntity, Relationship } from '../../../../desktop/src/models/Desktop.types';
 
 export function hubRelationships(
 	unit: ComponentManifest,

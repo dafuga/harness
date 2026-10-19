@@ -4,7 +4,7 @@ import {
 	consoleCanonical,
 	defaultCommit,
 	type IndexedHistory
-} from '../../src/utils/consoleCanonical';
+} from '../../src/utils/console-canonical/consoleCanonical';
 
 const id = (letter: string) => letter.repeat(40);
 const index: IndexedHistory = {

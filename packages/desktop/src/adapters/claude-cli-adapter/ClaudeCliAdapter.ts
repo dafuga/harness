@@ -1,4 +1,4 @@
-import type { AgentRunner, AgentTurn, CliCommand } from '../../models/AgentRunner.types.ts';
+import type { AgentRunner, AgentTurn, CliCommand } from '../../models/AgentRunner.types';
 import { claudeState } from './claudeState';
 import { claudeTurn } from './claudeTurn';
 

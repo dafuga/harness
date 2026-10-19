@@ -86,11 +86,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/explorer-history/explorerHistory.ts",
+		"entry": "packages/reports/src/utils/explorerHistory.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/explorer-history/explorerHistory.ts"
+				"entry": "packages/reports/src/utils/explorerHistory.ts"
 			}
 		]
 	},

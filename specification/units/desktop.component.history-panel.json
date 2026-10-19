@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/HistoryPanel.svelte",
-			"packages/desktop/src/components/history-panel/HistoryPanel.svelte"
-		],
-		"symbols": ["HistoryPanel", "HistoryPanel"]
+		"source": ["packages/desktop/src/components/history-panel/HistoryPanel.svelte"],
+		"symbols": ["HistoryPanel"]
 	},
 	"contract": {
 		"origin": "declared",

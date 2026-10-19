@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/harness/HarnessFailures.svelte",
-			"packages/reports/src/components/harness/harness-failures/HarnessFailures.svelte"
-		],
-		"symbols": ["HarnessFailures", "HarnessFailures"]
+		"source": ["packages/reports/src/components/harness/harness-failures/HarnessFailures.svelte"],
+		"symbols": ["HarnessFailures"]
 	},
 	"contract": {
 		"origin": "declared",

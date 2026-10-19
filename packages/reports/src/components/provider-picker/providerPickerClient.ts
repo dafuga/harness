@@ -1,4 +1,4 @@
-import { PickerClient } from '../../utils/providerPickerClient';
+import type { PickerClient } from '../../utils/providerPickerClient';
 import { App } from '@modelcontextprotocol/ext-apps';
 import type { PickerSnapshot } from '../../../../../src/core/pickerTypes';
 

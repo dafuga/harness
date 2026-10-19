@@ -1,5 +1,5 @@
-import { OfflineView } from '../cache-status/cacheStatus';
-import type { ProjectSnapshot } from '../../models/Desktop.types.ts';
+import type { OfflineView } from '../cache-status/cacheStatus';
+import type { ProjectSnapshot } from '../../models/Desktop.types';
 
 /** What a snapshot says about being a cached copy; null for a current one. */
 export function offlineView(snapshot: ProjectSnapshot): OfflineView | null {

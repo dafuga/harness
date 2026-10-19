@@ -5,7 +5,7 @@ vi.mock('../../../../src/services/CpuUsageService', () => ({
 		snapshot = snapshot;
 	}
 }));
-import { GET } from '../../src/routes/api/analytics-cpu/+server';
+import { GET } from '../../src/routes/api/analytics-cpu/-server/+server';
 test('CPU telemetry is local-only and never cached', async () => {
 	const blocked = await GET({ url: new URL('https://reports.example/api/analytics-cpu') });
 	expect(blocked.status).toBe(403);

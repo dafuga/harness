@@ -7,12 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/repositories/HistoryNoteRepository.ts",
-			"src/repositories/history-note-repository/HistoryNoteRepository.ts"
-		],
+		"source": ["src/repositories/history-note-repository/HistoryNoteRepository.ts"],
 		"symbols": [
-			"HistoryNoteRepository",
 			"HistoryNoteRepository",
 			"HistoryNoteRepository.constructor",
 			"HistoryNoteRepository.text",

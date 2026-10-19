@@ -1,13 +1,13 @@
 import { expect, test } from 'vitest';
 import {
 	explanationProblems,
-	writingDeclared,
 	writingHeld,
 	writingLimits,
 	writingPolicy,
 	writingVersion,
 	writingVersions
-} from '../../src/utils/writingLimits';
+} from '../../src/utils/writing-limits/writingLimits';
+import { writingDeclared } from '../../src/services/commit-message-service/writingLimits';
 
 const words = (count: number, word = 'word') => Array.from({ length: count }, () => word).join(' ');
 const about = 'function.slugify slugify';

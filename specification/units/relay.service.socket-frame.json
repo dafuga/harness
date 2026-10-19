@@ -7,12 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/relay/src/services/SocketFrameService.ts",
-			"packages/relay/src/services/socket-frame-service/SocketFrameService.ts"
-		],
+		"source": ["packages/relay/src/services/socket-frame-service/SocketFrameService.ts"],
 		"symbols": [
-			"SocketFrameService",
 			"SocketFrameService",
 			"SocketFrameService.constructor",
 			"SocketFrameService.message",

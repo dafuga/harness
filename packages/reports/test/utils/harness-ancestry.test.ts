@@ -1,13 +1,13 @@
 import { expect, test } from 'vitest';
 import type { HarnessIndex, HarnessRevisionSummary } from '../../src/models/Harness.types';
+import { branchCommits } from '../../src/components/harness/harness-navbar/harnessAncestry';
 import {
-	branchCommits,
 	branchNames,
 	branchOf,
 	defaultCommit,
-	harnessAncestry,
 	retainedBranch
 } from '../../src/utils/harnessAncestry';
+import { harnessAncestry } from '../../src/utils/explorer-history/harnessAncestry';
 
 const id = (letter: string) => letter.repeat(40);
 function revision(letter: string, extra: Partial<HarnessRevisionSummary>): HarnessRevisionSummary {

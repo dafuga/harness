@@ -133,11 +133,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/cache-status/cacheStatus.ts",
+		"entry": "packages/desktop/src/utils/cacheStatus.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/cache-status/cacheStatus.ts"
+				"entry": "packages/desktop/src/utils/cacheStatus.ts"
 			}
 		]
 	},

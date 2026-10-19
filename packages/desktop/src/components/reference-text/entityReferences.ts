@@ -1,4 +1,5 @@
-import { ReferencePart, isUnitId } from '../../utils/entityReferences';
+import type { ReferencePart } from '../../utils/entityReferences';
+import { isUnitId } from '../../utils/entityReferences';
 
 /** A marker holds no bracket and no space, so a broken one never swallows the next. */
 const marker = /\[\[unit:([^\][\s]{1,201})\]\]/g;
