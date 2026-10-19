@@ -1,24 +1,8 @@
 import { test, expect } from '../../../../test/support/browserTest';
-import { mkdir } from 'node:fs/promises';
 import { seededId } from './support/fixtures';
-import { expectRetired, reportView } from './support/portableReport';
-async function capture(page: import('@playwright/test').Page, name: string, fullPage = true) {
-	if (process.env.TAKE_SCREENSHOT !== 'true') return;
-	const directory = `output/evidence/${process.env.SCREENSHOT_LABEL || 'current'}`;
-	await mkdir(directory, { recursive: true });
-	await page.evaluate(async () => {
-		await document.fonts.ready;
-		for (const image of document.querySelectorAll('img')) {
-			const bounds = image.getBoundingClientRect();
-			if (bounds.width === 0 || bounds.height === 0) continue;
-			await image.decode();
-			if (!image.complete || image.naturalWidth === 0) throw new Error('Image is not ready');
-		}
-	});
-	await page.screenshot({ path: `${directory}/${name}.png`, fullPage });
-}
+import { capture, expectCenteredClose, expectRetired, reportView } from './support/portableReport';
 for (const width of [1440, 390])
-	test(`report details open as separate modals at ${width}px`, async ({ page }) => {
+	test(`report details open as separate modals at ${width}px`, async ({ page }, info) => {
 		await page.setViewportSize({ width, height: 1000 });
 		const id = await seededId();
 		await page.goto(await reportView(id));
@@ -42,6 +26,8 @@ for (const width of [1440, 390])
 				await expect(dialog.getByText('bun run check')).toBeVisible();
 			}
 			await capture(page, `details-${label.toLowerCase().replaceAll(' ', '-')}-${width}`, false);
+			await expectCenteredClose(dialog, info);
+			await trigger.click();
 			await page.keyboard.press('Escape');
 			await expect(dialog).toHaveCount(0);
 			await expect(trigger).toBeFocused();
