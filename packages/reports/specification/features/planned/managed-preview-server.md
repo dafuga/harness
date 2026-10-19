@@ -32,4 +32,6 @@ process cleanup. Commit failing proof before the implementation. No native Elect
 - Reports unit suite, production build, type checks, changed-file lint, audits and unit registry checks pass.
 - Full desktop lint has an existing nested ternary at `test/ios-simulator-build.test.ts:25`; it is outside this change.
 - Native Electron testing remains paused by request. The full root/native aggregate was not run.
-- Replacing the two already-running legacy previews awaits explicit server-stop approval.
+- Activated on 2026-10-19 after approval: legacy previews on 5673 and 5688 were stopped; one managed process now serves 5688.
+- The history index is unchanged (333 revisions, no index problems). A repeated launch reused the same owner.
+- A fresh in-app browser catalog loaded successfully with no console errors; the existing user tab and filters were preserved.
