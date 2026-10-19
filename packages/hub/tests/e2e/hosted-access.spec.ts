@@ -137,13 +137,17 @@ test('the same Google account automatically discovers owned and joined projects 
 			name: 'New owned project'
 		});
 		await other.evaluate(() => window.dispatchEvent(new Event('focus')));
-		if (process.env.TAKE_SCREENSHOT === 'true') {
-			await other.evaluate(() => document.fonts.ready);
-			await other.screenshot({
-				path: `/tmp/harness-google-project-sync-${process.env.SCREENSHOT_LABEL ?? 'proof'}.png`
-			});
+		try {
+			await expect(other.getByRole('link', { name: 'Open Borealis', exact: true })).toBeVisible();
+		} finally {
+			if (process.env.TAKE_SCREENSHOT === 'true') {
+				await other.evaluate(() => document.fonts.ready);
+				await other.screenshot({
+					path: `/tmp/harness-google-project-sync-${process.env.SCREENSHOT_LABEL ?? 'proof'}.png`,
+					fullPage: true
+				});
+			}
 		}
-		await expect(other.getByRole('link', { name: 'Open Borealis', exact: true })).toBeVisible();
 		await expect(
 			other.getByRole('link', { name: 'Open New owned project', exact: true })
 		).toBeVisible();
