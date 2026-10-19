@@ -192,16 +192,17 @@ function execute(run: IsolatedRun, output: Buffer[]): Promise<Outcome> {
 		child.once('error', () => finish(null));
 		run.signal?.addEventListener('abort', cancel, { once: true });
 		if (run.signal?.aborted) cancel();
+		// Bun may deliver child events inside a synchronous spawn observer.
+		child.once('exit', (code) => {
+			descendants.closed();
+			if (!guard) signalGroup(child, 'SIGKILL');
+			setTimeout(() => finish(code), 50);
+		});
 		try {
 			if (child.pid) run.onSpawn?.(child.pid);
 		} catch {
 			cancel();
 			finish(null);
 		}
-		child.once('exit', (code) => {
-			descendants.closed();
-			if (!guard) signalGroup(child, 'SIGKILL');
-			setTimeout(() => finish(code), 50);
-		});
 	});
 }

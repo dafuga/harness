@@ -1,0 +1,73 @@
+{
+	"name": "observed-command-exits",
+	"goal": "Commands that exit during synchronous spawn observers retain exit and output events in Node and Bun without holding resource reservations",
+	"createdAt": "2026-10-19T18:19:56.792Z",
+	"updatedAt": "2026-10-19T18:22:54.076Z",
+	"template": "regression-prevention",
+	"templateLineage": ["regression-prevention"],
+	"enforceOrder": true,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
+			"status": "complete",
+			"completedAt": "2026-10-19T18:20:34.467Z",
+			"evidence": "New synchronous PID observer from d13fc5e7 can consume Bun child exit events before runIsolated attaches its exit listener; native Bun sh exits normally at zero observer delay and falsely times out at 100 ms. Linux timeout relies on that missing exit event."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
+			"status": "complete",
+			"completedAt": "2026-10-19T18:20:34.820Z",
+			"evidence": "Existing process-runner tests execute under Node and observe only a cheap callback. Extend their normal exit/output case with native Bun at zero and delayed observer delivery; no unrelated broad suite needed."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test and shared coverage; run it failing before repair and record the command, assertion and result.",
+			"status": "complete",
+			"completedAt": "2026-10-19T18:20:35.073Z",
+			"evidence": "/tmp/harness-observed-exit-red.log: unchanged standardized native Bun matrix passes 0 ms and fails 100 ms, receiving timeout/null/true instead of passed/0/false in 3.89 seconds."
+		},
+		{
+			"id": "propose",
+			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
+			"status": "complete",
+			"completedAt": "2026-10-19T18:20:35.323Z",
+			"evidence": "Register child exit listeners before invoking synchronous observers. Keep the native runtime/observer matrix in the existing process-runner suite and require lifecycle boundary tests when extending observers."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
+			"status": "complete",
+			"completedAt": "2026-10-19T18:22:53.400Z",
+			"evidence": "Child exit listener installed before onSpawn; standard Node/Bun exit-output matrix covers synchronous observer delay, with a matching AGENTS.md review checkpoint."
+		},
+		{
+			"id": "green",
+			"title": "Repeat repair and the same unchanged regression test until it passes; record passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-19T18:22:53.770Z",
+			"evidence": "/tmp/harness-observed-exit-green.log: all 6 process-runner cases pass; final Node/Bun matrix with real stdout/stderr also passes in isolated restored source."
+		},
+		{
+			"id": "guard",
+			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
+			"status": "complete",
+			"completedAt": "2026-10-19T18:22:54.076Z",
+			"evidence": "/tmp/harness-observed-guard-red.log rejects old HEAD source with timeout/null/true; /tmp/harness-observed-guard-green.log passes the same unchanged matrix after restoring repaired source."
+		},
+		{
+			"id": "verify",
+			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
