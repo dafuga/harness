@@ -1,0 +1,143 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [7.10s]
+$ vitest run test/preview-lifecycle.test.ts -t "autonomously recovers"
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-sH1YYi/packages/reports
+
+ ❯ test/preview-lifecycle.test.ts (11 tests | 3 failed | 8 skipped) 55775ms
+   ↓ repeated starts on another requested port reuse the same owned preview
+   ↓ another history configuration is refused without starting a second preview
+   ↓ an occupied preview port is refused instead of silently choosing another
+   ↓ an owner that crashes can be restarted without a stale lock or orphan preview
+   ↓ simultaneous launches elect one owner while the other reuses it
+   ↓ a different checkout is refused without affecting the owner
+   ↓ normal shutdown releases both the preview and ownership listeners
+   ↓ route indexes stay aligned after the normal SvelteKit sync command
+   × the owned preview autonomously recovers after crash 18604ms
+     → Recovery did not complete: $ BODY_SIZE_LIMIT=110M HARNESS_OWNER_MODE=loopback HARNESS_BIND=127.0.0.1 bun src/initializers/initializePreview.ts "/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-preview-lifecycle-nbm5cD" --config "/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-preview-lifecycle-nbm5cD/vite.config.mjs" --port "49735"
+Harness preview: http://127.0.0.1:49735
+error: script "dev" exited with code 1
+
+   × the owned preview autonomously recovers after hang 18832ms
+     → Recovery did not complete: $ BODY_SIZE_LIMIT=110M HARNESS_OWNER_MODE=loopback HARNESS_BIND=127.0.0.1 bun src/initializers/initializePreview.ts "/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-preview-lifecycle-b5AQqh" --config "/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-preview-lifecycle-b5AQqh/vite.config.mjs" --port "50204"
+Harness preview: http://127.0.0.1:50204
+
+   × the owned preview autonomously recovers after module errors 18338ms
+     → Recovery did not complete: $ BODY_SIZE_LIMIT=110M HARNESS_OWNER_MODE=loopback HARNESS_BIND=127.0.0.1 bun src/initializers/initializePreview.ts "/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-preview-lifecycle-WL8Z8J" --config "/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-preview-lifecycle-WL8Z8J/vite.config.mjs" --port "50341"
+Harness preview: http://127.0.0.1:50341
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/preview-lifecycle.test.ts > the owned preview autonomously recovers after crash
+Error: Recovery did not complete: $ BODY_SIZE_LIMIT=110M HARNESS_OWNER_MODE=loopback HARNESS_BIND=127.0.0.1 bun src/initializers/initializePreview.ts "/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-preview-lifecycle-nbm5cD" --config "/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-preview-lifecycle-nbm5cD/vite.config.mjs" --port "49735"
+Harness preview: http://127.0.0.1:49735
+error: script "dev" exited with code 1
+
+ ❯ test/preview-lifecycle.test.ts:176:10
+    174|    await expect(fetch(`http://127.0.0.1:${nextPort}`)).rejects.toThrow…
+    175|   } catch (cause) {
+    176|    throw new Error('Recovery did not complete: ' + run.text(), { cause…
+       |          ^
+    177|   } finally {
+    178|    try {
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ test/preview-lifecycle.test.ts:166:6
+
+Caused by: AssertionError: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/preview-lifecycle.test.ts > the owned preview autonomously recovers after hang
+Error: Recovery did not complete: $ BODY_SIZE_LIMIT=110M HARNESS_OWNER_MODE=loopback HARNESS_BIND=127.0.0.1 bun src/initializers/initializePreview.ts "/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-preview-lifecycle-b5AQqh" --config "/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-preview-lifecycle-b5AQqh/vite.config.mjs" --port "50204"
+Harness preview: http://127.0.0.1:50204
+
+ ❯ test/preview-lifecycle.test.ts:176:10
+    174|    await expect(fetch(`http://127.0.0.1:${nextPort}`)).rejects.toThrow…
+    175|   } catch (cause) {
+    176|    throw new Error('Recovery did not complete: ' + run.text(), { cause…
+       |          ^
+    177|   } finally {
+    178|    try {
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ test/preview-lifecycle.test.ts:166:6
+
+Caused by: AssertionError: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/preview-lifecycle.test.ts > the owned preview autonomously recovers after module errors
+Error: Recovery did not complete: $ BODY_SIZE_LIMIT=110M HARNESS_OWNER_MODE=loopback HARNESS_BIND=127.0.0.1 bun src/initializers/initializePreview.ts "/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-preview-lifecycle-WL8Z8J" --config "/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-preview-lifecycle-WL8Z8J/vite.config.mjs" --port "50341"
+Harness preview: http://127.0.0.1:50341
+
+ ❯ test/preview-lifecycle.test.ts:176:10
+    174|    await expect(fetch(`http://127.0.0.1:${nextPort}`)).rejects.toThrow…
+    175|   } catch (cause) {
+    176|    throw new Error('Recovery did not complete: ' + run.text(), { cause…
+       |          ^
+    177|   } finally {
+    178|    try {
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ test/preview-lifecycle.test.ts:166:6
+
+Caused by: AssertionError: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 8 skipped (11)
+   Start at  13:43:20
+   Duration  56.12s (transform 28ms, setup 0ms, collect 31ms, tests 55.77s, environment 0ms, prepare 31ms)
+
+error: script "test:unit" exited with code 1
