@@ -1,4 +1,4 @@
-import { spawn, type ChildProcess } from 'node:child_process';
+import { execFileSync, spawn, type ChildProcess } from 'node:child_process';
 import { once } from 'node:events';
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { createServer } from 'node:net';
@@ -35,10 +35,15 @@ async function fixture() {
 	await writeFile(join(root, 'vite.config.mjs'), 'export default {};');
 	return { root, owner: await port() };
 }
-function start(f: Awaited<ReturnType<typeof fixture>>, webPort: number, history = 'one') {
+function start(
+	f: Awaited<ReturnType<typeof fixture>>,
+	webPort: number,
+	history = 'one',
+	configFile = join(f.root, 'vite.config.mjs')
+) {
 	const child = spawn(
 		'bun',
-		['run', 'dev', f.root, '--config', join(f.root, 'vite.config.mjs'), '--port', String(webPort)],
+		['run', 'dev', f.root, '--config', configFile, '--port', String(webPort)],
 		{
 			cwd: reports,
 			detached: true,
@@ -187,4 +192,30 @@ test('normal shutdown releases both the preview and ownership listeners', async 
 	await expect(fetch(`http://127.0.0.1:${webPort}`)).rejects.toThrow();
 	start(f, webPort);
 	await ready(webPort);
+}, 30000);
+
+test('route indexes stay aligned after the normal SvelteKit sync command', async () => {
+	const webPort = await port();
+	start({ root: reports, owner: await port() }, webPort, 'one', join(reports, 'vite.config.ts'));
+	const url = `http://127.0.0.1:${webPort}`;
+	let html = '';
+	await expect
+		.poll(
+			async () => {
+				try {
+					html = await (await fetch(url + '/harness/branch/main/pages')).text();
+					return html.includes('node_ids:');
+				} catch {
+					return false;
+				}
+			},
+			{ timeout: 20000 }
+		)
+		.toBe(true);
+	execFileSync('bun', ['x', 'svelte-kit', 'sync'], { cwd: reports, stdio: 'pipe' });
+	const ids = JSON.parse(/node_ids: (\[[^\]]+\])/.exec(html)![1]) as number[];
+	const leaf = await (
+		await fetch(url + `/.svelte-kit/generated/client/nodes/${ids.at(-1)}.js`)
+	).text();
+	expect(leaf, 'the Pages route must hydrate the Pages component').toContain('/pages/+page.svelte');
 }, 30000);
