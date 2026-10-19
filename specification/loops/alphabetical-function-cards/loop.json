@@ -2,7 +2,7 @@
 	"name": "alphabetical-function-cards",
 	"goal": "Function cards sort by their displayed callable name by default and open through the code link without a duplicate arrow",
 	"createdAt": "2026-10-19T15:08:08.719Z",
-	"updatedAt": "2026-10-19T15:11:06.056Z",
+	"updatedAt": "2026-10-19T15:12:31.328Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -34,17 +34,20 @@
 			"title": "Implement the smallest repair without weakening the regression test.",
 			"status": "complete",
 			"completedAt": "2026-10-19T15:11:06.056Z",
-			"evidence": "Function cards and sorting share the callable-name selector. Default A–Z and reverse order use that name; the single full-width code link replaces the arrow."
+			"evidence": "Function cards and sorting share the callable-name selector. Default A\u2013Z and reverse order use that name; the single full-width code link replaces the arrow."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T15:12:31.328Z",
+			"evidence": "9cdd2300: the unchanged collection and card tests plus desktop/tablet/mobile grid scenarios pass in an isolated snapshot. Failing and passing commits and screenshots are preserved."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Reports workspace check passed: 595 unit tests, formatting, typecheck, lint, build and audit. All 30 related browser cases passed. Isolated unchanged regression: 15 unit cases and 3 viewport cases pass at 9cdd2300 after failing at 1481d2ab. Before/after screenshots in /tmp/harness-alpha-before and /tmp/harness-alpha-after inspected. Live list verified alphabetical across 524 cards with zero arrows; code-link navigation preserves branch context. Full root verification remains unresolved from prior work, so this global verification step stays pending. No native testing or main merge."
 		}
 	],
 	"evaluators": [
