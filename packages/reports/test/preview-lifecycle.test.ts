@@ -11,6 +11,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { once } from 'node:events';
+import { createServer } from 'node:net';
 import { test } from 'vitest';
 import { expect } from '../../../test/verificationExpect';
 const reports = fileURLToPath(new URL('..', import.meta.url));
@@ -130,7 +131,7 @@ for (const fault of ['crash', 'hang', 'module errors'] as const) {
 			nextPort = await port();
 		const history = join(f.root, 'history.json');
 		await writeFile(history, 'existing committed history');
-		start(f, webPort, history);
+		const run = start(f, webPort, history);
 		await ready(webPort);
 		const owner = () =>
 			fetch(`http://127.0.0.1:${f.owner}/__harness_preview__`).then((r) => r.json());
@@ -171,6 +172,8 @@ for (const fault of ['crash', 'hang', 'module errors'] as const) {
 			await exited(reused);
 			expect(reused.child.exitCode).toBe(0);
 			await expect(fetch(`http://127.0.0.1:${nextPort}`)).rejects.toThrow();
+		} catch (cause) {
+			throw new Error('Recovery did not complete: ' + run.text(), { cause });
 		} finally {
 			try {
 				process.kill(pid, 'SIGCONT');
