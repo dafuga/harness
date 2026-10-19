@@ -1092,3 +1092,9 @@ Splitting `catalogFilter` and retaining its original forwarding export introduce
 The existing catalog suite now cold-imports both public and owner entrypoints in separate native runtimes, verifies their public callable exports and calls the filter. The helper-move checkpoint in the local Harness skill requires this coverage whenever forwarding exports are introduced. This catches initialization-order regressions without adding another workflow or broad test suite. The comparator remains one shared implementation, declared as a hoisted function.
 
 The same move review distinguishes source-relative and compiled-output-relative URLs. Rewriting the report launcher's bundled addresses broke its installed layout even though its source paths remained valid. The existing report-environment suite now builds a small native installation fixture, launches its sibling CLI and verifies both runtime roots. This runs in normal unit verification; no full application build or real report/provider access is needed for the guard.
+
+## Public SDK declaration packaging
+
+Public SDK imports retain their existing addresses. Three portable SDK modules now reference owner-local implementations under Reports, so declaration generation includes the complete transitive source layout inside `dist/types`. Generated forwarding entries preserve the published `dist/types/lib` type paths. The runtime bundler still checks the Web entries for platform portability.
+
+The existing API builder supports `--types-only` for the standardized packaged API guard. Its isolated source fixture checks public declaration paths before a full application or kernel build, and the empty installed consumer imports and uses the console SDK with strict type checking. This detects cross-workspace declaration failures earlier without adding another workflow.

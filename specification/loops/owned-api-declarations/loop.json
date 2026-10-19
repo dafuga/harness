@@ -2,7 +2,7 @@
 	"name": "owned-api-declarations",
 	"goal": "Package declarations for owner-local cross-workspace SDK functions without changing public import paths",
 	"createdAt": "2026-10-19T19:16:10.963Z",
-	"updatedAt": "2026-10-19T19:16:11.924Z",
+	"updatedAt": "2026-10-19T19:19:39.059Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T19:19:37.890Z",
+			"evidence": "Test-only 30c0e35a fails the actual public declaration build in an isolated source fixture. Immutable red ef3d9e4c15822784fa815fbc053d05f5708ff1cb21dbad0fa0782a20952d9095 records TS6059 and the public API build assertion; live source and regression snapshot inputs remain unchanged."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T19:19:38.270Z",
+			"evidence": "Emit declarations using the repository as the source root, retaining transitive owner-local files under dist/types. Generate forwarding declaration entries at the existing public dist/types/lib paths. Add a declaration-only mode to the existing builder so the packaged API guard can run early and independently."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T19:19:39.059Z",
+			"evidence": "The existing API builder emits the complete transitive declaration tree under dist/types and writes stable public type forwarders. Its types-only mode uses the same builder without application or kernel work. The standard packaged API test checks public entry files and a strict typed console consumer."
 		},
 		{
 			"id": "green",
