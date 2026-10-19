@@ -3,6 +3,7 @@ import {
 	copyFileSync,
 	mkdirSync,
 	mkdtempSync,
+	readdirSync,
 	readFileSync,
 	realpathSync,
 	rmSync,
@@ -21,6 +22,27 @@ import { afterEach, expect, test } from 'vitest';
  */
 const repository = resolve(import.meta.dirname, '..');
 const roots: string[] = [];
+const workspaces = [
+	'.',
+	...readdirSync(join(repository, 'packages')).map((name) => `packages/${name}`)
+];
+test.each(workspaces)(
+	'%s routes standalone verification and build scripts through admission',
+	(workspace) => {
+		const { scripts } = JSON.parse(
+			readFileSync(join(repository, workspace, 'package.json'), 'utf8')
+		) as {
+			scripts: Record<string, string>;
+		};
+		for (const [name, command] of Object.entries(scripts)) {
+			if (!/(^|:)(test|build|check|lint|format)(:|$)/.test(name)) continue;
+			const delegation = /^bun run [\w:-]+$/.test(command);
+			expect(command.includes(' resources run ') || delegation, `${workspace}: ${name}`).toBe(true);
+			if (command.includes(' -- sh -c '))
+				expect(command, `${workspace}: ${name} arguments`).toMatch(/ "\$@"' --$/);
+		}
+	}
+);
 afterEach(() => roots.splice(0).forEach((root) => rmSync(root, { recursive: true, force: true })));
 function project(): string {
 	const root = realpathSync(mkdtempSync(join(tmpdir(), 'harness-workspace-config-')));

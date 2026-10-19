@@ -1,8 +1,8 @@
-import { mkdtemp, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
-import { runHarness } from './support/cli';
+import { runCommand, runHarness } from './support/cli';
 const homes: string[] = [];
 afterEach(async () => {
 	await Promise.all(homes.splice(0).map((p) => rm(p, { recursive: true, force: true })));
@@ -32,6 +32,22 @@ test('resources status reports overall CPU, available cores, memory and the shar
 	expect(status.snapshot.memoryTotalBytes).toBeGreaterThan(0);
 	expect(status.jobs).toEqual([]);
 }, 15000);
+test.each(['.', 'packages/desktop'])(
+	'managed %s scripts forward caller arguments',
+	async (workspace) => {
+		const { version } = JSON.parse(
+			await readFile(join(process.cwd(), 'node_modules/prettier/package.json'), 'utf8')
+		) as { version: string };
+		const result = await runCommand(
+			['bun', 'run', 'format:check', '--version'],
+			join(process.cwd(), workspace),
+			false
+		);
+		expect(result.stdout.trim(), result.stderr).toBe(version);
+		expect(result.exitCode, result.stderr).toBe(0);
+	},
+	15000
+);
 test('an impossible resource request is rejected before a command starts', async () => {
 	const result = await runHarness(
 		['resources', 'run', '--cpus', '999999', '--', 'bun', '-e', 'console.log("STARTED")'],

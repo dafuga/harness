@@ -14,6 +14,7 @@ Coordinate coding and verification across local Harness sessions without saturat
 - Fail closed for unavailable, invalid or stale telemetry; reject impossible requests; cancel queued work without launching it.
 - Monitor running work, finish the current test under pressure, then hold later work until headroom recovers.
 - Integrate verification checks, loop evaluators, Desktop coding turns and repository build/test/check commands; propagate worker budgets and preserve command stdio.
+- Include standalone formatting checks and native builds; preserve caller arguments through managed shell scripts and cap native build workers.
 - Reclaim stale requests only after checking PID/start identity; retain live orphan worker reservations.
 - Provide status/configure/run CLI, public Node/Bun resource API and guidance explaining admission estimates and unmanaged command boundaries.
 - Prove policy, cancellation, pressure, nested concurrency, cross-process ordering, native stdio and both provider integrations with focused tests; run normal project verification remotely to avoid laptop load.

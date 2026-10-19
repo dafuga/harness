@@ -2,7 +2,7 @@
 	"name": "resource-aware-queue",
 	"goal": "Coordinate CPU and memory across Harness sessions, retain 10 percent CPU headroom, prioritize agent-needed tests and monitor running work without disturbing unrelated processes",
 	"createdAt": "2026-10-19T16:05:29.010Z",
-	"updatedAt": "2026-10-19T16:51:55.481Z",
+	"updatedAt": "2026-10-19T18:31:43.655Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -32,6 +32,20 @@
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
 			"status": "pending"
+		},
+		{
+			"id": "entrypoints",
+			"title": "Standalone workspace checks and native builds obey admission and worker budgets.",
+			"status": "complete",
+			"completedAt": "2026-10-19T18:28:34.776Z",
+			"evidence": "Existing workspace config suite rejects 8 ungated package entrypoints before repair and passes all 10 cases after wrapping. Native build stand-in rejects missing worker budgets (exit 66) before repair, then all 4 unchanged ownership/build cases pass; real Xcode is not launched."
+		},
+		{
+			"id": "arguments",
+			"title": "Managed scripts preserve caller arguments and native build parallelism.",
+			"status": "complete",
+			"completedAt": "2026-10-19T18:31:43.655Z",
+			"evidence": "Actual root and Desktop formatter scripts dropped --version before repair; the same CLI cases now pass. All 8 workspace inventories enforce argument forwarding on shell wrappers. Native build stand-ins prove the admitted -jobs value and preserve ownership cleanup."
 		}
 	],
 	"evaluators": [

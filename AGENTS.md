@@ -45,6 +45,7 @@ This is a Harness CLI project. Treat Harness as the operating contract for every
 
 - Scheduler changes must prove forward progress across mixed nesting depths with occupied ancestor budgets and pending siblings, alongside priority and headroom.
 - Process-runner observer changes must prove fast exit, output retention and delayed synchronous observers in every supported runtime before full verification; native Bun and Node coverage belongs in the existing runner suite.
+- Workspace verification and build entrypoints must join the shared queue and preserve caller arguments, including standalone formatting and native builds; keep the workspace config suite's entrypoint inventory current.
 
 ## Code Rules
 

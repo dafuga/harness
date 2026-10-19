@@ -92,6 +92,10 @@ const started = execFileSync('ps', ['-p', String(daemon.pid), '-o', 'lstart=']).
 writeFileSync(${JSON.stringify(join(home, 'daemon.pid'))}, daemon.pid + '\\n' + started);
 const products = value('-derivedDataPath') + '/Build/Products/' + value('-configuration');
 cpSync(${JSON.stringify(join(home, 'product/App.app'))}, products + '-iphonesimulator/App.app', { recursive: true });
+if (value('-jobs') !== (process.env.CARGO_BUILD_JOBS ?? '1')) {
+ console.error('Build escaped the managed worker budget');
+ process.exit(66);
+}
 await new Promise((done) => setTimeout(done, 1200));
 process.exit(Number(process.env.STAND_IN_EXIT ?? 0));
 `;
