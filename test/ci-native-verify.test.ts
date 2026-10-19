@@ -68,13 +68,15 @@ test('the macOS job keeps every obligation of the verification', () => {
 		'name: harness-record',
 		'path: .cache/harness/verifications/${{ env.COMMIT }}',
 		'if-no-files-found: error',
-		"if: steps.verify.outcome != 'success'"
+		"if: always() && steps.verify.outcome != 'success'"
 	]) {
 		expect(verify).toContain(`${kept}\n`);
 	}
 	expect(verify).toMatch(/brew install [^\n]*git-lfs[^\n]* ffmpeg\n/);
 	expect(verify).toContain('git lfs install --local\n');
-	expect(verify).toMatch(/id: verify\n {8}continue-on-error: true\n/);
+	expect(verify).toMatch(/id: verify\n {8}timeout-minutes: 170\n {8}continue-on-error: true\n/);
+	expect(verify).toContain("HARNESS_VERIFY_PROGRESS: '1'");
+	expect(verify).toMatch(/name: Keep the record[^\n]*\n {8}if: always\(\)\n/);
 	expect(verify.trimEnd().endsWith('run: exit 1')).toBe(true);
 });
 

@@ -3,6 +3,7 @@ import { runCommand } from './support/cli';
 
 const context = [
 	'HARNESS_VERIFY',
+	'HARNESS_VERIFY_PROGRESS',
 	'HARNESS_VERIFY_REVISION',
 	'HARNESS_VERIFY_TREE',
 	'HARNESS_VERIFY_PROFILE',

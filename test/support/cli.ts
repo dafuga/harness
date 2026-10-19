@@ -15,6 +15,7 @@ export interface CommandResult {
 /** What `harness verify` gives a check; a command under test must not inherit it by accident. */
 const verificationContext = [
 	'HARNESS_VERIFY',
+	'HARNESS_VERIFY_PROGRESS',
 	'HARNESS_VERIFY_REVISION',
 	'HARNESS_VERIFY_TREE',
 	'HARNESS_VERIFY_PROFILE',

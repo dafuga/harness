@@ -1,0 +1,59 @@
+{
+	"name": "verifier-progress",
+	"goal": "Diagnose hosted snapshot timeout with phase and check progress and retain partial logs without relaxing verification gates",
+	"createdAt": "2026-10-19T15:47:44.028Z",
+	"updatedAt": "2026-10-19T15:52:14.750Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-19T15:48:39.975Z",
+			"evidence": "Head 5708df3f hosted verifier cancelled at 180 minutes with no record or artifacts; full check passed. Reconstructed plan has 1067 serial checks after uncertainty expansion."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-19T15:48:41.002Z",
+			"evidence": "Existing verify.e2e baseline only asserts final record; ci-native-verify only checks normal artifact configuration. Extend these standardized tests for opt-in stderr phases and timeout artifact lifecycle."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test and shared coverage; run it failing before repair and record the command, assertion and result.",
+			"status": "complete",
+			"completedAt": "2026-10-19T15:48:41.617Z",
+			"evidence": "nice -n 15 bun x vitest run test/verify.e2e.test.ts test/ci-native-verify.test.ts -t fixture-baseline-or-macOS-obligations --maxWorkers 1 --minWorkers 1: two assertion failures, no history progress and missing timeout/upload-always. /tmp/harness-verifier-progress-red.log; 9.53 seconds."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-19T15:50:55.807Z",
+			"evidence": "Opt-in structured stderr marks history, trusted base, index, impact, snapshot, tools, individual checks, drift and record assembly. CI reserves ten minutes for cleanup/upload and always retains partial outputs; verification gates and job limit unchanged."
+		},
+		{
+			"id": "green",
+			"title": "Repeat repair and the same unchanged regression test until it passes; record passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-19T15:52:14.750Z",
+			"evidence": "Same strengthened tests pass unchanged. Final low-priority single-worker run of verify.e2e, ci-native-verify, cli-environment.e2e and verify-snapshot.e2e: 16 passed in 69.02 seconds. JSON stdout, silent defaults, full source-mutation guards retained. /tmp/harness-verifier-progress-final-focused.log"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

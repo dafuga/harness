@@ -34,7 +34,25 @@ interface Capture {
 test('the fixture baseline verifies clean on an exact commit and tree', async () => {
 	const repo = await cloneRepo(baseline);
 	const head = await repo.git(['rev-parse', 'HEAD']);
-	const { exitCode, record, directory } = await repo.verify();
+	const { exitCode, record, directory, stderr } = await repo.verify([], {
+		HARNESS_VERIFY_PROGRESS: '1'
+	});
+	const progress = stderr
+		.split('\n')
+		.filter((line) => line.startsWith('[harness verify] '))
+		.map((line) => JSON.parse(line.slice('[harness verify] '.length)));
+	for (const phase of ['history', 'base', 'index', 'impact', 'snapshot', 'drift', 'record']) {
+		expect(progress).toContainEqual(expect.objectContaining({ phase, status: 'started' }));
+		expect(progress).toContainEqual(expect.objectContaining({ phase, status: 'finished' }));
+	}
+	for (const check of record.tests) {
+		expect(progress).toContainEqual(
+			expect.objectContaining({ phase: 'check', id: check.id, status: 'started' })
+		);
+		expect(progress).toContainEqual(
+			expect.objectContaining({ phase: 'check', id: check.id, status: check.status })
+		);
+	}
 	expect(record.failures).toEqual([]);
 	expect([exitCode, record.status]).toEqual([0, 'passed']);
 	// The parent's only record failed for want of baselines, so it proves nothing to build on:
@@ -57,6 +75,7 @@ test('the fixture baseline verifies clean on an exact commit and tree', async ()
 	});
 	// Now that this revision is proven, verifying it against itself inherits every scenario.
 	const unchanged = await repo.verify(['--base', 'HEAD']);
+	expect(unchanged.stderr).not.toContain('[harness verify]');
 	expect(unchanged.record.source.base).toBe(head);
 	expect(unchanged.record.scenarios.map((scenario) => scenario.status)).toEqual(
 		unchanged.record.scenarios.map(() => 'referenced')
