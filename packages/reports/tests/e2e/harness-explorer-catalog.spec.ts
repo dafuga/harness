@@ -44,16 +44,15 @@ test('the keyboard reaches the controls, changes the order and opens an entity',
 	page
 }) => {
 	await page.goto(at('main', commits.approved, 'functions'));
+	await page.getByRole('button', { name: 'Filters', exact: true }).click();
 	await sharedField(order(page));
 	await typed(page, order(page), 'Order: Name (Z');
 	await expect(titled(page)).toHaveText('Slugify');
-	await search(page).focus();
-	await page.keyboard.press('Tab');
-	await expect(changedOnly(page)).toBeFocused();
+	await changedOnly(page).focus();
 	await page.keyboard.press('Space');
-	// This commit approved a budget and changed no function itself.
 	await expect(shown(page)).toHaveText('0 of 2 functions shown');
 	await page.keyboard.press('Space');
+	await page.getByRole('button', { name: 'Done', exact: true }).click();
 	await titled(page).focus();
 	await page.keyboard.press('Enter');
 	await expectPath(page, at('main', commits.approved, `functions/${units.slugify}`));
@@ -65,7 +64,9 @@ test('a selected commit lists what it added, and what it removed from its first 
 	await page.goto(at('main', commits.approved, 'functions'));
 	await expect(named(page, 'Extra')).toHaveCount(0);
 	await page.goto(at('main', commits.added, 'functions'));
+	await page.getByRole('button', { name: 'Filters', exact: true }).click();
 	await changedOnly(page).click();
+	await page.getByRole('button', { name: 'Done', exact: true }).click();
 	await expect(cards(page).getByRole('heading', { level: 2 }).getByRole('link')).toHaveText([
 		'Extra'
 	]);
@@ -87,7 +88,9 @@ test('a commit nobody verified still marks what its source changed, and proves n
 }) => {
 	await page.goto(tip('main', 'functions'));
 	await expect(commit(page)).toHaveValue(commits.sourceOnly);
+	await page.getByRole('button', { name: 'Filters', exact: true }).click();
 	await changedOnly(page).click();
+	await page.getByRole('button', { name: 'Done', exact: true }).click();
 	await checkpoint(page, 'catalog-unverified-change');
 	await expect(cards(page).getByRole('heading', { level: 2 }).getByRole('link')).toHaveText([
 		'Clock'
@@ -97,7 +100,9 @@ test('a commit nobody verified still marks what its source changed, and proves n
 	await expect(page.getByRole('button', { name: 'Evidence missing', exact: true })).toBeVisible();
 	// What only depends on the changed function was not changed by this commit itself.
 	await page.goto(tip('main', 'services'));
+	await page.getByRole('button', { name: 'Filters', exact: true }).click();
 	await changedOnly(page).click();
+	await page.getByRole('button', { name: 'Done', exact: true }).click();
 	await expect(shown(page)).toContainText('0 of ');
 });
 
@@ -107,7 +112,10 @@ for (const [screen, width, height] of screens) {
 	}) => {
 		await page.setViewportSize({ width, height });
 		await page.goto(tip('main', 'functions'));
-		for (const field of [branch(page), commit(page), order(page)]) await sharedField(field);
+		for (const field of [branch(page), commit(page)]) await sharedField(field);
+		await page.getByRole('button', { name: 'Filters', exact: true }).click();
+		await sharedField(order(page));
+		await page.getByRole('button', { name: 'Done', exact: true }).click();
 		await branch(page).selectOption(keptBranch);
 		await expectPath(page, tip(keptBranch, 'functions'));
 		await commit(page).selectOption(commits.baseline);
@@ -136,7 +144,9 @@ test.describe('a registry of several hundred units', () => {
 		// Ten units are numbered 300 to 309; a few more may say 30 in what they are for.
 		expect(await cards(page).count()).toBeGreaterThanOrEqual(10);
 		expect(await cards(page).count()).toBeLessThan(20);
+		await page.getByRole('button', { name: 'Filters', exact: true }).click();
 		await typed(page, order(page), 'Order: Name (Z');
+		await page.getByRole('button', { name: 'Done', exact: true }).click();
 		await expect(titled(page)).toHaveText('Generated 309');
 		await titled(page).focus();
 		await page.keyboard.press('Enter');

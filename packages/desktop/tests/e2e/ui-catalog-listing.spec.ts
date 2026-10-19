@@ -30,17 +30,24 @@ test('Pages of the tip show every ordinary page and no card for an address that 
 }, info) => {
 	await opened(page);
 	await pictured(page, info, 'pages-tip');
+	await expect(page.getByRole('button', { name: 'Filters', exact: true })).toHaveCount(1);
+	await expect(page.getByRole('combobox', { name: 'Verification filter' })).toHaveCount(0);
 	expect(await listedIds(page)).toEqual(pages);
-	await page.getByRole('combobox', { name: 'Verification filter' }).selectOption('passed');
+	await changeFilter(page, 'Verification filter', 'passed');
 	await expect(cards(page)).toHaveCount(0);
 	await page.getByRole('button', { name: 'Show all pages' }).click();
 	expect(await listedIds(page)).toEqual(pages);
-	await page.getByRole('combobox', { name: 'Planning filter' }).selectOption('planned');
+	await changeFilter(page, 'Planning filter', 'planned');
 	await expect(cards(page)).toHaveCount(0);
-	await page.getByRole('button', { name: 'Clear filters', exact: true }).click();
+	await page.getByRole('button', { name: 'Filters', exact: true }).click();
+	await page.getByRole('button', { name: 'Reset filters', exact: true }).click();
+	await page.getByRole('button', { name: 'Done', exact: true }).click();
 	await page.getByRole('searchbox', { name: 'Search pages' }).fill('Analytics');
 	await expect(cards(page)).toHaveCount(1);
-	await page.getByRole('button', { name: 'Clear filters', exact: true }).click();
+	await page.getByRole('searchbox', { name: 'Search pages' }).fill('');
+	await page.getByRole('button', { name: 'Filters', exact: true }).click();
+	await page.getByRole('button', { name: 'Reset filters', exact: true }).click();
+	await page.getByRole('button', { name: 'Done', exact: true }).click();
 
 	// A real page keeps the name Analytics; so does the service, under Services.
 	await expect(cards(page).getByRole('heading', { name: 'Analytics', exact: true })).toHaveCount(1);
@@ -83,3 +90,12 @@ test('an address that only redirects is still opened by its identity, at the tip
 	await open(`/harness/branch/main/commit/${project.earlier.revision.commit}/pages/${analytics}`);
 	await expect(page.getByText(charted).first()).toBeVisible();
 });
+
+async function changeFilter(page: Page, name: string, value: string) {
+	await page.getByRole('button', { name: 'Filters', exact: true }).click();
+	await page
+		.getByRole('dialog', { name: 'Filters', exact: true })
+		.getByRole('combobox', { name, exact: true })
+		.selectOption(value);
+	await page.getByRole('button', { name: 'Done', exact: true }).click();
+}

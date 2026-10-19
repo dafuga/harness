@@ -65,9 +65,9 @@ test('configs and services keep columns; component and function grids expose no 
 test('a collection offers search, changed only and an order, and says how many it lists', () => {
 	const body = content('commit', { category: 'functions' });
 	expect(body).toContain('aria-label="Search functions"');
-	expect(body).toMatch(/<input[^>]*role="switch"/);
-	expect(words(body)).toContain('Changed only');
-	expect(body).toMatch(/<select[^>]*aria-label="Order"/);
+	expect(body).toContain('aria-label="Filters"');
+	expect(words(body)).not.toContain('Changed only');
+	expect(body).not.toMatch(/<select[^>]*aria-label="Order"/);
 	expect(words(body)).toContain('1 of 1 functions shown');
 });
 

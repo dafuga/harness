@@ -1,5 +1,5 @@
 import { expect, test } from '../../../test/support/browserTest';
-import { capture, fits, open, viewports, where } from './entityPreviewPage';
+import { capture, chooseCatalogFilter, fits, open, viewports, where } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 const page = { category: 'pages' as const, entity: ids.page };
 const filter = { category: 'functions' as const, entity: ids.filter };
@@ -15,15 +15,16 @@ test('collections: search, changed only and order change what is listed', async 
 	const rows = tab.getByRole('article');
 	await expect(rows).toHaveCount(3);
 	await capture(tab, 'components-desktop');
-	await tab.getByRole('combobox', { name: 'Verification filter' }).selectOption('unproven');
+	await expect(tab.getByRole('button', { name: 'Filters', exact: true })).toHaveCount(1);
+	await expect(tab.getByRole('combobox', { name: 'Order' })).toHaveCount(0);
+	await chooseCatalogFilter(tab, 'Verification filter', 'unproven');
 	await expect(rows).toHaveCount(0);
 	await tab.getByRole('button', { name: 'Show all components' }).click();
 	await expect(rows).toHaveCount(3);
-	await tab.getByRole('combobox', { name: 'Usage filter' }).selectOption('shared');
+	await chooseCatalogFilter(tab, 'Usage filter', 'shared');
 	await expect(rows).toHaveCount(0);
 	await tab.getByRole('button', { name: 'Show all components' }).click();
 	await expect(rows).toHaveCount(3);
-	// The footer explains the two marks by showing them; what each means is told on request.
 	const key = tab.locator('.ex-legend');
 	expect(await key.innerText()).not.toMatch(/proven|passed|failed/i);
 	await key.getByRole('button', { name: 'Not proven' }).hover();
@@ -36,11 +37,11 @@ test('collections: search, changed only and order change what is listed', async 
 	await expect(tab.getByText('No components match this search.')).toBeVisible();
 	await tab.getByRole('button', { name: 'Show all components' }).click();
 	await expect(rows).toHaveCount(3);
-	await tab.getByRole('switch').check();
+	await chooseCatalogFilter(tab, 'Changed only', true);
 	await expect(rows).toHaveCount(1);
 	await expect(rows.first()).toContainText('Order list');
-	await tab.getByRole('switch').uncheck();
-	await tab.getByRole('combobox', { name: 'Order' }).selectOption('name-desc');
+	await chooseCatalogFilter(tab, 'Changed only', false);
+	await chooseCatalogFilter(tab, 'Order', 'name-desc');
 	await expect(rows.first()).toContainText('Search box');
 });
 test('a row or a card of a collection opens its entity in the same branch and commit', async ({

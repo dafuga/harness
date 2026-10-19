@@ -170,3 +170,13 @@ export async function reviewStates(
 	).toHaveAttribute('src', `/media/${commit ? 'bbbbbbb' : 'ccccccc'}-error-mobile.png`);
 	expect(await fits(page)).toBe(true);
 }
+
+/** Choose through the same filter dialog used by every catalog, retaining keyboard focus. */
+export async function chooseCatalogFilter(page: Page, name: string, value: string | boolean) {
+	await page.getByRole('button', { name: 'Filters', exact: true }).click();
+	const dialog = page.getByRole('dialog', { name: 'Filters', exact: true });
+	if (typeof value === 'boolean') await dialog.getByLabel(name, { exact: true }).setChecked(value);
+	else await dialog.getByRole('combobox', { name, exact: true }).selectOption(value);
+	await dialog.getByRole('button', { name: 'Done', exact: true }).click();
+	await expect(page.getByRole('button', { name: 'Filters', exact: true })).toBeFocused();
+}

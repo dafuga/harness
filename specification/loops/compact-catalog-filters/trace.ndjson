@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-19T08:37:36.446Z","name":"compact-catalog-filters","goal":"Every catalog has one compact search row with all filters and ordering in an icon-triggered modal","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-19T08:38:57.426Z","loop":"compact-catalog-filters","step":"spec","evidence":"Feature spec: one search row, modal filters and sorting, persistence and reset."}
+{"event":"step.completed","timestamp":"2026-10-19T08:38:57.797Z","loop":"compact-catalog-filters","step":"coverage","evidence":"Extended existing collection, shared catalog and workspace cases to open and close filters instead of assuming inline controls."}
