@@ -26,7 +26,9 @@ const hosted = 'packages/hub/src/components/HostedWorkspace.svelte';
 /** What the Web workspace imports of the shared workspace, by the unit that owns each file. */
 const shared: Record<string, string> = {
 	'desktop.component.workspace-shell': 'packages/desktop/src/components/WorkspaceShell.svelte',
+	'desktop.function.cache-status': 'packages/desktop/src/utils/cache-status/cacheStatus.ts',
 	'desktop.function.workspace-route': 'packages/desktop/src/utils/workspaceRoute.ts',
+	'desktop.service.project-sync': 'packages/desktop/src/services/ProjectSyncService.ts',
 	'desktop.store.workspace': 'packages/desktop/src/lib/stores/workspace.svelte.ts'
 };
 const indexer = new SourceIndexService();
