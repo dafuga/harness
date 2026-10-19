@@ -1,20 +1,21 @@
-import { EvidenceTreeAdapter } from '../adapters/EvidenceTreeAdapter';
-import { GitAdapter } from '../adapters/GitAdapter';
-import { CommitTreeAdapter } from '../adapters/CommitTreeAdapter';
-import { UnitRegistryRepository } from '../repositories/UnitRegistryRepository';
-import { pathMatches } from '../core/unitsConfig';
-import { fail } from '../core/errors';
-import type { RegressionRecord } from '../core/regressionTypes';
+import { EvidenceTreeAdapter } from "../adapters/EvidenceTreeAdapter";
+import { CommitTreeAdapter } from "../adapters/CommitTreeAdapter";
+import { UnitRegistryRepository } from "../repositories/UnitRegistryRepository";
+import { pathMatches } from "../core/unitsConfig";
+import { fail } from "../core/errors";
+import type { RegressionRecord } from "../core/regressionTypes";
 
-const testPath = (path: string) =>
+export const testPath = (path: string) =>
 	/(^|\/)(test|tests|e2e|fixtures|__tests__|__snapshots__)\//.test(path) ||
 	/\.(test|spec)\.[^/]+$/.test(path) ||
 	path.startsWith('specification/scenarios/');
+
 const configuration = (path: string) =>
 	/(^|\/)(package\.json|bun\.lockb?|[\w.-]*lock\.ya?ml|[\w.-]*\.config\.[^/]+|tsconfig[^/]*\.json|harness\.verify\.json)$/.test(
 		path
 	);
-const metadata = (path: string) => path.startsWith('specification/loops/') || path.endsWith('.md');
+
+export const metadata = (path: string) => path.startsWith('specification/loops/') || path.endsWith('.md');
 
 /** Freeze the complete test corpus, including shared fixtures and runner configuration. */
 export async function regressionFiles(root: string, commit: string, tests: string[]) {
@@ -38,27 +39,6 @@ export async function regressionFiles(root: string, commit: string, tests: strin
 		.map(([path, hash]) => ({ path, hash }));
 }
 
-/** A failing checkpoint adds coverage; no product repair may be hidden in that commit. */
-export async function regressionTestCommit(
-	root: string,
-	commit: string,
-	tests: string[]
-): Promise<void> {
-	const git = new GitAdapter(root);
-	const changed = (await git.run(['diff', '--name-only', `${commit}^`, commit]))
-		.split('\n')
-		.filter(Boolean);
-	const disallowed = changed.filter(
-		(path) => !tests.includes(path) && !testPath(path) && !metadata(path)
-	);
-	if (disallowed.length)
-		fail(
-			`The failing-test commit must be test-only; product files changed: ${disallowed.join(', ')}.`
-		);
-	if (!changed.some((path) => tests.includes(path)))
-		fail('The failing-test commit must strengthen a named test.');
-}
-
 /** The fix descends from a different commit and changes none of the frozen test inputs. */
 export async function regressionFixCommit(
 	root: string,
@@ -77,3 +57,5 @@ export async function regressionFixCommit(
 	if (!changed.some((path) => !testPath(path) && !metadata(path) && !configuration(path)))
 		fail('The separate fix commit must change product code.');
 }
+
+export { regressionTestCommit } from '../workflows/record-regression/regressionFiles';

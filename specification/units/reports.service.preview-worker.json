@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/services/PreviewWorkerService.ts"],
+		"source": [
+			"packages/reports/src/services/preview-worker-service/PreviewWorkerService.ts",
+			"packages/reports/src/services/PreviewWorkerService.ts"
+		],
 		"symbols": [
 			"PreviewWorkerService",
 			"PreviewWorkerService.constructor",
@@ -22,7 +25,9 @@
 				"name": "PreviewWorkerService.constructor.entry",
 				"type": "string",
 				"description": "Compiled Node launcher owned by this supervisor.",
-				"examples": ["/projects/harness/packages/reports/.cache/preview-node-example/entry.mjs"]
+				"examples": [
+					"/projects/harness/packages/reports/.cache/preview-node-example/entry.mjs"
+				]
 			},
 			{
 				"name": "PreviewWorkerService.constructor.args",
@@ -43,7 +48,9 @@
 				"name": "PreviewWorkerService.constructor.url",
 				"type": "string",
 				"description": "Stable loopback URL retained across worker replacements.",
-				"examples": ["http://127.0.0.1:5688"]
+				"examples": [
+					"http://127.0.0.1:5688"
+				]
 			}
 		],
 		"outputs": [
@@ -62,7 +69,9 @@
 				"name": "PreviewWorkerService.close",
 				"type": "Promise<void>",
 				"description": "Stops health checks and the owned child without respawning.",
-				"examples": [null]
+				"examples": [
+					null
+				]
 			}
 		],
 		"errors": [
@@ -70,7 +79,9 @@
 				"name": "Error",
 				"type": "thrown",
 				"description": "Refuses an unavailable or mismatched worker; ongoing recovery retries back off without starting overlapping workers.",
-				"examples": ["Preview worker did not become ready."]
+				"examples": [
+					"Preview worker did not become ready."
+				]
 			}
 		]
 	},
@@ -88,7 +99,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/services/PreviewWorkerService.ts",
+		"entry": "packages/reports/src/services/preview-worker-service/PreviewWorkerService.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -96,7 +107,9 @@
 			}
 		]
 	},
-	"scenarios": ["local-project-chat"],
+	"scenarios": [
+		"local-project-chat"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/previewNode.ts"],
-		"symbols": ["previewNode"]
+		"source": [
+			"packages/reports/src/utils/preview-node/previewNode.ts",
+			"packages/reports/src/utils/previewNode.ts"
+		],
+		"symbols": [
+			"previewNode"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -34,7 +39,9 @@
 				"name": "previewNode",
 				"type": "Promise<number>",
 				"description": "Exit code of the managed Node process; signals are forwarded and its temporary launcher is removed.",
-				"examples": [0]
+				"examples": [
+					0
+				]
 			}
 		],
 		"errors": [
@@ -42,7 +49,9 @@
 				"name": "Error",
 				"type": "thrown",
 				"description": "Fails without starting a second preview when launcher compilation or process startup is unavailable.",
-				"examples": ["Could not prepare the managed preview runtime."]
+				"examples": [
+					"Could not prepare the managed preview runtime."
+				]
 			}
 		]
 	},
@@ -75,7 +84,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/previewNode.ts",
+		"entry": "packages/reports/src/utils/preview-node/previewNode.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -83,7 +92,9 @@
 			}
 		]
 	},
-	"scenarios": ["local-project-chat"],
+	"scenarios": [
+		"local-project-chat"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -1,4 +1,4 @@
-import { ProcessRuntimeAdapter } from '../adapters/ProcessRuntimeAdapter';
+import { ProcessRuntimeAdapter } from "../adapters/process-runtime-adapter/ProcessRuntimeAdapter";
 import { representativeWorkload } from '../core/benchmarkTypes';
 import { fail } from '../core/errors';
 import type { Comparison } from '../core/comparisonTypes';
@@ -6,10 +6,10 @@ import type { UnitRuntime } from '../core/runtimeTypes';
 import type { RuntimeKind } from '../core/unitTypes';
 import { UnitRuntimeService } from '../services/UnitRuntimeService';
 import { benchRounds, roundMeasurements } from '../utils/benchSamples';
-import { comparisonContext } from '../utils/comparisonContext';
+import { comparisonContext } from "../utils/comparison-context/comparisonContext";
 import { kernelArtifacts } from '../utils/kernelArtifacts';
 import { kernelWorkload } from '../utils/kernelWorkload';
-import { recordCapture } from '../utils/recordCapture';
+import { recordCapture } from "../utils/record-capture/recordCapture";
 
 /** The unit that owns the public invocation boundary: adapters, validation and the kernel. */
 export const boundaryUnit = 'service.unit-runtime';

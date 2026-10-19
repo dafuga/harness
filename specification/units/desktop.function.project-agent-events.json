@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/projectAgentEvents.ts"],
-		"symbols": ["projectAgentEvents"]
+		"source": [
+			"packages/desktop/src/utils/project-agent-events/projectAgentEvents.ts",
+			"packages/desktop/src/utils/projectAgentEvents.ts"
+		],
+		"symbols": [
+			"projectAgentEvents"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -46,7 +51,9 @@
 				"name": "projectAgentEvents",
 				"type": "Promise<void>",
 				"description": "Updates only the matching conversation, keeps terminal text and refreshes its project. Resolves without a return value.",
-				"examples": [null]
+				"examples": [
+					null
+				]
 			}
 		],
 		"errors": []
@@ -70,7 +77,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/projectAgentEvents.ts",
+		"entry": "packages/desktop/src/utils/project-agent-events/projectAgentEvents.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -78,7 +85,9 @@
 			}
 		]
 	},
-	"scenarios": ["agent-references"],
+	"scenarios": [
+		"agent-references"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

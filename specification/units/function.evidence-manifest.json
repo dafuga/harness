@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/evidenceManifest.ts"],
-		"symbols": ["RecordFile", "recordFiles", "evidenceManifest"]
+		"source": [
+			"src/utils/evidenceManifest.ts",
+			"src/services/evidence-attach-service/evidenceManifest.ts"
+		],
+		"symbols": [
+			"RecordFile",
+			"recordFiles",
+			"evidenceManifest"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -70,7 +77,10 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-recorded-evidence", "hub-recorded-evidence"],
+	"scenarios": [
+		"desktop-recorded-evidence",
+		"hub-recorded-evidence"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

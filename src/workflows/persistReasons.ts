@@ -1,7 +1,7 @@
 import { resolve } from 'node:path';
 import { GitAdapter } from '../adapters/GitAdapter';
 import type { HistoryNote } from '../core/historyTypes';
-import { HistoryNoteRepository } from '../repositories/HistoryNoteRepository';
+import { HistoryNoteRepository } from "../repositories/history-note-repository/HistoryNoteRepository";
 import { explainedRange } from './runExplain';
 import { sourceCommit } from './runHistory';
 

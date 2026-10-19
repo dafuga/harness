@@ -1,7 +1,7 @@
 import { lstat, mkdir, rm } from 'node:fs/promises';
 import { join } from 'node:path';
-import { ReportRepository } from '../repositories/ReportRepository';
-import { ReportExportService } from './ReportExportService';
+import { ReportRepository } from "../repositories/report-repository/ReportRepository";
+import { ReportExportService } from "./report-export-service/ReportExportService";
 import { atomicJson } from '../utils/reportFiles';
 import { reportLock } from '../utils/reportLock';
 import { resultStatus } from '../utils/reportState';

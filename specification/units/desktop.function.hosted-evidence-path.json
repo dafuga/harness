@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/hostedEvidencePath.ts"],
-		"symbols": ["hostedEvidencePath"]
+		"source": [
+			"packages/desktop/src/adapters/hosted-evidence-adapter/hostedEvidencePath.ts",
+			"packages/desktop/src/utils/hostedEvidencePath.ts"
+		],
+		"symbols": [
+			"hostedEvidencePath"
+		]
 	},
 	"contract": {
 		"origin": "declared",

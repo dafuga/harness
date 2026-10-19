@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs';
 import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { GitAdapter } from '../adapters/GitAdapter';
-import type { LoopState } from '../workflows/loopState';
+import type { LoopState } from "../workflows/loop-state/loopState";
 
 export interface Checkout {
 	path: string;

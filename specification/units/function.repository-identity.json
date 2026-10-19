@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/repositoryIdentity.ts"],
-		"symbols": ["repositoryIdentity", "sameRepository", "sameSite"]
+		"source": [
+			"src/utils/repository-identity/repositoryIdentity.ts",
+			"src/utils/repositoryIdentity.ts"
+		],
+		"symbols": [
+			"repositoryIdentity",
+			"sameRepository",
+			"sameSite"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -61,7 +68,7 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/repositoryIdentity.ts",
+		"entry": "src/utils/repository-identity/repositoryIdentity.ts",
 		"targets": [
 			{
 				"kind": "module",

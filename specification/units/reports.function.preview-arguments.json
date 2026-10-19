@@ -8,8 +8,14 @@
 	"status": "active",
 	"documentation": "packages/reports/specification/features/planned/managed-preview-server.md",
 	"owns": {
-		"source": ["packages/reports/src/utils/previewArguments.ts"],
-		"symbols": ["PreviewArguments", "previewArguments"]
+		"source": [
+			"packages/reports/src/utils/previewArguments.ts",
+			"packages/reports/src/utils/preview-node/previewArguments.ts"
+		],
+		"symbols": [
+			"PreviewArguments",
+			"previewArguments"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -59,7 +65,9 @@
 				"name": "Error",
 				"type": "thrown",
 				"description": "Refuses unknown or missing options, invalid ports and addresses that would expose the preview remotely.",
-				"examples": ["Harness previews bind to 127.0.0.1 only."]
+				"examples": [
+					"Harness previews bind to 127.0.0.1 only."
+				]
 			}
 		]
 	},

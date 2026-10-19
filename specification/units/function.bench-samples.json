@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/benchSamples.ts"],
+		"source": [
+			"src/utils/benchSamples.ts",
+			"src/services/kernel-benchmark-service/benchSamples.ts"
+		],
 		"symbols": [
 			"WarmResult",
 			"median",

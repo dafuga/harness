@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/trackpadZoom.ts"],
-		"symbols": ["Point", "imageAnchor", "keepPointerInPlace", "trackpadZoom"]
+		"source": [
+			"packages/reports/src/utils/trackpadZoom.ts",
+			"packages/reports/src/components/image-zoom/trackpadZoom.ts"
+		],
+		"symbols": [
+			"Point",
+			"imageAnchor",
+			"keepPointerInPlace",
+			"trackpadZoom"
+		]
 	},
 	"contract": {
 		"origin": "declared",

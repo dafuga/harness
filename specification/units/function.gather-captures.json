@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/gatherCaptures.ts"],
-		"symbols": ["Gathered", "GatherResult", "gatherCaptures"]
+		"source": [
+			"src/utils/gatherCaptures.ts",
+			"src/services/check-run-service/gatherCaptures.ts"
+		],
+		"symbols": [
+			"Gathered",
+			"GatherResult",
+			"gatherCaptures"
+		]
 	},
 	"contract": {
 		"origin": "declared",

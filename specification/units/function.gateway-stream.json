@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/gatewayStream.ts"],
-		"symbols": ["gatewayStream"]
+		"source": [
+			"src/services/codex-gateway-service/gatewayStream.ts",
+			"src/utils/gatewayStream.ts"
+		],
+		"symbols": [
+			"gatewayStream"
+		]
 	},
 	"contract": {
 		"origin": "declared",

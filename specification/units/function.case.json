@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/case.ts"],
-		"symbols": ["toKebabCase", "toPascalCase", "toCamelCase", "toSnakeCase"]
+		"source": [
+			"src/core/case.ts",
+			"src/workflows/generate-code/case.ts"
+		],
+		"symbols": [
+			"toKebabCase",
+			"toPascalCase",
+			"toCamelCase",
+			"toSnakeCase"
+		]
 	},
 	"contract": {
 		"origin": "declared",

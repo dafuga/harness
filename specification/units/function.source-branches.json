@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/sourceBranches.ts"],
-		"symbols": ["ListedRef", "SourceBranch", "sourceBranches"]
+		"source": [
+			"src/utils/sourceBranches.ts",
+			"src/repositories/source-history-repository/sourceBranches.ts"
+		],
+		"symbols": [
+			"ListedRef",
+			"SourceBranch",
+			"sourceBranches"
+		]
 	},
 	"contract": {
 		"origin": "declared",

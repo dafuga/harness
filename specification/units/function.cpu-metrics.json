@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/cpuMetrics.ts"],
-		"symbols": ["CpuReading", "CpuGroup", "CpuSnapshot", "cpuMetrics"]
+		"source": [
+			"src/utils/cpuMetrics.ts",
+			"src/services/cpu-usage-service/cpuMetrics.ts"
+		],
+		"symbols": [
+			"CpuReading",
+			"CpuGroup",
+			"CpuSnapshot",
+			"cpuMetrics"
+		]
 	},
 	"contract": {
 		"origin": "declared",

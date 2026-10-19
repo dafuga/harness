@@ -1,9 +1,8 @@
-import type { ScenarioManifest } from '../core/unitTypes';
-import type { ScenarioResult } from '../core/verificationTypes';
-import { benchmarkCaptureSchema, verifyConfigFile } from '../core/verifyTypes';
-import type { Gathered } from './gatherCaptures';
-import type { MediaFacts } from './mediaFacts';
-import { scenarioRequirements } from './scenarioRequirements';
+import type { ScenarioManifest } from "../core/unitTypes";
+import type { ScenarioResult } from "../core/verificationTypes";
+import { benchmarkCaptureSchema, verifyConfigFile } from "../core/verifyTypes";
+import type { Gathered } from "./gatherCaptures";
+import type { MediaFacts } from "./mediaFacts";
 
 export interface CoverageInput {
 	scenario: ScenarioManifest;
@@ -22,53 +21,12 @@ export interface CoverageResult {
 }
 
 type Evidence = ScenarioManifest['evidence'][number];
+
 type Viewport = ScenarioManifest['viewports'][number];
+
 const durationTolerance = 0.05;
 
-/** Judges gathered captures against the scenario contract: completeness, validity, freshness. */
-export function scenarioCoverage(input: CoverageInput): CoverageResult {
-	const { scenario, gathered } = input;
-	const requirements = scenarioRequirements(scenario);
-	const problems = new Map(gathered.map((item) => [item, problem(input, item)]));
-	const absent = requirements.required
-		.filter((need) => !gathered.some((item) => matches(item, need)))
-		.map((need) => {
-			const where = need.viewport ? ` at viewport ${need.viewport}` : '';
-			return `missing ${need.kind} for state ${need.state}${where}`;
-		});
-	const failures = [
-		...requirements.unproven.map(
-			(item) => `state ${item.state} is declared missing: ${item.reason}`
-		),
-		...absent,
-		...[...problems.values()].flatMap((found) => found ?? [])
-	];
-	const failed = (item: Gathered) => input.checkFailed || problems.get(item) !== undefined;
-	const states = scenario.states.map((state) => ({
-		id: state.id,
-		coverage: state.coverage,
-		...(state.reason ? { reason: state.reason } : {}),
-		captures: gathered
-			.filter((item) => item.line.state === state.id)
-			.map((item) => ({
-				...item.capture,
-				status: failed(item) ? ('failed' as const) : ('passed' as const)
-			}))
-	}));
-	return { states, failures: failures.map((failure) => `${scenario.id}: ${failure}`) };
-}
-
-function matches(
-	item: Gathered,
-	need: { evidence: string; state: string; viewport?: string }
-): boolean {
-	const { line } = item;
-	return (
-		line.evidence === need.evidence && line.state === need.state && line.viewport === need.viewport
-	);
-}
-
-/** The first thing wrong with one capture, if anything. */
+export /** The first thing wrong with one capture, if anything. */
 function problem(input: CoverageInput, item: Gathered): string | undefined {
 	const evidence = input.scenario.evidence.find((entry) => entry.id === item.line.evidence);
 	if (item.line.kind === 'screenshot') return imageProblem(input, item, evidence);
@@ -197,3 +155,5 @@ function buildProblem(
 	if (served === compiled) return undefined;
 	return `was served by build ${served.slice(0, 12)}, not the ${named} build ${compiled.slice(0, 12)} compiled from this revision`;
 }
+
+export { scenarioCoverage } from '../services/verification-service/scenarioCoverage';

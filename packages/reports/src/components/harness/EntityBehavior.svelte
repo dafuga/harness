@@ -5,12 +5,12 @@
 	import { entityLens, shortCommit, type EntityNav } from '../../utils/entityLens';
 	import { notMeasured } from '../../utils/entityMeasure';
 	import type { EntityReasons as Reasons } from '../../utils/entityReasons';
-	import { explorerReading } from '../../utils/explorerReading';
-	import EntityReasons from './EntityReasons.svelte';
+	import { explorerReading } from "../../utils/explorer-reading/explorerReading";
+	import EntityReasons from './entity-reasons/EntityReasons.svelte';
 	import EntityRun from './EntityRun.svelte';
 	import HarnessAction from './HarnessAction.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
-	import HarnessVerdict from './HarnessVerdict.svelte';
+	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
 	let {
 		behavior,
 		read = null,

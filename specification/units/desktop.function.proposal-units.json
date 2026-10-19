@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/proposalUnits.ts"],
-		"symbols": ["proposalUnits", "taskUnits"]
+		"source": [
+			"packages/desktop/src/services/project-run-service/proposalUnits.ts",
+			"packages/desktop/src/services/project-task-service/proposalUnits.ts",
+			"packages/desktop/src/utils/proposalUnits.ts"
+		],
+		"symbols": [
+			"proposalUnits",
+			"taskUnits"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -60,7 +67,9 @@
 			}
 		]
 	},
-	"scenarios": ["agent-references"],
+	"scenarios": [
+		"agent-references"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

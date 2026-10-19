@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/rendererAssets.ts"],
-		"symbols": ["rendererPolicy", "rendererAssets"]
+		"source": [
+			"packages/desktop/src/utils/renderer-assets/rendererAssets.ts",
+			"packages/desktop/src/utils/rendererAssets.ts"
+		],
+		"symbols": [
+			"rendererPolicy",
+			"rendererAssets"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -62,7 +68,7 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/rendererAssets.ts",
+		"entry": "packages/desktop/src/utils/renderer-assets/rendererAssets.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -70,7 +76,10 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-project-runs"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

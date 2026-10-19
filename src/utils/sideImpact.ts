@@ -1,10 +1,7 @@
-import { HandlerRuntimeAdapter } from '../adapters/HandlerRuntimeAdapter';
-import type { ImpactReport, ImpactSide } from '../core/impactTypes';
-import type { GraphNode, SourceGraph, TreeEntry, UncertainNode } from '../core/sourceTypes';
-import type { ComponentManifest, ScenarioManifest } from '../core/unitTypes';
-import { defaultUnitsConfig, type UnitsConfig } from '../core/unitsConfig';
-import { ImpactService } from '../services/ImpactService';
-import { impactKernel } from './impactKernel';
+import type { ImpactReport } from "../core/impactTypes";
+import type { GraphNode, UncertainNode } from "../core/sourceTypes";
+import type { ScenarioManifest } from "../core/unitTypes";
+import { type UnitsConfig } from "../core/unitsConfig";
 
 /**
  * Everything the impact analysis reads of one source tree, kept small: every tracked file with
@@ -35,56 +32,6 @@ export interface SourceImpact {
 	changed: ImpactReport['changed'];
 }
 
-export function storedSide(side: ImpactSide): StoredSide {
-	const position = new Map(side.graph.nodes.map((node, index) => [node.id, index]));
-	const edges = side.graph.edges.flatMap((edge): Array<[number, number]> => {
-		const [from, to] = [position.get(edge.from), position.get(edge.to)];
-		return from === undefined || to === undefined ? [] : [[from, to]];
-	});
-	return {
-		schemaVersion: 1,
-		config: side.config,
-		files: side.entries.map((entry) => [entry.path, entry.hash]),
-		units: side.manifests.map((unit) => ({
-			id: unit.id,
-			status: unit.status,
-			source: unit.owns.source
-		})),
-		scenarios: side.scenarios,
-		nodes: side.graph.nodes.map((node) => [node.id, node.kind]),
-		edges,
-		uncertain: side.graph.uncertain
-	};
-}
-
-function graphOf(stored: StoredSide): SourceGraph {
-	const nodes = stored.nodes.map(([id, kind]) => ({ id, kind }));
-	const edges = stored.edges.map(([from, to]) => ({
-		from: nodes[from].id,
-		to: nodes[to].id,
-		via: ''
-	}));
-	return { nodes, edges, uncertain: stored.uncertain };
-}
-
-/** The side as the analysis expects it; a missing side is the state before the first commit. */
-function sideOf(stored: StoredSide | null, revision: string): ImpactSide {
-	const empty = { nodes: [], edges: [], uncertain: [] };
-	const units = (stored?.units ?? []).map((unit) => ({
-		id: unit.id,
-		status: unit.status,
-		owns: { source: unit.source, symbols: [] }
-	}));
-	return {
-		revision,
-		config: stored?.config ?? defaultUnitsConfig,
-		entries: (stored?.files ?? []).map(([path, hash]): TreeEntry => ({ path, hash })),
-		manifests: units as unknown as ComponentManifest[],
-		scenarios: stored?.scenarios ?? [],
-		graph: stored ? graphOf(stored) : empty
-	};
-}
-
 export function impactView(report: ImpactReport, base: string | null): SourceImpact {
 	return {
 		base,
@@ -96,17 +43,5 @@ export function impactView(report: ImpactReport, base: string | null): SourceImp
 	};
 }
 
-/**
- * What differs between two stored sides: the same analysis the impact command runs on the two
- * commits, on what was stored of them when the history was indexed. It needs no repository,
- * so it runs wherever the history is shown, for any two revisions and in either direction.
- */
-export async function sideImpact(
-	base: { commit: string; side: StoredSide } | null,
-	head: { commit: string; side: StoredSide }
-): Promise<SourceImpact> {
-	const analysis = new ImpactService(new HandlerRuntimeAdapter(impactKernel));
-	const from = sideOf(base?.side ?? null, base?.commit ?? 'none');
-	const report = await analysis.compute(from, sideOf(head.side, head.commit));
-	return impactView(report, base?.commit ?? null);
-}
+export { storedSide } from '../services/source-impact-service/sideImpact';
+export { sideImpact } from '../../packages/reports/src/components/harness/harness-compare/sideImpact';

@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/impactReport.ts"],
-		"symbols": ["graphTests", "impactReport"]
+		"source": [
+			"src/utils/impactReport.ts",
+			"src/services/impact-service/impactReport.ts"
+		],
+		"symbols": [
+			"graphTests",
+			"impactReport"
+		]
 	},
 	"contract": {
 		"origin": "declared",

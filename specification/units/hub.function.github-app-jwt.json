@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/githubAppJwt.ts"],
-		"symbols": ["GithubAppJwtInput", "githubAppKey", "githubAppJwt"]
+		"source": [
+			"packages/hub/src/services/installation-token-service/githubAppJwt.ts",
+			"packages/hub/src/utils/githubAppJwt.ts"
+		],
+		"symbols": [
+			"GithubAppJwtInput",
+			"githubAppKey",
+			"githubAppJwt"
+		]
 	},
 	"contract": {
 		"origin": "declared",

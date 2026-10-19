@@ -1,14 +1,7 @@
 import type { Command } from 'commander';
 import { fail } from '../core/errors';
-import {
-	kernelDefault,
-	kernelParity,
-	kernelSample,
-	parityProblems,
-	renderDefault,
-	serveKernelRuntime
-} from '../workflows/runKernel';
-import { renderBench, runKernelBench } from '../workflows/runKernelBench';
+import { kernelDefault, kernelParity, kernelSample, parityProblems, renderDefault, serveKernelRuntime } from "../workflows/run-kernel/runKernel";
+import { renderBench, runKernelBench } from "../workflows/run-kernel-bench/runKernelBench";
 import { kernelBoundary } from '../workflows/runKernelBoundary';
 
 interface Flags {

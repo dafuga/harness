@@ -1,10 +1,10 @@
-import { previewNode } from '../utils/previewNode';
+import { previewNode } from "../utils/preview-node/previewNode";
 import { previewHealth, closePreviewSessions } from '../utils/previewHealth';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createServer } from 'vite';
-import { PreviewServerService } from '../services/PreviewServerService';
-import { previewArguments } from '../utils/previewArguments';
+import { PreviewServerService } from "../services/preview-server-service/PreviewServerService";
+import { previewArguments } from "../utils/preview-node/previewArguments";
 import { previewOwnerPort } from '../utils/previewOwner';
 
 /** Reports and the desktop renderer share one managed preview across all checkouts. */

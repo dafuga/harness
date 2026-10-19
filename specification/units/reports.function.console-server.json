@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/consoleServer.ts"],
-		"symbols": ["consoleDirectory", "consoleData", "consoleServer"]
+		"source": [
+			"packages/reports/src/utils/console-server/consoleServer.ts",
+			"packages/reports/src/utils/consoleServer.ts"
+		],
+		"symbols": [
+			"consoleDirectory",
+			"consoleData",
+			"consoleServer"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -61,7 +68,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/consoleServer.ts",
+		"entry": "packages/reports/src/utils/console-server/consoleServer.ts",
 		"targets": [
 			{
 				"kind": "module",

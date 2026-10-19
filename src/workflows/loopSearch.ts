@@ -1,6 +1,6 @@
 import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';
-import { isMissingFile, loopPaths, readLoop, type LoopInput } from './loopState';
+import { isMissingFile, loopPaths, readLoop, type LoopInput } from "./loop-state/loopState";
 import { listLoopTemplates } from './loopTemplates';
 
 export type LoopSearchKind = 'loop' | 'template';

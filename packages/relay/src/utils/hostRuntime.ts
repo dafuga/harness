@@ -13,7 +13,7 @@ import { PairingExchangeService } from '../services/PairingExchangeService';
 import { PairingOfferService } from '../services/PairingOfferService';
 import { RateLimitService } from '../services/RateLimitService';
 import { SocketAcceptService } from '../services/SocketAcceptService';
-import { SocketFrameService } from '../services/SocketFrameService';
+import { SocketFrameService } from "../services/socket-frame-service/SocketFrameService";
 
 /** What one host object is made of: its requests, its frames and its alarm. */
 export interface HostRuntime {

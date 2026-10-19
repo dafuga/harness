@@ -1,6 +1,6 @@
 import { GitAdapter } from '../adapters/GitAdapter';
 import type { Explanation } from '../core/explanationTypes';
-import { requiredReasons, type ReasonSide } from '../utils/requiredReasons';
+import { requiredReasons, type ReasonSide } from "../utils/required-reasons/requiredReasons";
 import { ExplanationService, type ReasonReport } from './ExplanationService';
 
 export interface ReasonRange {

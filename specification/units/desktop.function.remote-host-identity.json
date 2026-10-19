@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/remoteHostIdentity.ts"],
-		"symbols": ["RegisterRemoteHost", "remoteHostIdentity", "registerRemoteHost"]
+		"source": [
+			"packages/desktop/src/utils/remoteHostIdentity.ts",
+			"packages/desktop/src/services/remote-host-switch-service/remoteHostIdentity.ts"
+		],
+		"symbols": [
+			"RegisterRemoteHost",
+			"remoteHostIdentity",
+			"registerRemoteHost"
+		]
 	},
 	"contract": {
 		"origin": "declared",

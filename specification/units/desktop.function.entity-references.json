@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/entityReferences.ts"],
-		"symbols": ["ReferencePart", "isUnitId", "entityReferences"]
+		"source": [
+			"packages/desktop/src/utils/entityReferences.ts",
+			"packages/desktop/src/components/reference-text/entityReferences.ts"
+		],
+		"symbols": [
+			"ReferencePart",
+			"isUnitId",
+			"entityReferences"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -49,7 +56,9 @@
 			}
 		]
 	},
-	"scenarios": ["agent-references"],
+	"scenarios": [
+		"agent-references"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

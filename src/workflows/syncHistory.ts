@@ -1,7 +1,7 @@
 import { resolve } from 'node:path';
 import { GitAdapter } from '../adapters/GitAdapter';
 import { fail } from '../core/errors';
-import { HistorySyncService, type Synced } from '../services/HistorySyncService';
+import { HistorySyncService, type Synced } from "../services/history-sync-service/HistorySyncService";
 
 export type SyncAction = 'fetch' | 'push' | 'sync';
 

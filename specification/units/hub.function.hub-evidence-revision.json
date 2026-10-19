@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubEvidenceRevision.ts"],
-		"symbols": ["hubEvidenceRevision"]
+		"source": [
+			"packages/hub/src/utils/hub-evidence-revision/hubEvidenceRevision.ts",
+			"packages/hub/src/utils/hubEvidenceRevision.ts"
+		],
+		"symbols": [
+			"hubEvidenceRevision"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -97,7 +102,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hubEvidenceRevision.ts",
+		"entry": "packages/hub/src/utils/hub-evidence-revision/hubEvidenceRevision.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -105,7 +110,9 @@
 			}
 		]
 	},
-	"scenarios": ["hub-recorded-evidence"],
+	"scenarios": [
+		"hub-recorded-evidence"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

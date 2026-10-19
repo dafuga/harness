@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/lib/server/auth.ts"],
+		"source": [
+			"packages/hub/src/lib/server/auth/auth.ts",
+			"packages/hub/src/lib/server/auth.ts"
+		],
 		"symbols": [
 			"createHubAuth",
 			"createD1AuthStore",
@@ -95,7 +98,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/lib/server/auth.ts",
+		"entry": "packages/hub/src/lib/server/auth/auth.ts",
 		"targets": [
 			{
 				"kind": "module",

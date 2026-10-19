@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/recordedPreview.ts"],
-		"symbols": ["RecordedThumbnail", "PreviewState", "recordedPreview"]
+		"source": [
+			"packages/desktop/src/utils/recordedPreview.ts",
+			"packages/desktop/src/components/recorded-preview/recordedPreview.ts"
+		],
+		"symbols": [
+			"RecordedThumbnail",
+			"PreviewState",
+			"recordedPreview"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -85,7 +92,9 @@
 			}
 		]
 	},
-	"scenarios": ["catalog-previews"],
+	"scenarios": [
+		"catalog-previews"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -4,7 +4,7 @@ import type { Comparison } from '../core/comparisonTypes';
 import type { ComponentManifest, RuntimeKind } from '../core/unitTypes';
 import type { Workload } from '../core/verifyTypes';
 import { benchRounds, roundMeasurements } from '../utils/benchSamples';
-import { comparisonContext } from '../utils/comparisonContext';
+import { comparisonContext } from "../utils/comparison-context/comparisonContext";
 import { stableJson } from '../utils/stableJson';
 import { UnitRuntimeService } from './UnitRuntimeService';
 

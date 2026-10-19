@@ -9,7 +9,7 @@ import {
 import { evaluateLoop, renderLoopEvaluation } from '../workflows/loopEvaluate';
 import { nextLoopStep, renderNextLoopStep } from '../workflows/loopNext';
 import { renderLoopSearchResults, searchLoops } from '../workflows/loopSearch';
-import { recordRegression, type RecordRegressionInput } from '../workflows/recordRegression';
+import { recordRegression, type RecordRegressionInput } from "../workflows/record-regression/recordRegression";
 
 export function registerLoopCommand(program: Command): void {
 	const command = program

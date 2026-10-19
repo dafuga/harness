@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/d1EmailStores.ts"],
-		"symbols": ["D1EmailStores", "EMAIL_PURGES", "d1EmailStores"]
+		"source": [
+			"packages/hub/src/utils/d1EmailStores.ts",
+			"packages/hub/src/adapters/d1-auth-store-adapter/d1EmailStores.ts"
+		],
+		"symbols": [
+			"D1EmailStores",
+			"EMAIL_PURGES",
+			"d1EmailStores"
+		]
 	},
 	"contract": {
 		"origin": "declared",

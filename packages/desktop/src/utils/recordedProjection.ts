@@ -1,9 +1,11 @@
-import type { ExplorerEvidence, ExplorerSide } from '../../../reports/src/models/Explorer.types';
-import type { HarnessRecord, HarnessRevision } from '../../../reports/src/models/Harness.types';
+import type { ExplorerSide } from "../../../reports/src/models/Explorer.types";
+import type { HarnessRecord, HarnessRevision } from "../../../reports/src/models/Harness.types";
 
 type Impact = NonNullable<HarnessRevision['sourceImpact']>;
+
 /** The scenarios that cover the entity on one side, each with the states that show it. */
 type Shown = Map<string, Set<string>>;
+
 type Staged = { id: string; states: Array<{ id: string }> };
 
 const shownOn = (side: ExplorerSide): Shown =>
@@ -77,25 +79,11 @@ function detail(whole: HarnessRevision, entity: string, shown: Shown): HarnessRe
 	};
 }
 
-function side(whole: ExplorerSide, entity: string): ExplorerSide {
+export function side(whole: ExplorerSide, entity: string): ExplorerSide {
 	if (!whole.detail) return whole;
 	const projected = detail(whole.detail, entity, shownOn(whole));
 	const judged = projected.records.find((item) => item.id === whole.record?.id) ?? null;
 	return { ...whole, detail: projected, record: judged };
 }
 
-/**
- * The evidence of one entity with only what that entity needs. Each side keeps its captures and
- * coverage as they were found, and of its revision and records what judges this entity: its own
- * unit, the scenarios that cover it with the states that show it, every test, and its own
- * failures, measurements, limits, impact and reasons. Other units, the graph, the files a
- * commit changed and the results of other scenarios are left out. The evidence that is given is
- * not altered, and the projection still derives the same evidence and the same verdict.
- */
-export function recordedProjection(evidence: ExplorerEvidence, entityId: string): ExplorerEvidence {
-	return {
-		...evidence,
-		after: side(evidence.after, entityId),
-		before: evidence.before && side(evidence.before, entityId)
-	};
-}
+export { recordedProjection } from './recorded-answer/recordedProjection';

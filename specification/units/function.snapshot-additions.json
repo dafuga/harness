@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/snapshotAdditions.ts"],
-		"symbols": ["SnapshotBounds", "declaredOutput", "snapshotAdditions"]
+		"source": [
+			"src/utils/snapshotAdditions.ts",
+			"src/adapters/snapshot-adapter/snapshotAdditions.ts"
+		],
+		"symbols": [
+			"SnapshotBounds",
+			"declaredOutput",
+			"snapshotAdditions"
+		]
 	},
 	"contract": {
 		"origin": "declared",

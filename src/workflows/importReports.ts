@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { GitAdapter } from '../adapters/GitAdapter';
 import { fail } from '../core/errors';
-import { LegacyImportService, type LegacyImport } from '../services/LegacyImportService';
+import { LegacyImportService, type LegacyImport } from "../services/legacy-import-service/LegacyImportService";
 
 export interface ImportOptions {
 	root?: string;

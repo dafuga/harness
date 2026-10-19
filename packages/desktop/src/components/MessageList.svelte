@@ -3,7 +3,7 @@
 	import type { CatalogEntity } from '../models/Desktop.types';
 	import type { ThreadEntry } from '../utils/commentEntries';
 	import { timeLabel } from '../utils/timeLabel';
-	import ReferenceText from './ReferenceText.svelte';
+	import ReferenceText from './reference-text/ReferenceText.svelte';
 	let {
 		messages,
 		workspace,

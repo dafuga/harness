@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/composeModes.ts"],
+		"source": [
+			"packages/desktop/src/utils/composeModes.ts",
+			"packages/desktop/src/components/thread-panel/composeModes.ts"
+		],
 		"symbols": [
 			"ComposeMode",
 			"AgentChoice",
@@ -83,7 +86,9 @@
 			}
 		]
 	},
-	"scenarios": ["function-examples"],
+	"scenarios": [
+		"function-examples"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

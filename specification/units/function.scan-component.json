@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/scanComponent.ts"],
-		"symbols": ["scanComponent"]
+		"source": [
+			"src/services/source-index-service/scanComponent.ts",
+			"src/utils/scanComponent.ts"
+		],
+		"symbols": [
+			"scanComponent"
+		]
 	},
 	"contract": {
 		"origin": "declared",

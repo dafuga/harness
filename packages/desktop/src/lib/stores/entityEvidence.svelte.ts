@@ -1,7 +1,7 @@
 import type { ExplorerBehavior } from '../../../../reports/src/models/Explorer.types';
 import type { DesktopBridge } from '../../models/DesktopBridge.types';
 import type { EntityEvidenceQuery, EntityEvidenceResult } from '../../models/DesktopEvidence.types';
-import { artifactBytes } from '../../utils/artifactBytes';
+import { artifactBytes } from "../../components/recorded-preview/artifactBytes";
 import { artifactQuery, type EvidenceSide } from '../../utils/artifactQuery';
 import type { EvidenceStatus } from '../../utils/evidenceNotice';
 import { evidenceReading } from '../../utils/evidenceReading';

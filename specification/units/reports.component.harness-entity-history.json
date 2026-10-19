@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/EntityHistory.svelte"],
-		"symbols": ["EntityHistory"]
+		"source": [
+			"packages/reports/src/components/harness/entity-history/EntityHistory.svelte",
+			"packages/reports/src/components/harness/EntityHistory.svelte"
+		],
+		"symbols": [
+			"EntityHistory"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -122,7 +127,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/EntityHistory.svelte",
+		"entry": "packages/reports/src/components/harness/entity-history/EntityHistory.svelte",
 		"targets": [
 			{
 				"kind": "module",

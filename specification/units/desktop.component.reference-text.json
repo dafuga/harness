@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/ReferenceText.svelte"],
-		"symbols": ["ReferenceText"]
+		"source": [
+			"packages/desktop/src/components/reference-text/ReferenceText.svelte",
+			"packages/desktop/src/components/ReferenceText.svelte"
+		],
+		"symbols": [
+			"ReferenceText"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -72,7 +77,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/ReferenceText.svelte",
+		"entry": "packages/desktop/src/components/reference-text/ReferenceText.svelte",
 		"targets": [
 			{
 				"kind": "module",
@@ -80,7 +85,9 @@
 			}
 		]
 	},
-	"scenarios": ["agent-references"],
+	"scenarios": [
+		"agent-references"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

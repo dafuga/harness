@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/replayVideo.ts"],
-		"symbols": ["replayVideoKey", "replayVideo"]
+		"source": [
+			"packages/reports/src/utils/replayVideo.ts",
+			"packages/reports/src/services/replay-video-service/replayVideo.ts"
+		],
+		"symbols": [
+			"replayVideoKey",
+			"replayVideo"
+		]
 	},
 	"contract": {
 		"origin": "declared",

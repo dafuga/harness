@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/explorerHistory.ts"],
-		"symbols": ["explorerHistory", "historyDetail"]
+		"source": [
+			"packages/reports/src/utils/explorer-history/explorerHistory.ts",
+			"packages/reports/src/components/harness/entity-history/explorerHistory.ts",
+			"packages/reports/src/utils/explorerHistory.ts"
+		],
+		"symbols": [
+			"explorerHistory",
+			"historyDetail"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -82,7 +89,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/explorerHistory.ts",
+		"entry": "packages/reports/src/utils/explorer-history/explorerHistory.ts",
 		"targets": [
 			{
 				"kind": "module",

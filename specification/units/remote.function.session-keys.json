@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/remote/src/utils/sessionKeys.ts"],
-		"symbols": ["SessionKeyInput", "sessionKeys"]
+		"source": [
+			"packages/remote/src/utils/sessionKeys.ts",
+			"packages/remote/src/services/secure-channel-service/sessionKeys.ts"
+		],
+		"symbols": [
+			"SessionKeyInput",
+			"sessionKeys"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -55,7 +61,9 @@
 			}
 		]
 	},
-	"scenarios": ["remote-desktop-boundaries"],
+	"scenarios": [
+		"remote-desktop-boundaries"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

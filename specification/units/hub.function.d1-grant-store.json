@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/d1GrantStore.ts"],
-		"symbols": ["EXPIRE_GRANTS", "d1GrantStore"]
+		"source": [
+			"packages/hub/src/adapters/d1-auth-store-adapter/d1GrantStore.ts",
+			"packages/hub/src/utils/d1GrantStore.ts"
+		],
+		"symbols": [
+			"EXPIRE_GRANTS",
+			"d1GrantStore"
+		]
 	},
 	"contract": {
 		"origin": "declared",

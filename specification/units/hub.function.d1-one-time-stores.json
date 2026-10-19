@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/d1OneTimeStores.ts"],
-		"symbols": ["D1OneTimeStores", "d1OneTimeStores"]
+		"source": [
+			"packages/hub/src/utils/d1OneTimeStores.ts",
+			"packages/hub/src/adapters/d1-auth-store-adapter/d1OneTimeStores.ts"
+		],
+		"symbols": [
+			"D1OneTimeStores",
+			"d1OneTimeStores"
+		]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/controllers/HubApiController.ts"],
-		"symbols": ["HubApiController", "HubApiController.constructor", "HubApiController.handle"]
+		"source": [
+			"packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
+			"packages/hub/src/controllers/HubApiController.ts"
+		],
+		"symbols": [
+			"HubApiController",
+			"HubApiController.constructor",
+			"HubApiController.handle"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -74,7 +81,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/controllers/HubApiController.ts",
+		"entry": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -82,7 +89,9 @@
 			}
 		]
 	},
-	"scenarios": ["hub-recorded-evidence"],
+	"scenarios": [
+		"hub-recorded-evidence"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/workspaceSearch.ts"],
-		"symbols": ["WorkspaceSearch", "workspaceSearch"]
+		"source": [
+			"packages/desktop/src/utils/workspaceSearch.ts",
+			"packages/desktop/src/components/nav-bar/workspaceSearch.ts"
+		],
+		"symbols": [
+			"WorkspaceSearch",
+			"workspaceSearch"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -60,7 +66,9 @@
 			}
 		]
 	},
-	"scenarios": ["search-shared-app"],
+	"scenarios": [
+		"search-shared-app"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

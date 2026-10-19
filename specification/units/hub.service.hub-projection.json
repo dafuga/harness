@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/services/HubProjectionService.ts"],
+		"source": [
+			"packages/hub/src/services/hub-projection-service/HubProjectionService.ts",
+			"packages/hub/src/services/HubProjectionService.ts"
+		],
 		"symbols": [
 			"HubProjectionService",
 			"HubProjectionService.constructor",
@@ -240,7 +243,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/services/HubProjectionService.ts",
+		"entry": "packages/hub/src/services/hub-projection-service/HubProjectionService.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -248,7 +251,10 @@
 			}
 		]
 	},
-	"scenarios": ["hosted-catalog", "hub-recorded-evidence"],
+	"scenarios": [
+		"hosted-catalog",
+		"hub-recorded-evidence"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

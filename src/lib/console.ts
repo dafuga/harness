@@ -3,9 +3,10 @@
  * request must pass, and the two ways data reaches the handlers. Everything here uses only Web
  * platform APIs, so it runs on Workers as well as on Node and Bun.
  */
-export { consolePolicy, denyAll, loopbackAddress } from '../utils/consolePolicy';
+export { consolePolicy, loopbackAddress } from '../../packages/reports/src/utils/console-server/consolePolicy';
+export { denyAll } from '../utils/consolePolicy';
 export type { ConsolePolicy, ConsoleRequest, OwnerMode } from '../utils/consolePolicy';
-export { consoleAccess } from '../utils/consoleAccess';
+export { consoleAccess } from '../../packages/reports/src/utils/console-server/consoleAccess';
 export type {
 	ConsoleAccess,
 	ConsoleData,
@@ -21,16 +22,10 @@ export { consoleBundle } from '../utils/consoleBundle';
 export type { ConsoleModules } from '../utils/consoleBundle';
 export { consoleDocument } from '../utils/consoleDocument';
 export type { ConsoleAssets, ConsoleDocumentOptions } from '../utils/consoleDocument';
-export {
-	commitBranch,
-	consoleCanonical,
-	defaultCommit,
-	explorerAddress,
-	explorerExact,
-	explorerHome
-} from '../utils/consoleCanonical';
-export type { IndexedHistory } from '../utils/consoleCanonical';
-export { explorerLegacy } from '../utils/explorerLegacy';
+export { commitBranch, defaultCommit, explorerAddress, explorerExact, explorerHome } from '../utils/console-canonical/consoleCanonical';
+export { consoleCanonical } from '../../packages/reports/src/utils/console-server/consoleCanonical';
+export { type IndexedHistory } from '../utils/console-canonical/consoleCanonical';
+export { explorerLegacy } from '../utils/console-canonical/explorerLegacy';
 export {
 	explorerCategories,
 	explorerKindCategory,
@@ -45,5 +40,7 @@ export type {
 	ExplorerSection,
 	ExplorerTab
 } from '../utils/explorerRoute';
-export { consoleRoute, consoleRoutePath, consoleViews } from '../utils/consoleRoute';
+export { consoleRoute } from '../utils/console-canonical/consoleRoute';
+export { consoleRoutePath } from '../../packages/reports/src/components/project-activity/consoleRoute';
+export { consoleViews } from '../utils/consoleRoute';
 export type { ConsoleRoute, ConsoleView } from '../utils/consoleRoute';

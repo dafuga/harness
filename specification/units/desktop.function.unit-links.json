@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/unitLinks.ts"],
-		"symbols": ["UnitLink", "unitLinks"]
+		"source": [
+			"packages/desktop/src/utils/unitLinks.ts",
+			"packages/desktop/src/components/reference-text/unitLinks.ts"
+		],
+		"symbols": [
+			"UnitLink",
+			"unitLinks"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -70,7 +76,9 @@
 			}
 		]
 	},
-	"scenarios": ["agent-references"],
+	"scenarios": [
+		"agent-references"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

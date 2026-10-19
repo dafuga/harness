@@ -7,7 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/writingLimits.ts"],
+		"source": [
+			"src/utils/writing-limits/writingLimits.ts",
+			"src/services/commit-message-service/writingLimits.ts",
+			"src/utils/writingLimits.ts"
+		],
 		"symbols": [
 			"WritingLimit",
 			"writingVersions",
@@ -125,7 +129,7 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/writingLimits.ts",
+		"entry": "src/utils/writing-limits/writingLimits.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/pushedRefs.ts"],
-		"symbols": ["pushedRefs"]
+		"source": [
+			"src/services/hook-run-service/pushedRefs.ts",
+			"src/utils/pushedRefs.ts"
+		],
+		"symbols": [
+			"pushedRefs"
+		]
 	},
 	"contract": {
 		"origin": "declared",

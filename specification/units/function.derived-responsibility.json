@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/derivedResponsibility.ts"],
-		"symbols": ["derivedResponsibility"]
+		"source": [
+			"src/services/unit-index-service/derivedResponsibility.ts",
+			"src/utils/derivedResponsibility.ts"
+		],
+		"symbols": [
+			"derivedResponsibility"
+		]
 	},
 	"contract": {
 		"origin": "declared",

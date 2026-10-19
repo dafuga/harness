@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/reportPages.ts"],
-		"symbols": ["reportPages"]
+		"source": [
+			"packages/reports/src/services/report-publish-service/reportPages.ts",
+			"packages/reports/src/utils/reportPages.ts"
+		],
+		"symbols": [
+			"reportPages"
+		]
 	},
 	"contract": {
 		"origin": "declared",

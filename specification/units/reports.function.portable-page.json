@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/portablePage.ts"],
-		"symbols": ["PortableAssets", "portablePage"]
+		"source": [
+			"packages/reports/src/utils/portablePage.ts",
+			"packages/reports/src/utils/console-server/portablePage.ts"
+		],
+		"symbols": [
+			"PortableAssets",
+			"portablePage"
+		]
 	},
 	"contract": {
 		"origin": "declared",

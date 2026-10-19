@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/RemotePhonePanel.svelte"],
-		"symbols": ["RemotePhonePanel"]
+		"source": [
+			"packages/desktop/src/components/remote-phone-panel/RemotePhonePanel.svelte",
+			"packages/desktop/src/components/RemotePhonePanel.svelte"
+		],
+		"symbols": [
+			"RemotePhonePanel"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -47,7 +52,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/RemotePhonePanel.svelte",
+		"entry": "packages/desktop/src/components/remote-phone-panel/RemotePhonePanel.svelte",
 		"targets": [
 			{
 				"kind": "module",
@@ -55,7 +60,9 @@
 			}
 		]
 	},
-	"scenarios": ["remote-mobile-ui"],
+	"scenarios": [
+		"remote-mobile-ui"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

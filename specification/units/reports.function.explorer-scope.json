@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/explorerScope.ts"],
-		"symbols": ["ExplorerResolved", "explorerScope"]
+		"source": [
+			"packages/reports/src/utils/explorerScope.ts",
+			"packages/reports/src/utils/harness-page/explorerScope.ts"
+		],
+		"symbols": [
+			"ExplorerResolved",
+			"explorerScope"
+		]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/HistoryPanel.svelte"],
-		"symbols": ["HistoryPanel"]
+		"source": [
+			"packages/desktop/src/components/history-panel/HistoryPanel.svelte",
+			"packages/desktop/src/components/HistoryPanel.svelte"
+		],
+		"symbols": [
+			"HistoryPanel"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -72,7 +77,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/HistoryPanel.svelte",
+		"entry": "packages/desktop/src/components/history-panel/HistoryPanel.svelte",
 		"targets": [
 			{
 				"kind": "module",
@@ -80,7 +85,10 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-renderer"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-renderer"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

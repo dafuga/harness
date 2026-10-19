@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/projectList.ts"],
-		"symbols": ["listedProjects", "projectList"]
+		"source": [
+			"packages/desktop/src/utils/projectList.ts",
+			"packages/desktop/src/components/project-switcher/projectList.ts"
+		],
+		"symbols": [
+			"listedProjects",
+			"projectList"
+		]
 	},
 	"contract": {
 		"origin": "declared",

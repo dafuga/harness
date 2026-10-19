@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import type { Member, ProjectSummary } from 'collaboration';
 	import { browserContext } from '../utils/browserContext';
-	import InvitationForm from './InvitationForm.svelte';
+	import InvitationForm from './invitation-form/InvitationForm.svelte';
 	let { projectId }: { projectId: string } = $props();
 	const { projects } = browserContext();
 	let project = $state<ProjectSummary | null>(null);

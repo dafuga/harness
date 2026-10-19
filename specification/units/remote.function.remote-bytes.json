@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/remote/src/utils/remoteBytes.ts"],
+		"source": [
+			"packages/remote/src/utils/remoteBytes.ts",
+			"packages/remote/src/services/wire-session-service/remoteBytes.ts"
+		],
 		"symbols": [
 			"CryptoSource",
 			"cryptoSource",
@@ -185,7 +188,9 @@
 			}
 		]
 	},
-	"scenarios": ["remote-desktop-boundaries"],
+	"scenarios": [
+		"remote-desktop-boundaries"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

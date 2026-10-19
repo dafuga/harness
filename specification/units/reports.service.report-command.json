@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/services/ReportCommandService.ts"],
+		"source": [
+			"packages/reports/src/services/report-command-service/ReportCommandService.ts",
+			"packages/reports/src/services/ReportCommandService.ts"
+		],
 		"symbols": [
 			"ReportCommandService",
 			"ReportCommandService.constructor",
@@ -88,7 +91,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/services/ReportCommandService.ts",
+		"entry": "packages/reports/src/services/report-command-service/ReportCommandService.ts",
 		"targets": [
 			{
 				"kind": "module",

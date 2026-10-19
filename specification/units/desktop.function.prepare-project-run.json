@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/prepareProjectRun.ts"],
-		"symbols": ["ProjectRunContext", "prepareProjectRun"]
+		"source": [
+			"packages/desktop/src/utils/prepareProjectRun.ts",
+			"packages/desktop/src/services/desktop-run-service/prepareProjectRun.ts"
+		],
+		"symbols": [
+			"ProjectRunContext",
+			"prepareProjectRun"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -91,7 +97,9 @@
 			}
 		]
 	},
-	"scenarios": ["agent-creation"],
+	"scenarios": [
+		"agent-creation"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

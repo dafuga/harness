@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/collaboration/src/utils/githubHistoryPage.ts"],
-		"symbols": ["githubHistoryPage"]
+		"source": [
+			"packages/collaboration/src/utils/create-git-hub-source/githubHistoryPage.ts",
+			"packages/collaboration/src/utils/githubHistoryPage.ts"
+		],
+		"symbols": [
+			"githubHistoryPage"
+		]
 	},
 	"contract": {
 		"origin": "declared",

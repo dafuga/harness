@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/publicCliEvents.ts"],
-		"symbols": ["publicCliEvents"]
+		"source": [
+			"packages/desktop/src/adapters/claude-cli-adapter/publicCliEvents.ts",
+			"packages/desktop/src/utils/publicCliEvents.ts"
+		],
+		"symbols": [
+			"publicCliEvents"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -39,7 +44,10 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-project-runs"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

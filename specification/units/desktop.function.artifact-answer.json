@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/artifactAnswer.ts"],
-		"symbols": ["artifactAnswer"]
+		"source": [
+			"packages/desktop/src/utils/artifact-answer/artifactAnswer.ts",
+			"packages/desktop/src/utils/artifactAnswer.ts"
+		],
+		"symbols": [
+			"artifactAnswer"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -68,7 +73,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/artifactAnswer.ts",
+		"entry": "packages/desktop/src/utils/artifact-answer/artifactAnswer.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -76,7 +81,10 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-recorded-evidence", "hub-recorded-evidence"],
+	"scenarios": [
+		"desktop-recorded-evidence",
+		"hub-recorded-evidence"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

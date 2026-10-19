@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/planning/src/utils/planGit.ts"],
+		"source": [
+			"packages/planning/src/utils/planGit.ts",
+			"packages/planning/src/utils/plan-read/planGit.ts"
+		],
 		"symbols": [
 			"Git",
 			"planGit",
@@ -170,7 +173,9 @@
 			}
 		]
 	},
-	"scenarios": ["planning-artifacts"],
+	"scenarios": [
+		"planning-artifacts"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/pickerPaths.ts"],
-		"symbols": ["pickerPaths"]
+		"source": [
+			"src/commands/codex-picker-command/pickerPaths.ts",
+			"src/utils/pickerPaths.ts"
+		],
+		"symbols": [
+			"pickerPaths"
+		]
 	},
 	"contract": {
 		"origin": "declared",

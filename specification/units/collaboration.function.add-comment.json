@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/collaboration/src/utils/addComment.ts"],
-		"symbols": ["addComment"]
+		"source": [
+			"packages/collaboration/src/utils/create-collaboration/addComment.ts",
+			"packages/collaboration/src/utils/addComment.ts"
+		],
+		"symbols": [
+			"addComment"
+		]
 	},
 	"contract": {
 		"origin": "declared",

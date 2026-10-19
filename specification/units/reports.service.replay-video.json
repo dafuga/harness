@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/services/ReplayVideoService.ts"],
-		"symbols": ["ReplayVideoService", "ReplayVideoService.constructor", "ReplayVideoService.create"]
+		"source": [
+			"packages/reports/src/services/replay-video-service/ReplayVideoService.ts",
+			"packages/reports/src/services/ReplayVideoService.ts"
+		],
+		"symbols": [
+			"ReplayVideoService",
+			"ReplayVideoService.constructor",
+			"ReplayVideoService.create"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -69,7 +76,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/services/ReplayVideoService.ts",
+		"entry": "packages/reports/src/services/replay-video-service/ReplayVideoService.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/CodexGatewayService.ts"],
+		"source": [
+			"src/services/codex-gateway-service/CodexGatewayService.ts",
+			"src/services/CodexGatewayService.ts"
+		],
 		"symbols": [
 			"CodexGatewayService",
 			"CodexGatewayService.constructor",
@@ -68,7 +71,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/CodexGatewayService.ts",
+		"entry": "src/services/codex-gateway-service/CodexGatewayService.ts",
 		"targets": [
 			{
 				"kind": "module",

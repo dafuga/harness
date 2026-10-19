@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/commitMessage.ts"],
-		"symbols": ["commitPrefixes", "MessageCleanup", "writtenMessage", "commitMessage"]
+		"source": [
+			"src/utils/commitMessage.ts",
+			"src/services/commit-message-service/commitMessage.ts"
+		],
+		"symbols": [
+			"commitPrefixes",
+			"MessageCleanup",
+			"writtenMessage",
+			"commitMessage"
+		]
 	},
 	"contract": {
 		"origin": "declared",

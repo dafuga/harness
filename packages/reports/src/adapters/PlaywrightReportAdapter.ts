@@ -1,6 +1,6 @@
 import { dirname, resolve, extname } from 'node:path';
 import { readFile } from 'node:fs/promises';
-import type { ReportRepository } from '../repositories/ReportRepository';
+import type { ReportRepository } from "../repositories/report-repository/ReportRepository";
 import type { Status } from '../models/Report.types';
 type PwResult = {
 	status?: string;

@@ -1,7 +1,9 @@
-import { z } from 'zod';
-import type { GitHubOptions } from '../models/Collaboration.types';
-import { fail, parse, repositorySchema, safePath, sha } from './parseCollaborationInput';
+import { z } from "zod";
+import type { GitHubOptions } from "../models/Collaboration.types";
+import { fail, parse, repositorySchema, safePath, sha } from "./parseCollaborationInput";
+
 type Request = { method?: string; body?: unknown; statuses?: number[] };
+
 async function request(
 	options: GitHubOptions,
 	permission: 'read' | 'write',
@@ -23,6 +25,7 @@ async function request(
 		return fail('github-unavailable');
 	}
 }
+
 async function readResponse(response: Response, input: Request) {
 	if (response.status >= 300 && response.status < 400) return unavailable(response);
 	if (input.statuses?.includes(response.status))
@@ -34,9 +37,11 @@ async function readResponse(response: Response, input: Request) {
 		hasNext: hasNextPage(response)
 	};
 }
+
 function hasNextPage(response: Response): boolean {
 	return /rel="next"/.test(response.headers.get('link') ?? '');
 }
+
 function requestOptions(token: string, input: Request): RequestInit {
 	return {
 		method: input.method ?? 'GET',
@@ -50,6 +55,7 @@ function requestOptions(token: string, input: Request): RequestInit {
 		...(input.body === undefined ? {} : { body: JSON.stringify(input.body) })
 	};
 }
+
 export function githubTransport(options: GitHubOptions, permission: 'read' | 'write') {
 	const repository = parse(repositorySchema, options.repository);
 	return {
@@ -63,14 +69,18 @@ export function githubTransport(options: GitHubOptions, permission: 'read' | 'wr
 		}
 	};
 }
+
 export type GitHubTransport = ReturnType<typeof githubTransport>;
+
 export function refPath(ref: string): string {
 	if (!/^refs\/(heads|notes|tags)\/.+/.test(ref)) return fail('invalid-ref');
 	safePath(ref);
 	if (/\s|\.\.|@\{|[~^:?*[\\]|\.lock(?:\/|$)/.test(ref)) return fail('invalid-ref');
 	return ref.slice(5).split('/').map(encodeURIComponent).join('/');
 }
+
 const reference = z.object({ ref: z.string(), object: z.object({ sha }) });
+
 export async function readRef(client: GitHubTransport, ref: string): Promise<string | null> {
 	const path = refPath(ref);
 	const notes = ref.startsWith('refs/notes/');
@@ -85,14 +95,13 @@ export async function readRef(client: GitHubTransport, ref: string): Promise<str
 	if (matched.length !== 1) return fail('ref-mismatch');
 	return matched[0].object.sha;
 }
-export async function exactRef(client: GitHubTransport, ref: string): Promise<string> {
-	return (await readRef(client, ref)) ?? fail('not-found');
-}
+
 export function base64(bytes: Uint8Array): string {
 	let value = '';
 	for (const byte of bytes) value += String.fromCharCode(byte);
 	return btoa(value);
 }
+
 export function decode64(value: string): Uint8Array {
 	try {
 		return Uint8Array.from(atob(value.replace(/\s/g, '')), (char) => char.charCodeAt(0));
@@ -105,3 +114,5 @@ async function unavailable(response: Response): Promise<never> {
 	await response.body?.cancel();
 	return fail('github-unavailable');
 }
+
+export { exactRef } from './create-git-hub-source/githubTransport';

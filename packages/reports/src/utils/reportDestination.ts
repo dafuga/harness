@@ -1,4 +1,4 @@
-import { commitBranch, explorerHome } from '../../../../src/utils/consoleCanonical';
+import { commitBranch, explorerHome } from "../../../../src/utils/console-canonical/consoleCanonical";
 import { explorerRoutePath } from '../../../../src/utils/explorerRoute';
 import type { HarnessIndex } from '../models/Harness.types';
 

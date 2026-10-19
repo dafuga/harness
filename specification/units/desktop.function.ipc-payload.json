@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/ipcPayload.ts"],
+		"source": [
+			"packages/desktop/src/utils/ipc-payload/ipcPayload.ts",
+			"packages/desktop/src/utils/ipcPayload.ts"
+		],
 		"symbols": [
 			"approvalPayload",
 			"threadPayload",
@@ -115,7 +118,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/ipcPayload.ts",
+		"entry": "packages/desktop/src/utils/ipc-payload/ipcPayload.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -123,7 +126,12 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs", "agent-creation", "shells-shared-app"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-project-runs",
+		"agent-creation",
+		"shells-shared-app"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

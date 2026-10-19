@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/collaboration/src/utils/createProject.ts"],
-		"symbols": ["createProject", "removeMember"]
+		"source": [
+			"packages/collaboration/src/utils/create-collaboration/createProject.ts",
+			"packages/collaboration/src/utils/createProject.ts"
+		],
+		"symbols": [
+			"createProject",
+			"removeMember"
+		]
 	},
 	"contract": {
 		"origin": "declared",

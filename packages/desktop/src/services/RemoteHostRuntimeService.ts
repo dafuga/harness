@@ -1,8 +1,8 @@
 import { HostPairingService } from '../../../remote/src/index';
 import type { RelayHostFrame, RemoteKeyPair, RemoteSocket } from '../../../remote/src/index';
 import type { RemoteHostState } from '../adapters/RemoteHostStoreAdapter';
-import { RelayLinkService } from './RelayLinkService';
-import type { RelayLinkOptions, RelayLinkState } from './RelayLinkService';
+import { RelayLinkService } from "./relay-link-service/RelayLinkService";
+import type { RelayLinkOptions, RelayLinkState } from "./relay-link-service/RelayLinkService";
 import { RemoteDeviceSessionsService } from './RemoteDeviceSessionsService';
 import type { RemoteDeviceSessionsOptions } from './RemoteDeviceSessionsService';
 

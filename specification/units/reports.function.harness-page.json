@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/harnessPage.ts"],
-		"symbols": ["HarnessPage", "homePath", "harnessPage"]
+		"source": [
+			"packages/reports/src/utils/harness-page/harnessPage.ts",
+			"packages/reports/src/utils/harnessPage.ts"
+		],
+		"symbols": [
+			"HarnessPage",
+			"homePath",
+			"harnessPage"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -77,7 +84,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/harnessPage.ts",
+		"entry": "packages/reports/src/utils/harness-page/harnessPage.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/historyPages.ts"],
-		"symbols": ["historyPages"]
+		"source": [
+			"packages/desktop/src/components/history-panel/historyPages.ts",
+			"packages/desktop/src/utils/historyPages.ts"
+		],
+		"symbols": [
+			"historyPages"
+		]
 	},
 	"contract": {
 		"origin": "declared",

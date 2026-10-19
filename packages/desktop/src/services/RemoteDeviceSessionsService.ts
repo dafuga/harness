@@ -7,8 +7,8 @@ import type {
 	WireLink
 } from '../../../remote/src/index';
 import type { RemoteHostDevice } from '../adapters/RemoteHostStoreAdapter';
-import { DeviceSessionService } from './DeviceSessionService';
-import type { DeviceSessionOptions } from './DeviceSessionService';
+import { DeviceSessionService } from "./device-session-service/DeviceSessionService";
+import type { DeviceSessionOptions } from "./device-session-service/DeviceSessionService";
 
 export interface DeviceAddress {
 	deviceId: string;

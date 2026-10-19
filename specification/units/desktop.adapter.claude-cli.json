@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/adapters/ClaudeCliAdapter.ts"],
+		"source": [
+			"packages/desktop/src/adapters/claude-cli-adapter/ClaudeCliAdapter.ts",
+			"packages/desktop/src/adapters/ClaudeCliAdapter.ts"
+		],
 		"symbols": [
 			"ClaudeCliAdapter",
 			"ClaudeCliAdapter.constructor",
@@ -58,7 +61,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/adapters/ClaudeCliAdapter.ts",
+		"entry": "packages/desktop/src/adapters/claude-cli-adapter/ClaudeCliAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -66,7 +69,10 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-project-runs"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/repositories/ReportRepository.ts"],
+		"source": [
+			"packages/reports/src/repositories/report-repository/ReportRepository.ts",
+			"packages/reports/src/repositories/ReportRepository.ts"
+		],
 		"symbols": [
 			"ReportRepository",
 			"ReportRepository.constructor",
@@ -154,7 +157,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/repositories/ReportRepository.ts",
+		"entry": "packages/reports/src/repositories/report-repository/ReportRepository.ts",
 		"targets": [
 			{
 				"kind": "module",

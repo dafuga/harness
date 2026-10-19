@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/ReportSummary.svelte"],
-		"symbols": ["ReportSummary"]
+		"source": [
+			"packages/reports/src/components/report-summary/ReportSummary.svelte",
+			"packages/reports/src/components/ReportSummary.svelte"
+		],
+		"symbols": [
+			"ReportSummary"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -62,7 +67,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/ReportSummary.svelte",
+		"entry": "packages/reports/src/components/report-summary/ReportSummary.svelte",
 		"targets": [
 			{
 				"kind": "module",

@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/browserContext.ts"],
-		"symbols": ["HostedBrowser", "provideBrowser", "browserContext"]
+		"source": [
+			"packages/hub/src/utils/browserContext.ts",
+			"packages/hub/src/routes/-layout/browserContext.ts"
+		],
+		"symbols": [
+			"HostedBrowser",
+			"provideBrowser",
+			"browserContext"
+		]
 	},
 	"contract": {
 		"origin": "declared",

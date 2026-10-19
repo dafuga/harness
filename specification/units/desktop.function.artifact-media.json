@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/artifactMedia.ts"],
-		"symbols": ["artifactLimit", "artifactMedia"]
+		"source": [
+			"packages/desktop/src/utils/artifactMedia.ts",
+			"packages/desktop/src/utils/artifact-answer/artifactMedia.ts"
+		],
+		"symbols": [
+			"artifactLimit",
+			"artifactMedia"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -55,7 +61,10 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-recorded-evidence", "hub-recorded-evidence"],
+	"scenarios": [
+		"desktop-recorded-evidence",
+		"hub-recorded-evidence"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

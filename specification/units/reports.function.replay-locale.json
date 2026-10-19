@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/replayLocale.ts"],
-		"symbols": ["replayLocale"]
+		"source": [
+			"packages/reports/src/components/gameplay-replay/replayLocale.ts",
+			"packages/reports/src/utils/replayLocale.ts"
+		],
+		"symbols": [
+			"replayLocale"
+		]
 	},
 	"contract": {
 		"origin": "declared",

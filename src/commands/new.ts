@@ -1,6 +1,6 @@
 import type { Command } from 'commander';
-import { createProject, renderCreateProject } from '../workflows/createProject';
-import type { ProjectKind } from '../workflows/createProject';
+import { createProject, renderCreateProject } from "../workflows/create-project/createProject";
+import type { ProjectKind } from "../workflows/create-project/createProject";
 
 export function registerNewCommand(program: Command): void {
 	const command = program.command('new').description('Create a new Harness project.');

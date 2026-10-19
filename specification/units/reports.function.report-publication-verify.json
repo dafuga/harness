@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/reportPublicationVerify.ts"],
-		"symbols": ["reportPublicationVerify"]
+		"source": [
+			"packages/reports/src/services/report-publish-service/reportPublicationVerify.ts",
+			"packages/reports/src/utils/reportPublicationVerify.ts"
+		],
+		"symbols": [
+			"reportPublicationVerify"
+		]
 	},
 	"contract": {
 		"origin": "declared",

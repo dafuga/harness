@@ -1,13 +1,15 @@
-import type { Git } from './planGit';
-import { blob, paths } from './planGit';
-import { parse, fail } from './planData';
-import { filename, planValidate } from './planValidate';
-import type { PlanCategory, PlanSummary } from '../models/Planning.types';
+import type { Git } from "./planGit";
+import { blob, paths } from "./planGit";
+import { parse, fail } from "./planData";
+import { filename } from "./planValidate";
+import type { PlanCategory, PlanSummary } from "../models/Planning.types";
+
 export function identity(unitId: string): void {
 	filename(unitId);
 	if (unitId.length > 200 || !/^[a-z][a-z0-9-]*(?:\.[a-z][a-z0-9-]*)+$/.test(unitId))
 		fail('invalid-input', 'Invalid unit identity');
 }
+
 export async function attest(
 	git: Git,
 	rev: string,
@@ -20,11 +22,13 @@ export async function attest(
 	if (manifest.id !== unit.unitId || manifest.kind !== unit.category)
 		fail('invalid-input', 'Canonical identity or category mismatch');
 }
+
 export async function planFiles(git: Git, rev: string): Promise<string[]> {
 	return (await paths(git, rev, 'src')).filter((path) =>
 		/^src\/(pages|shells|components|functions|configs|services)\/[^/]+\/plan.json$/.test(path)
 	);
 }
+
 export async function findIdentity(git: Git, rev: string, unitId: string): Promise<string | null> {
 	identity(unitId);
 	const matches: string[] = [];
@@ -39,12 +43,9 @@ export async function findIdentity(git: Git, rev: string, unitId: string): Promi
 	if (matches.length > 1) fail('artifact-tampered', 'Duplicate planning identity');
 	return matches[0] ?? null;
 }
+
 export async function planIdentity(git: Git, rev: string, unitId: string): Promise<string> {
 	return (await findIdentity(git, rev, unitId)) ?? fail('not-found', 'Plan not found');
 }
-export async function validateIdentity(git: Git, rev: string, plan: PlanSummary): Promise<void> {
-	identity(plan.unitId);
-	if (plan.path !== planValidate(`${plan.category}.${plan.slug}`))
-		fail('artifact-tampered', 'Plan folder mismatch');
-	if (plan.unitId !== `${plan.category}.${plan.slug}`) await attest(git, rev, plan);
-}
+
+export { validateIdentity } from './plan-read/planIdentity';

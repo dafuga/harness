@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/runIsolated.ts"],
-		"symbols": ["IsolatedRun", "IsolatedResult", "runIsolated"]
+		"source": [
+			"src/utils/run-isolated/runIsolated.ts",
+			"src/utils/runIsolated.ts"
+		],
+		"symbols": [
+			"IsolatedRun",
+			"IsolatedResult",
+			"runIsolated"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -62,7 +69,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/runIsolated.ts",
+		"entry": "src/utils/run-isolated/runIsolated.ts",
 		"targets": [
 			{
 				"kind": "module",

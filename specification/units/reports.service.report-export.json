@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/services/ReportExportService.ts"],
+		"source": [
+			"packages/reports/src/services/report-export-service/ReportExportService.ts",
+			"packages/reports/src/services/ReportExportService.ts"
+		],
 		"symbols": [
 			"ReportExportService",
 			"ReportExportService.constructor",
@@ -96,7 +99,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/services/ReportExportService.ts",
+		"entry": "packages/reports/src/services/report-export-service/ReportExportService.ts",
 		"targets": [
 			{
 				"kind": "module",

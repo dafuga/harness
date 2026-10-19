@@ -7,7 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/remote/src/utils/remoteIdentity.ts"],
+		"source": [
+			"packages/remote/src/services/host-pairing-service/remoteIdentity.ts",
+			"packages/remote/src/utils/remoteIdentity.ts",
+			"packages/remote/src/services/wire-session-service/remoteIdentity.ts"
+		],
 		"symbols": [
 			"remotePatterns",
 			"remoteIdentity",
@@ -132,7 +136,9 @@
 			}
 		]
 	},
-	"scenarios": ["remote-desktop-boundaries"],
+	"scenarios": [
+		"remote-desktop-boundaries"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/browserErrorRows.ts"],
-		"symbols": ["BrowserErrorRow", "browserErrorRows"]
+		"source": [
+			"packages/reports/src/utils/browserErrorRows.ts",
+			"packages/reports/src/components/browser-errors/browserErrorRows.ts"
+		],
+		"symbols": [
+			"BrowserErrorRow",
+			"browserErrorRows"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -45,7 +51,9 @@
 			}
 		]
 	},
-	"scenarios": ["browser-error-evidence"],
+	"scenarios": [
+		"browser-error-evidence"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

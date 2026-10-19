@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/hostedArtifact.ts"],
-		"symbols": ["hostedArtifact"]
+		"source": [
+			"packages/hub/src/utils/browser-bridge/hostedArtifact.ts",
+			"packages/desktop/src/utils/hostedArtifact.ts"
+		],
+		"symbols": [
+			"hostedArtifact"
+		]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/entityUsage.ts"],
-		"symbols": ["UsageGroup", "EntityUsage", "entityUsage"]
+		"source": [
+			"packages/reports/src/utils/entityUsage.ts",
+			"packages/reports/src/components/harness/entity-relations/entityUsage.ts"
+		],
+		"symbols": [
+			"UsageGroup",
+			"EntityUsage",
+			"entityUsage"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -50,7 +57,9 @@
 			}
 		]
 	},
-	"scenarios": ["harness-console"],
+	"scenarios": [
+		"harness-console"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

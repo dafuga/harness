@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/runKernelBench.ts"],
-		"symbols": ["BenchOptions", "runKernelBench", "renderBench"]
+		"source": [
+			"src/workflows/run-kernel-bench/runKernelBench.ts",
+			"src/workflows/runKernelBench.ts"
+		],
+		"symbols": [
+			"BenchOptions",
+			"runKernelBench",
+			"renderBench"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -98,7 +105,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/runKernelBench.ts",
+		"entry": "src/workflows/run-kernel-bench/runKernelBench.ts",
 		"targets": [
 			{
 				"kind": "module",

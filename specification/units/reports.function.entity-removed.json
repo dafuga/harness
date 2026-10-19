@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/entityRemoved.ts"],
-		"symbols": ["entityRemoved"]
+		"source": [
+			"packages/reports/src/components/harness/entity-tests/entityRemoved.ts",
+			"packages/reports/src/utils/entityRemoved.ts"
+		],
+		"symbols": [
+			"entityRemoved"
+		]
 	},
 	"contract": {
 		"origin": "declared",

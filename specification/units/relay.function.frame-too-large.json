@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/relay/src/utils/frameTooLarge.ts"],
-		"symbols": ["frameTooLarge"]
+		"source": [
+			"packages/relay/src/services/socket-frame-service/frameTooLarge.ts",
+			"packages/relay/src/utils/frameTooLarge.ts"
+		],
+		"symbols": [
+			"frameTooLarge"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -50,7 +55,9 @@
 			}
 		]
 	},
-	"scenarios": ["remote-desktop-boundaries"],
+	"scenarios": [
+		"remote-desktop-boundaries"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

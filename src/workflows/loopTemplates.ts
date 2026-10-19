@@ -2,12 +2,7 @@ import { builtInTemplates } from './builtInLoopTemplates';
 import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fail } from '../core/errors';
-import {
-	validateLoopId,
-	validateRequiredText,
-	isMissingFile,
-	type LoopEvaluator
-} from './loopState';
+import { validateLoopId, validateRequiredText, isMissingFile, type LoopEvaluator } from "./loop-state/loopState";
 
 export interface LoopTemplateStep {
 	id: string;

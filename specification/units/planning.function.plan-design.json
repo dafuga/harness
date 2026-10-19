@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/planning/src/utils/planDesign.ts"],
-		"symbols": ["readImage", "planDesign", "approve"]
+		"source": [
+			"packages/planning/src/services/planning-service/planDesign.ts",
+			"packages/planning/src/utils/plan-design/planDesign.ts",
+			"packages/planning/src/utils/planDesign.ts"
+		],
+		"symbols": [
+			"readImage",
+			"planDesign",
+			"approve"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -123,7 +131,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/planning/src/utils/planDesign.ts",
+		"entry": "packages/planning/src/utils/plan-design/planDesign.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -131,7 +139,11 @@
 			}
 		]
 	},
-	"scenarios": ["planning-artifacts", "shells-shared-app", "hosted-design-options"],
+	"scenarios": [
+		"planning-artifacts",
+		"shells-shared-app",
+		"hosted-design-options"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

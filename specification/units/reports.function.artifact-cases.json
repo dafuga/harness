@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/artifactCases.ts"],
-		"symbols": ["caseForm", "artifactCases"]
+		"source": [
+			"packages/reports/src/components/entity-cases/artifactCases.ts",
+			"packages/reports/src/utils/artifactCases.ts"
+		],
+		"symbols": [
+			"caseForm",
+			"artifactCases"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -55,7 +61,11 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-renderer", "harness-console", "shared-test-cases"],
+	"scenarios": [
+		"desktop-renderer",
+		"harness-console",
+		"shared-test-cases"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

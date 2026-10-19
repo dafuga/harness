@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { createSdkMcpServer, tool } from '@anthropic-ai/claude-agent-sdk';
 import { z } from 'zod';
 import type { GatewayItem, GatewaySession } from '../utils/gatewayTypes';
-import type { CodexSessionRepository } from '../repositories/CodexSessionRepository';
+import type { CodexSessionRepository } from "../repositories/codex-session-repository/CodexSessionRepository";
 import { GatewayContentSerializer } from './GatewayContentSerializer';
 import { GatewayEventsService } from '../services/GatewayEventsService';
 

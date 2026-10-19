@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/EntitySearch.svelte"],
-		"symbols": ["EntitySearch"]
+		"source": [
+			"packages/reports/src/components/entity-search/EntitySearch.svelte",
+			"packages/reports/src/components/EntitySearch.svelte"
+		],
+		"symbols": [
+			"EntitySearch"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -62,7 +67,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/EntitySearch.svelte",
+		"entry": "packages/reports/src/components/entity-search/EntitySearch.svelte",
 		"targets": [
 			{
 				"kind": "module",
@@ -70,7 +75,11 @@
 			}
 		]
 	},
-	"scenarios": ["explorer-shell", "harness-console", "search-shared-app"],
+	"scenarios": [
+		"explorer-shell",
+		"harness-console",
+		"search-shared-app"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

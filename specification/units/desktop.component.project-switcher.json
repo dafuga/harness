@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/ProjectSwitcher.svelte"],
-		"symbols": ["ProjectSwitcher"]
+		"source": [
+			"packages/desktop/src/components/project-switcher/ProjectSwitcher.svelte",
+			"packages/desktop/src/components/ProjectSwitcher.svelte"
+		],
+		"symbols": [
+			"ProjectSwitcher"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -47,7 +52,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/ProjectSwitcher.svelte",
+		"entry": "packages/desktop/src/components/project-switcher/ProjectSwitcher.svelte",
 		"targets": [
 			{
 				"kind": "module",
@@ -55,7 +60,9 @@
 			}
 		]
 	},
-	"scenarios": ["remote-mobile-ui"],
+	"scenarios": [
+		"remote-mobile-ui"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

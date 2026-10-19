@@ -6,7 +6,7 @@
 	import EntityLink from './EntityLink.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
 	import HarnessTabs from './HarnessTabs.svelte';
-	import HarnessVerdict from './HarnessVerdict.svelte';
+	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
 	let {
 		entity,
 		nav,

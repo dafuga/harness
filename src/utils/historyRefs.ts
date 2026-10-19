@@ -1,9 +1,4 @@
-import {
-	evidenceRef,
-	notesRef,
-	remoteTrackingPrefix,
-	sourceArchivePrefix
-} from '../core/historyTypes';
+import { evidenceRef, notesRef, remoteTrackingPrefix, sourceArchivePrefix } from "../core/historyTypes";
 
 export type RefKind =
 	| 'source'
@@ -40,7 +35,4 @@ export function refKind(ref: string): RefKind {
 	return prefixes.find(([prefix]) => ref.startsWith(prefix))?.[1] ?? 'other';
 }
 
-/** The refs Harness history consists of, and the patterns that match them on a remote. */
-export function historyRefs(): { evidence: string; notes: string; archives: string } {
-	return { evidence: evidenceRef, notes: notesRef, archives: `${sourceArchivePrefix}*` };
-}
+export { historyRefs } from '../services/history-sync-service/historyRefs';

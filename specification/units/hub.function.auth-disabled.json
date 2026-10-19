@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/authDisabled.ts"],
-		"symbols": ["authDisabled"]
+		"source": [
+			"packages/hub/src/lib/server/auth/authDisabled.ts",
+			"packages/hub/src/utils/authDisabled.ts"
+		],
+		"symbols": [
+			"authDisabled"
+		]
 	},
 	"contract": {
 		"origin": "declared",

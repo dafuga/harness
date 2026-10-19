@@ -1,6 +1,6 @@
 import type { CacheIdentity } from '../../../collaboration/src/models/Collaboration.types';
 import type { ImageQuery } from '../models/DesktopBridge.types';
-import type { ProjectionCacheService } from './ProjectionCacheService';
+import type { ProjectionCacheService } from "./projection-cache-service/ProjectionCacheService";
 export class RemoteImageCacheService {
 	constructor(private cache: ProjectionCacheService) {}
 	async read(

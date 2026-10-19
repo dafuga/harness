@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/explorerArtifact.ts"],
-		"symbols": ["artifactText", "artifactBehavior", "ArtifactFetcher", "explorerArtifact"]
+		"source": [
+			"packages/reports/src/utils/explorer-reading/explorerArtifact.ts",
+			"packages/reports/src/utils/explorerArtifact.ts"
+		],
+		"symbols": [
+			"artifactText",
+			"artifactBehavior",
+			"ArtifactFetcher",
+			"explorerArtifact"
+		]
 	},
 	"contract": {
 		"origin": "declared",

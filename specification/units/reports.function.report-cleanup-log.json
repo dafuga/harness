@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/reportCleanupLog.ts"],
-		"symbols": ["reportCleanupLog"]
+		"source": [
+			"packages/reports/src/services/report-retention-service/reportCleanupLog.ts",
+			"packages/reports/src/utils/reportCleanupLog.ts"
+		],
+		"symbols": [
+			"reportCleanupLog"
+		]
 	},
 	"contract": {
 		"origin": "declared",

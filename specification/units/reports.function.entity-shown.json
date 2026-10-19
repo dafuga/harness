@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/entityShown.ts"],
-		"symbols": ["EntityShown", "entityShown", "entityChanged"]
+		"source": [
+			"packages/reports/src/utils/entityShown.ts",
+			"packages/reports/src/components/harness/entity-sections/entityShown.ts"
+		],
+		"symbols": [
+			"EntityShown",
+			"entityShown",
+			"entityChanged"
+		]
 	},
 	"contract": {
 		"origin": "declared",

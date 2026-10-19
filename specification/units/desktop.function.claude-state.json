@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/claudeState.ts"],
-		"symbols": ["claudeState"]
+		"source": [
+			"packages/desktop/src/adapters/claude-cli-adapter/claudeState.ts",
+			"packages/desktop/src/utils/claudeState.ts"
+		],
+		"symbols": [
+			"claudeState"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -61,7 +66,10 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-project-runs"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

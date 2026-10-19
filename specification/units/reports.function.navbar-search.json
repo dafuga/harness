@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/navbarSearch.ts"],
-		"symbols": ["NavbarSearch", "navbarSearch"]
+		"source": [
+			"packages/reports/src/utils/navbarSearch.ts",
+			"packages/reports/src/components/harness/harness-navbar/navbarSearch.ts"
+		],
+		"symbols": [
+			"NavbarSearch",
+			"navbarSearch"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -55,7 +61,10 @@
 			}
 		]
 	},
-	"scenarios": ["explorer-shell", "harness-console"],
+	"scenarios": [
+		"explorer-shell",
+		"harness-console"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

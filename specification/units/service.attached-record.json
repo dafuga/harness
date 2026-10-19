@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/AttachedRecordService.ts"],
+		"source": [
+			"src/services/attached-record-service/AttachedRecordService.ts",
+			"src/services/AttachedRecordService.ts"
+		],
 		"symbols": [
 			"AttachedRecord",
 			"AttachedRecordService",
@@ -83,7 +86,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/AttachedRecordService.ts",
+		"entry": "src/services/attached-record-service/AttachedRecordService.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -91,7 +94,9 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-recorded-evidence"],
+	"scenarios": [
+		"desktop-recorded-evidence"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

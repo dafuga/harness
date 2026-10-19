@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/ActivityAgents.svelte"],
-		"symbols": ["ActivityAgents"]
+		"source": [
+			"packages/reports/src/components/activity-agents/ActivityAgents.svelte",
+			"packages/reports/src/components/ActivityAgents.svelte"
+		],
+		"symbols": [
+			"ActivityAgents"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -62,7 +67,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/ActivityAgents.svelte",
+		"entry": "packages/reports/src/components/activity-agents/ActivityAgents.svelte",
 		"targets": [
 			{
 				"kind": "module",

@@ -1,7 +1,7 @@
 import { resolve } from 'node:path';
 import { HttpRuntimeAdapter } from '../adapters/HttpRuntimeAdapter';
 import { ModuleRuntimeAdapter } from '../adapters/ModuleRuntimeAdapter';
-import { ProcessRuntimeAdapter } from '../adapters/ProcessRuntimeAdapter';
+import { ProcessRuntimeAdapter } from "../adapters/process-runtime-adapter/ProcessRuntimeAdapter";
 import { WasmRuntimeAdapter } from '../adapters/WasmRuntimeAdapter';
 import { representativeWorkload } from '../core/benchmarkTypes';
 import { fail } from '../core/errors';
@@ -9,7 +9,7 @@ import type { RuntimeOptions, UnitRuntime } from '../core/runtimeTypes';
 import type { ComponentManifest, ExecutionTarget, RuntimeKind } from '../core/unitTypes';
 import { MeasurementRepository } from '../repositories/MeasurementRepository';
 import { chooseRuntime, type RuntimeChoice } from '../utils/chooseRuntime';
-import { impactKernelPortable } from '../utils/impactKernel';
+import { impactKernelPortable } from "../utils/impact-kernel/impactKernel";
 import { kernelArtifacts, type Environment } from '../utils/kernelArtifacts';
 import { machineProfile } from '../utils/machineProfile';
 

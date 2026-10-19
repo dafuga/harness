@@ -1,5 +1,5 @@
 import type { Explanation, ReasonStatus, RequiredReason } from '../core/explanationTypes';
-import { explanationProblems, writingVersions, type WritingVersion } from '../utils/writingLimits';
+import { explanationProblems, writingVersions, type WritingVersion } from "../utils/writing-limits/writingLimits";
 
 export interface ReasonReport {
 	required: ReasonStatus[];

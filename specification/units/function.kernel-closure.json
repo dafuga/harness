@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/kernelClosure.ts"],
-		"symbols": ["kernelClosure"]
+		"source": [
+			"src/utils/impact-kernel/kernelClosure.ts",
+			"src/utils/kernelClosure.ts"
+		],
+		"symbols": [
+			"kernelClosure"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -45,7 +50,9 @@
 			}
 		]
 	},
-	"scenarios": ["kernel-closure-cases"],
+	"scenarios": [
+		"kernel-closure-cases"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/planning/src/utils/planValidate.ts"],
+		"source": [
+			"packages/planning/src/utils/planValidate.ts",
+			"packages/planning/src/utils/plan-design/planValidate.ts"
+		],
 		"symbols": [
 			"categories",
 			"text",
@@ -141,7 +144,10 @@
 			}
 		]
 	},
-	"scenarios": ["planning-artifacts", "shells-shared-app"],
+	"scenarios": [
+		"planning-artifacts",
+		"shells-shared-app"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

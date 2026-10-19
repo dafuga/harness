@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/services/DeviceOperationsService.ts"],
+		"source": [
+			"packages/desktop/src/services/device-operations-service/DeviceOperationsService.ts",
+			"packages/desktop/src/services/DeviceOperationsService.ts"
+		],
 		"symbols": [
 			"DeviceOperationsOptions",
 			"DeviceOperationsService",
@@ -104,7 +107,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/DeviceOperationsService.ts",
+		"entry": "packages/desktop/src/services/device-operations-service/DeviceOperationsService.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -112,7 +115,10 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-recorded-evidence", "remote-desktop-boundaries"],
+	"scenarios": [
+		"desktop-recorded-evidence",
+		"remote-desktop-boundaries"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

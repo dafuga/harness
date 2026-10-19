@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/changeExecute.ts"],
-		"symbols": ["changeExecute", "recordChange"]
+		"source": [
+			"packages/desktop/src/services/change-run-service/changeExecute.ts",
+			"packages/desktop/src/utils/changeExecute.ts"
+		],
+		"symbols": [
+			"changeExecute",
+			"recordChange"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -111,7 +117,11 @@
 			}
 		]
 	},
-	"scenarios": ["agent-references", "desktop-native", "desktop-project-runs"],
+	"scenarios": [
+		"agent-references",
+		"desktop-native",
+		"desktop-project-runs"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

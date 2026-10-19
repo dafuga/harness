@@ -11,10 +11,10 @@
 	} from '../../utils/entityScreens';
 	import EvidenceViewer from '../EvidenceViewer.svelte';
 	import Select from '../Select.svelte';
-	import EntityReasons from './EntityReasons.svelte';
+	import EntityReasons from './entity-reasons/EntityReasons.svelte';
 	import HarnessAction from './HarnessAction.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
-	import HarnessVerdict from './HarnessVerdict.svelte';
+	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
 	let {
 		options,
 		evidence,

@@ -8,7 +8,10 @@
 	"status": "active",
 	"documentation": "packages/reports/specification/features/planned/managed-preview-server.md",
 	"owns": {
-		"source": ["packages/reports/src/services/PreviewServerService.ts"],
+		"source": [
+			"packages/reports/src/services/preview-server-service/PreviewServerService.ts",
+			"packages/reports/src/services/PreviewServerService.ts"
+		],
 		"symbols": [
 			"PreviewHandle",
 			"PreviewResult",
@@ -25,13 +28,17 @@
 				"name": "PreviewServerService.constructor.port",
 				"type": "number",
 				"description": "Loopback port used to reserve the one preview slot.",
-				"examples": [47840]
+				"examples": [
+					47840
+				]
 			},
 			{
 				"name": "PreviewServerService.run.identity",
 				"type": "string",
 				"description": "Fingerprint of the checkout and selected history data.",
-				"examples": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"]
+				"examples": [
+					"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+				]
 			},
 			{
 				"name": "PreviewServerService.run.start",
@@ -68,7 +75,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/services/PreviewServerService.ts",
+		"entry": "packages/reports/src/services/preview-server-service/PreviewServerService.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -76,7 +83,9 @@
 			}
 		]
 	},
-	"scenarios": ["local-project-chat"],
+	"scenarios": [
+		"local-project-chat"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

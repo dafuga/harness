@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/explorerBehavior.ts"],
-		"symbols": ["behaviorKinds", "behaviorSummary", "explorerBehavior"]
+		"source": [
+			"packages/reports/src/utils/explorerBehavior.ts",
+			"packages/desktop/src/utils/recorded-answer/explorerBehavior.ts"
+		],
+		"symbols": [
+			"behaviorKinds",
+			"behaviorSummary",
+			"explorerBehavior"
+		]
 	},
 	"contract": {
 		"origin": "declared",

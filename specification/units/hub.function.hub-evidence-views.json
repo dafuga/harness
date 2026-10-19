@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubEvidenceViews.ts"],
-		"symbols": ["hubEvidenceOrigin", "hubEvidenceViews"]
+		"source": [
+			"packages/hub/src/utils/hubEvidenceViews.ts",
+			"packages/hub/src/utils/hub-evidence-revision/hubEvidenceViews.ts"
+		],
+		"symbols": [
+			"hubEvidenceOrigin",
+			"hubEvidenceViews"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -80,7 +86,9 @@
 			}
 		]
 	},
-	"scenarios": ["hub-recorded-evidence"],
+	"scenarios": [
+		"hub-recorded-evidence"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

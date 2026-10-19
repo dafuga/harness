@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/impactSeeds.ts"],
-		"symbols": ["ImpactSeeds", "impactSeeds"]
+		"source": [
+			"src/utils/impactSeeds.ts",
+			"src/services/impact-service/impactSeeds.ts"
+		],
+		"symbols": [
+			"ImpactSeeds",
+			"impactSeeds"
+		]
 	},
 	"contract": {
 		"origin": "declared",

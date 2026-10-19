@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubNotes.ts"],
-		"symbols": ["hubNotes"]
+		"source": [
+			"packages/hub/src/services/hub-evidence-service/hubNotes.ts",
+			"packages/hub/src/utils/hubNotes.ts"
+		],
+		"symbols": [
+			"hubNotes"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -70,7 +75,9 @@
 			}
 		]
 	},
-	"scenarios": ["hub-recorded-evidence"],
+	"scenarios": [
+		"hub-recorded-evidence"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

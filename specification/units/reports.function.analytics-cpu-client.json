@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/analyticsCpuClient.ts"],
-		"symbols": ["CpuState", "analyticsCpuClient"]
+		"source": [
+			"packages/reports/src/utils/analyticsCpuClient.ts",
+			"packages/reports/src/components/analytics-cpu/analyticsCpuClient.ts"
+		],
+		"symbols": [
+			"CpuState",
+			"analyticsCpuClient"
+		]
 	},
 	"contract": {
 		"origin": "declared",

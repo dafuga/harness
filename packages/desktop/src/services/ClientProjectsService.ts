@@ -2,11 +2,11 @@ import type { ImageGenerator } from '../models/AgentRunner.types';
 import type { DesktopBridge, RunEvent } from '../models/DesktopBridge.types';
 import { desktopBridge } from '../utils/desktopBridge';
 import type { CommentOutboxService } from './CommentOutboxService';
-import { DesktopRunService } from './DesktopRunService';
+import { DesktopRunService } from "./desktop-run-service/DesktopRunService";
 import type { ProjectRegistryService } from './ProjectRegistryService';
 import { ProjectSessionService } from './ProjectSessionService';
-import type { ProjectionCacheService } from './ProjectionCacheService';
-import type { ProviderDiscoveryService } from './ProviderDiscoveryService';
+import type { ProjectionCacheService } from "./projection-cache-service/ProjectionCacheService";
+import type { ProviderDiscoveryService } from "./provider-discovery-service/ProviderDiscoveryService";
 import type { RepositoryArbiterService } from './RepositoryArbiterService';
 
 const ended = 'This session has ended.';

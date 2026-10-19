@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/planDesign.ts"],
-		"symbols": ["planDesign"]
+		"source": [
+			"packages/desktop/src/utils/plan-design/planDesign.ts",
+			"packages/desktop/src/utils/planDesign.ts"
+		],
+		"symbols": [
+			"planDesign"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -73,7 +78,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/planDesign.ts",
+		"entry": "packages/desktop/src/utils/plan-design/planDesign.ts",
 		"targets": [
 			{
 				"kind": "module",

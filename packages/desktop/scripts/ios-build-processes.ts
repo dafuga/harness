@@ -1,8 +1,8 @@
 import { execFile, spawn } from 'node:child_process';
 import { realpathSync } from 'node:fs';
 import { basename, sep } from 'node:path';
-import { classifyProcess, platformServices } from '../../../src/utils/platformServices';
-import { processDescendants, signalProcesses } from '../../../src/utils/processDescendants';
+import { classifyProcess, platformServices } from "../../../src/utils/run-isolated/platformServices";
+import { processDescendants, signalProcesses } from "../../../src/utils/run-isolated/processDescendants";
 import type { TrackedProcess } from '../../../src/utils/processDescendants';
 import { buildObservation, finishObservation } from './ios-build-observation';
 import { observeIosServices } from './ios-service-observers';

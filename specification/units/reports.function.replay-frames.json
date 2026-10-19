@@ -7,8 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/replayFrames.ts"],
-		"symbols": ["FRAME_SECONDS", "REPLAY_SPEEDS", "ReplayFrame", "replayStart", "replayFrames"]
+		"source": [
+			"packages/reports/src/utils/replayFrames.ts",
+			"packages/reports/src/components/gameplay-replay/replayFrames.ts"
+		],
+		"symbols": [
+			"FRAME_SECONDS",
+			"REPLAY_SPEEDS",
+			"ReplayFrame",
+			"replayStart",
+			"replayFrames"
+		]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/adapters/CapacitorBridgeAdapter.ts"],
+		"source": [
+			"packages/desktop/src/adapters/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
+			"packages/desktop/src/adapters/CapacitorBridgeAdapter.ts"
+		],
 		"symbols": [
 			"CapacitorBridgeAdapterConfig",
 			"CapacitorBridgeAdapter",
@@ -95,7 +98,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/adapters/CapacitorBridgeAdapter.ts",
+		"entry": "packages/desktop/src/adapters/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -103,7 +106,10 @@
 			}
 		]
 	},
-	"scenarios": ["remote-mobile-native", "remote-mobile-ui"],
+	"scenarios": [
+		"remote-mobile-native",
+		"remote-mobile-ui"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

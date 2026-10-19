@@ -1,7 +1,7 @@
 import { readdir, readFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { AnalyticsRepository } from '../repositories/AnalyticsRepository';
-import type { LoopState } from '../workflows/loopState';
+import type { LoopState } from "./loop-state/loopState";
 import type { AnalyticsEvent } from '../core/analyticsTypes';
 import { fingerprint, projectIdentity } from './analyticsRecord';
 

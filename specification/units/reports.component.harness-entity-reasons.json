@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/EntityReasons.svelte"],
-		"symbols": ["EntityReasons"]
+		"source": [
+			"packages/reports/src/components/harness/entity-reasons/EntityReasons.svelte",
+			"packages/reports/src/components/harness/EntityReasons.svelte"
+		],
+		"symbols": [
+			"EntityReasons"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -47,7 +52,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/EntityReasons.svelte",
+		"entry": "packages/reports/src/components/harness/entity-reasons/EntityReasons.svelte",
 		"targets": [
 			{
 				"kind": "module",

@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/browserApi.ts"],
-		"symbols": ["Query", "BrowserApi", "ApiFailure", "browserApi"]
+		"source": [
+			"packages/hub/src/utils/browserApi.ts",
+			"packages/hub/src/routes/-layout/browserApi.ts"
+		],
+		"symbols": [
+			"Query",
+			"BrowserApi",
+			"ApiFailure",
+			"browserApi"
+		]
 	},
 	"contract": {
 		"origin": "declared",

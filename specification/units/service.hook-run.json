@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/HookRunService.ts"],
+		"source": [
+			"src/services/hook-run-service/HookRunService.ts",
+			"src/services/HookRunService.ts"
+		],
 		"symbols": [
 			"HookOutcome",
 			"HookRunService",
@@ -54,7 +57,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/HookRunService.ts",
+		"entry": "src/services/hook-run-service/HookRunService.ts",
 		"targets": [
 			{
 				"kind": "module",

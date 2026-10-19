@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/gitRead.ts"],
-		"symbols": ["gitRead", "gitRevision", "gitFiles", "gitText"]
+		"source": [
+			"packages/desktop/src/utils/gitRead.ts",
+			"packages/desktop/src/adapters/git-source-adapter/gitRead.ts"
+		],
+		"symbols": [
+			"gitRead",
+			"gitRevision",
+			"gitFiles",
+			"gitText"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -100,7 +108,10 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-project-runs"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

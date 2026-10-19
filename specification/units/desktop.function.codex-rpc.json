@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/codexRpc.ts"],
-		"symbols": ["codexRpc"]
+		"source": [
+			"packages/desktop/src/utils/codex-rpc/codexRpc.ts",
+			"packages/desktop/src/utils/codexRpc.ts"
+		],
+		"symbols": [
+			"codexRpc"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -63,7 +68,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/codexRpc.ts",
+		"entry": "packages/desktop/src/utils/codex-rpc/codexRpc.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -71,7 +76,10 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-project-runs"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

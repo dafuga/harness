@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/services/HubEvidenceService.ts"],
+		"source": [
+			"packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts",
+			"packages/hub/src/services/HubEvidenceService.ts"
+		],
 		"symbols": [
 			"HubEvidenceService",
 			"HubEvidenceService.constructor",
@@ -139,7 +142,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/services/HubEvidenceService.ts",
+		"entry": "packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -147,7 +150,9 @@
 			}
 		]
 	},
-	"scenarios": ["hub-recorded-evidence"],
+	"scenarios": [
+		"hub-recorded-evidence"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

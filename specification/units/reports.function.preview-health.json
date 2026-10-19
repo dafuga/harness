@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/previewHealth.ts"],
-		"symbols": ["PreviewHealth", "closePreviewSessions", "previewHealth", "readPreviewHealth"]
+		"source": [
+			"packages/reports/src/utils/previewHealth.ts",
+			"packages/reports/src/services/preview-worker-service/previewHealth.ts"
+		],
+		"symbols": [
+			"PreviewHealth",
+			"closePreviewSessions",
+			"previewHealth",
+			"readPreviewHealth"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -17,19 +25,25 @@
 				"name": "previewHealth.token",
 				"type": "string",
 				"description": "Per-worker probe secret shared only through the child environment and request header.",
-				"examples": ["example-worker-token"]
+				"examples": [
+					"example-worker-token"
+				]
 			},
 			{
 				"name": "readPreviewHealth.url",
 				"type": "string",
 				"description": "Exact loopback address of the worker spawned by the supervisor.",
-				"examples": ["http://127.0.0.1:5688"]
+				"examples": [
+					"http://127.0.0.1:5688"
+				]
 			},
 			{
 				"name": "readPreviewHealth.token",
 				"type": "string",
 				"description": "Probe secret for this worker generation.",
-				"examples": ["example-worker-token"]
+				"examples": [
+					"example-worker-token"
+				]
 			}
 		],
 		"outputs": [
@@ -37,7 +51,9 @@
 				"name": "closePreviewSessions",
 				"type": "void",
 				"description": "Cancels the current worker’s owned project requests before normal shutdown.",
-				"examples": [null]
+				"examples": [
+					null
+				]
 			},
 			{
 				"name": "previewHealth",
@@ -69,7 +85,9 @@
 				"name": "Error",
 				"type": "thrown",
 				"description": "Rejects a failed or unexpected health response; network errors and probe timeouts propagate to the supervisor.",
-				"examples": ["Worker not ready."]
+				"examples": [
+					"Worker not ready."
+				]
 			}
 		]
 	},
@@ -91,7 +109,9 @@
 			}
 		]
 	},
-	"scenarios": ["local-project-chat"],
+	"scenarios": [
+		"local-project-chat"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

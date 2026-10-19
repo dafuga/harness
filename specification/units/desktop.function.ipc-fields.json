@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/ipcFields.ts"],
+		"source": [
+			"packages/desktop/src/utils/ipcFields.ts",
+			"packages/desktop/src/utils/ipc-payload/ipcFields.ts"
+		],
 		"symbols": [
 			"ipcFields",
 			"textField",
@@ -141,7 +144,10 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-project-runs"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

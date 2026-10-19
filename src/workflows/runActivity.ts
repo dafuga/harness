@@ -3,8 +3,8 @@ import { GitAdapter } from '../adapters/GitAdapter';
 import type { AgentRoster, LiveActivity, ProjectActivity } from '../core/activityTypes';
 import { fail } from '../core/errors';
 import { ProjectWorkRepository } from '../repositories/ProjectWorkRepository';
-import { AgentActivityService } from '../services/AgentActivityService';
-import { ProjectActivityService } from '../services/ProjectActivityService';
+import { AgentActivityService } from "../services/agent-activity-service/AgentActivityService";
+import { ProjectActivityService } from "../services/project-activity-service/ProjectActivityService";
 import type { AgentInput } from '../utils/agentStatement';
 
 export interface Shown {

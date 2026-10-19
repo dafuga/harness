@@ -6,7 +6,7 @@ import {
 	VerificationStoreRepository,
 	type StoredRecord
 } from '../../../src/repositories/VerificationStoreRepository';
-import { EvidenceAttachService, type Attached } from '../../../src/services/EvidenceAttachService';
+import { EvidenceAttachService, type Attached } from "../../../src/services/evidence-attach-service/EvidenceAttachService";
 import { EvidenceRestoreService } from '../../../src/services/EvidenceRestoreService';
 import { sourceCommit } from '../../../src/workflows/runHistory';
 

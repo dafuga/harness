@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/budgetFindings.ts"],
+		"source": [
+			"src/utils/budgetFindings.ts",
+			"src/services/budget-service/budgetFindings.ts"
+		],
 		"symbols": [
 			"frozenMetrics",
 			"isFrozen",

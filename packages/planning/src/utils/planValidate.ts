@@ -1,5 +1,6 @@
-import type { PlanContract, NormalizedRegion, PlanAuthor } from '../models/Planning.types';
-import { fail, hash, planData } from './planData';
+import type { PlanContract, NormalizedRegion, PlanAuthor } from "../models/Planning.types";
+import { fail, hash, planData } from "./planData";
+
 export const categories = {
 	page: 'pages',
 	shell: 'shells',
@@ -8,10 +9,12 @@ export const categories = {
 	config: 'configs',
 	service: 'services'
 };
+
 export function text(value: unknown): asserts value is string {
 	if (typeof value !== 'string' || !value.trim() || value.length > 1000000)
 		fail('invalid-input', 'Expected non-empty text');
 }
+
 export function slug(value: unknown): asserts value is string {
 	if (
 		typeof value !== 'string' ||
@@ -20,6 +23,7 @@ export function slug(value: unknown): asserts value is string {
 	)
 		fail('invalid-input', 'Invalid slug');
 }
+
 export function planValidate(unitId: string): string {
 	text(unitId);
 	const [category, name, extra] = unitId.split('.');
@@ -27,6 +31,7 @@ export function planValidate(unitId: string): string {
 	if (extra || !Object.hasOwn(categories, category)) fail('invalid-input', 'Invalid unit identity');
 	return `src/${categories[category as keyof typeof categories]}/${name}`;
 }
+
 export function contractHash(contract: PlanContract): string {
 	text(contract?.responsibility);
 	for (const fields of [contract.inputs, contract.outputs]) {
@@ -45,10 +50,12 @@ export function contractHash(contract: PlanContract): string {
 		fail('invalid-input', 'Invalid viewport');
 	return hash(planData(contract));
 }
+
 export function author(value: PlanAuthor): void {
 	if (!value || !['person', 'agent'].includes(value.kind)) fail('invalid-input', 'Invalid author');
 	text(value.name);
 }
+
 export function region(value: NormalizedRegion | null): NormalizedRegion | null {
 	if (value === null) return null;
 	if (!value || ![value.x, value.y, value.width, value.height].every(Number.isFinite))
@@ -60,10 +67,10 @@ export function region(value: NormalizedRegion | null): NormalizedRegion | null 
 		Object.entries({ x, y, width, height }).map(([key, n]) => [key, Math.round(n * 1e6) / 1e6])
 	) as unknown as NormalizedRegion;
 }
+
 export function filename(value: string): void {
 	if (!/^[a-z0-9][a-z0-9.-]*$/.test(value) || value.includes('..'))
 		fail('unsafe-path', 'Invalid artifact filename');
 }
-export function version(value: string): void {
-	if (!/^v\d{3,}$/.test(value)) fail('invalid-input', 'Invalid design version');
-}
+
+export { version } from './plan-design/planValidate';

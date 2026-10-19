@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubRateLimit.ts"],
-		"symbols": ["hubRateLimit"]
+		"source": [
+			"packages/hub/src/routes/api/[...path]/-server/hubRateLimit.ts",
+			"packages/hub/src/utils/hubRateLimit.ts"
+		],
+		"symbols": [
+			"hubRateLimit"
+		]
 	},
 	"contract": {
 		"origin": "declared",

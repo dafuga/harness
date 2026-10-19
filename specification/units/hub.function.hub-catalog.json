@@ -7,8 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubCatalog.ts"],
-		"symbols": ["hubCatalog", "hubAttestPlan", "hubRelationships", "hubOwnedPaths"]
+		"source": [
+			"packages/hub/src/utils/hub-catalog/hubCatalog.ts",
+			"packages/hub/src/services/hub-projection-service/hubCatalog.ts",
+			"packages/hub/src/utils/hubCatalog.ts"
+		],
+		"symbols": [
+			"hubCatalog",
+			"hubAttestPlan",
+			"hubRelationships",
+			"hubOwnedPaths"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -127,7 +136,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hubCatalog.ts",
+		"entry": "packages/hub/src/utils/hub-catalog/hubCatalog.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -135,7 +144,9 @@
 			}
 		]
 	},
-	"scenarios": ["hosted-catalog"],
+	"scenarios": [
+		"hosted-catalog"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

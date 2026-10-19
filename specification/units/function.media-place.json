@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/mediaPlace.ts"],
-		"symbols": ["MediaFile", "MediaPlacer", "mediaPlace", "checkedMedia"]
+		"source": [
+			"src/utils/mediaPlace.ts",
+			"src/services/history-media-service/mediaPlace.ts"
+		],
+		"symbols": [
+			"MediaFile",
+			"MediaPlacer",
+			"mediaPlace",
+			"checkedMedia"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -60,7 +68,9 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-recorded-evidence"],
+	"scenarios": [
+		"desktop-recorded-evidence"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

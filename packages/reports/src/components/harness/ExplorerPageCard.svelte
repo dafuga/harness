@@ -5,7 +5,7 @@
 	import { categoryIcon } from '../../utils/harnessIcons';
 	import EntityLink from './EntityLink.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
-	import HarnessVerdict from './HarnessVerdict.svelte';
+	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
 	let {
 		row,
 		shot,

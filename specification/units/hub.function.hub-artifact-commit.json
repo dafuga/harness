@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubArtifactCommit.ts"],
-		"symbols": ["hubArtifactCommit"]
+		"source": [
+			"packages/hub/src/services/hub-projection-service/hubArtifactCommit.ts",
+			"packages/hub/src/utils/hubArtifactCommit.ts"
+		],
+		"symbols": [
+			"hubArtifactCommit"
+		]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/collaboration/src/utils/createInvitation.ts"],
-		"symbols": ["createInvitation", "acceptInvitation"]
+		"source": [
+			"packages/collaboration/src/utils/create-collaboration/createInvitation.ts",
+			"packages/collaboration/src/utils/createInvitation.ts"
+		],
+		"symbols": [
+			"createInvitation",
+			"acceptInvitation"
+		]
 	},
 	"contract": {
 		"origin": "declared",

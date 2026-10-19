@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/helperTemplates.ts"],
-		"symbols": ["helperTemplates"]
+		"source": [
+			"src/services/revision-detail-service/helperTemplates.ts",
+			"src/utils/helperTemplates.ts"
+		],
+		"symbols": [
+			"helperTemplates"
+		]
 	},
 	"contract": {
 		"origin": "derived",

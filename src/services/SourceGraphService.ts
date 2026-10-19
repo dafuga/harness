@@ -6,7 +6,7 @@ import type {
 	UncertainNode
 } from '../core/sourceTypes';
 import type { ComponentManifest, ScenarioManifest } from '../core/unitTypes';
-import type { SourceIndex } from './SourceIndexService';
+import type { SourceIndex } from "./source-index-service/SourceIndexService";
 
 export const fileNode = (path: string): string => `file:${path}`;
 export const unitNode = (id: string): string => `unit:${id}`;

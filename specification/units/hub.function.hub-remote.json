@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubRemote.ts"],
-		"symbols": ["HubRemoteRuntime", "hubRemote"]
+		"source": [
+			"packages/hub/src/utils/hubRemote.ts",
+			"packages/hub/src/routes/api/[...path]/-server/hubRemote.ts"
+		],
+		"symbols": [
+			"HubRemoteRuntime",
+			"hubRemote"
+		]
 	},
 	"contract": {
 		"origin": "declared",

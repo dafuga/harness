@@ -3,7 +3,7 @@ import type { FileWriteStatus } from '../core/files';
 import type { ComponentManifest } from '../core/unitTypes';
 import { scaffoldKinds, type PieceKind } from '../templates/scaffoldTypes';
 import { stableJson } from '../utils/stableJson';
-import { generatePiece, type GenerateResult } from './generateCode';
+import { generatePiece, type GenerateResult } from "./generate-code/generateCode";
 import { loadUnits } from './loadUnits';
 
 export interface GenerateUnitInput {

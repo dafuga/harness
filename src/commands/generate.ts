@@ -1,11 +1,6 @@
 import type { Command } from 'commander';
-import {
-	generateModel,
-	generatePiece,
-	renderGenerateResult,
-	scaffoldKinds
-} from '../workflows/generateCode';
-import type { PieceKind } from '../workflows/generateCode';
+import { generateModel, generatePiece, renderGenerateResult, scaffoldKinds } from "../workflows/generate-code/generateCode";
+import type { PieceKind } from "../workflows/generate-code/generateCode";
 import { generateUnit } from '../workflows/generateUnit';
 
 interface UnitFlags {

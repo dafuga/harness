@@ -1,5 +1,5 @@
 import { responseRecord } from './RemoteProjectResponseValidator';
-import type { NativeHostedCredential } from '../adapters/HostedHttpAdapter';
+import type { NativeHostedCredential } from "../adapters/hosted-http-adapter/HostedHttpAdapter";
 import type { NativeHostedStatus } from '../models/ProjectContext.types';
 export class NativeHandoffValidator {
 	start(value: unknown, origin: string, now: number) {

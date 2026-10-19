@@ -9,8 +9,8 @@ import type { SourceTree } from '../core/sourceTypes';
 import type { ComponentManifest } from '../core/unitTypes';
 import { defaultUnitsConfig } from '../core/unitsConfig';
 import { verifyConfigFile } from '../core/verifyTypes';
-import { SourceIndexService, type SourceIndex } from '../services/SourceIndexService';
-import { writingHeld, type WritingVersion } from '../utils/writingLimits';
+import { SourceIndexService, type SourceIndex } from "../services/source-index-service/SourceIndexService";
+import { writingHeld, type WritingVersion } from "../utils/writing-limits/writingLimits";
 import { graphOf, loadUnits } from './loadUnits';
 
 /** One revision with everything impact, reasons and measurements read from it. */

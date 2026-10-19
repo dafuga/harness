@@ -28,18 +28,19 @@ export {
 	workloadSchema
 } from '../core/verifyTypes';
 export type { CaptureLine, VerifyConfig, Workload } from '../core/verifyTypes';
-export { evidenceRequested, recordCapture } from '../utils/recordCapture';
+export { evidenceRequested, recordCapture } from '../utils/record-capture/recordCapture';
 export { buildIdentity } from '../utils/buildIdentity';
 export type { BuiltFile } from '../utils/buildIdentity';
 export { BuildIdentityService } from '../services/BuildIdentityService';
 export type { BuiltIdentity, IdentifiedBuild } from '../services/BuildIdentityService';
 export { scenarioRequirements } from '../utils/scenarioRequirements';
 export type { RequiredCapture, ScenarioRequirements } from '../utils/scenarioRequirements';
-export { mediaFacts } from '../utils/mediaFacts';
+export { mediaFacts } from '../services/check-run-service/mediaFacts';
 export type { MediaFacts } from '../utils/mediaFacts';
-export { comparisonContext, requestDigest } from '../utils/comparisonContext';
-export { comparisonDifferences } from '../utils/comparisonDifferences';
+export { comparisonContext, requestDigest } from '../utils/comparison-context/comparisonContext';
+export { comparisonDifferences } from '../services/budget-service/comparisonDifferences';
 export type { ComparisonVerdict, MeasuredDefinition } from '../utils/comparisonDifferences';
-export { budgetFindings, frozenMetrics, performanceLimit } from '../utils/budgetFindings';
+export { budgetFindings } from '../services/budget-service/budgetFindings';
+export { frozenMetrics, performanceLimit } from '../utils/budgetFindings';
 export type { BudgetBaseline, BudgetInput, PerformanceBaseline } from '../utils/budgetFindings';
 export { recordIntact, sealRecord } from '../utils/sealRecord';

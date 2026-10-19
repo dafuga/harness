@@ -7,8 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubHttp.ts"],
-		"symbols": ["hubHttp", "hubQuery", "hubBody", "hubHttpFailure"]
+		"source": [
+			"packages/hub/src/utils/hub-http/hubHttp.ts",
+			"packages/hub/src/controllers/hub-api-controller/hubHttp.ts",
+			"packages/hub/src/utils/hubHttp.ts"
+		],
+		"symbols": [
+			"hubHttp",
+			"hubQuery",
+			"hubBody",
+			"hubHttpFailure"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -77,7 +86,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hubHttp.ts",
+		"entry": "packages/hub/src/utils/hub-http/hubHttp.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -85,7 +94,9 @@
 			}
 		]
 	},
-	"scenarios": ["hub-recorded-evidence"],
+	"scenarios": [
+		"hub-recorded-evidence"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

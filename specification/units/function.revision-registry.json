@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/revisionRegistry.ts"],
-		"symbols": ["RevisionRegistry", "revisionRegistry"]
+		"source": [
+			"src/utils/revision-registry/revisionRegistry.ts",
+			"src/utils/revisionRegistry.ts"
+		],
+		"symbols": [
+			"RevisionRegistry",
+			"revisionRegistry"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -77,7 +83,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/revisionRegistry.ts",
+		"entry": "src/utils/revision-registry/revisionRegistry.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -85,7 +91,10 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-recorded-evidence", "hub-recorded-evidence"],
+	"scenarios": [
+		"desktop-recorded-evidence",
+		"hub-recorded-evidence"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

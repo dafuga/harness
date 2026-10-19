@@ -38,16 +38,18 @@ export type {
 	LegacyEntry,
 	LegacyMedia
 } from '../core/historyIndexTypes';
-export { lfsPointer, lfsStored, parseLfsPointer } from '../utils/lfsPointer';
+export { lfsPointer, lfsStored } from '../utils/lfsPointer';
+export { parseLfsPointer } from '../services/attached-record-service/lfsPointer';
 export type { LfsObject } from '../utils/lfsPointer';
-export { mergeNoteLines, noteCommit, noteLine, readNoteLines } from '../utils/noteLines';
-export type { ReadNote } from '../utils/noteLines';
+export { mergeNoteLines, noteLine } from '../repositories/history-note-repository/noteLines';
+export { noteCommit, readNoteLines } from '../utils/note-lines/noteLines';
+export { type ReadNote } from '../utils/note-lines/noteLines';
 export { refKind, sourceArchiveRef } from '../utils/historyRefs';
 export type { RefKind } from '../utils/historyRefs';
 export { recordLineage } from '../utils/recordLineage';
 export type { LineageSource } from '../utils/recordLineage';
-export { pushedRefs } from '../utils/pushedRefs';
+export { pushedRefs } from '../services/hook-run-service/pushedRefs';
 export type { RecordView, ResolvedMedia } from '../utils/recordView';
-export type { RevisionRegistry } from '../utils/revisionRegistry';
+export { type RevisionRegistry } from '../utils/revision-registry/revisionRegistry';
 export { regressionRecordSchema, regressionViewSchema } from '../core/regressionTypes';
 export type { RegressionRecord, RegressionPoint, RegressionView } from '../core/regressionTypes';

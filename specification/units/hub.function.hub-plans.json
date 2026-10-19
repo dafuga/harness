@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubPlans.ts"],
-		"symbols": ["hubPlans", "hubPlanRecord"]
+		"source": [
+			"packages/hub/src/utils/hubPlans.ts",
+			"packages/hub/src/utils/hub-catalog/hubPlans.ts"
+		],
+		"symbols": [
+			"hubPlans",
+			"hubPlanRecord"
+		]
 	},
 	"contract": {
 		"origin": "declared",

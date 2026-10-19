@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/recordedBuilds.ts"],
-		"symbols": ["recordedBuilds"]
+		"source": [
+			"src/services/record-assembly-service/recordedBuilds.ts",
+			"src/utils/recordedBuilds.ts"
+		],
+		"symbols": [
+			"recordedBuilds"
+		]
 	},
 	"contract": {
 		"origin": "declared",

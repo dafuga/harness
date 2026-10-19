@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/wavInfo.ts"],
-		"symbols": ["wavInfo"]
+		"source": [
+			"packages/reports/src/utils/audio-asset/wavInfo.ts",
+			"packages/reports/src/utils/wavInfo.ts"
+		],
+		"symbols": [
+			"wavInfo"
+		]
 	},
 	"contract": {
 		"origin": "declared",

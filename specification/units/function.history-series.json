@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/historySeries.ts"],
-		"symbols": ["unitGrowth", "historySeries"]
+		"source": [
+			"src/services/history-index-service/historySeries.ts",
+			"src/utils/historySeries.ts"
+		],
+		"symbols": [
+			"unitGrowth",
+			"historySeries"
+		]
 	},
 	"contract": {
 		"origin": "declared",

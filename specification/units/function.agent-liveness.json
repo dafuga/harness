@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/agentLiveness.ts"],
-		"symbols": ["AgentFacts", "ProcessFacts", "agentLiveness"]
+		"source": [
+			"src/utils/agentLiveness.ts",
+			"src/services/agent-activity-service/agentLiveness.ts"
+		],
+		"symbols": [
+			"AgentFacts",
+			"ProcessFacts",
+			"agentLiveness"
+		]
 	},
 	"contract": {
 		"origin": "declared",

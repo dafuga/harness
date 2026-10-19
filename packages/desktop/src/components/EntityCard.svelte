@@ -6,7 +6,7 @@
 	import PlanBadge from './PlanBadge.svelte';
 	import StatusIcon from './StatusIcon.svelte';
 	import WorkspaceLink from './WorkspaceLink.svelte';
-	import RecordedPreview from './RecordedPreview.svelte';
+	import RecordedPreview from './recorded-preview/RecordedPreview.svelte';
 	let { entity, workspace }: { entity: CatalogEntity; workspace: Workspace } = $props();
 	let image = $state('');
 	/** A function has a plan and no design: no picture is asked for it or left room for. */

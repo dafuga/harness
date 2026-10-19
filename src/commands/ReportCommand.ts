@@ -1,5 +1,5 @@
 import type { Command } from 'commander';
-import { runReport } from '../workflows/runReport';
+import { runReport } from "../workflows/run-report/runReport";
 export function registerReportCommand(program: Command): void {
 	program
 		.command('report')
