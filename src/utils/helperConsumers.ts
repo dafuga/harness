@@ -88,8 +88,7 @@ function resolveHelper(
 	seen.add(key);
 	if (context.helpers.has(key)) return key;
 	for (const binding of context.facts.get(path)?.forwards ?? []) {
-		if (binding.name !== '*' && binding.name !== name) continue;
-		const next = target(path, binding, context);
+		const next = forwardTarget({ path, name }, binding, context);
 		if (!next) continue;
 		const resolved = resolveHelper(
 			next,
@@ -100,6 +99,15 @@ function resolveHelper(
 		if (resolved) return resolved;
 	}
 	return undefined;
+}
+
+function forwardTarget(
+	asked: { path: string; name: string },
+	binding: HelperFacts['forwards'][number],
+	context: Context
+) {
+	if (binding.name !== '*' && binding.name !== asked.name) return undefined;
+	return target(asked.path, binding, context);
 }
 
 function consumerOf(unit: Unit, reference: HelperReference): HelperConsumer | undefined {
@@ -113,6 +121,14 @@ function consumerOf(unit: Unit, reference: HelperReference): HelperConsumer | un
 	return undefined;
 }
 
+function consumerReference(path: string, reference: HelperReference, context: Context) {
+	const next = target(path, reference, context);
+	if (!next) return undefined;
+	const key = resolveHelper(next, reference.imported, context);
+	if (!key || (!reference.specifier && reference.caller === reference.imported)) return undefined;
+	return key;
+}
+
 function usersOf(context: Context): Map<string, Map<string, HelperConsumer>> {
 	const users = new Map<string, Map<string, HelperConsumer>>();
 	for (const unit of context.units) {
@@ -120,10 +136,8 @@ function usersOf(context: Context): Map<string, Map<string, HelperConsumer>> {
 			for (const reference of context.facts.get(path)?.references ?? []) {
 				const consumer = consumerOf(unit, reference);
 				if (!consumer) continue;
-				const next = target(path, reference, context);
-				if (!next) continue;
-				const key = resolveHelper(next, reference.imported, context);
-				if (!key || (!reference.specifier && reference.caller === reference.imported)) continue;
+				const key = consumerReference(path, reference, context);
+				if (!key) continue;
 				const identity = `${consumer.unit}#${consumer.symbol ?? ''}`;
 				if (!users.has(key)) users.set(key, new Map());
 				users.get(key)!.set(identity, consumer);

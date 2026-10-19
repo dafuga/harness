@@ -16,45 +16,55 @@ export interface HelperFacts {
 }
 const cache = new Map<string, HelperFacts>();
 
+function namedImports(clause: ts.ImportClause, specifier: string) {
+	const found = new Map<string, HelperBinding>();
+	if (clause.name) found.set(clause.name.text, { specifier, imported: 'default' });
+	const bindings = clause.namedBindings;
+	if (bindings && ts.isNamespaceImport(bindings))
+		found.set(bindings.name.text, { specifier, imported: '*' });
+	if (bindings && ts.isNamedImports(bindings))
+		for (const item of bindings.elements) {
+			if (!item.isTypeOnly)
+				found.set(item.name.text, {
+					specifier,
+					imported: item.propertyName?.text ?? item.name.text
+				});
+		}
+	return found;
+}
+
 function imports(source: ts.SourceFile): Map<string, HelperBinding> {
 	const found = new Map<string, HelperBinding>();
 	for (const node of source.statements) {
 		if (!ts.isImportDeclaration(node) || !ts.isStringLiteral(node.moduleSpecifier)) continue;
 		const clause = node.importClause;
 		if (!clause || clause.isTypeOnly) continue;
-		const specifier = node.moduleSpecifier.text;
-		if (clause.name) found.set(clause.name.text, { specifier, imported: 'default' });
-		const bindings = clause.namedBindings;
-		if (bindings && ts.isNamespaceImport(bindings))
-			found.set(bindings.name.text, { specifier, imported: '*' });
-		if (bindings && ts.isNamedImports(bindings))
-			for (const item of bindings.elements) {
-				if (!item.isTypeOnly)
-					found.set(item.name.text, {
-						specifier,
-						imported: item.propertyName?.text ?? item.name.text
-					});
-			}
+		for (const [name, binding] of namedImports(clause, node.moduleSpecifier.text))
+			found.set(name, binding);
 	}
 	return found;
+}
+
+function exportedBindings(node: ts.ExportDeclaration): HelperFacts['forwards'] {
+	const specifier =
+		node.moduleSpecifier && ts.isStringLiteral(node.moduleSpecifier)
+			? node.moduleSpecifier.text
+			: undefined;
+	if (!node.exportClause) return [{ name: '*', imported: '*', specifier }];
+	if (!ts.isNamedExports(node.exportClause)) return [];
+	return node.exportClause.elements
+		.filter((item) => !item.isTypeOnly)
+		.map((item) => ({
+			name: item.name.text,
+			imported: item.propertyName?.text ?? item.name.text,
+			specifier
+		}));
 }
 
 function forwards(source: ts.SourceFile): HelperFacts['forwards'] {
 	return source.statements.flatMap((node) => {
 		if (ts.isExportDeclaration(node) && !node.isTypeOnly) {
-			const specifier =
-				node.moduleSpecifier && ts.isStringLiteral(node.moduleSpecifier)
-					? node.moduleSpecifier.text
-					: undefined;
-			if (!node.exportClause) return [{ name: '*', imported: '*', specifier }];
-			if (!ts.isNamedExports(node.exportClause)) return [];
-			return node.exportClause.elements
-				.filter((item) => !item.isTypeOnly)
-				.map((item) => ({
-					name: item.name.text,
-					imported: item.propertyName?.text ?? item.name.text,
-					specifier
-				}));
+			return exportedBindings(node);
 		}
 		if (
 			ts.isFunctionDeclaration(node) &&
@@ -67,25 +77,30 @@ function forwards(source: ts.SourceFile): HelperFacts['forwards'] {
 	});
 }
 
+function namespaceReference(
+	node: ts.Node,
+	bindings: Map<string, HelperBinding>
+): HelperReference | null {
+	if (!ts.isPropertyAccessExpression(node) && !ts.isElementAccessExpression(node)) return null;
+	if (!ts.isIdentifier(node.expression)) return null;
+	const imported = ts.isPropertyAccessExpression(node)
+		? node.name.text
+		: literalIndex(node.argumentExpression);
+	if (imported === undefined) return null;
+	const binding = bindings.get(node.expression.text);
+	const scope = helperScopes(node, node.expression.text);
+	return binding?.imported === '*' && !scope.shadowed
+		? { ...binding, imported, caller: scope.caller }
+		: null;
+}
+
+function literalIndex(node: ts.Expression): string | undefined {
+	return ts.isStringLiteral(node) ? node.text : undefined;
+}
+
 function reference(node: ts.Node, bindings: Map<string, HelperBinding>): HelperReference | null {
-	if (ts.isPropertyAccessExpression(node) && ts.isIdentifier(node.expression)) {
-		const binding = bindings.get(node.expression.text);
-		const scope = helperScopes(node, node.expression.text);
-		return binding?.imported === '*' && !scope.shadowed
-			? { ...binding, imported: node.name.text, caller: scope.caller }
-			: null;
-	}
-	if (
-		ts.isElementAccessExpression(node) &&
-		ts.isIdentifier(node.expression) &&
-		ts.isStringLiteral(node.argumentExpression)
-	) {
-		const binding = bindings.get(node.expression.text);
-		const scope = helperScopes(node, node.expression.text);
-		return binding?.imported === '*' && !scope.shadowed
-			? { ...binding, imported: node.argumentExpression.text, caller: scope.caller }
-			: null;
-	}
+	if (ts.isPropertyAccessExpression(node) || ts.isElementAccessExpression(node))
+		return namespaceReference(node, bindings);
 	if (!ts.isIdentifier(node)) return null;
 	const parent = node.parent;
 	if ('name' in parent && parent.name === node && !ts.isShorthandPropertyAssignment(parent))

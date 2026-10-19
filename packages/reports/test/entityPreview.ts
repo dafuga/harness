@@ -154,21 +154,22 @@ if (variant === 'console') {
 function withHelpers(detail: HarnessRevision): HarnessRevision {
 	const template = detail.registry.units.find((unit) => unit.id === ids.filter)!;
 	const hidden = ['types', 'schema', 'private', 'class-method', 'legacy', 'unused', 'single'].map(
-		(kind) => ({
-			...template,
-			id: `function.${kind}`,
-			title: kind,
-			helpers:
-				kind === 'legacy'
-					? undefined
-					: kind === 'unused' || kind === 'single'
-						? template.helpers?.map((helper) => ({
-								...helper,
-								name: kind,
-								consumers: kind === 'single' ? [{ unit: ids.list }] : []
-							}))
-						: []
-		})
+		(kind) => {
+			let helpers: typeof template.helpers = kind === 'legacy' ? undefined : [];
+			if (kind === 'unused' || kind === 'single') {
+				helpers = template.helpers?.map((helper) => ({
+					...helper,
+					name: kind,
+					consumers: kind === 'single' ? [{ unit: ids.list }] : []
+				}));
+			}
+			return {
+				...template,
+				id: `function.${kind}`,
+				title: kind,
+				helpers
+			};
+		}
 	);
 	return {
 		...detail,

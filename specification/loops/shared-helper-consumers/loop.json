@@ -2,7 +2,7 @@
 	"name": "shared-helper-consumers",
 	"goal": "List a helper only when at least two distinct services, components or functions use that exact helper at the selected commit.",
 	"createdAt": "2026-10-19T16:40:42.160Z",
-	"updatedAt": "2026-10-19T16:52:25.508Z",
+	"updatedAt": "2026-10-19T16:56:44.570Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T16:56:44.570Z",
+			"evidence": "Unchanged regression suite passes at f75ca3f2: 7 source metadata cases, 16 Reports unit cases and 3 responsive browser cases. Immutable green record b624ace9399a133bc0211accc8c90c0be9904d925859f42ef8813c0572b8d51e follows red record 7ef79aba10664cbba183fd53f1025ba917684c71abbd0706786f1254338d4b9d."
 		},
 		{
 			"id": "verify",
