@@ -21,6 +21,8 @@ test('a catalog is searchable, and a click on a listed entity opens it in the sa
 	page
 }) => {
 	await page.goto(at('main', commits.approved, 'functions'));
+	await expect(cards(page)).toHaveCount(1);
+	await checkpoint(page, 'catalog-search');
 	await expect(page.getByRole('heading', { level: 1, name: 'Helpers' })).toBeVisible();
 	await expect(shown(page)).toHaveText('1 of 1 helpers shown');
 	await search(page).fill('slug');
@@ -29,7 +31,6 @@ test('a catalog is searchable, and a click on a listed entity opens it in the sa
 	await expect(cards(page).locator('code')).toHaveText(/^slugify\(/);
 	await expect(cards(page).getByRole('heading')).toHaveCount(0);
 	await expect(cards(page).getByRole('button')).toHaveCount(0);
-	await checkpoint(page, 'catalog-search');
 	await expect(page.getByRole('link', { name: 'Models', exact: true })).toBeVisible();
 	// The title itself is clicked, as a reader does, not an address that the test put together.
 	await titled(page).click();
