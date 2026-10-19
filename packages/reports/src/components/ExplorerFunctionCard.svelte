@@ -1,17 +1,21 @@
 <script lang="ts">
-	import { functionName, type CatalogRow } from '../utils/entityCatalog';
+	import { type CatalogRow } from '../utils/entityCatalog';
 	import { entityLens, type EntityNav } from '../utils/entityLens';
 	import EntityLink from './harness/EntityLink.svelte';
 	let { row, nav }: { row: CatalogRow; nav: EntityNav } = $props();
-	let to = $derived(entityLens(nav.route, { category: 'functions', entity: row.id }));
+	let to = $derived(entityLens(nav.route, { category: 'functions', entity: row.entity.id }));
 	/** A call from this revision's documented values; unspecified arguments stay named variables. */
 	function invocation(unit: CatalogRow['entity']['unit']): string {
-		const inputs = unit.contract.inputs;
-		const owner = inputs[0]?.name.split('.').slice(0, -1).join('.');
-		const name = functionName(unit);
+		const helper = row.helper;
+		const name = helper?.name ?? '';
+		const inputs = helper?.inputs ?? [];
+		const owner = name;
 		const documented = unit.documentation?.examples[0]?.input;
 		const values =
-			documented && typeof documented === 'object' && !Array.isArray(documented)
+			unit.contract.inputs[0]?.name.startsWith(`${name}.`) &&
+			documented &&
+			typeof documented === 'object' &&
+			!Array.isArray(documented)
 				? (documented as Record<string, unknown>)
 				: {};
 		const args = inputs
@@ -19,7 +23,8 @@
 			.map((input) => {
 				const parameter = input.name.split('.').at(-1)!;
 				if (Object.hasOwn(values, parameter)) return JSON.stringify(values[parameter]);
-				if (input.examples?.length) return JSON.stringify(input.examples[0]);
+				const declared = unit.contract.inputs.find((field) => field.name === input.name);
+				if (declared?.examples?.length) return JSON.stringify(declared.examples[0]);
 				return parameter;
 			});
 		if (!name) return unit.title;

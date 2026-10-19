@@ -54,7 +54,7 @@ export const entityLabels: Record<ExplorerCategory, EntityLabel> = {
 	functions: {
 		title: 'Functions',
 		one: 'Function',
-		subtitle: 'Small behaviors shared across the app.'
+		subtitle: 'Helpers available across the codebase.'
 	},
 	configs: {
 		title: 'Configs',

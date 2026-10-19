@@ -5,7 +5,10 @@ import type {
 	ExplorerVerdict
 } from '../models/Explorer.types';
 
+type Relations = Pick<ExplorerRelations, 'pages' | 'usedBy' | 'components'>;
+
 export interface CatalogRow {
+	helper?: NonNullable<ExplorerEntity['unit']['helpers']>[number];
 	entity: ExplorerEntity;
 	id: string;
 	name: string;
@@ -49,11 +52,11 @@ const names = (entities: ExplorerEntity[]) => entities.map((entity) => entity.na
 const own = ['direct', 'added'];
 
 /** True when more than one entity uses it itself, or more than one page shows it. */
-export function isShared(related: ExplorerRelations): boolean {
+export function isShared(related: Relations): boolean {
 	return related.usedBy.length > 1 || related.pages.length > 1;
 }
 
-function rowOf(entity: ExplorerEntity, related: ExplorerRelations): CatalogRow {
+function rowOf(entity: ExplorerEntity, related: Relations): CatalogRow {
 	return {
 		entity,
 		id: entity.id,
@@ -72,32 +75,36 @@ function rowOf(entity: ExplorerEntity, related: ExplorerRelations): CatalogRow {
 
 /** The callable name shown on a function card, before its example arguments. */
 export function functionName(unit: CatalogRow['entity']['unit']): string {
-	return (
-		unit.contract.inputs[0]?.name.split('.').slice(0, -1).join('.') ||
-		unit.owns.symbols.find((symbol) => /^[a-z_$]/.test(symbol)) ||
-		unit.owns.symbols[0] ||
-		unit.title
-	);
+	return unit.helpers?.[0]?.name ?? '';
 }
 
-const sortName = (row: CatalogRow) =>
-	row.entity.category === 'functions' ? functionName(row.entity.unit) : row.name;
+const sortName = (row: CatalogRow) => row.helper?.name ?? row.name;
 const byName = (left: CatalogRow, right: CatalogRow) =>
 	sortName(left).localeCompare(sortName(right), 'en', { sensitivity: 'base' });
 
 /**
  * One collection of the explorer: the entities of a category, each with the name, the
- * relations and the verdict a card or a table row shows, in order of name. What an entity
- * relates to is asked once for each listed entity and for no other; a row holds no source path.
+ * relations and the verdict a card or a table row shows, in order of name. Shared helper
+ * exports become separate cards pointing to their owning entity; unrecorded exports stay absent.
  */
 export function entityCatalog(
 	entities: ExplorerEntity[],
 	category: ExplorerCategory,
-	relations: (id: string) => ExplorerRelations
+	relations: (id: string) => Relations
 ): CatalogRow[] {
 	return entities
 		.filter((entity) => entity.category === category)
-		.map((entity) => rowOf(entity, relations(entity.id)))
+		.flatMap((entity) => {
+			const row = rowOf(entity, relations(entity.id));
+			if (category !== 'functions') return [row];
+			const helpers = entity.unit.helpers ?? [];
+			return helpers.map((helper) => ({
+				...row,
+				helper,
+				name: helper.name,
+				id: helpers.length === 1 ? entity.id : `${entity.id}#${helper.source}:${helper.name}`
+			}));
+		})
 		.sort(byName);
 }
 
@@ -125,8 +132,7 @@ export function catalogFilter(rows: CatalogRow[], filter: CatalogFilter): Catalo
 			(row) => !filter.usage || filter.usage === 'all' || row.shared === (filter.usage === 'shared')
 		)
 		.filter((row) => {
-			const symbols =
-				row.entity.category === 'functions' ? row.entity.unit.owns.symbols.join(' ') : '';
+			const symbols = row.helper?.name ?? '';
 			return !wanted || `${row.name} ${row.summary} ${symbols}`.toLowerCase().includes(wanted);
 		})
 		.sort(orders[filter.order]);

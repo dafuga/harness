@@ -165,3 +165,9 @@ bun run test:e2e
 ```
 
 `check` runs format, type, lint, unit, build, and Harness audit. Browser tests cover filters, comparisons, keyboard controls, modal details, and 1440px/920px/390px layouts. The project is Harness-governed; read `AGENTS.md` and the project-local Harness skill before code changes.
+
+## Functions catalog
+
+Functions lists exported, standalone helpers in shared utility modules (`src/utils`, `src/helpers`, `src/functions`, `src/core`, and `src/lib/{utils,helpers,functions}` within each workspace). Availability means other code can import the helper; it does not require multiple current callers. Component-local functions, class methods, types, constants, schemas, validators and service internals are excluded.
+
+Each helper gets an alphabetically sorted example-call card. Modules exporting several helpers get several cards, all linking to the owning entity's contract and history. Signatures come from the selected Git revision, while argument examples come from its committed contract or usage document. Missing examples remain named parameters. No working-tree fallback fills historical gaps. Older projections without helper metadata must be refreshed before their helpers can be listed.

@@ -96,3 +96,4 @@ export { regressionRecordSchema } from './core/regressionTypes';
 export { recordRegression } from './workflows/recordRegression';
 export { regressionHistory } from './utils/regressionHistory';
 export { unitDocumentation } from './utils/unitDocumentation';
+export { unitMetadata } from './utils/unitMetadata';

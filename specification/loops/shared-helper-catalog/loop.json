@@ -2,7 +2,7 @@
 	"name": "shared-helper-catalog",
 	"goal": "List only exported codebase-wide helpers, with real signatures from the selected commit.",
 	"createdAt": "2026-10-19T15:26:50.310Z",
-	"updatedAt": "2026-10-19T15:27:38.428Z",
+	"updatedAt": "2026-10-19T15:33:38.492Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T15:31:26.725Z",
+			"evidence": "b62e8899 fails the shared catalog assertion, all three viewport card cases, and exact-commit history helper metadata. Before screenshots inspected: non-callable units are incorrectly displayed as calls."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T15:33:38.492Z",
+			"evidence": "Exact-revision source exports enrich projection metadata. Shared utility callables become individually sorted cards linked to their owning entity; types, private helpers, classes and feature-local source stay out."
 		},
 		{
 			"id": "green",

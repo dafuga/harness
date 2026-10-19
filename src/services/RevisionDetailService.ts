@@ -18,7 +18,7 @@ import { SourceImpactService, type SourceImpact } from './SourceImpactService';
 import { RegressionProofRepository } from '../repositories/RegressionProofRepository';
 import { regressionHistory } from '../utils/regressionHistory';
 import type { RegressionView } from '../core/regressionTypes';
-import { hydrateUnitDocumentation } from '../utils/unitDocumentation';
+import { unitMetadata } from '../utils/unitMetadata';
 
 export interface RevisionDetail {
 	schemaVersion: 1;
@@ -173,7 +173,7 @@ export class RevisionDetailService {
 		const ledger = (await new BudgetLedgerRepository(this.root).read(tree)).events;
 		const limits = new BudgetService().baselines(ledger, units.manifests);
 		const registry = revisionRegistry(units.manifests, scenarios.manifests, blobs, limits);
-		await hydrateUnitDocumentation(tree, registry.units);
+		await unitMetadata(tree, registry.units);
 		this.kept.registries.set(key, { registry, ledger });
 		return { registry, ledger };
 	}

@@ -3,6 +3,7 @@ import type { HarnessLegacyReport } from './HarnessLegacy.types';
 import type { Status } from './Report.types';
 import type { BrowserDiagnostic } from '../../../../src/core/browserDiagnostics';
 import type { RegressionView } from '../../../../src/core/regressionTypes';
+import type { PublicHelper } from '../../../../src/utils/unitMetadata';
 import type { UnitDocumentation } from '../../../../src/utils/unitDocumentation';
 export type * from './HarnessLegacy.types';
 export interface HarnessRecordSummary {
@@ -63,6 +64,8 @@ export interface HarnessIndex {
 	problems: string[];
 }
 export interface HarnessUnit extends HarnessUnitLimits {
+	helpers?: PublicHelper[];
+	helperGap?: string;
 	documentation?: UnitDocumentation;
 	preview?: { scenario: string; state: string; viewport: string };
 	id: string;

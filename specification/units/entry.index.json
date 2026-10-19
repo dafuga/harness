@@ -73,7 +73,8 @@
 			"regressionRecordSchema",
 			"recordRegression",
 			"regressionHistory",
-			"unitDocumentation"
+			"unitDocumentation",
+			"unitMetadata"
 		]
 	},
 	"contract": {
@@ -280,6 +281,11 @@
 		},
 		{
 			"unit": "function.unit-documentation",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-metadata",
 			"via": "reexport",
 			"origin": "derived"
 		},

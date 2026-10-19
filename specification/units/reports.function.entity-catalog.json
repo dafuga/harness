@@ -3,7 +3,7 @@
 	"id": "reports.function.entity-catalog",
 	"kind": "function",
 	"title": "Entity collection rows",
-	"responsibility": "Builds readable collection rows and applies search, change filtering and ordering.",
+	"responsibility": "Lists category rows, with one card per exported shared helper, and applies search and ordering.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -15,10 +15,10 @@
 			"orderLabels",
 			"CatalogFilter",
 			"isShared",
+			"functionName",
 			"entityCatalog",
 			"catalogFilter",
-			"listed",
-			"functionName"
+			"listed"
 		]
 	},
 	"contract": {
@@ -67,7 +67,7 @@
 			{
 				"name": "functionName.unit",
 				"type": "HarnessUnit",
-				"description": "The displayed revision\u2019s function symbols and input contract."
+				"description": "The selected revision’s recorded exported shared helpers."
 			}
 		],
 		"outputs": [
@@ -104,7 +104,7 @@
 			{
 				"name": "functionName",
 				"type": "string",
-				"description": "The callable identifier shared by function cards and alphabetical sorting; falls back to the registered symbol or title."
+				"description": "The first recorded helper name, or an empty string when no helper metadata is available."
 			}
 		],
 		"errors": []

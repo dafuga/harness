@@ -1,7 +1,7 @@
 import { explorerKindCategory, type ExplorerCategory } from '../../../../src/utils/explorerRoute';
 import type { HarnessUnit } from '../models/Harness.types';
 
-type Classified = Pick<HarnessUnit, 'kind' | 'owns'>;
+type Classified = Pick<HarnessUnit, 'kind' | 'owns' | 'helpers'>;
 
 /** What a unit of each kind is called; a kind that is not here is called by its own words. */
 const roles = new Map<string, string>([
@@ -31,6 +31,7 @@ const renders = (unit: Classified) =>
  */
 export function explorerCategory(unit: Classified): ExplorerCategory | null {
 	if (renders(unit)) return 'pages';
+	if (unit.kind === 'module' && unit.helpers?.length) return 'functions';
 	const category = explorerKindCategory(unit.kind);
 	return category === 'pages' ? 'services' : category;
 }

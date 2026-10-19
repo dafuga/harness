@@ -8,6 +8,7 @@ import {
 	type FrozenLimits
 } from './budgetReviews';
 import { canonicalJson } from './canonicalJson';
+import type { PublicHelper } from './unitMetadata';
 import type { UnitDocumentation } from './unitDocumentation';
 
 export interface RevisionRegistry {
@@ -25,6 +26,8 @@ export interface RevisionRegistry {
 		/** What the unit owns and promises, as its manifest states it at this revision. */
 		owns: ComponentManifest['owns'];
 		contract: Pick<ComponentManifest['contract'], 'inputs' | 'outputs' | 'errors'>;
+		helpers?: PublicHelper[];
+		helperGap?: string;
 		documentation?: UnitDocumentation;
 		preview?: ComponentManifest['preview'];
 		runtime: { kind: string; targets: Array<{ kind: string; entry: string }> };
