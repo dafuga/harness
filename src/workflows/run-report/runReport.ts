@@ -5,7 +5,8 @@ import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 export async function runReport(args: string[]): Promise<void> {
-	const bundled = fileURLToPath(new URL('../reports/cli.js', import.meta.url));
+	// Bundling inlines this module into dist/index.js; installed paths use that output layout.
+	const bundled = fileURLToPath(new URL('./reports/cli.js', import.meta.url));
 	const source = fileURLToPath(
 		new URL('../../../packages/reports/src/cli/index.ts', import.meta.url)
 	);
@@ -18,7 +19,7 @@ export async function runReport(args: string[]): Promise<void> {
 				? dirname(bundled)
 				: fileURLToPath(new URL('../../../packages/reports/', import.meta.url)),
 			HARNESS_CLI_PATH: existsSync(bundled)
-				? fileURLToPath(new URL('../index.js', import.meta.url))
+				? fileURLToPath(new URL('./index.js', import.meta.url))
 				: fileURLToPath(new URL('../../index.ts', import.meta.url))
 		}
 	});
