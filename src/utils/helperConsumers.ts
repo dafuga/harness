@@ -113,12 +113,7 @@ function forwardTarget(
 function consumerOf(unit: Unit, reference: HelperReference): HelperConsumer | undefined {
 	const category = explorerKindCategory(unit.kind);
 	if (category === 'components' || category === 'services') return { unit: unit.id };
-	if (
-		(category === 'functions' || unit.kind === 'module' || unit.kind === 'shared-function') &&
-		reference.caller
-	)
-		return { unit: unit.id, symbol: reference.caller };
-	return undefined;
+	return reference.caller ? { unit: unit.id, symbol: reference.caller } : undefined;
 }
 
 function consumerReference(path: string, reference: HelperReference, context: Context) {
