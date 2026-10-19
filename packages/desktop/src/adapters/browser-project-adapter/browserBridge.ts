@@ -8,7 +8,7 @@ import type {
 	ProjectCapabilities,
 	ProjectContext
 } from '../../models/ProjectContext.types';
-import { commentEntries } from '../../utils/commentEntries';
+import { commentEntries } from './commentEntries';
 import type { BrowserApi } from '../../models/BrowserApi.types';
 
 type Reads = Pick<

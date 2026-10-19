@@ -374,9 +374,14 @@
 				"symbol": "messages"
 			},
 			"from": "packages/desktop/src/utils/commentEntries.ts",
-			"to": "packages/hub/src/utils/browser-bridge/commentEntries.ts",
-			"ownerSource": "packages/hub/src/utils/browser-bridge/browserBridge.ts",
-			"definition": "54fbe05edc551a705a770f5104c95a5fdfcd71ce9148dc64034f60d6a2d573c2"
+			"to": "packages/desktop/src/adapters/browser-project-adapter/commentEntries.ts",
+			"ownerSource": "packages/desktop/src/adapters/browser-project-adapter/browserBridge.ts",
+			"definition": "54fbe05edc551a705a770f5104c95a5fdfcd71ce9148dc64034f60d6a2d573c2",
+			"relocation": {
+				"trigger": "2386c0f7",
+				"previous": "packages/hub/src/utils/browser-bridge/commentEntries.ts",
+				"reason": "Keep the native and Web project client independent of Hub build state; private helpers remain beside the portable owner."
+			}
 		},
 		{
 			"unit": "desktop.function.comment-entries",
@@ -543,9 +548,14 @@
 				"symbol": "browserArtifact"
 			},
 			"from": "packages/desktop/src/utils/hostedArtifact.ts",
-			"to": "packages/hub/src/utils/browser-bridge/hostedArtifact.ts",
-			"ownerSource": "packages/hub/src/utils/browser-bridge/browserArtifact.ts",
-			"definition": "1a9af531565a7463f3c921dc59d7ea51b776b1e9a970d3478e66676d48dbb976"
+			"to": "packages/desktop/src/adapters/browser-project-adapter/hostedArtifact.ts",
+			"ownerSource": "packages/desktop/src/adapters/browser-project-adapter/browserArtifact.ts",
+			"definition": "1a9af531565a7463f3c921dc59d7ea51b776b1e9a970d3478e66676d48dbb976",
+			"relocation": {
+				"trigger": "2386c0f7",
+				"previous": "packages/hub/src/utils/browser-bridge/hostedArtifact.ts",
+				"reason": "Keep the native and Web project client independent of Hub build state; private helpers remain beside the portable owner."
+			}
 		},
 		{
 			"unit": "desktop.function.hosted-evidence-path",
@@ -2654,9 +2664,14 @@
 				"symbol": "browserEvidenceReads"
 			},
 			"from": "packages/hub/src/utils/browserArtifact.ts",
-			"to": "packages/hub/src/utils/browser-bridge/browserArtifact.ts",
-			"ownerSource": "packages/hub/src/utils/browser-bridge/browserEvidenceReads.ts",
-			"definition": "42875f93cd3977450380d7c3b4e44d778a020c8bdf9c109bb6fae1d039803b80"
+			"to": "packages/desktop/src/adapters/browser-project-adapter/browserArtifact.ts",
+			"ownerSource": "packages/desktop/src/adapters/browser-project-adapter/browserEvidenceReads.ts",
+			"definition": "42875f93cd3977450380d7c3b4e44d778a020c8bdf9c109bb6fae1d039803b80",
+			"relocation": {
+				"trigger": "2386c0f7",
+				"previous": "packages/hub/src/utils/browser-bridge/browserArtifact.ts",
+				"reason": "Keep the native and Web project client independent of Hub build state; private helpers remain beside the portable owner."
+			}
 		},
 		{
 			"unit": "hub.function.browser-context",
@@ -2677,9 +2692,14 @@
 				"symbol": "reads"
 			},
 			"from": "packages/hub/src/utils/browserEvidenceReads.ts",
-			"to": "packages/hub/src/utils/browser-bridge/browserEvidenceReads.ts",
-			"ownerSource": "packages/hub/src/utils/browser-bridge/browserBridge.ts",
-			"definition": "51a20bc66464efc319894884036583c0125503778ac3148cbaabd2cb21383856"
+			"to": "packages/desktop/src/adapters/browser-project-adapter/browserEvidenceReads.ts",
+			"ownerSource": "packages/desktop/src/adapters/browser-project-adapter/browserBridge.ts",
+			"definition": "51a20bc66464efc319894884036583c0125503778ac3148cbaabd2cb21383856",
+			"relocation": {
+				"trigger": "2386c0f7",
+				"previous": "packages/hub/src/utils/browser-bridge/browserEvidenceReads.ts",
+				"reason": "Keep the native and Web project client independent of Hub build state; private helpers remain beside the portable owner."
+			}
 		},
 		{
 			"unit": "hub.function.browser-projects",

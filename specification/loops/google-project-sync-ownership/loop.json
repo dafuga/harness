@@ -2,7 +2,7 @@
 	"name": "google-project-sync-ownership",
 	"goal": "Keep moved portable client helpers with their owner and retain Harness migration identities",
 	"createdAt": "2026-10-19T23:09:27.019Z",
-	"updatedAt": "2026-10-19T23:09:27.803Z",
+	"updatedAt": "2026-10-19T23:12:14.144Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T23:11:38.998Z",
+			"evidence": "Test-only 7a1624a6 records failing checkpoint 789cb3a8: commentEntries definition changed and three other owner-local records still point at forwarding files. The strict unchanged root guard rejects the move."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T23:12:14.144Z",
+			"evidence": "Private comment and artifact helpers now live beside browserBridge, with all public forwards preserved. Four migration records name the new owner-local paths and retain original definition hashes and identities. Root 15, bridge 21 and focused Desktop 16 checks pass."
 		},
 		{
 			"id": "green",

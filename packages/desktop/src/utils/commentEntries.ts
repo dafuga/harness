@@ -1,4 +1,3 @@
-import type { CommittedThread } from '../../../collaboration/src/models/Collaboration.types';
 import type { ThreadMessage } from '../models/Desktop.types';
 import type { HumanCommentResult } from '../models/ProjectContext.types';
 
@@ -12,20 +11,7 @@ export interface ThreadEntry extends ThreadMessage {
 
 export type PendingComment = Extract<HumanCommentResult, { kind: 'pending' }>;
 
-export function commentEntries(thread: CommittedThread): ThreadEntry[] {
-	return thread.comments.map((comment) => ({
-		id: comment.id,
-		at: comment.createdAt,
-		author: 'user',
-		authorName: comment.actor.name,
-		text: comment.text,
-		mode: null,
-		provider: null,
-		model: null,
-		version: thread.anchor.version,
-		imageSha256: thread.anchor.imageSha256
-	}));
-}
+export { commentEntries } from '../adapters/browser-project-adapter/commentEntries';
 
 export {
 	threadInfo,
