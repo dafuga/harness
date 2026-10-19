@@ -50,6 +50,7 @@ function unit(seed: UnitSeed): HarnessUnit {
 					helpers: [
 						{
 							name: seed.title,
+							pure: true,
 							source: file,
 							inputs: named(seed.inputs),
 							consumers: [{ unit: ids.list }, { unit: ids.store }]

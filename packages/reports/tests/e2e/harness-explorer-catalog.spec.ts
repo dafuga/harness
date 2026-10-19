@@ -21,14 +21,16 @@ test('a catalog is searchable, and a click on a listed entity opens it in the sa
 	page
 }) => {
 	await page.goto(at('main', commits.approved, 'functions'));
-	await expect(shown(page)).toHaveText('1 of 1 functions shown');
+	await expect(page.getByRole('heading', { level: 1, name: 'Helpers' })).toBeVisible();
+	await expect(shown(page)).toHaveText('1 of 1 helpers shown');
 	await search(page).fill('slug');
-	await expect(shown(page)).toHaveText('1 of 1 functions shown');
+	await expect(shown(page)).toHaveText('1 of 1 helpers shown');
 	await expect(cards(page)).toHaveCount(1);
 	await expect(cards(page).locator('code')).toHaveText(/^slugify\(/);
 	await expect(cards(page).getByRole('heading')).toHaveCount(0);
 	await expect(cards(page).getByRole('button')).toHaveCount(0);
 	await checkpoint(page, 'catalog-search');
+	await expect(page.getByRole('link', { name: 'Models', exact: true })).toBeVisible();
 	// The title itself is clicked, as a reader does, not an address that the test put together.
 	await titled(page).click();
 	await expectPath(page, at('main', commits.approved, `functions/${units.slugify}`));
@@ -51,7 +53,7 @@ test('the keyboard reaches the controls, changes the order and opens an entity',
 	await changedOnly(page).focus();
 	await page.keyboard.press('Space');
 	await page.getByRole('button', { name: 'Done', exact: true }).click();
-	await expect(shown(page)).toHaveText('0 of 1 functions shown');
+	await expect(shown(page)).toHaveText('0 of 1 helpers shown');
 	await page.getByRole('button', { name: 'Filters', exact: true }).click();
 	await changedOnly(page).focus();
 	await page.keyboard.press('Space');
@@ -66,14 +68,14 @@ test('private helpers stay off the shared catalog while their historical pages r
 }) => {
 	for (const selected of [commits.approved, commits.added, commits.removed, commits.reordered]) {
 		await page.goto(at('main', selected, 'functions'));
-		await expect(shown(page)).toHaveText('1 of 1 functions shown');
+		await expect(shown(page)).toHaveText('1 of 1 helpers shown');
 		await expect(named(page, 'extra')).toHaveCount(0);
 	}
 	await page.goto(at('main', commits.added, 'functions'));
 	await page.getByRole('button', { name: 'Filters', exact: true }).click();
 	await changedOnly(page).click();
 	await page.getByRole('button', { name: 'Done', exact: true }).click();
-	await expect(shown(page)).toHaveText('0 of 1 functions shown');
+	await expect(shown(page)).toHaveText('0 of 1 helpers shown');
 	await page.goto(at('main', commits.removed, 'functions/function.extra'));
 	await checkpoint(page, 'catalog-removed');
 	await expect(
@@ -90,7 +92,7 @@ test('a commit nobody verified still marks what its source changed, and proves n
 	await changedOnly(page).click();
 	await page.getByRole('button', { name: 'Done', exact: true }).click();
 	await checkpoint(page, 'catalog-unverified-change');
-	await expect(shown(page)).toHaveText('0 of 1 functions shown');
+	await expect(shown(page)).toHaveText('0 of 1 helpers shown');
 	await page.goto(tip('main', 'services/service.clock?tab=uses'));
 	await page.locator('a[href*="/functions/function.clock"]').click();
 	await expect(
@@ -131,7 +133,7 @@ test.describe('a registry of several hundred units', () => {
 	test('stays searchable, ordered and keyboard operable', async ({ page }) => {
 		expect(functions).toBeGreaterThan(400);
 		await page.goto(tip('main', 'functions'));
-		await expect(shown(page)).toHaveText(`${functions} of ${functions} functions shown`);
+		await expect(shown(page)).toHaveText(`${functions} of ${functions} helpers shown`);
 		await expect(cards(page)).toHaveCount(functions);
 		await search(page).fill('generated 30');
 		// Ten units are numbered 300 to 309; a few more may say 30 in what they are for.

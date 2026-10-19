@@ -135,3 +135,31 @@ test.each(cases)(
 		).toEqual([]);
 	}
 );
+
+const pureCases = [
+	[
+		'/** @pure */\nexport function formatDate(iso: string) { return new Date(iso).toISOString(); }',
+		true
+	],
+	['export function shared(value: string) { return value.trim(); }', false],
+	['/** @pure */\nexport async function load() { return fetch("/api"); }', false],
+	['/** @pure */\nexport function now() { return Date.now(); }', false],
+	['/** @pure */\nexport function random() { return Math.random(); }', false],
+	['/** @pure */\nexport function mutate(input: number[]) { return input.sort(); }', false],
+	[
+		'/** @pure */\nexport function write(input: {value: number}) { input.value++; return input; }',
+		false
+	],
+	['export function fake() { return "/** @pure */"; }', false]
+] as const;
+
+test.each(pureCases)(
+	'helper purity is an explicit, checked source contract: %s',
+	async (source, pure) => {
+		const files = { 'src/utils/helper.ts': source };
+		const indexed = await indexFiles(files);
+		const registry = revisionRegistry(indexed.result.manifests, []);
+		await unitMetadata(memoryTree(files), registry.units);
+		expect(registry.units[0].helpers?.[0]).toMatchObject({ pure });
+	}
+);

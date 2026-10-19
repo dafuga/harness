@@ -16,6 +16,7 @@ test('a unit of a product kind is listed under the category of that kind', () =>
 	expect(explorerCategory(unit('serializer.report-export', 'serializer'))).toBe('functions');
 	expect(explorerCategory(unit('reports.config.report-vite', 'config'))).toBe('configs');
 	expect(explorerCategory(unit('service.title', 'service'))).toBe('services');
+	expect(explorerCategory(unit('model.order', 'model'))).toBe('models');
 	expect(explorerCategory(unit('reports.endpoint.harness-data-path', 'endpoint'))).toBe('services');
 	expect(explorerCategory(unit('adapter.git', 'adapter'))).toBe('services');
 	expect(explorerCategory(unit('repository.budget-ledger', 'repository'))).toBe('services');
@@ -44,7 +45,6 @@ test('what is not one of the five product kinds has no category and says what it
 		['audit', 'Audit rule'],
 		['guide', 'Guide'],
 		['template', 'Template'],
-		['model', 'Model'],
 		['module', 'Module'],
 		['entry', 'Entry point'],
 		['script', 'Script'],
@@ -96,7 +96,7 @@ test("the policy holds for Harness's own registry", () => {
 	expect(listed('pages').map((item) => item.id)).not.toContain('reports.page.root');
 	expect(listed('pages').map((item) => item.id)).not.toContain('reports.layout.root');
 	// No rule, guide, template or model is presented as a function of the product.
-	const invented = ['audit', 'guide', 'template', 'model', 'module', 'entry', 'script', 'style'];
+	const invented = ['audit', 'guide', 'template', 'module', 'entry', 'script', 'style'];
 	for (const item of units.filter((found) => invented.includes(found.kind))) {
 		expect([item.id, explorerCategory(item)]).toEqual([item.id, null]);
 	}

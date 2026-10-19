@@ -51,6 +51,7 @@ test('a collection lists the entities of its category by the name a person reads
 			helpers: [
 				{
 					name,
+					pure: true,
 					source: 'src/utils/shared.ts',
 					inputs: [],
 					consumers: original.unit.helpers![0].consumers
@@ -139,6 +140,7 @@ test('shared helper rows require source exports, list every callable and keep ow
 	const original = explorerEntities(head).find((entity) => entity.id === ids.filter)!;
 	const helpers = ['second', 'first'].map((name) => ({
 		name,
+		pure: true,
 		source: 'src/utils/shared.ts',
 		inputs: [],
 		consumers: [{ unit: ids.list }, { unit: ids.store }]
@@ -154,6 +156,16 @@ test('shared helper rows require source exports, list every callable and keep ow
 					{ ...helpers[0], name: 'single', consumers: [{ unit: ids.list }, { unit: ids.list }] }
 				]
 			}
+		},
+		{
+			...original,
+			id: 'effectful',
+			unit: { ...original.unit, helpers: [{ ...helpers[0], name: 'loadData', pure: false }] }
+		},
+		{
+			...original,
+			id: 'unknown',
+			unit: { ...original.unit, helpers: [{ ...helpers[0], name: 'unknown', pure: undefined }] }
 		},
 		{ ...original, id: 'types', unit: { ...original.unit, helpers: [] } },
 		{ ...original, id: 'legacy', unit: { ...original.unit, helpers: undefined } }
