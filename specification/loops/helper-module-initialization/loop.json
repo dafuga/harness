@@ -2,7 +2,7 @@
 	"name": "helper-module-initialization",
 	"goal": "Preserve cold entrypoint initialization when colocating helpers and retaining public forwarding exports",
 	"createdAt": "2026-10-19T18:56:25.095Z",
-	"updatedAt": "2026-10-19T18:56:44.580Z",
+	"updatedAt": "2026-10-19T18:59:04.346Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T18:59:02.363Z",
+			"evidence": "Test-only commit 20c7fdb5 fails a fresh public-entry import with the observed byName initialization error. Immutable red ec50fc3a2da3e9036451d2a72174be9ce243757ec8753aee090f476f6d37ae77 preserves the unchanged catalog suite and exact command."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T18:59:03.054Z",
+			"evidence": "Keep the comparator shared and public APIs intact; declare it as a hoisted function so either side of the forwarding cycle can initialize. The existing catalog suite must execute both entries in fresh native runtimes, and the helper-move review rule must require that coverage."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T18:59:04.346Z",
+			"evidence": "The shared comparator is now a hoisted declaration. Public forwarding exports and owner-local placement remain intact. The standardized catalog suite exercises native cold initialization through both entries; the existing helper-move skill checkpoint now requires that proof."
 		},
 		{
 			"id": "green",

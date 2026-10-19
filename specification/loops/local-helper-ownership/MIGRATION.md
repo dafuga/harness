@@ -1084,3 +1084,9 @@ Import consumers retain their existing behavior; only module addresses change. T
 ## Public routes and supported owner folders
 
 SvelteKit route filenames stay at their original public addresses. Route-private helpers live beside those files. The planning library implementation uses the supported `src/lib/planning` folder; its public `src/index.ts` entry remains stable.
+
+## Module initialization prevention
+
+Splitting `catalogFilter` and retaining its original forwarding export introduced a cycle: importing the public catalog first read a constant comparator before initialization. Warm unit imports started at the other side and missed it. Browser verification and a native cold import established attribution to this migration.
+
+The existing catalog suite now cold-imports both public and owner entrypoints in separate native runtimes, verifies their public callable exports and calls the filter. The helper-move checkpoint in the local Harness skill requires this coverage whenever forwarding exports are introduced. This catches initialization-order regressions without adding another workflow or broad test suite. The comparator remains one shared implementation, declared as a hoisted function.

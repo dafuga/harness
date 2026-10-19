@@ -93,8 +93,9 @@ export function functionName(unit: CatalogRow['entity']['unit']): string {
 
 const sortName = (row: CatalogRow) => row.helper?.name ?? row.name;
 
-export const byName = (left: CatalogRow, right: CatalogRow) =>
-	sortName(left).localeCompare(sortName(right), 'en', { sensitivity: 'base' });
+export function byName(left: CatalogRow, right: CatalogRow): number {
+	return sortName(left).localeCompare(sortName(right), 'en', { sensitivity: 'base' });
+}
 
 /**
  * One collection of the explorer: the entities of a category, each with the name, the
