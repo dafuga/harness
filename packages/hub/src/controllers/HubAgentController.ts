@@ -67,35 +67,14 @@ export class HubAgentController {
 		const { projectId, projection, actor } = this.context;
 		if (!['providers', 'startRun', 'cancelRun', 'events', 'openThread', 'approve'].includes(method))
 			return hubFail('invalid-input');
-		const input =
-			body.input && typeof body.input === 'object' && !Array.isArray(body.input)
-				? (body.input as Record<string, unknown>)
-				: {};
-		if (input.projectId !== undefined && input.projectId !== projectId)
-			return hubFail('invalid-input');
-		if (method === 'events') {
-			if (
-				typeof input.runId !== 'string' ||
-				!Number.isSafeInteger(input.after) ||
-				Number(input.after) < 0
-			)
-				return hubFail('invalid-input');
-			return { runId: input.runId, after: input.after };
-		}
+		const input = agentInput(body.input, projectId);
+		if (method === 'events') return eventCursor(input);
 		const parsed = new IpcRequestValidator().parse(channels[method as keyof typeof channels], {
 			...input,
 			projectId
 		});
 		if (['providers', 'cancelRun'].includes(method)) return parsed;
-		if (
-			method === 'startRun' &&
-			(typeof body.requestId !== 'string' ||
-				!/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i.test(body.requestId))
-		)
-			return hubFail('invalid-input');
-		const revision = body.revision as { branch?: unknown; commit?: unknown } | undefined;
-		if (typeof revision?.branch !== 'string' || typeof revision.commit !== 'string')
-			return hubFail('invalid-input');
+		const revision = agentRevision(method, body);
 		const snapshot = await projection.snapshot(actor, projectId, {
 			branch: revision.branch,
 			commit: revision.commit
@@ -108,4 +87,33 @@ export class HubAgentController {
 			return hubFail('revision-mismatch');
 		return { input: parsed, revision, requestId: body.requestId };
 	}
+}
+
+function agentInput(value: unknown, projectId: string): Record<string, unknown> {
+	if (!value || typeof value !== 'object' || Array.isArray(value)) return hubFail('invalid-input');
+	const input = value as Record<string, unknown>;
+	if (input.projectId !== undefined && input.projectId !== projectId)
+		return hubFail('invalid-input');
+	return input;
+}
+function eventCursor(input: Record<string, unknown>) {
+	if (
+		typeof input.runId !== 'string' ||
+		!Number.isSafeInteger(input.after) ||
+		Number(input.after) < 0
+	)
+		return hubFail('invalid-input');
+	return { runId: input.runId, after: input.after };
+}
+function agentRevision(method: string, body: Record<string, unknown>) {
+	if (
+		method === 'startRun' &&
+		(typeof body.requestId !== 'string' ||
+			!/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i.test(body.requestId))
+	)
+		return hubFail('invalid-input');
+	const revision = body.revision as { branch?: unknown; commit?: unknown } | undefined;
+	if (typeof revision?.branch !== 'string' || typeof revision.commit !== 'string')
+		return hubFail('invalid-input');
+	return { branch: revision.branch, commit: revision.commit };
 }

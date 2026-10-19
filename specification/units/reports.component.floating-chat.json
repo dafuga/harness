@@ -11,37 +11,51 @@
 		"symbols": ["FloatingChat"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "FloatingChat.open",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Bindable panel visibility; closing preserves the mounted conversation.",
+				"examples": [false]
 			},
 			{
 				"name": "FloatingChat.label",
-				"type": "string"
+				"type": "string",
+				"description": "Accessible name of the round launcher.",
+				"examples": ["Work with agent"]
 			},
 			{
 				"name": "FloatingChat.panelLabel",
-				"type": "string"
+				"type": "string",
+				"description": "Accessible name of the conversation panel.",
+				"examples": ["Project agent"]
 			},
 			{
 				"name": "FloatingChat.title",
-				"type": "string"
+				"type": "string",
+				"description": "Short heading at the top of the panel.",
+				"examples": ["Project chat"]
 			},
 			{
 				"name": "FloatingChat.notice",
-				"type": "string"
+				"type": "string",
+				"description": "Current capability or connection explanation below the heading.",
+				"examples": ["Ask a question, plan a design, or request a code change."]
 			},
 			{
 				"name": "FloatingChat.children",
-				"type": "Snippet"
+				"type": "Snippet",
+				"description": "Conversation and input rendered inside the panel as a Svelte snippet.",
+				"examples": ["{#snippet children()}<p>No messages yet.</p>{/snippet}"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "FloatingChat",
-				"type": "markup"
+				"type": "markup",
+				"description": "A fixed round launcher and an optional keyboard-accessible conversation panel.",
+				"examples": ["<button aria-expanded=\"false\" aria-label=\"Work with agent\">…</button>"]
 			}
 		],
 		"errors": []
@@ -63,7 +77,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["agent-references"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

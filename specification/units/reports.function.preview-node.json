@@ -17,7 +17,9 @@
 				"name": "previewNode.args",
 				"type": "string[]",
 				"description": "Preview root, optional Vite config, host and port arguments forwarded unchanged.",
-				"examples": [["--port", "5688"]]
+				"examples": [
+					["--port", "5688"]
+				]
 			}
 		],
 		"outputs": [
@@ -54,7 +56,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["local-project-chat"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

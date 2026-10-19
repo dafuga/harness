@@ -11,23 +11,29 @@
 		"symbols": ["RepositoryLease", "repositoryLease"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "repositoryLease.root",
-				"type": "string"
+				"type": "string",
+				"description": "Canonical local repository root to reserve across Harness app processes.",
+				"examples": ["/projects/atlas"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "repositoryLease",
-				"type": "Promise<RepositoryLease | null>"
+				"type": "Promise<RepositoryLease | null>",
+				"description": "An async release callback with an abort signal, or null while another owner holds the repository. Always release in finally.",
+				"examples": [null]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Refuses unsupported platforms, unreadable lock owners or filesystem failures instead of running without a lock.",
+				"examples": ["Cross-app repository locking is not supported on this platform."]
 			}
 		]
 	},
@@ -42,7 +48,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["remote-desktop-boundaries"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

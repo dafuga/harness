@@ -32,6 +32,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.function.hosted-capabilities",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.controller.hub-agent",
 			"via": "import",
 			"origin": "derived"

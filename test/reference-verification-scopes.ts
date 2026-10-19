@@ -8,6 +8,17 @@ export const referenceVerificationScopes: Record<string, VerificationScope> = {
 	'agent-references': {
 		package: 'desktop',
 		vitest: {
+			'test/services/project-task.test.ts': {
+				'Ask preserves source and a returned answer containing a registered unit reference':
+					'reference-functions',
+				'a requested registered unit beyond the first 120 is prioritized in the bounded prompt':
+					'reference-functions',
+				'Change reports actual registered source owners rather than the requested subject':
+					'reference-functions',
+				'an unexpected Ask write fails and preserves the changed file for review':
+					'reference-functions'
+			},
+
 			'test/entity-references.test.ts': {
 				'text is cut into its words and its references, in order, with nothing lost':
 					'reference-functions',
@@ -133,5 +144,38 @@ export const referenceVerificationScopes: Record<string, VerificationScope> = {
 				'agent-reply'
 			]
 		}
+	},
+	'local-project-chat': {
+		package: 'reports',
+		vitest: {
+			'test/console-workspace.test.ts': {
+				'chat references navigate the standalone explorer to scoped entity history':
+					'history-navigation'
+			},
+			'test/console-bridge.test.ts': {
+				'a tab retries an unacknowledged start with its original request identity and context':
+					'transport-recovery',
+				'closing a connecting tab disconnects its late session rather than retaining an orphan':
+					'transport-recovery'
+			},
+			'test/console-agent.test.ts': {
+				'owner web chat requires loopback Host, same origin and JSON before invoking its executor':
+					'owner-boundary',
+				'oversized and malformed payloads never reach the executor': 'owner-boundary'
+			},
+			'test/preview-lifecycle.test.ts': {
+				'repeated starts on another requested port reuse the same owned preview': 'route-runtime',
+				'another history configuration is refused without starting a second preview':
+					'route-runtime',
+				'an occupied preview port is refused instead of silently choosing another': 'route-runtime',
+				'an owner that crashes can be restarted without a stale lock or orphan preview':
+					'route-runtime',
+				'simultaneous launches elect one owner while the other reuses it': 'route-runtime',
+				'a different checkout is refused without affecting the owner': 'route-runtime',
+				'normal shutdown releases both the preview and ownership listeners': 'route-runtime',
+				'route indexes stay aligned after the normal SvelteKit sync command': 'route-runtime'
+			}
+		},
+		playwright: {}
 	}
 };

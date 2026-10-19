@@ -2,11 +2,9 @@
 	"name": "persistent-project-chat",
 	"goal": "Always-visible chat bubble with working model requests and touched-unit history links.",
 	"createdAt": "2026-10-19T10:05:58.999Z",
-	"updatedAt": "2026-10-19T10:14:41.398Z",
+	"updatedAt": "2026-10-19T11:19:01.895Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T11:18:49.132Z",
+			"evidence": "Red d5322bf5 at this committed failing test 953aaddf: round chat bubble assertion fails. Paired green ae66c2d4 at separate fix d158979b uses unchanged inputs and environment."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T11:19:00.642Z",
+			"evidence": "Separate product fix d158979b: Opus shared launcher, web transport, history references and permission checks. Regression corpus unchanged."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T11:19:01.895Z",
+			"evidence": "Green ae66c2d4 at d158979b passed the unchanged tests and command under the same environment as red d5322bf5 at 953aaddf."
 		},
 		{
 			"id": "verify",

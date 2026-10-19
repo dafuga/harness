@@ -48,7 +48,9 @@
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Refuses an unrelated listener, a different checkout or a preview that never finishes starting.",
+				"examples": ["Preview ownership port is occupied by another application."]
 			}
 		]
 	},

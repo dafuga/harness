@@ -11,25 +11,33 @@
 		"symbols": ["ConsoleChat"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ConsoleChat.base",
-				"type": "string"
+				"type": "string",
+				"description": "URL prefix of the local explorer.",
+				"examples": ["/harness"]
 			},
 			{
 				"name": "ConsoleChat.path",
-				"type": "string"
+				"type": "string",
+				"description": "Selected branch, optional commit and entity path, including its tab query.",
+				"examples": ["/branch/main/components/app.component.toolbar?tab=contract"]
 			},
 			{
 				"name": "ConsoleChat.navigate",
-				"type": "(path: string, replace: boolean) => void"
+				"type": "(path: string, replace: boolean) => void",
+				"description": "Host router callback. Receives the explorer path and whether to replace the current history entry.",
+				"examples": ["navigate(\"/branch/main/pages\", false)"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ConsoleChat",
-				"type": "markup"
+				"type": "markup",
+				"description": "The shared round launcher and conversation, connected lazily to the local project executor.",
+				"examples": ["<button aria-label=\"Work with agent\">…</button>"]
 			}
 		],
 		"errors": []
@@ -56,7 +64,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["local-project-chat"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

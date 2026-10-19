@@ -111,16 +111,7 @@ const clients = (state[key] ??= new Map());
 /** Tokens stay in the tab's memory and request body; no cookie, URL, or disk contains them. */
 export async function consoleAgent(input: Record<string, unknown>): Promise<unknown> {
 	if (input.method === 'connect') {
-		for (const [id, client] of clients) if (client.expired) clients.delete(id);
-		while (clients.size >= 8) {
-			const idle = [...clients].find(
-				([, client]) => !client['session'].busy && client['session'].root !== null
-			);
-			if (!idle)
-				throw new Error('All chat sessions are active. Finish one before opening another.');
-			idle[1].close();
-			clients.delete(idle[0]);
-		}
+		availableSessionSlot();
 		const client = new ConsoleAgentService(),
 			token = randomUUID();
 		clients.set(token, client);
@@ -145,4 +136,16 @@ export async function consoleAgent(input: Record<string, unknown>): Promise<unkn
 		input.input,
 		typeof input.requestId === 'string' ? input.requestId : undefined
 	);
+}
+
+function availableSessionSlot() {
+	for (const [id, client] of clients) if (client.expired) clients.delete(id);
+	while (clients.size >= 8) {
+		const idle = [...clients].find(
+			([, client]) => !client['session'].busy && client['session'].root !== null
+		);
+		if (!idle) throw new Error('All chat sessions are active. Finish one before opening another.');
+		idle[1].close();
+		clients.delete(idle[0]);
+	}
 }

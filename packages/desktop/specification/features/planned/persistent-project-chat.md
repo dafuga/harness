@@ -1,6 +1,6 @@
 # Persistent project chat and access levels
 
-Status: planned
+Status: implemented locally; final browser verification in progress
 
 The round project-chat bubble is always available on catalogs, entity pages, history,
 and read-only views. Its panel retains the conversation while navigating within a project.
@@ -32,4 +32,4 @@ Native Electron/iOS UI testing stays paused; test the shared renderer and backen
 
 The local web preview uses the real desktop run service behind its loopback owner guard and same-origin JSON checks. Chat connects lazily. Read-only questions report any unexpected writes. Shared hosting accepts Write requests only through an explicitly configured project executor; no production executor or Google deployment is configured by this change. Native UI checks remain paused.
 
-The first broad desktop unit run found legacy assertions that deliberately required the launcher to disappear. Those assertions will be aligned only after the unchanged red/green regression checkpoint. The running preview also retains stale SvelteKit route-node numbering after external sync; fresh fixture servers verify source routing while this existing server awaits an authorized refresh.
+The unchanged chat regression fails at 953aaddf and passes at d158979b. The subsequent preview-runtime regression fails at 14e16604 and passes at 3ccd1e8b: managed Vite now runs under Node, matching normal SvelteKit sync. Legacy launcher assertions were aligned after the committed chat proof. Registered local-web, task, transport, lease and hosted-authority checks preserve actual matcher observations. Full-suite results and browser evidence are recorded in the local feature report; targeted passing checks do not imply a full-suite pass.

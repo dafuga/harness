@@ -11,33 +11,71 @@
 		"symbols": ["projectAgentActions", "projectAgentComment"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "projectAgentActions.agent",
-				"type": "ProjectAgent"
+				"type": "ProjectAgent",
+				"description": "The current project conversation and the bridge allowed to send its requests.",
+				"examples": [
+					{
+						"workspace": {
+							"projectId": "local-demo"
+						},
+						"runId": "run-1",
+						"messages": [],
+						"said": ""
+					}
+				]
 			},
 			{
 				"name": "projectAgentActions.draft",
-				"type": "RunDraft"
+				"type": "RunDraft",
+				"description": "The selected Plan, Ask or Change mode, the message and the exact discovered model.",
+				"examples": [
+					{
+						"mode": "ask",
+						"provider": "claude",
+						"model": "claude-opus-5-5",
+						"effort": "high",
+						"text": "Explain the toolbar"
+					}
+				]
 			},
 			{
 				"name": "projectAgentComment.agent",
-				"type": "ProjectAgent"
+				"type": "ProjectAgent",
+				"description": "The conversation and verified comment permission of the selected project.",
+				"examples": [
+					{
+						"workspace": {
+							"projectId": "local-demo"
+						},
+						"runId": "run-1",
+						"messages": [],
+						"said": ""
+					}
+				]
 			},
 			{
 				"name": "projectAgentComment.text",
-				"type": "string"
+				"type": "string",
+				"description": "Human comment to save at the entity or project revision currently in view.",
+				"examples": ["The toolbar looks good."]
 			}
 		],
 		"outputs": [
 			{
 				"name": "projectAgentActions",
-				"type": "Promise<boolean>"
+				"type": "Promise<boolean>",
+				"description": "True when a request completes or leaves a saved plan holding its request; false when refused, cancelled or failed.",
+				"examples": [true]
 			},
 			{
 				"name": "projectAgentComment",
-				"type": "Promise<boolean>"
+				"type": "Promise<boolean>",
+				"description": "True after saving the human comment; false if permission or saving fails.",
+				"examples": [true]
 			}
 		],
 		"errors": []
@@ -64,7 +102,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["agent-references"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

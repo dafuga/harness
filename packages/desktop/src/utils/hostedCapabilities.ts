@@ -15,13 +15,13 @@ export function hostedCapabilities(value: unknown, projectId: string): ProjectCa
 		planning: agents,
 		approval: agents,
 		source: 'github',
-		reason:
-			project.role === 'viewer'
-				? 'Read access: browse only.'
-				: agents
-					? 'Write access: comments and AI requests.'
-					: ['owner', 'writer'].includes(String(project.role))
-						? 'Write access. Connect a project executor to run AI.'
-						: 'Comment access: read and leave comments.'
+		reason: hostedReason(project.role, agents)
 	};
+}
+function hostedReason(role: unknown, agents: boolean): string {
+	if (role === 'viewer') return 'Read access: browse only.';
+	if (agents) return 'Write access: comments and AI requests.';
+	if (['owner', 'writer'].includes(String(role)))
+		return 'Write access. Connect a project executor to run AI.';
+	return 'Comment access: read and leave comments.';
 }

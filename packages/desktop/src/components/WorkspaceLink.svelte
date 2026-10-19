@@ -33,4 +33,6 @@
 	}
 </script>
 
+<!-- Paths are validated by Workspace and shared across hosts with different generated route types. -->
+<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
 <a class={style} {href} {title} aria-label={label} onclick={open}>{@render children()}</a>

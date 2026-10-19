@@ -54,16 +54,7 @@ export class AgentHttpAdapter {
 			input,
 			...(changes ? { revision, requestId: crypto.randomUUID() } : {})
 		};
-		if (method === 'startRun') {
-			const key = agentRequestKey(input),
-				pending = this.pending.get(projectId);
-			if (pending && pending.key !== key)
-				throw new Error(
-					'Retry the previous request to establish whether it started before sending another.'
-				);
-			body = pending?.body ?? body;
-			this.pending.set(projectId, { key, body });
-		}
+		body = pendingCall(this.pending, projectId, body);
 		const value = await this.send(projectId, body).catch((cause) => {
 			if (method === 'startRun' && definitiveAgentFailure(cause)) this.pending.delete(projectId);
 			throw cause;
@@ -86,32 +77,51 @@ export class AgentHttpAdapter {
 			})) as {
 				events: Array<{ sequence: number; value: RunEvent }>;
 			};
-			for (const event of value.events) {
-				if (event.value.runId !== runId || event.sequence <= state.after) continue;
-				state.after = event.sequence;
-				for (const listener of this.listeners) listener(event.value);
-				if (['finished', 'failed', 'cancelled'].includes(event.value.kind))
-					this.active.delete(runId);
-			}
+			this.deliver(runId, state, value.events);
 		} catch (cause) {
-			if (definitiveAgentFailure(cause)) {
-				this.active.delete(runId);
-				for (const listener of this.listeners)
-					listener({
-						runId,
-						kind: 'failed',
-						message: 'Access to this run was refused. Refresh project access.'
-					});
-				return;
-			}
-			for (const listener of this.listeners)
-				listener({
-					runId,
-					kind: 'status',
-					phase: 'prompting',
-					detail: 'Reconnecting to the existing run…'
-				});
+			const event = pollingFailure(runId, cause);
+			if (event.kind === 'failed') this.active.delete(runId);
+			for (const listener of this.listeners) listener(event);
+			if (event.kind === 'failed') return;
 		}
 		if (this.active.has(runId)) setTimeout(() => void this.poll(runId), 350);
 	}
+	private deliver(
+		runId: string,
+		state: { after: number },
+		events: Array<{ sequence: number; value: RunEvent }>
+	) {
+		for (const event of events) {
+			if (event.value.runId !== runId || event.sequence <= state.after) continue;
+			state.after = event.sequence;
+			for (const listener of this.listeners) listener(event.value);
+			if (['finished', 'failed', 'cancelled'].includes(event.value.kind)) this.active.delete(runId);
+		}
+	}
+}
+
+function pendingCall(
+	pending: Map<string, { key: string; body: AgentCall }>,
+	projectId: string,
+	body: AgentCall
+): AgentCall {
+	if (body.method !== 'startRun') return body;
+	const key = agentRequestKey(body.input),
+		prior = pending.get(projectId);
+	if (prior && prior.key !== key)
+		throw new Error(
+			'Retry the previous request to establish whether it started before sending another.'
+		);
+	body = prior?.body ?? body;
+	pending.set(projectId, { key, body });
+	return body;
+}
+function pollingFailure(runId: string, cause: unknown): RunEvent {
+	if (definitiveAgentFailure(cause))
+		return {
+			runId,
+			kind: 'failed',
+			message: 'Access to this run was refused. Refresh project access.'
+		};
+	return { runId, kind: 'status', phase: 'prompting', detail: 'Reconnecting to the existing run…' };
 }

@@ -36,16 +36,8 @@ class ProjectAgentState {
 		);
 	}
 	get modes(): ComposeMode[] {
-		return this.allowed
-			? [
-					'plan',
-					'ask',
-					'change',
-					...(this.workspace.capabilities.comments ? ['comment' as const] : [])
-				]
-			: this.workspace.capabilities.comments
-				? ['comment']
-				: [];
+		const comments: ComposeMode[] = this.workspace.capabilities.comments ? ['comment'] : [];
+		return this.allowed ? ['plan', 'ask', 'change', ...comments] : comments;
 	}
 	get approved() {
 		return this.allowed;

@@ -33,8 +33,8 @@ function base(input: ProjectContext): string {
 }
 
 /**
- * Whatever a server states, a hosted project has no agent, plan or approval and is not
- * writable. Commenting is allowed only when the server says so.
+ * Fresh capabilities come from the authenticated server. Missing flags deny access;
+ * Write additionally requires a live executor and the writable branch tip.
  */
 function hosted(snapshot: ProjectSnapshot): ProjectSnapshot {
 	const stated = snapshot.capabilities;

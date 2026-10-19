@@ -50,7 +50,9 @@
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Refuses unknown or missing options, invalid ports and addresses that would expose the preview remotely.",
+				"examples": ["Harness previews bind to 127.0.0.1 only."]
 			}
 		]
 	},

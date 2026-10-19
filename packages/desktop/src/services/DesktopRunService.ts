@@ -87,12 +87,11 @@ export class DesktopRunService {
 	): Promise<Prepared> {
 		const { session, providers, generator, emit } = this;
 		const given = { session, providers, generator, emit };
-		const prepare = (): Promise<Prepared> =>
-			'intent' in request
-				? request.intent === 'task'
-					? prepareProjectTask(given, request, controller)
-					: prepareProjectRun(given, request, controller)
-				: prepareRun(given, request, controller);
+		const prepare = (): Promise<Prepared> => {
+			if (!('intent' in request)) return prepareRun(given, request, controller);
+			if (request.intent === 'task') return prepareProjectTask(given, request, controller);
+			return prepareProjectRun(given, request, controller);
+		};
 		return session.root === null ? prepare() : session.arbiter.exclusive(session.root, prepare);
 	}
 	/** What a run came to. A new plan also names itself, so that what asked for it can open it. */

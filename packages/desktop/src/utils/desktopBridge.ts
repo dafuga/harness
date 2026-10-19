@@ -27,7 +27,8 @@ function exclusive<T>(session: ProjectSessionService, work: () => Promise<T>): P
 	const root = session.requireProject().root;
 	return session.arbiter.exclusive(root, async () => {
 		const release = await repositoryLease(root);
-		if (!release) throw new Error('An agent or planning write is active in another Harness app.');
+		if (!release)
+			throw new Error('Wait for the current run or planning write in this or another Harness app.');
 		try {
 			release.signal.throwIfAborted();
 			const value = await work();

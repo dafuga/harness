@@ -1,3 +1,4 @@
+import { hostedCapabilities } from '../../../desktop/src/utils/hostedCapabilities';
 import type { Actor, CollaborationApi, AddCommentInput } from 'collaboration';
 import type { HubApiRuntime } from '../utils/hubRuntime';
 import type { HubProjectionService } from '../services/HubProjectionService';
@@ -28,7 +29,7 @@ export class HubApiController {
 		}
 	}
 	private async projects(request: Request, actor: Actor) {
-		const parts = new URL(request.url).pathname.split('/').filter(Boolean).map(decodeURIComponent);
+		const parts = requestParts(request);
 		if (parts[1] === 'remote')
 			return new HubRemoteController(this.runtime.remote).handle(request, actor);
 		if (parts[0] !== 'api' || parts[1] !== 'projects') return hubHttp({ error: 'not-found' }, 404);
@@ -74,21 +75,7 @@ async function readProject(c: Context, operation: string): Promise<Response> {
 		return hubHttp({
 			...snapshot,
 			writable: agents && !p.get('commit') && snapshot.revision.atTip,
-			capabilities: {
-				comments: project.role !== 'viewer',
-				agents,
-				planning: agents,
-				approval: agents,
-				source: 'github',
-				reason:
-					project.role === 'viewer'
-						? 'Read access: browse only.'
-						: agents
-							? 'Write access: comments and AI requests.'
-							: ['owner', 'writer'].includes(project.role)
-								? 'Write access. Connect a project executor to run AI.'
-								: 'Comment access: read and leave comments.'
-			}
+			capabilities: hostedCapabilities({ ...project, executionAvailable: agents }, projectId)
 		});
 	}
 	return readEntity(c, operation);
@@ -181,4 +168,8 @@ async function executable(
 		['owner', 'writer'].includes(project.role) &&
 		Boolean(await context.executor?.available(project))
 	);
+}
+
+function requestParts(request: Request) {
+	return new URL(request.url).pathname.split('/').filter(Boolean).map(decodeURIComponent);
 }

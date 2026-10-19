@@ -86,7 +86,7 @@ class WorkspaceState {
 			const loaded = await this.load(route, token);
 			if (!loaded || token !== this.serial) return;
 			const shown = this.show(route, loaded);
-			if (push || shown !== url) (this.onNavigate ?? browserNavigate)(shown, push);
+			if (shouldNavigate(push, shown, url)) (this.onNavigate ?? browserNavigate)(shown, push);
 		} catch (cause) {
 			if (token === this.serial) this.error = String(cause);
 		} finally {
@@ -138,4 +138,8 @@ export type Workspace = WorkspaceState;
 function browserNavigate(shown: string, push: boolean) {
 	if (push) globalThis.history.pushState({}, '', shown);
 	else globalThis.history.replaceState({}, '', shown);
+}
+
+function shouldNavigate(push: boolean, shown: string, asked: string) {
+	return push || shown !== asked;
 }

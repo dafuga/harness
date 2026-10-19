@@ -2,7 +2,7 @@
 	"name": "preview-route-runtime",
 	"goal": "Managed preview keeps server and client route indexes aligned after normal SvelteKit sync.",
 	"createdAt": "2026-10-19T11:47:55.498Z",
-	"updatedAt": "2026-10-19T11:48:46.250Z",
+	"updatedAt": "2026-10-19T12:05:23.248Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T12:00:06.885Z",
+			"evidence": "Committed test 14e16604 fails with real hydration mismatch: red record 77e73281. The valid fixture adds routes in authoring order, then runs the normal sync command."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T12:05:21.980Z",
+			"evidence": "Fix 3ccd1e8b launches managed Vite with Node, matching normal SvelteKit sync without changing the regression corpus."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T12:05:23.248Z",
+			"evidence": "Formal green 57c0f081 at 3ccd1e8b passes the unchanged red command and tests from 14e16604; all eight preview lifecycle checks also pass."
 		},
 		{
 			"id": "verify",

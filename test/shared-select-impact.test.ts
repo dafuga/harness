@@ -1,5 +1,5 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { beforeAll, expect, test } from 'vitest';
 import { HandlerRuntimeAdapter } from '../src/adapters/HandlerRuntimeAdapter';
 import { WorkingTreeAdapter } from '../src/adapters/WorkingTreeAdapter';
@@ -12,8 +12,8 @@ import { scanImports } from '../src/utils/scanImports';
 import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
 
 /**
- * ONE SELECT, NINE CONSUMERS IN TWO APPS. The desktop and the hub import the Select of the
- * reports package through a build alias. This reads this very repository through the index,
+ * ONE SELECT, TEN CONSUMERS IN TWO APPS. The desktop and the hub import the Select of the
+ * reports package through their declared alias or a shared relative import. This reads this very repository through the index,
  * the graph and the impact analysis and holds them to every alias the packages' own builds
  * declare: all that is simulated is the content hash of the one file said to have changed.
  */
@@ -52,7 +52,11 @@ function imports(from: string): Written[] {
 	const found = scanImports(readFileSync(from, 'utf8'), language);
 	return found.flatMap((item) => {
 		const [alias, target] = own.find(([key]) => item.specifier?.startsWith(`${key}/`)) ?? [];
-		if (!alias || !target || !item.specifier) return [];
+		if (!item.specifier) return [];
+		if (!alias || !target) {
+			const to = join(dirname(from), item.specifier);
+			return to === select ? [{ from, specifier: item.specifier, to }] : [];
+		}
 		const path = join('packages', name, target, item.specifier.slice(alias.length + 1));
 		const to = [path, `${path}.ts`].find((candidate) => loaded.index.files.has(candidate));
 		return [{ from, specifier: item.specifier, to }];
@@ -107,13 +111,13 @@ test('no import written through a build alias of any package is left as a packag
 	expect(outside.map((file) => file.path)).toEqual([]);
 });
 
-test('the registry stores Select as a derived dependency of each of its nine consumers, and is not stale', () => {
+test('the registry stores Select as a derived dependency of each of its ten consumers, and is not stale', () => {
 	const units = consumers().map((item) => owner(item.from));
 	expect(units.sort()).toEqual([
 		...['agent-controls', 'agent-settings', 'catalog-view', 'design-panel'].map(
 			(name) => `desktop.component.${name}`
 		),
-		...['project-switcher', 'revision-picker', 'runtime-screens'].map(
+		...['project-switcher', 'remote-approval', 'revision-picker', 'runtime-screens'].map(
 			(name) => `desktop.component.${name}`
 		),
 		...['invitation-form', 'project-create'].map((name) => `hub.component.${name}`)
@@ -207,6 +211,7 @@ test('declaring the Select imports moves those references alone: packages and un
 	expect(moved.filter(([, was, to]) => was !== shared || to !== select)).toEqual([]);
 	expect(moved.map(([from]) => from).sort()).toEqual(
 		consumers()
+			.filter((item) => item.specifier.startsWith(`${shared}/`))
 			.map((item) => item.from)
 			.sort()
 	);

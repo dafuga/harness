@@ -7,7 +7,8 @@ import type { AddressInfo } from 'node:net';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { afterEach, expect, test } from 'vitest';
+import { afterEach, test } from 'vitest';
+import { expect } from '../../../test/verificationExpect';
 const reports = fileURLToPath(new URL('..', import.meta.url));
 const roots: string[] = [],
 	children: ChildProcess[] = [];

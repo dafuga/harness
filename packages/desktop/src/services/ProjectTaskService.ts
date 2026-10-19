@@ -12,7 +12,7 @@ import { bugRepairPolicy } from '../../../../src/utils/bugRepairPolicy';
 /** Executes an explicit project request and reports the registered owners of observed writes. */
 export class ProjectTaskService {
 	async run(context: ProjectTaskContext): Promise<{ summary: string }> {
-		const { request, root, emit, id, signal } = context;
+		const { request, root, signal } = context;
 		const before = await sourceSnapshot(root),
 			host = hostChanges(root);
 		const units = await context.project.source.units(context.revision.commit);

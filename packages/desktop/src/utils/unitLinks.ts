@@ -56,6 +56,7 @@ export function unitLinks(
 	options: { history?: boolean } = {}
 ): (id: string) => UnitLink | null {
 	const view = shown(workspace);
+	const suffix = options.history ? 'history' : null;
 	if (!view) return () => null;
 	const index = indexed(workspace.snapshot!.entities);
 	const loaded = current && current.id === workspace.entity?.id ? current : null;
@@ -70,7 +71,7 @@ export function unitLinks(
 			commit,
 			category,
 			entityId: unit.id,
-			suffix: options.history ? 'history' : null
+			suffix
 		});
 		return { to, name: explorerName(unit), category };
 	};

@@ -9,10 +9,11 @@ export function deviceCapabilities(agents: boolean, comments = true): ProjectCap
 		planning: agents,
 		approval: agents,
 		source: 'local',
-		reason: agents
-			? 'Comments are saved on the computer as pending drafts until connected.'
-			: comments
-				? 'This device was approved to read and comment only.'
-				: 'This device has Read access.'
+		reason: deviceReason(agents, comments)
 	};
+}
+function deviceReason(agents: boolean, comments: boolean): string {
+	if (agents) return 'Comments are saved on the computer as pending drafts until connected.';
+	if (comments) return 'This device was approved to read and comment only.';
+	return 'This device has Read access.';
 }

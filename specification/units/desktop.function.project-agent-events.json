@@ -11,21 +11,42 @@
 		"symbols": ["projectAgentEvents"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "projectAgentEvents.agent",
-				"type": "ProjectAgent"
+				"type": "ProjectAgent",
+				"description": "The project conversation that owns the active run and its visible messages.",
+				"examples": [
+					{
+						"workspace": {
+							"projectId": "local-demo"
+						},
+						"runId": "run-1",
+						"messages": [],
+						"said": ""
+					}
+				]
 			},
 			{
 				"name": "projectAgentEvents.value",
-				"type": "RunEvent"
+				"type": "RunEvent",
+				"description": "Public progress, answer text, changes or terminal result from a specific run.",
+				"examples": [
+					{
+						"runId": "run-1",
+						"kind": "text",
+						"text": "See [[unit:app.component.toolbar]]"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "projectAgentEvents",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Updates only the matching conversation, keeps terminal text and refreshes its project. Resolves without a return value.",
+				"examples": [null]
 			}
 		],
 		"errors": []
@@ -57,7 +78,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["agent-references"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

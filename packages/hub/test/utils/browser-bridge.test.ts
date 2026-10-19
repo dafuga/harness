@@ -41,7 +41,18 @@ const snapshot = {
 };
 function apiOf(answers: Record<string, unknown>) {
 	const get = vi.fn(async (path: string) => answers[path]);
-	const send = vi.fn(async (_method: string, path: string) => answers[path]);
+	const send = vi.fn(async (_method: string, path: string, body: unknown) =>
+		(body as { method?: string })?.method === 'events'
+			? {
+					events: [
+						{
+							sequence: 1,
+							value: { runId: 'run-1', kind: 'finished', summary: 'Done', verified: false }
+						}
+					]
+				}
+			: answers[path]
+	);
 	const bytes = vi.fn(async () => new Uint8Array([1, 2]));
 	return { api: { get, send, bytes } as unknown as BrowserApi, get, send, bytes };
 }
@@ -89,16 +100,16 @@ test('reads use the addresses of the named project and the given revision', asyn
 	expect(await bridge.messages({ ...entity, threadId: 'unknown' })).toEqual([]);
 });
 
-test('whatever the server states, the hosted workspace allows no agent, plan or approval', async () => {
+test('the hosted workspace honors fresh server capabilities and closes unspecified access', async () => {
 	const { api } = apiOf({ [`${base}/snapshot`]: snapshot });
 	const bridge = browserBridge(api);
 	const shown = await bridge.snapshot({ projectId, branch: null, commit: null });
-	expect(shown.writable).toBe(false);
+	expect(shown.writable).toBe(true);
 	expect(shown.capabilities).toEqual({
 		comments: true,
-		agents: false,
-		planning: false,
-		approval: false,
+		agents: true,
+		planning: true,
+		approval: true,
 		source: 'github'
 	});
 	expect(await bridge.capabilities!({ projectId })).toEqual(shown.capabilities);
@@ -111,24 +122,48 @@ test('whatever the server states, the hosted workspace allows no agent, plan or 
 	expect(closed.capabilities?.comments).toBe(false);
 });
 
-test('agent operations are refused without any request', async () => {
-	const { api, get, send, bytes } = apiOf({});
+test('requests without a selected project or writable tip never start agents', async () => {
+	const { api, get, send } = apiOf({});
 	const bridge = browserBridge(api);
-	const refused = [
-		bridge.providers(),
-		bridge.startRun({} as never),
-		bridge.createPlan({} as never),
-		bridge.approve({} as never),
-		bridge.openThread({} as never),
-		bridge.cancelRun({ runId: 'r' })
-	];
-	for (const attempt of refused) await expect(attempt).rejects.toThrow(/runs no agent/);
-	expect(await bridge.openProject()).toBeNull();
-	expect(await bridge.pendingComments!({ projectId })).toEqual([]);
-	expect(bridge.onRunEvent(() => {})()).toBeUndefined();
+	await expect(bridge.providers()).rejects.toThrow(/project/);
+	await expect(bridge.startRun({} as never)).rejects.toThrow(/branch tip/);
+	await expect(bridge.approve({} as never)).rejects.toThrow(/branch tip/);
+	await expect(bridge.createPlan({} as never)).rejects.toThrow(/runs no agent/);
 	expect(get).not.toHaveBeenCalled();
 	expect(send).not.toHaveBeenCalled();
-	expect(bytes).not.toHaveBeenCalled();
+});
+
+test('Write requests use the selected project and shown revision; Read and Comment refuse changes', async () => {
+	const { api, send } = apiOf({
+		[`${base}/snapshot`]: snapshot,
+		[`${base}/agent`]: { runId: 'run-1' }
+	});
+	const bridge = browserBridge(api);
+	await bridge.snapshot({ projectId, branch: null, commit: null });
+	await bridge.startRun({ projectId, text: 'Explain this' } as never);
+	expect(send).toHaveBeenCalledWith(
+		'POST',
+		`${base}/agent`,
+		expect.objectContaining({
+			method: 'startRun',
+			revision: { branch: 'main', commit },
+			requestId: expect.any(String)
+		})
+	);
+	// No listener/polling left active after a terminal result.
+	for (const comments of [false, true]) {
+		const f = apiOf({
+			[`${base}/snapshot`]: {
+				...snapshot,
+				writable: false,
+				capabilities: { comments, agents: false }
+			}
+		});
+		const read = browserBridge(f.api);
+		await read.snapshot({ projectId, branch: null, commit: null });
+		await expect(read.startRun({ projectId } as never)).rejects.toThrow(/branch tip/);
+		expect(f.send).not.toHaveBeenCalled();
+	}
 });
 
 test('a comment is posted without an author and answered by its collaboration commit', async () => {

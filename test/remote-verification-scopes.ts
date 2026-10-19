@@ -31,6 +31,20 @@ export const remoteVerificationScopes: Record<string, VerificationScope> = {
 	'remote-desktop-boundaries': {
 		package: 'desktop',
 		vitest: {
+			'test/adapters/agent-http.test.ts': {
+				'an uncertain start keeps its identity through unrelated errors and retries its original payload':
+					'local-authority',
+				'temporary polling failure retains the run until its confirmed terminal event':
+					'local-authority',
+				'a definitive polling denial stops the run subscription': 'local-authority'
+			},
+			'test/utils/repository-lease.test.ts': {
+				'a repository lease rejects contention and admits a new owner after release':
+					'local-authority',
+				'helper death aborts the lease but its parent fence holds until explicit release':
+					'local-authority'
+			},
+
 			'test/remote-human-approval.test.ts': {
 				'a concurrent valid request cannot replace the phone already displayed': 'human-authority',
 				'approval after project discovery stays bound to the displayed phone': 'human-authority'

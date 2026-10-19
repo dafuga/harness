@@ -11,35 +11,86 @@
 		"symbols": ["ProjectTaskContext", "prepareProjectTask"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "prepareProjectTask.preparation",
-				"type": "Preparation"
+				"type": "Preparation",
+				"description": "The selected project session and its verified model inventory.",
+				"examples": [
+					{
+						"session": "Selected project session",
+						"providers": "Available model providers"
+					}
+				]
 			},
 			{
 				"name": "prepareProjectTask.request",
-				"type": "ProjectTaskRequest"
+				"type": "ProjectTaskRequest",
+				"description": "The question or code request, including its exact project, branch, commit and chosen model.",
+				"examples": [
+					{
+						"intent": "task",
+						"category": "components",
+						"mode": "ask",
+						"projectId": "local-demo",
+						"branch": "main",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"provider": "claude",
+						"model": "claude-opus-5-5",
+						"effort": "high",
+						"text": "Explain the toolbar"
+					}
+				]
 			},
 			{
 				"name": "prepareProjectTask.controller",
-				"type": "AbortController"
+				"type": "AbortController",
+				"description": "Cancellation controller for this one request. A cancelled request never starts the model.",
+				"examples": ["new AbortController()"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "prepareProjectTask",
-				"type": "Promise<ProjectTaskContext>"
+				"type": "Promise<ProjectTaskContext>",
+				"description": "A checked execution context with the chosen runner, project root, revision and cancellation signal.",
+				"examples": [
+					{
+						"id": "run-1",
+						"root": "/projects/atlas",
+						"revision": {
+							"branch": "main",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+						},
+						"request": {
+							"intent": "task",
+							"category": "components",
+							"mode": "ask",
+							"projectId": "local-demo",
+							"branch": "main",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"provider": "claude",
+							"model": "claude-opus-5-5",
+							"effort": "high",
+							"text": "Explain the toolbar"
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Refuses another project, a historical or changed revision, or a model that is unavailable.",
+				"examples": ["The project revision changed. Refresh before asking the agent."]
 			},
 			{
 				"name": "RunCancelled",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Stops preparation when the request was cancelled before the model could start.",
+				"examples": ["Request cancelled"]
 			}
 		]
 	},
@@ -75,7 +126,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["agent-references"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

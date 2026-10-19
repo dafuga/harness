@@ -87,28 +87,11 @@ export class ConsoleBridgeAdapter {
 		if (!this.running) return;
 		try {
 			const value = await this.request('events', { after: this.sequence });
-			if (value.gap && value.replay[this.runId]) {
-				const replay = value.replay[this.runId];
-				for (const listener of this.listeners) {
-					listener({
-						runId: this.runId,
-						kind: 'replay',
-						text: replay.text,
-						detail: 'Reconnected. Earlier output may be shortened. ' + replay.detail
-					});
-					if (replay.terminal) listener(replay.terminal);
-				}
-				if (replay.terminal) this.running = false;
-				this.sequence = value.sequence;
-			}
-			for (const event of value.events as Array<{ sequence: number; value: RunEvent }>) {
-				if (event.sequence <= this.sequence) continue;
-				this.sequence = event.sequence;
-				for (const listener of this.listeners) listener(event.value);
-				if (
-					event.value.runId === this.runId &&
-					['finished', 'failed', 'cancelled'].includes(event.value.kind)
-				)
+			const progress = consoleProgress(this.runId, this.sequence, value);
+			this.sequence = progress.sequence;
+			for (const event of progress.events) {
+				for (const listener of this.listeners) listener(event);
+				if (event.runId === this.runId && ['finished', 'failed', 'cancelled'].includes(event.kind))
 					this.running = false;
 			}
 		} catch {
@@ -144,4 +127,31 @@ async function consoleRequest(body: {
 			status: response.status
 		});
 	return value;
+}
+
+interface EventBatch {
+	gap?: boolean;
+	sequence: number;
+	events: Array<{ sequence: number; value: RunEvent }>;
+	replay: Record<string, { text: string; detail: string; terminal?: RunEvent }>;
+}
+function consoleProgress(runId: string, after: number, value: EventBatch) {
+	const events: RunEvent[] = [];
+	const replay = value.replay?.[runId];
+	if (value.gap && replay) {
+		events.push({
+			runId,
+			kind: 'replay',
+			text: replay.text,
+			detail: 'Reconnected. Earlier output may be shortened. ' + replay.detail
+		});
+		if (replay.terminal) events.push(replay.terminal);
+		after = value.sequence;
+	}
+	for (const event of value.events) {
+		if (event.sequence <= after) continue;
+		after = event.sequence;
+		events.push(event.value);
+	}
+	return { events, sequence: after };
 }

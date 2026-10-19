@@ -18,7 +18,9 @@
 				"name": "initializePreview.args",
 				"type": "string[]",
 				"description": "Launch options from the dev command.",
-				"examples": [["--port", "5688"]]
+				"examples": [
+					["--port", "5688"]
+				]
 			}
 		],
 		"outputs": [
@@ -67,7 +69,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["local-project-chat"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

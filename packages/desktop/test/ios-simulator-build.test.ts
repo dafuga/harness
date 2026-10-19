@@ -22,7 +22,7 @@ async function simulatorBuild(args: string[]) {
 				(error, stdout, stderr) =>
 					done({
 						error: error && typeof error.code !== 'number' ? error : null,
-						status: error ? (typeof error.code === 'number' ? error.code : null) : 0,
+						status: exitStatus(error),
 						output: `${stdout ?? ''}${stderr ?? ''}`
 					})
 			);
@@ -69,3 +69,8 @@ test.skipIf(unavailable)(
 	},
 	20000
 );
+
+function exitStatus(error: (Error & { code?: string | number | null }) | null): number | null {
+	if (!error) return 0;
+	return typeof error.code === 'number' ? error.code : null;
+}
