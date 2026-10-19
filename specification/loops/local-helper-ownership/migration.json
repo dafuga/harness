@@ -2642,8 +2642,8 @@
 				"symbol": "provideBrowser"
 			},
 			"from": "packages/hub/src/utils/browserApi.ts",
-			"to": "packages/hub/src/routes/-layout/browserApi.ts",
-			"ownerSource": "packages/hub/src/routes/-layout/browserContext.ts",
+			"to": "packages/hub/src/routes/browserApi.ts",
+			"ownerSource": "packages/hub/src/routes/browserContext.ts",
 			"definition": "ac94dbe02057303f8cfecc0f88fe57d9651bd7c927dec4ab9b005fa8279d5560"
 		},
 		{
@@ -2665,8 +2665,8 @@
 				"unit": "hub.layout.root"
 			},
 			"from": "packages/hub/src/utils/browserContext.ts",
-			"to": "packages/hub/src/routes/-layout/browserContext.ts",
-			"ownerSource": "packages/hub/src/routes/-layout/+layout.svelte",
+			"to": "packages/hub/src/routes/browserContext.ts",
+			"ownerSource": "packages/hub/src/routes/+layout.svelte",
 			"definition": "2df27c8366b2c003c128a96f2040952622458a7f063a5823c938ad7e5cee63b8"
 		},
 		{
@@ -2700,8 +2700,8 @@
 				"symbol": "provideBrowser"
 			},
 			"from": "packages/hub/src/utils/browserProjects.ts",
-			"to": "packages/hub/src/routes/-layout/browserProjects.ts",
-			"ownerSource": "packages/hub/src/routes/-layout/browserContext.ts",
+			"to": "packages/hub/src/routes/browserProjects.ts",
+			"ownerSource": "packages/hub/src/routes/browserContext.ts",
 			"definition": "a4736734ebfb130a15a9f24522cdcb64ba85a94351bb818c4f9745f5e1b20983"
 		},
 		{
@@ -2848,8 +2848,8 @@
 				"symbol": "hubRuntime"
 			},
 			"from": "packages/hub/src/utils/hubCache.ts",
-			"to": "packages/hub/src/routes/api/[...path]/-server/hubCache.ts",
-			"ownerSource": "packages/hub/src/routes/api/[...path]/-server/hubRuntime.ts",
+			"to": "packages/hub/src/routes/api/[...path]/hubCache.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/hubRuntime.ts",
 			"definition": "9002427017a2fccd6cb547c0176373aaa6c605f800ad63dc4ec72c92b5f2ce13"
 		},
 		{
@@ -3161,8 +3161,8 @@
 				"unit": "hub.endpoint.api-path"
 			},
 			"from": "packages/hub/src/utils/hubRateLimit.ts",
-			"to": "packages/hub/src/routes/api/[...path]/-server/hubRateLimit.ts",
-			"ownerSource": "packages/hub/src/routes/api/[...path]/-server/+server.ts",
+			"to": "packages/hub/src/routes/api/[...path]/hubRateLimit.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/+server.ts",
 			"definition": "02bc32f0a0495cd5d056675aea124977d188f64eb927a47b9665a1d78855829c"
 		},
 		{
@@ -3173,8 +3173,8 @@
 				"symbol": "hubRuntime"
 			},
 			"from": "packages/hub/src/utils/hubRemote.ts",
-			"to": "packages/hub/src/routes/api/[...path]/-server/hubRemote.ts",
-			"ownerSource": "packages/hub/src/routes/api/[...path]/-server/hubRuntime.ts",
+			"to": "packages/hub/src/routes/api/[...path]/hubRemote.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/hubRuntime.ts",
 			"definition": "7ea22b6aba48f8b6e1fbdf3794e74d661e97b5e05aaf436697a1ff5fd1280b0b"
 		},
 		{
@@ -3184,8 +3184,8 @@
 				"unit": "hub.endpoint.api-path"
 			},
 			"from": "packages/hub/src/utils/hubRuntime.ts",
-			"to": "packages/hub/src/routes/api/[...path]/-server/hubRuntime.ts",
-			"ownerSource": "packages/hub/src/routes/api/[...path]/-server/+server.ts",
+			"to": "packages/hub/src/routes/api/[...path]/hubRuntime.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/+server.ts",
 			"definition": "440a3361df4b54e9ef4daa5c055a83aa103d84c92503e6e5c21b541ad671b133"
 		},
 		{
@@ -3287,8 +3287,8 @@
 				"symbol": "createPlanning"
 			},
 			"from": "packages/planning/src/utils/planGit.ts",
-			"to": "packages/planning/src/index/planGit.ts",
-			"ownerSource": "packages/planning/src/index/index.ts",
+			"to": "packages/planning/src/lib/planning/planGit.ts",
+			"ownerSource": "packages/planning/src/lib/planning/index.ts",
 			"definition": "37ff6fa29d5106b2a3c6f6140638a972269472569f6d819884db70a2389bf3ed"
 		},
 		{
@@ -4457,8 +4457,8 @@
 				"symbol": "load"
 			},
 			"from": "packages/reports/src/utils/reportDestination.ts",
-			"to": "packages/reports/src/routes/harness/reports/[id]/-page-server/reportDestination.ts",
-			"ownerSource": "packages/reports/src/routes/harness/reports/[id]/-page-server/+page.server.ts",
+			"to": "packages/reports/src/routes/harness/reports/[id]/reportDestination.ts",
+			"ownerSource": "packages/reports/src/routes/harness/reports/[id]/+page.server.ts",
 			"definition": "2bcc5ced1e1609fb6cf5c03b64bfa635ddac93840e2964c2a1dc06e92c962092"
 		},
 		{
@@ -4512,8 +4512,8 @@
 				"unit": "reports.endpoint.api-health"
 			},
 			"from": "packages/reports/src/utils/reportHttp.ts",
-			"to": "packages/reports/src/routes/api/health/-server/reportHttp.ts",
-			"ownerSource": "packages/reports/src/routes/api/health/-server/+server.ts",
+			"to": "packages/reports/src/routes/api/health/reportHttp.ts",
+			"ownerSource": "packages/reports/src/routes/api/health/+server.ts",
 			"definition": "5469e6afa39a78a9bbb60bfa771b1f13205b542500ae86f7d12ef45b86d53b0b"
 		},
 		{
@@ -4523,8 +4523,8 @@
 				"unit": "reports.endpoint.api-reports-id-type-file"
 			},
 			"from": "packages/reports/src/utils/reportHttp.ts",
-			"to": "packages/reports/src/routes/api/reports/[id]/[type]/[file]/-server/reportHttp.ts",
-			"ownerSource": "packages/reports/src/routes/api/reports/[id]/[type]/[file]/-server/+server.ts",
+			"to": "packages/reports/src/routes/api/reports/[id]/[type]/[file]/reportHttp.ts",
+			"ownerSource": "packages/reports/src/routes/api/reports/[id]/[type]/[file]/+server.ts",
 			"definition": "9f85dd5c607c36bbd083b79f7dd4fd36b4b90dd72592a41c01cd79294b55f1a5"
 		},
 		{
@@ -4622,8 +4622,8 @@
 				"unit": "reports.endpoint.api-project-activity"
 			},
 			"from": "packages/reports/src/utils/siteActivity.ts",
-			"to": "packages/reports/src/routes/api/project-activity/-server/siteActivity.ts",
-			"ownerSource": "packages/reports/src/routes/api/project-activity/-server/+server.ts",
+			"to": "packages/reports/src/routes/api/project-activity/siteActivity.ts",
+			"ownerSource": "packages/reports/src/routes/api/project-activity/+server.ts",
 			"definition": "1af573fa573e9278c2b1d5eb97bec2f45f3d8f26638e5086c60101528bc5da16"
 		},
 		{
@@ -4633,8 +4633,8 @@
 				"unit": "reports.endpoint.api-analytics-cpu"
 			},
 			"from": "packages/reports/src/utils/siteProcesses.ts",
-			"to": "packages/reports/src/routes/api/analytics-cpu/-server/siteProcesses.ts",
-			"ownerSource": "packages/reports/src/routes/api/analytics-cpu/-server/+server.ts",
+			"to": "packages/reports/src/routes/api/analytics-cpu/siteProcesses.ts",
+			"ownerSource": "packages/reports/src/routes/api/analytics-cpu/+server.ts",
 			"definition": "641680746a0692ceac4dcbeba0786b2ac866ac293f80fc13ac244f613b045eae"
 		},
 		{
@@ -4681,6 +4681,36 @@
 			"to": "packages/reports/src/utils/audio-asset/wavInfo.ts",
 			"ownerSource": "packages/reports/src/utils/audio-asset/audioAsset.ts",
 			"definition": "3e608b11fda68a63840c573cd64dad234fcb8ea203632fb46b1867269cff9669"
+		}
+	],
+	"publicRoutes": [
+		{
+			"unit": "hub.layout.root",
+			"source": "packages/hub/src/routes/+layout.svelte"
+		},
+		{
+			"unit": "hub.endpoint.api-path",
+			"source": "packages/hub/src/routes/api/[...path]/+server.ts"
+		},
+		{
+			"unit": "reports.page.harness-reports-id",
+			"source": "packages/reports/src/routes/harness/reports/[id]/+page.server.ts"
+		},
+		{
+			"unit": "reports.endpoint.api-health",
+			"source": "packages/reports/src/routes/api/health/+server.ts"
+		},
+		{
+			"unit": "reports.endpoint.api-reports-id-type-file",
+			"source": "packages/reports/src/routes/api/reports/[id]/[type]/[file]/+server.ts"
+		},
+		{
+			"unit": "reports.endpoint.api-project-activity",
+			"source": "packages/reports/src/routes/api/project-activity/+server.ts"
+		},
+		{
+			"unit": "reports.endpoint.api-analytics-cpu",
+			"source": "packages/reports/src/routes/api/analytics-cpu/+server.ts"
 		}
 	]
 }

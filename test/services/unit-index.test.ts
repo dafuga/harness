@@ -31,6 +31,14 @@ test('recorded source moves retain definitions, owner-local placement and regist
 		if (unit.id !== move.unit || !unit.owns.source.includes(move.to))
 			gaps.push(`${move.name}: registered identity lost`);
 	}
+	for (const route of migration.publicRoutes) {
+		if (!existsSync(resolve(root, route.source)))
+			gaps.push(`${route.unit}: public route filename moved`);
+		const unit = JSON.parse(
+			readFileSync(resolve(root, `specification/units/${route.unit}.json`), 'utf8')
+		) as ComponentManifest;
+		if (!unit.owns.source.includes(route.source)) gaps.push(`${route.unit}: route ownership lost`);
+	}
 	expect(migration.helpers).toHaveLength(411);
 	expect(
 		gaps,
