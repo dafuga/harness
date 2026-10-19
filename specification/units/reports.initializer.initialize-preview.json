@@ -9,8 +9,8 @@
 	"documentation": "packages/reports/specification/features/planned/managed-preview-server.md",
 	"owns": {
 		"source": [
-			"packages/reports/src/lib/initialize-preview/initializePreview.ts",
-			"packages/reports/src/initializers/initializePreview.ts"
+			"packages/reports/src/initializers/initializePreview.ts",
+			"packages/reports/src/lib/initialize-preview/initializePreview.ts"
 		],
 		"symbols": ["initializePreview", "initializePreview"]
 	},

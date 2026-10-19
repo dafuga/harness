@@ -8,13 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/core/exports.ts", "src/workflows/generate-code/exports.ts"],
-		"symbols": [
-			"ExportPlan",
-			"applyExports",
-			"appendMissingExports",
-			"applyExports",
-			"appendMissingExports"
-		]
+		"symbols": ["ExportPlan", "applyExports", "appendMissingExports", "ExportPlan"]
 	},
 	"contract": {
 		"origin": "declared",

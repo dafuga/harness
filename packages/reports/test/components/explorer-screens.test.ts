@@ -33,7 +33,9 @@ const mounted = Object.fromEntries(
 /** The components a file imports, by name. */
 const imported = (file: string): string[] =>
 	[...readFileSync(file, 'utf8').matchAll(/from '[^']*\/(\w+)\.svelte'/g)].map((found) => found[1]);
-const files = readdirSync(home, { recursive: true }).filter((file) => file.endsWith('.svelte'));
+const files = readdirSync(home, { recursive: true, encoding: 'utf8' }).filter((file) =>
+	file.endsWith('.svelte')
+);
 const own = (name: string) =>
 	join(home, files.find((file) => file.split('/').at(-1) === `${name}.svelte`) ?? `${name}.svelte`);
 const direct = (name: string) => imported(own(name));

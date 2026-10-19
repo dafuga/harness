@@ -8,8 +8,8 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
-			"packages/desktop/src/initializers/initializeDesktop.ts"
+			"packages/desktop/src/initializers/initializeDesktop.ts",
+			"packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts"
 		],
 		"symbols": ["initializeDesktop", "initializeDesktop"]
 	},
