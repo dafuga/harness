@@ -28,7 +28,7 @@
 			{
 				"name": "ExplorerFunctionCard",
 				"type": "markup",
-				"description": "An example invocation and compact open icon. Documented input values take priority over field samples; missing samples remain named variables. No title, description or contract panel is displayed."
+				"description": "One clickable example invocation without a separate arrow, title or description. Documented input values take priority over field samples; missing samples remain named variables."
 			}
 		],
 		"errors": []
@@ -36,11 +36,6 @@
 	"dependencies": [
 		{
 			"unit": "reports.component.harness-entity-link",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-harness-icon",
 			"via": "import",
 			"origin": "derived"
 		},

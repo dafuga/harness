@@ -70,8 +70,20 @@ function rowOf(entity: ExplorerEntity, related: ExplorerRelations): CatalogRow {
 	};
 }
 
+/** The callable name shown on a function card, before its example arguments. */
+export function functionName(unit: CatalogRow['entity']['unit']): string {
+	return (
+		unit.contract.inputs[0]?.name.split('.').slice(0, -1).join('.') ||
+		unit.owns.symbols.find((symbol) => /^[a-z_$]/.test(symbol)) ||
+		unit.owns.symbols[0] ||
+		unit.title
+	);
+}
+
+const sortName = (row: CatalogRow) =>
+	row.entity.category === 'functions' ? functionName(row.entity.unit) : row.name;
 const byName = (left: CatalogRow, right: CatalogRow) =>
-	left.name.localeCompare(right.name, 'en', { sensitivity: 'base' });
+	sortName(left).localeCompare(sortName(right), 'en', { sensitivity: 'base' });
 
 /**
  * One collection of the explorer: the entities of a category, each with the name, the
