@@ -192,3 +192,17 @@ test('capabilities that cannot be read close every write', async () => {
 		approval: false
 	});
 });
+
+test('a refreshed account list clears a removed shared project and all of its actions', async () => {
+	const bridge = bridgeOf({ shared: 'main' });
+	const store = connected(bridge);
+	await store.navigate('/projects/shared/harness/pages');
+	store.capabilities = { ...open, source: 'github' };
+	bridge.listProjects.mockResolvedValue([]);
+	await store.loadProjects();
+	expect(store.projects).toEqual([]);
+	expect(store.snapshot, 'removed shared project is no longer rendered').toBeNull();
+	expect(store.entity).toBeNull();
+	expect(store.capabilities.agents).toBe(false);
+	expect(store.capabilities.comments).toBe(false);
+});

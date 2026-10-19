@@ -116,3 +116,47 @@ test('an invitation asks for sign-in and the code, then opens the project', asyn
 	expect(accepted[0].path).toBe(`/api/projects/${atlas}/invitations/${invitation}/accept`);
 	expect(state.calls.filter((call) => JSON.stringify(call.query).includes(code))).toEqual([]);
 });
+
+test('the same Google account automatically discovers owned and joined projects on another open device', async ({
+	page,
+	browser,
+	baseURL
+}) => {
+	const state = await hostedFixture(page);
+	const joined = state.data.projects.pop()!;
+	const context = await browser.newContext({ baseURL });
+	try {
+		const other = await context.newPage();
+		const second = await hostedFixture(other, { data: state.data });
+		await page.goto('/');
+		await other.goto('/');
+		await expect(other.getByRole('link', { name: 'Open Atlas', exact: true })).toBeVisible();
+		state.data.projects.push(joined, {
+			...state.data.projects[0],
+			id: invitation,
+			name: 'New owned project'
+		});
+		await other.evaluate(() => window.dispatchEvent(new Event('focus')));
+		if (process.env.TAKE_SCREENSHOT === 'true') {
+			await other.evaluate(() => document.fonts.ready);
+			await other.screenshot({
+				path: `/tmp/harness-google-project-sync-${process.env.SCREENSHOT_LABEL ?? 'proof'}.png`
+			});
+		}
+		await expect(other.getByRole('link', { name: 'Open Borealis', exact: true })).toBeVisible();
+		await expect(
+			other.getByRole('link', { name: 'Open New owned project', exact: true })
+		).toBeVisible();
+		state.data.projects.splice(0, 1);
+		await other.evaluate(() => window.dispatchEvent(new Event('focus')));
+		await expect(other.getByRole('link', { name: 'Open Atlas', exact: true })).toHaveCount(0);
+		second.signedIn = false;
+		await other.evaluate(() => window.dispatchEvent(new Event('focus')));
+		await expect(
+			other.getByRole('heading', { name: 'Sign in to Harness', exact: true })
+		).toBeVisible();
+		await expect(other.getByRole('link', { name: 'Open Borealis', exact: true })).toHaveCount(0);
+	} finally {
+		await context.close();
+	}
+});
