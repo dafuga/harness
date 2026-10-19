@@ -19,6 +19,26 @@ test('a collection lists the entities of its category by the name a person reads
 		'Search box'
 	]);
 	expect(rows('pages').map((row) => row.id)).toEqual([ids.page]);
+	const original = explorerEntities(head).find((entity) => entity.id === ids.filter)!;
+	const functions = ['zebra', 'Alpha', 'beta'].map((name, index) => ({
+		...original,
+		id: name,
+		name: ['A title', 'Z title', 'M title'][index],
+		unit: {
+			...original.unit,
+			contract: { ...original.unit.contract, inputs: [{ name: `${name}.value`, type: 'string' }] }
+		}
+	}));
+	const sorted = entityCatalog(functions, 'functions', () => explorerRelations(head, ids.filter));
+	expect(
+		sorted.map((row) => row.id),
+		'default order follows the displayed function name'
+	).toEqual(['Alpha', 'beta', 'zebra']);
+	expect(catalogFilter(sorted, { ...filter, order: 'name-desc' }).map((row) => row.id)).toEqual([
+		'zebra',
+		'beta',
+		'Alpha'
+	]);
 	const shown = rows('components').map(({ entity: _entity, ...row }) => row);
 	expect(JSON.stringify(shown)).not.toMatch(/src\/|\.ts"|OrderList/);
 });

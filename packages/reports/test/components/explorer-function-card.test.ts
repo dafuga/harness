@@ -16,7 +16,8 @@ test('function catalog cards stay concise and retain revision links without deta
 		expect(words(card)).not.toContain('Returns the orders');
 		expect(words(card)).not.toMatch(/Contract|Inputs|Output|Used by|View tests|Shared|Changed/);
 		expect(count(body, /class="hx-verdict/g)).toBe(0);
-		expect(body).toContain('aria-label="Open function"');
+		expect(count(card, /<a\b/g), 'only the function call opens its page').toBe(1);
+		expect(card).not.toMatch(/<svg|ex-function-open/);
 		const commit = mode === 'current' ? '' : `/commit/${commits.middle}`;
 		expect(body).toContain(`/branch/feature%2Forders${commit}/functions/${ids.filter}`);
 		expect(body).not.toContain('tab=tests');

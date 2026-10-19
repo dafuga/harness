@@ -82,9 +82,9 @@ for (const [name, size] of Object.entries(viewports)) {
 					'filterOrders(orders, "SERVICE")'
 				);
 				await expect(cards.locator('h2, p, img')).toHaveCount(0);
-				const action = cards.getByRole('link', { name: 'Open function', exact: true });
-				expect((await action.innerText()).trim()).toBe('');
-				expect(await action.boundingBox()).toMatchObject({ width: 36, height: 36 });
+				await expect(cards.locator('svg'), 'function cards have no arrow').toHaveCount(0);
+				const action = cards.getByRole('link');
+				await expect(action).toHaveCount(1);
 				await action.press('Enter');
 				expect(await where(tab)).toMatchObject({ category, entity: ids.filter, commit: null });
 				await tab.getByRole('tab', { name: 'Contract', exact: true }).click();

@@ -72,7 +72,7 @@ test('a selected commit lists what it added, and what it removed from its first 
 	await page.goto(at('main', commits.removed, 'functions'));
 	await checkpoint(page, 'catalog-removed');
 	await expect(named(page, 'Extra')).toBeVisible();
-	await named(page, 'Extra').getByRole('link', { name: 'Open function', exact: true }).click();
+	await named(page, 'Extra').getByRole('link').click();
 	await expect(
 		page.getByRole('button', { name: 'Removed at this commit', exact: true })
 	).toBeVisible();
@@ -158,7 +158,7 @@ test.describe('a registry of several hundred units', () => {
 		await search(page).fill('generated 477');
 		await expect(cards(page)).toHaveCount(1);
 		expect(await fits(page)).toBe(true);
-		await cards(page).getByRole('link', { name: 'Open function', exact: true }).click();
+		await cards(page).getByRole('link').click();
 		await expectPath(page, tip('main', 'functions/function.generated-477'));
 	});
 });
