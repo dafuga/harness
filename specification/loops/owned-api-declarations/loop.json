@@ -2,11 +2,9 @@
 	"name": "owned-api-declarations",
 	"goal": "Package declarations for owner-local cross-workspace SDK functions without changing public import paths",
 	"createdAt": "2026-10-19T19:16:10.963Z",
-	"updatedAt": "2026-10-19T19:19:39.059Z",
+	"updatedAt": "2026-10-19T19:20:59.316Z",
 	"template": "regression-prevention",
-	"templateLineage": [
-		"regression-prevention"
-	],
+	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -48,12 +46,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T19:20:34.158Z",
+			"evidence": "Unchanged isolated packaged API type coverage passes at c8e23662. Green affe51bae03f7265207e6eca3fd5863348f2d52642305b52aa2322beeb6c1fa5 pairs with test-only red ef3d9e4c15822784fa815fbc053d05f5708ff1cb21dbad0fa0782a20952d9095 using the same test corpus, command and environment."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T19:20:59.316Z",
+			"evidence": "An isolated archive of c8e23662 ran the unchanged declaration guard. Reintroducing the old builder failed the public API type-build assertion; restoring the fixed builder passed. Logs: /tmp/harness-owned-api-guard-{red,green}.log. The test itself isolates all declaration writes outside live and frozen source."
 		},
 		{
 			"id": "verify",
