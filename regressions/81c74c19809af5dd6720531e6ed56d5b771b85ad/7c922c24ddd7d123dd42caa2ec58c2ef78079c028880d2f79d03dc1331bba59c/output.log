@@ -1,0 +1,170 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [6.10s]
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+Loading svelte-check in workspace: /private/tmp/harness-snapshot-VhwCOA/packages/reports
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+$ playwright test --config src/config/shellPlaywrightConfig.ts "tests/e2e/explorer-shell.spec.ts" --grep "branch with its tip" --timeout "10000"
+
+Running 3 tests using 1 worker
+
+  ✘  1 tests/e2e/explorer-shell.spec.ts:125:2 › the branch with its tip and the viewed commit are told apart at desktop width (219ms)
+  ✘  2 tests/e2e/explorer-shell.spec.ts:125:2 › the branch with its tip and the viewed commit are told apart at tablet width (145ms)
+  ✘  3 tests/e2e/explorer-shell.spec.ts:125:2 › the branch with its tip and the viewed commit are told apart at mobile width (142ms)
+
+
+  1) tests/e2e/explorer-shell.spec.ts:125:2 › the branch with its tip and the viewed commit are told apart at desktop width 
+
+    Error: compact revision row
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 48
+    Received:    93.375
+
+       at support/shellChecks.ts:24
+
+      22 | 	const row = within.locator('.hx-revision, .revision-picker');
+      23 | 	const bounds = await box(row);
+    > 24 | 	expect(bounds.height, 'compact revision row').toBeLessThanOrEqual(48);
+         | 	                                              ^
+      25 | 	expect(bounds.width, 'bounded revision width').toBeLessThanOrEqual(380);
+      26 | 	const fields = ['Branch', 'Commit'].map((name) => combo(within, name));
+      27 | 	for (const field of fields) expect((await box(field)).height).toBeLessThanOrEqual(36);
+        at compactRevision (/private/tmp/harness-snapshot-VhwCOA/packages/reports/tests/e2e/support/shellChecks.ts:24:48)
+        at /private/tmp/harness-snapshot-VhwCOA/packages/reports/tests/e2e/explorer-shell.spec.ts:132:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-the-branch--7a8d7-told-apart-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-branch--7a8d7-told-apart-at-desktop-width/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-branch--7a8d7-told-apart-at-desktop-width/error-context.md
+
+  2) tests/e2e/explorer-shell.spec.ts:125:2 › the branch with its tip and the viewed commit are told apart at tablet width 
+
+    Error: compact revision row
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 48
+    Received:    73
+
+       at support/shellChecks.ts:24
+
+      22 | 	const row = within.locator('.hx-revision, .revision-picker');
+      23 | 	const bounds = await box(row);
+    > 24 | 	expect(bounds.height, 'compact revision row').toBeLessThanOrEqual(48);
+         | 	                                              ^
+      25 | 	expect(bounds.width, 'bounded revision width').toBeLessThanOrEqual(380);
+      26 | 	const fields = ['Branch', 'Commit'].map((name) => combo(within, name));
+      27 | 	for (const field of fields) expect((await box(field)).height).toBeLessThanOrEqual(36);
+        at compactRevision (/private/tmp/harness-snapshot-VhwCOA/packages/reports/tests/e2e/support/shellChecks.ts:24:48)
+        at /private/tmp/harness-snapshot-VhwCOA/packages/reports/tests/e2e/explorer-shell.spec.ts:132:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-the-branch--5ba6a--told-apart-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-branch--5ba6a--told-apart-at-tablet-width/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-branch--5ba6a--told-apart-at-tablet-width/error-context.md
+
+  3) tests/e2e/explorer-shell.spec.ts:125:2 › the branch with its tip and the viewed commit are told apart at mobile width 
+
+    Error: compact revision row
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 48
+    Received:    203.75
+
+       at support/shellChecks.ts:24
+
+      22 | 	const row = within.locator('.hx-revision, .revision-picker');
+      23 | 	const bounds = await box(row);
+    > 24 | 	expect(bounds.height, 'compact revision row').toBeLessThanOrEqual(48);
+         | 	                                              ^
+      25 | 	expect(bounds.width, 'bounded revision width').toBeLessThanOrEqual(380);
+      26 | 	const fields = ['Branch', 'Commit'].map((name) => combo(within, name));
+      27 | 	for (const field of fields) expect((await box(field)).height).toBeLessThanOrEqual(36);
+        at compactRevision (/private/tmp/harness-snapshot-VhwCOA/packages/reports/tests/e2e/support/shellChecks.ts:24:48)
+        at /private/tmp/harness-snapshot-VhwCOA/packages/reports/tests/e2e/explorer-shell.spec.ts:132:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-the-branch--4f473--told-apart-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-branch--4f473--told-apart-at-mobile-width/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-branch--4f473--told-apart-at-mobile-width/error-context.md
+
+  3 failed
+    tests/e2e/explorer-shell.spec.ts:125:2 › the branch with its tip and the viewed commit are told apart at desktop width 
+    tests/e2e/explorer-shell.spec.ts:125:2 › the branch with its tip and the viewed commit are told apart at tablet width 
+    tests/e2e/explorer-shell.spec.ts:125:2 › the branch with its tip and the viewed commit are told apart at mobile width 
+error: script "test:shell" exited with code 1
+[WebServer] $ bun run sync:shared && vite dev --host 127.0.0.1 --port 5799 --strictPort --port "5796"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+[WebServer] ▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+[WebServer] 
+[WebServer]     tsconfig.json:2:12:
+[WebServer]       2 │   "extends": "./.svelte-kit/tsconfig.json",
+[WebServer]         ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[WebServer] 
+
+Running 1 test using 1 worker
+
+  ✘  1 tests/e2e/ui-workspace.spec.ts:16:1 › designless Plan preserves truthful status and branch/commit paths (918ms)
+
+
+  1) tests/e2e/ui-workspace.spec.ts:16:1 › designless Plan preserves truthful status and branch/commit paths 
+
+    Error: compact revision row
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 48
+    Received:    76
+
+       at ../../../reports/tests/e2e/support/shellChecks.ts:24
+
+      22 | 	const row = within.locator('.hx-revision, .revision-picker');
+      23 | 	const bounds = await box(row);
+    > 24 | 	expect(bounds.height, 'compact revision row').toBeLessThanOrEqual(48);
+         | 	                                              ^
+      25 | 	expect(bounds.width, 'bounded revision width').toBeLessThanOrEqual(380);
+      26 | 	const fields = ['Branch', 'Commit'].map((name) => combo(within, name));
+      27 | 	for (const field of fields) expect((await box(field)).height).toBeLessThanOrEqual(36);
+        at compactRevision (/private/tmp/harness-snapshot-VhwCOA/packages/reports/tests/e2e/support/shellChecks.ts:24:48)
+        at /private/tmp/harness-snapshot-VhwCOA/packages/desktop/tests/e2e/ui-workspace.spec.ts:20:2
+
+    Error Context: test-results/ui-workspace-designless-Pl-25b78-tus-and-branch-commit-paths/error-context.md
+
+  1 failed
+    tests/e2e/ui-workspace.spec.ts:16:1 › designless Plan preserves truthful status and branch/commit paths 
