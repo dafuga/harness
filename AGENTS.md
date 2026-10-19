@@ -15,6 +15,17 @@ This is a Harness CLI project. Treat Harness as the operating contract for every
 - Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `harness audit`.
 - An agent that works here says so: `bun run dev -- activity register --label <who> --task <what> --units <ids>`, then `activity heartbeat <id>` as it goes (or `HARNESS_AGENT_ID=<id>` on its Harness commands) and `activity finish <id>` at the end. `bun run dev -- info activity` has the rules.
 
+## Harness Project Change Communication
+
+These rules apply only to this Harness repository, including requests made in an external coding chat.
+
+- Treat a request here as a Harness-managed change, using the same project and revision context, registered units, contracts, generators, regression flow, permissions, approval requirements and evidence standards as the app's chat. Existing explicit user authorization still applies.
+- Before editing, link the affected registered entity pages or relevant sections and briefly explain the intended change and why each unit needs to be touched. Read its contract, Used In and Uses; distinguish direct edits from dependencies being checked.
+- Keep those links in progress updates and questions. If another unit must change, explain that addition before editing it; a dependency graph alone does not authorize unrelated work.
+- At handoff, link each changed unit and its History section, explain what changed and why, and identify its actual commits and verification results. Distinguish newly run proof, inherited evidence and unresolved checks.
+- Resolve links from real registered ids at the selected branch or commit. Use each unit's actual kind: page, component, shell, function, service or config. For an artifact without an explorer page, explicitly identify that gap and link its source; never invent an entity link or call backend code a visual component.
+- Keep execution attribution truthful: this chat does not automatically create an app conversation or run. Report an in-app thread, run or approval only when that record actually exists; continue registering external work through Harness activity.
+
 ## Bug and Regression Loops
 
 - Commit the strengthened failing test before product repair. Run `harness loop record <loop> --phase red --test <path> --command <command> --assertion <actual failure>` on that commit. Make a separate fix commit and run `loop record --phase green` against the same tests, fixtures, command and environment. Keep both commits when landing; never squash away this regression history. Focused red/green proof does not replace full verification.
