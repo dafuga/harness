@@ -2,7 +2,7 @@
 	"name": "shared-helper-export-syntax",
 	"goal": "Recognize standalone exported helper arrows without mistaking parenthesized values for functions.",
 	"createdAt": "2026-10-19T15:37:21.894Z",
-	"updatedAt": "2026-10-19T15:38:14.557Z",
+	"updatedAt": "2026-10-19T15:39:51.615Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T15:39:51.615Z",
+			"evidence": "83f6c459 passes the unchanged source-shape matrix after failure at 3dd02df7. Typed and single-argument arrows appear; values, private functions, classes and feature-local paths do not. Missing historical files remain explicit gaps."
 		},
 		{
 			"id": "verify",
