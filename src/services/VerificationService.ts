@@ -1,3 +1,4 @@
+import { verificationProgress } from '../utils/verificationProgress';
 import type { ImpactReport } from '../core/impactTypes';
 import type { ScenarioManifest } from '../core/unitTypes';
 import type { VerifyConfig } from '../core/verifyTypes';
@@ -60,6 +61,7 @@ export class VerificationService {
 			testTimeoutMs: context.testTimeoutMs
 		});
 		const executed = await this.snapshotRun(directory).execute(plan, this.artifactPaths());
+		verificationProgress(context.env, { phase: 'record', status: 'started' });
 		const scenarios = rerun.map((scenario) => this.judge(scenario, executed));
 		const assembly = new RecordAssemblyService({
 			...context,
@@ -68,6 +70,7 @@ export class VerificationService {
 		});
 		const record = await assembly.assemble({ startedAt, executed, scenarios, referenced });
 		await this.store.save(record, directory);
+		verificationProgress(context.env, { phase: 'record', status: 'finished', id: record.id });
 		return { record, directory };
 	}
 

@@ -1,3 +1,4 @@
+import { verificationProgress } from '../utils/verificationProgress';
 import { SnapshotAdapter } from '../adapters/SnapshotAdapter';
 import { verifyConfigFile, type VerifyConfig } from '../core/verifyTypes';
 import type { BuiltArtifacts } from '../utils/unitMeasurements';
@@ -41,13 +42,14 @@ export class SnapshotRunService {
 
 	async execute(plan: PlannedCheck[], artifactPaths: string[] = []): Promise<Executed> {
 		const { root, config, context } = this.run;
+		verificationProgress(context.env, {
+			phase: 'snapshot',
+			status: 'started',
+			checks: plan.length
+		});
 		const snapshot = await SnapshotAdapter.create(root, context.commit, config.outputs);
 		const seen = { mutated: new Set<string>(), added: new Set<string>() };
-		const observe = async (): Promise<void> => {
-			const drift = await snapshot.drift();
-			for (const path of drift.mutated) seen.mutated.add(path);
-			for (const path of drift.added) seen.added.add(path);
-		};
+
 		try {
 			for (const path of config.link) await snapshot.link(root, path);
 			const runner = new CheckRunService({ ...context, snapshot: snapshot.directory });
@@ -55,11 +57,11 @@ export class SnapshotRunService {
 			const setupFailures = misdeclared.length > 0 ? misdeclared : await this.setup(runner);
 			const tools = setupFailures.length > 0 ? [] : await this.tools(runner, setupFailures);
 			const compiled = await this.identities.declared(snapshot.directory, config.builds);
-			await observe();
+			await this.observe(snapshot, seen);
 			const outcomes: CheckOutcome[] = [];
 			for (const check of setupFailures.length > 0 ? [] : plan) {
 				outcomes.push(await runner.run(check));
-				await observe();
+				await this.observe(snapshot, seen);
 			}
 			const artifacts = await built(snapshot, artifactPaths);
 			const [mutated, added] = [[...seen.mutated].sort(), [...seen.added].sort()];
@@ -67,10 +69,23 @@ export class SnapshotRunService {
 			const builds = config.builds.length > 0 ? { builds: compiled.found } : {};
 			const buildFailures = [...compiled.failures, ...moved];
 			const observed = { outcomes, mutated, added, setupFailures, tools, artifacts };
+			verificationProgress(context.env, { phase: 'snapshot', status: 'finished' });
 			return { ...observed, ...builds, buildFailures };
 		} finally {
 			await snapshot.remove();
 		}
+	}
+
+	private async observe(
+		snapshot: SnapshotAdapter,
+		seen: { mutated: Set<string>; added: Set<string> }
+	): Promise<void> {
+		const { env } = this.run.context;
+		verificationProgress(env, { phase: 'drift', status: 'started' });
+		const drift = await snapshot.drift();
+		verificationProgress(env, { phase: 'drift', status: 'finished' });
+		for (const path of drift.mutated) seen.mutated.add(path);
+		for (const path of drift.added) seen.added.add(path);
 	}
 
 	/** A declared tool that cannot say what it is counts as failed setup: nothing runs after it. */

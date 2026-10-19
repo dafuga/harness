@@ -1,4 +1,5 @@
 import { readFile } from 'node:fs/promises';
+import { verificationProgress } from '../utils/verificationProgress';
 import { join, relative } from 'node:path';
 import type { VerificationRecord } from '../core/verificationTypes';
 import { gatherCaptures, type Gathered } from '../utils/gatherCaptures';
@@ -36,15 +37,7 @@ export class CheckRunService {
 		const slug = check.id.replace(/[^\w.-]+/g, '-');
 		const leaf = check.scenario ? check.name : slug;
 		const evidencePath = `evidence/${commit}/${check.scenario ?? 'checks'}/${leaf}`;
-		const result = await runIsolated({
-			command: 'sh',
-			args: ['-c', check.command],
-			cwd: join(this.context.snapshot, check.cwd),
-			env: this.environment(check, join(directory, evidencePath)),
-			timeoutMs: check.timeoutMs,
-			log: join(directory, 'logs', `${slug}.log`),
-			maxLogBytes
-		});
+		const result = await this.execute(check, evidencePath, slug);
 		// Nothing a stopped check wrote is trusted: a timeout yields no captures at all.
 		const captures = result.timedOut
 			? { gathered: [], failures: [] }
@@ -65,9 +58,35 @@ export class CheckRunService {
 		};
 	}
 
+	private async execute(
+		check: PlannedCheck,
+		evidencePath: string,
+		slug: string
+	): Promise<IsolatedResult> {
+		const { directory } = this.context;
+		verificationProgress(this.context.env, { phase: 'check', status: 'started', id: check.id });
+		const result = await runIsolated({
+			command: 'sh',
+			args: ['-c', check.command],
+			cwd: join(this.context.snapshot, check.cwd),
+			env: this.environment(check, join(directory, evidencePath)),
+			timeoutMs: check.timeoutMs,
+			log: join(directory, 'logs', `${slug}.log`),
+			maxLogBytes
+		});
+		verificationProgress(this.context.env, {
+			phase: 'check',
+			status: result.status,
+			id: check.id,
+			durationMs: Math.round(result.durationMs)
+		});
+		return result;
+	}
+
 	/** What a declared tool says it is: the first line it prints, or undefined when it fails. */
 	async version(tool: { id: string; command: string }): Promise<string | undefined> {
 		const log = join(this.context.directory, 'logs', `tool-${tool.id}.log`);
+		verificationProgress(this.context.env, { phase: 'tool', status: 'started', id: tool.id });
 		const result = await runIsolated({
 			command: 'sh',
 			args: ['-c', tool.command],
@@ -77,6 +96,7 @@ export class CheckRunService {
 			log,
 			maxLogBytes
 		});
+		verificationProgress(this.context.env, { phase: 'tool', status: result.status, id: tool.id });
 		if (result.status !== 'passed') return undefined;
 		const printed = await readFile(log, 'utf8').catch(() => '');
 		return printed

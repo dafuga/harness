@@ -1,4 +1,5 @@
 import { resolve } from 'node:path';
+import { verificationProgress } from '../utils/verificationProgress';
 import { GitAdapter } from '../adapters/GitAdapter';
 import { fail } from '../core/errors';
 import {
@@ -50,8 +51,16 @@ async function resolveCommit(git: GitAdapter, reference: string): Promise<string
 async function provenBase(git: GitAdapter, commit: string, base: string | undefined) {
 	const parent = base ?? (await git.attempt(['rev-parse', '--verify', '--quiet', `${commit}^`]));
 	const requestedBase = !parent || parent === 'none' ? null : await resolveCommit(git, parent);
+	verificationProgress(process.env, { phase: 'history', status: 'started' });
 	await new EvidenceRestoreService(git.root).restore();
+	verificationProgress(process.env, { phase: 'history', status: 'finished' });
+	verificationProgress(process.env, { phase: 'base', status: 'started' });
 	const proven = await new TrustedBaseService(git.root).nearestRecord(requestedBase);
+	verificationProgress(process.env, {
+		phase: 'base',
+		status: 'finished',
+		id: proven?.commit ?? 'none'
+	});
 	return { requestedBase, proven };
 }
 
@@ -63,11 +72,15 @@ export async function verifyRun(options: VerifyOptions = {}): Promise<StoredReco
 	const commit = await resolveCommit(git, options.commit ?? 'HEAD');
 	const { requestedBase, proven } = await provenBase(git, commit, options.base);
 	const baseCommit = proven?.commit ?? null;
+	verificationProgress(process.env, { phase: 'index', status: 'started' });
 	const { base, head } = await openRange({ root, base: baseCommit ?? 'none', head: commit });
+	verificationProgress(process.env, { phase: 'index', status: 'finished' });
+	verificationProgress(process.env, { phase: 'impact', status: 'started' });
 	const runtime = new UnitRuntimeService(root).kernel(runtimeKind(options.runtime));
 	const impact = await new ImpactService(runtime)
 		.compute(base, head)
 		.finally(() => runtime.close());
+	verificationProgress(process.env, { phase: 'impact', status: 'finished' });
 	return new VerificationService({
 		root,
 		commit,
