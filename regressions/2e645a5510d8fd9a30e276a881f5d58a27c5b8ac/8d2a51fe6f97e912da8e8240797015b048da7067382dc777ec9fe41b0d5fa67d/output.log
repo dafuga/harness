@@ -1,0 +1,172 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [13.13s]
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-p0pLzF/packages/reports
+
+ ❯ test/utils/entity-catalog.test.ts (7 tests | 1 failed) 24ms
+   × a collection lists the entities of its category by the name a person reads 18ms
+     → owner names remain searchable when cards show callable names: expected [] to deeply equal [ 'Alpha' ]
+   ✓ a component says which pages it is used on and which components it contains 1ms
+   ✓ a page counts the components it contains and a service names its targets 1ms
+   ✓ changed is what the commit changed itself, and the verdict is the one it was given 1ms
+   ✓ search reads names and purposes, changed only keeps changes, and an order sorts 1ms
+   ✓ a list of names is none, one name, or the first and how many more 0ms
+   ✓ shared helper rows require source exports, list every callable and keep owner links 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/entity-catalog.test.ts > a collection lists the entities of its category by the name a person reads
+AssertionError: owner names remain searchable when cards show callable names: expected [] to deeply equal [ 'Alpha' ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [[39m
+[32m-   "Alpha",[39m
+[32m- ][39m
+[31m+ [][39m
+
+ ❯ test/utils/entity-catalog.test.ts:46:4
+     44|   catalogFilter(sorted, { ...filter, search: 'Z title' }).map((row) =>…
+     45|   'owner names remain searchable when cards show callable names'
+     46|  ).toEqual(['Alpha']);
+       |    ^
+     47|  const shown = rows('components').map(({ entity: _entity, ...row }) =>…
+     48|  expect(JSON.stringify(shown)).not.toMatch(/src\/|\.ts"|OrderList/);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  16:44:35
+   Duration  618ms (transform 92ms, setup 0ms, collect 112ms, tests 24ms, environment 0ms, prepare 60ms)
+
+
+Running 3 tests using 1 worker
+
+  ✘  1 test/entity-preview-actions.spec.ts:145:2 › the console keeps a loaded revision responsive at desktop width (5.8s)
+  ✘  2 test/entity-preview-actions.spec.ts:145:2 › the console keeps a loaded revision responsive at tablet width (5.5s)
+  ✘  3 test/entity-preview-actions.spec.ts:145:2 › the console keeps a loaded revision responsive at mobile width (5.5s)
+
+
+  1) test/entity-preview-actions.spec.ts:145:2 › the console keeps a loaded revision responsive at desktop width 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  getByRole('status').filter({ hasText: 'functions shown' })
+    Expected: "1 of 1001 functions shown"
+    Received: "0 of 1001 functions shown"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveText" getByRole('status').filter({ hasText: 'functions shown' }) with timeout 5000ms
+      - waiting for getByRole('status').filter({ hasText: 'functions shown' })
+        14 × locator resolved to <p role="status" class="ex-hidden">0 of 1001 functions shown</p>
+           - unexpected value "0 of 1001 functions shown"
+
+
+      165 | 		const searchStart = await tab.evaluate(() => performance.now());
+      166 | 		await tab.getByRole('searchbox', { name: 'Search functions' }).fill('generated 999');
+    > 167 | 		await expect(tab.getByRole('status').filter({ hasText: 'functions shown' })).toHaveText(
+          | 		                                                                             ^
+      168 | 			'1 of 1001 functions shown'
+      169 | 		);
+      170 | 		const searchMs = (await tab.evaluate(() => performance.now())) - searchStart;
+        at /private/tmp/harness-snapshot-p0pLzF/packages/reports/test/entity-preview-actions.spec.ts:167:80
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-the-0c635-responsive-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-the-0c635-responsive-at-desktop-width/error-context.md
+
+  2) test/entity-preview-actions.spec.ts:145:2 › the console keeps a loaded revision responsive at tablet width 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  getByRole('status').filter({ hasText: 'functions shown' })
+    Expected: "1 of 1001 functions shown"
+    Received: "0 of 1001 functions shown"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveText" getByRole('status').filter({ hasText: 'functions shown' }) with timeout 5000ms
+      - waiting for getByRole('status').filter({ hasText: 'functions shown' })
+        14 × locator resolved to <p role="status" class="ex-hidden">0 of 1001 functions shown</p>
+           - unexpected value "0 of 1001 functions shown"
+
+
+      165 | 		const searchStart = await tab.evaluate(() => performance.now());
+      166 | 		await tab.getByRole('searchbox', { name: 'Search functions' }).fill('generated 999');
+    > 167 | 		await expect(tab.getByRole('status').filter({ hasText: 'functions shown' })).toHaveText(
+          | 		                                                                             ^
+      168 | 			'1 of 1001 functions shown'
+      169 | 		);
+      170 | 		const searchMs = (await tab.evaluate(() => performance.now())) - searchStart;
+        at /private/tmp/harness-snapshot-p0pLzF/packages/reports/test/entity-preview-actions.spec.ts:167:80
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-the-9cc51--responsive-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-the-9cc51--responsive-at-tablet-width/error-context.md
+
+  3) test/entity-preview-actions.spec.ts:145:2 › the console keeps a loaded revision responsive at mobile width 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  getByRole('status').filter({ hasText: 'functions shown' })
+    Expected: "1 of 1001 functions shown"
+    Received: "0 of 1001 functions shown"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveText" getByRole('status').filter({ hasText: 'functions shown' }) with timeout 5000ms
+      - waiting for getByRole('status').filter({ hasText: 'functions shown' })
+        14 × locator resolved to <p role="status" class="ex-hidden">0 of 1001 functions shown</p>
+           - unexpected value "0 of 1001 functions shown"
+
+
+      165 | 		const searchStart = await tab.evaluate(() => performance.now());
+      166 | 		await tab.getByRole('searchbox', { name: 'Search functions' }).fill('generated 999');
+    > 167 | 		await expect(tab.getByRole('status').filter({ hasText: 'functions shown' })).toHaveText(
+          | 		                                                                             ^
+      168 | 			'1 of 1001 functions shown'
+      169 | 		);
+      170 | 		const searchMs = (await tab.evaluate(() => performance.now())) - searchStart;
+        at /private/tmp/harness-snapshot-p0pLzF/packages/reports/test/entity-preview-actions.spec.ts:167:80
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-the-23653--responsive-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-the-23653--responsive-at-mobile-width/error-context.md
+
+  3 failed
+    test/entity-preview-actions.spec.ts:145:2 › the console keeps a loaded revision responsive at desktop width 
+    test/entity-preview-actions.spec.ts:145:2 › the console keeps a loaded revision responsive at tablet width 
+    test/entity-preview-actions.spec.ts:145:2 › the console keeps a loaded revision responsive at mobile width 
