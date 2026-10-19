@@ -1,8 +1,7 @@
 import { expect, test, type Page } from '../../../../test/support/browserTest';
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { generatedUnits } from '../../scripts/harness-scale-data';
 import { at, branch, checkpoint, commit, expectPath, explorer, tip } from './support/explorer';
-import { home, seeded } from './support/harnessHistory';
+import { seeded } from './support/harnessHistory';
 import { fits, screens, sharedField, typed } from './support/sharedSelect';
 
 const { commits, keptBranch } = seeded();
@@ -22,10 +21,13 @@ test('a catalog is searchable, and a click on a listed entity opens it in the sa
 	page
 }) => {
 	await page.goto(at('main', commits.approved, 'functions'));
-	await expect(shown(page)).toHaveText('2 of 2 functions shown');
+	await expect(shown(page)).toHaveText('1 of 1 functions shown');
 	await search(page).fill('slug');
-	await expect(shown(page)).toHaveText('1 of 2 functions shown');
+	await expect(shown(page)).toHaveText('1 of 1 functions shown');
 	await expect(cards(page)).toHaveCount(1);
+	await expect(cards(page).locator('code')).toHaveText(/^slugify\(/);
+	await expect(cards(page).getByRole('heading')).toHaveCount(0);
+	await expect(cards(page).getByRole('button')).toHaveCount(0);
 	await checkpoint(page, 'catalog-search');
 	// The title itself is clicked, as a reader does, not an address that the test put together.
 	await titled(page).click();
@@ -44,12 +46,12 @@ test('the keyboard reaches the controls, changes the order and opens an entity',
 	await sharedField(order(page));
 	await typed(page, order(page), 'Order: Name (Z');
 	await page.getByRole('button', { name: 'Done', exact: true }).click();
-	await expect(cards(page).first()).toHaveAttribute('aria-label', 'Slugify');
+	await expect(cards(page).first()).toHaveAttribute('aria-label', 'slugify');
 	await page.getByRole('button', { name: 'Filters', exact: true }).click();
 	await changedOnly(page).focus();
 	await page.keyboard.press('Space');
 	await page.getByRole('button', { name: 'Done', exact: true }).click();
-	await expect(shown(page)).toHaveText('0 of 2 functions shown');
+	await expect(shown(page)).toHaveText('0 of 1 functions shown');
 	await page.getByRole('button', { name: 'Filters', exact: true }).click();
 	await changedOnly(page).focus();
 	await page.keyboard.press('Space');
@@ -59,27 +61,24 @@ test('the keyboard reaches the controls, changes the order and opens an entity',
 	await expectPath(page, at('main', commits.approved, `functions/${units.slugify}`));
 });
 
-test('a selected commit lists what it added, and what it removed from its first parent', async ({
+test('private helpers stay off the shared catalog while their historical pages remain reachable', async ({
 	page
 }) => {
-	await page.goto(at('main', commits.approved, 'functions'));
-	await expect(named(page, 'Extra')).toHaveCount(0);
+	for (const selected of [commits.approved, commits.added, commits.removed, commits.reordered]) {
+		await page.goto(at('main', selected, 'functions'));
+		await expect(shown(page)).toHaveText('1 of 1 functions shown');
+		await expect(named(page, 'extra')).toHaveCount(0);
+	}
 	await page.goto(at('main', commits.added, 'functions'));
 	await page.getByRole('button', { name: 'Filters', exact: true }).click();
 	await changedOnly(page).click();
 	await page.getByRole('button', { name: 'Done', exact: true }).click();
-	await expect(cards(page)).toHaveAttribute('aria-label', 'Extra');
-	await page.goto(at('main', commits.removed, 'functions'));
+	await expect(shown(page)).toHaveText('0 of 1 functions shown');
+	await page.goto(at('main', commits.removed, 'functions/function.extra'));
 	await checkpoint(page, 'catalog-removed');
-	await expect(named(page, 'Extra')).toBeVisible();
-	await named(page, 'Extra').getByRole('link').click();
 	await expect(
 		page.getByRole('button', { name: 'Removed at this commit', exact: true })
 	).toBeVisible();
-	// The commit after the removal no longer holds it, and nothing is carried over.
-	await page.goto(at('main', commits.reordered, 'functions'));
-	await expect(shown(page)).toHaveText('2 of 2 functions shown');
-	await expect(named(page, 'Extra')).toHaveCount(0);
 });
 
 test('a commit nobody verified still marks what its source changed, and proves none of it', async ({
@@ -91,9 +90,9 @@ test('a commit nobody verified still marks what its source changed, and proves n
 	await changedOnly(page).click();
 	await page.getByRole('button', { name: 'Done', exact: true }).click();
 	await checkpoint(page, 'catalog-unverified-change');
-	await expect(cards(page)).toHaveAttribute('aria-label', 'Clock');
-	await expect(cards(page).first().locator('.hx-verdict')).toHaveCount(0);
-	await titled(page).click();
+	await expect(shown(page)).toHaveText('0 of 1 functions shown');
+	await page.goto(tip('main', 'services/service.clock?tab=uses'));
+	await page.locator('a[href*="/functions/function.clock"]').click();
 	await expect(
 		page.locator('.ex-head').getByRole('button', { name: 'Evidence missing', exact: true })
 	).toBeVisible();
@@ -127,12 +126,7 @@ for (const [screen, width, height] of screens) {
 
 test.describe('a registry of several hundred units', () => {
 	test.use({ baseURL: scale });
-	const stored = JSON.parse(
-		readFileSync(join(home, 'scale/revisions', `${commits.sourceOnly}.json`), 'utf8')
-	) as { registry: { units: Array<{ kind: string; status: string }> } };
-	const functions = stored.registry.units.filter(
-		(unit) => unit.status === 'active' && ['function', 'kernel'].includes(unit.kind)
-	).length;
+	const functions = generatedUnits + 1; // All synthetic helpers plus the shared source helper.
 
 	test('stays searchable, ordered and keyboard operable', async ({ page }) => {
 		expect(functions).toBeGreaterThan(400);
@@ -146,7 +140,7 @@ test.describe('a registry of several hundred units', () => {
 		await page.getByRole('button', { name: 'Filters', exact: true }).click();
 		await typed(page, order(page), 'Order: Name (Z');
 		await page.getByRole('button', { name: 'Done', exact: true }).click();
-		await expect(cards(page).first()).toHaveAttribute('aria-label', 'Generated 309');
+		await expect(cards(page).first()).toHaveAttribute('aria-label', 'unit309');
 		await titled(page).focus();
 		await page.keyboard.press('Enter');
 		await expectPath(page, tip('main', 'functions/function.generated-309'));

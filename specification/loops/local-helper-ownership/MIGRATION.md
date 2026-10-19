@@ -1098,3 +1098,9 @@ The same move review distinguishes source-relative and compiled-output-relative 
 Public SDK imports retain their existing addresses. Three portable SDK modules now reference owner-local implementations under Reports, so declaration generation includes the complete transitive source layout inside `dist/types`. Generated forwarding entries preserve the published `dist/types/lib` type paths. The runtime bundler still checks the Web entries for platform portability.
 
 The existing API builder supports `--types-only` for the standardized packaged API guard. Its isolated source fixture checks public declaration paths before a full application or kernel build, and the empty installed consumer imports and uses the console SDK with strict type checking. This detects cross-workspace declaration failures earlier without adding another workflow.
+
+## Browser fixture maintenance
+
+The installed-package checks passed, but the concurrent browser guard repeated outdated catalog expectations until its timeout: it expected private Clock/Extra helpers in the shared list and used owner titles for function call labels. The standardized catalog scenarios now assert the requested shared-only list, private historical-page reachability, callable labels and keyboard navigation. Synthetic scale rows carry explicitly synthetic callable metadata rather than copying a different helper's identity.
+
+The browser-run fixture now asks Playwright to stop at the first failure while retaining its JSON diagnostics. Passing runs keep every repetition and assertion. This prevents one stale assertion from being repeated dozens of times before being reported. The generated browser-cache reference follows the moved fixture file's new module-relative address.

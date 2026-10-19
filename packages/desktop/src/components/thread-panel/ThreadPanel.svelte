@@ -8,8 +8,7 @@
 	import { createThreadRunStore } from '../../lib/stores/threadRun.svelte';
 	import { pendingEntries, requestEntry, threadInfo } from './commentEntries';
 	import type { ThreadEntry } from '../../utils/commentEntries';
-	import { composeModes } from './composeModes';
-	import { visualCategory, type RunDraft } from '../../utils/composeModes';
+	import { composeModes, visualCategory, type RunDraft } from '../../utils/composeModes';
 	import { designTarget, otherOption, shownApproval, threadAnchor } from './threadAnchor';
 	import type { ThreadTarget } from '../../utils/threadAnchor';
 	import ApprovalButton from '../ApprovalButton.svelte';
@@ -159,6 +158,7 @@
 		return true;
 	}
 </script>
+
 <aside class="thread-panel" aria-label="Design conversation">
 	<div class="row">
 		<h2>{explorerName(entity)} · {heading}</h2>

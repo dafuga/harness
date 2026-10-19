@@ -83,7 +83,7 @@
 		},
 		{
 			"from": "packages/reports/src/utils/e2e-fixtures/e2eFixtures.ts",
-			"specifier": "../../../../.cache/reports-e2e/",
+			"specifier": "../../../../../.cache/reports-e2e/",
 			"external": "browser-run-build",
 			"reason": "Where a browser run keeps its copy of the finished build: a generated directory in the checkout cache, never source."
 		},
