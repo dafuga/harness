@@ -66,10 +66,24 @@ function callableSymbol(source: Source, match: RegExpExecArray): Located {
 function variableSymbol(source: Source, match: RegExpExecArray): Located {
 	const after = match.index + match[0].length;
 	const rest = source.masked.slice(after, after + 400);
-	const arrow = /^\s*=\s*(?:async\s*)?(?:<[^>(]*>\s*)?\(/.exec(rest);
+	const assignment = rest.search(/=(?!>)/);
+	const initializer = assignment === -1 ? '' : rest.slice(assignment + 1);
+	const arrow = /^\s*(?:async\s*)?(?:<[^>(]*>\s*)?\(/.exec(initializer);
 	if (arrow) {
-		const signature = signatureAt(source, after + arrow[0].length - 1, match[1]);
-		return { index: match.index, name: match[1], kind: 'function', ...signature };
+		const open = after + assignment + arrow[0].length;
+		const close = closingGroup(source.nesting, open);
+		if (/^\s*(?::[\s\S]*?)?=>/.test(source.masked.slice(close + 1))) {
+			const signature = signatureAt(source, open, match[1]);
+			return { index: match.index, name: match[1], kind: 'function', ...signature };
+		}
+	}
+	const single = /^\s*(?:async\s+)?([\w$]+)\s*=>/.exec(initializer);
+	if (single) {
+		return {
+			...plain(match, match[1], 'function'),
+			inputs: [{ name: `${match[1]}.${single[1]}`, type: 'unknown' }],
+			output: 'unknown'
+		};
 	}
 	const typed = /^\s*:\s*([^=]+?)\s*=(?!>)/.exec(rest);
 	const output = typed ? normalizeType(source.code.slice(after, after + typed[0].length - 1)) : '';

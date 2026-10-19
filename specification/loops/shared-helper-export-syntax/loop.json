@@ -2,7 +2,7 @@
 	"name": "shared-helper-export-syntax",
 	"goal": "Recognize standalone exported helper arrows without mistaking parenthesized values for functions.",
 	"createdAt": "2026-10-19T15:37:21.894Z",
-	"updatedAt": "2026-10-19T15:37:23.692Z",
+	"updatedAt": "2026-10-19T15:38:14.557Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T15:38:08.738Z",
+			"evidence": "3dd02df7: unchanged metadata source-shape matrix fails: typed and single-parameter arrows are missing and a parenthesized constant is falsely callable."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T15:38:14.557Z",
+			"evidence": "Export scanning reads past variable type annotations and checks for the arrow token; parenthesized value expressions remain constants. Both parenthesized and single-parameter helper arrows retain their signatures."
 		},
 		{
 			"id": "green",
