@@ -10,11 +10,15 @@
 	function invocation(unit: CatalogRow['entity']['unit']): string {
 		const inputs = unit.contract.inputs;
 		const owner = inputs[0]?.name.split('.').slice(0, -1).join('.');
-		const name = owner || unit.owns.symbols.find((symbol) => /^[a-z_$]/.test(symbol)) || unit.owns.symbols[0];
+		const name =
+			owner || unit.owns.symbols.find((symbol) => /^[a-z_$]/.test(symbol)) || unit.owns.symbols[0];
 		const documented = unit.documentation?.examples[0]?.input;
-		const values = documented && typeof documented === 'object' && !Array.isArray(documented)
-			? documented as Record<string, unknown> : {};
-		const args = inputs.filter((input) => !owner || input.name.startsWith(`${owner}.`))
+		const values =
+			documented && typeof documented === 'object' && !Array.isArray(documented)
+				? (documented as Record<string, unknown>)
+				: {};
+		const args = inputs
+			.filter((input) => !owner || input.name.startsWith(`${owner}.`))
 			.map((input) => {
 				const parameter = input.name.split('.').at(-1)!;
 				if (Object.hasOwn(values, parameter)) return JSON.stringify(values[parameter]);
@@ -28,7 +32,11 @@
 </script>
 
 <article class="ex-function-tile" aria-label={row.name}>
-	<EntityLink {to} {nav} title="Example usage; arguments without recorded sample values remain named variables.">
+	<EntityLink
+		{to}
+		{nav}
+		title="Example usage; arguments without recorded sample values remain named variables."
+	>
 		<code>{call}</code>
 	</EntityLink>
 	<EntityLink {to} {nav} class="hx-action gold ex-function-open" label={open} title={open}>
@@ -55,7 +63,11 @@
 		overflow: auto;
 		white-space: pre-wrap;
 		overflow-wrap: anywhere;
-		font: 0.9rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+		font:
+			0.9rem/1.6 ui-monospace,
+			SFMono-Regular,
+			Menlo,
+			monospace;
 	}
 	.ex-function-tile :global(.ex-function-open) {
 		grid-column: 2;

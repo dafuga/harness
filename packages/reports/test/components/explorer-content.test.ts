@@ -58,7 +58,9 @@ test('configs and services keep columns; component and function grids expose no 
 	const functions = content('commit', { category: 'functions' });
 	expect(count(functions, /<article\b/g)).toBe(1);
 	expect(count(functions, /<img\b/g)).toBe(0);
-	expect(words(functions)).not.toMatch(source);
+	// Function symbols now appear in usage calls; source paths and component symbols stay hidden.
+	expect(words(functions)).not.toMatch(/src\/|\+page\.svelte|\.ts\b|OrdersPage/);
+	expect(words(functions)).toContain('filterOrders(orders, "SERVICE")');
 	expect(words(functions)).not.toMatch(banned);
 });
 

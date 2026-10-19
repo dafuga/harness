@@ -51,7 +51,7 @@
 			{
 				"name": "catalogFilter.filter",
 				"type": "CatalogFilter",
-				"description": "Search text, changed-only flag and supported ordering choice. Search matches name and purpose case-insensitively after trimming."
+				"description": "Search text, changed-only flag and ordering. Search matches name, purpose and function symbols case-insensitively after trimming."
 			},
 			{
 				"name": "listed.names",

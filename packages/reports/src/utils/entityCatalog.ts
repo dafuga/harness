@@ -112,7 +112,11 @@ export function catalogFilter(rows: CatalogRow[], filter: CatalogFilter): Catalo
 		.filter(
 			(row) => !filter.usage || filter.usage === 'all' || row.shared === (filter.usage === 'shared')
 		)
-		.filter((row) => !wanted || `${row.name} ${row.summary}`.toLowerCase().includes(wanted))
+		.filter((row) => {
+			const symbols =
+				row.entity.category === 'functions' ? row.entity.unit.owns.symbols.join(' ') : '';
+			return !wanted || `${row.name} ${row.summary} ${symbols}`.toLowerCase().includes(wanted);
+		})
 		.sort(orders[filter.order]);
 }
 

@@ -2,7 +2,7 @@
 	"name": "function-call-cards",
 	"goal": "Function list cards show linked example invocations instead of titles and descriptions, preserving revision scope and small responsive grids",
 	"createdAt": "2026-10-19T14:17:22.503Z",
-	"updatedAt": "2026-10-19T14:21:04.066Z",
+	"updatedAt": "2026-10-19T14:22:16.998Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T14:22:16.998Z",
+			"evidence": "7854a4e6: the same unchanged browser matrix and 9 rendering tests pass in an isolated snapshot. Same command/environment and test inputs as the committed failing step; after screenshots retained."
 		},
 		{
 			"id": "verify",
