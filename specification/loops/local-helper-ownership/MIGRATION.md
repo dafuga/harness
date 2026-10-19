@@ -1133,3 +1133,11 @@ A static scan of utility forwarding exports and owner-level initializers found o
 - A current memory sample attributed 0.952 GiB RSS to 24 Harness working-directory/tool processes; shared Codex/browser hosts are excluded and peak memory was not measured. Checks/builds/cache prebuilds run serially.
 
 Full verification steps remain pending because the three baseline type/lint failures above remain unresolved. No claim is made that the repository-wide check is green or that this working branch has been merged to main.
+
+## Final web preview proof
+
+Managed preview 5688 was reused. Its cache now retains 454 revisions and ten legacy records with no ancestry problems. All 454 revision metadata files were refreshed from their exact Git trees; assertions preserved every non-helper field, record and media reference, and backups remain in `/tmp/harness-complete-consumer-cache-backup-20261019`.
+
+In the in-app browser at `0e6cb50`, the catalog reports 422 of 422 functions. Filtering `activityReading` returns zero matches; `activityTime` remains available. Its detail relationships open Activity freshness directly, whose Source tab shows `packages/reports/src/components/activity-agents/activityReading.ts` and its retained compatibility entry. No new browser errors were recorded. Fresh screenshots were inspected after fonts and visible images were ready; generated captures remain outside Git.
+
+Final root formatting, type checks, lint, registry check, CLI build and public API/declaration build pass. The working branch remains `dafuga/regression-commit-history`; main and production were not changed.
