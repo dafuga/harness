@@ -2,11 +2,9 @@
 	"name": "pure-helper-catalog",
 	"goal": "Show only declared pure shared helpers and separate models from services",
 	"createdAt": "2026-10-19T20:37:36.628Z",
-	"updatedAt": "2026-10-19T20:47:13.641Z",
+	"updatedAt": "2026-10-19T20:47:30.970Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T20:47:30.970Z",
+			"evidence": "The unchanged 20 metadata cases and 18 catalog/category/label cases pass on the separate fix commit in the same shell environment."
 		},
 		{
 			"id": "verify",

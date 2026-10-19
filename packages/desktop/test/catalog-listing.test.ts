@@ -129,3 +129,42 @@ test('of the registry of this repository, the pages the explorer lists are liste
 		expect.arrayContaining(redirects.map((name) => `reports.page.${name}`))
 	);
 });
+
+test('native and hosted catalogs list pure shared contracts, models and services separately', async () => {
+	const base = manifest([
+		'function.format-date',
+		'Formatting',
+		'Formats values.',
+		['src/utils/formatDate.ts']
+	]);
+	const pure = {
+		...base,
+		kind: 'function',
+		helperContracts: [
+			{
+				name: 'formatDate',
+				source: 'src/utils/formatDate.ts',
+				inputs: [{ name: 'formatDate.iso', type: 'string' }],
+				output: 'string',
+				pure: true,
+				consumers: [{ unit: 'component.one' }, { unit: 'service.two' }]
+			}
+		]
+	};
+	const units = [
+		pure,
+		{ ...base, kind: 'function', id: 'function.load-data' },
+		{ ...base, kind: 'model', id: 'model.record' },
+		{ ...base, kind: 'service', id: 'service.storage' }
+	];
+	const source = { units: async () => units, changed: async () => new Set<string>() };
+	const catalog = new CatalogService(source as never, { plans: async () => [] } as never);
+	expect(ids(await catalog.list('HEAD')), 'pure helper catalog parity').toEqual([
+		'function.format-date',
+		'model.record',
+		'service.storage'
+	]);
+	expect((await catalog.list('HEAD')).find((item) => item.category === 'functions')?.title).toBe(
+		'formatDate(iso)'
+	);
+});
