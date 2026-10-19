@@ -1,5 +1,7 @@
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
+import { readdirSync, readFileSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
 import { IpcRequestValidator } from '../src/validators/IpcRequestValidator';
 import { NavigationValidator } from '../src/validators/NavigationValidator';
 import { scrubEnvironment } from '../src/utils/cli-environment/scrubEnvironment';
@@ -62,4 +64,37 @@ test('private reasoning is never forwarded to the renderer', () => {
 			}
 		})
 	).toEqual(['Design is ready.']);
+});
+
+function sources(directory: string): string[] {
+	return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+		const path = resolve(directory, entry.name);
+		return entry.isDirectory() ? sources(path) : /\.(ts|js|svelte)$/.test(path) ? [path] : [];
+	});
+}
+
+test('portable workspace sources must not depend on the Hub app', () => {
+	const desktop = resolve(import.meta.dirname, '..');
+	const hub = resolve(desktop, '../hub');
+	const dependencies = sources(resolve(desktop, 'src')).flatMap((path) => {
+		const imports = [
+			...readFileSync(path, 'utf8').matchAll(
+				/(?:\bfrom\s*|\bimport\s*(?:\(\s*)?|\brequire\s*\(\s*)['"]([^'"]+)['"]/g
+			)
+		];
+		return imports
+			.filter(([, specifier]) => {
+				const target = resolve(dirname(path), specifier);
+				return target === hub || target.startsWith(`${hub}/`) || /^hub(?:\/|$)/.test(specifier);
+			})
+			.map(([, specifier]) => `${path.slice(desktop.length + 1)} -> ${specifier}`);
+	});
+	const aliases = readFileSync(resolve(desktop, 'svelte.config.js'), 'utf8');
+	const upwardAliases = [...aliases.matchAll(/['"]([^'"]*\.\.\/hub(?:\/[^'"]*)?)['"]/g)].map(
+		([, target]) => `Svelte alias -> ${target}`
+	);
+	expect(
+		[...dependencies, ...upwardAliases],
+		'portable workspace sources must not depend on the Hub app'
+	).toEqual([]);
 });
