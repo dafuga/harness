@@ -15,7 +15,7 @@ const xcode = '/Applications/Xcode_26.3.app/Contents/Developer';
 const at = (text: string): number => verify.indexOf(text);
 
 test('the full check stays on Linux with its display and dependency setup', () => {
-	expect(check).toContain('name: Full check\n    runs-on: ubuntu-latest\n    timeout-minutes: 45');
+	expect(check).toContain('name: Full check\n    runs-on: ubuntu-latest\n    timeout-minutes: 120');
 	expect(check).toContain('@playwright/test/cli.js install --with-deps chromium');
 	expect(check).toContain('sudo apt-get install --yes git-lfs xauth libgtk-3-0t64 ffmpeg');
 	expect(check).toContain('run: xvfb-run -a bun run check');

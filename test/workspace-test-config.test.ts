@@ -25,7 +25,12 @@ afterEach(() => roots.splice(0).forEach((root) => rmSync(root, { recursive: true
 function project(): string {
 	const root = realpathSync(mkdtempSync(join(tmpdir(), 'harness-workspace-config-')));
 	roots.push(root);
-	for (const file of ['vitest.config.ts', 'test/svelteKitConfigs.ts', 'test/setup.ts']) {
+	for (const file of [
+		'vitest.config.ts',
+		'src/utils/resourceWorkers.ts',
+		'test/svelteKitConfigs.ts',
+		'test/setup.ts'
+	]) {
 		mkdirSync(join(root, file, '..'), { recursive: true });
 		copyFileSync(join(repository, file), join(root, file));
 	}
@@ -88,7 +93,7 @@ test('a workspace without a config of its own runs its tests with the root confi
 	const root = project();
 	const nested = run(root, join(root, 'packages', 'nested'));
 	expect(nested.output).not.toMatch(/ERR_MODULE_NOT_FOUND|ERR_LOAD_URL|No test files found/);
-	expect([nested.timedOut, nested.status, nested.files]).toEqual([
+	expect([nested.timedOut, nested.status, nested.files], nested.output).toEqual([
 		false,
 		0,
 		[['packages/nested/test/nested.test.ts', 'passed']]
@@ -98,7 +103,7 @@ test('a workspace without a config of its own runs its tests with the root confi
 test('the root runs its own tests and still leaves the workspaces to theirs', () => {
 	const root = project();
 	const top = run(root, root);
-	expect([top.timedOut, top.status, top.files]).toEqual([
+	expect([top.timedOut, top.status, top.files], top.output).toEqual([
 		false,
 		0,
 		[['test/root.test.ts', 'passed']]
