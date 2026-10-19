@@ -4737,5 +4737,28 @@
 				"validateName"
 			]
 		}
+	],
+	"followUps": [
+		{
+			"unit": "function.derive-manifest",
+			"name": "deriveManifest",
+			"commit": "e8f8e3a5",
+			"reason": "Preserve committed pure helper contracts during re-indexing.",
+			"definition": "54a2de0bf239061c8c216711397e915fdf667ee3da34345d430ccc3ad486182f"
+		},
+		{
+			"unit": "hub.function.hub-snapshot",
+			"name": "hubSnapshot",
+			"commit": "e8f8e3a5",
+			"reason": "Reject snapshots cached before the pure helper catalog policy.",
+			"definition": "54c3025d529118fa2411e89738306f5a57d50ea7e5a47a5118777de5ce2abbaf"
+		},
+		{
+			"unit": "reports.function.entity-usage",
+			"name": "entityUsage",
+			"commit": "f22e91fa",
+			"reason": "Keep model relations in their separate catalog category.",
+			"definition": "3de8093b75f09af4d6c9725f036e38ccabba60e9ece720f785b585f11e9f4423"
+		}
 	]
 }

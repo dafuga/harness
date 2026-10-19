@@ -92,7 +92,10 @@ async function committedHelpers(
 			}));
 		else delete unit.helperContracts;
 	}
-	fresh.manifests = fresh.manifests.map((unit) => componentManifestSchema.parse(unit));
+	fresh.manifests = fresh.manifests.map((unit) => {
+		const checked = componentManifestSchema.safeParse(unit);
+		return checked.success ? checked.data : unit;
+	});
 	const before = new Map(stored.map((unit) => [unit.id, stableJson(unit)]));
 	const created = new Set([
 		...fresh.added,

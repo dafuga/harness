@@ -3,25 +3,41 @@
 	"id": "function.helper-contract",
 	"kind": "function",
 	"title": "helperContract",
-	"responsibility": "Owns the helperContract shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Decides whether a reviewed pure helper has at least two distinct actual consumers.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/helperContract.ts"],
 		"symbols": ["helperContract"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "helperContract.helper",
-				"type": "CallableContract"
+				"type": "CallableContract",
+				"description": "The purity declaration and the component, service or named-function consumers recorded at this revision.",
+				"examples": [
+					{
+						"pure": true,
+						"consumers": [
+							{
+								"unit": "component.summary"
+							},
+							{
+								"unit": "service.export"
+							}
+						]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "helperContract",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True only when the helper is explicitly pure and has two or more different consumers.",
+				"examples": [true, false]
 			}
 		],
 		"errors": []

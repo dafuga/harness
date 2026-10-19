@@ -51,9 +51,10 @@ test('a commit on no branch keeps no branch', () => {
 	);
 });
 
-test('a kind is one of the six categories or none; nothing else becomes a function', () => {
+test('a kind is one of the seven categories or none; nothing else becomes a function', () => {
 	const expected: Record<string, string[]> = {
 		pages: ['page', 'view'],
+		models: ['model'],
 		components: ['component', 'partial', 'layout'],
 		configs: ['config', 'initializer'],
 		services: ['service', 'endpoint', 'api', 'adapter', 'repository', 'workflow', 'command'],
@@ -62,16 +63,7 @@ test('a kind is one of the six categories or none; nothing else becomes a functi
 	for (const [category, kinds] of Object.entries(expected)) {
 		for (const kind of kinds) expect([kind, explorerKindCategory(kind)]).toEqual([kind, category]);
 	}
-	for (const kind of [
-		'audit',
-		'guide',
-		'template',
-		'model',
-		'module',
-		'script',
-		'style',
-		'toString'
-	]) {
+	for (const kind of ['audit', 'guide', 'template', 'module', 'script', 'style', 'toString']) {
 		expect([kind, explorerKindCategory(kind)]).toEqual([kind, null]);
 	}
 });

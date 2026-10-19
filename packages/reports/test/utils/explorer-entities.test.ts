@@ -121,6 +121,7 @@ test('an entity that is not at the revision has no relations, and a cycle ends',
 		components: [],
 		functions: [],
 		configs: [],
+		models: [],
 		services: [],
 		usedBy: [],
 		support: []

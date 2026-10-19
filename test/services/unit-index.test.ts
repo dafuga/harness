@@ -23,7 +23,10 @@ test('recorded source moves retain definitions, owner-local placement and regist
 			gaps.push(`${move.name}: different owner folder`);
 		if (!existsSync(resolve(root, move.ownerSource)))
 			gaps.push(`${move.name}: owner source is missing`);
-		if (movedDefinition(move.to, move.name) !== move.definition)
+		const reviewed = migration.followUps.find(
+			(item) => item.unit === move.unit && item.name === move.name
+		);
+		if (movedDefinition(move.to, move.name) !== (reviewed?.definition ?? move.definition))
 			gaps.push(`${move.name}: definition changed`);
 		const unit = JSON.parse(
 			readFileSync(resolve(root, `specification/units/${move.unit}.json`), 'utf8')

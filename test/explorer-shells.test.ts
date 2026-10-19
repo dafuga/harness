@@ -19,14 +19,15 @@ import { planningArtifactPaths } from '../src/audit/structure-rules/planningArti
 const commit = 'a'.repeat(40);
 const shell = 'desktop.component.workspace-shell';
 
-test('the explorer has six categories, Shells after Pages', () => {
+test('the explorer has seven categories, Shells after Pages', () => {
 	expect([...explorerCategories]).toEqual([
 		'pages',
 		'shells',
 		'components',
 		'functions',
 		'configs',
-		'services'
+		'services',
+		'models'
 	]);
 });
 
