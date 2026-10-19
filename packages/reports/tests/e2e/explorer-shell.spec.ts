@@ -139,7 +139,6 @@ for (const [screen, width, height] of screens) {
 		await pictured(page, `explorer-shell-current-${screen}`);
 		await revisionDivider(bar);
 		await compactRevision(bar);
-		// The native value and every option remain complete.
 		await expect(branch).toHaveValue(shellBranch);
 		await expect(commit).toHaveValue(sha(5));
 		for (const field of [branch, commit]) {
@@ -148,22 +147,18 @@ for (const [screen, width, height] of screens) {
 		}
 		await expect(branch).toHaveAttribute('title', /Tip · 0505050/);
 		await expect(commit).toHaveAttribute('title', /Current · branch tip/);
-		// Both are read whole: neither is cut short by the field above it.
 		await expect(bar.locator('small').first()).not.toBeVisible();
 		await expect(tip).toBeDisabled();
 		await reachable(tip, width);
 
-		// A chosen commit is a route of its own; the tip stays what it is.
 		const functions = await earlierFunctions(page, bar);
 		await expect(commit).toHaveAttribute('title', /Historical commit/);
 		await expect(branch).toHaveAttribute('title', /Tip · 0505050/);
 		await expect(functions).toHaveAttribute('aria-current', 'page');
-		// Every link of the bar stays in the branch and the commit that are viewed.
 		await expect(bar.getByRole('link', { name: 'Pages' })).toHaveAttribute(
 			'href',
 			`${earlier}/pages`
 		);
-		// The closed field shows the short hash once: inside the field, before its caret.
 		const short = bar.getByText('0303030', { exact: true });
 		await expect(short).toBeVisible();
 		expect(channels(await styled(commit, 'color'))[3], 'the field paints no second text').toBe(0);
