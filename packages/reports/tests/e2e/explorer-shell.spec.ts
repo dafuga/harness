@@ -6,6 +6,7 @@ import {
 	combo,
 	compactRevision,
 	reachable,
+	navigationSpacing,
 	styled,
 	revisionDivider
 } from './support/shellChecks';
@@ -67,6 +68,7 @@ for (const [screen, width, height] of screens) {
 	}) => {
 		const bar = await opened(page, width, height);
 		await pictured(page, `explorer-shell-bar-${screen}`);
+		await navigationSpacing(bar);
 		const links = bar.getByRole('navigation', { name: 'Harness categories' }).getByRole('link');
 		await expect(links).toHaveText(categories);
 		await expect(page.getByRole('link', { name: /Reports|Analytics|Activity|Growth/ })).toHaveCount(
@@ -123,7 +125,7 @@ for (const [screen, width, height] of screens) {
 		if (screen === 'desktop') {
 			// On a wide screen the brand, the categories and both fields are one row.
 			const [row, first] = [await box(bar), await box(links.nth(0))];
-			expect(row.height).toBeLessThanOrEqual(first.height + 2);
+			expect(row.height).toBeLessThanOrEqual(first.height + 18);
 			expect((await box(brand)).x).toBeLessThan(first.x);
 			expect(first.x).toBeLessThan((await box(combo(bar, 'Branch'))).x);
 		}

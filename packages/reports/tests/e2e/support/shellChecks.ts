@@ -28,6 +28,33 @@ export async function compactRevision(within: Locator): Promise<void> {
 	expect(Math.abs((await box(fields[0])).y - (await box(fields[1])).y)).toBeLessThan(2);
 }
 
+/** Navigation and wrapped revision controls have breathing room without growing the fields. */
+export async function navigationSpacing(within: Locator): Promise<void> {
+	const [header, brand, categories, revision, field] = await Promise.all([
+		box(within),
+		box(within.getByRole('link', { name: 'Harness', exact: true })),
+		box(within.locator('.hx-categories')),
+		box(within.locator('.hx-revision')),
+		box(combo(within, 'Branch'))
+	]);
+	expect(brand.y - header.y, 'space above navigation').toBeGreaterThanOrEqual(8);
+	const contentBottom = Math.max(
+		brand.y + brand.height,
+		categories.y + categories.height,
+		revision.y + revision.height
+	);
+	expect(header.y + header.height - contentBottom, 'space below navigation').toBeGreaterThanOrEqual(
+		8
+	);
+	if (revision.y >= categories.y + categories.height - 1) {
+		expect(field.y - revision.y, 'space above revision controls').toBeGreaterThanOrEqual(8);
+		expect(
+			revision.y + revision.height - field.y - field.height,
+			'space below revision controls'
+		).toBeGreaterThanOrEqual(8);
+	}
+}
+
 /** A wrapped revision row is separated from the categories across the entire header. */
 export async function revisionDivider(within: Locator): Promise<void> {
 	const row = within.locator('.hx-revision');
