@@ -59,14 +59,16 @@ for (const [name, size] of Object.entries(viewports)) {
 	test(`component and function lists use a card grid at ${name} width`, async ({ page: tab }) => {
 		await tab.setViewportSize(size);
 		for (const category of ['components', 'functions'] as const) {
-			await open(tab, { category });
+			await open(tab, { category }, 'helpers');
 			await tab.evaluate(async () => {
 				await document.fonts.ready;
 				await Promise.all([...document.images].map((image) => image.decode()));
 			});
 			await capture(tab, `grid-${category}-${name}`);
 			const cards = tab.getByRole('article');
-			await expect(cards, 'both catalogs use cards').toHaveCount(category === 'components' ? 3 : 1);
+			await expect(cards, 'only exported shared helpers are listed').toHaveCount(
+				category === 'components' ? 3 : 1
+			);
 			const card = (await cards.first().boundingBox())!;
 			const available = (await tab.locator('.ex-index').boundingBox())!;
 			if (name !== 'mobile') {
@@ -180,7 +182,6 @@ for (const [name, size] of Object.entries(viewports)) {
 		}
 	});
 }
-
 test('the component catalog labels reused screenshots with their original commit', async ({
 	page: tab
 }) => {
@@ -191,7 +192,6 @@ test('the component catalog labels reused screenshots with their original commit
 	await expect(card).toContainText('Reused from bbbbbbb');
 	await expect(card).not.toContainText('Captured at ccccccc');
 });
-
 test('branch and commit selection replace component screenshots with that revision', async ({
 	page: tab
 }) => {

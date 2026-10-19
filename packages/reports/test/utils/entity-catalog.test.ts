@@ -26,6 +26,7 @@ test('a collection lists the entities of its category by the name a person reads
 		name: ['A title', 'Z title', 'M title'][index],
 		unit: {
 			...original.unit,
+			helpers: [{ name, source: 'src/utils/shared.ts', inputs: [] }],
 			contract: { ...original.unit.contract, inputs: [{ name: `${name}.value`, type: 'string' }] }
 		}
 	}));
@@ -99,4 +100,37 @@ test('a list of names is none, one name, or the first and how many more', () => 
 	expect(listed(['Order list'])).toBe('Order list');
 	expect(listed(['Order list', 'Search box', 'Order card'])).toBe('Order list + 2 more');
 	expect(listed(['Order card', 'Search box'], 2)).toBe('Order card · Search box');
+});
+
+test('shared helper rows require source exports, list every callable and keep owner links', () => {
+	const original = explorerEntities(head).find((entity) => entity.id === ids.filter)!;
+	const helpers = ['second', 'first'].map((name) => ({
+		name,
+		source: 'src/utils/shared.ts',
+		inputs: []
+	}));
+	const variants = [
+		{ ...original, unit: { ...original.unit, helpers } },
+		{ ...original, id: 'types', unit: { ...original.unit, helpers: [] } },
+		{ ...original, id: 'legacy', unit: { ...original.unit, helpers: undefined } }
+	];
+	const shown = entityCatalog(variants, 'functions', () => ({
+		pages: [],
+		usedBy: [],
+		components: [],
+		uses: []
+	}));
+	expect(
+		shown.map((row) => row.name),
+		'only exported shared helpers are listed'
+	).toEqual(['first', 'second']);
+	expect(new Set(shown.map((row) => row.id)).size).toBe(2);
+	expect(shown.every((row) => row.entity.id === ids.filter)).toBe(true);
+	expect(
+		shown.every((row) => !row.shared),
+		'availability does not require multiple callers'
+	).toBe(true);
+	expect(catalogFilter(shown, { ...filter, search: 'second' }).map((row) => row.name)).toEqual([
+		'second'
+	]);
 });

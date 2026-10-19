@@ -36,6 +36,13 @@ test.each([false, 0, null, '', [], { label: '<script>example</script>' }, '🧪'
 					? {
 							...unit,
 							owns: { ...unit.owns, symbols: ['helperType', 'filterOrders'] },
+							helpers: [
+								{
+									name: 'filterOrders',
+									source: 'src/functions/filterOrders.ts',
+									inputs: [{ name: 'filterOrders.value', type: 'unknown' }]
+								}
+							],
 							contract: {
 								...unit.contract,
 								inputs: [

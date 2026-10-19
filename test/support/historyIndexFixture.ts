@@ -41,7 +41,10 @@ export interface Detail {
 	commit: string;
 	registry: {
 		available: boolean;
-		units: Array<{ id: string }>;
+		units: Array<{
+			id: string;
+			helpers?: Array<{ name: string; source: string; inputs: Array<{ name: string }> }>;
+		}>;
 		graph: {
 			nodes: Array<{ id: string }>;
 			edges: Array<{ from: string; to: string; via: string }>;

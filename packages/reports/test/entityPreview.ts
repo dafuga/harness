@@ -1,3 +1,4 @@
+import { withHelpers } from './entityUnits';
 import { mount, unmount } from 'svelte';
 import ExplorerContent from '../src/components/harness/ExplorerContent.svelte';
 import HarnessShell from '../src/components/harness/HarnessShell.svelte';
@@ -38,6 +39,8 @@ const stored: Record<string, HarnessRevision> = {
 	},
 	[commits.tip]: recorded(commits.tip)
 };
+if (variant === 'helpers')
+	for (const commit of Object.keys(stored)) stored[commit] = withHelpers(stored[commit]);
 if (variant === 'inherited')
 	stored[commits.tip] = withInherited(stored[commits.tip], commits.middle);
 if (variant === 'documented')

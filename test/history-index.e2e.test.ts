@@ -62,6 +62,14 @@ test('the index is deterministic and names every commit, verified or not', async
 		records: [{ id: changed.record.id, status: 'passed', valid: true }]
 	});
 	expect(by(commits.changed)?.committedAt).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+	const stored = await detail(one, by(commits.baseline));
+	expect(
+		stored.registry.units.find((unit) => unit.id === 'function.slugify')?.helpers,
+		'helper exports are recorded from the selected commit'
+	).toMatchObject([
+		{ name: 'slugify', source: 'src/utils/slugify.ts', inputs: [{ name: 'slugify.input' }] }
+	]);
+	expect(stored.registry.units.find((unit) => unit.id === 'service.title')?.helpers).toEqual([]);
 	await rm(two, { recursive: true });
 }, 240_000);
 
