@@ -18,7 +18,16 @@
 				"name": "previewArguments.args",
 				"type": "string[]",
 				"description": "Launch options from the dev command.",
-				"examples": [["--port", "5688"]]
+				"examples": [
+					[
+						"--port",
+						"5688",
+						"--config",
+						"/projects/harness/packages/reports/vite.config.ts",
+						"--host",
+						"127.0.0.1"
+					]
+				]
 			},
 			{
 				"name": "previewArguments.env",

@@ -17,7 +17,16 @@
 				"name": "previewNode.args",
 				"type": "string[]",
 				"description": "Preview root, optional Vite config, host and port arguments forwarded unchanged.",
-				"examples": [["--port", "5688"]]
+				"examples": [
+					[
+						"--port",
+						"5688",
+						"--config",
+						"/projects/harness/packages/reports/vite.config.ts",
+						"--host",
+						"127.0.0.1"
+					]
+				]
 			}
 		],
 		"outputs": [
