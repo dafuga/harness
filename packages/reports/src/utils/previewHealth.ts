@@ -16,7 +16,7 @@ export function closePreviewSessions(): void {
 	for (const client of sessions()?.values() ?? []) client.close();
 }
 /** Health bypasses compilation; real server failures are observed without changing responses. */
-export function previewHealthPlugin(token: string): Plugin {
+export function previewHealth(token: string): Plugin {
 	let errors = 0,
 		last = 0;
 	return {

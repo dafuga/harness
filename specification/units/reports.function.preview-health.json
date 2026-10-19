@@ -8,13 +8,13 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/utils/previewHealth.ts"],
-		"symbols": ["PreviewHealth", "closePreviewSessions", "previewHealthPlugin", "readPreviewHealth"]
+		"symbols": ["PreviewHealth", "closePreviewSessions", "previewHealth", "readPreviewHealth"]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "previewHealthPlugin.token",
+				"name": "previewHealth.token",
 				"type": "string",
 				"description": "Per-worker probe secret shared only through the child environment and request header.",
 				"examples": ["example-worker-token"]
@@ -40,7 +40,7 @@
 				"examples": [null]
 			},
 			{
-				"name": "previewHealthPlugin",
+				"name": "previewHealth",
 				"type": "Plugin",
 				"description": "Vite middleware exposing authenticated health and counting server failures.",
 				"examples": [

@@ -1,5 +1,5 @@
 import { previewNode } from '../utils/previewNode';
-import { previewHealthPlugin, closePreviewSessions } from '../utils/previewHealth';
+import { previewHealth, closePreviewSessions } from '../utils/previewHealth';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createServer } from 'vite';
@@ -26,7 +26,7 @@ export async function initializePreview(args: string[] = process.argv.slice(2)):
 		const start = async () => {
 			const server = await createServer({
 				root: options.root,
-				plugins: token ? [previewHealthPlugin(token)] : [],
+				plugins: token ? [previewHealth(token)] : [],
 				configFile: options.configFile,
 				server: { host: '127.0.0.1', port: options.port, strictPort: true }
 			});
