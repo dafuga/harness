@@ -14,10 +14,9 @@ const search = (page: Page) => page.getByRole('searchbox', { name: /^Search / })
 const order = (page: Page) => page.getByRole('combobox', { name: 'Order' });
 const changedOnly = (page: Page) => page.getByRole('switch', { name: 'Changed only' });
 /** The name link of a card, apart from its test and open actions. */
-const titled = (page: Page) =>
-	cards(page).first().getByRole('heading', { level: 2 }).getByRole('link');
+const titled = (page: Page) => cards(page).first().getByRole('link').first();
 const named = (page: Page, name: string) =>
-	cards(page).filter({ has: page.getByRole('heading', { name, exact: true }) });
+	page.getByRole('main').getByRole('article', { name, exact: true });
 
 test('a catalog is searchable, and a click on a listed entity opens it in the same scope', async ({
 	page
@@ -29,10 +28,7 @@ test('a catalog is searchable, and a click on a listed entity opens it in the sa
 	await expect(cards(page)).toHaveCount(1);
 	await checkpoint(page, 'catalog-search');
 	// The title itself is clicked, as a reader does, not an address that the test put together.
-	await cards(page)
-		.getByRole('heading', { level: 2 })
-		.getByRole('link', { name: 'Slugify' })
-		.click();
+	await titled(page).click();
 	await expectPath(page, at('main', commits.approved, `functions/${units.slugify}`));
 	await expect(commit(page)).toHaveValue(commits.approved);
 	await expect(page.getByRole('heading', { level: 1, name: 'Slugify' })).toBeVisible();
@@ -48,7 +44,7 @@ test('the keyboard reaches the controls, changes the order and opens an entity',
 	await sharedField(order(page));
 	await typed(page, order(page), 'Order: Name (Z');
 	await page.getByRole('button', { name: 'Done', exact: true }).click();
-	await expect(titled(page)).toHaveText('Slugify');
+	await expect(cards(page).first()).toHaveAttribute('aria-label', 'Slugify');
 	await page.getByRole('button', { name: 'Filters', exact: true }).click();
 	await changedOnly(page).focus();
 	await page.keyboard.press('Space');
@@ -72,13 +68,11 @@ test('a selected commit lists what it added, and what it removed from its first 
 	await page.getByRole('button', { name: 'Filters', exact: true }).click();
 	await changedOnly(page).click();
 	await page.getByRole('button', { name: 'Done', exact: true }).click();
-	await expect(cards(page).getByRole('heading', { level: 2 }).getByRole('link')).toHaveText([
-		'Extra'
-	]);
+	await expect(cards(page)).toHaveAttribute('aria-label', 'Extra');
 	await page.goto(at('main', commits.removed, 'functions'));
 	await checkpoint(page, 'catalog-removed');
 	await expect(named(page, 'Extra')).toBeVisible();
-	await named(page, 'Extra').getByRole('link', { name: 'Extra', exact: true }).click();
+	await named(page, 'Extra').getByRole('link', { name: 'Open function', exact: true }).click();
 	await expect(
 		page.getByRole('button', { name: 'Removed at this commit', exact: true })
 	).toBeVisible();
@@ -97,9 +91,7 @@ test('a commit nobody verified still marks what its source changed, and proves n
 	await changedOnly(page).click();
 	await page.getByRole('button', { name: 'Done', exact: true }).click();
 	await checkpoint(page, 'catalog-unverified-change');
-	await expect(cards(page).getByRole('heading', { level: 2 }).getByRole('link')).toHaveText([
-		'Clock'
-	]);
+	await expect(cards(page)).toHaveAttribute('aria-label', 'Clock');
 	await expect(cards(page).first().locator('.hx-verdict')).toHaveCount(0);
 	await titled(page).click();
 	await expect(
@@ -154,7 +146,7 @@ test.describe('a registry of several hundred units', () => {
 		await page.getByRole('button', { name: 'Filters', exact: true }).click();
 		await typed(page, order(page), 'Order: Name (Z');
 		await page.getByRole('button', { name: 'Done', exact: true }).click();
-		await expect(titled(page)).toHaveText('Generated 309');
+		await expect(cards(page).first()).toHaveAttribute('aria-label', 'Generated 309');
 		await titled(page).focus();
 		await page.keyboard.press('Enter');
 		await expectPath(page, tip('main', 'functions/function.generated-309'));

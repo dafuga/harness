@@ -74,12 +74,14 @@ for (const [name, size] of Object.entries(viewports)) {
 			}
 			expect(await fits(tab)).toBe(true);
 			if (category === 'functions') {
-				await expect(cards.getByRole('img')).toHaveCount(0);
 				await expect(cards.first(), 'function cards omit detail panels').not.toContainText(
 					/Contract|Inputs|Output|Used by|View tests|Shared|Changed/
 				);
 				await expect(cards.locator('.hx-verdict')).toHaveCount(0);
-				expect([...(await cards.first().locator('p').innerText())].length).toBeLessThanOrEqual(80);
+				await expect(cards.locator('code'), 'function cards show example calls').toHaveText(
+					'filterOrders(orders, "SERVICE")'
+				);
+				await expect(cards.locator('h2, p, img')).toHaveCount(0);
 				const action = cards.getByRole('link', { name: 'Open function', exact: true });
 				expect((await action.innerText()).trim()).toBe('');
 				expect(await action.boundingBox()).toMatchObject({ width: 36, height: 36 });

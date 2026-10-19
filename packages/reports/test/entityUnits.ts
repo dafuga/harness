@@ -30,7 +30,11 @@ function unit(seed: UnitSeed): HarnessUnit {
 	const file =
 		seed.kind === 'page' ? 'src/routes/orders/+page.svelte' : `src/${seed.kind}s/${seed.title}.ts`;
 	const named = (names: string[] = []) =>
-		names.map((name) => ({ name: `${seed.title}.${name}`, type: 'string' }));
+		names.map((name) => ({
+			name: `${seed.title}.${name}`,
+			type: 'string',
+			...(name === 'searchText' ? { examples: ['SERVICE'] } : {})
+		}));
 	return {
 		id: seed.id,
 		kind: seed.kind,
