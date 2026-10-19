@@ -2,7 +2,7 @@
 	"name": "google-project-sync-ownership",
 	"goal": "Keep moved portable client helpers with their owner and retain Harness migration identities",
 	"createdAt": "2026-10-19T23:09:27.019Z",
-	"updatedAt": "2026-10-19T23:12:14.144Z",
+	"updatedAt": "2026-10-19T23:13:25.181Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T23:13:25.181Z",
+			"evidence": "Separate fix 7f848772 passes unchanged checkpoint recorded in /tmp/harness-google-sync-ownership-green.json. All 15 registry/migration, 41 Desktop account/boundary, 9 Hub session/cold entry and 11 browser checks pass from a clean checkout."
 		},
 		{
 			"id": "verify",

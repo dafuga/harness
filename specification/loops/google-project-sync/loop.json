@@ -2,7 +2,7 @@
 	"name": "google-project-sync",
 	"goal": "Same Google account discovers owned and joined projects automatically across clients, with revocation and account isolation",
 	"createdAt": "2026-10-19T21:23:49.796Z",
-	"updatedAt": "2026-10-19T22:35:20.163Z",
+	"updatedAt": "2026-10-19T23:03:17.849Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T23:03:17.849Z",
+			"evidence": "2386c0f7 passes unchanged clean-snapshot checkpoint 5f3d4478 after failing-test 81386391/6880c1b3. Desktop account and boundary, Hub session and cold entries, and all 11 browser cases pass."
 		},
 		{
 			"id": "verify",

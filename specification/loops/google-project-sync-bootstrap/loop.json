@@ -2,7 +2,7 @@
 	"name": "google-project-sync-bootstrap",
 	"goal": "Keep portable account clients independent of hosted app build caches and prove cold public entrypoints",
 	"createdAt": "2026-10-19T22:55:01.170Z",
-	"updatedAt": "2026-10-19T23:01:41.986Z",
+	"updatedAt": "2026-10-19T23:03:46.145Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -46,12 +46,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T23:03:18.834Z",
+			"evidence": "Separate fix 2386c0f7 passes unchanged checkpoint f6eafba0 after test-only 81386391/a2c4ee0c. No generated Hub configuration is needed by the portable account client."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T23:03:46.145Z",
+			"evidence": "Isolated 2386c0f7 snapshot: restoring the original upward commentEntries import fails backend-boundaries; restoring the fixed source passes. Snapshot drift is empty; logs retained outside Git."
 		},
 		{
 			"id": "verify",

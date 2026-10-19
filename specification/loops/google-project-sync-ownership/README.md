@@ -21,3 +21,13 @@ The unchanged proof command includes the 15 root registry/unit-index tests,
 Desktop account/boundary checks, Hub session/cold entries and all 11 hosted
 account browser cases. Live Google and physical device acceptance remain
 separate configuration-dependent gates.
+
+The separate repair is `7f848772`, passing unchanged clean checkpoint `f3eef9d7`:
+15 root registry/migration checks, 41 Desktop account/boundary checks, nine Hub
+session/cold-entry checks and 11 browser cases. All public and owner calls pass.
+No migration definition hash was relaxed, and no fixture assertion was removed.
+
+Final root unit rerun: 889 passed, 25 skipped. The Web and iOS simulator builds,
+Hub type checking and all 11 fresh browser cases pass. Full verification remains
+pending for the Desktop fixture type error, Hub controller lint debt and live
+account configuration documented in the parent account-sync loop.

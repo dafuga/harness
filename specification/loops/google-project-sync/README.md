@@ -101,3 +101,60 @@ These are recorded failures, not passing checks. Electron UI tests are excluded 
 Screenshots use synthetic accounts and remain outside Git. The live Google provider,
 production deployment, real Keychain persistence and physical-device sign-in are not
 proven by these fixtures or the simulator build. No real account was signed out.
+
+## Committed clean replay
+
+The feature is committed at `23641dc6`. A final clean checkout found that the
+native account adapter depended on generated Hub configuration. The follow-up
+`google-project-sync-bootstrap` loop records the cause, boundary guard and repair.
+The portable bootstrap repair is `2386c0f7`; test-only revision `81386391` precedes it. The ownership follow-up records the remaining migration metadata and cold helper entry checks.
+
+| Loop                      | Red checkpoint | Green checkpoint | Result                                                                |
+| ------------------------- | -------------- | ---------------- | --------------------------------------------------------------------- |
+| Account synchronization   | `6880c1b3`     | `5f3d4478`       | Unchanged command passes at the fix revision                          |
+| Portable client bootstrap | `a2c4ee0c`     | `f6eafba0`       | The original upward imports are rejected; portable bridge starts cold |
+
+Both replays install only frozen dependencies, initialize the shared renderer,
+run Desktop account/boundary tests and Hub session/cold-entry tests, then run all
+11 hosted account and device-approval browser cases. No prior Hub build cache is
+available. The isolated mutation also proves the normal boundary guard rejects
+reintroducing the original application dependency and passes after restoration.
+
+The two new static test path lookups add two scanner uncertainties; the registry
+has 1307 valid units and no errors. The pre-existing 62 uncertainties remain.
+Full-project verification and real hosted Google/device acceptance remain open
+for the blockers above. Passing focused proof does not close those gates.
+
+The ownership follow-up's final repair is `7f848772`: clean checkpoint `f3eef9d7`
+passes after test-only `7a1624a6` / failing checkpoint `789cb3a8`. That replay also
+runs the existing root migration and shared-workspace registry checks, keeping
+all 411 helper identities and definition hashes enforced. Private helpers stay
+beside the portable client that uses them; public exports continue forwarding.
+
+## Final verification at `7f848772`
+
+- Root unit suite: 217 files passed, two live-service files skipped; 889 tests
+  passed and 25 explicitly skipped. Root formatting, TypeScript, lint and Rust
+  checks passed in the broader check before its unit phase found the now-repaired
+  registry/ownership expectations. That complete root unit phase was rerun green.
+- Latest clean acceptance checkpoint: `f3eef9d7`, 76 passing checks across root,
+  Desktop, Hub session/cold entries and browser flows.
+- Hub type checking: zero errors and warnings. Hub Web build passed.
+- Fresh iOS simulator renderer/native app build passed, signed ad hoc with no
+  team/account. Native Swift logic remains Debug 286 / Release 264 passing.
+- Fresh hosted account and device browser run: all 11 passed with the shared
+  unexpected-browser-error assertions enabled. Three screenshots were captured
+  after fonts were ready and inspected; they use synthetic accounts and remain
+  outside Git. No Electron app UI was launched or exercised.
+
+`bun run check` is not fully green. Current Desktop type checking still reports
+TS2589 in `tests/e2e/ui-evidence-fixture.ts:172`; current Hub lint still reports
+complexity 11 in `HubApiController.projects`. Those source files are unchanged
+from the task base `a7ce3b70`. The unchanged Desktop types audit debt and the
+previously recorded broader catalog/browser test failures also remain open.
+No failing gate is waived. Full loop verification therefore remains pending.
+
+No live Google client or dedicated hosted environment was configured or
+published. Real Google login, device-only Keychain persistence, physical-device
+acceptance and production deployment are unverified. The work remains on the
+feature branch until the outstanding project gates and live setup are resolved.

@@ -49,7 +49,7 @@ The fingerprint selects an identity already available to `security find-identity
 
 ## Projects and shared collaboration
 
-The top-left picker switches between saved local projects and shared GitHub projects. Local projects retain Plan/Change controls; shared projects support human comments only. Launch with the dedicated `HARNESS_HUB_ORIGIN` to connect through a browser sign-in and one-time desktop code. The main process stores the session through Electron safeStorage; credentials never enter the renderer.
+The top-left picker switches between saved local projects and shared GitHub projects. Local projects retain Plan/Change controls. Shared project actions follow membership: readers browse, commenters discuss, and writers can request agent work when a project executor is available. Launch with the dedicated `HARNESS_HUB_ORIGIN` to connect through browser sign-in and a one-time device code. The main process stores the session through Electron safeStorage; credentials never enter the renderer.
 
 Project URLs start with `/projects/{projectId}/harness/branch/{encodedBranch}/`, with an optional `/commit/{fullSha}/` before the entity category. Cached shared views display their saved time while offline and disable mutations. Access denial clears protected cached views; pending drafts stay distinct from acknowledged GitHub comments.
 

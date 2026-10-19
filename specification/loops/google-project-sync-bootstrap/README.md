@@ -28,3 +28,17 @@ milliseconds. No extra server, polling service or CI workflow is introduced.
 An isolated mutation must restore the original upward import, fail the same
 boundary assertion, then pass after the source is restored. Its checkpoint is
 recorded alongside unchanged red/green proof in this loop.
+
+## Recorded proof
+
+- Test-only revision `81386391`, failing checkpoint `a2c4ee0c`.
+- Separate repair revision `2386c0f7`, passing checkpoint `f6eafba0`.
+- Same tests, configuration, dependency lockfile, command and environment profile.
+- Mutation in a temporary committed snapshot: original upward forwarding import
+  fails the boundary guard; restored source passes. No source drift remains.
+- Focused portable bridge/API/artifact suite: 27 passed. Desktop account,
+  boundary, artifact and comment mapping impact suite: 48 passed.
+
+The tests run under the existing package unit commands, with no new workflow.
+Full verification remains pending while the unrelated package and live deployment
+blockers documented in the account sync loop remain unresolved.
