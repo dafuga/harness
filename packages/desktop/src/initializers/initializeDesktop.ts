@@ -40,7 +40,17 @@ type Backend = ReturnType<typeof desktopBackend>;
 const windows: { current: { window: BrowserWindow; client: LocalClientService } | null } = {
 	current: null
 };
-export async function initializeDesktop(): Promise<BrowserWindow> {
+export async function initializeDesktop(): Promise<BrowserWindow | null> {
+	if (!app.requestSingleInstanceLock()) {
+		app.quit();
+		return null;
+	}
+	app.on('second-instance', () => {
+		const window = windows.current?.window;
+		if (window?.isMinimized()) window.restore();
+		window?.show();
+		window?.focus();
+	});
 	await app.whenReady();
 	const backend = desktopBackend(),
 		port = await backend.transport.listen(),

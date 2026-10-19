@@ -45,3 +45,12 @@ This is a Harness SvelteKit app. Treat Harness as the operating contract for eve
 - Unsupported file types must appear in audit coverage instead of being skipped silently.
 
 Hard limits: files 220, functions 55, classes 120, methods 35, nesting 4.
+
+## Managed Local Preview
+
+- Start the app with `bun run dev` in its package. Both renderer apps share one preview owner.
+- A repeated start prints the existing URL; use it. Do not start Vite directly or scan for another port.
+- A different checkout or history configuration is refused with the current URL. End the owned preview before switching.
+- Port 47840 is the loopback ownership/status slot, not a project web port. No launch or stop API is exposed.
+- `HARNESS_PREVIEW_OWNER_PORT` is reserved for isolated lifecycle tests; do not override it in ordinary previews.
+- Browser-test fixture servers keep their own isolated startup and teardown.
