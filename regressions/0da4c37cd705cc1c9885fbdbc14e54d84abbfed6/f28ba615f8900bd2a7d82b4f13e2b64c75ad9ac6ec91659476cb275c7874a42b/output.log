@@ -1,0 +1,78 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [6.32s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-gp85uu
+
+ ❯ test/units.e2e.test.ts (4 tests | 1 failed | 3 skipped) 612ms
+   ↓ generic unit generator coexists with the Svelte component generator
+   ↓ index derives contracts and keeps identity stable across re-index, moves and recreation
+   ↓ check rejects invalid manifests and schemas are exposed
+   × index records reviewed shared helper contracts for clients without source rescans 612ms
+     → committed pure helper contracts: expected undefined to deeply equal [ ObjectContaining{…} ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/units.e2e.test.ts > index records reviewed shared helper contracts for clients without source rescans
+AssertionError: committed pure helper contracts: expected undefined to deeply equal [ ObjectContaining{…} ]
+
+- Expected: 
+[
+  ObjectContaining {
+    "consumers": ArrayContaining [
+      {
+        "symbol": "first",
+        "unit": "function.first",
+      },
+      {
+        "symbol": "second",
+        "unit": "function.second",
+      },
+    ],
+    "name": "formatDate",
+    "pure": true,
+    "source": "src/utils/formatDate.ts",
+  },
+]
+
++ Received: 
+undefined
+
+ ❯ test/units.e2e.test.ts:177:66
+    175|   'specification/units/function.format-date.json'
+    176|  );
+    177|  expect(unit.helperContracts, 'committed pure helper contracts').toEqu…
+       |                                                                  ^
+    178|   expect.objectContaining({
+    179|    name: 'formatDate',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 skipped (4)
+   Start at  21:54:09
+   Duration  2.88s (transform 21ms, setup 5ms, collect 11ms, tests 612ms, environment 0ms, prepare 24ms)
+
