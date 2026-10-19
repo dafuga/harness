@@ -43,10 +43,9 @@ export async function expectScope(
 	page: Page,
 	scope: { tip: string; viewed: string; label: string }
 ): Promise<void> {
-	const bar = page.getByRole('banner');
-	await expect(bar.getByText(`Tip · ${short(scope.tip)}`)).toBeVisible();
+	expect(await branch(page).getAttribute('title')).toContain(`Tip · ${short(scope.tip)}`);
 	await expect(commit(page)).toHaveValue(scope.viewed);
-	await expect(bar.getByText(scope.label, { exact: true })).toBeVisible();
+	expect(await commit(page).getAttribute('title')).toContain(scope.label);
 }
 
 /** Nothing on the page is wider than the window, so a phone never scrolls sideways. */

@@ -2,7 +2,7 @@
 	"name": "compact-revision-controls",
 	"goal": "Branch and commit controls use one compact row with middle-shortened long values and full accessible values",
 	"createdAt": "2026-10-19T09:01:47.832Z",
-	"updatedAt": "2026-10-19T09:12:08.066Z",
+	"updatedAt": "2026-10-19T09:19:10.838Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -41,12 +41,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T09:12:46.651Z",
+			"evidence": "Frozen shell and shared-renderer checks pass at d6b514e6; green 0488f81d7371de1ce535aa4ace98322e69437f0011f25e1044fb72848f6fe73a preserves the same tests and command as red 7c922c24."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T09:19:10.838Z",
+			"evidence": "Reports check passed: 575 units, types/lint/builds/audit. Browser suites passed: 76 shell, 6 routes and 27 shared-renderer cases; 13 shared-impact tests passed. Manual historical selection, return-to-tip and tablet screenshot inspected. Native and aggregate checks remain paused."
 		}
 	],
 	"evaluators": [

@@ -108,10 +108,12 @@ test('a project link opens its project, full commit, entity and History', async 
 	await expect(page.getByLabel('Project', { exact: true })).toHaveValue(alpha);
 	await expect(page.getByLabel('Branch', { exact: true })).toHaveValue('feat/alpha');
 	await expect(page.getByLabel('Commit', { exact: true })).toHaveValue(earlier);
-	await expect(page.getByText(`Tip · ${tip.slice(0, 7)}`, { exact: true })).toBeVisible();
-	await expect(
-		page.getByText(`Historical commit · ${earlier.slice(0, 7)}`, { exact: true })
-	).toBeVisible();
+	expect(await page.getByLabel('Branch', { exact: true }).getAttribute('title')).toContain(
+		`Tip · ${tip.slice(0, 7)}`
+	);
+	expect(await page.getByLabel('Commit', { exact: true }).getAttribute('title')).toContain(
+		`Historical commit · ${earlier.slice(0, 7)}`
+	);
 	await expect(page.getByRole('link', { name: 'pages › Alpha activity' })).toHaveAttribute(
 		'href',
 		pinned
@@ -119,7 +121,10 @@ test('a project link opens its project, full commit, entity and History', async 
 	expect((await calls(page))[0]).toMatchObject({ op: 'selectProject', projectId: alpha });
 	await page.getByRole('button', { name: 'Go to tip', exact: true }).click();
 	await expect(page).toHaveURL(new RegExp(`/projects/${alpha}/harness/branch/feat%2Falpha/pages$`));
-	await expect(page.getByText('Current · branch tip', { exact: true })).toBeVisible();
+	await expect(page.getByLabel('Commit', { exact: true })).toHaveAttribute(
+		'title',
+		/Current · branch tip/
+	);
 	await expect(page.getByRole('button', { name: 'Go to tip', exact: true })).toHaveCount(0);
 	await expect(
 		categories(page).getByRole('link', { name: 'Services', exact: true })

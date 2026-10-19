@@ -119,8 +119,8 @@ test('the selectors of the bar say where the tip is, what is viewed, and lead ba
 	// Each field name has its outline icon before it, and each field is still the shared select.
 	for (const label of labels)
 		expect(label).toMatch(/^\s*<span\b[^>]*>\s*<svg\b[^>]*viewBox="0 0 24 24"/);
-	expect(html.match(/class="report-select\b/g)).toHaveLength(2);
-	expect(html).toMatch(/<span class="hx-shown" aria-hidden="true">0404040<\/span>/);
+	expect(html.match(/class="report-select(?:\s|")/g)).toHaveLength(2);
+	expect(html).toMatch(/<span[^>]*class="report-select-value[^>]*>0404040<\/span>/);
 	expect(html).toMatch(/<a\b[^>]*href="\/harness\/tip"[^>]*>(?:(?!<\/a>).)*Go to tip/s);
 	// With nowhere to go the same control is a disabled button.
 	const there = selectors({ tip: { ...tip, viewed: 'Current · branch tip', href: null } });

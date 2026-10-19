@@ -119,7 +119,7 @@ test('at a selected commit the tip and the viewed hash differ, and Go to tip is 
 
 test('both selectors are the shared select, and the bar writes no field of its own', () => {
 	const html = body(historical);
-	expect(html.match(/class="report-select\b/g)).toHaveLength(2);
+	expect(html.match(/class="report-select(?:\s|")/g)).toHaveLength(2);
 	expect(html.match(/<select\b/g)).toHaveLength(2);
 	expect(field(html, 'Branch')).toContain('<option value="main">main</option>');
 });

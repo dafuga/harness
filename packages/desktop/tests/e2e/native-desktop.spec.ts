@@ -75,7 +75,9 @@ async function openDraftThroughUi(page: Page, root: string) {
 	await expect(page.getByRole('heading', { name: 'No design image yet' })).toBeVisible();
 	const tip = git(root, 'rev-parse', 'HEAD');
 	await expect(page.getByLabel('Commit', { exact: true })).toHaveValue(tip);
-	await expect(page.getByText(`Tip · ${tip.slice(0, 7)}`, { exact: true })).toBeVisible();
+	expect(await page.getByLabel('Branch', { exact: true }).getAttribute('title')).toContain(
+		`Tip · ${tip.slice(0, 7)}`
+	);
 	const api = await createPlanning(root),
 		plans = await api.listPlans();
 	expect(plans).toHaveLength(1);

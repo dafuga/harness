@@ -90,7 +90,7 @@
 	.has-display select {
 		color: transparent;
 	}
-	.has-display option {
+	.has-display :global(option) {
 		color: var(--text, #eef2f8);
 		background: var(--panel, #102131);
 	}

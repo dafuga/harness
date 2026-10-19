@@ -196,6 +196,8 @@ for (const outcome of ['failed', 'cancelled'] as const) {
 		await expect(
 			page.getByRole('main').getByText(`Persisted ${outcome} outcome`, { exact: true })
 		).toBeVisible();
-		await expect(page.getByText('Tip · ddddddd', { exact: true })).toBeVisible();
+		expect(await page.getByLabel('Branch', { exact: true }).getAttribute('title')).toContain(
+			`Tip · ddddddd`
+		);
 	});
 }

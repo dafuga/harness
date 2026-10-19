@@ -206,7 +206,7 @@ for (const [screen, width, height] of screens) {
 		await typed(page, branch, 'm');
 		await expect(page).toHaveURL(at(`${shellMount}/branch/main/functions`));
 		await expect(branch).toBeFocused();
-		await expect(bar.getByText('Tip · 0303030')).toBeVisible();
+		await expect(branch).toHaveAttribute('title', /Tip · 0303030/);
 		await expect(commit).toHaveAttribute('title', /Current · branch tip/);
 		await expect(commit).toHaveValue(sha(3));
 		await captureShell(page, home, { state: 'returned', viewport: screen });
