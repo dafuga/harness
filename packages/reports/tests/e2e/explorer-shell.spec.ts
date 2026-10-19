@@ -18,7 +18,6 @@ import {
 	removeShellFixture,
 	shellOrigin
 } from './support/shellFixture';
-
 /**
  * The bar of the explorer, looked at alone over a made-up history: the brand, six categories
  * and the revision that is viewed. Its page is built by this run and answered from its own
@@ -49,7 +48,6 @@ async function opened(page: Page, width: number, height: number): Promise<Locato
 	await expect(page.getByText('Harness', { exact: true }).first()).toBeVisible();
 	return page.getByRole('banner');
 }
-
 /** Chooses an earlier commit, then opens Functions there with the keyboard. */
 async function earlierFunctions(page: Page, bar: Locator): Promise<Locator> {
 	const functions = bar.getByRole('link', { name: 'Functions' });
