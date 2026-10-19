@@ -40,6 +40,10 @@ test('a collection lists the entities of its category by the name a person reads
 		'beta',
 		'Alpha'
 	]);
+	expect(
+		catalogFilter(sorted, { ...filter, search: 'Z title' }).map((row) => row.id),
+		'owner names remain searchable when cards show callable names'
+	).toEqual(['Alpha']);
 	const shown = rows('components').map(({ entity: _entity, ...row }) => row);
 	expect(JSON.stringify(shown)).not.toMatch(/src\/|\.ts"|OrderList/);
 });
