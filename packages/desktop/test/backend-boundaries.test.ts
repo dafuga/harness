@@ -69,7 +69,8 @@ test('private reasoning is never forwarded to the renderer', () => {
 function sources(directory: string): string[] {
 	return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
 		const path = resolve(directory, entry.name);
-		return entry.isDirectory() ? sources(path) : /\.(ts|js|svelte)$/.test(path) ? [path] : [];
+		if (entry.isDirectory()) return sources(path);
+		return /\.(ts|js|svelte)$/.test(path) ? [path] : [];
 	});
 }
 
