@@ -10,6 +10,7 @@ test('generated projects reject bad code through lint, check, and Harness audit'
 		await runHarness(['new', 'lib', 'bad-rules'], root);
 		const project = join(root, 'bad-rules');
 
+		await mkdir(join(project, 'src/utils'), { recursive: true });
 		await writeFile(
 			join(project, 'src/utils/value.ts'),
 			'export const value = (input: string) => input;'

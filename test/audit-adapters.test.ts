@@ -115,7 +115,7 @@ test.each([
 			'export const value = (input: string) => input;'
 		);
 		await writeFile(join(root, 'src/utils/forward.ts'), String(source));
-		const findings = await auditPath(root);
+		const { findings } = await auditProject(root, { profile: 'lib' });
 		const rejected = findings.some(
 			(f) => f.path === 'src/utils/forward.ts' && f.rule === 'function-name-pattern'
 		);
