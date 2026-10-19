@@ -206,6 +206,7 @@ test.each([false, true])(
 		expect(store.projects).toEqual([]);
 		expect(store.snapshot, 'removed shared project is no longer rendered').toBeNull();
 		expect(store.entity).toBeNull();
+		expect(store.offline, 'revoked views retain no offline identity').toBeNull();
 		expect(store.capabilities.agents).toBe(false);
 		expect(store.capabilities.comments).toBe(false);
 	}
