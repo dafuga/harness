@@ -165,6 +165,7 @@ for (const fault of ['crash', 'hang', 'module errors'] as const) {
 				.toBe(true);
 			await ready(webPort);
 			expect((await owner()).pid, 'the supervisor retains its ownership slot').toBe(before.pid);
+			expect((await owner()).url, 'recovery preserves the published address').toBe(before.url);
 			expect(await readFile(history, 'utf8')).toBe('existing committed history');
 			const reused = start(f, nextPort, history);
 			await exited(reused);
