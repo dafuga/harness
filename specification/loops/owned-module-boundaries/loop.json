@@ -2,7 +2,7 @@
 	"name": "owned-module-boundaries",
 	"goal": "Preserve helper definitions, callable contracts and dependency direction in owner-local modules",
 	"createdAt": "2026-10-19T20:13:37.733Z",
-	"updatedAt": "2026-10-19T20:16:14.884Z",
+	"updatedAt": "2026-10-19T20:18:11.782Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T20:18:11.782Z",
+			"evidence": "Separate fix 11896e81 passes the unchanged placement and native runtime API tests. Both immutable checkpoints used one stable shell environment and the complete frozen test corpus."
 		},
 		{
 			"id": "verify",

@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 
@@ -33,7 +33,9 @@ const mounted = Object.fromEntries(
 /** The components a file imports, by name. */
 const imported = (file: string): string[] =>
 	[...readFileSync(file, 'utf8').matchAll(/from '[^']*\/(\w+)\.svelte'/g)].map((found) => found[1]);
-const own = (name: string) => join(home, `${name}.svelte`);
+const files = readdirSync(home, { recursive: true }).filter((file) => file.endsWith('.svelte'));
+const own = (name: string) =>
+	join(home, files.find((file) => file.split('/').at(-1) === `${name}.svelte`) ?? `${name}.svelte`);
 const direct = (name: string) => imported(own(name));
 
 /** Every component of the explorer that one reaches through what it imports. */

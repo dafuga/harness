@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { mergeNoteLines } from '../../src/repositories/history-note-repository/noteLines';
-import { readNoteLines } from '../../src/utils/note-lines/noteLines';
+import { readNoteLines } from '../../src/utils/note-lines/noteCommit';
 
 const commit = 'a'.repeat(40);
 const other = 'b'.repeat(40);

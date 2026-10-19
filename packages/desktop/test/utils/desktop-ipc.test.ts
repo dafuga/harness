@@ -1,8 +1,8 @@
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { bootstrapChannel } from '../../src/utils/desktopIpc';
-import { desktopIpc } from '../../src/initializers/initialize-desktop/desktopIpc';
-import { trustedSender } from '../../src/initializers/initialize-desktop/trustedSender';
+import { desktopIpc } from '../../src/lib/initialize-desktop/desktopIpc';
+import { trustedSender } from '../../src/lib/initialize-desktop/trustedSender';
 
 type Handler = (event: unknown) => Promise<unknown>;
 function port() {
