@@ -3,9 +3,74 @@ import { componentManifestSchema, type ComponentManifest } from '../../src/core/
 import { SourceGraphService } from '../../src/services/SourceGraphService';
 import { UnitRegistryValidator } from '../../src/validators/UnitRegistryValidator';
 import { indexFiles, retire, unitOf } from '../support/memoryTree';
+import { existsSync, readFileSync } from 'node:fs';
+import { posix, resolve } from 'node:path';
+import { createHash } from 'node:crypto';
+import ts from 'typescript';
+import migration from '../../specification/loops/local-helper-ownership/migration.json';
 
 const slugify = 'export function slugify(input: string): string {\n\treturn input.trim();\n}\n';
 const other = 'export function slugifyTitle(input: string): string {\n\treturn input;\n}\n';
+
+function movedDefinition(path: string, name: string): string {
+	const code = readFileSync(path, 'utf8');
+	const source = ts.createSourceFile(path, code, ts.ScriptTarget.Latest, true);
+	const node = source.statements.find((item) => {
+		if (ts.isFunctionDeclaration(item)) return item.name?.text === name;
+		return (
+			ts.isVariableStatement(item) &&
+			item.declarationList.declarations.some(
+				(declaration) => ts.isIdentifier(declaration.name) && declaration.name.text === name
+			)
+		);
+	});
+	if (!node) return 'definition absent';
+	const text = node
+		.getText(source)
+		.replace(/^export\s+(?:default\s+)?/, '')
+		.replace(
+			/new URL\((['"])(\.[^'"]*)\1,\s*import\.meta\.url\)/g,
+			(_match, quote: string, value: string) =>
+				`new URL(${quote}${posix.normalize(posix.join(posix.dirname(path), value))}${quote}, import.meta.url)`
+		);
+	const scanner = ts.createScanner(ts.ScriptTarget.Latest, true, ts.LanguageVariant.Standard, text);
+	const tokens: string[] = [];
+	let token;
+	while ((token = scanner.scan()) !== ts.SyntaxKind.EndOfFileToken) {
+		const value =
+			token === ts.SyntaxKind.StringLiteral ? scanner.getTokenValue() : scanner.getTokenText();
+		tokens.push(`${token}:${value}`);
+	}
+	return createHash('sha256').update(tokens.join('\0')).digest('hex');
+}
+
+test('recorded source moves retain definitions, owner-local placement and registered identity', () => {
+	const root = resolve(import.meta.dirname, '../..');
+	const gaps: string[] = [];
+	for (const move of migration.helpers) {
+		const target = resolve(root, move.to);
+		if (!existsSync(target)) {
+			gaps.push(`${move.name}: owner-local source is missing`);
+			continue;
+		}
+		if (posix.dirname(move.to) !== posix.dirname(move.ownerSource))
+			gaps.push(`${move.name}: different owner folder`);
+		if (!existsSync(resolve(root, move.ownerSource)))
+			gaps.push(`${move.name}: owner source is missing`);
+		if (movedDefinition(move.to, move.name) !== move.definition)
+			gaps.push(`${move.name}: definition changed`);
+		const unit = JSON.parse(
+			readFileSync(resolve(root, `specification/units/${move.unit}.json`), 'utf8')
+		) as ComponentManifest;
+		if (unit.id !== move.unit || !unit.owns.source.includes(move.to))
+			gaps.push(`${move.name}: registered identity lost`);
+	}
+	expect(migration.helpers).toHaveLength(412);
+	expect(
+		gaps,
+		`owner-local helper placement: ${gaps.length} gaps; ${gaps.slice(0, 12).join('; ')}`
+	).toEqual([]);
+});
 
 test('declared preview and documentation survive source re-indexing', async () => {
 	const documentation = 'src/components/Panel.md';
