@@ -1,9 +1,4 @@
-import type {
-	HarnessCapture,
-	HarnessScenario,
-	HarnessUnit,
-	HarnessRevision
-} from '../src/models/Harness.types';
+import type { HarnessCapture, HarnessScenario, HarnessUnit } from '../src/models/Harness.types';
 
 /** Synthetic history of an invented orders application; nothing here is a real repository. */
 export const sha = (letter: string): string => letter.repeat(40);
@@ -51,7 +46,16 @@ function unit(seed: UnitSeed): HarnessUnit {
 		owns: { source: [file], symbols: [seed.title] },
 		contract: { inputs: named(seed.inputs), outputs: named(seed.outputs), errors: [] },
 		...(seed.kind === 'function'
-			? { helpers: [{ name: seed.title, source: file, inputs: named(seed.inputs) }] }
+			? {
+					helpers: [
+						{
+							name: seed.title,
+							source: file,
+							inputs: named(seed.inputs),
+							consumers: [{ unit: ids.list }, { unit: ids.store }]
+						}
+					]
+				}
 			: {}),
 		runtime: {
 			kind: 'module',
@@ -199,20 +203,5 @@ export function capture(commit: string, seed: CaptureSeed): HarnessCapture {
 		...(seed.kind === 'audio' ? said : {}),
 		media,
 		...(media === null ? { gap: 'the bytes are not in this history' } : {})
-	};
-}
-
-/** Source-derived helper metadata distinguishes callable utilities from implementation units. */
-export function withHelpers(detail: HarnessRevision): HarnessRevision {
-	const template = detail.registry.units.find((unit) => unit.id === ids.filter)!;
-	const hidden = ['types', 'schema', 'private', 'class-method', 'legacy'].map((kind) => ({
-		...template,
-		id: `function.${kind}`,
-		title: kind,
-		helpers: kind === 'legacy' ? undefined : []
-	}));
-	return {
-		...detail,
-		registry: { ...detail.registry, units: [...detail.registry.units, ...hidden] }
 	};
 }

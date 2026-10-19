@@ -41,3 +41,79 @@ test('revision metadata lists standalone shared exports without requiring caller
 	expect(shared.helpers).toEqual([]);
 	expect(shared.helperGap).toContain('could not be read');
 });
+
+const cases: Array<{ files: Record<string, string>; count: number }> = [
+	{
+		files: {
+			'src/services/OneService.ts':
+				"import { shared } from '../utils/shared'; export class OneService { run() { shared(); shared(); } }"
+		},
+		count: 1
+	},
+	{
+		files: {
+			'src/utils/callers.ts':
+				"import { shared as use } from './shared'; export function first() { use(); use(); } export function second() { [1].map(use); }"
+		},
+		count: 2
+	},
+	{
+		files: {
+			'src/components/One.svelte':
+				"<script>import { shared } from '../utils/shared';</script><p>{shared()}</p>",
+			'src/services/TwoService.ts':
+				"import * as helpers from '../utils/shared'; export class TwoService { run() { helpers.shared(); } }"
+		},
+		count: 2
+	},
+	{
+		files: {
+			'src/utils/callers.ts':
+				"import { shared } from './shared'; export function first(shared: Function) { shared(); }",
+			'src/utils/types.ts':
+				"import type { shared } from './shared'; export type Example = typeof shared;"
+		},
+		count: 0
+	},
+	{
+		files: {
+			'src/utils/callers.ts':
+				"import { shared, other } from './shared'; export function first() { other(); }"
+		},
+		count: 0
+	},
+	{
+		files: {
+			'src/pages/one.ts': "import { shared } from '../utils/shared'; shared();",
+			'src/utils/barrel.ts': "export { shared } from './shared';",
+			'src/utils/callers.ts':
+				"import { shared } from './barrel'; export function first() { shared(); }"
+		},
+		count: 1
+	}
+];
+test.each(cases)(
+	'revision metadata counts distinct actual consumers: $count',
+	async ({ files, count }) => {
+		const sources = {
+			'src/utils/shared.ts':
+				'export function shared() { return shared; }\nexport function other() {}',
+			...files
+		};
+		const indexed = await indexFiles(sources);
+		const registry = revisionRegistry(indexed.result.manifests, []);
+		await unitMetadata(memoryTree(sources), registry.units);
+		const helper = registry.units
+			.find((unit) => unit.id === 'function.shared')!
+			.helpers!.find((helper) => helper.name === 'shared')!;
+		expect(
+			helper.consumers?.length,
+			'distinct services, components and functions count as users'
+		).toBe(count);
+		const earlier = memoryTree({ 'src/utils/shared.ts': sources['src/utils/shared.ts'] });
+		await unitMetadata(earlier, registry.units);
+		expect(
+			registry.units.find((unit) => unit.id === 'function.shared')!.helpers![0].consumers
+		).toEqual([]);
+	}
+);

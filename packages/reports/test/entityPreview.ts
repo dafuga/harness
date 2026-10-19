@@ -1,4 +1,3 @@
-import { withHelpers } from './entityUnits';
 import { mount, unmount } from 'svelte';
 import ExplorerContent from '../src/components/harness/ExplorerContent.svelte';
 import HarnessShell from '../src/components/harness/HarnessShell.svelte';
@@ -150,3 +149,29 @@ if (variant === 'console') {
 	history.replaceState(null, '', '/harness' + explorerRoutePath(asked()));
 	mount(HarnessShell, { target, props: { base: '/harness', exportable: false } });
 } else show(asked());
+
+/** Source-derived helper metadata distinguishes callable utilities from implementation units. */
+function withHelpers(detail: HarnessRevision): HarnessRevision {
+	const template = detail.registry.units.find((unit) => unit.id === ids.filter)!;
+	const hidden = ['types', 'schema', 'private', 'class-method', 'legacy', 'unused', 'single'].map(
+		(kind) => ({
+			...template,
+			id: `function.${kind}`,
+			title: kind,
+			helpers:
+				kind === 'legacy'
+					? undefined
+					: kind === 'unused' || kind === 'single'
+						? template.helpers?.map((helper) => ({
+								...helper,
+								name: kind,
+								consumers: kind === 'single' ? [{ unit: ids.list }] : []
+							}))
+						: []
+		})
+	);
+	return {
+		...detail,
+		registry: { ...detail.registry, units: [...detail.registry.units, ...hidden] }
+	};
+}

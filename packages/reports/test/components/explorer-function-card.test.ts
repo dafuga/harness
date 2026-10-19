@@ -39,6 +39,7 @@ test.each([false, 0, null, '', [], { label: '<script>example</script>' }, '🧪'
 							helpers: [
 								{
 									name: 'filterOrders',
+									consumers: [{ unit: ids.list }, { unit: ids.store }],
 									source: 'src/functions/filterOrders.ts',
 									inputs: [{ name: 'filterOrders.value', type: 'unknown' }]
 								}
