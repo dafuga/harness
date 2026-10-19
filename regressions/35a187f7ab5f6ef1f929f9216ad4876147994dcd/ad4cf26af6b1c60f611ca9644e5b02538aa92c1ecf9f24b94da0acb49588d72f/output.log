@@ -1,0 +1,99 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [438.00ms]
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+Loading svelte-check in workspace: /private/tmp/harness-snapshot-5RXYCF/packages/reports
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+
+Running 1 test using 1 worker
+
+  ✘  1 tests/e2e/explorer-shell-search.spec.ts:59:1 › every category of the revision is found, and the keyboard opens a shell under Shells (10.0s)
+
+
+  1) tests/e2e/explorer-shell-search.spec.ts:59:1 › every category of the revision is found, and the keyboard opens a shell under Shells 
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Search entities', exact: true })
+
+
+      45 | 	await openShellPage(page, home, 'navbar');
+      46 | 	await expect(page.getByText('Harness', { exact: true }).first()).toBeVisible();
+    > 47 | 	await page.getByRole('button', { name: 'Search entities', exact: true }).click();
+         | 	                                                                         ^
+      48 | }
+      49 |
+      50 | async function remember(page: Page, info: TestInfo, name: string): Promise<void> {
+        at opened (/private/tmp/harness-snapshot-5RXYCF/packages/reports/tests/e2e/explorer-shell-search.spec.ts:47:75)
+        at /private/tmp/harness-snapshot-5RXYCF/packages/reports/tests/e2e/explorer-shell-search.spec.ts:62:2
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-search-ever-94dbd--opens-a-shell-under-Shells/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-search-ever-94dbd--opens-a-shell-under-Shells/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-search-ever-94dbd--opens-a-shell-under-Shells/error-context.md
+
+  1 failed
+    tests/e2e/explorer-shell-search.spec.ts:59:1 › every category of the revision is found, and the keyboard opens a shell under Shells 
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts test/entity-preview.spec.ts --grep collections: --timeout "10000"
+
+Running 1 test using 1 worker
+
+  ✘  1 test/entity-preview.spec.ts:8:1 › collections: search, changed only and order change what is listed (10.0s)
+
+
+  1) test/entity-preview.spec.ts:8:1 › collections: search, changed only and order change what is listed 
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.selectOption: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('combobox', { name: 'Verification filter' })
+
+
+      17 | 	await expect(rows).toHaveCount(3);
+      18 | 	await capture(tab, 'components-desktop');
+    > 19 | 	await tab.getByRole('combobox', { name: 'Verification filter' }).selectOption('unproven');
+         | 	                                                                 ^
+      20 | 	await expect(rows).toHaveCount(0);
+      21 | 	await tab.getByRole('button', { name: 'Show all components' }).click();
+      22 | 	await expect(rows).toHaveCount(3);
+        at /private/tmp/harness-snapshot-5RXYCF/packages/reports/test/entity-preview.spec.ts:19:67
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-collections-5ecb5-order-change-what-is-listed/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-collections-5ecb5-order-change-what-is-listed/error-context.md
+
+  1 failed
+    test/entity-preview.spec.ts:8:1 › collections: search, changed only and order change what is listed 
+error: script "test:entities" exited with code 1
