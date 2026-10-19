@@ -4,16 +4,18 @@ import { screenStates } from './explorerScreens';
 import { searchStates } from './explorerSearch';
 import { shellStates } from './explorerShells';
 import { seeded, short } from './harnessHistory';
-
 const { commits, keptBranch } = seeded();
 const { explorerBranch, explorerUnits: units } = explorer();
 const scale = `http://127.0.0.1:${Number(process.env.HARNESS_CONSOLE_E2E_SCALE_PORT || 5593)}`;
 const content = (page: Page) => page.locator('.ex-content');
 const titled = (page: Page, name: string) =>
 	expect(page.getByRole('heading', { level: 1, name })).toBeVisible();
-const measured = (page: Page) =>
-	expect(page.getByRole('table', { name: 'Measurements and frozen limits' })).toBeVisible();
-
+const measured = async (page: Page) => {
+	await expect(page.getByRole('region', { name: 'Size', exact: true })).toBeVisible();
+	await expect(
+		page.getByRole('region', { name: 'Performance profile', exact: true })
+	).toBeVisible();
+};
 /**
  * How each state of the explorer scenario is reached in the synthetic history. Every state is a
  * real address of the explorer; none is put together from parts of another revision.
@@ -40,7 +42,6 @@ export const explorerFlows: Record<string, { expects: string; source?: boolean }
 		source: true
 	}
 };
-
 async function showContract(page: Page, commit = false, example = false): Promise<void> {
 	const path = `functions/${units.slugify}?tab=contract`;
 	await page.goto(commit ? at('main', commits.approved, path) : tip(explorerBranch, path));
