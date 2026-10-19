@@ -23,7 +23,7 @@ These rules apply only to this Harness repository, including requests made in an
 - Before editing, link the affected registered entity pages or relevant sections and briefly explain the intended change and why each unit needs to be touched. Read its contract, Used In and Uses; distinguish direct edits from dependencies being checked.
 - Keep those links in progress updates and questions. If another unit must change, explain that addition before editing it; a dependency graph alone does not authorize unrelated work.
 - At handoff, link each changed unit and its History section, explain what changed and why, and identify its actual commits and verification results. Distinguish newly run proof, inherited evidence and unresolved checks.
-- Resolve links from real registered ids at the selected branch or commit. Use each unit's actual kind: page, component, shell, function, service or config. For an artifact without an explorer page, explicitly identify that gap and link its source; never invent an entity link or call backend code a visual component.
+- Resolve links from real registered ids at the selected branch or commit, preserving their registered kinds and the explorer's category mapping. For an artifact without an explorer page, explicitly identify that gap and link its source; never invent an entity link or call backend code a visual component.
 - Keep execution attribution truthful: this chat does not automatically create an app conversation or run. Report an in-app thread, run or approval only when that record actually exists; continue registering external work through Harness activity.
 
 ## Bug and Regression Loops
