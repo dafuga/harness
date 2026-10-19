@@ -2,7 +2,7 @@
 	"name": "preview-auto-recovery",
 	"goal": "One managed preview automatically recovers its own failed or unresponsive worker at the same URL while preserving cached history.",
 	"createdAt": "2026-10-19T12:34:13.991Z",
-	"updatedAt": "2026-10-19T13:54:01.871Z",
+	"updatedAt": "2026-10-19T13:55:52.563Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -47,7 +47,7 @@
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
 			"status": "pending",
-			"evidence": "Recovery passes all eleven lifecycle cases at b709affa, and the live frozen worker recovered in 9.92 seconds with its URL and history unchanged. Full verification remains pending: the desktop browser run had 21 failures, one interruption and 42 unrun cases. The missing Evidence coverage assertion also fails in an isolated eee40ecd snapshot from before this task."
+			"evidence": "Recovery passes all eleven lifecycle cases at b709affa, and the live frozen worker recovered in 9.92 seconds with its URL and history unchanged. Full verification remains pending: the desktop browser run had 21 failures, one interruption and 42 unrun cases. The missing Evidence coverage assertion also fails in an isolated eee40ecd snapshot from before this task. Hub lint is blocked at projects() complexity 11/10; Remote lint at approval() 13/10. Both source files and lint configurations are unchanged from eee40ecd."
 		}
 	],
 	"evaluators": [
