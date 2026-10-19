@@ -36,7 +36,10 @@ function workspaceOf(bridge: object) {
 	return workspace as unknown as Workspace & { loadProjects: ReturnType<typeof vi.fn> };
 }
 beforeEach(() => vi.useFakeTimers());
-afterEach(() => vi.useRealTimers());
+afterEach(() => {
+	vi.useRealTimers();
+	vi.unstubAllGlobals();
+});
 
 test('pending approval shows a code and an address and is asked about no sooner than the interval', async () => {
 	const hostedStatus = vi
@@ -166,4 +169,32 @@ test('an account status that arrives after disposal cannot restart polling or re
 	await loading;
 	expect(workspace.loadProjects).not.toHaveBeenCalled();
 	expect(connection.status).toBeNull();
+});
+
+test('account sync pauses while hidden, refreshes when visible and removes listeners on disposal', async () => {
+	const page = Object.assign(new EventTarget(), { visibilityState: 'visible' });
+	const view = new EventTarget();
+	vi.stubGlobal('document', page);
+	vi.stubGlobal('window', view);
+	const hostedStatus = vi.fn(async () => signedIn);
+	const workspace = workspaceOf({
+		hostedStatus,
+		connectHosted: vi.fn(),
+		disconnectHosted: vi.fn()
+	});
+	const connection = createHostedConnectionStore(workspace);
+	await connection.load();
+	page.visibilityState = 'hidden';
+	page.dispatchEvent(new Event('visibilitychange'));
+	view.dispatchEvent(new Event('focus'));
+	await vi.advanceTimersByTimeAsync(60000);
+	expect(hostedStatus, 'hidden devices make no account reads').toHaveBeenCalledTimes(1);
+	page.visibilityState = 'visible';
+	page.dispatchEvent(new Event('visibilitychange'));
+	await vi.advanceTimersByTimeAsync(0);
+	expect(hostedStatus).toHaveBeenCalledTimes(2);
+	connection.dispose();
+	view.dispatchEvent(new Event('focus'));
+	await vi.advanceTimersByTimeAsync(60000);
+	expect(hostedStatus).toHaveBeenCalledTimes(2);
 });
