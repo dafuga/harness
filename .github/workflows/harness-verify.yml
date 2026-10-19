@@ -113,9 +113,13 @@ jobs:
         # profile. A runner without one fails that gate; it never borrows another profile's
         # baseline and nothing here establishes or approves one.
         id: verify
+        timeout-minutes: 170
         continue-on-error: true
+        env:
+          HARNESS_VERIFY_PROGRESS: '1'
         run: bun run dev -- verify run --commit "$COMMIT"
       - name: Keep the record and its evidence, pass or fail
+        if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: harness-record
@@ -123,5 +127,5 @@ jobs:
           include-hidden-files: true
           if-no-files-found: error
       - name: Fail when the verification failed
-        if: steps.verify.outcome != 'success'
+        if: always() && steps.verify.outcome != 'success'
         run: exit 1
