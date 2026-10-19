@@ -138,3 +138,53 @@ test('an owner that crashes can be restarted without a stale lock or orphan prev
 	start(f, webPort);
 	await ready(webPort);
 }, 30000);
+
+test('simultaneous launches elect one owner while the other reuses it', async () => {
+	const f = await fixture(),
+		webPort = await port();
+	const runs = [start(f, webPort), start(f, webPort)];
+	await ready(webPort);
+	await expect
+		.poll(() => runs.filter((run) => run.child.exitCode !== null).length, { timeout: 4000 })
+		.toBe(1);
+	const reused = runs.find((run) => run.child.exitCode !== null)!;
+	expect(reused.child.exitCode).toBe(0);
+	expect(reused.text()).toContain(`Reusing Harness preview: http://127.0.0.1:${webPort}`);
+}, 30000);
+
+test('a different checkout is refused without affecting the owner', async () => {
+	const f = await fixture(),
+		other = await fixture(),
+		webPort = await port(),
+		nextPort = await port();
+	start(f, webPort);
+	await ready(webPort);
+	const second = start({ ...f, root: other.root }, nextPort);
+	await exited(second);
+	expect(second.child.exitCode).not.toBe(0);
+	expect(second.text()).toContain(`already running at http://127.0.0.1:${webPort}`);
+	await ready(webPort);
+}, 30000);
+
+test('normal shutdown releases both the preview and ownership listeners', async () => {
+	const f = await fixture(),
+		webPort = await port(),
+		first = start(f, webPort);
+	await ready(webPort);
+	const ended = once(first.child, 'exit');
+	process.kill(-first.child.pid!, 'SIGTERM');
+	await ended;
+	await expect
+		.poll(async () => {
+			try {
+				await fetch(`http://127.0.0.1:${f.owner}/__harness_preview__`);
+				return true;
+			} catch {
+				return false;
+			}
+		})
+		.toBe(false);
+	await expect(fetch(`http://127.0.0.1:${webPort}`)).rejects.toThrow();
+	start(f, webPort);
+	await ready(webPort);
+}, 30000);
