@@ -68,12 +68,19 @@
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Refuses an unavailable or mismatched worker; ongoing recovery retries back off without starting overlapping workers.",
-				"examples": ["Preview worker did not become ready."]
+				"description": "Rejects a failed or unexpected health response; network errors and probe timeouts propagate to the supervisor.",
+				"examples": ["Worker not ready."]
 			}
 		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "reports.service.console-agent",
+			"via": "contract",
+			"origin": "declared",
+			"contract": "Shared worker sessions expose busy and close through Symbol.for(\"harness.console.agents\")."
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/reports/src/utils/previewHealth.ts",
@@ -84,7 +91,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["local-project-chat"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
