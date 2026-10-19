@@ -46,7 +46,8 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Reports workspace check passed: 596 tests, formatting, typecheck, lint, three builds and audit. All 30 related browser cases pass, with no unexpected browser diagnostics. Root formatting, typecheck, lint, kernel checks/build and 854 unit tests passed (25 live cases skipped). The full root check was interrupted during broader E2E after 13 passing cases, so full cross-platform verification remains pending; no native UI testing or main merge. Exact-commit history integration and immutable red/green pairs are recorded separately. Live preview 5688 verified helper search, schema exclusion and owner-history links. Cached projections were enriched from exact Git commits without changing prior records, media or other fields. Logs: /tmp/harness-helpers-reports-final-check.log, /tmp/harness-helpers-browser-final.log, /tmp/harness-helpers-root-check.log."
 		}
 	],
 	"evaluators": [

@@ -2,7 +2,7 @@
 	"name": "shared-helper-owner-search",
 	"goal": "Keep helper calls searchable by both their callable names and owning module names.",
 	"createdAt": "2026-10-19T15:43:46.332Z",
-	"updatedAt": "2026-10-19T15:45:33.645Z",
+	"updatedAt": "2026-10-19T15:46:35.391Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -46,17 +46,22 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T15:46:25.632Z",
+			"evidence": "84f4c759 passes the unchanged collection identity guard and all three 1000-row responsive console scenarios after failure at 2e645a55. Helper and owning module names both remain searchable."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T15:46:35.391Z",
+			"evidence": "Isolated current-source snapshot: removing owner names from search makes the shared identity assertion fail; restoring the fix passes all 7 collection tests. Product checkout unchanged. Log: /tmp/harness-helper-owner-guard.log."
 		},
 		{
 			"id": "verify",
 			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Reports workspace check passed: 596 tests, formatting, typecheck, lint, three builds and audit. All 30 related browser cases pass, with no unexpected browser diagnostics. Root formatting, typecheck, lint, kernel checks/build and 854 unit tests passed (25 live cases skipped). The full root check was interrupted during broader E2E after 13 passing cases, so full cross-platform verification remains pending; no native UI testing or main merge. Exact-commit history integration and immutable red/green pairs are recorded separately. Live preview 5688 verified helper search, schema exclusion and owner-history links. Cached projections were enriched from exact Git commits without changing prior records, media or other fields. Logs: /tmp/harness-helpers-reports-final-check.log, /tmp/harness-helpers-browser-final.log, /tmp/harness-helpers-root-check.log."
 		}
 	],
 	"evaluators": [
