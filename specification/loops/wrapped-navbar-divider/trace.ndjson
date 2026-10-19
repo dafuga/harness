@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-19T09:56:32.057Z","name":"wrapped-navbar-divider","goal":"Separate the wrapped branch and commit row from navigation with a visible divider.","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-19T09:57:21.683Z","loop":"wrapped-navbar-divider","step":"spec","evidence":"Shared navbar needs a full-width divider only when revision controls wrap below categories."}
+{"event":"step.completed","timestamp":"2026-10-19T09:57:22.081Z","loop":"wrapped-navbar-divider","step":"coverage","evidence":"Existing responsive shell checkpoint covered wrapping and compactness but not row separation; added divider assertions at the same three viewport checkpoints."}

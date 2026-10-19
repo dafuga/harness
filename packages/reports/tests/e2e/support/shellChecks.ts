@@ -27,3 +27,32 @@ export async function compactRevision(within: Locator): Promise<void> {
 	for (const field of fields) expect((await box(field)).height).toBeLessThanOrEqual(36);
 	expect(Math.abs((await box(fields[0])).y - (await box(fields[1])).y)).toBeLessThan(2);
 }
+
+/** A wrapped revision row is separated from the categories across the entire header. */
+export async function revisionDivider(within: Locator): Promise<void> {
+	const row = within.locator('.hx-revision');
+	const [revision, categories, header] = await Promise.all([
+		box(row),
+		box(within.locator('.hx-categories')),
+		box(within)
+	]);
+	const line = await row.evaluate((element) => {
+		const style = getComputedStyle(element, '::before');
+		return {
+			content: style.content,
+			height: parseFloat(style.height),
+			width: parseFloat(style.width),
+			left: parseFloat(style.left),
+			top: parseFloat(style.top),
+			color: style.backgroundColor
+		};
+	});
+	if (revision.y >= categories.y + categories.height - 1) {
+		expect(line.content, 'wrapped revision divider').toBe('""');
+		expect(line.height).toBe(1);
+		expect(line.width).toBeCloseTo(header.width, 0);
+		expect(revision.x + line.left).toBeCloseTo(header.x, 0);
+		expect(line.top).toBe(0);
+		expect(channels(line.color)[3] ?? 1).toBeGreaterThan(0);
+	} else expect(line.content).toBe('none');
+}

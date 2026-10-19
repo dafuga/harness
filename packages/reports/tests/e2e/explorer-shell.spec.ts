@@ -1,6 +1,14 @@
 import { expect, test, type Locator, type Page } from '../../../../test/support/browserTest';
 import { fits, pictured, screens, sharedField, typed } from './support/sharedSelect';
-import { box, channels, combo, compactRevision, reachable, styled } from './support/shellChecks';
+import {
+	box,
+	channels,
+	combo,
+	compactRevision,
+	reachable,
+	styled,
+	revisionDivider
+} from './support/shellChecks';
 import { sha, shellBranch, shellMount, longBranch } from './support/shellData';
 import {
 	buildShellFixture,
@@ -129,6 +137,7 @@ for (const [screen, width, height] of screens) {
 		const [branch, commit] = [combo(bar, 'Branch'), combo(bar, 'Commit')];
 		const tip = bar.getByRole('button', { name: 'Go to tip' });
 		await pictured(page, `explorer-shell-current-${screen}`);
+		await revisionDivider(bar);
 		await compactRevision(bar);
 		// The native value and every option remain complete.
 		await expect(branch).toHaveValue(shellBranch);
