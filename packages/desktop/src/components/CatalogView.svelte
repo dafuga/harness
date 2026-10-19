@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { helperContract } from '../../../../src/utils/helperContract';
 	import Select from '$shared/Select.svelte';
 	import FilterDialog from '$shared/FilterDialog.svelte';
 	import { explorerName } from '../../../reports/src/utils/explorerName';
@@ -11,7 +12,11 @@
 	let changed = $state(false);
 	let verification = $state('all');
 	let planning = $state('all');
-	const heading = $derived(workspace.category[0].toUpperCase() + workspace.category.slice(1));
+	const heading = $derived(
+		workspace.category === 'functions'
+			? 'Helpers'
+			: workspace.category[0].toUpperCase() + workspace.category.slice(1)
+	);
 	/** Only a verified entity has passed; a failed, unverified or unknown one is unproven. */
 	const proofOf = (e: CatalogEntity) => (e.verification === 'verified' ? 'passed' : 'unproven');
 	function reset() {
@@ -37,6 +42,7 @@
 			.filter(
 				(e) =>
 					e.category === workspace.category &&
+					(e.category !== 'functions' || e.planned || e.helperContracts?.some(helperContract)) &&
 					`${explorerName(e)} ${e.summary}`.toLowerCase().includes(search.toLowerCase()) &&
 					(!changed || e.changed) &&
 					(verification === 'all' || proofOf(e) === verification) &&

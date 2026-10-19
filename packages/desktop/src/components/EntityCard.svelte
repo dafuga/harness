@@ -49,7 +49,14 @@
 {/snippet}
 
 <article class="entity-card" class:planned={entity.hasPlan}>
-	{#if compact}
+	{#if headless && !entity.hasPlan}
+		<WorkspaceLink
+			{workspace}
+			to={workspace.path(entity.category, entity.id)}
+			class="helper-card-link"
+			label={`Open ${entity.title}`}><code>{entity.title}</code></WorkspaceLink
+		>
+	{:else if compact}
 		<WorkspaceLink
 			{workspace}
 			to={workspace.path(entity.category, entity.id, entity.hasPlan ? reviewed : '')}
@@ -83,6 +90,16 @@
 </article>
 
 <style>
+	:global(.entity-card .helper-card-link) {
+		display: block;
+		min-width: 0;
+		overflow-wrap: anywhere;
+	}
+	:global(.entity-card .helper-card-link:focus-visible) {
+		outline: 2px solid var(--gold);
+		outline-offset: 6px;
+	}
+
 	:global(.entity-card .page-card-link) {
 		display: grid;
 		gap: 16px;

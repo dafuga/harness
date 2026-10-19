@@ -38,6 +38,16 @@ export const contractItemSchema = z.strictObject({
 	examples: z.array(z.json()).optional()
 });
 
+/** Reviewed helper declarations, derived at indexing time and pinned with the source. */
+export const helperContractSchema = z.strictObject({
+	name: text,
+	source: text,
+	inputs: z.array(contractItemSchema),
+	output: z.string().optional(),
+	pure: z.literal(true),
+	consumers: z.array(z.strictObject({ unit: identifier, symbol: text.optional() })).min(2)
+});
+
 export const unitDependencySchema = z.strictObject({
 	unit: identifier,
 	via: z.enum(dependencyVias),
@@ -90,6 +100,7 @@ export const componentManifestSchema = z.strictObject({
 		errors: z.array(contractItemSchema)
 	}),
 	dependencies: z.array(unitDependencySchema),
+	helperContracts: z.array(helperContractSchema).optional(),
 	/** `kind` and `entry` name the default execution target; `targets` lists every applicable one. */
 	runtime: executionTargetSchema.extend({ targets: z.array(executionTargetSchema).min(1) }),
 	scenarios: z.array(identifier),

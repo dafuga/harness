@@ -163,6 +163,7 @@ export type Thumbnail =
 	| ({ source: 'recorded' } & Partial<NonNullable<ComponentManifest['preview']>>);
 
 export interface CatalogEntity {
+	helperContracts?: ComponentManifest['helperContracts'];
 	id: string;
 	category: Category;
 	kind: string;

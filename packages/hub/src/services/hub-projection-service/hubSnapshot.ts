@@ -34,7 +34,8 @@ export async function hubSnapshot(
 		{
 			// Named for what is listed: a snapshot cached with route loaders in it is not read.
 			profile:
-				'snapshot:listed:' + (await hubHash(new TextEncoder().encode(JSON.stringify(branches)))),
+				'snapshot:pure-helper-contracts-v1:' +
+				(await hubHash(new TextEncoder().encode(JSON.stringify(branches)))),
 			accept: (value) => new RemoteProjectResponseValidator().snapshot(value, project.id)
 		},
 		async () => {

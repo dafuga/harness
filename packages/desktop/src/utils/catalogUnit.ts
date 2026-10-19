@@ -1,3 +1,4 @@
+import { helperContract } from '../../../../src/utils/helperContract';
 import type { ComponentManifest } from '../../../../src/lib/contracts';
 import type { CatalogEntity, DesignVersion } from '../models/Desktop.types';
 import type { PlanRecord } from '../models/PlanningPort.types';
@@ -10,6 +11,7 @@ export function catalogUnit(unit: ComponentManifest, changed: Set<string>): Cata
 	if (!category || unit.status !== 'active') return null;
 	const preview = category === 'pages' || category === 'components' ? unit.preview : undefined;
 	return {
+		...(unit.helperContracts?.length ? { helperContracts: unit.helperContracts } : {}),
 		id: unit.id,
 		category,
 		kind: unit.kind,
@@ -41,7 +43,25 @@ export function catalogListed(units: ComponentManifest[], items: CatalogEntity[]
 			.filter((unit) => unit.owns.source.every((path) => loader.test(path)))
 			.map((unit) => unit.id)
 	);
-	return items.filter((item) => !loaders.has(item.id));
+	return items
+		.filter((item) => !loaders.has(item.id))
+		.flatMap((item) => {
+			if (item.category !== 'functions' || item.planned) return [item];
+			const helpers = (item.helperContracts ?? []).filter(helperContract);
+			return helpers.length
+				? [
+						{
+							...item,
+							title: helpers
+								.map(
+									(helper) =>
+										`${helper.name}(${helper.inputs.map((input) => input.name.split('.').at(-1)).join(', ')})`
+								)
+								.join('\n')
+						}
+					]
+				: [];
+		});
 }
 function draftCatalog(plan: PlanRecord): CatalogEntity {
 	return {

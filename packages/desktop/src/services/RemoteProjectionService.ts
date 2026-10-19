@@ -4,7 +4,7 @@ import type { HostedHttpAdapter } from '../adapters/hosted-http-adapter/HostedHt
 import { RemoteProjectResponseValidator } from '../validators/RemoteProjectResponseValidator';
 import { HostedReadService, type HostedReadOptions } from './HostedReadService';
 /** Names the rule a kept snapshot was listed by; one kept under another rule is not looked up. */
-const listed = 'listed:';
+const listed = 'pure-helper-contracts-v1:';
 export class RemoteProjectionService {
 	private reads: HostedReadService;
 	private validator = new RemoteProjectResponseValidator();

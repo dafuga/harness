@@ -1,3 +1,4 @@
+import { helperContract } from '../../../../src/utils/helperContract';
 import { explorerCategory } from './explorerCategory';
 import type {
 	ExplorerCategory,
@@ -79,13 +80,7 @@ function rowOf(entity: ExplorerEntity, related: Relations): CatalogRow {
 	};
 }
 
-function sharedHelper(helper: NonNullable<CatalogRow['helper']>): boolean {
-	return (
-		helper.pure === true &&
-		new Set(helper.consumers?.map((consumer) => `${consumer.unit}#${consumer.symbol ?? ''}`))
-			.size >= 2
-	);
-}
+const sharedHelper = helperContract;
 
 /** The callable name shown on a function card, before its example arguments. */
 export function functionName(unit: CatalogRow['entity']['unit']): string {

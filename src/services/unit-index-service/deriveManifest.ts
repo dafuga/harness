@@ -28,6 +28,7 @@ export function deriveManifest(input: DeriveInput): ComponentManifest {
 		owns: { source, symbols: files.flatMap((file) => file.exports.map((symbol) => symbol.name)) },
 		contract: kept.contract.origin === 'declared' ? kept.contract : derivedContract(files),
 		dependencies: [...derivedDependencies(input), ...declaredDependencies(input.previous)],
+		...(kept.helperContracts?.length ? { helperContracts: kept.helperContracts } : {}),
 		runtime: runtime(input.previous, source),
 		scenarios: kept.scenarios,
 		...(preview ? { preview } : {}),
@@ -44,6 +45,7 @@ type Declared = Pick<
 	| 'contract'
 	| 'scenarios'
 	| 'preview'
+	| 'helperContracts'
 	| 'documentation'
 	| 'budgets'
 >;
