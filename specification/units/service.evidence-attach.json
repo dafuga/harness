@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/evidence-attach-service/EvidenceAttachService.ts",
-			"src/services/EvidenceAttachService.ts"
-		],
+		"source": ["src/services/EvidenceAttachService.ts"],
 		"symbols": [
 			"Attached",
 			"EvidenceAttachService",
@@ -126,7 +123,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/evidence-attach-service/EvidenceAttachService.ts",
+		"entry": "src/services/EvidenceAttachService.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -134,9 +131,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"history-fixture-integrity"
-	],
+	"scenarios": ["history-fixture-integrity"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

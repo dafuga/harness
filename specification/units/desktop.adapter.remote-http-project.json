@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
-			"packages/desktop/src/adapters/RemoteHttpProjectAdapter.ts"
-		],
+		"source": ["packages/desktop/src/adapters/RemoteHttpProjectAdapter.ts"],
 		"symbols": [
 			"NativeHostedCredential",
 			"RemoteHttpProjectAdapter",
@@ -229,7 +226,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
+		"entry": "packages/desktop/src/adapters/RemoteHttpProjectAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -237,9 +234,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"hosted-client-copies"
-	],
+	"scenarios": ["hosted-client-copies"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

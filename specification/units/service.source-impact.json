@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/source-impact-service/SourceImpactService.ts",
-			"src/services/SourceImpactService.ts"
-		],
+		"source": ["src/services/SourceImpactService.ts"],
 		"symbols": [
 			"SourceImpact",
 			"SourceImpactService",
@@ -119,7 +116,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/source-impact-service/SourceImpactService.ts",
+		"entry": "src/services/SourceImpactService.ts",
 		"targets": [
 			{
 				"kind": "module",

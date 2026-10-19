@@ -1,5 +1,10 @@
-import { explorerCategory } from "./explorerCategory";
-import type { ExplorerCategory, ExplorerEntity, ExplorerRelations, ExplorerVerdict } from "../models/Explorer.types";
+import { explorerCategory } from './explorerCategory';
+import type {
+	ExplorerCategory,
+	ExplorerEntity,
+	ExplorerRelations,
+	ExplorerVerdict
+} from '../models/Explorer.types';
 
 type Relations = Pick<ExplorerRelations, 'pages' | 'usedBy' | 'components'>;
 
@@ -27,9 +32,7 @@ export interface CatalogRow {
 }
 
 export const catalogOrders = ['name', 'name-desc', 'changed', 'failed'] as const;
-
 export type CatalogOrder = (typeof catalogOrders)[number];
-
 export const orderLabels: Record<CatalogOrder, string> = {
 	name: 'Name (A → Z)',
 	'name-desc': 'Name (Z → A)',
@@ -46,7 +49,6 @@ export interface CatalogFilter {
 }
 
 const names = (entities: ExplorerEntity[]) => entities.map((entity) => entity.name);
-
 // An entity that is only reached by a change of something it uses did not change itself.
 const own = ['direct', 'added'];
 
@@ -87,8 +89,7 @@ export function functionName(unit: CatalogRow['entity']['unit']): string {
 }
 
 const sortName = (row: CatalogRow) => row.helper?.name ?? row.name;
-
-export const byName = (left: CatalogRow, right: CatalogRow) =>
+const byName = (left: CatalogRow, right: CatalogRow) =>
 	sortName(left).localeCompare(sortName(right), 'en', { sensitivity: 'base' });
 
 /**
@@ -118,11 +119,42 @@ export function entityCatalog(
 		.sort(byName);
 }
 
+const first = (flag: (row: CatalogRow) => boolean) => (left: CatalogRow, right: CatalogRow) =>
+	Number(flag(right)) - Number(flag(left)) || byName(left, right);
+const orders: Record<CatalogOrder, (left: CatalogRow, right: CatalogRow) => number> = {
+	name: byName,
+	'name-desc': (left, right) => byName(right, left),
+	changed: first((row) => row.changed),
+	failed: first((row) => !row.verdict.passed)
+};
+
+/** The rows a person asked for: those a search matches, only the changed ones, in an order. */
+export function catalogFilter(rows: CatalogRow[], filter: CatalogFilter): CatalogRow[] {
+	const wanted = filter.search.trim().toLowerCase();
+	return rows
+		.filter((row) => !filter.changedOnly || row.changed)
+		.filter(
+			(row) =>
+				!filter.verification ||
+				filter.verification === 'all' ||
+				row.verdict.passed === (filter.verification === 'passed')
+		)
+		.filter(
+			(row) => !filter.usage || filter.usage === 'all' || row.shared === (filter.usage === 'shared')
+		)
+		.filter((row) => {
+			const symbols = row.helper?.name ?? '';
+			return (
+				!wanted ||
+				`${row.name} ${row.entity.name} ${row.summary} ${symbols}`.toLowerCase().includes(wanted)
+			);
+		})
+		.sort(orders[filter.order]);
+}
+
 /** Names in a cell: none, the first few, and how many more there are. */
 export function listed(names: string[], most = 1): string {
 	if (names.length === 0) return 'none';
 	if (names.length <= most) return names.join(' · ');
 	return `${names.slice(0, most).join(' · ')} + ${names.length - most} more`;
 }
-
-export { catalogFilter } from '../components/harness/explorer-index/entityCatalog';

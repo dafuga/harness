@@ -1,9 +1,9 @@
-import { SnapshotAdapter } from "../adapters/snapshot-adapter/SnapshotAdapter";
+import { SnapshotAdapter } from '../adapters/SnapshotAdapter';
 import { verifyConfigFile, type VerifyConfig } from '../core/verifyTypes';
 import type { BuiltArtifacts } from '../utils/unitMeasurements';
 import type { PlannedCheck } from '../utils/verifyPlan';
 import { BuildIdentityService, type BuiltIdentity } from './BuildIdentityService';
-import { CheckRunService, type CheckOutcome, type RunContext } from "./check-run-service/CheckRunService";
+import { CheckRunService, type CheckOutcome, type RunContext } from './CheckRunService';
 
 export interface SnapshotRun {
 	root: string;

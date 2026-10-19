@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { ExplorerScreenProps } from '../../models/ExplorerScreen.types';
-	import { entityShown } from "./entity-sections/entityShown";
+	import { entityShown } from '../../utils/entityShown';
 	import EntityDetails from './EntityDetails.svelte';
 	import EntityFrame from './EntityFrame.svelte';
 	let host: ExplorerScreenProps = $props();

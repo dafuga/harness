@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/check-run-service/readBrowserDiagnostics.ts",
-			"src/utils/readBrowserDiagnostics.ts"
-		],
-		"symbols": [
-			"readBrowserDiagnostics"
-		]
+		"source": ["src/utils/readBrowserDiagnostics.ts"],
+		"symbols": ["readBrowserDiagnostics"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -50,9 +45,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"browser-error-evidence"
-	],
+	"scenarios": ["browser-error-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

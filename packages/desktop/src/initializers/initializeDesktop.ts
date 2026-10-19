@@ -1,7 +1,7 @@
 import { NativeConnectionService } from '../services/NativeConnectionService';
 import { ProjectRegistryService } from '../services/ProjectRegistryService';
 import { CommentOutboxService } from '../services/CommentOutboxService';
-import { ProjectionCacheService } from "../services/projection-cache-service/ProjectionCacheService";
+import { ProjectionCacheService } from '../services/ProjectionCacheService';
 import {
 	app,
 	BrowserWindow,
@@ -18,18 +18,18 @@ import type { LocalBootstrap } from '../../../remote/src/index';
 import { LocalClientService } from '../services/LocalClientService';
 import type { LocalControl } from '../services/LocalOperationsService';
 import { LocalTransportService } from '../services/LocalTransportService';
-import { ProviderDiscoveryService } from "../services/provider-discovery-service/ProviderDiscoveryService";
-import { RemoteHostService } from "../services/remote-host-service/RemoteHostService";
+import { ProviderDiscoveryService } from '../services/ProviderDiscoveryService';
+import { RemoteHostService } from '../services/RemoteHostService';
 import { RemoteLifecycleService } from '../services/RemoteLifecycleService';
 import { RepositoryArbiterService } from '../services/RepositoryArbiterService';
-import { CodexAppServerAdapter } from "../adapters/codex-app-server-adapter/CodexAppServerAdapter";
-import { ClaudeCliAdapter } from "../adapters/claude-cli-adapter/ClaudeCliAdapter";
+import { CodexAppServerAdapter } from '../adapters/CodexAppServerAdapter';
+import { ClaudeCliAdapter } from '../adapters/ClaudeCliAdapter';
 import { NativeSessionAdapter } from '../adapters/NativeSessionAdapter';
 import { RelaySocketAdapter } from '../adapters/RelaySocketAdapter';
 import { RemoteHostStoreAdapter } from '../adapters/RemoteHostStoreAdapter';
 import { RemoteRegistrationAdapter } from '../adapters/RemoteRegistrationAdapter';
 import { desktopIpc } from '../utils/desktopIpc';
-import { rendererAssets } from "../utils/renderer-assets/rendererAssets";
+import { rendererAssets } from '../utils/rendererAssets';
 import { trustedSender } from '../utils/trustedSender';
 import { NavigationValidator } from '../validators/NavigationValidator';
 protocol.registerSchemesAsPrivileged([

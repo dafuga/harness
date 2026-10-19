@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/adapters/snapshot-adapter/SnapshotAdapter.ts",
-			"src/adapters/SnapshotAdapter.ts"
-		],
+		"source": ["src/adapters/SnapshotAdapter.ts"],
 		"symbols": [
 			"SnapshotDrift",
 			"SnapshotAdapter",
@@ -107,7 +104,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/adapters/snapshot-adapter/SnapshotAdapter.ts",
+		"entry": "src/adapters/SnapshotAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import EntityCases from '../../../reports/src/components/entity-cases/EntityCases.svelte';
+	import EntityCases from '../../../reports/src/components/EntityCases.svelte';
 	import type { ExplorerArtifactBehavior } from '../../../reports/src/models/ExplorerEvidence.types';
 	import type { BehaviorCell } from '../../../reports/src/utils/entityBehavior';
 	import { artifactText } from '../../../reports/src/utils/explorerArtifact';

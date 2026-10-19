@@ -1,9 +1,23 @@
 import { resolveLoopTemplate } from './loopTemplates';
-import { appendTrace, loopPaths, loopRoot, readLoop, timestamp, validateLoopId, validateRequiredText, writeLoop, writeNewLoop, type LoopInput, type LoopState, type LoopStatus, type LoopStep } from "./loop-state/loopState";
+import {
+	appendTrace,
+	loopPaths,
+	loopRoot,
+	readLoop,
+	timestamp,
+	validateLoopId,
+	validateRequiredText,
+	writeLoop,
+	writeNewLoop,
+	type LoopInput,
+	type LoopState,
+	type LoopStatus,
+	type LoopStep
+} from './loopState';
 import { fail } from '../core/errors';
-import { enforceRegressionStep } from "./record-regression/recordRegression";
+import { enforceRegressionStep } from './recordRegression';
 
-export { type LoopEvaluator, type LoopState, type LoopStatus, type LoopStep } from './loop-state/loopState';
+export type { LoopEvaluator, LoopState, LoopStatus, LoopStep } from './loopState';
 
 export interface CreateLoopInput extends LoopInput {
 	name: string;

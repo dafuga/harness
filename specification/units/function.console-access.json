@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/utils/consoleAccess.ts",
-			"packages/reports/src/utils/console-server/consoleAccess.ts"
-		],
+		"source": ["src/utils/consoleAccess.ts"],
 		"symbols": [
 			"ConsoleData",
 			"ConsoleExportInput",

@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/claude-query-service/gatewayMessages.ts",
-			"src/utils/gatewayMessages.ts"
-		],
-		"symbols": [
-			"gatewayMessages"
-		]
+		"source": ["src/utils/gatewayMessages.ts"],
+		"symbols": ["gatewayMessages"]
 	},
 	"contract": {
 		"origin": "declared",

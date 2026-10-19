@@ -1,9 +1,11 @@
 import { buildObservation, type BuildObservation } from './ios-build-observation';
 import { join } from 'node:path';
-import { classifyProcess, platformServices } from "../../../src/utils/run-isolated/platformServices";
-import { type ServiceContext } from "../../../src/utils/platformServices";
-import { processDescendants } from "../../../src/utils/run-isolated/processDescendants";
-import { type TrackedProcess } from "../../../src/utils/processDescendants";
+import {
+	classifyProcess,
+	platformServices,
+	type ServiceContext
+} from '../../../src/utils/platformServices';
+import { processDescendants, type TrackedProcess } from '../../../src/utils/processDescendants';
 
 interface SeenService {
 	started: string;

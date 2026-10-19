@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/adapters/codex-app-server-adapter/codexTurn.ts",
-			"packages/desktop/src/utils/codexTurn.ts"
-		],
-		"symbols": [
-			"codexTurn"
-		]
+		"source": ["packages/desktop/src/utils/codexTurn.ts"],
+		"symbols": ["codexTurn"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -71,10 +66,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-native",
-		"desktop-project-runs"
-	],
+	"scenarios": ["desktop-native", "desktop-project-runs"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

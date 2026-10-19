@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/harnessComparison.ts",
-			"packages/reports/src/components/harness/harness-compare-media/harnessComparison.ts"
-		],
+		"source": ["packages/reports/src/utils/harnessComparison.ts"],
 		"symbols": [
 			"ComparedSide",
 			"StateChoice",

@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/collaboration/src/utils/create-git-hub-source/validateGitHubAnchor.ts",
-			"packages/collaboration/src/utils/validateGitHubAnchor.ts"
-		],
-		"symbols": [
-			"validateGitHubAnchor"
-		]
+		"source": ["packages/collaboration/src/utils/validateGitHubAnchor.ts"],
+		"symbols": ["validateGitHubAnchor"]
 	},
 	"contract": {
 		"origin": "declared",

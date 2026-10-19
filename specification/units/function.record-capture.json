@@ -7,14 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/utils/record-capture/recordCapture.ts",
-			"src/utils/recordCapture.ts"
-		],
-		"symbols": [
-			"evidenceRequested",
-			"recordCapture"
-		]
+		"source": ["src/utils/recordCapture.ts"],
+		"symbols": ["evidenceRequested", "recordCapture"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -63,7 +57,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/record-capture/recordCapture.ts",
+		"entry": "src/utils/recordCapture.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -1,7 +1,7 @@
 import type { Command } from 'commander';
 import { readFile, stat } from 'node:fs/promises';
-import { CodexGatewayService } from "../services/codex-gateway-service/CodexGatewayService";
-import { registerCodexPickerCommand } from "./codex-picker-command/CodexPickerCommand";
+import { CodexGatewayService } from '../services/CodexGatewayService';
+import { registerCodexPickerCommand } from './CodexPickerCommand';
 
 export function registerCodexCommand(program: Command): void {
 	const codex = program

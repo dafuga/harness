@@ -7,15 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/createdThread.ts",
-			"packages/desktop/src/utils/project-agent-events/createdThread.ts",
-			"packages/desktop/src/components/entity-view/createdThread.ts"
-		],
-		"symbols": [
-			"rememberCreatedThread",
-			"createdThread"
-		]
+		"source": ["packages/desktop/src/utils/createdThread.ts"],
+		"symbols": ["rememberCreatedThread", "createdThread"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -77,9 +70,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"agent-creation"
-	],
+	"scenarios": ["agent-creation"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

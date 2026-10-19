@@ -3,12 +3,12 @@
 	import { tick } from 'svelte';
 	import type { Report } from '../models/Report.types';
 	import { t } from '../utils/reportLocale';
-	import ReportSummary from './report-summary/ReportSummary.svelte';
-	import GameplayReplay from './gameplay-replay/GameplayReplay.svelte';
+	import ReportSummary from './ReportSummary.svelte';
+	import GameplayReplay from './GameplayReplay.svelte';
 	import ReportChecks from './ReportChecks.svelte';
 	import ReportFindings from './ReportFindings.svelte';
 	import CoverageList from './CoverageList.svelte';
-	import EvidenceGrid from './evidence-grid/EvidenceGrid.svelte';
+	import EvidenceGrid from './EvidenceGrid.svelte';
 	import Modal from './Modal.svelte';
 	let {
 		report,

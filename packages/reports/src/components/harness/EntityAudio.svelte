@@ -4,7 +4,7 @@
 	import { shortCommit } from '../../utils/entityLens';
 	import { galleryItems } from '../../utils/entityScreens';
 	import AudioEvidence from '../AudioEvidence.svelte';
-	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
+	import HarnessVerdict from './HarnessVerdict.svelte';
 	let {
 		evidence,
 		scope,

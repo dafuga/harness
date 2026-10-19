@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/utils/hub-metadata/hubMetadataPaths.ts",
-			"packages/hub/src/utils/hubMetadataPaths.ts"
-		],
-		"symbols": [
-			"hubMetadataPaths"
-		]
+		"source": ["packages/hub/src/utils/hubMetadataPaths.ts"],
+		"symbols": ["hubMetadataPaths"]
 	},
 	"contract": {
 		"origin": "declared",

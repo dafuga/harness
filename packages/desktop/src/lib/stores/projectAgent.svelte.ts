@@ -2,7 +2,7 @@ import type { ProviderState } from '../../models/Desktop.types';
 import type { CreatedEntity, RunEvent } from '../../models/DesktopBridge.types';
 import type { ComposeMode, RunDraft } from '../../utils/composeModes';
 import { projectAgentActions, projectAgentComment } from '../../utils/projectAgentActions';
-import { projectAgentEvents } from "../../utils/project-agent-events/projectAgentEvents";
+import { projectAgentEvents } from '../../utils/projectAgentEvents';
 import type { Workspace } from './workspace.svelte';
 class ProjectAgentState {
 	runId = $state('');

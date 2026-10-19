@@ -7,16 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/utils/hub-designs/hubDesigns.ts",
-			"packages/hub/src/utils/hub-catalog/hubDesigns.ts",
-			"packages/hub/src/services/hub-projection-service/hubDesigns.ts",
-			"packages/hub/src/utils/hubDesigns.ts"
-		],
-		"symbols": [
-			"hubDesigns",
-			"hubDesignImage"
-		]
+		"source": ["packages/hub/src/utils/hubDesigns.ts"],
+		"symbols": ["hubDesigns", "hubDesignImage"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -100,7 +92,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hub-designs/hubDesigns.ts",
+		"entry": "packages/hub/src/utils/hubDesigns.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -108,9 +100,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"hosted-design-options"
-	],
+	"scenarios": ["hosted-design-options"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

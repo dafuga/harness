@@ -7,11 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/remote/src/utils/pairingOffer.ts",
-			"packages/remote/src/services/device-pairing-service/pairingOffer.ts",
-			"packages/desktop/src/services/remote-host-service/pairingOffer.ts"
-		],
+		"source": ["packages/remote/src/utils/pairingOffer.ts"],
 		"symbols": [
 			"PairingOffer",
 			"OfferEnvironment",

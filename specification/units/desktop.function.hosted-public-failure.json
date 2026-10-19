@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/adapters/hosted-http-adapter/hostedPublicFailure.ts",
-			"packages/desktop/src/utils/hostedPublicFailure.ts"
-		],
-		"symbols": [
-			"hostedPublicFailure"
-		]
+		"source": ["packages/desktop/src/utils/hostedPublicFailure.ts"],
+		"symbols": ["hostedPublicFailure"]
 	},
 	"contract": {
 		"origin": "declared",

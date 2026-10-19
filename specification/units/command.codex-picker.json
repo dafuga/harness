@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/commands/codex-picker-command/CodexPickerCommand.ts",
-			"src/commands/CodexPickerCommand.ts"
-		],
-		"symbols": [
-			"registerCodexPickerCommand"
-		]
+		"source": ["src/commands/CodexPickerCommand.ts"],
+		"symbols": ["registerCodexPickerCommand"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -65,7 +60,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/commands/codex-picker-command/CodexPickerCommand.ts",
+		"entry": "src/commands/CodexPickerCommand.ts",
 		"targets": [
 			{
 				"kind": "module",

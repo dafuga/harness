@@ -2,7 +2,7 @@ import { componentManifestSchema } from '../../../../src/core/unitTypes';
 import { hubRead } from './hubSource';
 import type { HubSourceContext } from './hubSource';
 import { hubJson, hubFail } from './hubJson';
-import { hubMetadata } from "./hub-metadata/hubMetadata";
+import { hubMetadata } from './hubMetadata';
 export async function hubRecords(context: HubSourceContext) {
 	await hubMetadata(context);
 	const entries = context.entries.filter((e) => /^specification\/units\/[^/]+\.json$/.test(e.path));

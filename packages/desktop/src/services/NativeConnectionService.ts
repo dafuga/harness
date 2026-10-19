@@ -1,9 +1,9 @@
 import type { CacheStatus } from '../models/ProjectContext.types';
 import { NativeSessionAdapter, type NativeEncryption } from '../adapters/NativeSessionAdapter';
-import { HostedHttpAdapter } from "../adapters/hosted-http-adapter/HostedHttpAdapter";
-import { RemoteHttpProjectAdapter } from "../adapters/remote-http-project-adapter/RemoteHttpProjectAdapter";
+import { HostedHttpAdapter } from '../adapters/HostedHttpAdapter';
+import { RemoteHttpProjectAdapter } from '../adapters/RemoteHttpProjectAdapter';
 import { NativeAuthService } from './NativeAuthService';
-import type { ProjectionCacheService } from "./projection-cache-service/ProjectionCacheService";
+import type { ProjectionCacheService } from './ProjectionCacheService';
 interface NativeConnectionOptions {
 	origin?: string;
 	onCacheStatus?: (status: CacheStatus) => void;

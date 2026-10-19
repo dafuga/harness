@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/workflows/run-report/runReport.ts",
-			"src/workflows/runReport.ts"
-		],
-		"symbols": [
-			"runReport"
-		]
+		"source": ["src/workflows/runReport.ts"],
+		"symbols": ["runReport"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -50,7 +45,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/run-report/runReport.ts",
+		"entry": "src/workflows/runReport.ts",
 		"targets": [
 			{
 				"kind": "module",

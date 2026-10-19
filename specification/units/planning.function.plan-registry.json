@@ -7,14 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/planning/src/utils/planRegistry.ts",
-			"packages/planning/src/services/planning-service/planRegistry.ts"
-		],
-		"symbols": [
-			"planningIgnores",
-			"planRegistry"
-		]
+		"source": ["packages/planning/src/utils/planRegistry.ts"],
+		"symbols": ["planningIgnores", "planRegistry"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -88,10 +82,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"planning-artifacts",
-		"shells-shared-app"
-	],
+	"scenarios": ["planning-artifacts", "shells-shared-app"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -2,8 +2,8 @@
 	import type { Snippet } from 'svelte';
 	import type { Workspace } from '../lib/stores/workspace.svelte';
 	import CatalogView from './CatalogView.svelte';
-	import EntityView from './entity-view/EntityView.svelte';
-	import NavBar from './nav-bar/NavBar.svelte';
+	import EntityView from './EntityView.svelte';
+	import NavBar from './NavBar.svelte';
 	import ProjectAgent from './ProjectAgent.svelte';
 	import StatusBar from './StatusBar.svelte';
 	let { workspace, account }: { workspace: Workspace; account?: Snippet } = $props();

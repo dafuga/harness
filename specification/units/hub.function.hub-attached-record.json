@@ -7,15 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/utils/hubAttachedRecord.ts",
-			"packages/hub/src/services/hub-attached-service/hubAttachedRecord.ts"
-		],
-		"symbols": [
-			"HubAttachedRecord",
-			"hubRecordJson",
-			"hubAttachedRecord"
-		]
+		"source": ["packages/hub/src/utils/hubAttachedRecord.ts"],
+		"symbols": ["HubAttachedRecord", "hubRecordJson", "hubAttachedRecord"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -77,9 +70,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"hub-recorded-evidence"
-	],
+	"scenarios": ["hub-recorded-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

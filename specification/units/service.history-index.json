@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/history-index-service/HistoryIndexService.ts",
-			"src/services/HistoryIndexService.ts"
-		],
+		"source": ["src/services/HistoryIndexService.ts"],
 		"symbols": [
 			"BuiltHistory",
 			"LegacyReader",
@@ -126,7 +123,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/history-index-service/HistoryIndexService.ts",
+		"entry": "src/services/HistoryIndexService.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/services/remote-host-switch-service/RemoteHostSwitchService.ts",
-			"packages/desktop/src/services/RemoteHostSwitchService.ts"
-		],
+		"source": ["packages/desktop/src/services/RemoteHostSwitchService.ts"],
 		"symbols": [
 			"RemoteHostSwitchOptions",
 			"RemoteHostSwitchService",
@@ -78,7 +75,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/remote-host-switch-service/RemoteHostSwitchService.ts",
+		"entry": "packages/desktop/src/services/RemoteHostSwitchService.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { BehaviorOutcome, EntityBehavior } from '../../utils/entityBehavior';
 	import EntityArtifact from './EntityArtifact.svelte';
-	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
+	import HarnessVerdict from './HarnessVerdict.svelte';
 	let {
 		shown,
 		side,

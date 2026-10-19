@@ -1,4 +1,11 @@
-import { loopPaths, loopRoot, readLoop, type LoopEvaluator, type LoopInput, type LoopStep } from "./loop-state/loopState";
+import {
+	loopPaths,
+	loopRoot,
+	readLoop,
+	type LoopEvaluator,
+	type LoopInput,
+	type LoopStep
+} from './loopState';
 
 export interface NextLoopStepInput extends LoopInput {
 	loop: string;

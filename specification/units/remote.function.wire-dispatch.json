@@ -7,14 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/remote/src/utils/wireDispatch.ts",
-			"packages/remote/src/services/wire-session-service/wireDispatch.ts"
-		],
-		"symbols": [
-			"WireDispatchContext",
-			"wireDispatch"
-		]
+		"source": ["packages/remote/src/utils/wireDispatch.ts"],
+		"symbols": ["WireDispatchContext", "wireDispatch"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -66,9 +60,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"remote-desktop-boundaries"
-	],
+	"scenarios": ["remote-desktop-boundaries"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

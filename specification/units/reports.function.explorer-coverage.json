@@ -7,14 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/explorer-verdict/explorerCoverage.ts",
-			"packages/reports/src/utils/explorerCoverage.ts"
-		],
-		"symbols": [
-			"coverageAffected",
-			"explorerCoverage"
-		]
+		"source": ["packages/reports/src/utils/explorerCoverage.ts"],
+		"symbols": ["coverageAffected", "explorerCoverage"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -96,9 +90,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"browser-error-evidence"
-	],
+	"scenarios": ["browser-error-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

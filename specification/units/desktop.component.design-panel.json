@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/design-panel/DesignPanel.svelte",
-			"packages/desktop/src/components/DesignPanel.svelte"
-		],
-		"symbols": [
-			"DesignPanel"
-		]
+		"source": ["packages/desktop/src/components/DesignPanel.svelte"],
+		"symbols": ["DesignPanel"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -118,7 +113,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/design-panel/DesignPanel.svelte",
+		"entry": "packages/desktop/src/components/DesignPanel.svelte",
 		"targets": [
 			{
 				"kind": "module",
@@ -126,10 +121,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-native",
-		"desktop-renderer"
-	],
+	"scenarios": ["desktop-native", "desktop-renderer"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

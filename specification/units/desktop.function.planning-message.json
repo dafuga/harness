@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/adapters/planning-facade-adapter/planningMessage.ts",
-			"packages/desktop/src/utils/planningMessage.ts"
-		],
-		"symbols": [
-			"planningMessage"
-		]
+		"source": ["packages/desktop/src/utils/planningMessage.ts"],
+		"symbols": ["planningMessage"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -81,10 +76,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-native",
-		"desktop-project-runs"
-	],
+	"scenarios": ["desktop-native", "desktop-project-runs"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

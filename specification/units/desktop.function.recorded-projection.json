@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/recordedProjection.ts",
-			"packages/desktop/src/utils/recorded-answer/recordedProjection.ts"
-		],
-		"symbols": [
-			"recordedProjection"
-		]
+		"source": ["packages/desktop/src/utils/recordedProjection.ts"],
+		"symbols": ["recordedProjection"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -60,10 +55,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-recorded-evidence",
-		"hub-recorded-evidence"
-	],
+	"scenarios": ["desktop-recorded-evidence", "hub-recorded-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

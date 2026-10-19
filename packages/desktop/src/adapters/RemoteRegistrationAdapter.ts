@@ -1,7 +1,7 @@
 import type { RemoteHostRegisterInput, RemoteHostRegistration } from '../../../remote/src/index';
 import type { HostedFailureValidator } from '../validators/HostedFailureValidator';
-import { HostedHttpAdapter } from "./hosted-http-adapter/HostedHttpAdapter";
-import type { NativeHostedCredential } from "./hosted-http-adapter/HostedHttpAdapter";
+import { HostedHttpAdapter } from './HostedHttpAdapter';
+import type { NativeHostedCredential } from './HostedHttpAdapter';
 
 export interface RemoteRegistrationAdapterConfig {
 	/** The exact hub origin of this computer; without it there is no hosted identity. */

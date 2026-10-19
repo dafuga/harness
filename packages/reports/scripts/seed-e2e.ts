@@ -1,9 +1,9 @@
-import { e2eFixtures } from "../src/utils/e2e-fixtures/e2eFixtures";
+import { e2eFixtures } from '../src/utils/e2eFixtures';
 import { mkdir, writeFile, rm } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
 import { chromium } from '@playwright/test';
 import { browserErrorCollector } from '../../../test/support/browserTest';
-import { ReportRepository } from "../src/repositories/report-repository/ReportRepository";
+import { ReportRepository } from '../src/repositories/ReportRepository';
 const { reports: root, site } = e2eFixtures();
 await rm(root, { recursive: true, force: true });
 await mkdir(root, { recursive: true });

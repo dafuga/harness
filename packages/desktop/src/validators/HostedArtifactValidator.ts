@@ -1,6 +1,5 @@
 import { createHash } from 'node:crypto';
-import { artifactLimit } from "../utils/artifactMedia";
-import { artifactMedia } from "../utils/artifact-answer/artifactMedia";
+import { artifactLimit, artifactMedia } from '../utils/artifactMedia';
 import type { EvidenceArtifactResult } from '../models/DesktopEvidence.types';
 import { hostedAttestation, unshownHostedArtifact as unshown } from '../utils/hostedAttestation';
 /** Rehash every online or saved artifact and require an exactly supported MIME attestation. */

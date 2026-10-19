@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/record-assembly-service/RecordAssemblyService.ts",
-			"src/services/RecordAssemblyService.ts"
-		],
+		"source": ["src/services/RecordAssemblyService.ts"],
 		"symbols": [
 			"AssemblyContext",
 			"AssemblyInput",
@@ -113,7 +110,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/record-assembly-service/RecordAssemblyService.ts",
+		"entry": "src/services/RecordAssemblyService.ts",
 		"targets": [
 			{
 				"kind": "module",

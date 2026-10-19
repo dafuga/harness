@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/services/hub-projection-service/hubEntity.ts",
-			"packages/hub/src/utils/hubEntity.ts"
-		],
-		"symbols": [
-			"hubEntity"
-		]
+		"source": ["packages/hub/src/utils/hubEntity.ts"],
+		"symbols": ["hubEntity"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -105,9 +100,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"hosted-catalog"
-	],
+	"scenarios": ["hosted-catalog"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

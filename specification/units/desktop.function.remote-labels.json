@@ -7,12 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/remoteLabels.ts",
-			"packages/desktop/src/components/remote-host-panel/remoteLabels.ts",
-			"packages/desktop/src/components/remote-offer-code/remoteLabels.ts",
-			"packages/desktop/src/components/remote-phone-panel/remoteLabels.ts"
-		],
+		"source": ["packages/desktop/src/utils/remoteLabels.ts"],
 		"symbols": [
 			"lockNote",
 			"awakeNote",
@@ -182,9 +177,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"remote-mobile-ui"
-	],
+	"scenarios": ["remote-mobile-ui"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

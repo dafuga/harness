@@ -7,15 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/utils/kernelWorkload.ts",
-			"src/workflows/run-kernel/kernelWorkload.ts"
-		],
-		"symbols": [
-			"kernelWorkload",
-			"kernelMutations",
-			"kernelTexts"
-		]
+		"source": ["src/utils/kernelWorkload.ts"],
+		"symbols": ["kernelWorkload", "kernelMutations", "kernelTexts"]
 	},
 	"contract": {
 		"origin": "declared",

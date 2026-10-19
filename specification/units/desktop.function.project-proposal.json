@@ -7,15 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/projectProposal.ts",
-			"packages/desktop/src/services/project-run-service/projectProposal.ts"
-		],
-		"symbols": [
-			"ProjectProposal",
-			"projectProposal",
-			"proposalPrompt"
-		]
+		"source": ["packages/desktop/src/utils/projectProposal.ts"],
+		"symbols": ["ProjectProposal", "projectProposal", "proposalPrompt"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -77,10 +70,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"agent-creation",
-		"agent-references"
-	],
+	"scenarios": ["agent-creation", "agent-references"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

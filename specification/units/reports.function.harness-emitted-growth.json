@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/harnessEmittedGrowth.ts",
-			"packages/reports/src/components/harness/harness-growth/harnessEmittedGrowth.ts"
-		],
+		"source": ["packages/reports/src/utils/harnessEmittedGrowth.ts"],
 		"symbols": [
 			"EmittedCell",
 			"EmittedReview",

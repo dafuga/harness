@@ -7,16 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/utils/consoleHostFiles.ts",
-			"src/services/console-install-service/consoleHostFiles.ts"
-		],
-		"symbols": [
-			"HostFile",
-			"ConsoleHostOptions",
-			"consoleServerDirectory",
-			"consoleHostFiles"
-		]
+		"source": ["src/utils/consoleHostFiles.ts"],
+		"symbols": ["HostFile", "ConsoleHostOptions", "consoleServerDirectory", "consoleHostFiles"]
 	},
 	"contract": {
 		"origin": "declared",

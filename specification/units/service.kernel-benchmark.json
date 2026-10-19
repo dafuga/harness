@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/kernel-benchmark-service/KernelBenchmarkService.ts",
-			"src/services/KernelBenchmarkService.ts"
-		],
+		"source": ["src/services/KernelBenchmarkService.ts"],
 		"symbols": [
 			"BenchPlan",
 			"WorkloadRun",
@@ -139,7 +136,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/kernel-benchmark-service/KernelBenchmarkService.ts",
+		"entry": "src/services/KernelBenchmarkService.ts",
 		"targets": [
 			{
 				"kind": "module",

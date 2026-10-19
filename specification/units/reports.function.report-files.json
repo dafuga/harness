@@ -7,16 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/repositories/report-repository/reportFiles.ts",
-			"packages/reports/src/utils/reportFiles.ts"
-		],
-		"symbols": [
-			"reportFiles",
-			"safeId",
-			"readJson",
-			"atomicJson"
-		]
+		"source": ["packages/reports/src/utils/reportFiles.ts"],
+		"symbols": ["reportFiles", "safeId", "readJson", "atomicJson"]
 	},
 	"contract": {
 		"origin": "declared",

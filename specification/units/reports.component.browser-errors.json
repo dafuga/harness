@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/browser-errors/BrowserErrors.svelte",
-			"packages/reports/src/components/BrowserErrors.svelte"
-		],
-		"symbols": [
-			"BrowserErrors"
-		]
+		"source": ["packages/reports/src/components/BrowserErrors.svelte"],
+		"symbols": ["BrowserErrors"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -47,7 +42,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/browser-errors/BrowserErrors.svelte",
+		"entry": "packages/reports/src/components/BrowserErrors.svelte",
 		"targets": [
 			{
 				"kind": "module",
@@ -55,9 +50,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"browser-error-evidence"
-	],
+	"scenarios": ["browser-error-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

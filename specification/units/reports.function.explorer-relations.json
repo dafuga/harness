@@ -7,15 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/explorer-relations/explorerRelations.ts",
-			"packages/reports/src/utils/explorerRelations.ts"
-		],
-		"symbols": [
-			"RelationsReader",
-			"explorerRelationsReader",
-			"explorerRelations"
-		]
+		"source": ["packages/reports/src/utils/explorerRelations.ts"],
+		"symbols": ["RelationsReader", "explorerRelationsReader", "explorerRelations"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -84,7 +77,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/explorer-relations/explorerRelations.ts",
+		"entry": "packages/reports/src/utils/explorerRelations.ts",
 		"targets": [
 			{
 				"kind": "module",

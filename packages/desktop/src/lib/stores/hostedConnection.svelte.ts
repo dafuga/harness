@@ -1,7 +1,7 @@
 import type { Workspace } from './workspace.svelte';
 import type { DesktopBridge } from '../../models/DesktopBridge.types';
 import type { NativeHostedStatus } from '../../models/ProjectContext.types';
-import { everyProject, forgetShared } from "../../utils/cache-status/cacheStatus";
+import { everyProject, forgetShared } from '../../utils/cacheStatus';
 import { hostedAddress } from '../../utils/hostedAddress';
 
 /**

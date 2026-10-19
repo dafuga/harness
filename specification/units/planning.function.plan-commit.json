@@ -7,16 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/planning/src/utils/planCommit.ts",
-			"packages/planning/src/utils/plan-write/planCommit.ts"
-		],
-		"symbols": [
-			"stageFiles",
-			"CommitContext",
-			"planCommit",
-			"requireLfsFilters"
-		]
+		"source": ["packages/planning/src/utils/planCommit.ts"],
+		"symbols": ["stageFiles", "CommitContext", "planCommit", "requireLfsFilters"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -114,9 +106,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"planning-artifacts"
-	],
+	"scenarios": ["planning-artifacts"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

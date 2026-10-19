@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/services/device-operations-service/deviceCapabilities.ts",
-			"packages/desktop/src/utils/deviceCapabilities.ts"
-		],
-		"symbols": [
-			"deviceCapabilities"
-		]
+		"source": ["packages/desktop/src/utils/deviceCapabilities.ts"],
+		"symbols": ["deviceCapabilities"]
 	},
 	"contract": {
 		"origin": "declared",

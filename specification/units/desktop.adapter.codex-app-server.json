@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/adapters/codex-app-server-adapter/CodexAppServerAdapter.ts",
-			"packages/desktop/src/adapters/CodexAppServerAdapter.ts"
-		],
+		"source": ["packages/desktop/src/adapters/CodexAppServerAdapter.ts"],
 		"symbols": [
 			"CodexAppServerAdapter",
 			"CodexAppServerAdapter.constructor",
@@ -80,7 +77,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/adapters/codex-app-server-adapter/CodexAppServerAdapter.ts",
+		"entry": "packages/desktop/src/adapters/CodexAppServerAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -88,10 +85,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-native",
-		"desktop-project-runs"
-	],
+	"scenarios": ["desktop-native", "desktop-project-runs"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

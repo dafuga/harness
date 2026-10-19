@@ -1,7 +1,7 @@
 <script lang="ts">
 	import HostedWorkspace from '../../../../../components/HostedWorkspace.svelte';
 	import HubFrame from '../../../../../components/HubFrame.svelte';
-	import LoginPanel from '../../../../../components/login-panel/LoginPanel.svelte';
+	import LoginPanel from '../../../../../components/LoginPanel.svelte';
 	import { browserContext } from '../../../../../utils/browserContext';
 	const { session } = browserContext();
 </script>

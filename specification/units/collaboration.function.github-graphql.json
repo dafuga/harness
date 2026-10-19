@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/collaboration/src/utils/create-git-hub-source/githubGraphql.ts",
-			"packages/collaboration/src/utils/githubGraphql.ts"
-		],
-		"symbols": [
-			"githubGraphql"
-		]
+		"source": ["packages/collaboration/src/utils/githubGraphql.ts"],
+		"symbols": ["githubGraphql"]
 	},
 	"contract": {
 		"origin": "declared",

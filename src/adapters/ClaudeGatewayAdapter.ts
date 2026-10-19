@@ -1,7 +1,7 @@
 import type { GatewayRequest, GatewaySession } from '../utils/gatewayTypes';
-import type { CodexSessionRepository } from "../repositories/codex-session-repository/CodexSessionRepository";
+import type { CodexSessionRepository } from '../repositories/CodexSessionRepository';
 import { GatewayContentSerializer } from '../serializers/GatewayContentSerializer';
-import { ClaudeQueryService } from "../services/claude-query-service/ClaudeQueryService";
+import { ClaudeQueryService } from '../services/ClaudeQueryService';
 
 export class ClaudeGatewayAdapter {
 	constructor(private readonly repository: CodexSessionRepository) {}

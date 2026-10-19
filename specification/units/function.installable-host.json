@@ -7,15 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/console-install-service/installableHost.ts",
-			"src/utils/installableHost.ts"
-		],
-		"symbols": [
-			"HostRequest",
-			"installableHost",
-			"hostWarnings"
-		]
+		"source": ["src/utils/installableHost.ts"],
+		"symbols": ["HostRequest", "installableHost", "hostWarnings"]
 	},
 	"contract": {
 		"origin": "declared",

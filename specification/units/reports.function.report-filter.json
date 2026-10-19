@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/reportFilter.ts",
-			"packages/reports/src/components/evidence-grid/reportFilter.ts"
-		],
+		"source": ["packages/reports/src/utils/reportFilter.ts"],
 		"symbols": [
 			"ScreenSize",
 			"screenSize",

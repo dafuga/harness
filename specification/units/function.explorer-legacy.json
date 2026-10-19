@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/utils/console-canonical/explorerLegacy.ts",
-			"src/utils/explorerLegacy.ts"
-		],
-		"symbols": [
-			"explorerLegacy"
-		]
+		"source": ["src/utils/explorerLegacy.ts"],
+		"symbols": ["explorerLegacy"]
 	},
 	"contract": {
 		"origin": "declared",

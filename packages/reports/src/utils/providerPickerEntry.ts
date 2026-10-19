@@ -1,5 +1,5 @@
 import { mount } from 'svelte';
-import ProviderPicker from '../components/provider-picker/ProviderPicker.svelte';
+import ProviderPicker from '../components/ProviderPicker.svelte';
 import '../lib/styles/base.css';
 
 export function providerPickerEntry() {

@@ -7,14 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/utils/classify-path/classifyPath.ts",
-			"src/utils/classifyPath.ts"
-		],
-		"symbols": [
-			"PathClass",
-			"classifyPath"
-		]
+		"source": ["src/utils/classifyPath.ts"],
+		"symbols": ["PathClass", "classifyPath"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -58,7 +52,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/classify-path/classifyPath.ts",
+		"entry": "src/utils/classifyPath.ts",
 		"targets": [
 			{
 				"kind": "module",

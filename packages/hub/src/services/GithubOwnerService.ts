@@ -3,7 +3,7 @@ import type { GithubApiAdapter } from '../adapters/GithubApiAdapter';
 import type { GithubRepositories, GithubRepositoryOption } from '../models/HubAuth.types';
 import { authFail } from '../utils/authFail';
 import type { GithubGrantService } from './GithubGrantService';
-import type { InstallationTokenService } from "./installation-token-service/InstallationTokenService";
+import type { InstallationTokenService } from './InstallationTokenService';
 
 export interface GithubOwnerOptions {
 	grants: GithubGrantService;

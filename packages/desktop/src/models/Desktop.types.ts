@@ -1,13 +1,13 @@
 import type { ProjectCapabilities, CacheProvenance } from './ProjectContext.types';
 import type { DesignVersion } from './DesignVersion.types';
 import type { ComponentManifest } from '../../../../src/lib/contracts';
-import type { UnitDocumentation } from "../../../../src/utils/unit-documentation/unitDocumentation";
+import type { UnitDocumentation } from '../../../../src/utils/unitDocumentation';
 export type {
 	DesignImage,
 	DesignOptionInfo,
 	DesignRevision,
 	DesignVersion
-} from './DesignVersion.types.ts';
+} from './DesignVersion.types';
 /**
  * What the Electron main process tells the renderer about a project. Every value here is
  * serializable: it crosses the preload bridge by structured clone.

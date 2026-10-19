@@ -6,9 +6,9 @@ import { fail } from '../core/errors';
 import { runtimeKinds, type ComponentManifest } from '../core/unitTypes';
 import { workloadSchema } from '../core/verifyTypes';
 import { BudgetLedgerRepository } from '../repositories/BudgetLedgerRepository';
-import { BudgetService, type UnitBaseline } from "../services/budget-service/BudgetService";
+import { BudgetService, type UnitBaseline } from '../services/BudgetService';
 import { UnitBenchmarkService, type UnitBenchmark } from '../services/UnitBenchmarkService';
-import { recordCapture } from "../utils/record-capture/recordCapture";
+import { recordCapture } from '../utils/recordCapture';
 import { unitMeasurements } from '../utils/unitMeasurements';
 import { loadUnits } from './loadUnits';
 

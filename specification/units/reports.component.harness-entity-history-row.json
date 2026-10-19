@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/harness/entity-history-row/EntityHistoryRow.svelte",
-			"packages/reports/src/components/harness/EntityHistoryRow.svelte"
-		],
-		"symbols": [
-			"EntityHistoryRow"
-		]
+		"source": ["packages/reports/src/components/harness/EntityHistoryRow.svelte"],
+		"symbols": ["EntityHistoryRow"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -127,7 +122,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/entity-history-row/EntityHistoryRow.svelte",
+		"entry": "packages/reports/src/components/harness/EntityHistoryRow.svelte",
 		"targets": [
 			{
 				"kind": "module",

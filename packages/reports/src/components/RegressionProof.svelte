@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { RegressionView } from '../../../../src/core/regressionTypes';
-	import HarnessVerdict from './harness/harness-verdict/HarnessVerdict.svelte';
+	import HarnessVerdict from './harness/HarnessVerdict.svelte';
 	let {
 		items = [],
 		unit,

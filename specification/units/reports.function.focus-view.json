@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/focusView.ts",
-			"packages/reports/src/components/harness/harness-map/focusView.ts"
-		],
+		"source": ["packages/reports/src/utils/focusView.ts"],
 		"symbols": [
 			"MapView",
 			"wholeView",

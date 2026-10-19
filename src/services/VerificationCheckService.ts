@@ -12,7 +12,7 @@ import { componentVersion } from '../utils/componentVersion';
 import { recordLineage } from '../utils/recordLineage';
 import { recordIntact } from '../utils/sealRecord';
 import { loadSide } from '../workflows/loadRevisions';
-import { SourceIndexService } from "./source-index-service/SourceIndexService";
+import { SourceIndexService } from './SourceIndexService';
 
 export interface CheckReport {
 	status: 'passed' | 'failed';

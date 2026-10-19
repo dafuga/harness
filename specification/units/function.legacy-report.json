@@ -7,14 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/legacy-import-service/legacyReport.ts",
-			"src/utils/legacyReport.ts"
-		],
-		"symbols": [
-			"LegacyReport",
-			"legacyReport"
-		]
+		"source": ["src/utils/legacyReport.ts"],
+		"symbols": ["LegacyReport", "legacyReport"]
 	},
 	"contract": {
 		"origin": "declared",

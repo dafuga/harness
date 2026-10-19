@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/utils/hub-catalog/hubApproval.ts",
-			"packages/hub/src/utils/hubApproval.ts"
-		],
-		"symbols": [
-			"hubApproval"
-		]
+		"source": ["packages/hub/src/utils/hubApproval.ts"],
+		"symbols": ["hubApproval"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -70,9 +65,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"hosted-design-options"
-	],
+	"scenarios": ["hosted-design-options"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

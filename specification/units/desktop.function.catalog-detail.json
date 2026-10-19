@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/services/catalog-service/catalogDetail.ts",
-			"packages/desktop/src/utils/catalogDetail.ts"
-		],
-		"symbols": [
-			"catalogDetail"
-		]
+		"source": ["packages/desktop/src/utils/catalogDetail.ts"],
+		"symbols": ["catalogDetail"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -86,10 +81,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-native",
-		"desktop-project-runs"
-	],
+	"scenarios": ["desktop-native", "desktop-project-runs"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -7,17 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/utils/scanImports.ts",
-			"src/services/source-index-service/scanImports.ts"
-		],
-		"symbols": [
-			"ReferenceVia",
-			"SourceLanguage",
-			"SourceReference",
-			"scanImports",
-			"svelteScripts"
-		]
+		"source": ["src/utils/scanImports.ts"],
+		"symbols": ["ReferenceVia", "SourceLanguage", "SourceReference", "scanImports", "svelteScripts"]
 	},
 	"contract": {
 		"origin": "declared",

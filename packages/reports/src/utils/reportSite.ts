@@ -1,6 +1,6 @@
 import { execFileSync } from 'node:child_process';
 import { basename, resolve } from 'node:path';
-import { repositoryIdentity, sameSite } from "../../../../src/utils/repository-identity/repositoryIdentity";
+import { repositoryIdentity, sameSite } from '../../../../src/utils/repositoryIdentity';
 
 export interface ReportSite {
 	/** The checkout this server is hosted for. */

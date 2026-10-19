@@ -5,7 +5,7 @@
 	import type { Workspace } from '../lib/stores/workspace.svelte';
 	import { visualCategory } from '../utils/composeModes';
 	import Composer from './Composer.svelte';
-	import ReferenceText from './reference-text/ReferenceText.svelte';
+	import ReferenceText from './ReferenceText.svelte';
 	let { workspace, open = $bindable(false) }: { workspace: Workspace; open?: boolean } = $props();
 	// Rebuilt only for another project; the workspace itself is one object throughout.
 	// svelte-ignore state_referenced_locally

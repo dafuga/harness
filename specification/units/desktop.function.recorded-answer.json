@@ -7,14 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/recorded-answer/recordedAnswer.ts",
-			"packages/desktop/src/utils/recordedAnswer.ts"
-		],
-		"symbols": [
-			"AnswerInput",
-			"recordedAnswer"
-		]
+		"source": ["packages/desktop/src/utils/recordedAnswer.ts"],
+		"symbols": ["AnswerInput", "recordedAnswer"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -79,7 +73,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/recorded-answer/recordedAnswer.ts",
+		"entry": "packages/desktop/src/utils/recordedAnswer.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -87,10 +81,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-recorded-evidence",
-		"hub-recorded-evidence"
-	],
+	"scenarios": ["desktop-recorded-evidence", "hub-recorded-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

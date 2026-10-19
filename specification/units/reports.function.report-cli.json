@@ -7,16 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/reportCli.ts",
-			"packages/reports/src/services/report-command-service/reportCli.ts"
-		],
-		"symbols": [
-			"CliOptions",
-			"reportCli",
-			"inputData",
-			"required"
-		]
+		"source": ["packages/reports/src/utils/reportCli.ts"],
+		"symbols": ["CliOptions", "reportCli", "inputData", "required"]
 	},
 	"contract": {
 		"origin": "declared",

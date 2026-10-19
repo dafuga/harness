@@ -3,7 +3,7 @@ import type { ExplorerEntity } from '../models/Explorer.types';
 import type { HarnessMark, HarnessRevision, HarnessUnit } from '../models/Harness.types';
 import { explorerCategory, explorerRole } from './explorerCategory';
 import { explorerAppRoute, explorerName } from './explorerName';
-import { explorerVerdict } from "./explorer-verdict/explorerVerdict";
+import { explorerVerdict } from './explorerVerdict';
 
 const marks: HarnessMark[] = ['added', 'direct', 'indirect', 'removed'];
 

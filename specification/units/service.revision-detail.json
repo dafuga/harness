@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/revision-detail-service/RevisionDetailService.ts",
-			"src/services/RevisionDetailService.ts"
-		],
+		"source": ["src/services/RevisionDetailService.ts"],
 		"symbols": [
 			"RevisionDetail",
 			"BuiltRevision",
@@ -169,7 +166,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/revision-detail-service/RevisionDetailService.ts",
+		"entry": "src/services/RevisionDetailService.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -177,9 +174,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-recorded-evidence"
-	],
+	"scenarios": ["desktop-recorded-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

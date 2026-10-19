@@ -3,7 +3,7 @@
 	import type { HarnessRecord } from '../../models/Harness.types';
 	import type { ContractRow } from '../../utils/entityContract';
 	import type { EntityMeasure } from '../../utils/entityMeasure';
-	import EntityContract from '../entity-contract/EntityContract.svelte';
+	import EntityContract from '../EntityContract.svelte';
 	import EntityMeasures from './EntityMeasures.svelte';
 	import EntitySource from './EntitySource.svelte';
 	import EntitySummary from './EntitySummary.svelte';

@@ -5,7 +5,7 @@
 	import { catalogShot } from '../../utils/entityScreens';
 	import ExplorerFunctionCard from '../ExplorerFunctionCard.svelte';
 	import ExplorerFrame from './ExplorerFrame.svelte';
-	import ExplorerIndex from './explorer-index/ExplorerIndex.svelte';
+	import ExplorerIndex from './ExplorerIndex.svelte';
 	import ExplorerPageCard from './ExplorerPageCard.svelte';
 	import ExplorerTable from './ExplorerTable.svelte';
 	let host: ExplorerScreenProps = $props();

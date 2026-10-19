@@ -4,8 +4,8 @@ import { ProjectOperationsService } from '../services/ProjectOperationsService';
 import { RecordedEvidenceService } from '../services/RecordedEvidenceService';
 import type { DesktopBridge } from '../models/DesktopBridge.types';
 import type { ProjectSessionService } from '../services/ProjectSessionService';
-import type { ProviderDiscoveryService } from "../services/provider-discovery-service/ProviderDiscoveryService";
-import type { DesktopRunService } from "../services/desktop-run-service/DesktopRunService";
+import type { ProviderDiscoveryService } from '../services/ProviderDiscoveryService';
+import type { DesktopRunService } from '../services/DesktopRunService';
 interface BridgeContext {
 	session: ProjectSessionService;
 	providers: ProviderDiscoveryService;

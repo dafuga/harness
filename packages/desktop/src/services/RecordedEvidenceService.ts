@@ -14,9 +14,9 @@ import type {
 	EvidenceArtifactQuery,
 	EvidenceArtifactResult
 } from '../models/DesktopEvidence.types';
-import { artifactAnswer } from "../utils/artifact-answer/artifactAnswer";
+import { artifactAnswer } from '../utils/artifactAnswer';
 import { gitRead } from '../utils/gitRead';
-import { recordedAnswer } from "../utils/recorded-answer/recordedAnswer";
+import { recordedAnswer } from '../utils/recordedAnswer';
 import { recordedCapture } from '../utils/recordedCapture';
 import { recordedScope, recordedTip } from '../utils/recordedScope';
 import type { ProjectSessionService } from './ProjectSessionService';

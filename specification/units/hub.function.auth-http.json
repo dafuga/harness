@@ -7,11 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/utils/authHttp.ts",
-			"packages/hub/src/services/request-session-service/authHttp.ts",
-			"packages/hub/src/controllers/github-connection-controller/authHttp.ts"
-		],
+		"source": ["packages/hub/src/utils/authHttp.ts"],
 		"symbols": [
 			"AuthHttpOptions",
 			"authHttp",

@@ -1,6 +1,9 @@
-import { SourceHistoryRepository } from "../../../../src/repositories/source-history-repository/SourceHistoryRepository";
+import { SourceHistoryRepository } from '../../../../src/repositories/SourceHistoryRepository';
 import { HistoryStatusService } from '../../../../src/services/HistoryStatusService';
-import { RevisionDetailService, revisionSources } from "../../../../src/services/revision-detail-service/RevisionDetailService";
+import {
+	RevisionDetailService,
+	revisionSources
+} from '../../../../src/services/RevisionDetailService';
 import { checkedMedia } from '../../../../src/utils/mediaPlace';
 import { revisionSummary, type RevisionRecords } from '../../../../src/utils/revisionSummary';
 import type {

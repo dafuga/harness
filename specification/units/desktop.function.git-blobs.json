@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/adapters/git-source-adapter/gitBlobs.ts",
-			"packages/desktop/src/utils/gitBlobs.ts"
-		],
-		"symbols": [
-			"gitBlobs"
-		]
+		"source": ["packages/desktop/src/utils/gitBlobs.ts"],
+		"symbols": ["gitBlobs"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -55,10 +50,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-native",
-		"desktop-project-runs"
-	],
+	"scenarios": ["desktop-native", "desktop-project-runs"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

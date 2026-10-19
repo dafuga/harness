@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/services/catalog-service/CatalogService.ts",
-			"packages/desktop/src/services/CatalogService.ts"
-		],
+		"source": ["packages/desktop/src/services/CatalogService.ts"],
 		"symbols": [
 			"CatalogService",
 			"CatalogService.constructor",
@@ -83,7 +80,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/catalog-service/CatalogService.ts",
+		"entry": "packages/desktop/src/services/CatalogService.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -91,11 +88,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-native",
-		"desktop-project-runs",
-		"desktop-renderer"
-	],
+	"scenarios": ["desktop-native", "desktop-project-runs", "desktop-renderer"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

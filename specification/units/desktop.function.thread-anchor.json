@@ -7,12 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/threadAnchor.ts",
-			"packages/desktop/src/components/thread-panel/threadAnchor.ts",
-			"packages/desktop/src/components/entity-view/threadAnchor.ts",
-			"packages/desktop/src/components/thread-links/threadAnchor.ts"
-		],
+		"source": ["packages/desktop/src/utils/threadAnchor.ts"],
 		"symbols": [
 			"ThreadTarget",
 			"CommentAnchor",

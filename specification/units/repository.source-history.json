@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/repositories/source-history-repository/SourceHistoryRepository.ts",
-			"src/repositories/SourceHistoryRepository.ts"
-		],
+		"source": ["src/repositories/SourceHistoryRepository.ts"],
 		"symbols": [
 			"SourceRevision",
 			"SourceHistory",
@@ -71,7 +68,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/repositories/source-history-repository/SourceHistoryRepository.ts",
+		"entry": "src/repositories/SourceHistoryRepository.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -79,9 +76,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-recorded-evidence"
-	],
+	"scenarios": ["desktop-recorded-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/collaboration/src/utils/create-collaboration/createCollaboration.ts",
-			"packages/collaboration/src/utils/createCollaboration.ts"
-		],
-		"symbols": [
-			"createCollaboration"
-		]
+		"source": ["packages/collaboration/src/utils/createCollaboration.ts"],
+		"symbols": ["createCollaboration"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -72,7 +67,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/collaboration/src/utils/create-collaboration/createCollaboration.ts",
+		"entry": "packages/collaboration/src/utils/createCollaboration.ts",
 		"targets": [
 			{
 				"kind": "module",

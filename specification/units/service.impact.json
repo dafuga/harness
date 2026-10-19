@@ -7,15 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/impact-service/ImpactService.ts",
-			"src/services/ImpactService.ts"
-		],
-		"symbols": [
-			"ImpactService",
-			"ImpactService.constructor",
-			"ImpactService.compute"
-		]
+		"source": ["src/services/ImpactService.ts"],
+		"symbols": ["ImpactService", "ImpactService.constructor", "ImpactService.compute"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -90,7 +83,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/impact-service/ImpactService.ts",
+		"entry": "src/services/ImpactService.ts",
 		"targets": [
 			{
 				"kind": "module",

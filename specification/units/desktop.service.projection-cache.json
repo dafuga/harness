@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/services/projection-cache-service/ProjectionCacheService.ts",
-			"packages/desktop/src/services/ProjectionCacheService.ts"
-		],
+		"source": ["packages/desktop/src/services/ProjectionCacheService.ts"],
 		"symbols": [
 			"ProjectionCacheService",
 			"ProjectionCacheService.constructor",
@@ -135,7 +132,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/projection-cache-service/ProjectionCacheService.ts",
+		"entry": "packages/desktop/src/services/ProjectionCacheService.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -143,9 +140,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"hosted-client-copies"
-	],
+	"scenarios": ["hosted-client-copies"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

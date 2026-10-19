@@ -7,11 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/cache-status/cacheStatus.ts",
-			"packages/desktop/src/utils/load-workspace/cacheStatus.ts",
-			"packages/desktop/src/utils/cacheStatus.ts"
-		],
+		"source": ["packages/desktop/src/utils/cacheStatus.ts"],
 		"symbols": [
 			"everyProject",
 			"deniedNotice",
@@ -125,7 +121,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/cache-status/cacheStatus.ts",
+		"entry": "packages/desktop/src/utils/cacheStatus.ts",
 		"targets": [
 			{
 				"kind": "module",

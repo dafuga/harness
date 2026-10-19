@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/services/device-session-service/DeviceSessionService.ts",
-			"packages/desktop/src/services/DeviceSessionService.ts"
-		],
+		"source": ["packages/desktop/src/services/DeviceSessionService.ts"],
 		"symbols": [
 			"DeviceSessionOptions",
 			"DeviceSessionService",
@@ -58,7 +55,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/device-session-service/DeviceSessionService.ts",
+		"entry": "packages/desktop/src/services/DeviceSessionService.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -66,9 +63,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"remote-desktop-boundaries"
-	],
+	"scenarios": ["remote-desktop-boundaries"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -7,15 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/artifactBytes.ts",
-			"packages/desktop/src/components/recorded-preview/artifactBytes.ts"
-		],
-		"symbols": [
-			"unreadArtifact",
-			"damagedArtifact",
-			"artifactBytes"
-		]
+		"source": ["packages/desktop/src/utils/artifactBytes.ts"],
+		"symbols": ["unreadArtifact", "damagedArtifact", "artifactBytes"]
 	},
 	"contract": {
 		"origin": "declared",

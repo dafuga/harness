@@ -7,14 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/recordedValue.ts",
-			"packages/reports/src/components/recorded-value/recordedValue.ts"
-		],
-		"symbols": [
-			"RecordedNode",
-			"recordedValue"
-		]
+		"source": ["packages/reports/src/utils/recordedValue.ts"],
+		"symbols": ["RecordedNode", "recordedValue"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -45,9 +39,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"shared-test-cases"
-	],
+	"scenarios": ["shared-test-cases"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

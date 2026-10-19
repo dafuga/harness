@@ -7,7 +7,7 @@
 	import EntityLink from './EntityLink.svelte';
 	import HarnessAction from './HarnessAction.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
-	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
+	import HarnessVerdict from './HarnessVerdict.svelte';
 	type Kind = Exclude<ExplorerCategory, 'pages'>;
 	let { category, rows, nav }: { category: Kind; rows: CatalogRow[]; nav: EntityNav } = $props();
 	/** What uses a row: the entities that use it directly, else the pages it is shown on. */

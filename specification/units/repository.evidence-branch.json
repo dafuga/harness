@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/repositories/evidence-branch-repository/EvidenceBranchRepository.ts",
-			"src/repositories/EvidenceBranchRepository.ts"
-		],
+		"source": ["src/repositories/EvidenceBranchRepository.ts"],
 		"symbols": [
 			"StoredDirectory",
 			"EvidenceBranchRepository",
@@ -84,7 +81,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/repositories/evidence-branch-repository/EvidenceBranchRepository.ts",
+		"entry": "src/repositories/EvidenceBranchRepository.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -92,9 +89,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-recorded-evidence"
-	],
+	"scenarios": ["desktop-recorded-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

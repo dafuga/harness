@@ -7,16 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/rpcMessages.ts",
-			"packages/desktop/src/utils/codex-rpc/rpcMessages.ts"
-		],
-		"symbols": [
-			"RpcEvent",
-			"RpcPending",
-			"rpcMessages",
-			"rpcRequest"
-		]
+		"source": ["packages/desktop/src/utils/rpcMessages.ts"],
+		"symbols": ["RpcEvent", "RpcPending", "rpcMessages", "rpcRequest"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -72,10 +64,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-native",
-		"desktop-project-runs"
-	],
+	"scenarios": ["desktop-native", "desktop-project-runs"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

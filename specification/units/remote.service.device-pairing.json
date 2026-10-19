@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/remote/src/services/device-pairing-service/DevicePairingService.ts",
-			"packages/remote/src/services/DevicePairingService.ts"
-		],
+		"source": ["packages/remote/src/services/DevicePairingService.ts"],
 		"symbols": [
 			"DevicePairingInput",
 			"ScanningDevice",
@@ -139,7 +136,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/remote/src/services/device-pairing-service/DevicePairingService.ts",
+		"entry": "packages/remote/src/services/DevicePairingService.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -147,9 +144,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"remote-desktop-boundaries"
-	],
+	"scenarios": ["remote-desktop-boundaries"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

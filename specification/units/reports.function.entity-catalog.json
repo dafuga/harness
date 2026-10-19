@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/entityCatalog.ts",
-			"packages/reports/src/components/harness/explorer-index/entityCatalog.ts"
-		],
+		"source": ["packages/reports/src/utils/entityCatalog.ts"],
 		"symbols": [
 			"CatalogRow",
 			"catalogOrders",

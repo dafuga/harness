@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/services/hub-attached-service/HubAttachedService.ts",
-			"packages/hub/src/services/HubAttachedService.ts"
-		],
+		"source": ["packages/hub/src/services/HubAttachedService.ts"],
 		"symbols": [
 			"HubAttachedService",
 			"HubAttachedService.constructor",
@@ -113,7 +110,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/services/hub-attached-service/HubAttachedService.ts",
+		"entry": "packages/hub/src/services/HubAttachedService.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -121,9 +118,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"hub-recorded-evidence"
-	],
+	"scenarios": ["hub-recorded-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

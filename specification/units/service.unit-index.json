@@ -7,16 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/unit-index-service/UnitIndexService.ts",
-			"src/services/UnitIndexService.ts"
-		],
-		"symbols": [
-			"UnitMove",
-			"UnitIndexResult",
-			"UnitIndexService",
-			"UnitIndexService.index"
-		]
+		"source": ["src/services/UnitIndexService.ts"],
+		"symbols": ["UnitMove", "UnitIndexResult", "UnitIndexService", "UnitIndexService.index"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -72,7 +64,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/unit-index-service/UnitIndexService.ts",
+		"entry": "src/services/UnitIndexService.ts",
 		"targets": [
 			{
 				"kind": "module",

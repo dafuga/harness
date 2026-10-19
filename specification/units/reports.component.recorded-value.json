@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/recorded-value/RecordedValue.svelte",
-			"packages/reports/src/components/RecordedValue.svelte"
-		],
-		"symbols": [
-			"RecordedValue"
-		]
+		"source": ["packages/reports/src/components/RecordedValue.svelte"],
+		"symbols": ["RecordedValue"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -57,7 +52,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/recorded-value/RecordedValue.svelte",
+		"entry": "packages/reports/src/components/RecordedValue.svelte",
 		"targets": [
 			{
 				"kind": "module",
@@ -65,9 +60,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"shared-test-cases"
-	],
+	"scenarios": ["shared-test-cases"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

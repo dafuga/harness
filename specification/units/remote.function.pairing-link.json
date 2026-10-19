@@ -11,12 +11,8 @@
 		"at": "2026-10-13T07:03:33.845Z"
 	},
 	"owns": {
-		"source": [],
-		"symbols": [
-			"PairingLink",
-			"pairingLink",
-			"parsePairingLink"
-		]
+		"source": ["packages/remote/src/utils/pairingLink.ts"],
+		"symbols": ["PairingLink", "pairingLink", "parsePairingLink"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -69,9 +65,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"remote-desktop-boundaries"
-	],
+	"scenarios": ["remote-desktop-boundaries"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

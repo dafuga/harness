@@ -3,8 +3,7 @@ import { join } from 'node:path';
 import type { Report } from '../models/Report.types';
 import { registeredAsset } from '../utils/reportAssets';
 import { mediaMime } from '../utils/evidenceMedia';
-import { portablePage } from "../utils/console-server/portablePage";
-import { type PortableAssets } from "../utils/portablePage";
+import { portablePage, type PortableAssets } from '../utils/portablePage';
 export class ReportExportSerializer {
 	constructor(private readonly appRoot: string) {}
 	async html(report: Report, directory: string) {

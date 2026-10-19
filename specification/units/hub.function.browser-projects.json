@@ -7,16 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/routes/-layout/browserProjects.ts",
-			"packages/hub/src/components/invitation-form/browserProjects.ts",
-			"packages/hub/src/utils/browserProjects.ts"
-		],
-		"symbols": [
-			"invitationLink",
-			"browserProjects",
-			"BrowserProjects"
-		]
+		"source": ["packages/hub/src/utils/browserProjects.ts"],
+		"symbols": ["invitationLink", "browserProjects", "BrowserProjects"]
 	},
 	"contract": {
 		"origin": "declared",

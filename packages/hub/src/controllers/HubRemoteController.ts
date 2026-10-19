@@ -1,6 +1,6 @@
 import type { Actor } from 'collaboration';
 import type { RemoteHostRegistration } from '../../../remote/src/models/RemoteRelay.types';
-import { hubBody, hubHttp } from "../utils/hub-http/hubHttp";
+import { hubBody, hubHttp } from '../utils/hubHttp';
 import { hubFail } from '../utils/hubJson';
 import type { HubRemoteRuntime } from '../utils/hubRemote';
 import { RemoteHostValidator } from '../validators/RemoteHostValidator';

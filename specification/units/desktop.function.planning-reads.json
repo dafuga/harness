@@ -7,11 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/planning-reads/planningReads.ts",
-			"packages/desktop/src/adapters/planning-facade-adapter/planningReads.ts",
-			"packages/desktop/src/utils/planningReads.ts"
-		],
+		"source": ["packages/desktop/src/utils/planningReads.ts"],
 		"symbols": [
 			"PlanningContext",
 			"planningReads",
@@ -165,7 +161,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/planning-reads/planningReads.ts",
+		"entry": "packages/desktop/src/utils/planningReads.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -173,10 +169,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-native",
-		"desktop-project-runs"
-	],
+	"scenarios": ["desktop-native", "desktop-project-runs"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

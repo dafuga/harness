@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/workflows/generate-code/generateCode.ts",
-			"src/workflows/generateCode.ts"
-		],
+		"source": ["src/workflows/generateCode.ts"],
 		"symbols": [
 			"scaffoldKinds",
 			"PieceKind",
@@ -123,7 +120,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/generate-code/generateCode.ts",
+		"entry": "src/workflows/generateCode.ts",
 		"targets": [
 			{
 				"kind": "module",

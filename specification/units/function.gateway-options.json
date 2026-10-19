@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/claude-query-service/gatewayOptions.ts",
-			"src/utils/gatewayOptions.ts"
-		],
-		"symbols": [
-			"gatewayOptions"
-		]
+		"source": ["src/utils/gatewayOptions.ts"],
+		"symbols": ["gatewayOptions"]
 	},
 	"contract": {
 		"origin": "declared",

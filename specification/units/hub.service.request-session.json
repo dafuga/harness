@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/services/request-session-service/RequestSessionService.ts",
-			"packages/hub/src/services/RequestSessionService.ts"
-		],
+		"source": ["packages/hub/src/services/RequestSessionService.ts"],
 		"symbols": [
 			"RequestSessionOptions",
 			"RequestSessionService",
@@ -94,7 +91,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/services/request-session-service/RequestSessionService.ts",
+		"entry": "packages/hub/src/services/RequestSessionService.ts",
 		"targets": [
 			{
 				"kind": "module",

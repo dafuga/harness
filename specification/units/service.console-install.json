@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/console-install-service/ConsoleInstallService.ts",
-			"src/services/ConsoleInstallService.ts"
-		],
+		"source": ["src/services/ConsoleInstallService.ts"],
 		"symbols": [
 			"ConsoleInstallOptions",
 			"ConsoleInstallResult",
@@ -91,7 +88,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/console-install-service/ConsoleInstallService.ts",
+		"entry": "src/services/ConsoleInstallService.ts",
 		"targets": [
 			{
 				"kind": "module",

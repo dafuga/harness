@@ -7,11 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/entityReasons.ts",
-			"packages/reports/src/components/harness/entity-history-row/entityReasons.ts",
-			"packages/reports/src/components/harness/entity-reasons/entityReasons.ts"
-		],
+		"source": ["packages/reports/src/utils/entityReasons.ts"],
 		"symbols": [
 			"BoundedText",
 			"ReasonKind",

@@ -7,14 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/utils/composeHubAuth.ts",
-			"packages/hub/src/lib/server/auth/composeHubAuth.ts"
-		],
-		"symbols": [
-			"HubAuthParts",
-			"composeHubAuth"
-		]
+		"source": ["packages/hub/src/utils/composeHubAuth.ts"],
+		"symbols": ["HubAuthParts", "composeHubAuth"]
 	},
 	"contract": {
 		"origin": "declared",

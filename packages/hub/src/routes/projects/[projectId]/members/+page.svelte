@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import HubFrame from '../../../../components/HubFrame.svelte';
-	import LoginPanel from '../../../../components/login-panel/LoginPanel.svelte';
+	import LoginPanel from '../../../../components/LoginPanel.svelte';
 	import MembersPanel from '../../../../components/MembersPanel.svelte';
 	import { browserContext } from '../../../../utils/browserContext';
 	const { session } = browserContext();

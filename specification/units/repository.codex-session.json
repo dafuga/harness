@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/repositories/codex-session-repository/CodexSessionRepository.ts",
-			"src/repositories/CodexSessionRepository.ts"
-		],
+		"source": ["src/repositories/CodexSessionRepository.ts"],
 		"symbols": [
 			"CodexSessionRepository",
 			"CodexSessionRepository.create",
@@ -81,7 +78,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/repositories/codex-session-repository/CodexSessionRepository.ts",
+		"entry": "src/repositories/CodexSessionRepository.ts",
 		"targets": [
 			{
 				"kind": "module",

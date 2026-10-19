@@ -1,19 +1,14 @@
-import type { HarnessRecord, HarnessUnit } from "../models/Harness.types";
+import type { HarnessIndex, HarnessRecord, HarnessUnit } from '../models/Harness.types';
 
 type Measurement = HarnessRecord['measurements'][number];
-
-export const metric = 'artifact-bytes';
-
-export const order = ['process', 'wasm'];
-
+const metric = 'artifact-bytes';
+const order = ['process', 'wasm'];
 const labels: Record<string, string> = { process: 'process (native)', wasm: 'Wasm' };
 
 /** A size in words: one byte is a byte. */
 export const emittedBytes = (count: number): string => `${count} ${count === 1 ? 'byte' : 'bytes'}`;
-
 /** How a reader is told which output a size belongs to. */
 export const emittedLabel = (target: string): string => labels[target] ?? target;
-
 /** The name the limit of a target has in the ledger and in the notes of a growth point. */
 export const emittedKey = (target: string): string => `${metric}:${target}`;
 
@@ -28,7 +23,7 @@ export interface EmittedLine {
 	note?: string;
 }
 
-export /**
+/**
  * The size measured from the build of the verified snapshot. A size a benchmark reports about
  * its own run names a machine profile and is not what a limit is frozen from.
  */
@@ -47,7 +42,7 @@ function built(
 	);
 }
 
-export /** The outputs a unit declares, in a fixed order; a unit that only runs as a module has none. */
+/** The outputs a unit declares, in a fixed order; a unit that only runs as a module has none. */
 function targetsOf(unit: HarnessUnit): string[] {
 	const declared = new Set(unit.runtime.targets.map((target) => target.kind));
 	return order.filter((target) => declared.has(target));
@@ -112,5 +107,33 @@ export interface EmittedChange {
 	after: number | null;
 }
 
-export { emittedChange } from '../components/harness/harness-compare/harnessEmitted';
-export { emittedTargets } from '../components/harness/harness-growth/harnessEmitted';
+/** The emitted size of each target of a unit on both sides of a comparison. */
+export function emittedChange(
+	unit: string,
+	sides: Array<{ units: HarnessUnit[]; record: HarnessRecord | null }>
+): EmittedChange[] {
+	const declared = sides.flatMap((side) => {
+		const found = side.units.find((item) => item.id === unit);
+		return found ? targetsOf(found) : [];
+	});
+	const [base, head] = sides;
+	return order
+		.filter((target) => declared.includes(target))
+		.map((target) => ({
+			target,
+			label: emittedLabel(target),
+			before: built(base?.record ?? null, unit, target)?.value ?? null,
+			after: built(head?.record ?? null, unit, target)?.value ?? null
+		}));
+}
+
+/** The targets a unit has a size, a note or a review for anywhere in the history. */
+export function emittedTargets(index: HarnessIndex, unit: string): string[] {
+	const found = index.units.find((item) => item.id === unit);
+	const named = new Set<string>();
+	for (const point of found?.growth ?? []) {
+		for (const target of Object.keys(point.emitted ?? {})) named.add(target);
+		for (const key of Object.keys(point.notes ?? {})) named.add(key.replace(`${metric}:`, ''));
+	}
+	return order.filter((target) => named.has(target));
+}

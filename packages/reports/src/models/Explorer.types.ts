@@ -8,7 +8,7 @@ import type {
 } from './Harness.types';
 import type { HarnessReview } from './HarnessBudget.types';
 
-export type * from './ExplorerEvidence.types.ts';
+export type * from './ExplorerEvidence.types';
 export type {
 	ExplorerCategory,
 	ExplorerLocation,

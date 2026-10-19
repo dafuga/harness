@@ -7,14 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/entitySearch.ts",
-			"packages/reports/src/components/entity-search/entitySearch.ts"
-		],
-		"symbols": [
-			"SearchEntry",
-			"entitySearch"
-		]
+		"source": ["packages/reports/src/utils/entitySearch.ts"],
+		"symbols": ["SearchEntry", "entitySearch"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -61,11 +55,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"explorer-shell",
-		"harness-console",
-		"search-shared-app"
-	],
+	"scenarios": ["explorer-shell", "harness-console", "search-shared-app"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

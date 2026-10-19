@@ -1,5 +1,4 @@
-import { toKebabCase, toPascalCase } from "../core/case";
-import { toSnakeCase } from "../workflows/generate-code/case";
+import { toKebabCase, toPascalCase, toSnakeCase } from '../core/case';
 import type { Field } from '../core/fields';
 import type { PlannedFile } from '../core/files';
 

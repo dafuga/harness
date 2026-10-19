@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/recorded-preview/RecordedPreview.svelte",
-			"packages/desktop/src/components/RecordedPreview.svelte"
-		],
-		"symbols": [
-			"RecordedPreview"
-		]
+		"source": ["packages/desktop/src/components/RecordedPreview.svelte"],
+		"symbols": ["RecordedPreview"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,10 +37,7 @@
 				"name": "RecordedPreview.compact",
 				"type": "boolean",
 				"description": "Defaults to false. Hide the caption for minimal page cards; keep capture origin and missing-image details available on hover.",
-				"examples": [
-					true,
-					false
-				]
+				"examples": [true, false]
 			}
 		],
 		"outputs": [
@@ -71,7 +63,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/recorded-preview/RecordedPreview.svelte",
+		"entry": "packages/desktop/src/components/RecordedPreview.svelte",
 		"targets": [
 			{
 				"kind": "module",
@@ -79,9 +71,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"catalog-previews"
-	],
+	"scenarios": ["catalog-previews"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

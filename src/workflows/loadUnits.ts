@@ -6,8 +6,8 @@ import type { UnitsConfig } from '../core/unitsConfig';
 import { ScenarioRepository } from '../repositories/ScenarioRepository';
 import { UnitRegistryRepository } from '../repositories/UnitRegistryRepository';
 import { SourceGraphService } from '../services/SourceGraphService';
-import { SourceIndexService, type SourceIndex } from "../services/source-index-service/SourceIndexService";
-import { UnitIndexService, type UnitIndexResult } from "../services/unit-index-service/UnitIndexService";
+import { SourceIndexService, type SourceIndex } from '../services/SourceIndexService';
+import { UnitIndexService, type UnitIndexResult } from '../services/UnitIndexService';
 
 export interface LoadedUnits {
 	root: string;

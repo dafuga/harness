@@ -1,6 +1,24 @@
-import type { PlanThread, ThreadMessage as StoredMessage, ApprovalRecord } from "../../../planning/src/index";
-import type { ApprovalInfo, ThreadInfo, ThreadMessage, ProviderId } from "../models/Desktop.types";
-
+import type {
+	PlanDetail,
+	PlanThread,
+	ThreadMessage as StoredMessage,
+	ApprovalRecord
+} from '../../../planning/src/index';
+import type {
+	ApprovalInfo,
+	EntityContract,
+	ThreadInfo,
+	ThreadMessage,
+	ProviderId
+} from '../models/Desktop.types';
+export function planningConvert(plan: PlanDetail): EntityContract {
+	return {
+		inputs: plan.contract.inputs,
+		outputs: plan.contract.outputs,
+		errors: plan.contract.errors.map((name) => ({ name, type: 'error' })),
+		hash: plan.contractHash
+	};
+}
 export function approvalInfo(record: ApprovalRecord): ApprovalInfo {
 	return {
 		id: record.id,
@@ -12,7 +30,6 @@ export function approvalInfo(record: ApprovalRecord): ApprovalInfo {
 		...(record.option ? { option: record.option } : {})
 	};
 }
-
 export function threadInfo(thread: PlanThread): ThreadInfo {
 	const anchor = thread.anchor ?? {
 		version: null,
@@ -48,11 +65,8 @@ export function messageInfo(message: StoredMessage): ThreadMessage {
 		imageSha256: image?.kind === 'image' ? image.sha256 : null
 	};
 }
-
 function messageVersion(message: StoredMessage) {
 	const image = message.references.find((r) => r.kind === 'image');
 	const notes = message.references.find((r) => r.kind === 'notes');
 	return image?.version ?? notes?.version ?? message.change?.target.version ?? null;
 }
-
-export { planningConvert } from './planning-reads/planningConvert';

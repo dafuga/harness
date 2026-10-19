@@ -7,20 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/planning/src/utils/planOptions.ts",
-			"packages/planning/src/services/planning-service/planOptions.ts",
-			"packages/planning/src/utils/plan-read/planOptions.ts",
-			"packages/planning/src/utils/plan-design/planOptions.ts"
-		],
-		"symbols": [
-			"WriteImages",
-			"planOptions",
-			"checkOptions",
-			"optionOf",
-			"heldBy",
-			"approvable"
-		]
+		"source": ["packages/planning/src/utils/planOptions.ts"],
+		"symbols": ["WriteImages", "planOptions", "checkOptions", "optionOf", "heldBy", "approvable"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -158,10 +146,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"plan-fixture-contracts",
-		"hosted-design-options"
-	],
+	"scenarios": ["plan-fixture-contracts", "hosted-design-options"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

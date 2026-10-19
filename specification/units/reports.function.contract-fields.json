@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/entity-contract/contractFields.ts",
-			"packages/reports/src/utils/contractFields.ts"
-		],
+		"source": ["packages/reports/src/utils/contractFields.ts"],
 		"symbols": [
 			"ContractExample",
 			"ContractField",

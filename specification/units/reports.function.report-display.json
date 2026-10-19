@@ -7,18 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/gameplay-replay/reportDisplay.ts",
-			"packages/reports/src/utils/reportDisplay.ts",
-			"packages/reports/src/components/report-summary/reportDisplay.ts"
-		],
-		"symbols": [
-			"reportDisplay",
-			"reportStale",
-			"dateLabel",
-			"timeAgo",
-			"evidenceAnchor"
-		]
+		"source": ["packages/reports/src/utils/reportDisplay.ts"],
+		"symbols": ["reportDisplay", "reportStale", "dateLabel", "timeAgo", "evidenceAnchor"]
 	},
 	"contract": {
 		"origin": "declared",

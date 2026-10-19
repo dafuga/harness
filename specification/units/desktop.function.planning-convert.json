@@ -7,16 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/planning-reads/planningConvert.ts",
-			"packages/desktop/src/utils/planningConvert.ts"
-		],
-		"symbols": [
-			"planningConvert",
-			"approvalInfo",
-			"threadInfo",
-			"messageInfo"
-		]
+		"source": ["packages/desktop/src/utils/planningConvert.ts"],
+		"symbols": ["planningConvert", "approvalInfo", "threadInfo", "messageInfo"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -88,10 +80,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-native",
-		"desktop-project-runs"
-	],
+	"scenarios": ["desktop-native", "desktop-project-runs"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

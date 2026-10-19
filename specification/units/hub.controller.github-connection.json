@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/controllers/github-connection-controller/GithubConnectionController.ts",
-			"packages/hub/src/controllers/GithubConnectionController.ts"
-		],
+		"source": ["packages/hub/src/controllers/GithubConnectionController.ts"],
 		"symbols": [
 			"GithubConnection",
 			"GithubConnectionControllerOptions",
@@ -74,7 +71,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/controllers/github-connection-controller/GithubConnectionController.ts",
+		"entry": "packages/hub/src/controllers/GithubConnectionController.ts",
 		"targets": [
 			{
 				"kind": "module",

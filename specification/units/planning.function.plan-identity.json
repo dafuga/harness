@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/planning/src/utils/planIdentity.ts",
-			"packages/planning/src/utils/plan-read/planIdentity.ts"
-		],
+		"source": ["packages/planning/src/utils/planIdentity.ts"],
 		"symbols": [
 			"identity",
 			"attest",
@@ -171,10 +168,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"planning-artifacts",
-		"shells-shared-app"
-	],
+	"scenarios": ["planning-artifacts", "shells-shared-app"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

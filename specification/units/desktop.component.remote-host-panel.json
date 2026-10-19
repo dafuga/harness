@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/remote-host-panel/RemoteHostPanel.svelte",
-			"packages/desktop/src/components/RemoteHostPanel.svelte"
-		],
-		"symbols": [
-			"RemoteHostPanel"
-		]
+		"source": ["packages/desktop/src/components/RemoteHostPanel.svelte"],
+		"symbols": ["RemoteHostPanel"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -67,7 +62,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/remote-host-panel/RemoteHostPanel.svelte",
+		"entry": "packages/desktop/src/components/RemoteHostPanel.svelte",
 		"targets": [
 			{
 				"kind": "module",
@@ -75,9 +70,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"remote-mobile-ui"
-	],
+	"scenarios": ["remote-mobile-ui"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

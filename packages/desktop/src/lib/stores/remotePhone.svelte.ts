@@ -4,7 +4,7 @@ import type {
 	RemoteMobileStatus,
 	RemoteNativeStatus
 } from '../../models/Environment.types';
-import { cacheStatus } from "../../utils/cache-status/cacheStatus";
+import { cacheStatus } from '../../utils/cacheStatus';
 import { forgetRemote } from '../../utils/forgetRemote';
 import {
 	authorityChange,
@@ -12,8 +12,8 @@ import {
 	noAuthority,
 	remoteAuthority
 } from '../../utils/remoteAuthority';
-import { nameNotice, phoneName, scanFailure, scanNotice } from "../../utils/scan-notice/scanNotice";
-import type { ScanFailure } from "../../utils/scan-notice/scanNotice";
+import { nameNotice, phoneName, scanFailure, scanNotice } from '../../utils/scanNotice';
+import type { ScanFailure } from '../../utils/scanNotice';
 import { isWorkspacePath } from '../../utils/workspaceRoute';
 
 type State = RemoteMobileStatus['state'];

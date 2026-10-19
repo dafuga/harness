@@ -2,7 +2,7 @@
 	import { resolve } from '$app/paths';
 	import type { ProjectSummary } from 'collaboration';
 	import HubFrame from '../components/HubFrame.svelte';
-	import LoginPanel from '../components/login-panel/LoginPanel.svelte';
+	import LoginPanel from '../components/LoginPanel.svelte';
 	import ProjectCreate from '../components/ProjectCreate.svelte';
 	import ProjectList from '../components/ProjectList.svelte';
 	import { browserContext } from '../utils/browserContext';

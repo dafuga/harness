@@ -2,7 +2,7 @@ import type { RunContext } from '../models/RunContext.types';
 import { runContext } from '../utils/runContext';
 import { sourceSnapshot } from '../utils/sourceSnapshot';
 import { sourceChanges } from '../utils/sourceChanges';
-import { planDesign } from "../utils/plan-design/planDesign";
+import { planDesign } from '../utils/planDesign';
 export class PlanRunService {
 	async run(context: RunContext) {
 		const { request, runner, signal, emit, id } = context;

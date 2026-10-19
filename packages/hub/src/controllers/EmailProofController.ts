@@ -1,8 +1,8 @@
 import type { SignInResult } from '../models/HubAuth.types';
 import { BROWSER_TTL } from '../repositories/SessionRepository';
-import { PENDING_TTL } from "../services/email-proof-service/EmailProofService";
-import type { EmailProofService } from "../services/email-proof-service/EmailProofService";
-import type { RequestSessionService } from "../services/request-session-service/RequestSessionService";
+import { PENDING_TTL } from '../services/EmailProofService';
+import type { EmailProofService } from '../services/EmailProofService';
+import type { RequestSessionService } from '../services/RequestSessionService';
 import {
 	EMAIL_PROOF_COOKIE,
 	SESSION_COOKIE,

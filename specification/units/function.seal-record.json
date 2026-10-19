@@ -7,11 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/record-assembly-service/sealRecord.ts",
-			"src/services/verification-service/sealRecord.ts",
-			"src/utils/sealRecord.ts"
-		],
+		"source": ["src/utils/sealRecord.ts"],
 		"symbols": [
 			"recordComponents",
 			"benchmarkMeasurements",
@@ -150,10 +146,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-recorded-evidence",
-		"hub-recorded-evidence"
-	],
+	"scenarios": ["desktop-recorded-evidence", "hub-recorded-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

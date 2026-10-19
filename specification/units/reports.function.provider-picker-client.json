@@ -7,14 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/providerPickerClient.ts",
-			"packages/reports/src/components/provider-picker/providerPickerClient.ts"
-		],
-		"symbols": [
-			"PickerClient",
-			"providerPickerClient"
-		]
+		"source": ["packages/reports/src/utils/providerPickerClient.ts"],
+		"symbols": ["PickerClient", "providerPickerClient"]
 	},
 	"contract": {
 		"origin": "declared",

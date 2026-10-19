@@ -7,17 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/entityContract.ts",
-			"packages/reports/src/components/harness/entity-sections/entityContract.ts"
-		],
-		"symbols": [
-			"ContractRow",
-			"ContractFacts",
-			"humanize",
-			"requiredStates",
-			"entityContract"
-		]
+		"source": ["packages/reports/src/utils/entityContract.ts"],
+		"symbols": ["ContractRow", "ContractFacts", "humanize", "requiredStates", "entityContract"]
 	},
 	"contract": {
 		"origin": "declared",

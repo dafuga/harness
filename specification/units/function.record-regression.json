@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/workflows/record-regression/recordRegression.ts",
-			"src/workflows/recordRegression.ts"
-		],
+		"source": ["src/workflows/recordRegression.ts"],
 		"symbols": [
 			"RecordRegressionInput",
 			"recordRegression",
@@ -101,7 +98,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/record-regression/recordRegression.ts",
+		"entry": "src/workflows/recordRegression.ts",
 		"targets": [
 			{
 				"kind": "module",

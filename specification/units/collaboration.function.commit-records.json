@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/collaboration/src/utils/create-git-hub-repository/commitRecords.ts",
-			"packages/collaboration/src/utils/commitRecords.ts"
-		],
-		"symbols": [
-			"commitRecords"
-		]
+		"source": ["packages/collaboration/src/utils/commitRecords.ts"],
+		"symbols": ["commitRecords"]
 	},
 	"contract": {
 		"origin": "declared",

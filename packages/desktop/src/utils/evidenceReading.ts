@@ -1,6 +1,6 @@
 import type { ExplorerBehavior } from '../../../reports/src/models/Explorer.types';
 import type { ArtifactFetcher } from '../../../reports/src/utils/explorerArtifact';
-import { explorerReading } from "../../../reports/src/utils/explorer-reading/explorerReading";
+import { explorerReading } from '../../../reports/src/utils/explorerReading';
 import type { DesktopBridge } from '../models/DesktopBridge.types';
 import type { EntityEvidenceQuery, EntityEvidenceResult } from '../models/DesktopEvidence.types';
 import { artifactQuery } from './artifactQuery';

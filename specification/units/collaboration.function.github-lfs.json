@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/collaboration/src/utils/create-git-hub-source/githubLfs.ts",
-			"packages/collaboration/src/utils/githubLfs.ts"
-		],
-		"symbols": [
-			"githubLfs"
-		]
+		"source": ["packages/collaboration/src/utils/githubLfs.ts"],
+		"symbols": ["githubLfs"]
 	},
 	"contract": {
 		"origin": "declared",

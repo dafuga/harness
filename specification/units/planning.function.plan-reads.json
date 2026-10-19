@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/planning/src/services/planning-service/planReads.ts",
-			"packages/planning/src/utils/planReads.ts"
-		],
-		"symbols": [
-			"planReads"
-		]
+		"source": ["packages/planning/src/utils/planReads.ts"],
+		"symbols": ["planReads"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -50,9 +45,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"planning-artifacts"
-	],
+	"scenarios": ["planning-artifacts"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

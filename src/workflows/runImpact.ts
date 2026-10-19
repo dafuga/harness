@@ -1,7 +1,7 @@
 import { fail } from '../core/errors';
 import type { ImpactReport } from '../core/impactTypes';
 import { runtimeKinds, type RuntimeKind } from '../core/unitTypes';
-import { ImpactService } from "../services/impact-service/ImpactService";
+import { ImpactService } from '../services/ImpactService';
 import { UnitRuntimeService } from '../services/UnitRuntimeService';
 import { openRange } from './loadRevisions';
 

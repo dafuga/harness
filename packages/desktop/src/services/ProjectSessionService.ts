@@ -1,14 +1,14 @@
 import type { NativeAuthService } from './NativeAuthService';
 import type { RemoteProjectPort } from '../models/ProjectContext.types';
 import { CommentOutboxService } from './CommentOutboxService';
-import type { ProjectionCacheService } from "./projection-cache-service/ProjectionCacheService";
+import type { ProjectionCacheService } from './ProjectionCacheService';
 import { ProjectRegistryService } from './ProjectRegistryService';
 import { RepositoryArbiterService } from './RepositoryArbiterService';
 import { realpath } from 'node:fs/promises';
 import { basename } from 'node:path';
-import { GitSourceAdapter } from "../adapters/git-source-adapter/GitSourceAdapter";
-import { PlanningFacadeAdapter } from "../adapters/planning-facade-adapter/PlanningFacadeAdapter";
-import { CatalogService } from "./catalog-service/CatalogService";
+import { GitSourceAdapter } from '../adapters/GitSourceAdapter';
+import { PlanningFacadeAdapter } from '../adapters/PlanningFacadeAdapter';
+import { CatalogService } from './CatalogService';
 import type { RevisionQuery } from '../models/DesktopBridge.types';
 import type { ProjectSnapshot } from '../models/Desktop.types';
 import { gitRead } from '../utils/gitRead';

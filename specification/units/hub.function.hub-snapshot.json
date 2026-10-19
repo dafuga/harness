@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/services/hub-projection-service/hubSnapshot.ts",
-			"packages/hub/src/utils/hubSnapshot.ts"
-		],
-		"symbols": [
-			"hubSnapshot"
-		]
+		"source": ["packages/hub/src/utils/hubSnapshot.ts"],
+		"symbols": ["hubSnapshot"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -80,9 +75,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"hosted-catalog"
-	],
+	"scenarios": ["hosted-catalog"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

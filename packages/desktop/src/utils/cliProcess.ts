@@ -1,7 +1,7 @@
 import { spawn } from 'node:child_process';
 import type { CliCommand } from '../models/AgentRunner.types';
 import { RunCancelled } from '../models/AgentRunner.types';
-import { cliEnvironment } from "./cli-environment/cliEnvironment";
+import { cliEnvironment } from './cliEnvironment';
 import { streamLines } from './streamLines';
 import { StringDecoder } from 'node:string_decoder';
 export interface ProcessOptions {

@@ -1,6 +1,10 @@
-import { writingCount, writingLimits, type WritingLimit } from "../../../../src/utils/writing-limits/writingLimits";
-import type { HarnessExplanation } from "../models/Harness.types";
-import { humanize } from "./entityContract";
+import {
+	writingCount,
+	writingLimits,
+	type WritingLimit
+} from '../../../../src/utils/writingLimits';
+import type { HarnessExplanation } from '../models/Harness.types';
+import { humanize } from './entityContract';
 
 export interface BoundedText {
 	text: string;
@@ -34,11 +38,8 @@ export interface EntityReasons {
 }
 
 const kinds: ReasonKind[] = ['simplification', 'performance'];
-
 const mark = '…';
-
 const plain = (text: string) => text.trim().split(/\s+/).join(' ');
-
 const unique = <Item>(items: Item[]) => [...new Set(items)];
 
 /** Whether a text is within a limit, counted the one way every check of writing counts. */
@@ -67,7 +68,7 @@ export function boundedText(notes: string[], limit: WritingLimit): BoundedText {
 	return fits(text, limit) ? { text, cut: false } : { text: start(text, limit), cut: true };
 }
 
-export /** What several reasons say alike, each text once as it was first written, in that order. */
+/** What several reasons say alike, each text once as it was first written, in that order. */
 function alike<Item>(said: Array<{ text: string; of: Item }>): Array<{ text: string; of: Item[] }> {
 	const found = new Map<string, { text: string; of: Item[] }>();
 	for (const { text, of } of said.filter((entry) => plain(entry.text))) {
@@ -80,7 +81,7 @@ function alike<Item>(said: Array<{ text: string; of: Item }>): Array<{ text: str
 const subject = (reason: HarnessExplanation) =>
 	reason.symbol === '*' ? 'the whole entity' : humanize(reason.symbol);
 
-export function attempts(reasons: HarnessExplanation[], kind: ReasonKind): ReasonAttempts {
+function attempts(reasons: HarnessExplanation[], kind: ReasonKind): ReasonAttempts {
 	const tried = reasons.map((reason) => reason[kind].attempt);
 	return {
 		...boundedText(tried, writingLimits.attempt),
@@ -88,12 +89,11 @@ export function attempts(reasons: HarnessExplanation[], kind: ReasonKind): Reaso
 	};
 }
 
-export const uses = (reason: HarnessExplanation) =>
+const uses = (reason: HarnessExplanation) =>
 	kinds.map((kind) => ({
 		text: reason[kind].attempt,
 		of: { subject: subject(reason), kind, outcome: humanize(reason[kind].outcome) }
 	}));
-
 const same = (one: ReasonUse, other: ReasonUse) =>
 	one.subject === other.subject && one.kind === other.kind && one.outcome === other.outcome;
 
@@ -123,5 +123,30 @@ export function entityReasons(reasons: HarnessExplanation[]): EntityReasons {
 	};
 }
 
-export { reasonsTried } from '../components/harness/entity-history-row/entityReasons';
-export { reasonUses } from '../components/harness/entity-reasons/entityReasons';
+/**
+ * What a row of a history says was tried: the attempts of each kind within the limit of one,
+ * and an attempt both kinds share once, under the kind that says it first.
+ */
+export function reasonsTried(reasons: EntityReasons): string[] {
+	const of = (kind: ReasonKind) =>
+		reasons.attempted
+			.filter((tried) => tried.uses.some((use) => use.kind === kind))
+			.map((tried) => tried.attempt);
+	const first = of('simplification');
+	const second = of('performance').filter((attempt) => !first.includes(attempt));
+	return [first, second]
+		.map((attempts) => boundedText(attempts, writingLimits.attempt).text)
+		.filter(Boolean);
+}
+
+/** The uses of one attempt by kind and outcome, every subject under the outcome it had. */
+export function reasonUses(
+	uses: ReasonUse[]
+): Array<{ kind: ReasonKind; outcome: string; subjects: string[] }> {
+	const said = uses.map((use) => ({ text: `${use.kind} ${use.outcome}`, of: use }));
+	return alike(said).map(({ of }) => ({
+		kind: of[0].kind,
+		outcome: of[0].outcome,
+		subjects: of.map((use) => use.subject)
+	}));
+}

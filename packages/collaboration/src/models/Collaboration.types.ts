@@ -187,4 +187,4 @@ export type {
 	SourceHistoryCommit,
 	SourceHistoryPage,
 	SourceHistoryPageInput
-} from './SourceHistory.types.ts';
+} from './SourceHistory.types';

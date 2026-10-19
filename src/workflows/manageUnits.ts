@@ -1,6 +1,6 @@
 import { fail } from '../core/errors';
 import type { ComponentManifest } from '../core/unitTypes';
-import type { UnitIndexResult } from "../services/unit-index-service/UnitIndexService";
+import type { UnitIndexResult } from '../services/UnitIndexService';
 import { UnitRegistryValidator } from '../validators/UnitRegistryValidator';
 import { previewBinding } from '../utils/previewBinding';
 import { graphOf, loadUnits, type LoadedUnits } from './loadUnits';

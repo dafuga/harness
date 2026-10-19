@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/gameplay-replay/GameplayReplay.svelte",
-			"packages/reports/src/components/GameplayReplay.svelte"
-		],
-		"symbols": [
-			"GameplayReplay"
-		]
+		"source": ["packages/reports/src/components/GameplayReplay.svelte"],
+		"symbols": ["GameplayReplay"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -87,7 +82,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/gameplay-replay/GameplayReplay.svelte",
+		"entry": "packages/reports/src/components/GameplayReplay.svelte",
 		"targets": [
 			{
 				"kind": "module",

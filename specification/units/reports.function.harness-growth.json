@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/harnessGrowth.ts",
-			"packages/reports/src/components/harness/harness-growth/harnessGrowth.ts"
-		],
+		"source": ["packages/reports/src/utils/harnessGrowth.ts"],
 		"symbols": [
 			"growthMetrics",
 			"GrowthMetric",

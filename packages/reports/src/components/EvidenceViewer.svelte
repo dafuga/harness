@@ -3,7 +3,7 @@
 	import { galleryEvidence, screenSize, type ScreenSize } from '../utils/reportFilter';
 	import { t } from '../utils/reportLocale';
 	import EvidenceProvenance from './EvidenceProvenance.svelte';
-	import ImageZoom from './image-zoom/ImageZoom.svelte';
+	import ImageZoom from './ImageZoom.svelte';
 	import Modal from './Modal.svelte';
 	let {
 		items,

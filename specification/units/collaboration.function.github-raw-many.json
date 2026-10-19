@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/collaboration/src/utils/create-git-hub-source/githubRawMany.ts",
-			"packages/collaboration/src/utils/githubRawMany.ts"
-		],
-		"symbols": [
-			"githubRawMany"
-		]
+		"source": ["packages/collaboration/src/utils/githubRawMany.ts"],
+		"symbols": ["githubRawMany"]
 	},
 	"contract": {
 		"origin": "declared",

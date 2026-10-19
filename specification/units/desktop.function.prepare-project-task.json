@@ -7,14 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/prepareProjectTask.ts",
-			"packages/desktop/src/services/desktop-run-service/prepareProjectTask.ts"
-		],
-		"symbols": [
-			"ProjectTaskContext",
-			"prepareProjectTask"
-		]
+		"source": ["packages/desktop/src/utils/prepareProjectTask.ts"],
+		"symbols": ["ProjectTaskContext", "prepareProjectTask"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -53,9 +47,7 @@
 				"name": "prepareProjectTask.controller",
 				"type": "AbortController",
 				"description": "Cancellation controller for this one request. A cancelled request never starts the model.",
-				"examples": [
-					"new AbortController()"
-				]
+				"examples": ["new AbortController()"]
 			}
 		],
 		"outputs": [
@@ -92,17 +84,13 @@
 				"name": "Error",
 				"type": "thrown",
 				"description": "Refuses another project, a historical or changed revision, or a model that is unavailable.",
-				"examples": [
-					"The project revision changed. Refresh before asking the agent."
-				]
+				"examples": ["The project revision changed. Refresh before asking the agent."]
 			},
 			{
 				"name": "RunCancelled",
 				"type": "thrown",
 				"description": "Stops preparation when the request was cancelled before the model could start.",
-				"examples": [
-					"Request cancelled"
-				]
+				"examples": ["Request cancelled"]
 			}
 		]
 	},
@@ -138,9 +126,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"agent-references"
-	],
+	"scenarios": ["agent-references"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

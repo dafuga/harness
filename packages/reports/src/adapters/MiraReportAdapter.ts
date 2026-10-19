@@ -1,6 +1,6 @@
 import { dirname, join } from 'node:path';
 import { readFile } from 'node:fs/promises';
-import type { ReportRepository } from "../repositories/report-repository/ReportRepository";
+import type { ReportRepository } from '../repositories/ReportRepository';
 type MiraAsset = {
 	number: number;
 	file: string;

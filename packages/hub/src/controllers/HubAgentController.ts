@@ -1,8 +1,8 @@
 import type { Actor, CollaborationApi, ProjectSummary } from 'collaboration';
-import type { HubProjectionService } from "../services/hub-projection-service/HubProjectionService";
+import type { HubProjectionService } from '../services/HubProjectionService';
 import { IpcRequestValidator } from '../../../desktop/src/validators/IpcRequestValidator';
 import { channels } from '../../../desktop/src/models/DesktopBridge.types';
-import { hubBody, hubHttp } from "../utils/hub-http/hubHttp";
+import { hubBody, hubHttp } from '../utils/hubHttp';
 import { hubFail } from '../utils/hubJson';
 
 /** Bound executors own repository mapping and run ownership. Deduplicate requestId per actor/project and reject conflicting payloads. */

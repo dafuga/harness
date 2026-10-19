@@ -1,15 +1,15 @@
-import { AuthFailure, authFail } from "./authFail";
+import { AuthFailure, authFail } from './authFail';
 
 const MAX_BODY = 16384;
-
-export const baseHeaders = { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' };
+const OPAQUE_BEARER = /^Bearer ([A-Za-z0-9_-]{32,128})$/;
+const baseHeaders = { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' };
 
 export interface AuthHttpOptions {
 	status?: number;
 	cookies?: string[];
 }
 
-export function withCookies(response: Response, cookies: string[] = []): Response {
+function withCookies(response: Response, cookies: string[] = []): Response {
 	for (const cookie of cookies) response.headers.append('Set-Cookie', cookie);
 	return response;
 }
@@ -21,14 +21,27 @@ export function authHttp(body: unknown, options: AuthHttpOptions = {}): Response
 	return withCookies(response, options.cookies);
 }
 
+export function authRedirect(location: string, cookies: string[] = []): Response {
+	const headers = { ...baseHeaders, Location: location, 'Referrer-Policy': 'no-referrer' };
+	return withCookies(new Response(null, { status: 303, headers }), cookies);
+}
+
 /** Anything that is not an AuthFailure becomes an opaque 500. */
 export function authFailure(error: unknown): Response {
 	const failure = error instanceof AuthFailure ? error : new AuthFailure('auth-unavailable');
 	return authHttp({ error: failure.code }, { status: failure.status });
 }
 
+export function sameOrigin(request: Request, origin: string): boolean {
+	return request.headers.get('origin') === origin;
+}
+
 export function hasAuthorization(request: Request): boolean {
 	return request.headers.has('authorization');
+}
+
+export function bearerToken(request: Request): string | null {
+	return OPAQUE_BEARER.exec(request.headers.get('authorization') ?? '')?.[1] ?? null;
 }
 
 function jsonObject(text: string): Record<string, unknown> | null {
@@ -90,7 +103,6 @@ export async function readJson(request: Request): Promise<Record<string, unknown
 }
 
 export type AuthRoute = (request: Request) => Promise<Response>;
-
 /** Keyed by `METHOD /path`. */
 export type AuthRoutes = Record<string, AuthRoute>;
 
@@ -99,6 +111,3 @@ export function authPath(request: Request): string | null {
 	const path = new URL(request.url).pathname;
 	return path.startsWith('/api/auth/') || path.startsWith('/api/github/') ? path : null;
 }
-
-export { authRedirect } from '../controllers/github-connection-controller/authHttp';
-export { sameOrigin, bearerToken } from '../services/request-session-service/authHttp';

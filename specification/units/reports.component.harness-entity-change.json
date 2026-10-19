@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/harness/entity-change/EntityChange.svelte",
-			"packages/reports/src/components/harness/EntityChange.svelte"
-		],
-		"symbols": [
-			"EntityChange"
-		]
+		"source": ["packages/reports/src/components/harness/EntityChange.svelte"],
+		"symbols": ["EntityChange"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -102,7 +97,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/entity-change/EntityChange.svelte",
+		"entry": "packages/reports/src/components/harness/EntityChange.svelte",
 		"targets": [
 			{
 				"kind": "module",

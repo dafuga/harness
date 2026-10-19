@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/plan-design/designDirections.ts",
-			"packages/desktop/src/utils/designDirections.ts"
-		],
-		"symbols": [
-			"designDirections"
-		]
+		"source": ["packages/desktop/src/utils/designDirections.ts"],
+		"symbols": ["designDirections"]
 	},
 	"contract": {
 		"origin": "declared",

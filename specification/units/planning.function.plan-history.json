@@ -7,15 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/planning/src/utils/planHistory.ts",
-			"packages/planning/src/services/planning-service/planHistory.ts"
-		],
-		"symbols": [
-			"commits",
-			"revisionInfo",
-			"planHistory"
-		]
+		"source": ["packages/planning/src/utils/planHistory.ts"],
+		"symbols": ["commits", "revisionInfo", "planHistory"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -118,9 +111,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"planning-artifacts"
-	],
+	"scenarios": ["planning-artifacts"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -7,11 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/harnessEmitted.ts",
-			"packages/reports/src/components/harness/harness-compare/harnessEmitted.ts",
-			"packages/reports/src/components/harness/harness-growth/harnessEmitted.ts"
-		],
+		"source": ["packages/reports/src/utils/harnessEmitted.ts"],
 		"symbols": [
 			"emittedBytes",
 			"emittedLabel",

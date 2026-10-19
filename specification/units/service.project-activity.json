@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/project-activity-service/ProjectActivityService.ts",
-			"src/services/ProjectActivityService.ts"
-		],
+		"source": ["src/services/ProjectActivityService.ts"],
 		"symbols": [
 			"ProjectActivityService",
 			"ProjectActivityService.constructor",
@@ -94,7 +91,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/project-activity-service/ProjectActivityService.ts",
+		"entry": "src/services/ProjectActivityService.ts",
 		"targets": [
 			{
 				"kind": "module",

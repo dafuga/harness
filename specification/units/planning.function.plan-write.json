@@ -7,18 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/planning/src/utils/plan-write/planWrite.ts",
-			"packages/planning/src/services/planning-service/planWrite.ts",
-			"packages/planning/src/utils/planWrite.ts"
-		],
-		"symbols": [
-			"Files",
-			"planWrite",
-			"clean",
-			"assertClean",
-			"commitFiles"
-		]
+		"source": ["packages/planning/src/utils/planWrite.ts"],
+		"symbols": ["Files", "planWrite", "clean", "assertClean", "commitFiles"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -123,7 +113,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/planning/src/utils/plan-write/planWrite.ts",
+		"entry": "packages/planning/src/utils/planWrite.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -131,9 +121,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"planning-artifacts"
-	],
+	"scenarios": ["planning-artifacts"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

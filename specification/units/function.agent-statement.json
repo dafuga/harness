@@ -7,15 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/utils/agentStatement.ts",
-			"src/services/agent-activity-service/agentStatement.ts"
-		],
-		"symbols": [
-			"AgentInput",
-			"AgentStatement",
-			"agentStatement"
-		]
+		"source": ["src/utils/agentStatement.ts"],
+		"symbols": ["AgentInput", "AgentStatement", "agentStatement"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/utils/hubEvidenceScope.ts",
-			"packages/hub/src/services/hub-evidence-service/hubEvidenceScope.ts"
-		],
+		"source": ["packages/hub/src/utils/hubEvidenceScope.ts"],
 		"symbols": [
 			"HubEvidenceDependencies",
 			"hubEvidenceContext",
@@ -149,9 +146,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"hub-recorded-evidence"
-	],
+	"scenarios": ["hub-recorded-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

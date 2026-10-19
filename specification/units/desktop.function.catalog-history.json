@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/services/catalog-service/catalogHistory.ts",
-			"packages/desktop/src/utils/catalogHistory.ts"
-		],
-		"symbols": [
-			"catalogHistory"
-		]
+		"source": ["packages/desktop/src/utils/catalogHistory.ts"],
+		"symbols": ["catalogHistory"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -65,10 +60,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-native",
-		"desktop-project-runs"
-	],
+	"scenarios": ["desktop-native", "desktop-project-runs"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

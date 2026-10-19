@@ -7,14 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/collaboration/src/utils/create-git-hub-source/githubHistory.ts",
-			"packages/collaboration/src/utils/githubHistory.ts"
-		],
-		"symbols": [
-			"ensureAncestry",
-			"githubHistory"
-		]
+		"source": ["packages/collaboration/src/utils/githubHistory.ts"],
+		"symbols": ["ensureAncestry", "githubHistory"]
 	},
 	"contract": {
 		"origin": "declared",

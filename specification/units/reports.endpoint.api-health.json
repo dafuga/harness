@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/routes/api/health/-server/+server.ts",
-			"packages/reports/src/routes/api/health/+server.ts"
-		],
-		"symbols": [
-			"GET"
-		]
+		"source": ["packages/reports/src/routes/api/health/+server.ts"],
+		"symbols": ["GET"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -35,7 +30,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/routes/api/health/-server/+server.ts",
+		"entry": "packages/reports/src/routes/api/health/+server.ts",
 		"targets": [
 			{
 				"kind": "module",

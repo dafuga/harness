@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/services/hub-projection-service/hubPng.ts",
-			"packages/hub/src/utils/hubPng.ts"
-		],
-		"symbols": [
-			"hubPng"
-		]
+		"source": ["packages/hub/src/utils/hubPng.ts"],
+		"symbols": ["hubPng"]
 	},
 	"contract": {
 		"origin": "declared",

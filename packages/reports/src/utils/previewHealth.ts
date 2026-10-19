@@ -1,5 +1,4 @@
-import type { Plugin } from "vite";
-
+import type { Plugin } from 'vite';
 /** Private health protocol between the supervisor and the exact worker it spawned. */
 export interface PreviewHealth {
 	protocol: 'harness-worker-v1';
@@ -7,19 +6,15 @@ export interface PreviewHealth {
 	errors: number;
 	busy: boolean;
 }
-
-export const path = '/__harness_worker__';
-
+const path = '/__harness_worker__';
 const sessions = () =>
 	(globalThis as unknown as Record<symbol, Map<string, { busy: boolean; close(): void }>>)[
 		Symbol.for('harness.console.agents')
 	];
-
 /** Give live agents a chance to cancel their owned CLIs before a responsive worker exits. */
 export function closePreviewSessions(): void {
 	for (const client of sessions()?.values() ?? []) client.close();
 }
-
 /** Health bypasses compilation; real server failures are observed without changing responses. */
 export function previewHealth(token: string): Plugin {
 	let errors = 0,
@@ -52,5 +47,13 @@ export function previewHealth(token: string): Plugin {
 		}
 	};
 }
-
-export { readPreviewHealth } from '../services/preview-worker-service/previewHealth';
+export async function readPreviewHealth(url: string, token: string): Promise<PreviewHealth> {
+	const response = await fetch(url + path, {
+		headers: { 'x-harness-worker': token },
+		signal: AbortSignal.timeout(750),
+		redirect: 'error'
+	});
+	const health = (await response.json()) as PreviewHealth;
+	if (!response.ok || health.protocol !== 'harness-worker-v1') throw new Error('Worker not ready.');
+	return health;
+}

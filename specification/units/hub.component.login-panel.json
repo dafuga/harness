@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/components/login-panel/LoginPanel.svelte",
-			"packages/hub/src/components/LoginPanel.svelte"
-		],
-		"symbols": [
-			"LoginPanel"
-		]
+		"source": ["packages/hub/src/components/LoginPanel.svelte"],
+		"symbols": ["LoginPanel"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -52,7 +47,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/login-panel/LoginPanel.svelte",
+		"entry": "packages/hub/src/components/LoginPanel.svelte",
 		"targets": [
 			{
 				"kind": "module",

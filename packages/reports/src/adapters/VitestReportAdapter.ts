@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises';
-import type { ReportRepository } from "../repositories/report-repository/ReportRepository";
+import type { ReportRepository } from '../repositories/ReportRepository';
 import type { Status } from '../models/Report.types';
 type VitestCase = { fullName?: string; title?: string; status?: string; duration?: number };
 type VitestFile = { name?: string; assertionResults?: VitestCase[] };

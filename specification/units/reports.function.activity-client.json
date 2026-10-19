@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/site-activity/activityClient.ts",
-			"packages/reports/src/utils/activityClient.ts"
-		],
-		"symbols": [
-			"activityClient"
-		]
+		"source": ["packages/reports/src/utils/activityClient.ts"],
+		"symbols": ["activityClient"]
 	},
 	"contract": {
 		"origin": "declared",

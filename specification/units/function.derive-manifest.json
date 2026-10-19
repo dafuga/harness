@@ -7,14 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/utils/deriveManifest.ts",
-			"src/services/unit-index-service/deriveManifest.ts"
-		],
-		"symbols": [
-			"DeriveInput",
-			"deriveManifest"
-		]
+		"source": ["src/utils/deriveManifest.ts"],
+		"symbols": ["DeriveInput", "deriveManifest"]
 	},
 	"contract": {
 		"origin": "declared",

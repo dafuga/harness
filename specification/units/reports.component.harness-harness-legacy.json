@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/harness/harness-legacy/HarnessLegacy.svelte",
-			"packages/reports/src/components/harness/HarnessLegacy.svelte"
-		],
-		"symbols": [
-			"HarnessLegacy"
-		]
+		"source": ["packages/reports/src/components/harness/HarnessLegacy.svelte"],
+		"symbols": ["HarnessLegacy"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -72,7 +67,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/harness-legacy/HarnessLegacy.svelte",
+		"entry": "packages/reports/src/components/harness/HarnessLegacy.svelte",
 		"targets": [
 			{
 				"kind": "module",

@@ -1,5 +1,5 @@
 import type { ProjectTaskRequest } from './ProjectTask.types';
-export type { ProjectTaskRequest } from './ProjectTask.types.ts';
+export type { ProjectTaskRequest } from './ProjectTask.types';
 import type {
 	EntityEvidenceQuery,
 	EntityEvidenceResult,

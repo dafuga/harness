@@ -7,11 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/utils/note-lines/noteLines.ts",
-			"src/repositories/history-note-repository/noteLines.ts",
-			"src/utils/noteLines.ts"
-		],
+		"source": ["src/utils/noteLines.ts"],
 		"symbols": [
 			"ReadNote",
 			"noteLine",
@@ -103,7 +99,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/note-lines/noteLines.ts",
+		"entry": "src/utils/noteLines.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -111,10 +107,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-recorded-evidence",
-		"hub-recorded-evidence"
-	],
+	"scenarios": ["desktop-recorded-evidence", "hub-recorded-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

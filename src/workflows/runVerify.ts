@@ -12,15 +12,15 @@ import {
 	type StoredRecord
 } from '../repositories/VerificationStoreRepository';
 import { BuildIdentityService, type IdentifiedBuild } from '../services/BuildIdentityService';
-import { CommitMessageService } from "../services/commit-message-service/CommitMessageService";
+import { CommitMessageService } from '../services/CommitMessageService';
 import { EvidenceRestoreService } from '../services/EvidenceRestoreService';
 import { ExplanationRepository } from '../repositories/ExplanationRepository';
-import { ImpactService } from "../services/impact-service/ImpactService";
+import { ImpactService } from '../services/ImpactService';
 import { ReasonPathService } from '../services/ReasonPathService';
 import { TrustedBaseService } from '../services/TrustedBaseService';
 import { UnitRuntimeService } from '../services/UnitRuntimeService';
 import { VerificationCheckService, type CheckReport } from '../services/VerificationCheckService';
-import { VerificationService } from "../services/verification-service/VerificationService";
+import { VerificationService } from '../services/VerificationService';
 import { commitLoader, openRange, type RevisionSide } from './loadRevisions';
 import { runtimeKind } from './runImpact';
 

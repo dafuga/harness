@@ -1,24 +1,36 @@
-
-
 export type Point = { x: number; y: number };
-
 type ZoomControls = {
 	current: number;
 	minimum: number;
 	maximum: number;
 	apply: (next: number | null, point: Point) => void;
 };
-
 type Gesture = Event & { scale?: number; clientX?: number; clientY?: number };
-
 // Chrome sends a pinch as Ctrl+wheel with deltaY = -100·ln(scale), so zoom follows the fingers;
 // the cap keeps one Ctrl+mouse-wheel notch to about 1.65×.
 const PINCH_DELTA = 100;
-
 const MAX_WHEEL_DELTA = 50;
-
 // Only rounding noise counts as fit, so the smallest outward pinch leaves the fitted view.
 const FIT_TOLERANCE = 1e-9;
+
+export function imageAnchor(image: HTMLImageElement, pointer: Point): Point {
+	const rect = image.getBoundingClientRect();
+	return {
+		x: Math.max(0, Math.min(1, (pointer.x - rect.left) / rect.width)),
+		y: Math.max(0, Math.min(1, (pointer.y - rect.top) / rect.height))
+	};
+}
+
+export function keepPointerInPlace(
+	viewport: HTMLElement,
+	image: HTMLImageElement,
+	anchor: Point,
+	pointer: Point
+) {
+	const rect = image.getBoundingClientRect();
+	viewport.scrollLeft += rect.left + anchor.x * rect.width - pointer.x;
+	viewport.scrollTop += rect.top + anchor.y * rect.height - pointer.y;
+}
 
 function wheelFactor(event: WheelEvent, pageHeight: number) {
 	const unit = [1, 16, pageHeight][event.deltaMode] ?? 1;
@@ -76,5 +88,3 @@ export function trackpadZoom(node: HTMLElement, controls: () => ZoomControls | n
 		}
 	};
 }
-
-export { imageAnchor, keepPointerInPlace } from '../components/image-zoom/trackpadZoom';

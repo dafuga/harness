@@ -1,10 +1,10 @@
 import type { PlanningApi, PlanningRequest, PlanningResult } from './models/PlanningBridge.types';
 import type { PlanningErrorCode } from './models/PlanningView.types';
 import { planGit } from './utils/planGit';
-import { planningService } from "./services/planning-service/PlanningService";
-export type * from './models/Planning.types.ts';
-export type * from './models/PlanningBridge.types.ts';
-export type * from './models/PlanningView.types.ts';
+import { planningService } from './services/PlanningService';
+export type * from './models/Planning.types';
+export type * from './models/PlanningBridge.types';
+export type * from './models/PlanningView.types';
 export async function createPlanning(root: string): Promise<PlanningApi> {
 	return planningService(await planGit(root));
 }
@@ -31,7 +31,7 @@ export async function handlePlanningRequest(
 	}
 }
 export { planImageCodec } from './utils/planImageCodec';
-export { planCommit } from './utils/plan-write/planCommit';
+export { planCommit } from './utils/planCommit';
 export { planIdentity } from './utils/planIdentity';
-export { planOptions } from './services/planning-service/planOptions';
-export { planReads } from './services/planning-service/planReads';
+export { planOptions } from './utils/planOptions';
+export { planReads } from './utils/planReads';

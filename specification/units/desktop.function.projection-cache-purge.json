@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/services/projection-cache-service/projectionCachePurge.ts",
-			"packages/desktop/src/utils/projectionCachePurge.ts"
-		],
-		"symbols": [
-			"projectionCachePurge"
-		]
+		"source": ["packages/desktop/src/utils/projectionCachePurge.ts"],
+		"symbols": ["projectionCachePurge"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -60,9 +55,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"hosted-client-copies"
-	],
+	"scenarios": ["hosted-client-copies"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

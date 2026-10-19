@@ -7,14 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/cachedSnapshot.ts",
-			"packages/desktop/src/adapters/capacitor-bridge-adapter/cachedSnapshot.ts"
-		],
-		"symbols": [
-			"SavedCopy",
-			"cachedSnapshot"
-		]
+		"source": ["packages/desktop/src/utils/cachedSnapshot.ts"],
+		"symbols": ["SavedCopy", "cachedSnapshot"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -56,9 +50,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"remote-mobile-native"
-	],
+	"scenarios": ["remote-mobile-native"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

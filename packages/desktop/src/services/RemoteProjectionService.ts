@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import type { ProjectSnapshot } from '../models/Desktop.types';
-import type { HostedHttpAdapter } from "../adapters/hosted-http-adapter/HostedHttpAdapter";
+import type { HostedHttpAdapter } from '../adapters/HostedHttpAdapter';
 import { RemoteProjectResponseValidator } from '../validators/RemoteProjectResponseValidator';
 import { HostedReadService, type HostedReadOptions } from './HostedReadService';
 /** Names the rule a kept snapshot was listed by; one kept under another rule is not looked up. */

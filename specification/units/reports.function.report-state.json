@@ -7,15 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/repositories/report-repository/reportState.ts",
-			"packages/reports/src/utils/reportState.ts"
-		],
-		"symbols": [
-			"reportState",
-			"resultStatus",
-			"interrupted"
-		]
+		"source": ["packages/reports/src/utils/reportState.ts"],
+		"symbols": ["reportState", "resultStatus", "interrupted"]
 	},
 	"contract": {
 		"origin": "declared",

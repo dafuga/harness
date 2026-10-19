@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import type { Evidence } from '../models/Report.types';
-import type { ReportRepository } from "../repositories/report-repository/ReportRepository";
+import type { ReportRepository } from '../repositories/ReportRepository';
 import { imageAsset, writeImageAsset } from '../utils/reportAssets';
 import { sanitize } from '../utils/sanitize';
 import type { R2ScreenshotStoreAdapter } from '../adapters/R2ScreenshotStoreAdapter';

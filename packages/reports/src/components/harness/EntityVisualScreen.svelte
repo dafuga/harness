@@ -5,7 +5,7 @@
 	import EntityAudio from './EntityAudio.svelte';
 	import EntityFrame from './EntityFrame.svelte';
 	import EntityScreens from './EntityScreens.svelte';
-	import EntitySections from './entity-sections/EntitySections.svelte';
+	import EntitySections from './EntitySections.svelte';
 	let host: ExplorerScreenProps = $props();
 </script>
 

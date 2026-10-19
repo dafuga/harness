@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/harness/harness-navbar/HarnessNavbar.svelte",
-			"packages/reports/src/components/harness/HarnessNavbar.svelte"
-		],
-		"symbols": [
-			"HarnessNavbar"
-		]
+		"source": ["packages/reports/src/components/harness/HarnessNavbar.svelte"],
+		"symbols": ["HarnessNavbar"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -112,7 +107,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/harness-navbar/HarnessNavbar.svelte",
+		"entry": "packages/reports/src/components/harness/HarnessNavbar.svelte",
 		"targets": [
 			{
 				"kind": "module",

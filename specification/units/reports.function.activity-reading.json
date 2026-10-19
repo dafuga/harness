@@ -8,15 +8,8 @@
 	"status": "active",
 	"documentation": "packages/reports/src/utils/activityReading.md",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/activityReading.ts",
-			"packages/reports/src/components/activity-agents/activityReading.ts"
-		],
-		"symbols": [
-			"readingAge",
-			"ActivityReading",
-			"activityReading"
-		]
+		"source": ["packages/reports/src/utils/activityReading.ts"],
+		"symbols": ["readingAge", "ActivityReading", "activityReading"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,9 +35,7 @@
 				"name": "readingAge",
 				"type": "number",
 				"description": "Freshness allowance of 60,000 milliseconds.",
-				"examples": [
-					60000
-				]
+				"examples": [60000]
 			},
 			{
 				"name": "activityReading",

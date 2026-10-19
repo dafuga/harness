@@ -8,16 +8,8 @@
 	"status": "active",
 	"documentation": "packages/reports/specification/features/planned/managed-preview-server.md",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/previewOwner.ts",
-			"packages/reports/src/services/preview-server-service/previewOwner.ts"
-		],
-		"symbols": [
-			"PreviewOwner",
-			"previewOwnerPort",
-			"previewOwnerPath",
-			"previewOwner"
-		]
+		"source": ["packages/reports/src/utils/previewOwner.ts"],
+		"symbols": ["PreviewOwner", "previewOwnerPort", "previewOwnerPath", "previewOwner"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -26,17 +18,13 @@
 				"name": "previewOwner.port",
 				"type": "number",
 				"description": "Loopback port used to reserve the one preview slot.",
-				"examples": [
-					47840
-				]
+				"examples": [47840]
 			},
 			{
 				"name": "previewOwner.identity",
 				"type": "string",
 				"description": "Fingerprint of the checkout and selected history data.",
-				"examples": [
-					"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-				]
+				"examples": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"]
 			}
 		],
 		"outputs": [
@@ -54,9 +42,7 @@
 				"name": "previewOwner",
 				"type": "Promise<string>",
 				"description": "Address of a matching, ready preview.",
-				"examples": [
-					"http://127.0.0.1:5688"
-				]
+				"examples": ["http://127.0.0.1:5688"]
 			}
 		],
 		"errors": [
@@ -64,9 +50,7 @@
 				"name": "Error",
 				"type": "thrown",
 				"description": "Refuses an unrelated listener, a different checkout or a preview that never finishes starting.",
-				"examples": [
-					"Preview ownership port is occupied by another application."
-				]
+				"examples": ["Preview ownership port is occupied by another application."]
 			}
 		]
 	},

@@ -7,14 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/utils/comparison-context/comparisonContext.ts",
-			"src/utils/comparisonContext.ts"
-		],
-		"symbols": [
-			"requestDigest",
-			"comparisonContext"
-		]
+		"source": ["src/utils/comparisonContext.ts"],
+		"symbols": ["requestDigest", "comparisonContext"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -63,7 +57,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/comparison-context/comparisonContext.ts",
+		"entry": "src/utils/comparisonContext.ts",
 		"targets": [
 			{
 				"kind": "module",

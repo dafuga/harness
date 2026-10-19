@@ -7,15 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/core/exports.ts",
-			"src/workflows/generate-code/exports.ts"
-		],
-		"symbols": [
-			"ExportPlan",
-			"applyExports",
-			"appendMissingExports"
-		]
+		"source": ["src/core/exports.ts"],
+		"symbols": ["ExportPlan", "applyExports", "appendMissingExports"]
 	},
 	"contract": {
 		"origin": "declared",

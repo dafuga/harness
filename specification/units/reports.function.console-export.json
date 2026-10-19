@@ -7,14 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/consoleExport.ts",
-			"packages/reports/src/utils/console-server/consoleExport.ts"
-		],
-		"symbols": [
-			"ConsoleExportInput",
-			"consoleExport"
-		]
+		"source": ["packages/reports/src/utils/consoleExport.ts"],
+		"symbols": ["ConsoleExportInput", "consoleExport"]
 	},
 	"contract": {
 		"origin": "declared",

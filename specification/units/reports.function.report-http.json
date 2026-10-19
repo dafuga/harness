@@ -7,16 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/reportHttp.ts",
-			"packages/reports/src/routes/api/health/-server/reportHttp.ts",
-			"packages/reports/src/routes/api/reports/[id]/[type]/[file]/-server/reportHttp.ts"
-		],
-		"symbols": [
-			"repository",
-			"reportHttp",
-			"reportFile"
-		]
+		"source": ["packages/reports/src/utils/reportHttp.ts"],
+		"symbols": ["repository", "reportHttp", "reportFile"]
 	},
 	"contract": {
 		"origin": "declared",

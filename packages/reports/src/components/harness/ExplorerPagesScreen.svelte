@@ -3,7 +3,7 @@
 	import type { ExplorerScreenProps } from '../../models/ExplorerScreen.types';
 	import { catalogShot } from '../../utils/entityScreens';
 	import ExplorerFrame from './ExplorerFrame.svelte';
-	import ExplorerIndex from './explorer-index/ExplorerIndex.svelte';
+	import ExplorerIndex from './ExplorerIndex.svelte';
 	import ExplorerPageCard from './ExplorerPageCard.svelte';
 	let host: ExplorerScreenProps = $props();
 	let rows = $derived(entityCatalog(host.entities, 'pages', host.lens.relations));

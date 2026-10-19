@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/collaboration/src/utils/create-git-hub-repository/createGitHubRepository.ts",
-			"packages/collaboration/src/utils/createGitHubRepository.ts"
-		],
-		"symbols": [
-			"createGitHubRepository"
-		]
+		"source": ["packages/collaboration/src/utils/createGitHubRepository.ts"],
+		"symbols": ["createGitHubRepository"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -68,7 +63,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/collaboration/src/utils/create-git-hub-repository/createGitHubRepository.ts",
+		"entry": "packages/collaboration/src/utils/createGitHubRepository.ts",
 		"targets": [
 			{
 				"kind": "module",

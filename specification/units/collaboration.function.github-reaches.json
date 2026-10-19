@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/collaboration/src/utils/create-git-hub-source/githubReaches.ts",
-			"packages/collaboration/src/utils/githubReaches.ts"
-		],
-		"symbols": [
-			"githubReaches"
-		]
+		"source": ["packages/collaboration/src/utils/githubReaches.ts"],
+		"symbols": ["githubReaches"]
 	},
 	"contract": {
 		"origin": "declared",

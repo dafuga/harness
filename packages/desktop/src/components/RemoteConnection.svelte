@@ -4,8 +4,8 @@
 	import type { RemotePhone } from '../lib/stores/remotePhone.svelte';
 	import type { Workspace } from '../lib/stores/workspace.svelte';
 	import { remoteContext } from '../models/Environment.types';
-	import RemoteHostPanel from './remote-host-panel/RemoteHostPanel.svelte';
-	import RemotePhonePanel from './remote-phone-panel/RemotePhonePanel.svelte';
+	import RemoteHostPanel from './RemoteHostPanel.svelte';
+	import RemotePhonePanel from './RemotePhonePanel.svelte';
 	let { workspace, compact = false }: { workspace: Workspace; compact?: boolean } = $props();
 	/**
 	 * The environment decides which side this is: a desktop sets up phone access, a phone connects

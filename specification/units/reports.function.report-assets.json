@@ -7,16 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/reportAssets.ts",
-			"packages/reports/src/repositories/report-repository/reportAssets.ts"
-		],
-		"symbols": [
-			"imageAsset",
-			"writeImageAsset",
-			"reportAssets",
-			"registeredAsset"
-		]
+		"source": ["packages/reports/src/utils/reportAssets.ts"],
+		"symbols": ["imageAsset", "writeImageAsset", "reportAssets", "registeredAsset"]
 	},
 	"contract": {
 		"origin": "declared",

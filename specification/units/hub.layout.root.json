@@ -7,15 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/routes/-layout/+layout.svelte",
-			"packages/hub/src/routes/+layout.svelte",
-			"packages/hub/src/routes/+layout.ts"
-		],
-		"symbols": [
-			"+layout",
-			"ssr"
-		]
+		"source": ["packages/hub/src/routes/+layout.svelte", "packages/hub/src/routes/+layout.ts"],
+		"symbols": ["+layout", "ssr"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -61,7 +54,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/routes/-layout/+layout.svelte",
+		"entry": "packages/hub/src/routes/+layout.svelte",
 		"targets": [
 			{
 				"kind": "module",

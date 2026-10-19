@@ -1,5 +1,5 @@
 import type { ComponentManifest } from '../core/unitTypes';
-import { unitLineage } from "../services/unit-index-service/unitLineage";
+import { unitLineage } from '../utils/unitLineage';
 
 /** Checks relationships between manifests that no single manifest can prove alone. */
 export class UnitRegistryValidator {

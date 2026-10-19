@@ -7,11 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/entityHistory.ts",
-			"packages/reports/src/components/harness/entity-history/entityHistory.ts",
-			"packages/reports/src/components/harness/entity-change/entityHistory.ts"
-		],
+		"source": ["packages/reports/src/utils/entityHistory.ts"],
 		"symbols": [
 			"HistoryTiming",
 			"historyVerdict",

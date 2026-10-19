@@ -4,7 +4,7 @@ import { apiFiles, e2eFiles, viewFiles } from './appPieces';
 import { adapterTypeFiles } from './adapterTypes';
 import { controllerFiles, policyFiles, serializerFiles } from './packagePieces';
 import { modelFiles } from './model';
-import { parseFields } from "../workflows/generate-code/fields";
+import { parseFields } from '../core/fields';
 
 interface ClassEntityTemplate {
 	folder: string;

@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/utils/revisionChanges.ts",
-			"src/services/history-index-service/revisionChanges.ts"
-		],
+		"source": ["src/utils/revisionChanges.ts"],
 		"symbols": [
 			"UnitVersions",
 			"ChangedUnits",

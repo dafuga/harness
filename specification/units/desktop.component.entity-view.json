@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/entity-view/EntityView.svelte",
-			"packages/desktop/src/components/EntityView.svelte"
-		],
-		"symbols": [
-			"EntityView"
-		]
+		"source": ["packages/desktop/src/components/EntityView.svelte"],
+		"symbols": ["EntityView"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -152,7 +147,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/entity-view/EntityView.svelte",
+		"entry": "packages/desktop/src/components/EntityView.svelte",
 		"targets": [
 			{
 				"kind": "module",

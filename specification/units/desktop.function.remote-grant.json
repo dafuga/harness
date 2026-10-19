@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/adapters/capacitor-bridge-adapter/remoteGrant.ts",
-			"packages/desktop/src/utils/remoteGrant.ts"
-		],
-		"symbols": [
-			"remoteGrant"
-		]
+		"source": ["packages/desktop/src/utils/remoteGrant.ts"],
+		"symbols": ["remoteGrant"]
 	},
 	"contract": {
 		"origin": "declared",

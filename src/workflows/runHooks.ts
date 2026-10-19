@@ -1,9 +1,9 @@
 import { resolve } from 'node:path';
 import { GitAdapter } from '../adapters/GitAdapter';
 import { fail } from '../core/errors';
-import { CommitMessageService } from "../services/commit-message-service/CommitMessageService";
-import { HookInstallService, type HookStatus } from "../services/hook-install-service/HookInstallService";
-import { HookRunService, type HookOutcome } from "../services/hook-run-service/HookRunService";
+import { CommitMessageService } from '../services/CommitMessageService';
+import { HookInstallService, type HookStatus } from '../services/HookInstallService';
+import { HookRunService, type HookOutcome } from '../services/HookRunService';
 
 type Action = 'install' | 'uninstall' | 'status';
 

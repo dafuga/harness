@@ -1,5 +1,12 @@
 import { spawn } from 'node:child_process';
-import { loopPaths, loopRoot, readLoop, appendTrace, type LoopEvaluator, type LoopInput } from "./loop-state/loopState";
+import {
+	loopPaths,
+	loopRoot,
+	readLoop,
+	appendTrace,
+	type LoopEvaluator,
+	type LoopInput
+} from './loopState';
 
 export interface LoopEvaluationResult {
 	loop: string;

@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/check-run-service/CheckRunService.ts",
-			"src/services/CheckRunService.ts"
-		],
+		"source": ["src/services/CheckRunService.ts"],
 		"symbols": [
 			"RunContext",
 			"CheckOutcome",
@@ -77,7 +74,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/check-run-service/CheckRunService.ts",
+		"entry": "src/services/CheckRunService.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -85,9 +82,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"browser-error-evidence"
-	],
+	"scenarios": ["browser-error-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

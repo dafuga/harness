@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/services/device-session-service/remoteFailureText.ts",
-			"packages/desktop/src/utils/remoteFailureText.ts"
-		],
-		"symbols": [
-			"remoteFailureText"
-		]
+		"source": ["packages/desktop/src/utils/remoteFailureText.ts"],
+		"symbols": ["remoteFailureText"]
 	},
 	"contract": {
 		"origin": "declared",

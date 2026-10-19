@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/provider-picker/ProviderPicker.svelte",
-			"packages/reports/src/components/ProviderPicker.svelte"
-		],
-		"symbols": [
-			"ProviderPicker"
-		]
+		"source": ["packages/reports/src/components/ProviderPicker.svelte"],
+		"symbols": ["ProviderPicker"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -73,7 +68,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/provider-picker/ProviderPicker.svelte",
+		"entry": "packages/reports/src/components/ProviderPicker.svelte",
 		"targets": [
 			{
 				"kind": "module",

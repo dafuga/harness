@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/reportServerRecord.ts",
-			"packages/reports/src/services/report-server-service/reportServerRecord.ts"
-		],
+		"source": ["packages/reports/src/utils/reportServerRecord.ts"],
 		"symbols": [
 			"ServerRecord",
 			"StoppedServer",

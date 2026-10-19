@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/services/provider-discovery-service/ProviderDiscoveryService.ts",
-			"packages/desktop/src/services/ProviderDiscoveryService.ts"
-		],
+		"source": ["packages/desktop/src/services/ProviderDiscoveryService.ts"],
 		"symbols": [
 			"ProviderDiscoveryService",
 			"ProviderDiscoveryService.constructor",
@@ -74,7 +71,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/provider-discovery-service/ProviderDiscoveryService.ts",
+		"entry": "packages/desktop/src/services/ProviderDiscoveryService.ts",
 		"targets": [
 			{
 				"kind": "module",
@@ -82,10 +79,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-native",
-		"desktop-project-runs"
-	],
+	"scenarios": ["desktop-native", "desktop-project-runs"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

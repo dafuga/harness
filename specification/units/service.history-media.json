@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/history-media-service/HistoryMediaService.ts",
-			"src/services/HistoryMediaService.ts"
-		],
+		"source": ["src/services/HistoryMediaService.ts"],
 		"symbols": [
 			"HistoryMediaService",
 			"HistoryMediaService.constructor",
@@ -59,7 +56,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/history-media-service/HistoryMediaService.ts",
+		"entry": "src/services/HistoryMediaService.ts",
 		"targets": [
 			{
 				"kind": "module",

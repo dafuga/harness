@@ -5,7 +5,7 @@ import { realpath, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { AnalyticsRepository } from '../repositories/AnalyticsRepository';
 import type { AnalyticsContext, AnalyticsEvent } from '../core/analyticsTypes';
-import { loopPaths, readLoop } from "./loop-state/loopState";
+import { loopPaths, readLoop } from '../workflows/loopState';
 
 const git = promisify(execFile);
 export async function projectIdentity(root: string): Promise<string> {

@@ -1,5 +1,5 @@
 import { error, type RequestEvent } from '@sveltejs/kit';
-import { ReplayVideoService } from "../../../services/replay-video-service/ReplayVideoService";
+import { ReplayVideoService } from '../../../services/ReplayVideoService';
 import { mediaResponse } from '../../../utils/mediaResponse';
 import { repository } from '../../../utils/reportHttp';
 const service = new ReplayVideoService(repository);

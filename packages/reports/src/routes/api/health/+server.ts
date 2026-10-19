@@ -1,2 +1,2 @@
-
-export { GET } from './-server/+server';
+import { reportHttp } from '../../../utils/reportHttp';
+export const GET = reportHttp;

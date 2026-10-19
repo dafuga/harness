@@ -1,5 +1,3 @@
-
-
 /** A bounded reading of already-parsed evidence; original values are never rewritten. */
 export type RecordedNode =
 	| { kind: 'scalar'; type: string; text: string; shortened?: boolean }
@@ -12,9 +10,7 @@ const more = (): RecordedNode => ({
 	kind: 'notice',
 	text: 'Open Full recorded values to see more.'
 });
-
 const scalar = (value: unknown) => value === null || typeof value !== 'object';
-
 const types: Record<string, string> = { string: 'Text', number: 'Number', boolean: 'Boolean' };
 
 function leaf(value: unknown): RecordedNode {
@@ -41,7 +37,7 @@ function columns(items: unknown[]): string[] {
 	return keys.length <= 8 && objects.every((item) => Object.values(item).every(scalar)) ? keys : [];
 }
 
-export function read(value: unknown, depth: number, budget: { left: number }): RecordedNode {
+function read(value: unknown, depth: number, budget: { left: number }): RecordedNode {
 	if (budget.left-- <= 0) return more();
 	if (scalar(value)) return leaf(value);
 	if (depth >= 4) return more();
@@ -79,4 +75,7 @@ function list(values: unknown[], depth: number, budget: { left: number }): Recor
 	};
 }
 
-export { recordedValue } from '../components/recorded-value/recordedValue';
+/** At most four levels, twelve items per collection and 120 expanded values. */
+export function recordedValue(value: unknown): RecordedNode {
+	return read(value, 0, { left: 120 });
+}

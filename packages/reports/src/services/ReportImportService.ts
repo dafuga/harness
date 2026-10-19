@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
-import { ReportRepository } from "../repositories/report-repository/ReportRepository";
+import { ReportRepository } from '../repositories/ReportRepository';
 import { PlaywrightReportAdapter } from '../adapters/PlaywrightReportAdapter';
 import { VitestReportAdapter } from '../adapters/VitestReportAdapter';
 import { MiraReportAdapter } from '../adapters/MiraReportAdapter';

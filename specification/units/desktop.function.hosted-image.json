@@ -7,13 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/adapters/remote-http-project-adapter/hostedImage.ts",
-			"packages/desktop/src/utils/hostedImage.ts"
-		],
-		"symbols": [
-			"hostedImage"
-		]
+		"source": ["packages/desktop/src/utils/hostedImage.ts"],
+		"symbols": ["hostedImage"]
 	},
 	"contract": {
 		"origin": "declared",
