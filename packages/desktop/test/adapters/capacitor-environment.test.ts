@@ -86,3 +86,45 @@ test('what the scanner refuses reaches the page with its code, and no pairing li
 	expect('links' in environment).toBe(false);
 	expect(plugin.addListener).not.toHaveBeenCalledWith('pairingLink', expect.any(Function));
 });
+
+test('an unpaired phone signs in and lists owned and invited account projects without a Mac', async () => {
+	const f = native();
+	let connected = true;
+	const signed = {
+		configured: true,
+		state: 'signed-in',
+		actor: { id: 'google:ada', name: 'Ada', email: 'ada@example.invalid' }
+	};
+	const account = {
+		status: vi.fn(async () => (connected ? signed : { configured: true, state: 'signed-out' })),
+		connect: vi.fn(async () => signed),
+		disconnect: vi.fn(async () => {
+			connected = false;
+			return { configured: true, state: 'signed-out' };
+		}),
+		request: vi.fn(async () => ({
+			status: 200,
+			contentType: 'application/json',
+			data: btoa(
+				JSON.stringify([
+					{ id: '11111111-1111-4111-8111-111111111111', name: 'Owned', role: 'owner' },
+					{ id: '22222222-2222-4222-8222-222222222222', name: 'Invited', role: 'viewer' }
+				])
+			)
+		}))
+	};
+	const config = { plugin: f.plugin as unknown as RemoteNativePlugin, account };
+	const environment = new CapacitorEnvironmentAdapter(config).connect();
+	const bridge = environment.bridge!;
+	expect(typeof bridge.hostedStatus, 'Google account connection is offered without pairing').toBe(
+		'function'
+	);
+	expect(await bridge.hostedStatus!()).toMatchObject({ configured: true, state: 'signed-in' });
+	expect(await bridge.listProjects!()).toEqual([
+		{ id: '11111111-1111-4111-8111-111111111111', name: 'Owned', kind: 'shared' },
+		{ id: '22222222-2222-4222-8222-222222222222', name: 'Invited', kind: 'shared' }
+	]);
+	expect(f.plugin.request).not.toHaveBeenCalled();
+	await bridge.disconnectHosted!();
+	expect(await bridge.listProjects!()).toEqual([]);
+});
