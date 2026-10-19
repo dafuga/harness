@@ -137,6 +137,9 @@ test.each(cases)(
 );
 
 const pureCases = [
+	['/** @pure */\nexport function env() { return process.env.MODE; }', false],
+	['let state = 0;\n/** @pure */\nexport function captured() { return state; }', false],
+	['/** @pure */\nexport function writeFile() { console.log("side effect"); return 1; }', false],
 	[
 		'/** @pure */\nexport function formatDate(iso: string) { return new Date(iso).toISOString(); }',
 		true
