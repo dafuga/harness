@@ -1,0 +1,138 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.resource-queue",
+	"kind": "repository",
+	"title": "ResourceQueueRepository",
+	"responsibility": "Owns the ResourceQueueRepository persistence boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/repositories/ResourceQueueRepository.ts"],
+		"symbols": [
+			"ResourceQueueRepository",
+			"ResourceQueueRepository.constructor",
+			"ResourceQueueRepository.all",
+			"ResourceQueueRepository.add",
+			"ResourceQueueRepository.patch",
+			"ResourceQueueRepository.remove",
+			"ResourceQueueRepository.schedule",
+			"ResourceQueueRepository.snapshot",
+			"ResourceQueueRepository.saveSnapshot",
+			"ResourceQueueRepository.close"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ResourceQueueRepository.constructor.home",
+				"type": "unknown"
+			},
+			{
+				"name": "ResourceQueueRepository.add.job",
+				"type": "Omit<ResourceJob, 'sequence'>"
+			},
+			{
+				"name": "ResourceQueueRepository.patch.id",
+				"type": "string"
+			},
+			{
+				"name": "ResourceQueueRepository.patch.changes",
+				"type": "Partial<ResourceJob>"
+			},
+			{
+				"name": "ResourceQueueRepository.remove.id",
+				"type": "string"
+			},
+			{
+				"name": "ResourceQueueRepository.schedule.sample",
+				"type": "ResourceSnapshot"
+			},
+			{
+				"name": "ResourceQueueRepository.schedule.config",
+				"type": "ResourceConfig"
+			},
+			{
+				"name": "ResourceQueueRepository.schedule.now",
+				"type": "unknown"
+			},
+			{
+				"name": "ResourceQueueRepository.saveSnapshot.sample",
+				"type": "ResourceSnapshot"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ResourceQueueRepository.all",
+				"type": "ResourceJob[]"
+			},
+			{
+				"name": "ResourceQueueRepository.add",
+				"type": "void"
+			},
+			{
+				"name": "ResourceQueueRepository.patch",
+				"type": "void"
+			},
+			{
+				"name": "ResourceQueueRepository.remove",
+				"type": "void"
+			},
+			{
+				"name": "ResourceQueueRepository.schedule",
+				"type": "ResourceJob[]"
+			},
+			{
+				"name": "ResourceQueueRepository.snapshot",
+				"type": "ResourceSnapshot | undefined"
+			},
+			{
+				"name": "ResourceQueueRepository.saveSnapshot",
+				"type": "void"
+			},
+			{
+				"name": "ResourceQueueRepository.close",
+				"type": "void"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.resource-config",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-database",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-policy",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/ResourceQueueRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/ResourceQueueRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

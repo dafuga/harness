@@ -1,0 +1,59 @@
+{
+	"schemaVersion": 1,
+	"id": "function.host-resource-limits",
+	"kind": "function",
+	"title": "hostResourceLimits",
+	"responsibility": "Owns the hostResourceLimits shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/hostResourceLimits.ts"],
+		"symbols": ["HostLimits", "hostResourceLimits"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hostResourceLimits.root",
+				"type": "unknown"
+			},
+			{
+				"name": "hostResourceLimits.membership",
+				"type": "unknown"
+			},
+			{
+				"name": "hostResourceLimits.system",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hostResourceLimits",
+				"type": "HostLimits"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/hostResourceLimits.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/hostResourceLimits.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

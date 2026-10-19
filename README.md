@@ -871,3 +871,38 @@ in its native picker and applies verified provider changes on the next turn. Its
 native selection is independent of the plugin's pending queue. OpenAI remains the
 launch default. Hosted web search is unavailable for Claude; phone and voice are
 unverified. The original vendor app remains unchanged.
+
+## CPU and memory admission
+
+`harness resources status --json` shows machine CPU usage, logical and usable cores,
+available memory, pressure and the shared queue. Harness keeps 10% CPU capacity and
+**max(10% RAM, 2 GiB)** available when admitting work. Raise these buffers with
+`harness resources configure`; the minimum buffers cannot be lowered.
+
+```sh
+harness resources run --priority agent-test --cpus auto --memory-mib auto -- bun run test
+harness resources run --priority coding --cpus 2 --memory-mib 2048 -- codex exec "Implement the contract"
+harness verify run --priority environment --commit HEAD
+```
+
+Agent-needed tests precede coding work, which precedes environment checks; each
+priority is FIFO. Running work finishes when pressure rises, while later work waits.
+Unknown or stale telemetry also holds admission. Wait time is separate from check
+execution time; `resources run --wait-timeout` defaults to 30 minutes.
+
+Verification checks, loop evaluators, Desktop agent turns, and this repository's
+build/test/check scripts enter the queue. Nested work shares a validated parent
+budget rather than reserving the same capacity twice. Standard Vitest workers and
+Rust/Go/OpenMP thread counts follow the admitted CPU budget. Custom tools must use
+appropriate worker limits and realistic peak RAM estimates.
+
+All worktrees share `~/.codex/harness/resources`; `HARNESS_RESOURCES_HOME` changes
+that location. Use the same home across sessions. No command text or prompts are
+stored in the queue. The Node API is exported at `@dafuga01/harness/resources`
+(Node 22.13+ or Bun), including `resourceWork`, `ResourceQueueService`, and the
+request/config schemas. See `harness info resources` for details.
+
+This is admission control, not an OS quota: external apps and underestimated work
+can consume the reserve after a task starts. Commands launched outside Harness
+need the wrapper. macOS and Linux cgroup v2 are supported; unknown monitoring or
+process ownership fails closed rather than admitting unmeasured work.

@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "function.resource-command",
+	"kind": "function",
+	"title": "resourceCommand",
+	"responsibility": "Owns the resourceCommand shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/resourceCommand.ts"],
+		"symbols": ["resourceCommand"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "resourceCommand.args",
+				"type": "string[]"
+			},
+			{
+				"name": "resourceCommand.context",
+				"type": "ResourceContext"
+			},
+			{
+				"name": "resourceCommand.signal",
+				"type": "AbortSignal"
+			},
+			{
+				"name": "resourceCommand.timeoutMs",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "resourceCommand",
+				"type": "Promise<number>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.resource-config",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.run-isolated",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/resourceCommand.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/resourceCommand.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,3 +1,4 @@
+import { resourceWorkers } from './src/utils/resourceWorkers';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
 // A workspace without a config of its own inherits this one, and Vitest resolves relative paths
@@ -6,6 +7,7 @@ import { defineConfig } from 'vitest/config';
 const owned = (path: string) => fileURLToPath(new URL(path, import.meta.url));
 export default defineConfig({
 	test: {
+		...resourceWorkers(),
 		// A fresh checkout has no generated SvelteKit configs; root tests resolve them.
 		globalSetup: [owned('./test/svelteKitConfigs.ts')],
 		setupFiles: ['test/setup.ts'],

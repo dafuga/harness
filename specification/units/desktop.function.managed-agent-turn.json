@@ -1,0 +1,80 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.managed-agent-turn",
+	"kind": "function",
+	"title": "managedAgentTurn",
+	"responsibility": "Owns the managedAgentTurn shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/managedAgentTurn.ts"],
+		"symbols": ["managedAgentTurn"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "managedAgentTurn.turn",
+				"type": "AgentTurn"
+			},
+			{
+				"name": "managedAgentTurn.action",
+				"type": "(context: ResourceContext) => Promise<T>"
+			},
+			{
+				"name": "managedAgentTurn.queue",
+				"type": "ResourceQueueService"
+			}
+		],
+		"outputs": [
+			{
+				"name": "managedAgentTurn",
+				"type": "Promise<T>"
+			}
+		],
+		"errors": [
+			{
+				"name": "RunCancelled",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.agent-runner-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-work",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.resource-queue",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/managedAgentTurn.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/managedAgentTurn.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

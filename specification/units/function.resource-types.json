@@ -1,0 +1,73 @@
+{
+	"schemaVersion": 1,
+	"id": "function.resource-types",
+	"kind": "function",
+	"title": "resourceTypes",
+	"responsibility": "Owns the resourceTypes shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/resourceTypes.ts"],
+		"symbols": [
+			"resourcePriorities",
+			"resourcePriority",
+			"resourceConfigSchema",
+			"ResourceConfig",
+			"resourceRequestSchema",
+			"ResourceRequest",
+			"ResourceSnapshot",
+			"resourceJobSchema",
+			"ResourceJob",
+			"ResourceContext",
+			"mib"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "resourcePriorities",
+				"type": "unknown"
+			},
+			{
+				"name": "resourcePriority",
+				"type": "unknown"
+			},
+			{
+				"name": "resourceConfigSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "resourceRequestSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "resourceJobSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "mib",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/resourceTypes.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/resourceTypes.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,127 @@
+{
+	"schemaVersion": 1,
+	"id": "service.resource-monitor",
+	"kind": "service",
+	"title": "ResourceMonitorService",
+	"responsibility": "Owns the ResourceMonitorService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/ResourceMonitorService.ts"],
+		"symbols": [
+			"ResourceMonitorService",
+			"ResourceMonitorService.constructor",
+			"ResourceMonitorService.snapshot",
+			"ResourceMonitorService.heartbeat",
+			"ResourceMonitorService.sweep",
+			"ResourceMonitorService.wait"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ResourceMonitorService.constructor.options",
+				"type": "MonitorOptions"
+			},
+			{
+				"name": "ResourceMonitorService.heartbeat.id",
+				"type": "string"
+			},
+			{
+				"name": "ResourceMonitorService.wait.id",
+				"type": "string"
+			},
+			{
+				"name": "ResourceMonitorService.wait.request",
+				"type": "ResourceRequest"
+			},
+			{
+				"name": "ResourceMonitorService.wait.options",
+				"type": "RunOptions"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ResourceMonitorService.snapshot",
+				"type": "Promise<ResourceSnapshot>"
+			},
+			{
+				"name": "ResourceMonitorService.heartbeat",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "ResourceMonitorService.sweep",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "ResourceMonitorService.wait",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.host-resources",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.process-descendants",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-config",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-policy",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.resource-queue",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.resource-queue",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/ResourceMonitorService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/ResourceMonitorService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

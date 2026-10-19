@@ -1,3 +1,5 @@
+import { resourceEnvironment } from '../../../../src/utils/resourceEnvironment';
+import type { ResourceContext } from '../../../../src/core/resourceTypes';
 import { spawn } from 'node:child_process';
 import { killOwnedProcess } from './cliProcess';
 import { cliEnvironment } from './cliEnvironment';
@@ -5,12 +7,13 @@ import type { CliCommand } from '../models/AgentRunner.types';
 import { rpcMessages, rpcRequest } from './rpcMessages';
 import type { RpcEvent, RpcPending } from './rpcMessages';
 import { streamLines } from './streamLines';
-function connection(command: CliCommand) {
+function connection(command: CliCommand, resources?: ResourceContext) {
 	const child = spawn(command.command, command.args, {
-		env: cliEnvironment(),
+		env: { ...cliEnvironment(), ...resourceEnvironment(resources?.env ?? {}) },
 		detached: process.platform !== 'win32',
 		stdio: 'pipe'
 	});
+	if (child.pid) resources?.track(child.pid);
 	let sequence = 0,
 		closed = false;
 	const pending = new Map<number, RpcPending>(),
@@ -64,9 +67,10 @@ export async function codexRpc(
 	command: CliCommand = {
 		command: 'codex',
 		args: ['app-server', '--stdio', '-c', 'model_provider="openai"']
-	}
+	},
+	resources?: ResourceContext
 ) {
-	const rpc = connection(command);
+	const rpc = connection(command, resources);
 	try {
 		await rpc.request('initialize', {
 			clientInfo: { name: 'harness-desktop', version: '0.1.0' },

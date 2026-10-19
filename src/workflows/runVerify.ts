@@ -1,3 +1,4 @@
+import { resourcePriority } from '../core/resourceTypes';
 import { resolve } from 'node:path';
 import { GitAdapter } from '../adapters/GitAdapter';
 import { fail } from '../core/errors';
@@ -25,6 +26,7 @@ import { commitLoader, openRange, type RevisionSide } from './loadRevisions';
 import { runtimeKind } from './runImpact';
 
 export interface VerifyOptions {
+	priority?: string;
 	root?: string;
 	/** Commit to verify; `HEAD` by default. Uncommitted changes are never part of it. */
 	commit?: string;
@@ -80,7 +82,10 @@ export async function verifyRun(options: VerifyOptions = {}): Promise<StoredReco
 		impact,
 		config: await verifyConfig(head),
 		testTimeoutMs: options.testTimeout ? Number(options.testTimeout) : undefined,
-		env: process.env,
+		env: {
+			...process.env,
+			HARNESS_RESOURCE_PRIORITY: verificationPriority(options.priority)
+		},
 		// What was written about the range is held to the writing limits: its reasons, and the
 		// stored messages of its commits, so a commit made past the hook does not pass.
 		explained: async () =>
@@ -154,4 +159,8 @@ export function renderVerify(stored: StoredRecord): string {
 		...record.failures.map((failure) => `  ${failure}`),
 		`Record ${record.id.slice(0, 12)} in ${stored.directory}`
 	].join('\n');
+}
+
+function verificationPriority(priority: string | undefined): string {
+	return resourcePriority.parse(priority ?? process.env.HARNESS_RESOURCE_PRIORITY ?? 'environment');
 }

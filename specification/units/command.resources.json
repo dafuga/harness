@@ -1,0 +1,72 @@
+{
+	"schemaVersion": 1,
+	"id": "command.resources",
+	"kind": "command",
+	"title": "ResourcesCommand",
+	"responsibility": "Owns the ResourcesCommand command registration.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/ResourcesCommand.ts"],
+		"symbols": ["registerResourcesCommand"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "registerResourcesCommand.program",
+				"type": "Command"
+			}
+		],
+		"outputs": [
+			{
+				"name": "registerResourcesCommand",
+				"type": "void"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.resource-command",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-config",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-request",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.resource-queue",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/ResourcesCommand.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/ResourcesCommand.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,7 +1,17 @@
+import type { ResourceQueueService } from '../../../../src/services/ResourceQueueService';
+import { managedAgentTurn } from './managedAgentTurn';
+import type { ResourceContext } from '../../../../src/core/resourceTypes';
 import type { AgentTurn, CliCommand } from '../models/AgentRunner.types';
 import { cliProcess } from './cliProcess';
 import { publicCliEvents } from './publicCliEvents';
-export async function claudeTurn(command: CliCommand, turn: AgentTurn) {
+export async function claudeTurn(
+	command: CliCommand,
+	turn: AgentTurn,
+	queue?: ResourceQueueService
+) {
+	return managedAgentTurn(turn, (resources) => runClaudeTurn(command, turn, resources), queue);
+}
+async function runClaudeTurn(command: CliCommand, turn: AgentTurn, resources: ResourceContext) {
 	let actual = '',
 		result: Record<string, unknown> | null = null;
 	const args = [
@@ -21,6 +31,7 @@ export async function claudeTurn(command: CliCommand, turn: AgentTurn) {
 	await cliProcess(
 		{ ...command, args },
 		{
+			resources,
 			cwd: turn.cwd,
 			input: turn.prompt,
 			signal: turn.signal,

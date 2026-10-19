@@ -64,7 +64,33 @@
 			"CommitMessageService",
 			"revisionReasons",
 			"verificationNoteIdentity",
-			"bugRepairPolicy"
+			"bugRepairPolicy",
+			"resourceConfigSchema",
+			"resourceRequestSchema",
+			"resourcePriorities",
+			"resourcePolicy",
+			"resourcePressure",
+			"impossibleRequest",
+			"HostResourcesAdapter",
+			"ResourceQueueRepository",
+			"ResourceQueueService",
+			"resourceConfig",
+			"resourceWork",
+			"registerResourcesCommand",
+			"hostMemory",
+			"resourceDatabase",
+			"resourceCommand",
+			"resourceIdentity",
+			"abandonedResources",
+			"hostResourceLimits",
+			"ResourceMonitorService",
+			"resourceEnvironment",
+			"isolatedChild",
+			"resourceRequest",
+			"resourceWorkers",
+			"resourcesGuide",
+			"resourceCpu",
+			"resourceContext"
 		]
 	},
 	"contract": {
@@ -95,6 +121,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "adapter.host-resources",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.provider-catalog",
 			"via": "reexport",
 			"origin": "derived"
@@ -106,6 +137,11 @@
 		},
 		{
 			"unit": "command.codex-picker",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.resources",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -200,6 +236,21 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.host-memory",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.host-resource-limits",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.isolated-child",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.native-picker-protocol",
 			"via": "reexport",
 			"origin": "derived"
@@ -230,6 +281,66 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.resource-command",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-config",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-context",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-cpu",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-database",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-environment",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-identity",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-policy",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-request",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-work",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-workers",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.revision-changes",
 			"via": "reexport",
 			"origin": "derived"
@@ -250,12 +361,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "guide.resources",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.codex-session",
 			"via": "reexport",
 			"origin": "derived"
 		},
 		{
 			"unit": "repository.provider-switch",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.resource-queue",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -336,6 +457,16 @@
 		},
 		{
 			"unit": "service.provider-switch-apply",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.resource-monitor",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.resource-queue",
 			"via": "reexport",
 			"origin": "derived"
 		},

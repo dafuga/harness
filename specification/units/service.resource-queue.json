@@ -1,0 +1,114 @@
+{
+	"schemaVersion": 1,
+	"id": "service.resource-queue",
+	"kind": "service",
+	"title": "ResourceQueueService",
+	"responsibility": "Owns the ResourceQueueService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/ResourceQueueService.ts"],
+		"symbols": [
+			"RunOptions",
+			"ResourceQueueService",
+			"ResourceQueueService.constructor",
+			"ResourceQueueService.snapshot",
+			"ResourceQueueService.run",
+			"ResourceQueueService.close"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ResourceQueueService.constructor.options",
+				"type": "Dependencies"
+			},
+			{
+				"name": "ResourceQueueService.run.input",
+				"type": "ResourceRequest"
+			},
+			{
+				"name": "ResourceQueueService.run.action",
+				"type": "(context: ResourceContext) => Promise<T>"
+			},
+			{
+				"name": "ResourceQueueService.run.options",
+				"type": "RunOptions"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ResourceQueueService.snapshot",
+				"type": "Promise<ResourceSnapshot>"
+			},
+			{
+				"name": "ResourceQueueService.run",
+				"type": "Promise<T>"
+			},
+			{
+				"name": "ResourceQueueService.close",
+				"type": "void"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.process-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-config",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.resource-queue",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.resource-monitor",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/ResourceQueueService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/ResourceQueueService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

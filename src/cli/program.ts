@@ -1,3 +1,4 @@
+import { registerResourcesCommand } from '../commands/ResourcesCommand';
 import { sdkPackage } from '../utils/buildStamp';
 import { registerCodexCommand } from '../commands/CodexCommand';
 import { registerAnalyticsCommand } from '../commands/AnalyticsCommand';
@@ -32,6 +33,7 @@ export function buildProgram(): Command {
 	registerCodexCommand(program);
 	registerAnalyticsCommand(program);
 	registerActivityCommand(program);
+	registerResourcesCommand(program);
 	registerReportCommand(program);
 	registerNewCommand(program);
 	registerGenerateCommand(program);

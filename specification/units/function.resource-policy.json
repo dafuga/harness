@@ -1,0 +1,108 @@
+{
+	"schemaVersion": 1,
+	"id": "function.resource-policy",
+	"kind": "function",
+	"title": "resourcePolicy",
+	"responsibility": "Owns the resourcePolicy shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/resourcePolicy.ts"],
+		"symbols": ["resourcePressure", "memoryReserve", "impossibleRequest", "resourcePolicy"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "resourcePressure.sample",
+				"type": "ResourceSnapshot"
+			},
+			{
+				"name": "resourcePressure.config",
+				"type": "ResourceConfig"
+			},
+			{
+				"name": "resourcePressure.now",
+				"type": "unknown"
+			},
+			{
+				"name": "memoryReserve.sample",
+				"type": "ResourceSnapshot"
+			},
+			{
+				"name": "memoryReserve.config",
+				"type": "ResourceConfig"
+			},
+			{
+				"name": "impossibleRequest.request",
+				"type": "ResourceRequest"
+			},
+			{
+				"name": "impossibleRequest.sample",
+				"type": "ResourceSnapshot"
+			},
+			{
+				"name": "impossibleRequest.config",
+				"type": "ResourceConfig"
+			},
+			{
+				"name": "resourcePolicy.jobs",
+				"type": "ResourceJob[]"
+			},
+			{
+				"name": "resourcePolicy.sample",
+				"type": "ResourceSnapshot"
+			},
+			{
+				"name": "resourcePolicy.config",
+				"type": "ResourceConfig"
+			},
+			{
+				"name": "resourcePolicy.now",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "resourcePressure",
+				"type": "string | null"
+			},
+			{
+				"name": "memoryReserve",
+				"type": "number"
+			},
+			{
+				"name": "impossibleRequest",
+				"type": "boolean"
+			},
+			{
+				"name": "resourcePolicy",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.resource-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/resourcePolicy.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/resourcePolicy.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

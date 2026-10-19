@@ -1,0 +1,73 @@
+{
+	"schemaVersion": 1,
+	"id": "function.resource-identity",
+	"kind": "function",
+	"title": "resourceIdentity",
+	"responsibility": "Owns the resourceIdentity shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/resourceIdentity.ts"],
+		"symbols": ["resourceIdentity", "abandonedResources"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "resourceIdentity.job",
+				"type": "ResourceJob"
+			},
+			{
+				"name": "abandonedResources.jobs",
+				"type": "ResourceJob[]"
+			},
+			{
+				"name": "abandonedResources.rows",
+				"type": "ProcessRow[]"
+			},
+			{
+				"name": "abandonedResources.now",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "resourceIdentity",
+				"type": "Promise<boolean>"
+			},
+			{
+				"name": "abandonedResources",
+				"type": "string[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.process-descendants",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/resourceIdentity.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/resourceIdentity.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

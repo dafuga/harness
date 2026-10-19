@@ -16,6 +16,10 @@
 			{
 				"name": "codexRpc.command",
 				"type": "CliCommand"
+			},
+			{
+				"name": "codexRpc.resources",
+				"type": "ResourceContext"
 			}
 		],
 		"outputs": [
@@ -54,6 +58,16 @@
 		},
 		{
 			"unit": "desktop.model.agent-runner-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-environment",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-types",
 			"via": "import",
 			"origin": "derived"
 		}

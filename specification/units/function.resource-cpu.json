@@ -1,0 +1,65 @@
+{
+	"schemaVersion": 1,
+	"id": "function.resource-cpu",
+	"kind": "function",
+	"title": "resourceCpu",
+	"responsibility": "Owns the resourceCpu shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/resourceCpu.ts"],
+		"symbols": ["hostCpuCounters", "resourceCpu"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "resourceCpu.previous",
+				"type": "Counters"
+			},
+			{
+				"name": "resourceCpu.current",
+				"type": "Counters"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hostCpuCounters",
+				"type": "unknown"
+			},
+			{
+				"name": "resourceCpu",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.host-resource-limits",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/resourceCpu.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/resourceCpu.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

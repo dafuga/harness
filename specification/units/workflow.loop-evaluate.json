@@ -42,6 +42,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.resource-work",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "workflow.loop-state",
 			"via": "import",
 			"origin": "derived"

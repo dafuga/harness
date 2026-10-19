@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "function.resource-work",
+	"kind": "function",
+	"title": "resourceWork",
+	"responsibility": "Owns the resourceWork shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/resourceWork.ts"],
+		"symbols": ["resourceWork"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "resourceWork.request",
+				"type": "Partial<ResourceRequest>"
+			},
+			{
+				"name": "resourceWork.action",
+				"type": "(context: ResourceContext) => Promise<T>"
+			},
+			{
+				"name": "resourceWork.env",
+				"type": "Record<string, string | undefined>"
+			},
+			{
+				"name": "resourceWork.options",
+				"type": "Omit<RunOptions, 'env'>"
+			}
+		],
+		"outputs": [
+			{
+				"name": "resourceWork",
+				"type": "Promise<T>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.resource-environment",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.resource-queue",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/resourceWork.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/resourceWork.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,3 +1,5 @@
+import { resourceEnvironment } from '../../../../src/utils/resourceEnvironment';
+import type { ResourceContext } from '../../../../src/core/resourceTypes';
 import { spawn } from 'node:child_process';
 import type { CliCommand } from '../models/AgentRunner.types';
 import { RunCancelled } from '../models/AgentRunner.types';
@@ -5,6 +7,7 @@ import { cliEnvironment } from './cliEnvironment';
 import { streamLines } from './streamLines';
 import { StringDecoder } from 'node:string_decoder';
 export interface ProcessOptions {
+	resources?: ResourceContext;
 	cwd?: string;
 	input?: string;
 	signal?: AbortSignal;
@@ -20,10 +23,10 @@ export function killOwnedProcess(pid: number | undefined): void {
 		/* Already exited. */
 	}
 }
-function processFor(command: CliCommand, cwd: string | undefined) {
+function processFor(command: CliCommand, options: ProcessOptions) {
 	return spawn(command.command, command.args, {
-		cwd,
-		env: cliEnvironment(),
+		cwd: options.cwd,
+		env: { ...cliEnvironment(), ...resourceEnvironment(options.resources?.env ?? {}) },
 		detached: process.platform !== 'win32',
 		stdio: 'pipe'
 	});
@@ -34,8 +37,9 @@ export async function cliProcess(
 ): Promise<string> {
 	if (options.signal?.aborted) throw new RunCancelled();
 	return new Promise((resolve, reject) => {
-		const child = processFor(command, options.cwd),
+		const child = processFor(command, options),
 			decoder = new StringDecoder('utf8');
+		if (child.pid) options.resources?.track(child.pid);
 		let output = '',
 			error = '',
 			settled = false;

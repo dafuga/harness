@@ -45,10 +45,16 @@ const leaveOnceSeen =
 	'fs.renameSync(at("family.part"), at("family")); ' +
 	'setInterval(() => fs.existsSync(at("seen")) && process.exit(0), 10);';
 
-async function run(script: string, timeoutMs = 5000, maxLogBytes = 64_000) {
+async function run(
+	script: string,
+	timeoutMs = 5000,
+	maxLogBytes = 64_000,
+	options: { onSpawn?: (pid: number) => void; signal?: AbortSignal } = {}
+) {
 	const directory = await mkdtemp(join(tmpdir(), 'harness-isolated-'));
 	const log = join(directory, 'run.log');
 	const result = await runIsolated({
+		...options,
 		command: node,
 		args: ['-e', script, directory],
 		cwd: directory,
@@ -62,7 +68,13 @@ async function run(script: string, timeoutMs = 5000, maxLogBytes = 64_000) {
 }
 
 test('a passing and a failing command report their exit codes and output', async () => {
-	const passed = await run('console.log("out"); console.error("err")');
+	let pid: number | undefined;
+	const passed = await run('console.log("out"); console.error("err")', 5000, 64000, {
+		onSpawn: (own) => {
+			pid = own;
+		}
+	});
+	expect(pid).toBeGreaterThan(0);
 	expect(passed.result).toMatchObject({ status: 'passed', exitCode: 0, timedOut: false });
 	expect(await readFile(passed.log, 'utf8')).toBe('out\nerr\n');
 	const failed = await run('process.exit(7)');
@@ -85,6 +97,10 @@ test('a command that ignores termination is still stopped at its limit', async (
 	expect(result).toMatchObject({ status: 'timeout', timedOut: true });
 	expect(Date.now() - started).toBeLessThan(5000);
 	expect(result.durationMs).toBeGreaterThanOrEqual(300);
+	const abort = new AbortController();
+	const cancelled = run('setInterval(()=>{},1000)', 5000, 64000, { signal: abort.signal });
+	setTimeout(() => abort.abort(), 100);
+	expect((await cancelled).result).toMatchObject({ status: 'failed', timedOut: false });
 });
 
 test('children of a timed-out or finished command are torn down with it', async () => {

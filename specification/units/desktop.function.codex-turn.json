@@ -20,6 +20,10 @@
 			{
 				"name": "codexTurn.turn",
 				"type": "TurnOptions"
+			},
+			{
+				"name": "codexTurn.queue",
+				"type": "ResourceQueueService"
 			}
 		],
 		"outputs": [
@@ -46,7 +50,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.function.managed-agent-turn",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.agent-runner-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.resource-queue",
 			"via": "import",
 			"origin": "derived"
 		}

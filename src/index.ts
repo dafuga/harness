@@ -87,3 +87,28 @@ export { CommitMessageService } from './services/CommitMessageService';
 export { revisionReasons } from './utils/revisionReasons';
 export { verificationNoteIdentity } from './utils/verificationNoteIdentity';
 export { bugRepairPolicy } from './utils/bugRepairPolicy';
+export {
+	resourceConfigSchema,
+	resourceRequestSchema,
+	resourcePriorities
+} from './core/resourceTypes';
+export { resourcePolicy, resourcePressure, impossibleRequest } from './utils/resourcePolicy';
+export { HostResourcesAdapter } from './adapters/HostResourcesAdapter';
+export { ResourceQueueRepository } from './repositories/ResourceQueueRepository';
+export { ResourceQueueService } from './services/ResourceQueueService';
+export { resourceConfig } from './utils/resourceConfig';
+export { resourceWork } from './utils/resourceWork';
+export { registerResourcesCommand } from './commands/ResourcesCommand';
+export { hostMemory } from './utils/hostMemory';
+export { resourceDatabase } from './utils/resourceDatabase';
+export { resourceCommand } from './utils/resourceCommand';
+export { resourceIdentity, abandonedResources } from './utils/resourceIdentity';
+export { hostResourceLimits } from './utils/hostResourceLimits';
+export { ResourceMonitorService } from './services/ResourceMonitorService';
+export { resourceEnvironment } from './utils/resourceEnvironment';
+export { isolatedChild } from './utils/isolatedChild';
+export { resourceRequest } from './utils/resourceRequest';
+export { resourceWorkers } from './utils/resourceWorkers';
+export { resourcesGuide } from './guides/resources';
+export { resourceCpu } from './utils/resourceCpu';
+export { resourceContext } from './utils/resourceContext';

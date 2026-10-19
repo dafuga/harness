@@ -23,6 +23,10 @@
 				"type": "CliCommand"
 			},
 			{
+				"name": "ClaudeCliAdapter.constructor.queue",
+				"type": "ResourceQueueService"
+			},
+			{
 				"name": "ClaudeCliAdapter.run.turn",
 				"type": "AgentTurn"
 			}
@@ -52,6 +56,11 @@
 		},
 		{
 			"unit": "desktop.model.agent-runner-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.resource-queue",
 			"via": "import",
 			"origin": "derived"
 		}

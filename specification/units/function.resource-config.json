@@ -1,0 +1,72 @@
+{
+	"schemaVersion": 1,
+	"id": "function.resource-config",
+	"kind": "function",
+	"title": "resourceConfig",
+	"responsibility": "Owns the resourceConfig shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/resourceConfig.ts"],
+		"symbols": ["resourceHome", "resourceConfig", "saveResourceConfig"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "resourceHome.env",
+				"type": "Record<string, string | undefined>"
+			},
+			{
+				"name": "resourceConfig.home",
+				"type": "unknown"
+			},
+			{
+				"name": "saveResourceConfig.config",
+				"type": "ResourceConfig"
+			},
+			{
+				"name": "saveResourceConfig.home",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "resourceHome",
+				"type": "string"
+			},
+			{
+				"name": "resourceConfig",
+				"type": "ResourceConfig"
+			},
+			{
+				"name": "saveResourceConfig",
+				"type": "void"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.resource-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/resourceConfig.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/resourceConfig.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
