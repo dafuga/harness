@@ -19,6 +19,14 @@ test('Google sign-in uses the challenge nonce and posts the credential in a body
 }) => {
 	const state = await hostedFixture(page, { signedIn: false });
 	await page.goto('/');
+	await expect(page.getByRole('button', signIn)).toBeVisible();
+	if (process.env.TAKE_SCREENSHOT === 'true') {
+		await page.evaluate(() => document.fonts.ready);
+		await page.screenshot({
+			path: `/tmp/harness-google-sign-in-${process.env.SCREENSHOT_LABEL ?? 'proof'}.png`,
+			fullPage: true
+		});
+	}
 	await page.getByRole('button', signIn).click();
 	await expect(page.getByRole('link', { name: 'Open Atlas', exact: true })).toBeVisible();
 	await expect(page.getByText('Ada Example', { exact: true })).toBeVisible();

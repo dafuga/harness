@@ -73,7 +73,7 @@ function serverFor(
 	identity: () => unknown
 ) {
 	return createServer((request, response) => {
-		state.calls.push(request.url ?? '');
+		state.calls.push(request.url!);
 		response.setHeader('content-type', 'application/json');
 		if (request.url === '/api/auth/status')
 			return response.end(JSON.stringify(actorStatus(state.actor)));

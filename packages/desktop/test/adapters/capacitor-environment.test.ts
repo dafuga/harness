@@ -128,3 +128,69 @@ test('an unpaired phone signs in and lists owned and invited account projects wi
 	await bridge.disconnectHosted!();
 	expect(await bridge.listProjects!()).toEqual([]);
 });
+
+test.each(['account-mismatch', 'session-required'])(
+	'an iOS account refusal (%s) returns to sign-in without retaining the previous account',
+	async (code) => {
+		const f = native();
+		const signed = {
+			configured: true,
+			state: 'signed-in' as const,
+			actor: { id: 'google:ada', name: 'Ada', email: 'ada@example.invalid' }
+		};
+		const account = {
+			status: vi.fn(async () => signed),
+			connect: vi.fn(async () => signed),
+			disconnect: vi.fn(async () => ({ configured: true, state: 'signed-out' as const })),
+			request: vi.fn()
+		};
+		const bridge = new CapacitorEnvironmentAdapter({
+			plugin: f.plugin as unknown as RemoteNativePlugin,
+			account
+		}).connect().bridge!;
+		expect(await bridge.hostedStatus!()).toMatchObject({ state: 'signed-in' });
+		account.status.mockRejectedValueOnce(Object.assign(new Error('Sign in again.'), { code }));
+		await expect(
+			bridge.hostedStatus!(),
+			'revoked phone identity returns to sign-in'
+		).resolves.toEqual({
+			configured: true,
+			state: 'signed-out'
+		});
+		expect(await bridge.listProjects!()).toEqual([]);
+		expect(account.request).not.toHaveBeenCalled();
+	}
+);
+
+test('a hosted project refusal is never retried through the paired Mac', async () => {
+	const f = native(online);
+	const signed = {
+		configured: true,
+		state: 'signed-in' as const,
+		actor: { id: 'google:ada', name: 'Ada', email: 'ada@example.invalid' }
+	};
+	const account = {
+		status: vi.fn(async () => signed),
+		connect: vi.fn(async () => signed),
+		disconnect: vi.fn(async () => ({ configured: true, state: 'signed-out' as const })),
+		request: vi.fn(async () => ({
+			status: 403,
+			contentType: 'application/json',
+			data: btoa(JSON.stringify({ error: 'permission-denied' }))
+		}))
+	};
+	const bridge = new CapacitorEnvironmentAdapter({
+		plugin: f.plugin as unknown as RemoteNativePlugin,
+		account
+	}).connect().bridge!;
+	await bridge.hostedStatus!();
+	await expect(
+		bridge.entity({
+			projectId: '11111111-1111-4111-8111-111111111111',
+			entityId: 'component.example',
+			commit: 'a'.repeat(40)
+		})
+	).rejects.toMatchObject({ status: 403 });
+	expect(account.request).toHaveBeenCalledOnce();
+	expect(f.plugin.request).not.toHaveBeenCalled();
+});
