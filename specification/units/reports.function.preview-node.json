@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.preview-node",
+	"kind": "function",
+	"title": "Run the managed preview with Node",
+	"responsibility": "Starts the single managed preview with the runtime used by SvelteKit sync, then removes its temporary launcher on exit.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/previewNode.ts"],
+		"symbols": ["previewNode"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "previewNode.args",
+				"type": "string[]",
+				"description": "Preview root, optional Vite config, host and port arguments forwarded unchanged.",
+				"examples": [["--port", "5688"]]
+			}
+		],
+		"outputs": [
+			{
+				"name": "previewNode",
+				"type": "Promise<number>",
+				"description": "Exit code of the managed Node process; signals are forwarded and its temporary launcher is removed.",
+				"examples": [0]
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Fails without starting a second preview when launcher compilation or process startup is unavailable.",
+				"examples": ["Could not prepare the managed preview runtime."]
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "reports.initializer.initialize-preview",
+			"via": "url",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/previewNode.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/previewNode.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

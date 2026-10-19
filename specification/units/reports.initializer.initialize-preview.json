@@ -18,9 +18,7 @@
 				"name": "initializePreview.args",
 				"type": "string[]",
 				"description": "Launch options from the dev command.",
-				"examples": [
-					["--port", "5688"]
-				]
+				"examples": [["--port", "5688"]]
 			}
 		],
 		"outputs": [
@@ -40,6 +38,11 @@
 	"dependencies": [
 		{
 			"unit": "reports.function.preview-arguments",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.preview-node",
 			"via": "import",
 			"origin": "derived"
 		},

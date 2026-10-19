@@ -1,3 +1,6 @@
+import { previewNode } from '../utils/previewNode';
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { createServer } from 'vite';
 import { PreviewServerService } from '../services/PreviewServerService';
 import { previewArguments } from '../utils/previewArguments';
@@ -42,8 +45,13 @@ export async function initializePreview(args: string[] = process.argv.slice(2)):
 		throw error;
 	}
 }
-if (import.meta.main) {
-	void initializePreview().catch((error: unknown) => {
+if (import.meta.main || resolve(process.argv[1] ?? '') === fileURLToPath(import.meta.url)) {
+	const work = process.versions.bun
+		? previewNode(process.argv.slice(2)).then((code) => {
+				process.exitCode = code;
+			})
+		: initializePreview();
+	void work.catch((error: unknown) => {
 		console.error(error instanceof Error ? error.message : error);
 		process.exitCode = 1;
 	});
