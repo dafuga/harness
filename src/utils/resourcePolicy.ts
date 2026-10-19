@@ -54,38 +54,21 @@ export function resourcePolicy(
 	const roots = jobs.filter(
 		(job) => !job.parentId || (job.state === 'running' && !ids.has(job.parentId))
 	);
-	const granted: string[] = [];
-	if (pressure) return { granted, reason: pressure };
-	granted.push(
-		...grantPool(
-			roots,
-			sample.cpuAvailableCores - (sample.usableCores * config.cpuReservePercent) / 100,
-			sample.memoryAvailableBytes - memoryReserve(sample, config)
-		)
-	);
-	for (const parent of jobs) {
-		if (parent.state !== 'running' && !granted.includes(parent.id)) continue;
-		granted.push(
-			...grantPool(
-				jobs.filter((j) => j.parentId === parent.id),
-				parent.cpus,
-				parent.memoryMiB * mib
-			)
-		);
-	}
+	if (pressure) return { granted: [], reason: pressure };
+	const available = {
+		cpu: sample.cpuAvailableCores - (sample.usableCores * config.cpuReservePercent) / 100,
+		memory: sample.memoryAvailableBytes - memoryReserve(sample, config)
+	};
+	const granted = grantPool(roots, available.cpu, available.memory);
+	for (const job of roots) if (granted.includes(job.id)) spend(job, available);
+	granted.push(...grantChildren(jobs, available));
 	return { granted, reason: granted.length ? null : 'Waiting for CPU and memory reservations' };
 }
 function grantPool(jobs: ResourceJob[], cpu: number, memory: number): string[] {
 	const running = jobs.filter((j) => j.state === 'running');
 	cpu -= running.reduce((n, j) => n + j.cpus, 0);
 	memory -= running.reduce((n, j) => n + j.memoryMiB * mib, 0);
-	const queued = jobs
-		.filter((j) => j.state === 'queued')
-		.sort(
-			(a, b) =>
-				resourcePriorities.indexOf(a.priority) - resourcePriorities.indexOf(b.priority) ||
-				a.sequence - b.sequence
-		);
+	const queued = jobs.filter((j) => j.state === 'queued').sort(queueOrder);
 	const granted: string[] = [];
 	for (const job of queued) {
 		if (job.cpus > cpu || job.memoryMiB * mib > memory) break;
@@ -129,4 +112,46 @@ function invalidMemory(sample: ResourceSnapshot): boolean {
 		sample.memoryAvailableBytes < 0 ||
 		sample.memoryAvailableBytes > sample.memoryTotalBytes
 	);
+}
+
+interface Budget {
+	cpu: number;
+	memory: number;
+}
+function queueOrder(a: ResourceJob, b: ResourceJob): number {
+	return (
+		resourcePriorities.indexOf(a.priority) - resourcePriorities.indexOf(b.priority) ||
+		a.sequence - b.sequence
+	);
+}
+function fits(job: ResourceJob, budget: Budget): boolean {
+	return job.cpus <= budget.cpu && job.memoryMiB * mib <= budget.memory;
+}
+function spend(job: ResourceJob, budget: Budget): void {
+	budget.cpu -= job.cpus;
+	budget.memory -= job.memoryMiB * mib;
+}
+/** Parent budgets prevent oversubscription; live headroom still gates each new child. */
+function grantChildren(jobs: ResourceJob[], available: Budget): string[] {
+	const pools = new Map(
+		jobs
+			.filter((j) => j.state === 'running')
+			.map((j) => [j.id, { cpu: j.cpus, memory: j.memoryMiB * mib }])
+	);
+	for (const job of jobs) {
+		const parent = job.parentId && pools.get(job.parentId);
+		if (job.state === 'running' && parent) spend(job, parent);
+	}
+	const queued = jobs
+		.filter((j) => j.state === 'queued' && j.parentId && pools.has(j.parentId))
+		.sort(queueOrder);
+	const granted: string[] = [];
+	for (const job of queued) {
+		const parent = pools.get(job.parentId!)!;
+		if (!fits(job, parent) || !fits(job, available)) break;
+		granted.push(job.id);
+		spend(job, parent);
+		spend(job, available);
+	}
+	return granted;
 }

@@ -92,3 +92,28 @@ test('requests which can never fit fail instead of waiting forever', () => {
 		false
 	);
 });
+
+test.each([{ cpuAvailableCores: 2.5, cpuUsedPercent: 75 }, { memoryAvailableBytes: 2560 * mib }])(
+	'nested admissions preserve live system headroom as well as the parent budget: %j',
+	(changes) => {
+		const parent = job({ state: 'running', cpus: 4, memoryMiB: 12000 });
+		const first = job({ parentId: parent.id, sequence: 2 }),
+			second = job({ parentId: parent.id, sequence: 3 });
+		expect(resourcePolicy([parent, first, second], snapshot(changes), config).granted).toEqual([
+			first.id
+		]);
+	}
+);
+test('nested agent tests precede environment checks across different active parents', () => {
+	const environment = job({ state: 'running', cpus: 2 }),
+		coding = job({ state: 'running', cpus: 2, sequence: 2 });
+	const background = job({ parentId: environment.id, priority: 'environment', sequence: 3 });
+	const agent = job({ parentId: coding.id, priority: 'agent-test', sequence: 4 });
+	expect(
+		resourcePolicy(
+			[environment, coding, background, agent],
+			snapshot({ cpuAvailableCores: 2.5, cpuUsedPercent: 75 }),
+			config
+		).granted
+	).toEqual([agent.id]);
+});
