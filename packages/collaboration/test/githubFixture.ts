@@ -153,7 +153,7 @@ export function githubFixture() {
 	});
 }
 
-export function collaborationFixture() {
+export function collaborationFixture(adminActors = [owner.id]) {
 	const remote = githubFixture();
 	const clock = { value: new Date('2026-10-12T00:00:00Z') };
 	const api = createCollaboration({
@@ -168,7 +168,8 @@ export function collaborationFixture() {
 			async delete() {}
 		},
 		async authorizeRepository(actor, repositoryId) {
-			if (actor.id !== owner.id || repositoryId !== sourceRepository.id) throw new Error('Denied');
+			if (!adminActors.includes(actor.id) || repositoryId !== sourceRepository.id)
+				throw new Error('Denied');
 			return sourceRepository;
 		}
 	});

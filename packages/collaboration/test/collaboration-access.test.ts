@@ -110,3 +110,29 @@ test('Write membership can read and comment, without acquiring owner management 
 	await api.removeMember(owner, { projectId: project.id, memberId: guest.id });
 	await expect(api.getProject(guest, project.id)).rejects.toMatchObject({ code: 'forbidden' });
 });
+
+test('a Google subject lists both owned and accepted-invitation projects on every client', async () => {
+	const { api } = collaborationFixture([owner.id, guest.id]);
+	const owned = await api.createProject(guest, { name: 'My project', repositoryId: 202 });
+	const shared = await api.createProject(owner, { name: 'Invited project', repositoryId: 202 });
+	const invitation = await api.createInvitation(owner, {
+		projectId: shared.id,
+		email: guest.email,
+		role: 'commenter'
+	});
+	await api.acceptInvitation(guest, {
+		projectId: shared.id,
+		invitationId: invitation.id,
+		code: invitation.code
+	});
+	for (const client of [guest, { ...guest, name: 'Same Google account on another device' }]) {
+		expect((await api.listProjects(client)).map((p) => [p.id, p.role]).sort()).toEqual(
+			[
+				[owned.id, 'owner'],
+				[shared.id, 'commenter']
+			].sort()
+		);
+	}
+	await api.removeMember(owner, { projectId: shared.id, memberId: guest.id });
+	expect((await api.listProjects(guest)).map((p) => p.id)).toEqual([owned.id]);
+});
