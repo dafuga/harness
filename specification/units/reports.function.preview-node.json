@@ -17,9 +17,7 @@
 				"name": "previewNode.args",
 				"type": "string[]",
 				"description": "Preview root, optional Vite config, host and port arguments forwarded unchanged.",
-				"examples": [
-					["--port", "5688"]
-				]
+				"examples": [["--port", "5688"]]
 			}
 		],
 		"outputs": [

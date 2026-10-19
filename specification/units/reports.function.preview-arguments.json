@@ -18,9 +18,7 @@
 				"name": "previewArguments.args",
 				"type": "string[]",
 				"description": "Launch options from the dev command.",
-				"examples": [
-					["--port", "5688"]
-				]
+				"examples": [["--port", "5688"]]
 			},
 			{
 				"name": "previewArguments.env",
