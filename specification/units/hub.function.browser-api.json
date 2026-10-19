@@ -51,6 +51,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.model.browser-api-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.function.browser-error",
 			"via": "import",
 			"origin": "derived"

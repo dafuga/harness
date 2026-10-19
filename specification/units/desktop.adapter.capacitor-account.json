@@ -65,6 +65,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.model.browser-api-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.desktop-bridge-types",
 			"via": "import",
 			"origin": "derived"
@@ -76,11 +81,6 @@
 		},
 		{
 			"unit": "desktop.model.project-context-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.function.browser-api",
 			"via": "import",
 			"origin": "derived"
 		},

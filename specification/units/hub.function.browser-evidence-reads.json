@@ -8,10 +8,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/adapters/browser-project-adapter/browserEvidenceReads.ts",
 			"packages/hub/src/utils/browser-bridge/browserEvidenceReads.ts",
 			"packages/hub/src/utils/browserEvidenceReads.ts"
 		],
-		"symbols": ["browserEvidenceReads", "browserEvidenceReads"]
+		"symbols": ["browserEvidenceReads", "browserEvidenceReads", "browserEvidenceReads"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -43,6 +44,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.model.browser-api-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.desktop-bridge-types",
 			"via": "import",
 			"origin": "derived"
@@ -58,11 +64,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.function.browser-api",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "hub.function.browser-artifact",
 			"via": "import",
 			"origin": "derived"
@@ -70,11 +71,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/browserEvidenceReads.ts",
+		"entry": "packages/desktop/src/adapters/browser-project-adapter/browserEvidenceReads.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/browserEvidenceReads.ts"
+				"entry": "packages/desktop/src/adapters/browser-project-adapter/browserEvidenceReads.ts"
 			}
 		]
 	},

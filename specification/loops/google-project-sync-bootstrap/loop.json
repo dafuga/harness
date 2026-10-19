@@ -2,7 +2,7 @@
 	"name": "google-project-sync-bootstrap",
 	"goal": "Keep portable account clients independent of hosted app build caches and prove cold public entrypoints",
 	"createdAt": "2026-10-19T22:55:01.170Z",
-	"updatedAt": "2026-10-19T22:57:52.157Z",
+	"updatedAt": "2026-10-19T23:01:41.986Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T22:59:30.246Z",
+			"evidence": "278755fd clean replay: checkpoint 9027c96b rejects six upward Hub imports; the account adapter suite also cannot load without generated Hub state."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T22:59:30.621Z",
+			"evidence": "Move existing API port and client bridge into the shared renderer, preserve old exports and unit IDs, and run the boundary and cold-entry guards in normal unit verification."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T23:01:41.986Z",
+			"evidence": "Portable bridge, evidence, API port and error mapping now live in Desktop shared source. Old Hub exports and unit identities remain. Focused Desktop 48 and bridge 27 checks pass; boundary guard is part of normal unit tests."
 		},
 		{
 			"id": "green",

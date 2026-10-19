@@ -1,5 +1,5 @@
-import { browserBridge } from '../../../../hub/src/utils/browser-bridge/browserBridge';
-import type { BrowserApi, Query } from '../../../../hub/src/utils/browserApi';
+import { browserBridge } from '../browser-project-adapter/browserBridge';
+import type { BrowserApi, Query } from '../../models/BrowserApi.types';
 import type { DesktopBridge } from '../../models/DesktopBridge.types';
 import type {
 	AccountNativeCall,

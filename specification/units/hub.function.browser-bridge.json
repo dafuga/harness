@@ -3,15 +3,16 @@
 	"id": "hub.function.browser-bridge",
 	"kind": "function",
 	"title": "Hosted workspace bridge",
-	"responsibility": "Adapt hosted project reads and human comments to the desktop workspace interface.",
+	"responsibility": "Connect project views, comments and permitted agent requests to the signed-in account on Web and native devices.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/adapters/browser-project-adapter/browserBridge.ts",
 			"packages/hub/src/utils/browser-bridge/browserBridge.ts",
 			"packages/hub/src/utils/browserBridge.ts"
 		],
-		"symbols": ["browserBridge", "browserBridge"]
+		"symbols": ["browserBridge", "browserBridge", "browserBridge"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -19,21 +20,21 @@
 			{
 				"name": "browserBridge.api",
 				"type": "BrowserApi",
-				"description": "Same-site API client for project data and comments."
+				"description": "Authenticated project API port. Credentials remain in the browser session or native account layer."
 			}
 		],
 		"outputs": [
 			{
 				"name": "browserBridge",
 				"type": "DesktopBridge",
-				"description": "Bridge for shared project listing, snapshots, entities, source, images, threads, history and evidence, plus comment posting. Snapshots force writable, agents, planning and approval off; comments follow the server flag. Read refusals notify listeners on 401/403. Local project opening returns null and pending comments are empty."
+				"description": "A workspace bridge for project reads, comments and agent requests. Fresh server capabilities and the writable branch tip determine which actions are available. Refused reads notify listeners before failing."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects requests without a project and all plan/approval/provider/agent operations; API read and comment failures propagate."
+				"description": "Rejects missing project IDs and denied requests. Project creation stays unavailable through this bridge; other server failures propagate."
 			}
 		]
 	},
@@ -45,6 +46,11 @@
 		},
 		{
 			"unit": "desktop.function.comment-entries",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.browser-api-types",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -64,11 +70,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.function.browser-api",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "hub.function.browser-evidence-reads",
 			"via": "import",
 			"origin": "derived"
@@ -76,11 +77,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/browserBridge.ts",
+		"entry": "packages/desktop/src/adapters/browser-project-adapter/browserBridge.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/browserBridge.ts"
+				"entry": "packages/desktop/src/adapters/browser-project-adapter/browserBridge.ts"
 			}
 		]
 	},

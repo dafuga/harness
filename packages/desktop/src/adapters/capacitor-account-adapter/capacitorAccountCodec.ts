@@ -1,5 +1,5 @@
-import type { Query } from '../../../../hub/src/utils/browserApi';
-import { browserError } from '../../../../hub/src/utils/browserError';
+import type { Query } from '../../models/BrowserApi.types';
+import { browserError } from '../browser-project-adapter/browserError';
 import type { AccountNativeReply, AccountNativeStatus } from '../../models/Environment.types';
 import type { NativeHostedStatus } from '../../models/ProjectContext.types';
 

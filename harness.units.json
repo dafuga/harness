@@ -136,66 +136,6 @@
 			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser API imports artifactLimit from this file."
 		},
 		{
-			"from": "packages/hub/src/utils/browser-bridge/browserArtifact.ts",
-			"specifier": "$desktop/utils/remoteArtifact",
-			"to": "packages/desktop/src/utils/remoteArtifact.ts",
-			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser artifact reader imports artifactMediaTypes from this file."
-		},
-		{
-			"from": "packages/hub/src/utils/browser-bridge/browserArtifact.ts",
-			"specifier": "./hostedArtifact",
-			"to": "packages/hub/src/utils/browser-bridge/hostedArtifact.ts",
-			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser artifact reader imports hostedArtifact from this file."
-		},
-		{
-			"from": "packages/hub/src/utils/browser-bridge/browserBridge.ts",
-			"specifier": "$desktop/models/DesktopBridge.types",
-			"to": "packages/desktop/src/models/DesktopBridge.types.ts",
-			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser bridge is typed by DesktopBridge and SourceFile from this file."
-		},
-		{
-			"from": "packages/hub/src/utils/browser-bridge/browserBridge.ts",
-			"specifier": "$desktop/models/Desktop.types",
-			"to": "packages/desktop/src/models/Desktop.types.ts",
-			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser bridge is typed by EntityDetail and ProjectSnapshot from this file."
-		},
-		{
-			"from": "packages/hub/src/utils/browser-bridge/browserBridge.ts",
-			"specifier": "$desktop/models/ProjectContext.types",
-			"to": "packages/desktop/src/models/ProjectContext.types.ts",
-			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser bridge is typed by the project context types of this file."
-		},
-		{
-			"from": "packages/hub/src/utils/browser-bridge/browserBridge.ts",
-			"specifier": "./commentEntries",
-			"to": "packages/hub/src/utils/browser-bridge/commentEntries.ts",
-			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser bridge imports commentEntries from this file."
-		},
-		{
-			"from": "packages/hub/src/utils/browser-bridge/browserEvidenceReads.ts",
-			"specifier": "$desktop/utils/evidencePayload",
-			"to": "packages/desktop/src/utils/evidencePayload.ts",
-			"reason": "The hub's build alias $desktop is packages/desktop/src: the evidence reads import evidencePayload from this file."
-		},
-		{
-			"from": "packages/hub/src/utils/browser-bridge/browserEvidenceReads.ts",
-			"specifier": "$desktop/models/DesktopEvidence.types",
-			"to": "packages/desktop/src/models/DesktopEvidence.types.ts",
-			"reason": "The hub's build alias $desktop is packages/desktop/src: the evidence reads are typed by EntityEvidenceResult from this file."
-		},
-		{
-			"from": "packages/hub/src/utils/browser-bridge/browserEvidenceReads.ts",
-			"specifier": "$desktop/models/DesktopBridge.types",
-			"to": "packages/desktop/src/models/DesktopBridge.types.ts",
-			"reason": "The hub's build alias $desktop is packages/desktop/src: the evidence reads are typed by DesktopBridge from this file."
-		},
-		{
-			"from": "packages/hub/src/utils/browser-bridge/browserEvidenceReads.ts",
-			"specifier": "$desktop/models/ProjectContext.types",
-			"to": "packages/desktop/src/models/ProjectContext.types.ts",
-			"reason": "The hub's build alias $desktop is packages/desktop/src: the evidence reads are typed by ProjectContext from this file."
-		},
-		{
 			"from": "packages/desktop/src/components/AgentControls.svelte",
 			"specifier": "$shared/Select.svelte",
 			"to": "packages/reports/src/components/Select.svelte",
