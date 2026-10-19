@@ -82,7 +82,7 @@
 				"symbol": "createCollaboration"
 			},
 			"from": "packages/collaboration/src/utils/currentProject.ts",
-			"to": "packages/collaboration/src/utils/create-collaboration/currentProject.ts",
+			"to": "packages/collaboration/src/utils/create-collaboration/readRecords.ts",
 			"ownerSource": "packages/collaboration/src/utils/create-collaboration/createCollaboration.ts",
 			"definition": "a04284278aae5d78ca7c0e7823dd39ff5fa61befdf3ab40a98a0f4f94ad7a1af"
 		},
@@ -178,7 +178,7 @@
 				"symbol": "resolveCommit"
 			},
 			"from": "packages/collaboration/src/utils/githubTransport.ts",
-			"to": "packages/collaboration/src/utils/create-git-hub-source/githubTransport.ts",
+			"to": "packages/collaboration/src/utils/create-git-hub-source/exactRef.ts",
 			"ownerSource": "packages/collaboration/src/utils/create-git-hub-source/createGitHubSource.ts",
 			"definition": "2d2bf0bbcca3bc13d89e3ec32f7ee974dffbfc7a65861e9e217975c92ddf6c94"
 		},
@@ -250,7 +250,7 @@
 				"symbol": "loadWorkspace"
 			},
 			"from": "packages/desktop/src/utils/cacheStatus.ts",
-			"to": "packages/desktop/src/utils/load-workspace/cacheStatus.ts",
+			"to": "packages/desktop/src/utils/load-workspace/offlineView.ts",
 			"ownerSource": "packages/desktop/src/utils/load-workspace/loadWorkspace.ts",
 			"definition": "8e63d6da00f2c622f85cbd1cac290fd4100b07f38e1985c63b329632f0a931f3"
 		},
@@ -430,7 +430,7 @@
 				"symbol": "projectAgentEvents"
 			},
 			"from": "packages/desktop/src/utils/createdThread.ts",
-			"to": "packages/desktop/src/utils/project-agent-events/createdThread.ts",
+			"to": "packages/desktop/src/utils/project-agent-events/rememberCreatedThread.ts",
 			"ownerSource": "packages/desktop/src/utils/project-agent-events/projectAgentEvents.ts",
 			"definition": "7cca75a83b906af5c039537dbec3a88902897a68251e2b77f65c88ef5f249980"
 		},
@@ -465,8 +465,8 @@
 				"symbol": "initializeDesktop"
 			},
 			"from": "packages/desktop/src/utils/desktopIpc.ts",
-			"to": "packages/desktop/src/initializers/initialize-desktop/desktopIpc.ts",
-			"ownerSource": "packages/desktop/src/initializers/initialize-desktop/initializeDesktop.ts",
+			"to": "packages/desktop/src/lib/initialize-desktop/desktopIpc.ts",
+			"ownerSource": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 			"definition": "a7dda3197ba681d277d34a121d4cf23338b9c9a820f72cf9c583d293c651867e"
 		},
 		{
@@ -588,7 +588,7 @@
 				"symbol": "threadPayload"
 			},
 			"from": "packages/desktop/src/utils/ipcFields.ts",
-			"to": "packages/desktop/src/utils/ipc-payload/ipcFields.ts",
+			"to": "packages/desktop/src/utils/ipc-payload/regionField.ts",
 			"ownerSource": "packages/desktop/src/utils/ipc-payload/ipcPayload.ts",
 			"definition": "7990aa43262943ca87b99d1b65eb0ddcbbe8bafe5c6a9573dcf517d580e53884"
 		},
@@ -637,7 +637,7 @@
 			},
 			"from": "packages/desktop/src/utils/planningConvert.ts",
 			"to": "packages/desktop/src/utils/planning-reads/planningConvert.ts",
-			"ownerSource": "packages/desktop/src/utils/planning-reads/planningReads.ts",
+			"ownerSource": "packages/desktop/src/utils/planning-reads/planRecord.ts",
 			"definition": "84816bc4fb484fc0f0277bf5007f4873ce3632d01d7414111326019427a219e8"
 		},
 		{
@@ -1104,8 +1104,8 @@
 				"symbol": "rendererAssets"
 			},
 			"from": "packages/desktop/src/utils/rendererAssets.ts",
-			"to": "packages/desktop/src/initializers/initialize-desktop/rendererAssets.ts",
-			"ownerSource": "packages/desktop/src/initializers/initialize-desktop/rendererAssets.ts",
+			"to": "packages/desktop/src/lib/initialize-desktop/rendererAssets.ts",
+			"ownerSource": "packages/desktop/src/lib/initialize-desktop/rendererAssets.ts",
 			"definition": "3e001edb5672577219476deb337693239e22a58514eeed897d0405d56a05eca0"
 		},
 		{
@@ -1116,8 +1116,8 @@
 				"symbol": "initializeDesktop"
 			},
 			"from": "packages/desktop/src/utils/rendererAssets.ts",
-			"to": "packages/desktop/src/initializers/initialize-desktop/rendererAssets.ts",
-			"ownerSource": "packages/desktop/src/initializers/initialize-desktop/initializeDesktop.ts",
+			"to": "packages/desktop/src/lib/initialize-desktop/rendererAssets.ts",
+			"ownerSource": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 			"definition": "c4b3262cbe0cb6122bc0fc9d388c7d3401828bb56f85f27b08aafd2355d0090e"
 		},
 		{
@@ -1242,8 +1242,8 @@
 				"symbol": "bootstrap"
 			},
 			"from": "packages/desktop/src/utils/trustedSender.ts",
-			"to": "packages/desktop/src/initializers/initialize-desktop/trustedSender.ts",
-			"ownerSource": "packages/desktop/src/initializers/initialize-desktop/initializeDesktop.ts",
+			"to": "packages/desktop/src/lib/initialize-desktop/trustedSender.ts",
+			"ownerSource": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 			"definition": "6990458f0bca67f29bb67a0da70e500095b1ae0dc9440defbc07e9e5e68027fb"
 		},
 		{
@@ -1354,7 +1354,7 @@
 				"symbol": "revisionRegistry"
 			},
 			"from": "src/utils/budgetReviews.ts",
-			"to": "src/utils/revision-registry/budgetReviews.ts",
+			"to": "src/utils/revision-registry/frozenLimits.ts",
 			"ownerSource": "src/utils/revision-registry/revisionRegistry.ts",
 			"definition": "780f5ec215bfefbc2e7316f0d0c81484b7e17555e320c345b4b32047baab9290"
 		},
@@ -1366,7 +1366,7 @@
 				"symbol": "revisionRegistry"
 			},
 			"from": "src/utils/budgetReviews.ts",
-			"to": "src/utils/revision-registry/budgetReviews.ts",
+			"to": "src/utils/revision-registry/frozenLimits.ts",
 			"ownerSource": "src/utils/revision-registry/revisionRegistry.ts",
 			"definition": "e4793ef65cf6479176871704a45cd4b24fa8c94999dc4c5f3c931d8b85a97969"
 		},
@@ -2015,8 +2015,8 @@
 				"symbol": "readNoteLines"
 			},
 			"from": "src/utils/noteLines.ts",
-			"to": "src/utils/note-lines/noteLines.ts",
-			"ownerSource": "src/utils/note-lines/noteLines.ts",
+			"to": "src/utils/note-lines/noteCommit.ts",
+			"ownerSource": "src/utils/note-lines/noteCommit.ts",
 			"definition": "30814174420fa0c4d7dbf5b60b4b76b9b7e3630414975c49e07a6335c902a8cf"
 		},
 		{
@@ -2084,7 +2084,7 @@
 				"symbol": "signalOwn.one"
 			},
 			"from": "src/utils/platformServices.ts",
-			"to": "src/utils/run-isolated/platformServices.ts",
+			"to": "src/utils/run-isolated/stillPrivate.ts",
 			"ownerSource": "src/utils/run-isolated/settleProcesses.ts",
 			"definition": "45935f151c2fe1ea072af92c6347aca0d9589d42011fcd488fb46949de006cae"
 		},
@@ -2391,7 +2391,7 @@
 				"symbol": "assignedSpans"
 			},
 			"from": "src/utils/sourceNesting.ts",
-			"to": "src/utils/block-spans/sourceNesting.ts",
+			"to": "src/utils/block-spans/statementEnd.ts",
 			"ownerSource": "src/utils/block-spans/blockSpans.ts",
 			"definition": "56c44753900adaf117b4d56f599bdbb4371f5c194646317a4f02f4323c943e2f"
 		},
@@ -2873,7 +2873,7 @@
 			},
 			"from": "packages/hub/src/utils/hubDesigns.ts",
 			"to": "packages/hub/src/utils/hub-catalog/hubDesigns.ts",
-			"ownerSource": "packages/hub/src/utils/hub-catalog/hubPlans.ts",
+			"ownerSource": "packages/hub/src/utils/hub-catalog/hubPlanRecord.ts",
 			"definition": "0aea53a7c9b0a88d5377e4ce07355f26c14d9b7a9b27de7459965bc765fa9212"
 		},
 		{
@@ -3068,7 +3068,7 @@
 			},
 			"from": "packages/hub/src/utils/hubOptions.ts",
 			"to": "packages/hub/src/utils/hub-designs/hubOptions.ts",
-			"ownerSource": "packages/hub/src/utils/hub-designs/hubDesigns.ts",
+			"ownerSource": "packages/hub/src/utils/hub-designs/design.ts",
 			"definition": "d2c7642db5143d3c14667e5f293989901954d726ee72c62f259872a1ad57aa0c"
 		},
 		{
@@ -3079,7 +3079,7 @@
 				"symbol": "version"
 			},
 			"from": "packages/hub/src/utils/hubOptions.ts",
-			"to": "packages/hub/src/utils/hub-catalog/hubOptions.ts",
+			"to": "packages/hub/src/utils/hub-catalog/hubImageOption.ts",
 			"ownerSource": "packages/hub/src/utils/hub-catalog/hubDesigns.ts",
 			"definition": "7015720b7bc115d3e5b46ee4fc21a3e57c5d4e2e76c5fa310b98dc2039528716"
 		},
@@ -3091,7 +3091,7 @@
 				"symbol": "version"
 			},
 			"from": "packages/hub/src/utils/hubOptions.ts",
-			"to": "packages/hub/src/utils/hub-catalog/hubOptions.ts",
+			"to": "packages/hub/src/utils/hub-catalog/hubImageOption.ts",
 			"ownerSource": "packages/hub/src/utils/hub-catalog/hubDesigns.ts",
 			"definition": "201f6b0c50fff752c7e5054db3239862e0dd046b04eab6a1dd2da22365d5be7a"
 		},
@@ -3103,7 +3103,7 @@
 				"symbol": "version"
 			},
 			"from": "packages/hub/src/utils/hubOptions.ts",
-			"to": "packages/hub/src/utils/hub-catalog/hubOptions.ts",
+			"to": "packages/hub/src/utils/hub-catalog/hubImageOption.ts",
 			"ownerSource": "packages/hub/src/utils/hub-catalog/hubDesigns.ts",
 			"definition": "9b10d164e9337f003f13a30c6b1af85eea2de11125ec230982a7e119c4e27ee1"
 		},
@@ -3126,7 +3126,7 @@
 				"symbol": "hubCatalog"
 			},
 			"from": "packages/hub/src/utils/hubPlans.ts",
-			"to": "packages/hub/src/utils/hub-catalog/hubPlans.ts",
+			"to": "packages/hub/src/utils/hub-catalog/hubPlanRecord.ts",
 			"ownerSource": "packages/hub/src/utils/hub-catalog/hubCatalog.ts",
 			"definition": "5dadd7f60af08053c1e51a89a59a0f69eafda5547d19f13cca43cdc6df960efd"
 		},
@@ -3242,7 +3242,7 @@
 			},
 			"from": "packages/planning/src/utils/planCommit.ts",
 			"to": "packages/planning/src/utils/plan-write/planCommit.ts",
-			"ownerSource": "packages/planning/src/utils/plan-write/planWrite.ts",
+			"ownerSource": "packages/planning/src/utils/plan-write/clean.ts",
 			"definition": "662dccd58578a9ef767f04e290076a93eda0bdd8d2dd9d99c85bce1fe3610453"
 		},
 		{
@@ -3254,7 +3254,7 @@
 			},
 			"from": "packages/planning/src/utils/planCommit.ts",
 			"to": "packages/planning/src/utils/plan-write/planCommit.ts",
-			"ownerSource": "packages/planning/src/utils/plan-write/planWrite.ts",
+			"ownerSource": "packages/planning/src/utils/plan-write/clean.ts",
 			"definition": "969a6a57d325ee66e8e21af1c18fd5fb46f108837b85b5715f4f2a6e29b8771f"
 		},
 		{
@@ -3299,7 +3299,7 @@
 				"symbol": "immutable"
 			},
 			"from": "packages/planning/src/utils/planGit.ts",
-			"to": "packages/planning/src/utils/plan-read/planGit.ts",
+			"to": "packages/planning/src/utils/plan-read/containing.ts",
 			"ownerSource": "packages/planning/src/utils/plan-read/planRead.ts",
 			"definition": "602823d9fa0d4dec530fd427340bef9de6cd041ec9a1a0299314f2b18be64d67"
 		},
@@ -3322,7 +3322,7 @@
 				"symbol": "planRead"
 			},
 			"from": "packages/planning/src/utils/planIdentity.ts",
-			"to": "packages/planning/src/utils/plan-read/planIdentity.ts",
+			"to": "packages/planning/src/utils/plan-read/validateIdentity.ts",
 			"ownerSource": "packages/planning/src/utils/plan-read/planRead.ts",
 			"definition": "58cca1a098b3089fa9e1d17ec1a43b21d81d89f75ac289fe85fbbe96eed6c387"
 		},
@@ -3346,7 +3346,7 @@
 				"symbol": "readVersion"
 			},
 			"from": "packages/planning/src/utils/planOptions.ts",
-			"to": "packages/planning/src/utils/plan-read/planOptions.ts",
+			"to": "packages/planning/src/utils/plan-read/checkOptions.ts",
 			"ownerSource": "packages/planning/src/utils/plan-read/planRead.ts",
 			"definition": "eaf5b816595443e1feec2e54d6ad0b02a465082f661494b42ac11022c4a1e344"
 		},
@@ -3358,8 +3358,8 @@
 				"symbol": "readImage"
 			},
 			"from": "packages/planning/src/utils/planOptions.ts",
-			"to": "packages/planning/src/utils/plan-design/planOptions.ts",
-			"ownerSource": "packages/planning/src/utils/plan-design/planDesign.ts",
+			"to": "packages/planning/src/utils/plan-design/heldBy.ts",
+			"ownerSource": "packages/planning/src/utils/plan-design/readImage.ts",
 			"definition": "10057af4e76fe7a7531bc6ee1cd4e2cde1fba242475e4851cc8fbb051a70f168"
 		},
 		{
@@ -3414,8 +3414,8 @@
 				"symbol": "readImage"
 			},
 			"from": "packages/planning/src/utils/planValidate.ts",
-			"to": "packages/planning/src/utils/plan-design/planValidate.ts",
-			"ownerSource": "packages/planning/src/utils/plan-design/planDesign.ts",
+			"to": "packages/planning/src/utils/plan-design/version.ts",
+			"ownerSource": "packages/planning/src/utils/plan-design/readImage.ts",
 			"definition": "3f6be3ab53efb78bef9ad2172ec5b896f19286a8a8500bf1ec57eb90d731b488"
 		},
 		{
@@ -4142,7 +4142,7 @@
 				"symbol": "consoleExport"
 			},
 			"from": "packages/reports/src/utils/harnessEvidence.ts",
-			"to": "packages/reports/src/utils/console-server/harnessEvidence.ts",
+			"to": "packages/reports/src/utils/console-server/harnessReport.ts",
 			"ownerSource": "packages/reports/src/utils/console-server/consoleExport.ts",
 			"definition": "b69f96c479b9512d17f8a33bb65d51cc129787bf4b6d96a6a9b2156171aa2593"
 		},
@@ -4300,8 +4300,8 @@
 				"symbol": "initializePreview.quit"
 			},
 			"from": "packages/reports/src/utils/previewHealth.ts",
-			"to": "packages/reports/src/initializers/initialize-preview/previewHealth.ts",
-			"ownerSource": "packages/reports/src/initializers/initialize-preview/initializePreview.ts",
+			"to": "packages/reports/src/lib/initialize-preview/previewHealth.ts",
+			"ownerSource": "packages/reports/src/lib/initialize-preview/initializePreview.ts",
 			"definition": "403022e2cd5509983d8b4b5b087808560f16fbdb788051d29c9508cee4147bc9"
 		},
 		{
@@ -4312,8 +4312,8 @@
 				"symbol": "initializePreview.start"
 			},
 			"from": "packages/reports/src/utils/previewHealth.ts",
-			"to": "packages/reports/src/initializers/initialize-preview/previewHealth.ts",
-			"ownerSource": "packages/reports/src/initializers/initialize-preview/initializePreview.ts",
+			"to": "packages/reports/src/lib/initialize-preview/previewHealth.ts",
+			"ownerSource": "packages/reports/src/lib/initialize-preview/initializePreview.ts",
 			"definition": "ae650267f9aaa725e3d5f8698104a842d06410ea83eb05d3560c7441e532a449"
 		},
 		{
@@ -4711,6 +4711,31 @@
 		{
 			"unit": "reports.endpoint.api-analytics-cpu",
 			"source": "packages/reports/src/routes/api/analytics-cpu/+server.ts"
+		}
+	],
+	"publicModules": [
+		{
+			"unit": "function.project",
+			"entry": "src/workflows/generate-code/project.ts",
+			"exports": ["detectProjectKind"]
+		},
+		{
+			"unit": "function.exports",
+			"entry": "src/workflows/generate-code/exports.ts",
+			"exports": ["applyExports", "appendMissingExports"]
+		},
+		{
+			"unit": "function.validation",
+			"entry": "src/workflows/create-project/validation.ts",
+			"exports": [
+				"validateProjectName",
+				"validateCodeName",
+				"validateFieldName",
+				"validateRouteName",
+				"validateKebabName",
+				"validateExportName",
+				"validateName"
+			]
 		}
 	]
 }

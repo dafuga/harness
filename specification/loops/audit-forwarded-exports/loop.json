@@ -2,7 +2,7 @@
 	"name": "audit-forwarded-exports",
 	"goal": "Audit explicit named runtime forwarding exports without admitting type-only, wildcard or misleading exports",
 	"createdAt": "2026-10-19T20:05:31.180Z",
-	"updatedAt": "2026-10-19T20:08:10.105Z",
+	"updatedAt": "2026-10-19T20:12:21.034Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -48,7 +48,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T20:12:21.034Z",
+			"evidence": "Fix 12ead6dd passes the unchanged adapter and CLI audit suites; green record 1f650e05a2beb1ed1e7f54b1079c6315963b8f9bb0028bc8f98ac2906737d946."
 		},
 		{
 			"id": "guard",
