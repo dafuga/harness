@@ -2,7 +2,7 @@
 	"name": "shared-helper-consumers",
 	"goal": "List a helper only when at least two distinct services, components or functions use that exact helper at the selected commit.",
 	"createdAt": "2026-10-19T16:40:42.160Z",
-	"updatedAt": "2026-10-19T16:56:44.570Z",
+	"updatedAt": "2026-10-19T17:04:49.013Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -46,7 +46,8 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Scoped verification passes on the implementation retained by 1f26ff4e: Reports check (596 tests, type/lint, builds and audit), 65 entity browser cases, 13 source/documentation/history integration tests, root formatting/type/lint/audit/1295-unit registry validation and CLI/API builds. The follow-up refactor only separates reference-analysis branches and equivalent fixture setup for lint. Formal unchanged red/green remains at 979102b4/f75ca3f2. Live preview 5688 shows 392 qualified helpers; activityReading and acceptInvitation are excluded, activityTime remains and opens its Shared owning entity. Fresh screenshots /tmp/harness-shared-consumers-final.png and /tmp/harness-shared-consumers-detail.png inspected; browser errors/warnings empty. Cold scan approximately 1 second and 407 MiB RSS, not aggregate app memory. Cached helper metadata refreshed from each exact Git commit with backups, preserving unrelated fields, records and media. Full root cross-platform check remains pending: its initial formatting failure was corrected and static checks passed, but the full command was not rerun through native tests under the no-Electron-testing instruction. Main integration remains pending."
 		}
 	],
 	"evaluators": [
