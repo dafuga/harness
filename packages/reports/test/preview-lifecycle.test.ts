@@ -1,10 +1,11 @@
-import { execFileSync, spawn, type ChildProcess } from 'node:child_process';
+import { assertPreviewRoutes, sveltePreviewFixture } from './support/previewFixture';
+import { spawn, type ChildProcess } from 'node:child_process';
 import { once } from 'node:events';
-import { mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises';
+import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { createServer } from 'node:net';
 import type { AddressInfo } from 'node:net';
 import { tmpdir } from 'node:os';
-import { dirname, join } from 'node:path';
+import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterEach, expect, test } from 'vitest';
 const reports = fileURLToPath(new URL('..', import.meta.url));
@@ -35,16 +36,23 @@ async function fixture() {
 	return { root, owner: await port() };
 }
 function start(
-	f: Awaited<ReturnType<typeof fixture>>,
+	f: Awaited<ReturnType<typeof fixture>> & { app?: boolean },
 	webPort: number,
 	history = 'one',
 	configFile = join(f.root, 'vite.config.mjs')
 ) {
 	const child = spawn(
 		'bun',
-		['run', 'dev', f.root, '--config', configFile, '--port', String(webPort)],
+		[
+			...(f.app ? [join(reports, 'src/initializers/initializePreview.ts')] : ['run', 'dev']),
+			f.root,
+			'--config',
+			configFile,
+			'--port',
+			String(webPort)
+		],
 		{
-			cwd: reports,
+			cwd: f.app ? f.root : reports,
 			detached: true,
 			stdio: ['ignore', 'pipe', 'pipe'],
 			env: {
@@ -188,41 +196,7 @@ test('normal shutdown releases both the preview and ownership listeners', async 
 test('route indexes stay aligned after the normal SvelteKit sync command', async () => {
 	const f = await fixture(),
 		webPort = await port();
-	await symlink(join(reports, '../../node_modules'), join(f.root, 'node_modules'), 'dir');
-	const files = {
-		'package.json': '{"type":"module"}',
-		'vite.config.mjs':
-			'import {sveltekit} from "@sveltejs/kit/vite";export default {plugins:[sveltekit()]};',
-		'svelte.config.js': 'export default {};',
-		'src/app.html':
-			'<!doctype html><html><head>%sveltekit.head%</head><body><div style="display:contents">%sveltekit.body%</div></body></html>',
-		'src/routes/pages/+page.svelte': '<h1>Pages</h1>',
-		'src/routes/a-first/+page.svelte': '<h1>Added later, sorts earlier</h1>'
-	};
-	for (const [path, text] of Object.entries(files)) {
-		await mkdir(dirname(join(f.root, path)), { recursive: true });
-		await writeFile(join(f.root, path), text);
-	}
-	start(f, webPort);
-	const url = `http://127.0.0.1:${webPort}`;
-	let html = '';
-	await expect
-		.poll(
-			async () => {
-				try {
-					html = await (await fetch(url + '/pages')).text();
-					return html.includes('node_ids:');
-				} catch {
-					return false;
-				}
-			},
-			{ timeout: 20000 }
-		)
-		.toBe(true);
-	execFileSync('bun', ['x', 'svelte-kit', 'sync'], { cwd: f.root, stdio: 'pipe' });
-	const ids = JSON.parse(/node_ids: (\[[^\]]+\])/.exec(html)![1]) as number[];
-	const leaf = await (
-		await fetch(url + `/.svelte-kit/generated/client/nodes/${ids.at(-1)}.js`)
-	).text();
-	expect(leaf, 'the Pages route must hydrate the Pages component').toContain('/pages/+page.svelte');
+	const names = await sveltePreviewFixture(f.root, join(reports, '../../node_modules'));
+	const run = start({ ...f, app: true }, webPort);
+	await assertPreviewRoutes(f.root, `http://127.0.0.1:${webPort}`, names, run.text);
 }, 30000);
