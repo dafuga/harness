@@ -58,6 +58,10 @@ These rules apply only to this Harness repository, including requests made in an
 
 ## Code Rules
 
+- Reserve shared helper folders for callable helpers used by at least two distinct components, services or named functions, in any combination. Count actual runtime references; repeated calls by one consumer, type-only references, unused imports and forwarding exports do not establish sharing.
+- A helper with one consumer belongs in that consumer's folder, beside the component, service or function that owns it. Keep private helpers out of codebase-wide utility folders. Promote them into shared folders only when a second distinct consumer needs them; move them back when only one remains.
+- Preserve registered identities, contracts and history when relocating helpers. Update imports, tests and owned source together. Mixed shared/private modules must be split by responsibility rather than moving a shared helper into one consumer's folder. An unused export has no proven owner; check public API contracts and dynamic/runtime use before removing or relocating it.
+
 - Keep Harness, its coding agents and active checks below the combined 10 GB RAM target. Measure attributed process memory; report shared or unmeasurable usage separately.
 - Run one broad check, build or history prebuild at a time. Use focused standardized tests while editing and reuse running servers.
 - Vitest defaults to one worker across workspaces. Increasing concurrency requires measuring the combined peak first. Stop only verified task-owned leftover processes; preserve other sessions and servers.
