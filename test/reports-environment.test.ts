@@ -1,4 +1,4 @@
-import { mkdtemp, rm, writeFile, mkdir, readFile } from 'node:fs/promises';
+import { mkdtemp, rm, writeFile, mkdir, readFile, realpath } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { afterEach, expect, test, vi } from 'vitest';
@@ -29,7 +29,7 @@ test('report settings preserve configuration references and explicit env takes p
 });
 
 test('a relocated report launcher finds installed runtime files beside its bundle', async () => {
-	const root = await mkdtemp(join(tmpdir(), 'harness-report-runtime-'));
+	const root = await realpath(await mkdtemp(join(tmpdir(), 'harness-report-runtime-')));
 	try {
 		const manifest = JSON.parse(
 			await readFile(
