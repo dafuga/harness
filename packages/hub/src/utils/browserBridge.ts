@@ -1,3 +1,4 @@
+import { AgentHttpAdapter } from '../../../desktop/src/adapters/AgentHttpAdapter';
 import { browserEvidenceReads } from './browserEvidenceReads';
 import type { CommittedThread, ProjectSummary } from 'collaboration';
 import type { DesktopBridge, SourceFile } from '$desktop/models/DesktopBridge.types';
@@ -39,13 +40,13 @@ function hosted(snapshot: ProjectSnapshot): ProjectSnapshot {
 	const stated = snapshot.capabilities;
 	const capabilities: ProjectCapabilities = {
 		comments: stated?.comments === true,
-		agents: false,
-		planning: false,
-		approval: false,
+		agents: stated?.agents === true,
+		planning: stated?.planning === true,
+		approval: stated?.approval === true,
 		source: 'github'
 	};
 	if (stated?.reason) capabilities.reason = stated.reason;
-	return { ...snapshot, writable: false, capabilities };
+	return { ...snapshot, writable: snapshot.writable && capabilities.agents, capabilities };
 }
 
 /**
@@ -66,7 +67,11 @@ function guarded(listeners: Set<Listener>): Guard {
 	};
 }
 
-function reads(api: BrowserApi, guard: Guard): Reads {
+function reads(
+	api: BrowserApi,
+	guard: Guard,
+	report: (snapshot: ProjectSnapshot, query: Parameters<DesktopBridge['snapshot']>[0]) => void
+): Reads {
 	/** The branch last shown per project: the server reads an entity's history along it. */
 	const branches = new Map<string, string>();
 	const snapshot: DesktopBridge['snapshot'] = async (input) => {
@@ -75,6 +80,7 @@ function reads(api: BrowserApi, guard: Guard): Reads {
 			await guard(input, (path) => api.get<ProjectSnapshot>(`${path}/snapshot`, { branch, commit }))
 		);
 		branches.set(input.projectId!, shown.revision.branch);
+		report(shown, input);
 		return shown;
 	};
 	return {
@@ -101,13 +107,7 @@ function reads(api: BrowserApi, guard: Guard): Reads {
 			),
 		image: async ({ entityId, commit, version, sha256, ...context }) =>
 			guard(context, (path) => api.bytes(`${path}/image`, { entityId, commit, version, sha256 })),
-		messages: async ({ entityId, commit, threadId, ...context }) => {
-			const threads = await guard(context, (path) =>
-				api.get<CommittedThread[]>(`${path}/threads`, { entityId, commit })
-			);
-			const thread = threads.find((item) => item.id === threadId);
-			return thread ? commentEntries(thread) : [];
-		},
+		messages: (input) => messages(api, guard, input),
 		/** Further pages of an entity's history, along the branch and at the commit in view. */
 		history: async ({ entityId, commit, page, branch, ...context }) =>
 			guard(context, (path) =>
@@ -139,8 +139,16 @@ function denied(): Denied {
  */
 export function browserBridge(api: BrowserApi): DesktopBridge {
 	const listeners = new Set<Listener>();
+	let selected = '';
+	const agents = new AgentHttpAdapter((projectId, body) =>
+		api.send('POST', `${base({ projectId })}/agent`, body)
+	);
+	const call = (method: string, input: unknown = {}) => agents.call(method, input, selected);
 	return {
-		...reads(api, guarded(listeners)),
+		...reads(api, guarded(listeners), (snapshot, query) => {
+			selected = snapshot.project.id!;
+			agents.shown(snapshot, query);
+		}),
 		onCacheStatus: (listener) => {
 			listeners.add(listener);
 			return () => listeners.delete(listener);
@@ -161,6 +169,24 @@ export function browserBridge(api: BrowserApi): DesktopBridge {
 			const thread = await api.send<CommittedThread>('POST', `${base(input)}/comments`, body);
 			return { kind: 'shared', projectId: projectId!, thread };
 		},
-		onRunEvent: () => () => {}
+		providers: () => call('providers') as ReturnType<DesktopBridge['providers']>,
+		startRun: (input) => call('startRun', input) as ReturnType<DesktopBridge['startRun']>,
+		cancelRun: (input) => call('cancelRun', input) as ReturnType<DesktopBridge['cancelRun']>,
+		openThread: (input) => call('openThread', input) as ReturnType<DesktopBridge['openThread']>,
+		approve: (input) => call('approve', input) as ReturnType<DesktopBridge['approve']>,
+		onRunEvent: (listener) => agents.listen(listener)
 	};
+}
+
+async function messages(
+	api: BrowserApi,
+	guard: Guard,
+	input: Parameters<DesktopBridge['messages']>[0]
+) {
+	const { entityId, commit, threadId, ...context } = input;
+	const threads = await guard(context, (path) =>
+		api.get<CommittedThread[]>(`${path}/threads`, { entityId, commit })
+	);
+	const thread = threads.find((item) => item.id === threadId);
+	return thread ? commentEntries(thread) : [];
 }

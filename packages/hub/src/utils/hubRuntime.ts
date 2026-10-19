@@ -1,3 +1,4 @@
+import type { HubAgentPort } from '../controllers/HubAgentController';
 import { createCollaboration, createGitHubRepository, createGitHubSource } from 'collaboration';
 import type { CollaborationApi } from 'collaboration';
 import type { HubEnv } from '../config/hubEnvConfig';
@@ -9,6 +10,8 @@ import { hubFail } from './hubJson';
 import { hubRemote } from './hubRemote';
 import type { HubRemoteRuntime } from './hubRemote';
 export interface HubApiRuntime {
+	/** Explicit deployment injection only; absent until a project executor is connected. */
+	agent?: HubAgentPort;
 	auth: Pick<HubAuth, 'actor' | 'handle'>;
 	connect(): { api: CollaborationApi; projection: HubProjectionService };
 	/** Null or absent when the relay binding or its origin is not configured. */

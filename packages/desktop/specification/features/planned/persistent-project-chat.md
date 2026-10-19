@@ -27,3 +27,9 @@ creation prompts, and asserted universal hosted execution denial. Extend those s
 scenarios for bubble visibility, permission levels and scoped history links. Extend role
 access and executor boundaries for writer membership, forged roles and revocation.
 Native Electron/iOS UI testing stays paused; test the shared renderer and backend adapters.
+
+## Verification boundaries
+
+The local web preview uses the real desktop run service behind its loopback owner guard and same-origin JSON checks. Chat connects lazily. Read-only questions report any unexpected writes. Shared hosting accepts Write requests only through an explicitly configured project executor; no production executor or Google deployment is configured by this change. Native UI checks remain paused.
+
+The first broad desktop unit run found legacy assertions that deliberately required the launcher to disappear. Those assertions will be aligned only after the unchanged red/green regression checkpoint. The running preview also retains stale SvelteKit route-node numbering after external sync; fresh fixture servers verify source routing while this existing server awaits an authorized refresh.

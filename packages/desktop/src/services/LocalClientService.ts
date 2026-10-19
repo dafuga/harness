@@ -51,6 +51,7 @@ export class LocalClientService {
 	readonly session: ProjectSessionService;
 	readonly wire: WireSessionService;
 	private readonly runs: DesktopRunService;
+	private releaseAgent?: () => void;
 	private readonly sockets = new Set<LocalSocket>();
 	constructor(private readonly options: LocalClientOptions) {
 		const { providers, generator, ...stores } = options.shared;
@@ -70,6 +71,9 @@ export class LocalClientService {
 			handle: (request) => operations.handle(request),
 			explain: (error) => ({ code: 'failed', message: words(error) })
 		});
+		this.releaseAgent = options.shared.remote?.onRunEvent?.((event) =>
+			this.wire.emit('run', event)
+		);
 	}
 	get ended(): boolean {
 		return this.wire.ended;
@@ -111,6 +115,7 @@ export class LocalClientService {
 	}
 	/** The window closed: its runs are cancelled and its sockets end. */
 	end(): void {
+		this.releaseAgent?.();
 		this.wire.end();
 		this.runs.cancelActive();
 		for (const socket of [...this.sockets]) socket.close(1001);

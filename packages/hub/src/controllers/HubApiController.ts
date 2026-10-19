@@ -1,11 +1,13 @@
 import type { Actor, CollaborationApi, AddCommentInput } from 'collaboration';
 import type { HubApiRuntime } from '../utils/hubRuntime';
 import type { HubProjectionService } from '../services/HubProjectionService';
+import { HubAgentController, type HubAgentPort } from './HubAgentController';
 import { HubRemoteController } from './HubRemoteController';
 import { hubBody, hubHttp, hubHttpFailure, hubQuery } from '../utils/hubHttp';
 import { hubFail } from '../utils/hubJson';
 import { hubEvidenceRead } from '../utils/hubEvidenceRead';
 interface Context {
+	executor?: HubAgentPort;
 	api: CollaborationApi;
 	projection: HubProjectionService;
 	actor: Actor;
@@ -34,7 +36,9 @@ export class HubApiController {
 			projectId = parts[2] ?? '';
 		if (!projectId) return collection({ api, request, actor });
 		if (!/^[a-f0-9-]{36}$/.test(projectId)) return hubFail('invalid-input');
-		const context = { api, projection, actor, request, projectId };
+		const context = { api, projection, actor, request, projectId, executor: this.runtime.agent };
+		if (parts[3] === 'agent')
+			return new HubAgentController({ ...context, executor: this.runtime.agent }).handle();
 		if (['evidence', 'artifact'].includes(parts[3])) return hubEvidenceRead(context, parts[3]);
 		if (request.method === 'GET') return readProject(context, parts[3] ?? '');
 		return mutateProject(context, parts.slice(3));
@@ -54,16 +58,38 @@ async function collection(c: Pick<Context, 'api' | 'request' | 'actor'>) {
 }
 async function readProject(c: Context, operation: string): Promise<Response> {
 	const { actor, api, projection, projectId, request } = c;
-	if (!operation) return hubHttp(await api.getProject(actor, projectId));
+	if (!operation) {
+		const project = await api.getProject(actor, projectId);
+		return hubHttp({ ...project, executionAvailable: await executable(c, project) });
+	}
 	if (operation === 'members') return hubHttp(await api.listMembers(actor, projectId));
 	if (operation === 'snapshot') {
 		const p = new URL(request.url).searchParams;
-		return hubHttp(
-			await projection.snapshot(actor, projectId, {
-				branch: p.get('branch'),
-				commit: p.get('commit')
-			})
-		);
+		const snapshot = await projection.snapshot(actor, projectId, {
+			branch: p.get('branch'),
+			commit: p.get('commit')
+		});
+		const project = await api.getProject(actor, projectId),
+			agents = await executable(c, project);
+		return hubHttp({
+			...snapshot,
+			writable: agents && !p.get('commit') && snapshot.revision.atTip,
+			capabilities: {
+				comments: project.role !== 'viewer',
+				agents,
+				planning: agents,
+				approval: agents,
+				source: 'github',
+				reason:
+					project.role === 'viewer'
+						? 'Read access: browse only.'
+						: agents
+							? 'Write access: comments and AI requests.'
+							: ['owner', 'writer'].includes(project.role)
+								? 'Write access. Connect a project executor to run AI.'
+								: 'Comment access: read and leave comments.'
+			}
+		});
 	}
 	return readEntity(c, operation);
 }
@@ -135,14 +161,24 @@ async function invitation(c: Context, input: { parts: string[]; body: Record<str
 				code: String(body.code ?? '')
 			})
 		);
-	if (parts.length !== 1 || !['viewer', 'commenter'].includes(String(body.role)))
+	if (parts.length !== 1 || !['viewer', 'commenter', 'writer'].includes(String(body.role)))
 		return hubFail('invalid-input');
 	return hubHttp(
 		await api.createInvitation(actor, {
 			projectId,
 			email: String(body.email ?? ''),
-			role: body.role as 'viewer' | 'commenter'
+			role: body.role as 'viewer' | 'commenter' | 'writer'
 		}),
 		201
+	);
+}
+
+async function executable(
+	context: Context,
+	project: Awaited<ReturnType<CollaborationApi['getProject']>>
+) {
+	return (
+		['owner', 'writer'].includes(project.role) &&
+		Boolean(await context.executor?.available(project))
 	);
 }

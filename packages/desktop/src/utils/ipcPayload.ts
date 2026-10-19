@@ -68,7 +68,35 @@ export function creationPayload(x: Record<string, unknown>) {
 		...countField(x.designOptions)
 	};
 }
+/** General chat cannot choose a directory or silently act on a different revision. */
+function taskPayload(x: Record<string, unknown>) {
+	const allowed = [...creation, 'branch', 'commit', 'conversation'];
+	if (Object.keys(x).some((key) => !allowed.includes(key))) throw new Error('Invalid task fields.');
+	const conversation = x.conversation ?? [];
+	if (!Array.isArray(conversation) || conversation.length > 20)
+		throw new Error('Invalid conversation.');
+	return {
+		intent: 'task' as const,
+		projectId: creationProject(x.projectId),
+		category: enumField(x.category, categories),
+		mode: enumField(x.mode, ['ask', 'change']),
+		branch: textField(x.branch),
+		commit: textField(x.commit, 40, commitPattern),
+		provider: enumField(x.provider, ['codex', 'claude']),
+		model: textField(x.model),
+		effort: nullableText(x.effort),
+		text: textField(x.text, 20000),
+		conversation: conversation.map((entry) => {
+			const value = ipcFields(entry);
+			return {
+				author: enumField(value.author, ['user', 'agent']),
+				text: textField(value.text, 4000)
+			};
+		})
+	};
+}
 export function runPayload(x: Record<string, unknown>) {
+	if (x.intent === 'task') return taskPayload(x);
 	if (x.intent !== undefined) return creationPayload(x);
 	const mode = enumField(x.mode, ['plan', 'change']);
 	const approval = x.approval === null ? null : approvalPayload(x.approval);

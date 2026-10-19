@@ -32,7 +32,11 @@ export async function addComment(
 	};
 	const threadId = value.threadId ?? crypto.randomUUID();
 	const result = await transaction(deps, async (records) => {
-		const project = currentProject(records, verified, value.projectId, ['owner', 'commenter']);
+		const project = currentProject(records, verified, value.projectId, [
+			'owner',
+			'writer',
+			'commenter'
+		]);
 		await deps.source.validateAnchor(project.sourceRepository, value.anchor);
 		const prior = records.threads.find(
 			(t) =>

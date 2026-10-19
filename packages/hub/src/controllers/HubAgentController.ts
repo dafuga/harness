@@ -1,0 +1,111 @@
+import type { Actor, CollaborationApi, ProjectSummary } from 'collaboration';
+import type { HubProjectionService } from '../services/HubProjectionService';
+import { IpcRequestValidator } from '../../../desktop/src/validators/IpcRequestValidator';
+import { channels } from '../../../desktop/src/models/DesktopBridge.types';
+import { hubBody, hubHttp } from '../utils/hubHttp';
+import { hubFail } from '../utils/hubJson';
+
+/** Bound executors own repository mapping and run ownership. Deduplicate requestId per actor/project and reject conflicting payloads. */
+export interface HubAgentPort {
+	available(project: ProjectSummary): Promise<boolean>;
+	/** Cancel only this actor’s runs of this project when membership is revoked. */
+	revoke(actorId: string, projectId: string): Promise<void>;
+	execute(input: {
+		project: ProjectSummary;
+		actor: Actor;
+		method: string;
+		payload: unknown;
+		/** Recheck immediately before queued work and while running; revoke must cancel that run. */
+		authorize(): Promise<void>;
+	}): Promise<unknown>;
+}
+interface Context {
+	api: CollaborationApi;
+	projection: HubProjectionService;
+	actor: Actor;
+	request: Request;
+	projectId: string;
+	executor?: HubAgentPort;
+}
+/** Membership is read for every operation. Write never confers owner administration. */
+export class HubAgentController {
+	constructor(private context: Context) {}
+	async handle(): Promise<Response> {
+		const { actor, executor, request } = this.context;
+		const project = await this.authorize();
+		if (!executor || !(await executor.available(project)))
+			return hubHttp({ error: 'executor-offline' }, 503);
+		if (request.method !== 'POST') return hubHttp({ error: 'method-denied' }, 405);
+		const bearer = request.headers.get('authorization')?.startsWith('Bearer ');
+		if (!bearer && request.headers.get('origin') !== new URL(request.url).origin)
+			return hubHttp({ error: 'origin-denied' }, 403);
+		const body = await hubBody(request),
+			method = String(body.method);
+		const payload = await this.payload(method, body);
+		const authorize = async () => {
+			await this.authorize();
+		};
+		await authorize();
+		const result = await executor.execute({ project, actor, method, payload, authorize });
+		await authorize();
+		return hubHttp(result);
+	}
+	private async authorize() {
+		const { api, actor, projectId, executor } = this.context;
+		const project = await api.getProject(actor, projectId).catch(async (cause) => {
+			await executor?.revoke(actor.id, projectId);
+			throw cause;
+		});
+		if (!['owner', 'writer'].includes(project.role)) {
+			await executor?.revoke(actor.id, projectId);
+			return hubFail('forbidden');
+		}
+		return project;
+	}
+
+	private async payload(method: string, body: Record<string, unknown>): Promise<unknown> {
+		const { projectId, projection, actor } = this.context;
+		if (!['providers', 'startRun', 'cancelRun', 'events', 'openThread', 'approve'].includes(method))
+			return hubFail('invalid-input');
+		const input =
+			body.input && typeof body.input === 'object' && !Array.isArray(body.input)
+				? (body.input as Record<string, unknown>)
+				: {};
+		if (input.projectId !== undefined && input.projectId !== projectId)
+			return hubFail('invalid-input');
+		if (method === 'events') {
+			if (
+				typeof input.runId !== 'string' ||
+				!Number.isSafeInteger(input.after) ||
+				Number(input.after) < 0
+			)
+				return hubFail('invalid-input');
+			return { runId: input.runId, after: input.after };
+		}
+		const parsed = new IpcRequestValidator().parse(channels[method as keyof typeof channels], {
+			...input,
+			projectId
+		});
+		if (['providers', 'cancelRun'].includes(method)) return parsed;
+		if (
+			method === 'startRun' &&
+			(typeof body.requestId !== 'string' ||
+				!/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i.test(body.requestId))
+		)
+			return hubFail('invalid-input');
+		const revision = body.revision as { branch?: unknown; commit?: unknown } | undefined;
+		if (typeof revision?.branch !== 'string' || typeof revision.commit !== 'string')
+			return hubFail('invalid-input');
+		const snapshot = await projection.snapshot(actor, projectId, {
+			branch: revision.branch,
+			commit: revision.commit
+		});
+		if (
+			!snapshot.revision.atTip ||
+			snapshot.revision.commit !== revision.commit ||
+			revision.branch === 'harness-evidence'
+		)
+			return hubFail('revision-mismatch');
+		return { input: parsed, revision, requestId: body.requestId };
+	}
+}

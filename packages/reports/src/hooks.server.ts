@@ -1,3 +1,4 @@
+import { ConsoleAgentController } from './controllers/ConsoleAgentController';
 import type { Handle } from '@sveltejs/kit';
 import { consoleServer } from './utils/consoleServer';
 import { reportBuildIdentity } from './utils/reportBuildIdentity';
@@ -9,7 +10,10 @@ reportBuildIdentity();
 export const handle: Handle = async ({ event, resolve }) => {
 	const denied = await consoleServer().guard(event);
 	if (denied) return denied;
-	const response = await resolve(event);
+	const response =
+		event.url.pathname === '/api/agent'
+			? await new ConsoleAgentController().handle(event.request)
+			: await resolve(event);
 	// What the owner is shown is the owner's: no shared cache may keep a page, a redirect or data.
 	if (!response.headers.has('cache-control')) {
 		response.headers.set('cache-control', 'private, no-store');

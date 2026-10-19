@@ -1,0 +1,72 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.floating-chat",
+	"kind": "component",
+	"title": "Floating chat",
+	"responsibility": "Keeps a round chat bubble visible and opens a compact conversation with keyboard focus and Escape support.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/FloatingChat.svelte"],
+		"symbols": ["FloatingChat"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "FloatingChat.open",
+				"type": "boolean"
+			},
+			{
+				"name": "FloatingChat.label",
+				"type": "string"
+			},
+			{
+				"name": "FloatingChat.panelLabel",
+				"type": "string"
+			},
+			{
+				"name": "FloatingChat.title",
+				"type": "string"
+			},
+			{
+				"name": "FloatingChat.notice",
+				"type": "string"
+			},
+			{
+				"name": "FloatingChat.children",
+				"type": "Snippet"
+			}
+		],
+		"outputs": [
+			{
+				"name": "FloatingChat",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/FloatingChat.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/FloatingChat.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

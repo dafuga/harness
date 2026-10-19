@@ -18,8 +18,14 @@
 		error = '';
 		copied = '';
 		try {
-			const input = { email: email.trim(), role: role === 'viewer' ? 'viewer' : 'commenter' };
-			invitation = await projects.invite(projectId, input as { email: string; role: 'viewer' });
+			const input = {
+				email: email.trim(),
+				role: role === 'viewer' ? 'viewer' : role === 'writer' ? 'writer' : 'commenter'
+			};
+			invitation = await projects.invite(
+				projectId,
+				input as { email: string; role: 'viewer' | 'commenter' | 'writer' }
+			);
 		} catch (cause) {
 			invitation = null;
 			error = String(cause);
@@ -48,9 +54,9 @@
 	>
 		<label>Email<input type="email" bind:value={email} required autocomplete="off" /></label><label
 			>Role<Select label="Role" bind:value={role}
-				><option value="commenter">Commenter · reads and comments</option><option value="viewer"
-					>Viewer · reads only</option
-				></Select
+				><option value="writer">Write · read, comment and ask AI</option><option value="commenter"
+					>Comment · read and leave comments</option
+				><option value="viewer">Read · browse only</option></Select
 			></label
 		>
 		<button class="primary" disabled={saving || !email.trim()}>Create invitation</button>

@@ -19,5 +19,10 @@ export function remoteGrant(status: RemoteNativeStatus | null): Set<string> {
 	if (!status?.grant || !paired.includes(status.state)) return new Set();
 	const attached = status.methods;
 	if (Array.isArray(attached)) return new Set(attached.filter((item) => device.includes(item)));
-	return new Set(status.grant.agents ? assumed.device : assumed.reads);
+	const methods = status.grant.agents ? assumed.device : assumed.reads;
+	return new Set(
+		status.grant.comments === false
+			? methods.filter((method) => !(commentMethods as readonly string[]).includes(method))
+			: methods
+	);
 }

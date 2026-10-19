@@ -36,8 +36,14 @@ export function keyLabel(deviceId: string): string {
 export function identityLabel(deviceId: string): string {
 	return (deviceId.match(/.{1,4}/g) ?? []).join(' ');
 }
-export function grantLabel(grant: { agents: boolean }): string {
-	return grant.agents ? 'Plan and Change allowed' : 'Read and comment only';
+export function grantLabel(grant: { agents: boolean; comments?: boolean }): string {
+	if (grant.comments === undefined)
+		return grant.agents ? 'Plan and Change allowed' : 'Read and comment only';
+	return grant.agents
+		? 'Write · read, comment and ask AI'
+		: grant.comments === false
+			? 'Read only'
+			: 'Comment · read and comment';
 }
 export function grantSummary(grant: { projects: unknown[]; agents: boolean }): string {
 	return `${plural(grant.projects.length, 'project')} · ${grantLabel(grant)}`;

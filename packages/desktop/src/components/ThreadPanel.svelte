@@ -121,10 +121,13 @@
 		return created;
 	}
 	async function send(request: RunDraft) {
+		if (request.mode === 'ask') return false;
+		const mode = request.mode;
 		const started = await run.start(async () => {
 			const approval = request.mode === 'change' ? design?.approval : null;
 			return {
 				...request,
+				mode,
 				entityId: entity.id,
 				threadId: (await planningThread()).id,
 				approval: approval

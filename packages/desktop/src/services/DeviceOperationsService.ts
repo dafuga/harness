@@ -48,10 +48,13 @@ export class DeviceOperationsService {
 		// Recorded evidence is read here for a phone; the history of an entity is not served yet.
 		const kept = ['history'],
 			reads = readMethods.filter((method) => !kept.includes(method)),
-			agents = this.options.grant().agents ? agentMethods : [];
-		return [attachMethod, ...reads, ...commentMethods, ...agents];
+			agents =
+				this.options.grant().agents && this.options.grant().comments !== false ? agentMethods : [];
+		const comments = this.options.grant().comments === false ? [] : commentMethods;
+		return [attachMethod, ...reads, ...comments, ...agents];
 	}
 	async handle(request: WireRequest): Promise<unknown> {
+		if (!this.methods().includes(request.method)) throw new RemoteFailure('method-denied');
 		const { method, input } = request,
 			{ agents, projects } = this.options.grant();
 		if (method === 'listProjects')
@@ -79,7 +82,10 @@ export class DeviceOperationsService {
 	/** The same rules as the desktop's own renderer; what they refuse is an invalid message. */
 	private payload(method: RemoteMethod, input: Fields): unknown {
 		try {
-			return this.payloads.parse(channels[method as keyof typeof channels], input);
+			const body = { ...input };
+			delete body.revision;
+			delete body.epoch;
+			return this.payloads.parse(channels[method as keyof typeof channels], body);
 		} catch {
 			throw new RemoteFailure('invalid-message');
 		}
@@ -110,7 +116,10 @@ export class DeviceOperationsService {
 	}
 	/** Nothing a phone receives names a folder of this computer. */
 	private shaped(method: RemoteMethod, value: unknown): unknown {
-		const capabilities = deviceCapabilities(this.options.grant().agents);
+		const capabilities = deviceCapabilities(
+			this.options.grant().agents,
+			this.options.grant().comments
+		);
 		if (method === 'capabilities') return capabilities;
 		if (method === 'image') return binaryAnswer(value as Uint8Array);
 		if (method === 'artifact')

@@ -93,6 +93,11 @@ export async function validateGitHubAnchor(
 	const tip = await deps.adapter.resolve(repository, `refs/heads/${anchor.branch}`);
 	await deps.adapter.resolve(repository, anchor.commit);
 	await ensureAncestry(deps.client, anchor.commit, tip.commit);
+	if (anchor.entityId === 'harness.project.discussion') {
+		if (anchor.version || anchor.imageSha256 || anchor.state || anchor.viewport || anchor.region)
+			return fail('invalid-entity');
+		return;
+	}
 	const path = await entityPlan(deps.adapter, repository, anchor);
 	if (!anchor.version) return;
 	if (!path) return fail('invalid-version');

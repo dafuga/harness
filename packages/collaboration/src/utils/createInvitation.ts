@@ -12,7 +12,7 @@ export async function createInvitation(
 	input: Parameters<CollaborationApi['createInvitation']>[1]
 ) {
 	const value = parse(
-		z.strictObject({ projectId: id, email, role: z.enum(['commenter', 'viewer']) }),
+		z.strictObject({ projectId: id, email, role: z.enum(['writer', 'commenter', 'viewer']) }),
 		input
 	);
 	parse(actorSchema, actor);

@@ -2,7 +2,7 @@ import type { ProviderId, RunMode } from '../models/Desktop.types';
 import type { ProjectCapabilities } from '../models/ProjectContext.types';
 
 /** A comment is written for people. It is no run mode and never reaches an agent. */
-export type ComposeMode = 'comment' | RunMode;
+export type ComposeMode = 'comment' | 'ask' | RunMode;
 export interface AgentChoice {
 	provider: ProviderId;
 	/** An identifier the provider itself listed. */
@@ -11,7 +11,7 @@ export interface AgentChoice {
 }
 export interface RunDraft extends AgentChoice {
 	text: string;
-	mode: RunMode;
+	mode: RunMode | 'ask';
 	/** Plan of a visual unit only: how many separately generated design options, 1 to 10. */
 	designOptions?: number;
 }

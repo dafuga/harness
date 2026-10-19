@@ -51,7 +51,17 @@ function deviceOf(
 	const { deviceId, name, platform, agents, approvedAt, lastSeenAt } = device,
 		projectIds = device.projects.map((project) => project.id),
 		online = runtime ? runtime.online(deviceId) : false;
-	return { deviceId, name, platform, projectIds, agents, approvedAt, lastSeenAt, online };
+	return {
+		deviceId,
+		name,
+		platform,
+		projectIds,
+		agents,
+		approvedAt,
+		lastSeenAt,
+		online,
+		...(device.comments === undefined ? {} : { comments: device.comments })
+	};
 }
 /** Pairing, requests and devices, as far as they exist for the host that is on. */
 function viewOf(active: RemoteHostState | null, runtime: RemoteHostRuntimeService | null) {

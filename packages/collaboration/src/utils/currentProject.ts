@@ -11,7 +11,7 @@ export function currentProject(
 	records: CollaborationRecords,
 	actor: Actor,
 	projectId: string,
-	roles: Role[] = ['owner', 'commenter', 'viewer']
+	roles: Role[] = ['owner', 'writer', 'commenter', 'viewer']
 ): ProjectSummary {
 	parse(actorSchema, actor);
 	parse(id, projectId);

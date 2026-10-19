@@ -1,0 +1,73 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.project-agent-actions",
+	"kind": "function",
+	"title": "Send project messages",
+	"responsibility": "Sends questions, plans, code requests and human comments while keeping conversation text with its project.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/projectAgentActions.ts"],
+		"symbols": ["projectAgentActions", "projectAgentComment"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "projectAgentActions.agent",
+				"type": "ProjectAgent"
+			},
+			{
+				"name": "projectAgentActions.draft",
+				"type": "RunDraft"
+			},
+			{
+				"name": "projectAgentComment.agent",
+				"type": "ProjectAgent"
+			},
+			{
+				"name": "projectAgentComment.text",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "projectAgentActions",
+				"type": "Promise<boolean>"
+			},
+			{
+				"name": "projectAgentComment",
+				"type": "Promise<boolean>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.compose-modes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.project-agent",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/projectAgentActions.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/projectAgentActions.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

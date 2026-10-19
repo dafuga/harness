@@ -36,6 +36,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.function.repository-lease",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.desktop-bridge-types",
 			"via": "import",
 			"origin": "derived"

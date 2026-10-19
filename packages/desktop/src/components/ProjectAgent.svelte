@@ -1,191 +1,189 @@
 <script lang="ts">
-	import { onMount, tick } from 'svelte';
+	import FloatingChat from '../../../reports/src/components/FloatingChat.svelte';
+	import { onMount, untrack } from 'svelte';
 	import { createProjectAgentStore } from '../lib/stores/projectAgent.svelte';
 	import type { Workspace } from '../lib/stores/workspace.svelte';
 	import { visualCategory } from '../utils/composeModes';
 	import Composer from './Composer.svelte';
 	import ReferenceText from './ReferenceText.svelte';
-	let { workspace }: { workspace: Workspace } = $props();
-	// The shell rebuilds this for another project; the workspace itself is one object throughout.
+	let { workspace, open = $bindable(false) }: { workspace: Workspace; open?: boolean } = $props();
+	// Rebuilt only for another project; the workspace itself is one object throughout.
 	// svelte-ignore state_referenced_locally
 	const agent = createProjectAgentStore(workspace);
-	let open = $state(false);
-	let panel = $state<HTMLElement>();
-	let launcher = $state<HTMLButtonElement>();
-	/** Something new is asked for from a catalog; an entity that is open has its own thread. */
-	const shown = $derived(agent.allowed && !workspace.entity);
 	const kind = $derived(workspace.category.slice(0, -1));
+	const label = $derived(workspace.capabilities.agents ? 'Work with agent' : 'Open project chat');
 	onMount(() => agent.listen());
-	async function toggle() {
-		open = !open;
-		await tick();
-		if (open) panel?.querySelector('textarea')?.focus();
-		else launcher?.focus();
-	}
+	$effect(() => {
+		if (open && agent.allowed) untrack(() => agent.loadProviders());
+	});
 	/** Where a draft that was left without the request is; it is linked and never opened. */
 	const draft = $derived(
 		agent.saved ? workspace.path(agent.saved.category, agent.saved.entityId) : ''
 	);
-	function escape(event: KeyboardEvent) {
-		if (open && event.key === 'Escape') void toggle();
+	const quiet = $derived(!agent.messages.length && !agent.asked);
+	/** What is under way is shown once: not again where the transcript already ends with it. */
+	function pending(author: 'user' | 'agent', text: string) {
+		if (!agent.active) return false;
+		const end = agent.messages.slice(-2);
+		return Boolean(text) && !end.some((item) => item.author === author && item.text === text);
 	}
 </script>
 
-<svelte:window onkeydown={escape} />
-<!-- Adding to a project is a conversation: there is no form, and the catalog in view is a hint. -->
-{#if shown}
-	{#if open}<aside
-			id="project-agent"
-			class="project-agent"
-			aria-label="Project agent"
-			bind:this={panel}
-		>
-			<header>
-				<div>
-					<h2>Work with agent</h2>
-					<p>The agent proposes a plan for you to review.</p>
-				</div>
-				<button type="button" class="agent-close" aria-label="Close project agent" onclick={toggle}
-					>×</button
+{#snippet line(author: 'user' | 'agent', text: string)}<li class="chat-message {author}">
+		<span class="chat-author">{author === 'user' ? 'You: ' : 'Agent: '}</span><ReferenceText
+			{text}
+			{workspace}
+			history
+		/>
+	</li>{/snippet}
+
+<!-- One conversation for the project: it stays open through entities, history and pinned commits,
+     what it offers is what the store allows here, and a unit it names opens at its history. -->
+<div class="project-chat">
+	<FloatingChat
+		bind:open
+		{label}
+		panelLabel="Project agent"
+		title="Project chat"
+		notice={agent.notice}
+	>
+		<div class="chat-thread">
+			{#if quiet}<p class="chat-note">No messages yet.</p>{:else}<ol class="chat-log">
+					{#each agent.messages as message (message.id)}
+						{@render line(message.author, message.text)}
+					{/each}
+					{#if pending('user', agent.asked)}{@render line('user', agent.asked)}{/if}
+					{#if pending('agent', agent.said)}{@render line('agent', agent.said)}{/if}
+				</ol>{/if}
+			{#if agent.status && (agent.active || !agent.messages.at(-1)?.text.includes(agent.status))}<p
+					class="chat-note chat-status"
+					role="status"
 				>
-			</header>
-			{#if agent.asked}<p class="agent-asked">
-					<ReferenceText text={agent.asked} {workspace} />
-				</p>{/if}
-			{#if agent.said}<p class="agent-said">
-					<ReferenceText text={agent.said} {workspace} />
-				</p>{/if}
-			{#if agent.status}<p class="agent-status" role="status">
-					<span><ReferenceText text={agent.status} {workspace} /></span>{#if agent.runId}<button
-							type="button"
-							onclick={agent.cancel}>Cancel</button
-						>{/if}
+					<span><ReferenceText text={agent.status} {workspace} history /></span>
+					{#if agent.runId}<button type="button" onclick={() => agent.cancel()}>Cancel</button>{/if}
 				</p>{/if}
 			{#if agent.error}<p class="error" role="alert">{agent.error}</p>{/if}
-			{#if draft}<p class="agent-status">
+			{#if draft}<p class="chat-note chat-status">
 					<span>A draft was saved without your request. Your text is kept here.</span><button
 						type="button"
 						onclick={() => workspace.navigate(draft)}>Open the saved draft</button
 					>
 				</p>{/if}
+		</div>
+		<div class="chat-compose">
 			<Composer
-				modes={['plan', 'change']}
+				modes={agent.modes}
 				visual={visualCategory(workspace.category)}
 				compact
 				providers={agent.providers}
-				approved={false}
-				running={agent.active}
+				approved={agent.approved}
+				running={agent.active || workspace.busy}
 				placeholder={`Describe the ${kind} to add…`}
-				comment={async () => false}
+				comment={(text) => agent.comment(text)}
 				send={agent.send}
 			/>
-		</aside>{/if}
-	<button
-		type="button"
-		class="agent-launcher"
-		bind:this={launcher}
-		aria-expanded={open}
-		aria-controls="project-agent"
-		onclick={toggle}><span aria-hidden="true">✦</span>Work with agent</button
-	>
-{/if}
+		</div>
+	</FloatingChat>
+</div>
 
 <style>
-	.agent-launcher,
-	.project-agent {
-		position: fixed;
-		right: 20px;
-		z-index: 40;
-		border: 1px solid var(--line);
-		box-shadow: 0 14px 40px rgb(0 0 0 / 0.5);
+	/* The panel ends under the bar at the top however far that bar wraps; a phone gives it room. */
+	.project-chat {
+		--floating-chat-top: 124px;
+		display: contents;
 	}
-	.agent-launcher {
-		bottom: 60px;
-		display: inline-flex;
-		align-items: center;
-		gap: 10px;
-		padding: 12px 20px;
-		border-radius: 999px;
-		background: #04141e;
-		color: inherit;
-		font-weight: 600;
+	@media (max-width: 1409px) {
+		.project-chat {
+			--floating-chat-top: 170px;
+		}
 	}
-	.agent-launcher span {
-		color: var(--gold);
+	@media (max-width: 1250px) {
+		.project-chat {
+			--floating-chat-top: 220px;
+		}
 	}
-	.agent-launcher:hover,
-	.agent-launcher[aria-expanded='true'] {
-		border-color: var(--gold);
+	@media (max-width: 560px) {
+		.project-chat {
+			--floating-chat-top: 96px;
+		}
 	}
-	.agent-launcher:focus-visible,
-	.agent-close:focus-visible {
-		outline: 2px solid var(--gold);
-		outline-offset: 2px;
-	}
-	.project-agent {
-		bottom: 120px;
-		display: grid;
-		gap: 10px;
-		width: min(440px, calc(100vw - 40px));
-		max-height: calc(100dvh - 150px);
-		overflow-y: auto;
-		padding: 14px;
-		border-radius: 18px;
-		background: var(--panel);
-	}
-	header {
+	.chat-thread {
 		display: flex;
-		gap: 12px;
-		justify-content: space-between;
-		align-items: flex-start;
+		flex-direction: column;
+		gap: 10px;
 	}
-	h2,
-	p {
+	/* Without a request to write, the conversation ends a margin above the panel's edge. */
+	.chat-thread:last-child {
+		padding-bottom: 14px;
+	}
+	.chat-log {
+		display: grid;
+		gap: 8px;
 		margin: 0;
+		padding: 0;
+		list-style: none;
 	}
-	h2 {
-		font-size: 16px;
-	}
-	header p,
-	.agent-status {
-		margin-top: 4px;
-		color: var(--muted);
-		font-size: 13px;
-	}
-	.agent-close {
-		padding: 2px 10px;
-		border-radius: 999px;
-		font-size: 18px;
-		line-height: 1.4;
-	}
-	.agent-asked,
-	.agent-said {
-		padding: 10px 12px;
+	.chat-message {
+		max-width: 88%;
+		padding: 8px 12px;
 		border: 1px solid var(--line);
-		border-radius: 12px;
+		border-radius: 14px;
+		font-size: 14px;
+		line-height: 1.45;
 		overflow-wrap: anywhere;
 		white-space: pre-wrap;
 	}
-	.agent-said {
-		border-color: var(--gold);
+	.chat-message.user {
+		justify-self: end;
+		border-end-end-radius: 4px;
+		background: rgb(255 255 255 / 0.04);
 	}
-	/* The request is what is read here: it is set as large as the words around it. */
-	.project-agent :global(.composer textarea) {
-		font-size: 16px;
+	.chat-message.agent {
+		justify-self: start;
+		border-color: color-mix(in srgb, var(--gold) 45%, transparent);
+		border-end-start-radius: 4px;
 	}
-	.agent-status {
+	/* Who said it is read out; the side of the conversation shows it. */
+	.chat-author {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+	.chat-note,
+	.error {
+		margin: 0;
+		font-size: 13px;
+	}
+	.chat-note {
+		color: var(--muted);
+	}
+	.chat-status {
 		display: flex;
 		gap: 10px;
 		justify-content: space-between;
 		align-items: center;
 	}
-	@media (max-width: 520px) {
-		.agent-launcher,
-		.project-agent {
-			right: 12px;
-		}
-		.project-agent {
-			width: calc(100vw - 24px);
-		}
+	.chat-status button {
+		flex: none;
+		padding: 5px 10px;
+	}
+	.error {
+		padding: 8px 12px;
+		border-radius: 8px;
+	}
+	/* The request stays in reach under the conversation as it scrolls. */
+	.chat-compose {
+		position: sticky;
+		bottom: 0;
+		margin-top: auto;
+		padding: 2px 0 14px;
+		background: var(--panel);
+	}
+	/* The request is what is read here: it is set as large as the words around it. */
+	.chat-compose :global(.composer textarea) {
+		font-size: 16px;
 	}
 </style>

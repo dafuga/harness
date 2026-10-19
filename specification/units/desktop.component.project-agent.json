@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.project-agent",
 	"kind": "component",
-	"title": "Project agent",
-	"responsibility": "Offers a catalog-level agent conversation for proposing a new entity and presents the request, response, progress and recoverable saved draft.",
+	"title": "Project chat",
+	"responsibility": "Keeps project chat available on every screen and links discussed or changed units to their commit history.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -16,14 +16,14 @@
 			{
 				"name": "ProjectAgent.workspace",
 				"type": "Workspace",
-				"description": "Workspace used to create the project-agent state and provide category context and navigation. The component is intended to be recreated when the project changes. Its launcher is shown only when the agent state allows it and no entity is open."
+				"description": "The selected project, revision, permissions, bridge and navigation. Conversation state stays with this project as its screens change."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectAgent",
 				"type": "markup",
-				"description": "Initially closed “Work with agent” launcher and an expandable conversation panel. Opening focuses the message box; closing or Escape restores focus to the launcher. Shows recorded request, response, status, errors and a cancel button when a status and run identifier exist. Links a saved draft for explicit opening. The compact composer offers Plan and a disabled Change choice because approval is false; active work blocks sending and the current category informs the request prompt."
+				"description": "A persistent round chat bubble and conversation panel. Read users browse; Comment users leave comments; Write users can choose a model and ask, plan or change at a writable branch tip. Registered unit references open their history."
 			}
 		],
 		"errors": []
@@ -51,6 +51,11 @@
 		},
 		{
 			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.floating-chat",
 			"via": "import",
 			"origin": "derived"
 		}

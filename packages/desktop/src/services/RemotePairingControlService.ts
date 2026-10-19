@@ -113,7 +113,11 @@ export class RemotePairingControlService {
 		if (!waiting) throw new Error('This pairing request is no longer waiting.');
 		const earlier = state.devices.find((device) => device.deviceId === shown),
 			generation = (earlier ? earlier.generation : 0) + 1,
-			grant = { projects, agents },
+			grant = {
+				projects,
+				agents,
+				...(approval.comments === undefined ? {} : { comments: approval.comments })
+			},
 			terms = { hostName: this.host.name(), generation, grant, deviceId: shown };
 		const approved = await runtime.pairing.approve(pairingId, terms),
 			{ deviceId, sealed, challenge } = approved,

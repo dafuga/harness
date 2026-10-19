@@ -84,7 +84,7 @@ export function requestEntry(
 		at: new Date().toISOString(),
 		author: 'user',
 		text: request.text,
-		mode: request.mode,
+		mode: request.mode === 'ask' ? null : request.mode,
 		provider: request.provider,
 		model: request.model,
 		version: design?.version || null,

@@ -1,3 +1,4 @@
+import { AgentHttpAdapter } from './AgentHttpAdapter';
 import { hostedImage } from '../utils/hostedImage';
 import { hostedCapabilities } from '../utils/hostedCapabilities';
 import { HostedEvidenceAdapter } from './HostedEvidenceAdapter';
@@ -22,6 +23,7 @@ import type { HostedReadOptions } from '../services/HostedReadService';
 export type { NativeHostedCredential } from './HostedHttpAdapter';
 export class RemoteHttpProjectAdapter implements RemoteProjectPort {
 	private http: HostedHttpAdapter;
+	private agents: AgentHttpAdapter;
 	private projections: RemoteProjectionService;
 	private recorded: HostedEvidenceService;
 	private validator = new RemoteProjectResponseValidator();
@@ -42,29 +44,37 @@ export class RemoteHttpProjectAdapter implements RemoteProjectPort {
 				await options.cache?.purge(principal, project);
 			}
 		});
+		this.agents = agentPort(this.http);
 		this.projections = new RemoteProjectionService(this.http, authorityOptions);
 		this.recorded = new HostedEvidenceService(
 			new HostedEvidenceAdapter(this.http),
 			authorityOptions
 		);
 	}
-	evidence(input: EntityEvidenceQuery & { projectId: string }) {
-		return this.recorded.evidence(input);
+	evidence = (input: EntityEvidenceQuery & { projectId: string }) => this.recorded.evidence(input);
+	artifact = (input: EvidenceArtifactQuery & { projectId: string }) =>
+		this.recorded.artifact(input);
+	agent(method: string, input: unknown, projectId: string) {
+		return this.agents.call(method, input, projectId);
 	}
-	artifact(input: EvidenceArtifactQuery & { projectId: string }) {
-		return this.recorded.artifact(input);
+	onRunEvent(listener: Parameters<AgentHttpAdapter['listen']>[0]) {
+		return this.agents.listen(listener);
 	}
 	async available() {
 		return Boolean(await this.options.credentials());
 	}
-	async listProjects() {
-		return this.projections.projects();
-	}
+	listProjects = () => this.projections.projects();
 	async snapshot(input: { projectId: string; branch: string | null; commit: string | null }) {
 		const snapshot = await this.projections.snapshot(input);
-		return snapshot.cache?.status === 'offline'
-			? snapshot
-			: { ...snapshot, capabilities: await this.capabilities(input.projectId) };
+		if (snapshot.cache?.status === 'offline') return snapshot;
+		const capabilities = await this.capabilities(input.projectId);
+		const fresh = {
+			...snapshot,
+			capabilities,
+			writable: !input.commit && snapshot.revision.atTip && capabilities.agents
+		};
+		this.agents.shown(fresh, input);
+		return fresh;
 	}
 	async entity(input: EntityQuery & { projectId: string }) {
 		return this.projections.read(
@@ -128,7 +138,18 @@ export class RemoteHttpProjectAdapter implements RemoteProjectPort {
 		)
 			throw new Error('Unknown hosted image anchor.');
 	}
-	private path(projectId: string, operation: string, input: object = {}): string {
-		return this.projections.path(projectId, operation, input);
-	}
+	private path = (projectId: string, operation: string, input: object = {}) =>
+		this.projections.path(projectId, operation, input);
+}
+
+function agentPort(http: HostedHttpAdapter) {
+	return new AgentHttpAdapter(async (projectId, body) => {
+		const credential = await http.authorize();
+		const response = await http.request(
+			`/api/projects/${encodeURIComponent(projectId)}/agent`,
+			credential,
+			{ method: 'POST', body: JSON.stringify(body) }
+		);
+		return response.json();
+	});
 }

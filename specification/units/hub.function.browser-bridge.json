@@ -36,6 +36,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.adapter.agent-http",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.function.comment-entries",
 			"via": "import",
 			"origin": "derived"

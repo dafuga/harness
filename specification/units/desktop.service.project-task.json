@@ -1,0 +1,106 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.service.project-task",
+	"kind": "service",
+	"title": "Run a project request",
+	"responsibility": "Answers a question without writes or makes an explicit code change, then identifies the registered owners of changed files.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/services/ProjectTaskService.ts"],
+		"symbols": ["ProjectTaskService", "ProjectTaskService.run"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ProjectTaskService.run.context",
+				"type": "ProjectTaskContext"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ProjectTaskService.run",
+				"type": "Promise<{ summary: string }>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			},
+			{
+				"name": "RunCancelled",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.changed-units",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.host-changes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.prepare-project-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.proposal-units",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.reference-prompt",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.source-changes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.source-snapshot",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.agent-runner-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.bug-repair-policy",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-owners",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/services/ProjectTaskService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/services/ProjectTaskService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

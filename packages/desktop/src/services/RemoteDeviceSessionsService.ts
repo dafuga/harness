@@ -125,7 +125,11 @@ export class RemoteDeviceSessionsService {
 	private grant(deviceId: string): RemoteGrant {
 		const record = this.options.device(deviceId);
 		return record
-			? { projects: record.projects, agents: record.agents }
+			? {
+					projects: record.projects,
+					agents: record.agents,
+					...(record.comments === undefined ? {} : { comments: record.comments })
+				}
 			: { projects: [], agents: false };
 	}
 	private detach(entry: Entry): void {

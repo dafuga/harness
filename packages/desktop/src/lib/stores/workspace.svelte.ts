@@ -11,6 +11,8 @@ import { workspacePath, workspaceRoute } from '../../utils/workspaceRoute';
 import type { RouteSuffix, WorkspaceRoute } from '../../utils/workspaceRoute';
 
 class WorkspaceState {
+	routeProject = true;
+	onNavigate?: (url: string, push: boolean) => void;
 	snapshot = $state<ProjectSnapshot | null>(null);
 	entity = $state<EntityDetail | null>(null);
 	category = $state<Category>('pages');
@@ -67,7 +69,11 @@ class WorkspaceState {
 	}
 	/** A link inside the shown project: a branch tip, or a full commit of that branch. */
 	link(target: Partial<Omit<WorkspaceRoute, 'projectId'>>) {
-		return workspacePath({ category: this.category, ...target, projectId: this.projectId });
+		return workspacePath({
+			category: this.category,
+			...target,
+			projectId: this.routeProject ? this.projectId : null
+		});
 	}
 	async navigate(url: string, push = true) {
 		if (!this.bridge) return;
@@ -80,8 +86,7 @@ class WorkspaceState {
 			const loaded = await this.load(route, token);
 			if (!loaded || token !== this.serial) return;
 			const shown = this.show(route, loaded);
-			if (push) globalThis.history.pushState({}, '', shown);
-			else if (shown !== url) globalThis.history.replaceState({}, '', shown);
+			if (push || shown !== url) (this.onNavigate ?? browserNavigate)(shown, push);
 		} catch (cause) {
 			if (token === this.serial) this.error = String(cause);
 		} finally {
@@ -107,9 +112,7 @@ class WorkspaceState {
 		this.suffix = route.suffix;
 		return this.path(this.category, route.entityId ?? undefined, route.suffix ?? '');
 	}
-	openProject() {
-		return openProject(this);
-	}
+	openProject = () => openProject(this);
 	/** Keeps the category; entity, branch and commit belong to the project that is left. */
 	async switchProject(projectId: string) {
 		if (!projectId || projectId === this.projectId) return;
@@ -125,11 +128,14 @@ class WorkspaceState {
 			if (listing === this.listing) this.error = String(cause);
 		}
 	}
-	async refresh() {
-		await this.navigate(globalThis.location.pathname, false);
-	}
+	refresh = () => this.navigate(globalThis.location.pathname, false);
 }
 export function createWorkspaceStore() {
 	return new WorkspaceState();
 }
 export type Workspace = WorkspaceState;
+
+function browserNavigate(shown: string, push: boolean) {
+	if (push) globalThis.history.pushState({}, '', shown);
+	else globalThis.history.replaceState({}, '', shown);
+}

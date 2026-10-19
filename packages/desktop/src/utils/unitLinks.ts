@@ -52,7 +52,8 @@ function same(view: View, now: View | null): boolean {
  */
 export function unitLinks(
 	workspace: Workspace,
-	current: CatalogEntity | null = null
+	current: CatalogEntity | null = null,
+	options: { history?: boolean } = {}
 ): (id: string) => UnitLink | null {
 	const view = shown(workspace);
 	if (!view) return () => null;
@@ -64,12 +65,12 @@ export function unitLinks(
 		const { projectId, branch } = view;
 		const [commit, category] = [view.pinned ? view.commit : null, unit.category];
 		const to = workspacePath({
-			projectId,
+			projectId: workspace.routeProject === false ? null : projectId,
 			branch,
 			commit,
 			category,
 			entityId: unit.id,
-			suffix: null
+			suffix: options.history ? 'history' : null
 		});
 		return { to, name: explorerName(unit), category };
 	};

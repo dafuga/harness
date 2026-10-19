@@ -13,15 +13,18 @@
 	let {
 		text,
 		workspace,
-		entity = null
+		entity = null,
+		history = false
 	}: {
 		text: string;
 		workspace: Workspace;
 		/** The entity whose details are in view; it is named before the catalog lists it. */
 		entity?: CatalogEntity | null;
+		/** Whether a reference opens the unit's commit history rather than its details. */
+		history?: boolean;
 	} = $props();
 	const parts = $derived.by(() => {
-		const link = unitLinks(workspace, entity);
+		const link = unitLinks(workspace, entity, { history });
 		return entityReferences(text).map((part) => ({
 			text: part.text,
 			unit: part.kind === 'reference' ? link(part.id) : null

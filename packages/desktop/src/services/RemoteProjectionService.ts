@@ -127,7 +127,7 @@ function cachedSnapshot(
 ): ProjectSnapshot {
 	return {
 		...snapshot,
-		writable: false,
+		writable: snapshot.writable && !result.offline,
 		...(snapshot.cache
 			? {
 					cache: {

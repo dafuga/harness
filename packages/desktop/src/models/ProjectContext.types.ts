@@ -62,6 +62,10 @@ export type HumanCommentResult =
 	| { kind: 'shared'; projectId: string; thread: CommittedThread };
 /** Main-process injected transport. It owns verified Google session handling; no renderer Actor. */
 export interface RemoteProjectPort {
+	agent?(method: string, input: unknown, projectId: string): Promise<unknown>;
+	onRunEvent?(
+		listener: Parameters<import('./DesktopBridge.types').DesktopBridge['onRunEvent']>[0]
+	): () => void;
 	evidence?(input: EntityEvidenceQuery & { projectId: string }): Promise<EntityEvidenceResult>;
 	artifact?(input: EvidenceArtifactQuery & { projectId: string }): Promise<EvidenceArtifactResult>;
 	history?(input: EntityQuery & { projectId: string; page: number; branch?: string }): Promise<{

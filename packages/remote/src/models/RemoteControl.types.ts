@@ -27,6 +27,8 @@ export interface RemoteDeviceInfo {
 	name: string;
 	platform: string;
 	projectIds: string[];
+	/** False grants read-only access; omitted preserves older read-and-comment grants. */
+	comments?: boolean;
 	agents: boolean;
 	approvedAt: string;
 	lastSeenAt: string | null;
@@ -58,6 +60,8 @@ export interface RemoteApprovalInput {
 	pairingId: string;
 	deviceId: string;
 	projectIds: string[];
+	/** False grants read-only access; omitted preserves older read-and-comment grants. */
+	comments?: boolean;
 	agents: boolean;
 }
 /** `window.harnessRemote` in Electron. Absent anywhere else. */

@@ -18,6 +18,7 @@
 			/>{/key}{:else}{#key workspace.projectId}<CatalogView {workspace} />{/key}{/if}<StatusBar
 		{workspace}
 	/>
-	<!-- One conversation per project and revision: a request never follows to another one. -->
-	{#key `${workspace.projectId}:${workspace.snapshot?.writable}`}<ProjectAgent {workspace} />{/key}
+	<!-- One conversation per project: it stays through entities, history and pinned commits, and
+	     a request never follows to another project. -->
+	{#key workspace.projectId}<ProjectAgent {workspace} />{/key}
 </div>

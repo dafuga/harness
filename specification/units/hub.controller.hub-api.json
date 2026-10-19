@@ -32,6 +32,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "hub.controller.hub-agent",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.controller.hub-remote",
 			"via": "import",
 			"origin": "derived"

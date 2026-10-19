@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/proposalUnits.ts"],
-		"symbols": ["proposalUnits"]
+		"symbols": ["proposalUnits", "taskUnits"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -41,6 +41,11 @@
 		},
 		{
 			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "module.contracts",
 			"via": "import",
 			"origin": "derived"
 		}

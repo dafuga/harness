@@ -1,3 +1,4 @@
+import { repositoryLease } from './repositoryLease';
 import { ProjectImageCacheService } from '../services/ProjectImageCacheService';
 import { ProjectOperationsService } from '../services/ProjectOperationsService';
 import { RecordedEvidenceService } from '../services/RecordedEvidenceService';
@@ -23,7 +24,19 @@ async function writable(context: BridgeContext) {
 }
 /** Planning writes of one repository happen one at a time, whichever client asks. */
 function exclusive<T>(session: ProjectSessionService, work: () => Promise<T>): Promise<T> {
-	return session.arbiter.exclusive(session.requireProject().root, work);
+	const root = session.requireProject().root;
+	return session.arbiter.exclusive(root, async () => {
+		const release = await repositoryLease(root);
+		if (!release) throw new Error('An agent or planning write is active in another Harness app.');
+		try {
+			release.signal.throwIfAborted();
+			const value = await work();
+			release.signal.throwIfAborted();
+			return value;
+		} finally {
+			await release();
+		}
+	});
 }
 async function thread(context: BridgeContext, input: Parameters<DesktopBridge['openThread']>[0]) {
 	const p = await writable(context),

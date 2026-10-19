@@ -28,6 +28,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.component.console-chat",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.style.base",
 			"via": "import",
 			"origin": "derived"
