@@ -12,7 +12,9 @@ import { alpha, beta, earlier, gamma, searchFixture } from './ui-search-fixture'
  */
 const alphaAt = (rest: string) => `/projects/${alpha}/harness/branch/feat%2Falpha/${rest}`;
 const field = (page: Page) =>
-	page.getByRole('banner').getByRole('combobox', { name: 'Search entities', exact: true });
+	page
+		.getByRole('dialog', { name: 'Search project' })
+		.getByRole('combobox', { name: 'Search entities', exact: true });
 const found = (page: Page) => page.getByRole('listbox', { name: 'Entities found', exact: true });
 const options = (page: Page) => found(page).getByRole('option');
 const sixth = [
@@ -28,6 +30,7 @@ const sixth = [
 async function ready(page: Page, info: TestInfo, name: string): Promise<void> {
 	await expect(page.getByRole('navigation', { name: 'Catalog categories' })).toBeVisible();
 	await remember(page, info, `ready-${name}`);
+	await page.getByRole('button', { name: 'Search entities', exact: true }).click();
 }
 
 async function remember(page: Page, info: TestInfo, name: string): Promise<void> {
@@ -82,9 +85,9 @@ test('Escape closes the list and then clears the field, and nothing found is sai
 	await expect(options(page)).toHaveCount(1);
 	await field(page).press('Escape');
 	await expect(found(page)).toBeHidden();
-	await expect(field(page)).toHaveValue('refund');
-	await field(page).press('Escape');
-	await expect(field(page)).toHaveValue('');
+	await expect(page.getByRole('button', { name: 'Search entities', exact: true })).toBeFocused();
+	await page.keyboard.press('ControlOrMeta+k');
+	await expect(field(page)).toBeFocused();
 	await field(page).fill('limits');
 	await options(page).first().click();
 	await expect(page).toHaveURL(alphaAt('configs/app.config.order-limits'));
@@ -114,6 +117,7 @@ test('another project is never searched', async ({ page }, info) => {
 	await field(page).fill('only');
 	await expect(page.getByText('No entity matches “only”')).toBeVisible();
 	await page.goto(`/projects/${beta}/harness/branch/main/pages`);
+	await page.getByRole('button', { name: 'Search entities', exact: true }).click();
 	await field(page).fill('only');
 	await expect(options(page)).toHaveText([/Function.*Beta only function/]);
 	await field(page).fill('alpha');

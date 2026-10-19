@@ -16,7 +16,9 @@ import {
  */
 const scoped = `${shellMount}/branch/feature%2Fshell%231`;
 const field = (page: Page) =>
-	page.getByRole('banner').getByRole('combobox', { name: 'Search entities', exact: true });
+	page
+		.getByRole('dialog', { name: 'Search project' })
+		.getByRole('combobox', { name: 'Search entities', exact: true });
 const found = (page: Page) => page.getByRole('listbox', { name: 'Entities found', exact: true });
 const options = (page: Page) => found(page).getByRole('option');
 const long =
@@ -34,6 +36,7 @@ async function opened(page: Page, info: TestInfo, name: string, hooks: object) {
 	await openShellPage(page, home, 'navbar');
 	await expect(page.getByText('Harness', { exact: true }).first()).toBeVisible();
 	await remember(page, info, `ready-${name}`);
+	await page.getByRole('button', { name: 'Search entities', exact: true }).click();
 }
 async function remember(page: Page, info: TestInfo, name: string): Promise<void> {
 	await page.evaluate(() => document.fonts.ready.then(() => undefined));

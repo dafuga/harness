@@ -16,12 +16,14 @@ const found = (page: Page) =>
 export const searchStates: Record<string, (page: Page) => Promise<void>> = {
 	async search(page) {
 		await page.goto(tip(shellsBranch, 'shells'));
+		await page.getByRole('button', { name: 'Search entities', exact: true }).click();
 		await field(page).fill('title');
 		await expect(found(page).filter({ hasText: 'Title frame' })).toContainText('Shell');
 		await expect(found(page).first()).toHaveAttribute('aria-selected', 'true');
 	},
 	async 'search-pinned'(page) {
 		await page.goto(at('main', commits.approved, 'functions'));
+		await page.getByRole('button', { name: 'Search entities', exact: true }).click();
 		await expect(field(page)).toHaveAttribute(
 			'placeholder',
 			`Search at ${short(commits.approved)}`

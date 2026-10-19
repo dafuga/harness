@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-19T07:17:58.867Z","name":"navbar-search-filters","goal":"Global search opens from a right navbar icon; each catalog has local search and composable filters","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-19T07:20:17.567Z","loop":"navbar-search-filters","step":"spec","evidence":"Feature spec defines modal search, revision scope, local filtering and responsive behavior."}
+{"event":"step.completed","timestamp":"2026-10-19T07:20:17.932Z","loop":"navbar-search-filters","step":"coverage","evidence":"Extended existing shell search, shared renderer search and collection tests; prior assertions required inline search and covered no composable filters."}

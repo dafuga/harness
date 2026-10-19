@@ -1,7 +1,7 @@
 import { expect, test, type Page, type TestInfo } from '../../../../test/support/browserTest';
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { box, combo } from './support/shellChecks';
+import { box } from './support/shellChecks';
 import { sha, shellBranch, shellMount } from './support/shellData';
 import {
 	buildShellFixture,
@@ -18,7 +18,9 @@ import {
  */
 const scoped = `${shellMount}/branch/feature%2Fshell%231`;
 const field = (page: Page) =>
-	page.getByRole('banner').getByRole('combobox', { name: 'Search entities', exact: true });
+	page
+		.getByRole('dialog', { name: 'Search project' })
+		.getByRole('combobox', { name: 'Search entities', exact: true });
 const found = (page: Page) => page.getByRole('listbox', { name: 'Entities found', exact: true });
 const options = (page: Page) => found(page).getByRole('option');
 const address = (page: Page) => page.getByRole('status', { name: 'Address' });
@@ -42,6 +44,7 @@ async function opened(page: Page, width: number, height: number) {
 	await page.setViewportSize({ width, height });
 	await openShellPage(page, home, 'navbar');
 	await expect(page.getByText('Harness', { exact: true }).first()).toBeVisible();
+	await page.getByRole('button', { name: 'Search entities', exact: true }).click();
 }
 
 async function remember(page: Page, info: TestInfo, name: string): Promise<void> {
@@ -87,9 +90,9 @@ test('Escape closes the list then clears the field; nothing found is said; a cli
 	await expect(options(page)).toHaveText([/Service.*Order refunds/]);
 	await field(page).press('Escape');
 	await expect(found(page)).toBeHidden();
-	await expect(field(page)).toHaveValue('cents');
-	await field(page).press('Escape');
-	await expect(field(page)).toHaveValue('');
+	await expect(page.getByRole('button', { name: 'Search entities', exact: true })).toBeFocused();
+	await page.keyboard.press('ControlOrMeta+k');
+	await expect(field(page)).toBeFocused();
 	await field(page).fill('limits');
 	await options(page).first().click();
 	await expect(address(page)).toHaveText(`${scoped}/configs/app.config.order-limits`);
@@ -103,6 +106,7 @@ test('with a commit selected only that commit is searched, and the result keeps 
 	const pinned = { branch: shellBranch, commit: sha(3), category: 'functions' };
 	await page.evaluate((to) => history.replaceState(to, ''), pinned);
 	await page.reload();
+	await page.getByRole('button', { name: 'Search entities', exact: true }).click();
 	await expect(field(page)).toHaveAttribute('placeholder', `Search at ${sha(3).slice(0, 7)}`);
 	await field(page).fill('frame');
 	await remember(page, info, 'shell-search-pinned-desktop');
@@ -119,24 +123,12 @@ test('at a wide desktop the search shares the one row of the bar, overlapping no
 }, info) => {
 	await opened(page, 1440, 1000);
 	await remember(page, info, 'ready-shell-search-fit-desktop');
-	const bar = page.getByRole('banner');
-	const [search, branch, tip] = [
-		await box(field(page)),
-		await box(combo(bar, 'Branch')),
-		await box(bar.getByRole('button', { name: 'Go to tip' }))
-	];
-	// The field, with its focus ring of three pixels, and the branch field do not overlap.
-	const apart = (one: typeof search, two: typeof search) => one.x + one.width + 3 <= two.x;
-	expect(apart(search, branch) || apart(branch, search)).toBe(true);
-	expect(search.width).toBeGreaterThanOrEqual(120);
-	expect(tip.x + tip.width).toBeLessThanOrEqual(1440);
+	await field(page).press('Escape');
+	const trigger = page.getByRole('button', { name: 'Search entities', exact: true });
+	const search = await box(trigger);
+	expect(search.width).toBeLessThanOrEqual(48);
+	expect(search.x + search.width).toBeLessThanOrEqual(1440);
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(1440);
-	// Still the one row of the bar a wide screen had before the search.
-	const first = bar
-		.getByRole('navigation', { name: 'Harness categories' })
-		.getByRole('link')
-		.first();
-	expect((await box(bar)).height).toBeLessThanOrEqual((await box(first)).height + 2);
 });
 
 for (const viewport of [

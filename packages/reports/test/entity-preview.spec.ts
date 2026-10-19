@@ -16,6 +16,14 @@ test('collections: search, changed only and order change what is listed', async 
 	const rows = tab.getByRole('article');
 	await expect(rows).toHaveCount(3);
 	await capture(tab, 'components-desktop');
+	await tab.getByRole('combobox', { name: 'Verification filter' }).selectOption('unproven');
+	await expect(rows).toHaveCount(0);
+	await tab.getByRole('button', { name: 'Show all components' }).click();
+	await expect(rows).toHaveCount(3);
+	await tab.getByRole('combobox', { name: 'Usage filter' }).selectOption('shared');
+	await expect(rows).toHaveCount(0);
+	await tab.getByRole('button', { name: 'Show all components' }).click();
+	await expect(rows).toHaveCount(3);
 	// The footer explains the two marks by showing them; what each means is told on request.
 	const key = tab.locator('.ex-legend');
 	expect(await key.innerText()).not.toMatch(/proven|passed|failed/i);

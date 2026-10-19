@@ -27,19 +27,9 @@ const drawn = (props: object) =>
 			...props
 		}
 	}).body.replace(/<!--.*?-->/gs, '');
-const field = (html: string) => /<input\b[^>]*>/s.exec(html)?.[0] ?? '';
-
-test('the field is a closed combobox for entities with nothing listed', () => {
+test('global search starts as a single icon button with its query inside a closed modal', () => {
 	const html = drawn({});
-	expect(field(html)).toMatch(/role="combobox"/);
-	expect(field(html)).toMatch(/aria-expanded="false"/);
-	expect(field(html)).toMatch(/placeholder="Search entities"/);
-	expect(html).not.toMatch(/role="listbox"|role="option"/);
-});
-
-test('a selected commit is named, also while its entities are read; otherwise loading is said', () => {
-	const pinned = { label: 'At commit ccccccc', pinned: 'ccccccc' };
-	expect(field(drawn({ scope: pinned }))).toMatch(/placeholder="Search at ccccccc"/);
-	expect(field(drawn({ scope: pinned, entries: null }))).toMatch(/placeholder="Search at ccccccc"/);
-	expect(field(drawn({ entries: null }))).toMatch(/placeholder="Loading entities…"/);
+	expect(html).toMatch(/aria-label="Search entities"/);
+	expect(html).not.toMatch(/role="combobox"|role="listbox"|<input\b/);
+	expect(html).toMatch(/aria-haspopup="dialog"/);
 });
