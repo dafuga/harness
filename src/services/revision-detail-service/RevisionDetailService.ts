@@ -10,17 +10,11 @@ import { UnitRegistryRepository } from '../../repositories/UnitRegistryRepositor
 import type { MediaPlacer } from '../../utils/mediaPlace';
 import { recordView, type RecordView, type ResolvedMedia } from '../../utils/recordView';
 import { revisionReasons, type RevisionReasons } from '../../utils/revisionReasons';
-import {
-	revisionRegistry,
-	type RevisionRegistry
-} from '../../utils/revision-registry/revisionRegistry';
+import { revisionRegistry, type RevisionRegistry } from '../../utils/revisionRegistry';
 import type { AttachedRecord } from '../attached-record-service/AttachedRecordService';
 import type { CommitStatus, HistoryStatusService } from '../HistoryStatusService';
 import type { StoredSide } from '../../utils/sideImpact';
-import {
-	SourceImpactService,
-	type SourceImpact
-} from '../source-impact-service/SourceImpactService';
+import * as sourceImpact from '../source-impact-service/SourceImpactService';
 import { RegressionProofRepository } from '../../repositories/RegressionProofRepository';
 import { regressionHistory } from '../../utils/regressionHistory';
 import type { RegressionView } from '../../core/regressionTypes';
@@ -45,7 +39,7 @@ export interface RevisionDetail {
 	 * What the commit changed against its first parent, computed from the source of both commits.
 	 * It exists whether or not anything was verified; null when a tree could not be read.
 	 */
-	sourceImpact: SourceImpact | null;
+	sourceImpact: sourceImpact.SourceImpact | null;
 	/**
 	 * Where the stored side of this revision's source tree is, relative to the index: what any
 	 * two revisions are compared from. Null when the tree could not be read.
@@ -81,7 +75,7 @@ export interface BuiltRevision {
 
 /** What the source of a commit says, whatever is noted on it: shared, it is read only once. */
 export const revisionSources = (root: string) => ({
-	source: new SourceImpactService(root),
+	source: new sourceImpact.SourceImpactService(root),
 	registries: new Map<string, Stored>()
 });
 

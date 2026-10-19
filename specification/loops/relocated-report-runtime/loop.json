@@ -2,7 +2,7 @@
 	"name": "relocated-report-runtime",
 	"goal": "Preserve installed and source-relative report runtime paths after helper owner relocation",
 	"createdAt": "2026-10-19T19:04:02.492Z",
-	"updatedAt": "2026-10-19T19:05:46.254Z",
+	"updatedAt": "2026-10-19T19:10:16.464Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -48,12 +48,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T19:08:36.795Z",
+			"evidence": "Canonical-path test-only commit da5195b3 fails the installed launcher assertion; separate fix 2564dd29 passes unchanged tests and command. Immutable red 0f002f032c25dae6e7192886a3380c952a9530376a4b70e417cab4149c744c85 pairs with green 67130113e06257bbc37918eaf55aad21d25216938e41c9440b9b42d784d28e14. The earlier macOS path-spelling fixture failure remains recorded, not treated as passing proof."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T19:10:16.464Z",
+			"evidence": "An isolated archive of 2564dd29 ran the unchanged canonical-path environment suite. Restoring the previous output-relative URLs failed the installed-entry assertion; restoring the repair passed both cases. The live checkout and managed preview were not used as test fixtures. Logs: /tmp/harness-report-relocation-guard-{red,green}.log."
 		},
 		{
 			"id": "verify",

@@ -7,7 +7,6 @@
 	import type { PickerSnapshot, SwitchRequest } from '../../../../../src/core/pickerTypes';
 	import type { ProviderSelection } from '../../../../../src/core/pickerModelTypes';
 	import '../../lib/styles/provider-picker.css';
-
 	let { label = 'Model picker' }: { label?: string } = $props();
 
 	const providers: Record<string, string> = { openai: 'OpenAI', 'harness-claude': 'Claude' };

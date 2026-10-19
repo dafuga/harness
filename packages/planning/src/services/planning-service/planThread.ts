@@ -1,19 +1,10 @@
 import { planIdentity } from '../../utils/planIdentity';
 import { randomUUID } from 'node:crypto';
 import { isAbsolute } from 'node:path';
-import type {
-	OpenThreadInput,
-	MessageDraft,
-	AppendMessageInput
-} from '../../models/PlanningBridge.types';
-import type {
-	PlanDetail,
-	PlanThread,
-	ThreadMessage,
-	ThreadAnchor,
-	ApprovalRecord,
-	HostFileChange
-} from '../../models/Planning.types';
+import type { OpenThreadInput, MessageDraft } from '../../models/PlanningBridge.types';
+import type { AppendMessageInput } from '../../models/PlanningBridge.types';
+import type { PlanDetail, PlanThread, ThreadMessage } from '../../models/Planning.types';
+import type { ThreadAnchor, ApprovalRecord, HostFileChange } from '../../models/Planning.types';
 import type { Git } from '../../utils/planGit';
 import { blob, revision } from '../../utils/planGit';
 import { planRead } from '../../utils/plan-read/planRead';
@@ -22,7 +13,6 @@ import { optionOf } from '../../utils/planOptions';
 import { clean, commitFiles, type Files } from '../../utils/plan-write/planWrite';
 import { fail, hash, json, now, planData } from '../../utils/planData';
 import { author, filename, region, text } from '../../utils/planValidate';
-
 function messageValue(
 	input: MessageDraft,
 	plan: PlanDetail,

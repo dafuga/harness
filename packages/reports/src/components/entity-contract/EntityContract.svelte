@@ -38,7 +38,6 @@
 		opener?.focus();
 	}
 </script>
-
 <section
 	class="ex-card ex-contract"
 	data-harness-component="entity-contract"

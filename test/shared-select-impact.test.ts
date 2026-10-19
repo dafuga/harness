@@ -1,3 +1,4 @@
+import * as sourceIndex from '../src/services/source-index-service/SourceIndexService';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { beforeAll, expect, test } from 'vitest';
@@ -6,10 +7,6 @@ import { WorkingTreeAdapter } from '../src/adapters/WorkingTreeAdapter';
 import type { ImpactReport, ImpactSide } from '../src/core/impactTypes';
 import { ImpactService } from '../src/services/impact-service/ImpactService';
 import { SourceGraphService } from '../src/services/SourceGraphService';
-import {
-	SourceIndexService,
-	type SourceIndex
-} from '../src/services/source-index-service/SourceIndexService';
 import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
 import { scanImports } from '../src/services/source-index-service/scanImports';
 import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
@@ -22,7 +19,7 @@ import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
  */
 const select = 'packages/reports/src/components/Select.svelte';
 const shared = '$shared';
-const indexer = new SourceIndexService();
+const indexer = new sourceIndex.SourceIndexService();
 const analysis = new ImpactService(new HandlerRuntimeAdapter(impactKernel));
 const reports = new Map<string, Promise<ImpactReport>>();
 interface Written {
@@ -66,7 +63,7 @@ function imports(from: string): Written[] {
 	});
 }
 /** One tree as the impact analysis reads it, with the registry as it is stored. */
-function side(index: SourceIndex): ImpactSide {
+function side(index: sourceIndex.SourceIndex): ImpactSide {
 	return {
 		revision: 'working-tree',
 		config: loaded.config,

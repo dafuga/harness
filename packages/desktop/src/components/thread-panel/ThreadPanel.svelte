@@ -159,7 +159,6 @@
 		return true;
 	}
 </script>
-
 <aside class="thread-panel" aria-label="Design conversation">
 	<div class="row">
 		<h2>{explorerName(entity)} · {heading}</h2>
