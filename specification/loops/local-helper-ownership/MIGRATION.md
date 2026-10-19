@@ -424,7 +424,7 @@ Nested private call chains follow their terminal owner. Types and constants reta
 
 ## Registered module contracts
 
-Helper definitions live in the owner-local files listed above. Existing registered module entry points retain forwarding exports so their contracts, public imports and history remain valid. These entry modules do not duplicate the relocated helper implementations. Component and class imports use their new source paths.
+Helper definitions live in the owner-local files listed above. Published module entry points retain forwarding exports so their contracts, public imports and history remain valid. The three internal core module runtimes described below follow their workflow owners. These entry modules do not duplicate the relocated helper implementations. Component and class imports use their new source paths.
 
 ## Other units whose imports change
 
@@ -1112,3 +1112,11 @@ Split utility files now match their exported helper names. Initializer implement
 The existing project detection and ownership suites prove all 411 definition fingerprints and native cold imports of the three registered APIs. Test-only commit `7d14589d` fails; fix `11896e81` passes with the same frozen test corpus. Stable-shell red `48ad9f8d43582d38ab7bb6e4efc14aadd5ed13ef672215924bd7c49b9ca89a59`, green `2f46ac97a07a4801a700a9b71074238355422168ecf305507d25368e35645f32`. Fixture-path maintenance was deferred until after proof.
 
 Audit forwarding export guard: in an isolated archived workspace, restoring the previous declaration-only parser fails the standard adapter matrix; restoring the fixed parser passes. Logs: `/tmp/harness-forwarding-guard-red.log` and `/tmp/harness-forwarding-guard-green.log`. Naming and dependency limits remain unchanged.
+
+## Grant store initialization prevention
+
+The Hub grant store initially kept SQL constants in a public facade that forwarded its owner implementation. The owner read those constants during initialization, closing a cycle. Real SQLite contract tests rejected the resulting statements; the production Hub build also caught the native temporal-dead-zone error. The constants now initialize with the owner, and the facade forwards the same runtime names. No token handling, SQL semantics or authorization rule changed.
+
+The existing D1 adapter suite now cold-imports both entries in native runtimes. Red commit `922e3a15`, fix `cf9f04a5`; stable red `8ec6e9fe976634159154f467123a2a078eea702d72dea99a3e46f48e0973273c`, green `104da9b3311b49b9818a691ecb1dedd105e508af9c00508cd87e28cfc17d02b4`. All 43 adapter cases pass. An isolated reintroduction fails, and restoring the repair passes. Logs: `/tmp/harness-grant-initialization-guard-red.log` and `/tmp/harness-grant-initialization-guard-green.log`.
+
+A static scan of utility forwarding exports and owner-level initializers found only the previously guarded `byName` back-reference; its declaration is hoisted and its cold public/owner cases pass. New split modules must not read facade constants during initialization.
