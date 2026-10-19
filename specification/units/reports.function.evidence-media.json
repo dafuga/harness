@@ -55,6 +55,31 @@
 			"origin": "derived"
 		}
 	],
+	"helperContracts": [
+		{
+			"name": "audioDuration",
+			"source": "packages/reports/src/utils/evidenceMedia.ts",
+			"inputs": [
+				{
+					"name": "audioDuration.seconds",
+					"type": "number"
+				}
+			],
+			"output": "unknown",
+			"pure": true,
+			"consumers": [
+				{
+					"unit": "reports.component.audio-comparison"
+				},
+				{
+					"unit": "reports.component.audio-evidence"
+				},
+				{
+					"unit": "reports.component.replay-controls"
+				}
+			]
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/reports/src/utils/evidenceMedia.ts",

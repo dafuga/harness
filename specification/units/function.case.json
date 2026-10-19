@@ -59,6 +59,337 @@
 		"errors": []
 	},
 	"dependencies": [],
+	"helperContracts": [
+		{
+			"name": "toKebabCase",
+			"source": "src/core/case.ts",
+			"inputs": [
+				{
+					"name": "toKebabCase.value",
+					"type": "string"
+				}
+			],
+			"output": "string",
+			"pure": true,
+			"consumers": [
+				{
+					"unit": "function.unit-identity",
+					"symbol": "named"
+				},
+				{
+					"unit": "function.validation",
+					"symbol": "validateRouteName"
+				},
+				{
+					"unit": "template.app-pieces",
+					"symbol": "apiFiles"
+				},
+				{
+					"unit": "template.app-pieces",
+					"symbol": "componentFiles"
+				},
+				{
+					"unit": "template.app-pieces",
+					"symbol": "e2eFiles"
+				},
+				{
+					"unit": "template.app-pieces",
+					"symbol": "hookFiles"
+				},
+				{
+					"unit": "template.app-pieces",
+					"symbol": "layoutFiles"
+				},
+				{
+					"unit": "template.app-pieces",
+					"symbol": "partialFiles"
+				},
+				{
+					"unit": "template.app-pieces",
+					"symbol": "storeFiles"
+				},
+				{
+					"unit": "template.app-pieces",
+					"symbol": "viewFiles"
+				},
+				{
+					"unit": "template.model",
+					"symbol": "modelFiles"
+				},
+				{
+					"unit": "template.package-pieces",
+					"symbol": "adapterFiles"
+				},
+				{
+					"unit": "template.package-pieces",
+					"symbol": "classFiles"
+				},
+				{
+					"unit": "template.package-pieces",
+					"symbol": "controllerFiles"
+				},
+				{
+					"unit": "template.package-pieces",
+					"symbol": "policyFiles"
+				},
+				{
+					"unit": "template.package-pieces",
+					"symbol": "repositoryFiles"
+				},
+				{
+					"unit": "template.package-pieces",
+					"symbol": "seederFiles"
+				},
+				{
+					"unit": "template.package-pieces",
+					"symbol": "serializerFiles"
+				},
+				{
+					"unit": "template.package-pieces",
+					"symbol": "utilFiles"
+				},
+				{
+					"unit": "template.package-pieces",
+					"symbol": "validatorFiles"
+				},
+				{
+					"unit": "template.pieces",
+					"symbol": "featureFiles"
+				},
+				{
+					"unit": "template.pieces",
+					"symbol": "migrationFiles"
+				},
+				{
+					"unit": "template.pieces",
+					"symbol": "testFiles"
+				},
+				{
+					"unit": "template.rails-pieces",
+					"symbol": "channelFiles"
+				},
+				{
+					"unit": "template.rails-pieces",
+					"symbol": "concernFiles"
+				},
+				{
+					"unit": "template.rails-pieces",
+					"symbol": "configFiles"
+				},
+				{
+					"unit": "template.rails-pieces",
+					"symbol": "formFiles"
+				},
+				{
+					"unit": "template.rails-pieces",
+					"symbol": "helperFiles"
+				},
+				{
+					"unit": "template.rails-pieces",
+					"symbol": "initializerFiles"
+				},
+				{
+					"unit": "template.rails-pieces",
+					"symbol": "mailerFiles"
+				},
+				{
+					"unit": "template.rails-pieces",
+					"symbol": "middlewareFiles"
+				},
+				{
+					"unit": "workflow.export-plans"
+				}
+			]
+		},
+		{
+			"name": "toPascalCase",
+			"source": "src/core/case.ts",
+			"inputs": [
+				{
+					"name": "toPascalCase.value",
+					"type": "string"
+				}
+			],
+			"output": "string",
+			"pure": true,
+			"consumers": [
+				{
+					"unit": "audit.scaffold-naming-rules",
+					"symbol": "prefixedRule"
+				},
+				{
+					"unit": "audit.scaffold-naming-rules",
+					"symbol": "seedRule"
+				},
+				{
+					"unit": "audit.scaffold-naming-rules",
+					"symbol": "storeRule"
+				},
+				{
+					"unit": "function.case",
+					"symbol": "toCamelCase"
+				},
+				{
+					"unit": "template.app-pieces",
+					"symbol": "componentFiles"
+				},
+				{
+					"unit": "template.app-pieces",
+					"symbol": "partialFiles"
+				},
+				{
+					"unit": "template.app-pieces",
+					"symbol": "storeFiles"
+				},
+				{
+					"unit": "template.app-pieces",
+					"symbol": "titleName"
+				},
+				{
+					"unit": "template.model",
+					"symbol": "modelFiles"
+				},
+				{
+					"unit": "template.package-pieces",
+					"symbol": "adapterFiles"
+				},
+				{
+					"unit": "template.package-pieces",
+					"symbol": "classFiles"
+				},
+				{
+					"unit": "template.package-pieces",
+					"symbol": "controllerFiles"
+				},
+				{
+					"unit": "template.package-pieces",
+					"symbol": "policyFiles"
+				},
+				{
+					"unit": "template.package-pieces",
+					"symbol": "repositoryFiles"
+				},
+				{
+					"unit": "template.package-pieces",
+					"symbol": "seederFiles"
+				},
+				{
+					"unit": "template.package-pieces",
+					"symbol": "serializerFiles"
+				},
+				{
+					"unit": "template.package-pieces",
+					"symbol": "validatorFiles"
+				},
+				{
+					"unit": "template.pieces",
+					"symbol": "featureFiles"
+				},
+				{
+					"unit": "template.rails-pieces",
+					"symbol": "channelFiles"
+				},
+				{
+					"unit": "template.rails-pieces",
+					"symbol": "concernFiles"
+				},
+				{
+					"unit": "template.rails-pieces",
+					"symbol": "formFiles"
+				},
+				{
+					"unit": "template.rails-pieces",
+					"symbol": "helperFiles"
+				},
+				{
+					"unit": "template.rails-pieces",
+					"symbol": "initializerFiles"
+				},
+				{
+					"unit": "template.rails-pieces",
+					"symbol": "mailerFiles"
+				},
+				{
+					"unit": "template.rails-pieces",
+					"symbol": "middlewareFiles"
+				},
+				{
+					"unit": "workflow.export-plans"
+				}
+			]
+		},
+		{
+			"name": "toCamelCase",
+			"source": "src/core/case.ts",
+			"inputs": [
+				{
+					"name": "toCamelCase.value",
+					"type": "string"
+				}
+			],
+			"output": "string",
+			"pure": true,
+			"consumers": [
+				{
+					"unit": "audit.scaffold-naming-rules",
+					"symbol": "camelFunctionRule"
+				},
+				{
+					"unit": "audit.scaffold-naming-rules",
+					"symbol": "hookRule"
+				},
+				{
+					"unit": "function.fields",
+					"symbol": "parseField"
+				},
+				{
+					"unit": "function.validation",
+					"symbol": "validateExportName"
+				},
+				{
+					"unit": "template.app-pieces",
+					"symbol": "hookFiles"
+				},
+				{
+					"unit": "template.app-pieces",
+					"symbol": "storeFiles"
+				},
+				{
+					"unit": "template.package-pieces",
+					"symbol": "utilFiles"
+				},
+				{
+					"unit": "template.rails-pieces",
+					"symbol": "configFiles"
+				},
+				{
+					"unit": "workflow.export-plans"
+				}
+			]
+		},
+		{
+			"name": "toSnakeCase",
+			"source": "src/core/case.ts",
+			"inputs": [
+				{
+					"name": "toSnakeCase.value",
+					"type": "string"
+				}
+			],
+			"output": "string",
+			"pure": true,
+			"consumers": [
+				{
+					"unit": "function.fields",
+					"symbol": "parseField"
+				},
+				{
+					"unit": "template.model",
+					"symbol": "modelFiles"
+				}
+			]
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/core/case.ts",

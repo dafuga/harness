@@ -35,19 +35,20 @@ const historical: ExplorerLocation = {
 const canonical = { ...historical };
 delete canonical.section;
 
-test('the bar has exactly six categories, pages then shells first, each scoped to the branch and commit that are viewed', () => {
+test('the bar has exactly seven categories, pages then shells first, each scoped to the branch and commit that are viewed', () => {
 	const { categories } = view(historical);
 	expect(categories.map((item) => [item.id, item.label, item.icon])).toEqual([
 		['pages', 'Pages', 'pages'],
 		['shells', 'Shells', 'shells'],
 		['components', 'Components', 'components'],
-		['functions', 'Functions', 'functions'],
+		['functions', 'Helpers', 'functions'],
 		['configs', 'Configs', 'configs'],
-		['services', 'Services', 'services']
+		['services', 'Services', 'services'],
+		['models', 'Models', 'database']
 	]);
 	// The whole branch is one segment, and a category opens its index: no entity, section or tab.
 	expect(categories.map((item) => item.href)).toEqual(
-		['pages', 'shells', 'components', 'functions', 'configs', 'services'].map(
+		['pages', 'shells', 'components', 'functions', 'configs', 'services', 'models'].map(
 			(category) => `${scoped}/commit/${sha(4)}/${category}`
 		)
 	);
@@ -135,7 +136,7 @@ test('a commit no branch reaches has no tip, says so, and is listed although no 
 	});
 });
 
-test('without a resolved address the bar keeps its six categories and offers no revision', () => {
+test('without a resolved address the bar keeps its seven categories and offers no revision', () => {
 	const { revision, categories, home } = view(null);
 	expect(revision).toBeNull();
 	expect(home).toEqual({ href: shellMount, to: null });
@@ -143,9 +144,10 @@ test('without a resolved address the bar keeps its six categories and offers no 
 		'Pages',
 		'Shells',
 		'Components',
-		'Functions',
+		'Helpers',
 		'Configs',
-		'Services'
+		'Services',
+		'Models'
 	]);
 	expect(categories.every((item) => item.href === null && item.to === null && !item.active)).toBe(
 		true

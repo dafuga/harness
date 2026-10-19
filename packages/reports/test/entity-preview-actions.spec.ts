@@ -156,7 +156,7 @@ for (const [name, size] of Object.entries(viewports)) {
 		const categoryStart = await tab.evaluate(() => performance.now());
 		await tab
 			.getByRole('navigation', { name: 'Harness categories' })
-			.getByRole('link', { name: 'Functions', exact: true })
+			.getByRole('link', { name: 'Helpers', exact: true })
 			.click();
 		await expect(tab.getByRole('status').filter({ hasText: 'functions shown' })).toHaveText(
 			'1001 of 1001 functions shown'

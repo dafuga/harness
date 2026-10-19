@@ -55,14 +55,15 @@ const shapes: Array<[string, Partial<ExplorerLocation>]> = [
 	]
 ];
 
-test('has exactly six categories, pages then shells first', () => {
+test('has exactly seven categories, pages then shells first', () => {
 	expect(explorerCategories).toEqual([
 		'pages',
 		'shells',
 		'components',
 		'functions',
 		'configs',
-		'services'
+		'services',
+		'models'
 	]);
 });
 

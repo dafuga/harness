@@ -179,6 +179,54 @@
 			"origin": "derived"
 		}
 	],
+	"helperContracts": [
+		{
+			"name": "plural",
+			"source": "packages/desktop/src/utils/remoteLabels.ts",
+			"inputs": [
+				{
+					"name": "plural.count",
+					"type": "number"
+				},
+				{
+					"name": "plural.word",
+					"type": "string"
+				}
+			],
+			"output": "unknown",
+			"pure": true,
+			"consumers": [
+				{
+					"unit": "desktop.function.remote-labels",
+					"symbol": "grantSummary"
+				},
+				{
+					"unit": "desktop.function.remote-labels",
+					"symbol": "hostSummary"
+				}
+			]
+		},
+		{
+			"name": "identityLabel",
+			"source": "packages/desktop/src/utils/remoteLabels.ts",
+			"inputs": [
+				{
+					"name": "identityLabel.deviceId",
+					"type": "string"
+				}
+			],
+			"output": "string",
+			"pure": true,
+			"consumers": [
+				{
+					"unit": "desktop.component.remote-approval"
+				},
+				{
+					"unit": "desktop.component.remote-phone-panel"
+				}
+			]
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/desktop/src/utils/remoteLabels.ts",

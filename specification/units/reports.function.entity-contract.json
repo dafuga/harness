@@ -91,6 +91,68 @@
 			"origin": "derived"
 		}
 	],
+	"helperContracts": [
+		{
+			"name": "humanize",
+			"source": "packages/reports/src/utils/entityContract.ts",
+			"inputs": [
+				{
+					"name": "humanize.name",
+					"type": "string"
+				}
+			],
+			"output": "string",
+			"pure": true,
+			"consumers": [
+				{
+					"unit": "desktop.component.contract-panel"
+				},
+				{
+					"unit": "reports.component.harness-entity-change"
+				},
+				{
+					"unit": "reports.component.harness-entity-config"
+				},
+				{
+					"unit": "reports.component.harness-entity-measures"
+				},
+				{
+					"unit": "reports.component.harness-explorer-table"
+				},
+				{
+					"unit": "reports.component.recorded-value"
+				},
+				{
+					"unit": "reports.function.contract-fields",
+					"symbol": "nameOf"
+				},
+				{
+					"unit": "reports.function.entity-contract",
+					"symbol": "row"
+				},
+				{
+					"unit": "reports.function.entity-history",
+					"symbol": "named"
+				},
+				{
+					"unit": "reports.function.entity-measure",
+					"symbol": "timing"
+				},
+				{
+					"unit": "reports.function.entity-reasons",
+					"symbol": "attempts"
+				},
+				{
+					"unit": "reports.function.entity-reasons",
+					"symbol": "subject"
+				},
+				{
+					"unit": "reports.function.entity-reasons",
+					"symbol": "uses"
+				}
+			]
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/reports/src/utils/entityContract.ts",

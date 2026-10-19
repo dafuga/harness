@@ -102,6 +102,55 @@
 			"origin": "derived"
 		}
 	],
+	"helperContracts": [
+		{
+			"name": "activityTime",
+			"source": "packages/reports/src/utils/activityDisplay.ts",
+			"inputs": [
+				{
+					"name": "activityTime.iso",
+					"type": "string"
+				}
+			],
+			"output": "string",
+			"pure": true,
+			"consumers": [
+				{
+					"unit": "reports.component.activity-files"
+				},
+				{
+					"unit": "reports.component.activity-loops"
+				},
+				{
+					"unit": "reports.component.activity-work"
+				}
+			]
+		},
+		{
+			"name": "plural",
+			"source": "packages/reports/src/utils/activityDisplay.ts",
+			"inputs": [
+				{
+					"name": "plural.count",
+					"type": "number"
+				},
+				{
+					"name": "plural.word",
+					"type": "string"
+				}
+			],
+			"output": "string",
+			"pure": true,
+			"consumers": [
+				{
+					"unit": "reports.component.activity-loops"
+				},
+				{
+					"unit": "reports.component.activity-work"
+				}
+			]
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/reports/src/utils/activityDisplay.ts",

@@ -121,6 +121,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.helper-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.explorer-category",
 			"via": "import",
 			"origin": "derived"
