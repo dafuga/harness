@@ -1,0 +1,66 @@
+{
+	"name": "grant-store-initialization",
+	"goal": "Initialize grant store public and owner entries without circular constant reads",
+	"createdAt": "2026-10-19T20:22:23.565Z",
+	"updatedAt": "2026-10-19T20:22:24.416Z",
+	"template": "regression-prevention",
+	"templateLineage": [
+		"regression-prevention"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
+			"status": "complete",
+			"completedAt": "2026-10-19T20:22:24.041Z",
+			"evidence": "Moving d1GrantStore behind a forwarding facade left ERASE and EXPIRE_GRANTS in that facade. Owner SQL constants read ERASE before module initialization; SQL tests fail and Hub build reports a ReferenceError."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
+			"status": "complete",
+			"completedAt": "2026-10-19T20:22:24.416Z",
+			"evidence": "The existing store contract checks real SQLite revocation and exposed invalid SQL after relocation. Add native cold imports of both public and owner entries to the same standardized adapter suite so module initialization is proved directly."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "propose",
+			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "guard",
+			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
