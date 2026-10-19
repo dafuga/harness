@@ -32,6 +32,11 @@ import {
 	type ExecutionTarget
 } from '@dafuga01/harness/runtime';
 import * as root from '@dafuga01/harness';
+import { consolePolicy, consoleAccess, consoleRoutePath } from '@dafuga01/harness/console';
+const sdkPolicy = consolePolicy({ mode: 'loopback', bind: '127.0.0.1' });
+const sdkAccess = consoleAccess({ policy: sdkPolicy, data: { json: async () => undefined } });
+const sdkRoute: string = consoleRoutePath({ branch: null, commit: 'a', view: 'map' });
+void [sdkAccess, sdkRoute];
 
 const request: RuntimeRequest = { operation: 'version' };
 const manifest: ComponentManifest = componentManifestSchema.parse(JSON.parse(process.argv[2]));
@@ -115,6 +120,29 @@ async function expectTypes(project: string): Promise<void> {
 	expect(bad.exitCode).not.toBe(0);
 	expect(bad.stdout).toContain('TS2');
 }
+
+test('public API type build retains configured entry paths across owned workspaces', async () => {
+	const built = await runCommand(
+		['bun', 'scripts/build-api.ts', '--types-only'],
+		process.cwd(),
+		false
+	);
+	expect(
+		built.exitCode,
+		`public API declaration build succeeds: ${built.stdout}${built.stderr}`
+	).toBe(0);
+	const manifest = JSON.parse(await readFile('package.json', 'utf8'));
+	for (const [name, entry] of Object.entries(manifest.exports)) {
+		if (
+			name === './console-ui' ||
+			typeof entry !== 'object' ||
+			entry === null ||
+			!('types' in entry)
+		)
+			continue;
+		expect(await readFile(String(entry.types), 'utf8'), name).not.toBe('');
+	}
+}, 60000);
 
 test('a packed consumer imports typed contracts and calls real adapters without the CLI', async () => {
 	const { root, project } = await packedConsumer();
