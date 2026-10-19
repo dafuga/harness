@@ -1,6 +1,6 @@
 # One managed preview server
 
-Status: planned
+Status: implemented
 
 Repeated dev commands currently start independent Vite servers, including on different ports.
 Existing browser tests only check their own isolated server; they never exercise repeated app launches.
@@ -23,3 +23,13 @@ The desktop transport also creates another listener if listen is called twice.
 Extend the standardized local transport lifecycle tests. Add the missing reusable preview-launch
 lifecycle category using a tiny Vite app in a temporary workspace, real dev commands and owned
 process cleanup. Commit failing proof before the implementation. No native Electron UI testing.
+
+## Recorded results
+
+- Failing checkpoint: `7c3804c4`; passing fix: `1f98ac15`. Both use the same launcher, tests and environment.
+- Seven real-process preview lifecycle cases pass, including concurrent election, history/checkout refusal and shutdown.
+- Nineteen desktop backend cases pass without launching Electron.
+- Reports unit suite, production build, type checks, changed-file lint, audits and unit registry checks pass.
+- Full desktop lint has an existing nested ternary at `test/ios-simulator-build.test.ts:25`; it is outside this change.
+- Native Electron testing remains paused by request. The full root/native aggregate was not run.
+- Replacing the two already-running legacy previews awaits explicit server-stop approval.

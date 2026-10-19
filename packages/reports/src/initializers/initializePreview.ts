@@ -4,7 +4,7 @@ import { previewArguments } from '../utils/previewArguments';
 import { previewOwnerPort } from '../utils/previewOwner';
 
 /** Reports and the desktop renderer share one preview process across all checkouts. */
-export async function initializePreview(args = process.argv.slice(2)): Promise<void> {
+export async function initializePreview(args: string[] = process.argv.slice(2)): Promise<void> {
 	const options = previewArguments(args),
 		port = Number(process.env.HARNESS_PREVIEW_OWNER_PORT ?? previewOwnerPort);
 	if (!Number.isInteger(port) || port < 1024 || port > 65535)

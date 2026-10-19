@@ -2,11 +2,9 @@
 	"name": "managed-preview-server",
 	"goal": "One managed Harness preview is reused across starts; desktop launches share one backend.",
 	"createdAt": "2026-10-19T09:28:17.281Z",
-	"updatedAt": "2026-10-19T09:34:16.454Z",
+	"updatedAt": "2026-10-19T09:41:18.070Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,12 +39,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T09:38:09.864Z",
+			"evidence": "Unchanged seven preview lifecycle and nine desktop cases passed at 1f98ac15, record bd0edb02 paired with failing test-only 7c3804c4/a5ae0233; launcher/config/environment frozen."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T09:41:18.070Z",
+			"evidence": "Reports 579 units plus expanded 7-case lifecycle, production build, both typechecks, 19 desktop backend cases, scoped lint, audits and registry passed. Existing desktop lint issue and paused native checks documented; live legacy-server replacement awaits approval."
 		}
 	],
 	"evaluators": [

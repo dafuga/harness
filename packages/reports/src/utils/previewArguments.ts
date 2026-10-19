@@ -2,10 +2,20 @@ import { createHash } from 'node:crypto';
 import { realpathSync } from 'node:fs';
 import { resolve } from 'node:path';
 
+export interface PreviewArguments {
+	root: string;
+	configFile?: string;
+	port: number;
+	identity: string;
+}
+
 type PreviewOptions = { root: string; configFile?: string; port: number };
 
 /** The app owns its listener; Vite must never move to another port or expose it remotely. */
-export function previewArguments(args: string[], env: NodeJS.ProcessEnv = process.env) {
+export function previewArguments(
+	args: string[],
+	env: NodeJS.ProcessEnv = process.env
+): PreviewArguments {
 	const options: PreviewOptions = { root: process.cwd(), port: 5588 };
 	for (let index = 0; index < args.length; index++) {
 		const arg = args[index];

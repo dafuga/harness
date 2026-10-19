@@ -16,7 +16,7 @@ export class PreviewServerService {
 	private preview: PreviewHandle | null = null;
 	private starting: Promise<PreviewResult> | null = null;
 	private closing: Promise<void> | null = null;
-	constructor(private readonly port = previewOwnerPort) {}
+	constructor(private readonly port: number = previewOwnerPort) {}
 
 	run(identity: string, start: () => Promise<PreviewHandle>): Promise<PreviewResult> {
 		this.starting ??= this.acquire(identity, start);

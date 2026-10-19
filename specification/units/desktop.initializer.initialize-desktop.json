@@ -16,7 +16,7 @@
 		"outputs": [
 			{
 				"name": "initializeDesktop",
-				"type": "Promise<BrowserWindow>"
+				"type": "Promise<BrowserWindow | null>"
 			}
 		],
 		"errors": []
