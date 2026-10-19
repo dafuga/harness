@@ -1,9 +1,10 @@
 /* The bar every explorer route shares: the brand, six categories, the revision that is viewed. */
 .hx-nav {
+	--hx-nav-gap: clamp(10px, 1.1vw, 22px);
 	display: flex;
 	flex-wrap: wrap;
 	align-items: stretch;
-	gap: 0 clamp(10px, 1.1vw, 22px);
+	gap: 0 var(--hx-nav-gap);
 	min-height: 92px;
 	padding: 0 var(--hx-gutter);
 	border-bottom: 1px solid var(--hx-line);
@@ -92,35 +93,20 @@
 	border-radius: 3px 3px 0 0;
 	background: var(--hx-gold);
 }
+/* The search is one icon that ends the bar; the search itself opens in a dialog. */
 .hx-search {
 	display: flex;
+	flex: none;
 	align-items: center;
 }
-@media (min-width: 1321px) {
+/* One row from 1420px, ended by the revision and the search: the revision keeps the whole width of
+   its fields, a long repository name gives way, and the spacing narrows near the threshold. */
+@media (min-width: 1420px) {
 	.hx-nav {
 		flex-wrap: nowrap;
 	}
-}
-/* Narrower than one row: the revision takes a row of its own, under the categories. */
-@media (max-width: 1320px) {
-	.hx-nav .hx-revision {
-		flex: 1 0 100%;
-		margin-left: 0;
-		padding: 10px 0 12px;
-		border-top: 1px solid var(--hx-line);
-	}
-	.hx-nav .hx-revision::before {
-		display: none;
-	}
-	.hx-nav .hx-revision label:first-of-type {
-		flex: 0 1 280px;
-	}
-}
-/* A bar with a search is one row from 1420px: the revision keeps the whole width of its fields,
-   the search and a long repository name give way, and the spacing narrows near the threshold. */
-@media (min-width: 1420px) {
 	.hx-nav:has(.hx-search) {
-		column-gap: clamp(10px, 2.2vw - 21px, 22px);
+		--hx-nav-gap: clamp(10px, 2.2vw - 21px, 22px);
 	}
 	.hx-nav:has(.hx-search) .hx-revision {
 		flex-shrink: 0;
@@ -132,37 +118,33 @@
 	.hx-nav:has(.hx-search) :is(.hx-categories a, .hx-category) {
 		padding-inline: clamp(8px, 2.8vw - 32px, 22px);
 	}
-	.hx-search {
-		flex: 0 1 200px;
-		min-width: 150px;
-	}
 }
-/* Narrower, a bar with a search gives the revision a row of its own, and the search one under it. */
+/* Narrower: the revision takes a row of its own under the bar, and the search stays at the end of
+   the categories' row. The categories keep the room of its 40px icon, so the two always wrap
+   together and the search never takes a row alone. */
 @media (max-width: 1419px) {
-	.hx-nav:has(.hx-search) {
-		flex-wrap: wrap;
-	}
-	.hx-nav:has(.hx-search) .hx-revision {
+	.hx-nav .hx-revision {
+		order: 1;
 		flex: 1 0 100%;
 		margin-left: 0;
 		padding: 10px 0 12px;
 		border-top: 1px solid var(--hx-line);
 	}
-	.hx-nav:has(.hx-search) .hx-revision::before {
+	.hx-nav .hx-revision::before {
 		display: none;
 	}
-	.hx-nav:has(.hx-search) .hx-revision label:first-of-type {
+	.hx-nav .hx-revision label:first-of-type {
 		flex: 0 1 280px;
 	}
-	.hx-search {
-		flex: 1 0 100%;
-		padding: 0 0 12px;
+	.hx-nav:has(.hx-search) .hx-categories {
+		flex-grow: 1;
+		margin-right: calc(40px + var(--hx-nav-gap));
 	}
-	.hx-search .entity-search {
-		max-width: 420px;
+	.hx-search {
+		margin-left: calc(-40px - var(--hx-nav-gap));
 	}
 }
-/* A phone: the brand, then the six categories across the screen, then the fields. */
+/* A phone: the brand and the search, the six categories across the screen, then the fields. */
 @media (max-width: 720px) {
 	.hx-nav {
 		min-height: 0;
@@ -178,6 +160,14 @@
 		flex: 1 1 100%;
 		border-top: 1px solid var(--hx-line);
 		overflow-x: auto;
+	}
+	/* The categories follow the search, so the search stays on the brand's row. */
+	.hx-nav:has(.hx-search) .hx-categories {
+		order: 1;
+		margin-right: 0;
+	}
+	.hx-search {
+		margin-left: auto;
 	}
 	.hx-categories::before {
 		display: none;
@@ -199,16 +189,9 @@
 	.hx-nav .hx-revision label {
 		flex: 1 1 0;
 	}
-	.hx-search .entity-search {
-		max-width: none;
-	}
-	.hx-nav:has(.hx-search) .hx-revision label:first-of-type {
-		flex: 1 0 100%;
-	}
 }
 @media (min-width: 600px) and (max-width: 1024px) {
-	.hx-nav .hx-revision,
-	.hx-nav:has(.hx-search) .hx-revision {
+	.hx-nav .hx-revision {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
 		align-items: end;

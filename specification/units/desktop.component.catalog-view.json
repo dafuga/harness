@@ -3,7 +3,7 @@
 	"id": "desktop.component.catalog-view",
 	"kind": "component",
 	"title": "Catalog view",
-	"responsibility": "Lists the selected category of project entities with text search, a changed-only filter and sorting.",
+	"responsibility": "Lists the selected category with local search, verification and planning filters.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -23,7 +23,7 @@
 			{
 				"name": "CatalogView",
 				"type": "markup",
-				"description": "Category heading, project breadcrumb, filters and matching entity cards. Search starts empty and matches displayed names and summaries without case sensitivity; changed-only starts off. Sorting defaults to name, or uses descending string order of design versions, treating missing versions as empty. Displays an empty-view message when no entities match."
+				"description": "A grid of matching entities with local query, changed-only, verification, planning and sort controls. Empty results allow resetting the filters."
 			}
 		],
 		"errors": []
@@ -31,6 +31,11 @@
 	"dependencies": [
 		{
 			"unit": "desktop.component.entity-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
 			"via": "import",
 			"origin": "derived"
 		},

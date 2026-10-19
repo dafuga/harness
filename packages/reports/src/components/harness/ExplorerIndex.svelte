@@ -18,11 +18,22 @@
 		/** How the listed entities of this kind are drawn: cards for pages, a table otherwise. */
 		list: Snippet<[CatalogRow[]]>;
 	} = $props();
-	let filter = $state<CatalogFilter>({ search: '', changedOnly: false, order: 'name' });
+	let filter = $state<CatalogFilter>({
+		search: '',
+		changedOnly: false,
+		order: 'name',
+		verification: 'all',
+		usage: 'all'
+	});
 	let label = $derived(entityLabels[category]);
 	let noun = $derived(label.title.toLowerCase());
 	let listed = $derived(catalogFilter(rows, filter));
-	let filtered = $derived(Boolean(filter.search.trim()) || filter.changedOnly);
+	let filtered = $derived(
+		Boolean(filter.search.trim()) ||
+			filter.changedOnly ||
+			filter.verification !== 'all' ||
+			filter.usage !== 'all'
+	);
 </script>
 
 <section class="ex-index" aria-labelledby="ex-index-title">
@@ -49,8 +60,14 @@
 			<button
 				type="button"
 				class="ex-text-button"
-				onclick={() => (filter = { ...filter, search: '', changedOnly: false })}
-				>Show all {noun}</button
+				onclick={() =>
+					(filter = {
+						...filter,
+						search: '',
+						changedOnly: false,
+						verification: 'all',
+						usage: 'all'
+					})}>Show all {noun}</button
 			>
 		</p>
 	{:else}

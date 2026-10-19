@@ -12,17 +12,6 @@
 		column-gap: clamp(10px, 1.1vw, 22px);
 	}
 }
-/* Narrower than one row: the search takes a row of its own after the revision, as in the explorer bar. */
-@media (max-width: 1409px) {
-	.topbar-search {
-		flex: 1 0 100%;
-		max-width: none;
-		padding-bottom: 12px;
-	}
-	.topbar-search .entity-search {
-		max-width: 420px;
-	}
-}
 @media (max-width: 1250px) {
 	.topbar {
 		flex-wrap: wrap;
@@ -38,9 +27,21 @@
 	.revision-picker {
 		margin-left: auto;
 	}
-	/* The categories end the bar here, a row-gap under the search. */
 	.topbar-search {
-		padding-bottom: 0;
+		order: 0;
+		margin-left: auto;
+	}
+	.revision-picker {
+		order: 4;
+		width: 100%;
+		margin: 0;
+		padding: 8px 0;
+		border-left: 0;
+		border-top: 1px solid var(--line);
+	}
+	.topbar .project-switcher {
+		flex: 1;
+		min-width: 0;
 	}
 	.project-switcher {
 		border-inline: 0;
@@ -114,9 +115,7 @@
 	.topbar {
 		padding: 10px 12px 0;
 	}
-	.topbar-search .entity-search {
-		max-width: none;
-	}
+
 	.brand {
 		width: 100%;
 		justify-content: center;

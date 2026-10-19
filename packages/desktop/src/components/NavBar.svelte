@@ -73,14 +73,12 @@
 		color: var(--gold);
 		border-color: var(--gold);
 	}
-	/* One row: the gaps start at their least, giving the search back the room of the settings,
-	   and meet the bar's own near 1650px, where the search has room to spare. */
-	@media (min-width: 1410px) {
-		.topbar:has(.topbar-settings) {
-			column-gap: clamp(10px, 3.4vw - 38px, 22px);
+	@media (min-width: 1251px) and (max-width: 1500px) {
+		.topbar {
+			column-gap: 10px;
 		}
-		.topbar-search:has(.topbar-settings) {
-			max-width: 388px;
+		.topbar :global(nav a) {
+			min-width: 72px;
 		}
 	}
 </style>

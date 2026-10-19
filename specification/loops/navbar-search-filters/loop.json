@@ -2,11 +2,9 @@
 	"name": "navbar-search-filters",
 	"goal": "Global search opens from a right navbar icon; each catalog has local search and composable filters",
 	"createdAt": "2026-10-19T07:17:58.867Z",
-	"updatedAt": "2026-10-19T07:20:17.932Z",
+	"updatedAt": "2026-10-19T07:38:07.297Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T07:22:43.005Z",
+			"evidence": "Committed red 35a187f7, record ad4cf26af6b1c60f611ca9644e5b02538aa92c1ecf9f24b94da0acb49588d72f: missing Search entities icon and Verification filter."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T07:38:07.297Z",
+			"evidence": "Shared modal search and right navbar icon implemented; catalog filters compose with query, changes and ordering."
 		},
 		{
 			"id": "green",

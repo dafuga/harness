@@ -40,6 +40,8 @@ export interface CatalogFilter {
 	search: string;
 	changedOnly: boolean;
 	order: CatalogOrder;
+	verification?: string;
+	usage?: string;
 }
 
 const names = (entities: ExplorerEntity[]) => entities.map((entity) => entity.name);
@@ -101,6 +103,15 @@ export function catalogFilter(rows: CatalogRow[], filter: CatalogFilter): Catalo
 	const wanted = filter.search.trim().toLowerCase();
 	return rows
 		.filter((row) => !filter.changedOnly || row.changed)
+		.filter(
+			(row) =>
+				!filter.verification ||
+				filter.verification === 'all' ||
+				row.verdict.passed === (filter.verification === 'passed')
+		)
+		.filter(
+			(row) => !filter.usage || filter.usage === 'all' || row.shared === (filter.usage === 'shared')
+		)
 		.filter((row) => !wanted || `${row.name} ${row.summary}`.toLowerCase().includes(wanted))
 		.sort(orders[filter.order]);
 }

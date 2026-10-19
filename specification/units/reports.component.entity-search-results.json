@@ -3,7 +3,7 @@
 	"id": "reports.component.entity-search-results",
 	"kind": "component",
 	"title": "Entity search results",
-	"responsibility": "Renders an accessible search-result popup and delegates plain-click navigation to its host.",
+	"responsibility": "Shows ranked entity links inside the project search modal.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -44,11 +44,6 @@
 				"description": "Required human-readable revision/search scope displayed above results."
 			},
 			{
-				"name": "EntitySearchResults.shift",
-				"type": "number",
-				"description": "Required pixel amount moving the popup left; used directly as a negative left offset."
-			},
-			{
 				"name": "EntitySearchResults.href",
 				"type": "(entry: SearchEntry) => string",
 				"description": "Required callback supplying each result’s actual link target."
@@ -63,7 +58,7 @@
 			{
 				"name": "EntitySearchResults",
 				"type": "markup",
-				"description": "Listbox of result links with category badges and optional purposes. Mouse down is prevented to preserve field focus. Plain click prevents navigation and calls choose. Shows loading or no-match status as applicable."
+				"description": "A scrollable list of ranked entity links, their categories and purposes, with loading or no-match feedback. Modified clicks preserve normal browser link behavior."
 			}
 		],
 		"errors": []

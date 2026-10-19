@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-explorer-controls",
 	"kind": "component",
 	"title": "Catalog controls",
-	"responsibility": "Edits search, changed-only and ordering choices for a catalog.",
+	"responsibility": "Filters a catalog by search, changes, verification and shared usage.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -21,14 +21,14 @@
 			{
 				"name": "ExplorerControls.filter",
 				"type": "CatalogFilter",
-				"description": "Required bindable filter object whose search, changedOnly and order are updated directly."
+				"description": "Bindable query, changed-only, verification, shared usage and ordering choices."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerControls",
 				"type": "markup",
-				"description": "Search field, changed-only switch and order dropdown populated from supported catalog orders. Does not filter records itself."
+				"description": "A local search field, changed-only switch, verification and usage filters, and ordering controls update the supplied filter. The host filters the rows."
 			}
 		],
 		"errors": []

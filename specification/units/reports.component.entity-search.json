@@ -3,7 +3,7 @@
 	"id": "reports.component.entity-search",
 	"kind": "component",
 	"title": "Entity search",
-	"responsibility": "Searches supplied revision entities and offers keyboard or link navigation.",
+	"responsibility": "Opens project search from a navbar icon and finds entities in the selected revision.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -31,14 +31,14 @@
 			{
 				"name": "EntitySearch.open",
 				"type": "(entry: SearchEntry) => void",
-				"description": "Required callback for chosen results within the host. Choosing clears the query and closes the popup before calling it."
+				"description": "Opens the chosen entity in the host after closing the search modal."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntitySearch",
 				"type": "markup",
-				"description": "Combobox with up to 12 helper-ranked results for a nonblank query while expanded. Input resets active index; arrows wrap, Enter opens active result, Escape first closes then clears and stops propagation. Losing external focus closes results. Popup shifts left to fit the viewport and adjusts on resize."
+				"description": "A search icon opens a modal by click or Cmd/Ctrl+K. The focused query offers ranked results; arrows and Enter navigate. Escape closes the modal and restores icon focus."
 			}
 		],
 		"errors": []
@@ -46,6 +46,11 @@
 	"dependencies": [
 		{
 			"unit": "reports.component.entity-search-results",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.modal",
 			"via": "import",
 			"origin": "derived"
 		},
