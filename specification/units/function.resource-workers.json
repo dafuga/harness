@@ -25,7 +25,7 @@
 		"outputs": [
 			{
 				"name": "resourceWorkers",
-				"type": "{ maxWorkers?: number; minWorkers?: number; }"
+				"type": "{ maxWorkers?: number; minWorkers?: number; env?: Record<string, string>; }"
 			},
 			{
 				"name": "resourceThreads",

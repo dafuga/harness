@@ -10,7 +10,7 @@ export const resourcesGuide: Guide = {
 	],
 	rules: [
 		'One private SQLite queue coordinates all worktrees using the same HARNESS_RESOURCES_HOME (default ~/.codex/harness/resources).',
-		'Admission subtracts reservations as well as observed host load; agent-test precedes coding, then environment, FIFO within each priority.',
+		'Admission subtracts reservations as well as observed host load; agent-test precedes coding, then environment, FIFO among eligible requests within each priority; nested work skips blocked ancestor pools so running parents can finish.',
 		'A running test finishes under pressure. Later work waits; unavailable, stale or pressured telemetry blocks admission.',
 		'Nested commands share a validated bounded parent budget. Standard Vitest workers and Rust/Go/OpenMP thread counts inherit that budget.',
 		'Harness verification checks, loop evaluators, Desktop agent turns and repository build/test/check scripts use admission automatically.',

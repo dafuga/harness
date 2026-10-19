@@ -886,7 +886,7 @@ harness verify run --priority environment --commit HEAD
 ```
 
 Agent-needed tests precede coding work, which precedes environment checks; each
-priority is FIFO. Running work finishes when pressure rises, while later work waits.
+priority is FIFO among eligible requests. Nested work can progress through other parent pools when an ancestor is full, allowing running work to finish. Running work finishes when pressure rises, while later work waits.
 Unknown or stale telemetry also holds admission. Wait time is separate from check
 execution time; `resources run --wait-timeout` defaults to 30 minutes.
 

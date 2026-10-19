@@ -43,6 +43,8 @@ This is a Harness CLI project. Treat Harness as the operating contract for every
 
 - Browser normal flows, including screenshot/video runs, must have no unexpected console.error or pageerror events. Use the shared browserTest fixture and watch extra contexts before navigation. Preserve logs for expected errors and declare their exact messages and reasons in that test. For unexpected errors, prove a failing log assertion before repair, then rerun the same unchanged regression until the error disappears.
 
+- Scheduler changes must prove forward progress across mixed nesting depths with occupied ancestor budgets and pending siblings, alongside priority and headroom.
+
 ## Code Rules
 
 - Files should stay focused and under 220 lines unless a local audit baseline explicitly tracks existing debt.

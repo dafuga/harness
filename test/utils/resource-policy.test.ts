@@ -117,3 +117,19 @@ test('nested agent tests precede environment checks across different active pare
 		).granted
 	).toEqual([agent.id]);
 });
+
+test.each([2, 3, 5])(
+	'eligible descendants can finish when an older sibling waits behind %i occupied ancestor pools',
+	(depth) => {
+		const ancestors = [job({ state: 'running', memoryMiB: 2048 })];
+		for (let i = 1; i < depth; i++)
+			ancestors.push(
+				job({ state: 'running', memoryMiB: 2048, parentId: ancestors[i - 1].id, sequence: i + 1 })
+			);
+		const sibling = job({ parentId: ancestors[0].id, sequence: depth + 1 });
+		const descendant = job({ parentId: ancestors.at(-1)!.id, sequence: depth + 2 });
+		expect(resourcePolicy([...ancestors, sibling, descendant], snapshot(), config).granted).toEqual(
+			[descendant.id]
+		);
+	}
+);

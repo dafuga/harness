@@ -37,7 +37,7 @@ function project(): string {
 	symlinkSync(join(repository, 'node_modules'), join(root, 'node_modules'));
 	writeFileSync(
 		join(root, 'test/root.test.ts'),
-		"import { test } from 'vitest';\ntest('root', () => {});\n"
+		"import { test } from 'vitest';\ntest('root', () => { if(process.env.HARNESS_RESOURCE_CPUS !== '1') throw new Error('Worker inherited the whole suite budget'); });\n"
 	);
 	const nested = join(root, 'packages', 'nested');
 	mkdirSync(join(nested, 'test'), { recursive: true });
@@ -48,7 +48,7 @@ function project(): string {
 	);
 	writeFileSync(
 		join(nested, 'test/nested.test.ts'),
-		"import { expect, test } from 'vitest';\ntest('own setup ran', () => expect((globalThis as { ownSetup?: boolean }).ownSetup).toBe(true));\n"
+		"import { expect, test } from 'vitest';\ntest('own setup ran', () => expect((globalThis as { ownSetup?: boolean }).ownSetup).toBe(true));\n test('worker budget', () => expect(process.env.HARNESS_RESOURCE_CPUS).toBe('1'));\n"
 	);
 	return root;
 }
@@ -70,7 +70,12 @@ function run(root: string, cwd: string) {
 		['x', 'vitest', 'run', '--reporter=json', `--outputFile=${report}`],
 		{
 			cwd,
-			env: { ...env, NO_COLOR: '1' },
+			env: {
+				...env,
+				NO_COLOR: '1',
+				HARNESS_RESOURCE_CPUS: '3',
+				HARNESS_RESOURCE_MEMORY_MIB: '1792'
+			},
 			encoding: 'utf8',
 			timeout: runLimit,
 			killSignal: 'SIGKILL'

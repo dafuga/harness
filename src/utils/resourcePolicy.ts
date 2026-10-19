@@ -145,10 +145,14 @@ function grantChildren(jobs: ResourceJob[], available: Budget): string[] {
 	const queued = jobs
 		.filter((j) => j.state === 'queued' && j.parentId && pools.has(j.parentId))
 		.sort(queueOrder);
-	const granted: string[] = [];
+	const granted: string[] = [],
+		blocked = new Set<string>();
 	for (const job of queued) {
 		const parent = pools.get(job.parentId!)!;
-		if (!fits(job, parent) || !fits(job, available)) break;
+		if (blocked.has(job.parentId!) || !fits(job, parent) || !fits(job, available)) {
+			blocked.add(job.parentId!);
+			continue;
+		}
 		granted.push(job.id);
 		spend(job, parent);
 		spend(job, available);

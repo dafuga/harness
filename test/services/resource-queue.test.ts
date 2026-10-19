@@ -168,3 +168,39 @@ test('a future cached sample is replaced rather than pinning admission after a c
 	await service.run(resourceRequestSchema.parse({}), async () => {});
 	expect(service.queue.all()).toEqual([]);
 });
+
+test('a queued sibling cannot block the descendant needed to release its ancestor reservation', async () => {
+	const { service } = fixture(),
+		order: string[] = [];
+	let sibling: Promise<void> | undefined;
+	await service.run(resourceRequestSchema.parse({}), async (root) => {
+		try {
+			await service.run(
+				resourceRequestSchema.parse({}),
+				async (child) => {
+					sibling = service.run(
+						resourceRequestSchema.parse({}),
+						async () => {
+							order.push('sibling');
+						},
+						{ env: root.env }
+					);
+					while (!service.queue.all().some((j) => j.parentId === root.id && j.state === 'queued'))
+						await delay(5);
+					await service.run(
+						resourceRequestSchema.parse({}),
+						async () => {
+							order.push('descendant');
+						},
+						{ env: child.env, waitTimeoutMs: 1000 }
+					);
+				},
+				{ env: root.env }
+			);
+		} finally {
+			await sibling;
+		}
+	});
+	expect(order).toEqual(['descendant', 'sibling']);
+	expect(service.queue.all()).toEqual([]);
+});
