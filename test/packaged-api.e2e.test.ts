@@ -34,7 +34,7 @@ import {
 import * as root from '@dafuga01/harness';
 import { consolePolicy, consoleAccess, consoleRoutePath } from '@dafuga01/harness/console';
 const sdkPolicy = consolePolicy({ mode: 'loopback', bind: '127.0.0.1' });
-const sdkAccess = consoleAccess({ policy: sdkPolicy, data: { json: async () => undefined } });
+const sdkAccess = consoleAccess({ policy: sdkPolicy, data: { json: async () => undefined, media: async () => undefined } });
 const sdkRoute: string = consoleRoutePath({ branch: null, commit: 'a', view: 'map' });
 void [sdkAccess, sdkRoute];
 
