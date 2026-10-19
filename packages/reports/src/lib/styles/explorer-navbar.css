@@ -6,7 +6,7 @@
 	align-items: stretch;
 	gap: 0 var(--hx-nav-gap);
 	min-height: 92px;
-	padding: 0 var(--hx-gutter);
+	padding: 8px var(--hx-gutter);
 	border-bottom: 1px solid var(--hx-line);
 	background: var(--hx-surface);
 }
@@ -128,7 +128,7 @@
 		order: 1;
 		flex: none;
 		margin-left: 0;
-		padding: 2px 0;
+		padding: 8px 0;
 		border: 0;
 	}
 	/* The fields stay compact; their separator spans the full wrapped navbar row. */
