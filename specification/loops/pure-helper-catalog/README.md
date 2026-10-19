@@ -40,3 +40,23 @@ unreviewed operation is excluded, and models and services retain separate catego
 Full verification results and known blockers are recorded with the loop before handoff.
 No native application UI is launched or tested for this change, as requested. This work is
 on `dafuga/regression-commit-history`; it is not a main-branch or production release.
+
+## Verification status
+
+- Web package: all 598 tests, formatting, types, lint, three builds and audit passed.
+- CLI indexing, graphs, policy and manifest validation passed, including rejecting an invalid
+  budget with the original readable diagnostic. The new contracts round-trip through indexing.
+- Native catalog/remote boundary suites: 18 tests passed. Hosted catalog/cache suites: 10 passed.
+- Root types, lint, audit and registry validation passed; the registry has 1,300 stable units
+  including four new Models route pages and the new eligibility function, with 62 existing
+  uncertain references. API declaration/CLI builds and both packaged consumer tests passed.
+- Desktop and Hub builds passed without launching native applications. Hub types and desktop
+  lint passed. Desktop types remain blocked by the existing TS2589 in
+  `packages/desktop/tests/e2e/ui-evidence-fixture.ts:172`. Hub lint remains blocked by the
+  unchanged `HubApiController.projects` complexity of 11 (limit 10).
+- The root `bun run check` attempt stopped at five stale navigation, recording and migration
+  expectations introduced by this change. Their five standardized suites subsequently passed
+  all 25 cases after maintenance; the new CLI policy case also passed unchanged. A final
+  aggregate check has not passed, so the loops' full-verification steps remain pending.
+- Migration fingerprint follow-ups retain the original 411 definitions and record the three
+  explicitly changed definitions, their commit and purpose; ownership guards remain active.
