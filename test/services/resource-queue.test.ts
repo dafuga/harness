@@ -111,6 +111,8 @@ test('forged inherited reservations and impossible requests do not execute work'
 test('a validated nested task uses its ancestor budget rather than deadlocking', async () => {
 	const { service } = fixture();
 	await service.run(resourceRequestSchema.parse({}), async (context) => {
+		expect(context.env.CARGO_BUILD_JOBS).toBe('1');
+		expect(context.env.GOMAXPROCS).toBe('1');
 		await service.run(
 			resourceRequestSchema.parse({}),
 			async () => {

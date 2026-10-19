@@ -7,7 +7,11 @@ export function resourceEnvironment(
 		'HARNESS_RESOURCE_LEASE',
 		'HARNESS_RESOURCE_CPUS',
 		'HARNESS_RESOURCE_MEMORY_MIB',
-		'HARNESS_RESOURCE_PRIORITY'
+		'HARNESS_RESOURCE_PRIORITY',
+		'CARGO_BUILD_JOBS',
+		'RAYON_NUM_THREADS',
+		'GOMAXPROCS',
+		'OMP_NUM_THREADS'
 	];
 	return Object.fromEntries(
 		keys.filter((key) => env[key] !== undefined).map((key) => [key, env[key]])

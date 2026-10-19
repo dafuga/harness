@@ -24,7 +24,7 @@ import {spawn} from 'node:child_process';
 const root=dirname(fileURLToPath(import.meta.url));
 const log=value=>appendFileSync(join(root,'events.ndjson'),JSON.stringify(value)+'\\n');
 const send=value=>process.stdout.write(JSON.stringify(value)+'\\n');
-log({kind:'spawn',pid:process.pid,argv:process.argv.slice(2),cwd:process.cwd(),resources:{lease:process.env.HARNESS_RESOURCE_LEASE,cpus:process.env.HARNESS_RESOURCE_CPUS},env:Object.keys(process.env).filter(k=>/^(OPENAI_API_KEY|OPENAI_BASE_URL|ANTHROPIC_API_KEY|ANTHROPIC_BASE_URL)$/.test(k))});
+log({kind:'spawn',pid:process.pid,argv:process.argv.slice(2),cwd:process.cwd(),resources:{lease:process.env.HARNESS_RESOURCE_LEASE,cpus:process.env.HARNESS_RESOURCE_CPUS,threads:process.env.CARGO_BUILD_JOBS},env:Object.keys(process.env).filter(k=>/^(OPENAI_API_KEY|OPENAI_BASE_URL|ANTHROPIC_API_KEY|ANTHROPIC_BASE_URL)$/.test(k))});
 if(process.argv.includes('--version')){console.log('fixture 1.0');process.exit(0);}
 if(process.argv.includes('auth')){send({loggedIn:true,authMethod:'claude.ai'});process.exit(0);}
 function hang(){const child=spawn(process.execPath,['-e','setInterval(()=>{},1000)'],{stdio:'ignore'});log({kind:'owned',pid:child.pid});setInterval(()=>{},1000);}
@@ -63,7 +63,7 @@ interface Event {
 	argv?: string[];
 	cwd?: string;
 	env?: string[];
-	resources?: { lease?: string; cpus?: string };
+	resources?: { lease?: string; cpus?: string; threads?: string };
 	method?: string;
 	params?: Record<string, unknown>;
 	input?: string;

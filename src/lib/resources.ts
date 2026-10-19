@@ -2,7 +2,7 @@
 export { ResourceQueueService } from '../services/ResourceQueueService';
 export type { RunOptions } from '../services/ResourceQueueService';
 export { resourceWork } from '../utils/resourceWork';
-export { resourceWorkers } from '../utils/resourceWorkers';
+export { resourceWorkers, resourceThreads } from '../utils/resourceWorkers';
 export { resourceEnvironment } from '../utils/resourceEnvironment';
 export { resourceConfig, saveResourceConfig } from '../utils/resourceConfig';
 export {

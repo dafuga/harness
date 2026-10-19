@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/resourceWorkers.ts"],
-		"symbols": ["resourceWorkers"]
+		"symbols": ["resourceWorkers", "resourceThreads"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -16,12 +16,20 @@
 			{
 				"name": "resourceWorkers.env",
 				"type": "Record<string, string | undefined>"
+			},
+			{
+				"name": "resourceThreads.env",
+				"type": "Record<string, string | undefined>"
 			}
 		],
 		"outputs": [
 			{
 				"name": "resourceWorkers",
 				"type": "{ maxWorkers?: number; minWorkers?: number; }"
+			},
+			{
+				"name": "resourceThreads",
+				"type": "Record<string, string>"
 			}
 		],
 		"errors": []

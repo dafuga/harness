@@ -9,10 +9,8 @@ export async function resourceCommand(
 	signal?: AbortSignal,
 	timeoutMs = 21600000
 ): Promise<number> {
-	if (!Number.isFinite(timeoutMs) || timeoutMs <= 0 || timeoutMs > 2147483647)
-		throw new Error('Invalid managed command timeout');
+	validateTimeout(timeoutMs);
 	if (!args.length) throw new Error('A managed command is required after --');
-	const count = String(Math.max(1, Math.floor(Number(context.env.HARNESS_RESOURCE_CPUS))));
 	const result = await runIsolated({
 		command: args[0],
 		args: args.slice(1),
@@ -20,13 +18,7 @@ export async function resourceCommand(
 		signal,
 		stdio: 'inherit',
 		onSpawn: context.track,
-		env: {
-			...context.env,
-			CARGO_BUILD_JOBS: count,
-			RAYON_NUM_THREADS: count,
-			GOMAXPROCS: count,
-			OMP_NUM_THREADS: count
-		},
+		env: context.env,
 		timeoutMs,
 		maxLogBytes: 1000000,
 		log: join(resourceHome(context.env), 'logs', context.id + '.log')
@@ -38,4 +30,9 @@ export async function resourceCommand(
 		);
 	if (result.status === 'passed') return 0;
 	return result.exitCode === 0 ? 1 : (result.exitCode ?? 1);
+}
+
+function validateTimeout(timeout: number): void {
+	if (!Number.isFinite(timeout) || timeout <= 0 || timeout > 2147483647)
+		throw new Error('Invalid managed command timeout');
 }

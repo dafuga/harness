@@ -20,7 +20,8 @@ test('Codex initializes subscription RPC, discovers models and confines public t
 	expect(events.find((e) => e.method === 'turn/start')?.resources).toBeUndefined();
 	expect(events.filter((e) => e.argv?.includes('app-server')).at(-1)?.resources).toMatchObject({
 		lease: expect.any(String),
-		cpus: '1'
+		cpus: '1',
+		threads: '1'
 	});
 	expect(events.every((e) => !e.env?.length)).toBe(true);
 	expect(events.find((e) => e.method === 'initialize')?.params).toMatchObject({
@@ -75,7 +76,7 @@ test('Claude uses requested model, project cwd, stdin and subscription-only envi
 	const events = await f.events();
 	const run = events.find((e) => e.argv?.includes('-p'));
 	expect(run?.cwd).toBe(f.root);
-	expect(run?.resources).toMatchObject({ lease: expect.any(String), cpus: '1' });
+	expect(run?.resources).toMatchObject({ lease: expect.any(String), cpus: '1', threads: '1' });
 	const flags =
 		'-p --verbose --output-format stream-json --model selected --permission-mode bypassPermissions --no-session-persistence --effort high --tools Read,Glob,Grep';
 	expect(run?.argv).toEqual(flags.split(' '));
