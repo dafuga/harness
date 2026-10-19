@@ -164,6 +164,9 @@ export const referenceVerificationScopes: Record<string, VerificationScope> = {
 				'oversized and malformed payloads never reach the executor': 'owner-boundary'
 			},
 			'test/preview-lifecycle.test.ts': {
+				'the owned preview autonomously recovers after crash': 'route-runtime',
+				'the owned preview autonomously recovers after hang': 'route-runtime',
+				'the owned preview autonomously recovers after module errors': 'route-runtime',
 				'repeated starts on another requested port reuse the same owned preview': 'route-runtime',
 				'another history configuration is refused without starting a second preview':
 					'route-runtime',

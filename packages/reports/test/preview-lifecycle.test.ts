@@ -1,98 +1,19 @@
-import { assertPreviewRoutes, sveltePreviewFixture } from './support/previewFixture';
-import { spawn, type ChildProcess } from 'node:child_process';
-import { once } from 'node:events';
-import { mkdtemp, rm, writeFile } from 'node:fs/promises';
-import { createServer } from 'node:net';
-import type { AddressInfo } from 'node:net';
-import { tmpdir } from 'node:os';
+import {
+	assertPreviewRoutes,
+	sveltePreviewFixture,
+	previewFixture as fixture,
+	previewPort as port,
+	startPreview as start,
+	readyPreview as ready,
+	exitedPreview as exited
+} from './support/previewFixture';
+import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { afterEach, test } from 'vitest';
+import { once } from 'node:events';
+import { test } from 'vitest';
 import { expect } from '../../../test/verificationExpect';
 const reports = fileURLToPath(new URL('..', import.meta.url));
-const roots: string[] = [],
-	children: ChildProcess[] = [];
-afterEach(async () => {
-	for (const child of children.splice(0)) {
-		if (child.exitCode !== null || child.signalCode !== null) continue;
-		const ended = once(child, 'exit');
-		process.kill(-child.pid!, 'SIGTERM');
-		await ended;
-	}
-	for (const root of roots.splice(0)) await rm(root, { recursive: true, force: true });
-});
-async function port() {
-	const server = createServer();
-	server.listen(0, '127.0.0.1');
-	await once(server, 'listening');
-	const value = (server.address() as AddressInfo).port;
-	await new Promise<void>((resolve) => server.close(() => resolve()));
-	return value;
-}
-async function fixture() {
-	const root = await mkdtemp(join(tmpdir(), 'harness-preview-lifecycle-'));
-	roots.push(root);
-	await writeFile(join(root, 'index.html'), '<h1>Managed preview fixture</h1>');
-	await writeFile(join(root, 'vite.config.mjs'), 'export default {};');
-	return { root, owner: await port() };
-}
-function start(
-	f: Awaited<ReturnType<typeof fixture>> & { app?: boolean },
-	webPort: number,
-	history = 'one',
-	configFile = join(f.root, 'vite.config.mjs')
-) {
-	const child = spawn(
-		'bun',
-		[
-			...(f.app ? [join(reports, 'src/initializers/initializePreview.ts')] : ['run', 'dev']),
-			f.root,
-			'--config',
-			configFile,
-			'--port',
-			String(webPort)
-		],
-		{
-			cwd: f.app ? f.root : reports,
-			detached: true,
-			stdio: ['ignore', 'pipe', 'pipe'],
-			env: {
-				...process.env,
-				NO_COLOR: '1',
-				HARNESS_PREVIEW_OWNER_PORT: String(f.owner),
-				HARNESS_CONSOLE_DATA: history
-			}
-		}
-	);
-	children.push(child);
-	let text = '';
-	child.stdout!.on('data', (data) => {
-		text += String(data);
-	});
-	child.stderr!.on('data', (data) => {
-		text += String(data);
-	});
-	return { child, text: () => text };
-}
-async function ready(webPort: number) {
-	await expect
-		.poll(
-			async () => {
-				try {
-					return await (
-						await fetch(`http://127.0.0.1:${webPort}`, { signal: AbortSignal.timeout(500) })
-					).text();
-				} catch {
-					return '';
-				}
-			},
-			{ timeout: 15000 }
-		)
-		.toContain('Managed preview fixture');
-}
-async function exited(run: ReturnType<typeof start>) {
-	await expect.poll(() => run.child.exitCode, { timeout: 4000 }).not.toBeNull();
-}
 test('repeated starts on another requested port reuse the same owned preview', async () => {
 	const f = await fixture(),
 		firstPort = await port(),
@@ -201,3 +122,60 @@ test('route indexes stay aligned after the normal SvelteKit sync command', async
 	const run = start({ ...f, app: true }, webPort);
 	await assertPreviewRoutes(f.root, `http://127.0.0.1:${webPort}`, names, run.text);
 }, 30000);
+
+for (const fault of ['crash', 'hang', 'module errors'] as const) {
+	test(`the owned preview autonomously recovers after ${fault}`, async () => {
+		const f = await fixture(),
+			webPort = await port(),
+			nextPort = await port();
+		const history = join(f.root, 'history.json');
+		await writeFile(history, 'existing committed history');
+		start(f, webPort, history);
+		await ready(webPort);
+		const owner = () =>
+			fetch(`http://127.0.0.1:${f.owner}/__harness_preview__`).then((r) => r.json());
+		const worker = async () => {
+			try {
+				return (
+					await (
+						await fetch(`http://127.0.0.1:${webPort}/fixture-worker`, {
+							signal: AbortSignal.timeout(500)
+						})
+					).json()
+				).pid as number;
+			} catch {
+				return 0;
+			}
+		};
+		const before = await owner(),
+			pid = await worker();
+		expect(pid).toBeGreaterThan(0);
+		try {
+			if (fault === 'module errors')
+				for (let i = 0; i < 3; i++) await fetch(`http://127.0.0.1:${webPort}/fixture-fail.js`);
+			else process.kill(pid, fault === 'crash' ? 'SIGKILL' : 'SIGSTOP');
+			await expect
+				.poll(
+					async () => {
+						const current = await worker();
+						return current > 0 && current !== pid;
+					},
+					{ timeout: 18000 }
+				)
+				.toBe(true);
+			await ready(webPort);
+			expect((await owner()).pid, 'the supervisor retains its ownership slot').toBe(before.pid);
+			expect(await readFile(history, 'utf8')).toBe('existing committed history');
+			const reused = start(f, nextPort, history);
+			await exited(reused);
+			expect(reused.child.exitCode).toBe(0);
+			await expect(fetch(`http://127.0.0.1:${nextPort}`)).rejects.toThrow();
+		} finally {
+			try {
+				process.kill(pid, 'SIGCONT');
+			} catch {
+				/* Exited fixture worker. */
+			}
+		}
+	}, 35000);
+}
