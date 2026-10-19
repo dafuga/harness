@@ -1,0 +1,48 @@
+{
+	"name": "subagent-benchmarks",
+	"goal": "Prove isolated identical trials enforce immutable contracts and attribute first-submit and repair outcomes to Codex and Claude configurations",
+	"createdAt": "2026-10-19T11:25:20.862Z",
+	"updatedAt": "2026-10-19T11:49:10.663Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-19T11:48:31.488Z",
+			"evidence": "Approved contract benchmark specification: exact editable files, fixed checks, full agent configurations, controlled sequential trials, CLI/JSON, three repetitions and two repairs."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-10-19T11:48:31.647Z",
+			"evidence": "Codex/Claude adapters, isolated evaluator overlays, deadline cancellation, durable local runs, configuration fingerprints and analytics implemented."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-10-19T11:48:31.772Z",
+			"evidence": "Same final CLI regression fails on original 149fda2c with unknown benchmark command. Final one-worker check passed 197 CLI units, 51 CLI integrations, package smoke and 86 Reports tests."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "complete",
+			"completedAt": "2026-10-19T11:49:10.663Z",
+			"evidence": "Final bun run check passed: 197 CLI unit tests, 51 CLI integration tests, packaged CLI smoke, 86 Reports tests, builds, lint, types and both audits; 25 opt-in Jev tests skipped. Native final smoke 566b5318-8d98-4efb-b09c-d819ca769f4e: Claude Opus 5.5 and explicitly configured Codex gpt-5.6-sol both passed first submission. Single test worker and nice 15 used. No affected frontend UI or application deployment."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

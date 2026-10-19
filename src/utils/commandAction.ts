@@ -1,6 +1,7 @@
 const subcommands: Record<string, string[]> = {
 	loop: ['create', 'add', 'complete', 'status', 'search', 'next', 'evaluate'],
-	analytics: ['summary', 'loops', 'jev', 'models', 'events', 'import', 'export'],
+	analytics: ['summary', 'loops', 'jev', 'models', 'benchmarks', 'events', 'import', 'export'],
+	benchmark: ['validate', 'run', 'results'],
 	report: ['begin', 'record', 'import', 'finalize', 'serve', 'publish', 'cleanup', 'sync-storage']
 };
 export function commandAction(args: string[]): string {

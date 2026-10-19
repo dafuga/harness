@@ -1,0 +1,55 @@
+{
+	"name": "benchmark-verification-repair",
+	"goal": "Loop discovery skips incomplete local loop folders instead of blocking template search and verification",
+	"createdAt": "2026-10-19T11:41:14.285Z",
+	"updatedAt": "2026-10-19T11:48:32.364Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-19T11:48:31.892Z",
+			"evidence": "Template search failed when existing local loop folders lacked loop.json; this also broke two pre-existing regression-loop tests."
+		},
+		{
+			"id": "red",
+			"title": "Write and run a failing regression test; record the defect assertion and command.",
+			"status": "complete",
+			"completedAt": "2026-10-19T11:48:32.006Z",
+			"evidence": "Unchanged test/loop-discovery.test.ts failed with ExpectedCliError: Loop does not exist before the source repair."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-19T11:48:32.124Z",
+			"evidence": "Loop discovery reads loop state directly so its existing missing-file branch can skip incomplete folders."
+		},
+		{
+			"id": "green",
+			"title": "Repeat repair and the same unchanged regression test until it passes; record passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-19T11:48:32.240Z",
+			"evidence": "Same unchanged loop-discovery regression and six existing regression-loop tests pass; no expectations weakened."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots; keep pending until proof passes.",
+			"status": "complete",
+			"completedAt": "2026-10-19T11:48:32.364Z",
+			"evidence": "Final bun run check passed with one Vitest worker, lower scheduling priority and limited esbuild concurrency. CLI has no affected browser UI path."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

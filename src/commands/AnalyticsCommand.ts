@@ -4,7 +4,16 @@ export function registerAnalyticsCommand(program: Command): void {
 	const analytics = program
 		.command('analytics')
 		.description('Query durable local cross-project Harness history.');
-	for (const operation of ['summary', 'loops', 'jev', 'models', 'events', 'import', 'export']) {
+	for (const operation of [
+		'summary',
+		'loops',
+		'jev',
+		'models',
+		'benchmarks',
+		'events',
+		'import',
+		'export'
+	]) {
 		analytics
 			.command(operation)
 			.option('--json', 'Print structured results.')

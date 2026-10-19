@@ -299,3 +299,90 @@ passes. Claude Code must already be logged in; the executable defaults to
 `~/.local/bin/claude` and can be supplied through `HARNESS_CLAUDE_EXECUTABLE`.
 The prototype offers no API billing fallback. Session/retry state is in memory;
 cancelled sessions and orphaned continuations fail closed.
+
+## Component agent benchmarks
+
+Compare explicit agent configurations on the same component contract:
+
+```bash
+harness benchmark validate benchmark.json
+harness benchmark run benchmark.json --seed comparison-1 --json
+harness benchmark results <run-id> --json
+harness analytics benchmarks --json
+```
+
+A definition uses paths relative to its `project` directory, resolved from the
+JSON file's directory. Only committed files from `revision` enter a trial;
+uncommitted working changes and local secrets are not copied.
+
+```json
+{
+	"version": 1,
+	"name": "sum-component",
+	"project": ".",
+	"revision": "HEAD",
+	"task": "Implement add(a, b) in src/add.ts.",
+	"contract": "Export add(a: number, b: number): number returning a + b.",
+	"allowedFiles": ["src/add.ts"],
+	"checks": [{ "id": "contract", "command": "bun test test/add.test.ts" }],
+	"setup": ["bun install --frozen-lockfile"],
+	"candidates": [
+		{
+			"id": "codex",
+			"runner": "codex",
+			"model": "YOUR_CODEX_MODEL",
+			"effort": "medium",
+			"instructions": "Prefer small functions.",
+			"tools": "default"
+		},
+		{
+			"id": "claude",
+			"runner": "claude",
+			"model": "YOUR_CLAUDE_MODEL",
+			"effort": "medium",
+			"tools": "default"
+		}
+	],
+	"budget": { "repetitions": 3, "timeoutMs": 900000, "repairs": 2 }
+}
+```
+
+Choose models available to your signed-in runners. `validate` checks definitions,
+pins the commit, and checks installed runner versions; authentication and model
+access are proven by actual trials. Codex supports `low`, `medium`, `high`, and
+`xhigh` effort with its default tools. Claude also supports `max` effort and the
+`files` tool preset (`Read,Edit,Write,Glob,Grep`). Unknown settings are rejected.
+Provider API environment overrides are removed; existing subscription logins are
+preserved. User runner configuration is disabled for reproducibility. Pinned
+repository instructions remain part of the task context.
+
+Trials run sequentially in fresh workspaces and sessions. Every completed runner
+response is a submission; internal agent iterations do not count as submissions.
+The first submission is evaluated independently, and failures receive feedback
+for at most two repairs by default. All setup, agent, and evaluation work counts
+toward the trial deadline. Checks are visible and fixed. Protect test/interface
+files by leaving them out of `allowedFiles`; these are exact file paths, not globs.
+Each evaluation starts from original files and copies only allowed implementation
+changes. Protected edits, including committed edits, and symlinks invalidate a
+submission. Symlinks, submodules, and export-ignored snapshots are unsupported.
+
+Compare correctness before speed: tables separate first-submission and eventual
+success, show sample counts and all failure outcomes, and report median elapsed
+time for successful trials. JSON includes per-check evidence, patches, timing,
+repairs, requested/reported model identity, and available author usage. Missing
+usage stays unknown. Claude's cumulative reported cost is counted once per trial
+and is an estimate, not a subscription charge. Evaluations use local commands;
+there is no model judge or inferred evaluator token spend.
+
+Run data and workspaces live under `HARNESS_ANALYTICS_HOME/benchmarks` (default
+`~/.codex/harness/benchmarks`), outside the project. Trial workspaces are removed
+after evaluation; persisted patches and check evidence remain. Analytics stores fingerprints
+and attributed trial summaries, without raw prompts, patches, or test output.
+Read interrupted runs with `results`; trials are never silently retried. The run
+command exits nonzero if any trial fails or is interrupted. Results queries exit
+zero even when displaying failed outcomes.
+
+Run only trusted repositories, setup commands, acceptance commands, and agents.
+Workspace separation provides reproducibility, not an OS security sandbox.
+Claude uses full execution permissions; Codex uses workspace-write. Keep external
+services out of contract checks for controlled, repeatable comparisons.

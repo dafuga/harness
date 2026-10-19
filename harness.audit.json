@@ -13,6 +13,10 @@
 		{
 			"path": "packages/reports/",
 			"reason": "Reporting workspace is audited separately by its own strict app configuration in bun run check."
+		},
+		{
+			"path": ".agents/",
+			"reason": "Codex-managed local plugin installation metadata, outside project source."
 		}
 	]
 }

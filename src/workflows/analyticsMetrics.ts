@@ -31,6 +31,7 @@ export function analyticsSnapshot(events: AnalyticsEvent[], filter: AnalyticsFil
 			cleanCode: jevMetrics(assessmentScope, 'clean-code', undefined, filter.model)
 		},
 		models: modelMetrics(assessmentScope, filter.model),
+		benchmarks: selected.filter((event) => event.kind === 'benchmark'),
 		events: selected
 	};
 }
