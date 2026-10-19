@@ -2,7 +2,7 @@ import { expect } from '../../../test/verificationExpect';
 import { afterEach, test } from 'vitest';
 import { rm } from 'node:fs/promises';
 import { PNG } from 'pngjs';
-import { createPlanning } from '../../planning/src/index/index';
+import { createPlanning } from '../../planning/src/lib/planning/index';
 import type { RunEvent, RunRequest } from '../src/models/DesktopBridge.types';
 import { DesktopRunService } from '../src/services/desktop-run-service/DesktopRunService';
 import { ProjectSessionService } from '../src/services/ProjectSessionService';

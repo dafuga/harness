@@ -9,7 +9,7 @@ import type {
 	CollaborationRecords
 } from 'collaboration';
 import { createCollaboration } from 'collaboration';
-import { hubCache } from '../../src/routes/api/[...path]/-server/hubCache';
+import { hubCache } from '../../src/routes/api/[...path]/hubCache';
 import { HubProjectionService } from '../../src/services/hub-projection-service/HubProjectionService';
 import { HubApiController } from '../../src/controllers/hub-api-controller/HubApiController';
 const encode = (v: unknown) => new TextEncoder().encode(JSON.stringify(v));

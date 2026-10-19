@@ -5,7 +5,7 @@ import { recordCapture } from '../../../src/utils/record-capture/recordCapture';
 import { runtimeAudio, runtimeEvidence } from '../tests/e2e/runtime-evidence';
 import { evidenceData, recordedClip } from '../tests/e2e/ui-evidence-fixture';
 
-vi.mock('../../../src/utils/recordCapture', async (original) => ({
+vi.mock('../../../src/utils/record-capture/recordCapture', async (original) => ({
 	...(await original<typeof Capture>()),
 	recordCapture: vi.fn()
 }));

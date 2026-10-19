@@ -1,4 +1,6 @@
 import { expect, test } from 'vitest';
+import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import { catalogFilter } from '../../src/components/harness/explorer-index/entityCatalog';
 import { entityCatalog, listed } from '../../src/utils/entityCatalog';
 import { explorerEntities } from '../../src/utils/explorerEntities';
@@ -12,6 +14,20 @@ const partial = revision(commits.middle, [record(commits.middle, false)]);
 const rows = (category: Parameters<typeof entityCatalog>[1], detail = head) =>
 	entityCatalog(explorerEntities(detail), category, (id) => explorerRelations(detail, id));
 const filter = { search: '', changedOnly: false, order: 'name' as const };
+
+test.each([
+	'../../src/utils/entityCatalog.ts',
+	'../../src/components/harness/explorer-index/entityCatalog.ts'
+])('a fresh runtime loads and calls the catalog through %s', (entry) => {
+	const path = fileURLToPath(new URL(entry, import.meta.url));
+	const script = `const m = await import(${JSON.stringify(path)}); console.log(JSON.stringify(m.catalogFilter([], { search: '', changedOnly: false, order: 'name' })));`;
+	expect(
+		execFileSync(process.env.HARNESS_BUN_PATH ?? 'bun', ['-e', script], {
+			encoding: 'utf8',
+			timeout: 10000
+		})
+	).toBe('[]\n');
+});
 
 test('a collection lists the entities of its category by the name a person reads', () => {
 	expect(rows('components').map((row) => row.name)).toEqual([

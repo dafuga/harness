@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { browserProjects } from '../../src/routes/-layout/browserProjects';
+import { browserProjects } from '../../src/routes/browserProjects';
 import { invitationLink } from '../../src/components/invitation-form/browserProjects';
 import type { BrowserApi } from '../../src/utils/browserApi';
 

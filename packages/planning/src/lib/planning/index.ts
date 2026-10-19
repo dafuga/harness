@@ -1,4 +1,8 @@
-import type { PlanningApi, PlanningRequest, PlanningResult } from '../../models/PlanningBridge.types';
+import type {
+	PlanningApi,
+	PlanningRequest,
+	PlanningResult
+} from '../../models/PlanningBridge.types';
 import type { PlanningErrorCode } from '../../models/PlanningView.types';
 import { planGit } from './planGit';
 import { planningService } from '../../services/planning-service/PlanningService';

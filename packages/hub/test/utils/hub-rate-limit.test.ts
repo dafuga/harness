@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { hubRateLimit } from '../../src/routes/api/[...path]/-server/hubRateLimit';
+import { hubRateLimit } from '../../src/routes/api/[...path]/hubRateLimit';
 test('unauthenticated challenge requests are bounded and identifiers are hashed', async () => {
 	let count = 0;
 	const keys: string[] = [];

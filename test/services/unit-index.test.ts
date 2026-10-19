@@ -31,6 +31,17 @@ test('recorded source moves retain definitions, owner-local placement and regist
 		if (unit.id !== move.unit || !unit.owns.source.includes(move.to))
 			gaps.push(`${move.name}: registered identity lost`);
 	}
+
+	expect(migration.helpers).toHaveLength(411);
+	expect(
+		gaps,
+		`owner-local helper placement: ${gaps.length} gaps; ${gaps.slice(0, 12).join('; ')}`
+	).toEqual([]);
+});
+
+test('public route filenames retain their registered ownership', () => {
+	const root = resolve(import.meta.dirname, '../..');
+	const gaps: string[] = [];
 	for (const route of migration.publicRoutes) {
 		if (!existsSync(resolve(root, route.source)))
 			gaps.push(`${route.unit}: public route filename moved`);
@@ -39,11 +50,7 @@ test('recorded source moves retain definitions, owner-local placement and regist
 		) as ComponentManifest;
 		if (!unit.owns.source.includes(route.source)) gaps.push(`${route.unit}: route ownership lost`);
 	}
-	expect(migration.helpers).toHaveLength(411);
-	expect(
-		gaps,
-		`owner-local helper placement: ${gaps.length} gaps; ${gaps.slice(0, 12).join('; ')}`
-	).toEqual([]);
+	expect(gaps).toEqual([]);
 });
 
 test('declared preview and documentation survive source re-indexing', async () => {

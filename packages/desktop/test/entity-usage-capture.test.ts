@@ -4,7 +4,7 @@ import type * as Capture from '../../../src/utils/recordCapture';
 import { recordCapture } from '../../../src/utils/record-capture/recordCapture';
 import { pictured } from '../tests/e2e/ui-entity-usage-fixture';
 
-vi.mock('../../../src/utils/recordCapture', async (original) => ({
+vi.mock('../../../src/utils/record-capture/recordCapture', async (original) => ({
 	...(await original<typeof Capture>()),
 	recordCapture: vi.fn()
 }));

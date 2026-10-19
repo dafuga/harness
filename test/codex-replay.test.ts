@@ -2,7 +2,7 @@ import { expect, test, vi } from 'vitest';
 import { CodexSessionRepository } from '../src/repositories/codex-session-repository/CodexSessionRepository';
 import { CodexGatewayService } from '../src/services/codex-gateway-service/CodexGatewayService';
 const runs = vi.hoisted(() => ({ count: 0 }));
-vi.mock('../src/services/ClaudeQueryService', () => ({
+vi.mock('../src/services/claude-query-service/ClaudeQueryService', () => ({
 	ClaudeQueryService: class {
 		run(_request: unknown, session: { emit: (event: unknown) => void }) {
 			runs.count++;

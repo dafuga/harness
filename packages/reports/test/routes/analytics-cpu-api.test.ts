@@ -1,11 +1,11 @@
 import { expect, test, vi } from 'vitest';
 const snapshot = vi.hoisted(() => vi.fn());
-vi.mock('../../../../src/services/CpuUsageService', () => ({
+vi.mock('../../../../src/services/cpu-usage-service/CpuUsageService', () => ({
 	CpuUsageService: class {
 		snapshot = snapshot;
 	}
 }));
-import { GET } from '../../src/routes/api/analytics-cpu/-server/+server';
+import { GET } from '../../src/routes/api/analytics-cpu/+server';
 test('CPU telemetry is local-only and never cached', async () => {
 	const blocked = await GET({ url: new URL('https://reports.example/api/analytics-cpu') });
 	expect(blocked.status).toBe(403);

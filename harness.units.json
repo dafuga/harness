@@ -34,15 +34,8 @@
 			"root": "packages/relay"
 		}
 	],
-	"tests": [
-		"test/",
-		"tests/"
-	],
-	"global": [
-		"**/.prettierignore",
-		"tsconfig.api.json",
-		"specification/measurements/"
-	],
+	"tests": ["test/", "tests/"],
+	"global": ["**/.prettierignore", "tsconfig.api.json", "specification/measurements/"],
 	"ignored": [
 		"**/*.md",
 		"specification/features/",

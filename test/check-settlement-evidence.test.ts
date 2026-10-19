@@ -14,9 +14,9 @@ test('a failed check says which processes it stopped, which outlasted a signal, 
 		resisted: 1,
 		unknown: false
 	};
-	vi.doMock('../src/utils/runIsolated', () => ({ runIsolated: async () => left }));
+	vi.doMock('../src/utils/run-isolated/runIsolated', () => ({ runIsolated: async () => left }));
 	const { CheckRunService } = await import('../src/services/CheckRunService');
-	vi.doUnmock('../src/utils/runIsolated');
+	vi.doUnmock('../src/utils/run-isolated/runIsolated');
 	const context = { commit: 'made-up', tree: 'made-up', profile: 'made-up', env: {} };
 	const service = new CheckRunService({ ...context, snapshot: '/made/up', directory: '/made/up' });
 	const check = { id: 'page', name: 'page', target: 'page', cwd: '.', command: 'true' };

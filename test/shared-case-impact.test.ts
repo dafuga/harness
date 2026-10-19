@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { beforeAll, expect, test } from 'vitest';
 import { HandlerRuntimeAdapter } from '../src/adapters/HandlerRuntimeAdapter';
 import type { ImpactSide } from '../src/core/impactTypes';
@@ -10,7 +11,9 @@ let loaded: LoadedUnits;
 beforeAll(async () => {
 	loaded = await loadUnits(process.cwd());
 }, 60_000);
-const path = 'packages/reports/src/components/EntityCases.svelte';
+const path: string = JSON.parse(
+	readFileSync('specification/units/reports.component.entity-cases.json', 'utf8')
+).runtime.entry;
 const unit = 'reports.component.entity-cases';
 
 test('the shared case table is an actual dependency of both artifact viewers, without an external alias', () => {

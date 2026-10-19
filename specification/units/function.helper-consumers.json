@@ -14,21 +14,24 @@
 		"symbols": ["helperConsumers", "HelperTree", "HelperConsumer", "helperConsumers"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "helperConsumers.tree",
-				"type": "HelperTree"
+				"type": "HelperTree",
+				"description": "The selected source tree. Reads and optional file listings describe this exact revision, rather than files from another checkout."
 			},
 			{
 				"name": "helperConsumers.units",
-				"type": "Unit[]"
+				"type": "Unit[]",
+				"description": "Registered units and their owned source. Each helper receives distinct actual component, service or named-function consumers in this array."
 			}
 		],
 		"outputs": [
 			{
 				"name": "helperConsumers",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Completes after attaching consumer facts to the supplied helper metadata; it returns no separate value."
 			}
 		],
 		"errors": []

@@ -14,17 +14,20 @@
 		"symbols": ["helperTemplates", "helperTemplates"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "helperTemplates.code",
-				"type": "string"
+				"type": "string",
+				"description": "Svelte component source to parse. Plain markup and string contents do not become helper calls.",
+				"examples": ["<script>const title = 'Orders';</script><h1>{title}</h1>"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "helperTemplates",
-				"type": "string"
+				"type": "string",
+				"description": "Script code and isolated template-expression wrappers, with template-bound names represented as local parameters so shadowing remains visible."
 			}
 		],
 		"errors": []

@@ -2,11 +2,9 @@
 	"name": "canonical-helper-owner-folders",
 	"goal": "Colocate helpers within supported source folders while keeping every public SvelteKit route filename fixed.",
 	"createdAt": "2026-10-19T18:44:23.115Z",
-	"updatedAt": "2026-10-19T18:46:47.575Z",
+	"updatedAt": "2026-10-19T18:48:38.673Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T18:48:38.673Z",
+			"evidence": "The unchanged migration guard and explicitly frozen ledger pass at 509c1f82. Green e4fbecc50db29a937482f3b5fe51d649d84cf431034ce07c901ae9eb368416bb preserves all seven public route paths and the 411 helper definitions."
 		},
 		{
 			"id": "verify",

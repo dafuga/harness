@@ -10,7 +10,7 @@ import { DesktopRunService } from '../src/services/desktop-run-service/DesktopRu
 import { ProviderDiscoveryService } from '../src/services/provider-discovery-service/ProviderDiscoveryService';
 import type { AgentRunner, AgentTurn, ImageGenerator } from '../src/models/AgentRunner.types';
 import type { RunEvent, RunRequest } from '../src/models/DesktopBridge.types';
-import { createPlanning } from '../../planning/src/index/index';
+import { createPlanning } from '../../planning/src/lib/planning/index';
 const roots: string[] = [];
 export const bytes = PNG.sync.write(new PNG({ width: 2, height: 2 }));
 export const git = (root: string, ...args: string[]) =>

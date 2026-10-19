@@ -2,6 +2,8 @@
 
 The first scan omitted named function callers in templates, config and routes. Corrected counts are 404 shared helpers, 411 single-consumer helpers and 67 exports without a counted consumer. The migration uses the corrected scan; functions with multiple actual consumers remain shared.
 
+After relocation, the current source scan finds **422 shared functions**: all 404 previously shared functions remain shared, and 18 supporting helpers now cross the separated owner modules with at least two real consumers. All 101 single-consumer exports still visible in utility locations are in the same folder as their consumer; other relocated private helpers now live under their components, services, adapters, routes or scripts. No single-consumer folder gaps remain.
+
 411 helpers had one distinct consumer at the corrected baseline. Their definitions move beside that consumer; stable registered identities, contracts and history remain attached. Shared callable implementations stay shared.
 
 Nested private call chains follow their terminal owner. Types and constants retain their original contracts. Definition hashes ignore formatting and normalize module-relative URL targets; they do not waive behavior checks.

@@ -2,7 +2,7 @@ import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { createPlanning } from '../../planning/src/index/index';
+import { createPlanning } from '../../planning/src/lib/planning/index';
 import { fixture, settled, git } from './run-fixture';
 
 test.each(['functions', 'services', 'configs'] as const)(
