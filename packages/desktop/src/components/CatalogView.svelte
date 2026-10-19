@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Select from '$shared/Select.svelte';
+	import FilterDialog from '$shared/FilterDialog.svelte';
 	import { explorerName } from '../../../reports/src/utils/explorerName';
 	import type { Workspace } from '../lib/stores/workspace.svelte';
 	import type { CatalogEntity } from '../models/Desktop.types';
@@ -18,6 +19,18 @@
 		changed = false;
 		verification = 'all';
 		planning = 'all';
+	}
+	const active = $derived(
+		Number(changed) +
+			Number(verification !== 'all') +
+			Number(planning !== 'all') +
+			Number(sort !== 'title')
+	);
+	function resetFilters() {
+		changed = false;
+		verification = 'all';
+		planning = 'all';
+		sort = 'title';
 	}
 	const entities = $derived(
 		(workspace.snapshot?.entities || [])
@@ -52,22 +65,27 @@
 			aria-label={`Search ${workspace.category}`}
 			placeholder={`Search ${workspace.category}…`}
 			bind:value={search}
-		/><label class="checkbox"><input type="checkbox" bind:checked={changed} /> Changed only</label
-		><Select label="Verification filter" bind:value={verification}
-			><option value="all">All verification</option><option value="passed">Verified</option><option
-				value="unproven">Not verified</option
-			></Select
-		><Select label="Planning filter" bind:value={planning}
-			><option value="all">All planning</option><option value="planned">Planned</option><option
-				value="implemented">Implemented</option
-			></Select
-		><Select label="Sort catalog" bind:value={sort}
-			><option value="title">Name</option><option value="version">Design version</option></Select
+		/><FilterDialog {active} onreset={resetFilters}
+			><label class="checkbox"><input type="checkbox" bind:checked={changed} /> Changed only</label
+			><label class="filter-field"
+				><span>Verification</span><Select label="Verification filter" bind:value={verification}
+					><option value="all">All verification</option><option value="passed">Verified</option
+					><option value="unproven">Not verified</option></Select
+				></label
+			><label class="filter-field"
+				><span>Planning</span><Select label="Planning filter" bind:value={planning}
+					><option value="all">All planning</option><option value="planned">Planned</option><option
+						value="implemented">Implemented</option
+					></Select
+				></label
+			><label class="filter-field"
+				><span>Order</span><Select label="Sort catalog" bind:value={sort}
+					><option value="title">Name</option><option value="version">Design version</option
+					></Select
+				></label
+			></FilterDialog
 		>
 	</div>
-	{#if search || changed || verification !== 'all' || planning !== 'all'}<button onclick={reset}
-			>Clear filters</button
-		>{/if}
 	<div class="card-grid">
 		{#each entities as entity (entity.id)}<EntityCard {entity} {workspace} />{:else}<p
 				class="empty"
@@ -77,3 +95,15 @@
 			</p>{/each}
 	</div>
 </main>
+
+<style>
+	.catalog-tools {
+		flex-wrap: nowrap;
+		gap: 10px;
+	}
+	.catalog-tools > input {
+		flex: 1 1 0;
+		min-width: 0;
+		min-height: 48px;
+	}
+</style>

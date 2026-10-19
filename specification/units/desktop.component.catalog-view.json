@@ -23,7 +23,7 @@
 			{
 				"name": "CatalogView",
 				"type": "markup",
-				"description": "A grid of matching entities with local query, changed-only, verification, planning and sort controls. Empty results allow resetting the filters."
+				"description": "Local search and one filter icon above the catalog. The shared modal holds filters and ordering."
 			}
 		],
 		"errors": []
@@ -41,6 +41,11 @@
 		},
 		{
 			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.filter-dialog",
 			"via": "import",
 			"origin": "derived"
 		},

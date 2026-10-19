@@ -284,6 +284,12 @@
 			"specifier": "../../../../src/core/browserDiagnostics",
 			"to": "src/core/browserDiagnostics.ts",
 			"reason": "Hosted evidence validates the same recorded browser diagnostic contract as the verification runner."
+		},
+		{
+			"from": "packages/desktop/src/components/CatalogView.svelte",
+			"specifier": "$shared/FilterDialog.svelte",
+			"to": "packages/reports/src/components/FilterDialog.svelte",
+			"reason": "The shared catalog uses the same filter dialog on Web, Electron and iOS."
 		}
 	]
 }

@@ -28,12 +28,17 @@
 			{
 				"name": "ExplorerControls",
 				"type": "markup",
-				"description": "A local search field, changed-only switch, verification and usage filters, and ordering controls update the supplied filter. The host filters the rows."
+				"description": "Local search and one filter icon above the catalog. The shared modal holds filters and ordering."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.filter-dialog",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.harness-harness-icon",
 			"via": "import",

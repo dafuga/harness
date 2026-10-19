@@ -6,6 +6,7 @@
 		type CatalogOrder
 	} from '../../utils/entityCatalog';
 	import Select from '../Select.svelte';
+	import FilterDialog from '../FilterDialog.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
 	let {
 		noun,
@@ -25,6 +26,15 @@
 		['shared', 'Shared'],
 		['exclusive', 'Not shared']
 	];
+	const active = $derived(
+		Number(filter.changedOnly) +
+			Number((filter.verification ?? 'all') !== 'all') +
+			Number((filter.usage ?? 'all') !== 'all') +
+			Number(filter.order !== 'name')
+	);
+	function resetFilters() {
+		filter = { ...filter, changedOnly: false, verification: 'all', usage: 'all', order: 'name' };
+	}
 </script>
 
 <div class="ex-controls" role="search" aria-label={`Find ${noun}`}>
@@ -37,95 +47,50 @@
 			bind:value={filter.search}
 		/>
 	</label>
-	<div class="ex-filters">
+	<FilterDialog {active} onreset={resetFilters}>
 		<label class="ex-toggle">
 			<input type="checkbox" role="switch" bind:checked={filter.changedOnly} />
 			<span class="ex-toggle-track" aria-hidden="true"></span>
 			<span>Changed only</span>
 		</label>
-		<span class="ex-filter">
+		<label class="filter-field"
+			><span>Verification</span>
 			<Select
 				label="Verification filter"
 				bind:value={() => filter.verification ?? 'all', (chosen) => (filter.verification = chosen)}
 			>
 				{#each verifications as [id, text] (id)}<option value={id}>{text}</option>{/each}
 			</Select>
-		</span>
-		<span class="ex-filter">
+		</label>
+		<label class="filter-field"
+			><span>Usage</span>
 			<Select
 				label="Usage filter"
 				bind:value={() => filter.usage ?? 'all', (chosen) => (filter.usage = chosen)}
 			>
 				{#each usages as [id, text] (id)}<option value={id}>{text}</option>{/each}
 			</Select>
-		</span>
-		<span class="ex-order">
+		</label>
+		<label class="filter-field"
+			><span>Order</span>
 			<Select
 				label="Order"
 				bind:value={() => filter.order, (chosen) => (filter.order = chosen as CatalogOrder)}
 			>
 				{#each catalogOrders as id (id)}<option value={id}>Order: {orderLabels[id]}</option>{/each}
 			</Select>
-		</span>
-	</div>
+		</label>
+	</FilterDialog>
 </div>
 
 <style>
 	:global(.ex-content .ex-controls) {
-		display: grid;
-		grid-template-columns: minmax(0, 1fr);
-		align-items: stretch;
+		display: flex;
+		flex-wrap: nowrap;
+		align-items: center;
+		gap: 10px;
 	}
 	:global(.ex-content .ex-controls .ex-search) {
-		flex: none;
-	}
-	@media (min-width: 1440px) {
-		:global(.ex-content .ex-controls) {
-			display: flex;
-		}
-		:global(.ex-content .ex-controls .ex-search) {
-			flex: 1 1 260px;
-		}
-	}
-
-	/* The filters keep together: beside the search while there is room, otherwise in a row beneath. */
-	.ex-filters {
-		display: flex;
-		flex: 0 1 auto;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: 12px 24px;
-		min-width: 0;
-	}
-	/* Each as wide as its longest choice, so no choice is cut short. */
-	.ex-filter {
-		flex: 0 1 auto;
-		min-width: 0;
-	}
-	.ex-filter :global(.report-select) {
-		display: block;
-	}
-	@media (max-width: 760px) {
-		.ex-filters {
-			display: grid;
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-			gap: 12px;
-		}
-		.ex-filters :global(.ex-order) {
-			min-width: 0;
-			margin-left: 0;
-		}
-		.ex-filters :global(.report-select) {
-			display: block;
-		}
-
-		.ex-filter {
-			flex-grow: 1;
-		}
-	}
-	@media (max-width: 359px) {
-		.ex-filters {
-			grid-template-columns: minmax(0, 1fr);
-		}
+		flex: 1 1 0;
 	}
 </style>

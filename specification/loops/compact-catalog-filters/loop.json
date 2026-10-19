@@ -2,11 +2,9 @@
 	"name": "compact-catalog-filters",
 	"goal": "Every catalog has one compact search row with all filters and ordering in an icon-triggered modal",
 	"createdAt": "2026-10-19T08:37:36.446Z",
-	"updatedAt": "2026-10-19T08:38:57.797Z",
+	"updatedAt": "2026-10-19T08:42:58.449Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T08:40:03.745Z",
+			"evidence": "Test-only b3059fc7; sealed red 45ad72470906e36d31daeb452913b258d398090dde25be285623080c2ae5aaf0 proves missing Filters icon on both hosts."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T08:42:58.449Z",
+			"evidence": "Both catalogs use the shared FilterDialog with existing Modal, Select and icon components; search remains outside to the left."
 		},
 		{
 			"id": "green",
