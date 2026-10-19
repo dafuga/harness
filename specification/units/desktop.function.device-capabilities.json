@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/deviceCapabilities.ts"],
-		"symbols": ["deviceCapabilities"]
+		"source": [
+			"packages/desktop/src/services/device-operations-service/deviceCapabilities.ts",
+			"packages/desktop/src/utils/deviceCapabilities.ts"
+		],
+		"symbols": ["deviceCapabilities", "deviceCapabilities"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -37,7 +40,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/deviceCapabilities.ts",
+		"entry": "packages/desktop/src/services/device-operations-service/deviceCapabilities.ts",
 		"targets": [
 			{
 				"kind": "module",

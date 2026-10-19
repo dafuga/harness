@@ -7,8 +7,20 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/sideImpact.ts"],
-		"symbols": ["StoredSide", "SourceImpact", "storedSide", "impactView", "sideImpact"]
+		"source": [
+			"packages/reports/src/components/harness/harness-compare/sideImpact.ts",
+			"src/services/source-impact-service/sideImpact.ts",
+			"src/utils/sideImpact.ts"
+		],
+		"symbols": [
+			"StoredSide",
+			"SourceImpact",
+			"impactView",
+			"storedSide",
+			"sideImpact",
+			"storedSide",
+			"sideImpact"
+		]
 	},
 	"contract": {
 		"origin": "declared",

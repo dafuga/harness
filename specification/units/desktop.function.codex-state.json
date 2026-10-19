@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/codexState.ts"],
-		"symbols": ["codexState"]
+		"source": [
+			"packages/desktop/src/adapters/codex-app-server-adapter/codexState.ts",
+			"packages/desktop/src/utils/codexState.ts"
+		],
+		"symbols": ["codexState", "codexState"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -68,7 +71,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/codexState.ts",
+		"entry": "packages/desktop/src/adapters/codex-app-server-adapter/codexState.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/nativeScope.ts"],
-		"symbols": ["nativeScope"]
+		"source": [
+			"packages/hub/src/components/native-approval/nativeScope.ts",
+			"packages/hub/src/utils/nativeScope.ts"
+		],
+		"symbols": ["nativeScope", "nativeScope"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,7 +45,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/nativeScope.ts",
+		"entry": "packages/hub/src/components/native-approval/nativeScope.ts",
 		"targets": [
 			{
 				"kind": "module",

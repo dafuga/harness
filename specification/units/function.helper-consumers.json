@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/helperConsumers.ts"],
-		"symbols": ["HelperTree", "HelperConsumer", "helperConsumers"]
+		"source": [
+			"src/services/revision-detail-service/helperConsumers.ts",
+			"src/utils/helperConsumers.ts"
+		],
+		"symbols": ["helperConsumers", "HelperTree", "HelperConsumer", "helperConsumers"]
 	},
 	"contract": {
 		"origin": "derived",

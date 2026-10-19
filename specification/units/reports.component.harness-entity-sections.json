@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/EntitySections.svelte"],
-		"symbols": ["EntitySections"]
+		"source": [
+			"packages/reports/src/components/harness/EntitySections.svelte",
+			"packages/reports/src/components/harness/entity-sections/EntitySections.svelte"
+		],
+		"symbols": ["EntitySections", "EntitySections"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -102,7 +105,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/EntitySections.svelte",
+		"entry": "packages/reports/src/components/harness/entity-sections/EntitySections.svelte",
 		"targets": [
 			{
 				"kind": "module",

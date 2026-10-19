@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/planningConvert.ts"],
-		"symbols": ["planningConvert", "approvalInfo", "threadInfo", "messageInfo"]
+		"source": [
+			"packages/desktop/src/utils/planning-reads/planningConvert.ts",
+			"packages/desktop/src/utils/planningConvert.ts"
+		],
+		"symbols": ["planningConvert", "approvalInfo", "threadInfo", "messageInfo", "planningConvert"]
 	},
 	"contract": {
 		"origin": "declared",

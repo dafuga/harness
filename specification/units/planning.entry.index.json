@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/planning/src/index.ts"],
+		"source": ["packages/planning/src/index.ts", "packages/planning/src/index/index.ts"],
 		"symbols": [
 			"createPlanning",
 			"default",
@@ -16,7 +16,9 @@
 			"planCommit",
 			"planIdentity",
 			"planOptions",
-			"planReads"
+			"planReads",
+			"createPlanning",
+			"handlePlanningRequest"
 		]
 	},
 	"contract": {
@@ -107,7 +109,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/planning/src/index.ts",
+		"entry": "packages/planning/src/index/index.ts",
 		"targets": [
 			{
 				"kind": "module",

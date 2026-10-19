@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/browserBridge.ts"],
-		"symbols": ["browserBridge"]
+		"source": [
+			"packages/hub/src/utils/browser-bridge/browserBridge.ts",
+			"packages/hub/src/utils/browserBridge.ts"
+		],
+		"symbols": ["browserBridge", "browserBridge"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -73,7 +76,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/browserBridge.ts",
+		"entry": "packages/hub/src/utils/browser-bridge/browserBridge.ts",
 		"targets": [
 			{
 				"kind": "module",

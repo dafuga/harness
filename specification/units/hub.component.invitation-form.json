@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/InvitationForm.svelte"],
-		"symbols": ["InvitationForm"]
+		"source": [
+			"packages/hub/src/components/InvitationForm.svelte",
+			"packages/hub/src/components/invitation-form/InvitationForm.svelte"
+		],
+		"symbols": ["InvitationForm", "InvitationForm"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -47,7 +50,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/InvitationForm.svelte",
+		"entry": "packages/hub/src/components/invitation-form/InvitationForm.svelte",
 		"targets": [
 			{
 				"kind": "module",

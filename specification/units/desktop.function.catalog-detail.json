@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/catalogDetail.ts"],
-		"symbols": ["catalogDetail"]
+		"source": [
+			"packages/desktop/src/services/catalog-service/catalogDetail.ts",
+			"packages/desktop/src/utils/catalogDetail.ts"
+		],
+		"symbols": ["catalogDetail", "catalogDetail"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -73,7 +76,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/catalogDetail.ts",
+		"entry": "packages/desktop/src/services/catalog-service/catalogDetail.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/unitIdentity.ts"],
-		"symbols": ["UnitIdentity", "unitIdentity"]
+		"source": ["src/utils/classify-path/unitIdentity.ts", "src/utils/unitIdentity.ts"],
+		"symbols": ["UnitIdentity", "unitIdentity", "unitIdentity"]
 	},
 	"contract": {
 		"origin": "declared",

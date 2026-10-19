@@ -7,14 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/AgentActivityService.ts"],
+		"source": [
+			"src/services/AgentActivityService.ts",
+			"src/services/agent-activity-service/AgentActivityService.ts"
+		],
 		"symbols": [
 			"AgentActivityService",
 			"AgentActivityService.constructor",
 			"AgentActivityService.register",
 			"AgentActivityService.heartbeat",
 			"AgentActivityService.finish",
-			"AgentActivityService.roster"
+			"AgentActivityService.roster",
+			"AgentActivityService"
 		]
 	},
 	"contract": {
@@ -117,7 +121,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/AgentActivityService.ts",
+		"entry": "src/services/agent-activity-service/AgentActivityService.ts",
 		"targets": [
 			{
 				"kind": "module",

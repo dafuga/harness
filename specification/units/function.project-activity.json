@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/projectActivity.ts"],
-		"symbols": ["ActivityRevision", "ActivitySource", "projectActivity"]
+		"source": [
+			"src/services/project-activity-service/projectActivity.ts",
+			"src/utils/projectActivity.ts"
+		],
+		"symbols": ["ActivityRevision", "ActivitySource", "projectActivity", "projectActivity"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/gatewayMessages.ts"],
-		"symbols": ["gatewayMessages"]
+		"source": [
+			"src/services/claude-query-service/gatewayMessages.ts",
+			"src/utils/gatewayMessages.ts"
+		],
+		"symbols": ["gatewayMessages", "gatewayMessages"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -47,7 +50,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/gatewayMessages.ts",
+		"entry": "src/services/claude-query-service/gatewayMessages.ts",
 		"targets": [
 			{
 				"kind": "module",

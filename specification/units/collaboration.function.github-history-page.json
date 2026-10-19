@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/collaboration/src/utils/githubHistoryPage.ts"],
-		"symbols": ["githubHistoryPage"]
+		"source": [
+			"packages/collaboration/src/utils/create-git-hub-source/githubHistoryPage.ts",
+			"packages/collaboration/src/utils/githubHistoryPage.ts"
+		],
+		"symbols": ["githubHistoryPage", "githubHistoryPage"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -57,7 +60,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/collaboration/src/utils/githubHistoryPage.ts",
+		"entry": "packages/collaboration/src/utils/create-git-hub-source/githubHistoryPage.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/ThreadLinks.svelte"],
-		"symbols": ["ThreadLinks"]
+		"source": [
+			"packages/desktop/src/components/ThreadLinks.svelte",
+			"packages/desktop/src/components/thread-links/ThreadLinks.svelte"
+		],
+		"symbols": ["ThreadLinks", "ThreadLinks"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -57,7 +60,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/ThreadLinks.svelte",
+		"entry": "packages/desktop/src/components/thread-links/ThreadLinks.svelte",
 		"targets": [
 			{
 				"kind": "module",

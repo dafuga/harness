@@ -1,7 +1,7 @@
 import type { ChangeRecord } from './HostFileChange.types';
-export type { HostFileChange, ChangeTarget, ChangeRecord } from './HostFileChange.types';
+export type { HostFileChange, ChangeTarget, ChangeRecord } from './HostFileChange.types.ts';
 import type { DesignOption } from './DesignOption.types';
-export type { DesignOption, DesignOptionInput } from './DesignOption.types';
+export type { DesignOption, DesignOptionInput } from './DesignOption.types.ts';
 /**
  * Planning artifacts as they are stored in Git and returned by the facade.
  * Every type here is plain data: it survives JSON and structured clone unchanged,

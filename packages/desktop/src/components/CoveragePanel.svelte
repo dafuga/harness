@@ -1,5 +1,5 @@
 <script lang="ts">
-	import BrowserErrors from '../../../reports/src/components/BrowserErrors.svelte';
+	import BrowserErrors from '../../../reports/src/components/browser-errors/BrowserErrors.svelte';
 	import EntityStates from '../../../reports/src/components/EntityStates.svelte';
 	import { explorerName } from '../../../reports/src/utils/explorerName';
 	import type {

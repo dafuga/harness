@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/complexityCoverage.ts"],
-		"symbols": ["ComplexityCoverage", "complexityCoverage", "uncountedLanguage"]
+		"source": [
+			"src/services/source-index-service/complexityCoverage.ts",
+			"src/utils/complexityCoverage.ts"
+		],
+		"symbols": [
+			"ComplexityCoverage",
+			"uncountedLanguage",
+			"complexityCoverage",
+			"complexityCoverage"
+		]
 	},
 	"contract": {
 		"origin": "declared",

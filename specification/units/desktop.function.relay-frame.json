@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/relayFrame.ts"],
-		"symbols": ["relayFrame"]
+		"source": [
+			"packages/desktop/src/services/relay-link-service/relayFrame.ts",
+			"packages/desktop/src/utils/relayFrame.ts"
+		],
+		"symbols": ["relayFrame", "relayFrame"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -37,7 +40,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/relayFrame.ts",
+		"entry": "packages/desktop/src/services/relay-link-service/relayFrame.ts",
 		"targets": [
 			{
 				"kind": "module",

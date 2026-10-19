@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/kernelRequest.ts"],
-		"symbols": ["Parsed", "kernelRequest", "isObject"]
+		"source": ["src/utils/impact-kernel/kernelRequest.ts", "src/utils/kernelRequest.ts"],
+		"symbols": ["Parsed", "isObject", "kernelRequest", "kernelRequest"]
 	},
 	"contract": {
 		"origin": "declared",

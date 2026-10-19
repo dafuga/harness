@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubEvidenceRegistry.ts"],
-		"symbols": ["hubEvidenceRegistry"]
+		"source": [
+			"packages/hub/src/utils/hub-evidence-revision/hubEvidenceRegistry.ts",
+			"packages/hub/src/utils/hubEvidenceRegistry.ts"
+		],
+		"symbols": ["hubEvidenceRegistry", "hubEvidenceRegistry"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -72,7 +75,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hubEvidenceRegistry.ts",
+		"entry": "packages/hub/src/utils/hub-evidence-revision/hubEvidenceRegistry.ts",
 		"targets": [
 			{
 				"kind": "module",

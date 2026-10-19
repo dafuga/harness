@@ -7,14 +7,19 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/consolePolicy.ts"],
+		"source": [
+			"packages/reports/src/utils/console-server/consolePolicy.ts",
+			"src/utils/consolePolicy.ts"
+		],
 		"symbols": [
 			"ConsoleRequest",
 			"ConsolePolicy",
 			"OwnerMode",
+			"denyAll",
 			"loopbackAddress",
 			"consolePolicy",
-			"denyAll"
+			"loopbackAddress",
+			"consolePolicy"
 		]
 	},
 	"contract": {

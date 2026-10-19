@@ -7,14 +7,19 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/harnessGrowth.ts"],
+		"source": [
+			"packages/reports/src/components/harness/harness-growth/harnessGrowth.ts",
+			"packages/reports/src/utils/harnessGrowth.ts"
+		],
 		"symbols": [
 			"growthMetrics",
 			"GrowthMetric",
 			"GrowthRow",
+			"signed",
 			"harnessGrowth",
 			"unitTimings",
-			"signed"
+			"harnessGrowth",
+			"unitTimings"
 		]
 	},
 	"contract": {

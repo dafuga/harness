@@ -9,7 +9,7 @@ import type {
 	ThreadMessage
 } from './Desktop.types';
 import type { ApprovalDraft, PlanDraft, ThreadDraft } from './DesktopBridge.types';
-import type { HostFileChange } from '../../../planning/src/index';
+import type { HostFileChange } from '../../../planning/src/index/index';
 
 /** A draft plan as the planning package keeps it, in the words the desktop shows. */
 export interface PlanRecord {

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/ImageZoom.svelte"],
-		"symbols": ["ImageZoom"]
+		"source": [
+			"packages/reports/src/components/ImageZoom.svelte",
+			"packages/reports/src/components/image-zoom/ImageZoom.svelte"
+		],
+		"symbols": ["ImageZoom", "ImageZoom"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -47,7 +50,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/ImageZoom.svelte",
+		"entry": "packages/reports/src/components/image-zoom/ImageZoom.svelte",
 		"targets": [
 			{
 				"kind": "module",

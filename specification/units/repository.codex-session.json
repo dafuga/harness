@@ -7,13 +7,17 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/repositories/CodexSessionRepository.ts"],
+		"source": [
+			"src/repositories/CodexSessionRepository.ts",
+			"src/repositories/codex-session-repository/CodexSessionRepository.ts"
+		],
 		"symbols": [
 			"CodexSessionRepository",
 			"CodexSessionRepository.create",
 			"CodexSessionRepository.waitForTool",
 			"CodexSessionRepository.deliver",
-			"CodexSessionRepository.cancel"
+			"CodexSessionRepository.cancel",
+			"CodexSessionRepository"
 		]
 	},
 	"contract": {
@@ -78,7 +82,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/repositories/CodexSessionRepository.ts",
+		"entry": "src/repositories/codex-session-repository/CodexSessionRepository.ts",
 		"targets": [
 			{
 				"kind": "module",

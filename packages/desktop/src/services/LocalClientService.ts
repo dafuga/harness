@@ -6,15 +6,15 @@ import type { ImageGenerator } from '../models/AgentRunner.types';
 import type { RemoteProjectPort } from '../models/ProjectContext.types';
 import type { CommentOutboxService } from './CommentOutboxService';
 import { DesktopBridgeService } from './DesktopBridgeService';
-import { DesktopRunService } from './DesktopRunService';
+import { DesktopRunService } from './desktop-run-service/DesktopRunService';
 import { LocalOperationsService } from './LocalOperationsService';
 import type { LocalControl } from './LocalOperationsService';
 import type { LocalSocket } from './LocalTransportService';
 import type { NativeAuthService } from './NativeAuthService';
 import type { ProjectRegistryService } from './ProjectRegistryService';
 import { ProjectSessionService } from './ProjectSessionService';
-import type { ProjectionCacheService } from './ProjectionCacheService';
-import type { ProviderDiscoveryService } from './ProviderDiscoveryService';
+import type { ProjectionCacheService } from './projection-cache-service/ProjectionCacheService';
+import type { ProviderDiscoveryService } from './provider-discovery-service/ProviderDiscoveryService';
 import type { RepositoryArbiterService } from './RepositoryArbiterService';
 
 export interface LocalClientOptions {

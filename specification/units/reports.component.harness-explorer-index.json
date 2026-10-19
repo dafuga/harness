@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/ExplorerIndex.svelte"],
-		"symbols": ["ExplorerIndex"]
+		"source": [
+			"packages/reports/src/components/harness/ExplorerIndex.svelte",
+			"packages/reports/src/components/harness/explorer-index/ExplorerIndex.svelte"
+		],
+		"symbols": ["ExplorerIndex", "ExplorerIndex"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -77,7 +80,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/ExplorerIndex.svelte",
+		"entry": "packages/reports/src/components/harness/explorer-index/ExplorerIndex.svelte",
 		"targets": [
 			{
 				"kind": "module",

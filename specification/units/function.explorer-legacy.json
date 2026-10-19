@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/explorerLegacy.ts"],
-		"symbols": ["explorerLegacy"]
+		"source": ["src/utils/console-canonical/explorerLegacy.ts", "src/utils/explorerLegacy.ts"],
+		"symbols": ["explorerLegacy", "explorerLegacy"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,7 +42,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/explorerLegacy.ts",
+		"entry": "src/utils/console-canonical/explorerLegacy.ts",
 		"targets": [
 			{
 				"kind": "module",

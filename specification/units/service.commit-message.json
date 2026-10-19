@@ -7,13 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/CommitMessageService.ts"],
+		"source": [
+			"src/services/CommitMessageService.ts",
+			"src/services/commit-message-service/CommitMessageService.ts"
+		],
 		"symbols": [
 			"CommitMessageService",
 			"CommitMessageService.constructor",
 			"CommitMessageService.written",
 			"CommitMessageService.stored",
-			"CommitMessageService.reported"
+			"CommitMessageService.reported",
+			"CommitMessageService"
 		]
 	},
 	"contract": {
@@ -97,7 +101,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/CommitMessageService.ts",
+		"entry": "src/services/commit-message-service/CommitMessageService.ts",
 		"targets": [
 			{
 				"kind": "module",

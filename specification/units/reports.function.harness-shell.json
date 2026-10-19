@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/harnessShell.ts"],
+		"source": [
+			"packages/reports/src/components/harness/harness-navbar/harnessShell.ts",
+			"packages/reports/src/utils/harnessShell.ts"
+		],
 		"symbols": [
 			"HarnessNavbarInput",
 			"HarnessTab",
@@ -16,6 +19,7 @@
 			"HarnessShellRevision",
 			"HarnessShellView",
 			"plainClick",
+			"harnessShell",
 			"harnessShell"
 		]
 	},

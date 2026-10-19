@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/approvalMatch.ts"],
-		"symbols": ["approvalMatch"]
+		"source": [
+			"packages/desktop/src/services/desktop-run-service/approvalMatch.ts",
+			"packages/desktop/src/utils/approvalMatch.ts"
+		],
+		"symbols": ["approvalMatch", "approvalMatch"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -53,7 +56,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/approvalMatch.ts",
+		"entry": "packages/desktop/src/services/desktop-run-service/approvalMatch.ts",
 		"targets": [
 			{
 				"kind": "module",

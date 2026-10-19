@@ -3,7 +3,7 @@
 	import WorkspaceShell from '$desktop/components/WorkspaceShell.svelte';
 	import { createWorkspaceStore } from '$desktop/lib/stores/workspace.svelte';
 	import { isWorkspacePath } from '$desktop/utils/workspaceRoute';
-	import { browserBridge } from '../utils/browserBridge';
+	import { browserBridge } from '../utils/browser-bridge/browserBridge';
 	import { browserContext } from '../utils/browserContext';
 	import AccountMenu from './AccountMenu.svelte';
 	import HubFrame from './HubFrame.svelte';

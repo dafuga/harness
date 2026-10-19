@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/projectAgentEvents.ts"],
-		"symbols": ["projectAgentEvents"]
+		"source": [
+			"packages/desktop/src/utils/project-agent-events/projectAgentEvents.ts",
+			"packages/desktop/src/utils/projectAgentEvents.ts"
+		],
+		"symbols": ["projectAgentEvents", "projectAgentEvents"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -70,7 +73,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/projectAgentEvents.ts",
+		"entry": "packages/desktop/src/utils/project-agent-events/projectAgentEvents.ts",
 		"targets": [
 			{
 				"kind": "module",

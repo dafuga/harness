@@ -1,6 +1,6 @@
 import type { ExportedSymbol } from '../core/sourceTypes';
 import type { ContractItem } from '../core/unitTypes';
-import { blockSpans, type BlockSpan } from './blockSpans';
+import { blockSpans, type BlockSpan } from './block-spans/blockSpans';
 import { maskSource } from './maskSource';
 import { normalizeType, parseParameters } from './parseParameters';
 import { bodyEnd, matchingBrace, sourceNesting, type SourceNesting } from './sourceNesting';

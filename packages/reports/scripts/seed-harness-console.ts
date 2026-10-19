@@ -7,7 +7,7 @@
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { legacyRun } from '../../../test/support/legacyStore';
-import { e2eFixtures } from '../src/utils/e2eFixtures';
+import { e2eFixtures } from '../src/utils/e2e-fixtures/e2eFixtures';
 import { seedEmitted } from './harness-emitted-seed';
 import { SeedAttacher } from './harness-seed-attacher';
 import { explorerBranch, explorerUnits, seedExplorer } from './harness-explorer-seed';

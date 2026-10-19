@@ -8,14 +8,20 @@
 	"status": "active",
 	"documentation": "packages/reports/specification/features/planned/managed-preview-server.md",
 	"owns": {
-		"source": ["packages/reports/src/services/PreviewServerService.ts"],
+		"source": [
+			"packages/reports/src/services/PreviewServerService.ts",
+			"packages/reports/src/services/preview-server-service/PreviewServerService.ts"
+		],
 		"symbols": [
 			"PreviewHandle",
 			"PreviewResult",
 			"PreviewServerService",
 			"PreviewServerService.constructor",
 			"PreviewServerService.run",
-			"PreviewServerService.close"
+			"PreviewServerService.close",
+			"PreviewHandle",
+			"PreviewResult",
+			"PreviewServerService"
 		]
 	},
 	"contract": {
@@ -68,7 +74,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/services/PreviewServerService.ts",
+		"entry": "packages/reports/src/services/preview-server-service/PreviewServerService.ts",
 		"targets": [
 			{
 				"kind": "module",

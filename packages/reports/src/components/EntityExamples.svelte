@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import type { UnitDocumentation } from '../../../../src/utils/unitDocumentation';
-	import EntityCases from './EntityCases.svelte';
+	import type { UnitDocumentation } from '../../../../src/utils/unit-documentation/unitDocumentation';
+	import EntityCases from './entity-cases/EntityCases.svelte';
 	let {
 		documentation,
 		verification

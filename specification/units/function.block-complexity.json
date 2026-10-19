@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/blockComplexity.ts"],
-		"symbols": ["blockComplexity", "templateComplexity"]
+		"source": [
+			"src/services/source-index-service/blockComplexity.ts",
+			"src/utils/blockComplexity.ts"
+		],
+		"symbols": ["blockComplexity", "templateComplexity", "templateComplexity"]
 	},
 	"contract": {
 		"origin": "declared",

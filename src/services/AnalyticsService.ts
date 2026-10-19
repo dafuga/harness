@@ -6,7 +6,7 @@ import { analyticsSnapshot } from '../workflows/analyticsMetrics';
 import { importAnalytics } from '../workflows/importAnalytics';
 import type { AnalyticsFilter } from '../core/analyticsTypes';
 import { analyticsHtml } from '../workflows/analyticsHtml';
-import { sameSite } from '../utils/repositoryIdentity';
+import { sameSite } from '../utils/repository-identity/repositoryIdentity';
 
 export interface AnalyticsOptions extends AnalyticsFilter {
 	json?: boolean;

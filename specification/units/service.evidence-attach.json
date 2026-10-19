@@ -7,12 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/EvidenceAttachService.ts"],
+		"source": [
+			"src/services/EvidenceAttachService.ts",
+			"src/services/evidence-attach-service/EvidenceAttachService.ts"
+		],
 		"symbols": [
 			"Attached",
 			"EvidenceAttachService",
 			"EvidenceAttachService.constructor",
-			"EvidenceAttachService.attach"
+			"EvidenceAttachService.attach",
+			"Attached",
+			"EvidenceAttachService"
 		]
 	},
 	"contract": {
@@ -123,7 +128,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/EvidenceAttachService.ts",
+		"entry": "src/services/evidence-attach-service/EvidenceAttachService.ts",
 		"targets": [
 			{
 				"kind": "module",

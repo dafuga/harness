@@ -7,8 +7,27 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/planning/src/utils/planOptions.ts"],
-		"symbols": ["WriteImages", "planOptions", "checkOptions", "optionOf", "heldBy", "approvable"]
+		"source": [
+			"packages/planning/src/services/planning-service/planOptions.ts",
+			"packages/planning/src/utils/plan-design/planOptions.ts",
+			"packages/planning/src/utils/plan-read/planOptions.ts",
+			"packages/planning/src/utils/planOptions.ts"
+		],
+		"symbols": [
+			"WriteImages",
+			"most",
+			"id",
+			"binding",
+			"provenance",
+			"optionOf",
+			"approvable",
+			"planOptions",
+			"checkOptions",
+			"heldBy",
+			"planOptions",
+			"checkOptions",
+			"heldBy"
+		]
 	},
 	"contract": {
 		"origin": "declared",

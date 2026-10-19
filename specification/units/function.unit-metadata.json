@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/unitMetadata.ts"],
-		"symbols": ["PublicHelper", "UnitMetadata", "unitMetadata"]
+		"source": ["src/services/revision-detail-service/unitMetadata.ts", "src/utils/unitMetadata.ts"],
+		"symbols": ["PublicHelper", "UnitMetadata", "unitMetadata", "unitMetadata"]
 	},
 	"contract": {
 		"origin": "declared",

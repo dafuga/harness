@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/gatewayOptions.ts"],
-		"symbols": ["gatewayOptions"]
+		"source": [
+			"src/services/claude-query-service/gatewayOptions.ts",
+			"src/utils/gatewayOptions.ts"
+		],
+		"symbols": ["gatewayOptions", "gatewayOptions"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -37,7 +40,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/gatewayOptions.ts",
+		"entry": "src/services/claude-query-service/gatewayOptions.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/artifactMedia.ts"],
-		"symbols": ["artifactLimit", "artifactMedia"]
+		"source": [
+			"packages/desktop/src/utils/artifact-answer/artifactMedia.ts",
+			"packages/desktop/src/utils/artifactMedia.ts"
+		],
+		"symbols": ["artifactLimit", "artifactMedia", "artifactMedia"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/services/NativeHandoffService.ts"],
+		"source": [
+			"packages/hub/src/services/NativeHandoffService.ts",
+			"packages/hub/src/services/native-handoff-service/NativeHandoffService.ts"
+		],
 		"symbols": [
 			"HANDOFF_TTL",
 			"POLL_INTERVAL",
@@ -17,7 +20,11 @@
 			"NativeHandoffService.start",
 			"NativeHandoffService.approve",
 			"NativeHandoffService.poll",
-			"NativeHandoffService.exchange"
+			"NativeHandoffService.exchange",
+			"HANDOFF_TTL",
+			"POLL_INTERVAL",
+			"NativeHandoffOptions",
+			"NativeHandoffService"
 		]
 	},
 	"contract": {
@@ -105,7 +112,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/services/NativeHandoffService.ts",
+		"entry": "packages/hub/src/services/native-handoff-service/NativeHandoffService.ts",
 		"targets": [
 			{
 				"kind": "module",

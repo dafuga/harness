@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/relay/src/utils/frameTooLarge.ts"],
-		"symbols": ["frameTooLarge"]
+		"source": [
+			"packages/relay/src/services/socket-frame-service/frameTooLarge.ts",
+			"packages/relay/src/utils/frameTooLarge.ts"
+		],
+		"symbols": ["frameTooLarge", "frameTooLarge"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,7 +45,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/utils/frameTooLarge.ts",
+		"entry": "packages/relay/src/services/socket-frame-service/frameTooLarge.ts",
 		"targets": [
 			{
 				"kind": "module",

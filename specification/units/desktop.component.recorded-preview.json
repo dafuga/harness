@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/RecordedPreview.svelte"],
-		"symbols": ["RecordedPreview"]
+		"source": [
+			"packages/desktop/src/components/RecordedPreview.svelte",
+			"packages/desktop/src/components/recorded-preview/RecordedPreview.svelte"
+		],
+		"symbols": ["RecordedPreview", "RecordedPreview"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -63,7 +66,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/RecordedPreview.svelte",
+		"entry": "packages/desktop/src/components/recorded-preview/RecordedPreview.svelte",
 		"targets": [
 			{
 				"kind": "module",

@@ -7,7 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/writingLimits.ts"],
+		"source": [
+			"src/services/commit-message-service/writingLimits.ts",
+			"src/utils/writing-limits/writingLimits.ts",
+			"src/utils/writingLimits.ts"
+		],
 		"symbols": [
 			"WritingLimit",
 			"writingVersions",
@@ -17,11 +21,24 @@
 			"WritingPolicy",
 			"writingPolicy",
 			"writingHeld",
-			"writingDeclared",
 			"writingCount",
 			"writingProblems",
 			"WrittenReason",
-			"explanationProblems"
+			"explanationProblems",
+			"writingDeclared",
+			"WritingLimit",
+			"writingVersions",
+			"WritingVersion",
+			"writingVersion",
+			"writingLimits",
+			"WritingPolicy",
+			"writingPolicy",
+			"writingHeld",
+			"writingCount",
+			"writingProblems",
+			"WrittenReason",
+			"explanationProblems",
+			"writingDeclared"
 		]
 	},
 	"contract": {
@@ -125,7 +142,7 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/writingLimits.ts",
+		"entry": "src/utils/writing-limits/writingLimits.ts",
 		"targets": [
 			{
 				"kind": "module",

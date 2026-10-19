@@ -7,8 +7,19 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/benchMeasurement.ts"],
-		"symbols": ["MeasureContext", "kernelUnits", "benchMeasurement", "sizeMeasurements"]
+		"source": [
+			"src/utils/benchMeasurement.ts",
+			"src/workflows/run-kernel-bench/benchMeasurement.ts"
+		],
+		"symbols": [
+			"MeasureContext",
+			"Artifact",
+			"Value",
+			"kernelUnits",
+			"benchMeasurement",
+			"sizeMeasurements",
+			"sizeMeasurements"
+		]
 	},
 	"contract": {
 		"origin": "declared",

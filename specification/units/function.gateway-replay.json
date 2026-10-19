@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/gatewayReplay.ts"],
-		"symbols": ["gatewayReplay"]
+		"source": ["src/services/codex-gateway-service/gatewayReplay.ts", "src/utils/gatewayReplay.ts"],
+		"symbols": ["gatewayReplay", "gatewayReplay"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -37,7 +37,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/gatewayReplay.ts",
+		"entry": "src/services/codex-gateway-service/gatewayReplay.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubNotes.ts"],
-		"symbols": ["hubNotes"]
+		"source": [
+			"packages/hub/src/services/hub-evidence-service/hubNotes.ts",
+			"packages/hub/src/utils/hubNotes.ts"
+		],
+		"symbols": ["hubNotes", "hubNotes"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -62,7 +65,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hubNotes.ts",
+		"entry": "packages/hub/src/services/hub-evidence-service/hubNotes.ts",
 		"targets": [
 			{
 				"kind": "module",

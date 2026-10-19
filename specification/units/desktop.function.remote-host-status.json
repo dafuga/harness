@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/remoteHostStatus.ts"],
-		"symbols": ["RemoteHostPhase", "RemoteHostStatusInput", "remoteHostStatus"]
+		"source": [
+			"packages/desktop/src/services/remote-host-service/remoteHostStatus.ts",
+			"packages/desktop/src/utils/remoteHostStatus.ts"
+		],
+		"symbols": ["RemoteHostPhase", "RemoteHostStatusInput", "remoteHostStatus", "remoteHostStatus"]
 	},
 	"contract": {
 		"origin": "declared",

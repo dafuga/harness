@@ -8,8 +8,11 @@
 	"status": "active",
 	"documentation": "packages/reports/src/utils/activityReading.md",
 	"owns": {
-		"source": ["packages/reports/src/utils/activityReading.ts"],
-		"symbols": ["readingAge", "ActivityReading", "activityReading"]
+		"source": [
+			"packages/reports/src/components/activity-agents/activityReading.ts",
+			"packages/reports/src/utils/activityReading.ts"
+		],
+		"symbols": ["readingAge", "ActivityReading", "activityReading", "activityReading"]
 	},
 	"contract": {
 		"origin": "declared",

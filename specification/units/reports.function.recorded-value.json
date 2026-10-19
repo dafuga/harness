@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/recordedValue.ts"],
-		"symbols": ["RecordedNode", "recordedValue"]
+		"source": [
+			"packages/reports/src/components/recorded-value/recordedValue.ts",
+			"packages/reports/src/utils/recordedValue.ts"
+		],
+		"symbols": ["RecordedNode", "read", "recordedValue", "recordedValue"]
 	},
 	"contract": {
 		"origin": "declared",

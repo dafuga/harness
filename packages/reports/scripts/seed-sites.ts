@@ -8,7 +8,7 @@
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { e2eFixtures } from '../src/utils/e2eFixtures';
+import { e2eFixtures } from '../src/utils/e2e-fixtures/e2eFixtures';
 
 const { site } = e2eFixtures();
 export const siteRoot = site('alpha-project');

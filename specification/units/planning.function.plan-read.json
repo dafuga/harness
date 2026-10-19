@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/planning/src/utils/planRead.ts"],
-		"symbols": ["approvalMatches", "planRead"]
+		"source": [
+			"packages/planning/src/utils/plan-read/planRead.ts",
+			"packages/planning/src/utils/planRead.ts"
+		],
+		"symbols": ["approvalMatches", "planRead", "approvalMatches", "planRead"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -98,7 +101,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/planning/src/utils/planRead.ts",
+		"entry": "packages/planning/src/utils/plan-read/planRead.ts",
 		"targets": [
 			{
 				"kind": "module",

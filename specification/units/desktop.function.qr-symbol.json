@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/qrSymbol.ts"],
-		"symbols": ["QrSymbol", "qrLimits", "qrSymbol"]
+		"source": [
+			"packages/desktop/src/components/remote-offer-code/qrSymbol.ts",
+			"packages/desktop/src/utils/qrSymbol.ts"
+		],
+		"symbols": ["QrSymbol", "qrLimits", "qrSymbol", "qrSymbol"]
 	},
 	"contract": {
 		"origin": "declared",

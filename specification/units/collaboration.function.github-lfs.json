@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/collaboration/src/utils/githubLfs.ts"],
-		"symbols": ["githubLfs"]
+		"source": [
+			"packages/collaboration/src/utils/create-git-hub-source/githubLfs.ts",
+			"packages/collaboration/src/utils/githubLfs.ts"
+		],
+		"symbols": ["githubLfs", "githubLfs"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -58,7 +61,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/collaboration/src/utils/githubLfs.ts",
+		"entry": "packages/collaboration/src/utils/create-git-hub-source/githubLfs.ts",
 		"targets": [
 			{
 				"kind": "module",

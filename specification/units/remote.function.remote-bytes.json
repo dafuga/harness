@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/remote/src/utils/remoteBytes.ts"],
+		"source": [
+			"packages/remote/src/services/wire-session-service/remoteBytes.ts",
+			"packages/remote/src/utils/remoteBytes.ts"
+		],
 		"symbols": [
 			"CryptoSource",
 			"cryptoSource",
@@ -22,6 +25,7 @@
 			"sha256",
 			"randomBytes",
 			"safeEqual",
+			"stableJson",
 			"stableJson"
 		]
 	},

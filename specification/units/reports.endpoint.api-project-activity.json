@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/routes/api/project-activity/+server.ts"],
-		"symbols": ["GET"]
+		"source": [
+			"packages/reports/src/routes/api/project-activity/+server.ts",
+			"packages/reports/src/routes/api/project-activity/-server/+server.ts"
+		],
+		"symbols": ["GET", "GET"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -30,7 +33,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/routes/api/project-activity/+server.ts",
+		"entry": "packages/reports/src/routes/api/project-activity/-server/+server.ts",
 		"targets": [
 			{
 				"kind": "module",

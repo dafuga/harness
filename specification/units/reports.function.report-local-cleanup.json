@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/reportLocalCleanup.ts"],
-		"symbols": ["reportLocalCleanup"]
+		"source": [
+			"packages/reports/src/services/report-retention-service/reportLocalCleanup.ts",
+			"packages/reports/src/utils/reportLocalCleanup.ts"
+		],
+		"symbols": ["reportLocalCleanup", "reportLocalCleanup"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -52,7 +55,7 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/reportLocalCleanup.ts",
+		"entry": "packages/reports/src/services/report-retention-service/reportLocalCleanup.ts",
 		"targets": [
 			{
 				"kind": "module",

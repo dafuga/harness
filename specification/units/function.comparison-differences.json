@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/comparisonDifferences.ts"],
-		"symbols": ["MeasuredDefinition", "ComparisonVerdict", "comparisonDifferences"]
+		"source": [
+			"src/services/budget-service/comparisonDifferences.ts",
+			"src/utils/comparisonDifferences.ts"
+		],
+		"symbols": [
+			"MeasuredDefinition",
+			"ComparisonVerdict",
+			"comparisonDifferences",
+			"comparisonDifferences"
+		]
 	},
 	"contract": {
 		"origin": "declared",

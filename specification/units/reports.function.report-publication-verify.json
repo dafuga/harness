@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/reportPublicationVerify.ts"],
-		"symbols": ["reportPublicationVerify"]
+		"source": [
+			"packages/reports/src/services/report-publish-service/reportPublicationVerify.ts",
+			"packages/reports/src/utils/reportPublicationVerify.ts"
+		],
+		"symbols": ["reportPublicationVerify", "reportPublicationVerify"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -53,7 +56,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/reportPublicationVerify.ts",
+		"entry": "packages/reports/src/services/report-publish-service/reportPublicationVerify.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -8,8 +8,17 @@
 	"status": "active",
 	"documentation": "packages/reports/specification/features/planned/managed-preview-server.md",
 	"owns": {
-		"source": ["packages/reports/src/utils/previewOwner.ts"],
-		"symbols": ["PreviewOwner", "previewOwnerPort", "previewOwnerPath", "previewOwner"]
+		"source": [
+			"packages/reports/src/services/preview-server-service/previewOwner.ts",
+			"packages/reports/src/utils/previewOwner.ts"
+		],
+		"symbols": [
+			"PreviewOwner",
+			"previewOwnerPort",
+			"previewOwnerPath",
+			"previewOwner",
+			"previewOwner"
+		]
 	},
 	"contract": {
 		"origin": "declared",

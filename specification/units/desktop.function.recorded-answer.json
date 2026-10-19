@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/recordedAnswer.ts"],
-		"symbols": ["AnswerInput", "recordedAnswer"]
+		"source": [
+			"packages/desktop/src/utils/recorded-answer/recordedAnswer.ts",
+			"packages/desktop/src/utils/recordedAnswer.ts"
+		],
+		"symbols": ["AnswerInput", "recordedAnswer", "AnswerInput", "recordedAnswer"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -73,7 +76,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/recordedAnswer.ts",
+		"entry": "packages/desktop/src/utils/recorded-answer/recordedAnswer.ts",
 		"targets": [
 			{
 				"kind": "module",

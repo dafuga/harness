@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubApproval.ts"],
-		"symbols": ["hubApproval"]
+		"source": [
+			"packages/hub/src/utils/hub-catalog/hubApproval.ts",
+			"packages/hub/src/utils/hubApproval.ts"
+		],
+		"symbols": ["hubApproval", "hubApproval"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -57,7 +60,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hubApproval.ts",
+		"entry": "packages/hub/src/utils/hub-catalog/hubApproval.ts",
 		"targets": [
 			{
 				"kind": "module",

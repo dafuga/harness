@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubEvidenceFile.ts"],
-		"symbols": ["evidenceFileLimit", "hubEvidenceFile"]
+		"source": [
+			"packages/hub/src/services/hub-attached-service/hubEvidenceFile.ts",
+			"packages/hub/src/utils/hubEvidenceFile.ts"
+		],
+		"symbols": ["evidenceFileLimit", "hubEvidenceFile", "hubEvidenceFile"]
 	},
 	"contract": {
 		"origin": "declared",

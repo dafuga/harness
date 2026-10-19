@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/initializers/initializeDesktop.ts"],
-		"symbols": ["initializeDesktop"]
+		"source": [
+			"packages/desktop/src/initializers/initialize-desktop/initializeDesktop.ts",
+			"packages/desktop/src/initializers/initializeDesktop.ts"
+		],
+		"symbols": ["initializeDesktop", "initializeDesktop"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -135,7 +138,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/initializers/initializeDesktop.ts",
+		"entry": "packages/desktop/src/initializers/initialize-desktop/initializeDesktop.ts",
 		"targets": [
 			{
 				"kind": "module",

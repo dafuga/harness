@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/reportPdf.ts"],
-		"symbols": ["reportPdf"]
+		"source": [
+			"packages/reports/src/services/report-export-service/reportPdf.ts",
+			"packages/reports/src/utils/reportPdf.ts"
+		],
+		"symbols": ["reportPdf", "reportPdf"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -25,7 +28,7 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/reportPdf.ts",
+		"entry": "packages/reports/src/services/report-export-service/reportPdf.ts",
 		"targets": [
 			{
 				"kind": "module",

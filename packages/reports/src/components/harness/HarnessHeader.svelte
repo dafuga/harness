@@ -1,7 +1,7 @@
 <script lang="ts">
 	import BrandMark from '../BrandMark.svelte';
 	import type { HarnessNavbarInput } from '../../utils/harnessShell';
-	import HarnessNavbar from './HarnessNavbar.svelte';
+	import HarnessNavbar from './harness-navbar/HarnessNavbar.svelte';
 	let {
 		base,
 		links = [],

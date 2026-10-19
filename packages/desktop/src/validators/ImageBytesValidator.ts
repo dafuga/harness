@@ -1,4 +1,4 @@
-import { planImageCodec } from '../../../planning/src/index';
+import { planImageCodec } from '../../../planning/src/index/index';
 export class ImageBytesValidator {
 	validate(value: Uint8Array): Uint8Array {
 		if (!(value instanceof Uint8Array))

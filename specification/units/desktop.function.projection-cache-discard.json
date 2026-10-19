@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/projectionCacheDiscard.ts"],
-		"symbols": ["projectionCacheDiscard"]
+		"source": [
+			"packages/desktop/src/services/projection-cache-service/projectionCacheDiscard.ts",
+			"packages/desktop/src/utils/projectionCacheDiscard.ts"
+		],
+		"symbols": ["projectionCacheDiscard", "projectionCacheDiscard"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -36,7 +39,7 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/projectionCacheDiscard.ts",
+		"entry": "packages/desktop/src/services/projection-cache-service/projectionCacheDiscard.ts",
 		"targets": [
 			{
 				"kind": "module",

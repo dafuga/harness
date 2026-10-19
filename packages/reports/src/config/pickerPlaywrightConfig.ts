@@ -1,6 +1,6 @@
 import { defineConfig } from '@playwright/test';
 import { fileURLToPath } from 'node:url';
-import { freePorts } from '../utils/e2eFixtures';
+import { freePorts } from '../utils/e2e-fixtures/e2eFixtures';
 // A verification starts a preview of its own snapshot on a port of its own, so two at once do
 // not meet; the port is written to the environment for the workers of the same run.
 if (process.env.HARNESS_VERIFY) process.env.HARNESS_PICKER_PREVIEW_PORT ??= String(freePorts(1)[0]);

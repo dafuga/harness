@@ -7,13 +7,17 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/services/DesktopRunService.ts"],
+		"source": [
+			"packages/desktop/src/services/DesktopRunService.ts",
+			"packages/desktop/src/services/desktop-run-service/DesktopRunService.ts"
+		],
 		"symbols": [
 			"DesktopRunService",
 			"DesktopRunService.constructor",
 			"DesktopRunService.start",
 			"DesktopRunService.cancelActive",
-			"DesktopRunService.cancel"
+			"DesktopRunService.cancel",
+			"DesktopRunService"
 		]
 	},
 	"contract": {
@@ -139,7 +143,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/DesktopRunService.ts",
+		"entry": "packages/desktop/src/services/desktop-run-service/DesktopRunService.ts",
 		"targets": [
 			{
 				"kind": "module",

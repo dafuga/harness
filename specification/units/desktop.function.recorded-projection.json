@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/recordedProjection.ts"],
-		"symbols": ["recordedProjection"]
+		"source": [
+			"packages/desktop/src/utils/recorded-answer/recordedProjection.ts",
+			"packages/desktop/src/utils/recordedProjection.ts"
+		],
+		"symbols": ["side", "recordedProjection", "recordedProjection"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,8 +7,17 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/SourceIndexService.ts"],
-		"symbols": ["SourceIndex", "SourceIndexService", "SourceIndexService.index"]
+		"source": [
+			"src/services/SourceIndexService.ts",
+			"src/services/source-index-service/SourceIndexService.ts"
+		],
+		"symbols": [
+			"SourceIndex",
+			"SourceIndexService",
+			"SourceIndexService.index",
+			"SourceIndex",
+			"SourceIndexService"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -79,7 +88,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/SourceIndexService.ts",
+		"entry": "src/services/source-index-service/SourceIndexService.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -7,12 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/AttachedRecordService.ts"],
+		"source": [
+			"src/services/AttachedRecordService.ts",
+			"src/services/attached-record-service/AttachedRecordService.ts"
+		],
 		"symbols": [
 			"AttachedRecord",
 			"AttachedRecordService",
 			"AttachedRecordService.constructor",
-			"AttachedRecordService.load"
+			"AttachedRecordService.load",
+			"AttachedRecord",
+			"AttachedRecordService"
 		]
 	},
 	"contract": {
@@ -83,7 +88,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/AttachedRecordService.ts",
+		"entry": "src/services/attached-record-service/AttachedRecordService.ts",
 		"targets": [
 			{
 				"kind": "module",

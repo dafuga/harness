@@ -7,12 +7,16 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/services/ReportExportService.ts"],
+		"source": [
+			"packages/reports/src/services/ReportExportService.ts",
+			"packages/reports/src/services/report-export-service/ReportExportService.ts"
+		],
 		"symbols": [
 			"ReportExportService",
 			"ReportExportService.constructor",
 			"ReportExportService.finalize",
-			"ReportExportService.rebuildAfterRetention"
+			"ReportExportService.rebuildAfterRetention",
+			"ReportExportService"
 		]
 	},
 	"contract": {
@@ -96,7 +100,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/services/ReportExportService.ts",
+		"entry": "packages/reports/src/services/report-export-service/ReportExportService.ts",
 		"targets": [
 			{
 				"kind": "module",

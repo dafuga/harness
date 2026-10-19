@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/HarnessGrowth.svelte"],
-		"symbols": ["HarnessGrowth"]
+		"source": [
+			"packages/reports/src/components/harness/HarnessGrowth.svelte",
+			"packages/reports/src/components/harness/harness-growth/HarnessGrowth.svelte"
+		],
+		"symbols": ["HarnessGrowth", "HarnessGrowth"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -82,7 +85,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/HarnessGrowth.svelte",
+		"entry": "packages/reports/src/components/harness/harness-growth/HarnessGrowth.svelte",
 		"targets": [
 			{
 				"kind": "module",

@@ -7,8 +7,20 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/activityDisplay.ts"],
-		"symbols": ["agentStates", "commitHref", "activityTime", "plural", "activityDisplay"]
+		"source": [
+			"packages/reports/src/components/activity-agents/activityDisplay.ts",
+			"packages/reports/src/components/project-activity/activityDisplay.ts",
+			"packages/reports/src/utils/activityDisplay.ts"
+		],
+		"symbols": [
+			"agentStates",
+			"activityTime",
+			"plural",
+			"commitHref",
+			"activityDisplay",
+			"commitHref",
+			"activityDisplay"
+		]
 	},
 	"contract": {
 		"origin": "declared",

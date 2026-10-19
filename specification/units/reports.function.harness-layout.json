@@ -7,8 +7,19 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/harnessLayout.ts"],
-		"symbols": ["PlacedUnit", "HarnessLayout", "nodeSize", "mapColumns", "harnessLayout"]
+		"source": [
+			"packages/reports/src/components/harness/harness-map/harnessLayout.ts",
+			"packages/reports/src/utils/harnessLayout.ts"
+		],
+		"symbols": [
+			"PlacedUnit",
+			"HarnessLayout",
+			"nodeSize",
+			"mapColumns",
+			"harnessLayout",
+			"mapColumns",
+			"harnessLayout"
+		]
 	},
 	"contract": {
 		"origin": "declared",

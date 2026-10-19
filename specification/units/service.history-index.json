@@ -7,13 +7,19 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/HistoryIndexService.ts"],
+		"source": [
+			"src/services/HistoryIndexService.ts",
+			"src/services/history-index-service/HistoryIndexService.ts"
+		],
 		"symbols": [
 			"BuiltHistory",
 			"LegacyReader",
 			"HistoryIndexService",
 			"HistoryIndexService.constructor",
-			"HistoryIndexService.build"
+			"HistoryIndexService.build",
+			"BuiltHistory",
+			"LegacyReader",
+			"HistoryIndexService"
 		]
 	},
 	"contract": {
@@ -123,7 +129,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/HistoryIndexService.ts",
+		"entry": "src/services/history-index-service/HistoryIndexService.ts",
 		"targets": [
 			{
 				"kind": "module",

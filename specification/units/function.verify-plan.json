@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/verifyPlan.ts"],
-		"symbols": ["PlannedCheck", "PlanInput", "verifyPlan"]
+		"source": ["src/services/verification-service/verifyPlan.ts", "src/utils/verifyPlan.ts"],
+		"symbols": ["PlannedCheck", "PlanInput", "verifyPlan", "verifyPlan"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/gitBlobs.ts"],
-		"symbols": ["gitBlobs"]
+		"source": [
+			"packages/desktop/src/adapters/git-source-adapter/gitBlobs.ts",
+			"packages/desktop/src/utils/gitBlobs.ts"
+		],
+		"symbols": ["gitBlobs", "gitBlobs"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,7 +45,7 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/gitBlobs.ts",
+		"entry": "packages/desktop/src/adapters/git-source-adapter/gitBlobs.ts",
 		"targets": [
 			{
 				"kind": "module",

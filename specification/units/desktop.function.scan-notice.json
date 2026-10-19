@@ -7,8 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/scanNotice.ts"],
+		"source": [
+			"packages/desktop/src/utils/scan-notice/scanNotice.ts",
+			"packages/desktop/src/utils/scanNotice.ts"
+		],
 		"symbols": [
+			"ScanFailure",
+			"scanFailures",
+			"nameNotice",
+			"scanNotices",
+			"scanFailure",
+			"scanNotice",
+			"phoneName",
 			"ScanFailure",
 			"scanFailures",
 			"nameNotice",
@@ -80,7 +90,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/scanNotice.ts",
+		"entry": "packages/desktop/src/utils/scan-notice/scanNotice.ts",
 		"targets": [
 			{
 				"kind": "module",

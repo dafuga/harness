@@ -7,11 +7,15 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/services/ReportPublishService.ts"],
+		"source": [
+			"packages/reports/src/services/ReportPublishService.ts",
+			"packages/reports/src/services/report-publish-service/ReportPublishService.ts"
+		],
 		"symbols": [
 			"ReportPublishService",
 			"ReportPublishService.constructor",
-			"ReportPublishService.publish"
+			"ReportPublishService.publish",
+			"ReportPublishService"
 		]
 	},
 	"contract": {
@@ -85,7 +89,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/services/ReportPublishService.ts",
+		"entry": "packages/reports/src/services/report-publish-service/ReportPublishService.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -13,11 +13,16 @@ import {
 	type LoopState,
 	type LoopStatus,
 	type LoopStep
-} from './loopState';
+} from './loop-state/loopState';
 import { fail } from '../core/errors';
-import { enforceRegressionStep } from './recordRegression';
+import { enforceRegressionStep } from './record-regression/recordRegression';
 
-export type { LoopEvaluator, LoopState, LoopStatus, LoopStep } from './loopState';
+export {
+	type LoopEvaluator,
+	type LoopState,
+	type LoopStatus,
+	type LoopStep
+} from './loop-state/loopState';
 
 export interface CreateLoopInput extends LoopInput {
 	name: string;

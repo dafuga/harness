@@ -7,14 +7,24 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/noteLines.ts"],
+		"source": [
+			"src/repositories/history-note-repository/noteLines.ts",
+			"src/utils/note-lines/noteLines.ts",
+			"src/utils/noteLines.ts"
+		],
 		"symbols": [
 			"ReadNote",
+			"noteCommit",
+			"readNoteLines",
 			"noteLine",
 			"noteLines",
-			"noteCommit",
 			"mergeNoteLines",
-			"readNoteLines"
+			"ReadNote",
+			"noteCommit",
+			"readNoteLines",
+			"noteLine",
+			"noteLines",
+			"mergeNoteLines"
 		]
 	},
 	"contract": {
@@ -99,7 +109,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/noteLines.ts",
+		"entry": "src/utils/note-lines/noteLines.ts",
 		"targets": [
 			{
 				"kind": "module",

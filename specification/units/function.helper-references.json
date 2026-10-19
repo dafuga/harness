@@ -7,8 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/helperReferences.ts"],
-		"symbols": ["HelperBinding", "HelperReference", "HelperFacts", "helperReferences"]
+		"source": [
+			"src/services/revision-detail-service/helperReferences.ts",
+			"src/utils/helperReferences.ts"
+		],
+		"symbols": [
+			"HelperBinding",
+			"HelperReference",
+			"HelperFacts",
+			"helperReferences",
+			"helperReferences"
+		]
 	},
 	"contract": {
 		"origin": "derived",

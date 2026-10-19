@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/navbarSearch.ts"],
-		"symbols": ["NavbarSearch", "navbarSearch"]
+		"source": [
+			"packages/reports/src/components/harness/harness-navbar/navbarSearch.ts",
+			"packages/reports/src/utils/navbarSearch.ts"
+		],
+		"symbols": ["NavbarSearch", "navbarSearch", "navbarSearch"]
 	},
 	"contract": {
 		"origin": "declared",

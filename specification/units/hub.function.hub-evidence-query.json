@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubEvidenceQuery.ts"],
-		"symbols": ["hubEvidenceQuery", "hubArtifactQuery"]
+		"source": [
+			"packages/hub/src/controllers/hub-api-controller/hubEvidenceQuery.ts",
+			"packages/hub/src/utils/hubEvidenceQuery.ts"
+		],
+		"symbols": ["hubEvidenceQuery", "hubArtifactQuery", "hubEvidenceQuery", "hubArtifactQuery"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -67,7 +70,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hubEvidenceQuery.ts",
+		"entry": "packages/hub/src/controllers/hub-api-controller/hubEvidenceQuery.ts",
 		"targets": [
 			{
 				"kind": "module",

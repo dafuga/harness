@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/routes/harness/reports/[id]/+page.server.ts"],
-		"symbols": ["load"]
+		"source": [
+			"packages/reports/src/routes/harness/reports/[id]/+page.server.ts",
+			"packages/reports/src/routes/harness/reports/[id]/-page-server/+page.server.ts"
+		],
+		"symbols": ["load", "load"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -50,7 +53,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/routes/harness/reports/[id]/+page.server.ts",
+		"entry": "packages/reports/src/routes/harness/reports/[id]/-page-server/+page.server.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubPngChunks.ts"],
-		"symbols": ["Header", "State", "hubPngChunks"]
+		"source": [
+			"packages/hub/src/services/hub-projection-service/hubPngChunks.ts",
+			"packages/hub/src/utils/hubPngChunks.ts"
+		],
+		"symbols": ["Header", "State", "hubPngChunks", "hubPngChunks"]
 	},
 	"contract": {
 		"origin": "declared",

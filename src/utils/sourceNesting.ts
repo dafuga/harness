@@ -5,9 +5,6 @@ export interface SourceNesting {
 	group: Int32Array;
 }
 
-const statementStarts =
-	/^(?:export|const|let|var|function|class|import|interface|type|if|for|return|async|declare|enum)\b|^[})]/;
-
 /** Computes bracket depths over masked source so literal contents never count. */
 export function sourceNesting(masked: string): SourceNesting {
 	const brace = new Int32Array(masked.length + 1);
@@ -29,21 +26,6 @@ export function matchingBrace(nesting: SourceNesting, open: number): number {
 	return nesting.brace.length - 2;
 }
 
-/** Inclusive end of the statement beginning at `start`. */
-export function statementEnd(masked: string, nesting: SourceNesting, start: number): number {
-	const brace = nesting.brace[start];
-	const group = nesting.group[start];
-	for (let index = start; index < masked.length; index += 1) {
-		if (nesting.brace[index] !== brace || nesting.group[index] !== group) continue;
-		if (masked[index] === ';') return index;
-		if (masked[index] === '\n' && index > start && startsStatement(masked, index + 1)) {
-			return index - 1;
-		}
-		if (masked[index] === '}') return index - 1;
-	}
-	return masked.length - 1;
-}
-
 /** Inclusive end of the function body that follows `from`, or -1 for a bodiless signature. */
 export function bodyEnd(masked: string, nesting: SourceNesting, from: number): number {
 	const group = nesting.group[from];
@@ -58,12 +40,9 @@ export function bodyEnd(masked: string, nesting: SourceNesting, from: number): n
 	return -1;
 }
 
-function startsStatement(masked: string, index: number): boolean {
-	const rest = masked.slice(index, index + 40).trimStart();
-	return rest === '' || statementStarts.test(rest);
-}
-
 function delta(char: string, open: string, close: string): number {
 	if (char === open) return 1;
 	return char === close ? -1 : 0;
 }
+
+export { statementEnd } from './block-spans/sourceNesting';

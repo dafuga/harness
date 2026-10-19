@@ -7,13 +7,18 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/services/DeviceOperationsService.ts"],
+		"source": [
+			"packages/desktop/src/services/DeviceOperationsService.ts",
+			"packages/desktop/src/services/device-operations-service/DeviceOperationsService.ts"
+		],
 		"symbols": [
 			"DeviceOperationsOptions",
 			"DeviceOperationsService",
 			"DeviceOperationsService.constructor",
 			"DeviceOperationsService.methods",
-			"DeviceOperationsService.handle"
+			"DeviceOperationsService.handle",
+			"DeviceOperationsOptions",
+			"DeviceOperationsService"
 		]
 	},
 	"contract": {
@@ -104,7 +109,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/DeviceOperationsService.ts",
+		"entry": "packages/desktop/src/services/device-operations-service/DeviceOperationsService.ts",
 		"targets": [
 			{
 				"kind": "module",

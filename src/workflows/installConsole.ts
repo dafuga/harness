@@ -2,7 +2,7 @@ import { join, resolve } from 'node:path';
 import {
 	ConsoleInstallService,
 	type ConsoleInstallResult
-} from '../services/ConsoleInstallService';
+} from '../services/console-install-service/ConsoleInstallService';
 import { fail } from '../core/errors';
 import {
 	ConsoleUninstallService,

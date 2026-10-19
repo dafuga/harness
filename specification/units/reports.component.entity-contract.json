@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/EntityContract.svelte"],
-		"symbols": ["EntityContract"]
+		"source": [
+			"packages/reports/src/components/EntityContract.svelte",
+			"packages/reports/src/components/entity-contract/EntityContract.svelte"
+		],
+		"symbols": ["EntityContract", "EntityContract"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -82,7 +85,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/EntityContract.svelte",
+		"entry": "packages/reports/src/components/entity-contract/EntityContract.svelte",
 		"targets": [
 			{
 				"kind": "module",

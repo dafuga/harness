@@ -7,8 +7,19 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/impactKernel.ts"],
-		"symbols": ["impactKernel", "impactKernelPortable", "impactKernelText"]
+		"source": [
+			"src/utils/impact-kernel/impactKernel.ts",
+			"src/utils/impactKernel.ts",
+			"src/workflows/run-kernel/impactKernel.ts"
+		],
+		"symbols": [
+			"impactKernel",
+			"impactKernelPortable",
+			"impactKernelText",
+			"impactKernel",
+			"impactKernelPortable",
+			"impactKernelText"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -77,7 +88,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/impactKernel.ts",
+		"entry": "src/utils/impact-kernel/impactKernel.ts",
 		"handler": "impactKernel",
 		"targets": [
 			{

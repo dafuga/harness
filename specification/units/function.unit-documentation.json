@@ -7,8 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/unitDocumentation.ts"],
+		"source": [
+			"src/services/revision-detail-service/unitDocumentation.ts",
+			"src/utils/unit-documentation/unitDocumentation.ts",
+			"src/utils/unitDocumentation.ts"
+		],
 		"symbols": [
+			"UsageExample",
+			"UnitDocumentation",
+			"unitDocumentation",
+			"readUnitDocumentation",
+			"hydrateUnitDocumentation",
 			"UsageExample",
 			"UnitDocumentation",
 			"unitDocumentation",
@@ -145,7 +154,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/unitDocumentation.ts",
+		"entry": "src/utils/unit-documentation/unitDocumentation.ts",
 		"targets": [
 			{
 				"kind": "module",

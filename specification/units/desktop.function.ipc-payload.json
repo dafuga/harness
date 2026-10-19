@@ -7,8 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/ipcPayload.ts"],
+		"source": [
+			"packages/desktop/src/utils/ipc-payload/ipcPayload.ts",
+			"packages/desktop/src/utils/ipcPayload.ts"
+		],
 		"symbols": [
+			"approvalPayload",
+			"threadPayload",
+			"creationProject",
+			"creationPayload",
+			"runPayload",
+			"ipcPayload",
 			"approvalPayload",
 			"threadPayload",
 			"creationProject",
@@ -115,7 +124,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/ipcPayload.ts",
+		"entry": "packages/desktop/src/utils/ipc-payload/ipcPayload.ts",
 		"targets": [
 			{
 				"kind": "module",

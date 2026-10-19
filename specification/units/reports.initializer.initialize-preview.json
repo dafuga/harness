@@ -8,8 +8,11 @@
 	"status": "active",
 	"documentation": "packages/reports/specification/features/planned/managed-preview-server.md",
 	"owns": {
-		"source": ["packages/reports/src/initializers/initializePreview.ts"],
-		"symbols": ["initializePreview"]
+		"source": [
+			"packages/reports/src/initializers/initialize-preview/initializePreview.ts",
+			"packages/reports/src/initializers/initializePreview.ts"
+		],
+		"symbols": ["initializePreview", "initializePreview"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -73,7 +76,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/initializers/initializePreview.ts",
+		"entry": "packages/reports/src/initializers/initialize-preview/initializePreview.ts",
 		"targets": [
 			{
 				"kind": "module",

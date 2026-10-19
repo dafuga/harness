@@ -1,8 +1,8 @@
 import { mkdir, mkdtemp, rm } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { PreviewServerService } from '../services/PreviewServerService';
-import { PreviewWorkerService } from '../services/PreviewWorkerService';
+import { PreviewServerService } from '../services/preview-server-service/PreviewServerService';
+import { PreviewWorkerService } from '../services/preview-worker-service/PreviewWorkerService';
 import { previewArguments } from './previewArguments';
 import { previewOwnerPort } from './previewOwner';
 /** The supervisor owns the stable slot; Vite runs in one replaceable Node worker. */

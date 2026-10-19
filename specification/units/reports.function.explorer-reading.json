@@ -7,8 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/explorerReading.ts"],
-		"symbols": ["artifactRun", "artifactDifferences", "explorerReading"]
+		"source": [
+			"packages/reports/src/utils/explorer-reading/explorerReading.ts",
+			"packages/reports/src/utils/explorerReading.ts"
+		],
+		"symbols": [
+			"artifactRun",
+			"artifactDifferences",
+			"explorerReading",
+			"artifactRun",
+			"artifactDifferences",
+			"explorerReading"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -82,7 +92,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/explorerReading.ts",
+		"entry": "packages/reports/src/utils/explorer-reading/explorerReading.ts",
 		"targets": [
 			{
 				"kind": "module",

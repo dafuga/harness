@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/changeExecute.ts"],
-		"symbols": ["changeExecute", "recordChange"]
+		"source": [
+			"packages/desktop/src/services/change-run-service/changeExecute.ts",
+			"packages/desktop/src/utils/changeExecute.ts"
+		],
+		"symbols": ["changeExecute", "recordChange", "changeExecute", "recordChange"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -103,7 +106,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/changeExecute.ts",
+		"entry": "packages/desktop/src/services/change-run-service/changeExecute.ts",
 		"targets": [
 			{
 				"kind": "module",

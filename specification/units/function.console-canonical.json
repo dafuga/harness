@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/consoleCanonical.ts"],
+		"source": ["src/utils/console-canonical/consoleCanonical.ts", "src/utils/consoleCanonical.ts"],
 		"symbols": [
+			"IndexedHistory",
+			"defaultCommit",
+			"commitBranch",
+			"explorerHome",
+			"explorerExact",
+			"explorerAddress",
+			"consoleCanonical",
 			"IndexedHistory",
 			"defaultCommit",
 			"commitBranch",
@@ -140,7 +147,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/consoleCanonical.ts",
+		"entry": "src/utils/console-canonical/consoleCanonical.ts",
 		"targets": [
 			{
 				"kind": "module",

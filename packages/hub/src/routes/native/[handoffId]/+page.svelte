@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import HubFrame from '../../../components/HubFrame.svelte';
-	import LoginPanel from '../../../components/LoginPanel.svelte';
-	import NativeApproval from '../../../components/NativeApproval.svelte';
+	import LoginPanel from '../../../components/login-panel/LoginPanel.svelte';
+	import NativeApproval from '../../../components/native-approval/NativeApproval.svelte';
 	import { browserContext } from '../../../utils/browserContext';
 	const { session } = browserContext();
 	const handoffId = $derived(page.params.handoffId ?? '');

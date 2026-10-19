@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/entityReferences.ts"],
-		"symbols": ["ReferencePart", "isUnitId", "entityReferences"]
+		"source": [
+			"packages/desktop/src/components/reference-text/entityReferences.ts",
+			"packages/desktop/src/utils/entityReferences.ts"
+		],
+		"symbols": ["ReferencePart", "isUnitId", "entityReferences", "entityReferences"]
 	},
 	"contract": {
 		"origin": "declared",

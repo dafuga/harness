@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubCache.ts"],
-		"symbols": ["hubCache"]
+		"source": [
+			"packages/hub/src/routes/api/[...path]/-server/hubCache.ts",
+			"packages/hub/src/utils/hubCache.ts"
+		],
+		"symbols": ["hubCache", "hubCache"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,7 +34,7 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hubCache.ts",
+		"entry": "packages/hub/src/routes/api/[...path]/-server/hubCache.ts",
 		"targets": [
 			{
 				"kind": "module",

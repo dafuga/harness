@@ -7,12 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/LegacyImportService.ts"],
+		"source": [
+			"src/services/LegacyImportService.ts",
+			"src/services/legacy-import-service/LegacyImportService.ts"
+		],
 		"symbols": [
 			"LegacyImport",
 			"LegacyImportService",
 			"LegacyImportService.constructor",
-			"LegacyImportService.import"
+			"LegacyImportService.import",
+			"LegacyImport",
+			"LegacyImportService"
 		]
 	},
 	"contract": {
@@ -98,7 +103,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/LegacyImportService.ts",
+		"entry": "src/services/legacy-import-service/LegacyImportService.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -7,12 +7,16 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/services/CatalogService.ts"],
+		"source": [
+			"packages/desktop/src/services/CatalogService.ts",
+			"packages/desktop/src/services/catalog-service/CatalogService.ts"
+		],
 		"symbols": [
 			"CatalogService",
 			"CatalogService.constructor",
 			"CatalogService.list",
-			"CatalogService.entity"
+			"CatalogService.entity",
+			"CatalogService"
 		]
 	},
 	"contract": {
@@ -80,7 +84,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/CatalogService.ts",
+		"entry": "packages/desktop/src/services/catalog-service/CatalogService.ts",
 		"targets": [
 			{
 				"kind": "module",

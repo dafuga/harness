@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubMetadataPaths.ts"],
-		"symbols": ["hubMetadataPaths"]
+		"source": [
+			"packages/hub/src/utils/hub-metadata/hubMetadataPaths.ts",
+			"packages/hub/src/utils/hubMetadataPaths.ts"
+		],
+		"symbols": ["hubMetadataPaths", "hubMetadataPaths"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,7 +34,7 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hubMetadataPaths.ts",
+		"entry": "packages/hub/src/utils/hub-metadata/hubMetadataPaths.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -7,12 +7,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/ProjectActivityService.ts"],
+		"source": [
+			"src/services/ProjectActivityService.ts",
+			"src/services/project-activity-service/ProjectActivityService.ts"
+		],
 		"symbols": [
 			"ProjectActivityService",
 			"ProjectActivityService.constructor",
 			"ProjectActivityService.show",
-			"ProjectActivityService.recorded"
+			"ProjectActivityService.recorded",
+			"ProjectActivityService"
 		]
 	},
 	"contract": {
@@ -91,7 +95,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/ProjectActivityService.ts",
+		"entry": "src/services/project-activity-service/ProjectActivityService.ts",
 		"targets": [
 			{
 				"kind": "module",

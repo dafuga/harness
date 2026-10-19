@@ -7,8 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/loadWorkspace.ts"],
-		"symbols": ["LoadedWorkspace", "ProjectSelection", "loadWorkspace"]
+		"source": [
+			"packages/desktop/src/utils/load-workspace/loadWorkspace.ts",
+			"packages/desktop/src/utils/loadWorkspace.ts"
+		],
+		"symbols": [
+			"LoadedWorkspace",
+			"ProjectSelection",
+			"loadWorkspace",
+			"LoadedWorkspace",
+			"ProjectSelection",
+			"loadWorkspace"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -78,7 +88,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/loadWorkspace.ts",
+		"entry": "packages/desktop/src/utils/load-workspace/loadWorkspace.ts",
 		"targets": [
 			{
 				"kind": "module",

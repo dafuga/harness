@@ -7,8 +7,21 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/previewHealth.ts"],
-		"symbols": ["PreviewHealth", "closePreviewSessions", "previewHealth", "readPreviewHealth"]
+		"source": [
+			"packages/reports/src/initializers/initialize-preview/previewHealth.ts",
+			"packages/reports/src/services/preview-worker-service/previewHealth.ts",
+			"packages/reports/src/utils/previewHealth.ts"
+		],
+		"symbols": [
+			"PreviewHealth",
+			"path",
+			"closePreviewSessions",
+			"previewHealth",
+			"readPreviewHealth",
+			"closePreviewSessions",
+			"previewHealth",
+			"readPreviewHealth"
+		]
 	},
 	"contract": {
 		"origin": "declared",

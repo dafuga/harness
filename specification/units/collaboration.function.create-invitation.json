@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/collaboration/src/utils/createInvitation.ts"],
-		"symbols": ["createInvitation", "acceptInvitation"]
+		"source": [
+			"packages/collaboration/src/utils/create-collaboration/createInvitation.ts",
+			"packages/collaboration/src/utils/createInvitation.ts"
+		],
+		"symbols": ["createInvitation", "acceptInvitation", "createInvitation", "acceptInvitation"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -83,7 +86,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/collaboration/src/utils/createInvitation.ts",
+		"entry": "packages/collaboration/src/utils/create-collaboration/createInvitation.ts",
 		"targets": [
 			{
 				"kind": "module",

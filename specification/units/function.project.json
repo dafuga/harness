@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/project.ts"],
-		"symbols": ["DetectedProjectKind", "detectProjectKind"]
+		"source": ["src/core/project.ts", "src/workflows/generate-code/project.ts"],
+		"symbols": ["DetectedProjectKind", "detectProjectKind", "detectProjectKind"]
 	},
 	"contract": {
 		"origin": "declared",

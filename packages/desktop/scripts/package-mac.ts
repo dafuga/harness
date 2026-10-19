@@ -2,7 +2,7 @@ import electron from 'electron';
 import { cp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 import { execFileSync } from 'node:child_process';
-import { macIcon } from './mac-icon';
+import { macIcon } from './mac-icon/mac-icon';
 if (process.platform !== 'darwin') throw new Error('This package target requires macOS.');
 const identity = process.env.HARNESS_MAC_SIGN_IDENTITY;
 if (identity !== undefined) {

@@ -14,17 +14,20 @@ export interface ServiceAuthority {
 	/** Each service by its exact path inside the directory, and what its running code must satisfy. */
 	services: { path: string; requirement: string }[];
 }
+
 /**
  * delegated: a vetted service, vouched for, that left its command and is the system's now.
  * protected: possibly a shared service, or not to be told apart; never signalled, never passed.
  * private: the command's own. gone: no longer the process that was followed.
  */
 export type Standing = 'delegated' | 'protected' | 'private' | 'gone';
+
 export interface Verdict {
 	standing: Standing;
 	reason: string;
 	executable: string | null;
 }
+
 export interface ServiceContext {
 	authority: () => ServiceAuthority | null | Promise<ServiceAuthority | null>;
 	/** The process group of the command. */
@@ -34,6 +37,7 @@ export interface ServiceContext {
 	/** Ends the looks that are under way when the work they belong to is over. */
 	signal?: AbortSignal;
 }
+
 type Facts = ProcessFacts;
 
 const xcodeRequirement =
@@ -42,18 +46,24 @@ const xcodeRequirement =
 	'certificate 1[field.1.2.840.113635.100.6.2.6] exists and ' +
 	'certificate leaf[field.1.2.840.113635.100.6.1.13] exists and ' +
 	'certificate leaf[subject.OU] = "59GAB85EFG")';
+
 const vetted = [
 	{ path: 'usr/bin/ibtoold', requirement: 'identifier "com.apple.ibtool" and anchor apple' }
 ];
+
 /** Names of the shared service and of the tools that start it: never signalled under any path. */
 const guarded = ['ibtoold', 'ibtool', 'actool'];
+
 const vouched = new Set<string>();
+
 const gone: Verdict = { standing: 'gone', reason: 'it ended', executable: null };
-const sameTime = (one: string, other: string) =>
+
+export const sameTime = (one: string, other: string) =>
 	one.replace(/\s+/g, ' ') === other.replace(/\s+/g, ' ');
 
-const named = (...names: string[]) => names.some((name) => guarded.includes(basename(name)));
-const probing = (context: ServiceContext) =>
+export const named = (...names: string[]) => names.some((name) => guarded.includes(basename(name)));
+
+export const probing = (context: ServiceContext) =>
 	context.probes ?? processProbes({ signal: context.signal });
 
 /** The Xcode a developer directory is part of, with the one service of it that is shared. */
@@ -189,19 +199,4 @@ export async function classifyProcess(
 	return { standing: 'private', reason: "the command's own", executable: live };
 }
 
-/**
- * The last look before a signal: the process is still the one that was judged, by id and start
- * time, and still runs the program it was judged by. A process that was replaced, runs another
- * program or cannot be read gets no signal. Between this look and the signal nothing holds it:
- * the system offers no way to do both at once.
- */
-export async function stillPrivate(
-	known: TrackedProcess,
-	judgedAs: string | null,
-	context: ServiceContext
-): Promise<boolean> {
-	const probes = probing(context);
-	const [seen, live] = await Promise.all([probes.facts(known.pid), probes.executable(known.pid)]);
-	if (!seen || !live || live !== judgedAs) return false;
-	return sameTime(seen.started, known.started) && !named(live, seen.name);
-}
+export { stillPrivate } from './run-isolated/platformServices';

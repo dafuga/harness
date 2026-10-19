@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["scripts/build-kernel.ts"],
+		"source": ["scripts/build-kernel/build-kernel.ts"],
 		"symbols": []
 	},
 	"contract": {
@@ -30,7 +30,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "scripts/build-kernel.ts",
+		"entry": "scripts/build-kernel/build-kernel.ts",
 		"targets": [
 			{
 				"kind": "module",

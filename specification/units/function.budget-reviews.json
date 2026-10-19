@@ -7,12 +7,19 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/budgetReviews.ts"],
+		"source": [
+			"src/services/history-index-service/budgetReviews.ts",
+			"src/utils/budgetReviews.ts",
+			"src/utils/revision-registry/budgetReviews.ts"
+		],
 		"symbols": [
 			"BudgetReview",
 			"EmittedLimits",
-			"budgetReviews",
 			"FrozenLimits",
+			"budgetReviews",
+			"frozenLimits",
+			"emittedLimits",
+			"budgetReviews",
 			"frozenLimits",
 			"emittedLimits"
 		]

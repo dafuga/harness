@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/collaboration/src/utils/commitRecords.ts"],
-		"symbols": ["commitRecords"]
+		"source": [
+			"packages/collaboration/src/utils/commitRecords.ts",
+			"packages/collaboration/src/utils/create-git-hub-repository/commitRecords.ts"
+		],
+		"symbols": ["commitRecords", "commitRecords"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -47,7 +50,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/collaboration/src/utils/commitRecords.ts",
+		"entry": "packages/collaboration/src/utils/create-git-hub-repository/commitRecords.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/browserArtifact.ts"],
-		"symbols": ["browserArtifact"]
+		"source": [
+			"packages/hub/src/utils/browser-bridge/browserArtifact.ts",
+			"packages/hub/src/utils/browserArtifact.ts"
+		],
+		"symbols": ["browserArtifact", "browserArtifact"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -53,7 +56,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/browserArtifact.ts",
+		"entry": "packages/hub/src/utils/browser-bridge/browserArtifact.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/collaboration/src/utils/githubCommitFacts.ts"],
-		"symbols": ["githubCommitFacts"]
+		"source": [
+			"packages/collaboration/src/utils/create-git-hub-source/githubCommitFacts.ts",
+			"packages/collaboration/src/utils/githubCommitFacts.ts"
+		],
+		"symbols": ["githubCommitFacts", "githubCommitFacts"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -58,7 +61,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/collaboration/src/utils/githubCommitFacts.ts",
+		"entry": "packages/collaboration/src/utils/create-git-hub-source/githubCommitFacts.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/hostedArtifact.ts"],
-		"symbols": ["hostedArtifact"]
+		"source": [
+			"packages/desktop/src/utils/hostedArtifact.ts",
+			"packages/hub/src/utils/browser-bridge/hostedArtifact.ts"
+		],
+		"symbols": ["hostedArtifact", "hostedArtifact"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -53,7 +56,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/hostedArtifact.ts",
+		"entry": "packages/hub/src/utils/browser-bridge/hostedArtifact.ts",
 		"targets": [
 			{
 				"kind": "module",

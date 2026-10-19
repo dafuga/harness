@@ -7,15 +7,21 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/planning/src/utils/planGit.ts"],
+		"source": [
+			"packages/planning/src/index/planGit.ts",
+			"packages/planning/src/utils/plan-read/planGit.ts",
+			"packages/planning/src/utils/planGit.ts"
+		],
 		"symbols": [
 			"Git",
-			"planGit",
 			"revision",
 			"paths",
 			"blob",
 			"imageBlob",
 			"safePath",
+			"planGit",
+			"containing",
+			"planGit",
 			"containing"
 		]
 	},

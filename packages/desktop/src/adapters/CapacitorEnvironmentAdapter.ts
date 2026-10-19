@@ -1,5 +1,5 @@
 import { registerPlugin } from '@capacitor/core';
-import { CapacitorBridgeAdapter } from './CapacitorBridgeAdapter';
+import { CapacitorBridgeAdapter } from './capacitor-bridge-adapter/CapacitorBridgeAdapter';
 import type {
 	Environment,
 	RemoteMobileControl,

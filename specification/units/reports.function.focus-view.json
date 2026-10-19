@@ -7,10 +7,20 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/focusView.ts"],
+		"source": [
+			"packages/reports/src/components/harness/harness-map/focusView.ts",
+			"packages/reports/src/utils/focusView.ts"
+		],
 		"symbols": [
 			"MapView",
+			"pad",
 			"wholeView",
+			"focusView",
+			"focusOn",
+			"zoomView",
+			"panView",
+			"drawnEdges",
+			"nextNode",
 			"focusView",
 			"focusOn",
 			"zoomView",

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/remote/src/utils/wireDispatch.ts"],
-		"symbols": ["WireDispatchContext", "wireDispatch"]
+		"source": [
+			"packages/remote/src/services/wire-session-service/wireDispatch.ts",
+			"packages/remote/src/utils/wireDispatch.ts"
+		],
+		"symbols": ["WireDispatchContext", "wireDispatch", "wireDispatch"]
 	},
 	"contract": {
 		"origin": "declared",

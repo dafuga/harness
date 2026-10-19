@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubBodyBytes.ts"],
-		"symbols": ["hubBodyBytes"]
+		"source": [
+			"packages/hub/src/utils/hub-http/hubBodyBytes.ts",
+			"packages/hub/src/utils/hubBodyBytes.ts"
+		],
+		"symbols": ["hubBodyBytes", "hubBodyBytes"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -37,7 +40,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hubBodyBytes.ts",
+		"entry": "packages/hub/src/utils/hub-http/hubBodyBytes.ts",
 		"targets": [
 			{
 				"kind": "module",

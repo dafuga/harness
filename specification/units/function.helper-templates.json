@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/helperTemplates.ts"],
-		"symbols": ["helperTemplates"]
+		"source": [
+			"src/services/revision-detail-service/helperTemplates.ts",
+			"src/utils/helperTemplates.ts"
+		],
+		"symbols": ["helperTemplates", "helperTemplates"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -35,7 +38,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/helperTemplates.ts",
+		"entry": "src/services/revision-detail-service/helperTemplates.ts",
 		"targets": [
 			{
 				"kind": "module",

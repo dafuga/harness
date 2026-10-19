@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/settleProcesses.ts"],
-		"symbols": ["Settlement", "Watched", "SettleTiming", "haltProcesses", "settleProcesses"]
+		"source": ["src/utils/run-isolated/settleProcesses.ts", "src/utils/settleProcesses.ts"],
+		"symbols": [
+			"Settlement",
+			"Watched",
+			"SettleTiming",
+			"haltProcesses",
+			"settleProcesses",
+			"haltProcesses",
+			"settleProcesses"
+		]
 	},
 	"contract": {
 		"origin": "declared",

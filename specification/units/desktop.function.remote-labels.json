@@ -7,7 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/remoteLabels.ts"],
+		"source": [
+			"packages/desktop/src/components/remote-host-panel/remoteLabels.ts",
+			"packages/desktop/src/components/remote-offer-code/remoteLabels.ts",
+			"packages/desktop/src/components/remote-phone-panel/remoteLabels.ts",
+			"packages/desktop/src/utils/remoteLabels.ts"
+		],
 		"symbols": [
 			"lockNote",
 			"awakeNote",
@@ -16,14 +21,21 @@
 			"approveNote",
 			"awayNote",
 			"revokedNote",
-			"relayName",
-			"timeLeft",
+			"plural",
 			"keyLabel",
 			"identityLabel",
 			"grantLabel",
-			"grantSummary",
+			"relayName",
 			"hostLine",
 			"hostSummary",
+			"timeLeft",
+			"grantSummary",
+			"remoteLabels",
+			"relayName",
+			"hostLine",
+			"hostSummary",
+			"timeLeft",
+			"grantSummary",
 			"remoteLabels"
 		]
 	},

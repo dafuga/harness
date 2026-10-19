@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubMetadata.ts"],
-		"symbols": ["hubMetadata"]
+		"source": [
+			"packages/hub/src/utils/hub-metadata/hubMetadata.ts",
+			"packages/hub/src/utils/hubMetadata.ts"
+		],
+		"symbols": ["hubMetadata", "hubMetadata"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -47,7 +50,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hubMetadata.ts",
+		"entry": "packages/hub/src/utils/hub-metadata/hubMetadata.ts",
 		"targets": [
 			{
 				"kind": "module",

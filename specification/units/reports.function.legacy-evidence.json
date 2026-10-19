@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/legacyEvidence.ts"],
-		"symbols": ["legacyLink", "legacyEvidence"]
+		"source": [
+			"packages/reports/src/components/harness/harness-legacy/legacyEvidence.ts",
+			"packages/reports/src/utils/legacyEvidence.ts"
+		],
+		"symbols": ["legacyLink", "legacyEvidence", "legacyLink", "legacyEvidence"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -57,7 +60,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/legacyEvidence.ts",
+		"entry": "packages/reports/src/components/harness/harness-legacy/legacyEvidence.ts",
 		"targets": [
 			{
 				"kind": "module",

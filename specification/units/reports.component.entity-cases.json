@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/EntityCases.svelte"],
-		"symbols": ["EntityCases"]
+		"source": [
+			"packages/reports/src/components/EntityCases.svelte",
+			"packages/reports/src/components/entity-cases/EntityCases.svelte"
+		],
+		"symbols": ["EntityCases", "EntityCases"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -62,7 +65,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/EntityCases.svelte",
+		"entry": "packages/reports/src/components/entity-cases/EntityCases.svelte",
 		"targets": [
 			{
 				"kind": "module",

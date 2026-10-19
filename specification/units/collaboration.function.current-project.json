@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/collaboration/src/utils/currentProject.ts"],
-		"symbols": ["currentProject", "readRecords", "transaction", "now"]
+		"source": [
+			"packages/collaboration/src/utils/create-collaboration/currentProject.ts",
+			"packages/collaboration/src/utils/currentProject.ts"
+		],
+		"symbols": ["currentProject", "transaction", "now", "readRecords", "readRecords"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/browserApi.ts"],
-		"symbols": ["Query", "BrowserApi", "ApiFailure", "browserApi"]
+		"source": [
+			"packages/hub/src/routes/-layout/browserApi.ts",
+			"packages/hub/src/utils/browserApi.ts"
+		],
+		"symbols": ["Query", "BrowserApi", "ApiFailure", "browserApi", "browserApi"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -40,16 +43,6 @@
 		]
 	},
 	"dependencies": [
-		{
-			"unit": "desktop.function.artifact-media",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "desktop.function.hosted-response",
-			"via": "import",
-			"origin": "derived"
-		},
 		{
 			"unit": "hub.function.browser-error",
 			"via": "import",

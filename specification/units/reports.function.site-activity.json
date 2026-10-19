@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/siteActivity.ts"],
-		"symbols": ["siteActivity"]
+		"source": [
+			"packages/reports/src/routes/api/project-activity/-server/siteActivity.ts",
+			"packages/reports/src/utils/siteActivity.ts"
+		],
+		"symbols": ["siteActivity", "siteActivity"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -41,7 +44,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/siteActivity.ts",
+		"entry": "packages/reports/src/routes/api/project-activity/-server/siteActivity.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubSnapshot.ts"],
-		"symbols": ["hubSnapshot"]
+		"source": [
+			"packages/hub/src/services/hub-projection-service/hubSnapshot.ts",
+			"packages/hub/src/utils/hubSnapshot.ts"
+		],
+		"symbols": ["hubSnapshot", "hubSnapshot"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -67,7 +70,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hubSnapshot.ts",
+		"entry": "packages/hub/src/services/hub-projection-service/hubSnapshot.ts",
 		"targets": [
 			{
 				"kind": "module",

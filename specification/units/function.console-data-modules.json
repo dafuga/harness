@@ -7,8 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/consoleDataModules.ts"],
-		"symbols": ["IndexFile", "consoleDataModules", "BundledSize", "bundledSize"]
+		"source": [
+			"src/services/console-install-service/consoleDataModules.ts",
+			"src/utils/consoleDataModules.ts"
+		],
+		"symbols": [
+			"IndexFile",
+			"BundledSize",
+			"consoleDataModules",
+			"bundledSize",
+			"consoleDataModules",
+			"bundledSize"
+		]
 	},
 	"contract": {
 		"origin": "declared",

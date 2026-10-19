@@ -7,15 +7,19 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/benchSamples.ts"],
+		"source": [
+			"src/services/kernel-benchmark-service/benchSamples.ts",
+			"src/utils/benchSamples.ts"
+		],
 		"symbols": [
 			"WarmResult",
 			"median",
 			"timeCall",
-			"benchSamples",
 			"RoundResult",
 			"benchRounds",
-			"roundMeasurements"
+			"roundMeasurements",
+			"benchSamples",
+			"benchSamples"
 		]
 	},
 	"contract": {

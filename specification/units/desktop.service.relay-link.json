@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/services/RelayLinkService.ts"],
+		"source": [
+			"packages/desktop/src/services/RelayLinkService.ts",
+			"packages/desktop/src/services/relay-link-service/RelayLinkService.ts"
+		],
 		"symbols": [
 			"RelayLinkState",
 			"RelayCommandInput",
@@ -17,7 +20,11 @@
 			"RelayLinkService.start",
 			"RelayLinkService.stop",
 			"RelayLinkService.send",
-			"RelayLinkService.command"
+			"RelayLinkService.command",
+			"RelayLinkState",
+			"RelayCommandInput",
+			"RelayLinkOptions",
+			"RelayLinkService"
 		]
 	},
 	"contract": {
@@ -70,7 +77,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/RelayLinkService.ts",
+		"entry": "packages/desktop/src/services/relay-link-service/RelayLinkService.ts",
 		"targets": [
 			{
 				"kind": "module",

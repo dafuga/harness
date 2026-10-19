@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/structureRules.ts"],
-		"symbols": ["auditHarnessStructure"]
+		"source": ["src/audit/structure-rules/structureRules.ts", "src/audit/structureRules.ts"],
+		"symbols": ["auditHarnessStructure", "auditHarnessStructure"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -50,7 +50,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/audit/structureRules.ts",
+		"entry": "src/audit/structure-rules/structureRules.ts",
 		"targets": [
 			{
 				"kind": "module",

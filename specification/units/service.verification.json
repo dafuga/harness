@@ -7,12 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/VerificationService.ts"],
+		"source": [
+			"src/services/VerificationService.ts",
+			"src/services/verification-service/VerificationService.ts"
+		],
 		"symbols": [
 			"VerifyContext",
 			"VerificationService",
 			"VerificationService.constructor",
-			"VerificationService.run"
+			"VerificationService.run",
+			"VerifyContext",
+			"VerificationService"
 		]
 	},
 	"contract": {
@@ -105,7 +110,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/VerificationService.ts",
+		"entry": "src/services/verification-service/VerificationService.ts",
 		"targets": [
 			{
 				"kind": "module",

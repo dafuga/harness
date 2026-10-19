@@ -1,7 +1,7 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { brandMark } from '../../reports/src/utils/brandMark';
-import { brandIcon } from '../src/utils/brandIcon';
+import { brandIcon } from './mac-icon/brandIcon';
 
 /**
  * Writes the brand assets from the shared geometry: the favicon of each app and the 1024 pixel

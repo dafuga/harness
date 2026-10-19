@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/explorerCoverage.ts"],
-		"symbols": ["coverageAffected", "explorerCoverage"]
+		"source": [
+			"packages/reports/src/utils/explorer-verdict/explorerCoverage.ts",
+			"packages/reports/src/utils/explorerCoverage.ts"
+		],
+		"symbols": ["coverageAffected", "explorerCoverage", "coverageAffected", "explorerCoverage"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -82,7 +85,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/explorerCoverage.ts",
+		"entry": "packages/reports/src/utils/explorer-verdict/explorerCoverage.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -14,11 +14,12 @@
 	import { explorerEntities } from '../../utils/explorerEntities';
 	import { explorerSearchEntries } from '../../utils/explorerSearchEntries';
 	import { explorerEvidence } from '../../utils/explorerEvidence';
-	import { explorerHistory } from '../../utils/explorerHistory';
+	import { explorerHistory } from '../../utils/explorer-history/explorerHistory';
 	import { explorerRelationsReader } from '../../utils/explorerRelations';
-	import { branchCommits, retainedBranch } from '../../utils/harnessAncestry';
+	import { branchCommits } from './harness-navbar/harnessAncestry';
+	import { retainedBranch } from '../../utils/harnessAncestry';
 	import { harnessClient } from '../../utils/harnessClient';
-	import { harnessPage } from '../../utils/harnessPage';
+	import { harnessPage } from '../../utils/harness-page/harnessPage';
 	import HarnessHeader from './HarnessHeader.svelte';
 	let {
 		base,

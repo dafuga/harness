@@ -7,13 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/planning/src/utils/planIdentity.ts"],
+		"source": [
+			"packages/planning/src/utils/plan-read/planIdentity.ts",
+			"packages/planning/src/utils/planIdentity.ts"
+		],
 		"symbols": [
 			"identity",
 			"attest",
 			"planFiles",
 			"findIdentity",
 			"planIdentity",
+			"validateIdentity",
 			"validateIdentity"
 		]
 	},

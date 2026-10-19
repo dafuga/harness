@@ -7,8 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/planning/src/utils/planCommit.ts"],
-		"symbols": ["stageFiles", "CommitContext", "planCommit", "requireLfsFilters"]
+		"source": [
+			"packages/planning/src/utils/plan-write/planCommit.ts",
+			"packages/planning/src/utils/planCommit.ts"
+		],
+		"symbols": [
+			"stageFiles",
+			"CommitContext",
+			"planCommit",
+			"requireLfsFilters",
+			"planCommit",
+			"requireLfsFilters"
+		]
 	},
 	"contract": {
 		"origin": "declared",

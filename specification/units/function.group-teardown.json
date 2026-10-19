@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/groupTeardown.ts"],
-		"symbols": ["GroupTiming", "signalGroup", "groupTeardown"]
+		"source": ["src/utils/groupTeardown.ts", "src/utils/run-isolated/groupTeardown.ts"],
+		"symbols": ["GroupTiming", "signalGroup", "groupTeardown", "groupTeardown"]
 	},
 	"contract": {
 		"origin": "declared",

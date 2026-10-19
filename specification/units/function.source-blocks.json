@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/sourceBlocks.ts"],
-		"symbols": ["SourceBlock", "sourceBlocks"]
+		"source": ["src/services/source-index-service/sourceBlocks.ts", "src/utils/sourceBlocks.ts"],
+		"symbols": ["SourceBlock", "sourceBlocks", "sourceBlocks"]
 	},
 	"contract": {
 		"origin": "declared",

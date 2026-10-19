@@ -7,8 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/scenarioCoverage.ts"],
-		"symbols": ["CoverageInput", "CoverageResult", "scenarioCoverage"]
+		"source": [
+			"src/services/verification-service/scenarioCoverage.ts",
+			"src/utils/scenarioCoverage.ts"
+		],
+		"symbols": [
+			"CoverageInput",
+			"CoverageResult",
+			"problem",
+			"scenarioCoverage",
+			"scenarioCoverage"
+		]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubPinnedSource.ts"],
-		"symbols": ["hubPinnedSource", "hubEvidencePath"]
+		"source": [
+			"packages/hub/src/services/hub-attached-service/hubPinnedSource.ts",
+			"packages/hub/src/utils/hubPinnedSource.ts"
+		],
+		"symbols": ["hubPinnedSource", "hubEvidencePath", "hubEvidencePath"]
 	},
 	"contract": {
 		"origin": "declared",

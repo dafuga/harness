@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/harnessEvidence.ts"],
-		"symbols": ["mediaFile", "harnessEvidence", "harnessReport"]
+		"source": [
+			"packages/reports/src/utils/console-server/harnessEvidence.ts",
+			"packages/reports/src/utils/harnessEvidence.ts"
+		],
+		"symbols": ["harnessReport", "mediaFile", "harnessEvidence", "harnessReport"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,8 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/explorerVerdict.ts"],
-		"symbols": ["verdictRecord", "verdictCoverage", "explorerVerdict"]
+		"source": [
+			"packages/reports/src/utils/explorer-verdict/explorerVerdict.ts",
+			"packages/reports/src/utils/explorerVerdict.ts"
+		],
+		"symbols": [
+			"verdictRecord",
+			"verdictCoverage",
+			"explorerVerdict",
+			"verdictRecord",
+			"verdictCoverage",
+			"explorerVerdict"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -82,7 +92,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/explorerVerdict.ts",
+		"entry": "packages/reports/src/utils/explorer-verdict/explorerVerdict.ts",
 		"targets": [
 			{
 				"kind": "module",

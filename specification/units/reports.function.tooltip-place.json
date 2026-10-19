@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/tooltipPlace.ts"],
-		"symbols": ["TooltipMark", "TooltipSize", "tooltipPlace"]
+		"source": [
+			"packages/reports/src/components/harness/harness-verdict/tooltipPlace.ts",
+			"packages/reports/src/utils/tooltipPlace.ts"
+		],
+		"symbols": ["TooltipMark", "TooltipSize", "tooltipPlace", "tooltipPlace"]
 	},
 	"contract": {
 		"origin": "declared",

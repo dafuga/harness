@@ -7,6 +7,7 @@ import type {
 } from '../models/Collaboration.types';
 import { fail, parse, actorSchema, id } from './parseCollaborationInput';
 import { recordsSchema } from './recordsSchema';
+
 export function currentProject(
 	records: CollaborationRecords,
 	actor: Actor,
@@ -20,9 +21,7 @@ export function currentProject(
 	if (!project || !member || !roles.includes(member.role)) return fail('forbidden');
 	return { ...project, role: member.role };
 }
-export async function readRecords(deps: CollaborationDependencies): Promise<CollaborationRecords> {
-	return parse(recordsSchema, (await deps.repository.read()).records);
-}
+
 export async function transaction<T>(
 	deps: CollaborationDependencies,
 	operation: (records: CollaborationRecords) => Promise<T>
@@ -41,6 +40,9 @@ export async function transaction<T>(
 	}
 	return fail('conflict');
 }
+
 export function now(deps: CollaborationDependencies): Date {
 	return deps.now?.() ?? new Date();
 }
+
+export { readRecords } from './create-collaboration/currentProject';

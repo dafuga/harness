@@ -7,12 +7,16 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/services/HubEvidenceService.ts"],
+		"source": [
+			"packages/hub/src/services/HubEvidenceService.ts",
+			"packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts"
+		],
 		"symbols": [
 			"HubEvidenceService",
 			"HubEvidenceService.constructor",
 			"HubEvidenceService.evidence",
-			"HubEvidenceService.artifact"
+			"HubEvidenceService.artifact",
+			"HubEvidenceService"
 		]
 	},
 	"contract": {
@@ -139,7 +143,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/services/HubEvidenceService.ts",
+		"entry": "packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -1,11 +1,14 @@
-import { createHash } from 'node:crypto';
-import { copyFile, mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
-import { pinnedToolchain } from '../src/utils/pinnedToolchain';
+import { createHash } from "node:crypto";
+import { copyFile, mkdir, readdir, readFile, writeFile } from "node:fs/promises";
+import { join } from "node:path";
+import { pinnedToolchain } from "./pinnedToolchain";
 
 const out = 'target/kernel';
+
 const rawWasm = 'target/wasm32-unknown-unknown/release/impact_kernel.wasm';
+
 const features = ['--enable-bulk-memory', '--enable-sign-ext', '--enable-nontrapping-float-to-int'];
+
 const reference = [
 	'impactKernel.ts',
 	'kernelRequest.ts',
@@ -48,13 +51,19 @@ async function sources(files: string[]) {
 }
 
 rust('cargo', ['build', '--release', '--locked', '--bin', 'impact-kernel']);
+
 rust('cargo', ['build', '--release', '--locked', '--lib', '--target', 'wasm32-unknown-unknown']);
+
 await mkdir(out, { recursive: true });
+
 const wasmOpt = await optimize(join(out, 'impact-kernel.wasm'));
+
 await copyFile('target/release/impact-kernel', join(out, 'impact-kernel'));
+
 const crate = (await readdir('crates/impact-kernel/src')).map(
 	(file) => `crates/impact-kernel/src/${file}`
 );
+
 const build = {
 	contract: 'impact-kernel/1',
 	rustc: rust('rustc', ['--version']),
@@ -68,7 +77,9 @@ const build = {
 		reference: await sources(reference)
 	}
 };
+
 await writeFile(join(out, 'build.json'), `${JSON.stringify(build, null, '\t')}\n`);
+
 console.log(
 	`Built impact kernel: wasm ${build.wasm.bytes} bytes (wasm-opt ${wasmOpt ?? 'not applied'}), ` +
 		`native ${build.native.bytes} bytes.`

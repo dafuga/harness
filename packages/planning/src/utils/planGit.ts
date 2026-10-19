@@ -1,9 +1,8 @@
-import process from 'node:process';
 import { Buffer } from 'node:buffer';
-import { spawn } from 'node:child_process';
-import { lstat, realpath, readFile } from 'node:fs/promises';
+import { lstat, readFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { fail, hash } from './planData';
+
 export interface Git {
 	root: string;
 	dir: string;
@@ -12,46 +11,7 @@ export interface Git {
 	objectFormat?: 'sha1' | 'sha256';
 	run(args: string[], input?: Uint8Array | string, env?: Record<string, string>): Promise<Buffer>;
 }
-export async function planGit(root: string): Promise<Git> {
-	const canonical = await realpath(root);
-	const run: Git['run'] = (args, input, env) =>
-		new Promise((resolve, reject) => {
-			const child = spawn('git', args, {
-				cwd: canonical,
-				env: { ...process.env, GIT_OPTIONAL_LOCKS: '0', ...env },
-				stdio: 'pipe'
-			});
-			const out: Buffer[] = [];
-			const errors: Buffer[] = [];
-			child.stdout.on('data', (data) => out.push(data));
-			child.stderr.on('data', (data) => errors.push(data));
-			child.on('error', reject);
-			child.on('close', (code) =>
-				code === 0
-					? resolve(Buffer.concat(out))
-					: reject(
-							Object.assign(
-								new Error(Buffer.concat(errors).toString().trim() || 'Git command failed'),
-								{ code: 'git-failed' }
-							)
-						)
-			);
-			child.stdin.on('error', () => {});
-			child.stdin.end(input);
-		});
-	const top = (await run(['rev-parse', '--show-toplevel'])).toString().trim();
-	if (top !== canonical) fail('not-a-repository', 'Select the repository root');
-	const dir = (await run(['rev-parse', '--absolute-git-dir'])).toString().trim();
-	return { root: canonical, dir, run, ...(await objectFormat(run)) };
-}
-/** The format the repository names its objects in, when Git states one known here. */
-async function objectFormat(run: Git['run']): Promise<Pick<Git, 'objectFormat'>> {
-	const stated = await run(['rev-parse', '--show-object-format']).then(
-		(bytes) => bytes.toString().trim(),
-		() => ''
-	);
-	return stated === 'sha1' || stated === 'sha256' ? { objectFormat: stated } : {};
-}
+
 export async function revision(git: Git, value = 'HEAD'): Promise<string> {
 	if (typeof value !== 'string' || !value || value.startsWith('-') || /[\0\r\n]/.test(value))
 		fail('unknown-revision', 'Invalid revision');
@@ -61,6 +21,7 @@ export async function revision(git: Git, value = 'HEAD'): Promise<string> {
 		return fail('unknown-revision', 'Unknown revision');
 	}
 }
+
 export async function paths(git: Git, rev: string, path = ''): Promise<string[]> {
 	const result = await git.run(['ls-tree', '-rz', rev, '--', path || '.']);
 	return result
@@ -69,6 +30,7 @@ export async function paths(git: Git, rev: string, path = ''): Promise<string[]>
 		.filter(Boolean)
 		.map((line) => line.split('\t')[1]);
 }
+
 export async function blob(git: Git, rev: string, path: string): Promise<Buffer> {
 	const entry = (await git.run(['ls-tree', '-z', rev, '--', path])).toString();
 	if (!entry) fail('artifact-missing', `Missing artifact ${path}`);
@@ -76,6 +38,7 @@ export async function blob(git: Git, rev: string, path: string): Promise<Buffer>
 		fail('unsafe-path', 'Non-regular artifact');
 	return git.run(['show', `${rev}:${path}`]);
 }
+
 export async function imageBlob(git: Git, rev: string, path: string): Promise<Buffer> {
 	const data = await blob(git, rev, path);
 	if (!data.toString('utf8', 0, 50).startsWith('version https://git-lfs.github.com/spec/v1'))
@@ -98,6 +61,7 @@ export async function imageBlob(git: Git, rev: string, path: string): Promise<Bu
 		fail('artifact-tampered', 'LFS object hash mismatch');
 	return bytes;
 }
+
 export async function safePath(git: Git, path: string): Promise<void> {
 	let current = git.root;
 	for (const part of path.split('/')) {
@@ -110,12 +74,6 @@ export async function safePath(git: Git, path: string): Promise<void> {
 		}
 	}
 }
-export async function containing(git: Git, rev: string, path: string): Promise<string> {
-	return (
-		(await git.run(['log', '--format=%H', '--diff-filter=A', rev, '--', path]))
-			.toString()
-			.trim()
-			.split('\n')
-			.at(-1) || fail('artifact-tampered', 'Artifact has no creation commit')
-	);
-}
+
+export { planGit } from '../index/planGit';
+export { containing } from './plan-read/planGit';

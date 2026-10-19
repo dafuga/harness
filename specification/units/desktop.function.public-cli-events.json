@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/publicCliEvents.ts"],
-		"symbols": ["publicCliEvents"]
+		"source": [
+			"packages/desktop/src/adapters/claude-cli-adapter/publicCliEvents.ts",
+			"packages/desktop/src/utils/publicCliEvents.ts"
+		],
+		"symbols": ["publicCliEvents", "publicCliEvents"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,7 +34,7 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/publicCliEvents.ts",
+		"entry": "packages/desktop/src/adapters/claude-cli-adapter/publicCliEvents.ts",
 		"targets": [
 			{
 				"kind": "module",

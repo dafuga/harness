@@ -7,12 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/HookRunService.ts"],
+		"source": ["src/services/HookRunService.ts", "src/services/hook-run-service/HookRunService.ts"],
 		"symbols": [
 			"HookOutcome",
 			"HookRunService",
 			"HookRunService.constructor",
-			"HookRunService.prePush"
+			"HookRunService.prePush",
+			"HookOutcome",
+			"HookRunService"
 		]
 	},
 	"contract": {
@@ -54,7 +56,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/HookRunService.ts",
+		"entry": "src/services/hook-run-service/HookRunService.ts",
 		"targets": [
 			{
 				"kind": "module",

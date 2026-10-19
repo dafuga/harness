@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/evidenceVerdict.ts"],
-		"symbols": ["EvidenceRead", "EntityVerdict", "evidenceVerdict"]
+		"source": [
+			"packages/desktop/src/components/entity-view/evidenceVerdict.ts",
+			"packages/desktop/src/utils/evidenceVerdict.ts"
+		],
+		"symbols": ["EvidenceRead", "EntityVerdict", "evidenceVerdict", "evidenceVerdict"]
 	},
 	"contract": {
 		"origin": "declared",

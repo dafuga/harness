@@ -7,7 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/entityReasons.ts"],
+		"source": [
+			"packages/reports/src/components/harness/entity-history-row/entityReasons.ts",
+			"packages/reports/src/components/harness/entity-reasons/entityReasons.ts",
+			"packages/reports/src/utils/entityReasons.ts"
+		],
 		"symbols": [
 			"BoundedText",
 			"ReasonKind",
@@ -15,7 +19,12 @@
 			"ReasonUse",
 			"EntityReasons",
 			"boundedText",
+			"alike",
+			"attempts",
+			"uses",
 			"entityReasons",
+			"reasonsTried",
+			"reasonUses",
 			"reasonsTried",
 			"reasonUses"
 		]

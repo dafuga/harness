@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/reportDestination.ts"],
-		"symbols": ["NamedReport", "reportDestination"]
+		"source": [
+			"packages/reports/src/routes/harness/reports/[id]/-page-server/reportDestination.ts",
+			"packages/reports/src/utils/reportDestination.ts"
+		],
+		"symbols": ["NamedReport", "reportDestination", "reportDestination"]
 	},
 	"contract": {
 		"origin": "declared",

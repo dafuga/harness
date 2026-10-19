@@ -7,13 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/repositories/EvidenceBranchRepository.ts"],
+		"source": [
+			"src/repositories/EvidenceBranchRepository.ts",
+			"src/repositories/evidence-branch-repository/EvidenceBranchRepository.ts"
+		],
 		"symbols": [
 			"StoredDirectory",
 			"EvidenceBranchRepository",
 			"EvidenceBranchRepository.constructor",
 			"EvidenceBranchRepository.tip",
-			"EvidenceBranchRepository.add"
+			"EvidenceBranchRepository.add",
+			"StoredDirectory",
+			"EvidenceBranchRepository"
 		]
 	},
 	"contract": {
@@ -81,7 +86,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/repositories/EvidenceBranchRepository.ts",
+		"entry": "src/repositories/evidence-branch-repository/EvidenceBranchRepository.ts",
 		"targets": [
 			{
 				"kind": "module",

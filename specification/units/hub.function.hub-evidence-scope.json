@@ -7,9 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubEvidenceScope.ts"],
+		"source": [
+			"packages/hub/src/services/hub-evidence-service/hubEvidenceScope.ts",
+			"packages/hub/src/utils/hubEvidenceScope.ts"
+		],
 		"symbols": [
 			"HubEvidenceDependencies",
+			"hubEvidenceContext",
+			"hubEvidencePins",
+			"hubEvidenceScope",
 			"hubEvidenceContext",
 			"hubEvidencePins",
 			"hubEvidenceScope"

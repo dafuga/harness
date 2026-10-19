@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/rendererAssets.ts"],
-		"symbols": ["rendererPolicy", "rendererAssets"]
+		"source": [
+			"packages/desktop/src/initializers/initialize-desktop/rendererAssets.ts",
+			"packages/desktop/src/utils/rendererAssets.ts"
+		],
+		"symbols": ["rendererPolicy", "rendererAssets", "rendererPolicy", "rendererAssets"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -62,7 +65,7 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/rendererAssets.ts",
+		"entry": "packages/desktop/src/initializers/initialize-desktop/rendererAssets.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/planning/src/utils/planHistory.ts"],
-		"symbols": ["commits", "revisionInfo", "planHistory"]
+		"source": [
+			"packages/planning/src/services/planning-service/planHistory.ts",
+			"packages/planning/src/utils/planHistory.ts"
+		],
+		"symbols": ["commits", "revisionInfo", "planHistory", "planHistory"]
 	},
 	"contract": {
 		"origin": "declared",

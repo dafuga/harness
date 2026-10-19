@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/mediaPlace.ts"],
-		"symbols": ["MediaFile", "MediaPlacer", "mediaPlace", "checkedMedia"]
+		"source": ["src/services/history-media-service/mediaPlace.ts", "src/utils/mediaPlace.ts"],
+		"symbols": ["MediaFile", "MediaPlacer", "checkedMedia", "mediaPlace", "mediaPlace"]
 	},
 	"contract": {
 		"origin": "declared",

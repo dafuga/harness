@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/repositories/HistoryNoteRepository.ts"],
+		"source": [
+			"src/repositories/HistoryNoteRepository.ts",
+			"src/repositories/history-note-repository/HistoryNoteRepository.ts"
+		],
 		"symbols": [
 			"HistoryNoteRepository",
 			"HistoryNoteRepository.constructor",
@@ -15,7 +18,8 @@
 			"HistoryNoteRepository.read",
 			"HistoryNoteRepository.append",
 			"HistoryNoteRepository.merge",
-			"HistoryNoteRepository.all"
+			"HistoryNoteRepository.all",
+			"HistoryNoteRepository"
 		]
 	},
 	"contract": {
@@ -108,7 +112,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/repositories/HistoryNoteRepository.ts",
+		"entry": "src/repositories/history-note-repository/HistoryNoteRepository.ts",
 		"targets": [
 			{
 				"kind": "module",

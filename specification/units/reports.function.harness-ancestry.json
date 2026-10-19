@@ -7,14 +7,22 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/harnessAncestry.ts"],
+		"source": [
+			"packages/reports/src/components/harness/harness-navbar/harnessAncestry.ts",
+			"packages/reports/src/components/harness/harness-selectors/harnessAncestry.ts",
+			"packages/reports/src/utils/explorer-history/harnessAncestry.ts",
+			"packages/reports/src/utils/harnessAncestry.ts"
+		],
 		"symbols": [
 			"retainedBranch",
-			"harnessAncestry",
 			"branchNames",
 			"defaultCommit",
-			"branchCommits",
 			"branchOf",
+			"harnessAncestry",
+			"branchCommits",
+			"revisionLabel",
+			"harnessAncestry",
+			"branchCommits",
 			"revisionLabel"
 		]
 	},

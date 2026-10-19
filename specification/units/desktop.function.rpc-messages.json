@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/rpcMessages.ts"],
-		"symbols": ["RpcEvent", "RpcPending", "rpcMessages", "rpcRequest"]
+		"source": [
+			"packages/desktop/src/utils/codex-rpc/rpcMessages.ts",
+			"packages/desktop/src/utils/rpcMessages.ts"
+		],
+		"symbols": ["RpcEvent", "RpcPending", "rpcMessages", "rpcRequest", "rpcMessages", "rpcRequest"]
 	},
 	"contract": {
 		"origin": "declared",

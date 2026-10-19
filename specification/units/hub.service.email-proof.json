@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/services/EmailProofService.ts"],
+		"source": [
+			"packages/hub/src/services/EmailProofService.ts",
+			"packages/hub/src/services/email-proof-service/EmailProofService.ts"
+		],
 		"symbols": [
 			"PENDING_TTL",
 			"CODE_TTL",
@@ -23,7 +26,15 @@
 			"EmailProofService.status",
 			"EmailProofService.start",
 			"EmailProofService.verify",
-			"EmailProofService.cancel"
+			"EmailProofService.cancel",
+			"PENDING_TTL",
+			"CODE_TTL",
+			"MAX_ATTEMPTS",
+			"SEND_INTERVAL",
+			"DAILY_SENDS",
+			"PROOF_TTL",
+			"EmailProofOptions",
+			"EmailProofService"
 		]
 	},
 	"contract": {
@@ -143,7 +154,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/services/EmailProofService.ts",
+		"entry": "packages/hub/src/services/email-proof-service/EmailProofService.ts",
 		"targets": [
 			{
 				"kind": "module",

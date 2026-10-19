@@ -7,20 +7,29 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/authHttp.ts"],
+		"source": [
+			"packages/hub/src/controllers/github-connection-controller/authHttp.ts",
+			"packages/hub/src/services/request-session-service/authHttp.ts",
+			"packages/hub/src/utils/authHttp.ts"
+		],
 		"symbols": [
+			"baseHeaders",
 			"AuthHttpOptions",
+			"withCookies",
 			"authHttp",
-			"authRedirect",
 			"authFailure",
-			"sameOrigin",
 			"hasAuthorization",
-			"bearerToken",
 			"boundedText",
 			"readJson",
 			"AuthRoute",
 			"AuthRoutes",
-			"authPath"
+			"authPath",
+			"authRedirect",
+			"sameOrigin",
+			"bearerToken",
+			"sameOrigin",
+			"bearerToken",
+			"authRedirect"
 		]
 	},
 	"contract": {

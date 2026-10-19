@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/browserErrorRows.ts"],
-		"symbols": ["BrowserErrorRow", "browserErrorRows"]
+		"source": [
+			"packages/reports/src/components/browser-errors/browserErrorRows.ts",
+			"packages/reports/src/utils/browserErrorRows.ts"
+		],
+		"symbols": ["Observed", "BrowserErrorRow", "browserErrorRows", "browserErrorRows"]
 	},
 	"contract": {
 		"origin": "declared",

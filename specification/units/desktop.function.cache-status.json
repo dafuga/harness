@@ -7,16 +7,28 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/cacheStatus.ts"],
+		"source": [
+			"packages/desktop/src/utils/cache-status/cacheStatus.ts",
+			"packages/desktop/src/utils/cacheStatus.ts",
+			"packages/desktop/src/utils/load-workspace/cacheStatus.ts"
+		],
 		"symbols": [
 			"everyProject",
 			"deniedNotice",
 			"offlineNotice",
 			"OfflineView",
 			"offlineCapabilities",
-			"offlineView",
 			"forgetShared",
-			"cacheStatus"
+			"cacheStatus",
+			"offlineView",
+			"everyProject",
+			"deniedNotice",
+			"offlineNotice",
+			"OfflineView",
+			"offlineCapabilities",
+			"forgetShared",
+			"cacheStatus",
+			"offlineView"
 		]
 	},
 	"contract": {
@@ -121,7 +133,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/cacheStatus.ts",
+		"entry": "packages/desktop/src/utils/cache-status/cacheStatus.ts",
 		"targets": [
 			{
 				"kind": "module",

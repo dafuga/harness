@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/lineProcess.ts"],
-		"symbols": ["ProcessReply", "LineProcess", "lineProcess", "unavailable", "exited"]
+		"source": ["src/adapters/process-runtime-adapter/lineProcess.ts", "src/utils/lineProcess.ts"],
+		"symbols": [
+			"ProcessReply",
+			"LineProcess",
+			"unavailable",
+			"exited",
+			"lineProcess",
+			"lineProcess"
+		]
 	},
 	"contract": {
 		"origin": "declared",

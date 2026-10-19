@@ -7,8 +7,21 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/lfsPointer.ts"],
-		"symbols": ["LfsObject", "lfsPointer", "parseLfsPointer", "lfsStored", "lfsAttributes"]
+		"source": [
+			"src/repositories/evidence-branch-repository/lfsPointer.ts",
+			"src/services/attached-record-service/lfsPointer.ts",
+			"src/utils/lfsPointer.ts"
+		],
+		"symbols": [
+			"mediaExtensions",
+			"LfsObject",
+			"lfsPointer",
+			"lfsStored",
+			"parseLfsPointer",
+			"lfsAttributes",
+			"parseLfsPointer",
+			"lfsAttributes"
+		]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,14 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/BudgetService.ts"],
+		"source": ["src/services/BudgetService.ts", "src/services/budget-service/BudgetService.ts"],
 		"symbols": [
 			"UnitBaseline",
 			"BudgetSubject",
 			"BudgetReport",
 			"BudgetService",
 			"BudgetService.baselines",
-			"BudgetService.evaluate"
+			"BudgetService.evaluate",
+			"UnitBaseline",
+			"BudgetSubject",
+			"BudgetReport",
+			"BudgetService"
 		]
 	},
 	"contract": {
@@ -78,7 +82,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/BudgetService.ts",
+		"entry": "src/services/budget-service/BudgetService.ts",
 		"targets": [
 			{
 				"kind": "module",

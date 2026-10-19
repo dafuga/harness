@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/AnalyticsCpu.svelte"],
-		"symbols": ["AnalyticsCpu"]
+		"source": [
+			"packages/reports/src/components/AnalyticsCpu.svelte",
+			"packages/reports/src/components/analytics-cpu/AnalyticsCpu.svelte"
+		],
+		"symbols": ["AnalyticsCpu", "AnalyticsCpu"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -36,7 +39,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/AnalyticsCpu.svelte",
+		"entry": "packages/reports/src/components/analytics-cpu/AnalyticsCpu.svelte",
 		"targets": [
 			{
 				"kind": "module",

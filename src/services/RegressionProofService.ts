@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { CommitTreeAdapter } from '../adapters/CommitTreeAdapter';
 import { GitAdapter } from '../adapters/GitAdapter';
-import { SnapshotAdapter } from '../adapters/SnapshotAdapter';
+import { SnapshotAdapter } from '../adapters/snapshot-adapter/SnapshotAdapter';
 import { fail } from '../core/errors';
 import type { RegressionPhase, RegressionRecord } from '../core/regressionTypes';
 import { defaultVerifyConfig, verifyConfigSchema } from '../core/verifyTypes';
@@ -11,7 +11,7 @@ import { RegressionProofRepository } from '../repositories/RegressionProofReposi
 import { regressionHash } from '../utils/regressionHistory';
 import { canonicalJson } from '../utils/canonicalJson';
 import { regressionFiles } from '../utils/regressionFiles';
-import { runIsolated } from '../utils/runIsolated';
+import { runIsolated } from '../utils/run-isolated/runIsolated';
 
 export interface RegressionRun {
 	commit: string;

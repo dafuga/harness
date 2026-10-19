@@ -7,14 +7,23 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/validation.ts"],
+		"source": [
+			"src/core/fields/validation.ts",
+			"src/core/validation.ts",
+			"src/workflows/create-project/validation.ts",
+			"src/workflows/loop-state/validation.ts"
+		],
 		"symbols": [
-			"validateProjectName",
 			"validateCodeName",
-			"validateFieldName",
 			"validateRouteName",
+			"validateExportName",
+			"validateName",
+			"validateProjectName",
+			"validateFieldName",
 			"validateKebabName",
-			"validateExportName"
+			"validateProjectName",
+			"validateFieldName",
+			"validateKebabName"
 		]
 	},
 	"contract": {

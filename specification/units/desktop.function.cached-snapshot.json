@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/cachedSnapshot.ts"],
-		"symbols": ["SavedCopy", "cachedSnapshot"]
+		"source": [
+			"packages/desktop/src/adapters/capacitor-bridge-adapter/cachedSnapshot.ts",
+			"packages/desktop/src/utils/cachedSnapshot.ts"
+		],
+		"symbols": ["SavedCopy", "cachedSnapshot", "cachedSnapshot"]
 	},
 	"contract": {
 		"origin": "declared",

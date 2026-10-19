@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/evidenceManifest.ts"],
-		"symbols": ["RecordFile", "recordFiles", "evidenceManifest"]
+		"source": [
+			"src/services/evidence-attach-service/evidenceManifest.ts",
+			"src/utils/evidenceManifest.ts"
+		],
+		"symbols": ["RecordFile", "recordFiles", "evidenceManifest", "evidenceManifest"]
 	},
 	"contract": {
 		"origin": "declared",

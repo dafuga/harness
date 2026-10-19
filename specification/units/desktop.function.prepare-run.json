@@ -7,8 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/prepareRun.ts"],
-		"symbols": ["Preparation", "imageModel", "prepareRun", "messageFor", "recordRunFailure"]
+		"source": [
+			"packages/desktop/src/services/desktop-run-service/prepareRun.ts",
+			"packages/desktop/src/utils/prepareRun.ts"
+		],
+		"symbols": [
+			"Preparation",
+			"imageModel",
+			"messageFor",
+			"recordRunFailure",
+			"prepareRun",
+			"prepareRun"
+		]
 	},
 	"contract": {
 		"origin": "declared",

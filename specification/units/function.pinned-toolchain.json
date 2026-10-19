@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/pinnedToolchain.ts"],
-		"symbols": ["PinnedTool", "ToolAnswer", "ToolRun", "PinnedOptions", "pinnedToolchain"]
+		"source": ["scripts/build-kernel/pinnedToolchain.ts", "src/utils/pinnedToolchain.ts"],
+		"symbols": [
+			"PinnedTool",
+			"ToolAnswer",
+			"ToolRun",
+			"PinnedOptions",
+			"pinnedToolchain",
+			"pinnedToolchain"
+		]
 	},
 	"contract": {
 		"origin": "declared",

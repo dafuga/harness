@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/scanComponent.ts"],
-		"symbols": ["scanComponent"]
+		"source": ["src/services/source-index-service/scanComponent.ts", "src/utils/scanComponent.ts"],
+		"symbols": ["scanComponent", "scanComponent"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -67,7 +67,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/scanComponent.ts",
+		"entry": "src/services/source-index-service/scanComponent.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/treeChanges.ts"],
-		"symbols": ["TreeChange", "treeChanges"]
+		"source": ["src/services/impact-service/treeChanges.ts", "src/utils/treeChanges.ts"],
+		"symbols": ["TreeChange", "treeChanges", "treeChanges"]
 	},
 	"contract": {
 		"origin": "declared",

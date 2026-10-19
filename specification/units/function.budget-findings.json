@@ -7,15 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/budgetFindings.ts"],
+		"source": ["src/services/budget-service/budgetFindings.ts", "src/utils/budgetFindings.ts"],
 		"symbols": [
 			"frozenMetrics",
 			"isFrozen",
+			"higherIsBetter",
 			"PerformanceBaseline",
 			"BudgetBaseline",
+			"Measured",
 			"BudgetInput",
+			"performanceLimit",
 			"budgetFindings",
-			"performanceLimit"
+			"budgetFindings"
 		]
 	},
 	"contract": {

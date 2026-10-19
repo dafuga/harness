@@ -1,5 +1,5 @@
 import { randomBytes, createHash } from 'node:crypto';
-import type { HostedHttpAdapter } from '../adapters/HostedHttpAdapter';
+import type { HostedHttpAdapter } from '../adapters/hosted-http-adapter/HostedHttpAdapter';
 import type { NativeSessionAdapter } from '../adapters/NativeSessionAdapter';
 import type { NativeHostedStatus } from '../models/ProjectContext.types';
 import { NativeHandoffValidator } from '../validators/NativeHandoffValidator';

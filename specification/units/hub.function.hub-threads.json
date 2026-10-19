@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubThreads.ts"],
-		"symbols": ["hubThreads", "hubMessages"]
+		"source": [
+			"packages/hub/src/services/hub-projection-service/hubThreads.ts",
+			"packages/hub/src/utils/hubThreads.ts"
+		],
+		"symbols": ["hubThreads", "hubMessages", "hubMessages"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/pushedRefs.ts"],
-		"symbols": ["pushedRefs"]
+		"source": ["src/services/hook-run-service/pushedRefs.ts", "src/utils/pushedRefs.ts"],
+		"symbols": ["pushedRefs", "pushedRefs"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -37,7 +37,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/pushedRefs.ts",
+		"entry": "src/services/hook-run-service/pushedRefs.ts",
 		"targets": [
 			{
 				"kind": "module",

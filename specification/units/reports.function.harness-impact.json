@@ -7,8 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/harnessImpact.ts"],
-		"symbols": ["HarnessImpact", "harnessImpact", "ComparedSides", "comparedSides"]
+		"source": [
+			"packages/reports/src/components/harness/harness-compare/harnessImpact.ts",
+			"packages/reports/src/utils/harnessImpact.ts"
+		],
+		"symbols": [
+			"HarnessImpact",
+			"ComparedSides",
+			"harnessImpact",
+			"comparedSides",
+			"harnessImpact",
+			"comparedSides"
+		]
 	},
 	"contract": {
 		"origin": "declared",

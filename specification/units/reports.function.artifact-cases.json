@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/artifactCases.ts"],
-		"symbols": ["caseForm", "artifactCases"]
+		"source": [
+			"packages/reports/src/components/entity-cases/artifactCases.ts",
+			"packages/reports/src/utils/artifactCases.ts"
+		],
+		"symbols": ["artifactCases", "caseForm", "artifactCases"]
 	},
 	"contract": {
 		"origin": "declared",

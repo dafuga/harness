@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/hostedEvidencePath.ts"],
-		"symbols": ["hostedEvidencePath"]
+		"source": [
+			"packages/desktop/src/adapters/hosted-evidence-adapter/hostedEvidencePath.ts",
+			"packages/desktop/src/utils/hostedEvidencePath.ts"
+		],
+		"symbols": ["hostedEvidencePath", "hostedEvidencePath"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -53,7 +56,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/hostedEvidencePath.ts",
+		"entry": "packages/desktop/src/adapters/hosted-evidence-adapter/hostedEvidencePath.ts",
 		"targets": [
 			{
 				"kind": "module",

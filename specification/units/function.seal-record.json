@@ -7,13 +7,20 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/sealRecord.ts"],
+		"source": [
+			"src/services/record-assembly-service/sealRecord.ts",
+			"src/services/verification-service/sealRecord.ts",
+			"src/utils/sealRecord.ts"
+		],
 		"symbols": [
 			"recordComponents",
 			"benchmarkMeasurements",
 			"referencedScenario",
 			"sealRecord",
-			"recordIntact"
+			"recordIntact",
+			"recordComponents",
+			"benchmarkMeasurements",
+			"referencedScenario"
 		]
 	},
 	"contract": {

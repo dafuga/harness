@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/collaboration/src/utils/githubReaches.ts"],
-		"symbols": ["githubReaches"]
+		"source": [
+			"packages/collaboration/src/utils/create-git-hub-source/githubReaches.ts",
+			"packages/collaboration/src/utils/githubReaches.ts"
+		],
+		"symbols": ["githubReaches", "githubReaches"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -47,7 +50,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/collaboration/src/utils/githubReaches.ts",
+		"entry": "packages/collaboration/src/utils/create-git-hub-source/githubReaches.ts",
 		"targets": [
 			{
 				"kind": "module",

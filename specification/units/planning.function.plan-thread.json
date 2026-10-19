@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/planning/src/utils/planThread.ts"],
-		"symbols": ["planThread", "append"]
+		"source": [
+			"packages/planning/src/services/planning-service/planThread.ts",
+			"packages/planning/src/utils/planThread.ts"
+		],
+		"symbols": ["planThread", "append", "planThread", "append"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -108,7 +111,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/planning/src/utils/planThread.ts",
+		"entry": "packages/planning/src/services/planning-service/planThread.ts",
 		"targets": [
 			{
 				"kind": "module",

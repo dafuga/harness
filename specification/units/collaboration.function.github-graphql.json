@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/collaboration/src/utils/githubGraphql.ts"],
-		"symbols": ["githubGraphql"]
+		"source": [
+			"packages/collaboration/src/utils/create-git-hub-source/githubGraphql.ts",
+			"packages/collaboration/src/utils/githubGraphql.ts"
+		],
+		"symbols": ["githubGraphql", "githubGraphql"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -53,7 +56,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/collaboration/src/utils/githubGraphql.ts",
+		"entry": "packages/collaboration/src/utils/create-git-hub-source/githubGraphql.ts",
 		"targets": [
 			{
 				"kind": "module",

@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/settlementReport.ts"],
-		"symbols": ["Watched", "Settlement", "Judged", "unknownSettlement", "settlementReport"]
+		"source": ["src/utils/run-isolated/settlementReport.ts", "src/utils/settlementReport.ts"],
+		"symbols": [
+			"Watched",
+			"Settlement",
+			"Judged",
+			"unknownSettlement",
+			"settlementReport",
+			"settlementReport"
+		]
 	},
 	"contract": {
 		"origin": "declared",

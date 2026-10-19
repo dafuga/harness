@@ -7,9 +7,13 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/createProject.ts"],
+		"source": ["src/workflows/create-project/createProject.ts", "src/workflows/createProject.ts"],
 		"symbols": [
 			"ProjectKind",
+			"CreateProjectInput",
+			"CreateProjectResult",
+			"createProject",
+			"renderCreateProject",
 			"CreateProjectInput",
 			"CreateProjectResult",
 			"createProject",
@@ -59,7 +63,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/createProject.ts",
+		"entry": "src/workflows/create-project/createProject.ts",
 		"targets": [
 			{
 				"kind": "module",

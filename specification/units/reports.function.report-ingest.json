@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/reportIngest.ts"],
-		"symbols": ["reportIngest"]
+		"source": [
+			"packages/reports/src/repositories/report-repository/reportIngest.ts",
+			"packages/reports/src/utils/reportIngest.ts"
+		],
+		"symbols": ["reportIngest", "reportIngest"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -57,7 +60,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/reportIngest.ts",
+		"entry": "packages/reports/src/repositories/report-repository/reportIngest.ts",
 		"targets": [
 			{
 				"kind": "module",

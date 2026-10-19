@@ -7,8 +7,21 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubOptions.ts"],
-		"symbols": ["hubOptions", "hubImageOption", "hubOptionInfos", "hubRevision"]
+		"source": [
+			"packages/hub/src/utils/hub-catalog/hubOptions.ts",
+			"packages/hub/src/utils/hub-designs/hubOptions.ts",
+			"packages/hub/src/utils/hubOptions.ts"
+		],
+		"symbols": [
+			"hubOptions",
+			"hubImageOption",
+			"hubOptionInfos",
+			"hubRevision",
+			"hubOptions",
+			"hubImageOption",
+			"hubOptionInfos",
+			"hubRevision"
+		]
 	},
 	"contract": {
 		"origin": "declared",

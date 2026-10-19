@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubRuntime.ts"],
-		"symbols": ["HubApiRuntime", "hubRuntime"]
+		"source": [
+			"packages/hub/src/routes/api/[...path]/-server/hubRuntime.ts",
+			"packages/hub/src/utils/hubRuntime.ts"
+		],
+		"symbols": ["HubApiRuntime", "hubRuntime", "hubRuntime"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,8 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/regressionFiles.ts"],
-		"symbols": ["regressionFiles", "regressionTestCommit", "regressionFixCommit"]
+		"source": [
+			"src/utils/regressionFiles.ts",
+			"src/workflows/record-regression/regressionFiles.ts"
+		],
+		"symbols": [
+			"testPath",
+			"metadata",
+			"regressionFiles",
+			"regressionFixCommit",
+			"regressionTestCommit",
+			"regressionTestCommit"
+		]
 	},
 	"contract": {
 		"origin": "declared",

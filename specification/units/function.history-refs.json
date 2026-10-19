@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/historyRefs.ts"],
-		"symbols": ["RefKind", "sourceArchiveRef", "refKind", "historyRefs"]
+		"source": ["src/services/history-sync-service/historyRefs.ts", "src/utils/historyRefs.ts"],
+		"symbols": ["RefKind", "sourceArchiveRef", "refKind", "historyRefs", "historyRefs"]
 	},
 	"contract": {
 		"origin": "declared",

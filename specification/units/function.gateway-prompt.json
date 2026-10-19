@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/gatewayPrompt.ts"],
-		"symbols": ["gatewayPrompt"]
+		"source": ["src/services/claude-query-service/gatewayPrompt.ts", "src/utils/gatewayPrompt.ts"],
+		"symbols": ["gatewayPrompt", "gatewayPrompt"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -37,7 +37,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/gatewayPrompt.ts",
+		"entry": "src/services/claude-query-service/gatewayPrompt.ts",
 		"targets": [
 			{
 				"kind": "module",

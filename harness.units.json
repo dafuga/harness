@@ -82,7 +82,7 @@
 			"reason": "Built kernel in a source checkout; the dependency on kernel.impact-kernel is declared on the unit."
 		},
 		{
-			"from": "packages/reports/src/utils/e2eFixtures.ts",
+			"from": "packages/reports/src/utils/e2e-fixtures/e2eFixtures.ts",
 			"specifier": "../../../../.cache/reports-e2e/",
 			"external": "browser-run-build",
 			"reason": "Where a browser run keeps its copy of the finished build: a generated directory in the checkout cache, never source."
@@ -112,13 +112,13 @@
 			"reason": "The hub's build alias $desktop is packages/desktop/src: the proof panel imports timeLabel from this file."
 		},
 		{
-			"from": "packages/hub/src/routes/+layout.svelte",
+			"from": "packages/hub/src/routes/-layout/+layout.svelte",
 			"specifier": "$desktop/lib/styles/workspace.css",
 			"to": "packages/desktop/src/lib/styles/workspace.css",
 			"reason": "The hub's build alias $desktop is packages/desktop/src: the hub layout loads this workspace style sheet."
 		},
 		{
-			"from": "packages/hub/src/routes/+layout.svelte",
+			"from": "packages/hub/src/routes/-layout/+layout.svelte",
 			"specifier": "$desktop/lib/styles/design.css",
 			"to": "packages/desktop/src/lib/styles/design.css",
 			"reason": "The hub's build alias $desktop is packages/desktop/src: the hub layout loads this design style sheet."
@@ -136,61 +136,61 @@
 			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser API imports artifactLimit from this file."
 		},
 		{
-			"from": "packages/hub/src/utils/browserArtifact.ts",
+			"from": "packages/hub/src/utils/browser-bridge/browserArtifact.ts",
 			"specifier": "$desktop/utils/remoteArtifact",
 			"to": "packages/desktop/src/utils/remoteArtifact.ts",
 			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser artifact reader imports artifactMediaTypes from this file."
 		},
 		{
-			"from": "packages/hub/src/utils/browserArtifact.ts",
+			"from": "packages/hub/src/utils/browser-bridge/browserArtifact.ts",
 			"specifier": "$desktop/utils/hostedArtifact",
-			"to": "packages/desktop/src/utils/hostedArtifact.ts",
+			"to": "packages/hub/src/utils/browser-bridge/hostedArtifact.ts",
 			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser artifact reader imports hostedArtifact from this file."
 		},
 		{
-			"from": "packages/hub/src/utils/browserBridge.ts",
+			"from": "packages/hub/src/utils/browser-bridge/browserBridge.ts",
 			"specifier": "$desktop/models/DesktopBridge.types",
 			"to": "packages/desktop/src/models/DesktopBridge.types.ts",
 			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser bridge is typed by DesktopBridge and SourceFile from this file."
 		},
 		{
-			"from": "packages/hub/src/utils/browserBridge.ts",
+			"from": "packages/hub/src/utils/browser-bridge/browserBridge.ts",
 			"specifier": "$desktop/models/Desktop.types",
 			"to": "packages/desktop/src/models/Desktop.types.ts",
 			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser bridge is typed by EntityDetail and ProjectSnapshot from this file."
 		},
 		{
-			"from": "packages/hub/src/utils/browserBridge.ts",
+			"from": "packages/hub/src/utils/browser-bridge/browserBridge.ts",
 			"specifier": "$desktop/models/ProjectContext.types",
 			"to": "packages/desktop/src/models/ProjectContext.types.ts",
 			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser bridge is typed by the project context types of this file."
 		},
 		{
-			"from": "packages/hub/src/utils/browserBridge.ts",
+			"from": "packages/hub/src/utils/browser-bridge/browserBridge.ts",
 			"specifier": "$desktop/utils/commentEntries",
 			"to": "packages/desktop/src/utils/commentEntries.ts",
 			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser bridge imports commentEntries from this file."
 		},
 		{
-			"from": "packages/hub/src/utils/browserEvidenceReads.ts",
+			"from": "packages/hub/src/utils/browser-bridge/browserEvidenceReads.ts",
 			"specifier": "$desktop/utils/evidencePayload",
 			"to": "packages/desktop/src/utils/evidencePayload.ts",
 			"reason": "The hub's build alias $desktop is packages/desktop/src: the evidence reads import evidencePayload from this file."
 		},
 		{
-			"from": "packages/hub/src/utils/browserEvidenceReads.ts",
+			"from": "packages/hub/src/utils/browser-bridge/browserEvidenceReads.ts",
 			"specifier": "$desktop/models/DesktopEvidence.types",
 			"to": "packages/desktop/src/models/DesktopEvidence.types.ts",
 			"reason": "The hub's build alias $desktop is packages/desktop/src: the evidence reads are typed by EntityEvidenceResult from this file."
 		},
 		{
-			"from": "packages/hub/src/utils/browserEvidenceReads.ts",
+			"from": "packages/hub/src/utils/browser-bridge/browserEvidenceReads.ts",
 			"specifier": "$desktop/models/DesktopBridge.types",
 			"to": "packages/desktop/src/models/DesktopBridge.types.ts",
 			"reason": "The hub's build alias $desktop is packages/desktop/src: the evidence reads are typed by DesktopBridge from this file."
 		},
 		{
-			"from": "packages/hub/src/utils/browserEvidenceReads.ts",
+			"from": "packages/hub/src/utils/browser-bridge/browserEvidenceReads.ts",
 			"specifier": "$desktop/models/ProjectContext.types",
 			"to": "packages/desktop/src/models/ProjectContext.types.ts",
 			"reason": "The hub's build alias $desktop is packages/desktop/src: the evidence reads are typed by ProjectContext from this file."
@@ -208,21 +208,21 @@
 			"reason": "The desktop's build alias $shared is packages/reports/src/components: the catalog view renders the Select of the reports package."
 		},
 		{
-			"from": "packages/desktop/src/components/DesignPanel.svelte",
+			"from": "packages/desktop/src/components/design-panel/DesignPanel.svelte",
 			"specifier": "$shared/Select.svelte",
 			"to": "packages/reports/src/components/Select.svelte",
 			"reason": "The desktop's build alias $shared is packages/reports/src/components: the design panel renders the Select of the reports package."
 		},
 		{
-			"from": "packages/desktop/src/components/ProjectSwitcher.svelte",
+			"from": "packages/desktop/src/components/project-switcher/ProjectSwitcher.svelte",
 			"specifier": "$shared/Select.svelte",
 			"to": "packages/reports/src/components/Select.svelte",
 			"reason": "The desktop's build alias $shared is packages/reports/src/components: the project switcher renders the Select of the reports package."
 		},
 		{
-			"from": "packages/desktop/src/components/NavBar.svelte",
+			"from": "packages/desktop/src/components/nav-bar/NavBar.svelte",
 			"specifier": "$shared/EntitySearch.svelte",
-			"to": "packages/reports/src/components/EntitySearch.svelte",
+			"to": "packages/reports/src/components/entity-search/EntitySearch.svelte",
 			"reason": "The desktop's build alias $shared is packages/reports/src/components: the top bar renders the entity search of the reports package."
 		},
 		{
@@ -238,7 +238,7 @@
 			"reason": "The desktop's build alias $shared is packages/reports/src/components: the runtime screens render the Select of the reports package."
 		},
 		{
-			"from": "packages/hub/src/components/InvitationForm.svelte",
+			"from": "packages/hub/src/components/invitation-form/InvitationForm.svelte",
 			"specifier": "$shared/Select.svelte",
 			"to": "packages/reports/src/components/Select.svelte",
 			"reason": "The hub's build alias $shared is packages/reports/src/components: the invitation form renders the Select of the reports package."
@@ -250,7 +250,7 @@
 			"reason": "The hub's build alias $shared is packages/reports/src/components: the project form renders the Select of the reports package."
 		},
 		{
-			"from": "packages/desktop/src/components/NavBar.svelte",
+			"from": "packages/desktop/src/components/nav-bar/NavBar.svelte",
 			"specifier": "$shared/BrandMark.svelte",
 			"to": "packages/reports/src/components/BrandMark.svelte",
 			"reason": "The desktop navbar renders the shared brand component through its configured $shared alias."
@@ -276,7 +276,7 @@
 		{
 			"from": "packages/desktop/src/components/CoveragePanel.svelte",
 			"specifier": "../../../reports/src/components/BrowserErrors.svelte",
-			"to": "packages/reports/src/components/BrowserErrors.svelte",
+			"to": "packages/reports/src/components/browser-errors/BrowserErrors.svelte",
 			"reason": "Component evidence and console tests render the same recorded browser diagnostics."
 		},
 		{

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/wavInfo.ts"],
-		"symbols": ["wavInfo"]
+		"source": [
+			"packages/reports/src/utils/audio-asset/wavInfo.ts",
+			"packages/reports/src/utils/wavInfo.ts"
+		],
+		"symbols": ["wavInfo", "wavInfo"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -37,7 +40,7 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/wavInfo.ts",
+		"entry": "packages/reports/src/utils/audio-asset/wavInfo.ts",
 		"targets": [
 			{
 				"kind": "module",

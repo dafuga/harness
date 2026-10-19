@@ -1,6 +1,6 @@
 import { ConsoleAgentController } from './controllers/ConsoleAgentController';
 import type { Handle } from '@sveltejs/kit';
-import { consoleServer } from './utils/consoleServer';
+import { consoleServer } from './utils/console-server/consoleServer';
 import { reportBuildIdentity } from './utils/reportBuildIdentity';
 
 // Read once at start: the identity is of the files this process was started from.

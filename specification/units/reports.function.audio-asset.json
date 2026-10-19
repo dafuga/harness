@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/audioAsset.ts"],
-		"symbols": ["audioAsset"]
+		"source": [
+			"packages/reports/src/utils/audio-asset/audioAsset.ts",
+			"packages/reports/src/utils/audioAsset.ts"
+		],
+		"symbols": ["audioAsset", "audioAsset"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -53,7 +56,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/audioAsset.ts",
+		"entry": "packages/reports/src/utils/audio-asset/audioAsset.ts",
 		"targets": [
 			{
 				"kind": "module",

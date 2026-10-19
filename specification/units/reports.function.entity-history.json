@@ -7,16 +7,25 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/entityHistory.ts"],
+		"source": [
+			"packages/reports/src/components/harness/entity-change/entityHistory.ts",
+			"packages/reports/src/components/harness/entity-history/entityHistory.ts",
+			"packages/reports/src/utils/entityHistory.ts"
+		],
 		"symbols": [
 			"HistoryTiming",
+			"signedBytes",
+			"signedCount",
 			"historyVerdict",
 			"historyListed",
 			"entityHistory",
 			"historyProfiles",
 			"reviewChanges",
-			"signedBytes",
-			"signedCount"
+			"historyVerdict",
+			"historyListed",
+			"entityHistory",
+			"historyProfiles",
+			"reviewChanges"
 		]
 	},
 	"contract": {

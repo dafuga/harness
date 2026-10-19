@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/claudeTurn.ts"],
-		"symbols": ["claudeTurn"]
+		"source": [
+			"packages/desktop/src/adapters/claude-cli-adapter/claudeTurn.ts",
+			"packages/desktop/src/utils/claudeTurn.ts"
+		],
+		"symbols": ["claudeTurn", "claudeTurn"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -58,7 +61,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/claudeTurn.ts",
+		"entry": "packages/desktop/src/adapters/claude-cli-adapter/claudeTurn.ts",
 		"targets": [
 			{
 				"kind": "module",

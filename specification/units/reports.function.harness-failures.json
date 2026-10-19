@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/harnessFailures.ts"],
-		"symbols": ["FailureCause", "FailureSummary", "harnessFailures"]
+		"source": [
+			"packages/reports/src/components/harness/harness-failures/harnessFailures.ts",
+			"packages/reports/src/utils/harnessFailures.ts"
+		],
+		"symbols": ["FailureCause", "FailureSummary", "harnessFailures", "harnessFailures"]
 	},
 	"contract": {
 		"origin": "declared",

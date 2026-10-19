@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/collaboration/src/utils/githubRawMany.ts"],
-		"symbols": ["githubRawMany"]
+		"source": [
+			"packages/collaboration/src/utils/create-git-hub-source/githubRawMany.ts",
+			"packages/collaboration/src/utils/githubRawMany.ts"
+		],
+		"symbols": ["githubRawMany", "githubRawMany"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -53,7 +56,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/collaboration/src/utils/githubRawMany.ts",
+		"entry": "packages/collaboration/src/utils/create-git-hub-source/githubRawMany.ts",
 		"targets": [
 			{
 				"kind": "module",

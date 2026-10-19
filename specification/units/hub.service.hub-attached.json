@@ -7,13 +7,17 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/services/HubAttachedService.ts"],
+		"source": [
+			"packages/hub/src/services/HubAttachedService.ts",
+			"packages/hub/src/services/hub-attached-service/HubAttachedService.ts"
+		],
 		"symbols": [
 			"HubAttachedService",
 			"HubAttachedService.constructor",
 			"HubAttachedService.load",
 			"HubAttachedService.regression",
-			"HubAttachedService.readFile"
+			"HubAttachedService.readFile",
+			"HubAttachedService"
 		]
 	},
 	"contract": {
@@ -110,7 +114,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/services/HubAttachedService.ts",
+		"entry": "packages/hub/src/services/hub-attached-service/HubAttachedService.ts",
 		"targets": [
 			{
 				"kind": "module",

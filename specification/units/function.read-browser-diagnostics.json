@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/readBrowserDiagnostics.ts"],
-		"symbols": ["readBrowserDiagnostics"]
+		"source": [
+			"src/services/check-run-service/readBrowserDiagnostics.ts",
+			"src/utils/readBrowserDiagnostics.ts"
+		],
+		"symbols": ["readBrowserDiagnostics", "readBrowserDiagnostics"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -37,7 +40,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/readBrowserDiagnostics.ts",
+		"entry": "src/services/check-run-service/readBrowserDiagnostics.ts",
 		"targets": [
 			{
 				"kind": "module",

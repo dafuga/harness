@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/derivedResponsibility.ts"],
-		"symbols": ["derivedResponsibility"]
+		"source": [
+			"src/services/unit-index-service/derivedResponsibility.ts",
+			"src/utils/derivedResponsibility.ts"
+		],
+		"symbols": ["derivedResponsibility", "derivedResponsibility"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -36,7 +39,7 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/derivedResponsibility.ts",
+		"entry": "src/services/unit-index-service/derivedResponsibility.ts",
 		"targets": [
 			{
 				"kind": "module",

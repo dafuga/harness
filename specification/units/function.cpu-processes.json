@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/cpuProcesses.ts"],
-		"symbols": ["CpuRole", "CpuProcess", "cpuProcesses"]
+		"source": ["src/adapters/cpu-process-adapter/cpuProcesses.ts", "src/utils/cpuProcesses.ts"],
+		"symbols": ["CpuRole", "CpuProcess", "cpuProcesses", "cpuProcesses"]
 	},
 	"contract": {
 		"origin": "declared",

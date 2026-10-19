@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/workspaceSearch.ts"],
-		"symbols": ["WorkspaceSearch", "workspaceSearch"]
+		"source": [
+			"packages/desktop/src/components/nav-bar/workspaceSearch.ts",
+			"packages/desktop/src/utils/workspaceSearch.ts"
+		],
+		"symbols": ["WorkspaceSearch", "workspaceSearch", "workspaceSearch"]
 	},
 	"contract": {
 		"origin": "declared",

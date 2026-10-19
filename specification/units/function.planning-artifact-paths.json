@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/planningArtifactPaths.ts"],
-		"symbols": ["planningArtifactPaths"]
+		"source": [
+			"src/audit/structure-rules/planningArtifactPaths.ts",
+			"src/utils/planningArtifactPaths.ts"
+		],
+		"symbols": ["planningArtifactPaths", "planningArtifactPaths"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -47,7 +50,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/planningArtifactPaths.ts",
+		"entry": "src/audit/structure-rules/planningArtifactPaths.ts",
 		"targets": [
 			{
 				"kind": "module",

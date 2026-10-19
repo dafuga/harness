@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/projectCapabilities.ts"],
-		"symbols": ["closedCapabilities", "projectCapabilities"]
+		"source": [
+			"packages/desktop/src/utils/load-workspace/projectCapabilities.ts",
+			"packages/desktop/src/utils/projectCapabilities.ts"
+		],
+		"symbols": ["closedCapabilities", "projectCapabilities", "projectCapabilities"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/SiteActivity.svelte"],
-		"symbols": ["SiteActivity"]
+		"source": [
+			"packages/reports/src/components/SiteActivity.svelte",
+			"packages/reports/src/components/site-activity/SiteActivity.svelte"
+		],
+		"symbols": ["SiteActivity", "SiteActivity"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -47,7 +50,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/SiteActivity.svelte",
+		"entry": "packages/reports/src/components/site-activity/SiteActivity.svelte",
 		"targets": [
 			{
 				"kind": "module",

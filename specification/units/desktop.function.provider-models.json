@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/providerModels.ts"],
-		"symbols": ["providerModels", "validateModel"]
+		"source": [
+			"packages/desktop/src/adapters/codex-app-server-adapter/providerModels.ts",
+			"packages/desktop/src/services/provider-discovery-service/providerModels.ts",
+			"packages/desktop/src/utils/providerModels.ts"
+		],
+		"symbols": ["providerModels", "validateModel", "providerModels", "validateModel"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/services/ProjectTaskService.ts"],
-		"symbols": ["ProjectTaskService", "ProjectTaskService.run"]
+		"source": [
+			"packages/desktop/src/services/ProjectTaskService.ts",
+			"packages/desktop/src/services/project-task-service/ProjectTaskService.ts"
+		],
+		"symbols": ["ProjectTaskService", "ProjectTaskService.run", "ProjectTaskService"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -89,7 +92,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/ProjectTaskService.ts",
+		"entry": "packages/desktop/src/services/project-task-service/ProjectTaskService.ts",
 		"targets": [
 			{
 				"kind": "module",

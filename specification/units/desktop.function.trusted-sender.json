@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/trustedSender.ts"],
-		"symbols": ["trustedSender"]
+		"source": [
+			"packages/desktop/src/initializers/initialize-desktop/trustedSender.ts",
+			"packages/desktop/src/utils/trustedSender.ts"
+		],
+		"symbols": ["trustedSender", "trustedSender"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,7 +45,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/trustedSender.ts",
+		"entry": "packages/desktop/src/initializers/initialize-desktop/trustedSender.ts",
 		"targets": [
 			{
 				"kind": "module",

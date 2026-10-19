@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/ReferenceText.svelte"],
-		"symbols": ["ReferenceText"]
+		"source": [
+			"packages/desktop/src/components/ReferenceText.svelte",
+			"packages/desktop/src/components/reference-text/ReferenceText.svelte"
+		],
+		"symbols": ["ReferenceText", "ReferenceText"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -72,7 +75,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/ReferenceText.svelte",
+		"entry": "packages/desktop/src/components/reference-text/ReferenceText.svelte",
 		"targets": [
 			{
 				"kind": "module",

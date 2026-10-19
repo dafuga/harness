@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/historyPages.ts"],
-		"symbols": ["historyPages"]
+		"source": [
+			"packages/desktop/src/components/history-panel/historyPages.ts",
+			"packages/desktop/src/utils/historyPages.ts"
+		],
+		"symbols": ["historyPages", "historyPages"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -37,7 +40,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/historyPages.ts",
+		"entry": "packages/desktop/src/components/history-panel/historyPages.ts",
 		"targets": [
 			{
 				"kind": "module",

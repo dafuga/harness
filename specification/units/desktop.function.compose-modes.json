@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/composeModes.ts"],
+		"source": [
+			"packages/desktop/src/components/thread-panel/composeModes.ts",
+			"packages/desktop/src/utils/composeModes.ts"
+		],
 		"symbols": [
 			"ComposeMode",
 			"AgentChoice",
@@ -15,6 +18,7 @@
 			"designCounts",
 			"defaultDesignCount",
 			"visualCategory",
+			"composeModes",
 			"composeModes"
 		]
 	},

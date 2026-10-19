@@ -7,13 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/explorerState.ts"],
+		"source": [
+			"packages/reports/src/utils/explorer-verdict/explorerState.ts",
+			"packages/reports/src/utils/explorerState.ts"
+		],
 		"symbols": [
 			"Told",
 			"Judged",
 			"reasonText",
 			"scenarioFor",
 			"coverageWorst",
+			"captureUnbound",
+			"explorerState",
 			"captureUnbound",
 			"explorerState"
 		]

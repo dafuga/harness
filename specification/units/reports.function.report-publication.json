@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/reportPublication.ts"],
-		"symbols": ["PublicationFile", "PublicationBundle", "reportPublication"]
+		"source": [
+			"packages/reports/src/services/report-publish-service/reportPublication.ts",
+			"packages/reports/src/utils/reportPublication.ts"
+		],
+		"symbols": ["PublicationFile", "PublicationBundle", "reportPublication", "reportPublication"]
 	},
 	"contract": {
 		"origin": "declared",

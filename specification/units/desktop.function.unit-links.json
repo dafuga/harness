@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/unitLinks.ts"],
-		"symbols": ["UnitLink", "unitLinks"]
+		"source": [
+			"packages/desktop/src/components/reference-text/unitLinks.ts",
+			"packages/desktop/src/utils/unitLinks.ts"
+		],
+		"symbols": ["UnitLink", "unitLinks", "unitLinks"]
 	},
 	"contract": {
 		"origin": "declared",

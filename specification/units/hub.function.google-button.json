@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/googleButton.ts"],
-		"symbols": ["googleIdentityScript", "GoogleButton", "googleButton"]
+		"source": [
+			"packages/hub/src/components/login-panel/googleButton.ts",
+			"packages/hub/src/utils/googleButton.ts"
+		],
+		"symbols": ["googleIdentityScript", "GoogleButton", "googleButton", "googleButton"]
 	},
 	"contract": {
 		"origin": "declared",

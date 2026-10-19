@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/entitySearch.ts"],
-		"symbols": ["SearchEntry", "entitySearch"]
+		"source": [
+			"packages/reports/src/components/entity-search/entitySearch.ts",
+			"packages/reports/src/utils/entitySearch.ts"
+		],
+		"symbols": ["SearchEntry", "entitySearch", "entitySearch"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,11 +7,15 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/services/ReportRetentionService.ts"],
+		"source": [
+			"packages/reports/src/services/ReportRetentionService.ts",
+			"packages/reports/src/services/report-retention-service/ReportRetentionService.ts"
+		],
 		"symbols": [
 			"ReportRetentionService",
 			"ReportRetentionService.constructor",
-			"ReportRetentionService.run"
+			"ReportRetentionService.run",
+			"ReportRetentionService"
 		]
 	},
 	"contract": {
@@ -93,7 +97,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/services/ReportRetentionService.ts",
+		"entry": "packages/reports/src/services/report-retention-service/ReportRetentionService.ts",
 		"targets": [
 			{
 				"kind": "module",

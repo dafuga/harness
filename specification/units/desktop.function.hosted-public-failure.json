@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/hostedPublicFailure.ts"],
-		"symbols": ["hostedPublicFailure"]
+		"source": [
+			"packages/desktop/src/adapters/hosted-http-adapter/hostedPublicFailure.ts",
+			"packages/desktop/src/utils/hostedPublicFailure.ts"
+		],
+		"symbols": ["hostedPublicFailure", "hostedPublicFailure"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,7 +45,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/hostedPublicFailure.ts",
+		"entry": "packages/desktop/src/adapters/hosted-http-adapter/hostedPublicFailure.ts",
 		"targets": [
 			{
 				"kind": "module",

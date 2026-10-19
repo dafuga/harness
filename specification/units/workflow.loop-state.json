@@ -7,8 +7,24 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/loopState.ts"],
+		"source": ["src/workflows/loop-state/loopState.ts", "src/workflows/loopState.ts"],
 		"symbols": [
+			"LoopStep",
+			"LoopEvaluator",
+			"LoopState",
+			"LoopStatus",
+			"LoopInput",
+			"LoopPaths",
+			"loopRoot",
+			"loopPaths",
+			"writeNewLoop",
+			"readLoop",
+			"writeLoop",
+			"appendTrace",
+			"validateLoopId",
+			"validateRequiredText",
+			"timestamp",
+			"isMissingFile",
 			"LoopStep",
 			"LoopEvaluator",
 			"LoopState",
@@ -158,7 +174,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/loopState.ts",
+		"entry": "src/workflows/loop-state/loopState.ts",
 		"targets": [
 			{
 				"kind": "module",

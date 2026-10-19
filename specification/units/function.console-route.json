@@ -7,8 +7,20 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/consoleRoute.ts"],
-		"symbols": ["consoleViews", "ConsoleView", "ConsoleRoute", "consoleRoute", "consoleRoutePath"]
+		"source": [
+			"packages/reports/src/components/project-activity/consoleRoute.ts",
+			"src/utils/console-canonical/consoleRoute.ts",
+			"src/utils/consoleRoute.ts"
+		],
+		"symbols": [
+			"consoleViews",
+			"ConsoleView",
+			"ConsoleRoute",
+			"consoleRoute",
+			"consoleRoutePath",
+			"consoleRoute",
+			"consoleRoutePath"
+		]
 	},
 	"contract": {
 		"origin": "declared",

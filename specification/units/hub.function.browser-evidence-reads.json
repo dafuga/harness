@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/browserEvidenceReads.ts"],
-		"symbols": ["browserEvidenceReads"]
+		"source": [
+			"packages/hub/src/utils/browser-bridge/browserEvidenceReads.ts",
+			"packages/hub/src/utils/browserEvidenceReads.ts"
+		],
+		"symbols": ["browserEvidenceReads", "browserEvidenceReads"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -67,7 +70,7 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/browserEvidenceReads.ts",
+		"entry": "packages/hub/src/utils/browser-bridge/browserEvidenceReads.ts",
 		"targets": [
 			{
 				"kind": "module",
