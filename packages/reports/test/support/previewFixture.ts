@@ -154,3 +154,20 @@ export async function readyPreview(webPort: number) {
 export async function exitedPreview(run: ReturnType<typeof startPreview>) {
 	await expect.poll(() => run.child.exitCode, { timeout: 4000 }).not.toBeNull();
 }
+
+/** The published owner is ready before a lifecycle fault is injected. */
+export async function publishedPreviewOwner(port: number, webPort: number) {
+	const read = () => fetch(`http://127.0.0.1:${port}/__harness_preview__`).then((r) => r.json());
+	await expect.poll(async () => (await read()).url).toBe(`http://127.0.0.1:${webPort}`);
+	return read();
+}
+export async function previewWorkerPid(webPort: number): Promise<number> {
+	try {
+		const response = await fetch(`http://127.0.0.1:${webPort}/fixture-worker`, {
+			signal: AbortSignal.timeout(500)
+		});
+		return (await response.json()).pid;
+	} catch {
+		return 0;
+	}
+}
