@@ -29,7 +29,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.function.cache-status",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.function.workspace-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.project-sync",
 			"via": "import",
 			"origin": "derived"
 		},

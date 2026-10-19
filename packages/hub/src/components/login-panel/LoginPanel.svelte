@@ -3,7 +3,7 @@
 	import { googleButton } from './googleButton';
 	import EmailProofPanel from '../EmailProofPanel.svelte';
 	let {
-		reason = 'Sign in with your Google account to open the projects you were invited to.'
+		reason = 'Sign in with Google to open the projects you own and the ones you were invited to.'
 	}: { reason?: string } = $props();
 	const { session } = browserContext();
 	let holder = $state<HTMLDivElement>();
@@ -50,6 +50,10 @@
 			and a session secret; until then nobody can sign in and no project is shown.
 		</p>{:else if proof}<EmailProofPanel {proof} />{:else}<h2>Sign in to Harness</h2>
 		<p>{reason}</p>
+		<p class="muted">
+			One Google account keeps the same projects on every device where you sign in, and new ones
+			appear without reloading.
+		</p>
 		<div class="google-button" bind:this={holder}></div>
 		{#if failure || session.error}<p class="error" role="alert">
 				{failure || session.error}

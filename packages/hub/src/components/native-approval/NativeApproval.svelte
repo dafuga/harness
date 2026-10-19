@@ -47,20 +47,21 @@
 	{#if framed}<p>Open this page in its own browser tab to approve a device.</p>
 	{:else if done}<h2>Approved</h2>
 		<p role="status">
-			Return to the desktop app; it connects within a few seconds. Signing out here also disconnects
-			it.
+			Return to your Harness device; it connects within a few seconds. Signing out here also
+			disconnects it.
 		</p>{:else if request === 'reading'}<p class="muted">Reading the request…</p>
 	{:else if request === 'expired'}<h2>This request has expired</h2>
-		<p>Start again in the desktop app to get a new code.</p>
+		<p>Start again on your Harness device to get a new code.</p>
 	{:else if request === 'approved'}<h2>This request was already approved</h2>
 		<p>Nothing more is needed here.</p>
-	{:else}<h2>A Harness desktop app asks to connect</h2>
+	{:else}<h2>A Harness device asks to connect</h2>
 		<p>
-			It asks to read <strong>{scope}</strong>, and to post comments as
-			{session.actor?.email}. It cannot run agents on these projects.
+			It asks to open <strong>{scope}</strong> as {session.actor?.email}. Your project role controls
+			access: readers can view, commenters can also comment, and writers can ask agents to make
+			changes.
 		</p>
 		<p>
-			Approve only what you started yourself in your own desktop app a moment ago. Never type a code
+			Approve only what you started yourself on your own Harness device just now. Never type a code
 			that someone sent you.
 		</p>
 		<form
@@ -71,7 +72,7 @@
 			}}
 		>
 			<label
-				>Code shown in the desktop app<input
+				>Code shown on your Harness device<input
 					bind:value={code}
 					required
 					autocomplete="off"

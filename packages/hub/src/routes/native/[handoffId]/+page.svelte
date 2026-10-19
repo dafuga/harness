@@ -9,10 +9,10 @@
 </script>
 
 <!-- The address holds one identifier that is useless alone; the code is typed, never linked. -->
-<svelte:head><title>Harness · Connect the desktop app</title></svelte:head>
+<svelte:head><title>Harness · Connect a Harness device</title></svelte:head>
 <HubFrame>
-	<h1>Connect the desktop app</h1>
+	<h1>Connect a Harness device</h1>
 	{#if session.actor}{#key handoffId}<NativeApproval {handoffId} />{/key}{:else}<LoginPanel
-			reason="Sign in with Google to approve your desktop app. You then type the code it shows."
+			reason="Sign in with Google to approve your Harness device. You then type the code it shows."
 		/>{/if}
 </HubFrame>

@@ -3,7 +3,7 @@
 	"id": "hub.component.native-approval",
 	"kind": "component",
 	"title": "Native approval",
-	"responsibility": "Lets a signed-in person review a desktop connection request and submit its displayed code.",
+	"responsibility": "Approves a sign-in request from a Harness device using a separately typed one-time code.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -23,7 +23,7 @@
 			{
 				"name": "NativeApproval",
 				"type": "markup",
-				"description": "When framed, offers only guidance to open a standalone tab. Otherwise shows reading, expired, already-approved or pending request content. Pending form describes scope and account, then submits a trimmed uppercase code while blocking empty/concurrent requests. Success clears code and shows return-to-desktop guidance; errors are alerts. A failed initial request read falls back to pending after obtaining a fallback scope."
+				"description": "Names the account and requested projects, explains role-limited viewing, comments and agent changes, and accepts a device code in a POST body. Never puts the code or credential in a link."
 			}
 		],
 		"errors": []

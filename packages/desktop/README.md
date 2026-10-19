@@ -1,6 +1,25 @@
 # Harness desktop
 
-A local Electron workspace for browsing Pages, Shells, Components, Functions, Configs and Services, finding any of them with the global search in the top bar, reviewing committed designs, and sending Plan or Change requests to installed agent CLIs.
+A local Electron workspace for browsing Pages, Shells, Components, Helpers, Models, Configs and Services, finding any of them with the global search in the top bar, reviewing committed designs, and sending Plan or Change requests to installed agent CLIs.
+
+## Google account projects
+
+Use **Connect shared projects** to sign in with Google through the trusted Harness Hub.
+The same account sees projects it owns and projects whose invitations it accepted on Web,
+Electron and iOS. Lists refresh on focus, when a page becomes visible or reconnects, and
+at most every 30 seconds while visible. A removed membership or rejected session clears
+protected views; a temporary outage preserves the saved login.
+
+The iOS account connection works without a paired Mac. Pairing adds explicitly granted
+local Mac projects beside hosted projects; removing that pairing leaves the independent
+account intact. Local folders are not uploaded automatically by signing in.
+
+Configure the dedicated Hub using [the Hub setup guide](../hub/README.md). Electron reads
+its exact `HARNESS_HUB_ORIGIN`; an iOS build uses the public Xcode build setting of that
+name through `HarnessHubOrigin` in Info.plist. Leave it unset until the real HTTPS Hub
+is configured. The bundled renderer stays local, and Google approval opens in the system
+browser. Native credentials remain in OS-protected storage, outside renderer messages;
+the iOS account uses a separate device-only Keychain entry from Mac pairing.
 
 ## Run locally
 

@@ -1,6 +1,9 @@
-import { registerPlugin } from '@capacitor/core';
+import { Capacitor, registerPlugin } from '@capacitor/core';
+import { CapacitorAccountAdapter } from './capacitor-account-adapter/CapacitorAccountAdapter';
 import { CapacitorBridgeAdapter } from './capacitor-bridge-adapter/CapacitorBridgeAdapter';
+import { CapacitorProjectsService } from '../services/CapacitorProjectsService';
 import type {
+	AccountNativePlugin,
 	Environment,
 	RemoteMobileControl,
 	RemoteNativeEvents,
@@ -11,26 +14,41 @@ import type {
 export interface CapacitorEnvironmentAdapterConfig {
 	/** A test hands in a plugin; the app registers the native one. */
 	plugin?: RemoteNativePlugin;
+	/**
+	 * This phone's own Hub account. A test hands one in; the app registers the native one only
+	 * where the shell has it, so that an older shell keeps exactly the computer's bridge.
+	 */
+	account?: AccountNativePlugin;
 }
 
 export const remotePluginName = 'HarnessRemote';
 
+export const accountPluginName = 'HarnessAccount';
+
+function nativeAccount(): AccountNativePlugin | undefined {
+	if (!Capacitor.isPluginAvailable(accountPluginName)) return undefined;
+	return registerPlugin<AccountNativePlugin>(accountPluginName);
+}
+
 /**
  * The iOS shell. One native plugin gives both the product interface and this phone's connection
- * to a computer; the page holds no socket, key or credential of its own.
+ * to a computer; another, where the shell has it, this phone's own Hub account. The page holds
+ * no socket, key or credential of its own.
  */
 export class CapacitorEnvironmentAdapter {
 	private readonly plugin: RemoteNativePlugin;
+	private readonly account: AccountNativePlugin | undefined;
 	constructor(config: CapacitorEnvironmentAdapterConfig = {}) {
 		this.plugin = config.plugin ?? registerPlugin<RemoteNativePlugin>(remotePluginName);
+		this.account = 'account' in config ? config.account : nativeAccount();
 	}
 
 	connect(): Environment {
 		const plugin = this.plugin;
-		const bridge = new CapacitorBridgeAdapter({ plugin });
+		const computer = new CapacitorBridgeAdapter({ plugin });
 		/** What the bridge offers follows each status before anyone else hears of it. */
 		const note = (status: RemoteNativeStatus) => {
-			bridge.allow(status);
+			computer.allow(status);
 			return status;
 		};
 		const phone: RemoteMobileControl = {
@@ -39,7 +57,12 @@ export class CapacitorEnvironmentAdapter {
 			disconnect: async () => note(await plugin.disconnect()),
 			onStatus: (listener) => this.listen('status', (status) => listener(note(status)))
 		};
-		return { kind: 'capacitor', bridge: bridge.connect(), local: false, phone };
+		const mac = computer.connect();
+		if (!this.account) return { kind: 'capacitor', bridge: mac, local: false, phone };
+		/** The account is read at once, paired or not; the computer's projects join it once reached. */
+		const cloud = new CapacitorAccountAdapter({ plugin: this.account }).connect();
+		const bridge = new CapacitorProjectsService({ cloud, mac }).connect();
+		return { kind: 'capacitor', bridge, local: false, phone, account: true };
 	}
 
 	private listen<K extends keyof RemoteNativeEvents>(

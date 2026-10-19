@@ -112,6 +112,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.service.project-discovery",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.validator.remote-project-response",
 			"via": "import",
 			"origin": "derived"

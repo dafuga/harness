@@ -302,6 +302,24 @@
 			"specifier": "$desktop/utils/artifactMedia",
 			"to": "packages/desktop/src/utils/artifactMedia.ts",
 			"reason": "The declared source binding matches this platform build alias and current owner-local path."
+		},
+		{
+			"from": "packages/hub/src/components/HostedWorkspace.svelte",
+			"specifier": "$desktop/services/ProjectSyncService",
+			"to": "packages/desktop/src/services/ProjectSyncService.ts",
+			"reason": "The Hub build resolves $desktop to the shared desktop source, so account refresh and access cleanup use the same implementation on every platform."
+		},
+		{
+			"from": "packages/hub/src/components/HostedWorkspace.svelte",
+			"specifier": "$desktop/utils/cache-status/cacheStatus",
+			"to": "packages/desktop/src/utils/cache-status/cacheStatus.ts",
+			"reason": "The Hub build resolves $desktop to the shared desktop source, so account refresh and access cleanup use the same implementation on every platform."
+		},
+		{
+			"from": "packages/hub/src/routes/+page.svelte",
+			"specifier": "$desktop/services/ProjectSyncService",
+			"to": "packages/desktop/src/services/ProjectSyncService.ts",
+			"reason": "The Hub build resolves $desktop to the shared desktop source, so account refresh and access cleanup use the same implementation on every platform."
 		}
 	]
 }

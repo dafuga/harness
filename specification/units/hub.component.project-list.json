@@ -3,7 +3,7 @@
 	"id": "hub.component.project-list",
 	"kind": "component",
 	"title": "Project list",
-	"responsibility": "Lists shared projects with repository, membership role and navigation actions.",
+	"responsibility": "Groups the signed-in account’s owned and invited projects, with their roles and navigation links.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -23,7 +23,7 @@
 			{
 				"name": "ProjectList",
 				"type": "markup",
-				"description": "Project cards with owner/repository and role, full-document Open links to Pages, and Members links only for owners. An empty list explains creating a shared project or receiving an invitation."
+				"description": "Owned by you and Shared with you groups show project names, repositories and membership roles. Owners also get Members links. An empty list explains how projects appear across devices."
 			}
 		],
 		"errors": []
