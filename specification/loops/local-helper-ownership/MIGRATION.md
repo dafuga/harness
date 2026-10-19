@@ -1120,3 +1120,16 @@ The Hub grant store initially kept SQL constants in a public facade that forward
 The existing D1 adapter suite now cold-imports both entries in native runtimes. Red commit `922e3a15`, fix `cf9f04a5`; stable red `8ec6e9fe976634159154f467123a2a078eea702d72dea99a3e46f48e0973273c`, green `104da9b3311b49b9818a691ecb1dedd105e508af9c00508cd87e28cfc17d02b4`. All 43 adapter cases pass. An isolated reintroduction fails, and restoring the repair passes. Logs: `/tmp/harness-grant-initialization-guard-red.log` and `/tmp/harness-grant-initialization-guard-green.log`.
 
 A static scan of utility forwarding exports and owner-level initializers found only the previously guarded `byName` back-reference; its declaration is hoisted and its cold public/owner cases pass. New split modules must not read facade constants during initialization.
+
+## Verification status on 2026-10-19
+
+- All 411 moved definition fingerprints pass; all 101 remaining utility-location private exports share their actual consumer's folder. Fresh inventory: 422 shared, 101 colocated private, 67 exports without a statically counted caller. All 404 baseline shared helpers remain shared.
+- Registry: 1,295 identities, no added or revived units, 62 uncertain references matching the pre-migration baseline. Every root/workspace structure audit passes without relaxed limits.
+- Reports full check: 598 tests, type checks, lint and builds pass. Planning full check: 50 tests and build pass. Collaboration full check: 44 tests and build pass. Relay: 159 tests and build pass. Remote: 135 tests and build pass.
+- Hub: 465 other cases passed in the broad run; the 43-case adapter suite passes after the constant-cycle repair. Hub type check, build and audit pass. Its existing `projects` method still exceeds the lint complexity limit (11 > 10); its body is unchanged from the pre-migration baseline.
+- Desktop: broad static/unit run had 851 passes and one retired-ownership assertion failure, since repaired; the 18 relevant cleanup, renderer and moved-import cases now pass. Lint and build pass. Native/Electron/simulator UI was not exercised. Existing TS2589 in `tests/e2e/ui-evidence-fixture.ts:172` reproduces before this migration and still blocks its full check.
+- Existing remote validator `approval` complexity (13 > 10) still blocks its full lint/check. The validator is unchanged from the pre-migration baseline.
+- Root migration, runtime API, audit naming and packaged report-address suites: 39 cases pass. Earlier broad root verification passed 865 unit cases and 229 CLI cases. Package acceptance passed 28 ordinary cases and four isolation/build cases; the corrected concurrency suite passed all 60 repetitions. Live/scale opt-ins remained skipped. Public SDK type addresses are retained.
+- A current memory sample attributed 0.952 GiB RSS to 24 Harness working-directory/tool processes; shared Codex/browser hosts are excluded and peak memory was not measured. Checks/builds/cache prebuilds run serially.
+
+Full verification steps remain pending because the three baseline type/lint failures above remain unresolved. No claim is made that the repository-wide check is green or that this working branch has been merged to main.
