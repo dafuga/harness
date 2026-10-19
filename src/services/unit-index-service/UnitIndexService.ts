@@ -137,6 +137,7 @@ export class UnitIndexService {
 			(unit) => unit.status === 'retired' && !filesByUnit.has(unit.id)
 		);
 		for (const [id, files] of filesByUnit) {
+			files.sort(byPath);
 			const symbols = files.flatMap((file) => file.exports.map((symbol) => symbol.name));
 			registry.byId.set(
 				id,
@@ -151,6 +152,12 @@ export class UnitIndexService {
 			);
 		}
 	}
+}
+
+/** These groups are fresh internal arrays; the caller's source map retains its order. */
+function byPath(left: SourceFile, right: SourceFile): number {
+	if (left.path === right.path) return 0;
+	return left.path < right.path ? -1 : 1;
 }
 
 function sameSymbols(unit: ComponentManifest, group: Group): boolean {
