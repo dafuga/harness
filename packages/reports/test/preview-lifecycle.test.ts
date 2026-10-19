@@ -1,5 +1,7 @@
 import {
 	assertPreviewRoutes,
+	publishedPreviewOwner,
+	previewWorkerPid,
 	sveltePreviewFixture,
 	previewFixture as fixture,
 	previewPort as port,
@@ -44,7 +46,11 @@ test('another history configuration is refused without starting a second preview
 test('an occupied preview port is refused instead of silently choosing another', async () => {
 	const f = await fixture(),
 		webPort = await port(),
-		server = createServer();
+		server = createServer((socket) => {
+			socket.on('error', (error: NodeJS.ErrnoException) => {
+				if (error.code !== 'ECONNRESET') throw error; // The occupied fixture may reset readiness probes.
+			});
+		});
 	server.listen(webPort, '127.0.0.1');
 	await once(server, 'listening');
 	try {
@@ -135,20 +141,8 @@ for (const fault of ['crash', 'hang', 'module errors'] as const) {
 		await ready(webPort);
 		const owner = () =>
 			fetch(`http://127.0.0.1:${f.owner}/__harness_preview__`).then((r) => r.json());
-		const worker = async () => {
-			try {
-				return (
-					await (
-						await fetch(`http://127.0.0.1:${webPort}/fixture-worker`, {
-							signal: AbortSignal.timeout(500)
-						})
-					).json()
-				).pid as number;
-			} catch {
-				return 0;
-			}
-		};
-		const before = await owner(),
+		const worker = () => previewWorkerPid(webPort);
+		const before = await publishedPreviewOwner(f.owner, webPort),
 			pid = await worker();
 		expect(pid).toBeGreaterThan(0);
 		try {
