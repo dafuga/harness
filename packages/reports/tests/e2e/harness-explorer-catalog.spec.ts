@@ -38,6 +38,12 @@ test('a catalog is searchable, and a click on a listed entity opens it in the sa
 	await expect(page.getByRole('heading', { level: 1, name: 'Slugify' })).toBeVisible();
 	await page.goBack();
 	await expectPath(page, at('main', commits.approved, 'functions'));
+	await page.getByRole('link', { name: 'Models', exact: true }).click();
+	await expect(page.getByRole('heading', { level: 1, name: 'Models' })).toBeVisible();
+	await expectPath(page, at('main', commits.approved, 'models'));
+	await page.getByRole('link', { name: 'Services', exact: true }).click();
+	await expect(page.getByRole('heading', { level: 1, name: 'Services' })).toBeVisible();
+	await expect(commit(page)).toHaveValue(commits.approved);
 });
 
 test('the keyboard reaches the controls, changes the order and opens an entity', async ({

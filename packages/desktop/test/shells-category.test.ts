@@ -17,20 +17,22 @@ afterEach(() => vi.unstubAllGlobals());
 const shell = 'desktop.component.workspace-shell';
 const [commit, tip] = ['a'.repeat(40), 'b'.repeat(40)];
 
-test('the shared app has six categories, Shells after Pages', () => {
+test('the shared app has seven categories, Shells after Pages', () => {
 	expect([...categories]).toEqual([
 		'pages',
 		'shells',
 		'components',
 		'functions',
 		'configs',
-		'services'
+		'services',
+		'models'
 	]);
 });
 
 test('a unit declared a shell is a Shell, and every other kind stays where it was', () => {
 	expect(categoryOf('shell')).toBe('shells');
 	expect(categoryOf('component')).toBe('components');
+	expect(categoryOf('model')).toBe('models');
 	expect(categoryOf('page')).toBe('pages');
 	expect(categoryOf('shared-function')).toBe('functions');
 });
