@@ -78,3 +78,35 @@ test('invitations reject expiry, action/project mismatch and unverified identiti
 	expect(remote.revision()).toBe(before);
 	expect(remote.records().invitations[0].acceptedBy).toBeNull();
 });
+
+test('Write membership can read and comment, without acquiring owner management rights', async () => {
+	const { api } = collaborationFixture();
+	const project = await api.createProject(owner, { name: 'Writable', repositoryId: 202 });
+	const invite = await api.createInvitation(owner, {
+		projectId: project.id,
+		email: guest.email,
+		role: 'writer' as Parameters<typeof api.createInvitation>[1]['role']
+	});
+	await api.acceptInvitation(guest, {
+		projectId: project.id,
+		invitationId: invite.id,
+		code: invite.code
+	});
+	expect((await api.getProject(guest, project.id)).role).toBe('writer');
+	const comment = await api.addComment(guest, {
+		projectId: project.id,
+		requestId: crypto.randomUUID(),
+		anchor,
+		text: 'Please work on this function.'
+	});
+	expect(comment.comments[0].actor.id).toBe(guest.id);
+	await expect(
+		api.createInvitation(guest, {
+			projectId: project.id,
+			email: 'next@example.test',
+			role: 'viewer'
+		})
+	).rejects.toMatchObject({ code: 'forbidden' });
+	await api.removeMember(owner, { projectId: project.id, memberId: guest.id });
+	await expect(api.getProject(guest, project.id)).rejects.toMatchObject({ code: 'forbidden' });
+});
