@@ -133,7 +133,10 @@ export function catalogFilter(rows: CatalogRow[], filter: CatalogFilter): Catalo
 		)
 		.filter((row) => {
 			const symbols = row.helper?.name ?? '';
-			return !wanted || `${row.name} ${row.summary} ${symbols}`.toLowerCase().includes(wanted);
+			return (
+				!wanted ||
+				`${row.name} ${row.entity.name} ${row.summary} ${symbols}`.toLowerCase().includes(wanted)
+			);
 		})
 		.sort(orders[filter.order]);
 }

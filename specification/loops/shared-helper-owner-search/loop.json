@@ -2,7 +2,7 @@
 	"name": "shared-helper-owner-search",
 	"goal": "Keep helper calls searchable by both their callable names and owning module names.",
 	"createdAt": "2026-10-19T15:43:46.332Z",
-	"updatedAt": "2026-10-19T15:44:14.680Z",
+	"updatedAt": "2026-10-19T15:45:33.645Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T15:45:32.116Z",
+			"evidence": "2e645a55 fails owner-title search in the collection identity matrix and all three existing 1000-row responsive console scenarios. Browser failure screenshots retained in /tmp/harness-helper-owner-before-tablet.png."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T15:45:32.995Z",
+			"evidence": "Keep callable names for display and ordering while including the owning entity name in search. The shared identity matrix and existing scale scenario guard aliases; document both as catalog acceptance requirements."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T15:45:33.645Z",
+			"evidence": "Search includes owner names alongside callable names and purposes. README makes alias preservation part of catalog acceptance; the normal unit suite enforces the shared identity matrix."
 		},
 		{
 			"id": "green",
