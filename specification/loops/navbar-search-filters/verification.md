@@ -8,7 +8,7 @@ The right navbar icon opens the shared project search modal. Cmd/Ctrl+K focuses 
 - Red record: `ad4cf26af6b1c60f611ca9644e5b02538aa92c1ecf9f24b94da0acb49588d72f`.
 - Fix commit: `c5750b7a1a5417714fbe97bfd6f99910dd3c8007`.
 - Green record: `8998eaca07f394810a6e8990e07969a0b3f4c0cdedf2523d806610ad05065c6e`.
-- The sealed pair uses the same committed tests, fixtures, command and environment. Later maintenance only removes blank lines for file limits, updates the older shared-navbar SSR expectation and extends shared catalog filter coverage.
+- The sealed pair uses the same committed tests, fixtures, command and environment. Later maintenance only removes blank lines for file limits, updates the older shared-navbar SSR expectation and extends shared catalog filter coverage. The broader capture flow also updates its older textbox locator to the local field’s searchbox role.
 
 ## Checks
 

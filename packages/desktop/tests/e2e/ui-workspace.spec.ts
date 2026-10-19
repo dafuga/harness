@@ -66,7 +66,7 @@ test('catalog search, changed filter and conversational plan request', async ({ 
 	await expect(page.getByRole('heading', { name: 'Overview', exact: true })).toBeVisible();
 	await page.getByRole('checkbox', { name: 'Changed only', exact: true }).check();
 	await expect(page.getByRole('heading', { name: 'Overview', exact: true })).toHaveCount(0);
-	await page.getByRole('textbox', { name: 'Search pages', exact: true }).fill('missing');
+	await page.getByRole('searchbox', { name: 'Search pages', exact: true }).fill('missing');
 	await expect(page.getByText('No pages match this view.')).toBeVisible();
 	await page.getByRole('button', { name: 'Work with agent', exact: true }).click();
 	await page
