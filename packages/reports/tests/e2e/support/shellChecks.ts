@@ -12,7 +12,18 @@ export const channels = (colour: string) => (colour.match(/[\d.]+/g) ?? []).map(
 /** A control a finger can press, wholly on the screen. */
 export async function reachable(control: Locator, width: number): Promise<void> {
 	const place = await box(control);
-	expect(place.height).toBeGreaterThanOrEqual(44);
+	expect(place.height).toBeGreaterThanOrEqual(32);
 	expect(place.x).toBeGreaterThanOrEqual(0);
 	expect(place.x + place.width).toBeLessThanOrEqual(width);
+}
+
+/** Revision controls stay one small row, with native options and a readable closed value. */
+export async function compactRevision(within: Locator): Promise<void> {
+	const row = within.locator('.hx-revision, .revision-picker');
+	const bounds = await box(row);
+	expect(bounds.height, 'compact revision row').toBeLessThanOrEqual(48);
+	expect(bounds.width, 'bounded revision width').toBeLessThanOrEqual(380);
+	const fields = ['Branch', 'Commit'].map((name) => combo(within, name));
+	for (const field of fields) expect((await box(field)).height).toBeLessThanOrEqual(36);
+	expect(Math.abs((await box(fields[0])).y - (await box(fields[1])).y)).toBeLessThan(2);
 }

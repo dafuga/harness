@@ -107,7 +107,7 @@ test('at a selected commit the tip and the viewed hash differ, and Go to tip is 
 	const html = body(historical);
 	expect(chosen(html, 'Commit')).toEqual([sha(4), '0404040 Sketch the explorer shell · failed']);
 	// The closed field shows the short hash; the full line of each commit is in its options.
-	expect(html).toMatch(/<span class="hx-shown" aria-hidden="true">0404040<\/span>/);
+	expect(html).toMatch(/<span[^>]*class="report-select-value[^>]*>0404040<\/span>/);
 	expect(field(html, 'Commit')).toContain('0505050 Add the unified navbar · no evidence');
 	expect(text(html)).toContain('Tip · 0505050');
 	expect(text(html)).toContain('Historical commit');

@@ -1,3 +1,4 @@
+import { compactRevision } from '../../../reports/tests/e2e/support/shellChecks';
 import { fakeProject } from './ui-workspace-fixture';
 import { expect, test } from '../../../../test/support/browserTest';
 
@@ -16,6 +17,7 @@ test('designless Plan preserves truthful status and branch/commit paths', async 
 	await fakeProject(page);
 	await page.goto('/');
 	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
+	await compactRevision(page.getByRole('banner'));
 	await expect(
 		page.getByRole('navigation', { name: 'Catalog categories' }).getByRole('link')
 	).toHaveCount(6);
