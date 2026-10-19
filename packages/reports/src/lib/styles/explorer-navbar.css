@@ -124,11 +124,23 @@
    together and the search never takes a row alone. */
 @media (max-width: 1419px) {
 	.hx-nav .hx-revision {
+		position: relative;
 		order: 1;
 		flex: none;
 		margin-left: 0;
 		padding: 2px 0;
 		border: 0;
+	}
+	/* The fields stay compact; their separator spans the full wrapped navbar row. */
+	.hx-nav .hx-revision::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: calc(-1 * var(--hx-gutter));
+		width: 100vw;
+		height: 1px;
+		background: var(--hx-line);
+		pointer-events: none;
 	}
 	.hx-nav:has(.hx-search) .hx-categories {
 		flex-grow: 1;
