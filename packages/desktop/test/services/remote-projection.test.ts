@@ -39,6 +39,10 @@ test('a removed membership cannot reappear from this devices cached projects or 
 		f.state.projects = [];
 		expect(await f.adapter.listProjects()).toEqual([]);
 		await f.close();
+		expect(
+			await f.adapter.listProjects().catch(() => []),
+			'revoked projects never return from an older offline list'
+		).toEqual([]);
 		await expect(f.adapter.entity(input), 'removed project copies are purged').rejects.toThrow();
 	} finally {
 		await f.cleanup();
