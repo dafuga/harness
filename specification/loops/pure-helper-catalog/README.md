@@ -5,10 +5,11 @@ least two distinct actual component, service or named-function consumers. Format
 or converting case fits this category. Network requests, storage, mutation, clocks, random
 values and reads of hidden state do not. Sharing alone does not make an operation a helper.
 
-Source declarations use `@pure`. A conservative syntax guard rejects unsupported effects and
+Source declarations use `@pure`. `activityTime` is excluded because its unrestricted string
+input can rely on the host timezone. A conservative syntax guard rejects unsupported effects and
 hidden dependencies. This is a reviewed source contract, not a formal proof for arbitrary
 JavaScript, custom methods, getters or hostile input objects. Unreviewed exports are excluded.
-Eleven existing shared formatter exports were reviewed for this change; the much larger
+Ten existing shared formatter exports qualify after review; the much larger
 inventory of shared callable exports is not presented as a list of pure helpers.
 
 Services holds registered service classes and capabilities. Models holds registered data types

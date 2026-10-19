@@ -9,8 +9,9 @@ export const agentStates: Record<AgentState, string> = {
 	failed: 'Failed'
 };
 
-/** A moment as a reader compares it: the UTC day and minute. */
-/** @pure */
+/** A moment as a reader compares it: the UTC day and minute.
+ * Not declared pure: offset-free input strings can use the host timezone.
+ */
 export function activityTime(iso: string): string {
 	const at = new Date(iso);
 	return Number.isFinite(at.getTime()) ? at.toISOString().slice(0, 16).replace('T', ' ') : iso;
