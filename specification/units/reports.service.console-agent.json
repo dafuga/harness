@@ -12,6 +12,7 @@
 			"ConsoleAgentService",
 			"ConsoleAgentService.open",
 			"ConsoleAgentService.close",
+			"ConsoleAgentService.busy",
 			"ConsoleAgentService.expired",
 			"ConsoleAgentService.call",
 			"consoleAgent"
@@ -44,6 +45,10 @@
 			},
 			{
 				"name": "ConsoleAgentService.close",
+				"type": "unknown"
+			},
+			{
+				"name": "ConsoleAgentService.busy",
 				"type": "unknown"
 			},
 			{

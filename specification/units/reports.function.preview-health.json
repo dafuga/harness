@@ -1,0 +1,93 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.preview-health",
+	"kind": "function",
+	"title": "Check preview worker health",
+	"responsibility": "Authenticates private worker health probes, observes repeated server failures and reports whether project agents are active.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/previewHealth.ts"],
+		"symbols": ["PreviewHealth", "closePreviewSessions", "previewHealthPlugin", "readPreviewHealth"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "previewHealthPlugin.token",
+				"type": "string",
+				"description": "Per-worker probe secret shared only through the child environment and request header.",
+				"examples": ["example-worker-token"]
+			},
+			{
+				"name": "readPreviewHealth.url",
+				"type": "string",
+				"description": "Exact loopback address of the worker spawned by the supervisor.",
+				"examples": ["http://127.0.0.1:5688"]
+			},
+			{
+				"name": "readPreviewHealth.token",
+				"type": "string",
+				"description": "Probe secret for this worker generation.",
+				"examples": ["example-worker-token"]
+			}
+		],
+		"outputs": [
+			{
+				"name": "closePreviewSessions",
+				"type": "void",
+				"description": "Cancels the current worker’s owned project requests before normal shutdown.",
+				"examples": [null]
+			},
+			{
+				"name": "previewHealthPlugin",
+				"type": "Plugin",
+				"description": "Vite middleware exposing authenticated health and counting server failures.",
+				"examples": [
+					{
+						"name": "harness-preview-health",
+						"enforce": "pre"
+					}
+				]
+			},
+			{
+				"name": "readPreviewHealth",
+				"type": "Promise<PreviewHealth>",
+				"description": "Worker identity, recent error count and active-agent flag.",
+				"examples": [
+					{
+						"protocol": "harness-worker-v1",
+						"pid": 1234,
+						"errors": 0,
+						"busy": false
+					}
+				]
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Refuses an unavailable or mismatched worker; ongoing recovery retries back off without starting overlapping workers.",
+				"examples": ["Preview worker did not become ready."]
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/previewHealth.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/previewHealth.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,4 +1,5 @@
 import { previewNode } from '../utils/previewNode';
+import { previewHealthPlugin, closePreviewSessions } from '../utils/previewHealth';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createServer } from 'vite';
@@ -6,22 +7,26 @@ import { PreviewServerService } from '../services/PreviewServerService';
 import { previewArguments } from '../utils/previewArguments';
 import { previewOwnerPort } from '../utils/previewOwner';
 
-/** Reports and the desktop renderer share one preview process across all checkouts. */
+/** Reports and the desktop renderer share one managed preview across all checkouts. */
 export async function initializePreview(args: string[] = process.argv.slice(2)): Promise<void> {
 	const options = previewArguments(args),
 		port = Number(process.env.HARNESS_PREVIEW_OWNER_PORT ?? previewOwnerPort);
 	if (!Number.isInteger(port) || port < 1024 || port > 65535)
 		throw new Error('Invalid preview ownership port.');
 	const owner = new PreviewServerService(port);
+	const token = process.env.HARNESS_PREVIEW_WORKER_TOKEN;
+	let worker: { close(): Promise<void> } | undefined;
 	const quit = () => {
-		void owner.close().finally(() => process.exit());
+		closePreviewSessions();
+		void (worker ? worker.close() : owner.close()).finally(() => process.exit());
 	};
 	process.once('SIGTERM', quit);
 	process.once('SIGINT', quit);
 	try {
-		const result = await owner.run(options.identity, async () => {
+		const start = async () => {
 			const server = await createServer({
 				root: options.root,
+				plugins: token ? [previewHealthPlugin(token)] : [],
 				configFile: options.configFile,
 				server: { host: '127.0.0.1', port: options.port, strictPort: true }
 			});
@@ -32,7 +37,10 @@ export async function initializePreview(args: string[] = process.argv.slice(2)):
 				throw error;
 			}
 			return { url: `http://127.0.0.1:${options.port}`, close: () => server.close() };
-		});
+		};
+		const result = token
+			? { ...(worker = await start()), reused: false }
+			: await owner.run(options.identity, start);
 		console.log(`${result.reused ? 'Reusing Harness preview' : 'Harness preview'}: ${result.url}`);
 		if (result.reused) {
 			process.removeListener('SIGTERM', quit);

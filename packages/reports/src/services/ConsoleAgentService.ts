@@ -63,6 +63,9 @@ export class ConsoleAgentService {
 	close() {
 		this.runs.cancelActive();
 	}
+	get busy() {
+		return this.session.busy;
+	}
 	get expired() {
 		return Date.now() - this.touched > 60 * 60 * 1000 && !this.session.busy;
 	}
