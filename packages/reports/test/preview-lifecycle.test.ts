@@ -188,7 +188,7 @@ test('normal shutdown releases both the preview and ownership listeners', async 
 test('route indexes stay aligned after the normal SvelteKit sync command', async () => {
 	const f = await fixture(),
 		webPort = await port();
-	await symlink(join(reports, 'node_modules'), join(f.root, 'node_modules'), 'dir');
+	await symlink(join(reports, '../../node_modules'), join(f.root, 'node_modules'), 'dir');
 	const files = {
 		'package.json': '{"type":"module"}',
 		'vite.config.mjs':
