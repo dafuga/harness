@@ -4,7 +4,7 @@ import type { AddDesignInput, DesignImageInput } from '../../src/models/Planning
 import type { DesignImage, DesignVersion } from '../../src/models/Planning.types';
 import { hash } from '../../src/utils/planData';
 import { approvable, optionOf, type WriteImages } from '../../src/utils/planOptions';
-import { checkOptions } from '../../src/utils/plan-read/checkOptions';
+import { checkOptions } from '../../src/utils/plan-read/planOptions';
 import { planOptions } from '../../src/services/planning-service/planOptions';
 
 /**

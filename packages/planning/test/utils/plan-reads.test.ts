@@ -3,7 +3,7 @@ import { test } from 'vitest';
 import { createHash } from 'node:crypto';
 import { PNG } from 'pngjs';
 import { planningService } from '../../src/services/planning-service/PlanningService';
-import { readImage } from '../../src/utils/plan-design/readImage';
+import { readImage } from '../../src/utils/plan-design/planDesign';
 import { planGit } from '../../src/lib/planning/planGit';
 import { revision, type Git } from '../../src/utils/planGit';
 import { planRead } from '../../src/utils/plan-read/planRead';

@@ -12,17 +12,11 @@ import BrandMark from '../../src/components/BrandMark.svelte';
  * old diamond glyph or chevron mark.
  */
 const packages = resolve(import.meta.dirname, '../../..');
-function unitSource(id: string): string {
-	const unit = JSON.parse(
-		readFileSync(resolve(packages, '../specification/units', `${id}.json`), 'utf8')
-	);
-	return unit.runtime.entry.replace(/^packages\//, '');
-}
 const surfaces = [
-	unitSource('desktop.component.nav-bar'),
+	'desktop/src/components/NavBar.svelte',
 	'desktop/src/components/ProjectGate.svelte',
 	'hub/src/components/HubFrame.svelte',
-	unitSource('reports.component.harness-harness-navbar'),
+	'reports/src/components/harness/HarnessNavbar.svelte',
 	'reports/src/components/harness/HarnessHeader.svelte',
 	'reports/src/components/ReportView.svelte'
 ];

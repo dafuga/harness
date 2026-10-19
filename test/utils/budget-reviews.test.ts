@@ -3,7 +3,7 @@ import type { BudgetEvent } from '../../src/core/budgetTypes';
 import type { ComponentManifest } from '../../src/core/unitTypes';
 import type { VerificationRecord } from '../../src/core/verificationTypes';
 import { budgetReviews } from '../../src/services/history-index-service/budgetReviews';
-import { emittedLimits, frozenLimits } from '../../src/utils/revision-registry/frozenLimits';
+import { emittedLimits, frozenLimits } from '../../src/utils/revision-registry/budgetReviews';
 import { unitGrowth } from '../../src/services/history-index-service/historySeries';
 
 const [first, second] = ['a', 'b'].map((letter) => letter.repeat(40));
