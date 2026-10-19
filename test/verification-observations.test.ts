@@ -41,7 +41,7 @@ function captures(directory: string): CaptureLine[] {
 }
 test.each([
 	['catalog-previews', 'test/utils/recorded-preview.test.ts', 'preview-safety', 7],
-	['desktop-project-runs', 'test/catalog-listing.test.ts', 'project-scope', 5]
+	['desktop-project-runs', 'test/catalog-listing.test.ts', 'project-scope', 6]
 ])(
 	'the %s command records every actual test, not just a passing process',
 	(scenario, file, state, count) => {

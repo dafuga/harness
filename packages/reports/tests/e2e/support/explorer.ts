@@ -11,7 +11,15 @@ export interface SeededExplorer {
 export const explorer = (): SeededExplorer =>
 	JSON.parse(readFileSync(join(home, 'meta.json'), 'utf8')) as SeededExplorer;
 
-export const categories = ['Pages', 'Shells', 'Components', 'Functions', 'Configs', 'Services'];
+export const categories = [
+	'Pages',
+	'Shells',
+	'Components',
+	'Helpers',
+	'Configs',
+	'Services',
+	'Models'
+];
 export const nav = (page: Page) => page.getByRole('navigation', { name: 'Harness categories' });
 export const branch = (page: Page) => page.getByRole('combobox', { name: 'Branch' });
 export const commit = (page: Page) => page.getByRole('combobox', { name: 'Commit' });

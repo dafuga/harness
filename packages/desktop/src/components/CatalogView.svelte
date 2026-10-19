@@ -17,6 +17,8 @@
 			? 'Helpers'
 			: workspace.category[0].toUpperCase() + workspace.category.slice(1)
 	);
+	const nameOf = (entity: CatalogEntity) =>
+		entity.category === 'functions' && !entity.planned ? entity.title : explorerName(entity);
 	/** Only a verified entity has passed; a failed, unverified or unknown one is unproven. */
 	const proofOf = (e: CatalogEntity) => (e.verification === 'verified' ? 'passed' : 'unproven');
 	function reset() {
@@ -43,14 +45,14 @@
 				(e) =>
 					e.category === workspace.category &&
 					(e.category !== 'functions' || e.planned || e.helperContracts?.some(helperContract)) &&
-					`${explorerName(e)} ${e.summary}`.toLowerCase().includes(search.toLowerCase()) &&
+					`${nameOf(e)} ${e.summary}`.toLowerCase().includes(search.toLowerCase()) &&
 					(!changed || e.changed) &&
 					(verification === 'all' || proofOf(e) === verification) &&
 					(planning === 'all' || e.hasPlan === (planning === 'planned'))
 			)
 			.sort((a, b) =>
 				sort === 'title'
-					? explorerName(a).localeCompare(explorerName(b))
+					? nameOf(a).localeCompare(nameOf(b))
 					: (b.latestVersion || '').localeCompare(a.latestVersion || '')
 			)
 	);
@@ -61,7 +63,7 @@
 	<div class="row">
 		<div>
 			<h1>{heading}</h1>
-			<p>Browse {workspace.category} and understand your project.</p>
+			<p>Browse {heading.toLowerCase()} and understand your project.</p>
 		</div>
 	</div>
 	<!-- Right above the list: its search first, then filters that narrow it together. -->
