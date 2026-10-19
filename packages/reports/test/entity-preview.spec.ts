@@ -1,7 +1,6 @@
 import { expect, test } from '../../../test/support/browserTest';
 import { capture, fits, open, viewports, where } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
-
 const page = { category: 'pages' as const, entity: ids.page };
 const filter = { category: 'functions' as const, entity: ids.filter };
 const shots = '.ex-evidence .ex-shot img';
@@ -44,7 +43,6 @@ test('collections: search, changed only and order change what is listed', async 
 	await tab.getByRole('combobox', { name: 'Order' }).selectOption('name-desc');
 	await expect(rows.first()).toContainText('Search box');
 });
-
 test('a row or a card of a collection opens its entity in the same branch and commit', async ({
 	page: tab
 }) => {
@@ -72,7 +70,6 @@ test('a row or a card of a collection opens its entity in the same branch and co
 		.click();
 	expect(await where(tab)).toEqual({ branch, commit: null, category: 'pages' });
 });
-
 test('a page shows one screenshot at the tip and a matching pair at a commit', async ({
 	page: tab
 }) => {
@@ -102,7 +99,6 @@ test('a page shows one screenshot at the tip and a matching pair at a commit', a
 	await tab.getByRole('button', { name: 'Open full size' }).last().click();
 	await expect(tab.getByRole('dialog')).toBeVisible();
 });
-
 test('a function shows its recorded run: steps, input, output and assertions', async ({
 	page: tab
 }) => {
@@ -136,7 +132,6 @@ test('a function shows its recorded run: steps, input, output and assertions', a
 	await expect(tab.getByText('Before ·')).toHaveCount(0);
 	await capture(tab, 'function-current-desktop');
 });
-
 test('links walk page to component to function, and keep the branch and the commit', async ({
 	page: tab
 }) => {
@@ -164,7 +159,6 @@ test('links walk page to component to function, and keep the branch and the comm
 	});
 	await expect(tab.getByRole('heading', { level: 1, name: 'Filter orders' })).toBeVisible();
 });
-
 test('one entity page keeps source optional without a duplicate Details page', async ({
 	page: tab
 }) => {
@@ -192,7 +186,6 @@ test('one entity page keeps source optional without a duplicate Details page', a
 		expect(await where(tab)).toEqual({ branch: 'feature/orders', commit: null, ...filter });
 	}
 });
-
 test('history lists changes, keeps profiles apart and opens a revision', async ({ page: tab }) => {
 	await open(tab, { ...filter, section: 'history', commit: commits.middle });
 	await expect(tab.locator('.ex-history tbody tr')).toHaveCount(2);
@@ -205,7 +198,6 @@ test('history lists changes, keeps profiles apart and opens a revision', async (
 	expect(await where(tab)).toEqual({ branch: 'feature/orders', commit: commits.first, ...filter });
 	await expect(tab.getByText('First version')).toBeVisible();
 });
-
 for (const [name, size] of Object.entries(viewports)) {
 	test(`every screen fits a ${name} window without scrolling sideways`, async ({ page: tab }) => {
 		await tab.setViewportSize(size);

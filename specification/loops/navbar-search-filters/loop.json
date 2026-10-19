@@ -2,7 +2,7 @@
 	"name": "navbar-search-filters",
 	"goal": "Global search opens from a right navbar icon; each catalog has local search and composable filters",
 	"createdAt": "2026-10-19T07:17:58.867Z",
-	"updatedAt": "2026-10-19T07:38:07.297Z",
+	"updatedAt": "2026-10-19T07:46:35.985Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,12 +39,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T07:38:54.353Z",
+			"evidence": "Unchanged regression passed at c5750b7a; sealed green 8998eaca07f394810a6e8990e07969a0b3f4c0cdedf2523d806610ad05065c6e pairs with committed red 35a187f7."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T07:46:35.985Z",
+			"evidence": "Reports 575 unit, 76 shell and 65 entity cases plus 16 shared browser and 13 impact cases passed. Inspected browser modal and compact toolbar; native testing remains paused. See verification.md."
 		}
 	],
 	"evaluators": [

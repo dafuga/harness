@@ -7,15 +7,13 @@
 	} from '../../utils/entityCatalog';
 	import Select from '../Select.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
-	/** Verification and usage narrow the list as well; the root reads them, and unset means all. */
-	type Filter = CatalogFilter & { verification?: string; usage?: string };
 	let {
 		noun,
 		filter = $bindable()
 	}: {
 		/** What is searched, in the plural and lower case: `pages`, `components`. */
 		noun: string;
-		filter: Filter;
+		filter: CatalogFilter;
 	} = $props();
 	const verifications = [
 		['all', 'All verification'],
@@ -25,7 +23,7 @@
 	const usages = [
 		['all', 'All usage'],
 		['shared', 'Shared'],
-		['exclusive', 'Single use']
+		['exclusive', 'Not shared']
 	];
 </script>
 
@@ -73,10 +71,27 @@
 </div>
 
 <style>
+	:global(.ex-content .ex-controls) {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		align-items: stretch;
+	}
+	:global(.ex-content .ex-controls .ex-search) {
+		flex: none;
+	}
+	@media (min-width: 1440px) {
+		:global(.ex-content .ex-controls) {
+			display: flex;
+		}
+		:global(.ex-content .ex-controls .ex-search) {
+			flex: 1 1 260px;
+		}
+	}
+
 	/* The filters keep together: beside the search while there is room, otherwise in a row beneath. */
 	.ex-filters {
 		display: flex;
-		flex: 1 1 auto;
+		flex: 0 1 auto;
 		flex-wrap: wrap;
 		align-items: center;
 		gap: 12px 24px;
@@ -92,10 +107,25 @@
 	}
 	@media (max-width: 760px) {
 		.ex-filters {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
 			gap: 12px;
 		}
+		.ex-filters :global(.ex-order) {
+			min-width: 0;
+			margin-left: 0;
+		}
+		.ex-filters :global(.report-select) {
+			display: block;
+		}
+
 		.ex-filter {
 			flex-grow: 1;
+		}
+	}
+	@media (max-width: 359px) {
+		.ex-filters {
+			grid-template-columns: minmax(0, 1fr);
 		}
 	}
 </style>

@@ -53,16 +53,11 @@
 </header>
 
 <style>
-	/* Settings end the search's own place, so they never take a row of their own. */
-	.topbar-search {
-		gap: 8px;
-	}
+	/* Settings sit beside the search icon, at its size, so the two never part. */
 	.topbar-settings {
 		display: inline-grid;
 		place-items: center;
 		flex: none;
-		align-self: center;
-		margin-inline-start: auto;
 		width: 40px;
 		height: 40px;
 		border: 1px solid var(--line);
@@ -72,13 +67,5 @@
 	.topbar-settings:hover {
 		color: var(--gold);
 		border-color: var(--gold);
-	}
-	@media (min-width: 1251px) and (max-width: 1500px) {
-		.topbar {
-			column-gap: 10px;
-		}
-		.topbar :global(nav a) {
-			min-width: 72px;
-		}
 	}
 </style>

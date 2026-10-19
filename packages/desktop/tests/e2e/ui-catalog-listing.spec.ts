@@ -31,6 +31,17 @@ test('Pages of the tip show every ordinary page and no card for an address that 
 	await opened(page);
 	await pictured(page, info, 'pages-tip');
 	expect(await listedIds(page)).toEqual(pages);
+	await page.getByRole('combobox', { name: 'Verification filter' }).selectOption('passed');
+	await expect(cards(page)).toHaveCount(0);
+	await page.getByRole('button', { name: 'Show all pages' }).click();
+	expect(await listedIds(page)).toEqual(pages);
+	await page.getByRole('combobox', { name: 'Planning filter' }).selectOption('planned');
+	await expect(cards(page)).toHaveCount(0);
+	await page.getByRole('button', { name: 'Clear filters', exact: true }).click();
+	await page.getByRole('searchbox', { name: 'Search pages' }).fill('Analytics');
+	await expect(cards(page)).toHaveCount(1);
+	await page.getByRole('button', { name: 'Clear filters', exact: true }).click();
+
 	// A real page keeps the name Analytics; so does the service, under Services.
 	await expect(cards(page).getByRole('heading', { name: 'Analytics', exact: true })).toHaveCount(1);
 	const categories = page.getByRole('navigation', { name: 'Catalog categories' });

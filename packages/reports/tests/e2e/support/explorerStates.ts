@@ -54,7 +54,6 @@ async function showContract(page: Page, commit = false, example = false): Promis
 		.click();
 	await expect(page.getByRole('dialog')).toBeVisible();
 }
-
 const reaches: Record<string, (page: Page) => Promise<void>> = {
 	contract: (page) => showContract(page),
 	'contract-commit': (page) => showContract(page, true),
@@ -198,7 +197,6 @@ const reaches: Record<string, (page: Page) => Promise<void>> = {
 		expect(await content(page).getByRole('article').count()).toBeGreaterThan(400);
 	}
 };
-
 /** Each state, reached through one address that is kept so its flow can say what was asked. */
 export const explorerStates: Record<string, (page: Page) => Promise<void>> = Object.fromEntries(
 	Object.entries(reaches).map(([state, reach]) => [

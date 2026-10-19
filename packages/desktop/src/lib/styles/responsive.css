@@ -6,10 +6,18 @@
 		grid-template-columns: repeat(4, minmax(0, 1fr));
 	}
 }
-/* Wide enough for one row, the search included: the gaps narrow as those of the explorer bar do. */
-@media (min-width: 1410px) {
-	.topbar:has(.topbar-search) {
-		column-gap: clamp(10px, 1.1vw, 22px);
+/* Narrower than one row: the revision takes a row of its own under the bar, and the search, with
+   the settings, stays at the end of the first row, as in the explorer bar. */
+@media (max-width: 1409px) {
+	.topbar-search {
+		margin-left: auto;
+	}
+	.revision-picker {
+		order: 1;
+		flex: 1 0 100%;
+		margin-left: 0;
+		border-left: 0;
+		padding: 0 0 12px;
 	}
 }
 @media (max-width: 1250px) {
@@ -24,28 +32,17 @@
 		justify-content: center;
 		height: 70px;
 	}
+	/* The categories end the bar here, a row-gap under the revision. */
 	.revision-picker {
-		margin-left: auto;
-	}
-	.topbar-search {
-		order: 0;
-		margin-left: auto;
-	}
-	.revision-picker {
-		order: 4;
-		width: 100%;
-		margin: 0;
-		padding: 8px 0;
-		border-left: 0;
-		border-top: 1px solid var(--line);
-	}
-	.topbar .project-switcher {
-		flex: 1;
-		min-width: 0;
+		padding-bottom: 0;
 	}
 	.project-switcher {
 		border-inline: 0;
 		padding: 0;
+	}
+	/* The list's search takes its whole row, and its filters a row beneath it. */
+	.catalog-tools > input {
+		flex-basis: 100%;
 	}
 	.base-panels {
 		grid-template-columns: minmax(0, 1fr);
@@ -88,12 +85,6 @@
 	.thread-scroll {
 		max-height: 380px;
 	}
-	.catalog-tools {
-		flex-wrap: wrap;
-	}
-	.catalog-tools > input {
-		flex-basis: 100%;
-	}
 	.entity-main {
 		padding: 18px;
 	}
@@ -102,7 +93,6 @@
 	}
 	.revision-picker {
 		gap: 8px;
-		padding-left: 12px;
 	}
 	.revision-picker label {
 		max-width: 155px;
@@ -115,12 +105,9 @@
 	.topbar {
 		padding: 10px 12px 0;
 	}
-
-	.brand {
-		width: 100%;
-		justify-content: center;
-	}
+	/* The brand and the search share the first row; the project, revision and account follow. */
 	.project-switcher {
+		order: 1;
 		width: 100%;
 		justify-content: center;
 	}
@@ -128,6 +115,7 @@
 		flex-wrap: wrap;
 	}
 	.account {
+		order: 2;
 		width: 100%;
 		justify-content: center;
 		border: 0;
@@ -166,6 +154,10 @@
 	}
 	.catalog > .row p {
 		font-size: 13px;
+	}
+	/* The filters share each row they wrap onto, so no row ends ragged. */
+	.catalog-tools .report-select {
+		flex: 1 1 auto;
 	}
 	.card-grid {
 		grid-template-columns: 1fr;
