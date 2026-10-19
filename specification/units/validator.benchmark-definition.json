@@ -1,0 +1,65 @@
+{
+	"schemaVersion": 1,
+	"id": "validator.benchmark-definition",
+	"kind": "validator",
+	"title": "BenchmarkDefinitionValidator",
+	"responsibility": "Owns the BenchmarkDefinitionValidator input validation.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/validators/BenchmarkDefinitionValidator.ts"],
+		"symbols": [
+			"benchmarkDefinitionSchema",
+			"BenchmarkDefinitionValidator",
+			"BenchmarkDefinitionValidator.validate"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "BenchmarkDefinitionValidator.validate.input",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "benchmarkDefinitionSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "BenchmarkDefinitionValidator.validate",
+				"type": "BenchmarkDefinition"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.subagent-benchmark-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/validators/BenchmarkDefinitionValidator.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/validators/BenchmarkDefinitionValidator.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

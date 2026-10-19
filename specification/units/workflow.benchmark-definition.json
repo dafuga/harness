@@ -1,0 +1,90 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.benchmark-definition",
+	"kind": "workflow",
+	"title": "benchmarkDefinition",
+	"responsibility": "Owns the benchmarkDefinition command workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/benchmarkDefinition.ts"],
+		"symbols": ["BenchmarkRunners", "benchmarkRunners", "PreparedBenchmark", "prepareBenchmark"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "prepareBenchmark.path",
+				"type": "string"
+			},
+			{
+				"name": "prepareBenchmark.runners",
+				"type": "BenchmarkRunners"
+			}
+		],
+		"outputs": [
+			{
+				"name": "benchmarkRunners",
+				"type": "BenchmarkRunners"
+			},
+			{
+				"name": "prepareBenchmark",
+				"type": "Promise<PreparedBenchmark>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.claude-benchmark",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.codex-benchmark",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.subagent-benchmark-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.benchmark-definition",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.analytics-record",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.benchmark-workspace",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/benchmarkDefinition.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/benchmarkDefinition.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

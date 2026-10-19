@@ -1,0 +1,90 @@
+{
+	"schemaVersion": 1,
+	"id": "service.benchmark",
+	"kind": "service",
+	"title": "BenchmarkService",
+	"responsibility": "Owns the BenchmarkService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/BenchmarkService.ts"],
+		"symbols": ["BenchmarkOptions", "BenchmarkService", "BenchmarkService.execute"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "BenchmarkService.execute.operation",
+				"type": "string"
+			},
+			{
+				"name": "BenchmarkService.execute.target",
+				"type": "string"
+			},
+			{
+				"name": "BenchmarkService.execute.options",
+				"type": "BenchmarkOptions"
+			}
+		],
+		"outputs": [
+			{
+				"name": "BenchmarkService.execute",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.subagent-benchmark-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.benchmark",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.benchmark-definition",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.benchmark-metrics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.run-benchmark",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/BenchmarkService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/BenchmarkService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

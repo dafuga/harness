@@ -87,3 +87,10 @@ export { CommitMessageService } from './services/CommitMessageService';
 export { revisionReasons } from './utils/revisionReasons';
 export { verificationNoteIdentity } from './utils/verificationNoteIdentity';
 export { bugRepairPolicy } from './utils/bugRepairPolicy';
+
+export { registerBenchmarkCommand } from './commands/BenchmarkCommand';
+export { CodexBenchmarkAdapter } from './adapters/CodexBenchmarkAdapter';
+export { ClaudeBenchmarkAdapter } from './adapters/ClaudeBenchmarkAdapter';
+export { BenchmarkDefinitionValidator } from './validators/BenchmarkDefinitionValidator';
+export { BenchmarkRepository } from './repositories/BenchmarkRepository';
+export { BenchmarkService } from './services/BenchmarkService';

@@ -10,7 +10,20 @@ export interface AnalyticsEvent extends AnalyticsContext {
 	id: string;
 	timestamp: string;
 	project: string;
-	kind: 'command' | 'loop' | 'step' | 'evaluation' | 'jev';
+	kind: 'command' | 'loop' | 'step' | 'evaluation' | 'jev' | 'benchmark';
+	benchmark?: {
+		run: string;
+		name: string;
+		fingerprint: string;
+		candidate: string;
+		configuration: string;
+		trial: string;
+		repetition: number;
+		firstSubmissionPassed?: boolean;
+		repairs: number;
+		agentDurationMs: number;
+		evaluationDurationMs: number;
+	};
 	action: string;
 	historical?: boolean;
 	template?: string;

@@ -1,0 +1,149 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.benchmark-workspace",
+	"kind": "workflow",
+	"title": "benchmarkWorkspace",
+	"responsibility": "Owns the benchmarkWorkspace command workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/benchmarkWorkspace.ts"],
+		"symbols": [
+			"benchmarkGit",
+			"benchmarkFiles",
+			"snapshotBenchmark",
+			"createBenchmarkWorkspace",
+			"regularBenchmarkFile",
+			"benchmarkFileValue",
+			"overlayBenchmarkFiles"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "benchmarkGit.cwd",
+				"type": "string"
+			},
+			{
+				"name": "benchmarkGit.args",
+				"type": "string[]"
+			},
+			{
+				"name": "benchmarkFiles.project",
+				"type": "string"
+			},
+			{
+				"name": "benchmarkFiles.revision",
+				"type": "string"
+			},
+			{
+				"name": "snapshotBenchmark.project",
+				"type": "string"
+			},
+			{
+				"name": "snapshotBenchmark.revision",
+				"type": "string"
+			},
+			{
+				"name": "snapshotBenchmark.destination",
+				"type": "string"
+			},
+			{
+				"name": "createBenchmarkWorkspace.baseline",
+				"type": "string"
+			},
+			{
+				"name": "createBenchmarkWorkspace.destination",
+				"type": "string"
+			},
+			{
+				"name": "regularBenchmarkFile.root",
+				"type": "string"
+			},
+			{
+				"name": "regularBenchmarkFile.file",
+				"type": "string"
+			},
+			{
+				"name": "benchmarkFileValue.root",
+				"type": "string"
+			},
+			{
+				"name": "benchmarkFileValue.file",
+				"type": "string"
+			},
+			{
+				"name": "overlayBenchmarkFiles.source",
+				"type": "string"
+			},
+			{
+				"name": "overlayBenchmarkFiles.target",
+				"type": "string"
+			},
+			{
+				"name": "overlayBenchmarkFiles.files",
+				"type": "string[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "benchmarkGit",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "benchmarkFiles",
+				"type": "Promise<string[]>"
+			},
+			{
+				"name": "snapshotBenchmark",
+				"type": "Promise<string[]>"
+			},
+			{
+				"name": "createBenchmarkWorkspace",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "regularBenchmarkFile",
+				"type": "Promise<boolean>"
+			},
+			{
+				"name": "benchmarkFileValue",
+				"type": "Promise<string | undefined>"
+			},
+			{
+				"name": "overlayBenchmarkFiles",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.benchmark-process",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/benchmarkWorkspace.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/benchmarkWorkspace.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

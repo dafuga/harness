@@ -1,0 +1,93 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.claude-benchmark",
+	"kind": "adapter",
+	"title": "ClaudeBenchmarkAdapter",
+	"responsibility": "Owns the ClaudeBenchmarkAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/adapters/ClaudeBenchmarkAdapter.ts"],
+		"symbols": [
+			"ClaudeBenchmarkAdapter",
+			"ClaudeBenchmarkAdapter.constructor",
+			"ClaudeBenchmarkAdapter.preflight",
+			"ClaudeBenchmarkAdapter.run",
+			"ClaudeBenchmarkAdapter.command"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ClaudeBenchmarkAdapter.constructor.executable",
+				"type": "unknown"
+			},
+			{
+				"name": "ClaudeBenchmarkAdapter.preflight._candidate",
+				"type": "BenchmarkCandidate"
+			},
+			{
+				"name": "ClaudeBenchmarkAdapter.run.input",
+				"type": "BenchmarkRunnerInput"
+			},
+			{
+				"name": "ClaudeBenchmarkAdapter.command.input",
+				"type": "BenchmarkRunnerInput"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ClaudeBenchmarkAdapter.preflight",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "ClaudeBenchmarkAdapter.run",
+				"type": "Promise<BenchmarkTurn>"
+			},
+			{
+				"name": "ClaudeBenchmarkAdapter.command",
+				"type": "string[]"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.benchmark-events",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.benchmark-process",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.subagent-benchmark-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/ClaudeBenchmarkAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/ClaudeBenchmarkAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

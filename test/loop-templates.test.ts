@@ -93,6 +93,7 @@ test('loop search includes templates and existing loop instances', async () => {
 	const root = await tempRoot('harness-loop-search-');
 	try {
 		await createLoop({ root, name: 'search-proof', goal: 'Prove search works', from: 'feature' });
+		await mkdir(join(root, 'specification/loops/incomplete'), { recursive: true });
 
 		const results = await searchLoops({ root, query: 'search' });
 

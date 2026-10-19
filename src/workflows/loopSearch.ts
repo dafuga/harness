@@ -1,6 +1,6 @@
-import { readdir } from 'node:fs/promises';
+import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { isMissingFile, loopPaths, readLoop, type LoopInput } from './loopState';
+import { isMissingFile, loopPaths, type LoopInput, type LoopState } from './loopState';
 import { listLoopTemplates } from './loopTemplates';
 
 export type LoopSearchKind = 'loop' | 'template';
@@ -57,7 +57,7 @@ async function loopResults(root: string): Promise<LoopSearchResult[]> {
 
 async function loopResult(root: string, name: string): Promise<LoopSearchResult | undefined> {
 	try {
-		const state = await readLoop(loopPaths(root, name).state);
+		const state = JSON.parse(await readFile(loopPaths(root, name).state, 'utf8')) as LoopState;
 		return {
 			kind: 'loop',
 			id: state.name,

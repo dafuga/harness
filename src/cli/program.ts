@@ -1,5 +1,6 @@
 import { sdkPackage } from '../utils/buildStamp';
 import { registerCodexCommand } from '../commands/CodexCommand';
+import { registerBenchmarkCommand } from '../commands/BenchmarkCommand';
 import { registerAnalyticsCommand } from '../commands/AnalyticsCommand';
 import { registerActivityCommand } from '../commands/ActivityCommand';
 import { registerReportCommand } from '../commands/ReportCommand';
@@ -30,6 +31,7 @@ export function buildProgram(): Command {
 		.version(sdkPackage.version);
 
 	registerCodexCommand(program);
+	registerBenchmarkCommand(program);
 	registerAnalyticsCommand(program);
 	registerActivityCommand(program);
 	registerReportCommand(program);

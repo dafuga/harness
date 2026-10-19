@@ -1,0 +1,62 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.benchmark-trial",
+	"kind": "workflow",
+	"title": "benchmarkTrial",
+	"responsibility": "Owns the benchmarkTrial command workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/benchmarkTrial.ts"],
+		"symbols": ["BenchmarkTrialInput", "runBenchmarkTrial"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "runBenchmarkTrial.input",
+				"type": "BenchmarkTrialInput"
+			}
+		],
+		"outputs": [
+			{
+				"name": "runBenchmarkTrial",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.subagent-benchmark-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.benchmark-evaluate",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.benchmark-workspace",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/benchmarkTrial.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/benchmarkTrial.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.benchmark-evaluate",
+	"kind": "workflow",
+	"title": "benchmarkEvaluate",
+	"responsibility": "Owns the benchmarkEvaluate command workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/benchmarkEvaluate.ts"],
+		"symbols": [
+			"BenchmarkEvaluationInput",
+			"evaluateBenchmarkSubmission",
+			"setupBenchmarkWorkspace"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "evaluateBenchmarkSubmission.input",
+				"type": "BenchmarkEvaluationInput"
+			},
+			{
+				"name": "setupBenchmarkWorkspace.cwd",
+				"type": "string"
+			},
+			{
+				"name": "setupBenchmarkWorkspace.definition",
+				"type": "BenchmarkDefinition"
+			},
+			{
+				"name": "setupBenchmarkWorkspace.signal",
+				"type": "AbortSignal"
+			}
+		],
+		"outputs": [
+			{
+				"name": "evaluateBenchmarkSubmission",
+				"type": "Promise<BenchmarkSubmission>"
+			},
+			{
+				"name": "setupBenchmarkWorkspace",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.benchmark-process",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.subagent-benchmark-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.benchmark-workspace",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/benchmarkEvaluate.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/benchmarkEvaluate.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

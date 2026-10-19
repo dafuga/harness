@@ -1,0 +1,55 @@
+{
+	"schemaVersion": 1,
+	"id": "function.benchmark-process",
+	"kind": "function",
+	"title": "benchmarkProcess",
+	"responsibility": "Owns the benchmarkProcess shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/benchmarkProcess.ts"],
+		"symbols": [
+			"BenchmarkProcessInput",
+			"BenchmarkProcessResult",
+			"benchmarkEnvironment",
+			"benchmarkProcess"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "benchmarkProcess.input",
+				"type": "BenchmarkProcessInput"
+			}
+		],
+		"outputs": [
+			{
+				"name": "benchmarkEnvironment",
+				"type": "Record<string, string | undefined>"
+			},
+			{
+				"name": "benchmarkProcess",
+				"type": "Promise<BenchmarkProcessResult>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/benchmarkProcess.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/benchmarkProcess.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

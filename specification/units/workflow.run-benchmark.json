@@ -1,0 +1,85 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.run-benchmark",
+	"kind": "workflow",
+	"title": "runBenchmark",
+	"responsibility": "Owns the runBenchmark command workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/runBenchmark.ts"],
+		"symbols": ["RunBenchmarkInput", "runBenchmark", "benchmarkSchedule"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "runBenchmark.input",
+				"type": "RunBenchmarkInput"
+			},
+			{
+				"name": "benchmarkSchedule.run",
+				"type": "BenchmarkRun"
+			}
+		],
+		"outputs": [
+			{
+				"name": "runBenchmark",
+				"type": "Promise<BenchmarkRun>"
+			},
+			{
+				"name": "benchmarkSchedule",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.subagent-benchmark-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.benchmark",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.analytics-record",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.benchmark-definition",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.benchmark-trial",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.benchmark-workspace",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/runBenchmark.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/runBenchmark.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
