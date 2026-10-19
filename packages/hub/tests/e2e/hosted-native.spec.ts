@@ -23,7 +23,7 @@ test('the approval page names what is asked, and takes the typed code in a body,
 	await page.getByRole('button', { name: 'Sign in with Google' }).click();
 	await expect(page.getByText('every shared project you can open, now and later')).toBeVisible();
 	await expect(page.getByText(/Never type a code\s+that someone sent you/)).toBeVisible();
-	await expect(page.getByText(/writers can ask agents to make changes/)).toBeVisible();
+	await expect(page.getByText(/writers\s+can\s+ask\s+agents\s+to\s+make\s+changes/)).toBeVisible();
 	if (process.env.TAKE_SCREENSHOT === 'true') {
 		await page.evaluate(() => document.fonts.ready);
 		await page.screenshot({
