@@ -3,7 +3,7 @@
 	"id": "reports.component.explorer-function-card",
 	"kind": "component",
 	"title": "Function card",
-	"responsibility": "Shows a function name, a description of at most 80 characters and a compact link to its page.",
+	"responsibility": "Shows a linked function invocation with revision-owned sample arguments instead of a heading or description.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -16,7 +16,7 @@
 			{
 				"name": "ExplorerFunctionCard.row",
 				"type": "CatalogRow",
-				"description": "The function at the viewed revision: its name and purpose."
+				"description": "The function at the viewed revision, including its symbols, input contract and committed usage examples."
 			},
 			{
 				"name": "ExplorerFunctionCard.nav",
@@ -28,7 +28,7 @@
 			{
 				"name": "ExplorerFunctionCard",
 				"type": "markup",
-				"description": "A function name, a description capped at 80 characters and an open icon. Full details stay on the function page."
+				"description": "An example invocation and compact open icon. Documented input values take priority over field samples; missing samples remain named variables. No title, description or contract panel is displayed."
 			}
 		],
 		"errors": []

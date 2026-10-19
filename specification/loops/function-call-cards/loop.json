@@ -2,7 +2,7 @@
 	"name": "function-call-cards",
 	"goal": "Function list cards show linked example invocations instead of titles and descriptions, preserving revision scope and small responsive grids",
 	"createdAt": "2026-10-19T14:17:22.503Z",
-	"updatedAt": "2026-10-19T14:18:50.655Z",
+	"updatedAt": "2026-10-19T14:21:04.066Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T14:20:30.285Z",
+			"evidence": "7b62e683: standardized grid cases fail on desktop/tablet/mobile with function cards show example calls; cards contain no code invocation. Before screenshots preserved in /tmp/harness-function-calls-before."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T14:21:04.066Z",
+			"evidence": "Shared Function card now shows a linked example invocation from this revision’s parameter samples or documentation. Missing values remain named variables; compact navigation and the grid are retained."
 		},
 		{
 			"id": "green",

@@ -14,7 +14,7 @@
 	let tiled = $derived(category === 'components' || category === 'functions');
 </script>
 
-<!-- A component shows its screenshot above what it says; a function shows its name and brief purpose, no image. -->
+<!-- A component shows its screenshot; a function shows an example invocation without a title or description. -->
 {#snippet tile(row: CatalogRow, nav: EntityNav)}
 	{#if category === 'components'}
 		<ExplorerPageCard
