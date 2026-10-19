@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { t } from '../utils/reportLocale';
+	import HarnessIcon from './harness/HarnessIcon.svelte';
 	let {
 		open = false,
 		isOpen,
@@ -45,7 +46,9 @@
 	>
 		<header class="viewer-header">
 			<h2 id="viewer-dialog-title">{title}</h2>
-			<button onclick={close} aria-label={$t('close')}>×</button>
+			<button onclick={close} aria-label={$t('close')}
+				><HarnessIcon name="close" size={24} /></button
+			>
 		</header>
 		<div class="viewer-content">{@render children?.()}</div>
 		{#if footer}<footer>{@render footer()}</footer>{/if}

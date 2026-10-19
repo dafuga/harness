@@ -129,9 +129,12 @@
 	font-size: 16px;
 }
 .viewer-header button {
-	font-size: 24px;
-	line-height: 1;
-	padding: 8px 12px;
+	display: grid;
+	place-items: center;
+	flex: none;
+	width: 44px;
+	height: 44px;
+	padding: 0;
 }
 .viewer-content {
 	padding: 20px;
