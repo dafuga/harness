@@ -160,3 +160,22 @@ test('the same Google account automatically discovers owned and joined projects 
 		await context.close();
 	}
 });
+
+test('an account changed in another tab replaces the identity and never retains the previous projects', async ({
+	page
+}) => {
+	const state = await hostedFixture(page);
+	await page.goto('/');
+	await expect(page.getByRole('link', { name: 'Open Atlas', exact: true })).toBeVisible();
+	state.actor = {
+		...state.actor,
+		id: 'google:ben',
+		name: 'Ben Example',
+		email: 'ben@example.invalid'
+	};
+	state.data.projects = [];
+	await page.evaluate(() => window.dispatchEvent(new Event('focus')));
+	await expect(page.getByText('Ben Example', { exact: true })).toBeVisible();
+	await expect(page.getByRole('link', { name: 'Open Atlas', exact: true })).toHaveCount(0);
+	await expect(page.getByRole('link', { name: 'Open Borealis', exact: true })).toHaveCount(0);
+});
