@@ -93,11 +93,16 @@ test('a screen is recorded on the pages that mount it and on no other route page
 });
 
 test('a page is under its own states, and a screen under the states of the pages that mount it', () => {
-	expect(statesOf(`${at}pages`)).toEqual(['pages']);
+	expect(statesOf(`${at}pages`)).toEqual(['pages', 'catalog-filters']);
 	expect(statesOf(`${at}configs-entity`)).toEqual(['config']);
 	expect(statesOf(`${at}functions-entity-history`)).toEqual(['history']);
 	// The page of no screen can draw any of them, so its one state shows every screen too.
-	expect(statesOf(`${part}explorer-pages-screen`)).toEqual(['pages', 'retained', 'shell-retained']);
+	expect(statesOf(`${part}explorer-pages-screen`)).toEqual([
+		'pages',
+		'retained',
+		'shell-retained',
+		'catalog-filters'
+	]);
 	expect(statesOf(`${part}entity-config-screen`)).toEqual(['config', 'retained', 'shell-retained']);
 	expect(statesOf(`${part}entity-history-screen`)).toEqual([
 		'history',
@@ -155,11 +160,16 @@ const contractStates: Array<[string, string[]]> = [
 		[...contracts, 'reports.component.contract-example', 'reports.component.modal']
 	]
 ];
-const written = [...shellStates, ...searchStates, ...contractStates];
+const written = [
+	...shellStates,
+	...searchStates,
+	...contractStates,
+	['catalog-filters', ['reports.component.filter-dialog', `${part}explorer-controls`, `${at}pages`]]
+];
 
 test('what every page is made of is under every state, and each state names a page there is', () => {
 	const every = scenario.states.map((state) => state.id);
-	expect(every).toHaveLength(48);
+	expect(every).toHaveLength(49);
 	expect(statesOf(`${part}harness-header`)).toEqual(every);
 	expect(statesOf(`${part}harness-console`)).toEqual(every);
 	const pages = new Set(units.filter((unit) => unit.kind === 'page').map((unit) => unit.id));

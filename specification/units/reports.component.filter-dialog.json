@@ -26,7 +26,7 @@
 			{
 				"name": "FilterDialog.children",
 				"type": "Snippet",
-				"description": "The catalog\u2019s existing filter controls, rendered inside the dialog."
+				"description": "The catalog’s existing filter controls, rendered inside the dialog."
 			}
 		],
 		"outputs": [
@@ -60,7 +60,12 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["harness-console"],
+	"preview": {
+		"scenario": "harness-console",
+		"state": "catalog-filters",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

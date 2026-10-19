@@ -69,6 +69,7 @@
 	.catalog-filter-dialog :global(.viewer-dialog[open]) {
 		box-sizing: border-box;
 		width: min(440px, calc(100vw - 32px));
+		height: fit-content;
 		max-height: calc(100dvh - 32px);
 		padding: 0;
 		border: 1px solid var(--line, #2c4259);

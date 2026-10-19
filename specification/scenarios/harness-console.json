@@ -16,8 +16,14 @@
 		"function.revision-changes",
 		"function.side-impact",
 		"function.unit-measurements",
+		"reports.component.contract-example",
 		"reports.component.entity-cases",
+		"reports.component.entity-contract",
+		"reports.component.entity-search",
+		"reports.component.entity-search-results",
 		"reports.component.evidence-provenance",
+		"reports.component.explorer-function-card",
+		"reports.component.filter-dialog",
 		"reports.component.harness-entity-artifact",
 		"reports.component.harness-entity-audio",
 		"reports.component.harness-entity-behavior",
@@ -45,7 +51,6 @@
 		"reports.component.harness-entity-summary",
 		"reports.component.harness-entity-tests",
 		"reports.component.harness-entity-visual-screen",
-		"reports.component.explorer-function-card",
 		"reports.component.harness-explorer-catalog-screen",
 		"reports.component.harness-explorer-content",
 		"reports.component.harness-explorer-controls",
@@ -63,11 +68,14 @@
 		"reports.component.harness-harness-tabs",
 		"reports.component.harness-harness-verdict",
 		"reports.component.harness-screen",
+		"reports.component.modal",
 		"reports.component.select",
 		"reports.endpoint.harness-data-path",
 		"reports.endpoint.harness-media-file",
 		"reports.entry.hooks-server",
 		"reports.function.artifact-cases",
+		"reports.function.contract-fields",
+		"reports.function.corrected-location",
 		"reports.function.entity-behavior",
 		"reports.function.entity-catalog",
 		"reports.function.entity-contract",
@@ -77,6 +85,7 @@
 		"reports.function.entity-reasons",
 		"reports.function.entity-removed",
 		"reports.function.entity-screens",
+		"reports.function.entity-search",
 		"reports.function.entity-shown",
 		"reports.function.entity-usage",
 		"reports.function.explorer-artifact",
@@ -90,6 +99,7 @@
 		"reports.function.explorer-reading",
 		"reports.function.explorer-relations",
 		"reports.function.explorer-scope",
+		"reports.function.explorer-search-entries",
 		"reports.function.explorer-state",
 		"reports.function.explorer-verdict",
 		"reports.function.harness-budget",
@@ -98,6 +108,7 @@
 		"reports.function.harness-icons",
 		"reports.function.harness-page",
 		"reports.function.harness-shell",
+		"reports.function.navbar-search",
 		"reports.function.report-destination",
 		"reports.page.harness-branch-branch-at-components",
 		"reports.page.harness-branch-branch-at-components-entity",
@@ -119,6 +130,10 @@
 		"reports.page.harness-branch-branch-at-services-entity",
 		"reports.page.harness-branch-branch-at-services-entity-details",
 		"reports.page.harness-branch-branch-at-services-entity-history",
+		"reports.page.harness-branch-branch-at-shells",
+		"reports.page.harness-branch-branch-at-shells-entity",
+		"reports.page.harness-branch-branch-at-shells-entity-details",
+		"reports.page.harness-branch-branch-at-shells-entity-history",
 		"reports.page.harness-view",
 		"reports.style.entity",
 		"reports.style.entity-evidence",
@@ -127,21 +142,7 @@
 		"reports.style.entity-summary",
 		"reports.style.explorer",
 		"reports.style.explorer-controls",
-		"reports.style.explorer-navbar",
-		"reports.page.harness-branch-branch-at-shells",
-		"reports.page.harness-branch-branch-at-shells-entity",
-		"reports.page.harness-branch-branch-at-shells-entity-details",
-		"reports.page.harness-branch-branch-at-shells-entity-history",
-		"reports.function.corrected-location",
-		"reports.function.explorer-search-entries",
-		"reports.function.navbar-search",
-		"reports.function.entity-search",
-		"reports.component.entity-search",
-		"reports.component.entity-search-results",
-		"reports.component.entity-contract",
-		"reports.function.contract-fields",
-		"reports.component.contract-example",
-		"reports.component.modal"
+		"reports.style.explorer-navbar"
 	],
 	"states": [
 		{
@@ -471,6 +472,16 @@
 				"reports.component.contract-example",
 				"reports.component.modal"
 			]
+		},
+		{
+			"id": "catalog-filters",
+			"title": "Catalog filters and ordering opened from one compact icon",
+			"coverage": "required",
+			"units": [
+				"reports.component.filter-dialog",
+				"reports.component.harness-explorer-controls",
+				"reports.page.harness-branch-branch-at-pages"
+			]
 		}
 	],
 	"viewports": [
@@ -551,7 +562,8 @@
 				"contract",
 				"contract-commit",
 				"contract-example",
-				"contract-example-commit"
+				"contract-example-commit",
+				"catalog-filters"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",

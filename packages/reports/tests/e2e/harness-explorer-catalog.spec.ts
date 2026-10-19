@@ -47,10 +47,15 @@ test('the keyboard reaches the controls, changes the order and opens an entity',
 	await page.getByRole('button', { name: 'Filters', exact: true }).click();
 	await sharedField(order(page));
 	await typed(page, order(page), 'Order: Name (Z');
+	await page.getByRole('button', { name: 'Done', exact: true }).click();
 	await expect(titled(page)).toHaveText('Slugify');
+	await page.getByRole('button', { name: 'Filters', exact: true }).click();
 	await changedOnly(page).focus();
 	await page.keyboard.press('Space');
+	await page.getByRole('button', { name: 'Done', exact: true }).click();
 	await expect(shown(page)).toHaveText('0 of 2 functions shown');
+	await page.getByRole('button', { name: 'Filters', exact: true }).click();
+	await changedOnly(page).focus();
 	await page.keyboard.press('Space');
 	await page.getByRole('button', { name: 'Done', exact: true }).click();
 	await titled(page).focus();
@@ -97,7 +102,9 @@ test('a commit nobody verified still marks what its source changed, and proves n
 	]);
 	await expect(cards(page).first().locator('.hx-verdict')).toHaveCount(0);
 	await titled(page).click();
-	await expect(page.getByRole('button', { name: 'Evidence missing', exact: true })).toBeVisible();
+	await expect(
+		page.locator('.ex-head').getByRole('button', { name: 'Evidence missing', exact: true })
+	).toBeVisible();
 	// What only depends on the changed function was not changed by this commit itself.
 	await page.goto(tip('main', 'services'));
 	await page.getByRole('button', { name: 'Filters', exact: true }).click();

@@ -64,7 +64,6 @@ test('a row or a card of a collection opens its entity in the same branch and co
 	await open(tab);
 	await tab.getByRole('link', { name: 'Open Orders page' }).click();
 	expect(await where(tab)).toEqual({ branch, commit: null, ...page });
-	// The way back to the collection keeps the branch tip too.
 	await tab
 		.getByRole('navigation', { name: 'Breadcrumb' })
 		.getByRole('link', { name: 'Pages' })
