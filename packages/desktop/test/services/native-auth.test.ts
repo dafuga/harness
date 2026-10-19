@@ -82,3 +82,83 @@ test('a wrong native nonce never persists a credential', async () => {
 	await expect(f.service.status()).rejects.toThrow('handoff');
 	expect(f.save).not.toHaveBeenCalled();
 });
+
+test.each([401, 403, 200])(
+	'revoked or mismatched native status %s drops the session and protected cache',
+	async (status) => {
+		const credential = {
+			origin,
+			principalId: 'google:original',
+			token: 'synthetic-private-native-token'
+		};
+		const store = {
+			available: () => true,
+			read: async () => credential,
+			save: vi.fn(),
+			clear: vi.fn()
+		};
+		const clearCache = vi.fn(async () => {}),
+			onDisconnect = vi.fn();
+		const http = new HostedHttpAdapter({
+			origin,
+			credentials: async () => credential,
+			fetch: vi.fn(async () =>
+				Response.json(
+					{
+						actor: {
+							id: 'google:other',
+							email: 'other@example.invalid',
+							name: 'Other',
+							emailVerified: true
+						}
+					},
+					{ status }
+				)
+			) as unknown as typeof fetch
+		});
+		const service = new NativeAuthService({
+			origin,
+			http,
+			store: store as unknown as NativeSessionAdapter,
+			open: vi.fn(),
+			clearCache,
+			onDisconnect
+		});
+		await expect(service.status(), 'revoked identity returns to Google sign-in').resolves.toEqual({
+			configured: true,
+			state: 'signed-out'
+		});
+		expect(onDisconnect).toHaveBeenCalledOnce();
+		expect(store.clear).toHaveBeenCalledOnce();
+		expect(clearCache).toHaveBeenCalledOnce();
+	}
+);
+
+test('a temporary native status failure preserves the encrypted login', async () => {
+	const credential = {
+		origin,
+		principalId: 'google:original',
+		token: 'synthetic-private-native-token'
+	};
+	const store = {
+		available: () => true,
+		read: async () => credential,
+		save: vi.fn(),
+		clear: vi.fn()
+	};
+	const http = new HostedHttpAdapter({
+		origin,
+		credentials: async () => credential,
+		fetch: vi.fn(async () =>
+			Response.json({ error: 'unavailable' }, { status: 503 })
+		) as unknown as typeof fetch
+	});
+	const service = new NativeAuthService({
+		origin,
+		http,
+		store: store as unknown as NativeSessionAdapter,
+		open: vi.fn()
+	});
+	await expect(service.status()).rejects.toThrow();
+	expect(store.clear).not.toHaveBeenCalled();
+});
