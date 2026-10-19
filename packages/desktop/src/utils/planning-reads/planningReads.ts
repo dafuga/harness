@@ -2,7 +2,7 @@ import type {
 	PlanningApi,
 	PlanDetail,
 	DesignVersion as StoredVersion
-} from '../../../../planning/src/index/index';
+} from '../../../../planning/src/lib/planning/index';
 import type { PlanRecord } from '../../models/PlanningPort.types';
 import type { DesignRevision, DesignVersion } from '../../models/Desktop.types';
 import { approvalInfo, threadInfo } from '../planningConvert';

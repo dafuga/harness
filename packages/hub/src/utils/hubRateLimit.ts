@@ -1,1 +1,1 @@
-export { hubRateLimit } from '../routes/api/[...path]/-server/hubRateLimit';
+export { hubRateLimit } from '../routes/api/[...path]/hubRateLimit';

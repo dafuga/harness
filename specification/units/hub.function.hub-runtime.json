@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/routes/api/[...path]/-server/hubRuntime.ts",
+			"packages/hub/src/routes/api/[...path]/hubRuntime.ts",
 			"packages/hub/src/utils/hubRuntime.ts"
 		],
 		"symbols": ["hubRuntime", "HubApiRuntime", "hubRuntime"]

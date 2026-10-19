@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/routes/+layout.ts",
-			"packages/hub/src/routes/-layout/+layout.svelte"
-		],
-		"symbols": ["ssr", "+layout"]
+		"source": ["packages/hub/src/routes/+layout.svelte", "packages/hub/src/routes/+layout.ts"],
+		"symbols": ["+layout", "ssr"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -23,12 +20,12 @@
 		],
 		"outputs": [
 			{
-				"name": "ssr",
-				"type": "unknown"
-			},
-			{
 				"name": "+layout",
 				"type": "markup"
+			},
+			{
+				"name": "ssr",
+				"type": "unknown"
 			}
 		],
 		"errors": []
@@ -57,11 +54,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/routes/-layout/+layout.svelte",
+		"entry": "packages/hub/src/routes/+layout.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/routes/-layout/+layout.svelte"
+				"entry": "packages/hub/src/routes/+layout.svelte"
 			}
 		]
 	},

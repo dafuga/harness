@@ -34,8 +34,15 @@
 			"root": "packages/relay"
 		}
 	],
-	"tests": ["test/", "tests/"],
-	"global": ["**/.prettierignore", "tsconfig.api.json", "specification/measurements/"],
+	"tests": [
+		"test/",
+		"tests/"
+	],
+	"global": [
+		"**/.prettierignore",
+		"tsconfig.api.json",
+		"specification/measurements/"
+	],
 	"ignored": [
 		"**/*.md",
 		"specification/features/",
@@ -112,13 +119,13 @@
 			"reason": "The hub's build alias $desktop is packages/desktop/src: the proof panel imports timeLabel from this file."
 		},
 		{
-			"from": "packages/hub/src/routes/-layout/+layout.svelte",
+			"from": "packages/hub/src/routes/+layout.svelte",
 			"specifier": "$desktop/lib/styles/workspace.css",
 			"to": "packages/desktop/src/lib/styles/workspace.css",
 			"reason": "The hub's build alias $desktop is packages/desktop/src: the hub layout loads this workspace style sheet."
 		},
 		{
-			"from": "packages/hub/src/routes/-layout/+layout.svelte",
+			"from": "packages/hub/src/routes/+layout.svelte",
 			"specifier": "$desktop/lib/styles/design.css",
 			"to": "packages/desktop/src/lib/styles/design.css",
 			"reason": "The hub's build alias $desktop is packages/desktop/src: the hub layout loads this design style sheet."
@@ -292,13 +299,13 @@
 			"reason": "The shared catalog uses the same filter dialog on Web, Electron and iOS."
 		},
 		{
-			"from": "packages/hub/src/routes/-layout/browserApi.ts",
+			"from": "packages/hub/src/routes/browserApi.ts",
 			"specifier": "$desktop/utils/hostedResponse",
 			"to": "packages/desktop/src/utils/hostedResponse.ts",
 			"reason": "The declared source binding matches this platform build alias and current owner-local path."
 		},
 		{
-			"from": "packages/hub/src/routes/-layout/browserApi.ts",
+			"from": "packages/hub/src/routes/browserApi.ts",
 			"specifier": "$desktop/utils/artifactMedia",
 			"to": "packages/desktop/src/utils/artifactMedia.ts",
 			"reason": "The declared source binding matches this platform build alias and current owner-local path."

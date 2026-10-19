@@ -1,1 +1,1 @@
-export { siteProcesses } from '../routes/api/analytics-cpu/-server/siteProcesses';
+export { siteProcesses } from '../routes/api/analytics-cpu/siteProcesses';

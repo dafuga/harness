@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/routes/-layout/browserContext.ts",
+			"packages/hub/src/routes/browserContext.ts",
 			"packages/hub/src/utils/browserContext.ts"
 		],
 		"symbols": ["provideBrowser", "HostedBrowser", "key", "browserContext", "provideBrowser"]

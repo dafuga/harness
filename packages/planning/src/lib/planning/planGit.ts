@@ -1,9 +1,9 @@
-import type { Git } from '../utils/planGit';
+import type { Git } from '../../utils/planGit';
 import process from 'node:process';
 import { Buffer } from 'node:buffer';
 import { spawn } from 'node:child_process';
 import { realpath } from 'node:fs/promises';
-import { fail } from '../utils/planData';
+import { fail } from '../../utils/planData';
 
 export async function planGit(root: string): Promise<Git> {
 	const canonical = await realpath(root);

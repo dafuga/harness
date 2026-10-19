@@ -13,4 +13,4 @@ export interface HubApiRuntime {
 	remote?: HubRemoteRuntime | null;
 }
 
-export { hubRuntime } from '../routes/api/[...path]/-server/hubRuntime';
+export { hubRuntime } from '../routes/api/[...path]/hubRuntime';

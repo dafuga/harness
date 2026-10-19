@@ -12,4 +12,4 @@ export interface ApiFailure extends Error {
 	code: string;
 }
 
-export { browserApi } from '../routes/-layout/browserApi';
+export { browserApi } from '../routes/browserApi';

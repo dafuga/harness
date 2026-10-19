@@ -8,8 +8,8 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/routes/api/health/-server/reportHttp.ts",
-			"packages/reports/src/routes/api/reports/[id]/[type]/[file]/-server/reportHttp.ts",
+			"packages/reports/src/routes/api/health/reportHttp.ts",
+			"packages/reports/src/routes/api/reports/[id]/[type]/[file]/reportHttp.ts",
 			"packages/reports/src/utils/reportHttp.ts"
 		],
 		"symbols": ["reportHttp", "reportFile", "repository", "reportHttp", "reportFile"]

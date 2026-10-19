@@ -1,9 +1,9 @@
-import type { HostedBrowser } from '../../utils/browserContext';
-import { key } from '../../utils/browserContext';
+import type { HostedBrowser } from '../utils/browserContext';
+import { key } from '../utils/browserContext';
 import { setContext } from 'svelte';
-import { createSessionStore } from '../../lib/stores/session.svelte';
+import { createSessionStore } from '../lib/stores/session.svelte';
 import { browserApi } from './browserApi';
-import { browserAuth } from '../../utils/browserAuth';
+import { browserAuth } from '../utils/browserAuth';
 import { browserProjects } from './browserProjects';
 
 /** One API client and one session per opened page, held by the layout and never by a module. */

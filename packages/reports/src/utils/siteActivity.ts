@@ -1,1 +1,1 @@
-export { siteActivity } from '../routes/api/project-activity/-server/siteActivity';
+export { siteActivity } from '../routes/api/project-activity/siteActivity';

@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/routes/api/[...path]/-server/hubRemote.ts",
+			"packages/hub/src/routes/api/[...path]/hubRemote.ts",
 			"packages/hub/src/utils/hubRemote.ts"
 		],
 		"symbols": ["hubRemote", "HubRemoteRuntime", "hubRemote"]

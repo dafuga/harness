@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/routes/harness/reports/[id]/-page-server/reportDestination.ts",
+			"packages/reports/src/routes/harness/reports/[id]/reportDestination.ts",
 			"packages/reports/src/utils/reportDestination.ts"
 		],
 		"symbols": ["reportDestination", "NamedReport", "reportDestination"]

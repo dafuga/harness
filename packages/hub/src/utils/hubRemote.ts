@@ -6,4 +6,4 @@ export interface HubRemoteRuntime {
 	relay: RelayManageAdapter;
 }
 
-export { hubRemote } from '../routes/api/[...path]/-server/hubRemote';
+export { hubRemote } from '../routes/api/[...path]/hubRemote';

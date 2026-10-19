@@ -16,4 +16,4 @@ export function browserContext(): HostedBrowser {
 	return getContext<HostedBrowser>(key);
 }
 
-export { provideBrowser } from '../routes/-layout/browserContext';
+export { provideBrowser } from '../routes/browserContext';

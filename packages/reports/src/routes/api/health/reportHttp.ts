@@ -1,5 +1,5 @@
-import { repository } from '../../../../utils/reportHttp';
-import { reportBuildIdentity } from '../../../../utils/reportBuildIdentity';
+import { repository } from '../../../utils/reportHttp';
+import { reportBuildIdentity } from '../../../utils/reportBuildIdentity';
 import { json } from '@sveltejs/kit';
 import { createHash } from 'node:crypto';
 

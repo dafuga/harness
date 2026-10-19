@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/planning/src/index.ts", "packages/planning/src/index/index.ts"],
+		"source": ["packages/planning/src/index.ts", "packages/planning/src/lib/planning/index.ts"],
 		"symbols": [
 			"default",
 			"createPlanning",
@@ -108,11 +108,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/planning/src/index/index.ts",
+		"entry": "packages/planning/src/lib/planning/index.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/planning/src/index/index.ts"
+				"entry": "packages/planning/src/lib/planning/index.ts"
 			}
 		]
 	},

@@ -75,5 +75,5 @@ export async function safePath(git: Git, path: string): Promise<void> {
 	}
 }
 
-export { planGit } from '../index/planGit';
+export { planGit } from '../lib/planning/planGit';
 export { containing } from './plan-read/planGit';

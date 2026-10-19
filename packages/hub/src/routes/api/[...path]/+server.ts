@@ -1,8 +1,8 @@
 import type { RequestHandler } from './$types';
 import { env } from '$env/dynamic/private';
-import { hubEnvConfig } from '../../../../config/hubEnvConfig';
+import { hubEnvConfig } from '../../../config/hubEnvConfig';
 import { hubRuntime } from './hubRuntime';
-import { HubApiController } from '../../../../controllers/hub-api-controller/HubApiController';
+import { HubApiController } from '../../../controllers/hub-api-controller/HubApiController';
 import { hubRateLimit } from './hubRateLimit';
 
 const handler: RequestHandler = async ({ request, platform }) => {

@@ -1,6 +1,6 @@
-import { ProjectActivityService } from '../../../../../../../src/services/project-activity-service/ProjectActivityService';
-import type { Shown } from '../../../../../../../src/workflows/runActivity';
-import { reportSite } from '../../../../utils/reportSite';
+import { ProjectActivityService } from '../../../../../../src/services/project-activity-service/ProjectActivityService';
+import type { Shown } from '../../../../../../src/workflows/runActivity';
+import { reportSite } from '../../../utils/reportSite';
 
 /** Newest commits a page shows. */
 const commits = 20;

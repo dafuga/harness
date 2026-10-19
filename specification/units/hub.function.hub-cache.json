@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/routes/api/[...path]/-server/hubCache.ts",
+			"packages/hub/src/routes/api/[...path]/hubCache.ts",
 			"packages/hub/src/utils/hubCache.ts"
 		],
 		"symbols": ["hubCache", "hubCache"]

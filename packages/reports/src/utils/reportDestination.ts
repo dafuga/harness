@@ -4,4 +4,4 @@ export interface NamedReport {
 	revision?: string | null;
 }
 
-export { reportDestination } from '../routes/harness/reports/[id]/-page-server/reportDestination';
+export { reportDestination } from '../routes/harness/reports/[id]/reportDestination';

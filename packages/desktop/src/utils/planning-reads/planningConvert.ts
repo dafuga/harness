@@ -1,4 +1,4 @@
-import type { PlanDetail } from '../../../../planning/src/index/index';
+import type { PlanDetail } from '../../../../planning/src/lib/planning/index';
 import type { EntityContract } from '../../models/Desktop.types';
 
 export function planningConvert(plan: PlanDetail): EntityContract {

@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/routes/api/[...path]/-server/+server.ts"],
+		"source": ["packages/hub/src/routes/api/[...path]/+server.ts"],
 		"symbols": ["GET", "POST", "DELETE", "PUT", "PATCH"]
 	},
 	"contract": {
@@ -61,11 +61,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/routes/api/[...path]/-server/+server.ts",
+		"entry": "packages/hub/src/routes/api/[...path]/+server.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/routes/api/[...path]/-server/+server.ts"
+				"entry": "packages/hub/src/routes/api/[...path]/+server.ts"
 			}
 		]
 	},

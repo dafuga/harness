@@ -1,1 +1,1 @@
-export { hubCache } from '../routes/api/[...path]/-server/hubCache';
+export { hubCache } from '../routes/api/[...path]/hubCache';

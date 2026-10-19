@@ -2,7 +2,7 @@ import type {
 	PlanThread,
 	ThreadMessage as StoredMessage,
 	ApprovalRecord
-} from '../../../planning/src/index/index';
+} from '../../../planning/src/lib/planning/index';
 import type { ApprovalInfo, ThreadInfo, ThreadMessage, ProviderId } from '../models/Desktop.types';
 
 export function approvalInfo(record: ApprovalRecord): ApprovalInfo {

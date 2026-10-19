@@ -1,7 +1,7 @@
-import type { Query, ApiFailure, BrowserApi } from '../../utils/browserApi';
+import type { Query, ApiFailure, BrowserApi } from '../utils/browserApi';
 import { hostedResponse } from '$desktop/utils/hostedResponse';
 import { artifactLimit } from '$desktop/utils/artifactMedia';
-import { browserError } from '../../utils/browserError';
+import { browserError } from '../utils/browserError';
 
 /** A request that hangs must not hold the workspace: reads there are done one at a time. */
 const patience = 30000;
