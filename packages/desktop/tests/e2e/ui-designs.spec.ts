@@ -20,7 +20,7 @@ test('exact image region, approval, Change, public stream and source disclosure'
 	await page.goto('/');
 	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
 	await checkpoint(page, 'catalog');
-	await page.getByRole('link', { name: 'Review designs' }).click();
+	await page.getByRole('link', { name: 'Open Activity', exact: true }).click();
 	await expect(page.getByRole('img', { name: 'Activity v002 desktop default' })).toBeVisible();
 	await page.getByRole('button', { name: 'Open thread 1', exact: true }).click();
 	await expect(page.getByText('Keep the filters on one line.')).toBeVisible();
@@ -77,7 +77,7 @@ for (const viewport of [
 		await fixture(page);
 		await page.goto('/');
 		await page.getByRole('button', { name: 'Open Project', exact: true }).click();
-		await page.getByRole('link', { name: 'Review designs' }).click();
+		await page.getByRole('link', { name: 'Open Activity', exact: true }).click();
 		await expect(page.getByRole('img', { name: 'Activity v002 desktop default' })).toBeVisible();
 		await expect(
 			page.getByRole('navigation', { name: 'Catalog categories' }).getByRole('link')
@@ -183,7 +183,7 @@ for (const outcome of ['failed', 'cancelled'] as const) {
 		await page.goto('/');
 		await persistTerminalOutcome(page, outcome);
 		await page.getByRole('button', { name: 'Open Project', exact: true }).click();
-		await page.getByRole('link', { name: 'Review designs' }).click();
+		await page.getByRole('link', { name: 'Open Activity', exact: true }).click();
 		await page.getByRole('textbox', { name: 'Message', exact: true }).fill('Revise the design');
 		await page.getByRole('button', { name: 'Send plan', exact: true }).click();
 		await expect(page.getByText('Working on the approved design.')).toBeVisible();

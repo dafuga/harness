@@ -32,9 +32,7 @@ test('Pages of the tip show every ordinary page and no card for an address that 
 	await pictured(page, info, 'pages-tip');
 	expect(await listedIds(page)).toEqual(pages);
 	// A real page keeps the name Analytics; so does the service, under Services.
-	await expect(
-		cards(page).filter({ hasText: 'Charts how many runs passed each day.' })
-	).toHaveCount(1);
+	await expect(cards(page).getByRole('heading', { name: 'Analytics', exact: true })).toHaveCount(1);
 	const categories = page.getByRole('navigation', { name: 'Catalog categories' });
 	await categories.getByRole('link', { name: 'Services', exact: true }).click();
 	await expect(
@@ -50,7 +48,7 @@ test('the identity that only redirects at the tip is a card at the earlier commi
 	await at(page, project.earlier.revision.commit);
 	await pictured(page, info, 'pages-earlier');
 	expect(await listedIds(page)).toEqual([analytics, ...pages].sort());
-	await expect(cards(page).filter({ hasText: charted })).toHaveCount(1);
+	await expect(cards(page).getByRole('heading', { name: 'Analytics', exact: true })).toHaveCount(2);
 	await expect(cards(page).filter({ hasText: former })).toHaveCount(0);
 	await at(page, project.tip.revision.commit);
 	await pictured(page, info, 'pages-tip-selected');

@@ -69,7 +69,7 @@ async function openDraftThroughUi(page: Page, root: string) {
 	await expect(page.getByLabel('Branch', { exact: true })).toHaveValue('feat/native');
 	await expect(page.getByRole('button', { name: 'New page' })).toHaveCount(0);
 	await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toBeVisible();
-	await page.getByRole('link', { name: 'Review designs →', exact: true }).click();
+	await page.getByRole('link', { name: 'Open Native activity', exact: true }).click();
 	const sections = page.getByRole('navigation', { name: 'Entity sections' });
 	await sections.getByRole('button', { name: 'Designs', exact: true }).click();
 	await expect(page.getByRole('heading', { name: 'No design image yet' })).toBeVisible();
@@ -130,7 +130,7 @@ async function historical(page: Page, commit: string, unitId: string) {
 	await page.getByLabel('Commit', { exact: true }).selectOption(commit);
 	await expect(page).toHaveURL(new RegExp(`/branch/feat%2Fnative/commit/${commit}/pages$`));
 	await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toHaveCount(0);
-	await page.getByRole('link', { name: 'Review designs' }).click();
+	await page.getByRole('link', { name: 'Open Native activity' }).click();
 	await expect(page.getByRole('button', { name: 'Approve v001', exact: true })).toBeDisabled();
 	await nativeCapture(page, { state: 'history', unitId, commit });
 	const rejected = await page.evaluate(async () => {

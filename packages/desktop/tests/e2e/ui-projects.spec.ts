@@ -55,7 +55,7 @@ test('an answer for the previous project that arrives late is never rendered', a
 			entity: 600
 		};
 	});
-	await page.getByRole('link', { name: 'Review designs' }).click();
+	await page.getByRole('link', { name: 'Open Alpha activity' }).click();
 	await page.getByLabel('Project', { exact: true }).selectOption(beta);
 	const betaPages = new RegExp(`/projects/${beta}/harness/branch/main/pages$`);
 	await expect(page).toHaveURL(betaPages);
@@ -71,7 +71,7 @@ test('the same entity id of another project shows no thread, message or image of
 	page
 }) => {
 	await openAlpha(page);
-	await page.getByRole('link', { name: 'Review designs' }).click();
+	await page.getByRole('link', { name: 'Open Alpha activity' }).click();
 	await page.getByRole('button', { name: 'Open thread 1', exact: true }).click();
 	await expect(page.getByText('Alpha: keep the filters on one line.')).toBeVisible();
 	await expect(

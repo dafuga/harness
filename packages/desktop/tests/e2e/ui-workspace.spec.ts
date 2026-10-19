@@ -19,11 +19,11 @@ test('designless Plan preserves truthful status and branch/commit paths', async 
 	await expect(
 		page.getByRole('navigation', { name: 'Catalog categories' }).getByRole('link')
 	).toHaveCount(6);
-	await expect(page.getByRole('link', { name: 'Review designs' })).toHaveAttribute(
+	await expect(page.getByRole('link', { name: 'Open Activity' })).toHaveAttribute(
 		'href',
 		'/harness/branch/feat%2Factivity/pages/page%3Aactivity/designs'
 	);
-	await page.getByRole('link', { name: 'Review designs' }).click();
+	await page.getByRole('link', { name: 'Open Activity' }).click();
 	if (process.env.TAKE_SCREENSHOT === 'true') {
 		await page.evaluate(async () => {
 			await document.fonts.ready;
@@ -48,7 +48,7 @@ test('designless Plan preserves truthful status and branch/commit paths', async 
 	await page.getByLabel('Commit', { exact: true }).selectOption('b'.repeat(40));
 	await expect(page).toHaveURL(/branch\/feat%2Factivity\/commit\/b{40}\/pages/);
 	await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toHaveCount(0);
-	await expect(page.getByRole('link', { name: 'Review designs' })).toHaveAttribute(
+	await expect(page.getByRole('link', { name: 'Open Activity' })).toHaveAttribute(
 		'href',
 		`/harness/branch/feat%2Factivity/commit/${'b'.repeat(40)}/pages/page%3Aactivity/designs`
 	);

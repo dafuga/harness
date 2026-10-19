@@ -105,7 +105,7 @@ test('a paired phone shows the same workspace through the native adapter', async
 		'href',
 		`${pages}/components`
 	);
-	await page.getByRole('link', { name: 'Review designs' }).click();
+	await page.getByRole('link', { name: 'Open Alpha activity' }).click();
 	const image = page.getByRole('img', { name: 'Alpha activity v002 desktop default' });
 	await expect(image).toBeVisible();
 	await expect
