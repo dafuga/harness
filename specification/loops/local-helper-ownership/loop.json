@@ -1,6 +1,6 @@
 {
 	"name": "local-helper-ownership",
-	"goal": "Every existing single-consumer helper lives beside its owning component, service or function while shared helpers, contracts and registered history remain intact.",
+	"goal": "Move every confirmed single-consumer helper beside its owner using the complete runtime consumer inventory, preserving definitions, shared access and registered history.",
 	"createdAt": "2026-10-19T17:50:47.275Z",
 	"updatedAt": "2026-10-19T17:57:14.162Z",
 	"template": "bug-fix",
@@ -13,14 +13,14 @@
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
 			"status": "complete",
 			"completedAt": "2026-10-19T17:57:13.443Z",
-			"evidence": "Relocate all 412 baseline single-consumer helpers into owner-local folders. Preserve 392 shared helpers, implementation semantics, stable registered identities and source/history evidence. Migration ledger names each helper and owner."
+			"evidence": "The corrected scan counts named functions in all registered source kinds: 404 shared, 411 single-consumer, 67 without a counted consumer. Move the 411 confirmed private helpers; preserve genuinely shared definitions and stable identities."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
 			"status": "complete",
 			"completedAt": "2026-10-19T17:57:14.162Z",
-			"evidence": "Existing unit-index relocation coverage proves synthetic moves and identity retention but does not check the actual repository helper layout. Extend that standardized suite with the committed migration ledger, definition fingerprints and owner-folder assertions."
+			"evidence": "Synthetic unit-index relocation coverage did not check actual repository placement. The migration ledger, definition fingerprints and owner-folder assertions cover all 411 confirmed private helpers. The ledger is frozen explicitly as a regression input."
 		},
 		{
 			"id": "red",

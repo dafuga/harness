@@ -1,6 +1,6 @@
 {
 	"schemaVersion": 1,
-	"baseline": "352ddac1",
+	"baseline": "d909f261",
 	"helpers": [
 		{
 			"unit": "collaboration.function.add-comment",
@@ -231,6 +231,18 @@
 			"definition": "c8a48da6fe97bb907089dfdcac2337dfcf9fa6bd89486f3ad298f0866db137ac"
 		},
 		{
+			"unit": "desktop.function.brand-icon",
+			"name": "brandIcon",
+			"consumer": {
+				"unit": "desktop.script.mac-icon",
+				"symbol": "macIcon"
+			},
+			"from": "packages/desktop/src/utils/brandIcon.ts",
+			"to": "packages/desktop/scripts/mac-icon/brandIcon.ts",
+			"ownerSource": "packages/desktop/scripts/mac-icon/mac-icon.ts",
+			"definition": "a27e5791fac2abaf349a2d339afeee33a1a212d43e726be4d5d478ca2a969ce0"
+		},
+		{
 			"unit": "desktop.function.cache-status",
 			"name": "offlineView",
 			"consumer": {
@@ -444,6 +456,18 @@
 			"to": "packages/desktop/src/utils/plan-design/designDirections.ts",
 			"ownerSource": "packages/desktop/src/utils/plan-design/planDesign.ts",
 			"definition": "187a87ebf4a051baa12c7dd3180845d6ce962df2c9b9608412b3b9f3c1658b79"
+		},
+		{
+			"unit": "desktop.function.desktop-ipc",
+			"name": "desktopIpc",
+			"consumer": {
+				"unit": "desktop.initializer.initialize-desktop",
+				"symbol": "initializeDesktop"
+			},
+			"from": "packages/desktop/src/utils/desktopIpc.ts",
+			"to": "packages/desktop/src/initializers/initialize-desktop/desktopIpc.ts",
+			"ownerSource": "packages/desktop/src/initializers/initialize-desktop/initializeDesktop.ts",
+			"definition": "a7dda3197ba681d277d34a121d4cf23338b9c9a820f72cf9c583d293c651867e"
 		},
 		{
 			"unit": "desktop.function.device-capabilities",
@@ -1080,9 +1104,21 @@
 				"symbol": "rendererAssets"
 			},
 			"from": "packages/desktop/src/utils/rendererAssets.ts",
-			"to": "packages/desktop/src/utils/renderer-assets/rendererAssets.ts",
-			"ownerSource": "packages/desktop/src/utils/renderer-assets/rendererAssets.ts",
+			"to": "packages/desktop/src/initializers/initialize-desktop/rendererAssets.ts",
+			"ownerSource": "packages/desktop/src/initializers/initialize-desktop/rendererAssets.ts",
 			"definition": "3e001edb5672577219476deb337693239e22a58514eeed897d0405d56a05eca0"
+		},
+		{
+			"unit": "desktop.function.renderer-assets",
+			"name": "rendererAssets",
+			"consumer": {
+				"unit": "desktop.initializer.initialize-desktop",
+				"symbol": "initializeDesktop"
+			},
+			"from": "packages/desktop/src/utils/rendererAssets.ts",
+			"to": "packages/desktop/src/initializers/initialize-desktop/rendererAssets.ts",
+			"ownerSource": "packages/desktop/src/initializers/initialize-desktop/initializeDesktop.ts",
+			"definition": "c4b3262cbe0cb6122bc0fc9d388c7d3401828bb56f85f27b08aafd2355d0090e"
 		},
 		{
 			"unit": "desktop.function.rpc-messages",
@@ -1197,6 +1233,18 @@
 			"to": "packages/desktop/src/components/thread-links/threadAnchor.ts",
 			"ownerSource": "packages/desktop/src/components/thread-links/ThreadLinks.svelte",
 			"definition": "488b36936543e3b1a559399d82e4a86f533aa1fcac924769eb4d90b31376df44"
+		},
+		{
+			"unit": "desktop.function.trusted-sender",
+			"name": "trustedSender",
+			"consumer": {
+				"unit": "desktop.initializer.initialize-desktop",
+				"symbol": "bootstrap"
+			},
+			"from": "packages/desktop/src/utils/trustedSender.ts",
+			"to": "packages/desktop/src/initializers/initialize-desktop/trustedSender.ts",
+			"ownerSource": "packages/desktop/src/initializers/initialize-desktop/initializeDesktop.ts",
+			"definition": "6990458f0bca67f29bb67a0da70e500095b1ae0dc9440defbc07e9e5e68027fb"
 		},
 		{
 			"unit": "desktop.function.unit-links",
@@ -1323,18 +1371,6 @@
 			"definition": "e4793ef65cf6479176871704a45cd4b24fa8c94999dc4c5f3c931d8b85a97969"
 		},
 		{
-			"unit": "function.case",
-			"name": "toSnakeCase",
-			"consumer": {
-				"unit": "function.fields",
-				"symbol": "parseField"
-			},
-			"from": "src/core/case.ts",
-			"to": "src/workflows/generate-code/case.ts",
-			"ownerSource": "src/workflows/generate-code/fields.ts",
-			"definition": "d8a2ea1f7d5b379ef09f88376f720e24d2fc019e66555a1fb71c5629866fd67b"
-		},
-		{
 			"unit": "function.commit-message",
 			"name": "writtenMessage",
 			"consumer": {
@@ -1402,30 +1438,6 @@
 			"to": "packages/reports/src/utils/console-server/consoleAccess.ts",
 			"ownerSource": "packages/reports/src/utils/console-server/consoleServer.ts",
 			"definition": "1a3de46dae8c462b09e85fc3700734eb995a9d80ba840380faf23868a41bd428"
-		},
-		{
-			"unit": "function.console-canonical",
-			"name": "explorerExact",
-			"consumer": {
-				"unit": "function.console-canonical",
-				"symbol": "explorerAddress"
-			},
-			"from": "src/utils/consoleCanonical.ts",
-			"to": "src/utils/console-canonical/consoleCanonical.ts",
-			"ownerSource": "src/utils/console-canonical/consoleCanonical.ts",
-			"definition": "a67828d31de525cf3fd2bccf0454d21e0c1c146a45df4fc1c564ff1989d81a69"
-		},
-		{
-			"unit": "function.console-canonical",
-			"name": "consoleCanonical",
-			"consumer": {
-				"unit": "function.console-access",
-				"symbol": "redirected"
-			},
-			"from": "src/utils/consoleCanonical.ts",
-			"to": "packages/reports/src/utils/console-server/consoleCanonical.ts",
-			"ownerSource": "packages/reports/src/utils/console-server/consoleAccess.ts",
-			"definition": "9fdbcc6899b39324ed07cbbff46ef37e35f06351d70e07bf88acdf39f7b2400a"
 		},
 		{
 			"unit": "function.console-data-modules",
@@ -1598,17 +1610,6 @@
 			"to": "src/workflows/generate-code/exports.ts",
 			"ownerSource": "src/workflows/generate-code/exports.ts",
 			"definition": "d437bc610dd361fab906457b96217df50d03ac615124470c31eeb40d4fb5f220"
-		},
-		{
-			"unit": "function.fields",
-			"name": "parseFields",
-			"consumer": {
-				"unit": "workflow.generate-code"
-			},
-			"from": "src/core/fields.ts",
-			"to": "src/workflows/generate-code/fields.ts",
-			"ownerSource": "src/workflows/generate-code/generateCode.ts",
-			"definition": "d242a21df6b48194571f9fd802a603e925139960ea47efbbc999acd1267857f9"
 		},
 		{
 			"unit": "function.gateway-messages",
@@ -2052,28 +2053,28 @@
 			"definition": "25e304af3918259b5978added482dbc223b443c7251c28ab16159c08391254ce"
 		},
 		{
-			"unit": "function.platform-services",
-			"name": "platformServices",
+			"unit": "function.pinned-toolchain",
+			"name": "pinnedToolchain",
 			"consumer": {
-				"unit": "function.run-isolated",
-				"symbol": "guarding"
+				"unit": "script.build-kernel",
+				"symbol": "rust"
 			},
-			"from": "src/utils/platformServices.ts",
-			"to": "src/utils/run-isolated/platformServices.ts",
-			"ownerSource": "src/utils/run-isolated/runIsolated.ts",
-			"definition": "4dbfb856a1be405dac13895866f18663611d30c88182b6b0cf5b1d5630c37224"
+			"from": "src/utils/pinnedToolchain.ts",
+			"to": "scripts/build-kernel/pinnedToolchain.ts",
+			"ownerSource": "scripts/build-kernel/build-kernel.ts",
+			"definition": "a8b1d791623176cc45410621c95b89d682d545c10500f08ff32078f24005f181"
 		},
 		{
-			"unit": "function.platform-services",
-			"name": "classifyProcess",
+			"unit": "function.planning-artifact-paths",
+			"name": "planningArtifactPaths",
 			"consumer": {
-				"unit": "function.settle-processes",
-				"symbol": "judged.one"
+				"unit": "audit.structure-rules",
+				"symbol": "auditHarnessStructure"
 			},
-			"from": "src/utils/platformServices.ts",
-			"to": "src/utils/run-isolated/platformServices.ts",
-			"ownerSource": "src/utils/run-isolated/settleProcesses.ts",
-			"definition": "57adfd6d86392ccf5f5881f0b6668fe351fbf9dc02d18ebc1cfa1be638632ea8"
+			"from": "src/utils/planningArtifactPaths.ts",
+			"to": "src/audit/structure-rules/planningArtifactPaths.ts",
+			"ownerSource": "src/audit/structure-rules/structureRules.ts",
+			"definition": "42242cdeb448b751e6b3c74f540eefa49361d5b0f6848b223be681e964446c75"
 		},
 		{
 			"unit": "function.platform-services",
@@ -2086,30 +2087,6 @@
 			"to": "src/utils/run-isolated/platformServices.ts",
 			"ownerSource": "src/utils/run-isolated/settleProcesses.ts",
 			"definition": "45935f151c2fe1ea072af92c6347aca0d9589d42011fcd488fb46949de006cae"
-		},
-		{
-			"unit": "function.process-descendants",
-			"name": "processDescendants",
-			"consumer": {
-				"unit": "function.run-isolated",
-				"symbol": "execute"
-			},
-			"from": "src/utils/processDescendants.ts",
-			"to": "src/utils/run-isolated/processDescendants.ts",
-			"ownerSource": "src/utils/run-isolated/runIsolated.ts",
-			"definition": "ff65577f58ac2a8927714d812787074f628c07fba5a131c40f0a584bab9a8ba7"
-		},
-		{
-			"unit": "function.process-descendants",
-			"name": "signalProcesses",
-			"consumer": {
-				"unit": "function.group-teardown",
-				"symbol": "groupTeardown"
-			},
-			"from": "src/utils/processDescendants.ts",
-			"to": "src/utils/run-isolated/processDescendants.ts",
-			"ownerSource": "src/utils/run-isolated/groupTeardown.ts",
-			"definition": "3b2e513bedf02804702ce085fdfb6f829d18d8c469278afc96511ac5419cad6c"
 		},
 		{
 			"unit": "function.project",
@@ -2506,8 +2483,8 @@
 				"symbol": "parseField"
 			},
 			"from": "src/core/validation.ts",
-			"to": "src/workflows/generate-code/validation.ts",
-			"ownerSource": "src/workflows/generate-code/fields.ts",
+			"to": "src/core/fields/validation.ts",
+			"ownerSource": "src/core/fields/fields.ts",
 			"definition": "2a226b19007f40900b39129e3e3ca76395475dba919a445ebe310dc4fce25009"
 		},
 		{
@@ -3304,6 +3281,18 @@
 		},
 		{
 			"unit": "planning.function.plan-git",
+			"name": "planGit",
+			"consumer": {
+				"unit": "planning.entry.index",
+				"symbol": "createPlanning"
+			},
+			"from": "packages/planning/src/utils/planGit.ts",
+			"to": "packages/planning/src/index/planGit.ts",
+			"ownerSource": "packages/planning/src/index/index.ts",
+			"definition": "37ff6fa29d5106b2a3c6f6140638a972269472569f6d819884db70a2389bf3ed"
+		},
+		{
+			"unit": "planning.function.plan-git",
 			"name": "containing",
 			"consumer": {
 				"unit": "planning.function.plan-read",
@@ -3905,18 +3894,6 @@
 			"definition": "d274d12bab2bc380fae3c44810ed9c93780db5e79cfa731d599458010992a2ef"
 		},
 		{
-			"unit": "reports.function.explorer-behavior",
-			"name": "explorerBehavior",
-			"consumer": {
-				"unit": "desktop.function.recorded-answer",
-				"symbol": "recordedAnswer"
-			},
-			"from": "packages/reports/src/utils/explorerBehavior.ts",
-			"to": "packages/desktop/src/utils/recorded-answer/explorerBehavior.ts",
-			"ownerSource": "packages/desktop/src/utils/recorded-answer/recordedAnswer.ts",
-			"definition": "88cbe4d0a43aa3784a5f3c58d4b3201057293f1ad829c2cdf17b02a38b30ec07"
-		},
-		{
 			"unit": "reports.function.explorer-coverage",
 			"name": "coverageAffected",
 			"consumer": {
@@ -3962,18 +3939,6 @@
 			"to": "packages/reports/src/utils/explorer-reading/explorerReading.ts",
 			"ownerSource": "packages/reports/src/utils/explorer-reading/explorerReading.ts",
 			"definition": "e0a95083858cbad54ade5b713550001fc1de41f4749ebf97f6b3ae7e1d3b3535"
-		},
-		{
-			"unit": "reports.function.explorer-relations",
-			"name": "explorerRelationsReader",
-			"consumer": {
-				"unit": "reports.function.explorer-relations",
-				"symbol": "explorerRelations"
-			},
-			"from": "packages/reports/src/utils/explorerRelations.ts",
-			"to": "packages/reports/src/utils/explorer-relations/explorerRelations.ts",
-			"ownerSource": "packages/reports/src/utils/explorer-relations/explorerRelations.ts",
-			"definition": "dc6ea94e3f41ffc273b7b9bb300ced3a557750778bc427948651d58d28b6a1ac"
 		},
 		{
 			"unit": "reports.function.explorer-scope",
@@ -4328,16 +4293,28 @@
 			"definition": "9d979493619d1b4e0a3da9d2c2f2b9c56670358f3d44a285e75c453e7cf0c02d"
 		},
 		{
-			"unit": "reports.function.preview-arguments",
-			"name": "previewArguments",
+			"unit": "reports.function.preview-health",
+			"name": "closePreviewSessions",
 			"consumer": {
-				"unit": "reports.function.preview-node",
-				"symbol": "previewNode"
+				"unit": "reports.initializer.initialize-preview",
+				"symbol": "initializePreview.quit"
 			},
-			"from": "packages/reports/src/utils/previewArguments.ts",
-			"to": "packages/reports/src/utils/preview-node/previewArguments.ts",
-			"ownerSource": "packages/reports/src/utils/preview-node/previewNode.ts",
-			"definition": "c2c1ebdda9e604ae591d81472d87281c73e011810b3e9caef6300dc8e5b32f41"
+			"from": "packages/reports/src/utils/previewHealth.ts",
+			"to": "packages/reports/src/initializers/initialize-preview/previewHealth.ts",
+			"ownerSource": "packages/reports/src/initializers/initialize-preview/initializePreview.ts",
+			"definition": "403022e2cd5509983d8b4b5b087808560f16fbdb788051d29c9508cee4147bc9"
+		},
+		{
+			"unit": "reports.function.preview-health",
+			"name": "previewHealth",
+			"consumer": {
+				"unit": "reports.initializer.initialize-preview",
+				"symbol": "initializePreview.start"
+			},
+			"from": "packages/reports/src/utils/previewHealth.ts",
+			"to": "packages/reports/src/initializers/initialize-preview/previewHealth.ts",
+			"ownerSource": "packages/reports/src/initializers/initialize-preview/initializePreview.ts",
+			"definition": "ae650267f9aaa725e3d5f8698104a842d06410ea83eb05d3560c7441e532a449"
 		},
 		{
 			"unit": "reports.function.preview-health",
@@ -4471,6 +4448,18 @@
 			"to": "packages/reports/src/services/report-command-service/reportCli.ts",
 			"ownerSource": "packages/reports/src/services/report-command-service/ReportCommandService.ts",
 			"definition": "f31bbc81ae3721099e5e9d122de98a366df85534c130fe700392d0470af7b10e"
+		},
+		{
+			"unit": "reports.function.report-destination",
+			"name": "reportDestination",
+			"consumer": {
+				"unit": "reports.page.harness-reports-id",
+				"symbol": "load"
+			},
+			"from": "packages/reports/src/utils/reportDestination.ts",
+			"to": "packages/reports/src/routes/harness/reports/[id]/-page-server/reportDestination.ts",
+			"ownerSource": "packages/reports/src/routes/harness/reports/[id]/-page-server/+page.server.ts",
+			"definition": "2bcc5ced1e1609fb6cf5c03b64bfa635ddac93840e2964c2a1dc06e92c962092"
 		},
 		{
 			"unit": "reports.function.report-display",

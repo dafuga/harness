@@ -2,7 +2,7 @@
 	"name": "complete-helper-consumers",
 	"goal": "Count actual named-function callers in every registered source kind, including templates, workflows, config and route functions, before deciding whether a helper is private.",
 	"createdAt": "2026-10-19T18:03:36.732Z",
-	"updatedAt": "2026-10-19T18:03:36.732Z",
+	"updatedAt": "2026-10-19T18:05:45.292Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -11,12 +11,16 @@
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T18:05:44.828Z",
+			"evidence": "A helper used by a named template, config or route function has an actual function consumer regardless of the registered module kind."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T18:05:45.292Z",
+			"evidence": "The standard consumer matrix covered components/services and conventional function modules but omitted named functions in template/config/route units. Two reusable matrix rows expose the omission."
 		},
 		{
 			"id": "red",

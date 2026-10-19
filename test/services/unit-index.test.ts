@@ -65,7 +65,7 @@ test('recorded source moves retain definitions, owner-local placement and regist
 		if (unit.id !== move.unit || !unit.owns.source.includes(move.to))
 			gaps.push(`${move.name}: registered identity lost`);
 	}
-	expect(migration.helpers).toHaveLength(412);
+	expect(migration.helpers).toHaveLength(411);
 	expect(
 		gaps,
 		`owner-local helper placement: ${gaps.length} gaps; ${gaps.slice(0, 12).join('; ')}`
