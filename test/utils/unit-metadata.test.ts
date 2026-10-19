@@ -45,6 +45,24 @@ test('revision metadata lists standalone shared exports without requiring caller
 const cases: Array<{ files: Record<string, string>; count: number }> = [
 	{
 		files: {
+			'src/templates/one.ts':
+				"import { shared } from '../utils/shared'; export function firstTemplate() { return shared(); }",
+			'src/workflows/other.ts':
+				"import { shared } from '../utils/shared'; export function otherWorkflow() { return shared(); }"
+		},
+		count: 2
+	},
+	{
+		files: {
+			'src/config/options.ts':
+				"import { shared } from '../utils/shared'; export function configuration() { return shared(); }",
+			'src/routes/+page.server.ts':
+				"import { shared } from '../utils/shared'; export function load() { return shared(); }"
+		},
+		count: 2
+	},
+	{
+		files: {
 			'src/services/OneService.ts':
 				"import { shared } from '../utils/shared'; export class OneService { run() { shared(); shared(); } }"
 		},
