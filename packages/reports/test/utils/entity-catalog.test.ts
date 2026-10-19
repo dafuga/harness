@@ -66,6 +66,10 @@ test('search reads names and purposes, changed only keeps changes, and an order 
 	const failing = [...rows('functions', partial), ...rows('pages', partial)];
 	expect(catalogFilter(failing, { ...filter, order: 'failed' })[0].name).toBe('Orders page');
 	expect(catalogFilter(all, { ...filter, search: 'nothing-matches' })).toEqual([]);
+	expect(
+		catalogFilter(rows('functions'), { ...filter, search: ' FILTERORDERS ' }).map((row) => row.id),
+		'visible function symbols are searchable'
+	).toEqual([ids.filter]);
 	// Filtering leaves the rows it was given as they were.
 	expect(names(all)).toEqual(['Order card', 'Order list', 'Search box']);
 });
