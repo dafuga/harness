@@ -1,13 +1,12 @@
 import { execFileSync, spawn, type ChildProcess } from 'node:child_process';
 import { once } from 'node:events';
-import { mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises';
 import { createServer } from 'node:net';
 import type { AddressInfo } from 'node:net';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterEach, expect, test } from 'vitest';
-
 const reports = fileURLToPath(new URL('..', import.meta.url));
 const roots: string[] = [],
 	children: ChildProcess[] = [];
@@ -85,7 +84,6 @@ async function ready(webPort: number) {
 async function exited(run: ReturnType<typeof start>) {
 	await expect.poll(() => run.child.exitCode, { timeout: 4000 }).not.toBeNull();
 }
-
 test('repeated starts on another requested port reuse the same owned preview', async () => {
 	const f = await fixture(),
 		firstPort = await port(),
@@ -99,7 +97,6 @@ test('repeated starts on another requested port reuse the same owned preview', a
 	await expect(fetch(`http://127.0.0.1:${nextPort}`)).rejects.toThrow();
 	await ready(firstPort);
 }, 30000);
-
 test('another history configuration is refused without starting a second preview', async () => {
 	const f = await fixture(),
 		firstPort = await port(),
@@ -113,7 +110,6 @@ test('another history configuration is refused without starting a second preview
 	await expect(fetch(`http://127.0.0.1:${nextPort}`)).rejects.toThrow();
 	await ready(firstPort);
 }, 30000);
-
 test('an occupied preview port is refused instead of silently choosing another', async () => {
 	const f = await fixture(),
 		webPort = await port(),
@@ -131,7 +127,6 @@ test('an occupied preview port is refused instead of silently choosing another',
 	start(f, webPort);
 	await ready(webPort);
 }, 30000);
-
 test('an owner that crashes can be restarted without a stale lock or orphan preview', async () => {
 	const f = await fixture(),
 		webPort = await port(),
@@ -143,7 +138,6 @@ test('an owner that crashes can be restarted without a stale lock or orphan prev
 	start(f, webPort);
 	await ready(webPort);
 }, 30000);
-
 test('simultaneous launches elect one owner while the other reuses it', async () => {
 	const f = await fixture(),
 		webPort = await port();
@@ -156,7 +150,6 @@ test('simultaneous launches elect one owner while the other reuses it', async ()
 	expect(reused.child.exitCode).toBe(0);
 	expect(reused.text()).toContain(`Reusing Harness preview: http://127.0.0.1:${webPort}`);
 }, 30000);
-
 test('a different checkout is refused without affecting the owner', async () => {
 	const f = await fixture(),
 		other = await fixture(),
@@ -170,7 +163,6 @@ test('a different checkout is refused without affecting the owner', async () => 
 	expect(second.text()).toContain(`already running at http://127.0.0.1:${webPort}`);
 	await ready(webPort);
 }, 30000);
-
 test('normal shutdown releases both the preview and ownership listeners', async () => {
 	const f = await fixture(),
 		webPort = await port(),
@@ -193,17 +185,32 @@ test('normal shutdown releases both the preview and ownership listeners', async 
 	start(f, webPort);
 	await ready(webPort);
 }, 30000);
-
 test('route indexes stay aligned after the normal SvelteKit sync command', async () => {
-	const webPort = await port();
-	start({ root: reports, owner: await port() }, webPort, 'one', join(reports, 'vite.config.ts'));
+	const f = await fixture(),
+		webPort = await port();
+	await symlink(join(reports, 'node_modules'), join(f.root, 'node_modules'), 'dir');
+	const files = {
+		'package.json': '{"type":"module"}',
+		'vite.config.mjs':
+			'import {sveltekit} from "@sveltejs/kit/vite";export default {plugins:[sveltekit()]};',
+		'svelte.config.js': 'export default {};',
+		'src/app.html':
+			'<!doctype html><html><head>%sveltekit.head%</head><body><div style="display:contents">%sveltekit.body%</div></body></html>',
+		'src/routes/pages/+page.svelte': '<h1>Pages</h1>',
+		'src/routes/a-first/+page.svelte': '<h1>Added later, sorts earlier</h1>'
+	};
+	for (const [path, text] of Object.entries(files)) {
+		await mkdir(dirname(join(f.root, path)), { recursive: true });
+		await writeFile(join(f.root, path), text);
+	}
+	start(f, webPort);
 	const url = `http://127.0.0.1:${webPort}`;
 	let html = '';
 	await expect
 		.poll(
 			async () => {
 				try {
-					html = await (await fetch(url + '/harness/branch/main/pages')).text();
+					html = await (await fetch(url + '/pages')).text();
 					return html.includes('node_ids:');
 				} catch {
 					return false;
@@ -212,7 +219,7 @@ test('route indexes stay aligned after the normal SvelteKit sync command', async
 			{ timeout: 20000 }
 		)
 		.toBe(true);
-	execFileSync('bun', ['x', 'svelte-kit', 'sync'], { cwd: reports, stdio: 'pipe' });
+	execFileSync('bun', ['x', 'svelte-kit', 'sync'], { cwd: f.root, stdio: 'pipe' });
 	const ids = JSON.parse(/node_ids: (\[[^\]]+\])/.exec(html)![1]) as number[];
 	const leaf = await (
 		await fetch(url + `/.svelte-kit/generated/client/nodes/${ids.at(-1)}.js`)
