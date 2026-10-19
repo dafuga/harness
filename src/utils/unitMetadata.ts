@@ -2,10 +2,16 @@ import { createHash } from 'node:crypto';
 import type { ExportedSymbol, SourceTree } from '../core/sourceTypes';
 import type { RevisionRegistry } from './revisionRegistry';
 import { scanExports } from './scanExports';
-import { hydrateUnitDocumentation } from './unitDocumentation';
+import { hydrateUnitDocumentation, type UnitDocumentation } from './unitDocumentation';
 
 export interface PublicHelper extends Pick<ExportedSymbol, 'name' | 'inputs' | 'output'> {
 	source: string;
+}
+
+export interface UnitMetadata {
+	documentation?: UnitDocumentation;
+	helpers?: PublicHelper[];
+	helperGap?: string;
 }
 
 type Unit = RevisionRegistry['units'][number];

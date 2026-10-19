@@ -2,7 +2,7 @@
 	"name": "shared-helper-catalog",
 	"goal": "List only exported codebase-wide helpers, with real signatures from the selected commit.",
 	"createdAt": "2026-10-19T15:26:50.310Z",
-	"updatedAt": "2026-10-19T15:33:38.492Z",
+	"updatedAt": "2026-10-19T15:36:24.748Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T15:36:24.748Z",
+			"evidence": "0f7a9504: unchanged catalog/rendering tests, all three viewport checks and exact-commit history integration pass after failing at b62e8899. Screenshots preserved in /tmp/harness-helpers-after."
 		},
 		{
 			"id": "verify",
