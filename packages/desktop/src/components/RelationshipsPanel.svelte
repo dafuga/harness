@@ -22,7 +22,8 @@
 		components: ['Components', 'Component'],
 		functions: ['Functions', 'Function'],
 		configs: ['Configs', 'Config'],
-		services: ['Services', 'Service']
+		services: ['Services', 'Service'],
+		models: ['Models', 'Model']
 	};
 	const other: [string, string] = ['Other', 'Other'];
 	const kind = (item: Relationship) => (item.category ? kinds[item.category] : other);

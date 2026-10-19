@@ -93,5 +93,6 @@ export const categoryIcon: Record<ExplorerCategory, HarnessIconName> = {
 	components: 'components',
 	functions: 'functions',
 	configs: 'configs',
-	services: 'services'
+	services: 'services',
+	models: 'database'
 };

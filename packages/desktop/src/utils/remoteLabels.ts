@@ -13,6 +13,7 @@ export const awayNote = 'It is asleep or has no network. Nothing is sent until i
 
 export const revokedNote = 'Pair again from your computer to continue.';
 
+/** @pure */
 export const plural = (count: number, word: string) => `${count} ${word}${count === 1 ? '' : 's'}`;
 
 /** The start of a device identity, which is the hash of its key, in groups a person can compare. */
@@ -21,6 +22,7 @@ export function keyLabel(deviceId: string): string {
 }
 
 /** A whole device identity, which is the hash of its key, in groups a person can compare. */
+/** @pure */
 export function identityLabel(deviceId: string): string {
 	return (deviceId.match(/.{1,4}/g) ?? []).join(' ');
 }

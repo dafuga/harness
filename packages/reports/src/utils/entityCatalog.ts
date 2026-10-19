@@ -81,6 +81,7 @@ function rowOf(entity: ExplorerEntity, related: Relations): CatalogRow {
 
 function sharedHelper(helper: NonNullable<CatalogRow['helper']>): boolean {
 	return (
+		helper.pure === true &&
 		new Set(helper.consumers?.map((consumer) => `${consumer.unit}#${consumer.symbol ?? ''}`))
 			.size >= 2
 	);

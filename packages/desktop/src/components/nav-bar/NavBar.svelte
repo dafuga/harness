@@ -28,7 +28,10 @@
 				{workspace}
 				to={workspace.path(category)}
 				class={workspace.category === category ? 'active' : ''}
-				><Icon name={category} /><span>{category[0].toUpperCase() + category.slice(1)}</span
+				><Icon name={category} /><span
+					>{category === 'functions'
+						? 'Helpers'
+						: category[0].toUpperCase() + category.slice(1)}</span
 				></WorkspaceLink
 			>{/each}
 	</nav>

@@ -1,3 +1,4 @@
+import { pureHelpers } from './pureHelpers';
 import { helperConsumers } from './helperConsumers';
 import { type HelperTree } from '../../utils/helperConsumers';
 import { createHash } from 'node:crypto';
@@ -14,13 +15,16 @@ const shared =
 	/(?:^|\/)src\/(?:utils|helpers|functions|core|lib\/(?:utils|helpers|functions))\/.+\.(?:[cm]?[jt]s|[jt]sx)$/;
 
 // Keys hash bytes actually read, never an unchecked revision-looking string.
-const scanned = new Map<string, ExportedSymbol[]>();
+const scanned = new Map<string, Array<ExportedSymbol & { pure: boolean }>>();
 
-function exportsOf(text: string): ExportedSymbol[] {
+function exportsOf(text: string): Array<ExportedSymbol & { pure: boolean }> {
 	const key = createHash('sha256').update(text).digest('hex');
 	const held = scanned.get(key);
 	if (held) return held;
-	const exports = scanExports(text).symbols.filter((symbol) => symbol.kind === 'function');
+	const pure = pureHelpers(text);
+	const exports = scanExports(text)
+		.symbols.filter((symbol) => symbol.kind === 'function')
+		.map((symbol) => ({ ...symbol, pure: pure.has(symbol.name) }));
 	if (scanned.size >= 4096) scanned.delete(scanned.keys().next().value!);
 	scanned.set(key, exports);
 	return exports;

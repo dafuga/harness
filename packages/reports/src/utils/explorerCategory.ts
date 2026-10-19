@@ -26,7 +26,7 @@ const renders = (unit: Classified) =>
  * The one category a unit is listed under, or null for a unit that is none of the six. A page
  * is what renders an address, whatever kind it was registered as; a route file that renders
  * nothing answers a request, as a service does, and a layout frames pages, as a component does.
- * A rule, a guide, a template, a model, a script or a style sheet has no category: it is not
+ * A rule, a guide, a template, a script or a style sheet has no category: it is not
  * presented as a function, and stays reachable from what depends on it under its own role.
  */
 export function explorerCategory(unit: Classified): ExplorerCategory | null {

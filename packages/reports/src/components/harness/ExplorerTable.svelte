@@ -24,6 +24,10 @@
 			['Responsibility', (row) => row.summary],
 			['Used by', users]
 		],
+		models: [
+			['Purpose', (row) => row.summary],
+			['Used by', users]
+		],
 		configs: [
 			['Purpose', (row) => row.summary],
 			['Used by', users],

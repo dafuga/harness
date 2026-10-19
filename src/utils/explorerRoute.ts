@@ -1,11 +1,12 @@
-/** The six kinds of entity the explorer shows, in the order of its navigation. */
+/** The seven kinds of entity the explorer shows, in the order of its navigation. */
 export const explorerCategories = [
 	'pages',
 	'shells',
 	'components',
 	'functions',
 	'configs',
-	'services'
+	'services',
+	'models'
 ] as const;
 export type ExplorerCategory = (typeof explorerCategories)[number];
 
@@ -28,6 +29,7 @@ const kinds = new Map<string, ExplorerCategory>([
 	['form', 'functions'],
 	['config', 'configs'],
 	['initializer', 'configs'],
+	['model', 'models'],
 	['service', 'services'],
 	['endpoint', 'services'],
 	['api', 'services'],
@@ -45,7 +47,7 @@ const kinds = new Map<string, ExplorerCategory>([
 
 /**
  * The category a kind of unit is listed under. Null for a kind that is none of the six: a rule,
- * a guide, a template, a model, a script or anything unknown is not presented as a function.
+ * a guide, a template, a script or anything unknown is not presented as a function.
  */
 export function explorerKindCategory(kind: string): ExplorerCategory | null {
 	return kinds.get(kind) ?? null;

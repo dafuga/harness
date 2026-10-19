@@ -3,12 +3,25 @@
 	"id": "function.unit-metadata",
 	"kind": "function",
 	"title": "Load revision helper metadata",
-	"responsibility": "Loads committed examples, helper signatures and their distinct consumers from the selected revision.",
+	"responsibility": "Reads source contracts and callable signatures, accepting only explicitly declared pure helpers that pass the conservative effect guard.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/revision-detail-service/unitMetadata.ts", "src/utils/unitMetadata.ts"],
-		"symbols": ["unitMetadata", "PublicHelper", "UnitMetadata", "unitMetadata"]
+		"source": [
+			"src/services/revision-detail-service/pureHelperCalls.ts",
+			"src/services/revision-detail-service/pureHelpers.ts",
+			"src/services/revision-detail-service/unitMetadata.ts",
+			"src/utils/unitMetadata.ts"
+		],
+		"symbols": [
+			"pureGlobals",
+			"pureHelperCalls",
+			"pureHelpers",
+			"unitMetadata",
+			"PublicHelper",
+			"UnitMetadata",
+			"unitMetadata"
+		]
 	},
 	"contract": {
 		"origin": "declared",

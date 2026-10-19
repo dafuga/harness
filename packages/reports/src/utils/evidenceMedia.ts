@@ -24,6 +24,7 @@ export function evidenceMedia(item: Pick<Evidence, 'mediaType' | 'file'>): 'imag
 			: 'image')
 	);
 }
+/** @pure */
 export function audioDuration(seconds?: number) {
 	if (seconds === undefined || !Number.isFinite(seconds) || seconds < 0) return '';
 	const total = Math.floor(seconds);

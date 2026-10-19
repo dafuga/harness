@@ -7,7 +7,8 @@ const kinds = [
 	['Components', 'components'],
 	['Functions', 'functions'],
 	['Configs', 'configs'],
-	['Services', 'services']
+	['Services', 'services'],
+	['Models', 'models']
 ] as const;
 
 /** Each of them once, where it was first named. */
@@ -21,7 +22,11 @@ const once = <Item extends { id: string }>(items: Item[]): Item[] => [
  */
 export function entityUsage(relations: ExplorerRelations): EntityUsage {
 	const uses = kinds
-		.map(([title, kind]) => ({ title, icon: categoryIcon[kind], items: once(relations[kind]) }))
+		.map(([title, kind]) => ({
+			title,
+			icon: categoryIcon[kind],
+			items: once(relations[kind] ?? [])
+		}))
 		.filter((group) => group.items.length > 0);
 	const other = once(relations.support);
 	const listed = uses.reduce((sum, group) => sum + group.items.length, 0);

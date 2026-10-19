@@ -18,7 +18,8 @@ export const categories = [
 	'components',
 	'functions',
 	'configs',
-	'services'
+	'services',
+	'models'
 ] as const;
 export type Category = (typeof categories)[number];
 export type ProviderId = 'codex' | 'claude';

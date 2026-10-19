@@ -10,11 +10,13 @@ export const agentStates: Record<AgentState, string> = {
 };
 
 /** A moment as a reader compares it: the UTC day and minute. */
+/** @pure */
 export function activityTime(iso: string): string {
 	const at = new Date(iso);
 	return Number.isFinite(at.getTime()) ? at.toISOString().slice(0, 16).replace('T', ' ') : iso;
 }
 
+/** @pure */
 export const plural = (count: number, word: string): string =>
 	`${count} ${word}${count === 1 ? '' : 's'}`;
 

@@ -2,7 +2,7 @@
 	"name": "pure-helper-catalog",
 	"goal": "Show only declared pure shared helpers and separate models from services",
 	"createdAt": "2026-10-19T20:37:36.628Z",
-	"updatedAt": "2026-10-19T20:37:37.466Z",
+	"updatedAt": "2026-10-19T20:47:13.641Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T20:47:13.117Z",
+			"evidence": "Test-only 3c650c4e fails pure-contract metadata and model classification. The frozen browser catalog flow separately fails its Helpers heading after capturing the rendered before state."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T20:47:13.641Z",
+			"evidence": "Helpers require explicit @pure source declarations, a conservative no-effects/no-hidden-state guard and two consumers. Eleven reviewed formatters qualify. Models have routing, navigation, search, relationships and contract/source views; existing Services and function URLs remain available."
 		},
 		{
 			"id": "green",

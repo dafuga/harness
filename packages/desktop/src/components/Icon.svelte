@@ -5,6 +5,7 @@
 		pages: 'M6 3h9l4 4v14H6z M14 3v5h5 M9 12h7 M9 16h7',
 		shells: 'M3 4h18v16H3z M3 9h18 M8 9v11',
 		components: 'm12 2 9 5v10l-9 5-9-5V7z M3 7l9 5 9-5 M12 12v10',
+		models: 'M4 5h16v14H4zM4 10h16M10 10v9',
 		functions: 'M16 3h-3c-3 0-3 4-4 9s-1 9-4 9 M5 9h11',
 		configs:
 			'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8 M12 2v3 M12 19v3 M2 12h3 M19 12h3 M5 5l2 2 M17 17l2 2 M5 19l2-2 M17 7l2-2',

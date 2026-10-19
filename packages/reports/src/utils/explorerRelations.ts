@@ -141,6 +141,7 @@ function related(graph: Graph, id: string, entity: Entity): ExplorerRelations {
 		functions: of('functions'),
 		configs: of('configs'),
 		services: of('services'),
+		models: of('models'),
 		usedBy: entities(using).filter((found) => found.category !== 'pages'),
 		support: contained.support.map(support)
 	};
