@@ -1,0 +1,211 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [5.96s]
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-q0CRkN/packages/reports
+
+ ❯ test/preview-lifecycle.test.ts (7 tests | 5 failed) 21650ms
+   × repeated starts on another requested port reuse the same owned preview 4398ms
+     → Matcher did not succeed in time.
+   × another history configuration is refused without starting a second preview 4200ms
+     → Matcher did not succeed in time.
+   × an occupied preview port is refused instead of silently choosing another 4008ms
+     → Matcher did not succeed in time.
+   ✓ an owner that crashes can be restarted without a stale lock or orphan preview  337ms
+   × simultaneous launches elect one owner while the other reuses it 4179ms
+     → Matcher did not succeed in time.
+   × a different checkout is refused without affecting the owner 4182ms
+     → Matcher did not succeed in time.
+   ✓ normal shutdown releases both the preview and ownership listeners  346ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/preview-lifecycle.test.ts > repeated starts on another requested port reuse the same owned preview
+Error: Matcher did not succeed in time.
+ ❯ exited test/preview-lifecycle.test.ts:81:69
+     79| }
+     80| async function exited(run: ReturnType<typeof start>) {
+     81|  await expect.poll(() => run.child.exitCode, { timeout: 4000 }).not.to…
+       |                                                                     ^
+     82| }
+     83| 
+ ❯ test/preview-lifecycle.test.ts:91:8
+
+Caused by: AssertionError: expected null not to be null
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  test/preview-lifecycle.test.ts > another history configuration is refused without starting a second preview
+Error: Matcher did not succeed in time.
+ ❯ exited test/preview-lifecycle.test.ts:81:69
+     79| }
+     80| async function exited(run: ReturnType<typeof start>) {
+     81|  await expect.poll(() => run.child.exitCode, { timeout: 4000 }).not.to…
+       |                                                                     ^
+     82| }
+     83| 
+ ❯ test/preview-lifecycle.test.ts:105:8
+
+Caused by: AssertionError: expected null not to be null
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  test/preview-lifecycle.test.ts > an occupied preview port is refused instead of silently choosing another
+Error: Matcher did not succeed in time.
+ ❯ exited test/preview-lifecycle.test.ts:81:69
+     79| }
+     80| async function exited(run: ReturnType<typeof start>) {
+     81|  await expect.poll(() => run.child.exitCode, { timeout: 4000 }).not.to…
+       |                                                                     ^
+     82| }
+     83| 
+ ❯ test/preview-lifecycle.test.ts:120:9
+
+Caused by: AssertionError: expected null not to be null
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  test/preview-lifecycle.test.ts > simultaneous launches elect one owner while the other reuses it
+Error: Matcher did not succeed in time.
+ ❯ test/preview-lifecycle.test.ts:149:4
+    147|  await expect
+    148|   .poll(() => runs.filter((run) => run.child.exitCode !== null).length…
+    149|   .toBe(1);
+       |    ^
+    150|  const reused = runs.find((run) => run.child.exitCode !== null)!;
+    151|  expect(reused.child.exitCode).toBe(0);
+
+Caused by: AssertionError: expected +0 to be 1 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 1[39m
+[31m+ 0[39m
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  test/preview-lifecycle.test.ts > a different checkout is refused without affecting the owner
+Error: Matcher did not succeed in time.
+ ❯ exited test/preview-lifecycle.test.ts:81:69
+     79| }
+     80| async function exited(run: ReturnType<typeof start>) {
+     81|  await expect.poll(() => run.child.exitCode, { timeout: 4000 }).not.to…
+       |                                                                     ^
+     82| }
+     83| 
+ ❯ test/preview-lifecycle.test.ts:163:8
+
+Caused by: AssertionError: expected null not to be null
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 2 passed (7)
+   Start at  10:36:20
+   Duration  22.16s (transform 15ms, setup 0ms, collect 16ms, tests 21.65s, environment 0ms, prepare 233ms)
+
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-q0CRkN/packages/desktop
+
+ ❯ test/local-transport.test.ts (7 tests | 1 failed) 16389ms
+   ✓ the bridge works over a socket that only this machine can reach  2713ms
+   ✓ an image of more than a mebibyte crosses the socket in bounded frames and arrives intact  3236ms
+   ✓ two large answers take turns on the socket and a small one does not wait for them  3176ms
+   ✓ each window is its own client: its own project, its own run events, one repository lock  3662ms
+   ✓ a reload keeps the session of its window; closing the window ends its socket and its run only  1847ms
+   ✓ the control port travels over the same socket, with exactly what the page gave  923ms
+   × repeated concurrent listens reuse one listener and closing releases it 832ms
+     → expected [ 63768, 63769 ] to deeply equal [ 63767, 63767 ]
+ ❯ test/desktop-startup.test.ts (2 tests | 2 failed) 323ms
+   × only the first app instance reaches readiness and backend startup 286ms
+     → expected "spy" to be called once, but got 0 times
+   × a second app instance quits before readiness or any backend can start 37ms
+     → expected "spy" to be called once, but got 0 times
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/desktop-startup.test.ts > only the first app instance reaches readiness and backend startup
+AssertionError: expected "spy" to be called once, but got 0 times
+ ❯ test/desktop-startup.test.ts:26:21
+     24| test('only the first app instance reaches readiness and backend startu…
+     25|  await import('../src/initializers/initializeDesktop');
+     26|  expect(state.lock).toHaveBeenCalledOnce();
+       |                     ^
+     27|  expect(state.ready).toHaveBeenCalledOnce();
+     28|  expect(state.lock.mock.invocationCallOrder[0]).toBeLessThan(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/desktop-startup.test.ts > a second app instance quits before readiness or any backend can start
+AssertionError: expected "spy" to be called once, but got 0 times
+ ❯ test/desktop-startup.test.ts:37:21
+     35|  state.lock.mockReturnValue(false);
+     36|  await import('../src/initializers/initializeDesktop');
+     37|  expect(state.quit).toHaveBeenCalledOnce();
+       |                     ^
+     38|  expect(state.ready).not.toHaveBeenCalled();
+     39| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/local-transport.test.ts > repeated concurrent listens reuse one listener and closing releases it
+AssertionError: expected [ 63768, 63769 ] to deeply equal [ 63767, 63767 ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[32m-   63767,[39m
+[32m-   63767,[39m
+[31m+   63768,[39m
+[31m+   63769,[39m
+[2m  ][22m
+
+ ❯ test/local-transport.test.ts:166:16
+    164|  const f = await localFixture();
+    165|  const ports = await Promise.all([f.transport.listen(), f.transport.li…
+    166|  expect(ports).toEqual([f.port, f.port]);
+       |                ^
+    167|  await f.transport.close();
+    168|  await expect(fetch(`http://127.0.0.1:${f.port}`)).rejects.toThrow();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  3 failed | 6 passed (9)
+   Start at  10:36:43
+   Duration  17.82s (transform 559ms, setup 0ms, collect 715ms, tests 16.71s, environment 0ms, prepare 64ms)
+
