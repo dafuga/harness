@@ -156,7 +156,7 @@ const reaches: Record<string, (page: Page) => Promise<void>> = {
 	// What a commit removed is listed from its parent, where it last was.
 	async removed(page) {
 		await page.goto(at('main', commits.removed, 'functions'));
-		await expect(verdict(page, 'Removed at this commit').first()).toBeVisible();
+		await expect(content(page).getByRole('article', { name: 'Extra', exact: true })).toBeVisible();
 	},
 	// An entity that is not at a revision stays absent; no other revision is shown.
 	async missing(page) {

@@ -71,7 +71,11 @@ test('a selected commit lists what it added, and what it removed from its first 
 	]);
 	await page.goto(at('main', commits.removed, 'functions'));
 	await checkpoint(page, 'catalog-removed');
-	await expect(named(page, 'Extra')).toContainText('Removed at this commit');
+	await expect(named(page, 'Extra')).toBeVisible();
+	await named(page, 'Extra').getByRole('link', { name: 'Extra', exact: true }).click();
+	await expect(
+		page.getByRole('button', { name: 'Removed at this commit', exact: true })
+	).toBeVisible();
 	// The commit after the removal no longer holds it, and nothing is carried over.
 	await page.goto(at('main', commits.reordered, 'functions'));
 	await expect(shown(page)).toHaveText('2 of 2 functions shown');
@@ -88,7 +92,9 @@ test('a commit nobody verified still marks what its source changed, and proves n
 	await expect(cards(page).getByRole('heading', { level: 2 }).getByRole('link')).toHaveText([
 		'Clock'
 	]);
-	await expect(cards(page).first()).toContainText('Evidence missing');
+	await expect(cards(page).first().locator('.hx-verdict')).toHaveCount(0);
+	await titled(page).click();
+	await expect(page.getByRole('button', { name: 'Evidence missing', exact: true })).toBeVisible();
 	// What only depends on the changed function was not changed by this commit itself.
 	await page.goto(tip('main', 'services'));
 	await changedOnly(page).click();
