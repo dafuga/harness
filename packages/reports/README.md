@@ -168,7 +168,7 @@ bun run test:e2e
 
 ## Functions catalog
 
-Functions lists exported, standalone helpers in shared utility modules (`src/utils`, `src/helpers`, `src/functions`, `src/core`, and `src/lib/{utils,helpers,functions}` within each workspace). Availability means other code can import the helper; it does not require multiple current callers. Component-local functions, class methods, types, constants, schemas, validators and service internals are excluded.
+Functions lists exported, standalone helpers in shared utility modules (`src/utils`, `src/helpers`, `src/functions`, `src/core`, and `src/lib/{utils,helpers,functions}` within each workspace). A helper is shared only when at least two distinct active components, services or named functions use that exact helper. Any mixture counts. Repeated calls from one consumer, unused imports, type references, self-recursion and barrel exports do not add consumers. Caller facts come from the selected commit, including import aliases and forwarding exports. Component-local functions, class methods, types, constants, schemas, validators and service internals are excluded.
 
 Each helper gets an alphabetically sorted example-call card. Modules exporting several helpers get several cards, all linking to the owning entity's contract and history. Signatures come from the selected Git revision, while argument examples come from its committed contract or usage document. Missing examples remain named parameters. No working-tree fallback fills historical gaps. Older projections without helper metadata must be refreshed before their helpers can be listed.
 

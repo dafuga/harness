@@ -2,7 +2,7 @@
 	"name": "shared-helper-consumers",
 	"goal": "List a helper only when at least two distinct services, components or functions use that exact helper at the selected commit.",
 	"createdAt": "2026-10-19T16:40:42.160Z",
-	"updatedAt": "2026-10-19T16:42:25.440Z",
+	"updatedAt": "2026-10-19T16:52:25.508Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T16:46:22.676Z",
+			"evidence": "979102b4 fails all six actual-consumer matrix cases, shared flags and the three viewport cases: unused and one-consumer exports remain visible. Before screenshots are retained in /tmp/harness-consumers-before."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T16:52:25.508Z",
+			"evidence": "Committed-source AST references count distinct named function callers and component/service owners, resolving aliases, namespace accesses and forwarding exports. Catalog rows and function Shared badges require two proven consumers of that exact helper; counts are precomputed, not fetched on clicks."
 		},
 		{
 			"id": "green",

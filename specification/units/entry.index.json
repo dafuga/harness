@@ -74,7 +74,11 @@
 			"recordRegression",
 			"regressionHistory",
 			"unitDocumentation",
-			"unitMetadata"
+			"unitMetadata",
+			"helperScopes",
+			"helperTemplates",
+			"helperReferences",
+			"helperConsumers"
 		]
 	},
 	"contract": {
@@ -206,6 +210,26 @@
 		},
 		{
 			"unit": "function.gateway-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.helper-consumers",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.helper-references",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.helper-scopes",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.helper-templates",
 			"via": "reexport",
 			"origin": "derived"
 		},

@@ -3,7 +3,7 @@
 	"id": "reports.function.entity-catalog",
 	"kind": "function",
 	"title": "Entity collection rows",
-	"responsibility": "Lists category rows, with one card per exported shared helper, and applies search and ordering.",
+	"responsibility": "Lists only helpers with two distinct consumers, retaining alphabetical calls, owner search and other entity catalogs.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -68,6 +68,11 @@
 				"name": "functionName.unit",
 				"type": "HarnessUnit",
 				"description": "The selected revision’s recorded exported shared helpers."
+			},
+			{
+				"name": "isShared.unit",
+				"type": "HarnessUnit | absent",
+				"description": "For a function, use its recorded per-helper consumers; other entity kinds retain their existing relationship rules."
 			}
 		],
 		"outputs": [
@@ -110,6 +115,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.function.explorer-category",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.model.explorer-types",
 			"via": "import",

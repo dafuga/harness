@@ -1,3 +1,4 @@
+import { explorerCategory } from './explorerCategory';
 import type {
 	ExplorerCategory,
 	ExplorerEntity,
@@ -52,7 +53,9 @@ const names = (entities: ExplorerEntity[]) => entities.map((entity) => entity.na
 const own = ['direct', 'added'];
 
 /** True when more than one entity uses it itself, or more than one page shows it. */
-export function isShared(related: Relations): boolean {
+export function isShared(related: Relations, unit?: ExplorerEntity['unit']): boolean {
+	if (unit && explorerCategory(unit) === 'functions')
+		return (unit.helpers ?? []).some((helper) => sharedHelper(helper));
 	return related.usedBy.length > 1 || related.pages.length > 1;
 }
 
@@ -63,7 +66,7 @@ function rowOf(entity: ExplorerEntity, related: Relations): CatalogRow {
 		name: entity.name,
 		summary: entity.purpose,
 		changed: own.includes(entity.change ?? ''),
-		shared: isShared(related),
+		shared: isShared(related, entity.unit),
 		verdict: entity.verdict,
 		usedOn: names(related.pages),
 		usedBy: names(related.usedBy),
@@ -71,6 +74,13 @@ function rowOf(entity: ExplorerEntity, related: Relations): CatalogRow {
 		targets: entity.unit.runtime.targets.map((target) => target.kind),
 		components: related.components.length
 	};
+}
+
+function sharedHelper(helper: NonNullable<CatalogRow['helper']>): boolean {
+	return (
+		new Set(helper.consumers?.map((consumer) => `${consumer.unit}#${consumer.symbol ?? ''}`))
+			.size >= 2
+	);
 }
 
 /** The callable name shown on a function card, before its example arguments. */
@@ -97,9 +107,10 @@ export function entityCatalog(
 		.flatMap((entity) => {
 			const row = rowOf(entity, relations(entity.id));
 			if (category !== 'functions') return [row];
-			const helpers = entity.unit.helpers ?? [];
+			const helpers = (entity.unit.helpers ?? []).filter(sharedHelper);
 			return helpers.map((helper) => ({
 				...row,
+				shared: true,
 				helper,
 				name: helper.name,
 				id: helpers.length === 1 ? entity.id : `${entity.id}#${helper.source}:${helper.name}`

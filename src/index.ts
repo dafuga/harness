@@ -97,3 +97,7 @@ export { recordRegression } from './workflows/recordRegression';
 export { regressionHistory } from './utils/regressionHistory';
 export { unitDocumentation } from './utils/unitDocumentation';
 export { unitMetadata } from './utils/unitMetadata';
+export { helperScopes } from './utils/helperScopes';
+export { helperTemplates } from './utils/helperTemplates';
+export { helperReferences } from './utils/helperReferences';
+export { helperConsumers } from './utils/helperConsumers';

@@ -41,7 +41,7 @@
 			<EntityHeader
 				{entity}
 				{nav}
-				shared={isShared(host.lens.relations(entity.id))}
+				shared={isShared(host.lens.relations(entity.id), entity.unit)}
 				preview={screens}
 			/>
 			{@render screen(entity, nav)}

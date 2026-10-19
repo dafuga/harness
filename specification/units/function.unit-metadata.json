@@ -3,7 +3,7 @@
 	"id": "function.unit-metadata",
 	"kind": "function",
 	"title": "Load revision helper metadata",
-	"responsibility": "Loads committed documentation and exported shared helper signatures from the selected revision.",
+	"responsibility": "Loads committed examples, helper signatures and their distinct consumers from the selected revision.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -34,6 +34,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.helper-consumers",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.revision-registry",
 			"via": "import",

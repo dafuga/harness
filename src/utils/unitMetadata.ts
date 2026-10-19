@@ -1,3 +1,4 @@
+import { helperConsumers, type HelperConsumer, type HelperTree } from './helperConsumers';
 import { createHash } from 'node:crypto';
 import type { ExportedSymbol, SourceTree } from '../core/sourceTypes';
 import type { RevisionRegistry } from './revisionRegistry';
@@ -6,6 +7,7 @@ import { hydrateUnitDocumentation, type UnitDocumentation } from './unitDocument
 
 export interface PublicHelper extends Pick<ExportedSymbol, 'name' | 'inputs' | 'output'> {
 	source: string;
+	consumers?: HelperConsumer[];
 }
 
 export interface UnitMetadata {
@@ -31,7 +33,7 @@ function exportsOf(text: string): ExportedSymbol[] {
 	return exports;
 }
 
-/** Available imports, not a usage-count heuristic; read only shared utility locations. */
+/** Read export signatures from utility locations before counting their actual consumers. */
 async function helpersAt(tree: Pick<SourceTree, 'read'>, path: string) {
 	try {
 		return {
@@ -43,7 +45,7 @@ async function helpersAt(tree: Pick<SourceTree, 'read'>, path: string) {
 }
 
 /** Enrich the selected revision from its own source; absent historical files stay absent. */
-export async function unitMetadata(tree: Pick<SourceTree, 'read'>, units: Unit[]): Promise<void> {
+export async function unitMetadata(tree: HelperTree, units: Unit[]): Promise<void> {
 	await hydrateUnitDocumentation(tree, units);
 	const paths = [
 		...new Set(
@@ -67,4 +69,5 @@ export async function unitMetadata(tree: Pick<SourceTree, 'read'>, units: Unit[]
 		if (gaps.length) unit.helperGap = gaps.join(' ');
 		else delete unit.helperGap;
 	}
+	await helperConsumers(tree, units);
 }
