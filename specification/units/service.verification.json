@@ -14,10 +14,10 @@
 		"symbols": [
 			"VerifyContext",
 			"VerificationService",
-			"VerificationService.constructor",
-			"VerificationService.run",
 			"VerifyContext",
-			"VerificationService"
+			"VerificationService",
+			"VerificationService.constructor",
+			"VerificationService.run"
 		]
 	},
 	"contract": {
@@ -114,7 +114,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/VerificationService.ts"
+				"entry": "src/services/verification-service/VerificationService.ts"
 			}
 		]
 	},

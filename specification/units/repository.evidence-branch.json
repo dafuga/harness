@@ -14,11 +14,11 @@
 		"symbols": [
 			"StoredDirectory",
 			"EvidenceBranchRepository",
+			"StoredDirectory",
+			"EvidenceBranchRepository",
 			"EvidenceBranchRepository.constructor",
 			"EvidenceBranchRepository.tip",
-			"EvidenceBranchRepository.add",
-			"StoredDirectory",
-			"EvidenceBranchRepository"
+			"EvidenceBranchRepository.add"
 		]
 	},
 	"contract": {
@@ -90,7 +90,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/repositories/EvidenceBranchRepository.ts"
+				"entry": "src/repositories/evidence-branch-repository/EvidenceBranchRepository.ts"
 			}
 		]
 	},

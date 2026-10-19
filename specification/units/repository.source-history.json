@@ -15,12 +15,12 @@
 			"SourceRevision",
 			"SourceHistory",
 			"SourceHistoryRepository",
-			"SourceHistoryRepository.constructor",
-			"SourceHistoryRepository.read",
-			"SourceHistoryRepository.revision",
 			"SourceRevision",
 			"SourceHistory",
-			"SourceHistoryRepository"
+			"SourceHistoryRepository",
+			"SourceHistoryRepository.constructor",
+			"SourceHistoryRepository.read",
+			"SourceHistoryRepository.revision"
 		]
 	},
 	"contract": {
@@ -78,7 +78,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/repositories/SourceHistoryRepository.ts"
+				"entry": "src/repositories/source-history-repository/SourceHistoryRepository.ts"
 			}
 		]
 	},

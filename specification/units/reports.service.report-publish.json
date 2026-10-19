@@ -13,9 +13,9 @@
 		],
 		"symbols": [
 			"ReportPublishService",
+			"ReportPublishService",
 			"ReportPublishService.constructor",
-			"ReportPublishService.publish",
-			"ReportPublishService"
+			"ReportPublishService.publish"
 		]
 	},
 	"contract": {
@@ -93,7 +93,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/services/ReportPublishService.ts"
+				"entry": "packages/reports/src/services/report-publish-service/ReportPublishService.ts"
 			}
 		]
 	},

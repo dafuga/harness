@@ -14,15 +14,15 @@
 		"symbols": [
 			"SecureChannelOptions",
 			"SecureChannelService",
+			"SecureChannelOptions",
+			"SecureChannelService",
 			"SecureChannelService.constructor",
 			"SecureChannelService.ready",
 			"SecureChannelService.hello",
 			"SecureChannelService.answer",
 			"SecureChannelService.accept",
 			"SecureChannelService.seal",
-			"SecureChannelService.open",
-			"SecureChannelOptions",
-			"SecureChannelService"
+			"SecureChannelService.open"
 		]
 	},
 	"contract": {
@@ -128,7 +128,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/remote/src/services/SecureChannelService.ts"
+				"entry": "packages/remote/src/services/secure-channel-service/SecureChannelService.ts"
 			}
 		]
 	},

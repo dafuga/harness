@@ -15,12 +15,12 @@
 			"CachedInstallationToken",
 			"InstallationTokenOptions",
 			"InstallationTokenService",
-			"InstallationTokenService.constructor",
-			"InstallationTokenService.token",
-			"InstallationTokenService.resolve",
 			"CachedInstallationToken",
 			"InstallationTokenOptions",
-			"InstallationTokenService"
+			"InstallationTokenService",
+			"InstallationTokenService.constructor",
+			"InstallationTokenService.token",
+			"InstallationTokenService.resolve"
 		]
 	},
 	"contract": {
@@ -93,7 +93,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/services/InstallationTokenService.ts"
+				"entry": "packages/hub/src/services/installation-token-service/InstallationTokenService.ts"
 			}
 		]
 	},

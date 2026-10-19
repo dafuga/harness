@@ -13,10 +13,10 @@
 			"packages/hub/src/utils/hubHttp.ts"
 		],
 		"symbols": [
-			"hubHttp",
-			"hubBody",
 			"hubQuery",
 			"hubHttpFailure",
+			"hubHttp",
+			"hubBody",
 			"hubHttp",
 			"hubBody",
 			"hubQuery",
@@ -94,7 +94,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/hubHttp.ts"
+				"entry": "packages/hub/src/utils/hub-http/hubHttp.ts"
 			}
 		]
 	},

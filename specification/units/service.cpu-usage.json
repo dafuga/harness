@@ -13,9 +13,9 @@
 		],
 		"symbols": [
 			"CpuUsageService",
+			"CpuUsageService",
 			"CpuUsageService.constructor",
-			"CpuUsageService.snapshot",
-			"CpuUsageService"
+			"CpuUsageService.snapshot"
 		]
 	},
 	"contract": {
@@ -52,7 +52,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/CpuUsageService.ts"
+				"entry": "src/services/cpu-usage-service/CpuUsageService.ts"
 			}
 		]
 	},

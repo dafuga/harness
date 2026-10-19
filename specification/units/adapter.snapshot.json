@@ -14,14 +14,14 @@
 		"symbols": [
 			"SnapshotDrift",
 			"SnapshotAdapter",
+			"SnapshotDrift",
+			"SnapshotAdapter",
 			"SnapshotAdapter.create",
 			"SnapshotAdapter.link",
 			"SnapshotAdapter.misdeclared",
 			"SnapshotAdapter.drift",
 			"SnapshotAdapter.artifact",
-			"SnapshotAdapter.remove",
-			"SnapshotDrift",
-			"SnapshotAdapter"
+			"SnapshotAdapter.remove"
 		]
 	},
 	"contract": {
@@ -113,7 +113,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/adapters/SnapshotAdapter.ts"
+				"entry": "src/adapters/snapshot-adapter/SnapshotAdapter.ts"
 			}
 		]
 	},

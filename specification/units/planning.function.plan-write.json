@@ -13,11 +13,11 @@
 			"packages/planning/src/utils/planWrite.ts"
 		],
 		"symbols": [
+			"planWrite",
 			"Files",
 			"clean",
 			"assertClean",
 			"commitFiles",
-			"planWrite",
 			"Files",
 			"clean",
 			"assertClean",
@@ -132,7 +132,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/planning/src/utils/planWrite.ts"
+				"entry": "packages/planning/src/utils/plan-write/planWrite.ts"
 			}
 		]
 	},

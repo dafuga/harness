@@ -37,7 +37,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/routes/api/health/+server.ts"
+				"entry": "packages/reports/src/routes/api/health/-server/+server.ts"
 			}
 		]
 	},

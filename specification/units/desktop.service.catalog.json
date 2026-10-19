@@ -13,10 +13,10 @@
 		],
 		"symbols": [
 			"CatalogService",
+			"CatalogService",
 			"CatalogService.constructor",
 			"CatalogService.list",
-			"CatalogService.entity",
-			"CatalogService"
+			"CatalogService.entity"
 		]
 	},
 	"contract": {
@@ -88,7 +88,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/CatalogService.ts"
+				"entry": "packages/desktop/src/services/catalog-service/CatalogService.ts"
 			}
 		]
 	},

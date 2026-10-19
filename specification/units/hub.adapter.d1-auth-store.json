@@ -15,12 +15,12 @@
 			"D1Statement",
 			"D1Like",
 			"D1AuthStoreAdapter",
-			"D1AuthStoreAdapter.constructor",
-			"D1AuthStoreAdapter.purge",
 			"createD1AuthStore",
 			"D1Statement",
 			"D1Like",
 			"D1AuthStoreAdapter",
+			"D1AuthStoreAdapter.constructor",
+			"D1AuthStoreAdapter.purge",
 			"createD1AuthStore"
 		]
 	},
@@ -90,7 +90,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/adapters/D1AuthStoreAdapter.ts"
+				"entry": "packages/hub/src/adapters/d1-auth-store-adapter/D1AuthStoreAdapter.ts"
 			}
 		]
 	},

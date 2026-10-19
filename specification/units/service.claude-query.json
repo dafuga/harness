@@ -13,9 +13,9 @@
 		],
 		"symbols": [
 			"ClaudeQueryService",
+			"ClaudeQueryService",
 			"ClaudeQueryService.constructor",
-			"ClaudeQueryService.run",
-			"ClaudeQueryService"
+			"ClaudeQueryService.run"
 		]
 	},
 	"contract": {
@@ -80,7 +80,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/ClaudeQueryService.ts"
+				"entry": "src/services/claude-query-service/ClaudeQueryService.ts"
 			}
 		]
 	},

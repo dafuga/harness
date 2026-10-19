@@ -15,13 +15,13 @@
 			"RefChange",
 			"Synced",
 			"HistorySyncService",
+			"RefChange",
+			"Synced",
+			"HistorySyncService",
 			"HistorySyncService.constructor",
 			"HistorySyncService.fetch",
 			"HistorySyncService.push",
-			"HistorySyncService.sync",
-			"RefChange",
-			"Synced",
-			"HistorySyncService"
+			"HistorySyncService.sync"
 		]
 	},
 	"contract": {
@@ -103,7 +103,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/HistorySyncService.ts"
+				"entry": "src/services/history-sync-service/HistorySyncService.ts"
 			}
 		]
 	},

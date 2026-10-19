@@ -14,9 +14,9 @@
 		"symbols": [
 			"SourceIndex",
 			"SourceIndexService",
-			"SourceIndexService.index",
 			"SourceIndex",
-			"SourceIndexService"
+			"SourceIndexService",
+			"SourceIndexService.index"
 		]
 	},
 	"contract": {
@@ -92,7 +92,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/SourceIndexService.ts"
+				"entry": "src/services/source-index-service/SourceIndexService.ts"
 			}
 		]
 	},

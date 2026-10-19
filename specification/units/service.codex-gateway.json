@@ -13,9 +13,9 @@
 		],
 		"symbols": [
 			"CodexGatewayService",
+			"CodexGatewayService",
 			"CodexGatewayService.constructor",
-			"CodexGatewayService.fetch",
-			"CodexGatewayService"
+			"CodexGatewayService.fetch"
 		]
 	},
 	"contract": {
@@ -76,7 +76,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/CodexGatewayService.ts"
+				"entry": "src/services/codex-gateway-service/CodexGatewayService.ts"
 			}
 		]
 	},

@@ -13,10 +13,10 @@
 		],
 		"symbols": [
 			"ProjectActivityService",
+			"ProjectActivityService",
 			"ProjectActivityService.constructor",
 			"ProjectActivityService.show",
-			"ProjectActivityService.recorded",
-			"ProjectActivityService"
+			"ProjectActivityService.recorded"
 		]
 	},
 	"contract": {
@@ -99,7 +99,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/ProjectActivityService.ts"
+				"entry": "src/services/project-activity-service/ProjectActivityService.ts"
 			}
 		]
 	},

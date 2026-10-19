@@ -9,11 +9,11 @@
 	"owns": {
 		"source": ["src/services/source-index-service/scanImports.ts", "src/utils/scanImports.ts"],
 		"symbols": [
+			"scanImports",
 			"ReferenceVia",
 			"SourceLanguage",
 			"SourceReference",
 			"svelteScripts",
-			"scanImports",
 			"scanImports"
 		]
 	},

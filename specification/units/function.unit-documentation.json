@@ -13,11 +13,11 @@
 			"src/utils/unitDocumentation.ts"
 		],
 		"symbols": [
+			"hydrateUnitDocumentation",
 			"UsageExample",
 			"UnitDocumentation",
 			"unitDocumentation",
 			"readUnitDocumentation",
-			"hydrateUnitDocumentation",
 			"UsageExample",
 			"UnitDocumentation",
 			"unitDocumentation",
@@ -158,7 +158,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/unitDocumentation.ts"
+				"entry": "src/utils/unit-documentation/unitDocumentation.ts"
 			}
 		]
 	},

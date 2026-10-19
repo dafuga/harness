@@ -12,7 +12,7 @@
 			"packages/reports/src/utils/explorer-history/explorerHistory.ts",
 			"packages/reports/src/utils/explorerHistory.ts"
 		],
-		"symbols": ["explorerHistory", "historyDetail", "explorerHistory", "historyDetail"]
+		"symbols": ["historyDetail", "explorerHistory", "explorerHistory", "historyDetail"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -90,7 +90,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/explorerHistory.ts"
+				"entry": "packages/reports/src/utils/explorer-history/explorerHistory.ts"
 			}
 		]
 	},

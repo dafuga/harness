@@ -13,9 +13,9 @@
 		],
 		"symbols": [
 			"ReportCommandService",
+			"ReportCommandService",
 			"ReportCommandService.constructor",
-			"ReportCommandService.execute",
-			"ReportCommandService"
+			"ReportCommandService.execute"
 		]
 	},
 	"contract": {
@@ -96,7 +96,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/services/ReportCommandService.ts"
+				"entry": "packages/reports/src/services/report-command-service/ReportCommandService.ts"
 			}
 		]
 	},

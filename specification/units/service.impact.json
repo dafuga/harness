@@ -10,9 +10,9 @@
 		"source": ["src/services/ImpactService.ts", "src/services/impact-service/ImpactService.ts"],
 		"symbols": [
 			"ImpactService",
+			"ImpactService",
 			"ImpactService.constructor",
-			"ImpactService.compute",
-			"ImpactService"
+			"ImpactService.compute"
 		]
 	},
 	"contract": {
@@ -92,7 +92,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/ImpactService.ts"
+				"entry": "src/services/impact-service/ImpactService.ts"
 			}
 		]
 	},

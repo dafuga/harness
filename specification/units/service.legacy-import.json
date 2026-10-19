@@ -14,10 +14,10 @@
 		"symbols": [
 			"LegacyImport",
 			"LegacyImportService",
-			"LegacyImportService.constructor",
-			"LegacyImportService.import",
 			"LegacyImport",
-			"LegacyImportService"
+			"LegacyImportService",
+			"LegacyImportService.constructor",
+			"LegacyImportService.import"
 		]
 	},
 	"contract": {
@@ -107,7 +107,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/LegacyImportService.ts"
+				"entry": "src/services/legacy-import-service/LegacyImportService.ts"
 			}
 		]
 	},

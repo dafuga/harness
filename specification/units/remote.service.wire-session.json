@@ -15,14 +15,14 @@
 			"WireSessionOptions",
 			"WireLink",
 			"WireSessionService",
+			"WireSessionOptions",
+			"WireLink",
+			"WireSessionService",
 			"WireSessionService.constructor",
 			"WireSessionService.ended",
 			"WireSessionService.connect",
 			"WireSessionService.emit",
-			"WireSessionService.end",
-			"WireSessionOptions",
-			"WireLink",
-			"WireSessionService"
+			"WireSessionService.end"
 		]
 	},
 	"contract": {
@@ -107,7 +107,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/remote/src/services/WireSessionService.ts"
+				"entry": "packages/remote/src/services/wire-session-service/WireSessionService.ts"
 			}
 		]
 	},

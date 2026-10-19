@@ -20,7 +20,6 @@
 			"offlineCapabilities",
 			"forgetShared",
 			"cacheStatus",
-			"offlineView",
 			"everyProject",
 			"deniedNotice",
 			"offlineNotice",
@@ -28,6 +27,7 @@
 			"offlineCapabilities",
 			"forgetShared",
 			"cacheStatus",
+			"offlineView",
 			"offlineView"
 		]
 	},
@@ -137,7 +137,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/cacheStatus.ts"
+				"entry": "packages/desktop/src/utils/cache-status/cacheStatus.ts"
 			}
 		]
 	},

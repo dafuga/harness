@@ -13,9 +13,9 @@
 		],
 		"symbols": [
 			"ReplayVideoService",
+			"ReplayVideoService",
 			"ReplayVideoService.constructor",
-			"ReplayVideoService.create",
-			"ReplayVideoService"
+			"ReplayVideoService.create"
 		]
 	},
 	"contract": {
@@ -81,7 +81,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/services/ReplayVideoService.ts"
+				"entry": "packages/reports/src/services/replay-video-service/ReplayVideoService.ts"
 			}
 		]
 	},

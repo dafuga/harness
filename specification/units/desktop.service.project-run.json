@@ -14,9 +14,9 @@
 		"symbols": [
 			"plannedBefore",
 			"ProjectRunService",
-			"ProjectRunService.run",
 			"plannedBefore",
-			"ProjectRunService"
+			"ProjectRunService",
+			"ProjectRunService.run"
 		]
 	},
 	"contract": {
@@ -111,7 +111,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/ProjectRunService.ts"
+				"entry": "packages/desktop/src/services/project-run-service/ProjectRunService.ts"
 			}
 		]
 	},

@@ -13,12 +13,12 @@
 			"BudgetSubject",
 			"BudgetReport",
 			"BudgetService",
-			"BudgetService.baselines",
-			"BudgetService.evaluate",
 			"UnitBaseline",
 			"BudgetSubject",
 			"BudgetReport",
-			"BudgetService"
+			"BudgetService",
+			"BudgetService.baselines",
+			"BudgetService.evaluate"
 		]
 	},
 	"contract": {
@@ -86,7 +86,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/BudgetService.ts"
+				"entry": "src/services/budget-service/BudgetService.ts"
 			}
 		]
 	},

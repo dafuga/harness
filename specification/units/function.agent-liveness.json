@@ -11,7 +11,7 @@
 			"src/services/agent-activity-service/agentLiveness.ts",
 			"src/utils/agentLiveness.ts"
 		],
-		"symbols": ["AgentFacts", "ProcessFacts", "agentLiveness", "agentLiveness"]
+		"symbols": ["agentLiveness", "AgentFacts", "ProcessFacts", "agentLiveness"]
 	},
 	"contract": {
 		"origin": "declared",

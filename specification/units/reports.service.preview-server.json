@@ -16,12 +16,12 @@
 			"PreviewHandle",
 			"PreviewResult",
 			"PreviewServerService",
-			"PreviewServerService.constructor",
-			"PreviewServerService.run",
-			"PreviewServerService.close",
 			"PreviewHandle",
 			"PreviewResult",
-			"PreviewServerService"
+			"PreviewServerService",
+			"PreviewServerService.constructor",
+			"PreviewServerService.run",
+			"PreviewServerService.close"
 		]
 	},
 	"contract": {
@@ -78,7 +78,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/services/PreviewServerService.ts"
+				"entry": "packages/reports/src/services/preview-server-service/PreviewServerService.ts"
 			}
 		]
 	},

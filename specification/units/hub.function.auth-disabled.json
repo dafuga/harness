@@ -48,7 +48,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/authDisabled.ts"
+				"entry": "packages/hub/src/lib/server/auth/authDisabled.ts"
 			}
 		]
 	},

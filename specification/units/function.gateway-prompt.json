@@ -41,7 +41,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/gatewayPrompt.ts"
+				"entry": "src/services/claude-query-service/gatewayPrompt.ts"
 			}
 		]
 	},

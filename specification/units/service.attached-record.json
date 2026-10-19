@@ -14,10 +14,10 @@
 		"symbols": [
 			"AttachedRecord",
 			"AttachedRecordService",
-			"AttachedRecordService.constructor",
-			"AttachedRecordService.load",
 			"AttachedRecord",
-			"AttachedRecordService"
+			"AttachedRecordService",
+			"AttachedRecordService.constructor",
+			"AttachedRecordService.load"
 		]
 	},
 	"contract": {
@@ -92,7 +92,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/AttachedRecordService.ts"
+				"entry": "src/services/attached-record-service/AttachedRecordService.ts"
 			}
 		]
 	},

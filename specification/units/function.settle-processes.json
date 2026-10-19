@@ -9,11 +9,11 @@
 	"owns": {
 		"source": ["src/utils/run-isolated/settleProcesses.ts", "src/utils/settleProcesses.ts"],
 		"symbols": [
+			"haltProcesses",
+			"settleProcesses",
 			"Settlement",
 			"Watched",
 			"SettleTiming",
-			"haltProcesses",
-			"settleProcesses",
 			"haltProcesses",
 			"settleProcesses"
 		]

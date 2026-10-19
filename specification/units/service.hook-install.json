@@ -15,13 +15,13 @@
 			"HookStageStatus",
 			"HookStatus",
 			"HookInstallService",
+			"HookStageStatus",
+			"HookStatus",
+			"HookInstallService",
 			"HookInstallService.constructor",
 			"HookInstallService.status",
 			"HookInstallService.install",
-			"HookInstallService.uninstall",
-			"HookStageStatus",
-			"HookStatus",
-			"HookInstallService"
+			"HookInstallService.uninstall"
 		]
 	},
 	"contract": {
@@ -80,7 +80,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/HookInstallService.ts"
+				"entry": "src/services/hook-install-service/HookInstallService.ts"
 			}
 		]
 	},

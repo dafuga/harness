@@ -13,10 +13,10 @@
 		],
 		"symbols": [
 			"ClaudeCliAdapter",
+			"ClaudeCliAdapter",
 			"ClaudeCliAdapter.constructor",
 			"ClaudeCliAdapter.discover",
-			"ClaudeCliAdapter.run",
-			"ClaudeCliAdapter"
+			"ClaudeCliAdapter.run"
 		]
 	},
 	"contract": {
@@ -66,7 +66,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/adapters/ClaudeCliAdapter.ts"
+				"entry": "packages/desktop/src/adapters/claude-cli-adapter/ClaudeCliAdapter.ts"
 			}
 		]
 	},

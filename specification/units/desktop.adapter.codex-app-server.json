@@ -13,11 +13,11 @@
 		],
 		"symbols": [
 			"CodexAppServerAdapter",
+			"CodexAppServerAdapter",
 			"CodexAppServerAdapter.constructor",
 			"CodexAppServerAdapter.discover",
 			"CodexAppServerAdapter.run",
-			"CodexAppServerAdapter.generateImage",
-			"CodexAppServerAdapter"
+			"CodexAppServerAdapter.generateImage"
 		]
 	},
 	"contract": {
@@ -85,7 +85,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/adapters/CodexAppServerAdapter.ts"
+				"entry": "packages/desktop/src/adapters/codex-app-server-adapter/CodexAppServerAdapter.ts"
 			}
 		]
 	},

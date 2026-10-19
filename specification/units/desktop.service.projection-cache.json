@@ -13,6 +13,7 @@
 		],
 		"symbols": [
 			"ProjectionCacheService",
+			"ProjectionCacheService",
 			"ProjectionCacheService.constructor",
 			"ProjectionCacheService.get",
 			"ProjectionCacheService.put",
@@ -20,8 +21,7 @@
 			"ProjectionCacheService.lookup",
 			"ProjectionCacheService.discard",
 			"ProjectionCacheService.purge",
-			"ProjectionCacheService.clear",
-			"ProjectionCacheService"
+			"ProjectionCacheService.clear"
 		]
 	},
 	"contract": {
@@ -140,7 +140,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/ProjectionCacheService.ts"
+				"entry": "packages/desktop/src/services/projection-cache-service/ProjectionCacheService.ts"
 			}
 		]
 	},

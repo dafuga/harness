@@ -20,13 +20,6 @@
 			"PROOF_TTL",
 			"EmailProofOptions",
 			"EmailProofService",
-			"EmailProofService.constructor",
-			"EmailProofService.proven",
-			"EmailProofService.open",
-			"EmailProofService.status",
-			"EmailProofService.start",
-			"EmailProofService.verify",
-			"EmailProofService.cancel",
 			"PENDING_TTL",
 			"CODE_TTL",
 			"MAX_ATTEMPTS",
@@ -34,7 +27,14 @@
 			"DAILY_SENDS",
 			"PROOF_TTL",
 			"EmailProofOptions",
-			"EmailProofService"
+			"EmailProofService",
+			"EmailProofService.constructor",
+			"EmailProofService.proven",
+			"EmailProofService.open",
+			"EmailProofService.status",
+			"EmailProofService.start",
+			"EmailProofService.verify",
+			"EmailProofService.cancel"
 		]
 	},
 	"contract": {
@@ -158,7 +158,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/services/EmailProofService.ts"
+				"entry": "packages/hub/src/services/email-proof-service/EmailProofService.ts"
 			}
 		]
 	},

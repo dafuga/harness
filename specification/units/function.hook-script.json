@@ -9,14 +9,14 @@
 	"owns": {
 		"source": ["src/services/hook-install-service/hookScript.ts", "src/utils/hookScript.ts"],
 		"symbols": [
+			"hookScript",
+			"managedHook",
 			"hookMarker",
 			"chainedSuffix",
 			"enabledFile",
 			"hookStages",
 			"HookStage",
 			"stageFile",
-			"hookScript",
-			"managedHook",
 			"hookScript",
 			"managedHook"
 		]

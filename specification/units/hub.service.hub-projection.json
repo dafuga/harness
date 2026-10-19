@@ -13,6 +13,7 @@
 		],
 		"symbols": [
 			"HubProjectionService",
+			"HubProjectionService",
 			"HubProjectionService.constructor",
 			"HubProjectionService.evidence",
 			"HubProjectionService.artifact",
@@ -21,8 +22,7 @@
 			"HubProjectionService.history",
 			"HubProjectionService.source",
 			"HubProjectionService.image",
-			"HubProjectionService.messages",
-			"HubProjectionService"
+			"HubProjectionService.messages"
 		]
 	},
 	"contract": {
@@ -248,7 +248,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/services/HubProjectionService.ts"
+				"entry": "packages/hub/src/services/hub-projection-service/HubProjectionService.ts"
 			}
 		]
 	},

@@ -44,7 +44,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/hubRateLimit.ts"
+				"entry": "packages/hub/src/routes/api/[...path]/-server/hubRateLimit.ts"
 			}
 		]
 	},

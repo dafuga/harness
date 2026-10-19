@@ -13,13 +13,13 @@
 			"packages/desktop/src/utils/planningReads.ts"
 		],
 		"symbols": [
-			"PlanningContext",
-			"planRecord",
-			"planVersion",
 			"planningReads",
 			"readPlanMessages",
 			"readPlanImage",
 			"readPlanHistory",
+			"PlanningContext",
+			"planRecord",
+			"planVersion",
 			"PlanningContext",
 			"planRecord",
 			"planVersion",
@@ -176,7 +176,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/planningReads.ts"
+				"entry": "packages/desktop/src/utils/planning-reads/planningReads.ts"
 			}
 		]
 	},

@@ -14,11 +14,11 @@
 		"symbols": [
 			"DeviceOperationsOptions",
 			"DeviceOperationsService",
+			"DeviceOperationsOptions",
+			"DeviceOperationsService",
 			"DeviceOperationsService.constructor",
 			"DeviceOperationsService.methods",
-			"DeviceOperationsService.handle",
-			"DeviceOperationsOptions",
-			"DeviceOperationsService"
+			"DeviceOperationsService.handle"
 		]
 	},
 	"contract": {
@@ -113,7 +113,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/DeviceOperationsService.ts"
+				"entry": "packages/desktop/src/services/device-operations-service/DeviceOperationsService.ts"
 			}
 		]
 	},

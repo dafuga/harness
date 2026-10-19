@@ -13,7 +13,7 @@
 			"packages/hub/src/utils/hub-designs/hubDesigns.ts",
 			"packages/hub/src/utils/hubDesigns.ts"
 		],
-		"symbols": ["design", "hubDesigns", "hubDesignImage", "hubDesigns", "hubDesignImage"]
+		"symbols": ["hubDesignImage", "hubDesigns", "design", "hubDesigns", "hubDesignImage"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -101,7 +101,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/hubDesigns.ts"
+				"entry": "packages/hub/src/utils/hub-designs/hubDesigns.ts"
 			}
 		]
 	},

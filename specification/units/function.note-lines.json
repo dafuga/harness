@@ -13,12 +13,12 @@
 			"src/utils/noteLines.ts"
 		],
 		"symbols": [
-			"ReadNote",
-			"noteCommit",
-			"readNoteLines",
 			"noteLine",
 			"noteLines",
 			"mergeNoteLines",
+			"ReadNote",
+			"noteCommit",
+			"readNoteLines",
 			"ReadNote",
 			"noteCommit",
 			"readNoteLines",
@@ -113,7 +113,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/noteLines.ts"
+				"entry": "src/utils/note-lines/noteLines.ts"
 			}
 		]
 	},

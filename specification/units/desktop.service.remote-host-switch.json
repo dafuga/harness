@@ -14,13 +14,13 @@
 		"symbols": [
 			"RemoteHostSwitchOptions",
 			"RemoteHostSwitchService",
+			"RemoteHostSwitchOptions",
+			"RemoteHostSwitchService",
 			"RemoteHostSwitchService.constructor",
 			"RemoteHostSwitchService.start",
 			"RemoteHostSwitchService.enable",
 			"RemoteHostSwitchService.disable",
-			"RemoteHostSwitchService.stop",
-			"RemoteHostSwitchOptions",
-			"RemoteHostSwitchService"
+			"RemoteHostSwitchService.stop"
 		]
 	},
 	"contract": {
@@ -84,7 +84,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/RemoteHostSwitchService.ts"
+				"entry": "packages/desktop/src/services/remote-host-switch-service/RemoteHostSwitchService.ts"
 			}
 		]
 	},

@@ -13,6 +13,7 @@
 		],
 		"symbols": [
 			"PlanningFacadeAdapter",
+			"PlanningFacadeAdapter",
 			"PlanningFacadeAdapter.open",
 			"PlanningFacadeAdapter.plans",
 			"PlanningFacadeAdapter.createPlan",
@@ -23,8 +24,7 @@
 			"PlanningFacadeAdapter.appendMessage",
 			"PlanningFacadeAdapter.approve",
 			"PlanningFacadeAdapter.image",
-			"PlanningFacadeAdapter.history",
-			"PlanningFacadeAdapter"
+			"PlanningFacadeAdapter.history"
 		]
 	},
 	"contract": {
@@ -190,7 +190,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/adapters/PlanningFacadeAdapter.ts"
+				"entry": "packages/desktop/src/adapters/planning-facade-adapter/PlanningFacadeAdapter.ts"
 			}
 		]
 	},

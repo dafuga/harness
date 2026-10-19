@@ -13,11 +13,11 @@
 		],
 		"symbols": [
 			"DesktopRunService",
+			"DesktopRunService",
 			"DesktopRunService.constructor",
 			"DesktopRunService.start",
 			"DesktopRunService.cancelActive",
-			"DesktopRunService.cancel",
-			"DesktopRunService"
+			"DesktopRunService.cancel"
 		]
 	},
 	"contract": {
@@ -147,7 +147,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/DesktopRunService.ts"
+				"entry": "packages/desktop/src/services/desktop-run-service/DesktopRunService.ts"
 			}
 		]
 	},

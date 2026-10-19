@@ -11,7 +11,7 @@
 			"packages/desktop/src/services/ChangeRunService.ts",
 			"packages/desktop/src/services/change-run-service/ChangeRunService.ts"
 		],
-		"symbols": ["ChangeRunService", "ChangeRunService.run", "ChangeRunService"]
+		"symbols": ["ChangeRunService", "ChangeRunService", "ChangeRunService.run"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -57,7 +57,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/ChangeRunService.ts"
+				"entry": "packages/desktop/src/services/change-run-service/ChangeRunService.ts"
 			}
 		]
 	},

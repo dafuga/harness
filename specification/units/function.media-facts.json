@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/services/check-run-service/mediaFacts.ts", "src/utils/mediaFacts.ts"],
-		"symbols": ["MediaFacts", "pngChecksum", "mediaFacts", "pngChecksum", "mediaFacts"]
+		"symbols": ["pngChecksum", "mediaFacts", "MediaFacts", "pngChecksum", "mediaFacts"]
 	},
 	"contract": {
 		"origin": "declared",

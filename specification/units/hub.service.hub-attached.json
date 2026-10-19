@@ -13,11 +13,11 @@
 		],
 		"symbols": [
 			"HubAttachedService",
+			"HubAttachedService",
 			"HubAttachedService.constructor",
 			"HubAttachedService.load",
 			"HubAttachedService.regression",
-			"HubAttachedService.readFile",
-			"HubAttachedService"
+			"HubAttachedService.readFile"
 		]
 	},
 	"contract": {
@@ -118,7 +118,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/services/HubAttachedService.ts"
+				"entry": "packages/hub/src/services/hub-attached-service/HubAttachedService.ts"
 			}
 		]
 	},

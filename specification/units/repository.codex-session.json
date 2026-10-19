@@ -13,11 +13,11 @@
 		],
 		"symbols": [
 			"CodexSessionRepository",
+			"CodexSessionRepository",
 			"CodexSessionRepository.create",
 			"CodexSessionRepository.waitForTool",
 			"CodexSessionRepository.deliver",
-			"CodexSessionRepository.cancel",
-			"CodexSessionRepository"
+			"CodexSessionRepository.cancel"
 		]
 	},
 	"contract": {
@@ -86,7 +86,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/repositories/CodexSessionRepository.ts"
+				"entry": "src/repositories/codex-session-repository/CodexSessionRepository.ts"
 			}
 		]
 	},

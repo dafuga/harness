@@ -14,10 +14,10 @@
 		"symbols": [
 			"Attached",
 			"EvidenceAttachService",
-			"EvidenceAttachService.constructor",
-			"EvidenceAttachService.attach",
 			"Attached",
-			"EvidenceAttachService"
+			"EvidenceAttachService",
+			"EvidenceAttachService.constructor",
+			"EvidenceAttachService.attach"
 		]
 	},
 	"contract": {
@@ -132,7 +132,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/EvidenceAttachService.ts"
+				"entry": "src/services/evidence-attach-service/EvidenceAttachService.ts"
 			}
 		]
 	},

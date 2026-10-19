@@ -15,11 +15,11 @@
 			"AssemblyContext",
 			"AssemblyInput",
 			"RecordAssemblyService",
-			"RecordAssemblyService.constructor",
-			"RecordAssemblyService.assemble",
 			"AssemblyContext",
 			"AssemblyInput",
-			"RecordAssemblyService"
+			"RecordAssemblyService",
+			"RecordAssemblyService.constructor",
+			"RecordAssemblyService.assemble"
 		]
 	},
 	"contract": {
@@ -120,7 +120,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/RecordAssemblyService.ts"
+				"entry": "src/services/record-assembly-service/RecordAssemblyService.ts"
 			}
 		]
 	},

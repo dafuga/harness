@@ -10,12 +10,12 @@
 		"source": ["packages/hub/src/lib/server/auth.ts", "packages/hub/src/lib/server/auth/auth.ts"],
 		"symbols": [
 			"createHubAuth",
+			"createHubAuth",
 			"createD1AuthStore",
 			"createResendDelivery",
 			"D1Like",
 			"AuthFailure",
-			"AuthStore",
-			"createHubAuth"
+			"AuthStore"
 		]
 	},
 	"contract": {
@@ -100,7 +100,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/lib/server/auth.ts"
+				"entry": "packages/hub/src/lib/server/auth/auth.ts"
 			}
 		]
 	},

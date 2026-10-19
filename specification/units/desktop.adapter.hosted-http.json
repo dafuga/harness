@@ -15,15 +15,15 @@
 			"NativeHostedCredential",
 			"RemoteHttpOptions",
 			"HostedHttpAdapter",
+			"NativeHostedCredential",
+			"RemoteHttpOptions",
+			"HostedHttpAdapter",
 			"HostedHttpAdapter.constructor",
 			"HostedHttpAdapter.publicStatus",
 			"HostedHttpAdapter.publicJson",
 			"HostedHttpAdapter.authorize",
 			"HostedHttpAdapter.json",
-			"HostedHttpAdapter.request",
-			"NativeHostedCredential",
-			"RemoteHttpOptions",
-			"HostedHttpAdapter"
+			"HostedHttpAdapter.request"
 		]
 	},
 	"contract": {
@@ -114,7 +114,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/adapters/HostedHttpAdapter.ts"
+				"entry": "packages/desktop/src/adapters/hosted-http-adapter/HostedHttpAdapter.ts"
 			}
 		]
 	},

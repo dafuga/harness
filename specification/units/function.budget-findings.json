@@ -9,6 +9,7 @@
 	"owns": {
 		"source": ["src/services/budget-service/budgetFindings.ts", "src/utils/budgetFindings.ts"],
 		"symbols": [
+			"budgetFindings",
 			"frozenMetrics",
 			"isFrozen",
 			"higherIsBetter",
@@ -17,7 +18,6 @@
 			"Measured",
 			"BudgetInput",
 			"performanceLimit",
-			"budgetFindings",
 			"budgetFindings"
 		]
 	},

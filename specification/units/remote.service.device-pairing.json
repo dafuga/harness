@@ -17,16 +17,16 @@
 			"PendingPairing",
 			"DeviceCredentials",
 			"DevicePairingService",
-			"DevicePairingService.constructor",
-			"DevicePairingService.scanned",
-			"DevicePairingService.request",
-			"DevicePairingService.poll",
-			"DevicePairingService.exchange",
 			"DevicePairingInput",
 			"ScanningDevice",
 			"PendingPairing",
 			"DeviceCredentials",
-			"DevicePairingService"
+			"DevicePairingService",
+			"DevicePairingService.constructor",
+			"DevicePairingService.scanned",
+			"DevicePairingService.request",
+			"DevicePairingService.poll",
+			"DevicePairingService.exchange"
 		]
 	},
 	"contract": {
@@ -148,7 +148,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/remote/src/services/DevicePairingService.ts"
+				"entry": "packages/remote/src/services/device-pairing-service/DevicePairingService.ts"
 			}
 		]
 	},

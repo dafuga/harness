@@ -13,6 +13,7 @@
 			"src/utils/writingLimits.ts"
 		],
 		"symbols": [
+			"writingDeclared",
 			"WritingLimit",
 			"writingVersions",
 			"WritingVersion",
@@ -25,7 +26,6 @@
 			"writingProblems",
 			"WrittenReason",
 			"explanationProblems",
-			"writingDeclared",
 			"WritingLimit",
 			"writingVersions",
 			"WritingVersion",
@@ -146,7 +146,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/writingLimits.ts"
+				"entry": "src/utils/writing-limits/writingLimits.ts"
 			}
 		]
 	},

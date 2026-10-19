@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/services/cpu-usage-service/cpuMetrics.ts", "src/utils/cpuMetrics.ts"],
-		"symbols": ["CpuReading", "CpuGroup", "CpuSnapshot", "cpuMetrics", "cpuMetrics"]
+		"symbols": ["cpuMetrics", "CpuReading", "CpuGroup", "CpuSnapshot", "cpuMetrics"]
 	},
 	"contract": {
 		"origin": "declared",

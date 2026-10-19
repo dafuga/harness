@@ -47,7 +47,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/routes/api/analytics-cpu/+server.ts"
+				"entry": "packages/reports/src/routes/api/analytics-cpu/-server/+server.ts"
 			}
 		]
 	},

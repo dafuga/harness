@@ -11,7 +11,7 @@
 			"src/adapters/CpuProcessAdapter.ts",
 			"src/adapters/cpu-process-adapter/CpuProcessAdapter.ts"
 		],
-		"symbols": ["CpuProcessAdapter", "CpuProcessAdapter.sample", "CpuProcessAdapter"]
+		"symbols": ["CpuProcessAdapter", "CpuProcessAdapter", "CpuProcessAdapter.sample"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -47,7 +47,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/adapters/CpuProcessAdapter.ts"
+				"entry": "src/adapters/cpu-process-adapter/CpuProcessAdapter.ts"
 			}
 		]
 	},

@@ -12,7 +12,7 @@
 			"packages/hub/src/routes/+layout.ts",
 			"packages/hub/src/routes/-layout/+layout.svelte"
 		],
-		"symbols": ["+layout", "+layout", "ssr"]
+		"symbols": ["+layout", "ssr", "+layout"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -28,12 +28,12 @@
 				"type": "markup"
 			},
 			{
-				"name": "+layout",
-				"type": "markup"
-			},
-			{
 				"name": "ssr",
 				"type": "unknown"
+			},
+			{
+				"name": "+layout",
+				"type": "markup"
 			}
 		],
 		"errors": []
@@ -66,7 +66,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/routes/+layout.svelte"
+				"entry": "packages/hub/src/routes/-layout/+layout.svelte"
 			}
 		]
 	},

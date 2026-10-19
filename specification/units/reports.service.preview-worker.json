@@ -13,10 +13,10 @@
 		],
 		"symbols": [
 			"PreviewWorkerService",
+			"PreviewWorkerService",
 			"PreviewWorkerService.constructor",
 			"PreviewWorkerService.start",
-			"PreviewWorkerService.close",
-			"PreviewWorkerService"
+			"PreviewWorkerService.close"
 		]
 	},
 	"contract": {
@@ -96,7 +96,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/services/PreviewWorkerService.ts"
+				"entry": "packages/reports/src/services/preview-worker-service/PreviewWorkerService.ts"
 			}
 		]
 	},

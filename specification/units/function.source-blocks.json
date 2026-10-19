@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/services/source-index-service/sourceBlocks.ts", "src/utils/sourceBlocks.ts"],
-		"symbols": ["SourceBlock", "sourceBlocks", "sourceBlocks"]
+		"symbols": ["sourceBlocks", "SourceBlock", "sourceBlocks"]
 	},
 	"contract": {
 		"origin": "declared",

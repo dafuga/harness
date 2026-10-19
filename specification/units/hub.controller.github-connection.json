@@ -15,11 +15,11 @@
 			"GithubConnection",
 			"GithubConnectionControllerOptions",
 			"GithubConnectionController",
-			"GithubConnectionController.constructor",
-			"GithubConnectionController.routes",
 			"GithubConnection",
 			"GithubConnectionControllerOptions",
-			"GithubConnectionController"
+			"GithubConnectionController",
+			"GithubConnectionController.constructor",
+			"GithubConnectionController.routes"
 		]
 	},
 	"contract": {
@@ -81,7 +81,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/controllers/GithubConnectionController.ts"
+				"entry": "packages/hub/src/controllers/github-connection-controller/GithubConnectionController.ts"
 			}
 		]
 	},

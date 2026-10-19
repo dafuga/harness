@@ -13,13 +13,13 @@
 		],
 		"symbols": [
 			"HistoryNoteRepository",
+			"HistoryNoteRepository",
 			"HistoryNoteRepository.constructor",
 			"HistoryNoteRepository.text",
 			"HistoryNoteRepository.read",
 			"HistoryNoteRepository.append",
 			"HistoryNoteRepository.merge",
-			"HistoryNoteRepository.all",
-			"HistoryNoteRepository"
+			"HistoryNoteRepository.all"
 		]
 	},
 	"contract": {
@@ -116,7 +116,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/repositories/HistoryNoteRepository.ts"
+				"entry": "src/repositories/history-note-repository/HistoryNoteRepository.ts"
 			}
 		]
 	},

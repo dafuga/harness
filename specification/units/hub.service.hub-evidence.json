@@ -13,10 +13,10 @@
 		],
 		"symbols": [
 			"HubEvidenceService",
+			"HubEvidenceService",
 			"HubEvidenceService.constructor",
 			"HubEvidenceService.evidence",
-			"HubEvidenceService.artifact",
-			"HubEvidenceService"
+			"HubEvidenceService.artifact"
 		]
 	},
 	"contract": {
@@ -147,7 +147,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/services/HubEvidenceService.ts"
+				"entry": "packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts"
 			}
 		]
 	},

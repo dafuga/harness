@@ -15,11 +15,11 @@
 			"BuiltHistory",
 			"LegacyReader",
 			"HistoryIndexService",
-			"HistoryIndexService.constructor",
-			"HistoryIndexService.build",
 			"BuiltHistory",
 			"LegacyReader",
-			"HistoryIndexService"
+			"HistoryIndexService",
+			"HistoryIndexService.constructor",
+			"HistoryIndexService.build"
 		]
 	},
 	"contract": {
@@ -133,7 +133,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/HistoryIndexService.ts"
+				"entry": "src/services/history-index-service/HistoryIndexService.ts"
 			}
 		]
 	},

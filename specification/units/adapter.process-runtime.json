@@ -14,12 +14,12 @@
 		"symbols": [
 			"ProcessRuntimeConfig",
 			"ProcessRuntimeAdapter",
+			"ProcessRuntimeConfig",
+			"ProcessRuntimeAdapter",
 			"ProcessRuntimeAdapter.constructor",
 			"ProcessRuntimeAdapter.invoke",
 			"ProcessRuntimeAdapter.invokeText",
-			"ProcessRuntimeAdapter.close",
-			"ProcessRuntimeConfig",
-			"ProcessRuntimeAdapter"
+			"ProcessRuntimeAdapter.close"
 		]
 	},
 	"contract": {
@@ -82,7 +82,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/adapters/ProcessRuntimeAdapter.ts"
+				"entry": "src/adapters/process-runtime-adapter/ProcessRuntimeAdapter.ts"
 			}
 		]
 	},

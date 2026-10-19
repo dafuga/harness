@@ -14,6 +14,8 @@
 		"symbols": [
 			"RemoteHostOptions",
 			"RemoteHostService",
+			"RemoteHostOptions",
+			"RemoteHostService",
 			"RemoteHostService.constructor",
 			"RemoteHostService.enabled",
 			"RemoteHostService.name",
@@ -28,9 +30,7 @@
 			"RemoteHostService.status",
 			"RemoteHostService.current",
 			"RemoteHostService.published",
-			"RemoteHostService.saved",
-			"RemoteHostOptions",
-			"RemoteHostService"
+			"RemoteHostService.saved"
 		]
 	},
 	"contract": {
@@ -167,7 +167,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/RemoteHostService.ts"
+				"entry": "packages/desktop/src/services/remote-host-service/RemoteHostService.ts"
 			}
 		]
 	},

@@ -13,11 +13,11 @@
 		],
 		"symbols": [
 			"CommitMessageService",
+			"CommitMessageService",
 			"CommitMessageService.constructor",
 			"CommitMessageService.written",
 			"CommitMessageService.stored",
-			"CommitMessageService.reported",
-			"CommitMessageService"
+			"CommitMessageService.reported"
 		]
 	},
 	"contract": {
@@ -105,7 +105,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/CommitMessageService.ts"
+				"entry": "src/services/commit-message-service/CommitMessageService.ts"
 			}
 		]
 	},

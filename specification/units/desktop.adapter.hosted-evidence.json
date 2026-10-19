@@ -13,11 +13,11 @@
 		],
 		"symbols": [
 			"HostedEvidenceAdapter",
+			"HostedEvidenceAdapter",
 			"HostedEvidenceAdapter.constructor",
 			"HostedEvidenceAdapter.path",
 			"HostedEvidenceAdapter.evidence",
-			"HostedEvidenceAdapter.artifact",
-			"HostedEvidenceAdapter"
+			"HostedEvidenceAdapter.artifact"
 		]
 	},
 	"contract": {
@@ -103,7 +103,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/adapters/HostedEvidenceAdapter.ts"
+				"entry": "packages/desktop/src/adapters/hosted-evidence-adapter/HostedEvidenceAdapter.ts"
 			}
 		]
 	},

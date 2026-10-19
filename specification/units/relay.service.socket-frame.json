@@ -13,10 +13,10 @@
 		],
 		"symbols": [
 			"SocketFrameService",
+			"SocketFrameService",
 			"SocketFrameService.constructor",
 			"SocketFrameService.message",
-			"SocketFrameService.closed",
-			"SocketFrameService"
+			"SocketFrameService.closed"
 		]
 	},
 	"contract": {
@@ -102,7 +102,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/services/SocketFrameService.ts"
+				"entry": "packages/relay/src/services/socket-frame-service/SocketFrameService.ts"
 			}
 		]
 	},

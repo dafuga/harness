@@ -13,12 +13,12 @@
 		],
 		"symbols": [
 			"AgentActivityService",
+			"AgentActivityService",
 			"AgentActivityService.constructor",
 			"AgentActivityService.register",
 			"AgentActivityService.heartbeat",
 			"AgentActivityService.finish",
-			"AgentActivityService.roster",
-			"AgentActivityService"
+			"AgentActivityService.roster"
 		]
 	},
 	"contract": {
@@ -125,7 +125,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/AgentActivityService.ts"
+				"entry": "src/services/agent-activity-service/AgentActivityService.ts"
 			}
 		]
 	},

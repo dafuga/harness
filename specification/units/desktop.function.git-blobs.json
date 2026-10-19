@@ -49,7 +49,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/gitBlobs.ts"
+				"entry": "packages/desktop/src/adapters/git-source-adapter/gitBlobs.ts"
 			}
 		]
 	},

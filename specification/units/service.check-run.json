@@ -15,12 +15,12 @@
 			"RunContext",
 			"CheckOutcome",
 			"CheckRunService",
-			"CheckRunService.constructor",
-			"CheckRunService.run",
-			"CheckRunService.version",
 			"RunContext",
 			"CheckOutcome",
-			"CheckRunService"
+			"CheckRunService",
+			"CheckRunService.constructor",
+			"CheckRunService.run",
+			"CheckRunService.version"
 		]
 	},
 	"contract": {
@@ -84,7 +84,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/CheckRunService.ts"
+				"entry": "src/services/check-run-service/CheckRunService.ts"
 			}
 		]
 	},

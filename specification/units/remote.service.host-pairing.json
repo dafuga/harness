@@ -17,6 +17,11 @@
 			"HostPairingFrame",
 			"HostPairingApproved",
 			"HostPairingService",
+			"HostPairingOptions",
+			"HostPairingOffer",
+			"HostPairingFrame",
+			"HostPairingApproved",
+			"HostPairingService",
 			"HostPairingService.constructor",
 			"HostPairingService.open",
 			"HostPairingService.offer",
@@ -24,12 +29,7 @@
 			"HostPairingService.receive",
 			"HostPairingService.approve",
 			"HostPairingService.deny",
-			"HostPairingService.close",
-			"HostPairingOptions",
-			"HostPairingOffer",
-			"HostPairingFrame",
-			"HostPairingApproved",
-			"HostPairingService"
+			"HostPairingService.close"
 		]
 	},
 	"contract": {
@@ -141,7 +141,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/remote/src/services/HostPairingService.ts"
+				"entry": "packages/remote/src/services/host-pairing-service/HostPairingService.ts"
 			}
 		]
 	},

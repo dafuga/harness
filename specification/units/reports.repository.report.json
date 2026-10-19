@@ -13,6 +13,7 @@
 		],
 		"symbols": [
 			"ReportRepository",
+			"ReportRepository",
 			"ReportRepository.constructor",
 			"ReportRepository.directory",
 			"ReportRepository.begin",
@@ -21,8 +22,7 @@
 			"ReportRepository.record",
 			"ReportRepository.mutateActive",
 			"ReportRepository.seal",
-			"ReportRepository.finish",
-			"ReportRepository"
+			"ReportRepository.finish"
 		]
 	},
 	"contract": {
@@ -162,7 +162,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/repositories/ReportRepository.ts"
+				"entry": "packages/reports/src/repositories/report-repository/ReportRepository.ts"
 			}
 		]
 	},

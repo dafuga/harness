@@ -38,7 +38,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/hubCache.ts"
+				"entry": "packages/hub/src/routes/api/[...path]/-server/hubCache.ts"
 			}
 		]
 	},

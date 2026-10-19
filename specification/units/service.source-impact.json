@@ -12,14 +12,14 @@
 			"src/services/source-impact-service/SourceImpactService.ts"
 		],
 		"symbols": [
+			"SourceImpactService",
 			"SourceImpact",
 			"SourceImpactService",
 			"SourceImpactService.constructor",
 			"SourceImpactService.of",
 			"SourceImpactService.reasons",
 			"SourceImpactService.parent",
-			"SourceImpactService.stored",
-			"SourceImpactService"
+			"SourceImpactService.stored"
 		]
 	},
 	"contract": {
@@ -124,7 +124,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/SourceImpactService.ts"
+				"entry": "src/services/source-impact-service/SourceImpactService.ts"
 			}
 		]
 	},

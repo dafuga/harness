@@ -14,11 +14,11 @@
 		"symbols": [
 			"CapacitorBridgeAdapterConfig",
 			"CapacitorBridgeAdapter",
+			"CapacitorBridgeAdapterConfig",
+			"CapacitorBridgeAdapter",
 			"CapacitorBridgeAdapter.constructor",
 			"CapacitorBridgeAdapter.allow",
-			"CapacitorBridgeAdapter.connect",
-			"CapacitorBridgeAdapterConfig",
-			"CapacitorBridgeAdapter"
+			"CapacitorBridgeAdapter.connect"
 		]
 	},
 	"contract": {
@@ -104,7 +104,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/adapters/CapacitorBridgeAdapter.ts"
+				"entry": "packages/desktop/src/adapters/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts"
 			}
 		]
 	},

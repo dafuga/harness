@@ -13,9 +13,9 @@
 		],
 		"symbols": [
 			"HistoryMediaService",
+			"HistoryMediaService",
 			"HistoryMediaService.constructor",
-			"HistoryMediaService.place",
-			"HistoryMediaService"
+			"HistoryMediaService.place"
 		]
 	},
 	"contract": {
@@ -64,7 +64,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/HistoryMediaService.ts"
+				"entry": "src/services/history-media-service/HistoryMediaService.ts"
 			}
 		]
 	},

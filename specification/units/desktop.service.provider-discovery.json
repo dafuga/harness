@@ -13,10 +13,10 @@
 		],
 		"symbols": [
 			"ProviderDiscoveryService",
+			"ProviderDiscoveryService",
 			"ProviderDiscoveryService.constructor",
 			"ProviderDiscoveryService.list",
-			"ProviderDiscoveryService.select",
-			"ProviderDiscoveryService"
+			"ProviderDiscoveryService.select"
 		]
 	},
 	"contract": {
@@ -79,7 +79,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/ProviderDiscoveryService.ts"
+				"entry": "packages/desktop/src/services/provider-discovery-service/ProviderDiscoveryService.ts"
 			}
 		]
 	},

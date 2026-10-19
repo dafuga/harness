@@ -13,10 +13,10 @@
 		],
 		"symbols": [
 			"ReportExportService",
+			"ReportExportService",
 			"ReportExportService.constructor",
 			"ReportExportService.finalize",
-			"ReportExportService.rebuildAfterRetention",
-			"ReportExportService"
+			"ReportExportService.rebuildAfterRetention"
 		]
 	},
 	"contract": {
@@ -104,7 +104,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/services/ReportExportService.ts"
+				"entry": "packages/reports/src/services/report-export-service/ReportExportService.ts"
 			}
 		]
 	},

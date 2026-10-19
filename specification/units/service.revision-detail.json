@@ -16,12 +16,12 @@
 			"BuiltRevision",
 			"revisionSources",
 			"RevisionDetailService",
-			"RevisionDetailService.constructor",
-			"RevisionDetailService.build",
 			"RevisionDetail",
 			"BuiltRevision",
 			"revisionSources",
-			"RevisionDetailService"
+			"RevisionDetailService",
+			"RevisionDetailService.constructor",
+			"RevisionDetailService.build"
 		]
 	},
 	"contract": {
@@ -177,7 +177,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/RevisionDetailService.ts"
+				"entry": "src/services/revision-detail-service/RevisionDetailService.ts"
 			}
 		]
 	},

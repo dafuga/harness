@@ -15,13 +15,13 @@
 			"BenchPlan",
 			"WorkloadRun",
 			"KernelBenchmarkService",
-			"KernelBenchmarkService.constructor",
-			"KernelBenchmarkService.measure",
-			"KernelBenchmarkService.describe",
 			"serveKernel",
 			"BenchPlan",
 			"WorkloadRun",
 			"KernelBenchmarkService",
+			"KernelBenchmarkService.constructor",
+			"KernelBenchmarkService.measure",
+			"KernelBenchmarkService.describe",
 			"serveKernel"
 		]
 	},
@@ -147,7 +147,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/KernelBenchmarkService.ts"
+				"entry": "src/services/kernel-benchmark-service/KernelBenchmarkService.ts"
 			}
 		]
 	},

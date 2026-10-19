@@ -15,9 +15,9 @@
 		"symbols": [
 			"impactKernel",
 			"impactKernelPortable",
-			"impactKernelText",
 			"impactKernel",
 			"impactKernelPortable",
+			"impactKernelText",
 			"impactKernelText"
 		]
 	},
@@ -93,7 +93,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/impactKernel.ts",
+				"entry": "src/utils/impact-kernel/impactKernel.ts",
 				"handler": "impactKernel"
 			}
 		]

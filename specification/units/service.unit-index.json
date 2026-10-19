@@ -15,10 +15,10 @@
 			"UnitMove",
 			"UnitIndexResult",
 			"UnitIndexService",
-			"UnitIndexService.index",
 			"UnitMove",
 			"UnitIndexResult",
-			"UnitIndexService"
+			"UnitIndexService",
+			"UnitIndexService.index"
 		]
 	},
 	"contract": {
@@ -79,7 +79,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/UnitIndexService.ts"
+				"entry": "src/services/unit-index-service/UnitIndexService.ts"
 			}
 		]
 	},

@@ -12,6 +12,7 @@
 			"packages/desktop/src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter.ts"
 		],
 		"symbols": [
+			"RemoteHttpProjectAdapter",
 			"NativeHostedCredential",
 			"RemoteHttpProjectAdapter",
 			"RemoteHttpProjectAdapter.constructor",
@@ -28,8 +29,7 @@
 			"RemoteHttpProjectAdapter.messages",
 			"RemoteHttpProjectAdapter.history",
 			"RemoteHttpProjectAdapter.capabilities",
-			"RemoteHttpProjectAdapter.addComment",
-			"RemoteHttpProjectAdapter"
+			"RemoteHttpProjectAdapter.addComment"
 		]
 	},
 	"contract": {
@@ -234,7 +234,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/adapters/RemoteHttpProjectAdapter.ts"
+				"entry": "packages/desktop/src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter.ts"
 			}
 		]
 	},

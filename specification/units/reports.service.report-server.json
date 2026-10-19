@@ -13,10 +13,10 @@
 		],
 		"symbols": [
 			"ReportServerService",
+			"ReportServerService",
 			"ReportServerService.constructor",
 			"ReportServerService.serve",
-			"ReportServerService.stop",
-			"ReportServerService"
+			"ReportServerService.stop"
 		]
 	},
 	"contract": {
@@ -80,7 +80,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/services/ReportServerService.ts"
+				"entry": "packages/reports/src/services/report-server-service/ReportServerService.ts"
 			}
 		]
 	},

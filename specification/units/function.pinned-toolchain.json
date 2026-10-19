@@ -9,11 +9,11 @@
 	"owns": {
 		"source": ["scripts/build-kernel/pinnedToolchain.ts", "src/utils/pinnedToolchain.ts"],
 		"symbols": [
+			"pinnedToolchain",
 			"PinnedTool",
 			"ToolAnswer",
 			"ToolRun",
 			"PinnedOptions",
-			"pinnedToolchain",
 			"pinnedToolchain"
 		]
 	},

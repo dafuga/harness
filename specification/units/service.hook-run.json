@@ -11,10 +11,10 @@
 		"symbols": [
 			"HookOutcome",
 			"HookRunService",
-			"HookRunService.constructor",
-			"HookRunService.prePush",
 			"HookOutcome",
-			"HookRunService"
+			"HookRunService",
+			"HookRunService.constructor",
+			"HookRunService.prePush"
 		]
 	},
 	"contract": {
@@ -60,7 +60,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/HookRunService.ts"
+				"entry": "src/services/hook-run-service/HookRunService.ts"
 			}
 		]
 	},

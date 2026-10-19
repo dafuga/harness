@@ -16,15 +16,15 @@
 			"POLL_INTERVAL",
 			"NativeHandoffOptions",
 			"NativeHandoffService",
+			"HANDOFF_TTL",
+			"POLL_INTERVAL",
+			"NativeHandoffOptions",
+			"NativeHandoffService",
 			"NativeHandoffService.constructor",
 			"NativeHandoffService.start",
 			"NativeHandoffService.approve",
 			"NativeHandoffService.poll",
-			"NativeHandoffService.exchange",
-			"HANDOFF_TTL",
-			"POLL_INTERVAL",
-			"NativeHandoffOptions",
-			"NativeHandoffService"
+			"NativeHandoffService.exchange"
 		]
 	},
 	"contract": {
@@ -116,7 +116,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/services/NativeHandoffService.ts"
+				"entry": "packages/hub/src/services/native-handoff-service/NativeHandoffService.ts"
 			}
 		]
 	},

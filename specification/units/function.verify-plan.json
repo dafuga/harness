@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/services/verification-service/verifyPlan.ts", "src/utils/verifyPlan.ts"],
-		"symbols": ["PlannedCheck", "PlanInput", "verifyPlan", "verifyPlan"]
+		"symbols": ["verifyPlan", "PlannedCheck", "PlanInput", "verifyPlan"]
 	},
 	"contract": {
 		"origin": "declared",

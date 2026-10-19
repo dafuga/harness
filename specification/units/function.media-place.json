@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/services/history-media-service/mediaPlace.ts", "src/utils/mediaPlace.ts"],
-		"symbols": ["MediaFile", "MediaPlacer", "checkedMedia", "mediaPlace", "mediaPlace"]
+		"symbols": ["mediaPlace", "MediaFile", "MediaPlacer", "checkedMedia", "mediaPlace"]
 	},
 	"contract": {
 		"origin": "declared",

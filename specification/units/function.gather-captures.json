@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/services/check-run-service/gatherCaptures.ts", "src/utils/gatherCaptures.ts"],
-		"symbols": ["Gathered", "GatherResult", "gatherCaptures", "gatherCaptures"]
+		"symbols": ["gatherCaptures", "Gathered", "GatherResult", "gatherCaptures"]
 	},
 	"contract": {
 		"origin": "declared",

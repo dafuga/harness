@@ -14,10 +14,10 @@
 		"symbols": [
 			"DeviceSessionOptions",
 			"DeviceSessionService",
-			"DeviceSessionService.constructor",
-			"DeviceSessionService.end",
 			"DeviceSessionOptions",
-			"DeviceSessionService"
+			"DeviceSessionService",
+			"DeviceSessionService.constructor",
+			"DeviceSessionService.end"
 		]
 	},
 	"contract": {
@@ -64,7 +64,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/DeviceSessionService.ts"
+				"entry": "packages/desktop/src/services/device-session-service/DeviceSessionService.ts"
 			}
 		]
 	},

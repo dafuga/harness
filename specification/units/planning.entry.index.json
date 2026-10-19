@@ -10,15 +10,15 @@
 		"source": ["packages/planning/src/index.ts", "packages/planning/src/index/index.ts"],
 		"symbols": [
 			"createPlanning",
+			"handlePlanningRequest",
+			"createPlanning",
 			"default",
 			"handlePlanningRequest",
 			"planImageCodec",
 			"planCommit",
 			"planIdentity",
 			"planOptions",
-			"planReads",
-			"createPlanning",
-			"handlePlanningRequest"
+			"planReads"
 		]
 	},
 	"contract": {
@@ -113,7 +113,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/planning/src/index.ts"
+				"entry": "packages/planning/src/index/index.ts"
 			}
 		]
 	},

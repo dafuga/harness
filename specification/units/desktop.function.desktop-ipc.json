@@ -11,7 +11,7 @@
 			"packages/desktop/src/initializers/initialize-desktop/desktopIpc.ts",
 			"packages/desktop/src/utils/desktopIpc.ts"
 		],
-		"symbols": ["bootstrapChannel", "DesktopIpcPort", "desktopIpc", "desktopIpc"]
+		"symbols": ["desktopIpc", "bootstrapChannel", "DesktopIpcPort", "desktopIpc"]
 	},
 	"contract": {
 		"origin": "declared",

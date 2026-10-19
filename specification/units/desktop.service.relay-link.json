@@ -16,15 +16,15 @@
 			"RelayCommandInput",
 			"RelayLinkOptions",
 			"RelayLinkService",
+			"RelayLinkState",
+			"RelayCommandInput",
+			"RelayLinkOptions",
+			"RelayLinkService",
 			"RelayLinkService.constructor",
 			"RelayLinkService.start",
 			"RelayLinkService.stop",
 			"RelayLinkService.send",
-			"RelayLinkService.command",
-			"RelayLinkState",
-			"RelayCommandInput",
-			"RelayLinkOptions",
-			"RelayLinkService"
+			"RelayLinkService.command"
 		]
 	},
 	"contract": {
@@ -81,7 +81,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/RelayLinkService.ts"
+				"entry": "packages/desktop/src/services/relay-link-service/RelayLinkService.ts"
 			}
 		]
 	},

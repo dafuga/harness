@@ -15,11 +15,11 @@
 			"ConsoleInstallOptions",
 			"ConsoleInstallResult",
 			"ConsoleInstallService",
-			"ConsoleInstallService.install",
-			"ConsoleInstallService.restore",
 			"ConsoleInstallOptions",
 			"ConsoleInstallResult",
-			"ConsoleInstallService"
+			"ConsoleInstallService",
+			"ConsoleInstallService.install",
+			"ConsoleInstallService.restore"
 		]
 	},
 	"contract": {
@@ -98,7 +98,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/ConsoleInstallService.ts"
+				"entry": "src/services/console-install-service/ConsoleInstallService.ts"
 			}
 		]
 	},

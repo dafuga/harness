@@ -13,6 +13,7 @@
 		],
 		"symbols": [
 			"GitSourceAdapter",
+			"GitSourceAdapter",
 			"GitSourceAdapter.constructor",
 			"GitSourceAdapter.branches",
 			"GitSourceAdapter.revision",
@@ -23,8 +24,7 @@
 			"GitSourceAdapter.source",
 			"GitSourceAdapter.documentation",
 			"GitSourceAdapter.size",
-			"GitSourceAdapter.contractHash",
-			"GitSourceAdapter"
+			"GitSourceAdapter.contractHash"
 		]
 	},
 	"contract": {
@@ -173,7 +173,7 @@
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/adapters/GitSourceAdapter.ts"
+				"entry": "packages/desktop/src/adapters/git-source-adapter/GitSourceAdapter.ts"
 			}
 		]
 	},
