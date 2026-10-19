@@ -34,7 +34,7 @@
 			"title": "Implement the smallest repair without weakening the regression test.",
 			"status": "complete",
 			"completedAt": "2026-10-19T14:21:04.066Z",
-			"evidence": "Shared Function card now shows a linked example invocation from this revision’s parameter samples or documentation. Missing values remain named variables; compact navigation and the grid are retained."
+			"evidence": "Shared Function card now shows a linked example invocation from this revision\u2019s parameter samples or documentation. Missing values remain named variables; compact navigation and the grid are retained."
 		},
 		{
 			"id": "green",
@@ -46,7 +46,8 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Scoped verification passed: 3 unchanged viewport regressions and 9 rendering cases in isolated red/green checkpoints; 30 related browser cases; 21 focused unit cases after aligning one obsolete hidden-symbol assertion; Reports typecheck, lint, build and audit. Live call navigation and function-symbol search verified without console errors. Fresh before/after images inspected at /tmp/harness-function-calls-before and /tmp/harness-function-calls-after; live screenshot /tmp/harness-function-calls-live.jpg. Root check passed initial format/types/lint/kernel stages but was bounded at 90 seconds during unit tests; full repository verification remains incomplete. Main is unchanged; no Electron testing."
 		}
 	],
 	"evaluators": [
