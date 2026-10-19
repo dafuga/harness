@@ -2,7 +2,7 @@
 	"name": "grant-store-initialization",
 	"goal": "Initialize grant store public and owner entries without circular constant reads",
 	"createdAt": "2026-10-19T20:22:23.565Z",
-	"updatedAt": "2026-10-19T20:22:24.416Z",
+	"updatedAt": "2026-10-19T20:23:13.911Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T20:23:10.695Z",
+			"evidence": "Committed standard adapter suite 922e3a15 reproduces the circular initialization from both public and owner entries and fails real SQLite revocation assertions."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T20:23:11.151Z",
+			"evidence": "Place SQL constants with their initialized owner implementation; retain explicit public forwarding exports. The native cold-entry cases and real SQLite grant contract guard initialization and behavior together."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-19T20:23:13.911Z",
+			"evidence": "SQL constants are initialized in the owner module before SQL statements are constructed. The public module forwards the same exported names and no implementation imports back from its facade."
 		},
 		{
 			"id": "green",
