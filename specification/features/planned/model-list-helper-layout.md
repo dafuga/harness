@@ -53,3 +53,80 @@ red check; behavior is already correct and must remain unchanged.
 ## Future Enhancements
 
 - Model detail design and SQLite catalog integration are separate changes.
+
+## Local Verification Handoff: 2026-10-20
+
+The code is committed on `fix/model-list-helper-layout`. Application code has not
+been pushed, merged or deployed. The SQLite catalog remains in its separate
+`feat/sqlite-model-storage` worktree at `edd93768`.
+The verified source base is `cd36c21c5b2e593e2e30ea549146c519f246a2f8`.
+During verification, `origin/main` advanced to
+`c6d8a8706bf2848ead437c107854ca9df58d5a2c`; that upstream change is not integrated
+or covered by this branch's results.
+
+| Repair                                             | Product commit | Result                                                                                       |
+| -------------------------------------------------- | -------------- | -------------------------------------------------------------------------------------------- |
+| Models reuse helper cards                          | `06fbc6d4`     | Unchanged card-grid regression passes at all covered widths.                                 |
+| Private removal details retain the parent contract | `2eb9c49b`     | Unchanged history regression and browser case pass.                                          |
+| Desktop fixture initializer typing                 | `f34b49d6`     | Typecheck passes with both trusted initializer boundaries bounded.                           |
+| Desktop Examples verification disclosure           | `9e324911`     | Unchanged red/green scenario, authored examples and manual current/history/phone flows pass. |
+| Remote approval guard extraction                   | `0bf42a0f`     | Identical lint and approval characterization command changes from failing to passing.        |
+
+Remote red record `492a14014c14eceecd60f72210326c9fd36fd820b12ceaf771540e4567035925`
+belongs to test-only commit `6c9bccb5`. Green record
+`161dea3d308765842efcd4b0ea9c9e7a698462940d7f0b539bfb1f021d608175`
+belongs to `0bf42a0f`. Tests, fixtures, command and environment are unchanged.
+The red failure is the existing complexity limit; all four runtime cases pass
+before and after repair. Field-read order and optional comment omission are retained.
+
+Newly run checks include the complete Remote package check (27 files, 135 tests),
+seven Desktop approval/binding integration cases, current registry validation and
+root audit. Final root formatting, types and lint pass; current Desktop typecheck
+reports zero errors and warnings, and Desktop lint passes.
+Desktop's complete unit/integration run passed 870 tests with three
+skips. Its renderer and Electron builds, project-local audit and 53 Swift file
+limits passed. Earlier Reports verification passed 613 unit tests, 68 entity
+browser cases and nine hosted-catalog cases; those unaffected suites were not rerun
+for the Remote extraction.
+
+The full Desktop browser suite finished with **152 passed and 42 failed**. Failures
+include project-agent expectations, evidence layouts, native navigation, design
+images, remote-host approval selectors and search flows. Some assertions reference
+older navigation or inline-search contracts; a complete baseline attribution was
+not performed. Their diagnostics are retained, and the checks were not weakened.
+Hub also retains its separately observed projects-controller complexity 11 failure
+against limit 10. Full repository verification has not passed; loop verification
+steps remain pending. Project Reports run `f5eee44e-d1dc-4426-9766-1172744a9463`
+stays active. Its earlier media connection failure recovered and the Desktop
+regression captures were uploaded successfully; no completed report is published.
+
+Fresh in-app browser captures show the Models list at 1280 and 390 pixels, model
+detail navigation and the restored Desktop Examples disclosure. These use the
+normal compiled renderer with synthetic Orders fixtures, not a live project DB or
+physical device. Both inspected browser tabs reported no console errors.
+Evidence and full logs are outside Git under
+`~/.codex/project-reports/work/model-list-verification/` and its parent directory.
+
+### Changed Unit Sources and History
+
+The managed real-project preview is occupied by another active session. Actual
+registered entity and History pages cannot be served here without disturbing that
+session. The following sources and explicit commits identify each changed unit;
+the synthetic preview is not presented as a real Harness project history page.
+
+| Registered unit                                     | Source                                                                                                        | History commit |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | -------------- |
+| `reports.component.harness-explorer-catalog-screen` | [ExplorerCatalogScreen.svelte](../../../packages/reports/src/components/harness/ExplorerCatalogScreen.svelte) | `06fbc6d4`     |
+| `reports.component.explorer-function-card`          | [ExplorerFunctionCard.svelte](../../../packages/reports/src/components/ExplorerFunctionCard.svelte)           | `06fbc6d4`     |
+| `reports.component.harness-explorer-index`          | [ExplorerIndex.svelte](../../../packages/reports/src/components/harness/explorer-index/ExplorerIndex.svelte)  | `06fbc6d4`     |
+| `reports.function.entity-catalog`                   | [entityCatalog.ts](../../../packages/reports/src/utils/entityCatalog.ts)                                      | `06fbc6d4`     |
+| `reports.component.harness-entity-frame`            | [EntityFrame.svelte](../../../packages/reports/src/components/harness/EntityFrame.svelte)                     | `2eb9c49b`     |
+| `reports.function.explorer-entities`                | [explorerEntities.ts](../../../packages/reports/src/utils/explorerEntities.ts)                                | `2eb9c49b`     |
+| `desktop.component.entity-view`                     | [EntityView.svelte](../../../packages/desktop/src/components/entity-view/EntityView.svelte)                   | `9e324911`     |
+| `desktop.model.desktop-types`                       | [Desktop.types.ts](../../../packages/desktop/src/models/Desktop.types.ts)                                     | `404ad1c1`     |
+| `remote.validator.remote-input`                     | [RemoteInputValidator.ts](../../../packages/remote/src/validators/RemoteInputValidator.ts)                    | `0bf42a0f`     |
+
+The browser-only fixture initializer has no entity page; its source is
+[ui-evidence-fixture.ts](../../../packages/desktop/tests/e2e/ui-evidence-fixture.ts)
+at `f34b49d6`. The Desktop model type file has only a blank-line removal at
+`404ad1c1` to meet the unchanged file limit; its types and behavior are unchanged.
