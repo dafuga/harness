@@ -129,8 +129,14 @@ test('a declared catalog preview selects its exact state and viewport without a 
 });
 
 test('validated unchanged screenshots stay visible with their capture origin', () => {
-	const inherited = withInherited(tip, commits.middle);
-	const shown = entityScreens(evidence(page, inherited), screenPick(options, {})!);
+	const unchanged = {
+		...tip,
+		sourceImpact: { ...tip.sourceImpact!, units: { ...tip.sourceImpact!.units, indirect: [] } }
+	};
+	const inherited = withInherited(unchanged, commits.middle);
+	const usable = evidence(page, inherited);
+	expect(usable.after.captures[0].usable, 'fixture has validated unchanged proof').toBe(true);
+	const shown = entityScreens(usable, screenPick(options, {})!);
 	expect(shown.after).toMatchObject({ missing: false, file: 'bbbbbbb-default-desktop.png' });
 	expect(shown.fresh).toBe(false);
 	expect(shown.origin).toBe(commits.middle);
