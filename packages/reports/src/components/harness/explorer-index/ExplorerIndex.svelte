@@ -74,7 +74,7 @@
 	{:else}
 		{@render list(listed)}
 	{/if}
-	{#if !['functions', 'components'].includes(category)}<footer class="ex-legend">
+	{#if category !== 'functions'}<footer class="ex-legend">
 			{#if category === 'pages'}
 				<p class="ex-hint">
 					<HarnessIcon name="relationships" size={26} />
