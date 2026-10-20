@@ -54,8 +54,23 @@ test('once every generated config exists, nothing is left to sync', () => {
 	expect(unsyncedKitPackages(root)).toEqual([]);
 });
 
-// Exercise the real build sequence over cold workspace configs and a real cross-package Vite bundle.
-test('a cold build prepares every imported SvelteKit workspace before Reports compiles it', () => {
+function kitWorkspace(root: string, repository: string, name: string): void {
+	const directory = join(root, 'packages', name);
+	mkdirSync(join(directory, 'src/routes'), { recursive: true });
+	writeFileSync(join(directory, 'src/routes/+page.svelte'), '<h1>Fixture</h1>');
+	copyFileSync(join(repository, 'packages', name, 'src/app.html'), join(directory, 'src/app.html'));
+	copyFileSync(
+		join(repository, 'packages', name, 'svelte.config.js'),
+		join(directory, 'svelte.config.js')
+	);
+	writeFileSync(
+		join(directory, 'package.json'),
+		JSON.stringify({ name, type: 'module', scripts: { build: 'vite build' } })
+	);
+	writeFileSync(join(directory, 'src/sample.ts'), 'export const count: number = 1;');
+}
+
+function coldBuildProject(): string {
 	const repository = join(import.meta.dirname, '..');
 	const root = tree({
 		desktop: { tsconfig: kit },
@@ -79,24 +94,8 @@ test('a cold build prepares every imported SvelteKit workspace before Reports co
 	);
 	mkdirSync(join(root, 'scripts'));
 	writeFileSync(join(root, 'scripts/package-reports.ts'), 'export {};');
-	for (const name of ['desktop', 'reports', 'hub']) {
-		const directory = join(root, 'packages', name);
-		mkdirSync(join(directory, 'src/routes'), { recursive: true });
-		writeFileSync(join(directory, 'src/routes/+page.svelte'), '<h1>Fixture</h1>');
-		copyFileSync(
-			join(repository, 'packages', name, 'src/app.html'),
-			join(directory, 'src/app.html')
-		);
-		copyFileSync(
-			join(repository, 'packages', name, 'svelte.config.js'),
-			join(directory, 'svelte.config.js')
-		);
-		writeFileSync(
-			join(directory, 'package.json'),
-			JSON.stringify({ name, type: 'module', scripts: { build: 'vite build' } })
-		);
-		writeFileSync(join(directory, 'src/sample.ts'), 'export const count: number = 1;');
-	}
+	for (const name of ['desktop', 'reports', 'hub']) kitWorkspace(root, repository, name);
+
 	writeFileSync(
 		join(root, 'packages/reports/src/index.ts'),
 		"import {count as desktop} from '../../desktop/src/sample'; import {count as hub} from '../../hub/src/sample'; export const answer = desktop + hub + 1;"
@@ -105,6 +104,12 @@ test('a cold build prepares every imported SvelteKit workspace before Reports co
 		join(root, 'packages/reports/vite.config.ts'),
 		"import {defineConfig} from 'vite'; export default defineConfig({build:{lib:{entry:'src/index.ts',formats:['es'],fileName:()=> 'bundle.js'}}});"
 	);
+	return root;
+}
+
+// Exercise the real build sequence over cold workspace configs and a real cross-package Vite bundle.
+test('a cold build prepares every imported SvelteKit workspace before Reports compiles it', () => {
+	const root = coldBuildProject();
 	const built = spawnSync('bun', ['run', 'build'], { cwd: root, encoding: 'utf8', timeout: 60000 });
 	expect(
 		built.stdout + built.stderr,
