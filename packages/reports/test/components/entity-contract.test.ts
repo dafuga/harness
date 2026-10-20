@@ -105,3 +105,52 @@ test('callable contracts preserve actual parameters and associate their returns'
 	expect(words(body)).toContain('No errors declared.');
 	expect(words(body)).not.toMatch(/Count words · Value|Runs as|Module/);
 });
+
+test('a selected callable page excludes sibling APIs and rejects missing symbols', () => {
+	const head = revision(commits.tip, []);
+	const unit = head.registry.units.find((item) => item.id === ids.filter)!;
+	unit.helpers = [
+		{ name: 'first', source: 'helpers.ts', inputs: [], output: 'string' },
+		{ name: 'second', source: 'helpers.ts', inputs: [], output: 'number' }
+	];
+	unit.contract = {
+		inputs: [],
+		outputs: [
+			{ name: 'first', type: 'string', examples: ['hello'] },
+			{ name: 'second', type: 'number', examples: [42] }
+		],
+		errors: [{ name: 'second.failure', type: 'TypeError' }]
+	};
+	for (const mode of ['current', 'commit'] as const) {
+		for (const helper of ['first', 'second']) {
+			const body = content(
+				mode,
+				{ category: 'functions', entity: ids.filter, helper, tab: 'contract' },
+				{ head }
+			);
+			expect(body, 'detail header identifies the selected function').toMatch(
+				new RegExp(`<h1[^>]*>.*?${helper}.*?</h1>`, 's')
+			);
+			expect(body).toContain(`aria-label="${helper} contract"`);
+			expect(body).not.toContain(
+				`aria-label="${helper === 'first' ? 'second' : 'first'} contract"`
+			);
+			expect(words(body).includes('TypeError')).toBe(helper === 'second');
+		}
+		const missing = content(
+			mode,
+			{ category: 'functions', entity: ids.filter, helper: 'removed', tab: 'contract' },
+			{ head }
+		);
+		expect(words(missing)).toContain('Not at this revision');
+		expect(missing).not.toContain('aria-label="first contract"');
+		const legacy = content(
+			mode,
+			{ category: 'functions', entity: ids.filter, tab: 'contract' },
+			{ head }
+		);
+		expect(legacy).toContain('helper=first');
+		expect(legacy).toContain('helper=second');
+		expect(legacy).not.toContain('aria-label="first contract"');
+	}
+});

@@ -189,6 +189,7 @@ function callableFixture(unit: HarnessUnit): HarnessUnit {
 		output,
 		source: 'src/functions/text.ts',
 		pure: true,
+		consumers: [{ unit: ids.list }, { unit: ids.store }],
 		inputs: name === 'reset' ? [] : [{ name: `${name}.textToConvert`, type: 'string' }]
 	}));
 	return {

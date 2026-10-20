@@ -49,3 +49,16 @@ test('only a link that names a commit leaves the revision, and a collection keep
 	// A commit on no branch keeps having none; no branch is invented for a link.
 	expect(entityLens(place({ branch: null }), { category: 'configs' }).branch).toBeNull();
 });
+
+test('callable identity follows its own tabs and commits, never another entity', () => {
+	const from = { ...place({ category: 'functions', entity: ids.filter }), helper: 'filterOrders' };
+	expect(entityLens(from, { entity: ids.filter, tab: 'contract' })).toHaveProperty(
+		'helper',
+		'filterOrders'
+	);
+	expect(
+		entityLens(from, { entity: ids.filter, section: 'history', commit: commits.first })
+	).toHaveProperty('helper', 'filterOrders');
+	expect(entityLens(from, { entity: ids.list })).not.toHaveProperty('helper');
+	expect(entityLens(from, { category: 'functions' })).not.toHaveProperty('helper');
+});
