@@ -153,26 +153,55 @@ if (variant === 'console') {
 /** Source-derived helper metadata distinguishes callable utilities from implementation units. */
 function withHelpers(detail: HarnessRevision): HarnessRevision {
 	const template = detail.registry.units.find((unit) => unit.id === ids.filter)!;
-	const hidden = ['types', 'schema', 'private', 'class-method', 'legacy', 'unused', 'single'].map(
-		(kind) => {
-			let helpers: typeof template.helpers = kind === 'legacy' ? undefined : [];
-			if (kind === 'unused' || kind === 'single') {
-				helpers = template.helpers?.map((helper) => ({
-					...helper,
-					name: kind,
-					consumers: kind === 'single' ? [{ unit: ids.list }] : []
-				}));
-			}
-			return {
-				...template,
-				id: `function.${kind}`,
-				title: kind,
-				helpers
-			};
+	const hidden = [
+		'types',
+		'schema',
+		'private',
+		'class-method',
+		'legacy',
+		'unused',
+		'single',
+		'effectful',
+		'duplicates'
+	].map((kind) => {
+		let helpers: typeof template.helpers = kind === 'legacy' ? undefined : [];
+		if (['unused', 'single', 'effectful', 'duplicates'].includes(kind)) {
+			helpers = template.helpers?.map((helper) => ({
+				...helper,
+				name: kind,
+				pure: kind !== 'effectful',
+				consumers:
+					kind === 'unused'
+						? []
+						: kind === 'effectful'
+							? [{ unit: ids.list }, { unit: ids.store }]
+							: kind === 'duplicates'
+								? [{ unit: ids.list }, { unit: ids.list }]
+								: [{ unit: ids.list }]
+			}));
 		}
-	);
+		return {
+			...template,
+			id: `function.${kind}`,
+			title: kind,
+			helpers
+		};
+	});
 	return {
 		...detail,
-		registry: { ...detail.registry, units: [...detail.registry.units, ...hidden] }
+		registry: {
+			...detail.registry,
+			units: [
+				...detail.registry.units.map((unit) =>
+					unit.id === ids.list
+						? {
+								...unit,
+								dependencies: [...unit.dependencies, { unit: 'function.single', via: 'import' }]
+							}
+						: unit
+				),
+				...hidden
+			]
+		}
 	};
 }

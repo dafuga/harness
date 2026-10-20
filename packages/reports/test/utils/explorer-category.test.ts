@@ -12,8 +12,8 @@ const owning = (id: string, kind: string, source: string[]) =>
 test('a unit of a product kind is listed under the category of that kind', () => {
 	expect(explorerCategory(unit('reports.component.select', 'component'))).toBe('components');
 	expect(explorerCategory(unit('function.slugify', 'function'))).toBe('functions');
-	expect(explorerCategory(unit('validator.codex-request', 'validator'))).toBe('functions');
-	expect(explorerCategory(unit('serializer.report-export', 'serializer'))).toBe('functions');
+	expect(explorerCategory(unit('validator.codex-request', 'validator'))).toBeNull();
+	expect(explorerCategory(unit('serializer.report-export', 'serializer'))).toBeNull();
 	expect(explorerCategory(unit('reports.config.report-vite', 'config'))).toBe('configs');
 	expect(explorerCategory(unit('service.title', 'service'))).toBe('services');
 	expect(explorerCategory(unit('model.order', 'model'))).toBe('models');
@@ -109,5 +109,43 @@ test("the policy holds for Harness's own registry", () => {
 		expect(category === null || explorerCategories.includes(category)).toBe(true);
 		expect(explorerRole(item)).toMatch(/^[A-Z][a-z]+( [a-z]+)*$/);
 	}
-	for (const category of explorerCategories) expect(listed(category).length).toBeGreaterThan(0);
+	expect(listed('functions')).toEqual([]); // Raw manifests have no source-derived helper proof.
+	for (const category of explorerCategories.filter((kind) => kind !== 'functions')) {
+		expect(listed(category).length).toBeGreaterThan(0);
+	}
+});
+
+test('only explicitly pure functions with distinct runtime consumers are helpers', () => {
+	const helper = { name: 'format', source: 'src/utils/format.ts', inputs: [], pure: true };
+	for (const kind of ['function', 'helper', 'module', 'validator', 'serializer', 'kernel']) {
+		const variants = [
+			{ ...helper, consumers: [] },
+			{ ...helper, consumers: [{ unit: 'component.one' }] },
+			{ ...helper, consumers: [{ unit: 'component.one' }, { unit: 'component.one' }] },
+			{ ...helper, pure: false, consumers: [{ unit: 'component.one' }, { unit: 'component.two' }] },
+			{
+				...helper,
+				pure: undefined,
+				consumers: [{ unit: 'component.one' }, { unit: 'component.two' }]
+			}
+		];
+		for (const entry of variants) {
+			expect(
+				explorerCategory(unit('function.private', kind, { helpers: [entry] })),
+				'Private functions are not helpers'
+			).toBeNull();
+		}
+		for (const consumers of [
+			[{ unit: 'component.one' }, { unit: 'component.two' }],
+			[
+				{ unit: 'function.calls', symbol: 'first' },
+				{ unit: 'function.calls', symbol: 'second' }
+			]
+		]) {
+			expect(
+				explorerCategory(unit('function.shared', kind, { helpers: [{ ...helper, consumers }] }))
+			).toBe('functions');
+		}
+		expect(explorerCategory(unit('function.legacy', kind, { helpers: undefined }))).toBeNull();
+	}
 });

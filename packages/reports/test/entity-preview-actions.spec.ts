@@ -91,6 +91,42 @@ for (const [name, size] of Object.entries(viewports)) {
 				expect(await where(tab)).toMatchObject({ category, entity: ids.filter, commit: null });
 				await tab.getByRole('tab', { name: 'Contract', exact: true }).click();
 				await expect(tab.getByRole('table', { name: 'Inputs', exact: true })).toBeVisible();
+				for (const commit of [null, commits.middle]) {
+					await open(
+						tab,
+						{ category: 'components', entity: ids.list, tab: 'uses', commit },
+						'helpers'
+					);
+					await tab
+						.getByRole('region', { name: 'Uses', exact: true })
+						.getByRole('link', { name: 'Single', exact: true })
+						.click();
+					await capture(
+						tab,
+						`${process.env.SCREENSHOT_LABEL ?? 'run'}-private-function-${commit ? 'commit' : 'tip'}-${name}`
+					);
+					const breadcrumb = tab.getByRole('navigation', { name: 'Breadcrumb' });
+					await expect(
+						breadcrumb,
+						'Private functions have no Helpers breadcrumb'
+					).not.toContainText('Helpers');
+					await expect(
+						breadcrumb.getByRole('link', { name: 'Order list', exact: true })
+					).toBeVisible();
+					await expect(tab.getByRole('heading', { name: 'Single', exact: true })).toBeVisible();
+					await tab.getByRole('tab', { name: 'Examples', exact: true }).click();
+					await expect(tab.getByRole('tabpanel', { name: 'Single examples' })).toBeVisible();
+					await tab.getByRole('tab', { name: 'Source', exact: true }).click();
+					await expect(tab.getByRole('tabpanel', { name: 'Single source' })).toBeVisible();
+					await tab.getByRole('tab', { name: 'History', exact: true }).click();
+					await expect(breadcrumb).not.toContainText('Helpers');
+					expect(await where(tab)).toMatchObject({
+						entity: 'function.single',
+						commit,
+						section: 'history'
+					});
+					expect(await fits(tab)).toBe(true);
+				}
 			}
 		}
 	});
