@@ -3,6 +3,7 @@ import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
+import { DeploymentActivityService } from '../src/services/DeploymentActivityService';
 import { DeploymentService } from '../src/services/DeploymentService';
 import { ProjectSessionService } from '../src/services/ProjectSessionService';
 import type {
@@ -11,7 +12,9 @@ import type {
 	DeployExecutor
 } from '../src/models/Deployment.types';
 const roots: string[] = [];
+const registries: DeploymentActivityService[] = [];
 afterEach(async () => {
+	await Promise.all(registries.splice(0).map((registry) => registry.idle()));
 	await Promise.all(roots.splice(0).map((root) => rm(root, { recursive: true, force: true })));
 });
 export async function deploymentFixture() {
@@ -54,6 +57,13 @@ export async function deploymentFixture() {
 	session.root = root;
 	session.projectId = 'local-' + 'a'.repeat(64);
 	const execute = vi.fn<DeployExecutor>(async () => 'passed');
-	const service = new DeploymentService(session, { plugin, execute, health: async () => true });
-	return { root, commit, config, plugin, execute, service, session, git };
+	const activities = new DeploymentActivityService();
+	registries.push(activities);
+	const service = new DeploymentService(session, {
+		plugin,
+		execute,
+		activities,
+		health: async () => true
+	});
+	return { root, commit, config, plugin, execute, service, session, git, activities };
 }

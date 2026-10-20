@@ -1,123 +1,97 @@
-import { deploymentExecution } from '../utils/deploymentExecution';
-import { randomUUID } from 'node:crypto';
 import { CloudflareDeployAdapter } from '../adapters/CloudflareDeployAdapter';
+import { desktopDeployments } from './DeploymentActivityService';
+import type { DeploymentActivityService } from './DeploymentActivityService';
 import type {
 	DeployExecutor,
 	DeployInput,
 	DeploymentPlan,
-	DeploymentProgress,
 	DeploymentPlugin,
 	DeploymentQuery,
+	DeploymentReceipt,
 	CloudflareTarget
 } from '../models/Deployment.types';
 import type { ProjectContext } from '../models/ProjectContext.types';
 import type { ProjectSessionService } from './ProjectSessionService';
-import { deploymentBlockers, deploymentProof } from '../utils/deploymentProof';
+import { deploymentCurrent } from '../utils/deploymentProof';
 import { deploymentStatus } from '../utils/deploymentState';
-const deploymentSteps = [
-	'Run bun run check',
-	'Build the source commit',
-	'Deploy with Cloudflare',
-	'Verify deployment identity and health'
-];
+import { deploymentExecution } from '../utils/deploymentExecution';
+import { reviewDeployment } from '../utils/reviewDeployment';
+import { enqueueChangeDeployments } from '../utils/enqueueChangeDeployments';
 export interface DeploymentOptions {
 	plugin?: DeploymentPlugin;
 	execute?: DeployExecutor;
 	health?: (target: CloudflareTarget) => Promise<boolean>;
+	activities?: DeploymentActivityService;
 }
 export interface ReviewedDeployment {
 	plan: DeploymentPlan;
 	fingerprint: string;
 	root: string;
 	projectId: string | null;
+	target?: CloudflareTarget;
+	predecessor: DeploymentReceipt | null;
 }
-/** Plans live in this desktop session; no renderer input supplies commands, targets or credentials. */
+/** Read-only plans and short admissions; every actual deployment belongs to the host job registry. */
 export class DeploymentService {
 	private plans = new Map<string, ReviewedDeployment>();
-	private updates = new Map<string, { root: string; value: DeploymentProgress }>();
 	private plugin: DeploymentPlugin;
+	private jobs: DeploymentActivityService;
 	constructor(
 		private session: ProjectSessionService,
 		private options: DeploymentOptions = {}
 	) {
 		this.plugin = options.plugin ?? new CloudflareDeployAdapter();
+		this.jobs = options.activities ?? desktopDeployments;
 	}
-	async status(input: ProjectContext = {}) {
+	status(input: ProjectContext = {}) {
 		return deploymentStatus(this.root(input), this.plugin);
 	}
-
-	async plan(input: DeploymentQuery): Promise<DeploymentPlan> {
-		const root = this.root(input);
-		const config = await this.plugin.discover(root);
-		const proof = await deploymentBlockers(root, input, config);
-		const { blockers, branch } = proof;
-		const target = config.targets[input.environment];
-		const plan = {
-			id: randomUUID(),
-			environment: input.environment,
-			commit: proof.promotion?.preprod?.commit ?? input.commit,
-			...(proof.promotion ? { promotion: proof.promotion } : {}),
-			branch,
-			adapter: this.plugin.id,
-			target: target
-				? `${target.kind} · ${target.name} · ${target.wranglerEnvironment || target.branch} · account ${target.accountId} · ${target.healthUrl}`
-				: 'Unconfigured',
-			steps: deploymentSteps,
-			blockers,
-			expiresAt: new Date(Date.now() + 5 * 60 * 1000).toISOString()
-		};
+	activities() {
+		return this.jobs.list();
+	}
+	async plan(input: DeploymentQuery) {
+		const reviewed = await reviewDeployment(this.root(input), input, {
+			plugin: this.plugin,
+			projectId: this.session.projectId
+		});
 		for (const [id, value] of this.plans)
 			if (Date.parse(value.plan.expiresAt) <= Date.now()) this.plans.delete(id);
 		if (this.plans.size >= 32) this.plans.delete(this.plans.keys().next().value!);
-		this.plans.set(plan.id, {
-			plan,
-			root,
-			projectId: this.session.projectId,
-			fingerprint: deploymentProof(config)
-		});
-		return plan;
+		this.plans.set(reviewed.plan.id, reviewed);
+		return structuredClone(reviewed.plan);
 	}
-	async deploy(input: DeployInput) {
+	async start(input: DeployInput) {
 		const reviewed = this.plans.get(input.planId);
 		this.plans.delete(input.planId);
 		if (!reviewed || Date.parse(reviewed.plan.expiresAt) <= Date.now())
 			throw new Error('Please review a fresh deployment plan.');
-		const root = this.root(input);
-		if (root !== reviewed.root || this.session.projectId !== reviewed.projectId)
+		if (this.root(input) !== reviewed.root || this.session.projectId !== reviewed.projectId)
 			throw new Error('The selected project changed.');
-		if (this.session.busy || !this.session.arbiter.hold(root, this))
-			throw new Error('Wait for the active project operation.');
-		this.session.busy = true;
-		try {
-			return await this.session.arbiter.exclusive(root, () => this.execute(reviewed));
-		} finally {
-			this.session.busy = false;
-			this.session.arbiter.release(root, this);
-		}
+		await deploymentCurrent(reviewed.root, reviewed.plan, {
+			plugin: this.plugin,
+			fingerprint: reviewed.fingerprint
+		});
+		return this.jobs.schedule(reviewed, (update) =>
+			deploymentExecution(reviewed, { ...this.options, plugin: this.plugin, update })
+		);
 	}
-	/** Internal change-run path, bounded even if a caller passes a forged environment. */
+	async deploy(input: DeployInput) {
+		return this.jobs.wait((await this.start(input)).id);
+	}
 	async automatic(input: DeploymentQuery) {
 		if (!['dev', 'stage', 'preprod'].includes(input.environment))
-			throw new Error('Protected environments require the Deploy UI.');
-		const plan = await this.plan(input);
-		const reviewed = this.plans.get(plan.id)!;
-		this.plans.delete(plan.id);
-		return this.execute(reviewed);
+			throw new Error('Production requires the Deploy UI.');
+		return this.deploy({ ...input, planId: (await this.plan(input)).id });
+	}
+	enqueue(input: DeploymentQuery) {
+		return enqueueChangeDeployments(
+			this.root(input),
+			{ ...input, projectId: this.session.projectId },
+			{ ...this.options, plugin: this.plugin, activities: this.jobs }
+		);
 	}
 	async progress(input: DeployInput) {
-		const update = this.updates.get(input.planId);
-		return update?.root === this.root(input) ? update.value : null;
-	}
-	private update(reviewed: ReviewedDeployment, phase: DeploymentProgress['phase'], detail: string) {
-		if (this.updates.size >= 32) this.updates.delete(this.updates.keys().next().value!);
-		this.updates.set(reviewed.plan.id, { root: reviewed.root, value: { phase, detail } });
-	}
-	private execute(reviewed: ReviewedDeployment) {
-		return deploymentExecution(reviewed, {
-			...this.options,
-			plugin: this.plugin,
-			update: (phase, detail) => this.update(reviewed, phase, detail)
-		});
+		return this.jobs.progress(input.planId, this.root(input));
 	}
 	private root(input: ProjectContext): string {
 		this.session.assertProject(input.projectId);

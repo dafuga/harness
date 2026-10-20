@@ -13,6 +13,7 @@
 		width,
 		maxHeight,
 		gap = 6,
+		activeCount,
 		icon,
 		onopen,
 		children
@@ -20,6 +21,8 @@
 		label: string;
 		title: string;
 		disabled?: boolean;
+		/** How many things the icon stands for are under way, kept on it as `data-active`. */
+		activeCount?: number;
 		/** The widest and tallest the dialog may be, in pixels, within the viewport. */
 		width: number;
 		maxHeight: number;
@@ -56,6 +59,7 @@
 	class="agent-icon"
 	aria-label={label}
 	aria-haspopup="dialog"
+	data-active={activeCount}
 	{title}
 	{disabled}
 	onclick={open}>{@render icon()}</button

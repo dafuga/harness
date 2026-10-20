@@ -25,30 +25,14 @@ test.each(['dev', 'stage', 'preprod', 'prod'] as const)(
 		await configure(f.root);
 		const request = await approve(f);
 		const execute = vi.spyOn(commands, 'deploymentCommand').mockResolvedValue('verified');
-		const automatic = vi.spyOn(DeploymentService.prototype, 'automatic').mockResolvedValue({
-			environment: 'stage',
-			commit: 'a',
-			branch: 'main',
-			adapter: 'cloudflare',
-			updatedAt: '2026-10-20T12:00:00.000Z',
-			deploymentId: 'synthetic',
-			configuration: 'synthetic-config',
-			url: 'https://example.invalid'
-		});
+		const automatic = vi.spyOn(DeploymentService.prototype, 'enqueue').mockResolvedValue([]);
 		try {
 			await settled(f, { ...request, environment });
 			expect(execute).toHaveBeenCalledWith({ args: ['bun', 'run', 'check'], cwd: f.root });
-			expect(automatic.mock.calls.map(([input]) => input.environment)).toEqual(
-				{
-					dev: ['dev'],
-					stage: ['dev', 'stage'],
-					preprod: ['dev', 'stage', 'preprod'],
-					prod: ['dev', 'stage', 'preprod']
-				}[environment]
-			);
-			expect(
-				automatic.mock.calls.every(([input]) => input.commit === git(f.root, 'rev-parse', 'HEAD'))
-			).toBe(true);
+			expect(automatic).toHaveBeenCalledWith({
+				environment,
+				commit: git(f.root, 'rev-parse', 'HEAD')
+			});
 			expect(git(f.root, 'status', '--porcelain')).toBe('');
 			expect(f.events).toContainEqual(
 				expect.objectContaining({ kind: 'finished', verified: false })

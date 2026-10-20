@@ -36,6 +36,8 @@ test('the bridge works over a socket that only this machine can reach', async ()
 	const f = await localFixture(),
 		client = f.connect(f.window());
 	expect(f.transport.address).toBe('127.0.0.1');
+	expect(await client.request('deploymentActivities')).toEqual([]);
+	await expect(client.request('startDeployment', { planId: 'invalid' })).rejects.toThrow('Invalid');
 	const opened = await client.request<ProjectSnapshot>('openProject');
 	expect(opened.project).toMatchObject({ root: f.root, id: f.project.id });
 	expect(await client.request('listProjects')).toMatchObject([{ id: f.project.id, kind: 'local' }]);

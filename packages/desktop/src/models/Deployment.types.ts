@@ -18,8 +18,40 @@ export interface DeploymentStatus {
 	reason: string;
 }
 export interface DeploymentProgress {
-	phase: 'preparing' | 'checking' | 'building' | 'uploading' | 'verifying' | 'complete' | 'failed';
+	phase:
+		| 'queued'
+		| 'preparing'
+		| 'checking'
+		| 'building'
+		| 'uploading'
+		| 'verifying'
+		| 'complete'
+		| 'failed';
 	detail: string;
+}
+export const deploymentSteps = [
+	{ id: 'preparing', title: 'Prepare source' },
+	{ id: 'checking', title: 'Run checks' },
+	{ id: 'building', title: 'Build source' },
+	{ id: 'uploading', title: 'Deploy to Cloudflare' },
+	{ id: 'verifying', title: 'Verify health' }
+] as const;
+export type DeploymentStep = (typeof deploymentSteps)[number]['id'];
+export interface DeploymentActivity extends DeploymentProgress {
+	id: string;
+	projectId: string | null;
+	projectName: string;
+	environment: DeploymentEnvironment;
+	commit: string;
+	branch: string;
+	steps: { id: DeploymentStep; title: string }[];
+	step: DeploymentStep | null;
+	error: string | null;
+	receipt: DeploymentReceipt | null;
+	createdAt: string;
+	startedAt: string | null;
+	updatedAt: string;
+	finishedAt: string | null;
 }
 export interface ProductionPromotion {
 	preprod: DeploymentReceipt | null;
@@ -78,6 +110,8 @@ export interface DeploymentPlugin {
 }
 
 export interface DeploymentBridge {
+	deploymentActivities?(): Promise<DeploymentActivity[]>;
+	startDeployment?(input: DeployInput): Promise<DeploymentActivity>;
 	deploymentProgress?(input: DeployInput): Promise<DeploymentProgress | null>;
 	deploymentStatus?(input?: ProjectContext): Promise<DeploymentStatus[]>;
 	planDeployment?(input: DeploymentQuery): Promise<DeploymentPlan>;

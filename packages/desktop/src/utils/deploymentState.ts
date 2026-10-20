@@ -1,3 +1,4 @@
+import { RepositoryArbiterService } from '../services/RepositoryArbiterService';
 import type { DeploymentPlugin, DeploymentConfig } from '../models/Deployment.types';
 import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
@@ -6,6 +7,7 @@ import { z } from 'zod';
 import { deploymentEnvironments } from '../models/Deployment.types';
 import type { DeploymentReceipt } from '../models/Deployment.types';
 import { gitRead } from './gitRead';
+const receiptWrites = new RepositoryArbiterService();
 const receipts = z.array(
 	z.object({
 		environment: z.enum(deploymentEnvironments),
@@ -34,6 +36,9 @@ export async function deploymentState(root: string): Promise<DeploymentReceipt[]
 }
 export async function saveDeployment(root: string, receipt: DeploymentReceipt) {
 	const directory = await location(root);
+	return receiptWrites.exclusive(directory, () => writeReceipt(root, receipt, directory));
+}
+async function writeReceipt(root: string, receipt: DeploymentReceipt, directory: string) {
 	const current = await deploymentState(root);
 	await mkdir(directory, { recursive: true });
 	const temp = join(directory, randomUUID() + '.tmp');

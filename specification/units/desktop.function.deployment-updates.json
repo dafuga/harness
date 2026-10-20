@@ -5,7 +5,11 @@
 	"title": "deploymentUpdates",
 	"responsibility": "Owns the deploymentUpdates shared function.",
 	"responsibilityOrigin": "derived",
-	"status": "active",
+	"status": "retired",
+	"retired": {
+		"reason": "Host-wide deployment activity polling replaces per-plan polling.",
+		"at": "2026-10-20T13:49:14.798Z"
+	},
 	"owns": {
 		"source": ["packages/desktop/src/utils/deploymentUpdates.ts"],
 		"symbols": ["deploymentUpdates"]

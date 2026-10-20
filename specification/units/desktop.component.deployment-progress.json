@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.deployment-progress",
+	"kind": "component",
+	"title": "DeploymentProgress",
+	"responsibility": "Owns the DeploymentProgress Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/DeploymentProgress.svelte"],
+		"symbols": ["DeploymentProgress"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "DeploymentProgress.deployment",
+				"type": "DeploymentActivity"
+			}
+		],
+		"outputs": [
+			{
+				"name": "DeploymentProgress",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.deployment-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/DeploymentProgress.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/DeploymentProgress.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

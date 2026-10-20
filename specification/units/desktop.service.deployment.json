@@ -14,9 +14,12 @@
 			"DeploymentService",
 			"DeploymentService.constructor",
 			"DeploymentService.status",
+			"DeploymentService.activities",
 			"DeploymentService.plan",
+			"DeploymentService.start",
 			"DeploymentService.deploy",
 			"DeploymentService.automatic",
+			"DeploymentService.enqueue",
 			"DeploymentService.progress"
 		]
 	},
@@ -40,11 +43,19 @@
 				"type": "DeploymentQuery"
 			},
 			{
+				"name": "DeploymentService.start.input",
+				"type": "DeployInput"
+			},
+			{
 				"name": "DeploymentService.deploy.input",
 				"type": "DeployInput"
 			},
 			{
 				"name": "DeploymentService.automatic.input",
+				"type": "DeploymentQuery"
+			},
+			{
+				"name": "DeploymentService.enqueue.input",
 				"type": "DeploymentQuery"
 			},
 			{
@@ -58,8 +69,16 @@
 				"type": "unknown"
 			},
 			{
+				"name": "DeploymentService.activities",
+				"type": "unknown"
+			},
+			{
 				"name": "DeploymentService.plan",
-				"type": "Promise<DeploymentPlan>"
+				"type": "unknown"
+			},
+			{
+				"name": "DeploymentService.start",
+				"type": "unknown"
 			},
 			{
 				"name": "DeploymentService.deploy",
@@ -67,6 +86,10 @@
 			},
 			{
 				"name": "DeploymentService.automatic",
+				"type": "unknown"
+			},
+			{
+				"name": "DeploymentService.enqueue",
 				"type": "unknown"
 			},
 			{
@@ -103,12 +126,27 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.function.enqueue-change-deployments",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.review-deployment",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.deployment-types",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "desktop.model.project-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.deployment-activity",
 			"via": "import",
 			"origin": "derived"
 		},

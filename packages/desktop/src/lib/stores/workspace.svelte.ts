@@ -1,3 +1,4 @@
+import { createDeploymentActivityStore } from './deploymentActivity.svelte';
 import { createDeploymentsStore } from './deployments.svelte';
 import type { DesktopBridge } from '../../models/DesktopBridge.types';
 import type { Category, EntityDetail, ProjectSnapshot } from '../../models/Desktop.types';
@@ -12,6 +13,7 @@ import { workspacePath, workspaceRoute } from '../../utils/workspaceRoute';
 import type { RouteSuffix, WorkspaceRoute } from '../../utils/workspaceRoute';
 
 class WorkspaceState {
+	readonly activity = createDeploymentActivityStore(this);
 	readonly deployments = createDeploymentsStore(this);
 	snapshot = $state<ProjectSnapshot | null>(null);
 	entity = $state<EntityDetail | null>(null);
@@ -109,9 +111,7 @@ class WorkspaceState {
 		this.suffix = route.suffix;
 		return this.path(this.category, route.entityId ?? undefined, route.suffix ?? '');
 	}
-	openProject() {
-		return openProject(this);
-	}
+	openProject = () => openProject(this);
 	/** Keeps the category; entity, branch and commit belong to the project that is left. */
 	async switchProject(projectId: string) {
 		if (!projectId || projectId === this.projectId) return;

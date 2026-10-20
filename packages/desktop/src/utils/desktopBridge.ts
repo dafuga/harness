@@ -3,6 +3,7 @@ import { ProjectImageCacheService } from '../services/ProjectImageCacheService';
 import { ProjectOperationsService } from '../services/ProjectOperationsService';
 import { RecordedEvidenceService } from '../services/RecordedEvidenceService';
 import type { DesktopBridge } from '../models/DesktopBridge.types';
+import type { DeploymentBridge } from '../models/Deployment.types';
 import type { ProjectSessionService } from '../services/ProjectSessionService';
 import type { ProviderDiscoveryService } from '../services/ProviderDiscoveryService';
 import type { DesktopRunService } from '../services/DesktopRunService';
@@ -63,13 +64,9 @@ function authentication(session: ProjectSessionService) {
 export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRunEvent'> {
 	const { session, providers, runs, choose } = context;
 	const operations = new ProjectOperationsService(session);
-	const deployments = new DeploymentService(session);
 	const recorded = new RecordedEvidenceService(session);
 	const bridge: Omit<DesktopBridge, 'onRunEvent'> = {
-		deploymentStatus: (input) => deployments.status(input),
-		deploymentProgress: (input) => deployments.progress(input),
-		planDeployment: (input) => deployments.plan(input),
-		deploy: (input) => deployments.deploy(input),
+		...deploymentOperations(session),
 		...authentication(session),
 		listProjects: () => operations.listProjects(),
 		selectProject: (input) => operations.selectProject(input),
@@ -100,7 +97,10 @@ export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRu
 		get(target, property: keyof typeof bridge) {
 			const operation = target[property];
 			if (typeof operation !== 'function') return operation;
-			if (['openProject', 'selectProject', 'listProjects'].includes(property)) return operation;
+			if (
+				['openProject', 'selectProject', 'listProjects', 'deploymentActivities'].includes(property)
+			)
+				return operation;
 			return async (input?: { projectId?: string }) => {
 				session.assertProject(input?.projectId);
 				session.pending++;
@@ -112,4 +112,15 @@ export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRu
 			};
 		}
 	});
+}
+function deploymentOperations(session: ProjectSessionService): DeploymentBridge {
+	const deployments = new DeploymentService(session);
+	return {
+		deploymentStatus: (input) => deployments.status(input),
+		deploymentActivities: async () => deployments.activities(),
+		startDeployment: (input) => deployments.start(input),
+		deploymentProgress: (input) => deployments.progress(input),
+		planDeployment: (input) => deployments.plan(input),
+		deploy: (input) => deployments.deploy(input)
+	};
 }

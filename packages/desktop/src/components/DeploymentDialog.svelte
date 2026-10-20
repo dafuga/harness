@@ -3,16 +3,17 @@
 	import type { DeploymentPlan, DeploymentReceipt } from '../models/Deployment.types';
 	import { displayTime } from '../utils/revisionTime';
 	import ChoiceDialog from './ChoiceDialog.svelte';
+	import DeploymentDetails from './DeploymentDetails.svelte';
 	import Icon from './Icon.svelte';
 	/**
 	 * Deploy promotes the verified preprod commit to production, whatever environment, branch or
 	 * commit is shown. Opening reads the promotion and changes nothing; only Promote to production,
-	 * for a production plan with nothing blocking, deploys it, once.
+	 * for a production plan with nothing blocking, deploys it, once. The promotion then runs on its
+	 * own and is followed here as it is in the deployment activity.
 	 */
 	let { workspace }: { workspace: Workspace } = $props();
 	const deployments = $derived(workspace.deployments);
 	const plan = $derived(deployments.plan);
-	const receipt = $derived(deployments.receipt);
 	/** Why Deploy is not offered, or nothing; a promotion under way can always be followed. */
 	const refusal = $derived.by(() => {
 		if (deployments.pending) return '';
@@ -25,31 +26,37 @@
 	let owner = $state<string | null>(null);
 	const previous = $derived(owner === workspace.projectId ? held : null);
 	const promotion = $derived((plan ?? previous)?.promotion);
+	/** The promotion followed here: the one promoted from here, or one of this project under way. */
+	const job = $derived.by(() => {
+		const value = deployments.job;
+		if (previous) return value?.id === previous.id ? value : null;
+		return value?.finishedAt === null && value.projectId === workspace.projectId ? value : null;
+	});
+	const receipt = $derived(job?.receipt ?? null);
 	/** Once promoted, production is at the commit of its new receipt. */
 	const production = $derived(receipt ?? promotion?.production ?? null);
 	const ready = $derived(
 		plan?.environment === 'prod' &&
 			!plan.blockers.length &&
 			!deployments.pending &&
-			!receipt &&
 			plan.id !== previous?.id
 	);
 	const commits = (count: number) => `${count} ${count === 1 ? 'commit' : 'commits'}`;
-	/** How far production is behind preprod, where that is known. */
+	/** How far production is behind preprod as reviewed; preprod may move on during a promotion. */
 	const distance = $derived.by(() => {
-		const behind = receipt ? 0 : promotion?.commitsBehind;
+		if (receipt) return 'The reviewed preprod commit was promoted to production.';
+		const behind = promotion?.commitsBehind;
 		if (behind === 0) return 'Production matches preprod.';
 		if (typeof behind !== 'number') return promotion ? 'The distance to preprod is unknown.' : '';
 		if (!production) return `Production has no deployment yet; preprod has ${commits(behind)}.`;
 		return `Production is behind preprod by ${commits(behind)}.`;
 	});
-	/** One live line: reading the promotion, each phase of promoting it, then success. */
+	/** Until a promotion is followed here: reading it, starting it, or one under way elsewhere. */
 	const status = $derived.by(() => {
-		if (deployments.pending)
-			return previous
-				? (deployments.progress?.detail ?? 'Starting promotion…')
-				: 'Loading promotion…';
-		return receipt ? 'Production is up to date.' : '';
+		if (!deployments.pending) return '';
+		if (previous) return 'Starting promotion…';
+		const running = deployments.job?.finishedAt === null;
+		return running ? 'A production promotion is under way.' : 'Loading promotion…';
 	});
 	/** Each opening reads the promotion afresh, unless one is under way to follow. */
 	function opened() {
@@ -91,11 +98,12 @@
 	{#if plan?.blockers.length}<ul class="blockers" aria-label="Blockers">
 			{#each plan.blockers as blocker, index (index)}<li>{blocker}</li>{/each}
 		</ul>{/if}
-	{#if deployments.error}<p class="error" role="alert">{deployments.error}</p>{/if}
+	{#if deployments.error && deployments.error !== job?.error}<p class="error" role="alert">
+			{deployments.error}
+		</p>{/if}
+	{#if job}<DeploymentDetails deployment={job} showIdentity={false} />{/if}
 	<div class="promote">
-		<p role="status" aria-live="polite" class:done={!!receipt && !deployments.pending}>
-			{status}
-		</p>
+		{#if !job}<p role="status" aria-live="polite">{status}</p>{/if}
 		<button type="button" class="primary" disabled={!ready} onclick={promote}
 			>Promote to production</button
 		>
@@ -161,9 +169,6 @@
 		margin: 0;
 		font-size: 12px;
 		color: var(--gold);
-	}
-	.promote p.done {
-		color: #7fe3c0;
 	}
 	.promote button {
 		margin-inline-start: auto;

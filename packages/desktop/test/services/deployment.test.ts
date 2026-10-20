@@ -14,7 +14,7 @@ test('promotion requires the same commit in every preceding environment and a re
 		expect(receipt).toMatchObject({ environment, commit: f.commit, deploymentId: 'receipt-1' });
 		await expect(f.service.deploy({ planId: plan.id })).rejects.toThrow(/review/);
 	}
-	expect(f.execute).toHaveBeenCalledTimes(9);
+	expect(f.execute).toHaveBeenCalledTimes(12);
 	expect((await f.service.status()).every((item) => item.receipt?.commit === f.commit)).toBe(true);
 });
 test('changed configuration, source or project invalidates confirmation without deploying', async () => {
@@ -64,15 +64,15 @@ test('automatic promotion allows preprod, refuses production and confirmations e
 	}
 	expect(f.plugin.deploy).toHaveBeenCalledTimes(3);
 });
-test('source changes during upload cannot become a verified environment receipt', async () => {
+test('later source commits do not replace the immutable source already being deployed', async () => {
 	const f = await fixture();
 	vi.mocked(f.plugin.deploy).mockImplementationOnce(async () => {
 		f.git('commit', '--allow-empty', '-m', 'feat: source advanced during upload');
 		return { deploymentId: 'uploaded', url: 'https://example.invalid' };
 	});
 	const plan = await f.service.plan({ environment: 'dev', commit: f.commit });
-	await expect(f.service.deploy({ planId: plan.id })).rejects.toThrow(/changed during deployment/);
-	expect((await f.service.status())[0].receipt).toBeNull();
+	await expect(f.service.deploy({ planId: plan.id })).resolves.toMatchObject({ commit: f.commit });
+	expect((await f.service.status())[0].receipt?.commit).toBe(f.commit);
 });
 
 test('production promotes the reviewed preprod source after the checkout advances, with live progress', async () => {
@@ -114,4 +114,40 @@ test('production promotes the reviewed preprod source after the checkout advance
 	const current = await f.service.plan({ environment: 'prod', commit: head });
 	expect(current.promotion?.commitsBehind).toBe(0);
 	expect(current.blockers.join(' ')).toMatch(/up to date/);
+});
+
+test('different environments deploy concurrently from captured commits and retain every receipt', async () => {
+	const f = await fixture();
+	for (const environment of ['dev', 'stage', 'preprod'] as const)
+		await f.service.automatic({ environment, commit: f.commit });
+	f.git('commit', '--allow-empty', '-m', 'feat: next source');
+	const stage = f.git('rev-parse', 'HEAD');
+	await f.service.automatic({ environment: 'dev', commit: stage });
+	const prodPlan = await f.service.plan({ environment: 'prod', commit: stage });
+	const stagePlan = await f.service.plan({ environment: 'stage', commit: stage });
+	const entered: string[] = [];
+	let release!: () => void;
+	const gate = new Promise<void>((resolve) => {
+		release = resolve;
+	});
+	vi.mocked(f.plugin.deploy).mockImplementation(async (target, source) => {
+		entered.push(target.environment);
+		expect(source.root).not.toBe(f.root);
+		await gate;
+		return { deploymentId: target.environment, url: 'https://example.invalid' };
+	});
+	const prod = f.service.deploy({ planId: prodPlan.id });
+	const next = f.service.deploy({ planId: stagePlan.id });
+	const results = Promise.allSettled([prod, next]);
+	try {
+		await expect.poll(() => entered.sort(), { timeout: 3000 }).toEqual(['prod', 'stage']);
+		f.git('commit', '--allow-empty', '-m', 'feat: work continues during deployment');
+	} finally {
+		release();
+	}
+	expect((await results).map((item) => item.status)).toEqual(['fulfilled', 'fulfilled']);
+	const state = await f.service.status();
+	expect(state.find((item) => item.environment === 'prod')?.receipt?.commit).toBe(f.commit);
+	expect(state.find((item) => item.environment === 'stage')?.receipt?.commit).toBe(stage);
+	expect(state.find((item) => item.environment === 'dev')?.receipt?.commit).toBe(stage);
 });

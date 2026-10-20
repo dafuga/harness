@@ -5,6 +5,7 @@
 	import type { Snippet } from 'svelte';
 	import { categories } from '../models/Desktop.types';
 	import type { Workspace } from '../lib/stores/workspace.svelte';
+	import DeploymentActivity from './DeploymentActivity.svelte';
 	import DeploymentDialog from './DeploymentDialog.svelte';
 	import EnvironmentPicker from './EnvironmentPicker.svelte';
 	import Icon from './Icon.svelte';
@@ -16,11 +17,12 @@
 	let { workspace, account }: { workspace: Workspace; account?: Snippet } = $props();
 	// Results open only from the projection that listed them; one left from another is refused.
 	const search = $derived(workspaceSearch(workspace));
-	/** Settings are of this device's agents, so they are offered only where agents can run. */
 	const settings = $derived(`/settings?from=${encodeURIComponent(workspace.path())}`);
+	/** Deployments are of this device's host: only a local bridge that reports them shows them. */
+	const activity = $derived(workspace.local && !!workspace.bridge?.deploymentActivities);
 </script>
 
-<header class="topbar" class:with-account={!!account}>
+<header class="topbar" class:with-account={!!account} class:with-activity={activity && !account}>
 	<WorkspaceLink {workspace} to={workspace.path('pages')} class="brand"
 		><span class="brand-mark"><BrandMark /></span> Harness</WorkspaceLink
 	>
@@ -52,7 +54,9 @@
 				title="Settings"><Icon name="settings" /></a
 			>{/if}
 	</div>
-	{#if account}<div class="account">{@render account()}</div>{/if}
+	{#if account}<div class="account">
+			{@render account()}{#if activity}<DeploymentActivity {workspace} />{/if}
+		</div>{:else if activity}<DeploymentActivity {workspace} />{/if}
 </header>
 
 <style>
@@ -77,7 +81,7 @@
 		color: var(--gold);
 		border-color: var(--gold);
 	}
-	/* Project, branch, commit and Deploy are icons of one size; their pickers open as dialogs. */
+	/* Project, branch, commit, Deploy and Deployments are icons of one size; each opens a dialog. */
 	.topbar :global(.agent-icon) {
 		display: inline-grid;
 		place-items: center;
@@ -87,12 +91,11 @@
 		padding: 0;
 	}
 	/* From a tablet up the bar is a grid of deliberate rows, so no control wraps alone: the brand,
-	   project, revision, environment and account share the first; the categories and the search
-	   share the last in one area, so neither is sized by a column above. The search has what the
-	   six categories (6 × 86px) and a reserve leave it, within its bounds. */
+	   project, revision, environment and account (or the deployment light) share the first; the
+	   categories and the search share the last in one area, neither sized by a column above. */
 	@media (min-width: 561px) {
 		header.topbar {
-			--search: clamp(168px, 100% - 540px, 468px);
+			--search: clamp(168px, 100% - 540px, 468px); /* left by 6 × 86px categories and a reserve */
 			display: grid;
 			grid-template:
 				'brand project . revision environment' auto
@@ -101,7 +104,8 @@
 			gap: 8px 16px;
 			padding: 12px 26px 0;
 		}
-		header.topbar.with-account {
+		header.topbar.with-account,
+		header.topbar.with-activity {
 			grid-template:
 				'brand project . revision environment account' auto
 				'tools tools tools tools tools tools' auto
@@ -121,7 +125,8 @@
 			grid-area: environment;
 			justify-self: end;
 		}
-		.account {
+		.account,
+		.topbar > :global(.deployment-activity) {
 			grid-area: account;
 		}
 		/* The categories are tabs on the bar's bottom edge. */
@@ -159,7 +164,8 @@
 		}
 	}
 	@media (min-width: 561px) and (max-width: 900px) {
-		header.topbar {
+		header.topbar,
+		header.topbar.with-activity {
 			grid-template:
 				'brand project . account' auto
 				'revision revision revision environment' auto
@@ -189,12 +195,25 @@
 			column-gap: 22px;
 			padding: 0 26px;
 		}
+		header.topbar.with-activity {
+			grid-template:
+				'brand project tools . revision environment search account' auto
+				/ auto minmax(0, max-content) auto 1fr max-content auto minmax(168px, 388px) auto;
+		}
 		.topbar:not(.with-account) nav {
 			height: auto;
 		}
 		.topbar:not(.with-account) .topbar-search {
 			grid-area: search;
 			width: 100%;
+		}
+	}
+	/* On a phone the deployment light ends the brand's row, the brand still centred on the bar. */
+	@media (max-width: 560px) {
+		.with-activity :global(.brand) {
+			order: -2;
+			flex: 1;
+			padding-inline-start: 46px;
 		}
 	}
 </style>

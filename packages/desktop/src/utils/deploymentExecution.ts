@@ -1,68 +1,63 @@
 import type { DeploymentOptions, ReviewedDeployment } from '../services/DeploymentService';
-import type { DeploymentPlugin, DeploymentProgress } from '../models/Deployment.types';
+import type {
+	DeploymentPlugin,
+	DeploymentProgress,
+	CloudflareTarget,
+	DeploymentReceipt
+} from '../models/Deployment.types';
 import { deploymentWorktree } from './deploymentWorktree';
 import { deploymentCommand } from './deploymentCommand';
-import { deploymentCurrent, deploymentHealth, deploymentProof } from './deploymentProof';
+import { deploymentHealth } from './deploymentProof';
 import { saveDeployment } from './deploymentState';
-import { gitRead, gitRevision } from './gitRead';
+import { captureDeploymentTarget, verifyDeploymentSnapshot } from './verifyDeploymentSnapshot';
 interface Runtime extends DeploymentOptions {
 	plugin: DeploymentPlugin;
 	update: (phase: DeploymentProgress['phase'], detail: string) => void;
 }
-/** Confirmation is bound to receipts/configuration; production builds an immutable preprod source. */
+type Captured = { target: CloudflareTarget; destination: DeploymentReceipt | null };
+/** Each target uses its own immutable checkout; later edits and lower deployments can continue. */
 export async function deploymentExecution(reviewed: ReviewedDeployment, runtime: Runtime) {
-	try {
-		if (reviewed.plan.blockers.length) throw new Error(reviewed.plan.blockers.join(' '));
-		if (reviewed.plan.environment !== 'prod') return await upload(reviewed, reviewed.root, runtime);
-		await current(reviewed.root, reviewed, runtime);
-		runtime.update('preparing', 'Preparing the preprod commit');
-		return await deploymentWorktree(reviewed.root, reviewed.plan.commit, async (directory) => {
-			await (runtime.execute ?? deploymentCommand)({
-				args: ['bun', 'install', '--frozen-lockfile'],
-				cwd: directory
-			});
-			return upload(reviewed, directory, runtime);
+	if (reviewed.plan.blockers.length) throw new Error(reviewed.plan.blockers.join(' '));
+	runtime.update('preparing', 'Preparing source');
+	const captured = await captureDeploymentTarget(reviewed, runtime.plugin);
+	return deploymentWorktree(reviewed.root, reviewed.plan.commit, async (directory) => {
+		await (runtime.execute ?? deploymentCommand)({
+			args: ['bun', 'install', '--frozen-lockfile'],
+			cwd: directory
 		});
-	} catch (error) {
-		runtime.update('failed', 'Promotion failed. Inspect the error before retrying.');
-		throw error;
-	}
+		return upload(reviewed, directory, runtime, captured);
+	});
 }
-async function upload(reviewed: ReviewedDeployment, source: string, runtime: Runtime) {
-	const { plan, root } = reviewed;
-	const config = await current(root, reviewed, runtime);
-	const target = config.targets[plan.environment]!;
-	if (source !== root) await current(source, reviewed, runtime);
+async function upload(
+	reviewed: ReviewedDeployment,
+	source: string,
+	runtime: Runtime,
+	captured: Captured
+) {
+	const { plan, root } = reviewed,
+		{ target, destination } = captured;
+	const guard = { plugin: runtime.plugin, destination };
 	const execute = runtime.execute ?? deploymentCommand;
-	runtime.update(
-		'checking',
-		`Checking the ${plan.environment === 'prod' ? 'preprod' : 'source'} commit`
-	);
+	await verifyDeploymentSnapshot(source, reviewed, guard);
+	runtime.update('checking', 'Checking source commit');
 	await execute({ args: ['bun', 'run', 'check'], cwd: source });
-	runtime.update('building', 'Building the source commit');
+	runtime.update('building', 'Building source commit');
 	await execute({
 		args: ['bun', 'run', 'build'],
 		cwd: source,
 		env: { CLOUDFLARE_ENV: target.wranglerEnvironment }
 	});
-	await current(source, reviewed, runtime);
-	await current(root, reviewed, runtime);
+	await verifyDeploymentSnapshot(source, reviewed, guard);
+	await verifyDeploymentSnapshot(root, reviewed, guard);
 	runtime.update('uploading', 'Deploying to Cloudflare');
 	const deployed = await runtime.plugin.deploy(target, { root: source, commit: plan.commit });
-	runtime.update(
-		'verifying',
-		`Verifying ${plan.environment === 'prod' ? 'production' : plan.environment} health`
-	);
+	runtime.update('verifying', `Verifying ${plan.environment} health`);
 	if (!(await (runtime.health ?? deploymentHealth)(target)))
 		throw new Error('Deployment health verification failed; environment state was not advanced.');
-	await deploymentCurrent(root, plan, {
-		plugin: runtime.plugin,
-		fingerprint: reviewed.fingerprint,
-		phase: ' during deployment'
-	});
-	await current(source, reviewed, runtime);
+	await verifyDeploymentSnapshot(root, reviewed, guard);
+	await verifyDeploymentSnapshot(source, reviewed, guard);
 	const receipt = {
-		configuration: deploymentProof(config),
+		configuration: reviewed.fingerprint,
 		...deployed,
 		environment: plan.environment,
 		commit: plan.commit,
@@ -71,20 +66,5 @@ async function upload(reviewed: ReviewedDeployment, source: string, runtime: Run
 		updatedAt: new Date().toISOString()
 	};
 	await saveDeployment(root, receipt);
-	runtime.update(
-		'complete',
-		plan.environment === 'prod' ? 'Production is up to date' : `Deployed to ${plan.environment}`
-	);
 	return receipt;
-}
-async function current(root: string, reviewed: ReviewedDeployment, runtime: Runtime) {
-	if (root !== reviewed.root) {
-		const head = await gitRevision(root);
-		if (head !== reviewed.plan.commit || (await gitRead(root, ['status', '--porcelain'])).trim())
-			throw new Error('The isolated preprod source changed during the production build.');
-	}
-	return deploymentCurrent(root, reviewed.plan, {
-		plugin: runtime.plugin,
-		fingerprint: reviewed.fingerprint
-	});
 }

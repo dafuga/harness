@@ -10,7 +10,7 @@ export async function deploymentWorktree<T>(
 	work: (directory: string) => Promise<T>
 ): Promise<T> {
 	const resolved = await gitRevision(root, commit);
-	const temporary = await mkdtemp(join(tmpdir(), 'harness-production-'));
+	const temporary = await mkdtemp(join(tmpdir(), 'harness-deployment-'));
 	const directory = join(temporary, 'source');
 	let added = false;
 	try {

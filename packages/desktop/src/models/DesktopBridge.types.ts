@@ -34,6 +34,8 @@ import type {
 /** The only channels the main process answers. Anything else is refused before any handler. */
 export const channels = {
 	deploymentStatus: 'deployment:status',
+	deploymentActivities: 'deployment:activities',
+	startDeployment: 'deployment:start',
 	deploymentProgress: 'deployment:progress',
 	planDeployment: 'deployment:plan',
 	deploy: 'deployment:execute',

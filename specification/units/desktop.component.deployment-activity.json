@@ -1,0 +1,67 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.deployment-activity",
+	"kind": "component",
+	"title": "DeploymentActivity",
+	"responsibility": "Owns the DeploymentActivity Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/DeploymentActivity.svelte"],
+		"symbols": ["DeploymentActivity"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "DeploymentActivity.workspace",
+				"type": "Workspace"
+			}
+		],
+		"outputs": [
+			{
+				"name": "DeploymentActivity",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.choice-dialog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.deployment-details",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.deployment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/DeploymentActivity.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/DeploymentActivity.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

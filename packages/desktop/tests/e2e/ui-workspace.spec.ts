@@ -144,38 +144,3 @@ test('workspace selectors start collapsed and environment stays directly selecta
 		await expect(page.getByRole('button', { name: button, exact: true })).toBeFocused();
 	}
 });
-
-test('production promotion previews preprod distance, requires one action and reports live status', async ({
-	page
-}) => {
-	await fakeProject(page, true);
-	await page.goto('/');
-	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
-	await page.getByLabel('Environment', { exact: true }).selectOption('preprod');
-	await page.getByRole('button', { name: 'Deploy', exact: true }).click();
-	await page.evaluate(() => document.fonts.ready);
-	if (process.env.TAKE_SCREENSHOT === 'true')
-		await page.screenshot({
-			path: `/tmp/harness-env-evidence/production-promotion-${process.env.SCREENSHOT_LABEL ?? 'local'}.png`
-		});
-	const dialog = page.getByRole('dialog', { name: 'Deploy', exact: true });
-	await expect(
-		dialog.getByText('Production is behind preprod by 3 commits.', { exact: true })
-	).toBeVisible();
-	await expect(dialog.getByText('c'.repeat(40), { exact: true })).toBeVisible();
-	await expect(dialog.getByText('b'.repeat(40), { exact: true })).toBeVisible();
-	await expect(dialog.getByRole('button')).toHaveCount(1);
-	expect(
-		await page.evaluate(() => JSON.stringify((window as unknown as { __calls: unknown[] }).__calls))
-	).not.toContain('"op":"deploy"');
-	await dialog.getByRole('button', { name: 'Promote to production', exact: true }).click();
-	await expect(dialog.getByRole('status')).toContainText('Checking the preprod commit');
-	if (process.env.TAKE_SCREENSHOT === 'true')
-		await page.screenshot({
-			path: `/tmp/harness-env-evidence/production-progress-${process.env.SCREENSHOT_LABEL ?? 'local'}.png`
-		});
-	await expect(dialog.getByRole('status')).toContainText('Production is up to date');
-	await expect(
-		dialog.getByRole('button', { name: 'Promote to production', exact: true })
-	).toBeDisabled();
-});

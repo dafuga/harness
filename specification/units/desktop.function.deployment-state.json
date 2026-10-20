@@ -60,6 +60,11 @@
 			"unit": "desktop.model.deployment-types",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.repository-arbiter",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

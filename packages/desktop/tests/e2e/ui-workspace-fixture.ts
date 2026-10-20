@@ -1,3 +1,4 @@
+import { installDeploymentFixture } from './ui-deployment-fixture';
 const hash = 'a'.repeat(40);
 const item = {
 	id: 'page:activity',
@@ -123,82 +124,10 @@ function installProject(data: {
 	Object.assign(window, { harness: bridge, __calls: calls });
 }
 
-const deploymentFixture = {
-	statuses: ['dev', 'stage', 'preprod', 'prod'].map((environment) => ({
-		environment,
-		available: true,
-		reason: 'Cloudflare target configured.',
-		receipt: true
-			? {
-					environment,
-					commit: environment === 'prod' ? 'b'.repeat(40) : 'c'.repeat(40),
-					branch: 'feat/activity',
-					updatedAt: '2026-10-20T10:15:00.000Z',
-					adapter: 'cloudflare',
-					deploymentId: 'fixture-' + environment,
-					url: 'https://example.invalid'
-				}
-			: null
-	})),
-	plan: {
-		id: 'reviewed-fixture',
-		branch: 'feat/activity',
-		adapter: 'cloudflare',
-		steps: [
-			'Run bun run check',
-			'Build the source commit',
-			'Deploy with Cloudflare',
-			'Verify deployment identity and health'
-		],
-		blockers: [],
-		expiresAt: '2026-10-20T23:59:00.000Z'
-	},
-	receipt: {
-		environment: 'prod',
-		commit: 'c'.repeat(40),
-		branch: 'feat/activity',
-		updatedAt: '2026-10-20T11:00:00.000Z',
-		adapter: 'cloudflare',
-		deploymentId: 'fixture-prod',
-		url: 'https://example.invalid'
-	}
-};
-function installDeployment(data: typeof deploymentFixture) {
-	let deploying = false;
-	const host = window as unknown as { harness: object; __calls: unknown[] };
-	Object.assign(host.harness, {
-		deploymentStatus: async () => data.statuses,
-		planDeployment: async (input: { environment: string; commit: string }) => {
-			host.__calls.push({ op: 'planDeployment', ...input });
-			return {
-				...data.plan,
-				environment: 'prod',
-				commit: 'c'.repeat(40),
-				target: 'workers · example-prod',
-				promotion: {
-					preprod: data.statuses[2].receipt,
-					production: data.statuses[3].receipt,
-					commitsBehind: 3
-				}
-			};
-		},
-		deploymentProgress: async () => ({
-			phase: 'checking',
-			detail: deploying ? 'Checking the preprod commit' : ''
-		}),
-		deploy: async (input: unknown) => {
-			deploying = true;
-			await new Promise((resolve) => setTimeout(resolve, 1800));
-			host.__calls.push({ op: 'deploy', ...(input as object) });
-			return data.receipt;
-		}
-	});
-}
-
 export async function fakeProject(page: import('@playwright/test').Page, identified = false) {
 	const shown = identified
 		? { ...snapshot, project: { ...snapshot.project, id: 'local-' + 'a'.repeat(64) } }
 		: snapshot;
 	await page.addInitScript(installProject, { snapshot: shown, item, providers, thread });
-	await page.addInitScript(installDeployment, deploymentFixture);
+	await installDeploymentFixture(page);
 }

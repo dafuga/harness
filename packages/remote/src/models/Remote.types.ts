@@ -46,6 +46,8 @@ export const agentMethods = ['createPlan', 'approve', 'startRun', 'cancelRun'] a
 /** Never available to a remote device: folders and hosted credentials stay on the computer. */
 export const localMethods = [
 	'deploymentStatus',
+	'deploymentActivities',
+	'startDeployment',
 	'deploymentProgress',
 	'planDeployment',
 	'deploy',
@@ -83,10 +85,10 @@ export const revisionMethods: readonly RemoteMethod[] = [
 	'approve',
 	'startRun'
 ];
-/** Methods of a device that name no project. */
 export const projectlessMethods: readonly RemoteMethod[] = [
 	attachMethod,
 	'listProjects',
+	'deploymentActivities',
 	'providers'
 ];
 /** Answers remembered by request id: re-sending one of these never runs it twice. */
@@ -95,6 +97,7 @@ export const mutationMethods: readonly RemoteMethod[] = [
 	...agentMethods,
 	'deploy',
 	'planDeployment',
+	'startDeployment',
 	'openProject',
 	'selectProject',
 	'connectHosted',

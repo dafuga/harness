@@ -1,0 +1,97 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.verify-deployment-snapshot",
+	"kind": "function",
+	"title": "verifyDeploymentSnapshot",
+	"responsibility": "Owns the verifyDeploymentSnapshot shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/verifyDeploymentSnapshot.ts"],
+		"symbols": ["captureDeploymentTarget", "verifyDeploymentSnapshot"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "captureDeploymentTarget.reviewed",
+				"type": "ReviewedDeployment"
+			},
+			{
+				"name": "captureDeploymentTarget.plugin",
+				"type": "DeploymentPlugin"
+			},
+			{
+				"name": "verifyDeploymentSnapshot.root",
+				"type": "string"
+			},
+			{
+				"name": "verifyDeploymentSnapshot.reviewed",
+				"type": "ReviewedDeployment"
+			},
+			{
+				"name": "verifyDeploymentSnapshot.guard",
+				"type": "{ plugin: DeploymentPlugin; destination: DeploymentReceipt | null }"
+			}
+		],
+		"outputs": [
+			{
+				"name": "captureDeploymentTarget",
+				"type": "unknown"
+			},
+			{
+				"name": "verifyDeploymentSnapshot",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.deployment-proof",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.deployment-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.git-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.deployment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.deployment",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/verifyDeploymentSnapshot.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/verifyDeploymentSnapshot.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -52,16 +52,7 @@ export async function promoteChange(context: RunContext, before: SourceSnapshot)
 		await gitRead(root, ['commit', '-m', 'feat: implement verified environment change']);
 	const commit = (await gitRead(root, ['rev-parse', 'HEAD'])).trim();
 	const service = new DeploymentService(context.session);
-	for (const target of changeEnvironment(environment)) {
-		if (context.signal.aborted) throw new Error('Change cancelled before the next deployment.');
-		emit({
-			runId: id,
-			kind: 'status',
-			phase: 'recording',
-			detail: `Deploying verified change to ${target}`
-		});
-		await service.automatic({ environment: target, commit });
-	}
+	await service.enqueue({ environment, commit });
 	const last = changeEnvironment(environment).at(-1);
-	return `Change verified and deployed through ${last}.${environment === 'prod' ? ' Use Deploy to promote preprod to production.' : ''}`;
+	return `Change verified and committed. Deployments through ${last} are queued; follow the deployment activity indicator.${environment === 'prod' ? ' Use Deploy to promote preprod to production.' : ''}`;
 }

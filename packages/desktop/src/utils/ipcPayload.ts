@@ -145,7 +145,7 @@ function entityPayload(channel: string, x: Record<string, unknown>) {
 }
 
 function deploymentPayload(channel: string, x: Record<string, unknown>) {
-	if (channel === 'deployment:status') return {};
+	if (channel === 'deployment:status' || channel === 'deployment:activities') return {};
 	if (channel === 'deployment:plan')
 		return {
 			environment: enumField(x.environment, deploymentEnvironments),

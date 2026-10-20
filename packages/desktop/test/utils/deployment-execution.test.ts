@@ -2,7 +2,7 @@ import { expect, test, vi } from 'vitest';
 import { deploymentFixture } from '../deployment-fixture';
 import { saveDeployment } from '../../src/utils/deploymentState';
 
-test('receipt changes after review and during upload invalidate production confirmation', async () => {
+test('stale confirmation is refused, but captured lower receipts can advance during upload', async () => {
 	const f = await deploymentFixture();
 	for (const environment of ['dev', 'stage', 'preprod'] as const)
 		await f.service.automatic({ environment, commit: f.commit });
@@ -21,11 +21,11 @@ test('receipt changes after review and during upload invalidate production confi
 		await saveDeployment(f.root, { ...preprod, deploymentId: 'concurrent-preprod' });
 		return { deploymentId: 'uploaded', url: 'https://example.invalid' };
 	});
-	await expect(f.service.deploy({ planId: next.id })).rejects.toThrow(/changed/);
+	await expect(f.service.deploy({ planId: next.id })).resolves.toMatchObject({ commit: f.commit });
 	expect(
-		(await f.service.status()).find((item) => item.environment === 'prod')?.receipt
-	).toBeNull();
-	expect((await f.service.progress({ planId: next.id }))?.phase).toBe('failed');
+		(await f.service.status()).find((item) => item.environment === 'prod')?.receipt?.commit
+	).toBe(f.commit);
+	expect((await f.service.progress({ planId: next.id }))?.phase).toBe('complete');
 });
 
 test('build-time source mutation cannot upload a different production artifact', async () => {
@@ -46,7 +46,7 @@ test('build-time source mutation cannot upload a different production artifact',
 	});
 	const plan = await f.service.plan({ environment: 'prod', commit });
 	await expect(f.service.deploy({ planId: plan.id })).rejects.toThrow(
-		/isolated preprod source changed/
+		/isolated deployment source changed/
 	);
 	expect(f.plugin.deploy).toHaveBeenCalledTimes(calls);
 	expect(
