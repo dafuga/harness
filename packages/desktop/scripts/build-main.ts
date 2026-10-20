@@ -2,7 +2,6 @@ import { mkdir } from 'node:fs/promises';
 export const desktopNodeOptions = {
 	target: 'node' as const,
 	format: 'cjs' as const,
-	mainFields: ['main'],
 	external: ['electron'],
 	outdir: 'dist',
 	sourcemap: 'external' as const
