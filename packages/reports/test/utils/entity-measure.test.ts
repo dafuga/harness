@@ -78,8 +78,22 @@ test('a measured size is shown and one nothing measured reads Not measured, neve
 	const observed = {
 		...find(ids.list),
 		sourceMeasurements: [
-			{ unit: ids.list, metric: 'source-bytes', unitOfMeasure: 'bytes', value: 3456 },
-			{ unit: ids.list, metric: 'complexity', unitOfMeasure: 'points', value: 17 }
+			{
+				unit: ids.list,
+				metric: 'source-bytes',
+				unitOfMeasure: 'bytes',
+				value: 3456,
+				workload: null,
+				profile: null
+			},
+			{
+				unit: ids.list,
+				metric: 'complexity',
+				unitOfMeasure: 'points',
+				value: 17,
+				workload: null,
+				profile: null
+			}
 		]
 	};
 	const fresh = entityMeasure(observed, taken);

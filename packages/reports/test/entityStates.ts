@@ -54,6 +54,8 @@ export function withSourceMeasures(detail: HarnessRevision): HarnessRevision {
 				metric: 'source-bytes',
 				unitOfMeasure: 'bytes',
 				value: 12345,
+				workload: null,
+				profile: null,
 				testedRevision: detail.commit
 			},
 			{
@@ -61,6 +63,8 @@ export function withSourceMeasures(detail: HarnessRevision): HarnessRevision {
 				metric: 'complexity',
 				unitOfMeasure: 'points',
 				value: 21,
+				workload: null,
+				profile: null,
 				testedRevision: detail.commit
 			}
 		]
