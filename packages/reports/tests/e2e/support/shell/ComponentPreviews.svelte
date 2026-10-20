@@ -14,6 +14,13 @@
 			label: 'GPT 6.1',
 			efforts: ['high'],
 			defaultEffort: 'high'
+		},
+		{
+			provider: 'harness-claude' as const,
+			model: 'claude-opus-5-5',
+			label: 'Claude Opus 5.5',
+			efforts: ['xhigh'],
+			defaultEffort: 'xhigh'
 		}
 	];
 	let cancelled = $state(false);
@@ -50,13 +57,13 @@
 						: {
 								id: 'fixture-switch',
 								sessionId: 'fixture-session',
-								target: selection,
+								target: { provider: 'harness-claude', model: 'claude-opus-5-5', effort: 'xhigh' },
 								status: 'pending',
 								createdAt: '2026-10-20T10:01:00Z',
 								reason: ''
 							}}
 					{models}
-					providers={{ openai: 'OpenAI' }}
+					providers={{ openai: 'OpenAI', 'harness-claude': 'Anthropic' }}
 					locked={false}
 					oncancel={() => (cancelled = true)}
 				/>

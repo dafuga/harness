@@ -63,6 +63,19 @@ test('capture readiness runs under the server-free shell config', () => {
 	);
 });
 
+test('the complete component gallery runs under its shell config and builds before capture', () => {
+	const path = 'packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts';
+	expect(existsSync(path)).toBe(true);
+	expect(planned(path)[0]).toMatchObject({
+		cwd: 'packages/reports',
+		command:
+			'bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-component-catalog.spec.ts',
+		timeoutMs: 300000
+	});
+	const manifest = JSON.parse(readFileSync('packages/reports/package.json', 'utf8'));
+	expect(manifest.scripts['build:shell']).toContain('SHELL_FIXTURE_PAGE=catalog vite build');
+});
+
 test('an ordinary reports end-to-end spec keeps the default Playwright config', () => {
 	const path = 'packages/reports/tests/e2e/harness-explorer-routes.spec.ts';
 	expect(existsSync(path)).toBe(true);

@@ -14,6 +14,10 @@
 			"path": ".env.cloudflare-auth/",
 			"rule": "folder-name-pattern",
 			"reason": "Git-ignored project credential runtime cache uses the established .env prefix; source rules and limits still apply."
+		},
+		{
+			"path": "output/",
+			"reason": "Generated fixture bundles and browser captures declared in harness.verify.json. Authored fixture sources remain audited; snapshot verification rejects outputs that cover tracked source."
 		}
 	]
 }
