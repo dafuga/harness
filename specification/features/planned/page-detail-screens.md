@@ -1,12 +1,14 @@
 # Feature: Concise page details
 
 Pages open with their name, role and verification mark. The screenshot panel keeps a concise
-heading, viewport buttons and the image. Purpose and route details remain in Contract. Scenario
+heading, viewport buttons and the image. Overview begins with the page's short registered purpose;
+route details remain in Contract. Scenario
 and state selection belong in States; the overview has no commit-change action or repeated prose.
 
 ## Acceptance Criteria
 
 - Page headers omit purpose prose and app-route metadata; other entity headers retain them.
+- Page Overview shows its registered description before screenshot evidence, at current and selected commits.
 - Screenshot overviews omit Scenario and State dropdowns, repeated explanatory text and View commit changes.
 - A declared page preview selects its own scenario and state; viewport buttons keep that identity.
 - Validated unchanged captures remain visible with their original commit; rejected or missing media remains a gap.
@@ -28,3 +30,6 @@ all size rows at current and selected commits across desktop, tablet and mobile 
 
 The usage and tab tests previously required Used In for pages. The same standardized scenarios
 now distinguish pages from reusable entities and exercise retired links in both revision modes.
+
+Overview coverage now requires the page purpose above screenshots instead of omitting it entirely.
+The same page scenarios retain a concise header and keep overview copy out of other tabs.

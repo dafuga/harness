@@ -14,6 +14,13 @@ export async function reviewOverviewControls(page: Page, category: string): Prom
 		(await page.locator('.ex-summary').boundingBox())!.width * 0.95
 	);
 	if (category === 'pages') {
+		const description = page
+			.getByRole('tabpanel', { name: 'Orders page overview', exact: true })
+			.getByText('Lists the orders of an account.', { exact: true });
+		await expect(description, 'page Overview describes what the page does').toHaveCount(1);
+		expect((await description.boundingBox())!.y).toBeLessThan(
+			(await page.locator('.ex-evidence-head').boundingBox())!.y
+		);
 		await expect(
 			page.getByRole('tab', { name: 'Used In', exact: true }),
 			'pages omit Used In'

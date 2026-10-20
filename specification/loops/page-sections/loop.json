@@ -2,7 +2,7 @@
 	"name": "page-sections",
 	"goal": "Pages expose Uses but no Used In tab or section; existing Used In links open Overview.",
 	"createdAt": "2026-10-20T17:31:12.844Z",
-	"updatedAt": "2026-10-20T17:47:02.499845+00:00",
+	"updatedAt": "2026-10-20T19:11:08.669Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T19:11:07.857Z",
+			"evidence": "745346c5 removes page consumer navigation and panels and canonicalizes old links without changing non-page usage."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T19:11:08.669Z",
+			"evidence": "Unchanged frozen regression passes at 745346c5: record bd04f68b1b190e1705643a7ceceea172c35a7806674eee3d9f61c716e1049be4; 61 root and 23 reports tests plus 9 browser cases."
 		},
 		{
 			"id": "verify",

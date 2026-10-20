@@ -28,6 +28,10 @@ test('an overview groups size and timings in Performance profile, with no source
 
 test('a page at a selected commit shows the parent and the commit for one state and viewport', () => {
 	const body = content('commit', page);
+	expect(words(body)).toContain('Lists the orders of an account.');
+	expect(body.indexOf('Lists the orders of an account.')).toBeLessThan(
+		body.indexOf('Commit comparison')
+	);
 	expect(words(body)).toContain('Commit comparison');
 	expect(words(body)).toContain('Before · aaaaaaa Parent commit');
 	expect(words(body)).toContain('After · bbbbbbb Selected commit');
@@ -40,6 +44,10 @@ test('a page at a selected commit shows the parent and the commit for one state 
 
 test('a page at the branch tip shows exactly one screenshot and no before or after', () => {
 	const body = content('current', page);
+	expect(words(body)).toContain('Lists the orders of an account.');
+	expect(body.indexOf('Lists the orders of an account.')).toBeLessThan(
+		body.indexOf('Current screenshot')
+	);
 	expect(words(body)).toContain('Current screenshot');
 	expect(words(body)).toContain('Branch tip · ccccccc');
 	expect(shots(body)).toEqual(['ccccccc-default-desktop.png']);
