@@ -2,18 +2,16 @@ import { expect, test } from 'vitest';
 import { componentManifestSchema, type ComponentManifest } from '../../src/core/unitTypes';
 import { SourceGraphService } from '../../src/services/SourceGraphService';
 import { UnitRegistryValidator } from '../../src/validators/UnitRegistryValidator';
-import { indexFiles, retire, unitOf, helperMoveGaps } from '../support/memoryTree';
+import { indexFiles, retire, unitOf, helperMoveGaps, relocatedSource } from '../support/memoryTree';
 import { existsSync, readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
 import services from '../../specification/loops/shared-service-ownership/migration.json';
-import { relocatedSource } from '../support/memoryTree';
 import migration from '../../specification/loops/local-helper-ownership/migration.json';
 
 const slugify = 'export function slugify(input: string): string {\n\treturn input.trim();\n}\n';
 const other = 'export function slugifyTitle(input: string): string {\n\treturn input;\n}\n';
 
 test('recorded source moves retain definitions, owner-local placement and registered identity', () => {
-	const root = resolve(import.meta.dirname, '../..');
+	const root = import.meta.dirname + '/../..';
 	const gaps = helperMoveGaps(root, migration.helpers, migration.followUps);
 
 	expect(migration.helpers).toHaveLength(411);
@@ -24,7 +22,7 @@ test('recorded source moves retain definitions, owner-local placement and regist
 });
 
 test('public route filenames retain their registered ownership', () => {
-	const root = resolve(import.meta.dirname, '../..');
+	const root = import.meta.dirname + '/../..';
 	const gaps: string[] = [];
 	for (const route of migration.publicRoutes) {
 		if (!existsSync(resolve(root, route.source)))
