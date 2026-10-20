@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { ExplorerEntity } from '../../models/Explorer.types';
-	import { explorerEntity } from '../../utils/explorerEntities';
+	import { explorerEntity, removedEntity } from '../../utils/explorerEntities';
 	import { isShared } from '../../utils/entityCatalog';
 	import type { ExplorerScreenProps } from '../../models/ExplorerScreen.types';
 	import { entityLens, shortCommit, type EntityNav } from '../../utils/entityLens';
@@ -26,11 +26,20 @@
 		const unit = host.head.registry.units.find(
 			(item) => item.id === host.route.entity && item.status === 'active'
 		);
-		return unit ? explorerEntity(host.head, unit, true) ?? undefined : undefined;
+		if (unit) return explorerEntity(host.head, unit, true) ?? undefined;
+		const parent = host.parent;
+		if (!parent || !host.head.sourceImpact?.units.removed.includes(host.route.entity ?? ''))
+			return undefined;
+		const previous = parent.registry.units.find(
+			(item) => item.id === host.route.entity && item.status === 'active'
+		);
+		return previous ? (removedEntity(parent, previous, true) ?? undefined) : undefined;
 	});
 	let entity = $derived(helperEntity(moduleEntity, host.route.helper));
 	let choosing = $derived(
-		moduleEntity?.category === 'functions' && !host.route.helper && (moduleEntity.unit.helpers?.length ?? 0) > 1
+		moduleEntity?.category === 'functions' &&
+			!host.route.helper &&
+			(moduleEntity.unit.helpers?.length ?? 0) > 1
 	);
 	let owner = $derived.by(() => {
 		if (!entity || listed) return undefined;
