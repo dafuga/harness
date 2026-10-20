@@ -142,7 +142,7 @@ function configureWorkspace(
 		revision: { branch: desktopData.branch, commit: commits.tip, tip: commits.tip, atTip: true },
 		branches: [{ name: desktopData.branch, tip: commits.tip, current: true }],
 		commits: desktopData.commits,
-		entities: desktopData.entities as unknown as EntityDetail[],
+		entities: previewEntities(id),
 		writable: true
 	};
 	workspace.projects = [
@@ -157,6 +157,25 @@ function configureWorkspace(
 	};
 	workspace.category = 'components';
 	workspace.entity = id === 'desktop.component.entity-view' ? entity : null;
+}
+
+function previewEntities(id: string): EntityDetail[] {
+	const entities = desktopData.entities as unknown as EntityDetail[];
+	if (id !== 'desktop.component.catalog-view') return entities;
+	const card = entities.find((entity) => entity.id === ids.card)!;
+	return [
+		{
+			...card,
+			verification: 'verified',
+			verificationNote: 'Synthetic recorded fixture',
+			thumbnail: {
+				source: 'recorded',
+				scenario: 'order-card',
+				state: 'default',
+				viewport: 'desktop'
+			}
+		}
+	];
 }
 
 function evidenceOf(entityId: string, bridge: DesktopBridge) {

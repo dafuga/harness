@@ -12,13 +12,14 @@
 	const Component = previewComponent(unit.source);
 	const fullFrame = /harness-(navbar|header|console|shell)$/.test(id);
 	const explorer = unit.source.includes('/components/harness/');
+	const reports = id.startsWith('reports.');
 	setContext(key, fixture.hub);
 	setContext(remoteContext, fixture.remote);
 	onDestroy(fixture.cleanup);
 </script>
 
-<div class="hx-shell preview-catalog" class:hub-page={id.startsWith('hub.')}>
-	<main class="hx-main" class:full-frame={fullFrame}>
+<div class="preview-catalog" class:hx-shell={reports} class:hub-page={id.startsWith('hub.')}>
+	<main class="preview-main" class:hx-main={reports} class:full-frame={fullFrame}>
 		<h1 id="preview-title">{unit.title}</h1>
 		{#await fixture.ready}<p role="status">Preparing component preview…</p>{:then}
 			<div
@@ -41,11 +42,15 @@
 	.preview-catalog {
 		min-height: 100vh;
 	}
-	.full-frame {
+	.preview-main:not(.hx-main) {
+		min-width: 0;
+		padding: 20px;
+	}
+	.preview-main.full-frame {
 		padding: 0 0 64px;
 	}
 	.full-frame h1 {
-		padding: 20px var(--hx-gutter) 0;
+		padding: 20px var(--hx-gutter, 20px) 0;
 	}
 	.preview-content {
 		min-width: 0;
