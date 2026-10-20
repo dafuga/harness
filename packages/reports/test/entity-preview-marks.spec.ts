@@ -208,7 +208,7 @@ test('a title that wraps onto two lines is one solid area to press', async ({ pa
 	expect(await where(tab)).toMatchObject({ entity: ids.list });
 });
 for (const [name, size] of Object.entries(viewports)) {
-	test(`measurements at ${name}: observations need no budget and missing evidence is neutral`, async ({
+	test(`measurements at ${name}: multiple metrics stay readable without a budget`, async ({
 		page: tab
 	}) => {
 		await tab.setViewportSize(size);

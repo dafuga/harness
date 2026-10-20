@@ -181,8 +181,11 @@ export async function reviewMeasurements(tab: Page, name: string): Promise<void>
 	});
 	const fragments = await metric.evaluate((cell) => {
 		const range = document.createRange();
-		range.setStart(cell.firstChild!, 0);
-		range.setEnd(cell.firstChild!, 'Benchmark'.length);
+		const text = [...cell.childNodes].find(
+			(node) => node.nodeType === Node.TEXT_NODE && node.textContent?.includes('Benchmark')
+		)!;
+		range.setStart(text, 0);
+		range.setEnd(text, 'Benchmark'.length);
 		return range.getClientRects().length;
 	});
 	expect(fragments, 'benchmark labels stay whole').toBe(1);
