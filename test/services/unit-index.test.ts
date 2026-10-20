@@ -1,3 +1,4 @@
+import { execFileSync } from 'node:child_process';
 import { expect, test } from 'vitest';
 import { componentManifestSchema, type ComponentManifest } from '../../src/core/unitTypes';
 import { SourceGraphService } from '../../src/services/SourceGraphService';
@@ -199,4 +200,12 @@ test('recorded service moves preserve implementations and registered owner-local
 	expect(gaps, `service ownership: ${gaps.length} gaps; ${gaps.slice(0, 6).join('; ')}`).toEqual(
 		[]
 	);
+	const owner = services.files.find((file) => file.unit === 'service.unit-index')!.to;
+	for (const entry of ['src/services/unit-index-service/UnitIndexService.ts', owner]) {
+		const code = `const {UnitIndexService} = await import(${JSON.stringify(resolve(entry))}); console.log(JSON.stringify(new UnitIndexService().index({files: new Map()}, []).manifests));`;
+		expect(
+			execFileSync('bun', ['-e', code], { encoding: 'utf8', timeout: 10000 }).trim(),
+			entry
+		).toBe('[]');
+	}
 });

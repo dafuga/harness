@@ -112,6 +112,16 @@ export function relocatedSource(
 	while ((token = scanner.scan()) !== ts.SyntaxKind.EndOfFileToken) {
 		const value =
 			token === ts.SyntaxKind.StringLiteral ? scanner.getTokenValue() : scanner.getTokenText();
+		if (
+			[
+				ts.SyntaxKind.CloseBracketToken,
+				ts.SyntaxKind.CloseBraceToken,
+				ts.SyntaxKind.CloseParenToken
+			].includes(token) &&
+			tokens.at(-1)?.startsWith(`${ts.SyntaxKind.CommaToken}:`) &&
+			!tokens.at(-2)?.startsWith(`${ts.SyntaxKind.CommaToken}:`)
+		)
+			tokens.pop();
 		tokens.push(`${token}:${value}`);
 	}
 	return createHash('sha256').update(tokens.join('\0')).digest('hex');
