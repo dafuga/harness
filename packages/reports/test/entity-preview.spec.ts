@@ -1,3 +1,4 @@
+import { reviewHelperSource } from './entityPreviewFunctions';
 import { expect, test } from '../../../test/support/browserTest';
 import { capture, chooseCatalogFilter, fits, open, viewports, where } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
@@ -164,28 +165,10 @@ test('one entity page keeps source optional without a duplicate Details page', a
 }) => {
 	for (const [name, size] of Object.entries(viewports)) {
 		await tab.setViewportSize(size);
-		await open(tab, filter);
-		await tab.evaluate(async () => {
-			await document.fonts.ready;
-		});
-		await capture(tab, `unified-function-${name}`);
-		await expect(
-			tab.getByRole('link', { name: 'Details', exact: true }),
-			'no second Details page'
-		).toHaveCount(0);
-		await expect(tab.getByText('Source ownership')).toHaveCount(0);
-		await tab.getByRole('tab', { name: 'Source', exact: true }).click();
-		expect(await where(tab)).toEqual({
-			branch: 'feature/orders',
-			commit: null,
-			...filter,
-			tab: 'source'
-		});
-		await expect(tab.getByText('src/functions/filterOrders.ts', { exact: true })).toBeVisible();
-		await tab.getByRole('tab', { name: 'Overview', exact: true }).click();
-		expect(await where(tab)).toEqual({ branch: 'feature/orders', commit: null, ...filter });
+		await reviewHelperSource(tab, name);
 	}
 });
+
 test('history lists changes, keeps profiles apart and opens a revision', async ({ page: tab }) => {
 	await open(tab, { ...filter, section: 'history', commit: commits.middle });
 	await expect(tab.locator('.ex-history tbody tr')).toHaveCount(2);
