@@ -24,7 +24,7 @@ import {
 	withStates,
 	type PreviewVariant
 } from './entityPreviewData';
-import { commits } from './entityUnits';
+import { commits, ids } from './entityUnits';
 import { withHelpers } from './entityPreviewHelpers';
 
 /** The synthetic history in a browser, for the checks that need one; no server and no real data. */

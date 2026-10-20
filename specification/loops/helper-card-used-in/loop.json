@@ -2,7 +2,7 @@
 	"name": "helper-card-used-in",
 	"goal": "Each helper card shows a smaller Used In row with up to three distinct component, service or model consumers linking within the selected revision",
 	"createdAt": "2026-10-20T13:26:44.932Z",
-	"updatedAt": "2026-10-20T13:30:05.155Z",
+	"updatedAt": "2026-10-20T13:30:50.388Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T13:30:50.388Z",
+			"evidence": "Unchanged frozen browser matrix and unit tests pass at 9890fe0b, record 376528bfaf1807f404a6257bfe33ac2a687db9ea6ae2ebded8dad0a8acb26777. Desktop/tablet/mobile verify three consumer categories, smaller text, limit/dedup and navigation at current and selected commit; card/catalog SSR tests also pass."
 		},
 		{
 			"id": "verify",

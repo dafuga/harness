@@ -111,4 +111,8 @@ test('helper usage selects three distinct eligible consumers before truncating',
 	])
 		expect(card).toContain(`/branch/feature%2Forders/${target}`);
 	for (const excluded of [ids.page, ids.card, 'missing']) expect(card).not.toContain(excluded);
+	const helper = head.registry.units.find((unit) => unit.id === ids.filter)!;
+	helper.helpers![0].consumers = [{ unit: ids.page }, { unit: ids.filter }];
+	const empty = screen(ExplorerCatalogScreen, 'current', { category: 'functions' }, { head });
+	expect(words(empty), 'eligible consumer gaps stay explicit').toContain('Used In —');
 });
