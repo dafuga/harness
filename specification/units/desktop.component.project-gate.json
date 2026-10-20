@@ -23,6 +23,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.component.game-create",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.project-context-types",
 			"via": "import",
 			"origin": "derived"

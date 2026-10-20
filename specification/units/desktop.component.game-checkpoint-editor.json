@@ -1,0 +1,65 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.game-checkpoint-editor",
+	"kind": "component",
+	"title": "GameCheckpointEditor",
+	"responsibility": "Owns the GameCheckpointEditor Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/GameCheckpointEditor.svelte"],
+		"symbols": ["GameCheckpointEditor"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "GameCheckpointEditor.checkpoint",
+				"type": "Checkpoint | null"
+			},
+			{
+				"name": "GameCheckpointEditor.change",
+				"type": "(node: Checkpoint) => void"
+			},
+			{
+				"name": "GameCheckpointEditor.readonly",
+				"type": "boolean"
+			}
+		],
+		"outputs": [
+			{
+				"name": "GameCheckpointEditor",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "game.model.game-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/GameCheckpointEditor.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/GameCheckpointEditor.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

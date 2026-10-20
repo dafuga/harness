@@ -192,7 +192,13 @@ export interface EntityDetail extends CatalogEntity {
 }
 
 export interface ProjectSnapshot {
-	project: { name: string; root: string; id?: string };
+	project: {
+		name: string;
+		root: string;
+		id?: string;
+		kind?: 'app' | 'game' | 'local' | 'shared';
+		dimension?: '2d' | '3d';
+	};
 	capabilities?: ProjectCapabilities;
 	cache?: CacheProvenance;
 	revision: Revision;

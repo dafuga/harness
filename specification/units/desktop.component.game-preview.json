@@ -1,0 +1,77 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.game-preview",
+	"kind": "component",
+	"title": "GamePreview",
+	"responsibility": "Owns the GamePreview Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/GamePreview.svelte"],
+		"symbols": ["GamePreview"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "GamePreview.props",
+				"type": "Props"
+			}
+		],
+		"outputs": [
+			{
+				"name": "GamePreview",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.game-live-video",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.game-render-options",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.game-preview-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "game.entry.index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "game.function.connect-decart",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/GamePreview.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/GamePreview.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

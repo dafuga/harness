@@ -1,7 +1,7 @@
 import { access, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
-export type DetectedProjectKind = 'app' | 'lib' | 'unknown';
+export type DetectedProjectKind = 'app' | 'lib' | 'game' | 'unknown';
 
 interface PackageManifest {
 	harness?: {
@@ -38,7 +38,11 @@ export async function detectProjectKind(root: string): Promise<DetectedProjectKi
 function explicitProjectKind(
 	manifest: PackageManifest | undefined
 ): DetectedProjectKind | undefined {
-	if (manifest?.harness?.kind === 'app' || manifest?.harness?.kind === 'lib') {
+	if (
+		manifest?.harness?.kind === 'app' ||
+		manifest?.harness?.kind === 'lib' ||
+		manifest?.harness?.kind === 'game'
+	) {
 		return manifest.harness.kind;
 	}
 

@@ -70,7 +70,11 @@ export async function generatePiece(input: GeneratePieceInput): Promise<Generate
 	const name = validateCodeName(input.name);
 	const projectKind = await detectProjectKind(root);
 
-	if (isAppOnlyScaffold(input.kind) && projectKind !== 'app') {
+	if (['game-view', 'mechanic', 'checkpoint'].includes(input.kind) && projectKind !== 'game') {
+		fail('Game scaffolds require a Harness game project.');
+	}
+
+	if (isAppOnlyScaffold(input.kind) && !['app', 'game'].includes(projectKind)) {
 		fail(`The ${input.kind} scaffold is only available in Harness app projects.`);
 	}
 

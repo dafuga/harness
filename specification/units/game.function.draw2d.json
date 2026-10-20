@@ -1,0 +1,68 @@
+{
+	"schemaVersion": 1,
+	"id": "game.function.draw2d",
+	"kind": "function",
+	"title": "draw2d",
+	"responsibility": "Owns the draw2d shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/game/src/utils/draw2d.ts"],
+		"symbols": ["draw2d", "create2d"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "draw2d.canvas",
+				"type": "HTMLCanvasElement"
+			},
+			{
+				"name": "draw2d.run",
+				"type": "GameRun"
+			},
+			{
+				"name": "draw2d.view",
+				"type": "GameView"
+			},
+			{
+				"name": "create2d.canvas",
+				"type": "HTMLCanvasElement"
+			}
+		],
+		"outputs": [
+			{
+				"name": "draw2d",
+				"type": "void"
+			},
+			{
+				"name": "create2d",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "game.model.game-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/game/src/utils/draw2d.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/game/src/utils/draw2d.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,91 @@
+{
+	"schemaVersion": 1,
+	"id": "game.adapter.decart",
+	"kind": "adapter",
+	"title": "DecartAdapter",
+	"responsibility": "Owns the DecartAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/game/src/adapters/DecartAdapter.ts"],
+		"symbols": [
+			"DecartAdapter",
+			"DecartAdapter.constructor",
+			"DecartAdapter.start",
+			"renderRate",
+			"validateSession"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "DecartAdapter.constructor.tokens",
+				"type": "Pick<TokenClient, 'create'>"
+			},
+			{
+				"name": "DecartAdapter.constructor.now",
+				"type": "unknown"
+			},
+			{
+				"name": "DecartAdapter.start.input",
+				"type": "RenderSessionRequest"
+			},
+			{
+				"name": "renderRate.model",
+				"type": "string"
+			},
+			{
+				"name": "renderRate.fast",
+				"type": "boolean"
+			},
+			{
+				"name": "validateSession.input",
+				"type": "RenderSessionRequest"
+			}
+		],
+		"outputs": [
+			{
+				"name": "DecartAdapter.start",
+				"type": "Promise<RenderSession>"
+			},
+			{
+				"name": "renderRate",
+				"type": "number"
+			},
+			{
+				"name": "validateSession",
+				"type": "void"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "game.model.game-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/game/src/adapters/DecartAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/game/src/adapters/DecartAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,103 @@
+{
+	"schemaVersion": 1,
+	"id": "game.function.game-step",
+	"kind": "function",
+	"title": "gameStep",
+	"responsibility": "Owns the gameStep shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/game/src/utils/gameStep.ts"],
+		"symbols": ["createRun", "stepGame", "gameStep", "enterView"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "createRun.seed",
+				"type": "unknown"
+			},
+			{
+				"name": "stepGame.run",
+				"type": "GameRun"
+			},
+			{
+				"name": "stepGame.input",
+				"type": "GameInput"
+			},
+			{
+				"name": "stepGame.view",
+				"type": "GameView"
+			},
+			{
+				"name": "stepGame.mechanics",
+				"type": "Mechanic[]"
+			},
+			{
+				"name": "enterView.run",
+				"type": "GameRun"
+			},
+			{
+				"name": "enterView.id",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "createRun",
+				"type": "GameRun"
+			},
+			{
+				"name": "stepGame",
+				"type": "GameRun"
+			},
+			{
+				"name": "gameStep",
+				"type": "unknown"
+			},
+			{
+				"name": "enterView",
+				"type": "GameRun"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "game.function.checkpoint-graph",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "game.function.key-door",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "game.model.game-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/game/src/utils/gameStep.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/game/src/utils/gameStep.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

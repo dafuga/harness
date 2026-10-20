@@ -1,3 +1,4 @@
+import type { GameDesktopBridge } from './GameDesktopBridge.types';
 import type {
 	EntityEvidenceQuery,
 	EntityEvidenceResult,
@@ -32,6 +33,10 @@ import type {
 
 /** The only channels the main process answers. Anything else is refused before any handler. */
 export const channels = {
+	gameCreate: 'game:create',
+	gameRead: 'game:read',
+	gameSave: 'game:save',
+	gameRender: 'game:render',
 	openProject: 'project:open',
 	listProjects: 'project:list',
 	selectProject: 'project:select',
@@ -178,7 +183,7 @@ export type RunEvent = { runId: string } & (
 );
 
 /** What the preload script exposes as `window.harness`. Without it a page is a preview. */
-export interface DesktopBridge {
+export interface DesktopBridge extends GameDesktopBridge {
 	onCacheStatus?(listener: (event: CacheStatus) => void): () => void;
 	history?(
 		input: EntityQuery & { page: number; branch?: string }

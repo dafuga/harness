@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.game-workspace",
+	"kind": "component",
+	"title": "GameWorkspace",
+	"responsibility": "Owns the GameWorkspace Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/GameWorkspace.svelte"],
+		"symbols": ["GameWorkspace"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "GameWorkspace.props",
+				"type": "Props"
+			}
+		],
+		"outputs": [
+			{
+				"name": "GameWorkspace",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.game-checkpoint-editor",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.game-graph",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.game-mechanics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.game-preview",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.game-trace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.game-view-fields",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "game.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/GameWorkspace.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/GameWorkspace.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

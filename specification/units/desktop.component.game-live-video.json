@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.game-live-video",
+	"kind": "component",
+	"title": "GameLiveVideo",
+	"responsibility": "Owns the GameLiveVideo Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/GameLiveVideo.svelte"],
+		"symbols": ["GameLiveVideo"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "GameLiveVideo.stream",
+				"type": "MediaStream"
+			}
+		],
+		"outputs": [
+			{
+				"name": "GameLiveVideo",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/GameLiveVideo.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/GameLiveVideo.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

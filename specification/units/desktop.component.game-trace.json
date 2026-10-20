@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.game-trace",
+	"kind": "component",
+	"title": "GameTrace",
+	"responsibility": "Owns the GameTrace Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/GameTrace.svelte"],
+		"symbols": ["GameTrace"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "GameTrace.run",
+				"type": "GameRun"
+			},
+			{
+				"name": "GameTrace.view",
+				"type": "GameView"
+			}
+		],
+		"outputs": [
+			{
+				"name": "GameTrace",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "game.model.game-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/GameTrace.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/GameTrace.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

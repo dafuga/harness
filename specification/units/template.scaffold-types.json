@@ -40,7 +40,18 @@
 		],
 		"errors": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "template.game-scaffold-details",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.scaffold-detail-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/templates/scaffoldTypes.ts",

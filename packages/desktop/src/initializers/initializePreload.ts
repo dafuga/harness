@@ -27,6 +27,10 @@ const call =
 	(input?: Input): Promise<T> =>
 		transport.request<T>(method, { ...input });
 const bridge: DesktopBridge = {
+	gameCreate: call('gameCreate'),
+	gameRead: call('gameRead'),
+	gameSave: call('gameSave'),
+	gameRender: call('gameRender'),
 	history: call('history'),
 	onCacheStatus: (listener) => transport.on('cache', (value) => listener(value as CacheStatus)),
 	hostedStatus: call('hostedStatus'),

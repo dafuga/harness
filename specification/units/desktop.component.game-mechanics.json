@@ -1,0 +1,60 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.game-mechanics",
+	"kind": "component",
+	"title": "GameMechanics",
+	"responsibility": "Owns the GameMechanics Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/GameMechanics.svelte"],
+		"symbols": ["GameMechanics"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "GameMechanics.mechanics",
+				"type": "MechanicDefinition[]"
+			},
+			{
+				"name": "GameMechanics.change",
+				"type": "(list: MechanicDefinition[]) => void"
+			},
+			{
+				"name": "GameMechanics.readonly",
+				"type": "boolean"
+			}
+		],
+		"outputs": [
+			{
+				"name": "GameMechanics",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "game.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/GameMechanics.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/GameMechanics.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

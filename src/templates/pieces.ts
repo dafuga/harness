@@ -33,10 +33,14 @@ import {
 	resourceFiles
 } from './railsPieces';
 import type { PieceKind } from './scaffoldTypes';
+import { gameViewFiles, mechanicFiles, checkpointFiles } from './gamePieces';
 
 export type { PieceKind } from './scaffoldTypes';
 
 const pieceBuilders: Record<PieceKind, (name: string) => PlannedFile[]> = {
+	'game-view': gameViewFiles,
+	mechanic: mechanicFiles,
+	checkpoint: checkpointFiles,
 	controller: controllerFiles,
 	service: (name) => classFiles('services', name, 'Service'),
 	decorator: (name) => classFiles('decorators', name, 'Decorator'),

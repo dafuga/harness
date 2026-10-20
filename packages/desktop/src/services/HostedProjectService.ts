@@ -20,6 +20,7 @@ export class HostedProjectService {
 					];
 				if (key === 'selectProject')
 					return (input: { projectId: string }) => this.select(local, input.projectId);
+				if (key === 'gameCreate') return target[key];
 				if (key === 'openProject')
 					return async () => {
 						const result = await local.openProject();

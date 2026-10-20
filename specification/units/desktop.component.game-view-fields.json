@@ -1,0 +1,77 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.game-view-fields",
+	"kind": "component",
+	"title": "GameViewFields",
+	"responsibility": "Owns the GameViewFields Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/GameViewFields.svelte"],
+		"symbols": ["GameViewFields"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "GameViewFields.view",
+				"type": "GameView"
+			},
+			{
+				"name": "GameViewFields.views",
+				"type": "GameView[]"
+			},
+			{
+				"name": "GameViewFields.readonly",
+				"type": "boolean"
+			},
+			{
+				"name": "GameViewFields.select",
+				"type": "(id: string) => void"
+			},
+			{
+				"name": "GameViewFields.create",
+				"type": "() => void"
+			},
+			{
+				"name": "GameViewFields.change",
+				"type": "(patch: Partial<GameView>) => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "GameViewFields",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "game.model.game-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/GameViewFields.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/GameViewFields.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

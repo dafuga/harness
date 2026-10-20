@@ -82,15 +82,13 @@ export class ProjectSessionService {
 		const entities = await catalog.list(revision.commit);
 		this.query = { branch: revision.branch, commit: query.commit };
 		return {
-			project: { name: basename(root), root, id: this.projectId! },
-			capabilities: {
-				comments: true,
-				agents: true,
-				planning: true,
-				approval: true,
-				source: 'local',
-				reason: 'Comments are saved as local pending drafts until connected.'
+			project: {
+				name: basename(root),
+				root,
+				id: this.projectId!,
+				...(await gameKind(root, revision.commit))
 			},
+			capabilities: localCapabilities,
 			revision,
 			branches,
 			commits: await source.commits(revision.branch),
@@ -130,3 +128,26 @@ export class ProjectSessionService {
 		return project;
 	}
 }
+
+async function gameKind(
+	root: string,
+	commit: string
+): Promise<{ kind?: 'game'; dimension?: '2d' | '3d' }> {
+	try {
+		const pkg = JSON.parse(await gitRead(root, ['show', commit + ':package.json']));
+		return pkg.harness?.kind === 'game'
+			? { kind: 'game', dimension: pkg.harness.dimension === '3d' ? '3d' : '2d' }
+			: {};
+	} catch {
+		return {};
+	}
+}
+
+const localCapabilities = {
+	comments: true,
+	agents: true,
+	planning: true,
+	approval: true,
+	source: 'local',
+	reason: 'Comments are saved as local pending drafts until connected.'
+} as const;

@@ -4,11 +4,14 @@ Harness is an opinionated CLI for humans and coding agents. It gives projects a 
 structure for TypeScript: small files, focused classes, small functions, generators, specs,
 and loop driven development that agents can query before making a change.
 
+Game projects retain app pages and add independent mechanics and executable checkpoint graphs. See [the game engine guide](packages/game/README.md) for authoring, AI preview costs and verification.
+
 ## Commands
 
 ```bash
 bun run dev -- new lib my-lib
 bun run dev -- new app my-app
+bun run dev -- new game my-game --dimension 3d
 bun run dev -- generate model Post title:string body:text --adapter sqlite
 bun run dev -- generate mailer Welcome
 bun run dev -- generate resource Article

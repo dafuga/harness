@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "game.function.software3d",
+	"kind": "function",
+	"title": "software3d",
+	"responsibility": "Owns the software3d shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/game/src/utils/software3d.ts"],
+		"symbols": ["software3d"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "software3d.canvas",
+				"type": "HTMLCanvasElement"
+			}
+		],
+		"outputs": [
+			{
+				"name": "software3d",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "game.model.game-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/game/src/utils/software3d.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/game/src/utils/software3d.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

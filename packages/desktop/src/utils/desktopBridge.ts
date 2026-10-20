@@ -1,3 +1,5 @@
+import { GameProjectService } from '../services/GameProjectService';
+import { GameRenderService } from '../services/GameRenderService';
 import { ProjectImageCacheService } from '../services/ProjectImageCacheService';
 import { ProjectOperationsService } from '../services/ProjectOperationsService';
 import { RecordedEvidenceService } from '../services/RecordedEvidenceService';
@@ -50,8 +52,14 @@ async function create(context: BridgeContext, input: Parameters<DesktopBridge['c
 export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRunEvent'> {
 	const { session, providers, runs, choose } = context;
 	const operations = new ProjectOperationsService(session);
+	const game = new GameProjectService(session),
+		render = new GameRenderService(session);
 	const recorded = new RecordedEvidenceService(session);
 	const bridge: Omit<DesktopBridge, 'onRunEvent'> = {
+		gameCreate: (input) => game.create(input),
+		gameRead: (input) => game.read(input),
+		gameSave: (input) => game.save(input),
+		gameRender: (input) => render.start(input),
 		hostedStatus: () =>
 			session.auth?.status() ?? Promise.resolve({ configured: false, state: 'signed-out' }),
 		connectHosted: async () => {
@@ -85,11 +93,19 @@ export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRu
 		startRun: (input) => runs.start(input),
 		cancelRun: async (input) => runs.cancel(input.runId)
 	};
+	return bindProjectBridge(session, bridge);
+}
+
+function bindProjectBridge(
+	session: ProjectSessionService,
+	bridge: Omit<DesktopBridge, 'onRunEvent'>
+) {
 	return new Proxy(bridge, {
 		get(target, property: keyof typeof bridge) {
 			const operation = target[property];
 			if (typeof operation !== 'function') return operation;
-			if (['openProject', 'selectProject', 'listProjects'].includes(property)) return operation;
+			if (['openProject', 'selectProject', 'listProjects', 'gameCreate'].includes(property))
+				return operation;
 			return async (input?: { projectId?: string }) => {
 				session.assertProject(input?.projectId);
 				session.pending++;

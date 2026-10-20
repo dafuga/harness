@@ -1,0 +1,77 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.game-graph",
+	"kind": "component",
+	"title": "GameGraph",
+	"responsibility": "Owns the GameGraph Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/GameGraph.svelte"],
+		"symbols": ["GameGraph"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "GameGraph.checkpoints",
+				"type": "Checkpoint[]"
+			},
+			{
+				"name": "GameGraph.run",
+				"type": "GameRun"
+			},
+			{
+				"name": "GameGraph.selected",
+				"type": "string | null"
+			},
+			{
+				"name": "GameGraph.select",
+				"type": "(id: string) => void"
+			},
+			{
+				"name": "GameGraph.change",
+				"type": "(nodes: Checkpoint[]) => void"
+			},
+			{
+				"name": "GameGraph.readonly",
+				"type": "boolean"
+			}
+		],
+		"outputs": [
+			{
+				"name": "GameGraph",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "game.function.checkpoint-graph",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "game.model.game-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/GameGraph.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/GameGraph.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

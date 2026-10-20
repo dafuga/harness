@@ -1,0 +1,80 @@
+{
+	"schemaVersion": 1,
+	"id": "game.function.checkpoint-graph",
+	"kind": "function",
+	"title": "checkpointGraph",
+	"responsibility": "Owns the checkpointGraph shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/game/src/utils/checkpointGraph.ts"],
+		"symbols": ["conditionMatches", "checkpointEligible", "checkpointGraph"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "conditionMatches.condition",
+				"type": "Condition"
+			},
+			{
+				"name": "conditionMatches.state",
+				"type": "Readonly<GameState>"
+			},
+			{
+				"name": "checkpointEligible.node",
+				"type": "Checkpoint"
+			},
+			{
+				"name": "checkpointEligible.run",
+				"type": "GameRun"
+			},
+			{
+				"name": "checkpointGraph.run",
+				"type": "GameRun"
+			},
+			{
+				"name": "checkpointGraph.view",
+				"type": "GameView"
+			}
+		],
+		"outputs": [
+			{
+				"name": "conditionMatches",
+				"type": "boolean"
+			},
+			{
+				"name": "checkpointEligible",
+				"type": "boolean"
+			},
+			{
+				"name": "checkpointGraph",
+				"type": "GameRun"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "game.model.game-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/game/src/utils/checkpointGraph.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/game/src/utils/checkpointGraph.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

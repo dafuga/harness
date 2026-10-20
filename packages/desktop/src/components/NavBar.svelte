@@ -16,6 +16,20 @@
 	const search = $derived(workspaceSearch(workspace));
 	/** Settings are of this device's agents, so they are offered only where agents can run. */
 	const settings = $derived(`/settings?from=${encodeURIComponent(workspace.path())}`);
+	/** A game's own views; a revision that is not the tip opens them read-only at its commit. */
+	const gameViews = $derived.by(() => {
+		const { snapshot, projectId } = workspace;
+		if (
+			snapshot?.project.kind !== 'game' ||
+			!projectId ||
+			!workspace.local ||
+			!workspace.bridge?.gameRead
+		)
+			return null;
+		const views = `/game?projectId=${encodeURIComponent(projectId)}`;
+		if (snapshot.writable) return views;
+		return `${views}&readonly=1&commit=${encodeURIComponent(snapshot.revision.commit)}`;
+	});
 </script>
 
 <header class="topbar">
@@ -32,6 +46,7 @@
 				></WorkspaceLink
 			>{/each}
 	</nav>
+	{#if gameViews}<a class="topbar-game" href={resolve(gameViews as '/')}>Game Views</a>{/if}
 	<RevisionPicker {workspace} />
 	<div class="topbar-search">
 		<EntitySearch
@@ -70,6 +85,20 @@
 		color: inherit;
 	}
 	.topbar-settings:hover {
+		color: var(--gold);
+		border-color: var(--gold);
+	}
+	/* A game's views leave the catalog, so they stand beside its categories, not among them. */
+	.topbar-game {
+		flex: none;
+		align-self: center;
+		padding: 9px 14px;
+		border: 1px solid var(--line);
+		border-radius: 8px;
+		font-size: 14px;
+		white-space: nowrap;
+	}
+	.topbar-game:hover {
 		color: var(--gold);
 		border-color: var(--gold);
 	}

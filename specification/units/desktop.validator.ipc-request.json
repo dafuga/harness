@@ -37,6 +37,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.function.game-payload",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.function.ipc-payload",
 			"via": "import",
 			"origin": "derived"

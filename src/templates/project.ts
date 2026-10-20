@@ -1,19 +1,23 @@
+import { appTestFiles } from './projectTests';
 import type { PlannedFile } from '../core/files';
 import { auditConfigFiles } from './auditConfig';
 import { auditRunnerFiles } from './auditRunner';
-import { browserTestFiles } from './browserTest';
 import { formatConfigFiles } from './formatConfig';
 import { lintConfigFiles } from './lintConfig';
 import { agentRules, skillRules } from './projectGuidance';
-export type ProjectKind = 'app' | 'lib';
+import { gameFiles } from './gameProject';
+export type ProjectKind = 'app' | 'lib' | 'game';
 
 export interface ProjectTemplateInput {
 	name: string;
 	kind: ProjectKind;
+	dimension?: '2d' | '3d';
 }
 
 export function projectFiles(input: ProjectTemplateInput): PlannedFile[] {
-	return input.kind === 'app' ? appFiles(input.name) : libFiles(input.name);
+	if (input.kind === 'lib') return libFiles(input.name);
+	const app = appFiles(input.name);
+	return input.kind === 'game' ? gameFiles(input, app) : app;
 }
 
 function appFiles(name: string): PlannedFile[] {
@@ -87,17 +91,6 @@ function appSourceFiles(name: string): PlannedFile[] {
 		{
 			path: 'src/lib/adapters/README.md',
 			contents: 'Persistence adapters live here. Generate models with `harness generate model`.\n'
-		}
-	];
-}
-
-function appTestFiles(): PlannedFile[] {
-	return [
-		...browserTestFiles(),
-		{
-			path: 'test/smoke.test.ts',
-			contents:
-				"import { expect, test } from 'vitest';\n\ntest('Harness app scaffold is ready', () => {\n\texpect(true).toBe(true);\n});\n"
 		}
 	];
 }

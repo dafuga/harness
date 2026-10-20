@@ -43,6 +43,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.service.game-project",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.game-render",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.service.project-image-cache",
 			"via": "import",
 			"origin": "derived"

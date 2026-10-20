@@ -1,0 +1,76 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.game-create",
+	"kind": "component",
+	"title": "GameCreate",
+	"responsibility": "Owns the GameCreate Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/GameCreate.svelte"],
+		"symbols": ["GameCreate"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "GameCreate.bridge",
+				"type": "DesktopBridge"
+			},
+			{
+				"name": "GameCreate.created",
+				"type": "(snapshot: ProjectSnapshot) => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "GameCreate",
+				"type": "markup"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.environment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/GameCreate.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/GameCreate.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

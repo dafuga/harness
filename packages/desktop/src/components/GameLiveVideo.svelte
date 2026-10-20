@@ -1,0 +1,46 @@
+<script lang="ts">
+	let { stream }: { stream?: MediaStream } = $props();
+	let video = $state<HTMLVideoElement>();
+	let fps = $state<number | null>(null);
+	$effect(() => {
+		if (!video) return;
+		const target = video;
+		target.srcObject = stream ?? null;
+		fps = null;
+		let token = 0,
+			active = true,
+			started = performance.now(),
+			frames = 0;
+		function frame(now: number) {
+			if (!active) return;
+			frames++;
+			if (now - started >= 1000) {
+				fps = Math.round((frames * 1000) / (now - started));
+				frames = 0;
+				started = now;
+			}
+			token = target.requestVideoFrameCallback(frame);
+		}
+		if (stream && target.requestVideoFrameCallback) token = target.requestVideoFrameCallback(frame);
+		return () => {
+			active = false;
+			if (token) target.cancelVideoFrameCallback(token);
+			target.srcObject = null;
+		};
+	});
+</script>
+
+<div>
+	<video bind:this={video} autoplay muted playsinline aria-label="AI video"></video>
+	<small role="status">AI output: {fps === null ? 'waiting for video frames' : fps + ' fps'}</small>
+</div>
+
+<style>
+	video {
+		width: 100%;
+		aspect-ratio: 1280/704;
+		border: 1px solid var(--line);
+		border-radius: 12px;
+		background: #04131d;
+	}
+</style>

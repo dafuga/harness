@@ -32,6 +32,10 @@
 		{
 			"name": "relay",
 			"root": "packages/relay"
+		},
+		{
+			"name": "game",
+			"root": "packages/game"
 		}
 	],
 	"tests": ["test/", "tests/"],
@@ -284,6 +288,30 @@
 			"specifier": "../../../../src/core/browserDiagnostics",
 			"to": "src/core/browserDiagnostics.ts",
 			"reason": "Hosted evidence validates the same recorded browser diagnostic contract as the verification runner."
+		},
+		{
+			"from": "packages/desktop/src/components/GamePreview.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "Desktop build alias resolves this shared UI component to the reports package."
+		},
+		{
+			"from": "packages/desktop/src/components/GameCreate.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "Desktop build alias resolves this shared UI component to the reports package."
+		},
+		{
+			"from": "packages/desktop/src/components/GameCheckpointEditor.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "Desktop build alias resolves this shared UI component to the reports package."
+		},
+		{
+			"from": "packages/desktop/src/components/GameViewFields.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "Desktop build alias resolves this shared UI component to the reports package."
 		}
 	]
 }

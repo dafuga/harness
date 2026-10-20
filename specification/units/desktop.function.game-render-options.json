@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.game-render-options",
+	"kind": "function",
+	"title": "gameRenderOptions",
+	"responsibility": "Owns the gameRenderOptions shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/gameRenderOptions.ts"],
+		"symbols": ["gameRenderOptions"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "gameRenderOptions",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/gameRenderOptions.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/gameRenderOptions.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
