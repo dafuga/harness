@@ -87,7 +87,7 @@
 			"id": "recorded-values",
 			"kind": "unit",
 			"runner": "command",
-			"target": "bun x vitest run test/utils/recorded-value.test.ts test/utils/artifact-cases.test.ts test/components/recorded-value.test.ts test/components/entity-cases.test.ts test/components/entity-behavior.test.ts",
+			"target": "bun x vitest run test/utils/recorded-value.test.ts test/utils/artifact-cases.test.ts test/components/recorded-value.test.ts test/components/entity-cases.test.ts test/components/entity-behavior.test.ts test/components/entity-examples.test.ts test/components/usage-examples.test.ts test/utils/usage-examples.test.ts test/utils/activity-reading.test.ts",
 			"cwd": "packages/reports",
 			"timeoutMs": 180000
 		},
