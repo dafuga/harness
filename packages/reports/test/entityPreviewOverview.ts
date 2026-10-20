@@ -15,6 +15,10 @@ export async function reviewOverviewControls(page: Page, category: string): Prom
 	);
 	if (category === 'pages') {
 		await expect(
+			page.getByRole('tab', { name: 'Used In', exact: true }),
+			'pages omit Used In'
+		).toHaveCount(0);
+		await expect(
 			page.locator('.ex-head .ex-lead, .ex-head .ex-route'),
 			'page header stays concise'
 		).toHaveCount(0);

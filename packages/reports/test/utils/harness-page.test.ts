@@ -69,6 +69,11 @@ test('a branch or a commit alone opens its Pages, keeping the scope', () => {
 		kind: 'redirect',
 		path: `/branch/${encoded}/commit/${sha('b')}/pages`
 	});
+	for (const path of [
+		`/branch/${encoded}/pages/page.titles`,
+		`/branch/${encoded}/commit/${sha('b')}/pages/page.titles`
+	])
+		expect(shown(path, '?tab=used-in')).toEqual({ kind: 'redirect', path });
 });
 
 test('an earlier page leads to the entity it showed, at the commit it named', () => {

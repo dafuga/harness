@@ -12,15 +12,7 @@ const tabs = (body: string) =>
 
 test('details opens on the contract with size and performance, and shows no source', () => {
 	const body = content('commit', page);
-	expect(tabs(body)).toEqual([
-		'Overview',
-		'Contract',
-		'Used In',
-		'Uses',
-		'States',
-		'History',
-		'Source'
-	]);
+	expect(tabs(body)).toEqual(['Overview', 'Contract', 'Uses', 'States', 'History', 'Source']);
 	expect(words(body)).toContain('Lists the orders of an account.');
 	for (const heading of ['Contract', 'Performance profile']) {
 		expect(body).toContain(`aria-label="${heading}"`);

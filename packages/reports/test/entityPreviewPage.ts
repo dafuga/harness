@@ -75,7 +75,7 @@ export async function capture(page: Page, name: string): Promise<void> {
 	await page.screenshot({ path: join(directory, `${name}.png`), fullPage: true });
 }
 /** Wait for the visible capture to render without forcing offscreen lazy images to load. */
-async function ready(page: Page): Promise<void> {
+export async function ready(page: Page): Promise<void> {
 	await page.evaluate(async () => {
 		await document.fonts.ready;
 		const visible = [...document.images].filter((image) => {
@@ -102,7 +102,8 @@ export async function reviewVisual(
 	expect((await evidence.boundingBox())!.y).toBeLessThan((await profile.boundingBox())!.y);
 	expect(await fits(page)).toBe(true);
 	await reviewOverviewControls(page, route.category);
-	for (const name of ['Overview', 'Contract', 'Used In', 'Uses', 'States', 'History', 'Source']) {
+	const tabs = ['Overview', 'Contract', 'Used In', 'Uses', 'States', 'History', 'Source'];
+	for (const name of tabs.filter((tab) => route.category !== 'pages' || tab !== 'Used In')) {
 		await page.getByRole('tab', { name, exact: true }).click();
 		await ready(page);
 		await capture(page, `header-base-${route.category}-${name}-${mode}-${viewport}`);
