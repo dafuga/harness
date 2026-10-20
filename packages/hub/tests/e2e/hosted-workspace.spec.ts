@@ -38,7 +38,7 @@ test('the hosted workspace has no agent control and a comment never calls a run'
 	await expect(page.getByRole('heading', { name: 'Atlas activity', exact: true })).toBeVisible();
 	await expect(page.getByRole('button', { name: /New page/ })).toHaveCount(0);
 	await noAgentControls(page);
-	const open = page.getByRole('link', { name: /Open page/ });
+	const open = page.getByRole('link', { name: 'Open Atlas activity', exact: true });
 	await expect(open).toHaveAttribute('href', entity(atlas, 'main'));
 	await open.click();
 	// The hosted page is the same viewer: an entity opens on its overview, with its evidence.
@@ -109,7 +109,7 @@ test('changing project leaves nothing of the previous one and reads only the new
 	await expect(page.getByRole('main').getByText(/Atlas/)).toHaveCount(0);
 	await expect(page.getByRole('complementary', { name: 'Design conversation' })).toHaveCount(0);
 	await expect(page.getByRole('main').getByRole('img')).toHaveCount(0);
-	await page.getByRole('link', { name: /Open page/ }).click();
+	await page.getByRole('link', { name: 'Open Borealis activity', exact: true }).click();
 	await expect(page.getByRole('heading', { level: 1, name: 'Borealis activity' })).toBeVisible();
 	await expect(page.getByText('Atlas: align the filters.')).toHaveCount(0);
 	await expect(page.getByRole('button', { name: /^Thread 1/ })).toHaveCount(0);
