@@ -27,13 +27,17 @@ for (const directory of ['dist/api', 'dist/types', 'dist/kernel']) {
 	await rm(directory, { recursive: true, force: true });
 }
 // Each entry is bundled on its own: code splitting currently emits duplicate exports.
+// Only declared runtime dependencies may remain external in a published Node entry.
+const manifest = JSON.parse(await readFile('package.json', 'utf8'));
+const external = Object.keys(manifest.dependencies ?? {});
 for (const entry of entries) {
 	const result = await Bun.build({
 		entrypoints: [`src/lib/${entry}.ts`],
 		target: 'node',
 		format: 'esm',
 		outdir: 'dist/api',
-		packages: 'external'
+		packages: 'bundle',
+		external
 	});
 	if (!result.success) throw new Error(`Public API bundle failed.\n${result.logs.join('\n')}`);
 }

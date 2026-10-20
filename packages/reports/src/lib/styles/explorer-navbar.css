@@ -181,9 +181,9 @@
 	.hx-categories a,
 	.hx-category {
 		flex: 1 0 auto;
-		min-width: 0;
+		min-width: 44px;
 		min-height: 60px;
-		padding: 6px;
-		font-size: 0.78rem;
+		padding: 6px 2px;
+		font-size: clamp(0.65rem, 2.95vw, 0.78rem);
 	}
 }

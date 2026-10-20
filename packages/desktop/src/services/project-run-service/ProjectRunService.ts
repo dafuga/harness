@@ -11,6 +11,7 @@ import { type ProjectProposal } from '../../utils/projectProposal';
 import { proposalUnits } from './proposalUnits';
 import { sourceChanges } from '../../utils/sourceChanges';
 import { sourceSnapshot, type SourceSnapshot } from '../../utils/sourceSnapshot';
+import { catalogUnit } from '../../utils/catalogUnit';
 
 /** The draft a run had written when it failed or was cancelled, by the error it ended with. */
 export const plannedBefore = new WeakMap<object, CreatedEntity>();
@@ -27,7 +28,13 @@ type Host = ReturnType<typeof hostChanges>;
 
 /** Registered ids the notes may name, those of the request first; no source goes with them. */
 async function known({ project, revision, request }: ProjectRunContext): Promise<string[]> {
-	return proposalUnits(await project.catalog.list(revision.commit), request);
+	const units = await project.source.units(revision.commit);
+	const unchanged = new Set<string>();
+	const registered = units.flatMap((unit) => {
+		const item = catalogUnit(unit, unchanged);
+		return item ? [item] : [];
+	});
+	return proposalUnits(registered, request);
 }
 
 /**
