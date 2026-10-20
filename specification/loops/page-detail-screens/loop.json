@@ -2,11 +2,9 @@
 	"name": "page-detail-screens",
 	"goal": "Page details show concise identity, fixed page screenshots and viewport controls without scenario/state selectors or a commit action; every tab is captured",
 	"createdAt": "2026-10-20T15:06:25.420Z",
-	"updatedAt": "2026-10-20T15:17:23.350Z",
+	"updatedAt": "2026-10-20T15:58:41.167361+00:00",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -29,7 +27,7 @@
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
 			"status": "complete",
 			"completedAt": "2026-10-20T15:10:15.918Z",
-			"evidence": "Frozen dc72a014 fails page header stays concise at desktop, tablet and mobile; validated inherited screenshot assertion also fails. Red record ff3c705815a17f9d3a77efc37315bda683583b212876fa9e7070fe1fcd4f4bd7."
+			"evidence": "Final frozen baseline 7566e18d, red afebe46d: concise overview, declared preview and usable inherited-image assertions fail. Complete final test corpus is frozen."
 		},
 		{
 			"id": "implement",
@@ -41,12 +39,15 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T15:32:53.126Z",
+			"evidence": "Unchanged final test corpus passes at d5e01b0e: 15 unit assertions and all 3 desktop/tablet/mobile browser cases, including every page tab. Green 533b20d6 pairs with red afebe46d at 7566e18d."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Local feature proof passes: 15 units, 3 browser cases across all seven tabs, 604-test complete Reports check, actual page walkthrough and nine original-byte checks. Root aggregate fails the unchanged baseline entityMeasure/entityShown definition guard; legacy integration has three pre-existing selector/fixture failures (16 pass, 4 unrun). Verification remains pending; no main merge, publication or native acceptance."
 		}
 	],
 	"evaluators": [
