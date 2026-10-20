@@ -34,6 +34,7 @@
 				{@const evidence = host.lens.evidence(entity.unit)}
 				<EntityScreens
 					options={screenOptions(evidence.scenarios)}
+					preview={entity.unit.preview}
 					{evidence}
 					scope={host.scope}
 					mediaBase={host.mediaBase}

@@ -2,7 +2,7 @@
 	"name": "page-detail-screens",
 	"goal": "Page details show concise identity, fixed page screenshots and viewport controls without scenario/state selectors or a commit action; every tab is captured",
 	"createdAt": "2026-10-20T15:06:25.420Z",
-	"updatedAt": "2026-10-20T15:08:16.170Z",
+	"updatedAt": "2026-10-20T15:17:23.350Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T15:10:15.918Z",
+			"evidence": "Frozen dc72a014 fails page header stays concise at desktop, tablet and mobile; validated inherited screenshot assertion also fails. Red record ff3c705815a17f9d3a77efc37315bda683583b212876fa9e7070fe1fcd4f4bd7."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T15:17:23.350Z",
+			"evidence": "Opus 5.5 removed repeated page copy and selectors. Fixed previews reach both callers; validated unchanged screenshots retain their capture origin."
 		},
 		{
 			"id": "green",
