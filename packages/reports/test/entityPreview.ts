@@ -146,6 +146,11 @@ function callableFixture(unit: HarnessUnit): HarnessUnit {
 		countWords: 'wordCount',
 		reset: 'noReturnValue'
 	};
+	const exampleReturns: Record<string, string | number | null> = {
+		toKebabCase: 'hello-world',
+		countWords: 2,
+		reset: null
+	};
 	const helpers = [
 		['toKebabCase', 'string'],
 		['countWords', 'number'],
@@ -161,7 +166,7 @@ function callableFixture(unit: HarnessUnit): HarnessUnit {
 				name: `${name} usage`,
 				call: name === 'reset' ? 'reset() ?? null' : `${name}("hello world")`,
 				input: name === 'reset' ? [] : ['hello world'],
-				output: name === 'reset' ? null : name === 'countWords' ? 2 : 'hello-world'
+				output: exampleReturns[name]
 			}
 		],
 		inputs: name === 'reset' ? [] : [{ name: `${name}.textToConvert`, type: 'string' }]
