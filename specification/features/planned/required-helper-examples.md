@@ -37,3 +37,9 @@ This branch also contains the previously requested GitHub-only Source tab and co
 ## Verification boundary
 
 Focused red/green proof passes at the exact test and fix commits. Broader verification of the integrated branch is running. Full repository verification, including native desktop and iOS layers, is not established by those focused results. No production application deployment is part of this change.
+
+## Process prevention retro: runtime dependency resolution
+
+Live verification exposed a separate regression introduced by main's environment-controls PR #15 (`c6d8a870`): `deploymentConfig` imported JSONC's private ESM entry, whose extensionless imports fail under Node. The preview returned 500 before rendering the helper page. The existing Node boundary test bundled dependencies, so it bypassed the failing external package resolution.
+
+The primary prevention is to extend that existing boundary matrix to bundled and external dependency execution. The desktop runtime-dependency checkpoint must require both modes whenever the same server code runs in the web preview. The test runs in normal desktop verification and rejects the original private import in an isolated committed snapshot; this is a resolution check and does not launch Electron or deploy anything. The repair uses the package's supported public entry. This is a small extension of the existing runtime boundary rule, not a separate workflow.

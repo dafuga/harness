@@ -2,28 +2,32 @@
 	"name": "deployment-config-runtime",
 	"goal": "Runtime dependencies resolve in bundled Node and external preview execution",
 	"createdAt": "2026-10-20T21:02:18.900Z",
-	"updatedAt": "2026-10-20T21:02:18.900Z",
+	"updatedAt": "2026-10-20T21:04:08.362Z",
 	"template": "regression-prevention",
-	"templateLineage": [
-		"regression-prevention"
-	],
+	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
 		{
 			"id": "spec",
 			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T21:02:32.675Z",
+			"evidence": "PR 15 introduced a deep JSONC ESM import that Node cannot resolve; the managed web preview returns 500 with ERR_MODULE_NOT_FOUND for impl/format."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T21:02:33.225Z",
+			"evidence": "The existing deployment-config boundary test bundles every dependency, hiding external package entry resolution. Extend its matrix to both bundled and external JSONC under Node."
 		},
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T21:04:08.362Z",
+			"evidence": "775ea77b reproduces the actual impl/format resolution failure with the installed package found; bundled mode passes and external mode fails under Node. Earlier 3ae3496c had an incorrect NODE_PATH and is setup failure, not defect proof."
 		},
 		{
 			"id": "propose",

@@ -11,7 +11,7 @@ This is a Harness SvelteKit app. Treat Harness as the operating contract for eve
 - Add or update a feature spec before implementation.
 - Keep files small, focused, and aligned with `harness.audit.json` limits.
 - Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `bun run audit`.
-- When adding a runtime dependency used by Electron main or preload, add a packaged-Node assertion to its boundary tests and exercise the built native app. Source-module and Vite tests alone do not prove bundled imports resolve.
+- When adding a runtime dependency used by Electron main or preload, add a packaged-Node assertion to its boundary tests and exercise the built native app. When server code also runs in the web preview, cover both bundled and external dependency resolution under Node. Source-module and Vite tests alone do not prove runtime imports resolve.
 
 ## Clean Code Review
 
