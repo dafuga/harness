@@ -1,0 +1,137 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [5.63s]
+$ bun run --cwd packages/desktop svelte-kit sync && bun run --cwd packages/reports svelte-kit sync && bun run --cwd packages/hub svelte-kit sync
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pdUZjV
+
+ ✓ test/utils/preview-binding.test.ts (6 tests) 71ms
+ ❯ test/project-template.test.ts (5 tests | 1 failed) 71ms
+   ✓ app projects include SvelteKit and specification files 1ms
+   ✓ library projects include Bun TypeScript test structure 0ms
+   ✓ generated app code and configuration obey their formatter settings 53ms
+   ✓ generated lib code and configuration obey their formatter settings 7ms
+   × generated project guidance requires Harness completion audits and keeps planning read-only 4ms
+     → expected '# AGENTS.md\n\nThis is a Harness Svel…' to contain 'required parent layout'
+ ✓ test/preview-shells-runner.test.ts (6 tests) 714ms
+   ✓ component preview media refuses unknown files and labels synthetic image input  711ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/project-template.test.ts > generated project guidance requires Harness completion audits and keeps planning read-only
+AssertionError: expected '# AGENTS.md\n\nThis is a Harness Svel…' to contain 'required parent layout'
+
+- Expected
++ Received
+
+- required parent layout
++ # AGENTS.md
++
++ This is a Harness SvelteKit app. Treat Harness as the operating contract for every code change in this project.
++
++ ## Required Harness Workflow
++
++ - Read this file and the `.codex/skills/harness/SKILL.md` skill before changing code.
++ - Use Harness generators for supported code shapes instead of hand-rolling new structure.
++ - Ask `harness info <topic>` before adding unfamiliar code or choosing a scaffold shape.
++ - For non-trivial work, ask what the loop should prove, search templates, then create or continue a `harness loop`.
++ - Add or update a feature spec before implementation.
++ - Keep files small, focused, and aligned with `harness.audit.json` limits.
++ - Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `bun run audit`.
++
++ ## Clean Code Review
++
++ - Use `harness info clean-code` for optional Jev reviews.
++ - Preview with `harness audit . --clean-code --dry-run`; reviews remain disabled until enabled.
++ - Configure a project-owned credential and assess advisory results before enabling the gate.
++ - Keep uncertain judgments visible and never call incomplete reviews clean.
++
++ ## Task Completion
++
++ - Coding tasks require actual representative latency and memory profiling through Harness, independently of budget declarations. Use PerformanceProfileService in standardized tests or harness budget bench with a declared workload; label whole-process memory honestly.
++ - Commit the task source, run harness verify run --require-performance, then harness task check --loop <loop>. Missing, failed or stale evidence blocks completion; an agent reply or a free-text step claim is not verification.
++ - Planning tasks remain planning-only: include substantive Overview, Acceptance Criteria, Dependencies, Verification and Performance sections, with representative workloads, latency and memory measurement plans. Run the Harness task audit; do not fabricate runtime results or implement the plan.
++ - The final audit checks structural and evidence heuristics, not arbitrary semantic correctness. Expose remaining uncertainty and obtain required acceptance review. Do not change source after auditing it or claim completion while the audit fails.
++
++ ## Visual Component Evidence
++
++ - Every active visual component requires a preview bound to its own required screenshot state and viewport. Capture the actual component with representative parameters; verify fresh or validated inherited screenshots at the selected revision. A missing image or failed verdict blocks handoff: inspect and repair its registry, scenario, reason, ledger and budget failures; never hide the failure, substitute another component, or relabel a capture. Component titles name the component, with state labels confined to scenario states.
++
++ ## Bug and Regression Loops
++
++ - For a reported bug, first diagnose why existing tests missed it. Name the responsible standardized test or scenario and its missing inputs, lifecycle, fixture or assertion; record the coverage gap before product repair.
++ - Strengthen the existing standardized test and shared fixtures or assertions using the project's Harness scenario, state, viewport, registered-test and evidence format. Do not add a one-off bug-specific regression test.
++ - If no existing test covers the behavior, explain the missing coverage category and extend reusable standardized coverage before product repair.
++ - Run the strengthened test against the broken implementation and record the failing command, assertion and observed result before repair. A fixture or environment error is not defect proof; never manufacture a failure.
++ - Before changing product code, commit the failing test separately. Run harness loop record <loop> --phase red --test <path> --command <command> --assertion <actual failure> on that commit. Then make a separate fix commit and run loop record --phase green: the tests, fixtures, command and environment must be unchanged. Preserve both commits when landing; do not squash away the failing-test commit. Focused regression results do not replace full verification.
++ - Repair the product while keeping the strengthened test unchanged. Repeat repair and the same unchanged test until it passes; retain failing and passing evidence at their tested revisions, then run normal verification.
++ - When correcting function names or APIs, parameter names describe their domain role; rename source declarations and update callers and contracts, rather than inventing display labels. Diagnose why the original name or API was accepted, then repair the earliest responsible generator, skill or review checkpoint within the authorized project scope. Verify the revised guidance is emitted for generated projects.
++ - For helper catalogs, prove one selected callable per detail page: distinct links for functions sharing a source module, only that callable’s parameters, return and throws, and selection retained across tabs and revisions. Keep module ownership/history explicit; a missing callable must not silently show a sibling.
++ - During read-only planning, report the coverage diagnosis and propose the standardized test change; do not edit tests or product source. Write only within an approved implementation request.
++ - Use `harness loop create <name> --from bug-fix --goal <text>` for bug repairs: reproduce with a failing test before implementation, then repeat repair and the same unchanged test until it passes.
++ - Use `--from regression-prevention` for regressions requiring durable prevention: identify the root cause, propose the repair and guard, implement both, and include the guard in normal project verification.
++ - Prove the guard rejects reintroducing the original failure in an isolated fixture or temporary workspace; restore the repair and prove the guard passes.
++ - Record failing and passing commands, assertions, and results as step evidence. Keep green/guard/verification steps pending while proof fails; the agent retries repairs and checks. Harness does not launch an AI repair runner or automatically complete steps.
++ - For affected UI paths, exercise the browser flow and capture fresh screenshots, then inspect the images before recording proof. Report blockers without claiming completion.
++ - Browser normal flows, including screenshot/video runs, must have no unexpected console.error or pageerror events. Use the shared browserTest fixture; watch extra contexts before navigation. Keep logs for expected errors and declare their exact messages and reasons in that test. For unexpected errors, prove a failing log assertion before repair, then rerun the same unchanged regression until the error disappears; preserve diagnostics and keep verification pending while errors remain.
++ - Shared browser fixtures must preserve lazy setup. When their dependencies change, prove API-only tests run with an unavailable browser executable alongside actual browser cases.
++
++ ## Code Rules
++
++ - Files stay at or below 220 lines.
++ - Functions stay at or below 55 lines.
++ - Classes stay at or below 120 lines.
++ - Methods stay at or below 35 lines.
++ - Nesting stays at or below 4 levels.
++ - Functions and methods take at most 4 parameters.
++ - Cyclomatic complexity stays at or below 10.
++ - Each file defines at most 1 class.
++ - Generated scaffold file names should keep the casing and suffixes prescribed by Harness.
++ - Function exports should use camelCase and generated function files should export the expected name.
++ - Classes should not use catch-all Manager names.
++ - Command modules delegate to workflows instead of importing templates or file-generation helpers.
++ - Core, template, workflow, and command imports move in one direction.
++ - Harness audit applies ecosystem adapters for app and library code surfaces.
++ - Unsupported file types must appear in audit coverage instead of being skipped silently.
++
++ Hard limits: files 220, functions 55, classes 120, methods 35, nesting 4.
++
+
+ ❯ test/project-template.test.ts:113:21
+    111|    expect(guidance).toContain('A missing image or failed verdict block…
+    112|    expect(guidance).toContain('state labels confined to scenario state…
+    113|    expect(guidance).toContain('required parent layout');
+       |                     ^
+    114|    expect(guidance).toContain('isolate app themes');
+    115|    expect(guidance).toContain('synthetic media inputs');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 16 passed (17)
+   Start at  00:50:36
+   Duration  1.80s (transform 185ms, setup 9ms, collect 575ms, tests 856ms, environment 0ms, prepare 56ms)
+
