@@ -1,0 +1,40 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-RMMflg
+
+ ✓ test/services/unit-index.test.ts (12 tests | 11 skipped) 701ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  696ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 11 skipped (12)
+   Start at  18:12:33
+   Duration  5.16s (transform 179ms, setup 10ms, collect 531ms, tests 701ms, environment 0ms, prepare 57ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-RMMflg
+
+ ✓ test/utils/unit-metadata.test.ts (28 tests) 85ms
+
+ Test Files  1 passed (1)
+      Tests  28 passed (28)
+   Start at  18:12:39
+   Duration  1.17s (transform 227ms, setup 11ms, collect 772ms, tests 85ms, environment 0ms, prepare 38ms)
+
+
+Running 3 tests using 1 worker
+
+  ✓  1 test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at desktop width (2.0s)
+  ✓  2 test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at tablet width (2.0s)
+  ✓  3 test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at mobile width (2.0s)
+
+  3 passed (10.5s)
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-RMMflg/packages/reports
+
+ ✓ test/utils/entity-catalog.test.ts (9 tests) 114ms
+ ✓ test/components/explorer-catalog-screen.test.ts (10 tests) 25ms
+
+ Test Files  2 passed (2)
+      Tests  19 passed (19)
+   Start at  18:12:53
+   Duration  2.76s (transform 1.23s, setup 0ms, collect 1.91s, tests 139ms, environment 0ms, prepare 136ms)
+
