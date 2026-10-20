@@ -45,9 +45,8 @@ function examplesOf(item: Item, type: string): Pick<ContractField, 'source' | 'e
 }
 
 /**
- * The name of a field in words, without the owner a name may say it of. What a component draws
- * is derived under the name of the component or of its file, which says nothing: it reads
- * rendered markup.
+ * Name a field in words, keeping its owner when sibling names would collide. Component outputs
+ * derived under the component or file name read rendered markup.
  */
 function nameOf(item: Item, unit: HarnessUnit): string {
 	const name = item.name.slice(item.name.lastIndexOf('.') + 1);
@@ -55,7 +54,16 @@ function nameOf(item: Item, unit: HarnessUnit): string {
 	const own = [unit.title, ...unit.owns.symbols, ...files];
 	const itself = item.type === 'markup' && own.includes(name);
 	const words = itself ? 'rendered markup' : humanize(name);
-	return words ? words[0].toUpperCase() + words.slice(1) : 'Unnamed';
+	const label = words ? words[0].toUpperCase() + words.slice(1) : 'Unnamed';
+	const siblings = [unit.contract.inputs, unit.contract.outputs, unit.contract.errors].find(
+		(fields) => fields.includes(item)
+	);
+	const ambiguous = siblings?.some(
+		(field) => field.name !== item.name && humanize(field.name.split('.').at(-1)!) === words
+	);
+	const owner = humanize(item.name.slice(0, item.name.lastIndexOf('.')));
+	if (!ambiguous || !item.name.includes('.') || !owner) return label;
+	return `${owner[0].toUpperCase()}${owner.slice(1)} · ${label}`;
 }
 
 function fieldOf(item: Item, unit: HarnessUnit): ContractField {

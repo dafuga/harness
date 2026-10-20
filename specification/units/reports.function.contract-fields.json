@@ -3,7 +3,7 @@
 	"id": "reports.function.contract-fields",
 	"kind": "function",
 	"title": "Prepare typed contract fields",
-	"responsibility": "Prepares public types, readable field groups and honest example labels for one opened entity.",
+	"responsibility": "Prepares typed contract fields and example labels, preserving function owners when field names repeat.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -67,7 +67,7 @@
 			{
 				"name": "contractFields",
 				"type": "ContractGroup[]",
-				"description": "Input, output and error groups with descriptions and declared examples. Safe simple types may get labelled placeholders; opaque types keep explicit gaps."
+				"description": "Input, output and error groups with distinct owner-qualified names where needed, descriptions and declared examples. Safe simple types may get labelled placeholders; opaque types keep explicit gaps."
 			},
 			{
 				"name": "contractFacts",
