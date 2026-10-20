@@ -272,6 +272,11 @@
 		{
 			"path": "packages/reports/test/entity-preview-catalog.spec.ts",
 			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
+		},
+		{
+			"path": "packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts",
+			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-component-catalog.spec.ts",
+			"timeoutMs": 300000
 		}
 	],
 	"tools": [

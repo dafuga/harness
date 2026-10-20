@@ -34,6 +34,8 @@ for (const viewport of scenario.viewports) {
 					page.getByRole('heading', { name: 'Active model', exact: true })
 				).toBeVisible();
 				await expect(page.getByText('Pending', { exact: true })).toBeVisible();
+				await expect(page.getByText('GPT 6.1', { exact: true })).toBeVisible();
+				await expect(page.getByText('Claude Opus 5.5', { exact: true })).toBeVisible();
 				await captureShell(page, home, { state: state.id, viewport: viewport.id });
 				await page.getByRole('button', { name: 'Cancel pending switch', exact: true }).click();
 				await expect(
