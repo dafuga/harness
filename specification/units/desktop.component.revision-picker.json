@@ -30,7 +30,17 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.component.choice-dialog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.component.icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.revision-time",
 			"via": "import",
 			"origin": "derived"
 		},

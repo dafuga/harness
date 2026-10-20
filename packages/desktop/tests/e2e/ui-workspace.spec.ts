@@ -1,4 +1,3 @@
-import { compactRevision } from '../../../reports/tests/e2e/support/shellChecks';
 import { fakeProject } from './ui-workspace-fixture';
 import { expect, test } from '../../../../test/support/browserTest';
 
@@ -17,7 +16,10 @@ test('designless Plan preserves truthful status and branch/commit paths', async 
 	await fakeProject(page);
 	await page.goto('/');
 	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
-	await compactRevision(page.getByRole('banner'));
+	for (const name of ['Choose branch', 'Choose commit']) {
+		const icon = page.getByRole('button', { name, exact: true });
+		expect((await icon.boundingBox())!.height).toBeLessThanOrEqual(36);
+	}
 	await expect(
 		page.getByRole('navigation', { name: 'Catalog categories' }).getByRole('link')
 	).toHaveCount(7);
@@ -47,9 +49,13 @@ test('designless Plan preserves truthful status and branch/commit paths', async 
 			page.evaluate(() => JSON.stringify((window as unknown as { __calls: unknown[] }).__calls))
 		)
 		.toContain('Create the first Activity design');
+	await page.getByRole('button', { name: 'Choose commit', exact: true }).click();
 	await page.getByLabel('Commit', { exact: true }).selectOption('b'.repeat(40));
+	await page.keyboard.press('Escape');
 	await expect(page).toHaveURL(/branch\/feat%2Factivity\/commit\/b{40}\/pages/);
-	await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toHaveCount(0);
+	await page.getByRole('button', { name: 'Work with agent', exact: true }).click();
+	await expect(page.getByRole('button', { name: 'Change', exact: true })).toHaveCount(0);
+	await page.keyboard.press('Escape');
 	await expect(page.getByRole('link', { name: 'Open Activity' })).toHaveAttribute(
 		'href',
 		`/harness/branch/feat%2Factivity/commit/${'b'.repeat(40)}/pages/page%3Aactivity/designs`
@@ -90,9 +96,13 @@ test('Go to tip exits both historical and explicitly pinned tip revisions', asyn
 	await page.goto('/');
 	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
 	for (const commit of ['b'.repeat(40), 'a'.repeat(40)]) {
+		await page.getByRole('button', { name: 'Choose commit', exact: true }).click();
 		await page.getByLabel('Commit', { exact: true }).selectOption(commit);
+		await page.keyboard.press('Escape');
 		await expect(page).toHaveURL(new RegExp(`/commit/${commit}/pages$`));
-		await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toHaveCount(0);
+		await page.getByRole('button', { name: 'Work with agent', exact: true }).click();
+		await expect(page.getByRole('button', { name: 'Change', exact: true })).toHaveCount(0);
+		await page.keyboard.press('Escape');
 		if (process.env.TAKE_SCREENSHOT === 'true') {
 			await page.evaluate(() => document.fonts.ready);
 			await page.mouse.move(0, 0);
@@ -111,5 +121,41 @@ test('Go to tip exits both historical and explicitly pinned tip revisions', asyn
 				path: `test-results/go-to-tip-${process.env.SCREENSHOT_LABEL ?? 'local'}-returned-${commit[0]}.png`
 			});
 		}
+	}
+});
+
+test('workspace selectors start collapsed and environment stays directly selectable', async ({
+	page
+}) => {
+	await fakeProject(page, true);
+	await page.goto('/');
+	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
+	await page.evaluate(() => document.fonts.ready);
+	if (process.env.TAKE_SCREENSHOT === 'true')
+		await page.screenshot({
+			path: `/tmp/harness-env-evidence/environment-controls-${process.env.SCREENSHOT_LABEL ?? 'local'}.png`
+		});
+	await expect(page.getByLabel('Commit', { exact: true })).not.toBeVisible();
+	await expect(page.getByLabel('Branch', { exact: true })).not.toBeVisible();
+	await expect(page.getByLabel('Project', { exact: true })).not.toBeVisible();
+	await expect(page.getByLabel('Environment', { exact: true })).toBeVisible();
+	const environment = await page.getByLabel('Environment', { exact: true }).boundingBox();
+	for (const name of ['Choose branch', 'Choose commit', 'Deploy']) {
+		const icon = await page.getByRole('button', { name, exact: true }).boundingBox();
+		expect(environment!.x + environment!.width).toBeLessThan(icon!.x);
+	}
+	await page.getByLabel('Environment', { exact: true }).selectOption('prod');
+	await expect(
+		page.getByText('Changes reach preprod. Use Deploy to promote preprod to production.')
+	).toBeVisible();
+	for (const [button, selector] of [
+		['Choose commit', 'Commit'],
+		['Choose branch', 'Branch'],
+		['Choose workbench', 'Project']
+	]) {
+		await page.getByRole('button', { name: button, exact: true }).click();
+		await expect(page.getByLabel(selector, { exact: true })).toBeVisible();
+		await page.keyboard.press('Escape');
+		await expect(page.getByRole('button', { name: button, exact: true })).toBeFocused();
 	}
 });

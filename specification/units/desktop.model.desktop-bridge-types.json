@@ -53,6 +53,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.model.deployment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.desktop-evidence-types",
 			"via": "import",
 			"origin": "derived"

@@ -1,3 +1,4 @@
+import { deploymentEnvironments } from '../../models/Deployment.types';
 import { evidencePayload } from '../evidencePayload';
 import { categories } from '../../models/Desktop.types';
 import {
@@ -77,7 +78,7 @@ export function creationPayload(x: Record<string, unknown>) {
 
 /** General chat cannot choose a directory or silently act on a different revision. */
 function taskPayload(x: Record<string, unknown>) {
-	const allowed = [...creation, 'branch', 'commit', 'conversation'];
+	const allowed = [...creation, 'branch', 'commit', 'conversation', 'environment'];
 	if (Object.keys(x).some((key) => !allowed.includes(key))) throw new Error('Invalid task fields.');
 	const conversation = x.conversation ?? [];
 	if (!Array.isArray(conversation) || conversation.length > 20)
@@ -87,6 +88,9 @@ function taskPayload(x: Record<string, unknown>) {
 		projectId: creationProject(x.projectId),
 		category: enumField(x.category, categories),
 		mode: enumField(x.mode, ['ask', 'change']),
+		...(x.environment === undefined
+			? {}
+			: { environment: enumField(x.environment, deploymentEnvironments) }),
 		branch: textField(x.branch),
 		commit: textField(x.commit, 40, commitPattern),
 		provider: enumField(x.provider, ['codex', 'claude']),
@@ -120,7 +124,10 @@ export function runPayload(x: Record<string, unknown>) {
 		entityId: textField(x.entityId, 120, idPattern),
 		threadId: textField(x.threadId),
 		text: textField(x.text, 20000),
-		...countField(x.designOptions)
+		...countField(x.designOptions),
+		...(x.environment === undefined
+			? {}
+			: { environment: enumField(x.environment, deploymentEnvironments) })
 	};
 }
 
@@ -142,6 +149,7 @@ export function ipcPayload(channel: string, input: unknown): unknown {
 	const x = ipcFields(input);
 	if (channel === 'project:snapshot')
 		return { branch: nullableText(x.branch), commit: nullableText(x.commit, commitPattern) };
+	if (channel.startsWith('deployment:')) return deploymentPayload(channel, x);
 	if (channel === 'plan:create')
 		return {
 			category: enumField(x.category, categories),
@@ -177,4 +185,14 @@ function entityPayload(channel: string, x: Record<string, unknown>) {
 		};
 	if (channel === 'thread:messages') return { ...base, threadId: textField(x.threadId) };
 	return base;
+}
+
+function deploymentPayload(channel: string, x: Record<string, unknown>) {
+	if (channel === 'deployment:status' || channel === 'deployment:activities') return {};
+	if (channel === 'deployment:plan')
+		return {
+			environment: enumField(x.environment, deploymentEnvironments),
+			commit: textField(x.commit, 64, /^[a-f0-9]{40,64}$/)
+		};
+	return { planId: textField(x.planId, 36, /^[a-f0-9-]{36}$/) };
 }
