@@ -30,6 +30,21 @@ function everyKind(): HarnessRevision {
 	return detail;
 }
 
+/** Evidence runs require both observed figures, not merely a successful navigation. */
+function expectRuntimeObservations(state: string, category: string): void {
+	const directory = process.env.HARNESS_EVIDENCE_DIR;
+	if (!directory || process.env.TAKE_SCREENSHOT !== '1') return;
+	const saved = JSON.parse(readFileSync(join(directory, `${state}-benchmark.json`), 'utf8'));
+	for (const metric of ['browser-navigation-ms', 'browser-js-heap-bytes']) {
+		const observation = saved.measurements.find(
+			(item: { metric: string }) => item.metric === metric
+		);
+		expect(observation, `${category} records ${metric}`).toBeDefined();
+		expect(observation.unit).toBe(`reports.page.harness-branch-branch-at-${category}-entity`);
+		expect(observation.value).toBeGreaterThan(0);
+	}
+}
+
 for (const viewport of viewports)
 	test(`every entity kind shows selected source measurements at ${viewport.id} width`, async ({
 		page
@@ -58,6 +73,7 @@ for (const viewport of viewports)
 			const profile = page.getByRole('region', { name: 'Performance profile', exact: true });
 			await expect(profile).toBeVisible();
 			await checkpoint(page, `current-measurements-${category}-${viewport.id}`);
+			expectRuntimeObservations(`current-measurements-${category}-${viewport.id}`, category);
 			for (const metric of ['Source size', 'Complexity']) {
 				const row = profile
 					.locator('dl > div')

@@ -149,7 +149,7 @@ async function expectLegacySourceMeasures(
 			const measures = fresh.registry.units.find((unit) => unit.id === id)?.sourceMeasurements;
 			for (const metric of ['source-bytes', 'complexity'])
 				expect(
-					measures,
+					measures ?? [],
 					'older prepared revisions gain selected-commit source measurements'
 				).toContainEqual(
 					expect.objectContaining({ metric, value: expect.any(Number), testedRevision: commit })
