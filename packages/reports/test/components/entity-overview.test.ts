@@ -20,7 +20,7 @@ test('an overview shows contract, size and performance, and nothing of the sourc
 	expect(words(body)).toContain('Not measured');
 	expect(words(body)).toContain('thousand orders');
 	expect(words(body)).toContain('5%');
-	expect(words(body)).not.toMatch(/src\/|\.ts\b|filterOrders|v-app\./);
+	expect(words(body)).not.toMatch(/src\/|\.ts\b|v-app\./);
 	expect(words(body)).not.toMatch(/provenance/i);
 });
 

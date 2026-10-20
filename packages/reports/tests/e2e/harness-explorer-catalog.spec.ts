@@ -36,7 +36,7 @@ test('a catalog is searchable, and a click on a listed entity opens it in the sa
 	await titled(page).click();
 	await expectPath(page, at('main', commits.approved, `functions/${units.slugify}`));
 	await expect(commit(page)).toHaveValue(commits.approved);
-	await expect(page.getByRole('heading', { level: 1, name: 'Slugify' })).toBeVisible();
+	await expect(page.getByRole('heading', { level: 1, name: 'slugify' })).toBeVisible();
 	await page.goBack();
 	await expectPath(page, at('main', commits.approved, 'functions'));
 	await page.getByRole('link', { name: 'Models', exact: true }).click();

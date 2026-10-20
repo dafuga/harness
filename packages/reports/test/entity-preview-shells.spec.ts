@@ -10,7 +10,7 @@ import { commits, ids } from './entityUnits';
  */
 const label = process.env.SCREENSHOT_LABEL ?? 'run';
 const content = (page: Page) => page.locator('.ex-content');
-const frame = (page: Page) => content(page).getByText('Order frame', { exact: true });
+const frame = (page: Page) => content(page).getByText('OrderFrame', { exact: true });
 
 /** Fonts drawn and every image decoded before a picture is kept. */
 async function settled(page: Page, name: string): Promise<void> {

@@ -109,9 +109,7 @@ export async function reviewServiceCard(page: Page, viewport: string): Promise<v
 			await document.fonts.ready;
 		});
 		await capture(page, `service-card-${commit ? 'commit' : 'tip'}-${viewport}`);
-		const card = page
-			.getByRole('article')
-			.filter({ has: page.getByRole('link', { name: 'OrderStore', exact: true }) });
+		const card = page.getByRole('article', { name: 'OrderStore', exact: true });
 		await expect(page.getByRole('article')).toHaveCount(2);
 		await expect(card, 'service cards show only name and usage').toHaveText(
 			/^\s*OrderStore\s*Used In\s*OrderList\s*SearchBox\s*$/
