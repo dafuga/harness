@@ -71,6 +71,7 @@ function validateView(view: RecordValue, views: RecordValue[], errors: string[])
 function validNode(node: RecordValue): boolean {
 	return (
 		safe(node.title) &&
+		validVisual(node) &&
 		text(node.description) &&
 		Number.isFinite(node.x) &&
 		Number.isFinite(node.y) &&
@@ -142,4 +143,22 @@ function cyclic(nodes: RecordValue[]): boolean {
 		return false;
 	};
 	return nodes.some((node) => visit(node.id));
+}
+
+function validImage(value: unknown): boolean {
+	if (value === undefined) return true;
+	return (
+		record(value) &&
+		value.model === 'gpt-image-2' &&
+		typeof value.path === 'string' &&
+		/^static\/game\/checkpoints\/[a-f0-9]{64}\.png$/.test(value.path) &&
+		typeof value.prompt === 'string' &&
+		value.prompt.length <= 20000 &&
+		typeof value.createdAt === 'string' &&
+		Number.isFinite(Date.parse(value.createdAt))
+	);
+}
+
+function validVisual(node: RecordValue): boolean {
+	return (node.imagePrompt === undefined || text(node.imagePrompt)) && validImage(node.image);
 }

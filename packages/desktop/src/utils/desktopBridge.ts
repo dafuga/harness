@@ -1,3 +1,4 @@
+import { GameImageService } from '../services/GameImageService';
 import { GameProjectService } from '../services/GameProjectService';
 import { GameRenderService } from '../services/GameRenderService';
 import { ProjectImageCacheService } from '../services/ProjectImageCacheService';
@@ -52,11 +53,14 @@ async function create(context: BridgeContext, input: Parameters<DesktopBridge['c
 export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRunEvent'> {
 	const { session, providers, runs, choose } = context;
 	const operations = new ProjectOperationsService(session);
+	const images = new GameImageService(session);
 	const game = new GameProjectService(session),
 		render = new GameRenderService(session);
 	const recorded = new RecordedEvidenceService(session);
 	const bridge: Omit<DesktopBridge, 'onRunEvent'> = {
 		gameCreate: (input) => game.create(input),
+		gameImageGenerate: (input) => images.generate(input),
+		gameImageRead: (input) => images.read(input),
 		gameRead: (input) => game.read(input),
 		gameSave: (input) => game.save(input),
 		gameRender: (input) => render.start(input),

@@ -1,0 +1,89 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.game-checkpoint-image",
+	"kind": "component",
+	"title": "GameCheckpointImage",
+	"responsibility": "Owns the GameCheckpointImage Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/GameCheckpointImage.svelte"],
+		"symbols": ["GameCheckpointImage"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "GameCheckpointImage.checkpoint",
+				"type": "Checkpoint"
+			},
+			{
+				"name": "GameCheckpointImage.view",
+				"type": "GameView"
+			},
+			{
+				"name": "GameCheckpointImage.document",
+				"type": "GameDocument"
+			},
+			{
+				"name": "GameCheckpointImage.projectId",
+				"type": "string | null"
+			},
+			{
+				"name": "GameCheckpointImage.revision",
+				"type": "string"
+			},
+			{
+				"name": "GameCheckpointImage.commit",
+				"type": "string"
+			},
+			{
+				"name": "GameCheckpointImage.readonly",
+				"type": "boolean"
+			},
+			{
+				"name": "GameCheckpointImage.bridge",
+				"type": "DesktopBridge"
+			},
+			{
+				"name": "GameCheckpointImage.change",
+				"type": "(patch: Partial<Checkpoint>) => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "GameCheckpointImage",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "game.model.game-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/GameCheckpointImage.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/GameCheckpointImage.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

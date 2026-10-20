@@ -1,10 +1,19 @@
 import type {
 	GameDocument,
+	CheckpointImage,
 	RenderSessionRequest,
 	RenderSession
 } from '../../../game/src/models/Game.types';
 import type { ProjectSnapshot } from './Desktop.types';
 export interface GameDesktopBridge {
+	gameImageGenerate?(input: {
+		projectId: string;
+		document: GameDocument;
+		viewId: string;
+		checkpointId: string;
+		expectedRevision: string;
+	}): Promise<{ image: CheckpointImage; dataUrl: string }>;
+	gameImageRead?(input: { projectId: string; path: string; commit?: string }): Promise<string>;
 	gameCreate?(input: {
 		name: string;
 		kind: 'app' | 'game';

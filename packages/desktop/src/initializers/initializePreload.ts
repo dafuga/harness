@@ -28,6 +28,8 @@ const call =
 		transport.request<T>(method, { ...input });
 const bridge: DesktopBridge = {
 	gameCreate: call('gameCreate'),
+	gameImageGenerate: call('gameImageGenerate'),
+	gameImageRead: call('gameImageRead'),
 	gameRead: call('gameRead'),
 	gameSave: call('gameSave'),
 	gameRender: call('gameRender'),

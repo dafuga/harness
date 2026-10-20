@@ -34,6 +34,8 @@ import type {
 /** The only channels the main process answers. Anything else is refused before any handler. */
 export const channels = {
 	gameCreate: 'game:create',
+	gameImageGenerate: 'game:image-generate',
+	gameImageRead: 'game:image-read',
 	gameRead: 'game:read',
 	gameSave: 'game:save',
 	gameRender: 'game:render',

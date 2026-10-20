@@ -1,0 +1,21 @@
+import { expect, test } from 'vitest';
+import { writeFile, unlink, symlink } from 'node:fs/promises';
+import { join } from 'node:path';
+import { fixture, git } from '../project-fixture';
+import { projectGameCredential } from '../../src/utils/projectGameCredential';
+test('game credentials require the current project ignored regular file', async () => {
+	const { root } = await fixture();
+	const name = 'HARNESS_GAME_OPENAI_API_KEY';
+	await expect(projectGameCredential(root, name)).rejects.toThrow(name);
+	await writeFile(join(root, '.env.local'), name + '=synthetic-project-key\n');
+	await expect(projectGameCredential(root, name)).rejects.toThrow(name);
+	await writeFile(join(root, '.gitignore'), '.env.local\n');
+	expect(await projectGameCredential(root, name)).toBe('synthetic-project-key');
+	git(root, 'add', '-f', '.env.local');
+	await expect(projectGameCredential(root, name)).rejects.toThrow(name);
+	git(root, 'rm', '--cached', '.env.local');
+	await unlink(join(root, '.env.local'));
+	await writeFile(join(root, 'outside.env'), name + '=synthetic-outside-key\n');
+	await symlink(join(root, 'outside.env'), join(root, '.env.local'));
+	await expect(projectGameCredential(root, name)).rejects.toThrow(name);
+});

@@ -5,7 +5,7 @@
 	import { createRun, exampleDocument, validateDocument, enterView } from '../../../game/src/index';
 	import type { Checkpoint, GameDocument, GameRun, GameView } from '../../../game/src/index';
 	import type { DesktopBridge } from '../models/DesktopBridge.types';
-	import GameCheckpointEditor from './GameCheckpointEditor.svelte';
+	import GameCheckpointPane from './GameCheckpointPane.svelte';
 	import GameGraph from './GameGraph.svelte';
 	import GameMechanics from './GameMechanics.svelte';
 	import GamePreview from './GamePreview.svelte';
@@ -47,7 +47,6 @@
 		const id = view?.id;
 		if (id && run.viewId !== id) untrack(() => (run = enterView(run, id)));
 	});
-
 	async function load({ projectId, commit, bridge }: Source) {
 		const id = ++request;
 		error = '';
@@ -121,7 +120,7 @@
 
 <section class="game" data-harness-component="game-workspace">
 	<a class="back" href={resolve('/harness')}><span aria-hidden="true">←</span> Back to project</a>
-	<header class="row">
+	<header class="row" style="flex-wrap:wrap">
 		<h1>Game Views</h1>
 		{#if demo}<span class="chip gold">Demo</span>{/if}
 		{#if commit}<span class="chip">History · {commit.slice(0, 8)}</span>{/if}
@@ -152,7 +151,7 @@
 		{#if problems.length}
 			<p class="error" role="alert">Fix before saving or previewing: {problems.join(' ')}</p>
 		{/if}
-		<div class="row" role="group" aria-label="Game sections">
+		<div class="row" style="flex-wrap:wrap" role="group" aria-label="Game sections">
 			{#each tabs as name (name)}
 				<button class:gold={tab === name} aria-pressed={tab === name} onclick={() => (tab = name)}>
 					{name}
@@ -170,12 +169,15 @@
 					readonly={!editable}
 				/>
 				{#if checkpoint}
-					<GameCheckpointEditor {checkpoint} change={editCheckpoint} readonly={!editable} />
+					<GameCheckpointPane
+						context={{ checkpoint, view, document: doc, projectId, revision, commit, bridge }}
+						change={editCheckpoint}
+						readonly={!editable}
+					/>
 				{:else}
 					<p class="muted">Select a checkpoint to inspect it.</p>
 				{/if}
 			</div>
-
 			<GameTrace {run} {view} />
 		{:else if tab === 'Mechanics'}
 			<GameMechanics mechanics={doc.mechanics} change={editMechanics} readonly={!editable} />
@@ -206,9 +208,6 @@
 	h1 {
 		flex: 1;
 		margin: 0;
-	}
-	.row {
-		flex-wrap: wrap;
 	}
 	.split {
 		display: grid;

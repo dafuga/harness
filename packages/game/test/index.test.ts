@@ -9,3 +9,16 @@ test('cyclic prerequisites cannot be saved as executable graphs', () => {
 	document.views[0].checkpoints[0].requires = ['door'];
 	expect(validateDocument(document)).toContain('Cyclic checkpoint prerequisites');
 });
+
+test('checkpoint image metadata accepts local immutable assets and rejects unsafe paths', () => {
+	const doc = exampleDocument();
+	doc.views[0].checkpoints[0].image = {
+		path: 'static/game/checkpoints/' + 'a'.repeat(64) + '.png',
+		model: 'gpt-image-2',
+		prompt: 'A key',
+		createdAt: '2026-10-20T00:00:00Z'
+	};
+	expect(validateDocument(doc)).toEqual([]);
+	doc.views[0].checkpoints[0].image!.path = '../.env.local';
+	expect(validateDocument(doc)).toContain('Invalid checkpoint');
+});

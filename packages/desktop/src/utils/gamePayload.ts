@@ -16,6 +16,22 @@ export function gamePayload(channel: string, input: unknown): unknown {
 			projectId,
 			...(x.commit === undefined ? {} : { commit: textField(x.commit, 40, commitPattern) })
 		};
+	if (channel === 'game:image-read')
+		return {
+			projectId,
+			path: textField(x.path, 100, /^static\/game\/checkpoints\/[a-f0-9]{64}\.png$/),
+			...(x.commit === undefined ? {} : { commit: textField(x.commit, 40, commitPattern) })
+		};
+	if (channel === 'game:image-generate') {
+		assertDocument(x.document);
+		return {
+			projectId,
+			document: x.document,
+			viewId: textField(x.viewId, 200),
+			checkpointId: textField(x.checkpointId, 200),
+			expectedRevision: textField(x.expectedRevision, 64, /^[a-f0-9]{64}$/)
+		};
+	}
 	if (channel === 'game:save') {
 		assertDocument(x.document);
 		return {

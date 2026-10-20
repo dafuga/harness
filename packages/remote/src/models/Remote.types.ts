@@ -1,9 +1,7 @@
 import type { RemoteHostStatus } from './RemoteControl.types';
 
-/** Wire v1. A host answers no other protocol number. */
 export const REMOTE_PROTOCOL = 1;
 
-/** Every bound of the protocol. A host also returns them from `session.attach`. */
 export const remoteLimits = {
 	frameBytes: 262144,
 	chunkBytes: 131072,
@@ -47,8 +45,10 @@ export const agentMethods = ['createPlan', 'approve', 'startRun', 'cancelRun'] a
 export const localMethods = [
 	'gameCreate',
 	'gameRead',
+	'gameImageRead',
 	'gameSave',
 	'gameRender',
+	'gameImageGenerate',
 	'openProject',
 	'selectProject',
 	'hostedStatus',
@@ -96,6 +96,7 @@ export const mutationMethods: readonly RemoteMethod[] = [
 	'gameCreate',
 	'gameSave',
 	'gameRender',
+	'gameImageGenerate',
 	'openProject',
 	'selectProject',
 	'connectHosted',

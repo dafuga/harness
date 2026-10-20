@@ -34,19 +34,22 @@ function gamePage(): string {
  import {createRun,stepGame} from '$lib/game/utils/gameStep';
  import {draw2d} from '$lib/game/utils/draw2d';
  import type {GameView,GameRun} from '$lib/game/models/Game.types';
- let canvas:HTMLCanvasElement; let run=$state(createRun());
+ let canvas:HTMLCanvasElement; let run=$state(createRun()); let ready=$state(false);
  const view=document.views[0] as GameView;
  let render:(run:GameRun,view:GameView)=>void;
  function move(x:number,y:number,choice?:string){run=stepGame(run,{x,y,choice},view);render?.(run,view);}
  onMount(()=>{let dispose=()=>{};let active=true;
- if(view.dimension==='3d') void import('$lib/game/utils/create3d').then(({create3d})=>{if(!active)return;const scene=create3d(canvas);render=(r,v)=>scene.render(r,v);dispose=()=>scene.dispose();render(run,view);});
- else {render=(r,v)=>draw2d(canvas,r,v);render(run,view);}
+ if(view.dimension==='3d') void import('$lib/game/utils/create3d').then(({create3d})=>{if(!active)return;const scene=create3d(canvas);render=(r,v)=>scene.render(r,v);dispose=()=>scene.dispose();render(run,view);ready=true;});
+ else {render=(r,v)=>draw2d(canvas,r,v);render(run,view);ready=true;}
  return ()=>{active=false;dispose();};});
  </script>
  <svelte:head><title>{view.title}</title></svelte:head>
- <h1>{view.title}</h1><canvas bind:this={canvas} width="1280" height="704" style="width:100%;max-width:960px" aria-label="Game scene"></canvas>
+ <h1>{view.title}</h1><canvas data-ready={ready} bind:this={canvas} width="1280" height="704" style="width:100%;max-width:960px" aria-label="Game scene"></canvas>
  <p>Key: {run.state.hasKey ? 'collected':'missing'} · Door: {run.state.doorOpen ? 'open':'locked'} · Outcome: {run.state.outcome || 'exploring'}</p>
- <button onclick={()=>move(-1,0)}>Move left</button><button onclick={()=>move(1,0)}>Move right</button>
+ {#each view.checkpoints.filter(node=>run.completed.includes(node.id) && node.image) as node (node.id)}
+ <figure><img src={'/'+node.image!.path.replace('static/','')} alt={node.title+' gameplay reference'} style="width:100%;max-width:960px" /><figcaption>{node.title}</figcaption></figure>
+ {/each}
+ <button disabled={!ready} onclick={()=>move(-1,0)}>Move left</button><button disabled={!ready} onclick={()=>move(1,0)}>Move right</button>
  <button disabled={!run.state.doorOpen} onclick={()=>move(0,0,'garden')}>Garden</button><button disabled={!run.state.doorOpen} onclick={()=>move(0,0,'vault')}>Vault</button>
  `;
 }

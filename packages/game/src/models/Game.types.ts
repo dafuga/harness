@@ -11,7 +11,15 @@ export interface GameAction {
 	target: string;
 	value: Value;
 }
+export interface CheckpointImage {
+	path: string;
+	model: 'gpt-image-2';
+	prompt: string;
+	createdAt: string;
+}
 export interface Checkpoint {
+	imagePrompt?: string;
+	image?: CheckpointImage;
 	id: string;
 	title: string;
 	description: string;

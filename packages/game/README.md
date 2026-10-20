@@ -23,3 +23,13 @@ Live AI geometry preservation, visual consistency and responsiveness require a r
 ## Verification
 
 `bun run check` runs format, types, lint, tests, build and Harness audit. Set `HARNESS_CLI_PATH=../../src/index.ts` when checking from this repository. Root verification includes this package and temporary-workspace CLI coverage for both dimensions.
+
+## Checkpoint images
+
+Each checkpoint can have visual direction and a generated gameplay reference. The editor's explicit Generate action makes one GPT Image 2 request at medium quality, 1536×1024 PNG, using view style, checkpoint guidance, prerequisites, conditions and consequences. This is a paid still-image request, separate from live video; there are no automatic retries or background generation.
+
+Configure `HARNESS_GAME_OPENAI_API_KEY` in the game project's ignored, untracked `.env.local`, with a dedicated OpenAI project/environment key. The desktop backend sends it only in an Authorization header. It never uses ambient keys. Existing old games without images remain valid.
+
+PNG assets are immutable SHA-256 files under `static/game/checkpoints/`. Save the graph to persist image metadata; commit both game.json and its assets to preserve them in Git history. Removing or regenerating a reference does not delete old assets. Save conflicts retain edits and do not retry generation. Generated standalone games show references when their checkpoints complete. Images describe the intended look and do not control game mechanics.
+
+API reference: https://developers.openai.com/api/reference/resources/images/methods/generate
