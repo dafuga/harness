@@ -2,7 +2,7 @@
 	"name": "mobile-deployment-layout",
 	"goal": "Keep the mobile workspace header compact and deployment modals contained and usable across narrow and short viewports, with unchanged red-green coverage.",
 	"createdAt": "2026-10-20T20:45:30.253Z",
-	"updatedAt": "2026-10-20T21:24:07.765Z",
+	"updatedAt": "2026-10-20T21:29:52.324Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -46,12 +46,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T21:29:50.845Z",
+			"evidence": "Stable-environment recorded green passes at ae4ade16 against unchanged a20e5833 tests, fixture corpus and command. Same UI source tree passes32compiled renderer checks."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T21:29:52.324Z",
+			"evidence": "Isolated /tmp/harness-mobile-guard-30lc45aq restored original c6d8a870 presentation files: same3tests produce2actual layout failures. Restoring repaired files yields3passed. Logs retained; no test assertions changed."
 		},
 		{
 			"id": "verify",
