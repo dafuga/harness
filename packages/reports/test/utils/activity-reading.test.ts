@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { runInNewContext } from 'node:vm';
 import { unitDocumentation } from '../../../../src/utils/unit-documentation/unitDocumentation';
 import { expect, test } from 'vitest';
 import { activityReading } from '../../src/components/activity-agents/activityReading';
@@ -38,30 +39,11 @@ test('committed activity examples describe the function’s actual behavior', ()
 	const text = readFileSync(new URL('../../src/utils/activityReading.md', import.meta.url), 'utf8');
 	const doc = unitDocumentation(text, 'reports.function.activity-reading');
 	expect(doc.gap).toBeUndefined();
-	expect(doc.examples).toHaveLength(4);
+	expect(doc.examples).toHaveLength(3);
+	expect(doc.setup).toBeUndefined();
 	for (const example of doc.examples) {
-		const input = example.input as {
-			sampleAgeSeconds: number;
-			agentAllowanceSeconds: number;
-			reportedWorking: number;
-			agentState: string;
-		};
-		const { agents, sampledAt } = activityPayload(at, [
-			{
-				label: 'Example agent',
-				state: input.agentState,
-				expiresAt: new Date(at + input.agentAllowanceSeconds * 1000).toISOString()
-			}
-		]).live;
-		agents.working = input.reportedWorking;
-		const result = activityReading(agents as never, sampledAt, at + input.sampleAgeSeconds * 1000);
-		expect(
-			{
-				current: result.current,
-				working: result.working,
-				labels: agents.roster.map((agent) => result.label(agent as never))
-			},
-			example.name
-		).toEqual(example.output);
+		expect(example.call).toContain('activityReading(');
+		expect(example.call).not.toMatch(/const |agents|sampledAt/);
+		expect(runInNewContext(example.call!, { activityReading })).toEqual(example.output);
 	}
 });

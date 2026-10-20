@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { ExplorerEntity } from '../../models/Explorer.types';
+	import { explorerEntity } from '../../utils/explorerEntities';
 	import { isShared } from '../../utils/entityCatalog';
 	import type { ExplorerScreenProps } from '../../models/ExplorerScreen.types';
 	import { entityLens, shortCommit, type EntityNav } from '../../utils/entityLens';
@@ -19,11 +20,24 @@
 		/** The screen of the entity the address names, once the revision is found to hold it. */
 		children: Snippet<[ExplorerEntity, EntityNav]>;
 	} = $props();
-	let owner = $derived(host.entities.find((item) => item.id === host.route.entity));
-	let entity = $derived(helperEntity(owner, host.route.helper));
+	let listed = $derived(host.entities.find((item) => item.id === host.route.entity));
+	let moduleEntity = $derived.by(() => {
+		if (listed) return listed;
+		const unit = host.head.registry.units.find(
+			(item) => item.id === host.route.entity && item.status === 'active'
+		);
+		return unit ? explorerEntity(host.head, unit, true) ?? undefined : undefined;
+	});
+	let entity = $derived(helperEntity(moduleEntity, host.route.helper));
 	let choosing = $derived(
-		owner?.category === 'functions' && !host.route.helper && (owner.unit.helpers?.length ?? 0) > 1
+		moduleEntity?.category === 'functions' && !host.route.helper && (moduleEntity.unit.helpers?.length ?? 0) > 1
 	);
+	let owner = $derived.by(() => {
+		if (!entity || listed) return undefined;
+		const related = host.lens.relations(entity.id);
+		if (related.usedBy.length === 1) return related.usedBy[0];
+		return related.usedBy.length === 0 && related.pages.length === 1 ? related.pages[0] : undefined;
+	});
 </script>
 
 <ExplorerFrame {host}>
@@ -42,17 +56,17 @@
 				/>
 			{/if}
 		{/snippet}
-		{#if choosing && owner}
+		{#if choosing && moduleEntity}
 			<section class="ex-card">
-				<h1>{owner.name}</h1>
+				<h1>{moduleEntity.name}</h1>
 				<p>Choose a helper to open its own detail page.</p>
 				<ul class="ex-links">
-					{#each owner.unit.helpers ?? [] as helper}
+					{#each moduleEntity.unit.helpers ?? [] as helper}
 						<li>
 							<EntityLink
 								{nav}
 								to={entityLens(host.route, {
-									entity: owner.id,
+									entity: moduleEntity.id,
 									helper: helper.name,
 									tab: 'contract'
 								})}><code>{helper.name}()</code></EntityLink
@@ -64,6 +78,7 @@
 		{:else if entity}
 			<EntityHeader
 				{entity}
+				{owner}
 				{nav}
 				shared={isShared(host.lens.relations(entity.id), entity.unit)}
 				preview={screens}

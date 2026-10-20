@@ -13,6 +13,7 @@ const head = revision(commits.middle, [record(commits.middle)]);
 const partial = revision(commits.middle, [record(commits.middle, false)]);
 const rows = (category: Parameters<typeof entityCatalog>[1], detail = head) =>
 	entityCatalog(explorerEntities(detail), category, (id) => explorerRelations(detail, id));
+const consumers = explorerEntities(head).filter((entity) => entity.category !== 'functions');
 const filter = { search: '', changedOnly: false, order: 'name' as const };
 
 test.each([
@@ -60,7 +61,9 @@ test('a collection lists the entities of its category by the name a person reads
 			contract: { ...original.unit.contract, inputs: [{ name: `${name}.value`, type: 'string' }] }
 		}
 	}));
-	const sorted = entityCatalog(functions, 'functions', () => explorerRelations(head, ids.filter));
+	const sorted = entityCatalog([...functions, ...consumers], 'functions', () =>
+		explorerRelations(head, ids.filter)
+	);
 	expect(
 		sorted.map((row) => row.id),
 		'default order follows the displayed function name'
@@ -170,7 +173,7 @@ test('shared helper rows require source exports, list every callable and keep ow
 		{ ...original, id: 'types', unit: { ...original.unit, helpers: [] } },
 		{ ...original, id: 'legacy', unit: { ...original.unit, helpers: undefined } }
 	];
-	const shown = entityCatalog(variants, 'functions', () => ({
+	const shown = entityCatalog([...variants, ...consumers], 'functions', () => ({
 		pages: [],
 		usedBy: [],
 		components: [],

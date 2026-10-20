@@ -3,7 +3,7 @@
 	"id": "reports.function.entity-catalog",
 	"kind": "function",
 	"title": "Entity collection rows",
-	"responsibility": "Lists only helpers with two distinct consumers, retaining alphabetical calls, owner search and other entity catalogs.",
+	"responsibility": "Lists helpers with at least two distinct visible component, service or model consumers, retaining per-export links and other entity catalogs.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {

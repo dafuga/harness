@@ -3,7 +3,7 @@
 	"id": "reports.component.entity-examples",
 	"kind": "component",
 	"title": "Usage examples",
-	"responsibility": "Shows committed usage examples and their expected outcomes, with the complete document available to read.",
+	"responsibility": "Shows documented examples as short titles and code with expected output comments.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -17,18 +17,13 @@
 				"name": "EntityExamples.documentation",
 				"type": "UnitDocumentation | undefined",
 				"description": "Documentation read from this entity at the selected commit; absent or invalid content shows a gap."
-			},
-			{
-				"name": "EntityExamples.verification",
-				"type": "Snippet | undefined",
-				"description": "Optional recorded verification content, mounted only when the disclosure opens."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityExamples",
 				"type": "markup",
-				"description": "Named examples with input and expected output or error. Authored examples never imply test verification."
+				"description": "Only example titles and code snippets, or a stated gap when documentation is absent."
 			}
 		],
 		"errors": []
@@ -40,7 +35,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.entity-cases",
+			"unit": "reports.component.usage-examples-usage-examples",
 			"via": "import",
 			"origin": "derived"
 		}

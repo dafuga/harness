@@ -14,12 +14,12 @@ test('authored examples are expected outcomes, including errors and empty values
 		{ name: 'Normal <tag>', input: false, output: 0 },
 		{ name: 'Expected failure', input: null, error: '' }
 	]);
-	expect(body).toContain('Expected output');
-	expect(body).toContain('Expected error');
-	expect(body).toContain('Full example values');
+	expect(body).toContain('// throws');
+	expect(body).not.toContain('<table');
+	expect(body).not.toContain('<details');
 	expect(body).not.toContain('Observed output');
 	expect(body).not.toContain('<tag>');
-	expect(body).toContain('Committed document');
+	expect(body).not.toContain('Committed document');
 	expect(body).not.toContain('README.md');
 });
 
