@@ -7,7 +7,9 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/services/preview-worker-service/PreviewWorkerService.ts"],
+		"source": [
+			"packages/reports/src/lib/preview-node/preview-worker-service/PreviewWorkerService.ts"
+		],
 		"symbols": [
 			"PreviewWorkerService",
 			"PreviewWorkerService.constructor",
@@ -88,11 +90,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/services/preview-worker-service/PreviewWorkerService.ts",
+		"entry": "packages/reports/src/lib/preview-node/preview-worker-service/PreviewWorkerService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/services/preview-worker-service/PreviewWorkerService.ts"
+				"entry": "packages/reports/src/lib/preview-node/preview-worker-service/PreviewWorkerService.ts"
 			}
 		]
 	},

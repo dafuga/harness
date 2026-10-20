@@ -12,6 +12,9 @@ export interface PublicHelper extends Pick<ExportedSymbol, 'name' | 'inputs' | '
 export interface UnitMetadata {
 	documentation?: UnitDocumentation;
 	helpers?: PublicHelper[];
+	/** Runtime exports and their distinct owning code units at this exact revision. */
+	serviceExports?: Array<{ source: string; name: string }>;
+	serviceConsumers?: HelperConsumer[];
 	helperGap?: string;
 }
 

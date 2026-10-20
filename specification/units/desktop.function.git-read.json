@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/adapters/git-source-adapter/gitRead.ts",
+			"packages/desktop/src/services/project-session-service/git-source-adapter/gitRead.ts",
 			"packages/desktop/src/utils/gitRead.ts"
 		],
 		"symbols": ["gitFiles", "gitRead", "gitRevision", "gitText", "gitFiles"]

@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/claude-query-service/gatewayPrompt.ts", "src/utils/gatewayPrompt.ts"],
-		"symbols": ["gatewayPrompt", "gatewayPrompt"]
+		"source": [
+			"src/cli/program/codex-gateway-service/claude-query-service/gatewayPrompt.ts",
+			"src/services/claude-query-service/gatewayPrompt.ts",
+			"src/utils/gatewayPrompt.ts"
+		],
+		"symbols": ["gatewayPrompt", "gatewayPrompt", "gatewayPrompt"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,7 +7,10 @@ import {
 	type Attached
 } from '../services/evidence-attach-service/EvidenceAttachService';
 import { EvidenceRestoreService } from '../services/EvidenceRestoreService';
-import { HistoryStatusService, type CommitStatus } from '../services/HistoryStatusService';
+import {
+	HistoryStatusService,
+	type CommitStatus
+} from '../services/history-status-service/HistoryStatusService';
 
 export interface HistoryOptions {
 	root?: string;

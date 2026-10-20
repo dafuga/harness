@@ -1,5 +1,5 @@
 import type { ReportRepository } from '../repositories/report-repository/ReportRepository';
-import { SiteReportRepository } from '../repositories/SiteReportRepository';
+import { SiteReportRepository } from '../routes/api/health/SiteReportRepository';
 
 /** Everything this server serves or changes comes through here, limited to its own site. */
 export const repository: ReportRepository = new SiteReportRepository();

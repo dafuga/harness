@@ -8,18 +8,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/cli/program/create-project/validation.ts",
 			"src/core/fields/validation.ts",
 			"src/core/validation.ts",
-			"src/workflows/create-project/validation.ts",
 			"src/workflows/loop-state/validation.ts"
 		],
 		"symbols": [
-			"validateFieldName",
-			"validateCodeName",
-			"validateRouteName",
-			"validateExportName",
-			"validateName",
-			"validateFieldName",
 			"validateProjectName",
 			"validateCodeName",
 			"validateRouteName",
@@ -27,6 +21,12 @@
 			"validateName",
 			"validateFieldName",
 			"validateKebabName",
+			"validateFieldName",
+			"validateCodeName",
+			"validateRouteName",
+			"validateExportName",
+			"validateName",
+			"validateFieldName",
 			"validateKebabName"
 		]
 	},
@@ -123,11 +123,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/create-project/validation.ts",
+		"entry": "src/cli/program/create-project/validation.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/create-project/validation.ts"
+				"entry": "src/cli/program/create-project/validation.ts"
 			}
 		]
 	},

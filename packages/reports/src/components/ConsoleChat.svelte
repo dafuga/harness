@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount, untrack } from 'svelte';
 	import ProjectAgent from '../../../desktop/src/components/ProjectAgent.svelte';
-	import { createConsoleWorkspaceStore } from '../lib/stores/consoleWorkspace.svelte';
+	import { createConsoleWorkspaceStore } from '../lib/console-workspace/consoleWorkspace.svelte';
 	let {
 		base,
 		path,

@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { pickerPaths } from '../commands/codex-picker-command/pickerPaths';
+import { pickerPaths } from './program/codex-picker-command/pickerPaths';
 import { ProviderSwitchRepository } from '../repositories/ProviderSwitchRepository';
 import { ProviderCatalogAdapter } from '../adapters/ProviderCatalogAdapter';
 import { ProviderSwitchService } from '../services/ProviderSwitchService';

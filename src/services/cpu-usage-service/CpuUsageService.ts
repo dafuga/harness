@@ -1,4 +1,4 @@
-import { CpuProcessAdapter } from '../../adapters/cpu-process-adapter/CpuProcessAdapter';
+import { CpuProcessAdapter } from './cpu-process-adapter/CpuProcessAdapter';
 import { cpuMetrics } from './cpuMetrics';
 import { type CpuReading, type CpuSnapshot } from '../../utils/cpuMetrics';
 import { setTimeout } from 'node:timers/promises';

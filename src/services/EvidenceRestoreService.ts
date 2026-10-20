@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { mkdir, rename, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { VerificationStoreRepository } from '../repositories/VerificationStoreRepository';
-import { HistoryStatusService } from './HistoryStatusService';
+import { HistoryStatusService } from './history-status-service/HistoryStatusService';
 
 export interface Restored {
 	restored: string[];

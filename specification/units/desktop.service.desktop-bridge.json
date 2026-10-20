@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/services/DesktopBridgeService.ts"],
+		"source": ["packages/desktop/src/services/desktop-bridge-service/DesktopBridgeService.ts"],
 		"symbols": [
 			"DesktopBridgeService",
 			"DesktopBridgeService.constructor",
@@ -71,11 +71,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/DesktopBridgeService.ts",
+		"entry": "packages/desktop/src/services/desktop-bridge-service/DesktopBridgeService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/DesktopBridgeService.ts"
+				"entry": "packages/desktop/src/services/desktop-bridge-service/DesktopBridgeService.ts"
 			}
 		]
 	},

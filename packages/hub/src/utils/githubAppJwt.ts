@@ -4,4 +4,7 @@ export interface GithubAppJwtInput {
 	now: number;
 }
 
-export { githubAppKey, githubAppJwt } from '../services/installation-token-service/githubAppJwt';
+export {
+	githubAppKey,
+	githubAppJwt
+} from '../lib/server/auth/installation-token-service/githubAppJwt';

@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/services/ReportStorageSyncService.ts"],
+		"source": ["packages/reports/src/services/report-command-service/ReportStorageSyncService.ts"],
 		"symbols": [
 			"StorageSyncOptions",
 			"ReportStorageSyncService",
@@ -74,11 +74,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/services/ReportStorageSyncService.ts",
+		"entry": "packages/reports/src/services/report-command-service/ReportStorageSyncService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/services/ReportStorageSyncService.ts"
+				"entry": "packages/reports/src/services/report-command-service/ReportStorageSyncService.ts"
 			}
 		]
 	},

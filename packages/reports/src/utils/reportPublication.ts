@@ -13,4 +13,4 @@ export interface PublicationBundle {
 	files: PublicationFile[];
 }
 
-export { reportPublication } from '../services/report-publish-service/reportPublication';
+export { reportPublication } from '../services/report-command-service/report-publish-service/reportPublication';

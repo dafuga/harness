@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/unit-index-service/unitLineage.ts", "src/utils/unitLineage.ts"],
-		"symbols": ["unitLineage", "LineageSubject", "unitLineage"]
+		"source": [
+			"src/utils/unitLineage.ts",
+			"src/workflows/load-units/unit-index-service/unitLineage.ts"
+		],
+		"symbols": ["LineageSubject", "unitLineage", "unitLineage"]
 	},
 	"contract": {
 		"origin": "declared",

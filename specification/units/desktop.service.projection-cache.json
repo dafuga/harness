@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/services/projection-cache-service/ProjectionCacheService.ts"],
+		"source": [
+			"packages/desktop/src/lib/desktop-initialization/projection-cache-service/ProjectionCacheService.ts",
+			"packages/desktop/src/services/projection-cache-service/ProjectionCacheService.ts"
+		],
 		"symbols": [
 			"ProjectionCacheService",
 			"ProjectionCacheService.constructor",
@@ -17,7 +20,8 @@
 			"ProjectionCacheService.lookup",
 			"ProjectionCacheService.discard",
 			"ProjectionCacheService.purge",
-			"ProjectionCacheService.clear"
+			"ProjectionCacheService.clear",
+			"ProjectionCacheService"
 		]
 	},
 	"contract": {
@@ -132,11 +136,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/projection-cache-service/ProjectionCacheService.ts",
+		"entry": "packages/desktop/src/lib/desktop-initialization/projection-cache-service/ProjectionCacheService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/projection-cache-service/ProjectionCacheService.ts"
+				"entry": "packages/desktop/src/lib/desktop-initialization/projection-cache-service/ProjectionCacheService.ts"
 			}
 		]
 	},

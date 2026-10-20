@@ -1,5 +1,5 @@
 import type { HubRemoteRuntime } from '../../../utils/hubRemote';
-import { RelayManageAdapter } from '../../../adapters/RelayManageAdapter';
+import { RelayManageAdapter } from './RelayManageAdapter';
 import type { HubEnv } from '../../../config/hubEnvConfig';
 
 const LOCAL_HOSTS = ['127.0.0.1', 'localhost'];

@@ -7,12 +7,16 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/relay/src/services/socket-frame-service/SocketFrameService.ts"],
+		"source": [
+			"packages/relay/src/lib/host-runtime/socket-frame-service/SocketFrameService.ts",
+			"packages/relay/src/services/socket-frame-service/SocketFrameService.ts"
+		],
 		"symbols": [
 			"SocketFrameService",
 			"SocketFrameService.constructor",
 			"SocketFrameService.message",
-			"SocketFrameService.closed"
+			"SocketFrameService.closed",
+			"SocketFrameService"
 		]
 	},
 	"contract": {
@@ -94,11 +98,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/services/socket-frame-service/SocketFrameService.ts",
+		"entry": "packages/relay/src/lib/host-runtime/socket-frame-service/SocketFrameService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/services/socket-frame-service/SocketFrameService.ts"
+				"entry": "packages/relay/src/lib/host-runtime/socket-frame-service/SocketFrameService.ts"
 			}
 		]
 	},

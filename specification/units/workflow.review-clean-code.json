@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/reviewCleanCode.ts"],
-		"symbols": ["ReviewCleanCodeInput", "reviewCleanCode"]
+		"source": ["src/audit/reviewCleanCode.ts", "src/workflows/reviewCleanCode.ts"],
+		"symbols": [
+			"ReviewCleanCodeInput",
+			"reviewCleanCode",
+			"reviewCleanCode",
+			"ReviewCleanCodeInput"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -85,11 +90,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/reviewCleanCode.ts",
+		"entry": "src/audit/reviewCleanCode.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/reviewCleanCode.ts"
+				"entry": "src/audit/reviewCleanCode.ts"
 			}
 		]
 	},

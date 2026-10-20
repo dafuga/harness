@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/services/hub-projection-service/hubDesigns.ts",
+			"packages/hub/src/routes/api/[...path]/hub-projection-service/hubDesigns.ts",
 			"packages/hub/src/utils/hub-catalog/hubDesigns.ts",
 			"packages/hub/src/utils/hub-designs/design.ts",
 			"packages/hub/src/utils/hubDesigns.ts"

@@ -9,4 +9,4 @@ export interface PreviewHealth {
 export const path = '/__harness_worker__';
 
 export { closePreviewSessions, previewHealth } from '../lib/initialize-preview/previewHealth';
-export { readPreviewHealth } from '../services/preview-worker-service/previewHealth';
+export { readPreviewHealth } from '../lib/preview-node/preview-worker-service/previewHealth';

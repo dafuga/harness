@@ -11,4 +11,4 @@ export const EMAIL_PURGES = [
 	'DELETE FROM auth_email_sends WHERE last_sent_at + 172800000 <= ?'
 ];
 
-export { d1EmailStores } from '../adapters/d1-auth-store-adapter/d1EmailStores';
+export { d1EmailStores } from '../routes/api/[...path]/d1-auth-store-adapter/d1EmailStores';

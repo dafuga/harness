@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/installConsole.ts"],
+		"source": ["src/cli/program/installConsole.ts", "src/workflows/installConsole.ts"],
 		"symbols": [
 			"ConsoleInstallFlags",
 			"installConsole",
@@ -17,7 +17,16 @@
 			"renderConsoleUninstall",
 			"restoreConsoleFile",
 			"renderConsoleChange",
-			"renderConsoleInstall"
+			"renderConsoleInstall",
+			"installConsole",
+			"consoleObjects",
+			"uninstallConsole",
+			"renderConsoleUninstall",
+			"restoreConsoleFile",
+			"renderConsoleChange",
+			"renderConsoleInstall",
+			"ConsoleInstallFlags",
+			"ConsoleObjectEntry"
 		]
 	},
 	"contract": {
@@ -126,11 +135,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/installConsole.ts",
+		"entry": "src/cli/program/installConsole.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/installConsole.ts"
+				"entry": "src/cli/program/installConsole.ts"
 			}
 		]
 	},

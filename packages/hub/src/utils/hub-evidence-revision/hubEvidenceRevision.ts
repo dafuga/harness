@@ -2,7 +2,7 @@ import type { VerificationRecord } from '../../../../../src/core/verificationTyp
 import { revisionSummary } from '../../../../../src/utils/revisionSummary';
 import { revisionReasons } from '../../../../../src/utils/revisionReasons';
 import type { HarnessRevision } from '../../../../reports/src/models/Harness.types';
-import type { HubRecordStatusService } from '../../services/HubRecordStatusService';
+import type { HubRecordStatusService } from '../../services/hub-evidence-service/HubRecordStatusService';
 import type { HubSourceContext } from '../hubSource';
 import { hubPinnedSource } from '../hubPinnedSource';
 import { hubEvidenceRegistry } from './hubEvidenceRegistry';

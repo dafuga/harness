@@ -1,4 +1,4 @@
-import type { HubRecordStatusService } from '../services/HubRecordStatusService';
+import type { HubRecordStatusService } from '../services/hub-evidence-service/HubRecordStatusService';
 
 export async function hubEvidenceOrigin(history: HubRecordStatusService, id: string) {
 	const line = (await history.verifications()).find((item) => item.record === id);

@@ -8,10 +8,13 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/cli/program/console-install-service/consoleDataModules.ts",
 			"src/services/console-install-service/consoleDataModules.ts",
 			"src/utils/consoleDataModules.ts"
 		],
 		"symbols": [
+			"consoleDataModules",
+			"bundledSize",
 			"consoleDataModules",
 			"bundledSize",
 			"IndexFile",

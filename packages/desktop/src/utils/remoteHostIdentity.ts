@@ -7,4 +7,4 @@ export type RegisterRemoteHost = (
 export {
 	remoteHostIdentity,
 	registerRemoteHost
-} from '../services/remote-host-switch-service/remoteHostIdentity';
+} from '../services/remote-host-service/remote-host-switch-service/remoteHostIdentity';

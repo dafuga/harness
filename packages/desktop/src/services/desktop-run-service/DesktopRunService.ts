@@ -9,18 +9,18 @@ import { designCount } from '../../utils/designCount';
 import type { RunContext } from '../../models/RunContext.types';
 import type { ImageGenerator } from '../../models/AgentRunner.types';
 import { RunCancelled } from '../../models/AgentRunner.types';
-import type { ProjectSessionService } from '../ProjectSessionService';
+import type { ProjectSessionService } from '../project-session-service/ProjectSessionService';
 import type { ProviderDiscoveryService } from '../provider-discovery-service/ProviderDiscoveryService';
-import { PlanRunService } from '../PlanRunService';
-import { ChangeRunService } from '../change-run-service/ChangeRunService';
-import { plannedBefore, ProjectRunService } from '../project-run-service/ProjectRunService';
+import { PlanRunService } from './PlanRunService';
+import { ChangeRunService } from './change-run-service/ChangeRunService';
+import { plannedBefore, ProjectRunService } from './project-run-service/ProjectRunService';
 import { prepareProjectRun } from './prepareProjectRun';
 import { type ProjectRunContext } from '../../utils/prepareProjectRun';
 import { prepareRun } from './prepareRun';
 import { recordRunFailure } from '../../utils/prepareRun';
 import { prepareProjectTask } from './prepareProjectTask';
 import { type ProjectTaskContext } from '../../utils/prepareProjectTask';
-import { ProjectTaskService } from '../project-task-service/ProjectTaskService';
+import { ProjectTaskService } from './project-task-service/ProjectTaskService';
 
 type Prepared = RunContext | ProjectRunContext | ProjectTaskContext;
 

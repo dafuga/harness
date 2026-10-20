@@ -9,13 +9,15 @@
 	"owns": {
 		"source": [
 			"src/services/verification-service/scenarioCoverage.ts",
-			"src/utils/scenarioCoverage.ts"
+			"src/utils/scenarioCoverage.ts",
+			"src/workflows/run-verify/verification-service/scenarioCoverage.ts"
 		],
 		"symbols": [
 			"scenarioCoverage",
 			"CoverageInput",
 			"CoverageResult",
 			"problem",
+			"scenarioCoverage",
 			"scenarioCoverage"
 		]
 	},

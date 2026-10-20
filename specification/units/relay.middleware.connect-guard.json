@@ -7,12 +7,16 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/relay/src/middleware/ConnectGuardMiddleware.ts"],
+		"source": [
+			"packages/relay/src/lib/relay/ConnectGuardMiddleware.ts",
+			"packages/relay/src/middleware/ConnectGuardMiddleware.ts"
+		],
 		"symbols": [
 			"ConnectGuardMiddleware",
 			"ConnectGuardMiddleware.constructor",
 			"ConnectGuardMiddleware.transport",
-			"ConnectGuardMiddleware.handle"
+			"ConnectGuardMiddleware.handle",
+			"ConnectGuardMiddleware"
 		]
 	},
 	"contract": {
@@ -67,11 +71,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/middleware/ConnectGuardMiddleware.ts",
+		"entry": "packages/relay/src/lib/relay/ConnectGuardMiddleware.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/middleware/ConnectGuardMiddleware.ts"
+				"entry": "packages/relay/src/lib/relay/ConnectGuardMiddleware.ts"
 			}
 		]
 	},

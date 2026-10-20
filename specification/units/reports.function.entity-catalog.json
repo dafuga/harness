@@ -3,7 +3,7 @@
 	"id": "reports.function.entity-catalog",
 	"kind": "function",
 	"title": "Entity collection rows",
-	"responsibility": "Lists shared helpers and service class names with revision-bound consumer links, retaining other entity catalogs.",
+	"responsibility": "Lists service and helper cards only when two distinct active runtime owners resolve to the same Used In links.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {

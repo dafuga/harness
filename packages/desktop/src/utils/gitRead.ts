@@ -27,4 +27,4 @@ export async function gitText(root: string, revision: string, path: string): Pro
 	return data;
 }
 
-export { gitFiles } from '../adapters/git-source-adapter/gitRead';
+export { gitFiles } from '../services/project-session-service/git-source-adapter/gitRead';

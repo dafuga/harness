@@ -17,4 +17,4 @@ export interface GatherResult {
 	failures: string[];
 }
 
-export { gatherCaptures } from '../services/check-run-service/gatherCaptures';
+export { gatherCaptures } from '../workflows/run-verify/verification-service/check-run-service/gatherCaptures';

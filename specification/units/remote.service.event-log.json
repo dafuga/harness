@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/remote/src/services/EventLogService.ts"],
+		"source": [
+			"packages/remote/src/services/EventLogService.ts",
+			"packages/remote/src/services/wire-session-service/EventLogService.ts"
+		],
 		"symbols": [
+			"EventLogService",
+			"EventReplay",
 			"EventReplay",
 			"EventLogService",
 			"EventLogService.constructor",
@@ -67,11 +72,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/remote/src/services/EventLogService.ts",
+		"entry": "packages/remote/src/services/wire-session-service/EventLogService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/remote/src/services/EventLogService.ts"
+				"entry": "packages/remote/src/services/wire-session-service/EventLogService.ts"
 			}
 		]
 	},

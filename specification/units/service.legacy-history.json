@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/LegacyHistoryService.ts"],
+		"source": ["src/cli/program/LegacyHistoryService.ts"],
 		"symbols": [
 			"LegacyHistoryService",
 			"LegacyHistoryService.constructor",
@@ -68,11 +68,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/LegacyHistoryService.ts",
+		"entry": "src/cli/program/LegacyHistoryService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/LegacyHistoryService.ts"
+				"entry": "src/cli/program/LegacyHistoryService.ts"
 			}
 		]
 	},

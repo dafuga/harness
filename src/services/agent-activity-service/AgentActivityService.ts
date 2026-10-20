@@ -2,13 +2,10 @@ import { randomUUID } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import { readdir } from 'node:fs/promises';
 import { basename, join } from 'node:path';
-import { ProcessIdentityAdapter } from '../../adapters/ProcessIdentityAdapter';
+import { ProcessIdentityAdapter } from './ProcessIdentityAdapter';
 import type { AgentBeat, AgentEntry, AgentRoster, AgentState } from '../../core/activityTypes';
 import { fail } from '../../core/errors';
-import {
-	AgentRegistryRepository,
-	type StoredAgent
-} from '../../repositories/AgentRegistryRepository';
+import { AgentRegistryRepository, type StoredAgent } from './AgentRegistryRepository';
 import type { Checkout } from '../../repositories/ProjectWorkRepository';
 import { agentLiveness } from './agentLiveness';
 import { type ProcessFacts } from '../../utils/agentLiveness';

@@ -10,4 +10,4 @@ export {
 	hubEvidenceContext,
 	hubEvidencePins,
 	hubEvidenceScope
-} from '../services/hub-evidence-service/hubEvidenceScope';
+} from '../routes/api/[...path]/hub-projection-service/hub-evidence-service/hubEvidenceScope';

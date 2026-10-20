@@ -1,1 +1,1 @@
-export { gitBlobs } from '../adapters/git-source-adapter/gitBlobs';
+export { gitBlobs } from '../services/project-session-service/git-source-adapter/gitBlobs';

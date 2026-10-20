@@ -1,2 +1,2 @@
 export { hubDesigns } from './hub-catalog/hubDesigns';
-export { hubDesignImage } from '../services/hub-projection-service/hubDesigns';
+export { hubDesignImage } from '../routes/api/[...path]/hub-projection-service/hubDesigns';

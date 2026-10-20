@@ -1,4 +1,4 @@
-import type { ProjectSessionService } from '../services/ProjectSessionService';
+import type { ProjectSessionService } from '../services/project-session-service/ProjectSessionService';
 import type { ProviderDiscoveryService } from '../services/provider-discovery-service/ProviderDiscoveryService';
 import type { RunEvent, RunRequest } from '../models/DesktopBridge.types';
 import type { RunContext } from '../models/RunContext.types';

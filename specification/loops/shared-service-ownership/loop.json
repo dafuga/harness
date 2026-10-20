@@ -2,9 +2,11 @@
 	"name": "shared-service-ownership",
 	"goal": "Only services with two distinct runtime consumers appear in Services; single-consumer implementations live beside their owner while public contracts and registered identities remain stable",
 	"createdAt": "2026-10-20T16:17:55.965Z",
-	"updatedAt": "2026-10-20T16:23:11.781Z",
+	"updatedAt": "2026-10-20T17:10:41.389Z",
 	"template": "bug-fix",
-	"templateLineage": ["bug-fix"],
+	"templateLineage": [
+		"bug-fix"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -25,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T16:24:59.584Z",
+			"evidence": "Test commit 13db0192 fails owner-local placement (317 missing moved sources). Immutable red 272452fb7114118e8219f9ec942e9f42c0ae8616866917d3b733713ecedffa73. The same metadata suite fails all eight service-owner cases; browser desktop captures six cards where only the shared service should appear."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T17:10:41.389Z",
+			"evidence": "Resolved source runtime owners control service inclusion and Used In links. All 195 private implementations live in supported owner areas, with 318 AST comparisons and stable registered identities. Public source imports, framework hooks, store entries and their module contracts are preserved."
 		},
 		{
 			"id": "green",

@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/services/RemotePairingControlService.ts"],
+		"source": [
+			"packages/desktop/src/services/RemotePairingControlService.ts",
+			"packages/desktop/src/services/remote-host-service/RemotePairingControlService.ts"
+		],
 		"symbols": [
+			"RemotePairingControlService",
+			"RemoteHostAccess",
 			"RemoteHostAccess",
 			"RemotePairingControlService",
 			"RemotePairingControlService.constructor",
@@ -119,11 +124,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/RemotePairingControlService.ts",
+		"entry": "packages/desktop/src/services/remote-host-service/RemotePairingControlService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/RemotePairingControlService.ts"
+				"entry": "packages/desktop/src/services/remote-host-service/RemotePairingControlService.ts"
 			}
 		]
 	},

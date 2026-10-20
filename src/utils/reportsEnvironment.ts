@@ -1,1 +1,1 @@
-export { reportsEnvironment } from '../workflows/run-report/reportsEnvironment';
+export { reportsEnvironment } from '../cli/program/run-report/reportsEnvironment';

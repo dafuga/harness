@@ -2,7 +2,7 @@ import type { CacheIdentity } from '../../../collaboration/src/models/Collaborat
 import type { RemoteHttpOptions } from '../adapters/hosted-http-adapter/HostedHttpAdapter';
 import type { CacheStatus } from '../models/ProjectContext.types';
 import { HostedFailureValidator } from '../validators/HostedFailureValidator';
-import type { ProjectionCacheService } from './projection-cache-service/ProjectionCacheService';
+import type { ProjectionCacheService } from '../lib/desktop-initialization/projection-cache-service/ProjectionCacheService';
 export interface HostedReadOptions extends RemoteHttpOptions {
 	cache?: ProjectionCacheService;
 	onCacheStatus?: (status: CacheStatus) => void;

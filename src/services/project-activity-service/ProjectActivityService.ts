@@ -14,7 +14,7 @@ import {
 import { projectActivity } from './projectActivity';
 import { unitOwners, type OwnedSource } from '../../utils/unitOwners';
 import { AgentActivityService } from '../agent-activity-service/AgentActivityService';
-import { HistoryStatusService } from '../HistoryStatusService';
+import { HistoryStatusService } from '../history-status-service/HistoryStatusService';
 import type { RevisionDetail } from '../revision-detail-service/RevisionDetailService';
 
 /** How much of a project is shown: its newest commits, files, reasons, checkouts and changes. */

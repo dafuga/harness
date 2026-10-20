@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/reportsEnvironment.ts", "src/workflows/run-report/reportsEnvironment.ts"],
-		"symbols": ["reportsEnvironment", "reportsEnvironment"]
+		"source": [
+			"src/cli/program/run-report/reportsEnvironment.ts",
+			"src/utils/reportsEnvironment.ts",
+			"src/workflows/run-report/reportsEnvironment.ts"
+		],
+		"symbols": ["reportsEnvironment", "reportsEnvironment", "reportsEnvironment"]
 	},
 	"contract": {
 		"origin": "declared",

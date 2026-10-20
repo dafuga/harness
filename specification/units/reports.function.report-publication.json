@@ -8,10 +8,17 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/services/report-command-service/report-publish-service/reportPublication.ts",
 			"packages/reports/src/services/report-publish-service/reportPublication.ts",
 			"packages/reports/src/utils/reportPublication.ts"
 		],
-		"symbols": ["reportPublication", "PublicationFile", "PublicationBundle", "reportPublication"]
+		"symbols": [
+			"reportPublication",
+			"reportPublication",
+			"PublicationFile",
+			"PublicationBundle",
+			"reportPublication"
+		]
 	},
 	"contract": {
 		"origin": "declared",

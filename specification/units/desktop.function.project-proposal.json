@@ -8,10 +8,13 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/desktop-run-service/project-run-service/projectProposal.ts",
 			"packages/desktop/src/services/project-run-service/projectProposal.ts",
 			"packages/desktop/src/utils/projectProposal.ts"
 		],
 		"symbols": [
+			"projectProposal",
+			"proposalPrompt",
 			"projectProposal",
 			"proposalPrompt",
 			"ProjectProposal",

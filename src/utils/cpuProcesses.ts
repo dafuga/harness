@@ -8,4 +8,4 @@ export interface CpuProcess {
 	label?: string;
 }
 
-export { cpuProcesses } from '../adapters/cpu-process-adapter/cpuProcesses';
+export { cpuProcesses } from '../services/cpu-usage-service/cpu-process-adapter/cpuProcesses';

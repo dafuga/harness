@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/services/ProjectSessionService.ts"],
+		"source": [
+			"packages/desktop/src/services/ProjectSessionService.ts",
+			"packages/desktop/src/services/project-session-service/ProjectSessionService.ts"
+		],
 		"symbols": [
+			"ProjectSessionService",
 			"ProjectSessionService",
 			"ProjectSessionService.constructor",
 			"ProjectSessionService.assertProject",
@@ -140,11 +144,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/ProjectSessionService.ts",
+		"entry": "packages/desktop/src/services/project-session-service/ProjectSessionService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/ProjectSessionService.ts"
+				"entry": "packages/desktop/src/services/project-session-service/ProjectSessionService.ts"
 			}
 		]
 	},

@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/buildHistory.ts"],
+		"source": ["src/cli/program/buildHistory.ts"],
 		"symbols": ["BuildOptions", "buildHistory", "renderBuild"]
 	},
 	"contract": {
@@ -63,11 +63,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/buildHistory.ts",
+		"entry": "src/cli/program/buildHistory.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/buildHistory.ts"
+				"entry": "src/cli/program/buildHistory.ts"
 			}
 		]
 	},

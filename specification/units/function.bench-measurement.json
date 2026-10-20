@@ -8,16 +8,16 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/utils/benchMeasurement.ts",
-			"src/workflows/run-kernel-bench/benchMeasurement.ts"
+			"src/cli/program/run-kernel-bench/benchMeasurement.ts",
+			"src/utils/benchMeasurement.ts"
 		],
 		"symbols": [
+			"sizeMeasurements",
 			"MeasureContext",
 			"Artifact",
 			"Value",
 			"kernelUnits",
 			"benchMeasurement",
-			"sizeMeasurements",
 			"sizeMeasurements"
 		]
 	},

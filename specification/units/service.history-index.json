@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/history-index-service/HistoryIndexService.ts"],
+		"source": ["src/cli/program/history-index-service/HistoryIndexService.ts"],
 		"symbols": [
 			"BuiltHistory",
 			"LegacyReader",
@@ -123,11 +123,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/history-index-service/HistoryIndexService.ts",
+		"entry": "src/cli/program/history-index-service/HistoryIndexService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/history-index-service/HistoryIndexService.ts"
+				"entry": "src/cli/program/history-index-service/HistoryIndexService.ts"
 			}
 		]
 	},

@@ -11,4 +11,4 @@ export interface D1OneTimeStores {
 	exchanges: ExchangeStore;
 }
 
-export { d1OneTimeStores } from '../adapters/d1-auth-store-adapter/d1OneTimeStores';
+export { d1OneTimeStores } from '../routes/api/[...path]/d1-auth-store-adapter/d1OneTimeStores';

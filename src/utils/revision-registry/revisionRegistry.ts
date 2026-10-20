@@ -5,7 +5,7 @@ import type { BudgetBaseline } from '../budgetFindings';
 import { emittedLimits, frozenLimits } from './frozenLimits';
 import { type EmittedLimits, type FrozenLimits } from '../budgetReviews';
 import { canonicalJson } from '../canonicalJson';
-import type { PublicHelper } from '../unitMetadata';
+import type { PublicHelper, UnitMetadata } from '../unitMetadata';
 import type { UnitDocumentation } from '../unit-documentation/unitDocumentation';
 
 export interface RevisionRegistry {
@@ -25,6 +25,8 @@ export interface RevisionRegistry {
 		contract: Pick<ComponentManifest['contract'], 'inputs' | 'outputs' | 'errors'>;
 		helpers?: PublicHelper[];
 		helperGap?: string;
+		serviceExports?: UnitMetadata['serviceExports'];
+		serviceConsumers?: UnitMetadata['serviceConsumers'];
 		/** Static observations from this source commit; not a verification verdict. */
 		sourceMeasurements?: Measurement[];
 		documentation?: UnitDocumentation;

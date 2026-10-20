@@ -6,4 +6,4 @@ export {
 	addPlanDesign,
 	openPlanThread,
 	approvePlanDesign
-} from '../adapters/planning-facade-adapter/planningWrites';
+} from '../services/project-session-service/planning-facade-adapter/planningWrites';

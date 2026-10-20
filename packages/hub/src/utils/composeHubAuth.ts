@@ -1,7 +1,7 @@
 import type { EmailProofDelivery } from '../models/HubAuth.types';
 import type { AuthStore } from '../models/HubAuthStore.types';
-import type { GoogleIdentityService } from '../services/GoogleIdentityService';
-import type { CachedInstallationToken } from '../services/installation-token-service/InstallationTokenService';
+import type { GoogleIdentityService } from '../lib/server/auth/GoogleIdentityService';
+import type { CachedInstallationToken } from '../lib/server/auth/installation-token-service/InstallationTokenService';
 import type { AuthConfig } from './authConfig';
 
 export interface HubAuthParts {

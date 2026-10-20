@@ -1,10 +1,10 @@
 import { ReportRepository } from '../../repositories/report-repository/ReportRepository';
 import { ReportExportService } from '../report-export-service/ReportExportService';
-import { ReportImportService } from '../ReportImportService';
-import { ReportServerService } from '../report-server-service/ReportServerService';
-import { ReportRetentionService } from '../report-retention-service/ReportRetentionService';
-import { ReportStorageSyncService } from '../ReportStorageSyncService';
-import { ReportPublishService } from '../report-publish-service/ReportPublishService';
+import { ReportImportService } from './ReportImportService';
+import { ReportServerService } from './report-server-service/ReportServerService';
+import { ReportRetentionService } from './report-retention-service/ReportRetentionService';
+import { ReportStorageSyncService } from './ReportStorageSyncService';
+import { ReportPublishService } from './report-publish-service/ReportPublishService';
 import { reportCli, inputData, required } from './reportCli';
 import type { BeginInput, RecordInput } from '../../models/Report.types';
 

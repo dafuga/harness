@@ -40,4 +40,4 @@ export function refKind(ref: string): RefKind {
 	return prefixes.find(([prefix]) => ref.startsWith(prefix))?.[1] ?? 'other';
 }
 
-export { historyRefs } from '../services/history-sync-service/historyRefs';
+export { historyRefs } from '../cli/program/history-sync-service/historyRefs';

@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/services/NativeAccountStatusService.ts"],
+		"source": ["packages/desktop/src/lib/desktop-initialization/NativeAccountStatusService.ts"],
 		"symbols": [
 			"NativeAccountStatusService",
 			"NativeAccountStatusService.constructor",
@@ -73,11 +73,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/NativeAccountStatusService.ts",
+		"entry": "packages/desktop/src/lib/desktop-initialization/NativeAccountStatusService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/NativeAccountStatusService.ts"
+				"entry": "packages/desktop/src/lib/desktop-initialization/NativeAccountStatusService.ts"
 			}
 		]
 	},

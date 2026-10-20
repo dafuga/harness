@@ -23,6 +23,7 @@ interface Context {
 	paths: Set<string>;
 	facts: Map<string, HelperFacts>;
 	helpers: Set<string>;
+	services: Map<string, string>;
 	resolved: Map<string, string | undefined>;
 }
 
@@ -120,15 +121,21 @@ function consumerReference(path: string, reference: HelperReference, context: Co
 	return key;
 }
 
+function runtimeUser(unit: Unit, path: string, reference: HelperReference, context: Context) {
+	const key = consumerReference(path, reference, context);
+	if (!key || context.services.get(key) === unit.id) return undefined;
+	const consumer = context.services.has(key) ? { unit: unit.id } : consumerOf(unit, reference);
+	return consumer ? { key, consumer } : undefined;
+}
+
 function usersOf(context: Context): Map<string, Map<string, HelperConsumer>> {
 	const users = new Map<string, Map<string, HelperConsumer>>();
 	for (const unit of context.units) {
 		for (const path of unit.owns.source)
 			for (const reference of context.facts.get(path)?.references ?? []) {
-				const consumer = consumerOf(unit, reference);
-				if (!consumer) continue;
-				const key = consumerReference(path, reference, context);
-				if (!key) continue;
+				const found = runtimeUser(unit, path, reference, context);
+				if (!found) continue;
+				const { key, consumer } = found;
 				const identity = `${consumer.unit}#${consumer.symbol ?? ''}`;
 				if (!users.has(key)) users.set(key, new Map());
 				users.get(key)!.set(identity, consumer);
@@ -150,12 +157,19 @@ export async function helperConsumers(tree: HelperTree, units: Unit[]): Promise<
 			(unit.helpers ?? []).map((helper) => `${helper.source}#${helper.name}`)
 		)
 	);
+	const services = new Map(
+		active.flatMap((unit) =>
+			(unit.serviceExports ?? []).map((item) => [`${item.source}#${item.name}`, unit.id] as const)
+		)
+	);
+	for (const key of services.keys()) helpers.add(key);
 	const context = {
 		units: active,
 		config: await configuration(tree),
 		paths,
 		facts,
 		helpers,
+		services,
 		resolved: new Map<string, string | undefined>()
 	};
 	const users = usersOf(context);
@@ -165,4 +179,15 @@ export async function helperConsumers(tree: HelperTree, units: Unit[]): Promise<
 				(a, b) => `${a.unit}#${a.symbol ?? ''}`.localeCompare(`${b.unit}#${b.symbol ?? ''}`)
 			);
 		}
+	attachServices(units, users);
+}
+
+function attachServices(units: Unit[], users: Map<string, Map<string, HelperConsumer>>): void {
+	for (const unit of units) {
+		const consumers = new Map<string, HelperConsumer>();
+		for (const item of unit.serviceExports ?? [])
+			for (const consumer of users.get(`${item.source}#${item.name}`)?.values() ?? [])
+				consumers.set(consumer.unit, { unit: consumer.unit });
+		unit.serviceConsumers = [...consumers.values()].sort((a, b) => a.unit.localeCompare(b.unit));
+	}
 }

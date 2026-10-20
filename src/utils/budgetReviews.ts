@@ -28,5 +28,5 @@ export interface FrozenLimits {
 	unmeasured?: Record<string, string>;
 }
 
-export { budgetReviews } from '../services/history-index-service/budgetReviews';
+export { budgetReviews } from '../cli/program/history-index-service/budgetReviews';
 export { frozenLimits, emittedLimits } from './revision-registry/frozenLimits';

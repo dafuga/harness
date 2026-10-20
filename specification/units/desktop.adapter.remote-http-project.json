@@ -8,9 +8,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter.ts"
+			"packages/desktop/src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
+			"packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts"
 		],
 		"symbols": [
+			"NativeHostedCredential",
+			"RemoteHttpProjectAdapter",
 			"NativeHostedCredential",
 			"RemoteHttpProjectAdapter",
 			"RemoteHttpProjectAdapter.constructor",
@@ -228,11 +231,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
+		"entry": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter.ts"
+				"entry": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts"
 			}
 		]
 	},

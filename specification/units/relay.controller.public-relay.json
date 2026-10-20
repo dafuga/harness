@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/relay/src/controllers/PublicRelayController.ts"],
+		"source": ["packages/relay/src/lib/relay/PublicRelayController.ts"],
 		"symbols": [
 			"PublicRelayController",
 			"PublicRelayController.constructor",
@@ -73,11 +73,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/controllers/PublicRelayController.ts",
+		"entry": "packages/relay/src/lib/relay/PublicRelayController.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/controllers/PublicRelayController.ts"
+				"entry": "packages/relay/src/lib/relay/PublicRelayController.ts"
 			}
 		]
 	},

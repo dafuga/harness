@@ -7,8 +7,20 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/check-run-service/mediaFacts.ts", "src/utils/mediaFacts.ts"],
-		"symbols": ["pngChecksum", "mediaFacts", "MediaFacts", "pngChecksum", "mediaFacts"]
+		"source": [
+			"src/services/check-run-service/mediaFacts.ts",
+			"src/utils/mediaFacts.ts",
+			"src/workflows/run-verify/verification-service/check-run-service/mediaFacts.ts"
+		],
+		"symbols": [
+			"pngChecksum",
+			"mediaFacts",
+			"MediaFacts",
+			"pngChecksum",
+			"mediaFacts",
+			"pngChecksum",
+			"mediaFacts"
+		]
 	},
 	"contract": {
 		"origin": "declared",

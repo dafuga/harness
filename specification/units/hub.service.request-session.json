@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/services/request-session-service/RequestSessionService.ts"],
+		"source": [
+			"packages/hub/src/lib/server/auth/request-session-service/RequestSessionService.ts",
+			"packages/hub/src/services/request-session-service/RequestSessionService.ts"
+		],
 		"symbols": [
 			"RequestSessionOptions",
 			"RequestSessionService",
@@ -15,7 +18,9 @@
 			"RequestSessionService.resolve",
 			"RequestSessionService.browser",
 			"RequestSessionService.required",
-			"RequestSessionService.crossOrigin"
+			"RequestSessionService.crossOrigin",
+			"RequestSessionService",
+			"RequestSessionOptions"
 		]
 	},
 	"contract": {
@@ -91,11 +96,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/services/request-session-service/RequestSessionService.ts",
+		"entry": "packages/hub/src/lib/server/auth/request-session-service/RequestSessionService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/services/request-session-service/RequestSessionService.ts"
+				"entry": "packages/hub/src/lib/server/auth/request-session-service/RequestSessionService.ts"
 			}
 		]
 	},

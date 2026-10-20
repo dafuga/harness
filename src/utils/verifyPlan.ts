@@ -26,4 +26,4 @@ export interface PlanInput {
 	testTimeoutMs?: number;
 }
 
-export { verifyPlan } from '../services/verification-service/verifyPlan';
+export { verifyPlan } from '../workflows/run-verify/verification-service/verifyPlan';

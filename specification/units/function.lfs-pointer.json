@@ -10,10 +10,12 @@
 		"source": [
 			"src/repositories/evidence-branch-repository/lfsPointer.ts",
 			"src/services/attached-record-service/lfsPointer.ts",
+			"src/services/history-status-service/attached-record-service/lfsPointer.ts",
 			"src/utils/lfsPointer.ts"
 		],
 		"symbols": [
 			"lfsAttributes",
+			"parseLfsPointer",
 			"parseLfsPointer",
 			"mediaExtensions",
 			"LfsObject",

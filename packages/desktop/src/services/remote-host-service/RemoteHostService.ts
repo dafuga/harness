@@ -6,12 +6,12 @@ import type {
 } from '../../adapters/RemoteHostStoreAdapter';
 import type { RegisterRemoteHost } from '../../utils/remoteHostIdentity';
 import { remoteHostStatus } from './remoteHostStatus';
-import type { RemoteDeviceSessionsOptions } from '../RemoteDeviceSessionsService';
-import { RemoteHostRecordService } from '../RemoteHostRecordService';
-import { RemoteHostRuntimeService } from '../RemoteHostRuntimeService';
-import type { RelayLinkTuning } from '../RemoteHostRuntimeService';
-import { RemoteHostSwitchService } from '../remote-host-switch-service/RemoteHostSwitchService';
-import { RemotePairingControlService } from '../RemotePairingControlService';
+import type { RemoteDeviceSessionsOptions } from './RemoteDeviceSessionsService';
+import { RemoteHostRecordService } from './RemoteHostRecordService';
+import { RemoteHostRuntimeService } from './RemoteHostRuntimeService';
+import type { RelayLinkTuning } from './RemoteHostRuntimeService';
+import { RemoteHostSwitchService } from './remote-host-switch-service/RemoteHostSwitchService';
+import { RemotePairingControlService } from './RemotePairingControlService';
 
 export interface RemoteHostOptions {
 	store: RemoteHostStoreAdapter;

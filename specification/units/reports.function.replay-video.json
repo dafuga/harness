@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/services/replay-video-service/replayVideo.ts",
+			"packages/reports/src/routes/api/replay-video/replay-video-service/replayVideo.ts",
 			"packages/reports/src/utils/replayVideo.ts"
 		],
 		"symbols": ["replayVideo", "replayVideoKey", "replayVideo"]

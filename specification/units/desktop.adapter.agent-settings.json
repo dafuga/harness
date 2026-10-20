@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/adapters/AgentSettingsAdapter.ts"],
+		"source": [
+			"packages/desktop/src/adapters/AgentSettingsAdapter.ts",
+			"packages/desktop/src/lib/stores/AgentSettingsAdapter.ts"
+		],
 		"symbols": [
+			"AgentSettingsAdapter",
+			"AgentSettingsAdapterConfig",
 			"AgentSettingsAdapterConfig",
 			"AgentSettingsAdapter",
 			"AgentSettingsAdapter.constructor",
@@ -49,11 +54,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/adapters/AgentSettingsAdapter.ts",
+		"entry": "packages/desktop/src/lib/stores/AgentSettingsAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/adapters/AgentSettingsAdapter.ts"
+				"entry": "packages/desktop/src/lib/stores/AgentSettingsAdapter.ts"
 			}
 		]
 	},

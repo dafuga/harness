@@ -1,4 +1,4 @@
-import { mediaPlace } from '../services/history-media-service/mediaPlace';
+import { mediaPlace } from '../cli/program/history-index-service/history-media-service/mediaPlace';
 import type { ResolvedMedia } from './recordView';
 
 /** One file of a record whose bytes are placed: where it is in the record, and its hash. */
@@ -17,4 +17,4 @@ export const checkedMedia: MediaPlacer = {
 	place: async (bytes, file, gap) => mediaPlace(bytes, file, gap)
 };
 
-export { mediaPlace } from '../services/history-media-service/mediaPlace';
+export { mediaPlace } from '../cli/program/history-index-service/history-media-service/mediaPlace';

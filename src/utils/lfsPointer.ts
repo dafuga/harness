@@ -32,5 +32,5 @@ export function lfsStored(path: string): boolean {
 	return mediaExtensions.includes(extension);
 }
 
-export { parseLfsPointer } from '../services/attached-record-service/lfsPointer';
+export { parseLfsPointer } from '../services/history-status-service/attached-record-service/lfsPointer';
 export { lfsAttributes } from '../repositories/evidence-branch-repository/lfsPointer';

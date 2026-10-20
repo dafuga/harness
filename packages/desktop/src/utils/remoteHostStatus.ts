@@ -1,5 +1,5 @@
 import type { RemoteHostState } from '../adapters/RemoteHostStoreAdapter';
-import type { RemoteHostRuntimeService } from '../services/RemoteHostRuntimeService';
+import type { RemoteHostRuntimeService } from '../services/remote-host-service/RemoteHostRuntimeService';
 
 export type RemoteHostPhase = 'idle' | 'registering' | 'signed-out';
 

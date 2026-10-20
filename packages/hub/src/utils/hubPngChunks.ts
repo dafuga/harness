@@ -16,4 +16,4 @@ export type State = {
 	end: boolean;
 };
 
-export { hubPngChunks } from '../services/hub-projection-service/hubPngChunks';
+export { hubPngChunks } from '../routes/api/[...path]/hub-projection-service/hubPngChunks';

@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/services/hub-projection-service/hubPngChunks.ts",
+			"packages/hub/src/routes/api/[...path]/hub-projection-service/hubPngChunks.ts",
 			"packages/hub/src/utils/hubPngChunks.ts"
 		],
 		"symbols": ["hubPngChunks", "Header", "State", "hubPngChunks"]

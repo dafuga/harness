@@ -7,4 +7,4 @@ export interface LegacyReport {
 	record: LegacyRecord;
 }
 
-export { legacyReport } from '../services/legacy-import-service/legacyReport';
+export { legacyReport } from '../cli/program/legacy-import-service/legacyReport';

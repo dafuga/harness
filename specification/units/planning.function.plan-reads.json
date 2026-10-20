@@ -8,10 +8,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/planning/src/lib/planning/planning-service/planReads.ts",
 			"packages/planning/src/services/planning-service/planReads.ts",
 			"packages/planning/src/utils/planReads.ts"
 		],
-		"symbols": ["planReads", "planReads"]
+		"symbols": ["planReads", "planReads", "planReads"]
 	},
 	"contract": {
 		"origin": "declared",

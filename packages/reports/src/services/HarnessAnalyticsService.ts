@@ -1,6 +1,6 @@
 import { spawn } from 'node:child_process';
 import { resolve } from 'node:path';
-import type { analyticsSnapshot } from '../../../../src/workflows/analyticsMetrics';
+import type { analyticsSnapshot } from '../../../../src/cli/program/analyticsMetrics';
 import { reportRuntimeRoot } from '../utils/reportRuntimeRoot';
 import { reportSite } from '../utils/reportSite';
 export type AnalyticsSnapshot = ReturnType<typeof analyticsSnapshot>;

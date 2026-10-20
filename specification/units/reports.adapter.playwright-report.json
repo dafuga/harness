@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/adapters/PlaywrightReportAdapter.ts"],
+		"source": ["packages/reports/src/services/report-command-service/PlaywrightReportAdapter.ts"],
 		"symbols": ["PlaywrightReportAdapter", "PlaywrightReportAdapter.ingest"]
 	},
 	"contract": {
@@ -48,11 +48,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/adapters/PlaywrightReportAdapter.ts",
+		"entry": "packages/reports/src/services/report-command-service/PlaywrightReportAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/adapters/PlaywrightReportAdapter.ts"
+				"entry": "packages/reports/src/services/report-command-service/PlaywrightReportAdapter.ts"
 			}
 		]
 	},

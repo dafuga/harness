@@ -17,7 +17,7 @@ import { browserTestFiles } from '../../templates/browserTest';
 import { modelFiles, type AdapterName } from '../../templates/model';
 import { pieceFiles, type PieceKind } from '../../templates/pieces';
 import { isAppOnlyScaffold, scaffoldKinds } from '../../templates/scaffoldTypes';
-import { adapterExportPlan, modelExportPlans, pieceExportPlans } from '../exportPlans';
+import { adapterExportPlan, modelExportPlans, pieceExportPlans } from './exportPlans';
 
 export { scaffoldKinds };
 

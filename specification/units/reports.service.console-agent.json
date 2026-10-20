@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/services/ConsoleAgentService.ts"],
+		"source": [
+			"packages/reports/src/lib/server-hooks/ConsoleAgentService.ts",
+			"packages/reports/src/services/ConsoleAgentService.ts"
+		],
 		"symbols": [
 			"ConsoleAgentService",
 			"ConsoleAgentService.open",
@@ -15,6 +18,8 @@
 			"ConsoleAgentService.busy",
 			"ConsoleAgentService.expired",
 			"ConsoleAgentService.call",
+			"consoleAgent",
+			"ConsoleAgentService",
 			"consoleAgent"
 		]
 	},
@@ -130,11 +135,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/services/ConsoleAgentService.ts",
+		"entry": "packages/reports/src/lib/server-hooks/ConsoleAgentService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/services/ConsoleAgentService.ts"
+				"entry": "packages/reports/src/lib/server-hooks/ConsoleAgentService.ts"
 			}
 		]
 	},

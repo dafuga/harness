@@ -23,4 +23,4 @@ export const largeArtifact = 'The recorded file is too large to be read on this 
 
 export const otherArtifact = 'The computer sent another recorded file than the one asked for.';
 
-export { remoteArtifact } from '../adapters/capacitor-bridge-adapter/remoteArtifact';
+export { remoteArtifact } from './select-environment/capacitor-bridge-adapter/remoteArtifact';

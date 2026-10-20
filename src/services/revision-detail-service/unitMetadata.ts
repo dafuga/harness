@@ -1,3 +1,4 @@
+import { explorerKindCategory } from '../../utils/explorerRoute';
 import { pureHelpers } from './pureHelpers';
 import { helperConsumers } from './helperConsumers';
 import { type HelperTree } from '../../utils/helperConsumers';
@@ -41,6 +42,29 @@ async function helpersAt(tree: Pick<SourceTree, 'read'>, path: string) {
 	}
 }
 
+/** Service sharing uses exported runtime bindings, never type exports or module forwarding. */
+async function servicesAt(tree: HelperTree, unit: Unit): Promise<void> {
+	unit.serviceExports = [];
+	unit.serviceConsumers = [];
+	const category = explorerKindCategory(unit.kind);
+	if (category !== 'services' && category !== 'pages') return;
+	if (unit.owns.source.some((path) => path.endsWith('/+page.svelte'))) return;
+	for (const path of unit.owns.source) {
+		if (!/\.[cm]?[jt]sx?$/.test(path)) continue;
+		try {
+			unit.serviceExports.push(
+				...scanExports(await tree.read(path))
+					.symbols.filter((symbol) =>
+						['class', 'function', 'const', 'default'].includes(symbol.kind)
+					)
+					.map(({ name }) => ({ name, source: path }))
+			);
+		} catch {
+			/* Missing historical source cannot prove a consumer. */
+		}
+	}
+}
+
 /** Enrich the selected revision from its own source; absent historical files stay absent. */
 export async function unitMetadata(tree: HelperTree, units: Unit[]): Promise<void> {
 	await hydrateUnitDocumentation(tree, units);
@@ -66,5 +90,7 @@ export async function unitMetadata(tree: HelperTree, units: Unit[]): Promise<voi
 		if (gaps.length) unit.helperGap = gaps.join(' ');
 		else delete unit.helperGap;
 	}
+	for (let start = 0; start < units.length; start += 64)
+		await Promise.all(units.slice(start, start + 64).map((unit) => servicesAt(tree, unit)));
 	await helperConsumers(tree, units);
 }

@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/adapters/hosted-evidence-adapter/hostedEvidencePath.ts",
+			"packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/hostedEvidencePath.ts",
 			"packages/desktop/src/utils/hostedEvidencePath.ts"
 		],
 		"symbols": ["hostedEvidencePath", "hostedEvidencePath"]

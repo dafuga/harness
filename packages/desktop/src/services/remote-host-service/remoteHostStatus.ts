@@ -6,7 +6,7 @@ import type {
 	RemotePairingOffer
 } from '../../../../remote/src/index';
 import type { RemoteHostDevice, RemoteHostState } from '../../adapters/RemoteHostStoreAdapter';
-import type { RemoteHostRuntimeService } from '../RemoteHostRuntimeService';
+import type { RemoteHostRuntimeService } from './RemoteHostRuntimeService';
 
 const reasons: Partial<Record<RemoteHostStatus['state'], string>> = {
 	unavailable: 'OS encryption is required for remote access.',

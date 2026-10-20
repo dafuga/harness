@@ -8,10 +8,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubNotes.ts",
 			"packages/hub/src/services/hub-evidence-service/hubNotes.ts",
 			"packages/hub/src/utils/hubNotes.ts"
 		],
-		"symbols": ["hubNotes", "hubNotes"]
+		"symbols": ["hubNotes", "hubNotes", "hubNotes"]
 	},
 	"contract": {
 		"origin": "declared",

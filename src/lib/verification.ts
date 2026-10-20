@@ -35,7 +35,7 @@ export { BuildIdentityService } from '../services/BuildIdentityService';
 export type { BuiltIdentity, IdentifiedBuild } from '../services/BuildIdentityService';
 export { scenarioRequirements } from '../utils/scenarioRequirements';
 export type { RequiredCapture, ScenarioRequirements } from '../utils/scenarioRequirements';
-export { mediaFacts } from '../services/check-run-service/mediaFacts';
+export { mediaFacts } from '../workflows/run-verify/verification-service/check-run-service/mediaFacts';
 export type { MediaFacts } from '../utils/mediaFacts';
 export { comparisonContext, requestDigest } from '../utils/comparison-context/comparisonContext';
 export { comparisonDifferences } from '../services/budget-service/comparisonDifferences';

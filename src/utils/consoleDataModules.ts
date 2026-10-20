@@ -14,4 +14,4 @@ export interface BundledSize {
 export {
 	consoleDataModules,
 	bundledSize
-} from '../services/console-install-service/consoleDataModules';
+} from '../cli/program/console-install-service/consoleDataModules';

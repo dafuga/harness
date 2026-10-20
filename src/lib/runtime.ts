@@ -17,20 +17,23 @@ export type {
 export type { ExecutionTarget, RuntimeKind } from '../core/unitTypes';
 export { kernelContract } from '../core/kernelTypes';
 export type { AffectedNode, ImpactInput, ImpactOutput, KernelGraph } from '../core/kernelTypes';
-export { HandlerRuntimeAdapter } from '../adapters/HandlerRuntimeAdapter';
+export { HandlerRuntimeAdapter } from '../../packages/reports/src/components/harness/harness-compare/HandlerRuntimeAdapter';
 export { HttpRuntimeAdapter } from '../adapters/HttpRuntimeAdapter';
 export { ModuleRuntimeAdapter } from '../adapters/ModuleRuntimeAdapter';
 export { ProcessRuntimeAdapter } from '../adapters/process-runtime-adapter/ProcessRuntimeAdapter';
 export { type ProcessRuntimeConfig } from '../adapters/process-runtime-adapter/ProcessRuntimeAdapter';
-export { WasmModuleRuntimeAdapter } from '../adapters/WasmModuleRuntimeAdapter';
-export type { WasmLoader, WasmSource } from '../adapters/WasmModuleRuntimeAdapter';
-export { WasmRuntimeAdapter } from '../adapters/WasmRuntimeAdapter';
-export { RuntimeServerService } from '../services/RuntimeServerService';
-export type { ServedRuntime, ServeOptions } from '../services/RuntimeServerService';
+export { WasmModuleRuntimeAdapter } from '../adapters/wasm-runtime-adapter/WasmModuleRuntimeAdapter';
+export type {
+	WasmLoader,
+	WasmSource
+} from '../adapters/wasm-runtime-adapter/WasmModuleRuntimeAdapter';
+export { WasmRuntimeAdapter } from '../adapters/wasm-runtime-adapter/WasmRuntimeAdapter';
+export { RuntimeServerService } from '../cli/program/run-kernel/RuntimeServerService';
+export type { ServedRuntime, ServeOptions } from '../cli/program/run-kernel/RuntimeServerService';
 export { UnitRuntimeService } from '../services/UnitRuntimeService';
 export type { RuntimeServiceOptions } from '../services/UnitRuntimeService';
 export { impactKernel } from '../utils/impact-kernel/impactKernel';
-export { impactKernelText } from '../workflows/run-kernel/impactKernel';
+export { impactKernelText } from '../cli/program/run-kernel/impactKernel';
 export { kernelArtifacts } from '../utils/kernelArtifacts';
 export type { KernelArtifacts, KernelBuild } from '../utils/kernelArtifacts';
 export { chooseRuntime } from '../utils/chooseRuntime';

@@ -17,5 +17,5 @@ export function recordIntact(record: VerificationRecord): boolean {
 export {
 	recordComponents,
 	benchmarkMeasurements
-} from '../services/record-assembly-service/sealRecord';
-export { referencedScenario } from '../services/verification-service/sealRecord';
+} from '../workflows/run-verify/verification-service/record-assembly-service/sealRecord';
+export { referencedScenario } from '../workflows/run-verify/verification-service/sealRecord';

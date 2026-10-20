@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/remote/src/services/ResponseLedgerService.ts"],
+		"source": [
+			"packages/remote/src/services/ResponseLedgerService.ts",
+			"packages/remote/src/services/wire-session-service/ResponseLedgerService.ts"
+		],
 		"symbols": [
+			"ResponseLedgerService",
+			"LedgerOptions",
 			"LedgerOptions",
 			"ResponseLedgerService",
 			"ResponseLedgerService.constructor",
@@ -48,11 +53,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/remote/src/services/ResponseLedgerService.ts",
+		"entry": "packages/remote/src/services/wire-session-service/ResponseLedgerService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/remote/src/services/ResponseLedgerService.ts"
+				"entry": "packages/remote/src/services/wire-session-service/ResponseLedgerService.ts"
 			}
 		]
 	},

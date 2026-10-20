@@ -1,5 +1,5 @@
 import type { IndexedRevision } from '../core/historyIndexTypes';
-import type { CommitStatus } from '../services/HistoryStatusService';
+import type { CommitStatus } from '../services/history-status-service/HistoryStatusService';
 import type { RecordView } from './recordView';
 
 /** What the records attached to one commit come to: its coverage, its gaps and each record. */

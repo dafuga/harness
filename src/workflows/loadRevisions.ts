@@ -14,7 +14,7 @@ import {
 	type SourceIndex
 } from '../services/source-index-service/SourceIndexService';
 import { writingHeld, type WritingVersion } from '../utils/writing-limits/writingLimits';
-import { graphOf, loadUnits } from './loadUnits';
+import { graphOf, loadUnits } from './load-units/loadUnits';
 
 /** One revision with everything impact, reasons and measurements read from it. */
 export interface RevisionSide extends ImpactSide {

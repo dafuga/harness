@@ -1,1 +1,4 @@
-export { rendererPolicy, rendererAssets } from '../lib/initialize-desktop/rendererAssets';
+export {
+	rendererPolicy,
+	rendererAssets
+} from '../lib/desktop-initialization/initialize-desktop/rendererAssets';

@@ -47,4 +47,4 @@ export function edges(size: number, next: Random): Array<[number, number]> {
 	return list;
 }
 
-export { kernelMutations, kernelTexts } from '../workflows/run-kernel/kernelWorkload';
+export { kernelMutations, kernelTexts } from '../cli/program/run-kernel/kernelWorkload';

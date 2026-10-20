@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/services/LocalTransportService.ts"],
+		"source": [
+			"packages/desktop/src/lib/desktop-initialization/LocalTransportService.ts",
+			"packages/desktop/src/services/LocalTransportService.ts"
+		],
 		"symbols": [
 			"LocalSocket",
 			"LocalTransportTarget",
@@ -20,7 +23,11 @@
 			"LocalTransportService.listen",
 			"LocalTransportService.bootstrap",
 			"LocalTransportService.forget",
-			"LocalTransportService.close"
+			"LocalTransportService.close",
+			"LocalTransportService",
+			"LocalSocket",
+			"LocalTransportTarget",
+			"LocalTransportOptions"
 		]
 	},
 	"contract": {
@@ -85,11 +92,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/LocalTransportService.ts",
+		"entry": "packages/desktop/src/lib/desktop-initialization/LocalTransportService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/LocalTransportService.ts"
+				"entry": "packages/desktop/src/lib/desktop-initialization/LocalTransportService.ts"
 			}
 		]
 	},

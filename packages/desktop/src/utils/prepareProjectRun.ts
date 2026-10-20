@@ -1,6 +1,6 @@
 import type { ProjectRunRequest } from '../models/DesktopBridge.types';
 import type { RunContext } from '../models/RunContext.types';
-import type { ProjectSessionService } from '../services/ProjectSessionService';
+import type { ProjectSessionService } from '../services/project-session-service/ProjectSessionService';
 import type { Preparation } from './prepareRun';
 
 /** A creation run before anything exists: the project, the chosen runner and the request. */

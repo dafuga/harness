@@ -1,1 +1,1 @@
-export { reportLocalCleanup } from '../services/report-retention-service/reportLocalCleanup';
+export { reportLocalCleanup } from '../services/report-command-service/report-retention-service/reportLocalCleanup';

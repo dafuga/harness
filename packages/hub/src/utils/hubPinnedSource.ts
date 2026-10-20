@@ -20,4 +20,4 @@ export async function hubPinnedSource(
 	};
 }
 
-export { hubEvidencePath } from '../services/hub-attached-service/hubPinnedSource';
+export { hubEvidencePath } from '../services/hub-evidence-service/hub-attached-service/hubPinnedSource';

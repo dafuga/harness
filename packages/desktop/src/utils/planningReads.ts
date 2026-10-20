@@ -4,4 +4,4 @@ export {
 	readPlanMessages,
 	readPlanImage,
 	readPlanHistory
-} from '../adapters/planning-facade-adapter/planningReads';
+} from '../services/project-session-service/planning-facade-adapter/planningReads';

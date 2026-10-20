@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/repositories/AgentRegistryRepository.ts"],
+		"source": [
+			"src/repositories/AgentRegistryRepository.ts",
+			"src/services/agent-activity-service/AgentRegistryRepository.ts"
+		],
 		"symbols": [
+			"AgentRegistryRepository",
+			"StoredAgent",
 			"StoredAgent",
 			"AgentRegistryRepository",
 			"AgentRegistryRepository.constructor",
@@ -102,11 +107,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/repositories/AgentRegistryRepository.ts",
+		"entry": "src/services/agent-activity-service/AgentRegistryRepository.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/repositories/AgentRegistryRepository.ts"
+				"entry": "src/services/agent-activity-service/AgentRegistryRepository.ts"
 			}
 		]
 	},

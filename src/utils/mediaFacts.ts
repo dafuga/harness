@@ -3,4 +3,7 @@ export type MediaFacts =
 	| { kind: 'audio'; durationSeconds: number }
 	| { error: string };
 
-export { pngChecksum, mediaFacts } from '../services/check-run-service/mediaFacts';
+export {
+	pngChecksum,
+	mediaFacts
+} from '../workflows/run-verify/verification-service/check-run-service/mediaFacts';

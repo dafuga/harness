@@ -1,4 +1,4 @@
-import type { RelayManageAdapter } from '../adapters/RelayManageAdapter';
+import type { RelayManageAdapter } from '../routes/api/[...path]/RelayManageAdapter';
 
 export interface HubRemoteRuntime {
 	/** The exact relay origin a registering host is told to connect to. */

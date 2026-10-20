@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/services/projection-cache-service/projectionCachePurge.ts",
+			"packages/desktop/src/lib/desktop-initialization/projection-cache-service/projectionCachePurge.ts",
 			"packages/desktop/src/utils/projectionCachePurge.ts"
 		],
 		"symbols": ["projectionCachePurge", "projectionCachePurge"]

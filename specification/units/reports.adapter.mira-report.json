@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/adapters/MiraReportAdapter.ts"],
+		"source": ["packages/reports/src/services/report-command-service/MiraReportAdapter.ts"],
 		"symbols": ["MiraReportAdapter", "MiraReportAdapter.ingest"]
 	},
 	"contract": {
@@ -47,11 +47,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/adapters/MiraReportAdapter.ts",
+		"entry": "packages/reports/src/services/report-command-service/MiraReportAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/adapters/MiraReportAdapter.ts"
+				"entry": "packages/reports/src/services/report-command-service/MiraReportAdapter.ts"
 			}
 		]
 	},

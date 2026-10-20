@@ -50,4 +50,4 @@ export async function revisionInfo(git: Git, requested?: string): Promise<Revisi
 	};
 }
 
-export { planHistory } from '../services/planning-service/planHistory';
+export { planHistory } from '../lib/planning/planning-service/planHistory';

@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/planning/src/services/planning-service/planThread.ts",
+			"packages/planning/src/lib/planning/planning-service/planThread.ts",
 			"packages/planning/src/utils/planThread.ts"
 		],
 		"symbols": ["planThread", "append", "planThread", "append"]

@@ -11,4 +11,4 @@ export function replayVideoKey(report: Report) {
 		.digest('hex');
 }
 
-export { replayVideo } from '../services/replay-video-service/replayVideo';
+export { replayVideo } from '../routes/api/replay-video/replay-video-service/replayVideo';

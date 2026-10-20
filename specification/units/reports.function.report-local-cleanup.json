@@ -8,10 +8,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/services/report-command-service/report-retention-service/reportLocalCleanup.ts",
 			"packages/reports/src/services/report-retention-service/reportLocalCleanup.ts",
 			"packages/reports/src/utils/reportLocalCleanup.ts"
 		],
-		"symbols": ["reportLocalCleanup", "reportLocalCleanup"]
+		"symbols": ["reportLocalCleanup", "reportLocalCleanup", "reportLocalCleanup"]
 	},
 	"contract": {
 		"origin": "declared",

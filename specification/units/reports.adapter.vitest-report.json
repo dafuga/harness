@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/adapters/VitestReportAdapter.ts"],
+		"source": ["packages/reports/src/services/report-command-service/VitestReportAdapter.ts"],
 		"symbols": ["VitestReportAdapter", "VitestReportAdapter.ingest"]
 	},
 	"contract": {
@@ -48,11 +48,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/adapters/VitestReportAdapter.ts",
+		"entry": "packages/reports/src/services/report-command-service/VitestReportAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/adapters/VitestReportAdapter.ts"
+				"entry": "packages/reports/src/services/report-command-service/VitestReportAdapter.ts"
 			}
 		]
 	},

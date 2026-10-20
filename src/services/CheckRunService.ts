@@ -1,5 +1,5 @@
 export {
-	type RunContext,
-	type CheckOutcome,
+	RunContext,
+	CheckOutcome,
 	CheckRunService
-} from './check-run-service/CheckRunService';
+} from '../workflows/run-verify/verification-service/CheckRunService';

@@ -5,7 +5,7 @@
 	import { createWorkspaceStore } from '../lib/stores/workspace.svelte';
 	import { remoteContext } from '../models/Environment.types';
 	import type { EnvironmentHost, EnvironmentKind } from '../models/Environment.types';
-	import { selectEnvironment } from '../utils/selectEnvironment';
+	import { selectEnvironment } from '../utils/select-environment/selectEnvironment';
 	import { isWorkspacePath } from '../utils/workspaceRoute';
 	import HostedConnection from '../components/HostedConnection.svelte';
 	import ProjectGate from '../components/ProjectGate.svelte';

@@ -16,4 +16,4 @@ export function hubThreads(threads: CommittedThread[], offset = 0): ThreadInfo[]
 		}));
 }
 
-export { hubMessages } from '../services/hub-projection-service/hubThreads';
+export { hubMessages } from '../routes/api/[...path]/hub-projection-service/hubThreads';

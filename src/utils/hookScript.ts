@@ -24,4 +24,4 @@ export function stageFile(stage: string): string {
 	return stage === 'pre-push' ? enabledFile : `${enabledFile}-${stage}`;
 }
 
-export { hookScript, managedHook } from '../services/hook-install-service/hookScript';
+export { hookScript, managedHook } from '../cli/program/hook-install-service/hookScript';

@@ -63,6 +63,8 @@ These rules apply only to this Harness repository, including requests made in an
 - A helper with one consumer belongs in that consumer's folder, beside the component, service or function that owns it. Keep private helpers out of codebase-wide utility folders. Promote them into shared folders only when a second distinct consumer needs them; move them back when only one remains.
 - Preserve registered identities, contracts and history when relocating helpers. Update imports, tests and owned source together. Mixed shared/private modules must be split by responsibility rather than moving a shared helper into one consumer's folder. An unused export has no proven owner; check public API contracts and dynamic/runtime use before removing or relocating it.
 
+- Shared service catalogs require two distinct active runtime owner units. A single-consumer service implementation belongs inside its owning component or code area, with its private helpers. Types, unused imports, repeated references, forwarding exports and indirect page reachability do not establish sharing. Preserve registered identities, contracts and supported public entries when relocating; inspect dynamic/runtime contracts before assigning an unused export to an owner.
+
 - Keep Harness, its coding agents and active checks below the combined 10 GB RAM target. Measure attributed process memory; report shared or unmeasurable usage separately.
 - Run one broad check, build or history prebuild at a time. Use focused standardized tests while editing and reuse running servers.
 - Vitest defaults to one worker across workspaces. Increasing concurrency requires measuring the combined peak first. Stop only verified task-owned leftover processes; preserve other sessions and servers.

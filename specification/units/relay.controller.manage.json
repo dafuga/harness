@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/relay/src/controllers/ManageController.ts"],
+		"source": ["packages/relay/src/lib/host-runtime/ManageController.ts"],
 		"symbols": ["ManageController", "ManageController.constructor", "ManageController.handle"]
 	},
 	"contract": {
@@ -90,11 +90,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/controllers/ManageController.ts",
+		"entry": "packages/relay/src/lib/host-runtime/ManageController.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/controllers/ManageController.ts"
+				"entry": "packages/relay/src/lib/host-runtime/ManageController.ts"
 			}
 		]
 	},

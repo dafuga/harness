@@ -1,1 +1,1 @@
-export { trustedSender } from '../lib/initialize-desktop/trustedSender';
+export { trustedSender } from '../lib/desktop-initialization/initialize-desktop/trustedSender';

@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/claude-query-service/ClaudeQueryService.ts"],
-		"symbols": ["ClaudeQueryService", "ClaudeQueryService.constructor", "ClaudeQueryService.run"]
+		"source": [
+			"src/cli/program/codex-gateway-service/claude-query-service/ClaudeQueryService.ts",
+			"src/services/claude-query-service/ClaudeQueryService.ts"
+		],
+		"symbols": [
+			"ClaudeQueryService",
+			"ClaudeQueryService.constructor",
+			"ClaudeQueryService.run",
+			"ClaudeQueryService"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -68,11 +76,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/claude-query-service/ClaudeQueryService.ts",
+		"entry": "src/cli/program/codex-gateway-service/claude-query-service/ClaudeQueryService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/claude-query-service/ClaudeQueryService.ts"
+				"entry": "src/cli/program/codex-gateway-service/claude-query-service/ClaudeQueryService.ts"
 			}
 		]
 	},

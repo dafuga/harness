@@ -2,7 +2,7 @@ import { resolve } from 'node:path';
 import { HttpRuntimeAdapter } from '../adapters/HttpRuntimeAdapter';
 import { ModuleRuntimeAdapter } from '../adapters/ModuleRuntimeAdapter';
 import { ProcessRuntimeAdapter } from '../adapters/process-runtime-adapter/ProcessRuntimeAdapter';
-import { WasmRuntimeAdapter } from '../adapters/WasmRuntimeAdapter';
+import { WasmRuntimeAdapter } from '../adapters/wasm-runtime-adapter/WasmRuntimeAdapter';
 import { representativeWorkload } from '../core/benchmarkTypes';
 import { fail } from '../core/errors';
 import type { RuntimeOptions, UnitRuntime } from '../core/runtimeTypes';

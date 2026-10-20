@@ -8,11 +8,13 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/cli/program/run-kernel/impactKernel.ts",
 			"src/utils/impact-kernel/impactKernel.ts",
 			"src/utils/impactKernel.ts",
 			"src/workflows/run-kernel/impactKernel.ts"
 		],
 		"symbols": [
+			"impactKernelText",
 			"impactKernel",
 			"impactKernelPortable",
 			"impactKernel",

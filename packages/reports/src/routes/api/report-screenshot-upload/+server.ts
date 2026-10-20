@@ -1,9 +1,6 @@
 import { json, type RequestEvent } from '@sveltejs/kit';
 import { R2ScreenshotStoreAdapter } from '../../../adapters/R2ScreenshotStoreAdapter';
-import {
-	ScreenshotUploadService,
-	type ScreenshotUploadInput
-} from '../../../services/ScreenshotUploadService';
+import { ScreenshotUploadService, type ScreenshotUploadInput } from './ScreenshotUploadService';
 import { repository } from '../../../utils/reportHttp';
 
 function requestProblem(request: Request, url: URL) {

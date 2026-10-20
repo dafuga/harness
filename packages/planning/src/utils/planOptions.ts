@@ -28,6 +28,6 @@ export function approvable(version: DesignVersion, option?: string): ImageBindin
 	return version.options.find((item) => item.id === option)?.images ?? null;
 }
 
-export { planOptions } from '../services/planning-service/planOptions';
+export { planOptions } from '../lib/planning/planning-service/planOptions';
 export { checkOptions } from './plan-read/checkOptions';
 export { heldBy } from './plan-design/heldBy';

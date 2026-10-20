@@ -32,5 +32,5 @@ export function safeEqual(left: string, right: string): boolean {
 }
 
 export { authSecrets } from '../lib/server/auth/authSecrets';
-export { userCode, normalizeCode } from '../services/native-handoff-service/authSecrets';
+export { userCode, normalizeCode } from '../lib/server/auth/native-handoff-service/authSecrets';
 export { emailCode } from '../services/email-proof-service/authSecrets';

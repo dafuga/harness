@@ -1,7 +1,7 @@
 import type { AgentRunner, ImageGenerator } from './AgentRunner.types';
 import type { EntityDetail, Revision } from './Desktop.types';
 import type { RunEvent, RunRequest } from './DesktopBridge.types';
-import type { ProjectSessionService } from '../services/ProjectSessionService';
+import type { ProjectSessionService } from '../services/project-session-service/ProjectSessionService';
 import type { PlanningPort } from './PlanningPort.types';
 export interface RunContext {
 	id: string;

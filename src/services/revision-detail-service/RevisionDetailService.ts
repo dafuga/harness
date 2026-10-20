@@ -11,10 +11,13 @@ import type { MediaPlacer } from '../../utils/mediaPlace';
 import { recordView, type RecordView, type ResolvedMedia } from '../../utils/recordView';
 import { revisionReasons, type RevisionReasons } from '../../utils/revisionReasons';
 import { revisionRegistry, type RevisionRegistry } from '../../utils/revisionRegistry';
-import type { AttachedRecord } from '../attached-record-service/AttachedRecordService';
-import type { CommitStatus, HistoryStatusService } from '../HistoryStatusService';
+import type { AttachedRecord } from '../history-status-service/attached-record-service/AttachedRecordService';
+import type {
+	CommitStatus,
+	HistoryStatusService
+} from '../history-status-service/HistoryStatusService';
 import type { StoredSide } from '../../utils/sideImpact';
-import * as sourceImpact from '../source-impact-service/SourceImpactService';
+import * as sourceImpact from './source-impact-service/SourceImpactService';
 import { RegressionProofRepository } from '../../repositories/RegressionProofRepository';
 import { regressionHistory } from '../../utils/regressionHistory';
 import type { RegressionView } from '../../core/regressionTypes';

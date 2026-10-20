@@ -1,6 +1,6 @@
-import type { HubAgentPort } from '../controllers/HubAgentController';
+import type { HubAgentPort } from '../routes/api/[...path]/hub-api-controller/HubAgentController';
 import type { CollaborationApi } from 'collaboration';
-import type { HubProjectionService } from '../services/hub-projection-service/HubProjectionService';
+import type { HubProjectionService } from '../routes/api/[...path]/hub-projection-service/HubProjectionService';
 import type { HubAuth } from '../lib/server/auth/auth';
 import type { HubRemoteRuntime } from './hubRemote';
 

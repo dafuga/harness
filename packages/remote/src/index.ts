@@ -29,7 +29,7 @@ export {
 	randomCredential,
 	normalizeCode
 } from './utils/remoteIdentity';
-export { pairingCode } from './services/host-pairing-service/remoteIdentity';
+export { pairingCode } from '../../desktop/src/services/remote-host-service/host-pairing-service/remoteIdentity';
 export { requestDigest } from './services/wire-session-service/remoteIdentity';
 export * from './utils/remoteKeys';
 export { type SessionKeyInput } from './utils/sessionKeys';
@@ -58,8 +58,8 @@ export {
 	type SecureChannelOptions,
 	SecureChannelService
 } from './services/secure-channel-service/SecureChannelService';
-export * from './services/ResponseLedgerService';
-export * from './services/EventLogService';
+export * from './services/wire-session-service/ResponseLedgerService';
+export * from './services/wire-session-service/EventLogService';
 export * from './services/WireClientService';
 export {
 	type WireSessionOptions,
@@ -72,7 +72,7 @@ export {
 	type HostPairingFrame,
 	type HostPairingApproved,
 	HostPairingService
-} from './services/host-pairing-service/HostPairingService';
+} from '../../desktop/src/services/remote-host-service/host-pairing-service/HostPairingService';
 export {
 	type DevicePairingInput,
 	type ScanningDevice,

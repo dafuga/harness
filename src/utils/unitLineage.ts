@@ -3,4 +3,4 @@ export interface LineageSubject {
 	symbols: string[];
 }
 
-export { unitLineage } from '../services/unit-index-service/unitLineage';
+export { unitLineage } from '../workflows/load-units/unit-index-service/unitLineage';

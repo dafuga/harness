@@ -1,7 +1,7 @@
 import { DurableObject } from 'cloudflare:workers';
-import { PublicRelayController } from './controllers/PublicRelayController';
+import { PublicRelayController } from './lib/relay/PublicRelayController';
 import type { RelayEnv } from './models/RelayHost.types';
-import { hostRuntime, type HostRuntime } from './utils/hostRuntime';
+import { hostRuntime, type HostRuntime } from './lib/host-runtime/hostRuntime';
 
 /**
  * One per host (`env.REMOTE_HOSTS.idFromName(hostId)`): its registration, its devices, its

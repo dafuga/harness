@@ -1,9 +1,9 @@
 import { createRemoteJWKSet } from 'jose';
-import { createResendDelivery } from '../../../adapters/ResendEmailAdapter';
+import { createResendDelivery } from './ResendEmailAdapter';
 import type { AuthEnv, EmailProofDelivery, HubAuth } from '../../../models/HubAuth.types';
 import type { AuthStore } from '../../../models/HubAuthStore.types';
-import { GOOGLE_JWKS_URL, GoogleIdentityService } from '../../../services/GoogleIdentityService';
-import type { CachedInstallationToken } from '../../../services/installation-token-service/InstallationTokenService';
+import { GOOGLE_JWKS_URL, GoogleIdentityService } from './GoogleIdentityService';
+import type { CachedInstallationToken } from './installation-token-service/InstallationTokenService';
 import { authConfig } from './authConfig';
 import { authDisabled } from './authDisabled';
 import { composeHubAuth } from './composeHubAuth';
@@ -33,11 +33,11 @@ export function createHubAuth(
 	return composeHubAuth({ config, store, google, fetch: fetcher, now, tokenCache, delivery });
 }
 
-export { createD1AuthStore } from '../../../adapters/d1-auth-store-adapter/D1AuthStoreAdapter';
+export { createD1AuthStore } from '../../../routes/api/[...path]/d1-auth-store-adapter/D1AuthStoreAdapter';
 
-export { createResendDelivery } from '../../../adapters/ResendEmailAdapter';
+export { createResendDelivery } from './ResendEmailAdapter';
 
-export { type D1Like } from '../../../adapters/d1-auth-store-adapter/D1AuthStoreAdapter';
+export { type D1Like } from '../../../routes/api/[...path]/d1-auth-store-adapter/D1AuthStoreAdapter';
 
 export { AuthFailure } from '../../../utils/authFail';
 

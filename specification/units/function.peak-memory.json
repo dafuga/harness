@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/kernel-benchmark-service/peakMemory.ts", "src/utils/peakMemory.ts"],
+		"source": [
+			"src/cli/program/run-kernel-bench/kernel-benchmark-service/peakMemory.ts",
+			"src/utils/peakMemory.ts"
+		],
 		"symbols": ["peakMemory", "PeakMemory", "peakMemory"]
 	},
 	"contract": {

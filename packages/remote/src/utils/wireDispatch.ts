@@ -1,5 +1,5 @@
 import type { RemoteError, RemoteLimits, RemoteMethod, WireRequest } from '../models/Remote.types';
-import type { ResponseLedgerService } from '../services/ResponseLedgerService';
+import type { ResponseLedgerService } from '../services/wire-session-service/ResponseLedgerService';
 
 export interface WireDispatchContext {
 	attached: boolean;

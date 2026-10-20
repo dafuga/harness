@@ -81,4 +81,4 @@ export function roundMeasurements(result: RoundResult, where: string) {
 	];
 }
 
-export { benchSamples } from '../services/kernel-benchmark-service/benchSamples';
+export { benchSamples } from '../cli/program/run-kernel-bench/kernel-benchmark-service/benchSamples';

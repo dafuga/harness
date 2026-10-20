@@ -1,1 +1,1 @@
-export { projectionCacheDiscard } from '../services/projection-cache-service/projectionCacheDiscard';
+export { projectionCacheDiscard } from '../lib/desktop-initialization/projection-cache-service/projectionCacheDiscard';

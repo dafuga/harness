@@ -10,4 +10,7 @@ export interface ProjectProposal {
 	contract: ProposedContract;
 }
 
-export { projectProposal, proposalPrompt } from '../services/project-run-service/projectProposal';
+export {
+	projectProposal,
+	proposalPrompt
+} from '../services/desktop-run-service/project-run-service/projectProposal';

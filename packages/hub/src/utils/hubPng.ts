@@ -1,1 +1,1 @@
-export { hubPng } from '../services/hub-projection-service/hubPng';
+export { hubPng } from '../routes/api/[...path]/hub-projection-service/hubPng';

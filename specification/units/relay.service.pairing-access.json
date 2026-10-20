@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/relay/src/services/PairingAccessService.ts"],
+		"source": ["packages/relay/src/lib/host-runtime/PairingAccessService.ts"],
 		"symbols": [
 			"PairingAccessService",
 			"PairingAccessService.constructor",
@@ -88,11 +88,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/services/PairingAccessService.ts",
+		"entry": "packages/relay/src/lib/host-runtime/PairingAccessService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/services/PairingAccessService.ts"
+				"entry": "packages/relay/src/lib/host-runtime/PairingAccessService.ts"
 			}
 		]
 	},

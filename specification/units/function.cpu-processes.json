@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/adapters/cpu-process-adapter/cpuProcesses.ts", "src/utils/cpuProcesses.ts"],
-		"symbols": ["cpuProcesses", "CpuRole", "CpuProcess", "cpuProcesses"]
+		"source": [
+			"src/adapters/cpu-process-adapter/cpuProcesses.ts",
+			"src/services/cpu-usage-service/cpu-process-adapter/cpuProcesses.ts",
+			"src/utils/cpuProcesses.ts"
+		],
+		"symbols": ["cpuProcesses", "cpuProcesses", "CpuRole", "CpuProcess", "cpuProcesses"]
 	},
 	"contract": {
 		"origin": "declared",

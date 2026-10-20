@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/hook-install-service/HookInstallService.ts"],
+		"source": [
+			"src/cli/program/hook-install-service/HookInstallService.ts",
+			"src/services/hook-install-service/HookInstallService.ts"
+		],
 		"symbols": [
 			"HookStageStatus",
 			"HookStatus",
@@ -15,7 +18,10 @@
 			"HookInstallService.constructor",
 			"HookInstallService.status",
 			"HookInstallService.install",
-			"HookInstallService.uninstall"
+			"HookInstallService.uninstall",
+			"HookInstallService",
+			"HookStageStatus",
+			"HookStatus"
 		]
 	},
 	"contract": {
@@ -70,11 +76,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/hook-install-service/HookInstallService.ts",
+		"entry": "src/cli/program/hook-install-service/HookInstallService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/hook-install-service/HookInstallService.ts"
+				"entry": "src/cli/program/hook-install-service/HookInstallService.ts"
 			}
 		]
 	},

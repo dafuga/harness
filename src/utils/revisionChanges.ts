@@ -31,4 +31,4 @@ export interface ChangesInput {
 	base?: string | null;
 }
 
-export { revisionChanges } from '../services/history-index-service/revisionChanges';
+export { revisionChanges } from '../cli/program/history-index-service/revisionChanges';

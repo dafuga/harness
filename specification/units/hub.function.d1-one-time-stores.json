@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/adapters/d1-auth-store-adapter/d1OneTimeStores.ts",
+			"packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1OneTimeStores.ts",
 			"packages/hub/src/utils/d1OneTimeStores.ts"
 		],
 		"symbols": ["d1OneTimeStores", "D1OneTimeStores", "d1OneTimeStores"]

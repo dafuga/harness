@@ -8,10 +8,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/services/report-command-service/report-server-service/reportServerRecord.ts",
 			"packages/reports/src/services/report-server-service/reportServerRecord.ts",
 			"packages/reports/src/utils/reportServerRecord.ts"
 		],
 		"symbols": [
+			"stopReportServer",
 			"stopReportServer",
 			"ServerRecord",
 			"StoppedServer",

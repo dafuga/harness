@@ -8,12 +8,14 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/planning/src/lib/planning/planning-service/planOptions.ts",
 			"packages/planning/src/services/planning-service/planOptions.ts",
 			"packages/planning/src/utils/plan-design/heldBy.ts",
 			"packages/planning/src/utils/plan-read/checkOptions.ts",
 			"packages/planning/src/utils/planOptions.ts"
 		],
 		"symbols": [
+			"planOptions",
 			"planOptions",
 			"heldBy",
 			"checkOptions",

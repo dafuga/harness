@@ -10,4 +10,4 @@ export interface DesktopIpcPort {
 	removeHandler(channel: string): unknown;
 }
 
-export { desktopIpc } from '../lib/initialize-desktop/desktopIpc';
+export { desktopIpc } from '../lib/desktop-initialization/initialize-desktop/desktopIpc';

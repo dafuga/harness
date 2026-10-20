@@ -49,4 +49,4 @@ export function reportServerRecord(root: string, port: number) {
 	};
 }
 
-export { stopReportServer } from '../services/report-server-service/reportServerRecord';
+export { stopReportServer } from '../services/report-command-service/report-server-service/reportServerRecord';

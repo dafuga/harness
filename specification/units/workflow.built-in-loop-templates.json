@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/builtInLoopTemplates.ts"],
+		"source": ["src/workflows/loop-templates/builtInLoopTemplates.ts"],
 		"symbols": ["builtInTemplates"]
 	},
 	"contract": {
@@ -30,11 +30,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/builtInLoopTemplates.ts",
+		"entry": "src/workflows/loop-templates/builtInLoopTemplates.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/builtInLoopTemplates.ts"
+				"entry": "src/workflows/loop-templates/builtInLoopTemplates.ts"
 			}
 		]
 	},

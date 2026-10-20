@@ -1,4 +1,4 @@
-import { AgentSettingsAdapter } from '../../adapters/AgentSettingsAdapter';
+import { AgentSettingsAdapter } from './AgentSettingsAdapter';
 import { defaultDesignCount, designCounts } from '../../utils/composeModes';
 
 /** One reactive device preference serves project and thread composers alike. */

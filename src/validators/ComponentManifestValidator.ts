@@ -1,6 +1,6 @@
 import type { z } from 'zod';
 import { componentManifestSchema, type ComponentManifest } from '../core/unitTypes';
-import { derivedResponsibility } from '../services/unit-index-service/derivedResponsibility';
+import { derivedResponsibility } from '../workflows/load-units/unit-index-service/derivedResponsibility';
 
 export interface ManifestValidation<T> {
 	value?: T;

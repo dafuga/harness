@@ -8,10 +8,14 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubEvidenceScope.ts",
 			"packages/hub/src/services/hub-evidence-service/hubEvidenceScope.ts",
 			"packages/hub/src/utils/hubEvidenceScope.ts"
 		],
 		"symbols": [
+			"hubEvidenceContext",
+			"hubEvidencePins",
+			"hubEvidenceScope",
 			"hubEvidenceContext",
 			"hubEvidencePins",
 			"hubEvidenceScope",

@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/adapters/EvidenceRefsAdapter.ts"],
+		"source": [
+			"packages/desktop/src/adapters/EvidenceRefsAdapter.ts",
+			"packages/desktop/src/lib/desktop-bridge/EvidenceRefsAdapter.ts"
+		],
 		"symbols": [
+			"notesRef",
+			"evidenceRef",
+			"EvidenceRefsAdapter",
+			"PinnedRevisions",
+			"CurrentRefs",
 			"PinnedRevisions",
 			"CurrentRefs",
 			"notesRef",
@@ -71,11 +79,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/adapters/EvidenceRefsAdapter.ts",
+		"entry": "packages/desktop/src/lib/desktop-bridge/EvidenceRefsAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/adapters/EvidenceRefsAdapter.ts"
+				"entry": "packages/desktop/src/lib/desktop-bridge/EvidenceRefsAdapter.ts"
 			}
 		]
 	},

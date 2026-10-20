@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/adapters/d1-auth-store-adapter/d1GrantStore.ts",
+			"packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1GrantStore.ts",
 			"packages/hub/src/utils/d1GrantStore.ts"
 		],
 		"symbols": ["ERASE", "EXPIRE_GRANTS", "d1GrantStore", "d1GrantStore", "ERASE", "EXPIRE_GRANTS"]

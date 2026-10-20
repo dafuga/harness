@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/middleware/HubResponsesMiddleware.ts"],
-		"symbols": ["HubResponsesMiddleware", "HubResponsesMiddleware.handle"]
+		"source": [
+			"packages/hub/src/hooks.server/HubResponsesMiddleware.ts",
+			"packages/hub/src/middleware/HubResponsesMiddleware.ts"
+		],
+		"symbols": ["HubResponsesMiddleware", "HubResponsesMiddleware.handle", "HubResponsesMiddleware"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -29,11 +32,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/middleware/HubResponsesMiddleware.ts",
+		"entry": "packages/hub/src/hooks.server/HubResponsesMiddleware.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/middleware/HubResponsesMiddleware.ts"
+				"entry": "packages/hub/src/hooks.server/HubResponsesMiddleware.ts"
 			}
 		]
 	},

@@ -11,7 +11,7 @@ type Relations = Pick<ExplorerRelations, 'pages' | 'usedBy' | 'components'>;
 
 export interface CatalogRow {
 	helper?: NonNullable<ExplorerEntity['unit']['helpers']>[number];
-	/** Up to three consumers: per-export helper users, or service users with page fallback. */
+	/** Up to three consumers: resolved distinct runtime owners. */
 	usedIn?: Array<Pick<ExplorerEntity, 'id' | 'name' | 'category'>>;
 	entity: ExplorerEntity;
 	id: string;
@@ -81,13 +81,6 @@ function rowOf(entity: ExplorerEntity, related: Relations): CatalogRow {
 		entity,
 		id: entity.id,
 		name: serviceSymbol ?? entity.name,
-		...(entity.category === 'services'
-			? {
-					usedIn: (related.usedBy.length ? related.usedBy : related.pages)
-						.slice(0, 3)
-						.map(({ id, name, category }) => ({ id, name, category }))
-				}
-			: {}),
 		summary: entity.purpose,
 		changed: own.includes(entity.change ?? ''),
 		shared: isShared(related, entity.unit),
@@ -146,6 +139,16 @@ export function entityCatalog(
 		.filter((entity) => entity.category === category)
 		.flatMap((entity) => {
 			const row = rowOf(entity, relations(entity.id));
+			if (category === 'services') {
+				if (entity.change === 'removed') return [];
+				const usedIn = [...new Set((entity.unit.serviceConsumers ?? []).map((user) => user.unit))]
+					.filter((id) => id !== entity.id)
+					.map((id) => byId.get(id))
+					.filter((owner): owner is ExplorerEntity => Boolean(owner && owner.change !== 'removed'))
+					.slice(0, 3)
+					.map(({ id, name, category }) => ({ id, name, category }));
+				return usedIn.length >= 2 ? [{ ...row, shared: true, usedIn }] : [];
+			}
 			if (category !== 'functions') return [row];
 			const helpers = (entity.unit.helpers ?? []).filter(sharedHelper);
 			return helpers

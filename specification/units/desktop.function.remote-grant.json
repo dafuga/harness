@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/adapters/capacitor-bridge-adapter/remoteGrant.ts",
-			"packages/desktop/src/utils/remoteGrant.ts"
+			"packages/desktop/src/utils/remoteGrant.ts",
+			"packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/remoteGrant.ts"
 		],
-		"symbols": ["remoteGrant", "remoteGrant"]
+		"symbols": ["remoteGrant", "remoteGrant", "remoteGrant"]
 	},
 	"contract": {
 		"origin": "declared",

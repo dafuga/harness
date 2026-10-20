@@ -6,7 +6,7 @@ import { PNG } from 'pngjs';
 import { RunCancelled } from '../src/models/AgentRunner.types';
 import type { AgentRunner, AgentTurn, ImageGenerator } from '../src/models/AgentRunner.types';
 import type { ProviderId, ProviderState } from '../src/models/Desktop.types';
-import { ProjectSessionService } from '../src/services/ProjectSessionService';
+import { ProjectSessionService } from '../src/services/project-session-service/ProjectSessionService';
 
 const model = 'fixture-model';
 const git = (root: string, ...args: string[]) =>

@@ -9,4 +9,7 @@ export interface HostRequest {
 	prefix?: string;
 }
 
-export { installableHost, hostWarnings } from '../services/console-install-service/installableHost';
+export {
+	installableHost,
+	hostWarnings
+} from '../cli/program/console-install-service/installableHost';

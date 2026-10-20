@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/services/RemoteDeviceSessionsService.ts"],
+		"source": [
+			"packages/desktop/src/services/RemoteDeviceSessionsService.ts",
+			"packages/desktop/src/services/remote-host-service/RemoteDeviceSessionsService.ts"
+		],
 		"symbols": [
+			"RemoteDeviceSessionsService",
+			"DeviceAddress",
+			"RemoteDeviceSessionsOptions",
 			"DeviceAddress",
 			"RemoteDeviceSessionsOptions",
 			"RemoteDeviceSessionsService",
@@ -109,11 +115,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/RemoteDeviceSessionsService.ts",
+		"entry": "packages/desktop/src/services/remote-host-service/RemoteDeviceSessionsService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/RemoteDeviceSessionsService.ts"
+				"entry": "packages/desktop/src/services/remote-host-service/RemoteDeviceSessionsService.ts"
 			}
 		]
 	},

@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/UnitBenchmarkService.ts"],
+		"source": ["src/workflows/run-budget/UnitBenchmarkService.ts"],
 		"symbols": [
 			"UnitBenchmark",
 			"UnitBenchmarkService",
@@ -92,11 +92,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/UnitBenchmarkService.ts",
+		"entry": "src/workflows/run-budget/UnitBenchmarkService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/UnitBenchmarkService.ts"
+				"entry": "src/workflows/run-budget/UnitBenchmarkService.ts"
 			}
 		]
 	},

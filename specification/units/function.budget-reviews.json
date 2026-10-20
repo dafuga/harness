@@ -8,11 +8,13 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/cli/program/history-index-service/budgetReviews.ts",
 			"src/services/history-index-service/budgetReviews.ts",
 			"src/utils/budgetReviews.ts",
 			"src/utils/revision-registry/frozenLimits.ts"
 		],
 		"symbols": [
+			"budgetReviews",
 			"budgetReviews",
 			"BudgetReview",
 			"EmittedLimits",

@@ -3,7 +3,7 @@
 	"id": "function.helper-consumers",
 	"kind": "function",
 	"title": "helperConsumers",
-	"responsibility": "Counts distinct active components, services and functions using each exported helper at one revision.",
+	"responsibility": "Counts distinct runtime owner units of service exports and distinct callable consumers of pure helpers at the selected revision.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -24,7 +24,7 @@
 			{
 				"name": "helperConsumers.units",
 				"type": "Unit[]",
-				"description": "Registered units and their owned source. Each helper receives distinct actual component, service or named-function consumers in this array."
+				"description": "Registered units and their owned source. Helpers receive distinct callable consumers; services receive distinct active runtime owner units. Types, unused imports and forwarding exports do not count."
 			}
 		],
 		"outputs": [

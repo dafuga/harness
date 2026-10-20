@@ -16,6 +16,12 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 10. Shared browser fixtures must preserve lazy setup: when their dependencies change, run an API-only case with an unavailable browser executable alongside actual browser cases. Characterize diagnostics before page announcement and overlapping context/page delivery without duplicates.
 11. Helpers are pure synchronous value transformations with explicit reviewed `@pure` contracts and no I/O, mutation, hidden state, clocks or randomness. Service classes and models have separate catalog categories. A shared helper needs at least two distinct component, service or named-function consumers. Keep a single-consumer helper in its owner's folder. Preserve unit identity/history and update imports, tests and owned source when moving it; split mixed shared/private modules. Check public API and runtime references before changing an unused export. When moving definitions behind forwarding exports, extend the owning standardized test to cold-import and call both public and owner entries in fresh runtimes; a warm test-module graph does not prove initialization safety. For moved import.meta.url code, test source and packaged layouts separately; bundled output-relative addresses must keep their artifact paths. Before a broad suite for moves reachable from public SDK exports, run `bun scripts/build-api.ts --types-only`; retain the published import and type-entry addresses.
 
+## Service Ownership
+
+A shared service needs at least two distinct active runtime owner units. Single-consumer implementations and their private helpers live inside the owner code area. Count runtime references to exported operations or classes; exclude types, unused imports, repeated references by one owner, forwarding modules and indirect page reachability. Keep public entry and route contracts stable, preserve registered identity and source history, and review dynamic/runtime use before relocating an export with no statically proven owner.
+
+When relocating source, rewrite module specifiers and source-layout URLs only. Ordinary string literals, including traversal checks, stay identical. Compare declaration ASTs before and after; template contents and operators are part of that proof.
+
 ## Helper Naming Review
 
 Before adding, cataloging or accepting a helper, read its implementation, state the

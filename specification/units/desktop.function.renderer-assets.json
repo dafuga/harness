@@ -8,10 +8,18 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/lib/desktop-initialization/initialize-desktop/rendererAssets.ts",
 			"packages/desktop/src/lib/initialize-desktop/rendererAssets.ts",
 			"packages/desktop/src/utils/rendererAssets.ts"
 		],
-		"symbols": ["rendererPolicy", "rendererAssets", "rendererPolicy", "rendererAssets"]
+		"symbols": [
+			"rendererPolicy",
+			"rendererAssets",
+			"rendererPolicy",
+			"rendererAssets",
+			"rendererPolicy",
+			"rendererAssets"
+		]
 	},
 	"contract": {
 		"origin": "declared",

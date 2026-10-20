@@ -5,7 +5,7 @@ import type {
 } from '../../models/PlanningBridge.types';
 import type { PlanningErrorCode } from '../../models/PlanningView.types';
 import { planGit } from './planGit';
-import { planningService } from '../../services/planning-service/PlanningService';
+import { planningService } from './planning-service/PlanningService';
 
 export type * from '../../models/Planning.types';
 
@@ -47,6 +47,6 @@ export { planCommit } from '../../utils/plan-write/planCommit';
 
 export { planIdentity } from '../../utils/planIdentity';
 
-export { planOptions } from '../../services/planning-service/planOptions';
+export { planOptions } from './planning-service/planOptions';
 
-export { planReads } from '../../services/planning-service/planReads';
+export { planReads } from './planning-service/planReads';

@@ -13,4 +13,4 @@ export const planningIgnores = [
 	`**/src/${category}/*/threads/**/*`
 ]);
 
-export { planRegistry } from '../services/planning-service/planRegistry';
+export { planRegistry } from '../lib/planning/planning-service/planRegistry';

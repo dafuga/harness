@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/NativePickerBridgeService.ts"],
+		"source": [
+			"src/services/NativePickerBridgeService.ts",
+			"src/services/native-picker-bridge-service/NativePickerBridgeService.ts"
+		],
 		"symbols": [
+			"NativePickerBridgeService",
 			"NativePickerBridgeService",
 			"NativePickerBridgeService.constructor",
 			"NativePickerBridgeService.send"
@@ -70,11 +74,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/NativePickerBridgeService.ts",
+		"entry": "src/services/native-picker-bridge-service/NativePickerBridgeService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/NativePickerBridgeService.ts"
+				"entry": "src/services/native-picker-bridge-service/NativePickerBridgeService.ts"
 			}
 		]
 	},

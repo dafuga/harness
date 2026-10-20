@@ -8,10 +8,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/hub/src/routes/api/[...path]/hub-projection-service/hubArtifactCommit.ts",
 			"packages/hub/src/services/hub-projection-service/hubArtifactCommit.ts",
 			"packages/hub/src/utils/hubArtifactCommit.ts"
 		],
-		"symbols": ["hubArtifactCommit", "hubArtifactCommit"]
+		"symbols": ["hubArtifactCommit", "hubArtifactCommit", "hubArtifactCommit"]
 	},
 	"contract": {
 		"origin": "declared",

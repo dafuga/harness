@@ -15,10 +15,13 @@ export type {
 	TransportFailure,
 	UnitRuntime
 } from '../core/runtimeTypes';
-export { HandlerRuntimeAdapter } from '../adapters/HandlerRuntimeAdapter';
+export { HandlerRuntimeAdapter } from '../../packages/reports/src/components/harness/harness-compare/HandlerRuntimeAdapter';
 export { HttpRuntimeAdapter } from '../adapters/HttpRuntimeAdapter';
-export { WasmModuleRuntimeAdapter } from '../adapters/WasmModuleRuntimeAdapter';
-export type { WasmLoader, WasmSource } from '../adapters/WasmModuleRuntimeAdapter';
+export { WasmModuleRuntimeAdapter } from '../adapters/wasm-runtime-adapter/WasmModuleRuntimeAdapter';
+export type {
+	WasmLoader,
+	WasmSource
+} from '../adapters/wasm-runtime-adapter/WasmModuleRuntimeAdapter';
 export { runtimeFetch } from '../utils/runtimeFetch';
 export { runtimeReply } from '../utils/runtimeReply';
 export type { RuntimeReply } from '../utils/runtimeReply';

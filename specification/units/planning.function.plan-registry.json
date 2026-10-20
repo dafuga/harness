@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/planning/src/services/planning-service/planRegistry.ts",
+			"packages/planning/src/lib/planning/planning-service/planRegistry.ts",
 			"packages/planning/src/utils/planRegistry.ts"
 		],
 		"symbols": ["planRegistry", "planningIgnores", "planRegistry"]

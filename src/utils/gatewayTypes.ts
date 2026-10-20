@@ -37,4 +37,4 @@ export interface GatewaySession {
 	replays: Map<string, string>;
 }
 
-export { gatewayTypes } from '../repositories/codex-session-repository/gatewayTypes';
+export { gatewayTypes } from '../cli/program/codex-gateway-service/codex-session-repository/gatewayTypes';

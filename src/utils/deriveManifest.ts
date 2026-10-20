@@ -12,4 +12,4 @@ export interface DeriveInput {
 	previous?: ComponentManifest;
 }
 
-export { deriveManifest } from '../services/unit-index-service/deriveManifest';
+export { deriveManifest } from '../workflows/load-units/unit-index-service/deriveManifest';

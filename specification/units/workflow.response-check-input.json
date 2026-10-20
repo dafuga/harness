@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/responseCheckInput.ts"],
+		"source": ["src/cli/program/responseCheckInput.ts"],
 		"symbols": [
 			"responseInputLimit",
 			"responseCheckSettings",
@@ -70,11 +70,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/responseCheckInput.ts",
+		"entry": "src/cli/program/responseCheckInput.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/responseCheckInput.ts"
+				"entry": "src/cli/program/responseCheckInput.ts"
 			}
 		]
 	},

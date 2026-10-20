@@ -100,5 +100,5 @@ export function authPath(request: Request): string | null {
 	return path.startsWith('/api/auth/') || path.startsWith('/api/github/') ? path : null;
 }
 
-export { authRedirect } from '../controllers/github-connection-controller/authHttp';
-export { sameOrigin, bearerToken } from '../services/request-session-service/authHttp';
+export { authRedirect } from '../lib/server/auth/github-connection-controller/authHttp';
+export { sameOrigin, bearerToken } from '../lib/server/auth/request-session-service/authHttp';

@@ -3,7 +3,7 @@
 	"id": "function.unit-metadata",
 	"kind": "function",
 	"title": "Load revision helper metadata",
-	"responsibility": "Reads source contracts and callable signatures, accepting only explicitly declared pure helpers that pass the conservative effect guard.",
+	"responsibility": "Reads helper contracts, service runtime exports and their actual consumers from the selected source revision.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -47,6 +47,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.explorer-route",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.helper-consumers",
 			"via": "import",

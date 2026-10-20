@@ -1,4 +1,4 @@
-import { previewNode } from '../../utils/previewNode';
+import { previewNode } from '../preview-node/previewNode';
 import { previewHealth, closePreviewSessions } from './previewHealth';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';

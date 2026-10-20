@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/adapters/PinnedHistoryAdapter.ts"],
+		"source": [
+			"packages/desktop/src/adapters/PinnedHistoryAdapter.ts",
+			"packages/desktop/src/lib/desktop-bridge/PinnedHistoryAdapter.ts"
+		],
 		"symbols": [
+			"PinnedHistoryAdapter",
+			"CommitFacts",
+			"PinnedRevision",
 			"CommitFacts",
 			"PinnedRevision",
 			"PinnedHistoryAdapter",
@@ -106,11 +112,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/adapters/PinnedHistoryAdapter.ts",
+		"entry": "packages/desktop/src/lib/desktop-bridge/PinnedHistoryAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/adapters/PinnedHistoryAdapter.ts"
+				"entry": "packages/desktop/src/lib/desktop-bridge/PinnedHistoryAdapter.ts"
 			}
 		]
 	},

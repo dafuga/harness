@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/NativePickerDefaultsService.ts"],
+		"source": [
+			"src/services/NativePickerDefaultsService.ts",
+			"src/services/native-picker-bridge-service/NativePickerDefaultsService.ts"
+		],
 		"symbols": [
+			"NativePickerDefaultsService",
 			"NativePickerDefaultsService",
 			"NativePickerDefaultsService.constructor",
 			"NativePickerDefaultsService.write",
@@ -69,11 +73,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/NativePickerDefaultsService.ts",
+		"entry": "src/services/native-picker-bridge-service/NativePickerDefaultsService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/NativePickerDefaultsService.ts"
+				"entry": "src/services/native-picker-bridge-service/NativePickerDefaultsService.ts"
 			}
 		]
 	},

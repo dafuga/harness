@@ -6,7 +6,7 @@ import { GitAdapter } from '../../adapters/GitAdapter';
 import { fail } from '../../core/errors';
 import { regressionPhaseSchema, type RegressionRecord } from '../../core/regressionTypes';
 import { RegressionProofRepository } from '../../repositories/RegressionProofRepository';
-import { RegressionProofService } from '../../services/RegressionProofService';
+import { RegressionProofService } from './RegressionProofService';
 import { loopPaths, readLoop, validateLoopId, type LoopState } from '../loop-state/loopState';
 import { regressionFiles, regressionFixCommit } from '../../utils/regressionFiles';
 import { regressionTestCommit } from './regressionFiles';

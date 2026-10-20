@@ -47,4 +47,4 @@ export function benchMeasurement(context: MeasureContext, entry: Entry): BenchMe
 	};
 }
 
-export { sizeMeasurements } from '../workflows/run-kernel-bench/benchMeasurement';
+export { sizeMeasurements } from '../cli/program/run-kernel-bench/benchMeasurement';

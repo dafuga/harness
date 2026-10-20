@@ -17,8 +17,8 @@ import type {
 import { wireDispatch } from './wireDispatch';
 import { RemoteInputValidator } from '../../validators/RemoteInputValidator';
 import { WireMessageValidator } from '../../validators/WireMessageValidator';
-import { EventLogService } from '../EventLogService';
-import { ResponseLedgerService } from '../ResponseLedgerService';
+import { EventLogService } from './EventLogService';
+import { ResponseLedgerService } from './ResponseLedgerService';
 
 export interface WireSessionOptions {
 	role: RemoteAttachment['role'];

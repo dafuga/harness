@@ -19,7 +19,7 @@ import type {
 import type { AuditFinding } from './types';
 import type { HarnessRuleLimits } from '../rules/catalog';
 import { resolveCleanCodeSettings } from './cleanCodeConfig';
-import { reviewCleanCode } from '../workflows/reviewCleanCode';
+import { reviewCleanCode } from './reviewCleanCode';
 
 interface AuditCollectedFileInput {
 	root: string;

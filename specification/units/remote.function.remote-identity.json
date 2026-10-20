@@ -8,11 +8,13 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/remote-host-service/host-pairing-service/remoteIdentity.ts",
 			"packages/remote/src/services/host-pairing-service/remoteIdentity.ts",
 			"packages/remote/src/services/wire-session-service/remoteIdentity.ts",
 			"packages/remote/src/utils/remoteIdentity.ts"
 		],
 		"symbols": [
+			"pairingCode",
 			"pairingCode",
 			"requestDigest",
 			"remotePatterns",

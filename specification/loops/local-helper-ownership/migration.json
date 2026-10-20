@@ -273,8 +273,8 @@
 				"unit": "desktop.adapter.capacitor-bridge"
 			},
 			"from": "packages/desktop/src/utils/cachedSnapshot.ts",
-			"to": "packages/desktop/src/adapters/capacitor-bridge-adapter/cachedSnapshot.ts",
-			"ownerSource": "packages/desktop/src/adapters/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
+			"to": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/cachedSnapshot.ts",
+			"ownerSource": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
 			"definition": "56412d124c943e056d6e4844a8a415607ba745e419a883211b06db25e66479d1"
 		},
 		{
@@ -284,8 +284,8 @@
 				"unit": "desktop.service.catalog"
 			},
 			"from": "packages/desktop/src/utils/catalogDetail.ts",
-			"to": "packages/desktop/src/services/catalog-service/catalogDetail.ts",
-			"ownerSource": "packages/desktop/src/services/catalog-service/CatalogService.ts",
+			"to": "packages/desktop/src/services/project-session-service/catalog-service/catalogDetail.ts",
+			"ownerSource": "packages/desktop/src/services/project-session-service/catalog-service/CatalogService.ts",
 			"definition": "77fb4e594e25fc7458e591cdd99335d9289431cbab1f4bf222735d2b3d10eaab"
 		},
 		{
@@ -296,8 +296,8 @@
 				"symbol": "entityHistory"
 			},
 			"from": "packages/desktop/src/utils/catalogHistory.ts",
-			"to": "packages/desktop/src/services/catalog-service/catalogHistory.ts",
-			"ownerSource": "packages/desktop/src/services/catalog-service/catalogDetail.ts",
+			"to": "packages/desktop/src/services/project-session-service/catalog-service/catalogHistory.ts",
+			"ownerSource": "packages/desktop/src/services/project-session-service/catalog-service/catalogDetail.ts",
 			"definition": "6b38af5d64485eaa95a87a8bc9a80241c0cf0965f103df65b6a7799758160a3d"
 		},
 		{
@@ -307,8 +307,8 @@
 				"unit": "desktop.service.change-run"
 			},
 			"from": "packages/desktop/src/utils/changeExecute.ts",
-			"to": "packages/desktop/src/services/change-run-service/changeExecute.ts",
-			"ownerSource": "packages/desktop/src/services/change-run-service/ChangeRunService.ts",
+			"to": "packages/desktop/src/services/desktop-run-service/change-run-service/changeExecute.ts",
+			"ownerSource": "packages/desktop/src/services/desktop-run-service/change-run-service/ChangeRunService.ts",
 			"definition": "f4199077c189618d064a2905393937b1556f6751da70ce1ea8f9ad243cdde2b0"
 		},
 		{
@@ -318,8 +318,8 @@
 				"unit": "desktop.service.change-run"
 			},
 			"from": "packages/desktop/src/utils/changeExecute.ts",
-			"to": "packages/desktop/src/services/change-run-service/changeExecute.ts",
-			"ownerSource": "packages/desktop/src/services/change-run-service/ChangeRunService.ts",
+			"to": "packages/desktop/src/services/desktop-run-service/change-run-service/changeExecute.ts",
+			"ownerSource": "packages/desktop/src/services/desktop-run-service/change-run-service/ChangeRunService.ts",
 			"definition": "e10c336ec271723bf537151c2a28b11c5662e821170ab28c958411ec5743f964"
 		},
 		{
@@ -470,8 +470,8 @@
 				"symbol": "initializeDesktop"
 			},
 			"from": "packages/desktop/src/utils/desktopIpc.ts",
-			"to": "packages/desktop/src/lib/initialize-desktop/desktopIpc.ts",
-			"ownerSource": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/initialize-desktop/desktopIpc.ts",
+			"ownerSource": "packages/desktop/src/lib/desktop-initialization/initialize-desktop/initializeDesktop.ts",
 			"definition": "a7dda3197ba681d277d34a121d4cf23338b9c9a820f72cf9c583d293c651867e"
 		},
 		{
@@ -481,8 +481,8 @@
 				"unit": "desktop.service.device-operations"
 			},
 			"from": "packages/desktop/src/utils/deviceCapabilities.ts",
-			"to": "packages/desktop/src/services/device-operations-service/deviceCapabilities.ts",
-			"ownerSource": "packages/desktop/src/services/device-operations-service/DeviceOperationsService.ts",
+			"to": "packages/desktop/src/services/remote-host-service/device-session-service/device-operations-service/deviceCapabilities.ts",
+			"ownerSource": "packages/desktop/src/services/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts",
 			"definition": "3af0d92b4babb1bc8ae9a24fe0c7eb5be9bbabb6df73fc1b6338ca61cf5d546f"
 		},
 		{
@@ -514,8 +514,8 @@
 				"unit": "desktop.adapter.git-source"
 			},
 			"from": "packages/desktop/src/utils/gitBlobs.ts",
-			"to": "packages/desktop/src/adapters/git-source-adapter/gitBlobs.ts",
-			"ownerSource": "packages/desktop/src/adapters/git-source-adapter/GitSourceAdapter.ts",
+			"to": "packages/desktop/src/services/project-session-service/git-source-adapter/gitBlobs.ts",
+			"ownerSource": "packages/desktop/src/services/project-session-service/git-source-adapter/GitSourceAdapter.ts",
 			"definition": "e56a9b9a1277b02e5070e2043ed2985c12a8a0e546fe926cf17a336cf1a4759b"
 		},
 		{
@@ -525,8 +525,8 @@
 				"unit": "desktop.adapter.git-source"
 			},
 			"from": "packages/desktop/src/utils/gitRead.ts",
-			"to": "packages/desktop/src/adapters/git-source-adapter/gitRead.ts",
-			"ownerSource": "packages/desktop/src/adapters/git-source-adapter/GitSourceAdapter.ts",
+			"to": "packages/desktop/src/services/project-session-service/git-source-adapter/gitRead.ts",
+			"ownerSource": "packages/desktop/src/services/project-session-service/git-source-adapter/GitSourceAdapter.ts",
 			"definition": "cba87accde82b439fc13680317a84c8b765ad57135adf8923a75acd9efd278e5"
 		},
 		{
@@ -564,8 +564,8 @@
 				"unit": "desktop.adapter.hosted-evidence"
 			},
 			"from": "packages/desktop/src/utils/hostedEvidencePath.ts",
-			"to": "packages/desktop/src/adapters/hosted-evidence-adapter/hostedEvidencePath.ts",
-			"ownerSource": "packages/desktop/src/adapters/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/hostedEvidencePath.ts",
+			"ownerSource": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
 			"definition": "9da56dac7994b6ec0d383f0407d991361696c60ce26f328badd2b6b8a175d28b"
 		},
 		{
@@ -575,8 +575,8 @@
 				"unit": "desktop.adapter.remote-http-project"
 			},
 			"from": "packages/desktop/src/utils/hostedImage.ts",
-			"to": "packages/desktop/src/adapters/remote-http-project-adapter/hostedImage.ts",
-			"ownerSource": "packages/desktop/src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/hostedImage.ts",
+			"ownerSource": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
 			"definition": "c5ce4b9ce1482758a84c92bfdcf54762060ca04eaf1b7d02d1d4461093978627"
 		},
 		{
@@ -657,8 +657,8 @@
 				"unit": "desktop.adapter.planning-facade"
 			},
 			"from": "packages/desktop/src/utils/planningMessage.ts",
-			"to": "packages/desktop/src/adapters/planning-facade-adapter/planningMessage.ts",
-			"ownerSource": "packages/desktop/src/adapters/planning-facade-adapter/PlanningFacadeAdapter.ts",
+			"to": "packages/desktop/src/services/project-session-service/planning-facade-adapter/planningMessage.ts",
+			"ownerSource": "packages/desktop/src/services/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
 			"definition": "655be611e642bc633f4d8df26ad402966e95350c5127ba8ee811b711a650deea"
 		},
 		{
@@ -668,8 +668,8 @@
 				"unit": "desktop.adapter.planning-facade"
 			},
 			"from": "packages/desktop/src/utils/planningReads.ts",
-			"to": "packages/desktop/src/adapters/planning-facade-adapter/planningReads.ts",
-			"ownerSource": "packages/desktop/src/adapters/planning-facade-adapter/PlanningFacadeAdapter.ts",
+			"to": "packages/desktop/src/services/project-session-service/planning-facade-adapter/planningReads.ts",
+			"ownerSource": "packages/desktop/src/services/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
 			"definition": "e9b906b4ee9d63f62ed142364d6eb7089bea28c2988d5c75a6063796ac8bcf3e"
 		},
 		{
@@ -679,8 +679,8 @@
 				"unit": "desktop.adapter.planning-facade"
 			},
 			"from": "packages/desktop/src/utils/planningReads.ts",
-			"to": "packages/desktop/src/adapters/planning-facade-adapter/planningReads.ts",
-			"ownerSource": "packages/desktop/src/adapters/planning-facade-adapter/PlanningFacadeAdapter.ts",
+			"to": "packages/desktop/src/services/project-session-service/planning-facade-adapter/planningReads.ts",
+			"ownerSource": "packages/desktop/src/services/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
 			"definition": "5854e8cb45aea66567889b71e3f08d56c9b9e55c39daf34574cbbdd49ab004e7"
 		},
 		{
@@ -690,8 +690,8 @@
 				"unit": "desktop.adapter.planning-facade"
 			},
 			"from": "packages/desktop/src/utils/planningReads.ts",
-			"to": "packages/desktop/src/adapters/planning-facade-adapter/planningReads.ts",
-			"ownerSource": "packages/desktop/src/adapters/planning-facade-adapter/PlanningFacadeAdapter.ts",
+			"to": "packages/desktop/src/services/project-session-service/planning-facade-adapter/planningReads.ts",
+			"ownerSource": "packages/desktop/src/services/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
 			"definition": "557fbfbadfe2f2187e0f21946b5d088d97865e22ccb889ac092c8056a49d36d8"
 		},
 		{
@@ -701,8 +701,8 @@
 				"unit": "desktop.adapter.planning-facade"
 			},
 			"from": "packages/desktop/src/utils/planningReads.ts",
-			"to": "packages/desktop/src/adapters/planning-facade-adapter/planningReads.ts",
-			"ownerSource": "packages/desktop/src/adapters/planning-facade-adapter/PlanningFacadeAdapter.ts",
+			"to": "packages/desktop/src/services/project-session-service/planning-facade-adapter/planningReads.ts",
+			"ownerSource": "packages/desktop/src/services/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
 			"definition": "1eb14beca45588c7b216bfdf14782812245eb4c6f8ed461edb8e63366aec0164"
 		},
 		{
@@ -712,8 +712,8 @@
 				"unit": "desktop.adapter.planning-facade"
 			},
 			"from": "packages/desktop/src/utils/planningWrites.ts",
-			"to": "packages/desktop/src/adapters/planning-facade-adapter/planningWrites.ts",
-			"ownerSource": "packages/desktop/src/adapters/planning-facade-adapter/PlanningFacadeAdapter.ts",
+			"to": "packages/desktop/src/services/project-session-service/planning-facade-adapter/planningWrites.ts",
+			"ownerSource": "packages/desktop/src/services/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
 			"definition": "8d4ef33890b7d81e3953a7130685af8b6b04971952de591d4d74b173af296ad3"
 		},
 		{
@@ -723,8 +723,8 @@
 				"unit": "desktop.adapter.planning-facade"
 			},
 			"from": "packages/desktop/src/utils/planningWrites.ts",
-			"to": "packages/desktop/src/adapters/planning-facade-adapter/planningWrites.ts",
-			"ownerSource": "packages/desktop/src/adapters/planning-facade-adapter/PlanningFacadeAdapter.ts",
+			"to": "packages/desktop/src/services/project-session-service/planning-facade-adapter/planningWrites.ts",
+			"ownerSource": "packages/desktop/src/services/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
 			"definition": "b52ab7d40e21f67a9fef5c6e4a68b05c54b2e9ee3707ae3486193c7f44385701"
 		},
 		{
@@ -734,8 +734,8 @@
 				"unit": "desktop.adapter.planning-facade"
 			},
 			"from": "packages/desktop/src/utils/planningWrites.ts",
-			"to": "packages/desktop/src/adapters/planning-facade-adapter/planningWrites.ts",
-			"ownerSource": "packages/desktop/src/adapters/planning-facade-adapter/PlanningFacadeAdapter.ts",
+			"to": "packages/desktop/src/services/project-session-service/planning-facade-adapter/planningWrites.ts",
+			"ownerSource": "packages/desktop/src/services/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
 			"definition": "31c96b4a1815b7eac25d828cbf37cb4c8d56fc6968f50a4771a3b7726323bca5"
 		},
 		{
@@ -745,8 +745,8 @@
 				"unit": "desktop.adapter.planning-facade"
 			},
 			"from": "packages/desktop/src/utils/planningWrites.ts",
-			"to": "packages/desktop/src/adapters/planning-facade-adapter/planningWrites.ts",
-			"ownerSource": "packages/desktop/src/adapters/planning-facade-adapter/PlanningFacadeAdapter.ts",
+			"to": "packages/desktop/src/services/project-session-service/planning-facade-adapter/planningWrites.ts",
+			"ownerSource": "packages/desktop/src/services/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
 			"definition": "6bfc07867660aa0d81618d801194cf50bc3d556d886ef5b046355ae88020e47f"
 		},
 		{
@@ -756,8 +756,8 @@
 				"unit": "desktop.adapter.planning-facade"
 			},
 			"from": "packages/desktop/src/utils/planningWrites.ts",
-			"to": "packages/desktop/src/adapters/planning-facade-adapter/planningWrites.ts",
-			"ownerSource": "packages/desktop/src/adapters/planning-facade-adapter/PlanningFacadeAdapter.ts",
+			"to": "packages/desktop/src/services/project-session-service/planning-facade-adapter/planningWrites.ts",
+			"ownerSource": "packages/desktop/src/services/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
 			"definition": "ffc7b8dda43be426ac7b4ae6bbd7be651d244702bd5648bcab1489450d312d1c"
 		},
 		{
@@ -834,8 +834,8 @@
 				"unit": "desktop.service.project-run"
 			},
 			"from": "packages/desktop/src/utils/projectProposal.ts",
-			"to": "packages/desktop/src/services/project-run-service/projectProposal.ts",
-			"ownerSource": "packages/desktop/src/services/project-run-service/ProjectRunService.ts",
+			"to": "packages/desktop/src/services/desktop-run-service/project-run-service/projectProposal.ts",
+			"ownerSource": "packages/desktop/src/services/desktop-run-service/project-run-service/ProjectRunService.ts",
 			"definition": "a9a74ac27cb36a556fc9739499d443687e1572110ceafbe41face9f6857afad3"
 		},
 		{
@@ -845,8 +845,8 @@
 				"unit": "desktop.service.project-run"
 			},
 			"from": "packages/desktop/src/utils/projectProposal.ts",
-			"to": "packages/desktop/src/services/project-run-service/projectProposal.ts",
-			"ownerSource": "packages/desktop/src/services/project-run-service/ProjectRunService.ts",
+			"to": "packages/desktop/src/services/desktop-run-service/project-run-service/projectProposal.ts",
+			"ownerSource": "packages/desktop/src/services/desktop-run-service/project-run-service/ProjectRunService.ts",
 			"definition": "5b99af30453c9afd1fe4e15df72ffe8e4c357d03febf57c75a2b4216804be3c3"
 		},
 		{
@@ -856,8 +856,8 @@
 				"unit": "desktop.service.projection-cache"
 			},
 			"from": "packages/desktop/src/utils/projectionCacheDiscard.ts",
-			"to": "packages/desktop/src/services/projection-cache-service/projectionCacheDiscard.ts",
-			"ownerSource": "packages/desktop/src/services/projection-cache-service/ProjectionCacheService.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/projection-cache-service/projectionCacheDiscard.ts",
+			"ownerSource": "packages/desktop/src/lib/desktop-initialization/projection-cache-service/ProjectionCacheService.ts",
 			"definition": "461463c617ef608e8ee7dffdce907d551527f877f2f785f13bffd1239745100a"
 		},
 		{
@@ -867,8 +867,8 @@
 				"unit": "desktop.service.projection-cache"
 			},
 			"from": "packages/desktop/src/utils/projectionCachePurge.ts",
-			"to": "packages/desktop/src/services/projection-cache-service/projectionCachePurge.ts",
-			"ownerSource": "packages/desktop/src/services/projection-cache-service/ProjectionCacheService.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/projection-cache-service/projectionCachePurge.ts",
+			"ownerSource": "packages/desktop/src/lib/desktop-initialization/projection-cache-service/ProjectionCacheService.ts",
 			"definition": "76041c845dba65ede3677169d671e9b842a6fb5076fa4bf53bd88a44be124c0f"
 		},
 		{
@@ -878,8 +878,8 @@
 				"unit": "desktop.service.project-run"
 			},
 			"from": "packages/desktop/src/utils/proposalUnits.ts",
-			"to": "packages/desktop/src/services/project-run-service/proposalUnits.ts",
-			"ownerSource": "packages/desktop/src/services/project-run-service/ProjectRunService.ts",
+			"to": "packages/desktop/src/services/desktop-run-service/project-run-service/proposalUnits.ts",
+			"ownerSource": "packages/desktop/src/services/desktop-run-service/project-run-service/ProjectRunService.ts",
 			"definition": "001e072c88c4b7ba6ca68dcd8383501fffd8d9c93a8a4b0bb8b286cf36524808"
 		},
 		{
@@ -889,8 +889,8 @@
 				"unit": "desktop.service.project-task"
 			},
 			"from": "packages/desktop/src/utils/proposalUnits.ts",
-			"to": "packages/desktop/src/services/project-task-service/proposalUnits.ts",
-			"ownerSource": "packages/desktop/src/services/project-task-service/ProjectTaskService.ts",
+			"to": "packages/desktop/src/services/desktop-run-service/project-task-service/proposalUnits.ts",
+			"ownerSource": "packages/desktop/src/services/desktop-run-service/project-task-service/ProjectTaskService.ts",
 			"definition": "44d49c3dfcfb95f675d47bb57f63d3d7eae511ff4bfbefffc7703780fab2e25e"
 		},
 		{
@@ -969,8 +969,8 @@
 				"unit": "desktop.service.relay-link"
 			},
 			"from": "packages/desktop/src/utils/relayFrame.ts",
-			"to": "packages/desktop/src/services/relay-link-service/relayFrame.ts",
-			"ownerSource": "packages/desktop/src/services/relay-link-service/RelayLinkService.ts",
+			"to": "packages/desktop/src/services/remote-host-service/relay-link-service/relayFrame.ts",
+			"ownerSource": "packages/desktop/src/services/remote-host-service/relay-link-service/RelayLinkService.ts",
 			"definition": "36a6a67b146adff1bf761fb324554d478c298f1702707d2fe993646594056532"
 		},
 		{
@@ -980,8 +980,8 @@
 				"unit": "desktop.adapter.capacitor-bridge"
 			},
 			"from": "packages/desktop/src/utils/remoteArtifact.ts",
-			"to": "packages/desktop/src/adapters/capacitor-bridge-adapter/remoteArtifact.ts",
-			"ownerSource": "packages/desktop/src/adapters/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
+			"to": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/remoteArtifact.ts",
+			"ownerSource": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
 			"definition": "420b0e460d12cc464b8519eaf716666f511197f5f6201e1dbdda48123e4fefe3"
 		},
 		{
@@ -991,8 +991,8 @@
 				"unit": "desktop.service.device-session"
 			},
 			"from": "packages/desktop/src/utils/remoteFailureText.ts",
-			"to": "packages/desktop/src/services/device-session-service/remoteFailureText.ts",
-			"ownerSource": "packages/desktop/src/services/device-session-service/DeviceSessionService.ts",
+			"to": "packages/desktop/src/services/remote-host-service/device-session-service/remoteFailureText.ts",
+			"ownerSource": "packages/desktop/src/services/remote-host-service/device-session-service/DeviceSessionService.ts",
 			"definition": "11274b46f52d98f577aa6c287a64b2cdc32a2c8f88fb8a2218ff96691cd86cc3"
 		},
 		{
@@ -1002,8 +1002,8 @@
 				"unit": "desktop.adapter.capacitor-bridge"
 			},
 			"from": "packages/desktop/src/utils/remoteGrant.ts",
-			"to": "packages/desktop/src/adapters/capacitor-bridge-adapter/remoteGrant.ts",
-			"ownerSource": "packages/desktop/src/adapters/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
+			"to": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/remoteGrant.ts",
+			"ownerSource": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
 			"definition": "307f81c243331c9fc66b3ad031bc895aa2bd1adeda540bb9c73b3f9f6c05721b"
 		},
 		{
@@ -1013,8 +1013,8 @@
 				"unit": "desktop.service.remote-host-switch"
 			},
 			"from": "packages/desktop/src/utils/remoteHostIdentity.ts",
-			"to": "packages/desktop/src/services/remote-host-switch-service/remoteHostIdentity.ts",
-			"ownerSource": "packages/desktop/src/services/remote-host-switch-service/RemoteHostSwitchService.ts",
+			"to": "packages/desktop/src/services/remote-host-service/remote-host-switch-service/remoteHostIdentity.ts",
+			"ownerSource": "packages/desktop/src/services/remote-host-service/remote-host-switch-service/RemoteHostSwitchService.ts",
 			"definition": "a2d11b633721e219bd95570247b95801c3698e52d6e452a3455eeb558c4585e2"
 		},
 		{
@@ -1024,8 +1024,8 @@
 				"unit": "desktop.service.remote-host-switch"
 			},
 			"from": "packages/desktop/src/utils/remoteHostIdentity.ts",
-			"to": "packages/desktop/src/services/remote-host-switch-service/remoteHostIdentity.ts",
-			"ownerSource": "packages/desktop/src/services/remote-host-switch-service/RemoteHostSwitchService.ts",
+			"to": "packages/desktop/src/services/remote-host-service/remote-host-switch-service/remoteHostIdentity.ts",
+			"ownerSource": "packages/desktop/src/services/remote-host-service/remote-host-switch-service/RemoteHostSwitchService.ts",
 			"definition": "c0587d3499d802654c123406e8286c065820f528acfc89ce55441632bf8ff222"
 		},
 		{
@@ -1114,8 +1114,8 @@
 				"symbol": "rendererAssets"
 			},
 			"from": "packages/desktop/src/utils/rendererAssets.ts",
-			"to": "packages/desktop/src/lib/initialize-desktop/rendererAssets.ts",
-			"ownerSource": "packages/desktop/src/lib/initialize-desktop/rendererAssets.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/initialize-desktop/rendererAssets.ts",
+			"ownerSource": "packages/desktop/src/lib/desktop-initialization/initialize-desktop/rendererAssets.ts",
 			"definition": "3e001edb5672577219476deb337693239e22a58514eeed897d0405d56a05eca0"
 		},
 		{
@@ -1126,8 +1126,8 @@
 				"symbol": "initializeDesktop"
 			},
 			"from": "packages/desktop/src/utils/rendererAssets.ts",
-			"to": "packages/desktop/src/lib/initialize-desktop/rendererAssets.ts",
-			"ownerSource": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/initialize-desktop/rendererAssets.ts",
+			"ownerSource": "packages/desktop/src/lib/desktop-initialization/initialize-desktop/initializeDesktop.ts",
 			"definition": "c4b3262cbe0cb6122bc0fc9d388c7d3401828bb56f85f27b08aafd2355d0090e"
 		},
 		{
@@ -1252,8 +1252,8 @@
 				"symbol": "bootstrap"
 			},
 			"from": "packages/desktop/src/utils/trustedSender.ts",
-			"to": "packages/desktop/src/lib/initialize-desktop/trustedSender.ts",
-			"ownerSource": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/initialize-desktop/trustedSender.ts",
+			"ownerSource": "packages/desktop/src/lib/desktop-initialization/initialize-desktop/initializeDesktop.ts",
 			"definition": "6990458f0bca67f29bb67a0da70e500095b1ae0dc9440defbc07e9e5e68027fb"
 		},
 		{
@@ -1307,8 +1307,8 @@
 				"unit": "workflow.run-kernel-bench"
 			},
 			"from": "src/utils/benchMeasurement.ts",
-			"to": "src/workflows/run-kernel-bench/benchMeasurement.ts",
-			"ownerSource": "src/workflows/run-kernel-bench/runKernelBench.ts",
+			"to": "src/cli/program/run-kernel-bench/benchMeasurement.ts",
+			"ownerSource": "src/cli/program/run-kernel-bench/runKernelBench.ts",
 			"definition": "07b7d6c96bc9a9239375760b6d4eb32c325f988fc9a35d36b6882834f25115bd"
 		},
 		{
@@ -1318,8 +1318,8 @@
 				"unit": "service.kernel-benchmark"
 			},
 			"from": "src/utils/benchSamples.ts",
-			"to": "src/services/kernel-benchmark-service/benchSamples.ts",
-			"ownerSource": "src/services/kernel-benchmark-service/KernelBenchmarkService.ts",
+			"to": "src/cli/program/run-kernel-bench/kernel-benchmark-service/benchSamples.ts",
+			"ownerSource": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
 			"definition": "e511e652f36cad142908e09ef01a462aae30b56e308998fc97523c91975ea1ff"
 		},
 		{
@@ -1352,8 +1352,8 @@
 				"unit": "service.history-index"
 			},
 			"from": "src/utils/budgetReviews.ts",
-			"to": "src/services/history-index-service/budgetReviews.ts",
-			"ownerSource": "src/services/history-index-service/HistoryIndexService.ts",
+			"to": "src/cli/program/history-index-service/budgetReviews.ts",
+			"ownerSource": "src/cli/program/history-index-service/HistoryIndexService.ts",
 			"definition": "f678e70cb14e5aa06f7ffb5c0ac5e3d5594da4ddd8557724cc94656119582327"
 		},
 		{
@@ -1456,8 +1456,8 @@
 				"unit": "service.console-install"
 			},
 			"from": "src/utils/consoleDataModules.ts",
-			"to": "src/services/console-install-service/consoleDataModules.ts",
-			"ownerSource": "src/services/console-install-service/ConsoleInstallService.ts",
+			"to": "src/cli/program/console-install-service/consoleDataModules.ts",
+			"ownerSource": "src/cli/program/console-install-service/ConsoleInstallService.ts",
 			"definition": "0e1e7411fc9c44b3650de59bd9025a1641e937af6a11a67b6a892e55d4e32c6c"
 		},
 		{
@@ -1467,8 +1467,8 @@
 				"unit": "service.console-install"
 			},
 			"from": "src/utils/consoleDataModules.ts",
-			"to": "src/services/console-install-service/consoleDataModules.ts",
-			"ownerSource": "src/services/console-install-service/ConsoleInstallService.ts",
+			"to": "src/cli/program/console-install-service/consoleDataModules.ts",
+			"ownerSource": "src/cli/program/console-install-service/ConsoleInstallService.ts",
 			"definition": "1cf963620a8cde90f17df52670a30b2454f5df843cd55fbe343f3f6580b590fc"
 		},
 		{
@@ -1478,8 +1478,8 @@
 				"unit": "service.console-install"
 			},
 			"from": "src/utils/consoleHostFiles.ts",
-			"to": "src/services/console-install-service/consoleHostFiles.ts",
-			"ownerSource": "src/services/console-install-service/ConsoleInstallService.ts",
+			"to": "src/cli/program/console-install-service/consoleHostFiles.ts",
+			"ownerSource": "src/cli/program/console-install-service/ConsoleInstallService.ts",
 			"definition": "ecc01fdb6b8a9af41b833fa0ad0446ffeb5d66a5c717ecb4b75c303dbc31b09e"
 		},
 		{
@@ -1548,8 +1548,8 @@
 				"unit": "adapter.cpu-process"
 			},
 			"from": "src/utils/cpuProcesses.ts",
-			"to": "src/adapters/cpu-process-adapter/cpuProcesses.ts",
-			"ownerSource": "src/adapters/cpu-process-adapter/CpuProcessAdapter.ts",
+			"to": "src/services/cpu-usage-service/cpu-process-adapter/cpuProcesses.ts",
+			"ownerSource": "src/services/cpu-usage-service/cpu-process-adapter/CpuProcessAdapter.ts",
 			"definition": "071a7dcc2b7fb97b23ed75de431e4e6a5fc108140b2d508aab14e52e456f7354"
 		},
 		{
@@ -1559,8 +1559,8 @@
 				"unit": "service.unit-index"
 			},
 			"from": "src/utils/deriveManifest.ts",
-			"to": "src/services/unit-index-service/deriveManifest.ts",
-			"ownerSource": "src/services/unit-index-service/UnitIndexService.ts",
+			"to": "src/workflows/load-units/unit-index-service/deriveManifest.ts",
+			"ownerSource": "src/workflows/load-units/unit-index-service/UnitIndexService.ts",
 			"definition": "bdd00172000a86596b21b3b3dfd78671d8f3bb808a098890db0bb5b82b832026"
 		},
 		{
@@ -1571,8 +1571,8 @@
 				"symbol": "deriveManifest"
 			},
 			"from": "src/utils/derivedResponsibility.ts",
-			"to": "src/services/unit-index-service/derivedResponsibility.ts",
-			"ownerSource": "src/services/unit-index-service/deriveManifest.ts",
+			"to": "src/workflows/load-units/unit-index-service/derivedResponsibility.ts",
+			"ownerSource": "src/workflows/load-units/unit-index-service/deriveManifest.ts",
 			"definition": "7df00e86b0cf083dd329da8954e2806c2643a3f9fab078aee07606a3b3edc362"
 		},
 		{
@@ -1628,8 +1628,8 @@
 				"unit": "service.claude-query"
 			},
 			"from": "src/utils/gatewayMessages.ts",
-			"to": "src/services/claude-query-service/gatewayMessages.ts",
-			"ownerSource": "src/services/claude-query-service/ClaudeQueryService.ts",
+			"to": "src/cli/program/codex-gateway-service/claude-query-service/gatewayMessages.ts",
+			"ownerSource": "src/cli/program/codex-gateway-service/claude-query-service/ClaudeQueryService.ts",
 			"definition": "890623e1e641840afb52cfeb38ae4fad76dd3ef443ffbd0c9eedc4348d5bfd66"
 		},
 		{
@@ -1639,8 +1639,8 @@
 				"unit": "service.claude-query"
 			},
 			"from": "src/utils/gatewayOptions.ts",
-			"to": "src/services/claude-query-service/gatewayOptions.ts",
-			"ownerSource": "src/services/claude-query-service/ClaudeQueryService.ts",
+			"to": "src/cli/program/codex-gateway-service/claude-query-service/gatewayOptions.ts",
+			"ownerSource": "src/cli/program/codex-gateway-service/claude-query-service/ClaudeQueryService.ts",
 			"definition": "8d9c9e17136b9b55e4aac493299d2da5ba384613245d67fd7bef97fa6ea69516"
 		},
 		{
@@ -1651,8 +1651,8 @@
 				"symbol": "gatewayMessages"
 			},
 			"from": "src/utils/gatewayPrompt.ts",
-			"to": "src/services/claude-query-service/gatewayPrompt.ts",
-			"ownerSource": "src/services/claude-query-service/gatewayMessages.ts",
+			"to": "src/cli/program/codex-gateway-service/claude-query-service/gatewayPrompt.ts",
+			"ownerSource": "src/cli/program/codex-gateway-service/claude-query-service/gatewayMessages.ts",
 			"definition": "9daa3c58b8290b8d3819920f1a0653361870a46d641478aa0e8393dbf888e86d"
 		},
 		{
@@ -1662,8 +1662,8 @@
 				"unit": "service.codex-gateway"
 			},
 			"from": "src/utils/gatewayReplay.ts",
-			"to": "src/services/codex-gateway-service/gatewayReplay.ts",
-			"ownerSource": "src/services/codex-gateway-service/CodexGatewayService.ts",
+			"to": "src/cli/program/codex-gateway-service/gatewayReplay.ts",
+			"ownerSource": "src/cli/program/codex-gateway-service/CodexGatewayService.ts",
 			"definition": "5f2829fc5d6c93754ff681da63f581571fdec97dad180ebfac008895fcb462d1"
 		},
 		{
@@ -1673,8 +1673,8 @@
 				"unit": "service.codex-gateway"
 			},
 			"from": "src/utils/gatewayStream.ts",
-			"to": "src/services/codex-gateway-service/gatewayStream.ts",
-			"ownerSource": "src/services/codex-gateway-service/CodexGatewayService.ts",
+			"to": "src/cli/program/codex-gateway-service/gatewayStream.ts",
+			"ownerSource": "src/cli/program/codex-gateway-service/CodexGatewayService.ts",
 			"definition": "f91b2e92495430ae4649f0bf5ac3a9e0b6b44ef569aed4e7b17e266820ba0040"
 		},
 		{
@@ -1684,8 +1684,8 @@
 				"unit": "repository.codex-session"
 			},
 			"from": "src/utils/gatewayTypes.ts",
-			"to": "src/repositories/codex-session-repository/gatewayTypes.ts",
-			"ownerSource": "src/repositories/codex-session-repository/CodexSessionRepository.ts",
+			"to": "src/cli/program/codex-gateway-service/codex-session-repository/gatewayTypes.ts",
+			"ownerSource": "src/cli/program/codex-gateway-service/codex-session-repository/CodexSessionRepository.ts",
 			"definition": "28cdee6e7a1cf020af5b6504a88eefa7be7f1771131f20e5b3e2161c2d380082"
 		},
 		{
@@ -1695,8 +1695,8 @@
 				"unit": "service.check-run"
 			},
 			"from": "src/utils/gatherCaptures.ts",
-			"to": "src/services/check-run-service/gatherCaptures.ts",
-			"ownerSource": "src/services/check-run-service/CheckRunService.ts",
+			"to": "src/workflows/run-verify/verification-service/check-run-service/gatherCaptures.ts",
+			"ownerSource": "src/workflows/run-verify/verification-service/check-run-service/CheckRunService.ts",
 			"definition": "689de98fd44ce95b1f8edebb65f941e35eeb4d7bab85d6db96cf1b5f06a52d52"
 		},
 		{
@@ -1754,8 +1754,8 @@
 				"unit": "service.history-sync"
 			},
 			"from": "src/utils/historyRefs.ts",
-			"to": "src/services/history-sync-service/historyRefs.ts",
-			"ownerSource": "src/services/history-sync-service/HistorySyncService.ts",
+			"to": "src/cli/program/history-sync-service/historyRefs.ts",
+			"ownerSource": "src/cli/program/history-sync-service/HistorySyncService.ts",
 			"definition": "1e7d89522a587f6517338e04298f4dc3a7a9867808ebe6af33ed6a1bd9919b4a"
 		},
 		{
@@ -1765,8 +1765,8 @@
 				"unit": "service.history-index"
 			},
 			"from": "src/utils/historySeries.ts",
-			"to": "src/services/history-index-service/historySeries.ts",
-			"ownerSource": "src/services/history-index-service/HistoryIndexService.ts",
+			"to": "src/cli/program/history-index-service/historySeries.ts",
+			"ownerSource": "src/cli/program/history-index-service/HistoryIndexService.ts",
 			"definition": "43094c18832139d705fbff8e35dc4deba2645bde342a8e8b681e5afda48ed16f"
 		},
 		{
@@ -1776,8 +1776,8 @@
 				"unit": "service.history-index"
 			},
 			"from": "src/utils/historySeries.ts",
-			"to": "src/services/history-index-service/historySeries.ts",
-			"ownerSource": "src/services/history-index-service/HistoryIndexService.ts",
+			"to": "src/cli/program/history-index-service/historySeries.ts",
+			"ownerSource": "src/cli/program/history-index-service/HistoryIndexService.ts",
 			"definition": "e8e68c1a7144013f4e189253bed81b6a8936270378ae08f5f02b30c19eef24a9"
 		},
 		{
@@ -1787,8 +1787,8 @@
 				"unit": "service.hook-install"
 			},
 			"from": "src/utils/hookScript.ts",
-			"to": "src/services/hook-install-service/hookScript.ts",
-			"ownerSource": "src/services/hook-install-service/HookInstallService.ts",
+			"to": "src/cli/program/hook-install-service/hookScript.ts",
+			"ownerSource": "src/cli/program/hook-install-service/HookInstallService.ts",
 			"definition": "90528ab257796fd1386847040b59da32a569f546d5dee30228728cb275b5eae3"
 		},
 		{
@@ -1798,8 +1798,8 @@
 				"unit": "service.hook-install"
 			},
 			"from": "src/utils/hookScript.ts",
-			"to": "src/services/hook-install-service/hookScript.ts",
-			"ownerSource": "src/services/hook-install-service/HookInstallService.ts",
+			"to": "src/cli/program/hook-install-service/hookScript.ts",
+			"ownerSource": "src/cli/program/hook-install-service/HookInstallService.ts",
 			"definition": "b58647f2f1cc5d24866f9e7a57a743190ed2a6fb371d553567d507fde313a694"
 		},
 		{
@@ -1809,8 +1809,8 @@
 				"unit": "workflow.run-kernel"
 			},
 			"from": "src/utils/impactKernel.ts",
-			"to": "src/workflows/run-kernel/impactKernel.ts",
-			"ownerSource": "src/workflows/run-kernel/runKernel.ts",
+			"to": "src/cli/program/run-kernel/impactKernel.ts",
+			"ownerSource": "src/cli/program/run-kernel/runKernel.ts",
 			"definition": "b130d163b72934e728761df565e847aee0d31dbb0edf7bdc74a3923273bca2f5"
 		},
 		{
@@ -1842,8 +1842,8 @@
 				"unit": "service.console-install"
 			},
 			"from": "src/utils/installableHost.ts",
-			"to": "src/services/console-install-service/installableHost.ts",
-			"ownerSource": "src/services/console-install-service/ConsoleInstallService.ts",
+			"to": "src/cli/program/console-install-service/installableHost.ts",
+			"ownerSource": "src/cli/program/console-install-service/ConsoleInstallService.ts",
 			"definition": "f8d841f13ee38506bfa643e81bb6f7e9f2b7c70163bb35455a8f88c430b16e21"
 		},
 		{
@@ -1853,8 +1853,8 @@
 				"unit": "service.console-install"
 			},
 			"from": "src/utils/installableHost.ts",
-			"to": "src/services/console-install-service/installableHost.ts",
-			"ownerSource": "src/services/console-install-service/ConsoleInstallService.ts",
+			"to": "src/cli/program/console-install-service/installableHost.ts",
+			"ownerSource": "src/cli/program/console-install-service/ConsoleInstallService.ts",
 			"definition": "59d2ce7980b1ad7dd2c7d96e97e07efb2f1cff6fda5f3ac2ca6a54a87bc4e956"
 		},
 		{
@@ -1888,8 +1888,8 @@
 				"unit": "workflow.run-kernel"
 			},
 			"from": "src/utils/kernelWorkload.ts",
-			"to": "src/workflows/run-kernel/kernelWorkload.ts",
-			"ownerSource": "src/workflows/run-kernel/runKernel.ts",
+			"to": "src/cli/program/run-kernel/kernelWorkload.ts",
+			"ownerSource": "src/cli/program/run-kernel/runKernel.ts",
 			"definition": "4b0b88c3d9ef5992ef38d6d5463b25264e61bcf935616a4515ffc88a442f75f5"
 		},
 		{
@@ -1899,8 +1899,8 @@
 				"unit": "workflow.run-kernel"
 			},
 			"from": "src/utils/kernelWorkload.ts",
-			"to": "src/workflows/run-kernel/kernelWorkload.ts",
-			"ownerSource": "src/workflows/run-kernel/runKernel.ts",
+			"to": "src/cli/program/run-kernel/kernelWorkload.ts",
+			"ownerSource": "src/cli/program/run-kernel/runKernel.ts",
 			"definition": "312caa665d184ff299292105d06786f5a54d9fdb2f36915f7ab0f6d150b5b01a"
 		},
 		{
@@ -1910,8 +1910,8 @@
 				"unit": "service.legacy-import"
 			},
 			"from": "src/utils/legacyReport.ts",
-			"to": "src/services/legacy-import-service/legacyReport.ts",
-			"ownerSource": "src/services/legacy-import-service/LegacyImportService.ts",
+			"to": "src/cli/program/legacy-import-service/legacyReport.ts",
+			"ownerSource": "src/cli/program/legacy-import-service/LegacyImportService.ts",
 			"definition": "9f7d755b314787506d6f7d293bdfa65c9a30dc14b40a8cf5fee45ac6857f9450"
 		},
 		{
@@ -1921,8 +1921,8 @@
 				"unit": "service.attached-record"
 			},
 			"from": "src/utils/lfsPointer.ts",
-			"to": "src/services/attached-record-service/lfsPointer.ts",
-			"ownerSource": "src/services/attached-record-service/AttachedRecordService.ts",
+			"to": "src/services/history-status-service/attached-record-service/lfsPointer.ts",
+			"ownerSource": "src/services/history-status-service/attached-record-service/AttachedRecordService.ts",
 			"definition": "1e7aceea5928deba65484abfc0ab8e0c8cb1f6ec8877bca3df0200f79c4ee2dd"
 		},
 		{
@@ -1967,8 +1967,8 @@
 				"symbol": "pngFacts"
 			},
 			"from": "src/utils/mediaFacts.ts",
-			"to": "src/services/check-run-service/mediaFacts.ts",
-			"ownerSource": "src/services/check-run-service/mediaFacts.ts",
+			"to": "src/workflows/run-verify/verification-service/check-run-service/mediaFacts.ts",
+			"ownerSource": "src/workflows/run-verify/verification-service/check-run-service/mediaFacts.ts",
 			"definition": "ff4860b5daa5b0b9f8f805adfb5e873fbc6edc2aa86e3e74cd9ef1ce39a19b59"
 		},
 		{
@@ -1979,8 +1979,8 @@
 				"symbol": "inspect"
 			},
 			"from": "src/utils/mediaFacts.ts",
-			"to": "src/services/check-run-service/mediaFacts.ts",
-			"ownerSource": "src/services/check-run-service/gatherCaptures.ts",
+			"to": "src/workflows/run-verify/verification-service/check-run-service/mediaFacts.ts",
+			"ownerSource": "src/workflows/run-verify/verification-service/check-run-service/gatherCaptures.ts",
 			"definition": "6aa8e68aa60b2e5f323b29e4690c6e70c55c6c96949ae3ae3f7ad50f57ef096f"
 		},
 		{
@@ -1990,8 +1990,8 @@
 				"unit": "service.history-media"
 			},
 			"from": "src/utils/mediaPlace.ts",
-			"to": "src/services/history-media-service/mediaPlace.ts",
-			"ownerSource": "src/services/history-media-service/HistoryMediaService.ts",
+			"to": "src/cli/program/history-index-service/history-media-service/mediaPlace.ts",
+			"ownerSource": "src/cli/program/history-index-service/history-media-service/HistoryMediaService.ts",
 			"definition": "9c06dec8dae1f7ab8a1b3953f417638022e8f101df349fad54fa56fca2cd963c"
 		},
 		{
@@ -2047,8 +2047,8 @@
 				"unit": "service.kernel-benchmark"
 			},
 			"from": "src/utils/peakMemory.ts",
-			"to": "src/services/kernel-benchmark-service/peakMemory.ts",
-			"ownerSource": "src/services/kernel-benchmark-service/KernelBenchmarkService.ts",
+			"to": "src/cli/program/run-kernel-bench/kernel-benchmark-service/peakMemory.ts",
+			"ownerSource": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
 			"definition": "5d32a7077ac8f33f0d7adeab535ea33f6308358d094976201a323c8a747229e0"
 		},
 		{
@@ -2058,8 +2058,8 @@
 				"unit": "command.codex-picker"
 			},
 			"from": "src/utils/pickerPaths.ts",
-			"to": "src/commands/codex-picker-command/pickerPaths.ts",
-			"ownerSource": "src/commands/codex-picker-command/CodexPickerCommand.ts",
+			"to": "src/cli/program/codex-picker-command/pickerPaths.ts",
+			"ownerSource": "src/cli/program/codex-picker-command/CodexPickerCommand.ts",
 			"definition": "25e304af3918259b5978added482dbc223b443c7251c28ab16159c08391254ce"
 		},
 		{
@@ -2127,8 +2127,8 @@
 				"unit": "service.hook-run"
 			},
 			"from": "src/utils/pushedRefs.ts",
-			"to": "src/services/hook-run-service/pushedRefs.ts",
-			"ownerSource": "src/services/hook-run-service/HookRunService.ts",
+			"to": "src/cli/program/hook-run-service/pushedRefs.ts",
+			"ownerSource": "src/cli/program/hook-run-service/HookRunService.ts",
 			"definition": "27098214729cea21ddb2df5e0216952cd9d5ed04cd66dec7eb2318960c11b5c6"
 		},
 		{
@@ -2138,8 +2138,8 @@
 				"unit": "service.check-run"
 			},
 			"from": "src/utils/readBrowserDiagnostics.ts",
-			"to": "src/services/check-run-service/readBrowserDiagnostics.ts",
-			"ownerSource": "src/services/check-run-service/CheckRunService.ts",
+			"to": "src/workflows/run-verify/verification-service/check-run-service/readBrowserDiagnostics.ts",
+			"ownerSource": "src/workflows/run-verify/verification-service/check-run-service/CheckRunService.ts",
 			"definition": "d7c908e1858ce69724f42860eca91c6eff7fc908ad808ac52dd387e0f17008f4"
 		},
 		{
@@ -2161,8 +2161,8 @@
 				"unit": "service.record-assembly"
 			},
 			"from": "src/utils/recordedBuilds.ts",
-			"to": "src/services/record-assembly-service/recordedBuilds.ts",
-			"ownerSource": "src/services/record-assembly-service/RecordAssemblyService.ts",
+			"to": "src/workflows/run-verify/verification-service/record-assembly-service/recordedBuilds.ts",
+			"ownerSource": "src/workflows/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 			"definition": "055b72045a35b8f20b16f09462b7b8f1aa6499f5583c75694643f5039043d99a"
 		},
 		{
@@ -2184,8 +2184,8 @@
 				"unit": "workflow.run-report"
 			},
 			"from": "src/utils/reportsEnvironment.ts",
-			"to": "src/workflows/run-report/reportsEnvironment.ts",
-			"ownerSource": "src/workflows/run-report/runReport.ts",
+			"to": "src/cli/program/run-report/reportsEnvironment.ts",
+			"ownerSource": "src/cli/program/run-report/runReport.ts",
 			"definition": "7df280235515aa0d891fa1227c40c68a157e7b547f3b9971a56df989b54302bc"
 		},
 		{
@@ -2219,8 +2219,8 @@
 				"unit": "service.history-index"
 			},
 			"from": "src/utils/revisionChanges.ts",
-			"to": "src/services/history-index-service/revisionChanges.ts",
-			"ownerSource": "src/services/history-index-service/HistoryIndexService.ts",
+			"to": "src/cli/program/history-index-service/revisionChanges.ts",
+			"ownerSource": "src/cli/program/history-index-service/HistoryIndexService.ts",
 			"definition": "6dabd97d04267a74067899f5d8698e1c1431970db8360f7ebcf492f522864307"
 		},
 		{
@@ -2252,8 +2252,8 @@
 				"unit": "service.verification"
 			},
 			"from": "src/utils/scenarioCoverage.ts",
-			"to": "src/services/verification-service/scenarioCoverage.ts",
-			"ownerSource": "src/services/verification-service/VerificationService.ts",
+			"to": "src/workflows/run-verify/verification-service/scenarioCoverage.ts",
+			"ownerSource": "src/workflows/run-verify/verification-service/VerificationService.ts",
 			"definition": "5d5b20a570d5335326b5fd18abd95b867681f159f3f2e56f7c70cd5a7afc29ab"
 		},
 		{
@@ -2263,8 +2263,8 @@
 				"unit": "service.record-assembly"
 			},
 			"from": "src/utils/sealRecord.ts",
-			"to": "src/services/record-assembly-service/sealRecord.ts",
-			"ownerSource": "src/services/record-assembly-service/RecordAssemblyService.ts",
+			"to": "src/workflows/run-verify/verification-service/record-assembly-service/sealRecord.ts",
+			"ownerSource": "src/workflows/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 			"definition": "57c63bd18a4ac0163f90fa2d75214598b39d613c8cb413fc2b91fb290577d911"
 		},
 		{
@@ -2274,8 +2274,8 @@
 				"unit": "service.record-assembly"
 			},
 			"from": "src/utils/sealRecord.ts",
-			"to": "src/services/record-assembly-service/sealRecord.ts",
-			"ownerSource": "src/services/record-assembly-service/RecordAssemblyService.ts",
+			"to": "src/workflows/run-verify/verification-service/record-assembly-service/sealRecord.ts",
+			"ownerSource": "src/workflows/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 			"definition": "5b5a2a59744b43fe01f7cc544fce4a285338014f80fdd1cbdf76a36d8c6def06"
 		},
 		{
@@ -2285,8 +2285,8 @@
 				"unit": "service.verification"
 			},
 			"from": "src/utils/sealRecord.ts",
-			"to": "src/services/verification-service/sealRecord.ts",
-			"ownerSource": "src/services/verification-service/VerificationService.ts",
+			"to": "src/workflows/run-verify/verification-service/sealRecord.ts",
+			"ownerSource": "src/workflows/run-verify/verification-service/VerificationService.ts",
 			"definition": "25ab319bcdbb1ff400f50f9cb8c1c76080e2b8c05360f705834c52beed919c63"
 		},
 		{
@@ -2332,8 +2332,8 @@
 				"unit": "service.source-impact"
 			},
 			"from": "src/utils/sideImpact.ts",
-			"to": "src/services/source-impact-service/sideImpact.ts",
-			"ownerSource": "src/services/source-impact-service/SourceImpactService.ts",
+			"to": "src/services/revision-detail-service/source-impact-service/sideImpact.ts",
+			"ownerSource": "src/services/revision-detail-service/source-impact-service/SourceImpactService.ts",
 			"definition": "80ce3a7a3129a0251a9b742111e00285ca73073fd27f835c23c4531c2537e858"
 		},
 		{
@@ -2459,8 +2459,8 @@
 				"unit": "service.unit-index"
 			},
 			"from": "src/utils/unitLineage.ts",
-			"to": "src/services/unit-index-service/unitLineage.ts",
-			"ownerSource": "src/services/unit-index-service/UnitIndexService.ts",
+			"to": "src/workflows/load-units/unit-index-service/unitLineage.ts",
+			"ownerSource": "src/workflows/load-units/unit-index-service/UnitIndexService.ts",
 			"definition": "fc974523386a68fa6998d181938d0ceae1181b14b4b94107ba6ecca3ea97f62a"
 		},
 		{
@@ -2481,8 +2481,8 @@
 				"unit": "workflow.create-project"
 			},
 			"from": "src/core/validation.ts",
-			"to": "src/workflows/create-project/validation.ts",
-			"ownerSource": "src/workflows/create-project/createProject.ts",
+			"to": "src/cli/program/create-project/validation.ts",
+			"ownerSource": "src/cli/program/create-project/createProject.ts",
 			"definition": "ada56e1ff4ef5bc74402de2cc4d5ea7c8d555db4aec6f3a044b13f78ef3f916d"
 		},
 		{
@@ -2515,8 +2515,8 @@
 				"unit": "service.verification"
 			},
 			"from": "src/utils/verifyPlan.ts",
-			"to": "src/services/verification-service/verifyPlan.ts",
-			"ownerSource": "src/services/verification-service/VerificationService.ts",
+			"to": "src/workflows/run-verify/verification-service/verifyPlan.ts",
+			"ownerSource": "src/workflows/run-verify/verification-service/VerificationService.ts",
 			"definition": "9532008f9e975b9d9e033f3ce6aecd9ccca09da8375d91d75c9d999e7c09b83e"
 		},
 		{
@@ -2573,8 +2573,8 @@
 				"unit": "hub.controller.github-connection"
 			},
 			"from": "packages/hub/src/utils/authHttp.ts",
-			"to": "packages/hub/src/controllers/github-connection-controller/authHttp.ts",
-			"ownerSource": "packages/hub/src/controllers/github-connection-controller/GithubConnectionController.ts",
+			"to": "packages/hub/src/lib/server/auth/github-connection-controller/authHttp.ts",
+			"ownerSource": "packages/hub/src/lib/server/auth/github-connection-controller/GithubConnectionController.ts",
 			"definition": "f909fab6c39554f6b8cd9b376c460117ae71c76cfb18ece144f192bfc392e8a4"
 		},
 		{
@@ -2584,8 +2584,8 @@
 				"unit": "hub.service.request-session"
 			},
 			"from": "packages/hub/src/utils/authHttp.ts",
-			"to": "packages/hub/src/services/request-session-service/authHttp.ts",
-			"ownerSource": "packages/hub/src/services/request-session-service/RequestSessionService.ts",
+			"to": "packages/hub/src/lib/server/auth/request-session-service/authHttp.ts",
+			"ownerSource": "packages/hub/src/lib/server/auth/request-session-service/RequestSessionService.ts",
 			"definition": "e8c5d8976fe6d7081aa44bf8c632435da6e074a9b19a66c687bc4cfd3e236010"
 		},
 		{
@@ -2595,8 +2595,8 @@
 				"unit": "hub.service.request-session"
 			},
 			"from": "packages/hub/src/utils/authHttp.ts",
-			"to": "packages/hub/src/services/request-session-service/authHttp.ts",
-			"ownerSource": "packages/hub/src/services/request-session-service/RequestSessionService.ts",
+			"to": "packages/hub/src/lib/server/auth/request-session-service/authHttp.ts",
+			"ownerSource": "packages/hub/src/lib/server/auth/request-session-service/RequestSessionService.ts",
 			"definition": "f5c2d45232f6671fb5f53cceda312e197cb770343f399b65e0cbb655260d36f6"
 		},
 		{
@@ -2618,8 +2618,8 @@
 				"unit": "hub.service.native-handoff"
 			},
 			"from": "packages/hub/src/utils/authSecrets.ts",
-			"to": "packages/hub/src/services/native-handoff-service/authSecrets.ts",
-			"ownerSource": "packages/hub/src/services/native-handoff-service/NativeHandoffService.ts",
+			"to": "packages/hub/src/lib/server/auth/native-handoff-service/authSecrets.ts",
+			"ownerSource": "packages/hub/src/lib/server/auth/native-handoff-service/NativeHandoffService.ts",
 			"definition": "5e534a6795a6164daad1998ee791aa878b8591cc7359e989080c8c58e2b37ad1"
 		},
 		{
@@ -2629,8 +2629,8 @@
 				"unit": "hub.service.native-handoff"
 			},
 			"from": "packages/hub/src/utils/authSecrets.ts",
-			"to": "packages/hub/src/services/native-handoff-service/authSecrets.ts",
-			"ownerSource": "packages/hub/src/services/native-handoff-service/NativeHandoffService.ts",
+			"to": "packages/hub/src/lib/server/auth/native-handoff-service/authSecrets.ts",
+			"ownerSource": "packages/hub/src/lib/server/auth/native-handoff-service/NativeHandoffService.ts",
 			"definition": "a1b4c6ddba50f394cf899d39805fa81cf306b7e5b92174adcc652f0d12f03c57"
 		},
 		{
@@ -2743,8 +2743,8 @@
 				"unit": "hub.adapter.d1-auth-store"
 			},
 			"from": "packages/hub/src/utils/d1CredentialStores.ts",
-			"to": "packages/hub/src/adapters/d1-auth-store-adapter/d1CredentialStores.ts",
-			"ownerSource": "packages/hub/src/adapters/d1-auth-store-adapter/D1AuthStoreAdapter.ts",
+			"to": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1CredentialStores.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/D1AuthStoreAdapter.ts",
 			"definition": "69f057cfd9a476d9f666f0e9bc6fd7d0ebcfff43a08edb42f1badc8e8d5b8165"
 		},
 		{
@@ -2754,8 +2754,8 @@
 				"unit": "hub.adapter.d1-auth-store"
 			},
 			"from": "packages/hub/src/utils/d1EmailStores.ts",
-			"to": "packages/hub/src/adapters/d1-auth-store-adapter/d1EmailStores.ts",
-			"ownerSource": "packages/hub/src/adapters/d1-auth-store-adapter/D1AuthStoreAdapter.ts",
+			"to": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1EmailStores.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/D1AuthStoreAdapter.ts",
 			"definition": "e1f1cbfc0761916ccf4d32e9ad50e6b67317489bdb88943c3d8e3bdc64576872"
 		},
 		{
@@ -2765,8 +2765,8 @@
 				"unit": "hub.adapter.d1-auth-store"
 			},
 			"from": "packages/hub/src/utils/d1GrantStore.ts",
-			"to": "packages/hub/src/adapters/d1-auth-store-adapter/d1GrantStore.ts",
-			"ownerSource": "packages/hub/src/adapters/d1-auth-store-adapter/D1AuthStoreAdapter.ts",
+			"to": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1GrantStore.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/D1AuthStoreAdapter.ts",
 			"definition": "4f7f74ba95424974cebaa08ee27520c1c9e6ce21685ae1b57cffde2ad340a6c3"
 		},
 		{
@@ -2776,8 +2776,8 @@
 				"unit": "hub.adapter.d1-auth-store"
 			},
 			"from": "packages/hub/src/utils/d1OneTimeStores.ts",
-			"to": "packages/hub/src/adapters/d1-auth-store-adapter/d1OneTimeStores.ts",
-			"ownerSource": "packages/hub/src/adapters/d1-auth-store-adapter/D1AuthStoreAdapter.ts",
+			"to": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1OneTimeStores.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/D1AuthStoreAdapter.ts",
 			"definition": "5d5b6335df8b48392e4be73730b73a2e20322015eaa1ceba260f3ed5f4162772"
 		},
 		{
@@ -2787,8 +2787,8 @@
 				"unit": "hub.service.installation-token"
 			},
 			"from": "packages/hub/src/utils/githubAppJwt.ts",
-			"to": "packages/hub/src/services/installation-token-service/githubAppJwt.ts",
-			"ownerSource": "packages/hub/src/services/installation-token-service/InstallationTokenService.ts",
+			"to": "packages/hub/src/lib/server/auth/installation-token-service/githubAppJwt.ts",
+			"ownerSource": "packages/hub/src/lib/server/auth/installation-token-service/InstallationTokenService.ts",
 			"definition": "29354247bdb3c4c696e57abdb807b6e2bc1f31afbc5129c916397c964437e9ae"
 		},
 		{
@@ -2798,8 +2798,8 @@
 				"unit": "hub.service.installation-token"
 			},
 			"from": "packages/hub/src/utils/githubAppJwt.ts",
-			"to": "packages/hub/src/services/installation-token-service/githubAppJwt.ts",
-			"ownerSource": "packages/hub/src/services/installation-token-service/InstallationTokenService.ts",
+			"to": "packages/hub/src/lib/server/auth/installation-token-service/githubAppJwt.ts",
+			"ownerSource": "packages/hub/src/lib/server/auth/installation-token-service/InstallationTokenService.ts",
 			"definition": "7db4dd24badcff13e41e24b4a0119dc7a9a234b4cf784d6c16a422301d8d8f1d"
 		},
 		{
@@ -2833,8 +2833,8 @@
 				"symbol": "hubEntity"
 			},
 			"from": "packages/hub/src/utils/hubArtifactCommit.ts",
-			"to": "packages/hub/src/services/hub-projection-service/hubArtifactCommit.ts",
-			"ownerSource": "packages/hub/src/services/hub-projection-service/hubEntity.ts",
+			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubArtifactCommit.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubEntity.ts",
 			"definition": "13064311c24a2836e341bb1ed906b692e80f022759373becabab41bcb064925d"
 		},
 		{
@@ -2844,8 +2844,8 @@
 				"unit": "hub.service.hub-attached"
 			},
 			"from": "packages/hub/src/utils/hubAttachedRecord.ts",
-			"to": "packages/hub/src/services/hub-attached-service/hubAttachedRecord.ts",
-			"ownerSource": "packages/hub/src/services/hub-attached-service/HubAttachedService.ts",
+			"to": "packages/hub/src/services/hub-evidence-service/hub-attached-service/hubAttachedRecord.ts",
+			"ownerSource": "packages/hub/src/services/hub-evidence-service/hub-attached-service/HubAttachedService.ts",
 			"definition": "6f0e0765bb0f4abc069eb12a8a415d8a2707fef55811eededc38494c4a398728"
 		},
 		{
@@ -2880,8 +2880,8 @@
 				"symbol": "hubEntity"
 			},
 			"from": "packages/hub/src/utils/hubCatalog.ts",
-			"to": "packages/hub/src/services/hub-projection-service/hubCatalog.ts",
-			"ownerSource": "packages/hub/src/services/hub-projection-service/hubEntity.ts",
+			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubCatalog.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubEntity.ts",
 			"definition": "9154813bdab2e70554ef56247cd2670ef62749b3956bbffc41149d26c0ecb076"
 		},
 		{
@@ -2903,8 +2903,8 @@
 				"unit": "hub.service.hub-projection"
 			},
 			"from": "packages/hub/src/utils/hubDesigns.ts",
-			"to": "packages/hub/src/services/hub-projection-service/hubDesigns.ts",
-			"ownerSource": "packages/hub/src/services/hub-projection-service/HubProjectionService.ts",
+			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubDesigns.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
 			"definition": "d1adb40235278066950ee835d3bc6676d9be2ee28523cde2d00e105e406422a0"
 		},
 		{
@@ -2914,8 +2914,8 @@
 				"unit": "hub.service.hub-projection"
 			},
 			"from": "packages/hub/src/utils/hubEntity.ts",
-			"to": "packages/hub/src/services/hub-projection-service/hubEntity.ts",
-			"ownerSource": "packages/hub/src/services/hub-projection-service/HubProjectionService.ts",
+			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubEntity.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
 			"definition": "96e7cb8aef4f812803ad27dc29bb98280c8571d8379d96c22a9ad2a86b27fe64"
 		},
 		{
@@ -2926,8 +2926,8 @@
 				"symbol": "hubEntity"
 			},
 			"from": "packages/hub/src/utils/hubEntityContract.ts",
-			"to": "packages/hub/src/services/hub-projection-service/hubEntityContract.ts",
-			"ownerSource": "packages/hub/src/services/hub-projection-service/hubEntity.ts",
+			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubEntityContract.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubEntity.ts",
 			"definition": "8c376415ce3fabaad0bc85ec1a91a45a390eb38a1542b240060724a05e65fda1"
 		},
 		{
@@ -2937,8 +2937,8 @@
 				"unit": "hub.service.hub-attached"
 			},
 			"from": "packages/hub/src/utils/hubEvidenceFile.ts",
-			"to": "packages/hub/src/services/hub-attached-service/hubEvidenceFile.ts",
-			"ownerSource": "packages/hub/src/services/hub-attached-service/HubAttachedService.ts",
+			"to": "packages/hub/src/services/hub-evidence-service/hub-attached-service/hubEvidenceFile.ts",
+			"ownerSource": "packages/hub/src/services/hub-evidence-service/hub-attached-service/HubAttachedService.ts",
 			"definition": "296a503cca71adb5cb71363b259116afdd52952c441000194edf564849673c7e"
 		},
 		{
@@ -2949,8 +2949,8 @@
 				"symbol": "hubEvidenceRead"
 			},
 			"from": "packages/hub/src/utils/hubEvidenceQuery.ts",
-			"to": "packages/hub/src/controllers/hub-api-controller/hubEvidenceQuery.ts",
-			"ownerSource": "packages/hub/src/controllers/hub-api-controller/hubEvidenceRead.ts",
+			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/hubEvidenceQuery.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/hub-api-controller/hubEvidenceRead.ts",
 			"definition": "8835b032541dbb2334962a89af4c8d6caf496504db3e5b756b71fe874d3b4615"
 		},
 		{
@@ -2961,8 +2961,8 @@
 				"symbol": "hubEvidenceRead"
 			},
 			"from": "packages/hub/src/utils/hubEvidenceQuery.ts",
-			"to": "packages/hub/src/controllers/hub-api-controller/hubEvidenceQuery.ts",
-			"ownerSource": "packages/hub/src/controllers/hub-api-controller/hubEvidenceRead.ts",
+			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/hubEvidenceQuery.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/hub-api-controller/hubEvidenceRead.ts",
 			"definition": "ffac0e6ce5082aaa97d218e756a150180c0bf041dd561ffda6c64eadbda06844"
 		},
 		{
@@ -2972,8 +2972,8 @@
 				"unit": "hub.controller.hub-api"
 			},
 			"from": "packages/hub/src/utils/hubEvidenceRead.ts",
-			"to": "packages/hub/src/controllers/hub-api-controller/hubEvidenceRead.ts",
-			"ownerSource": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
+			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/hubEvidenceRead.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
 			"definition": "84aeb519d5e4558e8ba153ac9688cd56af9c623d32b1a776046626f2d50d17d7"
 		},
 		{
@@ -2995,8 +2995,8 @@
 				"unit": "hub.service.hub-evidence"
 			},
 			"from": "packages/hub/src/utils/hubEvidenceScope.ts",
-			"to": "packages/hub/src/services/hub-evidence-service/hubEvidenceScope.ts",
-			"ownerSource": "packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts",
+			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubEvidenceScope.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/HubEvidenceService.ts",
 			"definition": "7f750b815a4083e681ac515a3d18997f6f4eb145bc3ccee03a9cd999041bab98"
 		},
 		{
@@ -3006,8 +3006,8 @@
 				"unit": "hub.service.hub-evidence"
 			},
 			"from": "packages/hub/src/utils/hubEvidenceScope.ts",
-			"to": "packages/hub/src/services/hub-evidence-service/hubEvidenceScope.ts",
-			"ownerSource": "packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts",
+			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubEvidenceScope.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/HubEvidenceService.ts",
 			"definition": "06c0a9422ef9f5ccca3dc423a533e47e6190ab6d9b44f34f16b6babc713ceddf"
 		},
 		{
@@ -3017,8 +3017,8 @@
 				"unit": "hub.service.hub-evidence"
 			},
 			"from": "packages/hub/src/utils/hubEvidenceScope.ts",
-			"to": "packages/hub/src/services/hub-evidence-service/hubEvidenceScope.ts",
-			"ownerSource": "packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts",
+			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubEvidenceScope.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/HubEvidenceService.ts",
 			"definition": "d4dd7ef0a494370a4f33a3134bad27883c1905baf6c23a648ee8fe7d11af3ddd"
 		},
 		{
@@ -3040,8 +3040,8 @@
 				"unit": "hub.controller.hub-api"
 			},
 			"from": "packages/hub/src/utils/hubHttp.ts",
-			"to": "packages/hub/src/controllers/hub-api-controller/hubHttp.ts",
-			"ownerSource": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
+			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/hubHttp.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
 			"definition": "33179e1f1a1a41588cde75951619781e2674f3bcc803c90c2d21e540d5884dcd"
 		},
 		{
@@ -3051,8 +3051,8 @@
 				"unit": "hub.controller.hub-api"
 			},
 			"from": "packages/hub/src/utils/hubHttp.ts",
-			"to": "packages/hub/src/controllers/hub-api-controller/hubHttp.ts",
-			"ownerSource": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
+			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/hubHttp.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
 			"definition": "82a10efbc0d79dcb5c000d516a2f40c2e08af3b95ee8a7be7ddcc3bc2ca04c0d"
 		},
 		{
@@ -3075,8 +3075,8 @@
 				"symbol": "pinnedHistory"
 			},
 			"from": "packages/hub/src/utils/hubNotes.ts",
-			"to": "packages/hub/src/services/hub-evidence-service/hubNotes.ts",
-			"ownerSource": "packages/hub/src/services/hub-evidence-service/hubEvidenceScope.ts",
+			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubNotes.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubEvidenceScope.ts",
 			"definition": "882c40533ba115d2be8372358ea567cca7bbcfa070e9caed695fd6188763bdd8"
 		},
 		{
@@ -3134,8 +3134,8 @@
 				"unit": "hub.service.hub-attached"
 			},
 			"from": "packages/hub/src/utils/hubPinnedSource.ts",
-			"to": "packages/hub/src/services/hub-attached-service/hubPinnedSource.ts",
-			"ownerSource": "packages/hub/src/services/hub-attached-service/HubAttachedService.ts",
+			"to": "packages/hub/src/services/hub-evidence-service/hub-attached-service/hubPinnedSource.ts",
+			"ownerSource": "packages/hub/src/services/hub-evidence-service/hub-attached-service/HubAttachedService.ts",
 			"definition": "16def953524f533d775eeb322564b9b7d30b388208ee9a22b8dcd47c7b1d6f7f"
 		},
 		{
@@ -3158,8 +3158,8 @@
 				"symbol": "hubDesignImage"
 			},
 			"from": "packages/hub/src/utils/hubPng.ts",
-			"to": "packages/hub/src/services/hub-projection-service/hubPng.ts",
-			"ownerSource": "packages/hub/src/services/hub-projection-service/hubDesigns.ts",
+			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubPng.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubDesigns.ts",
 			"definition": "1c9b2fc5456acbcbb84d74a4a8b5fcb097cef8e3ff487cb027a15927faba0672"
 		},
 		{
@@ -3170,8 +3170,8 @@
 				"symbol": "hubPng"
 			},
 			"from": "packages/hub/src/utils/hubPngChunks.ts",
-			"to": "packages/hub/src/services/hub-projection-service/hubPngChunks.ts",
-			"ownerSource": "packages/hub/src/services/hub-projection-service/hubPng.ts",
+			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubPngChunks.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubPng.ts",
 			"definition": "dcb55a4ca8bb29ec4e30f0f39833e937f8b5a8d204bba44670b35dd8232966cf"
 		},
 		{
@@ -3216,8 +3216,8 @@
 				"symbol": "hubEntity"
 			},
 			"from": "packages/hub/src/utils/hubSize.ts",
-			"to": "packages/hub/src/services/hub-projection-service/hubSize.ts",
-			"ownerSource": "packages/hub/src/services/hub-projection-service/hubEntity.ts",
+			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubSize.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubEntity.ts",
 			"definition": "34d0d9f65cef8d3afc92fb76a4dbd72314560eaaae5b659bc963727ba4fe473f"
 		},
 		{
@@ -3227,8 +3227,8 @@
 				"unit": "hub.service.hub-projection"
 			},
 			"from": "packages/hub/src/utils/hubSnapshot.ts",
-			"to": "packages/hub/src/services/hub-projection-service/hubSnapshot.ts",
-			"ownerSource": "packages/hub/src/services/hub-projection-service/HubProjectionService.ts",
+			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubSnapshot.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
 			"definition": "9d5edce41d122f003f4212817ea5bdce4c1f527ae3d8ba20e946bb2c551ba326"
 		},
 		{
@@ -3238,8 +3238,8 @@
 				"unit": "hub.service.hub-projection"
 			},
 			"from": "packages/hub/src/utils/hubThreads.ts",
-			"to": "packages/hub/src/services/hub-projection-service/hubThreads.ts",
-			"ownerSource": "packages/hub/src/services/hub-projection-service/HubProjectionService.ts",
+			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubThreads.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
 			"definition": "41fc6af3b40c7a1e8ee1eb8543e42aaf7680f451ba41b66c12ed4510b0595ec6"
 		},
 		{
@@ -3284,8 +3284,8 @@
 				"unit": "planning.service.planning"
 			},
 			"from": "packages/planning/src/utils/planDesign.ts",
-			"to": "packages/planning/src/services/planning-service/planDesign.ts",
-			"ownerSource": "packages/planning/src/services/planning-service/PlanningService.ts",
+			"to": "packages/planning/src/lib/planning/planning-service/planDesign.ts",
+			"ownerSource": "packages/planning/src/lib/planning/planning-service/PlanningService.ts",
 			"definition": "1447fe3784a1f38ef006d99c67ed41682877c85855a7f0776cf6368062b5bd45"
 		},
 		{
@@ -3295,8 +3295,8 @@
 				"unit": "planning.service.planning"
 			},
 			"from": "packages/planning/src/utils/planDesign.ts",
-			"to": "packages/planning/src/services/planning-service/planDesign.ts",
-			"ownerSource": "packages/planning/src/services/planning-service/PlanningService.ts",
+			"to": "packages/planning/src/lib/planning/planning-service/planDesign.ts",
+			"ownerSource": "packages/planning/src/lib/planning/planning-service/PlanningService.ts",
 			"definition": "1934d188200e68019cd87bd74a769c11b7b563d2816395460f004c246972e2ae"
 		},
 		{
@@ -3330,8 +3330,8 @@
 				"unit": "planning.service.planning"
 			},
 			"from": "packages/planning/src/utils/planHistory.ts",
-			"to": "packages/planning/src/services/planning-service/planHistory.ts",
-			"ownerSource": "packages/planning/src/services/planning-service/PlanningService.ts",
+			"to": "packages/planning/src/lib/planning/planning-service/planHistory.ts",
+			"ownerSource": "packages/planning/src/lib/planning/planning-service/PlanningService.ts",
 			"definition": "f95d85bfed3e3fe3a1c298948dd33b0305097e82361afa02dce9ad191fafbe4e"
 		},
 		{
@@ -3354,8 +3354,8 @@
 				"symbol": "planDesign"
 			},
 			"from": "packages/planning/src/utils/planOptions.ts",
-			"to": "packages/planning/src/services/planning-service/planOptions.ts",
-			"ownerSource": "packages/planning/src/services/planning-service/planDesign.ts",
+			"to": "packages/planning/src/lib/planning/planning-service/planOptions.ts",
+			"ownerSource": "packages/planning/src/lib/planning/planning-service/planDesign.ts",
 			"definition": "5dadde16cd5b7929b4e96968651be7d6ddee3f842fe2227c71d75a5065909ec0"
 		},
 		{
@@ -3389,8 +3389,8 @@
 				"unit": "planning.service.planning"
 			},
 			"from": "packages/planning/src/utils/planReads.ts",
-			"to": "packages/planning/src/services/planning-service/planReads.ts",
-			"ownerSource": "packages/planning/src/services/planning-service/PlanningService.ts",
+			"to": "packages/planning/src/lib/planning/planning-service/planReads.ts",
+			"ownerSource": "packages/planning/src/lib/planning/planning-service/PlanningService.ts",
 			"definition": "0632fcdab8eda1b7d492d8bb7ef187537e3b8782213b5aca1f81c46175d82ba7"
 		},
 		{
@@ -3400,8 +3400,8 @@
 				"unit": "planning.service.planning"
 			},
 			"from": "packages/planning/src/utils/planRegistry.ts",
-			"to": "packages/planning/src/services/planning-service/planRegistry.ts",
-			"ownerSource": "packages/planning/src/services/planning-service/PlanningService.ts",
+			"to": "packages/planning/src/lib/planning/planning-service/planRegistry.ts",
+			"ownerSource": "packages/planning/src/lib/planning/planning-service/PlanningService.ts",
 			"definition": "13e9051e6135170ce2419089748322be31b72d9473f9435888a717fc99fc6ff6"
 		},
 		{
@@ -3411,8 +3411,8 @@
 				"unit": "planning.service.planning"
 			},
 			"from": "packages/planning/src/utils/planThread.ts",
-			"to": "packages/planning/src/services/planning-service/planThread.ts",
-			"ownerSource": "packages/planning/src/services/planning-service/PlanningService.ts",
+			"to": "packages/planning/src/lib/planning/planning-service/planThread.ts",
+			"ownerSource": "packages/planning/src/lib/planning/planning-service/PlanningService.ts",
 			"definition": "fcdc285b13af70115dc07a93acc655299314b22a85ad44f69e327a2e53f8eaae"
 		},
 		{
@@ -3422,8 +3422,8 @@
 				"unit": "planning.service.planning"
 			},
 			"from": "packages/planning/src/utils/planThread.ts",
-			"to": "packages/planning/src/services/planning-service/planThread.ts",
-			"ownerSource": "packages/planning/src/services/planning-service/PlanningService.ts",
+			"to": "packages/planning/src/lib/planning/planning-service/planThread.ts",
+			"ownerSource": "packages/planning/src/lib/planning/planning-service/PlanningService.ts",
 			"definition": "944031a0f62ad455e4b075ccda659a25590726363a9443862a2bd68143737442"
 		},
 		{
@@ -3445,8 +3445,8 @@
 				"unit": "planning.service.planning"
 			},
 			"from": "packages/planning/src/utils/planWrite.ts",
-			"to": "packages/planning/src/services/planning-service/planWrite.ts",
-			"ownerSource": "packages/planning/src/services/planning-service/PlanningService.ts",
+			"to": "packages/planning/src/lib/planning/planning-service/planWrite.ts",
+			"ownerSource": "packages/planning/src/lib/planning/planning-service/PlanningService.ts",
 			"definition": "2e65292b930737e3041496aa00465f01ee062aef13cd38fc76ac867907acb946"
 		},
 		{
@@ -3456,8 +3456,8 @@
 				"unit": "relay.service.socket-frame"
 			},
 			"from": "packages/relay/src/utils/frameTooLarge.ts",
-			"to": "packages/relay/src/services/socket-frame-service/frameTooLarge.ts",
-			"ownerSource": "packages/relay/src/services/socket-frame-service/SocketFrameService.ts",
+			"to": "packages/relay/src/lib/host-runtime/socket-frame-service/frameTooLarge.ts",
+			"ownerSource": "packages/relay/src/lib/host-runtime/socket-frame-service/SocketFrameService.ts",
 			"definition": "f0c619aaf6e3cd1eecf5f8d54b811d361b7ddf61a57e8f27593ac42dd656c8a4"
 		},
 		{
@@ -3502,8 +3502,8 @@
 				"unit": "remote.service.host-pairing"
 			},
 			"from": "packages/remote/src/utils/remoteIdentity.ts",
-			"to": "packages/remote/src/services/host-pairing-service/remoteIdentity.ts",
-			"ownerSource": "packages/remote/src/services/host-pairing-service/HostPairingService.ts",
+			"to": "packages/desktop/src/services/remote-host-service/host-pairing-service/remoteIdentity.ts",
+			"ownerSource": "packages/desktop/src/services/remote-host-service/host-pairing-service/HostPairingService.ts",
 			"definition": "a7092bdf2a687b5df2386a9cb98a5a78581a31e22681d67d21c824501310755a"
 		},
 		{
@@ -4343,8 +4343,8 @@
 				"unit": "reports.service.preview-worker"
 			},
 			"from": "packages/reports/src/utils/previewHealth.ts",
-			"to": "packages/reports/src/services/preview-worker-service/previewHealth.ts",
-			"ownerSource": "packages/reports/src/services/preview-worker-service/PreviewWorkerService.ts",
+			"to": "packages/reports/src/lib/preview-node/preview-worker-service/previewHealth.ts",
+			"ownerSource": "packages/reports/src/lib/preview-node/preview-worker-service/PreviewWorkerService.ts",
 			"definition": "596e3735b967e757d8037f3b67d74456c768f275eb73b2fe4ec8e6ca3d0117d8"
 		},
 		{
@@ -4409,8 +4409,8 @@
 				"unit": "reports.service.replay-video"
 			},
 			"from": "packages/reports/src/utils/replayVideo.ts",
-			"to": "packages/reports/src/services/replay-video-service/replayVideo.ts",
-			"ownerSource": "packages/reports/src/services/replay-video-service/ReplayVideoService.ts",
+			"to": "packages/reports/src/routes/api/replay-video/replay-video-service/replayVideo.ts",
+			"ownerSource": "packages/reports/src/routes/api/replay-video/replay-video-service/ReplayVideoService.ts",
 			"definition": "3c0e187afd3bd5d92813fb731238698c2c7bc968ef90986dd17f94c1699f57bf"
 		},
 		{
@@ -4432,8 +4432,8 @@
 				"unit": "reports.service.report-retention"
 			},
 			"from": "packages/reports/src/utils/reportCleanupLog.ts",
-			"to": "packages/reports/src/services/report-retention-service/reportCleanupLog.ts",
-			"ownerSource": "packages/reports/src/services/report-retention-service/ReportRetentionService.ts",
+			"to": "packages/reports/src/services/report-command-service/report-retention-service/reportCleanupLog.ts",
+			"ownerSource": "packages/reports/src/services/report-command-service/report-retention-service/ReportRetentionService.ts",
 			"definition": "52ac6326f9d251bdf8cace29c0e04c818ef67a810248c9f92a81bae9be4aa4eb"
 		},
 		{
@@ -4565,8 +4565,8 @@
 				"unit": "reports.service.report-retention"
 			},
 			"from": "packages/reports/src/utils/reportLocalCleanup.ts",
-			"to": "packages/reports/src/services/report-retention-service/reportLocalCleanup.ts",
-			"ownerSource": "packages/reports/src/services/report-retention-service/ReportRetentionService.ts",
+			"to": "packages/reports/src/services/report-command-service/report-retention-service/reportLocalCleanup.ts",
+			"ownerSource": "packages/reports/src/services/report-command-service/report-retention-service/ReportRetentionService.ts",
 			"definition": "3cdc6ab55a20045ef4fcce7e1260688ce7f9ffe2f29778a33ec7af0bf555e029"
 		},
 		{
@@ -4576,8 +4576,8 @@
 				"unit": "reports.service.report-publish"
 			},
 			"from": "packages/reports/src/utils/reportPages.ts",
-			"to": "packages/reports/src/services/report-publish-service/reportPages.ts",
-			"ownerSource": "packages/reports/src/services/report-publish-service/ReportPublishService.ts",
+			"to": "packages/reports/src/services/report-command-service/report-publish-service/reportPages.ts",
+			"ownerSource": "packages/reports/src/services/report-command-service/report-publish-service/ReportPublishService.ts",
 			"definition": "40891a5ce279c5d95e68ecd76aa44789d2e4416339e910a9b4df489e937d091b"
 		},
 		{
@@ -4598,8 +4598,8 @@
 				"unit": "reports.service.report-publish"
 			},
 			"from": "packages/reports/src/utils/reportPublication.ts",
-			"to": "packages/reports/src/services/report-publish-service/reportPublication.ts",
-			"ownerSource": "packages/reports/src/services/report-publish-service/ReportPublishService.ts",
+			"to": "packages/reports/src/services/report-command-service/report-publish-service/reportPublication.ts",
+			"ownerSource": "packages/reports/src/services/report-command-service/report-publish-service/ReportPublishService.ts",
 			"definition": "1ecb96c4e1bc346787ef9fd1866ab529f15a7e1777bd6dceb9724f811cd0ecb1"
 		},
 		{
@@ -4609,8 +4609,8 @@
 				"unit": "reports.service.report-publish"
 			},
 			"from": "packages/reports/src/utils/reportPublicationVerify.ts",
-			"to": "packages/reports/src/services/report-publish-service/reportPublicationVerify.ts",
-			"ownerSource": "packages/reports/src/services/report-publish-service/ReportPublishService.ts",
+			"to": "packages/reports/src/services/report-command-service/report-publish-service/reportPublicationVerify.ts",
+			"ownerSource": "packages/reports/src/services/report-command-service/report-publish-service/ReportPublishService.ts",
 			"definition": "9ba84bca0be83a593e53d0391c342975ce7a65ed495d17c1557c87fba4a757b9"
 		},
 		{
@@ -4620,8 +4620,8 @@
 				"unit": "reports.service.report-server"
 			},
 			"from": "packages/reports/src/utils/reportServerRecord.ts",
-			"to": "packages/reports/src/services/report-server-service/reportServerRecord.ts",
-			"ownerSource": "packages/reports/src/services/report-server-service/ReportServerService.ts",
+			"to": "packages/reports/src/services/report-command-service/report-server-service/reportServerRecord.ts",
+			"ownerSource": "packages/reports/src/services/report-command-service/report-server-service/ReportServerService.ts",
 			"definition": "fc7a5f6a1964ebab5ca57806b41a4d88d3e7072ff7d21b8bda4315ec1e49813b"
 		},
 		{
@@ -4746,7 +4746,7 @@
 		},
 		{
 			"unit": "function.validation",
-			"entry": "src/workflows/create-project/validation.ts",
+			"entry": "src/cli/program/create-project/validation.ts",
 			"exports": [
 				"validateProjectName",
 				"validateCodeName",
@@ -4786,6 +4786,18 @@
 			"commit": "424e3c549e09ed6b040f13d76e53c7f2bdb70e27",
 			"reason": "Preserve authored function calls and shared setup in committed usage documentation.",
 			"definition": "178bb75751d525b1bd8d20e89d73f041c6536466ac656103487683af3a10f367"
+		},
+		{
+			"unit": "function.helper-consumers",
+			"name": "helperConsumers",
+			"definition": "7a83986591203d75b8c0fa9426caf10d6a92243c66a1a3a297e438b429eef04b",
+			"reason": "Add source-derived service runtime ownership without changing helper eligibility."
+		},
+		{
+			"unit": "function.unit-metadata",
+			"name": "unitMetadata",
+			"definition": "4851cc55902161938d139c8719e044df2805eb901f98ca2f9ef48e5aad621ca8",
+			"reason": "Add source-derived service runtime ownership without changing helper eligibility."
 		}
 	]
 }

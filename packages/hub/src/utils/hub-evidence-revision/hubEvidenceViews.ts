@@ -1,7 +1,7 @@
 import { hubEvidenceOrigin } from '../hubEvidenceViews';
 import { recordView } from '../../../../../src/utils/recordView';
-import type { HubRecordStatusService } from '../../services/HubRecordStatusService';
-import type { RecordStatus } from '../../../../../src/services/HistoryStatusService';
+import type { HubRecordStatusService } from '../../services/hub-evidence-service/HubRecordStatusService';
+import type { RecordStatus } from '../../../../../src/services/history-status-service/HistoryStatusService';
 import type { HubAttachedRecord } from '../hubAttachedRecord';
 
 async function hubEvidenceView(history: HubRecordStatusService, item: RecordStatus) {

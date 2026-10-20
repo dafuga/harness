@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/history-sync-service/historyRefs.ts", "src/utils/historyRefs.ts"],
+		"source": ["src/cli/program/history-sync-service/historyRefs.ts", "src/utils/historyRefs.ts"],
 		"symbols": ["historyRefs", "RefKind", "sourceArchiveRef", "refKind", "historyRefs"]
 	},
 	"contract": {

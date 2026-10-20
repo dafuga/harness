@@ -156,4 +156,4 @@ function buildProblem(
 	return `was served by build ${served.slice(0, 12)}, not the ${named} build ${compiled.slice(0, 12)} compiled from this revision`;
 }
 
-export { scenarioCoverage } from '../services/verification-service/scenarioCoverage';
+export { scenarioCoverage } from '../workflows/run-verify/verification-service/scenarioCoverage';

@@ -1,5 +1,5 @@
 import type { EvidenceFile } from '../../../../src/core/historyTypes';
-import type { AttachedRecord } from '../../../../src/services/attached-record-service/AttachedRecordService';
+import type { AttachedRecord } from '../../../../src/services/history-status-service/attached-record-service/AttachedRecordService';
 
 export interface HubAttachedRecord extends Omit<AttachedRecord, 'files'> {
 	/** Only record.json is retained; captures and logs are validated then discarded. */
@@ -16,4 +16,4 @@ export function hubRecordJson(bytes: Uint8Array): unknown {
 	}
 }
 
-export { hubAttachedRecord } from '../services/hub-attached-service/hubAttachedRecord';
+export { hubAttachedRecord } from '../services/hub-evidence-service/hub-attached-service/hubAttachedRecord';

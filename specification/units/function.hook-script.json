@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/hook-install-service/hookScript.ts", "src/utils/hookScript.ts"],
+		"source": [
+			"src/cli/program/hook-install-service/hookScript.ts",
+			"src/services/hook-install-service/hookScript.ts",
+			"src/utils/hookScript.ts"
+		],
 		"symbols": [
+			"hookScript",
+			"managedHook",
 			"hookScript",
 			"managedHook",
 			"hookMarker",
