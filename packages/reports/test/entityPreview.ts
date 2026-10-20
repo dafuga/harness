@@ -26,6 +26,13 @@ import {
 } from './entityPreviewData';
 import { commits, ids } from './entityUnits';
 
+const helperUsers: Record<string, Array<{ unit: string }>> = {
+	unused: [],
+	single: [{ unit: ids.list }],
+	effectful: [{ unit: ids.list }, { unit: ids.store }],
+	duplicates: [{ unit: ids.list }, { unit: ids.list }]
+};
+
 /** The synthetic history in a browser, for the checks that need one; no server and no real data. */
 const variant = new URLSearchParams(location.search).get('variant') as PreviewVariant | null;
 const recorded = (commit: string, whole = true) => revision(commit, [previewRecord(commit, whole)]);
@@ -165,19 +172,13 @@ function withHelpers(detail: HarnessRevision): HarnessRevision {
 		'duplicates'
 	].map((kind) => {
 		let helpers: typeof template.helpers = kind === 'legacy' ? undefined : [];
-		if (['unused', 'single', 'effectful', 'duplicates'].includes(kind)) {
+		const consumers = helperUsers[kind];
+		if (consumers) {
 			helpers = template.helpers?.map((helper) => ({
 				...helper,
 				name: kind,
 				pure: kind !== 'effectful',
-				consumers:
-					kind === 'unused'
-						? []
-						: kind === 'effectful'
-							? [{ unit: ids.list }, { unit: ids.store }]
-							: kind === 'duplicates'
-								? [{ unit: ids.list }, { unit: ids.list }]
-								: [{ unit: ids.list }]
+				consumers
 			}));
 		}
 		return {
