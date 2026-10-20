@@ -1,0 +1,69 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.contract-table",
+	"kind": "component",
+	"title": "Contract field table",
+	"responsibility": "Display typed contract fields and examples with accessible detail controls.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/ContractTable.svelte"],
+		"symbols": ["ContractTable"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ContractTable.group",
+				"type": "ContractGroup",
+				"description": "Named parameter, return or component fields with types and authored or illustrative examples."
+			},
+			{
+				"name": "ContractTable.plain",
+				"type": "boolean",
+				"description": "Optional compact labels beneath a callable heading."
+			},
+			{
+				"name": "ContractTable.onexample",
+				"type": "(field: ContractField, opener: HTMLButtonElement) => void",
+				"description": "Open the existing example modal and retain its focus return target."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ContractTable",
+				"type": "markup",
+				"description": "A field table with compact examples and trailing info controls; return tables omit the redundant name column."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.contract-fields",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/ContractTable.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/ContractTable.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

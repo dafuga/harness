@@ -3,7 +3,7 @@
 	"id": "reports.function.contract-fields",
 	"kind": "function",
 	"title": "Prepare typed contract fields",
-	"responsibility": "Prepares typed contract fields and example labels, preserving function owners when field names repeat.",
+	"responsibility": "Prepares typed contract fields and per-callable parameter and return contracts with honest examples.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -19,9 +19,7 @@
 			"ContractField",
 			"ContractGroup",
 			"guess",
-			"typeLabel",
-			"contractFields",
-			"contractFacts"
+			"callableContracts"
 		]
 	},
 	"contract": {
@@ -56,6 +54,11 @@
 				"name": "contractFacts.category",
 				"type": "ExplorerCategory",
 				"description": "The entity category; functions also expose execution targets."
+			},
+			{
+				"name": "callableContracts.unit",
+				"type": "HarnessUnit",
+				"description": "Source-derived callable metadata and declared examples at the selected revision."
 			}
 		],
 		"outputs": [
@@ -67,12 +70,17 @@
 			{
 				"name": "contractFields",
 				"type": "ContractGroup[]",
-				"description": "Input, output and error groups with distinct owner-qualified names where needed, descriptions and declared examples. Safe simple types may get labelled placeholders; opaque types keep explicit gaps."
+				"description": "Input, output and error groups with descriptions and declared examples. Safe simple types may get labelled placeholders; opaque types keep explicit gaps."
 			},
 			{
 				"name": "contractFacts",
 				"type": "ContractRow[]",
 				"description": "Whole-contract facts without duplicate field summaries, plus execution targets for functions."
+			},
+			{
+				"name": "callableContracts",
+				"type": "{ name: string; signature: string; groups: ContractGroup[] }[]",
+				"description": "Each callable with its literal parameter names and its own return type and examples."
 			}
 		],
 		"errors": []

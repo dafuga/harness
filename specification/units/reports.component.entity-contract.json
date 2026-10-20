@@ -3,7 +3,7 @@
 	"id": "reports.component.entity-contract",
 	"kind": "component",
 	"title": "Typed contract",
-	"responsibility": "Lists typed inputs, outputs and errors with compact example previews and full details in a shared modal.",
+	"responsibility": "Shows component fields or each function\u2019s actual parameters and return value, with types and example details.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -38,7 +38,7 @@
 			{
 				"name": "EntityContract",
 				"type": "markup",
-				"description": "Name, type and example tables with ellipsis for long previews. Trailing info controls open all examples and the field description in the shared modal."
+				"description": "Typed component tables or separate callable API contracts. Literal parameter names and each return value stay together; info controls open full examples."
 			}
 		],
 		"errors": []
@@ -76,6 +76,11 @@
 		},
 		{
 			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.contract-table",
 			"via": "import",
 			"origin": "derived"
 		}

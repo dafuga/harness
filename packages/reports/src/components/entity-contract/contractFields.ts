@@ -44,26 +44,14 @@ function examplesOf(item: Item, type: string): Pick<ContractField, 'source' | 'e
 	return { source: 'illustrative', examples: [shown(placeholder.value, markup)] };
 }
 
-/**
- * Name a field in words, keeping its owner when sibling names would collide. Component outputs
- * derived under the component or file name read rendered markup.
- */
+/** Component fields read as words; their derived markup output reads rendered markup. */
 function nameOf(item: Item, unit: HarnessUnit): string {
 	const name = item.name.slice(item.name.lastIndexOf('.') + 1);
 	const files = unit.owns.source.map((path) => path.slice(path.lastIndexOf('/') + 1).split('.')[0]);
 	const own = [unit.title, ...unit.owns.symbols, ...files];
 	const itself = item.type === 'markup' && own.includes(name);
 	const words = itself ? 'rendered markup' : humanize(name);
-	const label = words ? words[0].toUpperCase() + words.slice(1) : 'Unnamed';
-	const siblings = [unit.contract.inputs, unit.contract.outputs, unit.contract.errors].find(
-		(fields) => fields.includes(item)
-	);
-	const ambiguous = siblings?.some(
-		(field) => field.name !== item.name && humanize(field.name.split('.').at(-1)!) === words
-	);
-	const owner = humanize(item.name.slice(0, item.name.lastIndexOf('.')));
-	if (!ambiguous || !item.name.includes('.') || !owner) return label;
-	return `${owner[0].toUpperCase()}${owner.slice(1)} · ${label}`;
+	return words ? words[0].toUpperCase() + words.slice(1) : 'Unnamed';
 }
 
 function fieldOf(item: Item, unit: HarnessUnit): ContractField {
@@ -112,4 +100,51 @@ export function contractFacts(
 	const kinds = unit.runtime.targets.map((target) => targets[target.kind] ?? target.kind);
 	const fallback = targets[unit.runtime.kind] ?? unit.runtime.kind;
 	return [...facts, { label: 'Runs as', value: [...new Set(kinds)].join(', ') || fallback }];
+}
+
+/** Each recorded callable keeps its own literal parameters and returned value. */
+export function callableContracts(unit: HarnessUnit): Array<{
+	name: string;
+	signature: string;
+	groups: ContractGroup[];
+}> {
+	const helpers = unit.helpers ?? [];
+	return helpers.map((helper) => {
+		const parameters = helper.inputs.map((input) => {
+			const declared = unit.contract.inputs.find((field) => field.name === input.name) ?? input;
+			const prefix = `${helper.name}.`;
+			const name = input.name.startsWith(prefix) ? input.name.slice(prefix.length) : input.name;
+			return { ...fieldOf(declared, unit), name };
+		});
+		const declared =
+			unit.contract.outputs.find((field) => field.name === helper.name) ??
+			(helpers.length === 1 ? unit.contract.outputs[0] : undefined);
+		const type = typeLabel(helper.output ?? declared?.type ?? 'unknown');
+		const returned: ContractField =
+			type === 'void'
+				? {
+						name: 'return value',
+						type,
+						source: 'missing',
+						examples: [],
+						description: 'This function returns no value.'
+					}
+				: { ...fieldOf({ ...declared, name: 'return value', type }, unit), name: 'return value' };
+		const errors = unit.contract.errors.filter(
+			(field) => helpers.length === 1 || field.name.startsWith(`${helper.name}.`)
+		);
+		const groups: ContractGroup[] = [
+			{ id: 'inputs', title: 'Parameters', none: 'No parameters.', fields: parameters },
+			{ id: 'outputs', title: 'Returns', none: '', fields: [returned], hideNames: true }
+		];
+		if (errors.length)
+			groups.push({
+				id: 'errors',
+				title: 'Errors',
+				none: '',
+				fields: errors.map((field) => fieldOf(field, unit))
+			});
+		const args = parameters.map((field) => `${field.name}: ${field.type}`).join(', ');
+		return { name: helper.name, signature: `${helper.name}(${args}): ${type}`, groups };
+	});
 }

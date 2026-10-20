@@ -10,7 +10,7 @@ export interface ContractExample {
 
 /** One input, output or error as a person reads it. */
 export interface ContractField {
-	/** Words a reader is shown; never a file or a module path. */
+	/** Readable component field name or the exact callable parameter identifier. */
 	name: string;
 	/** The public type as declared, without the module an inferred type is imported from. */
 	type: string;
@@ -26,6 +26,8 @@ export interface ContractField {
 export interface ContractGroup {
 	id: 'inputs' | 'outputs' | 'errors';
 	title: string;
+	/** Return tables show the value type without a redundant name column. */
+	hideNames?: boolean;
 	/** What is said when the contract declares none. */
 	none: string;
 	fields: ContractField[];

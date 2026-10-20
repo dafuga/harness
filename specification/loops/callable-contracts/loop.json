@@ -2,7 +2,7 @@
 	"name": "callable-contracts",
 	"goal": "Show each callable contract as its own parameters and return value without renaming API fields",
 	"createdAt": "2026-10-20T11:24:38.498Z",
-	"updatedAt": "2026-10-20T11:25:13.781Z",
+	"updatedAt": "2026-10-20T11:33:29.926Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T11:30:02.584Z",
+			"evidence": "Committed tests aa89d87a fail: the existing renderer has no per-callable API region. Immutable checkpoint 1dc08aaf and test-owned screenshots preserve the failure."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T11:30:03.142Z",
+			"evidence": "Render source-derived callables separately with literal parameters and their own return value. Reuse the field table and example modal. Extend normal contract coverage with source-derived multi-callable, differing return types and zero-parameter/void fixtures."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T11:33:29.926Z",
+			"evidence": "Opus extracted the canonical contract field table and renders separate callable API sections. Source metadata supplies literal parameters and each return type. Actual casing examples are declared and checked against implementations."
 		},
 		{
 			"id": "green",
