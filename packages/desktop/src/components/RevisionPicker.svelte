@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Select from '$shared/Select.svelte';
 	import type { Workspace } from '../lib/stores/workspace.svelte';
+	import Icon from './Icon.svelte';
 	let { workspace }: { workspace: Workspace } = $props();
 	let branch = $state('');
 	let commit = $state('');
@@ -52,7 +53,7 @@
 				class="go-to-tip"
 				aria-label="Go to tip"
 				title="Go to tip"
-				onclick={chooseBranch}>Go to tip</button
+				onclick={chooseBranch}><Icon name="open" size={16} /></button
 			>{/if}
 	</div>{/if}
 
