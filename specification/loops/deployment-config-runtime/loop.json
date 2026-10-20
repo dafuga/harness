@@ -2,7 +2,7 @@
 	"name": "deployment-config-runtime",
 	"goal": "Runtime dependencies resolve in bundled Node and external preview execution",
 	"createdAt": "2026-10-20T21:02:18.900Z",
-	"updatedAt": "2026-10-20T21:04:08.362Z",
+	"updatedAt": "2026-10-20T21:09:44.155Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -32,22 +32,30 @@
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T21:04:09.016Z",
+			"evidence": "Use the supported public JSONC entry. Keep the existing boundary test matrix in normal verification and require bundled plus external execution when server code is shared with the preview."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T21:08:55.919Z",
+			"evidence": "b77e749f uses the public package entry for Node; 82a8e5d9 resolves only JSONC to its ESM entry during desktop bundling. The boundary matrix uses actual shared build options."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T21:08:57.205Z",
+			"evidence": "82a8e5d9 passes the same unchanged boundary matrix recorded failing at acd89b73, in the same environment. Both bundled and external Node modes parse JSONC successfully."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T21:09:44.155Z",
+			"evidence": "An isolated snapshot of 82a8e5d9 fails the unchanged four-case matrix when the original private ESM import is reintroduced (impl/format), then passes all four cases after restoring the public entry. Logs preserved outside Git."
 		},
 		{
 			"id": "verify",
