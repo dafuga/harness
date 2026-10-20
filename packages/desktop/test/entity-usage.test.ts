@@ -38,18 +38,16 @@ test('Used In lists what uses the entity once each, with what it is', () => {
 	const used = panel('used-by');
 	expect(used).toMatch(/^Used In 2 /);
 	expect(used).toMatch(/Orders page\s+Page\b/);
-	expect(used).toMatch(/Order list\s+Component\b/);
-	expect(times(used, 'Order list')).toBe(1);
-	expect(used).not.toMatch(/relationship|Used by|Uses|Order store|Order settings|src\//i);
+	expect(used).toMatch(/OrderList\s+Component\b/);
+	expect(times(used, 'OrderList')).toBe(1);
+	expect(used).not.toMatch(/relationship|Used by|Uses|OrderStore|orderSettings|src\//i);
 	expect(used, 'usage lists omit verification marks').not.toMatch(/[×✓]/);
 });
 
 test('Uses keeps what the entity depends on apart by kind, with what is none of the five last', () => {
 	const uses = panel('uses');
-	expect(uses).toMatch(
-		/^Uses 3 .*Configs 1 Order settings.*Services 1 Order store.*Other 1 Order\b/
-	);
-	expect(uses).not.toMatch(/relationship|Used by|Used In|Orders page|Order list|src\//i);
+	expect(uses).toMatch(/^Uses 3 .*Configs 1 orderSettings.*Services 1 OrderStore.*Other 1 Order\b/);
+	expect(uses).not.toMatch(/relationship|Used by|Used In|Orders page|OrderList|src\//i);
 	expect(uses, 'usage lists omit verification marks').not.toMatch(/[×✓]/);
 	const body = drawn(RelationshipsPanel, { relationships: related, workspace, direction: 'uses' });
 	expect(body).toContain('href="/harness/services/app.service.order-store"');

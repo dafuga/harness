@@ -36,13 +36,24 @@ const ids = (entities: { id: string }[]) => entities.map((entity) => entity.id).
 const kept = idsOf([...ordinary, twin]);
 const redirects = ['analytics', 'harness-analytics', 'harness-reports', 'harness-reports-id'];
 
-test('implemented pages select their declared screenshot rather than an absent planning image', async () => {
+test('implemented catalog entries retain code identity and declared screenshots', async () => {
 	const preview = { scenario: 'orders', state: 'loaded', viewport: 'desktop' };
 	const unit = {
 		...manifest(['page.orders', 'Orders', 'Shows orders.', ['src/routes/orders/+page.svelte']]),
 		preview
 	} as ComponentManifest;
 	expect(catalogUnit(unit, new Set())?.thumbnail).toEqual({ source: 'recorded', ...preview });
+	const service = {
+		...unit,
+		kind: 'service',
+		id: 'service.payment',
+		title: 'Take payments',
+		owns: {
+			source: ['src/lib/checkout/PaymentService.ts'],
+			symbols: ['PaymentOptions', 'PaymentService']
+		}
+	};
+	expect(catalogUnit(service, new Set())?.title).toBe('PaymentService');
 	const source = { units: async () => [unit], changed: async () => new Set<string>() };
 	for (const versions of [[], [imagelessDesign]]) {
 		const plan = pagePlan(unit, versions);

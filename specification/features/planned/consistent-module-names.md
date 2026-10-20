@@ -27,6 +27,7 @@ Strengthen the existing explorer-name, entity-catalog and responsive entity-prev
 - guide.scaffolds and guide.guide: existing static guidance, no explorer category.
 - rule.catalog and template.project-guidance: naming policy and emitted agent instructions, no explorer category.
 - audit.scaffold-naming-rules and audit.adapters-svelte: existing audit rules, no explorer category.
+- desktop.function.catalog-unit and desktop.component.relationships-panel: Desktop shares the resolver; its catalog and relationships keep the same names as Reports. Backend source: /Users/danielfugere/.codex/worktrees/service-cards/harness/packages/desktop/src/utils/catalogUnit.ts.
 - [ExplorerFunctionCard](http://127.0.0.1:5732/harness/branch/dafuga%2Fservice-cards/components/reports.component.explorer-function-card): dependency verified; no markup or style edits.
 
 ## Future Enhancements
