@@ -2,7 +2,7 @@
 	"name": "page-overview-purpose",
 	"goal": "Page Overview begins with its short registered description above screenshots while the header stays concise.",
 	"createdAt": "2026-10-20T19:11:09.103Z",
-	"updatedAt": "2026-10-20T19:11:44.393Z",
+	"updatedAt": "2026-10-20T19:13:28.919Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T19:13:28.919Z",
+			"evidence": "d09a5276 fails the unchanged standardized page overview tests and all three browser widths: missing registered purpose. Frozen record 4b193bd4fa1c3b0fe40fc075395f711b969b1a5f0c74667f63817d195cf05c47 preserves the failing assertion and before captures."
 		},
 		{
 			"id": "implement",

@@ -20,6 +20,9 @@
 
 <!-- Contract, Used In and Uses are tabs of their own; an overview does not repeat them. -->
 <div role="tabpanel" aria-label={`${entity.name} overview`}>
+	{#if entity.category === 'pages' && entity.purpose}
+		<p class="ex-lead">{entity.purpose}</p>
+	{/if}
 	{#if first}{@render children()}{/if}
 	<EntitySummary {measure} compact />
 	{#if !first}{@render children()}{/if}

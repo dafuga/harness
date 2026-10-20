@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-entity-overview",
 	"kind": "component",
 	"title": "Entity overview",
-	"responsibility": "Shows visual evidence before measurements; contract and usage each have dedicated tabs.",
+	"responsibility": "Introduces each page's purpose, then shows visual evidence before measurements; contract and usage have dedicated tabs.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -16,7 +16,7 @@
 			{
 				"name": "EntityOverview.entity",
 				"type": "ExplorerEntity",
-				"description": "The entity name, category and removal state at the viewed revision."
+				"description": "The entity name, category, registered purpose and removal state at the viewed revision."
 			},
 			{
 				"name": "EntityOverview.measure",
@@ -33,7 +33,7 @@
 			{
 				"name": "EntityOverview",
 				"type": "markup",
-				"description": "Visual overviews begin with screenshots, a commit comparison or an explicit capture gap, followed by one Performance profile containing size and timing measurements. Other entities retain measurement-first evidence. Contract and usage appear in their own tabs."
+				"description": "Pages begin with their registered purpose when available. Visual evidence follows, then one Performance profile containing size and timing measurements. Other entities retain measurement-first evidence. Contract and usage appear in their own tabs."
 			}
 		],
 		"errors": []
