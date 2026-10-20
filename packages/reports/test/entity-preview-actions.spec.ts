@@ -143,7 +143,6 @@ for (const [name, size] of Object.entries(viewports)) {
 		await tab.keyboard.press('Enter');
 		expect(await where(tab)).toEqual({ branch: 'feature/orders', commit: null, ...page });
 	});
-
 	test(`the console keeps a loaded revision responsive at ${name} width`, async ({
 		page: tab
 	}, info) => {
