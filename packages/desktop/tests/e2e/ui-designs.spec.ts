@@ -1,20 +1,10 @@
 import { TaskCompletionService } from '../../../../src/services/TaskCompletionService';
 import { taskAuditRepo } from '../../../../test/support/taskAuditRepo';
-import { desktopEvidence } from './desktop-evidence';
+import { checkpoint } from './desktop-evidence';
 import { test, expect, type Page } from '../../../../test/support/browserTest';
 import { fixture } from './ui-design-fixture';
 import type { DesktopBridge, RunEvent } from '../../src/models/DesktopBridge.types';
 
-async function checkpoint(page: Page, name: string) {
-	await desktopEvidence(page, name, false);
-	if (process.env.TAKE_SCREENSHOT !== 'true') return;
-	await page.evaluate(async () => {
-		await document.fonts.ready;
-		await Promise.all([...document.images].map((image) => image.decode().catch(() => {})));
-	});
-	await page.mouse.move(0, 0);
-	await page.screenshot({ path: `test-results/ui-${name}.png`, fullPage: true });
-}
 test('exact image region, approval, Change, public stream and source disclosure', async ({
 	page
 }) => {

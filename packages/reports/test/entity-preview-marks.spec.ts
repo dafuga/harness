@@ -1,3 +1,4 @@
+import { inside } from './entityPreviewGeometry';
 import { expect, test, type Page } from '../../../test/support/browserTest';
 import {
 	capture,
@@ -13,12 +14,6 @@ const filter = { category: 'functions' as const, entity: ids.filter };
 const components = { category: 'components' as const, commit: commits.middle };
 const why = 'Orders page over synthetic orders: empty has no result in the record.';
 const tip = (tab: Page) => tab.getByRole('tooltip');
-/** True when the open tooltip lies wholly inside the window. */
-async function inside(tab: Page, size: { width: number; height: number }): Promise<boolean> {
-	const box = (await tip(tab).boundingBox()) ?? { x: -1, y: -1, width: 0, height: 0 };
-	const across = box.x >= 0 && box.x + box.width <= size.width;
-	return across && box.y >= 0 && box.y + box.height <= size.height;
-}
 for (const [name, size] of Object.entries(viewports)) {
 	test(`component detail at ${name}: the verdict supports pointer and keyboard inspection`, async ({
 		page: tab
