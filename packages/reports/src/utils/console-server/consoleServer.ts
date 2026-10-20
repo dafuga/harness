@@ -41,16 +41,23 @@ function currentFigures(unit: HarnessRevision['registry']['units'][number], comm
 	);
 }
 
+function selectedRevision(path: string, json: string | undefined): HarnessRevision | undefined {
+	const commit = /^revisions\/([a-f0-9]{40})\.json$/.exec(path)?.[1];
+	if (!commit || !json) return;
+	const revision = JSON.parse(json) as HarnessRevision;
+	if (revision.commit === commit && Array.isArray(revision.registry?.units)) return revision;
+}
+
 /** Old prepared indexes can lack static figures; derive them without changing stored proof. */
 async function measuredRevision(
 	path: string,
 	json: string | undefined
 ): Promise<string | undefined> {
 	const root = process.env.HARNESS_SITE_ROOT?.trim();
-	const commit = /^revisions\/([a-f0-9]{40})\.json$/.exec(path)?.[1];
-	if (!root || !commit || !json) return json;
-	const revision = JSON.parse(json) as HarnessRevision;
-	if (revision.commit !== commit || !Array.isArray(revision.registry?.units)) return json;
+	if (!root) return json;
+	const revision = selectedRevision(path, json);
+	if (!revision) return json;
+	const commit = revision.commit;
 	const units = revision.registry.units;
 	if (units.every((unit) => currentFigures(unit, commit))) return json;
 	const figures = await sourceFigures(root, commit);
