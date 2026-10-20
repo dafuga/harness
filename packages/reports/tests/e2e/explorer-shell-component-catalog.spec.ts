@@ -26,6 +26,18 @@ for (const viewport of catalogViewports) {
 				await expect(component.getByText('GPT 6.1', { exact: true })).toBeVisible();
 				await expect(component.getByText('Claude Opus 5.5', { exact: true })).toBeVisible();
 			}
+			if (unit.id === 'hub.component.account-menu') {
+				await expect(component).toHaveCSS('display', 'flex');
+				await expect(component).toHaveCSS('column-gap', '10px');
+			}
+			if (unit.id === 'reports.component.harness-explorer-page-card') {
+				await expect(component.locator('article')).toHaveCSS('display', 'grid');
+				await expect(component.locator('img')).toHaveCSS('object-fit', 'contain');
+				await expect(component.locator('img')).toHaveAttribute('src', /synthetic-card-input\.svg$/);
+				await expect(
+					component.getByRole('link', { name: 'Open Order card', exact: true })
+				).toHaveAttribute('title', /Synthetic preview input/);
+			}
 			await expect
 				.poll(() => page.evaluate(() => document.documentElement.scrollWidth))
 				.toBeLessThanOrEqual(viewport.width);
