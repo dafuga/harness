@@ -82,6 +82,29 @@ async function readTrace(project: string): Promise<string> {
 	return readFile(join(project, 'specification/loops/newsletter-signup/trace.ndjson'), 'utf8');
 }
 
+test('feature completion rejects an unsupported free-text verification claim', async () => {
+	const root = await mkdtemp(join(tmpdir(), 'harness-loop-completion-'));
+	try {
+		await runHarness(
+			['loop', 'create', 'delivery', '--from', 'feature', '--goal', 'Deliver search'],
+			root
+		);
+		for (const step of ['spec', 'implement', 'test'])
+			await runHarness(['loop', 'complete', 'delivery', step, '--evidence', 'Recorded work'], root);
+		const done = await runHarness(
+			['loop', 'complete', 'delivery', 'verify', '--evidence', 'Everything passed'],
+			root,
+			false
+		);
+		expect(done.exitCode, 'a claim cannot substitute for the completion audit').toBe(1);
+		expect(done.stderr).toContain('completion audit');
+		const status = await runHarness(['loop', 'status', 'delivery', '--json'], root);
+		expect(JSON.parse(status.stdout).state.steps.at(-1).status).toBe('pending');
+	} finally {
+		await rm(root, { recursive: true, force: true });
+	}
+}, 120_000);
+
 async function writeTemplate(root: string): Promise<void> {
 	const dir = join(root, 'specification/loop-templates');
 	await mkdir(dir, { recursive: true });

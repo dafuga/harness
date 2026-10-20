@@ -1,5 +1,6 @@
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { baselineRepo, cloneRepo, type VerifyRepo } from './support/verifyRepo';
+import { verifyRun } from '../src/workflows/runVerify';
 
 let baseline: VerifyRepo;
 beforeAll(async () => {
@@ -8,6 +9,25 @@ beforeAll(async () => {
 afterAll(() => baseline.dispose());
 
 const upper = (source: string) => source.replace('toLowerCase', 'toUpperCase');
+
+test('task verification rejects missing profiling even without performance budgets', async () => {
+	const repo = await cloneRepo(baseline);
+	try {
+		await repo.change('src/utils/slugify.ts', upper);
+		const request = { root: repo.root, requirePerformance: true };
+		const { record } = await verifyRun(request);
+		expect(record.gates?.performance, 'task profiling is mandatory without a budget').toBe(
+			'failed'
+		);
+		expect(
+			record.failures.some(
+				(failure) => failure.includes('function.slugify') && failure.includes('profil')
+			)
+		).toBe(true);
+	} finally {
+		await repo.dispose();
+	}
+}, 120_000);
 
 test('measures that do not apply or were not taken are stated, never left out', async () => {
 	const repo = await cloneRepo(baseline);
