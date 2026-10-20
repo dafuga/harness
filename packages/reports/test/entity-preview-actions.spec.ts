@@ -1,6 +1,7 @@
 import {
 	reviewHelperCard,
 	reviewHelperUsage,
+	reviewModelCard,
 	reviewPrivateFunctions
 } from './entityPreviewFunctions';
 import { expect, test } from '../../../test/support/browserTest';
@@ -61,9 +62,11 @@ for (const [name, size] of Object.entries(viewports)) {
 			}
 		}
 	});
-	test(`component and function lists use a card grid at ${name} width`, async ({ page: tab }) => {
+	test(`component, helper and model lists use a card grid at ${name} width`, async ({
+		page: tab
+	}) => {
 		await tab.setViewportSize(size);
-		for (const category of ['components', 'functions'] as const) {
+		for (const category of ['models', 'functions', 'components'] as const) {
 			await open(tab, { category }, 'helpers');
 			await tab.evaluate(async () => {
 				await document.fonts.ready;
@@ -73,7 +76,9 @@ for (const [name, size] of Object.entries(viewports)) {
 			const cards = tab.getByRole('article');
 			await expect(
 				cards,
-				'only helpers used in two distinct visible places are listed'
+				category === 'models'
+					? 'models use the helper card layout'
+					: 'only helpers used in two distinct visible places are listed'
 			).toHaveCount(category === 'components' ? 3 : 1);
 			const card = (await cards.first().boundingBox())!;
 			const available = (await tab.locator('.ex-index').boundingBox())!;
@@ -81,6 +86,7 @@ for (const [name, size] of Object.entries(viewports)) {
 				expect(card.width, 'cards leave room for neighbors').toBeLessThan(available.width * 0.6);
 			}
 			expect(await fits(tab)).toBe(true);
+			if (category === 'models') await reviewModelCard(tab, name);
 			if (category === 'functions') {
 				await reviewHelperCard(tab, cards);
 				await reviewHelperUsage(tab, name);

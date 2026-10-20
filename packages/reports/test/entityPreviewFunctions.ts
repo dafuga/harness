@@ -1,6 +1,6 @@
 import type { Locator, Page } from '@playwright/test';
 import { expect } from '../../../test/support/browserTest';
-import { capture, fits, open, where } from './entityPreviewPage';
+import { capture, chooseCatalogFilter, fits, open, where } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 
 /** Private functions stay reachable from their owner at the tip and a historical commit. */
@@ -98,5 +98,61 @@ export async function reviewHelperUsage(page: Page, viewport: string): Promise<v
 			await expect(page.getByRole('heading', { name: label, exact: true })).toBeVisible();
 			await open(page, { category: 'functions', commit }, 'helpers');
 		}
+	}
+}
+
+/** Models share helper appearance while their names and consumers keep model navigation. */
+export async function reviewModelCard(page: Page, viewport: string): Promise<void> {
+	const appearance = () =>
+		page
+			.getByRole('article')
+			.first()
+			.evaluate((node) => {
+				const style = getComputedStyle(node),
+					code = getComputedStyle(node.querySelector('code')!);
+				const usage = getComputedStyle(node.querySelector('[aria-label="Used In"]')!);
+				const grid = getComputedStyle(node.parentElement!);
+				return [
+					style.backgroundColor,
+					style.border,
+					style.borderRadius,
+					code.font,
+					usage.font,
+					grid.gap,
+					grid.gridTemplateColumns
+				];
+			});
+	await open(page, { category: 'functions' }, 'helpers');
+	const helperAppearance = await appearance();
+	for (const commit of [null, commits.middle]) {
+		await open(page, { category: 'models', commit }, 'helpers');
+		await page.evaluate(async () => {
+			await document.fonts.ready;
+		});
+		await capture(page, `model-card-${commit ? 'commit' : 'tip'}-${viewport}`);
+		const card = page.getByRole('article', { name: 'Order', exact: true });
+		await expect(card.locator('code')).toHaveText('Order');
+		await expect(card.locator('h2, p, img, svg, button, .hx-verdict')).toHaveCount(0);
+		await expect(page.locator('.ex-legend')).toHaveCount(0);
+		expect(await appearance()).toEqual(helperAppearance);
+		const usage = card.getByRole('group', { name: 'Used In', exact: true });
+		await expect(usage.getByRole('link')).toHaveText(['Order list', 'Order store']);
+		await page.getByRole('searchbox', { name: 'Search models' }).fill('absent-model');
+		await expect(page.getByRole('article')).toHaveCount(0);
+		await page.getByRole('button', { name: 'Show all models', exact: true }).click();
+		await chooseCatalogFilter(page, 'Usage filter', 'shared');
+		await expect(card).toHaveCount(1);
+		expect(await fits(page)).toBe(true);
+		await usage.getByRole('link', { name: 'Order list', exact: true }).press('Enter');
+		expect(await where(page)).toMatchObject({ category: 'components', entity: ids.list, commit });
+		await open(page, { category: 'models', commit }, 'helpers');
+		await card.getByRole('link', { name: 'Order', exact: true }).press('Enter');
+		expect(await where(page)).toEqual({
+			branch: 'feature/orders',
+			category: 'models',
+			entity: 'app.model.order',
+			commit
+		});
+		await expect(page.getByRole('heading', { level: 1, name: 'Order', exact: true })).toBeVisible();
 	}
 }

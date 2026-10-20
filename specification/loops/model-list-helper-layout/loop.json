@@ -1,0 +1,54 @@
+{
+	"name": "model-list-helper-layout",
+	"goal": "Models use the existing helper card grid with scoped model and consumer links, retaining search and responsive behavior",
+	"createdAt": "2026-10-20T15:44:20.718Z",
+	"updatedAt": "2026-10-20T15:47:31.128Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-20T15:47:30.088Z",
+			"evidence": "Models currently render a multi-column table. Expected: the same compact code-and-Used-In cards and responsive grid as Helpers, retaining model detail, consumer and revision navigation."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-20T15:47:31.128Z",
+			"evidence": "Existing standardized entity-preview-actions card-grid coverage iterates only components and functions. Extend it to models at all three widths using the existing helpers fixture, add direct model consumers to that shared fixture, and assert matching appearance, filtering, scoped links and current/historical navigation. Component render tests cover the same two scopes. No production source has changed."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

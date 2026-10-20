@@ -5,6 +5,27 @@ import { count, drawn, screen, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';
 import { withHelpers } from '../entityPreviewHelpers';
 
+test.each(['current', 'commit'] as const)(
+	'model cards share the concise code-and-consumers layout at %s scope',
+	(mode) => {
+		const head = withHelpers(revision(mode === 'current' ? commits.tip : commits.middle, []));
+		const body = screen(ExplorerCatalogScreen, mode, { category: 'models' }, { head });
+		const card = /<article\b.*?<\/article>/s.exec(body)?.[0] ?? '';
+		expect(count(body, /<article\b/g)).toBe(1);
+		expect(card).toContain('<code>Order</code>');
+		expect(words(card)).toContain('Used In');
+		for (const consumer of ['Order list', 'Order store']) expect(words(card)).toContain(consumer);
+		expect(card).not.toMatch(/<h2|<p\b|<svg|<button|ex-pill|hx-verdict/);
+		expect(body).not.toContain('ex-legend');
+		const scope = `/branch/feature%2Forders${mode === 'current' ? '' : `/commit/${commits.middle}`}`;
+		expect(card).toContain(`${scope}/models/app.model.order`);
+		expect(card).toContain(`${scope}/components/${ids.list}`);
+		expect(card).toContain(`${scope}/services/${ids.store}`);
+		expect(card).not.toContain('helper=');
+		expect(card).not.toContain('tab=contract');
+	}
+);
+
 test('function catalog cards stay concise and retain revision links without detail panels', () => {
 	for (const mode of ['current', 'commit'] as const) {
 		const body = screen(ExplorerCatalogScreen, mode, { category: 'functions' });

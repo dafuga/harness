@@ -94,11 +94,16 @@ function withConsumers(detail: HarnessRevision): HarnessRevision {
 		registry: {
 			...detail.registry,
 			units: [
-				...detail.registry.units.map((unit) =>
-					unit.id === ids.filter
-						? { ...unit, helpers: unit.helpers?.map((helper) => ({ ...helper, consumers })) }
-						: unit
-				),
+				...detail.registry.units.map((unit) => {
+					if (unit.id === ids.filter)
+						return { ...unit, helpers: unit.helpers?.map((helper) => ({ ...helper, consumers })) };
+					if (unit.id === ids.list || unit.id === ids.store)
+						return {
+							...unit,
+							dependencies: [...unit.dependencies, { unit: model.id, via: 'import' }]
+						};
+					return unit;
+				}),
 				model
 			]
 		}
