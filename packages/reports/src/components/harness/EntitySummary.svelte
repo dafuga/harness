@@ -18,7 +18,7 @@
 </script>
 
 <!-- Size and performance only: the contract is a tab of its own, and a section of Details. -->
-<div class="ex-summary" class:compact>
+<div class="ex-summary" class:compact class:benchmarked={measure.performance.length > 1}>
 	<section class="ex-card" aria-label="Size">
 		<h2><HarnessIcon name="size" size={24} /> Size</h2>
 		<dl class="ex-rows ex-figures">
@@ -103,3 +103,17 @@
 		{/if}
 	</section>
 </div>
+
+<style>
+	.benchmarked {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.ex-note {
+		display: block;
+		margin-top: 4px;
+	}
+	td {
+		overflow-wrap: normal;
+		word-break: normal;
+	}
+</style>
