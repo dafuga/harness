@@ -6,7 +6,7 @@
 	"name": "verification-integration",
 	"goal": "The branch preserves cold public API imports, canonical planning references and decoded design images while enforcing component evidence and task completion.",
 	"createdAt": "2026-10-20T21:00:51.258Z",
-	"updatedAt": "2026-10-20T21:21:08.408Z",
+	"updatedAt": "2026-10-20T22:44:13.713Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -45,14 +45,14 @@
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
 			"status": "complete",
 			"completedAt": "2026-10-20T21:21:06.600Z",
-			"evidence": "Fixed Node bundle dependency boundaries, canonical proposal references, DOM-safe blob URL cleanup and seven-category phone layout. Local Harness guidance now requires packed cold-call acceptance, canonical fixture coverage and image replacement/unmount checks."
+			"evidence": "Fixed Node bundle dependency boundaries, canonical proposal references, DOM-safe blob URL cleanup and seven-category phone layout. Local Harness guidance now requires packed cold-call acceptance, canonical fixture coverage and image replacement/unmount checks. Reused the removed-entity presenter for exact first-parent private removals without adding private units to collections."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
 			"status": "complete",
 			"completedAt": "2026-10-20T21:21:07.536Z",
-			"evidence": "Sealed green ab307cb9716d796b379882f0a6c1af1f4f72c814ecaf83187e34c9cdf58410bc at f5ff44ea passes the unchanged packed consumer, seven desktop reference/lifecycle checks and mobile navigation assertion."
+			"evidence": "Sealed green ab307cb9716d796b379882f0a6c1af1f4f72c814ecaf83187e34c9cdf58410bc at f5ff44ea passes the unchanged packed consumer, seven desktop reference/lifecycle checks and mobile navigation assertion. Retired-private route pair: red d24b6ac4 at 9200a9b2, green 9f2c9eec at 3e9c0b4d; unchanged corpus passes 14 tests and records actual SSR latency and process RSS."
 		},
 		{
 			"id": "guard",
@@ -64,7 +64,8 @@
 		{
 			"id": "verify",
 			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Pending current full verification and final task audit. All 172 active components have required own preview bindings; the initial 498-case gallery and 24 updated-control browser cases passed. Root checks passed 912 unit and 233 integration tests; package acceptance and all five lifecycle cases pass after repairing callable URLs and retired private routes. Reports and Planning checks pass; remaining workspace checks are running. Historical whole-history debt remains visible."
 		}
 	],
 	"evaluators": [
