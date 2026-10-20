@@ -17,9 +17,15 @@ test('details of every kind open on the contract, size and performance, with no 
 		const at = { ...place, section: 'details' as const };
 		const body = screen(EntityDetailsScreen, 'commit', at);
 		expect(words(body), place.entity).not.toContain('Details');
-		for (const heading of ['Contract', 'Size', 'Performance profile']) {
+		for (const heading of ['Contract', 'Performance profile']) {
 			expect(body, place.entity).toContain(`aria-label="${heading}"`);
 		}
+		expect(body, place.entity).not.toContain('aria-label="Size"');
+		const profile = /<section[^>]*aria-label="Performance profile"[^>]*>(.*?)<\/section>/s.exec(
+			body
+		);
+		for (const label of ['Source size', 'Emitted size', 'Complexity'])
+			expect(words(profile![1]), place.entity).toContain(label);
 		expect(words(body), place.entity).not.toMatch(owned);
 		expect(drawn(body), place.entity).toBe(drawn(content('commit', at)));
 	}

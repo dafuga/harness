@@ -4,6 +4,7 @@ import { extname, join } from 'node:path';
 import type { ExplorerLocation } from '../src/models/Explorer.types';
 import type { PreviewVariant } from './entityPreviewData';
 import { previewHome } from './entityPreviewSetup';
+import { reviewOverviewControls } from './entityPreviewOverview';
 // A local address is a secure context, so the page can hash the bytes of an artifact it reads.
 export const origin = 'http://localhost:41739';
 export const viewports = {
@@ -97,8 +98,8 @@ export async function reviewVisual(
 	await capture(page, `overview-${route.category}-${mode}-${viewport}`);
 	const title = commit ? 'Commit comparison' : 'Current screenshot';
 	const evidence = page.getByRole('heading', { name: title, exact: true });
-	const size = page.getByRole('region', { name: 'Size', exact: true });
-	expect((await evidence.boundingBox())!.y).toBeLessThan((await size.boundingBox())!.y);
+	const profile = page.getByRole('region', { name: 'Performance profile', exact: true });
+	expect((await evidence.boundingBox())!.y).toBeLessThan((await profile.boundingBox())!.y);
 	expect(await fits(page)).toBe(true);
 	await reviewOverviewControls(page, route.category);
 	for (const name of ['Overview', 'Contract', 'Used In', 'Uses', 'States', 'History', 'Source']) {
@@ -195,23 +196,4 @@ export async function reviewMeasurements(tab: Page, name: string): Promise<void>
 	});
 	expect(fragments, 'benchmark labels stay whole').toBe(1);
 	expect(await fits(tab)).toBe(true);
-}
-
-/** Overview keeps identity concise and leaves state selection in its dedicated tab. */
-async function reviewOverviewControls(page: Page, category: string): Promise<void> {
-	if (category === 'pages') {
-		await expect(
-			page.locator('.ex-head .ex-lead, .ex-head .ex-route'),
-			'page header stays concise'
-		).toHaveCount(0);
-	}
-	await expect(
-		page.getByRole('combobox', { name: /^(Scenario|State)$/ }),
-		'overview has no state controls'
-	).toHaveCount(0);
-	await expect(page.getByRole('link', { name: 'View commit changes', exact: true })).toHaveCount(0);
-	await expect(
-		page.locator('.ex-evidence-head p'),
-		'screenshot heading has no explanatory paragraph'
-	).toHaveCount(0);
 }

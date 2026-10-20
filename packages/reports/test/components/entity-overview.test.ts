@@ -9,11 +9,13 @@ const filter = { category: 'functions' as const, entity: ids.filter };
 const shots = (body: string) =>
 	[...body.matchAll(/<img[^>]*src="\/harness\/media\/([^"]+)"/g)].map((match) => match[1]);
 
-test('an overview shows contract, size and performance, and nothing of the source', () => {
+test('an overview groups size and timings in Performance profile, with no source', () => {
 	const body = content('commit', filter);
-	for (const heading of ['Size', 'Performance profile']) {
-		expect(body).toContain(`aria-label="${heading}"`);
-	}
+	expect(body).not.toContain('aria-label="Size"');
+	const profile = /<section[^>]*aria-label="Performance profile"[^>]*>(.*?)<\/section>/s.exec(body);
+	expect(profile).not.toBeNull();
+	for (const label of ['Source size 800 B', 'Emitted size', 'Complexity', 'thousand orders'])
+		expect(words(profile![1])).toContain(label);
 	expect(body).not.toContain('aria-label="Contract"');
 	expect(words(content('commit', { ...filter, tab: 'contract' }))).toContain('orders');
 	expect(words(body)).toContain('Source size 800 B');
