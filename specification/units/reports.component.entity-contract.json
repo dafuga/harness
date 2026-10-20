@@ -3,7 +3,7 @@
 	"id": "reports.component.entity-contract",
 	"kind": "component",
 	"title": "Typed contract",
-	"responsibility": "Shows component fields or each function\u2019s actual parameters and return value, with types and example details.",
+	"responsibility": "Shows component fields or each function’s actual parameters and return value, with types and example details.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -50,6 +50,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.contract-table",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-harness-icon",
 			"via": "import",
 			"origin": "derived"
@@ -76,11 +81,6 @@
 		},
 		{
 			"unit": "reports.model.harness-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.contract-table",
 			"via": "import",
 			"origin": "derived"
 		}

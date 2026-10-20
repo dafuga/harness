@@ -2,7 +2,7 @@
 	"name": "callable-contracts",
 	"goal": "Show each callable contract as its own parameters and return value without renaming API fields",
 	"createdAt": "2026-10-20T11:24:38.498Z",
-	"updatedAt": "2026-10-20T11:33:29.926Z",
+	"updatedAt": "2026-10-20T11:37:41.989Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -46,17 +46,23 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T11:35:14.759Z",
+			"evidence": "Unchanged tests and command pass at 13247fde: three contract rendering tests and three browser tests covering tip and history at desktop, tablet and mobile widths. Paired checkpoint 4d101121."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T11:35:24.288Z",
+			"evidence": "In an isolated 13247fde snapshot, replacing only EntityContract.svelte with the old renderer fails the existing countWords API assertion. Restoring the fixed renderer passes all three unchanged contract tests. Logs and guard JSON saved outside Git."
 		},
 		{
 			"id": "verify",
 			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T11:37:41.989Z",
+			"evidence": "Reports full check passes: formatting, zero type diagnostics, lint, 599 tests, all builds and audit. Browser API contracts and modals pass at three widths. Registry: 1308 units, 64 baseline uncertainties, no errors. Live casing and component modals inspected without browser errors. Root format/types/lint/Rust passed; root suite interrupted with Electron excluded."
 		}
 	],
 	"evaluators": [
