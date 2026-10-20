@@ -76,16 +76,15 @@ test('control inputs are exact', () => {
 	expect(validator.pairing({ pairingId })).toEqual({ pairingId });
 	expect(validator.device({ deviceId: 'd'.repeat(40) })).toEqual({ deviceId: 'd'.repeat(40) });
 	const refused: unknown[] = [
+		null,
+		[],
 		{ ...approval, projectIds: [] },
 		{ ...approval, projectIds: [projectId, projectId] },
 		{ ...approval, projectIds: ['a6196e55-8746-4bc5-bfeb-5e2c8771e241'] },
 		{ ...approval, projectIds: [...maximum, 'local-' + 'f'.repeat(64)] },
 		{ ...approval, projectIds: projectId },
 		{ ...approval, agents: 'yes' },
-		{ ...approval, comments: false },
-		{ ...approval, comments: undefined },
-		{ ...approval, comments: null },
-		{ ...approval, comments: 'yes' },
+		...[false, undefined, null, 'yes'].map((comments) => ({ ...approval, comments })),
 		{ ...approval, agents: false, comments: 0 },
 		{ ...approval, extra: true },
 		{ ...approval, pairingId: 'nope' },
