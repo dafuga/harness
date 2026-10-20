@@ -1,7 +1,14 @@
 import type { HarnessRevision } from '../src/models/Harness.types';
 import { ids } from './entityUnits';
 
-const helperUsers: Record<string, Array<{ unit: string }>> = {
+const helperUsers: Record<string, Array<{ unit: string; symbol?: string }>> = {
+	'no-visible': [{ unit: ids.page }, { unit: ids.filter }],
+	'single-visible': [{ unit: ids.list }, { unit: ids.filter }],
+	unresolved: [{ unit: ids.list }, { unit: 'missing' }],
+	'same-owner-functions': [
+		{ unit: ids.list, symbol: 'first' },
+		{ unit: ids.list, symbol: 'second' }
+	],
 	unused: [],
 	single: [{ unit: ids.list }],
 	effectful: [{ unit: ids.list }, { unit: ids.store }],
@@ -13,6 +20,10 @@ export function withHelpers(detail: HarnessRevision): HarnessRevision {
 	detail = withConsumers(detail);
 	const template = detail.registry.units.find((unit) => unit.id === ids.filter)!;
 	const hidden = [
+		'no-visible',
+		'single-visible',
+		'unresolved',
+		'same-owner-functions',
 		'types',
 		'schema',
 		'private',

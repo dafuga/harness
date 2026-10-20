@@ -71,9 +71,10 @@ for (const [name, size] of Object.entries(viewports)) {
 			});
 			await capture(tab, `grid-${category}-${name}`);
 			const cards = tab.getByRole('article');
-			await expect(cards, 'only exported shared helpers are listed').toHaveCount(
-				category === 'components' ? 3 : 1
-			);
+			await expect(
+				cards,
+				'only helpers used in two distinct visible places are listed'
+			).toHaveCount(category === 'components' ? 3 : 1);
 			const card = (await cards.first().boundingBox())!;
 			const available = (await tab.locator('.ex-index').boundingBox())!;
 			if (name !== 'mobile') {
