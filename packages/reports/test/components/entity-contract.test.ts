@@ -22,8 +22,6 @@ test('a dedicated contract lists types and example previews with full details be
 									examples: [false]
 								},
 								{ name: 'limit', type: 'number', examples: [0] },
-								{ name: 'toKebabCase.value', type: 'string' },
-								{ name: 'toCamelCase.value', type: 'string' },
 								{ name: 'empty', type: 'unknown', examples: [null] },
 								{ name: 'settings', type: 'object', examples: [{ label: 'Safe <tag>' }] }
 							],
@@ -40,8 +38,6 @@ test('a dedicated contract lists types and example previews with full details be
 		expect(body).toMatch(/<table\b/);
 		expect(body).toContain('aria-haspopup="dialog"');
 		expect(body).toContain('View example for Enabled');
-		expect(body).toContain('View example for To kebab case · Value');
-		expect(body).toContain('View example for To camel case · Value');
 		expect(body).toMatch(/Safe &lt;tag(?:&gt;|>)/);
 		expect(body).not.toContain('Whether the list is active.');
 		expect(body).not.toContain('<tag>');
@@ -70,4 +66,38 @@ test('legacy contract tables retain types and example controls for opaque fields
 	expect(body).toContain('View example for Label');
 	expect(body).toContain('View example for Context');
 	expect(body).toContain('PrivateContext');
+});
+
+test('callable contracts preserve actual parameters and associate their returns', () => {
+	const head = revision(commits.tip, [record(commits.tip)]);
+	head.registry.units = head.registry.units.map((unit) =>
+		unit.id !== ids.filter
+			? unit
+			: {
+					...unit,
+					helpers: [
+						{
+							name: 'countWords',
+							source: 'src/functions/text.ts',
+							output: 'number',
+							inputs: [{ name: 'countWords.value', type: 'string' }]
+						}
+					],
+					contract: {
+						inputs: [{ name: 'countWords.value', type: 'string', examples: ['hello world'] }],
+						outputs: [{ name: 'countWords', type: 'number', examples: [2] }],
+						errors: []
+					}
+				}
+	);
+	const body = content(
+		'current',
+		{ category: 'functions', entity: ids.filter, tab: 'contract' },
+		{ head }
+	);
+	expect(body).toContain('aria-label="countWords contract"');
+	expect(words(body)).toContain('countWords(value: string): number');
+	expect(body).toContain('aria-label="Parameters"');
+	expect(body).toContain('aria-label="Returns"');
+	expect(words(body)).not.toMatch(/Count words · Value|Runs as|Module/);
 });

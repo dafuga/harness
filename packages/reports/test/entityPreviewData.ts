@@ -143,11 +143,7 @@ export const declaredContract = {
 				{ label: 'Other' }
 			]
 		},
-		{ name: 'label', type: 'string' },
-		{ name: 'toKebabCase.value', type: 'string', examples: ['OrderList'] },
-		{ name: 'toPascalCase.value', type: 'string', examples: ['order-list'] },
-		{ name: 'toCamelCase.value', type: 'string', examples: ['OrderList'] },
-		{ name: 'toSnakeCase.value', type: 'string', examples: ['OrderList'] }
+		{ name: 'label', type: 'string' }
 	],
 	outputs: [
 		{

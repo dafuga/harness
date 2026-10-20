@@ -9,7 +9,7 @@ import '../src/lib/styles/gallery.css';
 import '../src/lib/styles/gallery-2.css';
 import '../src/lib/styles/harness.css';
 import type { ExplorerLocation } from '../src/models/Explorer.types';
-import type { HarnessRevision } from '../src/models/Harness.types';
+import type { HarnessUnit, HarnessRevision } from '../src/models/Harness.types';
 import { explorerEntities } from '../src/utils/explorerEntities';
 import { index, revision } from './entityFixture';
 import { lens, place, scope, type View } from './entityPlaces';
@@ -62,9 +62,10 @@ if (variant === 'declared') {
 	// Every viewed revision, including the branch tip, declares the same example contract.
 	for (const [commit, detail] of Object.entries(stored)) {
 		const { registry } = detail;
-		const units = registry.units.map((unit) =>
-			unit.id === ids.page ? { ...unit, contract: declaredContract } : unit
-		);
+		const units = registry.units.map((unit) => {
+			if (unit.id === ids.page) return { ...unit, contract: declaredContract };
+			return unit.id === ids.filter ? callableFixture(unit) : unit;
+		});
 		stored[commit] = { ...detail, registry: { ...registry, units } };
 	}
 }
@@ -174,5 +175,34 @@ function withHelpers(detail: HarnessRevision): HarnessRevision {
 	return {
 		...detail,
 		registry: { ...detail.registry, units: [...detail.registry.units, ...hidden] }
+	};
+}
+
+/** A module with distinct callable APIs, including a no-argument/void function. */
+function callableFixture(unit: HarnessUnit): HarnessUnit {
+	const helpers = [
+		['toKebabCase', 'string'],
+		['countWords', 'number'],
+		['reset', 'void']
+	].map(([name, output]) => ({
+		name,
+		output,
+		source: 'src/functions/text.ts',
+		pure: true,
+		inputs: name === 'reset' ? [] : [{ name: `${name}.value`, type: 'string' }]
+	}));
+	return {
+		...unit,
+		helpers,
+		owns: { source: ['src/functions/text.ts'], symbols: helpers.map((h) => h.name) },
+		contract: {
+			inputs: helpers.flatMap((h) => h.inputs.map((i) => ({ ...i, examples: ['hello world'] }))),
+			outputs: helpers.map((h) => ({
+				name: h.name,
+				type: h.output,
+				...(h.output === 'void' ? {} : { examples: [h.name === 'countWords' ? 2 : 'hello-world'] })
+			})),
+			errors: []
+		}
 	};
 }

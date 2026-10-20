@@ -180,3 +180,38 @@ export async function chooseCatalogFilter(page: Page, name: string, value: strin
 	await dialog.getByRole('button', { name: 'Done', exact: true }).click();
 	await expect(page.getByRole('button', { name: 'Filters', exact: true })).toBeFocused();
 }
+
+/** Function contracts keep actual parameter names and their own returned value. */
+export async function reviewCallableContract(page: Page, commit: string | null, viewport: string) {
+	await open(
+		page,
+		{ category: 'functions', entity: 'app.function.filter-orders', commit, tab: 'contract' },
+		'declared'
+	);
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+	});
+	await capture(page, `callable-contract-${commit ? 'commit' : 'tip'}-${viewport}`);
+	for (const [name, result] of [
+		['toKebabCase', 'string'],
+		['countWords', 'number'],
+		['reset', 'void']
+	]) {
+		const api = page.getByRole('region', { name: `${name} contract`, exact: true });
+		await expect(api, 'each callable has its own API contract').toBeVisible();
+		const signature = name === 'reset' ? 'reset(): void' : `${name}(value: string): ${result}`;
+		await expect(api.getByRole('heading')).toContainText(signature);
+		const params = api.getByRole('table', { name: 'Parameters', exact: true });
+		if (name !== 'reset') {
+			await expect(params.getByRole('rowheader')).toHaveText(['value']);
+			await params.getByRole('button').click();
+			await expect(page.getByRole('dialog')).toContainText('hello world');
+			await page.getByRole('button', { name: 'Close viewer', exact: true }).click();
+		} else await expect(params).toHaveCount(0);
+		await expect(api.getByRole('table', { name: 'Returns', exact: true })).toContainText(result);
+	}
+	await expect(page.getByRole('region', { name: 'Contract', exact: true })).not.toContainText(
+		/To kebab case · Value|Runs as|Module/
+	);
+	expect(await fits(page)).toBe(true);
+}
