@@ -43,7 +43,13 @@ function unit(seed: UnitSeed): HarnessUnit {
 		responsibility: seed.responsibility,
 		dependencies: (seed.uses ?? []).map((target) => ({ unit: target, via: 'import' })),
 		scenarios: [],
-		owns: { source: [file], symbols: [seed.title] },
+		owns: {
+			source: [file],
+			symbols:
+				seed.kind === 'service'
+					? [`${seed.title}Options`, seed.title, `${seed.title}Result`]
+					: [seed.title]
+		},
 		contract: { inputs: named(seed.inputs), outputs: named(seed.outputs), errors: [] },
 		...(seed.kind === 'function'
 			? {

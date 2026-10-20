@@ -2,11 +2,9 @@
 	"name": "service-cards",
 	"goal": "Services use the Helpers card grid with only a class or service name and Used In links, preserving search and revision navigation on desktop, tablet and mobile",
 	"createdAt": "2026-10-20T15:34:35.656Z",
-	"updatedAt": "2026-10-20T15:41:19.168Z",
+	"updatedAt": "2026-10-20T15:45:09.739Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T15:45:09.739Z",
+			"evidence": "Unchanged tests pass at fix commit 8c15da72: three desktop/tablet/mobile browser cases and 35 focused unit tests. Record 2599535693a35634a2fce2b03aa0b4c8e3fac401de6b6f08e13cf5654563675b preserves green proof after red record d45aadf12118511be8e095c93d43b6e2dc284e37557a7cb140fa40169dfed2d3."
 		},
 		{
 			"id": "verify",
