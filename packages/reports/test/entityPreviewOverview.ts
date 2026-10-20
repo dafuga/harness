@@ -1,5 +1,26 @@
 import { expect, type Page } from '@playwright/test';
 
+/** Equal rows also keep equal spacing across size and timing facts, even when notes wrap. */
+export async function reviewProfileRows(page: Page): Promise<void> {
+	const rows = await page
+		.getByRole('region', { name: 'Performance profile', exact: true })
+		.locator('dl > div')
+		.evaluateAll((rows) =>
+			rows.map((row) => {
+				const box = row.getBoundingClientRect();
+				return { top: box.top, height: box.height };
+			})
+		);
+	const heights = rows.map((row) => row.height);
+	const spacing = rows.slice(1).map((row, index) => row.top - rows[index].top);
+	expect
+		.soft(Math.max(...heights) - Math.min(...heights), 'measurement rows have equal heights')
+		.toBeLessThanOrEqual(1);
+	expect
+		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+		.toBeLessThanOrEqual(1);
+}
+
 /** Visual fixtures have no standalone compiled output, and all displayed rows share one height. */
 async function reviewProfile(page: Page, category: string): Promise<void> {
 	const profile = page.getByRole('region', { name: 'Performance profile', exact: true });
@@ -18,12 +39,7 @@ async function reviewProfile(page: Page, category: string): Promise<void> {
 			.soft(card.y - evidence.y - evidence.height, 'performance profile has space above it')
 			.toBeGreaterThanOrEqual(16);
 	}
-	const heights = await profile
-		.locator('dl > div')
-		.evaluateAll((rows) => rows.map((row) => row.getBoundingClientRect().height));
-	expect
-		.soft(Math.max(...heights) - Math.min(...heights), 'measurement rows have equal heights')
-		.toBeLessThanOrEqual(1);
+	await reviewProfileRows(page);
 	expect
 		.soft(
 			await profile.getByText('Emitted size', { exact: true }).count(),
