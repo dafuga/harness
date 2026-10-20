@@ -1,11 +1,10 @@
 <script lang="ts">
 	import type { Evidence } from '../../models/Report.types';
-	import { listed, type CatalogRow } from '../../utils/entityCatalog';
+	import { type CatalogRow } from '../../utils/entityCatalog';
 	import { entityLens, shortCommit, type EntityNav } from '../../utils/entityLens';
 	import { categoryIcon } from '../../utils/harnessIcons';
 	import EntityLink from './EntityLink.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
-	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
 	let {
 		row,
 		shot,
@@ -18,7 +17,7 @@
 		shot: Evidence | null;
 		mediaBase: string;
 		nav: EntityNav;
-		/** A page counts its components; a component tells where it is used and what it contains. */
+		/** Pages show their title and screenshot; components also link to their consumers. */
 		category?: 'pages' | 'components';
 	} = $props();
 	let to = $derived(entityLens(nav.route, { category, entity: row.id }));
@@ -33,7 +32,6 @@
 	let taken = $derived(shot?.standing === 'Fresh capture' ? 'Captured at' : 'Reused from');
 	let origin = $derived(`${taken} ${shortCommit(shot?.source ?? '')}`);
 	let page = $derived(category === 'pages');
-	let open = $derived(page ? 'Open page' : 'Open component');
 </script>
 
 {#snippet picture()}
@@ -66,36 +64,26 @@
 			<span class="ex-thumb">{@render picture()}</span>
 		</EntityLink>
 	{:else}
-		<figure class="ex-card-shot">
-			<EntityLink {to} {nav} class="ex-thumb" label={`Open ${row.name}`}>
-				{@render picture()}
-			</EntityLink>
-			{#if pictured && shot}
-				<figcaption title={shot.note}>
-					<span>In context · {shot.title}</span><span>{origin}</span>
-				</figcaption>
-			{/if}
-		</figure>
+		<EntityLink
+			{to}
+			{nav}
+			class="ex-thumb"
+			label={`Open ${row.name}`}
+			title={pictured && shot ? `${shot.title} · ${origin}` : undefined}
+		>
+			{@render picture()}
+		</EntityLink>
 		<div class="ex-page-body">
 			<h2><EntityLink {to} {nav}>{row.name}</EntityLink></h2>
-			<p class="ex-soft">{row.summary}</p>
-			<p class="ex-fact">
-				<HarnessIcon name="pages" size={22} />
-				<span><strong>Used on</strong> {listed(row.usedOn)}</span>
-			</p>
-			<p class="ex-fact">
-				<HarnessIcon name="layers" size={22} />
-				<span><strong>Contains</strong> {listed(row.contains, 2)}</span>
-				{#if row.shared}<span class="ex-pill gold">Shared</span>{/if}
-				{#if row.changed}<span class="ex-pill gold">Changed</span>{/if}
-			</p>
-			<p class="ex-fact">
-				<HarnessIcon name="tests" size={22} />
-				<HarnessVerdict {...row.verdict} framed />
-			</p>
-			<EntityLink {to} {nav} class="hx-action gold ex-open-page" label={open} title={open}>
-				<HarnessIcon name="arrow-right" size={18} />
-			</EntityLink>
+			<div class="ex-component-usage" role="group" aria-label="Used In">
+				<span>Used In</span>
+				{#each row.usedIn ?? [] as consumer (consumer.id)}
+					<EntityLink
+						to={entityLens(nav.route, { category: consumer.category, entity: consumer.id })}
+						{nav}>{consumer.name}</EntityLink
+					>{' '}
+				{:else}<span>—</span>{/each}
+			</div>
 		</div>
 	{/if}
 </article>
@@ -118,11 +106,12 @@
 		outline-offset: 6px;
 	}
 
-	.ex-page-body > :global(.ex-open-page) {
-		justify-self: end;
-		width: 36px;
-		height: 36px;
-		min-height: 36px;
-		padding: 8px;
+	.ex-component-usage {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px 12px;
+		align-items: baseline;
+		font-size: 0.8rem;
+		color: var(--hx-muted, #92a6bb);
 	}
 </style>
