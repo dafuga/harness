@@ -93,6 +93,23 @@ test('a component says which pages it is used on and which components it contain
 test('a page counts the components it contains and a service names its targets', () => {
 	expect(rows('pages')[0].components).toBe(2);
 	expect(rows('services')[0].targets).toEqual(['module', 'wasm', 'process']);
+	const service = rows('services')[0];
+	expect(service.name).toBe('OrderStore');
+	expect(service.usedIn).toEqual([{ id: ids.list, name: 'Order list', category: 'components' }]);
+	for (const search of ['OrderStore', 'Order store']) {
+		expect(catalogFilter([service], { ...filter, search }).map((row) => row.id)).toEqual([
+			ids.store
+		]);
+	}
+	const original = service.entity;
+	const unnamed = { ...original, unit: { ...original.unit, owns: { source: [], symbols: [] } } };
+	const related = explorerRelations(head, ids.store);
+	const fallback = entityCatalog([unnamed], 'services', () => ({ ...related, usedBy: [] }))[0];
+	expect(fallback.name).toBe('Order store');
+	expect(fallback.usedIn).toEqual([{ id: ids.page, name: 'Orders page', category: 'pages' }]);
+	expect(
+		entityCatalog([unnamed], 'services', () => ({ ...related, usedBy: [], pages: [] }))[0].usedIn
+	).toEqual([]);
 });
 
 test('changed is what the commit changed itself, and the verdict is the one it was given', () => {

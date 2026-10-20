@@ -33,12 +33,11 @@ test('the pages collection is cards with only the page title and its screenshot'
 	expect(words(body)).not.toMatch(banned);
 });
 
-test('configs and services keep columns; component and function grids expose no file names', () => {
+test('configs keep columns; component, helper and service collections use cards', () => {
 	const headers = (body: string) =>
 		[...body.matchAll(/<th scope="col">(.*?)<\/th>/gs)].map((match) => words(match[1]).trim());
 	const expected = {
-		configs: ['Config', 'Purpose', 'Used by', 'Changed', 'Verification', 'Open'],
-		services: ['Service', 'Responsibility', 'Execution target', 'Consumers', 'Verification', 'Open']
+		configs: ['Config', 'Purpose', 'Used by', 'Changed', 'Verification', 'Open']
 	};
 	for (const [category, columns] of Object.entries(expected)) {
 		const body = content('commit', { category: category as keyof typeof expected });
@@ -62,6 +61,12 @@ test('configs and services keep columns; component and function grids expose no 
 	expect(words(functions)).not.toMatch(/src\/|\+page\.svelte|\.ts\b|OrdersPage/);
 	expect(words(functions)).toContain('filterOrders(orders, "SERVICE")');
 	expect(words(functions)).not.toMatch(banned);
+	const services = content('commit', { category: 'services' });
+	expect(count(services, /<article\b/g)).toBe(1);
+	expect(headers(services)).toEqual([]);
+	expect(words(services)).toContain('OrderStore');
+	expect(services).toContain(`/commit/${commits.middle}/services/${ids.store}`);
+	expect(words(services)).not.toMatch(/src\/|\.ts\b|Execution target|Responsibility|Consumers/);
 });
 
 test('a collection offers search, changed only and an order, and says how many it lists', () => {

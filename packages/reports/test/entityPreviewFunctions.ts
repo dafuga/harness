@@ -100,3 +100,44 @@ export async function reviewHelperUsage(page: Page, viewport: string): Promise<v
 		}
 	}
 }
+
+/** Service cards keep only a recorded name and usage, with navigation in the viewed revision. */
+export async function reviewServiceCard(page: Page, viewport: string): Promise<void> {
+	for (const commit of [null, commits.middle]) {
+		await open(page, { category: 'services', commit }, 'helpers');
+		await page.evaluate(async () => {
+			await document.fonts.ready;
+		});
+		await capture(page, `service-card-${commit ? 'commit' : 'tip'}-${viewport}`);
+		const card = page.getByRole('article');
+		await expect(card, 'service cards show only name and usage').toHaveText(
+			/^\s*OrderStore\s*Used In\s*Order list\s*$/
+		);
+		await expect(card.locator('h2, p, img, button, svg, .hx-verdict')).toHaveCount(0);
+		const usage = card.getByRole('group', { name: 'Used In', exact: true });
+		await expect(usage.getByRole('link')).toHaveText(['Order list']);
+		for (const search of ['OrderStore', 'Order store']) {
+			await page.getByRole('searchbox', { name: 'Search services' }).fill(search);
+			await expect(card).toHaveCount(1);
+		}
+		expect(await fits(page)).toBe(true);
+		await card.getByRole('link', { name: 'OrderStore', exact: true }).press('Enter');
+		expect(await where(page)).toMatchObject({
+			branch: 'feature/orders',
+			category: 'services',
+			entity: ids.store,
+			commit
+		});
+		await open(page, { category: 'services', commit }, 'helpers');
+		await page
+			.getByRole('group', { name: 'Used In', exact: true })
+			.getByRole('link')
+			.press('Enter');
+		expect(await where(page)).toMatchObject({
+			branch: 'feature/orders',
+			category: 'components',
+			entity: ids.list,
+			commit
+		});
+	}
+}

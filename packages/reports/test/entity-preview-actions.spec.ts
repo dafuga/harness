@@ -1,7 +1,8 @@
 import {
 	reviewHelperCard,
 	reviewHelperUsage,
-	reviewPrivateFunctions
+	reviewPrivateFunctions,
+	reviewServiceCard
 } from './entityPreviewFunctions';
 import { expect, test } from '../../../test/support/browserTest';
 import {
@@ -61,9 +62,11 @@ for (const [name, size] of Object.entries(viewports)) {
 			}
 		}
 	});
-	test(`component and function lists use a card grid at ${name} width`, async ({ page: tab }) => {
+	test(`component, helper and service lists use a card grid at ${name} width`, async ({
+		page: tab
+	}) => {
 		await tab.setViewportSize(size);
-		for (const category of ['components', 'functions'] as const) {
+		for (const category of ['components', 'functions', 'services'] as const) {
 			await open(tab, { category }, 'helpers');
 			await tab.evaluate(async () => {
 				await document.fonts.ready;
@@ -73,7 +76,7 @@ for (const [name, size] of Object.entries(viewports)) {
 			const cards = tab.getByRole('article');
 			await expect(
 				cards,
-				'only helpers used in two distinct visible places are listed'
+				'collections use cards; helpers require two distinct visible consumers'
 			).toHaveCount(category === 'components' ? 3 : 1);
 			const card = (await cards.first().boundingBox())!;
 			const available = (await tab.locator('.ex-index').boundingBox())!;
@@ -86,6 +89,7 @@ for (const [name, size] of Object.entries(viewports)) {
 				await reviewHelperUsage(tab, name);
 				await reviewPrivateFunctions(tab, name);
 			}
+			if (category === 'services') await reviewServiceCard(tab, name);
 		}
 	});
 	test(`component screenshot cards follow the shown revision at ${name} width`, async ({
