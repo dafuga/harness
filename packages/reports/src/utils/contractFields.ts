@@ -26,7 +26,7 @@ export interface ContractField {
 export interface ContractGroup {
 	id: 'inputs' | 'outputs' | 'errors';
 	title: string;
-	/** Return tables show the value type without a redundant name column. */
+	/** Some error tables show only type and example; parameter and return tables keep names. */
 	hideNames?: boolean;
 	/** Keep an empty API table with an explicit absence message. */
 	keepEmpty?: boolean;

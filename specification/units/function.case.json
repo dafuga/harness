@@ -40,25 +40,25 @@
 		],
 		"outputs": [
 			{
-				"name": "toKebabCase",
+				"name": "toKebabCase.kebabCaseText",
 				"type": "string",
 				"description": "Lowercase words joined by hyphens; empty or separator-only input becomes an empty string.",
 				"examples": ["hello-world"]
 			},
 			{
-				"name": "toPascalCase",
+				"name": "toPascalCase.pascalCaseText",
 				"type": "string",
 				"description": "Words joined with each first letter capitalized; empty input becomes an empty string.",
 				"examples": ["HelloWorld"]
 			},
 			{
-				"name": "toCamelCase",
+				"name": "toCamelCase.camelCaseText",
 				"type": "string",
 				"description": "Joined words with a lowercase first character and capitalized later word initials.",
 				"examples": ["helloWorld"]
 			},
 			{
-				"name": "toSnakeCase",
+				"name": "toSnakeCase.snakeCaseText",
 				"type": "string",
 				"description": "Lowercase words joined by underscores; empty or separator-only input becomes an empty string.",
 				"examples": ["hello_world"]

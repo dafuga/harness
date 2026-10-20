@@ -2,7 +2,7 @@
 	"name": "contract-return-names",
 	"goal": "Returns show descriptive value names beside types/examples; no Throws table when no errors are declared",
 	"createdAt": "2026-10-20T13:47:42.114Z",
-	"updatedAt": "2026-10-20T13:49:11.907Z",
+	"updatedAt": "2026-10-20T13:54:23.376Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T13:54:23.376Z",
+			"evidence": "Test-only a54f3490; immutable red 260236874c687287d5f877b0bf58cb26c2043ffea0353eb90cdecf61d042eff8. Standard API assertions reproduce the missing return value name, with before screenshots. Test fixture passes formatter, lint and size audit before freezing."
 		},
 		{
 			"id": "implement",
