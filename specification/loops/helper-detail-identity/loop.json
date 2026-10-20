@@ -2,7 +2,7 @@
 	"name": "helper-detail-identity",
 	"goal": "Each helper opens only its own API; naming corrections repair the responsible Harness process",
 	"createdAt": "2026-10-20T12:49:04.440Z",
-	"updatedAt": "2026-10-20T13:02:36.256Z",
+	"updatedAt": "2026-10-20T13:07:14.490Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -46,17 +46,23 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T13:06:48.535Z",
+			"evidence": "Final paired proof: red 78d8b584dcb4530a884aa637fbfc938a49f96b55a83c5e69170f435654225647 at test-only 71a3b3ec; green 60031a326c3fa87c3925f987bff94328f08f199be33feead4be06f3301717c6a at fix 2effd64b. Same frozen inputs, command and environment. Root route/policy, 25 web tests and three browser widths pass."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T13:06:49.574Z",
+			"evidence": "Isolated 2effd64b snapshot: restoring the old ExplorerFunctionCard causes the unchanged card test to fail; restoring old consoleCanonical causes the unchanged canonical test to fail. Each restored fix passes. /tmp/helper-detail-guard.json records both exit pairs 1 then 0; no working server mutation."
 		},
 		{
 			"id": "verify",
 			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T13:07:14.490Z",
+			"evidence": "Reports check: 601 unit tests, formatting, Svelte diagnostics, lint, three builds and audit pass. Root focused routes/policy/generator tests: 80 pass; CLI/generator/index integration: 20 pass. Registry: 1308 units, 64 declared uncertainties, zero errors. Recorded browser flow passes at all three widths and current/historical revisions; live 5688 catalog opens separate kebab/Pascal pages, preserves History selection and shows the correct example modal. Fresh 2effd64b screenshots inspected. Full root check passed formatting/types/lint/Rust before being stopped during broader tests to exclude Electron; full repository check is not reported passing."
 		}
 	],
 	"evaluators": [
