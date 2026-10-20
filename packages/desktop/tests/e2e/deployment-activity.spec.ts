@@ -54,6 +54,13 @@ test('production promotion previews preprod distance, requires one action and re
 		action!.y + action!.height,
 		'Promotion action remains in the viewport'
 	).toBeLessThanOrEqual(480);
+	await page.setViewportSize({ width: 667, height: 375 });
+	await capture(page, 'production-complete-landscape');
+	await mobileDialog(page, 'Deploy');
+	const landscapeAction = await dialog
+		.getByRole('button', { name: 'Promote to production', exact: true })
+		.boundingBox();
+	expect(landscapeAction!.y + landscapeAction!.height).toBeLessThanOrEqual(375);
 	await dialog.getByText('Verified receipt', { exact: true }).scrollIntoViewIfNeeded();
 	await expect(dialog.getByText('Verified receipt', { exact: true })).toBeVisible();
 });

@@ -2,7 +2,7 @@
 	"name": "mobile-deployment-layout",
 	"goal": "Keep the mobile workspace header compact and deployment modals contained and usable across narrow and short viewports, with unchanged red-green coverage.",
 	"createdAt": "2026-10-20T20:45:30.253Z",
-	"updatedAt": "2026-10-20T20:45:30.253Z",
+	"updatedAt": "2026-10-20T20:48:29.502Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -13,22 +13,30 @@
 		{
 			"id": "spec",
 			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T20:48:07.574Z",
+			"evidence": "Current main c6d8a870 header is 374.92px at390px; completed promotion action ends at687.03px on320x480. Scope is presentation only, with all control and deployment information preserved."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T20:48:08.556Z",
+			"evidence": "Existing ui-workspace selector scenario and deployment-activity production/mobile scenarios checked horizontal fit only. Strengthened those same scenarios with mobile header height, 320x480 dialog containment, visible footer action and reachable details. No one-off replacement suite."
 		},
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T20:48:28.852Z",
+			"evidence": "Committed b27ad9c0; loop record red reproduced header374.92>164 and footer687.03>480 in a clean dependency-installed snapshot. Same registered tests and command will be reused unchanged."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T20:48:29.502Z",
+			"evidence": "Opus will replace mobile wrapping/order with a deliberate compact grid, condense secondary metadata into existing accessible controls, and use the shared ChoiceDialog scroll region and persistent promotion footer. Existing viewport assertions enforce this class in normal browser verification."
 		},
 		{
 			"id": "implement",

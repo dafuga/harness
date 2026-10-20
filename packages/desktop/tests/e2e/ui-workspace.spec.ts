@@ -158,13 +158,18 @@ test('workspace selectors start collapsed and environment stays directly selecta
 		await page.keyboard.press('Escape');
 		await expect(page.getByRole('button', { name: button, exact: true })).toBeFocused();
 	}
-	for (const width of [390, 320]) {
+	for (const [width, environment] of [
+		[390, 'dev'],
+		[390, 'prod'],
+		[320, 'dev'],
+		[320, 'prod']
+	] as const) {
 		await page.setViewportSize({ width, height: 568 });
-		await page.getByLabel('Environment', { exact: true }).selectOption('dev');
+		await page.getByLabel('Environment', { exact: true }).selectOption(environment);
 		await page.evaluate(() => document.fonts.ready);
 		if (process.env.TAKE_SCREENSHOT === 'true')
 			await page.screenshot({
-				path: `/tmp/harness-env-evidence/mobile-header-${width}-${process.env.SCREENSHOT_LABEL ?? 'local'}.png`
+				path: `/tmp/harness-env-evidence/mobile-header-${width}-${environment}-${process.env.SCREENSHOT_LABEL ?? 'local'}.png`
 			});
 		const header = await page.getByRole('banner').boundingBox();
 		expect(header!.height, 'Mobile header must leave room for project content').toBeLessThanOrEqual(
