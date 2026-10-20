@@ -1,4 +1,4 @@
-/* The header of an entity, the rows of its contract and the cards of its size and performance. */
+/* The header of an entity, its contract rows and its measurement profile. */
 .ex-content .ex-head {
 	display: flex;
 	flex-wrap: wrap;
@@ -75,10 +75,10 @@
 .ex-content .failed {
 	color: var(--ex-fail);
 }
-/* Size and performance share the row; the contract is shown on its own. */
+/* Size and performance share one full-width profile; the contract is shown on its own. */
 .ex-content .ex-summary {
 	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
+	grid-template-columns: minmax(0, 1fr);
 	gap: 16px;
 	align-items: start;
 }

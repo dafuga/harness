@@ -2,9 +2,11 @@
 	"name": "measurement-profile",
 	"goal": "Entity size measurements appear within Performance profile without a separate Size card.",
 	"createdAt": "2026-10-20T17:09:54.264Z",
-	"updatedAt": "2026-10-20T17:10:17.398Z",
+	"updatedAt": "2026-10-20T17:14:34.131Z",
 	"template": "bug-fix",
-	"templateLineage": ["bug-fix"],
+	"templateLineage": [
+		"bug-fix"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -25,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T17:14:34.131Z",
+			"evidence": "Committed c3dc2368. Frozen red record a46f86b0ae1f66740ef4f9fe660051c90830e4bec1d221051e7c3452c0566eed fails the unchanged size shares performance profile assertion at desktop, tablet and mobile. Before screenshots captured by the same standardized visual-overview test."
 		},
 		{
 			"id": "implement",

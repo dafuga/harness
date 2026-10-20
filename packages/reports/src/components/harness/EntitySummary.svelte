@@ -6,7 +6,7 @@
 		compact = false
 	}: {
 		measure: EntityMeasure;
-		/** The size and performance cards of an overview, without notes; false for Details. */
+		/** The measurement profile of an overview, without notes; false for Details. */
 		compact?: boolean;
 	} = $props();
 	const displayed = (row: EntityMeasure['size'][number]) =>
@@ -17,10 +17,10 @@
 		[row.target, row.profile].filter(Boolean).join(' · ') || '—';
 </script>
 
-<!-- Size and performance only: the contract is a tab of its own, and a section of Details. -->
-<div class="ex-summary" class:compact class:benchmarked={measure.performance.length > 1}>
-	<section class="ex-card" aria-label="Size">
-		<h2><HarnessIcon name="size" size={24} /> Size</h2>
+<!-- Size and timings share one profile; the contract keeps its own tab and Details section. -->
+<div class="ex-summary" class:compact>
+	<section class="ex-card" aria-label="Performance profile">
+		<h2><HarnessIcon name="gauge" size={24} /> Performance profile</h2>
 		<dl class="ex-rows ex-figures">
 			{#each measure.size as row, position (position)}
 				<div>
@@ -34,9 +34,6 @@
 				</div>
 			{/each}
 		</dl>
-	</section>
-	<section class="ex-card" aria-label="Performance profile">
-		<h2><HarnessIcon name="gauge" size={24} /> Performance profile</h2>
 		{#if measure.performance.length === 0}
 			<dl class="ex-rows ex-figures">
 				<div>
@@ -105,9 +102,6 @@
 </div>
 
 <style>
-	.benchmarked {
-		grid-template-columns: minmax(0, 1fr);
-	}
 	.ex-note {
 		display: block;
 		margin-top: 4px;

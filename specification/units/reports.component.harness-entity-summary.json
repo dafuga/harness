@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-entity-summary",
 	"kind": "component",
 	"title": "Measurement summary",
-	"responsibility": "Shows recorded size and performance facts for one entity.",
+	"responsibility": "Groups recorded size and performance facts in one entity performance profile.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -28,7 +28,7 @@
 			{
 				"name": "EntitySummary",
 				"type": "markup",
-				"description": "Size and performance cards. Unavailable measurements stay explicit; workload profiles remain separate and supplied tolerance flags remain visible."
+				"description": "One Performance profile card containing size, complexity and timing measurements. Unavailable measurements stay explicit; workload profiles remain separate and supplied tolerance flags remain visible."
 			}
 		],
 		"errors": []
