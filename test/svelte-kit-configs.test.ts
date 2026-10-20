@@ -1,4 +1,14 @@
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import {
+	copyFileSync,
+	existsSync,
+	mkdirSync,
+	mkdtempSync,
+	readFileSync,
+	rmSync,
+	symlinkSync,
+	writeFileSync
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
@@ -43,3 +53,65 @@ test('once every generated config exists, nothing is left to sync', () => {
 	});
 	expect(unsyncedKitPackages(root)).toEqual([]);
 });
+
+// Exercise the real build sequence over cold workspace configs and a real cross-package Vite bundle.
+test('a cold build prepares every imported SvelteKit workspace before Reports compiles it', () => {
+	const repository = join(import.meta.dirname, '..');
+	const root = tree({
+		desktop: { tsconfig: kit },
+		reports: { tsconfig: kit },
+		hub: { tsconfig: kit }
+	});
+	const real = JSON.parse(readFileSync(join(repository, 'package.json'), 'utf8'));
+	symlinkSync(join(repository, 'node_modules'), join(root, 'node_modules'));
+	const noop = 'bun -e ""';
+	const scripts = {
+		build: real.scripts.build,
+		'sync:workspaces': real.scripts['sync:workspaces'] ?? noop,
+		'build:kernel': noop,
+		'build:cli': noop,
+		'build:api': noop,
+		'build:picker': noop
+	};
+	writeFileSync(
+		join(root, 'package.json'),
+		JSON.stringify({ name: 'cold-build-fixture', type: 'module', scripts })
+	);
+	mkdirSync(join(root, 'scripts'));
+	writeFileSync(join(root, 'scripts/package-reports.ts'), 'export {};');
+	for (const name of ['desktop', 'reports', 'hub']) {
+		const directory = join(root, 'packages', name);
+		mkdirSync(join(directory, 'src/routes'), { recursive: true });
+		copyFileSync(
+			join(repository, 'packages', name, 'svelte.config.js'),
+			join(directory, 'svelte.config.js')
+		);
+		writeFileSync(
+			join(directory, 'package.json'),
+			JSON.stringify({ name, type: 'module', scripts: { build: 'vite build' } })
+		);
+		writeFileSync(join(directory, 'src/sample.ts'), 'export const count: number = 1;');
+	}
+	writeFileSync(
+		join(root, 'packages/reports/src/index.ts'),
+		"import {count as desktop} from '../../desktop/src/sample'; import {count as hub} from '../../hub/src/sample'; export const answer = desktop + hub + 1;"
+	);
+	writeFileSync(
+		join(root, 'packages/reports/vite.config.ts'),
+		"import {defineConfig} from 'vite'; export default defineConfig({build:{lib:{entry:'src/index.ts',formats:['es'],fileName:()=> 'bundle.js'}}});"
+	);
+	const built = spawnSync('bun', ['run', 'build'], { cwd: root, encoding: 'utf8', timeout: 60000 });
+	expect(
+		built.stdout + built.stderr,
+		'cold cross-workspace build must prepare missing configs'
+	).not.toContain('failed to resolve "extends"');
+	expect(built.status, built.stdout + built.stderr).toBe(0);
+	for (const name of ['desktop', 'reports', 'hub'])
+		expect(existsSync(join(root, 'packages', name, '.svelte-kit/tsconfig.json'))).toBe(true);
+	const value = spawnSync(
+		'bun',
+		['-e', "console.log((await import('./packages/reports/dist/bundle.js')).answer)"],
+		{ cwd: root, encoding: 'utf8' }
+	);
+	expect(value.stdout.trim()).toBe('3');
+}, 90000);
