@@ -175,6 +175,10 @@ test('history lists changes, keeps profiles apart and opens a revision', async (
 	await expect(tab.getByText('0.15 → 0.12 ms').first()).toBeVisible();
 	await capture(tab, 'function-history-desktop');
 	await expect(
+		tab.locator('.ex-history').getByText(/^(Added|Removed)$/),
+		'History lifecycle badges'
+	).toHaveCount(0);
+	await expect(
 		tab.getByText('Selected change', { exact: false }),
 		'Compact commit history'
 	).toHaveCount(0);

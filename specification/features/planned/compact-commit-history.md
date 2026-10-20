@@ -35,3 +35,7 @@ The full reports check passes: formatting, Svelte types, lint, 609 unit tests, p
 The same standard browser checkpoint was captured against the committed pre-repair snapshot and the repaired implementation. Both screenshots were inspected: the original has duplicate actions and a selected-change panel; the repair has the six-column table and direct commit links. The live formatDuration History page was also inspected after recovering both historical static observations; commit navigation preserves the helper, dates expose full timestamps, and the browser has no new errors. Screenshot files remain outside Git.
 
 The root `bun run check` is not claimed as passing: its Electron checks remain excluded by Daniel's instruction. Full repository verification and main integration remain pending. The UI repair itself is committed at `4cf3c2c6`.
+
+## Lifecycle label correction
+
+Commit rows omit Added and Removed badges. These markers describe the owning unit registry lifecycle and can misrepresent when an individual helper was introduced. Preserve the underlying history classification and navigation; omit only the presentation badge. Existing row and browser history cases now cover this absence, including classification read from revision detail.

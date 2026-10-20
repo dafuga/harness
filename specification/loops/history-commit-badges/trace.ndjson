@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-20T17:10:19.528Z","name":"history-commit-badges","goal":"Commit rows omit Added and Removed lifecycle badges while preserving direct revision links","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-20T17:10:47.310Z","loop":"history-commit-badges","step":"spec","evidence":"Remove Added/Removed badges: unit registration does not establish when the selected helper was introduced."}
+{"event":"step.completed","timestamp":"2026-10-20T17:10:48.511Z","loop":"history-commit-badges","step":"coverage","evidence":"The standardized row case explicitly required lifecycle pills; now checks their absence for all classifications and revision fallback. Browser history covers absence too."}

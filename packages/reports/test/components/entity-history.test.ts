@@ -51,7 +51,7 @@ test('pages have a history too: the commit that added the page is listed as that
 	const body = content('commit', page);
 	expect(hashes(body)).toEqual(['aaaaaaa']);
 	// No reason was recorded for the page, so the row is told by the subject of its commit.
-	expect(words(body)).toContain('aaaaaaa Added feat: orders page');
+	expect(words(body)).toContain('aaaaaaa feat: orders page');
 	expect(words(body)).not.toContain('Selected change');
 	expect(words(body)).not.toContain('do not record what they changed');
 });
