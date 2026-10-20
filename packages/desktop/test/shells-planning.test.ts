@@ -1,3 +1,4 @@
+import { planningProposal } from '../../../test/support/taskAuditRepo';
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import { createPlanning } from '../../planning/src/lib/planning/index';
@@ -25,7 +26,9 @@ test('an agent asked from Shells proposes a shell, and it is planned with an ima
 		category: 'shells',
 		title: 'Host frame',
 		goal: 'Frames the workspace of a host.',
-		proposal: 'A bar across the top, the content below it and a status line at the bottom.',
+		proposal: planningProposal(
+			'A frame for hosts with a bar across the top, content below it and a status line at the bottom.'
+		),
 		contract: { inputs: [{ name: 'workspace', type: 'Workspace' }], outputs: [], errors: [] }
 	};
 	f.run.mockImplementation(async (turn) => ({ text: JSON.stringify(proposal), model: turn.model }));

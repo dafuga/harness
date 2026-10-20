@@ -1,3 +1,4 @@
+import { planningProposal } from '../../../test/support/taskAuditRepo';
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
@@ -31,7 +32,9 @@ async function registered(root: string) {
 	git(root, 'add', '.');
 	git(root, 'commit', '-m', 'register the owned unit');
 }
-const notes = 'A list of refunds that formats each time with [[unit:app.function.owned]].';
+const notes = planningProposal(
+	'A list of refunds that formats each time with [[unit:app.function.owned]].'
+);
 const proposal = {
 	...{ category: 'functions', title: 'Refund times', goal: 'Lists refund times.', proposal: notes },
 	contract: { inputs: [], outputs: [{ name: 'list', type: 'string[]' }], errors: [] }

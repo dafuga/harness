@@ -1,3 +1,4 @@
+import { TaskCompletionService } from '../src/services/TaskCompletionService';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
@@ -105,6 +106,7 @@ test('a real operation that is slowed without changing its result fails the end-
 	const ranked = await prepareRanked();
 	const repo = await cloneRepo(ranked);
 	prepared.push(repo);
+	await assertTaskProfile(repo);
 	const before = await repo.verify(['--commit', 'HEAD~1']);
 	const digest = async (outcome: VerifyOutcome) => {
 		const capture = outcome.record.scenarios.find((scenario) => scenario.id === 'rank-boundary')
@@ -141,3 +143,27 @@ test('a real operation that is slowed without changing its result fails the end-
 	expect(finding?.measured as number).toBeGreaterThan(baselineFloor * 2);
 	await repo.dispose();
 }, 300_000);
+
+async function assertTaskProfile(repo: VerifyRepo) {
+	await repo.change('src/utils/rank.ts', (source) => source.replace('?? 1;', '?? 2;'));
+	const profiled = await repo.verify(['--require-performance']);
+	expect(profiled.record.failures).toEqual([]);
+	const audit = await new TaskCompletionService(repo.root).check({
+		kind: 'coding',
+		goal: 'Change rank default seed',
+		units: ['function.rank']
+	});
+	expect(audit.passed, JSON.stringify(audit.checks)).toBe(true);
+	const checked = await repo.run([
+		'task',
+		'check',
+		'--kind',
+		'coding',
+		'--goal',
+		'Change rank default seed',
+		'--units',
+		'function.rank',
+		'--json'
+	]);
+	expect(JSON.parse(checked.stdout).passed).toBe(true);
+}

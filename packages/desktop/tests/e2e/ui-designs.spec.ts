@@ -1,3 +1,5 @@
+import { TaskCompletionService } from '../../../../src/services/TaskCompletionService';
+import { taskAuditRepo } from '../../../../test/support/taskAuditRepo';
 import { desktopEvidence } from './desktop-evidence';
 import { test, expect, type Page } from '../../../../test/support/browserTest';
 import { fixture } from './ui-design-fixture';
@@ -142,38 +144,49 @@ test('headless committed notes approve without a fabricated image', async ({ pag
 	});
 });
 
-async function persistTerminalOutcome(page: Page, outcome: 'failed' | 'cancelled') {
-	await page.evaluate(async (kind) => {
-		const host = window as unknown as { harness: DesktopBridge; __terminate: () => void };
-		const bridge = host.harness;
-		const original = bridge.onRunEvent;
-		bridge.onRunEvent = (listener) => {
-			host.__terminate = () => {
-				const loadEntity = bridge.entity,
-					loadSnapshot = bridge.snapshot;
-				bridge.entity = async (query) => {
-					const entity = structuredClone(await loadEntity(query));
-					entity.history.push({
-						id: 'terminal',
-						at: 'Today',
-						kind: 'reason',
-						title: `Persisted ${kind} outcome`,
-						detail: 'Saved public outcome',
-						commit: 'd'.repeat(40),
-						version: 'v002'
-					});
-					return entity;
+async function persistTerminalOutcome(
+	page: Page,
+	outcome: 'failed' | 'cancelled',
+	message: string
+) {
+	await page.evaluate(
+		async ({ kind, message }) => {
+			const host = window as unknown as { harness: DesktopBridge; __terminate: () => void };
+			const bridge = host.harness;
+			const original = bridge.onRunEvent;
+			bridge.onRunEvent = (listener) => {
+				host.__terminate = () => {
+					const loadEntity = bridge.entity,
+						loadSnapshot = bridge.snapshot;
+					bridge.entity = async (query) => {
+						const entity = structuredClone(await loadEntity(query));
+						entity.history.push({
+							id: 'terminal',
+							at: 'Today',
+							kind: 'reason',
+							title: `Persisted ${kind} outcome`,
+							detail: 'Saved public outcome',
+							commit: 'd'.repeat(40),
+							version: 'v002'
+						});
+						return entity;
+					};
+					bridge.snapshot = async (query) => {
+						const snapshot = structuredClone(await loadSnapshot(query));
+						snapshot.revision = {
+							...snapshot.revision,
+							commit: 'd'.repeat(40),
+							tip: 'd'.repeat(40)
+						};
+						return snapshot;
+					};
+					listener({ runId: 'run-owned', kind, message } as RunEvent);
 				};
-				bridge.snapshot = async (query) => {
-					const snapshot = structuredClone(await loadSnapshot(query));
-					snapshot.revision = { ...snapshot.revision, commit: 'd'.repeat(40), tip: 'd'.repeat(40) };
-					return snapshot;
-				};
-				listener({ runId: 'run-owned', kind, message: 'Provider stopped' } as RunEvent);
+				return original(listener);
 			};
-			return original(listener);
-		};
-	}, outcome);
+		},
+		{ kind: outcome, message }
+	);
 }
 for (const outcome of ['failed', 'cancelled'] as const) {
 	test(`persisted ${outcome} outcome refreshes entity history and current commit`, async ({
@@ -181,7 +194,15 @@ for (const outcome of ['failed', 'cancelled'] as const) {
 	}) => {
 		await fixture(page);
 		await page.goto('/');
-		await persistTerminalOutcome(page, outcome);
+		const repo = await taskAuditRepo();
+		const audit = await new TaskCompletionService(repo.root).check({
+			kind: 'coding',
+			goal: 'Implement search'
+		});
+		await repo.dispose();
+		expect(audit.passed).toBe(false);
+		const message = `Task completion audit failed: ${audit.checks.find((check) => !check.passed)!.detail}`;
+		await persistTerminalOutcome(page, outcome, message);
 		await page.getByRole('button', { name: 'Open Project', exact: true }).click();
 		await page.getByRole('link', { name: 'Open Activity', exact: true }).click();
 		await page.getByRole('textbox', { name: 'Message', exact: true }).fill('Revise the design');
@@ -189,7 +210,7 @@ for (const outcome of ['failed', 'cancelled'] as const) {
 		await expect(page.getByText('Working on the approved design.')).toBeVisible();
 		await page.evaluate(() => (window as unknown as { __terminate: () => void }).__terminate());
 		await expect(
-			page.getByText(outcome === 'failed' ? 'Provider stopped' : 'Run cancelled', { exact: true })
+			page.getByText(outcome === 'failed' ? message : 'Run cancelled', { exact: true })
 		).toBeVisible();
 		await page.getByRole('button', { name: 'History', exact: true }).click();
 		await checkpoint(page, `${outcome}-history`);

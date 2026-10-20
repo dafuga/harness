@@ -1,3 +1,4 @@
+import { planningProposal } from '../../../test/support/taskAuditRepo';
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import { readFile, writeFile } from 'node:fs/promises';
@@ -15,7 +16,9 @@ const proposal = JSON.stringify({
 	category: 'functions',
 	title: 'Format time',
 	goal: 'Readable elapsed time',
-	proposal: 'Input 1500 returns 1.5 seconds',
+	proposal: planningProposal(
+		'The formatter converts elapsed time: input 1500 returns 1.5 seconds.'
+	),
 	contract
 });
 const request = (f: Awaited<ReturnType<typeof fixture>>, extra: object = {}) =>

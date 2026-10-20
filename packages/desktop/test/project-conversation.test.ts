@@ -1,3 +1,4 @@
+import { planningProposal } from '../../../test/support/taskAuditRepo';
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import type { RunRequest } from '../src/models/DesktopBridge.types';
@@ -8,8 +9,9 @@ const proposal = {
 	category: 'functions',
 	title: 'Format elapsed time',
 	goal: 'Format elapsed milliseconds for people.',
-	proposal:
-		'Input 1500 milliseconds returns 1.5 seconds. Reject negative values. Record these examples in behavior notes.',
+	proposal: planningProposal(
+		'Format elapsed milliseconds: input 1500 milliseconds returns 1.5 seconds. Reject negative values; record these examples in behavior notes.'
+	),
 	contract: {
 		inputs: [{ name: 'milliseconds', type: 'number' }],
 		outputs: [{ name: 'formatted', type: 'string' }],
@@ -64,26 +66,33 @@ test('a project conversation creates the proposed function and retains its origi
 	expect(git(f.root, 'status', '--porcelain')).toBe('');
 }, 20000);
 
-test('an invalid creation proposal creates no plan and emits no success', async () => {
-	const f = await fixture();
-	f.run.mockImplementation(async (turn) => ({
-		text: '{"category":"functions","title":"../outside"}',
-		model: turn.model
-	}));
-	const before = git(f.root, 'rev-parse', 'HEAD');
-	await f.service.start({
-		intent: 'create',
-		category: 'functions',
-		mode: 'plan',
-		provider: 'codex',
-		model: 'selected',
-		effort: 'high',
-		text: 'Add a formatter',
-		projectId: f.session.projectId!
-	} as unknown as RunRequest);
-	await expect.poll(() => f.session.busy, { timeout: 12000 }).toBe(false);
-	expect(git(f.root, 'rev-parse', 'HEAD')).toBe(before);
-	expect((await f.planning.plans(before)).map((plan) => plan.title)).toEqual(['Target']);
-	expect(f.events.some((event) => event.kind === 'finished')).toBe(false);
-	expect(f.events).toContainEqual(expect.objectContaining({ kind: 'failed' }));
-}, 20000);
+test.each([
+	'{"category":"functions","title":"../outside"}',
+	JSON.stringify({ ...proposal, proposal: 'Just implement the formatter.' })
+])(
+	'an invalid or incomplete proposal creates no plan and emits no success: %s',
+	async (answer) => {
+		const f = await fixture();
+		f.run.mockImplementation(async (turn) => ({
+			text: answer,
+			model: turn.model
+		}));
+		const before = git(f.root, 'rev-parse', 'HEAD');
+		await f.service.start({
+			intent: 'create',
+			category: 'functions',
+			mode: 'plan',
+			provider: 'codex',
+			model: 'selected',
+			effort: 'high',
+			text: 'Add a formatter',
+			projectId: f.session.projectId!
+		} as unknown as RunRequest);
+		await expect.poll(() => f.session.busy, { timeout: 12000 }).toBe(false);
+		expect(git(f.root, 'rev-parse', 'HEAD')).toBe(before);
+		expect((await f.planning.plans(before)).map((plan) => plan.title)).toEqual(['Target']);
+		expect(f.events.some((event) => event.kind === 'finished')).toBe(false);
+		expect(f.events).toContainEqual(expect.objectContaining({ kind: 'failed' }));
+	},
+	20000
+);
