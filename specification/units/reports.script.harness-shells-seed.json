@@ -42,7 +42,13 @@
 		],
 		"errors": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/reports/scripts/harness-shells-seed.ts",

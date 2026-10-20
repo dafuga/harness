@@ -5,6 +5,7 @@
  * by its commit alone. Everything here is made up for the test.
  */
 import { reviewer, type VerifyOutcome, type VerifyRepo } from '../../../test/support/verifyRepo';
+import type { ScenarioManifest } from '../../../src/core/unitTypes';
 
 /** The branch of the frame, with a slash an address has to encode. */
 export const shellsBranch = 'feature/shells';
@@ -27,6 +28,31 @@ export interface ShellsSeed {
 	explain: (repo: VerifyRepo, behavior: string) => Promise<unknown>;
 }
 
+async function bindFrame(repo: VerifyRepo): Promise<void> {
+	const path = `specification/units/${shellUnit}.json`;
+	const unit = await repo.json(path);
+	const scenarioPath = 'specification/scenarios/titles-list.json';
+	const scenario = await repo.json<ScenarioManifest>(scenarioPath);
+	scenario.units.push(shellUnit);
+	scenario.states.push({
+		id: 'frame',
+		title: 'Title frame',
+		coverage: 'required',
+		units: [shellUnit]
+	});
+	scenario.evidence.find((item) => item.id === 'screens')!.states.push('frame');
+	await repo.write(scenarioPath, JSON.stringify(scenario));
+	await repo.write(
+		path,
+		JSON.stringify({
+			...unit,
+			scenarios: ['titles-list'],
+			preview: { scenario: 'titles-list', state: 'frame', viewport: 'desktop' }
+		})
+	);
+	await repo.harness(['units', 'index', '--write']);
+}
+
 /** The commits it made, by what the frame was at each; it leaves `main` checked out. */
 export async function seedShells(
 	repo: VerifyRepo,
@@ -36,6 +62,7 @@ export async function seedShells(
 	await repo.git(['checkout', '-q', '-b', shellsBranch, from]);
 	await repo.write(file, frame('Titles'));
 	await repo.harness(['units', 'index', '--write']);
+	await bindFrame(repo);
 	await explain(repo, 'Adds a frame that puts the title list under a heading.');
 	const framed = await repo.commit('feat: add a frame around the title list');
 	const unlimited = await verified(repo);

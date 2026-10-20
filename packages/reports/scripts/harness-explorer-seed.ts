@@ -116,7 +116,7 @@ const sources: Record<string, string> = {
 
 /** The check of both scenarios: a plain Node script that follows the evidence protocol. */
 const script = String.raw`
-import { appendFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { crc32, deflateSync } from 'node:zlib';
 
@@ -152,7 +152,8 @@ if (mode === 'list') {
 	const sizes = { desktop: [1440, 900], tablet: [920, 800], mobile: [390, 844] };
 	const shade = (read('src/components/TitleList.svelte') + read('src/components/TitleRow.svelte')).length % 251;
 	const server = { buildId: 'fixture-build', revision: process.env.HARNESS_VERIFY_REVISION };
-	for (const [state, tone] of [['listed', 0], ['row', 61]]) {
+	const states = [['listed', 0], ['row', 61], ...(existsSync('src/components/TitleFrame.svelte') ? [['frame', 122]] : [])];
+	for (const [state, tone] of states) {
 		for (const [viewport, [width, height]] of Object.entries(sizes)) {
 			const entry = { evidence: 'screens', kind: 'screenshot', state, viewport, file: state + '-' + viewport + '.png', mediaType: 'image/png', server };
 			capture(entry, png(width, height, (shade + tone) % 251));
@@ -181,6 +182,18 @@ export async function seedExplorer(repo: VerifyRepo): Promise<void> {
 	await repo.write('scripts/explorer.mjs', script);
 	for (const scenario of scenarios) {
 		await repo.write(`specification/scenarios/${scenario.id}.json`, JSON.stringify(scenario));
+	}
+	await repo.harness(['units', 'index', '--write']);
+	for (const [id, state] of [
+		[explorerUnits.list, 'listed'],
+		[explorerUnits.row, 'row']
+	]) {
+		const path = `specification/units/${id}.json`;
+		const held = await repo.json(path);
+		await repo.write(
+			path,
+			JSON.stringify({ ...held, preview: { scenario: 'titles-list', state, viewport: 'desktop' } })
+		);
 	}
 	await repo.harness(['units', 'index', '--write']);
 }
