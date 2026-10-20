@@ -90,7 +90,12 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["component-catalog-cards"],
+	"preview": {
+		"scenario": "component-catalog-cards",
+		"state": "current",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

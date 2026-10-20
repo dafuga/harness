@@ -1,4 +1,5 @@
-import { expect, test } from 'vitest';
+import { PerformanceProfileService } from '../../../../src/services/PerformanceProfileService';
+import { afterAll, expect, test } from 'vitest';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { catalogFilter } from '../../src/components/harness/explorer-index/entityCatalog';
@@ -210,5 +211,18 @@ test('component usage links are distinct current consumers capped at three', () 
 	}));
 	expect(row.usedIn?.map((entity) => entity.id)).toEqual(
 		using.slice(0, 3).map((entity) => entity.id)
+	);
+});
+
+afterAll(async () => {
+	const all = explorerEntities(head);
+	const relation = (id: string) => explorerRelations(head, id);
+	await new PerformanceProfileService().capture(
+		{
+			unit: 'reports.function.entity-catalog',
+			workload: 'catalog-registered-components',
+			iterations: 1000
+		},
+		() => entityCatalog(all, 'components', relation)
 	);
 });

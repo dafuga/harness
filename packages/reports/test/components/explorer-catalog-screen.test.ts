@@ -1,4 +1,5 @@
-import { expect, test } from 'vitest';
+import { PerformanceProfileService } from '../../../../src/services/PerformanceProfileService';
+import { afterAll, expect, test } from 'vitest';
 import ExplorerCatalogScreen from '../../src/components/harness/ExplorerCatalogScreen.svelte';
 import { record, revision } from '../entityFixture';
 import { content, drawn, count, screen, words } from '../entityRender';
@@ -85,4 +86,18 @@ test('a collection of a revision without a registry shows its gap and no table',
 	const body = screen(ExplorerCatalogScreen, 'commit', { category: 'services' }, { head: bare });
 	expect(words(body)).toContain('No registry at this revision');
 	expect(count(body, /<table\b/g)).toBe(0);
+});
+
+// Profile the real SSR catalog path, including its card and index, with representative fixture input.
+afterAll(async () => {
+	const profiler = new PerformanceProfileService();
+	for (const unit of [
+		'reports.component.harness-explorer-page-card',
+		'reports.component.harness-explorer-index',
+		'reports.component.harness-explorer-catalog-screen'
+	]) {
+		await profiler.capture({ unit, workload: 'three-component-catalog-ssr', iterations: 50 }, () =>
+			screen(ExplorerCatalogScreen, 'current', { category: 'components' })
+		);
+	}
 });

@@ -1,0 +1,58 @@
+{
+	"schemaVersion": 1,
+	"id": "component-previews",
+	"title": "Component previews with representative synthetic inputs",
+	"kind": "ui",
+	"units": ["hub.component.account-menu", "reports.component.provider-picker-cards"],
+	"states": [
+		{
+			"id": "account",
+			"title": "Account menu",
+			"coverage": "required",
+			"units": ["hub.component.account-menu"]
+		},
+		{
+			"id": "models",
+			"title": "Model Cards",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker-cards"]
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 920,
+			"height": 560
+		},
+		{
+			"id": "tablet",
+			"width": 768,
+			"height": 560
+		},
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 700
+		}
+	],
+	"tests": [
+		{
+			"id": "components",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-component-previews.spec.ts",
+			"cwd": "packages/reports"
+		}
+	],
+	"evidence": [
+		{
+			"id": "screens",
+			"kind": "screenshot",
+			"states": ["account", "models"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"build": "shell-fixture",
+			"required": true
+		}
+	]
+}

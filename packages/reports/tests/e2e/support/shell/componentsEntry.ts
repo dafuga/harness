@@ -1,0 +1,11 @@
+import { mount } from 'svelte';
+import '../../../../src/lib/styles/base.css';
+import '../../../../src/lib/styles/base-2.css';
+import '../../../../src/lib/styles/base-3.css';
+import '../../../../src/lib/styles/harness.css';
+import '../../../../src/lib/styles/provider-picker.css';
+import '../../../../../desktop/src/lib/styles/workspace.css';
+import '../../../../../desktop/src/lib/styles/design.css';
+import '../../../../../hub/src/lib/styles/hub.css';
+import ComponentPreviews from './ComponentPreviews.svelte';
+mount(ComponentPreviews, { target: document.getElementById('app')! });

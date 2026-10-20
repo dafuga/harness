@@ -1,0 +1,81 @@
+{
+	"schemaVersion": 1,
+	"id": "component-catalog-cards",
+	"title": "Component catalog screenshot, title and consumer navigation",
+	"kind": "ui",
+	"units": [
+		"reports.component.harness-explorer-page-card",
+		"reports.component.harness-explorer-catalog-screen",
+		"reports.component.harness-explorer-index"
+	],
+	"states": [
+		{
+			"id": "current",
+			"title": "Current component catalog",
+			"coverage": "required"
+		},
+		{
+			"id": "previous",
+			"title": "Previous component catalog",
+			"coverage": "required"
+		},
+		{
+			"id": "initial",
+			"title": "Initial component catalog",
+			"coverage": "required"
+		},
+		{
+			"id": "inherited",
+			"title": "Inherited component catalog",
+			"coverage": "required"
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 1440,
+			"height": 900
+		},
+		{
+			"id": "tablet",
+			"width": 834,
+			"height": 1112
+		},
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 844
+		}
+	],
+	"tests": [
+		{
+			"id": "catalog",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts entity-preview-actions.spec.ts --grep \"component screenshot cards follow|component catalog labels reused|branch and commit selection\"",
+			"cwd": "packages/reports"
+		}
+	],
+	"evidence": [
+		{
+			"id": "screens",
+			"kind": "screenshot",
+			"states": ["current", "previous", "initial"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"build": "entity-preview",
+			"capture": "full-page",
+			"required": true
+		},
+		{
+			"id": "inherited-screens",
+			"kind": "screenshot",
+			"states": ["inherited"],
+			"viewports": ["desktop"],
+			"provenance": "actual-capture",
+			"build": "entity-preview",
+			"capture": "full-page",
+			"required": true
+		}
+	]
+}

@@ -1,4 +1,5 @@
-import { expect, test } from 'vitest';
+import { PerformanceProfileService } from '../src/services/PerformanceProfileService';
+import { afterAll, expect, test } from 'vitest';
 import { projectFiles } from '../src/templates/project';
 import { format, type Options } from 'prettier';
 
@@ -106,6 +107,16 @@ test('generated project guidance requires Harness completion audits and keeps pl
 			expect(guidance).toContain('harness verify run --require-performance');
 			expect(guidance).toContain('Planning tasks remain planning-only');
 			expect(guidance).toContain('structural and evidence heuristics');
+			expect(guidance).toContain('active visual component requires a preview');
+			expect(guidance).toContain('A missing image or failed verdict blocks handoff');
+			expect(guidance).toContain('state labels confined to scenario states');
 		}
 	}
+});
+
+afterAll(async () => {
+	await new PerformanceProfileService().capture(
+		{ unit: 'template.project-guidance', workload: 'generate-app-guidance', iterations: 100 },
+		() => projectFiles({ kind: 'app', name: 'demo' })
+	);
 });

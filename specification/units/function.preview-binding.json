@@ -16,7 +16,7 @@
 			{
 				"name": "unit",
 				"type": "PreviewUnit",
-				"description": "A visual unit and its optional preview binding."
+				"description": "A unit with its kind and preview binding. Active components require a binding to their own screenshot."
 			},
 			{
 				"name": "scenarios",
@@ -28,7 +28,7 @@
 			{
 				"name": "issues",
 				"type": "string[]",
-				"description": "Empty when no preview is declared or its own required screenshot state and viewport exist; otherwise readable validation problems."
+				"description": "Validation problems for missing component previews or bindings without a required own screenshot state and viewport. Nonvisual units may omit previews."
 			}
 		],
 		"errors": []

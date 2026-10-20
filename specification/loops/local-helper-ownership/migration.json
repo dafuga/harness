@@ -4807,6 +4807,20 @@
 			"commit": "45bf1fc9",
 			"reason": "Enforce Harness completion and plan audits; preserve owner-local placement and unit identity.",
 			"definition": "8ff1b48a2b4f74bc406a2a0e75d3eb79d05323b6f7d89d4fa10698c0d13e22ff"
+		},
+		{
+			"unit": "reports.function.entity-measure",
+			"name": "entityMeasure",
+			"commit": "b5dd8821243794b2c930592cc94d8be895ccd913",
+			"reason": "Review intentional measurement aggregation from b5dd8821: scoped unbudgeted runtime observations and source measurements remain visible without inventing a budget.",
+			"definition": "7110374921d27ac582f1e6ac64f7910e804b23f12eea28296e7060cfb721661d"
+		},
+		{
+			"unit": "reports.function.entity-shown",
+			"name": "entityShown",
+			"commit": "b5dd8821243794b2c930592cc94d8be895ccd913",
+			"reason": "Review intentional measurement forwarding from b5dd8821: only passing regression observations of the displayed commit supplement its recorded measures.",
+			"definition": "f6de7fca7ef306650d26d58e0fbd3d3357b74b63383585560ba8bbd27fab28f2"
 		}
 	]
 }

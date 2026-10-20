@@ -1,3 +1,5 @@
+import { BuildIdentityService } from '../../../src/services/BuildIdentityService';
+import { recordCapture } from '../../../src/utils/record-capture/recordCapture';
 import { expect, type Page } from '@playwright/test';
 import { existsSync, mkdirSync, readdirSync, readFileSync } from 'node:fs';
 import { extname, join } from 'node:path';
@@ -71,7 +73,35 @@ export async function capture(page: Page, name: string): Promise<void> {
 	if (process.env.TAKE_SCREENSHOT !== '1') return;
 	const directory = process.env.ENTITY_PREVIEW_SHOTS ?? '/tmp/harness-entity-preview-shots';
 	mkdirSync(directory, { recursive: true });
-	await page.screenshot({ path: join(directory, `${name}.png`), fullPage: true });
+	const bytes = await page.screenshot({ path: join(directory, `${name}.png`), fullPage: true });
+	const catalog = /^component-cards-(tip|bbbbbbb|aaaaaaa|reused)-(desktop|tablet|mobile)$/.exec(
+		name
+	);
+	if (!catalog) return;
+	const states: Record<string, string> = {
+		tip: 'current',
+		bbbbbbb: 'previous',
+		aaaaaaa: 'initial',
+		reused: 'inherited'
+	};
+	const built = await new BuildIdentityService().identify(previewHome());
+	if (!built) throw new Error('Component catalog preview build is missing.');
+	recordCapture(
+		{
+			evidence: catalog[1] === 'reused' ? 'inherited-screens' : 'screens',
+			kind: 'screenshot',
+			state: states[catalog[1]],
+			viewport: catalog[2],
+			file: `${name}.png`,
+			mediaType: 'image/png',
+			provenance: 'actual-capture',
+			server: {
+				buildId: built.buildId,
+				revision: process.env.HARNESS_VERIFY_REVISION ?? '0'.repeat(40)
+			}
+		},
+		bytes
+	);
 }
 /** Wait for the visible capture to render without forcing offscreen lazy images to load. */
 async function ready(page: Page): Promise<void> {

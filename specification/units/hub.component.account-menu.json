@@ -45,7 +45,12 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["component-previews"],
+	"preview": {
+		"scenario": "component-previews",
+		"state": "account",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

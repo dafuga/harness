@@ -13,7 +13,7 @@ export const previewHome = (): string =>
  * writes its media beside them. Only the preview is built, into its own directory: the build of
  * the application is neither read nor replaced.
  */
-export default async function entityPreviewSetup(): Promise<void> {
+export async function buildEntityPreview(): Promise<void> {
 	const home = previewHome();
 	await build({
 		configFile: false,
@@ -33,4 +33,9 @@ export default async function entityPreviewSetup(): Promise<void> {
 		}
 	});
 	writeFileSync(join(home, 'hashes.json'), JSON.stringify(entityPreviewAssets(home)));
+}
+
+/** Verification setup builds and identifies these files before browser checks begin. */
+export default async function entityPreviewSetup(): Promise<void> {
+	if (!process.env.HARNESS_VERIFY) await buildEntityPreview();
 }

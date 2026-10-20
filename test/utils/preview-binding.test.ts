@@ -1,4 +1,5 @@
-import { expect, test } from 'vitest';
+import { PerformanceProfileService } from '../../src/services/PerformanceProfileService';
+import { afterAll, expect, test } from 'vitest';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { ScenarioManifest } from '../../src/lib/contracts';
@@ -115,4 +116,28 @@ test('visual components cannot omit required preview coverage while nonvisual un
 	expect(
 		registryGate({ stored: [] }, { stored: [{ ...component, status: 'retired' }], scenarios: [] })
 	).toEqual([]);
+});
+
+afterAll(async () => {
+	const profiler = new PerformanceProfileService();
+	await profiler.capture(
+		{
+			unit: 'function.preview-binding',
+			workload: 'required-own-screenshot-binding',
+			iterations: 1000
+		},
+		() => previewBinding(unit, [scenario])
+	);
+	const source = await indexFiles({
+		'src/utils/orders.ts': 'export function orders() { return []; }'
+	});
+	const component = { ...unitOf(source, 'function.orders'), ...unit, kind: 'component' };
+	await profiler.capture(
+		{
+			unit: 'service.verification-gates',
+			workload: 'component-registry-preview',
+			iterations: 1000
+		},
+		() => registryGate({ stored: [] }, { stored: [component], scenarios: [scenario] })
+	);
 });

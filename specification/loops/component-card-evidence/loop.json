@@ -6,11 +6,9 @@
 	"name": "component-card-evidence",
 	"goal": "Component cards show only screenshots, neutral names and clickable consumers; incomplete visual coverage blocks verification and handoff.",
 	"createdAt": "2026-10-20T17:00:48.864Z",
-	"updatedAt": "2026-10-20T17:04:01.049Z",
+	"updatedAt": "2026-10-20T17:09:12.002Z",
 	"template": "regression-prevention",
-	"templateLineage": [
-		"regression-prevention"
-	],
+	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -45,17 +43,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T17:09:08.861Z",
+			"evidence": "Simplified cards to screenshots, neutral titles and three distinct consumer links. Screenshot origin remains in the link tooltip. Registry checks now reject active components without required preview bindings; local and generated guidance require real visual evidence and repaired failure gates."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T17:09:10.559Z",
+			"evidence": "At 3be78b44, sealed d0064517 passes the unchanged standard tests and all three browser widths; paired red 83e27c20 at e1593dcf fails the missing-preview assertion and compact-card assertions."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T17:09:12.002Z",
+			"evidence": "The unchanged memoryTree registry fixture rejects an active component without a preview, accepts its own required screenshot binding, and exempts retired/nonvisual units. Sealed red replays the original accepting behavior; sealed green proves rejection."
 		},
 		{
 			"id": "verify",
