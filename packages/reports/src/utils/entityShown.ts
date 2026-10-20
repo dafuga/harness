@@ -31,7 +31,9 @@ export function helperEntity(
 	const unit = owner.unit;
 	const helper = unit.helpers?.find((candidate) => candidate.name === helperName);
 	if (!helper) return undefined;
-	const output = unit.contract.outputs.find((field) => field.name === helperName);
+	const output = unit.contract.outputs.find(
+		(field) => field.name === helperName || field.name.startsWith(`${helperName}.`)
+	);
 	return {
 		...owner,
 		name: helperName,
@@ -52,7 +54,9 @@ function helperFields(unit: HarnessUnit, helperName: string): HarnessUnit['contr
 	const only = unit.helpers?.length === 1;
 	return {
 		inputs: unit.contract.inputs.filter((field) => field.name.startsWith(`${helperName}.`)),
-		outputs: unit.contract.outputs.filter((field) => field.name === helperName),
+		outputs: unit.contract.outputs.filter(
+			(field) => field.name === helperName || field.name.startsWith(`${helperName}.`)
+		),
 		errors: unit.contract.errors.filter((field) => only || field.name.startsWith(`${helperName}.`))
 	};
 }

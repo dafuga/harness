@@ -2,7 +2,7 @@
 	"name": "contract-return-names",
 	"goal": "Returns show descriptive value names beside types/examples; no Throws table when no errors are declared",
 	"createdAt": "2026-10-20T13:47:42.114Z",
-	"updatedAt": "2026-10-20T13:49:11.907Z",
+	"updatedAt": "2026-10-20T13:50:58.992Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T13:50:58.992Z",
+			"evidence": "Test-only commit 8298d5cb; immutable red record 4e9e63af90dfdfdd1de688bad79e9cb69a936b61109f625631d14f39466b2207. Standard SSR and desktop/tablet/mobile current/historical API scenarios fail because the return table lacks the declared value name."
 		},
 		{
 			"id": "implement",

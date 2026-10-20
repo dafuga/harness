@@ -117,19 +117,11 @@ export function callableContracts(unit: HarnessUnit): Array<{
 			return { ...fieldOf(declared, unit), name };
 		});
 		const declared =
-			unit.contract.outputs.find((field) => field.name === helper.name) ??
-			(helpers.length === 1 ? unit.contract.outputs[0] : undefined);
+			unit.contract.outputs.find(
+				(field) => field.name === helper.name || field.name.startsWith(`${helper.name}.`)
+			) ?? (helpers.length === 1 ? unit.contract.outputs[0] : undefined);
 		const type = typeLabel(helper.output ?? declared?.type ?? 'unknown');
-		const returned: ContractField =
-			type === 'void'
-				? {
-						name: 'return value',
-						type,
-						source: 'missing',
-						examples: [],
-						description: 'This function returns no value.'
-					}
-				: { ...fieldOf({ ...declared, name: 'return value', type }, unit), name: 'return value' };
+		const returned = returnField(declared, type, helper.name, unit);
 		const errors = unit.contract.errors.filter(
 			(field) => helpers.length === 1 || field.name.startsWith(`${helper.name}.`)
 		);
@@ -141,17 +133,37 @@ export function callableContracts(unit: HarnessUnit): Array<{
 				fields: parameters,
 				keepEmpty: true
 			},
-			{ id: 'outputs', title: 'Returns', none: '', fields: [returned], hideNames: true },
+			{ id: 'outputs', title: 'Returns', none: '', fields: [returned] },
 			{
 				id: 'errors',
 				title: 'Throws',
 				none: 'No errors declared.',
 				fields: errors.map((field) => fieldOf(field, unit)),
-				hideNames: true,
-				keepEmpty: true
+				hideNames: true
 			}
 		];
 		const args = parameters.map((field) => `${field.name}: ${field.type}`).join(', ');
 		return { name: helper.name, signature: `${helper.name}(${args}): ${type}`, groups };
 	});
+}
+
+/** A return value has its own declared name, distinct from the callable that produces it. */
+function returnField(
+	declared: Item | undefined,
+	type: string,
+	callable: string,
+	unit: HarnessUnit
+): ContractField {
+	const prefix = `${callable}.`;
+	const name =
+		declared && declared.name !== callable ? declared.name.replace(prefix, '') : 'returnValue';
+	if (type === 'void')
+		return {
+			name,
+			type,
+			source: 'missing',
+			examples: [],
+			description: 'This function returns no value.'
+		};
+	return { ...fieldOf({ ...declared, name, type }, unit), name };
 }
