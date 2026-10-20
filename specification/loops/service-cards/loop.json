@@ -46,7 +46,8 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Final UI code 13838843 passes the full Reports check (157 files, 610 tests), three card/navigation viewports, three 1000-row responsiveness cases, root typecheck, audit and registry validation. Real catalog class/consumer navigation passes on immutable build 1df1218e09a9f26cb8ba652447a49cbcf82615f50cb8dd1124eb752edee9f1b1. Full root verification remains blocked: the unchanged main cd36c21c source-move ownership test reports entityMeasure/entityShown definition changes; the same failure was reproduced there. Root check was stopped after that known failure; later root layers remain unrun. No merge or deployment."
 		}
 	],
 	"evaluators": [

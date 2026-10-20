@@ -2,11 +2,9 @@
 	"name": "service-class-labels",
 	"goal": "Service cards use their owned implementation symbol rather than an unrelated first export, with multi-export fixtures enforcing catalog label identity",
 	"createdAt": "2026-10-20T15:58:01.604Z",
-	"updatedAt": "2026-10-20T15:59:55.194Z",
+	"updatedAt": "2026-10-20T16:01:08.523Z",
 	"template": "regression-prevention",
-	"templateLineage": [
-		"regression-prevention"
-	],
+	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -48,17 +46,22 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T16:01:06.528Z",
+			"evidence": "The same multi-export card matrix and 35 focused unit tests pass at 13838843, record 754737b3ca7dd98ffae7bc07595b17fe3375517c87511fc0461dfd8ec0305e65. Inspected after screenshots show OrderStore rather than OrderStoreOptions."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T16:01:08.523Z",
+			"evidence": "Clean snapshots preserve the export-order fault at 43d9c18f and repair at 13838843. The identical shared fixture and browser assertions reject the original first-export implementation at three viewports, then pass with the repair."
 		},
 		{
 			"id": "verify",
 			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Final UI code 13838843 passes the full Reports check (157 files, 610 tests), three card/navigation viewports, three 1000-row responsiveness cases, root typecheck, audit and registry validation. Real catalog class/consumer navigation passes on immutable build 1df1218e09a9f26cb8ba652447a49cbcf82615f50cb8dd1124eb752edee9f1b1. Full root verification remains blocked: the unchanged main cd36c21c source-move ownership test reports entityMeasure/entityShown definition changes; the same failure was reproduced there. Root check was stopped after that known failure; later root layers remain unrun. No merge or deployment."
 		}
 	],
 	"evaluators": [
