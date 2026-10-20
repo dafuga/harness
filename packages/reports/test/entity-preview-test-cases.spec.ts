@@ -1,3 +1,4 @@
+import type { Locator } from '@playwright/test';
 import { expect, test } from '../../../test/support/browserTest';
 import { capture, fits, open, viewports } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
@@ -159,17 +160,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 				page,
 				`${process.env.SCREENSHOT_LABEL ?? 'run'}-function-calls-${commit ? 'commit' : 'tip'}-${viewport}`
 			);
-			await expect(
-				pane.locator('code').filter({ hasText: 'filterOrders(orders, "SERVICE")' }),
-				'Examples must show a concrete function call'
-			).toBeVisible();
-			await expect(
-				pane.locator('code').filter({ hasText: 'filterOrders(orders, "<tag>")' })
-			).toBeVisible();
-			await expect(pane.getByText('Output changes from Example 01', { exact: true })).toHaveCount(
-				2
-			);
-			await expect(pane.getByText('Call not documented', { exact: true })).toBeVisible();
+			await reviewFunctionCalls(pane);
 			const rows = pane.locator('.cases > table > tbody > tr');
 			await expect(rows).toHaveCount(3);
 			await expect(rows.first()).toContainText(
@@ -202,4 +193,17 @@ for (const [viewport, size] of Object.entries(viewports)) {
 		await pane.getByText('Recorded tests and verification', { exact: true }).click();
 		await expect(pane.getByRole('heading', { name: /Verification at/ })).toBeVisible();
 	});
+}
+
+/** Authored usage shows the call itself and how its expected result differs. */
+async function reviewFunctionCalls(pane: Locator): Promise<void> {
+	await expect(
+		pane.locator('code').filter({ hasText: 'filterOrders(orders, "SERVICE")' }),
+		'Examples must show a concrete function call'
+	).toBeVisible();
+	await expect(
+		pane.locator('code').filter({ hasText: 'filterOrders(orders, "<tag>")' })
+	).toBeVisible();
+	await expect(pane.getByText('Output changes from Example 01', { exact: true })).toHaveCount(2);
+	await expect(pane.getByText('Call not documented', { exact: true })).toBeVisible();
 }
