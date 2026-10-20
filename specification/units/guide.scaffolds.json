@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/guides/scaffolds.ts"],
-		"symbols": ["scaffoldGuides", "scaffoldsGuide"]
+		"symbols": ["scaffoldGuides", "scaffoldsGuide", "namingGuide"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -21,11 +21,20 @@
 			{
 				"name": "scaffoldsGuide",
 				"type": "Guide"
+			},
+			{
+				"name": "namingGuide",
+				"type": "Guide"
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.catalog",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "guide.guide",
 			"via": "import",

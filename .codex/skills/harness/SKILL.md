@@ -96,3 +96,11 @@ must not accept a row that contradicts the collection's inclusion rule.
 - Nesting: 4 levels.
 - Parameters: 4.
 - Classes per file: 1.
+
+## Module Naming
+
+Read `harness info naming` and the scaffold guide before naming a module. Classes keep PascalCase and their role suffix; models and components keep PascalCase; functions, pure helpers and value modules keep their actual camelCase name. Match source filenames and primary declarations, preserve framework entries and stable registered IDs, and keep descriptive responsibilities separate from code names. Use the same canonical code identity on cards, usage links and detail headings. Standard catalog coverage compares those surfaces for class, callable, component and model consumers at current and historical revisions; card-only naming overrides are not allowed.
+
+Before freezing a naming regression, format and lint the strengthened tests and shared fixtures. Record the failing assertion only after that preflight so green can use the unchanged test inputs.
+
+Keep registered test titles stable when extending naming coverage; verification records bind to those names.

@@ -1,11 +1,11 @@
 import { loopGuide } from './loop';
-import { harnessRuleSummaries } from '../rules/catalog';
+import { harnessNamingRules, harnessRuleSummaries } from '../rules/catalog';
 import { availableGuideTopics as uniqueGuideTopics, findGuideByTopic } from './topics';
 import { activityGuide } from './activity';
 import { analyticsGuide, reportGuide } from './analytics';
 import { cleanCodeGuide } from './cleanCode';
 import { responseCheckGuide } from './responseCheck';
-import { scaffoldGuides, scaffoldsGuide } from './scaffolds';
+import { namingGuide, scaffoldGuides, scaffoldsGuide } from './scaffolds';
 import { consoleGuides } from './console';
 import { historyGuides } from './history';
 import { runtimeGuides } from './runtimes';
@@ -152,13 +152,17 @@ export const guides: Guide[] = [
 		exampleCommands: ['harness audit src', 'harness info code-rules']
 	},
 	scaffoldsGuide(),
+	namingGuide(),
 	...scaffoldGuides(),
 	...unitGuides,
 	...runtimeGuides,
 	...verificationGuides,
 	...historyGuides,
 	...consoleGuides
-];
+].map((guide) => {
+	const naming = harnessNamingRules[guide.topic];
+	return naming ? { ...guide, rules: [naming, ...guide.rules] } : guide;
+});
 
 export function findGuide(topic: string): Guide | undefined {
 	return findGuideByTopic(guides, topic);

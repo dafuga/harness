@@ -1,7 +1,7 @@
 import { explorerCategories } from '../../../../src/utils/explorerRoute';
 import type { HarnessUnit } from '../models/Harness.types';
 
-type Named = Pick<HarnessUnit, 'id' | 'kind' | 'title'>;
+type Named = Pick<HarnessUnit, 'id' | 'kind' | 'title'> & Partial<Pick<HarnessUnit, 'owns'>>;
 const initials = new Set(['api', 'cli', 'cpu', 'css', 'e2e', 'html', 'id', 'json', 'lfs', 'mcp']);
 const more = ['pdf', 'r2', 'sdk', 'ui', 'url', 'wasm', 'wav', 'zip'];
 for (const word of more) initials.add(word);
@@ -47,12 +47,10 @@ function screenOf(title: string): string[] {
 	});
 }
 
-/**
- * The name a reader is shown for a unit: its title as written when a person wrote one, the words
- * of its title when the title is one identifier, the screen a route address ends in, else the
- * words of the last part of its id. It is never an id, an address or a file.
- */
+/** A code unit keeps its recorded symbol or module name; route screens keep readable labels. */
 export function explorerName(unit: Named): string {
+	const code = codeName(unit);
+	if (code) return code;
 	const title = unit.title.trim();
 	if (written.test(title) && title !== unit.id) return title;
 	const screen = screenOf(title);
@@ -60,6 +58,33 @@ export function explorerName(unit: Named): string {
 	const tail = unit.id.split('.').pop() ?? '';
 	const parts = identifier.test(title) ? words(title) : words(tail);
 	return parts.length > 0 ? sentence(parts) : 'Unnamed';
+}
+
+/** Owned source decides code identity even when a manifest has a descriptive title. */
+function codeName(unit: Named): string | undefined {
+	if (
+		['page', 'view', 'layout', 'api', 'style', 'script', 'template', 'guide', 'audit'].includes(
+			unit.kind
+		)
+	)
+		return undefined;
+	const stems = (unit.owns?.source ?? [])
+		.filter((source) => /\.(?:svelte|[cm]?[jt]sx?)$/.test(source))
+		.map((source) =>
+			source
+				.split('/')
+				.at(-1)!
+				.replace(/\.[^.]+$/, '')
+				.replace(/\.(?:client|server|svelte|d)$/, '')
+		);
+	const symbol = stems.find((stem) => unit.owns?.symbols.includes(stem));
+	if (symbol) return symbol;
+	const module = stems.find(
+		(stem) => stem !== 'index' && (identifier.test(stem) || /^[A-Z][A-Za-z0-9]*\.types$/.test(stem))
+	);
+	if (module) return module;
+	const title = unit.title.trim();
+	return identifier.test(title) && unit.kind ? title : undefined;
 }
 
 /** The address a route file serves: `src/routes/titles/+page.svelte` is `/titles`. */

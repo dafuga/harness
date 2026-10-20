@@ -1,4 +1,5 @@
 import { scaffoldDetails, scaffoldKinds, type ScaffoldDetail } from '../templates/scaffoldTypes';
+import { harnessNamingRules } from '../rules/catalog';
 import type { Guide } from './guide';
 
 export function scaffoldGuides(): Guide[] {
@@ -20,6 +21,30 @@ export function scaffoldsGuide(): Guide {
 		}),
 		antiPatterns: ['Do not guess a scaffold shape when harness info can describe it.'],
 		exampleCommands: ['harness info scaffolds', 'harness info mailer --json']
+	};
+}
+
+export function namingGuide(): Guide {
+	return {
+		topic: 'naming',
+		summary:
+			'Canonical source names for every module type, shared by generators, audit and code catalogs.',
+		steps: [
+			'Read the scaffold rule before generating code.',
+			'Review the actual operation and one concrete call.',
+			'Run harness audit and the project check.'
+		],
+		rules: [
+			...Object.values(harnessNamingRules),
+			'Pure shared helper callables use camelCase; the helper scaffold generates a PascalNameHelper class and follows the class rule.',
+			'Keep class, component, model, function and module identities identical in cards, usage links and detail headings.',
+			'Preserve registered unit IDs and history when renaming source; descriptive responsibilities are separate from code names.'
+		],
+		antiPatterns: [
+			'Do not invent a code name by recasing a descriptive title.',
+			'Do not add a card-only name override.'
+		],
+		exampleCommands: ['harness info naming --json', 'harness info service', 'harness audit .']
 	};
 }
 

@@ -3,7 +3,7 @@
 	"id": "reports.function.explorer-name",
 	"kind": "function",
 	"title": "Readable entity names",
-	"responsibility": "Derives display names and page addresses from declared titles and ownership.",
+	"responsibility": "Keeps canonical recorded code names consistent across catalogs, related units and detail pages; derives readable route screen labels separately.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -16,7 +16,7 @@
 			{
 				"name": "explorerName.unit",
 				"type": "Named",
-				"description": "Unit identifier, kind and title used for display naming."
+				"description": "Unit identity, kind and title with optional owned source and declared symbols from the viewed revision."
 			},
 			{
 				"name": "explorerAppRoute.unit",
@@ -28,7 +28,7 @@
 			{
 				"name": "explorerName",
 				"type": "string",
-				"description": "Preserves a human-written multiword title when it passes the title rules; otherwise uses route screen words, identifier words or the final identifier segment. Known initialisms stay uppercase; an empty result becomes Unnamed."
+				"description": "Recorded primary symbol or owned module stem for code units, preserving exact casing and type collection suffixes. Route screens retain readable names; absent code metadata retains the explicit readable fallback. No unit ID or route changes."
 			},
 			{
 				"name": "explorerAppRoute",

@@ -1,4 +1,4 @@
-import { harnessRuleLimits, harnessRuleSummaries } from '../rules/catalog';
+import { harnessNamingRules, harnessRuleLimits, harnessRuleSummaries } from '../rules/catalog';
 import { bugRepairPolicy } from '../utils/bugRepairPolicy';
 
 export function agentRules(projectType: string): string {
@@ -6,7 +6,7 @@ export function agentRules(projectType: string): string {
 }
 
 export function skillRules(projectType: string): string {
-	return `# Harness Project Discipline\n\nUse this skill whenever you are planning, implementing, reviewing, or verifying code in this Harness ${projectType}.\n\n## Operating Rules\n\n1. Treat \`harness info\`, Harness generators, and \`harness audit\` as mandatory project controls.\n2. Run \`harness info <topic>\` or \`harness info scaffolds --json\` before creating unfamiliar code shapes.\n3. For non-trivial work, ask what the loop should prove, search templates, then create or continue a \`harness loop\`.\n4. Prefer \`harness generate <kind> <name>\` for supported scaffolds, then adapt the generated file within Harness limits.\n5. Add or update the feature spec first so the intended behavior is explicit before implementation.\n6. Keep generated and hand-edited files inside the configured Harness rule limits.\n7. Use \`harness info clean-code\` for optional Jev review; preview coverage before enabling it, use a project-owned credential, and assess advisory results before gating.\n8. Verify with \`bun run check\` before handing work back.\n\n${regressionLoopRules()}\n## Hard Limits\n\n- Files: ${harnessRuleLimits.maxFileLines} lines.\n- Functions: ${harnessRuleLimits.maxFunctionLines} lines.\n- Classes: ${harnessRuleLimits.maxClassLines} lines.\n- Methods: ${harnessRuleLimits.maxMethodLines} lines.\n- Nesting: ${harnessRuleLimits.maxNestingDepth} levels.\n- Parameters: ${harnessRuleLimits.maxParameters}.\n- Classes per file: ${harnessRuleLimits.maxClassesPerFile}.\n`;
+	return `# Harness Project Discipline\n\nUse this skill whenever you are planning, implementing, reviewing, or verifying code in this Harness ${projectType}.\n\n## Operating Rules\n\n1. Treat \`harness info\`, Harness generators, and \`harness audit\` as mandatory project controls.\n2. Run \`harness info <topic>\` or \`harness info scaffolds --json\` before creating unfamiliar code shapes.\n3. For non-trivial work, ask what the loop should prove, search templates, then create or continue a \`harness loop\`.\n4. Prefer \`harness generate <kind> <name>\` for supported scaffolds, then adapt the generated file within Harness limits.\n5. Add or update the feature spec first so the intended behavior is explicit before implementation.\n6. Keep generated and hand-edited files inside the configured Harness rule limits.\n7. Use \`harness info clean-code\` for optional Jev review; preview coverage before enabling it, use a project-owned credential, and assess advisory results before gating.\n8. Verify with \`bun run check\` before handing work back.\n\n${regressionLoopRules()}\n${namingRules()}\n## Hard Limits\n\n- Files: ${harnessRuleLimits.maxFileLines} lines.\n- Functions: ${harnessRuleLimits.maxFunctionLines} lines.\n- Classes: ${harnessRuleLimits.maxClassLines} lines.\n- Methods: ${harnessRuleLimits.maxMethodLines} lines.\n- Nesting: ${harnessRuleLimits.maxNestingDepth} levels.\n- Parameters: ${harnessRuleLimits.maxParameters}.\n- Classes per file: ${harnessRuleLimits.maxClassesPerFile}.\n`;
 }
 
 function regressionLoopRules(): string {
@@ -23,4 +23,12 @@ ${bugRepairPolicy()
 - Browser normal flows, including screenshot/video runs, must have no unexpected console.error or pageerror events. Use the shared browserTest fixture; watch extra contexts before navigation. Keep logs for expected errors and declare their exact messages and reasons in that test. For unexpected errors, prove a failing log assertion before repair, then rerun the same unchanged regression until the error disappears; preserve diagnostics and keep verification pending while errors remain.
 - Shared browser fixtures must preserve lazy setup. When their dependencies change, prove API-only tests run with an unavailable browser executable alongside actual browser cases.
 `;
+}
+
+function namingRules(): string {
+	return `## Naming\n\nRead \`harness info naming\` and the scaffold guide before naming code. Keep code names consistent across cards, usage links and detail headings.\n\n${Object.values(
+		harnessNamingRules
+	)
+		.map((rule) => `- ${rule}`)
+		.join('\n')}\n`;
 }

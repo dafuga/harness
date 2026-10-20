@@ -1,4 +1,5 @@
 import { toCamelCase, toPascalCase } from '../core/case';
+import { harnessClassFileRules } from '../rules/catalog';
 import type { AuditFile } from './adapters/types';
 import { hasNamedValueExport } from './functionNamingRules';
 import {
@@ -10,37 +11,12 @@ import {
 } from './namePatterns';
 import type { AuditFinding } from './types';
 
-interface ClassFileRule {
-	folder: string;
-	suffix: string;
-	label: string;
-}
-
 interface FunctionFileRule {
 	expected: string;
 	label: string;
 	validFileName: boolean;
 	filePattern: string;
 }
-
-const classFileRules: ClassFileRule[] = [
-	{ folder: 'controllers', suffix: 'Controller', label: 'Controller' },
-	{ folder: 'services', suffix: 'Service', label: 'Service' },
-	{ folder: 'decorators', suffix: 'Decorator', label: 'Decorator' },
-	{ folder: 'adapters', suffix: 'Adapter', label: 'Adapter' },
-	{ folder: 'repositories', suffix: 'Repository', label: 'Repository' },
-	{ folder: 'validators', suffix: 'Validator', label: 'Validator' },
-	{ folder: 'serializers', suffix: 'Serializer', label: 'Serializer' },
-	{ folder: 'policies', suffix: 'Policy', label: 'Policy' },
-	{ folder: 'jobs', suffix: 'Job', label: 'Job' },
-	{ folder: 'notifications', suffix: 'Notification', label: 'Notification' },
-	{ folder: 'commands', suffix: 'Command', label: 'Command' },
-	{ folder: 'mailers', suffix: 'Mailer', label: 'Mailer' },
-	{ folder: 'helpers', suffix: 'Helper', label: 'Helper' },
-	{ folder: 'channels', suffix: 'Channel', label: 'Channel' },
-	{ folder: 'forms', suffix: 'Form', label: 'Form' },
-	{ folder: 'middleware', suffix: 'Middleware', label: 'Middleware' }
-];
 
 const modelAdapters: Record<string, string> = {
 	d1: 'createD1Adapter',
@@ -60,16 +36,21 @@ export function auditScaffoldTypeScriptNaming(file: AuditFile): AuditFinding[] {
 }
 
 function auditClassFileName(file: AuditFile): AuditFinding[] {
-	const rule = classRuleForPath(file.relativePath);
-	if (!rule) return [];
+	if (!file.relativePath.startsWith('src/')) return [];
 	const className = exportedClassNames(file.structuralLines)[0];
 	if (!className) return [];
 	const stem = typeScriptStem(file.relativePath);
-	if (stem === className && isPascalWithSuffix(className, rule.suffix)) return [];
+	// A model type collection may also declare a small error or value class.
+	if (stem.endsWith('.types')) return [];
+	const rule = classRuleForPath(file.relativePath);
+	const roleClass = harnessClassFileRules.some(({ suffix }) => className.endsWith(suffix));
+	if (!rule && !roleClass) return [];
+	if (matchesClassFile(stem, className, rule?.suffix)) return [];
+	const expected = rule ? `<PascalName>${rule.suffix}` : '<PascalName>';
 	return [
 		fileNameFinding(
 			file,
-			`${rule.label} files should be named <PascalName>${rule.suffix}.ts and match the exported class.`
+			`Class files should be named ${expected}.ts and match the exported class, including inside an owner's folder.`
 		)
 	];
 }
@@ -199,15 +180,27 @@ function modelAdapterRule(stem: string): FunctionFileRule | undefined {
 }
 
 function exportedClassNames(lines: string[]): string[] {
-	return lines.flatMap((line) => line.match(/^\s*export\s+class\s+([A-Za-z_$][\w$]*)/)?.[1] ?? []);
+	return lines.flatMap(
+		(line) =>
+			line.match(/^\s*export\s+(?:default\s+)?(?:abstract\s+)?class\s+([A-Za-z_$][\w$]*)/)?.[1] ??
+			[]
+	);
 }
 
-function classRuleForPath(path: string): ClassFileRule | undefined {
+function classRuleForPath(path: string) {
 	const segments = path.split('/');
 	if (segments.length !== 3 || segments[0] !== 'src') return undefined;
-	return classFileRules.find((rule) => rule.folder === segments[1]);
+	return harnessClassFileRules.find((rule) => rule.folder === segments[1]);
 }
 
 function isPascalWithSuffix(value: string, suffix: string): boolean {
 	return isPascalCase(value) && value.endsWith(suffix) && value.length > suffix.length;
+}
+
+function matchesClassFile(stem: string, className: string, suffix?: string): boolean {
+	return (
+		stem === className &&
+		isPascalCase(className) &&
+		(!suffix || isPascalWithSuffix(className, suffix))
+	);
 }
