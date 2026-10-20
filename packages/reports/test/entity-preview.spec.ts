@@ -1,3 +1,4 @@
+import { responsiveRoutes } from './entityPreviewGeometry';
 import { expect, test } from '../../../test/support/browserTest';
 import { capture, chooseCatalogFilter, fits, open, viewports, where } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
@@ -203,16 +204,8 @@ test('history lists changes, keeps profiles apart and opens a revision', async (
 for (const [name, size] of Object.entries(viewports)) {
 	test(`every screen fits a ${name} window without scrolling sideways`, async ({ page: tab }) => {
 		await tab.setViewportSize(size);
-		const routes = [
-			{},
-			{ category: 'services' as const, commit: commits.middle },
-			{ ...page, commit: commits.middle },
-			{ ...filter, commit: commits.middle },
-			{ ...filter, section: 'history' as const, commit: commits.middle },
-			{ ...page, tab: 'source' as const },
-			{ category: 'configs' as const, entity: ids.settings }
-		];
-		for (const [position, route] of routes.entries()) {
+
+		for (const [position, route] of responsiveRoutes.entries()) {
 			await open(tab, route);
 			expect(await fits(tab), `route ${position} at ${name}`).toBe(true);
 			await capture(tab, `fit-${position}-${name}`);

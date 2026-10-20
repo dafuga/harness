@@ -1,5 +1,5 @@
-import { componentScreens, runtimeEvidence } from './runtime-evidence';
-import { expect, test, type Locator, type Page } from '../../../../test/support/browserTest';
+import { componentScreens, runtimeEvidence, drawn } from './runtime-evidence';
+import { expect, test, type Page } from '../../../../test/support/browserTest';
 import {
 	branch,
 	cardScenario,
@@ -24,19 +24,6 @@ const at = (entity: string, commit?: string, suffix = '') =>
 const pageAt = (commit?: string, suffix = '') => at(`pages/${ids.page}`, commit, suffix);
 const runtime = (page: Page) => page.getByRole('region', { name: 'Recorded runtime evidence' });
 const shot = 'orders-page · default at desktop';
-
-/** What an image really shows: its own size and the colour in its middle, read from its pixels. */
-function drawn(image: Locator) {
-	return image.evaluate(async (node: HTMLImageElement) => {
-		await node.decode();
-		const canvas = document.createElement('canvas');
-		[canvas.width, canvas.height] = [node.naturalWidth, node.naturalHeight];
-		const context = canvas.getContext('2d')!;
-		context.drawImage(node, 0, 0);
-		const middle = context.getImageData(canvas.width / 2, canvas.height / 2, 1, 1).data;
-		return { width: canvas.width, height: canvas.height, tone: [...middle.slice(0, 3)] };
-	});
-}
 
 test.use({ screenshot: 'only-on-failure' });
 

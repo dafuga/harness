@@ -11,7 +11,6 @@ import type { Thumbnail } from '../../src/models/Desktop.types';
 import type { UnitDocumentation } from '../../../../src/utils/unit-documentation/unitDocumentation';
 import { nativeImageFixture } from './native-image-fixture';
 import { cardScenario, observedHistory, type Example } from './ui-evidence-history';
-
 export { commits, ids };
 export { cardScenario, soundScenario, tones } from './ui-evidence-history';
 /** SYNTHETIC identities of one project; no repository, account or server stands behind them. */

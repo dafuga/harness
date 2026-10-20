@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { expect, type Page, type TestInfo } from '@playwright/test';
+import { expect, type Page, type TestInfo, type Locator } from '@playwright/test';
 import type { ScenarioManifest } from '../../../../src/core/unitTypes';
 import scenarioData from '../../../../specification/scenarios/runtime-evidence-ui.json' with { type: 'json' };
 import { buildStamp } from '../../../../src/utils/buildStamp';
@@ -135,4 +135,17 @@ export async function componentScreens(page: Page, info: TestInfo, phase: string
 		).toEqual(sources);
 	}
 	await tabs.getByRole('button', { name: 'Overview', exact: true }).click();
+}
+
+/** What an image really shows: its own size and the colour in its middle, read from its pixels. */
+export function drawn(image: Locator) {
+	return image.evaluate(async (node: HTMLImageElement) => {
+		await node.decode();
+		const canvas = document.createElement('canvas');
+		[canvas.width, canvas.height] = [node.naturalWidth, node.naturalHeight];
+		const context = canvas.getContext('2d')!;
+		context.drawImage(node, 0, 0);
+		const middle = context.getImageData(canvas.width / 2, canvas.height / 2, 1, 1).data;
+		return { width: canvas.width, height: canvas.height, tone: [...middle.slice(0, 3)] };
+	});
 }
