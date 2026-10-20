@@ -20,6 +20,68 @@ export const harnessRuleLimits: HarnessRuleLimits = {
 	maxClassesPerFile: 1
 } as const;
 
+/** Role suffixes shared by scaffold naming guidance and the source audit. */
+export const harnessClassFileRules = [
+	{ kind: 'controller', folder: 'controllers', suffix: 'Controller' },
+	{ kind: 'service', folder: 'services', suffix: 'Service' },
+	{ kind: 'decorator', folder: 'decorators', suffix: 'Decorator' },
+	{ kind: 'adapter', folder: 'adapters', suffix: 'Adapter' },
+	{ kind: 'repository', folder: 'repositories', suffix: 'Repository' },
+	{ kind: 'validator', folder: 'validators', suffix: 'Validator' },
+	{ kind: 'serializer', folder: 'serializers', suffix: 'Serializer' },
+	{ kind: 'policy', folder: 'policies', suffix: 'Policy' },
+	{ kind: 'job', folder: 'jobs', suffix: 'Job' },
+	{ kind: 'notification', folder: 'notifications', suffix: 'Notification' },
+	{ kind: 'command', folder: 'commands', suffix: 'Command' },
+	{ kind: 'mailer', folder: 'mailers', suffix: 'Mailer' },
+	{ kind: 'helper', folder: 'helpers', suffix: 'Helper' },
+	{ kind: 'channel', folder: 'channels', suffix: 'Channel' },
+	{ kind: 'form', folder: 'forms', suffix: 'Form' },
+	{ kind: 'middleware', folder: 'middleware', suffix: 'Middleware' }
+] as const;
+
+/** Naming is about actual source declarations, never a recased descriptive label. */
+export const harnessNamingRules: Record<string, string> = {
+	...Object.fromEntries(
+		harnessClassFileRules.map(({ kind, suffix }) => [
+			kind,
+			`Naming: ${suffix} classes use <PascalName>${suffix}.ts and export the matching class, including inside an owner's folder.`
+		])
+	),
+	model:
+		'Naming: Models use <PascalName>.ts with a matching class or type; type collections use <PascalName>.types.ts.',
+	component: 'Naming: Components use <PascalName>.svelte and the same PascalCase import name.',
+	partial: 'Naming: Partials use <PascalName>Partial.svelte and the same PascalCase import name.',
+	shell: 'Naming: Shell components use <PascalName>.svelte and the same PascalCase import name.',
+	function:
+		'Naming: Functions and pure helper callables use descriptive camelCase names; utility modules use <camelName>.ts. Review the actual input-to-output operation, not only casing.',
+	util: 'Naming: Utilities use <camelName>.ts with a matching camelCase export that describes its actual operation.',
+	module:
+		'Naming: Value modules use <camelName>.ts; class and type modules follow their own type rules. Keep framework .client, .server, .svelte and .d suffixes where required.',
+	workflow:
+		'Naming: Workflow modules use <camelName>.ts; exported operations use descriptive camelCase names.',
+	config: 'Naming: Config objects use <camelName>Config.ts with a matching camelCase export.',
+	store: 'Naming: Stores use <camelName>.svelte.ts and export create<PascalName>Store.',
+	hook: 'Naming: Hooks use <camelName>Hook.server.ts and export <camelName>Hook; preserve the framework hooks.server.ts entry.',
+	concern: 'Naming: Concerns use with<PascalName>.ts and export with<PascalName>.',
+	initializer:
+		'Naming: Initializers use initialize<PascalName>.ts and export initialize<PascalName>.',
+	seeder: 'Naming: Seeders use <kebab-name>.ts and export seed<PascalName>.',
+	view: 'Naming: Pages preserve src/routes/<kebab-name>/+page.svelte; their screen labels may be human readable.',
+	page: 'Naming: Pages preserve framework +page.svelte and +page.server.ts filenames and their exported handlers.',
+	layout:
+		'Naming: Layouts preserve src/routes/<kebab-name>/+layout.svelte and framework handler names.',
+	api: 'Naming: API routes preserve src/routes/api/<kebab-name>/+server.ts and HTTP method exports such as GET and POST.',
+	entry:
+		'Naming: Entrypoints keep framework-required filenames and exports; other operation modules use <camelName>.ts.',
+	test: 'Naming: Unit tests use <kebab-name>.test.ts.',
+	e2e: 'Naming: Browser tests use <kebab-name>.spec.ts.',
+	feature: 'Naming: Feature specifications use <kebab-name>.md.',
+	migration: 'Naming: Migrations use lowercase kebab-case or snake_case .sql filenames.',
+	resource:
+		'Naming: Each generated resource piece follows its own model, controller, policy, serializer, route or test naming rule.'
+};
+
 export const harnessRuleSummaries = harnessRuleSummariesFor(harnessRuleLimits);
 
 export function harnessRuleSummariesFor(limits: HarnessRuleLimits): string[] {
@@ -32,8 +94,9 @@ export function harnessRuleSummariesFor(limits: HarnessRuleLimits): string[] {
 		`Functions and methods take at most ${limits.maxParameters} parameters.`,
 		`Cyclomatic complexity stays at or below ${limits.maxComplexity}.`,
 		`Each file defines at most ${limits.maxClassesPerFile} class.`,
-		'Generated scaffold file names should keep the casing and suffixes prescribed by Harness.',
-		'Function exports should use camelCase and generated function files should export the expected name.',
+		'Use harness info naming and the scaffold guide before naming a module.',
+		...Object.values(harnessNamingRules),
+		'Code catalogs, usage links and detail headings retain the same recorded code name; stable dotted unit IDs and framework filenames do not change with a display title.',
 		'Classes should not use catch-all Manager names.',
 		'Command modules delegate to workflows instead of importing templates or file-generation helpers.',
 		'Core, template, workflow, and command imports move in one direction.',

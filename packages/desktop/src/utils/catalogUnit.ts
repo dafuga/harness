@@ -1,4 +1,5 @@
 import { helperContract } from '../../../../src/utils/helperContract';
+import { explorerName } from '../../../reports/src/utils/explorerName';
 import type { ComponentManifest } from '../../../../src/lib/contracts';
 import type { CatalogEntity, DesignVersion } from '../models/Desktop.types';
 import type { PlanRecord } from '../models/PlanningPort.types';
@@ -15,7 +16,7 @@ export function catalogUnit(unit: ComponentManifest, changed: Set<string>): Cata
 		id: unit.id,
 		category,
 		kind: unit.kind,
-		title: unit.title,
+		title: category === 'pages' ? unit.title : explorerName(unit),
 		summary: unit.responsibility,
 		changed: ownsChange(unit.owns.source, changed),
 		planned: false,

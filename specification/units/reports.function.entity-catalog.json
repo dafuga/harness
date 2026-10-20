@@ -99,7 +99,7 @@
 			{
 				"name": "entityCatalog",
 				"type": "CatalogRow[]",
-				"description": "Rows sorted by displayed name, retaining registered names for search. Service labels use the owned implementation filename matched to a recorded symbol, or the registered name; three consumer links retain page fallback. Helpers retain per-export eligibility and consumers."
+				"description": "Rows sorted by canonical displayed code name. Services require at least two distinct resolved runtime owners and use the same set for up to three usage links. Helpers retain per-export eligibility, exact callable names and consumers. Cards and related entities share the same name resolver."
 			},
 			{
 				"name": "catalogFilter",

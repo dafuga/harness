@@ -27,8 +27,13 @@
 	};
 	const other: [string, string] = ['Other', 'Other'];
 	const kind = (item: Relationship) => (item.category ? kinds[item.category] : other);
-	/** A related entity is named in words, as it is where it is listed and opened. */
-	const named = (item: Relationship) => explorerName({ id: item.id, kind: '', title: item.title });
+	/** A related code unit keeps its identifier; pages keep their screen labels. */
+	const named = (item: Relationship) =>
+		explorerName({
+			id: item.id,
+			kind: item.category === 'pages' ? 'page' : 'module',
+			title: item.title
+		});
 	const title = $derived(direction === 'uses' ? 'Uses' : 'Used In');
 	/** What was recorded on this side, each entity once. */
 	const items = $derived([

@@ -19,6 +19,10 @@
 	);
 	const nameOf = (entity: CatalogEntity) =>
 		entity.category === 'functions' && !entity.planned ? entity.title : explorerName(entity);
+	const searchable = (entity: CatalogEntity) => {
+		const name = nameOf(entity);
+		return `${name} ${name.replace(/([a-z0-9])([A-Z])/g, '$1 $2')} ${entity.summary}`.toLowerCase();
+	};
 	/** Only a verified entity has passed; a failed, unverified or unknown one is unproven. */
 	const proofOf = (e: CatalogEntity) => (e.verification === 'verified' ? 'passed' : 'unproven');
 	function reset() {
@@ -45,7 +49,7 @@
 				(e) =>
 					e.category === workspace.category &&
 					(e.category !== 'functions' || e.planned || e.helperContracts?.some(helperContract)) &&
-					`${nameOf(e)} ${e.summary}`.toLowerCase().includes(search.toLowerCase()) &&
+					searchable(e).includes(search.toLowerCase()) &&
 					(!changed || e.changed) &&
 					(verification === 'all' || proofOf(e) === verification) &&
 					(planning === 'all' || e.hasPlan === (planning === 'planned'))

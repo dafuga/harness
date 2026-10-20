@@ -27,9 +27,14 @@ export function catalogFilter(rows: CatalogRow[], filter: CatalogFilter): Catalo
 		)
 		.filter((row) => {
 			const symbols = row.helper?.name ?? '';
+			const text = `${row.name} ${row.entity.name} ${row.entity.unit.title} ${row.summary} ${symbols}`;
 			return (
 				!wanted ||
-				`${row.name} ${row.entity.name} ${row.summary} ${symbols}`.toLowerCase().includes(wanted)
+				text.toLowerCase().includes(wanted) ||
+				text
+					.replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+					.toLowerCase()
+					.includes(wanted)
 			);
 		})
 		.sort(orders[filter.order]);

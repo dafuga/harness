@@ -4798,6 +4798,12 @@
 			"name": "unitMetadata",
 			"definition": "4851cc55902161938d139c8719e044df2805eb901f98ca2f9ef48e5aad621ca8",
 			"reason": "Add source-derived service runtime ownership without changing helper eligibility."
+		},
+		{
+			"unit": "reports.function.entity-catalog",
+			"name": "catalogFilter",
+			"definition": "c6a525e3916cfccf5a966e36a8c8a124c623e3841bcb498feb80e66402631647",
+			"reason": "Keep spaced descriptive-title search compatible while every catalog surface displays canonical code names."
 		}
 	]
 }
