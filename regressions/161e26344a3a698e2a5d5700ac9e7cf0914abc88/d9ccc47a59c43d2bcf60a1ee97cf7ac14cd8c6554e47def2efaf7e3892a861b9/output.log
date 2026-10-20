@@ -1,0 +1,273 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-PDsfpT
+
+ ❯ test/history-index.e2e.test.ts (4 tests | 1 failed) 24550ms
+   ✓ the index is deterministic and names every commit, verified or not  1817ms
+   × a revision carries its graph, comparison, inherited provenance, media and reasons 888ms
+     → source metrics exist without a verification record: expected undefined to deeply equal ArrayContaining{…}
+   ✓ growth and benchmarks are kept per unit, and another profile is a separate series  3752ms
+   ✓ a fresh clone rebuilds the same index from Git alone, and missing media is a stated gap  5610ms
+ ❯ test/loop.e2e.test.ts (6 tests | 3 failed) 17077ms
+   ✓ loop CLI traces work and remains audit-safe in generated projects  2189ms
+   ✓ generated app and lib instructions mention harness loops  673ms
+   ✓ loop CLI creates from templates, searches, guides next, and evaluates  1389ms
+   × bug-fix CLI records proof and leaves verification pending across failed and passing checks 4383ms
+     → focused proof retains benchmark measurements: expected undefined to deeply equal ArrayContaining{…}
+   × fix CLI records proof and leaves verification pending across failed and passing checks 4211ms
+     → focused proof retains benchmark measurements: expected undefined to deeply equal ArrayContaining{…}
+   × regression-prevention CLI records proof and leaves verification pending across failed and passing checks 4231ms
+     → focused proof retains benchmark measurements: expected undefined to deeply equal ArrayContaining{…}
+ ✓ test/case.test.ts (2 tests) 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/history-index.e2e.test.ts > a revision carries its graph, comparison, inherited provenance, media and reasons
+AssertionError: source metrics exist without a verification record: expected undefined to deeply equal ArrayContaining{…}
+
+- Expected: 
+ArrayContaining [
+  ObjectContaining {
+    "metric": "source-bytes",
+    "testedRevision": "a428d3e4463e0baa52bcf42170b6d8602a8781fb",
+    "value": 100,
+  },
+  ObjectContaining {
+    "metric": "complexity",
+    "value": Any<Number>,
+  },
+]
+
++ Received: 
+undefined
+
+ ❯ test/history-index.e2e.test.ts:131:4
+    129|   sourceUnit?.sourceMeasurements,
+    130|   'source metrics exist without a verification record'
+    131|  ).toEqual(
+       |    ^
+    132|   expect.arrayContaining([
+    133|    expect.objectContaining({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  test/loop.e2e.test.ts > bug-fix CLI records proof and leaves verification pending across failed and passing checks
+ FAIL  test/loop.e2e.test.ts > fix CLI records proof and leaves verification pending across failed and passing checks
+ FAIL  test/loop.e2e.test.ts > regression-prevention CLI records proof and leaves verification pending across failed and passing checks
+AssertionError: focused proof retains benchmark measurements: expected undefined to deeply equal ArrayContaining{…}
+
+- Expected: 
+ArrayContaining [
+  ObjectContaining {
+    "metric": "latency-warm-ms",
+    "testedRevision": Any<String>,
+    "value": 0.5,
+  },
+]
+
++ Received: 
+undefined
+
+ ❯ phaseProof test/support/loopRepair.ts:138:4
+    136|   JSON.parse(recorded.stdout).measurements,
+    137|   'focused proof retains benchmark measurements'
+    138|  ).toEqual(
+       |    ^
+    139|   expect.arrayContaining([
+    140|    expect.objectContaining({
+ ❯ exerciseRepair test/support/loopRepair.ts:44:4
+ ❯ test/loop.e2e.test.ts:116:4
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+
+ Test Files  2 failed | 1 passed (3)
+      Tests  4 failed | 8 passed (12)
+   Start at  15:15:56
+   Duration  44.57s (transform 63ms, setup 14ms, collect 92ms, tests 41.63s, environment 0ms, prepare 88ms)
+
+$ vitest run test/utils/entity-measure.test.ts test/components/harness-verdict.test.ts
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-PDsfpT/packages/reports
+
+ ❯ test/components/harness-verdict.test.ts (6 tests | 1 failed) 8ms
+   ✓ a verdict draws its icon and no words: the green check for a pass 2ms
+   ✓ no caller brings the words back: a label, a frame and the bare look all draw the icon alone 1ms
+   × missing, stale and incomplete evidence use a neutral info icon, actual failure stays red 3ms
+     → expected '<span class="hx-verdict svelte-1lwyhm…' to contain 'unknown'
+   ✓ the mark is a button named by the status, and described by the tooltip that holds the reasons 0ms
+   ✓ a verdict has words of its own, and a pass is given no reasons 0ms
+   ✓ it is made of phrasing content only, so a paragraph, a cell or a heading may hold it 0ms
+ ❯ test/utils/entity-measure.test.ts (8 tests | 1 failed) 5ms
+   ✓ a size is read in bytes, kilobytes or megabytes, and never rounded to nothing 1ms
+   ✓ a measured size is shown and one nothing measured reads Not measured, never zero 0ms
+   ✓ each execution target has its own emitted size, with the reason one could not be built 0ms
+   ✓ a timing names its workload and profile and its tolerance as a percentage 0ms
+   ✓ timings of two profiles stay two rows, and a declared budget nothing measured is not measured 0ms
+   ✓ a tolerance above the five percent policy is marked, not clamped 0ms
+   ✓ why a figure is unavailable is told without the file a recorded note names 0ms
+   × observed performance is visible without a budget and stays scoped to its callable 3ms
+     → measurements do not require a performance budget: expected [] to deeply equal ArrayContaining{…}
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/harness-verdict.test.ts > missing, stale and incomplete evidence use a neutral info icon, actual failure stays red
+AssertionError: expected '<span class="hx-verdict svelte-1lwyhm…' to contain 'unknown'
+
+Expected: "unknown"
+Received: "<span class="hx-verdict svelte-1lwyhm3 failed">"
+
+ ❯ test/components/harness-verdict.test.ts:58:22
+     56|  ]) {
+     57|   const body = markup({ passed: false, label });
+     58|   expect(root(body)).toContain('unknown');
+       |                      ^
+     59|   expect(body).not.toContain(`d="${harnessIcons.failed}"`);
+     60|   expect(body).not.toContain(`d="${harnessIcons.passed}"`);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/utils/entity-measure.test.ts > observed performance is visible without a budget and stays scoped to its callable
+AssertionError: measurements do not require a performance budget: expected [] to deeply equal ArrayContaining{…}
+
+- Expected
++ Received
+
+- ArrayContaining [
+-   ObjectContaining {
+-     "profile": "bun-reference",
+-     "tolerance": "—",
+-     "value": "0.12 ms",
+-   },
+- ]
++ []
+
+ ❯ test/utils/entity-measure.test.ts:117:67
+    115|  };
+    116|  const rows = entityMeasure(helper, taken).performance;
+    117|  expect(rows, 'measurements do not require a performance budget').toEq…
+       |                                                                   ^
+    118|   expect.arrayContaining([
+    119|    expect.objectContaining({ profile: 'bun-reference', value: '0.12 ms…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 12 passed (14)
+   Start at  15:16:41
+   Duration  730ms (transform 202ms, setup 0ms, collect 262ms, tests 13ms, environment 0ms, prepare 49ms)
+
+error: script "test:unit" exited with code 1
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts entity-preview-marks.spec.ts --grep "measurements at"
+
+Running 3 tests using 1 worker
+
+(node:36667) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/entity-preview-marks.spec.ts:217:2 › measurements at desktop: observations need no budget and missing evidence is neutral (5.4s)
+(node:74034) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 test/entity-preview-marks.spec.ts:217:2 › measurements at tablet: observations need no budget and missing evidence is neutral (5.3s)
+(node:8257) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 test/entity-preview-marks.spec.ts:217:2 › measurements at mobile: observations need no budget and missing evidence is neutral (5.2s)
+
+
+  1) test/entity-preview-marks.spec.ts:217:2 › measurements at desktop: observations need no budget and missing evidence is neutral 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('region', { name: 'Performance profile' })
+    Expected substring: "0.12 ms"
+    Received string:    " Performance profile Latency Not measured Memory Not measured No performance budget is declared for it."
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" getByRole('region', { name: 'Performance profile' }) with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Performance profile' })
+        14 × locator resolved to <section class="ex-card" aria-label="Performance profile">…</section>
+           - unexpected value " Performance profile Latency Not measured Memory Not measured No performance budget is declared for it."
+
+
+      222 | 		const performance = tab.getByRole('region', { name: 'Performance profile' });
+      223 | 		await capture(tab, `automatic-measurements-${name}`);
+    > 224 | 		await expect(performance).toContainText('0.12 ms');
+          | 		                          ^
+      225 | 		await expect(performance).not.toContainText('No performance budget');
+      226 | 		expect(await fits(tab)).toBe(true);
+      227 | 	});
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-PDsfpT/packages/reports/test/entity-preview-marks.spec.ts:224:29
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-marks-measu-2433d-missing-evidence-is-neutral/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-marks-measu-2433d-missing-evidence-is-neutral/error-context.md
+
+  2) test/entity-preview-marks.spec.ts:217:2 › measurements at tablet: observations need no budget and missing evidence is neutral 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('region', { name: 'Performance profile' })
+    Expected substring: "0.12 ms"
+    Received string:    " Performance profile Latency Not measured Memory Not measured No performance budget is declared for it."
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" getByRole('region', { name: 'Performance profile' }) with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Performance profile' })
+        14 × locator resolved to <section class="ex-card" aria-label="Performance profile">…</section>
+           - unexpected value " Performance profile Latency Not measured Memory Not measured No performance budget is declared for it."
+
+
+      222 | 		const performance = tab.getByRole('region', { name: 'Performance profile' });
+      223 | 		await capture(tab, `automatic-measurements-${name}`);
+    > 224 | 		await expect(performance).toContainText('0.12 ms');
+          | 		                          ^
+      225 | 		await expect(performance).not.toContainText('No performance budget');
+      226 | 		expect(await fits(tab)).toBe(true);
+      227 | 	});
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-PDsfpT/packages/reports/test/entity-preview-marks.spec.ts:224:29
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-marks-measu-82f7c-missing-evidence-is-neutral/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-marks-measu-82f7c-missing-evidence-is-neutral/error-context.md
+
+  3) test/entity-preview-marks.spec.ts:217:2 › measurements at mobile: observations need no budget and missing evidence is neutral 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('region', { name: 'Performance profile' })
+    Expected substring: "0.12 ms"
+    Received string:    " Performance profile Latency Not measured Memory Not measured No performance budget is declared for it."
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" getByRole('region', { name: 'Performance profile' }) with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Performance profile' })
+        14 × locator resolved to <section class="ex-card" aria-label="Performance profile">…</section>
+           - unexpected value " Performance profile Latency Not measured Memory Not measured No performance budget is declared for it."
+
+
+      222 | 		const performance = tab.getByRole('region', { name: 'Performance profile' });
+      223 | 		await capture(tab, `automatic-measurements-${name}`);
+    > 224 | 		await expect(performance).toContainText('0.12 ms');
+          | 		                          ^
+      225 | 		await expect(performance).not.toContainText('No performance budget');
+      226 | 		expect(await fits(tab)).toBe(true);
+      227 | 	});
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-PDsfpT/packages/reports/test/entity-preview-marks.spec.ts:224:29
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-marks-measu-ab890-missing-evidence-is-neutral/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-marks-measu-ab890-missing-evidence-is-neutral/error-context.md
+
+  3 failed
+    test/entity-preview-marks.spec.ts:217:2 › measurements at desktop: observations need no budget and missing evidence is neutral 
+    test/entity-preview-marks.spec.ts:217:2 › measurements at tablet: observations need no budget and missing evidence is neutral 
+    test/entity-preview-marks.spec.ts:217:2 › measurements at mobile: observations need no budget and missing evidence is neutral 
+error: script "test:entities" exited with code 1
