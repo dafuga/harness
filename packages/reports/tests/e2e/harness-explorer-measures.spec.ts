@@ -5,6 +5,68 @@ import { at, checkpoint, explorer } from './support/explorer';
 import { viewports } from './support/harnessCapture';
 import { home, seeded, short } from './support/harnessHistory';
 import { fits } from './support/sharedSelect';
+import type { HarnessRevision } from '../../src/models/Harness.types';
+import { explorerKindCategory } from '../../../../src/utils/explorerRoute';
+
+/** Synthetic model input completes the same category fixture; it claims no real model source. */
+function everyKind(): HarnessRevision {
+	const detail = JSON.parse(
+		readFileSync(join(home, 'data/revisions', `${commits.shelled}.json`), 'utf8')
+	) as HarnessRevision;
+	const template = detail.registry.units.find((unit) => unit.kind === 'config')!;
+	const id = 'model.acceptance-payload';
+	detail.registry.units.push({
+		...template,
+		id,
+		kind: 'model',
+		title: 'Acceptance payload',
+		responsibility: 'Synthetic model input for category acceptance; it describes no real source.',
+		sourceMeasurements: template.sourceMeasurements?.map((item) => ({
+			...item,
+			unit: id,
+			method: 'Synthetic model observations copied from the config fixture for category acceptance.'
+		}))
+	});
+	return detail;
+}
+
+for (const viewport of viewports)
+	test(`every entity kind shows selected source measurements at ${viewport.id} width`, async ({
+		page
+	}) => {
+		const detail = everyKind();
+		await page.setViewportSize({ width: viewport.width, height: viewport.height });
+		await page.route(`**/harness/data/revisions/${commits.shelled}.json`, (route) =>
+			route.fulfill({ json: detail })
+		);
+		for (const category of [
+			'pages',
+			'shells',
+			'components',
+			'functions',
+			'configs',
+			'services',
+			'models'
+		]) {
+			const unit = detail.registry.units.find(
+				(unit) =>
+					explorerKindCategory(unit.kind) === category &&
+					(category !== 'functions' || unit.id === 'function.slugify')
+			)!;
+			expect(unit, `the standard fixture covers ${category}`).toBeDefined();
+			await page.goto(at('feature/shells', commits.shelled, `${category}/${unit.id}`));
+			const profile = page.getByRole('region', { name: 'Performance profile', exact: true });
+			await expect(profile).toBeVisible();
+			await checkpoint(page, `current-measurements-${category}-${viewport.id}`);
+			for (const metric of ['Source size', 'Complexity']) {
+				const row = profile
+					.locator('dl > div')
+					.filter({ has: page.getByText(metric, { exact: true }) });
+				await expect(row).not.toContainText('Not measured');
+				await expect(row.locator('dd')).toContainText(/\d/);
+			}
+		}
+	});
 
 const { commits, keptBranch } = seeded();
 const { explorerUnits: units } = explorer();
