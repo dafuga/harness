@@ -87,7 +87,7 @@ test('callable contracts preserve actual parameters and associate their returns'
 						inputs: [
 							{ name: 'countWords.textToConvert', type: 'string', examples: ['hello world'] }
 						],
-						outputs: [{ name: 'countWords', type: 'number', examples: [2] }],
+						outputs: [{ name: 'countWords.wordCount', type: 'number', examples: [2] }],
 						errors: []
 					}
 				}
@@ -101,7 +101,10 @@ test('callable contracts preserve actual parameters and associate their returns'
 	expect(words(body)).toContain('countWords(textToConvert: string): number');
 	expect(body).toContain('aria-label="Parameters"');
 	expect(body).toContain('aria-label="Returns"');
-	expect(body).toContain('aria-label="Throws"');
+	expect(body, 'return table includes the declared value name').toContain(
+		'View example for wordCount'
+	);
+	expect(body).not.toContain('aria-label="Throws"');
 	expect(words(body)).toContain('No errors declared.');
 	expect(words(body)).not.toMatch(/Count words · Value|Runs as|Module/);
 });
@@ -116,8 +119,8 @@ test('a selected callable page excludes sibling APIs and rejects missing symbols
 	unit.contract = {
 		inputs: [],
 		outputs: [
-			{ name: 'first', type: 'string', examples: ['hello'] },
-			{ name: 'second', type: 'number', examples: [42] }
+			{ name: 'first.greeting', type: 'string', examples: ['hello'] },
+			{ name: 'second.answer', type: 'number', examples: [42] }
 		],
 		errors: [{ name: 'second.failure', type: 'TypeError' }]
 	};
@@ -135,6 +138,8 @@ test('a selected callable page excludes sibling APIs and rejects missing symbols
 			expect(body).not.toContain(
 				`aria-label="${helper === 'first' ? 'second' : 'first'} contract"`
 			);
+			expect(body).toContain(`View example for ${helper === 'first' ? 'greeting' : 'answer'}`);
+			expect(body.includes('aria-label="Throws"')).toBe(helper === 'second');
 			expect(words(body).includes('TypeError')).toBe(helper === 'second');
 		}
 		const missing = content(
