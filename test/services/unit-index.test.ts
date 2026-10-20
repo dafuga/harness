@@ -1,9 +1,8 @@
 import { expect, test } from 'vitest';
 import { componentManifestSchema, type ComponentManifest } from '../../src/core/unitTypes';
 import { SourceGraphService } from '../../src/services/SourceGraphService';
-import { scanExports } from '../../src/utils/scanExports';
 import { UnitRegistryValidator } from '../../src/validators/UnitRegistryValidator';
-import { indexFiles, retire, unitOf, helperMoveGaps, relocatedSource } from '../support/memoryTree';
+import { indexFiles, retire, unitOf, helperMoveGaps, serviceMoveGaps } from '../support/memoryTree';
 import { existsSync, readFileSync } from 'node:fs';
 import services from '../../specification/loops/shared-service-ownership/migration.json';
 import migration from '../../specification/loops/local-helper-ownership/migration.json';
@@ -195,34 +194,7 @@ test('several owned files produce identical metadata after one indexing pass', a
 });
 
 test('recorded service moves preserve implementations and registered owner-local placement', () => {
-	const gaps: string[] = [];
-	for (const file of services.files) {
-		if (!existsSync(file.to)) {
-			gaps.push(`${file.to}: missing`);
-			continue;
-		}
-		if (relocatedSource(file.to, services.moves) !== file.definition)
-			gaps.push(`${file.to}: definition changed`);
-		const unit = JSON.parse(
-			readFileSync(`specification/units/${file.unit}.json`, 'utf8')
-		) as ComponentManifest;
-		if (!unit.owns.source.includes(file.to)) gaps.push(`${file.unit}: identity lost`);
-	}
-	for (const service of services.services) {
-		const unit = JSON.parse(
-			readFileSync(`specification/units/${service.id}.json`, 'utf8')
-		) as ComponentManifest;
-		if (
-			unit.owns.source.some(
-				(path) =>
-					!path.startsWith(service.ownerFolder + '/') &&
-					scanExports(readFileSync(path, 'utf8')).symbols.some((symbol) =>
-						['class', 'function', 'const'].includes(symbol.kind)
-					)
-			)
-		)
-			gaps.push(`${service.id}: outside owner`);
-	}
+	const gaps = serviceMoveGaps(services);
 	expect(gaps, `service ownership: ${gaps.length} gaps; ${gaps.slice(0, 6).join('; ')}`).toEqual(
 		[]
 	);

@@ -1,3 +1,4 @@
+import { scanExports } from '../../src/utils/scanExports';
 import { existsSync, readFileSync } from 'node:fs';
 import { posix, resolve } from 'node:path';
 import ts from 'typescript';
@@ -141,5 +142,41 @@ export function helperMoveGaps(
 			gaps.push(`${move.name}: registered identity lost`);
 	}
 
+	return gaps;
+}
+
+export function serviceMoveGaps(services: {
+	moves: Record<string, string>;
+	files: Array<{ to: string; unit: string; definition: string }>;
+	services: Array<{ id: string; ownerFolder: string }>;
+}): string[] {
+	const gaps: string[] = [];
+	for (const file of services.files) {
+		if (!existsSync(file.to)) {
+			gaps.push(`${file.to}: missing`);
+			continue;
+		}
+		if (relocatedSource(file.to, services.moves) !== file.definition)
+			gaps.push(`${file.to}: definition changed`);
+		const unit = JSON.parse(
+			readFileSync(`specification/units/${file.unit}.json`, 'utf8')
+		) as ComponentManifest;
+		if (!unit.owns.source.includes(file.to)) gaps.push(`${file.unit}: identity lost`);
+	}
+	for (const service of services.services) {
+		const unit = JSON.parse(
+			readFileSync(`specification/units/${service.id}.json`, 'utf8')
+		) as ComponentManifest;
+		if (
+			unit.owns.source.some(
+				(path) =>
+					!path.startsWith(service.ownerFolder + '/') &&
+					scanExports(readFileSync(path, 'utf8')).symbols.some((symbol) =>
+						['class', 'function', 'const'].includes(symbol.kind)
+					)
+			)
+		)
+			gaps.push(`${service.id}: outside owner`);
+	}
 	return gaps;
 }
