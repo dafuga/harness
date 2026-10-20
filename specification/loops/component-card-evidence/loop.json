@@ -6,7 +6,7 @@
 	"name": "component-card-evidence",
 	"goal": "Component cards show only screenshots, neutral names and clickable consumers; incomplete visual coverage blocks verification and handoff.",
 	"createdAt": "2026-10-20T17:00:48.864Z",
-	"updatedAt": "2026-10-20T19:31:34.612Z",
+	"updatedAt": "2026-10-20T22:44:13.713Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -65,7 +65,7 @@
 			"id": "verify",
 			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
 			"status": "pending",
-			"evidence": "Pending: Reports check passes 610 tests. Root check passes formatting, types, lint, Rust checks and 910 tests but fails the stale preview inventory; its repaired inventory passes all four focused checks. Full verification of b3d2ec25 is running after clean build setup. 160 active components still lack explicit preview bindings; completion is not proven."
+			"evidence": "Pending current full verification and final task audit. All 172 active components have required own preview bindings; the initial 498-case gallery and 24 updated-control browser cases passed. Root checks passed 912 unit and 233 integration tests; package acceptance and all five lifecycle cases pass after repairing callable URLs and retired private routes. Reports and Planning checks pass; remaining workspace checks are running. Historical whole-history debt remains visible."
 		}
 	],
 	"evaluators": [
