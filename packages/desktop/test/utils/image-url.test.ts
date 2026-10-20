@@ -25,7 +25,9 @@ test('an image is read for the shown project and commit and released afterwards'
 	await vi.waitFor(() => expect(seen).toEqual(['', 'blob:one']));
 	expect(image).toHaveBeenCalledWith({ ...request, commit, projectId: 'p' });
 	release();
-	expect(revoke).toHaveBeenCalledWith('blob:one');
+	expect(seen.at(-1)).toBe('');
+	expect(revoke).not.toHaveBeenCalled();
+	await vi.waitFor(() => expect(revoke).toHaveBeenCalledWith('blob:one'));
 });
 
 test('a bridge without project identities is asked without one', async () => {

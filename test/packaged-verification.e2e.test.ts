@@ -3,6 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { runCommand } from './support/cli';
+import { completeProposal } from './support/taskAuditRepo';
 
 const consumer = `
 import {
@@ -13,6 +14,8 @@ import {
 	evidenceRequested,
 	explanationSchema,
 	mediaFacts,
+	TaskCompletionService,
+	PerformanceProfileService,
 	recordCapture,
 	scenarioRequirements,
 	verifyConfigSchema,
@@ -24,6 +27,13 @@ import {
 import { scenarioManifestSchema, type ScenarioManifest } from '@dafuga01/harness/contracts';
 
 const scenario: ScenarioManifest = scenarioManifestSchema.parse(JSON.parse(process.argv[2]));
+const audit = new TaskCompletionService(process.cwd());
+const proposal = ${JSON.stringify(completeProposal)};
+for (const unit of ['service.task-completion', 'module.verification'])
+	await new PerformanceProfileService().capture(
+		{ unit, workload: 'public-planning-audit', rounds: 3, iterations: 10 },
+		() => audit.requirePlan(proposal, 'Search proposal')
+	);
 const line: CaptureLine = { evidence: 'output', kind: 'output', state: 'default', file: 'out.txt', mediaType: 'text/plain' };
 const explanation: Explanation | undefined = explanationSchema.safeParse({}).data;
 const event: BudgetEvent | undefined = budgetEventSchema.safeParse({}).data;
@@ -56,6 +66,7 @@ const compare = (measurement: typeof measured | Omit<typeof measured, 'compariso
 	})[0].status;
 const { comparison: _dropped, ...labelOnly } = measured;
 console.log(JSON.stringify({
+	planningAudit: 'accepted',
 	comparable: [
 		compare(measured),
 		compare({ ...measured, unitOfMeasure: 'seconds', value: 0.01 }),
@@ -107,6 +118,7 @@ test('a packed consumer uses the verification contracts and evidence protocol', 
 	const env = { HARNESS_EVIDENCE_DIR: evidence, TAKE_SCREENSHOT: '1' };
 	const run = await runCommand(['bun', 'consumer.ts', scenario], project, true, env);
 	expect(JSON.parse(run.stdout)).toEqual({
+		planningAudit: 'accepted',
 		comparable: ['passed', 'incompatible', 'incompatible', 'incomplete'],
 		required: 1,
 		requested: true,
