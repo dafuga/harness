@@ -1,5 +1,6 @@
 import { expect, test, type Locator, type Page } from '../../../test/support/browserTest';
-import { capture, fits, open, viewports, where, reviewCallableContract } from './entityPreviewPage';
+import { capture, fits, open, viewports, where } from './entityPreviewPage';
+import { reviewCallableContract } from './entityCallableContract';
 import { commits, ids } from './entityUnits';
 
 /** How many words of an element are drawn across more than one line. */

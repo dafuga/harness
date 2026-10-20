@@ -9,7 +9,6 @@ const sha = 'a'.repeat(40);
 const branch = 'feature/kept#1';
 const encoded = 'feature%2Fkept%231';
 const entity = 'reports.component.harness-harness-console';
-/** The nineteen designed shapes of one scope: five indexes, five overviews, five details, four histories. */
 const shapes: Array<[string, Partial<ExplorerLocation>]> = [
 	['/pages', { category: 'pages' }],
 	['/pages/reports.page.titles', { category: 'pages', entity: 'reports.page.titles' }],
