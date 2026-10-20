@@ -2,7 +2,7 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.deployment-progress",
 	"kind": "component",
-	"title": "DeploymentProgress",
+	"title": "Deployment progress",
 	"responsibility": "Renders ordered deployment steps with completed, active, pending and failure states.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
@@ -45,7 +45,12 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "desktop-component-deployment-progress",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -2,7 +2,7 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.deployment-activity",
 	"kind": "component",
-	"title": "DeploymentActivity",
+	"title": "Deployment activity",
 	"responsibility": "Shows the host deployment light, concurrent destination list and shared deployment detail views.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
@@ -65,7 +65,12 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "desktop-component-deployment-activity",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
