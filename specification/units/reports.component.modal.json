@@ -65,6 +65,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.report-locale",
 			"via": "import",
 			"origin": "derived"
