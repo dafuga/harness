@@ -180,6 +180,11 @@ function withHelpers(detail: HarnessRevision): HarnessRevision {
 
 /** A module with distinct callable APIs, including a no-argument/void function. */
 function callableFixture(unit: HarnessUnit): HarnessUnit {
+	const returnNames: Record<string, string> = {
+		toKebabCase: 'kebabCaseText',
+		countWords: 'wordCount',
+		reset: 'noReturnValue'
+	};
 	const helpers = [
 		['toKebabCase', 'string'],
 		['countWords', 'number'],
@@ -199,7 +204,7 @@ function callableFixture(unit: HarnessUnit): HarnessUnit {
 		contract: {
 			inputs: helpers.flatMap((h) => h.inputs.map((i) => ({ ...i, examples: ['hello world'] }))),
 			outputs: helpers.map((h) => ({
-				name: h.name,
+				name: `${h.name}.${returnNames[h.name]}`,
 				type: h.output,
 				...(h.output === 'void' ? {} : { examples: [h.name === 'countWords' ? 2 : 'hello-world'] })
 			})),

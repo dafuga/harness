@@ -63,10 +63,24 @@ async function reviewCallableApi(page: Page, name: string, result: string): Prom
 		await expect(page.getByRole('dialog')).toContainText('hello world');
 		await page.getByRole('button', { name: 'Close viewer', exact: true }).click();
 	} else await expect(params).toContainText('No parameters.');
-	await expect(api.getByRole('table', { name: 'Returns', exact: true })).toContainText(result);
+	const returned = api.getByRole('table', { name: 'Returns', exact: true });
+	await expect(returned).toContainText(result);
+	const returnNames: Record<string, string> = {
+		toKebabCase: 'kebabCaseText',
+		countWords: 'wordCount',
+		reset: 'noReturnValue'
+	};
+	const valueName = returnNames[name];
+	await expect(
+		returned.getByRole('rowheader'),
+		'return table includes the declared value name'
+	).toHaveText(valueName);
+	await returned.getByRole('button').click();
+	await expect(page.getByRole('dialog')).toContainText(valueName);
+	await page.getByRole('button', { name: 'Close viewer', exact: true }).click();
 	const thrown = api.getByRole('table', { name: 'Throws', exact: true });
-	await expect(thrown, 'callable errors use their own Throws table').toContainText(
-		name === 'countWords' ? 'TypeError' : 'No errors declared.'
+	await expect(thrown, 'only declared errors need a Throws table').toHaveCount(
+		name === 'countWords' ? 1 : 0
 	);
 	if (name === 'countWords') {
 		await thrown.getByRole('button').click();
