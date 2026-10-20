@@ -12,6 +12,18 @@ import type { AgentRunner, AgentTurn, ImageGenerator } from '../src/models/Agent
 import type { RunEvent, RunRequest } from '../src/models/DesktopBridge.types';
 import { createPlanning } from '../../planning/src/lib/planning/index';
 const roots: string[] = [];
+export const proposal = `# Target proposal
+## Overview
+Precise design direction for the requested target and its contract.
+## Acceptance Criteria
+- The target renders its approved state and preserves the stated behavior.
+## Dependencies
+Use the existing project components and the approved target contract.
+## Verification
+Run the target unit tests and browser state checks before accepting implementation.
+## Performance
+Profile representative target rendering workloads for latency and memory through Harness during implementation.
+`;
 export const bytes = PNG.sync.write(new PNG({ width: 2, height: 2 }));
 export const git = (root: string, ...args: string[]) =>
 	execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
@@ -21,7 +33,7 @@ afterEach(async () => {
 function fakeRunner(action: (turn: AgentTurn) => Promise<void>) {
 	const run = vi.fn(async (turn: AgentTurn) => {
 		await action(turn);
-		return { text: 'Precise design direction', model: turn.model };
+		return { text: proposal, model: turn.model };
 	});
 	const runner: AgentRunner = {
 		run,
