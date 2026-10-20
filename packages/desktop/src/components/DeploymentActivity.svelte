@@ -120,16 +120,11 @@
 </div>
 
 <style>
-	/* The light keeps the end of the place it is given; in a phone's wrapping bar, after the brand. */
+	/* The light keeps the end of the place it is given, on a phone the end of the project's row. */
 	.deployment-activity {
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;
-	}
-	@media (max-width: 560px) {
-		.deployment-activity {
-			order: -1;
-		}
 	}
 	.light {
 		width: 10px;
