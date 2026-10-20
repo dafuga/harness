@@ -2,12 +2,12 @@ import { stamp } from './shared';
 import type { Report, Evidence } from '../../../../src/models/Report.types';
 export const picture: Evidence = {
 	id: 'activity',
-	title: 'Activity list',
+	title: 'Synthetic preview input',
 	category: 'Components',
-	file: 'preview.png',
+	file: 'synthetic-card-input.svg',
 	status: 'passed',
 	mediaType: 'image',
-	mimeType: 'image/png',
+	mimeType: 'image/svg+xml',
 	capturedAt: stamp,
 	viewport: 'Desktop',
 	phase: 'after',

@@ -141,12 +141,12 @@ export const explorerCases: PreviewCases = {
 		row: d.rows[0],
 		shot: {
 			id: 'preview',
-			title: 'Activity list',
-			file: 'preview.png',
-			status: 'passed',
+			title: 'Synthetic preview input',
+			file: 'synthetic-card-input.svg',
+			status: 'not-proven',
 			mediaType: 'image',
-			standing: 'Fresh capture',
-			source: d.commits.middle
+			standing: 'Synthetic input',
+			source: 'fixture-input'
 		},
 		...base,
 		category: 'components'

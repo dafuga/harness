@@ -3,11 +3,21 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { buildData } from './buildData';
 import { index, revision, record } from '../../../../test/entityFixture';
+import { commits } from '../../../../test/entityUnits';
 import { cpu } from './analytics';
 import { activity, live } from './activity';
 import { image, picker } from './shared';
 import { audioFixture } from '../../../../test/audioFixture';
 const data = buildData();
+const fixtureMedia = new Set(
+	Object.values(commits).flatMap((commit) =>
+		record(commit).scenarios.flatMap((scenario) =>
+			scenario.states.flatMap((state) =>
+				state.captures.map((capture) => capture.media?.split('/').pop())
+			)
+		)
+	)
+);
 export const previewOrigin = 'http://127.0.0.1:47999';
 export async function servePreview(route: Route, home: string) {
 	const url = new URL(route.request().url());
@@ -47,8 +57,14 @@ async function media(route: Route, path: string) {
 			}
 		}
 	}
-	if (path.endsWith('.wav'))
+	if (file === 'preview.wav')
 		return route.fulfill({ contentType: 'audio/wav', body: audioFixture(1) });
+	if (file !== 'synthetic-card-input.svg' && !fixtureMedia.has(file))
+		return route.fulfill({
+			status: 404,
+			contentType: 'text/plain',
+			body: 'Undeclared preview media'
+		});
 	return route.fulfill({
 		contentType: 'image/svg+xml',
 		body: decodeURIComponent(image.split(',')[1])

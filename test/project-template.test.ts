@@ -110,6 +110,9 @@ test('generated project guidance requires Harness completion audits and keeps pl
 			expect(guidance).toContain('active visual component requires a preview');
 			expect(guidance).toContain('A missing image or failed verdict blocks handoff');
 			expect(guidance).toContain('state labels confined to scenario states');
+			expect(guidance).toContain('required parent layout');
+			expect(guidance).toContain('synthetic media inputs');
+			expect(guidance).toContain('reject undeclared media');
 		}
 	}
 });

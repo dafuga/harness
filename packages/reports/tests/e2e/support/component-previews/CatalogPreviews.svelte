@@ -11,6 +11,7 @@
 	const fixture = previewFixture(id);
 	const Component = previewComponent(unit.source);
 	const fullFrame = /harness-(navbar|header|console|shell)$/.test(id);
+	const explorer = unit.source.includes('/components/harness/');
 	setContext(key, fixture.hub);
 	setContext(remoteContext, fixture.remote);
 	onDestroy(fixture.cleanup);
@@ -23,6 +24,8 @@
 			<div
 				class="preview-content"
 				class:provider-picker={id.includes('provider-picker')}
+				class:account={id === 'hub.component.account-menu'}
+				class:ex-content={explorer}
 				data-preview-unit={unit.id}
 			>
 				<Component {...fixture.props} />
