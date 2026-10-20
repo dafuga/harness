@@ -22,6 +22,17 @@ for (const viewport of catalogViewports) {
 			await openPreview(page, home, unit.id);
 			await expect(page.locator('#preview-title')).toHaveText(unit.title);
 			const component = await readyPreview(page, unit.id);
+			if (unit.id === 'desktop.component.agent-controls') {
+				const provider = component
+					.getByRole('group', { name: 'Agent', exact: true })
+					.getByRole('button');
+				await expect(provider).toHaveText('Codex');
+				const colors = await provider.evaluate((node) => {
+					const style = getComputedStyle(node);
+					return { text: style.color, background: style.backgroundColor };
+				});
+				expect(colors.text, 'The provider label must remain readable').not.toBe(colors.background);
+			}
 			if (unit.id === 'reports.component.provider-picker-cards') {
 				await expect(component.getByText('GPT 6.1', { exact: true })).toBeVisible();
 				await expect(component.getByText('Claude Opus 5.5', { exact: true })).toBeVisible();
