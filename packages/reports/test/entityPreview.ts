@@ -24,14 +24,8 @@ import {
 	withStates,
 	type PreviewVariant
 } from './entityPreviewData';
-import { commits, ids } from './entityUnits';
-
-const helperUsers: Record<string, Array<{ unit: string }>> = {
-	unused: [],
-	single: [{ unit: ids.list }],
-	effectful: [{ unit: ids.list }, { unit: ids.store }],
-	duplicates: [{ unit: ids.list }, { unit: ids.list }]
-};
+import { commits } from './entityUnits';
+import { withHelpers } from './entityPreviewHelpers';
 
 /** The synthetic history in a browser, for the checks that need one; no server and no real data. */
 const variant = new URLSearchParams(location.search).get('variant') as PreviewVariant | null;
@@ -156,53 +150,3 @@ if (variant === 'console') {
 	history.replaceState(null, '', '/harness' + explorerRoutePath(asked()));
 	mount(HarnessShell, { target, props: { base: '/harness', exportable: false } });
 } else show(asked());
-
-/** Source-derived helper metadata distinguishes callable utilities from implementation units. */
-function withHelpers(detail: HarnessRevision): HarnessRevision {
-	const template = detail.registry.units.find((unit) => unit.id === ids.filter)!;
-	const hidden = [
-		'types',
-		'schema',
-		'private',
-		'class-method',
-		'legacy',
-		'unused',
-		'single',
-		'effectful',
-		'duplicates'
-	].map((kind) => {
-		let helpers: typeof template.helpers = kind === 'legacy' ? undefined : [];
-		const consumers = helperUsers[kind];
-		if (consumers) {
-			helpers = template.helpers?.map((helper) => ({
-				...helper,
-				name: kind,
-				pure: kind !== 'effectful',
-				consumers
-			}));
-		}
-		return {
-			...template,
-			id: `function.${kind}`,
-			title: kind,
-			helpers
-		};
-	});
-	return {
-		...detail,
-		registry: {
-			...detail.registry,
-			units: [
-				...detail.registry.units.map((unit) =>
-					unit.id === ids.list
-						? {
-								...unit,
-								dependencies: [...unit.dependencies, { unit: 'function.single', via: 'import' }]
-							}
-						: unit
-				),
-				...hidden
-			]
-		}
-	};
-}

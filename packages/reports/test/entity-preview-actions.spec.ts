@@ -1,4 +1,8 @@
-import { reviewHelperCard, reviewPrivateFunctions } from './entityPreviewFunctions';
+import {
+	reviewHelperCard,
+	reviewHelperUsage,
+	reviewPrivateFunctions
+} from './entityPreviewFunctions';
 import { expect, test } from '../../../test/support/browserTest';
 import {
 	capture,
@@ -78,6 +82,7 @@ for (const [name, size] of Object.entries(viewports)) {
 			expect(await fits(tab)).toBe(true);
 			if (category === 'functions') {
 				await reviewHelperCard(tab, cards);
+				await reviewHelperUsage(tab, name);
 				await reviewPrivateFunctions(tab, name);
 			}
 		}
