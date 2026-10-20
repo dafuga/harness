@@ -82,6 +82,11 @@ test('a cold build prepares every imported SvelteKit workspace before Reports co
 	for (const name of ['desktop', 'reports', 'hub']) {
 		const directory = join(root, 'packages', name);
 		mkdirSync(join(directory, 'src/routes'), { recursive: true });
+		writeFileSync(join(directory, 'src/routes/+page.svelte'), '<h1>Fixture</h1>');
+		copyFileSync(
+			join(repository, 'packages', name, 'src/app.html'),
+			join(directory, 'src/app.html')
+		);
 		copyFileSync(
 			join(repository, 'packages', name, 'svelte.config.js'),
 			join(directory, 'svelte.config.js')
