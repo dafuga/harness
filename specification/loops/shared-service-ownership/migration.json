@@ -41,8 +41,8 @@
 		"src/repositories/AgentRegistryRepository.ts": "src/services/agent-activity-service/AgentRegistryRepository.ts",
 		"packages/relay/src/utils/hostRuntime.ts": "packages/relay/src/lib/host-runtime/hostRuntime.ts",
 		"packages/relay/src/services/HostCommandService.ts": "packages/relay/src/lib/host-runtime/HostCommandService.ts",
-		"packages/desktop/src/utils/selectEnvironment.ts": "packages/desktop/src/utils/select-environment/selectEnvironment.ts",
-		"packages/desktop/src/adapters/ElectronEnvironmentAdapter.ts": "packages/desktop/src/utils/select-environment/ElectronEnvironmentAdapter.ts",
+		"packages/desktop/src/utils/selectEnvironment.ts": "packages/desktop/src/lib/select-environment/selectEnvironment.ts",
+		"packages/desktop/src/adapters/ElectronEnvironmentAdapter.ts": "packages/desktop/src/lib/select-environment/ElectronEnvironmentAdapter.ts",
 		"packages/hub/src/services/installation-token-service/InstallationTokenService.ts": "packages/hub/src/lib/server/auth/installation-token-service/InstallationTokenService.ts",
 		"packages/hub/src/services/installation-token-service/githubAppJwt.ts": "packages/hub/src/lib/server/auth/installation-token-service/githubAppJwt.ts",
 		"src/commands/HistoryCommand.ts": "src/cli/program/HistoryCommand.ts",
@@ -85,7 +85,7 @@
 		"src/services/record-assembly-service/RecordAssemblyService.ts": "src/workflows/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 		"src/services/record-assembly-service/recordedBuilds.ts": "src/workflows/run-verify/verification-service/record-assembly-service/recordedBuilds.ts",
 		"src/services/record-assembly-service/sealRecord.ts": "src/workflows/run-verify/verification-service/record-assembly-service/sealRecord.ts",
-		"packages/desktop/src/adapters/AgentSettingsAdapter.ts": "packages/desktop/src/lib/stores/AgentSettingsAdapter.ts",
+		"packages/desktop/src/adapters/AgentSettingsAdapter.ts": "packages/desktop/src/lib/agent-settings/AgentSettingsAdapter.ts",
 		"packages/hub/src/controllers/HubAuthController.ts": "packages/hub/src/lib/server/auth/HubAuthController.ts",
 		"packages/desktop/src/services/RemoteLifecycleService.ts": "packages/desktop/src/lib/desktop-initialization/RemoteLifecycleService.ts",
 		"src/commands/CodexCommand.ts": "src/cli/program/CodexCommand.ts",
@@ -137,8 +137,8 @@
 		"packages/hub/src/services/hub-attached-service/hubAttachedRecord.ts": "packages/hub/src/services/hub-evidence-service/hub-attached-service/hubAttachedRecord.ts",
 		"packages/hub/src/services/hub-attached-service/hubEvidenceFile.ts": "packages/hub/src/services/hub-evidence-service/hub-attached-service/hubEvidenceFile.ts",
 		"packages/hub/src/services/hub-attached-service/hubPinnedSource.ts": "packages/hub/src/services/hub-evidence-service/hub-attached-service/hubPinnedSource.ts",
-		"packages/desktop/src/adapters/CapacitorEnvironmentAdapter.ts": "packages/desktop/src/utils/select-environment/CapacitorEnvironmentAdapter.ts",
-		"packages/desktop/src/services/CapacitorProjectsService.ts": "packages/desktop/src/utils/select-environment/CapacitorProjectsService.ts",
+		"packages/desktop/src/adapters/CapacitorEnvironmentAdapter.ts": "packages/desktop/src/lib/select-environment/CapacitorEnvironmentAdapter.ts",
+		"packages/desktop/src/services/CapacitorProjectsService.ts": "packages/desktop/src/lib/select-environment/CapacitorProjectsService.ts",
 		"src/services/console-install-service/ConsoleInstallService.ts": "src/cli/program/console-install-service/ConsoleInstallService.ts",
 		"src/services/console-install-service/consoleDataModules.ts": "src/cli/program/console-install-service/consoleDataModules.ts",
 		"src/services/console-install-service/consoleHostFiles.ts": "src/cli/program/console-install-service/consoleHostFiles.ts",
@@ -190,18 +190,18 @@
 		"src/commands/ReportCommand.ts": "src/cli/program/ReportCommand.ts",
 		"src/workflows/run-report/reportsEnvironment.ts": "src/cli/program/run-report/reportsEnvironment.ts",
 		"src/workflows/run-report/runReport.ts": "src/cli/program/run-report/runReport.ts",
-		"packages/hub/src/hooks.server.ts": "packages/hub/src/hooks.server/hooks.server.ts",
-		"packages/hub/src/middleware/HubResponsesMiddleware.ts": "packages/hub/src/hooks.server/HubResponsesMiddleware.ts",
+		"packages/hub/src/hooks.server.ts": "packages/hub/src/lib/server-hooks/hooks.server.ts",
+		"packages/hub/src/middleware/HubResponsesMiddleware.ts": "packages/hub/src/lib/server-hooks/HubResponsesMiddleware.ts",
 		"packages/desktop/src/services/device-operations-service/DeviceOperationsService.ts": "packages/desktop/src/services/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts",
 		"packages/desktop/src/services/device-operations-service/deviceCapabilities.ts": "packages/desktop/src/services/remote-host-service/device-session-service/device-operations-service/deviceCapabilities.ts",
 		"packages/desktop/src/adapters/planning-facade-adapter/PlanningFacadeAdapter.ts": "packages/desktop/src/services/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
 		"packages/desktop/src/adapters/planning-facade-adapter/planningMessage.ts": "packages/desktop/src/services/project-session-service/planning-facade-adapter/planningMessage.ts",
 		"packages/desktop/src/adapters/planning-facade-adapter/planningReads.ts": "packages/desktop/src/services/project-session-service/planning-facade-adapter/planningReads.ts",
 		"packages/desktop/src/adapters/planning-facade-adapter/planningWrites.ts": "packages/desktop/src/services/project-session-service/planning-facade-adapter/planningWrites.ts",
-		"packages/desktop/src/adapters/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
-		"packages/desktop/src/adapters/capacitor-bridge-adapter/cachedSnapshot.ts": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/cachedSnapshot.ts",
-		"packages/desktop/src/adapters/capacitor-bridge-adapter/remoteArtifact.ts": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/remoteArtifact.ts",
-		"packages/desktop/src/adapters/capacitor-bridge-adapter/remoteGrant.ts": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/remoteGrant.ts",
+		"packages/desktop/src/adapters/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts": "packages/desktop/src/lib/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
+		"packages/desktop/src/adapters/capacitor-bridge-adapter/cachedSnapshot.ts": "packages/desktop/src/lib/select-environment/capacitor-bridge-adapter/cachedSnapshot.ts",
+		"packages/desktop/src/adapters/capacitor-bridge-adapter/remoteArtifact.ts": "packages/desktop/src/lib/select-environment/capacitor-bridge-adapter/remoteArtifact.ts",
+		"packages/desktop/src/adapters/capacitor-bridge-adapter/remoteGrant.ts": "packages/desktop/src/lib/select-environment/capacitor-bridge-adapter/remoteGrant.ts",
 		"packages/desktop/src/initializers/initializePreload.ts": "packages/desktop/src/lib/preload-initialization/initializePreload.ts",
 		"packages/desktop/src/services/LocalTransportClientService.ts": "packages/desktop/src/lib/preload-initialization/LocalTransportClientService.ts",
 		"src/workflows/runKernelBoundary.ts": "src/cli/program/runKernelBoundary.ts",
@@ -310,8 +310,8 @@
 		"packages/reports/src/repositories/SiteReportRepository.ts": "packages/reports/src/routes/api/health/SiteReportRepository.ts",
 		"packages/desktop/src/services/ClientProjectsService.ts": "packages/desktop/src/services/remote-host-service/device-session-service/ClientProjectsService.ts",
 		"packages/reports/src/services/ScreenshotUploadService.ts": "packages/reports/src/routes/api/report-screenshot-upload/ScreenshotUploadService.ts",
-		"packages/desktop/src/adapters/capacitor-account-adapter/CapacitorAccountAdapter.ts": "packages/desktop/src/utils/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
-		"packages/desktop/src/adapters/capacitor-account-adapter/capacitorAccountCodec.ts": "packages/desktop/src/utils/select-environment/capacitor-account-adapter/capacitorAccountCodec.ts",
+		"packages/desktop/src/adapters/capacitor-account-adapter/CapacitorAccountAdapter.ts": "packages/desktop/src/lib/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
+		"packages/desktop/src/adapters/capacitor-account-adapter/capacitorAccountCodec.ts": "packages/desktop/src/lib/select-environment/capacitor-account-adapter/capacitorAccountCodec.ts",
 		"src/workflows/create-project/createProject.ts": "src/cli/program/create-project/createProject.ts",
 		"src/workflows/create-project/validation.ts": "src/cli/program/create-project/validation.ts",
 		"packages/desktop/src/services/RemoteHostRecordService.ts": "packages/desktop/src/services/remote-host-service/RemoteHostRecordService.ts",
@@ -319,7 +319,8 @@
 		"packages/desktop/src/services/project-task-service/proposalUnits.ts": "packages/desktop/src/services/desktop-run-service/project-task-service/proposalUnits.ts",
 		"packages/desktop/src/services/change-run-service/ChangeRunService.ts": "packages/desktop/src/services/desktop-run-service/change-run-service/ChangeRunService.ts",
 		"packages/desktop/src/services/change-run-service/changeExecute.ts": "packages/desktop/src/services/desktop-run-service/change-run-service/changeExecute.ts",
-		"packages/reports/src/lib/stores/consoleWorkspace.svelte.ts": "packages/reports/src/lib/console-workspace/consoleWorkspace.svelte.ts"
+		"packages/reports/src/lib/stores/consoleWorkspace.svelte.ts": "packages/reports/src/lib/console-workspace/consoleWorkspace.svelte.ts",
+		"packages/desktop/src/lib/stores/agentSettings.svelte.ts": "packages/desktop/src/lib/agent-settings/agentSettings.svelte.ts"
 	},
 	"files": [
 		{
@@ -559,13 +560,13 @@
 		{
 			"unit": "desktop.function.select-environment",
 			"from": "packages/desktop/src/utils/selectEnvironment.ts",
-			"to": "packages/desktop/src/utils/select-environment/selectEnvironment.ts",
+			"to": "packages/desktop/src/lib/select-environment/selectEnvironment.ts",
 			"definition": "002b5b03fd31705d4bd16811bdfc1dd882b9dcd28d859fdb9fa0d427b2d01ca1"
 		},
 		{
 			"unit": "desktop.adapter.electron-environment",
 			"from": "packages/desktop/src/adapters/ElectronEnvironmentAdapter.ts",
-			"to": "packages/desktop/src/utils/select-environment/ElectronEnvironmentAdapter.ts",
+			"to": "packages/desktop/src/lib/select-environment/ElectronEnvironmentAdapter.ts",
 			"definition": "da0290089728366cb117aeb9d8c013df801f3ad2bdc391ed95872f71b3af03ce"
 		},
 		{
@@ -823,7 +824,7 @@
 		{
 			"unit": "desktop.adapter.agent-settings",
 			"from": "packages/desktop/src/adapters/AgentSettingsAdapter.ts",
-			"to": "packages/desktop/src/lib/stores/AgentSettingsAdapter.ts",
+			"to": "packages/desktop/src/lib/agent-settings/AgentSettingsAdapter.ts",
 			"definition": "75cd353f7784dc2f03fbbf87581a334db84bc3f62a1e38c61540387043685d37"
 		},
 		{
@@ -1135,13 +1136,13 @@
 		{
 			"unit": "desktop.adapter.capacitor-environment",
 			"from": "packages/desktop/src/adapters/CapacitorEnvironmentAdapter.ts",
-			"to": "packages/desktop/src/utils/select-environment/CapacitorEnvironmentAdapter.ts",
+			"to": "packages/desktop/src/lib/select-environment/CapacitorEnvironmentAdapter.ts",
 			"definition": "a8686e0c6a99b21cf67d3b48283b7791fe3c0230f56e99b01fb0a072a81d2c94"
 		},
 		{
 			"unit": "desktop.service.capacitor-projects",
 			"from": "packages/desktop/src/services/CapacitorProjectsService.ts",
-			"to": "packages/desktop/src/utils/select-environment/CapacitorProjectsService.ts",
+			"to": "packages/desktop/src/lib/select-environment/CapacitorProjectsService.ts",
 			"definition": "fe30761246bf612fad1c8e18fa34c681a39a90ba14d7460dd78b469ebc5651f8"
 		},
 		{
@@ -1453,13 +1454,13 @@
 		{
 			"unit": "hub.entry.hooks-server",
 			"from": "packages/hub/src/hooks.server.ts",
-			"to": "packages/hub/src/hooks.server/hooks.server.ts",
+			"to": "packages/hub/src/lib/server-hooks/hooks.server.ts",
 			"definition": "d6de198639572484e2829450568f01debacede62c3d6274e20fdc79a8ea4de1d"
 		},
 		{
 			"unit": "hub.middleware.hub-responses",
 			"from": "packages/hub/src/middleware/HubResponsesMiddleware.ts",
-			"to": "packages/hub/src/hooks.server/HubResponsesMiddleware.ts",
+			"to": "packages/hub/src/lib/server-hooks/HubResponsesMiddleware.ts",
 			"definition": "b277bdb93533368ac620de101aea1dbea180dbb933a7d346265624358f4e72ae"
 		},
 		{
@@ -1501,25 +1502,25 @@
 		{
 			"unit": "desktop.adapter.capacitor-bridge",
 			"from": "packages/desktop/src/adapters/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
-			"to": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
+			"to": "packages/desktop/src/lib/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
 			"definition": "d508581532d44b290e7f920f2d540eb35ef9f9a804e77db0496990c21ef291f2"
 		},
 		{
 			"unit": "desktop.function.cached-snapshot",
 			"from": "packages/desktop/src/adapters/capacitor-bridge-adapter/cachedSnapshot.ts",
-			"to": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/cachedSnapshot.ts",
+			"to": "packages/desktop/src/lib/select-environment/capacitor-bridge-adapter/cachedSnapshot.ts",
 			"definition": "9438f87955165028471b9c610af182e05f9d785c928b5eb27d85165d0e80b1b5"
 		},
 		{
 			"unit": "desktop.function.remote-artifact",
 			"from": "packages/desktop/src/adapters/capacitor-bridge-adapter/remoteArtifact.ts",
-			"to": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/remoteArtifact.ts",
+			"to": "packages/desktop/src/lib/select-environment/capacitor-bridge-adapter/remoteArtifact.ts",
 			"definition": "49b1cb9c2db9e8683f882ffd6e5cd661a1db7cf4c95a24d1ae53434d45b3c254"
 		},
 		{
 			"unit": "desktop.function.remote-grant",
 			"from": "packages/desktop/src/adapters/capacitor-bridge-adapter/remoteGrant.ts",
-			"to": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/remoteGrant.ts",
+			"to": "packages/desktop/src/lib/select-environment/capacitor-bridge-adapter/remoteGrant.ts",
 			"definition": "7eec8fc38dfd064b90c3fb18a1d46f9573811a6c0b3c1d87ee2b303c5d1f5694"
 		},
 		{
@@ -2173,13 +2174,13 @@
 		{
 			"unit": "desktop.adapter.capacitor-account",
 			"from": "packages/desktop/src/adapters/capacitor-account-adapter/CapacitorAccountAdapter.ts",
-			"to": "packages/desktop/src/utils/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
+			"to": "packages/desktop/src/lib/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
 			"definition": "f54f1586b418a653ad39961751f61e977322b2dfa5d0ab7c8f660f3bb3cdd01a"
 		},
 		{
 			"unit": "desktop.adapter.capacitor-account",
 			"from": "packages/desktop/src/adapters/capacitor-account-adapter/capacitorAccountCodec.ts",
-			"to": "packages/desktop/src/utils/select-environment/capacitor-account-adapter/capacitorAccountCodec.ts",
+			"to": "packages/desktop/src/lib/select-environment/capacitor-account-adapter/capacitorAccountCodec.ts",
 			"definition": "66cb4f1b1f00e91a021140ec2916703f6f4b2e01dd1b4cc30197a9bb5dfc842b"
 		},
 		{
@@ -2229,6 +2230,12 @@
 			"from": "packages/reports/src/lib/stores/consoleWorkspace.svelte.ts",
 			"to": "packages/reports/src/lib/console-workspace/consoleWorkspace.svelte.ts",
 			"definition": "e884d503345bba068305a4df47cd9253ec1d9a522e70b6510f69714e225335ce"
+		},
+		{
+			"unit": "desktop.store.agent-settings",
+			"from": "packages/desktop/src/lib/stores/agentSettings.svelte.ts",
+			"to": "packages/desktop/src/lib/agent-settings/agentSettings.svelte.ts",
+			"definition": "65a81c6bf1c85d67a516fa0dcb2f2f43db09b926430a2dab676c45d00fa99403"
 		}
 	],
 	"services": [
@@ -2349,8 +2356,8 @@
 		{
 			"id": "desktop.adapter.electron-environment",
 			"owner": "desktop.function.select-environment",
-			"ownerFolder": "packages/desktop/src/utils/select-environment",
-			"source": ["packages/desktop/src/utils/select-environment/ElectronEnvironmentAdapter.ts"]
+			"ownerFolder": "packages/desktop/src/lib/select-environment",
+			"source": ["packages/desktop/src/lib/select-environment/ElectronEnvironmentAdapter.ts"]
 		},
 		{
 			"id": "hub.service.installation-token",
@@ -2445,8 +2452,8 @@
 		{
 			"id": "desktop.adapter.agent-settings",
 			"owner": "desktop.store.agent-settings",
-			"ownerFolder": "packages/desktop/src/lib/stores",
-			"source": ["packages/desktop/src/lib/stores/AgentSettingsAdapter.ts"]
+			"ownerFolder": "packages/desktop/src/lib/agent-settings",
+			"source": ["packages/desktop/src/lib/agent-settings/AgentSettingsAdapter.ts"]
 		},
 		{
 			"id": "hub.controller.hub-auth",
@@ -2667,14 +2674,14 @@
 		{
 			"id": "desktop.adapter.capacitor-environment",
 			"owner": "desktop.function.select-environment",
-			"ownerFolder": "packages/desktop/src/utils/select-environment",
-			"source": ["packages/desktop/src/utils/select-environment/CapacitorEnvironmentAdapter.ts"]
+			"ownerFolder": "packages/desktop/src/lib/select-environment",
+			"source": ["packages/desktop/src/lib/select-environment/CapacitorEnvironmentAdapter.ts"]
 		},
 		{
 			"id": "desktop.service.capacitor-projects",
 			"owner": "desktop.adapter.capacitor-environment",
-			"ownerFolder": "packages/desktop/src/utils/select-environment",
-			"source": ["packages/desktop/src/utils/select-environment/CapacitorProjectsService.ts"]
+			"ownerFolder": "packages/desktop/src/lib/select-environment",
+			"source": ["packages/desktop/src/lib/select-environment/CapacitorProjectsService.ts"]
 		},
 		{
 			"id": "service.console-install",
@@ -2920,8 +2927,8 @@
 		{
 			"id": "hub.middleware.hub-responses",
 			"owner": "hub.entry.hooks-server",
-			"ownerFolder": "packages/hub/src/hooks.server",
-			"source": ["packages/hub/src/hooks.server/HubResponsesMiddleware.ts"]
+			"ownerFolder": "packages/hub/src/lib/server-hooks",
+			"source": ["packages/hub/src/lib/server-hooks/HubResponsesMiddleware.ts"]
 		},
 		{
 			"id": "desktop.service.device-operations",
@@ -2942,9 +2949,9 @@
 		{
 			"id": "desktop.adapter.capacitor-bridge",
 			"owner": "desktop.adapter.capacitor-environment",
-			"ownerFolder": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter",
+			"ownerFolder": "packages/desktop/src/lib/select-environment/capacitor-bridge-adapter",
 			"source": [
-				"packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts"
+				"packages/desktop/src/lib/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts"
 			]
 		},
 		{
@@ -3434,10 +3441,10 @@
 		{
 			"id": "desktop.adapter.capacitor-account",
 			"owner": "desktop.adapter.capacitor-environment",
-			"ownerFolder": "packages/desktop/src/utils/select-environment/capacitor-account-adapter",
+			"ownerFolder": "packages/desktop/src/lib/select-environment/capacitor-account-adapter",
 			"source": [
-				"packages/desktop/src/utils/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
-				"packages/desktop/src/utils/select-environment/capacitor-account-adapter/capacitorAccountCodec.ts"
+				"packages/desktop/src/lib/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
+				"packages/desktop/src/lib/select-environment/capacitor-account-adapter/capacitorAccountCodec.ts"
 			]
 		},
 		{
