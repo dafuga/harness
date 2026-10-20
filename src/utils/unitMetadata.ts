@@ -1,10 +1,12 @@
 import { type HelperConsumer } from './helperConsumers';
 import type { ExportedSymbol } from '../core/sourceTypes';
-import { type UnitDocumentation, type UsageExample } from './unit-documentation/unitDocumentation';
+import type { z } from 'zod';
+import type { usageExampleSchema } from '../core/unitTypes';
+import { type UnitDocumentation } from './unit-documentation/unitDocumentation';
 
 export interface PublicHelper extends Pick<ExportedSymbol, 'name' | 'inputs' | 'output'> {
 	source: string;
-	examples?: UsageExample[];
+	examples?: z.infer<typeof usageExampleSchema>[];
 	/** Explicit @pure source contract accepted by the conservative effect guard. */
 	pure?: boolean;
 	consumers?: HelperConsumer[];

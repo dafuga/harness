@@ -9,8 +9,15 @@ const document = z.strictObject({
 	examples: z.array(usageExampleSchema).min(1).max(64)
 });
 
-/** Authored invocations are displayed as text and never executed by the viewer. */
-export type UsageExample = z.infer<typeof usageExampleSchema>;
+export interface UsageExample {
+	name: string;
+	description?: string;
+	/** Authored invocations are displayed as text and never executed by the viewer. */
+	call?: string;
+	input: unknown;
+	output?: unknown;
+	error?: unknown;
+}
 
 export interface UnitDocumentation {
 	path: string;
