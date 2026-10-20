@@ -5,6 +5,7 @@ const example = z
 	.strictObject({
 		name: z.string().trim().min(1).max(160),
 		description: z.string().max(500).optional(),
+		call: z.string().trim().min(1).max(16_000).optional(),
 		input: z.json(),
 		output: z.json().optional(),
 		error: z.json().optional()
@@ -14,12 +15,15 @@ const example = z
 const document = z.strictObject({
 	schemaVersion: z.literal(1),
 	unitId: z.string(),
+	setup: z.string().trim().min(1).max(32_000).optional(),
 	examples: z.array(example).min(1).max(64)
 });
 
 export interface UsageExample {
 	name: string;
 	description?: string;
+	/** Authored invocation code, displayed as text and never executed by the viewer. */
+	call?: string;
 	input: unknown;
 	output?: unknown;
 	error?: unknown;
@@ -29,6 +33,7 @@ export interface UnitDocumentation {
 	path: string;
 	/** Original Markdown, retained verbatim for review; never rendered as HTML. */
 	text?: string;
+	setup?: string;
 	examples: UsageExample[];
 	gap?: string;
 }
@@ -43,7 +48,12 @@ export function unitDocumentation(text: string, unitId: string, path = ''): Unit
 		const read = document.safeParse(JSON.parse(blocks[0][1]));
 		if (!read.success) return gap('The documented examples are malformed.');
 		if (read.data.unitId !== unitId) return gap('The document belongs to another entity.');
-		return { path, text, examples: read.data.examples };
+		return {
+			path,
+			text,
+			examples: read.data.examples,
+			...(read.data.setup ? { setup: read.data.setup } : {})
+		};
 	} catch {
 		return gap('The documented examples are not valid JSON.');
 	}

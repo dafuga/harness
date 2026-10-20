@@ -16,7 +16,7 @@ Determines which registered agents a sampled roster can still describe as workin
 | working      | number or null | Working count after expired agents are removed; null when unknown. |
 | label(agent) | string         | Working, Stale, Not confirmed or the recorded final state.         |
 
-The function returns a labeling function. The examples evaluate it for the example agent and show the resulting `labels` array. Inputs below describe the usage scenario in seconds; they are not a serialized AgentRoster.
+The function returns a labeling function. The examples evaluate it for the example agent and show the resulting `labels` array. Each call below uses the shared setup and projects the returned labeling function into a labels array. The input metadata describes the scenario in seconds.
 
 ## Usage
 
@@ -46,7 +46,8 @@ The documented values are expected behavior. Automated checks run these same sce
         "labels": [
           "Working"
         ]
-      }
+      },
+      "call": "const reading = activityReading(agents, sampledAt, at + 5_000);\n({ current: reading.current, working: reading.working,\n   labels: agents.roster.map(reading.label) });"
     },
     {
       "name": "An expired agent stops counting as working",
@@ -63,14 +64,15 @@ The documented values are expected behavior. Automated checks run these same sce
         "labels": [
           "Stale"
         ]
-      }
+      },
+      "call": "const reading = activityReading(agents, sampledAt, at + 30_000);\n({ current: reading.current, working: reading.working,\n   labels: agents.roster.map(reading.label) });"
     },
     {
       "name": "An old roster cannot confirm who is working",
       "description": "After one minute the roster cannot provide a current working count.",
       "input": {
         "sampleAgeSeconds": 61,
-        "agentAllowanceSeconds": 120,
+        "agentAllowanceSeconds": 10,
         "reportedWorking": 1,
         "agentState": "working"
       },
@@ -80,14 +82,15 @@ The documented values are expected behavior. Automated checks run these same sce
         "labels": [
           "Not confirmed"
         ]
-      }
+      },
+      "call": "const reading = activityReading(agents, sampledAt, at + 61_000);\n({ current: reading.current, working: reading.working,\n   labels: agents.roster.map(reading.label) });"
     },
     {
       "name": "A finished agent keeps its recorded outcome",
       "description": "A completed outcome remains Finished even when the roster is old.",
       "input": {
         "sampleAgeSeconds": 61,
-        "agentAllowanceSeconds": 120,
+        "agentAllowanceSeconds": 10,
         "reportedWorking": 0,
         "agentState": "completed"
       },
@@ -97,8 +100,10 @@ The documented values are expected behavior. Automated checks run these same sce
         "labels": [
           "Finished"
         ]
-      }
+      },
+      "call": "const finished = { ...agents, working: 0, roster: [{ ...agent, state: \"completed\" }] };\nconst reading = activityReading(finished, sampledAt, at + 61_000);\n({ current: reading.current, working: reading.working,\n   labels: finished.roster.map(reading.label) });"
     }
-  ]
+  ],
+  "setup": "const sampledAt = \"2026-10-11T12:00:00.000Z\";\nconst at = Date.parse(sampledAt);\nconst agent = {\n  id: \"example\", label: \"Example agent\",\n  provider: null, model: null, worktree: \"example\",\n  branch: null, task: null, loop: null, units: [], unknownUnits: [],\n  registeredAt: sampledAt, heartbeatAt: sampledAt,\n  expiresAt: new Date(at + 10_000).toISOString(),\n  state: \"working\", detail: \"\"\n};\nconst agents = { tracking: \"available\", working: 1, unreadable: 0, roster: [agent] };"
 }
 ```

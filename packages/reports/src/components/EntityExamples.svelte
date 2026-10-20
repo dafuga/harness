@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { UnitDocumentation } from '../../../../src/utils/unit-documentation/unitDocumentation';
-	import EntityCases from './entity-cases/EntityCases.svelte';
+	import UsageExamples from './usage-examples/UsageExamples.svelte';
 	let {
 		documentation,
 		verification
@@ -17,11 +17,9 @@
 <!-- How a unit is meant to be used, as written down: what it is given and should give back. -->
 <section class="ex-card">
 	<h2>Examples</h2>
-	<p class="ex-note">
-		Documented uses and the results they are expected to give, not recorded test results.
-	</p>
+	<p class="ex-note">Documented calls · expected results</p>
 	{#if examples.length}
-		<EntityCases {examples} />
+		<UsageExamples {examples} setup={documentation?.setup} />
 	{:else}
 		<p class="ex-gap">No usage examples are documented at this commit.</p>
 		{#if documentation?.gap}<p class="ex-gap">{documentation.gap}</p>{/if}
@@ -87,5 +85,10 @@
 			Menlo,
 			monospace;
 		color: #d5e4ef;
+	}
+	@media (max-width: 480px) {
+		.ex-card {
+			padding: 14px;
+		}
 	}
 </style>
