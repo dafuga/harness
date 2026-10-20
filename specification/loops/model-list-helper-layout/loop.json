@@ -2,7 +2,7 @@
 	"name": "model-list-helper-layout",
 	"goal": "Models use the existing helper card grid with scoped model and consumer links, retaining search and responsive behavior",
 	"createdAt": "2026-10-20T15:44:20.718Z",
-	"updatedAt": "2026-10-20T15:56:36.270Z",
+	"updatedAt": "2026-10-20T16:01:46.219Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T16:01:46.219Z",
+			"evidence": "Unchanged regression passed at fix commit 06fbc6d4: three viewports, current and selected commit, identical test inputs and fixed environment profile cb01adcd. Red 245c9c13 failed at 0072f930; green 81fa32ea passed. All three fresh before and after images inspected. Initial environment-profile mismatch was refused, then both committed revisions were rerun in one fixed minimal environment."
 		},
 		{
 			"id": "verify",

@@ -50,8 +50,9 @@ test('a row or a card of a collection opens its entity in the same branch and co
 	const branch = 'feature/orders';
 	await open(tab, { category: 'functions', commit: commits.middle });
 	await tab.getByRole('link', { name: 'filterOrders(orders, "SERVICE")', exact: true }).click();
-	expect(await where(tab)).toEqual({ branch, commit: commits.middle, ...filter });
-	await expect(tab.getByRole('heading', { level: 1, name: 'Filter orders' })).toBeVisible();
+	const callable = { ...filter, helper: 'filterOrders', tab: 'contract' };
+	expect(await where(tab)).toEqual({ branch, commit: commits.middle, ...callable });
+	await expect(tab.getByRole('heading', { level: 1, name: 'filterOrders' })).toBeVisible();
 	await open(tab, { category: 'components' });
 	await tab.getByRole('link', { name: 'Open Order card' }).click();
 	expect(await where(tab)).toEqual({

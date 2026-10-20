@@ -4786,6 +4786,20 @@
 			"commit": "424e3c549e09ed6b040f13d76e53c7f2bdb70e27",
 			"reason": "Preserve authored function calls and shared setup in committed usage documentation.",
 			"definition": "178bb75751d525b1bd8d20e89d73f041c6536466ac656103487683af3a10f367"
+		},
+		{
+			"unit": "reports.function.entity-measure",
+			"name": "entityMeasure",
+			"commit": "b5dd8821243794b2c930592cc94d8be895ccd913",
+			"reason": "Display automatic source and unbudgeted measurements from the selected revision.",
+			"definition": "7110374921d27ac582f1e6ac64f7910e804b23f12eea28296e7060cfb721661d"
+		},
+		{
+			"unit": "reports.function.entity-shown",
+			"name": "entityShown",
+			"commit": "b5dd8821243794b2c930592cc94d8be895ccd913",
+			"reason": "Include focused green measurements only for the selected revision.",
+			"definition": "f6de7fca7ef306650d26d58e0fbd3d3357b74b63383585560ba8bbd27fab28f2"
 		}
 	]
 }
