@@ -218,5 +218,21 @@ export async function reviewCallableContract(page: Page, commit: string | null, 
 		await page.reload();
 		await expect(page.getByRole('heading', { level: 1 })).toHaveText(name);
 	}
+	await open(
+		page,
+		{
+			category: 'functions',
+			entity: 'app.function.filter-orders',
+			helper: 'filterOrders',
+			commit,
+			tab: 'contract'
+		},
+		'console'
+	);
+	await expect(
+		page.getByRole('heading', { level: 1 }),
+		'the real console resolves callable addresses'
+	).toHaveText('filterOrders');
+	await capture(page, `callable-console-${commit ? 'commit' : 'tip'}-${viewport}`);
 	expect(await fits(page)).toBe(true);
 }

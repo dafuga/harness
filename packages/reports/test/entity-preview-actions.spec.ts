@@ -90,7 +90,7 @@ for (const [name, size] of Object.entries(viewports)) {
 				await action.press('Enter');
 				expect(await where(tab)).toMatchObject({ category, entity: ids.filter, commit: null });
 				await tab.getByRole('tab', { name: 'Contract', exact: true }).click();
-				await expect(tab.getByRole('table', { name: 'Inputs', exact: true })).toBeVisible();
+				await expect(tab.getByRole('table', { name: 'Parameters', exact: true })).toBeVisible();
 			}
 		}
 	});
