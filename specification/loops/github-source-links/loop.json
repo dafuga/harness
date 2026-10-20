@@ -2,7 +2,7 @@
 	"name": "github-source-links",
 	"goal": "Source tabs show only safe GitHub file links pinned to the selected revision",
 	"createdAt": "2026-10-20T15:44:22.581Z",
-	"updatedAt": "2026-10-20T15:49:41.348Z",
+	"updatedAt": "2026-10-20T15:50:29.871Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,7 +34,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T15:50:29.871Z",
+			"evidence": "Source renders only validated GitHub file links at the selected full commit. Index carries a canonical repository URL from Git origin."
 		},
 		{
 			"id": "green",
