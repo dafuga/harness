@@ -42,6 +42,10 @@
 				"type": "Snippet"
 			},
 			{
+				"name": "ChoiceDialog.onopen",
+				"type": "() => void"
+			},
+			{
 				"name": "ChoiceDialog.children",
 				"type": "Snippet<[close: () => void]>"
 			}

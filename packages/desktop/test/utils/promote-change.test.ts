@@ -39,7 +39,12 @@ test.each(['dev', 'stage', 'preprod', 'prod'] as const)(
 			await settled(f, { ...request, environment });
 			expect(execute).toHaveBeenCalledWith({ args: ['bun', 'run', 'check'], cwd: f.root });
 			expect(automatic.mock.calls.map(([input]) => input.environment)).toEqual(
-				environment === 'dev' ? ['dev'] : ['dev', 'stage']
+				{
+					dev: ['dev'],
+					stage: ['dev', 'stage'],
+					preprod: ['dev', 'stage', 'preprod'],
+					prod: ['dev', 'stage', 'preprod']
+				}[environment]
 			);
 			expect(
 				automatic.mock.calls.every(([input]) => input.commit === git(f.root, 'rev-parse', 'HEAD'))
@@ -63,7 +68,9 @@ async function configure(root: string) {
 
 	const wrangler = {
 		name: 'fixture',
-		env: Object.fromEntries(['dev', 'stage'].map((name) => [name, { name: 'fixture-' + name }]))
+		env: Object.fromEntries(
+			['dev', 'stage', 'preprod'].map((name) => [name, { name: 'fixture-' + name }])
+		)
 	};
 	await writeFile(join(root, 'wrangler.jsonc'), JSON.stringify(wrangler));
 	await writeFile(
@@ -73,7 +80,7 @@ async function configure(root: string) {
 			config: 'wrangler.jsonc',
 			sourceBranch: 'main',
 			environments: Object.fromEntries(
-				['dev', 'stage'].map((name) => [
+				['dev', 'stage', 'preprod'].map((name) => [
 					name,
 					{
 						name: 'fixture-' + name,

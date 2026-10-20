@@ -128,10 +128,10 @@ const deploymentFixture = {
 		environment,
 		available: true,
 		reason: 'Cloudflare target configured.',
-		receipt: ['dev', 'stage'].includes(environment)
+		receipt: true
 			? {
 					environment,
-					commit: hash,
+					commit: environment === 'prod' ? 'b'.repeat(40) : 'c'.repeat(40),
 					branch: 'feat/activity',
 					updatedAt: '2026-10-20T10:15:00.000Z',
 					adapter: 'cloudflare',
@@ -154,24 +154,41 @@ const deploymentFixture = {
 		expiresAt: '2026-10-20T23:59:00.000Z'
 	},
 	receipt: {
-		environment: 'preprod',
-		commit: hash,
+		environment: 'prod',
+		commit: 'c'.repeat(40),
 		branch: 'feat/activity',
 		updatedAt: '2026-10-20T11:00:00.000Z',
 		adapter: 'cloudflare',
-		deploymentId: 'fixture-preprod',
+		deploymentId: 'fixture-prod',
 		url: 'https://example.invalid'
 	}
 };
 function installDeployment(data: typeof deploymentFixture) {
+	let deploying = false;
 	const host = window as unknown as { harness: object; __calls: unknown[] };
 	Object.assign(host.harness, {
 		deploymentStatus: async () => data.statuses,
 		planDeployment: async (input: { environment: string; commit: string }) => {
 			host.__calls.push({ op: 'planDeployment', ...input });
-			return { ...data.plan, ...input, target: 'workers · example-' + input.environment };
+			return {
+				...data.plan,
+				environment: 'prod',
+				commit: 'c'.repeat(40),
+				target: 'workers · example-prod',
+				promotion: {
+					preprod: data.statuses[2].receipt,
+					production: data.statuses[3].receipt,
+					commitsBehind: 3
+				}
+			};
 		},
+		deploymentProgress: async () => ({
+			phase: 'checking',
+			detail: deploying ? 'Checking the preprod commit' : ''
+		}),
 		deploy: async (input: unknown) => {
+			deploying = true;
+			await new Promise((resolve) => setTimeout(resolve, 1800));
 			host.__calls.push({ op: 'deploy', ...(input as object) });
 			return data.receipt;
 		}

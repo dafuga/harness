@@ -83,7 +83,8 @@ export async function deploymentConfig(root: string): Promise<DeploymentConfig> 
 	const settings = raw === null ? null : settingsSchema.parse(JSON.parse(raw));
 	const { path, config, raw: wranglerRaw } = await configFile(root, settings?.config);
 	const sourceBranch =
-		settings?.sourceBranch ?? (await gitRead(root, ['symbolic-ref', '--short', 'HEAD'])).trim();
+		settings?.sourceBranch ??
+		(await gitRead(root, ['symbolic-ref', '--short', 'HEAD']).catch(() => '')).trim();
 	const targets: DeploymentConfig['targets'] = {};
 	for (const environment of deploymentEnvironments) {
 		const value = configuredTarget(config, {

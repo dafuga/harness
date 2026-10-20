@@ -3,7 +3,8 @@
 	/**
 	 * One icon that opens a modal list of choices. Opening focuses the chosen enabled choice;
 	 * Escape closes this dialog only, never a panel around it; a click on the backdrop closes it;
-	 * closing returns focus to the icon. A choice closes it through the `close` it is given.
+	 * closing returns focus to the icon. A choice closes it through the `close` it is given;
+	 * `onopen` is told each time the dialog is shown.
 	 */
 	let {
 		label,
@@ -13,6 +14,7 @@
 		maxHeight,
 		gap = 6,
 		icon,
+		onopen,
 		children
 	}: {
 		label: string;
@@ -24,12 +26,15 @@
 		/** The space between the choices, or the groups of choices, in pixels. */
 		gap?: number;
 		icon: Snippet;
+		/** Called once the dialog is shown; work it starts is not waited for. */
+		onopen?: () => void;
 		children: Snippet<[close: () => void]>;
 	} = $props();
 	let trigger = $state<HTMLButtonElement>();
 	let dialog = $state<HTMLDialogElement>();
 	async function open() {
 		dialog?.showModal();
+		onopen?.();
 		await tick();
 		dialog?.querySelector<HTMLButtonElement>('[aria-pressed="true"]:enabled')?.focus();
 	}

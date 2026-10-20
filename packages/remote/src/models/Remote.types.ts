@@ -46,6 +46,7 @@ export const agentMethods = ['createPlan', 'approve', 'startRun', 'cancelRun'] a
 /** Never available to a remote device: folders and hosted credentials stay on the computer. */
 export const localMethods = [
 	'deploymentStatus',
+	'deploymentProgress',
 	'planDeployment',
 	'deploy',
 	'openProject',

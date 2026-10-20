@@ -1,58 +1,7 @@
-import { expect, test, vi, afterEach } from 'vitest';
-import { mkdtemp, rm } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { expect, test, vi } from 'vitest';
 import { execFileSync } from 'node:child_process';
 import { DeploymentService } from '../../src/services/DeploymentService';
-import { ProjectSessionService } from '../../src/services/ProjectSessionService';
-import type { CloudflareTarget, DeploymentPlugin } from '../../src/models/Deployment.types';
-const roots: string[] = [];
-afterEach(async () => {
-	await Promise.all(roots.splice(0).map((root) => rm(root, { recursive: true, force: true })));
-});
-async function fixture() {
-	const root = await mkdtemp(join(tmpdir(), 'harness-deploy-'));
-	roots.push(root);
-	const git = (...args: string[]) =>
-		execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
-	git('init', '-b', 'dev');
-	git('config', 'user.name', 'Fixture');
-	git('config', 'user.email', 'fixture@example.invalid');
-	git('commit', '--allow-empty', '-m', 'feat: fixture');
-	const commit = git('rev-parse', 'HEAD');
-	const target = (environment: CloudflareTarget['environment']) => ({
-		environment,
-		kind: 'workers' as const,
-		config: 'wrangler.jsonc',
-		name: 'fixture-' + environment,
-		accountId: 'a'.repeat(32),
-		tokenEnv: 'FIXTURE_TOKEN',
-		wranglerEnvironment: environment,
-		branch: '',
-		output: '',
-		healthUrl: 'https://example.invalid'
-	});
-	const config = {
-		sourceBranch: 'dev',
-		targets: {
-			dev: target('dev'),
-			stage: target('stage'),
-			preprod: target('preprod'),
-			prod: target('prod')
-		}
-	};
-	const plugin: DeploymentPlugin = {
-		id: 'cloudflare',
-		discover: vi.fn(async () => config),
-		deploy: vi.fn(async () => ({ deploymentId: 'receipt-1', url: 'https://example.invalid' }))
-	};
-	const session = new ProjectSessionService();
-	session.root = root;
-	session.projectId = 'local-' + 'a'.repeat(64);
-	const execute = vi.fn(async () => 'passed');
-	const service = new DeploymentService(session, { plugin, execute, health: async () => true });
-	return { root, commit, config, plugin, execute, service, session, git };
-}
+import { deploymentFixture as fixture } from '../deployment-fixture';
 test('promotion requires the same commit in every preceding environment and a reviewed single-use plan', async () => {
 	const f = await fixture();
 	const blocked = await f.service.plan({ environment: 'prod', commit: f.commit });
@@ -65,7 +14,7 @@ test('promotion requires the same commit in every preceding environment and a re
 		expect(receipt).toMatchObject({ environment, commit: f.commit, deploymentId: 'receipt-1' });
 		await expect(f.service.deploy({ planId: plan.id })).rejects.toThrow(/review/);
 	}
-	expect(f.execute).toHaveBeenCalledTimes(8);
+	expect(f.execute).toHaveBeenCalledTimes(9);
 	expect((await f.service.status()).every((item) => item.receipt?.commit === f.commit)).toBe(true);
 });
 test('changed configuration, source or project invalidates confirmation without deploying', async () => {
@@ -99,11 +48,10 @@ test('failed checks or health verification never advance environment state', asy
 	expect((await service.status())[0].receipt).toBeNull();
 });
 
-test('automatic promotion refuses protected environments and confirmations expire', async () => {
+test('automatic promotion allows preprod, refuses production and confirmations expire', async () => {
 	const f = await fixture();
-	await expect(f.service.automatic({ environment: 'preprod', commit: f.commit })).rejects.toThrow(
-		/Deploy UI/
-	);
+	for (const environment of ['dev', 'stage', 'preprod'] as const)
+		await f.service.automatic({ environment, commit: f.commit });
 	await expect(f.service.automatic({ environment: 'prod', commit: f.commit })).rejects.toThrow(
 		/Deploy UI/
 	);
@@ -114,7 +62,7 @@ test('automatic promotion refuses protected environments and confirmations expir
 	} finally {
 		clock.mockRestore();
 	}
-	expect(f.plugin.deploy).not.toHaveBeenCalled();
+	expect(f.plugin.deploy).toHaveBeenCalledTimes(3);
 });
 test('source changes during upload cannot become a verified environment receipt', async () => {
 	const f = await fixture();
@@ -125,4 +73,45 @@ test('source changes during upload cannot become a verified environment receipt'
 	const plan = await f.service.plan({ environment: 'dev', commit: f.commit });
 	await expect(f.service.deploy({ planId: plan.id })).rejects.toThrow(/changed during deployment/);
 	expect((await f.service.status())[0].receipt).toBeNull();
+});
+
+test('production promotes the reviewed preprod source after the checkout advances, with live progress', async () => {
+	const f = await fixture();
+	for (const environment of ['dev', 'stage', 'preprod', 'prod'] as const) {
+		const plan = await f.service.plan({ environment, commit: f.commit });
+		await f.service.deploy({ planId: plan.id });
+	}
+	f.git('commit', '--allow-empty', '-m', 'feat: first promoted change');
+	f.git('commit', '--allow-empty', '-m', 'feat: second promoted change');
+	const preprod = f.git('rev-parse', 'HEAD');
+	for (const environment of ['dev', 'stage', 'preprod'] as const)
+		await f.service.automatic({ environment, commit: preprod });
+	f.git('commit', '--allow-empty', '-m', 'feat: newer local change');
+	const head = f.git('rev-parse', 'HEAD');
+	const plan = await f.service.plan({ environment: 'prod', commit: head });
+	expect(plan).toMatchObject({
+		commit: preprod,
+		promotion: { commitsBehind: 2, production: { commit: f.commit }, preprod: { commit: preprod } },
+		blockers: []
+	});
+	f.execute.mockImplementation(async (command) => {
+		expect(
+			execFileSync('git', ['rev-parse', 'HEAD'], { cwd: command.cwd, encoding: 'utf8' }).trim()
+		).toBe(preprod);
+		expect(command.cwd).not.toBe(f.root);
+		const progress = await f.service.progress({ planId: plan.id });
+		expect(['preparing', 'checking', 'building']).toContain(progress?.phase);
+		return 'passed';
+	});
+	await f.service.deploy({ planId: plan.id });
+	expect(f.plugin.deploy).toHaveBeenLastCalledWith(f.config.targets.prod, {
+		root: expect.any(String),
+		commit: preprod
+	});
+	expect((await f.service.progress({ planId: plan.id }))?.phase).toBe('complete');
+	expect(f.git('rev-parse', 'HEAD')).toBe(head);
+	expect(f.git('worktree', 'list', '--porcelain').match(/worktree /g)).toHaveLength(1);
+	const current = await f.service.plan({ environment: 'prod', commit: head });
+	expect(current.promotion?.commitsBehind).toBe(0);
+	expect(current.blockers.join(' ')).toMatch(/up to date/);
 });

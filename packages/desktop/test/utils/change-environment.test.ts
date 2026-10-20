@@ -3,8 +3,8 @@ import { changeEnvironment } from '../../src/utils/changeEnvironment';
 test.each([
 	['dev', ['dev']],
 	['stage', ['dev', 'stage']],
-	['preprod', ['dev', 'stage']],
-	['prod', ['dev', 'stage']]
-] as const)('changes viewed in %s stop before protected environments', (environment, expected) => {
+	['preprod', ['dev', 'stage', 'preprod']],
+	['prod', ['dev', 'stage', 'preprod']]
+] as const)('changes viewed in %s stop before production', (environment, expected) => {
 	expect(changeEnvironment(environment)).toEqual(expected);
 });

@@ -32,8 +32,8 @@ export async function runContext(context: RunContext): Promise<string> {
 		'\nEnvironment scope: ' +
 		(request.environment ?? 'local only') +
 		'. Automatic promotion stops at ' +
-		(request.environment === 'dev' ? 'dev' : 'stage') +
-		'; preprod and prod require the Deploy UI. Deployment and credentials are handled by the host after verification.\nRequest:\n' +
+		(request.environment === 'prod' ? 'preprod' : (request.environment ?? 'local only')) +
+		'; production requires the Deploy UI. Deployment and credentials are handled by the host after verification.\nRequest:\n' +
 		request.text
 	);
 }

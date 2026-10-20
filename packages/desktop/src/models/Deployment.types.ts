@@ -17,7 +17,17 @@ export interface DeploymentStatus {
 	available: boolean;
 	reason: string;
 }
+export interface DeploymentProgress {
+	phase: 'preparing' | 'checking' | 'building' | 'uploading' | 'verifying' | 'complete' | 'failed';
+	detail: string;
+}
+export interface ProductionPromotion {
+	preprod: DeploymentReceipt | null;
+	production: DeploymentReceipt | null;
+	commitsBehind: number | null;
+}
 export interface DeploymentPlan {
+	promotion?: ProductionPromotion;
 	id: string;
 	environment: DeploymentEnvironment;
 	commit: string;
@@ -68,6 +78,7 @@ export interface DeploymentPlugin {
 }
 
 export interface DeploymentBridge {
+	deploymentProgress?(input: DeployInput): Promise<DeploymentProgress | null>;
 	deploymentStatus?(input?: ProjectContext): Promise<DeploymentStatus[]>;
 	planDeployment?(input: DeploymentQuery): Promise<DeploymentPlan>;
 	deploy?(input: DeployInput): Promise<DeploymentReceipt>;

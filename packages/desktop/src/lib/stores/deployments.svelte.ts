@@ -1,7 +1,9 @@
+import { deploymentUpdates } from '../../utils/deploymentUpdates';
 import { untrack } from 'svelte';
 import type { Workspace } from './workspace.svelte';
 import type {
 	DeploymentEnvironment,
+	DeploymentProgress,
 	DeploymentPlan,
 	DeploymentReceipt,
 	DeploymentStatus
@@ -11,6 +13,7 @@ class DeploymentsState {
 	statuses = $state<DeploymentStatus[]>([]);
 	loading = $state(false);
 	pending = $state(false);
+	progress = $state<DeploymentProgress | null>(null);
 	error = $state('');
 	plan = $state<DeploymentPlan | null>(null);
 	receipt = $state<DeploymentReceipt | null>(null);
@@ -31,12 +34,13 @@ class DeploymentsState {
 	}
 	choose(value: DeploymentEnvironment) {
 		this.environment = value;
-		this.clear();
+		if (!this.pending) this.clear();
 	}
 	clear() {
 		this.plan = null;
 		this.receipt = null;
 		this.error = '';
+		this.progress = null;
 	}
 	async load() {
 		const token = ++this.serial;
@@ -63,7 +67,7 @@ class DeploymentsState {
 	async review() {
 		if (!this.supported || !this.workspace.snapshot || this.pending) return;
 		const projectId = this.workspace.projectId,
-			environment = this.environment;
+			environment = 'prod' as const;
 		this.pending = true;
 		this.clear();
 		try {
@@ -72,11 +76,9 @@ class DeploymentsState {
 				environment,
 				commit: this.workspace.snapshot.revision.commit
 			});
-			if (projectId === this.workspace.projectId && environment === this.environment)
-				this.plan = plan;
+			if (projectId === this.workspace.projectId) this.plan = plan;
 		} catch (error) {
-			if (projectId === this.workspace.projectId && environment === this.environment)
-				this.error = String(error);
+			if (projectId === this.workspace.projectId) this.error = String(error);
 		} finally {
 			this.pending = false;
 		}
@@ -87,7 +89,10 @@ class DeploymentsState {
 		const projectId = this.workspace.projectId;
 		this.pending = true;
 		this.error = '';
-		this.plan = null;
+		this.progress = { phase: 'preparing', detail: 'Preparing the preprod commit' };
+		const stop = deploymentUpdates(this.workspace, plan.id, (value) => {
+			this.progress = value;
+		});
 		try {
 			const receipt = await this.workspace.bridge!.deploy!({
 				...this.workspace.context,
@@ -96,10 +101,16 @@ class DeploymentsState {
 			if (projectId !== this.workspace.projectId) return;
 			await this.load();
 			this.receipt = receipt;
+			this.progress = { phase: 'complete', detail: 'Production is up to date' };
 		} catch (error) {
-			if (projectId === this.workspace.projectId) this.error = String(error);
+			if (projectId === this.workspace.projectId) {
+				this.error = String(error);
+				this.progress = { phase: 'failed', detail: 'Promotion failed' };
+			}
 		} finally {
+			stop();
 			this.pending = false;
+			this.plan = null;
 		}
 	}
 }
@@ -111,10 +122,10 @@ function canExecute(store: DeploymentsState, workspace: Workspace) {
 	const plan = store.plan;
 	return Boolean(
 		store.supported &&
+		!workspace.busy &&
 		plan &&
 		!store.pending &&
 		plan.blockers.length === 0 &&
-		plan.environment === store.environment &&
-		plan.commit === workspace.snapshot?.revision.commit
+		plan.environment === 'prod'
 	);
 }

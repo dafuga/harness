@@ -1,3 +1,4 @@
+import { productionPromotion } from './productionPromotion';
 import { createHash } from 'node:crypto';
 import { deploymentEnvironments } from '../models/Deployment.types';
 import type {
@@ -17,6 +18,8 @@ export async function deploymentBlockers(
 	query: { commit: string; environment: DeploymentEnvironment },
 	config: DeploymentConfig
 ) {
+	if (query.environment === 'prod')
+		return productionPromotion(root, config, deploymentProof(config));
 	const blockers: string[] = [];
 	const branch = (
 		await gitRead(root, ['symbolic-ref', '--quiet', '--short', 'HEAD']).catch(() => '')
@@ -45,7 +48,7 @@ export async function deploymentBlockers(
 		blockers.push(`Deploy this exact source commit to ${previous} first.`);
 	if (query.environment !== 'dev' && !previous)
 		blockers.push('Configure a preceding lower environment before promotion.');
-	return { blockers, branch };
+	return { blockers, branch, promotion: undefined };
 }
 export async function deploymentHealth(target: CloudflareTarget): Promise<boolean> {
 	try {
@@ -63,9 +66,15 @@ export async function deploymentCurrent(
 	guard: { plugin: DeploymentPlugin; fingerprint: string; phase?: string }
 ) {
 	const config = await guard.plugin.discover(root);
+	if (!config.sourceBranch) config.sourceBranch = plan.branch;
 	if (deploymentProof(config) !== guard.fingerprint)
 		throw new Error(`Deployment configuration changed${guard.phase ?? ''}; review again.`);
 	const proof = await deploymentBlockers(root, plan, config);
+	if (
+		plan.environment === 'prod' &&
+		JSON.stringify(proof.promotion) !== JSON.stringify(plan.promotion)
+	)
+		throw new Error('Preprod or production changed; review the promotion again.');
 	if (proof.blockers.length) {
 		if (guard.phase)
 			throw new Error(

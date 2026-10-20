@@ -67,6 +67,7 @@ export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRu
 	const recorded = new RecordedEvidenceService(session);
 	const bridge: Omit<DesktopBridge, 'onRunEvent'> = {
 		deploymentStatus: (input) => deployments.status(input),
+		deploymentProgress: (input) => deployments.progress(input),
 		planDeployment: (input) => deployments.plan(input),
 		deploy: (input) => deployments.deploy(input),
 		...authentication(session),

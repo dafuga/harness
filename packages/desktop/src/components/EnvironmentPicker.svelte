@@ -6,8 +6,9 @@
 	import { displayTime } from '../utils/revisionTime';
 	/**
 	 * The environment a Change is scoped to, always in sight with its last verified deployment.
-	 * Choosing one changes the scope only: nothing is deployed, and preprod and prod are reached
-	 * through Deploy alone. `children` is the action beside the choice.
+	 * Choosing one changes the scope only: nothing is deployed. A Change reaches preprod at most;
+	 * prod is reached through Deploy alone, which promotes preprod. `children` is the action beside
+	 * the choice.
 	 */
 	let { workspace, children }: { workspace: Workspace; children?: Snippet } = $props();
 	const deployments = $derived(workspace.deployments);
@@ -15,7 +16,8 @@
 	let value = $derived<string>(deployments.environment);
 	const status = $derived(deployments.selected);
 	const receipt = $derived(status?.receipt ?? null);
-	const gated = $derived(['preprod', 'prod'].includes(deployments.environment));
+	/** Only prod is beyond what a Change reaches. */
+	const gated = $derived(deployments.environment === 'prod');
 	const reason = $derived(
 		deployments.error || status?.reason || 'No deployment status for this project.'
 	);
@@ -49,7 +51,7 @@
 			>Unavailable</small
 		>{/if}
 	{#if gated}<small class="environment-note" role="status"
-			>Changes stop at stage. Use Deploy to promote to preprod or prod.</small
+			>Changes reach preprod. Use Deploy to promote preprod to production.</small
 		>{/if}
 </div>
 

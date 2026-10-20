@@ -28,6 +28,7 @@ const call =
 		transport.request<T>(method, { ...input });
 const bridge: DesktopBridge = {
 	deploymentStatus: call('deploymentStatus'),
+	deploymentProgress: call('deploymentProgress'),
 	planDeployment: call('planDeployment'),
 	deploy: call('deploy'),
 	history: call('history'),

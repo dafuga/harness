@@ -62,7 +62,6 @@ export async function promoteChange(context: RunContext, before: SourceSnapshot)
 		});
 		await service.automatic({ environment: target, commit });
 	}
-	return environment === 'dev'
-		? 'Change verified and deployed to dev.'
-		: `Change verified and deployed through stage.${environment === 'stage' ? '' : ' Use Deploy to promote to preprod or prod.'}`;
+	const last = changeEnvironment(environment).at(-1);
+	return `Change verified and deployed through ${last}.${environment === 'prod' ? ' Use Deploy to promote preprod to production.' : ''}`;
 }

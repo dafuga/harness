@@ -9,12 +9,15 @@
 	"owns": {
 		"source": ["packages/desktop/src/services/DeploymentService.ts"],
 		"symbols": [
+			"DeploymentOptions",
+			"ReviewedDeployment",
 			"DeploymentService",
 			"DeploymentService.constructor",
 			"DeploymentService.status",
 			"DeploymentService.plan",
 			"DeploymentService.deploy",
-			"DeploymentService.automatic"
+			"DeploymentService.automatic",
+			"DeploymentService.progress"
 		]
 	},
 	"contract": {
@@ -26,7 +29,7 @@
 			},
 			{
 				"name": "DeploymentService.constructor.options",
-				"type": "Options"
+				"type": "DeploymentOptions"
 			},
 			{
 				"name": "DeploymentService.status.input",
@@ -43,6 +46,10 @@
 			{
 				"name": "DeploymentService.automatic.input",
 				"type": "DeploymentQuery"
+			},
+			{
+				"name": "DeploymentService.progress.input",
+				"type": "DeployInput"
 			}
 		],
 		"outputs": [
@@ -61,6 +68,10 @@
 			{
 				"name": "DeploymentService.automatic",
 				"type": "unknown"
+			},
+			{
+				"name": "DeploymentService.progress",
+				"type": "unknown"
 			}
 		],
 		"errors": [
@@ -77,7 +88,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.function.deployment-command",
+			"unit": "desktop.function.deployment-execution",
 			"via": "import",
 			"origin": "derived"
 		},

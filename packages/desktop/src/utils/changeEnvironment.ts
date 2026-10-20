@@ -3,5 +3,6 @@ import type { DeploymentEnvironment } from '../models/Deployment.types';
 export function changeEnvironment(environment: DeploymentEnvironment): DeploymentEnvironment[] {
 	if (!['dev', 'stage', 'preprod', 'prod'].includes(environment))
 		throw new Error('Unknown deployment environment.');
-	return environment === 'dev' ? ['dev'] : ['dev', 'stage'];
+	if (environment === 'dev') return ['dev'];
+	return environment === 'stage' ? ['dev', 'stage'] : ['dev', 'stage', 'preprod'];
 }
