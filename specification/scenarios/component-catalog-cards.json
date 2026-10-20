@@ -52,7 +52,7 @@
 			"id": "catalog",
 			"kind": "e2e",
 			"runner": "command",
-			"target": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts entity-preview-actions.spec.ts --grep \"component screenshot cards follow|component catalog labels reused|branch and commit selection\"",
+			"target": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts entity-preview-catalog.spec.ts --grep \"component screenshot cards follow|component catalog labels reused|branch and commit selection\"",
 			"cwd": "packages/reports"
 		}
 	],

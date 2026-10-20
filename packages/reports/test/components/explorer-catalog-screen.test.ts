@@ -1,8 +1,9 @@
+import { entityCatalog } from '../../src/utils/entityCatalog';
 import { PerformanceProfileService } from '../../../../src/services/PerformanceProfileService';
 import { afterAll, expect, test } from 'vitest';
 import ExplorerCatalogScreen from '../../src/components/harness/ExplorerCatalogScreen.svelte';
 import { record, revision } from '../entityFixture';
-import { content, drawn, count, screen, words } from '../entityRender';
+import { content, drawn, count, screen, words, hostProps } from '../entityRender';
 import { commits } from '../entityUnits';
 
 const kinds = {
@@ -91,6 +92,15 @@ test('a collection of a revision without a registry shows its gap and no table',
 // Profile the real SSR catalog path, including its card and index, with representative fixture input.
 afterAll(async () => {
 	const profiler = new PerformanceProfileService();
+	const host = hostProps('commit', { category: 'components' });
+	await profiler.capture(
+		{
+			unit: 'reports.function.entity-catalog',
+			workload: 'catalog-registered-components',
+			iterations: 1000
+		},
+		() => entityCatalog(host.entities, 'components', host.lens.relations)
+	);
 	for (const unit of [
 		'reports.component.harness-explorer-page-card',
 		'reports.component.harness-explorer-index',

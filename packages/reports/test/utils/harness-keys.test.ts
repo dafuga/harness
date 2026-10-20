@@ -22,6 +22,8 @@ const unique = new Set([
 	"edge.from + '>' + edge.to",
 	// An explorer list of entities is keyed by the entity, and a history by its commit.
 	'row.id',
+	// Catalog consumer IDs are deduplicated before rendering; entity-catalog.test covers collisions.
+	'consumer.id',
 	'row.commit'
 ]);
 
