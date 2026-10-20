@@ -6,9 +6,11 @@
 	"name": "component-card-evidence",
 	"goal": "Component cards show only screenshots, neutral names and clickable consumers; incomplete visual coverage blocks verification and handoff.",
 	"createdAt": "2026-10-20T17:00:48.864Z",
-	"updatedAt": "2026-10-20T17:09:12.002Z",
+	"updatedAt": "2026-10-20T19:22:13.267Z",
 	"template": "regression-prevention",
-	"templateLineage": ["regression-prevention"],
+	"templateLineage": [
+		"regression-prevention"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -52,7 +54,7 @@
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
 			"status": "complete",
 			"completedAt": "2026-10-20T17:09:10.559Z",
-			"evidence": "At 3be78b44, sealed d0064517 passes the unchanged standard tests and all three browser widths; paired red 83e27c20 at e1593dcf fails the missing-preview assertion and compact-card assertions."
+			"evidence": "Final frozen-corpus replay: red de1a49cc96d960a6cdcaa03dfdab06d0591ddbcbbb438dd6036e9b7903ac0597 at f0bd59e882634a75a026bef66ca53400f8c1b54d; green ab4ba814dfe231b1163d2439ee0e5ad24b7388ecae28e4e8688dfe5a831912dc at 19e257259b34fe4f56dcaa35c2e6b7ab9d89cd26. Same command: 31 unit tests and 8 browser tests pass. Includes Harness latency and process-memory observations."
 		},
 		{
 			"id": "guard",
@@ -64,7 +66,8 @@
 		{
 			"id": "verify",
 			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Pending: Reports check passes 610 tests; focused clean builds and own Account menu/Model Cards captures pass. 160 existing active components still lack explicit preview bindings. Full current-commit verification and final task audit must pass before handoff or merge."
 		}
 	],
 	"evaluators": [
