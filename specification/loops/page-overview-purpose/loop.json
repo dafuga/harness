@@ -2,7 +2,7 @@
 	"name": "page-overview-purpose",
 	"goal": "Page Overview begins with its short registered description above screenshots while the header stays concise.",
 	"createdAt": "2026-10-20T19:11:09.103Z",
-	"updatedAt": "2026-10-20T19:13:28.919Z",
+	"updatedAt": "2026-10-20T19:31:57.193Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,17 +32,22 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T19:14:24.943Z",
+			"evidence": "79bbbf3e renders the registered page purpose as semantic text at the start of Overview using the existing lead style; other entity categories and tabs are unchanged."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T19:14:25.842Z",
+			"evidence": "Frozen record b635a1e50287aa70e496676937cfe5c48b3b54ac3f304f0f6642b5b4744d02fe passes the unchanged 13 unit assertions and 3 browser cases at 79bbbf3e; before and after captures retained."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Description product 79bbbf3e and final route revision 556d0de6 preserve the unchanged tests from d09a5276. Latest frozen green record 59b1ecf9474beafbdc3935b7327e97e22709b871cee5a79066eadfd33fb14bee passes 13 unit tests and three browser cases; matching before/after captures were inspected. Final 556d0de6 passes the complete Reports check: 604 tests, formatting, types, lint, three builds and app audit. Manual browser proof covers all six page tabs, current and selected commit links, and loaded desktop/tablet/mobile captures with no browser console errors. Eighteen gallery assets match inspected originals. Root check passes formatting, types, lint and kernel checks/build, then stops with 889 passed, 25 skipped and the existing entityMeasure/entityShown ownership guard failure. The helpers, ledger and guard are unchanged from a73ea58b. Later aggregate stages were not reached. Root audit also reports an unchanged 221-line test against the 220 limit. Jev review is incomplete without its dedicated credential. Full verification and report publication remain pending."
 		}
 	],
 	"evaluators": [

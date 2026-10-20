@@ -2,7 +2,7 @@
 	"name": "page-sections",
 	"goal": "Pages expose Uses but no Used In tab or section; existing Used In links open Overview.",
 	"createdAt": "2026-10-20T17:31:12.844Z",
-	"updatedAt": "2026-10-20T19:11:08.669Z",
+	"updatedAt": "2026-10-20T19:31:57.193Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -46,7 +46,8 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Navigation product 745346c5 has paired red/green proof ec9f6a2fe478c52cbefccaa72be18c80a3e4057b947778ff1beef95c1beb7fa4 / bd04f68b1b190e1705643a7ceceea172c35a7806674eee3d9f61c716e1049be4. Final route simplification 556d0de6 passes lint, 61 route tests and 13 Reports URL/usage tests. Final 556d0de6 passes the complete Reports check: 604 tests, formatting, types, lint, three builds and app audit. Manual browser proof covers all six page tabs, current and selected commit links, and loaded desktop/tablet/mobile captures with no browser console errors. Eighteen gallery assets match inspected originals. Root check passes formatting, types, lint and kernel checks/build, then stops with 889 passed, 25 skipped and the existing entityMeasure/entityShown ownership guard failure. The helpers, ledger and guard are unchanged from a73ea58b. Later aggregate stages were not reached. Root audit also reports an unchanged 221-line test against the 220 limit. Jev review is incomplete without its dedicated credential. Full verification and report publication remain pending."
 		}
 	],
 	"evaluators": [
