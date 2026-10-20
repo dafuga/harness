@@ -99,7 +99,7 @@
 			{
 				"name": "entityCatalog",
 				"type": "CatalogRow[]",
-				"description": "Rows sorted by displayed name, retaining registered names for search. Service names use the first owned symbol or registered name, with three consumer links and page fallback. Helpers retain per-export eligibility and consumers."
+				"description": "Rows sorted by displayed name, retaining registered names for search. Service labels use the owned implementation filename matched to a recorded symbol, or the registered name; three consumer links retain page fallback. Helpers retain per-export eligibility and consumers."
 			},
 			{
 				"name": "catalogFilter",

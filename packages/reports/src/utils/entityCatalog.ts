@@ -66,11 +66,21 @@ export function isShared(related: Relations, unit?: ExplorerEntity['unit']): boo
 }
 
 function rowOf(entity: ExplorerEntity, related: Relations): CatalogRow {
+	const serviceSymbol =
+		entity.category === 'services'
+			? entity.unit.owns.source
+					.map((path) =>
+						path
+							.split('/')
+							.at(-1)!
+							.replace(/\.[^.]+$/, '')
+					)
+					.find((name) => entity.unit.owns.symbols.includes(name))
+			: undefined;
 	return {
 		entity,
 		id: entity.id,
-		name:
-			entity.category === 'services' ? (entity.unit.owns.symbols[0] ?? entity.name) : entity.name,
+		name: serviceSymbol ?? entity.name,
 		...(entity.category === 'services'
 			? {
 					usedIn: (related.usedBy.length ? related.usedBy : related.pages)
