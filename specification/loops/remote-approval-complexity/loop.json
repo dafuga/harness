@@ -2,7 +2,7 @@
 	"name": "remote-approval-complexity",
 	"goal": "Remote approval validation meets the existing complexity limit while preserving exact projects and optional comment permissions.",
 	"createdAt": "2026-10-20T20:43:50.472Z",
-	"updatedAt": "2026-10-20T20:44:39.722Z",
+	"updatedAt": "2026-10-20T21:01:25.028Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T21:01:25.028Z",
+			"evidence": "Test-only commit 6c9bccb58b4d482e3993d9e2971df7bc189fc42a produced immutable red record 492a14014c14eceecd60f72210326c9fd36fd820b12ceaf771540e4567035925. Normal lint rejects approval complexity 13 against limit 10; all four strengthened runtime cases pass. No product source is repaired yet."
 		},
 		{
 			"id": "implement",

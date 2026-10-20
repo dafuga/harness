@@ -35,7 +35,8 @@
 			},
 			{
 				"name": "RemoteInputValidator.approval.input",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Exact approval fields: pairingId, deviceId, one to 64 distinct local projectIds and boolean agents, with optional boolean comments. Explicit comments must be true when agents is true; omitted comments retain legacy admission."
 			},
 			{
 				"name": "RemoteInputValidator.pairing.input",
@@ -61,7 +62,8 @@
 			},
 			{
 				"name": "RemoteInputValidator.approval",
-				"type": "RemoteApprovalInput"
+				"type": "RemoteApprovalInput",
+				"description": "Validated approval preserves project order, agents and the presence or absence of comments. Invalid fields throw RemoteFailure with invalid-message."
 			},
 			{
 				"name": "RemoteInputValidator.pairing",
