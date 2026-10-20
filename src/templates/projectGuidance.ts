@@ -17,6 +17,10 @@ ${taskCompletionInstructions()
 	.map((rule) => `- ${rule}`)
 	.join('\n')}
 
+## Visual Component Evidence
+
+- Every active visual component requires a preview bound to its own required screenshot state and viewport. Capture the actual component with representative parameters; verify fresh or validated inherited screenshots at the selected revision. A missing image or failed verdict blocks handoff: inspect and repair its registry, scenario, reason, ledger and budget failures; never hide the failure, substitute another component, or relabel a capture. Component titles name the component, with state labels confined to scenario states.
+
 ## Bug and Regression Loops
 
 ${bugRepairPolicy()

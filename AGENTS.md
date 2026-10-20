@@ -26,6 +26,10 @@ These rules apply only to this Harness repository, including requests made in an
 - Resolve links from real registered ids at the selected branch or commit, preserving their registered kinds and the explorer's category mapping. For an artifact without an explorer page, explicitly identify that gap and link its source; never invent an entity link or call backend code a visual component.
 - Keep execution attribution truthful: this chat does not automatically create an app conversation or run. Report an in-app thread, run or approval only when that record actually exists; continue registering external work through Harness activity.
 
+## Visual Component Evidence
+
+- Every active visual component requires a preview bound to its own required screenshot state and viewport. Capture the actual component with representative parameters; verify fresh or validated inherited screenshots at the selected revision. A missing image or failed verdict blocks handoff: inspect and repair its registry, scenario, reason, ledger and budget failures; never hide the failure, substitute another component, or relabel a capture. Component titles name the component, with state labels confined to scenario states.
+
 ## Bug and Regression Loops
 
 - Coding and planning completion requires `harness task check`; a process exit or free-text claim is insufficient. Coding requires `harness verify run --require-performance` and real representative latency and memory evidence for the affected executable units, even without budgets. Use Harness profiling APIs or declared benchmark workloads, with explicit process-memory attribution.

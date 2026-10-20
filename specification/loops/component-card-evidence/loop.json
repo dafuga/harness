@@ -6,7 +6,7 @@
 	"name": "component-card-evidence",
 	"goal": "Component cards show only screenshots, neutral names and clickable consumers; incomplete visual coverage blocks verification and handoff.",
 	"createdAt": "2026-10-20T17:00:48.864Z",
-	"updatedAt": "2026-10-20T17:01:30.456Z",
+	"updatedAt": "2026-10-20T17:04:01.049Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -31,12 +31,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T17:03:59.825Z",
+			"evidence": "At e1593dcf the committed standard tests fail: component.cards retain extra metadata, usage links are missing, and registryGate accepts a component with no preview. Browser checkpoints captured at three widths."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T17:04:01.049Z",
+			"evidence": "Reuse EntityLink for three distinct consumers, remove card-only metadata, keep provenance in the image link tooltip, rename Model Cards without changing identity, and reject active component manifests without a required own screenshot preview."
 		},
 		{
 			"id": "implement",

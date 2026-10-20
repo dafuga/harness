@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-explorer-page-card",
 	"kind": "component",
 	"title": "Visual catalog card",
-	"responsibility": "Shows a page title and screenshot, or a visual component with its screenshot and usage facts.",
+	"responsibility": "Shows a page screenshot and title, or a component screenshot, title and clickable consumers.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -36,14 +36,14 @@
 			{
 				"name": "ExplorerPageCard.category",
 				"type": "'pages' | 'components'",
-				"description": "Defaults to pages. Components retain the same screenshot card while showing their consumers and contained components, with an Open component icon."
+				"description": "Defaults to pages. Components show only their screenshot, title and first three distinct consumer links."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerPageCard",
 				"type": "markup",
-				"description": "Pages show only their title and screenshot in one keyboard-accessible link. Capture origin appears on hover. Components retain purpose, usages, provenance and verification. A missing or broken image shows a gap."
+				"description": "Pages show a title and screenshot link. Components show a screenshot, title and Used In links. Capture provenance appears on hover; missing evidence stays explicit and blocks verification."
 			}
 		],
 		"errors": []
@@ -56,11 +56,6 @@
 		},
 		{
 			"unit": "reports.component.harness-harness-icon",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-harness-verdict",
 			"via": "import",
 			"origin": "derived"
 		},

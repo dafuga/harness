@@ -39,6 +39,10 @@ one and multiple eligible consumers in the standardized catalog tests, including
 duplicate references and excluded or missing consumers. A passing display test
 must not accept a row that contradicts the collection's inclusion rule.
 
+## Visual Component Evidence
+
+- Every active visual component requires a preview bound to its own required screenshot state and viewport. Capture the actual component with representative parameters; verify fresh or validated inherited screenshots at the selected revision. A missing image or failed verdict blocks handoff: inspect and repair its registry, scenario, reason, ledger and budget failures; never hide the failure, substitute another component, or relabel a capture. Component titles name the component, with state labels confined to scenario states.
+
 ## Bug and Regression Loops
 
 - Commit the strengthened failing test before product repair. Run `harness loop record <loop> --phase red --test <path> --command <command> --assertion <actual failure>` on that commit. Make a separate fix commit and run `loop record --phase green` against the same tests, fixtures, command and environment. Keep both commits when landing; never squash away this regression history. Focused red/green proof does not replace full verification.
