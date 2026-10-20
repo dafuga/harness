@@ -2,7 +2,7 @@
 	"name": "performance-profile-layout",
 	"goal": "Performance profile has space above it, equal measurement row heights, and no output-size row when no output is declared.",
 	"createdAt": "2026-10-20T20:14:48.990Z",
-	"updatedAt": "2026-10-20T20:15:53.752Z",
+	"updatedAt": "2026-10-20T20:17:37.971Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T20:17:37.971Z",
+			"evidence": "b02b88f6 fails all three browser widths with named assertions for zero card spacing, unequal row heights and an inapplicable output row. Unit tests also fail the missing target metadata. Frozen red record 866f3e58e6985291a2a56c22db7b8569d15293aedca768fc0defdea5f103bec6 retains the same before checkpoints."
 		},
 		{
 			"id": "implement",

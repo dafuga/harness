@@ -60,7 +60,7 @@
 			{
 				"name": "entityMeasure",
 				"type": "EntityMeasure",
-				"description": "Source, emitted-size and complexity rows plus one performance row per matching measurement/profile or an explicit unmeasured row. Own size metrics exclude workload/profile measurements. Partial and unavailable notes remain visible; timing tolerance above five percent is flagged."
+				"description": "Source, emitted-size and complexity rows plus separate performance rows per matching measurement/profile. Emitted rows retain target identity; none means no output-size metric applies. Missing measurements, partial notes and unavailable-target reasons remain explicit; timing tolerance above five percent is flagged."
 			}
 		],
 		"errors": []
