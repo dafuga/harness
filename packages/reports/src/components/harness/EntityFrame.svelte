@@ -26,7 +26,9 @@
 	);
 	let entity = $derived(helperEntity(moduleEntity, host.route.helper));
 	let choosing = $derived(
-		moduleEntity?.category === 'functions' && !host.route.helper && (moduleEntity.unit.helpers?.length ?? 0) > 1
+		moduleEntity?.category === 'functions' &&
+			!host.route.helper &&
+			(moduleEntity.unit.helpers?.length ?? 0) > 1
 	);
 	let owner = $derived.by(() => {
 		if (!entity || listed) return undefined;

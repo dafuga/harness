@@ -2,7 +2,7 @@
 	"name": "private-function-history",
 	"goal": "Explicit removal-commit addresses retain private functions last active contracts without adding them to shared collections",
 	"createdAt": "2026-10-20T17:41:03.481Z",
-	"updatedAt": "2026-10-20T17:44:51.361Z",
+	"updatedAt": "2026-10-20T17:46:21.916Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T17:46:18.920Z",
+			"evidence": "EntityFrame uses an explicit-address resolver that first reads active head units, then allows the parent contract only for an id explicitly removed by head. The same removed projection retains its verdict and lastAt. Private collections retain their default exclusion. Source fix 2eb9c49b."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T17:46:21.916Z",
+			"evidence": "Unchanged four entity-frame tests pass at separate fix commit 2eb9c49b using the identical command, fixture hash and fixed cb01adcd environment. Green checkpoint is retained in Harness immutable regression history; both retired-tombstone and fully-absent lifecycle variants now preserve originalInput and reject unrelated revisions or missing parents."
 		},
 		{
 			"id": "verify",
