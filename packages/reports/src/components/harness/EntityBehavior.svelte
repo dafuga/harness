@@ -108,7 +108,7 @@
 		{/if}
 	</header>
 	{#if shown.groups.length === 0}
-		<p class="ex-gap">
+		<p class="ex-gap ex-unrecorded">
 			<HarnessVerdict passed={false} label="Evidence missing" />
 			<span>No end-to-end result is recorded for this entity at {at}.</span>
 		</p>
@@ -165,3 +165,10 @@
 		</dl>
 	</div>
 </section>
+
+<style>
+	.ex-gap.ex-unrecorded {
+		border-color: var(--hx-line, #273e50);
+		color: var(--hx-muted, #92a6bb);
+	}
+</style>

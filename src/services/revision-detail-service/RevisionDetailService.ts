@@ -19,7 +19,6 @@ import { RegressionProofRepository } from '../../repositories/RegressionProofRep
 import { regressionHistory } from '../../utils/regressionHistory';
 import type { RegressionView } from '../../core/regressionTypes';
 import { unitMetadata } from './unitMetadata';
-
 export interface RevisionDetail {
 	schemaVersion: 1;
 	commit: string;
@@ -56,12 +55,10 @@ export interface RevisionDetail {
 	/** Separate failing-test and fix commits, without granting a verification verdict. */
 	regressions?: RegressionView[];
 }
-
 interface Stored {
 	registry: RevisionRegistry;
 	ledger: BudgetEvent[];
 }
-
 export interface BuiltRevision {
 	detail: RevisionDetail;
 	/** The stored side to write at `detail.side`; revisions with one tree share one. */
@@ -72,17 +69,14 @@ export interface BuiltRevision {
 	/** The budget ledger as this revision stores it. */
 	ledger: BudgetEvent[];
 }
-
 /** What the source of a commit says, whatever is noted on it: shared, it is read only once. */
 export const revisionSources = (root: string) => ({
 	source: new sourceImpact.SourceImpactService(root),
 	registries: new Map<string, Stored>()
 });
-
 /** A commit's own registry, records and reasons, with captures placed by the caller. */
 export class RevisionDetailService {
 	private readonly git: GitAdapter;
-
 	constructor(
 		private readonly root: string,
 		private readonly history: HistoryStatusService,
@@ -90,7 +84,6 @@ export class RevisionDetailService {
 	) {
 		this.git = new GitAdapter(root);
 	}
-
 	async build(commit: string, media: MediaPlacer): Promise<BuiltRevision> {
 		const status = await this.history.status(commit);
 		const records: RecordView[] = [];
@@ -109,6 +102,7 @@ export class RevisionDetailService {
 		const side = await this.kept.source.stored(commit);
 		const tree = await this.git.attempt(['rev-parse', '--verify', '--quiet', `${commit}^{tree}`]);
 		const stored = await this.registry(commit);
+		await this.sourceMeasures(commit, stored.registry);
 		const reasons = await this.reasons(commit, sound);
 		const detail: RevisionDetail = {
 			schemaVersion: 1,
@@ -124,7 +118,12 @@ export class RevisionDetailService {
 		};
 		return { detail, status, sound, ledger: stored.ledger, ...(side ? { side } : {}) };
 	}
-
+	private async sourceMeasures(commit: string, registry: RevisionRegistry): Promise<void> {
+		const measured = await this.kept.source.measurements(commit);
+		for (const unit of registry.units) {
+			unit.sourceMeasurements = measured.filter((item) => item.unit === unit.id);
+		}
+	}
 	/** Every capture is looked up in the record that produced it, which may be an earlier one. */
 	private async media(
 		loaded: AttachedRecord,
@@ -143,7 +142,6 @@ export class RevisionDetailService {
 		}
 		return resolved;
 	}
-
 	/** The checks each record that this one inherits from ran, for the origins that can be read. */
 	private async ran(record: VerificationRecord): Promise<Map<string, VerificationRecord['tests']>> {
 		const origins = new Set(record.scenarios.flatMap((item) => item.referencedRecord ?? []));
@@ -154,7 +152,6 @@ export class RevisionDetailService {
 		}
 		return found;
 	}
-
 	/** The attached record with this id, wherever in history it was attached. */
 	private async origin(id: string): Promise<AttachedRecord | undefined> {
 		const line = (await this.history.verifications()).find((item) => item.record === id);
@@ -191,14 +188,12 @@ export class RevisionDetailService {
 		return revisionReasons({ parent, own: await this.kept.source.reasons(commit), noted, records });
 	}
 }
-
 /** Why the bytes of a capture are not available, in the words of what is wrong with them. */
 function gapFor(source: AttachedRecord | undefined, path: string, origin: string): string {
 	if (!source) return `inherited record ${short(origin)} is not available`;
 	const named = source.problems.find((problem) => problem.includes(path));
 	return named ?? `${path} is not part of record ${short(origin)}`;
 }
-
 function comparison(sound: VerificationRecord[]): RevisionDetail['comparison'] {
 	const record = sound.find((item) => item.status === 'passed') ?? sound[0];
 	if (!record) return null;
@@ -208,11 +203,9 @@ function comparison(sound: VerificationRecord[]): RevisionDetail['comparison'] {
 		.map((scenario) => scenario.id);
 	return { base: record.source.base, record: record.id, units, changed, scenarios, uncertain };
 }
-
 function short(id: string): string {
 	return id.slice(0, 12);
 }
-
 async function regressionProofs(root: string, history: HistoryStatusService, commit: string) {
 	const repository = new RegressionProofRepository(root, history.pinned?.evidence);
 	return regressionHistory(commit, await history.all(), repository.load.bind(repository));

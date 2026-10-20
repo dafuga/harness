@@ -18,5 +18,8 @@ export function entityShown(host: Shown, entity: ExplorerEntity): EntityShown {
 		// The registry that holds the entity says what it is made into, so which states apply.
 		states: requiredStates(entity.unit, held.registry.scenarios, held.registry.units)
 	});
-	return { contract, measure: entityMeasure(entity.unit, record), record };
+	const observations = (host.head.regressions ?? []).flatMap((proof) =>
+		proof.green?.commit === host.head.commit ? (proof.green.measurements ?? []) : []
+	);
+	return { contract, measure: entityMeasure(entity.unit, record, observations), record };
 }

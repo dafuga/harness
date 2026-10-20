@@ -28,7 +28,7 @@
 			{
 				"name": "EntityFrame.entityHeaderAndScreen",
 				"type": "markup",
-				"description": "Entity identity, the persistent component screenshot above its tabs, then the selected section. Captures use the selected revision and retain explicit gaps."
+				"description": "Selected entity header and screen. A helper address selects only its callable API; a legacy multi-callable address offers individual links. Missing helpers remain explicit. Owning module identity/history is retained."
 			}
 		],
 		"errors": [
@@ -47,6 +47,11 @@
 	"dependencies": [
 		{
 			"unit": "reports.component.harness-entity-header",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-entity-link",
 			"via": "import",
 			"origin": "derived"
 		},

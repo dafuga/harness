@@ -4,7 +4,6 @@ import { extname, join } from 'node:path';
 import type { ExplorerLocation } from '../src/models/Explorer.types';
 import type { PreviewVariant } from './entityPreviewData';
 import { previewHome } from './entityPreviewSetup';
-
 // A local address is a secure context, so the page can hash the bytes of an artifact it reads.
 export const origin = 'http://localhost:41739';
 export const viewports = {
@@ -20,7 +19,6 @@ const types: Record<string, string> = {
 	'.wav': 'audio/wav',
 	'.json': 'application/json'
 };
-
 function shell(home: string): string {
 	const sheets = readdirSync(home).filter((name) => name.endsWith('.css'));
 	const hashes = readFileSync(join(home, 'hashes.json'), 'utf8');
@@ -30,7 +28,6 @@ function shell(home: string): string {
 <body><div class="hx-shell"><main class="hx-main" id="app"></main></div>
 <script>window.artifactHashes=${hashes}</script><script src="/preview.iife.js"></script></body></html>`;
 }
-
 /**
  * Opens the content at an address, served from the built preview and from nowhere else. A
  * variant asks for the selected commit with a state uncaptured or with reasons at old length.
@@ -58,21 +55,17 @@ export async function open(
 	await page.goto(`${origin}/${asked}#${encodeURIComponent(JSON.stringify(address))}`);
 	await page.locator('.ex-content').waitFor();
 }
-
 /** The address the content is at, as the preview keeps it. */
 export const where = (page: Page): Promise<ExplorerLocation> =>
 	page.evaluate(() => JSON.parse(decodeURIComponent(location.hash.slice(1))) as ExplorerLocation);
-
 /** What a locator shows as text, as a person reads it: nothing hidden, each space once. */
 export const shown = async (page: Page, selector: string): Promise<string[]> =>
 	page
 		.locator(selector)
 		.evaluateAll((all) => all.map((found) => (found as HTMLElement).innerText.trim()));
-
 /** True when nothing makes the page wider than its window. */
 export const fits = (page: Page): Promise<boolean> =>
 	page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1);
-
 /** Keeps what the page shows, when a run asks for screenshots; the name says what and how wide. */
 export async function capture(page: Page, name: string): Promise<void> {
 	if (process.env.TAKE_SCREENSHOT !== '1') return;
@@ -80,7 +73,6 @@ export async function capture(page: Page, name: string): Promise<void> {
 	mkdirSync(directory, { recursive: true });
 	await page.screenshot({ path: join(directory, `${name}.png`), fullPage: true });
 }
-
 /** Wait for the visible capture to render without forcing offscreen lazy images to load. */
 async function ready(page: Page): Promise<void> {
 	await page.evaluate(async () => {
@@ -92,7 +84,6 @@ async function ready(page: Page): Promise<void> {
 		await Promise.all(visible.map((image) => image.decode()));
 	});
 }
-
 /** Visual evidence leads its overview; a component retains it above every row of tabs. */
 export async function reviewVisual(
 	page: Page,
@@ -131,7 +122,6 @@ export async function reviewVisual(
 		expect(await fits(page)).toBe(true);
 	}
 }
-
 /** Every supported visual state has its own revision-bound picture, including errors. */
 export async function reviewStates(
 	page: Page,
@@ -170,7 +160,6 @@ export async function reviewStates(
 	).toHaveAttribute('src', `/media/${commit ? 'bbbbbbb' : 'ccccccc'}-error-mobile.png`);
 	expect(await fits(page)).toBe(true);
 }
-
 /** Choose through the same filter dialog used by every catalog, retaining keyboard focus. */
 export async function chooseCatalogFilter(page: Page, name: string, value: string | boolean) {
 	await page.getByRole('button', { name: 'Filters', exact: true }).click();
@@ -179,4 +168,26 @@ export async function chooseCatalogFilter(page: Page, name: string, value: strin
 	else await dialog.getByRole('combobox', { name, exact: true }).selectOption(value);
 	await dialog.getByRole('button', { name: 'Done', exact: true }).click();
 	await expect(page.getByRole('button', { name: 'Filters', exact: true })).toBeFocused();
+}
+
+export async function reviewMeasurements(tab: Page, name: string): Promise<void> {
+	const performance = tab.getByRole('region', { name: 'Performance profile' });
+	await capture(tab, `automatic-measurements-${name}`);
+	await expect(performance).toContainText('0.12 ms');
+	await expect(performance).not.toContainText('No performance budget');
+	const metric = performance.getByRole('cell', {
+		name: 'Benchmark process peak RSS',
+		exact: true
+	});
+	const fragments = await metric.evaluate((cell) => {
+		const range = document.createRange();
+		const text = [...cell.childNodes].find(
+			(node) => node.nodeType === Node.TEXT_NODE && node.textContent?.includes('Benchmark')
+		)!;
+		range.setStart(text, 0);
+		range.setEnd(text, 'Benchmark'.length);
+		return range.getClientRects().length;
+	});
+	expect(fragments, 'benchmark labels stay whole').toBe(1);
+	expect(await fits(tab)).toBe(true);
 }

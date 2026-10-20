@@ -3,7 +3,7 @@
 	"id": "reports.function.contract-fields",
 	"kind": "function",
 	"title": "Prepare typed contract fields",
-	"responsibility": "Prepares public types, readable field groups and honest example labels for one opened entity.",
+	"responsibility": "Prepares named parameter and return tables with typed examples, and error tables only for declared errors.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -15,6 +15,7 @@
 			"typeLabel",
 			"contractFields",
 			"contractFacts",
+			"callableContracts",
 			"ContractExample",
 			"ContractField",
 			"ContractGroup",
@@ -56,6 +57,11 @@
 				"name": "contractFacts.category",
 				"type": "ExplorerCategory",
 				"description": "The entity category; functions also expose execution targets."
+			},
+			{
+				"name": "callableContracts.unit",
+				"type": "HarnessUnit",
+				"description": "Source-derived callable metadata and declared examples at the selected revision."
 			}
 		],
 		"outputs": [
@@ -73,6 +79,11 @@
 				"name": "contractFacts",
 				"type": "ContractRow[]",
 				"description": "Whole-contract facts without duplicate field summaries, plus execution targets for functions."
+			},
+			{
+				"name": "callableContracts",
+				"type": "{ name: string; signature: string; groups: ContractGroup[] }[]",
+				"description": "Callable signatures and Parameters/Returns groups with literal parameter names and declared return value names; Throws uses a table only when errors are declared. Missing errors are stated as text."
 			}
 		],
 		"errors": []

@@ -45,7 +45,7 @@
 			{
 				"name": "entityLens",
 				"type": "ExplorerLocation",
-				"description": "New location retaining the branch. Entity, section and tab are carried only when explicitly supplied, and section/tab are omitted without a target entity."
+				"description": "Location retaining branch and revision; helper identity follows tabs and commits only within the same owning entity. Catalog and different-entity links discard it."
 			},
 			{
 				"name": "shortCommit",

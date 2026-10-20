@@ -1,3 +1,4 @@
+import type { Measurement } from '../../core/verificationTypes';
 import { createHash } from 'node:crypto';
 import type { ComponentManifest, ScenarioManifest } from '../../core/unitTypes';
 import type { BudgetBaseline } from '../budgetFindings';
@@ -24,6 +25,8 @@ export interface RevisionRegistry {
 		contract: Pick<ComponentManifest['contract'], 'inputs' | 'outputs' | 'errors'>;
 		helpers?: PublicHelper[];
 		helperGap?: string;
+		/** Static observations from this source commit; not a verification verdict. */
+		sourceMeasurements?: Measurement[];
 		documentation?: UnitDocumentation;
 		preview?: ComponentManifest['preview'];
 		runtime: { kind: string; targets: Array<{ kind: string; entry: string }> };

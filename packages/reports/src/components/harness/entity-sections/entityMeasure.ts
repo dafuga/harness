@@ -21,7 +21,7 @@ function ownRow(measured: Measurement[], metric: string, label: string): Measure
 	const found = own(measured, metric);
 	if (!found) return { label, value: notMeasured };
 	if (found.value === null) return { label, value: notMeasured, note: told(found.unavailable) };
-	const value = metric === 'source-bytes' ? byteSize(found.value) : String(found.value);
+	const value = metric === 'source-bytes' ? byteSize(found.value!) : String(found.value);
 	return { label, value, ...(found.partial ? { note: `Partial: ${told(found.partial)}` } : {}) };
 }
 
@@ -36,16 +36,32 @@ function emittedRows(unit: HarnessUnit, record: HarnessRecord | null): MeasureRo
 	});
 }
 
-function timing(found: Measurement | undefined, budget: Budget): PerformanceRow {
-	const measured = found && found.value !== null;
+function observedValue(found: Measurement | undefined): string {
+	if (!found || found.value === null) return notMeasured;
+	if (found.unitOfMeasure === 'bytes') return byteSize(found.value);
+	return `${Number(found.value.toPrecision(4))} ${found.unitOfMeasure}`;
+}
+
+function metricLabel(metric: string): string {
+	if (metric === 'process-peak-rss-bytes') return 'Benchmark process peak RSS';
+	if (metric === 'latency-warm-ms') return 'Warm latency per call';
+	return humanize(metric);
+}
+
+function timing(
+	found: Measurement | undefined,
+	budget: Omit<Budget, 'tolerance'> & { tolerance?: number }
+): PerformanceRow {
+	const tolerance = budget.tolerance;
 	return {
 		workload: humanize(budget.workload),
-		metric: humanize(budget.metric),
+		metric: metricLabel(budget.metric),
 		target: found?.target ?? budget.target ?? '',
 		profile: found?.profile ?? '',
-		value: measured ? `${found.value} ${found.unitOfMeasure}` : notMeasured,
-		tolerance: `${Math.round(budget.tolerance * 100)}%`,
-		over: budget.tolerance > tolerancePolicy
+		value: observedValue(found),
+		note: found?.method,
+		tolerance: tolerance === undefined ? '—' : `${Math.round(tolerance * 100)}%`,
+		over: tolerance !== undefined && tolerance > tolerancePolicy
 	};
 }
 
@@ -65,14 +81,37 @@ function budgetRows(measured: Measurement[], budget: Budget): PerformanceRow[] {
  * judges that revision by, so a figure and a verdict never come from different attempts. A metric nothing measured reads Not measured with its reason and is never a zero.
  * Timings taken under different profiles or targets stay separate rows and are never joined.
  */
-export function entityMeasure(unit: HarnessUnit, record: HarnessRecord | null): EntityMeasure {
-	const measured = (record?.measurements ?? []).filter((item) => item.unit === unit.id);
+export function entityMeasure(
+	unit: HarnessUnit,
+	record: HarnessRecord | null,
+	observations: Measurement[] = []
+): EntityMeasure {
+	const measured = [
+		...(record?.measurements ?? []),
+		...observations,
+		...(unit.sourceMeasurements ?? [])
+	].filter(
+		(item) => item.unit === unit.id && (!item.callable || unit.owns.symbols.includes(item.callable))
+	);
+	const unbudgeted = measured.filter(
+		(item) =>
+			item.workload &&
+			item.profile &&
+			!unit.budgets.performance.some(
+				(budget) => budget.workload === item.workload && budget.metric === item.metric
+			)
+	);
 	return {
 		size: [
 			ownRow(measured, 'source-bytes', 'Source size'),
-			...emittedRows(unit, record),
+			...emittedRows(unit, record ?? ({ measurements: measured } as HarnessRecord)),
 			ownRow(measured, 'complexity', 'Complexity')
 		],
-		performance: unit.budgets.performance.flatMap((budget) => budgetRows(measured, budget))
+		performance: [
+			...unit.budgets.performance.flatMap((budget) => budgetRows(measured, budget)),
+			...unbudgeted.map((found) =>
+				timing(found, { workload: found.workload!, metric: found.metric })
+			)
+		]
 	};
 }

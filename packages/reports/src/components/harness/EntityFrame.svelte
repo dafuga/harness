@@ -6,7 +6,8 @@
 	import type { ExplorerScreenProps } from '../../models/ExplorerScreen.types';
 	import { entityLens, shortCommit, type EntityNav } from '../../utils/entityLens';
 	import { screenOptions } from '../../utils/entityScreens';
-	import { entityChanged } from '../../utils/entityShown';
+	import { entityChanged, helperEntity } from '../../utils/entityShown';
+	import EntityLink from './EntityLink.svelte';
 	import EntityHeader from './EntityHeader.svelte';
 	import EntityMissing from './EntityMissing.svelte';
 	import EntityScreens from './EntityScreens.svelte';
@@ -20,13 +21,17 @@
 		children: Snippet<[ExplorerEntity, EntityNav]>;
 	} = $props();
 	let listed = $derived(host.entities.find((item) => item.id === host.route.entity));
-	let entity = $derived.by(() => {
+	let moduleEntity = $derived.by(() => {
 		if (listed) return listed;
 		const unit = host.head.registry.units.find(
 			(item) => item.id === host.route.entity && item.status === 'active'
 		);
-		return unit ? explorerEntity(host.head, unit, true) : null;
+		return unit ? explorerEntity(host.head, unit, true) ?? undefined : undefined;
 	});
+	let entity = $derived(helperEntity(moduleEntity, host.route.helper));
+	let choosing = $derived(
+		moduleEntity?.category === 'functions' && !host.route.helper && (moduleEntity.unit.helpers?.length ?? 0) > 1
+	);
 	let owner = $derived.by(() => {
 		if (!entity || listed) return undefined;
 		const related = host.lens.relations(entity.id);
@@ -51,7 +56,26 @@
 				/>
 			{/if}
 		{/snippet}
-		{#if entity}
+		{#if choosing && moduleEntity}
+			<section class="ex-card">
+				<h1>{moduleEntity.name}</h1>
+				<p>Choose a helper to open its own detail page.</p>
+				<ul class="ex-links">
+					{#each moduleEntity.unit.helpers ?? [] as helper}
+						<li>
+							<EntityLink
+								{nav}
+								to={entityLens(host.route, {
+									entity: moduleEntity.id,
+									helper: helper.name,
+									tab: 'contract'
+								})}><code>{helper.name}()</code></EntityLink
+							>
+						</li>
+					{/each}
+				</ul>
+			</section>
+		{:else if entity}
 			<EntityHeader
 				{entity}
 				{owner}
@@ -59,11 +83,14 @@
 				shared={isShared(host.lens.relations(entity.id), entity.unit)}
 				preview={screens}
 			/>
+			{#if host.route.helper}<p class="ex-note">
+					Size, complexity, history, relationships and verification describe the owning module.
+				</p>{/if}
 			{@render screen(entity, nav)}
 		{:else}
 			<EntityMissing
 				title="Not at this revision"
-				message={`Nothing named ${host.route.entity} is in the registry at ${shortCommit(host.scope.commit)}.`}
+				message={`Nothing named ${host.route.helper ?? host.route.entity} is in the registry at ${shortCommit(host.scope.commit)}.`}
 				{nav}
 				to={entityLens(host.route, { category: host.route.category })}
 			/>

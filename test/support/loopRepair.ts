@@ -23,7 +23,14 @@ export async function prepareRepair(root: string, template: string): Promise<voi
 	expect(JSON.parse(old.stdout).passed).toBe(true);
 	await writeFile(
 		join(root, 'proof.ts'),
-		"import { strict as assert } from 'node:assert'; import { value } from './source'; assert.equal(value, 3);"
+		`import { strict as assert } from 'node:assert'; import { mkdirSync, writeFileSync } from 'node:fs'; import { value } from './source';
+const directory = process.env.HARNESS_EVIDENCE_DIR;
+if (directory) {
+ mkdirSync(directory, {recursive:true});
+ writeFileSync(directory+'/sample.json', JSON.stringify({measurements:[{unit:'function.sample', metric:'latency-warm-ms', unitOfMeasure:'ms', value:0.5, workload:'sample', method:'Synthetic fixture timing.'}]}));
+ writeFileSync(directory+'/captures.ndjson', JSON.stringify({evidence:'sample', kind:'benchmark', state:'sample', file:'sample.json', mediaType:'application/json'})+'\\n');
+}
+assert.equal(value, 3);`
 	);
 	await commitRepair(root, 'fix: commit the failing selected-value test');
 }
@@ -125,5 +132,17 @@ async function phaseProof(root: string, phase: string, frozen: string): Promise<
 		phase: phase,
 		status: phase === 'red' ? 'failed' : 'passed'
 	});
+	expect(
+		JSON.parse(recorded.stdout).measurements,
+		'focused proof retains benchmark measurements'
+	).toEqual(
+		expect.arrayContaining([
+			expect.objectContaining({
+				metric: 'latency-warm-ms',
+				value: 0.5,
+				testedRevision: expect.any(String)
+			})
+		])
+	);
 	if (phase === 'red') await rejected(root, ['--phase', 'green'], 'separate fix commit');
 }

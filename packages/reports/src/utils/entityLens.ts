@@ -73,7 +73,9 @@ export const entityLabels: Record<ExplorerCategory, EntityLabel> = {
 	}
 };
 
-type Target = Partial<Pick<ExplorerLocation, 'commit' | 'category' | 'entity' | 'section' | 'tab'>>;
+type Target = Partial<
+	Pick<ExplorerLocation, 'commit' | 'category' | 'entity' | 'helper' | 'section' | 'tab'>
+>;
 
 /**
  * Another place of the same branch and the same revision mode. The branch is always kept and
@@ -89,6 +91,8 @@ export function entityLens(from: ExplorerLocation, to: Target): ExplorerLocation
 	};
 	if (!to.entity) return place;
 	place.entity = to.entity;
+	const helper = to.helper ?? (to.entity === from.entity ? from.helper : undefined);
+	if (helper && place.category === 'functions') place.helper = helper;
 	if (to.section) place.section = to.section;
 	if (to.tab) place.tab = to.tab;
 	return place;

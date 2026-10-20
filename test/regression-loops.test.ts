@@ -94,6 +94,9 @@ test.each(['app', 'lib'] as const)(
 			expect(text).toContain('commit the failing test');
 			expect(text).toContain('separate fix commit');
 			expect(text).toContain('loop record');
+			expect(text).toContain('parameter names describe their domain role');
+			expect(text).toContain('earliest responsible generator, skill or review checkpoint');
+			expect(text).toContain('one selected callable per detail page');
 		}
 	}
 );

@@ -18,6 +18,7 @@ export interface PerformanceRow {
 	/** The machine profile the timing was taken under; empty when nothing was measured. */
 	profile: string;
 	value: string;
+	note?: string;
 	tolerance: string;
 	/** True when the declared tolerance is looser than the policy allows. */
 	over: boolean;

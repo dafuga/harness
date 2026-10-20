@@ -22,6 +22,9 @@
 	// Proven is one value. Missing, stale, unknown and anything else that arrives is not proven.
 	let proven = $derived(passed === true);
 	let words = $derived(label ?? (proven ? 'Full coverage passed' : 'Verification failed'));
+	let unknown = $derived(
+		!proven && /missing|stale|incomplete|unknown|not proven|not recorded|no .*recorded/i.test(words)
+	);
 	let why = $derived(proven ? [] : reasons);
 	// What asks for the tooltip: a pointer over the mark or over the tooltip itself, the keyboard
 	// on the mark, or a tap that pinned it.
@@ -79,7 +82,14 @@
 	});
 </script>
 
-<span class="hx-verdict" class:passed={proven} class:failed={!proven} class:framed bind:this={root}>
+<span
+	class="hx-verdict"
+	class:passed={proven}
+	class:failed={!proven && !unknown}
+	class:unknown
+	class:framed
+	bind:this={root}
+>
 	<button
 		type="button"
 		aria-label={words}
@@ -90,7 +100,7 @@
 		onfocus={(event) => (asked.focus = event.currentTarget.matches(':focus-visible'))}
 		onblur={close}
 		onclick={() => (asked.pinned = !asked.pinned)}
-		onkeydown={keyed}><HarnessIcon name={proven ? 'passed' : 'failed'} /></button
+		onkeydown={keyed}><HarnessIcon name={proven ? 'passed' : unknown ? 'info' : 'failed'} /></button
 	>
 	<span
 		class="hx-tip"
@@ -114,6 +124,9 @@
 		align-items: center;
 		color: var(--hx-fail, #f2545b);
 		vertical-align: middle;
+	}
+	.hx-verdict.unknown {
+		color: var(--hx-muted, #92a6bb);
 	}
 	.hx-verdict.passed {
 		color: var(--hx-pass, #34d399);

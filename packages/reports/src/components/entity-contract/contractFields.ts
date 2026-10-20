@@ -44,11 +44,7 @@ function examplesOf(item: Item, type: string): Pick<ContractField, 'source' | 'e
 	return { source: 'illustrative', examples: [shown(placeholder.value, markup)] };
 }
 
-/**
- * The name of a field in words, without the owner a name may say it of. What a component draws
- * is derived under the name of the component or of its file, which says nothing: it reads
- * rendered markup.
- */
+/** Component fields read as words; their derived markup output reads rendered markup. */
 function nameOf(item: Item, unit: HarnessUnit): string {
 	const name = item.name.slice(item.name.lastIndexOf('.') + 1);
 	const files = unit.owns.source.map((path) => path.slice(path.lastIndexOf('/') + 1).split('.')[0]);
@@ -104,4 +100,70 @@ export function contractFacts(
 	const kinds = unit.runtime.targets.map((target) => targets[target.kind] ?? target.kind);
 	const fallback = targets[unit.runtime.kind] ?? unit.runtime.kind;
 	return [...facts, { label: 'Runs as', value: [...new Set(kinds)].join(', ') || fallback }];
+}
+
+/** Each recorded callable keeps its own literal parameters and returned value. */
+export function callableContracts(unit: HarnessUnit): Array<{
+	name: string;
+	signature: string;
+	groups: ContractGroup[];
+}> {
+	const helpers = unit.helpers ?? [];
+	return helpers.map((helper) => {
+		const parameters = helper.inputs.map((input) => {
+			const declared = unit.contract.inputs.find((field) => field.name === input.name) ?? input;
+			const prefix = `${helper.name}.`;
+			const name = input.name.startsWith(prefix) ? input.name.slice(prefix.length) : input.name;
+			return { ...fieldOf(declared, unit), name };
+		});
+		const declared =
+			unit.contract.outputs.find(
+				(field) => field.name === helper.name || field.name.startsWith(`${helper.name}.`)
+			) ?? (helpers.length === 1 ? unit.contract.outputs[0] : undefined);
+		const type = typeLabel(helper.output ?? declared?.type ?? 'unknown');
+		const returned = returnField(declared, type, helper.name, unit);
+		const errors = unit.contract.errors.filter(
+			(field) => helpers.length === 1 || field.name.startsWith(`${helper.name}.`)
+		);
+		const groups: ContractGroup[] = [
+			{
+				id: 'inputs',
+				title: 'Parameters',
+				none: 'No parameters.',
+				fields: parameters,
+				keepEmpty: true
+			},
+			{ id: 'outputs', title: 'Returns', none: '', fields: [returned] },
+			{
+				id: 'errors',
+				title: 'Throws',
+				none: 'No errors declared.',
+				fields: errors.map((field) => fieldOf(field, unit)),
+				hideNames: true
+			}
+		];
+		const args = parameters.map((field) => `${field.name}: ${field.type}`).join(', ');
+		return { name: helper.name, signature: `${helper.name}(${args}): ${type}`, groups };
+	});
+}
+
+/** A return value has its own declared name, distinct from the callable that produces it. */
+function returnField(
+	declared: Item | undefined,
+	type: string,
+	callable: string,
+	unit: HarnessUnit
+): ContractField {
+	const prefix = `${callable}.`;
+	const name =
+		declared && declared.name !== callable ? declared.name.replace(prefix, '') : 'returnValue';
+	if (type === 'void')
+		return {
+			name,
+			type,
+			source: 'missing',
+			examples: [],
+			description: 'This function returns no value.'
+		};
+	return { ...fieldOf({ ...declared, name, type }, unit), name };
 }

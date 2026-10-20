@@ -31,6 +31,10 @@ test('the root opens Pages at the tip of the main branch', () => {
 });
 
 test('a branch address is a page bound to the tip of that branch', () => {
+	expect(
+		shown('/branch/main/functions/function.case', '?tab=contract&helper=toKebabCase'),
+		'callable URLs resolve a page rather than a redirect loop'
+	).toMatchObject({ location: { helper: 'toKebabCase', tab: 'contract' } });
 	expect(shown(`/branch/${encoded}/components`)).toMatchObject({
 		mode: 'current',
 		branch: kept,

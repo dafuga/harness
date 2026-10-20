@@ -14,7 +14,10 @@ export function placePath(place: ExplorerLocation): string {
 	const commit = place.commit ? `/commit/${place.commit}` : '';
 	const entity = place.entity ? `/${encodeURIComponent(place.entity)}` : '';
 	const section = place.section ? `/${place.section}` : '';
-	const tab = place.tab ? `?tab=${place.tab}` : '';
+	const query = new URLSearchParams();
+	if (place.tab) query.set('tab', place.tab);
+	if (place.helper) query.set('helper', place.helper);
+	const tab = query.size ? `?${query}` : '';
 	return `/harness${branch}${commit}/${place.category}${entity}${section}${tab}`;
 }
 

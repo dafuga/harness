@@ -67,3 +67,95 @@ test('legacy contract tables retain types and example controls for opaque fields
 	expect(body).toContain('View example for Context');
 	expect(body).toContain('PrivateContext');
 });
+
+test('callable contracts preserve actual parameters and associate their returns', () => {
+	const head = revision(commits.tip, [record(commits.tip)]);
+	head.registry.units = head.registry.units.map((unit) =>
+		unit.id !== ids.filter
+			? unit
+			: {
+					...unit,
+					helpers: [
+						{
+							name: 'countWords',
+							source: 'src/functions/text.ts',
+							output: 'number',
+							inputs: [{ name: 'countWords.textToConvert', type: 'string' }]
+						}
+					],
+					contract: {
+						inputs: [
+							{ name: 'countWords.textToConvert', type: 'string', examples: ['hello world'] }
+						],
+						outputs: [{ name: 'countWords.wordCount', type: 'number', examples: [2] }],
+						errors: []
+					}
+				}
+	);
+	const body = content(
+		'current',
+		{ category: 'functions', entity: ids.filter, tab: 'contract' },
+		{ head }
+	);
+	expect(body).toContain('aria-label="countWords contract"');
+	expect(words(body)).toContain('countWords(textToConvert: string): number');
+	expect(body).toContain('aria-label="Parameters"');
+	expect(body).toContain('aria-label="Returns"');
+	expect(body, 'return table includes the declared value name').toContain(
+		'View example for wordCount'
+	);
+	expect(body).not.toContain('aria-label="Throws"');
+	expect(words(body)).toContain('No errors declared.');
+	expect(words(body)).not.toMatch(/Count words · Value|Runs as|Module/);
+});
+
+test('a selected callable page excludes sibling APIs and rejects missing symbols', () => {
+	const head = revision(commits.tip, []);
+	const unit = head.registry.units.find((item) => item.id === ids.filter)!;
+	unit.helpers = [
+		{ name: 'first', source: 'helpers.ts', inputs: [], output: 'string' },
+		{ name: 'second', source: 'helpers.ts', inputs: [], output: 'number' }
+	];
+	unit.contract = {
+		inputs: [],
+		outputs: [
+			{ name: 'first.greeting', type: 'string', examples: ['hello'] },
+			{ name: 'second.answer', type: 'number', examples: [42] }
+		],
+		errors: [{ name: 'second.failure', type: 'TypeError' }]
+	};
+	for (const mode of ['current', 'commit'] as const) {
+		for (const helper of ['first', 'second']) {
+			const body = content(
+				mode,
+				{ category: 'functions', entity: ids.filter, helper, tab: 'contract' },
+				{ head }
+			);
+			expect(body, 'detail header identifies the selected function').toMatch(
+				new RegExp(`<h1[^>]*>.*?${helper}.*?</h1>`, 's')
+			);
+			expect(body).toContain(`aria-label="${helper} contract"`);
+			expect(body).not.toContain(
+				`aria-label="${helper === 'first' ? 'second' : 'first'} contract"`
+			);
+			expect(body).toContain(`View example for ${helper === 'first' ? 'greeting' : 'answer'}`);
+			expect(body.includes('aria-label="Throws"')).toBe(helper === 'second');
+			expect(words(body).includes('TypeError')).toBe(helper === 'second');
+		}
+		const missing = content(
+			mode,
+			{ category: 'functions', entity: ids.filter, helper: 'removed', tab: 'contract' },
+			{ head }
+		);
+		expect(words(missing)).toContain('Not at this revision');
+		expect(missing).not.toContain('aria-label="first contract"');
+		const legacy = content(
+			mode,
+			{ category: 'functions', entity: ids.filter, tab: 'contract' },
+			{ head }
+		);
+		expect(legacy).toContain('helper=first');
+		expect(legacy).toContain('helper=second');
+		expect(legacy).not.toContain('aria-label="first contract"');
+	}
+});

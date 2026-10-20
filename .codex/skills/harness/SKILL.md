@@ -55,6 +55,12 @@ must not accept a row that contradicts the collection's inclusion rule.
 - Record failing and passing commands, assertions, and results as step evidence. Keep green/guard/verification steps pending while proof fails; the agent retries repairs and checks. Harness does not launch an AI repair runner or automatically complete steps.
 - For affected UI paths, exercise the browser flow and capture fresh screenshots, then inspect the images before recording proof. Report blockers without claiming completion.
 
+## API and Naming Corrections
+
+- Function and parameter names describe their domain role or transformation. Avoid vague names such as `value` when the domain is known; generic abstractions may use genuinely generic names. Rename actual declarations, callers and contracts, not just UI labels.
+- When Daniel requests a naming or API correction, trace why the earlier implementation passed the generator, skill or review checkpoint. Repair the earliest responsible control within Harness, including generated tenant guidance where applicable, and verify the emitted instructions. Record cause and prevention alongside the regression proof.
+- A helper detail page selects one callable. Standard catalog-to-detail coverage must prove distinct links for helpers in the same module, isolated parameters/return/throws, and identity retained across tabs and historical revisions. Missing helpers stay explicit; preserve owning module identity and label module-level history and evidence honestly.
+
 ## Concise Writing
 
 - Behaviour note of a reason: 30 words and 200 characters. Each attempt: 15 words and 140 characters.
@@ -65,6 +71,13 @@ must not accept a row that contradicts the collection's inclusion rule.
 - Say what changed here and what was tried. Never shorten tests, contracts or evidence to fit.
 
 - Browser normal flows, including screenshot/video runs, must have no unexpected console.error or pageerror events. Use the shared browserTest fixture and watch extra contexts before navigation. Preserve logs for expected errors and declare their exact messages and reasons in that test. For unexpected errors, prove a failing log assertion before repair, then rerun the same unchanged regression until the error disappears.
+
+## Measurement Evidence
+
+- Source size and complexity are automatic observations of the selected committed tree; show them even when no full verification record exists.
+- Standard behavior tests for executable helpers record representative benchmark captures when verification requests evidence. Name the callable, workload, timing method and runtime profile. Focused regression runs retain these observations as well as their test outcome.
+- Display recorded performance independently of budget declarations. Budgets judge limits; they do not decide whether an observation is visible. A focused benchmark never grants full verification or approves a baseline.
+- Label whole-process memory as process memory, including runner overhead; never attribute it to one function. Explain unavailable metrics and distinguish missing evidence from actual failed checks.
 
 ## Hard Limits
 
