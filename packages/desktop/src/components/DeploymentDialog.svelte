@@ -91,6 +91,12 @@
 	onopen={opened}
 >
 	{#snippet icon()}<Icon name="deploy" size={18} />{/snippet}
+	{#snippet footer()}<div class="promote">
+			{#if !job}<p role="status" aria-live="polite">{status}</p>{/if}
+			<button type="button" class="primary" disabled={!ready} onclick={promote}
+				>Promote to production</button
+			>
+		</div>{/snippet}
 	<h2>Promote preprod to production</h2>
 	<div class="compare" class:same>
 		{@render commit('Preprod', promotion?.preprod ?? null)}
@@ -107,12 +113,6 @@
 			{deployments.error}
 		</p>{/if}
 	{#if job}<DeploymentDetails deployment={job} showIdentity={false} />{/if}
-	<div class="promote">
-		{#if !job}<p role="status" aria-live="polite">{status}</p>{/if}
-		<button type="button" class="primary" disabled={!ready} onclick={promote}
-			>Promote to production</button
-		>
-	</div>
 </ChoiceDialog>
 
 <style>
@@ -195,14 +195,13 @@
 		border-radius: 6px;
 		font-size: 12px;
 	}
-	/* The live status beside its one action; the action keeps the end of the row. */
+	/* The live status beside its one action, in the footer that stays in sight while the promotion,
+	   its steps and its receipt scroll above it; the action keeps the end of the row. */
 	.promote {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
 		gap: 8px 12px;
-		padding-top: 14px;
-		border-top: 1px solid var(--line);
 	}
 	.promote p {
 		flex: 1 1 160px;

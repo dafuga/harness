@@ -22,6 +22,7 @@ test('production promotion previews preprod distance, requires one action and re
 	await expect(dialog.getByRole('button')).toHaveCount(1);
 	await page.setViewportSize({ width: 390, height: 844 });
 	await capture(page, 'production-mobile');
+	await mobileDialog(page, 'Deploy');
 	for (const commit of ['c'.repeat(40), 'b'.repeat(40)]) {
 		const code = dialog.getByText(commit, { exact: true });
 		await expect(code).toBeVisible();
@@ -43,6 +44,25 @@ test('production promotion previews preprod distance, requires one action and re
 	).toBeDisabled();
 	await expect(dialog.getByText('Verified receipt', { exact: true })).toBeVisible();
 	await capture(page, 'production-complete');
+	await page.setViewportSize({ width: 320, height: 480 });
+	await capture(page, 'production-complete-mobile');
+	await mobileDialog(page, 'Deploy');
+	const action = await dialog
+		.getByRole('button', { name: 'Promote to production', exact: true })
+		.boundingBox();
+	expect(
+		action!.y + action!.height,
+		'Promotion action remains in the viewport'
+	).toBeLessThanOrEqual(480);
+	await page.setViewportSize({ width: 667, height: 375 });
+	await capture(page, 'production-complete-landscape');
+	await mobileDialog(page, 'Deploy');
+	const landscapeAction = await dialog
+		.getByRole('button', { name: 'Promote to production', exact: true })
+		.boundingBox();
+	expect(landscapeAction!.y + landscapeAction!.height).toBeLessThanOrEqual(375);
+	await dialog.getByText('Verified receipt', { exact: true }).scrollIntoViewIfNeeded();
+	await expect(dialog.getByText('Verified receipt', { exact: true })).toBeVisible();
 });
 
 test('deployment activity shows concurrent destinations and opens their current step', async ({
@@ -113,6 +133,15 @@ test('mobile deployment details retain queued and failed steps when status reads
 	await expect(dialog.locator('[aria-current="step"]')).toContainText('Deploy to Cloudflare');
 	await page.evaluate(() => document.fonts.ready);
 	await capture(page, 'activity-mobile-failure');
+	await mobileDialog(page, 'Deployments');
+	await page.setViewportSize({ width: 320, height: 480 });
+	await capture(page, 'activity-small-failure');
+	await mobileDialog(page, 'Deployments');
+	await dialog
+		.getByRole('button', { name: 'Back to deployments', exact: true })
+		.scrollIntoViewIfNeeded();
+	await dialog.getByRole('button', { name: 'Back to deployments', exact: true }).click();
+	await expect(dialog.getByRole('button', { name: /^prod deployment/ })).toBeVisible();
 });
 
 /** One evidence checkpoint for these deployment scenarios; normal verification writes no captures. */
@@ -130,4 +159,16 @@ async function capture(page: Page, name: string) {
 	await page.screenshot({
 		path: `/tmp/harness-env-evidence/${name}-${process.env.SCREENSHOT_LABEL ?? 'local'}.png`
 	});
+}
+
+/** Every mobile dialog stays inside the visual viewport; its own content may scroll. */
+async function mobileDialog(page: Page, name: string) {
+	const dialog = page.getByRole('dialog', { name, exact: true });
+	const bounds = await dialog.boundingBox();
+	const viewport = page.viewportSize()!;
+	expect(bounds!.x).toBeGreaterThanOrEqual(8);
+	expect(bounds!.y).toBeGreaterThanOrEqual(8);
+	expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(viewport.width - 8);
+	expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(viewport.height - 8);
+	expect(await dialog.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
 }
