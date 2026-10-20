@@ -1,5 +1,13 @@
 import { expect, test, type Page } from '../../../test/support/browserTest';
-import { capture, fits, open, shown, viewports, where } from './entityPreviewPage';
+import {
+	capture,
+	fits,
+	open,
+	shown,
+	viewports,
+	where,
+	reviewMeasurements
+} from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 const filter = { category: 'functions' as const, entity: ids.filter };
 const components = { category: 'components' as const, commit: commits.middle };
@@ -210,21 +218,6 @@ for (const [name, size] of Object.entries(viewports)) {
 	}) => {
 		await tab.setViewportSize(size);
 		await open(tab, { ...filter, commit: commits.middle }, 'measurements');
-		const performance = tab.getByRole('region', { name: 'Performance profile' });
-		await capture(tab, `automatic-measurements-${name}`);
-		await expect(performance).toContainText('0.12 ms');
-		await expect(performance).not.toContainText('No performance budget');
-		const metric = performance.getByRole('cell', {
-			name: 'Benchmark process peak RSS',
-			exact: true
-		});
-		const fragments = await metric.evaluate((cell) => {
-			const range = document.createRange();
-			range.setStart(cell.firstChild!, 0);
-			range.setEnd(cell.firstChild!, 'Benchmark'.length);
-			return range.getClientRects().length;
-		});
-		expect(fragments, 'benchmark labels stay whole').toBe(1);
-		expect(await fits(tab)).toBe(true);
+		await reviewMeasurements(tab, name);
 	});
 }

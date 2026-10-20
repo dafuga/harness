@@ -169,3 +169,22 @@ export async function chooseCatalogFilter(page: Page, name: string, value: strin
 	await dialog.getByRole('button', { name: 'Done', exact: true }).click();
 	await expect(page.getByRole('button', { name: 'Filters', exact: true })).toBeFocused();
 }
+
+export async function reviewMeasurements(tab: Page, name: string): Promise<void> {
+	const performance = tab.getByRole('region', { name: 'Performance profile' });
+	await capture(tab, `automatic-measurements-${name}`);
+	await expect(performance).toContainText('0.12 ms');
+	await expect(performance).not.toContainText('No performance budget');
+	const metric = performance.getByRole('cell', {
+		name: 'Benchmark process peak RSS',
+		exact: true
+	});
+	const fragments = await metric.evaluate((cell) => {
+		const range = document.createRange();
+		range.setStart(cell.firstChild!, 0);
+		range.setEnd(cell.firstChild!, 'Benchmark'.length);
+		return range.getClientRects().length;
+	});
+	expect(fragments, 'benchmark labels stay whole').toBe(1);
+	expect(await fits(tab)).toBe(true);
+}
