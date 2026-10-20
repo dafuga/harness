@@ -1,0 +1,182 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-PrNm0l/packages/reports
+
+ ❯ test/utils/entity-screens.test.ts (11 tests | 1 failed) 13ms
+   ✓ a visual entity offers the states and viewports its scenario declares; a function offers none 1ms
+   ✓ the first state and viewport are shown until a person picks; an unknown pick is not kept 0ms
+   ✓ the branch tip shows exactly one screenshot, the one of the picked state and viewport 2ms
+   ✓ a selected commit pairs the parent and the commit for the same state and viewport 1ms
+   ✓ a side with no capture is a stated gap and is never filled from the other side 1ms
+   ✓ a revision without a record has a gap for its screenshot, in the words its side gives 0ms
+   ✓ a first commit has no before pane to fill: its parent side says why 0ms
+   ✓ an inherited capture is never the screenshot of the tip: it is a gap that names its origin 0ms
+   ✓ the gallery gets every screenshot of both sides, each side marked as what it is 2ms
+   ✓ a declared catalog preview selects its exact state and viewport without a fallback 0ms
+   × validated unchanged screenshots stay visible with their capture origin 6ms
+     → expected { …(9) } to match object { missing: false, …(1) }
+(7 matching properties omitted from actual)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/entity-screens.test.ts > validated unchanged screenshots stay visible with their capture origin
+AssertionError: expected { …(9) } to match object { missing: false, …(1) }
+(7 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "file": "bbbbbbb-default-desktop.png",
+-   "missing": false,
++   "file": "",
++   "missing": true,
+  }
+
+ ❯ test/utils/entity-screens.test.ts:134:22
+    132|  const inherited = withInherited(tip, commits.middle);
+    133|  const shown = entityScreens(evidence(page, inherited), screenPick(opt…
+    134|  expect(shown.after).toMatchObject({ missing: false, file: 'bbbbbbb-de…
+       |                      ^
+    135|  expect(shown.fresh).toBe(false);
+    136|  expect(shown.origin).toBe(commits.middle);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 10 passed (11)
+   Start at  16:09:01
+   Duration  558ms (transform 105ms, setup 0ms, collect 148ms, tests 13ms, environment 0ms, prepare 43ms)
+
+
+Running 3 tests using 1 worker
+
+(node:63940) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at desktop width (5.5s)
+(node:83436) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at tablet width (5.3s)
+(node:1884) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at mobile width (5.4s)
+
+
+  1) test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at desktop width 
+
+    Error: page header stays concise
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.ex-head .ex-lead, .ex-head .ex-route')
+    Expected: 0
+    Received: 2
+    Timeout:  5000ms
+
+    Call log:
+      - page header stays concise locator('.ex-head .ex-lead, .ex-head .ex-route') with timeout 5000ms
+      - waiting for locator('.ex-head .ex-lead, .ex-head .ex-route')
+        14 × locator resolved to 2 elements
+           - unexpected value "2"
+
+
+       at entityPreviewPage.ts:107
+
+      105 | 			page.locator('.ex-head .ex-lead, .ex-head .ex-route'),
+      106 | 			'page header stays concise'
+    > 107 | 		).toHaveCount(0);
+          | 		  ^
+      108 | 	}
+      109 | 	await expect(
+      110 | 		page.getByRole('combobox', { name: /^(Scenario|State)$/ }),
+        at reviewVisual (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-PrNm0l/packages/reports/test/entityPreviewPage.ts:107:5)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-PrNm0l/packages/reports/test/entity-preview-actions.spec.ts:19:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-vis-6e20f-creenshots-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-vis-6e20f-creenshots-at-desktop-width/error-context.md
+
+  2) test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at tablet width 
+
+    Error: page header stays concise
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.ex-head .ex-lead, .ex-head .ex-route')
+    Expected: 0
+    Received: 2
+    Timeout:  5000ms
+
+    Call log:
+      - page header stays concise locator('.ex-head .ex-lead, .ex-head .ex-route') with timeout 5000ms
+      - waiting for locator('.ex-head .ex-lead, .ex-head .ex-route')
+        14 × locator resolved to 2 elements
+           - unexpected value "2"
+
+
+       at entityPreviewPage.ts:107
+
+      105 | 			page.locator('.ex-head .ex-lead, .ex-head .ex-route'),
+      106 | 			'page header stays concise'
+    > 107 | 		).toHaveCount(0);
+          | 		  ^
+      108 | 	}
+      109 | 	await expect(
+      110 | 		page.getByRole('combobox', { name: /^(Scenario|State)$/ }),
+        at reviewVisual (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-PrNm0l/packages/reports/test/entityPreviewPage.ts:107:5)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-PrNm0l/packages/reports/test/entity-preview-actions.spec.ts:19:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-vis-ec3df-screenshots-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-vis-ec3df-screenshots-at-tablet-width/error-context.md
+
+  3) test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at mobile width 
+
+    Error: page header stays concise
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.ex-head .ex-lead, .ex-head .ex-route')
+    Expected: 0
+    Received: 2
+    Timeout:  5000ms
+
+    Call log:
+      - page header stays concise locator('.ex-head .ex-lead, .ex-head .ex-route') with timeout 5000ms
+      - waiting for locator('.ex-head .ex-lead, .ex-head .ex-route')
+        14 × locator resolved to 2 elements
+           - unexpected value "2"
+
+
+       at entityPreviewPage.ts:107
+
+      105 | 			page.locator('.ex-head .ex-lead, .ex-head .ex-route'),
+      106 | 			'page header stays concise'
+    > 107 | 		).toHaveCount(0);
+          | 		  ^
+      108 | 	}
+      109 | 	await expect(
+      110 | 		page.getByRole('combobox', { name: /^(Scenario|State)$/ }),
+        at reviewVisual (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-PrNm0l/packages/reports/test/entityPreviewPage.ts:107:5)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-PrNm0l/packages/reports/test/entity-preview-actions.spec.ts:19:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-vis-5375c-screenshots-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-vis-5375c-screenshots-at-mobile-width/error-context.md
+
+  3 failed
+    test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at desktop width 
+    test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at tablet width 
+    test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at mobile width 
