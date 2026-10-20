@@ -11,6 +11,8 @@ type Relations = Pick<ExplorerRelations, 'pages' | 'usedBy' | 'components'>;
 
 export interface CatalogRow {
 	helper?: NonNullable<ExplorerEntity['unit']['helpers']>[number];
+	/** First three distinct component, service or model consumers of this specific helper. */
+	usedIn?: Array<Pick<ExplorerEntity, 'id' | 'name' | 'category'>>;
 	entity: ExplorerEntity;
 	id: string;
 	name: string;
@@ -93,6 +95,24 @@ export function byName(left: CatalogRow, right: CatalogRow): number {
 	return sortName(left).localeCompare(sortName(right), 'en', { sensitivity: 'base' });
 }
 
+/** Resolve per-export runtime consumers; unrelated exports in the same module do not count. */
+function helperConsumers(
+	helper: NonNullable<CatalogRow['helper']>,
+	entities: Map<string, ExplorerEntity>
+): NonNullable<CatalogRow['usedIn']> {
+	const usedIn: NonNullable<CatalogRow['usedIn']> = [];
+	const seen = new Set<string>();
+	for (const consumer of helper.consumers) {
+		const entity = entities.get(consumer.unit);
+		if (!entity || seen.has(entity.id) || entity.change === 'removed') continue;
+		if (!['components', 'services', 'models'].includes(entity.category)) continue;
+		seen.add(entity.id);
+		usedIn.push({ id: entity.id, name: entity.name, category: entity.category });
+		if (usedIn.length === 3) break;
+	}
+	return usedIn;
+}
+
 /**
  * One collection of the explorer: the entities of a category, each with the name, the
  * relations and the verdict a card or a table row shows, in order of name. Shared helper
@@ -103,6 +123,7 @@ export function entityCatalog(
 	category: ExplorerCategory,
 	relations: (id: string) => Relations
 ): CatalogRow[] {
+	const byId = new Map(entities.map((entity) => [entity.id, entity]));
 	return entities
 		.filter((entity) => entity.category === category)
 		.flatMap((entity) => {
@@ -113,6 +134,7 @@ export function entityCatalog(
 				...row,
 				shared: true,
 				helper,
+				usedIn: helperConsumers(helper, byId),
 				name: helper.name,
 				id: helpers.length === 1 ? entity.id : `${entity.id}#${helper.source}:${helper.name}`
 			}));
