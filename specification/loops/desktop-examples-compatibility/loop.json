@@ -2,7 +2,7 @@
 	"name": "desktop-examples-compatibility",
 	"goal": "Desktop Examples keeps documented examples and expandable verification coverage, with a type-safe evidence fixture.",
 	"createdAt": "2026-10-20T20:12:14.075Z",
-	"updatedAt": "2026-10-20T20:12:48.520Z",
+	"updatedAt": "2026-10-20T20:15:03.383Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T20:15:03.383Z",
+			"evidence": "Accepted red checkpoint 3b89da9910c9905acc14bd37a166d9dd5f1d44b46b78711344811980fdb083e1 at 40043847: Desktop typecheck reports both compatibility errors; the strengthened browser scenario fails because recorded verification is absent. The before screenshot was inspected."
 		},
 		{
 			"id": "implement",

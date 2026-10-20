@@ -8,7 +8,6 @@ import type {
 } from '../../src/models/DesktopEvidence.types';
 import { commits, evidenceData, ids, soundScenario, type EvidenceData } from './ui-evidence-data';
 export * from './ui-evidence-data';
-
 /**
  * SYNTHETIC BACKEND. A bridge like the one a backend gives the viewer, with the two evidence
  * reads answered from a sealed synthetic history: `evidence` answers what the reports functions
@@ -56,8 +55,9 @@ function installState(settings: Settings) {
 	Object.assign(window, { __evidence: { ...state, cache: () => {} }, harness: {} });
 }
 
-/** The reads every backend has: one project at a branch tip or at one of its commits. */
-function installProject(data: EvidenceData) {
+/** Trusted fixture input avoids recursively inferring Playwright handle types at this boundary. */
+function installProject(input: unknown) {
+	const data = input as EvidenceData;
 	const host = window as unknown as Host;
 	const state = host.__evidence;
 	const shared = { comments: true, agents: false, planning: false, approval: false };
@@ -104,7 +104,8 @@ function installProject(data: EvidenceData) {
 }
 
 /** The two evidence reads, typed as the bridge states them and bound as a backend binds them. */
-function installEvidence(data: EvidenceData) {
+function installEvidence(input: unknown) {
+	const data = input as EvidenceData;
 	const host = window as unknown as Host;
 	const state = host.__evidence;
 	const wait = (ms: number) => new Promise((done) => setTimeout(done, ms));
@@ -169,12 +170,11 @@ export async function evidenceFixture(page: Page, options: EvidenceOptions = {})
 	}
 	const { delay = {}, corrupt = [], moved = false, hold = false } = options;
 	await page.addInitScript(installState, { delay, corrupt, moved, hold });
-	await page.addInitScript(installProject, data);
-	await page.addInitScript(installEvidence, data);
+	await page.addInitScript<unknown>(installProject, data);
+	await page.addInitScript<unknown>(installEvidence, data);
 	if (options.reads === false) await page.addInitScript(removeEvidence);
 	return data;
 }
-
 /** What the synthetic backend was asked and what the page did with object URLs. */
 export const evidenceState = (page: Page) =>
 	page.evaluate(() => {

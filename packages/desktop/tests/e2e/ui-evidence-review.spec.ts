@@ -67,6 +67,7 @@ test('the address decides the section, also when the entity stays the same', asy
 	await expect(coverage).toBeVisible();
 	await verification.click();
 	await expect(coverage).toBeHidden();
+	await expect(current(page)).toHaveText('Examples');
 	await expect(page.getByRole('heading', { name: 'Source files', exact: true })).toHaveCount(0);
 	// A section chosen on the page has its address, and Details closes when another is chosen.
 	await expect(page.getByRole('button', { name: 'Details →', exact: true })).toHaveCount(0);
