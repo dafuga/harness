@@ -59,7 +59,7 @@ export async function reviewHelperCard(page: Page, cards: Locator): Promise<void
 		commit: null
 	});
 	await page.getByRole('tab', { name: 'Contract', exact: true }).click();
-	await expect(page.getByRole('table', { name: 'Inputs', exact: true })).toBeVisible();
+	await expect(page.getByRole('table', { name: 'Parameters', exact: true })).toBeVisible();
 }
 
 /** Consumer links are limited to three eligible units and retain current or selected-commit scope. */
