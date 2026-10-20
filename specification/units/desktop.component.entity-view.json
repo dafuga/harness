@@ -160,8 +160,14 @@
 		"desktop-renderer",
 		"shared-test-cases",
 		"agent-creation",
-		"shells-shared-app"
+		"shells-shared-app",
+		"component-catalog-previews"
 	],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "desktop-component-entity-view",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

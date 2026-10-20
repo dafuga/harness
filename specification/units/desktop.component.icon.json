@@ -44,7 +44,17 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-renderer", "shells-shared-app"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-renderer",
+		"shells-shared-app",
+		"component-catalog-previews"
+	],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "desktop-component-icon",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

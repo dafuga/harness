@@ -50,7 +50,17 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-renderer", "explorer-shell", "modular-h-branding-contract"],
+	"scenarios": [
+		"desktop-renderer",
+		"explorer-shell",
+		"modular-h-branding-contract",
+		"component-catalog-previews"
+	],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-brand-mark",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

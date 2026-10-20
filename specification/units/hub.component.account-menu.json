@@ -45,10 +45,10 @@
 			}
 		]
 	},
-	"scenarios": ["component-previews"],
+	"scenarios": ["component-previews", "component-catalog-previews"],
 	"preview": {
-		"scenario": "component-previews",
-		"state": "account",
+		"scenario": "component-catalog-previews",
+		"state": "hub-component-account-menu",
 		"viewport": "desktop"
 	},
 	"budgets": {

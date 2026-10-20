@@ -49,7 +49,12 @@
 			}
 		]
 	},
-	"scenarios": ["agent-settings"],
+	"scenarios": ["agent-settings", "component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "desktop-component-agent-settings",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -60,7 +60,12 @@
 			}
 		]
 	},
-	"scenarios": ["shared-test-cases"],
+	"scenarios": ["shared-test-cases", "component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-recorded-value",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

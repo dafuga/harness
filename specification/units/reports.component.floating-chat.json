@@ -77,7 +77,12 @@
 			}
 		]
 	},
-	"scenarios": ["agent-references"],
+	"scenarios": ["agent-references", "component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-floating-chat",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

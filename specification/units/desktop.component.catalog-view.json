@@ -81,7 +81,18 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-renderer", "agent-creation", "shells-shared-app"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-renderer",
+		"agent-creation",
+		"shells-shared-app",
+		"component-catalog-previews"
+	],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "desktop-component-catalog-view",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

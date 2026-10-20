@@ -70,7 +70,12 @@
 			}
 		]
 	},
-	"scenarios": ["remote-mobile-ui"],
+	"scenarios": ["remote-mobile-ui", "component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "desktop-component-remote-devices",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

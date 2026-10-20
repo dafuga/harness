@@ -111,7 +111,17 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-renderer", "agent-creation"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-renderer",
+		"agent-creation",
+		"component-catalog-previews"
+	],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "desktop-component-composer",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

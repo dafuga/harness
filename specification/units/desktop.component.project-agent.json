@@ -70,7 +70,12 @@
 			}
 		]
 	},
-	"scenarios": ["agent-creation", "agent-references"],
+	"scenarios": ["agent-creation", "agent-references", "component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "desktop-component-project-agent",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
