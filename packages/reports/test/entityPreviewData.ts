@@ -18,7 +18,8 @@ export type PreviewVariant =
 	| 'inherited'
 	| 'states'
 	| 'documented'
-	| 'helpers';
+	| 'helpers'
+	| 'measurements';
 
 /** A visual error state in the same standardized synthetic history as its ordinary states. */
 export function stateRecord(commit: string): HarnessRecord {

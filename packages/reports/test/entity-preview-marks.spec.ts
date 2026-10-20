@@ -211,3 +211,17 @@ test('a title that wraps onto two lines is one solid area to press', async ({ pa
 	await tab.mouse.click(again.x + again.width - 2, again.y + again.height - 3);
 	expect(await where(tab)).toMatchObject({ entity: ids.list });
 });
+
+for (const [name, size] of Object.entries(viewports)) {
+	test(`measurements at ${name}: observations need no budget and missing evidence is neutral`, async ({
+		page: tab
+	}) => {
+		await tab.setViewportSize(size);
+		await open(tab, { ...filter, commit: commits.middle }, 'measurements');
+		const performance = tab.getByRole('region', { name: 'Performance profile' });
+		await capture(tab, `automatic-measurements-${name}`);
+		await expect(performance).toContainText('0.12 ms');
+		await expect(performance).not.toContainText('No performance budget');
+		expect(await fits(tab)).toBe(true);
+	});
+}

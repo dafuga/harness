@@ -107,3 +107,16 @@ test('why a figure is unavailable is told without the file a recorded note names
 	// Where a file is stays under Details, Source and in the stored record.
 	expect(notes).not.toMatch(/crates\/|src\/|\.rs\b|\.ts\b/);
 });
+
+test('observed performance is visible without a budget and stays scoped to its callable', () => {
+	const helper = {
+		...find(ids.filter),
+		budgets: { size: 'none', complexity: 'none', performance: [] }
+	};
+	const rows = entityMeasure(helper, taken).performance;
+	expect(rows, 'measurements do not require a performance budget').toEqual(
+		expect.arrayContaining([
+			expect.objectContaining({ profile: 'bun-reference', value: '0.12 ms', tolerance: '—' })
+		])
+	);
+});

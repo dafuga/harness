@@ -19,16 +19,13 @@ import {
 	withRemote
 } from './support/historyRepo';
 import { cloneRepo, type VerifyOutcome, type VerifyRepo } from './support/verifyRepo';
-
 let repo: VerifyRepo;
 let commits: IndexedCommits;
 let changed: VerifyOutcome;
-
 beforeAll(async () => {
 	({ repo, commits, changed } = await indexedRepo());
 }, 240_000);
 afterAll(() => repo.dispose());
-
 test('the index is deterministic and names every commit, verified or not', async () => {
 	const one = join(repo.root, '.cache/history-one');
 	const two = join(repo.root, '.cache/history-two');
@@ -72,7 +69,6 @@ test('the index is deterministic and names every commit, verified or not', async
 	expect(stored.registry.units.find((unit) => unit.id === 'service.title')?.helpers).toEqual([]);
 	await rm(two, { recursive: true });
 }, 240_000);
-
 /** Every capture, inherited ones included, points at a file holding exactly its bytes. */
 async function expectResolvedMedia(out: string, record: Detail['records'][number]): Promise<void> {
 	const captures = record.scenarios.flatMap((scenario) =>
@@ -84,7 +80,6 @@ async function expectResolvedMedia(out: string, record: Detail['records'][number
 		expect(sha256(await readFile(join(out, capture.media ?? '')))).toBe(capture.sha256);
 	}
 }
-
 test('a revision carries its graph, comparison, inherited provenance, media and reasons', async () => {
 	const out = join(repo.root, '.cache/history-detail');
 	const { index, media } = await build(repo, out);
@@ -129,13 +124,26 @@ test('a revision carries its graph, comparison, inherited provenance, media and 
 		out,
 		index.revisions.find((item) => item.commit === commits.unverified)
 	);
+	const sourceUnit = untested.registry.units.find((unit) => unit.id === 'function.slugify');
+	expect(
+		sourceUnit?.sourceMeasurements,
+		'source metrics exist without a verification record'
+	).toEqual(
+		expect.arrayContaining([
+			expect.objectContaining({
+				metric: 'source-bytes',
+				value: 87,
+				testedRevision: commits.unverified
+			}),
+			expect.objectContaining({ metric: 'complexity', value: expect.any(Number) })
+		])
+	);
 	expect([untested.records, untested.comparison, untested.registry.available]).toEqual([
 		[],
 		null,
 		true
 	]);
 }, 240_000);
-
 test('growth and benchmarks are kept per unit, and another profile is a separate series', async () => {
 	const other = await cloneRepo(repo);
 	await other.git(['checkout', '-q', commits.changed]);
@@ -163,7 +171,6 @@ test('growth and benchmarks are kept per unit, and another profile is a separate
 	expect(latency?.series.every((series) => series.unitOfMeasure === 'ms')).toBe(true);
 	await other.dispose();
 }, 240_000);
-
 /** Without its media objects, the same clone states the gap instead of substituting anything. */
 async function expectMissingMedia(
 	reader: VerifyRepo,
@@ -191,7 +198,6 @@ async function expectMissingMedia(
 	]);
 	expect(strict.exitCode).toBe(1);
 }
-
 test('a fresh clone rebuilds the same index from Git alone, and missing media is a stated gap', async () => {
 	const out = join(repo.root, '.cache/history-origin');
 	const original = await build(repo, out);
@@ -209,7 +215,6 @@ test('a fresh clone rebuilds the same index from Git alone, and missing media is
 		await directoryDigest(out)
 	);
 	expect(existsSync(join(reader.root, '.cache/harness/analytics.sqlite'))).toBe(false);
-
 	await expectMissingMedia(reader, offline);
 	await Promise.all([reader.dispose(), removeRemote(remote)]);
 }, 300_000);

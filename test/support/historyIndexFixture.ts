@@ -43,6 +43,7 @@ export interface Detail {
 		available: boolean;
 		units: Array<{
 			id: string;
+			sourceMeasurements?: Array<{ metric: string; value: number | null; testedRevision: string }>;
 			helpers?: Array<{ name: string; source: string; inputs: Array<{ name: string }> }>;
 		}>;
 		graph: {

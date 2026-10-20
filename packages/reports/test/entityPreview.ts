@@ -38,6 +38,22 @@ const stored: Record<string, HarnessRevision> = {
 	},
 	[commits.tip]: recorded(commits.tip)
 };
+if (variant === 'measurements') {
+	for (const detail of Object.values(stored)) {
+		const helper = detail.registry.units.find((unit) => unit.id === ids.filter)!;
+		(helper as unknown as { sourceMeasurements: unknown[] }).sourceMeasurements = [
+			{
+				unit: ids.filter,
+				metric: 'source-bytes',
+				unitOfMeasure: 'bytes',
+				value: 800,
+				workload: null,
+				profile: null
+			}
+		];
+		helper.budgets.performance = [];
+	}
+}
 if (variant === 'helpers')
 	for (const commit of Object.keys(stored)) stored[commit] = withHelpers(stored[commit]);
 if (variant === 'inherited')
@@ -47,7 +63,6 @@ if (variant === 'documented')
 if (variant === 'states')
 	for (const commit of Object.keys(stored)) stored[commit] = withStates(stored[commit]);
 const hashes = (window as unknown as { artifactHashes?: Record<string, string> }).artifactHashes;
-// A recorded hash is the hash of the bytes the page is served, as a real history has it.
 for (const detail of Object.values(stored)) {
 	for (const state of detail.records
 		.flatMap((item) => item.scenarios)
@@ -59,7 +74,6 @@ for (const detail of Object.values(stored)) {
 }
 
 if (variant === 'declared') {
-	// Every viewed revision, including the branch tip, declares the same example contract.
 	for (const [commit, detail] of Object.entries(stored)) {
 		const { registry } = detail;
 		const units = registry.units.map((unit) => {
