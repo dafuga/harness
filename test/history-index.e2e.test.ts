@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import {
 	build,
+	expectSourceMeasures,
 	detail,
 	indexedRepo,
 	type Detail,
@@ -124,20 +125,7 @@ test('a revision carries its graph, comparison, inherited provenance, media and 
 		out,
 		index.revisions.find((item) => item.commit === commits.unverified)
 	);
-	const sourceUnit = untested.registry.units.find((unit) => unit.id === 'function.slugify');
-	expect(
-		sourceUnit?.sourceMeasurements,
-		'source metrics exist without a verification record'
-	).toEqual(
-		expect.arrayContaining([
-			expect.objectContaining({
-				metric: 'source-bytes',
-				value: 100,
-				testedRevision: commits.unverified
-			}),
-			expect.objectContaining({ metric: 'complexity', value: expect.any(Number) })
-		])
-	);
+	expectSourceMeasures(untested, commits.unverified);
 	expect([untested.records, untested.comparison, untested.registry.available]).toEqual([
 		[],
 		null,

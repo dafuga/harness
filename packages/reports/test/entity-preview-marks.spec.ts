@@ -5,7 +5,6 @@ const filter = { category: 'functions' as const, entity: ids.filter };
 const components = { category: 'components' as const, commit: commits.middle };
 const why = 'Orders page over synthetic orders: empty has no result in the record.';
 const tip = (tab: Page) => tab.getByRole('tooltip');
-
 /** True when the open tooltip lies wholly inside the window. */
 async function inside(tab: Page, size: { width: number; height: number }): Promise<boolean> {
 	const box = (await tip(tab).boundingBox()) ?? { x: -1, y: -1, width: 0, height: 0 };
@@ -39,7 +38,6 @@ for (const [name, size] of Object.entries(viewports)) {
 		await expect(tip(tab)).toHaveCount(0);
 	});
 }
-
 test('a tap opens what a mark tells, and a tap elsewhere closes it', async ({
 	browser,
 	browserErrors
@@ -56,7 +54,6 @@ test('a tap opens what a mark tells, and a tap elsewhere closes it', async ({
 	await expect(tip(tab)).toHaveCount(0);
 	await context.close();
 });
-
 test('every collection, a header, the tests and a history show marks without status words', async ({
 	page: tab
 }) => {
@@ -90,7 +87,6 @@ test('every collection, a header, the tests and a history show marks without sta
 	await expect(tab.getByRole('list', { name: 'Why it is not proven' })).toContainText(why);
 	await capture(tab, 'marks-tests-desktop');
 });
-
 for (const [name, size] of Object.entries(viewports)) {
 	test(`a long legacy history stays short at ${name}, and opens in full on request`, async ({
 		page: tab
@@ -129,7 +125,6 @@ for (const [name, size] of Object.entries(viewports)) {
 		await expect(full).not.toHaveAttribute('open');
 	});
 }
-
 test('the overview of a long legacy change is short too, with the same reasons to open', async ({
 	page: tab
 }) => {
@@ -144,7 +139,6 @@ test('the overview of a long legacy change is short too, with the same reasons t
 	await expect(change.getByText(/Register cpuGroups .* unit 70\./)).toBeVisible();
 	expect(await fits(tab)).toBe(true);
 });
-
 test('a recorded clip plays on the overview: one at the tip, a pair at a commit', async ({
 	page: tab
 }) => {
@@ -177,7 +171,6 @@ test('a recorded clip plays on the overview: one at the tip, a pair at a commit'
 		.toBe(true);
 	await capture(tab, 'audio-commit-desktop');
 });
-
 test('a title that wraps onto two lines is one solid area to press', async ({ page: tab }) => {
 	await tab.setViewportSize(viewports.mobile);
 	await open(tab, components);
@@ -211,9 +204,7 @@ test('a title that wraps onto two lines is one solid area to press', async ({ pa
 	await tab.mouse.click(again.x + again.width - 2, again.y + again.height - 3);
 	expect(await where(tab)).toMatchObject({ entity: ids.list });
 });
-
 for (const [name, size] of Object.entries(viewports)) {
-	// The normal detail fixture must expose observations even with no budget.
 	test(`measurements at ${name}: observations need no budget and missing evidence is neutral`, async ({
 		page: tab
 	}) => {
