@@ -11,7 +11,7 @@ type Relations = Pick<ExplorerRelations, 'pages' | 'usedBy' | 'components'>;
 
 export interface CatalogRow {
 	helper?: NonNullable<ExplorerEntity['unit']['helpers']>[number];
-	/** First three distinct component, service or model consumers of this specific helper. */
+	/** Up to three consumers: per-export helper users, or service users with page fallback. */
 	usedIn?: Array<Pick<ExplorerEntity, 'id' | 'name' | 'category'>>;
 	entity: ExplorerEntity;
 	id: string;
@@ -69,7 +69,15 @@ function rowOf(entity: ExplorerEntity, related: Relations): CatalogRow {
 	return {
 		entity,
 		id: entity.id,
-		name: entity.name,
+		name:
+			entity.category === 'services' ? (entity.unit.owns.symbols[0] ?? entity.name) : entity.name,
+		...(entity.category === 'services'
+			? {
+					usedIn: (related.usedBy.length ? related.usedBy : related.pages)
+						.slice(0, 3)
+						.map(({ id, name, category }) => ({ id, name, category }))
+				}
+			: {}),
 		summary: entity.purpose,
 		changed: own.includes(entity.change ?? ''),
 		shared: isShared(related, entity.unit),

@@ -2,7 +2,7 @@
 	"name": "service-cards",
 	"goal": "Services use the Helpers card grid with only a class or service name and Used In links, preserving search and revision navigation on desktop, tablet and mobile",
 	"createdAt": "2026-10-20T15:34:35.656Z",
-	"updatedAt": "2026-10-20T15:36:07.363Z",
+	"updatedAt": "2026-10-20T15:41:19.168Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T15:40:51.186Z",
+			"evidence": "Frozen test commit 95a9c9cc fails at the card-count assertion across desktop, tablet and mobile. Regression record e989c1d8a17a561d8a2469b25a6becf0d957e62baeb26386844f3209761441b3 preserves the failure. Before screenshots show the service table."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T15:41:19.168Z",
+			"evidence": "Reused the helper card and grid for services. Service rows use their owned class symbol or registered name, with up to three revision-scoped consumer links and page fallback. No new controls or styling."
 		},
 		{
 			"id": "green",

@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-explorer-catalog-screen",
 	"kind": "component",
 	"title": "ExplorerCatalogScreen",
-	"responsibility": "Lists components and functions in searchable card grids, and shells, configs and services in tables.",
+	"responsibility": "Lists components, helpers and services in searchable card grids, and shells, configs and models in tables.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -48,7 +48,7 @@
 			{
 				"name": "ExplorerCatalogScreen.collection",
 				"type": "markup",
-				"description": "Responsive grids show component screenshots and linked function example calls. Search, filters and links preserve the branch and commit. Shells, configs and services use tables."
+				"description": "Responsive grids show component screenshots, helper calls and service names with usage links. Search, filters and navigation preserve branch and commit. Shells, configs and models use tables."
 			}
 		],
 		"errors": [

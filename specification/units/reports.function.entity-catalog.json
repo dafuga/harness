@@ -3,7 +3,7 @@
 	"id": "reports.function.entity-catalog",
 	"kind": "function",
 	"title": "Entity collection rows",
-	"responsibility": "Lists helpers with at least two distinct visible component, service or model consumers, retaining per-export links and other entity catalogs.",
+	"responsibility": "Lists shared helpers and service class names with revision-bound consumer links, retaining other entity catalogs.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -72,7 +72,7 @@
 			{
 				"name": "functionName.unit",
 				"type": "HarnessUnit",
-				"description": "The selected revision’s recorded exported shared helpers."
+				"description": "The selected revision\u2019s recorded exported shared helpers."
 			},
 			{
 				"name": "isShared.unit",
@@ -99,7 +99,7 @@
 			{
 				"name": "entityCatalog",
 				"type": "CatalogRow[]",
-				"description": "Rows sorted by English name, including purpose, verdict, relation names, target kinds and component count. Only direct or added changes count as changed. Function names, rather than hidden titles, define alphabetical ordering."
+				"description": "Rows sorted by displayed name, retaining registered names for search. Service names use the first owned symbol or registered name, with three consumer links and page fallback. Helpers retain per-export eligibility and consumers."
 			},
 			{
 				"name": "catalogFilter",

@@ -5,7 +5,7 @@
 	let { row, nav }: { row: CatalogRow; nav: EntityNav } = $props();
 	let to = $derived(
 		entityLens(nav.route, {
-			category: 'functions',
+			category: row.entity.category,
 			entity: row.entity.id,
 			helper: row.helper?.name,
 			tab: 'contract'
@@ -37,7 +37,7 @@
 		if (!name) return unit.title;
 		return `${name}(${args.join(', ')})`;
 	}
-	let call = $derived(invocation(row.entity.unit));
+	let call = $derived(row.helper ? invocation(row.entity.unit) : row.name);
 </script>
 
 <article class="ex-function-tile" aria-label={row.name}>
@@ -45,7 +45,9 @@
 		{to}
 		{nav}
 		class="ex-function-call"
-		title="Example usage; arguments without recorded sample values remain named variables."
+		title={row.helper
+			? 'Example usage; arguments without recorded sample values remain named variables.'
+			: undefined}
 	>
 		<code>{call}</code>
 	</EntityLink>
