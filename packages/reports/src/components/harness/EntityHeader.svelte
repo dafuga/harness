@@ -42,11 +42,13 @@
 	};
 	const labels = ['Overview', 'Contract', 'Used In', 'Uses', 'Tests', 'History', 'Source'];
 	let tabs = $derived(
-		labels.map((label) => {
-			const title = label === 'Tests' ? evidenceLabels[evidenceTab] : label;
-			const id = title.toLowerCase().replace(' ', '-');
-			return { id, label: title, href: nav.href(at(row[id])) };
-		})
+		labels
+			.filter((label) => entity.category !== 'pages' || label !== 'Used In')
+			.map((label) => {
+				const title = label === 'Tests' ? evidenceLabels[evidenceTab] : label;
+				const id = title.toLowerCase().replace(' ', '-');
+				return { id, label: title, href: nav.href(at(row[id])) };
+			})
 	);
 	// A tab the row does not have, as the former one of both lists, is shown on the first.
 	let asked = $derived(

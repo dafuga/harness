@@ -2,7 +2,7 @@
 	"name": "page-sections",
 	"goal": "Pages expose Uses but no Used In tab or section; existing Used In links open Overview.",
 	"createdAt": "2026-10-20T17:31:12.844Z",
-	"updatedAt": "2026-10-20T17:34:31.271Z",
+	"updatedAt": "2026-10-20T17:47:02.499845+00:00",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T17:38:47.382Z",
+			"evidence": "Committed 38068f32 before product repair. Frozen red record ec9f6a2fe478c52cbefccaa72be18c80a3e4057b947778ff1beef95c1beb7fa4 rejects Page Used In in unit and browser checks at all three widths. Current Helpers labels replace stale Functions labels without changing navigation, counts or timing limits; the unrelated console case now passes before repair."
 		},
 		{
 			"id": "implement",
