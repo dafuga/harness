@@ -2,7 +2,7 @@
 	"name": "model-list-helper-layout",
 	"goal": "Models use the existing helper card grid with scoped model and consumer links, retaining search and responsive behavior",
 	"createdAt": "2026-10-20T15:44:20.718Z",
-	"updatedAt": "2026-10-20T15:47:31.128Z",
+	"updatedAt": "2026-10-20T15:56:36.270Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T15:56:35.270Z",
+			"evidence": "Committed standardized tests at 0072f930 before the product fix. Harness red record 24cd220ffe51f138255655e565d57c8ed6bb4cf7a0c7be7d2b2836a10b545869: three browser cases fail with models use the helper card layout because expected one card, found zero. Before images for all three viewports are retained under /tmp/harness-model-list-proof/0072f930*/. Initial cold-checkout setup failures were not accepted as defect proof."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T15:56:36.270Z",
+			"evidence": "Reused ExplorerFunctionCard and the existing responsive grid for models. The card infers model navigation from the row category, model projection supplies direct consumer links, and the index hides the inapplicable mark legend. No CSS duplication or new component. Focused component/catalog unit checks: 30 passed; 1309-unit registry valid."
 		},
 		{
 			"id": "green",

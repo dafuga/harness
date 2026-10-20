@@ -99,7 +99,7 @@
 			{
 				"name": "entityCatalog",
 				"type": "CatalogRow[]",
-				"description": "Rows sorted by English name, including purpose, verdict, relation names, target kinds and component count. Only direct or added changes count as changed. Function names, rather than hidden titles, define alphabetical ordering."
+				"description": "Rows sorted by English name, with purpose, verdict, relations and target kinds. Model rows include up to three direct consumer links. Helper inclusion and per-export consumers retain their existing eligibility rules."
 			},
 			{
 				"name": "catalogFilter",

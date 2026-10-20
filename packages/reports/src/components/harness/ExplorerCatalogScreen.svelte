@@ -11,10 +11,12 @@
 	let host: ExplorerScreenProps = $props();
 	let category = $derived(host.route.category);
 	let rows = $derived(entityCatalog(host.entities, category, host.lens.relations));
-	let tiled = $derived(category === 'components' || category === 'functions');
+	let tiled = $derived(
+		category === 'components' || category === 'functions' || category === 'models'
+	);
 </script>
 
-<!-- A component shows its screenshot; a function shows an example invocation without a title or description. -->
+<!-- Components show screenshots; helpers and models share the compact code-and-consumers card. -->
 {#snippet tile(row: CatalogRow, nav: EntityNav)}
 	{#if category === 'components'}
 		<ExplorerPageCard
@@ -29,12 +31,12 @@
 	{/if}
 {/snippet}
 
-<!-- Components and functions as tiles of one grid; shells, configs or services as a table of their kind. -->
+<!-- Components, helpers and models share one grid; shells, configs and services retain tables. -->
 <ExplorerFrame {host}>
 	{#snippet children(nav)}
 		<ExplorerIndex {category} {rows}>
 			{#snippet list(listed)}
-				<!-- Pages are cards on a screen of their own; this one draws the five other kinds. -->
+				<!-- Pages have their own card screen; the other categories are drawn here. -->
 				{#if tiled}
 					<div class="ex-catalog-grid">
 						{#each listed as row (row.id)}
