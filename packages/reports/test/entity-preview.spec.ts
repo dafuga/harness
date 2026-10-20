@@ -174,10 +174,16 @@ test('history lists changes, keeps profiles apart and opens a revision', async (
 	await expect(tab.locator('.ex-history tbody tr')).toHaveCount(2);
 	await expect(tab.getByText('0.15 → 0.12 ms').first()).toBeVisible();
 	await capture(tab, 'function-history-desktop');
+	await expect(
+		tab.getByText('Selected change', { exact: false }),
+		'Compact commit history'
+	).toHaveCount(0);
+	await expect(tab.getByRole('columnheader', { name: 'Evidence', exact: true })).toHaveCount(0);
+	await expect(tab.locator('.ex-history time').first()).toHaveAttribute('title', /2026-10-09/);
 	await tab.getByRole('combobox', { name: 'Performance profile' }).selectOption('ci-linux');
-	await expect(tab.getByRole('columnheader', { name: 'Timing (ci-linux)' })).toBeVisible();
+	await expect(tab.getByRole('columnheader', { name: 'Latency (ci-linux)' })).toBeVisible();
 	await expect(tab.locator('.ex-history tbody tr').first()).toContainText('0.31 ms');
-	await tab.getByRole('link', { name: 'View revision aaaaaaa' }).click();
+	await tab.getByRole('link', { name: 'aaaaaaa', exact: true }).click();
 	expect(await where(tab)).toEqual({ branch: 'feature/orders', commit: commits.first, ...filter });
 	await expect(tab.getByText('First version')).toBeVisible();
 });
