@@ -3,7 +3,7 @@
 	"id": "reports.component.usage-examples-usage-examples",
 	"kind": "component",
 	"title": "Function usage examples",
-	"responsibility": "Shows authored function calls beside compact expected results and highlights changes from the first example.",
+	"responsibility": "Shows short example titles and literal calls with expected output comments.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,7 +11,7 @@
 			"packages/reports/src/components/usage-examples/UsageExamples.svelte",
 			"packages/reports/src/components/usage-examples/usageExamples.ts"
 		],
-		"symbols": ["UsageExamples", "UsageExampleResult", "UsageChange", "compact", "usageExamples"]
+		"symbols": ["UsageExamples", "compact", "usageExamples"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -19,12 +19,12 @@
 			{
 				"name": "UsageExamples.examples",
 				"type": "UsageExample[]",
-				"description": "Committed invocation code and expected JSON results or errors; the first example is the comparison baseline."
+				"description": "Committed invocation code and expected JSON outputs or errors."
 			},
 			{
 				"name": "UsageExamples.setup",
 				"type": "string | undefined",
-				"description": "Optional shared setup displayed as escaped code without executing it."
+				"description": "Optional legacy setup included inside each code block without executing it."
 			},
 			{
 				"name": "compact.value",
@@ -34,14 +34,19 @@
 			{
 				"name": "usageExamples.examples",
 				"type": "UsageExample[]",
-				"description": "Authored examples whose expected outputs or errors are compared with the first example."
+				"description": "Authored examples formatted as code snippets with expected output comments."
+			},
+			{
+				"name": "usageExamples.setup",
+				"type": "string | undefined",
+				"description": "Optional setup code prepended to each snippet."
 			}
 		],
 		"outputs": [
 			{
 				"name": "UsageExamples",
 				"type": "markup",
-				"description": "Responsive call/result rows with explicit output differences and truthful gaps for missing calls."
+				"description": "Short titles and code blocks only, without tables, comparison panels or disclosures."
 			},
 			{
 				"name": "compact",
@@ -50,8 +55,8 @@
 			},
 			{
 				"name": "usageExamples",
-				"type": "UsageExampleResult[]",
-				"description": "Expected result values and their top-level changes from the first example, ignoring object property order."
+				"type": "string[]",
+				"description": "Literal code snippets followed by expected output or throws comments."
 			}
 		],
 		"errors": []
