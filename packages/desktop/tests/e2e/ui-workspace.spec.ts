@@ -158,4 +158,31 @@ test('workspace selectors start collapsed and environment stays directly selecta
 		await page.keyboard.press('Escape');
 		await expect(page.getByRole('button', { name: button, exact: true })).toBeFocused();
 	}
+	for (const width of [390, 320]) {
+		await page.setViewportSize({ width, height: 568 });
+		await page.getByLabel('Environment', { exact: true }).selectOption('dev');
+		await page.evaluate(() => document.fonts.ready);
+		if (process.env.TAKE_SCREENSHOT === 'true')
+			await page.screenshot({
+				path: `/tmp/harness-env-evidence/mobile-header-${width}-${process.env.SCREENSHOT_LABEL ?? 'local'}.png`
+			});
+		const header = await page.getByRole('banner').boundingBox();
+		expect(header!.height, 'Mobile header must leave room for project content').toBeLessThanOrEqual(
+			164
+		);
+		expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
+			width
+		);
+		for (const name of [
+			'Choose workbench',
+			'Choose branch',
+			'Choose commit',
+			'Deploy',
+			'Search entities'
+		])
+			await expect(page.getByRole('button', { name, exact: true })).toBeVisible();
+		await page.getByRole('button', { name: 'Choose commit', exact: true }).click();
+		await expect(page.getByLabel('Commit', { exact: true })).toBeVisible();
+		await page.keyboard.press('Escape');
+	}
 });
