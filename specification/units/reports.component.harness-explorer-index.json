@@ -85,10 +85,10 @@
 			}
 		]
 	},
-	"scenarios": ["component-catalog-cards"],
+	"scenarios": ["component-catalog-cards", "component-catalog-previews"],
 	"preview": {
-		"scenario": "component-catalog-cards",
-		"state": "current",
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-harness-explorer-index",
 		"viewport": "desktop"
 	},
 	"budgets": {

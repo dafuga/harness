@@ -60,7 +60,17 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-renderer", "remote-mobile-ui"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-renderer",
+		"remote-mobile-ui",
+		"component-catalog-previews"
+	],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "desktop-component-status-bar",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

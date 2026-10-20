@@ -50,7 +50,12 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "hub-component-invite-accept",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

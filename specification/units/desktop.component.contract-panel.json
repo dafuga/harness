@@ -50,7 +50,12 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-renderer"],
+	"scenarios": ["desktop-native", "desktop-renderer", "component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "desktop-component-contract-panel",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -96,7 +96,18 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-renderer", "shells-shared-app", "search-shared-app"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-renderer",
+		"shells-shared-app",
+		"search-shared-app",
+		"component-catalog-previews"
+	],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "desktop-component-nav-bar",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

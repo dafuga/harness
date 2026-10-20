@@ -39,7 +39,12 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-renderer"],
+	"scenarios": ["desktop-native", "desktop-renderer", "component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "desktop-component-plan-badge",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

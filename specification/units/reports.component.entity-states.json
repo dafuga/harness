@@ -97,7 +97,12 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-entity-states",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

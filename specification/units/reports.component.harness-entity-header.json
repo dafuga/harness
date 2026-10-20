@@ -100,7 +100,12 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-harness-entity-header",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

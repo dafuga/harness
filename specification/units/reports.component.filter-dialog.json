@@ -60,10 +60,10 @@
 			}
 		]
 	},
-	"scenarios": ["harness-console"],
+	"scenarios": ["harness-console", "component-catalog-previews"],
 	"preview": {
-		"scenario": "harness-console",
-		"state": "catalog-filters",
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-filter-dialog",
 		"viewport": "desktop"
 	},
 	"budgets": {

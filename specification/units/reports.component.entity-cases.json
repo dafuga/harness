@@ -70,7 +70,17 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-renderer", "harness-console", "shared-test-cases"],
+	"scenarios": [
+		"desktop-renderer",
+		"harness-console",
+		"shared-test-cases",
+		"component-catalog-previews"
+	],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-entity-cases",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

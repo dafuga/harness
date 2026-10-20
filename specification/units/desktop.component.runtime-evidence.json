@@ -100,7 +100,12 @@
 			}
 		]
 	},
-	"scenarios": ["runtime-evidence-ui", "shared-test-cases"],
+	"scenarios": ["runtime-evidence-ui", "shared-test-cases", "component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "desktop-component-runtime-evidence",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

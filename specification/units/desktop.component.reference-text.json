@@ -80,7 +80,12 @@
 			}
 		]
 	},
-	"scenarios": ["agent-references"],
+	"scenarios": ["agent-references", "component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "desktop-component-reference-text",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -55,7 +55,12 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "hub-component-login-panel",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

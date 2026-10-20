@@ -75,10 +75,10 @@
 			}
 		]
 	},
-	"scenarios": ["component-previews"],
+	"scenarios": ["component-previews", "component-catalog-previews"],
 	"preview": {
-		"scenario": "component-previews",
-		"state": "models",
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-provider-picker-cards",
 		"viewport": "desktop"
 	},
 	"budgets": {

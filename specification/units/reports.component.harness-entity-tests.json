@@ -115,7 +115,12 @@
 			}
 		]
 	},
-	"scenarios": ["browser-error-evidence"],
+	"scenarios": ["browser-error-evidence", "component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-harness-entity-tests",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

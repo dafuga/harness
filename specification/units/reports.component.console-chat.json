@@ -64,7 +64,12 @@
 			}
 		]
 	},
-	"scenarios": ["local-project-chat"],
+	"scenarios": ["local-project-chat", "component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-console-chat",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

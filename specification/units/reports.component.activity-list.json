@@ -83,7 +83,12 @@
 			}
 		]
 	},
-	"scenarios": ["activity-list-states"],
+	"scenarios": ["activity-list-states", "component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-activity-list",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

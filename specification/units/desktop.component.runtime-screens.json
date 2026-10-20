@@ -90,7 +90,12 @@
 			}
 		]
 	},
-	"scenarios": ["runtime-evidence-ui"],
+	"scenarios": ["runtime-evidence-ui", "component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "desktop-component-runtime-screens",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
