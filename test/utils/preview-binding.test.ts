@@ -112,6 +112,12 @@ test('visual components cannot omit required preview coverage while nonvisual un
 		units: [component.id],
 		states: [{ ...scenario.states[0], units: [component.id] }]
 	};
+	expect(
+		registryGate(
+			{ stored: [] },
+			{ stored: [{ ...covered, preview: undefined }], scenarios: [ownScenario] }
+		).join(' ')
+	).toContain('active component requires a screenshot preview');
 	expect(registryGate({ stored: [] }, { stored: [covered], scenarios: [ownScenario] })).toEqual([]);
 	expect(
 		registryGate({ stored: [] }, { stored: [{ ...component, status: 'retired' }], scenarios: [] })
