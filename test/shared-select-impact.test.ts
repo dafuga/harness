@@ -1,6 +1,5 @@
 import * as sourceIndex from '../src/services/source-index-service/SourceIndexService';
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { readdirSync } from 'node:fs';
 import { beforeAll, expect, test } from 'vitest';
 import { HandlerRuntimeAdapter } from '../src/adapters/HandlerRuntimeAdapter';
 import { WorkingTreeAdapter } from '../src/adapters/WorkingTreeAdapter';
@@ -8,7 +7,7 @@ import type { ImpactReport, ImpactSide } from '../src/core/impactTypes';
 import { ImpactService } from '../src/services/impact-service/ImpactService';
 import { SourceGraphService } from '../src/services/SourceGraphService';
 import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
-import { scanImports } from '../src/services/source-index-service/scanImports';
+import { aliases, imports, select, type Written } from './support/selectImports';
 import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
 
 /**
@@ -17,51 +16,21 @@ import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
  * the graph and the impact analysis and holds them to every alias the packages' own builds
  * declare: all that is simulated is the content hash of the one file said to have changed.
  */
-const select = 'packages/reports/src/components/Select.svelte';
 const shared = '$shared';
 const indexer = new sourceIndex.SourceIndexService();
 const analysis = new ImpactService(new HandlerRuntimeAdapter(impactKernel));
 const reports = new Map<string, Promise<ImpactReport>>();
-interface Written {
-	from: string;
-	specifier: string;
-	to: string | undefined;
-}
 let loaded: LoadedUnits;
 let builds: Record<string, Record<string, string>>;
 let written: Written[];
 beforeAll(async () => {
 	loaded = await loadUnits(process.cwd(), undefined, indexer);
 	builds = Object.fromEntries(readdirSync('packages').map((name) => [name, aliases(name)]));
-	written = [...loaded.index.files.keys()].flatMap(imports);
+	written = [...loaded.index.files.keys()].flatMap((from) =>
+		imports(from, builds, loaded.index.files)
+	);
 }, 60_000);
 
-/** The build aliases a package's Svelte configuration declares, each with the place it names. */
-function aliases(name: string): Record<string, string> {
-	const file = join('packages', name, 'svelte.config.js');
-	const stated = existsSync(file) ? /alias:\s*\{([^}]*)\}/.exec(readFileSync(file, 'utf8')) : null;
-	const pairs = [...(stated?.[1] ?? '').matchAll(/(\$\w+):\s*'([^']+)'/g)];
-	return Object.fromEntries(pairs.map(([, alias, target]) => [alias, target]));
-}
-/** The alias imports one file really writes, each with the tracked file its build sends it to. */
-function imports(from: string): Written[] {
-	const [, name = ''] = /^packages\/([^/]+)\//.exec(from) ?? [];
-	const language = /\.(svelte|css|ts)$/.exec(from)?.[1] as 'svelte' | 'css' | 'ts' | undefined;
-	const own = Object.entries(builds[name] ?? {});
-	if (!language || own.length === 0) return [];
-	const found = scanImports(readFileSync(from, 'utf8'), language);
-	return found.flatMap((item) => {
-		const [alias, target] = own.find(([key]) => item.specifier?.startsWith(`${key}/`)) ?? [];
-		if (!item.specifier) return [];
-		if (!alias || !target) {
-			const to = join(dirname(from), item.specifier);
-			return to === select ? [{ from, specifier: item.specifier, to }] : [];
-		}
-		const path = join('packages', name, target, item.specifier.slice(alias.length + 1));
-		const to = [path, `${path}.ts`].find((candidate) => loaded.index.files.has(candidate));
-		return [{ from, specifier: item.specifier, to }];
-	});
-}
 /** One tree as the impact analysis reads it, with the registry as it is stored. */
 function side(index: sourceIndex.SourceIndex): ImpactSide {
 	return {
