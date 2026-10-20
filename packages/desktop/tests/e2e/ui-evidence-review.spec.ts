@@ -37,7 +37,9 @@ const visit = (page: Page, address: string) =>
 		dispatchEvent(new PopStateEvent('popstate'));
 	}, address);
 
-test('the address decides the section, also when the entity stays the same', async ({ page }) => {
+test('the address decides the section, also when the entity stays the same', async ({
+	page
+}, info) => {
 	await evidenceFixture(page);
 	await page.goto(at(filter, undefined, '/history'));
 	await expect(page.getByRole('heading', { name: 'Entity history' })).toBeVisible();
@@ -54,8 +56,17 @@ test('the address decides the section, also when the entity stays the same', asy
 	await expect(page.getByRole('heading', { name: 'Source files', exact: true })).toBeVisible();
 	await visit(page, at(filter, undefined, '/evidence'));
 	await expect(current(page)).toHaveText('Examples');
-	await page.getByText('Recorded tests and verification', { exact: true }).click();
-	await expect(page.getByRole('region', { name: 'Evidence coverage' })).toBeVisible();
+	await runtimeEvidence(page, info, 'examples-collapsed');
+	await expect(page.getByText('No usage examples are documented at this commit.')).toBeVisible();
+	const verification = page.getByText('Recorded tests and verification', { exact: true });
+	const coverage = page.getByRole('region', { name: 'Evidence coverage' });
+	await expect(verification).toBeVisible();
+	await expect(coverage).toBeHidden();
+	await verification.click();
+	await runtimeEvidence(page, info, 'examples-expanded');
+	await expect(coverage).toBeVisible();
+	await verification.click();
+	await expect(coverage).toBeHidden();
 	await expect(page.getByRole('heading', { name: 'Source files', exact: true })).toHaveCount(0);
 	// A section chosen on the page has its address, and Details closes when another is chosen.
 	await expect(page.getByRole('button', { name: 'Details →', exact: true })).toHaveCount(0);
