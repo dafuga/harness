@@ -2,11 +2,9 @@
 	"name": "mobile-deployment-layout",
 	"goal": "Keep the mobile workspace header compact and deployment modals contained and usable across narrow and short viewports, with unchanged red-green coverage.",
 	"createdAt": "2026-10-20T20:45:30.253Z",
-	"updatedAt": "2026-10-20T20:48:29.502Z",
+	"updatedAt": "2026-10-20T21:24:07.765Z",
 	"template": "regression-prevention",
-	"templateLineage": [
-		"regression-prevention"
-	],
+	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,7 +39,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T21:24:07.765Z",
+			"evidence": "Opus5.5/xhigh implemented the compact shared header grid, revision metadata, tablet placement and opt-in shared dialog footer. Integration keeps production guidance on one line and mobile tabs44px; types/lint/build,9component tests,12contract guards and unchanged3browser scenarios pass."
 		},
 		{
 			"id": "green",
