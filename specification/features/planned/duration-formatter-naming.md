@@ -24,3 +24,13 @@ Update the project and installed Harness skills. Do not impose a generic verb-pr
 regex: the review must compare the actual transformation with the name and signature.
 A well-named single-consumer formatter still belongs with its owner; a file-reading
 operation is effectful regardless of its name. Keep the existing purity/reuse rules.
+
+## Verification Result
+
+- Preserved red `213ae47f` and green `741c2b5e` with the same test, command and environment; the isolated old-name mutation fails and exact restoration passes.
+- Reports `bun run check` passes: formatting, Svelte types, lint, 604 tests, three builds and audit. Three standardized catalog viewport cases pass.
+- Manual browser uses the actual registry from `741c2b5e`: old-name search returns zero, `formatDuration(90)` opens the same unit and its string-output contract. Fresh screenshots inspected; no browser errors.
+- Root audit passes; unit registry has no errors (64 existing uncertain units). Five focused root contract/index/shared-control suites pass (25 tests); the four-case hook suite has three passes and one existing failure at `test/hooks.e2e.test.ts:104`, expecting source bytes 87 to 148 while observing 100 to 161. This file is unchanged from baseline `24fcba33`.
+- Root `bun run check` passes formatting, types, lint and kernel checks/build. The aggregate was interrupted during root unit tests after the focused hook test confirmed the known blocker. Remaining aggregate unit, E2E, packaging and workspace layers are not claimed passing. Keep the loop verification step and report in progress.
+- Installed `harness-project` skill passes `quick_validate.py`; it lives outside project Git. The project root naming rule and reports-package link are committed. Manual semantic review distinguishes formatting, effectful file reads and single-consumer ownership; no naming regex was added.
+- Local source only; no merge, deployment or publication. Managed viewer history for this branch is not indexed, so screenshot proof comes from the actual-commit local fixture rather than a live managed History entry.

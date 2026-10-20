@@ -2,11 +2,9 @@
 	"name": "duration-formatter-naming",
 	"goal": "Helpers use names that explain their transformation; formatDuration replaces audioDuration without changing time formatting",
 	"createdAt": "2026-10-20T12:59:53.375Z",
-	"updatedAt": "2026-10-20T13:07:57.968Z",
+	"updatedAt": "2026-10-20T13:09:58.954Z",
 	"template": "regression-prevention",
-	"templateLineage": [
-		"regression-prevention"
-	],
+	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -48,12 +46,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T13:09:57.016Z",
+			"evidence": "Unchanged test and exact command/environment passed at 741c2b5e; green record a6ba47aadd3e4cca78f278d258166b01d303d89799e9d764f229ccd4ebffbf79 references frozen red 213ae47f."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T13:09:58.954Z",
+			"evidence": "Isolated git archive of 741c2b5e: restoring audioDuration in export and all three callers makes the same unchanged test fail with duration formatting is named for its operation (exit 1). Restoring exact fixed source passes (exit 0). Logs /tmp/harness-duration-guard-{reintroduced,restored}.log. Skill validator passes; semantic review rejects audioDuration for seconds-to-text, accepts formatDuration for three consumers, keeps a one-consumer formatter private, and treats file reads as effectful."
 		},
 		{
 			"id": "verify",
