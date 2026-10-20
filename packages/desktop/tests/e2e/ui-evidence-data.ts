@@ -96,6 +96,7 @@ function entity(unit: HarnessUnit, image: number) {
 		threadCount: 0,
 		thumbnail: (designed ? thumbnail : null) as Thumbnail | null,
 		contract: { ...unit.contract, hash: null },
+		helperContracts: unit.helpers,
 		relationships: [],
 		versions: designed ? [design] : [],
 		threads: [],

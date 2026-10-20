@@ -5,6 +5,19 @@ import { expect, test } from 'vitest';
 import { runCommand } from './support/cli';
 import { completeProposal } from './support/taskAuditRepo';
 import { existsSync } from 'node:fs';
+import { captureLineSchema } from '../src/core/verifyTypes';
+import { evidenceRequested, recordCapture } from '../src/utils/record-capture/recordCapture';
+
+/** Keep actual SDK-consumer profiles in the requesting Harness run before the consumer is removed. */
+async function forwardProfiles(directory: string): Promise<void> {
+	if (!evidenceRequested()) return;
+	const index = await readFile(join(directory, 'captures.ndjson'), 'utf8');
+	for (const line of index.trim().split('\n')) {
+		const capture = captureLineSchema.parse(JSON.parse(line));
+		if (capture.kind === 'benchmark')
+			recordCapture(capture, await readFile(join(directory, capture.file)));
+	}
+}
 
 const consumer = `
 import {
@@ -132,5 +145,6 @@ test('a packed consumer uses the verification contracts and evidence protocol', 
 	});
 	expect(await readFile(join(evidence, 'out.txt'), 'utf8')).toBe('hello');
 	expect(await readFile(join(evidence, 'captures.ndjson'), 'utf8')).toContain('"file":"out.txt"');
+	await forwardProfiles(evidence);
 	await rm(root, { recursive: true, force: true });
 }, 240_000);

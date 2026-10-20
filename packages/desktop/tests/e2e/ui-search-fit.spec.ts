@@ -42,15 +42,15 @@ async function opened(page: Page, width: number): Promise<number[]> {
 	await page.goto(at('pages'));
 	await expect(page.getByRole('navigation', { name: 'Catalog categories' })).toBeVisible();
 	await page.evaluate(() => document.fonts.ready.then(() => undefined));
-	const searched = bar(page).getByRole('button', { name: 'Search project', exact: true });
-	const place = bar(page).locator(':scope > *').filter({ has: searched });
+	const place = bar(page).locator('.topbar-search');
+	await expect(place.getByRole('button', { name: 'Search entities', exact: true })).toBeVisible();
 	await place.evaluate((element: HTMLElement) => (element.style.display = 'none'));
 	const without = await Promise.all(revision(page).map(async (one) => (await box(one)).width));
 	await place.evaluate((element: HTMLElement) => (element.style.display = ''));
 	return without.map(Math.round);
 }
 async function fits(page: Page, width: number, without: number[]): Promise<void> {
-	const search = await box(bar(page).getByRole('button', { name: 'Search project', exact: true }));
+	const search = await box(bar(page).getByRole('button', { name: 'Search entities', exact: true }));
 	const fields = await Promise.all(revision(page).map(box));
 	expect(fields.map((one) => meet(search, one, 3))).toEqual([false, false]);
 	// The search takes nothing of the room of either revision field.
@@ -76,7 +76,7 @@ for (const width of widths) {
 		const without = await opened(page, width);
 		await remember(page, info, `fit-${width}`);
 		await fits(page, width, without);
-		await bar(page).getByRole('button', { name: 'Search project', exact: true }).click();
+		await bar(page).getByRole('button', { name: 'Search entities', exact: true }).click();
 		await expect(field(page)).toBeFocused();
 		await fits(page, width, without);
 		await field(page).fill('alpha');
@@ -84,10 +84,11 @@ for (const width of widths) {
 		await fits(page, width, without);
 		const list = await box(found(page));
 		expect([list.x >= 0, list.x + list.width <= width]).toEqual([true, true]);
-		await expect(page.getByRole('dialog', { name: 'Search project' })).toHaveAttribute(
-			'aria-modal',
-			'true'
-		);
+		expect(
+			await page
+				.getByRole('dialog', { name: 'Search project' })
+				.evaluate((dialog) => dialog.matches(':modal'))
+		).toBe(true);
 		await remember(page, info, `fit-open-${width}`);
 	});
 
@@ -95,7 +96,7 @@ for (const width of widths) {
 		page
 	}) => {
 		await opened(page, width);
-		await bar(page).getByRole('button', { name: 'Search project', exact: true }).click();
+		await bar(page).getByRole('button', { name: 'Search entities', exact: true }).click();
 		await field(page).fill('refund');
 		const link = found(page).getByRole('option').first().getByRole('link');
 		const [tab] = await Promise.all([

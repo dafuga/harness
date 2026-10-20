@@ -140,29 +140,41 @@ for (const viewport of [
 						path: 'usage.md',
 						text: '# Committed usage',
 						examples: [
-							{ name: 'Search by name', input: { search: 'SERVICE' }, output: ['Service call'] },
-							{ name: 'No match', input: { search: 'none' }, output: [] }
+							{
+								name: 'Search by name',
+								call: 'filterOrders(["Service call"], "SERVICE")',
+								input: { search: 'SERVICE' },
+								output: ['Service call']
+							},
+							{
+								name: 'No match',
+								call: 'filterOrders(["Service call"], "none")',
+								input: { search: 'none' },
+								output: []
+							}
 						]
 					}
 				}
 			});
 			await page.goto(`${filter}/examples`);
 			await expect(current(page)).toHaveText('Examples');
-			await expect(page.locator('.cases > table > tbody > tr')).toHaveCount(2);
-			await expect(page.getByRole('columnheader')).toHaveText([
-				'Example',
-				'Input',
-				'Expected output'
+			const examples = page.locator('.examples');
+			await expect(examples.getByRole('article')).toHaveCount(2);
+			await expect(examples.getByRole('heading')).toHaveText(['Search by name', 'No match']);
+			await expect(examples.locator('code')).toHaveText([
+				'filterOrders(["Service call"], "SERVICE")\n// => ["Service call"]',
+				'filterOrders(["Service call"], "none")\n// => []'
 			]);
-			await expect(page.locator('.cases')).toContainText('Service call');
+			await expect(examples.getByRole('table')).toHaveCount(0);
 			await expect(page.getByRole('region', { name: 'Evidence coverage' })).toHaveCount(0);
 			if (process.env.TAKE_SCREENSHOT === '1')
 				await page.screenshot({
 					path: `/tmp/harness-shared-examples-${viewport.id}-${shared ? 'hosted' : 'local'}.png`,
 					fullPage: true
 				});
-			await page.getByText('Recorded tests and verification', { exact: true }).click();
-			await expect(page.getByRole('region', { name: 'Evidence coverage' })).toBeVisible();
+			await expect(page.getByText('Recorded tests and verification', { exact: true })).toHaveCount(
+				0
+			);
 			expect(
 				await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)
 			).toBeLessThanOrEqual(0);

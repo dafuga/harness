@@ -38,6 +38,8 @@ function drawn(image: Locator) {
 	});
 }
 
+test.use({ screenshot: 'only-on-failure' });
+
 test('a page at its branch tip shows one current screenshot beside its contract, apart from its designs', async ({
 	page
 }, info) => {
@@ -208,7 +210,20 @@ for (const viewport of [
 		const overflow = await page.evaluate(
 			() => document.documentElement.scrollWidth - document.documentElement.clientWidth
 		);
-		expect(overflow).toBeLessThanOrEqual(0);
+		const outside = overflow
+			? await page.evaluate(() =>
+					[...document.querySelectorAll('body *')]
+						.map((node) => ({
+							tag: node.tagName,
+							class: node.className,
+							right: node.getBoundingClientRect().right,
+							width: node.getBoundingClientRect().width
+						}))
+						.filter((box) => box.right > innerWidth && box.width > 0)
+						.slice(0, 20)
+				)
+			: [];
+		expect(overflow, JSON.stringify(outside)).toBeLessThanOrEqual(0);
 		await runtimeEvidence(page, info, 'commit');
 	});
 }

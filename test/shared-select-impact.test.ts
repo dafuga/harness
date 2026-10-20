@@ -12,7 +12,7 @@ import { scanImports } from '../src/services/source-index-service/scanImports';
 import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
 
 /**
- * ONE SELECT, TEN CONSUMERS IN TWO APPS. The desktop and the hub import the Select of the
+ * ONE SELECT ACROSS REGISTERED APPS. Desktop, Hub and Reports import the Select of the
  * reports package through their declared alias or a shared relative import. This reads this very repository through the index,
  * the graph and the impact analysis and holds them to every alias the packages' own builds
  * declare: all that is simulated is the content hash of the one file said to have changed.
@@ -87,7 +87,7 @@ function changed(path: string): Promise<ImpactReport> {
 const owner = (path: string | undefined) =>
 	loaded.stored.find((unit) => unit.status === 'active' && unit.owns.source.includes(path ?? ''))
 		?.id;
-const consumers = () => written.filter((item) => item.to === select);
+const consumers = () => written.filter((item) => item.to === select && owner(item.from));
 
 test('no import written through a build alias of any package is left as a package from outside', () => {
 	const declared = Object.fromEntries(
@@ -95,7 +95,8 @@ test('no import written through a build alias of any package is left as a packag
 	);
 	expect(declared).toEqual({
 		desktop: { $desktop: './src', $shared: '../reports/src/components' },
-		hub: { $desktop: '../desktop/src', $shared: '../reports/src/components' }
+		hub: { $desktop: '../desktop/src', $shared: '../reports/src/components' },
+		reports: { $desktop: '../desktop/src', $shared: './src/components' }
 	});
 	const resolved = (item: Written) =>
 		loaded.index.files
@@ -111,7 +112,7 @@ test('no import written through a build alias of any package is left as a packag
 	expect(outside.map((file) => file.path)).toEqual([]);
 });
 
-test('the registry stores Select as a derived dependency of each of its ten consumers, and is not stale', () => {
+test('the registry stores Select as a derived dependency of each registered consumer, and is not stale', () => {
 	const units = consumers().map((item) => owner(item.from));
 	expect(units.sort()).toEqual([
 		...['agent-controls', 'agent-settings', 'catalog-view', 'design-panel'].map(
@@ -120,7 +121,21 @@ test('the registry stores Select as a derived dependency of each of its ten cons
 		...['project-switcher', 'remote-approval', 'revision-picker', 'runtime-screens'].map(
 			(name) => `desktop.component.${name}`
 		),
-		...['invitation-form', 'project-create'].map((name) => `hub.component.${name}`)
+		...['invitation-form', 'project-create'].map((name) => `hub.component.${name}`),
+		...[
+			'entity-states',
+			'evidence-grid',
+			'harness-entity-history',
+			'harness-entity-screens',
+			'harness-explorer-controls',
+			'harness-harness-compare-media',
+			'harness-harness-growth',
+			'harness-harness-selectors',
+			'provider-picker',
+			'replay-controls',
+			'upload-audio',
+			'upload-comparison'
+		].map((name) => `reports.component.${name}`)
 	]);
 	const linked = (id: string | undefined) =>
 		loaded.stored
