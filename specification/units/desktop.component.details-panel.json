@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.details-panel",
 	"kind": "component",
-	"title": "DetailsPanel",
-	"responsibility": "Owns the DetailsPanel Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Source files",
+	"responsibility": "Lets a person read source files from the displayed entity and revision, only on the Source tab.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/DetailsPanel.svelte"],
 		"symbols": ["DetailsPanel"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DetailsPanel.entity",
-				"type": "EntityDetail"
+				"type": "EntityDetail",
+				"description": "Entity supplying its kind, size and performance text, owned source paths and identifier. A source request is scoped to this identifier. An empty source list produces “No source files recorded.”"
 			},
 			{
 				"name": "DetailsPanel.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Workspace supplying the source-reading bridge, snapshot revision commit and project context. These are required when a source is selected. Failures during that request, including unavailable required context, are caught and shown as text."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DetailsPanel",
-				"type": "markup"
+				"type": "markup",
+				"description": "Source files for the displayed entity and revision. Choosing a file clears old text and errors, requests its contents and shows the result. A failed read displays an alert."
 			}
 		],
 		"errors": []

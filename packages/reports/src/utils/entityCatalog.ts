@@ -1,3 +1,5 @@
+import { helperContract } from '../../../../src/utils/helperContract';
+import { explorerCategory } from './explorerCategory';
 import type {
 	ExplorerCategory,
 	ExplorerEntity,
@@ -5,7 +7,12 @@ import type {
 	ExplorerVerdict
 } from '../models/Explorer.types';
 
+type Relations = Pick<ExplorerRelations, 'pages' | 'usedBy' | 'components'>;
+
 export interface CatalogRow {
+	helper?: NonNullable<ExplorerEntity['unit']['helpers']>[number];
+	/** First three distinct component, service or model consumers of this specific helper. */
+	usedIn?: Array<Pick<ExplorerEntity, 'id' | 'name' | 'category'>>;
 	entity: ExplorerEntity;
 	id: string;
 	name: string;
@@ -28,7 +35,9 @@ export interface CatalogRow {
 }
 
 export const catalogOrders = ['name', 'name-desc', 'changed', 'failed'] as const;
+
 export type CatalogOrder = (typeof catalogOrders)[number];
+
 export const orderLabels: Record<CatalogOrder, string> = {
 	name: 'Name (A → Z)',
 	'name-desc': 'Name (Z → A)',
@@ -40,25 +49,30 @@ export interface CatalogFilter {
 	search: string;
 	changedOnly: boolean;
 	order: CatalogOrder;
+	verification?: string;
+	usage?: string;
 }
 
 const names = (entities: ExplorerEntity[]) => entities.map((entity) => entity.name);
+
 // An entity that is only reached by a change of something it uses did not change itself.
 const own = ['direct', 'added'];
 
 /** True when more than one entity uses it itself, or more than one page shows it. */
-export function isShared(related: ExplorerRelations): boolean {
+export function isShared(related: Relations, unit?: ExplorerEntity['unit']): boolean {
+	if (unit && explorerCategory(unit) === 'functions')
+		return (unit.helpers ?? []).some((helper) => sharedHelper(helper));
 	return related.usedBy.length > 1 || related.pages.length > 1;
 }
 
-function rowOf(entity: ExplorerEntity, related: ExplorerRelations): CatalogRow {
+function rowOf(entity: ExplorerEntity, related: Relations): CatalogRow {
 	return {
 		entity,
 		id: entity.id,
 		name: entity.name,
 		summary: entity.purpose,
 		changed: own.includes(entity.change ?? ''),
-		shared: isShared(related),
+		shared: isShared(related, entity.unit),
 		verdict: entity.verdict,
 		usedOn: names(related.pages),
 		usedBy: names(related.usedBy),
@@ -68,41 +82,66 @@ function rowOf(entity: ExplorerEntity, related: ExplorerRelations): CatalogRow {
 	};
 }
 
-const byName = (left: CatalogRow, right: CatalogRow) =>
-	left.name.localeCompare(right.name, 'en', { sensitivity: 'base' });
+const sharedHelper = helperContract;
+
+/** The callable name shown on a function card, before its example arguments. */
+export function functionName(unit: CatalogRow['entity']['unit']): string {
+	return unit.helpers?.[0]?.name ?? '';
+}
+
+const sortName = (row: CatalogRow) => row.helper?.name ?? row.name;
+
+export function byName(left: CatalogRow, right: CatalogRow): number {
+	return sortName(left).localeCompare(sortName(right), 'en', { sensitivity: 'base' });
+}
+
+/** Resolve per-export runtime consumers; unrelated exports in the same module do not count. */
+function helperConsumers(
+	helper: NonNullable<CatalogRow['helper']>,
+	entities: Map<string, ExplorerEntity>
+): NonNullable<CatalogRow['usedIn']> {
+	const usedIn: NonNullable<CatalogRow['usedIn']> = [];
+	const seen = new Set<string>();
+	for (const consumer of helper.consumers ?? []) {
+		const entity = entities.get(consumer.unit);
+		if (!entity || seen.has(entity.id) || entity.change === 'removed') continue;
+		if (!['components', 'services', 'models'].includes(entity.category)) continue;
+		seen.add(entity.id);
+		usedIn.push({ id: entity.id, name: entity.name, category: entity.category });
+		if (usedIn.length === 3) break;
+	}
+	return usedIn;
+}
 
 /**
  * One collection of the explorer: the entities of a category, each with the name, the
- * relations and the verdict a card or a table row shows, in order of name. What an entity
- * relates to is asked once for each listed entity and for no other; a row holds no source path.
+ * relations and the verdict a card or a table row shows, in order of name. Shared helper
+ * exports become separate cards pointing to their owning entity; unrecorded exports stay absent.
  */
 export function entityCatalog(
 	entities: ExplorerEntity[],
 	category: ExplorerCategory,
-	relations: (id: string) => ExplorerRelations
+	relations: (id: string) => Relations
 ): CatalogRow[] {
+	const byId = new Map(entities.map((entity) => [entity.id, entity]));
 	return entities
 		.filter((entity) => entity.category === category)
-		.map((entity) => rowOf(entity, relations(entity.id)))
+		.flatMap((entity) => {
+			const row = rowOf(entity, relations(entity.id));
+			if (category !== 'functions') return [row];
+			const helpers = (entity.unit.helpers ?? []).filter(sharedHelper);
+			return helpers
+				.map((helper) => ({
+					...row,
+					shared: true,
+					helper,
+					usedIn: helperConsumers(helper, byId),
+					name: helper.name,
+					id: helpers.length === 1 ? entity.id : `${entity.id}#${helper.source}:${helper.name}`
+				}))
+				.filter((item) => item.usedIn.length >= 2);
+		})
 		.sort(byName);
-}
-
-const first = (flag: (row: CatalogRow) => boolean) => (left: CatalogRow, right: CatalogRow) =>
-	Number(flag(right)) - Number(flag(left)) || byName(left, right);
-const orders: Record<CatalogOrder, (left: CatalogRow, right: CatalogRow) => number> = {
-	name: byName,
-	'name-desc': (left, right) => byName(right, left),
-	changed: first((row) => row.changed),
-	failed: first((row) => !row.verdict.passed)
-};
-
-/** The rows a person asked for: those a search matches, only the changed ones, in an order. */
-export function catalogFilter(rows: CatalogRow[], filter: CatalogFilter): CatalogRow[] {
-	const wanted = filter.search.trim().toLowerCase();
-	return rows
-		.filter((row) => !filter.changedOnly || row.changed)
-		.filter((row) => !wanted || `${row.name} ${row.summary}`.toLowerCase().includes(wanted))
-		.sort(orders[filter.order]);
 }
 
 /** Names in a cell: none, the first few, and how many more there are. */
@@ -111,3 +150,5 @@ export function listed(names: string[], most = 1): string {
 	if (names.length <= most) return names.join(' · ');
 	return `${names.slice(0, most).join(' · ')} + ${names.length - most} more`;
 }
+
+export { catalogFilter } from '../components/harness/explorer-index/entityCatalog';

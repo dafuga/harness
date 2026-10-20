@@ -2,7 +2,7 @@
 	"schemaVersion": 1,
 	"id": "function.bug-repair-policy",
 	"kind": "function",
-	"title": "bugRepairPolicy",
+	"title": "Standardized bug repair rules",
 	"responsibility": "Share coverage-first standardized bug repair rules between framework guidance and app agents.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
@@ -11,12 +11,13 @@
 		"symbols": ["bugRepairPolicy"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "bugRepairPolicy",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Reusable repair rules covering coverage diagnosis, immutable failing/passing commits, causal naming/API corrections, selected-callable acceptance and planning boundaries. Returns a fresh list; runs no tests or agent."
 			}
 		],
 		"errors": []

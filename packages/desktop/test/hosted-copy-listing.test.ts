@@ -2,7 +2,7 @@ import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { test } from 'vitest';
 import { expect } from '../../../test/verificationExpect';
-import { RemoteHttpProjectAdapter } from '../src/adapters/RemoteHttpProjectAdapter';
+import { RemoteHttpProjectAdapter } from '../src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter';
 import { RemoteProjectionService } from '../src/services/RemoteProjectionService';
 import { analytics, former } from './catalog-listing-manifests';
 import { remoteCacheFixture } from './remote-cache-fixture';

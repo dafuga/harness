@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.runtime-evidence",
 	"kind": "component",
-	"title": "RuntimeEvidence",
-	"responsibility": "Owns the RuntimeEvidence Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Runtime evidence",
+	"responsibility": "Combines recorded screenshots, behavior and audio while identifying evidence gaps and offline copies.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/RuntimeEvidence.svelte"],
 		"symbols": ["RuntimeEvidence"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RuntimeEvidence.entity",
-				"type": "EntityDetail"
+				"type": "EntityDetail",
+				"description": "Entity whose kind informs notices and category chooses panels. Pages/shells/components are visual; functions have no screenshot panel and scope behavior rows by identifier."
 			},
 			{
 				"name": "RuntimeEvidence.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Workspace supplying offline status and cache timestamp for the saved-copy warning."
 			},
 			{
 				"name": "RuntimeEvidence.evidence",
-				"type": "EntityEvidence"
+				"type": "EntityEvidence",
+				"description": "State whose ready result feeds the panels and whose status/error feeds notices. A notice takes precedence over results."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RuntimeEvidence",
-				"type": "markup"
+				"type": "markup",
+				"description": "Runtime section identifying current tip or commit/parent. Labels offline content as saved and not server-checked. Shows screenshots for non-functions that are visual or declare screen options; behavior for nonvisual entities or existing behavior rows; audio when appropriate. Uses recorded runtime evidence, not proposed designs."
 			}
 		],
 		"errors": []
@@ -72,6 +76,11 @@
 		},
 		{
 			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.regression-proof",
 			"via": "import",
 			"origin": "derived"
 		},

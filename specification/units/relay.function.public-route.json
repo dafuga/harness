@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "relay.function.public-route",
 	"kind": "function",
-	"title": "publicRoute",
-	"responsibility": "Owns the publicRoute shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Public relay route parser",
+	"responsibility": "Recognizes the relay’s public endpoints from exact method and validated path parts.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/relay/src/utils/publicRoute.ts"],
 		"symbols": ["publicRoute"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "publicRoute.method",
-				"type": "string"
+				"type": "string",
+				"description": "HTTP method compared exactly, including case."
 			},
 			{
 				"name": "publicRoute.pathname",
-				"type": "string"
+				"type": "string",
+				"description": "URL pathname only, without query data."
 			}
 		],
 		"outputs": [
 			{
 				"name": "publicRoute",
-				"type": "PublicRoute | undefined"
+				"type": "PublicRoute | undefined",
+				"description": "Health route for GET /v1/health; GET host connect; GET pairing information; or POST pairing request, poll and exchange. Host and pairing identifiers must match protocol patterns, and returned paths are rebuilt from those validated parts. Everything else, including management paths, returns undefined."
 			}
 		],
 		"errors": []

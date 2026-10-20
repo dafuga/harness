@@ -3,7 +3,7 @@
 	"id": "desktop.component.choice-dialog",
 	"kind": "component",
 	"title": "Choice dialog",
-	"responsibility": "Owns the compact picker trigger, native modal lifecycle, focus restoration and shared dialog styling.",
+	"responsibility": "Wraps supplied choices in a modal opened from an icon button.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,19 +11,22 @@
 		"symbols": ["ChoiceDialog"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ChoiceDialog.label",
-				"type": "string"
+				"type": "string",
+				"description": "Required accessible name for the trigger and dialog."
 			},
 			{
 				"name": "ChoiceDialog.title",
-				"type": "string"
+				"type": "string",
+				"description": "Required tooltip on the opening button."
 			},
 			{
 				"name": "ChoiceDialog.disabled",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional flag, false by default, disabling the trigger. Does not close an already-open dialog."
 			},
 			{
 				"name": "ChoiceDialog.activeCount",
@@ -31,19 +34,23 @@
 			},
 			{
 				"name": "ChoiceDialog.width",
-				"type": "number"
+				"type": "number",
+				"description": "Required preferred width in pixels, capped at viewport width minus 24 pixels."
 			},
 			{
 				"name": "ChoiceDialog.maxHeight",
-				"type": "number"
+				"type": "number",
+				"description": "Required maximum height in pixels, capped at dynamic viewport height minus 24 pixels; overflow scrolls."
 			},
 			{
 				"name": "ChoiceDialog.gap",
-				"type": "number"
+				"type": "number",
+				"description": "Optional gap between dialog-grid children in pixels; defaults to 6."
 			},
 			{
 				"name": "ChoiceDialog.icon",
-				"type": "Snippet"
+				"type": "Snippet",
+				"description": "Required content rendered inside the trigger button."
 			},
 			{
 				"name": "ChoiceDialog.onopen",
@@ -51,13 +58,15 @@
 			},
 			{
 				"name": "ChoiceDialog.children",
-				"type": "Snippet<[close: () => void]>"
+				"type": "Snippet<[close: () => void]>",
+				"description": "Required content function receiving a close callback for dismissing the dialog after selection."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ChoiceDialog",
-				"type": "markup"
+				"type": "markup",
+				"description": "Trigger and modal. Opening focuses an enabled aria-pressed=true choice when present. Escape closes this dialog and stops propagation; backdrop click also closes it. Closing returns focus to the trigger."
 			}
 		],
 		"errors": []

@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
-import type { ReportRepository } from '../repositories/ReportRepository';
-import { audioAsset } from '../utils/audioAsset';
+import type { ReportRepository } from '../repositories/report-repository/ReportRepository';
+import { audioAsset } from '../utils/audio-asset/audioAsset';
 import { writeImageAsset } from '../utils/reportAssets';
 import { sanitize } from '../utils/sanitize';
 interface AudioDetails {

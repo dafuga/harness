@@ -2,34 +2,41 @@
 	"schemaVersion": 1,
 	"id": "reports.function.report-ingest",
 	"kind": "function",
-	"title": "reportIngest",
-	"responsibility": "Owns the reportIngest shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Report record ingestion",
+	"responsibility": "Applies one sanitized record to a report and imports evidence files when needed.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/reportIngest.ts"],
-		"symbols": ["reportIngest"]
+		"source": [
+			"packages/reports/src/repositories/report-repository/reportIngest.ts",
+			"packages/reports/src/utils/reportIngest.ts"
+		],
+		"symbols": ["reportIngest", "reportIngest"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "reportIngest.report",
-				"type": "Report"
+				"type": "Report",
+				"description": "Report object to mutate and return."
 			},
 			{
 				"name": "reportIngest.record",
-				"type": "RecordInput"
+				"type": "RecordInput",
+				"description": "Record kind and payload. Summary/acceptance replace their values; check, finding, coverage and evidence records replace an existing item with the same identifier and append the new item."
 			},
 			{
 				"name": "reportIngest.directory",
-				"type": "string"
+				"type": "string",
+				"description": "Report directory used when importing evidence assets."
 			}
 		],
 		"outputs": [
 			{
 				"name": "reportIngest",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Promise resolving to the same mutated report with a fresh update timestamp. Evidence uses the original source path for import, discards caller-supplied path/storage fields, and applies generated file metadata with default Evidence category and not-proven status."
 			}
 		],
 		"errors": []

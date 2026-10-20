@@ -1,9 +1,10 @@
 import Foundation
 
-// Native checks of the Harness phone plugin. They run the real Swift of the app on this Mac,
-// without a simulator, a relay or a keychain: scripts/check-ios-native.ts compiles every file of
-// ios/App/App/Remote except the Capacitor plugin together with this folder, once as Debug and
-// once as Release. Nothing here is proof of a connection to a real computer.
+// Native checks of the Harness phone plugins. They run the real Swift of the app on this Mac,
+// without a simulator, a relay, a Hub or a keychain: scripts/check-ios-native.ts compiles every
+// file of ios/App/App/Remote and ios/App/App/Account except the Capacitor plugins together with
+// this folder, once as Debug and once as Release. Nothing here is proof of a connection to a
+// real computer or a real Hub.
 
 #if DEBUG
 let flavor = "Debug"
@@ -62,5 +63,11 @@ artifactFileChecks()
 artifactSizeChecks()
 httpRedirectChecks()
 socketChecks()
+accountPolicyChecks()
+accountSignInChecks()
+accountBindingChecks()
+accountRequestChecks()
+accountReuseChecks()
+accountHttpChecks()
 print("\(flavor): \(passes) passed, \(failures) failed.")
 exit(failures == 0 ? 0 : 1)

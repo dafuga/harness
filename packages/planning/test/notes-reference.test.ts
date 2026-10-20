@@ -3,7 +3,7 @@ import { test } from 'vitest';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { author, contract, fixture, git } from './planFixture';
-import type { ArtifactReference } from '../src';
+import type { ArtifactReference } from '../src/lib/planning/index';
 import { PNG } from 'pngjs';
 
 test('notes references bind exact entity artifacts without rewriting legacy messages', async () => {

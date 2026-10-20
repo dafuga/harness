@@ -2,52 +2,71 @@
 	"schemaVersion": 1,
 	"id": "reports.function.report-cli",
 	"kind": "function",
-	"title": "reportCli",
-	"responsibility": "Owns the reportCli shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Report command parsing",
+	"responsibility": "Parses report command options and reads required values or JSON input.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/reportCli.ts"],
-		"symbols": ["CliOptions", "reportCli", "inputData", "required"]
+		"source": [
+			"packages/reports/src/services/report-command-service/reportCli.ts",
+			"packages/reports/src/utils/reportCli.ts"
+		],
+		"symbols": [
+			"reportCli",
+			"inputData",
+			"required",
+			"CliOptions",
+			"reportCli",
+			"inputData",
+			"required"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "reportCli.argv",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Arguments beginning with the operation, followed by flags and positionals."
 			},
 			{
 				"name": "inputData.flags",
-				"type": "Record<string, string | boolean>"
+				"type": "Record<string, string | boolean>",
+				"description": "Parsed flags; a truthy file takes precedence over inline data."
 			},
 			{
 				"name": "required.flags",
-				"type": "Record<string, string | boolean>"
+				"type": "Record<string, string | boolean>",
+				"description": "Flags to inspect for a required string."
 			},
 			{
 				"name": "required.name",
-				"type": "string"
+				"type": "string",
+				"description": "Required flag name without leading dashes."
 			}
 		],
 		"outputs": [
 			{
 				"name": "reportCli",
-				"type": "CliOptions"
+				"type": "CliOptions",
+				"description": "Operation or empty string, parsed flags and remaining positionals. Uses permissive argument parsing with declared string and boolean options."
 			},
 			{
 				"name": "inputData",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Promise resolving to parsed file or inline JSON. The result is cast as an object without checking its shape."
 			},
 			{
 				"name": "required",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Original nonblank string value, retaining its surrounding whitespace."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Throws when JSON input is absent or a required option is missing/non-string/blank. Argument-parser, file-read and JSON errors also propagate."
 			}
 		]
 	},

@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.report-site",
 	"kind": "function",
-	"title": "reportSite",
-	"responsibility": "Fixes the application this server is hosted for when it starts, and says what belongs to it.",
+	"title": "Reports site ownership",
+	"responsibility": "Binds a reports server to its application checkout and delegates repository-identity ownership checks.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,21 +11,24 @@
 		"symbols": ["ReportSite", "reportSite", "ownedBySite"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ownedBySite.project",
-				"type": "{ path: string }"
+				"type": "{ path: string }",
+				"description": "Project path whose ownership should be checked."
 			}
 		],
 		"outputs": [
 			{
 				"name": "reportSite",
-				"type": "ReportSite"
+				"type": "ReportSite",
+				"description": "Cached site root, primary-checkout directory name and repository identity. On first call uses trimmed HARNESS_SITE_ROOT or the current directory, resolves the Git root when available, and falls back to the requested directory."
 			},
 			{
 				"name": "ownedBySite",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Result of comparing the configured site root with the supplied project path through the shared same-site helper."
 			}
 		],
 		"errors": []

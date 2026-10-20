@@ -2,46 +2,60 @@
 	"schemaVersion": 1,
 	"id": "function.kernel-workload",
 	"kind": "function",
-	"title": "kernelWorkload",
-	"responsibility": "Generates deterministic synthetic impact workloads and malformed variants.",
+	"title": "Deterministic kernel fixtures",
+	"responsibility": "Builds repeatable synthetic graph requests and malformed input variants for cross-runtime comparisons.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/kernelWorkload.ts"],
-		"symbols": ["kernelWorkload", "kernelMutations", "kernelTexts"]
+		"source": ["src/utils/kernelWorkload.ts", "src/workflows/run-kernel/kernelWorkload.ts"],
+		"symbols": [
+			"kernelWorkload",
+			"edges",
+			"kernelMutations",
+			"kernelTexts",
+			"kernelMutations",
+			"kernelTexts"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "kernelWorkload.nodes",
-				"type": "number"
+				"type": "number",
+				"description": "Requested graph node count, normally a nonnegative integer; zero produces an empty changed list."
 			},
 			{
 				"name": "kernelWorkload.seed",
-				"type": "number"
+				"type": "number",
+				"description": "Numeric random seed normalized to an unsigned 32-bit state."
 			},
 			{
 				"name": "kernelMutations.request",
-				"type": "RuntimeRequest"
+				"type": "RuntimeRequest",
+				"description": "Valid impact request whose input contains graph node/edge arrays and changed ids for mutation."
 			},
 			{
 				"name": "kernelMutations.count",
-				"type": "number"
+				"type": "number",
+				"description": "Number of malformed variants to generate by cycling the fixed mutation list."
 			}
 		],
 		"outputs": [
 			{
 				"name": "kernelWorkload",
-				"type": "RuntimeRequest"
+				"type": "RuntimeRequest",
+				"description": "Impact runtime request with deterministic base/head graphs, removals/additions, changed and uncertain ids and sink selection."
 			},
 			{
 				"name": "kernelMutations",
-				"type": "unknown[]"
+				"type": "unknown[]",
+				"description": "Ordered malformed requests covering missing/wrong fields, duplicate nodes, invalid edges and unsupported operations; later cycles add a round marker."
 			},
 			{
 				"name": "kernelTexts",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Raw JSON text fixtures covering numeric extremes, Unicode, depth, duplicate keys and malformed/non-object JSON."
 			}
 		],
 		"errors": []

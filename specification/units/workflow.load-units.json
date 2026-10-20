@@ -53,7 +53,27 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.helper-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.revision-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.stable-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-metadata",
 			"via": "import",
 			"origin": "derived"
 		},

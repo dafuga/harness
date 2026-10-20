@@ -3,7 +3,7 @@ import { mkdtemp, rm, readdir, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
-import { ProjectionCacheService } from '../../src/services/ProjectionCacheService';
+import { ProjectionCacheService } from '../../src/services/projection-cache-service/ProjectionCacheService';
 import type { CacheIdentity } from '../../../collaboration/src/models/Collaboration.types';
 const identity: CacheIdentity = {
 	collaborationRevision: '1'.repeat(40),

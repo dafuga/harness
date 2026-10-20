@@ -1,4 +1,5 @@
 import type { ExplorerCategory, ExplorerLocation } from '../../../../src/utils/explorerRoute';
+import type { RegressionView } from '../../../../src/core/regressionTypes';
 import type {
 	HarnessExplanation,
 	HarnessMark,
@@ -80,6 +81,7 @@ export interface ExplorerRelations {
 	functions: ExplorerEntity[];
 	configs: ExplorerEntity[];
 	services: ExplorerEntity[];
+	models?: ExplorerEntity[];
 	/** Entities that use it directly and are not pages. */
 	usedBy: ExplorerEntity[];
 	/** What it depends on that is none of the five kinds; entities behind these are listed above. */
@@ -121,6 +123,7 @@ export interface ExplorerHistoryRow {
 
 /** What one stored revision says about an entity, once it has been read. */
 export interface ExplorerHistoryDetail {
+	regressions?: RegressionView[];
 	/** False when the revision stores no registry or no impact, so the change is not known. */
 	known: boolean;
 	present: boolean;

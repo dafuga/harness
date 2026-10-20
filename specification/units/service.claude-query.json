@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/ClaudeQueryService.ts"],
+		"source": ["src/services/claude-query-service/ClaudeQueryService.ts"],
 		"symbols": ["ClaudeQueryService", "ClaudeQueryService.constructor", "ClaudeQueryService.run"]
 	},
 	"contract": {
@@ -68,11 +68,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/ClaudeQueryService.ts",
+		"entry": "src/services/claude-query-service/ClaudeQueryService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/ClaudeQueryService.ts"
+				"entry": "src/services/claude-query-service/ClaudeQueryService.ts"
 			}
 		]
 	},

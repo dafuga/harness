@@ -1,11 +1,11 @@
 import { expect, test } from 'vitest';
 import type { HarnessRevision } from '../src/models/Harness.types';
-import { entityUsage } from '../src/utils/entityUsage';
+import { entityUsage } from '../src/components/harness/entity-relations/entityUsage';
 import { explorerCategory, explorerRole } from '../src/utils/explorerCategory';
 import { explorerEntities } from '../src/utils/explorerEntities';
 import { explorerRelations } from '../src/utils/explorerRelations';
 import { categoryIcon } from '../src/utils/harnessIcons';
-import { harnessShell } from '../src/utils/harnessShell';
+import { harnessShell } from '../src/components/harness/harness-navbar/harnessShell';
 import {
 	shellBranch,
 	shellCommits,
@@ -27,7 +27,7 @@ const frame = frameId;
 const categoryOf = (head: HarnessRevision, id: string) =>
 	explorerEntities(head).find((entity) => entity.id === id)?.category;
 
-test('the bar has six categories, Shells after Pages, each with its own icon', () => {
+test('the bar has seven categories, Shells after Pages, each with its own icon', () => {
 	const location = { branch: shellBranch, commit: null, category: 'shells' as const };
 	const { categories } = harnessShell({
 		base: shellMount,
@@ -42,9 +42,10 @@ test('the bar has six categories, Shells after Pages, each with its own icon', (
 		['pages', 'Pages', 'pages', false],
 		['shells', 'Shells', 'shells', true],
 		['components', 'Components', 'components', false],
-		['functions', 'Functions', 'functions', false],
+		['functions', 'Helpers', 'functions', false],
 		['configs', 'Configs', 'configs', false],
-		['services', 'Services', 'services', false]
+		['services', 'Services', 'services', false],
+		['models', 'Models', 'database', false]
 	]);
 	expect(categoryIcon.shells).not.toBe(categoryIcon.components);
 });

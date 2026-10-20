@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "hub.function.browser-auth",
 	"kind": "function",
-	"title": "browserAuth",
-	"responsibility": "Owns the browserAuth shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Browser sign-in calls",
+	"responsibility": "Expose the browser-facing authentication endpoints through the supplied API client.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/browserAuth.ts"],
 		"symbols": ["LoginChallenge", "NativeRequest", "browserAuth", "BrowserAuth"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "browserAuth.api",
-				"type": "BrowserApi"
+				"type": "BrowserApi",
+				"description": "API client carrying same-site requests and failures."
 			}
 		],
 		"outputs": [
 			{
 				"name": "browserAuth",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Methods for status, login challenge, Google credential submission, email code send/verification, logout and native handoff polling/approval. Credentials and typed codes travel in request bodies; the server determines identity."
 			}
 		],
 		"errors": []

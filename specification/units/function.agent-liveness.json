@@ -2,34 +2,41 @@
 	"schemaVersion": 1,
 	"id": "function.agent-liveness",
 	"kind": "function",
-	"title": "agentLiveness",
-	"responsibility": "Says whether a registered agent is working now: from its own heartbeat, its end and what is known of the process its owner named.",
+	"title": "Agent liveness",
+	"responsibility": "Determines whether an agent finished, lost its process, exceeded its heartbeat allowance or is still working.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/agentLiveness.ts"],
-		"symbols": ["AgentFacts", "ProcessFacts", "agentLiveness"]
+		"source": [
+			"src/services/agent-activity-service/agentLiveness.ts",
+			"src/utils/agentLiveness.ts"
+		],
+		"symbols": ["agentLiveness", "AgentFacts", "ProcessFacts", "agentLiveness"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "agentLiveness.agent",
-				"type": "AgentFacts"
+				"type": "AgentFacts",
+				"description": "Registration and latest heartbeat facts, heartbeat allowance in seconds, optional process identity, and any final completed or failed record. Dates are expected to be parseable strings."
 			},
 			{
 				"name": "agentLiveness.now",
-				"type": "number"
+				"type": "number",
+				"description": "Time of the assessment in milliseconds since the Unix epoch; a heartbeat is stale only when its age is greater than the allowance."
 			},
 			{
 				"name": "agentLiveness.processOf",
-				"type": "(pid: number) => ProcessFacts"
+				"type": "(pid: number) => ProcessFacts",
+				"description": "Lookup for the named process, returning existence and start time. Called only for an unfinished agent with a non-null pid; undefined existence means the process could not be checked."
 			}
 		],
 		"outputs": [
 			{
 				"name": "agentLiveness",
-				"type": "{ state: AgentState; detail: string }"
+				"type": "{ state: AgentState; detail: string }",
+				"description": "State and explanation: a final status wins, an absent or reused process is gone, an overdue heartbeat is stale, and otherwise the agent is working."
 			}
 		],
 		"errors": []

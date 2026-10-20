@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.status-bar",
 	"kind": "component",
-	"title": "StatusBar",
-	"responsibility": "Owns the StatusBar Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Status bar",
+	"responsibility": "Summarizes revision, access limits, cache provenance and connection controls for the displayed project.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/StatusBar.svelte"],
 		"symbols": ["StatusBar"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "StatusBar.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Workspace providing busy/snapshot, revision, source/comment capabilities, pinned/offline state, cache and connection context. It supplies the facts; the view does not verify publication or connectivity."
 			}
 		],
 		"outputs": [
 			{
 				"name": "StatusBar",
-				"type": "markup"
+				"type": "markup",
+				"description": "Footer with loading, offline, local/shared, historical and access-limited status. Offline copies are read-only and not server-checked, with save time when available; local unpublished revisions are named accordingly. Includes compact hosted/remote controls and seven-character commit."
 			}
 		],
 		"errors": []

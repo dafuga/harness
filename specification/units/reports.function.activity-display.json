@@ -2,66 +2,90 @@
 	"schemaVersion": 1,
 	"id": "reports.function.activity-display",
 	"kind": "function",
-	"title": "activityDisplay",
-	"responsibility": "Words, times and links the activity components share.",
+	"title": "Activity labels and links",
+	"responsibility": "Formats recorded activity timestamps, agent states, counts and commit navigation.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/activityDisplay.ts"],
-		"symbols": ["agentStates", "commitHref", "activityTime", "plural", "activityDisplay"]
+		"source": [
+			"packages/reports/src/components/activity-agents/activityDisplay.ts",
+			"packages/reports/src/components/project-activity/activityDisplay.ts",
+			"packages/reports/src/utils/activityDisplay.ts"
+		],
+		"symbols": [
+			"activityDisplay",
+			"commitHref",
+			"agentStates",
+			"activityTime",
+			"plural",
+			"commitHref",
+			"activityDisplay"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "commitHref.base",
-				"type": "string"
+				"type": "string",
+				"description": "Explorer address prefix."
 			},
 			{
 				"name": "commitHref.commit",
-				"type": "string"
+				"type": "string",
+				"description": "Commit to open in history."
 			},
 			{
 				"name": "commitHref.branches",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Branch choices; uses the first or a retained-commit route when none exist."
 			},
 			{
 				"name": "activityTime.iso",
-				"type": "string"
+				"type": "string",
+				"description": "Timestamp to format."
 			},
 			{
 				"name": "plural.count",
-				"type": "number"
+				"type": "number",
+				"description": "Count to display."
 			},
 			{
 				"name": "plural.word",
-				"type": "string"
+				"type": "string",
+				"description": "Singular word to pluralize by appending s unless the count is exactly one."
 			},
 			{
 				"name": "activityDisplay.agents",
-				"type": "AgentRoster"
+				"type": "AgentRoster",
+				"description": "Registered agent roster with a working count or null for unknown."
 			}
 		],
 		"outputs": [
 			{
 				"name": "agentStates",
-				"type": "Record<AgentState, string>"
+				"type": "Record<AgentState, string>",
+				"description": "Labels for working, stale, ended, completed and failed agents."
 			},
 			{
 				"name": "commitHref",
-				"type": "string"
+				"type": "string",
+				"description": "History address formed from the base and commit route."
 			},
 			{
 				"name": "activityTime",
-				"type": "string"
+				"type": "string",
+				"description": "UTC date and minute for a valid timestamp; otherwise the original text."
 			},
 			{
 				"name": "plural",
-				"type": "string"
+				"type": "string",
+				"description": "Count followed by the word in singular or simple plural form."
 			},
 			{
 				"name": "activityDisplay",
-				"type": "string"
+				"type": "string",
+				"description": "Sentence stating the registered working-agent count, or that it is unknown when no agent has registered. Explicitly excludes unregistered agents."
 			}
 		],
 		"errors": []
@@ -76,6 +100,32 @@
 			"unit": "function.console-route",
 			"via": "import",
 			"origin": "derived"
+		}
+	],
+	"helperContracts": [
+		{
+			"name": "plural",
+			"source": "packages/reports/src/utils/activityDisplay.ts",
+			"inputs": [
+				{
+					"name": "plural.count",
+					"type": "number"
+				},
+				{
+					"name": "plural.word",
+					"type": "string"
+				}
+			],
+			"output": "string",
+			"pure": true,
+			"consumers": [
+				{
+					"unit": "reports.component.activity-loops"
+				},
+				{
+					"unit": "reports.component.activity-work"
+				}
+			]
 		}
 	],
 	"runtime": {

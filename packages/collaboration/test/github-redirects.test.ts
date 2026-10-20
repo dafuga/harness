@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { githubTransport } from '../src/utils/githubTransport';
-import { githubLfs } from '../src/utils/githubLfs';
+import { githubLfs } from '../src/utils/create-git-hub-source/githubLfs';
 import { sourceRepository } from './githubFixture';
 import type { GitHubOptions } from '../src/models/Collaboration.types';
 

@@ -1,6 +1,9 @@
 import { expect, test } from 'vitest';
 import { comparisonSchema, roundsProtocol, warmupCalls } from '../../src/core/comparisonTypes';
-import { comparisonContext, requestDigest } from '../../src/utils/comparisonContext';
+import {
+	comparisonContext,
+	requestDigest
+} from '../../src/utils/comparison-context/comparisonContext';
 
 const request = { operation: 'rank', input: { size: 20000, seed: 7 } };
 

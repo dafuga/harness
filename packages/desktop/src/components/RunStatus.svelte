@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Workspace } from '../lib/stores/workspace.svelte';
 	import type { CatalogEntity } from '../models/Desktop.types';
-	import ReferenceText from './ReferenceText.svelte';
+	import ReferenceText from './reference-text/ReferenceText.svelte';
 	let {
 		text,
 		active,

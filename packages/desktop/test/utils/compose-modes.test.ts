@@ -1,10 +1,6 @@
 import { expect, test } from 'vitest';
-import {
-	composeModes,
-	defaultDesignCount,
-	designCounts,
-	visualCategory
-} from '../../src/utils/composeModes';
+import { composeModes } from '../../src/components/thread-panel/composeModes';
+import { defaultDesignCount, designCounts, visualCategory } from '../../src/utils/composeModes';
 import type { ProjectCapabilities } from '../../src/models/ProjectContext.types';
 
 const local: ProjectCapabilities = {

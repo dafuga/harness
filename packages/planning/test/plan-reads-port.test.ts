@@ -1,9 +1,9 @@
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import { Buffer } from 'node:buffer';
-import { recordCapture } from '../../../src/utils/recordCapture';
+import { recordCapture } from '../../../src/utils/record-capture/recordCapture';
 import type { Git } from '../src/utils/planGit';
-import { planReads } from '../src/utils/planReads';
+import { planReads } from '../src/services/planning-service/planReads';
 
 /**
  * The Git that planReads returns, called on a small deterministic Git that answers each command

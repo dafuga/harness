@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-explorer-index",
 	"kind": "component",
-	"title": "ExplorerIndex",
-	"responsibility": "Shows one collection of the explorer with its search, changed-only and order controls, empty results in words and a footer of the two marks; how its rows are listed is given to it.",
+	"title": "Entity catalog",
+	"responsibility": "Frames and filters a category’s entities with accessible status and empty-state guidance.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/ExplorerIndex.svelte"],
+		"source": ["packages/reports/src/components/harness/explorer-index/ExplorerIndex.svelte"],
 		"symbols": ["ExplorerIndex"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ExplorerIndex.category",
-				"type": "ExplorerCategory"
+				"type": "ExplorerCategory",
+				"description": "Required category used for headings, icon and explanatory text."
 			},
 			{
 				"name": "ExplorerIndex.rows",
-				"type": "CatalogRow[]"
+				"type": "CatalogRow[]",
+				"description": "Required complete category rows before filtering."
 			},
 			{
 				"name": "ExplorerIndex.list",
-				"type": "Snippet<[CatalogRow[]]>"
+				"type": "Snippet<[CatalogRow[]]>",
+				"description": "Required snippet receiving filtered/sorted rows to render as cards or table."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerIndex",
-				"type": "markup"
+				"type": "markup",
+				"description": "Catalog with search empty, changed-only off and name ordering initially. Shows count status, distinct no-registry/no-match states and Show all clearing search/changed-only but preserving order. Adds verification legend and category-specific guidance."
 			}
 		],
 		"errors": []
@@ -73,11 +77,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/ExplorerIndex.svelte",
+		"entry": "packages/reports/src/components/harness/explorer-index/ExplorerIndex.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/harness/ExplorerIndex.svelte"
+				"entry": "packages/reports/src/components/harness/explorer-index/ExplorerIndex.svelte"
 			}
 		]
 	},

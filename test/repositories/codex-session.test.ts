@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { CodexSessionRepository } from '../../src/repositories/CodexSessionRepository';
+import { CodexSessionRepository } from '../../src/repositories/codex-session-repository/CodexSessionRepository';
 
 test('pending tool results are isolated and cannot be delivered twice', async () => {
 	const repository = new CodexSessionRepository();

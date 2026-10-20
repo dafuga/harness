@@ -2,26 +2,31 @@
 	"schemaVersion": 1,
 	"id": "function.project-activity",
 	"kind": "function",
-	"title": "projectActivity",
-	"responsibility": "Assembles what a project did from its commits, their noted reasons and changed files, the owners of those files and its tracked loops.",
+	"title": "Committed project activity",
+	"responsibility": "Assembles loop usage, recent commits and the latest change to each listed file from caller-provided repository facts.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/projectActivity.ts"],
-		"symbols": ["ActivityRevision", "ActivitySource", "projectActivity"]
+		"source": [
+			"src/services/project-activity-service/projectActivity.ts",
+			"src/utils/projectActivity.ts"
+		],
+		"symbols": ["projectActivity", "ActivityRevision", "ActivitySource", "projectActivity"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "projectActivity.source",
-				"type": "ActivitySource"
+				"type": "ActivitySource",
+				"description": "Repository identity and kind, newest-first revisions, callbacks for reasons/changes/owners, loop states and limits for work, files, reasons and units."
 			}
 		],
 		"outputs": [
 			{
 				"name": "projectActivity",
-				"type": "ProjectActivity"
+				"type": "ProjectActivity",
+				"description": "Version 1 activity with newest commit or null, loop summaries, bounded work entries and each path once at its latest listed change. Reasons and unit ids are deduplicated; owned files are preferred within a commit."
 			}
 		],
 		"errors": []

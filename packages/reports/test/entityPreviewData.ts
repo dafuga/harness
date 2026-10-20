@@ -6,28 +6,83 @@ import type {
 } from '../src/models/Harness.types';
 import { record } from './entityFixture';
 import { capture, ids, units } from './entityUnits';
-
-/** What a preview is asked to show beside the plain history: named in the address it opens at. */
-export type PreviewVariant = '' | 'legacy' | 'partial' | 'declared' | 'shells';
-
-/**
- * The record of a commit as the preview shows it: the search scenario also recorded a spoken
- * clip of its matching state. `whole` is whether every required state of the page was captured.
- */
+export type PreviewVariant =
+	| ''
+	| 'legacy'
+	| 'partial'
+	| 'declared'
+	| 'shells'
+	| 'console'
+	| 'inherited'
+	| 'states'
+	| 'documented'
+	| 'helpers'
+	| 'measurements';
+export function stateRecord(commit: string): HarnessRecord {
+	const taken = previewRecord(commit);
+	taken.scenarios[0].states.push({
+		id: 'error',
+		coverage: 'required',
+		captures: ['desktop', 'mobile'].map((viewport) =>
+			capture(commit, { kind: 'screenshot', state: 'error', viewport })
+		)
+	});
+	return taken;
+}
+export function withStates(detail: HarnessRevision): HarnessRevision {
+	const scenarios = detail.registry.scenarios.map((scenario) =>
+		scenario.id === 'orders-page'
+			? {
+					...scenario,
+					states: [...scenario.states, { id: 'error', coverage: 'required' }],
+					evidence: scenario.evidence?.map((item) =>
+						item.kind === 'screenshot' ? { ...item, states: [...item.states, 'error'] } : item
+					)
+				}
+			: scenario
+	);
+	return {
+		...detail,
+		registry: { ...detail.registry, scenarios },
+		records: [stateRecord(detail.commit)]
+	};
+}
+export function withInherited(detail: HarnessRevision, origin: string): HarnessRevision {
+	const taken = detail.records[0];
+	const original = previewRecord(origin);
+	const scenario = original.scenarios[0];
+	const inherited = {
+		...scenario,
+		status: 'referenced' as const,
+		inherited: true,
+		origin: { record: original.id, commit: origin },
+		originTests: original.tests.map(({ id, status }) => ({ id, status }))
+	};
+	return {
+		...detail,
+		records: [{ ...taken, scenarios: [inherited, ...taken.scenarios.slice(1)] }]
+	};
+}
+export function withScale(detail: HarnessRevision): HarnessRevision {
+	const template = detail.registry.units.find((unit) => unit.id === ids.filter)!;
+	const generated = Array.from({ length: 1000 }, (_, at) => ({
+		...template,
+		id: `function.generated-${at}`,
+		title: `Generated ${at}`,
+		dependencies: [{ unit: ids.filter, via: 'import' }]
+	}));
+	return {
+		...detail,
+		registry: { ...detail.registry, units: [...detail.registry.units, ...generated] }
+	};
+}
 export function previewRecord(commit: string, whole = true): HarnessRecord {
 	const taken = record(commit, whole);
 	taken.scenarios[1].states[0].captures.push(capture(commit, { kind: 'audio', state: 'match' }));
 	return taken;
 }
-
 const inventory = Array.from({ length: 70 }, (_, order) => `unit ${order + 1}`).join(', ');
 const tried = 'Registration only; implementation unchanged.';
-
-/**
- * Reasons as a history holds them from before notes were limited: four functions of one unit,
- * each repeating an inventory of everything its commit registered. Invented text, at the length
- * and in the shape of the analytics CPU client history that the limits were written for.
- */
 export const legacyReasons: HarnessExplanation[] = [
 	'cpuSample',
 	'cpuClient',
@@ -45,18 +100,41 @@ export const legacyReasons: HarnessExplanation[] = [
 		outcome: symbol === 'cpuHistory' ? 'improved' : 'not-applicable'
 	}
 }));
-
-/** A contract as a person declared it for the page: each item says in words what it is. */
 export const declaredContract = {
 	inputs: [
-		{ name: 'branch', type: 'string', description: 'The branch, as one encoded path segment.' },
+		{
+			name: 'branch',
+			type: 'string',
+			description: 'The branch, as one encoded path segment.',
+			examples: ['feature/orders']
+		},
 		{
 			name: 'commit',
 			type: 'hash | absent',
 			description: 'The selected commit; absent at the tip.'
+		},
+		{ name: 'enabled', type: 'boolean', examples: [false] },
+		{ name: 'limit', type: 'number', examples: [0] },
+		{ name: 'empty', type: 'unknown', examples: [null] },
+		{ name: 'query', type: 'string', examples: [''] },
+		{
+			name: 'settings',
+			type: 'object',
+			examples: [
+				{ label: 'Safe <tag> ' + 'a long readable contract example '.repeat(40) },
+				{ label: 'Other' }
+			]
+		},
+		{ name: 'label', type: 'string' }
+	],
+	outputs: [
+		{
+			name: '+page',
+			type: 'markup',
+			description: 'The orders of an account as a list.',
+			examples: ['<main>Orders</main>']
 		}
 	],
-	outputs: [{ name: '+page', type: 'markup', description: 'The orders of an account as a list.' }],
 	errors: [
 		{
 			name: 'not-at-revision',
@@ -65,14 +143,7 @@ export const declaredContract = {
 		}
 	]
 };
-
-/** A frame of the orders workspace: the page mounts it, and it holds the order list. */
 export const frameId = 'app.component.order-frame';
-
-/**
- * A revision with the orders page mounted inside the frame, of the kind that commit declared it:
- * a component where it was recorded as one, a shell where its manifest says so.
- */
 export function withFrame(head: HarnessRevision, kind: string): HarnessRevision {
 	const list = units.find((unit) => unit.id === ids.list)!;
 	const frame: HarnessUnit = {
@@ -92,3 +163,34 @@ export function withFrame(head: HarnessRevision, kind: string): HarnessRevision 
 	);
 	return { ...head, registry: { ...head.registry, units: [...mounted, frame] } };
 }
+export function withMeasurements(detail: HarnessRevision): HarnessRevision {
+	const helper = detail.registry.units.find((unit) => unit.id === ids.filter)!;
+	helper.sourceMeasurements = [
+		{
+			unit: ids.filter,
+			metric: 'source-bytes',
+			unitOfMeasure: 'bytes',
+			value: 800,
+			workload: null,
+			profile: null
+		}
+	];
+	helper.budgets.performance = [];
+	for (const taken of detail.records) {
+		const timing = taken.measurements.find((item) => item.unit === ids.filter && item.workload)!;
+		timing.profile = '1db6ce9451b5e530';
+		timing.method =
+			'Median of five batches of 1000 direct calls after three warmups using representative input.';
+		taken.measurements.push({
+			...timing,
+			metric: 'process-peak-rss-bytes',
+			unitOfMeasure: 'bytes',
+			value: 93_000_000,
+			method:
+				'Peak RSS of the whole benchmark process including the test runner, not attributable to one function.'
+		});
+	}
+	return detail;
+}
+
+export { withDocumentation } from './entityPreviewDocumentation';

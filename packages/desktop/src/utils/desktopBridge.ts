@@ -1,12 +1,13 @@
 import { DeploymentService } from '../services/DeploymentService';
+import { repositoryLease } from './repositoryLease';
 import { ProjectImageCacheService } from '../services/ProjectImageCacheService';
 import { ProjectOperationsService } from '../services/ProjectOperationsService';
 import { RecordedEvidenceService } from '../services/RecordedEvidenceService';
 import type { DesktopBridge } from '../models/DesktopBridge.types';
 import type { DeploymentBridge } from '../models/Deployment.types';
 import type { ProjectSessionService } from '../services/ProjectSessionService';
-import type { ProviderDiscoveryService } from '../services/ProviderDiscoveryService';
-import type { DesktopRunService } from '../services/DesktopRunService';
+import type { ProviderDiscoveryService } from '../services/provider-discovery-service/ProviderDiscoveryService';
+import type { DesktopRunService } from '../services/desktop-run-service/DesktopRunService';
 interface BridgeContext {
 	session: ProjectSessionService;
 	providers: ProviderDiscoveryService;
@@ -25,7 +26,20 @@ async function writable(context: BridgeContext) {
 }
 /** Planning writes of one repository happen one at a time, whichever client asks. */
 function exclusive<T>(session: ProjectSessionService, work: () => Promise<T>): Promise<T> {
-	return session.arbiter.exclusive(session.requireProject().root, work);
+	const root = session.requireProject().root;
+	return session.arbiter.exclusive(root, async () => {
+		const release = await repositoryLease(root);
+		if (!release)
+			throw new Error('Wait for the current run or planning write in this or another Harness app.');
+		try {
+			release.signal.throwIfAborted();
+			const value = await work();
+			release.signal.throwIfAborted();
+			return value;
+		} finally {
+			await release();
+		}
+	});
 }
 async function thread(context: BridgeContext, input: Parameters<DesktopBridge['openThread']>[0]) {
 	const p = await writable(context),

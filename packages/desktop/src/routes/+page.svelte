@@ -31,8 +31,11 @@
 		const show = () => {
 			if (isWorkspacePath(location.pathname)) void workspace.navigate(location.pathname, false);
 		};
-		/** A phone reads nothing before its computer is reached; its connection starts the reads. */
-		if (environment.bridge && !environment.phone) {
+		/**
+		 * A phone reads nothing of a computer before it is reached; its connection starts those
+		 * reads. The phone's own Hub account is read at once, paired or not.
+		 */
+		if (environment.bridge && (!environment.phone || environment.account)) {
 			void workspace.loadProjects();
 			show();
 		}

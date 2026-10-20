@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.host-changes",
 	"kind": "function",
-	"title": "hostChanges",
-	"responsibility": "Owns the hostChanges shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Record observed host file operations",
+	"responsibility": "Tracks reported file operations outside the project and records before and after hashes when available.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/hostChanges.ts"],
 		"symbols": ["hostChanges"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hostChanges.root",
-				"type": "string"
+				"type": "string",
+				"description": "The project directory used to resolve relative reported paths and distinguish files inside the project."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hostChanges",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "An observer and an asynchronous record operation. The observer remembers each qualifying absolute path once and starts its first hash read. Recording reads the final hashes, keeps observed operations even when hashes match, and appends a dated record when any exist. Missing or unreadable files have null hashes."
 			}
 		],
 		"errors": []

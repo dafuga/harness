@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { unitIdentity } from '../../src/utils/unitIdentity';
+import { unitIdentity } from '../../src/utils/classify-path/unitIdentity';
 
 test('unitIdentity derives kind and name from Harness scaffold folders', () => {
 	const cases: Array<[string, string]> = [

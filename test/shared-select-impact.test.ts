@@ -1,25 +1,25 @@
+import * as sourceIndex from '../src/services/source-index-service/SourceIndexService';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { beforeAll, expect, test } from 'vitest';
 import { HandlerRuntimeAdapter } from '../src/adapters/HandlerRuntimeAdapter';
 import { WorkingTreeAdapter } from '../src/adapters/WorkingTreeAdapter';
 import type { ImpactReport, ImpactSide } from '../src/core/impactTypes';
-import { ImpactService } from '../src/services/ImpactService';
+import { ImpactService } from '../src/services/impact-service/ImpactService';
 import { SourceGraphService } from '../src/services/SourceGraphService';
-import { SourceIndexService, type SourceIndex } from '../src/services/SourceIndexService';
-import { impactKernel } from '../src/utils/impactKernel';
-import { scanImports } from '../src/utils/scanImports';
+import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
+import { scanImports } from '../src/services/source-index-service/scanImports';
 import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
 
 /**
  * ONE SELECT, TEN CONSUMERS IN TWO APPS. The desktop and the hub import the Select of the
- * reports package through a build alias. This reads this very repository through the index,
+ * reports package through their declared alias or a shared relative import. This reads this very repository through the index,
  * the graph and the impact analysis and holds them to every alias the packages' own builds
  * declare: all that is simulated is the content hash of the one file said to have changed.
  */
 const select = 'packages/reports/src/components/Select.svelte';
 const shared = '$shared';
-const indexer = new SourceIndexService();
+const indexer = new sourceIndex.SourceIndexService();
 const analysis = new ImpactService(new HandlerRuntimeAdapter(impactKernel));
 const reports = new Map<string, Promise<ImpactReport>>();
 interface Written {
@@ -52,14 +52,18 @@ function imports(from: string): Written[] {
 	const found = scanImports(readFileSync(from, 'utf8'), language);
 	return found.flatMap((item) => {
 		const [alias, target] = own.find(([key]) => item.specifier?.startsWith(`${key}/`)) ?? [];
-		if (!alias || !target || !item.specifier) return [];
+		if (!item.specifier) return [];
+		if (!alias || !target) {
+			const to = join(dirname(from), item.specifier);
+			return to === select ? [{ from, specifier: item.specifier, to }] : [];
+		}
 		const path = join('packages', name, target, item.specifier.slice(alias.length + 1));
 		const to = [path, `${path}.ts`].find((candidate) => loaded.index.files.has(candidate));
 		return [{ from, specifier: item.specifier, to }];
 	});
 }
 /** One tree as the impact analysis reads it, with the registry as it is stored. */
-function side(index: SourceIndex): ImpactSide {
+function side(index: sourceIndex.SourceIndex): ImpactSide {
 	return {
 		revision: 'working-tree',
 		config: loaded.config,
@@ -90,7 +94,7 @@ test('no import written through a build alias of any package is left as a packag
 		Object.entries(builds).filter(([, own]) => Object.keys(own).length)
 	);
 	expect(declared).toEqual({
-		desktop: { $shared: '../reports/src/components' },
+		desktop: { $desktop: './src', $shared: '../reports/src/components' },
 		hub: { $desktop: '../desktop/src', $shared: '../reports/src/components' }
 	});
 	const resolved = (item: Written) =>
@@ -117,7 +121,7 @@ test('the registry stores Select as a derived dependency of each of its ten cons
 			'design-panel',
 			'environment-picker'
 		].map((name) => `desktop.component.${name}`),
-		...['project-switcher', 'revision-picker', 'runtime-screens'].map(
+		...['project-switcher', 'remote-approval', 'revision-picker', 'runtime-screens'].map(
 			(name) => `desktop.component.${name}`
 		),
 		...['invitation-form', 'project-create'].map((name) => `hub.component.${name}`)
@@ -211,6 +215,7 @@ test('declaring the Select imports moves those references alone: packages and un
 	expect(moved.filter(([, was, to]) => was !== shared || to !== select)).toEqual([]);
 	expect(moved.map(([from]) => from).sort()).toEqual(
 		consumers()
+			.filter((item) => item.specifier.startsWith(`${shared}/`))
 			.map((item) => item.from)
 			.sort()
 	);

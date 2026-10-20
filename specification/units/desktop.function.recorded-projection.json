@@ -2,30 +2,36 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.recorded-projection",
 	"kind": "function",
-	"title": "recordedProjection",
-	"responsibility": "Owns the recordedProjection shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Keep an entity’s evidence detail",
+	"responsibility": "Reduces revision and record details to what belongs to one entity while preserving its evidence sides.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/recordedProjection.ts"],
-		"symbols": ["recordedProjection"]
+		"source": [
+			"packages/desktop/src/utils/recorded-answer/recordedProjection.ts",
+			"packages/desktop/src/utils/recordedProjection.ts"
+		],
+		"symbols": ["recordedProjection", "side", "recordedProjection"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "recordedProjection.evidence",
-				"type": "ExplorerEvidence"
+				"type": "ExplorerEvidence",
+				"description": "The entity-scoped evidence whose coverage determines which scenario states to retain."
 			},
 			{
 				"name": "recordedProjection.entityId",
-				"type": "string"
+				"type": "string",
+				"description": "The exact unit identity to retain in registry details, reasons, failures, measurements, budgets and change summaries."
 			}
 		],
 		"outputs": [
 			{
 				"name": "recordedProjection",
-				"type": "ExplorerEvidence"
+				"type": "ExplorerEvidence",
+				"description": "A new evidence object with each detailed side reduced to the entity and its covered scenario states. Keeps all tests, existing captures and coverage, and the corresponding judging record; removes unrelated units, graph edges, changed-file lists and uncertainty lists. A side without detail is retained unchanged. The supplied evidence is not mutated."
 			}
 		],
 		"errors": []

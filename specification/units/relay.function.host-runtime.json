@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "relay.function.host-runtime",
 	"kind": "function",
-	"title": "hostRuntime",
-	"responsibility": "Owns the hostRuntime shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Relay host runtime wiring",
+	"responsibility": "Constructs the controllers and services used by one durable host object.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/relay/src/utils/hostRuntime.ts"],
 		"symbols": ["HostRuntime", "hostRuntime"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hostRuntime.state",
-				"type": "DurableObjectState"
+				"type": "DurableObjectState",
+				"description": "Durable Object identity, storage and socket state."
 			},
 			{
 				"name": "hostRuntime.env",
-				"type": "RelayEnv"
+				"type": "RelayEnv",
+				"description": "Relay environment whose host namespace determines whether a requested host belongs to this object."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hostRuntime",
-				"type": "HostRuntime"
+				"type": "HostRuntime",
+				"description": "Runtime exposing HTTP controller, frame service and pairing-offer service, sharing storage, sockets, host link, rate limiter and revocation dependencies. The ownership predicate compares the namespace-derived host identity with the object identity."
 			}
 		],
 		"errors": []

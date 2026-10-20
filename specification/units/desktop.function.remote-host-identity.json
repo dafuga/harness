@@ -2,44 +2,59 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.remote-host-identity",
 	"kind": "function",
-	"title": "remoteHostIdentity",
-	"responsibility": "Owns the remoteHostIdentity shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Create and register a remote host",
+	"responsibility": "Create a disabled host identity or register an existing identity and enable its relay connection.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/remoteHostIdentity.ts"],
-		"symbols": ["RegisterRemoteHost", "remoteHostIdentity", "registerRemoteHost"]
+		"source": [
+			"packages/desktop/src/services/remote-host-switch-service/remoteHostIdentity.ts",
+			"packages/desktop/src/utils/remoteHostIdentity.ts"
+		],
+		"symbols": [
+			"remoteHostIdentity",
+			"registerRemoteHost",
+			"RegisterRemoteHost",
+			"remoteHostIdentity",
+			"registerRemoteHost"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registerRemoteHost.state",
-				"type": "RemoteHostState"
+				"type": "RemoteHostState",
+				"description": "Existing host state; successful registration updates enabled, origin and generation in this object."
 			},
 			{
 				"name": "registerRemoteHost.name",
-				"type": "string"
+				"type": "string",
+				"description": "Computer name sent with the registration."
 			},
 			{
 				"name": "registerRemoteHost.register",
-				"type": "RegisterRemoteHost"
+				"type": "RegisterRemoteHost",
+				"description": "Callback receiving host ID, public key, credential hash and name and returning registration details."
 			}
 		],
 		"outputs": [
 			{
 				"name": "remoteHostIdentity",
-				"type": "Promise<RemoteHostState>"
+				"type": "Promise<RemoteHostState>",
+				"description": "New disabled state with generated keys, host ID and credential, no origin, generation zero and empty device/revocation lists."
 			},
 			{
 				"name": "registerRemoteHost",
-				"type": "Promise<RemoteKeyPair>"
+				"type": "Promise<RemoteKeyPair>",
+				"description": "Imported key pair after accepting a matching host ID and valid relay origin."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects invalid relay registration; key generation/import and registration failures also propagate."
 			}
 		]
 	},

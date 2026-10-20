@@ -1,6 +1,6 @@
 import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
-import { designDirections } from '../../src/utils/designDirections';
+import { designDirections } from '../../src/utils/plan-design/designDirections';
 
 /** Every count from 1 to 10 has as many directions, each unlike the others, the first the plainest. */
 test('each count has its own number of distinct directions', () => {

@@ -2,46 +2,53 @@
 	"schemaVersion": 1,
 	"id": "reports.component.evidence-viewer",
 	"kind": "component",
-	"title": "EvidenceViewer",
-	"responsibility": "Owns the EvidenceViewer Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Evidence viewer",
+	"responsibility": "Shows full-size screenshots with filtered navigation, viewport switching and before/after comparison.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/components/EvidenceViewer.svelte"],
 		"symbols": ["EvidenceViewer"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EvidenceViewer.items",
-				"type": "Evidence[]"
+				"type": "Evidence[]",
+				"description": "Required full screenshot evidence list, used to find comparison partners and available screen sizes. Partners match comparison identity and viewport with before/after phases."
 			},
 			{
 				"name": "EvidenceViewer.navigableItems",
-				"type": "Evidence[]"
+				"type": "Evidence[]",
+				"description": "Required ordered subset for previous/next and arrow-key navigation. Empty prevents movement."
 			},
 			{
 				"name": "EvidenceViewer.selected",
-				"type": "Evidence | null"
+				"type": "Evidence | null",
+				"description": "Required selected screenshot or null. Non-null opens the modal; null closes it through the modal open prop."
 			},
 			{
 				"name": "EvidenceViewer.assetBase",
-				"type": "string"
+				"type": "string",
+				"description": "Required prefix concatenated with image files for zoom and download links."
 			},
 			{
 				"name": "EvidenceViewer.onclose",
-				"type": "() => void"
+				"type": "() => void",
+				"description": "Required close callback; closing also resets view to after."
 			},
 			{
 				"name": "EvidenceViewer.onselect",
-				"type": "(item: Evidence, updateViewport?: boolean) => void"
+				"type": "(item: Evidence, updateViewport?: boolean) => void",
+				"description": "Required callback receiving a navigated item. Viewport switches pass true as the second argument so the host can update filters; ordinary previous/next omit it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EvidenceViewer",
-				"type": "markup"
+				"type": "markup",
+				"description": "Screenshot lightbox initially showing after, with before/compare choices when a partner exists. Previous/next wraps through the navigable subset and resets to after. Viewport switching prefers the same comparison, then category/title, category, then first candidate. Displays provenance, captions, missing notes and image links. Changing image/view recreates zoom state."
 			}
 		],
 		"errors": []

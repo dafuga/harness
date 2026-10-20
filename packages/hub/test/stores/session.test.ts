@@ -58,3 +58,26 @@ test('a status that cannot be read is an error, not a signed-out or configured s
 	expect(session.status).toBeNull();
 	expect(session.error).toMatch(/could not be reached/);
 });
+
+test('a late status from the previous Google account cannot replace the latest identity', async () => {
+	let older!: (value: { actor: typeof ada; configured: boolean; clientId: string }) => void;
+	const before = new Promise<{ actor: typeof ada; configured: boolean; clientId: string }>(
+		(resolve) => {
+			older = resolve;
+		}
+	);
+	const ben = { ...ada, id: 'google:ben', name: 'Ben Example', email: 'ben@example.invalid' };
+	let calls = 0;
+	const auth = {
+		status: () =>
+			++calls === 1
+				? before
+				: Promise.resolve({ actor: ben, configured: true, clientId: 'client-1' })
+	};
+	const session = createSessionStore(auth as unknown as BrowserAuth);
+	const first = session.refresh();
+	const second = session.refresh();
+	older({ actor: ada, configured: true, clientId: 'client-1' });
+	await Promise.all([first, second]);
+	expect(session.actor, 'latest Google account wins over stale status').toEqual(ben);
+});

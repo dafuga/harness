@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-entity-reasons",
 	"kind": "component",
-	"title": "EntityReasons",
-	"responsibility": "Offers the reasons one commit recorded for an entity in full, as they were written: each note and each attempt once, with what it is about and each outcome it had.",
+	"title": "Full change reasons",
+	"responsibility": "Makes original change notes and attempts available when their summaries were shortened.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/EntityReasons.svelte"],
+		"source": ["packages/reports/src/components/harness/entity-reasons/EntityReasons.svelte"],
 		"symbols": ["EntityReasons"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EntityReasons.reasons",
-				"type": "EntityReasons"
+				"type": "EntityReasons",
+				"description": "Required prepared reasons containing long flag, original notes and attempts with subjects/outcomes."
 			},
 			{
 				"name": "EntityReasons.open",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional bindable disclosure state, false by default."
 			},
 			{
 				"name": "EntityReasons.id",
-				"type": "string"
+				"type": "string",
+				"description": "Optional ID for the disclosure, allowing callers to focus or link it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityReasons",
-				"type": "markup"
+				"type": "markup",
+				"description": "Full reasons disclosure only when long is true, with counts and original behavior/attempt text grouped by usage. Otherwise renders nothing; it does not regenerate or shorten originals."
 			}
 		],
 		"errors": []
@@ -43,11 +47,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/EntityReasons.svelte",
+		"entry": "packages/reports/src/components/harness/entity-reasons/EntityReasons.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/harness/EntityReasons.svelte"
+				"entry": "packages/reports/src/components/harness/entity-reasons/EntityReasons.svelte"
 			}
 		]
 	},

@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "hub.component.project-create",
 	"kind": "component",
-	"title": "ProjectCreate",
-	"responsibility": "Owns the ProjectCreate Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Project create",
+	"responsibility": "Creates a shared project from a repository offered by the connected GitHub account.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/components/ProjectCreate.svelte"],
 		"symbols": ["ProjectCreate"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProjectCreate.created",
-				"type": "(projectId: string) => void"
+				"type": "(projectId: string) => void",
+				"description": "Required callback receiving the new project identifier after creation resolves. A synchronous callback exception is caught by the same failure handler as creation."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectCreate",
-				"type": "markup"
+				"type": "markup",
+				"description": "Loads GitHub configuration/connection and repositories on mount. Shows setup or connection guidance until usable, then repository and project-name fields. Name is trimmed and limited to 80 characters by the input; repository selection becomes a numeric ID. Blocks missing fields or concurrent saves, reports truncated lists and errors, and invokes created after success. Server remains responsible for checking repository administration."
 			}
 		],
 		"errors": []

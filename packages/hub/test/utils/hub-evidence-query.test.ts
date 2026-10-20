@@ -1,5 +1,8 @@
 import { expect, test } from 'vitest';
-import { hubArtifactQuery, hubEvidenceQuery } from '../../src/utils/hubEvidenceQuery';
+import {
+	hubArtifactQuery,
+	hubEvidenceQuery
+} from '../../src/controllers/hub-api-controller/hubEvidenceQuery';
 
 const projectId = 'a6196e55-8746-4bc5-bfeb-5e2c8771e241';
 const scope = {

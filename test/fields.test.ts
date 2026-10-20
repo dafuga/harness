@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { parseFields } from '../src/core/fields';
+import { parseFields } from '../src/core/fields/fields';
 
 test('parses every supported field type', () => {
 	const fields = parseFields([

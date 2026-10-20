@@ -61,6 +61,15 @@ test('control inputs are exact', () => {
 	const deviceId = 'd'.repeat(40),
 		approval = { pairingId, deviceId, projectIds: [projectId], agents: true };
 	expect(validator.approval(approval)).toEqual(approval);
+	expect(validator.approval({ ...approval, agents: false, comments: false })).toMatchObject({
+		agents: false,
+		comments: false
+	});
+	expect(validator.approval({ ...approval, comments: true })).toMatchObject({
+		agents: true,
+		comments: true
+	});
+	expect(code(() => validator.approval({ ...approval, comments: false }))).toBe('invalid-message');
 	expect(validator.pairing({ pairingId })).toEqual({ pairingId });
 	expect(validator.device({ deviceId: 'd'.repeat(40) })).toEqual({ deviceId: 'd'.repeat(40) });
 	const refused: unknown[] = [

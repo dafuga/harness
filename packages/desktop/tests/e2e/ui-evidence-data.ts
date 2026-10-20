@@ -3,12 +3,14 @@ import type { ExplorerSide } from '../../../reports/src/models/Explorer.types';
 import type { HarnessUnit } from '../../../reports/src/models/Harness.types';
 import { explorerBehavior } from '../../../reports/src/utils/explorerBehavior';
 import { explorerEvidence } from '../../../reports/src/utils/explorerEvidence';
-import { explorerScope } from '../../../reports/src/utils/explorerScope';
+import { explorerScope } from '../../../reports/src/utils/harness-page/explorerScope';
 import { index } from '../../../reports/test/entityFixture';
 import { commits, ids, units } from '../../../reports/test/entityUnits';
 import type { EntityEvidenceResult } from '../../src/models/DesktopEvidence.types';
+import type { Thumbnail } from '../../src/models/Desktop.types';
+import type { UnitDocumentation } from '../../../../src/utils/unit-documentation/unitDocumentation';
 import { nativeImageFixture } from './native-image-fixture';
-import { observedHistory } from './ui-evidence-history';
+import { cardScenario, observedHistory, type Example } from './ui-evidence-history';
 
 export { commits, ids };
 export { cardScenario, soundScenario, tones } from './ui-evidence-history';
@@ -77,6 +79,7 @@ function entity(unit: HarnessUnit, image: number) {
 	};
 	const thumbnail = { version: 'v001', sha256: designSha, state: 'default', viewport: 'desktop' };
 	return {
+		documentation: undefined as UnitDocumentation | undefined,
 		id: unit.id,
 		category: categories[unit.kind],
 		kind: unit.kind,
@@ -91,7 +94,7 @@ function entity(unit: HarnessUnit, image: number) {
 		latestVersion: designed ? 'v001' : null,
 		approvedVersion: null,
 		threadCount: 0,
-		thumbnail: designed ? thumbnail : null,
+		thumbnail: (designed ? thumbnail : null) as Thumbnail | null,
 		contract: { ...unit.contract, hash: null },
 		relationships: [],
 		versions: designed ? [design] : [],
@@ -152,12 +155,22 @@ function bound(result: EntityEvidenceResult, mode: Mode, unit: string) {
 	);
 }
 
+/** One incremental record: only the unchanged card and the checks it actually inherited. */
+function onlyInherited(history: ReturnType<typeof observedHistory>): void {
+	const tip = history.revisions[commits.tip];
+	tip.registry.scenarios = tip.registry.scenarios.filter((item) => item.id === cardScenario);
+	tip.records[0].scenarios = tip.records[0].scenarios.filter((item) => item.id === cardScenario);
+	tip.records[0].tests = [];
+}
+
 export function evidenceData(
 	shared = false,
 	observedUnits: string[] = [],
-	browserErrors?: unknown[]
+	example?: Example,
+	options: { browserErrors?: unknown[]; inheritedOnly?: boolean } = {}
 ) {
-	const history = observedHistory(observedUnits, browserErrors);
+	const history = observedHistory(observedUnits, options.browserErrors, example);
+	if (options.inheritedOnly) onlyInherited(history);
 	const design = Array.from(nativeImageFixture());
 	const results: Record<string, EntityEvidenceResult> = {};
 	const bindings: Record<string, string> = {};

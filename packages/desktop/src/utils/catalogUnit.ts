@@ -1,3 +1,4 @@
+import { helperContract } from '../../../../src/utils/helperContract';
 import type { ComponentManifest } from '../../../../src/lib/contracts';
 import type { CatalogEntity, DesignVersion } from '../models/Desktop.types';
 import type { PlanRecord } from '../models/PlanningPort.types';
@@ -8,7 +9,9 @@ function ownsChange(paths: string[], changed: Set<string>) {
 export function catalogUnit(unit: ComponentManifest, changed: Set<string>): CatalogEntity | null {
 	const category = categoryOf(unit.kind);
 	if (!category || unit.status !== 'active') return null;
+	const preview = category === 'pages' || category === 'components' ? unit.preview : undefined;
 	return {
+		...(unit.helperContracts?.length ? { helperContracts: unit.helperContracts } : {}),
 		id: unit.id,
 		category,
 		kind: unit.kind,
@@ -23,7 +26,7 @@ export function catalogUnit(unit: ComponentManifest, changed: Set<string>): Cata
 		latestVersion: null,
 		approvedVersion: null,
 		threadCount: 0,
-		thumbnail: null
+		thumbnail: preview || category === 'pages' ? { source: 'recorded', ...preview } : null
 	};
 }
 /** The route files that load for an address and render nothing of it. */
@@ -40,7 +43,25 @@ export function catalogListed(units: ComponentManifest[], items: CatalogEntity[]
 			.filter((unit) => unit.owns.source.every((path) => loader.test(path)))
 			.map((unit) => unit.id)
 	);
-	return items.filter((item) => !loaders.has(item.id));
+	return items
+		.filter((item) => !loaders.has(item.id))
+		.flatMap((item) => {
+			if (item.category !== 'functions' || item.planned) return [item];
+			const helpers = (item.helperContracts ?? []).filter(helperContract);
+			return helpers.length
+				? [
+						{
+							...item,
+							title: helpers
+								.map(
+									(helper) =>
+										`${helper.name}(${helper.inputs.map((input) => input.name.split('.').at(-1)).join(', ')})`
+								)
+								.join('\n')
+						}
+					]
+				: [];
+		});
 }
 function draftCatalog(plan: PlanRecord): CatalogEntity {
 	return {
@@ -83,6 +104,7 @@ export function planCatalog(
 	changed: Set<string>
 ): CatalogEntity {
 	const base = unit ?? draftCatalog(plan);
+	const design = latestDesign(plan.versions.at(-1));
 	return {
 		...base,
 		summary: plan.goal,
@@ -90,6 +112,7 @@ export function planCatalog(
 		hasPlan: true,
 		lifecycle: plan.lifecycle,
 		threadCount: plan.threads.length,
-		...latestDesign(plan.versions.at(-1))
+		...design,
+		thumbnail: design.thumbnail ?? base.thumbnail
 	};
 }

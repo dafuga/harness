@@ -8,7 +8,8 @@ export function categoryOf(kind: string): Category | null {
 		function: 'functions',
 		'shared-function': 'functions',
 		config: 'configs',
-		service: 'services'
+		service: 'services',
+		model: 'models'
 	};
 	return kinds[kind] ?? null;
 }

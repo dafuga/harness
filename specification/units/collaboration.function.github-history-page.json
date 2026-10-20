@@ -2,34 +2,41 @@
 	"schemaVersion": 1,
 	"id": "collaboration.function.github-history-page",
 	"kind": "function",
-	"title": "githubHistoryPage",
-	"responsibility": "Owns the githubHistoryPage shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Read one page of path history",
+	"responsibility": "Fetch a bounded history page for distinct paths and merge duplicate commits.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/collaboration/src/utils/githubHistoryPage.ts"],
-		"symbols": ["githubHistoryPage"]
+		"source": [
+			"packages/collaboration/src/utils/create-git-hub-source/githubHistoryPage.ts",
+			"packages/collaboration/src/utils/githubHistoryPage.ts"
+		],
+		"symbols": ["githubHistoryPage", "githubHistoryPage"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "githubHistoryPage.context",
-				"type": "{ adapter: SourceAdapter; client: GitHubTransport }"
+				"type": "{ adapter: SourceAdapter; client: GitHubTransport }",
+				"description": "Source adapter for resolving the commit and transport for GitHub history requests."
 			},
 			{
 				"name": "githubHistoryPage.repository",
-				"type": "RepositoryIdentity"
+				"type": "RepositoryIdentity",
+				"description": "Repository whose history is being read."
 			},
 			{
 				"name": "githubHistoryPage.input",
-				"type": "SourceHistoryPageInput"
+				"type": "SourceHistoryPageInput",
+				"description": "Exact commit SHA, at most 64 safe paths, page starting at 1 and page size 1–100; defaults are 1 and 30."
 			}
 		],
 		"outputs": [
 			{
 				"name": "githubHistoryPage",
-				"type": "Promise<SourceHistoryPage>"
+				"type": "Promise<SourceHistoryPage>",
+				"description": "Distinct commits in response insertion order, completion flag and next page number or null; an empty path list returns an empty complete page."
 			}
 		],
 		"errors": []

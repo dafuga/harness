@@ -8,7 +8,7 @@ import {
 	type LegacyRecord
 } from '../core/historyTypes';
 import { lfsStored } from '../utils/lfsPointer';
-import type { HistoryMediaService } from './HistoryMediaService';
+import type { HistoryMediaService } from './history-media-service/HistoryMediaService';
 
 /**
  * Reads the imported legacy reports for the history index. Each run is shown as recorded; a

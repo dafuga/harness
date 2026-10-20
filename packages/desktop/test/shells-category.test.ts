@@ -4,7 +4,7 @@ import { createWorkspaceStore } from '../src/lib/stores/workspace.svelte';
 import { categories, type ProjectSnapshot } from '../src/models/Desktop.types';
 import type { DesktopBridge } from '../src/models/DesktopBridge.types';
 import { categoryOf } from '../src/utils/categoryOf';
-import { ipcPayload } from '../src/utils/ipcPayload';
+import { ipcPayload } from '../src/utils/ipc-payload/ipcPayload';
 import type { Preparation } from '../src/utils/prepareRun';
 import { imageModel } from '../src/utils/prepareRun';
 import { isWorkspacePath, workspacePath, workspaceRoute } from '../src/utils/workspaceRoute';
@@ -17,20 +17,22 @@ afterEach(() => vi.unstubAllGlobals());
 const shell = 'desktop.component.workspace-shell';
 const [commit, tip] = ['a'.repeat(40), 'b'.repeat(40)];
 
-test('the shared app has six categories, Shells after Pages', () => {
+test('the shared app has seven categories, Shells after Pages', () => {
 	expect([...categories]).toEqual([
 		'pages',
 		'shells',
 		'components',
 		'functions',
 		'configs',
-		'services'
+		'services',
+		'models'
 	]);
 });
 
 test('a unit declared a shell is a Shell, and every other kind stays where it was', () => {
 	expect(categoryOf('shell')).toBe('shells');
 	expect(categoryOf('component')).toBe('components');
+	expect(categoryOf('model')).toBe('models');
 	expect(categoryOf('page')).toBe('pages');
 	expect(categoryOf('shared-function')).toBe('functions');
 });
@@ -44,9 +46,9 @@ test('a shell has a workspace address with its project, branch, commit and secti
 		commit,
 		category: 'shells',
 		entityId: shell,
-		suffix: 'details'
+		suffix: 'source'
 	});
-	expect(workspacePath(route)).toBe(path);
+	expect(workspacePath(route)).toBe(path.replace(/\/details$/, '/source'));
 	expect(isWorkspacePath('/harness/shells')).toBe(true);
 	expect(workspaceRoute('/harness/branch/main/shells').category).toBe('shells');
 });
@@ -76,7 +78,7 @@ test('an old Components address of a shell opens it under Shells, keeping its se
 	expect(history.pushState).toHaveBeenCalledWith(
 		{},
 		'',
-		`/harness/branch/main/shells/${shell}/details`
+		`/harness/branch/main/shells/${shell}/source`
 	);
 	await store.navigate(`/harness/branch/main/components/${shell}/history`, false);
 	expect(history.replaceState).toHaveBeenCalledWith(

@@ -1,12 +1,10 @@
 import { randomBytes, createHash } from 'node:crypto';
-import type { HostedHttpAdapter } from '../adapters/HostedHttpAdapter';
+import type { HostedHttpAdapter } from '../adapters/hosted-http-adapter/HostedHttpAdapter';
 import type { NativeSessionAdapter } from '../adapters/NativeSessionAdapter';
 import type { NativeHostedStatus } from '../models/ProjectContext.types';
 import { NativeHandoffValidator } from '../validators/NativeHandoffValidator';
-import {
-	responseRecord,
-	RemoteProjectResponseValidator
-} from '../validators/RemoteProjectResponseValidator';
+import { NativeAccountStatusService } from './NativeAccountStatusService';
+import { responseRecord } from '../validators/RemoteProjectResponseValidator';
 interface AuthOptions {
 	origin: string;
 	http: HostedHttpAdapter;
@@ -95,15 +93,7 @@ export class NativeAuthService {
 			const status = responseRecord(await this.options.http.publicStatus());
 			return { configured: status.configured === true, state: 'signed-out' };
 		}
-		const response = await this.options.http.request('/api/auth/status', credential);
-		const value = await response.json();
-		new RemoteProjectResponseValidator().actor(value, credential.principalId);
-		const actor = responseRecord(responseRecord(value).actor);
-		return {
-			configured: true,
-			state: 'signed-in',
-			actor: { id: credential.principalId, name: String(actor.name), email: String(actor.email) }
-		};
+		return new NativeAccountStatusService(this.options).read(credential);
 	}
 	private async poll(pending: Pending): Promise<NativeHostedStatus> {
 		if (Date.parse(pending.status.handoff!.expiresAt) <= this.now()) {

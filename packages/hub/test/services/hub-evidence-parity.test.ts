@@ -1,13 +1,13 @@
 import { expect, test } from 'vitest';
-import { BudgetService } from '../../../../src/services/BudgetService';
-import { mediaPlace } from '../../../../src/utils/mediaPlace';
+import { BudgetService } from '../../../../src/services/budget-service/BudgetService';
+import { mediaPlace } from '../../../../src/services/history-media-service/mediaPlace';
 import { recordView } from '../../../../src/utils/recordView';
-import { revisionRegistry } from '../../../../src/utils/revisionRegistry';
+import { revisionRegistry } from '../../../../src/utils/revision-registry/revisionRegistry';
 import { revisionSummary } from '../../../../src/utils/revisionSummary';
-import { recordedAnswer } from '../../../desktop/src/utils/recordedAnswer';
+import { recordedAnswer } from '../../../desktop/src/utils/recorded-answer/recordedAnswer';
 import { recordedScope } from '../../../desktop/src/utils/recordedScope';
 import type { HarnessRevision } from '../../../reports/src/models/Harness.types';
-import { explorerVerdict } from '../../../reports/src/utils/explorerVerdict';
+import { explorerVerdict } from '../../../reports/src/utils/explorer-verdict/explorerVerdict';
 import { asked, evidenceFixture, read, type EvidenceFixture } from '../support/evidenceFixture';
 import { blobId } from '../support/evidenceGit';
 import { clock, page, scenarios, units, type Stored } from '../support/evidenceRecords';

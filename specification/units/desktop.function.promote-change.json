@@ -19,11 +19,11 @@
 			},
 			{
 				"name": "prepareChangeEnvironment.request",
-				"type": "RunRequest"
+				"type": "| Pick<RunRequest, 'mode' | 'environment'> | { mode: 'ask' | 'change'; environment?: RunRequest['environment'] }"
 			},
 			{
 				"name": "promoteChange.context",
-				"type": "RunContext"
+				"type": "PromotionContext"
 			},
 			{
 				"name": "promoteChange.before",

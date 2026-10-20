@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test';
-import { recordCapture } from '../../../../../src/utils/recordCapture';
+import { recordCapture } from '../../../../../src/utils/record-capture/recordCapture';
 import { categories, nav } from './explorer';
 import { evidenceDirectory, servedBuild } from './harnessCapture';
 

@@ -2,42 +2,48 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.run-status",
 	"kind": "component",
-	"title": "RunStatus",
-	"responsibility": "Owns the RunStatus Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Run status",
+	"responsibility": "Shows run status text and, when applicable, its cancel action.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/RunStatus.svelte"],
 		"symbols": ["RunStatus"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RunStatus.text",
-				"type": "string"
+				"type": "string",
+				"description": "Required status text; empty suppresses the entire area, including Cancel. Known unit references become links."
 			},
 			{
 				"name": "RunStatus.active",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Whether Cancel run appears when text exists; no run state is inferred."
 			},
 			{
 				"name": "RunStatus.cancel",
-				"type": "() => void"
+				"type": "() => void",
+				"description": "Required click callback. Completion and cancellation errors are outside this component."
 			},
 			{
 				"name": "RunStatus.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Workspace for resolving status-text unit links."
 			},
 			{
 				"name": "RunStatus.entity",
-				"type": "CatalogEntity | null"
+				"type": "CatalogEntity | null",
+				"description": "Optional viewed entity for reference lookup, null by default."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RunStatus",
-				"type": "markup"
+				"type": "markup",
+				"description": "Status region with linked/plain text and optional Cancel run button; nothing for empty text."
 			}
 		],
 		"errors": []

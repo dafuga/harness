@@ -2,12 +2,13 @@ import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
 import { createHash } from 'node:crypto';
 import { PNG } from 'pngjs';
-import { planningService } from '../../src/services/PlanningService';
-import { readImage } from '../../src/utils/planDesign';
-import { planGit, revision, type Git } from '../../src/utils/planGit';
-import { planRead } from '../../src/utils/planRead';
+import { planningService } from '../../src/services/planning-service/PlanningService';
+import { readImage } from '../../src/utils/plan-design/readImage';
+import { planGit } from '../../src/lib/planning/planGit';
+import { revision, type Git } from '../../src/utils/planGit';
+import { planRead } from '../../src/utils/plan-read/planRead';
 import { author, contract, fixture, git as shell } from '../planFixture';
-import { recordCapture } from '../../../../src/utils/recordCapture';
+import { recordCapture } from '../../../../src/utils/record-capture/recordCapture';
 
 /**
  * One planning operation runs each read pinned to a commit once, and answers exactly as the same

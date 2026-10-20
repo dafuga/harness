@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.catalog-view",
 	"kind": "component",
-	"title": "CatalogView",
-	"responsibility": "Owns the CatalogView Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Catalog view",
+	"responsibility": "Lists the selected category with local search, verification and planning filters.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/CatalogView.svelte"],
 		"symbols": ["CatalogView"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CatalogView.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Workspace supplying the current category, optional project snapshot and entity-card context. A missing snapshot contributes an empty entity list. The category must be nonempty because it is used to build the heading."
 			}
 		],
 		"outputs": [
 			{
 				"name": "CatalogView",
-				"type": "markup"
+				"type": "markup",
+				"description": "Local search and one filter icon above the catalog. The shared modal holds filters and ordering."
 			}
 		],
 		"errors": []
@@ -33,7 +35,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.helper-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.filter-dialog",
 			"via": "import",
 			"origin": "derived"
 		},

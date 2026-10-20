@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "function.revision-summary",
 	"kind": "function",
-	"title": "revisionSummary",
-	"responsibility": "Owns the revisionSummary shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Revision evidence summary",
+	"responsibility": "Summarizes a commit’s attached records into coverage and explicit gaps without treating unusable evidence as passing.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/revisionSummary.ts"],
 		"symbols": ["RevisionRecords", "revisionSummary"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "revisionSummary.status",
-				"type": "Pick<CommitStatus, 'records'>"
+				"type": "Pick<CommitStatus, 'records'>",
+				"description": "Attached record status, validity and problems from history inspection."
 			},
 			{
 				"name": "revisionSummary.views",
-				"type": "Viewed[]"
+				"type": "Viewed[]",
+				"description": "Readable record views supplying profile, finish time and comparison base by record id."
 			}
 		],
 		"outputs": [
 			{
 				"name": "revisionSummary",
-				"type": "RevisionRecords"
+				"type": "RevisionRecords",
+				"description": "Coverage, gaps and record summaries. No records is unverified; any usable passed record is verified; usable failures yield failed; only unusable records yield invalid. Unreadable metadata is unknown and invalid-record problems are named as gaps."
 			}
 		],
 		"errors": []

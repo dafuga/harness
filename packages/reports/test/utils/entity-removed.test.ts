@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { entityRemoved } from '../../src/utils/entityRemoved';
+import { entityRemoved } from '../../src/components/harness/entity-tests/entityRemoved';
 import { record, revision } from '../entityFixture';
 import { answers, view } from '../entityPlaces';
 import { commits, ids, scenarios } from '../entityUnits';

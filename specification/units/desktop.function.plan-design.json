@@ -2,36 +2,43 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.plan-design",
 	"kind": "function",
-	"title": "planDesign",
-	"responsibility": "Owns the planDesign shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Save a proposed design version",
+	"responsibility": "Generates visual design options or keeps behavior notes, then saves one version for review.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/planDesign.ts"],
-		"symbols": ["planDesign"]
+		"source": [
+			"packages/desktop/src/utils/plan-design/planDesign.ts",
+			"packages/desktop/src/utils/planDesign.ts"
+		],
+		"symbols": ["planDesign", "planDesign"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "planDesign.context",
-				"type": "RunContext"
+				"type": "RunContext",
+				"description": "The prepared Plan context, including entity, selected thread, project revision, request, image model and generator, planning connection, cancellation signal and progress callback."
 			},
 			{
 				"name": "planDesign.prompt",
-				"type": "string"
+				"type": "string",
+				"description": "The proposal text. Visual categories use it to build image instructions; functions, configs and services retain it as notes without generating images."
 			}
 		],
 		"outputs": [
 			{
 				"name": "planDesign",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "A promise for a saved-version message. Pages, shells and components generate the requested 1–10 options, three by default, sequentially before saving one version. A single option is saved as one image. A version and thread notice are then saved and emitted for review; temporary generation files are removed after the main attempt."
 			}
 		],
 		"errors": [
 			{
 				"name": "RunCancelled",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects when cancellation is observed after a generation or before saving. Generated options are not saved if generation fails or is cancelled before the save step."
 			}
 		]
 	},

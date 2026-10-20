@@ -1,9 +1,12 @@
+import { readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import migration from '../specification/loops/local-helper-ownership/migration.json';
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { appendMissingExports, applyExports } from '../src/core/exports';
-import { detectProjectKind } from '../src/core/project';
+import { appendMissingExports, applyExports } from '../src/workflows/generate-code/exports';
+import { detectProjectKind } from '../src/workflows/generate-code/project';
 
 test('detects explicit Harness project kinds', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-project-'));
@@ -50,3 +53,16 @@ test('appends missing exports idempotently', async () => {
 	);
 	await rm(root, { recursive: true, force: true });
 });
+
+for (const module of migration.publicModules) {
+	test(`${module.unit} keeps its callable API at its owner-layer runtime entry`, () => {
+		const unit = JSON.parse(readFileSync(`specification/units/${module.unit}.json`, 'utf8'));
+		expect(unit.runtime.entry).toBe(module.entry);
+		expect(
+			unit.runtime.targets.every((target: { entry: string }) => target.entry === module.entry)
+		).toBe(true);
+		const command = `const module = await import(${JSON.stringify('./' + module.entry)}); console.log(JSON.stringify(${JSON.stringify(module.exports)}.map(name => typeof module[name])));`;
+		const types = JSON.parse(execFileSync('bun', ['-e', command], { encoding: 'utf8' }));
+		expect(types).toEqual(module.exports.map(() => 'function'));
+	});
+}

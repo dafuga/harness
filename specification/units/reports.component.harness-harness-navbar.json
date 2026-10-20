@@ -2,26 +2,63 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-harness-navbar",
 	"kind": "component",
-	"title": "HarnessNavbar",
-	"responsibility": "The one bar of every explorer route: the brand and the repository, six category links with an icon above each label and the active one marked, and the revision controls, each link and choice an address the host formats and follows.",
+	"title": "Explorer navigation bar",
+	"responsibility": "Provides repository, category, revision and scoped entity navigation.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/HarnessNavbar.svelte"],
+		"source": ["packages/reports/src/components/harness/harness-navbar/HarnessNavbar.svelte"],
 		"symbols": ["HarnessNavbar"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "HarnessNavbar.props",
-				"type": "HarnessNavbarInput"
+				"name": "HarnessNavbar.base",
+				"type": "string",
+				"description": "Required explorer mount address. Used for the brand link before a branch is resolved and as the fallback search link."
+			},
+			{
+				"name": "HarnessNavbar.repository",
+				"type": "string | null",
+				"description": "Required repository label or null. A missing or empty label hides the repository name."
+			},
+			{
+				"name": "HarnessNavbar.scope",
+				"type": "ExplorerScope | null",
+				"description": "Required current explorer location and revision context, or null while unresolved. Null disables category navigation and hides revision controls and search."
+			},
+			{
+				"name": "HarnessNavbar.index",
+				"type": "HarnessIndex | null",
+				"description": "Required repository index or null. Revision selectors appear only when a scope and index are available."
+			},
+			{
+				"name": "HarnessNavbar.commits",
+				"type": "HarnessRevisionSummary[]",
+				"description": "Required branch revision choices in newest-first order. The viewed revision is added if absent from this list."
+			},
+			{
+				"name": "HarnessNavbar.href",
+				"type": "(to: ExplorerLocation) => string",
+				"description": "Required function producing a complete address, including the mount, for a location."
+			},
+			{
+				"name": "HarnessNavbar.onroute",
+				"type": "(to: ExplorerLocation) => void",
+				"description": "Required callback for ordinary navigation clicks and revision or search selections. Modified links retain normal browser behavior."
+			},
+			{
+				"name": "HarnessNavbar.search",
+				"type": "{ entries: SearchEntry[] | null }",
+				"description": "Optional searchable entities for the viewed revision, or null entries while loading. The search helper excludes entries for a mismatched revision."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HarnessNavbar",
-				"type": "markup"
+				"type": "markup",
+				"description": "Repository/category links, revision controls and entity search for the available scope. Unavailable category destinations are disabled text. Plain link clicks use the route callback, while normal modified-link behavior is preserved. Search entries are accepted only for their matching revision context."
 			}
 		],
 		"errors": []
@@ -70,11 +107,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/HarnessNavbar.svelte",
+		"entry": "packages/reports/src/components/harness/harness-navbar/HarnessNavbar.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/harness/HarnessNavbar.svelte"
+				"entry": "packages/reports/src/components/harness/harness-navbar/HarnessNavbar.svelte"
 			}
 		]
 	},

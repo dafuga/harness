@@ -8,6 +8,7 @@ import type { HarnessIndex, HarnessRevisionSummary } from '../../../src/models/H
  */
 export const sha = (number: number): string => number.toString(16).padStart(2, '0').repeat(20);
 export const shellBranch = 'feature/shell#1';
+export const longBranch = 'feature/compact-revision-controls-long-branch-name';
 export const shellMount = '/harness';
 
 function revision(
@@ -34,10 +35,11 @@ function revision(
 export const shellIndex: HarnessIndex = {
 	branches: [
 		{ name: shellBranch, head: sha(5) },
+		{ name: longBranch, head: sha(5) },
 		{ name: 'main', head: sha(3) }
 	],
 	revisions: [
-		revision(5, 'Add the unified navbar', 'unverified', [shellBranch]),
+		revision(5, 'Add the unified navbar', 'unverified', [shellBranch, longBranch]),
 		revision(4, 'Sketch the explorer shell', 'failed', [shellBranch]),
 		revision(3, 'Record page evidence', 'verified'),
 		revision(2, 'Add the title service', 'verified'),

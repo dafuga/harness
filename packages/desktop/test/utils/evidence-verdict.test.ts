@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import type { EvidenceStatus } from '../../src/utils/evidenceNotice';
 import { readingEvidence, unavailableEvidence } from '../../src/utils/evidenceNotice';
-import { evidenceVerdict } from '../../src/utils/evidenceVerdict';
+import { evidenceVerdict } from '../../src/components/entity-view/evidenceVerdict';
 import { commits, data, entityOf, ids } from '../evidence-fixture';
 
 const read = (id: string, mode: string, commit = commits.tip) => ({

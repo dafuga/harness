@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.runtime-behavior",
 	"kind": "component",
-	"title": "RuntimeBehavior",
-	"responsibility": "Owns the RuntimeBehavior Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Runtime behavior",
+	"responsibility": "Shows recorded end-to-end behavior and comparison without presenting pending reads as verified changes.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/RuntimeBehavior.svelte"],
 		"symbols": ["RuntimeBehavior"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RuntimeBehavior.result",
-				"type": "EntityEvidenceResult"
+				"type": "EntityEvidenceResult",
+				"description": "Required behavior rows, scenarios, scope and after-side record. Comparison has two sides only for commit mode with a parent."
 			},
 			{
 				"name": "RuntimeBehavior.evidence",
-				"type": "EntityEvidence"
+				"type": "EntityEvidence",
+				"description": "Read state: undefined is pending, null is failure, populated data supplies comparison input. Refusal messages are forwarded to run panels."
 			},
 			{
 				"name": "RuntimeBehavior.unit",
-				"type": "string"
+				"type": "string",
+				"description": "Optional function identifier forwarded to result rows on both sides."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RuntimeBehavior",
-				"type": "markup"
+				"type": "markup",
+				"description": "Current or compared behavior with verdict/reasons, result groups, recorded duration and scenario outcomes. Pending reads show a reading verdict unless already fixed as not-compared or unknown with a reason. Failed reads say Behavior unknown. Missing groups or duration are explicitly marked absent."
 			}
 		],
 		"errors": []

@@ -10,13 +10,17 @@ test('legacy changes remain local, environment changes reject missing deployment
 	expect(f.session.busy).toBe(false);
 }, 15000);
 
-test.each(['dev', 'stage', 'preprod', 'prod'] as const)(
-	'a successful change scoped to %s verifies, commits and promotes only through its lower boundary',
-	async (environment) => {
+const scopedChanges = (['dev', 'stage', 'preprod', 'prod'] as const).flatMap((environment) => [
+	{ environment, task: false },
+	{ environment, task: true }
+]);
+test.each(scopedChanges)(
+	'a successful change scoped to $environment (project chat: $task) verifies, commits and promotes only through its lower boundary',
+	async ({ environment, task }) => {
 		const { vi } = await import('vitest');
 		const { writeFile } = await import('node:fs/promises');
 		const { join } = await import('node:path');
-		const { git, settled } = await import('../run-fixture');
+		const { git } = await import('../run-fixture');
 		const commands = await import('../../src/utils/deploymentCommand');
 		const { DeploymentService } = await import('../../src/services/DeploymentService');
 		const f = await fixture(async (turn) => {
@@ -27,7 +31,24 @@ test.each(['dev', 'stage', 'preprod', 'prod'] as const)(
 		const execute = vi.spyOn(commands, 'deploymentCommand').mockResolvedValue('verified');
 		const automatic = vi.spyOn(DeploymentService.prototype, 'enqueue').mockResolvedValue([]);
 		try {
-			await settled(f, { ...request, environment });
+			await f.service.start(
+				task
+					? {
+							intent: 'task',
+							category: 'functions',
+							mode: 'change',
+							projectId: f.session.projectId!,
+							branch: 'main',
+							commit: git(f.root, 'rev-parse', 'HEAD'),
+							provider: request.provider,
+							model: request.model,
+							effort: request.effort,
+							text: request.text,
+							environment
+						}
+					: { ...request, environment }
+			);
+			await expect.poll(() => f.session.busy, { timeout: 12000 }).toBe(false);
 			expect(execute).toHaveBeenCalledWith({ args: ['bun', 'run', 'check'], cwd: f.root });
 			expect(automatic).toHaveBeenCalledWith({
 				environment,

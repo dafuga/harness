@@ -2,42 +2,48 @@
 	"schemaVersion": 1,
 	"id": "reports.component.evidence-grid",
 	"kind": "component",
-	"title": "EvidenceGrid",
-	"responsibility": "Owns the EvidenceGrid Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Evidence grid",
+	"responsibility": "Filters report media and coordinates screenshot and paired-audio viewers plus optional uploads.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/EvidenceGrid.svelte"],
+		"source": ["packages/reports/src/components/evidence-grid/EvidenceGrid.svelte"],
 		"symbols": ["EvidenceGrid"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EvidenceGrid.items",
-				"type": "Evidence[]"
+				"type": "Evidence[]",
+				"description": "Required evidence list. Helpers pair related audio and choose gallery entries; screenshot-only lists feed image navigation."
 			},
 			{
 				"name": "EvidenceGrid.assetBase",
-				"type": "string"
+				"type": "string",
+				"description": "Required asset prefix forwarded to cards and viewers."
 			},
 			{
 				"name": "EvidenceGrid.reportId",
-				"type": "string"
+				"type": "string",
+				"description": "Optional report identifier. Upload controls appear only when both this value and onUploaded are supplied."
 			},
 			{
 				"name": "EvidenceGrid.onUploaded",
-				"type": "(report: Report) => void"
+				"type": "(report: Report) => void",
+				"description": "Optional callback receiving an updated report from upload controls. Also gates their visibility alongside reportId."
 			},
 			{
 				"name": "EvidenceGrid.idPrefix",
-				"type": "string"
+				"type": "string",
+				"description": "Optional prefix, empty by default, keeping the gallery heading ID unique on pages with multiple galleries. Does not prefix individual evidence-card IDs."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EvidenceGrid",
-				"type": "markup"
+				"type": "markup",
+				"description": "Gallery with search/category/status and screenshot-size filters, plus media tabs when audio or upload support exists. Shows filtered counts and an empty-result message. Paired audio opens a dedicated viewer; screenshots open a zoom/comparison viewer. Selecting another viewport can adjust filters to reveal it. Audio mode clears the viewport filter. Upload effects and failures belong to child controls."
 			}
 		],
 		"errors": []
@@ -101,11 +107,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/EvidenceGrid.svelte",
+		"entry": "packages/reports/src/components/evidence-grid/EvidenceGrid.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/EvidenceGrid.svelte"
+				"entry": "packages/reports/src/components/evidence-grid/EvidenceGrid.svelte"
 			}
 		]
 	},

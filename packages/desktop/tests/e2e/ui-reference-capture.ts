@@ -2,7 +2,10 @@ import type { Page, TestInfo } from '@playwright/test';
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { buildStamp } from '../../../../src/utils/buildStamp';
-import { evidenceRequested, recordCapture } from '../../../../src/utils/recordCapture';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../../../../src/utils/record-capture/recordCapture';
 import scenario from '../../../../specification/scenarios/agent-references.json' with { type: 'json' };
 
 export { scenario };

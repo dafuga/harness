@@ -5,6 +5,7 @@
 	"kind": "headless",
 	"units": [
 		"desktop.function.catalog-unit",
+		"hub.controller.hub-agent",
 		"hub.function.hub-catalog",
 		"hub.function.hub-entity",
 		"hub.function.hub-projection-cache",
@@ -31,6 +32,11 @@
 			"id": "hosted-cache",
 			"title": "A snapshot cached with a route loader listed not shown",
 			"coverage": "required"
+		},
+		{
+			"id": "write-access",
+			"title": "Read and Comment refuse AI; Write is project-bound and revoked access cancels work",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -42,20 +48,40 @@
 			"target": "bun ../../test/verification-output.ts vitest test/hub-catalog-listing.test.ts",
 			"cwd": "packages/hub",
 			"timeoutMs": 180000
+		},
+		{
+			"id": "project-agent-access",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/controllers/hub-agent.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
 		}
 	],
 	"evidence": [
 		{
 			"id": "hosted-catalog-output",
 			"kind": "output",
-			"states": ["hosted-listing", "hosted-detail", "hosted-history", "hosted-cache"],
+			"states": [
+				"hosted-listing",
+				"hosted-detail",
+				"hosted-history",
+				"hosted-cache",
+				"write-access"
+			],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "hosted-catalog-assertions",
 			"kind": "assertions",
-			"states": ["hosted-listing", "hosted-detail", "hosted-history", "hosted-cache"],
+			"states": [
+				"hosted-listing",
+				"hosted-detail",
+				"hosted-history",
+				"hosted-cache",
+				"write-access"
+			],
 			"viewports": [],
 			"required": true
 		}

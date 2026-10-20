@@ -14,14 +14,23 @@ const found = (page: Page) =>
  * the revision in view, at a branch tip that holds a shell and at a selected commit that does not.
  */
 export const searchStates: Record<string, (page: Page) => Promise<void>> = {
+	async 'catalog-filters'(page) {
+		await page.goto(at('main', commits.approved, 'pages'));
+		await page.getByRole('button', { name: 'Filters', exact: true }).click();
+		const dialog = page.getByRole('dialog', { name: 'Filters', exact: true });
+		await expect(dialog).toBeVisible();
+		expect(await dialog.evaluate((node) => node.getBoundingClientRect().height)).toBeLessThan(650);
+	},
 	async search(page) {
 		await page.goto(tip(shellsBranch, 'shells'));
+		await page.getByRole('button', { name: 'Search entities', exact: true }).click();
 		await field(page).fill('title');
 		await expect(found(page).filter({ hasText: 'Title frame' })).toContainText('Shell');
 		await expect(found(page).first()).toHaveAttribute('aria-selected', 'true');
 	},
 	async 'search-pinned'(page) {
 		await page.goto(at('main', commits.approved, 'functions'));
+		await page.getByRole('button', { name: 'Search entities', exact: true }).click();
 		await expect(field(page)).toHaveAttribute(
 			'placeholder',
 			`Search at ${short(commits.approved)}`

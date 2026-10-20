@@ -1,5 +1,5 @@
 import type { EvidencePointer, HistoryNote } from '../../../../src/core/historyTypes';
-import { noteLines } from '../../../../src/utils/noteLines';
+import { noteLines } from '../../../../src/repositories/history-note-repository/noteLines';
 import { fakeGit, type FakeGit } from './evidenceGit';
 import {
 	check,

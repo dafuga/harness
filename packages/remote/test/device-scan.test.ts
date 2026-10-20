@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
-import { DevicePairingService } from '../src/services/DevicePairingService';
-import { HostPairingService } from '../src/services/HostPairingService';
-import { pairingOffer } from '../src/utils/pairingOffer';
+import { DevicePairingService } from '../src/services/device-pairing-service/DevicePairingService';
+import { HostPairingService } from '../src/services/host-pairing-service/HostPairingService';
+import { pairingOffer } from '../../desktop/src/services/remote-host-service/pairingOffer';
 import type { OfferEnvironment } from '../src/utils/pairingOffer';
 import { toBase64Url } from '../src/utils/remoteBytes';
 import { remoteIdentity } from '../src/utils/remoteIdentity';

@@ -1,7 +1,7 @@
 import { expect, test, type APIRequestContext } from '../../../../test/support/browserTest';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { ReportRepository } from '../../src/repositories/ReportRepository';
+import { ReportRepository } from '../../src/repositories/report-repository/ReportRepository';
 import { ScreenshotRetentionService } from '../../src/services/ScreenshotRetentionService';
 import { fixtures, seededId } from './support/fixtures';
 import { expectRetired, servedReport } from './support/portableReport';

@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "function.helper-consumers",
+	"kind": "function",
+	"title": "helperConsumers",
+	"responsibility": "Counts distinct active components, services and functions using each exported helper at one revision.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/revision-detail-service/helperConsumers.ts",
+			"src/utils/helperConsumers.ts"
+		],
+		"symbols": ["helperConsumers", "HelperTree", "HelperConsumer", "helperConsumers"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "helperConsumers.tree",
+				"type": "HelperTree",
+				"description": "The selected source tree. Reads and optional file listings describe this exact revision, rather than files from another checkout."
+			},
+			{
+				"name": "helperConsumers.units",
+				"type": "Unit[]",
+				"description": "Registered units and their owned source. Each helper receives distinct actual component, service or named-function consumers in this array."
+			}
+		],
+		"outputs": [
+			{
+				"name": "helperConsumers",
+				"type": "Promise<void>",
+				"description": "Completes after attaching consumer facts to the supplied helper metadata; it returns no separate value."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.explorer-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.helper-references",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resolve-import",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.revision-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.units-config",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/helperConsumers.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/helperConsumers.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

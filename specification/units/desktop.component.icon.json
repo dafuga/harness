@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.icon",
 	"kind": "component",
-	"title": "Icon",
-	"responsibility": "Owns the Icon Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Entity icon",
+	"responsibility": "Draws a small decorative icon for a category or action.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/Icon.svelte"],
 		"symbols": ["Icon"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "Icon.name",
-				"type": "string"
+				"type": "string",
+				"description": "Which icon to draw. An unrecognized name uses the page icon."
 			},
 			{
 				"name": "Icon.size",
-				"type": "number"
+				"type": "number",
+				"description": "The icon’s width and height in pixels; 22 when no size is supplied."
 			}
 		],
 		"outputs": [
 			{
 				"name": "Icon",
-				"type": "markup"
+				"type": "markup",
+				"description": "A line icon hidden from screen readers. The surrounding control supplies its accessible name."
 			}
 		],
 		"errors": []

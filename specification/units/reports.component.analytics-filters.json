@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "reports.component.analytics-filters",
 	"kind": "component",
-	"title": "AnalyticsFilters",
-	"responsibility": "Owns the AnalyticsFilters Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Analytics filters",
+	"responsibility": "Provides history filters through a normal GET form.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/components/AnalyticsFilters.svelte"],
 		"symbols": ["AnalyticsFilters"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "AnalyticsFilters.filters",
-				"type": "AnalyticsSnapshot['filters']"
+				"type": "AnalyticsSnapshot['filters']",
+				"description": "Required initial loop, task, model and optional since/until values. Missing values become empty; dates use their first ten characters. These initialize input defaults rather than live bindings."
 			}
 		],
 		"outputs": [
 			{
 				"name": "AnalyticsFilters",
-				"type": "markup"
+				"type": "markup",
+				"description": "Loop/task/model text fields and UTC-day date inputs submitting to the analytics page, plus a reset link. Explains that live CPU is unaffected. Filtering and invalid-date handling occur outside this component."
 			}
 		],
 		"errors": []

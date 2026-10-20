@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.impact-types",
 	"kind": "function",
-	"title": "impactTypes",
-	"responsibility": "Defines the impact report and the per-revision input of an impact computation.",
+	"title": "Impact computation types",
+	"responsibility": "Defines classified file changes, selected tests and scenarios, uncertainty and the revision snapshots used for impact analysis.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,7 +11,7 @@
 		"symbols": ["ChangedFile", "ImpactReport", "ImpactSide"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
 		"errors": []

@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.project-agent",
 	"kind": "component",
-	"title": "ProjectAgent",
-	"responsibility": "Owns the ProjectAgent Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Project chat",
+	"responsibility": "Keeps project chat available on every screen and links discussed or changed units to their commit history.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/ProjectAgent.svelte"],
 		"symbols": ["ProjectAgent"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProjectAgent.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "The selected project, revision, permissions, bridge and navigation. Conversation state stays with this project as its screens change."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectAgent",
-				"type": "markup"
+				"type": "markup",
+				"description": "A persistent round chat bubble and conversation panel. Read users browse; Comment users leave comments; Write users can choose a model and ask, plan or change at a writable branch tip. Registered unit references open their history."
 			}
 		],
 		"errors": []
@@ -49,6 +51,11 @@
 		},
 		{
 			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.floating-chat",
 			"via": "import",
 			"origin": "derived"
 		}

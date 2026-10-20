@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.choose-runtime",
 	"kind": "function",
-	"title": "chooseRuntime",
-	"responsibility": "Chooses the default runtime from cold-latency measurements for one workload and profile.",
+	"title": "Measured runtime selection",
+	"responsibility": "Chooses the simplest runtime within tolerance of the fastest matching cold-latency measurement and explains omitted candidates.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,17 +11,19 @@
 		"symbols": ["RuntimeChoiceInput", "RuntimeChoice", "chooseRuntime"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "chooseRuntime.input",
-				"type": "RuntimeChoiceInput"
+				"type": "RuntimeChoiceInput",
+				"description": "Available measurements plus the exact workload and machine profile to consider. Only latency-cold-ms entries for those labels participate."
 			}
 		],
 		"outputs": [
 			{
 				"name": "chooseRuntime",
-				"type": "RuntimeChoice"
+				"type": "RuntimeChoice",
+				"description": "Chosen runtime, measured or unmeasured basis, workload and profile, selection rule, candidates and exclusions. Module, Wasm and process are considered in that order within five percent of the fastest; no winner falls back to unmeasured module. HTTP is never selected automatically."
 			}
 		],
 		"errors": []

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { consoleAccess } from '../../src/utils/consoleAccess';
+import { consoleAccess } from '../../packages/reports/src/utils/console-server/consoleAccess';
 import { consoleBundle } from '../../src/utils/consoleBundle';
 
 const commit = 'a'.repeat(40);
@@ -132,12 +132,16 @@ test('the root and the earlier query form are redirected into the explorer, afte
 	]);
 	const legacy = await admitted.entry(event(`/harness?view=history&commit=${head}`), '/harness');
 	expect(legacy?.headers.get('location')).toBe(`/harness/branch/feat%2Fx/commit/${head}/pages`);
-	// An explorer address is served as it is, with its tab, and so is an earlier page path: the
-	// viewer leads on from it. A stranger learns nothing from any form.
+	// Explorer addresses keep their tabs; the removed Details page redirects into Source.
+	// A stranger learns nothing from any form.
 	const page = '/harness/branch/feat%2Fx/pages';
 	expect(await admitted.entry(event(page), '/harness')).toBeUndefined();
 	const source = `/harness/branch/feat%2Fx/commit/${head}/pages/page.titles/details?tab=source`;
-	expect(await admitted.entry(event(source), '/harness')).toBeUndefined();
+	const redirected = await admitted.entry(event(source), '/harness');
+	expect([redirected?.status, redirected?.headers.get('location')]).toEqual([
+		308,
+		`/harness/branch/feat%2Fx/commit/${head}/pages/page.titles?tab=source`
+	]);
 	const earlier = `/harness/branch/feat/x/commit/${head}/map`;
 	expect(await admitted.entry(event(earlier), '/harness')).toBeUndefined();
 	const closed = consoleAccess({ policy: () => false, data: history });

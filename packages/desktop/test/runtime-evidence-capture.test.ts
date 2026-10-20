@@ -1,11 +1,11 @@
 import { afterEach, expect, test, vi } from 'vitest';
 import type { Page, TestInfo } from '@playwright/test';
 import type * as Capture from '../../../src/utils/recordCapture';
-import { recordCapture } from '../../../src/utils/recordCapture';
+import { recordCapture } from '../../../src/utils/record-capture/recordCapture';
 import { runtimeAudio, runtimeEvidence } from '../tests/e2e/runtime-evidence';
 import { evidenceData, recordedClip } from '../tests/e2e/ui-evidence-fixture';
 
-vi.mock('../../../src/utils/recordCapture', async (original) => ({
+vi.mock('../../../src/utils/record-capture/recordCapture', async (original) => ({
 	...(await original<typeof Capture>()),
 	recordCapture: vi.fn()
 }));
@@ -120,8 +120,11 @@ test('the runtime scenario refuses missing current, comparison, inherited and au
 		'function-commit',
 		'audio-current',
 		'old-host-gap',
-		'phone-gap'
+		'phone-gap',
+		'regression-proof',
+		'regression-proof-output',
+		'regression-proof-before'
 	])
 		expect(empty.failures.some((item) => item.includes(`state ${state}`))).toBe(true);
-	expect(empty.failures).toHaveLength(27);
+	expect(empty.failures).toHaveLength(36);
 });

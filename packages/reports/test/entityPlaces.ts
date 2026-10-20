@@ -4,7 +4,7 @@ import type { EntityLens, EntityNav } from '../src/utils/entityLens';
 import { explorerBehavior } from '../src/utils/explorerBehavior';
 import { explorerEntities } from '../src/utils/explorerEntities';
 import { explorerEvidence } from '../src/utils/explorerEvidence';
-import { explorerHistory } from '../src/utils/explorerHistory';
+import { explorerHistory } from '../src/utils/explorer-history/explorerHistory';
 import { explorerRelations } from '../src/utils/explorerRelations';
 import { index, record, revision } from './entityFixture';
 import { commits } from './entityUnits';
@@ -14,7 +14,10 @@ export function placePath(place: ExplorerLocation): string {
 	const commit = place.commit ? `/commit/${place.commit}` : '';
 	const entity = place.entity ? `/${encodeURIComponent(place.entity)}` : '';
 	const section = place.section ? `/${place.section}` : '';
-	const tab = place.tab ? `?tab=${place.tab}` : '';
+	const query = new URLSearchParams();
+	if (place.tab) query.set('tab', place.tab);
+	if (place.helper) query.set('helper', place.helper);
+	const tab = query.size ? `?${query}` : '';
 	return `/harness${branch}${commit}/${place.category}${entity}${section}${tab}`;
 }
 

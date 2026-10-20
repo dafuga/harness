@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "reports.component.analytics-models",
 	"kind": "component",
-	"title": "AnalyticsModels",
-	"responsibility": "Owns the AnalyticsModels Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Analytics models",
+	"responsibility": "Separates model authorship from evaluation and presents recorded usage and first-try results.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/components/AnalyticsModels.svelte"],
 		"symbols": ["AnalyticsModels"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "AnalyticsModels.models",
-				"type": "Models"
+				"type": "Models",
+				"description": "Required analytics model summary with check/loop author counts, evaluator counts/tokens and per-author first-try figures for response and clean-code checks. Names, including unknown, are preserved."
 			}
 		],
 		"outputs": [
 			{
 				"name": "AnalyticsModels",
-				"type": "markup"
+				"type": "markup",
+				"description": "Role-separated usage cards, token totals and author first-try table. Usage bars scale to the largest count. A zero assessed denominator displays an unavailable rate regardless of its stored rate, with excluded/check counts kept visible. Empty categories are stated explicitly. Does not recompute which checks count as assessments."
 			}
 		],
 		"errors": []

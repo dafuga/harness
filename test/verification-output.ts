@@ -4,7 +4,7 @@ import { readFileSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { scenarioManifestSchema, type ScenarioManifest } from '../src/core/unitTypes';
-import { recordCapture } from '../src/utils/recordCapture';
+import { recordCapture } from '../src/utils/record-capture/recordCapture';
 import { verificationTarget, type VerificationTarget } from './verification-targets';
 import { verifiedAssertions } from './verification-assertions';
 
@@ -56,9 +56,10 @@ function captureAssertions(
 	}
 }
 function request() {
-	const [runner, file] = process.argv.slice(2);
-	if (!['vitest', 'playwright'].includes(runner ?? '') || !file)
-		throw new Error('Expected runner and test file');
+	const args = process.argv.slice(2);
+	const [runner, file] = args;
+	if (args.length !== 2 || !['vitest', 'playwright'].includes(runner ?? '') || !file)
+		throw new Error('Expected exactly one runner and test file');
 	const requested = Boolean(process.env.HARNESS_SCENARIO ?? process.env.HARNESS_EVIDENCE_DIR);
 	const target = requested
 		? verificationTarget(process.env.HARNESS_SCENARIO ?? '', runner, file, process.cwd())

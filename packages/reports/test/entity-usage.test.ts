@@ -1,7 +1,7 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
 import { explorerRoute } from '../../../src/utils/explorerRoute';
-import EntityRelations from '../src/components/harness/EntityRelations.svelte';
+import EntityRelations from '../src/components/harness/entity-relations/EntityRelations.svelte';
 import type { ExplorerRelations } from '../src/models/Explorer.types';
 import type { EntityNav } from '../src/utils/entityLens';
 import { content, words } from './entityRender';
@@ -9,7 +9,7 @@ import { commits, ids } from './entityUnits';
 
 /**
  * What an entity is shown with of the things around it: a section named Used In and one named
- * Uses, on its overview and each on its own. Nothing is called a relationship, and neither
+ * Uses, each in its own tab and absent from the overview. Nothing is called a relationship, and neither
  * section shows the path of a source file.
  */
 const base = `/harness/branch/feature%2Forders/commit/${commits.middle}`;
@@ -37,9 +37,17 @@ const times = (text: string, part: string) => text.split(part).length - 1;
 test('the sections of an entity are named Used In and Uses, and none is a relationship', () => {
 	for (const entity of [list, filter, page]) {
 		const body = content('commit', entity);
-		expect(tabs(body)).toEqual(['Overview', 'Used In', 'Uses', 'Tests', 'History']);
+		expect(tabs(body)).toEqual([
+			'Overview',
+			'Contract',
+			'Used In',
+			'Uses',
+			entity.category === 'functions' ? 'Examples' : 'States',
+			'History',
+			'Source'
+		]);
 		expect(words(body)).not.toMatch(/relationship|\brelated\b|Used by|Used on pages/i);
-		expect(sections(body).filter((name) => /^Use/.test(name))).toEqual(['Used In', 'Uses']);
+		expect(sections(body).filter((name) => /^Use/.test(name))).toEqual([]);
 	}
 });
 
@@ -76,22 +84,24 @@ test('Uses keeps what the entity depends on apart by kind and leaves out a kind 
 	);
 });
 
-test('neither section shows the path of a source file, on the overview or on its own', () => {
-	const screens = [content('commit', list), content('commit', { ...list, tab: 'used-in' })];
-	for (const body of [...screens, content('commit', { ...list, tab: 'uses' })])
+test('the overview and both dedicated usage sections show no source paths', () => {
+	const screens = ([undefined, 'used-in', 'uses'] as const).map((tab) =>
+		content('commit', { ...list, tab })
+	);
+	for (const body of screens)
 		for (const name of ['Used In', 'Uses'])
 			expect(card(body, name)).not.toMatch(/src\/|\.ts\b|\.svelte\b/);
-	expect(card(screens[0], 'Used In')).toMatch(/Orders page\s+Page\b/);
-	expect(card(screens[0], 'Uses')).toMatch(/Components 1 Order card/);
+	expect(card(screens[1], 'Used In')).toMatch(/Orders page\s+Page\b/);
+	expect(card(screens[2], 'Uses')).toMatch(/Components 1 Order card/);
 });
 
-test('an address of the former relationships section opens the overview, where both sections are', () => {
+test('a former relationships address opens the overview without embedded usage sections', () => {
 	const at = (search: string) => explorerRoute(`/branch/main/components/${ids.list}`, search);
 	expect([at('?tab=used-in')?.tab, at('?tab=uses')?.tab]).toEqual(['used-in', 'uses']);
 	expect(at('?tab=relationships')?.tab).toBe('relationships');
 	const body = content('commit', { ...list, tab: 'relationships' });
 	expect(body).toContain('aria-label="Order list overview"');
-	expect(sections(body).filter((name) => /^Use/.test(name))).toEqual(['Used In', 'Uses']);
+	expect(sections(body).filter((name) => /^Use/.test(name))).toEqual([]);
 	expect(body).toMatch(/aria-selected="true"[^>]*>\s*Overview/);
 	expect(words(body)).not.toMatch(/relationship/i);
 });

@@ -2,7 +2,7 @@ import { test, expect } from 'vitest';
 import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { remoteCacheFixture } from './remote-cache-fixture';
-import { RemoteHttpProjectAdapter } from '../src/adapters/RemoteHttpProjectAdapter';
+import { RemoteHttpProjectAdapter } from '../src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter';
 const entity = { projectId: 'p', entityId: 'entity', commit: 'a'.repeat(40) };
 test.each(['logout', 'disconnect-start', 'denial', 'principal'] as const)(
 	'%s invalidates a previously authorized deferred HTTP read',

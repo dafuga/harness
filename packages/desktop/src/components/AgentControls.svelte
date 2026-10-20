@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Select from '$shared/Select.svelte';
+	import Select from '../../../reports/src/components/Select.svelte';
 	import type { Snippet } from 'svelte';
 	import type { ProviderId, ProviderState } from '../models/Desktop.types';
 	import type { AgentChoice } from '../utils/composeModes';

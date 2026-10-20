@@ -4,9 +4,9 @@ import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterAll, beforeAll, expect, test } from 'vitest';
-import { CommitMessageService } from '../../src/services/CommitMessageService';
-import { HookInstallService } from '../../src/services/HookInstallService';
-import { writtenMessage } from '../../src/utils/commitMessage';
+import { CommitMessageService } from '../../src/services/commit-message-service/CommitMessageService';
+import { HookInstallService } from '../../src/services/hook-install-service/HookInstallService';
+import { writtenMessage } from '../../src/services/commit-message-service/commitMessage';
 import { ownEnvironment } from '../support/cli';
 
 // Git is the oracle: a message file is measured as what Git itself stores from it. Real

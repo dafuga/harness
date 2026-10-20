@@ -95,7 +95,10 @@ test('a declared contract says what each item is, and a derived one only names i
 	expect(of('Inputs')).toEqual({
 		label: 'Inputs',
 		value: 'branch, tab',
-		items: [{ name: 'branch', text: 'The branch, as one path segment.' }]
+		items: [
+			{ name: 'branch', text: 'The branch, as one path segment.' },
+			{ name: 'tab', text: 'No description recorded.' }
+		]
 	});
 	expect(of('Output')?.items).toEqual([
 		{ name: 'rendered markup', text: 'The page with its verdict.' }
@@ -108,6 +111,54 @@ test('a declared contract says what each item is, and a derived one only names i
 	});
 	const derived = entityContract(find(ids.filter), { category: 'functions' });
 	expect(derived.every((item) => item.items === undefined)).toBe(true);
+});
+
+test('contract fields preserve admitted iterators, species and getter reads', () => {
+	let descriptions = 0;
+	let species = 0;
+	const fields = [
+		{
+			name: 'searchText',
+			type: 'string',
+			get description() {
+				descriptions++;
+				return 'Words to find.';
+			}
+		},
+		{ name: 'pageSize', type: 'number' }
+	];
+	Object.defineProperty(fields, Symbol.iterator, {
+		value: () => {
+			throw new Error('Must not iterate');
+		}
+	});
+	Object.defineProperty(fields, 'some', {
+		value: () => {
+			throw new Error('New array operation');
+		}
+	});
+	Object.defineProperty(fields, 'constructor', {
+		value: {
+			get [Symbol.species]() {
+				species++;
+				return Array;
+			}
+		}
+	});
+	const original = find(ids.filter);
+	const unit = { ...original, contract: { ...original.contract, inputs: fields } };
+	const inputs = entityContract(unit, { category: 'functions' }).find(
+		(item) => item.label === 'Inputs'
+	);
+	expect(inputs).toMatchObject({
+		value: 'search text, page size',
+		items: [
+			{ name: 'search text', text: 'Words to find.' },
+			{ name: 'page size', text: 'No description recorded.' }
+		]
+	});
+	expect(descriptions).toBe(2);
+	expect(species).toBe(2);
 });
 
 /** A unit of a small registry: what it uses is all that matters of it here. */

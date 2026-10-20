@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.capture-provenance",
 	"kind": "function",
-	"title": "captureProvenance",
-	"responsibility": "States what really produced a recorded capture: its own build, its standing and the attempt it belongs to.",
+	"title": "Capture provenance labels",
+	"responsibility": "Explains capture origin and acceptance separately from the revision a verification attempt targeted.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,33 +11,39 @@
 		"symbols": ["CaptureStanding", "CaptureProvenance", "captureProvenance", "scenarioOrigin"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "captureProvenance.record",
-				"type": "HarnessRecord"
+				"type": "HarnessRecord",
+				"description": "Record supplying validity, outcome and target revision."
 			},
 			{
 				"name": "captureProvenance.scenario",
-				"type": "Scenario"
+				"type": "Scenario",
+				"description": "Scenario supplying tested revision, inheritance and original record."
 			},
 			{
 				"name": "captureProvenance.capture",
-				"type": "HarnessCapture"
+				"type": "HarnessCapture",
+				"description": "Capture supplying status, source build and optional provenance."
 			},
 			{
 				"name": "scenarioOrigin.scenario",
-				"type": "Scenario"
+				"type": "Scenario",
+				"description": "Scenario whose result origin should be summarized."
 			}
 		],
 		"outputs": [
 			{
 				"name": "captureProvenance",
-				"type": "CaptureProvenance"
+				"type": "CaptureProvenance",
+				"description": "Standing, label, facts and full-revision note. Invalid records take precedence over failed captures; otherwise captures are rejected, inherited or fresh. Rejection labels distinguish a different recorded build from a required build stamp that is missing."
 			},
 			{
 				"name": "scenarioOrigin",
-				"type": "string"
+				"type": "string",
+				"description": "Inherited origin, tested revision for a passed scenario, or failed-attempt revision plus distinct other capture revisions when present."
 			}
 		],
 		"errors": []

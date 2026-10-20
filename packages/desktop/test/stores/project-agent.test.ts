@@ -1,13 +1,13 @@
 import { expect, test, vi } from 'vitest';
 import { createProjectAgentStore } from '../../src/lib/stores/projectAgent.svelte';
 import type { Workspace } from '../../src/lib/stores/workspace.svelte';
-import type { RunEvent } from '../../src/models/DesktopBridge.types';
+import type { DesktopBridge, RunEvent } from '../../src/models/DesktopBridge.types';
 
 function shown(change: object = {}) {
 	let follow: (event: RunEvent) => void = () => {};
 	const bridge = {
 		providers: vi.fn(async () => []),
-		startRun: vi.fn(async () => ({ runId: 'run-1' })),
+		startRun: vi.fn<DesktopBridge['startRun']>(async () => ({ runId: 'run-1' })),
 		onRunEvent: (listener: typeof follow) => {
 			follow = listener;
 			return () => {};
@@ -140,3 +140,21 @@ test('a creation request carries the count of design options that was chosen', a
 		[{ intent: 'create', category: 'functions', ...draft, designOptions: 2, projectId: 'local-1' }]
 	]);
 });
+
+test.each(['change', 'ask'] as const)(
+	'project %s scopes only writes to the selected available environment',
+	async (mode) => {
+		const f = shown({
+			snapshot: { writable: true, revision: { branch: 'main', commit: 'a'.repeat(40) } },
+			deployments: { environment: 'preprod', selected: { available: true } }
+		});
+		const sent = f.agent.send({ ...draft, mode });
+		await vi.waitFor(() => expect(f.agent.runId).toBe('run-1'));
+		expect(f.bridge.startRun.mock.calls[0][0]).toMatchObject({ intent: 'task', mode });
+		expect((f.bridge.startRun.mock.calls[0][0] as { environment?: string }).environment).toBe(
+			mode === 'change' ? 'preprod' : undefined
+		);
+		f.emit({ kind: 'finished', summary: 'Done', verified: false });
+		await sent;
+	}
+);

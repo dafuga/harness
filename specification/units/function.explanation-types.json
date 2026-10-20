@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.explanation-types",
 	"kind": "function",
-	"title": "explanationTypes",
-	"responsibility": "Defines a reason bound to the content fingerprints of the change it explains.",
+	"title": "Change explanation schema",
+	"responsibility": "Defines the scratch location, attempt outcomes and validated explanation of a particular unit change.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -19,20 +19,23 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "explanationsFile",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Scratch NDJSON path .cache/harness/explanations.ndjson, outside the source tree."
 			},
 			{
 				"name": "explanationOutcomes",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Allowed attempt outcomes: improved, not-improved and not-applicable."
 			},
 			{
 				"name": "explanationSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Strict Zod schema naming the unit, symbol, optional file, added/modified/removed change, nullable before/after fingerprints, behavior, simplification and performance attempts, and recording time. Text is trimmed and nonempty."
 			}
 		],
 		"errors": []

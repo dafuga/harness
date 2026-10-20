@@ -2,7 +2,10 @@ import { join } from 'node:path';
 import type { Page, TestInfo } from '@playwright/test';
 import scenario from '../../../../specification/scenarios/desktop-renderer.json' with { type: 'json' };
 import { buildStamp } from '../../../../src/utils/buildStamp';
-import { evidenceRequested, recordCapture } from '../../../../src/utils/recordCapture';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../../../../src/utils/record-capture/recordCapture';
 import { commits, ids } from './ui-evidence-fixture';
 
 /**

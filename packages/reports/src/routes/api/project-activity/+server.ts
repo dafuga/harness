@@ -1,5 +1,5 @@
 import { json } from '@sveltejs/kit';
-import { siteActivity } from '../../../utils/siteActivity';
+import { siteActivity } from './siteActivity';
 
 /** The activity of this site's repository, to whoever the owner policy admitted. It only reads. */
 export async function GET(): Promise<Response> {

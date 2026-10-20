@@ -2,44 +2,50 @@
 	"schemaVersion": 1,
 	"id": "remote.function.relay-origin",
 	"kind": "function",
-	"title": "relayOrigin",
-	"responsibility": "Owns the relayOrigin shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Validate relay addresses",
+	"responsibility": "Normalize an allowed relay origin and derive its host WebSocket endpoint.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/remote/src/utils/relayOrigin.ts"],
 		"symbols": ["relayOrigin", "relaySocketUrl"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "relayOrigin.value",
-				"type": "string | undefined"
+				"type": "string | undefined",
+				"description": "Optional URL limited to HTTPS, or HTTP on localhost, 127.0.0.1 or ::1, with no credentials, nonroot path, query or fragment."
 			},
 			{
 				"name": "relaySocketUrl.origin",
-				"type": "string"
+				"type": "string",
+				"description": "Relay origin accepted by relayOrigin."
 			},
 			{
 				"name": "relaySocketUrl.hostId",
-				"type": "string"
+				"type": "string",
+				"description": "Host ID containing exactly 40 lowercase hex characters."
 			}
 		],
 		"outputs": [
 			{
 				"name": "relayOrigin",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "Normalized URL origin, or null when the supplied address is missing or invalid."
 			},
 			{
 				"name": "relaySocketUrl",
-				"type": "string"
+				"type": "string",
+				"description": "Matching ws or wss URL ending in /v1/hosts/{hostId}/connect, without credentials."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Throws Invalid relay address when the origin or host ID is invalid."
 			}
 		]
 	},

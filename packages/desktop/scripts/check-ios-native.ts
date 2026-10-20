@@ -2,20 +2,22 @@ import { mkdirSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 /**
- * Runs the native checks of the phone plugin on this Mac: the real Swift of the app, compiled
+ * Runs the native checks of the phone plugins on this Mac: the real Swift of the app, compiled
  * with the checks of ios/Checks/Native, once as Debug and once as Release. The Capacitor plugin
- * file is left out, as it needs UIKit; everything it calls is checked. No simulator, relay or
- * keychain is used, and nothing is installed.
+ * files are left out, as they need UIKit; everything they call is checked. No simulator, relay,
+ * Hub or keychain is used, and nothing is installed.
  */
 const root = resolve(import.meta.dirname, '..');
 const remote = resolve(root, 'ios/App/App/Remote');
+const account = resolve(root, 'ios/App/App/Account');
 const checks = resolve(root, 'ios/Checks/Native');
 const output = resolve(root, '.cache/ios');
+const plugins = ['HarnessRemotePlugin.swift', 'HarnessAccountPlugin.swift'];
 const swift = (folder: string) =>
 	readdirSync(folder)
-		.filter((name) => name.endsWith('.swift') && name !== 'HarnessRemotePlugin.swift')
+		.filter((name) => name.endsWith('.swift') && !plugins.includes(name))
 		.map((name) => resolve(folder, name));
-const sources = [...swift(remote), ...swift(checks)];
+const sources = [...swift(remote), ...swift(account), ...swift(checks)];
 
 function run(command: string[]): number {
 	return Bun.spawnSync(command, { stdout: 'inherit', stderr: 'inherit' }).exitCode;

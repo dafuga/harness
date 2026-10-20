@@ -31,6 +31,7 @@
 			"EntityContract",
 			"Relationship",
 			"HistoryEvent",
+			"DesignThumbnail",
 			"Thumbnail",
 			"CatalogEntity",
 			"Measure",
@@ -58,6 +59,16 @@
 		},
 		{
 			"unit": "desktop.model.project-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-documentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "module.contracts",
 			"via": "import",
 			"origin": "derived"
 		}

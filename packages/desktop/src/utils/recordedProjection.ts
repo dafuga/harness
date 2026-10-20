@@ -1,9 +1,11 @@
-import type { ExplorerEvidence, ExplorerSide } from '../../../reports/src/models/Explorer.types';
+import type { ExplorerSide } from '../../../reports/src/models/Explorer.types';
 import type { HarnessRecord, HarnessRevision } from '../../../reports/src/models/Harness.types';
 
 type Impact = NonNullable<HarnessRevision['sourceImpact']>;
+
 /** The scenarios that cover the entity on one side, each with the states that show it. */
 type Shown = Map<string, Set<string>>;
+
 type Staged = { id: string; states: Array<{ id: string }> };
 
 const shownOn = (side: ExplorerSide): Shown =>
@@ -49,6 +51,9 @@ function record(whole: HarnessRecord, entity: string, shown: Shown): HarnessReco
 
 function detail(whole: HarnessRevision, entity: string, shown: Shown): HarnessRevision {
 	const { registry, comparison, sourceImpact } = whole;
+	const proofs = (whole.regressions ?? []).filter(
+		(proof) => !proof.units.length || proof.units.includes(entity)
+	);
 	const ran = (ids: string[]) => ids.filter((id) => shown.has(id));
 	const impact = (stated: Pick<Impact, 'base' | 'units' | 'scenarios'>) => ({
 		base: stated.base,
@@ -69,29 +74,16 @@ function detail(whole: HarnessRevision, entity: string, shown: Shown): HarnessRe
 		comparison: comparison && { ...impact(comparison), record: comparison.record },
 		...(changed === undefined ? {} : { sourceImpact: changed && { ...changed, changed: [] } }),
 		records: whole.records.map((item) => record(item, entity, shown)),
-		explanations: whole.explanations.filter((reason) => reason.unit === entity)
+		explanations: whole.explanations.filter((reason) => reason.unit === entity),
+		...(proofs.length ? { regressions: proofs } : {})
 	};
 }
 
-function side(whole: ExplorerSide, entity: string): ExplorerSide {
+export function side(whole: ExplorerSide, entity: string): ExplorerSide {
 	if (!whole.detail) return whole;
 	const projected = detail(whole.detail, entity, shownOn(whole));
 	const judged = projected.records.find((item) => item.id === whole.record?.id) ?? null;
 	return { ...whole, detail: projected, record: judged };
 }
 
-/**
- * The evidence of one entity with only what that entity needs. Each side keeps its captures and
- * coverage as they were found, and of its revision and records what judges this entity: its own
- * unit, the scenarios that cover it with the states that show it, every test, and its own
- * failures, measurements, limits, impact and reasons. Other units, the graph, the files a
- * commit changed and the results of other scenarios are left out. The evidence that is given is
- * not altered, and the projection still derives the same evidence and the same verdict.
- */
-export function recordedProjection(evidence: ExplorerEvidence, entityId: string): ExplorerEvidence {
-	return {
-		...evidence,
-		after: side(evidence.after, entityId),
-		before: evidence.before && side(evidence.before, entityId)
-	};
-}
+export { recordedProjection } from './recorded-answer/recordedProjection';

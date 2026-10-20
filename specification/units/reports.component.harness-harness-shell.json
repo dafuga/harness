@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-harness-shell",
 	"kind": "shell",
-	"title": "HarnessShell",
-	"responsibility": "Keeps the console place in the browser history, address and query, when no application router does.",
+	"title": "Standalone explorer shell",
+	"responsibility": "Hosts the explorer using browser history outside a framework router.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,25 +11,29 @@
 		"symbols": ["HarnessShell"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HarnessShell.base",
-				"type": "string"
+				"type": "string",
+				"description": "Required explorer URL prefix, removed from the current browser path to initialize the relative route and added back for navigation."
 			},
 			{
 				"name": "HarnessShell.links",
-				"type": "Array<{ label: string; href: string }>"
+				"type": "Array<{ label: string; href: string }>",
+				"description": "Optional compatibility links, defaulting to an empty list. Forwarded to the console, which currently does not render them."
 			},
 			{
 				"name": "HarnessShell.exportable",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional export flag, defaulting to true, forwarded to the console."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HarnessShell",
-				"type": "markup"
+				"type": "markup",
+				"description": "The generic explorer screen inside the console. Browser back and forward update the relative path; console navigation pushes or replaces browser history."
 			}
 		],
 		"errors": []

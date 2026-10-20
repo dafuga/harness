@@ -2,7 +2,7 @@ import { test, expect, type Page } from '../../../../test/support/browserTest';
 import { mkdir, writeFile, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
-import { ReportRepository } from '../../src/repositories/ReportRepository';
+import { ReportRepository } from '../../src/repositories/report-repository/ReportRepository';
 import { atomicJson } from '../../src/utils/reportFiles';
 import { audioFixture } from '../../test/audioFixture';
 import { fixtures } from './support/fixtures';

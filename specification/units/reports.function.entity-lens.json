@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.entity-lens",
 	"kind": "function",
-	"title": "entityLens",
-	"responsibility": "Declares what the host answers for the explorer content and how its components navigate, names the six collections, and builds the location of another place in the same branch and revision.",
+	"title": "Entity navigation context",
+	"responsibility": "Builds related explorer locations while preserving branch and revision context.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -18,33 +18,39 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "entityLens.from",
-				"type": "ExplorerLocation"
+				"type": "ExplorerLocation",
+				"description": "Current explorer location."
 			},
 			{
 				"name": "entityLens.to",
-				"type": "Target"
+				"type": "Target",
+				"description": "Optional target commit, category, entity, section and tab. Omitted commit/category retain the current values; null commit explicitly selects current mode."
 			},
 			{
 				"name": "shortCommit.commit",
-				"type": "string"
+				"type": "string",
+				"description": "Commit text to abbreviate."
 			}
 		],
 		"outputs": [
 			{
 				"name": "entityLabels",
-				"type": "Record<ExplorerCategory, EntityLabel>"
+				"type": "Record<ExplorerCategory, EntityLabel>",
+				"description": "Titles, singular labels and descriptions for the six explorer collections."
 			},
 			{
 				"name": "entityLens",
-				"type": "ExplorerLocation"
+				"type": "ExplorerLocation",
+				"description": "Location retaining branch and revision; helper identity follows tabs and commits only within the same owning entity. Catalog and different-entity links discard it."
 			},
 			{
 				"name": "shortCommit",
-				"type": "string"
+				"type": "string",
+				"description": "First seven characters of the supplied commit."
 			}
 		],
 		"errors": []
@@ -59,6 +65,55 @@
 			"unit": "reports.model.harness-types",
 			"via": "import",
 			"origin": "derived"
+		}
+	],
+	"helperContracts": [
+		{
+			"name": "shortCommit",
+			"source": "packages/reports/src/utils/entityLens.ts",
+			"inputs": [
+				{
+					"name": "shortCommit.commit",
+					"type": "string"
+				}
+			],
+			"output": "string",
+			"pure": true,
+			"consumers": [
+				{
+					"unit": "reports.component.harness-entity-audio"
+				},
+				{
+					"unit": "reports.component.harness-entity-behavior"
+				},
+				{
+					"unit": "reports.component.harness-entity-change"
+				},
+				{
+					"unit": "reports.component.harness-entity-config"
+				},
+				{
+					"unit": "reports.component.harness-entity-frame"
+				},
+				{
+					"unit": "reports.component.harness-entity-history-row"
+				},
+				{
+					"unit": "reports.component.harness-entity-history"
+				},
+				{
+					"unit": "reports.component.harness-entity-screens"
+				},
+				{
+					"unit": "reports.component.harness-entity-tests"
+				},
+				{
+					"unit": "reports.component.harness-explorer-frame"
+				},
+				{
+					"unit": "reports.component.harness-explorer-page-card"
+				}
+			]
 		}
 	],
 	"runtime": {

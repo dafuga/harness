@@ -5,7 +5,7 @@ import {
 	scanFailure,
 	scanFailures,
 	scanNotices
-} from '../../src/utils/scanNotice';
+} from '../../src/utils/scan-notice/scanNotice';
 
 test('each way a scan ends without an offer has words of its own that say how to go on', () => {
 	expect(scanFailures).toEqual([

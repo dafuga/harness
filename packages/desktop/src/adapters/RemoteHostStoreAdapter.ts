@@ -12,6 +12,8 @@ export interface RemoteHostDevice {
 	name: string;
 	platform: string;
 	projects: { id: string; name: string }[];
+	/** False grants read-only access; omitted preserves older read-and-comment grants. */
+	comments?: boolean;
 	agents: boolean;
 	approvedAt: string;
 	generation: number;

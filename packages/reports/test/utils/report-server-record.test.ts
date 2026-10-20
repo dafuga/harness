@@ -3,11 +3,8 @@ import { existsSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
-import {
-	processStarted,
-	reportServerRecord,
-	stopReportServer
-} from '../../src/utils/reportServerRecord';
+import { processStarted, reportServerRecord } from '../../src/utils/reportServerRecord';
+import { stopReportServer } from '../../src/services/report-server-service/reportServerRecord';
 
 const started: number[] = [];
 const roots: string[] = [];

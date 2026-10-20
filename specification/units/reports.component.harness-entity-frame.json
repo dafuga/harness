@@ -28,7 +28,7 @@
 			{
 				"name": "EntityFrame.entityHeaderAndScreen",
 				"type": "markup",
-				"description": "The header of the entity, then its screen."
+				"description": "Selected entity header and screen. A helper address selects only its callable API; a legacy multi-callable address offers individual links. Missing helpers remain explicit. Owning module identity/history is retained."
 			}
 		],
 		"errors": [
@@ -51,7 +51,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.harness-entity-link",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-entity-missing",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-entity-screens",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -67,6 +77,21 @@
 		},
 		{
 			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-screens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-shown",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-entities",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -2,7 +2,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { afterAll, beforeAll, test } from 'vitest';
 import { explorerBehavior } from '../../../reports/src/utils/explorerBehavior';
 import { explorerEvidence } from '../../../reports/src/utils/explorerEvidence';
-import { explorerVerdict } from '../../../reports/src/utils/explorerVerdict';
+import { explorerVerdict } from '../../../reports/src/utils/explorer-verdict/explorerVerdict';
 import {
 	asked,
 	clock,

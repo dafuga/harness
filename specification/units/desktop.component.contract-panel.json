@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.contract-panel",
 	"kind": "component",
-	"title": "ContractPanel",
-	"responsibility": "Owns the ContractPanel Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Contract panel",
+	"responsibility": "Presents an entity’s declared inputs, outputs and errors in ordinary language, with technical names and types available on expansion.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/ContractPanel.svelte"],
 		"symbols": ["ContractPanel"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ContractPanel.contract",
-				"type": "EntityContract"
+				"type": "EntityContract",
+				"description": "Required contract containing input, output and error arrays. Each field supplies its name and type and may supply a description. Missing descriptions are shown explicitly; this panel does not derive an explanation from the type."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ContractPanel",
-				"type": "markup"
+				"type": "markup",
+				"description": "Accepts, Returns and Can fail with sections. Uses a readable form of the final part of each field name and its recorded description, or “No description recorded.” when absent. Empty groups show “Nothing declared.” An expandable Technical contract section shows the full names and types."
 			}
 		],
 		"errors": []
@@ -29,6 +31,11 @@
 	"dependencies": [
 		{
 			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-contract",
 			"via": "import",
 			"origin": "derived"
 		}

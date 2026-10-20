@@ -2,36 +2,40 @@
 	"schemaVersion": 1,
 	"id": "hub.function.auth-fail",
 	"kind": "function",
-	"title": "authFail",
-	"responsibility": "Owns the authFail shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Coded authentication failures",
+	"responsibility": "Create stable authentication error codes with their mapped HTTP status.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/authFail.ts"],
 		"symbols": ["AuthFailure", "AuthFailure.constructor", "authFail"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "AuthFailure.constructor.code",
-				"type": "AuthFailureCode"
+				"type": "AuthFailureCode",
+				"description": "Declared authentication failure code used for the error message and status."
 			},
 			{
 				"name": "authFail.code",
-				"type": "AuthFailureCode"
+				"type": "AuthFailureCode",
+				"description": "Declared authentication failure code to throw."
 			}
 		],
 		"outputs": [
 			{
 				"name": "authFail",
-				"type": "never"
+				"type": "never",
+				"description": "Never returns; throws AuthFailure for the supplied code."
 			}
 		],
 		"errors": [
 			{
 				"name": "AuthFailure",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Error named AuthFailure with code, mapped status and a generic Hub auth message rather than provider details."
 			}
 		]
 	},

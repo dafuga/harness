@@ -1,5 +1,5 @@
 import { toKebabCase, toPascalCase, toSnakeCase } from '../core/case';
-import type { Field } from '../core/fields';
+import type { Field } from '../core/fields/fields';
 import type { PlannedFile } from '../core/files';
 
 export type AdapterName = 'd1' | 'sqlite' | 'postgres';

@@ -1,6 +1,6 @@
 import { test } from 'vitest';
 import { expect } from '../../../test/verificationExpect';
-import { RemoteHostService } from '../src/services/RemoteHostService';
+import { RemoteHostService } from '../src/services/remote-host-service/RemoteHostService';
 import { deferred } from './remote-fixture';
 import { hostFixture } from './remote-host-fixture';
 import { heldStore, storedOn } from './remote-host-holds';

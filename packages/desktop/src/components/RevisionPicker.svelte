@@ -75,6 +75,8 @@
 		{#if !revision.atTip || workspace.pinned}<button
 				type="button"
 				class="go-to-tip"
+				aria-label="Go to tip"
+				title="Go to tip"
 				onclick={() => chooseBranch()}>Go to tip</button
 			>{/if}
 	</div>{/if}

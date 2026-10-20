@@ -31,3 +31,7 @@ Deployment rows and shared details show a source → destination route, alongsid
 ## Deployment presentation
 
 Use one visual language for promotion, activity rows, directional routes and deployment progress. Give source and destination, current commit identities and status distinct, readable hierarchy. Production keeps exactly one promotion button and complete readable commit IDs; activity details reuse progress for queued, running, failed and verified outcomes. Preserve keyboard focus, reduced motion, timestamps and viewport fit at 390px. Visual polish changes no deployment admission, adapter or production authorization behavior.
+
+## Main integration and toolbar order
+
+The environment selector precedes the branch, commit and deployment icons in the top-right toolbar. Keyboard order follows the visual order. General project chat, like entity chat, carries the selected available environment for Change only. Both run paths validate deployment configuration before admitting a scoped change and reuse the verified promotion chain, capped at preprod. Production remains a single explicit promotion from preprod through Deploy.

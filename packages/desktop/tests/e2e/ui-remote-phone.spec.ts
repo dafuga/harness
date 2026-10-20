@@ -105,7 +105,7 @@ test('a paired phone shows the same workspace through the native adapter', async
 		'href',
 		`${pages}/components`
 	);
-	await page.getByRole('link', { name: 'Review designs' }).click();
+	await page.getByRole('link', { name: 'Open Alpha activity' }).click();
 	const image = page.getByRole('img', { name: 'Alpha activity v002 desktop default' });
 	await expect(image).toBeVisible();
 	await expect
@@ -119,7 +119,7 @@ test('a paired phone shows the same workspace through the native adapter', async
 	const heading = await page.locator('.entity-heading').boundingBox();
 	const summary = await page.locator('.entity-heading p').boundingBox();
 	expect(summary!.width).toBeGreaterThanOrEqual(heading!.width * 0.9);
-	for (const name of ['Details →', 'Conversation']) {
+	for (const name of ['Conversation']) {
 		const action = await page.getByRole('button', { name, exact: true }).boundingBox();
 		expect(action!.y).toBeGreaterThanOrEqual(summary!.y + summary!.height);
 	}

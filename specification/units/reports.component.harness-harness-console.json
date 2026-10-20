@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-harness-console",
 	"kind": "shell",
-	"title": "HarnessConsole",
-	"responsibility": "Hosts the explorer: resolves the address against the history, reads the shown revision and, at a selected commit, its first parent, and gives the bar and the screen its mounter names the scope, the entities and the answers they render.",
+	"title": "Explorer console",
+	"responsibility": "Loads recorded repository revisions and supplies the selected explorer screen with navigation, entities and evidence.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,37 +11,44 @@
 		"symbols": ["HarnessConsole"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HarnessConsole.base",
-				"type": "string"
+				"type": "string",
+				"description": "Required URL prefix used for the data client, media and export addresses."
 			},
 			{
 				"name": "HarnessConsole.path",
-				"type": "string"
+				"type": "string",
+				"description": "Required address within the base, including any query string. Determines the selected branch, revision and screen."
 			},
 			{
 				"name": "HarnessConsole.navigate",
-				"type": "(path: string, replace: boolean) => void"
+				"type": "(path: string, replace: boolean) => void",
+				"description": "Required host callback receiving the next relative address and whether to replace browser history. Corrections replace history; user navigation normally adds an entry."
 			},
 			{
 				"name": "HarnessConsole.links",
-				"type": "Array<{ label: string; href: string }>"
+				"type": "Array<{ label: string; href: string }>",
+				"description": "Compatibility input accepted by the prop type but not read or rendered by this component."
 			},
 			{
 				"name": "HarnessConsole.exportable",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional export availability flag, defaulting to true. False supplies the screen with an empty export address."
 			},
 			{
 				"name": "HarnessConsole.content",
-				"type": "ExplorerScreen"
+				"type": "ExplorerScreen",
+				"description": "Required screen component rendered once its selected revision and parent context are ready."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HarnessConsole",
-				"type": "markup"
+				"type": "markup",
+				"description": "Explorer header and selected screen, with loading, unavailable-address, truncated-history and missing-registry notices. Index and selected-revision failures become visible problem text; unavailable parent data becomes null."
 			}
 		],
 		"errors": []

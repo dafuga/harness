@@ -1,6 +1,6 @@
 import { test, expect } from '../../../../test/support/browserTest';
 import { readFile } from 'node:fs/promises';
-import { ReportRepository } from '../../src/repositories/ReportRepository';
+import { ReportRepository } from '../../src/repositories/report-repository/ReportRepository';
 import { audioFixture } from '../../test/audioFixture';
 import { fixtures } from './support/fixtures';
 import { expectRetired, reportView } from './support/portableReport';

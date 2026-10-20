@@ -1,7 +1,7 @@
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import type { RunEvent } from '../src/models/DesktopBridge.types';
-import { RemoteHostService } from '../src/services/RemoteHostService';
+import { RemoteHostService } from '../src/services/remote-host-service/RemoteHostService';
 import { RemoteLifecycleService } from '../src/services/RemoteLifecycleService';
 import type { PowerEvent } from '../src/services/RemoteLifecycleService';
 import { deferred } from './remote-fixture';

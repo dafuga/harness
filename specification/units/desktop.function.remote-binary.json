@@ -2,40 +2,45 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.remote-binary",
 	"kind": "function",
-	"title": "remoteBinary",
-	"responsibility": "Owns the remoteBinary shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Decode remote bytes",
+	"responsibility": "Decode base64 and verify its declared byte length and SHA-256 hash.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/remoteBinary.ts"],
 		"symbols": ["unreadableMedia", "damagedMedia", "remoteBinary"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "remoteBinary.value",
-				"type": "RemoteBinary"
+				"type": "RemoteBinary",
+				"description": "Base64 data with encoding, declared byte length and SHA-256 hash."
 			}
 		],
 		"outputs": [
 			{
 				"name": "unreadableMedia",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Message for unsupported encoding or unreadable base64."
 			},
 			{
 				"name": "damagedMedia",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Message for content that does not match its declared length or hash."
 			},
 			{
 				"name": "remoteBinary",
-				"type": "Promise<Uint8Array>"
+				"type": "Promise<Uint8Array>",
+				"description": "Decoded bytes after length and hash verification."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects unreadable content or a length/hash mismatch; underlying digest failures can also propagate."
 			}
 		]
 	},

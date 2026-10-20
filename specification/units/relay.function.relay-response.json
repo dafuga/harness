@@ -2,50 +2,58 @@
 	"schemaVersion": 1,
 	"id": "relay.function.relay-response",
 	"kind": "function",
-	"title": "relayResponse",
-	"responsibility": "Owns the relayResponse shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Relay JSON responses",
+	"responsibility": "Builds standard JSON replies and concise coded failures.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/relay/src/utils/relayResponse.ts"],
 		"symbols": ["relayResponse", "relayError"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "relayResponse.status",
-				"type": "number"
+				"type": "number",
+				"description": "HTTP response status."
 			},
 			{
 				"name": "relayResponse.body",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "JSON-serializable response body."
 			},
 			{
 				"name": "relayResponse.headers",
-				"type": "Record<string, string>"
+				"type": "Record<string, string>",
+				"description": "Optional additional headers, defaulting to empty; supplied keys override the default headers."
 			},
 			{
 				"name": "relayError.status",
-				"type": "number"
+				"type": "number",
+				"description": "HTTP failure status."
 			},
 			{
 				"name": "relayError.error",
-				"type": "RelayErrorCode"
+				"type": "RelayErrorCode",
+				"description": "Typed relay error code, serialized as the only body field."
 			},
 			{
 				"name": "relayError.headers",
-				"type": "Record<string, string>"
+				"type": "Record<string, string>",
+				"description": "Optional additional failure-response headers, defaulting to empty."
 			}
 		],
 		"outputs": [
 			{
 				"name": "relayResponse",
-				"type": "Response"
+				"type": "Response",
+				"description": "Response containing JSON with default application/json, no-store and nosniff headers."
 			},
 			{
 				"name": "relayError",
-				"type": "Response"
+				"type": "Response",
+				"description": "Response containing only the error code object, using the same response/header construction."
 			}
 		],
 		"errors": []

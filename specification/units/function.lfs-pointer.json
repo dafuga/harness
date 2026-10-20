@@ -2,46 +2,66 @@
 	"schemaVersion": 1,
 	"id": "function.lfs-pointer",
 	"kind": "function",
-	"title": "lfsPointer",
-	"responsibility": "Writes and reads Git LFS pointer text and decides which evidence files are stored through LFS.",
+	"title": "Git LFS evidence pointers",
+	"responsibility": "Formats and recognizes LFS pointer text and selects the media extensions stored through LFS.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/lfsPointer.ts"],
-		"symbols": ["LfsObject", "lfsPointer", "parseLfsPointer", "lfsStored", "lfsAttributes"]
+		"source": [
+			"src/repositories/evidence-branch-repository/lfsPointer.ts",
+			"src/services/attached-record-service/lfsPointer.ts",
+			"src/utils/lfsPointer.ts"
+		],
+		"symbols": [
+			"lfsAttributes",
+			"parseLfsPointer",
+			"mediaExtensions",
+			"LfsObject",
+			"lfsPointer",
+			"lfsStored",
+			"parseLfsPointer",
+			"lfsAttributes"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "lfsPointer.file",
-				"type": "LfsObject"
+				"type": "LfsObject",
+				"description": "Original SHA-256 digest and byte count to place in the pointer text."
 			},
 			{
 				"name": "parseLfsPointer.text",
-				"type": "string"
+				"type": "string",
+				"description": "Text to match against a three-line version, SHA-256 object id and decimal size pointer."
 			},
 			{
 				"name": "lfsStored.path",
-				"type": "string"
+				"type": "string",
+				"description": "File path whose final extension determines LFS storage, case-insensitively."
 			}
 		],
 		"outputs": [
 			{
 				"name": "lfsPointer",
-				"type": "string"
+				"type": "string",
+				"description": "Three-line Git LFS pointer with the standard version URL, supplied digest and size, and a final newline."
 			},
 			{
 				"name": "parseLfsPointer",
-				"type": "LfsObject | undefined"
+				"type": "LfsObject | undefined",
+				"description": "Parsed digest and numeric byte size, or undefined when the pointer shape does not match."
 			},
 			{
 				"name": "lfsStored",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True for png, jpg, jpeg, webp, gif, wav, mp3, m4a, ogg, webm and mp4 extensions."
 			},
 			{
 				"name": "lfsAttributes",
-				"type": "string"
+				"type": "string",
+				"description": "Git attributes lines applying LFS filtering to lowercase and uppercase forms of each supported media extension."
 			}
 		],
 		"errors": []

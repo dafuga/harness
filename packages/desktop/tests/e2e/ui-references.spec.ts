@@ -103,7 +103,8 @@ test('the project agent shows the unit its run is working on as a link', async (
 	await remember(page, info, 'references-agent-desktop');
 	await expect(agent.getByRole('link', { name: 'Order frame', exact: true })).toBeVisible();
 	await agent.getByRole('status').getByRole('link', { name: 'Format time', exact: true }).click();
-	await expect(page).toHaveURL(alphaAt('functions/app.function.format-time'));
+	await expect(page).toHaveURL(alphaAt('functions/app.function.format-time/history'));
+	await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toBeVisible();
 });
 
 test('a shared project renders a reference in a comment and offers no agent control', async ({
@@ -118,3 +119,24 @@ test('a shared project renders a reference in a comment and offers no agent cont
 	await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toHaveCount(0);
 	await expect(page.getByRole('button', { name: 'Plan', exact: true })).toHaveCount(0);
 });
+
+for (const shown of [
+	'pages',
+	'functions/app.function.format-time',
+	'functions/app.function.format-time/history'
+]) {
+	test(`the round project chat remains reachable on ${shown}`, async ({ page }, info) => {
+		await referenceFixture(page);
+		await page.goto(alphaAt(shown));
+		const launcher = page.getByRole('button', { name: 'Work with agent', exact: true });
+		await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+		await remember(page, info, 'persistent-chat-' + shown.replaceAll('/', '-'));
+		await expect(launcher).toBeVisible();
+		const box = (await launcher.boundingBox())!;
+		expect(Math.abs(box.width - box.height), 'round chat bubble').toBeLessThanOrEqual(2);
+		await launcher.click();
+		const panel = page.getByRole('complementary', { name: 'Project agent', exact: true });
+		await expect(panel).toBeVisible();
+		await expect(panel.getByRole('textbox', { name: 'Message', exact: true })).toBeVisible();
+	});
+}

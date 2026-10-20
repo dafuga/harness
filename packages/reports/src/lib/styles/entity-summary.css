@@ -1,4 +1,4 @@
-/* The header of an entity and the cards of its contract, size and performance. */
+/* The header of an entity, the rows of its contract and the cards of its size and performance. */
 .ex-content .ex-head {
 	display: flex;
 	flex-wrap: wrap;
@@ -75,20 +75,12 @@
 .ex-content .failed {
 	color: var(--ex-fail);
 }
+/* Size and performance share the row; the contract is shown on its own. */
 .ex-content .ex-summary {
 	display: grid;
-	grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 16px;
 	align-items: start;
-}
-.ex-content .ex-summary > :first-child {
-	grid-row: span 2;
-}
-.ex-content .ex-summary.compact {
-	grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-.ex-content .ex-summary.compact > :first-child {
-	grid-row: auto;
 }
 /* Positioned, so that hidden labels inside a wide table scroll with it and never widen the page. */
 .ex-content .ex-scroll {
@@ -207,8 +199,7 @@
 	.ex-content .ex-strip {
 		grid-template-columns: minmax(0, 1fr);
 	}
-	.ex-content .ex-summary,
-	.ex-content .ex-summary.compact {
+	.ex-content .ex-summary {
 		grid-template-columns: minmax(0, 1fr);
 	}
 	.ex-content .ex-head-actions {

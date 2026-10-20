@@ -13,7 +13,7 @@ import type {
 } from '../models/Harness.types';
 import { captureProvenance } from './captureProvenance';
 import { scenarioFor } from './explorerState';
-import { verdictCoverage, verdictRecord } from './explorerVerdict';
+import { verdictCoverage, verdictRecord } from './explorer-verdict/explorerVerdict';
 
 /** The stored revisions a page has read: the shown one, and its first parent when it has one. */
 export interface ExplorerRevisions {

@@ -1,12 +1,13 @@
 import type { Locator, Page } from '@playwright/test';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
+import type { UnitDocumentation } from '../../../../src/utils/unit-documentation/unitDocumentation';
+import type { ComponentManifest } from '../../../../src/lib/contracts';
 import type {
 	EntityEvidenceQuery,
 	EvidenceArtifactQuery
 } from '../../src/models/DesktopEvidence.types';
 import { commits, evidenceData, ids, soundScenario, type EvidenceData } from './ui-evidence-data';
 export * from './ui-evidence-data';
-
 /**
  * SYNTHETIC BACKEND. A bridge like the one a backend gives the viewer, with the two evidence
  * reads answered from a sealed synthetic history: `evidence` answers what the reports functions
@@ -34,7 +35,6 @@ interface Host {
 	__evidence: EvidenceState;
 }
 type Settings = Pick<EvidenceState, 'delay' | 'corrupt' | 'moved'> & { hold: boolean };
-
 function installState(settings: Settings) {
 	const urls = { made: [] as string[], revoked: [] as string[] };
 	const objects = new Map<string, Blob | MediaSource>();
@@ -53,7 +53,6 @@ function installState(settings: Settings) {
 	const state = { calls: [], ...settings, held: settings.hold ? [] : null, urls, objects };
 	Object.assign(window, { __evidence: { ...state, cache: () => {} }, harness: {} });
 }
-
 /** The reads every backend has: one project at a branch tip or at one of its commits. */
 function installProject(data: EvidenceData) {
 	const host = window as unknown as Host;
@@ -140,8 +139,13 @@ function removeEvidence() {
 }
 
 export interface EvidenceOptions extends Partial<Settings> {
+	documentation?: Record<string, UnitDocumentation>;
+	previews?: Record<string, NonNullable<ComponentManifest['preview']>>;
+	example?: Parameters<typeof evidenceData>[2];
 	/** Browser diagnostics held by the tip record's first check; synthetic test data only. */
 	browserErrors?: unknown[];
+	/** An incremental record whose only applicable scenario reuses its earlier passing checks. */
+	inheritedOnly?: boolean;
 	/** Extra entities declared by the synthetic history to have the recorded search observations. */
 	observedUnits?: string[];
 	/** A shared project read through a hosted connection: comments only, and a cache channel. */
@@ -150,13 +154,21 @@ export interface EvidenceOptions extends Partial<Settings> {
 	reads?: boolean;
 }
 
-/** The synthetic backend, as it answers after every load of the page. */
 export async function evidenceFixture(page: Page, options: EvidenceOptions = {}) {
-	const data = evidenceData(options.shared, options.observedUnits, options.browserErrors);
+	const data = evidenceData(options.shared, options.observedUnits, options.example, {
+		browserErrors: options.browserErrors,
+		inheritedOnly: options.inheritedOnly
+	});
+	for (const entity of data.entities) {
+		entity.documentation = options.documentation?.[entity.id];
+		const preview = options.previews?.[entity.id];
+		if (preview) entity.thumbnail = { source: 'recorded', ...preview };
+	}
 	const { delay = {}, corrupt = [], moved = false, hold = false } = options;
 	await page.addInitScript(installState, { delay, corrupt, moved, hold });
-	await page.addInitScript(installProject, data);
-	await page.addInitScript(installEvidence, data);
+	// Serialize the recursive documentation graph without Playwright's recursive handle type.
+	await page.addInitScript({ content: `(${installProject.toString()})(${JSON.stringify(data)})` });
+	await page.addInitScript({ content: `(${installEvidence.toString()})(${JSON.stringify(data)})` });
 	if (options.reads === false) await page.addInitScript(removeEvidence);
 	return data;
 }

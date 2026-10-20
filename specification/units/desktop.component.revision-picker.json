@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.revision-picker",
 	"kind": "component",
-	"title": "RevisionPicker",
-	"responsibility": "Owns the RevisionPicker Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Revision picker",
+	"responsibility": "Selects the displayed branch or commit and allows returning to its branch tip.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/RevisionPicker.svelte"],
 		"symbols": ["RevisionPicker"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RevisionPicker.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Workspace supplying snapshot, revision, branch/commit lists, pinned state and navigation. Values follow the displayed revision. Branch navigation supplies only branch; commit navigation includes both."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RevisionPicker",
-				"type": "markup"
+				"type": "markup",
+				"description": "One compact row of native branch and commit dropdowns. Long names are shortened in the middle; full names and current, pinned or historical status appear on hover. Go to tip returns pinned or historical views to the current branch."
 			}
 		],
 		"errors": []

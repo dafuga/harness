@@ -3,14 +3,14 @@ import { fromBase64Url } from '../../src/utils/remoteBytes';
 import {
 	credentialHash,
 	normalizeCode,
-	pairingCode,
 	pkceChallenge,
 	randomCredential,
 	randomId,
 	remoteIdentity,
-	remotePatterns,
-	requestDigest
+	remotePatterns
 } from '../../src/utils/remoteIdentity';
+import { pairingCode } from '../../src/services/host-pairing-service/remoteIdentity';
+import { requestDigest } from '../../src/services/wire-session-service/remoteIdentity';
 import { vectors } from '../support/vectors';
 
 test('an identity is the first 40 hex of the key hash, from bytes or base64url', async () => {

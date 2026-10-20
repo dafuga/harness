@@ -2,26 +2,31 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.remote-host-status",
 	"kind": "function",
-	"title": "remoteHostStatus",
-	"responsibility": "Owns the remoteHostStatus shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Public phone-access status",
+	"responsibility": "Build displayable computer status from persisted state and live relay and pairing activity.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/remoteHostStatus.ts"],
-		"symbols": ["RemoteHostPhase", "RemoteHostStatusInput", "remoteHostStatus"]
+		"source": [
+			"packages/desktop/src/services/remote-host-service/remoteHostStatus.ts",
+			"packages/desktop/src/utils/remoteHostStatus.ts"
+		],
+		"symbols": ["remoteHostStatus", "RemoteHostPhase", "RemoteHostStatusInput", "remoteHostStatus"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "remoteHostStatus.input",
-				"type": "RemoteHostStatusInput"
+				"type": "RemoteHostStatusInput",
+				"description": "Support flag, persisted state, runtime, phase, reason, display name and available project IDs/names."
 			}
 		],
 		"outputs": [
 			{
 				"name": "remoteHostStatus",
-				"type": "RemoteHostStatus"
+				"type": "RemoteHostStatus",
+				"description": "Public status with enabled state, connection phase, host, pairing offer and requests, approved device summaries and projects; private keys and credentials are omitted."
 			}
 		],
 		"errors": []

@@ -27,7 +27,7 @@ test('a phone opened while its computer is away shows saved copies, dated and re
 	await remoteCacheFixture(page);
 	await page.goto('/');
 	await page.getByRole('button', { name: 'Open Alpha', exact: true }).click();
-	await page.getByRole('link', { name: 'Review designs' }).click();
+	await page.getByRole('link', { name: 'Open Alpha activity' }).click();
 	await expect.poll(() => loaded(page)).not.toBe(0);
 	await reopenAway(page);
 	await shot(page, testInfo, 'cache-start');
@@ -54,7 +54,7 @@ test('what was never read is not invented, and no change is offered from a saved
 	await remoteCacheFixture(page);
 	await page.goto('/');
 	await page.getByRole('button', { name: 'Open Alpha', exact: true }).click();
-	await page.getByRole('link', { name: 'Review designs' }).click();
+	await page.getByRole('link', { name: 'Open Alpha activity' }).click();
 	await expect.poll(() => loaded(page)).not.toBe(0);
 	await reopenAway(page);
 	await expect(page.getByRole('heading', { level: 1, name: 'Alpha activity' })).toBeVisible();

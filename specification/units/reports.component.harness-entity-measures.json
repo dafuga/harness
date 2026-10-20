@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-entity-measures",
 	"kind": "component",
-	"title": "EntityMeasures",
-	"responsibility": "Lists every measured figure of an entity beside the limit it is frozen at, or says that no limit is recorded.",
+	"title": "Entity measurements",
+	"responsibility": "Shows recorded measurements beside frozen limits and declared performance tolerances.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,21 +11,24 @@
 		"symbols": ["EntityMeasures"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EntityMeasures.unit",
-				"type": "HarnessUnit"
+				"type": "HarnessUnit",
+				"description": "Required unit with budgets, limits and identity. Supplies performance workloads and frozen-policy declarations."
 			},
 			{
 				"name": "EntityMeasures.record",
-				"type": "HarnessRecord | null"
+				"type": "HarnessRecord | null",
+				"description": "Required record or null. Measurements and findings are filtered to the unit; unprofiled values supply source/complexity/dependency metrics."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityMeasures",
-				"type": "markup"
+				"type": "markup",
+				"description": "Measurement table including source bytes, complexity, dependencies, emitted size and declared performance budgets. Distinguishes policy from numeric limits. Missing record/performance budgets are explicit; helper-formatted values and notes remain visible without estimating data."
 			}
 		],
 		"errors": []

@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.source-snapshot",
 	"kind": "function",
-	"title": "sourceSnapshot",
-	"responsibility": "Owns the sourceSnapshot shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Read working source hashes",
+	"responsibility": "Snapshot tracked and nonignored untracked working files for later change comparison.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/sourceSnapshot.ts"],
 		"symbols": ["SourceSnapshot", "fileHash", "sourceSnapshot"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "fileHash.path",
-				"type": "string"
+				"type": "string",
+				"description": "Filesystem path to inspect."
 			},
 			{
 				"name": "sourceSnapshot.root",
-				"type": "string"
+				"type": "string",
+				"description": "Repository root used to list working source paths."
 			}
 		],
 		"outputs": [
 			{
 				"name": "fileHash",
-				"type": "Promise<string | null>"
+				"type": "Promise<string | null>",
+				"description": "SHA-256 for a regular file, link: plus target for a symbolic link, or null for missing/nonfile paths."
 			},
 			{
 				"name": "sourceSnapshot",
-				"type": "Promise<SourceSnapshot>"
+				"type": "Promise<SourceSnapshot>",
+				"description": "Map of Git-listed paths to current file hashes or link markers, omitting paths with no file value."
 			}
 		],
 		"errors": []

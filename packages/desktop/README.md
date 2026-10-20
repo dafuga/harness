@@ -1,6 +1,25 @@
 # Harness desktop
 
-A local Electron workspace for browsing Pages, Shells, Components, Functions, Configs and Services, finding any of them with the global search in the top bar, reviewing committed designs, and sending Plan or Change requests to installed agent CLIs.
+A local Electron workspace for browsing Pages, Shells, Components, Helpers, Models, Configs and Services, finding any of them with the global search in the top bar, reviewing committed designs, and sending Plan or Change requests to installed agent CLIs.
+
+## Google account projects
+
+Use **Connect shared projects** to sign in with Google through the trusted Harness Hub.
+The same account sees projects it owns and projects whose invitations it accepted on Web,
+Electron and iOS. Lists refresh on focus, when a page becomes visible or reconnects, and
+at most every 30 seconds while visible. A removed membership or rejected session clears
+protected views; a temporary outage preserves the saved login.
+
+The iOS account connection works without a paired Mac. Pairing adds explicitly granted
+local Mac projects beside hosted projects; removing that pairing leaves the independent
+account intact. Local folders are not uploaded automatically by signing in.
+
+Configure the dedicated Hub using [the Hub setup guide](../hub/README.md). Electron reads
+its exact `HARNESS_HUB_ORIGIN`; an iOS build uses the public Xcode build setting of that
+name through `HarnessHubOrigin` in Info.plist. Leave it unset until the real HTTPS Hub
+is configured. The bundled renderer stays local, and Google approval opens in the system
+browser. Native credentials remain in OS-protected storage, outside renderer messages;
+the iOS account uses a separate device-only Keychain entry from Mac pairing.
 
 ## Run locally
 
@@ -20,11 +39,17 @@ bun run package:mac
 open dist/mac/Harness.app
 ```
 
-The packaging script creates a local, ad-hoc-signed app. It does not notarize, publish, or install a production release.
+By default packaging signs the local app ad hoc. Rebuilds that change its code can change its signing requirement, which can make macOS ask for access to Harness's existing Keychain item again. Use the same project-authorized certificate for successive builds to keep a stable identity:
+
+```sh
+HARNESS_MAC_SIGN_IDENTITY=<exact-certificate-SHA1> bun run package:mac
+```
+
+The fingerprint selects an identity already available to `security find-identity -v -p codesigning`; it is not a password or private key. For repeated local builds, Bun can read this setting from this package's ignored `.env.local` file. An invalid or unavailable selection fails before the app is written. Signing is verified after packaging. Moving from ad-hoc signing can still require Keychain approval; compare the designated requirement of successive builds before assuming access is stable. This setting does not change Keychain permissions or disable encryption. Packaging does not notarize, publish, or install a production release.
 
 ## Projects and shared collaboration
 
-The top-left picker switches between saved local projects and shared GitHub projects. Local projects retain Plan/Change controls; shared projects support human comments only. Launch with the dedicated `HARNESS_HUB_ORIGIN` to connect through a browser sign-in and one-time desktop code. The main process stores the session through Electron safeStorage; credentials never enter the renderer.
+The top-left picker switches between saved local projects and shared GitHub projects. Local projects retain Plan/Change controls. Shared project actions follow membership: readers browse, commenters discuss, and writers can request agent work when a project executor is available. Launch with the dedicated `HARNESS_HUB_ORIGIN` to connect through browser sign-in and a one-time device code. The main process stores the session through Electron safeStorage; credentials never enter the renderer.
 
 Project URLs start with `/projects/{projectId}/harness/branch/{encodedBranch}/`, with an optional `/commit/{fullSha}/` before the entity category. Cached shared views display their saved time while offline and disable mutations. Access denial clears protected cached views; pending drafts stay distinct from acknowledged GitHub comments.
 

@@ -71,7 +71,14 @@ export class RemoteInputValidator {
 		};
 	}
 	approval(input: unknown): RemoteApprovalInput {
-		const item = exact(input, 'agents,deviceId,pairingId,projectIds'),
+		const present = fields(input);
+		const withComments = present && Object.hasOwn(present, 'comments');
+		const item = exact(
+				input,
+				withComments
+					? 'agents,comments,deviceId,pairingId,projectIds'
+					: 'agents,deviceId,pairingId,projectIds'
+			),
 			ids = Array.isArray(item.projectIds) ? (item.projectIds as unknown[]) : [];
 		const projectIds = ids.map((id) => matching(id, remotePatterns.projectId, 'invalid-message'));
 		const distinct = new Set(projectIds).size === projectIds.length;
@@ -79,7 +86,15 @@ export class RemoteInputValidator {
 			throw new RemoteFailure('invalid-message');
 		const { pairingId } = this.pairing({ pairingId: item.pairingId }),
 			{ deviceId } = this.device({ deviceId: item.deviceId });
-		return { pairingId, deviceId, projectIds, agents: item.agents };
+		if (withComments && (typeof item.comments !== 'boolean' || (item.agents && !item.comments)))
+			throw new RemoteFailure('invalid-message');
+		return {
+			pairingId,
+			deviceId,
+			projectIds,
+			agents: item.agents,
+			...(withComments ? { comments: item.comments as boolean } : {})
+		};
 	}
 	pairing(input: unknown): { pairingId: string } {
 		const item = exact(input, 'pairingId');

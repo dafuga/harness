@@ -2,13 +2,17 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.compose-modes",
 	"kind": "function",
-	"title": "composeModes",
-	"responsibility": "Chooses what the composer offers: Comment wherever people may comment, Plan and Change only where the project allows agents at a writable tip.",
+	"title": "Choose composer actions",
+	"responsibility": "Chooses the available comment and agent actions and defines visual-plan option counts.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/composeModes.ts"],
+		"source": [
+			"packages/desktop/src/components/thread-panel/composeModes.ts",
+			"packages/desktop/src/utils/composeModes.ts"
+		],
 		"symbols": [
+			"composeModes",
 			"ComposeMode",
 			"AgentChoice",
 			"RunDraft",
@@ -19,37 +23,44 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "visualCategory.category",
-				"type": "string"
+				"type": "string",
+				"description": "The catalog category to classify. Pages, shells and components are visual categories."
 			},
 			{
 				"name": "composeModes.capabilities",
-				"type": "ProjectCapabilities"
+				"type": "ProjectCapabilities",
+				"description": "The project capabilities. Comments and agents are the flags used here; planning and approval flags are not checked separately."
 			},
 			{
 				"name": "composeModes.writable",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Whether the shown revision permits writing. Agent actions require this to be true."
 			}
 		],
 		"outputs": [
 			{
 				"name": "designCounts",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The selectable design-option counts, all whole numbers from 1 through 10."
 			},
 			{
 				"name": "defaultDesignCount",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The default visual design-option count, 3."
 			},
 			{
 				"name": "visualCategory",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True for pages, shells and components; false for other category strings."
 			},
 			{
 				"name": "composeModes",
-				"type": "ComposeMode[]"
+				"type": "ComposeMode[]",
+				"description": "An ordered list beginning with comment when comments are allowed, followed by plan and change only when agents are allowed and the view is writable. Returns an empty list when none apply."
 			}
 		],
 		"errors": []

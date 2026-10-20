@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { scanImports } from '../../src/utils/scanImports';
+import { scanImports } from '../../src/services/source-index-service/scanImports';
 
 test('scanImports reads static, type, side-effect, re-export, dynamic, require and URL references', () => {
 	const code = [

@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-entity-artifact",
 	"kind": "component",
-	"title": "EntityArtifact",
-	"responsibility": "Shows what one recorded result holds once the host read and checked it: scenario, steps, input, output and assertions at once, the trace on request, or that it could not be verified.",
+	"title": "Entity artifact",
+	"responsibility": "Shows verified recorded result contents and a link to the original artifact.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,33 +11,39 @@
 		"symbols": ["EntityArtifact"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EntityArtifact.cell",
-				"type": "BehaviorCell"
+				"type": "BehaviorCell",
+				"description": "Required result cell with capture and read state. Missing capture or null media produces a gap; details require a verified read."
 			},
 			{
 				"name": "EntityArtifact.label",
-				"type": "string"
+				"type": "string",
+				"description": "Required accessible group name, also naming the original-file link."
 			},
 			{
 				"name": "EntityArtifact.mediaBase",
-				"type": "string"
+				"type": "string",
+				"description": "Required prefix joined with the capture’s media path for the original-file link."
 			},
 			{
 				"name": "EntityArtifact.lost",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional flag, false by default. True turns an absent read into an unverified state instead of pending."
 			},
 			{
 				"name": "EntityArtifact.unit",
-				"type": "string"
+				"type": "string",
+				"description": "Optional function identifier limiting direct-call rows; absent uses general recorded-case presentation."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityArtifact",
-				"type": "markup"
+				"type": "markup",
+				"description": "Recorded cases plus expandable assertions, facts, steps, trace and other content after verification. Unknown assertions stay Not stated. Formatted values are shortened after 12,000 characters with a file-opening reminder. Raw JSON is inserted only while expanded. A stored capture always gets an original-file link, including while pending or unverified."
 			}
 		],
 		"errors": []

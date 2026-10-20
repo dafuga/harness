@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
-import { comparisonContext } from '../../src/utils/comparisonContext';
-import { comparisonDifferences } from '../../src/utils/comparisonDifferences';
+import { comparisonContext } from '../../src/utils/comparison-context/comparisonContext';
+import { comparisonDifferences } from '../../src/services/budget-service/comparisonDifferences';
 
 const comparison = comparisonContext({ operation: 'rank' }, { rounds: 5, iterations: 30 });
 const definition = { unitOfMeasure: 'ms', method: 'Fastest call.', comparison };

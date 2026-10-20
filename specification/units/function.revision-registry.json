@@ -2,38 +2,43 @@
 	"schemaVersion": 1,
 	"id": "function.revision-registry",
 	"kind": "function",
-	"title": "revisionRegistry",
-	"responsibility": "Reads the unit registry and scenarios stored at one revision and derives its unit graph.",
+	"title": "Stored revision registry",
+	"responsibility": "Projects a revision’s declared units and scenarios with their graph, version identities and reviewed limits.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/revisionRegistry.ts"],
-		"symbols": ["RevisionRegistry", "revisionRegistry"]
+		"source": ["src/utils/revision-registry/revisionRegistry.ts", "src/utils/revisionRegistry.ts"],
+		"symbols": ["RevisionRegistry", "revisionRegistry", "RevisionRegistry", "revisionRegistry"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "revisionRegistry.manifests",
-				"type": "ComponentManifest[]"
+				"type": "ComponentManifest[]",
+				"description": "Unit manifests stored at the revision; entries are sorted by id without filtering status."
 			},
 			{
 				"name": "revisionRegistry.scenarios",
-				"type": "ScenarioManifest[]"
+				"type": "ScenarioManifest[]",
+				"description": "Scenario manifests stored at the revision; entries are sorted by id."
 			},
 			{
 				"name": "revisionRegistry.blobs",
-				"type": "Map<string, string>"
+				"type": "Map<string, string>",
+				"description": "Optional owned-file path to blob-hash map, default empty; absent files contribute an explicit absent marker to unit versions."
 			},
 			{
 				"name": "revisionRegistry.baselines",
-				"type": "Map<string, BudgetBaseline>"
+				"type": "Map<string, BudgetBaseline>",
+				"description": "Optional reviewed budget baseline map by unit, default empty."
 			}
 		],
 		"outputs": [
 			{
 				"name": "revisionRegistry",
-				"type": "RevisionRegistry"
+				"type": "RevisionRegistry",
+				"description": "Registry view containing units, scenarios and declared dependency/coverage edges, with per-unit version hashes and applicable reviewed limits. Available is false with a gap when there are no units."
 			}
 		],
 		"errors": []
@@ -55,7 +60,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.unit-documentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-metadata",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-types",
 			"via": "import",
 			"origin": "derived"
 		}

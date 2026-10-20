@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-entity-header",
 	"kind": "component",
-	"title": "EntityHeader",
-	"responsibility": "Names one entity: its breadcrumb, role, verdict and purpose, the way to its details or back, the address of a page, and the tabs of its screens.",
+	"title": "Entity header",
+	"responsibility": "Shows entity identity and one tab bar for overview, contract, usage, states or tests, history and optional source.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,25 +11,39 @@
 		"symbols": ["EntityHeader"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EntityHeader.entity",
-				"type": "ExplorerEntity"
+				"type": "ExplorerEntity",
+				"description": "Required name, category, role, purpose, verdict and optional app route/change. Removed entities receive a removed-at-commit badge. Page route links are enabled only for nonempty routes without bracket, colon, asterisk or parameter-pattern characters checked here."
 			},
 			{
 				"name": "EntityHeader.nav",
-				"type": "EntityNav"
+				"type": "EntityNav",
+				"description": "The branch, commit and selected tab, with functions for links and navigation."
 			},
 			{
 				"name": "EntityHeader.shared",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional flag, false by default, displaying a Shared badge."
+			},
+			{
+				"name": "EntityHeader.preview",
+				"type": "Snippet",
+				"description": "Optional component screenshot shown above every tab."
+			},
+			{
+				"name": "EntityHeader.owner",
+				"type": "ExplorerEntity | undefined",
+				"description": "Sole recorded consumer for a private function breadcrumb; absent when ownership is unknown or not unique."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityHeader",
-				"type": "markup"
+				"type": "markup",
+				"description": "Entity identity, verification and one tab bar. Pages also show their app route. Source is optional; navigation keeps the branch and commit. Component screenshots stay above every tab. Private function breadcrumbs point to the owner when known, otherwise say Function; they never link to Helpers."
 			}
 		],
 		"errors": []
@@ -37,11 +51,6 @@
 	"dependencies": [
 		{
 			"unit": "reports.component.harness-entity-link",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-harness-action",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -62,6 +71,11 @@
 		},
 		{
 			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-category",
 			"via": "import",
 			"origin": "derived"
 		},

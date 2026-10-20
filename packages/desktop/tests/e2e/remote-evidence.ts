@@ -1,5 +1,5 @@
 import { expect, type Locator, type Page, type TestInfo } from '@playwright/test';
-import { recordCapture } from '../../../../src/utils/recordCapture';
+import { recordCapture } from '../../../../src/utils/record-capture/recordCapture';
 import { buildStamp } from '../../../../src/utils/buildStamp';
 
 /** The viewports the scenario `remote-mobile-ui` names; a capture of any other size is refused. */

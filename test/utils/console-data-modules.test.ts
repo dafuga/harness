@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { consoleBundle } from '../../src/utils/consoleBundle';
-import { consoleDataModules } from '../../src/utils/consoleDataModules';
+import { consoleDataModules } from '../../src/services/console-install-service/consoleDataModules';
 
 const commit = 'a'.repeat(40);
 const sha = 'b'.repeat(64);

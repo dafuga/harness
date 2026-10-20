@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.harness-budget",
 	"kind": "function",
-	"title": "harnessBudget",
-	"responsibility": "Words one frozen metric of a unit at a revision: its value and limit, or that it is unavailable and not frozen, and what a partial value leaves out.",
+	"title": "Frozen metric description",
+	"responsibility": "Explains a measured value and the reviewed limit that applies without treating unavailable data as zero.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,25 +11,29 @@
 		"symbols": ["FrozenLine", "Reviewed", "harnessBudget"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "harnessBudget.found",
-				"type": "Measurement | undefined"
+				"type": "Measurement | undefined",
+				"description": "Recorded measurement or undefined."
 			},
 			{
 				"name": "harnessBudget.finding",
-				"type": "Finding"
+				"type": "Finding",
+				"description": "Optional budget finding supplying baseline, status and measured value."
 			},
 			{
 				"name": "harnessBudget.known",
-				"type": "Reviewed"
+				"type": "Reviewed",
+				"description": "Optional reviewed-limit knowledge, defaulting to a declared freeze with no numeric limit."
 			}
 		],
 		"outputs": [
 			{
 				"name": "harnessBudget",
-				"type": "FrozenLine"
+				"type": "FrozenLine",
+				"description": "Value, limit and optional partial/growth note. Prefers the finding baseline over the ledger limit; otherwise distinguishes reviewed-unmeasurable, no value, merely declared freeze and no limit. Missing measurements and null values remain explicit."
 			}
 		],
 		"errors": []

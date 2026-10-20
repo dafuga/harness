@@ -3,12 +3,12 @@
 	import { tick } from 'svelte';
 	import type { Report } from '../models/Report.types';
 	import { t } from '../utils/reportLocale';
-	import ReportSummary from './ReportSummary.svelte';
-	import GameplayReplay from './GameplayReplay.svelte';
+	import ReportSummary from './report-summary/ReportSummary.svelte';
+	import GameplayReplay from './gameplay-replay/GameplayReplay.svelte';
 	import ReportChecks from './ReportChecks.svelte';
 	import ReportFindings from './ReportFindings.svelte';
 	import CoverageList from './CoverageList.svelte';
-	import EvidenceGrid from './EvidenceGrid.svelte';
+	import EvidenceGrid from './evidence-grid/EvidenceGrid.svelte';
 	import Modal from './Modal.svelte';
 	let {
 		report,
@@ -16,7 +16,13 @@
 		downloadBase,
 		portable = false,
 		onUploaded
-	}: { report: Report; assetBase: string; downloadBase: string; portable?: boolean; onUploaded?: (report: Report) => void } = $props();
+	}: {
+		report: Report;
+		assetBase: string;
+		downloadBase: string;
+		portable?: boolean;
+		onUploaded?: (report: Report) => void;
+	} = $props();
 	type Detail = 'checks' | 'acceptance' | 'coverage';
 	let activeDetail = $state<Detail | null>(null);
 	let opener: HTMLButtonElement | null = null;
@@ -34,10 +40,13 @@
 
 <main class="report-shell">
 	<nav class="topbar">
-		<a class="brand" href={portable ? '#' : '/harness/reports'}><span class="brand-symbol"><BrandMark /></span> {$t('hub')}</a>
+		<a class="brand" href={portable ? '#' : '/harness/reports'}
+			><span class="brand-symbol"><BrandMark /></span> {$t('hub')}</a
+		>
 		<span class="workspace-label">{$t(portable ? 'html' : 'local')}</span>
 	</nav>
-	{#if !portable}<a class="back-link" href={'/harness/reports?project=' + report.project.id}>← {$t('history')}</a
+	{#if !portable}<a class="back-link" href={'/harness/reports?project=' + report.project.id}
+			>← {$t('history')}</a
 		>{/if}
 	<ReportSummary {report} {downloadBase} {portable} />
 	<ReportFindings findings={report.findings} />
@@ -78,7 +87,12 @@
 		{:else if activeDetail === 'acceptance'}<CoverageList {report} section="acceptance" embedded />
 		{:else if activeDetail === 'coverage'}<CoverageList {report} section="coverage" embedded />{/if}
 	</Modal>
-	<EvidenceGrid items={report.evidence} {assetBase} reportId={report.state === 'active' && !portable ? report.id : undefined} {onUploaded} />
+	<EvidenceGrid
+		items={report.evidence}
+		{assetBase}
+		reportId={report.state === 'active' && !portable ? report.id : undefined}
+		{onUploaded}
+	/>
 	<GameplayReplay {report} {assetBase} {portable} />
 	<footer class="report-footer"><span>{$t(report.state)}</span><span>{report.id}</span></footer>
 </main>

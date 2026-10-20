@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "function.verify-plan",
 	"kind": "function",
-	"title": "verifyPlan",
-	"responsibility": "Plans the checks a verification runs: selected test files and the checks of each scenario.",
+	"title": "Verification check planning",
+	"responsibility": "Builds the commands and timeouts for selected test files and affected scenario checks.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/verifyPlan.ts"],
-		"symbols": ["PlannedCheck", "PlanInput", "verifyPlan"]
+		"source": ["src/services/verification-service/verifyPlan.ts", "src/utils/verifyPlan.ts"],
+		"symbols": ["verifyPlan", "PlannedCheck", "PlanInput", "verifyPlan"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "verifyPlan.input",
-				"type": "PlanInput"
+				"type": "PlanInput",
+				"description": "Selected paths, scenario manifests, verification and workspace configuration, and optional test-timeout override."
 			}
 		],
 		"outputs": [
 			{
 				"name": "verifyPlan",
-				"type": "PlannedCheck[]"
+				"type": "PlannedCheck[]",
+				"description": "Planned checks with ids, runners, targets, workspace cwd, commands and timeouts. Scenario-covered paths are omitted from file checks; per-file/scenario overrides beat defaults, .spec files select Playwright and other files select Vitest. No commands run here."
 			}
 		],
 		"errors": []

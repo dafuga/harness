@@ -1,6 +1,7 @@
 import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
-import { hubImageOption, hubOptions, hubRevision } from '../../src/utils/hubOptions';
+import { hubImageOption, hubRevision } from '../../src/utils/hub-catalog/hubImageOption';
+import { hubOptions } from '../../src/utils/hub-designs/hubOptions';
 import type { HubDesign } from '../../src/utils/hubSchemas';
 
 /**

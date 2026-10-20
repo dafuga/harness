@@ -16,14 +16,18 @@ test('designless Plan preserves truthful status and branch/commit paths', async 
 	await fakeProject(page);
 	await page.goto('/');
 	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
+	for (const name of ['Choose branch', 'Choose commit']) {
+		const icon = page.getByRole('button', { name, exact: true });
+		expect((await icon.boundingBox())!.height).toBeLessThanOrEqual(36);
+	}
 	await expect(
 		page.getByRole('navigation', { name: 'Catalog categories' }).getByRole('link')
-	).toHaveCount(6);
-	await expect(page.getByRole('link', { name: 'Review designs' })).toHaveAttribute(
+	).toHaveCount(7);
+	await expect(page.getByRole('link', { name: 'Open Activity' })).toHaveAttribute(
 		'href',
 		'/harness/branch/feat%2Factivity/pages/page%3Aactivity/designs'
 	);
-	await page.getByRole('link', { name: 'Review designs' }).click();
+	await page.getByRole('link', { name: 'Open Activity' }).click();
 	if (process.env.TAKE_SCREENSHOT === 'true') {
 		await page.evaluate(async () => {
 			await document.fonts.ready;
@@ -49,8 +53,10 @@ test('designless Plan preserves truthful status and branch/commit paths', async 
 	await page.getByLabel('Commit', { exact: true }).selectOption('b'.repeat(40));
 	await page.keyboard.press('Escape');
 	await expect(page).toHaveURL(/branch\/feat%2Factivity\/commit\/b{40}\/pages/);
-	await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toHaveCount(0);
-	await expect(page.getByRole('link', { name: 'Review designs' })).toHaveAttribute(
+	await page.getByRole('button', { name: 'Work with agent', exact: true }).click();
+	await expect(page.getByRole('button', { name: 'Change', exact: true })).toHaveCount(0);
+	await page.keyboard.press('Escape');
+	await expect(page.getByRole('link', { name: 'Open Activity' })).toHaveAttribute(
 		'href',
 		`/harness/branch/feat%2Factivity/commit/${'b'.repeat(40)}/pages/page%3Aactivity/designs`
 	);
@@ -66,9 +72,11 @@ test('catalog search, changed filter and conversational plan request', async ({ 
 	await page.goto('/');
 	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
 	await expect(page.getByRole('heading', { name: 'Overview', exact: true })).toBeVisible();
+	await page.getByRole('button', { name: 'Filters', exact: true }).click();
 	await page.getByRole('checkbox', { name: 'Changed only', exact: true }).check();
+	await page.getByRole('button', { name: 'Done', exact: true }).click();
 	await expect(page.getByRole('heading', { name: 'Overview', exact: true })).toHaveCount(0);
-	await page.getByRole('textbox', { name: 'Search pages', exact: true }).fill('missing');
+	await page.getByRole('searchbox', { name: 'Search pages', exact: true }).fill('missing');
 	await expect(page.getByText('No pages match this view.')).toBeVisible();
 	await page.getByRole('button', { name: 'Work with agent', exact: true }).click();
 	await page
@@ -92,7 +100,9 @@ test('Go to tip exits both historical and explicitly pinned tip revisions', asyn
 		await page.getByLabel('Commit', { exact: true }).selectOption(commit);
 		await page.keyboard.press('Escape');
 		await expect(page).toHaveURL(new RegExp(`/commit/${commit}/pages$`));
-		await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toHaveCount(0);
+		await page.getByRole('button', { name: 'Work with agent', exact: true }).click();
+		await expect(page.getByRole('button', { name: 'Change', exact: true })).toHaveCount(0);
+		await page.keyboard.press('Escape');
 		if (process.env.TAKE_SCREENSHOT === 'true') {
 			await page.evaluate(() => document.fonts.ready);
 			await page.mouse.move(0, 0);
@@ -129,6 +139,11 @@ test('workspace selectors start collapsed and environment stays directly selecta
 	await expect(page.getByLabel('Branch', { exact: true })).not.toBeVisible();
 	await expect(page.getByLabel('Project', { exact: true })).not.toBeVisible();
 	await expect(page.getByLabel('Environment', { exact: true })).toBeVisible();
+	const environment = await page.getByLabel('Environment', { exact: true }).boundingBox();
+	for (const name of ['Choose branch', 'Choose commit', 'Deploy']) {
+		const icon = await page.getByRole('button', { name, exact: true }).boundingBox();
+		expect(environment!.x + environment!.width).toBeLessThan(icon!.x);
+	}
 	await page.getByLabel('Environment', { exact: true }).selectOption('prod');
 	await expect(
 		page.getByText('Changes reach preprod. Use Deploy to promote preprod to production.')

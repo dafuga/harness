@@ -1,4 +1,6 @@
 import type { DeploymentEnvironment, DeploymentBridge } from './Deployment.types';
+import type { ProjectTaskRequest } from './ProjectTask.types';
+export type { ProjectTaskRequest } from './ProjectTask.types';
 import type {
 	EntityEvidenceQuery,
 	EntityEvidenceResult,
@@ -30,8 +32,6 @@ import type {
 	ThreadInfo,
 	ThreadMessage
 } from './Desktop.types';
-
-/** The only channels the main process answers. Anything else is refused before any handler. */
 export const channels = {
 	deploymentStatus: 'deployment:status',
 	deploymentActivities: 'deployment:activities',
@@ -64,10 +64,8 @@ export const channels = {
 	cancelRun: 'run:cancel'
 } as const;
 export type ChannelName = (typeof channels)[keyof typeof channels];
-/** Main to renderer: public progress of a run. */
 export const runEventChannel = 'run:event';
 export const cacheEventChannel = 'cache:status';
-
 export interface RevisionQuery extends ProjectContext {
 	branch: string | null;
 	commit: string | null;
@@ -122,7 +120,6 @@ export interface ApprovalDraft extends ProjectContext {
 	/** The one design option approved, required when the version has options. */
 	option?: string;
 }
-
 export interface RunRequest extends ProjectContext {
 	environment?: DeploymentEnvironment;
 	mode: RunMode;
@@ -178,6 +175,7 @@ export type RunPhase = 'queued' | 'prompting' | 'generating' | 'saving' | 'chang
 export type RunEvent = { runId: string } & (
 	| { kind: 'status'; phase: RunPhase; detail: string }
 	| { kind: 'text'; text: string }
+	| { kind: 'replay'; text: string; detail: string }
 	| { kind: 'design'; version: string; images: DesignImage[] }
 	| { kind: 'changes'; files: SourceChange[] }
 	| { kind: 'failed'; message: string; created?: CreatedEntity }
@@ -213,7 +211,7 @@ export interface DesktopBridge extends DeploymentBridge {
 	messages(input: ThreadQuery): Promise<ThreadMessage[]>;
 	approve(input: ApprovalDraft): Promise<ApprovalInfo>;
 	providers(): Promise<ProviderState[]>;
-	startRun(input: RunRequest | ProjectRunRequest): Promise<{ runId: string }>;
+	startRun(input: RunRequest | ProjectRunRequest | ProjectTaskRequest): Promise<{ runId: string }>;
 	cancelRun(input: { runId: string; projectId?: string }): Promise<boolean>;
 	onRunEvent(listener: (event: RunEvent) => void): () => void;
 }

@@ -14,8 +14,34 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 8. Git answer caches: establish the object format first; hex shape is not immutability. Test refs named like the other width and unknown formats.
 9. Config changes: name owned helpers from the owning config file; run root and every inheriting workspace's test entrypoint before a full check.
 10. Shared browser fixtures must preserve lazy setup: when their dependencies change, run an API-only case with an unavailable browser executable alongside actual browser cases. Characterize diagnostics before page announcement and overlapping context/page delivery without duplicates.
+11. Helpers are pure synchronous value transformations with explicit reviewed `@pure` contracts and no I/O, mutation, hidden state, clocks or randomness. Service classes and models have separate catalog categories. A shared helper needs at least two distinct component, service or named-function consumers. Keep a single-consumer helper in its owner's folder. Preserve unit identity/history and update imports, tests and owned source when moving it; split mixed shared/private modules. Check public API and runtime references before changing an unused export. When moving definitions behind forwarding exports, extend the owning standardized test to cold-import and call both public and owner entries in fresh runtimes; a warm test-module graph does not prove initialization safety. For moved import.meta.url code, test source and packaged layouts separately; bundled output-relative addresses must keep their artifact paths. Before a broad suite for moves reachable from public SDK exports, run `bun scripts/build-api.ts --types-only`; retain the published import and type-entry addresses.
+
+## Helper Naming Review
+
+Before adding, cataloging or accepting a helper, read its implementation, state the
+input-to-output operation and check one concrete call and result. Assess whether
+the name and signature communicate that operation to a reader without extra explanation.
+Purity and multiple consumers establish eligibility; they do not establish naming clarity.
+
+For example, seconds becoming display text is `formatDuration(90) // => "1:30"`.
+A name such as `audioDuration` suggests inspecting or measuring audio, which this
+formatter does not do. Rename an unclear helper and update callers, contracts and
+examples before accepting it. Do not change its purity or hide a valid shared helper
+to compensate for a poor name. Use semantic judgment, not a universal verb-prefix rule.
+A clearly named formatter with one consumer stays with its owner; reading a file
+remains effectful even when the function has a clear name.
+
+## Catalog Threshold Review
+
+When a reuse threshold controls catalog inclusion, derive that decision and the
+visible usage links from the same resolved, distinct consumer set. Cover zero,
+one and multiple eligible consumers in the standardized catalog tests, including
+duplicate references and excluded or missing consumers. A passing display test
+must not accept a row that contradicts the collection's inclusion rule.
 
 ## Bug and Regression Loops
+
+- Commit the strengthened failing test before product repair. Run `harness loop record <loop> --phase red --test <path> --command <command> --assertion <actual failure>` on that commit. Make a separate fix commit and run `loop record --phase green` against the same tests, fixtures, command and environment. Keep both commits when landing; never squash away this regression history. Focused red/green proof does not replace full verification.
 
 - For a reported bug, first diagnose why existing tests missed it. Name the responsible standardized test or scenario and its missing inputs, lifecycle, fixture or assertion; record the coverage gap before product repair.
 - Strengthen the existing standardized test and shared fixtures or assertions using the project's Harness scenario, state, viewport, registered-test and evidence format. Do not add a one-off bug-specific regression test.
@@ -29,6 +55,12 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 - Record failing and passing commands, assertions, and results as step evidence. Keep green/guard/verification steps pending while proof fails; the agent retries repairs and checks. Harness does not launch an AI repair runner or automatically complete steps.
 - For affected UI paths, exercise the browser flow and capture fresh screenshots, then inspect the images before recording proof. Report blockers without claiming completion.
 
+## API and Naming Corrections
+
+- Function and parameter names describe their domain role or transformation. Avoid vague names such as `value` when the domain is known; generic abstractions may use genuinely generic names. Rename actual declarations, callers and contracts, not just UI labels.
+- When Daniel requests a naming or API correction, trace why the earlier implementation passed the generator, skill or review checkpoint. Repair the earliest responsible control within Harness, including generated tenant guidance where applicable, and verify the emitted instructions. Record cause and prevention alongside the regression proof.
+- A helper detail page selects one callable. Standard catalog-to-detail coverage must prove distinct links for helpers in the same module, isolated parameters/return/throws, and identity retained across tabs and historical revisions. Missing helpers stay explicit; preserve owning module identity and label module-level history and evidence honestly.
+
 ## Concise Writing
 
 - Behaviour note of a reason: 30 words and 200 characters. Each attempt: 15 words and 140 characters.
@@ -39,6 +71,13 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 - Say what changed here and what was tried. Never shorten tests, contracts or evidence to fit.
 
 - Browser normal flows, including screenshot/video runs, must have no unexpected console.error or pageerror events. Use the shared browserTest fixture and watch extra contexts before navigation. Preserve logs for expected errors and declare their exact messages and reasons in that test. For unexpected errors, prove a failing log assertion before repair, then rerun the same unchanged regression until the error disappears.
+
+## Measurement Evidence
+
+- Source size and complexity are automatic observations of the selected committed tree; show them even when no full verification record exists.
+- Standard behavior tests for executable helpers record representative benchmark captures when verification requests evidence. Name the callable, workload, timing method and runtime profile. Focused regression runs retain these observations as well as their test outcome.
+- Display recorded performance independently of budget declarations. Budgets judge limits; they do not decide whether an observation is visible. A focused benchmark never grants full verification or approves a baseline.
+- Label whole-process memory as process memory, including runner overhead; never attribute it to one function. Explain unavailable metrics and distinguish missing evidence from actual failed checks.
 
 ## Hard Limits
 

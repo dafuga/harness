@@ -7,7 +7,7 @@
 		"kind": "app"
 	},
 	"scripts": {
-		"dev": "bun run sync:shared && vite dev --host 127.0.0.1 --port 5799 --strictPort",
+		"dev": "bun run sync:shared && bun ../reports/src/initializers/initializePreview.ts --port 5799",
 		"build": "bun run sync:shared && vite build && bun run build:main",
 		"sync:shared": "bun run --cwd ../reports svelte-kit sync",
 		"build:main": "bun scripts/build-main.ts",

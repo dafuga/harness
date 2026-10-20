@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.console-document",
 	"kind": "function",
-	"title": "consoleDocument",
-	"responsibility": "Renders the whole console as one self-contained HTML document that a host serves after authorising the request.",
+	"title": "Console HTML document",
+	"responsibility": "Builds a complete console document with inline viewer assets and host settings while leaving history and media to protected endpoints.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,21 +11,24 @@
 		"symbols": ["ConsoleAssets", "ConsoleDocumentOptions", "consoleDocument"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "consoleDocument.assets",
-				"type": "ConsoleAssets"
+				"type": "ConsoleAssets",
+				"description": "Compiled JavaScript and CSS text to inline in the HTML document."
 			},
 			{
 				"name": "consoleDocument.options",
-				"type": "ConsoleDocumentOptions"
+				"type": "ConsoleDocumentOptions",
+				"description": "Console base path with optional title, export availability and navigation links. Title defaults to Harness and exportable defaults to false."
 			}
 		],
 		"outputs": [
 			{
 				"name": "consoleDocument",
-				"type": "string"
+				"type": "string",
+				"description": "Complete HTML string with escaped title, serialized settings and inline assets protected against closing their elements. It contains the viewer shell, not history data, and does not enforce access policy itself."
 			}
 		],
 		"errors": []

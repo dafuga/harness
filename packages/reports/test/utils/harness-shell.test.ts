@@ -1,7 +1,8 @@
 import { expect, test } from 'vitest';
 import type { ExplorerLocation } from '../../src/models/Explorer.types';
 import { retainedBranch } from '../../src/utils/harnessAncestry';
-import { harnessShell, plainClick, type HarnessNavbarInput } from '../../src/utils/harnessShell';
+import { harnessShell } from '../../src/components/harness/harness-navbar/harnessShell';
+import { plainClick, type HarnessNavbarInput } from '../../src/utils/harnessShell';
 import {
 	sha,
 	shellBranch,
@@ -31,20 +32,23 @@ const historical: ExplorerLocation = {
 	section: 'details',
 	tab: 'source'
 };
+const canonical = { ...historical };
+delete canonical.section;
 
-test('the bar has exactly six categories, pages then shells first, each scoped to the branch and commit that are viewed', () => {
+test('the bar has exactly seven categories, pages then shells first, each scoped to the branch and commit that are viewed', () => {
 	const { categories } = view(historical);
 	expect(categories.map((item) => [item.id, item.label, item.icon])).toEqual([
 		['pages', 'Pages', 'pages'],
 		['shells', 'Shells', 'shells'],
 		['components', 'Components', 'components'],
-		['functions', 'Functions', 'functions'],
+		['functions', 'Helpers', 'functions'],
 		['configs', 'Configs', 'configs'],
-		['services', 'Services', 'services']
+		['services', 'Services', 'services'],
+		['models', 'Models', 'database']
 	]);
 	// The whole branch is one segment, and a category opens its index: no entity, section or tab.
 	expect(categories.map((item) => item.href)).toEqual(
-		['pages', 'shells', 'components', 'functions', 'configs', 'services'].map(
+		['pages', 'shells', 'components', 'functions', 'configs', 'services', 'models'].map(
 			(category) => `${scoped}/commit/${sha(4)}/${category}`
 		)
 	);
@@ -83,8 +87,8 @@ test('on a selected commit the tip and the viewed commit are told apart, and Go 
 	});
 	// The equivalent route of the current branch: the same entity, section and tab, no commit.
 	expect(revision?.tip).toEqual({
-		href: `${scoped}/functions/function.slugify/details?tab=source`,
-		to: { ...historical, commit: null }
+		href: `${scoped}/functions/function.slugify?tab=source`,
+		to: { ...canonical, commit: null }
 	});
 	// The brand opens Pages at the tip of the branch, whatever is viewed.
 	expect(home.href).toBe(`${scoped}/pages`);
@@ -98,8 +102,8 @@ test('a selected commit that is the tip says both, and still leads to the curren
 
 test('a branch stays in current mode on the same entity, and a commit is always an explicit route', () => {
 	const { revision } = view(historical);
-	expect(revision?.branchTo('main')).toEqual({ ...historical, branch: 'main', commit: null });
-	expect(revision?.commitTo(sha(2))).toEqual({ ...historical, commit: sha(2) });
+	expect(revision?.branchTo('main')).toEqual({ ...canonical, branch: 'main', commit: null });
+	expect(revision?.commitTo(sha(2))).toEqual({ ...canonical, commit: sha(2) });
 	const current = view({ branch: shellBranch, commit: null, category: 'pages' }).revision;
 	// Choosing the tip itself from the current branch still names the commit in the address.
 	expect(current?.commitTo(sha(5))).toEqual({
@@ -126,13 +130,13 @@ test('a commit no branch reaches has no tip, says so, and is listed although no 
 	// Leaving a branch for the retained commits opens the newest of them, on no branch.
 	const branched = view(historical).revision;
 	expect(branched?.branchTo(retainedBranch)).toEqual({
-		...historical,
+		...canonical,
 		branch: null,
 		commit: sha(9)
 	});
 });
 
-test('without a resolved address the bar keeps its six categories and offers no revision', () => {
+test('without a resolved address the bar keeps its seven categories and offers no revision', () => {
 	const { revision, categories, home } = view(null);
 	expect(revision).toBeNull();
 	expect(home).toEqual({ href: shellMount, to: null });
@@ -140,9 +144,10 @@ test('without a resolved address the bar keeps its six categories and offers no 
 		'Pages',
 		'Shells',
 		'Components',
-		'Functions',
+		'Helpers',
 		'Configs',
-		'Services'
+		'Services',
+		'Models'
 	]);
 	expect(categories.every((item) => item.href === null && item.to === null && !item.active)).toBe(
 		true

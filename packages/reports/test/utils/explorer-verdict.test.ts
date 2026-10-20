@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import type { HarnessRecord, HarnessRevision } from '../../src/models/Harness.types';
-import { explorerVerdict, verdictRecord } from '../../src/utils/explorerVerdict';
+import { explorerVerdict, verdictRecord } from '../../src/utils/explorer-verdict/explorerVerdict';
 import {
 	capture,
 	complete,
@@ -101,15 +101,18 @@ test('inherited evidence stands only while a recorded impact shows the unit unaf
 		...item,
 		server: { buildId: 'build-0', revision: sha('b') }
 	}));
-	const inherited = record([
-		result(older, {
-			status: 'referenced',
-			inherited: true,
-			originTests: [{ id: 'titles-page:page', status: 'passed' }],
-			testedRevision: sha('b'),
-			origin
-		})
-	]);
+	const inherited = record(
+		[
+			result(older, {
+				status: 'referenced',
+				inherited: true,
+				originTests: [{ id: 'titles-page:page', status: 'passed' }],
+				testedRevision: sha('b'),
+				origin
+			})
+		],
+		{ tests: [] }
+	);
 	expect(proven([inherited], { sourceImpact: impacted(sha('b')) }).passed).toBe(true);
 	const changed = { sourceImpact: impacted(sha('b'), ['page.titles']) };
 	expect(proven([inherited], changed)).toMatchObject({ passed: false, label: 'Evidence stale' });

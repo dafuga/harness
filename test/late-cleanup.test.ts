@@ -10,7 +10,7 @@ import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { classifyProcess } from '../src/utils/platformServices';
 import { processTable, type TrackedProcess } from '../src/utils/processDescendants';
-import { runIsolated } from '../src/utils/runIsolated';
+import { runIsolated } from '../src/utils/run-isolated/runIsolated';
 import {
 	adopted,
 	alive,

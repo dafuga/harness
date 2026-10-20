@@ -1,7 +1,8 @@
+import { helperContract } from '../../../../src/utils/helperContract';
 import { explorerKindCategory, type ExplorerCategory } from '../../../../src/utils/explorerRoute';
 import type { HarnessUnit } from '../models/Harness.types';
 
-type Classified = Pick<HarnessUnit, 'kind' | 'owns'>;
+type Classified = Pick<HarnessUnit, 'kind' | 'owns' | 'helpers'>;
 
 /** What a unit of each kind is called; a kind that is not here is called by its own words. */
 const roles = new Map<string, string>([
@@ -26,12 +27,15 @@ const renders = (unit: Classified) =>
  * The one category a unit is listed under, or null for a unit that is none of the six. A page
  * is what renders an address, whatever kind it was registered as; a route file that renders
  * nothing answers a request, as a service does, and a layout frames pages, as a component does.
- * A rule, a guide, a template, a model, a script or a style sheet has no category: it is not
+ * A rule, a guide, a template, a script or a style sheet has no category: it is not
  * presented as a function, and stays reachable from what depends on it under its own role.
  */
 export function explorerCategory(unit: Classified): ExplorerCategory | null {
 	if (renders(unit)) return 'pages';
 	const category = explorerKindCategory(unit.kind);
+	if (category === 'functions' || unit.kind === 'module') {
+		return unit.helpers?.some(helperContract) ? 'functions' : null;
+	}
 	return category === 'pages' ? 'services' : category;
 }
 

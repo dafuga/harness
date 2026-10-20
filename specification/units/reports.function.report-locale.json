@@ -2,21 +2,22 @@
 	"schemaVersion": 1,
 	"id": "reports.function.report-locale",
 	"kind": "function",
-	"title": "reportLocale",
-	"responsibility": "Owns the reportLocale shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Report English locale",
+	"responsibility": "Registers report translations and initializes English as the report locale.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/utils/reportLocale.ts"],
 		"symbols": ["t", "reportLocale"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "reportLocale",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns en. Importing the module registers the English report dictionary and starts locale initialization with English fallback and initial locale."
 			}
 		],
 		"errors": []

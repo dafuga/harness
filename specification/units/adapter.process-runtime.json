@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/adapters/ProcessRuntimeAdapter.ts"],
+		"source": ["src/adapters/process-runtime-adapter/ProcessRuntimeAdapter.ts"],
 		"symbols": [
 			"ProcessRuntimeConfig",
 			"ProcessRuntimeAdapter",
@@ -73,11 +73,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/adapters/ProcessRuntimeAdapter.ts",
+		"entry": "src/adapters/process-runtime-adapter/ProcessRuntimeAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/adapters/ProcessRuntimeAdapter.ts"
+				"entry": "src/adapters/process-runtime-adapter/ProcessRuntimeAdapter.ts"
 			}
 		]
 	},

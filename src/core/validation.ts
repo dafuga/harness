@@ -3,16 +3,8 @@ import { fail } from './errors';
 
 const safeNamePattern = /^[a-zA-Z0-9][a-zA-Z0-9 _-]*$/;
 
-export function validateProjectName(name: string): string {
-	return validateName(name, 'Project name');
-}
-
 export function validateCodeName(name: string): string {
 	return validateName(name, 'Code name');
-}
-
-export function validateFieldName(name: string): string {
-	return validateName(name, 'Field name');
 }
 
 export function validateRouteName(name: string): string {
@@ -25,16 +17,6 @@ export function validateRouteName(name: string): string {
 	return route;
 }
 
-export function validateKebabName(name: string, label: string): string {
-	const value = name.trim();
-
-	if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value)) {
-		fail(`${label} must use lowercase kebab-case.`);
-	}
-
-	return value;
-}
-
 export function validateExportName(name: string): string {
 	const exportName = toCamelCase(validateCodeName(name));
 
@@ -45,7 +27,7 @@ export function validateExportName(name: string): string {
 	return exportName;
 }
 
-function validateName(name: string, label: string): string {
+export function validateName(name: string, label: string): string {
 	const value = name.trim();
 
 	if (!value) {
@@ -64,3 +46,5 @@ function validateName(name: string, label: string): string {
 
 	return value;
 }
+
+export { validateFieldName } from './fields/validation';

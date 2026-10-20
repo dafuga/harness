@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/remote/src/services/WireSessionService.ts"],
+		"source": ["packages/remote/src/services/wire-session-service/WireSessionService.ts"],
 		"symbols": [
 			"WireSessionOptions",
 			"WireLink",
@@ -97,11 +97,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/remote/src/services/WireSessionService.ts",
+		"entry": "packages/remote/src/services/wire-session-service/WireSessionService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/remote/src/services/WireSessionService.ts"
+				"entry": "packages/remote/src/services/wire-session-service/WireSessionService.ts"
 			}
 		]
 	},

@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.revision-reasons",
 	"kind": "function",
-	"title": "revisionReasons",
-	"responsibility": "Says which of the reasons noted on a commit and held by its records explain a change that commit itself made against its first parent.",
+	"title": "Commit-specific explanations",
+	"responsibility": "Selects reasons that explain a commit’s own first-parent changes rather than merely belonging to a longer verification range.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,17 +11,19 @@
 		"symbols": ["ReasonSources", "RevisionReasons", "revisionReasons"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "revisionReasons.sources",
-				"type": "ReasonSources"
+				"type": "ReasonSources",
+				"description": "First parent, optional own required changes, noted explanations and intact-record explanations with each record’s comparison base."
 			}
 		],
 		"outputs": [
 			{
 				"name": "revisionReasons",
-				"type": "RevisionReasons"
+				"type": "RevisionReasons",
+				"description": "Unique explanations in stable canonical order plus a count of held reasons belonging only to other changes/ranges. Exact-base record reasons are retained; known own changes are matched by fingerprints, otherwise notes not held solely by longer records are kept."
 			}
 		],
 		"errors": []

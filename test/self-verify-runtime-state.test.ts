@@ -4,7 +4,7 @@ import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
-import { SnapshotAdapter } from '../src/adapters/SnapshotAdapter';
+import { SnapshotAdapter } from '../src/adapters/snapshot-adapter/SnapshotAdapter';
 import { verifyConfigSchema } from '../src/core/verifyTypes';
 
 /**

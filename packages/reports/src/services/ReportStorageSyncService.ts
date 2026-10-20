@@ -1,6 +1,6 @@
 import { readdir, lstat } from 'node:fs/promises';
 import { join } from 'node:path';
-import { ReportRepository } from '../repositories/ReportRepository';
+import { ReportRepository } from '../repositories/report-repository/ReportRepository';
 import { EvidenceStorageService } from './EvidenceStorageService';
 import { ReplayStorageService } from './ReplayStorageService';
 import { atomicJson, readJson } from '../utils/reportFiles';

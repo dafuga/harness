@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { scenarioManifestSchema } from '../../src/core/unitTypes';
-import { revisionRegistry } from '../../src/utils/revisionRegistry';
+import { revisionRegistry } from '../../src/utils/revision-registry/revisionRegistry';
 import { ScenarioManifestValidator } from '../../src/validators/ScenarioManifestValidator';
 
 const scenario = (states: object[]) =>
@@ -31,15 +31,15 @@ test('a state may name the units it shows, and the stored registry keeps what it
 	]);
 	const [stored] = revisionRegistry([], [declared]).scenarios;
 	expect(stored.states).toEqual([
-		{ id: 'catalog', coverage: 'required', units: ['page.functions'] },
-		{ id: 'entity', coverage: 'required', units: ['page.function'] }
+		{ id: 'catalog', title: 'Catalog', coverage: 'required', units: ['page.functions'] },
+		{ id: 'entity', title: 'Entity', coverage: 'required', units: ['page.function'] }
 	]);
 });
 
 test('a state that names no unit is stored as before, and a unit outside the scenario is refused', () => {
 	const plain = scenario([{ id: 'catalog', title: 'Catalog', coverage: 'required' }]);
 	expect(revisionRegistry([], [plain]).scenarios[0].states).toEqual([
-		{ id: 'catalog', coverage: 'required' }
+		{ id: 'catalog', title: 'Catalog', coverage: 'required' }
 	]);
 	const foreign = scenario([
 		{ id: 'catalog', title: 'Catalog', coverage: 'required', units: ['page.other'] }

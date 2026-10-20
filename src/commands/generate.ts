@@ -4,8 +4,8 @@ import {
 	generatePiece,
 	renderGenerateResult,
 	scaffoldKinds
-} from '../workflows/generateCode';
-import type { PieceKind } from '../workflows/generateCode';
+} from '../workflows/generate-code/generateCode';
+import type { PieceKind } from '../workflows/generate-code/generateCode';
 import { generateUnit } from '../workflows/generateUnit';
 
 interface UnitFlags {

@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "reports.function.report-build-identity",
 	"kind": "function",
-	"title": "reportBuildIdentity",
-	"responsibility": "Owns the reportBuildIdentity shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Reports build identity",
+	"responsibility": "Calculates and caches the identity of the compiled reports server or identifies a development instance.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/utils/reportBuildIdentity.ts"],
 		"symbols": ["reportBuildIdentity"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "reportBuildIdentity.directory",
-				"type": "string | undefined"
+				"type": "string | undefined",
+				"description": "Optional build directory, defaulting to the nearest compiled server directory found within six ancestor checks of the running module."
 			}
 		],
 		"outputs": [
 			{
 				"name": "reportBuildIdentity",
-				"type": "string"
+				"type": "string",
+				"description": "Cached digest of regular files and relative names in the chosen directory. Returns harness-reports-development when no directory exists or no regular files are found."
 			}
 		],
 		"errors": []

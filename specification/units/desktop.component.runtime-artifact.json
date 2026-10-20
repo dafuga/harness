@@ -2,42 +2,48 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.runtime-artifact",
 	"kind": "component",
-	"title": "RuntimeArtifact",
-	"responsibility": "Owns the RuntimeArtifact Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Runtime artifact",
+	"responsibility": "Presents recorded test result contents only after a verified read, keeping missing or unreadable evidence explicit.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/RuntimeArtifact.svelte"],
 		"symbols": ["RuntimeArtifact"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RuntimeArtifact.cell",
-				"type": "BehaviorCell"
+				"type": "BehaviorCell",
+				"description": "Required result cell with capture and optional read. Missing capture means Not recorded; null media means bytes not stored. Only read.verified allows details."
 			},
 			{
 				"name": "RuntimeArtifact.label",
-				"type": "string"
+				"type": "string",
+				"description": "Required accessible name for the artifact group when a stored capture exists."
 			},
 			{
 				"name": "RuntimeArtifact.lost",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Whether reading failed instead of still pending. True makes absent reads unverified rather than loading."
 			},
 			{
 				"name": "RuntimeArtifact.refusal",
-				"type": "string"
+				"type": "string",
+				"description": "Optional backend refusal, preferred over the read problem and generic hash-check failure message."
 			},
 			{
 				"name": "RuntimeArtifact.unit",
-				"type": "string"
+				"type": "string",
+				"description": "Optional function identifier passed to case rendering, enabling callable rows scoped to that function."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RuntimeArtifact",
-				"type": "markup"
+				"type": "markup",
+				"description": "Verified cases plus expandable assertions, steps, traces and other facts. Unstated assertions remain unknown. Raw JSON renders only while expanded; non-JSON recorded text is shown. Each formatted text value is capped at 12,000 characters with a shortened marker. No capture, missing bytes, pending read and failed verification have distinct messages."
 			}
 		],
 		"errors": []

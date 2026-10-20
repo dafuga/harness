@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { behaviorDuration, entityBehavior } from '../../src/utils/entityBehavior';
-import { explorerReading } from '../../src/utils/explorerReading';
+import { explorerReading } from '../../src/utils/explorer-reading/explorerReading';
 import { servedArtifacts } from '../entityArtifacts';
 import { record, revision } from '../entityFixture';
 import { answers, view } from '../entityPlaces';

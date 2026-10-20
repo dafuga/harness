@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-entity-audio",
 	"kind": "component",
-	"title": "EntityAudio",
-	"responsibility": "Shows the audio clips recorded for an entity on its overview with the existing player and transcript: the clips of the branch tip, or the parent and the commit side by side.",
+	"title": "Entity audio",
+	"responsibility": "Presents matching recorded audio before and after a commit or at the current tip.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,25 +11,29 @@
 		"symbols": ["EntityAudio"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EntityAudio.evidence",
-				"type": "ExplorerEvidence"
+				"type": "ExplorerEvidence",
+				"description": "Required explorer evidence from which audio gallery items are selected and grouped by comparison identity. Commit mode creates paired panes; after falls back to current."
 			},
 			{
 				"name": "EntityAudio.scope",
-				"type": "ExplorerScope"
+				"type": "ExplorerScope",
+				"description": "Required selected commit and parent information used in pane labels."
 			},
 			{
 				"name": "EntityAudio.mediaBase",
-				"type": "string"
+				"type": "string",
+				"description": "Required asset prefix passed to each audio card."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityAudio",
-				"type": "markup"
+				"type": "markup",
+				"description": "Audio section only when at least one clip exists. Pairs before/after in commit mode and shows one current-side card otherwise. Missing sides within a pair are explicit gaps. Cards supply playback, transcript and provenance. No clips renders nothing, even when a scenario declares audio."
 			}
 		],
 		"errors": []

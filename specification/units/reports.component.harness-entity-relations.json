@@ -2,47 +2,58 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-entity-relations",
 	"kind": "component",
-	"title": "EntityRelations",
-	"responsibility": "Lists what an entity contains and what uses it as separate sections for components, functions, configs, services, pages and consumers, each entry a link.",
+	"title": "Used In and Uses",
+	"responsibility": "Shows what uses an entity and what that entity uses.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/EntityRelations.svelte"],
+		"source": ["packages/reports/src/components/harness/entity-relations/EntityRelations.svelte"],
 		"symbols": ["EntityRelations"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EntityRelations.relations",
-				"type": "ExplorerRelations"
+				"type": "ExplorerRelations",
+				"description": "Required relationship data organized by the usage helper."
 			},
 			{
 				"name": "EntityRelations.nav",
-				"type": "EntityNav"
+				"type": "EntityNav",
+				"description": "Required route context for related-entity links."
 			},
 			{
 				"name": "EntityRelations.show",
-				"type": "'both' | 'used-in' | 'uses'"
+				"type": "'both' | 'used-in' | 'uses'",
+				"description": "Optional both, used-in or uses, default both. Selects which sections appear."
 			},
 			{
 				"name": "EntityRelations.compact",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional flag, false by default. True hides purpose text while keeping names and badges."
 			},
 			{
 				"name": "EntityRelations.removed",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional flag, false by default, changing empty-state wording to explain removal at this commit."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityRelations",
-				"type": "markup"
+				"type": "markup",
+				"description": "Counted Used In and Uses groups without row verification marks. Private callables in Other link to their own detail screens; other unknown kinds stay unlinked. Changed entities receive Changed badges."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.explorer-route",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.harness-entity-link",
 			"via": "import",
@@ -50,11 +61,6 @@
 		},
 		{
 			"unit": "reports.component.harness-harness-icon",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-harness-verdict",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -76,11 +82,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/EntityRelations.svelte",
+		"entry": "packages/reports/src/components/harness/entity-relations/EntityRelations.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/harness/EntityRelations.svelte"
+				"entry": "packages/reports/src/components/harness/entity-relations/EntityRelations.svelte"
 			}
 		]
 	},

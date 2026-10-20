@@ -2,7 +2,7 @@ import { afterEach, expect, test, vi } from 'vitest';
 import { PutObjectCommand, type S3Client } from '@aws-sdk/client-s3';
 import { readFile, rm } from 'node:fs/promises';
 import { join } from 'node:path';
-import { ReportPublishService } from '../../src/services/ReportPublishService';
+import { ReportPublishService } from '../../src/services/report-publish-service/ReportPublishService';
 import { R2EvidenceStoreAdapter } from '../../src/adapters/R2EvidenceStoreAdapter';
 import { publicationFixture } from '../publicationFixture';
 const roots: string[] = [];

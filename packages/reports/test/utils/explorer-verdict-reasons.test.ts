@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import type { HarnessRecord, HarnessRevision } from '../../src/models/Harness.types';
-import { explorerVerdict } from '../../src/utils/explorerVerdict';
+import { explorerVerdict } from '../../src/utils/explorer-verdict/explorerVerdict';
 import { capture, complete, declared, record, result, revision, unit } from '../explorerFixture';
 
 const page = unit('page.titles', 'page');

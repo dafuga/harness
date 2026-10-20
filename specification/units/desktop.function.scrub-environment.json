@@ -2,26 +2,31 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.scrub-environment",
 	"kind": "function",
-	"title": "scrubEnvironment",
-	"responsibility": "Owns the scrubEnvironment shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Filter agent environment",
+	"responsibility": "Copy environment variables while removing provider credentials and the Electron Node-mode flag.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/scrubEnvironment.ts"],
-		"symbols": ["scrubEnvironment"]
+		"source": [
+			"packages/desktop/src/utils/cli-environment/scrubEnvironment.ts",
+			"packages/desktop/src/utils/scrubEnvironment.ts"
+		],
+		"symbols": ["scrubEnvironment", "scrubEnvironment"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "scrubEnvironment.env",
-				"type": "NodeJS.ProcessEnv"
+				"type": "NodeJS.ProcessEnv",
+				"description": "Environment map; defaults to process.env."
 			}
 		],
 		"outputs": [
 			{
 				"name": "scrubEnvironment",
-				"type": "NodeJS.ProcessEnv"
+				"type": "NodeJS.ProcessEnv",
+				"description": "New map excluding case-sensitive OPENAI_ and ANTHROPIC_ prefixes and ELECTRON_RUN_AS_NODE; other entries are retained."
 			}
 		],
 		"errors": []

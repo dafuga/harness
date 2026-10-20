@@ -1,7 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { explorerRoutePath, type ExplorerLocation } from '../../../../../src/utils/explorerRoute';
-	import type { ExplorerBehavior, ExplorerEvidence } from '../../models/Explorer.types';
+	import type {
+		ExplorerBehavior,
+		ExplorerEntity,
+		ExplorerEvidence
+	} from '../../models/Explorer.types';
 	import type { ExplorerScreen } from '../../models/ExplorerScreen.types';
 	import type { HarnessIndex, HarnessRevision, HarnessUnit } from '../../models/Harness.types';
 	import { correctedLocation } from '../../utils/correctedLocation';
@@ -10,11 +14,12 @@
 	import { explorerEntities } from '../../utils/explorerEntities';
 	import { explorerSearchEntries } from '../../utils/explorerSearchEntries';
 	import { explorerEvidence } from '../../utils/explorerEvidence';
-	import { explorerHistory } from '../../utils/explorerHistory';
-	import { explorerRelations } from '../../utils/explorerRelations';
-	import { branchCommits, retainedBranch } from '../../utils/harnessAncestry';
+	import { explorerHistory } from '../../utils/explorer-history/explorerHistory';
+	import { explorerRelationsReader } from '../../utils/explorerRelations';
+	import { branchCommits } from './harness-navbar/harnessAncestry';
+	import { retainedBranch } from '../../utils/harnessAncestry';
 	import { harnessClient } from '../../utils/harnessClient';
-	import { harnessPage } from '../../utils/harnessPage';
+	import { harnessPage } from '../../utils/harness-page/harnessPage';
 	import HarnessHeader from './HarnessHeader.svelte';
 	let {
 		base,
@@ -37,63 +42,81 @@
 	} = $props();
 	let Content = $derived(content);
 	let client = $derived(harnessClient(base));
-	let index = $state<HarnessIndex | null>(null);
+	// What is read is never changed in place, so it is held as read and not made reactive inside.
+	let index = $state.raw<HarnessIndex | null>(null);
 	let repository = $state<string | null>(null);
 	let problem = $state('');
-	let head = $state<HarnessRevision | null>(null);
+	let head = $state.raw<HarnessRevision | null>(null);
 	/** Undefined while the first parent is being read; null when there is none to read. */
-	let parent = $state<HarnessRevision | null | undefined>(null);
+	let parent = $state.raw<HarnessRevision | null | undefined>(null);
 	let pathname = $derived(path.split('?')[0]);
 	let search = $derived(path.slice(pathname.length));
 	let page = $derived(index ? harnessPage(index, pathname, search) : null);
 	let scope = $derived(page?.kind === 'page' ? page.scope : null);
-	let commits = $derived(
-		index && scope ? branchCommits(index, scope.branch ?? retainedBranch) : []
-	);
+	// Each address makes another scope; what follows from only its commit or branch waits for those.
+	let commit = $derived(scope?.commit ?? null);
+	let branch = $derived(scope ? (scope.branch ?? retainedBranch) : null);
+	let commits = $derived(index && branch !== null ? branchCommits(index, branch) : []);
 	// The first parent is read only where a selected commit is compared, and only if it is held.
 	let wanted = $derived.by(() => {
 		const first = scope?.mode === 'commit' ? scope.parent : null;
 		return first && index?.revisions.some((item) => item.commit === first) ? first : null;
 	});
 	const href = (to: ExplorerLocation) => base + explorerRoutePath(to);
-	const held = (detail: HarnessRevision, id: string) =>
-		detail.registry.units.some((unit) => unit.id === id);
+	type Answer = { evidence: ExplorerEvidence; behavior: ExplorerBehavior };
 	/** Another category, entity or section starts at its top; a tab of the same page does not. */
 	function onroute(to: ExplorerLocation) {
 		const next = explorerRoutePath(to);
 		navigate(next, false);
 		if (next.split('?')[0] !== pathname) window.scrollTo({ top: 0 });
 	}
+	/** What an entity relates to at a revision; what its commit removed, as the parent held it. */
+	function relationsOf(
+		detail: HarnessRevision,
+		before: HarnessRevision | null,
+		listed: ExplorerEntity[]
+	) {
+		const own = explorerRelationsReader(detail, listed);
+		// The parent lists its own entities, with the verdicts it gave them.
+		const last = before ? explorerRelationsReader(before) : own;
+		const held = new Set(detail.registry.units.map((unit) => unit.id));
+		return (id: string) => (held.has(id) ? own : last)(id);
+	}
+	/** The revisions of exactly the shown commit once both are read; kept while it stays shown. */
+	let loaded = $derived(
+		head && head.commit === commit && parent !== undefined ? { head, parent } : null
+	);
+	let entities = $derived(loaded ? explorerEntities(loaded.head, loaded.parent) : []);
+	let relations = $derived(loaded ? relationsOf(loaded.head, loaded.parent, entities) : null);
+	// What an answer depends on besides the revisions: the tip or a selected commit, and its parent.
+	let context = $derived(scope ? `${scope.mode} ${scope.commit} ${scope.parent}` : null);
+	// The content asks for an answer whenever it reads one, so each is worked out once for a unit
+	// and handed out as the same object until a revision or that context changes.
+	let answers = $derived(loaded && context ? new Map<string, Answer>() : null);
 	/** Everything the content is given, once the revisions of exactly this scope are read. */
 	let shown = $derived.by(() => {
-		if (!index || !scope || head?.commit !== scope.commit || parent === undefined) return null;
-		const [history, at, detail] = [index, scope, head];
-		const revisions = { head: detail, parent };
-		// The content asks for an answer whenever it reads one, so each is worked out once for a
-		// unit and handed out as the same object until the scope or a revision changes.
-		const answers = new Map<string, { evidence: ExplorerEvidence; behavior: ExplorerBehavior }>();
+		if (!index || !scope || !loaded || !relations || !answers) return null;
+		const [history, at, revisions, known] = [index, scope, loaded, answers];
 		const answer = (unit: HarnessUnit) => {
-			const known = answers.get(unit.id);
-			if (known) return known;
+			const found = known.get(unit.id);
+			if (found) return found;
 			const evidence = explorerEvidence(at, revisions, unit);
-			const found = { evidence, behavior: explorerBehavior(evidence) };
-			answers.set(unit.id, found);
-			return found;
+			const made = { evidence, behavior: explorerBehavior(evidence) };
+			known.set(unit.id, made);
+			return made;
 		};
 		const lens: EntityLens = {
 			href,
-			// What a commit removed is related to what its parent held, where it last was.
-			relations: (id) => explorerRelations(held(detail, id) ? detail : (parent ?? detail), id),
+			relations,
 			evidence: (unit) => answer(unit).evidence,
 			behavior: (unit) => answer(unit).behavior,
 			history: (id) => explorerHistory(history, at, id)
 		};
-		return { index: history, scope: at, head: detail, parent, lens };
+		return { index: history, scope: at, head: revisions.head, parent: revisions.parent, lens };
 	});
-	let entities = $derived(shown ? explorerEntities(shown.head, shown.parent) : []);
 	// The search of the bar holds the entities of exactly the revision shown; none while it is read.
 	let searchCatalog = $derived({
-		entries: shown ? explorerSearchEntries(entities, shown.scope.commit) : null
+		entries: loaded ? explorerSearchEntries(entities, loaded.head.commit) : null
 	});
 
 	onMount(async () => {
@@ -112,28 +135,34 @@
 	$effect(() => {
 		if (page?.kind === 'redirect') navigate(page.path, true);
 	});
-	// The detail of a revision is fetched when that revision is looked at, never in advance.
+	// The detail of a revision is fetched when that revision is looked at, never in advance. Only
+	// another commit or history reads again: a tab or category of the same commit keeps its detail.
 	$effect(() => {
-		const commit = scope?.commit;
-		if (!commit) return;
+		const [at, from] = [commit, client];
+		if (!at) return;
 		head = null;
-		void client.revision(commit).then(
+		// An answer for a commit that is no longer looked at, or from another history, is dropped.
+		const live = () => at === commit && from === client;
+		void from.revision(at).then(
 			(detail) => {
-				if (commit === scope?.commit) head = detail;
+				if (live()) head = detail;
 			},
-			(reason: unknown) => (problem = reason instanceof Error ? reason.message : String(reason))
+			(reason: unknown) => {
+				if (live()) problem = reason instanceof Error ? reason.message : String(reason);
+			}
 		);
 	});
 	$effect(() => {
-		const commit = wanted;
-		parent = commit ? undefined : null;
-		if (!commit) return;
-		void client.revision(commit).then(
+		const [at, from] = [wanted, client];
+		parent = at ? undefined : null;
+		if (!at) return;
+		const live = () => at === wanted && from === client;
+		void from.revision(at).then(
 			(detail) => {
-				if (commit === wanted) parent = detail;
+				if (live()) parent = detail;
 			},
 			() => {
-				if (commit === wanted) parent = null;
+				if (live()) parent = null;
 			}
 		);
 	});
@@ -168,19 +197,22 @@
 					of another revision is not shown in its place.
 				</p>
 			{/if}
-			<Content
-				index={shown.index}
-				head={shown.head}
-				parent={shown.parent}
-				scope={shown.scope}
-				route={shown.scope.location}
-				{entities}
-				lens={shown.lens}
-				{client}
-				mediaBase={base + '/media/'}
-				{onroute}
-				exportHref={exportable ? base + '/export/' + shown.scope.commit : ''}
-			/>
+			<!-- Another category, entity or section opens afresh; a tab of the same page keeps it. -->
+			{#key pathname}
+				<Content
+					index={shown.index}
+					head={shown.head}
+					parent={shown.parent}
+					scope={shown.scope}
+					route={shown.scope.location}
+					{entities}
+					lens={shown.lens}
+					{client}
+					mediaBase={base + '/media/'}
+					{onroute}
+					exportHref={exportable ? base + '/export/' + shown.scope.commit : ''}
+				/>
+			{/key}
 		{/if}
 	</main>
 </div>

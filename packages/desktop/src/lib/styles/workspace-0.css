@@ -165,36 +165,15 @@ small {
 .topbar nav a.active {
 	border-bottom-color: var(--gold);
 }
-/* The search of the shown revision follows the revision picker, in reading and focus order, and has
-   only the room the bar leaves: it never squeezes the picker. */
+/* The search of the shown revision is one icon, with the settings beside it. It follows the
+   revision picker, in reading and focus order, and ends the bar. */
 .topbar-search {
 	display: flex;
-	flex: 1 1 0;
-	min-width: 120px;
-	max-width: 340px;
+	flex: none;
+	align-items: center;
+	gap: 8px;
 }
 /* A bar with a search wraps rather than squeeze a control; one without keeps its own line. */
 .topbar:has(.topbar-search) {
 	flex-wrap: wrap;
-}
-.revision-picker {
-	flex-shrink: 0;
-	margin-left: auto;
-	display: flex;
-	gap: 16px;
-	border-left: 1px solid var(--line);
-	padding-left: 24px;
-}
-.revision-picker label {
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
-	font-size: 12px;
-	max-width: 205px;
-}
-.revision-picker select {
-	height: 34px;
-	min-height: 34px !important;
-	font-size: 13px;
-	padding-block: 0;
 }

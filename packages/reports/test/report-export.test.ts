@@ -2,10 +2,10 @@ import { afterEach, expect, test } from 'vitest';
 import { mkdtemp, readFile, rm, writeFile, mkdir, unlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { ReportRepository } from '../src/repositories/ReportRepository';
-import { ReportExportService } from '../src/services/ReportExportService';
+import { ReportRepository } from '../src/repositories/report-repository/ReportRepository';
+import { ReportExportService } from '../src/services/report-export-service/ReportExportService';
 import { reportProcess } from '../src/utils/reportProcess';
-import { reportPdf } from '../src/utils/reportPdf';
+import { reportPdf } from '../src/services/report-export-service/reportPdf';
 const roots: string[] = [];
 const pixel =
 	'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=';

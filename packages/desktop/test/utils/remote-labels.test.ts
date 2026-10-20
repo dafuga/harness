@@ -1,16 +1,13 @@
 import { expect, test } from 'vitest';
 import type { RemoteHostStatus, RemoteMobileStatus } from '../../src/models/Environment.types';
+import { awakeNote, identityLabel, keyLabel } from '../../src/utils/remoteLabels';
+import { grantSummary, remoteLabels } from '../../src/components/remote-phone-panel/remoteLabels';
 import {
-	awakeNote,
-	grantSummary,
 	hostLine,
 	hostSummary,
-	identityLabel,
-	keyLabel,
-	relayName,
-	remoteLabels,
-	timeLeft
-} from '../../src/utils/remoteLabels';
+	relayName
+} from '../../src/components/remote-host-panel/remoteLabels';
+import { timeLeft } from '../../src/components/remote-offer-code/remoteLabels';
 
 const phone = (state: RemoteMobileStatus['state'], reason: string | null = null) =>
 	({

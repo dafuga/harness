@@ -2,7 +2,10 @@ import { mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
-import { declaredOutput, snapshotAdditions } from '../../src/utils/snapshotAdditions';
+import {
+	declaredOutput,
+	snapshotAdditions
+} from '../../src/adapters/snapshot-adapter/snapshotAdditions';
 
 let root: string;
 const tracked = new Set(['src/a.ts', 'package.json', 'packages/app/src/b.ts']);

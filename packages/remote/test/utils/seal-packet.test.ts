@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import { SecureFailure } from '../../src/models/RemoteSecure.types';
 import { bytesText, fromBase64Url, remoteBytes } from '../../src/utils/remoteBytes';
 import { aesKey } from '../../src/utils/remoteKeys';
-import { openPacket, sealPacket } from '../../src/utils/sealPacket';
+import { openPacket, sealPacket } from '../../src/services/secure-channel-service/sealPacket';
 import type { SealContext } from '../../src/utils/sealPacket';
 
 const context = async (fill = 7): Promise<SealContext> => ({

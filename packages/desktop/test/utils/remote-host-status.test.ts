@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import type { RemoteHostState } from '../../src/adapters/RemoteHostStoreAdapter';
 import type { RemoteHostRuntimeService } from '../../src/services/RemoteHostRuntimeService';
-import { remoteHostStatus } from '../../src/utils/remoteHostStatus';
+import { remoteHostStatus } from '../../src/services/remote-host-service/remoteHostStatus';
 import type { RemoteHostStatusInput } from '../../src/utils/remoteHostStatus';
 
 const hostId = 'a'.repeat(40),

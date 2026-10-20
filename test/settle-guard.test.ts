@@ -1,7 +1,7 @@
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import type { FollowedProcess, TrackedProcess } from '../src/utils/processDescendants';
-import { settleProcesses } from '../src/utils/settleProcesses';
+import { settleProcesses } from '../src/utils/run-isolated/settleProcesses';
 import { epoch, realProbes } from './support/realProbes';
 import {
 	adopted,

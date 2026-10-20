@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { artifactDifferences } from '../../src/utils/explorerReading';
+import { artifactDifferences } from '../../src/utils/explorer-reading/explorerReading';
 
 /** What a run declares about itself, in the one place and version the reader recognises. */
 const declared = (stamp: number, more: object = {}) => ({

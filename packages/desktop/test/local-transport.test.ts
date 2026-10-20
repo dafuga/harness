@@ -173,3 +173,14 @@ test('the control port travels over the same socket, with exactly what the page 
 		['enable', undefined]
 	]);
 }, 40000);
+
+// One backend can be asked to start again by concurrent app/window startup paths.
+test('repeated concurrent listens reuse one listener and closing releases it', async () => {
+	const f = await localFixture();
+	const ports = await Promise.all([f.transport.listen(), f.transport.listen()]);
+	expect(ports).toEqual([f.port, f.port]);
+	await f.transport.close();
+	await expect(fetch(`http://127.0.0.1:${f.port}`)).rejects.toThrow();
+	const next = await f.transport.listen();
+	expect(next).toBeGreaterThan(0);
+});

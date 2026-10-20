@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
 import { processTable } from '../../src/utils/processDescendants';
-import { runIsolated } from '../../src/utils/runIsolated';
+import { runIsolated } from '../../src/utils/run-isolated/runIsolated';
 
 const node = process.execPath;
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));

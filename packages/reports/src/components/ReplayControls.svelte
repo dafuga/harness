@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { audioDuration } from '../utils/evidenceMedia';
+	import { formatDuration } from '../utils/evidenceMedia';
 	import { REPLAY_SPEEDS } from '../utils/replayFrames';
 	import { t } from '../utils/reportLocale';
 	import Select from './Select.svelte';
@@ -66,7 +66,7 @@
 		/>
 		<span class="replay-time"
 			>{$t('replay.time', {
-				values: { elapsed: audioDuration(elapsed), total: audioDuration(total) }
+				values: { elapsed: formatDuration(elapsed), total: formatDuration(total) }
 			})}</span
 		>
 	</div>

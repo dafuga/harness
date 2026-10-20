@@ -2,36 +2,40 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.hosted-capabilities",
 	"kind": "function",
-	"title": "hostedCapabilities",
-	"responsibility": "Owns the hostedCapabilities shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Read shared-project permissions",
+	"responsibility": "Converts a matching hosted project role into the actions allowed in the desktop view.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/hostedCapabilities.ts"],
 		"symbols": ["hostedCapabilities"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hostedCapabilities.value",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The hosted project response object, including its project identity and role."
 			},
 			{
 				"name": "hostedCapabilities.projectId",
-				"type": "string"
+				"type": "string",
+				"description": "The expected project identity; the response identity must match exactly."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hostedCapabilities",
-				"type": "ProjectCapabilities"
+				"type": "ProjectCapabilities",
+				"description": "Shared-project capabilities with GitHub as source. Owners and commenters may comment; viewers may not. Agents, planning and approval are disabled, with an explanation that shared comments need server acknowledgment."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Throws for an invalid response object, a different project identity or a role other than owner, commenter or viewer."
 			}
 		]
 	},

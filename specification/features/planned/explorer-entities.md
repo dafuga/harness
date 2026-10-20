@@ -14,15 +14,26 @@ props name; the host decides the address and supplies the data.
 
 ## Acceptance Criteria
 
-- Exactly five collections are offered and Pages comes first. Pages is a grid of cards with a
-  thumbnail; Components, Functions, Configs and Services are tables. No collection, column or
+- Pages comes first. Components and Functions use responsive card grids, with neighboring cards
+  on desktop and tablet and a single column on mobile. Pages and visual Components share
+  screenshot cards. Function cards show readable contract summaries and links to their recorded
+  input/output tests, with no design images. Configs, Services and Shells remain tables. No collection, column or
   heading is called Sub-components, Related or Reports.
+- Each component catalog card shows a usable screenshot declared to cover that component at
+  the selected branch tip or commit. Prefer fresh captures; validated unchanged captures may
+  be reused with their original commit visibly labelled. A missing, rejected, unvalidated,
+  wrong-build or unrelated capture stays an explicit gap, never another revision's image.
+  Scenario screenshots are identified as in-context evidence, not isolated component crops.
+  Search, ordering, change filtering, verification tooltips and the compact icon action remain
+  available. Switching branches or commits replaces the screenshots and preserves navigation.
 - Search, Changed only and Order each change what a collection lists, and an empty result says
   so instead of showing nothing.
 - An entity is named by its title and described by its responsibility. No file name, path,
   symbol list or raw source is in an Overview, in Relationships, in Tests, in History or in the
   default Details tab. Source ownership is rendered only when Details → Source is the open tab.
-- Overview and Details show Contract, Size and Performance profile. A metric nothing measured
+- Visual overviews show their screenshot or commit comparison first, followed by Contract, Size
+  and Performance profile. Contract, Used In and Uses appear only in their dedicated tabs, never embedded
+  in any overview. The Contract tab shows each field’s data type, description and examples. Declared examples remain distinct from illustrative primitive examples; opaque types without examples state the gap. Details retain the same typed contract and measurements. A metric nothing measured
   reads `Not measured`; it is never a zero. Timings taken under different profiles or targets are
   separate rows and are never joined or averaged. A declared tolerance is shown as the
   percentage that is recorded; one above the 5% policy is marked as above it, not clamped.
@@ -39,10 +50,10 @@ props name; the host decides the address and supplies the data.
   assertions and artifacts. At a selected commit it shows them for the parent and for the commit
   and says `Behavior changed` or `Behavior unchanged`; at the tip it shows the one current run.
   Where no end-to-end evidence is recorded it says so and shows a red X.
-- A Config overview shows its current contract and the entities that use it, and invents no
+- A Config overview shows its current contract; its Used In tab lists consumers. It invents no
   screenshot and no benchmark.
-- Relationships lists Components, Functions, Configs and Services of an entity as four separate
-  sections, plus what uses it, and each entry opens that entity. Components nest at any depth.
+- Uses lists Components, Functions, Configs and Services as separate sections; Used In lists
+  consumers. Each entry opens that entity in the same revision. Components nest at any depth.
 - History lists the commits that changed the entity through the viewed commit, oldest ancestry
   only, each with its date, behaviour change, simplification and performance attempt, size,
   complexity, timing per profile, reviewed budget approvals and its verdict. `View revision` and

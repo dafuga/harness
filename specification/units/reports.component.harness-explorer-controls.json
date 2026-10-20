@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-explorer-controls",
 	"kind": "component",
-	"title": "ExplorerControls",
-	"responsibility": "Offers the search field, the changed-only switch and the order of a collection, and holds none of what they filter.",
+	"title": "Catalog controls",
+	"responsibility": "Filters a catalog by search, changes, verification and shared usage.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,26 +11,34 @@
 		"symbols": ["ExplorerControls"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ExplorerControls.noun",
-				"type": "string"
+				"type": "string",
+				"description": "Required lowercase plural entity name used in search labels and placeholder."
 			},
 			{
 				"name": "ExplorerControls.filter",
-				"type": "CatalogFilter"
+				"type": "CatalogFilter",
+				"description": "Bindable query, changed-only, verification, shared usage and ordering choices."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerControls",
-				"type": "markup"
+				"type": "markup",
+				"description": "Local search and one filter icon above the catalog. The shared modal holds filters and ordering."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.filter-dialog",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.harness-harness-icon",
 			"via": "import",

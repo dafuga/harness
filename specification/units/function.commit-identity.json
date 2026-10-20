@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.commit-identity",
 	"kind": "function",
-	"title": "commitIdentity",
-	"responsibility": "Chooses the author identity for commits Harness writes to evidence and notes without changing any Git configuration.",
+	"title": "Evidence commit identity",
+	"responsibility": "Reads the repository’s configured Git identity and supplies fallback author and committer environment values without changing Git configuration.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,17 +11,19 @@
 		"symbols": ["commitIdentity"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "commitIdentity.git",
-				"type": "GitAdapter"
+				"type": "GitAdapter",
+				"description": "Git adapter for the repository whose user.name and user.email should be read."
 			}
 		],
 		"outputs": [
 			{
 				"name": "commitIdentity",
-				"type": "Promise<Record<string, string>>"
+				"type": "Promise<Record<string, string>>",
+				"description": "Author and committer name/email environment entries. Missing or empty settings fall back to Harness and harness@localhost."
 			}
 		],
 		"errors": []

@@ -9,12 +9,16 @@ import {
 import { evaluateLoop, renderLoopEvaluation } from '../workflows/loopEvaluate';
 import { nextLoopStep, renderNextLoopStep } from '../workflows/loopNext';
 import { renderLoopSearchResults, searchLoops } from '../workflows/loopSearch';
+import {
+	recordRegression,
+	type RecordRegressionInput
+} from '../workflows/record-regression/recordRegression';
 
 export function registerLoopCommand(program: Command): void {
 	const command = program
 		.command('loop')
 		.description('Define and trace verifiable agent work loops.');
-
+	registerRegressionCommand(command);
 	command
 		.command('create <name>')
 		.option('--agent-model <name>', 'Authoring model metadata.')
@@ -112,4 +116,31 @@ async function runEvaluate(loop: string, options: { json?: boolean }): Promise<v
 	const result = await evaluateLoop({ loop });
 	console.log(options.json ? JSON.stringify(result, null, 2) : renderLoopEvaluation(result));
 	if (!result.passed) process.exitCode = 1;
+}
+
+function registerRegressionCommand(command: Command): void {
+	command
+		.command('record <loop>')
+		.requiredOption(
+			'--phase <phase>',
+			'red for the failing-test commit; green for its separate fix.'
+		)
+		.option('--commit <revision>', 'Committed source to test in a clean snapshot.', 'HEAD')
+		.option('--test <path...>', 'Tracked regression tests; red phase only.')
+		.option('--unit <id...>', 'Units whose behavior the regression proves; red phase only.')
+		.option('--command <command>', 'Exact test command; inherited unchanged by green.')
+		.option('--assertion <text>', 'Actual failed assertion that red output must contain.')
+		.option('--timeout <ms>', 'Hard limit for this regression command.', '600000')
+		.option('--json', 'Print the immutable checkpoint.')
+		.description('Run and preserve a committed failing test or its unchanged passing fix.')
+		.action(
+			async (loop: string, options: Omit<RecordRegressionInput, 'loop'> & { json?: boolean }) => {
+				const record = await recordRegression({ ...options, loop });
+				console.log(
+					options.json
+						? JSON.stringify(record, null, 2)
+						: `${record.phase}: ${record.status} at ${record.source.commit}`
+				);
+			}
+		);
 }

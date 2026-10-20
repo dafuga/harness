@@ -3,14 +3,14 @@ import { createServer, type IncomingMessage, type ServerResponse } from 'node:ht
 import { mkdtemp, readdir, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { RemoteHttpProjectAdapter } from '../src/adapters/RemoteHttpProjectAdapter';
+import { RemoteHttpProjectAdapter } from '../src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter';
 import type {
 	EntityEvidenceResult,
 	EvidenceArtifactQuery
 } from '../src/models/DesktopEvidence.types';
 import type { CacheStatus } from '../src/models/ProjectContext.types';
-import { ProjectionCacheService } from '../src/services/ProjectionCacheService';
-import { recordedAnswer } from '../src/utils/recordedAnswer';
+import { ProjectionCacheService } from '../src/services/projection-cache-service/ProjectionCacheService';
+import { recordedAnswer } from '../src/utils/recorded-answer/recordedAnswer';
 import { head, home, parent, sampleDetail, sampleScope } from './recorded-sample';
 
 export const token = 'fixture-private-token';

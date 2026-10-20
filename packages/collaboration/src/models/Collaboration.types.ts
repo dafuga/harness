@@ -1,4 +1,4 @@
-export type Role = 'owner' | 'commenter' | 'viewer';
+export type Role = 'owner' | 'writer' | 'commenter' | 'viewer';
 export interface Actor {
 	id: string;
 	email: string;

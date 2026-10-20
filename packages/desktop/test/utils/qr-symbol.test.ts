@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest';
-import { qrLimits, qrSymbol } from '../../src/utils/qrSymbol';
+import { qrLimits } from '../../src/utils/qrSymbol';
+import { qrSymbol } from '../../src/components/remote-offer-code/qrSymbol';
 import { decoded, decodedPixels, offerVectors, pixels, runs } from '../qr-fixture';
 
 const offer = offerVectors.valid.text;

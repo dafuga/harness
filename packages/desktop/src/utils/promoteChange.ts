@@ -11,7 +11,9 @@ import { sourceChanges } from './sourceChanges';
 /** A scoped change cannot quietly become a local-only change or deploy an unverified mapping. */
 export async function prepareChangeEnvironment(
 	session: ProjectSessionService,
-	request: RunRequest
+	request:
+		| Pick<RunRequest, 'mode' | 'environment'>
+		| { mode: 'ask' | 'change'; environment?: RunRequest['environment'] }
 ) {
 	if (request.mode !== 'change' || request.environment === undefined) return;
 	const root = session.requireProject().root;
@@ -31,7 +33,14 @@ export async function prepareChangeEnvironment(
 	}
 }
 /** Runs inside the change run's existing repository lock; no remote branches are pushed. */
-export async function promoteChange(context: RunContext, before: SourceSnapshot): Promise<string> {
+type PromotionContext = Pick<
+	RunContext,
+	'root' | 'emit' | 'id' | 'signal' | 'session' | 'revision'
+> & { request: Pick<RunRequest, 'environment'> };
+export async function promoteChange(
+	context: PromotionContext,
+	before: SourceSnapshot
+): Promise<string> {
 	const environment = context.request.environment;
 	if (!environment) return 'Code changes recorded. Verification is still required.';
 	if (context.signal.aborted) throw new Error('Change cancelled before deployment.');

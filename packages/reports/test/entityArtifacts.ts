@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import type { HarnessRevision } from '../src/models/Harness.types';
 import type { ArtifactFetcher } from '../src/utils/explorerArtifact';
-import { artifactRun } from '../src/utils/explorerReading';
+import { artifactRun } from '../src/utils/explorer-reading/explorerReading';
 import { mediaFile } from '../src/utils/harnessEvidence';
 
 /** What a synthetic end-to-end run of one state says it did, as a recorded result states it. */

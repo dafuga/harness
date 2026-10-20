@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.remote-devices",
 	"kind": "component",
-	"title": "RemoteDevices",
-	"responsibility": "Owns the RemoteDevices Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Remote devices",
+	"responsibility": "Lists approved phones, granted projects and connection status with a revoke action.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/RemoteDevices.svelte"],
 		"symbols": ["RemoteDevices"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RemoteDevices.devices",
-				"type": "RemoteDeviceInfo[]"
+				"type": "RemoteDeviceInfo[]",
+				"description": "Required approved-device records with identities, names, project grants and connection information. Online means Connected; otherwise shows last-seen time or Not connected."
 			},
 			{
 				"name": "RemoteDevices.projects",
-				"type": "{ id: string; name: string }[]"
+				"type": "{ id: string; name: string }[]",
+				"description": "Required identifier/name lookup for grants; absent projects say Project no longer listed."
 			},
 			{
 				"name": "RemoteDevices.store",
-				"type": "RemoteHost"
+				"type": "RemoteHost",
+				"description": "Host store supplying busy state and revoke. A click passes the device identifier; busy disables the button."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RemoteDevices",
-				"type": "markup"
+				"type": "markup",
+				"description": "Approved-phone list with project badges, permission summaries, connectivity and Revoke actions, or No phone is approved for an empty list. Revocation effects and errors are handled outside this list."
 			}
 		],
 		"errors": []

@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "relay.function.connect-claims",
 	"kind": "function",
-	"title": "connectClaims",
-	"responsibility": "Owns the connectClaims shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Relay connection claims",
+	"responsibility": "Reads syntactically valid host or device connection claims from request headers.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/relay/src/utils/connectClaims.ts"],
 		"symbols": ["connectClaims"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "connectClaims.headers",
-				"type": "Headers"
+				"type": "Headers",
+				"description": "Headers containing Bearer authorization and the protocol role/device headers. The Bearer scheme is case-insensitive; the credential must match the protocol pattern."
 			}
 		],
 		"outputs": [
 			{
 				"name": "connectClaims",
-				"type": "ConnectClaims | undefined"
+				"type": "ConnectClaims | undefined",
+				"description": "Host claims with an empty device identifier, or device claims with a valid protocol device identifier. Returns undefined for missing/malformed credential, unknown role or invalid device identity."
 			}
 		],
 		"errors": []

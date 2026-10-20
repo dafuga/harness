@@ -4,7 +4,7 @@ import {
 	consoleCanonical,
 	defaultCommit,
 	type IndexedHistory
-} from '../../src/utils/consoleCanonical';
+} from '../../src/utils/console-canonical/consoleCanonical';
 
 const id = (letter: string) => letter.repeat(40);
 const index: IndexedHistory = {
@@ -95,11 +95,17 @@ test('an earlier page path leads into the explorer, with the query folded into i
 test('an explorer address is left alone, with its tab', () => {
 	expect(canonical('/harness/branch/main/pages')).toBeUndefined();
 	expect(
+		canonical('/harness/branch/main/functions/function.case?tab=contract&helper=toKebabCase'),
+		'a callable URL must not redirect to itself'
+	).toBeUndefined();
+	expect(
 		canonical(`/harness/branch/feature%2Fkept%231/commit/${id('b')}/functions`)
 	).toBeUndefined();
-	expect(canonical('/harness/branch/main/pages/page.titles/details?tab=source')).toBeUndefined();
+	expect(canonical('/harness/branch/main/pages/page.titles/details?tab=source')).toBe(
+		'/harness/branch/main/pages/page.titles?tab=source'
+	);
 	expect(canonical('/harness/branch/main/pages/page.titles/details?tab=nothing')).toBe(
-		'/harness/branch/main/pages/page.titles/details'
+		'/harness/branch/main/pages/page.titles?tab=contract'
 	);
 });
 
