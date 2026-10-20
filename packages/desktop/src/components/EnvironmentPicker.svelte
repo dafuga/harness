@@ -43,18 +43,23 @@
 			></label
 		>{@render children?.()}
 	</div>
-	{#if receipt}<small
-			class="deployed"
-			title="Last verified deployment to {receipt.environment}: {receipt.commit}"
-			>Deployed <code>{receipt.commit.slice(0, 7)}</code>
-			<time datetime={receipt.updatedAt}>{displayTime(receipt.updatedAt)}</time></small
-		>{:else if deployments.loading}<small>Checking deployments…</small
-		>{:else if status?.available}<small>No verified deployment</small>{:else}<small title={reason}
-			>Unavailable</small
-		>{/if}
-	{#if gated}<small class="environment-note" role="status"
-			>Changes reach preprod. Use Deploy to promote preprod to production.</small
-		>{/if}
+	<div class="environment-status">
+		{#if receipt}<small
+				class="deployed"
+				title="Last verified deployment to {receipt.environment}: {receipt.commit}"
+				>Deployed <code>{receipt.commit.slice(0, 7)}</code>
+				<time datetime={receipt.updatedAt}>{displayTime(receipt.updatedAt)}</time></small
+			>{:else if deployments.loading}<small>Checking deployments…</small
+			>{:else if status?.available}<small>No verified deployment</small>{:else}<small title={reason}
+				>Unavailable</small
+			>{/if}
+		{#if gated}<small class="environment-note" role="status">
+				<span class="full-note"
+					>Changes reach preprod. Use Deploy to promote preprod to production.</span
+				>
+				<span class="compact-note">Changes reach preprod. Deploy promotes to prod.</span></small
+			>{/if}
+	</div>
 </div>
 
 <style>
@@ -65,6 +70,10 @@
 		align-content: center;
 		gap: 3px;
 		width: 210px;
+	}
+	.environment-status {
+		display: grid;
+		gap: 3px;
 	}
 	.environment-choice {
 		display: flex;
@@ -110,21 +119,51 @@
 	.environment-note {
 		color: var(--gold);
 	}
+	.compact-note {
+		display: none;
+	}
 	/* Prod is reached through Deploy alone; while prod is chosen, Deploy is marked as the way there. */
 	.gated .environment-choice :global(.agent-icon:enabled) {
 		border-color: rgb(255 208 53 / 0.55);
 		color: var(--gold);
 	}
-	/* On a phone the status follows the choice on its row; the note takes the row under them. */
+	/* On a phone the bar places the choice beside the revision and how the environment stands on one
+	   line under both, its time after its commit; a note wraps under that line. */
 	@media (max-width: 560px) {
-		.environment-picker {
-			grid-template-columns: auto minmax(0, 1fr);
-			align-items: center;
-			column-gap: 10px;
-			width: 100%;
+		.full-note {
+			display: none;
 		}
-		.environment-note {
-			grid-column: 1 / -1;
+		.compact-note {
+			display: inline;
+		}
+		.environment-picker {
+			display: contents;
+		}
+		.environment-choice {
+			grid-area: environment;
+		}
+		.environment-picker .environment-choice :global(.report-select select) {
+			padding-inline: 10px 28px;
+		}
+		.environment-picker .environment-choice :global(.report-select svg) {
+			inset-inline-end: 8px;
+		}
+		.environment-status {
+			grid-area: status;
+			gap: 1px;
+			min-width: 0;
+		}
+		small:not(.environment-note) {
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+		.deployed time {
+			display: inline;
+			padding-inline-start: 0;
+		}
+		.deployed time::before {
+			content: '· ' / '';
 		}
 	}
 </style>

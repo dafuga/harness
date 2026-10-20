@@ -4,7 +4,8 @@
 	 * One icon that opens a modal list of choices. Opening focuses the chosen enabled choice;
 	 * Escape closes this dialog only, never a panel around it; a click on the backdrop closes it;
 	 * closing returns focus to the icon. A choice closes it through the `close` it is given;
-	 * `onopen` is told each time the dialog is shown.
+	 * `onopen` is told each time the dialog is shown. It keeps at least 12 pixels clear of each edge
+	 * of the viewport, and what does not fit scrolls inside it.
 	 */
 	let {
 		label,
@@ -16,7 +17,8 @@
 		activeCount,
 		icon,
 		onopen,
-		children
+		children,
+		footer
 	}: {
 		label: string;
 		title: string;
@@ -32,6 +34,8 @@
 		/** Called once the dialog is shown; work it starts is not waited for. */
 		onopen?: () => void;
 		children: Snippet<[close: () => void]>;
+		/** An action row kept in sight at the dialog's end while what is above it scrolls. */
+		footer?: Snippet<[close: () => void]>;
 	} = $props();
 	let trigger = $state<HTMLButtonElement>();
 	let dialog = $state<HTMLDialogElement>();
@@ -67,6 +71,7 @@
 <dialog
 	bind:this={dialog}
 	class="agent-picker"
+	class:with-footer={!!footer}
 	aria-label={label}
 	style:--picker-width="{width}px"
 	style:--picker-height="{maxHeight}px"
@@ -76,6 +81,7 @@
 	onclose={() => trigger?.focus()}
 >
 	<div class="agent-picker-body">{@render children(close)}</div>
+	{#if footer}<div class="agent-picker-footer">{@render footer(close)}</div>{/if}
 </dialog>
 
 <style>
@@ -88,6 +94,19 @@
 		background: var(--panel);
 		color: inherit;
 		overflow: auto;
+		overscroll-behavior: contain;
+	}
+	/* The dialog stays the one thing that scrolls; its footer sticks to the end it scrolls under,
+	   and a part scrolled into view is kept clear of it. */
+	.with-footer {
+		scroll-padding-block-end: 80px;
+	}
+	.agent-picker-footer {
+		position: sticky;
+		bottom: 0;
+		padding: 12px 14px 14px;
+		border-top: 1px solid var(--line);
+		background: var(--panel);
 	}
 	.agent-picker::backdrop {
 		background: rgb(3 26 40 / 0.6);

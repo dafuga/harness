@@ -20,14 +20,27 @@
 	const settings = $derived(`/settings?from=${encodeURIComponent(workspace.path())}`);
 	/** Deployments are of this device's host: only a local bridge that reports them shows them. */
 	const activity = $derived(workspace.local && !!workspace.bridge?.deploymentActivities);
+	let tabs = $state<HTMLElement>();
+	/** Where the categories scroll, as on a phone, the shown one is brought to their middle. */
+	$effect(() => {
+		void workspace.category;
+		const shown = tabs?.querySelector('.active')?.getBoundingClientRect();
+		const row = tabs?.getBoundingClientRect();
+		if (!tabs || !shown || !row) return;
+		tabs.scrollLeft += shown.left - row.left - (row.width - shown.width) / 2;
+	});
 </script>
 
+<!-- Focus follows the rows: project, environment and revision, categories, then search. -->
 <header class="topbar" class:with-account={!!account} class:with-activity={activity && !account}>
 	<WorkspaceLink {workspace} to={workspace.path('pages')} class="brand"
-		><span class="brand-mark"><BrandMark /></span> Harness</WorkspaceLink
+		><span class="brand-mark"><BrandMark /></span>
+		<span class="brand-word">Harness</span></WorkspaceLink
 	>
 	<ProjectSwitcher {workspace} />
-	<nav aria-label="Catalog categories">
+	<EnvironmentPicker {workspace}><DeploymentDialog {workspace} /></EnvironmentPicker>
+	<RevisionPicker {workspace} />
+	<nav aria-label="Catalog categories" bind:this={tabs}>
 		{#each categories as category (category)}<WorkspaceLink
 				{workspace}
 				to={workspace.path(category)}
@@ -39,8 +52,6 @@
 				></WorkspaceLink
 			>{/each}
 	</nav>
-	<EnvironmentPicker {workspace}><DeploymentDialog {workspace} /></EnvironmentPicker>
-	<RevisionPicker {workspace} />
 	<div class="topbar-search">
 		<EntitySearch
 			entries={search.entries}
@@ -92,10 +103,32 @@
 		height: 34px;
 		padding: 0;
 	}
+	/* Each part has one named place at every width; each layout arranges the places. */
+	header.topbar {
+		display: grid;
+	}
+	.topbar :global(.brand) {
+		grid-area: brand;
+	}
+	.topbar :global(.project-switcher) {
+		grid-area: project;
+	}
+	.topbar :global(.environment-picker) {
+		grid-area: environment;
+	}
+	.topbar :global(.revision-picker) {
+		grid-area: revision;
+	}
+	.topbar nav {
+		grid-area: tools;
+	}
+	.account,
+	.topbar > :global(.deployment-activity) {
+		grid-area: account;
+	}
 	/* Environment and revision share the first row; catalog and search share the last. */
 	@media (min-width: 561px) {
 		header.topbar {
-			display: grid;
 			grid-template:
 				'brand project . environment revision' auto
 				'tools tools tools tools tools' auto
@@ -110,27 +143,11 @@
 				'tools tools tools tools tools tools' auto
 				/ auto minmax(0, max-content) 1fr minmax(0, max-content) auto auto;
 		}
-		.topbar :global(.brand) {
-			grid-area: brand;
-		}
-		.topbar :global(.project-switcher) {
-			grid-area: project;
-		}
-		.topbar :global(.revision-picker) {
-			grid-area: revision;
-			margin-left: 0;
-		}
 		.topbar :global(.environment-picker) {
-			grid-area: environment;
 			justify-self: end;
-		}
-		.account,
-		.topbar > :global(.deployment-activity) {
-			grid-area: account;
 		}
 		/* The categories are tabs on the bar's bottom edge. */
 		.topbar nav {
-			grid-area: tools;
 			justify-self: start;
 			justify-content: flex-start;
 			width: auto;
@@ -140,25 +157,16 @@
 			grid-area: tools;
 			justify-self: end;
 			width: max-content;
-			max-width: none;
-			padding-bottom: 0;
-		}
-		.topbar-search :global(.entity-search) {
-			max-width: none;
 		}
 	}
-	/* At narrower widths, environment and revision share a row below the project. */
+	/* Narrower, the environment and the revision take a row of their own under the project. */
 	@media (min-width: 561px) and (max-width: 1250px) {
 		header.topbar.with-account {
 			grid-template:
 				'brand project . account' auto
-				'revision revision environment revision' auto
+				'environment environment environment revision' auto
 				'tools tools tools tools' auto
 				/ auto minmax(0, max-content) 1fr auto;
-		}
-		.with-account :global(.revision-picker) {
-			border-left: 0;
-			padding-left: 0;
 		}
 	}
 	@media (min-width: 561px) and (max-width: 900px) {
@@ -166,13 +174,9 @@
 		header.topbar.with-activity {
 			grid-template:
 				'brand project . account' auto
-				'revision revision environment revision' auto
+				'environment environment environment revision' auto
 				'tools tools tools tools' auto
 				/ auto minmax(0, max-content) 1fr auto;
-		}
-		.topbar :global(.revision-picker) {
-			border-left: 0;
-			padding-left: 0;
 		}
 	}
 	/* Narrower still, the search takes that row and the categories end the bar under it. */
@@ -206,12 +210,5 @@
 			width: 100%;
 		}
 	}
-	/* On a phone the deployment light ends the brand's row, the brand still centred on the bar. */
-	@media (max-width: 560px) {
-		.with-activity :global(.brand) {
-			order: -2;
-			flex: 1;
-			padding-inline-start: 46px;
-		}
-	}
+	/* A phone arranges the same places in rows of its own, in responsive.css. */
 </style>
