@@ -325,1903 +325,1903 @@
 			"unit": "desktop.initializer.initialize-desktop",
 			"from": "packages/desktop/src/initializers/initializeDesktop.ts",
 			"to": "packages/desktop/src/initializers/initialize-desktop/initializeDesktop.ts",
-			"definition": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+			"definition": "3cc3ecfe03737f3fdcb5daaec8070472370a26902b8f941f23f4eb2fd0e7f0fc"
 		},
 		{
 			"unit": "desktop.initializer.initialize-desktop",
 			"from": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 			"to": "packages/desktop/src/initializers/initialize-desktop/initialize-desktop/initializeDesktop.ts",
-			"definition": "0fcc06f27819c812d4e680a9fdceb7e4b8865b5cb83ac33cfabec02ea57de5ec"
+			"definition": "ad6779f744c3301ed9c076ccd555033b60565ddb328f789f7efeff9f93b08d6b"
 		},
 		{
 			"unit": "desktop.service.native-connection",
 			"from": "packages/desktop/src/services/NativeConnectionService.ts",
 			"to": "packages/desktop/src/initializers/initialize-desktop/NativeConnectionService.ts",
-			"definition": "7f8fab61b62dd0db58ce3caf537b0910850ccc31959ed25e265a9222f54efd3f"
+			"definition": "d2e47f584c82ec1dc1ee8b2633bfda9fd0b18e23c0d7bea61f4d3eccc4347133"
 		},
 		{
 			"unit": "desktop.service.native-auth",
 			"from": "packages/desktop/src/services/NativeAuthService.ts",
 			"to": "packages/desktop/src/initializers/initialize-desktop/NativeAuthService.ts",
-			"definition": "dc0857f42f2c9c825bceb783bc5f9287ea72734cb981a6d26575572b1f279f3c"
+			"definition": "67a3c6213e0976f629348ba23061f5fa8274ef5c97eb067ee00cba2f8005485f"
 		},
 		{
 			"unit": "workflow.export-plans",
 			"from": "src/workflows/exportPlans.ts",
 			"to": "src/workflows/generate-code/exportPlans.ts",
-			"definition": "ec867d6cbc7e44e7ce5b063ea2955acdf7663b20e26a037430f2bb751dd8d9e3"
+			"definition": "c9339ec6bedaa209dcec34bf6434e5486c3ca3a3bfb80759c7759765bc6c34cf"
 		},
 		{
 			"unit": "service.regression-proof",
 			"from": "src/services/RegressionProofService.ts",
 			"to": "src/workflows/record-regression/RegressionProofService.ts",
-			"definition": "1ebc75516ef07a9b0b8fd82d9467057c138d236f87df821ce9bee29eb4976d1e"
+			"definition": "fe7669ca45e2a0ea78e302821cd1fb8a23eb10a79522d1afd2e7f95d093c865c"
 		},
 		{
 			"unit": "workflow.load-units",
 			"from": "src/workflows/loadUnits.ts",
 			"to": "src/workflows/load-units/loadUnits.ts",
-			"definition": "c237cf32fc3096be06ee3c8f4ae69fa490f2ebb5c4cdcfe55c996551687ea302"
+			"definition": "43ff49f5ab22f48436c28b0e10bec73f575dde651160657b10cd29c0b1389769"
 		},
 		{
 			"unit": "service.unit-index",
 			"from": "src/services/unit-index-service/UnitIndexService.ts",
 			"to": "src/workflows/load-units/unit-index-service/UnitIndexService.ts",
-			"definition": "eb2567cc0ea7aea815f083a82ffddc8c5f1b5a3000441367b68f19111c720926"
+			"definition": "778cb54bcdb5124bbba4a4a7713eb68ba9bbc398edbbb93f94edd04daad12a03"
 		},
 		{
 			"unit": "function.derive-manifest",
 			"from": "src/services/unit-index-service/deriveManifest.ts",
 			"to": "src/workflows/load-units/unit-index-service/deriveManifest.ts",
-			"definition": "f337f76bcbbdae5cb3a05a86edda27959c0fe017a3e08ef226162fc4c60381eb"
+			"definition": "1cd59498d00359c72afea479b5bfff4ea88598a992c18f917842636421fffc65"
 		},
 		{
 			"unit": "function.derived-responsibility",
 			"from": "src/services/unit-index-service/derivedResponsibility.ts",
 			"to": "src/workflows/load-units/unit-index-service/derivedResponsibility.ts",
-			"definition": "40b5f86f9967302dd36919a7d3a561128eeea5bbb057e6a926fbb5852b5f3e31"
+			"definition": "91f9faa8f264146aff3772f19e403c9037073871033f54de7c580db906eca25c"
 		},
 		{
 			"unit": "function.unit-lineage",
 			"from": "src/services/unit-index-service/unitLineage.ts",
 			"to": "src/workflows/load-units/unit-index-service/unitLineage.ts",
-			"definition": "36c22d751c44046d503401f120281605c8ff590491eb1b3f8f4c6617fc484cb7"
+			"definition": "5e1cfd0eb4d3d4c5a6a3476378426fc7f29c262fef0e6b49bbcff0170aa3ccbb"
 		},
 		{
 			"unit": "command.analytics",
 			"from": "src/commands/AnalyticsCommand.ts",
 			"to": "src/cli/program/AnalyticsCommand.ts",
-			"definition": "5fd9d0a779fc5accb833f90d1719f868d86588aed5968ff7d2b7ad175143a47c"
+			"definition": "5043fdbf76fd08dc5df16f5dd7d7eb348b0e2248dee70f1381c0f638b6a9194a"
 		},
 		{
 			"unit": "service.analytics",
 			"from": "src/services/AnalyticsService.ts",
 			"to": "src/cli/program/AnalyticsService.ts",
-			"definition": "08a27c83719cf19f9e7861a5a3255cc2b02a9fba08b36ce21398c613097f2f77"
+			"definition": "1a76ce9bc1eb2d33dcb0f216fd0f9861ee67e8a243fc3e8964142c3cb50fb086"
 		},
 		{
 			"unit": "workflow.analytics-metrics",
 			"from": "src/workflows/analyticsMetrics.ts",
 			"to": "src/cli/program/analyticsMetrics.ts",
-			"definition": "42cd05e31b333119a85e037d996df2dd7dc129ba541dd8bd0cbe3ccc6981e289"
+			"definition": "ec2621dc9a41ead5584d56839f61c0d5c65a534d0c6e915a8b59c4b2f2d9d044"
 		},
 		{
 			"unit": "workflow.analytics-jev-metrics",
 			"from": "src/workflows/analyticsJevMetrics.ts",
 			"to": "src/cli/program/analyticsJevMetrics.ts",
-			"definition": "fbfecc6904cfcc5f0579cf0835f80a6c2218e7c374de8257894b84323e457e19"
+			"definition": "3976b07b90e0678790658f8a2c00658f4342131bb4cc9859e35db8e2c481b063"
 		},
 		{
 			"unit": "desktop.function.desktop-bridge",
 			"from": "packages/desktop/src/utils/desktopBridge.ts",
 			"to": "packages/desktop/src/utils/desktop-bridge/desktopBridge.ts",
-			"definition": "99f437b526b86dc122cc63f300e6c78924bc753030836cac75ab4da3c43808f9"
+			"definition": "794c1bb220d50eaf6010b88d400f937c4e578f20d98a5bb9a6acbaf99358daab"
 		},
 		{
 			"unit": "desktop.service.recorded-evidence",
 			"from": "packages/desktop/src/services/RecordedEvidenceService.ts",
 			"to": "packages/desktop/src/utils/desktop-bridge/RecordedEvidenceService.ts",
-			"definition": "b500c508ba87a56e7a90fed6be65b94a48fc076cec51e3fec827d9336d158d95"
+			"definition": "20f742d0064d2f7b41ccff6bb63b5fddf59ea307c5df95c9b8882fb117efb79f"
 		},
 		{
 			"unit": "desktop.adapter.evidence-refs",
 			"from": "packages/desktop/src/adapters/EvidenceRefsAdapter.ts",
 			"to": "packages/desktop/src/utils/desktop-bridge/EvidenceRefsAdapter.ts",
-			"definition": "22d4c0a0ee57cea07b42d2ffa06a14d4c617586a6665502cc2f45d72b339eac0"
+			"definition": "9e9e412ad8f06d522282097d50ea030e58dc73514c809cdb76f6c497774d4c84"
 		},
 		{
 			"unit": "desktop.service.desktop-bridge",
 			"from": "packages/desktop/src/services/DesktopBridgeService.ts",
 			"to": "packages/desktop/src/services/desktop-bridge-service/DesktopBridgeService.ts",
-			"definition": "2d42270e0b9b85f5a96771c3e3d258f62962cf7491b9461ffe3838276f6f454e"
+			"definition": "85580aa8406bf97a489d1d7122e00ad2014549c874e9571c1134568df0b58145"
 		},
 		{
 			"unit": "desktop.service.hosted-project",
 			"from": "packages/desktop/src/services/HostedProjectService.ts",
 			"to": "packages/desktop/src/services/desktop-bridge-service/HostedProjectService.ts",
-			"definition": "27be963f7ba295268568f04c0dd12426de867e37d96474729b6da7058450538f"
+			"definition": "b9917f0449c6e3eb571196e41e9ddf074be9c3abfeedfe0a221bd7e7e496059d"
 		},
 		{
 			"unit": "command.loop",
 			"from": "src/commands/loop.ts",
 			"to": "src/cli/program/loop.ts",
-			"definition": "f155808fdbe7d084daef8f66768973a1b5e3ea959aa6b85bda5fa8706117e490"
+			"definition": "f4704c6ab8a779e681e90ae7d8f18e9606693fc44eded629342354c860663bf2"
 		},
 		{
 			"unit": "workflow.loop-evaluate",
 			"from": "src/workflows/loopEvaluate.ts",
 			"to": "src/cli/program/loopEvaluate.ts",
-			"definition": "fdeaa6fbb1a8653e7940a0897482e15a25692a7917a18545419bc8af5d11c902"
+			"definition": "93b1bdbb716a8569108453b267b0843f66f570e9076fcdbb7ea203eb2adf31e3"
 		},
 		{
 			"unit": "adapter.desktop-archive",
 			"from": "src/adapters/DesktopArchiveAdapter.ts",
 			"to": "scripts/prepare-desktop-experiment/DesktopArchiveAdapter.ts",
-			"definition": "45364dfccfad14bed2e27d264748e5c40b12151d27588eb90a845d8ec0496350"
+			"definition": "2ed2e3d53d858c20c01ade8aceb1d7d58410033884041a2b49b07e8a992d5d23"
 		},
 		{
 			"unit": "command.generate",
 			"from": "src/commands/generate.ts",
 			"to": "src/cli/program/generate.ts",
-			"definition": "e7dc6dc6c750f2d4032e13c03b0514a897f3a4570727c2400d2643e00b24df39"
+			"definition": "ff81101b00b066736171c6484d746b10bd7bf695127baf85767d3d02826ce056"
 		},
 		{
 			"unit": "desktop.service.remote-host-runtime",
 			"from": "packages/desktop/src/services/RemoteHostRuntimeService.ts",
 			"to": "packages/desktop/src/services/remote-host-service/RemoteHostRuntimeService.ts",
-			"definition": "f06175b5ace0a10745e79416d5d7a94632f2b0ba55958a771377b17860349c7f"
+			"definition": "a051c6220e08e2287a7067ad22e9c2703627421b10f5d8b400a169581376c7e7"
 		},
 		{
 			"unit": "desktop.service.remote-device-sessions",
 			"from": "packages/desktop/src/services/RemoteDeviceSessionsService.ts",
 			"to": "packages/desktop/src/services/remote-host-service/RemoteDeviceSessionsService.ts",
-			"definition": "30a8290b7125b4ec91c4d48f8a3aeec3c61119c80b7fad1f4dbfeb976c3d9310"
+			"definition": "53acfdf80eaf7aadf2fd5badff05ee77c037c0d9cea8eb0fe415bb39a0f79653"
 		},
 		{
 			"unit": "hub.controller.hub-api",
 			"from": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
-			"definition": "4c36774c85bb859b214ebc0dbc3e7b548ef4f6beda981ac796d2f0bb74d86be8"
+			"definition": "9110e98fa4d5b30d509362ae7a3da4433467c345dd97c1179a0d205d3625ddb0"
 		},
 		{
 			"unit": "hub.function.hub-evidence-query",
 			"from": "packages/hub/src/controllers/hub-api-controller/hubEvidenceQuery.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/hubEvidenceQuery.ts",
-			"definition": "e32d5f0fbc1d838b1303a6f14f4d003da45110eb715dc289924b072874a073ea"
+			"definition": "0e49d2710121cbe376cf0c7825844134d7b725c0f75e4053d7c18db4ca0c3785"
 		},
 		{
 			"unit": "hub.function.hub-evidence-read",
 			"from": "packages/hub/src/controllers/hub-api-controller/hubEvidenceRead.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/hubEvidenceRead.ts",
-			"definition": "590e2c691bd86381220d3d906aa946696248e50d887f6fad59a6d9ed1e616b41"
+			"definition": "5e52a9484eebb4051a965c031f8f5343f52c277b5cb90b91b84a30df3a6eff01"
 		},
 		{
 			"unit": "hub.function.hub-http",
 			"from": "packages/hub/src/controllers/hub-api-controller/hubHttp.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/hubHttp.ts",
-			"definition": "a49988cb8e18a944e45075ca58b4f4d4e7a90450014ac2f5872e63387abe0a29"
+			"definition": "ea28ff7eb52b85f215c76d01547f598e1ea19b2d4a60648bc12af5b848b214f6"
 		},
 		{
 			"unit": "adapter.desktop-integrity",
 			"from": "src/adapters/DesktopIntegrityAdapter.ts",
 			"to": "scripts/prepare-desktop-experiment/DesktopIntegrityAdapter.ts",
-			"definition": "ade390062d30d7365e9dd138cdf861afeb2a1f58d4533d847637efa9fb40b8ba"
+			"definition": "27f868db89312a323289c6910f5728385b7e5ac5276904caf5e67e72921344e1"
 		},
 		{
 			"unit": "hub.controller.hub-remote",
 			"from": "packages/hub/src/controllers/HubRemoteController.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts",
-			"definition": "be0257eb354c442ffe950e3f483250ceda604d2f22e2b683e472f517e1b7d250"
+			"definition": "69949fa0a61ff7bc03b458c831cc2500e441bad89a146faab9191123f86bbbfc"
 		},
 		{
 			"unit": "reports.service.report-import",
 			"from": "packages/reports/src/services/ReportImportService.ts",
 			"to": "packages/reports/src/services/report-command-service/ReportImportService.ts",
-			"definition": "5bd588c785cae3f6801d169801387f98c9c3b4e46d9eca70990144d116d81f9b"
+			"definition": "b8e8d33cf05cdf903b8c6da7da97537e345ac890f4afc917f646d2d8638cbc6c"
 		},
 		{
 			"unit": "reports.adapter.vitest-report",
 			"from": "packages/reports/src/adapters/VitestReportAdapter.ts",
 			"to": "packages/reports/src/services/report-command-service/VitestReportAdapter.ts",
-			"definition": "e4b4fb2d9387b0fb6b5b4ba8e753a9bec0582d61ba24aa5185fde4430d374a2e"
+			"definition": "53c8fb1eed34afa767c14c38f8e72d0dc228ccc8d18789e3fd5eb5889ea40282"
 		},
 		{
 			"unit": "remote.service.event-log",
 			"from": "packages/remote/src/services/EventLogService.ts",
 			"to": "packages/remote/src/services/wire-session-service/EventLogService.ts",
-			"definition": "1c4bdf3f5048221ab80e522dc77b2cae887ffbc9d115906ab63d5900ebda0012"
+			"definition": "9a31de9e16bf83a9a756a68fce57a344eb2e3710c077663ebd944e938745f68c"
 		},
 		{
 			"unit": "command.impact",
 			"from": "src/commands/ImpactCommand.ts",
 			"to": "src/cli/program/ImpactCommand.ts",
-			"definition": "eeb19dba655b95b7d60d48dae472e35046a7680d4bc45cf6c66350c9deae7ad1"
+			"definition": "2c7c9887041d6ecb8165924449662ac06dd8dee81d5a9c329c266d5d981ed57f"
 		},
 		{
 			"unit": "repository.agent-registry",
 			"from": "src/repositories/AgentRegistryRepository.ts",
 			"to": "src/services/agent-activity-service/AgentRegistryRepository.ts",
-			"definition": "2b9e8ca214ab61625258eb2f92bfc66ce90e5e6d2a7e670684564dc4efd248b4"
+			"definition": "3eb33e31f1fd393900c022be242f9a1d337c2526a53fa5143cc1dca29e1eb098"
 		},
 		{
 			"unit": "relay.function.host-runtime",
 			"from": "packages/relay/src/utils/hostRuntime.ts",
 			"to": "packages/relay/src/utils/host-runtime/hostRuntime.ts",
-			"definition": "fd30f824688aa0f4dff50f9398b373e11f2b21d53dd6c619f7f816d670301a49"
+			"definition": "6354d18661261e6d3e34d0d735f5cf472ce06af946b09a4478e8500022d7744f"
 		},
 		{
 			"unit": "relay.service.host-command",
 			"from": "packages/relay/src/services/HostCommandService.ts",
 			"to": "packages/relay/src/utils/host-runtime/HostCommandService.ts",
-			"definition": "a82904a63d0d8793aa2df4cd45b8d5abb4afcacf303a70a450528c19b744a5b0"
+			"definition": "f3976fc69c97ec44e8772db4c1ec91d10df896931b8e453967641bff17098e7b"
 		},
 		{
 			"unit": "desktop.function.select-environment",
 			"from": "packages/desktop/src/utils/selectEnvironment.ts",
 			"to": "packages/desktop/src/utils/select-environment/selectEnvironment.ts",
-			"definition": "07c05b2a630591f80b7adcf88ac024efac73a14a4d701c62452c254ae83f9fb7"
+			"definition": "002b5b03fd31705d4bd16811bdfc1dd882b9dcd28d859fdb9fa0d427b2d01ca1"
 		},
 		{
 			"unit": "desktop.adapter.electron-environment",
 			"from": "packages/desktop/src/adapters/ElectronEnvironmentAdapter.ts",
 			"to": "packages/desktop/src/utils/select-environment/ElectronEnvironmentAdapter.ts",
-			"definition": "bd5963e8b18c8fa298b13305d96a785c02e7c0c46dbc9844f8a42063077dc4ad"
+			"definition": "da0290089728366cb117aeb9d8c013df801f3ad2bdc391ed95872f71b3af03ce"
 		},
 		{
 			"unit": "hub.service.installation-token",
 			"from": "packages/hub/src/services/installation-token-service/InstallationTokenService.ts",
 			"to": "packages/hub/src/lib/server/auth/installation-token-service/InstallationTokenService.ts",
-			"definition": "814d6aa71bea679c624e4f0392d503b5fa47da8c30ae50b716c8263ab3475331"
+			"definition": "a31b7359526ab249b8b6e501af9a486e252f1bf52054aa44b3fef6621458f38b"
 		},
 		{
 			"unit": "hub.function.github-app-jwt",
 			"from": "packages/hub/src/services/installation-token-service/githubAppJwt.ts",
 			"to": "packages/hub/src/lib/server/auth/installation-token-service/githubAppJwt.ts",
-			"definition": "d5eeb00dc47d6e22b23821c650a9c44a7cdfeb3e1101b985bc11927ebb56a2a3"
+			"definition": "56162317ed613c0f829f51f84543e7932279a2597404349ca721d1e6f426c32b"
 		},
 		{
 			"unit": "command.history",
 			"from": "src/commands/HistoryCommand.ts",
 			"to": "src/cli/program/HistoryCommand.ts",
-			"definition": "c6a489a432cd1b37d5b7242ec9497865fb0a29935ce194f02b8a3fc8d9401648"
+			"definition": "4fd4f25488fa98509dc9442a3850a8916c9ffd1a7955e85b0010de13e11d9699"
 		},
 		{
 			"unit": "workflow.import-reports",
 			"from": "src/workflows/importReports.ts",
 			"to": "src/cli/program/importReports.ts",
-			"definition": "316f4cb37b77dd68787a001f7469bbe5e8296f0652f1a8eece3d8194ac794a32"
+			"definition": "173c3fd0c1504c8b601f875ef4df133d48df545f0003627d516d4a441ef078b6"
 		},
 		{
 			"unit": "workflow.run-budget",
 			"from": "src/workflows/runBudget.ts",
 			"to": "src/workflows/run-budget/runBudget.ts",
-			"definition": "7b1a6188727600852b46a07470cdbc3cdd423b0aae81ad714b335f293846dee6"
+			"definition": "c0d6dfe19e737954a7def5fcedbc21fedb5c8f1fcf4c3beb4cc5d4efcfaae42d"
 		},
 		{
 			"unit": "service.unit-benchmark",
 			"from": "src/services/UnitBenchmarkService.ts",
 			"to": "src/workflows/run-budget/UnitBenchmarkService.ts",
-			"definition": "2440d774d6ecbadf670e308b00251211dd1ff9df776e16e673710c72d10fd016"
+			"definition": "95a44da0ce4a824fca16a7832ee41fc64d683116aa168143555a0a9180adaffb"
 		},
 		{
 			"unit": "command.budget",
 			"from": "src/commands/BudgetCommand.ts",
 			"to": "src/cli/program/BudgetCommand.ts",
-			"definition": "1e685d12b2a4564aeaaf052d6c20b56ea12d90825d77b5a22fd0305314461eda"
+			"definition": "86bae079a7c2d4df19d0b126d1988fe00a46c6e17d1f56c99b8230a416896cc1"
 		},
 		{
 			"unit": "workflow.sign-budget",
 			"from": "src/workflows/signBudget.ts",
 			"to": "src/cli/program/signBudget.ts",
-			"definition": "8dd71192c9e41b67a4a3f753965a1dd533ab94d4a64d0407b16415c24863ce59"
+			"definition": "0f6f79cf22ac079ea5b0e82d9dea5c24aec031b63ddece41b114036316097863"
 		},
 		{
 			"unit": "command.new",
 			"from": "src/commands/new.ts",
 			"to": "src/cli/program/new.ts",
-			"definition": "b13e0537d7ff7d60e05b483c8e1bd0926fe302c05d0223b3bc8a30d77aba9ce7"
+			"definition": "5b23218644999fd41e1610c4f710030dfce37b2977a2c3b8e31db18a8c97a2ee"
 		},
 		{
 			"unit": "hub.service.hub-projection",
 			"from": "packages/hub/src/services/hub-projection-service/HubProjectionService.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
-			"definition": "5e354356630001ba5414cb9857e59817dc08e6d0927b9fc24cdb19c872fee3e7"
+			"definition": "84da7c7af64f93f2bd137180aebff1745bde5b7c5e57f33231705205f8710ea4"
 		},
 		{
 			"unit": "hub.function.hub-artifact-commit",
 			"from": "packages/hub/src/services/hub-projection-service/hubArtifactCommit.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubArtifactCommit.ts",
-			"definition": "84155d34ab86d337053b3c2bc5c5adfea62ee0f1a6f4809c9f4db648869b09fe"
+			"definition": "a77d278f4eccc242239961d67e6a068b73e228dfc544580e366e67a144c47f3f"
 		},
 		{
 			"unit": "hub.function.hub-catalog",
 			"from": "packages/hub/src/services/hub-projection-service/hubCatalog.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubCatalog.ts",
-			"definition": "38aeb659e16c4032a6bd18cee10858dbf30f91165bff1f6c3c828aae8757b6d4"
+			"definition": "5194ff35ffcfcd9091ce8ab7817fbeceab465813b0a7912f02e6da09a53b7de6"
 		},
 		{
 			"unit": "hub.function.hub-designs",
 			"from": "packages/hub/src/services/hub-projection-service/hubDesigns.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubDesigns.ts",
-			"definition": "f01a58905929531e3a7d1cc09c6e277ce49c54e65462dc1e3677a6ce027cad6d"
+			"definition": "021a9f244b3491b19169f95e45b082f1b5f542762dd5d3524e0edf0360b110ef"
 		},
 		{
 			"unit": "hub.function.hub-entity",
 			"from": "packages/hub/src/services/hub-projection-service/hubEntity.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubEntity.ts",
-			"definition": "e70b0f6726c56eb14797befbb29d0ffdc54c823d862a4d4c36bb80a4b940988c"
+			"definition": "e9af9b0dcab22a31fd0d3eff09b8015683602142a8a5e9b7c543450d72070ecb"
 		},
 		{
 			"unit": "hub.function.hub-entity-contract",
 			"from": "packages/hub/src/services/hub-projection-service/hubEntityContract.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubEntityContract.ts",
-			"definition": "e701b580fa754572906866c9826952ce4e653edfa19f51a7f37c09655cf5866b"
+			"definition": "2b73aa80d207de02f41338909c47872f0a1f0762c1d9645e8f7e821278ce82c5"
 		},
 		{
 			"unit": "hub.function.hub-png",
 			"from": "packages/hub/src/services/hub-projection-service/hubPng.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubPng.ts",
-			"definition": "66fee55b9b0e322ec724985333630313d61b2cc9e7b9a784a51d0db19b9d22b8"
+			"definition": "ae899c196681ca1a49a644cfbfc04035b63e7ccfa495a18ea1553026633dd6c2"
 		},
 		{
 			"unit": "hub.function.hub-png-chunks",
 			"from": "packages/hub/src/services/hub-projection-service/hubPngChunks.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubPngChunks.ts",
-			"definition": "2e2089c3b49c25716094e14f8f2250201af428241d562cfcac74f21e5fadf0cb"
+			"definition": "436ee62e4dd7a3d03be89b8591a907820ea2599208bfd85b9fefd00dc57692be"
 		},
 		{
 			"unit": "hub.function.hub-size",
 			"from": "packages/hub/src/services/hub-projection-service/hubSize.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubSize.ts",
-			"definition": "5374dd36dff34adc85096001bc2ad1ccccdeee9fa2da4f8fecb513caf412d320"
+			"definition": "11cd911c0382aa58d1d4ae466ff94113e379240c8d4bf9e51721def30658fa6a"
 		},
 		{
 			"unit": "hub.function.hub-snapshot",
 			"from": "packages/hub/src/services/hub-projection-service/hubSnapshot.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubSnapshot.ts",
-			"definition": "6be933a900ceadbbea06a692d01c7f7bb433d8ba1b37edb65e2edcbb92bb2714"
+			"definition": "3db9a1e79c45309976d0889bf6fdc9c5a489c37362d54ab8b87f518085678a6a"
 		},
 		{
 			"unit": "hub.function.hub-threads",
 			"from": "packages/hub/src/services/hub-projection-service/hubThreads.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubThreads.ts",
-			"definition": "eb3caf85654fb45f90da7861845424dca1d775033a2a0b4d06692ac9af9ea0cc"
+			"definition": "7b98da9af37dfa54ec4079d30db8ed6a2193d5b72333312cf7363c1748246f17"
 		},
 		{
 			"unit": "command.kernel",
 			"from": "src/commands/KernelCommand.ts",
 			"to": "src/cli/program/KernelCommand.ts",
-			"definition": "29f0dfe76520d9f0da6d9d99be767623a8f243eab94495542b096518f3efef34"
+			"definition": "d8f56da3fb0c704326eec59e045c71e08cf41ddaa98ee3c9c59c6b78fa83e371"
 		},
 		{
 			"unit": "function.bench-measurement",
 			"from": "src/workflows/run-kernel-bench/benchMeasurement.ts",
 			"to": "src/cli/program/run-kernel-bench/benchMeasurement.ts",
-			"definition": "22003300a62ff1a37e3474416a3f33e63c1731cec0fe4ddb6e3fa598803e89b9"
+			"definition": "fad387ebfb9271df709fcd061d51c69c4b07e70a1bd9e8bcab5583989a2be0c1"
 		},
 		{
 			"unit": "workflow.run-kernel-bench",
 			"from": "src/workflows/run-kernel-bench/runKernelBench.ts",
 			"to": "src/cli/program/run-kernel-bench/runKernelBench.ts",
-			"definition": "d5d35aa1d2d139156fd9b2a0136aa08a589c2d62361508b5a27021b5f0ec8a4b"
+			"definition": "5e7d9ea213ae8ee0619442e657976cd8fba97b7213f6c612fbf3614ceb85aec3"
 		},
 		{
 			"unit": "service.kernel-benchmark",
 			"from": "src/services/kernel-benchmark-service/KernelBenchmarkService.ts",
 			"to": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
-			"definition": "3357da008fdec78c278ac65c165d8d04bf05ac4505d1ecc86c0e9676a238c3bc"
+			"definition": "31eb00cde9c6e7f351bd776bfd29d8e3db6c5e2952ac5c3d0320b7a7d7aaa28f"
 		},
 		{
 			"unit": "function.bench-samples",
 			"from": "src/services/kernel-benchmark-service/benchSamples.ts",
 			"to": "src/cli/program/run-kernel-bench/kernel-benchmark-service/benchSamples.ts",
-			"definition": "c10a80a69e1738ddf949ccf17a47134d96aacb3be8abf74812863e4b82828f5e"
+			"definition": "8afe3b220a716a12414665fe31817c17eb5aa6b3e57443538cdbac1e3fb2239b"
 		},
 		{
 			"unit": "function.peak-memory",
 			"from": "src/services/kernel-benchmark-service/peakMemory.ts",
 			"to": "src/cli/program/run-kernel-bench/kernel-benchmark-service/peakMemory.ts",
-			"definition": "6c1352ff3ba5829db6b0b089ba5ec31183c48ce1567116edd1d55df4a8e1772d"
+			"definition": "074394e192363920d0c4985e1be848a616a4663cd3a39a61becc08fa26dbe313"
 		},
 		{
 			"unit": "desktop.adapter.remote-http-project",
 			"from": "packages/desktop/src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
 			"to": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
-			"definition": "29d3ea3413ed2493da6bd1002ea626fff317ab97e52f67ec6eb1f25b08726733"
+			"definition": "56523dcc7e317b6acacd6394fa67dd5a8ab6fcd02336c1e564b9f5ad972c41fa"
 		},
 		{
 			"unit": "desktop.function.hosted-image",
 			"from": "packages/desktop/src/adapters/remote-http-project-adapter/hostedImage.ts",
 			"to": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/hostedImage.ts",
-			"definition": "c20ab352ac9d41c53cbf4424acf48da4e9ac0fbc1d1072f564e73654e577c4f9"
+			"definition": "1b4eb6d53cd9ddbfacc236d19f328b8d1a29fc2f7e7ba1e23c23497505dbf127"
 		},
 		{
 			"unit": "desktop.service.hosted-evidence",
 			"from": "packages/desktop/src/services/HostedEvidenceService.ts",
 			"to": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/HostedEvidenceService.ts",
-			"definition": "f80cb613794edec30c75f4696142bae9205b4f0d5813f1e8499ac0cab88ab51f"
+			"definition": "3e00646f73cc3637b2bfe2472711b4aadc2854340bd792eee4568d195b083fec"
 		},
 		{
 			"unit": "desktop.service.relay-link",
 			"from": "packages/desktop/src/services/relay-link-service/RelayLinkService.ts",
 			"to": "packages/desktop/src/services/remote-host-service/relay-link-service/RelayLinkService.ts",
-			"definition": "9ac042d3faeb0aed406b40698484841945e14cb71eae50c608087369bd3d744f"
+			"definition": "001bc6336fe43c5f2ba0a17caa6c00c55fa2ef254a9089931ef3bfd8773d22d3"
 		},
 		{
 			"unit": "desktop.function.relay-frame",
 			"from": "packages/desktop/src/services/relay-link-service/relayFrame.ts",
 			"to": "packages/desktop/src/services/remote-host-service/relay-link-service/relayFrame.ts",
-			"definition": "1eb5f0d2e8e4a6f6261b66a3f41cfaa669b54732ebd4285160a42b5ea1813ebc"
+			"definition": "c73bfca3686cc759002345ef1fc8b27750c7cb3ad6e44628483fbd48a8da992a"
 		},
 		{
 			"unit": "desktop.service.native-account-status",
 			"from": "packages/desktop/src/services/NativeAccountStatusService.ts",
 			"to": "packages/desktop/src/initializers/initialize-desktop/NativeAccountStatusService.ts",
-			"definition": "080bdf586e1fe4d406579b61422d9a3bb55f9f727c617b47045705a789054ef6"
+			"definition": "a68bd733bc96078afcc13b06d02101634df34b4ffacbfed6c59e61bb405c8033"
 		},
 		{
 			"unit": "command.units",
 			"from": "src/commands/UnitsCommand.ts",
 			"to": "src/cli/program/UnitsCommand.ts",
-			"definition": "5767dd262a8b722b6bd7f88c14fa058efcc059f3b49801293e11374f8e63039a"
+			"definition": "56b7063d4a3eaae60eab61f13b0a1da62432d13e4f6ee5e0cd0cc25f997289b0"
 		},
 		{
 			"unit": "workflow.inspect-units",
 			"from": "src/workflows/inspectUnits.ts",
 			"to": "src/cli/program/inspectUnits.ts",
-			"definition": "d20149e6c6a907a9862ef72a00cde5b80b4d53aab051518569288baa9ff36d3a"
+			"definition": "072cf1293671393fd361ca319d41b7dbb0a77de9cc57be8e81f46013d9296019"
 		},
 		{
 			"unit": "workflow.run-verify",
 			"from": "src/workflows/runVerify.ts",
 			"to": "src/workflows/run-verify/runVerify.ts",
-			"definition": "cccb296dc812f9b555e55ea0a9ece4dcb38417112e0340f69c542b3acb72a2a5"
+			"definition": "e0409b5f004bb8a3d911c1b43ea9f69717d3d9f5ba894bfc7c741da424850a38"
 		},
 		{
 			"unit": "service.verification",
 			"from": "src/services/verification-service/VerificationService.ts",
 			"to": "src/workflows/run-verify/verification-service/VerificationService.ts",
-			"definition": "7a386182e31261abbd7e9a95a8a2f74b38ce40aedd11263e865fa770a1e212de"
+			"definition": "146b117282696844fcc9506d83b7d30df30482554e3603d38b08b295272e02c9"
 		},
 		{
 			"unit": "function.scenario-coverage",
 			"from": "src/services/verification-service/scenarioCoverage.ts",
 			"to": "src/workflows/run-verify/verification-service/scenarioCoverage.ts",
-			"definition": "4e9d6cec23eab486dcc3b4900528db50a674405bd726d660503aa86f04902be7"
+			"definition": "7c6fde05df18fa70a2c12eae9a58acdd175271911693f14df619e73bd8938ffe"
 		},
 		{
 			"unit": "function.seal-record",
 			"from": "src/services/verification-service/sealRecord.ts",
 			"to": "src/workflows/run-verify/verification-service/sealRecord.ts",
-			"definition": "dff6e511ee0b65b072aabd56c9bec060ae4e377d67bed929b273cb7d1f818d7f"
+			"definition": "dacd4f8cd57ab47584ad9d1dc85994664745669ebcad5330e16bf11dbed0cd40"
 		},
 		{
 			"unit": "function.verify-plan",
 			"from": "src/services/verification-service/verifyPlan.ts",
 			"to": "src/workflows/run-verify/verification-service/verifyPlan.ts",
-			"definition": "08e56f9368531dfb93e052d513bdae83b9779aa4cc4a5f38b685813cf48e3b46"
+			"definition": "cc38e30b15727c2dd750d0ae3d269be515091dd8d0f675c442f1f6ffbaa9acdf"
 		},
 		{
 			"unit": "service.record-assembly",
 			"from": "src/services/record-assembly-service/RecordAssemblyService.ts",
 			"to": "src/workflows/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-			"definition": "76b48cf6ae083617585358b2e66cd425428d3eef7e55d6c9e5ac891a42edd07c"
+			"definition": "cf89f78b86c140f16a7bc001d974c7f60504d60cea4223b556f1521081274936"
 		},
 		{
 			"unit": "function.recorded-builds",
 			"from": "src/services/record-assembly-service/recordedBuilds.ts",
 			"to": "src/workflows/run-verify/verification-service/record-assembly-service/recordedBuilds.ts",
-			"definition": "51ec37a010c0a1b7159ce526a50443bae9a3fb1dae6c74963c52182abfec8755"
+			"definition": "55d30881cbcba4fab3a23661992d3c2660f3be37182901d9d80c94dd0c1d3fb5"
 		},
 		{
 			"unit": "function.seal-record",
 			"from": "src/services/record-assembly-service/sealRecord.ts",
 			"to": "src/workflows/run-verify/verification-service/record-assembly-service/sealRecord.ts",
-			"definition": "0ee0189d64395296df075cc2a716ab5353bbb95a0dabcb5c75e41b88df2dc6c7"
+			"definition": "479c0146db46857a37e33e2a651c9682ca71b480f0c163ce55d57d46286ec96a"
 		},
 		{
 			"unit": "desktop.adapter.agent-settings",
 			"from": "packages/desktop/src/adapters/AgentSettingsAdapter.ts",
 			"to": "packages/desktop/src/lib/stores/AgentSettingsAdapter.ts",
-			"definition": "22e6bdc2792ac29e8aba0e60a7db79daff109fcb7daa88dd1e45e0acb20fc8cf"
+			"definition": "75cd353f7784dc2f03fbbf87581a334db84bc3f62a1e38c61540387043685d37"
 		},
 		{
 			"unit": "hub.controller.hub-auth",
 			"from": "packages/hub/src/controllers/HubAuthController.ts",
 			"to": "packages/hub/src/lib/server/auth/HubAuthController.ts",
-			"definition": "126bde59bc8f16582a38d9b29409f62093a9987d0afd5136e2fc1eb6bf29f908"
+			"definition": "55313229fc2a0d03f59c4a06de96bda2576637c2d971f3afbc08ba3d985cadf9"
 		},
 		{
 			"unit": "desktop.service.remote-lifecycle",
 			"from": "packages/desktop/src/services/RemoteLifecycleService.ts",
 			"to": "packages/desktop/src/initializers/initialize-desktop/RemoteLifecycleService.ts",
-			"definition": "422fb31509cb52329b7e908353c8dab9e59bf24e5ffac47d801e585aff8e40d1"
+			"definition": "720333cecb5bf9cd05f3dae6365a30baffa591228b0c5d43545a827a1746cfae"
 		},
 		{
 			"unit": "command.codex",
 			"from": "src/commands/CodexCommand.ts",
 			"to": "src/cli/program/CodexCommand.ts",
-			"definition": "0c9d788fd2bbd633f91dbda1df52b6dd13aad7e0aa2d09f0c22849cd76d1a730"
+			"definition": "c2ff061e7bd9b408cf0c852dba1df0a8d30cfcb3772e7da222d51adc5bb90cb7"
 		},
 		{
 			"unit": "reports.service.report-retention",
 			"from": "packages/reports/src/services/report-retention-service/ReportRetentionService.ts",
 			"to": "packages/reports/src/services/report-command-service/report-retention-service/ReportRetentionService.ts",
-			"definition": "4c0fd05e920e9ad00b0fa63f05cea1d1fc2f2ea15f9840e53eb3af13921f59aa"
+			"definition": "2563b9aa0765d4b80aeb5f27671943ca7491399e4c70dc1ee33b04639abe4cc2"
 		},
 		{
 			"unit": "reports.function.report-cleanup-log",
 			"from": "packages/reports/src/services/report-retention-service/reportCleanupLog.ts",
 			"to": "packages/reports/src/services/report-command-service/report-retention-service/reportCleanupLog.ts",
-			"definition": "e872b320c5db8e71b777f89e7764a28d2d44c2d49b71985a2c44bb311e100136"
+			"definition": "f990585337ff82846ecf52563a07087274b1985f0bb5efecad806929ecb4d8a1"
 		},
 		{
 			"unit": "reports.function.report-local-cleanup",
 			"from": "packages/reports/src/services/report-retention-service/reportLocalCleanup.ts",
 			"to": "packages/reports/src/services/report-command-service/report-retention-service/reportLocalCleanup.ts",
-			"definition": "5462bf46c23651859b7ac73ef5b18274927c749301c237e7d514f1844ac74acd"
+			"definition": "7df7d32c283819d8700c1801b6175c015de4d0c59b962cfa5265941b7db12123"
 		},
 		{
 			"unit": "reports.adapter.report-pages-retention",
 			"from": "packages/reports/src/adapters/ReportPagesRetentionAdapter.ts",
 			"to": "packages/reports/src/services/report-command-service/report-retention-service/ReportPagesRetentionAdapter.ts",
-			"definition": "4876a13899ba9b72e743c670c9525fe0e2b49039fec363cef487d83993d156b8"
+			"definition": "8277258b463411f5dc0b60f2f199e7d2b83478fc9fbe986bac924e1de01a5df4"
 		},
 		{
 			"unit": "workflow.loop-templates",
 			"from": "src/workflows/loopTemplates.ts",
 			"to": "src/workflows/loop-templates/loopTemplates.ts",
-			"definition": "6b9aa3fb306fb877647a1c76995ca829db77a0156c8ca35aa5fbadc91e29a7e7"
+			"definition": "84f016c884e52779a602337666b3550448dfad30e71d818d12e3b16cf1c88b19"
 		},
 		{
 			"unit": "workflow.built-in-loop-templates",
 			"from": "src/workflows/builtInLoopTemplates.ts",
 			"to": "src/workflows/loop-templates/builtInLoopTemplates.ts",
-			"definition": "18484aebb3477f2536c47506a61ecc4e553826f6709f36ed732d95979c907981"
+			"definition": "6d566c8a153e181fbd3af7dde6f990633736ff57decf81b50cceda8c16a4a55f"
 		},
 		{
 			"unit": "reports.adapter.playwright-report",
 			"from": "packages/reports/src/adapters/PlaywrightReportAdapter.ts",
 			"to": "packages/reports/src/services/report-command-service/PlaywrightReportAdapter.ts",
-			"definition": "e0276bb9f815b0632a1b21616bf48f150fa2dde6d2e1fedbeb5f5b2a9e461bf2"
+			"definition": "59b0c3c429381266f91ac81e870eb49cd145d810a4c8ad7f6055844379923bea"
 		},
 		{
 			"unit": "workflow.manage-units",
 			"from": "src/workflows/manageUnits.ts",
 			"to": "src/cli/program/manageUnits.ts",
-			"definition": "e892dd06cb648f5eb18d0e8f6d570b7c3a0c9676825d39998657cf3bd5e9a6c9"
+			"definition": "9724dcb63f8d4269c25b93b40fe77fac47ecd44518b088f3f0e8b47a79c03353"
 		},
 		{
 			"unit": "command.explain",
 			"from": "src/commands/ExplainCommand.ts",
 			"to": "src/cli/program/ExplainCommand.ts",
-			"definition": "00eca27425d28359e7ff68a55acfa9a436671fb134c69cc6da54e9d1de7ad8b3"
+			"definition": "636caa893839ad5ff25739fe30fec6419c6cbd5ff3772dbf3174d116a63f3b84"
 		},
 		{
 			"unit": "desktop.service.project-session",
 			"from": "packages/desktop/src/services/ProjectSessionService.ts",
 			"to": "packages/desktop/src/services/project-session-service/ProjectSessionService.ts",
-			"definition": "8856df8426c7c6327687b4f1d1845eb35a8649e8cd86bcdf452ba14a7529b767"
+			"definition": "0d0e15a7a7474cac77d924f1b80a3a0198d40d983f1f6f4db3086dec6a43609e"
 		},
 		{
 			"unit": "desktop.service.catalog",
 			"from": "packages/desktop/src/services/catalog-service/CatalogService.ts",
 			"to": "packages/desktop/src/services/project-session-service/catalog-service/CatalogService.ts",
-			"definition": "8e16f6e18cde036a1872c3a55a2b9f315974138e059ff2f84af186a279d33bcd"
+			"definition": "3df627190d28e960cd8ca1480b90cab4f6913ad08b0ef9ae7500bd8920b29b97"
 		},
 		{
 			"unit": "desktop.function.catalog-detail",
 			"from": "packages/desktop/src/services/catalog-service/catalogDetail.ts",
 			"to": "packages/desktop/src/services/project-session-service/catalog-service/catalogDetail.ts",
-			"definition": "0198ff55a2eef379e869ea34496e2f3b591d8a8f2d20e14093950bee792bc59c"
+			"definition": "1ceee21dff48fa90b8ba7aa477d5eb90b99c6f96e2a2bf14b3b05071ebb65b31"
 		},
 		{
 			"unit": "desktop.function.catalog-history",
 			"from": "packages/desktop/src/services/catalog-service/catalogHistory.ts",
 			"to": "packages/desktop/src/services/project-session-service/catalog-service/catalogHistory.ts",
-			"definition": "adb5dcb4143dc2a7e72bf56d1cfcb08f044c098f65daeb52c9d63c8d50504151"
+			"definition": "e0a3e6bd6a767bdfe0ffb982337a4f1160ef0f42d1ae1ebc6c97c8529affb360"
 		},
 		{
 			"unit": "desktop.service.project-operations",
 			"from": "packages/desktop/src/services/ProjectOperationsService.ts",
 			"to": "packages/desktop/src/utils/desktop-bridge/ProjectOperationsService.ts",
-			"definition": "d21b5391e1959613c196fdd111b6231fb496ca74a040d44155168c3afb7674ce"
+			"definition": "8d0441fb6f610462198b107ee9a3517285b6b96143c340361063e994a2c94a5c"
 		},
 		{
 			"unit": "relay.controller.public-relay",
 			"from": "packages/relay/src/controllers/PublicRelayController.ts",
 			"to": "packages/relay/src/index/PublicRelayController.ts",
-			"definition": "cba5657ab924ef0ee2520c50a7554ba9543574eea20897ce20c5f3bd29571217"
+			"definition": "312fda1bbc8e913bb9972dbb7598d7ab2ed09a616b07cf1d9a44ebb77697120a"
 		},
 		{
 			"unit": "relay.middleware.connect-guard",
 			"from": "packages/relay/src/middleware/ConnectGuardMiddleware.ts",
 			"to": "packages/relay/src/index/ConnectGuardMiddleware.ts",
-			"definition": "a60e0e68d1045dc8fc888c3ae20e24d0d2cd97f552fac8c98430bef3f0151ee4"
+			"definition": "642a5a90714bcc091af7dadeac57a5fea4b12b6bfa335c5bf5d223b5796f195c"
 		},
 		{
 			"unit": "hub.adapter.resend-email",
 			"from": "packages/hub/src/adapters/ResendEmailAdapter.ts",
 			"to": "packages/hub/src/lib/server/auth/ResendEmailAdapter.ts",
-			"definition": "2a3c89a5dcdd17eb62b2d31c23ab28cd45cbe8bb70cacbc28727a9ea055ecf27"
+			"definition": "43ef13121cd7579d9b91c52940fe89fd69ba4f502b3ec8122376bb81c6dfb752"
 		},
 		{
 			"unit": "hub.controller.email-proof",
 			"from": "packages/hub/src/controllers/EmailProofController.ts",
 			"to": "packages/hub/src/lib/server/auth/EmailProofController.ts",
-			"definition": "67b9290e8714e297499871352cafa2709f0089fe144104c9d08cce64ae669412"
+			"definition": "8badc98ed02ba3c7f2c6bc98684fbe1ecfdcda7fde9c168ff54d83361f93993f"
 		},
 		{
 			"unit": "reports.service.replay-video",
 			"from": "packages/reports/src/services/replay-video-service/ReplayVideoService.ts",
 			"to": "packages/reports/src/routes/api/replay-video/replay-video-service/ReplayVideoService.ts",
-			"definition": "36af85b88695167b47872b41fa95e32caab5560030b715f93c4f7f5c2ffe3719"
+			"definition": "6deeb3885d0c892ac39fbbd706b45ab8fb64d63a977bc72693aed8a16c225e7f"
 		},
 		{
 			"unit": "reports.function.replay-video",
 			"from": "packages/reports/src/services/replay-video-service/replayVideo.ts",
 			"to": "packages/reports/src/routes/api/replay-video/replay-video-service/replayVideo.ts",
-			"definition": "e46c2313ee29a0b47e62d800497f8a6b006777a7638f3c985d63c7a70fdc8822"
+			"definition": "d5d879ea4bd22f36c4535ebcfb12f29e8cf1e5395db1bed17f80102c8123803a"
 		},
 		{
 			"unit": "desktop.service.remote-artifact-cache",
 			"from": "packages/desktop/src/services/RemoteArtifactCacheService.ts",
 			"to": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/RemoteArtifactCacheService.ts",
-			"definition": "e9cbae8a9a69b1191af9e3570295afd226f304403e00bcba03b5e47dfd0eb6bb"
+			"definition": "56dbb98929eb8ad7b80cef5fbffa6668e32ff3337ae716c9a7074a6183ba137f"
 		},
 		{
 			"unit": "command.console",
 			"from": "src/commands/ConsoleCommand.ts",
 			"to": "src/cli/program/ConsoleCommand.ts",
-			"definition": "1b70ee11571c43705ffed9f935a02d94d42a2f4a456f23684bab54093a0ea22f"
+			"definition": "04f06c12ee1be6bcd65cc0a8a46dea86d0923d9d30369bf472cea823435381ef"
 		},
 		{
 			"unit": "workflow.install-console",
 			"from": "src/workflows/installConsole.ts",
 			"to": "src/cli/program/installConsole.ts",
-			"definition": "8ddbaa03d846a5e447d62859b2a70a3c394871a40e91d4e9d497c3b1ec715f88"
+			"definition": "4e5f4d4c88f90ae1c3c9d4c20c0ebc0404620b0751fde72cc789f689e47e9bba"
 		},
 		{
 			"unit": "relay.service.host-registry",
 			"from": "packages/relay/src/services/HostRegistryService.ts",
 			"to": "packages/relay/src/utils/host-runtime/HostRegistryService.ts",
-			"definition": "1e59bb6495a03e9d19d9b6d195992068f3773b135701758564c4b1e63fc3717a"
+			"definition": "69de43d51c22d8b417cf4aa274ff4b0f4ceced25ff4562a850aa1392f9b28706"
 		},
 		{
 			"unit": "workflow.build-history",
 			"from": "src/workflows/buildHistory.ts",
 			"to": "src/cli/program/buildHistory.ts",
-			"definition": "e165231abb44e821836cc3a4f4867573458f037f839027db9ce34eacf9c5a842"
+			"definition": "f3772641c01fa9fc01230cef507cf61d269c7ae4c1f468ce8466ad9f813344f0"
 		},
 		{
 			"unit": "relay.service.socket-frame",
 			"from": "packages/relay/src/services/socket-frame-service/SocketFrameService.ts",
 			"to": "packages/relay/src/utils/host-runtime/socket-frame-service/SocketFrameService.ts",
-			"definition": "cda9ef788b07e6331187820046695cb9ef205dd3d172a37aa2d023df161c1114"
+			"definition": "bcf056e149f43e0c82fa5a34e33c254bff4b668d0c94340c5ea473b771076f55"
 		},
 		{
 			"unit": "relay.function.frame-too-large",
 			"from": "packages/relay/src/services/socket-frame-service/frameTooLarge.ts",
 			"to": "packages/relay/src/utils/host-runtime/socket-frame-service/frameTooLarge.ts",
-			"definition": "4a71155c308b88e852b002e20b74915917899aee042056d380e6e8fa4628d7f3"
+			"definition": "3b6d1c6843bf09a65467409951f9d313b4cb9193b0f65bd366b44b536995eedc"
 		},
 		{
 			"unit": "service.trusted-base",
 			"from": "src/services/TrustedBaseService.ts",
 			"to": "src/workflows/run-verify/TrustedBaseService.ts",
-			"definition": "539d38a80e3b282f6adc506c96a952e4d3a3f7c0c25707e30d57ffa8169fb497"
+			"definition": "3c9a45f9e9bfa8e96815bc7b3b3d345b36de174df513e57643a1f2fe5231f73d"
 		},
 		{
 			"unit": "relay.adapter.host-sockets",
 			"from": "packages/relay/src/adapters/HostSocketsAdapter.ts",
 			"to": "packages/relay/src/utils/host-runtime/HostSocketsAdapter.ts",
-			"definition": "c27249fc2759e715a5388223b866103df178480821a107997b79eeb37f77b74b"
+			"definition": "c8e688667bd8d7314e8b0b11f9c39ad2a3da28cc951ae52fb0fe0ae4f8a01a88"
 		},
 		{
 			"unit": "desktop.service.local-transport",
 			"from": "packages/desktop/src/services/LocalTransportService.ts",
 			"to": "packages/desktop/src/initializers/initialize-desktop/LocalTransportService.ts",
-			"definition": "67f342616969925fb078246f0fed63803c28f8df29634513e7e25c0e714e75c5"
+			"definition": "f3c24b924c74c2ac829123f1bd69cf51cb6d2303573f7e8611b7cd2461d62d71"
 		},
 		{
 			"unit": "reports.adapter.console-bridge",
 			"from": "packages/reports/src/adapters/ConsoleBridgeAdapter.ts",
 			"to": "packages/reports/src/lib/stores/ConsoleBridgeAdapter.ts",
-			"definition": "67b450a75a82f41edc79a0e8c72d43b401c48ccb8ace2fc9ed638e4eab2136c5"
+			"definition": "99210841b8655c75dc1c97ca9da4db278f8d762a9d7dec7244055e7b0b8dae85"
 		},
 		{
 			"unit": "relay.adapter.host-storage",
 			"from": "packages/relay/src/adapters/HostStorageAdapter.ts",
 			"to": "packages/relay/src/utils/host-runtime/HostStorageAdapter.ts",
-			"definition": "8a89f003afe9922ce325720f83932ed7345839e1ae7d7b41a5f7d1b1625ad919"
+			"definition": "45aaedb5d41741a10415019233bae813cd5414dd8fa7ff1fc05f810c369b8506"
 		},
 		{
 			"unit": "command.info",
 			"from": "src/commands/info.ts",
 			"to": "src/cli/program/info.ts",
-			"definition": "ce7f9bd93524d5ad23ebf131063291f60ef5f7f45d69a132dcd20b8c9a00c839"
+			"definition": "b4f401b8cb3ae2a502ba7307749ca5fc38da3ef4f6010991bab0baed26229ad0"
 		},
 		{
 			"unit": "relay.service.host-link",
 			"from": "packages/relay/src/services/HostLinkService.ts",
 			"to": "packages/relay/src/utils/host-runtime/HostLinkService.ts",
-			"definition": "59687aeaa99204dc8c9867b8ea7c5ddc80161160693f42cc90e319c989fd5f4a"
+			"definition": "41c2d0283b52598883d5e8d3f4e97cd8804bcb9102bee337b1ac799a881b2276"
 		},
 		{
 			"unit": "hub.service.google-identity",
 			"from": "packages/hub/src/services/GoogleIdentityService.ts",
 			"to": "packages/hub/src/lib/server/auth/GoogleIdentityService.ts",
-			"definition": "4ed32c133f0d9e98ca6a36fafd5a9c9398cea90f8a1bbeac68d9a8328d49664a"
+			"definition": "49a3f1cadcb4d94b996329a4d860098d5cafc28440c3e284468ede6de29faa19"
 		},
 		{
 			"unit": "command.scenarios",
 			"from": "src/commands/ScenariosCommand.ts",
 			"to": "src/cli/program/ScenariosCommand.ts",
-			"definition": "30f3d576027bd334ee617b727689f7b1fb1e105007ad6e1e6bdb0c1e79cc9116"
+			"definition": "a5876ffd75435e97960d08f4193096e9a62908d1e3461022ff3f75ed255ed0b1"
 		},
 		{
 			"unit": "command.response-check",
 			"from": "src/commands/ResponseCheckCommand.ts",
 			"to": "src/cli/program/ResponseCheckCommand.ts",
-			"definition": "06946b6d1965907a4a256602d3bec1ecd5a00751b1f0ef4bbd8da03b77d2e761"
+			"definition": "49cd0c6e759661dcd6cdda5acf4fc10a57fe611a190625da619e3c5297531ca2"
 		},
 		{
 			"unit": "workflow.run-response-check",
 			"from": "src/workflows/runResponseCheck.ts",
 			"to": "src/cli/program/runResponseCheck.ts",
-			"definition": "e01b44e41f42d3ae6215d6d95b7c6c6dfcf7ee5ee8de13540c4cfec620971f08"
+			"definition": "28cb0e208ab237c4bbc3909e8cd886a7a6d23e654d0930d3722fcfca26a2d142"
 		},
 		{
 			"unit": "workflow.response-check-input",
 			"from": "src/workflows/responseCheckInput.ts",
 			"to": "src/cli/program/responseCheckInput.ts",
-			"definition": "e078d909193a21ebedfe7fc9bc2b2954ecfc3944c3c06f54816b68b0ed746ca0"
+			"definition": "f95c036bbfe0b37d7e9aa3ba559ddcadb671bc694a00378e0b6ecf48f45456d4"
 		},
 		{
 			"unit": "serializer.claude-tools",
 			"from": "src/serializers/ClaudeToolsSerializer.ts",
 			"to": "src/serializers/claude-tools-serializer/ClaudeToolsSerializer.ts",
-			"definition": "534131cdd3e26b2d36146e78484eeff4416d06e3eafe0102c5cd0249c4a6edd5"
+			"definition": "936cc188f9dc3c3403ae6906eef5591331501b5c4de83eb56150835da2387fd6"
 		},
 		{
 			"unit": "service.gateway-events",
 			"from": "src/services/GatewayEventsService.ts",
 			"to": "src/serializers/claude-tools-serializer/GatewayEventsService.ts",
-			"definition": "002b2cd5825b9e59f002985b7a54557e822dc04febab5e0cdd537a045c5ca2df"
+			"definition": "23ddf7ccd2042c5b5a1e104a6ddfb1fab0e5651490f046973f18e639a90cd4b3"
 		},
 		{
 			"unit": "hub.service.hub-evidence",
 			"from": "packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/HubEvidenceService.ts",
-			"definition": "b8e626bbb5ac4d70f253981475127f016abcf46f7314eb5c3e4095a0ab667d18"
+			"definition": "b8b70551bd974df12b8d8bc33ada984bf1caa9395a519226df7aa5865651a69f"
 		},
 		{
 			"unit": "hub.function.hub-evidence-scope",
 			"from": "packages/hub/src/services/hub-evidence-service/hubEvidenceScope.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubEvidenceScope.ts",
-			"definition": "b6e27def0d0ae35920ef20511ccf925cd03764a693481cfee36ddce05dd6e7f1"
+			"definition": "6ca680340adfdaf2b2b0cf008429abbb7d040c4a3919aceb8c31594b888a1f0b"
 		},
 		{
 			"unit": "hub.function.hub-notes",
 			"from": "packages/hub/src/services/hub-evidence-service/hubNotes.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubNotes.ts",
-			"definition": "860712549ed17e8e2283222301a573c73e6f043e41abc61ee5c4213f1205c8a9"
+			"definition": "46b3f3b9b98713138655ce1567b0373349eb8cc8a80761e7601ffd0095162453"
 		},
 		{
 			"unit": "hub.service.hub-attached",
 			"from": "packages/hub/src/services/hub-attached-service/HubAttachedService.ts",
 			"to": "packages/hub/src/services/hub-evidence-service/hub-attached-service/HubAttachedService.ts",
-			"definition": "7a321b16e6090ad0d16b369fce3553a14cebedb95226c8e5950dcd929885126b"
+			"definition": "74a581a9942c2de9e8539b9e6b0805da00738aea18fcc599b6ad93c366407a66"
 		},
 		{
 			"unit": "hub.function.hub-attached-record",
 			"from": "packages/hub/src/services/hub-attached-service/hubAttachedRecord.ts",
 			"to": "packages/hub/src/services/hub-evidence-service/hub-attached-service/hubAttachedRecord.ts",
-			"definition": "472c7fcd222baffff25f5b6894f1f147d04d3213bb7fe111970c002dd760d7f3"
+			"definition": "4df7c679ca09b18040550d79c50f27724890dcc57550f7384f410ef2d5d54fa5"
 		},
 		{
 			"unit": "hub.function.hub-evidence-file",
 			"from": "packages/hub/src/services/hub-attached-service/hubEvidenceFile.ts",
 			"to": "packages/hub/src/services/hub-evidence-service/hub-attached-service/hubEvidenceFile.ts",
-			"definition": "65bc6b91cfd632cbe8c0ffca8eaa73b59162abf67bf1a1f378925502e92de649"
+			"definition": "6b7fbbd96c2e73a50150197450e5a7ebe8d6b9fb61efda39ef8fdc07177addab"
 		},
 		{
 			"unit": "hub.function.hub-pinned-source",
 			"from": "packages/hub/src/services/hub-attached-service/hubPinnedSource.ts",
 			"to": "packages/hub/src/services/hub-evidence-service/hub-attached-service/hubPinnedSource.ts",
-			"definition": "6f656755fa875f40e37f961c6dba4f7e2800cbc2bd99a90254f303d7f1f16f60"
+			"definition": "6b77699613b11d208e6db71d384c0b62ecd127f7fbc5ea184c92d1f9a2403a1f"
 		},
 		{
 			"unit": "desktop.adapter.capacitor-environment",
 			"from": "packages/desktop/src/adapters/CapacitorEnvironmentAdapter.ts",
 			"to": "packages/desktop/src/utils/select-environment/CapacitorEnvironmentAdapter.ts",
-			"definition": "e97494c4878b724f229f5efd74927045c89eb5b06af05b7239ae1d8b5d8484db"
+			"definition": "a8686e0c6a99b21cf67d3b48283b7791fe3c0230f56e99b01fb0a072a81d2c94"
 		},
 		{
 			"unit": "desktop.service.capacitor-projects",
 			"from": "packages/desktop/src/services/CapacitorProjectsService.ts",
 			"to": "packages/desktop/src/utils/select-environment/CapacitorProjectsService.ts",
-			"definition": "1c0ca1a9620c1dd9cf7019bb1a1c05294e60ab63cd2640975e7252428b192069"
+			"definition": "fe30761246bf612fad1c8e18fa34c681a39a90ba14d7460dd78b469ebc5651f8"
 		},
 		{
 			"unit": "service.console-install",
 			"from": "src/services/console-install-service/ConsoleInstallService.ts",
 			"to": "src/cli/program/console-install-service/ConsoleInstallService.ts",
-			"definition": "df10468db33375156b06fc89499e192a78b1e310d0c0cfedb15fbe937aa6eee6"
+			"definition": "1ba3af29117ab81457c8ab86a5bb1de4610191ede5952f24a74585169c9ef116"
 		},
 		{
 			"unit": "function.console-data-modules",
 			"from": "src/services/console-install-service/consoleDataModules.ts",
 			"to": "src/cli/program/console-install-service/consoleDataModules.ts",
-			"definition": "1d334eeb8907ee20ed74f2d79b90705b6afc3bcbcc4efd3d5778d990f6fb9c08"
+			"definition": "f3faaae0458431cc215997da24057d4928e08c0ceddb277f86ea01345d94eea6"
 		},
 		{
 			"unit": "function.console-host-files",
 			"from": "src/services/console-install-service/consoleHostFiles.ts",
 			"to": "src/cli/program/console-install-service/consoleHostFiles.ts",
-			"definition": "02d0b1f8bb472d8c01bd264d31039737e8ba8c2ddec8e204d3fb4cc295af01b3"
+			"definition": "69cae0b4559b77a45bee65616bf1c1bd0a71d7258d70e65f34fc29448be28e3c"
 		},
 		{
 			"unit": "function.installable-host",
 			"from": "src/services/console-install-service/installableHost.ts",
 			"to": "src/cli/program/console-install-service/installableHost.ts",
-			"definition": "b541f36f08f3454e15925f8e9fb8131b0e9a194c9b555a5becc469ea9bca943b"
+			"definition": "858d904f8b45f1fae16a943a119e3509abd68ab63b2d2505eb2ace23f1c471ac"
 		},
 		{
 			"unit": "command.hooks",
 			"from": "src/commands/HooksCommand.ts",
 			"to": "src/cli/program/HooksCommand.ts",
-			"definition": "a7e38bab6dcc458d1fe749c1ae8a69f42a91b69a10e5512ffab3b2d458b31a76"
+			"definition": "afb8eec4ccffc73475632d6c2233e53549fbf7f5125840e5994a46854b35d96d"
 		},
 		{
 			"unit": "desktop.adapter.hosted-evidence",
 			"from": "packages/desktop/src/adapters/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
 			"to": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
-			"definition": "cc824655de3065a5d1b0ffb041d67a572329697ea179372cdad37d1cb1488f71"
+			"definition": "fde061067f0730945bc7cc76edcb411ee62318daa9bd504164739b5c53e32039"
 		},
 		{
 			"unit": "desktop.function.hosted-evidence-path",
 			"from": "packages/desktop/src/adapters/hosted-evidence-adapter/hostedEvidencePath.ts",
 			"to": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/hosted-evidence-adapter/hostedEvidencePath.ts",
-			"definition": "9e3078a3b305363a71c1fac20f60f4df1bc1fb009357b16aa77178290ad0ec1b"
+			"definition": "211db09c901dbaba79d20148bf5f656fd777c92b92ac0e61d7765dff04cd6b85"
 		},
 		{
 			"unit": "command.activity",
 			"from": "src/commands/ActivityCommand.ts",
 			"to": "src/cli/program/ActivityCommand.ts",
-			"definition": "7057d5ffb2beab8831b9a197ecf9cabf132d9e22d1dcef1e090e2145b60695c6"
+			"definition": "c3a88eed52a534b2e567d34cb4af7a267a15b3e072b90ba76430c1fc9cb41034"
 		},
 		{
 			"unit": "desktop.service.device-session",
 			"from": "packages/desktop/src/services/device-session-service/DeviceSessionService.ts",
 			"to": "packages/desktop/src/services/remote-host-service/device-session-service/DeviceSessionService.ts",
-			"definition": "0faf31e361d9631b50fc92b791b89d2d7d0a768e01eb539ac9dfa9159c26fbcd"
+			"definition": "b7d6fcb27f7bddb260c21675238683b8dd638ab0e3360df590dd1a39a8c7a51f"
 		},
 		{
 			"unit": "desktop.function.remote-failure-text",
 			"from": "packages/desktop/src/services/device-session-service/remoteFailureText.ts",
 			"to": "packages/desktop/src/services/remote-host-service/device-session-service/remoteFailureText.ts",
-			"definition": "fa584aee7d9db6e0384741868cfa8951717a67ccb745da895920c92120ceb396"
+			"definition": "cb50e7d5e3595d591971bc25f6c6841e147978c543abde02c42229be60890ec3"
 		},
 		{
 			"unit": "service.legacy-import",
 			"from": "src/services/legacy-import-service/LegacyImportService.ts",
 			"to": "src/cli/program/legacy-import-service/LegacyImportService.ts",
-			"definition": "77b72facfd75023437b7e9c4e1c02e70cb239e3144aec314397100d350929060"
+			"definition": "985ecdd1a89c00854ef72625b8ac3065d5392f6ee09fc196e68e7583f9b7adbf"
 		},
 		{
 			"unit": "function.legacy-report",
 			"from": "src/services/legacy-import-service/legacyReport.ts",
 			"to": "src/cli/program/legacy-import-service/legacyReport.ts",
-			"definition": "a561265599bd6baa2e474661937f4e24d391fb2d4a5eb24a90b1ae151687cf20"
+			"definition": "5ce428305c12c585c4526efaac220b7b5d58ca1f44c365bf2d99b3a34580fdf3"
 		},
 		{
 			"unit": "repository.legacy-report",
 			"from": "src/repositories/LegacyReportRepository.ts",
 			"to": "src/cli/program/legacy-import-service/LegacyReportRepository.ts",
-			"definition": "dc7980f1b8e6b59dfbbcd6ef67925922c6b1251e997574d309df67308923a1b9"
+			"definition": "fc721d08a5f37ac629dd391b192456c82fe7ab7aedb09e9710ffdcd50d766963"
 		},
 		{
 			"unit": "desktop.service.projection-cache",
 			"from": "packages/desktop/src/services/projection-cache-service/ProjectionCacheService.ts",
 			"to": "packages/desktop/src/initializers/initialize-desktop/projection-cache-service/ProjectionCacheService.ts",
-			"definition": "5655b9163d21b130caaa7c8ab8fc63a09372c4fadc18f602c1ff7e53143273e9"
+			"definition": "e2ffa99957b1f8890f13849efdc76dc22e94fe5c95662f0b9c594031e63be076"
 		},
 		{
 			"unit": "desktop.function.projection-cache-discard",
 			"from": "packages/desktop/src/services/projection-cache-service/projectionCacheDiscard.ts",
 			"to": "packages/desktop/src/initializers/initialize-desktop/projection-cache-service/projectionCacheDiscard.ts",
-			"definition": "62f6501220034d659dde76ca07e6dc7b3c15923e6b88e4bc084c7da09a10b8e7"
+			"definition": "1d1cb4dbec008179ab4b2c1d89e47fd5cc8456925ec9b49862aba8f8c868c914"
 		},
 		{
 			"unit": "desktop.function.projection-cache-purge",
 			"from": "packages/desktop/src/services/projection-cache-service/projectionCachePurge.ts",
 			"to": "packages/desktop/src/initializers/initialize-desktop/projection-cache-service/projectionCachePurge.ts",
-			"definition": "479f0ae2b86265ed6e4ceac5e1e1cec2d45e3e469a2f474ffdfbb8824b2ca0cd"
+			"definition": "dc849db5795418a8ef43297cf0686a111e2114265fd1577adc4d9e86cfc33d02"
 		},
 		{
 			"unit": "service.desktop-experiment",
 			"from": "src/services/DesktopExperimentService.ts",
 			"to": "scripts/prepare-desktop-experiment/DesktopExperimentService.ts",
-			"definition": "d90793175213586eb86b4a0f977d765206ddebff7d3db4acebea6d50861cb77c"
+			"definition": "e764b648f4d347a7d8384229b2985e2da2c0a1afb1f5181fa721f494abb5a498"
 		},
 		{
 			"unit": "desktop.service.remote-pairing-control",
 			"from": "packages/desktop/src/services/RemotePairingControlService.ts",
 			"to": "packages/desktop/src/services/remote-host-service/RemotePairingControlService.ts",
-			"definition": "c4abb4b74b294bbc6420ea36be7f929a1a53c0a1ad3324fdc7c2c4b5b273bc13"
+			"definition": "387180118bceee12a21e4a25d91232047e1844acc24e79528c4902816fd1df06"
 		},
 		{
 			"unit": "hub.service.hub-record-status",
 			"from": "packages/hub/src/services/HubRecordStatusService.ts",
 			"to": "packages/hub/src/services/hub-evidence-service/HubRecordStatusService.ts",
-			"definition": "87a1492ac5ad89b4b0f011b95c2392589d36500345b4a3ef7e243cf4e4d4e821"
+			"definition": "100c55fe5d694f8d7c1212c0aa0bdf51187b992bc5845e40f652060c9d020708"
 		},
 		{
 			"unit": "adapter.handler-runtime",
 			"from": "src/adapters/HandlerRuntimeAdapter.ts",
 			"to": "packages/reports/src/components/harness/harness-compare/HandlerRuntimeAdapter.ts",
-			"definition": "b4c44dcfd998a62985edda244194525593d1810b030bcf530987849d84983a3f"
+			"definition": "b3a640c6f5de8820d38ba1b57e4f75ddc8725d50a31802f5772aa5a6a5a8a191"
 		},
 		{
 			"unit": "workflow.generate-unit",
 			"from": "src/workflows/generateUnit.ts",
 			"to": "src/cli/program/generateUnit.ts",
-			"definition": "cd7aac5cd1544b7f84c1133d76cc4e21f46f2357d0c104d6a8f7f334c2d2333c"
+			"definition": "74807c283180c08639ec027c8440518fd1817cc4d7be7268e1a83ea38c09452d"
 		},
 		{
 			"unit": "reports.adapter.mira-report",
 			"from": "packages/reports/src/adapters/MiraReportAdapter.ts",
 			"to": "packages/reports/src/services/report-command-service/MiraReportAdapter.ts",
-			"definition": "3a611ccbef554752441e85eaec262b4183966c25a9fa2b831adc62c90e71ca45"
+			"definition": "f10b3b46752d753cabb143b715d5c631163c463b058d8c33501272643d57c4e5"
 		},
 		{
 			"unit": "relay.controller.pairing",
 			"from": "packages/relay/src/controllers/PairingController.ts",
 			"to": "packages/relay/src/utils/host-runtime/PairingController.ts",
-			"definition": "1d147377ef41eb75b2d23697942a2392e1ad389d8bc8942b4bada0c42b87b5af"
+			"definition": "b29d4ffd67bbd63067c9444a8c092596f5543dde219be6ba3d2109137756b6f3"
 		},
 		{
 			"unit": "service.history-status",
 			"from": "src/services/HistoryStatusService.ts",
 			"to": "src/services/history-status-service/HistoryStatusService.ts",
-			"definition": "d3941e34691e2365b6c139e593399b977fedcab1cd71270d3c4393a0f2831b41"
+			"definition": "87c7256a47a4123f12fe84b1fcbe545919c9f68d9d8bf8af12ce2bb4e5cddb0a"
 		},
 		{
 			"unit": "service.attached-record",
 			"from": "src/services/attached-record-service/AttachedRecordService.ts",
 			"to": "src/services/history-status-service/attached-record-service/AttachedRecordService.ts",
-			"definition": "8a2726539f61bc84dce84901c224f7908a7bb34215fa6b64b243cb506037bdba"
+			"definition": "b8757575d793690dcd6f3daf521c33ca6d67b2a6d3d63ee7c1f22a002400b992"
 		},
 		{
 			"unit": "function.lfs-pointer",
 			"from": "src/services/attached-record-service/lfsPointer.ts",
 			"to": "src/services/history-status-service/attached-record-service/lfsPointer.ts",
-			"definition": "71c4bf8943c0af2a0f46126573cba89b6a2ee341ae5eefd9c73e5353697d8a5d"
+			"definition": "0e5a599d5ff5475fba8334f146535bdc790ba4a061abc4fa5b118ad9ed6c3a3f"
 		},
 		{
 			"unit": "desktop.service.project-run",
 			"from": "packages/desktop/src/services/project-run-service/ProjectRunService.ts",
 			"to": "packages/desktop/src/services/desktop-run-service/project-run-service/ProjectRunService.ts",
-			"definition": "1361e5c6d9403089db41f4f8678860269ecc5bc49c94d5097c51b085d64693bc"
+			"definition": "1c852abd6f52c52c7ce29c47f3b8477eb7c958547321a94cfef241083068e502"
 		},
 		{
 			"unit": "desktop.function.project-proposal",
 			"from": "packages/desktop/src/services/project-run-service/projectProposal.ts",
 			"to": "packages/desktop/src/services/desktop-run-service/project-run-service/projectProposal.ts",
-			"definition": "2793f23a159c5db1796b6210460f919f7839a63191496306cab5b214fcd3f96b"
+			"definition": "c5dbabc19a9f02002c27313d9fe1ee9e5f47ce026dd70ecd610d9d4841c4a00c"
 		},
 		{
 			"unit": "desktop.function.proposal-units",
 			"from": "packages/desktop/src/services/project-run-service/proposalUnits.ts",
 			"to": "packages/desktop/src/services/desktop-run-service/project-run-service/proposalUnits.ts",
-			"definition": "eef62ce8f6056e181ff5d905ef9c23e378074a39650d043ad710c245bd75b93e"
+			"definition": "68e107f0ae5ea45994a3b5d4e9cd052d79424f3916b85ad0255a7b8f653fd033"
 		},
 		{
 			"unit": "workflow.run-hooks",
 			"from": "src/workflows/runHooks.ts",
 			"to": "src/cli/program/runHooks.ts",
-			"definition": "2e508d2b87d89fd15bcfa54491960199aa9b06ddd486ca99737d761be6bd5927"
+			"definition": "1e216b824dc470d69c4ee5c04a8a9d6f0aa444dfb090eb561e92dd617472bf67"
 		},
 		{
 			"unit": "workflow.sync-history",
 			"from": "src/workflows/syncHistory.ts",
 			"to": "src/cli/program/syncHistory.ts",
-			"definition": "a174c81346f6579826a9b1e9b1092bdc6835857985831fc644deab5c58ded477"
+			"definition": "8cb31c39abef90bb9f8b728e2b2690eb0b7bd4168ef78487069b850c7d197e67"
 		},
 		{
 			"unit": "service.history-sync",
 			"from": "src/services/history-sync-service/HistorySyncService.ts",
 			"to": "src/cli/program/history-sync-service/HistorySyncService.ts",
-			"definition": "36b8adb14f5a7cae3153bd27d5d94c1598283f0f6da1d94870197a65624a8e82"
+			"definition": "77f2dfda99fa773d749ac5db85fa15725eac3596a496d3d4a242c98e1c0f5711"
 		},
 		{
 			"unit": "function.history-refs",
 			"from": "src/services/history-sync-service/historyRefs.ts",
 			"to": "src/cli/program/history-sync-service/historyRefs.ts",
-			"definition": "42409c1e00aa110963b5a6a1629efadf1e1809721849984fde621f841f7a1d16"
+			"definition": "964364f6f17a0d37112d8fa0d3a70c9c81e546d83a64e6e584ad512456c7b815"
 		},
 		{
 			"unit": "desktop.adapter.git-source",
 			"from": "packages/desktop/src/adapters/git-source-adapter/GitSourceAdapter.ts",
 			"to": "packages/desktop/src/services/project-session-service/git-source-adapter/GitSourceAdapter.ts",
-			"definition": "4d5df0e67547b56edbae58889b64f26e75f43a54367bb189b87cb1e47aea1448"
+			"definition": "01decde5581e75ca571d6f0156881dd2b9e059ef55127d28b366b3b64713cf90"
 		},
 		{
 			"unit": "desktop.function.git-blobs",
 			"from": "packages/desktop/src/adapters/git-source-adapter/gitBlobs.ts",
 			"to": "packages/desktop/src/services/project-session-service/git-source-adapter/gitBlobs.ts",
-			"definition": "d8c637bb6f8e3ad58c93a24a5589e5fc5e53600fbb7cdbd2f20b2a25f5185b7d"
+			"definition": "33e36f9afda2c67dafe8ac8750d80698f12501bb9c97a9b92d701169b2896f6f"
 		},
 		{
 			"unit": "desktop.function.git-read",
 			"from": "packages/desktop/src/adapters/git-source-adapter/gitRead.ts",
 			"to": "packages/desktop/src/services/project-session-service/git-source-adapter/gitRead.ts",
-			"definition": "328c4f0ad673cbe42983b7416ab183b9eb0b71c61d8c6d2d515613c85340420b"
+			"definition": "3e8f782fd730c1c5815a60a199cc1c6b5f639eb7d0c226b277c1323f23f71abb"
 		},
 		{
 			"unit": "workflow.inspect-scenarios",
 			"from": "src/workflows/inspectScenarios.ts",
 			"to": "src/cli/program/inspectScenarios.ts",
-			"definition": "c465d935ad7a8058f13232e74baf247a4e2f57d74a68c1d69092b6d2746652b8"
+			"definition": "1dbd23cba8e2ad6bbf9dac5e42346ff83c72bc9ebfc025f797a704533b24f535"
 		},
 		{
 			"unit": "relay.controller.manage",
 			"from": "packages/relay/src/controllers/ManageController.ts",
 			"to": "packages/relay/src/utils/host-runtime/ManageController.ts",
-			"definition": "4894f8d25f07401a31e2014110bea5ad9266e1989071cac0e018f8d7cc744d05"
+			"definition": "19f3865289625f04165dce6082558f633a40500c264a6d15e47ca519fbf5b8ee"
 		},
 		{
 			"unit": "desktop.adapter.remote-registration",
 			"from": "packages/desktop/src/adapters/RemoteRegistrationAdapter.ts",
 			"to": "packages/desktop/src/initializers/initialize-desktop/RemoteRegistrationAdapter.ts",
-			"definition": "8fbf7b322de565c683a830a1c2bdb01ff8cece4dccfc52c6c65bd17c1017ffd9"
+			"definition": "0b6b8fd1d9cbd054a71db55cd499d6ad412a4e65d86ea520e3ab8bf6414549a5"
 		},
 		{
 			"unit": "service.snapshot-run",
 			"from": "src/services/SnapshotRunService.ts",
 			"to": "src/workflows/run-verify/verification-service/SnapshotRunService.ts",
-			"definition": "74f9cede0d64cf9cbb6a4341af2dcc392d63ac5a8e377031b21a916c53fc4e83"
+			"definition": "6c3ff0bd50e6e2875d27738b036a234a6c7ee208b4687d4a4b94f53319e3e740"
 		},
 		{
 			"unit": "service.check-run",
 			"from": "src/services/CheckRunService.ts",
 			"to": "src/workflows/run-verify/verification-service/CheckRunService.ts",
-			"definition": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+			"definition": "3cc3ecfe03737f3fdcb5daaec8070472370a26902b8f941f23f4eb2fd0e7f0fc"
 		},
 		{
 			"unit": "service.check-run",
 			"from": "src/services/check-run-service/CheckRunService.ts",
 			"to": "src/workflows/run-verify/verification-service/check-run-service/CheckRunService.ts",
-			"definition": "1bfe8835ea7cdf0f9dbe828d5a2d673ee4b184374fb83a9e6f95c12575e695c0"
+			"definition": "b4409148ed49b4fe1574ee44790338bbbe23be3b7a6a284687a37ca0b9e8a0c6"
 		},
 		{
 			"unit": "reports.service.report-storage-sync",
 			"from": "packages/reports/src/services/ReportStorageSyncService.ts",
 			"to": "packages/reports/src/services/report-command-service/ReportStorageSyncService.ts",
-			"definition": "06d34d0bc994a370ef20535aca588c21b5996575d6a0886d495f53bcf42ca4e2"
+			"definition": "0873e5cbf4d526f8c2a6b385538548eb00943824900f94dbd00db8af2a834473"
 		},
 		{
 			"unit": "hub.service.request-session",
 			"from": "packages/hub/src/services/request-session-service/RequestSessionService.ts",
 			"to": "packages/hub/src/lib/server/auth/request-session-service/RequestSessionService.ts",
-			"definition": "ac5c6fc6a36412bca172e46308d7fb63cf1b25cf9609f0ff8c7744ce494cf084"
+			"definition": "e91d3ea0b35df80b51efb6d8cf83382cd993ffbe8e370d39e16f2029cb5c1eb6"
 		},
 		{
 			"unit": "hub.function.auth-http",
 			"from": "packages/hub/src/services/request-session-service/authHttp.ts",
 			"to": "packages/hub/src/lib/server/auth/request-session-service/authHttp.ts",
-			"definition": "6174b7581321b7bcbd32ca295ddf0cab9a09e16a34afcf1e69835554d66dc499"
+			"definition": "ee2985c557a4f312f2631b054a681aa92cb06973d3a9dc0168918f2a401f7a85"
 		},
 		{
 			"unit": "command.verify",
 			"from": "src/commands/VerifyCommand.ts",
 			"to": "src/cli/program/VerifyCommand.ts",
-			"definition": "7155714bf40596d7c85c2ca670d025e08729a9e7f561c5c0230540831bba7ccd"
+			"definition": "9bdae348aa1c461f5189e3ab3900c11dec68f78ec4a82c0d9c7986c56cfabbfc"
 		},
 		{
 			"unit": "workflow.analytics-html",
 			"from": "src/workflows/analyticsHtml.ts",
 			"to": "src/cli/program/analyticsHtml.ts",
-			"definition": "85550879cee1349e8cec021b8903d7f1c2d20ddbe017d289e73c25852fdfaf4d"
+			"definition": "13caf2eac7315dde69296bd9702bad39c7546c2413f0d2f074c90ed43d6c490a"
 		},
 		{
 			"unit": "hub.controller.hub-agent",
 			"from": "packages/hub/src/controllers/HubAgentController.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubAgentController.ts",
-			"definition": "85d58cdba266092cb3d2ef5e29e7d31f8a0fa20ab19465cc2d624a75444f4aff"
+			"definition": "0d95fa47025cad07d80735fa157260a9afa50cfece897f29a381021ec4253ead"
 		},
 		{
 			"unit": "command.report",
 			"from": "src/commands/ReportCommand.ts",
 			"to": "src/cli/program/ReportCommand.ts",
-			"definition": "c2e5edccf03b6f21eed41c9af42920d8dcecd274804b51b16299d2fae8813907"
+			"definition": "79b84b5ac94258d95bf87559ade196bbfd88d7dd2f821662c9132f02343b9d34"
 		},
 		{
 			"unit": "function.reports-environment",
 			"from": "src/workflows/run-report/reportsEnvironment.ts",
 			"to": "src/cli/program/run-report/reportsEnvironment.ts",
-			"definition": "3b60cdb211011abcb94914772da60854764ec587e7c93aa9c3742881334d5e70"
+			"definition": "0d914797cc82d740380dfddf99191e75e1ee67f0b59596edbf53aa2f4a8329a3"
 		},
 		{
 			"unit": "workflow.run-report",
 			"from": "src/workflows/run-report/runReport.ts",
 			"to": "src/cli/program/run-report/runReport.ts",
-			"definition": "77cc19a6f7fca9883217bb1e024d5686021f52746f959583bce932f60bea12cb"
+			"definition": "72f0c78424e1805e8a56830df6e61b6ea2f5e987d15bea3bcab9eb29c802889d"
 		},
 		{
 			"unit": "hub.entry.hooks-server",
 			"from": "packages/hub/src/hooks.server.ts",
 			"to": "packages/hub/src/hooks.server/hooks.server.ts",
-			"definition": "ab84c578fdd833d736a65aa3f04c0b3f5dece6288e99e1684933bcc6a66cc143"
+			"definition": "d6de198639572484e2829450568f01debacede62c3d6274e20fdc79a8ea4de1d"
 		},
 		{
 			"unit": "hub.middleware.hub-responses",
 			"from": "packages/hub/src/middleware/HubResponsesMiddleware.ts",
 			"to": "packages/hub/src/hooks.server/HubResponsesMiddleware.ts",
-			"definition": "2623ff0374444b518f8779aee754492212cb6639a74255a250425baecc84fbc6"
+			"definition": "b277bdb93533368ac620de101aea1dbea180dbb933a7d346265624358f4e72ae"
 		},
 		{
 			"unit": "desktop.service.device-operations",
 			"from": "packages/desktop/src/services/device-operations-service/DeviceOperationsService.ts",
 			"to": "packages/desktop/src/services/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts",
-			"definition": "73f2b5bf2b979dba7fef5cb70d1418ade178f901e79b30d09fb9d28c154c41d6"
+			"definition": "6af0c5d46f2451c29e1730ba56ac45579308fe38681e82c0a939181c136a54db"
 		},
 		{
 			"unit": "desktop.function.device-capabilities",
 			"from": "packages/desktop/src/services/device-operations-service/deviceCapabilities.ts",
 			"to": "packages/desktop/src/services/remote-host-service/device-session-service/device-operations-service/deviceCapabilities.ts",
-			"definition": "0c6cd4f85a3d7c16dd91996b2140ca58a7d90444b14935bd0255af087b6dd9e5"
+			"definition": "edbe7349e3e7ae3fe6200da1359c3ed4c088cdad39eeea1e39ecec6f49d8cc86"
 		},
 		{
 			"unit": "desktop.adapter.planning-facade",
 			"from": "packages/desktop/src/adapters/planning-facade-adapter/PlanningFacadeAdapter.ts",
 			"to": "packages/desktop/src/services/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
-			"definition": "364ae4879e50aa7e8012485bdc70afa4bb0eeacb168fde76b38621de95786b04"
+			"definition": "afff4002416783534f5046ec92099d8a29b37ef726ad3bfdef6e4529d145b47b"
 		},
 		{
 			"unit": "desktop.function.planning-message",
 			"from": "packages/desktop/src/adapters/planning-facade-adapter/planningMessage.ts",
 			"to": "packages/desktop/src/services/project-session-service/planning-facade-adapter/planningMessage.ts",
-			"definition": "ede96c88c32620e50c2379ee473f111b4668aaff5dbd132b492c8bb7b52f40a4"
+			"definition": "be9626e715b55eb2dfb7159373284e12e01f21a0933995ac5316380d0fc7cb7b"
 		},
 		{
 			"unit": "desktop.function.planning-reads",
 			"from": "packages/desktop/src/adapters/planning-facade-adapter/planningReads.ts",
 			"to": "packages/desktop/src/services/project-session-service/planning-facade-adapter/planningReads.ts",
-			"definition": "9a4f530e0738131b7d8c57cba1bc6615fef34411b7e185777beb2e25815d76a3"
+			"definition": "0fdd6df349103602a1edd9fc62dc32ffe1a41fecf315c0de75a532bef0aae255"
 		},
 		{
 			"unit": "desktop.function.planning-writes",
 			"from": "packages/desktop/src/adapters/planning-facade-adapter/planningWrites.ts",
 			"to": "packages/desktop/src/services/project-session-service/planning-facade-adapter/planningWrites.ts",
-			"definition": "b7b29cfade20da6ae79bfcc0e77f49fed41e24d8cee616e3969eeb2f34743a88"
+			"definition": "26c1fa6ed92d6361d09e0804f6eff2b034e8b9315c575142fe22f0a0d30933ac"
 		},
 		{
 			"unit": "desktop.adapter.capacitor-bridge",
 			"from": "packages/desktop/src/adapters/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
 			"to": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
-			"definition": "7e812a6f5ee27eaec5155203532c7b55c3db95127d574dbc632c1419837eeb91"
+			"definition": "d508581532d44b290e7f920f2d540eb35ef9f9a804e77db0496990c21ef291f2"
 		},
 		{
 			"unit": "desktop.function.cached-snapshot",
 			"from": "packages/desktop/src/adapters/capacitor-bridge-adapter/cachedSnapshot.ts",
 			"to": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/cachedSnapshot.ts",
-			"definition": "280ec288440d91e4990affe890d6599db85b3c9474ad40251894447a75080d67"
+			"definition": "9438f87955165028471b9c610af182e05f9d785c928b5eb27d85165d0e80b1b5"
 		},
 		{
 			"unit": "desktop.function.remote-artifact",
 			"from": "packages/desktop/src/adapters/capacitor-bridge-adapter/remoteArtifact.ts",
 			"to": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/remoteArtifact.ts",
-			"definition": "075290a24bd58683afb79082a0e9591afe571fc3bd28a71f1b22099db11e2a42"
+			"definition": "49b1cb9c2db9e8683f882ffd6e5cd661a1db7cf4c95a24d1ae53434d45b3c254"
 		},
 		{
 			"unit": "desktop.function.remote-grant",
 			"from": "packages/desktop/src/adapters/capacitor-bridge-adapter/remoteGrant.ts",
 			"to": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/remoteGrant.ts",
-			"definition": "e4cb3648646871207a6e6fd9c1d0dec19b7fbe0de2ff35aa416c3bb4ae5976d9"
+			"definition": "7eec8fc38dfd064b90c3fb18a1d46f9573811a6c0b3c1d87ee2b303c5d1f5694"
 		},
 		{
 			"unit": "desktop.initializer.initialize-preload",
 			"from": "packages/desktop/src/initializers/initializePreload.ts",
 			"to": "packages/desktop/src/initializers/initialize-preload/initializePreload.ts",
-			"definition": "5a8a1b26a027caf0f3513e69441a83f686ed7803f4a5766f4492058696e75d6f"
+			"definition": "08214b461596bde436cdaf61401f5479b220cfc1005d35c0e99af4faec53aea5"
 		},
 		{
 			"unit": "desktop.service.local-transport-client",
 			"from": "packages/desktop/src/services/LocalTransportClientService.ts",
 			"to": "packages/desktop/src/initializers/initialize-preload/LocalTransportClientService.ts",
-			"definition": "51e3cb272817205e2b917f2ea8a46c14d938af12b4edd5b0e17ad09dac2af3e2"
+			"definition": "0e3be5d2f39adfa9674e3c23158e2aa577543d021a80a90020a45076a8c361af"
 		},
 		{
 			"unit": "workflow.run-kernel-boundary",
 			"from": "src/workflows/runKernelBoundary.ts",
 			"to": "src/cli/program/runKernelBoundary.ts",
-			"definition": "e9fb9ac95a5ff543802704a40acf9092032680cd32bd70871838461caf3ca361"
+			"definition": "470eeb9b21aae88f574630e79fcd67d6822b116c07ed98179b356784c618d642"
 		},
 		{
 			"unit": "workflow.manage-loop",
 			"from": "src/workflows/manageLoop.ts",
 			"to": "src/cli/program/manageLoop.ts",
-			"definition": "f59d97d2bf6b5e1736800f7fefc01c67f5b07f76d020378a0db5db778ce4ad3e"
+			"definition": "e95f68a7587b306a9f99bd633dad2b68e60c3f5c138bcbb7af1e4c5ee767a3fe"
 		},
 		{
 			"unit": "service.legacy-history",
 			"from": "src/services/LegacyHistoryService.ts",
 			"to": "src/cli/program/LegacyHistoryService.ts",
-			"definition": "4b0b3151ddbd90fc4f5cb828272279cc015f7a86bbd78db7ea12f9450c806046"
+			"definition": "afda041d108f5dae7744434e4d56023930f9e4318bf6a649fc1492c22cc75aad"
 		},
 		{
 			"unit": "service.source-impact",
 			"from": "src/services/source-impact-service/SourceImpactService.ts",
 			"to": "src/services/revision-detail-service/source-impact-service/SourceImpactService.ts",
-			"definition": "4a0565c3e9b5f227a3a9fd28a4ee600f84d2ab0f225d0c2ec748aa870bbe8e9a"
+			"definition": "e921b26b9d9c3af93a7c95177d4cf4de8bdc8ad31401a1e8472406cd7eaa8e4c"
 		},
 		{
 			"unit": "function.side-impact",
 			"from": "src/services/source-impact-service/sideImpact.ts",
 			"to": "src/services/revision-detail-service/source-impact-service/sideImpact.ts",
-			"definition": "b14bc8c2116c18686313e4426612ddcd1ede44b260fe574bfba34af47618e12b"
+			"definition": "3ae0e0864e62ed6e002240aa3d23e739fa4b36dd5dbb5f6ea19e444c2ac941ed"
 		},
 		{
 			"unit": "remote.service.host-pairing",
 			"from": "packages/remote/src/services/host-pairing-service/HostPairingService.ts",
 			"to": "packages/desktop/src/services/remote-host-service/host-pairing-service/HostPairingService.ts",
-			"definition": "e93e1be717ff01a63df93812e4d8d3015b843357c87829f7b4f34984f4a0560b"
+			"definition": "4a40e61e9dd41177d106b1e6d73e1040b90d29be5ecaba311a76a91c200e708e"
 		},
 		{
 			"unit": "remote.function.remote-identity",
 			"from": "packages/remote/src/services/host-pairing-service/remoteIdentity.ts",
 			"to": "packages/desktop/src/services/remote-host-service/host-pairing-service/remoteIdentity.ts",
-			"definition": "c4ec3461263222bfa145bcb32b9f80ea6aad48cf3e1bb5e08441853f2e92e3a6"
+			"definition": "f679baeab043a2b94fda1f9c6e17e7e22e842066f97e37f9240349beb9ef1c74"
 		},
 		{
 			"unit": "workflow.response-check-evaluate",
 			"from": "src/workflows/responseCheckEvaluate.ts",
 			"to": "src/cli/program/responseCheckEvaluate.ts",
-			"definition": "6af1af68d38a81263c9ab3c1efdb42e8e39f8dd103c3148c8fc3a03b7361b4c9"
+			"definition": "ae5733eee279bb145f9c1c5a72a9b07ad7b9c1aa4cf7132cf4f27e9a3c6904ad"
 		},
 		{
 			"unit": "adapter.cpu-process",
 			"from": "src/adapters/cpu-process-adapter/CpuProcessAdapter.ts",
 			"to": "src/services/cpu-usage-service/cpu-process-adapter/CpuProcessAdapter.ts",
-			"definition": "83d55e209da03ec4fecde06550afd3e4af6b72c899edeffe99508951087e108d"
+			"definition": "f4d03e73c5e91f4910ba33f8df3a51019670e0eb91511447ac0c9ddd1de3d53a"
 		},
 		{
 			"unit": "function.cpu-processes",
 			"from": "src/adapters/cpu-process-adapter/cpuProcesses.ts",
 			"to": "src/services/cpu-usage-service/cpu-process-adapter/cpuProcesses.ts",
-			"definition": "38aa6cc7a41c8386be54f1c8f7f48e67a891698378cde2ffcd5d48c8074efd84"
+			"definition": "da089e6a90cd02560631a444e472879062e757d276657ae2889cdd287296154f"
 		},
 		{
 			"unit": "service.codex-gateway",
 			"from": "src/services/codex-gateway-service/CodexGatewayService.ts",
 			"to": "src/cli/program/codex-gateway-service/CodexGatewayService.ts",
-			"definition": "9b653d5f932e9739860c6ceabab38ee7cf675d957c4d57f3e137f16b7b90b996"
+			"definition": "7d92cb5e10dd6b0e7f6bfe8281a8c40e682d1805ee4061390c83f759bca0b1d6"
 		},
 		{
 			"unit": "function.gateway-replay",
 			"from": "src/services/codex-gateway-service/gatewayReplay.ts",
 			"to": "src/cli/program/codex-gateway-service/gatewayReplay.ts",
-			"definition": "fdfc3890a242c879ea4dc055e708586407926a42960513f7796eeca75be4f6db"
+			"definition": "8b8a349af0ccbc8e1da2249b8c3abbabf194f22bf2c18b46731b244b42fc83bb"
 		},
 		{
 			"unit": "function.gateway-stream",
 			"from": "src/services/codex-gateway-service/gatewayStream.ts",
 			"to": "src/cli/program/codex-gateway-service/gatewayStream.ts",
-			"definition": "e5afcc7416d5832f13c3294d729c59a23a312555ad087266759f342bc5587901"
+			"definition": "76cf900b93a1c2c308e800bc7f4d67d5328a5052d499c60d85456fb4d0d3388a"
 		},
 		{
 			"unit": "adapter.claude-gateway",
 			"from": "src/adapters/ClaudeGatewayAdapter.ts",
 			"to": "src/cli/program/codex-gateway-service/ClaudeGatewayAdapter.ts",
-			"definition": "ec37727801b2fb9e3d32bbafe444efd350f33113dd3307d3265e48bab797b467"
+			"definition": "cdb1be5acbee9035a9192f2303dc4c0afe49e84d2ba73e67ebea58d4f80011f4"
 		},
 		{
 			"unit": "reports.entry.hooks-server",
 			"from": "packages/reports/src/hooks.server.ts",
 			"to": "packages/reports/src/hooks.server/hooks.server.ts",
-			"definition": "eb38bdcffae991c15e7169485fdbaf9d12ec9e32e4a1a6126c1bc52ebf4168ae"
+			"definition": "ccf9315ac6d07bbb53248c5a8707431023e2cbaf67d6bdfa5090c309814e6523"
 		},
 		{
 			"unit": "reports.controller.console-agent",
 			"from": "packages/reports/src/controllers/ConsoleAgentController.ts",
 			"to": "packages/reports/src/hooks.server/ConsoleAgentController.ts",
-			"definition": "f6dbc5e7d6af263fba9676d58e7ea915706bf09141b537496b204ce3ae2f53ed"
+			"definition": "e69fab551d013e04a4dce4403696335dde5a3d877b52d988f11b9639e7c3d75e"
 		},
 		{
 			"unit": "relay.service.socket-accept",
 			"from": "packages/relay/src/services/SocketAcceptService.ts",
 			"to": "packages/relay/src/utils/host-runtime/SocketAcceptService.ts",
-			"definition": "884b6e7da3c21c69f5ccbbc0168c5679c6d57207a4679d58dcc2d94aff8e618f"
+			"definition": "ba7aed08b415ca4ad794733e064241bb1f2895ffa5130175c371293a4498e539"
 		},
 		{
 			"unit": "workflow.loop-next",
 			"from": "src/workflows/loopNext.ts",
 			"to": "src/cli/program/loopNext.ts",
-			"definition": "4de1a5bcb88c29e501471bfd32af1e90b925eb27b2701b1f51c4900dcaa9cace"
+			"definition": "6765f316e35a3d071a8bd403b52f8e3b3cba90ef2740b71534ad718aeab0cc4c"
 		},
 		{
 			"unit": "desktop.service.remote-projection",
 			"from": "packages/desktop/src/services/RemoteProjectionService.ts",
 			"to": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/RemoteProjectionService.ts",
-			"definition": "75b131476fde03887aee657f8ed98bc974e6653f716c9df422032b516dfecd07"
+			"definition": "de1f8f7b45e2210c8c54cbb5faef610b1fd382a23c38aaee970a92a171aeab9b"
 		},
 		{
 			"unit": "desktop.service.project-discovery",
 			"from": "packages/desktop/src/services/ProjectDiscoveryService.ts",
 			"to": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/ProjectDiscoveryService.ts",
-			"definition": "7bc53f765d7a0b69c1cd6fdbc64efe672a0ecf2467d6c9d8da37623a7d2fce40"
+			"definition": "83d804a14932dae5e1e35afc813a194dcd1991a9d879ebc5330b2eeea48e5d48"
 		},
 		{
 			"unit": "workflow.review-clean-code",
 			"from": "src/workflows/reviewCleanCode.ts",
 			"to": "src/audit/reviewCleanCode.ts",
-			"definition": "0ed4a02d22681a5e19d5c7cb5529178df8995676daada9654482205cadd39a9b"
+			"definition": "44b4bab69c483cf432c2ed13f325f301a3b3fb4229a1663559dba7e8ea494c62"
 		},
 		{
 			"unit": "desktop.service.plan-run",
 			"from": "packages/desktop/src/services/PlanRunService.ts",
 			"to": "packages/desktop/src/services/desktop-run-service/PlanRunService.ts",
-			"definition": "318ecfba1a1c3795bef2a80f572c64b5408350c55977abe9a3721832cfba069f"
+			"definition": "efa5aeed6c9be2c1a74d7f9a7cf08cbb3b31bf7a61c504518418a0d81d498da8"
 		},
 		{
 			"unit": "relay.service.device-revocation",
 			"from": "packages/relay/src/services/DeviceRevocationService.ts",
 			"to": "packages/relay/src/utils/host-runtime/DeviceRevocationService.ts",
-			"definition": "7df68d7b2e07c3733de6debf162b892d91c93008311a4abee05c097dd5605176"
+			"definition": "627c57b9882dd21b7415d799c30bef537f4d1d95e1c4c81c9132d8c3520339ae"
 		},
 		{
 			"unit": "hub.adapter.github-api",
 			"from": "packages/hub/src/adapters/GithubApiAdapter.ts",
 			"to": "packages/hub/src/lib/server/auth/GithubApiAdapter.ts",
-			"definition": "4c701b2e1fd444f1f69c6c9d764366d108089c6a2b9ebda7e676ea1705d0bf86"
+			"definition": "554f401f137bae1fd6dcfebe9d1014f8fafeb0a049d42af6efd9a55a6376cb87"
 		},
 		{
 			"unit": "hub.adapter.d1-auth-store",
 			"from": "packages/hub/src/adapters/d1-auth-store-adapter/D1AuthStoreAdapter.ts",
 			"to": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/D1AuthStoreAdapter.ts",
-			"definition": "30b15b0fbe64ceceacc1c70e106ab1133f6c3253befa09004b1757b680c8269b"
+			"definition": "627dc6c31ac7b1db9f58e62d32a97024552e6c93eab258ad6319039e3361bd35"
 		},
 		{
 			"unit": "hub.function.d1-credential-stores",
 			"from": "packages/hub/src/adapters/d1-auth-store-adapter/d1CredentialStores.ts",
 			"to": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1CredentialStores.ts",
-			"definition": "923d41e8bcbbb8f0fadfc277ed77e982921fd6cc0136567ef7a00fdb09ccb199"
+			"definition": "16943c31f2589ea2d77a5a0d3e1b1e617dd2716ea25f0e109f1d43499d5a40f1"
 		},
 		{
 			"unit": "hub.function.d1-email-stores",
 			"from": "packages/hub/src/adapters/d1-auth-store-adapter/d1EmailStores.ts",
 			"to": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1EmailStores.ts",
-			"definition": "1f36eb34314f356b2ef7aec37c2d2ffc5b8f81c6dd1f0ac3bdbe367ccf084c71"
+			"definition": "123a07436c74ce0571b45102c4206619bdbd3ba33f4c20fade0d34acf51279e2"
 		},
 		{
 			"unit": "hub.function.d1-grant-store",
 			"from": "packages/hub/src/adapters/d1-auth-store-adapter/d1GrantStore.ts",
 			"to": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1GrantStore.ts",
-			"definition": "1a79386e8002753a49f2c8f07f25b907d00a6fef18bfaf8f511d2148635002c1"
+			"definition": "afceb44b11fbfaa90f434903505c166017dfd5bf0a7fb2da26ba79f983d88d72"
 		},
 		{
 			"unit": "hub.function.d1-one-time-stores",
 			"from": "packages/hub/src/adapters/d1-auth-store-adapter/d1OneTimeStores.ts",
 			"to": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1OneTimeStores.ts",
-			"definition": "0978bd691b135d19e3e623f4a4d4249e434d129af6937b0aaee1098f7854030f"
+			"definition": "aa3dea355811dea4b698aa64ddfdbeb5fd74d5ff211c3cd96f916bf275f9e46c"
 		},
 		{
 			"unit": "service.history-index",
 			"from": "src/services/history-index-service/HistoryIndexService.ts",
 			"to": "src/cli/program/history-index-service/HistoryIndexService.ts",
-			"definition": "0f74b63ed96e83947b0eb4f0d5505a4f93b025c17a64af1d86fa8ce9619a851f"
+			"definition": "97187fefdb5f0d466f569ec40cfaa64eb3979340465655336c7464d3674410cb"
 		},
 		{
 			"unit": "function.budget-reviews",
 			"from": "src/services/history-index-service/budgetReviews.ts",
 			"to": "src/cli/program/history-index-service/budgetReviews.ts",
-			"definition": "0c95bf19e5f02182eba38330a5374cc2e77a99b7e0e01501bdd93d77c9edbe3c"
+			"definition": "c9cdbda77b4ddf4fcc061f5d2fc7af2c5c1219feaadd7e0c8098456d461b8e36"
 		},
 		{
 			"unit": "function.history-series",
 			"from": "src/services/history-index-service/historySeries.ts",
 			"to": "src/cli/program/history-index-service/historySeries.ts",
-			"definition": "0ce28c844bf3a88dff1993c0ce375593370969b029462026faea0952ae9b1e69"
+			"definition": "92697a7d2e73e368db3abe4e27cc48a861b4e40b2ca75e7e3132b1fe5db910e9"
 		},
 		{
 			"unit": "function.revision-changes",
 			"from": "src/services/history-index-service/revisionChanges.ts",
 			"to": "src/cli/program/history-index-service/revisionChanges.ts",
-			"definition": "ffe76fb3db9cdc003bca20e1429ba17977d39b3cdf7088862d5928e6ce4a248f"
+			"definition": "69b2dc284d3af5783a3e629e4bcbc8cb5490363587f5d31d122126576bdfcd04"
 		},
 		{
 			"unit": "service.history-media",
 			"from": "src/services/history-media-service/HistoryMediaService.ts",
 			"to": "src/cli/program/history-index-service/history-media-service/HistoryMediaService.ts",
-			"definition": "1cc7a9853d9cd807614bd4c93d2c8ff9ba3a7aa131a8f2e053bf9888af1325da"
+			"definition": "bdb33fb63db47666859b6c870331dfaf5c2c3c9f32783313f3645b3f40d768db"
 		},
 		{
 			"unit": "function.media-place",
 			"from": "src/services/history-media-service/mediaPlace.ts",
 			"to": "src/cli/program/history-index-service/history-media-service/mediaPlace.ts",
-			"definition": "ba96ca41e00e0f5624297bd64163d474bfc988b601ddd544068c759de4a2c89f"
+			"definition": "d0da4413944329e18a2cc7fd126cf08c3f58a164498f5b9eed41c6d9da8d5052"
 		},
 		{
 			"unit": "relay.service.pairing-offer",
 			"from": "packages/relay/src/services/PairingOfferService.ts",
 			"to": "packages/relay/src/utils/host-runtime/PairingOfferService.ts",
-			"definition": "f2c93b05127fb92248dad6b8923a4b03993d08b8a6ae454a9d806c983d985a3e"
+			"definition": "445fee03b5c60d9fcaed7dd87b6aac01ff99f0c4d466b5c773277c30f850a2cf"
 		},
 		{
 			"unit": "adapter.process-identity",
 			"from": "src/adapters/ProcessIdentityAdapter.ts",
 			"to": "src/services/agent-activity-service/ProcessIdentityAdapter.ts",
-			"definition": "096ac3706b82b72e7ba2db1251ea275f86d9000ef29cb497162b5ec555b108cf"
+			"definition": "701a93dbb22fb057e90f4970af7fbf8f73c265eb5a995dd00c1d769686855106"
 		},
 		{
 			"unit": "remote.service.response-ledger",
 			"from": "packages/remote/src/services/ResponseLedgerService.ts",
 			"to": "packages/remote/src/services/wire-session-service/ResponseLedgerService.ts",
-			"definition": "ba666d5f1dd686c8afb4ff0880fa6c38c3f2e1ae487c8a4bf366e9cfff347c77"
+			"definition": "d566b05cb230f17316ee1a3e79071658e942276a05f11f5de213b2392efefd41"
 		},
 		{
 			"unit": "service.console-uninstall",
 			"from": "src/services/ConsoleUninstallService.ts",
 			"to": "src/cli/program/ConsoleUninstallService.ts",
-			"definition": "81ce3279490e8329ac2ff405db81daa72109fad099f4a7e8f63786f93378842b"
+			"definition": "9e18ed6f492ae72cd20e40c5458d3660a71367b8a2d106cec48b86709cc71d19"
 		},
 		{
 			"unit": "reports.service.console-agent",
 			"from": "packages/reports/src/services/ConsoleAgentService.ts",
 			"to": "packages/reports/src/hooks.server/ConsoleAgentService.ts",
-			"definition": "8a4f818eacf03b3e85325929514358273b6fef048b76a60fc4a7d6d54d2d9a5b"
+			"definition": "2a0274757c369262eb9cc7098eb14483461e21fd95c40fc82cb6b5371dcd1695"
 		},
 		{
 			"unit": "service.claude-query",
 			"from": "src/services/claude-query-service/ClaudeQueryService.ts",
 			"to": "src/cli/program/codex-gateway-service/claude-query-service/ClaudeQueryService.ts",
-			"definition": "ea219eae47df2df90098b725c82c81dd69f41aecf8f93ae87acf75f287f30120"
+			"definition": "ca72ec6df05ed24a79f03cd969147c2c869a7bec2468605e8258673400bd0e77"
 		},
 		{
 			"unit": "function.gateway-messages",
 			"from": "src/services/claude-query-service/gatewayMessages.ts",
 			"to": "src/cli/program/codex-gateway-service/claude-query-service/gatewayMessages.ts",
-			"definition": "cebe8ac4f799a41c496f40f50531403c7eee287b10d87d2b44abed94cfa90bd8"
+			"definition": "fc35b349df748b11f02aad13acd344ad64c9f4fa6d8b8882c41a1407e6058709"
 		},
 		{
 			"unit": "function.gateway-options",
 			"from": "src/services/claude-query-service/gatewayOptions.ts",
 			"to": "src/cli/program/codex-gateway-service/claude-query-service/gatewayOptions.ts",
-			"definition": "4cbf89a16d1e7dacfd004d0704493f918ad193dcbbf7929274a1671a4417462b"
+			"definition": "53f4f14873858cf8165cdbee184810ecee7a2a5b3f706aacaa988960a162daa3"
 		},
 		{
 			"unit": "function.gateway-prompt",
 			"from": "src/services/claude-query-service/gatewayPrompt.ts",
 			"to": "src/cli/program/codex-gateway-service/claude-query-service/gatewayPrompt.ts",
-			"definition": "408958caf10de11dbc699ee6e2b066bb3d3ce996e926e7e42d059f1609ae68b6"
+			"definition": "41d010f54e03bfedfabadd6e7ede9d54fa3c3d089553a57b36a11448224db85a"
 		},
 		{
 			"unit": "command.codex-picker",
 			"from": "src/commands/codex-picker-command/CodexPickerCommand.ts",
 			"to": "src/cli/program/codex-picker-command/CodexPickerCommand.ts",
-			"definition": "c1cc11820b41594a895f37b50f8c87e66084824a2f8a3174dd7d6a7fb012020b"
+			"definition": "ca33161cad1afea04c4186428be149bbb0f5194058fe1ba33ae8fd1688542fa9"
 		},
 		{
 			"unit": "function.picker-paths",
 			"from": "src/commands/codex-picker-command/pickerPaths.ts",
 			"to": "src/cli/program/codex-picker-command/pickerPaths.ts",
-			"definition": "a74698acda8f900f8b5756c8fe361a84afa0b06a3c01de6a3ef56aa6de1541db"
+			"definition": "b0119e0cf75aae495ce6d225eea3196ee9af0e02a58ab4c4505e17cfe26f3b80"
 		},
 		{
 			"unit": "service.picker-preview",
 			"from": "src/services/PickerPreviewService.ts",
 			"to": "src/cli/program/codex-picker-command/PickerPreviewService.ts",
-			"definition": "2cb45592c98014fb9633a7381d24610562469bad62dd3b3775c8b95d8475e9d6"
+			"definition": "7a6bb0c9a6e91afdb7ea93c1194cedc7b9e23534116773a70e309558a74452f0"
 		},
 		{
 			"unit": "planning.service.planning",
 			"from": "packages/planning/src/services/planning-service/PlanningService.ts",
 			"to": "packages/planning/src/index/planning-service/PlanningService.ts",
-			"definition": "f04a8a111f94400d59f8cab089b398de26b2cdffcb1f63977356b5f7e4d64834"
+			"definition": "842a0a7f0eb280629e529e8d7254acb460115bebe524bfb4c0d6506f5da0de02"
 		},
 		{
 			"unit": "planning.function.plan-design",
 			"from": "packages/planning/src/services/planning-service/planDesign.ts",
 			"to": "packages/planning/src/index/planning-service/planDesign.ts",
-			"definition": "358e60091a38fe91075829a4f869af87fbb46f6a86bfd748d2b2ef629417d8f1"
+			"definition": "802e22cb4d88e4925e9f496afe4ff18f479eed8f2ae40f0d9b7f300b164ae1fe"
 		},
 		{
 			"unit": "planning.function.plan-history",
 			"from": "packages/planning/src/services/planning-service/planHistory.ts",
 			"to": "packages/planning/src/index/planning-service/planHistory.ts",
-			"definition": "203299773bd1d3bfa158a65399234a1169bff40a0c35c5c1a1930771c6ab60a3"
+			"definition": "1d1338613341131dbdefec2c2324370a11a401e3f7b889f9ff1eff2b7b55b4cf"
 		},
 		{
 			"unit": "planning.function.plan-options",
 			"from": "packages/planning/src/services/planning-service/planOptions.ts",
 			"to": "packages/planning/src/index/planning-service/planOptions.ts",
-			"definition": "cb450e6ca45e72a4bb8ec6bf4fe8ddda7e508e3e324663f8c9cda227a48f1cd5"
+			"definition": "54679315ca3597c70189edc5fd6c67d80261d9b00f78ddd5891b41dc14b1a569"
 		},
 		{
 			"unit": "planning.function.plan-reads",
 			"from": "packages/planning/src/services/planning-service/planReads.ts",
 			"to": "packages/planning/src/index/planning-service/planReads.ts",
-			"definition": "ea3e9c6afe840f81545994e0f9ca44748791551316f8fc89111694de27dfd8a8"
+			"definition": "a19d53f01e28ce0ca556b71535cfa79adcfe4c089a683c8f3d40f0897677fecc"
 		},
 		{
 			"unit": "planning.function.plan-registry",
 			"from": "packages/planning/src/services/planning-service/planRegistry.ts",
 			"to": "packages/planning/src/index/planning-service/planRegistry.ts",
-			"definition": "575f59a1aa0e9336dc21a33dec326b523826a07c96727f23f1e5fb791c6fd2bb"
+			"definition": "936bc9fa9c1ad007e5ce045bc2f143b4e683924ed77f715681929fce8bf26362"
 		},
 		{
 			"unit": "planning.function.plan-thread",
 			"from": "packages/planning/src/services/planning-service/planThread.ts",
 			"to": "packages/planning/src/index/planning-service/planThread.ts",
-			"definition": "01891edcf6019a21a58c1666f8a037190d0a9b7330e3660fd67d84017ca7ff28"
+			"definition": "0a13f3b5a49de66de9dbc81704035afa1b07304ce676f8c71965b29da872292f"
 		},
 		{
 			"unit": "planning.function.plan-write",
 			"from": "packages/planning/src/services/planning-service/planWrite.ts",
 			"to": "packages/planning/src/index/planning-service/planWrite.ts",
-			"definition": "b426e63d63a7c52a061705ca3830e8c53d0d32efd54a6627b36d865616647fb8"
+			"definition": "96303dabca3c2cffd99f7b38620d2a90554452982495d60fdb218412bc2825a4"
 		},
 		{
 			"unit": "desktop.adapter.pinned-history",
 			"from": "packages/desktop/src/adapters/PinnedHistoryAdapter.ts",
 			"to": "packages/desktop/src/utils/desktop-bridge/PinnedHistoryAdapter.ts",
-			"definition": "b10d7b4a222ed05b1c4eee16f33e895f0cccb5d674bf411494858e99d9f400ad"
+			"definition": "235f3a164c394ef8af28277f70a8dacb6277795a732f363a2188221f354dfd97"
 		},
 		{
 			"unit": "repository.codex-session",
 			"from": "src/repositories/codex-session-repository/CodexSessionRepository.ts",
 			"to": "src/cli/program/codex-gateway-service/codex-session-repository/CodexSessionRepository.ts",
-			"definition": "876d160dd6507284a3539a23d5ce93603fe51625f1c23550e42249b14bb672d5"
+			"definition": "9a85ab68eb60444b14869c6a781ee625603c4d0308b0f799419ce01370b64963"
 		},
 		{
 			"unit": "function.gateway-types",
 			"from": "src/repositories/codex-session-repository/gatewayTypes.ts",
 			"to": "src/cli/program/codex-gateway-service/codex-session-repository/gatewayTypes.ts",
-			"definition": "48381fd33f2c7a1d73c75171c1303f5b4e61f9fad7e764b4cc42a60ef3750721"
+			"definition": "f4d577a6657852492858a865eb9197a8e91f7c3218e21df691ad1f7a967be066"
 		},
 		{
 			"unit": "hub.service.github-owner",
 			"from": "packages/hub/src/services/GithubOwnerService.ts",
 			"to": "packages/hub/src/lib/server/auth/GithubOwnerService.ts",
-			"definition": "296fa61bd7741c00ebfbe7da78e123d91bcb9709c2d59f481701ed521f01ccc3"
+			"definition": "5172eb1c8a9861b05644b13ff9480922a7c081924e8a4588439adaa27910ea2d"
 		},
 		{
 			"unit": "reports.adapter.r2-report-retention",
 			"from": "packages/reports/src/adapters/R2ReportRetentionAdapter.ts",
 			"to": "packages/reports/src/services/report-command-service/report-retention-service/R2ReportRetentionAdapter.ts",
-			"definition": "215984daa2e664180d3fb67622cb300820d7ce54ac630907d8b38bc1f05b5c00"
+			"definition": "23de3eab3f3acb5e9c114ce616d453dfc68f3dd4e9a079056277caebd01dfd3f"
 		},
 		{
 			"unit": "service.verification-gates",
 			"from": "src/services/VerificationGates.ts",
 			"to": "src/workflows/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
-			"definition": "e21aa8051991de24806ccdf87bd798d78eeb6ba4f8896e16cdfa3cd3067993db"
+			"definition": "9782437852eb3589831812da79891f6a8a3727a289b5981275169ae5ae24a3d1"
 		},
 		{
 			"unit": "workflow.persist-reasons",
 			"from": "src/workflows/persistReasons.ts",
 			"to": "src/cli/program/persistReasons.ts",
-			"definition": "1bcd461ebc37e377f9e64958f6fbce4060271d6df40b4ce962cc1f9f93f7c54d"
+			"definition": "cd74c1c03c11931cc13d99f36dae7104f2bd419139d6ffe1ab7e0eb330cdc8bf"
 		},
 		{
 			"unit": "function.impact-kernel",
 			"from": "src/workflows/run-kernel/impactKernel.ts",
 			"to": "src/cli/program/run-kernel/impactKernel.ts",
-			"definition": "152e99e18f9a4f7f76fbebcd9dc72234d90d4fd9ea57e6b8f613bcabcdfc21f7"
+			"definition": "dfad609f762a2f9ef4930fea731d76778910061081ac1a408822f8cf1302f628"
 		},
 		{
 			"unit": "function.kernel-workload",
 			"from": "src/workflows/run-kernel/kernelWorkload.ts",
 			"to": "src/cli/program/run-kernel/kernelWorkload.ts",
-			"definition": "ac79a51b783b8051129adceb565dd4e14c1d89ddd526e5a6311431cbef6c96d7"
+			"definition": "1afd32f4699966708ed77b090d284e18a697f30046ad9f64fe0e62b71c708bfa"
 		},
 		{
 			"unit": "workflow.run-kernel",
 			"from": "src/workflows/run-kernel/runKernel.ts",
 			"to": "src/cli/program/run-kernel/runKernel.ts",
-			"definition": "2824ffe3a7bec519abea91d5bc7a85426f33b60c44b917d17e7d0a66d1783980"
+			"definition": "ff323de4ea14c1cfff6a983dca23342caa65e7294c8d629b54437712d3b7f6a0"
 		},
 		{
 			"unit": "service.runtime-server",
 			"from": "src/services/RuntimeServerService.ts",
 			"to": "src/cli/program/run-kernel/RuntimeServerService.ts",
-			"definition": "9dfef9aab759f597bd70c905de0f94a3038dd69939f53de88376a59329bdd87d"
+			"definition": "4c5cde2a9393be944223b056f53f61e6cbcff44139852af24b82360a45c05c01"
 		},
 		{
 			"unit": "workflow.loop-search",
 			"from": "src/workflows/loopSearch.ts",
 			"to": "src/cli/program/loopSearch.ts",
-			"definition": "cfb768c2d8f1a1e9c7dcc21f186750b842cad26dcc409d633e5cac0f5fcc9170"
+			"definition": "1778b62b24b95d14637892548eb20905c81b15703bc142a7e626e75b120a703f"
 		},
 		{
 			"unit": "command.audit",
 			"from": "src/commands/audit.ts",
 			"to": "src/cli/program/audit.ts",
-			"definition": "8a196f43085e4b837fbee860b35f8c8ea011dac8ec8689a7abd134149bf7edf3"
+			"definition": "c6c2daddaf59d35cbc8c0455a40cb72d607d27381aeddb8537d7ed6e14a0e3a8"
 		},
 		{
 			"unit": "reports.service.report-publish",
 			"from": "packages/reports/src/services/report-publish-service/ReportPublishService.ts",
 			"to": "packages/reports/src/services/report-command-service/report-publish-service/ReportPublishService.ts",
-			"definition": "eebfc3fa964967377b755794ea6997ab821e7135d2199c02ffca2ba03d955b40"
+			"definition": "c5a4d268f30e10c6bd007000d69fa6f3f3269c2a39e05c513276ae1caec8f944"
 		},
 		{
 			"unit": "reports.function.report-pages",
 			"from": "packages/reports/src/services/report-publish-service/reportPages.ts",
 			"to": "packages/reports/src/services/report-command-service/report-publish-service/reportPages.ts",
-			"definition": "684075309c7bacc836628bb2679c757a63648e7f5b1495dd19a7d2452cca9ac7"
+			"definition": "825e7ac92c7bff9a0fded841f6935efcf9fb3c488140e73a59bcf690bfe8914f"
 		},
 		{
 			"unit": "reports.function.report-publication",
 			"from": "packages/reports/src/services/report-publish-service/reportPublication.ts",
 			"to": "packages/reports/src/services/report-command-service/report-publish-service/reportPublication.ts",
-			"definition": "8aea1042296cd87d52b3779cbf4e86cba1b3034bbb2c15e0ec11e46e41adb309"
+			"definition": "240f476e273b1ec777bfe40df271b47e1f22bbce16921905376c87633d56e699"
 		},
 		{
 			"unit": "reports.function.report-publication-verify",
 			"from": "packages/reports/src/services/report-publish-service/reportPublicationVerify.ts",
 			"to": "packages/reports/src/services/report-command-service/report-publish-service/reportPublicationVerify.ts",
-			"definition": "ad4f2d41bc974cb7be76a9178581107baf1202cc6a9193e379b04d51b17aa74d"
+			"definition": "f2d42723b7068f526351cedaab97b30253af6b9d675ec340a7f1104fb979fee4"
 		},
 		{
 			"unit": "relay.service.pairing-exchange",
 			"from": "packages/relay/src/services/PairingExchangeService.ts",
 			"to": "packages/relay/src/utils/host-runtime/PairingExchangeService.ts",
-			"definition": "69c82d3a69fff131b6452f177403f0898672b4fbdcc4c0fad85e56d1135e0bea"
+			"definition": "b28c17e09c6f5ce8283c1d279470f18f04d146de0163ab966dca1dee630e759f"
 		},
 		{
 			"unit": "service.hook-run",
 			"from": "src/services/hook-run-service/HookRunService.ts",
 			"to": "src/cli/program/hook-run-service/HookRunService.ts",
-			"definition": "d75aff893c976c8afd73ff746f9a580c1ad4be1cdd6874375fd4a8dad3a45f93"
+			"definition": "8cc99febe64e2b4c68697f542fae772ff98e5a30f7338b1c069fabdde2bb2a55"
 		},
 		{
 			"unit": "function.pushed-refs",
 			"from": "src/services/hook-run-service/pushedRefs.ts",
 			"to": "src/cli/program/hook-run-service/pushedRefs.ts",
-			"definition": "e894120a64b86dec0cde803306e46b4332395173c53f6e4a97ae4e4e7b120d5b"
+			"definition": "25cf42536cf0cb09844e1f6d5aa0cbdd9484055e4131ab37d4b3d1395788c9fd"
 		},
 		{
 			"unit": "service.native-picker-bridge",
 			"from": "src/services/NativePickerBridgeService.ts",
 			"to": "src/services/native-picker-bridge-service/NativePickerBridgeService.ts",
-			"definition": "cf661858e27e7c9a9d73a37a14429078a8b54bea92c55cff9853f3d96227b833"
+			"definition": "2159b7972dc966a61dd8c18c972d16717d96db1036cdd6ba26aff3a5704144d2"
 		},
 		{
 			"unit": "service.native-picker-defaults",
 			"from": "src/services/NativePickerDefaultsService.ts",
 			"to": "src/services/native-picker-bridge-service/NativePickerDefaultsService.ts",
-			"definition": "97a7dd95271d708ccd0650f0f6e360b0ff1afd5485c305737e49b6ed9e27ed89"
+			"definition": "854ac915b0d8de4753b2880459d1d65963236f85c1fc34257d263350ac58ec87"
 		},
 		{
 			"unit": "workflow.run-audit",
 			"from": "src/workflows/runAudit.ts",
 			"to": "src/cli/program/runAudit.ts",
-			"definition": "fe80edbf1ea37ec1420fb96689220fad7c6c9687c57fa8d6a57c9eead6adf745"
+			"definition": "3ffb7ca3e71084177f94c31818c4ebf3bf90b75d73854117cd9df1c4e0107a0b"
 		},
 		{
 			"unit": "hub.controller.github-connection",
 			"from": "packages/hub/src/controllers/github-connection-controller/GithubConnectionController.ts",
 			"to": "packages/hub/src/lib/server/auth/github-connection-controller/GithubConnectionController.ts",
-			"definition": "00d1862fb52616b1a0d3eb7302f06b5be0ceb053a7a0a0ad29aaf56667b44b69"
+			"definition": "b9d251c80caa2bd7338394371b892f1a3e5a1a1a68125864a9285274e4505d7b"
 		},
 		{
 			"unit": "hub.function.auth-http",
 			"from": "packages/hub/src/controllers/github-connection-controller/authHttp.ts",
 			"to": "packages/hub/src/lib/server/auth/github-connection-controller/authHttp.ts",
-			"definition": "b00a7d34bcf97e96b6adbf8d49c5c37a96935f3a8f785ed8ee8c55d011b4cb35"
+			"definition": "e98bbe7464b872b9f259bc9050b22eaa5f52b49d9e01024b7dbe3fe2cfe5cc6b"
 		},
 		{
 			"unit": "reports.function.preview-node",
 			"from": "packages/reports/src/utils/previewNode.ts",
 			"to": "packages/reports/src/utils/preview-node/previewNode.ts",
-			"definition": "144fa7071d1c467fd7ad6d701f7e957b6679be5e417ddd884b143cee9ff9dd9b"
+			"definition": "c6330fbd3b43178d6e4c67995a105e528526c3e9ea2611f4436d33bd4abc5e5f"
 		},
 		{
 			"unit": "reports.service.preview-worker",
 			"from": "packages/reports/src/services/preview-worker-service/PreviewWorkerService.ts",
 			"to": "packages/reports/src/utils/preview-node/preview-worker-service/PreviewWorkerService.ts",
-			"definition": "8a4626cf69d6926fd7163d043d3f45b8ff5db72470b9b28be58f7fb60725a7f0"
+			"definition": "b0afd2601578c69b68d8e01a90b5f0aa6f9215c7087abd8f6931dd8938dd1877"
 		},
 		{
 			"unit": "reports.function.preview-health",
 			"from": "packages/reports/src/services/preview-worker-service/previewHealth.ts",
 			"to": "packages/reports/src/utils/preview-node/preview-worker-service/previewHealth.ts",
-			"definition": "88476d942b185f5c3bae719c1f3b5033be951c9619255c4c5e8a6fc12d11e198"
+			"definition": "e335cb3dd1e93a46fc808c2b485ce7a3f3c077de5bdb5a85a8d3985e3f586625"
 		},
 		{
 			"unit": "hub.adapter.relay-manage",
 			"from": "packages/hub/src/adapters/RelayManageAdapter.ts",
 			"to": "packages/hub/src/routes/api/[...path]/RelayManageAdapter.ts",
-			"definition": "9070552f5a40fe46bda5e4268781737ffa4fb6e702aff4b7378d600468d5d2d9"
+			"definition": "0c67bdcde714a6f787737cc23805ec2b4431d89c4c5bb50343f3ce050778635b"
 		},
 		{
 			"unit": "desktop.service.remote-host-switch",
 			"from": "packages/desktop/src/services/remote-host-switch-service/RemoteHostSwitchService.ts",
 			"to": "packages/desktop/src/services/remote-host-service/remote-host-switch-service/RemoteHostSwitchService.ts",
-			"definition": "89f805897b70b9c902c544d4aa27571d880fce33677151e71196338d8857ec4f"
+			"definition": "e59ff23491834c18f7a944895835a6ecbf1feaac050bc2fdc4093317eac99e3f"
 		},
 		{
 			"unit": "desktop.function.remote-host-identity",
 			"from": "packages/desktop/src/services/remote-host-switch-service/remoteHostIdentity.ts",
 			"to": "packages/desktop/src/services/remote-host-service/remote-host-switch-service/remoteHostIdentity.ts",
-			"definition": "777947c4d95162b562b8e2d43dec2a0b91128108438d8f073ce1f79c014ff167"
+			"definition": "dd1ca75e359a546992a7f79e13d4a296479b5d83feaa14e9f18b2b480e5ef630"
 		},
 		{
 			"unit": "hub.service.github-grant",
 			"from": "packages/hub/src/services/GithubGrantService.ts",
 			"to": "packages/hub/src/lib/server/auth/GithubGrantService.ts",
-			"definition": "e0e75036b2bfeda2b9daa9877879e5ab7aa24cd2465a7648801d0276f1388bd0"
+			"definition": "27fc88856f66e3f5c731d6dd2201467207e9890096017543f999a8fa1b1fa5a1"
 		},
 		{
 			"unit": "desktop.service.project-image-cache",
 			"from": "packages/desktop/src/services/ProjectImageCacheService.ts",
 			"to": "packages/desktop/src/utils/desktop-bridge/ProjectImageCacheService.ts",
-			"definition": "6e87029044fb8b4af9e1d4fa88d87bfde512e66f9c8244152a41ba535e7a8a98"
+			"definition": "12b147900f1bc34523186d2943b3a53390bd2b6dfcbcf12d19dc91fb445d039d"
 		},
 		{
 			"unit": "reports.service.report-server",
 			"from": "packages/reports/src/services/report-server-service/ReportServerService.ts",
 			"to": "packages/reports/src/services/report-command-service/report-server-service/ReportServerService.ts",
-			"definition": "5e02d40d5260eb5dbd10e91cd73603c08ddfaee2af3679786ee878af014bf923"
+			"definition": "8981e216100b4860ba47d2356a22c84663f62fc4f22d81cf3481b9279f8d680f"
 		},
 		{
 			"unit": "reports.function.report-server-record",
 			"from": "packages/reports/src/services/report-server-service/reportServerRecord.ts",
 			"to": "packages/reports/src/services/report-command-service/report-server-service/reportServerRecord.ts",
-			"definition": "0ecdcf49fbf2b6654558d394056a7cd0fa7ed96496dcc4ad666738ebaa015931"
+			"definition": "a917eb5b35b8bd4d29c391db6451e4a6a9058b7a2b0a8775326d2fdff9c00a0b"
 		},
 		{
 			"unit": "adapter.wasm-runtime",
 			"from": "src/adapters/WasmRuntimeAdapter.ts",
 			"to": "src/adapters/wasm-runtime-adapter/WasmRuntimeAdapter.ts",
-			"definition": "307b1d469081efffb093059dc6f079f5fb4970174310531907058ea84f61ff09"
+			"definition": "9bd8ca404feb0fecfe0df2ef3f1c1ce67de290c4756614e351238d92e15b4fb7"
 		},
 		{
 			"unit": "adapter.wasm-module-runtime",
 			"from": "src/adapters/WasmModuleRuntimeAdapter.ts",
 			"to": "src/adapters/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts",
-			"definition": "ca11e2f5a08aef4f7b9be381f872556314308d85fd0c666dee7b99abd02a3a94"
+			"definition": "6e795040118ba3425b9dabbd4884df717cc4f45b43bbcf841bb021b762d2f41a"
 		},
 		{
 			"unit": "hub.controller.native-handoff",
 			"from": "packages/hub/src/controllers/NativeHandoffController.ts",
 			"to": "packages/hub/src/lib/server/auth/NativeHandoffController.ts",
-			"definition": "e7afbe9ca60e80b514f07f7bc4e8f16b884ede948b3e6398c0dd2ae4f6f614df"
+			"definition": "b880ee1b45081519ef68e430763b436645845191782190d93682b383357ea2b0"
 		},
 		{
 			"unit": "desktop.service.local-client",
 			"from": "packages/desktop/src/services/LocalClientService.ts",
 			"to": "packages/desktop/src/initializers/initialize-desktop/LocalClientService.ts",
-			"definition": "39ad312f61a602ff7a3f4508d1a12961af3e2e337e2ddb402476913e86b2cb8f"
+			"definition": "db0ec4b62e6922c297169687608d262d5d27c0fbea6e3b27da2a52def20bb765"
 		},
 		{
 			"unit": "desktop.service.local-operations",
 			"from": "packages/desktop/src/services/LocalOperationsService.ts",
 			"to": "packages/desktop/src/initializers/initialize-desktop/LocalOperationsService.ts",
-			"definition": "51eec53f8b259dd218e4ffed102185ed8bfa5c686fa6784e84d53222ba956d25"
+			"definition": "6c93c210df9a0612e8b374298b009646d8cc776940b82b610c6aa2edf7a6f2b4"
 		},
 		{
 			"unit": "relay.service.rate-limit",
 			"from": "packages/relay/src/services/RateLimitService.ts",
 			"to": "packages/relay/src/utils/host-runtime/RateLimitService.ts",
-			"definition": "a7a5a6d8a756ef0e6261ba8b8ad4bdd65415df13d0176223dd530e4414191353"
+			"definition": "66f34da337c2f061a4e9761a0ed2a7060a890b3fd0a792bb93ac1619a507482e"
 		},
 		{
 			"unit": "service.hook-install",
 			"from": "src/services/hook-install-service/HookInstallService.ts",
 			"to": "src/cli/program/hook-install-service/HookInstallService.ts",
-			"definition": "4062ae313c3d458c411e9e0622ab9d630493a51408320446717aa190d952e05b"
+			"definition": "d752a5201c6a89300d2a160b06ad6e0bcc57d88266c4963f6880c3038f3f34c9"
 		},
 		{
 			"unit": "function.hook-script",
 			"from": "src/services/hook-install-service/hookScript.ts",
 			"to": "src/cli/program/hook-install-service/hookScript.ts",
-			"definition": "9a5d89674fbeb96438d698b51b9936c31b0939183cd960751745c515860319f7"
+			"definition": "a7ffff8eb91a0c477dc9017f87bdea1ce311354c7b85eb170040aff4b474e5af"
 		},
 		{
 			"unit": "hub.service.native-handoff",
 			"from": "packages/hub/src/services/native-handoff-service/NativeHandoffService.ts",
 			"to": "packages/hub/src/lib/server/auth/native-handoff-service/NativeHandoffService.ts",
-			"definition": "8b157fc37b8f901f370dc5979109469b44e82bc7846a243db2bae48c15d64f7b"
+			"definition": "adc1bff1069ed8336168cc7c69a01b7f363508d47402950f6e3b624e4df87831"
 		},
 		{
 			"unit": "hub.function.auth-secrets",
 			"from": "packages/hub/src/services/native-handoff-service/authSecrets.ts",
 			"to": "packages/hub/src/lib/server/auth/native-handoff-service/authSecrets.ts",
-			"definition": "6a243ea6ca1f396e7ad5e2d87f99bfa2f5de67dd6f11082511a5d2123f748ef4"
+			"definition": "05a95e6f15ecd9fa24816a8e79fd62df678117a3ae7cc61d6b4f11d56c78cbd9"
 		},
 		{
 			"unit": "service.native-picker-switch",
 			"from": "src/services/NativePickerSwitchService.ts",
 			"to": "src/services/native-picker-bridge-service/NativePickerSwitchService.ts",
-			"definition": "11cd033fb38acd93d29ece0d3e74c9a078a49506b7068748cd14b892e15f01d1"
+			"definition": "2e34e601d4fff1c4a30496525fc9626da31701174bf5f5e3dc54e93827aa4c96"
 		},
 		{
 			"unit": "relay.service.pairing-access",
 			"from": "packages/relay/src/services/PairingAccessService.ts",
 			"to": "packages/relay/src/utils/host-runtime/PairingAccessService.ts",
-			"definition": "5f9a60f5edf728d6efb3422bca57dd407c7fdb5606e41ff603202c9641042aff"
+			"definition": "b056388ba66ef3c9d73956b73ee81b46521c717be7bc3cb703029f503625153e"
 		},
 		{
 			"unit": "relay.controller.host-object",
 			"from": "packages/relay/src/controllers/HostObjectController.ts",
 			"to": "packages/relay/src/utils/host-runtime/HostObjectController.ts",
-			"definition": "ad22c04c66aff2b2d4b984ff8c400b987e4b7e117f0b6e0df380f83bf2bd06ed"
+			"definition": "32c9ce541f85805628b326ae3c56805974d8b6d463531ba47d9f7f4edcdf0064"
 		},
 		{
 			"unit": "reports.repository.site-report",
 			"from": "packages/reports/src/repositories/SiteReportRepository.ts",
 			"to": "packages/reports/src/routes/api/health/SiteReportRepository.ts",
-			"definition": "ebbdfc551c6692b50df4afc450353d5c40bdc13f21e2983f5167af8e43ae91ee"
+			"definition": "3506b18061c783bd846906d681b21458ad35348e15d1401d2cfa308e776a7355"
 		},
 		{
 			"unit": "desktop.service.client-projects",
 			"from": "packages/desktop/src/services/ClientProjectsService.ts",
 			"to": "packages/desktop/src/services/remote-host-service/device-session-service/ClientProjectsService.ts",
-			"definition": "f788f7837bf235102b234658045969a25ad88950625fc07120c33c9e81f4fe30"
+			"definition": "e7b1ac7d1e24d5fb3626b6072183bfc29bf27d362eca39ba35c3a254b3da4f42"
 		},
 		{
 			"unit": "reports.service.screenshot-upload",
 			"from": "packages/reports/src/services/ScreenshotUploadService.ts",
 			"to": "packages/reports/src/routes/api/report-screenshot-upload/ScreenshotUploadService.ts",
-			"definition": "0f5041d0479b003e2010c9d0b1f512c5b7e1abbac99ad3366f4c7c147b332cd6"
+			"definition": "e19472c2cbf4000653bedf229be0e2df9fa8a390db23a9ba052e446cc5648ac8"
 		},
 		{
 			"unit": "desktop.adapter.capacitor-account",
 			"from": "packages/desktop/src/adapters/capacitor-account-adapter/CapacitorAccountAdapter.ts",
 			"to": "packages/desktop/src/utils/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
-			"definition": "322dc2842d6eb020349050058ff87f9818053130ed59032798bf36a847fdc6d6"
+			"definition": "f54f1586b418a653ad39961751f61e977322b2dfa5d0ab7c8f660f3bb3cdd01a"
 		},
 		{
 			"unit": "desktop.adapter.capacitor-account",
 			"from": "packages/desktop/src/adapters/capacitor-account-adapter/capacitorAccountCodec.ts",
 			"to": "packages/desktop/src/utils/select-environment/capacitor-account-adapter/capacitorAccountCodec.ts",
-			"definition": "2516b03a692ae025c3a12ee13f7a5be403d047c1e527248f753f6d5a2d357626"
+			"definition": "66cb4f1b1f00e91a021140ec2916703f6f4b2e01dd1b4cc30197a9bb5dfc842b"
 		},
 		{
 			"unit": "workflow.create-project",
 			"from": "src/workflows/create-project/createProject.ts",
 			"to": "src/cli/program/create-project/createProject.ts",
-			"definition": "797140a23a58923570200ab615f087e99362bf9213f43ef61cb9f0bd692a9703"
+			"definition": "079d03bf5f45ed18001faf540c6fe2ea44ec45252b43225525d9e377022a84d1"
 		},
 		{
 			"unit": "function.validation",
 			"from": "src/workflows/create-project/validation.ts",
 			"to": "src/cli/program/create-project/validation.ts",
-			"definition": "54fcda2b682b7926cd47b8ffc232c8ddc6cdbabaf7ab90b7ff5196e000352537"
+			"definition": "2de02d2249653c2217ba459d14f4e1dda5614166c2e2e2b5ea38010917f07b5c"
 		},
 		{
 			"unit": "desktop.service.remote-host-record",
 			"from": "packages/desktop/src/services/RemoteHostRecordService.ts",
 			"to": "packages/desktop/src/services/remote-host-service/RemoteHostRecordService.ts",
-			"definition": "b08d00aee1c638d5ee8812e6dd7c9b2ee6988a7904c8af526827a1b5ecd58cb6"
+			"definition": "f7513cb284eebfa427a14af5bacf7f5cb61c58162b6a1e7a5073f03eaf7c9672"
 		},
 		{
 			"unit": "desktop.service.project-task",
 			"from": "packages/desktop/src/services/project-task-service/ProjectTaskService.ts",
 			"to": "packages/desktop/src/services/desktop-run-service/project-task-service/ProjectTaskService.ts",
-			"definition": "161ca36fc6bac333c048e37fc1a6c4734ff50377b3c0c25a089f3e4e3cde04ca"
+			"definition": "73959fb2b3c38f25589fe1b5ba676292ada0f9cc0799254885488e8680b3b573"
 		},
 		{
 			"unit": "desktop.function.proposal-units",
 			"from": "packages/desktop/src/services/project-task-service/proposalUnits.ts",
 			"to": "packages/desktop/src/services/desktop-run-service/project-task-service/proposalUnits.ts",
-			"definition": "2cdeef98dfdaf685a328131f3d1452f5f63312e7e8dc4279ea209323ebd0b9af"
+			"definition": "8a0be63c40828722028bf0dbc7296a20fa7d5fb562f72b01ec05e17a93dee9e8"
 		},
 		{
 			"unit": "desktop.service.change-run",
 			"from": "packages/desktop/src/services/change-run-service/ChangeRunService.ts",
 			"to": "packages/desktop/src/services/desktop-run-service/change-run-service/ChangeRunService.ts",
-			"definition": "53dea2ee8d7b4f44fb58a71cb47fcbc343943e688e582059f39ee540de97e2c4"
+			"definition": "0e7b44a91393721aec86b5823c9e30b365650d9a0e47fe4c2f050aa079c8684d"
 		},
 		{
 			"unit": "desktop.function.change-execute",
 			"from": "packages/desktop/src/services/change-run-service/changeExecute.ts",
 			"to": "packages/desktop/src/services/desktop-run-service/change-run-service/changeExecute.ts",
-			"definition": "6481f85eec68a6bafe0c6884c71c3227ac78fdeddba500198067363b5365ae60"
+			"definition": "8868058332251dc94177b77eff212cd8160482724a686ee437713773a8fa6f61"
 		}
 	],
 	"services": [

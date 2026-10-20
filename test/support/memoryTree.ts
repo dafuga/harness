@@ -106,24 +106,16 @@ export function relocatedSource(
 				return `new URL(${quote}${reverse.get(target) ?? target}${quote}, import.meta.url)`;
 			}
 		);
-	const scanner = ts.createScanner(ts.ScriptTarget.Latest, true, ts.LanguageVariant.Standard, text);
+	const parsed = ts.createSourceFile(path, text, ts.ScriptTarget.Latest, true);
 	const tokens: string[] = [];
-	let token;
-	while ((token = scanner.scan()) !== ts.SyntaxKind.EndOfFileToken) {
-		const value =
-			token === ts.SyntaxKind.StringLiteral ? scanner.getTokenValue() : scanner.getTokenText();
-		if (
-			[
-				ts.SyntaxKind.CloseBracketToken,
-				ts.SyntaxKind.CloseBraceToken,
-				ts.SyntaxKind.CloseParenToken
-			].includes(token) &&
-			tokens.at(-1)?.startsWith(`${ts.SyntaxKind.CommaToken}:`) &&
-			!tokens.at(-2)?.startsWith(`${ts.SyntaxKind.CommaToken}:`)
-		)
-			tokens.pop();
-		tokens.push(`${token}:${value}`);
-	}
+	const visit = (node: ts.Node) => {
+		tokens.push(String(node.kind));
+		if (node.kind <= ts.SyntaxKind.LastToken && 'text' in node) tokens.push(String(node.text));
+		if (ts.isVariableDeclarationList(node))
+			tokens.push(String(node.flags & (ts.NodeFlags.Let | ts.NodeFlags.Const)));
+		ts.forEachChild(node, visit);
+	};
+	visit(parsed);
 	return createHash('sha256').update(tokens.join('\0')).digest('hex');
 }
 
