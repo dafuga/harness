@@ -1,8 +1,17 @@
 import { mkdir } from 'node:fs/promises';
+const jsoncParser: Bun.BunPlugin = {
+	name: 'bundle-jsonc-parser-module',
+	setup(build) {
+		build.onResolve({ filter: /^jsonc-parser$/ }, () => ({
+			path: Bun.resolveSync('jsonc-parser/lib/esm/main.js', import.meta.dir)
+		}));
+	}
+};
 export const desktopNodeOptions = {
 	target: 'node' as const,
 	format: 'cjs' as const,
 	external: ['electron'],
+	plugins: [jsoncParser],
 	outdir: 'dist',
 	sourcemap: 'external' as const
 };
