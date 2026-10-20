@@ -39,13 +39,13 @@ test('a page at a selected commit shows the parent and the commit for one state 
 test('a page at the branch tip shows exactly one screenshot and no before or after', () => {
 	const body = content('current', page);
 	expect(words(body)).toContain('Current screenshot');
-	expect(words(body)).toContain('Current snapshot · ccccccc Branch tip');
+	expect(words(body)).toContain('Branch tip · ccccccc');
 	expect(shots(body)).toEqual(['ccccccc-default-desktop.png']);
 	expect(words(body)).not.toMatch(/Before ·|After ·|Parent commit|Commit comparison/);
-	// A person may pick another state or viewport of the same scenario.
-	expect(body).toMatch(/<select[^>]*aria-label="State"/);
+	// Overview fixes the state while retaining viewport selection.
+	expect(body).not.toMatch(/<select[^>]*aria-label="State"/);
 	expect(count(body, /aria-pressed="(true|false)"/g)).toBe(2);
-	expect(body).toContain(`/commit/${commits.tip}/pages/${ids.page}`);
+	expect(words(body)).not.toContain('View commit changes');
 });
 
 test('a side with no capture of the state is a stated gap, never the other side picture', () => {
@@ -78,7 +78,7 @@ test('a component no visual scenario names keeps the screenshot pane, as a state
 	expect(words(body)).toContain(`After · bbbbbbb Selected commit ${gap} at bbbbbbb.`);
 	expect(shots(body)).toEqual([]);
 	const tip = content('current', card, { head: { ...head, commit: commits.tip } });
-	expect(words(tip)).toContain(`Current snapshot · ccccccc Branch tip ${gap} at ccccccc.`);
+	expect(words(tip)).toContain(`Branch tip · ccccccc ${gap} at ccccccc.`);
 	expect(words(tip)).not.toMatch(/Before ·|After ·/);
 });
 
@@ -86,8 +86,7 @@ test('a page lists its components as components, each a link in the same scope',
 	const body = content('commit', { ...page, tab: 'uses' });
 	expect(words(body)).toMatch(/Uses\s+3\s+Components\s+2\s+Order list/);
 	expect(body).toContain(`/commit/${commits.middle}/components/${ids.list}`);
-	expect(words(body)).toContain('App route');
-	expect(words(body)).toContain('/orders');
+	expect(words(body)).not.toContain('App route');
 	expect(words(body)).not.toContain('Details');
 	expect(words(body)).toContain('Source');
 });
@@ -154,18 +153,18 @@ const offered = (body: string) => {
 	return [...select.matchAll(/<option[^>]*value="([^"]*)"/g)].map((found) => found[1]);
 };
 
-test('the contract and details list the required states the overview selector offers', () => {
+test('contract and details list required states without an overview selector', () => {
 	for (const entity of [ids.page, ids.list]) {
 		const at = {
 			category: entity === ids.page ? ('pages' as const) : ('components' as const),
 			entity
 		};
 		const overview = content('commit', at, both());
-		expect(offered(overview), entity).toEqual(['default', 'empty']);
+		expect(offered(overview), entity).toEqual([]);
 		// The scenario has a required state of another page too: it is not asked of this entity.
 		const label = entity === ids.page ? 'Required states' : 'States';
 		const contract = content('commit', { ...at, tab: 'contract' }, both());
-		expect(words(contract), entity).toContain(`${label} ${offered(overview).join(', ')}`);
+		expect(words(contract), entity).toContain(`${label} default, empty`);
 		const details = content('commit', { ...at, section: 'details' }, both());
 		expect(words(details), entity).toContain(`${label} default, empty`);
 		for (const body of [overview, contract, details]) {

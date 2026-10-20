@@ -100,21 +100,7 @@ export async function reviewVisual(
 	const size = page.getByRole('region', { name: 'Size', exact: true });
 	expect((await evidence.boundingBox())!.y).toBeLessThan((await size.boundingBox())!.y);
 	expect(await fits(page)).toBe(true);
-	if (route.category === 'pages') {
-		await expect(
-			page.locator('.ex-head .ex-lead, .ex-head .ex-route'),
-			'page header stays concise'
-		).toHaveCount(0);
-	}
-	await expect(
-		page.getByRole('combobox', { name: /^(Scenario|State)$/ }),
-		'overview has no state controls'
-	).toHaveCount(0);
-	await expect(page.getByRole('link', { name: 'View commit changes', exact: true })).toHaveCount(0);
-	await expect(
-		page.locator('.ex-evidence-head p'),
-		'screenshot heading has no explanatory paragraph'
-	).toHaveCount(0);
+	await reviewOverviewControls(page, route.category);
 	for (const name of ['Overview', 'Contract', 'Used In', 'Uses', 'States', 'History', 'Source']) {
 		await page.getByRole('tab', { name, exact: true }).click();
 		await ready(page);
@@ -209,4 +195,23 @@ export async function reviewMeasurements(tab: Page, name: string): Promise<void>
 	});
 	expect(fragments, 'benchmark labels stay whole').toBe(1);
 	expect(await fits(tab)).toBe(true);
+}
+
+/** Overview keeps identity concise and leaves state selection in its dedicated tab. */
+async function reviewOverviewControls(page: Page, category: string): Promise<void> {
+	if (category === 'pages') {
+		await expect(
+			page.locator('.ex-head .ex-lead, .ex-head .ex-route'),
+			'page header stays concise'
+		).toHaveCount(0);
+	}
+	await expect(
+		page.getByRole('combobox', { name: /^(Scenario|State)$/ }),
+		'overview has no state controls'
+	).toHaveCount(0);
+	await expect(page.getByRole('link', { name: 'View commit changes', exact: true })).toHaveCount(0);
+	await expect(
+		page.locator('.ex-evidence-head p'),
+		'screenshot heading has no explanatory paragraph'
+	).toHaveCount(0);
 }
