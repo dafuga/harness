@@ -1,0 +1,55 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-ZB7OEc
+
+ ✓ test/history-index.e2e.test.ts (4 tests) 27902ms
+   ✓ the index is deterministic and names every commit, verified or not  2141ms
+   ✓ a revision carries its graph, comparison, inherited provenance, media and reasons  1690ms
+   ✓ growth and benchmarks are kept per unit, and another profile is a separate series  4462ms
+   ✓ a fresh clone rebuilds the same index from Git alone, and missing media is a stated gap  6214ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  22:25:59
+   Duration  30.35s (transform 246ms, setup 6ms, collect 82ms, tests 27.90s, environment 0ms, prepare 33ms)
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-ZB7OEc/packages/reports
+
+ ✓ test/utils/entity-measure.test.ts (8 tests) 13ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  22:26:31
+   Duration  477ms (transform 62ms, setup 0ms, collect 106ms, tests 13ms, environment 0ms, prepare 43ms)
+
+
+Running 3 tests using 1 worker
+
+  ✓  1 test/entity-preview-marks.spec.ts:211:2 › measurements at desktop: multiple metrics stay readable without a budget (985ms)
+  ✓  2 test/entity-preview-marks.spec.ts:211:2 › measurements at tablet: multiple metrics stay readable without a budget (992ms)
+  ✓  3 test/entity-preview-marks.spec.ts:211:2 › measurements at mobile: multiple metrics stay readable without a budget (928ms)
+
+  3 passed (5.3s)
+[WebServer] $ vite build && vite build --config src/config/reportViteConfig.ts && vite build --config src/config/consoleViteConfig.ts
+[WebServer] ../../node_modules/zod/v4/core/util.js (400:0): A comment
+[WebServer] 
+[WebServer] "// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+[WebServer] 
+[WebServer] in "../../node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+[WebServer] ../../node_modules/zod/v4/core/regexes.js (74:0): A comment
+[WebServer] 
+[WebServer] "/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+[WebServer]  * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+[WebServer]  * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+[WebServer] 
+[WebServer] in "../../node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+[WebServer] Circular dependency: ../../node_modules/zod/v4/core/core.js -> ../../node_modules/zod/v4/core/util.js -> ../../node_modules/zod/v4/core/core.js
+[WebServer] Generated an empty chunk: "chunks/internal2.js".
+
+Running 3 tests using 1 worker
+
+  ✓  1 tests/e2e/harness-explorer-measures.spec.ts:49:2 › every entity kind shows selected source measurements at desktop width (1.2s)
+  ✓  2 tests/e2e/harness-explorer-measures.spec.ts:49:2 › every entity kind shows selected source measurements at tablet width (991ms)
+  ✓  3 tests/e2e/harness-explorer-measures.spec.ts:49:2 › every entity kind shows selected source measurements at mobile width (989ms)
+
+  3 passed (1.9m)
