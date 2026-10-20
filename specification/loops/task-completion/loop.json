@@ -2,7 +2,7 @@
 	"name": "task-completion",
 	"goal": "Coding and planning cannot complete without current task and performance evidence",
 	"createdAt": "2026-10-20T15:30:38.605Z",
-	"updatedAt": "2026-10-20T16:18:01.850Z",
+	"updatedAt": "2026-10-20T16:28:30.043Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -27,7 +27,7 @@
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
 			"status": "complete",
 			"completedAt": "2026-10-20T15:39:48.373Z",
-			"evidence": "Complete test corpus frozen at 2003b536; immutable red 05cb832ca03b preserves the actual failing CLI and app completion assertions before repair."
+			"evidence": "Complete test corpus frozen at 2003b536; immutable red de74c7931382 preserves actual failing CLI and app assertions and pairs with green 0cc99cbae4f1."
 		},
 		{
 			"id": "implement",
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T16:28:30.043Z",
+			"evidence": "Immutable green 0cc99cbae4f1 at 3d92ccca pairs with red de74c7931382 at 2003b536; the complete test corpus, command and runtime environment stayed unchanged."
 		},
 		{
 			"id": "verify",
