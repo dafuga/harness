@@ -29,7 +29,6 @@ export type RunMode = 'plan' | 'change';
  * `unverified` until such a record exists; a unit without one is `unknown`, never assumed.
  */
 export type Verification = 'verified' | 'failed' | 'unverified' | 'unknown';
-
 /** A rectangle on an image, each value a fraction of the image's width or height. */
 export interface Region {
 	x: number;
@@ -37,7 +36,6 @@ export interface Region {
 	width: number;
 	height: number;
 }
-
 export interface ModelChoice {
 	/** The identifier the CLI itself reported or accepts; passed back unchanged. */
 	id: string;

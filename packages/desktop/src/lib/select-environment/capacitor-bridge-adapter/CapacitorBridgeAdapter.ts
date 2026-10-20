@@ -12,7 +12,7 @@ import type {
 } from '../../../models/Environment.types';
 import { cachedSnapshot } from './cachedSnapshot';
 import { remoteArtifact } from './remoteArtifact';
-import { remoteBinary } from '../../remoteBinary';
+import { remoteBinary } from '../../../utils/remoteBinary';
 import { remoteGrant } from './remoteGrant';
 
 export interface CapacitorBridgeAdapterConfig {

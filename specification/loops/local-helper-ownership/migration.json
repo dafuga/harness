@@ -273,8 +273,8 @@
 				"unit": "desktop.adapter.capacitor-bridge"
 			},
 			"from": "packages/desktop/src/utils/cachedSnapshot.ts",
-			"to": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/cachedSnapshot.ts",
-			"ownerSource": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
+			"to": "packages/desktop/src/lib/select-environment/capacitor-bridge-adapter/cachedSnapshot.ts",
+			"ownerSource": "packages/desktop/src/lib/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
 			"definition": "56412d124c943e056d6e4844a8a415607ba745e419a883211b06db25e66479d1"
 		},
 		{
@@ -980,8 +980,8 @@
 				"unit": "desktop.adapter.capacitor-bridge"
 			},
 			"from": "packages/desktop/src/utils/remoteArtifact.ts",
-			"to": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/remoteArtifact.ts",
-			"ownerSource": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
+			"to": "packages/desktop/src/lib/select-environment/capacitor-bridge-adapter/remoteArtifact.ts",
+			"ownerSource": "packages/desktop/src/lib/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
 			"definition": "420b0e460d12cc464b8519eaf716666f511197f5f6201e1dbdda48123e4fefe3"
 		},
 		{
@@ -1002,8 +1002,8 @@
 				"unit": "desktop.adapter.capacitor-bridge"
 			},
 			"from": "packages/desktop/src/utils/remoteGrant.ts",
-			"to": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/remoteGrant.ts",
-			"ownerSource": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
+			"to": "packages/desktop/src/lib/select-environment/capacitor-bridge-adapter/remoteGrant.ts",
+			"ownerSource": "packages/desktop/src/lib/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
 			"definition": "307f81c243331c9fc66b3ad031bc895aa2bd1adeda540bb9c73b3f9f6c05721b"
 		},
 		{

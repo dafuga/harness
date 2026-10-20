@@ -4,4 +4,4 @@ export interface SavedCopy {
 	principal: string;
 }
 
-export { cachedSnapshot } from './select-environment/capacitor-bridge-adapter/cachedSnapshot';
+export { cachedSnapshot } from "../lib/select-environment/capacitor-bridge-adapter/cachedSnapshot";

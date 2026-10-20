@@ -1,1 +1,1 @@
-export { HubResponsesMiddleware } from '../hooks.server/HubResponsesMiddleware';
+export { HubResponsesMiddleware } from "../lib/server-hooks/HubResponsesMiddleware";

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Select from '$shared/Select.svelte';
 	import { onMount } from 'svelte';
-	import { agentSettings } from '../lib/stores/agentSettings.svelte';
+	import { agentSettings } from '../lib/agent-settings/agentSettings.svelte';
 	import { designCounts } from '../utils/composeModes';
 	/** Preferences of this device, the same for every project and composer on it. */
 	onMount(() => agentSettings.load());

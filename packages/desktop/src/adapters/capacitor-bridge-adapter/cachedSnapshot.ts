@@ -1,1 +1,1 @@
-export { cachedSnapshot } from '../../utils/select-environment/capacitor-bridge-adapter/cachedSnapshot';
+export { cachedSnapshot } from "../../lib/select-environment/capacitor-bridge-adapter/cachedSnapshot";

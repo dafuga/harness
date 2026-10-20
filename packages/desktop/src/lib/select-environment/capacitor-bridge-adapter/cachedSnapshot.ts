@@ -1,4 +1,4 @@
-import type { SavedCopy } from '../../cachedSnapshot';
+import type { SavedCopy } from '../../../utils/cachedSnapshot';
 import type { ProjectSnapshot } from '../../../models/Desktop.types';
 
 /**

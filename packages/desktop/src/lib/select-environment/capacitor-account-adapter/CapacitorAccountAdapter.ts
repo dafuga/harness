@@ -12,8 +12,8 @@ import type {
 	DesktopProject,
 	NativeHostedStatus
 } from '../../../models/ProjectContext.types';
-import { artifactLimit } from '../../artifactMedia';
-import { everyProject } from '../../cache-status/cacheStatus';
+import { artifactLimit } from '../../../utils/artifactMedia';
+import { everyProject } from '../../../utils/cache-status/cacheStatus';
 import {
 	accountIdentity,
 	principal,

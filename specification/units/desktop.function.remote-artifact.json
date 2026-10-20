@@ -9,17 +9,17 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/adapters/capacitor-bridge-adapter/remoteArtifact.ts",
-			"packages/desktop/src/utils/remoteArtifact.ts",
-			"packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/remoteArtifact.ts"
+			"packages/desktop/src/lib/select-environment/capacitor-bridge-adapter/remoteArtifact.ts",
+			"packages/desktop/src/utils/remoteArtifact.ts"
 		],
 		"symbols": [
+			"remoteArtifact",
 			"remoteArtifact",
 			"artifactLimit",
 			"artifactMediaTypes",
 			"unshownArtifact",
 			"largeArtifact",
 			"otherArtifact",
-			"remoteArtifact",
 			"remoteArtifact"
 		]
 	},

@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import type { ProviderState } from '../models/Desktop.types';
 	import type { AgentChoice, ComposeMode, RunDraft } from '../utils/composeModes';
-	import { agentSettings } from '../lib/stores/agentSettings.svelte';
+	import { agentSettings } from '../lib/agent-settings/agentSettings.svelte';
 	import AgentControls from './AgentControls.svelte';
 	let {
 		modes,

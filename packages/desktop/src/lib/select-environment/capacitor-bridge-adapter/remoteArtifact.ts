@@ -4,10 +4,10 @@ import {
 	artifactLimit,
 	largeArtifact,
 	otherArtifact
-} from '../../remoteArtifact';
+} from '../../../utils/remoteArtifact';
 import type { EvidenceArtifactResult } from '../../../models/DesktopEvidence.types';
 import type { RemoteBinary } from '../../../models/Environment.types';
-import { remoteBinary } from '../../remoteBinary';
+import { remoteBinary } from '../../../utils/remoteBinary';
 
 /**
  * One artifact of recorded evidence, as a computer sent it or as the phone kept it, decoded to

@@ -1,1 +1,1 @@
-export { remoteGrant } from './select-environment/capacitor-bridge-adapter/remoteGrant';
+export { remoteGrant } from "../lib/select-environment/capacitor-bridge-adapter/remoteGrant";

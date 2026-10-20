@@ -9,10 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/adapters/capacitor-bridge-adapter/cachedSnapshot.ts",
-			"packages/desktop/src/utils/cachedSnapshot.ts",
-			"packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/cachedSnapshot.ts"
+			"packages/desktop/src/lib/select-environment/capacitor-bridge-adapter/cachedSnapshot.ts",
+			"packages/desktop/src/utils/cachedSnapshot.ts"
 		],
-		"symbols": ["cachedSnapshot", "SavedCopy", "cachedSnapshot", "cachedSnapshot"]
+		"symbols": ["cachedSnapshot", "cachedSnapshot", "SavedCopy", "cachedSnapshot"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/hooks.server/hooks.server.ts"],
-		"symbols": ["handle"]
+		"source": [
+			"packages/hub/src/hooks.server.ts",
+			"packages/hub/src/lib/server-hooks/hooks.server.ts"
+		],
+		"symbols": ["handle", "handle"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -35,11 +38,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/hooks.server/hooks.server.ts",
+		"entry": "packages/hub/src/lib/server-hooks/hooks.server.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/hooks.server/hooks.server.ts"
+				"entry": "packages/hub/src/lib/server-hooks/hooks.server.ts"
 			}
 		]
 	},

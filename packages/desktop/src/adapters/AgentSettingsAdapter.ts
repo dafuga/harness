@@ -1,2 +1,2 @@
-export { AgentSettingsAdapter } from '../lib/stores/AgentSettingsAdapter';
-export type { AgentSettingsAdapterConfig } from '../lib/stores/AgentSettingsAdapter';
+export { AgentSettingsAdapter } from "../lib/agent-settings/AgentSettingsAdapter";
+export type { AgentSettingsAdapterConfig } from "../lib/agent-settings/AgentSettingsAdapter";
