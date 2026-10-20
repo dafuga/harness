@@ -40,7 +40,7 @@ for (const width of [1440, 390]) {
 			expect(bounds!.x).toBeGreaterThanOrEqual(0);
 			expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
 			await expect(panel.getByRole('button', { name: 'Send plan', exact: true })).toBeEnabled();
-			await expect(panel.getByRole('button', { name: 'Change', exact: true })).toBeDisabled();
+			await expect(panel.getByRole('button', { name: 'Change', exact: true })).toBeEnabled();
 			await scenarioCapture(page, scenario as ScenarioManifest, {
 				state: `compact-agent-${category}`,
 				name: `${width}`,

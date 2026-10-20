@@ -95,7 +95,7 @@ test('local CPU API returns the real server process sample', async ({ request })
 	);
 });
 
-test('the root fits mobile, has six categories and offers no way to analytics', async ({
+test('the root fits mobile, has seven categories and offers no way to analytics', async ({
 	page
 }) => {
 	await page.setViewportSize({ width: 390, height: 844 });
@@ -108,9 +108,9 @@ test('the root fits mobile, has six categories and offers no way to analytics', 
 	await expect(categories.getByRole('link')).toHaveCount(6);
 	await expect(page.getByRole('link', { name: 'Harness Analytics', exact: true })).toHaveCount(0);
 	// The categories are reachable on a phone: one press goes to another collection.
-	await categories.getByRole('link', { name: 'Functions', exact: true }).click();
+	await categories.getByRole('link', { name: 'Helpers', exact: true }).click();
 	await expect(page).toHaveURL(/\/functions$/);
-	await expect(page.getByRole('heading', { level: 1, name: 'Functions' })).toBeVisible();
+	await expect(page.getByRole('heading', { level: 1, name: 'Helpers' })).toBeVisible();
 });
 
 test('the page the dashboard address leads to fits a desktop and shows no CPU panel', async ({

@@ -25,11 +25,7 @@ test('collections: search, changed only and order change what is listed', async 
 	await expect(rows).toHaveCount(0);
 	await tab.getByRole('button', { name: 'Show all components' }).click();
 	await expect(rows).toHaveCount(3);
-	const key = tab.locator('.ex-legend');
-	expect(await key.innerText()).not.toMatch(/proven|passed|failed/i);
-	await key.getByRole('button', { name: 'Not proven' }).hover();
-	await expect(tab.getByRole('tooltip')).toContainText('is missing, is stale or is unknown');
-	await tab.mouse.move(1, 1);
+	await expect(tab.locator('.ex-legend')).toHaveCount(0);
 	await tab.getByRole('searchbox', { name: 'Search components' }).fill('card');
 	await expect(rows).toHaveCount(1);
 	await expect(rows.first()).toContainText('Order card');
@@ -50,8 +46,14 @@ test('a row or a card of a collection opens its entity in the same branch and co
 	const branch = 'feature/orders';
 	await open(tab, { category: 'functions', commit: commits.middle });
 	await tab.getByRole('link', { name: 'filterOrders(orders, "SERVICE")', exact: true }).click();
-	expect(await where(tab)).toEqual({ branch, commit: commits.middle, ...filter });
-	await expect(tab.getByRole('heading', { level: 1, name: 'Filter orders' })).toBeVisible();
+	expect(await where(tab)).toEqual({
+		branch,
+		commit: commits.middle,
+		...filter,
+		helper: 'filterOrders',
+		tab: 'contract'
+	});
+	await expect(tab.getByRole('heading', { level: 1, name: 'filterOrders' })).toBeVisible();
 	await open(tab, { category: 'components' });
 	await tab.getByRole('link', { name: 'Open Order card' }).click();
 	expect(await where(tab)).toEqual({

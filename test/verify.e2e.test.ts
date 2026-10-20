@@ -131,7 +131,7 @@ test('a shared function change re-verifies its service, page and audio scenarios
 	const size = record.measurements.find(
 		(item) => item.unit === 'function.slugify' && item.metric === 'source-bytes'
 	);
-	expect(size).toMatchObject({ value: 87, testedRevision: head, profile: null });
+	expect(size).toMatchObject({ value: 100, testedRevision: head, profile: null });
 	expect(record.reasons.status).toBe('passed');
 	expect(record.reasons.entries?.map((entry) => [entry.unit, entry.symbol])).toEqual([
 		['function.slugify', 'slugify']

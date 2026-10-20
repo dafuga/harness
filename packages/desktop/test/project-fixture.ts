@@ -5,7 +5,9 @@ import { join, dirname } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { ProjectSessionService } from '../src/services/ProjectSessionService';
 const roots: string[] = [];
-export const text = 'export const owned = "é";\n'.repeat(100);
+export const text =
+	"import { filter } from '../functions/filter';\nexport function owned(input = 'é') { return filter(input); }\n" +
+	'// Fixture source for history.\n'.repeat(100);
 const definitions = [
 	['page.home', 'page', 'src/pages/Home.ts'],
 	['reports.component.select', 'component', 'src/components/Select.ts'],
@@ -30,7 +32,13 @@ export async function fixture() {
 	git(root, 'config', 'user.email', 'fixture@example.invalid');
 	git(root, 'lfs', 'install', '--local');
 	for (const [id, kind, path] of definitions) {
-		await put(root, path, text);
+		await put(
+			root,
+			path,
+			id === 'function.filter'
+				? '/** @pure */\nexport function filter(input: string) { return input.trim(); }\n'
+				: text
+		);
 		await put(
 			root,
 			`specification/units/${id}.json`,
@@ -47,8 +55,26 @@ export async function fixture() {
 				status: 'active',
 				owns: { source: [path], symbols: [] },
 				contract: { origin: 'declared', inputs: [], outputs: [], errors: [] },
-				dependencies:
-					id === 'page.home' ? [{ unit: 'function.filter', via: 'import', origin: 'declared' }] : []
+				...(id === 'function.filter'
+					? {
+							helperContracts: [
+								{
+									name: 'filter',
+									source: path,
+									pure: true,
+									inputs: [{ name: 'filter.input', type: 'string' }],
+									output: 'string',
+									consumers: [
+										{ unit: 'page.home', symbol: 'owned' },
+										{ unit: 'service.analytics', symbol: 'owned' }
+									]
+								}
+							]
+						}
+					: {}),
+				dependencies: ['page.home', 'service.analytics'].includes(id)
+					? [{ unit: 'function.filter', via: 'import', origin: 'declared' }]
+					: []
 			})
 		);
 	}
@@ -62,7 +88,11 @@ export async function fixture() {
 	git(root, 'commit', '-m', 'feature source');
 	const feature = git(root, 'rev-parse', 'HEAD');
 	git(root, 'checkout', 'main');
-	await put(root, 'src/functions/filter.ts', 'current function source');
+	await put(
+		root,
+		'src/functions/filter.ts',
+		'/** @pure */\nexport function filter(input: string) { return input.trim().toUpperCase(); }\n'
+	);
 	git(root, 'add', '.');
 	git(root, 'commit', '-m', 'main source');
 	const tip = git(root, 'rev-parse', 'HEAD');

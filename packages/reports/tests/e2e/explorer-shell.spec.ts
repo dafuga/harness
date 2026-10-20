@@ -19,11 +19,11 @@ import {
 	shellOrigin
 } from './support/shellFixture';
 /**
- * The bar of the explorer, looked at alone over a made-up history: the brand, six categories
+ * The bar of the explorer, looked at alone over a made-up history: the brand, seven categories
  * and the revision that is viewed. Its page is built by this run and answered from its own
  * files; no server is started.
  */
-const categories = ['Pages', 'Shells', 'Components', 'Functions', 'Configs', 'Services'];
+const categories = ['Pages', 'Shells', 'Components', 'Helpers', 'Configs', 'Services', 'Models'];
 const scoped = `${shellMount}/branch/feature%2Fshell%231`;
 const earlier = `${scoped}/commit/${sha(3)}`;
 const at = (path: string) => `${shellOrigin}${path}`;
@@ -50,7 +50,7 @@ async function opened(page: Page, width: number, height: number): Promise<Locato
 }
 /** Chooses an earlier commit, then opens Functions there with the keyboard. */
 async function earlierFunctions(page: Page, bar: Locator): Promise<Locator> {
-	const functions = bar.getByRole('link', { name: 'Functions' });
+	const functions = bar.getByRole('link', { name: 'Helpers' });
 	await expect(combo(bar, 'Commit')).toBeVisible();
 	await combo(bar, 'Commit').selectOption(sha(3));
 	await expect(page).toHaveURL(at(`${earlier}/pages`));
@@ -61,7 +61,7 @@ async function earlierFunctions(page: Page, bar: Locator): Promise<Locator> {
 }
 
 for (const [screen, width, height] of screens) {
-	test(`the bar shows six categories with an icon above each label at ${screen} width`, async ({
+	test(`the bar shows seven categories with an icon above each label at ${screen} width`, async ({
 		page
 	}) => {
 		const bar = await opened(page, width, height);
@@ -88,7 +88,7 @@ for (const [screen, width, height] of screens) {
 		const line = await underline(links.nth(0));
 		expect(line?.[0]).toBeGreaterThanOrEqual(2);
 		expect(line?.[1]).toBe(colours[0]);
-		for (const other of [1, 2, 3, 4, 5]) {
+		for (const other of categories.slice(1).map((_, index) => index + 1)) {
 			await expect(links.nth(other)).not.toHaveAttribute('aria-current', 'page');
 			expect(await underline(links.nth(other))).toBeNull();
 		}
@@ -104,7 +104,7 @@ for (const [screen, width, height] of screens) {
 			await page.keyboard.press('Tab');
 			await expect(links.filter({ hasText: name })).toBeFocused();
 		}
-		expect(await styled(links.nth(5), 'outline-style')).not.toBe('none');
+		expect(await styled(links.last(), 'outline-style')).not.toBe('none');
 		for (const name of ['Branch', 'Commit']) {
 			await page.keyboard.press('Tab');
 			await expect(combo(bar, name)).toBeFocused();

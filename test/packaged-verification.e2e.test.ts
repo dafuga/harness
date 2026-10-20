@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { runCommand } from './support/cli';
 import { completeProposal } from './support/taskAuditRepo';
+import { existsSync } from 'node:fs';
 
 const consumer = `
 import {
@@ -110,6 +111,8 @@ test('a packed consumer uses the verification contracts and evidence protocol', 
 	);
 	await writeFile(join(project, 'consumer.ts'), consumer);
 	await runCommand(['bun', 'install'], project);
+	for (const optional of ['svelte', '@sveltejs/kit'])
+		expect(existsSync(join(project, 'node_modules', optional))).toBe(false);
 	const typecheck = await runCommand(['bun', 'x', 'tsc', '-p', '.'], project, false);
 	expect(typecheck.stdout + typecheck.stderr).toBe('');
 

@@ -4,7 +4,7 @@ import { expectRetired } from './support/portableReport';
 const evidence = '/tmp/harness-analytics-evidence';
 
 // The analytics dashboard is gone. Its address must lead somewhere and never show a dead page:
-// it leads into the explorer, which has six categories and no analytics among them.
+// it leads into the explorer, which has seven categories and no analytics among them.
 test('the analytics address leads into the explorer, which has no analytics screen', async ({
 	page
 }) => {
@@ -26,7 +26,7 @@ test('the analytics address leads into the explorer, which has no analytics scre
 		'Pages',
 		'Shells',
 		'Components',
-		'Functions',
+		'Helpers',
 		'Configs',
 		'Services'
 	]);

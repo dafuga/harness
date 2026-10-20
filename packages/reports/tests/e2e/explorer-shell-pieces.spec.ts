@@ -14,7 +14,7 @@ import {
  * binary badge, actions, tabs and the bar without an address, and beside them, outside the
  * explorer, two rows of the console that was.
  */
-const categories = ['Pages', 'Shells', 'Components', 'Functions', 'Configs', 'Services'];
+const categories = ['Pages', 'Shells', 'Components', 'Helpers', 'Configs', 'Services', 'Models'];
 const here = `${shellOrigin}/`;
 let home = '';
 
@@ -37,18 +37,20 @@ for (const [screen, width, height] of screens) {
 		);
 		expect(sizes.filter(([wide, high]) => wide !== 24 || high !== 24)).toEqual([]);
 
-		// A verdict has two looks and no third: passes share one colour, everything else another.
+		// Passing, missing evidence and explicit failures have distinct verdict colors.
 		const verdicts = page.getByLabel('Verdicts').locator('.hx-verdict');
 		const colours = await verdicts.evaluateAll((list) =>
 			list.map((badge) => getComputedStyle(badge.querySelector('svg')!).color)
 		);
-		const [passed, failed] = colours;
-		expect(colours).toEqual([passed, failed, passed, failed, passed, failed, failed]);
+		const [passed, missing, , , , failed] = colours;
+		expect(colours).toEqual([passed, missing, passed, missing, passed, failed, failed]);
+		expect(missing).not.toBe(passed);
+		expect(missing).not.toBe(failed);
 		const [pass, fail] = [channels(passed), channels(failed)];
 		expect(pass[1], 'a pass is green').toBeGreaterThan(Math.max(pass[0], pass[2]));
-		expect(fail[0], 'and everything else is red').toBeGreaterThan(Math.max(fail[1], fail[2]) * 2);
+		expect(fail[0], 'an explicit failure is red').toBeGreaterThan(Math.max(fail[1], fail[2]) * 2);
 		expect(await styled(verdicts.nth(2).getByRole('button'), 'border-top-color')).toBe(passed);
-		expect(await styled(verdicts.nth(3).getByRole('button'), 'border-top-color')).toBe(failed);
+		expect(await styled(verdicts.nth(3).getByRole('button'), 'border-top-color')).toBe(missing);
 		// Only the icon is drawn: the status is the name of the mark, and each has a tooltip of its own.
 		expect((await page.getByLabel('Verdicts').innerText()).trim()).toBe('');
 		await expect(page.getByRole('button', { name: 'Failed', exact: true })).toBeVisible();
@@ -57,7 +59,7 @@ for (const [screen, width, height] of screens) {
 			.evaluateAll((list) => list.map((tip) => tip.id));
 		expect([tips.length, new Set(tips).size]).toEqual([9, 9]);
 
-		// Without an address the bar still names the six categories and offers nothing to choose.
+		// Without an address the bar still names the seven categories and offers nothing to choose.
 		const idle = page.getByRole('region', { name: 'Bar without an address' });
 		await expect(idle.getByRole('navigation', { name: 'Harness categories' })).toHaveText(
 			new RegExp(`^\\s*${categories.join('\\s*')}\\s*$`)
