@@ -72,7 +72,6 @@
 		place-items: center;
 		flex: none;
 		align-self: center;
-		margin-inline-start: auto;
 		width: 40px;
 		height: 40px;
 		border: 1px solid var(--line);
@@ -96,7 +95,6 @@
 	/* Environment and revision share the first row; catalog and search share the last. */
 	@media (min-width: 561px) {
 		header.topbar {
-			--search: clamp(168px, 100% - 540px, 468px); /* left by 6 × 86px categories and a reserve */
 			display: grid;
 			grid-template:
 				'brand project . environment revision' auto
@@ -141,7 +139,7 @@
 		.topbar-search {
 			grid-area: tools;
 			justify-self: end;
-			width: var(--search);
+			width: max-content;
 			max-width: none;
 			padding-bottom: 0;
 		}
@@ -191,14 +189,14 @@
 		header.topbar:not(.with-account) {
 			grid-template:
 				'brand project tools . environment revision search' auto
-				/ auto minmax(0, max-content) auto 1fr max-content auto minmax(168px, 388px);
+				/ auto minmax(0, max-content) auto 1fr max-content auto max-content;
 			column-gap: 22px;
 			padding: 0 26px;
 		}
 		header.topbar.with-activity {
 			grid-template:
 				'brand project tools . environment revision search account' auto
-				/ auto minmax(0, max-content) auto 1fr max-content auto minmax(168px, 388px) auto;
+				/ auto minmax(0, max-content) auto 1fr max-content auto max-content auto;
 		}
 		.topbar:not(.with-account) nav {
 			height: auto;

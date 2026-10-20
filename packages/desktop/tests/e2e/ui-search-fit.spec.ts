@@ -21,7 +21,11 @@ const at = (rest: string) => `/projects/${alpha}/harness/branch/feat%2Falpha/${r
 const widths = [1440, 1379, 1300, 1251, 920, 768, 390];
 const bar = (page: Page) => page.getByRole('banner');
 const field = (page: Page) =>
-	bar(page).getByRole('combobox', { name: 'Search entities', exact: true });
+	page
+		.getByRole('dialog', { name: 'Search project' })
+		.getByRole('combobox', { name: 'Search entities', exact: true });
+const trigger = (page: Page) =>
+	bar(page).getByRole('button', { name: 'Search entities', exact: true });
 const revision = (page: Page) =>
 	['Branch', 'Commit'].map((name) =>
 		bar(page).getByRole('button', { name: `Choose ${name.toLowerCase()}`, exact: true })
@@ -42,7 +46,7 @@ async function opened(page: Page, width: number): Promise<number[]> {
 	await page.goto(at('pages'));
 	await expect(page.getByRole('navigation', { name: 'Catalog categories' })).toBeVisible();
 	await page.evaluate(() => document.fonts.ready.then(() => undefined));
-	const searched = page.getByRole('combobox', {
+	const searched = page.getByRole('button', {
 		name: 'Search entities',
 		exact: true,
 		includeHidden: true
@@ -54,12 +58,12 @@ async function opened(page: Page, width: number): Promise<number[]> {
 	return without.map(Math.round);
 }
 async function fits(page: Page, width: number, without: number[]): Promise<void> {
-	const search = await box(field(page));
+	const search = await box(trigger(page));
 	const fields = await Promise.all(revision(page).map(box));
 	expect(fields.map((one) => meet(search, one, 3))).toEqual([false, false]);
 	// The search takes nothing of the room of either revision field.
 	expect(fields.map((one) => Math.round(one.width))).toEqual(without);
-	expect(search.width).toBeGreaterThanOrEqual(120);
+	expect(search.width).toBeGreaterThanOrEqual(32);
 	expect([search.x >= 0, search.x + search.width <= width]).toEqual([true, true]);
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
 		width
@@ -80,7 +84,7 @@ for (const width of widths) {
 		const without = await opened(page, width);
 		await remember(page, info, `fit-${width}`);
 		await fits(page, width, without);
-		await field(page).focus();
+		await trigger(page).click();
 		await expect(field(page)).toBeFocused();
 		await fits(page, width, without);
 		await field(page).fill('alpha');
@@ -88,8 +92,7 @@ for (const width of widths) {
 		await fits(page, width, without);
 		const list = await box(found(page));
 		expect([list.x >= 0, list.x + list.width <= width]).toEqual([true, true]);
-		const fields = await Promise.all(revision(page).map(box));
-		expect(fields.map((one) => meet(list, one, 0))).toEqual([false, false]);
+		expect(list.width).toBeGreaterThan(120);
 		await remember(page, info, `fit-open-${width}`);
 	});
 
@@ -97,6 +100,7 @@ for (const width of widths) {
 		page
 	}) => {
 		await opened(page, width);
+		await trigger(page).click();
 		await field(page).fill('refund');
 		const link = found(page).getByRole('option').first().getByRole('link');
 		const [tab] = await Promise.all([

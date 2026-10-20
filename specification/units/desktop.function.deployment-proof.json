@@ -3,71 +3,84 @@
 	"id": "desktop.function.deployment-proof",
 	"kind": "function",
 	"title": "deploymentProof",
-	"responsibility": "Owns the deploymentProof shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Hashes the complete deployment configuration so a plan cannot outlive a changed environment mapping.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/deploymentProof.ts"],
 		"symbols": ["deploymentProof", "deploymentBlockers", "deploymentHealth", "deploymentCurrent"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "deploymentProof.config",
-				"type": "DeploymentConfig"
+				"type": "DeploymentConfig",
+				"description": "Validated environment mapping whose target identities and promotion boundaries must remain unchanged."
 			},
 			{
 				"name": "deploymentBlockers.root",
-				"type": "string"
+				"type": "string",
+				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
 			},
 			{
 				"name": "deploymentBlockers.query",
-				"type": "{ commit: string; environment: DeploymentEnvironment }"
+				"type": "{ commit: string; environment: DeploymentEnvironment }",
+				"description": "Requested immutable source commit and destination environment."
 			},
 			{
 				"name": "deploymentBlockers.config",
-				"type": "DeploymentConfig"
+				"type": "DeploymentConfig",
+				"description": "Validated environment mapping whose target identities and promotion boundaries must remain unchanged."
 			},
 			{
 				"name": "deploymentHealth.target",
-				"type": "CloudflareTarget"
+				"type": "CloudflareTarget",
+				"description": "Configured destination identity and health URL; credentials are never exposed in the UI."
 			},
 			{
 				"name": "deploymentCurrent.root",
-				"type": "string"
+				"type": "string",
+				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
 			},
 			{
 				"name": "deploymentCurrent.plan",
-				"type": "DeploymentPlan"
+				"type": "DeploymentPlan",
+				"description": "Reviewed immutable source and destination with expiry and blocking conditions."
 			},
 			{
 				"name": "deploymentCurrent.guard",
-				"type": "{ plugin: DeploymentPlugin; fingerprint: string; phase?: string }"
+				"type": "{ plugin: DeploymentPlugin; fingerprint: string; phase?: string }",
+				"description": "Reviewed configuration or destination proof that must still match before the next step."
 			}
 		],
 		"outputs": [
 			{
 				"name": "deploymentProof",
-				"type": "string"
+				"type": "string",
+				"description": "SHA-256 digest of the serialized deployment configuration."
 			},
 			{
 				"name": "deploymentBlockers",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Blocking reasons, source branch and, for production, preprod/production comparison."
 			},
 			{
 				"name": "deploymentHealth",
-				"type": "Promise<boolean>"
+				"type": "Promise<boolean>",
+				"description": "True only when the health endpoint returns a successful response without redirects."
 			},
 			{
 				"name": "deploymentCurrent",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Current validated configuration; rejects if source, configuration or promotion changed."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects unsafe source, target or promotion state; no successful deployment receipt is recorded."
 			}
 		]
 	},

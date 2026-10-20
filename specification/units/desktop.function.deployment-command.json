@@ -3,25 +3,27 @@
 	"id": "desktop.function.deployment-command",
 	"kind": "function",
 	"title": "deploymentCommand",
-	"responsibility": "Owns the deploymentCommand shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Runs a bounded deployment subprocess without a shell or inherited Cloudflare credentials; returns stdout.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/deploymentCommand.ts"],
 		"symbols": ["deploymentCommand"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "deploymentCommand.command",
-				"type": "DeployCommand"
+				"type": "DeployCommand",
+				"description": "Executable arguments, working directory and explicitly supplied environment for one deployment step."
 			}
 		],
 		"outputs": [
 			{
 				"name": "deploymentCommand",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Captured stdout on success; rejects on spawn failure, timeout or unsuccessful exit."
 			}
 		],
 		"errors": []

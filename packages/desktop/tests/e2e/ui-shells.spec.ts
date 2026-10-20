@@ -10,7 +10,7 @@ import { evidenced, shell, withShell } from './ui-shells-fixture';
  * it under Shells. A screenshot is kept before the checks of each place when TAKE_SCREENSHOT=true.
  */
 const route = (rest: string) => `/projects/${alpha}/harness/branch/feat%2Falpha/${rest}`;
-const categories = ['Pages', 'Shells', 'Components', 'Functions', 'Configs', 'Services'];
+const categories = ['Pages', 'Shells', 'Components', 'Helpers', 'Configs', 'Services', 'Models'];
 const nav = (page: Page) => page.getByRole('navigation', { name: 'Catalog categories' });
 
 /**

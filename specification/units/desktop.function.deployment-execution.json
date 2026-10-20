@@ -3,35 +3,39 @@
 	"id": "desktop.function.deployment-execution",
 	"kind": "function",
 	"title": "deploymentExecution",
-	"responsibility": "Owns the deploymentExecution shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Installs, checks, builds, uploads and health-checks an immutable source before recording its receipt.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/deploymentExecution.ts"],
 		"symbols": ["deploymentExecution"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "deploymentExecution.reviewed",
-				"type": "ReviewedDeployment"
+				"type": "ReviewedDeployment",
+				"description": "Reviewed deployment plan with repository, target, configuration hash and predecessor receipt."
 			},
 			{
 				"name": "deploymentExecution.runtime",
-				"type": "Runtime"
+				"type": "Runtime",
+				"description": "Deployment adapter and injected execution, health and progress callbacks."
 			}
 		],
 		"outputs": [
 			{
 				"name": "deploymentExecution",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Verified deployment receipt; failures leave the destination receipt unadvanced."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects unsafe source, target or promotion state; no successful deployment receipt is recorded."
 			}
 		]
 	},

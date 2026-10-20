@@ -30,7 +30,8 @@
 			},
 			{
 				"name": "ChoiceDialog.activeCount",
-				"type": "number"
+				"type": "number",
+				"description": "Number of active jobs to show in the deployment dialog heading."
 			},
 			{
 				"name": "ChoiceDialog.width",
@@ -54,7 +55,8 @@
 			},
 			{
 				"name": "ChoiceDialog.onopen",
-				"type": "() => void"
+				"type": "() => void",
+				"description": "Callback invoked when the dialog opens so its latest contents can be loaded."
 			},
 			{
 				"name": "ChoiceDialog.children",

@@ -3,31 +3,34 @@
 	"id": "desktop.function.change-environment",
 	"kind": "function",
 	"title": "changeEnvironment",
-	"responsibility": "Owns the changeEnvironment shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Lists automatic deployment destinations in order, stopping at preprod even when prod is selected.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/changeEnvironment.ts"],
 		"symbols": ["changeEnvironment"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "changeEnvironment.environment",
-				"type": "DeploymentEnvironment"
+				"type": "DeploymentEnvironment",
+				"description": "Selected environment; automatic promotion is limited to dev, stage and preprod."
 			}
 		],
 		"outputs": [
 			{
 				"name": "changeEnvironment",
-				"type": "DeploymentEnvironment[]"
+				"type": "DeploymentEnvironment[]",
+				"description": "Ordered lower destinations; prod selection returns dev, stage and preprod."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects unsafe source, target or promotion state; no successful deployment receipt is recorded."
 			}
 		]
 	},

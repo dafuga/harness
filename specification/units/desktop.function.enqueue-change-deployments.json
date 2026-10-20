@@ -3,39 +3,44 @@
 	"id": "desktop.function.enqueue-change-deployments",
 	"kind": "function",
 	"title": "enqueueChangeDeployments",
-	"responsibility": "Owns the enqueueChangeDeployments shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Queues an ordered automatic deployment chain for a verified source commit, capped at preprod.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/enqueueChangeDeployments.ts"],
 		"symbols": ["enqueueChangeDeployments"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "enqueueChangeDeployments.root",
-				"type": "string"
+				"type": "string",
+				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
 			},
 			{
 				"name": "enqueueChangeDeployments.input",
-				"type": "{ environment: DeploymentEnvironment; commit: string; projectId: string | null }"
+				"type": "{ environment: DeploymentEnvironment; commit: string; projectId: string | null }",
+				"description": "Requested environment and immutable source commit with the originating project identity."
 			},
 			{
 				"name": "enqueueChangeDeployments.runtime",
-				"type": "Required<Pick<DeploymentOptions, 'plugin'>> & DeploymentOptions & { activities: DeploymentActivityService }"
+				"type": "Required<Pick<DeploymentOptions, 'plugin'>> & DeploymentOptions & { activities: DeploymentActivityService }",
+				"description": "Deployment adapter and injected execution, health and progress callbacks."
 			}
 		],
 		"outputs": [
 			{
 				"name": "enqueueChangeDeployments",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Ordered queued jobs; each predecessor must succeed before the next destination begins."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects unsafe source, target or promotion state; no successful deployment receipt is recorded."
 			}
 		]
 	},

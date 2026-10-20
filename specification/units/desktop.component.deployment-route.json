@@ -3,25 +3,27 @@
 	"id": "desktop.component.deployment-route",
 	"kind": "component",
 	"title": "DeploymentRoute",
-	"responsibility": "Owns the DeploymentRoute Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Displays accessible source-to-destination labels and a directional arrow for a deployment.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/DeploymentRoute.svelte"],
 		"symbols": ["DeploymentRoute"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DeploymentRoute.deployment",
-				"type": "Pick<DeploymentActivity, 'sourceEnvironment' | 'environment' | 'branch'>"
+				"type": "Pick<DeploymentActivity, 'sourceEnvironment' | 'environment' | 'branch'>",
+				"description": "Deployment job or route whose source, destination and recorded progress are displayed."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DeploymentRoute",
-				"type": "markup"
+				"type": "markup",
+				"description": "Displays accessible source-to-destination labels and a directional arrow for a deployment."
 			}
 		],
 		"errors": []

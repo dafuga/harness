@@ -3,51 +3,59 @@
 	"id": "desktop.function.verify-deployment-snapshot",
 	"kind": "function",
 	"title": "verifyDeploymentSnapshot",
-	"responsibility": "Owns the verifyDeploymentSnapshot shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Captures the destination receipt and validates predecessor proof and forward-only commit ancestry.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/verifyDeploymentSnapshot.ts"],
 		"symbols": ["captureDeploymentTarget", "verifyDeploymentSnapshot"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "captureDeploymentTarget.reviewed",
-				"type": "ReviewedDeployment"
+				"type": "ReviewedDeployment",
+				"description": "Reviewed deployment plan with repository, target, configuration hash and predecessor receipt."
 			},
 			{
 				"name": "captureDeploymentTarget.plugin",
-				"type": "DeploymentPlugin"
+				"type": "DeploymentPlugin",
+				"description": "Deployment adapter used to discover configured target identities."
 			},
 			{
 				"name": "verifyDeploymentSnapshot.root",
-				"type": "string"
+				"type": "string",
+				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
 			},
 			{
 				"name": "verifyDeploymentSnapshot.reviewed",
-				"type": "ReviewedDeployment"
+				"type": "ReviewedDeployment",
+				"description": "Reviewed deployment plan with repository, target, configuration hash and predecessor receipt."
 			},
 			{
 				"name": "verifyDeploymentSnapshot.guard",
-				"type": "{ plugin: DeploymentPlugin; destination: DeploymentReceipt | null }"
+				"type": "{ plugin: DeploymentPlugin; destination: DeploymentReceipt | null }",
+				"description": "Reviewed configuration or destination proof that must still match before the next step."
 			}
 		],
 		"outputs": [
 			{
 				"name": "captureDeploymentTarget",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Configured target and captured destination receipt, or an admission error."
 			},
 			{
 				"name": "verifyDeploymentSnapshot",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves only while the source, mapping and captured destination remain valid."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects unsafe source, target or promotion state; no successful deployment receipt is recorded."
 			}
 		]
 	},

@@ -48,7 +48,10 @@
 			{#snippet children(close: () => void)}<label
 					class="picker-field"
 					onchange={() => chooseBranch(close)}
-					>Branch<Select label="Branch" bind:value={branch}
+					>Branch<Select
+						label="Branch"
+						title={`Tip · ${revision.tip.slice(0, 7)}`}
+						bind:value={branch}
 						>{#each snapshot.branches as item (item.name)}<option value={item.name}
 								>{item.name}</option
 							>{/each}</Select
@@ -60,7 +63,7 @@
 			{#snippet children(close: () => void)}<label
 					class="picker-field"
 					onchange={() => chooseCommit(close)}
-					>Commit<Select label="Commit" bind:value={commit}
+					>Commit<Select label="Commit" title={viewed} bind:value={commit}
 						>{#each snapshot.commits as item (item.hash)}<option value={item.hash}
 								>{item.hash.slice(0, 7)} · {item.subject}</option
 							>{/each}</Select

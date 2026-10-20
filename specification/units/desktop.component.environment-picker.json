@@ -3,29 +3,32 @@
 	"id": "desktop.component.environment-picker",
 	"kind": "component",
 	"title": "EnvironmentPicker",
-	"responsibility": "Owns the EnvironmentPicker Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Selects the environment scope for changes and shows its latest verified deployment timestamp.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/EnvironmentPicker.svelte"],
 		"symbols": ["EnvironmentPicker"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EnvironmentPicker.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Current project, revision, bridge capabilities and shared deployment stores shown by the app."
 			},
 			{
 				"name": "EnvironmentPicker.children",
-				"type": "Snippet"
+				"type": "Snippet",
+				"description": "Optional action rendered beside the environment choice, such as production promotion."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EnvironmentPicker",
-				"type": "markup"
+				"type": "markup",
+				"description": "Selects the environment scope for changes and shows its latest verified deployment timestamp."
 			}
 		],
 		"errors": []

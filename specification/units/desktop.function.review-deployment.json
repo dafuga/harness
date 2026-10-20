@@ -3,33 +3,37 @@
 	"id": "desktop.function.review-deployment",
 	"kind": "function",
 	"title": "reviewDeployment",
-	"responsibility": "Owns the reviewDeployment shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Builds a short-lived deployment plan with target identity, immutable source, predecessor proof and blockers.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/reviewDeployment.ts"],
 		"symbols": ["reviewDeployment"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "reviewDeployment.root",
-				"type": "string"
+				"type": "string",
+				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
 			},
 			{
 				"name": "reviewDeployment.input",
-				"type": "DeploymentQuery"
+				"type": "DeploymentQuery",
+				"description": "Requested environment and immutable source commit with the originating project identity."
 			},
 			{
 				"name": "reviewDeployment.options",
-				"type": "{ plugin: DeploymentPlugin; projectId: string | null; queuedChange?: boolean }"
+				"type": "{ plugin: DeploymentPlugin; projectId: string | null; queuedChange?: boolean }",
+				"description": "Adapter and project identity, with an explicit flag for lower-environment chat-chain admission."
 			}
 		],
 		"outputs": [
 			{
 				"name": "reviewDeployment",
-				"type": "Promise<ReviewedDeployment>"
+				"type": "Promise<ReviewedDeployment>",
+				"description": "Reviewed immutable plan with expiry, target, predecessor receipt and configuration fingerprint."
 			}
 		],
 		"errors": []

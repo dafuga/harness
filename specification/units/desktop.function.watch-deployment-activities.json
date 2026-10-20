@@ -3,29 +3,32 @@
 	"id": "desktop.function.watch-deployment-activities",
 	"kind": "function",
 	"title": "watchDeploymentActivities",
-	"responsibility": "Owns the watchDeploymentActivities shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Polls host-wide deployment jobs, rejects stale replies and returns a cleanup function.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/watchDeploymentActivities.ts"],
 		"symbols": ["watchDeploymentActivities"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "watchDeploymentActivities.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Current project, revision, bridge capabilities and shared deployment stores shown by the app."
 			},
 			{
 				"name": "watchDeploymentActivities.events",
-				"type": "Events"
+				"type": "Events",
+				"description": "Versioned callbacks that receive fresh jobs or a recoverable status-read failure."
 			}
 		],
 		"outputs": [
 			{
 				"name": "watchDeploymentActivities",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Cleanup callback that stops polling and discards later replies."
 			}
 		],
 		"errors": []

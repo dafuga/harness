@@ -3,25 +3,27 @@
 	"id": "desktop.component.deployment-progress",
 	"kind": "component",
 	"title": "DeploymentProgress",
-	"responsibility": "Owns the DeploymentProgress Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Renders ordered deployment steps with completed, active, pending and failure states.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/DeploymentProgress.svelte"],
 		"symbols": ["DeploymentProgress"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DeploymentProgress.deployment",
-				"type": "DeploymentActivity"
+				"type": "DeploymentActivity",
+				"description": "Deployment job or route whose source, destination and recorded progress are displayed."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DeploymentProgress",
-				"type": "markup"
+				"type": "markup",
+				"description": "Renders ordered deployment steps with completed, active, pending and failure states."
 			}
 		],
 		"errors": []

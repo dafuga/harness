@@ -3,25 +3,27 @@
 	"id": "desktop.component.deployment-dialog",
 	"kind": "component",
 	"title": "DeploymentDialog",
-	"responsibility": "Owns the DeploymentDialog Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Previews the verified preprod-to-production commit gap and starts promotion only after one explicit action.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/DeploymentDialog.svelte"],
 		"symbols": ["DeploymentDialog"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DeploymentDialog.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Current project, revision, bridge capabilities and shared deployment stores shown by the app."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DeploymentDialog",
-				"type": "markup"
+				"type": "markup",
+				"description": "Previews the verified preprod-to-production commit gap and starts promotion only after one explicit action."
 			}
 		],
 		"errors": []

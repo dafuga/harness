@@ -3,47 +3,54 @@
 	"id": "desktop.function.promote-change",
 	"kind": "function",
 	"title": "promoteChange",
-	"responsibility": "Owns the promoteChange shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Validates a scoped Change against a clean configured source branch and every required lower target.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/promoteChange.ts"],
 		"symbols": ["prepareChangeEnvironment", "promoteChange"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "prepareChangeEnvironment.session",
-				"type": "ProjectSessionService"
+				"type": "ProjectSessionService",
+				"description": "Project session used to identify the active source repository and configured branch."
 			},
 			{
 				"name": "prepareChangeEnvironment.request",
-				"type": "| Pick<RunRequest, 'mode' | 'environment'> | { mode: 'ask' | 'change'; environment?: RunRequest['environment'] }"
+				"type": "| Pick<RunRequest, 'mode' | 'environment'> | { mode: 'ask' | 'change'; environment?: RunRequest['environment'] }",
+				"description": "Run mode and optional selected environment; unscoped or read-only requests do not promote."
 			},
 			{
 				"name": "promoteChange.context",
-				"type": "PromotionContext"
+				"type": "PromotionContext",
+				"description": "Repository-locked run context with source revision, cancellation signal and status emitter."
 			},
 			{
 				"name": "promoteChange.before",
-				"type": "SourceSnapshot"
+				"type": "SourceSnapshot",
+				"description": "Source snapshot taken before the agent writes; only observed changes are staged."
 			}
 		],
 		"outputs": [
 			{
 				"name": "prepareChangeEnvironment",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves when admission is safe or the request is unscoped; rejects invalid mappings or source state."
 			},
 			{
 				"name": "promoteChange",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Public summary naming the queued lower boundary and the separate production action when needed."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects unsafe source, target or promotion state; no successful deployment receipt is recorded."
 			}
 		]
 	},

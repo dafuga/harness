@@ -146,7 +146,11 @@ test.each(['change', 'ask'] as const)(
 	async (mode) => {
 		const f = shown({
 			snapshot: { writable: true, revision: { branch: 'main', commit: 'a'.repeat(40) } },
-			deployments: { environment: 'preprod', selected: { available: true } }
+			deployments: {
+				environment: 'preprod',
+				selected: { available: true },
+				load: vi.fn(async () => {})
+			}
 		});
 		const sent = f.agent.send({ ...draft, mode });
 		await vi.waitFor(() => expect(f.agent.runId).toBe('run-1'));

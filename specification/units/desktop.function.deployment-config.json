@@ -3,43 +3,49 @@
 	"id": "desktop.function.deployment-config",
 	"kind": "function",
 	"title": "deploymentConfig",
-	"responsibility": "Owns the deploymentConfig shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Resolves a project-relative configuration path and refuses paths outside the repository.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/deploymentConfig.ts"],
 		"symbols": ["deploymentPath", "deploymentConfig"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "deploymentPath.root",
-				"type": "string"
+				"type": "string",
+				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
 			},
 			{
 				"name": "deploymentPath.path",
-				"type": "string"
+				"type": "string",
+				"description": "Project-relative configuration path; absolute paths and repository escapes are rejected."
 			},
 			{
 				"name": "deploymentConfig.root",
-				"type": "string"
+				"type": "string",
+				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
 			}
 		],
 		"outputs": [
 			{
 				"name": "deploymentPath",
-				"type": "string"
+				"type": "string",
+				"description": "Resolved path inside the repository; invalid paths throw."
 			},
 			{
 				"name": "deploymentConfig",
-				"type": "Promise<DeploymentConfig>"
+				"type": "Promise<DeploymentConfig>",
+				"description": "Validated adapter configuration with source branch and explicitly isolated targets."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects unsafe source, target or promotion state; no successful deployment receipt is recorded."
 			}
 		]
 	},

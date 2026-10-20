@@ -3,25 +3,27 @@
 	"id": "desktop.component.deployment-activity",
 	"kind": "component",
 	"title": "DeploymentActivity",
-	"responsibility": "Owns the DeploymentActivity Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Shows the host deployment light, concurrent destination list and shared deployment detail views.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/DeploymentActivity.svelte"],
 		"symbols": ["DeploymentActivity"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DeploymentActivity.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Current project, revision, bridge capabilities and shared deployment stores shown by the app."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DeploymentActivity",
-				"type": "markup"
+				"type": "markup",
+				"description": "Shows the host deployment light, concurrent destination list and shared deployment detail views."
 			}
 		],
 		"errors": []

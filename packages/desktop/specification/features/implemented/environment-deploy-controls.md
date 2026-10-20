@@ -35,3 +35,5 @@ Use one visual language for promotion, activity rows, directional routes and dep
 ## Main integration and toolbar order
 
 The environment selector precedes the branch, commit and deployment icons in the top-right toolbar. Keyboard order follows the visual order. General project chat, like entity chat, carries the selected available environment for Change only. Both run paths validate deployment configuration before admitting a scoped change and reuse the verified promotion chain, capped at preprod. Production remains a single explicit promotion from preprod through Deploy.
+
+Integration verification preserves current main behavior: Helpers and Models are catalog categories; general chat permits explicit Change at a writable tip and stays available read-only in history. Search opens a modal from its icon. Tests exercise collapsed revision icons, modal search bounds and protected read-only chat rather than expecting the older always-visible fields.

@@ -48,9 +48,9 @@ for (const width of [1440, 920, 390]) {
 			name: `scrolled-${width}`,
 			note: 'Actual compiled renderer scrolled 1000 px over a SYNTHETIC project of 24 components.'
 		});
-		await nav.getByRole('link', { name: 'Functions', exact: true }).click();
+		await nav.getByRole('link', { name: 'Helpers', exact: true }).click();
 		await expect(
-			page.getByRole('heading', { name: 'Functions', exact: true, level: 1 })
+			page.getByRole('heading', { name: 'Helpers', exact: true, level: 1 })
 		).toBeInViewport();
 	});
 }

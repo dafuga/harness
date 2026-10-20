@@ -3,35 +3,39 @@
 	"id": "desktop.function.cloudflare-safety",
 	"kind": "function",
 	"title": "cloudflareSafety",
-	"responsibility": "Owns the cloudflareSafety shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Rejects lower Worker targets whose routes overlap production or contain ambiguous wildcard hosts.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/cloudflareSafety.ts"],
 		"symbols": ["cloudflareSafety"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "cloudflareSafety.config",
-				"type": "Record<string, unknown>"
+				"type": "Record<string, unknown>",
+				"description": "Validated environment mapping whose target identities and promotion boundaries must remain unchanged."
 			},
 			{
 				"name": "cloudflareSafety.targets",
-				"type": "DeploymentConfig['targets']"
+				"type": "DeploymentConfig['targets']",
+				"description": "Explicit environment targets to compare against inherited and production Worker routes."
 			}
 		],
 		"outputs": [
 			{
 				"name": "cloudflareSafety",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns without a value only for distinct lower routes; throws for unsafe mappings."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects unsafe source, target or promotion state; no successful deployment receipt is recorded."
 			}
 		]
 	},
