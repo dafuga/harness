@@ -17,6 +17,8 @@ and state selection belong in States; the overview has no commit-change action o
 - Standardized entity-preview coverage proves desktop, tablet and mobile behavior before and after the repair.
 - Size measurements share the Performance profile card in overviews and details; no standalone Size card remains.
 - Source size, emitted targets, complexity, missing-measurement notes and workload profiles retain their values and semantics.
+- The overview uses normal stack spacing above Performance profile; label/value measurement rows share equal heights at all three widths.
+- A unit without a compiled output target omits the output-size placeholder. Real native/Wasm output sizes and unavailable-target reasons remain visible.
 
 ## Coverage gap
 
@@ -33,3 +35,6 @@ now distinguish pages from reusable entities and exercise retired links in both 
 
 Overview coverage now requires the page purpose above screenshots instead of omitting it entirely.
 The same page scenarios retain a concise header and keep overview copy out of other tabs.
+
+The same visual-overview checks now measure the gap above the profile and compare row heights.
+Formatter and details coverage distinguish no declared output from a declared but unavailable build.

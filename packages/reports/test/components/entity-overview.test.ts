@@ -14,8 +14,9 @@ test('an overview groups size and timings in Performance profile, with no source
 	expect(body).not.toContain('aria-label="Size"');
 	const profile = /<section[^>]*aria-label="Performance profile"[^>]*>(.*?)<\/section>/s.exec(body);
 	expect(profile).not.toBeNull();
-	for (const label of ['Source size 800 B', 'Emitted size', 'Complexity', 'thousand orders'])
+	for (const label of ['Source size 800 B', 'Complexity', 'thousand orders'])
 		expect(words(profile![1])).toContain(label);
+	expect(words(profile![1])).not.toContain('Emitted size');
 	expect(body).not.toContain('aria-label="Contract"');
 	expect(words(content('commit', { ...filter, tab: 'contract' }))).toContain('orders');
 	expect(words(body)).toContain('Source size 800 B');

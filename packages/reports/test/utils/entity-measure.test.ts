@@ -22,6 +22,9 @@ test('a measured size is shown and one nothing measured reads Not measured, neve
 	expect(value(list.size, 'Source size')).toBe('2.4 KB');
 	expect(value(list.size, 'Complexity')).toBe('3');
 	expect(value(list.size, 'Emitted size')).toBe(notMeasured);
+	expect(list.size).toContainEqual(
+		expect.objectContaining({ label: 'Emitted size', target: 'none' })
+	);
 	const card = entityMeasure(find(ids.card), taken);
 	expect(value(card.size, 'Source size')).toBe(notMeasured);
 	expect(JSON.stringify(card)).not.toMatch(/"0( B)?"/);
@@ -33,6 +36,10 @@ test('each execution target has its own emitted size, with the reason one could 
 	const native = store.size.find((item) => item.label === 'Emitted size · process (native)');
 	expect(native?.value).toBe(notMeasured);
 	expect(native?.note).toContain('no toolchain');
+	expect(native).toMatchObject({ target: 'process' });
+	expect(store.size).toContainEqual(
+		expect.objectContaining({ label: 'Emitted size · Wasm', target: 'wasm', value: '18 KB' })
+	);
 });
 
 test('a timing names its workload and profile and its tolerance as a percentage', () => {

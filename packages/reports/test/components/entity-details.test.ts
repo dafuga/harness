@@ -19,6 +19,8 @@ test('details opens on the contract with size and performance, and shows no sour
 	}
 	expect(body).not.toContain('aria-label="Size"');
 	expect(words(body)).toContain('Source size');
+	expect(words(body)).not.toContain('Emitted size');
+	expect(words(body)).not.toContain('This unit declares no process or Wasm output.');
 	expect(words(body)).not.toContain('Back to overview');
 	expect(words(body)).not.toContain('Details');
 	expect(words(body)).not.toMatch(owned);
