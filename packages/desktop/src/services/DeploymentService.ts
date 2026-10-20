@@ -5,6 +5,7 @@ import type {
 	DeployExecutor,
 	DeployInput,
 	DeploymentPlan,
+	DeploymentEnvironment,
 	DeploymentPlugin,
 	DeploymentQuery,
 	DeploymentReceipt,
@@ -24,6 +25,7 @@ export interface DeploymentOptions {
 	activities?: DeploymentActivityService;
 }
 export interface ReviewedDeployment {
+	sourceEnvironment: DeploymentEnvironment | null;
 	plan: DeploymentPlan;
 	fingerprint: string;
 	root: string;

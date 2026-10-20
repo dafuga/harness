@@ -8,6 +8,7 @@ export function deploymentActivityFixture(
 		projectId: 'project',
 		projectName: 'Test project',
 		environment: 'prod',
+		sourceEnvironment: 'preprod',
 		commit: 'a'.repeat(40),
 		branch: 'main',
 		steps: deploymentSteps.map((step) => ({ ...step })),

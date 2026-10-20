@@ -62,6 +62,8 @@ test('deployment activity shows concurrent destinations and opens their current 
 		await page.screenshot({
 			path: `/tmp/harness-env-evidence/activity-list-${process.env.SCREENSHOT_LABEL ?? 'local'}.png`
 		});
+	for (const route of ['preprod → prod', 'stage → preprod', 'dev → stage', 'feat/activity → dev'])
+		await expect(dialog.getByText(route, { exact: true })).toBeVisible();
 	await dialog.getByRole('button', { name: /preprod deployment/ }).click();
 	await expect(dialog.getByRole('status')).toContainText('Uploading preprod');
 	await expect(
@@ -71,6 +73,7 @@ test('deployment activity shows concurrent destinations and opens their current 
 		await page.screenshot({
 			path: `/tmp/harness-env-evidence/activity-detail-${process.env.SCREENSHOT_LABEL ?? 'local'}.png`
 		});
+	await expect(dialog.getByText('stage → preprod', { exact: true })).toBeVisible();
 	await dialog.getByRole('button', { name: 'Back to deployments', exact: true }).click();
 	await dialog.getByRole('button', { name: /^stage deployment/ }).click();
 	await expect(dialog.getByRole('status')).toContainText('Building stage');

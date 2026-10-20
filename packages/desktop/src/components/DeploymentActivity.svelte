@@ -4,6 +4,7 @@
 	import type { DeploymentActivity } from '../models/Deployment.types';
 	import ChoiceDialog from './ChoiceDialog.svelte';
 	import DeploymentDetails from './DeploymentDetails.svelte';
+	import DeploymentRoute from './DeploymentRoute.svelte';
 	/**
 	 * The light of the deployments of this device's projects, whichever project is shown. It pulses
 	 * while one is queued or runs and opens the active and recent ones, newest first; choosing one
@@ -97,11 +98,13 @@
 								type="button"
 								class="job"
 								data-id={item.id}
-								aria-label="{item.environment} deployment, {item.projectName}, {phase(item)}"
+								aria-label="{item.environment} deployment, from {item.sourceEnvironment ??
+									item.branch} to {item.environment}, {item.projectName}, {phase(item)}"
 								onclick={() => void choose(item.id)}
 							>
 								<span class="light" data-state={lightState(item)} aria-hidden="true"></span>
 								<strong>{item.environment} deployment</strong>
+								<small><DeploymentRoute deployment={item} /></small>
 								<small>{phase(item)} · {item.projectName} · {item.commit.slice(0, 7)}</small>
 							</button>
 						</li>{/each}

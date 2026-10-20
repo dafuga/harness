@@ -2,6 +2,7 @@
 	import type { DeploymentActivity } from '../models/Deployment.types';
 	import { displayTime } from '../utils/revisionTime';
 	import DeploymentProgress from './DeploymentProgress.svelte';
+	import DeploymentRoute from './DeploymentRoute.svelte';
 	/**
 	 * One deployment: where it goes and the commit it deploys, then its progress, why it failed or
 	 * the receipt it ended with. Where the deployment is named already, its identity is left out;
@@ -21,6 +22,7 @@
 		</div>{/if}{/snippet}
 
 <div class="deployment-details">
+	<DeploymentRoute {deployment} />
 	{#if showIdentity}<h2>{deployment.environment} deployment</h2>
 		<dl>
 			<div>

@@ -120,6 +120,7 @@ function activityFor(reviewed: ReviewedDeployment): DeploymentActivity {
 		projectId: reviewed.projectId,
 		projectName: basename(reviewed.root),
 		environment: plan.environment,
+		sourceEnvironment: reviewed.sourceEnvironment,
 		commit: plan.commit,
 		branch: plan.branch,
 		steps: deploymentSteps.map((step) => ({ ...step })),

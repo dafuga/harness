@@ -2,6 +2,8 @@ import { randomUUID } from 'node:crypto';
 import { deploymentEnvironments, deploymentSteps } from '../models/Deployment.types';
 import type {
 	CloudflareTarget,
+	DeploymentConfig,
+	DeploymentEnvironment,
 	DeploymentPlugin,
 	DeploymentQuery
 } from '../models/Deployment.types';
@@ -21,8 +23,7 @@ export async function reviewDeployment(
 	const target = config.targets[input.environment];
 	const blockers = [...proof.blockers];
 	if (!target) blockers.push(`Configure the ${input.environment} deployment target.`);
-	const configured = deploymentEnvironments.filter((item) => config.targets[item]);
-	const previous = configured[configured.indexOf(input.environment) - 1];
+	const previous = predecessorEnvironment(config, input.environment);
 	const predecessor =
 		proof.promotion?.preprod ??
 		(await deploymentState(root)).find((receipt) => receipt.environment === previous) ??
@@ -41,6 +42,7 @@ export async function reviewDeployment(
 	};
 	return {
 		plan,
+		sourceEnvironment: previous,
 		root,
 		projectId: options.projectId,
 		fingerprint: deploymentProof(config),
@@ -52,4 +54,9 @@ function describeTarget(target?: CloudflareTarget) {
 	return target
 		? `${target.kind} · ${target.name} · ${target.wranglerEnvironment || target.branch} · account ${target.accountId} · ${target.healthUrl}`
 		: 'Unconfigured';
+}
+
+function predecessorEnvironment(config: DeploymentConfig, environment: DeploymentEnvironment) {
+	const configured = deploymentEnvironments.filter((item) => config.targets[item]);
+	return configured[configured.indexOf(environment) - 1] ?? null;
 }

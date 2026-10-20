@@ -38,6 +38,7 @@ export const deploymentSteps = [
 ] as const;
 export type DeploymentStep = (typeof deploymentSteps)[number]['id'];
 export interface DeploymentActivity extends DeploymentProgress {
+	sourceEnvironment: DeploymentEnvironment | null;
 	id: string;
 	projectId: string | null;
 	projectName: string;

@@ -10,6 +10,7 @@ test('activity and production details share progress, errors and receipt renderi
 	});
 	for (const showIdentity of [true, false]) {
 		const { body } = render(DeploymentDetails, { props: { deployment, showIdentity } });
+		expect(body).toContain('aria-label="From preprod to prod"');
 		expect(body).toContain('aria-label="Deployment steps"');
 		expect(body).toContain('Health verification failed');
 		expect(body).toContain('role="alert"');

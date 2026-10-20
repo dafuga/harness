@@ -45,9 +45,9 @@ test('prod, preprod and stage jobs overlap from independent captured sources', a
 			f.service
 				.activities()
 				.filter((job) => !job.finishedAt)
-				.map((job) => job.environment)
+				.map((job) => `${job.sourceEnvironment} → ${job.environment}`)
 				.sort()
-		).toEqual(['preprod', 'prod', 'stage']);
+		).toEqual(['dev → stage', 'preprod → prod', 'stage → preprod']);
 		expect(f.session.busy).toBe(false);
 	} finally {
 		released = true;
@@ -88,7 +88,11 @@ test('a failed lower job stops its dependent environments without unhandled prom
 	const f = await deploymentFixture();
 	f.execute.mockRejectedValueOnce(new Error(`install failed in ${f.root}, token=private-value`));
 	const jobs = await f.service.enqueue({ environment: 'prod', commit: f.commit });
-	expect(jobs.map((job) => job.environment)).toEqual(['dev', 'stage', 'preprod']);
+	expect(jobs.map((job) => [job.sourceEnvironment, job.environment])).toEqual([
+		[null, 'dev'],
+		['dev', 'stage'],
+		['stage', 'preprod']
+	]);
 	await f.activities.idle();
 	expect(f.service.activities().map((job) => job.phase)).toEqual(['failed', 'failed', 'failed']);
 	expect(f.service.activities()[0].error).toMatch(/lower-environment/);
@@ -137,4 +141,16 @@ test('recent history is bounded without discarding active work or exposing mutab
 		release();
 	}
 	await f.activities.wait(active.id);
+});
+
+test('captured routes follow configured predecessors when an environment is omitted', async () => {
+	const f = await deploymentFixture();
+	Reflect.deleteProperty(f.config.targets, 'stage');
+	for (const environment of ['dev', 'preprod'] as const)
+		await f.service.automatic({ environment, commit: f.commit });
+	expect(f.service.activities().map((job) => [job.sourceEnvironment, job.environment])).toEqual([
+		['dev', 'preprod'],
+		[null, 'dev']
+	]);
+	expect(f.service.activities().every((job) => job.phase === 'complete')).toBe(true);
 });

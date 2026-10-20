@@ -49,6 +49,7 @@ function installDeployment(data: typeof deploymentFixture & { steps: typeof acti
 			projectId: 'local-' + 'a'.repeat(64),
 			projectName: 'Test project',
 			environment: 'prod',
+			sourceEnvironment: 'preprod',
 			commit: 'c'.repeat(40),
 			branch: 'feat/activity',
 			steps: data.steps,
@@ -103,19 +104,15 @@ const activitySteps = [
 	{ id: 'uploading', title: 'Deploy to Cloudflare' },
 	{ id: 'verifying', title: 'Verify health' }
 ];
-function installActivity({
-	steps,
-	interrupted
-}: {
-	steps: typeof activitySteps;
-	interrupted: boolean;
-}) {
+function installActivity(input: { steps: typeof activitySteps; interrupted: boolean }) {
+	const { steps, interrupted } = input;
 	const host = window as unknown as { harness: object };
 	const jobs = ['prod', 'preprod', 'stage', 'dev'].map((environment, index) => ({
 		id: 'deployment-' + environment,
 		projectId: 'local-' + 'a'.repeat(64),
 		projectName: 'Test project',
 		environment,
+		sourceEnvironment: ['preprod', 'stage', 'dev', null][index],
 		commit: String.fromCharCode(99 + index).repeat(40),
 		branch: 'feat/activity',
 		steps,
