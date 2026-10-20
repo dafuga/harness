@@ -6,7 +6,7 @@
 	"name": "component-card-evidence",
 	"goal": "Component cards show only screenshots, neutral names and clickable consumers; incomplete visual coverage blocks verification and handoff.",
 	"createdAt": "2026-10-20T17:00:48.864Z",
-	"updatedAt": "2026-10-20T19:22:13.267Z",
+	"updatedAt": "2026-10-20T19:31:34.612Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -52,7 +52,7 @@
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
 			"status": "complete",
 			"completedAt": "2026-10-20T17:09:10.559Z",
-			"evidence": "Final frozen-corpus replay: red de1a49cc96d960a6cdcaa03dfdab06d0591ddbcbbb438dd6036e9b7903ac0597 at f0bd59e882634a75a026bef66ca53400f8c1b54d; green ab4ba814dfe231b1163d2439ee0e5ad24b7388ecae28e4e8688dfe5a831912dc at 19e257259b34fe4f56dcaa35c2e6b7ab9d89cd26. Same command: 31 unit tests and 8 browser tests pass. Includes Harness latency and process-memory observations."
+			"evidence": "Frozen corpus after runner inventory repair: red 66e854246e5a6df2f39448a614691f22a17548a93ffe67db023916ec057b5559 at e4887f921f444cee0339fdfcdd277940b9aef8c4; green 3df4f104cd1773ce4083acfbb66b9f61489d85bdbeff567f9faf134c241089b8 at 6d46a54b357b629836b3a328a6175d12778b6089. The unchanged command passes 35 unit tests and 8 browser tests, including smaller Used In text. Harness profiles remain recorded."
 		},
 		{
 			"id": "guard",
@@ -65,7 +65,7 @@
 			"id": "verify",
 			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
 			"status": "pending",
-			"evidence": "Pending: Reports check passes 610 tests; focused clean builds and own Account menu/Model Cards captures pass. 160 existing active components still lack explicit preview bindings. Full current-commit verification and final task audit must pass before handoff or merge."
+			"evidence": "Pending: Reports check passes 610 tests. Root check passes formatting, types, lint, Rust checks and 910 tests but fails the stale preview inventory; its repaired inventory passes all four focused checks. Full verification of b3d2ec25 is running after clean build setup. 160 active components still lack explicit preview bindings; completion is not proven."
 		}
 	],
 	"evaluators": [
