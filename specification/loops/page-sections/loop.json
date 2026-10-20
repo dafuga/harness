@@ -2,7 +2,7 @@
 	"name": "page-sections",
 	"goal": "Pages expose Uses but no Used In tab or section; existing Used In links open Overview.",
 	"createdAt": "2026-10-20T17:31:12.844Z",
-	"updatedAt": "2026-10-20T17:34:31.271Z",
+	"updatedAt": "2026-10-20T17:38:47.382Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T17:38:47.382Z",
+			"evidence": "Committed c3947e3d. Frozen red record 37b5b8941efe8461fcf87eb1be9b4aeb5528a9d62448c5317022390872f12302 fails pages omit Used In at all three widths and rejects the retired page route behavior. Before screenshots are test-owned."
 		},
 		{
 			"id": "implement",
