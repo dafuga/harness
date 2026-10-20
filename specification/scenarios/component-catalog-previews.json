@@ -169,7 +169,13 @@
 		"reports.component.status-badge",
 		"reports.component.upload-audio",
 		"reports.component.upload-comparison",
-		"reports.component.usage-examples-usage-examples"
+		"reports.component.usage-examples-usage-examples",
+		"desktop.component.deployment-progress",
+		"desktop.component.deployment-details",
+		"desktop.component.deployment-activity",
+		"desktop.component.deployment-dialog",
+		"desktop.component.environment-picker",
+		"desktop.component.deployment-route"
 	],
 	"states": [
 		{
@@ -1167,6 +1173,42 @@
 			"title": "Function usage examples",
 			"coverage": "required",
 			"units": ["reports.component.usage-examples-usage-examples"]
+		},
+		{
+			"id": "desktop-component-deployment-progress",
+			"title": "Deployment progress",
+			"coverage": "required",
+			"units": ["desktop.component.deployment-progress"]
+		},
+		{
+			"id": "desktop-component-deployment-details",
+			"title": "Deployment details",
+			"coverage": "required",
+			"units": ["desktop.component.deployment-details"]
+		},
+		{
+			"id": "desktop-component-deployment-activity",
+			"title": "Deployment activity",
+			"coverage": "required",
+			"units": ["desktop.component.deployment-activity"]
+		},
+		{
+			"id": "desktop-component-deployment-dialog",
+			"title": "Deployment dialog",
+			"coverage": "required",
+			"units": ["desktop.component.deployment-dialog"]
+		},
+		{
+			"id": "desktop-component-environment-picker",
+			"title": "Environment picker",
+			"coverage": "required",
+			"units": ["desktop.component.environment-picker"]
+		},
+		{
+			"id": "desktop-component-deployment-route",
+			"title": "Deployment route",
+			"coverage": "required",
+			"units": ["desktop.component.deployment-route"]
 		}
 	],
 	"viewports": [
@@ -1366,7 +1408,13 @@
 				"reports-component-status-badge",
 				"reports-component-upload-audio",
 				"reports-component-upload-comparison",
-				"reports-component-usage-examples-usage-examples"
+				"reports-component-usage-examples-usage-examples",
+				"desktop-component-deployment-progress",
+				"desktop-component-deployment-details",
+				"desktop-component-deployment-activity",
+				"desktop-component-deployment-dialog",
+				"desktop-component-environment-picker",
+				"desktop-component-deployment-route"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",

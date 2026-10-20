@@ -16,6 +16,15 @@ export async function openPreview(page: Page, home: string, id: string) {
 export async function readyPreview(page: Page, id: string) {
 	const content = page.locator(`[data-preview-unit="${id}"]`);
 	await expect(content).toBeAttached();
+	const dialog = {
+		'desktop.component.deployment-activity': 'Deployments',
+		'desktop.component.deployment-dialog': 'Deploy'
+	}[id];
+	if (dialog && !(await page.getByRole('dialog').isVisible())) {
+		await content.getByRole('button', { name: dialog, exact: true }).click();
+		await expect(page.getByRole('dialog')).toBeVisible();
+		if (dialog === 'Deploy') await expect(page.getByText('Loading promotion…')).toHaveCount(0);
+	}
 	await expect.poll(() => content.locator(':visible').count()).toBeGreaterThan(0);
 	await expect.poll(() => content.evaluate((node) => node.childElementCount)).toBeGreaterThan(0);
 	await expect(content).not.toContainText(

@@ -2,7 +2,7 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.environment-picker",
 	"kind": "component",
-	"title": "EnvironmentPicker",
+	"title": "Environment picker",
 	"responsibility": "Selects the environment scope for changes and shows its latest verified deployment timestamp.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
@@ -65,7 +65,12 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "desktop-component-environment-picker",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

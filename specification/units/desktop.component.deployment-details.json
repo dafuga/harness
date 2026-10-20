@@ -2,7 +2,7 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.deployment-details",
 	"kind": "component",
-	"title": "DeploymentDetails",
+	"title": "Deployment details",
 	"responsibility": "Presents deployment identity, source-to-destination route, current status and shared progress steps.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
@@ -65,7 +65,12 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "desktop-component-deployment-details",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

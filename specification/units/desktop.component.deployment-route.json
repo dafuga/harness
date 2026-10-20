@@ -2,7 +2,7 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.deployment-route",
 	"kind": "component",
-	"title": "DeploymentRoute",
+	"title": "Deployment route",
 	"responsibility": "Displays accessible source-to-destination labels and a directional arrow for a deployment.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
@@ -45,7 +45,12 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "desktop-component-deployment-route",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
