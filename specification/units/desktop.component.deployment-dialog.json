@@ -2,7 +2,7 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.deployment-dialog",
 	"kind": "component",
-	"title": "DeploymentDialog",
+	"title": "Deployment dialog",
 	"responsibility": "Previews the verified preprod-to-production commit gap and starts promotion only after one explicit action.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
@@ -70,7 +70,12 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "desktop-component-deployment-dialog",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
