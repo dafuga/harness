@@ -107,7 +107,7 @@ test('the project agent says its public reply with the units it names as links',
 	);
 	await expect(reply.getByRole('link', { name: 'Order frame', exact: true })).toHaveAttribute(
 		'href',
-		alphaAt('shells/app.shell.order-frame')
+		alphaAt('shells/app.shell.order-frame/history')
 	);
 	await expect(reply.getByRole('link')).toHaveCount(1);
 	await capture(page, info, 'agent-reply');

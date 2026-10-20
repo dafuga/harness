@@ -1,5 +1,6 @@
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
+import { taskProfile } from '../../../../test/support/taskProfiles';
 import type { EntityEvidenceResult } from '../../../desktop/src/models/DesktopEvidence.types';
 import { artifactLimit } from '../../../desktop/src/utils/artifactMedia';
 import {
@@ -39,6 +40,9 @@ test('evidence is answered as JSON that is not stored by a browser', async () =>
 	expect(result).toEqual(JSON.parse(JSON.stringify(await read(f, tipOf(f)))));
 	expect(result.scope).toMatchObject({ mode: 'current', commit: f.commits.changed });
 	expect(result.identity).toMatchObject({ projectId: project.id, ...f.pins });
+	await taskProfile('hub.controller.hub-api', 'read-recorded-evidence-warm-cache', () =>
+		f.controller.handle(get('evidence', tipOf(f)))
+	);
 });
 
 test('an artifact is answered as its bytes, with the attested type and no sniffing', async () => {
