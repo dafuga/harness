@@ -31,6 +31,14 @@ to compensate for a poor name. Use semantic judgment, not a universal verb-prefi
 A clearly named formatter with one consumer stays with its owner; reading a file
 remains effectful even when the function has a clear name.
 
+## Catalog Threshold Review
+
+When a reuse threshold controls catalog inclusion, derive that decision and the
+visible usage links from the same resolved, distinct consumer set. Cover zero,
+one and multiple eligible consumers in the standardized catalog tests, including
+duplicate references and excluded or missing consumers. A passing display test
+must not accept a row that contradicts the collection's inclusion rule.
+
 ## Bug and Regression Loops
 
 - Commit the strengthened failing test before product repair. Run `harness loop record <loop> --phase red --test <path> --command <command> --assertion <actual failure>` on that commit. Make a separate fix commit and run `loop record --phase green` against the same tests, fixtures, command and environment. Keep both commits when landing; never squash away this regression history. Focused red/green proof does not replace full verification.

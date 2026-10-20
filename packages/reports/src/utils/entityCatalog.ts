@@ -130,14 +130,16 @@ export function entityCatalog(
 			const row = rowOf(entity, relations(entity.id));
 			if (category !== 'functions') return [row];
 			const helpers = (entity.unit.helpers ?? []).filter(sharedHelper);
-			return helpers.map((helper) => ({
-				...row,
-				shared: true,
-				helper,
-				usedIn: helperConsumers(helper, byId),
-				name: helper.name,
-				id: helpers.length === 1 ? entity.id : `${entity.id}#${helper.source}:${helper.name}`
-			}));
+			return helpers
+				.map((helper) => ({
+					...row,
+					shared: true,
+					helper,
+					usedIn: helperConsumers(helper, byId),
+					name: helper.name,
+					id: helpers.length === 1 ? entity.id : `${entity.id}#${helper.source}:${helper.name}`
+				}))
+				.filter((item) => item.usedIn.length >= 2);
 		})
 		.sort(byName);
 }
