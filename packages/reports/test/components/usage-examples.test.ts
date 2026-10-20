@@ -5,39 +5,34 @@ import type { UsageExample } from '../../../../src/utils/unit-documentation/unit
 
 const draw = (examples: UsageExample[]) => render(UsageExamples, { props: { examples } }).body;
 
-test('authored calls and falsy results remain literal escaped code', () => {
+test('only titles and escaped code show calls with output or error comments', () => {
 	const body = draw([
-		{ name: 'Call', call: 'choose("<script>")', input: null, output: false },
+		{
+			name: 'Call',
+			description: 'Hidden description',
+			call: 'choose("<script>")',
+			input: null,
+			output: false
+		},
 		{ name: 'Zero', call: 'choose(0)', input: 0, output: 0 },
 		{ name: 'Null error', call: 'fail()', input: [], error: null }
 	]);
 	expect(body).toContain('&lt;script');
 	expect(body).not.toContain('<script>');
 	expect(body).toContain('false');
-	expect(body).toContain('>0<');
+	expect(body).toContain('// throws null');
+	expect(body).not.toContain('<table');
+	expect(body).not.toContain('<details');
+	expect(body).not.toContain('Hidden description');
+	expect(body.match(/<article/g)).toHaveLength(3);
+	expect(body.match(/<pre/g)).toHaveLength(3);
+});
+
+test('legacy inputs remain literal comments without inventing a call', () => {
+	const body = draw([{ name: 'Undocumented call', input: { zero: 0, empty: null }, output: '' }]);
+	expect(body).toContain('// Call not documented');
+	expect(body).toContain('// Input:');
+	expect(body).toContain('zero');
 	expect(body).toContain('null');
-	expect(body).toContain('Expected error');
-	expect(body.match(/Output changes from Example 01/g)).toHaveLength(2);
-});
-
-test('output comparison uses values rather than object property order', () => {
-	const body = draw([
-		{ name: 'Baseline', input: {}, output: { count: 0, flags: [false, null] } },
-		{ name: 'Reordered', input: {}, output: { flags: [false, null], count: 0 } },
-		{ name: 'Changed field', input: {}, output: { count: 1 } }
-	]);
-	expect(body).toContain('Same output as Example 01');
-	expect(body.match(/Output changes from Example 01/g)).toHaveLength(1);
-	expect(body).toContain('count');
-	expect(body).toContain('flags');
-	expect(body).toContain('Call not documented');
-});
-
-test('changing an output into an error is visible even when both contain null', () => {
-	const body = draw([
-		{ name: 'Null value', input: null, output: null },
-		{ name: 'Null error', input: null, error: null }
-	]);
-	expect(body).toContain('Output changes from Example 01');
-	expect(body).toContain('Expected error');
+	expect(body).not.toContain('Output changes');
 });

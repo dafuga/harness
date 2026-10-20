@@ -161,7 +161,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 				`${process.env.SCREENSHOT_LABEL ?? 'run'}-function-calls-${commit ? 'commit' : 'tip'}-${viewport}`
 			);
 			await reviewFunctionCalls(pane);
-			const rows = pane.locator('.cases > table > tbody > tr');
+			const rows = pane.getByRole('article');
 			await expect(rows).toHaveCount(3);
 			await expect(rows.first()).toContainText(
 				commit ? 'Search the earlier catalog' : 'Find a matching order'
@@ -171,18 +171,9 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			await expect(rows.last()).toContainText('false');
 			await expect(rows.last()).toContainText('0');
 			await expect(rows.last()).toContainText('null');
-			await expect(pane.getByRole('columnheader')).toHaveText([
-				'Example',
-				'Call',
-				'Expected output'
-			]);
+			await expect(pane.getByRole('table')).toHaveCount(0);
+			await expect(pane.locator('details')).toHaveCount(0);
 			await expect(pane.locator('tag')).toHaveCount(0);
-			await expect(
-				pane.getByText('No usable verification record judges this revision.')
-			).not.toBeVisible();
-			await pane.getByText('Committed document', { exact: true }).click();
-			await expect(pane.locator('pre').last()).toContainText('Committed usage documentation');
-			await pane.getByText('Committed document', { exact: true }).click();
 			await capture(page, `examples-cases-${commit ? 'commit' : 'tip'}-${viewport}`);
 			expect(await fits(page)).toBe(true);
 		}
@@ -190,20 +181,27 @@ for (const [viewport, size] of Object.entries(viewports)) {
 		const pane = page.getByRole('tabpanel', { name: 'Filter orders examples', exact: true });
 		await expect(pane).toContainText('No usage examples are documented at this commit.');
 		await expect(pane.locator('.cases')).toHaveCount(0);
-		await pane.getByText('Recorded tests and verification', { exact: true }).click();
-		await expect(pane.getByRole('heading', { name: /Verification at/ })).toBeVisible();
+		await expect(pane.locator('details')).toHaveCount(0);
 	});
 }
 
-/** Authored usage shows the call itself and how its expected result differs. */
+/** Examples contain only short titles and literal calls with output comments. */
 async function reviewFunctionCalls(pane: Locator): Promise<void> {
-	await expect(
-		pane.locator('code').filter({ hasText: 'filterOrders(orders, "SERVICE")' }),
-		'Examples must show a concrete function call'
-	).toBeVisible();
-	await expect(
-		pane.locator('code').filter({ hasText: 'filterOrders(orders, "<tag>")' })
-	).toBeVisible();
-	await expect(pane.getByText('Output changes from Example 01', { exact: true })).toHaveCount(2);
-	await expect(pane.getByText('Call not documented', { exact: true })).toBeVisible();
+	await expect(pane.getByRole('table'), 'Examples contain no table').toHaveCount(0);
+	const examples = pane.getByRole('article');
+	await expect(examples).toHaveCount(3);
+	for (const example of await examples.all()) {
+		await expect(example.getByRole('heading')).toHaveCount(1);
+		await expect(example.locator('pre > code')).toHaveCount(1);
+		await expect(example.locator(':scope > *')).toHaveCount(2);
+		await expect(example.locator('code')).toContainText('// =>');
+	}
+	await expect(examples.first().locator('code')).toContainText(
+		'filterOrders(["Service call", "New installation"], "SERVICE")'
+	);
+	await expect(examples.first().locator('code')).toContainText('// => ["Service call"]');
+	await expect(examples.nth(1).locator('code')).toContainText('// => []');
+	await expect(examples.last().locator('code')).toContainText('// Call not documented');
+	await expect(pane).not.toContainText('Output changes from');
+	await expect(pane).not.toContainText('Search names without changing');
 }
