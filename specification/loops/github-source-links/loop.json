@@ -2,11 +2,9 @@
 	"name": "github-source-links",
 	"goal": "Source tabs show only safe GitHub file links pinned to the selected revision",
 	"createdAt": "2026-10-20T15:44:22.581Z",
-	"updatedAt": "2026-10-20T15:50:29.871Z",
+	"updatedAt": "2026-10-20T15:53:16.470Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T15:53:16.470Z",
+			"evidence": "The same committed index, component rendering and responsive navigation regressions pass at 276f672b with unchanged test inputs and environment."
 		},
 		{
 			"id": "verify",
