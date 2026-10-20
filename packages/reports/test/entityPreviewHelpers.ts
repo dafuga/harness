@@ -48,6 +48,7 @@ export function withHelpers(detail: HarnessRevision): HarnessRevision {
 			...template,
 			id: `function.${kind}`,
 			title: kind,
+			owns: { source: [`src/utils/${kind}.ts`], symbols: [kind] },
 			helpers
 		};
 	});
@@ -115,6 +116,17 @@ function withServices(detail: HarnessRevision): HarnessRevision {
 			...detail.registry,
 			units: [
 				...detail.registry.units,
+				{
+					...template,
+					id: 'app.workflow.record-analytics',
+					kind: 'workflow',
+					title: 'Analytics recording',
+					owns: {
+						source: ['src/workflows/recordAnalytics.ts'],
+						symbols: ['AnalyticsInput', 'recordAnalytics']
+					},
+					serviceConsumers: [{ unit: ids.list }, { unit: ids.store }]
+				},
 				...variants.map((serviceConsumers, index) => ({
 					...template,
 					id: `app.service.private-${index}`,

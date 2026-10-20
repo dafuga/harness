@@ -14,7 +14,7 @@ test('what an entity uses is one section of kinds of their own, and what uses it
 	for (const mode of ['current', 'commit'] as const) {
 		const [uses, used] = both(mode);
 		expect([sections(uses), sections(used)]).toEqual([['Uses'], ['Used In']]);
-		expect(words(uses)).toMatch(/Components\s+1\s+Order card[^]*Functions\s+1[^]*Services\s+1/);
+		expect(words(uses)).toMatch(/Components\s+1\s+OrderCard[^]*Functions\s+1[^]*Services\s+1/);
 		expect(words(uses + used)).not.toMatch(/sub-?components|\brelated\b/i);
 		expect(words(uses + used)).not.toMatch(/src\/|\.ts\b/);
 		for (const body of [uses, used]) {

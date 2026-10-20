@@ -37,9 +37,9 @@ test.each([
 });
 test('a collection lists the entities of its category by the name a person reads', () => {
 	expect(rows('components').map((row) => row.name)).toEqual([
-		'Order card',
-		'Order list',
-		'Search box'
+		'OrderCard',
+		'OrderList',
+		'SearchBox'
 	]);
 	expect(rows('pages').map((row) => row.id)).toEqual([ids.page]);
 	const original = explorerEntities(head).find((entity) => entity.id === ids.filter)!;
@@ -78,14 +78,14 @@ test('a collection lists the entities of its category by the name a person reads
 		'owner names remain searchable when cards show callable names'
 	).toEqual(['Alpha']);
 	const shown = rows('components').map(({ entity: _entity, ...row }) => row);
-	expect(JSON.stringify(shown)).not.toMatch(/src\/|\.ts"|OrderList/);
+	expect(JSON.stringify(shown)).not.toMatch(/src\/|\.ts"/);
 });
 test('a component says which pages it is used on and which components it contains', () => {
 	const card = rows('components').find((row) => row.id === ids.card)!;
 	expect(card.usedOn).toEqual(['Orders page']);
-	expect(card.usedBy).toEqual(['Order list']);
+	expect(card.usedBy).toEqual(['OrderList']);
 	const list = rows('components').find((row) => row.id === ids.list)!;
-	expect(list.contains).toEqual(['Order card']);
+	expect(list.contains).toEqual(['OrderCard']);
 	expect(list.shared).toBe(false);
 });
 test('service rows require two distinct resolved runtime owners and use that set for links', () => {
@@ -94,8 +94,8 @@ test('service rows require two distinct resolved runtime owners and use that set
 	expect(service.targets).toEqual(['module', 'wasm', 'process']);
 	expect(service.name).toBe('OrderStore');
 	expect(service.usedIn).toEqual([
-		{ id: ids.list, name: 'Order list', category: 'components' },
-		{ id: ids.search, name: 'Search box', category: 'components' }
+		{ id: ids.list, name: 'OrderList', category: 'components' },
+		{ id: ids.search, name: 'SearchBox', category: 'components' }
 	]);
 	for (const search of ['OrderStore', 'Order store'])
 		expect(catalogFilter([service], { ...filter, search }).map((row) => row.id)).toEqual([
@@ -119,7 +119,7 @@ test('service rows require two distinct resolved runtime owners and use that set
 	}
 	const unnamed = { ...original, unit: { ...original.unit, owns: { source: [], symbols: [] } } };
 	const fallback = serviceRows(unnamed)[0];
-	expect(fallback.name).toBe('Order store');
+	expect(fallback.name).toBe('OrderStore');
 });
 test('changed is what the commit changed itself, and the verdict is the one it was given', () => {
 	expect(rows('functions')[0].changed).toBe(true);
@@ -140,12 +140,12 @@ test('search reads names and purposes, changed only keeps changes, and an order 
 	const all = rows('components');
 	const names = (found: typeof all) => found.map((row) => row.name);
 	expect(names(catalogFilter(all, { ...filter, search: 'SEARCH' }))).toEqual([
-		'Order list',
-		'Search box'
+		'OrderList',
+		'SearchBox'
 	]);
-	expect(names(catalogFilter(all, { ...filter, changedOnly: true }))).toEqual(['Order list']);
-	expect(catalogFilter(all, { ...filter, order: 'name-desc' })[0].name).toBe('Search box');
-	expect(catalogFilter(all, { ...filter, order: 'changed' })[0].name).toBe('Order list');
+	expect(names(catalogFilter(all, { ...filter, changedOnly: true }))).toEqual(['OrderList']);
+	expect(catalogFilter(all, { ...filter, order: 'name-desc' })[0].name).toBe('SearchBox');
+	expect(catalogFilter(all, { ...filter, order: 'changed' })[0].name).toBe('OrderList');
 	const failing = [...rows('functions', partial), ...rows('pages', partial)];
 	expect(catalogFilter(failing, { ...filter, order: 'failed' })[0].name).toBe('Orders page');
 	expect(catalogFilter(all, { ...filter, search: 'nothing-matches' })).toEqual([]);
@@ -154,13 +154,13 @@ test('search reads names and purposes, changed only keeps changes, and an order 
 		'visible function symbols are searchable'
 	).toEqual([ids.filter]);
 	// Filtering leaves the rows it was given as they were.
-	expect(names(all)).toEqual(['Order card', 'Order list', 'Search box']);
+	expect(names(all)).toEqual(['OrderCard', 'OrderList', 'SearchBox']);
 });
 test('a list of names is none, one name, or the first and how many more', () => {
 	expect(listed([])).toBe('none');
-	expect(listed(['Order list'])).toBe('Order list');
-	expect(listed(['Order list', 'Search box', 'Order card'])).toBe('Order list + 2 more');
-	expect(listed(['Order card', 'Search box'], 2)).toBe('Order card · Search box');
+	expect(listed(['OrderList'])).toBe('OrderList');
+	expect(listed(['OrderList', 'SearchBox', 'OrderCard'])).toBe('OrderList + 2 more');
+	expect(listed(['OrderCard', 'SearchBox'], 2)).toBe('OrderCard · SearchBox');
 });
 test('shared helper rows require source exports, list every callable and keep owner links', () => {
 	const original = explorerEntities(head).find((entity) => entity.id === ids.filter)!;

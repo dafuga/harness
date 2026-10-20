@@ -119,6 +119,7 @@ test('audit reports architecture rule violations', async () => {
 test('audit reports Harness scaffold file and function naming violations', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-audit-'));
 	await mkdir(join(root, 'src/services'), { recursive: true });
+	await mkdir(join(root, 'src/lib/checkout'), { recursive: true });
 	await mkdir(join(root, 'src/utils'), { recursive: true });
 	await mkdir(join(root, 'src/concerns'), { recursive: true });
 	await mkdir(join(root, 'db/migrations'), { recursive: true });
@@ -137,10 +138,16 @@ test('audit reports Harness scaffold file and function naming violations', async
 	);
 	await writeFile(join(root, 'db/migrations/CreatePosts.sql'), '-- reversible: ok\n');
 
+	await writeFile(join(root, 'src/lib/checkout/payment.ts'), 'export class PaymentService {}\n');
 	const findings = await auditPath(root);
 	const rules = findings.map((finding) => finding.rule);
 
 	expect(rules).toContain('file-name-pattern');
+	expect(findings).toEqual(
+		expect.arrayContaining([
+			expect.objectContaining({ path: 'src/lib/checkout/payment.ts', rule: 'file-name-pattern' })
+		])
+	);
 	expect(rules).toContain('function-name-pattern');
 	await rm(root, { recursive: true, force: true });
 });

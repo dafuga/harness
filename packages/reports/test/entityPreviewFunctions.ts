@@ -9,7 +9,7 @@ export async function reviewPrivateFunctions(page: Page, viewport: string): Prom
 		await open(page, { category: 'components', entity: ids.list, tab: 'uses', commit }, 'helpers');
 		await page
 			.getByRole('region', { name: 'Uses', exact: true })
-			.getByRole('link', { name: 'Single', exact: true })
+			.getByRole('link', { name: 'single', exact: true })
 			.click();
 		await page.evaluate(async () => {
 			await document.fonts.ready;
@@ -22,12 +22,12 @@ export async function reviewPrivateFunctions(page: Page, viewport: string): Prom
 		await expect(breadcrumb, 'Private functions have no Helpers breadcrumb').not.toContainText(
 			'Helpers'
 		);
-		await expect(breadcrumb.getByRole('link', { name: 'Order list', exact: true })).toBeVisible();
-		await expect(page.getByRole('heading', { name: 'Single', exact: true })).toBeVisible();
+		await expect(breadcrumb.getByRole('link', { name: 'OrderList', exact: true })).toBeVisible();
+		await expect(page.getByRole('heading', { name: 'single', exact: true })).toBeVisible();
 		await page.getByRole('tab', { name: 'Examples', exact: true }).click();
-		await expect(page.getByRole('tabpanel', { name: 'Single examples' })).toBeVisible();
+		await expect(page.getByRole('tabpanel', { name: 'single examples' })).toBeVisible();
 		await page.getByRole('tab', { name: 'Source', exact: true }).click();
-		await expect(page.getByRole('tabpanel', { name: 'Single source' })).toBeVisible();
+		await expect(page.getByRole('tabpanel', { name: 'single source' })).toBeVisible();
 		await page.getByRole('tab', { name: 'History', exact: true }).click();
 		await expect(breadcrumb).not.toContainText('Helpers');
 		expect(await where(page)).toMatchObject({
@@ -73,7 +73,7 @@ export async function reviewHelperUsage(page: Page, viewport: string): Promise<v
 		const card = page.getByRole('article');
 		const usage = card.getByRole('group', { name: 'Used In', exact: true });
 		await expect(usage, 'helper cards expose their consumers').toBeVisible();
-		await expect(usage.getByRole('link')).toHaveText(['Order list', 'Order store', 'Order']);
+		await expect(usage.getByRole('link')).toHaveText(['OrderList', 'OrderStore', 'Order']);
 		const sizes = await card.evaluate((node) => [
 			parseFloat(getComputedStyle(node.querySelector('code')!).fontSize),
 			parseFloat(getComputedStyle(node.querySelector('[aria-label="Used In"]')!).fontSize)
@@ -81,8 +81,8 @@ export async function reviewHelperUsage(page: Page, viewport: string): Promise<v
 		expect(sizes[1], 'usage is smaller than the function call').toBeLessThan(sizes[0]);
 		expect(await fits(page)).toBe(true);
 		for (const [label, category, entity] of [
-			['Order list', 'components', ids.list],
-			['Order store', 'services', ids.store],
+			['OrderList', 'components', ids.list],
+			['OrderStore', 'services', ids.store],
 			['Order', 'models', 'app.model.order']
 		] as const) {
 			await page
@@ -109,13 +109,16 @@ export async function reviewServiceCard(page: Page, viewport: string): Promise<v
 			await document.fonts.ready;
 		});
 		await capture(page, `service-card-${commit ? 'commit' : 'tip'}-${viewport}`);
-		const card = page.getByRole('article');
+		const card = page
+			.getByRole('article')
+			.filter({ has: page.getByRole('link', { name: 'OrderStore', exact: true }) });
+		await expect(page.getByRole('article')).toHaveCount(2);
 		await expect(card, 'service cards show only name and usage').toHaveText(
-			/^\s*OrderStore\s*Used In\s*Order list\s*Search box\s*$/
+			/^\s*OrderStore\s*Used In\s*OrderList\s*SearchBox\s*$/
 		);
 		await expect(card.locator('h2, p, img, button, svg, .hx-verdict')).toHaveCount(0);
 		const usage = card.getByRole('group', { name: 'Used In', exact: true });
-		await expect(usage.getByRole('link')).toHaveText(['Order list', 'Search box']);
+		await expect(usage.getByRole('link')).toHaveText(['OrderList', 'SearchBox']);
 		for (const search of ['OrderStore', 'Order store']) {
 			await page.getByRole('searchbox', { name: 'Search services' }).fill(search);
 			await expect(card).toHaveCount(1);
@@ -128,10 +131,11 @@ export async function reviewServiceCard(page: Page, viewport: string): Promise<v
 			entity: ids.store,
 			commit
 		});
+		await expect(page.getByRole('heading', { name: 'OrderStore', exact: true })).toBeVisible();
 		await open(page, { category: 'services', commit }, 'helpers');
-		await page
+		await card
 			.getByRole('group', { name: 'Used In', exact: true })
-			.getByRole('link', { name: 'Order list', exact: true })
+			.getByRole('link', { name: 'OrderList', exact: true })
 			.press('Enter');
 		expect(await where(page)).toMatchObject({
 			branch: 'feature/orders',
@@ -139,5 +143,23 @@ export async function reviewServiceCard(page: Page, viewport: string): Promise<v
 			entity: ids.list,
 			commit
 		});
+		await reviewFunctionService(page, commit);
 	}
+}
+
+/** Function services and their class consumers keep one code name on every surface. */
+async function reviewFunctionService(page: Page, commit: string | null) {
+	await open(page, { category: 'services', commit }, 'helpers');
+	const card = page
+		.getByRole('article')
+		.filter({ has: page.getByRole('link', { name: 'recordAnalytics', exact: true }) });
+	await expect(
+		card.getByRole('group', { name: 'Used In', exact: true }).getByRole('link')
+	).toHaveText(['OrderList', 'OrderStore']);
+	await card.getByRole('link', { name: 'recordAnalytics', exact: true }).press('Enter');
+	await expect(page.getByRole('heading', { name: 'recordAnalytics', exact: true })).toBeVisible();
+	await open(page, { category: 'services', commit }, 'helpers');
+	await card.getByRole('link', { name: 'OrderStore', exact: true }).press('Enter');
+	await expect(page.getByRole('heading', { name: 'OrderStore', exact: true })).toBeVisible();
+	expect(await where(page)).toMatchObject({ commit, entity: ids.store });
 }

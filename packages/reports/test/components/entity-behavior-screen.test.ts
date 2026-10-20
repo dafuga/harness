@@ -39,7 +39,7 @@ test('its tabs and a missing entity behave as on every entity screen', () => {
 	expect(words(tests)).not.toContain('Recorded tests and verification');
 	expect(words(tests)).not.toContain('Verification at bbbbbbb');
 	const related = screen(EntityBehaviorScreen, 'commit', { ...filter, tab: 'used-in' });
-	expect(related).toContain('aria-label="Filter orders used in"');
+	expect(related).toContain('aria-label="filterOrders used in"');
 	const gone = { category: 'functions' as const, entity: 'app.function.gone' };
 	expect(words(screen(EntityBehaviorScreen, 'commit', gone))).toContain('Not at this revision');
 });

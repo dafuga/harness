@@ -50,7 +50,7 @@ test('configs keep columns; component, helper and service collections use cards'
 	expect(count(components, /<img\b/g)).toBe(3);
 	expect(words(components)).not.toMatch(source);
 	expect(words(components)).not.toMatch(banned);
-	expect(words(components)).toContain('Order list');
+	expect(words(components)).toContain('OrderList');
 	expect(words(components)).toContain('Orders page');
 	// A link from a selected commit stays at that commit.
 	expect(components).toContain(`/commit/${commits.middle}/components/${ids.list}`);

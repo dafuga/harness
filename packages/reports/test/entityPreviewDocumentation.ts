@@ -23,7 +23,7 @@ export function withDocumentation(detail: HarnessRevision): HarnessRevision {
 	];
 	const documentation = {
 		path: 'src/functions/filterOrders/README.md',
-		text: '# Filter orders\n\nCommitted usage documentation.',
+		text: '# filterOrders\n\nCommitted usage documentation.',
 		examples
 	};
 	const units = detail.registry.units.map((unit) =>

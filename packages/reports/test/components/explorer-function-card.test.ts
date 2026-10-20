@@ -13,14 +13,14 @@ test('function catalog cards stay concise and retain revision links without deta
 		expect(count(body, /<img\b/g)).toBe(0);
 		expect(words(card)).toContain('filterOrders(orders, "SERVICE")');
 		expect(card).not.toMatch(/<h2|<p\b/);
-		expect(words(card)).not.toContain('Filter orders');
+		expect(words(card)).not.toContain('filterOrders');
 		expect(words(card)).not.toContain('Returns the orders');
 		expect(words(card)).not.toMatch(/Contract|Inputs|Output|Used by|View tests|Shared|Changed/);
 		expect(count(body, /class="hx-verdict/g)).toBe(0);
 		expect(count(card, /<a\b/g), 'function call and its two consumer links').toBe(3);
 		expect(words(card)).toContain('Used In');
-		expect(words(card)).toContain('Order list');
-		expect(words(card)).toContain('Order store');
+		expect(words(card)).toContain('OrderList');
+		expect(words(card)).toContain('OrderStore');
 		expect(card).toContain(
 			`/branch/feature%2Forders${mode === 'current' ? '' : `/commit/${commits.middle}`}/services/${ids.store}`
 		);

@@ -105,7 +105,7 @@ for (const [name, size] of Object.entries(viewports)) {
 			await capture(tab, `component-cards-${commit?.slice(0, 7) ?? 'tip'}-${name}`);
 			const cards = tab.getByRole('article');
 			await expect(cards, 'components show screenshot cards').toHaveCount(3);
-			const shot = cards.getByRole('img', { name: 'Screenshot of Order card', exact: true });
+			const shot = cards.getByRole('img', { name: 'Screenshot of OrderCard', exact: true });
 			const viewed = (commit ?? commits.tip).slice(0, 7);
 			await expect(shot).toHaveAttribute('src', `/media/${viewed}-default-desktop.png`);
 			expect(await shot.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBe(1440);
@@ -184,7 +184,7 @@ test('the component catalog labels reused screenshots with their original commit
 }) => {
 	await open(tab, { category: 'components' }, 'inherited');
 	await capture(tab, 'component-cards-reused-desktop');
-	const card = tab.getByRole('article', { name: 'Order card', exact: true });
+	const card = tab.getByRole('article', { name: 'OrderCard', exact: true });
 	await expect(card.getByRole('img')).toHaveAttribute('src', '/media/bbbbbbb-default-desktop.png');
 	await expect(card).toContainText('Reused from bbbbbbb');
 	await expect(card).not.toContainText('Captured at ccccccc');
@@ -193,7 +193,7 @@ test('branch and commit selection replace component screenshots with that revisi
 	page: tab
 }) => {
 	await open(tab, { category: 'components' }, 'console');
-	const card = tab.getByRole('article', { name: 'Order card', exact: true });
+	const card = tab.getByRole('article', { name: 'OrderCard', exact: true });
 	await expect(card.getByRole('img')).toHaveAttribute(
 		'src',
 		'/harness/media/ccccccc-default-desktop.png'
