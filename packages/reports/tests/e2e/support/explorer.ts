@@ -1,7 +1,9 @@
 import { expect, type Page } from '@playwright/test';
-import { mkdirSync, readFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { home, short } from './harnessHistory';
+import { settled, servedBuild } from './harnessCapture';
+import { recordCapture } from '../../../../../src/utils/record-capture/recordCapture';
 
 /** What the seed recorded about the explorer's part of the synthetic history. */
 export interface SeededExplorer {
@@ -42,8 +44,68 @@ const shots = process.env.HARNESS_EXPLORER_SHOTS ?? join(home, 'explorer-shots')
 export async function checkpoint(page: Page, name: string): Promise<void> {
 	if (process.env.TAKE_SCREENSHOT !== '1') return;
 	mkdirSync(shots, { recursive: true });
-	await page.waitForLoadState('networkidle');
+	await settled(page);
 	await page.screenshot({ path: join(shots, `${name}.png`), fullPage: true });
+	await pageBenchmark(page, name);
+}
+
+/** Runtime observations of the real route, never of a later client-side destination. */
+async function pageBenchmark(page: Page, state: string): Promise<void> {
+	const match =
+		/^\/harness\/branch\/[^/]+\/(?:commit\/[a-f0-9]{40}\/)?(pages|shells|components|functions|configs|services|models)(\/[^/]+)?(\/(?:history|details))?$/.exec(
+			new URL(page.url()).pathname
+		);
+	if (!match) return;
+	const unit = `reports.page.harness-branch-branch-at-${match[1]}${match[2] ? '-entity' : ''}${match[3] ? '-' + match[3].slice(1) : ''}`;
+	if (!existsSync(join(import.meta.dirname, '../../../../../specification/units', unit + '.json')))
+		return;
+	const server = await servedBuild(page);
+	if (!server || server.revision !== process.env.HARNESS_VERIFY_REVISION) return;
+	const navigation = await page.evaluate(() => {
+		const entry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+		return entry ? { name: entry.name, duration: entry.duration } : null;
+	});
+	// A soft navigation has no new NavigationTiming entry; do not borrow its predecessor's time.
+	if (!navigation || navigation.name !== page.url()) return;
+	const session = await page.context().newCDPSession(page);
+	const heap = await session.send('Runtime.getHeapUsage');
+	await session.detach();
+	expect(navigation.duration).toBeGreaterThan(0);
+	expect(heap.usedSize).toBeGreaterThan(0);
+	const viewport = page.viewportSize()!;
+	const context = {
+		unit,
+		workload: `${state}-${viewport.width}x${viewport.height}`,
+		target: 'http',
+		samples: 1
+	};
+	const measurements = [
+		{
+			...context,
+			metric: 'browser-navigation-ms',
+			unitOfMeasure: 'ms',
+			value: navigation.duration,
+			method: `Chromium NavigationTiming duration through loadEventEnd for this exact URL; ${viewport.width}x${viewport.height}; build ${server.buildId}.`
+		},
+		{
+			...context,
+			metric: 'browser-js-heap-bytes',
+			unitOfMeasure: 'bytes',
+			value: heap.usedSize,
+			method:
+				'Chromium Runtime.getHeapUsage after fonts and images settled; whole page JavaScript heap including shared code, not isolated unit memory or browser-process RSS.'
+		}
+	];
+	recordCapture(
+		{
+			evidence: 'page-benchmarks',
+			state,
+			kind: 'benchmark',
+			file: `${state}-benchmark.json`,
+			mediaType: 'application/json'
+		},
+		JSON.stringify({ measurements })
+	);
 }
 
 /** The navbar says which tip the branch has and which commit is looked at. */
