@@ -102,7 +102,7 @@ const cases: Array<{ files: Record<string, string>; count: number }> = [
 	},
 	{
 		files: {
-			'src/pages/one.ts': "import { shared } from '../utils/shared'; shared();",
+			'src/routes/+page.server.ts': "import { shared } from '../utils/shared'; shared();",
 			'src/utils/barrel.ts': "export { shared } from './shared';",
 			'src/utils/callers.ts':
 				"import { shared } from './barrel'; export function first() { shared(); }"

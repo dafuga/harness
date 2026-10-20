@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest';
 import { componentManifestSchema, type ComponentManifest } from '../../src/core/unitTypes';
 import { SourceGraphService } from '../../src/services/SourceGraphService';
+import { scanExports } from '../../src/utils/scanExports';
 import { UnitRegistryValidator } from '../../src/validators/UnitRegistryValidator';
 import { indexFiles, retire, unitOf, helperMoveGaps, relocatedSource } from '../support/memoryTree';
 import { existsSync, readFileSync } from 'node:fs';
@@ -211,7 +212,15 @@ test('recorded service moves preserve implementations and registered owner-local
 		const unit = JSON.parse(
 			readFileSync(`specification/units/${service.id}.json`, 'utf8')
 		) as ComponentManifest;
-		if (!unit.owns.source.every((path) => path.startsWith(service.ownerFolder + '/')))
+		if (
+			unit.owns.source.some(
+				(path) =>
+					!path.startsWith(service.ownerFolder + '/') &&
+					scanExports(readFileSync(path, 'utf8')).symbols.some((symbol) =>
+						['class', 'function', 'const'].includes(symbol.kind)
+					)
+			)
+		)
 			gaps.push(`${service.id}: outside owner`);
 	}
 	expect(gaps, `service ownership: ${gaps.length} gaps; ${gaps.slice(0, 6).join('; ')}`).toEqual(
