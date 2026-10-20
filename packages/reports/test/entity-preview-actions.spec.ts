@@ -136,14 +136,14 @@ for (const [name, size] of Object.entries(viewports)) {
 			.getByRole('navigation', { name: 'Harness categories' })
 			.getByRole('link', { name: 'Helpers', exact: true })
 			.click();
-		await expect(tab.getByRole('status').filter({ hasText: 'functions shown' })).toHaveText(
-			'1001 of 1001 functions shown'
+		await expect(tab.getByRole('status').filter({ hasText: 'helpers shown' })).toHaveText(
+			'1001 of 1001 helpers shown'
 		);
 		const categoryMs = (await tab.evaluate(() => performance.now())) - categoryStart;
 		const searchStart = await tab.evaluate(() => performance.now());
-		await tab.getByRole('searchbox', { name: 'Search functions' }).fill('generated 999');
-		await expect(tab.getByRole('status').filter({ hasText: 'functions shown' })).toHaveText(
-			'1 of 1001 functions shown'
+		await tab.getByRole('searchbox', { name: 'Search helpers' }).fill('generated 999');
+		await expect(tab.getByRole('status').filter({ hasText: 'helpers shown' })).toHaveText(
+			'1 of 1001 helpers shown'
 		);
 		const searchMs = (await tab.evaluate(() => performance.now())) - searchStart;
 		await tab.evaluate(async () => {
