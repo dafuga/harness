@@ -3,7 +3,7 @@
 	"id": "reports.component.explorer-function-card",
 	"kind": "component",
 	"title": "Function card",
-	"responsibility": "Shows a linked helper invocation and a smaller Used In row linking up to three consumers.",
+	"responsibility": "Shows a linked function invocation with revision-owned sample arguments instead of a heading or description.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -16,19 +16,19 @@
 			{
 				"name": "ExplorerFunctionCard.row",
 				"type": "CatalogRow",
-				"description": "The function at the viewed revision, including sample arguments and up to three distinct component, service or model consumer links."
+				"description": "The function at the viewed revision, including its symbols, input contract and committed usage examples."
 			},
 			{
 				"name": "ExplorerFunctionCard.nav",
 				"type": "EntityNav",
-				"description": "Navigation that keeps the selected branch and commit when opening the function or a consumer."
+				"description": "Navigation that keeps the selected branch and commit when opening the function."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerFunctionCard",
 				"type": "markup",
-				"description": "A clickable example invocation and smaller Used In row. Up to three per-helper consumer links retain revision scope; absent eligible consumers show a dash."
+				"description": "One clickable example invocation without a separate arrow, title or description. Documented input values take priority over field samples; missing samples remain named variables."
 			}
 		],
 		"errors": []
