@@ -79,6 +79,26 @@
 			],
 			"output": "string",
 			"pure": true,
+			"examples": [
+				{
+					"name": "toKebabCase: example 1",
+					"call": "toKebabCase(\"Hello world\")",
+					"input": ["Hello world"],
+					"output": "hello-world"
+				},
+				{
+					"name": "toKebabCase: example 2",
+					"call": "toKebabCase(\"orderID\")",
+					"input": ["orderID"],
+					"output": "order-id"
+				},
+				{
+					"name": "toKebabCase: empty input",
+					"call": "toKebabCase(\"\")",
+					"input": [""],
+					"output": ""
+				}
+			],
 			"consumers": [
 				{
 					"unit": "function.unit-identity",
@@ -220,6 +240,26 @@
 			],
 			"output": "string",
 			"pure": true,
+			"examples": [
+				{
+					"name": "toPascalCase: example 1",
+					"call": "toPascalCase(\"Hello world\")",
+					"input": ["Hello world"],
+					"output": "HelloWorld"
+				},
+				{
+					"name": "toPascalCase: example 2",
+					"call": "toPascalCase(\"order_id\")",
+					"input": ["order_id"],
+					"output": "OrderId"
+				},
+				{
+					"name": "toPascalCase: empty input",
+					"call": "toPascalCase(\"\")",
+					"input": [""],
+					"output": ""
+				}
+			],
 			"consumers": [
 				{
 					"unit": "audit.scaffold-naming-rules",
@@ -337,6 +377,26 @@
 			],
 			"output": "string",
 			"pure": true,
+			"examples": [
+				{
+					"name": "toCamelCase: example 1",
+					"call": "toCamelCase(\"Hello world\")",
+					"input": ["Hello world"],
+					"output": "helloWorld"
+				},
+				{
+					"name": "toCamelCase: example 2",
+					"call": "toCamelCase(\"order_id\")",
+					"input": ["order_id"],
+					"output": "orderId"
+				},
+				{
+					"name": "toCamelCase: empty input",
+					"call": "toCamelCase(\"\")",
+					"input": [""],
+					"output": ""
+				}
+			],
 			"consumers": [
 				{
 					"unit": "audit.scaffold-naming-rules",
@@ -386,6 +446,26 @@
 			],
 			"output": "string",
 			"pure": true,
+			"examples": [
+				{
+					"name": "toSnakeCase: example 1",
+					"call": "toSnakeCase(\"Hello world\")",
+					"input": ["Hello world"],
+					"output": "hello_world"
+				},
+				{
+					"name": "toSnakeCase: example 2",
+					"call": "toSnakeCase(\"orderID\")",
+					"input": ["orderID"],
+					"output": "order_id"
+				},
+				{
+					"name": "toSnakeCase: empty input",
+					"call": "toSnakeCase(\"\")",
+					"input": [""],
+					"output": ""
+				}
+			],
 			"consumers": [
 				{
 					"unit": "function.fields",

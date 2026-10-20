@@ -88,3 +88,7 @@ must not accept a row that contradicts the collection's inclusion rule.
 - Nesting: 4 levels.
 - Parameters: 4.
 - Classes per file: 1.
+
+## Callable usage examples
+
+Every public helper needs committed examples with a real invocation, argument values and expected output or error. Execute authored examples against the actual implementation. `harness units check` rejects missing examples; indexing must preserve them and the detail page must select only the current callable and revision.

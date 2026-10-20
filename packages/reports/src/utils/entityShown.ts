@@ -44,7 +44,11 @@ export function helperEntity(
 			helpers: [helper],
 			owns: { source: [helper.source], symbols: [helperName] },
 			contract: helperFields(unit, helperName),
-			documentation: unit.helpers?.length === 1 ? unit.documentation : undefined
+			documentation: helper.examples?.length
+				? { path: '', examples: helper.examples }
+				: unit.helpers?.length === 1
+					? unit.documentation
+					: undefined
 		}
 	};
 }

@@ -61,7 +61,15 @@ export async function unitMetadata(tree: HelperTree, units: Unit[]): Promise<voi
 	}
 	for (const unit of units) {
 		const files = kinds.has(unit.kind) ? unit.owns.source.map((path) => found.get(path)) : [];
-		unit.helpers = files.flatMap((file) => file?.helpers ?? []);
+		const documented = new Map(
+			unit.helpers?.map((helper) => [`${helper.source}#${helper.name}`, helper.examples])
+		);
+		unit.helpers = files
+			.flatMap((file) => file?.helpers ?? [])
+			.map((helper) => {
+				const examples = documented.get(`${helper.source}#${helper.name}`);
+				return { ...helper, ...(examples ? { examples } : {}) };
+			});
 		const gaps = files.flatMap((file) => (file?.gap ? [file.gap] : []));
 		if (gaps.length) unit.helperGap = gaps.join(' ');
 		else delete unit.helperGap;

@@ -10,7 +10,12 @@ export function skillRules(projectType: string): string {
 }
 
 function regressionLoopRules(): string {
-	return `## Bug and Regression Loops
+	return `## Callable usage examples
+
+- Every public helper needs committed usage examples in its callable contract: a real call, argument values, and expected output or error. Verify examples against the implementation; never invent outcomes.
+- Run \`harness units check\`: missing helper examples must fail. Re-indexing must preserve authored examples. Each helper detail page shows only its own examples at the viewed commit.
+
+## Bug and Regression Loops
 
 ${bugRepairPolicy()
 	.map((rule) => `- ${rule}`)

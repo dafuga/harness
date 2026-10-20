@@ -8,6 +8,14 @@ export class UnitRegistryValidator {
 		const known = new Set(active.map((manifest) => manifest.id));
 		return [
 			...active.flatMap((unit) => this.missingSource(unit, files)),
+			...active.flatMap((unit) =>
+				(unit.helperContracts ?? [])
+					.filter((helper) => !helper.examples?.length)
+					.map(
+						(helper) =>
+							`${unit.id}: ${helper.name} requires at least one usage example with call, arguments and expected result`
+					)
+			),
 			...active.flatMap((unit) => this.unknownDependencies(unit, known)),
 			...this.sharedSource(active),
 			...active.flatMap((unit) => this.lineage(unit, manifests))

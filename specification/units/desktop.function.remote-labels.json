@@ -195,6 +195,26 @@
 			],
 			"output": "unknown",
 			"pure": true,
+			"examples": [
+				{
+					"name": "plural: example 1",
+					"call": "plural(1, \"task\")",
+					"input": [1, "task"],
+					"output": "1 task"
+				},
+				{
+					"name": "plural: example 2",
+					"call": "plural(2, \"task\")",
+					"input": [2, "task"],
+					"output": "2 tasks"
+				},
+				{
+					"name": "plural: example 3",
+					"call": "plural(0, \"task\")",
+					"input": [0, "task"],
+					"output": "0 tasks"
+				}
+			],
 			"consumers": [
 				{
 					"unit": "desktop.function.remote-labels",
@@ -217,6 +237,26 @@
 			],
 			"output": "string",
 			"pure": true,
+			"examples": [
+				{
+					"name": "identityLabel: example 1",
+					"call": "identityLabel(\"0123456789abcdef\")",
+					"input": ["0123456789abcdef"],
+					"output": "0123 4567 89ab cdef"
+				},
+				{
+					"name": "identityLabel: example 2",
+					"call": "identityLabel(\"abcde\")",
+					"input": ["abcde"],
+					"output": "abcd e"
+				},
+				{
+					"name": "identityLabel: empty input",
+					"call": "identityLabel(\"\")",
+					"input": [""],
+					"output": ""
+				}
+			],
 			"consumers": [
 				{
 					"unit": "desktop.component.remote-approval"

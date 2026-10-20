@@ -103,6 +103,26 @@
 			],
 			"output": "string",
 			"pure": true,
+			"examples": [
+				{
+					"name": "humanize: example 1",
+					"call": "humanize(\"orderID\")",
+					"input": ["orderID"],
+					"output": "order id"
+				},
+				{
+					"name": "humanize: example 2",
+					"call": "humanize(\"order-item_count\")",
+					"input": ["order-item_count"],
+					"output": "order item count"
+				},
+				{
+					"name": "humanize: empty input",
+					"call": "humanize(\"\")",
+					"input": [""],
+					"output": ""
+				}
+			],
 			"consumers": [
 				{
 					"unit": "desktop.component.contract-panel"
