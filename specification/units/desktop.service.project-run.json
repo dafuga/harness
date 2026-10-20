@@ -41,6 +41,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.function.catalog-unit",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.function.host-changes",
 			"via": "import",
 			"origin": "derived"

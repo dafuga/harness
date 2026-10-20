@@ -1,4 +1,5 @@
 import type { Workspace } from '../lib/stores/workspace.svelte';
+import { tick } from 'svelte';
 
 export interface ImageRequest {
 	entityId: string;
@@ -34,6 +35,12 @@ export function imageUrl(
 			});
 	return () => {
 		disposed = true;
-		if (url) URL.revokeObjectURL(url);
+		// Images must leave the DOM before their old blob address becomes invalid.
+		const released = url;
+		url = '';
+		if (released) {
+			apply('', '');
+			void tick().then(() => URL.revokeObjectURL(released));
+		}
 	};
 }

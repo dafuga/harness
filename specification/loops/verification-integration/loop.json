@@ -6,7 +6,7 @@
 	"name": "verification-integration",
 	"goal": "The branch preserves cold public API imports, canonical planning references and decoded design images while enforcing component evidence and task completion.",
 	"createdAt": "2026-10-20T21:00:51.258Z",
-	"updatedAt": "2026-10-20T21:01:26.456Z",
+	"updatedAt": "2026-10-20T21:10:31.167Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -31,12 +31,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T21:10:30.530Z",
+			"evidence": "Sealed red 8eb5477ec298158655f1ecb6c4184d57127af3c338cb801a81d204e98e0733bd at 11b40b3a reproduces the cold package import, missing private planning reference, early image release and seven-category mobile overflow using the standardized tests."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T21:10:31.167Z",
+			"evidence": "Bundle undeclared compiler dependencies in Node SDK output, derive proposal references from canonical registry metadata, defer URL revocation until Svelte detaches images, and fit all seven phone navigation targets without reducing their touch height."
 		},
 		{
 			"id": "implement",
