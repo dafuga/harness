@@ -61,7 +61,7 @@ test('a service says what uses it, down from the page, and what it uses', () => 
 	);
 	const used = content('commit', { ...store, tab: 'used-in' });
 	expect(card(used, 'Used In')).toMatch(
-		/^Used In 2 Orders page\s+Page\b.*Order list\s+Component\b/
+		/^Used In 3 Orders page\s+Page\b.*Order list\s+Component\b.*Search box\s+Component\b/
 	);
 	expect(sections(used)).toEqual(['Used In']);
 	expect(used).toContain(`href="${base}/components/${ids.list}"`);
