@@ -4779,6 +4779,13 @@
 			"commit": "f22e91fa",
 			"reason": "Keep model relations in their separate catalog category.",
 			"definition": "3de8093b75f09af4d6c9725f036e38ccabba60e9ece720f785b585f11e9f4423"
+		},
+		{
+			"unit": "function.unit-documentation",
+			"name": "unitDocumentation",
+			"commit": "424e3c549e09ed6b040f13d76e53c7f2bdb70e27",
+			"reason": "Preserve authored function calls and shared setup in committed usage documentation.",
+			"definition": "178bb75751d525b1bd8d20e89d73f041c6536466ac656103487683af3a10f367"
 		}
 	]
 }

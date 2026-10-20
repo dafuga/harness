@@ -2,7 +2,7 @@
 	"name": "function-call-examples",
 	"goal": "Function Examples show usable invocation code beside compact expected results and compare changed outputs across examples",
 	"createdAt": "2026-10-20T10:41:27.709Z",
-	"updatedAt": "2026-10-20T11:08:55.520Z",
+	"updatedAt": "2026-10-20T11:18:37.297Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,12 +39,15 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T11:18:37.297Z",
+			"evidence": "Final clean snapshots: red 515380ce fails the required function-call assertion; green 424e3c54 passes all three widths with the complete corpus unchanged. Real usage snippets match the function; report unit suite, lint, types, build and size audit pass."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Affected UI checks pass: frozen viewport regression, 14 browser cases, 602 report unit tests, types, lint, build and size audit. Repository-wide verification is blocked by an unchanged hooks fixture: expected source bytes 87/148, actual 100/161, reproduced on base 24fcba33. Broad E2E was stopped at this confirmed baseline blocker."
 		}
 	],
 	"evaluators": [
