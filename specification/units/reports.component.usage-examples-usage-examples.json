@@ -1,0 +1,82 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.usage-examples-usage-examples",
+	"kind": "component",
+	"title": "Function usage examples",
+	"responsibility": "Shows authored function calls beside compact expected results and highlights changes from the first example.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/components/usage-examples/UsageExamples.svelte",
+			"packages/reports/src/components/usage-examples/usageExamples.ts"
+		],
+		"symbols": ["UsageExamples", "UsageExampleResult", "UsageChange", "compact", "usageExamples"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "UsageExamples.examples",
+				"type": "UsageExample[]",
+				"description": "Committed invocation code and expected JSON results or errors; the first example is the comparison baseline."
+			},
+			{
+				"name": "UsageExamples.setup",
+				"type": "string | undefined",
+				"description": "Optional shared setup displayed as escaped code without executing it."
+			},
+			{
+				"name": "compact.value",
+				"type": "unknown",
+				"description": "A documented JSON value to format without removing falsy values or empty collections."
+			},
+			{
+				"name": "usageExamples.examples",
+				"type": "UsageExample[]",
+				"description": "Authored examples whose expected outputs or errors are compared with the first example."
+			}
+		],
+		"outputs": [
+			{
+				"name": "UsageExamples",
+				"type": "markup",
+				"description": "Responsive call/result rows with explicit output differences and truthful gaps for missing calls."
+			},
+			{
+				"name": "compact",
+				"type": "string",
+				"description": "Compact JSON text with whitespace that permits line wrapping."
+			},
+			{
+				"name": "usageExamples",
+				"type": "unknown",
+				"description": "Expected result values and their top-level changes from the first example, ignoring object property order."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.unit-documentation",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/usage-examples/UsageExamples.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/usage-examples/UsageExamples.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

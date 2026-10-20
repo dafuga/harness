@@ -2,11 +2,9 @@
 	"name": "function-call-examples",
 	"goal": "Function Examples show usable invocation code beside compact expected results and compare changed outputs across examples",
 	"createdAt": "2026-10-20T10:41:27.709Z",
-	"updatedAt": "2026-10-20T10:43:05.568Z",
+	"updatedAt": "2026-10-20T11:08:55.520Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T10:46:41.054Z",
+			"evidence": "Final supporting fixture corpus at 515380ce fails Examples must show a concrete function call at all three widths in a controlled environment; no assertions or example values changed during extraction."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T11:00:05.406Z",
+			"evidence": "Opus implemented compact call/result rows and output differences. Codex integrated revision-pinned call/setup metadata, truthful missing-call fallback, and real Activity freshness snippets checked against the function. Fourteen browser cases pass."
 		},
 		{
 			"id": "green",
