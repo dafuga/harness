@@ -2,7 +2,7 @@
 	"name": "duration-formatter-naming",
 	"goal": "Helpers use names that explain their transformation; formatDuration replaces audioDuration without changing time formatting",
 	"createdAt": "2026-10-20T12:59:53.375Z",
-	"updatedAt": "2026-10-20T13:06:24.039Z",
+	"updatedAt": "2026-10-20T13:07:57.968Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T13:07:12.741Z",
+			"evidence": "Frozen test commit 213ae47f; record 57b47d4b9070c4b0df2ba5de68e725377605e28ab37ddf32a574a8093b887f6c fails with duration formatting is named for its operation: formatDuration is missing. The existing search test passes."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T13:07:13.695Z",
+			"evidence": "Rename only the numeric formatter and its three callers; retain stable unit identity and outputs. Add semantic naming review to project and installed Harness skills, independent of purity/reuse. The strengthened existing media test guards the public export; manually assess naming against contrasting transformation, effectful and single-consumer cases."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T13:07:57.968Z",
+			"evidence": "Renamed the source export, AudioEvidence, AudioComparison and ReplayControls; updated the stable unit contract with a 90-second sample and string output. Added separate semantic Helper Naming Review to root project and installed harness-project skills, with the reports package linking to the root rule. No eligibility changes."
 		},
 		{
 			"id": "green",

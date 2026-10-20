@@ -16,6 +16,21 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 10. Shared browser fixtures must preserve lazy setup: when their dependencies change, run an API-only case with an unavailable browser executable alongside actual browser cases. Characterize diagnostics before page announcement and overlapping context/page delivery without duplicates.
 11. Helpers are pure synchronous value transformations with explicit reviewed `@pure` contracts and no I/O, mutation, hidden state, clocks or randomness. Service classes and models have separate catalog categories. A shared helper needs at least two distinct component, service or named-function consumers. Keep a single-consumer helper in its owner's folder. Preserve unit identity/history and update imports, tests and owned source when moving it; split mixed shared/private modules. Check public API and runtime references before changing an unused export. When moving definitions behind forwarding exports, extend the owning standardized test to cold-import and call both public and owner entries in fresh runtimes; a warm test-module graph does not prove initialization safety. For moved import.meta.url code, test source and packaged layouts separately; bundled output-relative addresses must keep their artifact paths. Before a broad suite for moves reachable from public SDK exports, run `bun scripts/build-api.ts --types-only`; retain the published import and type-entry addresses.
 
+## Helper Naming Review
+
+Before adding, cataloging or accepting a helper, read its implementation, state the
+input-to-output operation and check one concrete call and result. Assess whether
+the name and signature communicate that operation to a reader without extra explanation.
+Purity and multiple consumers establish eligibility; they do not establish naming clarity.
+
+For example, seconds becoming display text is `formatDuration(90) // => "1:30"`.
+A name such as `audioDuration` suggests inspecting or measuring audio, which this
+formatter does not do. Rename an unclear helper and update callers, contracts and
+examples before accepting it. Do not change its purity or hide a valid shared helper
+to compensate for a poor name. Use semantic judgment, not a universal verb-prefix rule.
+A clearly named formatter with one consumer stays with its owner; reading a file
+remains effectful even when the function has a clear name.
+
 ## Bug and Regression Loops
 
 - Commit the strengthened failing test before product repair. Run `harness loop record <loop> --phase red --test <path> --command <command> --assertion <actual failure>` on that commit. Make a separate fix commit and run `loop record --phase green` against the same tests, fixtures, command and environment. Keep both commits when landing; never squash away this regression history. Focused red/green proof does not replace full verification.
