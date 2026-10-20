@@ -96,3 +96,36 @@ test('a headless Plan keeps notes and generates no image, whatever count it is g
 		[[], true]
 	]);
 }, 30000);
+
+test('visual provenance stores actual image orchestration model and exact full generator prompt', async () => {
+	const f = await fixture();
+	const discover = f.runner.discover;
+	f.runner.discover = async () => {
+		const state = await discover();
+		return {
+			...state,
+			models: [
+				...state.models,
+				{
+					id: 'director',
+					label: 'Director',
+					efforts: ['high'],
+					defaultEffort: 'high',
+					isDefault: false
+				}
+			]
+		};
+	};
+	// A case of one design: it asks for a single design option.
+	await settled(f, { ...f.request, provider: 'claude', model: 'director', designOptions: 1 });
+	const imageCall = vi.mocked(f.generator.generateImage).mock.calls[0][0];
+	const plan = (await f.planning.plans(git(f.root, 'rev-parse', 'HEAD')))[0];
+	const version = plan.versions[0];
+	expect(f.run.mock.calls[0][0].model).toBe('director');
+	expect(imageCall.model).toBe('selected');
+	expect(version.generator).toBe('codex · selected');
+	expect(version.prompt).toBe(imageCall.prompt);
+	expect(version.prompt).toContain('Entity: Target');
+	expect(version.prompt).toContain('Precise design direction');
+	expect(version.notes).toContain('claude / director');
+}, 15000);
