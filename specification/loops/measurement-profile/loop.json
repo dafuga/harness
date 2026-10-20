@@ -2,11 +2,9 @@
 	"name": "measurement-profile",
 	"goal": "Entity size measurements appear within Performance profile without a separate Size card.",
 	"createdAt": "2026-10-20T17:09:54.264Z",
-	"updatedAt": "2026-10-20T17:14:34.131Z",
+	"updatedAt": "2026-10-20T17:28:41.684721+00:00",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -34,17 +32,22 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T17:16:40.441Z",
+			"evidence": "c752d036 groups unchanged size rows and performance observations in one full-width card. Existing missing-data notes, target/profile separation and tolerance flags remain."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T17:16:42.633Z",
+			"evidence": "Frozen green record c88f4c8b36db40388e66c2ecada6ffa1fe64acc569dce14da01a70649962ba4d passes the identical tests, fixtures, command and environment. Standardized visual overviews cover pages/components, current/history, desktop/tablet/mobile and all seven tabs."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Product c752d036 passes the complete Reports check (604 tests, formatting, types, lint, three builds and audit), 23 frozen unit tests, three frozen visual-overview browser cases and three existing multi-metric browser cases. The actual built viewer has one Performance profile and no Size card; desktop/tablet/mobile images load without browser errors. Root check finishes with 889 passed, 25 skipped and the unchanged entityMeasure/entityShown helper-definition guard failure. Later aggregate layers are unrun; full verification remains pending."
 		}
 	],
 	"evaluators": [
