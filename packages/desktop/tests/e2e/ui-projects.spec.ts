@@ -76,7 +76,6 @@ test('the same entity id of another project shows no thread, message or image of
 }) => {
 	await openAlpha(page);
 	await page.getByRole('link', { name: 'Open Alpha activity' }).click();
-	await page.getByRole('button', { name: 'Choose workbench', exact: true }).click();
 	await page.getByRole('button', { name: 'Open thread 1', exact: true }).click();
 	await expect(page.getByText('Alpha: keep the filters on one line.')).toBeVisible();
 	await expect(

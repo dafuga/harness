@@ -2,7 +2,7 @@
 	"name": "environment-toolbar-landing",
 	"goal": "Environment is before revision and deployment icons; all deployment changes integrate safely into main",
 	"createdAt": "2026-10-20T19:10:15.566Z",
-	"updatedAt": "2026-10-20T19:16:04.914Z",
+	"updatedAt": "2026-10-20T19:34:38.282Z",
 	"template": "visual-change",
 	"templateLineage": ["feature", "visual-change"],
 	"enforceOrder": false,
@@ -36,7 +36,9 @@
 		{
 			"id": "browser-proof",
 			"title": "Exercise the affected UI path, require no unexpected browser errors, and capture fresh evidence with error diagnostics.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T19:34:38.282Z",
+			"evidence": "Actual compiled renderer: 32 affected browser checks pass across 390-1440px; manual activity arrows and single-action promotion finish at a verified synthetic receipt, zero browser errors. Fresh inspected screenshots are in the active report."
 		}
 	],
 	"evaluators": [
