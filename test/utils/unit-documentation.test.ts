@@ -1,3 +1,5 @@
+import { readdir, readFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
 import { expect, test } from 'vitest';
 import {
 	unitDocumentation,
@@ -78,4 +80,25 @@ test('revision documents come only from their own tree, and their bytes change t
 		)
 	).toMatchObject({ examples: [], gap: 'The document is not available at this commit.' });
 	expect(await readUnitDocumentation(first, { id })).toBeUndefined();
+});
+
+test('every committed public helper example executes against its real implementation', async () => {
+	const files = await readdir('specification/units');
+	let total = 0;
+	for (const file of files.filter((path) => path.endsWith('.json'))) {
+		const unit = JSON.parse(await readFile(`specification/units/${file}`, 'utf8'));
+		if (unit.status !== 'active') continue;
+		for (const helper of unit.helperContracts ?? []) {
+			expect(helper.examples?.length, 'Callable examples are required').toBeGreaterThan(0);
+			const source = await import(resolve(helper.source));
+			for (const example of helper.examples) {
+				expect(Array.isArray(example.input)).toBe(true);
+				expect(source[helper.name](...example.input), `${unit.id} ${example.name}`).toEqual(
+					example.output
+				);
+				total += 1;
+			}
+		}
+	}
+	expect(total).toBeGreaterThan(0);
 });

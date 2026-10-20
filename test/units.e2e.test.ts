@@ -185,6 +185,28 @@ test('index records reviewed shared helper contracts for clients without source 
 			])
 		})
 	]);
+	const missing = await project.harness(['units', 'check'], false);
+	expect(missing.exitCode, 'Callable examples are required').toBe(1);
+	const examples = [
+		{
+			name: 'UTC date',
+			call: 'formatDate("2026-10-20")',
+			input: ['2026-10-20'],
+			output: '2026-10-20T00:00:00.000Z'
+		}
+	];
+	await project.write(
+		'specification/units/function.format-date.json',
+		JSON.stringify({
+			...unit,
+			helperContracts: unit.helperContracts.map((item) => ({ ...(item as object), examples }))
+		})
+	);
+	await project.harness(['units', 'index', '--write']);
+	const again = await project.json<{ helperContracts: Array<{ examples: unknown }> }>(
+		'specification/units/function.format-date.json'
+	);
+	expect(again.helperContracts[0].examples).toEqual(examples);
 	await project.harness(['units', 'check']);
 	await rm(join(project.root, '..'), { recursive: true, force: true });
 }, 60000);

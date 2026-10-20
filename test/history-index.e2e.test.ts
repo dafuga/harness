@@ -30,8 +30,14 @@ afterAll(() => repo.dispose());
 test('the index is deterministic and names every commit, verified or not', async () => {
 	const one = join(repo.root, '.cache/history-one');
 	const two = join(repo.root, '.cache/history-two');
+	await repo.git(['remote', 'add', 'origin', 'git@github.com:example/orders.git']);
 	const built = await build(repo, one);
+	await repo.git(['remote', 'set-url', 'origin', 'https://github.com/example/orders.git']);
 	await build(repo, two);
+	await repo.git(['remote', 'remove', 'origin']);
+	expect(built.index.sourceRepository, 'GitHub source links retain the repository').toBe(
+		'https://github.com/example/orders'
+	);
 	expect(await directoryDigest(one)).toBe(await directoryDigest(two));
 	expect(sha256(await readFile(join(one, 'index.json')))).toBe(built.digest);
 	const { index } = built;

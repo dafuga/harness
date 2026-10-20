@@ -28,6 +28,10 @@ test('app projects include SvelteKit and specification files', () => {
 	expect(fileContents(files, '.codex/skills/harness/SKILL.md')).toContain(
 		'harness info scaffolds --json'
 	);
+	for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md'])
+		expect(fileContents(files, path), 'Callable examples are required').toContain(
+			'Callable usage examples'
+		);
 	expect(auditConfig(files).limits.maxMethodLines).toBe(35);
 	expect(packageJson.harness.kind).toBe('app');
 	expect(packageJson.scripts['test:e2e']).toBe('playwright test');

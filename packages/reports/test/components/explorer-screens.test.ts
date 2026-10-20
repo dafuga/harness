@@ -108,8 +108,9 @@ test('details and history share component captures while keeping their own scree
 	const evidence = ['EntityBehavior', 'EntityTests', 'EntityRelations'];
 	expect(has(entries.details, ['EntitySummary', 'EntityMeasures', 'EntitySource'])).toHaveLength(3);
 	expect(has(entries.details, [...evidence, 'EntityHistory'])).toEqual([]);
-	const rows = ['EntityHistory', 'EntityHistoryRow', 'EntityChange', 'EntityReasons'];
-	expect(has(entries.history, rows)).toHaveLength(4);
+	const rows = ['EntityHistory', 'EntityHistoryRow', 'EntityReasons'];
+	expect(has(entries.history, rows)).toEqual(rows);
+	expect(has(entries.history, ['EntityChange'])).toEqual([]);
 	expect(has(entries.history, [...evidence, 'EntitySource', 'EntityMeasures'])).toEqual([]);
 	for (const entry of [entries.details, entries.history]) {
 		expect(has(entry, ['EntityHeader', 'EntityMissing', 'EntityScreens']), entry).toHaveLength(3);
