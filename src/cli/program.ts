@@ -20,6 +20,7 @@ import { registerConsoleCommand } from '../commands/ConsoleCommand';
 import { registerHistoryCommand } from '../commands/HistoryCommand';
 import { registerHooksCommand } from '../commands/HooksCommand';
 import { registerVerifyCommand } from '../commands/VerifyCommand';
+import { registerTaskCommand } from '../commands/TaskCommand';
 
 export function buildProgram(): Command {
 	const program = new Command();
@@ -44,6 +45,7 @@ export function buildProgram(): Command {
 	registerExplainCommand(program);
 	registerBudgetCommand(program);
 	registerVerifyCommand(program);
+	registerTaskCommand(program);
 	registerHistoryCommand(program);
 	registerHooksCommand(program);
 	registerConsoleCommand(program);

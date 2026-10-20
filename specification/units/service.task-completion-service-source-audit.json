@@ -1,0 +1,76 @@
+{
+	"schemaVersion": 1,
+	"id": "service.task-completion-service-source-audit",
+	"kind": "service",
+	"title": "sourceAudit",
+	"responsibility": "Owns the sourceAudit service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/task-completion-service/sourceAudit.ts"],
+		"symbols": ["sourceAudit"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "sourceAudit.root",
+				"type": "string"
+			},
+			{
+				"name": "sourceAudit.input",
+				"type": "TaskAuditInput"
+			}
+		],
+		"outputs": [
+			{
+				"name": "sourceAudit",
+				"type": "Promise<string>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.commit-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.task-completion",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.loop-state",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/task-completion-service/sourceAudit.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/task-completion-service/sourceAudit.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

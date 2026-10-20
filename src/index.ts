@@ -101,3 +101,7 @@ export { helperScopes } from './utils/helperScopes';
 export { helperTemplates } from './services/revision-detail-service/helperTemplates';
 export { helperReferences } from './services/revision-detail-service/helperReferences';
 export { helperConsumers } from './services/revision-detail-service/helperConsumers';
+export { PerformanceProfileService } from './services/PerformanceProfileService';
+export { TaskCompletionService } from './services/TaskCompletionService';
+export { PerformanceEvidenceValidator } from './validators/PerformanceEvidenceValidator';
+export { TaskCommand } from './commands/TaskCommand';

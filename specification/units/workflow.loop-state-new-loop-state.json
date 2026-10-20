@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.loop-state-new-loop-state",
+	"kind": "workflow",
+	"title": "newLoopState",
+	"responsibility": "Owns the newLoopState command workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/loop-state/newLoopState.ts"],
+		"symbols": ["newLoopState"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "newLoopState.root",
+				"type": "string"
+			},
+			{
+				"name": "newLoopState.input",
+				"type": "{ name: string; goal: string; createdAt: string; from?: string; kind?: 'coding' | 'planning'; plan?: string; }"
+			}
+		],
+		"outputs": [
+			{
+				"name": "newLoopState",
+				"type": "Promise<LoopState>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.loop-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.loop-templates",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/loop-state/newLoopState.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/loop-state/newLoopState.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

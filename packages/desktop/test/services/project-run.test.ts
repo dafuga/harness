@@ -1,3 +1,4 @@
+import { planningProposal } from '../../../../test/support/taskAuditRepo';
 import { rm, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -12,7 +13,7 @@ const badge = {
 	category: 'components',
 	title: 'Order badge',
 	goal: 'Shows the state of one order.',
-	proposal: 'A rounded badge with the state in words.',
+	proposal: planningProposal('A rounded order badge with the state in words.'),
 	contract: {
 		inputs: [{ name: 'state', type: 'OrderState' }],
 		outputs: [{ name: 'badge', type: 'markup' }],

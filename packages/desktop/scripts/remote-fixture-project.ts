@@ -72,7 +72,23 @@ async function syntheticTurn(turn: AgentTurn) {
 	turn.onText('This answer comes from the fixture, not from a coding agent.');
 	await new Promise((resolve) => setTimeout(resolve, 1200));
 	if (turn.signal.aborted) throw new RunCancelled();
-	return { text: 'Synthetic design direction from the remote fixture.', model: turn.model };
+	const request = turn.prompt.split('\nRequest:\n').at(-1)?.slice(0, 600) ?? '';
+	return {
+		text: `# Synthetic fixture proposal
+## Overview
+Synthetic design direction from the remote stand-in fixture; no coding agent runs here.
+Requested: ${request}
+## Acceptance Criteria
+- Display the synthetic fixture design and preserve its review state.
+## Dependencies
+Use only the existing synthetic image generator and project fixture.
+## Verification
+Run the remote fixture integration and browser checks for transport and rendering.
+## Performance
+Use a representative fixture workload; plan latency and process memory measurements through Harness during coding.
+`,
+		model: turn.model
+	};
 }
 /** TEST ONLY. Stands in for the installed CLIs: it starts no process and changes no file. */
 export function fixtureProviders(): Record<ProviderId, AgentRunner> & {

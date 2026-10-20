@@ -1,3 +1,4 @@
+import { planningProposal } from '../../../test/support/taskAuditRepo';
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import type { RunRequest } from '../src/models/DesktopBridge.types';
@@ -15,7 +16,9 @@ const proposal = JSON.stringify({
 	category: 'functions',
 	title: 'Format time',
 	goal: 'Readable elapsed time',
-	proposal: 'Input 1500 returns 1.5 seconds',
+	proposal: planningProposal(
+		'The formatter converts elapsed time: input 1500 returns 1.5 seconds.'
+	),
 	contract
 });
 const request = (f: Awaited<ReturnType<typeof fixture>>) =>
@@ -77,7 +80,9 @@ test('visual creation reuses GPT Image and saves a reviewable committed version'
 			category: 'components',
 			title: 'Elapsed badge',
 			goal: 'Display elapsed time',
-			proposal: 'Readable elapsed badge on navy background',
+			proposal: planningProposal(
+				'The formatter presents readable elapsed badge text on a navy background.'
+			),
 			contract
 		}),
 		model: turn.model

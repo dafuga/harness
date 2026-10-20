@@ -1,5 +1,6 @@
 {
 	"schemaVersion": 1,
+	"performanceRequired": 1,
 	"setup": [
 		{
 			"command": "bun install --frozen-lockfile --backend=copyfile",

@@ -94,3 +94,18 @@ function auditConfig(files: ReturnType<typeof projectFiles>): { limits: Record<s
 		limits: Record<string, number>;
 	};
 }
+
+test('generated project guidance requires Harness completion audits and keeps planning read-only', () => {
+	for (const files of [
+		projectFiles({ kind: 'app', name: 'demo' }),
+		projectFiles({ kind: 'lib', name: 'demo' })
+	]) {
+		for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md']) {
+			const guidance = fileContents(files, path);
+			expect(guidance).toContain('harness task check');
+			expect(guidance).toContain('harness verify run --require-performance');
+			expect(guidance).toContain('Planning tasks remain planning-only');
+			expect(guidance).toContain('structural and evidence heuristics');
+		}
+	}
+});

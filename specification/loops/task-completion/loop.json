@@ -2,11 +2,9 @@
 	"name": "task-completion",
 	"goal": "Coding and planning cannot complete without current task and performance evidence",
 	"createdAt": "2026-10-20T15:30:38.605Z",
-	"updatedAt": "2026-10-20T15:35:56.988Z",
+	"updatedAt": "2026-10-20T16:18:01.850Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T15:39:48.373Z",
+			"evidence": "Immutable red 19464e5f90e8 preserves the CLI and app assertions after an unchanged provenance case moved to its standard suite."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T16:18:01.850Z",
+			"evidence": "Shared completion audit and Harness profiling reject unsupported CLI, app and agent completion; focused positive and negative proofs pass."
 		},
 		{
 			"id": "green",
@@ -42,7 +44,8 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Pending: bun run check reached 907 passing unit tests, two failures; unchanged ownership fingerprints fail at 4eec669c too. The process-settlement case passes alone. Desktop type errors and catalog-reference failures also reproduce before repair. Focused CLI/app proof does not replace full verification."
 		}
 	],
 	"evaluators": [
@@ -52,5 +55,10 @@
 			"command": "bun run check",
 			"step": "verify"
 		}
-	]
+	],
+	"completion": {
+		"version": 1,
+		"kind": "coding",
+		"plan": "specification/features/planned/task-completion.md"
+	}
 }

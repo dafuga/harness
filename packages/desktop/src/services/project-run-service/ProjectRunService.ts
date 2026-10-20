@@ -1,3 +1,4 @@
+import { TaskCompletionService } from '../../../../../src/services/TaskCompletionService';
 import { RunCancelled } from '../../models/AgentRunner.types';
 import type { CreatedEntity, RunRequest } from '../../models/DesktopBridge.types';
 import type { RunContext } from '../../models/RunContext.types';
@@ -38,6 +39,7 @@ function answered(context: ProjectRunContext, text: string): ProjectProposal {
 	const say = (words: string) => context.emit({ runId: context.id, kind: 'text', text: words });
 	try {
 		const proposal = projectProposal(text);
+		new TaskCompletionService(context.root).requirePlan(proposal.proposal, context.request.text);
 		say(proposal.proposal);
 		return proposal;
 	} catch (error) {

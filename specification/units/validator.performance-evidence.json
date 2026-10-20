@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "validator.performance-evidence",
+	"kind": "validator",
+	"title": "PerformanceEvidenceValidator",
+	"responsibility": "Reject missing or stale runtime profiling independently of performance budgets.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/validators/PerformanceEvidenceValidator.ts"],
+		"symbols": [
+			"PerformanceEvidenceInput",
+			"PerformanceEvidenceValidator",
+			"PerformanceEvidenceValidator.required",
+			"PerformanceEvidenceValidator.validate"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "PerformanceEvidenceValidator.required.units",
+				"type": "ComponentManifest[]"
+			},
+			{
+				"name": "PerformanceEvidenceValidator.required.files",
+				"type": "Map<string, SourceFile>"
+			},
+			{
+				"name": "PerformanceEvidenceValidator.validate.input",
+				"type": "PerformanceEvidenceInput"
+			}
+		],
+		"outputs": [
+			{
+				"name": "PerformanceEvidenceValidator.required",
+				"type": "ComponentManifest[]"
+			},
+			{
+				"name": "PerformanceEvidenceValidator.validate",
+				"type": "string[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/validators/PerformanceEvidenceValidator.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/validators/PerformanceEvidenceValidator.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

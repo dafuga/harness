@@ -1,3 +1,4 @@
+import { planningProposal } from '../../../test/support/taskAuditRepo';
 import { expect } from '../../../test/verificationExpect';
 import { test, vi } from 'vitest';
 import { PNG } from 'pngjs';
@@ -18,7 +19,13 @@ const contract = {
 /** Asks, from the `hint` catalog, for something the agent proposes as `category` named `title`. */
 async function created(f: Made, proposed: { category: string; title: string }, extra = {}) {
 	const { category, title } = proposed;
-	const text = JSON.stringify({ category, title, goal: title, proposal: `A ${title}`, contract });
+	const text = JSON.stringify({
+		category,
+		title,
+		goal: title,
+		proposal: planningProposal(`Reviewable design proposal for ${title}.`),
+		contract
+	});
 	f.run.mockImplementation(async (turn) => ({ text, model: turn.model }));
 	await f.service.start({
 		...{ intent: 'create', projectId: f.session.projectId!, category: 'functions', mode: 'plan' },

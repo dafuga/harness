@@ -1,3 +1,4 @@
+import { unmeasured } from './unmeasured';
 import { sdkPackage } from '../../utils/buildStamp';
 import type { ImpactReport } from '../../core/impactTypes';
 import type { ComponentManifest } from '../../core/unitTypes';
@@ -15,8 +16,10 @@ import type { BudgetReport, BudgetSubject } from '../budget-service/BudgetServic
 import type { ReasonReport } from '../ExplanationService';
 import type { Executed } from '../SnapshotRunService';
 import { ledgerGate, registryGate } from '../VerificationGates';
+import { PerformanceEvidenceValidator } from '../../validators/PerformanceEvidenceValidator';
 
 export interface AssemblyContext {
+	requirePerformance?: boolean;
 	root: string;
 	commit: string;
 	tree: string;
@@ -53,12 +56,12 @@ export class RecordAssemblyService {
 		const measurements = this.measurements(input.executed);
 		const budgets = await this.budgets(measurements);
 		const reasons = await context.explained();
-		const gates = this.gates(input, { budgets, reasons });
+		const gates = this.gates(input, { budgets, reasons, measurements });
 		const failures = Object.values(gates).flat();
 		return sealRecord({
 			schemaVersion: 1,
 			repository: context.root,
-			source: this.source(),
+			source: source(context),
 			profile: context.profile,
 			tools: [{ id: 'harness', version: sdkPackage.version }, ...input.executed.tools],
 			startedAt: input.startedAt,
@@ -83,20 +86,20 @@ export class RecordAssemblyService {
 		});
 	}
 
-	private source(): VerificationRecord['source'] {
-		const { commit, tree, baseCommit, baseRecord, requestedBase } = this.context;
-		const widened = requestedBase && requestedBase !== baseCommit ? { requestedBase } : {};
-		const proven = baseCommit && baseRecord ? { baseRecord } : {};
-		return { commit, tree, base: baseCommit, ...proven, ...widened };
-	}
-
 	/** Each gate's failures, in the order they are reported. */
 	private gates(
 		input: AssemblyInput,
-		judged: { budgets: { report: BudgetReport; ledger: string[] }; reasons: ReasonReport }
+		judged: {
+			budgets: { report: BudgetReport; ledger: string[] };
+			reasons: ReasonReport;
+			measurements: Measurement[];
+		}
 	): Record<string, string[]> {
 		const { outcomes } = input.executed;
 		return {
+			...(this.context.requirePerformance
+				? { performance: profileFailures(this.context, judged.measurements) }
+				: {}),
 			snapshot: snapshotFailures(input.executed),
 			registry: registryGate(this.context.base, this.context.head),
 			ledger: judged.budgets.ledger,
@@ -195,23 +198,21 @@ function recordedImpact(impact: ImpactReport): VerificationRecord['impact'] {
 	return { runtime, expanded, changed, units, uncertain };
 }
 
-/** Performance and memory nothing measured are recorded as unavailable, never omitted. */
-function unmeasured(unit: string, testedRevision: string): Measurement[] {
-	const base = { unit, value: null, method: 'Not measured.', workload: null, profile: null };
-	const absent = (metric: string, unitOfMeasure: string, unavailable: string): Measurement => ({
-		...base,
-		metric,
-		unitOfMeasure,
-		unavailable,
-		testedRevision,
-		artifacts: []
+function source(context: AssemblyContext): VerificationRecord['source'] {
+	const { commit, tree, baseCommit, baseRecord, requestedBase } = context;
+	const widened = requestedBase && requestedBase !== baseCommit ? { requestedBase } : {};
+	const proven = baseCommit && baseRecord ? { baseRecord } : {};
+	return { commit, tree, base: baseCommit, ...proven, ...widened };
+}
+
+function profileFailures(context: AssemblyContext, measurements: Measurement[]): string[] {
+	const { head, impact, commit, profile } = context;
+	const ids = new Set([...impact.units.direct, ...impact.units.added, ...impact.units.indirect]);
+	return new PerformanceEvidenceValidator().validate({
+		units: head.manifests.filter((unit) => ids.has(unit.id)),
+		files: head.index.files,
+		measurements,
+		commit,
+		profile: profile.id
 	});
-	return [
-		absent('latency-warm-ms', 'ms', 'No benchmark measured this unit in this verification.'),
-		absent(
-			'memory-bytes',
-			'bytes',
-			'No benchmark measured this unit, and in-process memory cannot be attributed to it.'
-		)
-	];
 }

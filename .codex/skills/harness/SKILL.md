@@ -74,6 +74,9 @@ must not accept a row that contradicts the collection's inclusion rule.
 
 ## Measurement Evidence
 
+- End coding and planning tasks through `harness task check`. Coding completion requires an intact record for the committed source and actual representative latency and memory profiles, independently of budget declarations. Run `harness verify run --require-performance`; use the Harness `PerformanceProfileService` or declared benchmark runner rather than ad hoc timing scripts.
+- Planning audits inspect the proposal, acceptance criteria, dependencies, verification and performance-testing plan without implementing it. Structural heuristics cannot prove arbitrary semantic fulfillment: expose remaining uncertainty and required review. Missing, stale and failed evidence cannot be replaced with free-text claims.
+
 - Source size and complexity are automatic observations of the selected committed tree; show them even when no full verification record exists.
 - Standard behavior tests for executable helpers record representative benchmark captures when verification requests evidence. Name the callable, workload, timing method and runtime profile. Focused regression runs retain these observations as well as their test outcome.
 - Display recorded performance independently of budget declarations. Budgets judge limits; they do not decide whether an observation is visible. A focused benchmark never grants full verification or approves a baseline.

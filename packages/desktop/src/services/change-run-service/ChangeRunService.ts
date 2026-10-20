@@ -5,6 +5,7 @@ import type { RunContext } from '../../models/RunContext.types';
 import { sourceSnapshot } from '../../utils/sourceSnapshot';
 import { hostChanges } from '../../utils/hostChanges';
 import { changeExecute, recordChange } from './changeExecute';
+import { TaskCompletionService } from '../../../../../src/services/TaskCompletionService';
 
 export class ChangeRunService {
 	async run(context: RunContext) {
@@ -15,6 +16,11 @@ export class ChangeRunService {
 			let failure: Error | null = null;
 			try {
 				await changeExecute(context, { directory, observe: host.observe });
+				await new TaskCompletionService(context.root).require({
+					kind: 'coding',
+					goal: context.request.text,
+					units: [context.entity.id]
+				});
 			} catch (error) {
 				failure = error instanceof Error ? error : new Error(String(error));
 			}
@@ -23,7 +29,7 @@ export class ChangeRunService {
 				context.failureRecorded = true;
 				throw failure;
 			}
-			return 'Code changes recorded. Verification is still required.';
+			return 'Source completion audit passed; change history recorded.';
 		} finally {
 			await rm(directory, { recursive: true, force: true });
 		}
