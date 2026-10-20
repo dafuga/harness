@@ -56,6 +56,11 @@
 				"description": "Optional current epoch milliseconds, defaulting to Date.now()."
 			},
 			{
+				"name": "timeAgo.numeric",
+				"type": "'auto' | 'always'",
+				"description": "Optional relative-date wording. Defaults to auto; always uses numeric wording such as 1 week ago."
+			},
+			{
 				"name": "evidenceAnchor.id",
 				"type": "string",
 				"description": "Evidence identifier used in an anchor."

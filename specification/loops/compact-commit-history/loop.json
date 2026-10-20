@@ -2,7 +2,7 @@
 	"name": "compact-commit-history",
 	"goal": "History shows clickable commits, relative dates, source size, complexity and latency without duplicate detail panels",
 	"createdAt": "2026-10-20T16:50:44.755Z",
-	"updatedAt": "2026-10-20T16:55:04.836Z",
+	"updatedAt": "2026-10-20T16:56:07.879Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T16:56:07.879Z",
+			"evidence": "Unchanged standard history rendering and browser navigation tests pass at 4cf3c2c6 with the same frozen environment and test corpus."
 		},
 		{
 			"id": "verify",
