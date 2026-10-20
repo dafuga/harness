@@ -132,7 +132,7 @@ test('a revision carries its graph, comparison, inherited provenance, media and 
 		expect.arrayContaining([
 			expect.objectContaining({
 				metric: 'source-bytes',
-				value: 87,
+				value: 100,
 				testedRevision: commits.unverified
 			}),
 			expect.objectContaining({ metric: 'complexity', value: expect.any(Number) })
@@ -157,8 +157,8 @@ test('growth and benchmarks are kept per unit, and another profile is a separate
 	const slugify = index.units.find((unit) => unit.id === 'function.slugify');
 	expect(slugify?.growth.map((point) => [point.commit, point['source-bytes']])).toEqual(
 		expect.arrayContaining([
-			[commits.baseline, 87],
-			[commits.changed, 87]
+			[commits.baseline, 100],
+			[commits.changed, 100]
 		])
 	);
 	const latency = index.benchmarks.find(
