@@ -133,7 +133,12 @@ async function historical(page: Page, commit: string, unitId: string) {
 	await page.getByLabel('Commit', { exact: true }).selectOption(commit);
 	await page.keyboard.press('Escape');
 	await expect(page).toHaveURL(new RegExp(`/branch/feat%2Fnative/commit/${commit}/pages$`));
-	await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toHaveCount(0);
+	const chat = page.getByRole('button', { name: /^(Work with agent|Open project chat)$/ });
+	await chat.click();
+	const panel = page.getByRole('complementary', { name: 'Project agent', exact: true });
+	for (const name of ['Plan', 'Ask', 'Change', 'Send plan', 'Send change'])
+		await expect(panel.getByRole('button', { name, exact: true })).toHaveCount(0);
+	await panel.getByRole('button', { name: 'Close chat', exact: true }).click();
 	await page.getByRole('link', { name: 'Open Native activity' }).click();
 	await expect(page.getByRole('button', { name: 'Approve v001', exact: true })).toBeDisabled();
 	await nativeCapture(page, { state: 'history', unitId, commit });
