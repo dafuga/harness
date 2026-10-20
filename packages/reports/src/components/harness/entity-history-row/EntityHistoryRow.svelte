@@ -11,34 +11,30 @@
 	import { shortCommit, type EntityNav } from '../../../utils/entityLens';
 	import { byteSize, notMeasured } from '../../../utils/entityMeasure';
 	import { boundedText, entityReasons } from '../../../utils/entityReasons';
-	import { reasonsTried } from './entityReasons';
+	import { timeAgo } from '../../../utils/reportDisplay';
+	import EntityReasons from '../entity-reasons/EntityReasons.svelte';
 	import EntityLink from '../EntityLink.svelte';
-	import HarnessIcon from '../HarnessIcon.svelte';
-	import HarnessVerdict from '../harness-verdict/HarnessVerdict.svelte';
 	let {
 		row,
 		detail,
 		timing,
-		verdict,
-		selected,
 		viewed,
 		to,
-		nav,
-		onselect
+		nav
 	}: {
 		row: ExplorerHistoryRow;
 		/** What the revision of the commit says about the entity; nothing until it has been read. */
 		detail: ExplorerHistoryDetail | undefined;
 		/** The timing of the chosen profile at this commit, when it has one. */
 		timing: HistoryTiming | undefined;
-		verdict: Pick<ExplorerVerdict, 'passed' | 'label'> & { reasons?: string[] };
-		selected: boolean;
+		verdict?: Pick<ExplorerVerdict, 'passed' | 'label'> & { reasons?: string[] };
+		selected?: boolean;
 		viewed: boolean;
 		/** The entity at this commit, where it is compared with its own parent. */
 		to: ExplorerLocation;
 		nav: EntityNav;
 		/** Shows this change below; `full` asks for its reasons as they were written. */
-		onselect: (full: boolean) => void;
+		onselect?: (full: boolean) => void;
 	} = $props();
 	const pills: Record<HarnessMark, string> = {
 		added: 'Added',
@@ -48,36 +44,23 @@
 	};
 	let hash = $derived(shortCommit(row.commit));
 	let reasons = $derived(entityReasons(detail?.explanations ?? []));
-	let tried = $derived(reasonsTried(reasons));
 	// A commit that recorded no reason is told by its subject, held to the limit of one.
 	let subject = $derived(boundedText([row.subject], writingLimits.subject).text);
 	let change = $derived(pills[row.change ?? detail?.change ?? 'direct']);
-	let size = $derived(row.measured?.size ?? null);
-	let complexity = $derived(row.measured?.complexity ?? null);
+	let size = $derived(row.measured?.size ?? detail?.sourceSize ?? null);
+	let complexity = $derived(row.measured?.complexity ?? detail?.sourceComplexity ?? null);
 </script>
 
-<tr class:selected class:viewed>
-	<td>{row.committedAt.slice(0, 10)}</td>
+<tr class:viewed>
+	<td><time datetime={row.committedAt} title={row.committedAt}>{timeAgo(row.committedAt, Date.now(), 'always')}</time></td>
 	<td>
-		<button type="button" class="ex-hash" aria-pressed={selected} onclick={() => onselect(false)}
-			>{hash}</button
-		>
+		<EntityLink {to} {nav} class="ex-hash">{hash}</EntityLink>
 		{#if viewed}<span class="ex-pill gold">Viewed commit</span>{/if}
 		{#if change}<span class="ex-pill">{change}</span>{/if}
+		<EntityReasons {reasons} />
 	</td>
 	<td class="ex-said">
 		{reasons.behavior.text || subject}
-		{#if reasons.long}
-			<button
-				type="button"
-				class="ex-text-button"
-				aria-label={`Full reasons of ${hash}`}
-				onclick={() => onselect(true)}>Full reasons</button
-			>
-		{/if}
-	</td>
-	<td class="ex-said">
-		{#each tried as text, position (position)}<span class="ex-block">{text}</span>{:else}—{/each}
 	</td>
 	<td class:unmeasured={size === null}>
 		{size === null ? notMeasured : byteSize(size)}
@@ -95,11 +78,5 @@
 			{timing.before === undefined ? '' : `${timing.before} → `}{timing.after}
 			{timing.unit}
 		{:else}{notMeasured}{/if}
-	</td>
-	<td><HarnessVerdict {...verdict} /></td>
-	<td class="ex-open">
-		<EntityLink {to} {nav} label={`View revision ${hash}`}
-			>View revision <HarnessIcon name="arrow-right" size={16} /></EntityLink
-		>
 	</td>
 </tr>
