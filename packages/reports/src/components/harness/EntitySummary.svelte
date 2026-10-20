@@ -9,10 +9,8 @@
 		/** The measurement profile of an overview, without notes; false for Details. */
 		compact?: boolean;
 	} = $props();
-	const displayed = (row: EntityMeasure['size'][number]) =>
-		row.label === 'Emitted size' && row.note?.includes('no separate artifact')
-			? 'Not applicable'
-			: row.value;
+	// No timing reads as Latency and Memory, one as rows of the list; more take a table.
+	let tabled = $derived(measure.performance.length > 1);
 	const where = (row: EntityMeasure['performance'][number]) =>
 		[row.target, row.profile].filter(Boolean).join(' · ') || '—';
 </script>
@@ -21,54 +19,56 @@
 <div class="ex-summary" class:compact>
 	<section class="ex-card" aria-label="Performance profile">
 		<h2><HarnessIcon name="gauge" size={24} /> Performance profile</h2>
-		<dl class="ex-rows ex-figures">
-			{#each measure.size as row, position (position)}
-				<div>
-					<dt>{row.label}</dt>
-					<dd class:unmeasured={row.value === notMeasured} title={row.note}>
-						{displayed(row)}
-						{#if row.note && (!compact || row.value === notMeasured)}<span class="ex-note"
-								>{row.note}</span
-							>{/if}
-					</dd>
-				</div>
-			{/each}
-		</dl>
+		{#if measure.size.length > 0 || !tabled}
+			<dl class="ex-rows ex-figures">
+				{#each measure.size as row, position (position)}
+					{#if row.target !== 'none'}
+						<div>
+							<dt>{row.label}</dt>
+							<dd class:unmeasured={row.value === notMeasured} title={row.note}>
+								{row.value}
+								{#if row.note && (!compact || row.value === notMeasured)}<span class="ex-note"
+										>{row.note}</span
+									>{/if}
+							</dd>
+						</div>
+					{/if}
+				{/each}
+				{#if measure.performance.length === 0}
+					<div>
+						<dt>Latency</dt>
+						<dd class="unmeasured">{notMeasured}</dd>
+					</div>
+					<div>
+						<dt>Memory</dt>
+						<dd class="unmeasured">{notMeasured}</dd>
+					</div>
+				{:else if !tabled}
+					{@const row = measure.performance[0]}
+					<div>
+						<dt>Workload</dt>
+						<dd>{row.workload}</dd>
+					</div>
+					<div>
+						<dt>Environment</dt>
+						<dd class:unmeasured={where(row) === '—'}>{where(row)}</dd>
+					</div>
+					<div>
+						<dt>{row.metric}</dt>
+						<dd class:unmeasured={row.value === notMeasured} title={row.note}>
+							{row.value}{#if row.note}<span class="ex-note">{row.note}</span>{/if}
+						</dd>
+					</div>
+					<div>
+						<dt>Tolerance</dt>
+						<dd class:over={row.over}>{row.tolerance}{row.over ? ' · above the 5% policy' : ''}</dd>
+					</div>
+				{/if}
+			</dl>
+		{/if}
 		{#if measure.performance.length === 0}
-			<dl class="ex-rows ex-figures">
-				<div>
-					<dt>Latency</dt>
-					<dd class="unmeasured">{notMeasured}</dd>
-				</div>
-				<div>
-					<dt>Memory</dt>
-					<dd class="unmeasured">{notMeasured}</dd>
-				</div>
-			</dl>
 			<p class="ex-note">No benchmark is recorded for this revision.</p>
-		{:else if measure.performance.length === 1}
-			{@const row = measure.performance[0]}
-			<dl class="ex-rows ex-figures">
-				<div>
-					<dt>Workload</dt>
-					<dd>{row.workload}</dd>
-				</div>
-				<div>
-					<dt>Environment</dt>
-					<dd class:unmeasured={where(row) === '—'}>{where(row)}</dd>
-				</div>
-				<div>
-					<dt>{row.metric}</dt>
-					<dd class:unmeasured={row.value === notMeasured} title={row.note}>
-						{row.value}{#if row.note}<span class="ex-note">{row.note}</span>{/if}
-					</dd>
-				</div>
-				<div>
-					<dt>Tolerance</dt>
-					<dd class:over={row.over}>{row.tolerance}{row.over ? ' · above the 5% policy' : ''}</dd>
-				</div>
-			</dl>
-		{:else}
+		{:else if tabled}
 			<div class="ex-scroll">
 				<table class="ex-mini" aria-label="Timings by workload and profile">
 					<thead>

@@ -2,7 +2,7 @@
 	"name": "performance-profile-layout",
 	"goal": "Performance profile has space above it, equal measurement row heights, and no output-size row when no output is declared.",
 	"createdAt": "2026-10-20T20:14:48.990Z",
-	"updatedAt": "2026-10-20T20:15:53.752Z",
+	"updatedAt": "2026-10-20T20:30:10.692Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T20:30:10.043Z",
+			"evidence": "Frozen test commit 0dab75a9944217d17b9707ed190d1bd7d03accde: record a1d5995253bed5830661222a6939075b36e585393e6a7c13cd69db6073757e80 failed with five unit assertions and all six browser cases. Actual failures: missing profile gap, unequal row heights and spacing, and an output-size placeholder without a compiled target."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T20:30:10.692Z",
+			"evidence": "Keep the existing overview stack gap, combine scalar measurements in one equal-row grid, and preserve emitted target identity so only target none is omitted. Real artifact values and unavailable-build reasons remain. Claude Opus 5.5 made the visual edits; integration preserves the existing size iteration."
 		},
 		{
 			"id": "green",
