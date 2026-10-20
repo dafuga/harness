@@ -156,6 +156,14 @@ function callableFixture(unit: HarnessUnit): HarnessUnit {
 		source: 'src/functions/text.ts',
 		pure: true,
 		consumers: [{ unit: ids.list }, { unit: ids.store }],
+		examples: [
+			{
+				name: `${name} usage`,
+				call: name === 'reset' ? 'reset() ?? null' : `${name}("hello world")`,
+				input: name === 'reset' ? [] : ['hello world'],
+				output: name === 'reset' ? null : name === 'countWords' ? 2 : 'hello-world'
+			}
+		],
 		inputs: name === 'reset' ? [] : [{ name: `${name}.textToConvert`, type: 'string' }]
 	}));
 	return {

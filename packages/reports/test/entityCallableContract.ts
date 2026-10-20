@@ -24,6 +24,14 @@ export async function reviewCallableContract(page: Page, commit: string | null, 
 		});
 		await capture(page, `callable-${name}-${commit ? 'commit' : 'tip'}-${viewport}`);
 		await reviewCallableApi(page, name, result);
+		await page.getByRole('tab', { name: 'Examples', exact: true }).click();
+		await capture(page, `callable-examples-${name}-${commit ? 'commit' : 'tip'}-${viewport}`);
+		const code = page.locator('.examples pre');
+		await expect(code, 'Callable examples are required').toHaveCount(1);
+		await expect(code).toContainText(
+			name === 'reset' ? 'reset() ?? null' : `${name}("hello world")`
+		);
+		expect(await fits(page)).toBe(true);
 		await page.getByRole('tab', { name: 'History', exact: true }).click();
 		expect(await where(page)).toMatchObject({ helper: name, commit, section: 'history' });
 		await page.getByRole('tab', { name: 'Contract', exact: true }).click();
