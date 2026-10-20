@@ -189,7 +189,7 @@ function callableFixture(unit: HarnessUnit): HarnessUnit {
 		output,
 		source: 'src/functions/text.ts',
 		pure: true,
-		inputs: name === 'reset' ? [] : [{ name: `${name}.value`, type: 'string' }]
+		inputs: name === 'reset' ? [] : [{ name: `${name}.textToConvert`, type: 'string' }]
 	}));
 	return {
 		...unit,
@@ -202,7 +202,13 @@ function callableFixture(unit: HarnessUnit): HarnessUnit {
 				type: h.output,
 				...(h.output === 'void' ? {} : { examples: [h.name === 'countWords' ? 2 : 'hello-world'] })
 			})),
-			errors: []
+			errors: [
+				{
+					name: 'countWords.invalidInput',
+					type: 'TypeError',
+					examples: [{ name: 'TypeError', message: 'Input text required.' }]
+				}
+			]
 		}
 	};
 }

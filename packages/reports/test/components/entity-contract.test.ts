@@ -80,11 +80,13 @@ test('callable contracts preserve actual parameters and associate their returns'
 							name: 'countWords',
 							source: 'src/functions/text.ts',
 							output: 'number',
-							inputs: [{ name: 'countWords.value', type: 'string' }]
+							inputs: [{ name: 'countWords.textToConvert', type: 'string' }]
 						}
 					],
 					contract: {
-						inputs: [{ name: 'countWords.value', type: 'string', examples: ['hello world'] }],
+						inputs: [
+							{ name: 'countWords.textToConvert', type: 'string', examples: ['hello world'] }
+						],
 						outputs: [{ name: 'countWords', type: 'number', examples: [2] }],
 						errors: []
 					}
@@ -96,8 +98,10 @@ test('callable contracts preserve actual parameters and associate their returns'
 		{ head }
 	);
 	expect(body).toContain('aria-label="countWords contract"');
-	expect(words(body)).toContain('countWords(value: string): number');
+	expect(words(body)).toContain('countWords(textToConvert: string): number');
 	expect(body).toContain('aria-label="Parameters"');
 	expect(body).toContain('aria-label="Returns"');
+	expect(body).toContain('aria-label="Throws"');
+	expect(words(body)).toContain('No errors declared.');
 	expect(words(body)).not.toMatch(/Count words · Value|Runs as|Module/);
 });
