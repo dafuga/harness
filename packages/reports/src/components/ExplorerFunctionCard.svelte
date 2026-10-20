@@ -3,7 +3,14 @@
 	import { entityLens, type EntityNav } from '../utils/entityLens';
 	import EntityLink from './harness/EntityLink.svelte';
 	let { row, nav }: { row: CatalogRow; nav: EntityNav } = $props();
-	let to = $derived(entityLens(nav.route, { category: 'functions', entity: row.entity.id }));
+	let to = $derived(
+		entityLens(nav.route, {
+			category: 'functions',
+			entity: row.entity.id,
+			helper: row.helper?.name,
+			tab: 'contract'
+		})
+	);
 	/** A call from this revision's documented values; unspecified arguments stay named variables. */
 	function invocation(unit: CatalogRow['entity']['unit']): string {
 		const helper = row.helper;

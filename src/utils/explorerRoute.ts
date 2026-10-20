@@ -88,6 +88,8 @@ export interface ExplorerLocation {
 	category: ExplorerCategory;
 	/** The id of a unit; absent on the index of a category. */
 	entity?: string;
+	/** A callable within its owning unit, resolved at the selected revision. */
+	helper?: string;
 	/** Absent for the overview of the entity. */
 	section?: ExplorerSection;
 	/** A tab of the section other than its default one. */
@@ -173,6 +175,8 @@ export function explorerRoute(path: string, search = ''): ExplorerLocation | und
 	if (!isCategory(category) || !selected) return undefined;
 	const { branch, commit } = found;
 	const location: ExplorerLocation = { branch, commit, category, ...selected };
+	const helper = new URLSearchParams(search).get('helper');
+	if (category === 'functions' && location.entity && helper) location.helper = helper;
 	const tab = tabOf(location, search);
 	return tab ? { ...location, tab } : location;
 }
@@ -195,6 +199,10 @@ export function explorerRoutePath(location: ExplorerLocation): string {
 	const entity = location.entity ? `/${encodeURIComponent(location.entity)}` : '';
 	const section = location.entity && location.section ? `/${location.section}` : '';
 	const tab = tabOf(location, `tab=${location.tab ?? ''}`);
-	const query = tab ? `?tab=${tab}` : '';
+	const params = new URLSearchParams();
+	if (tab) params.set('tab', tab);
+	if (location.category === 'functions' && location.entity && location.helper)
+		params.set('helper', location.helper);
+	const query = params.size ? `?${params}` : '';
 	return `${branch}${commit}/${location.category}${entity}${section}${query}`;
 }

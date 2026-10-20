@@ -11,7 +11,14 @@
 			"packages/reports/src/components/harness/entity-sections/entityShown.ts",
 			"packages/reports/src/utils/entityShown.ts"
 		],
-		"symbols": ["entityShown", "EntityShown", "Shown", "entityChanged", "entityShown"]
+		"symbols": [
+			"entityShown",
+			"EntityShown",
+			"Shown",
+			"entityChanged",
+			"entityShown",
+			"helperEntity"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -35,6 +42,16 @@
 				"name": "entityChanged.unit",
 				"type": "string",
 				"description": "Unit identifier used to select its explanations."
+			},
+			{
+				"name": "helperEntity.owner",
+				"type": "ExplorerEntity | undefined",
+				"description": "Owning module entity at the selected revision."
+			},
+			{
+				"name": "helperEntity.helperName",
+				"type": "string | undefined",
+				"description": "Optional selected callable name; no matching callable returns undefined."
 			}
 		],
 		"outputs": [
@@ -47,6 +64,11 @@
 				"name": "entityChanged",
 				"type": "EntityReasons",
 				"description": "Bounded and full explanations recorded by the head for that unit."
+			},
+			{
+				"name": "helperEntity",
+				"type": "ExplorerEntity | undefined",
+				"description": "One callable’s actual parameters, return, errors and source. Keeps owning unit id for module evidence; excludes sibling APIs and unscoped multi-callable documentation."
 			}
 		],
 		"errors": []

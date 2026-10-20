@@ -2,7 +2,7 @@
 	"name": "helper-detail-identity",
 	"goal": "Each helper opens only its own API; naming corrections repair the responsible Harness process",
 	"createdAt": "2026-10-20T12:49:04.440Z",
-	"updatedAt": "2026-10-20T12:50:04.123Z",
+	"updatedAt": "2026-10-20T12:58:00.427Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T12:57:59.610Z",
+			"evidence": "Committed failing checkpoint a4b9da47; immutable record 24ead97b70e18ceded9ee7221a7c600ff27eb8101031e693aabfd05c5fe2fd41. Root route, generated policy, card/lens/contract tests and standardized browser flow reproduce lost callable identity."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T12:58:00.427Z",
+			"evidence": "Add helper identity to existing route/query and canonicalization, retain it within entity tabs/history, select only that API in EntityFrame, offer legacy module links and explicit missing helper. Extend shared bugRepairPolicy and local Harness skill with semantic naming and earliest-control diagnosis; generator tests prove tenant guidance propagation."
 		},
 		{
 			"id": "implement",
