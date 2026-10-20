@@ -14,7 +14,7 @@ Acceptance:
 
 Coverage gap: the service catalog tests required a one-consumer card and accepted transitive page fallback. The ownership suite guarded helper relocation only. Both standardized suites now cover service reuse and placement.
 
-The catalog selector has no standalone entity page: [source](/Users/danielfugere/.codex/worktrees/service-cards/harness/packages/reports/src/utils/entityCatalog.ts). [Cards](http://127.0.0.1:5731/harness/branch/dafuga%2Fservice-cards/components/reports.component.explorer-function-card) retain the established rendering. Registered service identities and their source/history remain available at the selected branch.
+The catalog selector has no standalone entity page: [source](/Users/danielfugere/.codex/worktrees/service-cards/harness/packages/reports/src/utils/entityCatalog.ts). [Cards](http://127.0.0.1:5732/harness/branch/dafuga%2Fservice-cards/components/reports.component.explorer-function-card) retain the established rendering. Registered service identities and their source/history remain available at the selected branch.
 
 Verification preparation: the real catalog has 81 cards from 94 statically shared services; every card has two or three distinct resolved consumer links. All 195 single-consumer implementations are owner-local. Thirty capabilities have no proven static owner, including public routes and native/runtime entries, and are excluded without deletion. Five existing helper cards are unchanged.
 
@@ -361,3 +361,5 @@ Verification record:
 - Physical-device UI and deployment were not attempted while required verification remains blocked. No Swift, Xcode or native plugin source changed. Production verification is not applicable to this local branch preview.
 - Jev's automatic startup advisory reported `needs-review` for unchanged lint/browser/build configs. A new live semantic review was not requested or run; structural audit success does not resolve those advisory judgments.
 - Saved report `0b1577d4-0e4c-4997-9ddf-b23122cbaf95` remains in progress and unpublished because required verification is blocked. Fresh browser evidence and observed results are preserved there; temporary broad-run logs that disappeared are not claimed retained.
+
+The restored preview retains 48 actual commits so this branch tip remains available alongside newer work on other branches. Its fresh final browser capture is 1280 by 720 pixels. The page has 81 cards and no browser errors; the local server remains running.
