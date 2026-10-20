@@ -20,6 +20,8 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 
 A shared service needs at least two distinct active runtime owner units. Single-consumer implementations and their private helpers live inside the owner code area. Count runtime references to exported operations or classes; exclude types, unused imports, repeated references by one owner, forwarding modules and indirect page reachability. Keep public entry and route contracts stable, preserve registered identity and source history, and review dynamic/runtime use before relocating an export with no statically proven owner.
 
+Before committing a cross-workspace relocation, run every affected workspace structure audit as well as the root audit. Use supported owner areas such as `src/lib/<owner>` when the original owner folder enforces another scaffold shape, and retain framework or store entry filenames as named forwards.
+
 When relocating source, rewrite module specifiers and source-layout URLs only. Ordinary string literals, including traversal checks, stay identical. Compare declaration ASTs before and after; template contents and operators are part of that proof.
 
 ## Helper Naming Review

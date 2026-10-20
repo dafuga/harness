@@ -4,9 +4,7 @@
 	"createdAt": "2026-10-20T16:17:55.965Z",
 	"updatedAt": "2026-10-20T17:25:28.957Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -48,7 +46,8 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Required root check: 898 passed, 25 skipped, one pre-existing ownership failure (entityMeasure/entityShown); later stages not reached. Four Desktop failures reproduce at cf06219b; broad Desktop run was interrupted by loss of temporary files/processes. Reports 610, focused proof, browser flow and all affected structure audits pass. Keep verification pending; report stays active and unpublished."
 		}
 	],
 	"evaluators": [
