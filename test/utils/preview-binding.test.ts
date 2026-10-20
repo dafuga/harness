@@ -76,24 +76,28 @@ test('strict verification rejects a preview that names no recorded page state', 
 	).toEqual([]);
 });
 
-// Exercise every committed page preview, not a synthetic manifest whose state bindings are ideal.
-test('registered page previews name the state that actually shows that page', () => {
+// Exercise the actual registry as well as idealized isolated manifests.
+test('registered visual previews bind their own required state and every component has one', () => {
 	const root = new URL('../../specification/', import.meta.url);
 	const directory = new URL('units/', root);
+	const scenarios = readdirSync(new URL('scenarios/', root)).map((file) =>
+		JSON.parse(readFileSync(new URL(join('scenarios', file), root), 'utf8'))
+	);
+	const problems: string[] = [];
 	for (const file of readdirSync(directory)) {
 		const unit = componentManifestSchema.parse(
 			JSON.parse(readFileSync(new URL(file, directory), 'utf8'))
 		);
-		if (unit.kind !== 'page' || unit.status !== 'active' || !unit.preview) continue;
-		const declared = JSON.parse(
-			readFileSync(new URL(join('scenarios', `${unit.preview.scenario}.json`), root), 'utf8')
-		);
-		const stored = revisionRegistry([unit], [declared]).units[0];
+		if (!['page', 'component'].includes(unit.kind) || unit.status !== 'active') continue;
+		problems.push(...previewBinding(unit, scenarios));
+		if (!unit.preview) continue;
+		const stored = revisionRegistry([unit], scenarios).units[0];
 		expect(stored, `${unit.id} preview must bind its own page state`).toHaveProperty(
 			'preview',
 			unit.preview
 		);
 	}
+	expect(problems, 'Every active component needs its own required screenshot preview').toEqual([]);
 });
 
 test('visual components cannot omit required preview coverage while nonvisual units can', async () => {
