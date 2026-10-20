@@ -18,7 +18,7 @@
 <section class="ex-card" aria-label="GitHub source">
 	{#if links.length}
 		<ul class="ex-links ex-mono">
-			{#each links as link (link.file)}
+			{#each links as link, position (position)}
 				<li><a href={link.href} target="_blank" rel="noopener noreferrer">{link.file}</a></li>
 			{/each}
 		</ul>
