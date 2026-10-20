@@ -5,6 +5,9 @@
 	import type { Snippet } from 'svelte';
 	import { categories } from '../../models/Desktop.types';
 	import type { Workspace } from '../../lib/stores/workspace.svelte';
+	import DeploymentActivity from '../DeploymentActivity.svelte';
+	import DeploymentDialog from '../DeploymentDialog.svelte';
+	import EnvironmentPicker from '../EnvironmentPicker.svelte';
 	import Icon from '../Icon.svelte';
 	import ProjectSwitcher from '../project-switcher/ProjectSwitcher.svelte';
 	import RevisionPicker from '../RevisionPicker.svelte';
@@ -14,11 +17,12 @@
 	let { workspace, account }: { workspace: Workspace; account?: Snippet } = $props();
 	// Results open only from the projection that listed them; one left from another is refused.
 	const search = $derived(workspaceSearch(workspace));
-	/** Settings are of this device's agents, so they are offered only where agents can run. */
 	const settings = $derived(`/settings?from=${encodeURIComponent(workspace.path())}`);
+	/** Deployments are of this device's host: only a local bridge that reports them shows them. */
+	const activity = $derived(workspace.local && !!workspace.bridge?.deploymentActivities);
 </script>
 
-<header class="topbar">
+<header class="topbar" class:with-account={!!account} class:with-activity={activity && !account}>
 	<WorkspaceLink {workspace} to={workspace.path('pages')} class="brand"
 		><span class="brand-mark"><BrandMark /></span> Harness</WorkspaceLink
 	>
@@ -35,6 +39,7 @@
 				></WorkspaceLink
 			>{/each}
 	</nav>
+	<EnvironmentPicker {workspace}><DeploymentDialog {workspace} /></EnvironmentPicker>
 	<RevisionPicker {workspace} />
 	<div class="topbar-search">
 		<EntitySearch
@@ -52,23 +57,161 @@
 				title="Settings"><Icon name="settings" /></a
 			>{/if}
 	</div>
-	{#if account}<div class="account">{@render account()}</div>{/if}
+	{#if account}<div class="account">
+			{@render account()}{#if activity}<DeploymentActivity {workspace} />{/if}
+		</div>{:else if activity}<DeploymentActivity {workspace} />{/if}
 </header>
 
 <style>
-	/* Settings sit beside the search icon, at its size, so the two never part. */
+	/* Settings end the search's own place, so they never take a row of their own. */
+	.topbar-search {
+		gap: 8px;
+	}
 	.topbar-settings {
 		display: inline-grid;
 		place-items: center;
 		flex: none;
+		align-self: center;
 		width: 40px;
 		height: 40px;
 		border: 1px solid var(--line);
 		border-radius: 8px;
 		color: inherit;
 	}
-	.topbar-settings:hover {
+	.topbar-settings:hover,
+	.topbar :global(.agent-icon:hover:not(:disabled)) {
 		color: var(--gold);
 		border-color: var(--gold);
+	}
+	/* Project, branch, commit, Deploy and Deployments are icons of one size; each opens a dialog. */
+	.topbar :global(.agent-icon) {
+		display: inline-grid;
+		place-items: center;
+		flex: none;
+		width: 34px;
+		height: 34px;
+		padding: 0;
+	}
+	/* Environment and revision share the first row; catalog and search share the last. */
+	@media (min-width: 561px) {
+		header.topbar {
+			display: grid;
+			grid-template:
+				'brand project . environment revision' auto
+				'tools tools tools tools tools' auto
+				/ auto minmax(0, max-content) 1fr minmax(0, max-content) auto;
+			gap: 8px 16px;
+			padding: 12px 26px 0;
+		}
+		header.topbar.with-account,
+		header.topbar.with-activity {
+			grid-template:
+				'brand project . environment revision account' auto
+				'tools tools tools tools tools tools' auto
+				/ auto minmax(0, max-content) 1fr minmax(0, max-content) auto auto;
+		}
+		.topbar :global(.brand) {
+			grid-area: brand;
+		}
+		.topbar :global(.project-switcher) {
+			grid-area: project;
+		}
+		.topbar :global(.revision-picker) {
+			grid-area: revision;
+			margin-left: 0;
+		}
+		.topbar :global(.environment-picker) {
+			grid-area: environment;
+			justify-self: end;
+		}
+		.account,
+		.topbar > :global(.deployment-activity) {
+			grid-area: account;
+		}
+		/* The categories are tabs on the bar's bottom edge. */
+		.topbar nav {
+			grid-area: tools;
+			justify-self: start;
+			justify-content: flex-start;
+			width: auto;
+			height: 58px;
+		}
+		.topbar-search {
+			grid-area: tools;
+			justify-self: end;
+			width: max-content;
+			max-width: none;
+			padding-bottom: 0;
+		}
+		.topbar-search :global(.entity-search) {
+			max-width: none;
+		}
+	}
+	/* At narrower widths, environment and revision share a row below the project. */
+	@media (min-width: 561px) and (max-width: 1250px) {
+		header.topbar.with-account {
+			grid-template:
+				'brand project . account' auto
+				'revision revision environment revision' auto
+				'tools tools tools tools' auto
+				/ auto minmax(0, max-content) 1fr auto;
+		}
+		.with-account :global(.revision-picker) {
+			border-left: 0;
+			padding-left: 0;
+		}
+	}
+	@media (min-width: 561px) and (max-width: 900px) {
+		header.topbar,
+		header.topbar.with-activity {
+			grid-template:
+				'brand project . account' auto
+				'revision revision environment revision' auto
+				'tools tools tools tools' auto
+				/ auto minmax(0, max-content) 1fr auto;
+		}
+		.topbar :global(.revision-picker) {
+			border-left: 0;
+			padding-left: 0;
+		}
+	}
+	/* Narrower still, the search takes that row and the categories end the bar under it. */
+	@media (min-width: 561px) and (max-width: 760px) {
+		.topbar nav {
+			grid-area: 4 / 1 / 5 / -1;
+		}
+		.topbar-search {
+			width: 100%;
+		}
+	}
+	/* Wide enough, a bar without an account is one row, the categories after the project. */
+	@media (min-width: 1800px) {
+		header.topbar:not(.with-account) {
+			grid-template:
+				'brand project tools . environment revision search' auto
+				/ auto minmax(0, max-content) auto 1fr max-content auto max-content;
+			column-gap: 22px;
+			padding: 0 26px;
+		}
+		header.topbar.with-activity {
+			grid-template:
+				'brand project tools . environment revision search account' auto
+				/ auto minmax(0, max-content) auto 1fr max-content auto max-content auto;
+		}
+		.topbar:not(.with-account) nav {
+			height: auto;
+		}
+		.topbar:not(.with-account) .topbar-search {
+			grid-area: search;
+			width: 100%;
+		}
+	}
+	/* On a phone the deployment light ends the brand's row, the brand still centred on the bar. */
+	@media (max-width: 560px) {
+		.with-activity :global(.brand) {
+			order: -2;
+			flex: 1;
+			padding-inline-start: 46px;
+		}
 	}
 </style>

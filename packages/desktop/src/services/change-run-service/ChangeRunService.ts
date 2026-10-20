@@ -1,3 +1,4 @@
+import { promoteChange } from '../../utils/promoteChange';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -23,7 +24,7 @@ export class ChangeRunService {
 				context.failureRecorded = true;
 				throw failure;
 			}
-			return 'Code changes recorded. Verification is still required.';
+			return await promoteChange(context, before);
 		} finally {
 			await rm(directory, { recursive: true, force: true });
 		}

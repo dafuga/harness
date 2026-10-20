@@ -1,0 +1,54 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.deployment-route",
+	"kind": "component",
+	"title": "DeploymentRoute",
+	"responsibility": "Displays accessible source-to-destination labels and a directional arrow for a deployment.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/DeploymentRoute.svelte"],
+		"symbols": ["DeploymentRoute"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "DeploymentRoute.deployment",
+				"type": "Pick<DeploymentActivity, 'sourceEnvironment' | 'environment' | 'branch'>",
+				"description": "Deployment job or route whose source, destination and recorded progress are displayed."
+			}
+		],
+		"outputs": [
+			{
+				"name": "DeploymentRoute",
+				"type": "markup",
+				"description": "Displays accessible source-to-destination labels and a directional arrow for a deployment."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.deployment-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/DeploymentRoute.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/DeploymentRoute.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

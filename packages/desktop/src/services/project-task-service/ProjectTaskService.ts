@@ -1,3 +1,4 @@
+import { promoteChange } from '../../utils/promoteChange';
 import { RunCancelled } from '../../models/AgentRunner.types';
 import type { ProjectTaskContext } from '../../utils/prepareProjectTask';
 import { sourceSnapshot } from '../../utils/sourceSnapshot';
@@ -25,12 +26,10 @@ export class ProjectTaskService {
 			await this.record(context, { before, host, owners });
 		}
 		await context.session.atBranch(request.branch);
-		return {
-			summary:
-				request.mode === 'ask'
-					? 'Answer complete.'
-					: 'Changes recorded. Verification is still required.'
-		};
+		let summary = 'Changes recorded. Verification is still required.';
+		if (request.mode === 'ask') summary = 'Answer complete.';
+		else if (request.environment) summary = await promoteChange(context, before);
+		return { summary };
 	}
 	private async execute(
 		context: ProjectTaskContext,

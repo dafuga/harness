@@ -25,7 +25,12 @@ function units(f: Fixture, many = false) {
 	catalog.push(manifest(target, ['src/owned.ts']));
 	vi.spyOn(f.session.requireProject().source, 'units').mockResolvedValue(catalog);
 }
-async function run(f: Fixture, mode: 'ask' | 'change', text = `Explain ${target}`) {
+async function run(
+	f: Fixture,
+	mode: 'ask' | 'change',
+	text = `Explain ${target}`,
+	environment?: 'stage'
+) {
 	const request: ProjectTaskRequest = {
 		intent: 'task',
 		category: 'functions',
@@ -36,7 +41,8 @@ async function run(f: Fixture, mode: 'ask' | 'change', text = `Explain ${target}
 		provider: 'codex',
 		model: 'selected',
 		effort: 'high',
-		text
+		text,
+		...(environment ? { environment } : {})
 	};
 	const started = await f.service.start(request);
 	await expect.poll(() => f.session.busy, { timeout: 12000 }).toBe(false);
@@ -110,4 +116,10 @@ test('an unexpected Ask write fails and preserves the changed file for review', 
 	expect(f.events).toContainEqual(
 		expect.objectContaining({ kind: 'status', detail: expect.stringContaining(reference) })
 	);
+}, 20000);
+
+test('a scoped project change refuses missing deployment configuration before an agent writes', async () => {
+	const f = await fixture();
+	await expect(run(f, 'change', 'Make the requested change', 'stage')).rejects.toThrow();
+	expect(f.run).not.toHaveBeenCalled();
 }, 20000);

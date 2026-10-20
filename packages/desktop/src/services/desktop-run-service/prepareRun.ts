@@ -1,3 +1,4 @@
+import { prepareChangeEnvironment } from '../../utils/promoteChange';
 import type { Preparation } from '../../utils/prepareRun';
 import { imageModel, messageFor } from '../../utils/prepareRun';
 import { randomUUID } from 'node:crypto';
@@ -11,6 +12,7 @@ export async function prepareRun(
 	request: RunRequest,
 	controller: AbortController
 ): Promise<RunContext> {
+	await prepareChangeEnvironment(preparation.session, request);
 	const project = await preparation.session.mutable(),
 		entity = await project.catalog.entity(request.entityId, project.revision.commit);
 	const runner = await preparation.providers.select(
