@@ -55,6 +55,13 @@ export interface RemoteHostStatus {
 	devices: RemoteDeviceInfo[];
 	projects: { id: string; name: string }[];
 }
+/** `resync` is raised by a client itself after a `gap`; a host never sends it. */
+export type RemoteConnectionEvent =
+	| { kind: 'grant'; grant: RemoteGrant }
+	| { kind: 'revoked' }
+	| { kind: 'host'; state: 'suspending' | 'locked' | 'unlocked' }
+	| { kind: 'remote-status'; status: RemoteHostStatus }
+	| { kind: 'resync' };
 /** `deviceId` is the identity of the request the person was shown; another one is refused. */
 export interface RemoteApprovalInput {
 	pairingId: string;

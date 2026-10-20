@@ -9,6 +9,7 @@
 	"owns": {
 		"source": ["packages/remote/src/models/Remote.types.ts"],
 		"symbols": [
+			"RemoteConnectionEvent",
 			"REMOTE_PROTOCOL",
 			"remoteLimits",
 			"RemoteLimits",
@@ -38,8 +39,7 @@
 			"RemoteResume",
 			"AttachInput",
 			"RemoteAttachment",
-			"RemoteBinary",
-			"RemoteConnectionEvent"
+			"RemoteBinary"
 		]
 	},
 	"contract": {
@@ -113,7 +113,7 @@
 	"dependencies": [
 		{
 			"unit": "remote.model.remote-control-types",
-			"via": "import",
+			"via": "reexport",
 			"origin": "derived"
 		}
 	],

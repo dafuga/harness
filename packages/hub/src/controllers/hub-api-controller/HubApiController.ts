@@ -44,7 +44,7 @@ export class HubApiController {
 		if (parts[3] === 'agent')
 			return new HubAgentController({ ...context, executor: this.runtime.agent }).handle();
 		if (['evidence', 'artifact'].includes(parts[3])) return hubEvidenceRead(context, parts[3]);
-		if (request.method === 'GET') return readProject(context, parts[3] ?? '');
+		if (request.method === 'GET') return readProject(context, parts[3]);
 		return mutateProject(context, parts.slice(3));
 	}
 }
@@ -62,7 +62,7 @@ async function collection(c: Pick<Context, 'api' | 'request' | 'actor'>) {
 	);
 }
 
-async function readProject(c: Context, operation: string): Promise<Response> {
+async function readProject(c: Context, operation = ''): Promise<Response> {
 	const { actor, api, projection, projectId, request } = c;
 	if (!operation) {
 		const project = await api.getProject(actor, projectId);

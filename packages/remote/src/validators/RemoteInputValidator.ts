@@ -43,6 +43,15 @@ function resume(value: unknown): RemoteResume | null {
 		sequence: sequence as number
 	};
 }
+function commentGrant(
+	item: Fields,
+	included: boolean | null
+): Pick<RemoteApprovalInput, 'comments'> {
+	if (!included) return {};
+	if (typeof item.comments !== 'boolean' || (item.agents && !item.comments))
+		throw new RemoteFailure('invalid-message');
+	return { comments: item.comments };
+}
 
 /** Inputs the protocol itself defines. Bridge inputs are validated by the host's own rules. */
 export class RemoteInputValidator {
@@ -86,14 +95,12 @@ export class RemoteInputValidator {
 			throw new RemoteFailure('invalid-message');
 		const { pairingId } = this.pairing({ pairingId: item.pairingId }),
 			{ deviceId } = this.device({ deviceId: item.deviceId });
-		if (withComments && (typeof item.comments !== 'boolean' || (item.agents && !item.comments)))
-			throw new RemoteFailure('invalid-message');
 		return {
 			pairingId,
 			deviceId,
 			projectIds,
 			agents: item.agents,
-			...(withComments ? { comments: item.comments as boolean } : {})
+			...commentGrant(item, withComments)
 		};
 	}
 	pairing(input: unknown): { pairingId: string } {

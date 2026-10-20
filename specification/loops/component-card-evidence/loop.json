@@ -65,7 +65,7 @@
 			"id": "verify",
 			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
 			"status": "pending",
-			"evidence": "Pending current full verification and final task audit. All 172 active components have required own preview bindings; the initial 498-case gallery and 24 updated-control browser cases passed. Root checks passed 912 unit and 233 integration tests; package acceptance and all five lifecycle cases pass after repairing callable URLs and retired private routes. Reports and Planning checks pass; remaining workspace checks are running. Historical whole-history debt remains visible."
+			"evidence": "Pending committed-source verification with mandatory performance profiles and final task audit. All 172 active components have own preview bindings; the initial 498-case gallery and 24 updated-control cases passed. Root checks passed 912 unit and 233 integration tests. Package acceptance and all five lifecycle cases pass. Workspace checks pass after focused repairs: Reports, Planning, Desktop, Collaboration, Hub, Remote and Relay; Desktop and Hub browser failures pass their affected-file reruns. The current 516-case gallery and inherited whole-history gates remain to be verified."
 		}
 	],
 	"evaluators": [
