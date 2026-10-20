@@ -203,12 +203,7 @@ test('a title that wraps onto two lines is one solid area to press', async ({ pa
 	await open(tab, components);
 	await tab.addStyleTag({ content: '.ex-page-body h2 a { width: 3em; display: block; }' });
 	await title.scrollIntoViewIfNeeded();
-	const again = (await title.boundingBox()) as {
-		x: number;
-		y: number;
-		width: number;
-		height: number;
-	};
+	const again = (await title.boundingBox())!;
 	await tab.mouse.click(again.x + again.width - 2, again.y + again.height - 3);
 	expect(await where(tab)).toMatchObject({ entity: ids.list });
 });
