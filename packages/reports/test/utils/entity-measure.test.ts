@@ -102,7 +102,7 @@ test('a measured size is shown and one nothing measured reads Not measured, neve
 	let iterations = 0;
 	source[Symbol.iterator] = function* () {
 		iterations++;
-		yield* Array.prototype.values.call(source);
+		return yield* source.values();
 	};
 	Object.defineProperty(source, 'constructor', {
 		get() {
