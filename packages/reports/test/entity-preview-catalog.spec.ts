@@ -56,6 +56,12 @@ for (const [name, size] of Object.entries(viewports)) {
 				0
 			);
 			const usage = cards.first().getByRole('group', { name: 'Used In' });
+			const usageSize = await usage.evaluate((node) => parseFloat(getComputedStyle(node).fontSize));
+			const titleSize = await cards
+				.first()
+				.locator('h2')
+				.evaluate((node) => parseFloat(getComputedStyle(node).fontSize));
+			expect(usageSize, 'usage stays smaller than the component title').toBeLessThan(titleSize);
 			await usage.getByRole('link', { name: 'Order list', exact: true }).click();
 			expect(await where(tab)).toMatchObject({ commit, category: 'components', entity: ids.list });
 			await open(tab, { category: 'components', commit });
