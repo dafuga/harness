@@ -43,10 +43,11 @@ test.each(['retired', 'absent'] as const)(
 		});
 		const parent = revision([prior], [], [], { commit: sha('b') });
 		const impact = impacted(parent.commit);
-		impact.units.removed = [prior.id];
 		const held =
 			status === 'retired' ? [{ ...prior, status: 'retired' as const, title: 'Tombstone' }] : [];
-		const head = revision(held, [], [], { sourceImpact: impact });
+		const head = revision(held, [], [], {
+			sourceImpact: { ...impact, units: { ...impact.units, removed: [prior.id] } }
+		});
 		const host = hostProps('commit', { category: 'functions', entity: prior.id }, { head, parent });
 		const contract = createRawSnippet((entity: () => ExplorerEntity) => ({
 			render: () => `<p>${entity().unit.contract.inputs[0]?.name}</p>`
