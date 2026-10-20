@@ -1,6 +1,7 @@
 import { expect, test } from '../../../test/support/browserTest';
 import { capture, chooseCatalogFilter, fits, open, viewports, where } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
+import { reviewHelperCard } from './entityPreviewFunctions';
 const page = { category: 'pages' as const, entity: ids.page };
 const filter = { category: 'functions' as const, entity: ids.filter };
 const shots = '.ex-evidence .ex-shot img';
@@ -49,10 +50,7 @@ test('a row or a card of a collection opens its entity in the same branch and co
 }) => {
 	const branch = 'feature/orders';
 	await open(tab, { category: 'functions', commit: commits.middle });
-	await tab.getByRole('link', { name: 'filterOrders(orders, "SERVICE")', exact: true }).click();
-	const callable = { ...filter, helper: 'filterOrders', tab: 'contract' };
-	expect(await where(tab)).toEqual({ branch, commit: commits.middle, ...callable });
-	await expect(tab.getByRole('heading', { level: 1, name: 'filterOrders' })).toBeVisible();
+	await reviewHelperCard(tab, tab.getByRole('article'), commits.middle);
 	await open(tab, { category: 'components' });
 	await tab.getByRole('link', { name: 'Open Order card' }).click();
 	expect(await where(tab)).toEqual({

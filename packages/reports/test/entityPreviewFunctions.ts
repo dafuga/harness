@@ -40,7 +40,11 @@ export async function reviewPrivateFunctions(page: Page, viewport: string): Prom
 }
 
 /** A shared helper card opens the same callable's contract without extra detail panels. */
-export async function reviewHelperCard(page: Page, cards: Locator): Promise<void> {
+export async function reviewHelperCard(
+	page: Page,
+	cards: Locator,
+	commit: string | null = null
+): Promise<void> {
 	await expect(cards.first(), 'function cards omit detail panels').not.toContainText(
 		/Contract|Inputs|Output|Used by|View tests|Shared|Changed/
 	);
@@ -53,10 +57,13 @@ export async function reviewHelperCard(page: Page, cards: Locator): Promise<void
 	const action = cards.getByRole('link', { name: 'filterOrders(orders, "SERVICE")', exact: true });
 	await expect(action).toHaveCount(1);
 	await action.press('Enter');
-	expect(await where(page)).toMatchObject({
+	expect(await where(page)).toEqual({
+		branch: 'feature/orders',
 		category: 'functions',
 		entity: ids.filter,
-		commit: null
+		commit,
+		helper: 'filterOrders',
+		tab: 'contract'
 	});
 	await page.getByRole('tab', { name: 'Contract', exact: true }).click();
 	await expect(page.getByRole('table', { name: 'Parameters', exact: true })).toBeVisible();
