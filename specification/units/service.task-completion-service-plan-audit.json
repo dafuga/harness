@@ -1,0 +1,50 @@
+{
+	"schemaVersion": 1,
+	"id": "service.task-completion-service-plan-audit",
+	"kind": "service",
+	"title": "planAudit",
+	"responsibility": "Owns the planAudit service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/task-completion-service/planAudit.ts"],
+		"symbols": ["TaskCheck", "planAudit"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "planAudit.proposal",
+				"type": "string"
+			},
+			{
+				"name": "planAudit.goal",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "planAudit",
+				"type": "TaskCheck[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/task-completion-service/planAudit.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/task-completion-service/planAudit.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

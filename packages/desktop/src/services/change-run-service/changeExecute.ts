@@ -10,6 +10,7 @@ import { sourceSnapshot } from '../../utils/sourceSnapshot';
 import type { SourceSnapshot } from '../../utils/sourceSnapshot';
 import { sourceChanges } from '../../utils/sourceChanges';
 import type { hostChanges } from '../../utils/hostChanges';
+import { taskCompletionInstructions } from '../../../../../src/services/TaskCompletionService';
 
 /** What the agent of a change said in public, kept for its notice also when the run failed. */
 const replies = new WeakMap<RunContext, string>();
@@ -57,6 +58,8 @@ export async function changeExecute(
 		cwd: context.root,
 		prompt:
 			(await runContext(context)) +
+			'\n' +
+			taskCompletionInstructions().join('\n') +
 			'\nImplement exactly approval ' +
 			JSON.stringify(request.approval) +
 			'. Approved visual: ' +
@@ -109,7 +112,7 @@ export async function recordChange(
 	const status = changeStatus(context, outcome.failure);
 	const paths = changes.map((c) => c.path);
 	const units = await owners(context, paths);
-	const summary = `Change ${status}: ${changes.length} project files; ${hostFiles.length} observed host operations. ${units ? units + ' ' : ''}Verification pending.`;
+	const summary = `Change ${status}: ${changes.length} project files; ${hostFiles.length} observed host operations. ${units ? units + ' ' : ''}${outcome.failure ? 'Completion audit or execution failed.' : 'Harness task completion audit passed.'}`;
 	const said = reply(context);
 	await planning.appendMessage({
 		entityId: entity.id,

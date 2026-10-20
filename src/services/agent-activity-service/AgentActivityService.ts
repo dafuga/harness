@@ -13,6 +13,7 @@ import type { Checkout } from '../../repositories/ProjectWorkRepository';
 import { agentLiveness } from './agentLiveness';
 import { type ProcessFacts } from '../../utils/agentLiveness';
 import { agentStatement } from './agentStatement';
+import { requireTaskCompletion } from './requireTaskCompletion';
 import { type AgentInput, type AgentStatement } from '../../utils/agentStatement';
 
 const order: AgentState[] = ['working', 'stale', 'gone', 'failed', 'completed'];
@@ -76,7 +77,8 @@ export class AgentActivityService {
 	}
 
 	async finish(id: string, failed: boolean, outcome?: string): Promise<void> {
-		const { registry } = await this.known(id);
+		const { registry, checkout, agent } = await this.known(id);
+		if (!failed) await requireTaskCompletion(checkout.path, agent);
 		const stated = agentStatement({ outcome });
 		const status = failed ? ('failed' as const) : ('completed' as const);
 		const end = { at: new Date().toISOString(), status, outcome: stated.outcome ?? null };

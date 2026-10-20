@@ -3,6 +3,8 @@ import { fail } from '../core/errors';
 import type { Comparison } from '../core/comparisonTypes';
 import type { ComponentManifest, RuntimeKind } from '../core/unitTypes';
 import type { Workload } from '../core/verifyTypes';
+import type { RuntimeResponse } from '../core/runtimeTypes';
+import type { RoundResult } from '../utils/benchSamples';
 import { benchRounds, roundMeasurements } from '../utils/benchSamples';
 import { comparisonContext } from '../utils/comparison-context/comparisonContext';
 import { stableJson } from '../utils/stableJson';
@@ -49,25 +51,51 @@ export class UnitBenchmarkService {
 				);
 			}
 			const result = await benchRounds(runtime, workload.request, workload);
-			const where =
-				`${workload.rounds} rounds of ${workload.iterations} end-to-end calls through the declared ` +
-				`${runtime.kind} target`;
-			const shared = {
-				unit: manifest.id,
-				workload: workload.id,
-				target: runtime.kind,
-				samples: result.samples,
-				comparison: comparisonContext(workload.request, workload)
-			};
-			return {
-				unit: manifest.id,
-				workload: workload.id,
-				target: runtime.kind,
-				responseDigest: createHash('sha256').update(stableJson(response)).digest('hex'),
-				measurements: roundMeasurements(result, where).map((entry) => ({ ...shared, ...entry }))
-			};
+			return benchmarkResult(manifest.id, workload, { target: runtime.kind, result, response });
 		} finally {
 			await runtime.close();
 		}
 	}
+}
+
+function processMemory(target: RuntimeKind) {
+	if (target !== 'module') return [];
+	return [
+		{
+			metric: 'process-peak-rss-bytes',
+			unitOfMeasure: 'bytes',
+			value: process.resourceUsage().maxRSS * 1024,
+			method:
+				'Peak RSS of the Harness benchmark process, including runner overhead and earlier work; excludes separate target processes and is not callable-attributed memory.'
+		}
+	];
+}
+
+function boundary(workload: Workload, kind: RuntimeKind): string {
+	return `${workload.rounds} rounds of ${workload.iterations} end-to-end calls through the declared ${kind} target`;
+}
+
+function benchmarkResult(
+	unit: string,
+	workload: Workload,
+	context: { target: RuntimeKind; result: RoundResult; response: RuntimeResponse }
+): UnitBenchmark {
+	const { target, result, response } = context;
+	const shared = {
+		unit,
+		workload: workload.id,
+		target,
+		samples: result.samples,
+		comparison: comparisonContext(workload.request, workload)
+	};
+	return {
+		unit,
+		workload: workload.id,
+		target,
+		responseDigest: createHash('sha256').update(stableJson(response)).digest('hex'),
+		measurements: [
+			...roundMeasurements(result, boundary(workload, target)),
+			...processMemory(target)
+		].map((entry) => ({ ...shared, ...entry }))
+	};
 }

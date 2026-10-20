@@ -1,4 +1,4 @@
-import { resolveLoopTemplate } from './loopTemplates';
+import { newLoopState } from './loop-state/newLoopState';
 import {
 	appendTrace,
 	loopPaths,
@@ -16,6 +16,7 @@ import {
 } from './loop-state/loopState';
 import { fail } from '../core/errors';
 import { enforceRegressionStep } from './record-regression/recordRegression';
+import { TaskCompletionService } from '../services/TaskCompletionService';
 
 export {
 	type LoopEvaluator,
@@ -25,6 +26,8 @@ export {
 } from './loop-state/loopState';
 
 export interface CreateLoopInput extends LoopInput {
+	kind?: 'coding' | 'planning';
+	plan?: string;
 	name: string;
 	goal: string;
 	from?: string;
@@ -53,7 +56,14 @@ export async function createLoop(input: CreateLoopInput): Promise<LoopStatus> {
 	const goal = validateRequiredText(input.goal, 'Loop goal');
 	const paths = loopPaths(root, name);
 	const createdAt = timestamp(input.now);
-	const state = await newLoopState(root, { name, goal, createdAt, from: input.from });
+	const state = await newLoopState(root, {
+		name,
+		goal,
+		createdAt,
+		from: input.from,
+		kind: input.kind,
+		plan: input.plan
+	});
 
 	state.agentModel = input.agentModel ?? process.env.HARNESS_AGENT_MODEL;
 	await writeNewLoop(paths, state);
@@ -95,6 +105,16 @@ export async function completeLoopStep(input: CompleteLoopStepInput): Promise<Lo
 	if (state.enforceOrder && pending && pending.id !== step)
 		fail(`Complete loop step "${pending.id}" before "${step}".`);
 	await enforceRegressionStep(loopRoot(input), state, step);
+	if (
+		state.completion &&
+		state.steps.filter((candidate) => candidate.status === 'pending').length === 1
+	)
+		await new TaskCompletionService(loopRoot(input)).require({
+			kind: state.completion.kind,
+			plan: state.completion.plan,
+			goal: state.goal,
+			loop: state.name
+		});
 
 	const completedAt = timestamp(input.now);
 	Object.assign(item, { status: 'complete' as const, completedAt, evidence });
@@ -131,29 +151,6 @@ export function renderLoopStatus(status: LoopStatus): string {
 
 	if (status.state.steps.length === 0) return [...lines, '  none'].join('\n');
 	return [...lines, ...status.state.steps.flatMap(renderStep)].join('\n');
-}
-
-async function newLoopState(
-	root: string,
-	input: { name: string; goal: string; createdAt: string; from?: string }
-): Promise<LoopState> {
-	const inherited = input.from ? await resolveLoopTemplate(root, input.from) : undefined;
-	return {
-		name: input.name,
-		goal: input.goal,
-		createdAt: input.createdAt,
-		updatedAt: input.createdAt,
-		template: inherited?.id,
-		templateLineage: inherited?.lineage,
-		enforceOrder: inherited?.lineage.some((id) =>
-			['bug-fix', 'regression-prevention'].includes(id)
-		),
-		...(inherited?.lineage.some((id) => ['bug-fix', 'regression-prevention'].includes(id))
-			? { regressionCommits: 1 as const }
-			: {}),
-		steps: inherited?.steps.map((step) => ({ ...step, status: 'pending' as const })) ?? [],
-		evaluators: inherited?.evaluators
-	};
 }
 
 function createTraceEvent(state: LoopState, timestampValue: string): Record<string, unknown> {

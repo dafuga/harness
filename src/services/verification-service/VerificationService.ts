@@ -17,6 +17,7 @@ import { emittedTargets } from '../../utils/unitMeasurements';
 import { SnapshotRunService, type Executed } from '../SnapshotRunService';
 
 export interface VerifyContext {
+	requirePerformance?: boolean;
 	root: string;
 	commit: string;
 	tree: string;

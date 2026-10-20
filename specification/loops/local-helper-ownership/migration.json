@@ -4786,6 +4786,27 @@
 			"commit": "424e3c549e09ed6b040f13d76e53c7f2bdb70e27",
 			"reason": "Preserve authored function calls and shared setup in committed usage documentation.",
 			"definition": "178bb75751d525b1bd8d20e89d73f041c6536466ac656103487683af3a10f367"
+		},
+		{
+			"unit": "desktop.function.change-execute",
+			"name": "changeExecute",
+			"commit": "45bf1fc9",
+			"reason": "Enforce Harness completion and plan audits; preserve owner-local placement and unit identity.",
+			"definition": "4b280673205b69447a2aa2fb9b942a152a4ec9e2b6c05185486261d4305efee0"
+		},
+		{
+			"unit": "desktop.function.change-execute",
+			"name": "recordChange",
+			"commit": "45bf1fc9",
+			"reason": "Enforce Harness completion and plan audits; preserve owner-local placement and unit identity.",
+			"definition": "7cb21e8b2de669bde4ce3b0d0e3a0ada73f4180f22024882439262f8d75e618d"
+		},
+		{
+			"unit": "desktop.function.project-proposal",
+			"name": "proposalPrompt",
+			"commit": "45bf1fc9",
+			"reason": "Enforce Harness completion and plan audits; preserve owner-local placement and unit identity.",
+			"definition": "8ff1b48a2b4f74bc406a2a0e75d3eb79d05323b6f7d89d4fa10698c0d13e22ff"
 		}
 	]
 }

@@ -25,6 +25,8 @@ import { commitLoader, openRange, type RevisionSide } from './loadRevisions';
 import { runtimeKind } from './runImpact';
 
 export interface VerifyOptions {
+	/** Mandatory for task completion; historical verification contracts remain readable. */
+	requirePerformance?: boolean;
 	root?: string;
 	/** Commit to verify; `HEAD` by default. Uncommitted changes are never part of it. */
 	commit?: string;
@@ -65,6 +67,7 @@ export async function verifyRun(options: VerifyOptions = {}): Promise<StoredReco
 	const baseCommit = proven?.commit ?? null;
 	const { base, head } = await openRange({ root, base: baseCommit ?? 'none', head: commit });
 	const runtime = new UnitRuntimeService(root).kernel(runtimeKind(options.runtime));
+	const config = await verifyConfig(head);
 	const impact = await new ImpactService(runtime)
 		.compute(base, head)
 		.finally(() => runtime.close());
@@ -78,7 +81,8 @@ export async function verifyRun(options: VerifyOptions = {}): Promise<StoredReco
 		base,
 		head,
 		impact,
-		config: await verifyConfig(head),
+		config,
+		requirePerformance: requiresPerformance(options, config),
 		testTimeoutMs: options.testTimeout ? Number(options.testTimeout) : undefined,
 		env: process.env,
 		// What was written about the range is held to the writing limits: its reasons, and the
@@ -154,4 +158,8 @@ export function renderVerify(stored: StoredRecord): string {
 		...record.failures.map((failure) => `  ${failure}`),
 		`Record ${record.id.slice(0, 12)} in ${stored.directory}`
 	].join('\n');
+}
+
+function requiresPerformance(options: VerifyOptions, config: VerifyConfig): boolean {
+	return options.requirePerformance === true || config.performanceRequired === 1;
 }

@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "service.task-completion-service-code-audit",
+	"kind": "service",
+	"title": "codeAudit",
+	"responsibility": "Owns the codeAudit service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/task-completion-service/codeAudit.ts"],
+		"symbols": ["codeAudit"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "codeAudit.root",
+				"type": "string"
+			},
+			{
+				"name": "codeAudit.commit",
+				"type": "string"
+			},
+			{
+				"name": "codeAudit.requested",
+				"type": "string[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "codeAudit",
+				"type": "Promise<TaskCheck[]>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.commit-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.verification-store",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.source-index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.task-completion-service-plan-audit",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-check",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.performance-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.load-revisions",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/task-completion-service/codeAudit.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/task-completion-service/codeAudit.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -89,12 +89,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.task-completion",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "workflow.loop-state",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "workflow.loop-templates",
+			"unit": "workflow.loop-state-new-loop-state",
 			"via": "import",
 			"origin": "derived"
 		}

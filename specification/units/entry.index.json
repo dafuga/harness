@@ -78,7 +78,11 @@
 			"helperScopes",
 			"helperTemplates",
 			"helperReferences",
-			"helperConsumers"
+			"helperConsumers",
+			"PerformanceProfileService",
+			"TaskCompletionService",
+			"PerformanceEvidenceValidator",
+			"TaskCommand"
 		]
 	},
 	"contract": {
@@ -120,6 +124,11 @@
 		},
 		{
 			"unit": "command.codex-picker",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.task",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -404,6 +413,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.performance-profile",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.picker-preview",
 			"via": "reexport",
 			"origin": "derived"
@@ -424,6 +438,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.task-completion",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "validator.codex-request",
 			"via": "reexport",
 			"origin": "derived"
@@ -435,6 +454,11 @@
 		},
 		{
 			"unit": "validator.native-picker-idle",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.performance-evidence",
 			"via": "reexport",
 			"origin": "derived"
 		},

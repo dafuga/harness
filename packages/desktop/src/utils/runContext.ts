@@ -19,7 +19,10 @@ export async function runContext(context: RunContext): Promise<string> {
 	// The entity and its registered relationships are the units a plan or change may name.
 	const named = referencePrompt([entity.id, ...entity.relationships.map((unit) => unit.id)]);
 	return (
-		'Assigned entity only. Treat dependency implementations as black boxes; use their contracts. Use Harness generators, specifications and development loops for changes. Make a simplification/performance attempt and test actual behavior. Do not commit, push, deploy, change branch, or claim tests passed without evidence. Host-owned files may be changed only when needed; report every such path. Behavior notes: at most 30 words and 200 characters. Each simplification/performance attempt: at most 15 words and 140 characters.\n' +
+		'Assigned entity only. Treat dependency implementations as black boxes; use their contracts. Use Harness generators, specifications and development loops for changes. Make a simplification/performance attempt and test actual behavior. Do not push, deploy, change branch, or claim tests passed without evidence. Host-owned files may be changed only when needed; report every such path. Behavior notes: at most 30 words and 200 characters. Each simplification/performance attempt: at most 15 words and 140 characters.\n' +
+		(request.mode === 'plan'
+			? 'Plan only; do not commit or implement source.\n'
+			: 'Commit only the requested code after relevant tests; preserve unrelated edits and follow Harness verification before completion.\n') +
 		bugRepairPolicy().join('\n') +
 		'\n' +
 		named +

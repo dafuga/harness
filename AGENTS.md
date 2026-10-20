@@ -28,6 +28,9 @@ These rules apply only to this Harness repository, including requests made in an
 
 ## Bug and Regression Loops
 
+- Coding and planning completion requires `harness task check`; a process exit or free-text claim is insufficient. Coding requires `harness verify run --require-performance` and real representative latency and memory evidence for the affected executable units, even without budgets. Use Harness profiling APIs or declared benchmark workloads, with explicit process-memory attribution.
+- Planning remains planning-only: include substantive Overview, Acceptance Criteria, Dependencies, Verification and Performance sections. Name representative workloads and latency/memory measurement plans without inventing runtime results. Missing, stale, failed or uncertain evidence stays visible and blocks a completion claim; heuristics do not replace acceptance review.
+
 - Commit the strengthened failing test before product repair. Run `harness loop record <loop> --phase red --test <path> --command <command> --assertion <actual failure>` on that commit. Make a separate fix commit and run `loop record --phase green` against the same tests, fixtures, command and environment. Keep both commits when landing; never squash away this regression history. Focused red/green proof does not replace full verification.
 
 - For a reported bug, first diagnose why existing tests missed it. Name the responsible standardized test or scenario and its missing inputs, lifecycle, fixture or assertion; record the coverage gap before product repair.

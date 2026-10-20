@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agent-activity-service-require-task-completion",
+	"kind": "service",
+	"title": "requireTaskCompletion",
+	"responsibility": "Owns the requireTaskCompletion service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agent-activity-service/requireTaskCompletion.ts"],
+		"symbols": ["requireTaskCompletion"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "requireTaskCompletion.root",
+				"type": "string"
+			},
+			{
+				"name": "requireTaskCompletion.agent",
+				"type": "StoredAgent"
+			}
+		],
+		"outputs": [
+			{
+				"name": "requireTaskCompletion",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "repository.agent-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.task-completion",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.loop-state",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agent-activity-service/requireTaskCompletion.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agent-activity-service/requireTaskCompletion.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
