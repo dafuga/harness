@@ -56,7 +56,7 @@
 								>{item.name}</option
 							>{/each}</Select
 					></label
-				>{@render when('Branch tip committed', tipped)}{/snippet}
+				>{@render when(`Branch tip ${revision.tip.slice(0, 7)} committed`, tipped)}{/snippet}
 		</ChoiceDialog>
 		<ChoiceDialog label="Choose commit" title="Choose commit" width={380} maxHeight={320} gap={10}>
 			{#snippet icon()}<Icon name="commit" size={18} />{/snippet}
@@ -71,7 +71,7 @@
 				>{@render when('Commit updated', committed)}{/snippet}
 		</ChoiceDialog>
 		<div class="revision-summary">
-			<strong title={revision.branch}>{revision.branch}</strong><small
+			<strong title={revision.branch}>{revision.branch}</strong><small class="tip"
 				>Tip · {revision.tip.slice(0, 7)}</small
 			><small class:historical={!revision.atTip}>{viewed}</small>
 		</div>
@@ -116,5 +116,31 @@
 	}
 	.picker-field :global(.report-select) {
 		display: block;
+	}
+	/* On a phone the icons, the branch and what is shown share one row beside the environment; the
+	   tip is named in the branch dialog, with when it was committed. */
+	@media (max-width: 560px) {
+		.revision-picker {
+			display: flex;
+			gap: 6px;
+			min-width: 0;
+			margin-inline-start: 6px;
+		}
+		.revision-summary {
+			flex: 1 1 auto;
+			max-width: none;
+			margin-inline-start: 2px;
+			line-height: 1.3;
+		}
+		.revision-summary small {
+			font-size: 11px;
+			line-height: 1.3;
+		}
+		.tip {
+			display: none;
+		}
+		.go-to-tip {
+			padding: 6px 8px;
+		}
 	}
 </style>

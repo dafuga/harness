@@ -62,6 +62,11 @@
 				"name": "ChoiceDialog.children",
 				"type": "Snippet<[close: () => void]>",
 				"description": "Required content function receiving a close callback for dismissing the dialog after selection."
+			},
+			{
+				"name": "ChoiceDialog.footer",
+				"type": "Snippet<[close: () => void]>",
+				"description": "Optional action row kept at the bottom of the dialog while the body scrolls; receives the same close callback."
 			}
 		],
 		"outputs": [
