@@ -84,7 +84,7 @@ test.each(['bundled', 'external'])(
 				{
 					encoding: 'utf8',
 					stdio: 'pipe',
-					env: { ...process.env, NODE_PATH: join(process.cwd(), 'node_modules') }
+					env: { ...process.env, NODE_PATH: join(process.cwd(), '../..', 'node_modules') }
 				}
 			);
 			expect(output).toBe('dev');
