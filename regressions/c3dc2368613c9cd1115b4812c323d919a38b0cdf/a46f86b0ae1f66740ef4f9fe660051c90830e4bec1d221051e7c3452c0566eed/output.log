@@ -1,0 +1,244 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-HgZi2Q/packages/reports
+
+ ❯ test/components/entity-overview.test.ts (11 tests | 1 failed) 67ms
+   × an overview groups size and timings in Performance profile, with no source 23ms
+     → expected '<!--[--><!--[--><div class="ex-conten…' not to contain 'aria-label="Size"'
+   ✓ a page at a selected commit shows the parent and the commit for one state and viewport 6ms
+   ✓ a page at the branch tip shows exactly one screenshot and no before or after 2ms
+   ✓ a side with no capture of the state is a stated gap, never the other side picture 3ms
+   ✓ a component no visual scenario names keeps the screenshot pane, as a stated gap 3ms
+   ✓ a page lists its components as components, each a link in the same scope 2ms
+   ✓ a function at a selected commit shows its end-to-end results before and after 3ms
+   ✓ a function at the branch tip shows one run, and an unrecorded one is a cross 5ms
+   ✓ a behaviour that cannot be established is unknown and shown as failed 6ms
+   ✓ a config shows what it provides and who uses it, with no screenshot and no benchmark 3ms
+   ✓ contract and details list required states without an overview selector 10ms
+ ❯ test/components/entity-details.test.ts (7 tests | 1 failed) 36ms
+   × details opens on the contract with size and performance, and shows no source 17ms
+     → expected '<!--[--><!--[--><div class="ex-conten…' not to contain 'aria-label="Size"'
+   ✓ a page has details like every other kind: purpose, address, inputs, output and states 3ms
+   ✓ source is shown only when the source tab is the open one 5ms
+   ✓ measurements name the limit each figure is frozen at, or that none is recorded 2ms
+   ✓ a service has each execution target on a line of its own, never added together 3ms
+   ✓ a recorded note that names a file is shown without it on measurements and on the contract 2ms
+   ✓ a declared contract explains each item in its dedicated tab and details 4ms
+ ❯ test/components/entity-details-screen.test.ts (3 tests | 1 failed) 22ms
+   × details of every kind open on the contract, size and performance, with no source 16ms
+     → app.page.orders: expected '<!--[--><div class="ex-content" data-…' not to contain 'aria-label="Size"'
+   ✓ its tabs open measurements, and the source only where the source is asked for 3ms
+   ✓ details of an entity the revision does not hold say that it is missing 3ms
+ ❯ test/components/entity-sections.test.ts (2 tests | 1 failed) 27ms
+   × a visual overview leads with evidence and keeps usage in its dedicated tabs 11ms
+     → expected '<!--[--><!--[-1--><div role="tabpanel…' not to contain 'aria-label="Size"'
+   ✓ what it uses and its tests replace the overview, and its evidence pane with it 15ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/entity-details-screen.test.ts > details of every kind open on the contract, size and performance, with no source
+AssertionError: app.page.orders: expected '<!--[--><div class="ex-content" data-…' not to contain 'aria-label="Size"'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- aria-label="Size"[39m
+[31m+ <!--[--><div class="ex-content" data-mode="commit"><!--[-1--><!--[1--><nav class="ex-crumbs" aria-label="Breadcrumb"><ol><li><a href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages"><!---->Pages<!----></a><!----></li> <!--[-1--><li aria-current="page">Orders page</li><!--]--></ol></nav> <header class="ex-head"><span class="ex-tile"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true" focusable="false"><path d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM8 8h8M8 12h8M8 16h5"></path></svg><!----></span> <div class="ex-head-main"><div class="ex-head-title"><h1>Orders page</h1> <span class="ex-pill">Page</span> <!--[-1--><!--]--> <!--[-1--><!--]--> <!--$s1--><span class="hx-verdict svelte-1lwyhm3 passed"><button type="button" aria-label="Full coverage passed" aria-describedby="s1" aria-expanded="false" class="svelte-1lwyhm3"><svg class="hx-icon svelte-1b1a29i solid" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20zM10.6 16.8l-4.3-4.3 1.4-1.4 2.9 2.9 5.7-5.7 1.4 1.4z"></path></svg><!----></button> <span class="hx-tip svelte-1lwyhm3" role="tooltip" id="s1" tabindex="-1" hidden="" style="visibility:hidden"><strong class="svelte-1lwyhm3">Full coverage passed</strong><!--[--><!--]--></span></span><!----></div> <!--[-1--><!--]--></div></header> <!--[-1--><!--]--><!----> <div class="hx-tabs" role="tablist" aria-label="Orders page sections"><!--[--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/app.page.orders" aria-selected="true">Overview</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/app.page.orders?tab=contract" aria-selected="false">Contract</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/app.page.orders?tab=used-in" aria-selected="false">Used In</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/app.page.orders?tab=uses" aria-selected="false">Uses</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/app.page.orders?tab=states" aria-selected="false">States</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/app.page.orders/history" aria-selected="false">History</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/app.page.orders?tab=source" aria-selected="false">Source</a><!--]--><!--]--></div><!----><!----> <!--[-1--><!--]--> <div role="tabpanel" aria-label="Orders page details"><!--[-1--><div class="ex-stack svelte-vccppw"><section class="ex-card ex-contract svelte-rrf560" data-harness-component="entity-contract" aria-label="Contract"><h2><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM14 3v5h5M9 13h6M9 17h6"></path></svg><!----> Contract</h2> <!--[-1--><!--]--> <!--[0--><dl class="ex-rows"><!--[--><div><dt>Purpose</dt> <dd>Lists the orders of an account.</dd></div><div><dt>App route</dt> <dd>/orders</dd></div><div><dt>Required states</dt> <dd>default, empty</dd></div><!--]--></dl><!--]--> <!--[!--><p class="ex-note">Declared examples are written in the contract. Illustrative ones are placeholders shaped by[39m
+[31m+ 			the type alone. Neither is the result of a test.</p> <!--[--><div class="group svelte-fbltee" data-harness-component="contract-table"><!--[0--><h3 class="svelte-fbltee">Inputs <span class="ex-count">2</span></h3><!--]--> <!--[-1--><div class="frame svelte-fbltee"><table aria-label="Inputs" class="svelte-fbltee"><thead class="svelte-fbltee"><tr><!--[0--><th scope="col" class="leading svelte-fbltee">Name</th><!--]--><th scope="col" class="leading svelte-fbltee">Type</th><th scope="col" class="svelte-fbltee">Example</th><th scope="col" class="act svelte-fbltee" aria-label="Actions"></th></tr></thead><tbody class="svelte-fbltee"><!--[-1--><!--]--><!--[--><tr class="svelte-fbltee"><!--[0--><th scope="row" class="svelte-fbltee">Account id</th><!--]--><td class="svelte-fbltee"><code class="type svelte-fbltee">string</code></td><td class="example svelte-fbltee"><!--[0--><i>Illustrative</i><!--]--> <!--[0--><code>"example"</code><!--]--></td><td class="act svelte-fbltee"><button type="button" class="info svelte-fbltee" aria-label="View example for Account id" aria-haspopup="dialog"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17zM12 11v5.5M12 7.6v.1"></path></svg><!----></button></td></tr><tr class="svelte-fbltee"><!--[0--><th scope="row" class="svelte-fbltee">Search text</th><!--]--><td class="svelte-fbltee"><code class="type svelte-fbltee">string</code></td><td class="example svelte-fbltee"><!--[-1--><!--]--> <!--[0--><code>"SERVICE"</code><!--]--></td><td class="act svelte-fbltee"><button type="button" class="info svelte-fbltee" aria-label="View example for Search text" aria-haspopup="dialog"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17zM12 11v5.5M12 7.6v.1"></path></svg><!----></button></td></tr><!--]--></tbody></table></div><!--]--></div><div class="group svelte-fbltee" data-harness-component="contract-table"><!--[0--><h3 class="svelte-fbltee">Outputs <span class="ex-count">1</span></h3><!--]--> <!--[-1--><div class="frame svelte-fbltee"><table aria-label="Outputs" class="svelte-fbltee"><thead class="svelte-fbltee"><tr><!--[0--><th scope="col" class="leading svelte-fbltee">Name</th><!--]--><th scope="col" class="leading svelte-fbltee">Type</th><th scope="col" class="svelte-fbltee">Example</th><th scope="col" class="act svelte-fbltee" aria-label="Actions"></th></tr></thead><tbody class="svelte-fbltee"><!--[-1--><!--]--><!--[--><tr class="svelte-fbltee"><!--[0--><th scope="row" class="svelte-fbltee">Markup</th><!--]--><td class="svelte-fbltee"><code class="type svelte-fbltee">string</code></td><td class="example svelte-fbltee"><!--[0--><i>Illustrative</i><!--]--> <!--[0--><code>"example"</code><!--]--></td><td class="act svelte-fbltee"><button type="button" class="info svelte-fbltee" aria-label="View example for Markup" aria-haspopup="dialog"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17zM12 11v5.5M12 7.6v.1"></path></svg><!----></button></td></tr><!--]--></tbody></table></div><!--]--></div><div class="group svelte-fbltee" data-harness-component="contract-table"><!--[0--><h3 class="svelte-fbltee">Errors <span class="ex-count">0</span></h3><!--]--> <!--[0--><p class="ex-note">No errors declared.</p><!--]--></div><!--]--><!--]--></section> <!--[-1--><!--]--><!----><!----> <div class="ex-summary svelte-9u3o22"><section class="ex-card" aria-label="Size"><h2><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zM4 7.5l8 4.5 8-4.5M12 12v9M8 5.3l8 4.5"></path></svg><!----> Size</h2> <dl class="ex-rows ex-figures"><!--[--><div><dt>Source size</dt> <dd class="unmeasured">Not measured <!--[-1--><!--]--></dd></div><div><dt>Emitted size</dt> <dd title="This unit declares no process or Wasm output." class="unmeasured">Not measured <!--[0--><span class="ex-note svelte-9u3o22">This unit declares no process or Wasm output.</span><!--]--></dd></div><div><dt>Complexity</dt> <dd class="unmeasured">Not measured <!--[-1--><!--]--></dd></div><!--]--></dl></section> <section class="ex-card" aria-label="Performance profile"><h2><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M4.5 17a8.5 8.5 0 1 1 15 0M12 13l3.5-4M12 14.2a1.2 1.2 0 1 0 0-2.4a1.2 1.2 0 0 0 0 2.4z"></path></svg><!----> Performance profile</h2> <!--[0--><dl class="ex-rows ex-figures"><div><dt>Latency</dt> <dd class="unmeasured">Not measured</dd></div> <div><dt>Memory</dt> <dd class="unmeasured">Not measured</dd></div></dl> <p class="ex-note svelte-9u3o22">No benchmark is recorded for this revision.</p><!--]--></section></div><!----></div><!--]--></div><!----><!--]--><!----><!--]--></div><!--]-->[39m
+
+ ❯ test/components/entity-details-screen.test.ts:23:34
+     21|    expect(body, place.entity).toContain(`aria-label="${heading}"`);
+     22|   }
+     23|   expect(body, place.entity).not.toContain('aria-label="Size"');
+       |                                  ^
+     24|   const profile = /<section[^>]*aria-label="Performance profile"[^>]*>…
+     25|    body
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  test/components/entity-details.test.ts > details opens on the contract with size and performance, and shows no source
+AssertionError: expected '<!--[--><!--[--><div class="ex-conten…' not to contain 'aria-label="Size"'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- aria-label="Size"[39m
+[31m+ <!--[--><!--[--><div class="ex-content" data-mode="commit"><!--[-1--><!--[1--><nav class="ex-crumbs" aria-label="Breadcrumb"><ol><li><a href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages"><!---->Pages<!----></a><!----></li> <!--[-1--><li aria-current="page">Orders page</li><!--]--></ol></nav> <header class="ex-head"><span class="ex-tile"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true" focusable="false"><path d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM8 8h8M8 12h8M8 16h5"></path></svg><!----></span> <div class="ex-head-main"><div class="ex-head-title"><h1>Orders page</h1> <span class="ex-pill">Page</span> <!--[-1--><!--]--> <!--[-1--><!--]--> <!--$s1--><span class="hx-verdict svelte-1lwyhm3 passed"><button type="button" aria-label="Full coverage passed" aria-describedby="s1" aria-expanded="false" class="svelte-1lwyhm3"><svg class="hx-icon svelte-1b1a29i solid" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20zM10.6 16.8l-4.3-4.3 1.4-1.4 2.9 2.9 5.7-5.7 1.4 1.4z"></path></svg><!----></button> <span class="hx-tip svelte-1lwyhm3" role="tooltip" id="s1" tabindex="-1" hidden="" style="visibility:hidden"><strong class="svelte-1lwyhm3">Full coverage passed</strong><!--[--><!--]--></span></span><!----></div> <!--[-1--><!--]--></div></header> <!--[-1--><!--]--><!----> <div class="hx-tabs" role="tablist" aria-label="Orders page sections"><!--[--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/app.page.orders" aria-selected="true">Overview</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/app.page.orders?tab=contract" aria-selected="false">Contract</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/app.page.orders?tab=used-in" aria-selected="false">Used In</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/app.page.orders?tab=uses" aria-selected="false">Uses</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/app.page.orders?tab=states" aria-selected="false">States</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/app.page.orders/history" aria-selected="false">History</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/app.page.orders?tab=source" aria-selected="false">Source</a><!--]--><!--]--></div><!----><!----> <!--[-1--><!--]--> <div role="tabpanel" aria-label="Orders page details"><!--[-1--><div class="ex-stack svelte-vccppw"><section class="ex-card ex-contract svelte-rrf560" data-harness-component="entity-contract" aria-label="Contract"><h2><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM14 3v5h5M9 13h6M9 17h6"></path></svg><!----> Contract</h2> <!--[-1--><!--]--> <!--[0--><dl class="ex-rows"><!--[--><div><dt>Purpose</dt> <dd>Lists the orders of an account.</dd></div><div><dt>App route</dt> <dd>/orders</dd></div><div><dt>Required states</dt> <dd>default, empty</dd></div><!--]--></dl><!--]--> <!--[!--><p class="ex-note">Declared examples are written in the contract. Illustrative ones are placeholders shaped by[39m
+[31m+ 			the type alone. Neither is the result of a test.</p> <!--[--><div class="group svelte-fbltee" data-harness-component="contract-table"><!--[0--><h3 class="svelte-fbltee">Inputs <span class="ex-count">2</span></h3><!--]--> <!--[-1--><div class="frame svelte-fbltee"><table aria-label="Inputs" class="svelte-fbltee"><thead class="svelte-fbltee"><tr><!--[0--><th scope="col" class="leading svelte-fbltee">Name</th><!--]--><th scope="col" class="leading svelte-fbltee">Type</th><th scope="col" class="svelte-fbltee">Example</th><th scope="col" class="act svelte-fbltee" aria-label="Actions"></th></tr></thead><tbody class="svelte-fbltee"><!--[-1--><!--]--><!--[--><tr class="svelte-fbltee"><!--[0--><th scope="row" class="svelte-fbltee">Account id</th><!--]--><td class="svelte-fbltee"><code class="type svelte-fbltee">string</code></td><td class="example svelte-fbltee"><!--[0--><i>Illustrative</i><!--]--> <!--[0--><code>"example"</code><!--]--></td><td class="act svelte-fbltee"><button type="button" class="info svelte-fbltee" aria-label="View example for Account id" aria-haspopup="dialog"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17zM12 11v5.5M12 7.6v.1"></path></svg><!----></button></td></tr><tr class="svelte-fbltee"><!--[0--><th scope="row" class="svelte-fbltee">Search text</th><!--]--><td class="svelte-fbltee"><code class="type svelte-fbltee">string</code></td><td class="example svelte-fbltee"><!--[-1--><!--]--> <!--[0--><code>"SERVICE"</code><!--]--></td><td class="act svelte-fbltee"><button type="button" class="info svelte-fbltee" aria-label="View example for Search text" aria-haspopup="dialog"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17zM12 11v5.5M12 7.6v.1"></path></svg><!----></button></td></tr><!--]--></tbody></table></div><!--]--></div><div class="group svelte-fbltee" data-harness-component="contract-table"><!--[0--><h3 class="svelte-fbltee">Outputs <span class="ex-count">1</span></h3><!--]--> <!--[-1--><div class="frame svelte-fbltee"><table aria-label="Outputs" class="svelte-fbltee"><thead class="svelte-fbltee"><tr><!--[0--><th scope="col" class="leading svelte-fbltee">Name</th><!--]--><th scope="col" class="leading svelte-fbltee">Type</th><th scope="col" class="svelte-fbltee">Example</th><th scope="col" class="act svelte-fbltee" aria-label="Actions"></th></tr></thead><tbody class="svelte-fbltee"><!--[-1--><!--]--><!--[--><tr class="svelte-fbltee"><!--[0--><th scope="row" class="svelte-fbltee">Markup</th><!--]--><td class="svelte-fbltee"><code class="type svelte-fbltee">string</code></td><td class="example svelte-fbltee"><!--[0--><i>Illustrative</i><!--]--> <!--[0--><code>"example"</code><!--]--></td><td class="act svelte-fbltee"><button type="button" class="info svelte-fbltee" aria-label="View example for Markup" aria-haspopup="dialog"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17zM12 11v5.5M12 7.6v.1"></path></svg><!----></button></td></tr><!--]--></tbody></table></div><!--]--></div><div class="group svelte-fbltee" data-harness-component="contract-table"><!--[0--><h3 class="svelte-fbltee">Errors <span class="ex-count">0</span></h3><!--]--> <!--[0--><p class="ex-note">No errors declared.</p><!--]--></div><!--]--><!--]--></section> <!--[-1--><!--]--><!----><!----> <div class="ex-summary svelte-9u3o22"><section class="ex-card" aria-label="Size"><h2><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zM4 7.5l8 4.5 8-4.5M12 12v9M8 5.3l8 4.5"></path></svg><!----> Size</h2> <dl class="ex-rows ex-figures"><!--[--><div><dt>Source size</dt> <dd class="unmeasured">Not measured <!--[-1--><!--]--></dd></div><div><dt>Emitted size</dt> <dd title="This unit declares no process or Wasm output." class="unmeasured">Not measured <!--[0--><span class="ex-note svelte-9u3o22">This unit declares no process or Wasm output.</span><!--]--></dd></div><div><dt>Complexity</dt> <dd class="unmeasured">Not measured <!--[-1--><!--]--></dd></div><!--]--></dl></section> <section class="ex-card" aria-label="Performance profile"><h2><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M4.5 17a8.5 8.5 0 1 1 15 0M12 13l3.5-4M12 14.2a1.2 1.2 0 1 0 0-2.4a1.2 1.2 0 0 0 0 2.4z"></path></svg><!----> Performance profile</h2> <!--[0--><dl class="ex-rows ex-figures"><div><dt>Latency</dt> <dd class="unmeasured">Not measured</dd></div> <div><dt>Memory</dt> <dd class="unmeasured">Not measured</dd></div></dl> <p class="ex-note svelte-9u3o22">No benchmark is recorded for this revision.</p><!--]--></section></div><!----></div><!--]--></div><!----><!--]--><!----><!--]--></div><!--]--><!--]-->[39m
+
+ ❯ test/components/entity-details.test.ts:28:19
+     26|   expect(body).toContain(`aria-label="${heading}"`);
+     27|  }
+     28|  expect(body).not.toContain('aria-label="Size"');
+       |                   ^
+     29|  expect(words(body)).toContain('Source size');
+     30|  expect(words(body)).not.toContain('Back to overview');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  test/components/entity-overview.test.ts > an overview groups size and timings in Performance profile, with no source
+AssertionError: expected '<!--[--><!--[--><div class="ex-conten…' not to contain 'aria-label="Size"'
+
+Expected: [32m"aria-label="Size""[39m
+Received: [31m"<!--[--><!--[--><div class="ex-content" data-mode="commit"><!--[-1--><!--[1--><nav class="ex-crumbs" aria-label="Breadcrumb"><ol><li><a href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/functions"><!---->Helpers<!----></a><!----></li> <!--[-1--><li aria-current="page">Filter orders</li><!--]--></ol></nav> <header class="ex-head"><span class="ex-tile"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true" focusable="false"><path d="M3.5 20c2 0 2.7-1 3.1-3L9 6.6C9.4 4.7 10.3 4 12 4M5.5 10.5h7M14.5 13l5 6M19.5 13l-5 6"></path></svg><!----></span> <div class="ex-head-main"><div class="ex-head-title"><h1>Filter orders</h1> <span class="ex-pill">Function</span> <!--[0--><span class="ex-pill gold">Shared</span><!--]--> <!--[-1--><!--]--> <!--$s1--><span class="hx-verdict svelte-1lwyhm3 passed"><button type="button" aria-label="Full coverage passed" aria-describedby="s1" aria-expanded="false" class="svelte-1lwyhm3"><svg class="hx-icon svelte-1b1a29i solid" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20zM10.6 16.8l-4.3-4.3 1.4-1.4 2.9 2.9 5.7-5.7 1.4 1.4z"></path></svg><!----></button> <span class="hx-tip svelte-1lwyhm3" role="tooltip" id="s1" tabindex="-1" hidden="" style="visibility:hidden"><strong class="svelte-1lwyhm3">Full coverage passed</strong><!--[--><!--]--></span></span><!----></div> <!--[0--><p class="ex-lead">Returns the orders whose name matches a search.</p><!--]--></div></header> <!--[-1--><!--]--><!----> <div class="hx-tabs" role="tablist" aria-label="Filter orders sections"><!--[--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/functions/app.function.filter-orders" aria-selected="true">Overview</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/functions/app.function.filter-orders?tab=contract" aria-selected="false">Contract</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/functions/app.function.filter-orders?tab=used-in" aria-selected="false">Used In</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/functions/app.function.filter-orders?tab=uses" aria-selected="false">Uses</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/functions/app.function.filter-orders?tab=examples" aria-selected="false">Examples</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/functions/app.function.filter-orders/history" aria-selected="false">History</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/functions/app.function.filter-orders?tab=source" aria-selected="false">Source</a><!--]--><!--]--></div><!----><!----> <!--[-1--><!--]--> <!--[-1--><div role="tabpanel" aria-label="Filter orders overview"><!--[-1--><!--]--> <div class="ex-summary svelte-9u3o22 compact"><section class="ex-card" aria-label="Size"><h2><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zM4 7.5l8 4.5 8-4.5M12 12v9M8 5.3l8 4.5"></path></svg><!----> Size</h2> <dl class="ex-rows ex-figures"><!--[--><div><dt>Source size</dt> <dd>800 B <!--[-1--><!--]--></dd></div><div><dt>Emitted size</dt> <dd title="This unit declares no process or Wasm output." class="unmeasured">Not measured <!--[0--><span class="ex-note svelte-9u3o22">This unit declares no process or Wasm output.</span><!--]--></dd></div><div><dt>Complexity</dt> <dd class="unmeasured">Not measured <!--[-1--><!--]--></dd></div><!--]--></dl></section> <section class="ex-card" aria-label="Performance profile"><h2><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M4.5 17a8.5 8.5 0 1 1 15 0M12 13l3.5-4M12 14.2a1.2 1.2 0 1 0 0-2.4a1.2 1.2 0 0 0 0 2.4z"></path></svg><!----> Performance profile</h2> <!--[1--><dl class="ex-rows ex-figures"><div><dt>Workload</dt> <dd>thousand orders</dd></div> <div><dt>Environment</dt> <dd>bun-reference</dd></div> <div><dt>p95 ms</dt> <dd>0.12 ms<!--[-1--><!--]--></dd></div> <div><dt>Tolerance</dt> <dd>5%</dd></div></dl><!--]--></section></div><!----> <!--[0--><!----><section class="ex-card ex-evidence" aria-labelledby="ex-behavior-title"><header class="ex-evidence-head"><div><h2 id="ex-behavior-title">End-to-end test comparison</h2> <p class="ex-soft">The same scenario and the same states on both revisions.</p></div> <!--[0--><a class="hx-action gold" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/functions/app.function.filter-orders?tab=tests"><!--[-1--><!--]--> <!---->View examples<!----> <!--[0--><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M4 12h16M14 6l6 6-6 6"></path></svg><!--]--><!----></a><!--]--><!----> <!--[-1--><!--]--></header> <!--[-1--><div class="ex-panes paired"><!--[0--><section class="ex-pane" aria-label="Before · aaaaaaa"><header class="ex-pane-head"><strong>Before · aaaaaaa</strong> <span class="ex-pill">Parent commit</span> <!--$s2--><span class="hx-verdict svelte-1lwyhm3 passed"><button type="button" aria-label="All results passed" aria-describedby="s2" aria-expanded="false" class="svelte-1lwyhm3"><svg class="hx-icon svelte-1b1a29i solid" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20zM10.6 16.8l-4.3-4.3 1.4-1.4 2.9 2.9 5.7-5.7 1.4 1.4z"></path></svg><!----></button> <span class="hx-tip svelte-1lwyhm3" role="tooltip" id="s2" tabindex="-1" hidden="" style="visibility:hidden"><strong class="svelte-1lwyhm3">All results passed</strong><!--[--><!--]--></span></span><!----></header> <!--[--><div class="ex-state"><h3><!--$s3--><span class="hx-verdict svelte-1lwyhm3 passed"><button type="button" aria-label="Passed" aria-describedby="s3" aria-expanded="false" class="svelte-1lwyhm3"><svg class="hx-icon svelte-1b1a29i solid" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20zM10.6 16.8l-4.3-4.3 1.4-1.4 2.9 2.9 5.7-5.7 1.4 1.4z"></path></svg><!----></button> <span class="hx-tip svelte-1lwyhm3" role="tooltip" id="s3" tabindex="-1" hidden="" style="visibility:hidden"><strong class="svelte-1lwyhm3">Passed</strong><!--[--><!--]--></span></span><!----> Search across synthetic orders · match</h3> <!--[--><div class="ex-result"><p><span class="ex-kind">assertions</span> <span>Passed</span> <!--[-1--><!--]--></p> <!--[-1--><div class="ex-artifact" role="group" aria-label="assertions of match"><!--[0--><p class="ex-soft" role="status">Reading what it holds…</p><!--]--> <a class="ex-link" href="/harness/media/aaaaaaa-match-assertions.json" target="_blank" rel="noreferrer">Open the recorded assertions of match</a></div><!--]--><!----></div><div class="ex-result"><p><span class="ex-kind">output</span> <span>Passed</span> <!--[-1--><!--]--></p> <!--[-1--><div class="ex-artifact" role="group" aria-label="output of match"><!--[0--><p class="ex-soft" role="status">Reading what it holds…</p><!--]--> <a class="ex-link" href="/harness/media/aaaaaaa-match-output.json" target="_blank" rel="noreferrer">Open the recorded output of match</a></div><!--]--><!----></div><!--]--></div><div class="ex-state"><h3><!--$s4--><span class="hx-verdict svelte-1lwyhm3 passed"><button type="button" aria-label="Passed" aria-describedby="s4" aria-expanded="false" class="svelte-1lwyhm3"><svg class="hx-icon svelte-1b1a29i solid" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20zM10.6 16.8l-4.3-4.3 1.4-1.4 2.9 2.9 5.7-5.7 1.4 1.4z"></path></svg><!----></button> <span class="hx-tip svelte-1lwyhm3" role="tooltip" id="s4" tabindex="-1" hidden="" style="visibility:hidden"><strong class="svelte-1lwyhm3">Passed</strong><!--[--><!--]--></span></span><!----> Search across synthetic orders · no-match</h3> <!--[--><div class="ex-result"><p><span class="ex-kind">assertions</span> <span>Passed</span> <!--[-1--><!--]--></p> <!--[-1--><div class="ex-artifact" role="group" aria-label="assertions of no-match"><!--[0--><p class="ex-soft" role="status">Reading what it holds…</p><!--]--> <a class="ex-link" href="/harness/media/aaaaaaa-no-match-assertions.json" target="_blank" rel="noreferrer">Open the recorded assertions of no-match</a></div><!--]--><!----></div><!--]--></div><!--]--></section><!--]--> <section class="ex-pane" aria-label="After · bbbbbbb"><header class="ex-pane-head"><strong>After · bbbbbbb</strong> <span class="ex-pill">Selected commit</span> <!--$s5--><span class="hx-verdict svelte-1lwyhm3 passed"><button type="button" aria-label="All results passed" aria-describedby="s5" aria-expanded="false" class="svelte-1lwyhm3"><svg class="hx-icon svelte-1b1a29i solid" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20zM10.6 16.8l-4.3-4.3 1.4-1.4 2.9 2.9 5.7-5.7 1.4 1.4z"></path></svg><!----></button> <span class="hx-tip svelte-1lwyhm3" role="tooltip" id="s5" tabindex="-1" hidden="" style="visibility:hidden"><strong class="svelte-1lwyhm3">All results passed</strong><!--[--><!--]--></span></span><!----></header> <!--[--><div class="ex-state"><h3><!--$s6--><span class="hx-verdict svelte-1lwyhm3 passed"><button type="button" aria-label="Passed" aria-describedby="s6" aria-expanded="false" class="svelte-1lwyhm3"><svg class="hx-icon svelte-1b1a29i solid" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20zM10.6 16.8l-4.3-4.3 1.4-1.4 2.9 2.9 5.7-5.7 1.4 1.4z"></path></svg><!----></button> <span class="hx-tip svelte-1lwyhm3" role="tooltip" id="s6" tabindex="-1" hidden="" style="visibility:hidden"><strong class="svelte-1lwyhm3">Passed</strong><!--[--><!--]--></span></span><!----> Search across synthetic orders · match</h3> <!--[--><div class="ex-result"><p><span class="ex-kind">assertions</span> <span>Passed</span> <!--[-1--><!--]--></p> <!--[-1--><div class="ex-artifact" role="group" aria-label="assertions of match"><!--[0--><p class="ex-soft" role="status">Reading what it holds…</p><!--]--> <a class="ex-link" href="/harness/media/bbbbbbb-match-assertions.json" target="_blank" rel="noreferrer">Open the recorded assertions of match</a></div><!--]--><!----></div><div class="ex-result"><p><span class="ex-kind">output</span> <span>Passed</span> <!--[-1--><!--]--></p> <!--[-1--><div class="ex-artifact" role="group" aria-label="output of match"><!--[0--><p class="ex-soft" role="status">Reading what it holds…</p><!--]--> <a class="ex-link" href="/harness/media/bbbbbbb-match-output.json" target="_blank" rel="noreferrer">Open the recorded output of match</a></div><!--]--><!----></div><!--]--></div><div class="ex-state"><h3><!--$s7--><span class="hx-verdict svelte-1lwyhm3 passed"><button type="button" aria-label="Passed" aria-describedby="s7" aria-expanded="false" class="svelte-1lwyhm3"><svg class="hx-icon svelte-1b1a29i solid" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20zM10.6 16.8l-4.3-4.3 1.4-1.4 2.9 2.9 5.7-5.7 1.4 1.4z"></path></svg><!----></button> <span class="hx-tip svelte-1lwyhm3" role="tooltip" id="s7" tabindex="-1" hidden="" style="visibility:hidden"><strong class="svelte-1lwyhm3">Passed</strong><!--[--><!--]--></span></span><!----> Search across synthetic orders · no-match</h3> <!--[--><div class="ex-result"><p><span class="ex-kind">assertions</span> <span>Passed</span> <!--[-1--><!--]--></p> <!--[-1--><div class="ex-artifact" role="group" aria-label="assertions of no-match"><!--[0--><p class="ex-soft" role="status">Reading what it holds…</p><!--]--> <a class="ex-link" href="/harness/media/bbbbbbb-no-match-assertions.json" target="_blank" rel="noreferrer">Open the recorded assertions of no-match</a></div><!--]--><!----></div><!--]--></div><!--]--></section><!----></div><!--]--> <div class="ex-change"><!--[0--><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17zM12 7.5V12l3 2"></path></svg><!--]--> <strong role="status">Reading the recorded results…</strong> <span>Matches orders regardless of case.</span> <!--[0--><!--[-1--><!--]--><!--]--> <dl class="ex-inline"><div><dt>E2E duration</dt> <dd>40 ms</dd></div> <!--[--><div><dt>Search across synthetic orders</dt> <dd>passed → passed</dd></div><!--]--></dl></div></section><!----> <!--[-1--><!--]--><!----><!----><!----><!--]--></div><!--]--><!----><!--]--><!----><!--]--></div><!--]--><!--]-->"[39m
+
+ ❯ test/components/entity-overview.test.ts:14:19
+     12| test('an overview groups size and timings in Performance profile, with…
+     13|  const body = content('commit', filter);
+     14|  expect(body).not.toContain('aria-label="Size"');
+       |                   ^
+     15|  const profile = /<section[^>]*aria-label="Performance profile"[^>]*>(…
+     16|  expect(profile).not.toBeNull();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  test/components/entity-sections.test.ts > a visual overview leads with evidence and keeps usage in its dedicated tabs
+AssertionError: expected '<!--[--><!--[-1--><div role="tabpanel…' not to contain 'aria-label="Size"'
+
+Expected: [32m"aria-label="Size""[39m
+Received: [31m"<!--[--><!--[-1--><div role="tabpanel" aria-label="Orders page overview"><!--[0--><p>the evidence of its kind</p><!----><!----><!--]--> <div class="ex-summary svelte-9u3o22 compact"><section class="ex-card" aria-label="Size"><h2><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zM4 7.5l8 4.5 8-4.5M12 12v9M8 5.3l8 4.5"></path></svg><!----> Size</h2> <dl class="ex-rows ex-figures"><!--[--><div><dt>Source size</dt> <dd class="unmeasured">Not measured <!--[-1--><!--]--></dd></div><div><dt>Emitted size</dt> <dd title="This unit declares no process or Wasm output." class="unmeasured">Not measured <!--[0--><span class="ex-note svelte-9u3o22">This unit declares no process or Wasm output.</span><!--]--></dd></div><div><dt>Complexity</dt> <dd class="unmeasured">Not measured <!--[-1--><!--]--></dd></div><!--]--></dl></section> <section class="ex-card" aria-label="Performance profile"><h2><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M4.5 17a8.5 8.5 0 1 1 15 0M12 13l3.5-4M12 14.2a1.2 1.2 0 1 0 0-2.4a1.2 1.2 0 0 0 0 2.4z"></path></svg><!----> Performance profile</h2> <!--[0--><dl class="ex-rows ex-figures"><div><dt>Latency</dt> <dd class="unmeasured">Not measured</dd></div> <div><dt>Memory</dt> <dd class="unmeasured">Not measured</dd></div></dl> <p class="ex-note svelte-9u3o22">No benchmark is recorded for this revision.</p><!--]--></section></div><!----> <!--[-1--><!--]--></div><!--]--><!--]-->"[39m
+
+ ❯ test/components/entity-sections.test.ts:24:19
+     22|   body.indexOf('aria-label="Performance profile"')
+     23|  );
+     24|  expect(body).not.toContain('aria-label="Size"');
+       |                   ^
+     25| });
+     26| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  4 failed (4)
+      Tests  4 failed | 19 passed (23)
+   Start at  18:13:34
+   Duration  3.81s (transform 1.19s, setup 0ms, collect 2.56s, tests 152ms, environment 1ms, prepare 190ms)
+
+
+Running 3 tests using 1 worker
+
+  ✘  1 test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at desktop width (5.3s)
+  ✘  2 test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at tablet width (5.3s)
+  ✘  3 test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at mobile width (5.3s)
+
+
+  1) test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at desktop width 
+
+    Error: size shares performance profile
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('region', { name: 'Size', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - size shares performance profile getByRole('region', { name: 'Size', exact: true }) with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Size', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewOverview.ts:9
+
+       7 | 		page.getByRole('region', { name: 'Size', exact: true }),
+       8 | 		'size shares performance profile'
+    >  9 | 	).toHaveCount(0);
+         | 	  ^
+      10 | 	await expect(profile).toHaveCount(1);
+      11 | 	for (const label of ['Source size', 'Emitted size', 'Complexity'])
+      12 | 		await expect(profile).toContainText(label);
+        at reviewOverviewControls (/private/tmp/harness-snapshot-HgZi2Q/packages/reports/test/entityPreviewOverview.ts:9:4)
+        at reviewVisual (/private/tmp/harness-snapshot-HgZi2Q/packages/reports/test/entityPreviewPage.ts:104:8)
+        at /private/tmp/harness-snapshot-HgZi2Q/packages/reports/test/entity-preview-actions.spec.ts:19:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-vis-6e20f-creenshots-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-vis-6e20f-creenshots-at-desktop-width/error-context.md
+
+  2) test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at tablet width 
+
+    Error: size shares performance profile
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('region', { name: 'Size', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - size shares performance profile getByRole('region', { name: 'Size', exact: true }) with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Size', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewOverview.ts:9
+
+       7 | 		page.getByRole('region', { name: 'Size', exact: true }),
+       8 | 		'size shares performance profile'
+    >  9 | 	).toHaveCount(0);
+         | 	  ^
+      10 | 	await expect(profile).toHaveCount(1);
+      11 | 	for (const label of ['Source size', 'Emitted size', 'Complexity'])
+      12 | 		await expect(profile).toContainText(label);
+        at reviewOverviewControls (/private/tmp/harness-snapshot-HgZi2Q/packages/reports/test/entityPreviewOverview.ts:9:4)
+        at reviewVisual (/private/tmp/harness-snapshot-HgZi2Q/packages/reports/test/entityPreviewPage.ts:104:8)
+        at /private/tmp/harness-snapshot-HgZi2Q/packages/reports/test/entity-preview-actions.spec.ts:19:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-vis-ec3df-screenshots-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-vis-ec3df-screenshots-at-tablet-width/error-context.md
+
+  3) test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at mobile width 
+
+    Error: size shares performance profile
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('region', { name: 'Size', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - size shares performance profile getByRole('region', { name: 'Size', exact: true }) with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Size', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewOverview.ts:9
+
+       7 | 		page.getByRole('region', { name: 'Size', exact: true }),
+       8 | 		'size shares performance profile'
+    >  9 | 	).toHaveCount(0);
+         | 	  ^
+      10 | 	await expect(profile).toHaveCount(1);
+      11 | 	for (const label of ['Source size', 'Emitted size', 'Complexity'])
+      12 | 		await expect(profile).toContainText(label);
+        at reviewOverviewControls (/private/tmp/harness-snapshot-HgZi2Q/packages/reports/test/entityPreviewOverview.ts:9:4)
+        at reviewVisual (/private/tmp/harness-snapshot-HgZi2Q/packages/reports/test/entityPreviewPage.ts:104:8)
+        at /private/tmp/harness-snapshot-HgZi2Q/packages/reports/test/entity-preview-actions.spec.ts:19:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-vis-5375c-screenshots-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-vis-5375c-screenshots-at-mobile-width/error-context.md
+
+  3 failed
+    test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at desktop width 
+    test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at tablet width 
+    test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at mobile width 
