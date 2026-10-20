@@ -57,7 +57,8 @@ function installState(settings: Settings) {
 }
 
 /** The reads every backend has: one project at a branch tip or at one of its commits. */
-function installProject(data: EvidenceData) {
+function installProject(serialized: string) {
+	const data: EvidenceData = JSON.parse(serialized);
 	const host = window as unknown as Host;
 	const state = host.__evidence;
 	const shared = { comments: true, agents: false, planning: false, approval: false };
@@ -104,7 +105,8 @@ function installProject(data: EvidenceData) {
 }
 
 /** The two evidence reads, typed as the bridge states them and bound as a backend binds them. */
-function installEvidence(data: EvidenceData) {
+function installEvidence(serialized: string) {
+	const data: EvidenceData = JSON.parse(serialized);
 	const host = window as unknown as Host;
 	const state = host.__evidence;
 	const wait = (ms: number) => new Promise((done) => setTimeout(done, ms));
@@ -169,8 +171,9 @@ export async function evidenceFixture(page: Page, options: EvidenceOptions = {})
 	}
 	const { delay = {}, corrupt = [], moved = false, hold = false } = options;
 	await page.addInitScript(installState, { delay, corrupt, moved, hold });
-	await page.addInitScript(installProject, data);
-	await page.addInitScript(installEvidence, data);
+	const serialized = JSON.stringify(data);
+	await page.addInitScript(installProject, serialized);
+	await page.addInitScript(installEvidence, serialized);
 	if (options.reads === false) await page.addInitScript(removeEvidence);
 	return data;
 }

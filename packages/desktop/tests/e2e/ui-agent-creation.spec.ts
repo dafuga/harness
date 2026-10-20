@@ -130,7 +130,10 @@ test('hosted and pinned revisions offer no project AI creation', async ({ page }
 	for (const target of [route('components', gamma), route('functions', alpha, earlier)]) {
 		await page.goto(target);
 		await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-		await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toHaveCount(0);
+		await page.getByRole('button', { name: /^(Work with agent|Open project chat)$/ }).click();
+		const panel = page.getByRole('complementary', { name: 'Project agent', exact: true });
+		for (const name of ['Plan', 'Ask', 'Change', 'Send plan', 'Send change'])
+			await expect(panel.getByRole('button', { name, exact: true })).toHaveCount(0);
 		await expect(
 			page.getByRole('button', { name: /^\+?\s*New (component|function)$/ })
 		).toHaveCount(0);
