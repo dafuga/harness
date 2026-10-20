@@ -94,3 +94,25 @@ test('registered page previews name the state that actually shows that page', ()
 		);
 	}
 });
+
+test('visual components cannot omit required preview coverage while nonvisual units can', async () => {
+	const source = await indexFiles({
+		'src/utils/orders.ts': 'export function orders() { return []; }'
+	});
+	const original = unitOf(source, 'function.orders');
+	const component = { ...original, id: 'component.orders', kind: 'component', scenarios: [] };
+	expect(registryGate({ stored: [] }, { stored: [component], scenarios: [] }).join(' ')).toContain(
+		'component.orders: active component requires a screenshot preview'
+	);
+	expect(registryGate({ stored: [] }, { stored: [original], scenarios: [] })).toEqual([]);
+	const covered = { ...component, scenarios: ['orders'], preview: unit.preview };
+	const ownScenario = {
+		...scenario,
+		units: [component.id],
+		states: [{ ...scenario.states[0], units: [component.id] }]
+	};
+	expect(registryGate({ stored: [] }, { stored: [covered], scenarios: [ownScenario] })).toEqual([]);
+	expect(
+		registryGate({ stored: [] }, { stored: [{ ...component, status: 'retired' }], scenarios: [] })
+	).toEqual([]);
+});

@@ -105,11 +105,16 @@ for (const [name, size] of Object.entries(viewports)) {
 			const viewed = (commit ?? commits.tip).slice(0, 7);
 			await expect(shot).toHaveAttribute('src', `/media/${viewed}-default-desktop.png`);
 			expect(await shot.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBe(1440);
-			await expect(cards.first()).toContainText('Used on');
+			await expect(cards.first()).toHaveText(/Order card\s+Used In\s+Order list\s+Orders page/);
+			await expect(cards.first().locator('button, .hx-verdict, .ex-fact, figcaption')).toHaveCount(
+				0
+			);
+			const usage = cards.first().getByRole('group', { name: 'Used In' });
+			await usage.getByRole('link', { name: 'Order list', exact: true }).click();
+			expect(await where(tab)).toMatchObject({ commit, category: 'components', entity: ids.list });
+			await open(tab, { category: 'components', commit });
 			expect(await fits(tab)).toBe(true);
-			const action = cards.first().getByRole('link', { name: 'Open component', exact: true });
-			expect((await action.innerText()).trim()).toBe('');
-			expect(await action.boundingBox()).toMatchObject({ width: 36, height: 36 });
+			const action = cards.first().getByRole('link', { name: 'Order card', exact: true });
 			await action.press('Enter');
 			expect(await where(tab)).toMatchObject({ commit, category: 'components', entity: ids.card });
 		}
@@ -182,7 +187,11 @@ test('the component catalog labels reused screenshots with their original commit
 	await capture(tab, 'component-cards-reused-desktop');
 	const card = tab.getByRole('article', { name: 'Order card', exact: true });
 	await expect(card.getByRole('img')).toHaveAttribute('src', '/media/bbbbbbb-default-desktop.png');
-	await expect(card).toContainText('Reused from bbbbbbb');
+	await expect(card.getByRole('link', { name: 'Open Order card', exact: true })).toHaveAttribute(
+		'title',
+		/Reused from bbbbbbb/
+	);
+	await expect(card).not.toContainText('Reused from');
 	await expect(card).not.toContainText('Captured at ccccccc');
 });
 test('branch and commit selection replace component screenshots with that revision', async ({

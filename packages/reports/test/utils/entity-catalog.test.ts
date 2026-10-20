@@ -85,6 +85,10 @@ test('a component says which pages it is used on and which components it contain
 	const card = rows('components').find((row) => row.id === ids.card)!;
 	expect(card.usedOn).toEqual(['Orders page']);
 	expect(card.usedBy).toEqual(['Order list']);
+	expect(card.usedIn).toEqual([
+		{ id: ids.list, name: 'Order list', category: 'components' },
+		{ id: ids.page, name: 'Orders page', category: 'pages' }
+	]);
 	const list = rows('components').find((row) => row.id === ids.list)!;
 	expect(list.contains).toEqual(['Order card']);
 	expect(list.shared).toBe(false);
@@ -192,4 +196,19 @@ test('shared helper rows require source exports, list every callable and keep ow
 	expect(catalogFilter(shown, { ...filter, search: 'second' }).map((row) => row.name)).toEqual([
 		'second'
 	]);
+});
+
+test('component usage links are distinct current consumers capped at three', () => {
+	const all = explorerEntities(head);
+	const owner = all.find((entity) => entity.id === ids.card)!;
+	const using = all.filter((entity) => entity.id !== ids.card);
+	const retired = { ...using[0], id: 'retired', change: 'removed' as const };
+	const [row] = entityCatalog([owner], 'components', () => ({
+		pages: [using[0]],
+		usedBy: [using[0], using[0], retired, ...using.slice(1)],
+		components: []
+	}));
+	expect(row.usedIn?.map((entity) => entity.id)).toEqual(
+		using.slice(0, 3).map((entity) => entity.id)
+	);
 });

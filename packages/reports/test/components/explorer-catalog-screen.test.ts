@@ -31,7 +31,10 @@ test('visual component cards show the selected revision, never the parent or ano
 		expect(body).toContain(`src="/harness/media/${commit.slice(0, 7)}-default-desktop.png"`);
 		expect(body).not.toContain('src="/harness/media/aaaaaaa-');
 		expect(body).toContain('/components/app.component.order-card');
-		expect(words(body)).toContain('Used on');
+		expect(words(body)).toContain('Used In');
+		expect(words(body)).not.toMatch(/Contains|Shared|In context|Shows one order/);
+		expect(body).not.toMatch(/hx-verdict|ex-open-page|figcaption/);
+		expect(body).toContain('/pages/app.page.orders');
 	}
 });
 
@@ -48,7 +51,8 @@ test('component previews retain the origin of validated unchanged evidence', () 
 	const body = screen(ExplorerCatalogScreen, 'current', { category: 'components' }, { head });
 	expect(count(body, /<img\b/g)).toBe(3);
 	expect(body).toContain('src="/harness/media/bbbbbbb-default-desktop.png"');
-	expect(words(body)).toContain('Reused from bbbbbbb');
+	expect(body).toContain('Reused from bbbbbbb');
+	expect(words(body)).not.toContain('Reused from');
 	expect(body).not.toContain('src="/harness/media/ccccccc-');
 });
 
