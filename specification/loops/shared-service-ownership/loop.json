@@ -2,7 +2,7 @@
 	"name": "shared-service-ownership",
 	"goal": "Only services with two distinct runtime consumers appear in Services; single-consumer implementations live beside their owner while public contracts and registered identities remain stable",
 	"createdAt": "2026-10-20T16:17:55.965Z",
-	"updatedAt": "2026-10-20T17:10:41.389Z",
+	"updatedAt": "2026-10-20T17:25:28.957Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -41,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T17:25:28.957Z",
+			"evidence": "Final unchanged corpus passes at e003afd5: paired green 155125e02f4c60c74e45cf84f6eb994ce0cd05aa94e01f9157071fd6b9ccc970, paired red e902aebb retained. Source move guard, 28 metadata cases, 3 responsive browser cases and 19 catalog assertions pass with no unexpected browser errors."
 		},
 		{
 			"id": "verify",
