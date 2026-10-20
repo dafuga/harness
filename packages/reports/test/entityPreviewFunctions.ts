@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 import { expect } from '../../../test/support/browserTest';
 import { capture, fits, open, where } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
@@ -37,4 +37,27 @@ export async function reviewPrivateFunctions(page: Page, viewport: string): Prom
 		});
 		expect(await fits(page)).toBe(true);
 	}
+}
+
+/** A shared helper card opens the same callable's contract without extra detail panels. */
+export async function reviewHelperCard(page: Page, cards: Locator): Promise<void> {
+	await expect(cards.first(), 'function cards omit detail panels').not.toContainText(
+		/Contract|Inputs|Output|Used by|View tests|Shared|Changed/
+	);
+	await expect(cards.locator('.hx-verdict')).toHaveCount(0);
+	await expect(cards.locator('code'), 'function cards show example calls').toHaveText(
+		'filterOrders(orders, "SERVICE")'
+	);
+	await expect(cards.locator('h2, p, img')).toHaveCount(0);
+	await expect(cards.locator('svg'), 'function cards have no arrow').toHaveCount(0);
+	const action = cards.getByRole('link');
+	await expect(action).toHaveCount(1);
+	await action.press('Enter');
+	expect(await where(page)).toMatchObject({
+		category: 'functions',
+		entity: ids.filter,
+		commit: null
+	});
+	await page.getByRole('tab', { name: 'Contract', exact: true }).click();
+	await expect(page.getByRole('table', { name: 'Inputs', exact: true })).toBeVisible();
 }

@@ -1,4 +1,4 @@
-import { reviewPrivateFunctions } from './entityPreviewFunctions';
+import { reviewHelperCard, reviewPrivateFunctions } from './entityPreviewFunctions';
 import { expect, test } from '../../../test/support/browserTest';
 import {
 	capture,
@@ -77,21 +77,7 @@ for (const [name, size] of Object.entries(viewports)) {
 			}
 			expect(await fits(tab)).toBe(true);
 			if (category === 'functions') {
-				await expect(cards.first(), 'function cards omit detail panels').not.toContainText(
-					/Contract|Inputs|Output|Used by|View tests|Shared|Changed/
-				);
-				await expect(cards.locator('.hx-verdict')).toHaveCount(0);
-				await expect(cards.locator('code'), 'function cards show example calls').toHaveText(
-					'filterOrders(orders, "SERVICE")'
-				);
-				await expect(cards.locator('h2, p, img')).toHaveCount(0);
-				await expect(cards.locator('svg'), 'function cards have no arrow').toHaveCount(0);
-				const action = cards.getByRole('link');
-				await expect(action).toHaveCount(1);
-				await action.press('Enter');
-				expect(await where(tab)).toMatchObject({ category, entity: ids.filter, commit: null });
-				await tab.getByRole('tab', { name: 'Contract', exact: true }).click();
-				await expect(tab.getByRole('table', { name: 'Inputs', exact: true })).toBeVisible();
+				await reviewHelperCard(tab, cards);
 				await reviewPrivateFunctions(tab, name);
 			}
 		}
