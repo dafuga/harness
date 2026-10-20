@@ -6,6 +6,7 @@ import { analyticsCases } from './analytics';
 import { createDesktopData } from './desktopData.svelte';
 import { desktopControls } from './desktopControls';
 import { desktopRuntime } from './desktopRuntime';
+import { deploymentCases } from './deployments';
 import { remotePreview } from './remote.svelte';
 import { hubPreview } from './hub.svelte';
 import type { PreviewCases } from './shared';
@@ -14,10 +15,9 @@ export function previewFixture(id: string) {
 	const remote = remotePreview();
 	const hub = hubPreview(id);
 	const desktopCases = Object.fromEntries(
-		Object.entries({ ...desktopControls, ...desktopRuntime }).map(([id, props]) => [
-			id,
-			props(desktop)
-		])
+		Object.entries({ ...desktopControls, ...desktopRuntime, ...deploymentCases }).map(
+			([id, props]) => [id, props(desktop)]
+		)
 	);
 	desktop.workspace.remote = { host: {} as never };
 	const explorer = explorerCases;
