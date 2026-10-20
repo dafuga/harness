@@ -100,7 +100,11 @@ async function reviewExamples(tab: Page, contract: Locator, checkpoint: string):
 		['Query', '""'],
 		['Settings', 'Safe <tag>'],
 		['Commit', 'Example not recorded'],
-		['Label', 'Illustrative']
+		['Label', 'Illustrative'],
+		['To kebab case · Value', 'OrderList'],
+		['To pascal case · Value', 'order-list'],
+		['To camel case · Value', 'OrderList'],
+		['To snake case · Value', 'OrderList']
 	]) {
 		await contract.getByRole('button', { name: `View example for ${name}`, exact: true }).click();
 		await expect(dialog).toContainText(sample);
@@ -184,6 +188,12 @@ for (const [width, size] of Object.entries(viewports)) {
 			await expect(inputs, 'contract inputs are a table').toBeVisible();
 			await expect(inputs.getByRole('row').filter({ hasText: 'Branch' })).toContainText('string');
 			await expect(contract.getByRole('table', { name: 'Outputs', exact: true })).toBeVisible();
+			await expect(inputs.getByRole('rowheader', { name: 'Value', exact: true })).toHaveCount(0);
+			for (const owner of ['kebab', 'pascal', 'camel', 'snake']) {
+				await expect(
+					inputs.getByRole('rowheader', { name: `To ${owner} case · Value`, exact: true })
+				).toBeVisible();
+			}
 			await compactExamples(inputs);
 			await expect(contract).toContainText('<main>Orders</main>');
 			await expect(contract).not.toContainText('The branch, as one encoded path segment.');

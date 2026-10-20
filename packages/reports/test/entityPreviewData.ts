@@ -32,7 +32,6 @@ export function stateRecord(commit: string): HarnessRecord {
 	});
 	return taken;
 }
-
 export function withStates(detail: HarnessRevision): HarnessRevision {
 	const scenarios = detail.registry.scenarios.map((scenario) =>
 		scenario.id === 'orders-page'
@@ -51,7 +50,6 @@ export function withStates(detail: HarnessRevision): HarnessRevision {
 		records: [stateRecord(detail.commit)]
 	};
 }
-
 /** Valid unchanged visual evidence: the target keeps the capture's tested origin and build. */
 export function withInherited(detail: HarnessRevision, origin: string): HarnessRevision {
 	const taken = detail.records[0];
@@ -69,7 +67,6 @@ export function withInherited(detail: HarnessRevision, origin: string): HarnessR
 		records: [{ ...taken, scenarios: [inherited, ...taken.scenarios.slice(1)] }]
 	};
 }
-
 /** The same recorded project at repository scale; generated units describe no real source. */
 export function withScale(detail: HarnessRevision): HarnessRevision {
 	const template = detail.registry.units.find((unit) => unit.id === ids.filter)!;
@@ -84,7 +81,6 @@ export function withScale(detail: HarnessRevision): HarnessRevision {
 		registry: { ...detail.registry, units: [...detail.registry.units, ...generated] }
 	};
 }
-
 /**
  * The record of a commit as the preview shows it: the search scenario also recorded a spoken
  * clip of its matching state. `whole` is whether every required state of the page was captured.
@@ -147,7 +143,11 @@ export const declaredContract = {
 				{ label: 'Other' }
 			]
 		},
-		{ name: 'label', type: 'string' }
+		{ name: 'label', type: 'string' },
+		{ name: 'toKebabCase.value', type: 'string', examples: ['OrderList'] },
+		{ name: 'toPascalCase.value', type: 'string', examples: ['order-list'] },
+		{ name: 'toCamelCase.value', type: 'string', examples: ['OrderList'] },
+		{ name: 'toSnakeCase.value', type: 'string', examples: ['OrderList'] }
 	],
 	outputs: [
 		{

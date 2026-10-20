@@ -22,6 +22,8 @@ test('a dedicated contract lists types and example previews with full details be
 									examples: [false]
 								},
 								{ name: 'limit', type: 'number', examples: [0] },
+								{ name: 'toKebabCase.value', type: 'string' },
+								{ name: 'toCamelCase.value', type: 'string' },
 								{ name: 'empty', type: 'unknown', examples: [null] },
 								{ name: 'settings', type: 'object', examples: [{ label: 'Safe <tag>' }] }
 							],
@@ -38,6 +40,8 @@ test('a dedicated contract lists types and example previews with full details be
 		expect(body).toMatch(/<table\b/);
 		expect(body).toContain('aria-haspopup="dialog"');
 		expect(body).toContain('View example for Enabled');
+		expect(body).toContain('View example for To kebab case · Value');
+		expect(body).toContain('View example for To camel case · Value');
 		expect(body).toMatch(/Safe &lt;tag(?:&gt;|>)/);
 		expect(body).not.toContain('Whether the list is active.');
 		expect(body).not.toContain('<tag>');
