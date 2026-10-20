@@ -17,14 +17,14 @@
 			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
 			"status": "complete",
 			"completedAt": "2026-10-20T21:01:25.852Z",
-			"evidence": "The broad committed run exposes a cold public API import of an undeclared Svelte compiler, planning references filtered by helper display rules, and design URLs revoked before their DOM image detaches. Existing tests demonstrate these failures."
+			"evidence": "The broad committed run exposes a cold public API import of an undeclared Svelte compiler, planning references filtered by helper display rules, and design URLs revoked before their DOM image detaches. Existing tests demonstrate these failures. Retired private functions also lost historical detail routes because active-only fallback omitted their proven first-parent contract."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
 			"status": "complete",
 			"completedAt": "2026-10-20T21:01:26.456Z",
-			"evidence": "Packed-consumer, project-run-references and image-url standardized coverage already owns these paths. Extend it with actual exported plan auditing, a canonical registry assertion and a DOM-safe release assertion; preserve browser error collection."
+			"evidence": "Packed-consumer, project-run-references and image-url standardized coverage already owns these paths. Extend it with actual exported plan auditing, a canonical registry assertion and a DOM-safe release assertion; preserve browser error collection. EntityFrame coverage omitted retired private functions; add active, retired and unrelated-parent variants while asserting collection exclusion."
 		},
 		{
 			"id": "red",
