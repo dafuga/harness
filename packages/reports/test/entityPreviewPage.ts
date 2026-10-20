@@ -4,7 +4,11 @@ import { extname, join } from 'node:path';
 import type { ExplorerLocation } from '../src/models/Explorer.types';
 import type { PreviewVariant } from './entityPreviewData';
 import { previewHome } from './entityPreviewSetup';
-import { reviewOverviewControls, reviewProfileRows } from './entityPreviewOverview';
+import {
+	reviewMeasuredSources,
+	reviewOverviewControls,
+	reviewProfileRows
+} from './entityPreviewOverview';
 import { commits, ids } from './entityUnits';
 // A local address is a secure context, so the page can hash the bytes of an artifact it reads.
 export const origin = 'http://localhost:41739';
@@ -206,4 +210,9 @@ export async function reviewMeasurements(tab: Page, name: string): Promise<void>
 	await expect(profile).toContainText('18 KB');
 	await expect(profile).toContainText('no toolchain');
 	await reviewProfileRows(tab);
+	await reviewMeasuredSources(tab, async (route) => {
+		await open(tab, { ...route, commit: commits.middle }, 'measurements');
+		await ready(tab);
+		await capture(tab, `measurements-current-${route.category}-${name}`);
+	});
 }

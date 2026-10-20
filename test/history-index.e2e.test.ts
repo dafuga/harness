@@ -125,7 +125,7 @@ test('a revision carries its graph, comparison, inherited provenance, media and 
 		out,
 		index.revisions.find((item) => item.commit === commits.unverified)
 	);
-	expectSourceMeasures(untested, commits.unverified);
+	await expectSourceMeasures(untested, commits.unverified, { repo, out });
 	expect([untested.records, untested.comparison, untested.registry.available]).toEqual([
 		[],
 		null,

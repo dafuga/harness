@@ -1,4 +1,8 @@
-import { expect, test } from 'vitest';
+import { afterAll, expect, test } from 'vitest';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../../../../src/utils/record-capture/recordCapture';
 import { byteSize, notMeasured } from '../../src/utils/entityMeasure';
 import { entityMeasure } from '../../src/components/harness/entity-sections/entityMeasure';
 import { record } from '../entityFixture';
@@ -8,6 +12,52 @@ const find = (id: string) => units.find((unit) => unit.id === id)!;
 const taken = record(commits.middle);
 const value = (rows: Array<{ label: string; value: string }>, label: string) =>
 	rows.find((item) => item.label === label)?.value;
+
+afterAll(() => {
+	if (!evidenceRequested()) return;
+	const samples: number[] = [];
+	for (let round = 0; round < 5; round++) {
+		const start = performance.now();
+		for (let iteration = 0; iteration < 100; iteration++)
+			for (const unit of units) entityMeasure(unit, taken);
+		samples.push((performance.now() - start) / (100 * units.length));
+	}
+	const context = {
+		unit: 'reports.function.entity-measure',
+		callable: 'entityMeasure',
+		workload: 'orders-entity-kinds',
+		target: 'module',
+		samples: 500 * units.length
+	};
+	const measurements = [
+		{
+			...context,
+			metric: 'latency-warm-ms',
+			unitOfMeasure: 'ms',
+			value: samples.sort((a, b) => a - b)[2],
+			method:
+				'Median per call from five batches of 100 passes over the standard orders entities and their recorded measurements.'
+		},
+		{
+			...context,
+			metric: 'process-peak-rss-bytes',
+			unitOfMeasure: 'bytes',
+			value: process.resourceUsage().maxRSS * 1024,
+			method:
+				'Peak RSS of the whole benchmark process including Vitest; not memory attributable to this formatter.'
+		}
+	];
+	recordCapture(
+		{
+			evidence: 'entity-measure-benchmark',
+			state: 'entity-kinds',
+			kind: 'benchmark',
+			file: 'entity-measure-benchmark.json',
+			mediaType: 'application/json'
+		},
+		JSON.stringify({ measurements })
+	);
+});
 
 test('a size is read in bytes, kilobytes or megabytes, and never rounded to nothing', () => {
 	expect(byteSize(800)).toBe('800 B');
@@ -25,6 +75,18 @@ test('a measured size is shown and one nothing measured reads Not measured, neve
 	expect(list.size).toContainEqual(
 		expect.objectContaining({ label: 'Emitted size', target: 'none' })
 	);
+	const observed = {
+		...find(ids.list),
+		sourceMeasurements: [
+			{ unit: ids.list, metric: 'source-bytes', unitOfMeasure: 'bytes', value: 3456 },
+			{ unit: ids.list, metric: 'complexity', unitOfMeasure: 'points', value: 17 }
+		]
+	};
+	const fresh = entityMeasure(observed, taken);
+	expect(value(fresh.size, 'Source size'), 'selected source outranks an older record').toBe(
+		'3.5 KB'
+	);
+	expect(value(fresh.size, 'Complexity')).toBe('17');
 	const card = entityMeasure(find(ids.card), taken);
 	expect(value(card.size, 'Source size')).toBe(notMeasured);
 	expect(JSON.stringify(card)).not.toMatch(/"0( B)?"/);

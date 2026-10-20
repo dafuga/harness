@@ -39,3 +39,48 @@ export const both = () => ({
 	head: namedRevision(commits.middle),
 	parent: namedRevision(commits.first)
 });
+/** Current source observations across every explorer kind, beside older record values. */
+export function withSourceMeasures(detail: HarnessRevision): HarnessRevision {
+	const sample = detail.registry.units[0];
+	const extra = [
+		{ ...sample, id: 'app.shell.orders', kind: 'shell', title: 'Orders shell' },
+		{ ...sample, id: 'app.model.order', kind: 'model', title: 'Order model' }
+	];
+	const units = [...detail.registry.units, ...extra].map((unit) => ({
+		...unit,
+		sourceMeasurements: [
+			{
+				unit: unit.id,
+				metric: 'source-bytes',
+				unitOfMeasure: 'bytes',
+				value: 12345,
+				testedRevision: detail.commit
+			},
+			{
+				unit: unit.id,
+				metric: 'complexity',
+				unitOfMeasure: 'points',
+				value: 21,
+				testedRevision: detail.commit
+			}
+		]
+	}));
+	const records = detail.records.map((taken) => ({
+		...taken,
+		measurements: [
+			...taken.measurements,
+			...units.flatMap((unit) =>
+				['source-bytes', 'complexity'].map((metric) => ({
+					unit: unit.id,
+					metric,
+					unitOfMeasure: metric === 'source-bytes' ? 'bytes' : 'points',
+					value: null,
+					workload: null,
+					profile: null,
+					unavailable: 'The earlier record did not collect this observation.'
+				}))
+			)
+		]
+	}));
+	return { ...detail, records, registry: { ...detail.registry, units } };
+}

@@ -1,4 +1,40 @@
 import { expect, type Page } from '@playwright/test';
+import type { ExplorerLocation } from '../src/models/Explorer.types';
+import { ids } from './entityUnits';
+
+/** Every entity screen reads current source figures, even beside an older partial record. */
+export async function reviewMeasuredSources(
+	page: Page,
+	visit: (route: Pick<ExplorerLocation, 'category' | 'entity'>) => Promise<void>
+): Promise<void> {
+	const routes = [
+		{ category: 'pages' as const, entity: ids.page },
+		{ category: 'shells' as const, entity: 'app.shell.orders' },
+		{ category: 'components' as const, entity: ids.list },
+		{ category: 'functions' as const, entity: ids.filter },
+		{ category: 'configs' as const, entity: ids.settings },
+		{ category: 'services' as const, entity: ids.store },
+		{ category: 'models' as const, entity: 'app.model.order' }
+	];
+	for (const route of routes) {
+		await visit(route);
+		const profile = page.getByRole('region', { name: 'Performance profile', exact: true });
+		const rows = await profile
+			.locator('dl > div')
+			.evaluateAll((rows) =>
+				Object.fromEntries(
+					rows.map((row) => [
+						row.querySelector('dt')!.textContent!.trim(),
+						row.querySelector('dd')!.textContent!.trim()
+					])
+				)
+			);
+		expect
+			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+			.toBe('12.3 KB');
+		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+	}
+}
 
 /** Equal rows also keep equal spacing across size and timing facts, even when notes wrap. */
 export async function reviewProfileRows(page: Page): Promise<void> {
