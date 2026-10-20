@@ -1,0 +1,60 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [8.99s]
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-efl8FN/packages/reports
+
+ ❯ test/utils/evidence-media.test.ts (2 tests | 1 failed) 3ms
+   × legacy image manifests and portable audio keep their media kind 3ms
+     → duration formatting is named for its operation: expected { …(3), …(1) } to have property "formatDuration" with value Any<Function>
+   ✓ search finds audio transcript and source 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/evidence-media.test.ts > legacy image manifests and portable audio keep their media kind
+AssertionError: duration formatting is named for its operation: expected { …(3), …(1) } to have property "formatDuration" with value Any<Function>
+
+[32m- Expected:[39m 
+Any<Function>
+
+[31m+ Received:[39m 
+undefined
+
+ ❯ test/utils/evidence-media.test.ts:10:66
+      8|  expect(evidenceMedia({ file: 'data:audio/wav;base64,AAA' })).toBe('au…
+      9|  expect(mediaMime('hash.m4a')).toBe('audio/mp4');
+     10|  expect(media, 'duration formatting is named for its operation').toHav…
+       |                                                                  ^
+     11|   'formatDuration',
+     12|   expect.any(Function)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  14:06:43
+   Duration  129ms (transform 19ms, setup 0ms, collect 18ms, tests 3ms, environment 0ms, prepare 38ms)
+
