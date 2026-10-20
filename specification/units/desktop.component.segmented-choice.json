@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.segmented-choice",
 	"kind": "component",
-	"title": "SegmentedChoice",
-	"responsibility": "Owns the SegmentedChoice Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Segmented choice",
+	"responsibility": "Offers a labeled group of string-valued choices.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/SegmentedChoice.svelte"],
 		"symbols": ["SegmentedChoice"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "SegmentedChoice.value",
-				"type": "string"
+				"type": "string",
+				"description": "Optional bindable selected string, empty by default. Click replaces it. Values outside the options leave all buttons unselected; no fallback is chosen."
 			},
 			{
 				"name": "SegmentedChoice.options",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Required option strings in display order, serving as both labels and keys. Callers should supply unique strings. Empty renders no buttons."
 			},
 			{
 				"name": "SegmentedChoice.label",
-				"type": "string"
+				"type": "string",
+				"description": "Required accessible name of the group."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SegmentedChoice",
-				"type": "markup"
+				"type": "markup",
+				"description": "Buttons with active styling and aria-pressed for the selected value. Selection updates the binding without submitting a form."
 			}
 		],
 		"errors": []

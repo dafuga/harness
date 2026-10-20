@@ -8,8 +8,8 @@ import type { DeviceCredentials, DeviceStatus } from '../../remote/src/index';
 import { RemoteHostStoreAdapter } from '../src/adapters/RemoteHostStoreAdapter';
 import type { AgentTurn } from '../src/models/AgentRunner.types';
 import { CommentOutboxService } from '../src/services/CommentOutboxService';
-import { RemoteHostService } from '../src/services/RemoteHostService';
-import type { RemoteHostOptions } from '../src/services/RemoteHostService';
+import { RemoteHostService } from '../src/services/remote-host-service/RemoteHostService';
+import type { RemoteHostOptions } from '../src/services/remote-host-service/RemoteHostService';
 import { remoteFixture } from './remote-fixture';
 import { MemoryRelay } from './remote-relay-fixture';
 

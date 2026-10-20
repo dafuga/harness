@@ -9,9 +9,9 @@ import type {
 	CollaborationRecords
 } from 'collaboration';
 import { createCollaboration } from 'collaboration';
-import { hubCache } from '../../src/utils/hubCache';
-import { HubProjectionService } from '../../src/services/HubProjectionService';
-import { HubApiController } from '../../src/controllers/HubApiController';
+import { hubCache } from '../../src/routes/api/[...path]/hubCache';
+import { HubProjectionService } from '../../src/services/hub-projection-service/HubProjectionService';
+import { HubApiController } from '../../src/controllers/hub-api-controller/HubApiController';
 const encode = (v: unknown) => new TextEncoder().encode(JSON.stringify(v));
 export const actor: Actor = {
 	id: 'google:fixture-one',

@@ -2,42 +2,55 @@
 	"schemaVersion": 1,
 	"id": "function.settlement-report",
 	"kind": "function",
-	"title": "settlementReport",
-	"responsibility": "Says what was done with each process a command left, for the check log, and what of it counts against the command.",
+	"title": "Process settlement reporting",
+	"responsibility": "Explains which descendants were delegated, stopped or left running and which outcomes count against a check.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/settlementReport.ts"],
-		"symbols": ["Watched", "Settlement", "Judged", "unknownSettlement", "settlementReport"]
+		"source": ["src/utils/run-isolated/settlementReport.ts", "src/utils/settlementReport.ts"],
+		"symbols": [
+			"settlementReport",
+			"Watched",
+			"Settlement",
+			"Judged",
+			"unknownSettlement",
+			"settlementReport"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "unknownSettlement.why",
-				"type": "string"
+				"type": "string",
+				"description": "Reason cleanup could not establish what remains."
 			},
 			{
 				"name": "settlementReport.asked",
-				"type": "Judged[]"
+				"type": "Judged[]",
+				"description": "Judged processes asked to end during the final settling step."
 			},
 			{
 				"name": "settlementReport.last",
-				"type": "Judged[]"
+				"type": "Judged[]",
+				"description": "Judged processes present at the final observation."
 			},
 			{
 				"name": "settlementReport.signalled",
-				"type": "(item: TrackedProcess) => boolean"
+				"type": "(item: TrackedProcess) => boolean",
+				"description": "Optional predicate identifying every process signalled during cleanup; defaults to membership in asked."
 			}
 		],
 		"outputs": [
 			{
 				"name": "unknownSettlement",
-				"type": "Settlement"
+				"type": "Settlement",
+				"description": "Unknown settlement with no asserted survivors, zero stopped/resisted, unknown true and a report explaining that the check fails."
 			},
 			{
 				"name": "settlementReport",
-				"type": "Settlement"
+				"type": "Settlement",
+				"description": "Settlement counting asked-but-absent processes as stopped and final nondelegated processes as running; survivors includes both because either counts against the command. Reports delegated, signalled-running, untouched-running and stopped outcomes."
 			}
 		],
 		"errors": []

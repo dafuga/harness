@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { CpuProcessAdapter } from '../../src/adapters/CpuProcessAdapter';
+import { CpuProcessAdapter } from '../../src/adapters/cpu-process-adapter/CpuProcessAdapter';
 test('native CPU sampler reads real monotonic counters without arguments', async () => {
 	if (!['darwin', 'linux'].includes(process.platform)) return;
 	const sample = await new CpuProcessAdapter().sample();

@@ -2,34 +2,41 @@
 	"schemaVersion": 1,
 	"id": "hub.function.hub-attached-record",
 	"kind": "function",
-	"title": "hubAttachedRecord",
-	"responsibility": "Owns the hubAttachedRecord shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Check an attached evidence record",
+	"responsibility": "Validate the original record and its manifest identity and file declarations before projecting it.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubAttachedRecord.ts"],
-		"symbols": ["HubAttachedRecord", "hubRecordJson", "hubAttachedRecord"]
+		"source": [
+			"packages/hub/src/services/hub-attached-service/hubAttachedRecord.ts",
+			"packages/hub/src/utils/hubAttachedRecord.ts"
+		],
+		"symbols": ["hubAttachedRecord", "HubAttachedRecord", "hubRecordJson", "hubAttachedRecord"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hubRecordJson.bytes",
-				"type": "Uint8Array"
+				"type": "Uint8Array",
+				"description": "Bytes expected to contain strict UTF-8 JSON."
 			},
 			{
 				"name": "hubAttachedRecord.result",
-				"type": "HubAttachedRecord"
+				"type": "HubAttachedRecord",
+				"description": "Attached result with manifest, retained record.json bytes, validated file facts and existing problems."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubRecordJson",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Parsed JSON value, or undefined for invalid encoding/JSON."
 			},
 			{
 				"name": "hubAttachedRecord",
-				"type": "HubAttachedRecord"
+				"type": "HubAttachedRecord",
+				"description": "Copied result with validated record when available and accumulated problems for invalid record structure, seal mismatch, identity mismatch or undeclared/mismatched files."
 			}
 		],
 		"errors": []

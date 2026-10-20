@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-harness-tabs",
 	"kind": "component",
-	"title": "HarnessTabs",
-	"responsibility": "A row of tabs: the views the console had, or the tabs of an entity it is given, each a link where it has an address.",
+	"title": "Explorer section tabs",
+	"responsibility": "Renders a selectable horizontal strip of explorer sections.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,29 +11,34 @@
 		"symbols": ["HarnessTabs"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HarnessTabs.view",
-				"type": "View"
+				"type": "View",
+				"description": "Required selected section value."
 			},
 			{
 				"name": "HarnessTabs.onview",
-				"type": "(view: View) => void"
+				"type": "(view: View) => void",
+				"description": "Required callback receiving the chosen section after a plain link click or enabled button click."
 			},
 			{
 				"name": "HarnessTabs.tabs",
-				"type": "Array<HarnessTab<View>>"
+				"type": "Array<HarnessTab<View>>",
+				"description": "Optional tab definitions. When omitted, uses map, compare, history, growth and activity; an explicitly empty list renders no tabs. Definitions may provide destinations and disabled state."
 			},
 			{
 				"name": "HarnessTabs.label",
-				"type": "string"
+				"type": "string",
+				"description": "Optional accessible navigation label, defaulting to Views."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HarnessTabs",
-				"type": "markup"
+				"type": "markup",
+				"description": "Links for enabled tabs with destinations and buttons otherwise. Keeps the selected tab visible within the scrolling strip as selection or size changes, without moving focus or scrolling the page."
 			}
 		],
 		"errors": []

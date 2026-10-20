@@ -2,13 +2,13 @@ import { afterEach, expect, test, vi } from 'vitest';
 import { mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { ReportRepository } from '../../src/repositories/ReportRepository';
+import { ReportRepository } from '../../src/repositories/report-repository/ReportRepository';
 import { ScreenshotUploadService } from '../../src/services/ScreenshotUploadService';
 import { ScreenshotRetentionService } from '../../src/services/ScreenshotRetentionService';
-import { ReportExportService } from '../../src/services/ReportExportService';
+import { ReportExportService } from '../../src/services/report-export-service/ReportExportService';
 import type { Report } from '../../src/models/Report.types';
 import { reportProcess } from '../../src/utils/reportProcess';
-import { reportPdf } from '../../src/utils/reportPdf';
+import { reportPdf } from '../../src/services/report-export-service/reportPdf';
 
 const roots: string[] = [];
 const oldImage = Buffer.from(

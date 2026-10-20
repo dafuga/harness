@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-explorer-page-card",
 	"kind": "component",
-	"title": "ExplorerPageCard",
-	"responsibility": "Shows one page as a card: its own screenshot at the shown revision or the gap, its purpose, how many components it contains and its binary verdict.",
+	"title": "Visual catalog card",
+	"responsibility": "Shows a page title and screenshot, or a visual component with its screenshot and usage facts.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,29 +11,39 @@
 		"symbols": ["ExplorerPageCard"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ExplorerPageCard.row",
-				"type": "CatalogRow"
+				"type": "CatalogRow",
+				"description": "Facts for one page or visual component: its name, purpose, usages, contained components, changed flag and verification."
 			},
 			{
 				"name": "ExplorerPageCard.shot",
-				"type": "Evidence | null"
+				"type": "Evidence | null",
+				"description": "A usable screenshot or null. Includes its original captured commit and whether the shown revision reuses validated unchanged evidence. Missing media or image-load failure shows an explicit gap."
 			},
 			{
 				"name": "ExplorerPageCard.mediaBase",
-				"type": "string"
+				"type": "string",
+				"description": "Required screenshot asset prefix."
 			},
 			{
 				"name": "ExplorerPageCard.nav",
-				"type": "EntityNav"
+				"type": "EntityNav",
+				"description": "The selected branch, commit and navigation actions; opening the card keeps that scope."
+			},
+			{
+				"name": "ExplorerPageCard.category",
+				"type": "'pages' | 'components'",
+				"description": "Defaults to pages. Components retain the same screenshot card while showing their consumers and contained components, with an Open component icon."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerPageCard",
-				"type": "markup"
+				"type": "markup",
+				"description": "Pages show only their title and screenshot in one keyboard-accessible link. Capture origin appears on hover. Components retain purpose, usages, provenance and verification. A missing or broken image shows a gap."
 			}
 		],
 		"errors": []
@@ -41,11 +51,6 @@
 	"dependencies": [
 		{
 			"unit": "reports.component.harness-entity-link",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-harness-action",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -66,6 +71,11 @@
 		},
 		{
 			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-icons",
 			"via": "import",
 			"origin": "derived"
 		},

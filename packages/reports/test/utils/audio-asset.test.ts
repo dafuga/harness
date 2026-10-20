@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { audioAsset } from '../../src/utils/audioAsset';
+import { audioAsset } from '../../src/utils/audio-asset/audioAsset';
 import { audioFixture } from '../audioFixture';
 test('validates WAV content and canonical extension before hashing', () => {
 	const asset = audioAsset(audioFixture(2), 'Recording.WAV');

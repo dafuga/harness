@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.nav-bar",
 	"kind": "component",
-	"title": "NavBar",
-	"responsibility": "Owns the NavBar Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Nav bar",
+	"responsibility": "Provides project, category and revision navigation, workspace search, agent settings access and optional host-account controls.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/NavBar.svelte"],
+		"source": ["packages/desktop/src/components/nav-bar/NavBar.svelte"],
 		"symbols": ["NavBar"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "NavBar.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Workspace supplying category links, project and revision pickers, search context and navigation. Settings is offered only when agent capability is enabled and includes the current workspace path as its return location. Search navigation uses only entries accepted by the current search context."
 			},
 			{
 				"name": "NavBar.account",
-				"type": "Snippet"
+				"type": "Snippet",
+				"description": "Optional content supplied by the host for account controls, such as the signed-in identity. When omitted, no account container is rendered; this component does not supply sign-in or sign-out behavior itself."
 			}
 		],
 		"outputs": [
 			{
 				"name": "NavBar",
-				"type": "markup"
+				"type": "markup",
+				"description": "Top bar with a Harness link to Pages, project and revision pickers, category links highlighting the current category, search, an agent-capability-dependent Settings link and any supplied account content. Accepted search selections navigate through the workspace; selections without a current path do not trigger that navigation."
 			}
 		],
 		"errors": []
@@ -85,11 +88,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/NavBar.svelte",
+		"entry": "packages/desktop/src/components/nav-bar/NavBar.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/NavBar.svelte"
+				"entry": "packages/desktop/src/components/nav-bar/NavBar.svelte"
 			}
 		]
 	},

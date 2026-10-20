@@ -1,9 +1,10 @@
 import type { RequestHandler } from './$types';
 import { env } from '$env/dynamic/private';
 import { hubEnvConfig } from '../../../config/hubEnvConfig';
-import { hubRuntime } from '../../../utils/hubRuntime';
-import { HubApiController } from '../../../controllers/HubApiController';
-import { hubRateLimit } from '../../../utils/hubRateLimit';
+import { hubRuntime } from './hubRuntime';
+import { HubApiController } from '../../../controllers/hub-api-controller/HubApiController';
+import { hubRateLimit } from './hubRateLimit';
+
 const handler: RequestHandler = async ({ request, platform }) => {
 	const config = hubEnvConfig({ ...env, ...platform?.env });
 	const limited = await hubRateLimit({
@@ -14,8 +15,13 @@ const handler: RequestHandler = async ({ request, platform }) => {
 	});
 	return limited ?? new HubApiController(hubRuntime(config)).handle(request);
 };
+
 export const GET = handler;
+
 export const POST = handler;
+
 export const DELETE = handler;
+
 export const PUT = handler;
+
 export const PATCH = handler;

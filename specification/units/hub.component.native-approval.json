@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "hub.component.native-approval",
 	"kind": "component",
-	"title": "NativeApproval",
-	"responsibility": "Owns the NativeApproval Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Native approval",
+	"responsibility": "Approves a sign-in request from a Harness device using a separately typed one-time code.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/NativeApproval.svelte"],
+		"source": ["packages/hub/src/components/native-approval/NativeApproval.svelte"],
 		"symbols": ["NativeApproval"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "NativeApproval.handoffId",
-				"type": "string"
+				"type": "string",
+				"description": "Required identifier used to read the native request and approve it. Loading occurs on mount; prop changes alone do not reload."
 			}
 		],
 		"outputs": [
 			{
 				"name": "NativeApproval",
-				"type": "markup"
+				"type": "markup",
+				"description": "Names the account and requested projects, explains role-limited viewing, comments and agent changes, and accepts a device code in a POST body. Never puts the code or credential in a link."
 			}
 		],
 		"errors": []
@@ -45,11 +47,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/NativeApproval.svelte",
+		"entry": "packages/hub/src/components/native-approval/NativeApproval.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/NativeApproval.svelte"
+				"entry": "packages/hub/src/components/native-approval/NativeApproval.svelte"
 			}
 		]
 	},

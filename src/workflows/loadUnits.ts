@@ -1,13 +1,27 @@
+import { revisionRegistry } from '../utils/revisionRegistry';
+import { unitMetadata } from '../utils/unitMetadata';
+import { helperContract } from '../utils/helperContract';
+import { stableJson } from '../utils/stableJson';
 import { resolve } from 'node:path';
 import { WorkingTreeAdapter } from '../adapters/WorkingTreeAdapter';
 import type { SourceGraph, SourceTree } from '../core/sourceTypes';
-import type { ComponentManifest, ScenarioManifest } from '../core/unitTypes';
+import {
+	componentManifestSchema,
+	type ComponentManifest,
+	type ScenarioManifest
+} from '../core/unitTypes';
 import type { UnitsConfig } from '../core/unitsConfig';
 import { ScenarioRepository } from '../repositories/ScenarioRepository';
 import { UnitRegistryRepository } from '../repositories/UnitRegistryRepository';
 import { SourceGraphService } from '../services/SourceGraphService';
-import { SourceIndexService, type SourceIndex } from '../services/SourceIndexService';
-import { UnitIndexService, type UnitIndexResult } from '../services/UnitIndexService';
+import {
+	SourceIndexService,
+	type SourceIndex
+} from '../services/source-index-service/SourceIndexService';
+import {
+	UnitIndexService,
+	type UnitIndexResult
+} from '../services/unit-index-service/UnitIndexService';
 
 export interface LoadedUnits {
 	root: string;
@@ -38,6 +52,8 @@ export async function loadUnits(
 	const index = await indexer.index(source, config);
 	const registry = await repository.read(source);
 	const scenarios = await new ScenarioRepository(absolute).read(source);
+	const fresh = new UnitIndexService().index(index, registry.manifests);
+	await committedHelpers(source, fresh, registry.manifests);
 	return {
 		root: absolute,
 		config,
@@ -46,11 +62,47 @@ export async function loadUnits(
 		scenarios: scenarios.manifests,
 		errors: [...registry.errors, ...scenarios.errors],
 		unformatted: registry.unformatted,
-		fresh: new UnitIndexService().index(index, registry.manifests),
+		fresh,
 		repository
 	};
 }
 
 export function graphOf(loaded: LoadedUnits, manifests = loaded.stored): SourceGraph {
 	return new SourceGraphService().build(loaded.index, manifests, loaded.scenarios);
+}
+
+async function committedHelpers(
+	tree: SourceTree,
+	fresh: UnitIndexResult,
+	stored: ComponentManifest[]
+): Promise<void> {
+	const enriched = revisionRegistry(fresh.manifests, []).units;
+	await unitMetadata(tree, enriched);
+	for (const unit of fresh.manifests) {
+		const helpers =
+			enriched.find((item) => item.id === unit.id)?.helpers?.filter(helperContract) ?? [];
+		if (helpers.length)
+			unit.helperContracts = helpers.map(({ name, source, inputs, output, consumers }) => ({
+				name,
+				source,
+				inputs,
+				output,
+				consumers: consumers ?? [],
+				pure: true
+			}));
+		else delete unit.helperContracts;
+	}
+	fresh.manifests = fresh.manifests.map((unit) => {
+		const checked = componentManifestSchema.safeParse(unit);
+		return checked.success ? checked.data : unit;
+	});
+	const before = new Map(stored.map((unit) => [unit.id, stableJson(unit)]));
+	const created = new Set([
+		...fresh.added,
+		...fresh.revived,
+		...fresh.moved.map((move) => move.id)
+	]);
+	fresh.updated = fresh.manifests
+		.filter((unit) => !created.has(unit.id) && before.get(unit.id) !== stableJson(unit))
+		.map((unit) => unit.id);
 }

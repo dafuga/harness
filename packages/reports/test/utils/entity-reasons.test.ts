@@ -1,12 +1,9 @@
 import { expect, test } from 'vitest';
-import { writingCount, writingLimits } from '../../../../src/utils/writingLimits';
+import { writingCount, writingLimits } from '../../../../src/utils/writing-limits/writingLimits';
 import type { HarnessExplanation } from '../../src/models/Harness.types';
-import {
-	boundedText,
-	entityReasons,
-	reasonsTried,
-	reasonUses
-} from '../../src/utils/entityReasons';
+import { boundedText, entityReasons } from '../../src/utils/entityReasons';
+import { reasonsTried } from '../../src/components/harness/entity-history-row/entityReasons';
+import { reasonUses } from '../../src/components/harness/entity-reasons/entityReasons';
 
 const unchanged = 'Registration only; implementation unchanged.';
 const reason = (symbol: string, changed: Partial<HarnessExplanation> = {}): HarnessExplanation => ({

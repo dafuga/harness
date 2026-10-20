@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.piped-output",
 	"kind": "function",
-	"title": "pipedOutput",
-	"responsibility": "Routes console output through the standard streams so piped output larger than a pipe buffer arrives whole.",
+	"title": "Buffered console output",
+	"responsibility": "Routes console.log through the stdout stream so large piped output is queued instead of truncated at a direct-write buffer boundary.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,12 +11,13 @@
 		"symbols": ["pipedOutput"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "pipedOutput",
-				"type": "void"
+				"type": "void",
+				"description": "Returns nothing and replaces global console.log with a formatter that writes one newline-terminated string to process.stdout."
 			}
 		],
 		"errors": []

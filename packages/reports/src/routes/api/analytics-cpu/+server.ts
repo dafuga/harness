@@ -1,7 +1,9 @@
 import { json } from '@sveltejs/kit';
-import { CpuUsageService } from '../../../../../../src/services/CpuUsageService';
-import { siteProcesses } from '../../../utils/siteProcesses';
+import { CpuUsageService } from '../../../../../../src/services/cpu-usage-service/CpuUsageService';
+import { siteProcesses } from './siteProcesses';
+
 const service = new CpuUsageService();
+
 export async function GET({ url }: { url: URL }): Promise<Response> {
 	if (!['127.0.0.1', 'localhost', '[::1]'].includes(url.hostname))
 		return json({ status: 'unavailable' }, { status: 403 });

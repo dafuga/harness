@@ -4,11 +4,14 @@ import { beforeAll, expect, test } from 'vitest';
 import { HandlerRuntimeAdapter } from '../src/adapters/HandlerRuntimeAdapter';
 import { WorkingTreeAdapter } from '../src/adapters/WorkingTreeAdapter';
 import type { ImpactReport, ImpactSide } from '../src/core/impactTypes';
-import { ImpactService } from '../src/services/ImpactService';
+import { ImpactService } from '../src/services/impact-service/ImpactService';
 import { SourceGraphService } from '../src/services/SourceGraphService';
-import { SourceIndexService, type SourceIndex } from '../src/services/SourceIndexService';
-import { impactKernel } from '../src/utils/impactKernel';
-import { scanImports } from '../src/utils/scanImports';
+import {
+	SourceIndexService,
+	type SourceIndex
+} from '../src/services/source-index-service/SourceIndexService';
+import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
+import { scanImports } from '../src/services/source-index-service/scanImports';
 import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
 
 /**
@@ -120,7 +123,14 @@ test('a change of a desktop file reaches every unit and test that a change of it
 }, 60_000);
 
 test('a change of hostedArtifact selects the hub page and its four hub tests, and stays selective', async () => {
-	const report = await changed('packages/desktop/src/utils/hostedArtifact.ts');
+	const unit = loaded.stored.find((item) => item.id === 'desktop.function.hosted-artifact')!;
+	const implementation = unit.owns.source.find((path) =>
+		loaded.index.files
+			.get(path)
+			?.exports.some((item) => item.kind === 'function' && item.name === 'hostedArtifact')
+	);
+	expect(implementation).toBeDefined();
+	const report = await changed(implementation!);
 	const units = ['browser-artifact', 'browser-bridge', 'browser-evidence-reads'];
 	const named = ['hub.component.hosted-workspace', 'hub.page.projects-project-id-harness-path'];
 	expect(report.units.indirect).toEqual(

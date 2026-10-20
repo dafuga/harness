@@ -2,26 +2,31 @@
 	"schemaVersion": 1,
 	"id": "hub.function.hub-metadata",
 	"kind": "function",
-	"title": "hubMetadata",
-	"responsibility": "Owns the hubMetadata shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Load a metadata bundle",
+	"responsibility": "Load or reuse one pinned metadata bundle into the authorized source context.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubMetadata.ts"],
-		"symbols": ["hubMetadata"]
+		"source": [
+			"packages/hub/src/utils/hub-metadata/hubMetadata.ts",
+			"packages/hub/src/utils/hubMetadata.ts"
+		],
+		"symbols": ["hubMetadata", "hubMetadata"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hubMetadata.context",
-				"type": "HubSourceContext"
+				"type": "HubSourceContext",
+				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubMetadata",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Returns nothing after populating context.metadata; concurrent calls share metadataPending. Does nothing when metadata exists or the adapter lacks rawMany. Invalid cache bundles are deleted and refetched, and failed loads clear the pending promise."
 			}
 		],
 		"errors": []

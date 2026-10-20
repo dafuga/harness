@@ -3,7 +3,7 @@ import { mkdir, mkdtemp, readdir, readFile, rm, writeFile } from 'node:fs/promis
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, beforeEach, expect, test } from 'vitest';
-import { ConsoleInstallService } from '../../src/services/ConsoleInstallService';
+import { ConsoleInstallService } from '../../src/services/console-install-service/ConsoleInstallService';
 import { ConsoleUninstallService } from '../../src/services/ConsoleUninstallService';
 
 let root: string;

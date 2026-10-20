@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/HistorySyncService.ts"],
+		"source": ["src/services/history-sync-service/HistorySyncService.ts"],
 		"symbols": [
 			"RefChange",
 			"Synced",
@@ -93,11 +93,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/HistorySyncService.ts",
+		"entry": "src/services/history-sync-service/HistorySyncService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/HistorySyncService.ts"
+				"entry": "src/services/history-sync-service/HistorySyncService.ts"
 			}
 		]
 	},

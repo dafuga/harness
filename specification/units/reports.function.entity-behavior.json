@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.entity-behavior",
 	"kind": "function",
-	"title": "entityBehavior",
-	"responsibility": "Arranges the headless results the host found into states with both sides, and repeats what the host concluded without concluding anything itself.",
+	"title": "Readable behavior results",
+	"responsibility": "Groups recorded behavior results by scenario and state without strengthening the host’s conclusion.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -19,29 +19,34 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "entityBehavior.behavior",
-				"type": "ExplorerBehavior"
+				"type": "ExplorerBehavior",
+				"description": "Host-derived behavior comparison, rows, scenario statuses and uncertainty explanation."
 			},
 			{
 				"name": "behaviorDuration.record",
-				"type": "HarnessRecord | null"
+				"type": "HarnessRecord | null",
+				"description": "Verification record to inspect, or null."
 			},
 			{
 				"name": "behaviorDuration.scenarios",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Scenario identifiers whose end-to-end job durations should be summed."
 			}
 		],
 		"outputs": [
 			{
 				"name": "entityBehavior",
-				"type": "EntityBehavior"
+				"type": "EntityBehavior",
+				"description": "Grouped before/after result cells, label and reasons. A current result passes only when something was recorded, every shown group passed and all scenario after-statuses passed. Missing results and unknown or byte-only differences remain uncertain."
 			},
 			{
 				"name": "behaviorDuration",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "Sum of durations for end-to-end jobs named with one of the scenario identifiers followed by a colon, rendered in milliseconds; null when no such jobs exist."
 			}
 		],
 		"errors": []

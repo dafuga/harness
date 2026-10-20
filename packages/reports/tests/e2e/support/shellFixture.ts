@@ -3,11 +3,14 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { BuildIdentityService } from '../../../../../src/services/BuildIdentityService';
-import { evidenceRequested, recordCapture } from '../../../../../src/utils/recordCapture';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../../../../../src/utils/record-capture/recordCapture';
 
 /** The address the fixture pages are opened at; nothing listens there. */
 export const shellOrigin = 'http://shell.fixture';
-export type ShellPage = 'navbar' | 'primitives' | 'errors';
+export type ShellPage = 'navbar' | 'primitives' | 'errors' | 'activity';
 const config = 'src/config/shellViteConfig.ts';
 /** Where the setup of a verification compiles the fixture: the build its captures are tied to. */
 const compiled = 'output/shell-fixture';
@@ -44,7 +47,12 @@ export function removeShellFixture(home: string): void {
  * Opens a page of the fixture. Its script and stylesheet are answered from the files of this
  * run, and every other path is the page itself, as a host serves the console at any address.
  */
-export async function openShellPage(page: Page, home: string, name: ShellPage): Promise<void> {
+export async function openShellPage(
+	page: Page,
+	home: string,
+	name: ShellPage,
+	search = ''
+): Promise<void> {
 	const built = join(home, name);
 	if (!existsSync(join(built, 'page.iife.js')))
 		throw new Error(`the ${name} page of the shell fixture was not built`);
@@ -59,7 +67,7 @@ export async function openShellPage(page: Page, home: string, name: ShellPage): 
 		const contentType = types[file.split('.').pop() ?? ''];
 		return route.fulfill({ contentType, body: readFileSync(join(built, file)) });
 	});
-	await page.goto(`${shellOrigin}/`);
+	await page.goto(`${shellOrigin}/${search}`);
 }
 
 /**

@@ -3,7 +3,6 @@ import type { HarnessScenario } from '../models/Harness.types';
 import type { Evidence } from '../models/Report.types';
 import { captureProvenance } from './captureProvenance';
 import { mediaFile } from './harnessEvidence';
-
 export interface ScreenOption {
 	scenario: string;
 	title: string;
@@ -11,13 +10,11 @@ export interface ScreenOption {
 	states: string[];
 	viewports: Array<{ id: string; label: string; size: string }>;
 }
-
 export interface ScreenPick {
 	scenario: string;
 	state: string;
 	viewport: string;
 }
-
 export interface EntityScreens {
 	/** The parent's capture at a selected commit; absent at the branch tip. */
 	before?: Evidence;
@@ -28,12 +25,10 @@ export interface EntityScreens {
 	/** The revision an inherited capture was taken at. */
 	origin?: string;
 }
-
 type Phase = NonNullable<Evidence['phase']>;
 const media = ['screenshot', 'audio'];
 const title = (id: string) => id.charAt(0).toUpperCase() + id.slice(1);
 const short = (commit: string) => commit.slice(0, 7);
-
 /** The scenarios of an entity that are seen: those with a viewport, with what each declares. */
 export function screenOptions(scenarios: HarnessScenario[]): ScreenOption[] {
 	return scenarios
@@ -51,7 +46,6 @@ export function screenOptions(scenarios: HarnessScenario[]): ScreenOption[] {
 			}))
 		}));
 }
-
 /** What is shown: what a person picked where the scenario has it, else its first of each. */
 export function screenPick(
 	options: ScreenOption[],
@@ -68,9 +62,7 @@ export function screenPick(
 		viewport: pick(viewports, wanted.viewport)
 	};
 }
-
 const unrecorded = { standing: null, label: undefined, facts: undefined, note: undefined };
-
 /** What the record of a side says produced a capture; nothing when the side has no such record. */
 function told(side: ExplorerSide, found: ExplorerCapture) {
 	const tested = side.record?.scenarios.find((entry) => entry.id === found.scenario);
@@ -89,6 +81,7 @@ function item(side: ExplorerSide, found: ExplorerCapture, phase: Phase): Evidenc
 		category: scenario,
 		file: mediaFile(capture),
 		status: origin.standing === 'unvalidated' ? 'not-proven' : capture.status,
+		source: capture.server?.revision,
 		capturedAt: capture.capturedAt,
 		viewport: capture.viewport,
 		phase,
@@ -118,10 +111,7 @@ function gapOf(pick: ScreenPick | null, at: string) {
 	};
 }
 
-/**
- * A side that has no capture of the picked state: its own stated gap, never another's capture.
- * With nothing to pick, no visual scenario names the entity, and the gap says that instead.
- */
+/** A side's own gap, never another's capture; an undeclared visual state says so. */
 function gap(
 	side: ExplorerSide | null,
 	pick: ScreenPick | null,
@@ -183,13 +173,7 @@ function borrowed(side: ExplorerSide, found: ExplorerCapture): string {
 		: `The capture on record is not usable for ${at}: it is ${found.standing}.`;
 }
 
-/**
- * The screenshot of one state at one viewport, out of the evidence the host gave. At the branch
- * tip that is exactly one image; at a selected commit it is the parent's and the commit's capture
- * of the same scenario, state and viewport. Nothing is aligned or compared here: a side that
- * holds no such capture is shown as its gap, and no other side or revision fills it. An entity
- * no visual scenario names has nothing to pick: each of its sides is that gap.
- */
+/** The selected state's current capture or parent/commit pair, keeping every side's own gaps. */
 export function entityScreens(evidence: ExplorerEvidence, pick: ScreenPick | null): EntityScreens {
 	const paired = evidence.mode === 'commit';
 	const after = pane(evidence.after, pick, paired ? 'after' : 'current', null);
@@ -200,6 +184,20 @@ export function entityScreens(evidence: ExplorerEvidence, pick: ScreenPick | nul
 	if (!paired) return result;
 	const why = evidence.before ? null : evidence.initial;
 	return { before: pane(evidence.before, pick, 'before', why).shown, ...result };
+}
+
+/** A catalog preview of this entity's shown version: fresh first, else validated unchanged proof. */
+export function catalogShot(evidence: ExplorerEvidence, preview?: ScreenPick): Evidence | null {
+	const usable = evidence.after.captures.filter(
+		(entry) =>
+			entry.usable &&
+			entry.capture.kind === 'screenshot' &&
+			entry.capture.media !== null &&
+			(!preview || matches(entry, preview))
+	);
+	const found = usable.find((entry) => entry.current) ?? usable[0];
+	if (!found) return null;
+	return item(evidence.after, found, evidence.mode === 'commit' ? 'after' : 'current');
 }
 
 /** Every screenshot and audio clip of the evidence, for the gallery, the viewer and the player. */

@@ -2,64 +2,75 @@
 	"schemaVersion": 1,
 	"id": "collaboration.function.cache-key",
 	"kind": "function",
-	"title": "cacheKey",
-	"responsibility": "Owns the cacheKey shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Validate collaboration cache entries",
+	"responsibility": "Key cached bytes by validated project and source identity and discard entries that fail integrity checks.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/collaboration/src/utils/cacheKey.ts"],
 		"symbols": ["cacheKey", "readCache", "writeCache"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "cacheKey.identity",
-				"type": "CacheIdentity"
+				"type": "CacheIdentity",
+				"description": "Principal, project, repository and source revisions with nullable evidence, notes, artifact and profile selectors."
 			},
 			{
 				"name": "readCache.cache",
-				"type": "CollaborationCache"
+				"type": "CollaborationCache",
+				"description": "Cache adapter from which to read or delete an entry."
 			},
 			{
 				"name": "readCache.identity",
-				"type": "CacheIdentity"
+				"type": "CacheIdentity",
+				"description": "Expected identity for the cached bytes."
 			},
 			{
 				"name": "writeCache.cache",
-				"type": "CollaborationCache"
+				"type": "CollaborationCache",
+				"description": "Cache adapter into which to store the entry."
 			},
 			{
 				"name": "writeCache.identity",
-				"type": "CacheIdentity"
+				"type": "CacheIdentity",
+				"description": "Validated identity to bind to the stored bytes."
 			},
 			{
 				"name": "writeCache.bytes",
-				"type": "Uint8Array"
+				"type": "Uint8Array",
+				"description": "Bytes to hash and copy into the cache; must match artifactHash when supplied."
 			}
 		],
 		"outputs": [
 			{
 				"name": "cacheKey",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "SHA-256 hex digest of the normalized identity JSON."
 			},
 			{
 				"name": "readCache",
-				"type": "Promise<Uint8Array | null>"
+				"type": "Promise<Uint8Array | null>",
+				"description": "A copy of verified bytes, or null for a miss or a corrupt entry that was deleted."
 			},
 			{
 				"name": "writeCache",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Stores normalized identity, SHA-256 and copied bytes; resolves without a value."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The internal corrupt-cache error is caught and turns into deletion and a null result; adapter failures may still propagate."
 			},
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects invalid identities or an artifact hash mismatch on write."
 			}
 		]
 	},

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { RequestSessionService } from '../../src/services/RequestSessionService';
+import { RequestSessionService } from '../../src/services/request-session-service/RequestSessionService';
 import { SESSION_COOKIE } from '../../src/utils/authCookies';
 import { ORIGIN, ada, authFixture, browserGrant } from '../support/authFixture';
 

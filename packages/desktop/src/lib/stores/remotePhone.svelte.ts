@@ -4,16 +4,16 @@ import type {
 	RemoteMobileStatus,
 	RemoteNativeStatus
 } from '../../models/Environment.types';
-import { cacheStatus } from '../../utils/cacheStatus';
-import { forgetRemote } from '../../utils/forgetRemote';
+import { cacheStatus } from '../../utils/cache-status/cacheStatus';
+import { accountView, forgetRemote } from '../../utils/forgetRemote';
 import {
 	authorityChange,
 	excludes,
 	noAuthority,
 	remoteAuthority
 } from '../../utils/remoteAuthority';
-import { nameNotice, phoneName, scanFailure, scanNotice } from '../../utils/scanNotice';
-import type { ScanFailure } from '../../utils/scanNotice';
+import { nameNotice, phoneName, scanFailure, scanNotice } from '../../utils/scan-notice/scanNotice';
+import type { ScanFailure } from '../../utils/scan-notice/scanNotice';
 import { isWorkspacePath } from '../../utils/workspaceRoute';
 
 type State = RemoteMobileStatus['state'];
@@ -106,9 +106,9 @@ class RemotePhoneState {
 		if (away.includes(status.state)) return this.lost(status);
 		this.kept = false;
 		if (status.state === 'online') return this.reached(before, status);
-		/** Not paired, or no longer: nothing of a computer stays, nor any read still under way. */
+		/** Not paired, or no longer: nothing of a computer stays; the phone's own account is listed anew. */
 		this.authority = noAuthority;
-		forgetRemote(this.workspace);
+		if (forgetRemote(this.workspace)) void this.workspace.loadProjects();
 	}
 	/** What a new authority excludes leaves first; only then is anything read, and read anew. */
 	private reached(before: RemoteMobileStatus | null, status: RemoteMobileStatus) {
@@ -117,12 +117,18 @@ class RemotePhoneState {
 		const change = authorityChange(this.authority, next, before?.state === 'online');
 		this.authority = next;
 		if (change === 'none') return;
+		/** A project of the phone's own account was granted by no computer: no grant narrows it. */
+		if (accountView(workspace)) return this.beside(change === 'holder');
 		const allowed = workspace.capabilities;
 		if (change === 'holder' || excludes(status, workspace.projectId)) forgetRemote(workspace);
 		else if (!status.grant?.agents)
 			workspace.capabilities = { ...allowed, agents: false, planning: false, approval: false };
 		void workspace.loadProjects();
 		if (workspace.snapshot || isWorkspacePath(path())) void workspace.refresh();
+	}
+	private beside(holder: boolean) {
+		if (holder) forgetRemote(this.workspace);
+		void this.workspace.loadProjects();
 	}
 	/**
 	 * What is on the page stays readable, named as a cached copy; nothing can be changed. Where
@@ -132,12 +138,14 @@ class RemotePhoneState {
 		const workspace = this.workspace;
 		const projectId = workspace.projectId;
 		const cachedAt = status.lastOnlineAt ?? undefined;
-		if (workspace.snapshot && projectId !== null)
+		/** A project of the phone's own account is no copy of this computer, and stays as it is. */
+		const own = accountView(workspace);
+		if (workspace.snapshot && projectId !== null && !own)
 			return cacheStatus(workspace, { projectId, status: 'offline', cachedAt });
 		if (status.state !== 'offline' || this.kept) return;
 		this.kept = true;
 		void workspace.loadProjects();
-		if (isWorkspacePath(path())) void workspace.refresh();
+		if (!own && isWorkspacePath(path())) void workspace.refresh();
 	}
 }
 export function createRemotePhoneStore(workspace: Workspace) {

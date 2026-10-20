@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import { RemoteFailure, remoteLimits } from '../../src/models/Remote.types';
 import type { WireRequest } from '../../src/models/Remote.types';
 import { ResponseLedgerService } from '../../src/services/ResponseLedgerService';
-import { wireDispatch } from '../../src/utils/wireDispatch';
+import { wireDispatch } from '../../src/services/wire-session-service/wireDispatch';
 import type { WireDispatchContext } from '../../src/utils/wireDispatch';
 
 const request = (method: WireRequest['method'], id = 'a'): WireRequest => ({

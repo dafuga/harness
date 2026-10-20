@@ -7,7 +7,7 @@
 		"kind": "app"
 	},
 	"scripts": {
-		"dev": "BODY_SIZE_LIMIT=110M HARNESS_OWNER_MODE=loopback HARNESS_BIND=127.0.0.1 vite dev --host 127.0.0.1 --port 5588",
+		"dev": "BODY_SIZE_LIMIT=110M HARNESS_OWNER_MODE=loopback HARNESS_BIND=127.0.0.1 bun src/initializers/initializePreview.ts",
 		"build": "vite build && vite build --config src/config/reportViteConfig.ts && vite build --config src/config/consoleViteConfig.ts",
 		"check": "bun run format:check && bun run typecheck && bun run lint && bun run test && bun run build && bun run audit",
 		"typecheck": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
@@ -22,7 +22,7 @@
 		"test:all": "bun run test:unit && bun run test:e2e",
 		"build:picker": "vite build --config src/config/pickerViteConfig.ts",
 		"test:picker": "playwright test --config src/config/pickerPlaywrightConfig.ts",
-		"build:shell": "SHELL_FIXTURE_PAGE=navbar vite build --config src/config/shellViteConfig.ts && SHELL_FIXTURE_PAGE=primitives vite build --config src/config/shellViteConfig.ts && SHELL_FIXTURE_PAGE=errors vite build --config src/config/shellViteConfig.ts",
+		"build:shell": "SHELL_FIXTURE_PAGE=navbar vite build --config src/config/shellViteConfig.ts && SHELL_FIXTURE_PAGE=primitives vite build --config src/config/shellViteConfig.ts && SHELL_FIXTURE_PAGE=errors vite build --config src/config/shellViteConfig.ts && SHELL_FIXTURE_PAGE=activity vite build --config src/config/shellViteConfig.ts",
 		"test:shell": "playwright test --config src/config/shellPlaywrightConfig.ts",
 		"test:entities": "ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts"
 	},

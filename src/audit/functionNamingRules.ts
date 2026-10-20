@@ -23,7 +23,10 @@ export function hasNamedValueExport(lines: string[], name: string): boolean {
 		new RegExp(`^\\s*export\\s+(?:async\\s+)?function\\s+${escaped}\\b`),
 		new RegExp(`^\\s*export\\s+const\\s+${escaped}\\b`)
 	];
-	return lines.some((line) => patterns.some((pattern) => pattern.test(line)));
+	return (
+		lines.some((line) => patterns.some((pattern) => pattern.test(line))) ||
+		forwardedValueExport(lines, name)
+	);
 }
 
 function functionNames(lines: string[]): string[] {
@@ -42,4 +45,23 @@ function isAllowedFunctionName(file: AuditFile, name: string): boolean {
 		(httpHandlerNames.has(name) && fileName(file.relativePath) === '+server.ts') ||
 		(['.jsx', '.tsx'].includes(file.extension) && isPascalCase(name))
 	);
+}
+
+/** Explicit runtime names can be forwarded without copying their implementations. */
+function forwardedValueExport(lines: string[], name: string): boolean {
+	const clauses = lines.join('\n').matchAll(/^\s*export\s+(?!type\b)\{([^}]+)\}/gm);
+	for (const [, clause] of clauses) {
+		for (const field of clause.split(',')) {
+			const specifier = field.trim();
+			if (/^type\s/.test(specifier)) continue;
+			if (
+				specifier
+					.split(/\s+as\s+/)
+					.at(-1)
+					?.trim() === name
+			)
+				return true;
+		}
+	}
+	return false;
 }

@@ -2,38 +2,43 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.thread-links",
 	"kind": "component",
-	"title": "ThreadLinks",
-	"responsibility": "Owns the ThreadLinks Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Thread links",
+	"responsibility": "Groups existing conversations by whether they belong to the image currently in view.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/ThreadLinks.svelte"],
+		"source": ["packages/desktop/src/components/thread-links/ThreadLinks.svelte"],
 		"symbols": ["ThreadLinks"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ThreadLinks.threads",
-				"type": "ThreadInfo[]"
+				"type": "ThreadInfo[]",
+				"description": "Required thread records, kept in supplied order within each group. Empty groups are omitted."
 			},
 			{
 				"name": "ThreadLinks.thread",
-				"type": "ThreadInfo | null"
+				"type": "ThreadInfo | null",
+				"description": "Required current thread or null. Its identifier marks the matching button active and pressed."
 			},
 			{
 				"name": "ThreadLinks.aim",
-				"type": "ThreadTarget"
+				"type": "ThreadTarget",
+				"description": "Required image/conversation target used by the same-image helper to classify threads."
 			},
 			{
 				"name": "ThreadLinks.select",
-				"type": "(thread: ThreadInfo) => void"
+				"type": "(thread: ThreadInfo) => void",
+				"description": "Called with the clicked thread; this component does not update the current-thread prop itself."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ThreadLinks",
-				"type": "markup"
+				"type": "markup",
+				"description": "Threads on this image followed by Other threads. Buttons show the pin number and version, falling back to Initial plan. Empty input renders no groups."
 			}
 		],
 		"errors": []
@@ -52,11 +57,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/ThreadLinks.svelte",
+		"entry": "packages/desktop/src/components/thread-links/ThreadLinks.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/ThreadLinks.svelte"
+				"entry": "packages/desktop/src/components/thread-links/ThreadLinks.svelte"
 			}
 		]
 	},

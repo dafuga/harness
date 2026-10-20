@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { nativeScope } from '../../src/utils/nativeScope';
+import { nativeScope } from '../../src/components/native-approval/nativeScope';
 
 test('the requested scope is said in words before anything is approved', async () => {
 	const get = vi.fn(async () => ({ name: 'Atlas' }) as never);

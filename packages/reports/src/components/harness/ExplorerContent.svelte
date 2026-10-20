@@ -17,7 +17,8 @@
 		components: EntityVisualScreen,
 		functions: EntityBehaviorScreen,
 		services: EntityBehaviorScreen,
-		configs: EntityConfigScreen
+		configs: EntityConfigScreen,
+		models: EntityConfigScreen
 	};
 	// An entity opens as the kind it is at this revision, whatever its address calls it.
 	let kind = $derived(

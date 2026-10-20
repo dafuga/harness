@@ -2,32 +2,35 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.binary-artifact",
 	"kind": "function",
-	"title": "binaryArtifact",
-	"responsibility": "Owns the binaryArtifact shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Decode a transported capture",
+	"responsibility": "Decodes transported artifact bytes and checks the supplied length and hash.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/binaryArtifact.ts"],
 		"symbols": ["binaryArtifact"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "binaryArtifact.value",
-				"type": "RemoteBinary"
+				"type": "RemoteBinary",
+				"description": "A transported binary answer with base64 data, encoding, byte length, hash and a string media type."
 			}
 		],
 		"outputs": [
 			{
 				"name": "binaryArtifact",
-				"type": "Promise<EvidenceArtifactResult>"
+				"type": "Promise<EvidenceArtifactResult>",
+				"description": "A promise for decoded bytes with the supplied media type and hash after the transport checks pass. The media label is retained, not independently inferred from the bytes."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects a non-string media type, unsupported encoding or unreadable base64, and bytes whose length or SHA-256 differs from the supplied values."
 			}
 		]
 	},

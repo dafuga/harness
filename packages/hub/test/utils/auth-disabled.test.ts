@@ -1,6 +1,6 @@
 import { afterEach, expect, test, vi } from 'vitest';
-import { createD1AuthStore, createHubAuth } from '../../src/lib/server/auth';
-import type { AuthChallenge } from '../../src/lib/server/auth';
+import { createD1AuthStore, createHubAuth } from '../../src/lib/server/auth/auth';
+import type { AuthChallenge } from '../../src/lib/server/auth/auth';
 import { GOOGLE_JWKS_URL } from '../../src/services/GoogleIdentityService';
 import { SESSION_COOKIE } from '../../src/utils/authCookies';
 import { ORIGIN, SECRET, ada } from '../support/authFixture';

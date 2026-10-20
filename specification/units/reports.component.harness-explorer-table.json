@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-explorer-table",
 	"kind": "component",
-	"title": "ExplorerTable",
-	"responsibility": "Lists the shells, components, functions, configs or services of a revision as a table with the columns of their kind and a link to each.",
+	"title": "Entity catalog table",
+	"responsibility": "Lists non-page entities with columns appropriate to their category.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,25 +11,29 @@
 		"symbols": ["ExplorerTable"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ExplorerTable.category",
-				"type": "Kind"
+				"type": "Kind",
+				"description": "Required non-page category: shells, components, functions, configs or services. Determines columns and labels."
 			},
 			{
 				"name": "ExplorerTable.rows",
-				"type": "CatalogRow[]"
+				"type": "CatalogRow[]",
+				"description": "Required catalog rows in display order. Used-by text falls back to pages where no direct users exist."
 			},
 			{
 				"name": "ExplorerTable.nav",
-				"type": "EntityNav"
+				"type": "EntityNav",
+				"description": "Required navigation context for entity links and actions."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerTable",
-				"type": "markup"
+				"type": "markup",
+				"description": "Named table with entity/shared badges, category-specific usage/responsibility/target columns, verdict and Open action. Shells/components show summaries under names; configs show changed state. Empty rows produce an empty table without a separate message."
 			}
 		],
 		"errors": []

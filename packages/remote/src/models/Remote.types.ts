@@ -169,6 +169,8 @@ export interface RemoteRevision {
 }
 export interface RemoteGrant {
 	projects: { id: string; name: string }[];
+	/** False grants read-only access; omitted preserves older read-and-comment grants. */
+	comments?: boolean;
 	agents: boolean;
 }
 export interface RemoteResume {

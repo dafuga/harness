@@ -43,7 +43,8 @@ test('a function at its branch tip shows the one run that was recorded, with wha
 	await expect(run.getByText('Branch tip', { exact: true })).toBeVisible();
 	await expect(run.getByText('Search across synthetic orders · match')).toBeVisible();
 	const output = run.getByRole('group', { name: 'output of match' });
-	await expect(output.getByText('"searchText": "SERVICE"')).toBeVisible();
+	await expect(output.getByText('Search text', { exact: true })).toBeVisible();
+	await expect(output.getByText('SERVICE', { exact: true })).toBeVisible();
 	await expect(output.getByText('Order 1042 · Service call')).toBeVisible();
 	await expect(output.getByText('Order 1077 · Service plan')).toBeVisible();
 	await output.getByText('Assertions and recorded result').click();

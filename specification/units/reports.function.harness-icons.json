@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.harness-icons",
 	"kind": "function",
-	"title": "harnessIcons",
-	"responsibility": "Holds the path data of the shared icon set of the explorer, which icons are solid, and the icon of each of the six categories.",
+	"title": "Explorer icon catalog",
+	"responsibility": "Provides shared SVG paths and category-to-icon mappings.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,20 +11,23 @@
 		"symbols": ["harnessIcons", "HarnessIconName", "solidIcons", "categoryIcon"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "harnessIcons",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Named SVG path data on a 24-by-24 grid for categories, verdicts, evidence and controls."
 			},
 			{
 				"name": "solidIcons",
-				"type": "ReadonlySet<HarnessIconName>"
+				"type": "ReadonlySet<HarnessIconName>",
+				"description": "Readonly-typed set containing passed and failed, the two filled verdict icons."
 			},
 			{
 				"name": "categoryIcon",
-				"type": "Record<ExplorerCategory, HarnessIconName>"
+				"type": "Record<ExplorerCategory, HarnessIconName>",
+				"description": "Icon name for each of the six explorer categories."
 			}
 		],
 		"errors": []

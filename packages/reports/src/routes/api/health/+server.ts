@@ -1,2 +1,3 @@
-import { reportHttp } from '../../../utils/reportHttp';
+import { reportHttp } from './reportHttp';
+
 export const GET = reportHttp;

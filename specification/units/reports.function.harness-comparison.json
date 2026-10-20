@@ -2,13 +2,18 @@
 	"schemaVersion": 1,
 	"id": "reports.function.harness-comparison",
 	"kind": "function",
-	"title": "harnessComparison",
-	"responsibility": "Aligns the recorded evidence of two revisions by scenario, state and viewport into before and after pairs, naming what either side lacks.",
+	"title": "Recorded media alignment",
+	"responsibility": "Aligns recorded before-and-after media while retaining each side’s own provenance or gap.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/harnessComparison.ts"],
+		"source": [
+			"packages/reports/src/components/harness/harness-compare-media/harnessComparison.ts",
+			"packages/reports/src/utils/harnessComparison.ts"
+		],
 		"symbols": [
+			"comparisonChoices",
+			"harnessComparison",
 			"ComparedSide",
 			"StateChoice",
 			"AlignedState",
@@ -17,37 +22,44 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "comparisonChoices.base",
-				"type": "ComparedSide"
+				"type": "ComparedSide",
+				"description": "Earlier revision and its selected record, which may be null."
 			},
 			{
 				"name": "comparisonChoices.head",
-				"type": "ComparedSide"
+				"type": "ComparedSide",
+				"description": "Later revision and its selected record, which may be null."
 			},
 			{
 				"name": "harnessComparison.base",
-				"type": "ComparedSide"
+				"type": "ComparedSide",
+				"description": "Earlier revision and selected record."
 			},
 			{
 				"name": "harnessComparison.head",
-				"type": "ComparedSide"
+				"type": "ComparedSide",
+				"description": "Later revision and selected record."
 			},
 			{
 				"name": "harnessComparison.choice",
-				"type": "StateChoice"
+				"type": "StateChoice",
+				"description": "Scenario plus optional empty state/viewport selectors; empty state or viewport includes all matching choices."
 			}
 		],
 		"outputs": [
 			{
 				"name": "comparisonChoices",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Sorted unique scenario, state and viewport choices from scenarios containing screenshot or audio media on either side."
 			},
 			{
 				"name": "harnessComparison",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Gallery items paired by scenario, state, evidence and viewport-or-kind, plus readable aligned-state summaries. Missing sides receive explicit gaps. Captures keep their own provenance, and no other revision fills a gap."
 			}
 		],
 		"errors": []

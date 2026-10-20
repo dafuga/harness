@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.cleanup-deadline",
 	"kind": "function",
-	"title": "cleanupDeadline",
-	"responsibility": "One bound for a piece of cleanup: work under it is raced, paused and cancelled together, and nothing acts once it is over.",
+	"title": "Bounded cleanup time",
+	"responsibility": "Creates a shared deadline that ends waits and supplies fallback answers when cleanup work fails or takes too long.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,17 +11,19 @@
 		"symbols": ["CleanupDeadline", "cleanupDeadline"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "cleanupDeadline.milliseconds",
-				"type": "number"
+				"type": "number",
+				"description": "Milliseconds before the deadline aborts. A timer starts immediately and is unreferenced so it does not keep the process alive."
 			}
 		],
 		"outputs": [
 			{
 				"name": "cleanupDeadline",
-				"type": "CleanupDeadline"
+				"type": "CleanupDeadline",
+				"description": "Deadline with an AbortSignal, expiry check, promise race with fallback, bounded pause and cancel method. Cancellation aborts immediately; within returns its fallback for failed or late work without stopping work that ignores the signal."
 			}
 		],
 		"errors": []

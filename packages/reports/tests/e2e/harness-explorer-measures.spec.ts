@@ -128,10 +128,7 @@ test.describe('a record with hundreds of failures of other units', () => {
 		expect(failed?.failures.length).toBeGreaterThan(400);
 		await page.goto(at('main', commits.grown, 'functions'));
 		await checkpoint(page, 'measures-failures');
-		const row = page
-			.getByRole('table', { name: 'Functions' })
-			.locator('tbody tr')
-			.filter({ has: page.getByRole('rowheader', { name: 'Slugify' }) });
+		const row = page.getByRole('article', { name: 'Slugify', exact: true });
 		await expect(row).toContainText('Verification failed');
 		await expect(row).toContainText('function.slugify: source-bytes');
 		await expect(row).not.toContainText('generated');

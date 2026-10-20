@@ -2,46 +2,53 @@
 	"schemaVersion": 1,
 	"id": "function.group-teardown",
 	"kind": "function",
-	"title": "groupTeardown",
-	"responsibility": "Stops what a command left by signalling its process group, where no shared service can be in that group.",
+	"title": "Child process group cleanup",
+	"responsibility": "Stops a command’s process group and follows surviving descendants that moved outside the group.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/groupTeardown.ts"],
-		"symbols": ["GroupTiming", "signalGroup", "groupTeardown"]
+		"source": ["src/utils/groupTeardown.ts", "src/utils/run-isolated/groupTeardown.ts"],
+		"symbols": ["GroupTiming", "signalGroup", "groupTeardown", "groupTeardown"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "signalGroup.child",
-				"type": "ChildProcess"
+				"type": "ChildProcess",
+				"description": "Child whose pid names the process group to signal."
 			},
 			{
 				"name": "signalGroup.signal",
-				"type": "'SIGTERM' | 'SIGKILL'"
+				"type": "'SIGTERM' | 'SIGKILL'",
+				"description": "SIGTERM or SIGKILL to send to the negative child pid."
 			},
 			{
 				"name": "groupTeardown.child",
-				"type": "ChildProcess"
+				"type": "ChildProcess",
+				"description": "Completed child whose process group is killed immediately."
 			},
 			{
 				"name": "groupTeardown.descendants",
-				"type": "Descendants"
+				"type": "Descendants",
+				"description": "Tracker providing surviving descendant identities for follow-up cleanup."
 			},
 			{
 				"name": "groupTeardown.timing",
-				"type": "GroupTiming"
+				"type": "GroupTiming",
+				"description": "Milliseconds allowed for natural settling and for graceful termination before escalation."
 			}
 		],
 		"outputs": [
 			{
 				"name": "signalGroup",
-				"type": "void"
+				"type": "void",
+				"description": "Returns nothing; attempts the group signal and ignores errors, including an already absent group."
 			},
 			{
 				"name": "groupTeardown",
-				"type": "Promise<TrackedProcess[]>"
+				"type": "Promise<TrackedProcess[]>",
+				"description": "Resolves with descendants found after the settling period, after sending them SIGTERM, waiting the grace period and sending SIGKILL. Returns an empty array if none remain."
 			}
 		],
 		"errors": []

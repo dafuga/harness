@@ -15,7 +15,20 @@ This is a Harness CLI project. Treat Harness as the operating contract for every
 - Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `harness audit`.
 - An agent that works here says so: `bun run dev -- activity register --label <who> --task <what> --units <ids>`, then `activity heartbeat <id>` as it goes (or `HARNESS_AGENT_ID=<id>` on its Harness commands) and `activity finish <id>` at the end. `bun run dev -- info activity` has the rules.
 
+## Harness Project Change Communication
+
+These rules apply only to this Harness repository, including requests made in an external coding chat.
+
+- Treat a request here as a Harness-managed change, using the same project and revision context, registered units, contracts, generators, regression flow, permissions, approval requirements and evidence standards as the app's chat. Existing explicit user authorization still applies.
+- Before editing, link the affected registered entity pages or relevant sections and briefly explain the intended change and why each unit needs to be touched. Read its contract, Used In and Uses; distinguish direct edits from dependencies being checked.
+- Keep those links in progress updates and questions. If another unit must change, explain that addition before editing it; a dependency graph alone does not authorize unrelated work.
+- At handoff, link each changed unit and its History section, explain what changed and why, and identify its actual commits and verification results. Distinguish newly run proof, inherited evidence and unresolved checks.
+- Resolve links from real registered ids at the selected branch or commit, preserving their registered kinds and the explorer's category mapping. For an artifact without an explorer page, explicitly identify that gap and link its source; never invent an entity link or call backend code a visual component.
+- Keep execution attribution truthful: this chat does not automatically create an app conversation or run. Report an in-app thread, run or approval only when that record actually exists; continue registering external work through Harness activity.
+
 ## Bug and Regression Loops
+
+- Commit the strengthened failing test before product repair. Run `harness loop record <loop> --phase red --test <path> --command <command> --assertion <actual failure>` on that commit. Make a separate fix commit and run `loop record --phase green` against the same tests, fixtures, command and environment. Keep both commits when landing; never squash away this regression history. Focused red/green proof does not replace full verification.
 
 - For a reported bug, first diagnose why existing tests missed it. Name the responsible standardized test or scenario and its missing inputs, lifecycle, fixture or assertion; record the coverage gap before product repair.
 - Strengthen the existing standardized test and shared fixtures or assertions using the project's Harness scenario, state, viewport, registered-test and evidence format. Do not add a one-off bug-specific regression test.
@@ -44,6 +57,15 @@ This is a Harness CLI project. Treat Harness as the operating contract for every
 - Browser normal flows, including screenshot/video runs, must have no unexpected console.error or pageerror events. Use the shared browserTest fixture and watch extra contexts before navigation. Preserve logs for expected errors and declare their exact messages and reasons in that test. For unexpected errors, prove a failing log assertion before repair, then rerun the same unchanged regression until the error disappears.
 
 ## Code Rules
+
+- Helpers are pure, synchronous value transformations: the same input gives the same result, without I/O, time/randomness, hidden state, or mutation. Declare reviewed helper contracts with `@pure`; the catalog requires this declaration, its conservative source guard and two distinct consumers. Service classes own operations and effects; models define data shapes and schemas. Unknown or effectful functions are not helpers.
+- Reserve shared helper folders for pure callable helpers used by at least two distinct components, services or named functions, in any combination. Count actual runtime references; repeated calls by one consumer, type-only references, unused imports and forwarding exports do not establish sharing.
+- A helper with one consumer belongs in that consumer's folder, beside the component, service or function that owns it. Keep private helpers out of codebase-wide utility folders. Promote them into shared folders only when a second distinct consumer needs them; move them back when only one remains.
+- Preserve registered identities, contracts and history when relocating helpers. Update imports, tests and owned source together. Mixed shared/private modules must be split by responsibility rather than moving a shared helper into one consumer's folder. An unused export has no proven owner; check public API contracts and dynamic/runtime use before removing or relocating it.
+
+- Keep Harness, its coding agents and active checks below the combined 10 GB RAM target. Measure attributed process memory; report shared or unmeasurable usage separately.
+- Run one broad check, build or history prebuild at a time. Use focused standardized tests while editing and reuse running servers.
+- Vitest defaults to one worker across workspaces. Increasing concurrency requires measuring the combined peak first. Stop only verified task-owned leftover processes; preserve other sessions and servers.
 
 - Files should stay focused and under 220 lines unless a local audit baseline explicitly tracks existing debt.
 - Functions should stay under 55 lines.

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { deviceCapabilities } from '../../src/utils/deviceCapabilities';
+import { deviceCapabilities } from '../../src/services/device-operations-service/deviceCapabilities';
 
 test('a device with the agents permission has what the desktop has', () => {
 	expect(deviceCapabilities(true)).toMatchObject({

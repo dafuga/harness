@@ -9,7 +9,7 @@ import { join } from 'node:path';
 import { projectFiles } from '../src/templates/project';
 import { pieceFiles } from '../src/templates/pieces';
 import { findGuide } from '../src/guides/guide';
-import { generatePiece } from '../src/workflows/generateCode';
+import { generatePiece } from '../src/workflows/generate-code/generateCode';
 
 for (const kind of ['console', 'pageerror'] as const) {
 	test(`${kind} diagnostics cover early and available pages once`, async () => {

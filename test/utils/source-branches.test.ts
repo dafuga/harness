@@ -1,6 +1,8 @@
 import { expect, test } from 'vitest';
-import { consoleRoute, consoleRoutePath } from '../../src/utils/consoleRoute';
-import { sourceBranches, type ListedRef } from '../../src/utils/sourceBranches';
+import { consoleRoute } from '../../src/utils/console-canonical/consoleRoute';
+import { consoleRoutePath } from '../../packages/reports/src/components/project-activity/consoleRoute';
+import { sourceBranches } from '../../src/repositories/source-history-repository/sourceBranches';
+import { type ListedRef } from '../../src/utils/sourceBranches';
 
 const [a, b, c, d] = ['a', 'b', 'c', 'd'].map((letter) => letter.repeat(40));
 const local = (name: string, head: string): ListedRef => ({ ref: `refs/heads/${name}`, head });

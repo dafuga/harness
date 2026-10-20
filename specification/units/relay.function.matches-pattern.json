@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "relay.function.matches-pattern",
 	"kind": "function",
-	"title": "matchesPattern",
-	"responsibility": "Owns the matchesPattern shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "String pattern guard",
+	"responsibility": "Checks a string against a regular expression without retaining its match position.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/relay/src/utils/matchesPattern.ts"],
 		"symbols": ["matchesPattern"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "matchesPattern.value",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Unknown candidate value; non-strings return false."
 			},
 			{
 				"name": "matchesPattern.pattern",
-				"type": "RegExp"
+				"type": "RegExp",
+				"description": "Regular expression to test. For string inputs, lastIndex is reset to zero before and after the test."
 			}
 		],
 		"outputs": [
 			{
 				"name": "matchesPattern",
-				"type": "value is string"
+				"type": "value is string",
+				"description": "Whether the string matches, with a string type guard on success."
 			}
 		],
 		"errors": []

@@ -24,7 +24,8 @@ export function evidenceMedia(item: Pick<Evidence, 'mediaType' | 'file'>): 'imag
 			: 'image')
 	);
 }
-export function audioDuration(seconds?: number) {
+/** @pure */
+export function formatDuration(seconds?: number): string {
 	if (seconds === undefined || !Number.isFinite(seconds) || seconds < 0) return '';
 	const total = Math.floor(seconds);
 	const minute = Math.floor(total / 60);

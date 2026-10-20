@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "reports.component.brand-mark",
 	"kind": "component",
-	"title": "BrandMark",
-	"responsibility": "Owns the BrandMark Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Brand mark",
+	"responsibility": "Draws the modular Harness H using the surrounding text color.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/components/BrandMark.svelte"],
 		"symbols": ["BrandMark"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "BrandMark.size",
-				"type": "number | string"
+				"type": "number | string",
+				"description": "Optional SVG width and height as number or string, default 1em."
 			},
 			{
 				"name": "BrandMark.label",
-				"type": "string"
+				"type": "string",
+				"description": "Optional accessible name, empty by default. Nonempty makes the SVG a named image; otherwise it is decorative and hidden from assistive technology."
 			}
 		],
 		"outputs": [
 			{
 				"name": "BrandMark",
-				"type": "markup"
+				"type": "markup",
+				"description": "Nonfocusable tiled H SVG using shared tile geometry and currentColor. Supplies no navigation behavior."
 			}
 		],
 		"errors": []

@@ -2,26 +2,31 @@
 	"schemaVersion": 1,
 	"id": "reports.function.harness-failures",
 	"kind": "function",
-	"title": "harnessFailures",
-	"responsibility": "Counts the failures of a record and groups those that say the same thing about different subjects into one cause, leaving nothing out of the count.",
+	"title": "Verification failure grouping",
+	"responsibility": "Summarizes repeated failure causes while retaining the original total count.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/harnessFailures.ts"],
-		"symbols": ["FailureCause", "FailureSummary", "harnessFailures"]
+		"source": [
+			"packages/reports/src/components/harness/harness-failures/harnessFailures.ts",
+			"packages/reports/src/utils/harnessFailures.ts"
+		],
+		"symbols": ["harnessFailures", "FailureCause", "FailureSummary", "harnessFailures"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "harnessFailures.failures",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Recorded failure strings. Subject-prefixed messages with shared text can become one cause."
 			}
 		],
 		"outputs": [
 			{
 				"name": "harnessFailures",
-				"type": "FailureSummary"
+				"type": "FailureSummary",
+				"description": "Total failures, whether at most five allow plain display, ordered causes and omitted-cause count. Shared causes list up to three subjects; longer summaries show at most five causes."
 			}
 		],
 		"errors": []

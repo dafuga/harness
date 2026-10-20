@@ -4,6 +4,8 @@ import type { ExplorerLocation } from '../src/models/Explorer.types';
 import type { ExplorerScreenProps } from '../src/models/ExplorerScreen.types';
 import type { HarnessIndex } from '../src/models/Harness.types';
 import ExplorerContent from '../src/components/harness/ExplorerContent.svelte';
+import EntityTests from '../src/components/harness/entity-tests/EntityTests.svelte';
+import { explorerRoutePath } from '../../../src/utils/explorerRoute';
 import { explorerEntities } from '../src/utils/explorerEntities';
 import { index } from './entityFixture';
 import { lens, place, view, type View } from './entityPlaces';
@@ -119,4 +121,20 @@ export function verdicts(
 				reasons: [...told.matchAll(/<span>(.*?)<\/span>/gs)].map((found) => plain(found[1]))
 			};
 		});
+}
+
+/** Recorded diagnostics are tested independently from the initially closed Examples disclosure. */
+export function verificationPanel(...given: Given): string {
+	const host = hostProps(...given);
+	const entity = host.entities.find((item) => item.id === host.route.entity)!;
+	return render(EntityTests, {
+		props: {
+			entity,
+			scope: host.scope,
+			evidence: host.lens.evidence(entity.unit),
+			behavior: host.lens.behavior(entity.unit),
+			mediaBase: host.mediaBase,
+			nav: { route: host.route, href: (to) => '/harness' + explorerRoutePath(to), go: host.onroute }
+		}
+	}).body;
 }

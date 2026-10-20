@@ -1,0 +1,106 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.entity-states",
+	"kind": "component",
+	"title": "Supported states",
+	"responsibility": "Shows recorded screenshots for every declared visual state at the selected revision and viewport.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/EntityStates.svelte"],
+		"symbols": ["EntityStates"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "EntityStates.name",
+				"type": "string",
+				"description": "The readable entity name used to label the gallery.",
+				"examples": ["Activity list"]
+			},
+			{
+				"name": "EntityStates.evidence",
+				"type": "ExplorerEvidence",
+				"description": "Declared states and verified captures for this entity on both revision sides."
+			},
+			{
+				"name": "EntityStates.scope",
+				"type": "ExplorerScope",
+				"description": "The viewed branch tip or commit and its parent, without changing their identity."
+			},
+			{
+				"name": "EntityStates.mediaBase",
+				"type": "string",
+				"description": "Optional prefix for prebuilt media assets; empty when a bridge resolves images.",
+				"examples": ["/harness/media/"]
+			},
+			{
+				"name": "EntityStates.resolveImage",
+				"type": "(item: Evidence) => Promise<string>",
+				"description": "Optional bridge callback that returns an image URL only after validating the artifact bytes."
+			}
+		],
+		"outputs": [
+			{
+				"name": "EntityStates",
+				"type": "markup",
+				"description": "Screenshot gallery with named states, viewport selection, revision labels, explicit gaps and full-size previews."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.evidence-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.evidence-viewer",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-screens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.entity-states",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/EntityStates.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/EntityStates.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "reports.function.analytics-display",
 	"kind": "function",
-	"title": "analyticsDisplay",
-	"responsibility": "Owns the analyticsDisplay shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Analytics number formatting",
+	"responsibility": "Formats assessment proportions and counts for analytics views.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/utils/analyticsDisplay.ts"],
 		"symbols": ["analyticsDisplay", "analyticsCount"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "analyticsDisplay.value",
-				"type": "number | null"
+				"type": "number | null",
+				"description": "Fraction to display as a percentage, or null when no assessments exist."
 			},
 			{
 				"name": "analyticsCount.value",
-				"type": "number"
+				"type": "number",
+				"description": "Count to format using the runtime locale."
 			}
 		],
 		"outputs": [
 			{
 				"name": "analyticsDisplay",
-				"type": "string"
+				"type": "string",
+				"description": "Rounded whole percentage, or No assessments for null."
 			},
 			{
 				"name": "analyticsCount",
-				"type": "string"
+				"type": "string",
+				"description": "Locale-formatted count."
 			}
 		],
 		"errors": []

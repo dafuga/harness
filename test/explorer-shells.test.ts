@@ -10,7 +10,7 @@ import {
 	explorerRoute,
 	explorerRoutePath
 } from '../src/utils/explorerRoute';
-import { planningArtifactPaths } from '../src/utils/planningArtifactPaths';
+import { planningArtifactPaths } from '../src/audit/structure-rules/planningArtifactPaths';
 
 /**
  * Shells: the composition of an app is a category of its own, after Pages. Only a unit declared a
@@ -19,14 +19,15 @@ import { planningArtifactPaths } from '../src/utils/planningArtifactPaths';
 const commit = 'a'.repeat(40);
 const shell = 'desktop.component.workspace-shell';
 
-test('the explorer has six categories, Shells after Pages', () => {
+test('the explorer has seven categories, Shells after Pages', () => {
 	expect([...explorerCategories]).toEqual([
 		'pages',
 		'shells',
 		'components',
 		'functions',
 		'configs',
-		'services'
+		'services',
+		'models'
 	]);
 });
 
@@ -51,7 +52,7 @@ test('a shell has an address at a branch tip and at a selected commit, with its 
 		tab: 'source'
 	});
 	expect(explorerRoutePath(at!)).toBe(
-		`/branch/feat%2Fx/commit/${commit}/shells/${shell}/details?tab=source`
+		`/branch/feat%2Fx/commit/${commit}/shells/${shell}?tab=source`
 	);
 	expect(explorerRoute('/branch/main/shells')).toEqual({
 		branch: 'main',

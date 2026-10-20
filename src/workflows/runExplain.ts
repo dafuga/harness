@@ -7,8 +7,12 @@ import {
 } from '../core/explanationTypes';
 import { ExplanationRepository } from '../repositories/ExplanationRepository';
 import { ExplanationService, type ReasonReport } from '../services/ExplanationService';
-import { requiredReasons } from '../utils/requiredReasons';
-import { explanationProblems, writingVersions, type WritingVersion } from '../utils/writingLimits';
+import { requiredReasons } from '../utils/required-reasons/requiredReasons';
+import {
+	explanationProblems,
+	writingVersions,
+	type WritingVersion
+} from '../utils/writing-limits/writingLimits';
 import { GitAdapter } from '../adapters/GitAdapter';
 import { ReasonPathService } from '../services/ReasonPathService';
 import { commitLoader, openRange, type RevisionRange } from './loadRevisions';

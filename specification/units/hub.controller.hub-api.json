@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/controllers/HubApiController.ts"],
+		"source": ["packages/hub/src/controllers/hub-api-controller/HubApiController.ts"],
 		"symbols": ["HubApiController", "HubApiController.constructor", "HubApiController.handle"]
 	},
 	"contract": {
@@ -31,6 +31,16 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.function.hosted-capabilities",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.controller.hub-agent",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "hub.controller.hub-remote",
 			"via": "import",
@@ -64,11 +74,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/controllers/HubApiController.ts",
+		"entry": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/controllers/HubApiController.ts"
+				"entry": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts"
 			}
 		]
 	},

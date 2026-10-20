@@ -2,30 +2,36 @@
 	"schemaVersion": 1,
 	"id": "reports.function.portable-page",
 	"kind": "function",
-	"title": "portablePage",
-	"responsibility": "Wraps a report whose media is inline into one self-contained page.",
+	"title": "Portable report HTML",
+	"responsibility": "Wraps a prepared report and compiled viewer into one HTML document.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/portablePage.ts"],
-		"symbols": ["PortableAssets", "portablePage"]
+		"source": [
+			"packages/reports/src/utils/console-server/portablePage.ts",
+			"packages/reports/src/utils/portablePage.ts"
+		],
+		"symbols": ["portablePage", "PortableAssets", "portablePage"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "portablePage.portable",
-				"type": "Report"
+				"type": "Report",
+				"description": "Report whose media should already be inline for a self-contained export."
 			},
 			{
 				"name": "portablePage.assets",
-				"type": "PortableAssets"
+				"type": "PortableAssets",
+				"description": "Compiled script and stylesheet text."
 			}
 		],
 		"outputs": [
 			{
 				"name": "portablePage",
-				"type": "string"
+				"type": "string",
+				"description": "HTML with escaped title, embedded report JSON and inline viewer assets. JSON escapes less-than and Unicode line/paragraph separators before placement in a script."
 			}
 		],
 		"errors": []

@@ -129,8 +129,8 @@ test('in a browser each branch, commit and category of the installed console is 
 	await field(page, 'Branch').selectOption(slashBranch);
 	await page.waitForURL(`**${slashed}/functions`);
 	// The tab of a section is part of the address: a reload of the installed console keeps it.
-	const source = `${main(target.commit, 'pages/page.titles/details')}?tab=source`;
-	await page.goto(worker.url + source);
+	const source = `${main(target.commit, 'pages/page.titles')}?tab=source`;
+	await page.goto(worker.url + `${main(target.commit, 'pages/page.titles/details')}?tab=source`);
 	await page.getByRole('tab', { name: 'Source', selected: true }).waitFor();
 	await page.reload();
 	await page.getByRole('tab', { name: 'Source', selected: true }).waitFor();
@@ -169,6 +169,7 @@ test('the installed console shows recorded media and exports a record, for the a
 		.toBeGreaterThan(0);
 	// The export its tests link to opens as a complete report with the same provenance.
 	await page.goto(`${worker.url}${entity}?tab=tests`);
+	await page.getByText('Verification details', { exact: true }).click();
 	const link = page.getByRole('link', { name: 'Download this record' }).first();
 	const address = new URL((await link.getAttribute('href')) ?? '', worker.url);
 	expect(address.pathname).toBe(`/harness/export/${target.commit}`);

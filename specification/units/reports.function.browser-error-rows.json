@@ -2,26 +2,31 @@
 	"schemaVersion": 1,
 	"id": "reports.function.browser-error-rows",
 	"kind": "function",
-	"title": "browserErrorRows",
-	"responsibility": "Owns the browserErrorRows shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Match browser error expectations",
+	"responsibility": "Classify observed browser errors and retain expectations that were not observed.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/browserErrorRows.ts"],
-		"symbols": ["BrowserErrorRow", "browserErrorRows"]
+		"source": [
+			"packages/reports/src/components/browser-errors/browserErrorRows.ts",
+			"packages/reports/src/utils/browserErrorRows.ts"
+		],
+		"symbols": ["browserErrorRows", "Observed", "BrowserErrorRow", "browserErrorRows"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "browserErrorRows.diagnostic",
-				"type": "BrowserDiagnostic"
+				"type": "BrowserDiagnostic",
+				"description": "One attempt’s observed errors and declared expectations. Each expectation matches exact type and message and, when specified, exact source."
 			}
 		],
 		"outputs": [
 			{
 				"name": "browserErrorRows",
-				"type": "BrowserErrorRow[]"
+				"type": "BrowserErrorRow[]",
+				"description": "Rows in observation order marked Expected or Unexpected, followed by unused expectations marked Missing expected error. Each expectation accounts for one occurrence; matching rows retain diagnostic context and add the expectation reason. Inputs are not modified."
 			}
 		],
 		"errors": []

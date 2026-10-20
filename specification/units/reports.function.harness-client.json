@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.harness-client",
 	"kind": "function",
-	"title": "harnessClient",
-	"responsibility": "Fetches the index and a revision detail from the protected endpoints, each once and only when asked.",
+	"title": "Console data client",
+	"responsibility": "Loads and caches requested console JSON resources.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,27 +11,31 @@
 		"symbols": ["HarnessClient", "harnessClient"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "harnessClient.base",
-				"type": "string"
+				"type": "string",
+				"description": "Console mount prefix used before /data/."
 			},
 			{
 				"name": "harnessClient.fetcher",
-				"type": "typeof fetch"
+				"type": "typeof fetch",
+				"description": "Optional fetch implementation. Supplying one creates an independent client; otherwise clients are shared by base."
 			}
 		],
 		"outputs": [
 			{
 				"name": "harnessClient",
-				"type": "HarnessClient"
+				"type": "HarnessClient",
+				"description": "Client with index, revision, stored-side and activity readers. Each path caches its promise, including successful responses; rejected reads are evicted so later calls retry. Construction makes no request."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Non-success HTTP responses reject with the resource path and status. Fetch and JSON errors also propagate to the caller."
 			}
 		]
 	},

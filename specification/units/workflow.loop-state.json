@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/loopState.ts"],
+		"source": ["src/workflows/loop-state/loopState.ts"],
 		"symbols": [
 			"LoopStep",
 			"LoopEvaluator",
@@ -158,11 +158,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/loopState.ts",
+		"entry": "src/workflows/loop-state/loopState.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/loopState.ts"
+				"entry": "src/workflows/loop-state/loopState.ts"
 			}
 		]
 	},

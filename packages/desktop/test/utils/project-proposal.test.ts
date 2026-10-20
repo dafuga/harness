@@ -1,5 +1,8 @@
 import { expect, test } from 'vitest';
-import { projectProposal, proposalPrompt } from '../../src/utils/projectProposal';
+import {
+	projectProposal,
+	proposalPrompt
+} from '../../src/services/project-run-service/projectProposal';
 
 const contract = {
 	inputs: [{ name: 'elapsed ms', type: 'number | bigint' }],

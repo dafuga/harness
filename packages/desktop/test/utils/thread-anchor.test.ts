@@ -1,16 +1,18 @@
 import { expect, test } from 'vitest';
 import {
 	designOption,
-	designTarget,
 	entityTarget,
 	imageTarget,
-	optionImages,
-	otherOption,
-	sameImage,
-	shownApproval,
-	threadAnchor,
-	versionOption
+	optionImages
 } from '../../src/utils/threadAnchor';
+import {
+	designTarget,
+	otherOption,
+	shownApproval,
+	threadAnchor
+} from '../../src/components/thread-panel/threadAnchor';
+import { sameImage } from '../../src/components/thread-links/threadAnchor';
+import { versionOption } from '../../src/components/entity-view/threadAnchor';
 import type { DesignVersion } from '../../src/models/Desktop.types';
 
 const image = { state: 'default', viewport: 'desktop', sha256: 'b'.repeat(64), bytes: 10 };

@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import { spawn } from 'node:child_process';
 import process from 'node:process';
 import { Buffer } from 'node:buffer';
-import { CodexAppServerAdapter } from '../src/adapters/CodexAppServerAdapter';
+import { CodexAppServerAdapter } from '../src/adapters/codex-app-server-adapter/CodexAppServerAdapter';
 import { fixture, turn, alive, pids, png } from './cli-fixture';
 test('Codex initializes subscription RPC, discovers models and confines public turn events', async () => {
 	const f = await fixture('codex-text');

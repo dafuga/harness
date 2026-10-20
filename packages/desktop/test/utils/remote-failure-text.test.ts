@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { homedir } from 'node:os';
 import { RemoteFailure, remoteErrorMessages } from '../../../remote/src/index';
-import { remoteFailureText } from '../../src/utils/remoteFailureText';
+import { remoteFailureText } from '../../src/services/device-session-service/remoteFailureText';
 
 const root = '/private/tmp/fixture-repository';
 test('declared failures keep their code and words', () => {

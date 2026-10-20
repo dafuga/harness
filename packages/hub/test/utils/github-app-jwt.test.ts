@@ -1,7 +1,10 @@
 import { generateKeyPairSync } from 'node:crypto';
 import { importSPKI, jwtVerify } from 'jose';
 import { expect, test } from 'vitest';
-import { githubAppJwt, githubAppKey } from '../../src/utils/githubAppJwt';
+import {
+	githubAppJwt,
+	githubAppKey
+} from '../../src/services/installation-token-service/githubAppJwt';
 
 const pair = generateKeyPairSync('rsa', { modulusLength: 2048 });
 const pkcs1 = pair.privateKey.export({ type: 'pkcs1', format: 'pem' }).toString();

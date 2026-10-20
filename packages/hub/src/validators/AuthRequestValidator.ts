@@ -6,7 +6,7 @@ import type {
 	NativeStartInput
 } from '../models/HubAuth.types';
 import { authFail } from '../utils/authFail';
-import { normalizeCode } from '../utils/authSecrets';
+import { normalizeCode } from '../services/native-handoff-service/authSecrets';
 
 type Body = Record<string, unknown>;
 

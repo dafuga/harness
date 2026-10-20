@@ -1,0 +1,65 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.regression-proof",
+	"kind": "component",
+	"title": "Regression proof",
+	"responsibility": "Show the failing-test commit beside the fix that passes the same test.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/RegressionProof.svelte"],
+		"symbols": ["RegressionProof"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "Request",
+				"type": "Regression inputs",
+				"description": "Commit-linked regression results for the selected unit"
+			}
+		],
+		"outputs": [
+			{
+				"name": "Result",
+				"type": "Regression result",
+				"description": "Readable failure and pass cards with revision links and optional recorded output"
+			}
+		],
+		"errors": [
+			{
+				"name": "Invalid proof",
+				"type": "Explicit rejection or gap",
+				"description": "Missing or damaged evidence is shown as a gap; no result is invented."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.regression-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-verdict",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/RegressionProof.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/RegressionProof.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

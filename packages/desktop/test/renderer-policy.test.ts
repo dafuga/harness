@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { rendererPolicy } from '../src/utils/rendererAssets';
+import { rendererPolicy } from '../src/lib/initialize-desktop/rendererAssets';
 
 /**
  * What the compiled renderer may load. A recorded clip is shown from an object URL of bytes the

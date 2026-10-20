@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { ProjectActivity as Recorded } from '../../../../../src/core/activityTypes';
 	import type { HarnessClient } from '../../utils/harnessClient';
-	import ProjectActivity from '../ProjectActivity.svelte';
+	import ProjectActivity from '../project-activity/ProjectActivity.svelte';
 	let { client, base }: { client: HarnessClient; base: string } = $props();
 	let recorded = $state<Recorded | null>(null);
 	let missing = $state(false);

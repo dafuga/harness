@@ -1,5 +1,7 @@
 import type { ProjectCapabilities, CacheProvenance } from './ProjectContext.types';
 import type { DesignVersion } from './DesignVersion.types';
+import type { ComponentManifest } from '../../../../src/lib/contracts';
+import type { UnitDocumentation } from '../../../../src/utils/unit-documentation/unitDocumentation';
 export type {
 	DesignImage,
 	DesignOptionInfo,
@@ -16,7 +18,8 @@ export const categories = [
 	'components',
 	'functions',
 	'configs',
-	'services'
+	'services',
+	'models'
 ] as const;
 export type Category = (typeof categories)[number];
 export type ProviderId = 'codex' | 'claude';
@@ -117,6 +120,8 @@ export interface ThreadMessage {
 export interface ContractField {
 	name: string;
 	type: string;
+	/** What this field means to someone reviewing the behaviour. */
+	description?: string;
 }
 
 export interface EntityContract {
@@ -146,14 +151,19 @@ export interface HistoryEvent {
 	version: string | null;
 }
 
-export interface Thumbnail {
+export interface DesignThumbnail {
+	source?: 'design';
 	version: string;
 	sha256: string;
 	state: string;
 	viewport: string;
 }
+export type Thumbnail =
+	| DesignThumbnail
+	| ({ source: 'recorded' } & Partial<NonNullable<ComponentManifest['preview']>>);
 
 export interface CatalogEntity {
+	helperContracts?: ComponentManifest['helperContracts'];
 	id: string;
 	category: Category;
 	kind: string;
@@ -179,6 +189,7 @@ export interface Measure {
 }
 
 export interface EntityDetail extends CatalogEntity {
+	documentation?: UnitDocumentation;
 	historyCoverage?: { complete: boolean; nextPage: number | null; loadedPages: number };
 	contract: EntityContract;
 	relationships: Relationship[];

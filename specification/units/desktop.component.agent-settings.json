@@ -3,7 +3,7 @@
 	"id": "desktop.component.agent-settings",
 	"kind": "component",
 	"title": "Agent settings preference",
-	"responsibility": "Configures the device design count from one to ten and shows persistence failures.",
+	"responsibility": "Lets a person set how many designs a visual Plan requests on this device.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,12 +11,13 @@
 		"symbols": ["AgentSettings"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "AgentSettings",
-				"type": "markup"
+				"type": "markup",
+				"description": "Agents section with a Design options dropdown populated from supported counts. Loads the shared device preference on mount and sends changes to its settings store. The preference applies across projects and composers. If saving fails, shows an alert that the choice resets on reload."
 			}
 		],
 		"errors": []

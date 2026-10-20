@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-harness-unit",
 	"kind": "component",
-	"title": "HarnessUnit",
-	"responsibility": "Shows one unit: its contract, owned interface, dependencies, consumers, targets, budgets and scenarios.",
+	"title": "Unit contract and evidence",
+	"responsibility": "Presents a unit’s technical contract, dependencies, budgets and recorded scenario coverage.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,37 +11,44 @@
 		"symbols": ["HarnessUnit"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HarnessUnit.unit",
-				"type": "HarnessUnit"
+				"type": "HarnessUnit",
+				"description": "Required unit definition whose ownership, interfaces, dependencies and limits are displayed."
 			},
 			{
 				"name": "HarnessUnit.units",
-				"type": "HarnessUnit[]"
+				"type": "HarnessUnit[]",
+				"description": "Required surrounding registry, used to resolve dependency relationships and find consumers."
 			},
 			{
 				"name": "HarnessUnit.scenarios",
-				"type": "HarnessScenario[]"
+				"type": "HarnessScenario[]",
+				"description": "Required scenarios, filtered to those covering this unit."
 			},
 			{
 				"name": "HarnessUnit.records",
-				"type": "HarnessRecord[]"
+				"type": "HarnessRecord[]",
+				"description": "Required verification records. Prefers a valid passed record, then any valid record, to show measured results and scenario status."
 			},
 			{
 				"name": "HarnessUnit.removed",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional removed-unit label, defaulting to false. The caller must supply the appropriate historical unit and evidence."
 			},
 			{
 				"name": "HarnessUnit.onselect",
-				"type": "(id: string) => void"
+				"type": "(id: string) => void",
+				"description": "Required callback receiving a dependency or consumer identifier when selected."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HarnessUnit",
-				"type": "markup"
+				"type": "markup",
+				"description": "Ownership and interface details; dependencies and consumers; runtime, source, emitted-size and performance budgets; unprofiled measurements for this unit; and scenario requirements, exemptions, viewports, tests and recorded outcomes. Scenarios without a selected record remain not tested."
 			}
 		],
 		"errors": []

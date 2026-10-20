@@ -2,7 +2,7 @@ import { afterEach, expect, test, vi } from 'vitest';
 import { mkdtemp, rm, writeFile, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { ReportRepository } from '../src/repositories/ReportRepository';
+import { ReportRepository } from '../src/repositories/report-repository/ReportRepository';
 import { AudioUploadService } from '../src/services/AudioUploadService';
 import { audioFixture } from './audioFixture';
 

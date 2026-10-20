@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { legacyRecordSchema } from '../../src/core/historyTypes';
-import { legacyReport } from '../../src/utils/legacyReport';
+import { legacyReport } from '../../src/services/legacy-import-service/legacyReport';
 
 const manifest = {
 	schemaVersion: 1,

@@ -35,6 +35,8 @@ export class ProjectOperationsService {
 			branch: input.anchor.branch,
 			commit: input.anchor.commit
 		});
+		if (projectDiscussion(input))
+			return this.outbox.save({ ...input, projectId: this.session.projectId! });
 		const entity = await project.catalog.entity(input.anchor.entityId, revision.commit);
 		if (input.anchor.imageSha256) {
 			const image = entity.versions
@@ -64,4 +66,18 @@ export class ProjectOperationsService {
 		this.session.requireProject();
 		return this.outbox.list(this.session.projectId!);
 	}
+}
+
+function projectDiscussion(input: HumanCommentDraft): boolean {
+	if (input.anchor.entityId !== 'harness.project.discussion') return false;
+	if (
+		input.threadId ||
+		input.anchor.version ||
+		input.anchor.imageSha256 ||
+		input.anchor.state ||
+		input.anchor.viewport ||
+		input.anchor.region
+	)
+		throw new Error('Invalid project discussion anchor.');
+	return true;
 }

@@ -2,50 +2,58 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.design-panel",
 	"kind": "component",
-	"title": "DesignPanel",
-	"responsibility": "Owns the DesignPanel Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Design panel",
+	"responsibility": "Displays a selected design version and option, or a function’s written plan, and connects image annotations to conversation callbacks.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/DesignPanel.svelte"],
+		"source": ["packages/desktop/src/components/design-panel/DesignPanel.svelte"],
 		"symbols": ["DesignPanel"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DesignPanel.entity",
-				"type": "EntityDetail"
+				"type": "EntityDetail",
+				"description": "Entity supplying design versions, options, images, notes, image-linked threads and measures. Functions display written planned behavior instead of images, even when old versions recorded pictures. Pages also display size and performance text."
 			},
 			{
 				"name": "DesignPanel.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Workspace used to retrieve images and determine the viewed revision and planning availability. Only a pinned view supplies a commit for selecting a before image. Planning capability controls the guidance shown when no version exists."
 			},
 			{
 				"name": "DesignPanel.annotatable",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Whether the displayed image or one of its regions may start a conversation. Passed to the image as its writable flag; false also prevents the annotation callback from being called."
 			},
 			{
 				"name": "DesignPanel.version",
-				"type": "string"
+				"type": "string",
+				"description": "Bindable version identifier, empty by default. If it does not identify one of the entity’s versions, it is replaced with the last version in the supplied list, or empty when there are none. Selecting a version updates this binding."
 			},
 			{
 				"name": "DesignPanel.option",
-				"type": "string"
+				"type": "string",
+				"description": "Bindable design-option identifier, empty by default. Determines which option’s images and direction are shown. Selecting an option updates this value; the parent is responsible for providing the intended selection when a version contains alternatives."
 			},
 			{
 				"name": "DesignPanel.onthread",
-				"type": "(thread: ThreadInfo) => void"
+				"type": "(thread: ThreadInfo) => void",
+				"description": "Required callback passed to the annotated image for selecting an existing thread. Receives the selected thread record so the parent can open its conversation."
 			},
 			{
 				"name": "DesignPanel.onannotate",
-				"type": "(target: ThreadTarget) => Promise<void>"
+				"type": "(target: ThreadTarget) => Promise<void>",
+				"description": "Required asynchronous callback for a whole-image or region annotation. Called only when an image is selected and annotations are enabled; receives a target anchored to the version and image, with the region or null. Rejections are caught and displayed as text."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DesignPanel",
-				"type": "markup"
+				"type": "markup",
+				"description": "Version and option selectors, available viewport and image-state selectors, and the selected annotated image, with a prior image when available. Viewport and state selections fall back to available images. Displays loading or image errors explicitly. A version without a displayed image shows its behavior notes or a missing-notes message; no version shows planning guidance or a no-committed-plan/design message. Function plans distinguish proposals from observed test results."
 			}
 		],
 		"errors": []
@@ -105,11 +113,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/DesignPanel.svelte",
+		"entry": "packages/desktop/src/components/design-panel/DesignPanel.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/DesignPanel.svelte"
+				"entry": "packages/desktop/src/components/design-panel/DesignPanel.svelte"
 			}
 		]
 	},

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { createGitHubSource } from '../src/utils/createGitHubSource';
+import { createGitHubSource } from '../src/utils/create-git-hub-source/createGitHubSource';
 import { sourceRepository } from './githubFixture';
 const commit = 'a'.repeat(40);
 test('owned-path history encodes paths, deduplicates overlap and reports exact pagination without tree fanout', async () => {

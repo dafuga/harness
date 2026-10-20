@@ -3,7 +3,7 @@ import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
-import { auditHarnessStructure } from '../src/audit/structureRules';
+import { auditHarnessStructure } from '../src/audit/structure-rules/structureRules';
 import { auditPath } from '../src/audit/audit';
 import { canonicalJson } from '../src/utils/canonicalJson';
 const roots: string[] = [];

@@ -11,6 +11,7 @@ The renderer uses the typed preload bridge. It has no filesystem, process, crede
 - Native Open Project selects only the chosen Git repository; cancellation preserves the existing view.
 - Pages, Components, Functions, Configs and Services remain reachable on desktop and mobile. No global App/Plan toggle is introduced.
 - Catalog search, changed-only filtering, sort, thumbnails and title/goal draft creation use the selected snapshot.
+- Implemented page cards open through a compact icon link with an accessible label and hover tooltip. Planned design review actions keep their labels.
 - Branch and full-commit paths retain encoded branch and entity identities. Branch selection displays the actual tip. Other branches and explicit commit views remain read-only in both UI and native bridge.
 - Entity views expose Design, Contract, Relationships and entity-specific History. Details → Source is the only source-disclosure path.
 - Designs show actual committed versions and available viewport/state choices. Missing images are not replaced by newer artifacts. Headless designs show their recorded notes.

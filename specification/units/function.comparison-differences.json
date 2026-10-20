@@ -2,34 +2,46 @@
 	"schemaVersion": 1,
 	"id": "function.comparison-differences",
 	"kind": "function",
-	"title": "comparisonDifferences",
-	"responsibility": "Decides whether a measurement may be compared with a baseline and names every gap or difference.",
+	"title": "Measurement comparability",
+	"responsibility": "Determines whether a measurement and baseline describe the same quantity and sampling method before their numeric values are compared.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/comparisonDifferences.ts"],
-		"symbols": ["MeasuredDefinition", "ComparisonVerdict", "comparisonDifferences"]
+		"source": [
+			"src/services/budget-service/comparisonDifferences.ts",
+			"src/utils/comparisonDifferences.ts"
+		],
+		"symbols": [
+			"comparisonDifferences",
+			"MeasuredDefinition",
+			"ComparisonVerdict",
+			"comparisonDifferences"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "comparisonDifferences.metric",
-				"type": "string"
+				"type": "string",
+				"description": "Metric name used to enforce the expected unit for known latency, throughput and memory metrics; custom metrics require matching units."
 			},
 			{
 				"name": "comparisonDifferences.measured",
-				"type": "MeasuredDefinition"
+				"type": "MeasuredDefinition",
+				"description": "Current measurement’s unit, method description and comparison context; missing or invalid metadata is reported as incomplete."
 			},
 			{
 				"name": "comparisonDifferences.baseline",
-				"type": "MeasuredDefinition"
+				"type": "MeasuredDefinition",
+				"description": "Reviewed baseline’s unit, method description and comparison context."
 			}
 		],
 		"outputs": [
 			{
 				"name": "comparisonDifferences",
-				"type": "ComparisonVerdict"
+				"type": "ComparisonVerdict",
+				"description": "Comparable with no differences when definitions match; incomplete when metadata is missing or invalid; otherwise incompatible with ordered differences for unit, request, boundary, protocol, sampling and method."
 			}
 		],
 		"errors": []

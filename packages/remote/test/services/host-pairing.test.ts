@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import type { PairingApproval } from '../../src/models/RemoteSecure.types';
-import { HostPairingService } from '../../src/services/HostPairingService';
+import { HostPairingService } from '../../src/services/host-pairing-service/HostPairingService';
 import { openPairing, pairingEnvelope, sealPairing } from '../../src/utils/pairingEnvelope';
 import { toBase64Url } from '../../src/utils/remoteBytes';
 import { pkceChallenge, remoteIdentity, remotePatterns } from '../../src/utils/remoteIdentity';

@@ -1,9 +1,9 @@
 import { createRawSnippet } from 'svelte';
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import EntitySections from '../../src/components/harness/EntitySections.svelte';
+import EntitySections from '../../src/components/harness/entity-sections/EntitySections.svelte';
 import { explorerEntities } from '../../src/utils/explorerEntities';
-import { hostProps, words } from '../entityRender';
+import { disclosed, hostProps, words } from '../entityRender';
 import { nav } from '../entityPlaces';
 import { ids } from '../entityUnits';
 
@@ -14,13 +14,11 @@ function sections(tab?: 'uses' | 'tests') {
 	return render(EntitySections, { props: { host, entity, nav: nav(host.route), pane } }).body;
 }
 
-test('the overview is the summary of the entity, then the evidence of its kind', () => {
+test('a visual overview leads with evidence and keeps usage in its dedicated tabs', () => {
 	const body = sections();
 	expect(body).toContain('aria-label="Orders page overview"');
-	expect(words(body)).toMatch(/Uses\s+3\s+Components\s+2\s+Order list/);
-	expect(body.indexOf('aria-label="Contract"')).toBeLessThan(
-		body.indexOf('the evidence of its kind')
-	);
+	expect(body).not.toMatch(/aria-label="(?:Used In|Uses)"/);
+	expect(body.indexOf('the evidence of its kind')).toBeLessThan(body.indexOf('aria-label="Size"'));
 });
 
 test('what it uses and its tests replace the overview, and its evidence pane with it', () => {
@@ -28,7 +26,9 @@ test('what it uses and its tests replace the overview, and its evidence pane wit
 	expect(related).toContain('aria-label="Orders page uses"');
 	expect(words(related)).not.toContain('the evidence of its kind');
 	const tests = sections('tests');
-	expect(tests).toContain('aria-label="Orders page tests"');
-	expect(words(tests)).toContain('Verification at bbbbbbb');
+	expect(tests).toContain('aria-label="Orders page states"');
+	expect(words(tests)).toContain('States');
+	expect(words(tests)).not.toContain('Verification at bbbbbbb');
+	expect(disclosed(tests)).toContain('Verification at bbbbbbb');
 	expect(words(tests)).not.toContain('the evidence of its kind');
 });

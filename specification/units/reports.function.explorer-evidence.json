@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.explorer-evidence",
 	"kind": "function",
-	"title": "explorerEvidence",
-	"responsibility": "Selects what an entity is shown with: the tip alone at a branch tip, or the first parent and the selected commit, with the coverage of each side and what makes the two not like for like.",
+	"title": "Revision-bound entity evidence",
+	"responsibility": "Selects the exact revision evidence for an entity and records why before/after results may not be comparable.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,25 +11,29 @@
 		"symbols": ["ExplorerRevisions", "explorerEvidence"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "explorerEvidence.scope",
-				"type": "ExplorerScope"
+				"type": "ExplorerScope",
+				"description": "Resolved branch/current-or-commit scope and first-parent identifier."
 			},
 			{
 				"name": "explorerEvidence.revisions",
-				"type": "ExplorerRevisions"
+				"type": "ExplorerRevisions",
+				"description": "Shown revision and parent state: undefined while loading, null when unavailable, or the stored parent revision."
 			},
 			{
 				"name": "explorerEvidence.unit",
-				"type": "Pick<HarnessUnit, 'id'>"
+				"type": "Pick<HarnessUnit, 'id'>",
+				"description": "Unit identifier whose scenarios and captures should be selected."
 			}
 		],
 		"outputs": [
 			{
 				"name": "explorerEvidence",
-				"type": "ExplorerEvidence"
+				"type": "ExplorerEvidence",
+				"description": "After evidence bound to the exact shown commit, and first-parent evidence only in selected-commit mode. Each side includes the chosen verdict record, applicable coverage, captures and explicit gaps. Current captures must be usable and not inherited. Scenario/state/viewport declarations from both sides are retained; differing profiles, viewport dimensions or tests are listed as comparison limits."
 			}
 		],
 		"errors": []

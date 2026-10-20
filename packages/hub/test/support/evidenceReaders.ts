@@ -1,6 +1,6 @@
-import { HubAttachedService } from '../../src/services/HubAttachedService';
+import { HubAttachedService } from '../../src/services/hub-attached-service/HubAttachedService';
 import { HubRecordStatusService } from '../../src/services/HubRecordStatusService';
-import { hubNotes } from '../../src/utils/hubNotes';
+import { hubNotes } from '../../src/services/hub-evidence-service/hubNotes';
 import type { HubSourceContext } from '../../src/utils/hubSource';
 import { reachesIn, type EvidenceFixture } from './evidenceFixture';
 

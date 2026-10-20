@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { writingCount, writingLimits } from '../../../../src/utils/writingLimits';
+import { writingCount, writingLimits } from '../../../../src/utils/writing-limits/writingLimits';
 import { index, record, revision } from '../entityFixture';
 import { content, disclosed, verdicts, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';

@@ -2,44 +2,50 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.cli-process",
 	"kind": "function",
-	"title": "cliProcess",
-	"responsibility": "Owns the cliProcess shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Run an owned CLI process",
+	"responsibility": "Runs a CLI command with bounded output and time, forwarding complete output lines and supporting cancellation.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/cliProcess.ts"],
 		"symbols": ["ProcessOptions", "killOwnedProcess", "cliProcess"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "killOwnedProcess.pid",
-				"type": "number | undefined"
+				"type": "number | undefined",
+				"description": "The owned process ID to terminate, or undefined to do nothing. On Windows it targets that process; elsewhere it targets the process group with that ID."
 			},
 			{
 				"name": "cliProcess.command",
-				"type": "CliCommand"
+				"type": "CliCommand",
+				"description": "The executable and arguments to spawn directly with the prepared CLI environment and piped input and output."
 			},
 			{
 				"name": "cliProcess.options",
-				"type": "ProcessOptions"
+				"type": "ProcessOptions",
+				"description": "Optional working directory, input text, cancellation signal, output-line callback and limits. Defaults are empty input, ten minutes and 16,000,000 output bytes. An already-aborted signal prevents the process from starting."
 			}
 		],
 		"outputs": [
 			{
 				"name": "killOwnedProcess",
-				"type": "void"
+				"type": "void",
+				"description": "No return value. Sends SIGTERM to the owned target; termination errors, including an already-exited process, are ignored."
 			},
 			{
 				"name": "cliProcess",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "A promise for UTF-8 standard output when the process exits with code zero. Rejects for startup failures, cancellation, timeout, excessive output or nonzero exit. Nonzero-exit messages include up to the last 2,000 characters of standard error."
 			}
 		],
 		"errors": [
 			{
 				"name": "RunCancelled",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects with RunCancelled when the supplied signal is already aborted or is aborted while the process runs. Active cancellation also sends termination to the owned process or process group."
 			}
 		]
 	},

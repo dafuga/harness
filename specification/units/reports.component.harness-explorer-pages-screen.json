@@ -53,7 +53,7 @@
 			{
 				"name": "ExplorerPagesScreen.pageCards",
 				"type": "markup",
-				"description": "The pages of the app as cards, each with its own screenshot, component count and verdict mark."
+				"description": "Page screenshot cards selected from the shown revision, with the original capture commit visible. Validated unchanged captures may be reused; missing or rejected evidence stays an explicit gap. Search, changed-only, ordering and links retain the selected scope."
 			}
 		],
 		"errors": [
@@ -92,11 +92,6 @@
 		},
 		{
 			"unit": "reports.model.explorer-screen-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.model.report-types",
 			"via": "import",
 			"origin": "derived"
 		}

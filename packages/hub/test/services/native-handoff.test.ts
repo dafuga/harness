@@ -1,6 +1,10 @@
 import { expect, test } from 'vitest';
-import { HANDOFF_TTL, NativeHandoffService } from '../../src/services/NativeHandoffService';
-import { normalizeCode, randomToken, sha256Url } from '../../src/utils/authSecrets';
+import {
+	HANDOFF_TTL,
+	NativeHandoffService
+} from '../../src/services/native-handoff-service/NativeHandoffService';
+import { normalizeCode } from '../../src/services/native-handoff-service/authSecrets';
+import { randomToken, sha256Url } from '../../src/utils/authSecrets';
 import { ORIGIN, ada, authFixture, browserGrant, grace } from '../support/authFixture';
 import type { AuthFixture } from '../support/authFixture';
 

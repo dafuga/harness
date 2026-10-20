@@ -2,40 +2,45 @@
 	"schemaVersion": 1,
 	"id": "function.errors",
 	"kind": "function",
-	"title": "errors",
-	"responsibility": "Owns the errors shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Expected CLI errors",
+	"responsibility": "Provides the error class used for deliberate CLI failures and the functions to throw or recognize it.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/core/errors.ts"],
 		"symbols": ["ExpectedCliError", "fail", "isExpectedCliError"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "fail.message",
-				"type": "string"
+				"type": "string",
+				"description": "Human-readable failure message to attach to the expected CLI error."
 			},
 			{
 				"name": "isExpectedCliError.error",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Any value to test for membership in the ExpectedCliError class."
 			}
 		],
 		"outputs": [
 			{
 				"name": "fail",
-				"type": "never"
+				"type": "never",
+				"description": "Never returns: immediately throws a new ExpectedCliError containing the supplied message."
 			},
 			{
 				"name": "isExpectedCliError",
-				"type": "error is ExpectedCliError"
+				"type": "error is ExpectedCliError",
+				"description": "True only when the value is an instance of ExpectedCliError, narrowing its TypeScript type."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The Error subclass thrown by fail, with its name set to ExpectedCliError."
 			}
 		]
 	},

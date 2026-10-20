@@ -2,26 +2,31 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.design-directions",
 	"kind": "function",
-	"title": "designDirections",
-	"responsibility": "Owns the designDirections shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Choose design directions",
+	"responsibility": "Returns distinct predefined directions for visual design options in their established order.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/designDirections.ts"],
-		"symbols": ["designDirections"]
+		"source": [
+			"packages/desktop/src/utils/designDirections.ts",
+			"packages/desktop/src/utils/plan-design/designDirections.ts"
+		],
+		"symbols": ["designDirections", "designDirections"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "designDirections.count",
-				"type": "number"
+				"type": "number",
+				"description": "The number of directions to take from the predefined list of ten. Callers normally supply a validated count from 1 to 10; this helper applies array slicing without validating it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "designDirections",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "A new list beginning with the most direct reading of the proposal, followed by the selected density, spacing, action-first, split-screen, cards, list, bold, calm and narrow-screen directions. Counts above ten return at most ten."
 			}
 		],
 		"errors": []

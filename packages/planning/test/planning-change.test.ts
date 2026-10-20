@@ -1,7 +1,7 @@
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import { author, contract, fixture } from './planFixture';
-import type { ChangeTarget, PlanningApi } from '../src';
+import type { ChangeTarget, PlanningApi } from '../src/lib/planning/index';
 async function headless(api: PlanningApi) {
 	await api.createPlan({
 		category: 'function',

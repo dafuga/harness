@@ -2,21 +2,22 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.hosted-evidence-schema",
 	"kind": "function",
-	"title": "hostedEvidenceSchema",
-	"responsibility": "Owns the hostedEvidenceSchema shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Define a hosted evidence answer",
+	"responsibility": "Defines the complete accepted structure of hosted evidence, including identity, viewing scope, captures and behavior comparisons.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/hostedEvidenceSchema.ts"],
 		"symbols": ["hostedEvidenceSchema"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "hostedEvidenceSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "A strict validation schema covering the read identity, revision scope, after side and nullable before side, scenario coverage and captures, and behavior rows and summary. Uses fixed status choices, 40-character commit hashes, 64-character content hashes, bounded lists and text, and fixed notes/evidence reference names. It rejects undeclared keys. Matching an answer to a particular request requires additional checks outside this schema."
 			}
 		],
 		"errors": []

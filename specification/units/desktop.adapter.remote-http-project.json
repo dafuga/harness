@@ -7,13 +7,17 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/adapters/RemoteHttpProjectAdapter.ts"],
+		"source": [
+			"packages/desktop/src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter.ts"
+		],
 		"symbols": [
 			"NativeHostedCredential",
 			"RemoteHttpProjectAdapter",
 			"RemoteHttpProjectAdapter.constructor",
 			"RemoteHttpProjectAdapter.evidence",
 			"RemoteHttpProjectAdapter.artifact",
+			"RemoteHttpProjectAdapter.agent",
+			"RemoteHttpProjectAdapter.onRunEvent",
 			"RemoteHttpProjectAdapter.available",
 			"RemoteHttpProjectAdapter.listProjects",
 			"RemoteHttpProjectAdapter.snapshot",
@@ -40,6 +44,22 @@
 			{
 				"name": "RemoteHttpProjectAdapter.artifact.input",
 				"type": "EvidenceArtifactQuery & { projectId: string }"
+			},
+			{
+				"name": "RemoteHttpProjectAdapter.agent.method",
+				"type": "string"
+			},
+			{
+				"name": "RemoteHttpProjectAdapter.agent.input",
+				"type": "unknown"
+			},
+			{
+				"name": "RemoteHttpProjectAdapter.agent.projectId",
+				"type": "string"
+			},
+			{
+				"name": "RemoteHttpProjectAdapter.onRunEvent.listener",
+				"type": "Parameters<AgentHttpAdapter['listen']>[0]"
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.snapshot.input",
@@ -81,6 +101,14 @@
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.artifact",
+				"type": "unknown"
+			},
+			{
+				"name": "RemoteHttpProjectAdapter.agent",
+				"type": "unknown"
+			},
+			{
+				"name": "RemoteHttpProjectAdapter.onRunEvent",
 				"type": "unknown"
 			},
 			{
@@ -134,6 +162,11 @@
 	"dependencies": [
 		{
 			"unit": "collaboration.model.collaboration-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.adapter.agent-http",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -195,11 +228,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/adapters/RemoteHttpProjectAdapter.ts",
+		"entry": "packages/desktop/src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/adapters/RemoteHttpProjectAdapter.ts"
+				"entry": "packages/desktop/src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter.ts"
 			}
 		]
 	},

@@ -1,22 +1,27 @@
+/** @pure */
 export function toKebabCase(value: string): string {
 	return words(value).join('-');
 }
 
+/** @pure */
 export function toPascalCase(value: string): string {
 	return words(value)
 		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
 		.join('');
 }
 
+/** @pure */
 export function toCamelCase(value: string): string {
 	const pascal = toPascalCase(value);
 	return pascal.charAt(0).toLowerCase() + pascal.slice(1);
 }
 
+/** @pure */
 export function toSnakeCase(value: string): string {
 	return words(value).join('_');
 }
 
+/** @pure */
 function words(value: string): string[] {
 	return value
 		.replace(/([a-z0-9])([A-Z])/g, '$1 $2')

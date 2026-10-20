@@ -5,8 +5,8 @@ import { join, resolve } from 'node:path';
 import { inflateSync } from 'node:zlib';
 import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
-import { brandIcon } from '../../src/utils/brandIcon';
-import { macIcon } from '../../scripts/mac-icon';
+import { brandIcon } from '../../scripts/mac-icon/brandIcon';
+import { macIcon } from '../../scripts/mac-icon/mac-icon';
 
 /**
  * The native icons are rasterised from the shared modular H: crisp gold tiles on navy with a

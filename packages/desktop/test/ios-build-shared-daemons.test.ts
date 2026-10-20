@@ -13,7 +13,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { signalProcesses, type TrackedProcess } from '../../../src/utils/processDescendants';
-import { runIsolated } from '../../../src/utils/runIsolated';
+import { runIsolated } from '../../../src/utils/run-isolated/runIsolated';
 
 /**
  * Apple's Interface Builder daemons are shared: one that a build started is reused by any other

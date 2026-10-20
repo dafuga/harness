@@ -3,7 +3,7 @@ import { dirname, join, relative, resolve } from 'node:path';
 import { parse, parseCss, type AST } from 'svelte/compiler';
 import { test } from 'vitest';
 import { expect } from '../../../test/verificationExpect';
-import { scanImports } from '../../../src/utils/scanImports';
+import { scanImports } from '../../../src/services/source-index-service/scanImports';
 
 /**
  * The model and effort pickers are two lists of choices behind one modal dialog. The dialog is

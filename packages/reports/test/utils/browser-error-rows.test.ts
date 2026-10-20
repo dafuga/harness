@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { browserErrorRows } from '../../src/utils/browserErrorRows';
+import { browserErrorRows } from '../../src/components/browser-errors/browserErrorRows';
 
 const observed = {
 	type: 'console' as const,

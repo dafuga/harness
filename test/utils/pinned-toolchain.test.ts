@@ -4,8 +4,9 @@ import { mkdtempSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, resolve } from 'node:path';
 import { afterAll, expect, test, vi } from 'vitest';
-import { pinnedToolchain, type ToolRun } from '../../src/utils/pinnedToolchain';
-import { recordCapture } from '../../src/utils/recordCapture';
+import { pinnedToolchain } from '../../scripts/build-kernel/pinnedToolchain';
+import { type ToolRun } from '../../src/utils/pinnedToolchain';
+import { recordCapture } from '../../src/utils/record-capture/recordCapture';
 
 /**
  * Which Rust tool an entry point of this project runs. It is the one of the toolchain that

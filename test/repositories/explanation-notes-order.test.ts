@@ -3,14 +3,14 @@ import { existsSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, expect, test } from 'vitest';
-import type { WritingVersion } from '../../src/utils/writingLimits';
+import type { WritingVersion } from '../../src/utils/writing-limits/writingLimits';
 import {
 	explanationsFile,
 	type Explanation,
 	type RequiredReason
 } from '../../src/core/explanationTypes';
 import { ExplanationRepository } from '../../src/repositories/ExplanationRepository';
-import { HistoryNoteRepository } from '../../src/repositories/HistoryNoteRepository';
+import { HistoryNoteRepository } from '../../src/repositories/history-note-repository/HistoryNoteRepository';
 import { ExplanationService } from '../../src/services/ExplanationService';
 
 const root = mkdtempSync(join(tmpdir(), 'harness-notes-order-'));

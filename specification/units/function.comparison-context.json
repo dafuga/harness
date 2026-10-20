@@ -2,38 +2,46 @@
 	"schemaVersion": 1,
 	"id": "function.comparison-context",
 	"kind": "function",
-	"title": "comparisonContext",
-	"responsibility": "Derives the comparison context of a benchmark from the request it sends and the sampling it uses.",
+	"title": "Benchmark comparison context",
+	"responsibility": "Identifies a benchmark’s full request and records the invocation boundary and sampling protocol needed for valid comparisons.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/comparisonContext.ts"],
-		"symbols": ["requestDigest", "comparisonContext"]
+		"source": [
+			"src/utils/comparison-context/comparisonContext.ts",
+			"src/utils/comparisonContext.ts"
+		],
+		"symbols": ["requestDigest", "comparisonContext", "requestDigest", "comparisonContext"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "requestDigest.request",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Complete JSON-shaped request, including operation and input, to fingerprint with canonical serialization."
 			},
 			{
 				"name": "comparisonContext.request",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Complete JSON-shaped request actually sent by the benchmark."
 			},
 			{
 				"name": "comparisonContext.sampling",
-				"type": "{ rounds: number; iterations: number }"
+				"type": "{ rounds: number; iterations: number }",
+				"description": "Round count and calls per round used by the benchmark; this helper copies rather than validates them."
 			}
 		],
 		"outputs": [
 			{
 				"name": "requestDigest",
-				"type": "string"
+				"type": "string",
+				"description": "Lowercase SHA-256 digest of canonical request JSON, independent of object-key order."
 			},
 			{
 				"name": "comparisonContext",
-				"type": "Comparison"
+				"type": "Comparison",
+				"description": "Context containing the request digest, public-invocation boundary, harness-rounds/1 protocol and sampling with three warm-up calls."
 			}
 		],
 		"errors": []

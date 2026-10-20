@@ -1,10 +1,10 @@
 <script lang="ts">
 	import HarnessAction from '../../../../src/components/harness/HarnessAction.svelte';
 	import HarnessIcon from '../../../../src/components/harness/HarnessIcon.svelte';
-	import HarnessNavbar from '../../../../src/components/harness/HarnessNavbar.svelte';
-	import HarnessSelectors from '../../../../src/components/harness/HarnessSelectors.svelte';
+	import HarnessNavbar from '../../../../src/components/harness/harness-navbar/HarnessNavbar.svelte';
+	import HarnessSelectors from '../../../../src/components/harness/harness-selectors/HarnessSelectors.svelte';
 	import HarnessTabs from '../../../../src/components/harness/HarnessTabs.svelte';
-	import HarnessVerdict from '../../../../src/components/harness/HarnessVerdict.svelte';
+	import HarnessVerdict from '../../../../src/components/harness/harness-verdict/HarnessVerdict.svelte';
 	import { harnessIcons, type HarnessIconName } from '../../../../src/utils/harnessIcons';
 	import { sha, shellBranch, shellCommits, shellHref, shellIndex, shellMount } from '../shellData';
 	// Every shared piece of the shell once, inside the explorer, and the two rows of the console
@@ -16,7 +16,8 @@
 		{ id: 'source', label: 'Source', disabled: true },
 		{ id: 'history', label: 'History' }
 	];
-	const sheet = 'display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:4px 12px;';
+	const sheet =
+		'display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:4px 12px;';
 	const cell = 'display:flex;align-items:center;gap:8px;margin:0;line-height:1.3;';
 	let section = $state('contract');
 	// The same tabs in a strip narrower than they are, opened on its last tab, as an entity is
@@ -98,10 +99,16 @@
 		<HarnessTabs label="Sections" view={section} tabs={sections} onview={(id) => (section = id)} />
 		<p>Section <output aria-label="Section">{section}</output></p>
 		<div style="max-width:230px;">
-			<HarnessTabs label="Narrow sections" view={narrow} tabs={sections} onview={(id) => (narrow = id)} />
+			<HarnessTabs
+				label="Narrow sections"
+				view={narrow}
+				tabs={sections}
+				onview={(id) => (narrow = id)}
+			/>
 		</div>
 		<p style="display:flex;flex-wrap:wrap;gap:12px;">
-			<HarnessAction tone="plain" onclick={() => (narrow = 'contract')}>Show contract</HarnessAction>
+			<HarnessAction tone="plain" onclick={() => (narrow = 'contract')}>Show contract</HarnessAction
+			>
 			<HarnessAction tone="plain" onclick={() => (narrow = 'history')}>Show history</HarnessAction>
 			<HarnessAction tone="plain" onclick={() => (section = 'history')}>Open history</HarnessAction>
 		</p>

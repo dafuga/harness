@@ -3,8 +3,8 @@
 	import { artifactText } from '../../utils/explorerArtifact';
 	import { mediaFile } from '../../utils/harnessEvidence';
 	import type { ExplorerArtifactBehavior } from '../../models/ExplorerEvidence.types';
-	import EntityCases from '../EntityCases.svelte';
-	import HarnessVerdict from './HarnessVerdict.svelte';
+	import EntityCases from '../entity-cases/EntityCases.svelte';
+	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
 	let {
 		cell,
 		label,

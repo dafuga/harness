@@ -3,7 +3,7 @@
 	"id": "desktop.component.agent-model-picker",
 	"kind": "component",
 	"title": "Agent model picker",
-	"responsibility": "Selects a discovered model across Codex CLI and Claude CLI without inventing availability.",
+	"responsibility": "Presents models grouped by provider and updates both identifiers of the chosen agent model.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,25 +11,29 @@
 		"symbols": ["AgentModelPicker"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "AgentModelPicker.providers",
-				"type": "ProviderState[]"
+				"type": "ProviderState[]",
+				"description": "Required providers with labels, models, availability and reasons. Unavailable providers stay visible with disabled model buttons; an available provider with no models gets an explicit empty message."
 			},
 			{
 				"name": "AgentModelPicker.provider",
-				"type": "ProviderId"
+				"type": "ProviderId",
+				"description": "Required bindable provider identifier. Selecting a model stores its provider identifier unchanged. Together with model, determines the selected button and tooltip."
 			},
 			{
 				"name": "AgentModelPicker.model",
-				"type": "string"
+				"type": "string",
+				"description": "Required bindable model identifier. Selecting a model stores its identifier unchanged and closes the picker. Does not choose a default model."
 			}
 		],
 		"outputs": [
 			{
 				"name": "AgentModelPicker",
-				"type": "markup"
+				"type": "markup",
+				"description": "Model icon and provider-grouped dialog with reasons, selected state and empty-provider messages. An enabled choice updates provider and model together."
 			}
 		],
 		"errors": []

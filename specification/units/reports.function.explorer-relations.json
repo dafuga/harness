@@ -2,30 +2,48 @@
 	"schemaVersion": 1,
 	"id": "reports.function.explorer-relations",
 	"kind": "function",
-	"title": "explorerRelations",
-	"responsibility": "Says what an entity contains and what contains it: pages, shells, components, functions, configs and services, each in its own section.",
+	"title": "Revision entity relationships",
+	"responsibility": "Finds categorized dependencies, consumers and containing pages within an active revision registry.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/utils/explorerRelations.ts"],
-		"symbols": ["explorerRelations"]
+		"symbols": ["RelationsReader", "explorerRelationsReader", "explorerRelations"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "explorerRelations.head",
-				"type": "HarnessRevision"
+				"type": "HarnessRevision",
+				"description": "Revision providing active unit definitions and dependency edges."
 			},
 			{
 				"name": "explorerRelations.id",
-				"type": "string"
+				"type": "string",
+				"description": "Entity identifier whose relationships should be traversed."
+			},
+			{
+				"name": "explorerRelationsReader.head",
+				"type": "HarnessRevision",
+				"description": "The recorded, read-only revision to browse. Create a new reader when its data changes."
+			},
+			{
+				"name": "explorerRelationsReader.built",
+				"type": "ExplorerEntity[]",
+				"description": "Optional entities already listed for this same revision. Their existing verdicts are reused; removed entries from a parent are excluded."
 			}
 		],
 		"outputs": [
 			{
 				"name": "explorerRelations",
-				"type": "ExplorerRelations"
+				"type": "ExplorerRelations",
+				"description": "Categorized dependencies, non-page users, containing pages and support units. Traversal stops at categorized entities but passes through support units; containing pages are reached upward to any depth. Cycles and duplicate visits are bounded by identifier sets. Missing or inactive identifiers return empty groups."
+			},
+			{
+				"name": "explorerRelationsReader",
+				"type": "(id: string) => ExplorerRelations",
+				"description": "A reusable lookup of Uses and Used In at this revision. It builds the dependency graph once and keeps each answer while the reader is held. Its answers are read-only; no global cache is created."
 			}
 		],
 		"errors": []

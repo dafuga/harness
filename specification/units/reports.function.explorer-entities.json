@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.explorer-entities",
 	"kind": "function",
-	"title": "explorerEntities",
-	"responsibility": "Lists the units of a revision as explorer entities with category, name, verdict and change, and the units the shown commit removed from its first parent.",
+	"title": "Explorer entity registry",
+	"responsibility": "Builds categorized active entities and selected-commit removal entries from revision data.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,45 +11,59 @@
 		"symbols": ["explorerChange", "explorerEntity", "explorerEntities"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "explorerChange.head",
-				"type": "HarnessRevision"
+				"type": "HarnessRevision",
+				"description": "Revision whose first-parent source impact is inspected."
 			},
 			{
 				"name": "explorerChange.unit",
-				"type": "string"
+				"type": "string",
+				"description": "Unit identifier to classify as changed."
 			},
 			{
 				"name": "explorerEntity.head",
-				"type": "HarnessRevision"
+				"type": "HarnessRevision",
+				"description": "Revision providing verdict and change context."
 			},
 			{
 				"name": "explorerEntity.unit",
-				"type": "HarnessUnit"
+				"type": "HarnessUnit",
+				"description": "Unit to convert to an explorer entity."
 			},
 			{
 				"name": "explorerEntities.head",
-				"type": "HarnessRevision"
+				"type": "HarnessRevision",
+				"description": "Shown revision with registry and source impact."
 			},
 			{
 				"name": "explorerEntities.parent",
-				"type": "HarnessRevision | null"
+				"type": "HarnessRevision | null",
+				"description": "Optional first-parent revision, used to show removed units in their last active form."
+			},
+			{
+				"name": "explorerEntity.includePrivate",
+				"type": "boolean | undefined",
+				"description": "Explicitly resolve a private callable for an owner or retained detail address; defaults to false for collections."
 			}
 		],
 		"outputs": [
 			{
 				"name": "explorerChange",
-				"type": "HarnessMark | null"
+				"type": "HarnessMark | null",
+				"description": "First matching impact mark in added, direct, indirect, removed order, or null without a match."
 			},
 			{
 				"name": "explorerEntity",
-				"type": "ExplorerEntity | null"
+				"type": "ExplorerEntity | null",
+				"description": "Named entity with category, role, purpose, source unit, verdict, change and app route; null for an uncategorized unit."
 			},
 			{
 				"name": "explorerEntities",
-				"type": "ExplorerEntity[]"
+				"type": "ExplorerEntity[]",
+				"description": "Active head entities grouped in category order, plus units explicitly removed by head and active in the supplied parent but no longer active in head. Removed entries retain their parent contract and receive a removed/not-proven verdict."
 			}
 		],
 		"errors": []

@@ -5,7 +5,7 @@ import { expect, test } from 'vitest';
 import type { CacheIdentity } from '../../../collaboration/src/models/Collaboration.types';
 import type { CacheStatus } from '../../src/models/ProjectContext.types';
 import { HostedReadService } from '../../src/services/HostedReadService';
-import { ProjectionCacheService } from '../../src/services/ProjectionCacheService';
+import { ProjectionCacheService } from '../../src/services/projection-cache-service/ProjectionCacheService';
 import { HostedFailureValidator } from '../../src/validators/HostedFailureValidator';
 
 const origin = 'https://hub.example.invalid';

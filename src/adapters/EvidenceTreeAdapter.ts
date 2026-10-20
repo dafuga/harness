@@ -51,6 +51,23 @@ export class EvidenceTreeAdapter {
 		return result.code === 0 ? result.stdout : undefined;
 	}
 
+	/** Exact raw blobs in one batch; missing paths stay absent and duplicate objects are read once. */
+	async readMany(commit: string, paths: string[]): Promise<Map<string, Buffer>> {
+		if (paths.length === 0) return new Map();
+		const listed = await this.list(commit);
+		const requested = paths.flatMap((path) => {
+			const hash = listed.get(path);
+			return hash ? [[path, hash] as const] : [];
+		});
+		const hashes = [...new Set(requested.map(([, hash]) => hash))];
+		if (hashes.length === 0) return new Map();
+		const bytes = await this.git.bytes(['cat-file', '--batch'], {
+			input: hashes.join('\n') + '\n'
+		});
+		const blobs = batchBlobs(bytes, hashes);
+		return new Map(requested.map(([path, hash]) => [path, Buffer.from(blobs.get(hash)!)]));
+	}
+
 	/** Every file path at a commit with its blob id. */
 	async list(commit: string): Promise<Map<string, string>> {
 		const output = await this.git.run(['ls-tree', '-r', '-z', commit]);
@@ -102,4 +119,26 @@ export class EvidenceTreeAdapter {
 		}
 		return ids;
 	}
+}
+
+/** Byte lengths delimit binary content; a malformed protocol response never becomes evidence. */
+function batchBlobs(bytes: Buffer, hashes: string[]): Map<string, Buffer> {
+	const blobs = new Map<string, Buffer>();
+	let offset = 0;
+	for (const hash of hashes) {
+		const end = bytes.indexOf(10, offset);
+		const header = /^([a-f0-9]+) blob ([0-9]+)$/.exec(
+			bytes.subarray(offset, end).toString('ascii')
+		);
+		const size = Number(header?.[2]);
+		if (end < 0 || header?.[1] !== hash || !Number.isSafeInteger(size))
+			throw new Error('Invalid Git batch response');
+		const start = end + 1,
+			next = start + size;
+		if (next >= bytes.length || bytes[next] !== 10) throw new Error('Invalid Git batch response');
+		blobs.set(hash, bytes.subarray(start, next));
+		offset = next + 1;
+	}
+	if (offset !== bytes.length) throw new Error('Invalid Git batch response');
+	return blobs;
 }

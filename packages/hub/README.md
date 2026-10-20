@@ -1,6 +1,6 @@
 # Harness Hub
 
-Hosted collaboration for Harness projects. Google users connect GitHub repositories, invite viewers or commenters, and discuss committed images. Hosted comments never run agents. Electron uses the same authenticated API and keeps its own disposable cache.
+Hosted collaboration for Harness projects. People sign in with Google and see projects they own alongside projects they have joined. Owners can invite readers, commenters or writers. Writers may request agent changes from Web, Electron or iOS; comments remain human discussion. Each client uses the same server-side membership checks.
 
 ## Local development
 
@@ -28,7 +28,7 @@ GitHub stores source, contracts, designs, notes/evidence and the private collabo
 - Append `/{entityId}`, `/{entityId}/history`, or `/{entityId}/details` for an entity; source remains inside Details.
 - `/invite/{projectId}/{invitationId}`: Google sign-in and invitation-code acceptance.
 - `/projects/{projectId}/members`: membership and invitations.
-- `/native/{handoffId}`: approve a one-time desktop session; no reusable credential in the URL.
+- `/native/{handoffId}`: approve a one-time device session; no reusable credential in the URL.
 
 Google sessions identify people by verified issuer/sub. GitHub authorization, membership and media access are checked server-side. Caches bind principal, project, repository, requested ref, source commit/tree, notes/evidence revisions and artifact hashes; corrupt data is discarded. Cache deletion never deletes GitHub records or local pending drafts.
 
@@ -36,11 +36,17 @@ R2 stores disposable source/media bytes and rendered snapshot/entity/history pro
 
 ## Electron connection
 
-Launch the Electron workspace with the exact trusted `HARNESS_HUB_ORIGIN`. Connect prompts a browser sign-in and one-time code approval. PKCE verifier and bearer session stay in the main process; the session is encrypted using Electron safeStorage. Plan/Change controls are available only in local agent-capable contexts. Shared projects use human comments and acknowledge only actual GitHub commits.
+Launch the Electron workspace with the exact trusted `HARNESS_HUB_ORIGIN`. Connect prompts a browser sign-in and one-time code approval. PKCE verifier and bearer session stay in the main process; the session is encrypted using Electron safeStorage. Owned and accepted-invitation projects use the same Google account across devices. Readers can browse, commenters can discuss, and writers can request agent work where the project capabilities allow it. The server checks those rights on every operation; a completed chat run is not a verification result.
+
+## iOS account connection
+
+Set the public `HARNESS_HUB_ORIGIN` build setting to the same exact HTTPS Hub origin used by Web and Electron. The app keeps its bundled renderer and opens the hosted Google approval page in Safari. Its account credential stays in a separate device-only Keychain namespace, outside the JavaScript bridge. No Google client secret belongs in the mobile build. An unset or invalid origin disables the account lane; it does not enable arbitrary host selection.
+
+A phone can open owned or joined hosted projects without a paired Mac. A paired Mac may additionally provide explicitly granted local projects. Removing a pairing leaves the independently authorized Google account intact. Temporary Hub outages do not authorize writes; the iOS hosted lane does not promise a persistent offline project cache.
 
 ## Remote hosts
 
-The desktop of a signed-in owner registers its Mac for phone access with `POST /api/remote/hosts` and manages it with `GET` or `DELETE /api/remote/hosts/{hostId}` and `DELETE /api/remote/hosts/{hostId}/devices/{deviceId}`. The owner is always the verified session, never a request field, and every call is forwarded to the relay's per-host Durable Object through the `REMOTE_HOSTS` binding. Without that binding or `HARNESS_RELAY_ORIGIN`, the relay's exact origin, these routes answer `503 remote-disabled`. The hub runs nothing for a phone, and a phone never calls the hub.
+The desktop of a signed-in owner registers its Mac for phone access with `POST /api/remote/hosts` and manages it with `GET` or `DELETE /api/remote/hosts/{hostId}` and `DELETE /api/remote/hosts/{hostId}/devices/{deviceId}`. The owner is always the verified session, never a request field, and every call is forwarded to the relay's per-host Durable Object through the `REMOTE_HOSTS` binding. Without that binding or `HARNESS_RELAY_ORIGIN`, the relay's exact origin, these routes answer `503 remote-disabled`. This paired-Mac lane is separate from the phone's Google account connection. Pairing grants only the explicitly approved local Mac projects; hosted projects still require the phone's own verified account and membership.
 
 ## Validation
 

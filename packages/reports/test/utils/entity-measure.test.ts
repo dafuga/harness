@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest';
-import { byteSize, entityMeasure, notMeasured } from '../../src/utils/entityMeasure';
+import { byteSize, notMeasured } from '../../src/utils/entityMeasure';
+import { entityMeasure } from '../../src/components/harness/entity-sections/entityMeasure';
 import { record } from '../entityFixture';
 import { commits, ids, units } from '../entityUnits';
 

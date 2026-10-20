@@ -1,4 +1,5 @@
 import { hostedEvidenceFields } from './hostedEvidenceFields';
+import { regressionViewSchema } from '../../../../src/core/regressionTypes';
 const { s, sha, array, names, obj, bool, num, scenario, unit } = hostedEvidenceFields;
 import { hostedEvidenceRecord as record } from './hostedEvidenceRecord';
 const changes = obj({
@@ -53,5 +54,6 @@ export const hostedEvidenceDetail = obj({
 			performance: attempt
 		}).strict()
 	),
-	rangeReasons: num.optional()
+	rangeReasons: num.optional(),
+	regressions: array(regressionViewSchema).optional()
 }).strict();

@@ -1,8 +1,8 @@
 import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
 import type { CatalogEntity } from '../../src/models/Desktop.types';
-import { proposalPrompt } from '../../src/utils/projectProposal';
-import { proposalUnits } from '../../src/utils/proposalUnits';
+import { proposalPrompt } from '../../src/services/project-run-service/projectProposal';
+import { proposalUnits } from '../../src/services/project-run-service/proposalUnits';
 
 /**
  * The catalog a creation request was made in is a hint: the prompt lists registered units of

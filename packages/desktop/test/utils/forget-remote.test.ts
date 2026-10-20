@@ -47,3 +47,22 @@ test('the start address is left alone, and a page without a location is not an e
 	vi.unstubAllGlobals();
 	expect(() => forgetRemote(shown() as unknown as Workspace)).not.toThrow();
 });
+
+test('disconnecting a Mac leaves the phones independent Google account project visible', () => {
+	const workspace = {
+		...shown(),
+		bridge: { hostedStatus: vi.fn() },
+		projects: [
+			{ id: 'local-1', name: 'Mac', kind: 'local' },
+			{ id: 'cloud', name: 'Account', kind: 'shared' }
+		],
+		snapshot: { project: { id: 'cloud' } },
+		capabilities: { ...closedCapabilities, source: 'github', comments: true },
+		selection: { id: 'cloud' },
+		target: 'cloud'
+	};
+	forgetRemote(workspace as unknown as Workspace);
+	expect(workspace.projects).toEqual([{ id: 'cloud', name: 'Account', kind: 'shared' }]);
+	expect(workspace.snapshot).toEqual({ project: { id: 'cloud' } });
+	expect(workspace.capabilities.comments).toBe(true);
+});

@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.canonical-json",
 	"kind": "function",
-	"title": "canonicalJson",
-	"responsibility": "Serializes a value as JSON with keys sorted at every depth, so equal values have one text and one hash.",
+	"title": "Canonical JSON serialization",
+	"responsibility": "Serializes JSON-shaped values with sorted object keys at every depth while preserving array order.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,17 +11,19 @@
 		"symbols": ["canonicalJson"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "canonicalJson.value",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "JSON-shaped value to serialize. Undefined object properties are omitted; arrays retain order. Objects are read through enumerable own keys rather than a custom JSON serializer."
 			}
 		],
 		"outputs": [
 			{
 				"name": "canonicalJson",
-				"type": "string"
+				"type": "string",
+				"description": "Compact JSON text with recursively sorted object keys and unchanged array order for JSON-serializable input."
 			}
 		],
 		"errors": []

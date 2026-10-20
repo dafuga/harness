@@ -52,9 +52,9 @@ export const entityLabels: Record<ExplorerCategory, EntityLabel> = {
 		subtitle: 'Reusable pieces of the app, at any level.'
 	},
 	functions: {
-		title: 'Functions',
-		one: 'Function',
-		subtitle: 'Small behaviors shared across the app.'
+		title: 'Helpers',
+		one: 'Helper',
+		subtitle: 'Pure, reusable functions. Same inputs, same result; no side effects.'
 	},
 	configs: {
 		title: 'Configs',
@@ -65,6 +65,11 @@ export const entityLabels: Record<ExplorerCategory, EntityLabel> = {
 		title: 'Services',
 		one: 'Service',
 		subtitle: 'Single-purpose capabilities behind the app.'
+	},
+	models: {
+		title: 'Models',
+		one: 'Model',
+		subtitle: 'The data types and schemas used by the app.'
 	}
 };
 
@@ -89,4 +94,5 @@ export function entityLens(from: ExplorerLocation, to: Target): ExplorerLocation
 	return place;
 }
 
+/** @pure */
 export const shortCommit = (commit: string): string => commit.slice(0, 7);

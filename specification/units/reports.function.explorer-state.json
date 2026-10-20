@@ -2,13 +2,18 @@
 	"schemaVersion": 1,
 	"id": "reports.function.explorer-state",
 	"kind": "function",
-	"title": "explorerState",
-	"responsibility": "Judges one declared state of a scenario against a record, and says which states of a scenario show a unit: those that name it, else those that name something made of it.",
+	"title": "State and capture coverage",
+	"responsibility": "Narrows scenarios to relevant states and judges whether each required recorded capture supports its bound revision.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/explorerState.ts"],
+		"source": [
+			"packages/reports/src/utils/explorer-verdict/explorerState.ts",
+			"packages/reports/src/utils/explorerState.ts"
+		],
 		"symbols": [
+			"captureUnbound",
+			"explorerState",
 			"Told",
 			"Judged",
 			"reasonText",
@@ -19,69 +24,84 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "reasonText.text",
-				"type": "string"
+				"type": "string",
+				"description": "Recorded reason whose file-location wording should be simplified."
 			},
 			{
 				"name": "scenarioFor.declared",
-				"type": "HarnessScenario"
+				"type": "HarnessScenario",
+				"description": "Full declared scenario."
 			},
 			{
 				"name": "scenarioFor.unit",
-				"type": "string"
+				"type": "string",
+				"description": "Unit identifier whose applicable states are requested."
 			},
 			{
 				"name": "scenarioFor.units",
-				"type": "HarnessUnit[]"
+				"type": "HarnessUnit[]",
+				"description": "Optional registry units, defaulting to an empty list, used to follow active consumers transitively."
 			},
 			{
 				"name": "coverageWorst.standings",
-				"type": "CoverageStanding[]"
+				"type": "CoverageStanding[]",
+				"description": "Coverage standings to prioritize."
 			},
 			{
 				"name": "captureUnbound.capture",
-				"type": "HarnessCapture"
+				"type": "HarnessCapture",
+				"description": "Capture whose recorded build binding is checked."
 			},
 			{
 				"name": "captureUnbound.commit",
-				"type": "string"
+				"type": "string",
+				"description": "Commit that the capture should support."
 			},
 			{
 				"name": "explorerState.judged",
-				"type": "Judged | null"
+				"type": "Judged | null",
+				"description": "Scenario declaration, result, record and bound commit, or null when there is no result to judge."
 			},
 			{
 				"name": "explorerState.declared",
-				"type": "HarnessScenario['states'][number]"
+				"type": "HarnessScenario['states'][number]",
+				"description": "Declared state and coverage requirement."
 			},
 			{
 				"name": "explorerState.absent",
-				"type": "Told"
+				"type": "Told",
+				"description": "Fallback standing and reason tuple. The standing is used when a required state lacks a judged result; its supplied reason text is not copied by this helper."
 			}
 		],
 		"outputs": [
 			{
 				"name": "reasonText",
-				"type": "string"
+				"type": "string",
+				"description": "Reason with matching in-file location phrases removed and other matching file paths replaced by a file."
 			},
 			{
 				"name": "scenarioFor",
-				"type": "HarnessScenario"
+				"type": "HarnessScenario",
+				"description": "Scenario narrowed to states naming the unit directly, otherwise states naming a transitive consumer, otherwise the unchanged full scenario."
 			},
 			{
 				"name": "coverageWorst",
-				"type": "CoverageStanding"
+				"type": "CoverageStanding",
+				"description": "Worst standing in failed, stale, missing, incomplete, passed order; inapplicable when none of those occurs."
 			},
 			{
 				"name": "captureUnbound",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "Reason when the capture names another revision or a screenshot/actual capture has no build stamp; null otherwise."
 			},
 			{
 				"name": "explorerState",
-				"type": "ExplorerStateCoverage"
+				"type": "ExplorerStateCoverage",
+				"description": "State coverage with reasons and evidence slots. Inapplicable states stay exempt; other nonrequired declarations are incomplete. Required states must be recorded as required and include each declared evidence/kind/viewport slot with a passed, stored, correctly bound capture. Missing declarations and slots never count as passed."
 			}
 		],
 		"errors": []

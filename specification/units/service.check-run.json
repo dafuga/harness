@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/CheckRunService.ts"],
+		"source": [
+			"src/services/CheckRunService.ts",
+			"src/services/check-run-service/CheckRunService.ts"
+		],
 		"symbols": [
+			"RunContext",
+			"CheckOutcome",
+			"CheckRunService",
 			"RunContext",
 			"CheckOutcome",
 			"CheckRunService",
@@ -74,11 +80,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/CheckRunService.ts",
+		"entry": "src/services/check-run-service/CheckRunService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/CheckRunService.ts"
+				"entry": "src/services/check-run-service/CheckRunService.ts"
 			}
 		]
 	},

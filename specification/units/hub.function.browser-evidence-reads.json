@@ -2,30 +2,37 @@
 	"schemaVersion": 1,
 	"id": "hub.function.browser-evidence-reads",
 	"kind": "function",
-	"title": "browserEvidenceReads",
-	"responsibility": "Owns the browserEvidenceReads shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Browser evidence reads",
+	"responsibility": "Use the project permission guard for evidence and verified artifact requests.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/browserEvidenceReads.ts"],
-		"symbols": ["browserEvidenceReads"]
+		"source": [
+			"packages/desktop/src/adapters/browser-project-adapter/browserEvidenceReads.ts",
+			"packages/hub/src/utils/browser-bridge/browserEvidenceReads.ts",
+			"packages/hub/src/utils/browserEvidenceReads.ts"
+		],
+		"symbols": ["browserEvidenceReads", "browserEvidenceReads", "browserEvidenceReads"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "browserEvidenceReads.api",
-				"type": "BrowserApi"
+				"type": "BrowserApi",
+				"description": "API client used for JSON evidence and bounded media reads."
 			},
 			{
 				"name": "browserEvidenceReads.guard",
-				"type": "Guard"
+				"type": "Guard",
+				"description": "Guard that resolves the project base path and handles permission failures."
 			}
 		],
 		"outputs": [
 			{
 				"name": "browserEvidenceReads",
-				"type": "Pick<DesktopBridge, 'evidence' | 'artifact'>"
+				"type": "Pick<DesktopBridge, 'evidence' | 'artifact'>",
+				"description": "evidence and artifact bridge methods using public evidence fields; artifact additionally validates returned media against the requested hash."
 			}
 		],
 		"errors": []
@@ -33,6 +40,11 @@
 	"dependencies": [
 		{
 			"unit": "desktop.function.evidence-payload",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.browser-api-types",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -52,11 +64,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.function.browser-api",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "hub.function.browser-artifact",
 			"via": "import",
 			"origin": "derived"
@@ -64,11 +71,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/browserEvidenceReads.ts",
+		"entry": "packages/desktop/src/adapters/browser-project-adapter/browserEvidenceReads.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/browserEvidenceReads.ts"
+				"entry": "packages/desktop/src/adapters/browser-project-adapter/browserEvidenceReads.ts"
 			}
 		]
 	},

@@ -52,6 +52,7 @@ function socketOf(socket: WebSocket): LocalSocket {
  */
 export class LocalTransportService {
 	private server: WebSocketServer | null = null;
+	private starting: Promise<number> | null = null;
 	private readonly tickets = new Map<string, Ticket>();
 	private readonly admitted = new WeakMap<IncomingMessage, LocalTransportTarget>();
 	constructor(private readonly options: LocalTransportOptions = {}) {}
@@ -64,7 +65,14 @@ export class LocalTransportService {
 	get connections(): number {
 		return this.server ? this.server.clients.size : 0;
 	}
-	async listen(): Promise<number> {
+	listen(): Promise<number> {
+		this.starting ??= this.start().catch((error: unknown) => {
+			this.starting = null;
+			throw error;
+		});
+		return this.starting;
+	}
+	private async start(): Promise<number> {
 		const server = new WebSocketServer({
 			host: '127.0.0.1',
 			port: 0,
@@ -100,6 +108,8 @@ export class LocalTransportService {
 			if (held.target === target) this.tickets.delete(ticket);
 	}
 	async close(): Promise<void> {
+		await this.starting?.catch(() => undefined);
+		this.starting = null;
 		const server = this.server;
 		this.server = null;
 		if (!server) return;

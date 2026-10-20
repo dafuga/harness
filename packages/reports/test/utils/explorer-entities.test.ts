@@ -121,6 +121,7 @@ test('an entity that is not at the revision has no relations, and a cycle ends',
 		components: [],
 		functions: [],
 		configs: [],
+		models: [],
 		services: [],
 		usedBy: [],
 		support: []
@@ -177,4 +178,25 @@ test('a unit the shown commit removed is listed from its parent, with its last c
 	expect(ids(explorerEntities(after))).not.toContain('function.old');
 	expect(ids(explorerEntities(after, null))).not.toContain('function.old');
 	expect(ids(explorerRelations(before, 'function.old').usedBy)).toEqual([]);
+});
+
+test('private functions are absent from collections and stay with their owner as support', () => {
+	const privateFunction = unit('function.private', 'function', {
+		helpers: [
+			{
+				name: 'private',
+				source: 'src/components/one/private.ts',
+				inputs: [],
+				pure: true,
+				consumers: [{ unit: 'component.one' }]
+			}
+		]
+	});
+	const owner = unit('component.one', 'component', uses(privateFunction.id));
+	const detail = revision([owner, privateFunction], [], []);
+	expect(ids(explorerEntities(detail))).toEqual([owner.id]);
+	expect(explorerRelations(detail, owner.id).functions).toEqual([]);
+	expect(explorerRelations(detail, owner.id).support.map((item) => item.id)).toEqual([
+		privateFunction.id
+	]);
 });

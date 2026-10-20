@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.relationships-panel",
 	"kind": "component",
-	"title": "RelationshipsPanel",
-	"responsibility": "Owns the RelationshipsPanel Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Used In and Uses",
+	"responsibility": "Shows recorded dependencies or the entities recorded as using the current entity.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/RelationshipsPanel.svelte"],
 		"symbols": ["RelationshipsPanel"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RelationshipsPanel.relationships",
-				"type": "Relationship[]"
+				"type": "Relationship[]",
+				"description": "Required relationships filtered by direction and deduplicated by identifier; the last matching duplicate supplies displayed values. Includes category, title and plan flag."
 			},
 			{
 				"name": "RelationshipsPanel.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Workspace used to link known-category entities. Records without a category remain plain text."
 			},
 			{
 				"name": "RelationshipsPanel.direction",
-				"type": "Relationship['direction']"
+				"type": "Relationship['direction']",
+				"description": "Required uses or used-by. Uses groups dependencies by category; used-by produces one Used In list with kind badges."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RelationshipsPanel",
-				"type": "markup"
+				"type": "markup",
+				"description": "Lists dependencies or users with names, category icons and optional plan badges. Verification marks stay on entity pages. Dependencies are grouped by kind; empty lists explain missing records."
 			}
 		],
 		"errors": []
@@ -42,11 +46,6 @@
 		},
 		{
 			"unit": "desktop.component.plan-badge",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "desktop.component.status-icon",
 			"via": "import",
 			"origin": "derived"
 		},

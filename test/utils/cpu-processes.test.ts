@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { cpuProcesses } from '../../src/utils/cpuProcesses';
+import { cpuProcesses } from '../../src/adapters/cpu-process-adapter/cpuProcesses';
 test('ignores malformed ps lines and distinguishes the shared app-server', () => {
 	const rows = cpuProcesses(
 		'garbage\n3 1 0:01 /bin/codex app-server\n4 1 0:01 /bin/codex exec\n5 1 0:01 node @anthropic-ai/claude-code/cli.js',

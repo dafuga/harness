@@ -2,26 +2,31 @@
 	"schemaVersion": 1,
 	"id": "remote.function.session-keys",
 	"kind": "function",
-	"title": "sessionKeys",
-	"responsibility": "Owns the sessionKeys shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Derive directional session keys",
+	"responsibility": "Bind triple P-256 key agreement to both peers and the current session context.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/remote/src/utils/sessionKeys.ts"],
-		"symbols": ["SessionKeyInput", "sessionKeys"]
+		"source": [
+			"packages/remote/src/services/secure-channel-service/sessionKeys.ts",
+			"packages/remote/src/utils/sessionKeys.ts"
+		],
+		"symbols": ["sessionKeys", "SessionKeyInput", "sessionKeys"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "sessionKeys.input",
-				"type": "SessionKeyInput"
+				"type": "SessionKeyInput",
+				"description": "Host or device role, both identities, generation, local static and ephemeral pairs, peer public keys and both session nonces."
 			}
 		],
 		"outputs": [
 			{
 				"name": "sessionKeys",
-				"type": "Promise<SessionKeys>"
+				"type": "Promise<SessionKeys>",
+				"description": "Nonextractable AES-256-GCM send and receive keys; opposite roles derive matching keys for each direction."
 			}
 		],
 		"errors": []

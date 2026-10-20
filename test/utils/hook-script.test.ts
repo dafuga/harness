@@ -1,12 +1,6 @@
 import { expect, test } from 'vitest';
-import {
-	chainedSuffix,
-	enabledFile,
-	hookScript,
-	hookStages,
-	managedHook,
-	stageFile
-} from '../../src/utils/hookScript';
+import { chainedSuffix, enabledFile, hookStages, stageFile } from '../../src/utils/hookScript';
+import { hookScript, managedHook } from '../../src/services/hook-install-service/hookScript';
 import { firstMessageHook, legacyPrePush } from '../support/legacyHooks';
 
 test('hookScript chains the previous hook first and runs Harness only where it was enabled', () => {

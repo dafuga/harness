@@ -13,14 +13,19 @@
 		"desktop.function.change-execute",
 		"desktop.function.changed-units",
 		"desktop.function.entity-references",
+		"desktop.function.prepare-project-task",
+		"desktop.function.project-agent-actions",
+		"desktop.function.project-agent-events",
 		"desktop.function.project-proposal",
 		"desktop.function.proposal-units",
 		"desktop.function.reference-prompt",
 		"desktop.function.run-context",
 		"desktop.function.unit-links",
 		"desktop.service.project-run",
+		"desktop.service.project-task",
 		"desktop.store.project-agent",
-		"desktop.store.thread-run"
+		"desktop.store.thread-run",
+		"reports.component.floating-chat"
 	],
 	"states": [
 		{
@@ -201,6 +206,14 @@
 			"target": "bun ../../test/verification-output.ts playwright tests/e2e/reference-views.spec.ts",
 			"cwd": "packages/desktop",
 			"timeoutMs": 240000
+		},
+		{
+			"id": "project-task",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/services/project-task.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
 		}
 	],
 	"evidence": [

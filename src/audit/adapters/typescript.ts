@@ -2,7 +2,7 @@ import { auditArchitecture } from '../architectureRules';
 import { auditBlocks } from '../blockRules';
 import { auditClassCount, auditFileLength } from '../commonRules';
 import { auditTypeScriptNaming } from '../namingRules';
-import { auditHarnessStructure } from '../structureRules';
+import { auditHarnessStructure } from '../structure-rules/structureRules';
 import type { AuditAdapter, AuditFile } from './types';
 
 export const typeScriptAdapter: AuditAdapter = {

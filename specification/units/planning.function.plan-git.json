@@ -2,129 +2,160 @@
 	"schemaVersion": 1,
 	"id": "planning.function.plan-git",
 	"kind": "function",
-	"title": "planGit",
-	"responsibility": "Owns the planGit shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Planning Git access",
+	"responsibility": "Provide repository reads and validate artifact paths and local Git LFS image content.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/planning/src/utils/planGit.ts"],
+		"source": [
+			"packages/planning/src/lib/planning/planGit.ts",
+			"packages/planning/src/utils/plan-read/containing.ts",
+			"packages/planning/src/utils/planGit.ts"
+		],
 		"symbols": [
-			"Git",
 			"planGit",
+			"containing",
+			"Git",
 			"revision",
 			"paths",
 			"blob",
 			"imageBlob",
 			"safePath",
+			"planGit",
 			"containing"
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "planGit.root",
-				"type": "string"
+				"type": "string",
+				"description": "Exact repository root; a nested directory is refused."
 			},
 			{
 				"name": "revision.git",
-				"type": "Git"
+				"type": "Git",
+				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "revision.value",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Branch, tag or commit; defaults to HEAD and rejects empty, option-like or newline-containing values."
 			},
 			{
 				"name": "paths.git",
-				"type": "Git"
+				"type": "Git",
+				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "paths.rev",
-				"type": "string"
+				"type": "string",
+				"description": "Revision whose tree is listed."
 			},
 			{
 				"name": "paths.path",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Optional repository path filter; defaults to the whole tree."
 			},
 			{
 				"name": "blob.git",
-				"type": "Git"
+				"type": "Git",
+				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "blob.rev",
-				"type": "string"
+				"type": "string",
+				"description": "Revision containing the artifact."
 			},
 			{
 				"name": "blob.path",
-				"type": "string"
+				"type": "string",
+				"description": "Repository-relative artifact path."
 			},
 			{
 				"name": "imageBlob.git",
-				"type": "Git"
+				"type": "Git",
+				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "imageBlob.rev",
-				"type": "string"
+				"type": "string",
+				"description": "Revision containing the PNG pointer."
 			},
 			{
 				"name": "imageBlob.path",
-				"type": "string"
+				"type": "string",
+				"description": "Repository-relative PNG path."
 			},
 			{
 				"name": "safePath.git",
-				"type": "Git"
+				"type": "Git",
+				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "safePath.path",
-				"type": "string"
+				"type": "string",
+				"description": "Repository-relative path to check for unsafe segments or existing symbolic links."
 			},
 			{
 				"name": "containing.git",
-				"type": "Git"
+				"type": "Git",
+				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "containing.rev",
-				"type": "string"
+				"type": "string",
+				"description": "Revision at which to inspect path history."
 			},
 			{
 				"name": "containing.path",
-				"type": "string"
+				"type": "string",
+				"description": "Artifact path whose first creation commit is needed."
 			}
 		],
 		"outputs": [
 			{
 				"name": "planGit",
-				"type": "Promise<Git>"
+				"type": "Promise<Git>",
+				"description": "Repository handle using the canonical root, Git directory and known object format, with a command runner."
 			},
 			{
 				"name": "revision",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Resolved full commit ID."
 			},
 			{
 				"name": "paths",
-				"type": "Promise<string[]>"
+				"type": "Promise<string[]>",
+				"description": "Matching paths from the revision tree."
 			},
 			{
 				"name": "blob",
-				"type": "Promise<Buffer>"
+				"type": "Promise<Buffer>",
+				"description": "Blob bytes for an existing regular-file entry."
 			},
 			{
 				"name": "imageBlob",
-				"type": "Promise<Buffer>"
+				"type": "Promise<Buffer>",
+				"description": "Local Git LFS content after pointer, length and SHA-256 verification."
 			},
 			{
 				"name": "safePath",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Returns nothing when the path has safe segments and no existing symbolic-link component."
 			},
 			{
 				"name": "containing",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Oldest creation commit found for the path within the selected history."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Reports invalid repositories or revisions, missing/tampered artifacts, unsafe paths and failed Git commands."
 			}
 		]
 	},

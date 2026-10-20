@@ -2,30 +2,36 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.unit-links",
 	"kind": "function",
-	"title": "unitLinks",
-	"responsibility": "Resolves unit references against the project, branch and commit in view when it was made.",
+	"title": "Resolve unit references",
+	"responsibility": "Create links for registered or currently viewed units within the captured workspace scope.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/unitLinks.ts"],
-		"symbols": ["UnitLink", "unitLinks"]
+		"source": [
+			"packages/desktop/src/components/reference-text/unitLinks.ts",
+			"packages/desktop/src/utils/unitLinks.ts"
+		],
+		"symbols": ["unitLinks", "UnitLink", "unitLinks"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "unitLinks.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Workspace with snapshot, selected entity, busy state and pinning state."
 			},
 			{
 				"name": "unitLinks.current",
-				"type": "CatalogEntity | null"
+				"type": "CatalogEntity | null",
+				"description": "Optional current entity detail; defaults to null and is used only for the entity actually selected."
 			}
 		],
 		"outputs": [
 			{
 				"name": "unitLinks",
-				"type": "(id: string)"
+				"type": "(id: string)",
+				"description": "Resolver returning unit name, category and route, or null for invalid IDs, absent units, busy state or changed project/revision scope. Pinned views keep their commit in the route."
 			}
 		],
 		"errors": []

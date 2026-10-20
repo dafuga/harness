@@ -2,42 +2,48 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.approval-button",
 	"kind": "component",
-	"title": "ApprovalButton",
-	"responsibility": "Owns the ApprovalButton Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Approval button",
+	"responsibility": "Saves approval of the latest displayed plan or design with its exact contract and selected images.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/ApprovalButton.svelte"],
 		"symbols": ["ApprovalButton"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ApprovalButton.entity",
-				"type": "EntityDetail"
+				"type": "EntityDetail",
+				"description": "Entity providing category, identifier, latest version and contract hash. Approval requires a hash; pages, shells and components also require selected images. Functions use Plan wording."
 			},
 			{
 				"name": "ApprovalButton.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Workspace providing writability, approval bridge and project context. Missing or nonwritable snapshot blocks approval. Refreshes the workspace after saving the decision."
 			},
 			{
 				"name": "ApprovalButton.design",
-				"type": "DesignVersion"
+				"type": "DesignVersion",
+				"description": "Version to approve; must equal the entity’s latest version. Its selected image hashes are sent with the approval. Versions with options also send the selected option identifier."
 			},
 			{
 				"name": "ApprovalButton.approved",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True disables approval and shows the approved-version label."
 			},
 			{
 				"name": "ApprovalButton.option",
-				"type": "string"
+				"type": "string",
+				"description": "Optional selected option identifier, empty by default. Determines the images whose hashes are approved and is included when the design has options."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ApprovalButton",
-				"type": "markup"
+				"type": "markup",
+				"description": "Approval button disabled for existing approval, an older version, missing contract hash or required images, a nonwritable workspace or an in-progress approval. Catches save/refresh failures as alerts and clears busy state afterward. Explains that approval saves a decision and only a Change request starts code work."
 			}
 		],
 		"errors": []

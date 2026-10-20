@@ -9,7 +9,7 @@ import {
 	repositorySchema
 } from './parseCollaborationInput';
 const time = z.iso.datetime();
-const role = z.enum(['owner', 'commenter', 'viewer']);
+const role = z.enum(['owner', 'writer', 'commenter', 'viewer']);
 export const projectSchema = z.strictObject({
 	id,
 	name: label,
@@ -24,7 +24,7 @@ const invitation = z.strictObject({
 	expiresAt: time,
 	codeHash: hash,
 	email,
-	role: z.enum(['commenter', 'viewer']),
+	role: z.enum(['writer', 'commenter', 'viewer']),
 	acceptedBy: label.nullable()
 });
 const comment = z.strictObject({

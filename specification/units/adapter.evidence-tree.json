@@ -17,6 +17,7 @@
 			"EvidenceTreeAdapter.contains",
 			"EvidenceTreeAdapter.exists",
 			"EvidenceTreeAdapter.read",
+			"EvidenceTreeAdapter.readMany",
 			"EvidenceTreeAdapter.list",
 			"EvidenceTreeAdapter.commit",
 			"EvidenceTreeAdapter.advance"
@@ -52,6 +53,14 @@
 			{
 				"name": "EvidenceTreeAdapter.read.path",
 				"type": "string"
+			},
+			{
+				"name": "EvidenceTreeAdapter.readMany.commit",
+				"type": "string"
+			},
+			{
+				"name": "EvidenceTreeAdapter.readMany.paths",
+				"type": "string[]"
 			},
 			{
 				"name": "EvidenceTreeAdapter.list.commit",
@@ -92,6 +101,10 @@
 				"type": "Promise<Buffer | undefined>"
 			},
 			{
+				"name": "EvidenceTreeAdapter.readMany",
+				"type": "Promise<Map<string, Buffer>>"
+			},
+			{
 				"name": "EvidenceTreeAdapter.list",
 				"type": "Promise<Map<string, string>>"
 			},
@@ -104,7 +117,12 @@
 				"type": "Promise<boolean>"
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
 	},
 	"dependencies": [
 		{

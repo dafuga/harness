@@ -1,7 +1,8 @@
 import { expect, test } from 'vitest';
 import type { Evidence } from '../../src/models/Report.types';
 import { audioPairs } from '../../src/utils/audioPairs';
-import { galleryEvidence, reportFilter } from '../../src/utils/reportFilter';
+import { galleryEvidence } from '../../src/utils/reportFilter';
+import { reportFilter } from '../../src/components/evidence-grid/reportFilter';
 const before: Evidence = {
 	id: 'before',
 	title: 'Early recording',

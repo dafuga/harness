@@ -1,3 +1,5 @@
+import type { ProjectTaskRequest } from './ProjectTask.types';
+export type { ProjectTaskRequest } from './ProjectTask.types';
 import type {
 	EntityEvidenceQuery,
 	EntityEvidenceResult,
@@ -30,7 +32,6 @@ import type {
 	ThreadMessage
 } from './Desktop.types';
 
-/** The only channels the main process answers. Anything else is refused before any handler. */
 export const channels = {
 	openProject: 'project:open',
 	listProjects: 'project:list',
@@ -57,7 +58,6 @@ export const channels = {
 	cancelRun: 'run:cancel'
 } as const;
 export type ChannelName = (typeof channels)[keyof typeof channels];
-/** Main to renderer: public progress of a run. */
 export const runEventChannel = 'run:event';
 export const cacheEventChannel = 'cache:status';
 
@@ -170,6 +170,7 @@ export type RunPhase = 'queued' | 'prompting' | 'generating' | 'saving' | 'chang
 export type RunEvent = { runId: string } & (
 	| { kind: 'status'; phase: RunPhase; detail: string }
 	| { kind: 'text'; text: string }
+	| { kind: 'replay'; text: string; detail: string }
 	| { kind: 'design'; version: string; images: DesignImage[] }
 	| { kind: 'changes'; files: SourceChange[] }
 	| { kind: 'failed'; message: string; created?: CreatedEntity }
@@ -205,7 +206,7 @@ export interface DesktopBridge {
 	messages(input: ThreadQuery): Promise<ThreadMessage[]>;
 	approve(input: ApprovalDraft): Promise<ApprovalInfo>;
 	providers(): Promise<ProviderState[]>;
-	startRun(input: RunRequest | ProjectRunRequest): Promise<{ runId: string }>;
+	startRun(input: RunRequest | ProjectRunRequest | ProjectTaskRequest): Promise<{ runId: string }>;
 	cancelRun(input: { runId: string; projectId?: string }): Promise<boolean>;
 	onRunEvent(listener: (event: RunEvent) => void): () => void;
 }

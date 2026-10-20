@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.kernel-types",
 	"kind": "function",
-	"title": "kernelTypes",
-	"responsibility": "Defines the impact kernel request and response contract.",
+	"title": "Impact kernel contract types",
+	"responsibility": "Defines the versioned impact graph, request and affected-node result types.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,12 +11,13 @@
 		"symbols": ["kernelContract", "KernelGraph", "ImpactInput", "AffectedNode", "ImpactOutput"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "kernelContract",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Contract identifier impact-kernel/1, returned by the kernel version operation."
 			}
 		],
 		"errors": []

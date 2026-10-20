@@ -1,12 +1,13 @@
-import { createHash } from 'node:crypto';
 import type { ProjectSnapshot } from '../models/Desktop.types';
-import type { HostedHttpAdapter } from '../adapters/HostedHttpAdapter';
+import type { HostedHttpAdapter } from '../adapters/hosted-http-adapter/HostedHttpAdapter';
 import { RemoteProjectResponseValidator } from '../validators/RemoteProjectResponseValidator';
 import { HostedReadService, type HostedReadOptions } from './HostedReadService';
+import { ProjectDiscoveryService } from './ProjectDiscoveryService';
 /** Names the rule a kept snapshot was listed by; one kept under another rule is not looked up. */
-const listed = 'listed:';
+const listed = 'pure-helper-contracts-v1:';
 export class RemoteProjectionService {
 	private reads: HostedReadService;
+	private discovery: ProjectDiscoveryService;
 	private validator = new RemoteProjectResponseValidator();
 	private views = new Map<string, string>();
 	constructor(
@@ -14,6 +15,7 @@ export class RemoteProjectionService {
 		private options: HostedReadOptions
 	) {
 		this.reads = new HostedReadService(options);
+		this.discovery = new ProjectDiscoveryService(this, http, this.reads, options);
 	}
 	branch(projectId: string) {
 		return this.views.get(projectId) ?? null;
@@ -43,38 +45,9 @@ export class RemoteProjectionService {
 		this.views.set(input.projectId, snapshot.revision.branch);
 		return cachedSnapshot(snapshot, result);
 	}
-	async projects() {
-		const result = await this.reads.read(
-			{ projectId: '$projects', key: 'projects' },
-			async () => {
-				const value = this.validator.projects(await this.http.json('/api/projects'));
-				if (!this.options.cache) return { value };
-				const identities = [];
-				for (const project of value) {
-					const snapshot = await this.snapshot({
-						projectId: project.id,
-						branch: null,
-						commit: null
-					});
-					if (snapshot.cache?.status === 'offline')
-						throw new Error('Project authority unavailable.');
-					if (snapshot.cache) identities.push(snapshot.cache.identity);
-				}
-				const first = identities[0];
-				// This is a discovery index; its profile binds every project's independent revisions.
-				const identity =
-					first && identities.length === value.length
-						? {
-								...first,
-								projectId: '$projects',
-								profile: createHash('sha256').update(JSON.stringify(identities)).digest('hex')
-							}
-						: undefined;
-				return { value, identity };
-			},
-			(value) => this.validator.projects(value)
-		);
-		return result.value;
+	/** The principal's owned and joined projects; a new one is read once to be kept offline. */
+	projects() {
+		return this.discovery.projects();
 	}
 	async read<T>(
 		input: { projectId: string; commit: string; branch?: string | null },
@@ -127,7 +100,7 @@ function cachedSnapshot(
 ): ProjectSnapshot {
 	return {
 		...snapshot,
-		writable: false,
+		writable: snapshot.writable && !result.offline,
 		...(snapshot.cache
 			? {
 					cache: {

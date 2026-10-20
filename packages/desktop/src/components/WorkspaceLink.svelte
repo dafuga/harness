@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
+	import { base } from '$app/paths';
 	import type { Snippet } from 'svelte';
 	import type { Workspace } from '../lib/stores/workspace.svelte';
 	let {
@@ -7,6 +7,7 @@
 		to,
 		class: style = '',
 		label,
+		title,
 		children
 	}: {
 		workspace: Workspace;
@@ -14,13 +15,15 @@
 		class?: string;
 		/** What the link does, where its text alone does not say it. */
 		label?: string;
+		/** Short hover text for an icon-only link. */
+		title?: string;
 		children: Snippet;
 	} = $props();
 	/**
 	 * Every workspace link is built by the workspace and resolved here against the base of the
 	 * app that renders it, so no component cuts a prefix off a path.
 	 */
-	const href = $derived(resolve(to as '/'));
+	const href = $derived(base + to);
 	/** A plain click opens the address here; a modified one is the browser's, such as a new tab. */
 	function open(event: MouseEvent) {
 		const modified = event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
@@ -30,4 +33,6 @@
 	}
 </script>
 
-<a class={style} {href} aria-label={label} onclick={open}>{@render children()}</a>
+<!-- Paths are validated by Workspace and shared across hosts with different generated route types. -->
+<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
+<a class={style} {href} {title} aria-label={label} onclick={open}>{@render children()}</a>

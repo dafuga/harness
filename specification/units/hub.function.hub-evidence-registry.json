@@ -2,26 +2,31 @@
 	"schemaVersion": 1,
 	"id": "hub.function.hub-evidence-registry",
 	"kind": "function",
-	"title": "hubEvidenceRegistry",
-	"responsibility": "Owns the hubEvidenceRegistry shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Build a revision evidence registry",
+	"responsibility": "Read unit and scenario manifests and budget history at the pinned revision.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubEvidenceRegistry.ts"],
-		"symbols": ["hubEvidenceRegistry"]
+		"source": [
+			"packages/hub/src/utils/hub-evidence-revision/hubEvidenceRegistry.ts",
+			"packages/hub/src/utils/hubEvidenceRegistry.ts"
+		],
+		"symbols": ["hubEvidenceRegistry", "hubEvidenceRegistry"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hubEvidenceRegistry.context",
-				"type": "HubSourceContext"
+				"type": "HubSourceContext",
+				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubEvidenceRegistry",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Revision registry built from unit/scenario records, blob identities and budget baselines. Scenario filenames must match their declared IDs."
 			}
 		],
 		"errors": []

@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.run-context",
 	"kind": "function",
-	"title": "runContext",
-	"responsibility": "Owns the runContext shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Build an agent task context",
+	"responsibility": "Assemble entity facts, recent thread messages, allowed unit references and task instructions for an agent run.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/runContext.ts"],
 		"symbols": ["runContext"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "runContext.context",
-				"type": "RunContext"
+				"type": "RunContext",
+				"description": "Run context containing project planning access, revision, entity, thread and requested work."
 			}
 		],
 		"outputs": [
 			{
 				"name": "runContext",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Prompt with entity contract, its uses and consumers, up to 20 recent messages truncated to 2000 characters each, reference instructions and requested work. Includes the shared coverage-first bug repair rules; assembling the prompt runs no repair or test."
 			}
 		],
 		"errors": []

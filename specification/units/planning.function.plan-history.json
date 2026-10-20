@@ -2,68 +2,83 @@
 	"schemaVersion": 1,
 	"id": "planning.function.plan-history",
 	"kind": "function",
-	"title": "planHistory",
-	"responsibility": "Owns the planHistory shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Planning history",
+	"responsibility": "Read commit metadata and classify changes to a single plan folder.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/planning/src/utils/planHistory.ts"],
-		"symbols": ["commits", "revisionInfo", "planHistory"]
+		"source": [
+			"packages/planning/src/services/planning-service/planHistory.ts",
+			"packages/planning/src/utils/planHistory.ts"
+		],
+		"symbols": ["planHistory", "commits", "revisionInfo", "planHistory"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "commits.git",
-				"type": "Git"
+				"type": "Git",
+				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "commits.rev",
-				"type": "string"
+				"type": "string",
+				"description": "Revision from which to list history."
 			},
 			{
 				"name": "commits.limit",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Integer from 1 to 500; defaults to 50."
 			},
 			{
 				"name": "commits.path",
-				"type": "string"
+				"type": "string",
+				"description": "Optional repository path filter."
 			},
 			{
 				"name": "revisionInfo.git",
-				"type": "Git"
+				"type": "Git",
+				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "revisionInfo.requested",
-				"type": "string"
+				"type": "string",
+				"description": "Requested branch, tag or commit; omitted means HEAD."
 			},
 			{
 				"name": "planHistory.git",
-				"type": "Git"
+				"type": "Git",
+				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "planHistory.input",
-				"type": "{ unitId: string; revision?: string; limit?: number }"
+				"type": "{ unitId: string; revision?: string; limit?: number }",
+				"description": "Unit ID, optional revision and limit from 1 to 500; history limit defaults to 100."
 			}
 		],
 		"outputs": [
 			{
 				"name": "commits",
-				"type": "Promise<CommitInfo[]>"
+				"type": "Promise<CommitInfo[]>",
+				"description": "Commit records with parents, author, commit time and subject."
 			},
 			{
 				"name": "revisionInfo",
-				"type": "Promise<RevisionInfo>"
+				"type": "Promise<RevisionInfo>",
+				"description": "Resolved commit and metadata, original request, whether it equals HEAD and current branch when applicable."
 			},
 			{
 				"name": "planHistory",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Unit ID, resolved revision and newest-first history entries with classified plan, design, approval, thread and message events."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects invalid limits, unresolved revisions and unavailable plans; underlying Git and artifact errors propagate."
 			}
 		]
 	},

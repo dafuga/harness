@@ -2,13 +2,15 @@
 	"schemaVersion": 1,
 	"id": "function.hook-script",
 	"kind": "function",
-	"title": "hookScript",
-	"responsibility": "Renders the managed Git hook wrapper for a stage and names the opt-in file of that stage: it chains an existing hook, reads the pushed references for pre-push and no input for commit-msg, acts only where its own stage was opted into, and is recognised as managed.",
+	"title": "Managed Git hook text",
+	"responsibility": "Renders stage-specific hook wrappers that chain existing hooks and run Harness only in opted-in worktrees.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/hookScript.ts"],
+		"source": ["src/services/hook-install-service/hookScript.ts", "src/utils/hookScript.ts"],
 		"symbols": [
+			"hookScript",
+			"managedHook",
 			"hookMarker",
 			"chainedSuffix",
 			"enabledFile",
@@ -20,49 +22,59 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "stageFile.stage",
-				"type": "string"
+				"type": "string",
+				"description": "Hook stage; pre-push retains the original opt-in filename, other names receive a suffix."
 			},
 			{
 				"name": "hookScript.stage",
-				"type": "string"
+				"type": "string",
+				"description": "Stage to render, normally pre-push or commit-msg. Only commit-msg uses the no-stdin message-file handoff."
 			},
 			{
 				"name": "managedHook.text",
-				"type": "string"
+				"type": "string",
+				"description": "Hook file text to search for the Harness marker."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hookMarker",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Marker text harness-managed hook."
 			},
 			{
 				"name": "chainedSuffix",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Suffix .harness-chained used to retain an existing hook beside the wrapper."
 			},
 			{
 				"name": "enabledFile",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Per-worktree push opt-in filename harness-hooks."
 			},
 			{
 				"name": "hookStages",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Supported stages pre-push and commit-msg."
 			},
 			{
 				"name": "stageFile",
-				"type": "string"
+				"type": "string",
+				"description": "harness-hooks for pre-push; otherwise harness-hooks- followed by the stage."
 			},
 			{
 				"name": "hookScript",
-				"type": "string"
+				"type": "string",
+				"description": "Shell script text that runs an executable chained hook first, preserves its failure, then reads the stage-specific worktree opt-in command and invokes Harness. Producing text does not install or run the hook."
 			},
 			{
 				"name": "managedHook",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when the text contains the managed marker anywhere."
 			}
 		],
 		"errors": []

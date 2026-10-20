@@ -26,6 +26,20 @@ export function unit(id: string, kind: string, extra: Partial<HarnessUnit> = {})
 		runtime: { kind: 'module', targets: [] },
 		budgets: { size: 'frozen', complexity: 'frozen', performance: [] },
 		version: 'v1',
+		// Function fixtures default to shared proof; private/legacy cases explicitly override it.
+		...(kind === 'function'
+			? {
+					helpers: [
+						{
+							name: id.split('.').pop() ?? id,
+							source: `src/${id}.ts`,
+							inputs: [],
+							pure: true,
+							consumers: [{ unit: 'component.first' }, { unit: 'component.second' }]
+						}
+					]
+				}
+			: {}),
 		...extra
 	};
 }

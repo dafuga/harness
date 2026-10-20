@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/planning/src/services/PlanningService.ts"],
+		"source": ["packages/planning/src/services/planning-service/PlanningService.ts"],
 		"symbols": ["planningService"]
 	},
 	"contract": {
@@ -105,11 +105,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/planning/src/services/PlanningService.ts",
+		"entry": "packages/planning/src/services/planning-service/PlanningService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/planning/src/services/PlanningService.ts"
+				"entry": "packages/planning/src/services/planning-service/PlanningService.ts"
 			}
 		]
 	},

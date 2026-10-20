@@ -2,44 +2,53 @@
 	"schemaVersion": 1,
 	"id": "function.installable-host",
 	"kind": "function",
-	"title": "installableHost",
-	"responsibility": "Checks that a directory is a SvelteKit project whose own policy module the console can be installed behind.",
+	"title": "Console host prerequisites",
+	"responsibility": "Checks console-install prerequisites and reports dependency or bundled-size warnings without installing files.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/installableHost.ts"],
-		"symbols": ["HostRequest", "installableHost", "hostWarnings"]
+		"source": [
+			"src/services/console-install-service/installableHost.ts",
+			"src/utils/installableHost.ts"
+		],
+		"symbols": ["installableHost", "hostWarnings", "HostRequest", "installableHost", "hostWarnings"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "installableHost.options",
-				"type": "HostRequest"
+				"type": "HostRequest",
+				"description": "SvelteKit host directory, console base segment, existing $lib policy module/export, update/keep choice and optional bucket binding/prefix."
 			},
 			{
 				"name": "hostWarnings.host",
-				"type": "string"
+				"type": "string",
+				"description": "Host directory whose package.json should be checked."
 			},
 			{
 				"name": "hostWarnings.compressedBytes",
-				"type": "number"
+				"type": "number",
+				"description": "Compressed bundled-history size in bytes to compare with the helper’s configured Worker threshold."
 			}
 		],
 		"outputs": [
 			{
 				"name": "installableHost",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value when host structure, base, option combinations, storage names and policy export text pass; reads files but performs no installation."
 			},
 			{
 				"name": "hostWarnings",
-				"type": "Promise<string[]>"
+				"type": "Promise<string[]>",
+				"description": "Warnings for a missing @dafuga01/harness dependency and for compressed history above the configured 3 MiB free threshold, mentioning the configured 10 MiB paid limit."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown for missing SvelteKit structure, invalid base/storage options, conflicting update/keep or absent policy module/export."
 			}
 		]
 	},

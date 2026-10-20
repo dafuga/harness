@@ -2,7 +2,10 @@ import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, type Page, type TestInfo } from '@playwright/test';
 import { buildStamp } from '../../../../src/utils/buildStamp';
-import { evidenceRequested, recordCapture } from '../../../../src/utils/recordCapture';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../../../../src/utils/record-capture/recordCapture';
 import scenario from '../../../../specification/scenarios/shared-test-cases.json' with { type: 'json' };
 
 const note =
@@ -20,6 +23,10 @@ async function observed(page: Page) {
 	const region = page.getByRole('region', { name: 'Evidence coverage' });
 	return {
 		heading: await page.getByRole('heading', { level: 1 }).innerText(),
+		contracts: await page
+			.getByRole('heading', { name: 'Contract', exact: true })
+			.locator('..')
+			.allTextContents(),
 		tables: await region
 			.getByRole('table')
 			.filter({ hasText: 'Observed output' })

@@ -22,7 +22,7 @@ import { afterEach, expect, test } from 'vitest';
 const repository = resolve(import.meta.dirname, '..');
 const roots: string[] = [];
 afterEach(() => roots.splice(0).forEach((root) => rmSync(root, { recursive: true, force: true })));
-function project(): string {
+function project(config?: string): string {
 	const root = realpathSync(mkdtempSync(join(tmpdir(), 'harness-workspace-config-')));
 	roots.push(root);
 	for (const file of ['vitest.config.ts', 'test/svelteKitConfigs.ts', 'test/setup.ts']) {
@@ -30,10 +30,7 @@ function project(): string {
 		copyFileSync(join(repository, file), join(root, file));
 	}
 	symlinkSync(join(repository, 'node_modules'), join(root, 'node_modules'));
-	writeFileSync(
-		join(root, 'test/root.test.ts'),
-		"import { test } from 'vitest';\ntest('root', () => {});\n"
-	);
+	samples(root, 'root', '');
 	const nested = join(root, 'packages', 'nested');
 	mkdirSync(join(nested, 'test'), { recursive: true });
 	writeFileSync(join(nested, 'package.json'), '{ "name": "nested", "private": true }\n');
@@ -41,11 +38,55 @@ function project(): string {
 		join(nested, 'test/setup.ts'),
 		'(globalThis as { ownSetup?: boolean }).ownSetup = true;\n'
 	);
-	writeFileSync(
-		join(nested, 'test/nested.test.ts'),
-		"import { expect, test } from 'vitest';\ntest('own setup ran', () => expect((globalThis as { ownSetup?: boolean }).ownSetup).toBe(true));\n"
-	);
+	const ownSetup = 'expect((globalThis as { ownSetup?: boolean }).ownSetup).toBe(true);';
+	samples(nested, 'nested', config ? '' : ownSetup);
+	if (config) {
+		copyFileSync(
+			join(repository, 'packages', config, 'vitest.config.ts'),
+			join(nested, 'vitest.config.ts')
+		);
+	}
 	return root;
+}
+
+/** Several real files reveal the runner's worker fan-out; one file cannot. */
+function samples(root: string, name: string, assertion: string): void {
+	for (let index = 0; index < 3; index++) {
+		writeFileSync(
+			join(root, `test/${name}-${index}.test.ts`),
+			`import { appendFileSync } from 'node:fs';
+import { expect, test } from 'vitest';
+test('${name} ${index}', async () => {
+	${assertion}
+	const id = process.pid + ':${index}';
+	appendFileSync('workers.log', 'start ' + id + '\\n');
+	await new Promise((resolve) => setTimeout(resolve, 100));
+	appendFileSync('workers.log', 'end ' + id + '\\n');
+});\n`
+		);
+	}
+}
+
+const files = (prefix: string, name: string) =>
+	Array.from({ length: 3 }, (_, index) => [`${prefix}test/${name}-${index}.test.ts`, 'passed']);
+
+/** Isolated files may use successive PIDs; count overlapping work, not lifetime PIDs. */
+function peakWorkers(cwd: string): number {
+	let peak = 0;
+	const active = new Set<string>();
+	let events: string[] = [];
+	try {
+		events = readFileSync(join(cwd, 'workers.log'), 'utf8').trim().split('\n');
+	} catch {
+		return -1;
+	}
+	for (const event of events) {
+		const [kind, id] = event.split(' ');
+		if (kind === 'start') active.add(id);
+		else active.delete(id);
+		peak = Math.max(peak, active.size);
+	}
+	return events.length === 6 && active.size === 0 ? peak : -1;
 }
 /**
  * How long one Vitest run may take, inside the 60 s each test allows: a blocking spawn cannot be
@@ -81,26 +122,49 @@ function run(root: string, cwd: string) {
 		files = [];
 	}
 	const timedOut = ran.error !== undefined && 'code' in ran.error && ran.error.code === 'ETIMEDOUT';
-	return { timedOut, status: ran.status, files, output: `${ran.stdout}${ran.stderr}` };
+	return {
+		timedOut,
+		status: ran.status,
+		files,
+		workers: peakWorkers(cwd),
+		output: `${ran.stdout}${ran.stderr}`
+	};
 }
 
 test('a workspace without a config of its own runs its tests with the root config and its own setup', () => {
 	const root = project();
 	const nested = run(root, join(root, 'packages', 'nested'));
 	expect(nested.output).not.toMatch(/ERR_MODULE_NOT_FOUND|ERR_LOAD_URL|No test files found/);
-	expect([nested.timedOut, nested.status, nested.files]).toEqual([
+	expect([nested.timedOut, nested.status, nested.files, nested.workers]).toEqual([
 		false,
 		0,
-		[['packages/nested/test/nested.test.ts', 'passed']]
+		files('packages/nested/', 'nested'),
+		1
 	]);
 }, 60_000);
 
 test('the root runs its own tests and still leaves the workspaces to theirs', () => {
 	const root = project();
 	const top = run(root, root);
-	expect([top.timedOut, top.status, top.files]).toEqual([
+	expect([top.timedOut, top.status, top.files, top.workers]).toEqual([
 		false,
 		0,
-		[['test/root.test.ts', 'passed']]
+		files('', 'root'),
+		1
 	]);
 }, 60_000);
+
+test.each(['collaboration', 'remote', 'relay'])(
+	'%s keeps its own configuration within one worker',
+	(config) => {
+		const root = project(config);
+		const nested = run(root, join(root, 'packages', 'nested'));
+		expect([nested.timedOut, nested.status, nested.files, nested.workers]).toEqual([
+			false,
+			0,
+			files('packages/nested/', 'nested'),
+			1
+		]);
+	},
+	60_000
+);

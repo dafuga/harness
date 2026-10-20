@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "function.stable-json",
 	"kind": "function",
-	"title": "stableJson",
-	"responsibility": "Owns the stableJson shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Formatted JSON output",
+	"responsibility": "Formats JSON-shaped data using the project’s tab-indented layout and short primitive-array style.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/stableJson.ts"],
 		"symbols": ["stableJson"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "stableJson.value",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "JSON-shaped value to render; undefined object fields are omitted, while nullish values elsewhere become null."
 			}
 		],
 		"outputs": [
 			{
 				"name": "stableJson",
-				"type": "string"
+				"type": "string",
+				"description": "Formatted text with a trailing newline. Objects retain entry order; primitive arrays stay inline when they fit the 100-column layout calculation, otherwise values expand with tabs."
 			}
 		],
 		"errors": []

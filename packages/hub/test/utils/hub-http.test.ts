@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest';
-import { hubHttpFailure, hubBody } from '../../src/utils/hubHttp';
+import { hubHttpFailure } from '../../src/controllers/hub-api-controller/hubHttp';
+import { hubBody } from '../../src/utils/hub-http/hubHttp';
 test('unknown provider detail and status never enter public errors', async () => {
 	for (const error of [
 		{ code: 'synthetic-private-provider-detail', status: 418 },

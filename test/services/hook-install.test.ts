@@ -3,7 +3,7 @@ import { chmodSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, expect, test } from 'vitest';
-import { HookInstallService } from '../../src/services/HookInstallService';
+import { HookInstallService } from '../../src/services/hook-install-service/HookInstallService';
 import { legacyPrePush } from '../support/legacyHooks';
 
 // Two worktrees of one repository share its hooks directory; each keeps its opt-ins in its own

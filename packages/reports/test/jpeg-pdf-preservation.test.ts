@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { reportPdf } from '../src/utils/reportPdf';
+import { reportPdf } from '../src/services/report-export-service/reportPdf';
 
 /**
  * Each case may take 30 seconds: it starts Python several times, to make a picture, to build the

@@ -1,6 +1,7 @@
 import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
-import { entityReferences, isUnitId } from '../../src/utils/entityReferences';
+import { entityReferences } from '../../src/components/reference-text/entityReferences';
+import { isUnitId } from '../../src/utils/entityReferences';
 
 /** The grammar of a reference id, and markers that are broken around a whole one. */
 test('an id is lower-case dotted segments of at most 200 characters', () => {

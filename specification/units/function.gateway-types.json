@@ -2,13 +2,17 @@
 	"schemaVersion": 1,
 	"id": "function.gateway-types",
 	"kind": "function",
-	"title": "gatewayTypes",
-	"responsibility": "Owns the gatewayTypes shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Gateway session state",
+	"responsibility": "Defines gateway message types and creates the mutable state of a fresh gateway session.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/gatewayTypes.ts"],
+		"source": [
+			"src/repositories/codex-session-repository/gatewayTypes.ts",
+			"src/utils/gatewayTypes.ts"
+		],
 		"symbols": [
+			"gatewayTypes",
 			"GatewayItem",
 			"GatewayRequest",
 			"GatewayCall",
@@ -19,17 +23,19 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "gatewayTypes.id",
-				"type": "string"
+				"type": "string",
+				"description": "Session identifier copied unchanged into the new state."
 			}
 		],
 		"outputs": [
 			{
 				"name": "gatewayTypes",
-				"type": "GatewaySession"
+				"type": "GatewaySession",
+				"description": "Fresh session with an AbortController, empty pending-tool map, delivered-id set and replay map, running false and no event emitter."
 			}
 		],
 		"errors": []

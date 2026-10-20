@@ -1,6 +1,6 @@
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
-import { entityReferences } from '../src/utils/entityReferences';
+import { entityReferences } from '../src/components/reference-text/entityReferences';
 
 /**
  * How text is read for references: a reference is [[unit:<id>]] with an id of lower-case dotted

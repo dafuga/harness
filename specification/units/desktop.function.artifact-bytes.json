@@ -2,44 +2,53 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.artifact-bytes",
 	"kind": "function",
-	"title": "artifactBytes",
-	"responsibility": "Owns the artifactBytes shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Read and check capture bytes",
+	"responsibility": "Reads a recorded capture through the desktop connection and independently checks its hash.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/artifactBytes.ts"],
-		"symbols": ["unreadArtifact", "damagedArtifact", "artifactBytes"]
+		"source": [
+			"packages/desktop/src/components/recorded-preview/artifactBytes.ts",
+			"packages/desktop/src/utils/artifactBytes.ts"
+		],
+		"symbols": ["artifactBytes", "unreadArtifact", "damagedArtifact", "artifactBytes"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "artifactBytes.bridge",
-				"type": "Pick<DesktopBridge, 'artifact'>"
+				"type": "Pick<DesktopBridge, 'artifact'>",
+				"description": "A connection with an optional artifact reader. A connection without that operation is refused."
 			},
 			{
 				"name": "artifactBytes.query",
-				"type": "EvidenceArtifactQuery"
+				"type": "EvidenceArtifactQuery",
+				"description": "The exact capture request, including its binding and expected SHA-256 hash. Passed unchanged to the artifact reader."
 			}
 		],
 		"outputs": [
 			{
 				"name": "unreadArtifact",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The message used when the connection cannot read recorded bytes."
 			},
 			{
 				"name": "damagedArtifact",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The message used when returned bytes do not match the requested recorded hash."
 			},
 			{
 				"name": "artifactBytes",
-				"type": "Promise<EvidenceArtifactResult>"
+				"type": "Promise<EvidenceArtifactResult>",
+				"description": "A promise for copied bytes, the reader’s media type and the independently calculated SHA-256 hash. The bytes must match the requested hash, regardless of the hash claimed by the answer."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects if artifact reading is unavailable or the bytes have a different hash. Backend and hashing failures propagate."
 			}
 		]
 	},

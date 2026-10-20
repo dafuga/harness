@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "hub.component.hub-frame",
 	"kind": "component",
-	"title": "HubFrame",
-	"responsibility": "Owns the HubFrame Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Hub frame",
+	"responsibility": "Provides the shared-project page frame around supplied content.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/components/HubFrame.svelte"],
 		"symbols": ["HubFrame"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HubFrame.children",
-				"type": "Snippet"
+				"type": "Snippet",
+				"description": "Required page-content snippet rendered in the main area."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubFrame",
-				"type": "markup"
+				"type": "markup",
+				"description": "Harness header linking to the project home through full document navigation, Shared projects label, account controls and supplied main content."
 			}
 		],
 		"errors": []

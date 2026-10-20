@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import type { VerificationRecord } from '../../src/core/verificationTypes';
-import { unitGrowth } from '../../src/utils/historySeries';
+import { unitGrowth } from '../../src/services/history-index-service/historySeries';
 
 const commit = 'a'.repeat(40);
 const reason = 'Decision points are not counted in Rust: crates/counter/src/lib.rs.';

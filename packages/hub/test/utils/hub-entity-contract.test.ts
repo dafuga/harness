@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { hubEntityContract } from '../../src/utils/hubEntityContract';
+import { hubEntityContract } from '../../src/services/hub-projection-service/hubEntityContract';
 
 test('design-only entity contracts retain recorded input and error behavior', async () => {
 	const contract = {

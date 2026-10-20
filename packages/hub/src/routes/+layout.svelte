@@ -3,7 +3,7 @@
 	import '$desktop/lib/styles/workspace.css';
 	import '$desktop/lib/styles/design.css';
 	import '../lib/styles/hub.css';
-	import { provideBrowser } from '../utils/browserContext';
+	import { provideBrowser } from './browserContext';
 	let { children }: { children: Snippet } = $props();
 	const { session } = provideBrowser();
 	onMount(() => void session.refresh());

@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { expect, test } from 'vitest';
 import { artifactLimit } from '../../../desktop/src/utils/artifactMedia';
-import { browserArtifact } from '../../src/utils/browserArtifact';
+import { browserArtifact } from '../../src/utils/browser-bridge/browserArtifact';
 
 const hash = (bytes: Uint8Array) => createHash('sha256').update(bytes).digest('hex');
 const text = (value: string) => new TextEncoder().encode(value);

@@ -1,20 +1,9 @@
 import type { ProviderState } from '../../models/Desktop.types';
 import type { CreatedEntity, RunEvent } from '../../models/DesktopBridge.types';
-import type { RunDraft } from '../../utils/composeModes';
-import { rememberCreatedThread } from '../../utils/createdThread';
+import type { ComposeMode, RunDraft } from '../../utils/composeModes';
+import { projectAgentActions, projectAgentComment } from '../../utils/projectAgentActions';
+import { projectAgentEvents } from '../../utils/project-agent-events/projectAgentEvents';
 import type { Workspace } from './workspace.svelte';
-
-const ended = ['failed', 'cancelled', 'finished'];
-/** The draft a run that ended names, and whether the request is written in it. */
-function left(value: RunEvent) {
-	const made = 'created' in value ? (value.created ?? null) : null;
-	return { made, kept: made?.requestSaved ? made : null };
-}
-
-/**
- * The conversation that adds something new to a project: one creation run, its public status
- * and what became of it. A request stays with the person until its plan exists.
- */
 class ProjectAgentState {
 	runId = $state('');
 	status = $state('');
@@ -26,83 +15,66 @@ class ProjectAgentState {
 	/** A draft the last run left without the request in it: it is linked, never opened. */
 	saved = $state.raw<CreatedEntity | null>(null);
 	providers = $state.raw<ProviderState[]>([]);
-	private starting = $state(false);
-	private settle: ((planned: boolean) => void) | null = null;
-	constructor(private workspace: Workspace) {}
+	pendingEvents: RunEvent[] = [];
+	messages = $state.raw<Array<{ id: string; author: 'user' | 'agent'; text: string }>>([]);
+	starting = $state(false);
+	settle: ((planned: boolean) => void) | null = null;
+	constructor(readonly workspace: Workspace) {}
 	get active() {
 		return Boolean(this.runId) || this.starting;
 	}
 	/** Agents add to a project only at the writable tip of its branch, never in a past commit. */
 	get allowed() {
 		const { capabilities, snapshot, pinned, projectId } = this.workspace;
-		return capabilities.agents && Boolean(snapshot?.writable) && !pinned && Boolean(projectId);
+		return (
+			!this.workspace.busy &&
+			!this.workspace.error &&
+			capabilities.agents &&
+			Boolean(snapshot?.writable) &&
+			!pinned &&
+			Boolean(projectId)
+		);
+	}
+	get modes(): ComposeMode[] {
+		const comments: ComposeMode[] = this.workspace.capabilities.comments ? ['comment'] : [];
+		return this.allowed ? ['plan', 'ask', 'change', ...comments] : comments;
+	}
+	get approved() {
+		return this.allowed;
+	}
+	get notice() {
+		if (this.workspace.error) return 'Chat unavailable: ' + this.workspace.error;
+		return this.allowed
+			? 'Ask a question, plan a design, or request a code change.'
+			: this.workspace.capabilities.reason || 'Read-only project access.';
 	}
 	/** Reads who can be asked and follows the runs; what it returns stops following them. */
 	listen(): (() => void) | undefined {
 		const bridge = this.workspace.bridge;
-		if (!bridge || !this.allowed) return undefined;
-		void bridge
-			.providers()
-			.then((value) => (this.providers = value))
-			.catch((cause) => (this.error = String(cause)));
+		if (!bridge) return undefined;
 		return bridge.onRunEvent((value) => void this.event(value));
 	}
-	/**
-	 * Asks the chosen agent to plan something new; the catalog in view goes along as a hint.
-	 * It answers true only once the request is written in a plan: until then the text stays with
-	 * the person, also when a draft without it was left behind.
-	 */
-	send = async (draft: RunDraft): Promise<boolean> => {
-		const projectId = this.workspace.projectId;
-		if (this.active || draft.mode !== 'plan' || !this.allowed || !projectId) return false;
-		this.starting = true;
-		[this.error, this.status, this.asked, this.saved, this.said] = ['', '', draft.text, null, ''];
-		try {
-			const { provider, model, effort, text, designOptions } = draft;
-			const run = await this.workspace.bridge!.startRun({
-				...{ intent: 'create', category: this.workspace.category, mode: 'plan' },
-				...{ provider, model, effort, text, projectId },
-				// The count the person chose; a headless proposal is planned without images.
-				...(designOptions === undefined ? {} : { designOptions })
+	private discovered = false;
+	loadProviders() {
+		if (this.discovered || !this.allowed) return;
+		this.discovered = true;
+		void this.workspace
+			.bridge!.providers()
+			.then((value) => (this.providers = value))
+			.catch((cause) => {
+				this.error = String(cause);
+				this.discovered = false;
 			});
-			this.runId = run.runId;
-			this.status = 'Request accepted';
-			return await new Promise<boolean>((done) => (this.settle = done));
-		} catch (cause) {
-			this.error = String(cause);
-			return false;
-		} finally {
-			this.starting = false;
+	}
+	send = (draft: RunDraft) => projectAgentActions(this, draft);
+	event = (value: RunEvent) => {
+		if (this.starting && !this.runId) {
+			this.pendingEvents = [...this.pendingEvents.slice(-511), value];
+			return Promise.resolve();
 		}
+		return projectAgentEvents(this, value);
 	};
-	/** What an event says of the run, in words; a failure is said as an error. */
-	private told(value: RunEvent) {
-		if (value.kind === 'status') this.status = value.detail;
-		if (value.kind === 'text') this.said += value.text;
-		if (value.kind === 'failed') [this.error, this.status] = [value.message, ''];
-		if (value.kind === 'cancelled')
-			this.status = value.created
-				? 'Cancelled. A draft was saved.'
-				: 'Cancelled. Nothing was planned.';
-		if (value.kind === 'finished') this.status = value.summary;
-	}
-	/** The run that was started here, as it goes; a plan that was made is opened. */
-	async event(value: RunEvent): Promise<void> {
-		if (!this.runId || value.runId !== this.runId) return;
-		this.told(value);
-		if (!ended.includes(value.kind)) return;
-		const { made, kept } = left(value);
-		this.saved = kept ? null : made;
-		this.runId = '';
-		this.settle?.(value.kind === 'finished' || kept !== null);
-		this.settle = null;
-		await this.workspace.refresh();
-		// Only a plan that holds the request is opened; `kept.threadId` is the thread it is in.
-		if (kept) {
-			rememberCreatedThread(this.workspace, kept);
-			await this.workspace.navigate(this.workspace.path(kept.category, kept.entityId));
-		}
-	}
+	comment = (text: string) => projectAgentComment(this, text);
 	async cancel() {
 		try {
 			await this.workspace.bridge!.cancelRun({ runId: this.runId, ...this.workspace.context });

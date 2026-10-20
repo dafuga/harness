@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.unit-owners",
 	"kind": "function",
-	"title": "unitOwners",
-	"responsibility": "Names the units that own a path, from what each unit says it owns.",
+	"title": "Declared source ownership",
+	"responsibility": "Builds a lookup from exact file and directory declarations to their owning unit ids.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,17 +11,19 @@
 		"symbols": ["OwnedSource", "unitOwners"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "unitOwners.units",
-				"type": "OwnedSource[]"
+				"type": "OwnedSource[]",
+				"description": "Units with ids and source entries; a trailing slash means every path under that directory."
 			}
 		],
 		"outputs": [
 			{
 				"name": "unitOwners",
-				"type": "(path: string)"
+				"type": "(path: string)",
+				"description": "Lookup function returning sorted unique owner ids for a path, from exact file matches and directory prefixes. No owner is inferred from naming."
 			}
 		],
 		"errors": []

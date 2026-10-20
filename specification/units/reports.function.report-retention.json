@@ -2,44 +2,50 @@
 	"schemaVersion": 1,
 	"id": "reports.function.report-retention",
 	"kind": "function",
-	"title": "reportRetention",
-	"responsibility": "Owns the reportRetention shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Report expiry policy",
+	"responsibility": "Determines whether a report has reached its retention lifetime.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/utils/reportRetention.ts"],
 		"symbols": ["reportLifetimeMs", "reportCloudPrefixes", "reportRetention"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "reportRetention.report",
-				"type": "Pick<Report, 'startedAt'>"
+				"type": "Pick<Report, 'startedAt'>",
+				"description": "Report start timestamp; later updates do not extend this calculation."
 			},
 			{
 				"name": "reportRetention.now",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Optional current time in epoch milliseconds, defaulting to Date.now()."
 			}
 		],
 		"outputs": [
 			{
 				"name": "reportLifetimeMs",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Thirty days expressed in milliseconds."
 			},
 			{
 				"name": "reportCloudPrefixes",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Cloud storage prefixes for report evidence, uploaded screenshots and published reports."
 			},
 			{
 				"name": "reportRetention",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "True once the start time plus thirty days is at or before now; false before that boundary."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Throws Invalid report retention timestamp when the start date or current time is not finite."
 			}
 		]
 	},

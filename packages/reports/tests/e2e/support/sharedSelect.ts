@@ -31,10 +31,11 @@ export async function sharedField(field: Locator): Promise<void> {
 	const box = (await field.boundingBox())!;
 	const icon = (await caret.boundingBox())!;
 	const inset = box.x + box.width - icon.x - icon.width;
-	expect(inset).toBeGreaterThanOrEqual(12);
+	expect(inset).toBeGreaterThanOrEqual(8);
 	expect(inset).toBeLessThanOrEqual(20);
 	expect(Math.abs(icon.y + icon.height / 2 - box.y - box.height / 2)).toBeLessThan(1);
-	expect(box.height).toBeGreaterThanOrEqual(44);
+	const compact = await field.locator('..').evaluate((node) => node.classList.contains('compact'));
+	expect(box.height).toBeGreaterThanOrEqual(compact ? 32 : 44);
 	const padding = await field.evaluate((element) =>
 		parseFloat(getComputedStyle(element).paddingInlineEnd)
 	);

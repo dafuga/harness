@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.emitted-sizes",
 	"kind": "function",
-	"title": "emittedSizes",
-	"responsibility": "Names the limit of what a unit emits for one execution target and picks the sizes that are frozen: those measured from the build of the verified snapshot.",
+	"title": "Emitted size selection",
+	"responsibility": "Names per-target artifact limits and selects build measurements that qualify for those frozen limits.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,29 +11,34 @@
 		"symbols": ["emittedMetric", "emittedKey", "emittedSizes"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "emittedKey.target",
-				"type": "string"
+				"type": "string",
+				"description": "Target name to append to the artifact-bytes ledger key."
 			},
 			{
 				"name": "emittedSizes.measurements",
-				"type": "Item[]"
+				"type": "Item[]",
+				"description": "Measurements with metric and optional target, profile and workload fields; the helper filters without changing entries."
 			}
 		],
 		"outputs": [
 			{
 				"name": "emittedMetric",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The metric name artifact-bytes used for emitted output sizes."
 			},
 			{
 				"name": "emittedKey",
-				"type": "string"
+				"type": "string",
+				"description": "Ledger key artifact-bytes: followed by the supplied target."
 			},
 			{
 				"name": "emittedSizes",
-				"type": "Array<Item & { target: RuntimeKind }>"
+				"type": "Array<Item & { target: RuntimeKind }>",
+				"description": "Entries whose metric is artifact-bytes, target is defined, and profile and workload are both absent or empty. Benchmark sizes with a profile or workload are excluded; original order and objects are preserved."
 			}
 		],
 		"errors": []

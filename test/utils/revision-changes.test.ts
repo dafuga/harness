@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { revisionChanges } from '../../src/utils/revisionChanges';
+import { revisionChanges } from '../../src/services/history-index-service/revisionChanges';
 
 const parent = 'b'.repeat(40);
 const registry = (versions: Record<string, string>, available = true) => ({

@@ -11,8 +11,9 @@ Only what is shown changes. What is related to what is read from the same graph 
 - **Used In** lists what uses the entity, the pages that show it included, each once, with a badge saying what kind of thing it is.
 - **Uses** lists what the entity depends on, kept apart by kind: components, functions, configs, services, and what is none of these.
 - Neither section shows a source path. Source stays under Details, then Source.
-- The overview of an entity holds both sections. The sections of an entity are Overview, Used In, Uses and what was there besides; none is named Relationships.
-- An address of the former relationships section still opens the entity, on its overview, where both sections are: `?tab=relationships` in the explorer and `/relationships` in the workspace.
+- The explorer keeps Used In and Uses in dedicated tabs; Overview does not repeat them. Neither section is named Relationships.
+- Usage rows show names, kind/change badges and descriptions without verification marks. The entity page header retains its verification mark.
+- An address of the former relationships section still opens the entity on its overview: `?tab=relationships` in the explorer and `/relationships` in the workspace.
 - A link of either section opens the entity it names in the same branch and commit.
 - An entity nothing uses, one that uses nothing, and one removed at the shown commit each say so, and say no more than is recorded.
 
@@ -20,6 +21,12 @@ Only what is shown changes. What is related to what is read from the same graph 
 
 - The explorer follows consumers up to the pages that show an entity at any depth. The workspace lists what its catalog recorded: direct consumers and direct dependencies. The two are not made alike here.
 - What a removed entity used is not listed: the relations of a revision are those of the units it holds.
+
+## Verification
+
+Status placement: red `685c4ee7` at `2149299b` and unchanged green `f410dd83` at `5da392e0` share 1,257 frozen inputs. Three responsive explorer cases, seven renderer unit cases and three workspace browser flows pass. Fresh screenshots retain the header mark and omit row marks.
+
+Web formatting, types, lint, 569 unit tests and builds pass; all 1,264 unit manifests check without errors. Full verification stays pending on three existing web file-length findings and the unchanged nested ternary in `desktop/test/ios-simulator-build.test.ts`. Native Electron acceptance remains paused.
 
 ## Future Enhancements
 

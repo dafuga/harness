@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-entity-run",
 	"kind": "component",
-	"title": "EntityRun",
-	"responsibility": "Shows one side of the recorded end-to-end results of an entity state by state: each result with what it holds, or that it could not be read.",
+	"title": "Recorded test run",
+	"responsibility": "Displays one side of grouped test outcomes and their artifacts.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,41 +11,49 @@
 		"symbols": ["EntityRun"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EntityRun.shown",
-				"type": "EntityBehavior"
+				"type": "EntityBehavior",
+				"description": "Required grouped behavior/scenario data. Overall passes only with at least one group and every selected-side group passing."
 			},
 			{
 				"name": "EntityRun.side",
-				"type": "'before' | 'after'"
+				"type": "'before' | 'after'",
+				"description": "Required before or after, selecting each group/line outcome. After alone displays difference paths."
 			},
 			{
 				"name": "EntityRun.title",
-				"type": "string"
+				"type": "string",
+				"description": "Required pane heading and accessible name."
 			},
 			{
 				"name": "EntityRun.role",
-				"type": "string"
+				"type": "string",
+				"description": "Required descriptive side badge."
 			},
 			{
 				"name": "EntityRun.mediaBase",
-				"type": "string"
+				"type": "string",
+				"description": "Required artifact URL base passed to result viewers."
 			},
 			{
 				"name": "EntityRun.lost",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional flag, false by default, telling artifacts that reading failed rather than remains pending."
 			},
 			{
 				"name": "EntityRun.unit",
-				"type": "string"
+				"type": "string",
+				"description": "Optional function identifier passed through to callable case rows."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityRun",
-				"type": "markup"
+				"type": "markup",
+				"description": "Run pane with overall/state verdicts, scenario/state names, result kinds and Passed/Failed/Not recorded labels. Shows supplied artifacts and after-side differences without calculating new verification."
 			}
 		],
 		"errors": []

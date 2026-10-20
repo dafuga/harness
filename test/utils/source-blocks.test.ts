@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { sourceBlocks } from '../../src/utils/sourceBlocks';
+import { sourceBlocks } from '../../src/services/source-index-service/sourceBlocks';
 
 const base = [
 	"import { x } from './x';",

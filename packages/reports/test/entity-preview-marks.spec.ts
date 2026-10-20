@@ -18,10 +18,9 @@ for (const [name, size] of Object.entries(viewports)) {
 	}) => {
 		await tab.setViewportSize(size);
 		await open(tab, components, 'partial');
-		const row = tab.locator('.ex-table tbody tr').filter({ hasText: 'Order list' });
+		const row = tab.getByRole('article', { name: 'Order list', exact: true });
 		const mark = row.getByRole('button', { name: 'Coverage incomplete' });
 		await expect(mark).toBeVisible();
-		// No status is written beside any mark, and nothing is told before it is asked for.
 		expect((await shown(tab, '.hx-verdict')).join('')).toBe('');
 		await expect(tip(tab)).toHaveCount(0);
 		await capture(tab, `marks-collapsed-${name}`);
@@ -32,7 +31,6 @@ for (const [name, size] of Object.entries(viewports)) {
 		await capture(tab, `marks-open-${name}`);
 		await tab.mouse.move(1, 1);
 		await expect(tip(tab)).toHaveCount(0);
-		// The keyboard reaches the mark after the title of its row, and Escape closes what it told.
 		await row.getByRole('link', { name: 'Order list', exact: true }).focus();
 		await tab.keyboard.press('Tab');
 		await expect(mark).toBeFocused();
@@ -50,7 +48,7 @@ test('a tap opens what a mark tells, and a tap elsewhere closes it', async ({
 	browserErrors.watch(context);
 	const tab = await context.newPage();
 	await open(tab, components, 'partial');
-	const row = tab.locator('.ex-table tbody tr').filter({ hasText: 'Order list' });
+	const row = tab.getByRole('article', { name: 'Order list', exact: true });
 	await row.getByRole('button', { name: 'Coverage incomplete' }).tap();
 	await expect(tip(tab)).toContainText(why);
 	expect(await inside(tab, viewports.mobile)).toBe(true);
@@ -77,17 +75,18 @@ test('every collection, a header, the tests and a history show marks without sta
 	for (const [position, place] of places.entries()) {
 		await open(tab, place, 'partial');
 		const marks = await shown(tab, '.hx-verdict');
-		expect(marks.length, `marks at place ${position}`).toBeGreaterThan(0);
+		if (place.category === 'functions' && !('entity' in place))
+			expect(marks, 'compact function cards omit verification marks').toHaveLength(0);
+		else expect(marks.length, `marks at place ${position}`).toBeGreaterThan(0);
 		expect(marks.join(''), `words beside a mark at place ${position}`).toBe('');
 		expect(await fits(tab)).toBe(true);
 	}
-	// The header of the page tells its status and its reason when its mark is asked.
 	await open(tab, page, 'partial');
 	await tab.locator('.ex-head').getByRole('button', { name: 'Coverage incomplete' }).hover();
 	await expect(tip(tab)).toHaveText(`Coverage incomplete${why}`);
 	await capture(tab, 'marks-header-open-desktop');
-	// The missing evidence itself stays written where the tests are read.
 	await open(tab, { ...page, tab: 'tests' }, 'partial');
+	await tab.getByText('Verification details', { exact: true }).click();
 	await expect(tab.getByRole('list', { name: 'Why it is not proven' })).toContainText(why);
 	await capture(tab, 'marks-tests-desktop');
 });
@@ -108,12 +107,10 @@ for (const [name, size] of Object.entries(viewports)) {
 		await expect(full).not.toHaveAttribute('open');
 		await expect(tab.getByText('unit 70').first()).toBeHidden();
 		expect(await fits(tab)).toBe(true);
-		// A wide window shows every column of the history at once, without scrolling inside it.
 		const scroller = tab.locator('.ex-scroll').filter({ has: tab.locator('.ex-history') });
 		const spare = await scroller.evaluate((box) => box.clientWidth - box.scrollWidth);
 		if (name === 'desktop') expect(spare).toBeGreaterThanOrEqual(0);
 		await capture(tab, `history-long-short-${name}`);
-		// The keyboard opens the reasons as they were written, and lands on them.
 		await row.getByRole('button', { name: 'Full reasons of bbbbbbb' }).press('Enter');
 		await expect(full).toHaveAttribute('open');
 		await expect(full.locator('summary')).toBeFocused();
@@ -157,7 +154,6 @@ test('a recorded clip plays on the overview: one at the tip, a pair at a commit'
 	await expect(clip).toHaveCount(1);
 	await expect(clip).toHaveAttribute('src', '/media/ccccccc-match-audio.wav');
 	await expect(current.getByText('Order filed.')).toBeVisible();
-	// The clip is sound a browser decodes and plays, not a name of a file.
 	await clip.evaluate((audio: HTMLAudioElement) => ((audio.muted = true), audio.play()));
 	await expect
 		.poll(() => clip.evaluate((audio: HTMLAudioElement) => audio.currentTime))
@@ -173,7 +169,6 @@ test('a recorded clip plays on the overview: one at the tip, a pair at a commit'
 	expect(await sources.evaluateAll((all) => all.map((audio) => audio.getAttribute('src')))).toEqual(
 		['/media/aaaaaaa-match-audio.wav', '/media/bbbbbbb-match-audio.wav']
 	);
-	// Starting the second clip stops the first, so two sides are never heard at once.
 	const play = (audio: HTMLAudioElement) => ((audio.muted = true), audio.play());
 	await sources.first().evaluate(play);
 	await sources.last().evaluate(play);
@@ -186,9 +181,9 @@ test('a recorded clip plays on the overview: one at the tip, a pair at a commit'
 test('a title that wraps onto two lines is one solid area to press', async ({ page: tab }) => {
 	await tab.setViewportSize(viewports.mobile);
 	await open(tab, components);
-	// A narrow name column wraps the title, as a long name does in a real registry.
-	await tab.addStyleTag({ content: '.ex-row-name > span { width: 4.2em; }' });
+	await tab.addStyleTag({ content: '.ex-page-body h2 a { width: 3em; display: block; }' });
 	const title = tab.getByRole('link', { name: 'Order list', exact: true });
+	await title.scrollIntoViewIfNeeded();
 	const box = (await title.boundingBox()) as {
 		x: number;
 		y: number;
@@ -197,7 +192,6 @@ test('a title that wraps onto two lines is one solid area to press', async ({ pa
 	};
 	const line = await title.evaluate((link) => parseFloat(getComputedStyle(link).lineHeight));
 	expect(box.height).toBeGreaterThan(line * 1.5);
-	// A press in the middle of the title, between its two lines, opens the entity.
 	await tab.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
 	expect(await where(tab)).toEqual({
 		branch: 'feature/orders',
@@ -205,9 +199,9 @@ test('a title that wraps onto two lines is one solid area to press', async ({ pa
 		category: 'components',
 		entity: ids.list
 	});
-	// So does a press at the end of the shorter line, where a line of text alone would be empty.
 	await open(tab, components);
-	await tab.addStyleTag({ content: '.ex-row-name > span { width: 4.2em; }' });
+	await tab.addStyleTag({ content: '.ex-page-body h2 a { width: 3em; display: block; }' });
+	await title.scrollIntoViewIfNeeded();
 	const again = (await title.boundingBox()) as {
 		x: number;
 		y: number;

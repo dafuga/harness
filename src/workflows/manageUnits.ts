@@ -1,7 +1,8 @@
 import { fail } from '../core/errors';
 import type { ComponentManifest } from '../core/unitTypes';
-import type { UnitIndexResult } from '../services/UnitIndexService';
+import type { UnitIndexResult } from '../services/unit-index-service/UnitIndexService';
 import { UnitRegistryValidator } from '../validators/UnitRegistryValidator';
+import { previewBinding } from '../utils/previewBinding';
 import { graphOf, loadUnits, type LoadedUnits } from './loadUnits';
 
 export interface UnitsOptions {
@@ -52,6 +53,9 @@ export function registryErrors(loaded: LoadedUnits): string[] {
 	const scenarios = new Set(loaded.scenarios.map((scenario) => scenario.id));
 	return [
 		...loaded.errors,
+		...loaded.stored
+			.filter((unit) => unit.status === 'active')
+			.flatMap((unit) => previewBinding(unit, loaded.scenarios)),
 		...new UnitRegistryValidator().validate(loaded.stored, files),
 		...loaded.scenarios.flatMap((scenario) =>
 			scenario.units

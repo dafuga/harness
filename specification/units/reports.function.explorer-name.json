@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.explorer-name",
 	"kind": "function",
-	"title": "explorerName",
-	"responsibility": "Gives a unit the name a reader is shown: words taken from its title and id, never a path.",
+	"title": "Readable entity names",
+	"responsibility": "Derives display names and page addresses from declared titles and ownership.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,25 +11,29 @@
 		"symbols": ["explorerName", "explorerAppRoute"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "explorerName.unit",
-				"type": "Named"
+				"type": "Named",
+				"description": "Unit identifier, kind and title used for display naming."
 			},
 			{
 				"name": "explorerAppRoute.unit",
-				"type": "Pick<HarnessUnit, 'kind' | 'title' | 'owns'>"
+				"type": "Pick<HarnessUnit, 'kind' | 'title' | 'owns'>",
+				"description": "Unit kind, title and owned files used for the page address."
 			}
 		],
 		"outputs": [
 			{
 				"name": "explorerName",
-				"type": "string"
+				"type": "string",
+				"description": "Preserves a human-written multiword title when it passes the title rules; otherwise uses route screen words, identifier words or the final identifier segment. Known initialisms stay uppercase; an empty result becomes Unnamed."
 			},
 			{
 				"name": "explorerAppRoute",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "For page or layout kinds, a slash-prefixed title or the owned +page route address; null for other kinds or no matching route file."
 			}
 		],
 		"errors": []

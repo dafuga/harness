@@ -13,10 +13,16 @@ import {
 	type LoopState,
 	type LoopStatus,
 	type LoopStep
-} from './loopState';
+} from './loop-state/loopState';
 import { fail } from '../core/errors';
+import { enforceRegressionStep } from './record-regression/recordRegression';
 
-export type { LoopEvaluator, LoopState, LoopStatus, LoopStep } from './loopState';
+export {
+	type LoopEvaluator,
+	type LoopState,
+	type LoopStatus,
+	type LoopStep
+} from './loop-state/loopState';
 
 export interface CreateLoopInput extends LoopInput {
 	name: string;
@@ -88,6 +94,7 @@ export async function completeLoopStep(input: CompleteLoopStepInput): Promise<Lo
 	const pending = state.steps.find((candidate) => candidate.status === 'pending');
 	if (state.enforceOrder && pending && pending.id !== step)
 		fail(`Complete loop step "${pending.id}" before "${step}".`);
+	await enforceRegressionStep(loopRoot(input), state, step);
 
 	const completedAt = timestamp(input.now);
 	Object.assign(item, { status: 'complete' as const, completedAt, evidence });
@@ -141,6 +148,9 @@ async function newLoopState(
 		enforceOrder: inherited?.lineage.some((id) =>
 			['bug-fix', 'regression-prevention'].includes(id)
 		),
+		...(inherited?.lineage.some((id) => ['bug-fix', 'regression-prevention'].includes(id))
+			? { regressionCommits: 1 as const }
+			: {}),
 		steps: inherited?.steps.map((step) => ({ ...step, status: 'pending' as const })) ?? [],
 		evaluators: inherited?.evaluators
 	};

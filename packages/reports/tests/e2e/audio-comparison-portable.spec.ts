@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { pathToFileURL } from 'node:url';
 import { audioPairFixture } from '../../test/audioPairFixture';
 import { audioFixture } from '../../test/audioFixture';
-import { ReportExportService } from '../../src/services/ReportExportService';
+import { ReportExportService } from '../../src/services/report-export-service/ReportExportService';
 test('paired audio plays and downloads in portable HTML with the network offline', async ({
 	page
 }) => {

@@ -2,26 +2,31 @@
 	"schemaVersion": 1,
 	"id": "reports.function.entity-removed",
 	"kind": "function",
-	"title": "entityRemoved",
-	"responsibility": "Names the scenarios and states the parent of a selected commit declared for an entity and the commit no longer does.",
+	"title": "Removed scenario declarations",
+	"responsibility": "Explains scenarios or states declared by a parent that the selected commit no longer declares.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/entityRemoved.ts"],
-		"symbols": ["entityRemoved"]
+		"source": [
+			"packages/reports/src/components/harness/entity-tests/entityRemoved.ts",
+			"packages/reports/src/utils/entityRemoved.ts"
+		],
+		"symbols": ["entityRemoved", "entityRemoved"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "entityRemoved.evidence",
-				"type": "ExplorerEvidence"
+				"type": "ExplorerEvidence",
+				"description": "Before/after evidence coverage supplied by the host."
 			}
 		],
 		"outputs": [
 			{
 				"name": "entityRemoved",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Sentences for each removed whole scenario or removed state. Uses coverage declarations rather than inferring removals from absent captures; no before coverage yields an empty list."
 			}
 		],
 		"errors": []

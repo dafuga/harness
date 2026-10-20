@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "hub.component.project-list",
 	"kind": "component",
-	"title": "ProjectList",
-	"responsibility": "Owns the ProjectList Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Project list",
+	"responsibility": "Groups the signed-in account’s owned and invited projects, with their roles and navigation links.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/components/ProjectList.svelte"],
 		"symbols": ["ProjectList"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProjectList.projects",
-				"type": "ProjectSummary[]"
+				"type": "ProjectSummary[]",
+				"description": "Required project summaries in display order, including identity, name, source repository and role."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectList",
-				"type": "markup"
+				"type": "markup",
+				"description": "Owned by you and Shared with you groups show project names, repositories and membership roles. Owners also get Members links. An empty list explains how projects appear across devices."
 			}
 		],
 		"errors": []

@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { browserApi } from '../../src/utils/browserApi';
+import { browserApi } from '../../src/routes/browserApi';
 
 test('recorded bytes arrive with the type the server states for them', async () => {
 	const fetcher = vi.fn(

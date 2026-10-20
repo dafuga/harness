@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "reports.component.browser-errors",
 	"kind": "component",
-	"title": "BrowserErrors",
-	"responsibility": "Displays recorded browser errors with their expectations, test identity, retry and diagnostic context in every component viewer.",
+	"title": "Recorded browser errors",
+	"responsibility": "Display recorded console errors and uncaught exceptions alongside their expectations and test-attempt context.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/BrowserErrors.svelte"],
+		"source": ["packages/reports/src/components/browser-errors/BrowserErrors.svelte"],
 		"symbols": ["BrowserErrors"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "BrowserErrors.diagnostics",
-				"type": "BrowserDiagnostic[]"
+				"type": "BrowserDiagnostic[]",
+				"description": "Optional recorded test-attempt diagnostics. Missing or empty arrays render nothing; each supplied attempt may contain observations, expectations or both."
 			}
 		],
 		"outputs": [
 			{
 				"name": "BrowserErrors",
-				"type": "markup"
+				"type": "markup",
+				"description": "Expandable Browser errors group with the total classified row count, test/file/project or browser identity and retry number. Rows show expected, unexpected or missing-expected status, message, expectation reason and available source/page/stack as escaped text. Source line and column display one-based coordinates. A supplied attempt with no rows still appears under a zero-entry summary."
 			}
 		],
 		"errors": []
@@ -40,11 +42,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/BrowserErrors.svelte",
+		"entry": "packages/reports/src/components/browser-errors/BrowserErrors.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/BrowserErrors.svelte"
+				"entry": "packages/reports/src/components/browser-errors/BrowserErrors.svelte"
 			}
 		]
 	},
