@@ -108,13 +108,7 @@ function withConsumers(detail: HarnessRevision): HarnessRevision {
 /** Private services stay linked to their owners but never enter the shared catalog. */
 function withServices(detail: HarnessRevision): HarnessRevision {
 	const template = detail.registry.units.find((unit) => unit.id === ids.store)!;
-	const variants = [
-		[],
-		[{ unit: ids.list }],
-		[{ unit: ids.list }, { unit: ids.list }],
-		[{ unit: ids.list }, { unit: 'missing' }],
-		undefined
-	];
+	const variants = privateServiceUsers;
 	return {
 		...detail,
 		registry: {
@@ -135,3 +129,11 @@ function withServices(detail: HarnessRevision): HarnessRevision {
 		}
 	};
 }
+
+export const privateServiceUsers = [
+	[],
+	[{ unit: ids.list }],
+	[{ unit: ids.list }, { unit: ids.list }],
+	[{ unit: ids.list }, { unit: 'missing' }],
+	undefined
+];

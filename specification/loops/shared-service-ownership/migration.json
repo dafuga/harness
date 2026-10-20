@@ -2,10 +2,10 @@
 	"schemaVersion": 1,
 	"baseline": "cf06219bc8e4d1599929c75740dbc50841e261fb",
 	"moves": {
-		"packages/desktop/src/initializers/initializeDesktop.ts": "packages/desktop/src/initializers/initialize-desktop/initializeDesktop.ts",
-		"packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts": "packages/desktop/src/initializers/initialize-desktop/initialize-desktop/initializeDesktop.ts",
-		"packages/desktop/src/services/NativeConnectionService.ts": "packages/desktop/src/initializers/initialize-desktop/NativeConnectionService.ts",
-		"packages/desktop/src/services/NativeAuthService.ts": "packages/desktop/src/initializers/initialize-desktop/NativeAuthService.ts",
+		"packages/desktop/src/initializers/initializeDesktop.ts": "packages/desktop/src/lib/desktop-initialization/initializeDesktop.ts",
+		"packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts": "packages/desktop/src/lib/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+		"packages/desktop/src/services/NativeConnectionService.ts": "packages/desktop/src/lib/desktop-initialization/NativeConnectionService.ts",
+		"packages/desktop/src/services/NativeAuthService.ts": "packages/desktop/src/lib/desktop-initialization/NativeAuthService.ts",
 		"src/workflows/exportPlans.ts": "src/workflows/generate-code/exportPlans.ts",
 		"src/services/RegressionProofService.ts": "src/workflows/record-regression/RegressionProofService.ts",
 		"src/workflows/loadUnits.ts": "src/workflows/load-units/loadUnits.ts",
@@ -17,9 +17,9 @@
 		"src/services/AnalyticsService.ts": "src/cli/program/AnalyticsService.ts",
 		"src/workflows/analyticsMetrics.ts": "src/cli/program/analyticsMetrics.ts",
 		"src/workflows/analyticsJevMetrics.ts": "src/cli/program/analyticsJevMetrics.ts",
-		"packages/desktop/src/utils/desktopBridge.ts": "packages/desktop/src/utils/desktop-bridge/desktopBridge.ts",
-		"packages/desktop/src/services/RecordedEvidenceService.ts": "packages/desktop/src/utils/desktop-bridge/RecordedEvidenceService.ts",
-		"packages/desktop/src/adapters/EvidenceRefsAdapter.ts": "packages/desktop/src/utils/desktop-bridge/EvidenceRefsAdapter.ts",
+		"packages/desktop/src/utils/desktopBridge.ts": "packages/desktop/src/lib/desktop-bridge/desktopBridge.ts",
+		"packages/desktop/src/services/RecordedEvidenceService.ts": "packages/desktop/src/lib/desktop-bridge/RecordedEvidenceService.ts",
+		"packages/desktop/src/adapters/EvidenceRefsAdapter.ts": "packages/desktop/src/lib/desktop-bridge/EvidenceRefsAdapter.ts",
 		"packages/desktop/src/services/DesktopBridgeService.ts": "packages/desktop/src/services/desktop-bridge-service/DesktopBridgeService.ts",
 		"packages/desktop/src/services/HostedProjectService.ts": "packages/desktop/src/services/desktop-bridge-service/HostedProjectService.ts",
 		"src/commands/loop.ts": "src/cli/program/loop.ts",
@@ -39,8 +39,8 @@
 		"packages/remote/src/services/EventLogService.ts": "packages/remote/src/services/wire-session-service/EventLogService.ts",
 		"src/commands/ImpactCommand.ts": "src/cli/program/ImpactCommand.ts",
 		"src/repositories/AgentRegistryRepository.ts": "src/services/agent-activity-service/AgentRegistryRepository.ts",
-		"packages/relay/src/utils/hostRuntime.ts": "packages/relay/src/utils/host-runtime/hostRuntime.ts",
-		"packages/relay/src/services/HostCommandService.ts": "packages/relay/src/utils/host-runtime/HostCommandService.ts",
+		"packages/relay/src/utils/hostRuntime.ts": "packages/relay/src/lib/host-runtime/hostRuntime.ts",
+		"packages/relay/src/services/HostCommandService.ts": "packages/relay/src/lib/host-runtime/HostCommandService.ts",
 		"packages/desktop/src/utils/selectEnvironment.ts": "packages/desktop/src/utils/select-environment/selectEnvironment.ts",
 		"packages/desktop/src/adapters/ElectronEnvironmentAdapter.ts": "packages/desktop/src/utils/select-environment/ElectronEnvironmentAdapter.ts",
 		"packages/hub/src/services/installation-token-service/InstallationTokenService.ts": "packages/hub/src/lib/server/auth/installation-token-service/InstallationTokenService.ts",
@@ -69,12 +69,12 @@
 		"src/services/kernel-benchmark-service/KernelBenchmarkService.ts": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
 		"src/services/kernel-benchmark-service/benchSamples.ts": "src/cli/program/run-kernel-bench/kernel-benchmark-service/benchSamples.ts",
 		"src/services/kernel-benchmark-service/peakMemory.ts": "src/cli/program/run-kernel-bench/kernel-benchmark-service/peakMemory.ts",
-		"packages/desktop/src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter.ts": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
-		"packages/desktop/src/adapters/remote-http-project-adapter/hostedImage.ts": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/hostedImage.ts",
-		"packages/desktop/src/services/HostedEvidenceService.ts": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/HostedEvidenceService.ts",
+		"packages/desktop/src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter.ts": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
+		"packages/desktop/src/adapters/remote-http-project-adapter/hostedImage.ts": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/hostedImage.ts",
+		"packages/desktop/src/services/HostedEvidenceService.ts": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/HostedEvidenceService.ts",
 		"packages/desktop/src/services/relay-link-service/RelayLinkService.ts": "packages/desktop/src/services/remote-host-service/relay-link-service/RelayLinkService.ts",
 		"packages/desktop/src/services/relay-link-service/relayFrame.ts": "packages/desktop/src/services/remote-host-service/relay-link-service/relayFrame.ts",
-		"packages/desktop/src/services/NativeAccountStatusService.ts": "packages/desktop/src/initializers/initialize-desktop/NativeAccountStatusService.ts",
+		"packages/desktop/src/services/NativeAccountStatusService.ts": "packages/desktop/src/lib/desktop-initialization/NativeAccountStatusService.ts",
 		"src/commands/UnitsCommand.ts": "src/cli/program/UnitsCommand.ts",
 		"src/workflows/inspectUnits.ts": "src/cli/program/inspectUnits.ts",
 		"src/workflows/runVerify.ts": "src/workflows/run-verify/runVerify.ts",
@@ -87,7 +87,7 @@
 		"src/services/record-assembly-service/sealRecord.ts": "src/workflows/run-verify/verification-service/record-assembly-service/sealRecord.ts",
 		"packages/desktop/src/adapters/AgentSettingsAdapter.ts": "packages/desktop/src/lib/stores/AgentSettingsAdapter.ts",
 		"packages/hub/src/controllers/HubAuthController.ts": "packages/hub/src/lib/server/auth/HubAuthController.ts",
-		"packages/desktop/src/services/RemoteLifecycleService.ts": "packages/desktop/src/initializers/initialize-desktop/RemoteLifecycleService.ts",
+		"packages/desktop/src/services/RemoteLifecycleService.ts": "packages/desktop/src/lib/desktop-initialization/RemoteLifecycleService.ts",
 		"src/commands/CodexCommand.ts": "src/cli/program/CodexCommand.ts",
 		"packages/reports/src/services/report-retention-service/ReportRetentionService.ts": "packages/reports/src/services/report-command-service/report-retention-service/ReportRetentionService.ts",
 		"packages/reports/src/services/report-retention-service/reportCleanupLog.ts": "packages/reports/src/services/report-command-service/report-retention-service/reportCleanupLog.ts",
@@ -102,27 +102,27 @@
 		"packages/desktop/src/services/catalog-service/CatalogService.ts": "packages/desktop/src/services/project-session-service/catalog-service/CatalogService.ts",
 		"packages/desktop/src/services/catalog-service/catalogDetail.ts": "packages/desktop/src/services/project-session-service/catalog-service/catalogDetail.ts",
 		"packages/desktop/src/services/catalog-service/catalogHistory.ts": "packages/desktop/src/services/project-session-service/catalog-service/catalogHistory.ts",
-		"packages/desktop/src/services/ProjectOperationsService.ts": "packages/desktop/src/utils/desktop-bridge/ProjectOperationsService.ts",
-		"packages/relay/src/controllers/PublicRelayController.ts": "packages/relay/src/index/PublicRelayController.ts",
-		"packages/relay/src/middleware/ConnectGuardMiddleware.ts": "packages/relay/src/index/ConnectGuardMiddleware.ts",
+		"packages/desktop/src/services/ProjectOperationsService.ts": "packages/desktop/src/lib/desktop-bridge/ProjectOperationsService.ts",
+		"packages/relay/src/controllers/PublicRelayController.ts": "packages/relay/src/lib/relay/PublicRelayController.ts",
+		"packages/relay/src/middleware/ConnectGuardMiddleware.ts": "packages/relay/src/lib/relay/ConnectGuardMiddleware.ts",
 		"packages/hub/src/adapters/ResendEmailAdapter.ts": "packages/hub/src/lib/server/auth/ResendEmailAdapter.ts",
 		"packages/hub/src/controllers/EmailProofController.ts": "packages/hub/src/lib/server/auth/EmailProofController.ts",
 		"packages/reports/src/services/replay-video-service/ReplayVideoService.ts": "packages/reports/src/routes/api/replay-video/replay-video-service/ReplayVideoService.ts",
 		"packages/reports/src/services/replay-video-service/replayVideo.ts": "packages/reports/src/routes/api/replay-video/replay-video-service/replayVideo.ts",
-		"packages/desktop/src/services/RemoteArtifactCacheService.ts": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/RemoteArtifactCacheService.ts",
+		"packages/desktop/src/services/RemoteArtifactCacheService.ts": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/RemoteArtifactCacheService.ts",
 		"src/commands/ConsoleCommand.ts": "src/cli/program/ConsoleCommand.ts",
 		"src/workflows/installConsole.ts": "src/cli/program/installConsole.ts",
-		"packages/relay/src/services/HostRegistryService.ts": "packages/relay/src/utils/host-runtime/HostRegistryService.ts",
+		"packages/relay/src/services/HostRegistryService.ts": "packages/relay/src/lib/host-runtime/HostRegistryService.ts",
 		"src/workflows/buildHistory.ts": "src/cli/program/buildHistory.ts",
-		"packages/relay/src/services/socket-frame-service/SocketFrameService.ts": "packages/relay/src/utils/host-runtime/socket-frame-service/SocketFrameService.ts",
-		"packages/relay/src/services/socket-frame-service/frameTooLarge.ts": "packages/relay/src/utils/host-runtime/socket-frame-service/frameTooLarge.ts",
+		"packages/relay/src/services/socket-frame-service/SocketFrameService.ts": "packages/relay/src/lib/host-runtime/socket-frame-service/SocketFrameService.ts",
+		"packages/relay/src/services/socket-frame-service/frameTooLarge.ts": "packages/relay/src/lib/host-runtime/socket-frame-service/frameTooLarge.ts",
 		"src/services/TrustedBaseService.ts": "src/workflows/run-verify/TrustedBaseService.ts",
-		"packages/relay/src/adapters/HostSocketsAdapter.ts": "packages/relay/src/utils/host-runtime/HostSocketsAdapter.ts",
-		"packages/desktop/src/services/LocalTransportService.ts": "packages/desktop/src/initializers/initialize-desktop/LocalTransportService.ts",
-		"packages/reports/src/adapters/ConsoleBridgeAdapter.ts": "packages/reports/src/lib/stores/ConsoleBridgeAdapter.ts",
-		"packages/relay/src/adapters/HostStorageAdapter.ts": "packages/relay/src/utils/host-runtime/HostStorageAdapter.ts",
+		"packages/relay/src/adapters/HostSocketsAdapter.ts": "packages/relay/src/lib/host-runtime/HostSocketsAdapter.ts",
+		"packages/desktop/src/services/LocalTransportService.ts": "packages/desktop/src/lib/desktop-initialization/LocalTransportService.ts",
+		"packages/reports/src/adapters/ConsoleBridgeAdapter.ts": "packages/reports/src/lib/console-workspace/ConsoleBridgeAdapter.ts",
+		"packages/relay/src/adapters/HostStorageAdapter.ts": "packages/relay/src/lib/host-runtime/HostStorageAdapter.ts",
 		"src/commands/info.ts": "src/cli/program/info.ts",
-		"packages/relay/src/services/HostLinkService.ts": "packages/relay/src/utils/host-runtime/HostLinkService.ts",
+		"packages/relay/src/services/HostLinkService.ts": "packages/relay/src/lib/host-runtime/HostLinkService.ts",
 		"packages/hub/src/services/GoogleIdentityService.ts": "packages/hub/src/lib/server/auth/GoogleIdentityService.ts",
 		"src/commands/ScenariosCommand.ts": "src/cli/program/ScenariosCommand.ts",
 		"src/commands/ResponseCheckCommand.ts": "src/cli/program/ResponseCheckCommand.ts",
@@ -144,24 +144,24 @@
 		"src/services/console-install-service/consoleHostFiles.ts": "src/cli/program/console-install-service/consoleHostFiles.ts",
 		"src/services/console-install-service/installableHost.ts": "src/cli/program/console-install-service/installableHost.ts",
 		"src/commands/HooksCommand.ts": "src/cli/program/HooksCommand.ts",
-		"packages/desktop/src/adapters/hosted-evidence-adapter/HostedEvidenceAdapter.ts": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
-		"packages/desktop/src/adapters/hosted-evidence-adapter/hostedEvidencePath.ts": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/hosted-evidence-adapter/hostedEvidencePath.ts",
+		"packages/desktop/src/adapters/hosted-evidence-adapter/HostedEvidenceAdapter.ts": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
+		"packages/desktop/src/adapters/hosted-evidence-adapter/hostedEvidencePath.ts": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/hostedEvidencePath.ts",
 		"src/commands/ActivityCommand.ts": "src/cli/program/ActivityCommand.ts",
 		"packages/desktop/src/services/device-session-service/DeviceSessionService.ts": "packages/desktop/src/services/remote-host-service/device-session-service/DeviceSessionService.ts",
 		"packages/desktop/src/services/device-session-service/remoteFailureText.ts": "packages/desktop/src/services/remote-host-service/device-session-service/remoteFailureText.ts",
 		"src/services/legacy-import-service/LegacyImportService.ts": "src/cli/program/legacy-import-service/LegacyImportService.ts",
 		"src/services/legacy-import-service/legacyReport.ts": "src/cli/program/legacy-import-service/legacyReport.ts",
 		"src/repositories/LegacyReportRepository.ts": "src/cli/program/legacy-import-service/LegacyReportRepository.ts",
-		"packages/desktop/src/services/projection-cache-service/ProjectionCacheService.ts": "packages/desktop/src/initializers/initialize-desktop/projection-cache-service/ProjectionCacheService.ts",
-		"packages/desktop/src/services/projection-cache-service/projectionCacheDiscard.ts": "packages/desktop/src/initializers/initialize-desktop/projection-cache-service/projectionCacheDiscard.ts",
-		"packages/desktop/src/services/projection-cache-service/projectionCachePurge.ts": "packages/desktop/src/initializers/initialize-desktop/projection-cache-service/projectionCachePurge.ts",
+		"packages/desktop/src/services/projection-cache-service/ProjectionCacheService.ts": "packages/desktop/src/lib/desktop-initialization/projection-cache-service/ProjectionCacheService.ts",
+		"packages/desktop/src/services/projection-cache-service/projectionCacheDiscard.ts": "packages/desktop/src/lib/desktop-initialization/projection-cache-service/projectionCacheDiscard.ts",
+		"packages/desktop/src/services/projection-cache-service/projectionCachePurge.ts": "packages/desktop/src/lib/desktop-initialization/projection-cache-service/projectionCachePurge.ts",
 		"src/services/DesktopExperimentService.ts": "scripts/prepare-desktop-experiment/DesktopExperimentService.ts",
 		"packages/desktop/src/services/RemotePairingControlService.ts": "packages/desktop/src/services/remote-host-service/RemotePairingControlService.ts",
 		"packages/hub/src/services/HubRecordStatusService.ts": "packages/hub/src/services/hub-evidence-service/HubRecordStatusService.ts",
 		"src/adapters/HandlerRuntimeAdapter.ts": "packages/reports/src/components/harness/harness-compare/HandlerRuntimeAdapter.ts",
 		"src/workflows/generateUnit.ts": "src/cli/program/generateUnit.ts",
 		"packages/reports/src/adapters/MiraReportAdapter.ts": "packages/reports/src/services/report-command-service/MiraReportAdapter.ts",
-		"packages/relay/src/controllers/PairingController.ts": "packages/relay/src/utils/host-runtime/PairingController.ts",
+		"packages/relay/src/controllers/PairingController.ts": "packages/relay/src/lib/host-runtime/PairingController.ts",
 		"src/services/HistoryStatusService.ts": "src/services/history-status-service/HistoryStatusService.ts",
 		"src/services/attached-record-service/AttachedRecordService.ts": "src/services/history-status-service/attached-record-service/AttachedRecordService.ts",
 		"src/services/attached-record-service/lfsPointer.ts": "src/services/history-status-service/attached-record-service/lfsPointer.ts",
@@ -176,8 +176,8 @@
 		"packages/desktop/src/adapters/git-source-adapter/gitBlobs.ts": "packages/desktop/src/services/project-session-service/git-source-adapter/gitBlobs.ts",
 		"packages/desktop/src/adapters/git-source-adapter/gitRead.ts": "packages/desktop/src/services/project-session-service/git-source-adapter/gitRead.ts",
 		"src/workflows/inspectScenarios.ts": "src/cli/program/inspectScenarios.ts",
-		"packages/relay/src/controllers/ManageController.ts": "packages/relay/src/utils/host-runtime/ManageController.ts",
-		"packages/desktop/src/adapters/RemoteRegistrationAdapter.ts": "packages/desktop/src/initializers/initialize-desktop/RemoteRegistrationAdapter.ts",
+		"packages/relay/src/controllers/ManageController.ts": "packages/relay/src/lib/host-runtime/ManageController.ts",
+		"packages/desktop/src/adapters/RemoteRegistrationAdapter.ts": "packages/desktop/src/lib/desktop-initialization/RemoteRegistrationAdapter.ts",
 		"src/services/SnapshotRunService.ts": "src/workflows/run-verify/verification-service/SnapshotRunService.ts",
 		"src/services/CheckRunService.ts": "src/workflows/run-verify/verification-service/CheckRunService.ts",
 		"src/services/check-run-service/CheckRunService.ts": "src/workflows/run-verify/verification-service/check-run-service/CheckRunService.ts",
@@ -202,8 +202,8 @@
 		"packages/desktop/src/adapters/capacitor-bridge-adapter/cachedSnapshot.ts": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/cachedSnapshot.ts",
 		"packages/desktop/src/adapters/capacitor-bridge-adapter/remoteArtifact.ts": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/remoteArtifact.ts",
 		"packages/desktop/src/adapters/capacitor-bridge-adapter/remoteGrant.ts": "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/remoteGrant.ts",
-		"packages/desktop/src/initializers/initializePreload.ts": "packages/desktop/src/initializers/initialize-preload/initializePreload.ts",
-		"packages/desktop/src/services/LocalTransportClientService.ts": "packages/desktop/src/initializers/initialize-preload/LocalTransportClientService.ts",
+		"packages/desktop/src/initializers/initializePreload.ts": "packages/desktop/src/lib/preload-initialization/initializePreload.ts",
+		"packages/desktop/src/services/LocalTransportClientService.ts": "packages/desktop/src/lib/preload-initialization/LocalTransportClientService.ts",
 		"src/workflows/runKernelBoundary.ts": "src/cli/program/runKernelBoundary.ts",
 		"src/workflows/manageLoop.ts": "src/cli/program/manageLoop.ts",
 		"src/services/LegacyHistoryService.ts": "src/cli/program/LegacyHistoryService.ts",
@@ -218,15 +218,15 @@
 		"src/services/codex-gateway-service/gatewayReplay.ts": "src/cli/program/codex-gateway-service/gatewayReplay.ts",
 		"src/services/codex-gateway-service/gatewayStream.ts": "src/cli/program/codex-gateway-service/gatewayStream.ts",
 		"src/adapters/ClaudeGatewayAdapter.ts": "src/cli/program/codex-gateway-service/ClaudeGatewayAdapter.ts",
-		"packages/reports/src/hooks.server.ts": "packages/reports/src/hooks.server/hooks.server.ts",
-		"packages/reports/src/controllers/ConsoleAgentController.ts": "packages/reports/src/hooks.server/ConsoleAgentController.ts",
-		"packages/relay/src/services/SocketAcceptService.ts": "packages/relay/src/utils/host-runtime/SocketAcceptService.ts",
+		"packages/reports/src/hooks.server.ts": "packages/reports/src/lib/server-hooks/hooks.server.ts",
+		"packages/reports/src/controllers/ConsoleAgentController.ts": "packages/reports/src/lib/server-hooks/ConsoleAgentController.ts",
+		"packages/relay/src/services/SocketAcceptService.ts": "packages/relay/src/lib/host-runtime/SocketAcceptService.ts",
 		"src/workflows/loopNext.ts": "src/cli/program/loopNext.ts",
-		"packages/desktop/src/services/RemoteProjectionService.ts": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/RemoteProjectionService.ts",
-		"packages/desktop/src/services/ProjectDiscoveryService.ts": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/ProjectDiscoveryService.ts",
+		"packages/desktop/src/services/RemoteProjectionService.ts": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/RemoteProjectionService.ts",
+		"packages/desktop/src/services/ProjectDiscoveryService.ts": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/ProjectDiscoveryService.ts",
 		"src/workflows/reviewCleanCode.ts": "src/audit/reviewCleanCode.ts",
 		"packages/desktop/src/services/PlanRunService.ts": "packages/desktop/src/services/desktop-run-service/PlanRunService.ts",
-		"packages/relay/src/services/DeviceRevocationService.ts": "packages/relay/src/utils/host-runtime/DeviceRevocationService.ts",
+		"packages/relay/src/services/DeviceRevocationService.ts": "packages/relay/src/lib/host-runtime/DeviceRevocationService.ts",
 		"packages/hub/src/adapters/GithubApiAdapter.ts": "packages/hub/src/lib/server/auth/GithubApiAdapter.ts",
 		"packages/hub/src/adapters/d1-auth-store-adapter/D1AuthStoreAdapter.ts": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/D1AuthStoreAdapter.ts",
 		"packages/hub/src/adapters/d1-auth-store-adapter/d1CredentialStores.ts": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1CredentialStores.ts",
@@ -239,11 +239,11 @@
 		"src/services/history-index-service/revisionChanges.ts": "src/cli/program/history-index-service/revisionChanges.ts",
 		"src/services/history-media-service/HistoryMediaService.ts": "src/cli/program/history-index-service/history-media-service/HistoryMediaService.ts",
 		"src/services/history-media-service/mediaPlace.ts": "src/cli/program/history-index-service/history-media-service/mediaPlace.ts",
-		"packages/relay/src/services/PairingOfferService.ts": "packages/relay/src/utils/host-runtime/PairingOfferService.ts",
+		"packages/relay/src/services/PairingOfferService.ts": "packages/relay/src/lib/host-runtime/PairingOfferService.ts",
 		"src/adapters/ProcessIdentityAdapter.ts": "src/services/agent-activity-service/ProcessIdentityAdapter.ts",
 		"packages/remote/src/services/ResponseLedgerService.ts": "packages/remote/src/services/wire-session-service/ResponseLedgerService.ts",
 		"src/services/ConsoleUninstallService.ts": "src/cli/program/ConsoleUninstallService.ts",
-		"packages/reports/src/services/ConsoleAgentService.ts": "packages/reports/src/hooks.server/ConsoleAgentService.ts",
+		"packages/reports/src/services/ConsoleAgentService.ts": "packages/reports/src/lib/server-hooks/ConsoleAgentService.ts",
 		"src/services/claude-query-service/ClaudeQueryService.ts": "src/cli/program/codex-gateway-service/claude-query-service/ClaudeQueryService.ts",
 		"src/services/claude-query-service/gatewayMessages.ts": "src/cli/program/codex-gateway-service/claude-query-service/gatewayMessages.ts",
 		"src/services/claude-query-service/gatewayOptions.ts": "src/cli/program/codex-gateway-service/claude-query-service/gatewayOptions.ts",
@@ -251,15 +251,15 @@
 		"src/commands/codex-picker-command/CodexPickerCommand.ts": "src/cli/program/codex-picker-command/CodexPickerCommand.ts",
 		"src/commands/codex-picker-command/pickerPaths.ts": "src/cli/program/codex-picker-command/pickerPaths.ts",
 		"src/services/PickerPreviewService.ts": "src/cli/program/codex-picker-command/PickerPreviewService.ts",
-		"packages/planning/src/services/planning-service/PlanningService.ts": "packages/planning/src/index/planning-service/PlanningService.ts",
-		"packages/planning/src/services/planning-service/planDesign.ts": "packages/planning/src/index/planning-service/planDesign.ts",
-		"packages/planning/src/services/planning-service/planHistory.ts": "packages/planning/src/index/planning-service/planHistory.ts",
-		"packages/planning/src/services/planning-service/planOptions.ts": "packages/planning/src/index/planning-service/planOptions.ts",
-		"packages/planning/src/services/planning-service/planReads.ts": "packages/planning/src/index/planning-service/planReads.ts",
-		"packages/planning/src/services/planning-service/planRegistry.ts": "packages/planning/src/index/planning-service/planRegistry.ts",
-		"packages/planning/src/services/planning-service/planThread.ts": "packages/planning/src/index/planning-service/planThread.ts",
-		"packages/planning/src/services/planning-service/planWrite.ts": "packages/planning/src/index/planning-service/planWrite.ts",
-		"packages/desktop/src/adapters/PinnedHistoryAdapter.ts": "packages/desktop/src/utils/desktop-bridge/PinnedHistoryAdapter.ts",
+		"packages/planning/src/services/planning-service/PlanningService.ts": "packages/planning/src/lib/planning/planning-service/PlanningService.ts",
+		"packages/planning/src/services/planning-service/planDesign.ts": "packages/planning/src/lib/planning/planning-service/planDesign.ts",
+		"packages/planning/src/services/planning-service/planHistory.ts": "packages/planning/src/lib/planning/planning-service/planHistory.ts",
+		"packages/planning/src/services/planning-service/planOptions.ts": "packages/planning/src/lib/planning/planning-service/planOptions.ts",
+		"packages/planning/src/services/planning-service/planReads.ts": "packages/planning/src/lib/planning/planning-service/planReads.ts",
+		"packages/planning/src/services/planning-service/planRegistry.ts": "packages/planning/src/lib/planning/planning-service/planRegistry.ts",
+		"packages/planning/src/services/planning-service/planThread.ts": "packages/planning/src/lib/planning/planning-service/planThread.ts",
+		"packages/planning/src/services/planning-service/planWrite.ts": "packages/planning/src/lib/planning/planning-service/planWrite.ts",
+		"packages/desktop/src/adapters/PinnedHistoryAdapter.ts": "packages/desktop/src/lib/desktop-bridge/PinnedHistoryAdapter.ts",
 		"src/repositories/codex-session-repository/CodexSessionRepository.ts": "src/cli/program/codex-gateway-service/codex-session-repository/CodexSessionRepository.ts",
 		"src/repositories/codex-session-repository/gatewayTypes.ts": "src/cli/program/codex-gateway-service/codex-session-repository/gatewayTypes.ts",
 		"packages/hub/src/services/GithubOwnerService.ts": "packages/hub/src/lib/server/auth/GithubOwnerService.ts",
@@ -276,7 +276,7 @@
 		"packages/reports/src/services/report-publish-service/reportPages.ts": "packages/reports/src/services/report-command-service/report-publish-service/reportPages.ts",
 		"packages/reports/src/services/report-publish-service/reportPublication.ts": "packages/reports/src/services/report-command-service/report-publish-service/reportPublication.ts",
 		"packages/reports/src/services/report-publish-service/reportPublicationVerify.ts": "packages/reports/src/services/report-command-service/report-publish-service/reportPublicationVerify.ts",
-		"packages/relay/src/services/PairingExchangeService.ts": "packages/relay/src/utils/host-runtime/PairingExchangeService.ts",
+		"packages/relay/src/services/PairingExchangeService.ts": "packages/relay/src/lib/host-runtime/PairingExchangeService.ts",
 		"src/services/hook-run-service/HookRunService.ts": "src/cli/program/hook-run-service/HookRunService.ts",
 		"src/services/hook-run-service/pushedRefs.ts": "src/cli/program/hook-run-service/pushedRefs.ts",
 		"src/services/NativePickerBridgeService.ts": "src/services/native-picker-bridge-service/NativePickerBridgeService.ts",
@@ -284,29 +284,29 @@
 		"src/workflows/runAudit.ts": "src/cli/program/runAudit.ts",
 		"packages/hub/src/controllers/github-connection-controller/GithubConnectionController.ts": "packages/hub/src/lib/server/auth/github-connection-controller/GithubConnectionController.ts",
 		"packages/hub/src/controllers/github-connection-controller/authHttp.ts": "packages/hub/src/lib/server/auth/github-connection-controller/authHttp.ts",
-		"packages/reports/src/utils/previewNode.ts": "packages/reports/src/utils/preview-node/previewNode.ts",
-		"packages/reports/src/services/preview-worker-service/PreviewWorkerService.ts": "packages/reports/src/utils/preview-node/preview-worker-service/PreviewWorkerService.ts",
-		"packages/reports/src/services/preview-worker-service/previewHealth.ts": "packages/reports/src/utils/preview-node/preview-worker-service/previewHealth.ts",
+		"packages/reports/src/utils/previewNode.ts": "packages/reports/src/lib/preview-node/previewNode.ts",
+		"packages/reports/src/services/preview-worker-service/PreviewWorkerService.ts": "packages/reports/src/lib/preview-node/preview-worker-service/PreviewWorkerService.ts",
+		"packages/reports/src/services/preview-worker-service/previewHealth.ts": "packages/reports/src/lib/preview-node/preview-worker-service/previewHealth.ts",
 		"packages/hub/src/adapters/RelayManageAdapter.ts": "packages/hub/src/routes/api/[...path]/RelayManageAdapter.ts",
 		"packages/desktop/src/services/remote-host-switch-service/RemoteHostSwitchService.ts": "packages/desktop/src/services/remote-host-service/remote-host-switch-service/RemoteHostSwitchService.ts",
 		"packages/desktop/src/services/remote-host-switch-service/remoteHostIdentity.ts": "packages/desktop/src/services/remote-host-service/remote-host-switch-service/remoteHostIdentity.ts",
 		"packages/hub/src/services/GithubGrantService.ts": "packages/hub/src/lib/server/auth/GithubGrantService.ts",
-		"packages/desktop/src/services/ProjectImageCacheService.ts": "packages/desktop/src/utils/desktop-bridge/ProjectImageCacheService.ts",
+		"packages/desktop/src/services/ProjectImageCacheService.ts": "packages/desktop/src/lib/desktop-bridge/ProjectImageCacheService.ts",
 		"packages/reports/src/services/report-server-service/ReportServerService.ts": "packages/reports/src/services/report-command-service/report-server-service/ReportServerService.ts",
 		"packages/reports/src/services/report-server-service/reportServerRecord.ts": "packages/reports/src/services/report-command-service/report-server-service/reportServerRecord.ts",
 		"src/adapters/WasmRuntimeAdapter.ts": "src/adapters/wasm-runtime-adapter/WasmRuntimeAdapter.ts",
 		"src/adapters/WasmModuleRuntimeAdapter.ts": "src/adapters/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts",
 		"packages/hub/src/controllers/NativeHandoffController.ts": "packages/hub/src/lib/server/auth/NativeHandoffController.ts",
-		"packages/desktop/src/services/LocalClientService.ts": "packages/desktop/src/initializers/initialize-desktop/LocalClientService.ts",
-		"packages/desktop/src/services/LocalOperationsService.ts": "packages/desktop/src/initializers/initialize-desktop/LocalOperationsService.ts",
-		"packages/relay/src/services/RateLimitService.ts": "packages/relay/src/utils/host-runtime/RateLimitService.ts",
+		"packages/desktop/src/services/LocalClientService.ts": "packages/desktop/src/lib/desktop-initialization/LocalClientService.ts",
+		"packages/desktop/src/services/LocalOperationsService.ts": "packages/desktop/src/lib/desktop-initialization/LocalOperationsService.ts",
+		"packages/relay/src/services/RateLimitService.ts": "packages/relay/src/lib/host-runtime/RateLimitService.ts",
 		"src/services/hook-install-service/HookInstallService.ts": "src/cli/program/hook-install-service/HookInstallService.ts",
 		"src/services/hook-install-service/hookScript.ts": "src/cli/program/hook-install-service/hookScript.ts",
 		"packages/hub/src/services/native-handoff-service/NativeHandoffService.ts": "packages/hub/src/lib/server/auth/native-handoff-service/NativeHandoffService.ts",
 		"packages/hub/src/services/native-handoff-service/authSecrets.ts": "packages/hub/src/lib/server/auth/native-handoff-service/authSecrets.ts",
 		"src/services/NativePickerSwitchService.ts": "src/services/native-picker-bridge-service/NativePickerSwitchService.ts",
-		"packages/relay/src/services/PairingAccessService.ts": "packages/relay/src/utils/host-runtime/PairingAccessService.ts",
-		"packages/relay/src/controllers/HostObjectController.ts": "packages/relay/src/utils/host-runtime/HostObjectController.ts",
+		"packages/relay/src/services/PairingAccessService.ts": "packages/relay/src/lib/host-runtime/PairingAccessService.ts",
+		"packages/relay/src/controllers/HostObjectController.ts": "packages/relay/src/lib/host-runtime/HostObjectController.ts",
 		"packages/reports/src/repositories/SiteReportRepository.ts": "packages/reports/src/routes/api/health/SiteReportRepository.ts",
 		"packages/desktop/src/services/ClientProjectsService.ts": "packages/desktop/src/services/remote-host-service/device-session-service/ClientProjectsService.ts",
 		"packages/reports/src/services/ScreenshotUploadService.ts": "packages/reports/src/routes/api/report-screenshot-upload/ScreenshotUploadService.ts",
@@ -318,31 +318,32 @@
 		"packages/desktop/src/services/project-task-service/ProjectTaskService.ts": "packages/desktop/src/services/desktop-run-service/project-task-service/ProjectTaskService.ts",
 		"packages/desktop/src/services/project-task-service/proposalUnits.ts": "packages/desktop/src/services/desktop-run-service/project-task-service/proposalUnits.ts",
 		"packages/desktop/src/services/change-run-service/ChangeRunService.ts": "packages/desktop/src/services/desktop-run-service/change-run-service/ChangeRunService.ts",
-		"packages/desktop/src/services/change-run-service/changeExecute.ts": "packages/desktop/src/services/desktop-run-service/change-run-service/changeExecute.ts"
+		"packages/desktop/src/services/change-run-service/changeExecute.ts": "packages/desktop/src/services/desktop-run-service/change-run-service/changeExecute.ts",
+		"packages/reports/src/lib/stores/consoleWorkspace.svelte.ts": "packages/reports/src/lib/console-workspace/consoleWorkspace.svelte.ts"
 	},
 	"files": [
 		{
 			"unit": "desktop.initializer.initialize-desktop",
 			"from": "packages/desktop/src/initializers/initializeDesktop.ts",
-			"to": "packages/desktop/src/initializers/initialize-desktop/initializeDesktop.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/initializeDesktop.ts",
 			"definition": "3cc3ecfe03737f3fdcb5daaec8070472370a26902b8f941f23f4eb2fd0e7f0fc"
 		},
 		{
 			"unit": "desktop.initializer.initialize-desktop",
 			"from": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
-			"to": "packages/desktop/src/initializers/initialize-desktop/initialize-desktop/initializeDesktop.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/initialize-desktop/initializeDesktop.ts",
 			"definition": "ad6779f744c3301ed9c076ccd555033b60565ddb328f789f7efeff9f93b08d6b"
 		},
 		{
 			"unit": "desktop.service.native-connection",
 			"from": "packages/desktop/src/services/NativeConnectionService.ts",
-			"to": "packages/desktop/src/initializers/initialize-desktop/NativeConnectionService.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/NativeConnectionService.ts",
 			"definition": "d2e47f584c82ec1dc1ee8b2633bfda9fd0b18e23c0d7bea61f4d3eccc4347133"
 		},
 		{
 			"unit": "desktop.service.native-auth",
 			"from": "packages/desktop/src/services/NativeAuthService.ts",
-			"to": "packages/desktop/src/initializers/initialize-desktop/NativeAuthService.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/NativeAuthService.ts",
 			"definition": "67a3c6213e0976f629348ba23061f5fa8274ef5c97eb067ee00cba2f8005485f"
 		},
 		{
@@ -414,19 +415,19 @@
 		{
 			"unit": "desktop.function.desktop-bridge",
 			"from": "packages/desktop/src/utils/desktopBridge.ts",
-			"to": "packages/desktop/src/utils/desktop-bridge/desktopBridge.ts",
+			"to": "packages/desktop/src/lib/desktop-bridge/desktopBridge.ts",
 			"definition": "794c1bb220d50eaf6010b88d400f937c4e578f20d98a5bb9a6acbaf99358daab"
 		},
 		{
 			"unit": "desktop.service.recorded-evidence",
 			"from": "packages/desktop/src/services/RecordedEvidenceService.ts",
-			"to": "packages/desktop/src/utils/desktop-bridge/RecordedEvidenceService.ts",
+			"to": "packages/desktop/src/lib/desktop-bridge/RecordedEvidenceService.ts",
 			"definition": "20f742d0064d2f7b41ccff6bb63b5fddf59ea307c5df95c9b8882fb117efb79f"
 		},
 		{
 			"unit": "desktop.adapter.evidence-refs",
 			"from": "packages/desktop/src/adapters/EvidenceRefsAdapter.ts",
-			"to": "packages/desktop/src/utils/desktop-bridge/EvidenceRefsAdapter.ts",
+			"to": "packages/desktop/src/lib/desktop-bridge/EvidenceRefsAdapter.ts",
 			"definition": "9e9e412ad8f06d522282097d50ea030e58dc73514c809cdb76f6c497774d4c84"
 		},
 		{
@@ -546,13 +547,13 @@
 		{
 			"unit": "relay.function.host-runtime",
 			"from": "packages/relay/src/utils/hostRuntime.ts",
-			"to": "packages/relay/src/utils/host-runtime/hostRuntime.ts",
+			"to": "packages/relay/src/lib/host-runtime/hostRuntime.ts",
 			"definition": "6354d18661261e6d3e34d0d735f5cf472ce06af946b09a4478e8500022d7744f"
 		},
 		{
 			"unit": "relay.service.host-command",
 			"from": "packages/relay/src/services/HostCommandService.ts",
-			"to": "packages/relay/src/utils/host-runtime/HostCommandService.ts",
+			"to": "packages/relay/src/lib/host-runtime/HostCommandService.ts",
 			"definition": "f3976fc69c97ec44e8772db4c1ec91d10df896931b8e453967641bff17098e7b"
 		},
 		{
@@ -726,19 +727,19 @@
 		{
 			"unit": "desktop.adapter.remote-http-project",
 			"from": "packages/desktop/src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
-			"to": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
 			"definition": "56523dcc7e317b6acacd6394fa67dd5a8ab6fcd02336c1e564b9f5ad972c41fa"
 		},
 		{
 			"unit": "desktop.function.hosted-image",
 			"from": "packages/desktop/src/adapters/remote-http-project-adapter/hostedImage.ts",
-			"to": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/hostedImage.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/hostedImage.ts",
 			"definition": "1b4eb6d53cd9ddbfacc236d19f328b8d1a29fc2f7e7ba1e23c23497505dbf127"
 		},
 		{
 			"unit": "desktop.service.hosted-evidence",
 			"from": "packages/desktop/src/services/HostedEvidenceService.ts",
-			"to": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/HostedEvidenceService.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/HostedEvidenceService.ts",
 			"definition": "3e00646f73cc3637b2bfe2472711b4aadc2854340bd792eee4568d195b083fec"
 		},
 		{
@@ -756,7 +757,7 @@
 		{
 			"unit": "desktop.service.native-account-status",
 			"from": "packages/desktop/src/services/NativeAccountStatusService.ts",
-			"to": "packages/desktop/src/initializers/initialize-desktop/NativeAccountStatusService.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/NativeAccountStatusService.ts",
 			"definition": "a68bd733bc96078afcc13b06d02101634df34b4ffacbfed6c59e61bb405c8033"
 		},
 		{
@@ -834,7 +835,7 @@
 		{
 			"unit": "desktop.service.remote-lifecycle",
 			"from": "packages/desktop/src/services/RemoteLifecycleService.ts",
-			"to": "packages/desktop/src/initializers/initialize-desktop/RemoteLifecycleService.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/RemoteLifecycleService.ts",
 			"definition": "720333cecb5bf9cd05f3dae6365a30baffa591228b0c5d43545a827a1746cfae"
 		},
 		{
@@ -924,19 +925,19 @@
 		{
 			"unit": "desktop.service.project-operations",
 			"from": "packages/desktop/src/services/ProjectOperationsService.ts",
-			"to": "packages/desktop/src/utils/desktop-bridge/ProjectOperationsService.ts",
+			"to": "packages/desktop/src/lib/desktop-bridge/ProjectOperationsService.ts",
 			"definition": "8d0441fb6f610462198b107ee9a3517285b6b96143c340361063e994a2c94a5c"
 		},
 		{
 			"unit": "relay.controller.public-relay",
 			"from": "packages/relay/src/controllers/PublicRelayController.ts",
-			"to": "packages/relay/src/index/PublicRelayController.ts",
+			"to": "packages/relay/src/lib/relay/PublicRelayController.ts",
 			"definition": "312fda1bbc8e913bb9972dbb7598d7ab2ed09a616b07cf1d9a44ebb77697120a"
 		},
 		{
 			"unit": "relay.middleware.connect-guard",
 			"from": "packages/relay/src/middleware/ConnectGuardMiddleware.ts",
-			"to": "packages/relay/src/index/ConnectGuardMiddleware.ts",
+			"to": "packages/relay/src/lib/relay/ConnectGuardMiddleware.ts",
 			"definition": "642a5a90714bcc091af7dadeac57a5fea4b12b6bfa335c5bf5d223b5796f195c"
 		},
 		{
@@ -966,7 +967,7 @@
 		{
 			"unit": "desktop.service.remote-artifact-cache",
 			"from": "packages/desktop/src/services/RemoteArtifactCacheService.ts",
-			"to": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/RemoteArtifactCacheService.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/RemoteArtifactCacheService.ts",
 			"definition": "56dbb98929eb8ad7b80cef5fbffa6668e32ff3337ae716c9a7074a6183ba137f"
 		},
 		{
@@ -984,7 +985,7 @@
 		{
 			"unit": "relay.service.host-registry",
 			"from": "packages/relay/src/services/HostRegistryService.ts",
-			"to": "packages/relay/src/utils/host-runtime/HostRegistryService.ts",
+			"to": "packages/relay/src/lib/host-runtime/HostRegistryService.ts",
 			"definition": "69de43d51c22d8b417cf4aa274ff4b0f4ceced25ff4562a850aa1392f9b28706"
 		},
 		{
@@ -996,13 +997,13 @@
 		{
 			"unit": "relay.service.socket-frame",
 			"from": "packages/relay/src/services/socket-frame-service/SocketFrameService.ts",
-			"to": "packages/relay/src/utils/host-runtime/socket-frame-service/SocketFrameService.ts",
+			"to": "packages/relay/src/lib/host-runtime/socket-frame-service/SocketFrameService.ts",
 			"definition": "bcf056e149f43e0c82fa5a34e33c254bff4b668d0c94340c5ea473b771076f55"
 		},
 		{
 			"unit": "relay.function.frame-too-large",
 			"from": "packages/relay/src/services/socket-frame-service/frameTooLarge.ts",
-			"to": "packages/relay/src/utils/host-runtime/socket-frame-service/frameTooLarge.ts",
+			"to": "packages/relay/src/lib/host-runtime/socket-frame-service/frameTooLarge.ts",
 			"definition": "3b6d1c6843bf09a65467409951f9d313b4cb9193b0f65bd366b44b536995eedc"
 		},
 		{
@@ -1014,25 +1015,25 @@
 		{
 			"unit": "relay.adapter.host-sockets",
 			"from": "packages/relay/src/adapters/HostSocketsAdapter.ts",
-			"to": "packages/relay/src/utils/host-runtime/HostSocketsAdapter.ts",
+			"to": "packages/relay/src/lib/host-runtime/HostSocketsAdapter.ts",
 			"definition": "c8e688667bd8d7314e8b0b11f9c39ad2a3da28cc951ae52fb0fe0ae4f8a01a88"
 		},
 		{
 			"unit": "desktop.service.local-transport",
 			"from": "packages/desktop/src/services/LocalTransportService.ts",
-			"to": "packages/desktop/src/initializers/initialize-desktop/LocalTransportService.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/LocalTransportService.ts",
 			"definition": "f3c24b924c74c2ac829123f1bd69cf51cb6d2303573f7e8611b7cd2461d62d71"
 		},
 		{
 			"unit": "reports.adapter.console-bridge",
 			"from": "packages/reports/src/adapters/ConsoleBridgeAdapter.ts",
-			"to": "packages/reports/src/lib/stores/ConsoleBridgeAdapter.ts",
+			"to": "packages/reports/src/lib/console-workspace/ConsoleBridgeAdapter.ts",
 			"definition": "99210841b8655c75dc1c97ca9da4db278f8d762a9d7dec7244055e7b0b8dae85"
 		},
 		{
 			"unit": "relay.adapter.host-storage",
 			"from": "packages/relay/src/adapters/HostStorageAdapter.ts",
-			"to": "packages/relay/src/utils/host-runtime/HostStorageAdapter.ts",
+			"to": "packages/relay/src/lib/host-runtime/HostStorageAdapter.ts",
 			"definition": "45aaedb5d41741a10415019233bae813cd5414dd8fa7ff1fc05f810c369b8506"
 		},
 		{
@@ -1044,7 +1045,7 @@
 		{
 			"unit": "relay.service.host-link",
 			"from": "packages/relay/src/services/HostLinkService.ts",
-			"to": "packages/relay/src/utils/host-runtime/HostLinkService.ts",
+			"to": "packages/relay/src/lib/host-runtime/HostLinkService.ts",
 			"definition": "41c2d0283b52598883d5e8d3f4e97cd8804bcb9102bee337b1ac799a881b2276"
 		},
 		{
@@ -1176,13 +1177,13 @@
 		{
 			"unit": "desktop.adapter.hosted-evidence",
 			"from": "packages/desktop/src/adapters/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
-			"to": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
 			"definition": "fde061067f0730945bc7cc76edcb411ee62318daa9bd504164739b5c53e32039"
 		},
 		{
 			"unit": "desktop.function.hosted-evidence-path",
 			"from": "packages/desktop/src/adapters/hosted-evidence-adapter/hostedEvidencePath.ts",
-			"to": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/hosted-evidence-adapter/hostedEvidencePath.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/hostedEvidencePath.ts",
 			"definition": "211db09c901dbaba79d20148bf5f656fd777c92b92ac0e61d7765dff04cd6b85"
 		},
 		{
@@ -1224,19 +1225,19 @@
 		{
 			"unit": "desktop.service.projection-cache",
 			"from": "packages/desktop/src/services/projection-cache-service/ProjectionCacheService.ts",
-			"to": "packages/desktop/src/initializers/initialize-desktop/projection-cache-service/ProjectionCacheService.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/projection-cache-service/ProjectionCacheService.ts",
 			"definition": "e2ffa99957b1f8890f13849efdc76dc22e94fe5c95662f0b9c594031e63be076"
 		},
 		{
 			"unit": "desktop.function.projection-cache-discard",
 			"from": "packages/desktop/src/services/projection-cache-service/projectionCacheDiscard.ts",
-			"to": "packages/desktop/src/initializers/initialize-desktop/projection-cache-service/projectionCacheDiscard.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/projection-cache-service/projectionCacheDiscard.ts",
 			"definition": "1d1cb4dbec008179ab4b2c1d89e47fd5cc8456925ec9b49862aba8f8c868c914"
 		},
 		{
 			"unit": "desktop.function.projection-cache-purge",
 			"from": "packages/desktop/src/services/projection-cache-service/projectionCachePurge.ts",
-			"to": "packages/desktop/src/initializers/initialize-desktop/projection-cache-service/projectionCachePurge.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/projection-cache-service/projectionCachePurge.ts",
 			"definition": "dc849db5795418a8ef43297cf0686a111e2114265fd1577adc4d9e86cfc33d02"
 		},
 		{
@@ -1278,7 +1279,7 @@
 		{
 			"unit": "relay.controller.pairing",
 			"from": "packages/relay/src/controllers/PairingController.ts",
-			"to": "packages/relay/src/utils/host-runtime/PairingController.ts",
+			"to": "packages/relay/src/lib/host-runtime/PairingController.ts",
 			"definition": "b29d4ffd67bbd63067c9444a8c092596f5543dde219be6ba3d2109137756b6f3"
 		},
 		{
@@ -1368,13 +1369,13 @@
 		{
 			"unit": "relay.controller.manage",
 			"from": "packages/relay/src/controllers/ManageController.ts",
-			"to": "packages/relay/src/utils/host-runtime/ManageController.ts",
+			"to": "packages/relay/src/lib/host-runtime/ManageController.ts",
 			"definition": "19f3865289625f04165dce6082558f633a40500c264a6d15e47ca519fbf5b8ee"
 		},
 		{
 			"unit": "desktop.adapter.remote-registration",
 			"from": "packages/desktop/src/adapters/RemoteRegistrationAdapter.ts",
-			"to": "packages/desktop/src/initializers/initialize-desktop/RemoteRegistrationAdapter.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/RemoteRegistrationAdapter.ts",
 			"definition": "0b6b8fd1d9cbd054a71db55cd499d6ad412a4e65d86ea520e3ab8bf6414549a5"
 		},
 		{
@@ -1524,13 +1525,13 @@
 		{
 			"unit": "desktop.initializer.initialize-preload",
 			"from": "packages/desktop/src/initializers/initializePreload.ts",
-			"to": "packages/desktop/src/initializers/initialize-preload/initializePreload.ts",
+			"to": "packages/desktop/src/lib/preload-initialization/initializePreload.ts",
 			"definition": "08214b461596bde436cdaf61401f5479b220cfc1005d35c0e99af4faec53aea5"
 		},
 		{
 			"unit": "desktop.service.local-transport-client",
 			"from": "packages/desktop/src/services/LocalTransportClientService.ts",
-			"to": "packages/desktop/src/initializers/initialize-preload/LocalTransportClientService.ts",
+			"to": "packages/desktop/src/lib/preload-initialization/LocalTransportClientService.ts",
 			"definition": "0e3be5d2f39adfa9674e3c23158e2aa577543d021a80a90020a45076a8c361af"
 		},
 		{
@@ -1620,19 +1621,19 @@
 		{
 			"unit": "reports.entry.hooks-server",
 			"from": "packages/reports/src/hooks.server.ts",
-			"to": "packages/reports/src/hooks.server/hooks.server.ts",
+			"to": "packages/reports/src/lib/server-hooks/hooks.server.ts",
 			"definition": "ccf9315ac6d07bbb53248c5a8707431023e2cbaf67d6bdfa5090c309814e6523"
 		},
 		{
 			"unit": "reports.controller.console-agent",
 			"from": "packages/reports/src/controllers/ConsoleAgentController.ts",
-			"to": "packages/reports/src/hooks.server/ConsoleAgentController.ts",
+			"to": "packages/reports/src/lib/server-hooks/ConsoleAgentController.ts",
 			"definition": "e69fab551d013e04a4dce4403696335dde5a3d877b52d988f11b9639e7c3d75e"
 		},
 		{
 			"unit": "relay.service.socket-accept",
 			"from": "packages/relay/src/services/SocketAcceptService.ts",
-			"to": "packages/relay/src/utils/host-runtime/SocketAcceptService.ts",
+			"to": "packages/relay/src/lib/host-runtime/SocketAcceptService.ts",
 			"definition": "ba7aed08b415ca4ad794733e064241bb1f2895ffa5130175c371293a4498e539"
 		},
 		{
@@ -1644,13 +1645,13 @@
 		{
 			"unit": "desktop.service.remote-projection",
 			"from": "packages/desktop/src/services/RemoteProjectionService.ts",
-			"to": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/RemoteProjectionService.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/RemoteProjectionService.ts",
 			"definition": "de1f8f7b45e2210c8c54cbb5faef610b1fd382a23c38aaee970a92a171aeab9b"
 		},
 		{
 			"unit": "desktop.service.project-discovery",
 			"from": "packages/desktop/src/services/ProjectDiscoveryService.ts",
-			"to": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/ProjectDiscoveryService.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/ProjectDiscoveryService.ts",
 			"definition": "83d804a14932dae5e1e35afc813a194dcd1991a9d879ebc5330b2eeea48e5d48"
 		},
 		{
@@ -1668,7 +1669,7 @@
 		{
 			"unit": "relay.service.device-revocation",
 			"from": "packages/relay/src/services/DeviceRevocationService.ts",
-			"to": "packages/relay/src/utils/host-runtime/DeviceRevocationService.ts",
+			"to": "packages/relay/src/lib/host-runtime/DeviceRevocationService.ts",
 			"definition": "627c57b9882dd21b7415d799c30bef537f4d1d95e1c4c81c9132d8c3520339ae"
 		},
 		{
@@ -1746,7 +1747,7 @@
 		{
 			"unit": "relay.service.pairing-offer",
 			"from": "packages/relay/src/services/PairingOfferService.ts",
-			"to": "packages/relay/src/utils/host-runtime/PairingOfferService.ts",
+			"to": "packages/relay/src/lib/host-runtime/PairingOfferService.ts",
 			"definition": "445fee03b5c60d9fcaed7dd87b6aac01ff99f0c4d466b5c773277c30f850a2cf"
 		},
 		{
@@ -1770,7 +1771,7 @@
 		{
 			"unit": "reports.service.console-agent",
 			"from": "packages/reports/src/services/ConsoleAgentService.ts",
-			"to": "packages/reports/src/hooks.server/ConsoleAgentService.ts",
+			"to": "packages/reports/src/lib/server-hooks/ConsoleAgentService.ts",
 			"definition": "2a0274757c369262eb9cc7098eb14483461e21fd95c40fc82cb6b5371dcd1695"
 		},
 		{
@@ -1818,55 +1819,55 @@
 		{
 			"unit": "planning.service.planning",
 			"from": "packages/planning/src/services/planning-service/PlanningService.ts",
-			"to": "packages/planning/src/index/planning-service/PlanningService.ts",
+			"to": "packages/planning/src/lib/planning/planning-service/PlanningService.ts",
 			"definition": "842a0a7f0eb280629e529e8d7254acb460115bebe524bfb4c0d6506f5da0de02"
 		},
 		{
 			"unit": "planning.function.plan-design",
 			"from": "packages/planning/src/services/planning-service/planDesign.ts",
-			"to": "packages/planning/src/index/planning-service/planDesign.ts",
+			"to": "packages/planning/src/lib/planning/planning-service/planDesign.ts",
 			"definition": "802e22cb4d88e4925e9f496afe4ff18f479eed8f2ae40f0d9b7f300b164ae1fe"
 		},
 		{
 			"unit": "planning.function.plan-history",
 			"from": "packages/planning/src/services/planning-service/planHistory.ts",
-			"to": "packages/planning/src/index/planning-service/planHistory.ts",
+			"to": "packages/planning/src/lib/planning/planning-service/planHistory.ts",
 			"definition": "1d1338613341131dbdefec2c2324370a11a401e3f7b889f9ff1eff2b7b55b4cf"
 		},
 		{
 			"unit": "planning.function.plan-options",
 			"from": "packages/planning/src/services/planning-service/planOptions.ts",
-			"to": "packages/planning/src/index/planning-service/planOptions.ts",
+			"to": "packages/planning/src/lib/planning/planning-service/planOptions.ts",
 			"definition": "54679315ca3597c70189edc5fd6c67d80261d9b00f78ddd5891b41dc14b1a569"
 		},
 		{
 			"unit": "planning.function.plan-reads",
 			"from": "packages/planning/src/services/planning-service/planReads.ts",
-			"to": "packages/planning/src/index/planning-service/planReads.ts",
+			"to": "packages/planning/src/lib/planning/planning-service/planReads.ts",
 			"definition": "a19d53f01e28ce0ca556b71535cfa79adcfe4c089a683c8f3d40f0897677fecc"
 		},
 		{
 			"unit": "planning.function.plan-registry",
 			"from": "packages/planning/src/services/planning-service/planRegistry.ts",
-			"to": "packages/planning/src/index/planning-service/planRegistry.ts",
+			"to": "packages/planning/src/lib/planning/planning-service/planRegistry.ts",
 			"definition": "936bc9fa9c1ad007e5ce045bc2f143b4e683924ed77f715681929fce8bf26362"
 		},
 		{
 			"unit": "planning.function.plan-thread",
 			"from": "packages/planning/src/services/planning-service/planThread.ts",
-			"to": "packages/planning/src/index/planning-service/planThread.ts",
+			"to": "packages/planning/src/lib/planning/planning-service/planThread.ts",
 			"definition": "0a13f3b5a49de66de9dbc81704035afa1b07304ce676f8c71965b29da872292f"
 		},
 		{
 			"unit": "planning.function.plan-write",
 			"from": "packages/planning/src/services/planning-service/planWrite.ts",
-			"to": "packages/planning/src/index/planning-service/planWrite.ts",
+			"to": "packages/planning/src/lib/planning/planning-service/planWrite.ts",
 			"definition": "96303dabca3c2cffd99f7b38620d2a90554452982495d60fdb218412bc2825a4"
 		},
 		{
 			"unit": "desktop.adapter.pinned-history",
 			"from": "packages/desktop/src/adapters/PinnedHistoryAdapter.ts",
-			"to": "packages/desktop/src/utils/desktop-bridge/PinnedHistoryAdapter.ts",
+			"to": "packages/desktop/src/lib/desktop-bridge/PinnedHistoryAdapter.ts",
 			"definition": "235f3a164c394ef8af28277f70a8dacb6277795a732f363a2188221f354dfd97"
 		},
 		{
@@ -1968,7 +1969,7 @@
 		{
 			"unit": "relay.service.pairing-exchange",
 			"from": "packages/relay/src/services/PairingExchangeService.ts",
-			"to": "packages/relay/src/utils/host-runtime/PairingExchangeService.ts",
+			"to": "packages/relay/src/lib/host-runtime/PairingExchangeService.ts",
 			"definition": "b28c17e09c6f5ce8283c1d279470f18f04d146de0163ab966dca1dee630e759f"
 		},
 		{
@@ -2016,19 +2017,19 @@
 		{
 			"unit": "reports.function.preview-node",
 			"from": "packages/reports/src/utils/previewNode.ts",
-			"to": "packages/reports/src/utils/preview-node/previewNode.ts",
+			"to": "packages/reports/src/lib/preview-node/previewNode.ts",
 			"definition": "c6330fbd3b43178d6e4c67995a105e528526c3e9ea2611f4436d33bd4abc5e5f"
 		},
 		{
 			"unit": "reports.service.preview-worker",
 			"from": "packages/reports/src/services/preview-worker-service/PreviewWorkerService.ts",
-			"to": "packages/reports/src/utils/preview-node/preview-worker-service/PreviewWorkerService.ts",
+			"to": "packages/reports/src/lib/preview-node/preview-worker-service/PreviewWorkerService.ts",
 			"definition": "b0afd2601578c69b68d8e01a90b5f0aa6f9215c7087abd8f6931dd8938dd1877"
 		},
 		{
 			"unit": "reports.function.preview-health",
 			"from": "packages/reports/src/services/preview-worker-service/previewHealth.ts",
-			"to": "packages/reports/src/utils/preview-node/preview-worker-service/previewHealth.ts",
+			"to": "packages/reports/src/lib/preview-node/preview-worker-service/previewHealth.ts",
 			"definition": "e335cb3dd1e93a46fc808c2b485ce7a3f3c077de5bdb5a85a8d3985e3f586625"
 		},
 		{
@@ -2058,7 +2059,7 @@
 		{
 			"unit": "desktop.service.project-image-cache",
 			"from": "packages/desktop/src/services/ProjectImageCacheService.ts",
-			"to": "packages/desktop/src/utils/desktop-bridge/ProjectImageCacheService.ts",
+			"to": "packages/desktop/src/lib/desktop-bridge/ProjectImageCacheService.ts",
 			"definition": "12b147900f1bc34523186d2943b3a53390bd2b6dfcbcf12d19dc91fb445d039d"
 		},
 		{
@@ -2094,19 +2095,19 @@
 		{
 			"unit": "desktop.service.local-client",
 			"from": "packages/desktop/src/services/LocalClientService.ts",
-			"to": "packages/desktop/src/initializers/initialize-desktop/LocalClientService.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/LocalClientService.ts",
 			"definition": "db0ec4b62e6922c297169687608d262d5d27c0fbea6e3b27da2a52def20bb765"
 		},
 		{
 			"unit": "desktop.service.local-operations",
 			"from": "packages/desktop/src/services/LocalOperationsService.ts",
-			"to": "packages/desktop/src/initializers/initialize-desktop/LocalOperationsService.ts",
+			"to": "packages/desktop/src/lib/desktop-initialization/LocalOperationsService.ts",
 			"definition": "6c93c210df9a0612e8b374298b009646d8cc776940b82b610c6aa2edf7a6f2b4"
 		},
 		{
 			"unit": "relay.service.rate-limit",
 			"from": "packages/relay/src/services/RateLimitService.ts",
-			"to": "packages/relay/src/utils/host-runtime/RateLimitService.ts",
+			"to": "packages/relay/src/lib/host-runtime/RateLimitService.ts",
 			"definition": "66f34da337c2f061a4e9761a0ed2a7060a890b3fd0a792bb93ac1619a507482e"
 		},
 		{
@@ -2142,13 +2143,13 @@
 		{
 			"unit": "relay.service.pairing-access",
 			"from": "packages/relay/src/services/PairingAccessService.ts",
-			"to": "packages/relay/src/utils/host-runtime/PairingAccessService.ts",
+			"to": "packages/relay/src/lib/host-runtime/PairingAccessService.ts",
 			"definition": "b056388ba66ef3c9d73956b73ee81b46521c717be7bc3cb703029f503625153e"
 		},
 		{
 			"unit": "relay.controller.host-object",
 			"from": "packages/relay/src/controllers/HostObjectController.ts",
-			"to": "packages/relay/src/utils/host-runtime/HostObjectController.ts",
+			"to": "packages/relay/src/lib/host-runtime/HostObjectController.ts",
 			"definition": "32c9ce541f85805628b326ae3c56805974d8b6d463531ba47d9f7f4edcdf0064"
 		},
 		{
@@ -2222,14 +2223,20 @@
 			"from": "packages/desktop/src/services/change-run-service/changeExecute.ts",
 			"to": "packages/desktop/src/services/desktop-run-service/change-run-service/changeExecute.ts",
 			"definition": "8868058332251dc94177b77eff212cd8160482724a686ee437713773a8fa6f61"
+		},
+		{
+			"unit": "reports.store.console-workspace",
+			"from": "packages/reports/src/lib/stores/consoleWorkspace.svelte.ts",
+			"to": "packages/reports/src/lib/console-workspace/consoleWorkspace.svelte.ts",
+			"definition": "e884d503345bba068305a4df47cd9253ec1d9a522e70b6510f69714e225335ce"
 		}
 	],
 	"services": [
 		{
 			"id": "desktop.service.native-auth",
 			"owner": "desktop.service.native-connection",
-			"ownerFolder": "packages/desktop/src/initializers/initialize-desktop",
-			"source": ["packages/desktop/src/initializers/initialize-desktop/NativeAuthService.ts"]
+			"ownerFolder": "packages/desktop/src/lib/desktop-initialization",
+			"source": ["packages/desktop/src/lib/desktop-initialization/NativeAuthService.ts"]
 		},
 		{
 			"id": "workflow.export-plans",
@@ -2258,8 +2265,8 @@
 		{
 			"id": "desktop.adapter.evidence-refs",
 			"owner": "desktop.service.recorded-evidence",
-			"ownerFolder": "packages/desktop/src/utils/desktop-bridge",
-			"source": ["packages/desktop/src/utils/desktop-bridge/EvidenceRefsAdapter.ts"]
+			"ownerFolder": "packages/desktop/src/lib/desktop-bridge",
+			"source": ["packages/desktop/src/lib/desktop-bridge/EvidenceRefsAdapter.ts"]
 		},
 		{
 			"id": "desktop.service.hosted-project",
@@ -2336,8 +2343,8 @@
 		{
 			"id": "relay.service.host-command",
 			"owner": "relay.function.host-runtime",
-			"ownerFolder": "packages/relay/src/utils/host-runtime",
-			"source": ["packages/relay/src/utils/host-runtime/HostCommandService.ts"]
+			"ownerFolder": "packages/relay/src/lib/host-runtime",
+			"source": ["packages/relay/src/lib/host-runtime/HostCommandService.ts"]
 		},
 		{
 			"id": "desktop.adapter.electron-environment",
@@ -2402,9 +2409,9 @@
 		{
 			"id": "desktop.service.hosted-evidence",
 			"owner": "desktop.adapter.remote-http-project",
-			"ownerFolder": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter",
+			"ownerFolder": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter",
 			"source": [
-				"packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/HostedEvidenceService.ts"
+				"packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/HostedEvidenceService.ts"
 			]
 		},
 		{
@@ -2418,10 +2425,8 @@
 		{
 			"id": "desktop.service.native-account-status",
 			"owner": "desktop.service.native-auth",
-			"ownerFolder": "packages/desktop/src/initializers/initialize-desktop",
-			"source": [
-				"packages/desktop/src/initializers/initialize-desktop/NativeAccountStatusService.ts"
-			]
+			"ownerFolder": "packages/desktop/src/lib/desktop-initialization",
+			"source": ["packages/desktop/src/lib/desktop-initialization/NativeAccountStatusService.ts"]
 		},
 		{
 			"id": "workflow.inspect-units",
@@ -2452,8 +2457,8 @@
 		{
 			"id": "desktop.service.remote-lifecycle",
 			"owner": "desktop.initializer.initialize-desktop",
-			"ownerFolder": "packages/desktop/src/initializers/initialize-desktop",
-			"source": ["packages/desktop/src/initializers/initialize-desktop/RemoteLifecycleService.ts"]
+			"ownerFolder": "packages/desktop/src/lib/desktop-initialization",
+			"source": ["packages/desktop/src/lib/desktop-initialization/RemoteLifecycleService.ts"]
 		},
 		{
 			"id": "command.codex",
@@ -2504,14 +2509,14 @@
 		{
 			"id": "desktop.service.project-operations",
 			"owner": "desktop.function.desktop-bridge",
-			"ownerFolder": "packages/desktop/src/utils/desktop-bridge",
-			"source": ["packages/desktop/src/utils/desktop-bridge/ProjectOperationsService.ts"]
+			"ownerFolder": "packages/desktop/src/lib/desktop-bridge",
+			"source": ["packages/desktop/src/lib/desktop-bridge/ProjectOperationsService.ts"]
 		},
 		{
 			"id": "relay.middleware.connect-guard",
 			"owner": "relay.controller.public-relay",
-			"ownerFolder": "packages/relay/src/index",
-			"source": ["packages/relay/src/index/ConnectGuardMiddleware.ts"]
+			"ownerFolder": "packages/relay/src/lib/relay",
+			"source": ["packages/relay/src/lib/relay/ConnectGuardMiddleware.ts"]
 		},
 		{
 			"id": "hub.adapter.resend-email",
@@ -2542,9 +2547,9 @@
 		{
 			"id": "desktop.service.remote-artifact-cache",
 			"owner": "desktop.service.hosted-evidence",
-			"ownerFolder": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter",
+			"ownerFolder": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter",
 			"source": [
-				"packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/RemoteArtifactCacheService.ts"
+				"packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/RemoteArtifactCacheService.ts"
 			]
 		},
 		{
@@ -2562,8 +2567,8 @@
 		{
 			"id": "relay.service.host-registry",
 			"owner": "relay.function.host-runtime",
-			"ownerFolder": "packages/relay/src/utils/host-runtime",
-			"source": ["packages/relay/src/utils/host-runtime/HostRegistryService.ts"]
+			"ownerFolder": "packages/relay/src/lib/host-runtime",
+			"source": ["packages/relay/src/lib/host-runtime/HostRegistryService.ts"]
 		},
 		{
 			"id": "workflow.build-history",
@@ -2574,8 +2579,8 @@
 		{
 			"id": "relay.service.socket-frame",
 			"owner": "relay.function.host-runtime",
-			"ownerFolder": "packages/relay/src/utils/host-runtime/socket-frame-service",
-			"source": ["packages/relay/src/utils/host-runtime/socket-frame-service/SocketFrameService.ts"]
+			"ownerFolder": "packages/relay/src/lib/host-runtime/socket-frame-service",
+			"source": ["packages/relay/src/lib/host-runtime/socket-frame-service/SocketFrameService.ts"]
 		},
 		{
 			"id": "service.trusted-base",
@@ -2586,26 +2591,26 @@
 		{
 			"id": "relay.adapter.host-sockets",
 			"owner": "relay.function.host-runtime",
-			"ownerFolder": "packages/relay/src/utils/host-runtime",
-			"source": ["packages/relay/src/utils/host-runtime/HostSocketsAdapter.ts"]
+			"ownerFolder": "packages/relay/src/lib/host-runtime",
+			"source": ["packages/relay/src/lib/host-runtime/HostSocketsAdapter.ts"]
 		},
 		{
 			"id": "desktop.service.local-transport",
 			"owner": "desktop.initializer.initialize-desktop",
-			"ownerFolder": "packages/desktop/src/initializers/initialize-desktop",
-			"source": ["packages/desktop/src/initializers/initialize-desktop/LocalTransportService.ts"]
+			"ownerFolder": "packages/desktop/src/lib/desktop-initialization",
+			"source": ["packages/desktop/src/lib/desktop-initialization/LocalTransportService.ts"]
 		},
 		{
 			"id": "reports.adapter.console-bridge",
 			"owner": "reports.store.console-workspace",
-			"ownerFolder": "packages/reports/src/lib/stores",
-			"source": ["packages/reports/src/lib/stores/ConsoleBridgeAdapter.ts"]
+			"ownerFolder": "packages/reports/src/lib/console-workspace",
+			"source": ["packages/reports/src/lib/console-workspace/ConsoleBridgeAdapter.ts"]
 		},
 		{
 			"id": "relay.adapter.host-storage",
 			"owner": "relay.function.host-runtime",
-			"ownerFolder": "packages/relay/src/utils/host-runtime",
-			"source": ["packages/relay/src/utils/host-runtime/HostStorageAdapter.ts"]
+			"ownerFolder": "packages/relay/src/lib/host-runtime",
+			"source": ["packages/relay/src/lib/host-runtime/HostStorageAdapter.ts"]
 		},
 		{
 			"id": "command.info",
@@ -2616,8 +2621,8 @@
 		{
 			"id": "relay.service.host-link",
 			"owner": "relay.function.host-runtime",
-			"ownerFolder": "packages/relay/src/utils/host-runtime",
-			"source": ["packages/relay/src/utils/host-runtime/HostLinkService.ts"]
+			"ownerFolder": "packages/relay/src/lib/host-runtime",
+			"source": ["packages/relay/src/lib/host-runtime/HostLinkService.ts"]
 		},
 		{
 			"id": "hub.service.google-identity",
@@ -2686,9 +2691,9 @@
 		{
 			"id": "desktop.adapter.hosted-evidence",
 			"owner": "desktop.adapter.remote-http-project",
-			"ownerFolder": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/hosted-evidence-adapter",
+			"ownerFolder": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter",
 			"source": [
-				"packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts"
+				"packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts"
 			]
 		},
 		{
@@ -2714,9 +2719,9 @@
 		{
 			"id": "desktop.service.projection-cache",
 			"owner": "desktop.initializer.initialize-desktop",
-			"ownerFolder": "packages/desktop/src/initializers/initialize-desktop/projection-cache-service",
+			"ownerFolder": "packages/desktop/src/lib/desktop-initialization/projection-cache-service",
 			"source": [
-				"packages/desktop/src/initializers/initialize-desktop/projection-cache-service/ProjectionCacheService.ts"
+				"packages/desktop/src/lib/desktop-initialization/projection-cache-service/ProjectionCacheService.ts"
 			]
 		},
 		{
@@ -2758,8 +2763,8 @@
 		{
 			"id": "relay.controller.pairing",
 			"owner": "relay.function.host-runtime",
-			"ownerFolder": "packages/relay/src/utils/host-runtime",
-			"source": ["packages/relay/src/utils/host-runtime/PairingController.ts"]
+			"ownerFolder": "packages/relay/src/lib/host-runtime",
+			"source": ["packages/relay/src/lib/host-runtime/PairingController.ts"]
 		},
 		{
 			"id": "service.attached-record",
@@ -2786,9 +2791,9 @@
 		{
 			"id": "desktop.adapter.remote-http-project",
 			"owner": "desktop.service.native-connection",
-			"ownerFolder": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter",
+			"ownerFolder": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter",
 			"source": [
-				"packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/RemoteHttpProjectAdapter.ts"
+				"packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts"
 			]
 		},
 		{
@@ -2814,16 +2819,14 @@
 		{
 			"id": "relay.controller.manage",
 			"owner": "relay.function.host-runtime",
-			"ownerFolder": "packages/relay/src/utils/host-runtime",
-			"source": ["packages/relay/src/utils/host-runtime/ManageController.ts"]
+			"ownerFolder": "packages/relay/src/lib/host-runtime",
+			"source": ["packages/relay/src/lib/host-runtime/ManageController.ts"]
 		},
 		{
 			"id": "desktop.adapter.remote-registration",
 			"owner": "desktop.initializer.initialize-desktop",
-			"ownerFolder": "packages/desktop/src/initializers/initialize-desktop",
-			"source": [
-				"packages/desktop/src/initializers/initialize-desktop/RemoteRegistrationAdapter.ts"
-			]
+			"ownerFolder": "packages/desktop/src/lib/desktop-initialization",
+			"source": ["packages/desktop/src/lib/desktop-initialization/RemoteRegistrationAdapter.ts"]
 		},
 		{
 			"id": "command.response-check",
@@ -2863,8 +2866,8 @@
 		{
 			"id": "desktop.service.recorded-evidence",
 			"owner": "desktop.function.desktop-bridge",
-			"ownerFolder": "packages/desktop/src/utils/desktop-bridge",
-			"source": ["packages/desktop/src/utils/desktop-bridge/RecordedEvidenceService.ts"]
+			"ownerFolder": "packages/desktop/src/lib/desktop-bridge",
+			"source": ["packages/desktop/src/lib/desktop-bridge/RecordedEvidenceService.ts"]
 		},
 		{
 			"id": "desktop.service.remote-host-runtime",
@@ -2875,8 +2878,8 @@
 		{
 			"id": "desktop.service.native-connection",
 			"owner": "desktop.initializer.initialize-desktop",
-			"ownerFolder": "packages/desktop/src/initializers/initialize-desktop",
-			"source": ["packages/desktop/src/initializers/initialize-desktop/NativeConnectionService.ts"]
+			"ownerFolder": "packages/desktop/src/lib/desktop-initialization",
+			"source": ["packages/desktop/src/lib/desktop-initialization/NativeConnectionService.ts"]
 		},
 		{
 			"id": "command.verify",
@@ -2953,10 +2956,8 @@
 		{
 			"id": "desktop.service.local-transport-client",
 			"owner": "desktop.initializer.initialize-preload",
-			"ownerFolder": "packages/desktop/src/initializers/initialize-preload",
-			"source": [
-				"packages/desktop/src/initializers/initialize-preload/LocalTransportClientService.ts"
-			]
+			"ownerFolder": "packages/desktop/src/lib/preload-initialization",
+			"source": ["packages/desktop/src/lib/preload-initialization/LocalTransportClientService.ts"]
 		},
 		{
 			"id": "workflow.run-kernel-boundary",
@@ -3013,14 +3014,14 @@
 		{
 			"id": "reports.controller.console-agent",
 			"owner": "reports.entry.hooks-server",
-			"ownerFolder": "packages/reports/src/hooks.server",
-			"source": ["packages/reports/src/hooks.server/ConsoleAgentController.ts"]
+			"ownerFolder": "packages/reports/src/lib/server-hooks",
+			"source": ["packages/reports/src/lib/server-hooks/ConsoleAgentController.ts"]
 		},
 		{
 			"id": "relay.service.socket-accept",
 			"owner": "relay.function.host-runtime",
-			"ownerFolder": "packages/relay/src/utils/host-runtime",
-			"source": ["packages/relay/src/utils/host-runtime/SocketAcceptService.ts"]
+			"ownerFolder": "packages/relay/src/lib/host-runtime",
+			"source": ["packages/relay/src/lib/host-runtime/SocketAcceptService.ts"]
 		},
 		{
 			"id": "workflow.loop-next",
@@ -3031,9 +3032,9 @@
 		{
 			"id": "desktop.service.project-discovery",
 			"owner": "desktop.service.remote-projection",
-			"ownerFolder": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter",
+			"ownerFolder": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter",
 			"source": [
-				"packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/ProjectDiscoveryService.ts"
+				"packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/ProjectDiscoveryService.ts"
 			]
 		},
 		{
@@ -3051,8 +3052,8 @@
 		{
 			"id": "relay.service.device-revocation",
 			"owner": "relay.function.host-runtime",
-			"ownerFolder": "packages/relay/src/utils/host-runtime",
-			"source": ["packages/relay/src/utils/host-runtime/DeviceRevocationService.ts"]
+			"ownerFolder": "packages/relay/src/lib/host-runtime",
+			"source": ["packages/relay/src/lib/host-runtime/DeviceRevocationService.ts"]
 		},
 		{
 			"id": "hub.adapter.github-api",
@@ -3105,8 +3106,8 @@
 		{
 			"id": "relay.service.pairing-offer",
 			"owner": "relay.function.host-runtime",
-			"ownerFolder": "packages/relay/src/utils/host-runtime",
-			"source": ["packages/relay/src/utils/host-runtime/PairingOfferService.ts"]
+			"ownerFolder": "packages/relay/src/lib/host-runtime",
+			"source": ["packages/relay/src/lib/host-runtime/PairingOfferService.ts"]
 		},
 		{
 			"id": "adapter.process-identity",
@@ -3129,8 +3130,8 @@
 		{
 			"id": "reports.service.console-agent",
 			"owner": "reports.controller.console-agent",
-			"ownerFolder": "packages/reports/src/hooks.server",
-			"source": ["packages/reports/src/hooks.server/ConsoleAgentService.ts"]
+			"ownerFolder": "packages/reports/src/lib/server-hooks",
+			"source": ["packages/reports/src/lib/server-hooks/ConsoleAgentService.ts"]
 		},
 		{
 			"id": "service.claude-query",
@@ -3147,14 +3148,14 @@
 		{
 			"id": "planning.service.planning",
 			"owner": "planning.entry.index",
-			"ownerFolder": "packages/planning/src/index/planning-service",
-			"source": ["packages/planning/src/index/planning-service/PlanningService.ts"]
+			"ownerFolder": "packages/planning/src/lib/planning/planning-service",
+			"source": ["packages/planning/src/lib/planning/planning-service/PlanningService.ts"]
 		},
 		{
 			"id": "desktop.adapter.pinned-history",
 			"owner": "desktop.service.recorded-evidence",
-			"ownerFolder": "packages/desktop/src/utils/desktop-bridge",
-			"source": ["packages/desktop/src/utils/desktop-bridge/PinnedHistoryAdapter.ts"]
+			"ownerFolder": "packages/desktop/src/lib/desktop-bridge",
+			"source": ["packages/desktop/src/lib/desktop-bridge/PinnedHistoryAdapter.ts"]
 		},
 		{
 			"id": "service.snapshot-run",
@@ -3233,8 +3234,8 @@
 		{
 			"id": "relay.service.pairing-exchange",
 			"owner": "relay.function.host-runtime",
-			"ownerFolder": "packages/relay/src/utils/host-runtime",
-			"source": ["packages/relay/src/utils/host-runtime/PairingExchangeService.ts"]
+			"ownerFolder": "packages/relay/src/lib/host-runtime",
+			"source": ["packages/relay/src/lib/host-runtime/PairingExchangeService.ts"]
 		},
 		{
 			"id": "service.hook-run",
@@ -3265,9 +3266,9 @@
 		{
 			"id": "reports.service.preview-worker",
 			"owner": "reports.function.preview-node",
-			"ownerFolder": "packages/reports/src/utils/preview-node/preview-worker-service",
+			"ownerFolder": "packages/reports/src/lib/preview-node/preview-worker-service",
 			"source": [
-				"packages/reports/src/utils/preview-node/preview-worker-service/PreviewWorkerService.ts"
+				"packages/reports/src/lib/preview-node/preview-worker-service/PreviewWorkerService.ts"
 			]
 		},
 		{
@@ -3299,8 +3300,8 @@
 		{
 			"id": "desktop.service.project-image-cache",
 			"owner": "desktop.function.desktop-bridge",
-			"ownerFolder": "packages/desktop/src/utils/desktop-bridge",
-			"source": ["packages/desktop/src/utils/desktop-bridge/ProjectImageCacheService.ts"]
+			"ownerFolder": "packages/desktop/src/lib/desktop-bridge",
+			"source": ["packages/desktop/src/lib/desktop-bridge/ProjectImageCacheService.ts"]
 		},
 		{
 			"id": "reports.service.report-server",
@@ -3325,20 +3326,20 @@
 		{
 			"id": "desktop.service.local-operations",
 			"owner": "desktop.service.local-client",
-			"ownerFolder": "packages/desktop/src/initializers/initialize-desktop",
-			"source": ["packages/desktop/src/initializers/initialize-desktop/LocalOperationsService.ts"]
+			"ownerFolder": "packages/desktop/src/lib/desktop-initialization",
+			"source": ["packages/desktop/src/lib/desktop-initialization/LocalOperationsService.ts"]
 		},
 		{
 			"id": "desktop.service.local-client",
 			"owner": "desktop.initializer.initialize-desktop",
-			"ownerFolder": "packages/desktop/src/initializers/initialize-desktop",
-			"source": ["packages/desktop/src/initializers/initialize-desktop/LocalClientService.ts"]
+			"ownerFolder": "packages/desktop/src/lib/desktop-initialization",
+			"source": ["packages/desktop/src/lib/desktop-initialization/LocalClientService.ts"]
 		},
 		{
 			"id": "relay.service.rate-limit",
 			"owner": "relay.function.host-runtime",
-			"ownerFolder": "packages/relay/src/utils/host-runtime",
-			"source": ["packages/relay/src/utils/host-runtime/RateLimitService.ts"]
+			"ownerFolder": "packages/relay/src/lib/host-runtime",
+			"source": ["packages/relay/src/lib/host-runtime/RateLimitService.ts"]
 		},
 		{
 			"id": "service.hook-install",
@@ -3385,14 +3386,14 @@
 		{
 			"id": "relay.service.pairing-access",
 			"owner": "relay.function.host-runtime",
-			"ownerFolder": "packages/relay/src/utils/host-runtime",
-			"source": ["packages/relay/src/utils/host-runtime/PairingAccessService.ts"]
+			"ownerFolder": "packages/relay/src/lib/host-runtime",
+			"source": ["packages/relay/src/lib/host-runtime/PairingAccessService.ts"]
 		},
 		{
 			"id": "relay.controller.host-object",
 			"owner": "relay.function.host-runtime",
-			"ownerFolder": "packages/relay/src/utils/host-runtime",
-			"source": ["packages/relay/src/utils/host-runtime/HostObjectController.ts"]
+			"ownerFolder": "packages/relay/src/lib/host-runtime",
+			"source": ["packages/relay/src/lib/host-runtime/HostObjectController.ts"]
 		},
 		{
 			"id": "workflow.run-kernel",
@@ -3417,9 +3418,9 @@
 		{
 			"id": "desktop.service.remote-projection",
 			"owner": "desktop.adapter.remote-http-project",
-			"ownerFolder": "packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter",
+			"ownerFolder": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter",
 			"source": [
-				"packages/desktop/src/initializers/initialize-desktop/remote-http-project-adapter/RemoteProjectionService.ts"
+				"packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/RemoteProjectionService.ts"
 			]
 		},
 		{
@@ -3460,8 +3461,8 @@
 		{
 			"id": "relay.controller.public-relay",
 			"owner": "relay.entry.index",
-			"ownerFolder": "packages/relay/src/index",
-			"source": ["packages/relay/src/index/PublicRelayController.ts"]
+			"ownerFolder": "packages/relay/src/lib/relay",
+			"source": ["packages/relay/src/lib/relay/PublicRelayController.ts"]
 		},
 		{
 			"id": "desktop.service.remote-host-record",

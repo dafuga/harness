@@ -6,6 +6,7 @@ import { entityCatalog, listed } from '../../src/utils/entityCatalog';
 import { explorerEntities } from '../../src/utils/explorerEntities';
 import { explorerRelations } from '../../src/utils/explorerRelations';
 import { record, revision } from '../entityFixture';
+import { privateServiceUsers } from '../entityPreviewHelpers';
 import { commits, ids } from '../entityUnits';
 
 const head = revision(commits.middle, [record(commits.middle)]);
@@ -34,7 +35,6 @@ test.each([
 	});
 	expect(JSON.parse(output)).toEqual({ types: exports.map(() => 'function'), rows: [] });
 });
-
 test('a collection lists the entities of its category by the name a person reads', () => {
 	expect(rows('components').map((row) => row.name)).toEqual([
 		'Order card',
@@ -80,7 +80,6 @@ test('a collection lists the entities of its category by the name a person reads
 	const shown = rows('components').map(({ entity: _entity, ...row }) => row);
 	expect(JSON.stringify(shown)).not.toMatch(/src\/|\.ts"|OrderList/);
 });
-
 test('a component says which pages it is used on and which components it contains', () => {
 	const card = rows('components').find((row) => row.id === ids.card)!;
 	expect(card.usedOn).toEqual(['Orders page']);
@@ -89,7 +88,6 @@ test('a component says which pages it is used on and which components it contain
 	expect(list.contains).toEqual(['Order card']);
 	expect(list.shared).toBe(false);
 });
-
 test('service rows require two distinct resolved runtime owners and use that set for links', () => {
 	expect(rows('pages')[0].components).toBe(2);
 	const service = rows('services')[0];
@@ -106,32 +104,23 @@ test('service rows require two distinct resolved runtime owners and use that set
 	const original = service.entity;
 	const related = explorerRelations(head, ids.store);
 	const known = explorerEntities(head);
-	for (const serviceConsumers of [
-		undefined,
-		[],
-		[{ unit: ids.list }],
-		[{ unit: ids.list }, { unit: ids.list }],
-		[{ unit: ids.list }, { unit: 'missing' }]
-	]) {
+	const serviceRows = (entity: typeof original) =>
+		entityCatalog(
+			known.map((item) => (item.id === original.id ? entity : item)),
+			'services',
+			() => related
+		);
+	for (const serviceConsumers of privateServiceUsers) {
 		const privateService = { ...original, unit: { ...original.unit, serviceConsumers } };
 		expect(
-			entityCatalog(
-				known.map((item) => (item.id === original.id ? privateService : item)),
-				'services',
-				() => related
-			),
+			serviceRows(privateService),
 			'transitive pages and imports cannot establish sharing'
 		).toEqual([]);
 	}
 	const unnamed = { ...original, unit: { ...original.unit, owns: { source: [], symbols: [] } } };
-	const fallback = entityCatalog(
-		known.map((item) => (item.id === original.id ? unnamed : item)),
-		'services',
-		() => related
-	)[0];
+	const fallback = serviceRows(unnamed)[0];
 	expect(fallback.name).toBe('Order store');
 });
-
 test('changed is what the commit changed itself, and the verdict is the one it was given', () => {
 	expect(rows('functions')[0].changed).toBe(true);
 	expect(rows('configs')[0].changed).toBe(false);
@@ -147,7 +136,6 @@ test('changed is what the commit changed itself, and the verdict is the one it w
 	expect(failed.label).not.toMatch(/%|\d/);
 	expect(failed.reasons.join(' ')).toContain('empty');
 });
-
 test('search reads names and purposes, changed only keeps changes, and an order sorts', () => {
 	const all = rows('components');
 	const names = (found: typeof all) => found.map((row) => row.name);
@@ -168,14 +156,12 @@ test('search reads names and purposes, changed only keeps changes, and an order 
 	// Filtering leaves the rows it was given as they were.
 	expect(names(all)).toEqual(['Order card', 'Order list', 'Search box']);
 });
-
 test('a list of names is none, one name, or the first and how many more', () => {
 	expect(listed([])).toBe('none');
 	expect(listed(['Order list'])).toBe('Order list');
 	expect(listed(['Order list', 'Search box', 'Order card'])).toBe('Order list + 2 more');
 	expect(listed(['Order card', 'Search box'], 2)).toBe('Order card · Search box');
 });
-
 test('shared helper rows require source exports, list every callable and keep owner links', () => {
 	const original = explorerEntities(head).find((entity) => entity.id === ids.filter)!;
 	const helpers = ['second', 'first'].map((name) => ({
