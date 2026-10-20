@@ -63,7 +63,7 @@
 			{
 				"name": "EntityVisualScreen.screenshotOverview",
 				"type": "markup",
-				"description": "Page and shell screenshots lead Overview. Components keep their screenshots above every tab through the shared frame; Overview retains measurements and any audio without duplicating the screenshots."
+				"description": "Page and shell screenshots lead Overview. Components keep their screenshots above every tab through the shared frame; Overview retains measurements and any audio without duplicating the screenshots. Screenshot selection receives the entity preview binding."
 			}
 		],
 		"errors": [

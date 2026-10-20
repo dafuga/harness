@@ -155,8 +155,8 @@ function pane(
 ): Pane {
 	const found = pick ? side?.captures.find((entry) => matches(entry, pick)) : undefined;
 	if (!side || !pick || !found) return { shown: gap(side, pick, phase, why) };
-	// What stands for the branch tip is a capture of the tip; an older or rejected one is a gap.
-	const stale = phase === 'current' && !current(found);
+	// Validated unchanged proof keeps its original capture identity; rejected proof stays a gap.
+	const stale = phase === 'current' && !found.usable;
 	return stale
 		? { found, shown: gap(side, pick, phase, borrowed(side, found)) }
 		: { found, shown: item(side, found, phase) };

@@ -16,7 +16,7 @@
 			{
 				"name": "EntityScreens.options",
 				"type": "ScreenOption[]",
-				"description": "Required visual scenarios with declared states and viewports; the picker helper reconciles current selection."
+				"description": "Available visual scenarios and viewports. Overview uses the fixed page preview, or the first declared scenario and state."
 			},
 			{
 				"name": "EntityScreens.evidence",
@@ -42,13 +42,18 @@
 				"name": "EntityScreens.reasons",
 				"type": "Reasons",
 				"description": "Required recorded change reasons, shown for paired comparisons with original text available."
+			},
+			{
+				"name": "EntityScreens.preview",
+				"type": "ScreenPick | undefined",
+				"description": "Exact optional scenario, state and initial viewport declared for this page. Viewport buttons preserve its scenario and state."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityScreens",
 				"type": "markup",
-				"description": "Scenario/state/viewport controls, matching screenshot panes or explicit gaps, and full-size viewer. Commit mode explains incomparable recordings; current mode names inherited capture origins. Scenario choice disables when fewer than two options exist. Image URLs are rendered directly; this view has no load-error handler."
+				"description": "Concise screenshot heading, viewport buttons, capture origin and full-size viewer. No scenario/state selectors or current-commit action. Validated unchanged captures retain their original commit; rejected or absent captures remain explicit gaps."
 			}
 		],
 		"errors": []
@@ -76,11 +81,6 @@
 		},
 		{
 			"unit": "reports.component.harness-harness-verdict",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.select",
 			"via": "import",
 			"origin": "derived"
 		},

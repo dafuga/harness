@@ -129,9 +129,7 @@ test('a branch tip shows one current screenshot and a selected commit shows pare
 }) => {
 	await page.goto(tip(explorerBranch, `pages/${units.page}`));
 	await checkpoint(page, 'evidence-current-page');
-	await expect(
-		content(page).getByText(`Current snapshot · ${short(commits.approved)}`)
-	).toBeVisible();
+	await expect(content(page).getByText(`Branch tip · ${short(commits.approved)}`)).toBeVisible();
 	await expect(content(page).getByText(/^Before ·/)).toHaveCount(0);
 	await expect(content(page).locator('img[src*="/harness/media/"]')).toHaveCount(1);
 	await content(page).getByRole('group', { name: 'Viewport' }).getByText('Mobile').click();

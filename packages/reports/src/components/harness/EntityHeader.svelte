@@ -54,8 +54,8 @@
 			tabs[0].id
 	);
 	let active = $derived(nav.route.section === 'history' ? 'history' : asked);
-	// A route with a parameter is a pattern, not an address a person can open.
-	let openable = $derived(Boolean(entity.appRoute) && !/[[\]:*]/.test(entity.appRoute ?? ''));
+	// A page is named by its screenshot; its purpose and app route are read in its Contract.
+	let concise = $derived(entity.category === 'pages');
 </script>
 
 <nav class="ex-crumbs" aria-label="Breadcrumb">
@@ -83,22 +83,7 @@
 			{#if entity.change === 'removed'}<span class="ex-pill">Removed at this commit</span>{/if}
 			<HarnessVerdict {...entity.verdict} />
 		</div>
-		<p class="ex-lead">{entity.purpose}</p>
-	</div>
-	<div class="ex-head-actions">
-		{#if entity.category === 'pages'}
-			<p class="ex-route">
-				<HarnessIcon name="route" size={18} />
-				<span>App route</span>
-				{#if openable}
-					<a href={entity.appRoute} target="_blank" rel="noreferrer"
-						><code>{entity.appRoute}</code><HarnessIcon name="external" size={16} /></a
-					>
-				{:else}
-					<code>{entity.appRoute ?? 'Not recorded'}</code>
-				{/if}
-			</p>
-		{/if}
+		{#if !concise}<p class="ex-lead">{entity.purpose}</p>{/if}
 	</div>
 </header>
 {@render preview?.()}

@@ -10,7 +10,6 @@
 		type ScreenPick
 	} from '../../utils/entityScreens';
 	import EvidenceViewer from '../EvidenceViewer.svelte';
-	import Select from '../Select.svelte';
 	import EntityReasons from './entity-reasons/EntityReasons.svelte';
 	import HarnessAction from './HarnessAction.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
@@ -21,7 +20,8 @@
 		scope,
 		mediaBase,
 		nav,
-		reasons
+		reasons,
+		preview
 	}: {
 		/** The visual scenarios of the entity with the states and viewports each declares. */
 		options: ScreenOption[];
@@ -31,10 +31,13 @@
 		nav: EntityNav;
 		/** What the commit says it changed in the entity: a summary, with what was written beside it. */
 		reasons: Reasons;
+		/** The scenario and state the entity declares as its preview; only the viewport is chosen. */
+		preview?: ScreenPick;
 	} = $props();
-	let wanted = $state<Partial<ScreenPick>>({});
+	/** The viewport a person pressed; scenario and state are never chosen here, but in States. */
+	let wanted = $state<string>();
 	let viewing = $state<Evidence | null>(null);
-	let pick = $derived(screenPick(options, wanted));
+	let pick = $derived(picked(wanted));
 	let option = $derived(options.find((item) => item.scenario === pick?.scenario));
 	// An entity no visual scenario names still has its sides: each says that nothing is captured.
 	let shown = $derived(entityScreens(evidence, pick));
@@ -43,19 +46,30 @@
 	let unlike = $derived(paired ? evidence.incomparable : []);
 	let panes = $derived([...(shown.before ? [shown.before] : []), shown.after]);
 	let size = $derived(option?.viewports.find((item) => item.id === pick?.viewport)?.size ?? '');
-	const choose = (changed: Partial<ScreenPick>) => (wanted = { ...pick, ...changed });
 	const entity = () => ({ category: nav.route.category, entity: nav.route.entity });
 	let tests = $derived(entityLens(nav.route, { ...entity(), tab: 'states' }));
-	let commit = $derived(entityLens(nav.route, { ...entity(), commit: scope.commit }));
-	/** Who a pane is: the parent, the selected commit, or the one snapshot of the branch tip. */
-	function heading(item: Evidence): { title: string; role: string } {
+	/** A declared preview keeps its own scenario and state, never another in its place. */
+	function picked(viewport?: string): ScreenPick | null {
+		const fixed = preview;
+		if (!fixed) return screenPick(options, { viewport });
+		const declared = options.find((item) => item.scenario === fixed.scenario);
+		const known = declared?.viewports.find((item) => item.id === viewport);
+		return { ...fixed, viewport: known?.id ?? fixed.viewport };
+	}
+	/** Who a pane is: the parent, the selected commit, or the branch tip the section names. */
+	function heading(item: Evidence): { title: string; role?: string } {
 		if (item.phase === 'before') {
 			return { title: `Before · ${shortCommit(scope.parent ?? '')}`, role: 'Parent commit' };
 		}
 		const at = shortCommit(scope.commit);
 		if (paired) return { title: `After · ${at}`, role: 'Selected commit' };
-		const origin = shown.origin ? `Inherited from ${shortCommit(shown.origin)}` : 'Branch tip';
-		return { title: `Current snapshot · ${at}`, role: origin };
+		return { title: `Branch tip · ${at}` };
+	}
+	/** Where a shown capture was taken and how its check ended; a reused one names its commit. */
+	function standing(item: Evidence): string {
+		const reused = item.phase !== 'before' && shown.origin;
+		const origin = reused ? `Inherited from ${shortCommit(reused)}` : item.standing;
+		return [origin, item.status].filter(Boolean).join(' · ');
 	}
 </script>
 
@@ -66,22 +80,23 @@
 				{#if !paired}Current screenshot{:else if unlike.length}Before and after, not alike
 				{:else}Commit comparison{/if}
 			</h2>
-			<p class="ex-soft">
-				{#if !paired}One screenshot of this entity at the current branch tip.
-				{:else if unlike.length}The two sides were not recorded alike, so they are not compared.
-				{:else}The same scenario, state and viewport before and after the selected commit.{/if}
-			</p>
 		</div>
+		{#if pick && option}
+			<div class="ex-segments" role="group" aria-label="Viewport">
+				{#each option.viewports as item (item.id)}
+					<button
+						type="button"
+						aria-pressed={item.id === pick.viewport}
+						title={item.size}
+						onclick={() => (wanted = item.id)}>{item.label}</button
+					>
+				{/each}
+			</div>
+			{#if size}<span class="ex-soft">{size}</span>{/if}
+		{/if}
 		{#if paired}
 			<HarnessAction href={nav.href(tests)} onclick={() => nav.go(tests)} icon="arrow-right"
 				>View full comparison</HarnessAction
-			>
-		{:else}
-			<HarnessAction
-				href={nav.href(commit)}
-				onclick={() => nav.go(commit)}
-				tone="plain"
-				icon="arrow-right">View commit changes</HarnessAction
 			>
 		{/if}
 	</header>
@@ -93,46 +108,17 @@
 			</ul>
 		</div>
 	{/if}
-	{#if pick && option}
-		<div class="ex-facts" role="group" aria-label="What is shown">
-			<label
-				>Scenario
-				<Select
-					label="Scenario"
-					disabled={options.length < 2}
-					bind:value={() => pick?.scenario ?? '', (scenario) => choose({ scenario })}
-				>
-					{#each options as item, position (position)}
-						<option value={item.scenario}>{item.title}</option>
-					{/each}
-				</Select>
-			</label>
-			<label
-				>State
-				<Select label="State" bind:value={() => pick?.state ?? '', (state) => choose({ state })}>
-					{#each option.states as id (id)}<option value={id}>{id}</option>{/each}
-				</Select>
-			</label>
-			<div class="ex-segments" role="group" aria-label="Viewport">
-				{#each option.viewports as item (item.id)}
-					<button
-						type="button"
-						aria-pressed={item.id === pick.viewport}
-						title={item.size}
-						onclick={() => choose({ viewport: item.id })}>{item.label}</button
-					>
-				{/each}
-			</div>
-			<span class="ex-soft">{size}</span>
-		</div>
-	{/if}
 	<div class="ex-panes" class:paired>
 		{#each panes as item (item.id)}
-			<figure class="ex-pane" aria-label={heading(item).title}>
+			{@const named = heading(item)}
+			<figure class="ex-pane" aria-label={named.title}>
 				<figcaption>
-					<strong>{heading(item).title}</strong>
-					<span class="ex-pill">{heading(item).role}</span>
+					<strong>{named.title}</strong>
+					{#if named.role}<span class="ex-pill">{named.role}</span>{/if}
 					{#if !item.missing}
+						<span class="ex-standing" class:stale={item.standing !== 'Fresh capture'}
+							>{standing(item)}</span
+						>
 						<button type="button" class="ex-text-button" onclick={() => (viewing = item)}
 							><HarnessIcon name="expand" size={16} /> Open full size</button
 						>
@@ -147,9 +133,6 @@
 					<button type="button" class="ex-shot" onclick={() => (viewing = item)}>
 						<img src={mediaBase + item.file} alt={`${item.title} at ${item.viewport}`} />
 					</button>
-					<p class="ex-standing" class:stale={item.standing !== 'Fresh capture'}>
-						{item.standing} · {item.status}
-					</p>
 				{/if}
 			</figure>
 		{/each}
