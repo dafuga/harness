@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.open-sqlite",
+	"kind": "adapter",
+	"title": "openSqlite",
+	"responsibility": "Owns the openSqlite integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/adapters/openSqlite.ts"],
+		"symbols": ["openSqlite"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "openSqlite.path",
+				"type": "string"
+			},
+			{
+				"name": "openSqlite.readOnly",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "openSqlite",
+				"type": "SqliteDatabase"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/openSqlite.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/openSqlite.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

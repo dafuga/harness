@@ -101,6 +101,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.catalog-index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.history-media",
 			"via": "import",
 			"origin": "derived"

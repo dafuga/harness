@@ -5,6 +5,7 @@ import { join, resolve } from 'node:path';
 import { expect, test } from 'vitest';
 import { kernelArtifacts } from '../src/utils/kernelArtifacts';
 import { runCommand } from './support/cli';
+import { expectPackagedSqlite } from './support/packagedSqliteConsumer';
 
 const consumer = `
 import {
@@ -119,6 +120,7 @@ async function expectTypes(project: string): Promise<void> {
 test('a packed consumer imports typed contracts and calls real adapters without the CLI', async () => {
 	const { root, project } = await packedConsumer();
 	await expectTypes(project);
+	await expectPackagedSqlite(project);
 	const manifest = await readFile(resolve('specification/units/function.stable-json.json'), 'utf8');
 	const native = kernelArtifacts().native ?? '';
 	const expected = { ok: true, output: { contract: 'impact-kernel/1' } };

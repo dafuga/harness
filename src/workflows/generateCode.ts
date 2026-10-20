@@ -18,6 +18,7 @@ import { modelFiles, type AdapterName } from '../templates/model';
 import { pieceFiles, type PieceKind } from '../templates/pieces';
 import { isAppOnlyScaffold, scaffoldKinds } from '../templates/scaffoldTypes';
 import { adapterExportPlan, modelExportPlans, pieceExportPlans } from './exportPlans';
+import { ModelDependencyService } from '../services/ModelDependencyService';
 
 export { scaffoldKinds };
 export type { PieceKind };
@@ -57,6 +58,7 @@ export async function generateModel(input: GenerateModelInput): Promise<Generate
 
 	await ensureParents(root, files);
 	const writes = await writePlannedFiles(root, files, { force: input.force });
+	if (adapter === 'sqlite') writes.push(...(await new ModelDependencyService().ensure(root)));
 	const exportsUpdated = await maybeExport(root, [
 		...modelExportPlans(name),
 		adapterExportPlan(adapter)
@@ -80,6 +82,7 @@ export async function generatePiece(input: GeneratePieceInput): Promise<Generate
 	const files = [...pieceFiles(input.kind, name), ...support];
 	await ensureParents(root, files);
 	const writes = await writePlannedFiles(root, files, { force: input.force });
+	if (input.kind === 'resource') writes.push(...(await new ModelDependencyService().ensure(root)));
 	const exportsUpdated =
 		projectKind === 'lib' ? await maybeExport(root, pieceExportPlans(input.kind, name)) : false;
 

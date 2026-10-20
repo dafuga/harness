@@ -34,6 +34,7 @@ test('the index is deterministic and names every commit, verified or not', async
 	const two = join(repo.root, '.cache/history-two');
 	const built = await build(repo, one);
 	await build(repo, two);
+	expect(existsSync(join(one, 'catalog.sqlite'))).toBe(true);
 	expect(await directoryDigest(one)).toBe(await directoryDigest(two));
 	expect(sha256(await readFile(join(one, 'index.json')))).toBe(built.digest);
 	const { index } = built;

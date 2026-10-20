@@ -1,6 +1,7 @@
 import { toKebabCase, toPascalCase, toSnakeCase } from '../core/case';
 import type { Field } from '../core/fields';
 import type { PlannedFile } from '../core/files';
+import { sqliteModelDefinition } from './sqliteModel';
 
 export type AdapterName = 'd1' | 'sqlite' | 'postgres';
 
@@ -22,7 +23,11 @@ export function modelFiles(input: ModelInput): PlannedFile[] {
 		},
 		{
 			path: `src/models/${className}.ts`,
-			contents: modelFile(className, tableName)
+			contents: modelFile(
+				className,
+				tableName,
+				input.adapter === 'sqlite' ? sqliteModelDefinition(tableName, input.fields) : ''
+			)
 		},
 		{
 			path: `src/models/adapters/${input.adapter}.ts`,
@@ -51,7 +56,7 @@ function typeFile(className: string, fields: Field[]): string {
 	return `export interface ${className}Attributes {\n${attributeLines.join('\n')}\n}\n\nexport type ${className}CreateInput = Omit<${className}Attributes, 'id' | 'createdAt' | 'updatedAt'>;\nexport type ${className}UpdateInput = Partial<${className}CreateInput>;\n`;
 }
 
-function modelFile(className: string, tableName: string): string {
+function modelFile(className: string, tableName: string, definition: string): string {
 	const createMethod = modelCreateMethod(className);
 
 	return `import type { PersistenceAdapter } from './adapters/types';
@@ -60,7 +65,7 @@ import type { ${className}Attributes, ${className}CreateInput, ${className}Updat
 const tableName = '${tableName}';
 
 export class ${className} {
-	static find(adapter: PersistenceAdapter, id: number): Promise<${className}Attributes | null> {
+${definition}	static find(adapter: PersistenceAdapter, id: number): Promise<${className}Attributes | null> {
 		return adapter.find(tableName, id);
 	}
 
@@ -151,18 +156,11 @@ export function createD1Adapter(db: D1LikeDatabase): PersistenceAdapter {
 }
 
 function sqliteAdapter(): string {
-	return `import type { PersistenceAdapter } from './types';
+	return `import { createSqliteAdapter as createAdapter } from '@dafuga01/harness/sqlite';
+import type { SqliteDatabase, SqliteModel } from '@dafuga01/harness/sqlite';
 
-export function createSqliteAdapter(): PersistenceAdapter {
-	return {
-		find: async () => null,
-		findBy: async () => [],
-		create: async () => {
-			throw new Error('SQLite create adapter is generated as a starting point.');
-		},
-		update: async () => null,
-		delete: async () => false
-	};
+export function createSqliteAdapter(db: SqliteDatabase, models: readonly SqliteModel[]) {
+\treturn createAdapter(db, models);
 }
 `;
 }

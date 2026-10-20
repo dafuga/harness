@@ -32,6 +32,7 @@ export function renderBuild(built: BuiltHistory): string {
 	const count = (coverage: string) => revisions.filter((item) => item.coverage === coverage).length;
 	return [
 		`History index written to ${built.out} (${built.digest.slice(0, 12)}).`,
+		`SQLite catalog: ${built.catalog}.`,
 		`${revisions.length} commits: ${count('verified')} verified, ${count('failed')} failed, ${count('invalid')} invalid, ${count('unverified')} without evidence.`,
 		`Media: ${built.media.resolved} resolved, ${built.media.missing} missing.`,
 		...built.problems.map((problem) => `  ${problem}`)

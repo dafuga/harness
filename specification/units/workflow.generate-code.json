@@ -88,6 +88,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.model-dependency",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "template.adapter-types",
 			"via": "import",
 			"origin": "derived"

@@ -64,7 +64,53 @@
 			"CommitMessageService",
 			"revisionReasons",
 			"verificationNoteIdentity",
-			"bugRepairPolicy"
+			"bugRepairPolicy",
+			"SqliteAdapter",
+			"CatalogRepository",
+			"CatalogIndexService",
+			"CatalogEntity",
+			"CatalogEntityAttributes",
+			"CatalogEntityCreateInput",
+			"CatalogEntityUpdateInput",
+			"createSqliteAdapter",
+			"CatalogRevision",
+			"CatalogRevisionAttributes",
+			"CatalogRevisionCreateInput",
+			"CatalogRevisionUpdateInput",
+			"CatalogRevisionEntity",
+			"CatalogRevisionEntityAttributes",
+			"CatalogRevisionEntityCreateInput",
+			"CatalogRevisionEntityUpdateInput",
+			"CatalogDependency",
+			"CatalogDependencyAttributes",
+			"CatalogDependencyCreateInput",
+			"CatalogDependencyUpdateInput",
+			"CatalogBranch",
+			"CatalogBranchAttributes",
+			"CatalogBranchCreateInput",
+			"CatalogBranchUpdateInput",
+			"CatalogRecord",
+			"CatalogRecordAttributes",
+			"CatalogRecordCreateInput",
+			"CatalogRecordUpdateInput",
+			"CatalogMetadata",
+			"CatalogMetadataAttributes",
+			"CatalogMetadataCreateInput",
+			"CatalogMetadataUpdateInput",
+			"AnalyticsEvent",
+			"AnalyticsEventAttributes",
+			"AnalyticsEventCreateInput",
+			"AnalyticsEventUpdateInput",
+			"ProviderSwitch",
+			"ProviderSwitchAttributes",
+			"ProviderSwitchCreateInput",
+			"ProviderSwitchUpdateInput",
+			"CatalogWriteService",
+			"CatalogScenario",
+			"CatalogScenarioAttributes",
+			"CatalogScenarioCreateInput",
+			"CatalogScenarioUpdateInput",
+			"ModelDependencyService"
 		]
 	},
 	"contract": {
@@ -96,6 +142,11 @@
 		},
 		{
 			"unit": "adapter.provider-catalog",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.sqlite",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -250,6 +301,116 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "model.adapters-sqlite",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "model.analytics-event",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "model.analytics-event-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "model.catalog-branch",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "model.catalog-branch-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "model.catalog-dependency",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "model.catalog-dependency-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "model.catalog-entity",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "model.catalog-entity-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "model.catalog-metadata",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "model.catalog-metadata-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "model.catalog-record",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "model.catalog-record-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "model.catalog-revision",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "model.catalog-revision-entity",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "model.catalog-revision-entity-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "model.catalog-revision-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "model.catalog-scenario",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "model.catalog-scenario-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "model.provider-switch",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "model.provider-switch-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.catalog",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.codex-session",
 			"via": "reexport",
 			"origin": "derived"
@@ -271,6 +432,16 @@
 		},
 		{
 			"unit": "serializer.gateway-content",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.catalog-index",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.catalog-write",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -306,6 +477,11 @@
 		},
 		{
 			"unit": "service.gateway-events",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.model-dependency",
 			"via": "reexport",
 			"origin": "derived"
 		},

@@ -12,6 +12,8 @@ test('lib generation auto-exports package-safe scaffolds', async () => {
 	await generatePiece({ root, kind: 'concern', name: 'Publishable' });
 	await generatePiece({ root, kind: 'config', name: 'Search' });
 	await generateModel({ root, name: 'Post', rawFields: ['title:string'], adapter: 'sqlite' });
+	const manifest = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
+	expect(manifest.dependencies['@dafuga01/harness']).toBe('^0.1.4');
 
 	const index = await readFile(join(root, 'src/index.ts'), 'utf8');
 	expect(index).toContain("export { PublishPostService } from './services/PublishPostService';");

@@ -87,3 +87,69 @@ export { CommitMessageService } from './services/CommitMessageService';
 export { revisionReasons } from './utils/revisionReasons';
 export { verificationNoteIdentity } from './utils/verificationNoteIdentity';
 export { bugRepairPolicy } from './utils/bugRepairPolicy';
+export { SqliteAdapter } from './adapters/SqliteAdapter';
+export { CatalogRepository } from './repositories/CatalogRepository';
+export { CatalogIndexService } from './services/CatalogIndexService';
+export { CatalogEntity } from './models/CatalogEntity';
+export type {
+	CatalogEntityAttributes,
+	CatalogEntityCreateInput,
+	CatalogEntityUpdateInput
+} from './models/CatalogEntity.types';
+export { createSqliteAdapter } from './models/adapters/sqlite';
+export { CatalogRevision } from './models/CatalogRevision';
+export type {
+	CatalogRevisionAttributes,
+	CatalogRevisionCreateInput,
+	CatalogRevisionUpdateInput
+} from './models/CatalogRevision.types';
+export { CatalogRevisionEntity } from './models/CatalogRevisionEntity';
+export type {
+	CatalogRevisionEntityAttributes,
+	CatalogRevisionEntityCreateInput,
+	CatalogRevisionEntityUpdateInput
+} from './models/CatalogRevisionEntity.types';
+export { CatalogDependency } from './models/CatalogDependency';
+export type {
+	CatalogDependencyAttributes,
+	CatalogDependencyCreateInput,
+	CatalogDependencyUpdateInput
+} from './models/CatalogDependency.types';
+export { CatalogBranch } from './models/CatalogBranch';
+export type {
+	CatalogBranchAttributes,
+	CatalogBranchCreateInput,
+	CatalogBranchUpdateInput
+} from './models/CatalogBranch.types';
+export { CatalogRecord } from './models/CatalogRecord';
+export type {
+	CatalogRecordAttributes,
+	CatalogRecordCreateInput,
+	CatalogRecordUpdateInput
+} from './models/CatalogRecord.types';
+export { CatalogMetadata } from './models/CatalogMetadata';
+export type {
+	CatalogMetadataAttributes,
+	CatalogMetadataCreateInput,
+	CatalogMetadataUpdateInput
+} from './models/CatalogMetadata.types';
+export { AnalyticsEvent } from './models/AnalyticsEvent';
+export type {
+	AnalyticsEventAttributes,
+	AnalyticsEventCreateInput,
+	AnalyticsEventUpdateInput
+} from './models/AnalyticsEvent.types';
+export { ProviderSwitch } from './models/ProviderSwitch';
+export type {
+	ProviderSwitchAttributes,
+	ProviderSwitchCreateInput,
+	ProviderSwitchUpdateInput
+} from './models/ProviderSwitch.types';
+export { CatalogWriteService } from './services/CatalogWriteService';
+export { CatalogScenario } from './models/CatalogScenario';
+export type {
+	CatalogScenarioAttributes,
+	CatalogScenarioCreateInput,
+	CatalogScenarioUpdateInput
+} from './models/CatalogScenario.types';
+export { ModelDependencyService } from './services/ModelDependencyService';

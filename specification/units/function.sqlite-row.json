@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "function.sqlite-row",
+	"kind": "function",
+	"title": "sqliteRow",
+	"responsibility": "Owns the sqliteRow shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/sqliteRow.ts"],
+		"symbols": ["sqliteRow"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "sqliteRow.model",
+				"type": "SqliteModel"
+			},
+			{
+				"name": "sqliteRow.row",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "sqliteRow",
+				"type": "T | null"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.sqlite-table-sql",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/sqliteRow.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/sqliteRow.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
