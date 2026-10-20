@@ -9,6 +9,8 @@ The approved follow-up also retains a removed private function at its explicit
 removal-commit address using its last active parent contract.
 The approved compatibility repair restores Desktop's expandable verification
 coverage beside documented examples and bounds the shared browser fixture typing.
+The approved Remote follow-up simplifies approval validation to meet its existing
+complexity limit while preserving project selection and optional comment permissions.
 
 ## Acceptance Criteria
 
@@ -28,6 +30,10 @@ coverage beside documented examples and bounds the shared browser fixture typing
   available in a collapsed disclosure that opens and closes without leaving the tab.
 - The shared evidence fixture typechecks without changing its synthetic reads,
   artifact admission rules or serialization behavior.
+- Remote approval keeps exact input keys, one to 64 distinct local project IDs,
+  boolean agent permission, and the existing optional comment-permission rules.
+- Remote lint passes its unchanged complexity limit; the same approval cases pass
+  before and after the cleanup.
 
 ## Compatibility Coverage
 
@@ -37,6 +43,12 @@ that scenario to cover both states alongside the documented-usage gap. Desktop's
 normal typecheck is the guard for the evidence fixture's excessive type inference.
 The shared Examples component intentionally accepts documentation only; Desktop
 owns its recorded-verification disclosure.
+
+Remote's existing control-input cases miss part of the comment-permission matrix
+and conflate the project-count ceiling with duplicate rejection. Extend those
+standard cases with exact output shape, omitted comments, invalid comment values,
+64 distinct projects and 65 distinct projects. The existing lint failure is the
+red check; behavior is already correct and must remain unchanged.
 
 ## Future Enhancements
 

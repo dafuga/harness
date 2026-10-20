@@ -1,0 +1,56 @@
+{
+	"name": "remote-approval-complexity",
+	"goal": "Remote approval validation meets the existing complexity limit while preserving exact projects and optional comment permissions.",
+	"createdAt": "2026-10-20T20:43:50.472Z",
+	"updatedAt": "2026-10-20T20:44:39.722Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-20T20:44:38.830Z",
+			"evidence": "Approved behavior-preserving Remote cleanup is documented in the model-list feature spec. The normal Remote lint currently reports approval complexity 13 against the unchanged limit 10."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-20T20:44:39.722Z",
+			"evidence": "Existing control-input cases lacked the full optional comment matrix and exact output shape, and 65 duplicate IDs did not isolate the count ceiling. Strengthened the standard cases with omitted/invalid comments and 64/65 distinct projects; all behavior must remain identical."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

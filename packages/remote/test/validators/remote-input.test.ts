@@ -60,24 +60,33 @@ test('a change names the branch and the full commit it applies to', () => {
 test('control inputs are exact', () => {
 	const deviceId = 'd'.repeat(40),
 		approval = { pairingId, deviceId, projectIds: [projectId], agents: true };
-	expect(validator.approval(approval)).toEqual(approval);
-	expect(validator.approval({ ...approval, agents: false, comments: false })).toMatchObject({
-		agents: false,
-		comments: false
-	});
-	expect(validator.approval({ ...approval, comments: true })).toMatchObject({
-		agents: true,
-		comments: true
-	});
-	expect(code(() => validator.approval({ ...approval, comments: false }))).toBe('invalid-message');
+	const maximum = Array.from(
+		{ length: 64 },
+		(_, index) => 'local-' + index.toString(16).padStart(64, '0')
+	);
+	const accepted = [
+		approval,
+		{ ...approval, agents: false },
+		{ ...approval, agents: false, comments: false },
+		{ ...approval, agents: false, comments: true },
+		{ ...approval, comments: true },
+		{ ...approval, projectIds: maximum }
+	];
+	for (const input of accepted) expect(validator.approval(input)).toStrictEqual(input);
 	expect(validator.pairing({ pairingId })).toEqual({ pairingId });
 	expect(validator.device({ deviceId: 'd'.repeat(40) })).toEqual({ deviceId: 'd'.repeat(40) });
 	const refused: unknown[] = [
 		{ ...approval, projectIds: [] },
 		{ ...approval, projectIds: [projectId, projectId] },
 		{ ...approval, projectIds: ['a6196e55-8746-4bc5-bfeb-5e2c8771e241'] },
-		{ ...approval, projectIds: Array.from({ length: 65 }, () => projectId) },
+		{ ...approval, projectIds: [...maximum, 'local-' + 'f'.repeat(64)] },
+		{ ...approval, projectIds: projectId },
 		{ ...approval, agents: 'yes' },
+		{ ...approval, comments: false },
+		{ ...approval, comments: undefined },
+		{ ...approval, comments: null },
+		{ ...approval, comments: 'yes' },
+		{ ...approval, extra: true },
 		{ ...approval, pairingId: 'nope' },
 		{ projectIds: [projectId], agents: true },
 		{ pairingId, projectIds: [projectId], agents: true },
