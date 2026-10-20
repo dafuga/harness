@@ -2,7 +2,7 @@
 	"name": "contract-field-names",
 	"goal": "Keep each contract field distinguishable when multiple functions use the same parameter name",
 	"createdAt": "2026-10-20T10:25:10.200Z",
-	"updatedAt": "2026-10-20T10:28:25.661Z",
+	"updatedAt": "2026-10-20T10:34:57.709Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,12 +39,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T10:32:16.633Z",
+			"evidence": "Same frozen tests and command pass at fix 3cf009b8: 2 rendering tests and 3 browser tests, covering tip and historical contracts at desktop/tablet/mobile widths; checkpoint cf295f15."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T10:34:57.709Z",
+			"evidence": "Reports check passes: formatting, types, lint, 598 unit tests, builds and audit. All 3 unchanged browser regressions pass. Live contract and field modal inspected with fresh screenshots and no browser errors. Root format/types/lint/Rust passed; full root run interrupted to keep Electron testing excluded."
 		}
 	],
 	"evaluators": [
