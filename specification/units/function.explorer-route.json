@@ -75,7 +75,7 @@
 			{
 				"name": "explorerRoutePath",
 				"type": "string",
-				"description": "Canonical path with encoded branch/entity segments and only a valid nondefault tab in the query."
+				"description": "Canonical path with encoded branch/entity segments, selected helper identity and valid nondefault tab in the query."
 			}
 		],
 		"errors": []

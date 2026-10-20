@@ -86,11 +86,14 @@ const scope = (location: ExplorerLocation) => ({
 export function explorerExact(path: string, search = ''): boolean {
 	const tail = path.replace(/\/+$/, '');
 	const location = explorerRoute(tail, search);
-	const tab = new URLSearchParams(search).get('tab');
-	return (
-		Boolean(location) &&
-		explorerRoutePath(location as ExplorerLocation) === (tab === null ? tail : `${tail}?tab=${tab}`)
-	);
+	const query = new URLSearchParams(search);
+	const recognized = new URLSearchParams();
+	for (const key of ['tab', 'helper']) {
+		const asked = query.get(key);
+		if (asked !== null) recognized.set(key, asked);
+	}
+	const suffix = recognized.size ? `?${recognized}` : '';
+	return Boolean(location) && explorerRoutePath(location as ExplorerLocation) === tail + suffix;
 }
 
 /**
