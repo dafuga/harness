@@ -61,15 +61,15 @@ test.each(['bundled', 'external'])(
 			execFileSync(
 				'bun',
 				[
-					'build',
-					'src/utils/deploymentConfig.ts',
-					'--target',
-					'node',
-					'--format',
-					'cjs',
-					...(mode === 'external' ? ['--external=jsonc-parser'] : []),
-					'--outfile',
-					bundle
+					'-e',
+					`import { desktopNodeOptions } from './scripts/build-main.ts';
+const external = process.argv[2] === 'external';
+const result = await Bun.build({ ...desktopNodeOptions,
+entrypoints: ['src/utils/deploymentConfig.ts'], outdir: process.argv[1], naming: 'deployment.cjs',
+...(external ? { external: ['jsonc-parser'], plugins: [] } : {}) });
+if (!result.success) throw new Error(result.logs.map(String).join('\\n'));`,
+					root,
+					mode
 				],
 				{ cwd: process.cwd(), stdio: 'pipe' }
 			);
