@@ -41,13 +41,20 @@ export async function profilePlanningLoop(root: string, loop: string) {
 			createdAt: '2026-10-20T10:00:00Z'
 		})
 	);
-	const service = new AgentActivityService(root, []);
+	const head = await sourceAudit(root, { ...planning, loop });
+	const service = new AgentActivityService(root, [
+		{ path: root, branch: 'main', head, primary: true }
+	]);
 	const agent = await service.register({ label: 'Isolated planning profile', loop });
 	await taskProfile(
 		'service.agent-activity-service-require-task-completion',
 		'registered-planning-completion',
 		() => requireTaskCompletion(root, agent)
 	);
+	await taskProfile('service.agent-activity', 'register-and-complete-planning-agent', async () => {
+		const registered = await service.register({ label: 'Isolated lifecycle profile', loop });
+		await service.finish(registered.registration.id, false);
+	});
 }
 
 /** Real audits of the temporary repository's already verified rank change, including Git and evidence I/O. */
