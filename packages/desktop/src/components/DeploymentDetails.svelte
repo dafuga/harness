@@ -4,9 +4,9 @@
 	import DeploymentProgress from './DeploymentProgress.svelte';
 	import DeploymentRoute from './DeploymentRoute.svelte';
 	/**
-	 * One deployment: where it goes and the commit it deploys, then its progress, why it failed or
-	 * the receipt it ended with. Where the deployment is named already, its identity is left out;
-	 * the progress, the failure and the receipt are the same wherever a deployment is shown.
+	 * One deployment: where it goes and the commit it deploys, then its progress, with why it failed,
+	 * and the receipt it ended with. Where the deployment is named already, its identity is left out;
+	 * the route, the progress and the receipt are the same wherever a deployment is shown.
 	 */
 	let {
 		deployment,
@@ -22,16 +22,18 @@
 		</div>{/if}{/snippet}
 
 <div class="deployment-details">
-	<DeploymentRoute {deployment} />
-	{#if showIdentity}<h2>{deployment.environment} deployment</h2>
-		<dl>
+	<div class="head">
+		{#if showIdentity}<h2>{deployment.environment} deployment</h2>{/if}
+		<DeploymentRoute {deployment} />
+	</div>
+	{#if showIdentity}<dl class="facts">
 			<div>
 				<dt>Project</dt>
 				<dd>{deployment.projectName}</dd>
 			</div>
 			<div>
 				<dt>Branch</dt>
-				<dd>{deployment.branch}</dd>
+				<dd><code>{deployment.branch}</code></dd>
 			</div>
 			<div>
 				<dt>Commit</dt>
@@ -44,7 +46,6 @@
 			{@render when('Finished', deployment.finishedAt)}
 		</dl>{/if}
 	<DeploymentProgress {deployment} />
-	{#if deployment.error}<p class="error" role="alert">{deployment.error}</p>{/if}
 	{#if receipt}<div class="receipt">
 			<h3>Verified receipt</h3>
 			<dl>
@@ -64,20 +65,30 @@
 <style>
 	.deployment-details {
 		display: grid;
-		gap: 12px;
+		gap: 14px;
 	}
-	.receipt {
+	/* Named by its destination with its route under it, as in the list it was chosen from. */
+	.head {
 		display: grid;
+		justify-items: start;
 		gap: 6px;
+		font-size: 12px;
 	}
 	h2 {
 		margin: 0;
-		font-size: 15px;
+		font-size: 16px;
 		color: var(--gold);
+	}
+	.receipt {
+		display: grid;
+		gap: 8px;
 	}
 	h3 {
 		margin: 0;
-		font-size: 12px;
+		font-size: 11px;
+		font-weight: 600;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
 		color: var(--muted);
 	}
 	/* Each name beside its value; a full commit wraps rather than being cut on a phone. */
@@ -85,9 +96,13 @@
 		display: grid;
 		grid-template-columns: max-content minmax(0, 1fr);
 		align-items: baseline;
-		gap: 4px 12px;
+		gap: 6px 16px;
 		margin: 0;
 		font-size: 13px;
+	}
+	.facts {
+		padding-block: 10px;
+		border-block: 1px solid var(--line);
 	}
 	dl div {
 		display: contents;
@@ -98,15 +113,11 @@
 	}
 	dd {
 		margin: 0;
+		color: #edf4fa;
 		overflow-wrap: anywhere;
 	}
 	code {
-		font-size: 12px;
-	}
-	.error {
-		margin: 0;
-		padding: 8px 12px;
-		border-radius: 6px;
-		font-size: 12px;
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 12.5px;
 	}
 </style>

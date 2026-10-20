@@ -35,6 +35,8 @@
 	const receipt = $derived(job?.receipt ?? null);
 	/** Once promoted, production is at the commit of its new receipt. */
 	const production = $derived(receipt ?? promotion?.production ?? null);
+	/** Production already runs the preprod commit shown; it is drawn as a match, not a gap. */
+	const same = $derived(!!production && production.commit === promotion?.preprod?.commit);
 	const ready = $derived(
 		plan?.environment === 'prod' &&
 			!plan.blockers.length &&
@@ -71,30 +73,33 @@
 	}
 </script>
 
-{#snippet commit(name: string, item: DeploymentReceipt | null)}<div>
+{#snippet commit(name: string, item: DeploymentReceipt | null)}<dl>
 		<dt>{name}</dt>
 		{#if item}<dd><code>{item.commit}</code></dd>
-			<dd>
-				<small>Deployed <time datetime={item.updatedAt}>{displayTime(item.updatedAt)}</time></small>
-			</dd>{:else}<dd>{promotion ? 'Never deployed' : '…'}</dd>{/if}
-	</div>{/snippet}
+			<dd class="when">
+				Deployed <time datetime={item.updatedAt}>{displayTime(item.updatedAt)}</time>
+			</dd>{:else}<dd class="when">{promotion ? 'Never deployed' : '…'}</dd>{/if}
+	</dl>{/snippet}
 
 <ChoiceDialog
 	label="Deploy"
 	title={refusal || 'Promote preprod to production'}
 	disabled={!!refusal}
-	width={460}
-	maxHeight={560}
-	gap={12}
+	width={480}
+	maxHeight={720}
+	gap={16}
 	onopen={opened}
 >
 	{#snippet icon()}<Icon name="deploy" size={18} />{/snippet}
 	<h2>Promote preprod to production</h2>
-	{#if distance}<p class="distance">{distance}</p>{/if}
-	<dl>
+	<div class="compare" class:same>
 		{@render commit('Preprod', promotion?.preprod ?? null)}
+		<div class="between">
+			<span class="arrow" aria-hidden="true">↓</span>
+			{#if distance}<p>{distance}</p>{/if}
+		</div>
 		{@render commit('Production', production)}
-	</dl>
+	</div>
 	{#if plan?.blockers.length}<ul class="blockers" aria-label="Blockers">
 			{#each plan.blockers as blocker, index (index)}<li>{blocker}</li>{/each}
 		</ul>{/if}
@@ -113,41 +118,74 @@
 <style>
 	h2 {
 		margin: 0;
-		font-size: 15px;
+		font-size: 16px;
 		color: var(--gold);
 	}
-	.distance {
-		margin: 0;
-		font-size: 13px;
-	}
-	/* Each commit in full under its environment, wrapping rather than cut on a phone. */
+	/* Preprod above production, each commit in full at the same place, so the two compare at a
+	   glance and wrap rather than being cut on a phone. */
 	dl {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr);
-		gap: 10px;
+		gap: 3px;
 		margin: 0;
+		padding: 10px 12px;
+		border: 1px solid var(--line);
+		border-radius: 8px;
+		background: #062031;
 		font-size: 13px;
 	}
-	dl div {
-		display: grid;
-		gap: 2px;
-	}
 	dt {
-		font-size: 12px;
+		font-size: 11px;
+		font-weight: 600;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
 		color: var(--muted);
 	}
 	dd {
-		color: inherit;
+		margin: 0;
+		color: #edf4fa;
 	}
-	dd code {
+	code {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
 		font-size: 12px;
 		overflow-wrap: anywhere;
 	}
+	.when {
+		font-size: 12px;
+		color: var(--muted);
+	}
+	/* How far apart they are rides the arrow from preprod to production; teal once they match. */
+	.between {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		min-height: 42px;
+		padding-inline: 12px;
+		font-size: 13px;
+		color: var(--gold);
+	}
+	.same .between {
+		color: #7fe3c0;
+	}
+	.arrow {
+		display: grid;
+		place-items: center;
+		flex: none;
+		width: 22px;
+		height: 22px;
+		border: 1px solid currentColor;
+		border-radius: 50%;
+	}
+	.between p {
+		margin: 0;
+	}
 	.blockers {
 		display: grid;
-		gap: 2px;
+		gap: 4px;
 		margin: 0;
-		padding-inline-start: 20px;
+		padding: 8px 12px 8px 28px;
+		border-radius: 6px;
+		background: rgb(255 171 176 / 0.08);
 		font-size: 13px;
 		color: #ffabb0;
 	}
@@ -163,6 +201,8 @@
 		flex-wrap: wrap;
 		align-items: center;
 		gap: 8px 12px;
+		padding-top: 14px;
+		border-top: 1px solid var(--line);
 	}
 	.promote p {
 		flex: 1 1 160px;
@@ -172,5 +212,6 @@
 	}
 	.promote button {
 		margin-inline-start: auto;
+		padding: 9px 18px;
 	}
 </style>

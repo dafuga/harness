@@ -34,7 +34,7 @@
 	}
 </script>
 
-<div class="environment-picker">
+<div class="environment-picker" class:gated>
 	<div class="environment-choice">
 		<label onchange={choose}
 			><Select label="Environment" bind:value
@@ -43,8 +43,10 @@
 			></label
 		>{@render children?.()}
 	</div>
-	{#if receipt}<small title="Last verified deployment to {receipt.environment}: {receipt.commit}"
-			>Deployed {receipt.commit.slice(0, 7)} ·
+	{#if receipt}<small
+			class="deployed"
+			title="Last verified deployment to {receipt.environment}: {receipt.commit}"
+			>Deployed <code>{receipt.commit.slice(0, 7)}</code>
 			<time datetime={receipt.updatedAt}>{displayTime(receipt.updatedAt)}</time></small
 		>{:else if deployments.loading}<small>Checking deployments…</small
 		>{:else if status?.available}<small>No verified deployment</small>{:else}<small title={reason}
@@ -86,7 +88,31 @@
 		font-size: 11px;
 		line-height: 1.35;
 	}
+	/* A verified deployment: a teal mark and its short commit, then when, on a line of its own. */
+	.deployed::before {
+		content: '';
+		display: inline-block;
+		width: 6px;
+		height: 6px;
+		margin-inline-end: 6px;
+		border-radius: 50%;
+		background: #7fe3c0;
+		vertical-align: 1px;
+	}
+	.deployed code {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		color: #cfe0ec;
+	}
+	.deployed time {
+		display: block;
+		padding-inline-start: 12px;
+	}
 	.environment-note {
+		color: var(--gold);
+	}
+	/* Prod is reached through Deploy alone; while prod is chosen, Deploy is marked as the way there. */
+	.gated .environment-choice :global(.agent-icon:enabled) {
+		border-color: rgb(255 208 53 / 0.55);
 		color: var(--gold);
 	}
 	/* On a phone the status follows the choice on its row; the note takes the row under them. */

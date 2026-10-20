@@ -73,8 +73,8 @@
 	<ChoiceDialog
 		label="Deployments"
 		{title}
-		width={420}
-		maxHeight={560}
+		width={440}
+		maxHeight={640}
 		gap={12}
 		activeCount={activity.activeCount}
 		onopen={() => void opened()}
@@ -91,9 +91,10 @@
 			>
 			<DeploymentDetails deployment={selected} />
 		{:else}<h2>Deployments</h2>
-			<p class="summary" role="status">{summary}</p>
+			<small role="status">{summary}</small>
 			{#if items.length}<ul bind:this={list}>
-					{#each items as item (item.id)}<li>
+					{#each items as item (item.id)}{@const state = lightState(item)}
+						<li>
 							<button
 								type="button"
 								class="job"
@@ -102,15 +103,18 @@
 									item.branch} to {item.environment}, {item.projectName}, {phase(item)}"
 								onclick={() => void choose(item.id)}
 							>
-								<span class="light" data-state={lightState(item)} aria-hidden="true"></span>
+								<span class="light" data-state={state} aria-hidden="true"></span>
 								<strong>{item.environment} deployment</strong>
 								<small><DeploymentRoute deployment={item} /></small>
-								<small>{phase(item)} · {item.projectName} · {item.commit.slice(0, 7)}</small>
+								<small
+									><span data-state={state}>{phase(item)}</span> · {item.projectName} ·
+									{item.commit.slice(0, 7)}</small
+								>
 							</button>
 						</li>{/each}
-				</ul>{:else}<p class="summary">
+				</ul>{:else}<small>
 					Deployments of local projects show here while they run, and for a while after.
-				</p>{/if}
+				</small>{/if}
 		{/if}
 	</ChoiceDialog>
 </div>
@@ -128,28 +132,32 @@
 		}
 	}
 	.light {
-		flex: none;
 		width: 10px;
 		height: 10px;
-		border: 2px solid var(--muted);
+		border: 2px solid;
 		border-radius: 50%;
+		color: var(--muted);
 	}
-	.light[data-state='queued'] {
-		border-color: var(--gold);
+	/* Each state has its colour and, on a light, its shape: ring, dot, diamond or haloed dot. A row
+	   says how it stands in the colour of its light. */
+	[data-state='queued'],
+	[data-state='active'] {
+		color: var(--gold);
 	}
-	.light[data-state='recent'] {
-		border-color: #7fe3c0;
-		background: #7fe3c0;
+	[data-state='recent'] {
+		color: #7fe3c0;
+	}
+	[data-state='failed'] {
+		color: #ffabb0;
+	}
+	.light:is([data-state='recent'], [data-state='failed'], [data-state='active']) {
+		background: currentColor;
 	}
 	.light[data-state='failed'] {
-		border-color: #ffabb0;
 		border-radius: 2px;
-		background: #ffabb0;
 		transform: rotate(45deg) scale(0.9);
 	}
 	.light[data-state='active'] {
-		border-color: var(--gold);
-		background: var(--gold);
 		box-shadow: 0 0 0 3px rgb(255 208 53 / 0.25);
 	}
 	/* Only the light in the bar pulses, and not where motion is reduced; its halo stays. */
@@ -168,13 +176,8 @@
 	}
 	h2 {
 		margin: 0;
-		font-size: 15px;
+		font-size: 16px;
 		color: var(--gold);
-	}
-	.summary {
-		margin: 0;
-		font-size: 13px;
-		color: var(--muted);
 	}
 	.error {
 		margin: 0;
@@ -183,23 +186,27 @@
 		font-size: 12px;
 	}
 	ul {
-		display: grid;
-		gap: 6px;
 		margin: 0;
 		padding: 0;
 		list-style: none;
 	}
-	/* A row names its destination first, then how it stands, its project and its commit. */
+	li + li {
+		border-top: 1px solid var(--line);
+	}
+	/* A row names its destination, then its route, how it stands, its project and its commit. */
 	.job {
 		display: grid;
 		grid-template-columns: auto minmax(0, 1fr);
 		align-items: center;
-		gap: 2px 10px;
+		gap: 4px 12px;
 		width: 100%;
-		padding: 8px 10px;
-		font-size: 13px;
+		margin-block: 3px;
+		padding: 9px 10px;
+		border-color: transparent;
+		background: none;
+		font-size: 14px;
 	}
-	small {
+	.job small {
 		grid-column: 2;
 		overflow-wrap: anywhere;
 	}

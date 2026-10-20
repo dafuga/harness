@@ -15,6 +15,7 @@ test('routes announce the captured environment or Git branch as the source', () 
 		});
 		const { body } = render(DeploymentRoute, { props: { deployment } });
 		expect(body).toContain(`aria-label="From ${source} to ${environment}"`);
+		expect(body).toContain('role="group"');
 		expect(body).toMatch(/<span[^>]*aria-hidden="true"[^>]*>→<\/span>/);
 	}
 });
