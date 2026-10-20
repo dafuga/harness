@@ -1,4 +1,4 @@
-import { explorerCategories } from '../../../../src/utils/explorerRoute';
+import { explorerCategories, explorerKindCategory } from '../../../../src/utils/explorerRoute';
 import type { ExplorerEntity } from '../models/Explorer.types';
 import type { HarnessMark, HarnessRevision, HarnessUnit } from '../models/Harness.types';
 import { explorerCategory, explorerRole } from './explorerCategory';
@@ -13,9 +13,14 @@ export function explorerChange(head: HarnessRevision, unit: string): HarnessMark
 	return (units && marks.find((mark) => units[mark].includes(unit))) ?? null;
 }
 
-/** One unit of the five kinds as the explorer lists it; null for a unit of no category. */
-export function explorerEntity(head: HarnessRevision, unit: HarnessUnit): ExplorerEntity | null {
-	const category = explorerCategory(unit);
+/** A listed entity, or an explicitly requested private callable; private units never enter collections. */
+export function explorerEntity(
+	head: HarnessRevision,
+	unit: HarnessUnit,
+	includePrivate = false
+): ExplorerEntity | null {
+	const privateFunction = includePrivate && explorerKindCategory(unit.kind) === 'functions';
+	const category = explorerCategory(unit) ?? (privateFunction ? 'functions' : null);
 	if (category === null) return null;
 	return {
 		id: unit.id,
