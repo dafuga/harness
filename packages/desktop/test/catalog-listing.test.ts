@@ -36,7 +36,7 @@ const ids = (entities: { id: string }[]) => entities.map((entity) => entity.id).
 const kept = idsOf([...ordinary, twin]);
 const redirects = ['analytics', 'harness-analytics', 'harness-reports', 'harness-reports-id'];
 
-test('implemented catalog entries retain code identity and declared screenshots', async () => {
+test('implemented pages select their declared screenshot rather than an absent planning image', async () => {
 	const preview = { scenario: 'orders', state: 'loaded', viewport: 'desktop' };
 	const unit = {
 		...manifest(['page.orders', 'Orders', 'Shows orders.', ['src/routes/orders/+page.svelte']]),
