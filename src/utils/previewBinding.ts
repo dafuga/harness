@@ -1,6 +1,6 @@
 import type { ComponentManifest, ScenarioManifest } from '../core/unitTypes';
 
-type PreviewUnit = Pick<ComponentManifest, 'id' | 'scenarios' | 'preview'>;
+type PreviewUnit = Pick<ComponentManifest, 'id' | 'scenarios' | 'preview'> & { kind?: string };
 
 function stateFor(unit: PreviewUnit, scenario: ScenarioManifest, id: string) {
 	const state = scenario.states.find((item) => item.id === id);
@@ -13,7 +13,10 @@ function stateFor(unit: PreviewUnit, scenario: ScenarioManifest, id: string) {
 /** A declared preview may select only the unit's own required screenshot state and viewport. */
 export function previewBinding(unit: PreviewUnit, scenarios: ScenarioManifest[]): string[] {
 	const preview = unit.preview;
-	if (!preview) return [];
+	if (!preview)
+		return unit.kind === 'component'
+			? [`${unit.id}: active component requires a screenshot preview`]
+			: [];
 	const scenario = scenarios.find((item) => item.id === preview.scenario);
 	if (!scenario) return [`${unit.id}: unknown preview scenario ${preview.scenario}`];
 	const state = stateFor(unit, scenario, preview.state);
