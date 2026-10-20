@@ -7,6 +7,7 @@ An approved phone works with the projects of a computer through a relay it does 
 ## Acceptance Criteria
 
 - Only listed methods exist; a method that a connection may not call is refused before any handler.
+- Deployment admission and host-wide activity remain local-only. Remote phones and hosted projects cannot start jobs or list other local projects' deployment activity.
 - A mutation is performed at most once per request id: a re-sent id is answered from the ledger, and an id whose answer is gone, or that was issued under another epoch, is refused as expired, never repeated.
 - Events carry one increasing sequence per client; a reconnect resumes after the cursor or reports a gap.
 - A packet with another key, direction, counter or flag, or any changed byte, ends the channel.

@@ -152,7 +152,7 @@ test('a long name wraps inside the results on a phone, which stay inside the scr
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 });
 
-test('at a wide desktop the search shares the one row of the top bar, overlapping nothing', async ({
+test('desktop search and revision icons retain their widths across the responsive header rows', async ({
 	page
 }, info) => {
 	await opened(page, info, alphaAt('pages'), 'search-fit-desktop');
@@ -161,7 +161,11 @@ test('at a wide desktop the search shares the one row of the top bar, overlappin
 	const revision = () =>
 		Promise.all(
 			['Branch', 'Commit'].map(async (name) =>
-				Math.round((await bar.getByRole('combobox', { name, exact: true }).boundingBox())!.width)
+				Math.round(
+					(await bar
+						.getByRole('button', { name: `Choose ${name.toLowerCase()}`, exact: true })
+						.boundingBox())!.width
+				)
 			)
 		);
 	// The branch and commit fields keep the width a wider screen gives them: the search squeezes neither.
@@ -171,14 +175,15 @@ test('at a wide desktop the search shares the one row of the top bar, overlappin
 	expect(await revision()).toEqual(natural);
 	const [search, branch, row] = [
 		(await bar.getByRole('button', { name: 'Search entities', exact: true }).boundingBox())!,
-		(await bar.getByRole('combobox', { name: 'Branch', exact: true }).boundingBox())!,
+		(await bar.getByRole('button', { name: 'Choose branch', exact: true }).boundingBox())!,
 		(await bar.getByRole('navigation', { name: 'Catalog categories' }).boundingBox())!
 	];
 	type Box = typeof row;
 	// The layout of a wide desktop is one row: the field and the branch field lie in the row of the
 	// categories, as the branch field did before the search.
 	const within = (item: Box) => item.y >= row.y && item.y + item.height <= row.y + row.height;
-	expect([within(search), within(branch)]).toEqual([true, true]);
+	expect(within(search)).toBe(true);
+	expect(branch.y + branch.height).toBeLessThanOrEqual(row.y);
 	// The field, with its focus ring of three pixels, and the branch field meet on neither axis.
 	const ring = 3;
 	const meet = (one: Box, two: Box) =>

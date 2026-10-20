@@ -1,3 +1,4 @@
+import { installDeploymentFixture } from './ui-deployment-fixture';
 const hash = 'a'.repeat(40);
 const item = {
 	id: 'page:activity',
@@ -128,4 +129,5 @@ export async function fakeProject(page: import('@playwright/test').Page, identif
 		? { ...snapshot, project: { ...snapshot.project, id: 'local-' + 'a'.repeat(64) } }
 		: snapshot;
 	await page.addInitScript(installProject, { snapshot: shown, item, providers, thread });
+	await installDeploymentFixture(page);
 }

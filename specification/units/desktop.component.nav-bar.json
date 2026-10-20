@@ -35,6 +35,21 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.component.deployment-activity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.deployment-dialog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.environment-picker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.component.icon",
 			"via": "import",
 			"origin": "derived"
