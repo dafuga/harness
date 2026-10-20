@@ -191,9 +191,7 @@
 				relationships={entity.relationships}
 				{workspace}
 				direction={tab === 'Uses' ? 'uses' : 'used-by'}
-			/>{:else if tab === 'Examples'}<EntityExamples documentation={entity.documentation}>
-				{#snippet verification()}<CoveragePanel {entity} {evidence} {workspace} />{/snippet}
-			</EntityExamples>
+			/>{:else if tab === 'Examples'}<EntityExamples documentation={entity.documentation} />
 		{:else if tab === 'Evidence' || tab === 'States'}<CoveragePanel
 				{entity}
 				{evidence}

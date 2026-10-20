@@ -6,7 +6,7 @@
 	"name": "verification-integration",
 	"goal": "The branch preserves cold public API imports, canonical planning references and decoded design images while enforcing component evidence and task completion.",
 	"createdAt": "2026-10-20T21:00:51.258Z",
-	"updatedAt": "2026-10-20T21:10:31.167Z",
+	"updatedAt": "2026-10-20T21:21:08.408Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -45,17 +45,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T21:21:06.600Z",
+			"evidence": "Fixed Node bundle dependency boundaries, canonical proposal references, DOM-safe blob URL cleanup and seven-category phone layout. Local Harness guidance now requires packed cold-call acceptance, canonical fixture coverage and image replacement/unmount checks."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T21:21:07.536Z",
+			"evidence": "Sealed green ab307cb9716d796b379882f0a6c1af1f4f72c814ecaf83187e34c9cdf58410bc at f5ff44ea passes the unchanged packed consumer, seven desktop reference/lifecycle checks and mobile navigation assertion."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T21:21:08.408Z",
+			"evidence": "The sealed red commit replays the original missing compiler, filtered private identity, immediate revocation and off-screen category. Its unchanged frozen command passes after the separate source-only repair."
 		},
 		{
 			"id": "verify",
