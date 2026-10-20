@@ -214,3 +214,33 @@ export function withDocumentation(detail: HarnessRevision): HarnessRevision {
 	);
 	return { ...detail, registry: { ...detail.registry, units } };
 }
+
+export function withMeasurements(detail: HarnessRevision): HarnessRevision {
+	const helper = detail.registry.units.find((unit) => unit.id === ids.filter)!;
+	helper.sourceMeasurements = [
+		{
+			unit: ids.filter,
+			metric: 'source-bytes',
+			unitOfMeasure: 'bytes',
+			value: 800,
+			workload: null,
+			profile: null
+		}
+	];
+	helper.budgets.performance = [];
+	for (const taken of detail.records) {
+		const timing = taken.measurements.find((item) => item.unit === ids.filter && item.workload)!;
+		timing.profile = '1db6ce9451b5e530';
+		timing.method =
+			'Median of five batches of 1000 direct calls after three warmups using representative input.';
+		taken.measurements.push({
+			...timing,
+			metric: 'process-peak-rss-bytes',
+			unitOfMeasure: 'bytes',
+			value: 93_000_000,
+			method:
+				'Peak RSS of the whole benchmark process including the test runner, not attributable to one function.'
+		});
+	}
+	return detail;
+}

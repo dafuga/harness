@@ -18,6 +18,7 @@ import {
 	legacyReasons,
 	previewRecord,
 	withFrame,
+	withMeasurements,
 	withDocumentation,
 	withInherited,
 	withScale,
@@ -36,22 +37,8 @@ const stored: Record<string, HarnessRevision> = {
 	},
 	[commits.tip]: recorded(commits.tip)
 };
-if (variant === 'measurements') {
-	for (const detail of Object.values(stored)) {
-		const helper = detail.registry.units.find((unit) => unit.id === ids.filter)!;
-		(helper as unknown as { sourceMeasurements: unknown[] }).sourceMeasurements = [
-			{
-				unit: ids.filter,
-				metric: 'source-bytes',
-				unitOfMeasure: 'bytes',
-				value: 800,
-				workload: null,
-				profile: null
-			}
-		];
-		helper.budgets.performance = [];
-	}
-}
+if (variant === 'measurements')
+	for (const commit of Object.keys(stored)) stored[commit] = withMeasurements(stored[commit]);
 if (variant === 'helpers')
 	for (const commit of Object.keys(stored)) stored[commit] = withHelpers(stored[commit]);
 if (variant === 'inherited')
