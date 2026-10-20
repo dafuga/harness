@@ -58,6 +58,8 @@ const named = (prompt: string) => /^Units you may name: (.*)$/m.exec(prompt)?.[1
 test('a pages request is asked with a registered function it names, and its checked notes are said', async () => {
 	const f = await fixture();
 	await registered(f.root);
+	const units = await f.session.requireProject().source.units(git(f.root, 'rev-parse', 'HEAD'));
+	expect(units.map((unit) => unit.id)).toContain('app.function.owned');
 	expect(await created(f, JSON.stringify(proposal))).toEqual([notes]);
 	const prompt = f.run.mock.calls[0][0].prompt;
 	expect(named(prompt).startsWith('[[unit:app.function.owned]]')).toBe(true);
