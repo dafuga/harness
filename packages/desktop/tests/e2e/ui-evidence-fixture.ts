@@ -8,7 +8,6 @@ import type {
 } from '../../src/models/DesktopEvidence.types';
 import { commits, evidenceData, ids, soundScenario, type EvidenceData } from './ui-evidence-data';
 export * from './ui-evidence-data';
-
 /**
  * SYNTHETIC BACKEND. A bridge like the one a backend gives the viewer, with the two evidence
  * reads answered from a sealed synthetic history: `evidence` answers what the reports functions
@@ -36,7 +35,6 @@ interface Host {
 	__evidence: EvidenceState;
 }
 type Settings = Pick<EvidenceState, 'delay' | 'corrupt' | 'moved'> & { hold: boolean };
-
 function installState(settings: Settings) {
 	const urls = { made: [] as string[], revoked: [] as string[] };
 	const objects = new Map<string, Blob | MediaSource>();
@@ -55,7 +53,6 @@ function installState(settings: Settings) {
 	const state = { calls: [], ...settings, held: settings.hold ? [] : null, urls, objects };
 	Object.assign(window, { __evidence: { ...state, cache: () => {} }, harness: {} });
 }
-
 /** The reads every backend has: one project at a branch tip or at one of its commits. */
 function installProject(data: EvidenceData) {
 	const host = window as unknown as Host;
@@ -169,8 +166,9 @@ export async function evidenceFixture(page: Page, options: EvidenceOptions = {})
 	}
 	const { delay = {}, corrupt = [], moved = false, hold = false } = options;
 	await page.addInitScript(installState, { delay, corrupt, moved, hold });
-	await page.addInitScript(installProject, data);
-	await page.addInitScript(installEvidence, data);
+	// Serialize the recursive documentation graph without Playwright's recursive handle type.
+	await page.addInitScript({ content: `(${installProject.toString()})(${JSON.stringify(data)})` });
+	await page.addInitScript({ content: `(${installEvidence.toString()})(${JSON.stringify(data)})` });
 	if (options.reads === false) await page.addInitScript(removeEvidence);
 	return data;
 }

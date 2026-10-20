@@ -114,9 +114,13 @@ test('no import written through a build alias of any package is left as a packag
 test('the registry stores Select as a derived dependency of each of its ten consumers, and is not stale', () => {
 	const units = consumers().map((item) => owner(item.from));
 	expect(units.sort()).toEqual([
-		...['agent-controls', 'agent-settings', 'catalog-view', 'design-panel'].map(
-			(name) => `desktop.component.${name}`
-		),
+		...[
+			'agent-controls',
+			'agent-settings',
+			'catalog-view',
+			'design-panel',
+			'environment-picker'
+		].map((name) => `desktop.component.${name}`),
 		...['project-switcher', 'remote-approval', 'revision-picker', 'runtime-screens'].map(
 			(name) => `desktop.component.${name}`
 		),

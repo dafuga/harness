@@ -101,7 +101,9 @@ test('changing project leaves nothing of the previous one and reads only the new
 	await expect(project.locator('option')).toHaveText(['Atlas', 'Borealis']);
 	await expect(project.locator('optgroup')).toHaveAttribute('label', 'Shared');
 	const before = state.calls.length;
+	await page.getByRole('button', { name: 'Choose workbench', exact: true }).click();
 	await project.selectOption(borealis);
+	await page.keyboard.press('Escape');
 	await expect(page).toHaveURL(new RegExp(`/projects/${borealis}/harness/branch/trunk/pages$`));
 	await expect(page.getByRole('heading', { name: 'Borealis activity', exact: true })).toBeVisible();
 	await expect(page.getByRole('main').getByText(/Atlas/)).toHaveCount(0);

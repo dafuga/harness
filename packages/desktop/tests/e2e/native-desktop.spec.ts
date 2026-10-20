@@ -129,7 +129,9 @@ async function committedImage(page: Page, root: string, unitId: string) {
 	return imageCommit;
 }
 async function historical(page: Page, commit: string, unitId: string) {
+	await page.getByRole('button', { name: 'Choose commit', exact: true }).click();
 	await page.getByLabel('Commit', { exact: true }).selectOption(commit);
+	await page.keyboard.press('Escape');
 	await expect(page).toHaveURL(new RegExp(`/branch/feat%2Fnative/commit/${commit}/pages$`));
 	await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toHaveCount(0);
 	await page.getByRole('link', { name: 'Open Native activity' }).click();

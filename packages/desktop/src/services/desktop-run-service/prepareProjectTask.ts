@@ -2,6 +2,7 @@ import type { ProjectTaskContext } from '../../utils/prepareProjectTask';
 import { randomUUID } from 'node:crypto';
 import type { ProjectTaskRequest } from '../../models/DesktopBridge.types';
 import type { Preparation } from '../../utils/prepareRun';
+import { prepareChangeEnvironment } from '../../utils/promoteChange';
 import { RunCancelled } from '../../models/AgentRunner.types';
 
 /** Rechecks project and revision before selecting a runner. No client can choose its cwd. */
@@ -12,6 +13,7 @@ export async function prepareProjectTask(
 ): Promise<ProjectTaskContext> {
 	const { session, providers } = preparation;
 	session.assertProject(request.projectId);
+	await prepareChangeEnvironment(session, request);
 	const project = await session.mutable();
 	if (project.revision.branch !== request.branch || project.revision.commit !== request.commit)
 		throw new Error('The project revision changed. Refresh before asking the agent.');

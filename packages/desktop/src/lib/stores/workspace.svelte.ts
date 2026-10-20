@@ -1,3 +1,5 @@
+import { createDeploymentActivityStore } from './deploymentActivity.svelte';
+import { createDeploymentsStore } from './deployments.svelte';
 import type { DesktopBridge } from '../../models/DesktopBridge.types';
 import type { Category, EntityDetail, ProjectSnapshot } from '../../models/Desktop.types';
 import type { RemotePorts } from '../../models/Environment.types';
@@ -14,8 +16,9 @@ import { closedCapabilities } from '../../utils/projectCapabilities';
 import { listedProjects } from '../../utils/projectList';
 import { workspacePath, workspaceRoute } from '../../utils/workspaceRoute';
 import type { RouteSuffix, WorkspaceRoute } from '../../utils/workspaceRoute';
-
 class WorkspaceState {
+	readonly activity = createDeploymentActivityStore(this);
+	readonly deployments = createDeploymentsStore(this);
 	routeProject = true;
 	onNavigate?: (url: string, push: boolean) => void;
 	snapshot = $state<ProjectSnapshot | null>(null);
@@ -119,10 +122,7 @@ class WorkspaceState {
 	}
 	openProject = () => openProject(this);
 	/** Keeps the category; entity, branch and commit belong to the project that is left. */
-	async switchProject(projectId: string) {
-		if (!projectId || projectId === this.projectId) return;
-		await this.navigate(workspacePath({ projectId, category: this.category }));
-	}
+	switchProject = (projectId: string) => switchProject(this, projectId);
 	async loadProjects() {
 		if (!this.bridge) return;
 		const listing = ++this.listing;
@@ -139,13 +139,11 @@ export function createWorkspaceStore() {
 	return new WorkspaceState();
 }
 export type Workspace = WorkspaceState;
-
 /** A discovery event says whether the list it precedes is current; every event is applied. */
 function heard(workspace: WorkspaceState, event: CacheStatus) {
 	if (event.projectId === everyProject) workspace.listedOffline = event.status === 'offline';
 	cacheStatus(workspace, event);
 }
-
 /**
  * Takes a fresh list. A shown shared project it no longer names leaves the page with what it
  * allowed and any navigation towards it; a kept copy of the list removes nothing.
@@ -173,4 +171,10 @@ function browserNavigate(shown: string, push: boolean) {
 
 function shouldNavigate(push: boolean, shown: string, asked: string) {
 	return push || shown !== asked;
+}
+
+/** A project selection keeps the category and leaves its former revision behind. */
+async function switchProject(workspace: Workspace, projectId: string) {
+	if (!projectId || projectId === workspace.projectId) return;
+	await workspace.navigate(workspacePath({ projectId, category: workspace.category }));
 }

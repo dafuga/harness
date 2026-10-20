@@ -29,3 +29,17 @@ test.each([
 ])('invalid creation request is refused: %j', (extra) => {
 	expect(() => parse({ ...request, ...extra })).toThrow();
 });
+
+test('project changes carry only a canonical environment across the IPC boundary', () => {
+	const task = {
+		...request,
+		intent: 'task',
+		mode: 'change',
+		branch: 'main',
+		commit: 'b'.repeat(40),
+		conversation: [],
+		environment: 'preprod'
+	};
+	expect(parse(task)).toEqual(task);
+	expect(() => parse({ ...task, environment: 'production' })).toThrow();
+});

@@ -20,7 +20,7 @@ for (const width of [1440, 390]) {
 		await expect(model.locator('svg')).toHaveCount(1);
 		await expect(effort.locator('svg')).toHaveCount(1);
 		await expect(panel.getByRole('combobox')).toHaveCount(0);
-		await expect(panel.getByRole('button', { name: 'Change', exact: true })).toBeDisabled();
+		await expect(panel.getByRole('button', { name: 'Change', exact: true })).toBeEnabled();
 		await expect(panel.getByRole('button', { name: 'Send plan', exact: true })).toBeEnabled();
 	});
 }
