@@ -86,31 +86,32 @@ export function movedDefinition(path: string, name: string): string {
 }
 
 /** Canonical source tokens keep relocation proof independent of import spelling. */
-export function relocatedSource(path: string, moves: Record<string, string>): string {
+export function relocatedSource(
+	path: string,
+	moves: Record<string, string>,
+	code = readFileSync(path, 'utf8')
+): string {
 	const reverse = new Map(Object.entries(moves).map(([from, to]) => [to, from]));
-	const source = ts.createSourceFile(
-		path,
-		readFileSync(path, 'utf8'),
-		ts.ScriptTarget.Latest,
-		true
-	);
+	const source = ts.createSourceFile(path, code, ts.ScriptTarget.Latest, true);
 	const text = source.statements
 		.filter((node) => !ts.isImportDeclaration(node) && !ts.isExportDeclaration(node))
 		.map((node) => node.getText(source))
-		.join('\n');
+		.join('\n')
+		.replace(
+			/new URL\((['"])(\.[^'"]*)\1,\s*import\.meta\.url\)/g,
+			(match, quote: string, specifier: string) => {
+				// Bundled-output addresses remain output-relative rather than source-relative.
+				if (specifier.endsWith('.js')) return match;
+				const target = posix.normalize(posix.join(posix.dirname(path), specifier));
+				return `new URL(${quote}${reverse.get(target) ?? target}${quote}, import.meta.url)`;
+			}
+		);
 	const scanner = ts.createScanner(ts.ScriptTarget.Latest, true, ts.LanguageVariant.Standard, text);
 	const tokens: string[] = [];
 	let token;
 	while ((token = scanner.scan()) !== ts.SyntaxKind.EndOfFileToken) {
-		let value =
+		const value =
 			token === ts.SyntaxKind.StringLiteral ? scanner.getTokenValue() : scanner.getTokenText();
-		if (token === ts.SyntaxKind.StringLiteral && value.startsWith('.')) {
-			const target = posix.normalize(posix.join(posix.dirname(path), value));
-			const resolved = ['', '.ts', '.svelte', '/index.ts']
-				.map((suffix) => target + suffix)
-				.find((candidate) => reverse.has(candidate) || candidate in moves || existsSync(candidate));
-			if (resolved) value = reverse.get(resolved) ?? resolved;
-		}
 		tokens.push(`${token}:${value}`);
 	}
 	return createHash('sha256').update(tokens.join('\0')).digest('hex');

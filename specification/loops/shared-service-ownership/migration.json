@@ -775,7 +775,7 @@
 			"unit": "workflow.run-verify",
 			"from": "src/workflows/runVerify.ts",
 			"to": "src/workflows/run-verify/runVerify.ts",
-			"definition": "2288adf780f23018b673467e423bdd7a324f4471bb86b5a881c89b2c44a285bb"
+			"definition": "cccb296dc812f9b555e55ea0a9ece4dcb38417112e0340f69c542b3acb72a2a5"
 		},
 		{
 			"unit": "service.verification",
@@ -859,7 +859,7 @@
 			"unit": "reports.function.report-local-cleanup",
 			"from": "packages/reports/src/services/report-retention-service/reportLocalCleanup.ts",
 			"to": "packages/reports/src/services/report-command-service/report-retention-service/reportLocalCleanup.ts",
-			"definition": "1765146bbd7ebd5d15e3063c4efcb196857756b81d424ea69a60a07e3b0f00e6"
+			"definition": "5462bf46c23651859b7ac73ef5b18274927c749301c237e7d514f1844ac74acd"
 		},
 		{
 			"unit": "reports.adapter.report-pages-retention",
@@ -1129,7 +1129,7 @@
 			"unit": "hub.function.hub-pinned-source",
 			"from": "packages/hub/src/services/hub-attached-service/hubPinnedSource.ts",
 			"to": "packages/hub/src/services/hub-evidence-service/hub-attached-service/hubPinnedSource.ts",
-			"definition": "b55050b9f82a79d06928874472fb83d54e1761d8870c998f34ba10dda8b06373"
+			"definition": "6f656755fa875f40e37f961c6dba4f7e2800cbc2bd99a90254f303d7f1f16f60"
 		},
 		{
 			"unit": "desktop.adapter.capacitor-environment",
@@ -1855,7 +1855,7 @@
 			"unit": "planning.function.plan-thread",
 			"from": "packages/planning/src/services/planning-service/planThread.ts",
 			"to": "packages/planning/src/index/planning-service/planThread.ts",
-			"definition": "a9f01a89d8abff7a5dfec605dc9377c15f6d27dff4ff997c8b7a189f73a83550"
+			"definition": "01891edcf6019a21a58c1666f8a037190d0a9b7330e3660fd67d84017ca7ff28"
 		},
 		{
 			"unit": "planning.function.plan-write",
@@ -1939,7 +1939,7 @@
 			"unit": "command.audit",
 			"from": "src/commands/audit.ts",
 			"to": "src/cli/program/audit.ts",
-			"definition": "b2f4f07de74e550a3204d846db1024ec58190e2e9235e1dc1bf4e97de4a17938"
+			"definition": "8a196f43085e4b837fbee860b35f8c8ea011dac8ec8689a7abd134149bf7edf3"
 		},
 		{
 			"unit": "reports.service.report-publish",
@@ -1993,7 +1993,7 @@
 			"unit": "service.native-picker-defaults",
 			"from": "src/services/NativePickerDefaultsService.ts",
 			"to": "src/services/native-picker-bridge-service/NativePickerDefaultsService.ts",
-			"definition": "41e09e29767092c58a7ad36024bc4df4fb790cce1d019e28adf31d089cbfb29c"
+			"definition": "97a7dd95271d708ccd0650f0f6e360b0ff1afd5485c305737e49b6ed9e27ed89"
 		},
 		{
 			"unit": "workflow.run-audit",
@@ -2017,7 +2017,7 @@
 			"unit": "reports.function.preview-node",
 			"from": "packages/reports/src/utils/previewNode.ts",
 			"to": "packages/reports/src/utils/preview-node/previewNode.ts",
-			"definition": "c0ec0dcd54fa73c840fbf467e747b9aea488c27bf2d31cc04e5f579394857f99"
+			"definition": "144fa7071d1c467fd7ad6d701f7e957b6679be5e417ddd884b143cee9ff9dd9b"
 		},
 		{
 			"unit": "reports.service.preview-worker",

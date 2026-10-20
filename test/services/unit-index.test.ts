@@ -3,6 +3,7 @@ import { componentManifestSchema, type ComponentManifest } from '../../src/core/
 import { SourceGraphService } from '../../src/services/SourceGraphService';
 import { UnitRegistryValidator } from '../../src/validators/UnitRegistryValidator';
 import { indexFiles, retire, unitOf, helperMoveGaps, serviceMoveGaps } from '../support/memoryTree';
+import { resolve } from 'node:path';
 import { existsSync, readFileSync } from 'node:fs';
 import services from '../../specification/loops/shared-service-ownership/migration.json';
 import migration from '../../specification/loops/local-helper-ownership/migration.json';
