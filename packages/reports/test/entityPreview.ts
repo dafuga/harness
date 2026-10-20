@@ -25,13 +25,11 @@ import {
 	type PreviewVariant
 } from './entityPreviewData';
 import { commits, ids } from './entityUnits';
-
 /** The synthetic history in a browser, for the checks that need one; no server and no real data. */
 const variant = new URLSearchParams(location.search).get('variant') as PreviewVariant | null;
 const recorded = (commit: string, whole = true) => revision(commit, [previewRecord(commit, whole)]);
 const stored: Record<string, HarnessRevision> = {
 	[commits.first]: recorded(commits.first),
-	// A variant shows the selected commit with a state uncaptured, or with reasons at old length.
 	[commits.middle]: {
 		...recorded(commits.middle, variant !== 'partial'),
 		...(variant === 'legacy' ? { explanations: legacyReasons } : {})
@@ -72,7 +70,6 @@ for (const detail of Object.values(stored)) {
 		}
 	}
 }
-
 if (variant === 'declared') {
 	for (const [commit, detail] of Object.entries(stored)) {
 		const { registry } = detail;
@@ -83,20 +80,16 @@ if (variant === 'declared') {
 		stored[commit] = { ...detail, registry: { ...registry, units } };
 	}
 }
-
 if (variant === 'shells') {
-	// The frame was recorded as a component; the tip's manifest declares it a shell.
 	stored[commits.first] = withFrame(stored[commits.first], 'component');
 	stored[commits.middle] = withFrame(stored[commits.middle], 'component');
 	stored[commits.tip] = withFrame(stored[commits.tip], 'shell');
 }
-
 const parents: Record<string, string | null> = {
 	[commits.first]: null,
 	[commits.middle]: commits.first,
 	[commits.tip]: commits.middle
 };
-
 /** The tip alone, or a selected commit beside the first parent the history gives it. */
 function viewOf(route: ExplorerLocation): View {
 	if (route.commit === null) {
@@ -110,10 +103,8 @@ function viewOf(route: ExplorerLocation): View {
 		parent: parent ? stored[parent] : null
 	};
 }
-
 const target = document.getElementById('app') as HTMLElement;
 let mounted: ReturnType<typeof mount> | undefined;
-
 function show(route: ExplorerLocation) {
 	if (mounted) void unmount(mounted);
 	const shown = viewOf(route);
@@ -135,17 +126,13 @@ function show(route: ExplorerLocation) {
 		}
 	});
 }
-
 /** The address the page was opened at, or the pages of the branch tip without one. */
 function asked(): ExplorerLocation {
 	const named = decodeURIComponent(location.hash.slice(1));
 	return named ? (JSON.parse(named) as ExplorerLocation) : place({ commit: null });
 }
-// Going to a place rewrites the address without this event; only an address typed or opened fires it.
 window.addEventListener('hashchange', () => show(asked()));
 if (variant === 'console') {
-	// The real console and client, over this same fixture. Each response is a fresh JSON tree,
-	// as it is over the network; no in-memory Svelte data is substituted for the host.
 	const fetcher = window.fetch;
 	window.fetch = Object.assign(
 		(input: Parameters<typeof fetch>[0], init?: Parameters<typeof fetch>[1]) => {
@@ -164,7 +151,6 @@ if (variant === 'console') {
 	history.replaceState(null, '', '/harness' + explorerRoutePath(asked()));
 	mount(HarnessShell, { target, props: { base: '/harness', exportable: false } });
 } else show(asked());
-
 /** Source-derived helper metadata distinguishes callable utilities from implementation units. */
 function withHelpers(detail: HarnessRevision): HarnessRevision {
 	const template = detail.registry.units.find((unit) => unit.id === ids.filter)!;
@@ -191,7 +177,6 @@ function withHelpers(detail: HarnessRevision): HarnessRevision {
 		registry: { ...detail.registry, units: [...detail.registry.units, ...hidden] }
 	};
 }
-
 function callableFixture(unit: HarnessUnit): HarnessUnit {
 	const returnNames: Record<string, string> = {
 		toKebabCase: 'kebabCaseText',

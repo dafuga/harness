@@ -213,6 +213,7 @@ test('a title that wraps onto two lines is one solid area to press', async ({ pa
 });
 
 for (const [name, size] of Object.entries(viewports)) {
+	// The normal detail fixture must expose observations even with no budget.
 	test(`measurements at ${name}: observations need no budget and missing evidence is neutral`, async ({
 		page: tab
 	}) => {
