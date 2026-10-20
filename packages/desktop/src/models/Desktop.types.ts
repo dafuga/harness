@@ -161,7 +161,6 @@ export interface DesignThumbnail {
 export type Thumbnail =
 	| DesignThumbnail
 	| ({ source: 'recorded' } & Partial<NonNullable<ComponentManifest['preview']>>);
-
 export interface CatalogEntity {
 	helperContracts?: ComponentManifest['helperContracts'];
 	id: string;
