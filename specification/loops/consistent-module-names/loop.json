@@ -2,7 +2,7 @@
 	"name": "consistent-module-names",
 	"goal": "Names match recorded code symbols across cards, relations and detail pages; each module type has documented generator and audit naming rules.",
 	"createdAt": "2026-10-20T20:11:21.894Z",
-	"updatedAt": "2026-10-20T20:35:33.611Z",
+	"updatedAt": "2026-10-20T21:01:20.338Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -27,7 +27,7 @@
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
 			"status": "complete",
 			"completedAt": "2026-10-20T20:22:22.577Z",
-			"evidence": "Committed a2f612c2; record 63f03bd7bb08a939c8b67f6baa7045a5302fb49d4f3a13d80244111151bb8b87 proves the naming, owner-local audit and guide failures using the final frozen test corpus."
+			"evidence": "Test-only b7145c1185aa867064261b13cf83efabfc936632; record 7ea7cf43202684a770b144d801a905311e14a729a9cef18e9e664ac1fc81981d. Registered test titles remain stable; all test inputs match the passing fix."
 		},
 		{
 			"id": "propose",
@@ -46,17 +46,22 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T21:01:19.030Z",
+			"evidence": "Final source 57c677244000ec8f9db9c296b79a28dda5b9c397 passes unchanged tests from b7145c1185aa867064261b13cf83efabfc936632. Records: red 7ea7cf43202684a770b144d801a905311e14a729a9cef18e9e664ac1fc81981d; green 2775269924df5854b1c4fb3514fdab7022784a829ca9c0669f2be58e2e6e6177."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T21:01:20.338Z",
+			"evidence": "Isolated fixture rejects reintroduced original namer and owner audit with real assertion failures. Restored suites pass; guarded source/test files are byte-identical to final 57c67724."
 		},
 		{
 			"id": "verify",
 			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Focused red/green, isolated prevention guard, final build, structure audits and real browser proof pass. Required broad verification retains existing ownership drift, Desktop type/unit failures and two obsolete browser cases; keep verification pending."
 		}
 	],
 	"evaluators": [
