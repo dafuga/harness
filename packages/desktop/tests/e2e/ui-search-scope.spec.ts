@@ -84,7 +84,7 @@ test('while another project loads, no result of the project left is offered', as
 	await evidenced(page, 'search-project-loading');
 	await expect(page.getByText('No entity matches “alpha”')).toBeVisible();
 	await field(page).fill('only');
-	await expect(options(page)).toHaveText([/Function.*Beta only function/]);
+	await expect(options(page)).toHaveText([/Helper.*Beta only function/]);
 });
 
 test('while another commit loads, no result of the tip is offered, then only that commit is', async ({
@@ -92,7 +92,7 @@ test('while another commit loads, no result of the tip is offered, then only tha
 }, info) => {
 	await opened(page, info, alphaAt('pages'), 'search-commit-change');
 	await field(page).fill('format');
-	await expect(options(page)).toHaveText([/Function.*Alpha format time/]);
+	await expect(options(page)).toHaveText([/Helper.*Alpha format time/]);
 	await followed(page, alphaAt(`commit/${earlier}/pages`));
 	await expect(options(page)).toHaveCount(0);
 	await expect(page.getByText('Loading entities…').first()).toBeVisible();

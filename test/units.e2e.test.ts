@@ -27,7 +27,7 @@ interface IndexResult {
 	orphaned: string[];
 }
 
-test('generic unit generator coexists with the Svelte component generator', async () => {
+test('generic units coexist with Svelte components, which require preview coverage', async () => {
 	const project = await unitProject('app');
 	const unit = await project.harness(['generate', 'unit', 'PriceQuote']);
 	expect(unit.stdout).toContain('create src/utils/priceQuote.ts');
@@ -51,7 +51,11 @@ test('generic unit generator coexists with the Svelte component generator', asyn
 	const index = await project.harnessJson<IndexResult>(['units', 'index', '--write']);
 	expect(index.added).toContain('component.price-quote');
 	expect(index.added).not.toContain('function.price-quote');
-	await project.harness(['units', 'check']);
+	const uncovered = await project.harness(['units', 'check'], false);
+	expect(uncovered.exitCode).toBe(1);
+	expect(uncovered.stderr).toContain(
+		'component.price-quote: active component requires a screenshot preview'
+	);
 	const service = await project.harness(['generate', 'unit', 'Billing', '--kind', 'service']);
 	expect(service.stdout).toContain('create src/services/BillingService.ts');
 	expect(service.stdout).toContain('create specification/units/service.billing.json');

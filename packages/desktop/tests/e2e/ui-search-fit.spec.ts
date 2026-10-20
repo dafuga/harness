@@ -11,8 +11,8 @@ import { alpha, searchFixture } from './ui-search-fixture';
 
 /**
  * The search of the top bar at every supported width. Closed, focused or with its results open,
- * the field and its focus ring meet neither revision field, which keep the widths they have at that
- * width without the search, the results cover neither, and no page is wider than the screen. A
+ * the search button and its focus ring meet neither revision field, which keep the widths they have at that
+ * width without the search, the results open in a modal dialog, and no page is wider than the screen. A
  * result opens in place, and with a modifier in another tab. A screenshot is kept when
  * TAKE_SCREENSHOT=true.
  */
@@ -21,7 +21,9 @@ const at = (rest: string) => `/projects/${alpha}/harness/branch/feat%2Falpha/${r
 const widths = [1440, 1379, 1300, 1251, 920, 768, 390];
 const bar = (page: Page) => page.getByRole('banner');
 const field = (page: Page) =>
-	bar(page).getByRole('combobox', { name: 'Search entities', exact: true });
+	page
+		.getByRole('dialog', { name: 'Search project' })
+		.getByRole('combobox', { name: 'Search entities', exact: true });
 const revision = (page: Page) =>
 	['Branch', 'Commit'].map((name) => bar(page).getByRole('combobox', { name, exact: true }));
 const found = (page: Page) => page.getByRole('listbox', { name: 'Entities found', exact: true });
@@ -40,11 +42,7 @@ async function opened(page: Page, width: number): Promise<number[]> {
 	await page.goto(at('pages'));
 	await expect(page.getByRole('navigation', { name: 'Catalog categories' })).toBeVisible();
 	await page.evaluate(() => document.fonts.ready.then(() => undefined));
-	const searched = page.getByRole('combobox', {
-		name: 'Search entities',
-		exact: true,
-		includeHidden: true
-	});
+	const searched = bar(page).getByRole('button', { name: 'Search project', exact: true });
 	const place = bar(page).locator(':scope > *').filter({ has: searched });
 	await place.evaluate((element: HTMLElement) => (element.style.display = 'none'));
 	const without = await Promise.all(revision(page).map(async (one) => (await box(one)).width));
@@ -52,12 +50,12 @@ async function opened(page: Page, width: number): Promise<number[]> {
 	return without.map(Math.round);
 }
 async function fits(page: Page, width: number, without: number[]): Promise<void> {
-	const search = await box(field(page));
+	const search = await box(bar(page).getByRole('button', { name: 'Search project', exact: true }));
 	const fields = await Promise.all(revision(page).map(box));
 	expect(fields.map((one) => meet(search, one, 3))).toEqual([false, false]);
 	// The search takes nothing of the room of either revision field.
 	expect(fields.map((one) => Math.round(one.width))).toEqual(without);
-	expect(search.width).toBeGreaterThanOrEqual(120);
+	expect(search.width).toBeGreaterThanOrEqual(40);
 	expect([search.x >= 0, search.x + search.width <= width]).toEqual([true, true]);
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
 		width
@@ -78,7 +76,7 @@ for (const width of widths) {
 		const without = await opened(page, width);
 		await remember(page, info, `fit-${width}`);
 		await fits(page, width, without);
-		await field(page).focus();
+		await bar(page).getByRole('button', { name: 'Search project', exact: true }).click();
 		await expect(field(page)).toBeFocused();
 		await fits(page, width, without);
 		await field(page).fill('alpha');
@@ -86,8 +84,10 @@ for (const width of widths) {
 		await fits(page, width, without);
 		const list = await box(found(page));
 		expect([list.x >= 0, list.x + list.width <= width]).toEqual([true, true]);
-		const fields = await Promise.all(revision(page).map(box));
-		expect(fields.map((one) => meet(list, one, 0))).toEqual([false, false]);
+		await expect(page.getByRole('dialog', { name: 'Search project' })).toHaveAttribute(
+			'aria-modal',
+			'true'
+		);
 		await remember(page, info, `fit-open-${width}`);
 	});
 
@@ -95,6 +95,7 @@ for (const width of widths) {
 		page
 	}) => {
 		await opened(page, width);
+		await bar(page).getByRole('button', { name: 'Search project', exact: true }).click();
 		await field(page).fill('refund');
 		const link = found(page).getByRole('option').first().getByRole('link');
 		const [tab] = await Promise.all([

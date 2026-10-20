@@ -20,7 +20,7 @@ test('designless Plan preserves truthful status and branch/commit paths', async 
 	await compactRevision(page.getByRole('banner'));
 	await expect(
 		page.getByRole('navigation', { name: 'Catalog categories' }).getByRole('link')
-	).toHaveCount(6);
+	).toHaveCount(7);
 	await expect(page.getByRole('link', { name: 'Open Activity' })).toHaveAttribute(
 		'href',
 		'/harness/branch/feat%2Factivity/pages/page%3Aactivity/designs'

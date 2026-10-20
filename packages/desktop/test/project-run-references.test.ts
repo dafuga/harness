@@ -62,7 +62,10 @@ test('a pages request is asked with a registered function it names, and its chec
 	expect(units.map((unit) => unit.id)).toContain('app.function.owned');
 	expect(await created(f, JSON.stringify(proposal))).toEqual([notes]);
 	const prompt = f.run.mock.calls[0][0].prompt;
-	expect(named(prompt).startsWith('[[unit:app.function.owned]]')).toBe(true);
+	expect(
+		named(prompt).startsWith('[[unit:app.function.owned]]'),
+		'Registered private functions remain usable in proposals'
+	).toBe(true);
 	// The planned target of the fixture has no registry entry; no source is in the prompt.
 	expect(named(prompt)).not.toContain(f.request.entityId);
 	expect(prompt).not.toContain('committed source');

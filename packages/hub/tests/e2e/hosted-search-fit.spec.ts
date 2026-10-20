@@ -12,7 +12,7 @@ const pages = `/projects/${atlas}/harness/branch/main/pages`;
 const widths = [1440, 1379, 1300, 1251, 920, 768, 390];
 const bar = (page: Page) => page.getByRole('banner');
 const field = (page: Page) =>
-	bar(page).getByRole('combobox', { name: 'Search entities', exact: true });
+	page.getByRole('dialog', { name: 'Search project' }).getByRole('combobox', { name: 'Search entities', exact: true });
 const found = (page: Page) => page.getByRole('listbox', { name: 'Entities found', exact: true });
 const controls = (page: Page): Locator[] => [
 	bar(page).getByRole('combobox', { name: 'Branch', exact: true }),
@@ -31,12 +31,12 @@ const meet = (one: Box, two: Box) =>
 	two.y < one.y + one.height + 3;
 
 async function apart(page: Page, width: number): Promise<void> {
-	const search = await box(field(page));
+	const search = await box(bar(page).getByRole('button', { name: 'Search project', exact: true }));
 	const placed = await Promise.all(controls(page).map(box));
 	expect(placed.map((one) => meet(search, one))).toEqual(placed.map(() => false));
 	const shown = (one: Box) => one.x >= 0 && one.x + one.width <= width;
 	expect([search, ...placed].map(shown)).toEqual([search, ...placed].map(() => true));
-	expect(search.width).toBeGreaterThanOrEqual(120);
+	expect(search.width).toBeGreaterThanOrEqual(40);
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
 		width
 	);
@@ -52,7 +52,7 @@ for (const width of widths) {
 		await expect(page).toHaveURL(new RegExp(`${pages}$`));
 		await expect(page.getByRole('navigation', { name: 'Catalog categories' })).toBeVisible();
 		await apart(page, width);
-		await field(page).focus();
+		await bar(page).getByRole('button', { name: 'Search project', exact: true }).click();
 		await expect(field(page)).toBeFocused();
 		await apart(page, width);
 		await field(page).fill('atlas');

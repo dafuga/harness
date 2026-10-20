@@ -77,6 +77,11 @@ beforeAll(async () => {
 	const loop = (name: string, from: string) =>
 		repo.harness(['loop', 'create', name, '--from', from, '--goal', `Goal of ${name}`]);
 	await loop('ship-titles', 'feature');
+	// Synthetic legacy history: current task-audit enforcement has its own acceptance suite.
+	const path = 'specification/loops/ship-titles/loop.json';
+	const historical = await repo.json(path);
+	delete historical.completion;
+	await repo.write(path, JSON.stringify(historical));
 	for (const step of ['spec', 'implement', 'test', 'verify']) {
 		await repo.harness(['loop', 'complete', 'ship-titles', step, '--evidence', 'Done.']);
 	}

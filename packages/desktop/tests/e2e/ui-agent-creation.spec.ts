@@ -68,7 +68,10 @@ for (const category of ['components', 'functions']) {
 		await projectFixture(page);
 		await page.goto(route(category));
 		await expect(
-			page.getByRole('heading', { name: new RegExp('^' + category + '$', 'i'), level: 1 })
+			page.getByRole('heading', {
+				name: new RegExp('^' + (category === 'functions' ? 'helpers' : category) + '$', 'i'),
+				level: 1
+			})
 		).toBeVisible();
 		await remember(page, info, category + '-catalog');
 		await expect(

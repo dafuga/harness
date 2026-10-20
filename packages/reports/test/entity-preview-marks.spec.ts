@@ -20,12 +20,12 @@ async function inside(tab: Page, size: { width: number; height: number }): Promi
 	return across && box.y >= 0 && box.y + box.height <= size.height;
 }
 for (const [name, size] of Object.entries(viewports)) {
-	test(`components at ${name}: a verdict is the mark alone, told on hover and by the keyboard`, async ({
+	test(`component detail at ${name}: the verdict supports pointer and keyboard inspection`, async ({
 		page: tab
 	}) => {
 		await tab.setViewportSize(size);
-		await open(tab, components, 'partial');
-		const row = tab.getByRole('article', { name: 'Order list', exact: true });
+		await open(tab, { ...components, entity: ids.list }, 'partial');
+		const row = tab.locator('.ex-head');
 		const mark = row.getByRole('button', { name: 'Coverage incomplete' });
 		await expect(mark).toBeVisible();
 		expect((await shown(tab, '.hx-verdict')).join('')).toBe('');
@@ -38,8 +38,7 @@ for (const [name, size] of Object.entries(viewports)) {
 		await capture(tab, `marks-open-${name}`);
 		await tab.mouse.move(1, 1);
 		await expect(tip(tab)).toHaveCount(0);
-		await row.getByRole('link', { name: 'Order list', exact: true }).focus();
-		await tab.keyboard.press('Tab');
+		await mark.focus();
 		await expect(mark).toBeFocused();
 		await expect(tip(tab)).toContainText(why);
 		await tab.keyboard.press('Escape');
@@ -53,12 +52,12 @@ test('a tap opens what a mark tells, and a tap elsewhere closes it', async ({
 	const context = await browser.newContext({ hasTouch: true, viewport: viewports.mobile });
 	browserErrors.watch(context);
 	const tab = await context.newPage();
-	await open(tab, components, 'partial');
-	const row = tab.getByRole('article', { name: 'Order list', exact: true });
+	await open(tab, { ...components, entity: ids.list }, 'partial');
+	const row = tab.locator('.ex-head');
 	await row.getByRole('button', { name: 'Coverage incomplete' }).tap();
 	await expect(tip(tab)).toContainText(why);
 	expect(await inside(tab, viewports.mobile)).toBe(true);
-	await tab.getByRole('heading', { level: 1, name: 'Components' }).tap();
+	await tab.getByRole('heading', { level: 1, name: 'Order list' }).tap();
 	await expect(tip(tab)).toHaveCount(0);
 	await context.close();
 });
@@ -183,7 +182,10 @@ test('a title that wraps onto two lines is one solid area to press', async ({ pa
 	await tab.setViewportSize(viewports.mobile);
 	await open(tab, components);
 	await tab.addStyleTag({ content: '.ex-page-body h2 a { width: 3em; display: block; }' });
-	const title = tab.getByRole('link', { name: 'Order list', exact: true });
+	const title = tab
+		.getByRole('article', { name: 'Order list', exact: true })
+		.locator('h2')
+		.getByRole('link', { name: 'Order list', exact: true });
 	await title.scrollIntoViewIfNeeded();
 	const box = (await title.boundingBox()) as {
 		x: number;

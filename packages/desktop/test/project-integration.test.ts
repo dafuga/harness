@@ -56,7 +56,8 @@ test('catalog shows source size and relationships without leaking source bodies 
 		expect.objectContaining({ id: 'function.filter', direction: 'uses', verification: 'unknown' })
 	]);
 	expect((await f.catalog.entity('function.filter', f.tip)).relationships).toEqual([
-		expect.objectContaining({ id: 'page.home', direction: 'used-by' })
+		expect.objectContaining({ id: 'page.home', direction: 'used-by' }),
+		expect.objectContaining({ id: 'service.analytics', direction: 'used-by' })
 	]);
 	expect(JSON.stringify(detail)).not.toContain(text);
 	const unit = (await f.source.units(f.tip)).find((u) => u.id === 'page.home')!;
