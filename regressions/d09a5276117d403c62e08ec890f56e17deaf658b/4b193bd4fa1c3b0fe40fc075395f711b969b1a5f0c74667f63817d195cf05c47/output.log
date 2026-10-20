@@ -1,0 +1,207 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-fimVrw/packages/reports
+
+ ❯ test/components/entity-overview.test.ts (11 tests | 2 failed) 50ms
+   ✓ an overview groups size and timings in Performance profile, with no source 17ms
+   × a page at a selected commit shows the parent and the commit for one state and viewport 8ms
+     → expected ' Pages Orders page Orders page Page O…' to contain 'Lists the orders of an account.'
+   × a page at the branch tip shows exactly one screenshot and no before or after 2ms
+     → expected ' Pages Orders page Orders page Page O…' to contain 'Lists the orders of an account.'
+   ✓ a side with no capture of the state is a stated gap, never the other side picture 2ms
+   ✓ a component no visual scenario names keeps the screenshot pane, as a stated gap 3ms
+   ✓ a page lists its components as components, each a link in the same scope 1ms
+   ✓ a function at a selected commit shows its end-to-end results before and after 2ms
+   ✓ a function at the branch tip shows one run, and an unrecorded one is a cross 3ms
+   ✓ a behaviour that cannot be established is unknown and shown as failed 1ms
+   ✓ a config shows what it provides and who uses it, with no screenshot and no benchmark 2ms
+   ✓ contract and details list required states without an overview selector 7ms
+ ❯ test/components/entity-sections.test.ts (2 tests | 1 failed) 25ms
+   × a page overview introduces its purpose before evidence and keeps usage in its tabs 10ms
+     → expected ' the evidence of its kind Performance…' to contain 'Lists the orders of an account.'
+   ✓ what it uses and its tests replace the overview, and its evidence pane with it 15ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/entity-overview.test.ts > a page at a selected commit shows the parent and the commit for one state and viewport
+AssertionError: expected ' Pages Orders page Orders page Page O…' to contain 'Lists the orders of an account.'
+
+Expected: [32m"Lists the orders of an account."[39m
+Received: [31m" Pages Orders page Orders page Page Overview Contract Uses States History Source Commit comparison Desktop Mobile 1440 × 900 View full comparison Before · aaaaaaa Parent commit Fresh capture · passed Open full size After · bbbbbbb Selected commit Fresh capture · passed Open full size Behavior change This commit records no reason for a change of this entity. Performance profile Source size Not measured Emitted size Not measured This unit declares no process or Wasm output. Complexity Not measured Latency Not measured Memory Not measured No benchmark is recorded for this revision. "[39m
+
+ ❯ test/components/entity-overview.test.ts:31:22
+     29| test('a page at a selected commit shows the parent and the commit for …
+     30|  const body = content('commit', page);
+     31|  expect(words(body)).toContain('Lists the orders of an account.');
+       |                      ^
+     32|  expect(body.indexOf('Lists the orders of an account.')).toBeLessThan(
+     33|   body.indexOf('Commit comparison')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/components/entity-overview.test.ts > a page at the branch tip shows exactly one screenshot and no before or after
+AssertionError: expected ' Pages Orders page Orders page Page O…' to contain 'Lists the orders of an account.'
+
+Expected: [32m"Lists the orders of an account."[39m
+Received: [31m" Pages Orders page Orders page Page Overview Contract Uses States History Source Current screenshot Desktop Mobile 1440 × 900 Branch tip · ccccccc Fresh capture · passed Open full size Performance profile Source size Not measured Emitted size Not measured This unit declares no process or Wasm output. Complexity Not measured Latency Not measured Memory Not measured No benchmark is recorded for this revision. "[39m
+
+ ❯ test/components/entity-overview.test.ts:47:22
+     45| test('a page at the branch tip shows exactly one screenshot and no bef…
+     46|  const body = content('current', page);
+     47|  expect(words(body)).toContain('Lists the orders of an account.');
+       |                      ^
+     48|  expect(body.indexOf('Lists the orders of an account.')).toBeLessThan(
+     49|   body.indexOf('Current screenshot')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/components/entity-sections.test.ts > a page overview introduces its purpose before evidence and keeps usage in its tabs
+AssertionError: expected ' the evidence of its kind Performance…' to contain 'Lists the orders of an account.'
+
+Expected: [32m"Lists the orders of an account."[39m
+Received: [31m" the evidence of its kind Performance profile Source size Not measured Emitted size Not measured This unit declares no process or Wasm output. Complexity Not measured Latency Not measured Memory Not measured No benchmark is recorded for this revision. "[39m
+
+ ❯ test/components/entity-sections.test.ts:21:22
+     19|  const body = sections();
+     20|  expect(body).toContain('aria-label="Orders page overview"');
+     21|  expect(words(body)).toContain('Lists the orders of an account.');
+       |                      ^
+     22|  expect(body.indexOf('Lists the orders of an account.')).toBeLessThan(
+     23|   body.indexOf('the evidence of its kind')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  3 failed | 10 passed (13)
+   Start at  20:12:24
+   Duration  2.17s (transform 937ms, setup 0ms, collect 1.49s, tests 75ms, environment 0ms, prepare 86ms)
+
+
+Running 3 tests using 1 worker
+
+  ✘  1 test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at desktop width (5.2s)
+  ✘  2 test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at tablet width (5.2s)
+  ✘  3 test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at mobile width (5.2s)
+
+
+  1) test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at desktop width 
+
+    Error: page Overview describes what the page does
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('tabpanel', { name: 'Orders page overview', exact: true }).getByText('Lists the orders of an account.', { exact: true })
+    Expected: 1
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - page Overview describes what the page does getByRole('tabpanel', { name: 'Orders page overview', exact: true }).getByText('Lists the orders of an account.', { exact: true }) with timeout 5000ms
+      - waiting for getByRole('tabpanel', { name: 'Orders page overview', exact: true }).getByText('Lists the orders of an account.', { exact: true })
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+       at entityPreviewOverview.ts:20
+
+      18 | 			.getByRole('tabpanel', { name: 'Orders page overview', exact: true })
+      19 | 			.getByText('Lists the orders of an account.', { exact: true });
+    > 20 | 		await expect(description, 'page Overview describes what the page does').toHaveCount(1);
+         | 		                                                                        ^
+      21 | 		expect((await description.boundingBox())!.y).toBeLessThan(
+      22 | 			(await page.locator('.ex-evidence-head').boundingBox())!.y
+      23 | 		);
+        at reviewOverviewControls (/private/tmp/harness-snapshot-fimVrw/packages/reports/test/entityPreviewOverview.ts:20:75)
+        at reviewVisual (/private/tmp/harness-snapshot-fimVrw/packages/reports/test/entityPreviewPage.ts:104:2)
+        at /private/tmp/harness-snapshot-fimVrw/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-vis-6e20f-creenshots-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-vis-6e20f-creenshots-at-desktop-width/error-context.md
+
+  2) test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at tablet width 
+
+    Error: page Overview describes what the page does
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('tabpanel', { name: 'Orders page overview', exact: true }).getByText('Lists the orders of an account.', { exact: true })
+    Expected: 1
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - page Overview describes what the page does getByRole('tabpanel', { name: 'Orders page overview', exact: true }).getByText('Lists the orders of an account.', { exact: true }) with timeout 5000ms
+      - waiting for getByRole('tabpanel', { name: 'Orders page overview', exact: true }).getByText('Lists the orders of an account.', { exact: true })
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+       at entityPreviewOverview.ts:20
+
+      18 | 			.getByRole('tabpanel', { name: 'Orders page overview', exact: true })
+      19 | 			.getByText('Lists the orders of an account.', { exact: true });
+    > 20 | 		await expect(description, 'page Overview describes what the page does').toHaveCount(1);
+         | 		                                                                        ^
+      21 | 		expect((await description.boundingBox())!.y).toBeLessThan(
+      22 | 			(await page.locator('.ex-evidence-head').boundingBox())!.y
+      23 | 		);
+        at reviewOverviewControls (/private/tmp/harness-snapshot-fimVrw/packages/reports/test/entityPreviewOverview.ts:20:75)
+        at reviewVisual (/private/tmp/harness-snapshot-fimVrw/packages/reports/test/entityPreviewPage.ts:104:2)
+        at /private/tmp/harness-snapshot-fimVrw/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-vis-ec3df-screenshots-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-vis-ec3df-screenshots-at-tablet-width/error-context.md
+
+  3) test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at mobile width 
+
+    Error: page Overview describes what the page does
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('tabpanel', { name: 'Orders page overview', exact: true }).getByText('Lists the orders of an account.', { exact: true })
+    Expected: 1
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - page Overview describes what the page does getByRole('tabpanel', { name: 'Orders page overview', exact: true }).getByText('Lists the orders of an account.', { exact: true }) with timeout 5000ms
+      - waiting for getByRole('tabpanel', { name: 'Orders page overview', exact: true }).getByText('Lists the orders of an account.', { exact: true })
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+       at entityPreviewOverview.ts:20
+
+      18 | 			.getByRole('tabpanel', { name: 'Orders page overview', exact: true })
+      19 | 			.getByText('Lists the orders of an account.', { exact: true });
+    > 20 | 		await expect(description, 'page Overview describes what the page does').toHaveCount(1);
+         | 		                                                                        ^
+      21 | 		expect((await description.boundingBox())!.y).toBeLessThan(
+      22 | 			(await page.locator('.ex-evidence-head').boundingBox())!.y
+      23 | 		);
+        at reviewOverviewControls (/private/tmp/harness-snapshot-fimVrw/packages/reports/test/entityPreviewOverview.ts:20:75)
+        at reviewVisual (/private/tmp/harness-snapshot-fimVrw/packages/reports/test/entityPreviewPage.ts:104:2)
+        at /private/tmp/harness-snapshot-fimVrw/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-vis-5375c-screenshots-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-vis-5375c-screenshots-at-mobile-width/error-context.md
+
+  3 failed
+    test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at desktop width 
+    test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at tablet width 
+    test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at mobile width 
