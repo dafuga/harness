@@ -2,7 +2,7 @@
 	"name": "history-commit-badges",
 	"goal": "Commit rows omit Added and Removed lifecycle badges while preserving direct revision links",
 	"createdAt": "2026-10-20T17:10:19.528Z",
-	"updatedAt": "2026-10-20T17:11:59.888Z",
+	"updatedAt": "2026-10-20T17:13:43.969Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T17:13:43.969Z",
+			"evidence": "The same committed history tests pass at ebdd8f5a. Before/after screenshots confirm lifecycle badges disappear and commit navigation still works."
 		},
 		{
 			"id": "verify",

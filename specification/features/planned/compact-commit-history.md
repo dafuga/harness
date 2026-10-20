@@ -39,3 +39,5 @@ The root `bun run check` is not claimed as passing: its Electron checks remain e
 ## Lifecycle label correction
 
 Commit rows omit Added and Removed badges. These markers describe the owning unit registry lifecycle and can misrepresent when an individual helper was introduced. Preserve the underlying history classification and navigation; omit only the presentation badge. Existing row and browser history cases now cover this absence, including classification read from revision detail.
+
+The lifecycle-label follow-up fails at `776a5645` and passes unchanged at `ebdd8f5a`, with inspected test-owned before/after screenshots. Focused history tests and navigation pass; reports types, formatting and lint, root audit and registry validation pass. The live helper History page was inspected without the Added badge or browser errors. The earlier full web suite is inherited evidence, not rerun for this label-only change. Full root verification and main integration remain pending.

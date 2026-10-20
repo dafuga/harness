@@ -38,7 +38,7 @@
 			{
 				"name": "EntityHistoryRow.to",
 				"type": "ExplorerLocation",
-				"description": "Required destination for opening this entity at this row\u2019s commit."
+				"description": "Required destination for opening this entity at this row’s commit."
 			},
 			{
 				"name": "EntityHistoryRow.nav",
@@ -98,11 +98,6 @@
 		},
 		{
 			"unit": "reports.model.explorer-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.model.harness-types",
 			"via": "import",
 			"origin": "derived"
 		}
