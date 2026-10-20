@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.hosted-address",
 	"kind": "function",
-	"title": "hostedAddress",
-	"responsibility": "Owns the hostedAddress shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Check a device-approval address",
+	"responsibility": "Accepts a plain secure device-approval URL and rejects other addresses.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/hostedAddress.ts"],
 		"symbols": ["hostedAddress"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hostedAddress.value",
-				"type": "string | undefined"
+				"type": "string | undefined",
+				"description": "The candidate URL, or undefined. It must use HTTPS, or HTTP on localhost, 127.0.0.1 or IPv6 loopback, and have a /native/ path followed by one identifier of 1–128 letters, digits, underscores or hyphens."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hostedAddress",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "The normalized URL when accepted, otherwise null. User information, query strings, fragments, other paths and invalid URLs are rejected. No request is sent."
 			}
 		],
 		"errors": []

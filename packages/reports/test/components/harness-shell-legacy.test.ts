@@ -1,7 +1,7 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
 import HarnessHeader from '../../src/components/harness/HarnessHeader.svelte';
-import HarnessSelectors from '../../src/components/harness/HarnessSelectors.svelte';
+import HarnessSelectors from '../../src/components/harness/harness-selectors/HarnessSelectors.svelte';
 import HarnessTabs from '../../src/components/harness/HarnessTabs.svelte';
 import {
 	sha,
@@ -78,7 +78,7 @@ test('the header with a navbar is the unified bar, and the notices it always sho
 	expect(html).toMatch(/^\s*<header class="hx-nav"/);
 	expect(
 		text(/<nav\b[^>]*aria-label="Harness categories"[^>]*>(.*?)<\/nav>/s.exec(html)?.[1] ?? '')
-	).toBe('Pages Shells Components Functions Configs Services');
+	).toBe('Pages Shells Components Helpers Configs Services Models');
 	// The title row and its links to other views are gone, with or without links to draw.
 	expect(html).not.toMatch(/hc-top|<h1\b|Other views|brand-symbol/);
 	expect(header({ navbar, links: [{ label: 'Reports', href: '/harness/reports' }] })).not.toMatch(
@@ -119,8 +119,8 @@ test('the selectors of the bar say where the tip is, what is viewed, and lead ba
 	// Each field name has its outline icon before it, and each field is still the shared select.
 	for (const label of labels)
 		expect(label).toMatch(/^\s*<span\b[^>]*>\s*<svg\b[^>]*viewBox="0 0 24 24"/);
-	expect(html.match(/class="report-select\b/g)).toHaveLength(2);
-	expect(html).toMatch(/<span class="hx-shown" aria-hidden="true">0404040<\/span>/);
+	expect(html.match(/class="report-select(?:\s|")/g)).toHaveLength(2);
+	expect(html).toMatch(/<span[^>]*class="report-select-value[^>]*>0404040<\/span>/);
 	expect(html).toMatch(/<a\b[^>]*href="\/harness\/tip"[^>]*>(?:(?!<\/a>).)*Go to tip/s);
 	// With nowhere to go the same control is a disabled button.
 	const there = selectors({ tip: { ...tip, viewed: 'Current · branch tip', href: null } });

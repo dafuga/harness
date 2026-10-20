@@ -2,25 +2,27 @@
 	"schemaVersion": 1,
 	"id": "collaboration.function.records-schema",
 	"kind": "function",
-	"title": "recordsSchema",
-	"responsibility": "Owns the recordsSchema shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Validate collaboration record snapshots",
+	"responsibility": "Define strict project and record schemas with identity, ownership and binding checks.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/collaboration/src/utils/recordsSchema.ts"],
 		"symbols": ["projectSchema", "recordsSchema"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "projectSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Strict project schema for UUID, name, repository identity, creation time and owner actor ID."
 			},
 			{
 				"name": "recordsSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Strict version-1 records schema for projects, members, invitations and threads; rejects duplicate identities or request IDs, unbound records and projects without an owner."
 			}
 		],
 		"errors": []

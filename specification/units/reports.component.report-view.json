@@ -2,42 +2,48 @@
 	"schemaVersion": 1,
 	"id": "reports.component.report-view",
 	"kind": "component",
-	"title": "ReportView",
-	"responsibility": "Owns the ReportView Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Report viewer",
+	"responsibility": "Presents a report with its recorded evidence and expandable review details.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/components/ReportView.svelte"],
 		"symbols": ["ReportView"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ReportView.report",
-				"type": "Report"
+				"type": "Report",
+				"description": "Required report providing summary, findings, checks, acceptance criteria, coverage, evidence and replay data."
 			},
 			{
 				"name": "ReportView.assetBase",
-				"type": "string"
+				"type": "string",
+				"description": "Required media address prefix passed to evidence and replay viewers."
 			},
 			{
 				"name": "ReportView.downloadBase",
-				"type": "string"
+				"type": "string",
+				"description": "Required download address prefix passed to the report summary."
 			},
 			{
 				"name": "ReportView.portable",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional portable presentation, defaulting to false. True changes the brand destination and hides project-history navigation and upload eligibility."
 			},
 			{
 				"name": "ReportView.onUploaded",
-				"type": "(report: Report) => void"
+				"type": "(report: Report) => void",
+				"description": "Optional callback forwarded to evidence uploads so the host can receive the updated report."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ReportView",
-				"type": "markup"
+				"type": "markup",
+				"description": "Report summary, findings, evidence gallery, replay and footer. Checks, acceptance and coverage open in a dialog; closing returns focus to the triggering button. Upload eligibility is passed only for an active, nonportable report."
 			}
 		],
 		"errors": []

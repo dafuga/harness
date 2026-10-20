@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { createInterface } from 'node:readline';
-import { openE2eRun } from '../../packages/reports/src/utils/e2eFixtures';
+import { openE2eRun } from '../../packages/reports/src/utils/e2e-fixtures/e2eFixtures';
 import { syntheticPng } from './syntheticPng';
 
 /**

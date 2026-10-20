@@ -2,7 +2,7 @@
 	"schemaVersion": 1,
 	"id": "function.bug-repair-policy",
 	"kind": "function",
-	"title": "bugRepairPolicy",
+	"title": "Standardized bug repair rules",
 	"responsibility": "Share coverage-first standardized bug repair rules between framework guidance and app agents.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
@@ -11,12 +11,13 @@
 		"symbols": ["bugRepairPolicy"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "bugRepairPolicy",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Six reusable instructions: diagnose the missed coverage, extend standardized tests, prove the defect before repair, repeat the same test, retain evidence and respect planning-only requests. Each call returns a new list; it runs no agent or test."
 			}
 		],
 		"errors": []

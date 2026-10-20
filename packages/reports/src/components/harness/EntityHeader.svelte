@@ -1,45 +1,65 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import type { ExplorerEntity, ExplorerLocation } from '../../models/Explorer.types';
+	import { explorerCategory } from '../../utils/explorerCategory';
 	import { entityLabels, entityLens, type EntityNav } from '../../utils/entityLens';
 	import { categoryIcon } from '../../utils/harnessIcons';
 	import EntityLink from './EntityLink.svelte';
-	import HarnessAction from './HarnessAction.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
 	import HarnessTabs from './HarnessTabs.svelte';
-	import HarnessVerdict from './HarnessVerdict.svelte';
+	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
 	let {
 		entity,
+		owner,
 		nav,
-		shared = false
-	}: { entity: ExplorerEntity; nav: EntityNav; shared?: boolean } = $props();
+		shared = false,
+		preview
+	}: {
+		entity: ExplorerEntity;
+		/** The sole owner of a private function, when the revision records one. */
+		owner?: ExplorerEntity;
+		nav: EntityNav;
+		shared?: boolean;
+		/** What stays between the identity and the tabs on every tab: the screenshots of a component. */
+		preview?: Snippet;
+	} = $props();
 	type Place = Pick<ExplorerLocation, 'section' | 'tab'>;
 	let label = $derived(entityLabels[entity.category]);
-	let details = $derived(nav.route.section === 'details');
+	let privateFunction = $derived(
+		entity.category === 'functions' && explorerCategory(entity.unit) === null
+	);
+	let visual = $derived(['pages', 'components', 'shells'].includes(entity.category));
+	let evidenceTab: 'states' | 'examples' | 'tests' = $derived.by(() => {
+		if (visual) return 'states';
+		return entity.category === 'functions' ? 'examples' : 'tests';
+	});
+	const evidenceLabels = { states: 'States', examples: 'Examples', tests: 'Tests' };
 	const at = (place: Place = {}) =>
 		entityLens(nav.route, { category: entity.category, entity: entity.id, ...place });
-	// History is a screen of its own, reached from either row of tabs.
-	const places: Record<string, Place> = {
+	const row: Record<string, Place> = {
 		overview: {},
+		contract: { tab: 'contract' },
 		'used-in': { tab: 'used-in' },
 		uses: { tab: 'uses' },
 		tests: { tab: 'tests' },
-		contract: { section: 'details' },
-		measurements: { section: 'details', tab: 'measurements' },
-		source: { section: 'details', tab: 'source' },
-		history: { section: 'history' }
+		examples: { tab: 'examples' },
+		states: { tab: 'states' },
+		history: { section: 'history' },
+		source: { tab: 'source' }
 	};
-	const rows = {
-		overview: ['Overview', 'Used In', 'Uses', 'Tests', 'History'],
-		details: ['Contract', 'Measurements', 'Source', 'History']
-	};
+	const labels = ['Overview', 'Contract', 'Used In', 'Uses', 'Tests', 'History', 'Source'];
 	let tabs = $derived(
-		rows[details ? 'details' : 'overview'].map((title) => {
+		labels.map((label) => {
+			const title = label === 'Tests' ? evidenceLabels[evidenceTab] : label;
 			const id = title.toLowerCase().replace(' ', '-');
-			return { id, label: title, href: nav.href(at(places[id])) };
+			return { id, label: title, href: nav.href(at(row[id])) };
 		})
 	);
 	// A tab the row does not have, as the former one of both lists, is shown on the first.
-	let asked = $derived(tabs.find((tab) => tab.id === nav.route.tab)?.id ?? tabs[0].id);
+	let asked = $derived(
+		tabs.find((tab) => tab.id === (nav.route.tab === 'tests' ? evidenceTab : nav.route.tab))?.id ??
+			tabs[0].id
+	);
 	let active = $derived(nav.route.section === 'history' ? 'history' : asked);
 	// A route with a parameter is a pattern, not an address a person can open.
 	let openable = $derived(Boolean(entity.appRoute) && !/[[\]:*]/.test(entity.appRoute ?? ''));
@@ -48,13 +68,22 @@
 <nav class="ex-crumbs" aria-label="Breadcrumb">
 	<ol>
 		<li>
-			<EntityLink to={entityLens(nav.route, { category: entity.category })} {nav}
-				>{label.title}</EntityLink
-			>
+			{#if privateFunction}
+				{#if owner}
+					<EntityLink
+						to={entityLens(nav.route, { category: owner.category, entity: owner.id })}
+						{nav}>{owner.name}</EntityLink
+					>
+				{:else}<span>Function</span>{/if}
+			{:else}
+				<EntityLink to={entityLens(nav.route, { category: entity.category })} {nav}
+					>{label.title}</EntityLink
+				>
+			{/if}
 		</li>
-		{#if nav.route.section}
+		{#if nav.route.section === 'history'}
 			<li><EntityLink to={at()} {nav}>{entity.name}</EntityLink></li>
-			<li aria-current="page">{details ? 'Details' : 'History'}</li>
+			<li aria-current="page">History</li>
 		{:else}
 			<li aria-current="page">{entity.name}</li>
 		{/if}
@@ -70,7 +99,7 @@
 			{#if entity.change === 'removed'}<span class="ex-pill">Removed at this commit</span>{/if}
 			<HarnessVerdict {...entity.verdict} />
 		</div>
-		<p class="ex-lead">{details ? 'Contract and measurements' : entity.purpose}</p>
+		<p class="ex-lead">{entity.purpose}</p>
 	</div>
 	<div class="ex-head-actions">
 		{#if entity.category === 'pages'}
@@ -86,22 +115,12 @@
 				{/if}
 			</p>
 		{/if}
-		{#if details}
-			<HarnessAction href={nav.href(at())} onclick={() => nav.go(at())} lead="arrow-left"
-				>Back to overview</HarnessAction
-			>
-		{:else}
-			<HarnessAction
-				href={nav.href(at(places.contract))}
-				onclick={() => nav.go(at(places.contract))}
-				icon="arrow-right">Details</HarnessAction
-			>
-		{/if}
 	</div>
 </header>
+{@render preview?.()}
 <HarnessTabs
 	label={`${entity.name} sections`}
 	view={active}
-	onview={(id) => nav.go(at(places[id]))}
+	onview={(id) => nav.go(at(row[id]))}
 	{tabs}
 />

@@ -20,7 +20,7 @@ test('exact image region, approval, Change, public stream and source disclosure'
 	await page.goto('/');
 	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
 	await checkpoint(page, 'catalog');
-	await page.getByRole('link', { name: 'Review designs' }).click();
+	await page.getByRole('link', { name: 'Open Activity', exact: true }).click();
 	await expect(page.getByRole('img', { name: 'Activity v002 desktop default' })).toBeVisible();
 	await page.getByRole('button', { name: 'Open thread 1', exact: true }).click();
 	await expect(page.getByText('Keep the filters on one line.')).toBeVisible();
@@ -55,11 +55,10 @@ test('exact image region, approval, Change, public stream and source disclosure'
 	await expect(page.getByText('Working on the approved design.')).toBeVisible();
 	await page.getByRole('button', { name: 'Cancel run', exact: true }).click();
 	await expect(page.getByText('Run cancelled', { exact: true })).toBeVisible();
-	await page.getByRole('button', { name: 'Details →', exact: true }).click();
-	await expect(
-		page.getByRole('button', { name: 'src/activity.svelte', exact: true })
-	).not.toBeVisible();
-	await page.getByText('Source', { exact: true }).click();
+	await page
+		.getByRole('navigation', { name: 'Entity sections' })
+		.getByRole('button', { name: 'Source', exact: true })
+		.click();
 	await page.getByRole('button', { name: 'src/activity.svelte', exact: true }).click();
 	await expect(page.getByLabel('src/activity.svelte', { exact: true })).toContainText(
 		'<h1>Activity</h1>'
@@ -78,7 +77,7 @@ for (const viewport of [
 		await fixture(page);
 		await page.goto('/');
 		await page.getByRole('button', { name: 'Open Project', exact: true }).click();
-		await page.getByRole('link', { name: 'Review designs' }).click();
+		await page.getByRole('link', { name: 'Open Activity', exact: true }).click();
 		await expect(page.getByRole('img', { name: 'Activity v002 desktop default' })).toBeVisible();
 		await expect(
 			page.getByRole('navigation', { name: 'Catalog categories' }).getByRole('link')
@@ -184,7 +183,7 @@ for (const outcome of ['failed', 'cancelled'] as const) {
 		await page.goto('/');
 		await persistTerminalOutcome(page, outcome);
 		await page.getByRole('button', { name: 'Open Project', exact: true }).click();
-		await page.getByRole('link', { name: 'Review designs' }).click();
+		await page.getByRole('link', { name: 'Open Activity', exact: true }).click();
 		await page.getByRole('textbox', { name: 'Message', exact: true }).fill('Revise the design');
 		await page.getByRole('button', { name: 'Send plan', exact: true }).click();
 		await expect(page.getByText('Working on the approved design.')).toBeVisible();
@@ -197,6 +196,8 @@ for (const outcome of ['failed', 'cancelled'] as const) {
 		await expect(
 			page.getByRole('main').getByText(`Persisted ${outcome} outcome`, { exact: true })
 		).toBeVisible();
-		await expect(page.getByText('Tip · ddddddd', { exact: true })).toBeVisible();
+		expect(await page.getByLabel('Branch', { exact: true }).getAttribute('title')).toContain(
+			`Tip · ddddddd`
+		);
 	});
 }

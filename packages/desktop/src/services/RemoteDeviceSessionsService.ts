@@ -7,8 +7,8 @@ import type {
 	WireLink
 } from '../../../remote/src/index';
 import type { RemoteHostDevice } from '../adapters/RemoteHostStoreAdapter';
-import { DeviceSessionService } from './DeviceSessionService';
-import type { DeviceSessionOptions } from './DeviceSessionService';
+import { DeviceSessionService } from './device-session-service/DeviceSessionService';
+import type { DeviceSessionOptions } from './device-session-service/DeviceSessionService';
 
 export interface DeviceAddress {
 	deviceId: string;
@@ -125,7 +125,11 @@ export class RemoteDeviceSessionsService {
 	private grant(deviceId: string): RemoteGrant {
 		const record = this.options.device(deviceId);
 		return record
-			? { projects: record.projects, agents: record.agents }
+			? {
+					projects: record.projects,
+					agents: record.agents,
+					...(record.comments === undefined ? {} : { comments: record.comments })
+				}
 			: { projects: [], agents: false };
 	}
 	private detach(entry: Entry): void {

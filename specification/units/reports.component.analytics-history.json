@@ -2,26 +2,33 @@
 	"schemaVersion": 1,
 	"id": "reports.component.analytics-history",
 	"kind": "component",
-	"title": "AnalyticsHistory",
-	"responsibility": "Owns the AnalyticsHistory Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Analytics history",
+	"responsibility": "Displays recorded loop history and frequency summaries.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/components/AnalyticsHistory.svelte"],
 		"symbols": ["AnalyticsHistory"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "AnalyticsHistory.props",
-				"type": "Props"
+				"name": "AnalyticsHistory.summary",
+				"type": "AnalyticsSnapshot['summary']",
+				"description": "Required aggregate counts for templates, commands, evaluator outcomes and daily activity. Frequency bars scale to the largest count; percentages show each count’s share of its category total. Daily rows appear newest first."
+			},
+			{
+				"name": "AnalyticsHistory.loops",
+				"type": "AnalyticsSnapshot['loops']",
+				"description": "Required loop history rows supplying names, templates, models, status, timestamps, duration and evaluation count. Empty shows no loops recorded; absent optional timestamps or durations display a dash."
 			}
 		],
 		"outputs": [
 			{
 				"name": "AnalyticsHistory",
-				"type": "markup"
+				"type": "markup",
+				"description": "Loop table with UTC labels and missing values shown as a dash, plus frequency bars for four summary groups. Bars scale to the largest count while percentages represent share of the group total. Daily keys sort newest first; other groups sort by descending count. Empty histories and groups have explicit messages."
 			}
 		],
 		"errors": []

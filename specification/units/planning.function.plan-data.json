@@ -2,72 +2,85 @@
 	"schemaVersion": 1,
 	"id": "planning.function.plan-data",
 	"kind": "function",
-	"title": "planData",
-	"responsibility": "Owns the planData shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Planning data serialization",
+	"responsibility": "Serialize planning records consistently, hash content and create coded failures.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/planning/src/utils/planData.ts"],
 		"symbols": ["planData", "hash", "fail", "json", "now", "parse"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "planData.value",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "JSON-compatible value to serialize recursively."
 			},
 			{
 				"name": "hash.value",
-				"type": "string | Uint8Array"
+				"type": "string | Uint8Array",
+				"description": "Text or bytes to hash with SHA-256."
 			},
 			{
 				"name": "fail.code",
-				"type": "PlanningErrorCode"
+				"type": "PlanningErrorCode",
+				"description": "Planning failure code to attach."
 			},
 			{
 				"name": "fail.message",
-				"type": "string"
+				"type": "string",
+				"description": "Human-readable failure message."
 			},
 			{
 				"name": "json.value",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "JSON-compatible value to serialize with a trailing newline."
 			},
 			{
 				"name": "parse.value",
-				"type": "Uint8Array"
+				"type": "Uint8Array",
+				"description": "Buffer containing JSON text."
 			}
 		],
 		"outputs": [
 			{
 				"name": "planData",
-				"type": "string"
+				"type": "string",
+				"description": "Serialized value with sorted object keys, omitted undefined object properties and preserved array order."
 			},
 			{
 				"name": "hash",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Lowercase SHA-256 hexadecimal digest."
 			},
 			{
 				"name": "fail",
-				"type": "never"
+				"type": "never",
+				"description": "Never returns; throws an Error carrying code and path null."
 			},
 			{
 				"name": "json",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Serialized record followed by a newline."
 			},
 			{
 				"name": "now",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Current time as an ISO timestamp."
 			},
 			{
 				"name": "parse",
-				"type": "T"
+				"type": "T",
+				"description": "Parsed JSON cast to the requested type; no schema validation is performed."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "parse reports artifact-corrupt for invalid JSON; fail throws the supplied code and message."
 			}
 		]
 	},

@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest';
-import { budgetFindings, type BudgetInput } from '../../src/utils/budgetFindings';
+import { budgetFindings } from '../../src/services/budget-service/budgetFindings';
+import { type BudgetInput } from '../../src/utils/budgetFindings';
 
 const commit = 'a'.repeat(40);
 const comparison = {

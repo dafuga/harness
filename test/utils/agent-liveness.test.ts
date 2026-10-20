@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest';
-import { agentLiveness, type AgentFacts, type ProcessFacts } from '../../src/utils/agentLiveness';
+import { agentLiveness } from '../../src/services/agent-activity-service/agentLiveness';
+import { type AgentFacts, type ProcessFacts } from '../../src/utils/agentLiveness';
 
 const now = Date.parse('2026-10-11T12:00:00.000Z');
 const ago = (seconds: number) => new Date(now - seconds * 1000).toISOString();

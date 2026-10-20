@@ -2,36 +2,43 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.catalog-detail",
 	"kind": "function",
-	"title": "catalogDetail",
-	"responsibility": "Owns the catalogDetail shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Assemble entity details",
+	"responsibility": "Combines an entity’s catalog entry, contract, relationships, plan and source history for a revision.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/catalogDetail.ts"],
-		"symbols": ["catalogDetail"]
+		"source": [
+			"packages/desktop/src/services/catalog-service/catalogDetail.ts",
+			"packages/desktop/src/utils/catalogDetail.ts"
+		],
+		"symbols": ["catalogDetail", "catalogDetail"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "catalogDetail.context",
-				"type": "DetailContext"
+				"type": "DetailContext",
+				"description": "The source adapter and planning reader used to obtain history, source details, size and contract hashes."
 			},
 			{
 				"name": "catalogDetail.data",
-				"type": "DetailData"
+				"type": "DetailData",
+				"description": "The requested identity and revision, catalog entries, unit definitions and optional plan from that revision. The identity must appear in the supplied catalog entries."
 			}
 		],
 		"outputs": [
 			{
 				"name": "catalogDetail",
-				"type": "Promise<EntityDetail>"
+				"type": "Promise<EntityDetail>",
+				"description": "A promise for the catalog entry enriched with a plan contract when present, otherwise the unit contract and hash; relationships; design versions and threads; source details; and merged history deduplicated by identity and sorted newest first. Design-only entries have no source files or size measurement. Performance is reported as not measured."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects when the requested identity is absent from the supplied catalog entries. Failures from history, source or size readers also propagate."
 			}
 		]
 	},

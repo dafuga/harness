@@ -31,20 +31,24 @@
 		comment: (text: string) => Promise<boolean>;
 		send: (request: RunDraft) => Promise<boolean>;
 	} = $props();
-	const labels = { comment: 'Comment', plan: 'Plan', change: 'Change' };
+	const labels = { comment: 'Comment', ask: 'Ask', plan: 'Plan', change: 'Change' };
 	let text = $state('');
 	let chosen = $state<ComposeMode | null>(null);
 	let agent = $state<AgentChoice | null>(null);
 	onMount(() => agentSettings.load());
 	/** A mode that is no longer offered is not kept: the first offered one takes its place. */
 	const mode = $derived(chosen && modes.includes(chosen) ? chosen : (modes[0] ?? null));
-	const request = $derived(mode === 'plan' || mode === 'change' ? mode : null);
-	/** Only a Plan of a visual unit has a count; a Change implements, and a comment asks nothing. */
+	const request = $derived(mode && mode !== 'comment' ? mode : null);
+	/** Only a Plan of a visual unit has a count; Ask and Change ask for none, nor does a comment. */
 	const counted = $derived(request === 'plan' && visual);
 	const unready = $derived(Boolean(request) && (!agent || (request === 'change' && !approved)));
 	const blocked = $derived(!mode || running || !text.trim() || unready);
 	const hint = $derived(notice || (mode ? 'For people. A comment never starts an agent.' : ''));
-	/** A comment goes to the comment operation; only Plan and Change become a run request. */
+	const prompt = $derived.by(() => {
+		if (request === 'ask') return 'Ask a question…';
+		return request ? placeholder || 'Describe the next design…' : 'Leave a comment…';
+	});
+	/** A comment goes to the comment operation; only Ask, Plan and Change become a run request. */
 	async function submit() {
 		if (blocked) return;
 		const body = text.trim();
@@ -67,7 +71,7 @@
 >
 	<textarea
 		aria-label="Message"
-		placeholder={request ? placeholder || 'Describe the next design…' : 'Leave a comment…'}
+		placeholder={prompt}
 		bind:value={text}
 		rows="3"
 		disabled={!mode || running}
@@ -84,7 +88,7 @@
 		</div>{/if}
 	{#snippet action()}<button
 			class="primary send"
-			aria-label={`Send ${mode ?? 'message'}`}
+			aria-label={`Send ${mode === 'ask' ? 'question' : (mode ?? 'message')}`}
 			disabled={blocked}>➤</button
 		>{/snippet}
 	{#if request}<AgentControls {providers} bind:choice={agent} {compact} {action} />{:else}<div

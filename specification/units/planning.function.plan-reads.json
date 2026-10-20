@@ -2,26 +2,31 @@
 	"schemaVersion": 1,
 	"id": "planning.function.plan-reads",
 	"kind": "function",
-	"title": "planReads",
-	"responsibility": "Answers each Git read pinned to a full object id once within one planning operation.",
+	"title": "Reuse immutable planning reads",
+	"responsibility": "Cache successful reads pinned to full commit IDs for one planning operation.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/planning/src/utils/planReads.ts"],
-		"symbols": ["planReads"]
+		"source": [
+			"packages/planning/src/services/planning-service/planReads.ts",
+			"packages/planning/src/utils/planReads.ts"
+		],
+		"symbols": ["planReads", "planReads"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "planReads.git",
-				"type": "Git"
+				"type": "Git",
+				"description": "Repository handle with root, Git directory and command runner."
 			}
 		],
 		"outputs": [
 			{
 				"name": "planReads",
-				"type": "Git"
+				"type": "Git",
+				"description": "Wrapped Git handle sharing in-flight and successful recognized reads at full lowercase IDs of the repository object format. Returned buffers are copied; mutable revisions, writes, calls with input/environment overrides and failed reads are not retained."
 			}
 		],
 		"errors": []

@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "reports.function.sanitize",
 	"kind": "function",
-	"title": "sanitize",
-	"responsibility": "Owns the sanitize shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Report data redaction",
+	"responsibility": "Redacts recognized credential patterns and removes sensitive URL parts from recorded text and data.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/utils/sanitize.ts"],
 		"symbols": ["sanitize", "cleanData"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "sanitize.value",
-				"type": "string"
+				"type": "string",
+				"description": "Text to sanitize."
 			},
 			{
 				"name": "cleanData.input",
-				"type": "T"
+				"type": "T",
+				"description": "Value to recursively clean."
 			}
 		],
 		"outputs": [
 			{
 				"name": "sanitize",
-				"type": "string"
+				"type": "string",
+				"description": "Text with recognized authorization tokens, secret assignments and key/token patterns replaced by redaction markers. HTTP(S) URLs lose user information, query and fragment; Stripe checkout URLs also lose their path."
 			},
 			{
 				"name": "cleanData",
-				"type": "T"
+				"type": "T",
+				"description": "Strings sanitized recursively through arrays and enumerable object fields, with matching sensitive keys replaced entirely by a redaction marker. Other primitive values remain unchanged."
 			}
 		],
 		"errors": []

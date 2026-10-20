@@ -4,7 +4,7 @@ import { existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, beforeEach, expect, test } from 'vitest';
-import { ConsoleInstallService } from '../../src/services/ConsoleInstallService';
+import { ConsoleInstallService } from '../../src/services/console-install-service/ConsoleInstallService';
 
 let root: string;
 let host: string;

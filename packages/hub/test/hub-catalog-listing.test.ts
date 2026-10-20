@@ -92,3 +92,26 @@ test('a snapshot that was cached with a loader listed is not what the hosted cat
 	await writeCache(again.cache, identity, encode({ ...fresh, entities }));
 	expect((await shown(again)).entities.find((entity) => entity.id === analytics)).toBeUndefined();
 });
+
+test('hosted entities read their committed usage document through the source cache', async () => {
+	const f = hosted(ordinary);
+	const [id] = ordinary[0];
+	const key = `specification/units/${id}.json`;
+	const value = JSON.parse(new TextDecoder().decode(f.files.get(key)!));
+	f.files.set(key, encode({ ...value, documentation: 'usage.md' }));
+	const text =
+		'# Hosted usage\n```harness-examples\n' +
+		JSON.stringify({
+			schemaVersion: 1,
+			unitId: id,
+			examples: [{ name: 'Hosted use', input: null, output: false }]
+		}) +
+		'\n```';
+	f.files.set('usage.md', new TextEncoder().encode(text));
+	const detail = await f.projection.entity(actor, project.id, { entityId: id, commit, branch });
+	expect(detail.documentation).toMatchObject({
+		path: 'usage.md',
+		text,
+		examples: [{ name: 'Hosted use', input: null, output: false }]
+	});
+});

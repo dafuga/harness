@@ -61,6 +61,11 @@ decided here and decide none of it.
   traversal, source only on request, binary verdicts, one current capture against a parent pair,
   end-to-end behaviour, history, and no sideways scrolling at tablet and phone widths.
 - Page, data, media and export requests still pass the admin policy first.
+- Same-revision tabs retain loaded content. Category changes reuse revision calculations, and
+  tabs, navigation and search complete within 500 ms in the standardized 1,000-function console
+  fixture at desktop, tablet and mobile sizes. Recorded history is read-only data, not deeply
+  reactive state. Reused calculations stay scoped to their actual revision and parent; switching
+  commits never borrows a previous revision's verdict, contract or evidence.
 
 ## Future Enhancements
 

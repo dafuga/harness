@@ -2,9 +2,9 @@
 	"schemaVersion": 1,
 	"id": "function.catalog",
 	"kind": "function",
-	"title": "catalog",
-	"responsibility": "Owns the catalog shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Harness audit rule catalog",
+	"responsibility": "Defines the standard audit limits and expresses supplied limits as human-readable rule summaries.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/rules/catalog.ts"],
@@ -16,25 +16,29 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "harnessRuleSummariesFor.limits",
-				"type": "HarnessRuleLimits"
+				"type": "HarnessRuleLimits",
+				"description": "Numeric limits for file, function, class and method lines, nesting, parameters, complexity and classes per file."
 			}
 		],
 		"outputs": [
 			{
 				"name": "harnessRuleLimits",
-				"type": "HarnessRuleLimits"
+				"type": "HarnessRuleLimits",
+				"description": "Default limits: 220 file lines, 55 function lines, 120 class lines, 35 method lines, nesting 4, parameters 4, complexity 10 and one class per file."
 			},
 			{
 				"name": "harnessRuleSummaries",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Rule summary strings generated from the default limits, followed by fixed naming, structure, dependency and coverage guidance."
 			},
 			{
 				"name": "harnessRuleSummariesFor",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Ordered rule summaries using the supplied numeric limits together with the fixed Harness guidance; no files are inspected or changed."
 			}
 		],
 		"errors": []

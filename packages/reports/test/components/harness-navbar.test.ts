@@ -1,6 +1,6 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import HarnessNavbar from '../../src/components/harness/HarnessNavbar.svelte';
+import HarnessNavbar from '../../src/components/harness/harness-navbar/HarnessNavbar.svelte';
 import type { ExplorerLocation } from '../../src/models/Explorer.types';
 import {
 	sha,
@@ -55,15 +55,15 @@ const historical: ExplorerLocation = {
 	tab: 'source'
 };
 
-test('one bar holds the brand, the repository and six categories with an icon above each label', () => {
+test('one bar holds the brand, the repository and seven categories with an icon above each label', () => {
 	const html = body(historical);
 	expect(html).toMatch(/^\s*<header class="hx-nav"/);
 	expect(html.match(/<header\b/g)).toHaveLength(1);
 	expect(links(html)).toEqual(
-		['Pages', 'Shells', 'Components', 'Functions', 'Configs', 'Services'].map((label) => ({
+		['Pages', 'Shells', 'Components', 'Helpers', 'Configs', 'Services', 'Models'].map((label) => ({
 			label,
-			href: `${scoped}/commit/${sha(4)}/${label.toLowerCase()}`,
-			current: label === 'Functions',
+			href: `${scoped}/commit/${sha(4)}/${label === 'Helpers' ? 'functions' : label.toLowerCase()}`,
+			current: label === 'Helpers',
 			iconThenLabel: true
 		}))
 	);
@@ -107,28 +107,28 @@ test('at a selected commit the tip and the viewed hash differ, and Go to tip is 
 	const html = body(historical);
 	expect(chosen(html, 'Commit')).toEqual([sha(4), '0404040 Sketch the explorer shell · failed']);
 	// The closed field shows the short hash; the full line of each commit is in its options.
-	expect(html).toMatch(/<span class="hx-shown" aria-hidden="true">0404040<\/span>/);
+	expect(html).toMatch(/<span[^>]*class="report-select-value[^>]*>0404040<\/span>/);
 	expect(field(html, 'Commit')).toContain('0505050 Add the unified navbar · no evidence');
 	expect(text(html)).toContain('Tip · 0505050');
 	expect(text(html)).toContain('Historical commit');
 	expect(text(html)).not.toContain('Current · branch tip');
 	const tip = /<a\b([^>]*)>(?:(?!<\/a>).)*Go to tip/s.exec(html)?.[1];
-	expect(tip).toContain(`href="${scoped}/functions/function.slugify/details?tab=source"`);
+	expect(tip).toContain(`href="${scoped}/functions/function.slugify?tab=source"`);
 	expect(html).not.toMatch(/<button\b[^>]*\sdisabled/);
 });
 
 test('both selectors are the shared select, and the bar writes no field of its own', () => {
 	const html = body(historical);
-	expect(html.match(/class="report-select\b/g)).toHaveLength(2);
+	expect(html.match(/class="report-select(?:\s|")/g)).toHaveLength(2);
 	expect(html.match(/<select\b/g)).toHaveLength(2);
 	expect(field(html, 'Branch')).toContain('<option value="main">main</option>');
 });
 
-test('without a resolved address the bar keeps the six categories and offers nothing to choose', () => {
+test('without a resolved address the bar keeps the seven categories and offers nothing to choose', () => {
 	const html = body(null, { repository: null, index: null });
-	expect(text(categories(html))).toBe('Pages Shells Components Functions Configs Services');
+	expect(text(categories(html))).toBe('Pages Shells Components Helpers Configs Services Models');
 	expect(links(html)).toEqual([]);
-	expect(categories(html).match(/aria-disabled="true"/g)).toHaveLength(6);
+	expect(categories(html).match(/aria-disabled="true"/g)).toHaveLength(7);
 	expect(html).not.toMatch(/<select\b|Go to tip|hx-repository/);
 	expect(html).toMatch(new RegExp(`<a\\b[^>]*class="hx-brand"[^>]*href="${shellMount}"`));
 });

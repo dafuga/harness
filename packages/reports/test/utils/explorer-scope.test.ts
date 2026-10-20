@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { explorerScope } from '../../src/utils/explorerScope';
+import { explorerScope } from '../../src/utils/harness-page/explorerScope';
 import { history, sha, summary } from '../explorerFixture';
 
 const index = history({

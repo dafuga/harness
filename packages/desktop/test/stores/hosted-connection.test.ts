@@ -36,7 +36,10 @@ function workspaceOf(bridge: object) {
 	return workspace as unknown as Workspace & { loadProjects: ReturnType<typeof vi.fn> };
 }
 beforeEach(() => vi.useFakeTimers());
-afterEach(() => vi.useRealTimers());
+afterEach(() => {
+	vi.useRealTimers();
+	vi.unstubAllGlobals();
+});
 
 test('pending approval shows a code and an address and is asked about no sooner than the interval', async () => {
 	const hostedStatus = vi
@@ -61,7 +64,8 @@ test('pending approval shows a code and an address and is asked about no sooner 
 	expect(connection.status?.state).toBe('signed-in');
 	expect(workspace.loadProjects).toHaveBeenCalled();
 	await vi.advanceTimersByTimeAsync(60000);
-	expect(hostedStatus).toHaveBeenCalledTimes(3);
+	expect(hostedStatus.mock.calls.length).toBeGreaterThan(3);
+	connection.dispose();
 });
 
 test('an address that is not a plain approval address is never offered', async () => {
@@ -118,4 +122,79 @@ test('a bridge without the three operations offers no connection', async () => {
 	await connection.load();
 	expect(hostedStatus).not.toHaveBeenCalled();
 	expect(connection.status).toBeNull();
+});
+
+test('a signed-in device keeps owned and joined projects current and clears another account first', async () => {
+	let identity = signedIn;
+	const hostedStatus = vi.fn(async () => identity);
+	const workspace = workspaceOf({
+		hostedStatus,
+		connectHosted: vi.fn(),
+		disconnectHosted: vi.fn()
+	});
+	const connection = createHostedConnectionStore(workspace);
+	await connection.load();
+	workspace.loadProjects.mockClear();
+	await vi.advanceTimersByTimeAsync(30000);
+	expect(workspace.loadProjects, 'signed-in projects refresh automatically').toHaveBeenCalled();
+	const names: string[][] = [];
+	workspace.loadProjects.mockImplementation(async () => {
+		names.push(workspace.projects.map((p) => p.id));
+	});
+	identity = { ...signedIn, actor: { id: 'google:2', name: 'Ben', email: 'ben@example.invalid' } };
+	await connection.load();
+	expect(names.at(-1), 'old account projects leave before loading the new account').toEqual([
+		'local-1'
+	]);
+	connection.dispose();
+	const calls = hostedStatus.mock.calls.length;
+	await vi.advanceTimersByTimeAsync(60000);
+	expect(hostedStatus).toHaveBeenCalledTimes(calls);
+});
+
+test('an account status that arrives after disposal cannot restart polling or repopulate projects', async () => {
+	let answer!: (value: NativeHostedStatus) => void;
+	const response = new Promise<NativeHostedStatus>((resolve) => {
+		answer = resolve;
+	});
+	const workspace = workspaceOf({
+		hostedStatus: () => response,
+		connectHosted: vi.fn(),
+		disconnectHosted: vi.fn()
+	});
+	const connection = createHostedConnectionStore(workspace);
+	const loading = connection.load();
+	connection.dispose();
+	answer(signedIn);
+	await loading;
+	expect(workspace.loadProjects).not.toHaveBeenCalled();
+	expect(connection.status).toBeNull();
+});
+
+test('account sync pauses while hidden, refreshes when visible and removes listeners on disposal', async () => {
+	const page = Object.assign(new EventTarget(), { visibilityState: 'visible' });
+	const view = new EventTarget();
+	vi.stubGlobal('document', page);
+	vi.stubGlobal('window', view);
+	const hostedStatus = vi.fn(async () => signedIn);
+	const workspace = workspaceOf({
+		hostedStatus,
+		connectHosted: vi.fn(),
+		disconnectHosted: vi.fn()
+	});
+	const connection = createHostedConnectionStore(workspace);
+	await connection.load();
+	page.visibilityState = 'hidden';
+	page.dispatchEvent(new Event('visibilitychange'));
+	view.dispatchEvent(new Event('focus'));
+	await vi.advanceTimersByTimeAsync(60000);
+	expect(hostedStatus, 'hidden devices make no account reads').toHaveBeenCalledTimes(1);
+	page.visibilityState = 'visible';
+	page.dispatchEvent(new Event('visibilitychange'));
+	await vi.advanceTimersByTimeAsync(0);
+	expect(hostedStatus).toHaveBeenCalledTimes(2);
+	connection.dispose();
+	view.dispatchEvent(new Event('focus'));
+	await vi.advanceTimersByTimeAsync(60000);
+	expect(hostedStatus).toHaveBeenCalledTimes(2);
 });

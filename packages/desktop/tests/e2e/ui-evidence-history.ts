@@ -9,7 +9,6 @@ import type {
 import { runDocument } from '../../../reports/test/entityArtifacts';
 import { record, revision, tested } from '../../../reports/test/entityFixture';
 import { commits, ids, scenarios } from '../../../reports/test/entityUnits';
-
 /**
  * SYNTHETIC SEALED HISTORY. The invented orders application of the reports tests at its three
  * commits, with real bytes behind every capture: each capture states the SHA-256 of the bytes
@@ -25,7 +24,6 @@ export const tones: Record<string, [number, number, number]> = {
 	[commits.middle]: [40, 90, 200],
 	[commits.tip]: [230, 170, 40]
 };
-
 /** The order card alone; its viewport was narrowed at the tip, so the two sides are not alike. */
 const card = (commit: string): HarnessScenario => ({
 	id: cardScenario,
@@ -37,7 +35,6 @@ const card = (commit: string): HarnessScenario => ({
 	tests: [{ id: 'card-browser', kind: 'e2e', runner: 'playwright' }],
 	evidence: [{ id: 'screens', kind: 'screenshot', states: ['default'], viewports: ['desktop'] }]
 });
-
 const sound: HarnessScenario = {
 	id: soundScenario,
 	title: 'Search box announcement',
@@ -48,7 +45,6 @@ const sound: HarnessScenario = {
 	tests: [{ id: 'sound-flow', kind: 'e2e', runner: 'vitest' }],
 	evidence: [{ id: 'audio', kind: 'audio', states: ['announced'], viewports: [] }]
 };
-
 const job = (id: string) => ({
 	id,
 	kind: 'e2e',
@@ -57,6 +53,10 @@ const job = (id: string) => ({
 	durationMs: 20
 });
 const shot = { kind: 'screenshot', state: '', viewport: 'desktop' };
+export interface Example {
+	input: unknown;
+	output: unknown;
+}
 
 /** What the tip keeps of the order card: the result of the middle commit, not run again. */
 function inherited(origin: Result): Result {
@@ -123,10 +123,24 @@ function answered(commit: string, state: string, kind: string) {
 }
 
 /** The bytes one capture stands for, by what kind of capture it is. */
-function bytesOf(commit: string, state: string, item: HarnessCapture, order: number): Buffer {
-	if (item.kind === 'screenshot') return png(tones[commit], 10 + order * 20);
+function bytesOf(
+	commit: string,
+	state: string,
+	item: HarnessCapture,
+	sample: { order: number; example?: Example }
+): Buffer {
+	if (item.kind === 'screenshot') return png(tones[commit], 10 + sample.order * 20);
 	if (item.kind === 'audio') return wav();
-	return Buffer.from(JSON.stringify(answered(commit, state, item.kind), null, 2));
+	const original = answered(commit, state, item.kind);
+	const document =
+		sample.example && state === 'match'
+			? {
+					...original,
+					input: sample.example.input,
+					...(item.kind === 'output' ? { output: sample.example.output } : {})
+				}
+			: original;
+	return Buffer.from(JSON.stringify(document, null, 2));
 }
 
 export interface SealedHistory {
@@ -136,13 +150,13 @@ export interface SealedHistory {
 }
 
 /** Gives every capture its bytes and states their hash and where they are kept on the capture. */
-function sealed(detail: HarnessRevision, bytes: SealedHistory['bytes']): void {
+function sealed(detail: HarnessRevision, bytes: SealedHistory['bytes'], example?: Example): void {
 	const results = detail.records.flatMap((item) => item.scenarios);
 	let order = 0;
 	for (const found of results) {
 		for (const state of found.states) {
 			for (const item of state.captures) {
-				const data = bytesOf(found.testedRevision, state.id, item, order++);
+				const data = bytesOf(found.testedRevision, state.id, item, { order: order++, example });
 				item.sha256 = createHash('sha256').update(data).digest('hex');
 				item.media = `media/${item.sha256}.${item.media?.split('.').pop()}`;
 				bytes[item.sha256] = { mediaType: item.mediaType, data: [...data] };
@@ -159,17 +173,17 @@ function rejected(detail: HarnessRevision): void {
 	if (mobile) mobile.status = 'failed';
 }
 
-export function sealedHistory(): SealedHistory {
+export function sealedHistory(example?: Example): SealedHistory {
 	const bytes: SealedHistory['bytes'] = {};
 	const middle = at(commits.middle, [recorded(commits.middle)]);
 	const tip = at(commits.tip, [recorded(commits.tip)]);
 	rejected(tip);
-	sealed(middle, bytes);
+	sealed(middle, bytes, example);
 	// What the tip inherited is the same capture of the middle commit, bytes and hash included.
 	const kept = middle.records[0].scenarios.find((item) => item.id === cardScenario);
 	const borrowed = tip.records[0].scenarios.find((item) => item.id === cardScenario);
 	if (kept && borrowed) borrowed.states = kept.states;
-	sealed({ ...tip, records: tip.records.map(withoutCard) }, bytes);
+	sealed({ ...tip, records: tip.records.map(withoutCard) }, bytes, example);
 	const first = at(commits.first, []);
 	return {
 		revisions: { [commits.first]: first, [commits.middle]: middle, [commits.tip]: tip },
@@ -183,8 +197,12 @@ function withoutCard(item: HarnessRecord): HarnessRecord {
 }
 
 /** Only this fixture adds entities and diagnostics to its synthetic recorded observations. */
-export function observedHistory(observedUnits: string[], browserErrors?: unknown[]) {
-	const history = sealedHistory();
+export function observedHistory(
+	observedUnits: string[],
+	browserErrors?: unknown[],
+	example?: Example
+) {
+	const history = sealedHistory(example);
 	for (const revision of Object.values(history.revisions)) {
 		revision.registry = {
 			...revision.registry,

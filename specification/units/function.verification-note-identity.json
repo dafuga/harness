@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.verification-note-identity",
 	"kind": "function",
-	"title": "verificationNoteIdentity",
-	"responsibility": "Validate every verification note identity against its original sealed record and actual tree",
+	"title": "Verification note identity checks",
+	"responsibility": "Detects contradictions between a stored verification record, its indexing note and the actual commit tree.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,25 +11,29 @@
 		"symbols": ["verificationNoteIdentity"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "verificationNoteIdentity.record",
-				"type": "VerificationRecord"
+				"type": "VerificationRecord",
+				"description": "Verification record whose identity fields are authoritative for comparison."
 			},
 			{
 				"name": "verificationNoteIdentity.note",
-				"type": "Note"
+				"type": "Note",
+				"description": "Verification history-note entry to compare with the record."
 			},
 			{
 				"name": "verificationNoteIdentity.tree",
-				"type": "string | null | undefined"
+				"type": "string | null | undefined",
+				"description": "Actual commit tree hash, or null/undefined when unavailable."
 			}
 		],
 		"outputs": [
 			{
 				"name": "verificationNoteIdentity",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "All mismatch messages in fixed order for record id, source commit/tree, outcome, note tree/base, profile and finish time; empty when they agree."
 			}
 		],
 		"errors": []

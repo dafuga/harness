@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/RevisionDetailService.ts"],
+		"source": ["src/services/revision-detail-service/RevisionDetailService.ts"],
 		"symbols": [
 			"RevisionDetail",
 			"BuiltRevision",
@@ -89,6 +89,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.regression-history",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.regression-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.revision-reasons",
 			"via": "import",
 			"origin": "derived"
@@ -104,12 +114,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.unit-metadata",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.verification-types",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "repository.budget-ledger",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.regression-proof",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -146,11 +166,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/RevisionDetailService.ts",
+		"entry": "src/services/revision-detail-service/RevisionDetailService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/RevisionDetailService.ts"
+				"entry": "src/services/revision-detail-service/RevisionDetailService.ts"
 			}
 		]
 	},

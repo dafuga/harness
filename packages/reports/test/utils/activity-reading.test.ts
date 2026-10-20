@@ -1,5 +1,8 @@
+import { readFileSync } from 'node:fs';
+import { runInNewContext } from 'node:vm';
+import { unitDocumentation } from '../../../../src/utils/unit-documentation/unitDocumentation';
 import { expect, test } from 'vitest';
-import { activityReading } from '../../src/utils/activityReading';
+import { activityReading } from '../../src/components/activity-agents/activityReading';
 import { activityPayload, manyAgents } from '../../tests/e2e/support/activityPayload';
 
 const at = Date.parse('2026-10-11T12:00:00.000Z');
@@ -30,4 +33,17 @@ test('a reading that grew old stops saying who is working', () => {
 	]);
 	// A recorded outcome is not live state and does not age.
 	expect(old.label({ ...agents.roster[0], state: 'completed' } as never)).toBe('Finished');
+});
+
+test('committed activity examples describe the function’s actual behavior', () => {
+	const text = readFileSync(new URL('../../src/utils/activityReading.md', import.meta.url), 'utf8');
+	const doc = unitDocumentation(text, 'reports.function.activity-reading');
+	expect(doc.gap).toBeUndefined();
+	expect(doc.examples).toHaveLength(3);
+	expect(doc.setup).toBeUndefined();
+	for (const example of doc.examples) {
+		expect(example.call).toContain('activityReading(');
+		expect(example.call).not.toMatch(/const |agents|sampledAt/);
+		expect(runInNewContext(example.call!, { activityReading })).toEqual(example.output);
+	}
 });

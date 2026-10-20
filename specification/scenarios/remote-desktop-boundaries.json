@@ -4,10 +4,12 @@
 	"title": "Approved encrypted relay, revision authority and revocation",
 	"kind": "headless",
 	"units": [
+		"desktop.adapter.agent-http",
 		"desktop.adapter.remote-host-store",
 		"desktop.adapter.remote-registration",
 		"desktop.function.desktop-ipc",
 		"desktop.function.prepare-run",
+		"desktop.function.repository-lease",
 		"desktop.service.client-projects",
 		"desktop.service.desktop-run",
 		"desktop.service.device-operations",
@@ -191,6 +193,22 @@
 			"target": "bun ../../test/verification-output.ts vitest test/utils/desktop-ipc.test.ts",
 			"cwd": "packages/desktop",
 			"timeoutMs": 120000
+		},
+		{
+			"id": "agent-http",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/adapters/agent-http.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		},
+		{
+			"id": "repository-lease",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/utils/repository-lease.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
 		}
 	],
 	"evidence": [

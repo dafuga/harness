@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/remote/src/services/HostPairingService.ts"],
+		"source": ["packages/remote/src/services/host-pairing-service/HostPairingService.ts"],
 		"symbols": [
 			"HostPairingOptions",
 			"HostPairingOffer",
@@ -129,11 +129,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/remote/src/services/HostPairingService.ts",
+		"entry": "packages/remote/src/services/host-pairing-service/HostPairingService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/remote/src/services/HostPairingService.ts"
+				"entry": "packages/remote/src/services/host-pairing-service/HostPairingService.ts"
 			}
 		]
 	},

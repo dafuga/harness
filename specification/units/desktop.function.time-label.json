@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.time-label",
 	"kind": "function",
-	"title": "timeLabel",
-	"responsibility": "Owns the timeLabel shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Format a timestamp",
+	"responsibility": "Display recognizable ISO-like timestamps in the reader’s locale.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/timeLabel.ts"],
 		"symbols": ["timeLabel"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "timeLabel.value",
-				"type": "string"
+				"type": "string",
+				"description": "Text beginning with a date and hour/minute timestamp to try formatting."
 			}
 		],
 		"outputs": [
 			{
 				"name": "timeLabel",
-				"type": "string"
+				"type": "string",
+				"description": "Localized medium date and short time when parsing succeeds; original text otherwise."
 			}
 		],
 		"errors": []

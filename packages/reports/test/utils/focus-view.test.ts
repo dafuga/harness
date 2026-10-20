@@ -1,14 +1,15 @@
 import { expect, test } from 'vitest';
 import type { HarnessUnit } from '../../src/models/Harness.types';
-import { harnessLayout, mapColumns, nodeSize } from '../../src/utils/harnessLayout';
+import { harnessLayout, mapColumns } from '../../src/components/harness/harness-map/harnessLayout';
+import { nodeSize } from '../../src/utils/harnessLayout';
 import {
 	drawnEdges,
 	focusView,
 	nextNode,
 	panView,
-	wholeView,
 	zoomView
-} from '../../src/utils/focusView';
+} from '../../src/components/harness/harness-map/focusView';
+import { wholeView } from '../../src/utils/focusView';
 
 function unit(id: string, dependencies: string[] = []): HarnessUnit {
 	return {

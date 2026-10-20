@@ -1,3 +1,4 @@
+import { compactRevision } from '../../../reports/tests/e2e/support/shellChecks';
 import { fakeProject } from './ui-workspace-fixture';
 import { expect, test } from '../../../../test/support/browserTest';
 
@@ -16,14 +17,15 @@ test('designless Plan preserves truthful status and branch/commit paths', async 
 	await fakeProject(page);
 	await page.goto('/');
 	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
+	await compactRevision(page.getByRole('banner'));
 	await expect(
 		page.getByRole('navigation', { name: 'Catalog categories' }).getByRole('link')
 	).toHaveCount(6);
-	await expect(page.getByRole('link', { name: 'Review designs' })).toHaveAttribute(
+	await expect(page.getByRole('link', { name: 'Open Activity' })).toHaveAttribute(
 		'href',
 		'/harness/branch/feat%2Factivity/pages/page%3Aactivity/designs'
 	);
-	await page.getByRole('link', { name: 'Review designs' }).click();
+	await page.getByRole('link', { name: 'Open Activity' }).click();
 	if (process.env.TAKE_SCREENSHOT === 'true') {
 		await page.evaluate(async () => {
 			await document.fonts.ready;
@@ -48,7 +50,7 @@ test('designless Plan preserves truthful status and branch/commit paths', async 
 	await page.getByLabel('Commit', { exact: true }).selectOption('b'.repeat(40));
 	await expect(page).toHaveURL(/branch\/feat%2Factivity\/commit\/b{40}\/pages/);
 	await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toHaveCount(0);
-	await expect(page.getByRole('link', { name: 'Review designs' })).toHaveAttribute(
+	await expect(page.getByRole('link', { name: 'Open Activity' })).toHaveAttribute(
 		'href',
 		`/harness/branch/feat%2Factivity/commit/${'b'.repeat(40)}/pages/page%3Aactivity/designs`
 	);
@@ -64,9 +66,11 @@ test('catalog search, changed filter and conversational plan request', async ({ 
 	await page.goto('/');
 	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
 	await expect(page.getByRole('heading', { name: 'Overview', exact: true })).toBeVisible();
+	await page.getByRole('button', { name: 'Filters', exact: true }).click();
 	await page.getByRole('checkbox', { name: 'Changed only', exact: true }).check();
+	await page.getByRole('button', { name: 'Done', exact: true }).click();
 	await expect(page.getByRole('heading', { name: 'Overview', exact: true })).toHaveCount(0);
-	await page.getByRole('textbox', { name: 'Search pages', exact: true }).fill('missing');
+	await page.getByRole('searchbox', { name: 'Search pages', exact: true }).fill('missing');
 	await expect(page.getByText('No pages match this view.')).toBeVisible();
 	await page.getByRole('button', { name: 'Work with agent', exact: true }).click();
 	await page

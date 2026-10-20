@@ -4,7 +4,10 @@ import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { projectFixture, alpha, gamma, earlier } from './ui-project-fixture';
 import { creationFixture } from './ui-agent-creation-fixture';
-import { evidenceRequested, recordCapture } from '../../../../src/utils/recordCapture';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../../../../src/utils/record-capture/recordCapture';
 import { buildStamp } from '../../../../src/utils/buildStamp';
 import scenario from '../../../../specification/scenarios/agent-creation.json' with { type: 'json' };
 

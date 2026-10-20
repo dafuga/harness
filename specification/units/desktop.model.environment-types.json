@@ -31,6 +31,10 @@
 			"RemoteNativeEvent",
 			"RemoteNativeEvents",
 			"RemoteNativePlugin",
+			"AccountNativeCall",
+			"AccountNativeReply",
+			"AccountNativeStatus",
+			"AccountNativePlugin",
 			"remoteContext"
 		]
 	},
@@ -48,6 +52,11 @@
 	"dependencies": [
 		{
 			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.project-context-types",
 			"via": "import",
 			"origin": "derived"
 		},

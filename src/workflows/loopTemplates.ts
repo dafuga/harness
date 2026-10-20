@@ -7,7 +7,7 @@ import {
 	validateRequiredText,
 	isMissingFile,
 	type LoopEvaluator
-} from './loopState';
+} from './loop-state/loopState';
 
 export interface LoopTemplateStep {
 	id: string;

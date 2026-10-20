@@ -2,10 +2,9 @@ import type { HarnessReview, HarnessUnitLimits } from './HarnessBudget.types';
 import type { HarnessLegacyReport } from './HarnessLegacy.types';
 import type { Status } from './Report.types';
 import type { BrowserDiagnostic } from '../../../../src/core/browserDiagnostics';
-
+import type { RegressionView } from '../../../../src/core/regressionTypes';
+import type { UnitMetadata } from '../../../../src/utils/unitMetadata';
 export type * from './HarnessLegacy.types';
-
-/** The parts of the history index and revision files the console reads. */
 export interface HarnessRecordSummary {
 	id: string;
 	status: 'passed' | 'failed';
@@ -27,10 +26,7 @@ export interface HarnessRevisionSummary {
 	gaps: string[];
 	records: HarnessRecordSummary[];
 	legacy: string[];
-	/**
-	 * The units the commit changed itself against its first parent. Null when that could not be
-	 * read; absent in a history built before it was kept, which then does not say.
-	 */
+	/** Directly changed units; null when unread, absent in older histories. */
 	changes?: { base: string | null; direct: string[]; added: string[]; removed: string[] } | null;
 }
 export interface HarnessSeries {
@@ -53,9 +49,7 @@ export interface HarnessGrowthPoint {
 	'source-bytes'?: number;
 	complexity?: number;
 	dependencies?: number;
-	/** The size of what the unit emits, by execution target. */
 	emitted?: Record<string, number>;
-	/** Per metric: why it has no value here, or what its value leaves out. */
 	notes?: Record<string, string>;
 }
 export interface HarnessIndex {
@@ -68,7 +62,8 @@ export interface HarnessIndex {
 	truncated: boolean;
 	problems: string[];
 }
-export interface HarnessUnit extends HarnessUnitLimits {
+export interface HarnessUnit extends HarnessUnitLimits, UnitMetadata {
+	preview?: { scenario: string; state: string; viewport: string };
 	id: string;
 	kind: string;
 	status: string;
@@ -77,10 +72,9 @@ export interface HarnessUnit extends HarnessUnitLimits {
 	dependencies: Array<{ unit: string; via: string }>;
 	scenarios: string[];
 	owns: { source: string[]; symbols: string[] };
-	/** Each item may say in words what it is: a declared contract does, a derived one does not. */
 	contract: Record<
 		'inputs' | 'outputs' | 'errors',
-		Array<{ name: string; type: string; description?: string }>
+		Array<{ name: string; type: string; description?: string; examples?: unknown[] }>
 	>;
 	runtime: { kind: string; targets: Array<{ kind: string; entry: string }> };
 	budgets: {
@@ -95,11 +89,15 @@ export interface HarnessScenario {
 	title: string;
 	kind: string;
 	units: string[];
-	/** `units` names what a state shows; a unit no state names is under every state. */
-	states: Array<{ id: string; coverage: string; reason?: string; units?: string[] }>;
+	states: Array<{
+		id: string;
+		title?: string;
+		coverage: string;
+		reason?: string;
+		units?: string[];
+	}>;
 	viewports: Array<{ id: string; width: number; height: number }>;
 	tests: Array<{ id: string; kind: string; runner: string }>;
-	/** What each state must be recorded with; absent in a history built before it was kept. */
 	evidence?: Array<{ id: string; kind: string; states: string[]; viewports: string[] }>;
 }
 export interface HarnessCapture {
@@ -184,6 +182,7 @@ export interface HarnessExplanation {
 	performance: { attempt: string; outcome: string };
 }
 export interface HarnessRevision {
+	regressions?: RegressionView[];
 	commit: string;
 	registry: {
 		available: boolean;

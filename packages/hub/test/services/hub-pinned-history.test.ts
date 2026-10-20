@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { hubEvidenceRevision } from '../../src/utils/hubEvidenceRevision';
+import { hubEvidenceRevision } from '../../src/utils/hub-evidence-revision/hubEvidenceRevision';
 import { hubEvidenceOrigin } from '../../src/utils/hubEvidenceViews';
 import { statusAt } from '../support/evidenceReaders';
 import {

@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-explorer-catalog-screen",
 	"kind": "component",
 	"title": "ExplorerCatalogScreen",
-	"responsibility": "The collection screen of components, functions, configs or services: a table with the columns of the kind.",
+	"responsibility": "Lists components and functions in searchable card grids, and shells, configs and services in tables.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -46,9 +46,9 @@
 		],
 		"outputs": [
 			{
-				"name": "ExplorerCatalogScreen.collectionTable",
+				"name": "ExplorerCatalogScreen.collection",
 				"type": "markup",
-				"description": "The components, functions, configs or services of the revision as a table, with search, changed-only and order."
+				"description": "Responsive grids show component screenshots and linked function example calls. Search, filters and links preserve the branch and commit. Shells, configs and services use tables."
 			}
 		],
 		"errors": [
@@ -61,6 +61,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.component.explorer-function-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-explorer-frame",
 			"via": "import",
 			"origin": "derived"
@@ -71,12 +76,27 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.harness-explorer-page-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-explorer-table",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.function.entity-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-screens",
 			"via": "import",
 			"origin": "derived"
 		},

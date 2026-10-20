@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/AgentActivityService.ts"],
+		"source": ["src/services/agent-activity-service/AgentActivityService.ts"],
 		"symbols": [
 			"AgentActivityService",
 			"AgentActivityService.constructor",
@@ -117,11 +117,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/AgentActivityService.ts",
+		"entry": "src/services/agent-activity-service/AgentActivityService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/AgentActivityService.ts"
+				"entry": "src/services/agent-activity-service/AgentActivityService.ts"
 			}
 		]
 	},

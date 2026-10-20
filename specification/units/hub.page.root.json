@@ -23,6 +23,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.service.project-sync",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.component.hub-frame",
 			"via": "import",
 			"origin": "derived"

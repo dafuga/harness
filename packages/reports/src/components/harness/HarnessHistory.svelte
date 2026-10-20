@@ -2,8 +2,8 @@
 	import type { HarnessRevision, HarnessRevisionSummary } from '../../models/Harness.types';
 	import { harnessEvidence, mediaFile } from '../../utils/harnessEvidence';
 	import { captureProvenance, scenarioOrigin } from '../../utils/captureProvenance';
-	import EvidenceGrid from '../EvidenceGrid.svelte';
-	import HarnessFailures from './HarnessFailures.svelte';
+	import EvidenceGrid from '../evidence-grid/EvidenceGrid.svelte';
+	import HarnessFailures from './harness-failures/HarnessFailures.svelte';
 	let {
 		summary,
 		detail,

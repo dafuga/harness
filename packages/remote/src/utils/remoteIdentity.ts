@@ -1,15 +1,5 @@
-import type { WireRequest } from '../models/Remote.types';
-import {
-	fromBase64Url,
-	randomBytes,
-	remoteBytes,
-	sha256,
-	stableJson,
-	toBase64Url,
-	toHex
-} from './remoteBytes';
+import { fromBase64Url, randomBytes, remoteBytes, sha256, toBase64Url, toHex } from './remoteBytes';
 
-const codeAlphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 /** Every identifier and encoded value of the protocol. Nothing else is accepted on a wire. */
 export const remotePatterns = {
 	hostId: /^[a-f0-9]{40}$/,
@@ -38,37 +28,37 @@ export async function remoteIdentity(publicKey: Uint8Array | string): Promise<st
 		throw new Error('Expected an uncompressed P-256 public key.');
 	return toHex(await sha256(bytes)).slice(0, 40);
 }
+
 export interface CredentialBinding {
 	role: 'host' | 'device';
 	hostId: string;
 	deviceId?: string;
 	credential: string;
 }
+
 /** What a relay stores in place of a credential: bound to the role and the identities. */
 export async function credentialHash(binding: CredentialBinding): Promise<string> {
 	const { role, hostId, deviceId = '', credential } = binding;
 	const text = ['harness-remote/v1/credential', role, hostId, deviceId, credential].join('\n');
 	return toHex(await sha256(remoteBytes(text)));
 }
+
 /** base64url(SHA-256(verifier)): the S256 transform of RFC 7636. */
 export async function pkceChallenge(verifier: string): Promise<string> {
 	return toBase64Url(await sha256(remoteBytes(verifier)));
 }
+
 export function randomId(bytes = 16): string {
 	return toHex(randomBytes(bytes));
 }
+
 export function randomCredential(): string {
 	return toBase64Url(randomBytes(32));
 }
-/** Eight characters a person reads on the computer and types on the phone, as `XXXX-XXXX`. */
-export function pairingCode(): string {
-	const text = [...randomBytes(8)].map((byte) => codeAlphabet[byte & 31]).join('');
-	return `${text.slice(0, 4)}-${text.slice(4)}`;
-}
+
 export function normalizeCode(value: string): string {
 	return value.toUpperCase().replace(/[^A-Z0-9]/g, '');
 }
-/** Identifies what a request asks for, whatever the order of its fields. */
-export async function requestDigest(request: WireRequest): Promise<string> {
-	return toHex(await sha256(remoteBytes(request.method + '\n' + stableJson(request.input))));
-}
+
+export { pairingCode } from '../services/host-pairing-service/remoteIdentity';
+export { requestDigest } from '../services/wire-session-service/remoteIdentity';

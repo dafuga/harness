@@ -1,6 +1,6 @@
 import type { EvidencePointer, HistoryNote } from '../../../../src/core/historyTypes';
 import type { Capture, VerificationRecord } from '../../../../src/core/verificationTypes';
-import { evidenceManifest } from '../../../../src/utils/evidenceManifest';
+import { evidenceManifest } from '../../../../src/services/evidence-attach-service/evidenceManifest';
 import { lfsPointer, lfsStored } from '../../../../src/utils/lfsPointer';
 import { sealRecord } from '../../../../src/utils/sealRecord';
 import { json, sha256 } from './evidenceSource';

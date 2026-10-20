@@ -63,6 +63,21 @@ bun run report serve
 
 `serve` reuses a matching loopback server, prefers port 5588, skips occupied ports, and leaves the server running. Open the returned URL in the Codex in-app browser. `bun run dev:reports` is also available for ordinary frontend work.
 
+## Managed development preview recovery
+
+`bun run dev:reports` and the desktop development command share one loopback owner.
+The launch command stays running as a supervisor, with one replaceable Node/Vite worker.
+It recovers a crashed or unresponsive worker and repeated HTTP 500 failures at the same
+address. Three failed health checks trigger recovery; the old worker exits before its
+replacement starts. Repeated failures back off up to 30 seconds. Initial configuration
+errors still fail visibly instead of silently choosing another port.
+
+Cached history and media are left intact. Server-error restarts wait while a project agent
+is active; normal shutdown cancels that worker's project requests. Intentional shutdown
+stops monitoring and does not respawn. This supervises the worker, so the original launch
+command must remain running. It does not regenerate Git history caches or repair source
+compilation errors.
+
 ## CLI
 
 Run these from the Harness repository root, use installed `harness report`, or invoke `bun /Users/danielfugere/projects/harness/src/index.ts report` from another project:
@@ -150,3 +165,11 @@ bun run test:e2e
 ```
 
 `check` runs format, type, lint, unit, build, and Harness audit. Browser tests cover filters, comparisons, keyboard controls, modal details, and 1440px/920px/390px layouts. The project is Harness-governed; read `AGENTS.md` and the project-local Harness skill before code changes.
+
+## Functions catalog
+
+Functions lists exported, standalone helpers in shared utility modules (`src/utils`, `src/helpers`, `src/functions`, `src/core`, and `src/lib/{utils,helpers,functions}` within each workspace). A helper is shared only when at least two distinct active components, services or named functions use that exact helper. Any mixture counts. Repeated calls from one consumer, unused imports, type references, self-recursion and barrel exports do not add consumers. Caller facts come from the selected commit, including import aliases and forwarding exports. Component-local functions, class methods, types, constants, schemas, validators and service internals are excluded.
+
+Each helper gets an alphabetically sorted example-call card. Modules exporting several helpers get several cards, all linking to the owning entity's contract and history. Signatures come from the selected Git revision, while argument examples come from its committed contract or usage document. Missing examples remain named parameters. No working-tree fallback fills historical gaps. Older projections without helper metadata must be refreshed before their helpers can be listed.
+
+When changing catalog identities or card labels, preserve search by both the displayed symbol and the owning entity name. The collection identity matrix enforces both in the normal unit suite; run the existing 1,000-row responsive console scenario for catalog changes. This catches label changes that unintentionally remove previously searchable names.

@@ -2,42 +2,51 @@
 	"schemaVersion": 1,
 	"id": "reports.function.entity-shown",
 	"kind": "function",
-	"title": "entityShown",
-	"responsibility": "Works out what an overview and a details screen say about an entity: its contract, measures and judging record, and the reasons its commit recorded.",
+	"title": "Entity overview data",
+	"responsibility": "Assembles an entity’s readable contract and measurements using the host’s revision context.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/entityShown.ts"],
-		"symbols": ["EntityShown", "entityShown", "entityChanged"]
+		"source": [
+			"packages/reports/src/components/harness/entity-sections/entityShown.ts",
+			"packages/reports/src/utils/entityShown.ts"
+		],
+		"symbols": ["entityShown", "EntityShown", "Shown", "entityChanged", "entityShown"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "entityShown.host",
-				"type": "Shown"
+				"type": "Shown",
+				"description": "Shown revision and optional parent context."
 			},
 			{
 				"name": "entityShown.entity",
-				"type": "ExplorerEntity"
+				"type": "ExplorerEntity",
+				"description": "Entity to describe, including category, unit and removal state."
 			},
 			{
 				"name": "entityChanged.host",
-				"type": "Pick<Shown, 'head'>"
+				"type": "Pick<Shown, 'head'>",
+				"description": "Shown revision holding recorded explanations."
 			},
 			{
 				"name": "entityChanged.unit",
-				"type": "string"
+				"type": "string",
+				"description": "Unit identifier used to select its explanations."
 			}
 		],
 		"outputs": [
 			{
 				"name": "entityShown",
-				"type": "EntityShown"
+				"type": "EntityShown",
+				"description": "Readable contract, measurements and the selected verdict record. Removed entities use parent declarations for applicable states when available, while measurements still come from the head verdict record."
 			},
 			{
 				"name": "entityChanged",
-				"type": "EntityReasons"
+				"type": "EntityReasons",
+				"description": "Bounded and full explanations recorded by the head for that unit."
 			}
 		],
 		"errors": []

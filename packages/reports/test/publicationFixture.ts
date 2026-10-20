@@ -1,7 +1,7 @@
 import { mkdtemp, mkdir, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { ReportRepository } from '../src/repositories/ReportRepository';
+import { ReportRepository } from '../src/repositories/report-repository/ReportRepository';
 import { audioFixture } from './audioFixture';
 export async function publicationFixture() {
 	const root = await mkdtemp(join(tmpdir(), 'report-publication-'));

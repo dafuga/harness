@@ -2,36 +2,43 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.git-blobs",
 	"kind": "function",
-	"title": "gitBlobs",
-	"responsibility": "Owns the gitBlobs shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Read several Git file contents",
+	"responsibility": "Reads the requested paths at one Git revision in a single batch operation.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/gitBlobs.ts"],
-		"symbols": ["gitBlobs"]
+		"source": [
+			"packages/desktop/src/adapters/git-source-adapter/gitBlobs.ts",
+			"packages/desktop/src/utils/gitBlobs.ts"
+		],
+		"symbols": ["gitBlobs", "gitBlobs"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "gitBlobs.root",
-				"type": "string"
+				"type": "string",
+				"description": "The repository directory passed to Git."
 			},
 			{
 				"name": "gitBlobs.request",
-				"type": "BlobRequest"
+				"type": "BlobRequest",
+				"description": "The revision and paths to read. Empty paths return an empty map without starting Git. Paths containing newline, carriage return or a null character are refused."
 			}
 		],
 		"outputs": [
 			{
 				"name": "gitBlobs",
-				"type": "Promise<Map<string, Buffer>>"
+				"type": "Promise<Map<string, Buffer>>",
+				"description": "A promise for a map from each requested path to its returned byte buffer. Duplicate paths share one map key. The Git command permits at most 64,000,000 output bytes."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects unsupported paths, Git execution failures or a response with a missing header boundary or invalid size. Missing objects can produce an invalid-response error. Revision strings are passed through without separate validation."
 			}
 		]
 	},

@@ -14,7 +14,7 @@ function referring() {
 		referencedRecord: 'origin-record',
 		states: []
 	};
-	return { ...verificationSample(), scenarios: [referenced] };
+	return { ...verificationSample(), tests: [], scenarios: [referenced] };
 }
 const ranHere = () => ({
 	...verificationSample(),
@@ -40,6 +40,7 @@ test('an inherited scenario carries the checks its origin ran, by their scoped n
 		origin: { record: 'origin-record', commit },
 		originTests: [{ id: `${id}:page`, status: 'passed' }]
 	});
+	expect(view.tests).toEqual([]);
 });
 
 test('an origin that cannot be read leaves its checks unstated, and a fresh scenario has none', () => {

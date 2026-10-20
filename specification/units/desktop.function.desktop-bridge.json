@@ -2,36 +2,44 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.desktop-bridge",
 	"kind": "function",
-	"title": "desktopBridge",
-	"responsibility": "Owns the desktopBridge shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Expose desktop project operations",
+	"responsibility": "Connects desktop project, planning, evidence and agent operations to the selected project session.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/desktopBridge.ts"],
 		"symbols": ["desktopBridge"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "desktopBridge.context",
-				"type": "BridgeContext"
+				"type": "BridgeContext",
+				"description": "The project session, provider discovery, run service, folder chooser and optional session-liveness check. The folder chooser returns a directory or null for cancellation."
 			}
 		],
 		"outputs": [
 			{
 				"name": "desktopBridge",
-				"type": "Omit<DesktopBridge, 'onRunEvent'>"
+				"type": "Omit<DesktopBridge, 'onRunEvent'>",
+				"description": "A desktop operations object without the run-event subscription. Most operations assert any supplied project identity and track a pending request until completion; open, select and list operations are delegated separately. Planning writes are serialized per repository. Opening returns the selected project snapshot or null when cancelled."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Returned operations can reject stale project context and underlying service failures. Planning changes refuse a busy repository or ended client. Opening a thread refuses an unknown entity; source reading refuses a draft without registered source. Hosted connection refuses when sign-in is not configured."
 			}
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.function.repository-lease",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.model.desktop-bridge-types",
 			"via": "import",

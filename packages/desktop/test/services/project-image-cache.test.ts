@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import { PNG } from 'pngjs';
 import { fixture, git } from '../project-fixture';
 import { ProjectSessionService } from '../../src/services/ProjectSessionService';
-import { ProjectionCacheService } from '../../src/services/ProjectionCacheService';
+import { ProjectionCacheService } from '../../src/services/projection-cache-service/ProjectionCacheService';
 import { ProjectImageCacheService } from '../../src/services/ProjectImageCacheService';
 test('real image reads revalidate project ownership and rebuild corrupt cache without changing canonical bytes', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-image-cache-'));

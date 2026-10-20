@@ -7,11 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/services/HubAttachedService.ts"],
+		"source": ["packages/hub/src/services/hub-attached-service/HubAttachedService.ts"],
 		"symbols": [
 			"HubAttachedService",
 			"HubAttachedService.constructor",
 			"HubAttachedService.load",
+			"HubAttachedService.regression",
 			"HubAttachedService.readFile"
 		]
 	},
@@ -25,6 +26,10 @@
 			{
 				"name": "HubAttachedService.load.pointer",
 				"type": "EvidencePointer"
+			},
+			{
+				"name": "HubAttachedService.regression.note",
+				"type": "RegressionNote"
 			},
 			{
 				"name": "HubAttachedService.readFile.pointer",
@@ -41,6 +46,10 @@
 				"type": "Promise<HubAttachedRecord>"
 			},
 			{
+				"name": "HubAttachedService.regression",
+				"type": "unknown"
+			},
+			{
 				"name": "HubAttachedService.readFile",
 				"type": "Promise<Uint8Array>"
 			}
@@ -55,6 +64,11 @@
 		},
 		{
 			"unit": "function.history-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.regression-history",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -87,15 +101,20 @@
 			"unit": "hub.function.hub-source",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "repository.regression-proof",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/services/HubAttachedService.ts",
+		"entry": "packages/hub/src/services/hub-attached-service/HubAttachedService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/services/HubAttachedService.ts"
+				"entry": "packages/hub/src/services/hub-attached-service/HubAttachedService.ts"
 			}
 		]
 	},

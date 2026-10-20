@@ -2,30 +2,36 @@
 	"schemaVersion": 1,
 	"id": "hub.function.d1-one-time-stores",
 	"kind": "function",
-	"title": "d1OneTimeStores",
-	"responsibility": "Owns the d1OneTimeStores shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "One-use authentication records",
+	"responsibility": "Provide conditional database operations for login challenges, GitHub state and native handoffs.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/d1OneTimeStores.ts"],
-		"symbols": ["D1OneTimeStores", "d1OneTimeStores"]
+		"source": [
+			"packages/hub/src/adapters/d1-auth-store-adapter/d1OneTimeStores.ts",
+			"packages/hub/src/utils/d1OneTimeStores.ts"
+		],
+		"symbols": ["d1OneTimeStores", "D1OneTimeStores", "d1OneTimeStores"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "d1OneTimeStores.db",
-				"type": "D1Like"
+				"type": "D1Like",
+				"description": "D1-compatible database handle; queries run only when the returned store methods are called."
 			},
 			{
 				"name": "d1OneTimeStores.records",
-				"type": "AuthRecordValidator"
+				"type": "AuthRecordValidator",
+				"description": "Validator used to turn stored database rows into typed records."
 			}
 		],
 		"outputs": [
 			{
 				"name": "d1OneTimeStores",
-				"type": "D1OneTimeStores"
+				"type": "D1OneTimeStores",
+				"description": "Stores that create and atomically consume unexpired challenges/GitHub states, plus native exchanges that can be found, approved with the matching code while pending, and consumed once while approved and unexpired. Unmatched claims return null and unmatched approval returns false."
 			}
 		],
 		"errors": []

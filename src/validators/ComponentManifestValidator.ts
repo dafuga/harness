@@ -1,6 +1,6 @@
 import type { z } from 'zod';
 import { componentManifestSchema, type ComponentManifest } from '../core/unitTypes';
-import { derivedResponsibility } from '../utils/derivedResponsibility';
+import { derivedResponsibility } from '../services/unit-index-service/derivedResponsibility';
 
 export interface ManifestValidation<T> {
 	value?: T;
@@ -32,8 +32,18 @@ export class ComponentManifestValidator {
 		}
 		return {
 			value: manifest,
-			errors: [...errors, ...this.targetErrors(manifest, label), ...this.labelErrors(manifest)]
+			errors: [
+				...errors,
+				...this.targetErrors(manifest, label),
+				...this.labelErrors(manifest),
+				...this.previewErrors(manifest)
+			]
 		};
+	}
+	private previewErrors(manifest: ComponentManifest): string[] {
+		return manifest.preview && !['page', 'component'].includes(manifest.kind)
+			? [`${manifest.id}: only page and component units may declare a preview`]
+			: [];
 	}
 
 	/** Text labelled as derived must be the generated placeholder, not an unreviewed edit. */

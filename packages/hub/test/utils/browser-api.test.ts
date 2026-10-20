@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { browserApi } from '../../src/utils/browserApi';
+import { browserApi } from '../../src/routes/browserApi';
 
 const json = (value: unknown, status = 200) =>
 	new Response(JSON.stringify(value), {

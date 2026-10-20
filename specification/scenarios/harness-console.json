@@ -16,8 +16,14 @@
 		"function.revision-changes",
 		"function.side-impact",
 		"function.unit-measurements",
+		"reports.component.contract-example",
 		"reports.component.entity-cases",
+		"reports.component.entity-contract",
+		"reports.component.entity-search",
+		"reports.component.entity-search-results",
 		"reports.component.evidence-provenance",
+		"reports.component.explorer-function-card",
+		"reports.component.filter-dialog",
 		"reports.component.harness-entity-artifact",
 		"reports.component.harness-entity-audio",
 		"reports.component.harness-entity-behavior",
@@ -62,11 +68,14 @@
 		"reports.component.harness-harness-tabs",
 		"reports.component.harness-harness-verdict",
 		"reports.component.harness-screen",
+		"reports.component.modal",
 		"reports.component.select",
 		"reports.endpoint.harness-data-path",
 		"reports.endpoint.harness-media-file",
 		"reports.entry.hooks-server",
 		"reports.function.artifact-cases",
+		"reports.function.contract-fields",
+		"reports.function.corrected-location",
 		"reports.function.entity-behavior",
 		"reports.function.entity-catalog",
 		"reports.function.entity-contract",
@@ -76,6 +85,7 @@
 		"reports.function.entity-reasons",
 		"reports.function.entity-removed",
 		"reports.function.entity-screens",
+		"reports.function.entity-search",
 		"reports.function.entity-shown",
 		"reports.function.entity-usage",
 		"reports.function.explorer-artifact",
@@ -89,6 +99,7 @@
 		"reports.function.explorer-reading",
 		"reports.function.explorer-relations",
 		"reports.function.explorer-scope",
+		"reports.function.explorer-search-entries",
 		"reports.function.explorer-state",
 		"reports.function.explorer-verdict",
 		"reports.function.harness-budget",
@@ -97,6 +108,7 @@
 		"reports.function.harness-icons",
 		"reports.function.harness-page",
 		"reports.function.harness-shell",
+		"reports.function.navbar-search",
 		"reports.function.report-destination",
 		"reports.page.harness-branch-branch-at-components",
 		"reports.page.harness-branch-branch-at-components-entity",
@@ -118,6 +130,10 @@
 		"reports.page.harness-branch-branch-at-services-entity",
 		"reports.page.harness-branch-branch-at-services-entity-details",
 		"reports.page.harness-branch-branch-at-services-entity-history",
+		"reports.page.harness-branch-branch-at-shells",
+		"reports.page.harness-branch-branch-at-shells-entity",
+		"reports.page.harness-branch-branch-at-shells-entity-details",
+		"reports.page.harness-branch-branch-at-shells-entity-history",
 		"reports.page.harness-view",
 		"reports.style.entity",
 		"reports.style.entity-evidence",
@@ -126,17 +142,7 @@
 		"reports.style.entity-summary",
 		"reports.style.explorer",
 		"reports.style.explorer-controls",
-		"reports.style.explorer-navbar",
-		"reports.page.harness-branch-branch-at-shells",
-		"reports.page.harness-branch-branch-at-shells-entity",
-		"reports.page.harness-branch-branch-at-shells-entity-details",
-		"reports.page.harness-branch-branch-at-shells-entity-history",
-		"reports.function.corrected-location",
-		"reports.function.explorer-search-entries",
-		"reports.function.navbar-search",
-		"reports.function.entity-search",
-		"reports.component.entity-search",
-		"reports.component.entity-search-results"
+		"reports.style.explorer-navbar"
 	],
 	"states": [
 		{
@@ -422,6 +428,60 @@
 				"reports.component.entity-search",
 				"reports.component.entity-search-results"
 			]
+		},
+		{
+			"id": "contract",
+			"title": "Typed contract examples at a branch tip",
+			"coverage": "required",
+			"units": [
+				"reports.component.entity-contract",
+				"reports.function.contract-fields",
+				"reports.page.harness-branch-branch-at-functions-entity"
+			]
+		},
+		{
+			"id": "contract-commit",
+			"title": "Typed contract examples at a selected commit",
+			"coverage": "required",
+			"units": [
+				"reports.component.entity-contract",
+				"reports.function.contract-fields",
+				"reports.page.harness-branch-branch-at-functions-entity"
+			]
+		},
+		{
+			"id": "contract-example",
+			"title": "A contract example modal at a branch tip",
+			"coverage": "required",
+			"units": [
+				"reports.component.entity-contract",
+				"reports.function.contract-fields",
+				"reports.page.harness-branch-branch-at-functions-entity",
+				"reports.component.contract-example",
+				"reports.component.modal"
+			]
+		},
+		{
+			"id": "contract-example-commit",
+			"title": "A contract example modal at a selected commit",
+			"coverage": "required",
+			"units": [
+				"reports.component.entity-contract",
+				"reports.function.contract-fields",
+				"reports.page.harness-branch-branch-at-functions-entity",
+				"reports.component.contract-example",
+				"reports.component.modal"
+			]
+		},
+		{
+			"id": "catalog-filters",
+			"title": "Catalog filters and ordering opened from one compact icon",
+			"coverage": "required",
+			"units": [
+				"reports.component.filter-dialog",
+				"reports.component.harness-explorer-controls",
+				"reports.page.harness-branch-branch-at-pages"
+			]
 		}
 	],
 	"viewports": [
@@ -498,7 +558,12 @@
 				"shell-earlier",
 				"shell-retained",
 				"search",
-				"search-pinned"
+				"search-pinned",
+				"contract",
+				"contract-commit",
+				"contract-example",
+				"contract-example-commit",
+				"catalog-filters"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",
@@ -517,7 +582,19 @@
 		{
 			"id": "flow",
 			"kind": "output",
-			"states": ["pages", "function", "history", "gap", "missing", "source", "shell-redirect"],
+			"states": [
+				"pages",
+				"function",
+				"history",
+				"gap",
+				"missing",
+				"source",
+				"shell-redirect",
+				"contract",
+				"contract-commit",
+				"contract-example",
+				"contract-example-commit"
+			],
 			"viewports": [],
 			"provenance": "actual-capture",
 			"build": "reports",
@@ -526,7 +603,19 @@
 		{
 			"id": "checks",
 			"kind": "assertions",
-			"states": ["pages", "function", "history", "gap", "missing", "source", "shell-redirect"],
+			"states": [
+				"pages",
+				"function",
+				"history",
+				"gap",
+				"missing",
+				"source",
+				"shell-redirect",
+				"contract",
+				"contract-commit",
+				"contract-example",
+				"contract-example-commit"
+			],
 			"viewports": [],
 			"provenance": "actual-capture",
 			"build": "reports",

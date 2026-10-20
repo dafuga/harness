@@ -1,8 +1,12 @@
+import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import type { D1Database } from '@cloudflare/workers-types';
 import { expect, test } from 'vitest';
-import { createD1AuthStore } from '../../src/adapters/D1AuthStoreAdapter';
-import type { D1Like, D1Statement } from '../../src/adapters/D1AuthStoreAdapter';
+import { createD1AuthStore } from '../../src/adapters/d1-auth-store-adapter/D1AuthStoreAdapter';
+import type {
+	D1Like,
+	D1Statement
+} from '../../src/adapters/d1-auth-store-adapter/D1AuthStoreAdapter';
 import { emailStoreContract } from '../support/authEmailContract';
 import { grantStoreContract } from '../support/authGrantContract';
 import { authStoreContract, sessionRecord } from '../support/authStoreContract';
@@ -97,3 +101,11 @@ test('a Cloudflare D1Database satisfies the adapter input type', () => {
 	const check = (db: D1Database) => accepts(db);
 	expect(check).toBeTypeOf('function');
 });
+
+for (const entry of ['utils/d1GrantStore.ts', 'adapters/d1-auth-store-adapter/d1GrantStore.ts']) {
+	test(`grant modules initialize from the cold ${entry} entry`, () => {
+		const path = new URL(`../../src/${entry}`, import.meta.url).href;
+		const code = `const module = await import(${JSON.stringify(path)}); console.log(typeof module.d1GrantStore);`;
+		expect(execFileSync('bun', ['-e', code], { encoding: 'utf8' }).trim()).toBe('function');
+	});
+}

@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { scenarioManifestSchema } from '../../src/core/unitTypes';
 import type { Gathered } from '../../src/utils/gatherCaptures';
-import { scenarioCoverage } from '../../src/utils/scenarioCoverage';
+import { scenarioCoverage } from '../../src/services/verification-service/scenarioCoverage';
 
 const commit = 'a'.repeat(40);
 const scenario = scenarioManifestSchema.parse({

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { pushedRefs } from '../../src/utils/pushedRefs';
+import { pushedRefs } from '../../src/services/hook-run-service/pushedRefs';
 
 const sha = (letter: string) => letter.repeat(40);
 const line = (local: string, remote: string, localSha = sha('a')) =>

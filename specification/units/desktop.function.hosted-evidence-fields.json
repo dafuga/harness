@@ -2,21 +2,22 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.hosted-evidence-fields",
 	"kind": "function",
-	"title": "hostedEvidenceFields",
-	"responsibility": "Owns the hostedEvidenceFields shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Define hosted evidence fields",
+	"responsibility": "Defines reusable validation fields for hosted units, scenarios and captures.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/hostedEvidenceFields.ts"],
 		"symbols": ["hostedEvidenceFields"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "hostedEvidenceFields",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "A collection of validation schemas and builders: general strings up to 1,000,000 characters, nonempty names up to 300, lowercase 40-character commit hashes and 64-character content hashes, arrays up to 5,000 items, finite numbers, booleans and accepted mode/status values. Includes strict capture, scenario and unit objects with their contracts, ownership, runtime and budget details. These schemas check structure, not proof of execution."
 			}
 		],
 		"errors": []

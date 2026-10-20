@@ -1,11 +1,14 @@
 import { GitAdapter } from '../adapters/GitAdapter';
 import type { HistoryNote } from '../core/historyTypes';
 import type { VerificationRecord } from '../core/verificationTypes';
-import { HistoryNoteRepository } from '../repositories/HistoryNoteRepository';
-import type { ReadNote } from '../utils/noteLines';
+import { HistoryNoteRepository } from '../repositories/history-note-repository/HistoryNoteRepository';
+import type { ReadNote } from '../utils/note-lines/noteCommit';
 import { recordLineage } from '../utils/recordLineage';
 import { verificationNoteIdentity } from '../utils/verificationNoteIdentity';
-import { AttachedRecordService, type AttachedRecord } from './AttachedRecordService';
+import {
+	AttachedRecordService,
+	type AttachedRecord
+} from './attached-record-service/AttachedRecordService';
 
 type VerificationNote = Extract<HistoryNote, { kind: 'verification' }>;
 
@@ -45,7 +48,7 @@ export class HistoryStatusService {
 	/** Pinned, everything is read at exactly those two commits, wherever the refs are by now. */
 	constructor(
 		root: string,
-		private readonly pinned?: PinnedHistory
+		readonly pinned?: PinnedHistory
 	) {
 		this.attached = new AttachedRecordService(root, pinned?.evidence);
 		this.notes = new HistoryNoteRepository(root);

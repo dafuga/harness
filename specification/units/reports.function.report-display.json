@@ -2,66 +2,90 @@
 	"schemaVersion": 1,
 	"id": "reports.function.report-display",
 	"kind": "function",
-	"title": "reportDisplay",
-	"responsibility": "Owns the reportDisplay shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Report status and time labels",
+	"responsibility": "Formats report activity status, stale state, timestamps and evidence anchors.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/reportDisplay.ts"],
-		"symbols": ["reportDisplay", "reportStale", "dateLabel", "timeAgo", "evidenceAnchor"]
+		"source": [
+			"packages/reports/src/components/gameplay-replay/reportDisplay.ts",
+			"packages/reports/src/components/report-summary/reportDisplay.ts",
+			"packages/reports/src/utils/reportDisplay.ts"
+		],
+		"symbols": [
+			"reportDisplay",
+			"dateLabel",
+			"reportStale",
+			"timeAgo",
+			"evidenceAnchor",
+			"reportDisplay",
+			"dateLabel"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "reportDisplay.report",
-				"type": "Report"
+				"type": "Report",
+				"description": "Report whose lifecycle and update time determine display status."
 			},
 			{
 				"name": "reportStale.report",
-				"type": "Report"
+				"type": "Report",
+				"description": "Report to check for inactivity."
 			},
 			{
 				"name": "reportStale.now",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Optional current epoch milliseconds, defaulting to Date.now()."
 			},
 			{
 				"name": "dateLabel.value",
-				"type": "string"
+				"type": "string",
+				"description": "Timestamp to format."
 			},
 			{
 				"name": "timeAgo.value",
-				"type": "string"
+				"type": "string",
+				"description": "Timestamp for elapsed-time wording."
 			},
 			{
 				"name": "timeAgo.now",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Optional current epoch milliseconds, defaulting to Date.now()."
 			},
 			{
 				"name": "evidenceAnchor.id",
-				"type": "string"
+				"type": "string",
+				"description": "Evidence identifier used in an anchor."
 			}
 		],
 		"outputs": [
 			{
 				"name": "reportDisplay",
-				"type": "Status"
+				"type": "Status",
+				"description": "Finalized report status unchanged; otherwise interrupted after more than 15 minutes without an update, or running."
 			},
 			{
 				"name": "reportStale",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True only for a nonfinalized report more than 15 minutes past its update time."
 			},
 			{
 				"name": "dateLabel",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Timestamp formatted in en-GB with medium date and short local time."
 			},
 			{
 				"name": "timeAgo",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "English relative age using the largest supported unit and whole elapsed units. Under one minute, including future dates, reads just now; invalid timestamps return empty."
 			},
 			{
 				"name": "evidenceAnchor",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "evidence- followed by the supplied identifier."
 			}
 		],
 		"errors": []

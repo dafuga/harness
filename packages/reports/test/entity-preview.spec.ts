@@ -1,11 +1,9 @@
 import { expect, test } from '../../../test/support/browserTest';
-import { capture, fits, open, viewports, where } from './entityPreviewPage';
+import { capture, chooseCatalogFilter, fits, open, viewports, where } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
-
 const page = { category: 'pages' as const, entity: ids.page };
 const filter = { category: 'functions' as const, entity: ids.filter };
 const shots = '.ex-evidence .ex-shot img';
-
 test('collections: search, changed only and order change what is listed', async ({ page: tab }) => {
 	await open(tab);
 	await expect(tab.getByRole('heading', { level: 1, name: 'Pages' })).toBeVisible();
@@ -14,10 +12,19 @@ test('collections: search, changed only and order change what is listed', async 
 	expect(await thumb.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBe(1440);
 	await capture(tab, 'pages-desktop');
 	await open(tab, { category: 'components', commit: commits.middle });
-	const rows = tab.locator('.ex-table tbody tr');
+	const rows = tab.getByRole('article');
 	await expect(rows).toHaveCount(3);
 	await capture(tab, 'components-desktop');
-	// The footer explains the two marks by showing them; what each means is told on request.
+	await expect(tab.getByRole('button', { name: 'Filters', exact: true })).toHaveCount(1);
+	await expect(tab.getByRole('combobox', { name: 'Order' })).toHaveCount(0);
+	await chooseCatalogFilter(tab, 'Verification filter', 'unproven');
+	await expect(rows).toHaveCount(0);
+	await tab.getByRole('button', { name: 'Show all components' }).click();
+	await expect(rows).toHaveCount(3);
+	await chooseCatalogFilter(tab, 'Usage filter', 'shared');
+	await expect(rows).toHaveCount(0);
+	await tab.getByRole('button', { name: 'Show all components' }).click();
+	await expect(rows).toHaveCount(3);
 	const key = tab.locator('.ex-legend');
 	expect(await key.innerText()).not.toMatch(/proven|passed|failed/i);
 	await key.getByRole('button', { name: 'Not proven' }).hover();
@@ -30,20 +37,19 @@ test('collections: search, changed only and order change what is listed', async 
 	await expect(tab.getByText('No components match this search.')).toBeVisible();
 	await tab.getByRole('button', { name: 'Show all components' }).click();
 	await expect(rows).toHaveCount(3);
-	await tab.getByRole('switch').check();
+	await chooseCatalogFilter(tab, 'Changed only', true);
 	await expect(rows).toHaveCount(1);
 	await expect(rows.first()).toContainText('Order list');
-	await tab.getByRole('switch').uncheck();
-	await tab.getByRole('combobox', { name: 'Order' }).selectOption('name-desc');
+	await chooseCatalogFilter(tab, 'Changed only', false);
+	await chooseCatalogFilter(tab, 'Order', 'name-desc');
 	await expect(rows.first()).toContainText('Search box');
 });
-
 test('a row or a card of a collection opens its entity in the same branch and commit', async ({
 	page: tab
 }) => {
 	const branch = 'feature/orders';
 	await open(tab, { category: 'functions', commit: commits.middle });
-	await tab.getByRole('link', { name: 'Filter orders', exact: true }).click();
+	await tab.getByRole('link', { name: 'filterOrders(orders, "SERVICE")', exact: true }).click();
 	expect(await where(tab)).toEqual({ branch, commit: commits.middle, ...filter });
 	await expect(tab.getByRole('heading', { level: 1, name: 'Filter orders' })).toBeVisible();
 	await open(tab, { category: 'components' });
@@ -56,16 +62,14 @@ test('a row or a card of a collection opens its entity in the same branch and co
 	});
 	await expect(tab.getByRole('heading', { level: 1, name: 'Order card' })).toBeVisible();
 	await open(tab);
-	await tab.getByRole('link', { name: 'Open page' }).click();
+	await tab.getByRole('link', { name: 'Open Orders page' }).click();
 	expect(await where(tab)).toEqual({ branch, commit: null, ...page });
-	// The way back to the collection keeps the branch tip too.
 	await tab
 		.getByRole('navigation', { name: 'Breadcrumb' })
 		.getByRole('link', { name: 'Pages' })
 		.click();
 	expect(await where(tab)).toEqual({ branch, commit: null, category: 'pages' });
 });
-
 test('a page shows one screenshot at the tip and a matching pair at a commit', async ({
 	page: tab
 }) => {
@@ -95,7 +99,6 @@ test('a page shows one screenshot at the tip and a matching pair at a commit', a
 	await tab.getByRole('button', { name: 'Open full size' }).last().click();
 	await expect(tab.getByRole('dialog')).toBeVisible();
 });
-
 test('a function shows its recorded run: steps, input, output and assertions', async ({
 	page: tab
 }) => {
@@ -129,7 +132,6 @@ test('a function shows its recorded run: steps, input, output and assertions', a
 	await expect(tab.getByText('Before ·')).toHaveCount(0);
 	await capture(tab, 'function-current-desktop');
 });
-
 test('links walk page to component to function, and keep the branch and the commit', async ({
 	page: tab
 }) => {
@@ -157,20 +159,33 @@ test('links walk page to component to function, and keep the branch and the comm
 	});
 	await expect(tab.getByRole('heading', { level: 1, name: 'Filter orders' })).toBeVisible();
 });
-
-test('details hide the source until the source tab is opened', async ({ page: tab }) => {
-	await open(tab, page);
-	await tab.getByRole('link', { name: 'Details' }).click();
-	expect(await where(tab)).toMatchObject({ section: 'details', commit: null });
-	await expect(tab.getByText('Contract and measurements')).toBeVisible();
-	await expect(tab.getByText('+page.svelte')).toHaveCount(0);
-	await capture(tab, 'page-details-desktop');
-	await tab.getByRole('tab', { name: 'Source' }).click();
-	await expect(tab.getByText('src/routes/orders/+page.svelte', { exact: true })).toBeVisible();
-	await tab.getByRole('link', { name: 'Back to overview' }).click();
-	expect(await where(tab)).toEqual({ branch: 'feature/orders', commit: null, ...page });
+test('one entity page keeps source optional without a duplicate Details page', async ({
+	page: tab
+}) => {
+	for (const [name, size] of Object.entries(viewports)) {
+		await tab.setViewportSize(size);
+		await open(tab, filter);
+		await tab.evaluate(async () => {
+			await document.fonts.ready;
+		});
+		await capture(tab, `unified-function-${name}`);
+		await expect(
+			tab.getByRole('link', { name: 'Details', exact: true }),
+			'no second Details page'
+		).toHaveCount(0);
+		await expect(tab.getByText('Source ownership')).toHaveCount(0);
+		await tab.getByRole('tab', { name: 'Source', exact: true }).click();
+		expect(await where(tab)).toEqual({
+			branch: 'feature/orders',
+			commit: null,
+			...filter,
+			tab: 'source'
+		});
+		await expect(tab.getByText('src/functions/filterOrders.ts', { exact: true })).toBeVisible();
+		await tab.getByRole('tab', { name: 'Overview', exact: true }).click();
+		expect(await where(tab)).toEqual({ branch: 'feature/orders', commit: null, ...filter });
+	}
 });
-
 test('history lists changes, keeps profiles apart and opens a revision', async ({ page: tab }) => {
 	await open(tab, { ...filter, section: 'history', commit: commits.middle });
 	await expect(tab.locator('.ex-history tbody tr')).toHaveCount(2);
@@ -183,7 +198,6 @@ test('history lists changes, keeps profiles apart and opens a revision', async (
 	expect(await where(tab)).toEqual({ branch: 'feature/orders', commit: commits.first, ...filter });
 	await expect(tab.getByText('First version')).toBeVisible();
 });
-
 for (const [name, size] of Object.entries(viewports)) {
 	test(`every screen fits a ${name} window without scrolling sideways`, async ({ page: tab }) => {
 		await tab.setViewportSize(size);
@@ -193,7 +207,7 @@ for (const [name, size] of Object.entries(viewports)) {
 			{ ...page, commit: commits.middle },
 			{ ...filter, commit: commits.middle },
 			{ ...filter, section: 'history' as const, commit: commits.middle },
-			{ ...page, section: 'details' as const },
+			{ ...page, tab: 'source' as const },
 			{ category: 'configs' as const, entity: ids.settings }
 		];
 		for (const [position, route] of routes.entries()) {

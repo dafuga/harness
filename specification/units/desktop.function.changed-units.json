@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.changed-units",
 	"kind": "function",
-	"title": "changedUnits",
-	"responsibility": "Names the units whose declared source owns a change's files and counts files no unit owns.",
+	"title": "Describe the units changed",
+	"responsibility": "Names distinct registered owners of changed files and counts files without owners.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,21 +11,24 @@
 		"symbols": ["changedUnits"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "changedUnits.paths",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "The changed file paths to look up. Paths are not included in the returned notice; repeated input paths can still increase the unowned-file count."
 			},
 			{
 				"name": "changedUnits.owners",
-				"type": "(path: string) => string[]"
+				"type": "(path: string) => string[]",
+				"description": "A lookup returning owning unit identities for each path. Only identities matching the unit-reference grammar are included; an empty result counts the path as unowned."
 			}
 		],
 		"outputs": [
 			{
 				"name": "changedUnits",
-				"type": "string"
+				"type": "string",
+				"description": "A notice with distinct valid unit identities sorted and written as unit references, limited to 40 named units with any remainder counted. Also counts paths with no owners. Returns an empty string when neither valid owners nor unowned paths can be reported."
 			}
 		],
 		"errors": []

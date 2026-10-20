@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { HttpRuntimeAdapter } from '../../src/adapters/HttpRuntimeAdapter';
 import { ModuleRuntimeAdapter } from '../../src/adapters/ModuleRuntimeAdapter';
-import { ProcessRuntimeAdapter } from '../../src/adapters/ProcessRuntimeAdapter';
+import { ProcessRuntimeAdapter } from '../../src/adapters/process-runtime-adapter/ProcessRuntimeAdapter';
 import { WasmRuntimeAdapter } from '../../src/adapters/WasmRuntimeAdapter';
 import type { RuntimeResponse } from '../../src/core/runtimeTypes';
 import { fixtureServer, ok, scripted, scripts } from '../support/runtimeFixtures';

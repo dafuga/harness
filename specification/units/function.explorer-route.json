@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.explorer-route",
 	"kind": "function",
-	"title": "explorerRoute",
-	"responsibility": "Parses and formats one address of the entity explorer: its branch, the selected commit or the branch tip, the category, the entity and the section shown.",
+	"title": "Explorer address parsing",
+	"responsibility": "Parses and formats branch or commit explorer addresses with category, entity, section and tab selection.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -18,53 +18,64 @@
 			"ExplorerTab",
 			"ExplorerLocation",
 			"explorerRoute",
+			"canonicalExplorerLocation",
 			"explorerRoutePath"
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "explorerKindCategory.kind",
-				"type": "string"
+				"type": "string",
+				"description": "Declared unit kind to map into a displayed category."
 			},
 			{
 				"name": "explorerRoute.path",
-				"type": "string"
+				"type": "string",
+				"description": "Console-relative path beginning with an encoded branch segment or full lowercase 40-character commit hash; trailing slashes are ignored."
 			},
 			{
 				"name": "explorerRoute.search",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Optional query string containing tab selection; defaults to empty."
 			},
 			{
 				"name": "explorerRoutePath.location",
-				"type": "ExplorerLocation"
+				"type": "ExplorerLocation",
+				"description": "Branch or commit scope and category, with optional entity, details/history section and tab."
 			}
 		],
 		"outputs": [
 			{
 				"name": "explorerCategories",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Navigation categories in order: pages, shells, components, functions, configs and services."
 			},
 			{
 				"name": "explorerKindCategory",
-				"type": "ExplorerCategory | null"
+				"type": "ExplorerCategory | null",
+				"description": "Mapped category, or null for an unsupported kind; only shell maps to shells."
 			},
 			{
 				"name": "explorerSections",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Supported entity sections: details and history; omitted section means overview."
 			},
 			{
 				"name": "explorerTabs",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Allowed tabs by section. Overview includes overview, used-in, uses, relationships and tests; details includes contract, measurements and source; history has none."
 			},
 			{
 				"name": "explorerRoute",
-				"type": "ExplorerLocation | undefined"
+				"type": "ExplorerLocation | undefined",
+				"description": "Parsed location, or undefined for malformed scope, encoding, category or selection. A bare branch or commit opens Pages; invalid/default tabs are omitted."
 			},
 			{
 				"name": "explorerRoutePath",
-				"type": "string"
+				"type": "string",
+				"description": "Canonical path with encoded branch/entity segments and only a valid nondefault tab in the query."
 			}
 		],
 		"errors": []

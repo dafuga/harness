@@ -1,13 +1,8 @@
 import { expect, test } from 'vitest';
 import { AuthFailure } from '../../src/utils/authFail';
-import {
-	authFailure,
-	authHttp,
-	authRedirect,
-	bearerToken,
-	readJson,
-	sameOrigin
-} from '../../src/utils/authHttp';
+import { authFailure, authHttp, readJson } from '../../src/utils/authHttp';
+import { authRedirect } from '../../src/controllers/github-connection-controller/authHttp';
+import { bearerToken, sameOrigin } from '../../src/services/request-session-service/authHttp';
 
 const post = (body: string, type = 'application/json') =>
 	new Request('https://hub.test/api/auth/google', {

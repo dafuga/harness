@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.evidence-reading",
 	"kind": "function",
-	"title": "evidenceReading",
-	"responsibility": "Owns the evidenceReading shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Read and compare recorded results",
+	"responsibility": "Reads result artifacts through their recorded bindings and delegates hash checks and behavior comparison to the reports explorer.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/evidenceReading.ts"],
 		"symbols": ["EvidenceRead", "evidenceReading"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "evidenceReading.bridge",
-				"type": "Pick<DesktopBridge, 'artifact'>"
+				"type": "Pick<DesktopBridge, 'artifact'>",
+				"description": "The desktop connection’s optional artifact reader. Without it, requested artifacts remain unread."
 			},
 			{
 				"name": "evidenceReading.result",
-				"type": "EntityEvidenceResult"
+				"type": "EntityEvidenceResult",
+				"description": "The evidence answer containing behavior rows and the captures listed on each side."
 			},
 			{
 				"name": "evidenceReading.scope",
-				"type": "EntityEvidenceQuery"
+				"type": "EntityEvidenceQuery",
+				"description": "The entity, project and revision scope to carry into artifact requests. The caller must supply the scope corresponding to the evidence answer."
 			}
 		],
 		"outputs": [
 			{
 				"name": "evidenceReading",
-				"type": "Promise<EvidenceRead>"
+				"type": "Promise<EvidenceRead>",
+				"description": "A promise for the behavior after artifact reading and comparison, plus backend refusal messages keyed by capture hash. Captures are found on the after side first, then before. Refused or unavailable reads remain unread; damaged bytes do not become verified results. Unexpected comparison failures can still reject."
 			}
 		],
 		"errors": []

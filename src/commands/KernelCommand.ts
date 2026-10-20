@@ -7,8 +7,8 @@ import {
 	parityProblems,
 	renderDefault,
 	serveKernelRuntime
-} from '../workflows/runKernel';
-import { renderBench, runKernelBench } from '../workflows/runKernelBench';
+} from '../workflows/run-kernel/runKernel';
+import { renderBench, runKernelBench } from '../workflows/run-kernel-bench/runKernelBench';
 import { kernelBoundary } from '../workflows/runKernelBoundary';
 
 interface Flags {

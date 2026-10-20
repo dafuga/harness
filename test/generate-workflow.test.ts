@@ -2,7 +2,7 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { generateModel, generatePiece } from '../src/workflows/generateCode';
+import { generateModel, generatePiece } from '../src/workflows/generate-code/generateCode';
 
 test('lib generation auto-exports package-safe scaffolds', async () => {
 	const root = await libProject();

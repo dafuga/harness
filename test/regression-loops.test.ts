@@ -44,6 +44,10 @@ test.each(Object.entries(orders))(
 			'existing standardized test'
 		);
 		expect(template.steps.find((step) => step.id === 'green')?.title).toContain('same unchanged');
+		expect(template.steps.find((step) => step.id === 'red')?.title).toContain('commit');
+		expect(template.steps.find((step) => step.id === 'green')?.title).toContain(
+			'separate fix commit'
+		);
 		expect((await searchLoops({ query: id })).map((item) => item.id)).toContain(id);
 	}
 );
@@ -87,6 +91,9 @@ test.each(['app', 'lib'] as const)(
 			expect(text).toContain('existing standardized test');
 			expect(text).toContain('one-off');
 			expect(text).toContain('missing coverage category');
+			expect(text).toContain('commit the failing test');
+			expect(text).toContain('separate fix commit');
+			expect(text).toContain('loop record');
 		}
 	}
 );
@@ -101,7 +108,9 @@ test('loop guide explains red-green evidence, prevention guards, and agent retri
 		'reintroducing',
 		'existing standardized test',
 		'coverage gap',
-		'one-off'
+		'one-off',
+		'separate fix commit',
+		'loop record'
 	]) {
 		expect(guide).toContain(term);
 	}

@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { crc32, deflateSync } from 'node:zlib';
-import { hubPng } from '../../src/utils/hubPng';
+import { hubPng } from '../../src/services/hub-projection-service/hubPng';
 const signature = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
 function chunk(type: string, data: Uint8Array = Buffer.alloc(0)): Buffer {
 	const result = Buffer.alloc(data.length + 12);

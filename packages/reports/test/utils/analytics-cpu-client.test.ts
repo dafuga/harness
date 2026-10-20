@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { analyticsCpuClient } from '../../src/utils/analyticsCpuClient';
+import { analyticsCpuClient } from '../../src/components/analytics-cpu/analyticsCpuClient';
 test('refresh failure clears stale CPU values and disposal aborts polling', async () => {
 	vi.useFakeTimers();
 	vi.stubGlobal('document', { visibilityState: 'visible' });

@@ -18,7 +18,7 @@ const scenario = stored<HarnessScenario>('scenarios/harness-console.json');
 const head = revision(units, [scenario], []);
 const at = 'reports.page.harness-branch-branch-at-';
 const part = 'reports.component.harness-';
-const categories = ['pages', 'shells', 'components', 'functions', 'configs', 'services'];
+const categories = ['pages', 'shells', 'components', 'functions', 'configs', 'services', 'models'];
 // What a unit is made of: the shells it mounts and the components it holds.
 const drawn = (id: string) => {
 	const { shells, components } = explorerRelations(head, id);
@@ -37,6 +37,7 @@ test('the registry records each page as made of the host and the one screen it m
 		components: 'entity-visual-screen',
 		functions: 'entity-behavior-screen',
 		configs: 'entity-config-screen',
+		models: 'entity-config-screen',
 		services: 'entity-behavior-screen'
 	};
 	for (const category of categories) {
@@ -77,7 +78,7 @@ test('a screen is recorded on the pages that mount it and on no other route page
 	expect(routed(`${part}explorer-catalog-screen`)).toEqual(
 		categories.filter((category) => category !== 'pages').sort()
 	);
-	expect(routed(`${part}entity-config-screen`)).toEqual(['configs-entity']);
+	expect(routed(`${part}entity-config-screen`)).toEqual(['configs-entity', 'models-entity']);
 	expect(routed(`${part}entity-visual-screen`)).toEqual([
 		'components-entity',
 		'pages-entity',
@@ -93,11 +94,16 @@ test('a screen is recorded on the pages that mount it and on no other route page
 });
 
 test('a page is under its own states, and a screen under the states of the pages that mount it', () => {
-	expect(statesOf(`${at}pages`)).toEqual(['pages']);
+	expect(statesOf(`${at}pages`)).toEqual(['pages', 'catalog-filters']);
 	expect(statesOf(`${at}configs-entity`)).toEqual(['config']);
 	expect(statesOf(`${at}functions-entity-history`)).toEqual(['history']);
 	// The page of no screen can draw any of them, so its one state shows every screen too.
-	expect(statesOf(`${part}explorer-pages-screen`)).toEqual(['pages', 'retained', 'shell-retained']);
+	expect(statesOf(`${part}explorer-pages-screen`)).toEqual([
+		'pages',
+		'retained',
+		'shell-retained',
+		'catalog-filters'
+	]);
 	expect(statesOf(`${part}entity-config-screen`)).toEqual(['config', 'retained', 'shell-retained']);
 	expect(statesOf(`${part}entity-history-screen`)).toEqual([
 		'history',
@@ -138,16 +144,38 @@ const searchStates: Array<[string, string[]]> = [
 	['search', [`${at}shells`, ...searching]],
 	['search-pinned', [`${at}functions`, ...searching]]
 ];
-const written = [...shellStates, ...searchStates];
+const contracts = [
+	'reports.component.entity-contract',
+	'reports.function.contract-fields',
+	`${at}functions-entity`
+];
+const contractStates: Array<[string, string[]]> = [
+	['contract', contracts],
+	['contract-commit', contracts],
+	[
+		'contract-example',
+		[...contracts, 'reports.component.contract-example', 'reports.component.modal']
+	],
+	[
+		'contract-example-commit',
+		[...contracts, 'reports.component.contract-example', 'reports.component.modal']
+	]
+];
+const written = [
+	...shellStates,
+	...searchStates,
+	...contractStates,
+	['catalog-filters', ['reports.component.filter-dialog', `${part}explorer-controls`, `${at}pages`]]
+];
 
 test('what every page is made of is under every state, and each state names a page there is', () => {
 	const every = scenario.states.map((state) => state.id);
-	expect(every).toHaveLength(44);
+	expect(every).toHaveLength(49);
 	expect(statesOf(`${part}harness-header`)).toEqual(every);
 	expect(statesOf(`${part}harness-console`)).toEqual(every);
 	const pages = new Set(units.filter((unit) => unit.kind === 'page').map((unit) => unit.id));
 	const named = new Set(written.map(([id]) => id));
-	// Every state from before Shells and search names exactly one page and nothing else.
+	// Earlier states name exactly one page; later states also name the shared pieces they show.
 	const earlier = scenario.states.filter((state) => !named.has(state.id));
 	expect(earlier).toHaveLength(34);
 	for (const state of earlier) {
@@ -157,7 +185,7 @@ test('what every page is made of is under every state, and each state names a pa
 			true
 		]);
 	}
-	// The Shells and search states are exactly these, in this order, each naming what it shows.
+	// The later states are exactly these, in this order, each naming what it shows.
 	const later = scenario.states.filter((state) => named.has(state.id));
 	expect(later.map((state) => [state.id, state.units])).toEqual(written);
 	const registered = new Set(units.map((unit) => unit.id));

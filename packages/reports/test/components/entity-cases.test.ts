@@ -1,6 +1,6 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import EntityCases from '../../src/components/EntityCases.svelte';
+import EntityCases from '../../src/components/entity-cases/EntityCases.svelte';
 import {
 	callRows,
 	calls,

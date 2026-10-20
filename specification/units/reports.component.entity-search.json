@@ -2,38 +2,43 @@
 	"schemaVersion": 1,
 	"id": "reports.component.entity-search",
 	"kind": "component",
-	"title": "EntitySearch",
-	"responsibility": "The shared search field of both top bars: a keyboard-driven combobox over the entities of the revision in view that names a pinned commit.",
+	"title": "Entity search",
+	"responsibility": "Opens project search from a navbar icon and finds entities in the selected revision.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/EntitySearch.svelte"],
+		"source": ["packages/reports/src/components/entity-search/EntitySearch.svelte"],
 		"symbols": ["EntitySearch"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EntitySearch.entries",
-				"type": "SearchEntry[] | null"
+				"type": "SearchEntry[] | null",
+				"description": "Required list of entities, or null while the host loads them. Null yields no matches and loading wording; the component does not fetch entries."
 			},
 			{
 				"name": "EntitySearch.scope",
-				"type": "{ label: string; pinned: string | null }"
+				"type": "{ label: string; pinned: string | null }",
+				"description": "Required label and optional pinned commit. Label names searched scope; pinned takes precedence in placeholder wording over loading."
 			},
 			{
 				"name": "EntitySearch.href",
-				"type": "(entry: SearchEntry) => string"
+				"type": "(entry: SearchEntry) => string",
+				"description": "Required callback providing complete result link targets."
 			},
 			{
 				"name": "EntitySearch.open",
-				"type": "(entry: SearchEntry) => void"
+				"type": "(entry: SearchEntry) => void",
+				"description": "Opens the chosen entity in the host after closing the search modal."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntitySearch",
-				"type": "markup"
+				"type": "markup",
+				"description": "A search icon opens a modal by click or Cmd/Ctrl+K. The focused query offers ranked results; arrows and Enter navigate. Escape closes the modal and restores icon focus."
 			}
 		],
 		"errors": []
@@ -45,6 +50,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.modal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.entity-search",
 			"via": "import",
 			"origin": "derived"
@@ -52,11 +62,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/EntitySearch.svelte",
+		"entry": "packages/reports/src/components/entity-search/EntitySearch.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/EntitySearch.svelte"
+				"entry": "packages/reports/src/components/entity-search/EntitySearch.svelte"
 			}
 		]
 	},

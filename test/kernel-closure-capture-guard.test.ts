@@ -4,11 +4,11 @@ import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { afterEach, test } from 'vitest';
-import { artifactCases } from '../packages/reports/src/utils/artifactCases';
+import { artifactCases } from '../packages/reports/src/components/entity-cases/artifactCases';
 import type { ImpactInput, ImpactOutput } from '../src/core/kernelTypes';
 import { componentManifestSchema, scenarioManifestSchema } from '../src/core/unitTypes';
 import { captureIndex, captureLineSchema } from '../src/core/verifyTypes';
-import { kernelClosure } from '../src/utils/kernelClosure';
+import { kernelClosure } from '../src/utils/impact-kernel/kernelClosure';
 import { ownEnvironment } from './support/cli';
 import { expect } from './verificationExpect';
 

@@ -2,9 +2,9 @@
 	"schemaVersion": 1,
 	"id": "function.source-types",
 	"kind": "function",
-	"title": "sourceTypes",
-	"responsibility": "Owns the sourceTypes shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Source index types",
+	"responsibility": "Defines source-file facts, exported symbols, resolved references, tree access and dependency graph types.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/core/sourceTypes.ts"],
@@ -23,7 +23,7 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
 		"errors": []

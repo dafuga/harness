@@ -2,7 +2,10 @@ import type { Page } from '@playwright/test';
 import type { ScenarioManifest } from '../../../../src/core/unitTypes';
 import scenarioData from '../../../../specification/scenarios/shells-shared-app.json' with { type: 'json' };
 import { buildStamp } from '../../../../src/utils/buildStamp';
-import { evidenceRequested, recordCapture } from '../../../../src/utils/recordCapture';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../../../../src/utils/record-capture/recordCapture';
 import { projectFixture } from './ui-project-fixture';
 
 export const shell = 'desktop.component.workspace-shell';

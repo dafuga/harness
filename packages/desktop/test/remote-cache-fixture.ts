@@ -6,8 +6,8 @@ import { createServer } from 'node:http';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { ProjectionCacheService } from '../src/services/ProjectionCacheService';
-import { RemoteHttpProjectAdapter } from '../src/adapters/RemoteHttpProjectAdapter';
+import { ProjectionCacheService } from '../src/services/projection-cache-service/ProjectionCacheService';
+import { RemoteHttpProjectAdapter } from '../src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter';
 export async function remoteCacheFixture() {
 	const root = await mkdtemp(join(tmpdir(), 'hosted-cache-'));
 	const state = {
@@ -17,7 +17,9 @@ export async function remoteCacheFixture() {
 		notes: 'c'.repeat(40),
 		collaboration: '1'.repeat(40) as string | undefined,
 		text: 'first',
-		malformed: false
+		malformed: false,
+		projects: ['p'],
+		calls: [] as string[]
 	};
 	const identity = () => ({
 		...(state.collaboration === undefined ? {} : { collaborationRevision: state.collaboration }),
@@ -60,10 +62,18 @@ export async function remoteCacheFixture() {
 	};
 }
 function serverFor(
-	state: { actor: string; status: number; text: string; malformed: boolean },
+	state: {
+		actor: string;
+		status: number;
+		text: string;
+		malformed: boolean;
+		projects: string[];
+		calls: string[];
+	},
 	identity: () => unknown
 ) {
 	return createServer((request, response) => {
+		state.calls.push(request.url!);
 		response.setHeader('content-type', 'application/json');
 		if (request.url === '/api/auth/status')
 			return response.end(JSON.stringify(actorStatus(state.actor)));
@@ -72,7 +82,8 @@ function serverFor(
 		if (url.pathname.endsWith('/image'))
 			return response.end(state.malformed ? Buffer.from('invalid') : remoteImage);
 		let value: unknown = { id: 'p', name: 'Project', role: 'owner' };
-		if (url.pathname === '/api/projects') value = [value];
+		if (url.pathname === '/api/projects')
+			value = state.projects.map((id) => ({ id, name: 'Project', role: 'owner' }));
 		if (url.pathname.endsWith('/snapshot'))
 			value = {
 				project: { id: 'p', name: 'Project' },

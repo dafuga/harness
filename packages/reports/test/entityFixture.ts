@@ -117,7 +117,7 @@ const summary = (commit: string, parents: string[], subject: string, day: string
 	subject,
 	author: 'Fixture',
 	committedAt: `2026-10-${day}T09:00:00.000Z`,
-	branches: ['feature/orders'],
+	branches: commit === commits.first ? ['feature/orders', 'release/orders'] : ['feature/orders'],
 	retained: false,
 	coverage: 'verified' as const,
 	gaps: [],
@@ -133,7 +133,10 @@ const told = (direct: string[], base: string = commits.middle) => ({
 });
 
 export const index: HarnessIndex = {
-	branches: [{ name: 'feature/orders', head: commits.tip }],
+	branches: [
+		{ name: 'feature/orders', head: commits.tip },
+		{ name: 'release/orders', head: commits.first }
+	],
 	// What each commit changed itself against its first parent, as a built history records it.
 	revisions: [
 		{ ...summary(commits.tip, [commits.middle], 'feat: sort orders', '10'), changes: told([]) },

@@ -2,21 +2,25 @@
 	"schemaVersion": 1,
 	"id": "hub.function.auth-disabled",
 	"kind": "function",
-	"title": "authDisabled",
-	"responsibility": "Owns the authDisabled shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Disabled authentication",
+	"responsibility": "Provide authentication behavior when sign-in is not configured.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/authDisabled.ts"],
-		"symbols": ["authDisabled"]
+		"source": [
+			"packages/hub/src/lib/server/auth/authDisabled.ts",
+			"packages/hub/src/utils/authDisabled.ts"
+		],
+		"symbols": ["authDisabled", "authDisabled"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "authDisabled",
-				"type": "HubAuth"
+				"type": "HubAuth",
+				"description": "Authentication interface: actor resolves to null; GET status routes report disabled; other owned routes return auth-disabled with 503; unrelated routes return null. Repository authorization and token calls reject with github-disabled."
 			}
 		],
 		"errors": []

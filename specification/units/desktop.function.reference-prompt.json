@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.reference-prompt",
 	"kind": "function",
-	"title": "referencePrompt",
-	"responsibility": "Asks an agent to name units as references and lists the registered ids it may name.",
+	"title": "Unit reference instructions",
+	"responsibility": "Build agent instructions for referencing a bounded list of unit IDs.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,17 +11,19 @@
 		"symbols": ["referencePrompt"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "referencePrompt.ids",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Candidate IDs; invalid grammar and duplicates are removed, preserving the first occurrence, up to 120 IDs."
 			}
 		],
 		"outputs": [
 			{
 				"name": "referencePrompt",
-				"type": "string"
+				"type": "string",
+				"description": "Instructions to use registered unit references, followed by the accepted IDs or none."
 			}
 		],
 		"errors": []

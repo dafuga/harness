@@ -44,8 +44,9 @@ test('evidence is read only where it is shown, and each section has its own addr
 		'page'
 	);
 	expect(await asked(page, 'evidence')).toEqual([]);
-	await tabs(page).getByRole('button', { name: 'Evidence' }).click();
-	await expect.poll(() => path(page)).toBe(at(orders, undefined, '/evidence'));
+	await tabs(page).getByRole('button', { name: 'States' }).click();
+	await expect.poll(() => path(page)).toBe(at(orders, undefined, '/states'));
+	await page.getByText('Verification details', { exact: true }).click();
 	const coverage = page.getByRole('region', { name: 'Evidence coverage' });
 	await expect(
 		coverage.getByRole('heading', { name: /Orders page over synthetic orders/ })
@@ -70,8 +71,10 @@ test('evidence is read only where it is shown, and each section has its own addr
 		await tabs(page).getByRole('button', { name }).click();
 		await expect.poll(() => path(page)).toBe(at(orders, undefined, suffix));
 	}
-	await page.getByRole('button', { name: 'Details →', exact: true }).click();
-	await page.getByText('Source', { exact: true }).click();
+	await page
+		.getByRole('navigation', { name: 'Entity sections' })
+		.getByRole('button', { name: 'Source', exact: true })
+		.click();
 	await expect(
 		page.getByRole('button', { name: 'src/routes/orders/+page.svelte', exact: true })
 	).toBeVisible();
@@ -131,7 +134,7 @@ test('a backend without the two reads says so, and designs are read as before', 
 	await expect(page.getByRole('heading', { name: 'Contract', exact: true })).toBeVisible();
 	await tabs(page).getByRole('button', { name: 'Designs' }).click();
 	await expect(page.getByRole('img', { name: 'OrdersPage v001 desktop default' })).toBeVisible();
-	await tabs(page).getByRole('button', { name: 'Evidence' }).click();
+	await tabs(page).getByRole('button', { name: 'States' }).click();
 	await expect(
 		page.getByText('Recorded runtime evidence is not available on this connection.')
 	).toBeVisible();
@@ -170,8 +173,9 @@ test('a phone shows the same overview, and says that its connection does not rea
 		'Designs',
 		'Used In',
 		'Uses',
-		'Evidence',
-		'History'
+		'States',
+		'History',
+		'Source'
 	]);
 	await expect(page.getByRole('heading', { name: 'Contract', exact: true })).toBeVisible();
 	await expect(

@@ -3,7 +3,7 @@ import { afterEach, expect, test, vi } from 'vitest';
 import { rm, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
-import { ReportCommandService } from '../src/services/ReportCommandService';
+import { ReportCommandService } from '../src/services/report-command-service/ReportCommandService';
 import { R2EvidenceStoreAdapter } from '../src/adapters/R2EvidenceStoreAdapter';
 import { atomicJson } from '../src/utils/reportFiles';
 import { configureFixtureCloud, fixtureCloudResponse, storageFixture } from './storageFixture';

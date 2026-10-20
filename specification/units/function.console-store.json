@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.console-store",
 	"kind": "function",
-	"title": "consoleStore",
-	"responsibility": "Reads console history and media from a private object store binding, under one prefix.",
+	"title": "Private console object data",
+	"responsibility": "Reads console JSON and media from a supplied private object store under one prefix.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,21 +11,24 @@
 		"symbols": ["ConsoleObject", "ConsoleBucket", "consoleStore"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "consoleStore.bucket",
-				"type": "ConsoleBucket"
+				"type": "ConsoleBucket",
+				"description": "Object-store binding providing asynchronous get calls that return text/byte readers or null for absent objects."
 			},
 			{
 				"name": "consoleStore.prefix",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Optional object-key prefix, defaulting to empty; trailing slashes are removed when constructing a prefixed key."
 			}
 		],
 		"outputs": [
 			{
 				"name": "consoleStore",
-				"type": "ConsoleData"
+				"type": "ConsoleData",
+				"description": "Async JSON and media readers. JSON reads the requested relative key; media reads media/name and derives its MIME type from the extension, defaulting to application/octet-stream. Missing objects yield undefined."
 			}
 		],
 		"errors": []

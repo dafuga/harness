@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { explorerEvidence } from '../../../reports/src/utils/explorerEvidence';
-import { explorerVerdict } from '../../../reports/src/utils/explorerVerdict';
-import { recordedProjection } from '../../src/utils/recordedProjection';
+import { explorerVerdict } from '../../../reports/src/utils/explorer-verdict/explorerVerdict';
+import { recordedProjection } from '../../src/utils/recorded-answer/recordedProjection';
 import { feed, head, held, home, parent, sampleDetail, sampleScope } from '../recorded-sample';
 
 const revisions = () => ({ head: sampleDetail(head), parent: sampleDetail(parent) });
@@ -82,4 +82,31 @@ test('a side whose revision is not held stays the gap it is', () => {
 	expect(projected.before).toMatchObject({ detail: null, record: null, captures: [] });
 	const alone = explorerEvidence(sampleScope(home, 'current'), revisions(), { id: home });
 	expect(recordedProjection(alone, home).before).toBeNull();
+});
+
+test('regression proof reaches each transport for its own entity and exact side', () => {
+	const evidence = full(home);
+	const point = (commit: string, status: 'failed' | 'passed') => ({
+		commit,
+		status,
+		command: 'bun test selected-item',
+		assertion: 'Expected the selected item',
+		output: status,
+		finishedAt: '2026-10-18T09:00:00Z'
+	});
+	const proof = {
+		loop: 'selected-item',
+		units: [home],
+		red: point(parent, 'failed'),
+		green: point(head, 'passed')
+	};
+	const before = { ...proof, green: undefined };
+	Object.assign(evidence.after.detail!, { regressions: [proof, { ...proof, units: [feed] }] });
+	Object.assign(evidence.before!.detail!, { regressions: [before] });
+	const untouched = structuredClone(evidence);
+	const result = recordedProjection(evidence, home);
+	expect(result.after.detail?.regressions).toEqual([proof]);
+	expect(result.before?.detail?.regressions).toEqual([before]);
+	expect(result.before?.detail?.regressions?.[0].green).toBeUndefined();
+	expect(evidence).toEqual(untouched);
 });

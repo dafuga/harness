@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { priorImage } from '../../src/utils/priorImage';
+import { priorImage } from '../../src/components/design-panel/priorImage';
 import type { DesignVersion } from '../../src/models/Desktop.types';
 
 const first = 'c'.repeat(40);

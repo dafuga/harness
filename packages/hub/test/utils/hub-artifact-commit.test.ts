@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { hubArtifactCommit } from '../../src/utils/hubArtifactCommit';
+import { hubArtifactCommit } from '../../src/services/hub-projection-service/hubArtifactCommit';
 import { hubSource } from '../../src/utils/hubSource';
 import { actor, project, commit, projectionFixture } from '../support/projectionFixture';
 

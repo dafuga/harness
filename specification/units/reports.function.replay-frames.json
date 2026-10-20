@@ -2,42 +2,58 @@
 	"schemaVersion": 1,
 	"id": "reports.function.replay-frames",
 	"kind": "function",
-	"title": "replayFrames",
-	"responsibility": "Owns the replayFrames shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Screenshot replay sequence",
+	"responsibility": "Builds ordered replay frames from available non-before image evidence.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/replayFrames.ts"],
-		"symbols": ["FRAME_SECONDS", "REPLAY_SPEEDS", "ReplayFrame", "replayStart", "replayFrames"]
+		"source": [
+			"packages/reports/src/components/gameplay-replay/replayFrames.ts",
+			"packages/reports/src/utils/replayFrames.ts"
+		],
+		"symbols": [
+			"replayStart",
+			"FRAME_SECONDS",
+			"REPLAY_SPEEDS",
+			"ReplayFrame",
+			"replayFrames",
+			"replayStart"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "replayStart.frames",
-				"type": "ReplayFrame[]"
+				"type": "ReplayFrame[]",
+				"description": "Replay frames to choose an initial position from."
 			},
 			{
 				"name": "replayFrames.items",
-				"type": "Evidence[]"
+				"type": "Evidence[]",
+				"description": "Evidence to filter and order."
 			}
 		],
 		"outputs": [
 			{
 				"name": "FRAME_SECONDS",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Three-second duration per frame."
 			},
 			{
 				"name": "REPLAY_SPEEDS",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Playback multipliers 0.25, 0.5, 1, 2, 4, 8 and 16."
 			},
 			{
 				"name": "replayStart",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Index of the first frame whose title names a scene, otherwise zero, including for an empty list."
 			},
 			{
 				"name": "replayFrames",
-				"type": "ReplayFrame[]"
+				"type": "ReplayFrame[]",
+				"description": "Available image frames excluding before-phase items, sorted by explicit order or original position. Each gets a sequential index, three-second start/duration and optional scene number parsed from a title beginning Scene followed by digits."
 			}
 		],
 		"errors": []

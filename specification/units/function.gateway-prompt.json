@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "function.gateway-prompt",
 	"kind": "function",
-	"title": "gatewayPrompt",
-	"responsibility": "Owns the gatewayPrompt shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Gateway conversation prompt",
+	"responsibility": "Formats ordered conversation input as the gateway continuation prompt.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/gatewayPrompt.ts"],
-		"symbols": ["gatewayPrompt"]
+		"source": ["src/services/claude-query-service/gatewayPrompt.ts", "src/utils/gatewayPrompt.ts"],
+		"symbols": ["gatewayPrompt", "gatewayPrompt"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "gatewayPrompt.request",
-				"type": "GatewayRequest"
+				"type": "GatewayRequest",
+				"description": "Request whose input array contains the complete ordered conversation history."
 			}
 		],
 		"outputs": [
 			{
 				"name": "gatewayPrompt",
-				"type": "string"
+				"type": "string",
+				"description": "Instruction text followed by JSON.stringify of request.input, asking continuation from the latest user request with role and tool context."
 			}
 		],
 		"errors": []

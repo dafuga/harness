@@ -2,32 +2,35 @@
 	"schemaVersion": 1,
 	"id": "reports.component.provider-picker",
 	"kind": "component",
-	"title": "ProviderPicker",
-	"responsibility": "Owns the ProviderPicker Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Session model picker",
+	"responsibility": "Lets a user inspect a session and queue or cancel its provider, model and reasoning-effort change.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/ProviderPicker.svelte"],
+		"source": ["packages/reports/src/components/provider-picker/ProviderPicker.svelte"],
 		"symbols": ["ProviderPicker"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProviderPicker.label",
-				"type": "string"
+				"type": "string",
+				"description": "Optional heading, defaulting to Model picker."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProviderPicker",
-				"type": "markup"
+				"type": "markup",
+				"description": "Connects to the picker client on mount and closes that connection on destruction. Displays session status and active/queued selections, allows binding a trimmed session identifier, refreshes state, and queues supported model/effort selections. Queuing does not immediately change the observed active model or global defaults. Operation failures appear as error text and controls lock while an operation runs."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "An invalid non-array response while listing queued sessions raises Queued sessions could not be read. inside the operation handler. That handler catches it and displays its message; ordinary operation failures are also caught, rather than deliberately thrown to the caller."
 			}
 		]
 	},
@@ -65,11 +68,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/ProviderPicker.svelte",
+		"entry": "packages/reports/src/components/provider-picker/ProviderPicker.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/ProviderPicker.svelte"
+				"entry": "packages/reports/src/components/provider-picker/ProviderPicker.svelte"
 			}
 		]
 	},

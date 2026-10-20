@@ -30,7 +30,11 @@ function unit(seed: UnitSeed): HarnessUnit {
 	const file =
 		seed.kind === 'page' ? 'src/routes/orders/+page.svelte' : `src/${seed.kind}s/${seed.title}.ts`;
 	const named = (names: string[] = []) =>
-		names.map((name) => ({ name: `${seed.title}.${name}`, type: 'string' }));
+		names.map((name) => ({
+			name: `${seed.title}.${name}`,
+			type: 'string',
+			...(name === 'searchText' ? { examples: ['SERVICE'] } : {})
+		}));
 	return {
 		id: seed.id,
 		kind: seed.kind,
@@ -41,6 +45,19 @@ function unit(seed: UnitSeed): HarnessUnit {
 		scenarios: [],
 		owns: { source: [file], symbols: [seed.title] },
 		contract: { inputs: named(seed.inputs), outputs: named(seed.outputs), errors: [] },
+		...(seed.kind === 'function'
+			? {
+					helpers: [
+						{
+							name: seed.title,
+							pure: true,
+							source: file,
+							inputs: named(seed.inputs),
+							consumers: [{ unit: ids.list }, { unit: ids.store }]
+						}
+					]
+				}
+			: {}),
 		runtime: {
 			kind: 'module',
 			targets: (seed.targets ?? ['module']).map((kind) => ({ kind, entry: file }))

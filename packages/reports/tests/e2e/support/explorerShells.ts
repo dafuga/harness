@@ -35,7 +35,12 @@ export const shellStates: Record<string, (page: Page) => Promise<void>> = {
 	async shell(page) {
 		await page.goto(at(shellsBranch, commits.shelled, `shells/${unit}`));
 		await titled(page, 'Title frame');
-		await expect(content(page).getByRole('region', { name: 'Uses', exact: true })).toBeVisible();
+		await expect(page.getByRole('tab', { name: 'Overview', exact: true })).toHaveAttribute(
+			'aria-selected',
+			'true'
+		);
+		await expect(page.getByRole('tab', { name: 'Uses', exact: true })).toBeVisible();
+		await expect(content(page).getByRole('region', { name: 'Uses', exact: true })).toHaveCount(0);
 	},
 	async 'shell-details'(page) {
 		await page.goto(at(shellsBranch, commits.shelled, `shells/${unit}/details`));
@@ -50,7 +55,7 @@ export const shellStates: Record<string, (page: Page) => Promise<void>> = {
 	// The address of a component leads a shell to Shells, with its branch, commit, section and tab.
 	async 'shell-redirect'(page) {
 		await page.goto(at(shellsBranch, commits.shelled, `components/${unit}/details?tab=source`));
-		await expectPath(page, at(shellsBranch, commits.shelled, `shells/${unit}/details?tab=source`));
+		await expectPath(page, at(shellsBranch, commits.shelled, `shells/${unit}?tab=source`));
 		await expect(content(page).getByText('src/components/TitleFrame.svelte').first()).toBeVisible();
 		await active(page, 'Shells');
 	},

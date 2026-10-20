@@ -1,4 +1,4 @@
-import { runtimeEvidence } from './runtime-evidence';
+import { componentScreens, runtimeEvidence } from './runtime-evidence';
 import { expect, test, type Locator, type Page } from '../../../../test/support/browserTest';
 import {
 	branch,
@@ -44,7 +44,7 @@ test('a page at its branch tip shows one current screenshot beside its contract,
 	await evidenceFixture(page);
 	await page.goto(pageAt());
 	const tabs = page.getByRole('navigation', { name: 'Entity sections' });
-	const names = ['Overview', 'Designs', 'Used In', 'Uses', 'Evidence', 'History'];
+	const names = ['Overview', 'Designs', 'Used In', 'Uses', 'States', 'History'];
 	await expect(tabs.getByRole('button')).toHaveText(names);
 	await expect(tabs.getByRole('button', { name: 'Overview' })).toHaveAttribute(
 		'aria-current',
@@ -150,14 +150,13 @@ test('the tip named as a commit is shown beside its first parent, and an older c
 test('an inherited capture is not the current one, and sides that are not alike are not compared', async ({
 	page
 }, info) => {
-	await evidenceFixture(page);
+	await evidenceFixture(page, { inheritedOnly: true });
 	await page.goto(at(`components/${ids.card}`));
 	const shown = runtime(page);
 	await expect(shown.getByLabel('Scenario', { exact: true }).locator('option')).toHaveText([
-		'Orders page over synthetic orders',
 		'Order card alone'
 	]);
-	await shown.getByLabel('Scenario', { exact: true }).selectOption(cardScenario);
+	await expect(shown.getByLabel('Scenario', { exact: true })).toHaveValue(cardScenario);
 	const current = shown.getByRole('figure', { name: `Current snapshot · ${short(commits.tip)}` });
 	await expect(current.getByText('Inherited from bbbbbbb', { exact: true })).toBeVisible();
 	await expect(
@@ -167,16 +166,21 @@ test('an inherited capture is not the current one, and sides that are not alike 
 	).toBeVisible();
 	await expect(current.getByRole('img')).toHaveCount(0);
 	await runtimeEvidence(page, info, 'inherited');
+	await componentScreens(page, info, 'current');
+	await expect(page.locator('.entity-heading .verification')).toHaveAccessibleName(
+		'Full coverage passed'
+	);
 	await page.goto(at(`components/${ids.card}`, commits.tip));
 	await expect(shown.getByRole('heading', { name: 'Before and after, not alike' })).toBeVisible();
 	await expect(
 		shown.getByText('Order card alone: viewport desktop is 1440×900 before and 1280×900 after.')
 	).toBeVisible();
-	await shown.getByLabel('Scenario', { exact: true }).selectOption(cardScenario);
+	await expect(shown.getByLabel('Scenario', { exact: true })).toHaveValue(cardScenario);
 	const after = shown.getByRole('figure', { name: `After · ${short(commits.tip)}` });
 	await expect(after.getByText('Inherited capture · passed')).toBeVisible();
 	expect((await drawn(after.getByRole('img'))).tone).toEqual(tones[commits.middle]);
 	await runtimeEvidence(page, info, 'not-alike');
+	await componentScreens(page, info, 'commit');
 });
 
 for (const viewport of [

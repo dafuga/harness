@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "relay.function.read-json-body",
 	"kind": "function",
-	"title": "readJsonBody",
-	"responsibility": "Owns the readJsonBody shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Bounded relay JSON body",
+	"responsibility": "Reads a bounded JSON object while rejecting unsupported public content types and oversized bodies.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/relay/src/utils/readJsonBody.ts"],
 		"symbols": ["readJsonBody"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "readJsonBody.request",
-				"type": "Request"
+				"type": "Request",
+				"description": "Request supplying headers and a byte stream."
 			},
 			{
 				"name": "readJsonBody.typed",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Optional content-type requirement, defaulting to true. False skips only the application/json check for internal callers."
 			}
 		],
 		"outputs": [
 			{
 				"name": "readJsonBody",
-				"type": "Promise<Record<string, unknown> | undefined>"
+				"type": "Promise<Record<string, unknown> | undefined>",
+				"description": "Promise resolving to a non-null JSON object, or undefined for a missing body, wrong content type, declared/actual body over 16 KiB, malformed JSON or non-object result. Reads chunks incrementally and cancels at the first byte above the limit."
 			}
 		],
 		"errors": []

@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.evidence-provenance",
 	"kind": "component",
-	"title": "EvidenceProvenance",
-	"responsibility": "Lists the recorded facts about what produced one piece of evidence.",
+	"title": "Evidence provenance",
+	"responsibility": "Lists recorded provenance facts for an evidence item.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,17 +11,19 @@
 		"symbols": ["EvidenceProvenance"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EvidenceProvenance.item",
-				"type": "Evidence"
+				"type": "Evidence",
+				"description": "Required evidence record whose optional provenance list supplies labels and values. Labels serve as row keys."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EvidenceProvenance",
-				"type": "markup"
+				"type": "markup",
+				"description": "Definition list of supplied provenance facts when nonempty; otherwise nothing. Does not derive or verify provenance."
 			}
 		],
 		"errors": []

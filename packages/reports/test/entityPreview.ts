@@ -1,5 +1,7 @@
 import { mount, unmount } from 'svelte';
 import ExplorerContent from '../src/components/harness/ExplorerContent.svelte';
+import HarnessShell from '../src/components/harness/HarnessShell.svelte';
+import { explorerRoutePath } from '../../../src/utils/explorerRoute';
 import '../src/lib/styles/base.css';
 import '../src/lib/styles/base-2.css';
 import '../src/lib/styles/base-3.css';
@@ -16,9 +18,14 @@ import {
 	legacyReasons,
 	previewRecord,
 	withFrame,
+	withDocumentation,
+	withInherited,
+	withScale,
+	withStates,
 	type PreviewVariant
 } from './entityPreviewData';
 import { commits, ids } from './entityUnits';
+import { withHelpers } from './entityPreviewHelpers';
 
 /** The synthetic history in a browser, for the checks that need one; no server and no real data. */
 const variant = new URLSearchParams(location.search).get('variant') as PreviewVariant | null;
@@ -32,6 +39,14 @@ const stored: Record<string, HarnessRevision> = {
 	},
 	[commits.tip]: recorded(commits.tip)
 };
+if (variant === 'helpers')
+	for (const commit of Object.keys(stored)) stored[commit] = withHelpers(stored[commit]);
+if (variant === 'inherited')
+	stored[commits.tip] = withInherited(stored[commits.tip], commits.middle);
+if (variant === 'documented')
+	for (const commit of Object.keys(stored)) stored[commit] = withDocumentation(stored[commit]);
+if (variant === 'states')
+	for (const commit of Object.keys(stored)) stored[commit] = withStates(stored[commit]);
 const hashes = (window as unknown as { artifactHashes?: Record<string, string> }).artifactHashes;
 // A recorded hash is the hash of the bytes the page is served, as a real history has it.
 for (const detail of Object.values(stored)) {
@@ -45,12 +60,14 @@ for (const detail of Object.values(stored)) {
 }
 
 if (variant === 'declared') {
-	// The page of the selected commit carries a contract that says what each of its items is.
-	const { registry } = stored[commits.middle];
-	const units = registry.units.map((unit) =>
-		unit.id === ids.page ? { ...unit, contract: declaredContract } : unit
-	);
-	stored[commits.middle] = { ...stored[commits.middle], registry: { ...registry, units } };
+	// Every viewed revision, including the branch tip, declares the same example contract.
+	for (const [commit, detail] of Object.entries(stored)) {
+		const { registry } = detail;
+		const units = registry.units.map((unit) =>
+			unit.id === ids.page ? { ...unit, contract: declaredContract } : unit
+		);
+		stored[commit] = { ...detail, registry: { ...registry, units } };
+	}
 }
 
 if (variant === 'shells') {
@@ -112,4 +129,24 @@ function asked(): ExplorerLocation {
 }
 // Going to a place rewrites the address without this event; only an address typed or opened fires it.
 window.addEventListener('hashchange', () => show(asked()));
-show(asked());
+if (variant === 'console') {
+	// The real console and client, over this same fixture. Each response is a fresh JSON tree,
+	// as it is over the network; no in-memory Svelte data is substituted for the host.
+	const fetcher = window.fetch;
+	window.fetch = Object.assign(
+		(input: Parameters<typeof fetch>[0], init?: Parameters<typeof fetch>[1]) => {
+			const path = String(input);
+			if (path.endsWith('/data/index.json')) return Promise.resolve(Response.json(index));
+			if (path.endsWith('/data/activity.json')) {
+				return Promise.resolve(Response.json({ repository: { name: 'Synthetic orders' } }));
+			}
+			const data = Object.entries(stored).find(([commit]) =>
+				path.endsWith(`/revisions/${commit}.json`)
+			)?.[1];
+			return data ? Promise.resolve(Response.json(withScale(data))) : fetcher(input, init);
+		},
+		fetcher
+	);
+	history.replaceState(null, '', '/harness' + explorerRoutePath(asked()));
+	mount(HarnessShell, { target, props: { base: '/harness', exportable: false } });
+} else show(asked());

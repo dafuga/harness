@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "reports.component.status-badge",
 	"kind": "component",
-	"title": "StatusBadge",
-	"responsibility": "Owns the StatusBadge Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Report status badge",
+	"responsibility": "Shows a report status using its translated label and status styling.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/components/StatusBadge.svelte"],
 		"symbols": ["StatusBadge"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "StatusBadge.status",
-				"type": "Status"
+				"type": "Status",
+				"description": "Required report status, used for the CSS class and translation key."
 			}
 		],
 		"outputs": [
 			{
 				"name": "StatusBadge",
-				"type": "markup"
+				"type": "markup",
+				"description": "Inline status badge with translated text and a decorative dot hidden from assistive technology."
 			}
 		],
 		"errors": []

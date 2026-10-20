@@ -4,6 +4,7 @@ import type { SourceTree } from '../core/sourceTypes';
 import type { ScenarioManifest } from '../core/unitTypes';
 import { scenariosDirectory } from '../core/unitsConfig';
 import { stableJson } from '../utils/stableJson';
+import { readTreeTexts } from '../utils/readTreeTexts';
 import { ScenarioManifestValidator } from '../validators/ScenarioManifestValidator';
 
 export interface ScenarioRead {
@@ -22,8 +23,9 @@ export class ScenarioRepository {
 			.map((entry) => entry.path)
 			.filter((path) => path.startsWith(`${scenariosDirectory}/`) && path.endsWith('.json'));
 		const result: ScenarioRead = { manifests: [], errors: [] };
-		for (const path of paths) {
-			const checked = this.validator.validate(parse(await tree.read(path)), path);
+		const texts = await readTreeTexts(tree, paths);
+		for (const [index, path] of paths.entries()) {
+			const checked = this.validator.validate(parse(texts[index]), path);
 			result.errors.push(...checked.errors);
 			if (checked.value) result.manifests.push(checked.value);
 		}

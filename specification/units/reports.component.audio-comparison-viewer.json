@@ -2,38 +2,43 @@
 	"schemaVersion": 1,
 	"id": "reports.component.audio-comparison-viewer",
 	"kind": "component",
-	"title": "AudioComparisonViewer",
-	"responsibility": "Owns the AudioComparisonViewer Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Audio comparison viewer",
+	"responsibility": "Opens paired recordings in a modal for listening to either side or both.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/components/AudioComparisonViewer.svelte"],
 		"symbols": ["AudioComparisonViewer"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "AudioComparisonViewer.before",
-				"type": "Evidence"
+				"type": "Evidence",
+				"description": "Required before recording, used in before and comparison views."
 			},
 			{
 				"name": "AudioComparisonViewer.after",
-				"type": "Evidence"
+				"type": "Evidence",
+				"description": "Required after recording, used in after/comparison views and as the comparison title."
 			},
 			{
 				"name": "AudioComparisonViewer.assetBase",
-				"type": "string"
+				"type": "string",
+				"description": "Required URL prefix passed to each audio card for its file."
 			},
 			{
 				"name": "AudioComparisonViewer.onclose",
-				"type": "() => void"
+				"type": "() => void",
+				"description": "Required callback called after the attached dialog is closed natively, allowing focus to return to its opener."
 			}
 		],
 		"outputs": [
 			{
 				"name": "AudioComparisonViewer",
-				"type": "markup"
+				"type": "markup",
+				"description": "Open audio modal initially in compare mode with Before/After/Compare controls. Mount pauses all document audio. Keyed audio cards are destroyed when leaving view, so their cleanup pauses playback. Each retains its own transcript, availability and status."
 			}
 		],
 		"errors": []

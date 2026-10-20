@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "hub.component.members-panel",
 	"kind": "component",
-	"title": "MembersPanel",
-	"responsibility": "Owns the MembersPanel Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Members panel",
+	"responsibility": "Lists project members and exposes invitations to owners.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/components/MembersPanel.svelte"],
 		"symbols": ["MembersPanel"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "MembersPanel.projectId",
-				"type": "string"
+				"type": "string",
+				"description": "Required project identifier used for project and member reads on mount and passed to the owner invitation form. Prop changes do not independently trigger another load."
 			}
 		],
 		"outputs": [
 			{
 				"name": "MembersPanel",
-				"type": "markup"
+				"type": "markup",
+				"description": "Members heading and table of names, emails and roles once the project is loaded. Empty lists are explicitly labeled. Owners see an invitation form; others see an owner-only explanation. Read failures are alerts."
 			}
 		],
 		"errors": []

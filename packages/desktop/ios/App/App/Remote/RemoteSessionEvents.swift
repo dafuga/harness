@@ -33,7 +33,8 @@ extension RemoteSession {
     private func granted(_ grant: RemoteGrant?) {
         guard let grant = grant, var record = record else { return }
         let agents: Set<String> = ["createPlan", "approve", "startRun", "cancelRun"]
-        let base = (record.methods ?? []).filter { !agents.contains($0) }
+        let comments: Set<String> = ["addComment", "pendingComments", "openThread"]
+        let base = (record.methods ?? []).filter { !agents.contains($0) && (grant.comments != false || !comments.contains($0)) }
         record.grant = grant
         record.methods = grant.agents ? base + agents.sorted() : base
         keep(record)

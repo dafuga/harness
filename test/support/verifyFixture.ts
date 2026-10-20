@@ -130,7 +130,7 @@ export const rankScenario = {
 
 export const fixtureSources: Record<string, string> = {
 	'src/utils/slugify.ts':
-		'export function slugify(input: string): string {\n\treturn input.trim().toLowerCase();\n}\n',
+		'/** @pure */\nexport function slugify(input: string): string {\n\treturn input.trim().toLowerCase();\n}\n',
 	'src/utils/clock.ts': 'export function clock(value: string): string {\n\treturn value;\n}\n',
 	'src/services/TitleService.ts': [
 		"import { slugify } from '../utils/slugify';",

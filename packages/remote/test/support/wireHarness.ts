@@ -5,8 +5,8 @@ import type {
 	WireRequest,
 	WireResponse
 } from '../../src/models/Remote.types';
-import { WireSessionService } from '../../src/services/WireSessionService';
-import type { WireSessionOptions } from '../../src/services/WireSessionService';
+import { WireSessionService } from '../../src/services/wire-session-service/WireSessionService';
+import type { WireSessionOptions } from '../../src/services/wire-session-service/WireSessionService';
 
 export const uuid = () => crypto.randomUUID();
 export const tick = () => new Promise<void>((resolve) => setTimeout(resolve, 0));

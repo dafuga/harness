@@ -5,10 +5,10 @@ import { afterAll, expect, test } from 'vitest';
 import { scenarioManifestSchema } from '../src/core/unitTypes';
 import { defaultUnitsConfig } from '../src/core/unitsConfig';
 import { captureIndex, defaultVerifyConfig } from '../src/core/verifyTypes';
-import { gatherCaptures } from '../src/utils/gatherCaptures';
-import { scenarioCoverage } from '../src/utils/scenarioCoverage';
+import { gatherCaptures } from '../src/services/check-run-service/gatherCaptures';
+import { scenarioCoverage } from '../src/services/verification-service/scenarioCoverage';
 import { scenarioRequirements } from '../src/utils/scenarioRequirements';
-import { verifyPlan } from '../src/utils/verifyPlan';
+import { verifyPlan } from '../src/services/verification-service/verifyPlan';
 import { syntheticPng as png } from './support/syntheticPng';
 import { verificationTarget } from './verification-targets';
 

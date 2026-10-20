@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.runtime-response",
 	"kind": "function",
-	"title": "runtimeResponse",
-	"responsibility": "Accepts only well-formed runtime response envelopes and provides call deadlines.",
+	"title": "Runtime envelopes and deadlines",
+	"responsibility": "Validates runtime response envelopes and applies a timeout to both yielded and thread-blocking calls.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,33 +11,39 @@
 		"symbols": ["runtimeResponse", "runtimeResponseText", "RuntimeDeadline", "runtimeDeadline"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "runtimeResponse.value",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Unknown value to inspect for ok true with an output property, or ok false with string error code/message."
 			},
 			{
 				"name": "runtimeResponseText.text",
-				"type": "string"
+				"type": "string",
+				"description": "JSON text returned by a byte transport."
 			},
 			{
 				"name": "runtimeDeadline.timeoutMs",
-				"type": "number"
+				"type": "number",
+				"description": "Milliseconds allowed for the call, measured from deadline creation."
 			}
 		],
 		"outputs": [
 			{
 				"name": "runtimeResponse",
-				"type": "RuntimeResponse"
+				"type": "RuntimeResponse",
+				"description": "Original valid envelope, or invalid-response failure explaining that the value is not an envelope."
 			},
 			{
 				"name": "runtimeResponseText",
-				"type": "RuntimeResponse"
+				"type": "RuntimeResponse",
+				"description": "Validated parsed envelope, or invalid-response for non-JSON text."
 			},
 			{
 				"name": "runtimeDeadline",
-				"type": "RuntimeDeadline"
+				"type": "RuntimeDeadline",
+				"description": "Deadline with an expired promise and settle method. The timer produces runtime-timeout; settle clears it and rejects a result arriving strictly after the elapsed limit, including work that blocked the timer."
 			}
 		],
 		"errors": []

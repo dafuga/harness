@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import { expect, test } from 'vitest';
-import { checkedMedia, mediaPlace } from '../../src/utils/mediaPlace';
+import { checkedMedia } from '../../src/utils/mediaPlace';
+import { mediaPlace } from '../../src/services/history-media-service/mediaPlace';
 
 const bytes = Buffer.from('recorded bytes');
 const sha256 = createHash('sha256').update(bytes).digest('hex');

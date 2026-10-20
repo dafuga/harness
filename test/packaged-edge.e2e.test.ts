@@ -5,7 +5,7 @@ import { afterAll, beforeAll, expect, test } from 'vitest';
 import { HttpRuntimeAdapter } from '../src/adapters/HttpRuntimeAdapter';
 import { ModuleRuntimeAdapter } from '../src/adapters/ModuleRuntimeAdapter';
 import { RuntimeServerService, type ServedRuntime } from '../src/services/RuntimeServerService';
-import { impactKernel } from '../src/utils/impactKernel';
+import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
 import { runCommand } from './support/cli';
 import { kernelVectors } from './support/kernelVectors';
 import { startWorker, type LocalWorker } from './support/workers';

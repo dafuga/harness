@@ -95,3 +95,35 @@ test('ecosystem adapters report app and library rule violations', async () => {
 		await rm(root, { recursive: true, force: true });
 	}
 });
+
+test.each([
+	['named alias', "export { value as forward } from './value';", true],
+	['multiline', "export {\n value as forward,\n type Item\n} from './value';", true],
+	['local list', "import { value } from './value';\nexport { value as forward };", true],
+	['type clause', "export type { Item as forward } from './value';", false],
+	['inline type', "export { type Item as forward } from './value';", false],
+	['another name', "export { value as elsewhere } from './value';", false],
+	['wildcard', "export * from './value';", false],
+	['comment', '// export { value as forward };\nexport const elsewhere = 1;', false],
+	['string', 'const text = `export { value as forward };`;\nexport const elsewhere = text;', false]
+])('utility runtime naming handles %s', async (_label, source, valid) => {
+	const root = await mkdtemp(join(tmpdir(), 'harness-forward-audit-'));
+	try {
+		await mkdir(join(root, 'src/utils'), { recursive: true });
+		await writeFile(
+			join(root, 'src/utils/value.ts'),
+			'export const value = (input: string) => input;'
+		);
+		await writeFile(join(root, 'src/utils/forward.ts'), String(source));
+		const { findings } = await auditProject(root, { profile: 'lib' });
+		const rejected = findings.some(
+			(f) => f.path === 'src/utils/forward.ts' && f.rule === 'function-name-pattern'
+		);
+		expect(
+			rejected,
+			'explicit runtime forward exports satisfy the utility name; type-only forms do not'
+		).toBe(!valid);
+	} finally {
+		await rm(root, { recursive: true, force: true });
+	}
+});

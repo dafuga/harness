@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import type { RemoteAttachment, WireRequest, WireResponse } from '../../src/models/Remote.types';
 import { ResponseLedgerService } from '../../src/services/ResponseLedgerService';
 import { WireClientService } from '../../src/services/WireClientService';
-import type { WireSessionService } from '../../src/services/WireSessionService';
+import type { WireSessionService } from '../../src/services/wire-session-service/WireSessionService';
 import { codeOf, tick, wireLink, wireSession } from '../support/wireHarness';
 
 const run = { projectId: 'p', text: 'go' };

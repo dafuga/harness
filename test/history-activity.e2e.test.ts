@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { consoleAccess, type ConsoleData } from '../src/lib/console';
-import { consoleDataModules } from '../src/utils/consoleDataModules';
+import { consoleDataModules } from '../src/services/console-install-service/consoleDataModules';
 import { indexFiles } from '../src/utils/indexFiles';
 import { build, indexedRepo, type IndexedCommits } from './support/historyIndexFixture';
 import { sha256 } from './support/historyRepo';

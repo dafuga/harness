@@ -2,44 +2,53 @@
 	"schemaVersion": 1,
 	"id": "reports.function.report-local-cleanup",
 	"kind": "function",
-	"title": "reportLocalCleanup",
-	"responsibility": "Owns the reportLocalCleanup shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Local report retention cleanup",
+	"responsibility": "Removes old nonreserved files and untracked run contents while preserving known runs and symlinks.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/reportLocalCleanup.ts"],
-		"symbols": ["reportLocalCleanup"]
+		"source": [
+			"packages/reports/src/services/report-retention-service/reportLocalCleanup.ts",
+			"packages/reports/src/utils/reportLocalCleanup.ts"
+		],
+		"symbols": ["reportLocalCleanup", "reportLocalCleanup"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "reportLocalCleanup.root",
-				"type": "string"
+				"type": "string",
+				"description": "Report store root, which must not itself be a symlink."
 			},
 			{
 				"name": "reportLocalCleanup.cutoff",
-				"type": "number"
+				"type": "number",
+				"description": "Finite modification-time cutoff in epoch milliseconds; files at or before it are eligible."
 			},
 			{
 				"name": "reportLocalCleanup.dryRun",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Optional dry-run flag, defaulting to false. True counts eligible files without deleting them."
 			},
 			{
 				"name": "reportLocalCleanup.knownRuns",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Optional set of known run identifiers, defaulting to empty; known run directories are skipped."
 			}
 		],
 		"outputs": [
 			{
 				"name": "reportLocalCleanup",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Promise resolving to the number of eligible files removed or counted. Skips root dot entries and reserved metadata, traverses other directories and orphan runs, skips symlinks and removes empty old directories during a real cleanup."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects a nonfinite cutoff or symlinked root/runs directory. Filesystem inspection and deletion errors propagate."
 			}
 		]
 	},

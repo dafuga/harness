@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import type { Measurement } from '../src/core/verificationTypes';
-import { recordCapture } from '../src/utils/recordCapture';
+import { recordCapture } from '../src/utils/record-capture/recordCapture';
 import { runHarness } from './support/cli';
 
 interface Bench {

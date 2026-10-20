@@ -1,4 +1,4 @@
-import { ReportCommandService } from '../services/ReportCommandService';
+import { ReportCommandService } from '../services/report-command-service/ReportCommandService';
 try {
 	const result = await new ReportCommandService().execute(process.argv.slice(2));
 	if ('id' in result)

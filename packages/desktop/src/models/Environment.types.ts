@@ -1,4 +1,5 @@
 import type { DesktopBridge } from './DesktopBridge.types';
+import type { NativeHostedStatus } from './ProjectContext.types';
 import type { RemoteMethod, WireChannel } from '../../../remote/src/models/Remote.types';
 import type {
 	RemoteDesktopControl,
@@ -38,6 +39,8 @@ export interface Environment extends RemotePorts {
 	bridge: DesktopBridge | undefined;
 	/** Whether a folder of this device can be added as a project. */
 	local: boolean;
+	/** Capacitor only: this phone has a Hub account of its own, read without any computer. */
+	account?: boolean;
 }
 /** What a page can see of its host besides the document. */
 export interface EnvironmentHost {
@@ -88,6 +91,32 @@ export interface RemoteNativePlugin {
 		eventName: K,
 		listener: (value: RemoteNativeEvents[K]) => void
 	): Promise<{ remove(): Promise<void> }>;
+}
+
+/** One call of the page to its Hub account: a path of the project API, its fields and its body. */
+export interface AccountNativeCall {
+	method: 'GET' | 'POST';
+	path: string;
+	query?: Record<string, string>;
+	body?: unknown;
+}
+/** What the Hub answered, as the plugin hands it on: its status, its media type, base64 bytes. */
+export interface AccountNativeReply {
+	status: number;
+	contentType: string;
+	data: string;
+}
+/** A status as the plugin states it; the page keeps only the public fields of NativeHostedStatus. */
+export type AccountNativeStatus = Omit<NativeHostedStatus, 'state'> & { state: string };
+/**
+ * The `HarnessAccount` plugin as the page sees it. The Swift side owns the Hub origin, the
+ * verifier, the nonce and the session, and signs every call; none of them crosses this interface.
+ */
+export interface AccountNativePlugin {
+	status(): Promise<AccountNativeStatus>;
+	connect(): Promise<AccountNativeStatus>;
+	disconnect(): Promise<AccountNativeStatus>;
+	request(call: AccountNativeCall): Promise<AccountNativeReply>;
 }
 
 /** Where the page keeps its two connection stores for the components below it. */

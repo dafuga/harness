@@ -2,13 +2,17 @@
 	"schemaVersion": 1,
 	"id": "reports.function.entity-measure",
 	"kind": "function",
-	"title": "entityMeasure",
-	"responsibility": "Reads the size and the performance profile of a unit from the record of a revision; what nothing measured is Not measured, never zero.",
+	"title": "Entity measurement display",
+	"responsibility": "Formats one unit’s recorded size and declared performance measurements without combining profiles.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/entityMeasure.ts"],
+		"source": [
+			"packages/reports/src/components/harness/entity-sections/entityMeasure.ts",
+			"packages/reports/src/utils/entityMeasure.ts"
+		],
 		"symbols": [
+			"entityMeasure",
 			"notMeasured",
 			"tolerancePolicy",
 			"MeasureRow",
@@ -19,37 +23,44 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "byteSize.count",
-				"type": "number"
+				"type": "number",
+				"description": "Byte count to format; sign is retained."
 			},
 			{
 				"name": "entityMeasure.unit",
-				"type": "HarnessUnit"
+				"type": "HarnessUnit",
+				"description": "Unit supplying identity, emitted targets and performance budgets."
 			},
 			{
 				"name": "entityMeasure.record",
-				"type": "HarnessRecord | null"
+				"type": "HarnessRecord | null",
+				"description": "Host-selected verification record, or null when none is available."
 			}
 		],
 		"outputs": [
 			{
 				"name": "notMeasured",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The Not measured placeholder."
 			},
 			{
 				"name": "tolerancePolicy",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Maximum accepted declared timing tolerance of 0.05, used to flag looser budgets."
 			},
 			{
 				"name": "byteSize",
-				"type": "string"
+				"type": "string",
+				"description": "Decimal B, KB or MB size, rounded to at most one decimal place using 1,000-based units."
 			},
 			{
 				"name": "entityMeasure",
-				"type": "EntityMeasure"
+				"type": "EntityMeasure",
+				"description": "Source, emitted-size and complexity rows plus one performance row per matching measurement/profile or an explicit unmeasured row. Own size metrics exclude workload/profile measurements. Partial and unavailable notes remain visible; timing tolerance above five percent is flagged."
 			}
 		],
 		"errors": []

@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.function.explorer-category",
 	"kind": "function",
-	"title": "explorerCategory",
-	"responsibility": "Says which of the six explorer categories a unit belongs to, from its kind.",
+	"title": "Explorer unit classification",
+	"responsibility": "Assigns units to readable explorer categories and role names.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,25 +11,29 @@
 		"symbols": ["explorerCategory", "explorerRole"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "explorerCategory.unit",
-				"type": "Classified"
+				"type": "Classified",
+				"description": "Unit kind and owned source files to classify."
 			},
 			{
 				"name": "explorerRole.unit",
-				"type": "Classified"
+				"type": "Classified",
+				"description": "Unit kind and owned source files to label."
 			}
 		],
 		"outputs": [
 			{
 				"name": "explorerCategory",
-				"type": "ExplorerCategory | null"
+				"type": "ExplorerCategory | null",
+				"description": "Pages for rendering routes; Helpers only for explicitly pure functions with two distinct runtime consumers. Private or unproven callables have no collection category; other kinds keep their existing category."
 			},
 			{
 				"name": "explorerRole",
-				"type": "string"
+				"type": "string",
+				"description": "Page for rendering routes, Route loader for non-rendering route kinds, otherwise a known friendly role or words derived from the kind."
 			}
 		],
 		"errors": []
@@ -37,6 +41,11 @@
 	"dependencies": [
 		{
 			"unit": "function.explorer-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.helper-contract",
 			"via": "import",
 			"origin": "derived"
 		},

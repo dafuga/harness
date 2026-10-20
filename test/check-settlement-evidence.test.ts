@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import type { IsolatedResult } from '../src/utils/runIsolated';
+import type { IsolatedResult } from '../src/utils/run-isolated/runIsolated';
 
 test('a failed check says which processes it stopped, which outlasted a signal, which it left', async () => {
 	const identities = [1, 2, 3].map((pid) => ({ pid, started: 'Mon Oct 12 10:00:00 2026' }));
@@ -14,9 +14,9 @@ test('a failed check says which processes it stopped, which outlasted a signal, 
 		resisted: 1,
 		unknown: false
 	};
-	vi.doMock('../src/utils/runIsolated', () => ({ runIsolated: async () => left }));
+	vi.doMock('../src/utils/run-isolated/runIsolated', () => ({ runIsolated: async () => left }));
 	const { CheckRunService } = await import('../src/services/CheckRunService');
-	vi.doUnmock('../src/utils/runIsolated');
+	vi.doUnmock('../src/utils/run-isolated/runIsolated');
 	const context = { commit: 'made-up', tree: 'made-up', profile: 'made-up', env: {} };
 	const service = new CheckRunService({ ...context, snapshot: '/made/up', directory: '/made/up' });
 	const check = { id: 'page', name: 'page', target: 'page', cwd: '.', command: 'true' };

@@ -2,38 +2,46 @@
 	"schemaVersion": 1,
 	"id": "function.block-complexity",
 	"kind": "function",
-	"title": "blockComplexity",
-	"responsibility": "Owns the blockComplexity shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Decision-point counting",
+	"responsibility": "Counts the supported code and Svelte template decision markers used for complexity measurements.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/blockComplexity.ts"],
-		"symbols": ["blockComplexity", "templateComplexity"]
+		"source": [
+			"src/services/source-index-service/blockComplexity.ts",
+			"src/utils/blockComplexity.ts"
+		],
+		"symbols": ["templateComplexity", "blockComplexity", "templateComplexity"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "blockComplexity.masked",
-				"type": "string"
+				"type": "string",
+				"description": "Source with comments and string contents already masked; matching keywords and operators are counted textually."
 			},
 			{
 				"name": "blockComplexity.base",
-				"type": "0 | 1"
+				"type": "0 | 1",
+				"description": "Initial count: 1 for a function, or 0 when no function base is needed."
 			},
 			{
 				"name": "templateComplexity.markup",
-				"type": "string"
+				"type": "string",
+				"description": "Markup to scan for Svelte if, each and await blocks and else-if branches."
 			}
 		],
 		"outputs": [
 			{
 				"name": "blockComplexity",
-				"type": "number"
+				"type": "number",
+				"description": "Base plus occurrences of if, for, while, case, catch, logical-and, logical-or, nullish-coalescing and recognized conditional question marks."
 			},
 			{
 				"name": "templateComplexity",
-				"type": "number"
+				"type": "number",
+				"description": "Number of recognized Svelte block and else-if decision markers, or zero when there are none."
 			}
 		],
 		"errors": []

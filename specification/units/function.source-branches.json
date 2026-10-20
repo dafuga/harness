@@ -2,30 +2,36 @@
 	"schemaVersion": 1,
 	"id": "function.source-branches",
 	"kind": "function",
-	"title": "sourceBranches",
-	"responsibility": "Names the branches of code a repository knows, local and remote-tracking, so that no remote tip takes the name of a local branch that points elsewhere.",
+	"title": "Source branch naming",
+	"responsibility": "Combines local and remote-tracking source branches without moving local names to conflicting remote tips.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/sourceBranches.ts"],
-		"symbols": ["ListedRef", "SourceBranch", "sourceBranches"]
+		"source": [
+			"src/repositories/source-history-repository/sourceBranches.ts",
+			"src/utils/sourceBranches.ts"
+		],
+		"symbols": ["sourceBranches", "ListedRef", "SourceBranch", "sourceBranches"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "sourceBranches.refs",
-				"type": "ListedRef[]"
+				"type": "ListedRef[]",
+				"description": "Listed Git refs with heads and optional symbolic targets."
 			},
 			{
 				"name": "sourceBranches.remotes",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Configured remote names, used to disambiguate tracking prefixes by longest match."
 			}
 		],
 		"outputs": [
 			{
 				"name": "sourceBranches",
-				"type": "SourceBranch[]"
+				"type": "SourceBranch[]",
+				"description": "Branches sorted by name. Local branches keep their tips; a remote-only agreed tip keeps the plain branch name, while conflicting tips use remote:branch. Evidence, notes, archives, tags and remote HEAD/symbolic refs are excluded."
 			}
 		],
 		"errors": []

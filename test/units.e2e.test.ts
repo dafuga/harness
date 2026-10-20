@@ -158,3 +158,33 @@ test('check rejects invalid manifests and schemas are exposed', async () => {
 	expect(info.stdout).toContain('harness generate unit');
 	await rm(join(project.root, '..'), { recursive: true, force: true });
 }, 60_000);
+
+test('index records reviewed shared helper contracts for clients without source rescans', async () => {
+	const project = await unitProject('lib');
+	await project.write(
+		'src/utils/formatDate.ts',
+		'/** @pure */\nexport function formatDate(iso: string): string { return new Date(iso).toISOString(); }\n'
+	);
+	for (const name of ['first', 'second'])
+		await project.write(
+			`src/utils/${name}.ts`,
+			`import { formatDate } from './formatDate';\nexport function ${name}(value: string) { return formatDate(value); }`
+		);
+	await project.harness(['units', 'index', '--write']);
+	const unit = await project.json<{ helperContracts: unknown[] }>(
+		'specification/units/function.format-date.json'
+	);
+	expect(unit.helperContracts, 'committed pure helper contracts').toEqual([
+		expect.objectContaining({
+			name: 'formatDate',
+			pure: true,
+			source: 'src/utils/formatDate.ts',
+			consumers: expect.arrayContaining([
+				{ unit: 'function.first', symbol: 'first' },
+				{ unit: 'function.second', symbol: 'second' }
+			])
+		})
+	]);
+	await project.harness(['units', 'check']);
+	await rm(join(project.root, '..'), { recursive: true, force: true });
+}, 60000);

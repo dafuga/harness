@@ -6,7 +6,7 @@ import {
 	readPairingOffer,
 	remoteIdentity
 } from '../../../remote/src/index';
-import { RemoteHostService } from '../../src/services/RemoteHostService';
+import { RemoteHostService } from '../../src/services/remote-host-service/RemoteHostService';
 import { hostFixture } from '../remote-host-fixture';
 
 test('enabling registers a hash under the hosted identity and connects by header', async () => {

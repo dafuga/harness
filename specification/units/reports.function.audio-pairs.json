@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "reports.function.audio-pairs",
 	"kind": "function",
-	"title": "audioPairs",
-	"responsibility": "Owns the audioPairs shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Audio comparison pairing",
+	"responsibility": "Finds unambiguous before-and-after audio pairs in recorded evidence.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/utils/audioPairs.ts"],
 		"symbols": ["audioPairs"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "audioPairs.items",
-				"type": "Evidence[]"
+				"type": "Evidence[]",
+				"description": "Evidence items; only audio with a nonblank comparison name and before/after phase participate."
 			}
 		],
 		"outputs": [
 			{
 				"name": "audioPairs",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Map from each after-item identifier to its before item, grouped by exact comparison text and viewport. Only groups with exactly one item on each side are paired; ambiguous and incomplete groups are omitted."
 			}
 		],
 		"errors": []

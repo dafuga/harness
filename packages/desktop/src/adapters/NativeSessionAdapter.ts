@@ -1,7 +1,7 @@
 import { mkdir, readFile, rename, unlink, writeFile } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { randomUUID } from 'node:crypto';
-import type { NativeHostedCredential } from './RemoteHttpProjectAdapter';
+import type { NativeHostedCredential } from './remote-http-project-adapter/RemoteHttpProjectAdapter';
 /** Electron safeStorage is injected only by main; fixtures supply a deterministic encryption port. */
 export interface NativeEncryption {
 	isEncryptionAvailable(): boolean;

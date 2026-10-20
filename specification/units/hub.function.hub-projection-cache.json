@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "hub.function.hub-projection-cache",
 	"kind": "function",
-	"title": "hubProjectionCache",
-	"responsibility": "Owns the hubProjectionCache shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Reuse a hosted projection",
+	"responsibility": "Read a validated cached projection or load, validate and cache a replacement.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/hubProjectionCache.ts"],
 		"symbols": ["hubProjectionCache"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hubProjectionCache.context",
-				"type": "HubSourceContext"
+				"type": "HubSourceContext",
+				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubProjectionCache.projection",
-				"type": "{ profile: string; accept: (value: unknown) => T }"
+				"type": "{ profile: string; accept: (value: unknown) => T }",
+				"description": "Profile name separating projection variants and accept callback that validates or converts candidate values."
 			},
 			{
 				"name": "hubProjectionCache.load",
-				"type": "() => Promise<T>"
+				"type": "() => Promise<T>",
+				"description": "Asynchronous loader called when no usable cached projection exists."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubProjectionCache",
-				"type": "Promise<T>"
+				"type": "Promise<T>",
+				"description": "Accepted cached or newly loaded value. Cached JSON/validation failures delete the entry before loading; fresh values are accepted before serialization and storage."
 			}
 		],
 		"errors": []

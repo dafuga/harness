@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "function.command-action",
 	"kind": "function",
-	"title": "commandAction",
-	"responsibility": "Owns the commandAction shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "CLI action classification",
+	"responsibility": "Reduces CLI arguments to the known command action used for attribution.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/commandAction.ts"],
 		"symbols": ["commandAction"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "commandAction.args",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "CLI arguments beginning with the command and optional subcommand; executable and script names should already be removed."
 			}
 		],
 		"outputs": [
 			{
 				"name": "commandAction",
-				"type": "string"
+				"type": "string",
+				"description": "Known top-level action, known command plus subcommand, command plus help for an unknown subcommand, or help-or-unknown for an unrecognized top-level command."
 			}
 		],
 		"errors": []

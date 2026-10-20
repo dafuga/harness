@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "function.explorer-legacy",
 	"kind": "function",
-	"title": "explorerLegacy",
-	"responsibility": "Says which explorer address an earlier console page stands for.",
+	"title": "Legacy explorer selection",
+	"responsibility": "Maps an earlier console selection to the corresponding explorer entity and section.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/explorerLegacy.ts"],
-		"symbols": ["explorerLegacy"]
+		"source": ["src/utils/console-canonical/explorerLegacy.ts", "src/utils/explorerLegacy.ts"],
+		"symbols": ["explorerLegacy", "explorerLegacy"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "explorerLegacy.route",
-				"type": "ConsoleRoute"
+				"type": "ConsoleRoute",
+				"description": "Legacy route with branch, commit, view and optional unit."
 			}
 		],
 		"outputs": [
 			{
 				"name": "explorerLegacy",
-				"type": "ExplorerLocation"
+				"type": "ExplorerLocation",
+				"description": "Explorer location preserving branch and commit. No unit opens Pages; a selected unit opens its kind category, defaulting to functions, with history section for history or growth views."
 			}
 		],
 		"errors": []

@@ -2,7 +2,7 @@ import { mkdtemp, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { vi } from 'vitest';
-import { ReportRepository } from '../src/repositories/ReportRepository';
+import { ReportRepository } from '../src/repositories/report-repository/ReportRepository';
 import { atomicJson } from '../src/utils/reportFiles';
 export const fixturePng = Buffer.from(
 	'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a5V8AAAAASUVORK5CYII=',

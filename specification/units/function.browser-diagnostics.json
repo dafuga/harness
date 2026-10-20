@@ -2,21 +2,22 @@
 	"schemaVersion": 1,
 	"id": "function.browser-diagnostics",
 	"kind": "function",
-	"title": "browserDiagnostics",
-	"responsibility": "Owns the browserDiagnostics shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Browser diagnostic records",
+	"responsibility": "Define the recorded browser errors and expectations associated with one test attempt.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/core/browserDiagnostics.ts"],
 		"symbols": ["browserDiagnosticSchema", "BrowserDiagnostic"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "browserDiagnosticSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Strict schema for one test attempt: nonempty test name, file and project strings, nonnegative retry number, optional browser name, observed errors and expected errors. Observations distinguish console errors from uncaught exceptions and retain message, page and optional source, nonnegative line/column and stack. Expectations require a nonempty message and reason and may require an exact source."
 			}
 		],
 		"errors": []

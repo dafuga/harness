@@ -2,7 +2,7 @@
 	import type { ExplorerScreenProps } from '../../models/ExplorerScreen.types';
 	import EntityConfig from './EntityConfig.svelte';
 	import EntityFrame from './EntityFrame.svelte';
-	import EntitySections from './EntitySections.svelte';
+	import EntitySections from './entity-sections/EntitySections.svelte';
 	let host: ExplorerScreenProps = $props();
 </script>
 
@@ -11,11 +11,7 @@
 	{#snippet children(entity, nav)}
 		<EntitySections {host} {entity} {nav}>
 			{#snippet pane()}
-				<EntityConfig
-					{entity}
-					scope={host.scope}
-					{nav}
-				/>
+				{#if entity.category !== 'models'}<EntityConfig {entity} scope={host.scope} {nav} />{/if}
 			{/snippet}
 		</EntitySections>
 	{/snippet}

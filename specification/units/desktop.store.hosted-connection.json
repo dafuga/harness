@@ -48,6 +48,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.service.project-sync",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.store.workspace",
 			"via": "import",
 			"origin": "derived"

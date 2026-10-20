@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.remote-offer-code",
 	"kind": "component",
-	"title": "RemoteOfferCode",
-	"responsibility": "Owns the RemoteOfferCode Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Remote offer code",
+	"responsibility": "Displays a live pairing offer as a QR code and allows replacing or hiding it.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/RemoteOfferCode.svelte"],
+		"source": ["packages/desktop/src/components/remote-offer-code/RemoteOfferCode.svelte"],
 		"symbols": ["RemoteOfferCode"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RemoteOfferCode.offer",
-				"type": "RemotePairingOffer"
+				"type": "RemotePairingOffer",
+				"description": "Required scan content and expiration. QR is drawn only while parsed expiration is in the future; scan content is not printed as text."
 			},
 			{
 				"name": "RemoteOfferCode.store",
-				"type": "RemoteHost"
+				"type": "RemoteHost",
+				"description": "Host store providing busy state and createPairing/closePairing for New code/Hide code. Busy disables these actions."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RemoteOfferCode",
-				"type": "markup"
+				"type": "markup",
+				"description": "QR with instructions and countdown while live and drawable. Checks expiry every second and clears the timer on cleanup. Invalid/expired timestamps show expired; QR failures show cannot-show guidance. New code is always offered, Hide code only when a symbol is displayed."
 			}
 		],
 		"errors": []
@@ -54,11 +57,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/RemoteOfferCode.svelte",
+		"entry": "packages/desktop/src/components/remote-offer-code/RemoteOfferCode.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/RemoteOfferCode.svelte"
+				"entry": "packages/desktop/src/components/remote-offer-code/RemoteOfferCode.svelte"
 			}
 		]
 	},

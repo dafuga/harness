@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, expect, test } from 'vitest';
 import type { CacheIdentity } from '../../../collaboration/src/models/Collaboration.types';
-import { ProjectionCacheService } from '../../src/services/ProjectionCacheService';
+import { ProjectionCacheService } from '../../src/services/projection-cache-service/ProjectionCacheService';
 
 const identity: CacheIdentity = {
 	collaborationRevision: null,

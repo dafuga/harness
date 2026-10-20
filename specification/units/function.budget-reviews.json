@@ -2,53 +2,67 @@
 	"schemaVersion": 1,
 	"id": "function.budget-reviews",
 	"kind": "function",
-	"title": "budgetReviews",
-	"responsibility": "Turns the budget ledger of a revision into what a history shows: the reviews of every unit with the limits before and after, and the limit each execution target of a unit has for the size of what it emits.",
+	"title": "Reviewed budget history",
+	"responsibility": "Combines repeated ledger events into review histories and selects the reviewed limits relevant to a unit’s source and emitted targets.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/budgetReviews.ts"],
+		"source": [
+			"src/services/history-index-service/budgetReviews.ts",
+			"src/utils/budgetReviews.ts",
+			"src/utils/revision-registry/frozenLimits.ts"
+		],
 		"symbols": [
+			"budgetReviews",
 			"BudgetReview",
 			"EmittedLimits",
-			"budgetReviews",
 			"FrozenLimits",
+			"budgetReviews",
+			"frozenLimits",
+			"emittedLimits",
 			"frozenLimits",
 			"emittedLimits"
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "budgetReviews.ledgers",
-				"type": "BudgetEvent[][]"
+				"type": "BudgetEvent[][]",
+				"description": "Budget ledgers from one or more revisions; identical events are deduplicated by canonical JSON."
 			},
 			{
 				"name": "frozenLimits.baseline",
-				"type": "BudgetBaseline | undefined"
+				"type": "BudgetBaseline | undefined",
+				"description": "Reviewed baseline containing frozen metrics and optional unavailable reasons, or undefined when none exists."
 			},
 			{
 				"name": "emittedLimits.unit",
-				"type": "ComponentManifest"
+				"type": "ComponentManifest",
+				"description": "Unit manifest whose execution targets determine which emitted limits are relevant."
 			},
 			{
 				"name": "emittedLimits.baseline",
-				"type": "BudgetBaseline | undefined"
+				"type": "BudgetBaseline | undefined",
+				"description": "Reviewed baseline to read target-specific limits and unavailable reasons from; may be undefined."
 			}
 		],
 		"outputs": [
 			{
 				"name": "budgetReviews",
-				"type": "Map<string, BudgetReview[]>"
+				"type": "Map<string, BudgetReview[]>",
+				"description": "Map from unit id to unique reviews sorted by their at timestamp, including the measured commit, reviewer, reason and before/after limits."
 			},
 			{
 				"name": "frozenLimits",
-				"type": "FrozenLimits | undefined"
+				"type": "FrozenLimits | undefined",
+				"description": "Only source-bytes, complexity and dependencies limits and their unavailable reasons; undefined when the baseline is absent."
 			},
 			{
 				"name": "emittedLimits",
-				"type": "EmittedLimits | undefined"
+				"type": "EmittedLimits | undefined",
+				"description": "Limits and unavailable reasons keyed by emitted runtime kind; undefined when the unit emits nothing, and an empty limits map when targets exist without reviewed limits."
 			}
 		],
 		"errors": []

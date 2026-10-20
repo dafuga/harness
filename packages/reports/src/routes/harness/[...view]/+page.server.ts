@@ -1,6 +1,9 @@
 import { redirect, type ServerLoadEvent } from '@sveltejs/kit';
-import { consoleCanonical, explorerExact } from '../../../../../../src/utils/consoleCanonical';
-import { consoleData } from '../../../utils/consoleServer';
+import {
+	consoleCanonical,
+	explorerExact
+} from '../../../../../../src/utils/console-canonical/consoleCanonical';
+import { consoleData } from '../../../utils/console-server/consoleServer';
 
 /**
  * The root of the console, a branch or a commit alone, and every earlier address lead to the

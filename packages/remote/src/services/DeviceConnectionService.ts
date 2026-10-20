@@ -6,8 +6,8 @@ import { relaySocketUrl } from '../utils/relayOrigin';
 import { fromBase64Url } from '../utils/remoteBytes';
 import { importRemoteKeys } from '../utils/remoteKeys';
 import { SecurePacketValidator } from '../validators/SecurePacketValidator';
-import type { DeviceCredentials } from './DevicePairingService';
-import { SecureChannelService } from './SecureChannelService';
+import type { DeviceCredentials } from './device-pairing-service/DevicePairingService';
+import { SecureChannelService } from './secure-channel-service/SecureChannelService';
 import { WireClientService } from './WireClientService';
 
 /** The few things a transport must offer. Text frames only. */

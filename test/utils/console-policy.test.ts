@@ -1,5 +1,9 @@
 import { expect, test } from 'vitest';
-import { consolePolicy, denyAll, loopbackAddress } from '../../src/utils/consolePolicy';
+import {
+	consolePolicy,
+	loopbackAddress
+} from '../../packages/reports/src/utils/console-server/consolePolicy';
+import { denyAll } from '../../src/utils/consolePolicy';
 
 const event = (peer: string | undefined, headers: Record<string, string> = {}) => ({
 	request: new Request('http://localhost/harness', { headers }),

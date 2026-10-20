@@ -3,7 +3,10 @@ import type { Page, TestInfo } from '@playwright/test';
 import type { ScenarioManifest } from '../../../../src/core/unitTypes';
 import scenarioData from '../../../../specification/scenarios/desktop-renderer.json' with { type: 'json' };
 import { buildStamp } from '../../../../src/utils/buildStamp';
-import { evidenceRequested, recordCapture } from '../../../../src/utils/recordCapture';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../../../../src/utils/record-capture/recordCapture';
 import { ids } from './ui-evidence-fixture';
 
 /**

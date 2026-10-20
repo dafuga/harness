@@ -2,16 +2,16 @@
 	"schemaVersion": 1,
 	"id": "function.jev-types",
 	"kind": "function",
-	"title": "jevTypes",
-	"responsibility": "Owns the jevTypes shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Jev evaluation types",
+	"responsibility": "Defines typed evaluation requests, choice answers with confidence and probabilities, model identity and token usage.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/core/jevTypes.ts"],
 		"symbols": ["JevChoice", "JevUsage", "JevQuestions", "JevRequest", "JevEvaluation"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
 		"errors": []

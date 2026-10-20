@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { appendFile, mkdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { explanationSchema, explanationsFile, type Explanation } from '../core/explanationTypes';
-import { HistoryNoteRepository } from './HistoryNoteRepository';
+import { HistoryNoteRepository } from './history-note-repository/HistoryNoteRepository';
 
 /**
  * Reasons live in two places: a scratch file while a change is being written, and the notes of

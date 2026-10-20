@@ -16,6 +16,31 @@ function errorsOf(value: ComponentManifest): string[] {
 	return new ComponentManifestValidator().validate(value, file).errors;
 }
 
+test('visual units can bind a preview to one scenario, state and viewport', async () => {
+	const preview = { scenario: 'orders', state: 'loaded', viewport: 'desktop' };
+	for (const kind of ['page', 'component']) {
+		const value = {
+			...(await manifest()),
+			kind,
+			preview,
+			responsibilityOrigin: 'declared'
+		} as ComponentManifest;
+		const result = new ComponentManifestValidator().validate(value, file);
+		expect(result.errors).toEqual([]);
+		expect(result.value).toHaveProperty('preview', preview);
+	}
+});
+
+test('headless units cannot declare screenshot previews', async () => {
+	const value = {
+		...(await manifest()),
+		preview: { scenario: 'orders', state: 'loaded', viewport: 'desktop' }
+	} as ComponentManifest;
+	expect(errorsOf(value).join(' ')).toContain(
+		'only page and component units may declare a preview'
+	);
+});
+
 test('a derived unit names its default execution target and lists it as its only target', async () => {
 	const unit = await manifest();
 	expect(unit.runtime).toEqual({
@@ -81,4 +106,19 @@ test('a derived responsibility is labelled derived and cannot be edited without 
 		'function.rank: responsibility differs from the derived text; set responsibilityOrigin to "declared"'
 	]);
 	expect(errorsOf({ ...edited, responsibilityOrigin: 'declared' })).toEqual([]);
+});
+
+test('a unit can name a committed Markdown document, but never escape its repository', async () => {
+	const base = await manifest();
+	const check = (documentation: string) =>
+		new ComponentManifestValidator().validate({ ...base, documentation }, file);
+	expect(check('src/functions/rank/README.md').errors).toEqual([]);
+	for (const path of [
+		'/tmp/rank.md',
+		'../rank.md',
+		'src/../rank.md',
+		'https://example.com/doc.md'
+	]) {
+		expect(check(path).errors.length).toBeGreaterThan(0);
+	}
 });

@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import type { ProjectSnapshot } from '../../src/models/Desktop.types';
-import { offlineView } from '../../src/utils/cacheStatus';
-import { cachedSnapshot } from '../../src/utils/cachedSnapshot';
+import { offlineView } from '../../src/utils/load-workspace/offlineView';
+import { cachedSnapshot } from '../../src/adapters/capacitor-bridge-adapter/cachedSnapshot';
 
 const tip = 'a'.repeat(40);
 const cachedAt = '2026-10-12T07:30:00.000Z';

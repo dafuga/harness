@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "reports.component.audio-upload-files",
 	"kind": "component",
-	"title": "AudioUploadFiles",
-	"responsibility": "Owns the AudioUploadFiles Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Audio upload files",
+	"responsibility": "Provides the file inputs for a single recording or a before/after pair.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/components/AudioUploadFiles.svelte"],
 		"symbols": ["AudioUploadFiles"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "AudioUploadFiles.mode",
-				"type": "string"
+				"type": "string",
+				"description": "Required mode string. Exactly comparison renders before and after fields; every other value renders one audio field."
 			},
 			{
 				"name": "AudioUploadFiles.uploading",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Required flag disabling file inputs during an upload."
 			}
 		],
 		"outputs": [
 			{
 				"name": "AudioUploadFiles",
-				"type": "markup"
+				"type": "markup",
+				"description": "Required file pickers accepting WAV, MP3, M4A and OGG extensions/MIME hints, with selected filenames or hints. Performs no upload or byte validation. Parent is expected to remount on reset or mode change to clear file/name state."
 			}
 		],
 		"errors": []

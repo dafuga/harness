@@ -78,7 +78,7 @@ test('a shared project acknowledges the collaboration commit and offers no agent
 	await page.getByRole('button', { name: 'Open Gamma', exact: true }).click();
 	await expect(page.getByRole('heading', { name: 'Gamma activity', exact: true })).toBeVisible();
 	await expect(page.getByRole('button', { name: /New page/ })).toHaveCount(0);
-	await page.getByRole('link', { name: /Open page/ }).click();
+	await page.getByRole('link', { name: /Open Gamma activity/ }).click();
 	await expect(message(page)).toBeVisible();
 	await expect(modes(page)).toHaveCount(0);
 	for (const name of ['Plan', 'Change', 'Codex CLI'])

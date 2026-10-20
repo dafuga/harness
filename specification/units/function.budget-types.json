@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.budget-types",
 	"kind": "function",
-	"title": "budgetTypes",
-	"responsibility": "Defines the append-only budget ledger events: baselines and reviewed approvals.",
+	"title": "Budget ledger schemas",
+	"responsibility": "Defines the validated performance baselines and reviewed baseline or approval events stored in the budget ledger.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -16,16 +16,18 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "performanceBaselineSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Strict Zod schema for a numeric performance baseline with nonempty workload, metric, profile, unit and method, a supported runtime target and complete comparison context."
 			},
 			{
 				"name": "budgetEventSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Zod union of strict baseline and approval records. Both name a unit, verification record, reviewer, reason, time and performance baselines; baseline stores metrics, approval stores before and after limits, and either may explain unmeasured metrics."
 			}
 		],
 		"errors": []

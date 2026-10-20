@@ -3,8 +3,10 @@ import { afterEach, test } from 'vitest';
 import { expect } from '../../../test/verificationExpect';
 import type { ComponentManifest } from '../../../src/lib/contracts';
 import { explorerCategory, explorerRole } from '../../reports/src/utils/explorerCategory';
-import { CatalogService } from '../src/services/CatalogService';
-import { listingProject } from './catalog-listing-fixture';
+import { CatalogService } from '../src/services/catalog-service/CatalogService';
+import { catalogUnit, planCatalog } from '../src/utils/catalogUnit';
+import { manifest } from './catalog-listing-manifests';
+import { imagelessDesign, listingProject, pagePlan } from './catalog-listing-fixture';
 import {
 	analytics,
 	charted,
@@ -33,6 +35,38 @@ async function project() {
 const ids = (entities: { id: string }[]) => entities.map((entity) => entity.id).sort();
 const kept = idsOf([...ordinary, twin]);
 const redirects = ['analytics', 'harness-analytics', 'harness-reports', 'harness-reports-id'];
+
+test('implemented pages select their declared screenshot rather than an absent planning image', async () => {
+	const preview = { scenario: 'orders', state: 'loaded', viewport: 'desktop' };
+	const unit = {
+		...manifest(['page.orders', 'Orders', 'Shows orders.', ['src/routes/orders/+page.svelte']]),
+		preview
+	} as ComponentManifest;
+	expect(catalogUnit(unit, new Set())?.thumbnail).toEqual({ source: 'recorded', ...preview });
+	const source = { units: async () => [unit], changed: async () => new Set<string>() };
+	for (const versions of [[], [imagelessDesign]]) {
+		const plan = pagePlan(unit, versions);
+		const planning = { plans: async () => [plan] };
+		const catalog = new CatalogService(source as never, planning as never);
+		expect((await catalog.list('HEAD'))[0]).toMatchObject({
+			planned: false,
+			hasPlan: true,
+			thumbnail: { source: 'recorded', ...preview }
+		});
+		// A plan with no implementation still has no screenshot to display.
+		expect(planCatalog(plan, null, new Set()).thumbnail).toBeNull();
+	}
+	const image = { state: 'default', viewport: 'desktop', sha256: 'b'.repeat(64), bytes: 100 };
+	const designed = pagePlan(unit, [{ ...imagelessDesign, images: [image] }]);
+	expect(planCatalog(designed, catalogUnit(unit, new Set()), new Set()).thumbnail).toEqual({
+		version: 'v001',
+		sha256: image.sha256,
+		state: image.state,
+		viewport: image.viewport
+	});
+	// A backend cannot make a headless unit reserve room for a design or screenshot.
+	expect(catalogUnit({ ...unit, kind: 'function' }, new Set())?.thumbnail).toBeNull();
+});
 
 test('the tip lists every ordinary entity and no page manifest that only loads for an address', async () => {
 	const f = await project();
@@ -93,5 +127,44 @@ test('of the registry of this repository, the pages the explorer lists are liste
 	expect(unlisted.map((unit) => explorerRole(unit))).toEqual(unlisted.map(() => 'Route loader'));
 	expect(unlisted.map((unit) => unit.id)).toEqual(
 		expect.arrayContaining(redirects.map((name) => `reports.page.${name}`))
+	);
+});
+
+test('native and hosted catalogs list pure shared contracts, models and services separately', async () => {
+	const base = manifest([
+		'function.format-date',
+		'Formatting',
+		'Formats values.',
+		['src/utils/formatDate.ts']
+	]);
+	const pure = {
+		...base,
+		kind: 'function',
+		helperContracts: [
+			{
+				name: 'formatDate',
+				source: 'src/utils/formatDate.ts',
+				inputs: [{ name: 'formatDate.iso', type: 'string' }],
+				output: 'string',
+				pure: true,
+				consumers: [{ unit: 'component.one' }, { unit: 'service.two' }]
+			}
+		]
+	};
+	const units = [
+		pure,
+		{ ...base, kind: 'function', id: 'function.load-data' },
+		{ ...base, kind: 'model', id: 'model.record' },
+		{ ...base, kind: 'service', id: 'service.storage' }
+	];
+	const source = { units: async () => units, changed: async () => new Set<string>() };
+	const catalog = new CatalogService(source as never, { plans: async () => [] } as never);
+	expect(ids(await catalog.list('HEAD')), 'pure helper catalog parity').toEqual([
+		'function.format-date',
+		'model.record',
+		'service.storage'
+	]);
+	expect((await catalog.list('HEAD')).find((item) => item.category === 'functions')?.title).toBe(
+		'formatDate(iso)'
 	);
 });

@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-entity-screens",
 	"kind": "component",
-	"title": "EntityScreens",
-	"responsibility": "Shows the screenshot of one state at one viewport: exactly one at the branch tip, the parent and the commit side by side at a selected commit, and the stated gap of a side or of an entity that has none.",
+	"title": "Entity screenshots",
+	"responsibility": "Displays recorded screenshots with scenario selection and comparison context.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,37 +11,44 @@
 		"symbols": ["EntityScreens"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EntityScreens.options",
-				"type": "ScreenOption[]"
+				"type": "ScreenOption[]",
+				"description": "Required visual scenarios with declared states and viewports; the picker helper reconciles current selection."
 			},
 			{
 				"name": "EntityScreens.evidence",
-				"type": "ExplorerEvidence"
+				"type": "ExplorerEvidence",
+				"description": "Required captures/comparison mode and incomparability reasons."
 			},
 			{
 				"name": "EntityScreens.scope",
-				"type": "ExplorerScope"
+				"type": "ExplorerScope",
+				"description": "Required commit/parent context for labels and links."
 			},
 			{
 				"name": "EntityScreens.mediaBase",
-				"type": "string"
+				"type": "string",
+				"description": "Required prefix concatenated with screenshot files."
 			},
 			{
 				"name": "EntityScreens.nav",
-				"type": "EntityNav"
+				"type": "EntityNav",
+				"description": "Required navigation to tests or selected-commit view."
 			},
 			{
 				"name": "EntityScreens.reasons",
-				"type": "Reasons"
+				"type": "Reasons",
+				"description": "Required recorded change reasons, shown for paired comparisons with original text available."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityScreens",
-				"type": "markup"
+				"type": "markup",
+				"description": "Scenario/state/viewport controls, matching screenshot panes or explicit gaps, and full-size viewer. Commit mode explains incomparable recordings; current mode names inherited capture origins. Scenario choice disables when fewer than two options exist. Image URLs are rendered directly; this view has no load-error handler."
 			}
 		],
 		"errors": []

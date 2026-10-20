@@ -1,5 +1,7 @@
 import type { Locator, Page } from '@playwright/test';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
+import type { UnitDocumentation } from '../../../../src/utils/unit-documentation/unitDocumentation';
+import type { ComponentManifest } from '../../../../src/lib/contracts';
 import type {
 	EntityEvidenceQuery,
 	EvidenceArtifactQuery
@@ -140,8 +142,13 @@ function removeEvidence() {
 }
 
 export interface EvidenceOptions extends Partial<Settings> {
+	documentation?: Record<string, UnitDocumentation>;
+	previews?: Record<string, NonNullable<ComponentManifest['preview']>>;
+	example?: Parameters<typeof evidenceData>[2];
 	/** Browser diagnostics held by the tip record's first check; synthetic test data only. */
 	browserErrors?: unknown[];
+	/** An incremental record whose only applicable scenario reuses its earlier passing checks. */
+	inheritedOnly?: boolean;
 	/** Extra entities declared by the synthetic history to have the recorded search observations. */
 	observedUnits?: string[];
 	/** A shared project read through a hosted connection: comments only, and a cache channel. */
@@ -150,9 +157,16 @@ export interface EvidenceOptions extends Partial<Settings> {
 	reads?: boolean;
 }
 
-/** The synthetic backend, as it answers after every load of the page. */
 export async function evidenceFixture(page: Page, options: EvidenceOptions = {}) {
-	const data = evidenceData(options.shared, options.observedUnits, options.browserErrors);
+	const data = evidenceData(options.shared, options.observedUnits, options.example, {
+		browserErrors: options.browserErrors,
+		inheritedOnly: options.inheritedOnly
+	});
+	for (const entity of data.entities) {
+		entity.documentation = options.documentation?.[entity.id];
+		const preview = options.previews?.[entity.id];
+		if (preview) entity.thumbnail = { source: 'recorded', ...preview };
+	}
 	const { delay = {}, corrupt = [], moved = false, hold = false } = options;
 	await page.addInitScript(installState, { delay, corrupt, moved, hold });
 	await page.addInitScript(installProject, data);

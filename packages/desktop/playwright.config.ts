@@ -3,7 +3,7 @@ import { defineConfig } from '@playwright/test';
 const verifying = process.env.HARNESS_VERIFY === '1';
 
 /**
- * An ordinary run starts its own preview on a port no development server uses, and never takes
+ * An ordinary run owns an isolated Vite fixture, outside the app-managed preview slot, and never takes
  * a server that is already there. HARNESS_DESKTOP_TEST_PORT names another free port.
  */
 function previewPort(): number {
@@ -19,7 +19,9 @@ export default defineConfig({
 	testDir: 'tests/e2e',
 	workers: 1,
 	webServer: {
-		command: verifying ? 'bun tests/e2e/desktop-static-server.ts' : `bun run dev --port ${port}`,
+		command: verifying
+			? 'bun tests/e2e/desktop-static-server.ts'
+			: `bun run sync:shared && bun x vite dev --host 127.0.0.1 --port ${port} --strictPort`,
 		url,
 		reuseExistingServer: false
 	},

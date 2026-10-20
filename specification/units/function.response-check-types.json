@@ -2,9 +2,9 @@
 	"schemaVersion": 1,
 	"id": "function.response-check-types",
 	"kind": "function",
-	"title": "responseCheckTypes",
-	"responsibility": "Owns the responseCheckTypes shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Response assessment types",
+	"responsibility": "Defines response-check CLI options, normalized request and criteria, evaluation settings and the reported assessment outcome.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/core/responseCheckTypes.ts"],
@@ -19,7 +19,7 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
 		"errors": []

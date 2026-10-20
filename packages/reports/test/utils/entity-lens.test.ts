@@ -3,14 +3,15 @@ import { entityLabels, entityLens } from '../../src/utils/entityLens';
 import { place } from '../entityPlaces';
 import { commits, ids } from '../entityUnits';
 
-test('there are exactly six collections and pages come first', () => {
+test('there are exactly seven collections and pages come first', () => {
 	expect(Object.keys(entityLabels)).toEqual([
 		'pages',
 		'shells',
 		'components',
 		'functions',
 		'configs',
-		'services'
+		'services',
+		'models'
 	]);
 	const words = Object.values(entityLabels).flatMap((label) => [label.title, label.subtitle]);
 	expect(words.join(' ')).not.toMatch(/sub-?components|related|reports/i);

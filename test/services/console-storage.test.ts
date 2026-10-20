@@ -4,8 +4,8 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, beforeEach, expect, test } from 'vitest';
-import { ConsoleInstallService } from '../../src/services/ConsoleInstallService';
-import { consoleHostFiles } from '../../src/utils/consoleHostFiles';
+import { ConsoleInstallService } from '../../src/services/console-install-service/ConsoleInstallService';
+import { consoleHostFiles } from '../../src/services/console-install-service/consoleHostFiles';
 
 let root: string;
 let host: string;

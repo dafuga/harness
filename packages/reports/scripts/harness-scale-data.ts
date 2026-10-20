@@ -15,6 +15,7 @@ interface Unit {
 	dependencies: Array<{ unit: string; via: string }>;
 	owns: { source: string[]; symbols: string[] };
 	scenarios: string[];
+	helpers?: Array<{ name: string; source: string; inputs: Array<{ name: string; type: string }> }>;
 }
 interface Detail {
 	registry: { units: Unit[]; graph: { edges: Array<{ from: string; to: string; via: string }> } };
@@ -35,7 +36,20 @@ function generated(template: Unit): Unit[] {
 			title: `Generated ${index}`,
 			responsibility: `Generated unit ${index} of the scale fixture; it describes no real source.`,
 			dependencies: below.map((target) => ({ unit: name(target), via: 'import' })),
-			owns: { source: [`generated/unit-${index}.ts`], symbols: [`unit${index}`] },
+			owns: {
+				source: [`generated/unit-${index}.ts`],
+				symbols: [`unit${String(index).padStart(3, '0')}`]
+			},
+			// Like every unit here, these callable facts are explicit synthetic scale data.
+			helpers: (template.helpers ?? []).map((helper) => ({
+				...helper,
+				name: `unit${String(index).padStart(3, '0')}`,
+				source: `generated/unit-${index}.ts`,
+				inputs: helper.inputs.map((input) => ({
+					...input,
+					name: `unit${String(index).padStart(3, '0')}.${input.name.split('.').at(-1)}`
+				}))
+			})),
 			scenarios: []
 		};
 	});

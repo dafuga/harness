@@ -1,8 +1,8 @@
 import { test, expect, vi } from 'vitest';
 import { fixture, git } from '../project-fixture';
 import { desktopBridge } from '../../src/utils/desktopBridge';
-import type { ProviderDiscoveryService } from '../../src/services/ProviderDiscoveryService';
-import type { DesktopRunService } from '../../src/services/DesktopRunService';
+import type { ProviderDiscoveryService } from '../../src/services/provider-discovery-service/ProviderDiscoveryService';
+import type { DesktopRunService } from '../../src/services/desktop-run-service/DesktopRunService';
 import type { HumanCommentDraft } from '../../src/models/ProjectContext.types';
 function bridgeFor(session: Awaited<ReturnType<typeof fixture>>['session']) {
 	const start = vi.fn(),

@@ -1,6 +1,6 @@
 import { expect, test, vi } from 'vitest';
 import { createHash } from 'node:crypto';
-import { reportPublicationVerify } from '../../src/utils/reportPublicationVerify';
+import { reportPublicationVerify } from '../../src/services/report-publish-service/reportPublicationVerify';
 import type { PublicationBundle } from '../../src/utils/reportPublication';
 const bytes = Buffer.from('original');
 const bundle = {

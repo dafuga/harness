@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { Evidence } from '../models/Report.types';
-	import { audioDuration } from '../utils/evidenceMedia';
+	import { formatDuration } from '../utils/evidenceMedia';
 	import { t } from '../utils/reportLocale';
 	import StatusBadge from './StatusBadge.svelte';
 	let { before, after, onopen }: { before: Evidence; after: Evidence; onopen: () => void } =
@@ -61,7 +61,7 @@
 							>{$t('audioUnavailable')}</span
 						>
 					{:else if length}<time class="audio-duration" datetime={`PT${Math.round(length)}S`}
-							>{audioDuration(length)}</time
+							>{formatDuration(length)}</time
 						>{/if}
 					<StatusBadge status={unavailable(item) ? 'not-proven' : item.status} />
 				</span>

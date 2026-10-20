@@ -1,8 +1,8 @@
 import { redirect } from '@sveltejs/kit';
 import type { HarnessIndex } from '../../../../models/Harness.types';
-import { consoleData } from '../../../../utils/consoleServer';
+import { consoleData } from '../../../../utils/console-server/consoleServer';
 import { repository } from '../../../../utils/reportHttp';
-import { reportDestination } from '../../../../utils/reportDestination';
+import { reportDestination } from './reportDestination';
 
 /**
  * The console has no report page. An earlier link to one opens the explorer where the report

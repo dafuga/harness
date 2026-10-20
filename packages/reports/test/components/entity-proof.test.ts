@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { record, revision } from '../entityFixture';
-import { content, count, words } from '../entityRender';
+import { content, count, words, verificationPanel } from '../entityRender';
 import { commits, ids, scenarios } from '../entityUnits';
 
 const page = { category: 'pages' as const, entity: ids.page };
@@ -22,7 +22,7 @@ test('a function shows its end-to-end behaviour first, even when a screenshot sc
 	expect(words(body)).not.toMatch(/Commit comparison|Current screenshot/);
 	expect(count(body, /<img/g)).toBe(0);
 	// The captures of the page it is seen on stay in its tests, where every capture is listed.
-	const tests = content('commit', { ...filter, tab: 'tests' }, { head });
+	const tests = verificationPanel('commit', { ...filter, tab: 'examples' }, { head });
 	expect(tests).toContain('/harness/media/bbbbbbb-default-desktop.png');
 });
 

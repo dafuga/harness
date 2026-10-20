@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { e2eFixtures } from '../../../src/utils/e2eFixtures';
+import { e2eFixtures } from '../../../src/utils/e2e-fixtures/e2eFixtures';
 
 /** The fixtures of this run: its report store, its console history and its site checkouts. */
 export const fixtures = e2eFixtures();

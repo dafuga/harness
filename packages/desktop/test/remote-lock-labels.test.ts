@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest';
 import type { RemoteNativeStatus } from '../src/models/Environment.types';
-import { awakeNote, remoteLabels } from '../src/utils/remoteLabels';
+import { awakeNote } from '../src/utils/remoteLabels';
+import { remoteLabels } from '../src/components/remote-phone-panel/remoteLabels';
 
 const at = (change: Partial<RemoteNativeStatus>) =>
 	({

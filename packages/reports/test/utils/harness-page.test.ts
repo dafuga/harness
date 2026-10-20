@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { harnessPage, homePath } from '../../src/utils/harnessPage';
+import { harnessPage, homePath } from '../../src/utils/harness-page/harnessPage';
 import { history, sha, summary } from '../explorerFixture';
 
 const kept = 'feature/kept#1';
@@ -39,9 +39,13 @@ test('a branch address is a page bound to the tip of that branch', () => {
 		parent: sha('b'),
 		location: { branch: kept, commit: null, category: 'components' }
 	});
-	expect(shown('/branch/main/functions/function.slugify/details', '?tab=source')).toMatchObject({
+	expect(shown('/branch/main/functions/function.slugify/details', '?tab=source')).toEqual({
+		kind: 'redirect',
+		path: '/branch/main/functions/function.slugify?tab=source'
+	});
+	expect(shown('/branch/main/functions/function.slugify', '?tab=source')).toMatchObject({
 		commit: sha('c'),
-		location: { entity: 'function.slugify', section: 'details', tab: 'source' }
+		location: { entity: 'function.slugify', tab: 'source' }
 	});
 });
 

@@ -72,12 +72,14 @@ struct RemoteProject: Codable {
 struct RemoteGrant: Codable {
     var projects: [RemoteProject]
     var agents: Bool
+    var comments: Bool?
 
     init?(_ value: Any?) {
         guard let object = value as? [String: Any], let agents = object["agents"] as? Bool,
             let list = object["projects"] as? [[String: Any]]
         else { return nil }
-        self.agents = agents
+        self.comments = object["comments"] as? Bool
+        self.agents = agents && self.comments != false
         self.projects = list.compactMap { item in
             guard let id = item["id"] as? String, let name = item["name"] as? String else { return nil }
             return RemoteProject(id: id, name: name)
@@ -85,7 +87,9 @@ struct RemoteGrant: Codable {
     }
 
     var object: [String: Any] {
-        ["projects": projects.map { ["id": $0.id, "name": $0.name] }, "agents": agents]
+        var value: [String: Any] = ["projects": projects.map { ["id": $0.id, "name": $0.name] }, "agents": agents]
+        if let comments = comments { value["comments"] = comments }
+        return value
     }
 }
 

@@ -1,52 +1,20 @@
 <script lang="ts">
-	import type { ContractRow } from '../../utils/entityContract';
 	import { notMeasured, type EntityMeasure } from '../../utils/entityMeasure';
 	import HarnessIcon from './HarnessIcon.svelte';
 	let {
-		contract,
 		measure,
-		compact = false,
-		last
+		compact = false
 	}: {
-		contract: ContractRow[];
 		measure: EntityMeasure;
-		/** The row of three cards above the evidence of an overview; false for the Details page. */
+		/** The size and performance cards of an overview, without notes; false for Details. */
 		compact?: boolean;
-		/** For an entity the shown commit removed: the parent commit this contract was last held at. */
-		last?: string;
 	} = $props();
-	let title = $derived(last ? `Last contract · ${last.slice(0, 7)}` : 'Contract');
-	// The purpose is the sentence under the name of an overview; it is not said twice there.
-	let rows = $derived(compact ? contract.filter((row) => row.label !== 'Purpose') : contract);
 	const where = (row: EntityMeasure['performance'][number]) =>
 		[row.target, row.profile].filter(Boolean).join(' · ') || '—';
 </script>
 
+<!-- Size and performance only: the contract is a tab of its own, and a section of Details. -->
 <div class="ex-summary" class:compact>
-	<section class="ex-card" aria-label={last ? 'Last contract' : 'Contract'}>
-		<h2><HarnessIcon name="contract" size={24} /> {title}</h2>
-		{#if last}
-			<p class="ex-note">Removed at the shown commit; this is what its parent held.</p>
-		{/if}
-		<dl class="ex-rows">
-			{#each rows as row, position (position)}
-				<div>
-					<dt>{row.label}</dt>
-					<dd>
-						{row.value}
-						<!-- Where a contract says what each item is, the details say it; an overview names. -->
-						{#if !compact && row.items}
-							<ul class="ex-items">
-								{#each row.items as item}
-									<li><strong>{item.name}</strong> <span>{item.text}</span></li>
-								{/each}
-							</ul>
-						{/if}
-					</dd>
-				</div>
-			{/each}
-		</dl>
-	</section>
 	<section class="ex-card" aria-label="Size">
 		<h2><HarnessIcon name="size" size={24} /> Size</h2>
 		<dl class="ex-rows ex-figures">

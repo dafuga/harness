@@ -64,7 +64,7 @@ test('an old Components address of the shell opens it under Shells, keeping its 
 	await expect(
 		page.getByRole('heading', { level: 1, name: 'Shared workspace shell' })
 	).toBeVisible();
-	await expect(page).toHaveURL(route(`shells/${shell}/details`));
+	await expect(page).toHaveURL(route(`shells/${shell}/source`));
 	await expect(nav(page).getByRole('link', { name: 'Shells' })).toHaveClass(/active/);
 	await expect(page.locator('.chip').filter({ hasText: /^shell$/ })).toBeVisible();
 	await evidenced(page, 'shells-legacy-address');
