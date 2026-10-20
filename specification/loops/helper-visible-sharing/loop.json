@@ -2,7 +2,7 @@
 	"name": "helper-visible-sharing",
 	"goal": "Every listed helper has at least two distinct component, service or model links in Used In, with eligibility and display using the same resolved consumer set",
 	"createdAt": "2026-10-20T13:45:46.804Z",
-	"updatedAt": "2026-10-20T13:48:40.142Z",
+	"updatedAt": "2026-10-20T13:50:07.279Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -46,12 +46,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T13:50:05.842Z",
+			"evidence": "Frozen 0d1249ee fails, exact same tests/fixtures/command/environment pass at 43697a0f. Green record 9df47905c525f9dd6858dbb4fada0b66c21d28bff8a0a24277a78b89e6527587. Svelte types, all three viewport cases and 19 unit tests pass."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T13:50:07.279Z",
+			"evidence": "Isolated archive of 43697a0f: replacing the visible >=2 predicate with old allow-all inclusion makes unchanged standardized unit tests fail with zero or one visible consumer is private (exit 1). Restoring exact source passes the same 19 tests (exit 0). Logs /tmp/harness-helper-sharing-guard-{red,green}.log."
 		},
 		{
 			"id": "verify",
