@@ -39,8 +39,12 @@ export function explorerEntity(
  * A unit the commit of a revision removed, as its first parent last held it: its last contract,
  * marked removed, and not proven because there is nothing of it at this commit to prove.
  */
-function removedEntity(parent: HarnessRevision, unit: HarnessUnit): ExplorerEntity | null {
-	const last = explorerEntity(parent, unit);
+function removedEntity(
+	parent: HarnessRevision,
+	unit: HarnessUnit,
+	includePrivate = false
+): ExplorerEntity | null {
+	const last = explorerEntity(parent, unit, includePrivate);
 	if (!last) return null;
 	const why = `This commit removed it; its contract is shown as it last was, at ${parent.commit.slice(0, 7)}.`;
 	return {
@@ -49,6 +53,19 @@ function removedEntity(parent: HarnessRevision, unit: HarnessUnit): ExplorerEnti
 		lastAt: parent.commit,
 		verdict: { passed: false, label: 'Removed at this commit', reasons: [why] }
 	};
+}
+
+/** Resolve an explicit address, retaining a removed private unit only at its removal commit. */
+export function explorerEntityAt(
+	head: HarnessRevision,
+	parent: HarnessRevision | null | undefined,
+	id: string
+): ExplorerEntity | null {
+	const active = head.registry.units.find((unit) => unit.id === id && unit.status === 'active');
+	if (active) return explorerEntity(head, active, true);
+	if (!parent || !head.sourceImpact?.units.removed.includes(id)) return null;
+	const prior = parent.registry.units.find((unit) => unit.id === id && unit.status === 'active');
+	return prior ? removedEntity(parent, prior, true) : null;
 }
 
 /** The units the commit removed that its first parent held, when that revision was read. */

@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/utils/explorerEntities.ts"],
-		"symbols": ["explorerChange", "explorerEntity", "explorerEntities"]
+		"symbols": ["explorerChange", "explorerEntity", "explorerEntities", "explorerEntityAt"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -47,6 +47,21 @@
 				"name": "explorerEntity.includePrivate",
 				"type": "boolean | undefined",
 				"description": "Explicitly resolve a private callable for an owner or retained detail address; defaults to false for collections."
+			},
+			{
+				"name": "explorerEntityAt.head",
+				"type": "HarnessRevision",
+				"description": "Revision at the explicit entity address."
+			},
+			{
+				"name": "explorerEntityAt.parent",
+				"type": "HarnessRevision | null | undefined",
+				"description": "Optional first parent providing the last active contract for a recorded removal."
+			},
+			{
+				"name": "explorerEntityAt.id",
+				"type": "string",
+				"description": "Explicitly requested entity identifier; private callables are allowed only in this detail resolver."
 			}
 		],
 		"outputs": [
@@ -64,6 +79,11 @@
 				"name": "explorerEntities",
 				"type": "ExplorerEntity[]",
 				"description": "Active head entities grouped in category order, plus units explicitly removed by head and active in the supplied parent but no longer active in head. Removed entries retain their parent contract and receive a removed/not-proven verdict."
+			},
+			{
+				"name": "explorerEntityAt",
+				"type": "ExplorerEntity | null",
+				"description": "Active explicit entity, or last active parent contract marked removed when head records its removal. Includes private callables without adding them to collections; null when neither revision can prove the address."
 			}
 		],
 		"errors": []

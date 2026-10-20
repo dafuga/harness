@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { ExplorerEntity } from '../../models/Explorer.types';
-	import { explorerEntity } from '../../utils/explorerEntities';
+	import { explorerEntityAt } from '../../utils/explorerEntities';
 	import { isShared } from '../../utils/entityCatalog';
 	import type { ExplorerScreenProps } from '../../models/ExplorerScreen.types';
 	import { entityLens, shortCommit, type EntityNav } from '../../utils/entityLens';
@@ -21,13 +21,9 @@
 		children: Snippet<[ExplorerEntity, EntityNav]>;
 	} = $props();
 	let listed = $derived(host.entities.find((item) => item.id === host.route.entity));
-	let moduleEntity = $derived.by(() => {
-		if (listed) return listed;
-		const unit = host.head.registry.units.find(
-			(item) => item.id === host.route.entity && item.status === 'active'
-		);
-		return unit ? explorerEntity(host.head, unit, true) ?? undefined : undefined;
-	});
+	let moduleEntity = $derived(
+		listed ?? explorerEntityAt(host.head, host.parent, host.route.entity ?? '') ?? undefined
+	);
 	let entity = $derived(helperEntity(moduleEntity, host.route.helper));
 	let choosing = $derived(
 		moduleEntity?.category === 'functions' && !host.route.helper && (moduleEntity.unit.helpers?.length ?? 0) > 1

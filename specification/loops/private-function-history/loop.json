@@ -2,7 +2,7 @@
 	"name": "private-function-history",
 	"goal": "Explicit removal-commit addresses retain private functions last active contracts without adding them to shared collections",
 	"createdAt": "2026-10-20T17:41:03.481Z",
-	"updatedAt": "2026-10-20T17:41:52.960Z",
+	"updatedAt": "2026-10-20T17:44:51.361Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T17:44:51.361Z",
+			"evidence": "Unchanged standardized entity-frame cases fail at committed test revision 9aa2ea3f for the exact assertion removed private functions retain the parent contract. Immutable Harness red checkpoint 08ab935aa0091a22081080f1ea79a40f286325056ac25f26e44d20c21f59874e, exit 1, fixed environment cb01adcd. No product repair exists in that snapshot."
 		},
 		{
 			"id": "implement",
