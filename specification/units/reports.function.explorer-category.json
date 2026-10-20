@@ -28,7 +28,7 @@
 			{
 				"name": "explorerCategory",
 				"type": "ExplorerCategory | null",
-				"description": "Pages for units owning a +page.svelte file; otherwise the shared kind classification, with non-rendering route/page kinds treated as services. Returns null for kinds outside explorer collections."
+				"description": "Pages for rendering routes; Helpers only for explicitly pure functions with two distinct runtime consumers. Private or unproven callables have no collection category; other kinds keep their existing category."
 			},
 			{
 				"name": "explorerRole",
@@ -41,6 +41,11 @@
 	"dependencies": [
 		{
 			"unit": "function.explorer-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.helper-contract",
 			"via": "import",
 			"origin": "derived"
 		},

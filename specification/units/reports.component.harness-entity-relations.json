@@ -43,12 +43,17 @@
 			{
 				"name": "EntityRelations",
 				"type": "markup",
-				"description": "Counted Used In list and categorized Uses groups without verification marks. Changed or added entities receive Changed badges. Unknown-category others remain unlinked. Empty sections explain missing records; removed mode does not substitute old relationships."
+				"description": "Counted Used In and Uses groups without row verification marks. Private callables in Other link to their own detail screens; other unknown kinds stay unlinked. Changed entities receive Changed badges."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.explorer-route",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.harness-entity-link",
 			"via": "import",

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { ExplorerEntity } from '../../models/Explorer.types';
+	import { explorerEntity } from '../../utils/explorerEntities';
 	import { isShared } from '../../utils/entityCatalog';
 	import type { ExplorerScreenProps } from '../../models/ExplorerScreen.types';
 	import { entityLens, shortCommit, type EntityNav } from '../../utils/entityLens';
@@ -18,7 +19,20 @@
 		/** The screen of the entity the address names, once the revision is found to hold it. */
 		children: Snippet<[ExplorerEntity, EntityNav]>;
 	} = $props();
-	let entity = $derived(host.entities.find((item) => item.id === host.route.entity));
+	let listed = $derived(host.entities.find((item) => item.id === host.route.entity));
+	let entity = $derived.by(() => {
+		if (listed) return listed;
+		const unit = host.head.registry.units.find(
+			(item) => item.id === host.route.entity && item.status === 'active'
+		);
+		return unit ? explorerEntity(host.head, unit, true) : null;
+	});
+	let owner = $derived.by(() => {
+		if (!entity || listed) return undefined;
+		const related = host.lens.relations(entity.id);
+		if (related.usedBy.length === 1) return related.usedBy[0];
+		return related.usedBy.length === 0 && related.pages.length === 1 ? related.pages[0] : undefined;
+	});
 </script>
 
 <ExplorerFrame {host}>
@@ -40,6 +54,7 @@
 		{#if entity}
 			<EntityHeader
 				{entity}
+				{owner}
 				{nav}
 				shared={isShared(host.lens.relations(entity.id), entity.unit)}
 				preview={screens}

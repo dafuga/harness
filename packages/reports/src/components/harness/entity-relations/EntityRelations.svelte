@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { ExplorerEntity, ExplorerRelations } from '../../../models/Explorer.types';
+	import { explorerKindCategory } from '../../../../../../src/utils/explorerRoute';
 	import { entityLens, type EntityNav } from '../../../utils/entityLens';
 	import { entityUsage } from './entityUsage';
 	import EntityLink from '../EntityLink.svelte';
@@ -87,7 +88,17 @@
 				</h3>
 				<ul class="ex-related">
 					{#each usage.other as item (item.id)}
-						<li><span>{item.name} <span class="ex-pill">{item.role}</span></span></li>
+						<li>
+							<span>
+								{#if explorerKindCategory(item.unit.kind) === 'functions'}
+									<EntityLink
+										to={entityLens(nav.route, { category: 'functions', entity: item.id })}
+										{nav}>{item.name}</EntityLink
+									>
+								{:else}{item.name}{/if}
+								<span class="ex-pill">{item.role}</span>
+							</span>
+						</li>
 					{/each}
 				</ul>
 			{/if}

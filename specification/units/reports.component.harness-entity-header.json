@@ -32,13 +32,18 @@
 				"name": "EntityHeader.preview",
 				"type": "Snippet",
 				"description": "Optional component screenshot shown above every tab."
+			},
+			{
+				"name": "EntityHeader.owner",
+				"type": "ExplorerEntity | undefined",
+				"description": "Sole recorded consumer for a private function breadcrumb; absent when ownership is unknown or not unique."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityHeader",
 				"type": "markup",
-				"description": "Entity identity, verification and one tab bar. Pages also show their app route. Source is optional; navigation keeps the branch and commit. Component screenshots stay above every tab."
+				"description": "Entity identity, verification and one tab bar. Pages also show their app route. Source is optional; navigation keeps the branch and commit. Component screenshots stay above every tab. Private function breadcrumbs point to the owner when known, otherwise say Function; they never link to Helpers."
 			}
 		],
 		"errors": []
@@ -66,6 +71,11 @@
 		},
 		{
 			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-category",
 			"via": "import",
 			"origin": "derived"
 		},
