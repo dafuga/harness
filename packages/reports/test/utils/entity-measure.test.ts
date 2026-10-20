@@ -82,7 +82,9 @@ test('a measured size is shown and one nothing measured reads Not measured, neve
 				unit: ids.list,
 				metric: 'source-bytes',
 				unitOfMeasure: 'bytes',
-				value: 3456,
+				get value() {
+					return 3456;
+				},
 				workload: null,
 				profile: null
 			},
@@ -96,7 +98,19 @@ test('a measured size is shown and one nothing measured reads Not measured, neve
 			}
 		]
 	};
+	const source = observed.sourceMeasurements;
+	let iterations = 0;
+	source[Symbol.iterator] = function* () {
+		iterations++;
+		yield* Array.prototype.values.call(source);
+	};
+	Object.defineProperty(source, 'constructor', {
+		get() {
+			throw new Error('Input array species must not be used.');
+		}
+	});
 	const fresh = entityMeasure(observed, taken);
+	expect(iterations, 'the admitted source iterator is consumed once').toBe(1);
 	expect(value(fresh.size, 'Source size'), 'selected source outranks an older record').toBe(
 		'3.5 KB'
 	);
