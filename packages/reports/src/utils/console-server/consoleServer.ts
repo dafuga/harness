@@ -10,6 +10,56 @@ import { ReportExportSerializer } from '../../serializers/ReportExportSerializer
 import { consoleExport } from './consoleExport';
 import { mediaMime } from '../evidenceMedia';
 import { reportRuntimeRoot } from '../reportRuntimeRoot';
+import { SourceImpactService } from '../../../../../src/services/source-impact-service/SourceImpactService';
+import type { Measurement } from '../../../../../src/core/verificationTypes';
+import type { HarnessRevision } from '../../models/Harness.types';
+
+// Cache only immutable commit observations, not source indexes or mutable branch answers.
+const measured = new Map<string, Promise<Measurement[]>>();
+
+async function sourceFigures(root: string, commit: string): Promise<Measurement[]> {
+	const key = `${resolve(root)}\n${commit}`;
+	const known = measured.get(key);
+	if (known) return known;
+	const pending = new SourceImpactService(root).measurements(commit);
+	measured.set(key, pending);
+	if (measured.size > 4) measured.delete(measured.keys().next().value!);
+	pending.then(
+		(rows) => {
+			if (!rows.length) measured.delete(key);
+		},
+		() => measured.delete(key)
+	);
+	return pending;
+}
+
+/** Old prepared indexes can lack static figures; derive them without changing stored proof. */
+async function measuredRevision(
+	path: string,
+	json: string | undefined
+): Promise<string | undefined> {
+	const root = process.env.HARNESS_SITE_ROOT?.trim();
+	const commit = /^revisions\/([a-f0-9]{40})\.json$/.exec(path)?.[1];
+	if (!root || !commit || !json) return json;
+	const revision = JSON.parse(json) as HarnessRevision;
+	if (revision.commit !== commit || !Array.isArray(revision.registry?.units)) return json;
+	const units = revision.registry.units;
+	if (
+		units.every((unit) =>
+			['source-bytes', 'complexity'].every((metric) =>
+				unit.sourceMeasurements?.some(
+					(item) => item.metric === metric && item.testedRevision === commit
+				)
+			)
+		)
+	)
+		return json;
+	const figures = await sourceFigures(root, commit);
+	if (!figures.length) return json;
+	for (const unit of units)
+		unit.sourceMeasurements = figures.filter((item) => item.unit === unit.id);
+	return JSON.stringify(revision);
+}
 
 /** The directory `harness history build` wrote, when this server was given one. */
 export function consoleDirectory(): string | undefined {
@@ -28,7 +78,7 @@ async function inside(directory: string | undefined, path: string): Promise<Buff
 function consoleFiles(): ConsoleData {
 	return {
 		async json(path) {
-			return (await inside(consoleDirectory(), path))?.toString('utf8');
+			return measuredRevision(path, (await inside(consoleDirectory(), path))?.toString('utf8'));
 		},
 		async media(name) {
 			const bytes = await inside(consoleDirectory(), `media/${name}`);

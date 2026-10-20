@@ -32,7 +32,7 @@
 			{
 				"name": "consoleData",
 				"type": "ConsoleData",
-				"description": "Disk-backed JSON and media readers. Rejects lexical paths outside the history directory and returns undefined for missing or unreadable files; media includes MIME type. Intended for server code that has already passed its guard."
+				"description": "Disk-backed guarded readers. Older revision JSON is enriched with source metrics from its exact Git commit when the configured project checkout is available; immutable files and verdict records are not changed. Cache contains at most four immutable revision observations. Missing files remain undefined."
 			},
 			{
 				"name": "consoleServer",
@@ -65,6 +65,21 @@
 		},
 		{
 			"unit": "reports.serializer.report-export",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.source-impact",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
 			"via": "import",
 			"origin": "derived"
 		}

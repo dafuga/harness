@@ -38,3 +38,6 @@ The same page scenarios retain a concise header and keep overview copy out of ot
 
 The same visual-overview checks now measure the gap above the profile and compare row heights.
 Formatter and details coverage distinguish no declared output from a declared but unavailable build.
+
+- All entity kinds show source measurements from the selected committed tree, even when an older prepared index or record lacks them. Missing placeholders cannot override current source observations.
+- Changed executable units record representative timing and accurately scoped memory in normal evidence runs, with the tested revision, workload, target, profile and method. Missing applicable captures remain a verification gap.

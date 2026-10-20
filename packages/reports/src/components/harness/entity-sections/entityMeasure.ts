@@ -56,6 +56,8 @@ function observedValue(found: Measurement | undefined): string {
 function metricLabel(metric: string): string {
 	if (metric === 'process-peak-rss-bytes') return 'Benchmark process peak RSS';
 	if (metric === 'latency-warm-ms') return 'Warm latency per call';
+	if (metric === 'browser-navigation-ms') return 'Page navigation time';
+	if (metric === 'browser-js-heap-bytes') return 'Page JavaScript heap';
 	return humanize(metric);
 }
 
@@ -98,9 +100,9 @@ export function entityMeasure(
 	observations: Measurement[] = []
 ): EntityMeasure {
 	const measured = [
+		...(unit.sourceMeasurements ?? []),
 		...(record?.measurements ?? []),
-		...observations,
-		...(unit.sourceMeasurements ?? [])
+		...observations
 	].filter(
 		(item) => item.unit === unit.id && (!item.callable || unit.owns.symbols.includes(item.callable))
 	);
