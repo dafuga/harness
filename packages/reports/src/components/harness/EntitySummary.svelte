@@ -48,7 +48,7 @@
 					<dd class="unmeasured">{notMeasured}</dd>
 				</div>
 			</dl>
-			<p class="ex-note">No performance budget is declared for it.</p>
+			<p class="ex-note">No benchmark is recorded for this revision.</p>
 		{:else if measure.performance.length === 1}
 			{@const row = measure.performance[0]}
 			<dl class="ex-rows ex-figures">
