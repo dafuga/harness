@@ -89,7 +89,7 @@ must not accept a row that contradicts the collection's inclusion rule.
 ## Integration Checkpoints
 
 - When a public SDK export reaches new runtime dependencies, rebuild and cold-import the affected packed entry in an empty consumer without workspace-only frameworks. Call the exported operation as well as type-checking it; run the standard packaged API acceptance before broad verification.
-- When catalog eligibility, labels or card controls change, refresh the canonical registry fixtures and run the existing planning-reference and browser navigation suites. A catalog display filter must not remove valid registry identities from planning prompts.
+- When catalog eligibility, labels or card controls change, refresh the canonical registry fixtures and run the existing planning-reference and browser navigation suites. A catalog display filter must not remove valid registry identities from planning prompts or direct historical routes. Cover active private units, first-parent removals and unrelated parent units; keep private units out of collections.
 - For image lifecycle changes, exercise replacement and unmount while reads are pending. Detach old image elements before releasing blob URLs, retain late-result cancellation coverage, and require the unchanged browser error collector to remain clean.
 
 ## Hard Limits

@@ -39,8 +39,12 @@ export function explorerEntity(
  * A unit the commit of a revision removed, as its first parent last held it: its last contract,
  * marked removed, and not proven because there is nothing of it at this commit to prove.
  */
-function removedEntity(parent: HarnessRevision, unit: HarnessUnit): ExplorerEntity | null {
-	const last = explorerEntity(parent, unit);
+export function removedEntity(
+	parent: HarnessRevision,
+	unit: HarnessUnit,
+	includePrivate = false
+): ExplorerEntity | null {
+	const last = explorerEntity(parent, unit, includePrivate);
 	if (!last) return null;
 	const why = `This commit removed it; its contract is shown as it last was, at ${parent.commit.slice(0, 7)}.`;
 	return {
