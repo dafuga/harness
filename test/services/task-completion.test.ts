@@ -1,3 +1,4 @@
+import { profilePlanningCompletion, profilePlanningLoop } from '../support/completionProfiles';
 import { createLoop, addLoopStep, completeLoopStep } from '../../src/workflows/manageLoop';
 import { expect, test } from 'vitest';
 import { TaskCompletionService } from '../../src/services/TaskCompletionService';
@@ -19,6 +20,7 @@ test('planning audits validate the committed proposal without implementing or pr
 		expect(audit.commit).toBe(before);
 		expect(audit.checks.some((check) => check.id === 'performance')).toBe(false);
 		expect(await repo.git.run(['status', '--porcelain'])).toBe('');
+		await profilePlanningCompletion(repo.root, audit);
 		await writeFile(join(repo.root, 'plan.md'), 'Done.');
 		expect(
 			(await service.check({ kind: 'planning', goal: 'Plan catalog search', plan: 'plan.md' }))
@@ -73,6 +75,7 @@ test('planning loops finish only on a committed task and reject edits to its dec
 		});
 		await addLoopStep({ root: repo.root, loop, step: 'verify', title: 'Inspect the plan' });
 		await repo.commit();
+		await profilePlanningLoop(repo.root, loop);
 		const result = await completeLoopStep({
 			root: repo.root,
 			loop,
