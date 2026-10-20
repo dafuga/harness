@@ -18,9 +18,20 @@ const template = resolve(
 async function registered(root: string) {
 	const manifest = JSON.parse(await readFile(template, 'utf8'));
 	await mkdir(join(root, 'specification/units'), { recursive: true });
+	const consumers = ['app.component.refunds', 'app.service.refunds'];
 	const owned = {
 		...{ ...manifest, id: 'app.function.owned', title: 'owned', dependencies: [], scenarios: [] },
 		owns: { source: ['src/owned.ts'], symbols: [] },
+		helperContracts: [
+			{
+				name: 'owned',
+				source: 'src/owned.ts',
+				inputs: [],
+				output: 'string',
+				pure: true,
+				consumers: consumers.map((unit) => ({ unit }))
+			}
+		],
 		runtime: {
 			kind: 'module',
 			entry: 'src/owned.ts',
@@ -28,6 +39,26 @@ async function registered(root: string) {
 		}
 	};
 	await writeFile(join(root, 'specification/units/app.function.owned.json'), JSON.stringify(owned));
+	await writeFile(join(root, 'src/owned.ts'), 'export const owned = () => "committed source";');
+	for (const id of consumers) {
+		const kind = id.split('.')[1],
+			source = `src/${kind}.ts`;
+		const unit = {
+			...owned,
+			id,
+			kind,
+			title: id,
+			helperContracts: [],
+			owns: { source: [source], symbols: [] },
+			dependencies: [{ unit: owned.id, via: 'import', origin: 'declared' }],
+			runtime: { kind: 'module', entry: source, targets: [{ kind: 'module', entry: source }] }
+		};
+		await writeFile(
+			join(root, source),
+			'import { owned } from "./owned"; export const text = owned();'
+		);
+		await writeFile(join(root, `specification/units/${id}.json`), JSON.stringify(unit));
+	}
 	git(root, 'add', '.');
 	git(root, 'commit', '-m', 'register the owned unit');
 }

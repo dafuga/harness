@@ -6,7 +6,8 @@ import { fixture, git, text } from './project-fixture';
 test('project selection and slash branches retain full ancestry and explicit historical views are immutable', async () => {
 	const f = await fixture();
 	const current = await f.session.snapshot({ branch: null, commit: null });
-	expect(current.entities).toHaveLength(5);
+	expect(current.entities).toHaveLength(4);
+	expect(current.entities.map((entity) => entity.id)).not.toContain('function.filter');
 	expect(current.branches.map((b) => b.name)).toContain('feature/design');
 	expect(current.commits.map((c) => c.hash)).toEqual([f.tip, f.base]);
 	expect(current.writable).toBe(true);
@@ -40,10 +41,11 @@ test('catalog shows source size and relationships without leaking source bodies 
 	const f = await fixture();
 	const catalog = await f.catalog.list(f.tip);
 	expect(catalog.map((e) => e.category).sort()).toEqual(
-		'components configs functions pages services'.split(' ')
+		'components configs pages services'.split(' ')
 	);
 	expect(catalog.every((e) => e.verification === 'unknown')).toBe(true);
-	expect(catalog.find((e) => e.id === 'function.filter')?.changed).toBe(true);
+	expect(catalog.find((e) => e.id === 'function.filter')).toBeUndefined();
+	expect((await f.catalog.entity('function.filter', f.tip)).changed).toBe(true);
 	expect(catalog.find((e) => e.id === 'page.home')?.changed).toBe(false);
 	expect(JSON.stringify(catalog)).not.toContain('export const owned');
 	expect(JSON.stringify(catalog)).not.toContain('PRIVATE_SOURCE_BODY');
@@ -139,7 +141,7 @@ test('existing canonical entities gain bound plans without duplicate draft ident
 	expect(thread.version).toBeNull();
 	const tip = git(f.root, 'rev-parse', 'HEAD');
 	const entities = await f.catalog.list(tip);
-	expect(entities).toHaveLength(5);
+	expect(entities).toHaveLength(4);
 	expect(entities.filter((e) => e.id === unit.id)).toHaveLength(1);
 	expect(entities.find((e) => e.id === unit.id)).toMatchObject({
 		planned: false,

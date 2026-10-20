@@ -148,13 +148,13 @@ for (const viewport of [
 			});
 			await page.goto(`${filter}/examples`);
 			await expect(current(page)).toHaveText('Examples');
-			await expect(page.locator('.cases > table > tbody > tr')).toHaveCount(2);
-			await expect(page.getByRole('columnheader')).toHaveText([
-				'Example',
-				'Input',
-				'Expected output'
+			const examples = page.locator('.examples > article');
+			await expect(examples).toHaveCount(2);
+			await expect(examples.getByRole('heading')).toHaveText(['Search by name', 'No match']);
+			await expect(examples.locator('code')).toHaveText([
+				'// Call not documented\n// Input: { "search": "SERVICE" }\n// => ["Service call"]',
+				'// Call not documented\n// Input: { "search": "none" }\n// => []'
 			]);
-			await expect(page.locator('.cases')).toContainText('Service call');
 			await expect(page.getByRole('region', { name: 'Evidence coverage' })).toHaveCount(0);
 			if (process.env.TAKE_SCREENSHOT === '1')
 				await page.screenshot({

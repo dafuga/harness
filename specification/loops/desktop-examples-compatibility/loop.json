@@ -2,7 +2,7 @@
 	"name": "desktop-examples-compatibility",
 	"goal": "Desktop Examples keeps documented examples and expandable verification coverage, with a type-safe evidence fixture.",
 	"createdAt": "2026-10-20T20:12:14.075Z",
-	"updatedAt": "2026-10-20T20:15:03.383Z",
+	"updatedAt": "2026-10-20T20:20:25.262Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T20:20:24.486Z",
+			"evidence": "At 9e324911, Desktop owns a standard details disclosure beside the documentation-only shared Examples component. Trusted synthetic fixture initializers use an explicit unknown boundary; bytes, bindings and reads remain unchanged."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T20:20:25.262Z",
+			"evidence": "Accepted green 52e5f59904a7474ba8b789f9801cdc674f97e6a6682c8b6d6ecf06c17b8775f9 pairs with final red b90e697613f7501e47208c5e0388c4b0312194f7f126f0c9f4528854d8dfb283: unchanged command, tests, fixtures and environment. Desktop typecheck has zero errors; the browser scenario passes."
 		},
 		{
 			"id": "verify",
