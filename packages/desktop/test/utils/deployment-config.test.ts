@@ -46,42 +46,50 @@ test.each(['jsonc', 'toml'])(
 	}
 );
 
-test('the Node deployment bundle resolves JSONC parsing without package-relative runtime requires', async () => {
-	const { execFileSync } = await import('node:child_process');
-	const root = await mkdtemp(join(tmpdir(), 'harness-cf-bundle-'));
-	try {
-		await writeFile(join(root, 'wrangler.jsonc'), '{"name":"fixture",/* comment */"env":{}}');
-		await writeFile(
-			join(root, 'harness.deploy.json'),
-			JSON.stringify({ adapter: 'cloudflare', sourceBranch: 'dev', environments: {} })
-		);
-		const bundle = join(root, 'deployment.cjs');
-		execFileSync(
-			'bun',
-			[
-				'build',
-				'src/utils/deploymentConfig.ts',
-				'--target',
-				'node',
-				'--format',
-				'cjs',
-				'--outfile',
-				bundle
-			],
-			{ cwd: process.cwd(), stdio: 'pipe' }
-		);
-		const output = execFileSync(
-			process.execPath,
-			[
-				'-e',
-				'require(process.argv[1]).deploymentConfig(process.argv[2]).then(value => process.stdout.write(value.sourceBranch))',
-				bundle,
-				root
-			],
-			{ encoding: 'utf8', stdio: 'pipe' }
-		);
-		expect(output).toBe('dev');
-	} finally {
-		await rm(root, { recursive: true, force: true });
+test.each(['bundled', 'external'])(
+	'the %s Node deployment bundle resolves JSONC parsing without package-relative runtime requires',
+	async (mode) => {
+		const { execFileSync } = await import('node:child_process');
+		const root = await mkdtemp(join(tmpdir(), 'harness-cf-bundle-'));
+		try {
+			await writeFile(join(root, 'wrangler.jsonc'), '{"name":"fixture",/* comment */"env":{}}');
+			await writeFile(
+				join(root, 'harness.deploy.json'),
+				JSON.stringify({ adapter: 'cloudflare', sourceBranch: 'dev', environments: {} })
+			);
+			const bundle = join(root, 'deployment.cjs');
+			execFileSync(
+				'bun',
+				[
+					'build',
+					'src/utils/deploymentConfig.ts',
+					'--target',
+					'node',
+					'--format',
+					'cjs',
+					...(mode === 'external' ? ['--external=jsonc-parser'] : []),
+					'--outfile',
+					bundle
+				],
+				{ cwd: process.cwd(), stdio: 'pipe' }
+			);
+			const output = execFileSync(
+				process.execPath,
+				[
+					'-e',
+					'require(process.argv[1]).deploymentConfig(process.argv[2]).then(value => process.stdout.write(value.sourceBranch))',
+					bundle,
+					root
+				],
+				{
+					encoding: 'utf8',
+					stdio: 'pipe',
+					env: { ...process.env, NODE_PATH: join(process.cwd(), 'node_modules') }
+				}
+			);
+			expect(output).toBe('dev');
+		} finally {
+			await rm(root, { recursive: true, force: true });
+		}
 	}
-});
+);
