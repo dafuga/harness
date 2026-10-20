@@ -112,6 +112,7 @@ test('generated project guidance requires Harness completion audits and keeps pl
 			expect(guidance).toContain('state labels confined to scenario states');
 			expect(guidance).toContain('required parent layout');
 			expect(guidance).toContain('isolate app themes');
+			expect(guidance).toContain('Reject caught fixture errors');
 			expect(guidance).toContain('synthetic media inputs');
 			expect(guidance).toContain('reject undeclared media');
 		}

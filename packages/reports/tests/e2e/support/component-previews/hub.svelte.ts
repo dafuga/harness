@@ -9,7 +9,7 @@ export function hubPreview(id: string) {
 		sourceRepository: { owner: 'preview', name: 'example', fullName: 'preview/example' },
 		createdAt: stamp
 	};
-	const proof = { email: actor.email, sent: true, expiresAt: '2050-01-01T00:00:00Z' };
+	const proof = { email: actor.email, sent: true, expiresAt: '2026-10-20T10:10:05Z' };
 	const session = $state({
 		actor,
 		busy: false,
@@ -23,6 +23,11 @@ export function hubPreview(id: string) {
 		signIn: done
 	});
 	const projects = {
+		github: async () => ({ configured: true, connected: true, login: 'ada-example' }),
+		repositories: async () => ({
+			repositories: [{ id: 1, owner: 'preview', name: 'example', private: true }],
+			truncated: false
+		}),
 		get: async () => project,
 		list: async () => [project],
 		members: async () => [
@@ -34,7 +39,8 @@ export function hubPreview(id: string) {
 	};
 	const api = {
 		get: async () => ({ resource: { kind: 'project', projectId: project.id }, status: 'pending' }),
-		post: done
+		post: done,
+		send: async () => ({ resource: `project:${project.id}`, status: 'pending' })
 	};
 	const cases: PreviewCases = {
 		'hub.component.account-menu': { projectId: project.id },

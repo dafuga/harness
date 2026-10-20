@@ -77,7 +77,7 @@ export const legacyCases: PreviewCases = {
 		mediaBase: '/media/',
 		exportHref: ''
 	},
-	'reports.component.harness-harness-icon': { name: 'component', size: 48, label: 'Component' },
+	'reports.component.harness-harness-icon': { name: 'components', size: 48, label: 'Component' },
 	'reports.component.harness-harness-legacy': {
 		reports: [],
 		commit: d.commits.middle,

@@ -7,7 +7,7 @@ const request = {
 	deviceName: 'Ada’s iPhone',
 	platform: 'iOS',
 	requestedAt: stamp,
-	expiresAt: '2050-01-01T00:00:00Z'
+	expiresAt: '2026-10-20T10:05:05Z'
 };
 const devices = [
 	{
@@ -28,7 +28,7 @@ const offer = {
 	origin: 'https://preview.invalid',
 	code: 'SYNTHETIC',
 	scan: 'harness://pairing/preview-only',
-	expiresAt: '2050-01-01T00:00:00Z'
+	expiresAt: '2026-10-20T10:05:05Z'
 };
 export function remotePreview() {
 	const host = $state({
