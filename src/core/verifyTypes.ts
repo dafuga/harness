@@ -98,6 +98,8 @@ export type CaptureLine = z.infer<typeof captureLineSchema>;
 /** One measurement a benchmark capture reports; the run adds its profile and revision. */
 export const reportedMeasurementSchema = z.object({
 	unit: text,
+	/** Selected exported callable when a module contains several helpers. */
+	callable: text.optional(),
 	metric: text,
 	unitOfMeasure: text,
 	value: z.number().nullable(),

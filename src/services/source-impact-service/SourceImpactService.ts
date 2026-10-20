@@ -1,3 +1,4 @@
+import { unitMeasurements } from '../../utils/unitMeasurements';
 import { CommitTreeAdapter } from '../../adapters/CommitTreeAdapter';
 import { GitAdapter } from '../../adapters/GitAdapter';
 import { ModuleRuntimeAdapter } from '../../adapters/ModuleRuntimeAdapter';
@@ -61,6 +62,13 @@ export class SourceImpactService {
 	/** The side of a commit in the form the index stores; undefined when its tree is unreadable. */
 	async stored(commit: string): Promise<StoredSide | undefined> {
 		return this.side(commit).then(storedSide, () => undefined);
+	}
+
+	/** Static observations come from this exact commit even when no tests were recorded. */
+	async measurements(commit: string) {
+		const side = await this.side(commit).catch(() => undefined);
+		if (!side) return [];
+		return side.manifests.flatMap((unit) => unitMeasurements(unit, side.index.files, commit));
 	}
 
 	/** Each tree is indexed once, however many commits are compared with it. */

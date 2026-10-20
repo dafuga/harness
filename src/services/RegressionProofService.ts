@@ -1,3 +1,6 @@
+import { benchmarkMeasurements } from './record-assembly-service/sealRecord';
+import { gatherCaptures } from './check-run-service/gatherCaptures';
+import { machineProfile } from '../utils/machineProfile';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -94,6 +97,7 @@ interface Observation {
 	startedAt: string;
 	result: Awaited<ReturnType<typeof runIsolated>>;
 	output: Buffer;
+	measurements: NonNullable<RegressionRecord['measurements']>;
 }
 
 async function observeRegression(
@@ -109,7 +113,13 @@ async function observeRegression(
 		command: 'sh',
 		args: ['-c', input.command],
 		cwd: snapshot.directory,
-		env: { ...process.env, HARNESS_ANALYTICS_DISABLED: '1' },
+		env: {
+			...process.env,
+			HARNESS_ANALYTICS_DISABLED: '1',
+			HARNESS_EVIDENCE_DIR: directory,
+			TAKE_SCREENSHOT: '1',
+			HARNESS_VERIFY_REVISION: input.commit
+		},
 		timeoutMs: input.timeoutMs,
 		log: join(directory, 'output.log'),
 		maxLogBytes: 2_000_000
@@ -119,7 +129,13 @@ async function observeRegression(
 		fail('The regression changed snapshot inputs or wrote undeclared outputs.');
 	const output = await readFile(result.log.path);
 	checkResult(input, result, output.toString('utf8'));
-	return { profile, startedAt, result, output };
+	const captures = gatherCaptures(directory, 'focused');
+	if (captures.failures.length) fail(captures.failures.join('; '));
+	const measurements = benchmarkMeasurements(captures.gathered, {
+		profile: machineProfile().id,
+		commit: input.commit
+	});
+	return { profile, startedAt, result, output, measurements };
 }
 
 async function sealRegression(
@@ -143,6 +159,7 @@ async function sealRegression(
 		startedAt,
 		finishedAt: new Date().toISOString(),
 		exitCode: result.exitCode!,
+		...(observed.measurements.length ? { measurements: observed.measurements } : {}),
 		log: { ...result.log, path: 'output.log' },
 		...(input.red ? { red: { commit: input.red.source.commit, record: input.red.id } } : {})
 	};

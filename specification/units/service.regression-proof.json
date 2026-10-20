@@ -66,6 +66,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.gather-captures",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.machine-profile",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.regression-files",
 			"via": "import",
 			"origin": "derived"
@@ -82,6 +92,11 @@
 		},
 		{
 			"unit": "function.run-isolated",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.seal-record",
 			"via": "import",
 			"origin": "derived"
 		},

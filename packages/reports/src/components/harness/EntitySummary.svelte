@@ -9,6 +9,10 @@
 		/** The size and performance cards of an overview, without notes; false for Details. */
 		compact?: boolean;
 	} = $props();
+	const displayed = (row: EntityMeasure['size'][number]) =>
+		row.label === 'Emitted size' && row.note?.includes('no separate artifact')
+			? 'Not applicable'
+			: row.value;
 	const where = (row: EntityMeasure['performance'][number]) =>
 		[row.target, row.profile].filter(Boolean).join(' · ') || '—';
 </script>
@@ -22,8 +26,10 @@
 				<div>
 					<dt>{row.label}</dt>
 					<dd class:unmeasured={row.value === notMeasured} title={row.note}>
-						{row.value}
-						{#if row.note && !compact}<span class="ex-note">{row.note}</span>{/if}
+						{displayed(row)}
+						{#if row.note && (!compact || row.value === notMeasured)}<span class="ex-note"
+								>{row.note}</span
+							>{/if}
 					</dd>
 				</div>
 			{/each}
@@ -56,7 +62,9 @@
 				</div>
 				<div>
 					<dt>{row.metric}</dt>
-					<dd class:unmeasured={row.value === notMeasured}>{row.value}</dd>
+					<dd class:unmeasured={row.value === notMeasured} title={row.note}>
+						{row.value}{#if row.note}<span class="ex-note">{row.note}</span>{/if}
+					</dd>
 				</div>
 				<div>
 					<dt>Tolerance</dt>
@@ -81,7 +89,9 @@
 								<td>{row.workload}</td>
 								<td>{row.metric}</td>
 								<td>{where(row)}</td>
-								<td class:unmeasured={row.value === notMeasured}>{row.value}</td>
+								<td class:unmeasured={row.value === notMeasured} title={row.note}
+									>{row.value}{#if row.note}<span class="ex-note">{row.note}</span>{/if}</td
+								>
 								<td class:over={row.over}
 									>{row.tolerance}{row.over ? ' · above the 5% policy' : ''}</td
 								>

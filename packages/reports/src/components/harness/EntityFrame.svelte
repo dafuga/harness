@@ -69,7 +69,7 @@
 				preview={screens}
 			/>
 			{#if host.route.helper}<p class="ex-note">
-					History, relationships and verification describe the owning module.
+					Size, complexity, history, relationships and verification describe the owning module.
 				</p>{/if}
 			{@render screen(entity, nav)}
 		{:else}

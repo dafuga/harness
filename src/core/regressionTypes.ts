@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { measurementSchema } from './verificationTypes';
 
 const commit = z.string().regex(/^[a-f0-9]{40}$/);
 const hash = z.string().regex(/^[a-f0-9]{64}$/);
@@ -26,6 +27,8 @@ export const regressionRecordSchema = z.strictObject({
 		sha256: hash,
 		bytes: z.number().int().nonnegative()
 	}),
+	/** Observations from the focused run, never full verification or budget approval. */
+	measurements: z.array(measurementSchema).optional(),
 	red: z.strictObject({ commit, record: hash }).optional()
 });
 
@@ -38,7 +41,8 @@ const pointSchema = z.strictObject({
 	command: text,
 	assertion: text,
 	output: z.string().max(2_000_000),
-	finishedAt: text
+	finishedAt: text,
+	measurements: z.array(measurementSchema).optional()
 });
 export const regressionViewSchema = z.strictObject({
 	loop: text,

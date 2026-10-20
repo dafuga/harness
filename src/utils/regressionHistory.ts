@@ -100,6 +100,7 @@ function regressionPoint(loaded: Loaded): RegressionPoint {
 		command: record.command,
 		assertion: record.assertion,
 		finishedAt: record.finishedAt,
+		...(record.measurements ? { measurements: record.measurements } : {}),
 		output
 	};
 }

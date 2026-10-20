@@ -26,7 +26,6 @@ export interface HarnessRevisionSummary {
 	gaps: string[];
 	records: HarnessRecordSummary[];
 	legacy: string[];
-	/** Directly changed units; null when unread, absent in older histories. */
 	changes?: { base: string | null; direct: string[]; added: string[]; removed: string[] } | null;
 }
 export interface HarnessSeries {
@@ -82,6 +81,7 @@ export interface HarnessUnit extends HarnessUnitLimits, UnitMetadata {
 		complexity: string;
 		performance: Array<{ workload: string; metric: string; tolerance: number; target?: string }>;
 	};
+	sourceMeasurements?: HarnessRecord['measurements'];
 	version: string;
 }
 export interface HarnessScenario {
@@ -111,7 +111,6 @@ export interface HarnessCapture {
 	mediaType: string;
 	capturedAt: string;
 	provenance?: string;
-	/** The build that served the capture, as the capture itself recorded it. */
 	server?: { buildId: string; revision: string };
 	transcript?: string;
 	durationSeconds?: number;
@@ -143,17 +142,17 @@ export interface HarnessRecord {
 		testedRevision: string;
 		inherited: boolean;
 		origin: { record: string; commit: string };
-		/** For inherited evidence: the checks its origin record ran; absent when not recorded. */
 		originTests?: Array<{ id: string; status: string; browserErrors?: BrowserDiagnostic[] }>;
 		states: Array<{ id: string; coverage: string; reason?: string; captures: HarnessCapture[] }>;
 	}>;
 	measurements: Array<{
 		unit: string;
 		metric: string;
+		callable?: string;
+		method?: string;
 		unitOfMeasure: string;
 		value: number | null;
 		unavailable?: string;
-		/** What the value leaves out, when only part of the unit could be measured. */
 		partial?: string;
 		workload: string | null;
 		profile: string | null;
@@ -174,7 +173,6 @@ export interface HarnessRecord {
 export interface HarnessExplanation {
 	unit: string;
 	symbol: string;
-	/** The file the explained change is in; reasons of one unit may differ in this alone. */
 	file?: string;
 	change: string;
 	behavior: string;
@@ -198,7 +196,6 @@ export interface HarnessRevision {
 		scenarios: string[];
 		uncertain: Array<{ node: string; reason: string; detail: string }>;
 	} | null;
-	/** What the commit changed against its first parent, computed from source when indexed. */
 	sourceImpact?: {
 		base: string | null;
 		expanded: boolean;
@@ -207,12 +204,9 @@ export interface HarnessRevision {
 		uncertain: Array<{ node: string; reason: string; detail: string }>;
 		changed: Array<{ path: string; status: string }>;
 	} | null;
-	/** Path of the stored side of this revision's source tree; null when it could not be read. */
 	side?: string | null;
 	records: HarnessRecord[];
-	/** The reasons for what this commit itself changed against its first parent. */
 	explanations: HarnessExplanation[];
-	/** How many more its notes and records hold for other commits of a range verified here. */
 	rangeReasons?: number;
 }
 export type HarnessMark = 'direct' | 'indirect' | 'added' | 'removed';

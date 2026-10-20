@@ -15,7 +15,8 @@
 			"SourceImpactService.of",
 			"SourceImpactService.reasons",
 			"SourceImpactService.parent",
-			"SourceImpactService.stored"
+			"SourceImpactService.stored",
+			"SourceImpactService.measurements"
 		]
 	},
 	"contract": {
@@ -40,6 +41,10 @@
 			{
 				"name": "SourceImpactService.stored.commit",
 				"type": "string"
+			},
+			{
+				"name": "SourceImpactService.measurements.commit",
+				"type": "string"
 			}
 		],
 		"outputs": [
@@ -58,6 +63,10 @@
 			{
 				"name": "SourceImpactService.stored",
 				"type": "Promise<StoredSide | undefined>"
+			},
+			{
+				"name": "SourceImpactService.measurements",
+				"type": "unknown"
 			}
 		],
 		"errors": []
@@ -95,6 +104,11 @@
 		},
 		{
 			"unit": "function.side-impact",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-measurements",
 			"via": "import",
 			"origin": "derived"
 		},

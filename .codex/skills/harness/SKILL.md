@@ -49,6 +49,13 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 
 - Browser normal flows, including screenshot/video runs, must have no unexpected console.error or pageerror events. Use the shared browserTest fixture and watch extra contexts before navigation. Preserve logs for expected errors and declare their exact messages and reasons in that test. For unexpected errors, prove a failing log assertion before repair, then rerun the same unchanged regression until the error disappears.
 
+## Measurement Evidence
+
+- Source size and complexity are automatic observations of the selected committed tree; show them even when no full verification record exists.
+- Standard behavior tests for executable helpers record representative benchmark captures when verification requests evidence. Name the callable, workload, timing method and runtime profile. Focused regression runs retain these observations as well as their test outcome.
+- Display recorded performance independently of budget declarations. Budgets judge limits; they do not decide whether an observation is visible. A focused benchmark never grants full verification or approves a baseline.
+- Label whole-process memory as process memory, including runner overhead; never attribute it to one function. Explain unavailable metrics and distinguish missing evidence from actual failed checks.
+
 ## Hard Limits
 
 - Files: 220 lines.

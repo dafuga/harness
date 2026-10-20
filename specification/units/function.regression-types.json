@@ -42,7 +42,13 @@
 			}
 		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.verification-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/core/regressionTypes.ts",
