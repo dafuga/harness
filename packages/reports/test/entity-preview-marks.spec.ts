@@ -9,7 +9,6 @@ import {
 	reviewMeasurements
 } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
-import { reviewProfileRows } from './entityPreviewOverview';
 const filter = { category: 'functions' as const, entity: ids.filter };
 const components = { category: 'components' as const, commit: commits.middle };
 const why = 'Orders page over synthetic orders: empty has no result in the record.';
@@ -215,12 +214,5 @@ for (const [name, size] of Object.entries(viewports)) {
 		await tab.setViewportSize(size);
 		await open(tab, { ...filter, commit: commits.middle }, 'measurements');
 		await reviewMeasurements(tab, name);
-		await open(tab, { category: 'services', entity: ids.store, commit: commits.middle });
-		await capture(tab, `measurements-service-${name}`);
-		const profile = tab.getByRole('region', { name: 'Performance profile', exact: true });
-		await expect(profile).toContainText('Emitted size · Wasm');
-		await expect(profile).toContainText('18 KB');
-		await expect(profile).toContainText('no toolchain');
-		await reviewProfileRows(tab);
 	});
 }

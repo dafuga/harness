@@ -4,7 +4,8 @@ import { extname, join } from 'node:path';
 import type { ExplorerLocation } from '../src/models/Explorer.types';
 import type { PreviewVariant } from './entityPreviewData';
 import { previewHome } from './entityPreviewSetup';
-import { reviewOverviewControls } from './entityPreviewOverview';
+import { reviewOverviewControls, reviewProfileRows } from './entityPreviewOverview';
+import { commits, ids } from './entityUnits';
 // A local address is a secure context, so the page can hash the bytes of an artifact it reads.
 export const origin = 'http://localhost:41739';
 export const viewports = {
@@ -197,4 +198,12 @@ export async function reviewMeasurements(tab: Page, name: string): Promise<void>
 	});
 	expect(fragments, 'benchmark labels stay whole').toBe(1);
 	expect(await fits(tab)).toBe(true);
+	await open(tab, { category: 'services', entity: ids.store, commit: commits.middle });
+	await ready(tab);
+	await capture(tab, `measurements-service-${name}`);
+	const profile = tab.getByRole('region', { name: 'Performance profile', exact: true });
+	await expect(profile).toContainText('Emitted size · Wasm');
+	await expect(profile).toContainText('18 KB');
+	await expect(profile).toContainText('no toolchain');
+	await reviewProfileRows(tab);
 }
