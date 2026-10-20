@@ -1,0 +1,180 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [7.02s]
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-nD5c8R/packages/reports
+
+ ❯ test/components/entity-contract.test.ts (2 tests | 1 failed) 14ms
+   × a dedicated contract lists types and example previews with full details behind info buttons 13ms
+     → expected '<!--[--><!--[--><div class="ex-conten…' to contain 'View example for To kebab case · Value'
+   ✓ legacy contract tables retain types and example controls for opaque fields 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/entity-contract.test.ts > a dedicated contract lists types and example previews with full details behind info buttons
+AssertionError: expected '<!--[--><!--[--><div class="ex-conten…' to contain 'View example for To kebab case · Value'
+
+- Expected
++ Received
+
+- View example for To kebab case · Value
++ <!--[--><!--[--><div class="ex-content" data-mode="current"><!--[-1--><!--[0--><nav class="ex-crumbs" aria-label="Breadcrumb"><ol><li><a href="/harness/branch/feature%2Forders/components"><!---->Components<!----></a><!----></li> <!--[-1--><li aria-current="page">Order list</li><!--]--></ol></nav> <header class="ex-head"><span class="ex-tile"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true" focusable="false"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zM4 7.5l8 4.5 8-4.5M12 12v9"></path></svg><!----></span> <div class="ex-head-main"><div class="ex-head-title"><h1>Order list</h1> <span class="ex-pill">Component</span> <!--[-1--><!--]--> <!--[-1--><!--]--> <!--$s1--><span class="hx-verdict svelte-1lwyhm3 passed"><button type="button" aria-label="Full coverage passed" aria-describedby="s1" aria-expanded="false" class="svelte-1lwyhm3"><svg class="hx-icon svelte-1b1a29i solid" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20zM10.6 16.8l-4.3-4.3 1.4-1.4 2.9 2.9 5.7-5.7 1.4 1.4z"></path></svg><!----></button> <span class="hx-tip svelte-1lwyhm3" role="tooltip" id="s1" tabindex="-1" hidden="" style="visibility:hidden"><strong class="svelte-1lwyhm3">Full coverage passed</strong><!--[--><!--]--></span></span><!----></div> <p class="ex-lead">Arranges orders into a searchable list.</p></div> <div class="ex-head-actions"><!--[-1--><!--]--></div></header> <!--[0--><section class="ex-card ex-evidence" aria-labelledby="ex-screens-title"><header class="ex-evidence-head"><div><h2 id="ex-screens-title"><!--[0-->Current screenshot<!--]--></h2> <p class="ex-soft"><!--[0-->One screenshot of this entity at the current branch tip.<!--]--></p></div> <!--[-1--><!--[0--><a class="hx-action plain" href="/harness/branch/feature%2Forders/commit/cccccccccccccccccccccccccccccccccccccccc/components/app.component.order-list"><!--[-1--><!--]--> <!---->View commit changes<!----> <!--[0--><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M4 12h16M14 6l6 6-6 6"></path></svg><!--]--><!----></a><!--]--><!--]--></header> <!--[-1--><!--]--> <!--[0--><div class="ex-facts" role="group" aria-label="What is shown"><label>Scenario <span class="report-select svelte-124sfg disabled"><select aria-label="Scenario" disabled="" class="svelte-124sfg"><!--[--><option value="orders-page" selected="">Orders page over synthetic orders</option><!--]--><!----><!></select> <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false" class="svelte-124sfg"><path d="m4 6 4 4 4-4"></path></svg> <!--[-1--><!--]--></span><!----></label> <label>State <span class="report-select svelte-124sfg"><select aria-label="State" class="svelte-124sfg"><!--[--><option value="default" selected="">default</option><option value="empty">empty</option><!--]--><!----><!></select> <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false" class="svelte-124sfg"><path d="m4 6 4 4 4-4"></path></svg> <!--[-1--><!--]--></span><!----></label> <div class="ex-segments" role="group" aria-label="Viewport"><!--[--><button type="button" aria-pressed="true" title="1440 × 900">Desktop</button><button type="button" aria-pressed="false" title="390 × 844">Mobile</button><!--]--></div> <span class="ex-soft">1440 × 900</span></div><!--]--> <div class="ex-panes"><!--[--><figure class="ex-pane" aria-label="Current snapshot · ccccccc"><figcaption><strong>Current snapshot · ccccccc</strong> <span class="ex-pill">Branch tip</span> <!--[0--><button type="button" class="ex-text-button"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"></path></svg><!----> Open full size</button><!--]--></figcaption> <!--[-1--><button type="button" class="ex-shot"><img src="/harness/media/ccccccc-default-desktop.png" alt="orders-page · default at desktop"/></button> <p class="ex-standing">Fresh capture · passed</p><!--]--></figure><!--]--></div> <!--[-1--><!--]--></section> <!--[-1--><!--]--><!----><!--]--><!----> <div class="hx-tabs" role="tablist" aria-label="Order list sections"><!--[--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/components/app.component.order-list" aria-selected="false">Overview</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/components/app.component.order-list?tab=contract" aria-selected="true">Contract</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/components/app.component.order-list?tab=used-in" aria-selected="false">Used In</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/components/app.component.order-list?tab=uses" aria-selected="false">Uses</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/components/app.component.order-list?tab=states" aria-selected="false">States</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/components/app.component.order-list/history" aria-selected="false">History</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/components/app.component.order-list?tab=source" aria-selected="false">Source</a><!--]--><!--]--></div><!----><!----> <!--[4--><div role="tabpanel" aria-label="Order list contract"><section class="ex-card ex-contract svelte-rrf560" data-harness-component="entity-contract" aria-label="Contract"><h2><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM14 3v5h5M9 13h6M9 17h6"></path></svg><!----> Contract</h2> <!--[-1--><!--]--> <!--[0--><dl class="ex-rows"><!--[--><div><dt>States</dt> <dd>default, empty</dd></div><!--]--></dl><!--]--> <p class="ex-note">Declared examples are written in the contract. Illustrative ones are placeholders shaped by the
++ 		type alone. Neither is the result of a test.</p> <!--[--><div class="group svelte-rrf560"><h3 class="svelte-rrf560">Inputs <span class="ex-count">6</span></h3> <!--[-1--><div class="frame svelte-rrf560"><table aria-label="Inputs" class="svelte-rrf560"><thead class="svelte-rrf560"><tr><th scope="col" class="svelte-rrf560">Name</th><th scope="col" class="svelte-rrf560">Type</th><th scope="col" class="svelte-rrf560">Example</th><th scope="col" class="act svelte-rrf560" aria-label="Actions"></th></tr></thead><tbody class="svelte-rrf560"><!--[--><tr class="svelte-rrf560"><th scope="row" class="svelte-rrf560">Enabled</th><td class="svelte-rrf560"><code class="type svelte-rrf560">boolean</code></td><td class="example svelte-rrf560"><!--[-1--><!--]--> <!--[0--><code>false</code><!--]--></td><td class="act svelte-rrf560"><button type="button" class="info svelte-rrf560" aria-label="View example for Enabled" aria-haspopup="dialog"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17zM12 11v5.5M12 7.6v.1"></path></svg><!----></button></td></tr><tr class="svelte-rrf560"><th scope="row" class="svelte-rrf560">Limit</th><td class="svelte-rrf560"><code class="type svelte-rrf560">number</code></td><td class="example svelte-rrf560"><!--[-1--><!--]--> <!--[0--><code>0</code><!--]--></td><td class="act svelte-rrf560"><button type="button" class="info svelte-rrf560" aria-label="View example for Limit" aria-haspopup="dialog"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17zM12 11v5.5M12 7.6v.1"></path></svg><!----></button></td></tr><tr class="svelte-rrf560"><th scope="row" class="svelte-rrf560">Value</th><td class="svelte-rrf560"><code class="type svelte-rrf560">string</code></td><td class="example svelte-rrf560"><!--[0--><i>Illustrative</i><!--]--> <!--[0--><code>"example"</code><!--]--></td><td class="act svelte-rrf560"><button type="button" class="info svelte-rrf560" aria-label="View example for Value" aria-haspopup="dialog"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17zM12 11v5.5M12 7.6v.1"></path></svg><!----></button></td></tr><tr class="svelte-rrf560"><th scope="row" class="svelte-rrf560">Value</th><td class="svelte-rrf560"><code class="type svelte-rrf560">string</code></td><td class="example svelte-rrf560"><!--[0--><i>Illustrative</i><!--]--> <!--[0--><code>"example"</code><!--]--></td><td class="act svelte-rrf560"><button type="button" class="info svelte-rrf560" aria-label="View example for Value" aria-haspopup="dialog"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17zM12 11v5.5M12 7.6v.1"></path></svg><!----></button></td></tr><tr class="svelte-rrf560"><th scope="row" class="svelte-rrf560">Empty</th><td class="svelte-rrf560"><code class="type svelte-rrf560">unknown</code></td><td class="example svelte-rrf560"><!--[-1--><!--]--> <!--[0--><code>null</code><!--]--></td><td class="act svelte-rrf560"><button type="button" class="info svelte-rrf560" aria-label="View example for Empty" aria-haspopup="dialog"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17zM12 11v5.5M12 7.6v.1"></path></svg><!----></button></td></tr><tr class="svelte-rrf560"><th scope="row" class="svelte-rrf560">Settings</th><td class="svelte-rrf560"><code class="type svelte-rrf560">object</code></td><td class="example svelte-rrf560"><!--[-1--><!--]--> <!--[0--><code>{
++   "label": "Safe &lt;tag>"
++ }</code><!--]--></td><td class="act svelte-rrf560"><button type="button" class="info svelte-rrf560" aria-label="View example for Settings" aria-haspopup="dialog"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17zM12 11v5.5M12 7.6v.1"></path></svg><!----></button></td></tr><!--]--></tbody></table></div><!--]--></div><div class="group svelte-rrf560"><h3 class="svelte-rrf560">Outputs <span class="ex-count">1</span></h3> <!--[-1--><div class="frame svelte-rrf560"><table aria-label="Outputs" class="svelte-rrf560"><thead class="svelte-rrf560"><tr><th scope="col" class="svelte-rrf560">Name</th><th scope="col" class="svelte-rrf560">Type</th><th scope="col" class="svelte-rrf560">Example</th><th scope="col" class="act svelte-rrf560" aria-label="Actions"></th></tr></thead><tbody class="svelte-rrf560"><!--[--><tr class="svelte-rrf560"><th scope="row" class="svelte-rrf560">Count</th><td class="svelte-rrf560"><code class="type svelte-rrf560">number</code></td><td class="example svelte-rrf560"><!--[-1--><!--]--> <!--[0--><code>2</code><!--]--></td><td class="act svelte-rrf560"><button type="button" class="info svelte-rrf560" aria-label="View example for Count" aria-haspopup="dialog"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17zM12 11v5.5M12 7.6v.1"></path></svg><!----></button></td></tr><!--]--></tbody></table></div><!--]--></div><div class="group svelte-rrf560"><h3 class="svelte-rrf560">Errors <span class="ex-count">0</span></h3> <!--[0--><p class="ex-note">No errors declared.</p><!--]--></div><!--]--></section> <!--[-1--><!--]--><!----><!----></div><!--]--><!----><!--]--><!----><!--]--></div><!--]--><!--]-->
+
+ ❯ test/components/entity-contract.test.ts:43:16
+     41|   expect(body).toContain('aria-haspopup="dialog"');
+     42|   expect(body).toContain('View example for Enabled');
+     43|   expect(body).toContain('View example for To kebab case · Value');
+       |                ^
+     44|   expect(body).toContain('View example for To camel case · Value');
+     45|   expect(body).toMatch(/Safe &lt;tag(?:&gt;|>)/);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  11:27:46
+   Duration  906ms (transform 574ms, setup 0ms, collect 751ms, tests 14ms, environment 0ms, prepare 30ms)
+
+
+Running 3 tests using 1 worker
+
+(node:31514) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/entity-preview-words.spec.ts:170:2 › contract has its own typed example view at desktop width (5.4s)
+(node:31565) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 test/entity-preview-words.spec.ts:170:2 › contract has its own typed example view at tablet width (5.3s)
+(node:31628) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 test/entity-preview-words.spec.ts:170:2 › contract has its own typed example view at mobile width (5.3s)
+
+
+  1) test/entity-preview-words.spec.ts:170:2 › contract has its own typed example view at desktop width 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('region', { name: 'Contract', exact: true }).getByRole('table', { name: 'Inputs', exact: true }).getByRole('rowheader', { name: 'Value', exact: true })
+    Expected: 0
+    Received: 4
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('region', { name: 'Contract', exact: true }).getByRole('table', { name: 'Inputs', exact: true }).getByRole('rowheader', { name: 'Value', exact: true }) with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Contract', exact: true }).getByRole('table', { name: 'Inputs', exact: true }).getByRole('rowheader', { name: 'Value', exact: true })
+        14 × locator resolved to 4 elements
+           - unexpected value "4"
+
+
+      189 | 			await expect(inputs.getByRole('row').filter({ hasText: 'Branch' })).toContainText('string');
+      190 | 			await expect(contract.getByRole('table', { name: 'Outputs', exact: true })).toBeVisible();
+    > 191 | 			await expect(inputs.getByRole('rowheader', { name: 'Value', exact: true })).toHaveCount(0);
+          | 			                                                                            ^
+      192 | 			for (const owner of ['kebab', 'pascal', 'camel', 'snake']) {
+      193 | 				await expect(
+      194 | 					inputs.getByRole('rowheader', { name: `To ${owner} case · Value`, exact: true })
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-nD5c8R/packages/reports/test/entity-preview-words.spec.ts:191:80
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-words-contr-4c394-ample-view-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-words-contr-4c394-ample-view-at-desktop-width/error-context.md
+
+  2) test/entity-preview-words.spec.ts:170:2 › contract has its own typed example view at tablet width 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('region', { name: 'Contract', exact: true }).getByRole('table', { name: 'Inputs', exact: true }).getByRole('rowheader', { name: 'Value', exact: true })
+    Expected: 0
+    Received: 4
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('region', { name: 'Contract', exact: true }).getByRole('table', { name: 'Inputs', exact: true }).getByRole('rowheader', { name: 'Value', exact: true }) with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Contract', exact: true }).getByRole('table', { name: 'Inputs', exact: true }).getByRole('rowheader', { name: 'Value', exact: true })
+        14 × locator resolved to 4 elements
+           - unexpected value "4"
+
+
+      189 | 			await expect(inputs.getByRole('row').filter({ hasText: 'Branch' })).toContainText('string');
+      190 | 			await expect(contract.getByRole('table', { name: 'Outputs', exact: true })).toBeVisible();
+    > 191 | 			await expect(inputs.getByRole('rowheader', { name: 'Value', exact: true })).toHaveCount(0);
+          | 			                                                                            ^
+      192 | 			for (const owner of ['kebab', 'pascal', 'camel', 'snake']) {
+      193 | 				await expect(
+      194 | 					inputs.getByRole('rowheader', { name: `To ${owner} case · Value`, exact: true })
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-nD5c8R/packages/reports/test/entity-preview-words.spec.ts:191:80
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-words-contr-22fbd-xample-view-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-words-contr-22fbd-xample-view-at-tablet-width/error-context.md
+
+  3) test/entity-preview-words.spec.ts:170:2 › contract has its own typed example view at mobile width 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('region', { name: 'Contract', exact: true }).getByRole('table', { name: 'Inputs', exact: true }).getByRole('rowheader', { name: 'Value', exact: true })
+    Expected: 0
+    Received: 4
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('region', { name: 'Contract', exact: true }).getByRole('table', { name: 'Inputs', exact: true }).getByRole('rowheader', { name: 'Value', exact: true }) with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Contract', exact: true }).getByRole('table', { name: 'Inputs', exact: true }).getByRole('rowheader', { name: 'Value', exact: true })
+        14 × locator resolved to 4 elements
+           - unexpected value "4"
+
+
+      189 | 			await expect(inputs.getByRole('row').filter({ hasText: 'Branch' })).toContainText('string');
+      190 | 			await expect(contract.getByRole('table', { name: 'Outputs', exact: true })).toBeVisible();
+    > 191 | 			await expect(inputs.getByRole('rowheader', { name: 'Value', exact: true })).toHaveCount(0);
+          | 			                                                                            ^
+      192 | 			for (const owner of ['kebab', 'pascal', 'camel', 'snake']) {
+      193 | 				await expect(
+      194 | 					inputs.getByRole('rowheader', { name: `To ${owner} case · Value`, exact: true })
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-nD5c8R/packages/reports/test/entity-preview-words.spec.ts:191:80
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-words-contr-70f40-xample-view-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-words-contr-70f40-xample-view-at-mobile-width/error-context.md
+
+  3 failed
+    test/entity-preview-words.spec.ts:170:2 › contract has its own typed example view at desktop width 
+    test/entity-preview-words.spec.ts:170:2 › contract has its own typed example view at tablet width 
+    test/entity-preview-words.spec.ts:170:2 › contract has its own typed example view at mobile width 
