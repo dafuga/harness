@@ -4,7 +4,7 @@
 	"kind": "template",
 	"title": "projectGuidance",
 	"responsibility": "Generates project agent and skill instructions, including required regression proof and fresh change measurements.",
-	"responsibilityOrigin": "derived",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/templates/projectGuidance.ts"],

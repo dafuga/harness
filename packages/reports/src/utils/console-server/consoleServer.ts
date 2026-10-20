@@ -33,6 +33,14 @@ async function sourceFigures(root: string, commit: string): Promise<Measurement[
 	return pending;
 }
 
+function currentFigures(unit: HarnessRevision['registry']['units'][number], commit: string) {
+	return ['source-bytes', 'complexity'].every((metric) =>
+		unit.sourceMeasurements?.some(
+			(item) => item.metric === metric && item.testedRevision === commit
+		)
+	);
+}
+
 /** Old prepared indexes can lack static figures; derive them without changing stored proof. */
 async function measuredRevision(
 	path: string,
@@ -44,16 +52,7 @@ async function measuredRevision(
 	const revision = JSON.parse(json) as HarnessRevision;
 	if (revision.commit !== commit || !Array.isArray(revision.registry?.units)) return json;
 	const units = revision.registry.units;
-	if (
-		units.every((unit) =>
-			['source-bytes', 'complexity'].every((metric) =>
-				unit.sourceMeasurements?.some(
-					(item) => item.metric === metric && item.testedRevision === commit
-				)
-			)
-		)
-	)
-		return json;
+	if (units.every((unit) => currentFigures(unit, commit))) return json;
 	const figures = await sourceFigures(root, commit);
 	if (!figures.length) return json;
 	for (const unit of units)
