@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { runInNewContext } from 'node:vm';
 import { unitDocumentation } from '../../../../src/utils/unit-documentation/unitDocumentation';
 import { expect, test } from 'vitest';
 import { activityReading } from '../../src/components/activity-agents/activityReading';
@@ -40,6 +41,16 @@ test('committed activity examples describe the function’s actual behavior', ()
 	expect(doc.gap).toBeUndefined();
 	expect(doc.examples).toHaveLength(4);
 	for (const example of doc.examples) {
+		expect(example, 'Each usage example includes the real function call').toHaveProperty(
+			'call',
+			expect.stringContaining('activityReading(')
+		);
+		const authored = example as typeof example & { call: string };
+		const setup = (doc as typeof doc & { setup: string }).setup;
+		expect(setup).toBeTruthy();
+		expect(
+			JSON.parse(JSON.stringify(runInNewContext(`${setup}\n${authored.call}`, { activityReading })))
+		).toEqual(example.output);
 		const input = example.input as {
 			sampleAgeSeconds: number;
 			agentAllowanceSeconds: number;

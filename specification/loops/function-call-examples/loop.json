@@ -1,0 +1,56 @@
+{
+	"name": "function-call-examples",
+	"goal": "Function Examples show usable invocation code beside compact expected results and compare changed outputs across examples",
+	"createdAt": "2026-10-20T10:41:27.709Z",
+	"updatedAt": "2026-10-20T10:43:05.568Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-20T10:43:05.015Z",
+			"evidence": "Show authored function calls with compact expected results; compare later outputs to the first example. Preserve actual result versus authored expectation provenance."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-20T10:43:05.568Z",
+			"evidence": "The standardized function Examples revision/viewport matrix only asserted field text and expected values. It never required an invocation or visible comparison. Extend that same fixture and matrix, plus documentation parsing and activity examples."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

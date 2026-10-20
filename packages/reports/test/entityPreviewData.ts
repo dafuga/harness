@@ -201,15 +201,22 @@ export function withDocumentation(detail: HarnessRevision): HarnessRevision {
 		{
 			name,
 			description: 'Search names without changing the original list.',
+			call: 'filterOrders(orders, "SERVICE")',
 			input: { search: 'SERVICE' },
 			output: ['Service call']
 		},
-		{ name: 'No matching order', input: { search: '<tag>' }, output: [] },
+		{
+			name: 'No matching order',
+			call: 'filterOrders(orders, "<tag>")',
+			input: { search: '<tag>' },
+			output: []
+		},
 		{ name: 'Preserve empty values', input: { enabled: false, limit: 0, empty: null }, output: '' }
 	];
 	const documentation = {
 		path: 'src/functions/filterOrders/README.md',
 		text: '# Filter orders\n\nCommitted usage documentation.',
+		setup: 'const orders = ["Service call", "New installation"];',
 		examples
 	};
 	const units = detail.registry.units.map((unit) =>

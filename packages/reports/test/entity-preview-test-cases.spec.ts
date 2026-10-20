@@ -145,13 +145,31 @@ for (const [viewport, size] of Object.entries(viewports)) {
 				{ category: 'functions', entity: ids.filter, commit, tab: 'tests' },
 				'documented'
 			);
-			await capture(page, `examples-entry-${commit ? 'commit' : 'tip'}-${viewport}`);
+			await capture(
+				page,
+				`${process.env.SCREENSHOT_LABEL ?? 'run'}-examples-entry-${commit ? 'commit' : 'tip'}-${viewport}`
+			);
 			const examples = page.getByRole('tab', { name: 'Examples', exact: true });
 			await expect(examples, 'functions expose Examples instead of Tests').toHaveCount(1);
 			await expect(page.getByRole('tab', { name: 'Tests', exact: true })).toHaveCount(0);
 			await examples.click();
 			const pane = page.getByRole('tabpanel', { name: 'Filter orders examples', exact: true });
 			await expect(pane).toBeVisible();
+			await capture(
+				page,
+				`${process.env.SCREENSHOT_LABEL ?? 'run'}-function-calls-${commit ? 'commit' : 'tip'}-${viewport}`
+			);
+			await expect(
+				pane.locator('code').filter({ hasText: 'filterOrders(orders, "SERVICE")' }),
+				'Examples must show a concrete function call'
+			).toBeVisible();
+			await expect(
+				pane.locator('code').filter({ hasText: 'filterOrders(orders, "<tag>")' })
+			).toBeVisible();
+			await expect(pane.getByText('Output changes from Example 01', { exact: true })).toHaveCount(
+				2
+			);
+			await expect(pane.getByText('Call not documented', { exact: true })).toBeVisible();
 			const rows = pane.locator('.cases > table > tbody > tr');
 			await expect(rows).toHaveCount(3);
 			await expect(rows.first()).toContainText(
@@ -164,7 +182,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			await expect(rows.last()).toContainText('null');
 			await expect(pane.getByRole('columnheader')).toHaveText([
 				'Example',
-				'Input',
+				'Call',
 				'Expected output'
 			]);
 			await expect(pane.locator('tag')).toHaveCount(0);
