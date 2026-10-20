@@ -49,11 +49,30 @@ test('approval alone never runs and Change records untracked and previously dirt
 			]
 		})
 	);
-	expect(f.events).toContainEqual(expect.objectContaining({ kind: 'finished', verified: false }));
+	expect(f.events, 'unverified coding cannot finish successfully').toContainEqual(
+		expect.objectContaining({
+			kind: 'failed',
+			message: expect.stringContaining('completion audit')
+		})
+	);
 	expect((await records(f)).at(-1)).toMatchObject({
-		status: 'completed',
+		status: 'failed',
 		changedPaths: ['src/new.ts', 'src/owned.ts']
 	});
+}, 15000);
+
+test('Plan rejects an incomplete proposal before generating or saving designs', async () => {
+	const f = await fixture();
+	f.run.mockResolvedValue({ text: 'Done.', model: 'selected' });
+	await settled(f);
+	expect(f.events, 'planning requires a completion audit').toContainEqual(
+		expect.objectContaining({
+			kind: 'failed',
+			message: expect.stringContaining('completion audit')
+		})
+	);
+	expect(f.generator.generateImage).not.toHaveBeenCalled();
+	expect(f.events.some((event) => event.kind === 'finished')).toBe(false);
 }, 15000);
 test('stale approval is rejected before agent execution', async () => {
 	const f = await fixture();
