@@ -21,10 +21,10 @@
 <div class="group" data-harness-component="contract-table">
 	{#if !plain}
 		<h3>{group.title} <span class="ex-count">{group.fields.length}</span></h3>
-	{:else if group.fields.length > 0}
+	{:else if group.fields.length > 0 || group.keepEmpty}
 		<p class="label">{group.title}</p>
 	{/if}
-	{#if group.fields.length === 0}
+	{#if group.fields.length === 0 && !group.keepEmpty}
 		<p class="ex-note">{group.none}</p>
 	{:else}
 		<div class="frame">
@@ -38,6 +38,9 @@
 					</tr>
 				</thead>
 				<tbody>
+					{#if group.fields.length === 0}
+						<tr><td colspan={named ? 4 : 3} class="ex-note">{group.none}</td></tr>
+					{/if}
 					{#each group.fields as field, position (position)}
 						{@const sample = field.examples[0]}
 						<tr>

@@ -28,6 +28,8 @@ export interface ContractGroup {
 	title: string;
 	/** Return tables show the value type without a redundant name column. */
 	hideNames?: boolean;
+	/** Keep an empty API table with an explicit absence message. */
+	keepEmpty?: boolean;
 	/** What is said when the contract declares none. */
 	none: string;
 	fields: ContractField[];

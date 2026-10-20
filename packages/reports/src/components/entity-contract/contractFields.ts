@@ -134,16 +134,23 @@ export function callableContracts(unit: HarnessUnit): Array<{
 			(field) => helpers.length === 1 || field.name.startsWith(`${helper.name}.`)
 		);
 		const groups: ContractGroup[] = [
-			{ id: 'inputs', title: 'Parameters', none: 'No parameters.', fields: parameters },
-			{ id: 'outputs', title: 'Returns', none: '', fields: [returned], hideNames: true }
-		];
-		if (errors.length)
-			groups.push({
+			{
+				id: 'inputs',
+				title: 'Parameters',
+				none: 'No parameters.',
+				fields: parameters,
+				keepEmpty: true
+			},
+			{ id: 'outputs', title: 'Returns', none: '', fields: [returned], hideNames: true },
+			{
 				id: 'errors',
-				title: 'Errors',
-				none: '',
-				fields: errors.map((field) => fieldOf(field, unit))
-			});
+				title: 'Throws',
+				none: 'No errors declared.',
+				fields: errors.map((field) => fieldOf(field, unit)),
+				hideNames: true,
+				keepEmpty: true
+			}
+		];
 		const args = parameters.map((field) => `${field.name}: ${field.type}`).join(', ');
 		return { name: helper.name, signature: `${helper.name}(${args}): ${type}`, groups };
 	});

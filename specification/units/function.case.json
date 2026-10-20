@@ -14,25 +14,25 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "toKebabCase.value",
+				"name": "toKebabCase.textToConvert",
 				"type": "string",
 				"description": "Text to split at lowercase-or-digit to uppercase transitions and non-alphanumeric separators.",
 				"examples": ["Hello world"]
 			},
 			{
-				"name": "toPascalCase.value",
+				"name": "toPascalCase.textToConvert",
 				"type": "string",
 				"description": "Text to split into normalized lowercase words before capitalizing each word.",
 				"examples": ["Hello world"]
 			},
 			{
-				"name": "toCamelCase.value",
+				"name": "toCamelCase.textToConvert",
 				"type": "string",
 				"description": "Text to split into words before building Pascal case and lowering its first character.",
 				"examples": ["Hello world"]
 			},
 			{
-				"name": "toSnakeCase.value",
+				"name": "toSnakeCase.textToConvert",
 				"type": "string",
 				"description": "Text to split at case transitions and non-alphanumeric separators.",
 				"examples": ["Hello world"]
@@ -73,7 +73,7 @@
 			"source": "src/core/case.ts",
 			"inputs": [
 				{
-					"name": "toKebabCase.value",
+					"name": "toKebabCase.textToConvert",
 					"type": "string"
 				}
 			],
@@ -214,7 +214,7 @@
 			"source": "src/core/case.ts",
 			"inputs": [
 				{
-					"name": "toPascalCase.value",
+					"name": "toPascalCase.textToConvert",
 					"type": "string"
 				}
 			],
@@ -331,7 +331,7 @@
 			"source": "src/core/case.ts",
 			"inputs": [
 				{
-					"name": "toCamelCase.value",
+					"name": "toCamelCase.textToConvert",
 					"type": "string"
 				}
 			],
@@ -380,7 +380,7 @@
 			"source": "src/core/case.ts",
 			"inputs": [
 				{
-					"name": "toSnakeCase.value",
+					"name": "toSnakeCase.textToConvert",
 					"type": "string"
 				}
 			],

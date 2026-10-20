@@ -2,7 +2,7 @@
 	"name": "callable-throws",
 	"goal": "Show Parameters, Returns and Throws tables for every callable, with descriptive source parameter names",
 	"createdAt": "2026-10-20T12:19:38.557Z",
-	"updatedAt": "2026-10-20T12:19:39.492Z",
+	"updatedAt": "2026-10-20T12:21:03.403Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T12:21:02.811Z",
+			"evidence": "Committed test 7af3cb12 fails because each callable does not expose a Throws table. Immutable red checkpoint and screenshots preserve the actual missing table."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T12:21:03.403Z",
+			"evidence": "Each callable retains Parameters, Returns and Throws tables, including explicit empty rows. Declared exceptions stay scoped to their function. Actual casing source parameters and contract fields are renamed textToConvert."
 		},
 		{
 			"id": "green",

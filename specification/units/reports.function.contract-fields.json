@@ -3,7 +3,7 @@
 	"id": "reports.function.contract-fields",
 	"kind": "function",
 	"title": "Prepare typed contract fields",
-	"responsibility": "Prepares typed contract fields and per-callable parameter and return contracts with honest examples.",
+	"responsibility": "Prepares typed contract fields and per-callable Parameters, Returns and Throws tables with honest examples.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -83,7 +83,7 @@
 			{
 				"name": "callableContracts",
 				"type": "{ name: string; signature: string; groups: ContractGroup[] }[]",
-				"description": "Each callable with its literal parameter names and its own return type and examples."
+				"description": "Each callable with literal parameter names, its own return value and a Throws table listing declared exceptions or an explicit absence message."
 			}
 		],
 		"errors": []
