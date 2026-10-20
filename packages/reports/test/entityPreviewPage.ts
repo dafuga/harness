@@ -100,11 +100,30 @@ export async function reviewVisual(
 	const size = page.getByRole('region', { name: 'Size', exact: true });
 	expect((await evidence.boundingBox())!.y).toBeLessThan((await size.boundingBox())!.y);
 	expect(await fits(page)).toBe(true);
-	if (route.category !== 'components') return;
+	if (route.category === 'pages') {
+		await expect(
+			page.locator('.ex-head .ex-lead, .ex-head .ex-route'),
+			'page header stays concise'
+		).toHaveCount(0);
+	}
+	await expect(
+		page.getByRole('combobox', { name: /^(Scenario|State)$/ }),
+		'overview has no state controls'
+	).toHaveCount(0);
+	await expect(page.getByRole('link', { name: 'View commit changes', exact: true })).toHaveCount(0);
+	await expect(
+		page.locator('.ex-evidence-head p'),
+		'screenshot heading has no explanatory paragraph'
+	).toHaveCount(0);
 	for (const name of ['Overview', 'Contract', 'Used In', 'Uses', 'States', 'History', 'Source']) {
 		await page.getByRole('tab', { name, exact: true }).click();
 		await ready(page);
-		await capture(page, `header-base-${name}-${mode}-${viewport}`);
+		await capture(page, `header-base-${route.category}-${name}-${mode}-${viewport}`);
+		if (route.category === 'pages') {
+			await expect(evidence).toHaveCount(name === 'Overview' ? 1 : 0);
+			expect(await where(page)).toMatchObject(route);
+			continue;
+		}
 		await expect(evidence, 'component screenshot persists across tabs').toHaveCount(1);
 		const tabs = await page.getByRole('tablist').boundingBox();
 		const shot = await page.locator('section[aria-labelledby="ex-screens-title"]').boundingBox();

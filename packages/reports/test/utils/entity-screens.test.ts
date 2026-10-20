@@ -8,6 +8,7 @@ import {
 } from '../../src/utils/entityScreens';
 import { explorerEvidence } from '../../src/utils/explorerEvidence';
 import { record, revision } from '../entityFixture';
+import { withInherited } from '../entityPreviewData';
 import { scope } from '../entityPlaces';
 import { commits, ids, scenarios, units } from '../entityUnits';
 
@@ -125,4 +126,13 @@ test('a declared catalog preview selects its exact state and viewport without a 
 	const preview = { scenario: 'orders-page', state: 'empty', viewport: 'mobile' };
 	expect(catalogShot(shown, preview)?.file).toBe('ccccccc-empty-mobile.png');
 	expect(catalogShot(shown, { ...preview, state: 'uncaptured' })).toBeNull();
+});
+
+test('validated unchanged screenshots stay visible with their capture origin', () => {
+	const inherited = withInherited(tip, commits.middle);
+	const shown = entityScreens(evidence(page, inherited), screenPick(options, {})!);
+	expect(shown.after).toMatchObject({ missing: false, file: 'bbbbbbb-default-desktop.png' });
+	expect(shown.fresh).toBe(false);
+	expect(shown.origin).toBe(commits.middle);
+	expect(shown.after.source).toBe(commits.middle);
 });
