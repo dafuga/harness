@@ -2,11 +2,9 @@
 	"name": "history-commit-badges",
 	"goal": "Commit rows omit Added and Removed lifecycle badges while preserving direct revision links",
 	"createdAt": "2026-10-20T17:10:19.528Z",
-	"updatedAt": "2026-10-20T17:10:48.511Z",
+	"updatedAt": "2026-10-20T17:11:59.888Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T17:11:58.350Z",
+			"evidence": "At 776a5645 the unchanged row and browser history cases fail on History lifecycle badges; screenshot preserves the Added badge."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T17:11:59.888Z",
+			"evidence": "Removed only lifecycle label rendering and its unused mapping. Commit links and underlying change metadata remain."
 		},
 		{
 			"id": "green",

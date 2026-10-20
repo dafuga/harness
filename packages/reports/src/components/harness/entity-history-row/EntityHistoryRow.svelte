@@ -6,7 +6,6 @@
 		ExplorerLocation,
 		ExplorerVerdict
 	} from '../../../models/Explorer.types';
-	import type { HarnessMark } from '../../../models/Harness.types';
 	import { signedBytes, signedCount, type HistoryTiming } from '../../../utils/entityHistory';
 	import { shortCommit, type EntityNav } from '../../../utils/entityLens';
 	import { byteSize, notMeasured } from '../../../utils/entityMeasure';
@@ -36,17 +35,10 @@
 		/** Shows this change below; `full` asks for its reasons as they were written. */
 		onselect?: (full: boolean) => void;
 	} = $props();
-	const pills: Record<HarnessMark, string> = {
-		added: 'Added',
-		removed: 'Removed',
-		direct: '',
-		indirect: ''
-	};
 	let hash = $derived(shortCommit(row.commit));
 	let reasons = $derived(entityReasons(detail?.explanations ?? []));
 	// A commit that recorded no reason is told by its subject, held to the limit of one.
 	let subject = $derived(boundedText([row.subject], writingLimits.subject).text);
-	let change = $derived(pills[row.change ?? detail?.change ?? 'direct']);
 	let size = $derived(row.measured?.size ?? detail?.sourceSize ?? null);
 	let complexity = $derived(row.measured?.complexity ?? detail?.sourceComplexity ?? null);
 </script>
@@ -56,7 +48,6 @@
 	<td>
 		<EntityLink {to} {nav} class="ex-hash">{hash}</EntityLink>
 		{#if viewed}<span class="ex-pill gold">Viewed commit</span>{/if}
-		{#if change}<span class="ex-pill">{change}</span>{/if}
 		<EntityReasons {reasons} />
 	</td>
 	<td class="ex-said">

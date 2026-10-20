@@ -38,7 +38,7 @@
 			{
 				"name": "EntityHistoryRow.to",
 				"type": "ExplorerLocation",
-				"description": "Required destination for opening this entity at this row’s commit."
+				"description": "Required destination for opening this entity at this row\u2019s commit."
 			},
 			{
 				"name": "EntityHistoryRow.nav",
@@ -50,7 +50,7 @@
 			{
 				"name": "EntityHistoryRow",
 				"type": "markup",
-				"description": "A compact commit row: relative date with exact timestamp on hover, commit link, behavior, source size, complexity and measured latency. Long reasons use an inline disclosure; no verdict or duplicate revision control."
+				"description": "A compact commit row: relative date with exact timestamp on hover, commit link, behavior, source size, complexity and measured latency. Long reasons use an inline disclosure; no verdict or duplicate revision control. Registry lifecycle badges are omitted because they do not establish helper introduction dates."
 			}
 		],
 		"errors": []
