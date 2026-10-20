@@ -86,6 +86,7 @@ test('control inputs are exact', () => {
 		{ ...approval, comments: undefined },
 		{ ...approval, comments: null },
 		{ ...approval, comments: 'yes' },
+		{ ...approval, agents: false, comments: 0 },
 		{ ...approval, extra: true },
 		{ ...approval, pairingId: 'nope' },
 		{ projectIds: [projectId], agents: true },

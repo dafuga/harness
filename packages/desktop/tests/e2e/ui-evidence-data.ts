@@ -8,6 +8,7 @@ import { index } from '../../../reports/test/entityFixture';
 import { commits, ids, units } from '../../../reports/test/entityUnits';
 import type { EntityEvidenceResult } from '../../src/models/DesktopEvidence.types';
 import type { Thumbnail } from '../../src/models/Desktop.types';
+import { categoryOf } from '../../src/utils/categoryOf';
 import type { UnitDocumentation } from '../../../../src/utils/unit-documentation/unitDocumentation';
 import { nativeImageFixture } from './native-image-fixture';
 import { cardScenario, observedHistory, type Example } from './ui-evidence-history';
@@ -22,13 +23,6 @@ export const designSha = 'b'.repeat(64);
 /** A commit of a planning branch: the shown branch does not list it, so nothing proves it. */
 export const planningCommit = '9'.repeat(40);
 type Mode = 'current' | 'commit';
-const categories: Record<string, string> = {
-	page: 'pages',
-	component: 'components',
-	function: 'functions',
-	config: 'configs',
-	service: 'services'
-};
 const short = (commit: string) => commit.slice(0, 7);
 
 function identity(commit: string, shared: boolean): CacheIdentity {
@@ -80,8 +74,11 @@ function entity(unit: HarnessUnit, image: number) {
 	const thumbnail = { version: 'v001', sha256: designSha, state: 'default', viewport: 'desktop' };
 	return {
 		documentation: undefined as UnitDocumentation | undefined,
+		helperContracts: unit.helpers
+			?.filter((helper) => helper.pure === true)
+			.map((helper) => ({ ...helper, pure: true as const, consumers: helper.consumers ?? [] })),
 		id: unit.id,
-		category: categories[unit.kind],
+		category: categoryOf(unit.kind)!,
 		kind: unit.kind,
 		title: unit.title,
 		summary: unit.responsibility,
