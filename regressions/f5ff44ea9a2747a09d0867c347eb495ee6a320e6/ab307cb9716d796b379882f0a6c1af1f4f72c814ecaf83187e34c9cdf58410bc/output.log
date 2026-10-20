@@ -1,0 +1,84 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [11.76s]
+$ bun run --cwd packages/desktop svelte-kit sync && bun run --cwd packages/reports svelte-kit sync && bun run --cwd packages/hub svelte-kit sync
+$ bun scripts/build-kernel.ts
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.26
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.151
+   Compiling itoa v1.0.18
+   Compiling memchr v2.8.3
+   Compiling syn v3.0.7
+   Compiling serde_derive v1.0.229
+   Compiling impact-kernel v0.1.0 (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1Jq2aP/crates/impact-kernel)
+    Finished `release` profile [optimized] target(s) in 8.26s
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.151
+   Compiling impact-kernel v0.1.0 (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1Jq2aP/crates/impact-kernel)
+    Finished `release` profile [optimized] target(s) in 4.25s
+Built impact kernel: wasm 142396 bytes (wasm-opt wasm-opt version 131), native 402080 bytes.
+$ bun scripts/build-api.ts
+Built public API: contracts, runtime, verification, history, edge, console and index, declarations in dist/types.
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1Jq2aP
+
+ ✓ test/packaged-verification.e2e.test.ts (1 test) 3852ms
+   ✓ a packed consumer uses the verification contracts and evidence protocol  3850ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  22:16:01
+   Duration  4.12s (transform 40ms, setup 9ms, collect 27ms, tests 3.85s, environment 0ms, prepare 42ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1Jq2aP/packages/desktop
+
+ ✓ test/project-run-references.test.ts (3 tests) 7321ms
+   ✓ a pages request is asked with a registered function it names, and its checked notes are said  4712ms
+   ✓ an answer in plain words is said before the run is refused as no proposal  1431ms
+   ✓ a broken or fenced JSON answer is never said  1178ms
+ ✓ test/utils/image-url.test.ts (4 tests) 166ms
+
+ Test Files  2 passed (2)
+      Tests  7 passed (7)
+   Start at  22:16:06
+   Duration  10.01s (transform 1.07s, setup 0ms, collect 2.13s, tests 7.49s, environment 0ms, prepare 78ms)
+
+
+Running 1 test using 1 worker
+
+(node:76007) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/explorer-shell.spec.ts:64:2 › the bar shows seven categories with an icon above each label at mobile width (347ms)
+
+  1 passed (987ms)
