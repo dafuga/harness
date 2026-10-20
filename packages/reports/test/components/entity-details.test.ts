@@ -63,7 +63,7 @@ test('source is shown only when the source tab is the open one', () => {
 	]) {
 		const body = content('commit', { ...page, tab: 'source' }, {}, { ...index, sourceRepository });
 		expect(words(body)).toContain('GitHub source unavailable');
-		expect(body).not.toContain('target="_blank"');
+		expect(body).not.toContain('href="https://github.com/');
 	}
 });
 

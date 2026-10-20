@@ -2,7 +2,7 @@
 	"name": "github-source-links",
 	"goal": "Source tabs show only safe GitHub file links pinned to the selected revision",
 	"createdAt": "2026-10-20T15:44:22.581Z",
-	"updatedAt": "2026-10-20T15:45:45.878Z",
+	"updatedAt": "2026-10-20T15:49:41.348Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-20T15:49:41.348Z",
+			"evidence": "Committed assertions reproduce missing repository metadata and GitHub file links. Tightened unavailable-link assertion to ignore unrelated app-route links."
 		},
 		{
 			"id": "implement",
