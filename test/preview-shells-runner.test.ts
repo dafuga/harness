@@ -89,3 +89,20 @@ test('an ordinary reports end-to-end spec keeps the default Playwright config', 
 		}
 	]);
 });
+
+test('component preview media refuses unknown files and labels synthetic image input', async () => {
+	const { servePreview } =
+		await import('../packages/reports/tests/e2e/support/component-previews/previewApi');
+	for (const file of ['unregistered.png', 'synthetic-card-input.svg']) {
+		let response: { status?: number; body?: string } = {};
+		const route = {
+			request: () => ({ url: () => `http://127.0.0.1:47999/media/${file}` }),
+			fulfill: async (result: typeof response) => {
+				response = result;
+			}
+		} as unknown as Parameters<typeof servePreview>[0];
+		await servePreview(route, 'unused');
+		if (file === 'unregistered.png') expect(response.status).toBe(404);
+		else expect(response.body).toContain('SYNTHETIC PREVIEW INPUT');
+	}
+});
