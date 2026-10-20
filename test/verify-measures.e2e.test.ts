@@ -1,3 +1,4 @@
+import { profileMissingMeasurements } from './support/taskProfiles';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { baselineRepo, cloneRepo, type VerifyRepo } from './support/verifyRepo';
 import { verifyRun } from '../src/workflows/runVerify';
@@ -30,6 +31,7 @@ test('task verification rejects missing profiling even without performance budge
 }, 120_000);
 
 test('measures that do not apply or were not taken are stated, never left out', async () => {
+	await profileMissingMeasurements();
 	const repo = await cloneRepo(baseline);
 	const head = await repo.change('src/utils/slugify.ts', upper);
 	const { record } = await repo.verify();

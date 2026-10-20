@@ -1,3 +1,4 @@
+import { profileEvidenceValidation } from '../support/taskProfiles';
 import { expect, test } from 'vitest';
 import { PerformanceEvidenceValidator } from '../../src/validators/PerformanceEvidenceValidator';
 import type { PerformanceEvidenceInput } from '../../src/validators/PerformanceEvidenceValidator';
@@ -42,6 +43,7 @@ test('actual observations are required even when a unit declares no performance 
 	const input = await observed();
 	const validator = new PerformanceEvidenceValidator();
 	expect(validator.validate(input)).toEqual([]);
+	await profileEvidenceValidation(input);
 	expect(validator.validate({ ...input, measurements: [] })[0]).toContain('profiling requires');
 });
 

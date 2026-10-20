@@ -1,3 +1,4 @@
+import { profileProfiler } from '../support/taskProfiles';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -31,6 +32,7 @@ test('profiles the representative operation and labels process memory honestly',
 	expect(measurements[0].value).toBeGreaterThanOrEqual(0);
 	expect(measurements[1].value).toBeGreaterThan(0);
 	expect(measurements[1].method).toContain('not memory attributable');
+	await profileProfiler();
 });
 
 test('failed workloads and invalid sampling cannot produce successful observations', async () => {

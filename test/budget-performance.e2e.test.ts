@@ -1,3 +1,4 @@
+import { profileCodingCompletion } from './support/completionProfiles';
 import { TaskCompletionService } from '../src/services/TaskCompletionService';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -154,6 +155,7 @@ async function assertTaskProfile(repo: VerifyRepo) {
 		units: ['function.rank']
 	});
 	expect(audit.passed, JSON.stringify(audit.checks)).toBe(true);
+	await profileCodingCompletion(repo.root, profiled.record.source.commit);
 	const checked = await repo.run([
 		'task',
 		'check',
