@@ -166,3 +166,36 @@ test.each(pureCases)(
 		expect(registry.units[0].helpers?.[0]).toMatchObject({ pure });
 	}
 );
+
+// Services count the owning code unit once, including top-level page and entry references.
+test.each(cases.map((item, index) => ({ ...item, serviceCount: [2, 2, 1, 1, 2, 0, 0, 2][index] })))(
+	'revision metadata counts distinct runtime service owners: $serviceCount',
+	async ({ files, serviceCount }) => {
+		const sources = {
+			'src/services/SharedService.ts':
+				'export function shared() { return 1; } export function other() {}',
+			...Object.fromEntries(
+				Object.entries(files).map(([path, text]) => [
+					path,
+					text
+						.replaceAll('../utils/shared', '../services/SharedService')
+						.replaceAll("'./shared'", "'../services/SharedService'")
+				])
+			)
+		};
+		const indexed = await indexFiles(sources);
+		const registry = revisionRegistry(indexed.result.manifests, []);
+		await unitMetadata(memoryTree(sources), registry.units);
+		const service = registry.units.find((unit) =>
+			unit.owns.source.includes('src/services/SharedService.ts')
+		)!;
+		expect(service.serviceConsumers?.length, 'only distinct runtime owners establish sharing').toBe(
+			serviceCount
+		);
+		await unitMetadata(
+			memoryTree({ 'src/services/SharedService.ts': sources['src/services/SharedService.ts'] }),
+			registry.units
+		);
+		expect(service.serviceConsumers).toEqual([]);
+	}
+);

@@ -2,9 +2,11 @@ import { expect, test } from 'vitest';
 import { componentManifestSchema, type ComponentManifest } from '../../src/core/unitTypes';
 import { SourceGraphService } from '../../src/services/SourceGraphService';
 import { UnitRegistryValidator } from '../../src/validators/UnitRegistryValidator';
-import { indexFiles, retire, unitOf, movedDefinition } from '../support/memoryTree';
+import { indexFiles, retire, unitOf, helperMoveGaps } from '../support/memoryTree';
 import { existsSync, readFileSync } from 'node:fs';
-import { posix, resolve } from 'node:path';
+import { resolve } from 'node:path';
+import services from '../../specification/loops/shared-service-ownership/migration.json';
+import { relocatedSource } from '../support/memoryTree';
 import migration from '../../specification/loops/local-helper-ownership/migration.json';
 
 const slugify = 'export function slugify(input: string): string {\n\treturn input.trim();\n}\n';
@@ -12,28 +14,7 @@ const other = 'export function slugifyTitle(input: string): string {\n\treturn i
 
 test('recorded source moves retain definitions, owner-local placement and registered identity', () => {
 	const root = resolve(import.meta.dirname, '../..');
-	const gaps: string[] = [];
-	for (const move of migration.helpers) {
-		const target = resolve(root, move.to);
-		if (!existsSync(target)) {
-			gaps.push(`${move.name}: owner-local source is missing`);
-			continue;
-		}
-		if (posix.dirname(move.to) !== posix.dirname(move.ownerSource))
-			gaps.push(`${move.name}: different owner folder`);
-		if (!existsSync(resolve(root, move.ownerSource)))
-			gaps.push(`${move.name}: owner source is missing`);
-		const reviewed = migration.followUps.find(
-			(item) => item.unit === move.unit && item.name === move.name
-		);
-		if (movedDefinition(move.to, move.name) !== (reviewed?.definition ?? move.definition))
-			gaps.push(`${move.name}: definition changed`);
-		const unit = JSON.parse(
-			readFileSync(resolve(root, `specification/units/${move.unit}.json`), 'utf8')
-		) as ComponentManifest;
-		if (unit.id !== move.unit || !unit.owns.source.includes(move.to))
-			gaps.push(`${move.name}: registered identity lost`);
-	}
+	const gaps = helperMoveGaps(root, migration.helpers, migration.followUps);
 
 	expect(migration.helpers).toHaveLength(411);
 	expect(
@@ -212,4 +193,30 @@ test('several owned files produce identical metadata after one indexing pass', a
 	expect(again.result.updated, 'one-pass source indexing must be idempotent').toEqual([]);
 	expect(again.result.manifests).toEqual(once.result.manifests);
 	expect([...once.index.files.keys()]).toEqual(Object.keys(files));
+});
+
+test('recorded service moves preserve implementations and registered owner-local placement', () => {
+	const gaps: string[] = [];
+	for (const file of services.files) {
+		if (!existsSync(file.to)) {
+			gaps.push(`${file.to}: missing`);
+			continue;
+		}
+		if (relocatedSource(file.to, services.moves) !== file.definition)
+			gaps.push(`${file.to}: definition changed`);
+		const unit = JSON.parse(
+			readFileSync(`specification/units/${file.unit}.json`, 'utf8')
+		) as ComponentManifest;
+		if (!unit.owns.source.includes(file.to)) gaps.push(`${file.unit}: identity lost`);
+	}
+	for (const service of services.services) {
+		const unit = JSON.parse(
+			readFileSync(`specification/units/${service.id}.json`, 'utf8')
+		) as ComponentManifest;
+		if (!unit.owns.source.every((path) => path.startsWith(service.ownerFolder + '/')))
+			gaps.push(`${service.id}: outside owner`);
+	}
+	expect(gaps, `service ownership: ${gaps.length} gaps; ${gaps.slice(0, 6).join('; ')}`).toEqual(
+		[]
+	);
 });

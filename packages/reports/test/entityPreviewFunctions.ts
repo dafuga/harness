@@ -111,11 +111,11 @@ export async function reviewServiceCard(page: Page, viewport: string): Promise<v
 		await capture(page, `service-card-${commit ? 'commit' : 'tip'}-${viewport}`);
 		const card = page.getByRole('article');
 		await expect(card, 'service cards show only name and usage').toHaveText(
-			/^\s*OrderStore\s*Used In\s*Order list\s*$/
+			/^\s*OrderStore\s*Used In\s*Order list\s*Search box\s*$/
 		);
 		await expect(card.locator('h2, p, img, button, svg, .hx-verdict')).toHaveCount(0);
 		const usage = card.getByRole('group', { name: 'Used In', exact: true });
-		await expect(usage.getByRole('link')).toHaveText(['Order list']);
+		await expect(usage.getByRole('link')).toHaveText(['Order list', 'Search box']);
 		for (const search of ['OrderStore', 'Order store']) {
 			await page.getByRole('searchbox', { name: 'Search services' }).fill(search);
 			await expect(card).toHaveCount(1);
@@ -131,7 +131,7 @@ export async function reviewServiceCard(page: Page, viewport: string): Promise<v
 		await open(page, { category: 'services', commit }, 'helpers');
 		await page
 			.getByRole('group', { name: 'Used In', exact: true })
-			.getByRole('link')
+			.getByRole('link', { name: 'Order list', exact: true })
 			.press('Enter');
 		expect(await where(page)).toMatchObject({
 			branch: 'feature/orders',

@@ -64,6 +64,9 @@ function unit(seed: UnitSeed): HarnessUnit {
 					]
 				}
 			: {}),
+		...(seed.kind === 'service'
+			? { serviceConsumers: [{ unit: ids.list }, { unit: ids.search }] }
+			: {}),
 		runtime: {
 			kind: 'module',
 			targets: (seed.targets ?? ['module']).map((kind) => ({ kind, entry: file }))
@@ -105,6 +108,7 @@ export const units: HarnessUnit[] = [
 		kind: 'component',
 		title: 'SearchBox',
 		responsibility: 'Takes the text orders are searched by.',
+		uses: [ids.store],
 		inputs: ['value'],
 		outputs: ['markup']
 	}),

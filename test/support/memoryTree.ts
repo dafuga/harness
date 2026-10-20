@@ -1,5 +1,5 @@
-import { readFileSync } from 'node:fs';
-import { posix } from 'node:path';
+import { existsSync, readFileSync } from 'node:fs';
+import { posix, resolve } from 'node:path';
 import ts from 'typescript';
 import { createHash } from 'node:crypto';
 import type { SourceTree } from '../../src/core/sourceTypes';
@@ -82,4 +82,64 @@ export function movedDefinition(path: string, name: string): string {
 		tokens.push(`${token}:${value}`);
 	}
 	return createHash('sha256').update(tokens.join('\0')).digest('hex');
+}
+
+/** Canonical source tokens keep relocation proof independent of import spelling. */
+export function relocatedSource(path: string, moves: Record<string, string>): string {
+	const reverse = new Map(Object.entries(moves).map(([from, to]) => [to, from]));
+	const source = ts.createSourceFile(
+		path,
+		readFileSync(path, 'utf8'),
+		ts.ScriptTarget.Latest,
+		true
+	);
+	const text = source.statements
+		.filter((node) => !ts.isImportDeclaration(node) && !ts.isExportDeclaration(node))
+		.map((node) => node.getText(source))
+		.join('\n');
+	const scanner = ts.createScanner(ts.ScriptTarget.Latest, true, ts.LanguageVariant.Standard, text);
+	const tokens: string[] = [];
+	let token;
+	while ((token = scanner.scan()) !== ts.SyntaxKind.EndOfFileToken) {
+		let value =
+			token === ts.SyntaxKind.StringLiteral ? scanner.getTokenValue() : scanner.getTokenText();
+		if (token === ts.SyntaxKind.StringLiteral && value.startsWith('.')) {
+			const target = posix.normalize(posix.join(posix.dirname(path), value));
+			const resolved = ['', '.ts', '.svelte', '/index.ts']
+				.map((suffix) => target + suffix)
+				.find((candidate) => reverse.has(candidate) || candidate in moves || existsSync(candidate));
+			if (resolved) value = reverse.get(resolved) ?? resolved;
+		}
+		tokens.push(`${token}:${value}`);
+	}
+	return createHash('sha256').update(tokens.join('\0')).digest('hex');
+}
+
+export function helperMoveGaps(
+	root: string,
+	moves: Array<{ unit: string; name: string; to: string; ownerSource: string; definition: string }>,
+	followUps: Array<{ unit: string; name: string; definition: string }>
+): string[] {
+	const gaps: string[] = [];
+	for (const move of moves) {
+		const target = resolve(root, move.to);
+		if (!existsSync(target)) {
+			gaps.push(`${move.name}: owner-local source is missing`);
+			continue;
+		}
+		if (posix.dirname(move.to) !== posix.dirname(move.ownerSource))
+			gaps.push(`${move.name}: different owner folder`);
+		if (!existsSync(resolve(root, move.ownerSource)))
+			gaps.push(`${move.name}: owner source is missing`);
+		const reviewed = followUps.find((item) => item.unit === move.unit && item.name === move.name);
+		if (movedDefinition(move.to, move.name) !== (reviewed?.definition ?? move.definition))
+			gaps.push(`${move.name}: definition changed`);
+		const unit = JSON.parse(
+			readFileSync(resolve(root, `specification/units/${move.unit}.json`), 'utf8')
+		) as ComponentManifest;
+		if (unit.id !== move.unit || !unit.owns.source.includes(move.to))
+			gaps.push(`${move.name}: registered identity lost`);
+	}
+
+	return gaps;
 }

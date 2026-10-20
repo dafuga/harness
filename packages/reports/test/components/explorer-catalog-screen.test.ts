@@ -22,9 +22,9 @@ test('service cards show only the class name and revision-scoped consumer links'
 		const body = screen(ExplorerCatalogScreen, mode, { category: 'services' });
 		expect(count(body, /<article\b/g), 'services use the helper card grid').toBe(1);
 		const card = /<article\b.*?<\/article>/s.exec(body)![0];
-		expect(words(card).trim()).toBe('OrderStore Used In Order list');
+		expect(words(card).trim()).toBe('OrderStore Used In Order list Search box');
 		expect(card).not.toMatch(/<h2|<p\b|<img|<button|<svg|hx-verdict/);
-		expect(count(card, /<a\b/g)).toBe(2);
+		expect(count(card, /<a\b/g)).toBe(3);
 		const scope = `/branch/feature%2Forders${mode === 'current' ? '' : `/commit/${commits.middle}`}`;
 		expect(card).toContain(`${scope}/services/${ids.store}`);
 		expect(card).toContain(`${scope}/components/${ids.list}`);

@@ -90,26 +90,46 @@ test('a component says which pages it is used on and which components it contain
 	expect(list.shared).toBe(false);
 });
 
-test('a page counts the components it contains and a service names its targets', () => {
+test('service rows require two distinct resolved runtime owners and use that set for links', () => {
 	expect(rows('pages')[0].components).toBe(2);
-	expect(rows('services')[0].targets).toEqual(['module', 'wasm', 'process']);
 	const service = rows('services')[0];
+	expect(service.targets).toEqual(['module', 'wasm', 'process']);
 	expect(service.name).toBe('OrderStore');
-	expect(service.usedIn).toEqual([{ id: ids.list, name: 'Order list', category: 'components' }]);
-	for (const search of ['OrderStore', 'Order store']) {
+	expect(service.usedIn).toEqual([
+		{ id: ids.list, name: 'Order list', category: 'components' },
+		{ id: ids.search, name: 'Search box', category: 'components' }
+	]);
+	for (const search of ['OrderStore', 'Order store'])
 		expect(catalogFilter([service], { ...filter, search }).map((row) => row.id)).toEqual([
 			ids.store
 		]);
-	}
 	const original = service.entity;
-	const unnamed = { ...original, unit: { ...original.unit, owns: { source: [], symbols: [] } } };
 	const related = explorerRelations(head, ids.store);
-	const fallback = entityCatalog([unnamed], 'services', () => ({ ...related, usedBy: [] }))[0];
+	const known = explorerEntities(head);
+	for (const serviceConsumers of [
+		undefined,
+		[],
+		[{ unit: ids.list }],
+		[{ unit: ids.list }, { unit: ids.list }],
+		[{ unit: ids.list }, { unit: 'missing' }]
+	]) {
+		const privateService = { ...original, unit: { ...original.unit, serviceConsumers } };
+		expect(
+			entityCatalog(
+				known.map((item) => (item.id === original.id ? privateService : item)),
+				'services',
+				() => related
+			),
+			'transitive pages and imports cannot establish sharing'
+		).toEqual([]);
+	}
+	const unnamed = { ...original, unit: { ...original.unit, owns: { source: [], symbols: [] } } };
+	const fallback = entityCatalog(
+		known.map((item) => (item.id === original.id ? unnamed : item)),
+		'services',
+		() => related
+	)[0];
 	expect(fallback.name).toBe('Order store');
-	expect(fallback.usedIn).toEqual([{ id: ids.page, name: 'Orders page', category: 'pages' }]);
-	expect(
-		entityCatalog([unnamed], 'services', () => ({ ...related, usedBy: [], pages: [] }))[0].usedIn
-	).toEqual([]);
 });
 
 test('changed is what the commit changed itself, and the verdict is the one it was given', () => {

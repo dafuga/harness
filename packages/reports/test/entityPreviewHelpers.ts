@@ -17,7 +17,7 @@ const helperUsers: Record<string, Array<{ unit: string; symbol?: string }>> = {
 
 /** Source-derived helper metadata distinguishes callable utilities from implementation units. */
 export function withHelpers(detail: HarnessRevision): HarnessRevision {
-	detail = withConsumers(detail);
+	detail = withServices(withConsumers(detail));
 	const template = detail.registry.units.find((unit) => unit.id === ids.filter)!;
 	const hidden = [
 		'no-visible',
@@ -100,6 +100,37 @@ function withConsumers(detail: HarnessRevision): HarnessRevision {
 						: unit
 				),
 				model
+			]
+		}
+	};
+}
+
+/** Private services stay linked to their owners but never enter the shared catalog. */
+function withServices(detail: HarnessRevision): HarnessRevision {
+	const template = detail.registry.units.find((unit) => unit.id === ids.store)!;
+	const variants = [
+		[],
+		[{ unit: ids.list }],
+		[{ unit: ids.list }, { unit: ids.list }],
+		[{ unit: ids.list }, { unit: 'missing' }],
+		undefined
+	];
+	return {
+		...detail,
+		registry: {
+			...detail.registry,
+			units: [
+				...detail.registry.units,
+				...variants.map((serviceConsumers, index) => ({
+					...template,
+					id: `app.service.private-${index}`,
+					title: `Private${index}`,
+					serviceConsumers,
+					owns: {
+						source: [`src/components/order-list/Private${index}.ts`],
+						symbols: [`Private${index}`]
+					}
+				}))
 			]
 		}
 	};
