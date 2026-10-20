@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.change-environment",
+	"kind": "function",
+	"title": "changeEnvironment",
+	"responsibility": "Owns the changeEnvironment shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/changeEnvironment.ts"],
+		"symbols": ["changeEnvironment"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "changeEnvironment.environment",
+				"type": "DeploymentEnvironment"
+			}
+		],
+		"outputs": [
+			{
+				"name": "changeEnvironment",
+				"type": "DeploymentEnvironment[]"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.deployment-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/changeEnvironment.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/changeEnvironment.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

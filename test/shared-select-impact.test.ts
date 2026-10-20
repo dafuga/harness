@@ -12,7 +12,7 @@ import { scanImports } from '../src/utils/scanImports';
 import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
 
 /**
- * ONE SELECT, NINE CONSUMERS IN TWO APPS. The desktop and the hub import the Select of the
+ * ONE SELECT, TEN CONSUMERS IN TWO APPS. The desktop and the hub import the Select of the
  * reports package through a build alias. This reads this very repository through the index,
  * the graph and the impact analysis and holds them to every alias the packages' own builds
  * declare: all that is simulated is the content hash of the one file said to have changed.
@@ -107,12 +107,16 @@ test('no import written through a build alias of any package is left as a packag
 	expect(outside.map((file) => file.path)).toEqual([]);
 });
 
-test('the registry stores Select as a derived dependency of each of its nine consumers, and is not stale', () => {
+test('the registry stores Select as a derived dependency of each of its ten consumers, and is not stale', () => {
 	const units = consumers().map((item) => owner(item.from));
 	expect(units.sort()).toEqual([
-		...['agent-controls', 'agent-settings', 'catalog-view', 'design-panel'].map(
-			(name) => `desktop.component.${name}`
-		),
+		...[
+			'agent-controls',
+			'agent-settings',
+			'catalog-view',
+			'design-panel',
+			'environment-picker'
+		].map((name) => `desktop.component.${name}`),
 		...['project-switcher', 'revision-picker', 'runtime-screens'].map(
 			(name) => `desktop.component.${name}`
 		),

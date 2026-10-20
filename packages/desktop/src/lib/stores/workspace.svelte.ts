@@ -1,3 +1,4 @@
+import { createDeploymentsStore } from './deployments.svelte';
 import type { DesktopBridge } from '../../models/DesktopBridge.types';
 import type { Category, EntityDetail, ProjectSnapshot } from '../../models/Desktop.types';
 import type { RemotePorts } from '../../models/Environment.types';
@@ -11,6 +12,7 @@ import { workspacePath, workspaceRoute } from '../../utils/workspaceRoute';
 import type { RouteSuffix, WorkspaceRoute } from '../../utils/workspaceRoute';
 
 class WorkspaceState {
+	readonly deployments = createDeploymentsStore(this);
 	snapshot = $state<ProjectSnapshot | null>(null);
 	entity = $state<EntityDetail | null>(null);
 	category = $state<Category>('pages');

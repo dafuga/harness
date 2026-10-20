@@ -45,7 +45,9 @@ test('designless Plan preserves truthful status and branch/commit paths', async 
 			page.evaluate(() => JSON.stringify((window as unknown as { __calls: unknown[] }).__calls))
 		)
 		.toContain('Create the first Activity design');
+	await page.getByRole('button', { name: 'Choose commit', exact: true }).click();
 	await page.getByLabel('Commit', { exact: true }).selectOption('b'.repeat(40));
+	await page.keyboard.press('Escape');
 	await expect(page).toHaveURL(/branch\/feat%2Factivity\/commit\/b{40}\/pages/);
 	await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toHaveCount(0);
 	await expect(page.getByRole('link', { name: 'Review designs' })).toHaveAttribute(
@@ -86,7 +88,9 @@ test('Go to tip exits both historical and explicitly pinned tip revisions', asyn
 	await page.goto('/');
 	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
 	for (const commit of ['b'.repeat(40), 'a'.repeat(40)]) {
+		await page.getByRole('button', { name: 'Choose commit', exact: true }).click();
 		await page.getByLabel('Commit', { exact: true }).selectOption(commit);
+		await page.keyboard.press('Escape');
 		await expect(page).toHaveURL(new RegExp(`/commit/${commit}/pages$`));
 		await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toHaveCount(0);
 		if (process.env.TAKE_SCREENSHOT === 'true') {
@@ -108,4 +112,67 @@ test('Go to tip exits both historical and explicitly pinned tip revisions', asyn
 			});
 		}
 	}
+});
+
+test('workspace selectors start collapsed and environment stays directly selectable', async ({
+	page
+}) => {
+	await fakeProject(page, true);
+	await page.goto('/');
+	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
+	await page.evaluate(() => document.fonts.ready);
+	if (process.env.TAKE_SCREENSHOT === 'true')
+		await page.screenshot({
+			path: `/tmp/harness-env-evidence/environment-controls-${process.env.SCREENSHOT_LABEL ?? 'local'}.png`
+		});
+	await expect(page.getByLabel('Commit', { exact: true })).not.toBeVisible();
+	await expect(page.getByLabel('Branch', { exact: true })).not.toBeVisible();
+	await expect(page.getByLabel('Project', { exact: true })).not.toBeVisible();
+	await expect(page.getByLabel('Environment', { exact: true })).toBeVisible();
+	await page.getByLabel('Environment', { exact: true }).selectOption('prod');
+	await expect(
+		page.getByText('Changes stop at stage. Use Deploy to promote to preprod or prod.')
+	).toBeVisible();
+	for (const [button, selector] of [
+		['Choose commit', 'Commit'],
+		['Choose branch', 'Branch'],
+		['Choose workbench', 'Project']
+	]) {
+		await page.getByRole('button', { name: button, exact: true }).click();
+		await expect(page.getByLabel(selector, { exact: true })).toBeVisible();
+		await page.keyboard.press('Escape');
+		await expect(page.getByRole('button', { name: button, exact: true })).toBeFocused();
+	}
+});
+
+test('deployment review names the environment and exact source before explicit confirmation', async ({
+	page
+}) => {
+	await fakeProject(page, true);
+	await page.goto('/');
+	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
+	await expect(page.locator('time[datetime="2026-10-20T10:15:00.000Z"]')).toBeVisible();
+	await page.getByLabel('Environment', { exact: true }).selectOption('preprod');
+	await page.getByRole('button', { name: 'Deploy', exact: true }).click();
+	await expect(
+		page.getByRole('button', { name: 'Deploy to preprod', exact: true })
+	).not.toBeVisible();
+	await page.getByRole('button', { name: 'Review deployment', exact: true }).click();
+	await expect(page.getByText('workers · example-preprod', { exact: true })).toBeVisible();
+	await expect(page.getByRole('button', { name: 'Deploy to preprod', exact: true })).toBeEnabled();
+	await page.evaluate(() => document.fonts.ready);
+	if (process.env.TAKE_SCREENSHOT === 'true')
+		await page.screenshot({
+			path: `/tmp/harness-env-evidence/deployment-review-${process.env.SCREENSHOT_LABEL ?? 'local'}.png`
+		});
+	expect(
+		await page.evaluate(() => JSON.stringify((window as unknown as { __calls: unknown[] }).__calls))
+	).not.toContain('"op":"deploy"');
+	await page.getByRole('button', { name: 'Deploy to preprod', exact: true }).click();
+	await expect
+		.poll(() =>
+			page.evaluate(() => JSON.stringify((window as unknown as { __calls: unknown[] }).__calls))
+		)
+		.toContain('"op":"deploy"');
+	await expect(page.getByText('fixture-preprod', { exact: true })).toBeVisible();
 });

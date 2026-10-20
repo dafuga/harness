@@ -120,3 +120,30 @@ Its screenshots and `report.json` go to `work/mobile/ios-acceptance/`, which Git
 A simulator has no camera, so the pairing scans in the isolated acceptance fixture are answered by the TEST ONLY scanner of `ios/Checks/Acceptance/SyntheticScanner.swift`. `--scan-fixture`, Debug only like `--fixture`, builds it into `.cache/ios/scan-fixture/` from an isolated copy of the native source in which it stands for the camera scanner and nothing else differs; the run fails if a product of the real source holds it. With that copy the run goes through each scan that is no offer, a scan that connects nothing until the fixture computer approves it, and denial. The Debug and Release products of the real source are started with the same launch argument and still have only their camera: a scan finds none, a refused camera is said as that, and nothing reaches the computer. The run sets the camera permission of its own simulator with `simctl privacy` and presses no prompt. No camera reads a code in any of this: a scan by a physical camera and the system's permission prompt are proven by nothing here. `ios:check:native`, `ios:check:vectors` and `test/ios-scanner-barrier.test.ts` hold the reader, the scan boundary and the absence of any other way in.
 
 See the [feature specification](specification/features/planned/image-threads.md) and [UI/native loop evidence](../../specification/loops/harness-image-threads/desktop-ui-native-evidence.md).
+
+## Environments and Cloudflare deployment
+
+The top bar keeps the project/workbench, Branch and Commit selectors behind labelled icons. Environment remains visible: dev, stage, preprod or prod. It scopes the next Change request; the source branch and commit remain visible separately. Environment times are the last deployment verified by this desktop, while revision times come from Git. Deployment does not switch or push Git branches.
+
+Projects without a configured deployment target keep local changes available and say **Local changes only**. A scoped Change requires a clean checkout of the configured source branch, verifies the source with `bun run check`, commits its changes, and deploys the resulting commit to dev, or dev then stage. Requests viewed in preprod/prod stop at stage. Use **Deploy → Review deployment → Deploy to environment** for higher promotion. Each configured preceding environment must have a verified receipt for the same commit. Expired, reused, changed-project, changed-source and changed-configuration plans are refused. A failed upload/health check does not advance the saved environment state; inspect Cloudflare before retrying because an upload may already have succeeded.
+
+The first plugin supports Cloudflare Workers with explicit named environments and Cloudflare Pages. It detects `wrangler.jsonc`, `wrangler.json` and `wrangler.toml`. Ambiguous mappings stay unavailable. Add `harness.deploy.json` in the selected project's root to state its source branch, account, environment aliases, dedicated credential variable names and HTTPS health endpoints:
+
+```json
+{
+	"adapter": "cloudflare",
+	"sourceBranch": "dev",
+	"config": "wrangler.jsonc",
+	"environments": {
+		"dev": {
+			"wranglerEnvironment": "development",
+			"name": "my-app-dev",
+			"accountId": "00000000000000000000000000000000",
+			"tokenEnv": "HARNESS_MY_APP_DEV_CLOUDFLARE_API_TOKEN",
+			"healthUrl": "https://dev.example.com/health"
+		}
+	}
+}
+```
+
+Add stage, preprod and prod entries for configured targets. Worker mappings must match an explicit `env.<name>.name` in Wrangler and use distinct Worker identities. Pages mappings instead name a `branch` and the Pages project `name`; output comes from `pages_build_output_dir`. The adapter checks the live Pages production branch before upload. Provider credentials are read only in the host, passed only to the adapter subprocess and removed from agent/check subprocess environments. Set the dedicated variables in the desktop host's managed launch environment; do not put tokens in this JSON. A repository needs its normal `check` and `build` scripts and locally installed Wrangler. Receipts live in the Git common directory's `harness-deployments/receipts.json` and are shared across worktrees. Remote phones and hosted read-only projects cannot execute deployment operations.

@@ -1,3 +1,4 @@
+import type { DeploymentEnvironment, DeploymentBridge } from './Deployment.types';
 import type {
 	EntityEvidenceQuery,
 	EntityEvidenceResult,
@@ -32,6 +33,9 @@ import type {
 
 /** The only channels the main process answers. Anything else is refused before any handler. */
 export const channels = {
+	deploymentStatus: 'deployment:status',
+	planDeployment: 'deployment:plan',
+	deploy: 'deployment:execute',
 	openProject: 'project:open',
 	listProjects: 'project:list',
 	selectProject: 'project:select',
@@ -117,6 +121,7 @@ export interface ApprovalDraft extends ProjectContext {
 }
 
 export interface RunRequest extends ProjectContext {
+	environment?: DeploymentEnvironment;
 	mode: RunMode;
 	provider: ProviderId;
 	/** An identifier the provider itself listed. It is never replaced by another. */
@@ -164,8 +169,8 @@ export interface CreatedEntity {
 export type RunPhase = 'queued' | 'prompting' | 'generating' | 'saving' | 'changing' | 'recording';
 
 /**
- * Public progress of a run: status words, the agent's public text and results. A run that
- * ends never states that tests passed; `verified` is false by construction.
+ * Public progress of a run: status words, the agent's public text and results. Host checks
+ * and deployment do not grant registered unit verification; `verified` remains false.
  */
 export type RunEvent = { runId: string } & (
 	| { kind: 'status'; phase: RunPhase; detail: string }
@@ -178,7 +183,7 @@ export type RunEvent = { runId: string } & (
 );
 
 /** What the preload script exposes as `window.harness`. Without it a page is a preview. */
-export interface DesktopBridge {
+export interface DesktopBridge extends DeploymentBridge {
 	onCacheStatus?(listener: (event: CacheStatus) => void): () => void;
 	history?(
 		input: EntityQuery & { page: number; branch?: string }

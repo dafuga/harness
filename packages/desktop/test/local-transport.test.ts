@@ -40,6 +40,15 @@ test('the bridge works over a socket that only this machine can reach', async ()
 	expect(opened.project).toMatchObject({ root: f.root, id: f.project.id });
 	expect(await client.request('listProjects')).toMatchObject([{ id: f.project.id, kind: 'local' }]);
 	expect((await client.request<ProjectSnapshot>('snapshot', view)).writable).toBe(true);
+	expect(await client.request('deploymentStatus')).toEqual(
+		expect.arrayContaining([
+			expect.objectContaining({ environment: 'dev', receipt: null, available: false })
+		])
+	);
+	await expect(
+		client.request('planDeployment', { environment: 'unknown', commit: opened.revision.commit })
+	).rejects.toThrow('Invalid');
+	await expect(client.request('deploy', { planId: 'no-review' })).rejects.toThrow('Invalid');
 	const plan = { category: 'pages', title: 'Loopback', goal: 'Over a socket' };
 	expect((await client.request<EntityDetail>('createPlan', plan)).title).toBe('Loopback');
 	expect(client.wire.attachment).toMatchObject({ role: 'local', grant: null, device: null });

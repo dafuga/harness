@@ -43,14 +43,19 @@ export class GitSourceAdapter {
 	}
 	async commits(branch: string): Promise<CommitInfo[]> {
 		const revision = await this.revision({ branch, commit: null });
-		const raw = await gitRead(this.root, ['log', '-200', '--format=%H%x00%aI%x00%s', revision.tip]);
+		const raw = await gitRead(this.root, [
+			'log',
+			'-200',
+			'--format=%H%x00%aI%x00%cI%x00%s',
+			revision.tip
+		]);
 		return raw
 			.trim()
 			.split('\n')
 			.filter(Boolean)
 			.map((line) => {
-				const [hash, authoredAt, subject] = line.split('\0');
-				return { hash, authoredAt, subject };
+				const [hash, authoredAt, committedAt, subject] = line.split('\0');
+				return { hash, authoredAt, committedAt, subject };
 			});
 	}
 	private registry = new Map<string, Promise<ComponentManifest[]>>();

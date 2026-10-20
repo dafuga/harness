@@ -20,7 +20,9 @@ async function opened(page: Page) {
 }
 
 async function at(page: Page, commit: string) {
+	await page.getByRole('button', { name: 'Choose commit', exact: true }).click();
 	await page.getByLabel('Commit', { exact: true }).selectOption(commit);
+	await page.keyboard.press('Escape');
 	await expect(page).toHaveURL(new RegExp(`/commit/${commit}/pages$`));
 	await expect(cards(page).first()).toBeVisible();
 }

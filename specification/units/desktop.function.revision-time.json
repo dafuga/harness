@@ -1,0 +1,64 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.revision-time",
+	"kind": "function",
+	"title": "revisionTime",
+	"responsibility": "Owns the revisionTime shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/revisionTime.ts"],
+		"symbols": ["revisionTime", "displayTime"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "revisionTime.snapshot",
+				"type": "ProjectSnapshot | null"
+			},
+			{
+				"name": "revisionTime.kind",
+				"type": "'commit' | 'branch'"
+			},
+			{
+				"name": "displayTime.value",
+				"type": "string | null"
+			}
+		],
+		"outputs": [
+			{
+				"name": "revisionTime",
+				"type": "string | null"
+			},
+			{
+				"name": "displayTime",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/revisionTime.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/revisionTime.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -123,9 +123,65 @@ function installProject(data: {
 	Object.assign(window, { harness: bridge, __calls: calls });
 }
 
+const deploymentFixture = {
+	statuses: ['dev', 'stage', 'preprod', 'prod'].map((environment) => ({
+		environment,
+		available: true,
+		reason: 'Cloudflare target configured.',
+		receipt: ['dev', 'stage'].includes(environment)
+			? {
+					environment,
+					commit: hash,
+					branch: 'feat/activity',
+					updatedAt: '2026-10-20T10:15:00.000Z',
+					adapter: 'cloudflare',
+					deploymentId: 'fixture-' + environment,
+					url: 'https://example.invalid'
+				}
+			: null
+	})),
+	plan: {
+		id: 'reviewed-fixture',
+		branch: 'feat/activity',
+		adapter: 'cloudflare',
+		steps: [
+			'Run bun run check',
+			'Build the source commit',
+			'Deploy with Cloudflare',
+			'Verify deployment identity and health'
+		],
+		blockers: [],
+		expiresAt: '2026-10-20T23:59:00.000Z'
+	},
+	receipt: {
+		environment: 'preprod',
+		commit: hash,
+		branch: 'feat/activity',
+		updatedAt: '2026-10-20T11:00:00.000Z',
+		adapter: 'cloudflare',
+		deploymentId: 'fixture-preprod',
+		url: 'https://example.invalid'
+	}
+};
+function installDeployment(data: typeof deploymentFixture) {
+	const host = window as unknown as { harness: object; __calls: unknown[] };
+	Object.assign(host.harness, {
+		deploymentStatus: async () => data.statuses,
+		planDeployment: async (input: { environment: string; commit: string }) => {
+			host.__calls.push({ op: 'planDeployment', ...input });
+			return { ...data.plan, ...input, target: 'workers · example-' + input.environment };
+		},
+		deploy: async (input: unknown) => {
+			host.__calls.push({ op: 'deploy', ...(input as object) });
+			return data.receipt;
+		}
+	});
+}
+
 export async function fakeProject(page: import('@playwright/test').Page, identified = false) {
 	const shown = identified
 		? { ...snapshot, project: { ...snapshot.project, id: 'local-' + 'a'.repeat(64) } }
 		: snapshot;
 	await page.addInitScript(installProject, { snapshot: shown, item, providers, thread });
+	await page.addInitScript(installDeployment, deploymentFixture);
 }

@@ -36,7 +36,9 @@ test('the project switcher keeps the category and shows only the chosen project'
 	await components.click();
 	await expect(page.getByRole('heading', { name: 'Alpha button', exact: true })).toBeVisible();
 	const before = (await calls(page)).length;
+	await page.getByRole('button', { name: 'Choose workbench', exact: true }).click();
 	await project.selectOption(beta);
+	await page.keyboard.press('Escape');
 	await expect(page).toHaveURL(new RegExp(`/projects/${beta}/harness/branch/main/components$`));
 	await expect(page.getByRole('heading', { name: 'Beta button', exact: true })).toBeVisible();
 	await expect(page.getByRole('main').getByText(/Alpha/)).toHaveCount(0);
@@ -56,7 +58,9 @@ test('an answer for the previous project that arrives late is never rendered', a
 		};
 	});
 	await page.getByRole('link', { name: 'Review designs' }).click();
+	await page.getByRole('button', { name: 'Choose workbench', exact: true }).click();
 	await page.getByLabel('Project', { exact: true }).selectOption(beta);
+	await page.keyboard.press('Escape');
 	const betaPages = new RegExp(`/projects/${beta}/harness/branch/main/pages$`);
 	await expect(page).toHaveURL(betaPages);
 	await page.waitForTimeout(900);

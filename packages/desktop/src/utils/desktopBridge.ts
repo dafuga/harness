@@ -1,3 +1,4 @@
+import { DeploymentService } from '../services/DeploymentService';
 import { ProjectImageCacheService } from '../services/ProjectImageCacheService';
 import { ProjectOperationsService } from '../services/ProjectOperationsService';
 import { RecordedEvidenceService } from '../services/RecordedEvidenceService';
@@ -47,11 +48,8 @@ async function create(context: BridgeContext, input: Parameters<DesktopBridge['c
 		revision = await p.source.revision({ branch: p.revision.branch, commit: null });
 	return p.catalog.entity(plan.id, revision.commit);
 }
-export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRunEvent'> {
-	const { session, providers, runs, choose } = context;
-	const operations = new ProjectOperationsService(session);
-	const recorded = new RecordedEvidenceService(session);
-	const bridge: Omit<DesktopBridge, 'onRunEvent'> = {
+function authentication(session: ProjectSessionService) {
+	return {
 		hostedStatus: () =>
 			session.auth?.status() ?? Promise.resolve({ configured: false, state: 'signed-out' }),
 		connectHosted: async () => {
@@ -59,7 +57,19 @@ export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRu
 			return session.auth.connect();
 		},
 		disconnectHosted: () =>
-			session.auth?.disconnect() ?? Promise.resolve({ configured: false, state: 'signed-out' }),
+			session.auth?.disconnect() ?? Promise.resolve({ configured: false, state: 'signed-out' })
+	};
+}
+export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRunEvent'> {
+	const { session, providers, runs, choose } = context;
+	const operations = new ProjectOperationsService(session);
+	const deployments = new DeploymentService(session);
+	const recorded = new RecordedEvidenceService(session);
+	const bridge: Omit<DesktopBridge, 'onRunEvent'> = {
+		deploymentStatus: (input) => deployments.status(input),
+		planDeployment: (input) => deployments.plan(input),
+		deploy: (input) => deployments.deploy(input),
+		...authentication(session),
 		listProjects: () => operations.listProjects(),
 		selectProject: (input) => operations.selectProject(input),
 		capabilities: (input) => operations.capabilities(input),

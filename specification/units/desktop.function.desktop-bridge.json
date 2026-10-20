@@ -38,6 +38,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.service.deployment",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.service.desktop-run",
 			"via": "import",
 			"origin": "derived"

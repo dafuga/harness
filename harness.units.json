@@ -284,6 +284,12 @@
 			"specifier": "../../../../src/core/browserDiagnostics",
 			"to": "src/core/browserDiagnostics.ts",
 			"reason": "Hosted evidence validates the same recorded browser diagnostic contract as the verification runner."
+		},
+		{
+			"from": "packages/desktop/src/components/EnvironmentPicker.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "Environment selection reuses the shared keyboard and value selection control."
 		}
 	]
 }

@@ -45,6 +45,9 @@ export const commentMethods = ['addComment', 'openThread'] as const;
 export const agentMethods = ['createPlan', 'approve', 'startRun', 'cancelRun'] as const;
 /** Never available to a remote device: folders and hosted credentials stay on the computer. */
 export const localMethods = [
+	'deploymentStatus',
+	'planDeployment',
+	'deploy',
 	'openProject',
 	'selectProject',
 	'hostedStatus',
@@ -89,6 +92,8 @@ export const projectlessMethods: readonly RemoteMethod[] = [
 export const mutationMethods: readonly RemoteMethod[] = [
 	...commentMethods,
 	...agentMethods,
+	'deploy',
+	'planDeployment',
 	'openProject',
 	'selectProject',
 	'connectHosted',

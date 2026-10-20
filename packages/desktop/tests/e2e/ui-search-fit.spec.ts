@@ -23,7 +23,9 @@ const bar = (page: Page) => page.getByRole('banner');
 const field = (page: Page) =>
 	bar(page).getByRole('combobox', { name: 'Search entities', exact: true });
 const revision = (page: Page) =>
-	['Branch', 'Commit'].map((name) => bar(page).getByRole('combobox', { name, exact: true }));
+	['Branch', 'Commit'].map((name) =>
+		bar(page).getByRole('button', { name: `Choose ${name.toLowerCase()}`, exact: true })
+	);
 const found = (page: Page) => page.getByRole('listbox', { name: 'Entities found', exact: true });
 const box = async (locator: Locator): Promise<Box> => (await locator.boundingBox())!;
 /** Whether two boxes share a pixel, the first with a ring of `ring` pixels around it. */

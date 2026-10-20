@@ -5,6 +5,8 @@
 	import type { Snippet } from 'svelte';
 	import { categories } from '../models/Desktop.types';
 	import type { Workspace } from '../lib/stores/workspace.svelte';
+	import DeploymentDialog from './DeploymentDialog.svelte';
+	import EnvironmentPicker from './EnvironmentPicker.svelte';
 	import Icon from './Icon.svelte';
 	import ProjectSwitcher from './ProjectSwitcher.svelte';
 	import RevisionPicker from './RevisionPicker.svelte';
@@ -18,7 +20,7 @@
 	const settings = $derived(`/settings?from=${encodeURIComponent(workspace.path())}`);
 </script>
 
-<header class="topbar">
+<header class="topbar" class:with-account={!!account}>
 	<WorkspaceLink {workspace} to={workspace.path('pages')} class="brand"
 		><span class="brand-mark"><BrandMark /></span> Harness</WorkspaceLink
 	>
@@ -33,6 +35,7 @@
 			>{/each}
 	</nav>
 	<RevisionPicker {workspace} />
+	<EnvironmentPicker {workspace}><DeploymentDialog {workspace} /></EnvironmentPicker>
 	<div class="topbar-search">
 		<EntitySearch
 			entries={search.entries}
@@ -69,18 +72,129 @@
 		border-radius: 8px;
 		color: inherit;
 	}
-	.topbar-settings:hover {
+	.topbar-settings:hover,
+	.topbar :global(.agent-icon:hover:not(:disabled)) {
 		color: var(--gold);
 		border-color: var(--gold);
 	}
-	/* One row: the gaps start at their least, giving the search back the room of the settings,
-	   and meet the bar's own near 1650px, where the search has room to spare. */
-	@media (min-width: 1410px) {
-		.topbar:has(.topbar-settings) {
-			column-gap: clamp(10px, 3.4vw - 38px, 22px);
+	/* Project, branch, commit and Deploy are icons of one size; their pickers open as dialogs. */
+	.topbar :global(.agent-icon) {
+		display: inline-grid;
+		place-items: center;
+		flex: none;
+		width: 34px;
+		height: 34px;
+		padding: 0;
+	}
+	/* From a tablet up the bar is a grid of deliberate rows, so no control wraps alone: the brand,
+	   project, revision, environment and account share the first; the categories and the search
+	   share the last in one area, so neither is sized by a column above. The search has what the
+	   six categories (6 × 86px) and a reserve leave it, within its bounds. */
+	@media (min-width: 561px) {
+		header.topbar {
+			--search: clamp(168px, 100% - 540px, 468px);
+			display: grid;
+			grid-template:
+				'brand project . revision environment' auto
+				'tools tools tools tools tools' auto
+				/ auto minmax(0, max-content) 1fr minmax(0, max-content) auto;
+			gap: 8px 16px;
+			padding: 12px 26px 0;
 		}
-		.topbar-search:has(.topbar-settings) {
-			max-width: 388px;
+		header.topbar.with-account {
+			grid-template:
+				'brand project . revision environment account' auto
+				'tools tools tools tools tools tools' auto
+				/ auto minmax(0, max-content) 1fr minmax(0, max-content) auto auto;
+		}
+		.topbar :global(.brand) {
+			grid-area: brand;
+		}
+		.topbar :global(.project-switcher) {
+			grid-area: project;
+		}
+		.topbar :global(.revision-picker) {
+			grid-area: revision;
+			margin-left: 0;
+		}
+		.topbar :global(.environment-picker) {
+			grid-area: environment;
+			justify-self: end;
+		}
+		.account {
+			grid-area: account;
+		}
+		/* The categories are tabs on the bar's bottom edge. */
+		.topbar nav {
+			grid-area: tools;
+			justify-self: start;
+			justify-content: flex-start;
+			width: auto;
+			height: 58px;
+		}
+		.topbar-search {
+			grid-area: tools;
+			justify-self: end;
+			width: var(--search);
+			max-width: none;
+			padding-bottom: 0;
+		}
+		.topbar-search :global(.entity-search) {
+			max-width: none;
+		}
+	}
+	/* Where the account (or, under 900px, the revision) has no room beside the project, the revision
+	   and environment take a row of their own, the environment under the account. */
+	@media (min-width: 561px) and (max-width: 1250px) {
+		header.topbar.with-account {
+			grid-template:
+				'brand project . account' auto
+				'revision revision revision environment' auto
+				'tools tools tools tools' auto
+				/ auto minmax(0, max-content) 1fr auto;
+		}
+		.with-account :global(.revision-picker) {
+			border-left: 0;
+			padding-left: 0;
+		}
+	}
+	@media (min-width: 561px) and (max-width: 900px) {
+		header.topbar {
+			grid-template:
+				'brand project . account' auto
+				'revision revision revision environment' auto
+				'tools tools tools tools' auto
+				/ auto minmax(0, max-content) 1fr auto;
+		}
+		.topbar :global(.revision-picker) {
+			border-left: 0;
+			padding-left: 0;
+		}
+	}
+	/* Narrower still, the search takes that row and the categories end the bar under it. */
+	@media (min-width: 561px) and (max-width: 760px) {
+		.topbar nav {
+			grid-area: 4 / 1 / 5 / -1;
+		}
+		.topbar-search {
+			width: 100%;
+		}
+	}
+	/* Wide enough, a bar without an account is one row, the categories after the project. */
+	@media (min-width: 1800px) {
+		header.topbar:not(.with-account) {
+			grid-template:
+				'brand project tools . revision environment search' auto
+				/ auto minmax(0, max-content) auto 1fr max-content auto minmax(168px, 388px);
+			column-gap: 22px;
+			padding: 0 26px;
+		}
+		.topbar:not(.with-account) nav {
+			height: auto;
+		}
+		.topbar:not(.with-account) .topbar-search {
+			grid-area: search;
+			width: 100%;
 		}
 	}
 </style>

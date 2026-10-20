@@ -1,3 +1,4 @@
+import { prepareChangeEnvironment } from './promoteChange';
 import { randomUUID } from 'node:crypto';
 import type { ProjectSessionService } from '../services/ProjectSessionService';
 import type { ProviderDiscoveryService } from '../services/ProviderDiscoveryService';
@@ -30,6 +31,7 @@ export async function prepareRun(
 	request: RunRequest,
 	controller: AbortController
 ): Promise<RunContext> {
+	await prepareChangeEnvironment(preparation.session, request);
 	const project = await preparation.session.mutable(),
 		entity = await project.catalog.entity(request.entityId, project.revision.commit);
 	const runner = await preparation.providers.select(

@@ -65,6 +65,7 @@ export interface CommitInfo {
 	hash: string;
 	subject: string;
 	authoredAt: string;
+	committedAt?: string;
 }
 
 export interface Revision {

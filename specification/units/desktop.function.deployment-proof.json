@@ -1,0 +1,107 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.deployment-proof",
+	"kind": "function",
+	"title": "deploymentProof",
+	"responsibility": "Owns the deploymentProof shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/deploymentProof.ts"],
+		"symbols": ["deploymentProof", "deploymentBlockers", "deploymentHealth", "deploymentCurrent"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "deploymentProof.config",
+				"type": "DeploymentConfig"
+			},
+			{
+				"name": "deploymentBlockers.root",
+				"type": "string"
+			},
+			{
+				"name": "deploymentBlockers.query",
+				"type": "{ commit: string; environment: DeploymentEnvironment }"
+			},
+			{
+				"name": "deploymentBlockers.config",
+				"type": "DeploymentConfig"
+			},
+			{
+				"name": "deploymentHealth.target",
+				"type": "CloudflareTarget"
+			},
+			{
+				"name": "deploymentCurrent.root",
+				"type": "string"
+			},
+			{
+				"name": "deploymentCurrent.plan",
+				"type": "DeploymentPlan"
+			},
+			{
+				"name": "deploymentCurrent.guard",
+				"type": "{ plugin: DeploymentPlugin; fingerprint: string; phase?: string }"
+			}
+		],
+		"outputs": [
+			{
+				"name": "deploymentProof",
+				"type": "string"
+			},
+			{
+				"name": "deploymentBlockers",
+				"type": "unknown"
+			},
+			{
+				"name": "deploymentHealth",
+				"type": "Promise<boolean>"
+			},
+			{
+				"name": "deploymentCurrent",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.deployment-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.git-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.deployment-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/deploymentProof.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/deploymentProof.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
