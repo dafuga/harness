@@ -1,3 +1,4 @@
+import { execFileSync } from 'node:child_process';
 import { mkdir } from 'node:fs/promises';
 await mkdir('dist', { recursive: true });
 for (const [entry, out] of [
@@ -14,4 +15,5 @@ for (const [entry, out] of [
 		sourcemap: 'external'
 	});
 	if (!result.success) throw new Error(result.logs.map(String).join('\n'));
+	execFileSync('node', ['--check', 'dist/' + out], { stdio: 'inherit' });
 }

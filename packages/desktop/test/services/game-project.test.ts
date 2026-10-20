@@ -1,4 +1,4 @@
-import { expect, test } from 'vitest';
+import { expect, test, vi } from 'vitest';
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fixture, git } from '../project-fixture';
@@ -89,4 +89,30 @@ test('AI preview fails closed before credential access without a safe transport'
 			seconds: 10
 		})
 	).rejects.toThrow('credential-safe provider transport');
+});
+
+test('prepared token minting uses only the server HTTP endpoint with bounded header-auth requests', async () => {
+	const { root, session } = await fixture();
+	await writeFile(join(root, '.gitignore'), '.env.local\n');
+	await writeFile(join(root, '.env.local'), 'HARNESS_GAME_DECART_API_KEY=synthetic-decart-key\n');
+	const send = vi.fn(
+		async () =>
+			new Response(JSON.stringify({ apiKey: 'synthetic-ephemeral', expiresAt: '2099-01-01' }))
+	);
+	const service = new GameRenderService(session, () => true, send);
+	const result = await service.start({
+		projectId: session.projectId!,
+		model: 'lucy-restyle-2',
+		fast: false,
+		seconds: 10
+	});
+	expect(result.apiKey).toBe('synthetic-ephemeral');
+	const [url, options] = send.mock.calls[0] as unknown as [string, RequestInit];
+	expect(url).toBe('https://api.decart.ai/v1/client/tokens');
+	expect(options.headers).toMatchObject({ 'X-API-KEY': 'synthetic-decart-key' });
+	expect(options.redirect).toBe('error');
+	expect(JSON.parse(String(options.body))).toMatchObject({
+		expiresIn: 60,
+		constraints: { realtime: { maxSessionDuration: 10 } }
+	});
 });

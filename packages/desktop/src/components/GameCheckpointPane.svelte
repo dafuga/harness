@@ -23,7 +23,6 @@
 </script>
 
 <div class="pane">
-	<GameCheckpointEditor checkpoint={context.checkpoint} {readonly} {change} />
 	<GameCheckpointImage
 		checkpoint={context.checkpoint}
 		view={context.view}
@@ -35,6 +34,7 @@
 		{readonly}
 		change={(patch) => change({ ...context.checkpoint, ...patch })}
 	/>
+	<GameCheckpointEditor checkpoint={context.checkpoint} {readonly} {change} />
 </div>
 
 <style>

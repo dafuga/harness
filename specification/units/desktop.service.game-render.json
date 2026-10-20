@@ -22,6 +22,10 @@
 				"type": "unknown"
 			},
 			{
+				"name": "GameRenderService.constructor.send",
+				"type": "(url: string, options: RequestInit) => Promise<Response>"
+			},
+			{
 				"name": "GameRenderService.start.input",
 				"type": "RenderSessionRequest"
 			}
