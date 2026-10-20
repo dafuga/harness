@@ -12,7 +12,7 @@ test.each(['current', 'commit'] as const)(
 		const body = screen(ExplorerCatalogScreen, mode, { category: 'models' }, { head });
 		const card = /<article\b.*?<\/article>/s.exec(body)?.[0] ?? '';
 		expect(count(body, /<article\b/g)).toBe(1);
-		expect(card).toContain('<code>Order</code>');
+		expect(card).toMatch(/<code[^>]*>Order<\/code>/);
 		expect(words(card)).toContain('Used In');
 		for (const consumer of ['Order list', 'Order store']) expect(words(card)).toContain(consumer);
 		expect(card).not.toMatch(/<h2|<p\b|<svg|<button|ex-pill|hx-verdict/);
