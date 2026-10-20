@@ -7,6 +7,7 @@ import type { EntityDetail } from '../../../../../desktop/src/models/Desktop.typ
 import { ids, commits } from './explorerData';
 import { stamp } from './shared';
 import { desktopData } from './sealedData';
+import { deploymentBridge } from './deployments';
 export const providers = [
 	{
 		id: 'codex',
@@ -97,6 +98,7 @@ export function createDesktopData(id: string) {
 }
 function desktopBridge(entity: EntityDetail): DesktopBridge {
 	return {
+		...deploymentBridge,
 		providers: async () => providers,
 		onRunEvent: () => () => {},
 		onCacheStatus: () => () => {},

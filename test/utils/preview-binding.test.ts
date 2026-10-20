@@ -91,6 +91,15 @@ test('registered visual previews bind their own required state and every compone
 		if (!['page', 'component'].includes(unit.kind) || unit.status !== 'active') continue;
 		problems.push(...previewBinding(unit, scenarios));
 		if (!unit.preview) continue;
+		const scenario = scenarios.find((scenario) => scenario.id === unit.preview!.scenario);
+		for (const viewport of scenario?.viewports ?? []) {
+			problems.push(
+				...previewBinding(
+					{ ...unit, preview: { ...unit.preview, viewport: viewport.id } },
+					scenarios
+				)
+			);
+		}
 		const stored = revisionRegistry([unit], scenarios).units[0];
 		expect(stored, `${unit.id} preview must bind its own page state`).toHaveProperty(
 			'preview',
