@@ -21,10 +21,9 @@
 		mediaBase: string;
 		verification?: boolean;
 	} = $props();
-	let visual = $derived(category === 'pages' || category === 'components');
 </script>
 
-{#if visual || category === 'functions'}
+{#if category === 'pages' || category === 'components' || category === 'functions'}
 	<div class={category === 'pages' ? 'ex-page-grid' : 'ex-catalog-grid'}>
 		{#each rows as row (row.id)}
 			{#if category === 'pages' || category === 'components'}
