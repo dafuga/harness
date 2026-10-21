@@ -9,7 +9,8 @@ import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { homedir, tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { capture, launch, imageProvider, recordRuntime } from './game-native-fixture';
+import { capture, launch, imageProvider } from './game-native-fixture';
+import { beginGameFlow, recordRuntime } from './game-runtime-fixture';
 import { nativeImageFixture } from './native-image-fixture';
 import type { GameDocument } from '../../../game/src/models/Game.types';
 test.setTimeout(120_000);
@@ -172,6 +173,7 @@ for (const { dimension, viewport } of ['2d', '3d'].flatMap((dimension) =>
 			browserErrors.watch(app.context());
 			const page = await app.firstWindow();
 			await page.setViewportSize(viewport);
+			beginGameFlow(page);
 			await test.step('Create a game', () => create(page, name, dimension));
 			await imageProvider(root);
 			await test.step('Author rules and image', () => author(page, dimension));

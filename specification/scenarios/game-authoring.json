@@ -323,6 +323,30 @@
 			],
 			"viewports": [],
 			"required": true
+		},
+		{
+			"id": "game-authoring-components",
+			"kind": "benchmark",
+			"states": [
+				"2d-creation",
+				"2d-mechanics",
+				"2d-fit-graph",
+				"2d-saved",
+				"2d-reopened",
+				"2d-play",
+				"2d-history",
+				"3d-creation",
+				"3d-mechanics",
+				"3d-fit-graph",
+				"3d-saved",
+				"3d-reopened",
+				"3d-play",
+				"3d-history",
+				"2d-trace",
+				"3d-trace"
+			],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"required": true
 		}
 	]
 }

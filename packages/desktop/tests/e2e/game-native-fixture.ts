@@ -6,12 +6,12 @@ import {
 	type Page,
 	type ElectronApplication
 } from '../../../../test/support/browserTest';
-import { mkdir, writeFile, appendFile } from 'node:fs/promises';
+import { writeFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
-import { execFileSync } from 'node:child_process';
 import { join, resolve, basename } from 'node:path';
 import { mkdirSync, appendFileSync } from 'node:fs';
 import { nativeImageFixture } from './native-image-fixture';
+import { recordGameState } from './game-runtime-fixture';
 const binary = createRequire(import.meta.url)('electron') as string;
 const desktop = resolve(import.meta.dirname, '../..');
 export async function capture(page: Page, state: string) {
@@ -20,6 +20,7 @@ export async function capture(page: Page, state: string) {
 		await document.fonts.ready;
 		await Promise.all([...document.images].map((image) => image.decode()));
 	});
+	await recordGameState(page, state);
 	await page.mouse.move(0, 0);
 	if (process.env.HARNESS_EVIDENCE_DIR) {
 		const size = page.viewportSize(),
@@ -99,84 +100,6 @@ export async function imageProvider(root: string) {
 		'HARNESS_GAME_OPENAI_API_KEY=synthetic-game-test-key\n',
 		{ mode: 0o600 }
 	);
-}
-
-export async function recordRuntime(page: Page, started: number, dimension: string) {
-	const elapsedMs = performance.now() - started;
-	const cdp = await page.context().newCDPSession(page);
-	const heap = await cdp.send('Runtime.getHeapUsage');
-	await cdp.detach();
-	const viewport = scenario.viewports.find((v) => v.width === page.viewportSize()?.width)?.id;
-	if (viewport) recordGameRuntime({ dimension, viewport, elapsedMs, heap: heap.usedSize });
-	const directory = resolve(desktop, '../../.cache/game-authoring-evidence');
-	await mkdir(directory, { recursive: true });
-	await appendFile(
-		join(directory, 'runtime.ndjson'),
-		JSON.stringify({
-			revision:
-				process.env.HARNESS_VERIFY_REVISION ??
-				execFileSync('git', ['rev-parse', 'HEAD'], {
-					cwd: desktop,
-					encoding: 'utf8'
-				}).trim(),
-			dimension,
-			viewport: page.viewportSize(),
-			workload: 'Native page reload to saved game and ready canvas',
-			elapsedMs,
-			pageHeapBytes: heap.usedSize,
-			memoryScope: 'Whole renderer V8 heap; excludes GPU and main process'
-		}) + '\n'
-	);
-}
-
-function recordGameRuntime({
-	dimension,
-	viewport,
-	elapsedMs,
-	heap
-}: {
-	dimension: string;
-	viewport: string;
-	elapsedMs: number;
-	heap: number;
-}) {
-	if (process.env.HARNESS_EVIDENCE_DIR)
-		recordCapture(
-			{
-				evidence: 'game-native-runtime',
-				kind: 'benchmark',
-				state: dimension + '-reopened',
-				viewport,
-				file: `game-native-runtime-${dimension}-${viewport}.json`,
-				mediaType: 'application/json'
-			},
-			JSON.stringify({
-				measurements: [
-					{
-						unit: 'desktop.page.game',
-						metric: 'native-page-ready-ms',
-						unitOfMeasure: 'ms',
-						value: elapsedMs,
-						workload: `saved-${dimension}-${viewport}`,
-						target: 'process',
-						samples: 1,
-						method:
-							'Wall time from reload through saved game and ready canvas, including Electron IPC and shared code; not isolated component timing.'
-					},
-					{
-						unit: 'desktop.page.game',
-						metric: 'renderer-js-heap-bytes',
-						unitOfMeasure: 'bytes',
-						value: heap,
-						workload: `saved-${dimension}-${viewport}`,
-						target: 'process',
-						samples: 1,
-						method:
-							'Chromium Runtime.getHeapUsage after the ready canvas; whole renderer JavaScript heap, excluding GPU and main process, not isolated component memory.'
-					}
-				]
-			})
-		);
 }
 
 /** Keep native exit/crash diagnostics after disposable profiles are removed. */
