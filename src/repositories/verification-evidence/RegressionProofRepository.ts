@@ -2,7 +2,12 @@ import { EvidenceTreeAdapter } from '../../adapters/verification-evidence/Eviden
 import { evidenceRef, type HistoryNote } from '../../core/git-source-history/historyTypes';
 import { fail } from '../../core/development-tooling/errors';
 import type { RegressionRecord } from '../../core/verification-evidence/regressionTypes';
-import { readRegression, regressionHash } from '../../utils/git-source-history/regressionHistory';
+import {
+	readRegression,
+	regressionHash,
+	regressionHistory
+} from '../../utils/git-source-history/regressionHistory';
+import type { MediaPlacer } from '../../utils/development-tooling/mediaPlace';
 import { canonicalJson } from '../../utils/development-tooling/canonicalJson';
 import { sourceArchiveRef } from '../../utils/git-source-history/historyRefs';
 import type { ReadNote } from '../../utils/git-source-history/note-lines/noteCommit';
@@ -17,6 +22,33 @@ export class RegressionProofRepository {
 		private readonly root: string,
 		private readonly within?: string | null
 	) {}
+
+	/** Squash commits may reuse sealed pixels only when their entire source trees are identical. */
+	async history(commit: string, notes: Map<string, ReadNote>, media: MediaPlacer) {
+		const git = new EvidenceTreeAdapter(this.root).git;
+		const target = await git.run(['rev-parse', `${commit}^{tree}`]);
+		const candidates = [
+			...new Set(
+				regressionNotes(notes)
+					.filter((note) => note.phase === 'green' && note.commit !== commit)
+					.map((note) => note.commit)
+			)
+		];
+		const trees = candidates.length
+			? (
+					await git.run(['cat-file', '--batch-check=%(objectname) %(objecttype)'], {
+						input: candidates.map((id) => `${id}^{tree}\n`).join('')
+					})
+				).split('\n')
+			: [];
+		const identical = candidates.filter((_, index) => trees[index] === `${target} tree`);
+		const origins = [commit, ...identical];
+		return (
+			await Promise.all(
+				origins.map((origin) => regressionHistory(origin, notes, this.load.bind(this), media))
+			)
+		).flat();
+	}
 
 	async save(
 		record: RegressionRecord,

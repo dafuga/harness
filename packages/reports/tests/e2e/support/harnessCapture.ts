@@ -131,7 +131,8 @@ export async function captureScreen(
 		requested(directory)
 	);
 	keep(file, bytes);
-	await pageBenchmark(page, `${state}-${viewport.id}`, pageUnit(page.url()));
+	if (directory === evidenceDirectory)
+		await pageBenchmark(page, `${state}-${viewport.id}`, pageUnit(page.url()));
 }
 
 /**

@@ -113,6 +113,7 @@ async function regressionPoint(loaded: Loaded, media?: MediaPlacer): Promise<Reg
 	);
 	return {
 		commit: record.source.commit,
+		sourceTree: record.source.tree,
 		id: record.id,
 		status: record.status,
 		command: record.command,

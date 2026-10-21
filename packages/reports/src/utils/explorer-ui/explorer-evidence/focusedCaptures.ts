@@ -1,17 +1,26 @@
 import type { ExplorerCapture, ExplorerSide } from '../../../models/Explorer.types';
 import type { HarnessRevision, HarnessScenario } from '../../../models/Harness.types';
 
-/** @pure Select stored, source-bound focused images of exactly this unit and commit. */
+/** @pure Select this unit's stored images from the same commit or an identical whole source tree. */
 export function focusedCaptures(detail: HarnessRevision, unit: string): ExplorerCapture[] {
 	const points = (detail.regressions ?? [])
 		.flatMap((run) =>
 			[run.green, run.red]
-				.filter((point) => point?.commit === detail.commit)
+				.filter(
+					(point) =>
+						point &&
+						(point.commit === detail.commit ||
+							(point.sourceTree && detail.side === `sides/${point.sourceTree}.json`))
+				)
 				.map((point) => ({ loop: run.loop, point: point! }))
 		)
 		.sort((a, b) => b.point.finishedAt.localeCompare(a.point.finishedAt));
-	const found = points.flatMap(({ loop, point }) =>
-		(point.captures ?? []).flatMap((item): ExplorerCapture[] => {
+	const found = points.flatMap(({ loop, point }) => {
+		const origin = {
+			current: point.commit === detail.commit,
+			inheritedFrom: point.commit === detail.commit ? null : point.commit
+		};
+		return (point.captures ?? []).flatMap((item): ExplorerCapture[] => {
 			const capture = item.capture;
 			if (
 				item.unit !== unit ||
@@ -19,7 +28,7 @@ export function focusedCaptures(detail: HarnessRevision, unit: string): Explorer
 				capture.status !== 'passed' ||
 				!capture.media ||
 				capture.provenance !== 'actual-capture' ||
-				capture.server?.revision !== detail.commit ||
+				capture.server?.revision !== point.commit ||
 				!capture.server.buildId
 			)
 				return [];
@@ -30,13 +39,12 @@ export function focusedCaptures(detail: HarnessRevision, unit: string): Explorer
 					capture,
 					standing: 'unvalidated',
 					usable: true,
-					current: true,
-					inheritedFrom: null,
+					...origin,
 					focused: { loop, status: point.status, record: point.id ?? '', viewport: item.viewport }
 				}
 			];
-		})
-	);
+		});
+	});
 	return found.filter(
 		(item, index) =>
 			found.findIndex(

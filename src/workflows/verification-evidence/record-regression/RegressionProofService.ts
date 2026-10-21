@@ -97,7 +97,7 @@ function checkResult(
 	if (invalidExecution(result))
 		fail('A timeout, missing executable or unfinished process is not regression proof.');
 	if (input.phase === 'green' && result.status !== 'passed')
-		fail('The unchanged regression must pass on the fix commit.');
+		fail(`The unchanged regression must pass on the fix commit.\n${output.slice(-8000)}`);
 	if (input.phase === 'red' && (result.exitCode === 0 || !output.includes(input.assertion)))
 		fail(
 			'The committed failing test must fail with the named assertion; setup errors do not prove the defect.'
