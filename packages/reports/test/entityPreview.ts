@@ -137,7 +137,12 @@ if (variant === 'console') {
 			const data = Object.entries(stored).find(([commit]) =>
 				path.endsWith(`/revisions/${commit}.json`)
 			)?.[1];
-			return data ? Promise.resolve(Response.json(withScale(data))) : fetcher(input, init);
+			if (!data) return fetcher(input, init);
+			const scaled = withScale(data);
+			const units = scaled.registry.units.map((unit) =>
+				unit.id === ids.filter ? callableFixture(unit) : unit
+			);
+			return Promise.resolve(Response.json({ ...scaled, registry: { ...scaled.registry, units } }));
 		},
 		fetcher
 	);

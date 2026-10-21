@@ -49,7 +49,7 @@ async function reviewConsoleAddress(page: Page, commit: string | null, viewport:
 		{
 			category: 'functions',
 			entity: 'app.function.filter-orders',
-			helper: 'filterOrders',
+			helper: 'toKebabCase',
 			commit,
 			tab: 'contract'
 		},
@@ -58,14 +58,31 @@ async function reviewConsoleAddress(page: Page, commit: string | null, viewport:
 	await expect(
 		page.getByRole('heading', { level: 1 }),
 		'the real console resolves callable addresses'
-	).toHaveText('filterOrders');
+	).toHaveText('toKebabCase');
 	await capture(page, `callable-console-${commit ? 'commit' : 'tip'}-${viewport}`);
 	await expect(
 		page,
 		'Readable helper URL without internal module ids or query selectors'
-	).toHaveURL(/\/helpers\/filterOrders\/contract$/);
+	).toHaveURL(/\/helpers\/toKebabCase\/contract$/);
 	await page.getByRole('tab', { name: 'Examples', exact: true }).click();
-	await expect(page).toHaveURL(/\/helpers\/filterOrders\/examples$/);
+	await expect(page).toHaveURL(/\/helpers\/toKebabCase\/examples$/);
+	await page.reload();
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText('toKebabCase');
+
+	await open(
+		page,
+		{
+			category: 'functions',
+			entity: 'function.generated-0',
+			helper: 'filterOrders',
+			commit,
+			tab: 'contract'
+		},
+		'console'
+	);
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText('filterOrders');
+	await capture(page, `callable-qualified-${commit ? 'commit' : 'tip'}-${viewport}`);
+	await expect(page).toHaveURL(/\/helpers\/filterOrders\/in\/function.generated-0\/contract$/);
 	await page.reload();
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText('filterOrders');
 }
