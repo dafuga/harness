@@ -2,7 +2,7 @@
 	"name": "compact-capture-headers",
 	"goal": "Comparison cards show revision identity without capture labels or duplicate full-size controls; clicking images still opens them.",
 	"createdAt": "2026-10-21T18:31:06.659Z",
-	"updatedAt": "2026-10-21T20:25:46.218Z",
+	"updatedAt": "2026-10-21T20:31:50.581Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T20:31:50.581Z",
+			"evidence": "Record 8db84cb1 at ca66f810 passes the unchanged 11 render, 10 responsive browser and 3 canonical route cases against main 9fb0505e. It retains 165 screenshots and 398 runtime observations."
 		},
 		{
 			"id": "verify",
