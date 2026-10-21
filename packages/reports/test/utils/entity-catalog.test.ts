@@ -10,7 +10,6 @@ import { privateServiceUsers } from '../entityPreviewHelpers';
 import { invalidServiceClasses, serviceMetadata, admission } from '../entityClassFixtures';
 import { commits, ids } from '../entityUnits';
 const head = revision(commits.middle, [record(commits.middle)]);
-// The same commit with the empty state of the page never captured.
 const partial = revision(commits.middle, [record(commits.middle, false)]);
 const rows = (category: Parameters<typeof entityCatalog>[1], detail = head) =>
 	entityCatalog(explorerEntities(detail), category, (id) => explorerRelations(detail, id));

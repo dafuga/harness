@@ -2,7 +2,7 @@
 	"name": "shared-service-classes",
 	"goal": "Services lists shared instantiated classes with multiple instance methods and canonical PascalCase names, excluding functions, objects and static namespaces",
 	"createdAt": "2026-10-21T08:51:48.972Z",
-	"updatedAt": "2026-10-21T09:38:05.317Z",
+	"updatedAt": "2026-10-21T10:06:25.231Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -46,12 +46,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T10:06:24.014Z",
+			"evidence": "Final immutable pair uses frozen tests at 7810abb0 and fix cb567550: red ed07f16548821895054463f1512fe2910a1b3f6ed118698a012617322b5c2101; green 05c5793c0934ebd503787ae656a80f34fa6be9ec1da5d6430dbfc3beb0d334a1. One persistent workflow process preserves the full environment gate; 113 unit cases and three responsive current/history browser cases pass."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T10:06:25.231Z",
+			"evidence": "Isolated cb567550 fixture with original helperReferences and entityCatalog produces actual class-proof and catalog assertion failures. Restoring exact cb567550 bytes passes all 52 root and nine catalog cases. Normal tests remain unchanged in the preserved pair."
 		},
 		{
 			"id": "verify",

@@ -29,7 +29,7 @@ Strengthen those normal source and UI scenarios with a reusable declaration/refe
 
 ## Verification
 
-Pending fresh regression, browser, source responsibility review and broad checks. Prior 57c67724 has 81 entries: 68 class declarations and 13 non-class entries. Prior broad verification failures remain historical evidence, not current proof.
+The implementation and local browser are verified at cb5675504d9c08c3b0d20f2810a4389c6b9e456f. Full verification remains open because the required root check stops at existing entityMeasure/entityShown ownership fingerprint drift. The feature report remains active, blocked and unpublished.
 
 ## Current implementation and review
 
@@ -54,11 +54,26 @@ These internal functions have no standalone shared-helper catalog/History pages.
 
 AGENTS.md and the project-local Harness skill are guidance artifacts with no explorer page. The existing card component is checked, not edited. The migration ledger records only the two legitimate metadata-definition changes; unrelated entityMeasure/entityShown drift remains unaccepted.
 
-## Proof checkpoints
+## Final proof and limitations
 
-- Initial test-only checkpoint 9d64d930 and red e1e62a2606afed01c2c12d93e19339d01b9e23d95919c8fc55fb6ebc4812002e remain preserved.
-- Final test-only checkpoint 7810abb052ac197d9d5a6c3c1527ce6da3382750 includes normal array admission with own iterators, species and getters. Red 08ce4eba3eeee7e191747585bcc3fbc7dffb7ba274e0bbcd85d7e6faeb32c2f2 has 15 root assertion failures, one catalog failure and three responsive browser failures, with all ten Desktop cases passing.
-- Reports normal unit suite: 620 passed. Root/Reports type checks and lint pass. The final catalog suite passes all nine cases, including collection admission.
-- Required root check initially had 908 passed, four failed, 25 skipped. Registry metadata caused three failures and has been repaired: all 13 normal shared-reference checks and units check now pass (1309 units, 63 explicit uncertain references). Existing ownership fingerprint drift remains; final broad rerun is pending.
-- Fresh Jev advisory review is incomplete because the manual command has no project-dedicated HARNESS_JEV_API_KEY. No clean verdict is claimed; startup advisory uncertainty is not cleared by deterministic tests.
-- Final immutable green, isolated reintroduction guard and rebuilt browser screenshots are pending at this checkpoint. Keep full verification and report publication open while required checks are blocked.
+- Product fix: cb5675504d9c08c3b0d20f2810a4389c6b9e456f, `fix: catalog source-proven shared service classes`.
+- Test-only checkpoint: 7810abb052ac197d9d5a6c3c1527ce6da3382750. Final paired red: ed07f16548821895054463f1512fe2910a1b3f6ed118698a012617322b5c2101. Green: 05c5793c0934ebd503787ae656a80f34fa6be9ec1da5d6430dbfc3beb0d334a1. Both run the same frozen tests, fixtures, command and environment. The persistent existing workflow API preserves the full environment gate. Earlier failing checkpoints remain in Git evidence.
+- Paired verification: 52 root, 51 Reports and 10 Desktop unit cases pass, plus desktop/tablet/mobile current/history browser scenarios. Normal array admission covers own iterators, indexed getters and species without a JSON round trip.
+- The isolated guard rejects the original class parser and catalog with actual assertion failures. Restoring exact product-fix source passes 52 root and nine catalog cases.
+- Normal Reports suite: 620 passed across 157 files. CLI/history/generated-project integration: nine passed. Root and Reports type checks/lint, app/embedded builds, all three workspace structure audits and units check pass. Registry: 1309 units, 63 explicitly uncertain references.
+- A comment-only follow-up removes a redundant test comment to meet the audit's newline-inclusive 220-line count. Assertions and fixtures are unchanged; its nine normal catalog cases and Reports audit pass. The immutable paired proof remains pinned to the product fix and its original unchanged tests.
+- Final required `bun run check` at the product fix: 911 passed, one failed, 25 skipped across 219 files. The remaining failure is existing entityMeasure/entityShown ownership-definition drift. Later full-check stages were not reached. Independently run Reports builds, unit tests and relevant CLI/history integration are reported above; no full-green claim.
+- The native app is not modified. Ten shared Desktop cases pass in the pair; native package broad checks and device deployment were not rerun. Earlier native verification gaps are not claimed resolved.
+- Fresh Jev advisory review is incomplete: no project-dedicated HARNESS_JEV_API_KEY is available to the manual command. No Clean Code clearance or provider duplication judgment is claimed. The responsibility assessment above is a bounded manual source review.
+
+## Browser and measurements
+
+The inspected local preview is [Services at the verified fix](http://127.0.0.1:5734/harness/branch/dafuga%2Fservice-cards/services). Health identifies source cb567550 and immutable build 5f88751c3884fa046e8462d2a0763e022a23fe4a3b9287580d2bb43216f28b5a. The real page has 52 capitalized class cards, at least two usage links each and zero recorded browser errors. AnalyticsRepository opens its class contract and consumer links; analyticsRecord remains a workflow and returns no class-card search result.
+
+[Final inspected screenshot](/Users/danielfugere/.codex/visualizations/2026/10/20/01a159e9-1136-7bf0-b6ef-272c2bfe481d/service-classes/services-final.jpg). Standard paired before/after screenshots are retained for desktop, tablet and mobile; the after images visibly omit the workflow card.
+
+Exact-commit source size/complexity observations for all six changed units are retained in the portable history and [source measurements](/Users/danielfugere/.codex/visualizations/2026/10/20/01a159e9-1136-7bf0-b6ef-272c2bfe481d/service-classes/source-measurements.json). The embedded console emits 358.29 kB JavaScript and 88.75 kB CSS before gzip. Individual metadata modules emit no separate artifact.
+
+[Manual API profiles](/Users/danielfugere/.codex/visualizations/2026/10/20/01a159e9-1136-7bf0-b6ef-272c2bfe481d/service-classes/runtime-profiles.json) use committed source, the real 1309-unit metadata workload and three sequential performance.now samples. Metadata enrichment: 944-2113 ms; consumer resolution: 350-408 ms; catalog construction: 175-261 ms. Whole-process RSS is 395-497 MB, including compiler/cache/runner overhead, not per-function memory. These profiles do not grant budget approval or full verification. Page runtime timing/heap are unavailable in the Codex read-only DOM evaluator; no page metric is invented. Shared Codex-process memory cannot be attributed to this task and the after-run RSS snapshot does not prove active-run peak memory.
+
+Report e2f36e24-093f-4e05-846f-bb3a3b6aa244 remains in progress and unpublished while the required root check is blocked. No application deployment, push or merge was performed. Existing local preview servers remain running.
