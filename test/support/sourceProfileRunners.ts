@@ -8,6 +8,23 @@ const repository = resolve(import.meta.dirname, '../..');
 export const preload = join(repository, 'src/adapters/source-profile-adapter/bunPreload.ts');
 export const source = 'export function greet(name: string) { return name.toUpperCase(); }\n';
 
+/** Exercise native startup without requiring the host to understand TypeScript. */
+export function nativeRunnerEnvironments(environment: Record<string, string>) {
+	const variants = [environment];
+	const flags = process.allowedNodeEnvironmentFlags;
+	const disable = flags.has('--no-strip-types')
+		? '--no-strip-types'
+		: flags.has('--experimental-strip-types')
+			? '--no-experimental-strip-types'
+			: undefined;
+	if (disable)
+		variants.push({
+			...environment,
+			NODE_OPTIONS: `${process.env.NODE_OPTIONS ?? ''} ${disable}`.trim()
+		});
+	return variants;
+}
+
 /** Synthetic unit ids and captures stay in this owned directory, never in real project evidence. */
 export async function runnerFixture(subjectSource = source, symbol = 'greet', output = 'string') {
 	const root = await mkdtemp(join(tmpdir(), 'harness-runner-profiles-'));
