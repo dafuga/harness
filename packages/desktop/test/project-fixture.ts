@@ -1,6 +1,7 @@
 import { unitManifest } from './project-fixture-units';
 import { afterEach } from 'vitest';
 import { mkdtemp, mkdir, writeFile, rm, realpath } from 'node:fs/promises';
+import { readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { execFileSync } from 'node:child_process';
@@ -26,10 +27,15 @@ async function put(root: string, path: string, content: string) {
 	await writeFile(join(root, path), content);
 }
 function checkFilterExamples(root: string) {
-	const program =
-		"import { filter } from './src/functions/filter.ts'; console.log(JSON.stringify([filter(false), filter(true)]));";
+	const declared = JSON.parse(
+		readFileSync(join(root, 'specification/units/function.filter.json'), 'utf8')
+	) as ReturnType<typeof unitManifest>;
+	const examples = declared.helperContracts?.[0].examples;
+	if (!examples?.length) throw new Error('Fixture helper examples are missing.');
+	const calls = examples.map((example) => example.call).join(', ');
+	const program = `import { filter } from './src/functions/filter.ts'; console.log(JSON.stringify([${calls}]));`;
 	const actual = execFileSync('bun', ['-e', program], { cwd: root, encoding: 'utf8' }).trim();
-	if (actual !== '[0,1]')
+	if (actual !== JSON.stringify(examples.map((example) => example.output)))
 		throw new Error('Fixture helper examples do not match its implementation.');
 }
 export async function fixture() {
@@ -49,12 +55,14 @@ export async function fixture() {
 		);
 		await put(root, `specification/units/${id}.json`, JSON.stringify(unitManifest(id, kind, path)));
 	}
+	checkFilterExamples(root);
 	await put(root, 'private.txt', 'PRIVATE_SOURCE_BODY');
 	git(root, 'add', '.');
 	git(root, 'commit', '-m', 'five canonical entities');
 	const base = git(root, 'rev-parse', 'HEAD');
 	git(root, 'checkout', '-b', 'feature/design');
 	await put(root, 'src/components/Select.ts', 'feature branch source');
+	checkFilterExamples(root);
 	git(root, 'add', '.');
 	git(root, 'commit', '-m', 'feature source');
 	const feature = git(root, 'rev-parse', 'HEAD');
