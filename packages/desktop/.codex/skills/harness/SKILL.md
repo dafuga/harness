@@ -13,6 +13,7 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 7. Use `harness info clean-code` for optional Jev review; preview coverage before enabling it, use a project-owned credential, and assess advisory results before gating.
 8. Verify with `bun run check` before handing work back.
 9. Use public dependency entry points. Verify cold Node imports with external dependencies as well as packaged CJS bundles; call the real operation in both modes.
+10. Keep browser tests and fixtures in normal compiler inputs. When changing compiler coverage, run the standard SvelteKit configuration suite: excluded invalid browser code is a control, the owning config must reject it, and valid browser code must pass. Check the actual Desktop corpus before broad browser verification; do not rely on ignored lint paths.
 
 ## Bug and Regression Loops
 
