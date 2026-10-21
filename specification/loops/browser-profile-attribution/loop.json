@@ -6,7 +6,7 @@
 	"name": "browser-profile-attribution",
 	"goal": "Record page measurements only for the explicitly exercised route owner, never a fixed list of possibly inactive shared units.",
 	"createdAt": "2026-10-21T23:32:06.146Z",
-	"updatedAt": "2026-10-21T23:36:54.091338+00:00",
+	"updatedAt": "2026-10-21T23:50:36.777Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": true,
@@ -26,29 +26,39 @@
 			"evidence": "The standard collector protocol matrix asserts metrics and target for the route but filters away other subjects. Require the complete measurement subject set to equal the explicit route owner, preserving build, revision, soft-navigation, positive-metric and inspector-cleanup controls."
 		},
 		{
-			"id": "red",
+			"id": "failing-protocol",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T23:50:33.851Z",
+			"evidence": "Sealed red b079df4d at 76e86c216 reproduces copied subjects in the existing protocol matrix. This isolated failing observation is retained without claiming an accepted product regression pair."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T23:50:34.758Z",
+			"evidence": "Record only the explicit framework route owner; remove copied shared subjects while preserving build, revision, target, workload, positive metric and inspector cleanup controls."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T23:50:35.392Z",
+			"evidence": "2c6f46b63 repairs the collector; all 12 standard protocol cases and Reports types, lint and audit pass. Application rendering is unchanged and current-source verification remains required."
 		},
 		{
-			"id": "green",
+			"id": "passing-protocol",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T23:50:36.044Z",
+			"evidence": "The unchanged exact-subject assertion and all 11 existing controls pass with the repaired collector. Formal product-pair green was rejected because the subject is test support; no accepted pair is claimed."
 		},
 		{
-			"id": "guard",
+			"id": "collector-guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T23:50:36.777Z",
+			"evidence": "Retained isolated original collector fails the subject-set assertion; the repaired collector passes it with wrong target, stale build, navigation, zero reading and inspector-error controls intact. Actual current-source browser rerun and final audit remain pending."
 		},
 		{
 			"id": "verify",
