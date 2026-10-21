@@ -262,3 +262,12 @@ Remote and Relay also pass their complete checks with 135 and 159 tests. Hosted
 search screenshots wait for final fonts and decoded images; all seven widths
 pass again with that evidence gate. The next required check is the complete root
 command on the final committed tree. No application deployment has occurred.
+
+The root run at `2cad44d84` passes 891 root unit tests, 230 CLI/history tests,
+33 package tests, audit/registry, Reports' 613 tests and planning's 50. Desktop
+then passes 869 tests and fails one evidence-contract assertion: the added
+Examples states raise required missing captures from 36 to 38. The owner test
+now explicitly captures and requires both Examples states, deriving the total
+from the declared evidence matrix. All six owner tests pass; product code is
+unchanged. The failed run and its 3,993-second output remain retained. A complete
+root rerun remains required before verification closes.

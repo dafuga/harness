@@ -34,18 +34,20 @@ function requested() {
 }
 test('capture records the rendered build and outer verification revision, with explicit fixture boundaries', async () => {
 	requested();
-	await runtimeEvidence(page(), info, 'current');
-	expect(recordCapture).toHaveBeenCalledWith(
-		expect.objectContaining({
-			evidence: 'runtime-screens-desktop',
-			state: 'current',
-			viewport: 'desktop',
-			provenance: 'actual-capture',
-			server: { buildId: build, revision },
-			note: expect.stringContaining('SYNTHETIC')
-		}),
-		Buffer.from('captured pixels')
-	);
+	for (const state of ['current', 'examples-collapsed', 'examples-expanded']) {
+		await runtimeEvidence(page(), info, state);
+		expect(recordCapture).toHaveBeenCalledWith(
+			expect.objectContaining({
+				evidence: 'runtime-screens-desktop',
+				state,
+				viewport: 'desktop',
+				provenance: 'actual-capture',
+				server: { buildId: build, revision },
+				note: expect.stringContaining('SYNTHETIC')
+			}),
+			Buffer.from('captured pixels')
+		);
+	}
 });
 test('an unstamped renderer, absent verification revision, and undeclared viewport cannot produce evidence', async () => {
 	requested();
@@ -119,6 +121,8 @@ test('the runtime scenario refuses missing current, comparison, inherited and au
 		'function-current',
 		'function-commit',
 		'audio-current',
+		'examples-collapsed',
+		'examples-expanded',
 		'old-host-gap',
 		'phone-gap',
 		'regression-proof',
@@ -126,5 +130,11 @@ test('the runtime scenario refuses missing current, comparison, inherited and au
 		'regression-proof-before'
 	])
 		expect(empty.failures.some((item) => item.includes(`state ${state}`))).toBe(true);
-	expect(empty.failures).toHaveLength(36);
+	const required = scenario.evidence
+		.filter((evidence) => evidence.required)
+		.reduce(
+			(count, evidence) => count + evidence.states.length * Math.max(1, evidence.viewports.length),
+			0
+		);
+	expect(empty.failures).toHaveLength(required);
 });
