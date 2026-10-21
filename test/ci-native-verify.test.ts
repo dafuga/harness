@@ -15,7 +15,9 @@ const xcode = '/Applications/Xcode_26.3.app/Contents/Developer';
 const at = (text: string): number => verify.indexOf(text);
 
 test('the full check stays on Linux with its display and dependency setup', () => {
-	expect(check).toContain('name: Full check\n    runs-on: ubuntu-latest\n    timeout-minutes: 45');
+	expect(check, 'The full check must have time to finish every required stage').toContain(
+		'name: Full check\n    runs-on: ubuntu-latest\n    timeout-minutes: 90'
+	);
 	const checkout = check.slice(check.indexOf('actions/checkout@'), check.indexOf('- name:'));
 	expect(checkout).toContain('ref: ${{ env.COMMIT }}');
 	expect(checkout, 'ownership review commits must be available to the full check').toContain(
