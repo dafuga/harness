@@ -3,6 +3,7 @@ import { buildStamp } from '../../../../src/utils/buildStamp';
 import { recordCapture } from '../../../../src/utils/record-capture/recordCapture';
 import {
 	_electron,
+	expect,
 	type Page,
 	type ElectronApplication
 } from '../../../../test/support/browserTest';
@@ -14,6 +15,33 @@ import { nativeImageFixture } from './native-image-fixture';
 import { recordGameState } from './game-runtime-fixture';
 const binary = createRequire(import.meta.url)('electron') as string;
 const desktop = resolve(import.meta.dirname, '../..');
+/** All catalog controls keep their own hit area before reopening saved game history. */
+export async function catalogNavigation(page: Page) {
+	const game = page.getByRole('link', { name: 'Game Views', exact: true });
+	for (const control of [
+		page.getByRole('button', { name: 'Search entities', exact: true }),
+		page.getByRole('link', { name: 'Settings', exact: true })
+	]) {
+		const [tab, tool] = await Promise.all([game.boundingBox(), control.boundingBox()]);
+		expect(tab).not.toBeNull();
+		expect(tool).not.toBeNull();
+		const separate =
+			tab!.x + tab!.width <= tool!.x ||
+			tool!.x + tool!.width <= tab!.x ||
+			tab!.y + tab!.height <= tool!.y ||
+			tool!.y + tool!.height <= tab!.y;
+		expect(separate, 'Game Views must not overlap catalog search or settings').toBe(true);
+	}
+	await page.getByRole('button', { name: 'Search entities', exact: true }).click();
+	const search = page.getByRole('dialog', { name: 'Search project', exact: true });
+	await expect(search).toBeVisible();
+	await page.keyboard.press('Escape');
+	await expect(search).not.toBeVisible();
+	await game.click();
+	await expect(page.getByRole('heading', { name: 'Game Views', exact: true })).toBeVisible();
+	await expect(page.getByLabel('View title', { exact: true })).toHaveAttribute('readonly', '');
+	await expect(page.getByRole('button', { name: 'Save', exact: true })).toHaveCount(0);
+}
 export async function capture(page: Page, state: string) {
 	if (process.env.TAKE_SCREENSHOT !== 'true' && !process.env.HARNESS_EVIDENCE_DIR) return;
 	await page.evaluate(async () => {

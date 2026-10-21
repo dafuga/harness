@@ -9,7 +9,7 @@ import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { homedir, tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { capture, launch, imageProvider } from './game-native-fixture';
+import { capture, launch, imageProvider, catalogNavigation } from './game-native-fixture';
 import { beginGameFlow, recordRuntime, recordStartup } from './game-runtime-fixture';
 import { nativeImageFixture } from './native-image-fixture';
 import type { GameDocument } from '../../../game/src/models/Game.types';
@@ -153,6 +153,7 @@ async function history(page: Page, root: string, dimension: string) {
 	).toBeVisible();
 	await expect(page.getByRole('link', { name: 'Game Views', exact: true })).toBeVisible();
 	await capture(page, `${dimension}-catalog`);
+	await catalogNavigation(page);
 }
 for (const { dimension, viewport } of ['2d', '3d'].flatMap((dimension) =>
 	[
