@@ -2,7 +2,7 @@
 	"name": "game-main-retention",
 	"goal": "Integrate newly landed main screenshot retention and measurements without losing game behavior.",
 	"createdAt": "2026-10-21T17:45:56.054Z",
-	"updatedAt": "2026-10-21T18:09:27.574Z",
+	"updatedAt": "2026-10-21T18:16:29.043Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -48,12 +48,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T18:16:27.679Z",
+			"evidence": "Same frozen tests/configuration pass at5993ee9de after failing at6b53c12f6 on identical Darwin/arm64/Bun profile0c051592. All10 root loop/history cases pass with retained focused screenshot bytes, source observations and Git-backed reconstruction."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T18:16:29.043Z",
+			"evidence": "The unchanged disposable Git guard rebuilds original focused images, then deliberately withholds the screenshot bytes and requires readRegression to reject capture missing. Intact evidence passes afterward; the isolated pre-integration snapshot is also rejected by the same unchanged assertions."
 		},
 		{
 			"id": "verify",
