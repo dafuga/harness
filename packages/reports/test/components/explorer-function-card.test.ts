@@ -15,7 +15,9 @@ test.each(['current', 'commit'] as const)(
 		expect(card).toMatch(/<code[^>]*>Order<\/code>/);
 		expect(words(card)).toContain('Used In');
 		for (const consumer of ['Order list', 'Order store']) expect(words(card)).toContain(consumer);
-		expect(card).not.toMatch(/<h2|<p\b|<svg|<button|ex-pill|hx-verdict/);
+		expect(card).not.toMatch(/<h2|<p\b|ex-pill|hx-verdict/);
+		expect(count(card, /<button\b/g)).toBe(1);
+		expect(card).toContain('aria-label="View code for Order"');
 		expect(body).not.toContain('ex-legend');
 		const scope = `/branch/feature%2Forders${mode === 'current' ? '' : `/commit/${commits.middle}`}`;
 		expect(card).toContain(`${scope}/models/app.model.order`);
@@ -45,7 +47,9 @@ test('function catalog cards stay concise and retain revision links without deta
 		expect(card).toContain(
 			`/branch/feature%2Forders${mode === 'current' ? '' : `/commit/${commits.middle}`}/services/${ids.store}`
 		);
-		expect(card).not.toMatch(/<svg|ex-function-open/);
+		expect(card).not.toContain('ex-function-open');
+		expect(count(card, /<button\b/g)).toBe(1);
+		expect(card).toContain('aria-label="View code for filterOrders"');
 		const commit = mode === 'current' ? '' : `/commit/${commits.middle}`;
 		expect(body).toContain(`/branch/feature%2Forders${commit}/functions/${ids.filter}`);
 		expect(body).toContain('helper=filterOrders');
