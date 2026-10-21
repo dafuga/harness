@@ -54,7 +54,7 @@ test('a page leads to its components, those to components, and those to function
 	page
 }) => {
 	await page.goto(main('pages'));
-	await open(page, 'Titles');
+	await open(page, 'Open Titles');
 	await expect(heading(page, 'Titles')).toBeVisible();
 	await page.getByRole('tab', { name: 'Uses', exact: true }).click();
 	await checkpoint(page, 'evidence-page-uses');
@@ -74,23 +74,31 @@ test('a page leads to its components, those to components, and those to function
 	await expect(heading(page, 'Slugify')).toBeVisible();
 });
 
-test('source is not shown until Details and then Source are opened, on a page too', async ({
+test('source opens only from its dedicated tab and survives reload, on a page too', async ({
 	page
 }) => {
 	const file = 'src/routes/titles/+page.svelte';
 	await page.goto(main(`pages/${units.page}`));
 	await expect(heading(page, 'Titles')).toBeVisible();
 	await expect(content(page).getByText(file)).toHaveCount(0);
-	await content(page).getByRole('link', { name: 'Details' }).click();
-	await expectPath(page, main(`pages/${units.page}/details`));
-	await checkpoint(page, 'evidence-page-details');
-	for (const section of ['Contract', 'Size', 'Performance profile']) {
+	for (const section of ['Size', 'Performance profile'])
 		await expect(content(page).getByRole('heading', { name: section, exact: true })).toBeVisible();
-	}
-	await expect(page.getByRole('tab')).toHaveText(['Contract', 'Measurements', 'Source', 'History']);
+	await page.getByRole('tab', { name: 'Contract', exact: true }).click();
+	await expectPath(page, main(`pages/${units.page}?tab=contract`));
+	await checkpoint(page, 'evidence-page-contract');
+	await expect(content(page).getByRole('region', { name: 'Contract', exact: true })).toBeVisible();
+	await expect(page.getByRole('tab')).toHaveText([
+		'Overview',
+		'Contract',
+		'Used In',
+		'Uses',
+		'States',
+		'History',
+		'Source'
+	]);
 	await expect(content(page).getByText(file)).toHaveCount(0);
 	await page.getByRole('tab', { name: 'Source' }).click();
-	await expectPath(page, main(`pages/${units.page}/details?tab=source`));
+	await expectPath(page, main(`pages/${units.page}?tab=source`));
 	await expect(content(page).getByText(file).first()).toBeVisible();
 	await page.reload();
 	await expect(content(page).getByText(file).first()).toBeVisible();

@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { at, checkpoint, explorer } from './support/explorer';
+import { at, checkpoint, explorer, expectPath, verdict } from './support/explorer';
 import { viewports } from './support/harnessCapture';
 import { home, seeded, short } from './support/harnessHistory';
 import { fits } from './support/sharedSelect';
@@ -17,8 +17,15 @@ const metric = (page: Page, name: string) =>
 	measures(page)
 		.getByRole('row')
 		.filter({ has: page.getByRole('rowheader', { name, exact: true }) });
-const details = (commit: string, unit: string) =>
-	at(keptBranch, commit, `functions/${unit}/details?tab=measurements`);
+async function openMeasures(page: Page, commit: string, unit: string): Promise<void> {
+	// Old measurement links retain their scope and lead to the overview's expandable detail.
+	await page.goto(at(keptBranch, commit, `functions/${unit}/details?tab=measurements`));
+	await expectPath(page, at(keptBranch, commit, `functions/${unit}`));
+	await content(page)
+		.locator('summary', { hasText: /^Measurements and frozen limits$/ })
+		.click();
+	await expect(measures(page)).toBeVisible();
+}
 const stored = (commit: string) =>
 	JSON.parse(readFileSync(join(home, 'data/revisions', `${commit}.json`), 'utf8')) as {
 		explanations: Array<{ unit: string; behavior: string }>;
@@ -30,11 +37,11 @@ for (const viewport of viewports) {
 	}) => {
 		await page.setViewportSize({ width: viewport.width, height: viewport.height });
 		// Before any review: both outputs are measured and nothing is frozen for them yet.
-		await page.goto(details(commits.emitting, 'function.packer'));
+		await openMeasures(page, commits.emitting, 'function.packer');
 		await expect(metric(page, 'emitted size · Wasm')).toContainText('5 bytes');
 		await expect(metric(page, 'emitted size · Wasm')).not.toContainText('frozen at');
 		// After the first baseline each output has the limit of its own size.
-		await page.goto(details(commits.packed, 'function.packer'));
+		await openMeasures(page, commits.packed, 'function.packer');
 		await checkpoint(page, `measures-emitted-${viewport.id}`);
 		await expect(metric(page, 'emitted size · process (native)')).toContainText('3 bytes');
 		await expect(metric(page, 'emitted size · process (native)')).toContainText(
@@ -42,7 +49,7 @@ for (const viewport of viewports) {
 		);
 		await expect(metric(page, 'emitted size · Wasm')).toContainText('frozen at 5 bytes');
 		// An output that is no longer built has no size: it is unavailable with its reason, never zero.
-		await page.goto(details(commits.vanished, 'function.packer'));
+		await openMeasures(page, commits.vanished, 'function.packer');
 		const gone = metric(page, 'emitted size · Wasm');
 		await expect(gone).toContainText('unavailable');
 		await expect(gone).toContainText('was not built in the verified snapshot');
@@ -54,7 +61,7 @@ for (const viewport of viewports) {
 test('complexity that was not counted is unavailable and not frozen, beside a counted control', async ({
 	page
 }) => {
-	await page.goto(details(commits.measured, 'kernel.counter'));
+	await openMeasures(page, commits.measured, 'kernel.counter');
 	await checkpoint(page, 'measures-unavailable');
 	const uncounted = metric(page, 'complexity');
 	await expect(uncounted).toContainText('unavailable');
@@ -62,11 +69,11 @@ test('complexity that was not counted is unavailable and not frozen, beside a co
 	await expect(uncounted).not.toContainText(/\b0 points/);
 	// A unit with counted and uncounted code has the counted value and says what it leaves out,
 	// at the commit whose record measured it.
-	await page.goto(details(commits.native, 'kernel.mixed'));
+	await openMeasures(page, commits.native, 'kernel.mixed');
 	await expect(metric(page, 'complexity')).toContainText(/\d+ points/);
 	await expect(metric(page, 'complexity').getByRole('cell').last()).not.toHaveText('—');
 	// The control: a counted unit has a number and a frozen limit, at a commit that changed it.
-	await page.goto(details(commits.shout, units.slugify));
+	await openMeasures(page, commits.shout, units.slugify);
 	await expect(metric(page, 'complexity')).toContainText(/\d+ points/);
 	await expect(metric(page, 'complexity')).toContainText('frozen at');
 	await expect(metric(page, 'complexity').getByRole('cell').last()).toHaveText('—');
@@ -129,9 +136,12 @@ test.describe('a record with hundreds of failures of other units', () => {
 		await page.goto(at('main', commits.grown, 'functions'));
 		await checkpoint(page, 'measures-failures');
 		const row = page.getByRole('article', { name: 'Slugify', exact: true });
-		await expect(row).toContainText('Verification failed');
-		await expect(row).toContainText('function.slugify: source-bytes');
-		await expect(row).not.toContainText('generated');
+		await row.getByRole('link').first().click();
+		await expect(page.getByRole('heading', { level: 1, name: 'Slugify' })).toBeVisible();
+		await verdict(page, 'Verification failed').first().hover();
+		const reasons = page.getByRole('tooltip').filter({ hasText: 'Verification failed' });
+		await expect(reasons).toContainText('function.slugify: source-bytes');
+		await expect(reasons).not.toContainText('generated');
 		expect(await fits(page)).toBe(true);
 	});
 });

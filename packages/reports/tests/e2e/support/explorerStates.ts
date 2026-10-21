@@ -59,7 +59,7 @@ const reaches: Record<string, (page: Page) => Promise<void>> = {
 	'contract-commit': (page) => showContract(page, true),
 	'contract-example': (page) => showContract(page, false, true),
 	'contract-example-commit': (page) => showContract(page, true, true),
-	// The six categories, pages first, at a verified commit.
+	// The seven categories, pages first, at a verified commit.
 	async pages(page) {
 		await page.goto(at('main', commits.approved, 'pages'));
 		await titled(page, 'Pages');

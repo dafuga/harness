@@ -77,7 +77,7 @@ function assertions(flow: Flow, seen: Observed) {
 			passed: seen.address.startsWith(scope.join('/'))
 		},
 		{
-			name: 'Exactly the six categories are offered, pages first',
+			name: 'Exactly the seven categories are offered, pages first',
 			passed: seen.categories.join() === categories.join()
 		},
 		{ name: 'The screen has a heading', passed: seen.heading.length > 0 },
