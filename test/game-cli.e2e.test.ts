@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+import { stripVTControlCharacters } from 'node:util';
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -68,14 +69,23 @@ async function playableRoute(cwd: string) {
 	);
 	try {
 		const url = await new Promise<string>((resolveUrl, reject) => {
-			const timeout = setTimeout(() => reject(new Error('Generated game did not start')), 30_000);
+			let output = '';
+			const timeout = setTimeout(
+				() =>
+					reject(new Error('Generated game did not start: ' + stripVTControlCharacters(output))),
+				30_000
+			);
+			server.stderr.on('data', (chunk) => {
+				output += String(chunk);
+			});
 			server.once('exit', () => {
 				clearTimeout(timeout);
 				reject(new Error('Generated game exited'));
 			});
 			server.once('error', reject);
 			server.stdout.on('data', (chunk) => {
-				const address = String(chunk).match(/http:\/\/127\.0\.0\.1:\d+/)?.[0];
+				output += String(chunk);
+				const address = stripVTControlCharacters(output).match(/http:\/\/127\.0\.0\.1:\d+/)?.[0];
 				if (address) {
 					clearTimeout(timeout);
 					resolveUrl(address);
