@@ -2,9 +2,11 @@
 	"name": "game-standalone-views",
 	"goal": "Generated 2D and 3D games follow authored view transitions and restore per-view checkpoint progress.",
 	"createdAt": "2026-10-21T17:35:28.659Z",
-	"updatedAt": "2026-10-21T17:39:04.989Z",
+	"updatedAt": "2026-10-21T17:41:58.418Z",
 	"template": "bug-fix",
-	"templateLineage": ["bug-fix"],
+	"templateLineage": [
+		"bug-fix"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -39,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T17:41:58.418Z",
+			"evidence": "All five CLI cases pass at cb760ee2c: source and bundled CLI in both dimensions play a transition to Second chamber, return to The courtyard and restore the saved checkpoint image. Inspected matching transition screenshot shows Second chamber and a fully rendered scene."
 		},
 		{
 			"id": "verify",
