@@ -48,6 +48,29 @@ test('actual observations are required even when a unit declares no performance 
 	expect(validator.validate({ ...input, measurements: [] })[0]).toContain('profiling requires');
 });
 
+test.each(['module', 'http'] as const)(
+	'browser observations match only their declared %s target',
+	async (target) => {
+		const input = await observed();
+		input.units[0].runtime.targets[0].kind = target;
+		input.measurements = input.measurements.map((item) => ({
+			...item,
+			target,
+			metric: item.unitOfMeasure === 'ms' ? 'browser-navigation-ms' : 'browser-js-heap-bytes'
+		}));
+		const validator = new PerformanceEvidenceValidator();
+		expect(
+			validator.validate(input),
+			'browser navigation and heap satisfy the declared target'
+		).toEqual([]);
+		input.measurements[1].target = target === 'module' ? 'http' : 'module';
+		expect(
+			validator.validate(input),
+			'a different target cannot lend its browser heap'
+		).toHaveLength(1);
+	}
+);
+
 test.each(['revision', 'profile', 'target', 'workload', 'samples', 'unavailable'])(
 	'%s mismatches cannot satisfy required profiling',
 	async (change) => {
