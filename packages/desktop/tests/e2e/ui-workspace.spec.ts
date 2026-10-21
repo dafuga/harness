@@ -173,10 +173,10 @@ test('workspace selectors start collapsed and environment stays directly selecta
 			});
 		await expect(page.getByText(/Changes reach preprod\./)).toHaveCount(0);
 		const summary = page.locator('.revision-summary');
-		await expect(summary.locator('strong')).toHaveText(environment);
+		await expect(summary.locator('strong')).toHaveText('Updated at');
 		await expect(summary.locator('time')).toHaveAttribute('datetime', '2026-10-20T10:15:00.000Z');
 		await expect(page.locator('.environment-status')).toHaveCount(0);
-		await expect(summary).not.toContainText(/Deployed|Current|branch tip|Tip/);
+		await expect(summary).not.toContainText(/Deployed|Current|branch tip|Tip|dev|prod|·/);
 		const sameLine = await summary.evaluate((element) => {
 			const name = element.querySelector('strong')!.getBoundingClientRect();
 			const time = element.querySelector('time')!.getBoundingClientRect();
