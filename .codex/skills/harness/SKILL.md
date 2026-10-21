@@ -98,3 +98,13 @@ Use descriptive behavior titles, never numbered placeholders. Choose one represe
 ## Route identity and UI state
 
 When changing URL structure or moving tabs between query strings and paths, key the rendered page by its logical entity, helper, branch, revision and section; tab or canonical-alias changes must preserve the frame. Extend the existing host browser matrix to assert DOM continuity across tabs, refresh and correctly scoped links. Capture after canonical navigation, fonts and layout settle, and inspect the original images; a passing text assertion alone does not establish a ready screenshot.
+
+## Shared Catalog Interaction Review
+
+When reusing a catalog item in relationships or another context, review the rendered
+variants and their supplied data, not only the component import. The existing
+standardized catalog and relationship matrix must exercise the same consumer
+footer, clickable references, hover/focus preview and branch/revision navigation.
+Include empty usage and missing screenshots. A class-name or entity-name assertion
+alone does not prove interaction parity. Keep screenshot evidence at the failing
+and passing checkpoints; do not substitute another entity or revision's image.

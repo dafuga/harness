@@ -22,18 +22,33 @@
 				"name": "ExplorerFunctionCard.nav",
 				"type": "EntityNav",
 				"description": "Navigation that keeps the selected branch and commit when opening the function or a consumer."
+			},
+			{
+				"name": "ExplorerFunctionCard.lens",
+				"type": "EntityLens",
+				"description": "Revision-scoped screenshot evidence for linked consumers."
+			},
+			{
+				"name": "ExplorerFunctionCard.mediaBase",
+				"type": "string",
+				"description": "URL prefix resolving consumer screenshots."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerFunctionCard",
 				"type": "markup",
-				"description": "A clickable example invocation and smaller Used In row. Up to three per-helper consumer links retain revision scope; absent eligible consumers show a dash."
+				"description": "Catalog item using the shared Used In consumer links and screenshot previews, with navigation and captures bound to the selected revision. Other item facts and verification follow the category."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.explorer-usage",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.harness-entity-link",
 			"via": "import",

@@ -107,7 +107,7 @@ for (const [name, size] of Object.entries(viewports)) {
 			const viewed = (commit ?? commits.tip).slice(0, 7);
 			await expect(shot).toHaveAttribute('src', `/media/${viewed}-default-desktop.png`);
 			expect(await shot.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBe(1440);
-			await expect(cards.first()).toContainText('Used on');
+			await expect(cards.first()).toContainText('Used In');
 			expect(await fits(tab)).toBe(true);
 			const action = cards.first().getByRole('link', { name: 'Open component', exact: true });
 			expect((await action.innerText()).trim()).toBe('');
@@ -116,7 +116,9 @@ for (const [name, size] of Object.entries(viewports)) {
 			expect(await where(tab)).toMatchObject({ commit, category: 'components', entity: ids.card });
 		}
 	});
-	test(`page cards show only a title and screenshot at ${name} width`, async ({ page: tab }) => {
+	test(`page cards show a title, screenshot and shared usage footer at ${name} width`, async ({
+		page: tab
+	}) => {
 		await tab.setViewportSize(size);
 		await open(tab);
 		await tab.evaluate(async () => {
@@ -125,7 +127,8 @@ for (const [name, size] of Object.entries(viewports)) {
 		});
 		await capture(tab, `compact-page-${name}`);
 		const card = tab.getByRole('article', { name: 'Orders page', exact: true });
-		expect((await card.innerText()).trim(), 'page cards show only their title').toBe('Orders page');
+		await expect(card.getByRole('group', { name: 'Used In', exact: true })).toHaveText('Used In—');
+		await expect(card.getByRole('heading', { name: 'Orders page', exact: true })).toBeVisible();
 		await expect(card.locator('button, .hx-verdict, .ex-fact')).toHaveCount(0);
 		const action = card.getByRole('link', { name: 'Open Orders page', exact: true });
 		await expect(action).toHaveCount(1);

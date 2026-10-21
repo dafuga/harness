@@ -31,7 +31,7 @@ test('visual component cards show the selected revision, never the parent or ano
 		expect(body).toContain(`src="/harness/media/${commit.slice(0, 7)}-default-desktop.png"`);
 		expect(body).not.toContain('src="/harness/media/aaaaaaa-');
 		expect(body).toContain('/components/app.component.order-card');
-		expect(words(body)).toContain('Used on');
+		expect(words(body)).toContain('Used In');
 	}
 });
 

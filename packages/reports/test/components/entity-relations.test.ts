@@ -21,6 +21,8 @@ test('what an entity uses is one section of kinds of their own, and what uses it
 		expect(uses).toContain('ex-page-card');
 		expect(uses).toContain('aria-label="Services"');
 		expect(used).toContain('ex-page-card');
+		expect(used).toContain('aria-label="Used In"');
+		expect(uses).toContain('aria-label="Used In"');
 		for (const body of [uses, used]) {
 			expect(
 				verdicts(body.slice(body.indexOf('class="ex-relations"'))),

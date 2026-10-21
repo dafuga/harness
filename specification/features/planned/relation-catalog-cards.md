@@ -43,3 +43,68 @@ The final integration includes main `503f75a9` (mobile navigation). Two existing
 Hosted clean-snapshot verification exposed a missing desktop SvelteKit config during the Reports build. Root tests had generated that file first, masking the cold-build dependency. The root build now synchronizes Reports, desktop and hub configs before building. A separate Git archive of `4cb7ca86` with newly installed locked dependencies completes the whole root build successfully; no warm generated config is shared. The existing clean-snapshot CI setup continues to exercise this boundary.
 
 The completed Reports run passed 610 tests, all builds and audit. The original broad root run passed 891 unit tests before its integration phase; its terminal and temporary logs were lost during a session reset. A fresh complete `bun run check` is running with a workspace-local log. Full verification remains incomplete, and the loop verification step stays pending. Hosted exact-commit records also have outstanding historical reason/budget findings; no baseline approval is fabricated. Jev's startup review has unresolved `needs-review` configuration entries and is not a clean verdict for this final source.
+
+## Consumer links and screenshot previews
+
+PR16 reused the item renderer, but kept pages' minimal variant and component
+usage as flattened names. Its shared-card acceptance checked classes and names,
+so it missed interaction parity. The revised local Harness skill now requires
+rendered variant, consumer footer, hover/focus preview and revision navigation
+coverage whenever catalog items are reused. The existing responsive matrix covers
+this rule; it is not a new workflow.
+
+The committed red checkpoint is 201046d7. Initial cold-snapshot attempts lacked
+dependencies and generated SvelteKit configs and are excluded as defect proof.
+After the normal install/sync preparation, all six responsive usage/card cases
+fail on the actual missing footer or preview, with inspected before captures.
+
+Catalog rows now retain consumer entities instead of only names. A generated
+ExplorerUsage footer and ExplorerUsageLink preview serve visual cards, helper
+cards and table consumer cells in both list and relationship views. The existing
+EntityLink preserves real link behavior and revision scope. Screenshot evidence
+comes from the referenced entity at the selected revision; missing captures and
+image errors stay explicit. New shared UI source and manifests are tracked;
+original screenshots remain outside source control. Verification is pending.
+
+The accepted immutable checkpoints are red `b092f49f` and fix `55c9fe81`, with
+the same frozen test corpus and pinned runtime/environment. Six responsive
+usage/card cases pass. A separate isolated fix snapshot with the old page card
+reintroduced fails all three usage cases; restoring the fixed file passes all
+three. Original build assets, captures, hashes, navigation timing and Chromium
+whole-renderer JavaScript heap estimates remain in the local evidence cache.
+The synthetic Orders fixture proves shared UI behavior; its captures are not
+screenshots of real Harness project entities.
+
+A broader usage assertion formerly forbade consumer links anywhere in Uses. It
+now forbids consumers as top-level dependency cards while requiring their nested
+links, matching the requested reusable footer. The six unchanged focused cases
+and their regression checkpoint remain intact. Reports and root verification
+are still being completed; no full-verification verdict is asserted.
+
+Changed executable units, with why they changed and links to their History:
+
+- [Shared consumer footer](http://127.0.0.1:5688/harness/branch/dafuga%2Fusage-card-previews/components/reports.component.explorer-usage/history): One usage footer shared across cards and tables.
+- [Consumer screenshot preview](http://127.0.0.1:5688/harness/branch/dafuga%2Fusage-card-previews/components/reports.component.explorer-usage-link/history): One accessible hover/focus preview and entity link.
+- [Visual catalog card](http://127.0.0.1:5688/harness/branch/dafuga%2Fusage-card-previews/components/reports.component.harness-explorer-page-card/history): Pages and components expose the same linked usage footer.
+- [Helper card](http://127.0.0.1:5688/harness/branch/dafuga%2Fusage-card-previews/components/reports.component.explorer-function-card/history): Replace its separate footer with the shared component.
+- [Catalog table](http://127.0.0.1:5688/harness/branch/dafuga%2Fusage-card-previews/components/reports.component.harness-explorer-table/history): Replace flattened consumer names with shared usage links.
+- [Catalog item renderer](http://127.0.0.1:5688/harness/branch/dafuga%2Fusage-card-previews/components/reports.component.explorer-catalog-items/history): Pass the selected evidence lens and media prefix to all items.
+- [Entity navigation link](http://127.0.0.1:5688/harness/branch/dafuga%2Fusage-card-previews/components/reports.component.harness-entity-link/history): Forward preview events and accessibility attributes while preserving native link behavior.
+- [Catalog row data](http://127.0.0.1:5688/harness/branch/dafuga%2Fusage-card-previews/functions/reports.function.entity-catalog/history): Retain distinct revision-scoped consumer entities for links and previews.
+
+The EntityLens manifest also records the new preview consumer of shortCommit; its implementation is unchanged. The local Harness skill has no explorer entity; its source is `.codex/skills/harness/SKILL.md`.
+
+Exact product commit `55c9fe81` source observations (bytes and decision points):
+
+| Unit                        | Source bytes | Complexity |
+| --------------------------- | -----------: | ---------: |
+| Shared consumer footer      |         1011 |          1 |
+| Consumer screenshot preview |         5693 |         27 |
+| Visual catalog card         |         4303 |         13 |
+| Helper card                 |         2718 |         11 |
+| Catalog table               |         3701 |         13 |
+| Catalog item renderer       |         2144 |          3 |
+| Entity navigation link      |         1015 |          2 |
+| Catalog row data            |         7043 |         43 |
+
+Source observations are independent of full verification. Runtime capture measurements describe the synthetic route and whole renderer; they do not attribute allocations or latency to one component. No production or native-device deployment is claimed.

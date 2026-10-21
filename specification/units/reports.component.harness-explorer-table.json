@@ -32,18 +32,33 @@
 				"name": "ExplorerTable.verification",
 				"type": "boolean",
 				"description": "Defaults to true in catalogs; false in relationship tabs to omit verification indicators."
+			},
+			{
+				"name": "ExplorerTable.lens",
+				"type": "EntityLens",
+				"description": "Revision-scoped screenshot evidence for linked consumers."
+			},
+			{
+				"name": "ExplorerTable.mediaBase",
+				"type": "string",
+				"description": "URL prefix resolving consumer screenshots."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerTable",
 				"type": "markup",
-				"description": "Named table with entity/shared badges, category-specific usage/responsibility/target columns, verdict and Open action. Shells/components show summaries under names; configs show changed state. Empty rows produce an empty table without a separate message."
+				"description": "Catalog item using the shared Used In consumer links and screenshot previews, with navigation and captures bound to the selected revision. Other item facts and verification follow the category."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.explorer-usage",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.harness-entity-link",
 			"via": "import",
