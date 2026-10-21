@@ -44,6 +44,7 @@ test('every entity preview spec of the reports package is run by the config that
 		'entity-preview-groups.spec.ts',
 		'entity-preview-marks.spec.ts',
 		'entity-preview-shells.spec.ts',
+		'entity-preview-source.spec.ts',
 		'entity-preview-test-cases.spec.ts',
 		'entity-preview-words.spec.ts',
 		'entity-preview.spec.ts'
