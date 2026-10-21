@@ -74,6 +74,8 @@ export async function reviewHelperUsage(page: Page, viewport: string): Promise<v
 		const usage = card.getByRole('group', { name: 'Used In', exact: true });
 		await expect(usage, 'helper cards expose their consumers').toBeVisible();
 		await expect(usage.getByRole('link')).toHaveText(['Order list', 'Order store', 'Order']);
+		for (const kind of ['Components', 'Services', 'Models'])
+			await expect(usage.getByRole('list', { name: kind, exact: true })).toBeVisible();
 		await reviewConsumerPreview(page, usage, commit, viewport);
 		const sizes = await card.evaluate((node) => [
 			parseFloat(getComputedStyle(node.querySelector('code')!).fontSize),
@@ -130,9 +132,11 @@ async function reviewConsumerPreview(
 	await expect(preview).toHaveCount(0);
 	const missing = usage.getByRole('link', { name: 'Order store', exact: true });
 	await missing.hover();
-	await expect(
-		page.getByRole('tooltip', { name: 'Preview of Order store', exact: true })
-	).toContainText('No screenshot is recorded at this revision');
+	await capture(page, `nonvisual-preview-${commit ? 'commit' : 'tip'}-${viewport}`);
+	const service = page.getByRole('tooltip', { name: 'Preview of Order store', exact: true });
+	await expect(service.locator('code')).toHaveText('OrderStore');
+	await expect(service).not.toContainText('No screenshot');
+	await expect(service.locator('img')).toHaveCount(0);
 	await page.mouse.move(1, 1);
 }
 
@@ -165,6 +169,11 @@ export async function reviewUsageCards(
 	category: string,
 	direction: string
 ): Promise<void> {
+	if (direction === 'used-in' && category === 'functions') {
+		const used = page.getByRole('region', { name: 'Used In', exact: true });
+		for (const kind of ['Pages', 'Components'])
+			await expect(used.getByRole('heading', { name: `${kind} 1`, exact: true })).toBeVisible();
+	}
 	const cards = page.locator('.ex-relations article');
 	for (const card of await cards.all()) {
 		await expect(
