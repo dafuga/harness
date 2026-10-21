@@ -22,6 +22,8 @@ for (const viewport of catalogViewports) {
 			await openPreview(page, home, unit.id);
 			await expect(page.locator('#preview-title')).toHaveText(unit.title);
 			const component = await readyPreview(page, unit.id);
+			if (unit.id === 'reports.component.usage-examples-usage-examples')
+				await expect(component.locator('code')).toHaveText('formatDuration(90)\n// => "1:30"');
 			if (unit.id === 'reports.component.harness-entity-history-row') {
 				await expect(component.locator('table.ex-history tbody > tr')).toHaveCount(1);
 				await expect(component.locator('td').first()).toHaveCSS('white-space', 'nowrap');
