@@ -4,6 +4,7 @@
 	import { explorerCategory } from '../../utils/explorerCategory';
 	import { entityLabels, entityLens, type EntityNav } from '../../utils/entityLens';
 	import { categoryIcon } from '../../utils/harnessIcons';
+	import SourceCodeAction from '../SourceCodeAction.svelte';
 	import EntityLink from './EntityLink.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
 	import HarnessTabs from './HarnessTabs.svelte';
@@ -115,6 +116,7 @@
 				{/if}
 			</p>
 		{/if}
+		<SourceCodeAction {entity} {nav} />
 	</div>
 </header>
 {@render preview?.()}

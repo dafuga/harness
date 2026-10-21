@@ -28,7 +28,7 @@
 			{
 				"name": "ExplorerFrame.screenRoot",
 				"type": "markup",
-				"description": "The root of a screen with the styles of the explorer."
+				"description": "Styled explorer screen plus one shared source dialog. Source opens without changing the URL; revision or entity context changes close it. Closing restores the initiating control."
 			}
 		],
 		"errors": [
@@ -46,12 +46,27 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.harness-entity-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.source-dialog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.entity-lens",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.model.explorer-screen-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
 			"via": "import",
 			"origin": "derived"
 		},

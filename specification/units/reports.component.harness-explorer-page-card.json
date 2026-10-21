@@ -43,7 +43,7 @@
 			{
 				"name": "ExplorerPageCard",
 				"type": "markup",
-				"description": "Pages show only their title and screenshot in one keyboard-accessible link. Capture origin appears on hover. Components retain purpose, usages, provenance and verification. A missing or broken image shows a gap."
+				"description": "Page title and screenshot or component usage card, with an independent View code action. Missing images show a gap; source opening preserves card navigation scope."
 			}
 		],
 		"errors": []
@@ -61,6 +61,11 @@
 		},
 		{
 			"unit": "reports.component.harness-harness-verdict",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.source-code-action",
 			"via": "import",
 			"origin": "derived"
 		},

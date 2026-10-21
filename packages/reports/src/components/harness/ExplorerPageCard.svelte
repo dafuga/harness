@@ -3,6 +3,7 @@
 	import { listed, type CatalogRow } from '../../utils/entityCatalog';
 	import { entityLens, shortCommit, type EntityNav } from '../../utils/entityLens';
 	import { categoryIcon } from '../../utils/harnessIcons';
+	import SourceCodeAction from '../SourceCodeAction.svelte';
 	import EntityLink from './EntityLink.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
 	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
@@ -65,6 +66,7 @@
 			<h2>{row.name}</h2>
 			<span class="ex-thumb">{@render picture()}</span>
 		</EntityLink>
+		<SourceCodeAction entity={row.entity} {nav} title={row.name} />
 	{:else}
 		<figure class="ex-card-shot">
 			<EntityLink {to} {nav} class="ex-thumb" label={`Open ${row.name}`}>
@@ -93,9 +95,12 @@
 				<HarnessIcon name="tests" size={22} />
 				<HarnessVerdict {...row.verdict} framed />
 			</p>
-			<EntityLink {to} {nav} class="hx-action gold ex-open-page" label={open} title={open}>
-				<HarnessIcon name="arrow-right" size={18} />
-			</EntityLink>
+			<div class="ex-card-actions">
+				<SourceCodeAction entity={row.entity} {nav} title={row.name} />
+				<EntityLink {to} {nav} class="hx-action gold ex-open-page" label={open} title={open}>
+					<HarnessIcon name="arrow-right" size={18} />
+				</EntityLink>
+			</div>
 		</div>
 	{/if}
 </article>
@@ -118,8 +123,19 @@
 		outline-offset: 6px;
 	}
 
-	.ex-page-body > :global(.ex-open-page) {
-		justify-self: end;
+	.ex-page-card > :global(.hx-action) {
+		justify-self: start;
+	}
+	/* Code on the left, the way in on the right, as the open action alone was. */
+	.ex-card-actions {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 10px;
+		justify-self: stretch;
+	}
+	.ex-card-actions > :global(.ex-open-page) {
+		margin-inline-start: auto;
 		width: 36px;
 		height: 36px;
 		min-height: 36px;

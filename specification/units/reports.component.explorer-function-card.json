@@ -28,7 +28,7 @@
 			{
 				"name": "ExplorerFunctionCard",
 				"type": "markup",
-				"description": "A clickable helper invocation or model name and smaller Used In row. Models open their overview; helpers open their callable contract. Both retain revision scope and identical card styling."
+				"description": "Linked helper invocation or model name, Used In row and independent View code action. Revision and collection filters remain unchanged when reading code."
 			}
 		],
 		"errors": []
@@ -36,6 +36,11 @@
 	"dependencies": [
 		{
 			"unit": "reports.component.harness-entity-link",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.source-code-action",
 			"via": "import",
 			"origin": "derived"
 		},
