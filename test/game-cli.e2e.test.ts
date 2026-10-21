@@ -60,7 +60,11 @@ async function playableRoute(cwd: string) {
 	const server = spawn(
 		process.execPath,
 		['node_modules/vite/bin/vite.js', 'dev', '--host', '127.0.0.1', '--port', '0'],
-		{ cwd, stdio: ['ignore', 'pipe', 'pipe'] }
+		{
+			cwd,
+			stdio: ['ignore', 'pipe', 'pipe'],
+			env: { ...process.env, FORCE_COLOR: '1', NO_COLOR: undefined }
+		}
 	);
 	try {
 		const url = await new Promise<string>((resolveUrl, reject) => {
