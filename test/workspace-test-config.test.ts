@@ -25,7 +25,12 @@ afterEach(() => roots.splice(0).forEach((root) => rmSync(root, { recursive: true
 function project(config?: string): string {
 	const root = realpathSync(mkdtempSync(join(tmpdir(), 'harness-workspace-config-')));
 	roots.push(root);
-	for (const file of ['vitest.config.ts', 'test/svelteKitConfigs.ts', 'test/setup.ts']) {
+	for (const file of [
+		'vitest.config.ts',
+		'test/svelteKitConfigs.ts',
+		'test/setup.ts',
+		'src/utils/testDiscoveryExcludes.ts'
+	]) {
 		mkdirSync(join(root, file, '..'), { recursive: true });
 		copyFileSync(join(repository, file), join(root, file));
 	}
