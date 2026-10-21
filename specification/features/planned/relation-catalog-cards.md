@@ -130,3 +130,15 @@ The shared entity tab strip uses a text underline for keyboard focus. Its active
 tab keeps the existing gold bottom border. No outline extends outside the scroll
 strip, where clipping previously left two yellow vertical lines. The responsive
 visual-overview matrix covers this focused state at each viewport and revision.
+
+## Progressive relationship lists
+
+Each module type in Used In and Uses starts with four catalog rows. View More
+reveals another four within that type; the button disappears when all rows are
+shown. Counts retain their full totals. Focus moves to the first newly revealed
+entry, and changing the entity, helper, tab, branch or revision resets the batches.
+
+The catalog renderer owns the batching so cards and table rows stay identical to
+their list-page versions. It reuses HarnessAction. ActivityList expands an entire
+li-based activity list, so it cannot preserve the typed catalog tables here.
+Main catalog pages continue showing their normal full filtered collections.
