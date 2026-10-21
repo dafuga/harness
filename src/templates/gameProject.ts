@@ -12,6 +12,10 @@ export function gameFiles(input: ProjectTemplateInput, app: PlannedFile[]): Plan
 	pkg.dependencies = { three: '0.180.0', '@decartai/sdk': '0.2.12' };
 	pkg.devDependencies['@types/three'] = '0.180.0';
 	manifest.contents = JSON.stringify(pkg, null, '\t') + '\n';
+	const formatting = app.find((file) => file.path === '.prettierrc')!;
+	const style = JSON.parse(formatting.contents);
+	style.overrides = [{ files: 'game.json', options: { parser: 'json-stringify' } }];
+	formatting.contents = JSON.stringify(style, null, '\t') + '\n';
 	const vite = app.find((file) => file.path === 'vite.config.ts')!;
 	// Vite otherwise caches /game as the root game.json module after the first page load.
 	vite.contents = vite.contents.replace(
@@ -24,7 +28,15 @@ export function gameFiles(input: ProjectTemplateInput, app: PlannedFile[]): Plan
 			path: 'src/lib/game/' + path,
 			contents
 		})),
-		{ path: 'game.json', contents: dimension === '3d' ? gameDocument3d : gameDocument2d },
+		{
+			path: 'game.json',
+			contents:
+				JSON.stringify(
+					JSON.parse(dimension === '3d' ? gameDocument3d : gameDocument2d),
+					null,
+					'\t'
+				) + '\n'
+		},
 		{ path: 'src/routes/game/+page.svelte', contents: gamePage() },
 		{
 			path: 'static/game/assets/README.md',

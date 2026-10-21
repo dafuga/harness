@@ -2,7 +2,7 @@
 	"name": "game-generated-check",
 	"goal": "New 2D and 3D projects and supported game generators pass their own normal project checks",
 	"createdAt": "2026-10-21T12:44:17.729Z",
-	"updatedAt": "2026-10-21T12:44:20.560Z",
+	"updatedAt": "2026-10-21T12:53:15.452Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T12:53:10.832Z",
+			"evidence": "Immutable 9bc153e1 runs both normal generated game checks after GameDocumentRepository.save; both fail Prettier with [warn] game.json. The unchanged tests retain their full type, lint, unit, build and audit steps."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T12:53:15.452Z",
+			"evidence": "Generated games use the json-stringify formatter for game.json, matching the canonical tab-indented encoding used by the authoring repository; initial documents use that encoding too."
 		},
 		{
 			"id": "green",
