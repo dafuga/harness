@@ -2,7 +2,7 @@
 	"name": "game-generated-check",
 	"goal": "New 2D and 3D projects and supported game generators pass their own normal project checks",
 	"createdAt": "2026-10-21T12:44:17.729Z",
-	"updatedAt": "2026-10-21T12:44:17.729Z",
+	"updatedAt": "2026-10-21T12:44:20.560Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -13,12 +13,16 @@
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T12:44:19.293Z",
+			"evidence": "Full creation includes running the generated project check, not only inspecting generated files or opening the page."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T12:44:20.560Z",
+			"evidence": "The standard game CLI scenarios now run bun run check after every supported generator, matching the existing app and library creation scenarios."
 		},
 		{
 			"id": "red",

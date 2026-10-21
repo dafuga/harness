@@ -1,1 +1,3 @@
 {"event":"loop.created","timestamp":"2026-10-21T12:44:17.729Z","name":"game-generated-check","goal":"New 2D and 3D projects and supported game generators pass their own normal project checks","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-21T12:44:19.293Z","loop":"game-generated-check","step":"spec","evidence":"Full creation includes running the generated project check, not only inspecting generated files or opening the page."}
+{"event":"step.completed","timestamp":"2026-10-21T12:44:20.560Z","loop":"game-generated-check","step":"coverage","evidence":"The standard game CLI scenarios now run bun run check after every supported generator, matching the existing app and library creation scenarios."}

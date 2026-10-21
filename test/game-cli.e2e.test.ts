@@ -3,6 +3,7 @@ import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { execFileSync, spawn } from 'node:child_process';
+import { GameDocumentRepository } from '../packages/game/src/repositories/GameDocumentRepository';
 const cli = resolve('src/index.ts');
 
 test.each(['2d', '3d'])(
@@ -25,6 +26,10 @@ test.each(['2d', '3d'])(
 			]) {
 				execFileSync('bun', [cli, 'generate', kind, name], { cwd });
 			}
+			const repository = new GameDocumentRepository(cwd);
+			const saved = await repository.read();
+			saved.document.views[0].title = 'Authored courtyard';
+			await repository.save(saved.document, saved.revision);
 			execFileSync('bun', ['run', 'check'], { cwd, stdio: 'pipe' });
 			expect(await readFile(join(cwd, 'src/routes/inventory/+page.svelte'), 'utf8')).toContain(
 				'Inventory'

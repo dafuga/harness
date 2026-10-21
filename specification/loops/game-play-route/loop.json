@@ -2,7 +2,7 @@
 	"name": "game-play-route",
 	"goal": "Generated 2D and 3D games serve the playable /game route while game.json remains importable",
 	"createdAt": "2026-10-21T12:29:00.517Z",
-	"updatedAt": "2026-10-21T12:29:05.807Z",
+	"updatedAt": "2026-10-21T12:41:56.849Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T12:41:54.993Z",
+			"evidence": "Committed baseline 586caf35 reproduces the missing canvas on the second /game request for both dimensions, with paired immutable output and a browser screenshot of the raw module."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T12:41:56.849Z",
+			"evidence": "The separate 5dbc84de repair excludes implicit JSON extension resolution in generated game Vite configs while retaining explicit game.json imports."
 		},
 		{
 			"id": "green",
