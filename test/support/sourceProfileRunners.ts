@@ -50,7 +50,7 @@ export async function runnerCaptures(directory: string) {
 	try {
 		index = await readFile(join(directory, 'captures.ndjson'), 'utf8');
 	} catch (error) {
-		if ((error as NodeJS.ErrnoException).code === 'ENOENT') return [];
+		if ((error as { code?: string }).code === 'ENOENT') return [];
 		throw error;
 	}
 	return (

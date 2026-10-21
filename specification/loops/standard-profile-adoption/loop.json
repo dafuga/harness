@@ -6,7 +6,7 @@
 	"name": "standard-profile-adoption",
 	"goal": "Normal root and workspace test entrypoints record current source operations when verification requests evidence, while preserving worker limits and lazy startup.",
 	"createdAt": "2026-10-21T11:24:54.408Z",
-	"updatedAt": "2026-10-21T11:28:54.828Z",
+	"updatedAt": "2026-10-21T11:30:35.133Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -52,12 +52,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:30:33.838Z",
+			"evidence": "Paired red2589eb0c at2833131e and greena5d3c5e2 atadbe75a1 retain identical tests and runner configurations in one environment; all six standard cases pass."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:30:35.133Z",
+			"evidence": "The isolated earlier adoption boundary returns[] and fails the normal capture assertion; restored implementation passes root and inherited workspace captures. Worker limits and sparse startup cases remain green."
 		},
 		{
 			"id": "verify",
