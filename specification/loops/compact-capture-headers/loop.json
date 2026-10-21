@@ -2,11 +2,9 @@
 	"name": "compact-capture-headers",
 	"goal": "Comparison cards show revision identity without capture labels or duplicate full-size controls; clicking images still opens them.",
 	"createdAt": "2026-10-21T18:31:06.659Z",
-	"updatedAt": "2026-10-21T18:32:05.441Z",
+	"updatedAt": "2026-10-21T20:11:52.523Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T20:11:39.786Z",
+			"evidence": "Updated main 0816efe0 with test-only commit f1550280 reproduces unwanted capture captions and duplicate viewer controls. Red record 7d26b786 retains 144 PNGs and 398 runtime observations; relationship paging and image activation pass."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T20:11:52.523Z",
+			"evidence": "Removed the standing caption and full-size text button from EntityScreens. Existing image buttons open EvidenceViewer; provenance stays in that viewer. Registered contract updated."
 		},
 		{
 			"id": "green",
