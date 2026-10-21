@@ -18,6 +18,7 @@ import {
 } from './support/harnessCapture';
 import { fixtures } from './support/fixtures';
 import { servedReport } from './support/portableReport';
+import { recordCapture } from '../../../../src/utils/record-capture/recordCapture';
 
 /**
  * The evidence of what is left of the reports of a site. The hub, the report page and the
@@ -31,7 +32,7 @@ test.use({ baseURL: origin });
 test.describe.configure({ mode: 'serial' });
 
 const root = fixtures.reports;
-const evidence = evidenceOf('reports');
+const evidence = join(evidenceOf('reports'), 'reports-captures');
 const title = 'Exported settings review';
 const made = { paired: '', exported: '' };
 
@@ -56,6 +57,13 @@ const states: Record<string, (page: Page) => Promise<void>> = {
 	'retired-report': (page) => retired(page, `/harness/reports/${made.exported}`),
 	'retired-analytics': (page) => retired(page, '/harness/analytics'),
 	exported,
+	async 'image-gallery'(page) {
+		await exported(page);
+		await page.locator('.gallery-section').first().scrollIntoViewIfNeeded();
+		await expect(
+			page.getByRole('button', { name: 'Open Tall report page', exact: true })
+		).toBeVisible();
+	},
 	async gallery(page) {
 		await page.goto(await servedReport(made.paired, origin));
 		await page.locator('.gallery-section').first().scrollIntoViewIfNeeded();
@@ -163,4 +171,9 @@ test('what was captured satisfies the reports scenario, served by the build unde
 	expect(judged.states.map((state) => [state.id, state.captures.length])).toEqual(
 		declared.map((state) => [state, state === 'audio' ? 4 : 3])
 	);
+	for (const { line } of gathered)
+		recordCapture(
+			{ ...line, file: 'reports-' + line.file },
+			readFileSync(join(evidence, line.file))
+		);
 });

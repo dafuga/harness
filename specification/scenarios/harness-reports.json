@@ -55,14 +55,16 @@
 			]
 		},
 		{
+			"id": "image-gallery",
+			"title": "Image evidence cards in the exported report gallery",
+			"coverage": "required",
+			"units": ["reports.component.evidence-grid", "reports.component.evidence-card"]
+		},
+		{
 			"id": "gallery",
 			"title": "Evidence gallery of the exported report",
 			"coverage": "required",
-			"units": [
-				"reports.component.evidence-grid",
-				"reports.component.evidence-card",
-				"reports.component.audio-comparison"
-			]
+			"units": ["reports.component.evidence-grid", "reports.component.audio-comparison"]
 		},
 		{
 			"id": "viewer",
@@ -118,6 +120,7 @@
 				"retired-report",
 				"retired-analytics",
 				"exported",
+				"image-gallery",
 				"gallery",
 				"viewer",
 				"comparison",
