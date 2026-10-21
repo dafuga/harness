@@ -1,25 +1,16 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { explorerRoutePath, type ExplorerLocation } from '../../../../../src/utils/explorerRoute';
-	import type {
-		ExplorerBehavior,
-		ExplorerEntity,
-		ExplorerEvidence
-	} from '../../models/Explorer.types';
 	import type { ExplorerScreen } from '../../models/ExplorerScreen.types';
-	import type { HarnessIndex, HarnessRevision, HarnessUnit } from '../../models/Harness.types';
+	import type { HarnessIndex, HarnessRevision } from '../../models/Harness.types';
 	import { correctedLocation, compactHelperLocation } from '../../utils/correctedLocation';
-	import type { EntityLens } from '../../utils/entityLens';
-	import { explorerBehavior } from '../../utils/explorerBehavior';
 	import { explorerEntities } from '../../utils/explorerEntities';
 	import { explorerSearchEntries } from '../../utils/explorerSearchEntries';
-	import { explorerEvidence } from '../../utils/explorerEvidence';
-	import { explorerHistory } from '../../utils/explorer-history/explorerHistory';
-	import { explorerRelationsReader } from '../../utils/explorerRelations';
 	import { branchCommits } from './harness-navbar/harnessAncestry';
 	import { retainedBranch } from '../../utils/harnessAncestry';
 	import { harnessClient } from '../../utils/harnessClient';
 	import { harnessPage } from '../../utils/harness-page/harnessPage';
+	import { consoleRelations, consoleView, type ConsoleAnswer } from './harness-console/consoleView';
 	import HarnessHeader from './HarnessHeader.svelte';
 	let {
 		base,
@@ -67,7 +58,6 @@
 		return explorerRoutePath(local ? compactHelperLocation(to, entities) : to);
 	}
 	const href = (to: ExplorerLocation) => base + address(to);
-	type Answer = { evidence: ExplorerEvidence; behavior: ExplorerBehavior };
 	/** Another category, entity or section starts at its top; a tab of the same page does not. */
 	function onroute(to: ExplorerLocation) {
 		const next = address(to);
@@ -80,52 +70,24 @@
 		)
 			window.scrollTo({ top: 0 });
 	}
-	/** What an entity relates to at a revision; what its commit removed, as the parent held it. */
-	function relationsOf(
-		detail: HarnessRevision,
-		before: HarnessRevision | null,
-		listed: ExplorerEntity[]
-	) {
-		const own = explorerRelationsReader(detail, listed);
-		// The parent lists its own entities, with the verdicts it gave them.
-		const last = before ? explorerRelationsReader(before) : own;
-		const held = new Set(detail.registry.units.map((unit) => unit.id));
-		return (id: string) => (held.has(id) ? own : last)(id);
-	}
 	/** The revisions of exactly the shown commit once both are read; kept while it stays shown. */
 	let loaded = $derived(
 		head && head.commit === commit && parent !== undefined ? { head, parent } : null
 	);
 	let entities = $derived(loaded ? explorerEntities(loaded.head, loaded.parent) : []);
-	let relations = $derived(loaded ? relationsOf(loaded.head, loaded.parent, entities) : null);
+	let relations = $derived(loaded ? consoleRelations(loaded.head, loaded.parent, entities) : null);
 	// What an answer depends on besides the revisions: the tip or a selected commit, and its parent.
 	let context = $derived(scope ? `${scope.mode} ${scope.commit} ${scope.parent}` : null);
 	// The content asks for an answer whenever it reads one, so each is worked out once for a unit
 	// and handed out as the same object until a revision or that context changes.
-	let answers = $derived(loaded && context ? new Map<string, Answer>() : null);
+	let answers = $derived(loaded && context ? new Map<string, ConsoleAnswer>() : null);
 	/** Everything the content is given, once the revisions of exactly this scope are read. */
-	let shown = $derived.by(() => {
-		if (!index || !scope || !loaded || !relations || !answers) return null;
-		const location = correctedLocation(scope.location, entities) ?? scope.location;
-		const at = { ...scope, location };
-		const [history, revisions, known] = [index, loaded, answers];
-		const answer = (unit: HarnessUnit) => {
-			const found = known.get(unit.id);
-			if (found) return found;
-			const evidence = explorerEvidence(at, revisions, unit);
-			const made = { evidence, behavior: explorerBehavior(evidence) };
-			known.set(unit.id, made);
-			return made;
-		};
-		const lens: EntityLens = {
-			href,
-			relations,
-			evidence: (unit) => answer(unit).evidence,
-			behavior: (unit) => answer(unit).behavior,
-			history: (id) => explorerHistory(history, at, id)
-		};
-		return { index: history, scope: at, head: revisions.head, parent: revisions.parent, lens };
-	});
+	let shown = $derived(
+		index && scope && loaded && relations && answers
+			? consoleView({ index, scope, loaded, entities, relations, answers, href })
+			: null
+	);
+
 	// The search of the bar holds the entities of exactly the revision shown; none while it is read.
 	let searchCatalog = $derived({
 		entries: loaded ? explorerSearchEntries(entities, loaded.head.commit) : null
