@@ -33,6 +33,60 @@ test('sourceBlocks names functions, methods and the module remainder', () => {
 	});
 });
 
+test.each([
+	{
+		title: 'uninitialized class callbacks beside executable members',
+		code: `export class Store {
+	private release: (() => void) | undefined;
+	onNavigate?: (target: string) => void;
+	generic?: <T = unknown>(value: T) => T;
+	run(flag: boolean) { if (flag) return 1; return 0; }
+	set = (flag: boolean) => flag ? 1 : 0;
+}`,
+		members: [
+			['Store.run', 2],
+			['Store.set', 2]
+		]
+	},
+	{
+		title: 'initialized class callbacks with function type annotations',
+		code: `export class Store {
+	readonly convert: (value: boolean) => number = value => value ? 1 : 0;
+	private identity: <T = unknown>(value: T) => T = value => value;
+	read = function(flag: boolean) { if (flag) return 1; return 0; };
+}`,
+		members: [
+			['Store.convert', 2],
+			['Store.identity', 1],
+			['Store.read', 2]
+		]
+	},
+	{
+		title: 'uninitialized variables and a typed executable constant',
+		code: `let pending: (value: boolean) => boolean;
+let generic: <T = unknown>(value: T) => T;
+export const active: (value: boolean) => number = value => value ? 1 : 0;`,
+		members: [['active', 2]]
+	},
+	{
+		title: 'multiline and nested callback declarations',
+		code: `class Store {
+	onValue?: (
+		value: { ok: boolean }
+	) => void;
+	callback: ((fn: () => void) => void) | undefined;
+	apply = (flag: boolean) => { return flag ? 1 : 0; };
+}`,
+		members: [['Store.apply', 2]]
+	}
+])('sourceBlocks separates declarations and assigned values: $title', ({ code, members }) => {
+	const blocks = sourceBlocks(code, 'ts');
+	expect(blocks.map(({ name, complexity }) => [name, complexity])).toEqual([
+		['<module>', 0],
+		...members
+	]);
+});
+
 test('sourceBlocks hashes change only for the edited block', () => {
 	const hashes = (code: string) =>
 		Object.fromEntries(sourceBlocks(code, 'ts').map((block) => [block.name, block.hash]));

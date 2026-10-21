@@ -28,6 +28,7 @@ function caseOwners(file: string, name: string): string[] {
 	return owners[file] ? [owners[file]] : [];
 }
 const workloads: Record<string, [RegExp, string[]][]> = {
+	'root/utils/source-blocks': [[/.*/, ['function.source-blocks', 'function.block-spans']]],
 	'game/test/repositories/game-document': [
 		[/.*/, ['game.repository.game-document', 'game.validator.game-document']]
 	],
