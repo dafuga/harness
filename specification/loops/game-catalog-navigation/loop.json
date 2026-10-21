@@ -2,7 +2,7 @@
 	"name": "game-catalog-navigation",
 	"goal": "Keep Game Views reachable without overlapping catalog controls at every declared viewport.",
 	"createdAt": "2026-10-21T21:29:56.507Z",
-	"updatedAt": "2026-10-21T21:39:51.742Z",
+	"updatedAt": "2026-10-21T21:44:12.996Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T21:43:59.774Z",
+			"evidence": "Opus5.5 applies grid-column1 only to the conditional Game Views anchor. Mobile grid gives it a separate row; wider flex layouts ignore grid placement. Existing comments and all seven categories remain. A shared-header variant review rule now requires control separation and activation."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T21:44:12.996Z",
+			"evidence": "Paired red0c1b59e21 record206d0d7a5fcd and green7941550df recordfae95cc88b36 freeze1356 test/config inputs and identical profile24a08292. Mobile2fail becomes6pass across all sizes, including control separation, search dialog and saved-game return. Both sides retain54 original screenshots and816 observations. Reconstructed and inspected mobile pixels from Git evidence."
 		},
 		{
 			"id": "verify",
