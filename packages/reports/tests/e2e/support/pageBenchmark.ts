@@ -50,9 +50,7 @@ export async function pageBenchmark(page: Page, state: string, unit?: string): P
 			mediaType: 'application/json'
 		},
 		JSON.stringify({
-			measurements: includedUnits(unit).flatMap((unit) =>
-				measurements.map((measurement) => ({ ...measurement, unit }))
-			)
+			measurements
 		})
 	);
 }
@@ -64,29 +62,6 @@ async function pageHeap(page: Page) {
 	} finally {
 		await session.detach();
 	}
-}
-
-/** A route workload includes its rendered shared units; these figures never claim isolation. */
-function includedUnits(page: string): string[] {
-	const units = [
-		page,
-		'reports.component.harness-entity-header',
-		'function.explorer-route',
-		'reports.component.harness-entity-summary',
-		'reports.function.entity-measure',
-		'reports.function.entity-shown',
-		'reports.function.explorer-evidence',
-		'reports.function.explorer-evidence-focused-captures'
-	];
-	if (/-(pages|shells|components)-entity$/.test(page))
-		units.push(
-			'reports.component.harness-entity-screens',
-			'reports.function.entity-screens',
-			'reports.component.harness-entity-frame'
-		);
-	return units.filter((unit) =>
-		existsSync(join(import.meta.dirname, '../../../../../specification/units', unit + '.json'))
-	);
 }
 
 /** The registered framework page of this exact route. */
