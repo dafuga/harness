@@ -6,7 +6,7 @@
 	"name": "runtime-rss-units",
 	"goal": "Record process peak RSS in bytes across Bun and Node without accepting the macOS Bun scaling error.",
 	"createdAt": "2026-10-21T20:24:55.590Z",
-	"updatedAt": "2026-10-21T20:26:32.201Z",
+	"updatedAt": "2026-10-21T20:31:29.323Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -29,12 +29,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T20:31:28.166Z",
+			"evidence": "bf56ed73f proof 9ded5d0c records two real failures: the source runner reports 113,833,410,560 bytes against a fresh-process scale bound of 889,454,592; the real rank process reports 335,728,869,376 bytes against its 8GiB sanity ceiling. Other cases pass. These are unit-scale guards, not wider performance budgets."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T20:31:29.323Z",
+			"evidence": "Centralize true process-peak RSS conversion in the existing profiling service. Preserve Bun/Darwin native bytes; convert the KiB reports from Node and other supported hosts. Reuse it for sampled observations, repeated profiles, unit benchmarks and history-index workloads. Mark the corrected memory method explicitly and retain old records unchanged."
 		},
 		{
 			"id": "implement",

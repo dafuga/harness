@@ -1,3 +1,4 @@
+import { PerformanceProfileService } from './PerformanceProfileService';
 import { createHash } from 'node:crypto';
 import { fail } from '../core/errors';
 import type { Comparison } from '../core/comparisonTypes';
@@ -64,9 +65,9 @@ function processMemory(target: RuntimeKind) {
 		{
 			metric: 'process-peak-rss-bytes',
 			unitOfMeasure: 'bytes',
-			value: process.resourceUsage().maxRSS * 1024,
+			value: PerformanceProfileService.peakProcessRssBytes(),
 			method:
-				'Peak RSS of the Harness benchmark process, including runner overhead and earlier work; excludes separate target processes and is not callable-attributed memory.'
+				'Peak RSS of the Harness benchmark process, normalized to bytes for this runtime, including runner overhead and earlier work; excludes separate target processes and is not callable-attributed memory.'
 		}
 	];
 }
