@@ -15,7 +15,7 @@ import { nativeImageFixture } from './native-image-fixture';
 import { recordGameState } from './game-runtime-fixture';
 const binary = createRequire(import.meta.url)('electron') as string;
 const desktop = resolve(import.meta.dirname, '../..');
-/** All catalog controls keep their own hit area before reopening saved game history. */
+/** All catalog controls keep their own hit area before reopening the saved current game. */
 export async function catalogNavigation(page: Page) {
 	const game = page.getByRole('link', { name: 'Game Views', exact: true });
 	for (const control of [
@@ -39,8 +39,8 @@ export async function catalogNavigation(page: Page) {
 	await expect(search).not.toBeVisible();
 	await game.click();
 	await expect(page.getByRole('heading', { name: 'Game Views', exact: true })).toBeVisible();
-	await expect(page.getByLabel('View title', { exact: true })).toHaveAttribute('readonly', '');
-	await expect(page.getByRole('button', { name: 'Save', exact: true })).toHaveCount(0);
+	await expect(page.getByLabel('View title', { exact: true })).toHaveValue('Authored courtyard');
+	await expect(page.getByRole('button', { name: 'Save', exact: true })).toBeVisible();
 }
 export async function capture(page: Page, state: string) {
 	if (process.env.TAKE_SCREENSHOT !== 'true' && !process.env.HARNESS_EVIDENCE_DIR) return;

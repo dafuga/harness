@@ -20,7 +20,7 @@
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
 			"status": "complete",
 			"completedAt": "2026-10-21T21:30:39.154Z",
-			"evidence": "The standard game-native authoring matrix only asserted the returned Game Views link was visible. Extend that same catalog state to assert no control overlap and follow the link back to saved read-only game history, retaining declared captures before assertions."
+			"evidence": "The standard game-native authoring matrix only asserted the returned Game Views link was visible. Extend that same catalog state to assert no control overlap and follow the link back to the saved current game, preserving the earlier historical read-only checks, retaining declared captures before assertions."
 		},
 		{
 			"id": "red",
