@@ -6,7 +6,7 @@
 	"name": "browser-test-type-coverage",
 	"goal": "Desktop normal type checks include browser tests and fixtures, rejecting unbound identifiers before UI execution.",
 	"createdAt": "2026-10-21T17:46:46.004Z",
-	"updatedAt": "2026-10-21T17:52:26.268Z",
+	"updatedAt": "2026-10-21T19:55:56.447Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -35,6 +35,11 @@
 		{
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		},
+		{
+			"id": "hosted",
+			"title": "Include the hosted Hub browser corpus and verify modal search through both hosts.",
 			"status": "pending"
 		}
 	],
