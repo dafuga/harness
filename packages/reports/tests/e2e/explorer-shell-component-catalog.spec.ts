@@ -22,6 +22,16 @@ for (const viewport of catalogViewports) {
 			await openPreview(page, home, unit.id);
 			await expect(page.locator('#preview-title')).toHaveText(unit.title);
 			const component = await readyPreview(page, unit.id);
+			await capturePreview(page, home, unit.id, viewport.id);
+			if (unit.id === 'reports.component.explorer-function-card') {
+				await expect(component.locator('code')).toHaveText('filterOrders(orders, "SERVICE")');
+				await expect(
+					component.getByRole('link', { name: 'Order list', exact: true })
+				).toBeVisible();
+				await expect(
+					component.getByRole('link', { name: 'Order store', exact: true })
+				).toBeVisible();
+			}
 			if (unit.id === 'reports.component.usage-examples-usage-examples')
 				await expect(component.locator('code')).toHaveText('formatDuration(90)\n// => "1:30"');
 			if (unit.id === 'reports.component.harness-entity-history-row') {
@@ -69,7 +79,6 @@ for (const viewport of catalogViewports) {
 			await expect
 				.poll(() => page.evaluate(() => document.documentElement.scrollWidth))
 				.toBeLessThanOrEqual(viewport.width);
-			await capturePreview(page, home, unit.id, viewport.id);
 			if (viewport.id === 'desktop') await profilePreview(page, unit.id);
 		});
 	}
