@@ -24,6 +24,7 @@ for (const viewport of catalogViewports) {
 			const component = await readyPreview(page, unit.id);
 			await capturePreview(page, home, unit.id, viewport.id);
 			if (unit.id === 'reports.component.explorer-function-card') {
+				await expect(component.locator('article')).toHaveCSS('border-top-style', 'solid');
 				await expect(component.locator('code')).toHaveText('filterOrders(orders, "SERVICE")');
 				await expect(
 					component.getByRole('link', { name: 'Order list', exact: true })
