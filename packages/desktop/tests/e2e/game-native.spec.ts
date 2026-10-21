@@ -92,6 +92,12 @@ async function author(page: Page) {
 	await page.getByRole('button', { name: 'Add action', exact: true }).click();
 	await page.getByLabel('Action 1 target', { exact: true }).fill('authored');
 	await page.getByLabel('Action 1 target', { exact: true }).press('Tab');
+	await page.getByRole('button', { name: 'Fit View', exact: true }).click();
+	await page.getByText('Collect the key', { exact: true }).first().scrollIntoViewIfNeeded();
+	await capture(page, 'fit-graph');
+	await expect(page.getByText('Collect the key', { exact: true }).first()).toBeInViewport({
+		ratio: 1
+	});
 	await page.getByText('Collect the key', { exact: true }).first().click();
 	await page
 		.getByLabel('Checkpoint image direction', { exact: true })
