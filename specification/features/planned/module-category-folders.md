@@ -63,7 +63,56 @@ Existing public entry boundaries remain injectable for storage and process tests
 The frozen input checkpoint includes runner mapping and category configuration
 manifest addresses before the separate product repair commit.
 
-The full required check remains pending. Inherited ownership definition drift in
-entityMeasure and entityShown is not approved by this migration. Baseline comparison
-also reproduces Desktop's snippet/type-depth errors and Remote's validator lint
-complexity failure. These checks remain visible rather than being waived.
+Delivered source is `c4447fb640f919fc60ed0c747f7b392f0595a18c`; the main
+category implementation is `f6cce71419935bb9e919aadf2c2ff1c5c8b0216b`.
+The test-only checkpoint is `312289aa830b70a7050c57bfa276d25049111fb1`.
+Red `84b8fbe1949cf798426af2b3a7300d523d8b8f6c337d53354ac044da3898a1ce`
+and green `28c918a48d9a27d9f409586a49ab5d713e7d87ed36309b66086fa3c82e6c6992`
+share the frozen corpus, command and environment. The 50 root, one catalog and
+three responsive browser cases pass on the delivered source. A first green at
+f6cce714 is retained; the final pair includes the Desktop compatibility repair.
+
+Reports passes its complete normal check with 621 cases. The full root build,
+18 focused CLI/package/history/browser-error integration cases, all workspace
+structure audits and registry validation pass. Planning has 50 passing cases,
+Collaboration and Relay pass their normal checks, Hub has 477 passing cases and
+Remote has 135. Desktop's 859 passing cases include native protocol and Swift
+checks; its missed public Git-read seam now passes all four isolation cases.
+The preload framework build entry is restored and both native main bundles build.
+
+The required root check has 914 passing cases, one failing ownership guard and
+25 skipped live cases. The guard retains inherited entityMeasure/entityShown
+fingerprint drift. Baseline comparison reproduces Desktop's snippet/type-depth,
+function-card/catalog assertions and Remote's validator lint failure. Hub also
+retains a route-controller lint failure; broader Desktop run timeouts remain
+unresolved. These checks are not waived or represented as green. Physical-device
+installation is blocked by the unresolved Desktop checks.
+
+The selected revision's seven collections contain 315 categorized entries;
+shared service membership remains 52 and helper membership remains five. Exact
+source observations cover 1186 changed active units. Representative category
+lookup, generator, metadata and filter timings are recorded separately; process
+RSS includes runner/compiler overhead and is not per-unit allocation or peak.
+
+The frozen local preview uses build
+`a512448576c52a76af598e4cf4d43e69d158d40b35258d97cd8aa74743ad34ef`.
+Its health endpoint identifies the delivered commit. The portable three-commit
+history builds without gaps. Automated captures were inspected at 1440, 834 and
+390 pixels. Live Codex-browser inspection is blocked by the existing tab's
+internal error-page URL policy; a user reload was requested. No alternate browser
+was used to bypass that restriction. The fresh Jev advisory cannot complete
+without the project's dedicated credential. Full verification remains pending,
+and the feature report stays active and unpublished.
+
+## Review links
+
+The explorer links below select the tested commit. The taxonomy data itself and
+infrastructure audit/guidance kinds have no standalone explorer page; their source
+links identify those gaps. The external evidence folder contains the full changed
+unit and History link table, static observations, original captures and logs.
+
+- [Services and category filters](http://127.0.0.1:5734/harness/branch/dafuga%2Fservice-cards/commit/c4447fb640f919fc60ed0c747f7b392f0595a18c/services)
+- [Generator workflow](http://127.0.0.1:5734/harness/branch/dafuga%2Fservice-cards/commit/c4447fb640f919fc60ed0c747f7b392f0595a18c/services/workflow.generate-code) and [History](http://127.0.0.1:5734/harness/branch/dafuga%2Fservice-cards/commit/c4447fb640f919fc60ed0c747f7b392f0595a18c/services/workflow.generate-code/history)
+- [Explorer index](http://127.0.0.1:5734/harness/branch/dafuga%2Fservice-cards/commit/c4447fb640f919fc60ed0c747f7b392f0595a18c/components/reports.component.harness-explorer-index) and [History](http://127.0.0.1:5734/harness/branch/dafuga%2Fservice-cards/commit/c4447fb640f919fc60ed0c747f7b392f0595a18c/components/reports.component.harness-explorer-index/history)
+- [Filter controls](http://127.0.0.1:5734/harness/branch/dafuga%2Fservice-cards/commit/c4447fb640f919fc60ed0c747f7b392f0595a18c/components/reports.component.harness-explorer-controls) and [History](http://127.0.0.1:5734/harness/branch/dafuga%2Fservice-cards/commit/c4447fb640f919fc60ed0c747f7b392f0595a18c/components/reports.component.harness-explorer-controls/history)
+- [Taxonomy data](../../../harness.groups.json), [audit source](../../../src/audit/development-tooling/structure-rules/moduleCategoryFindings.ts) and [authoring guidance](../../../.codex/skills/harness/SKILL.md).

@@ -2,7 +2,7 @@
 	"name": "module-category-folders",
 	"goal": "Generated modules use responsibility folders; all explorer kinds show revision-bound categories and filter them",
 	"createdAt": "2026-10-21T10:34:48.440Z",
-	"updatedAt": "2026-10-21T10:34:48.440Z",
+	"updatedAt": "2026-10-21T13:50:08.994Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -10,17 +10,23 @@
 		{
 			"id": "spec",
 			"title": "Confirm scope, success criteria, constraints, and proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T13:50:06.303Z",
+			"evidence": "Feature criteria and coverage gaps are recorded; generators, audit, metadata and all seven collections are in scope."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T13:50:07.961Z",
+			"evidence": "Committed c4447fb64; category folders, extensible taxonomy, generator selection and grouped multi-select explorer are implemented."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T13:50:08.994Z",
+			"evidence": "Red 84b8fbe1 at 312289aa; unchanged green 28c918a4 at c4447fb64. Root 50, catalog 1 and responsive browser 3 cases pass."
 		},
 		{
 			"id": "verify",
