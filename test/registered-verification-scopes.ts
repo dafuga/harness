@@ -1,3 +1,4 @@
+import gameScenario from '../specification/scenarios/game-authoring.json';
 import { hostedVerificationScopes } from './hosted-verification-scopes';
 import { functionVerificationScopes } from './function-verification-scopes';
 import { recordedEvidenceScopes } from './recorded-evidence-scopes';
@@ -16,6 +17,11 @@ import type { VerificationScope } from './verification-targets';
 
 /** Registered scenario mappings, kept in their existing precedence order. */
 export const registeredVerificationScopes: Record<string, VerificationScope> = {
+	'game-authoring': {
+		package: 'desktop',
+		vitest: {},
+		playwright: { 'tests/e2e/game-native.spec.ts': gameScenario.states.map((state) => state.id) }
+	},
 	...remoteVerificationScopes,
 	...recordedEvidenceScopes,
 	...hostedVerificationScopes,

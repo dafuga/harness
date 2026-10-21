@@ -6,6 +6,7 @@ import type {
 } from '../src/models/Harness.types';
 import { record } from './entityFixture';
 import { capture, ids, units } from './entityUnits';
+import { withSourceMeasures } from './entityStates';
 export type PreviewVariant =
 	| ''
 	| 'legacy'
@@ -17,7 +18,8 @@ export type PreviewVariant =
 	| 'states'
 	| 'documented'
 	| 'helpers'
-	| 'measurements';
+	| 'measurements'
+	| 'focused';
 export function stateRecord(commit: string): HarnessRecord {
 	const taken = previewRecord(commit);
 	taken.scenarios[0].states.push({
@@ -164,17 +166,8 @@ export function withFrame(head: HarnessRevision, kind: string): HarnessRevision 
 	return { ...head, registry: { ...head.registry, units: [...mounted, frame] } };
 }
 export function withMeasurements(detail: HarnessRevision): HarnessRevision {
+	detail = withSourceMeasures(detail);
 	const helper = detail.registry.units.find((unit) => unit.id === ids.filter)!;
-	helper.sourceMeasurements = [
-		{
-			unit: ids.filter,
-			metric: 'source-bytes',
-			unitOfMeasure: 'bytes',
-			value: 800,
-			workload: null,
-			profile: null
-		}
-	];
 	helper.budgets.performance = [];
 	for (const taken of detail.records) {
 		const timing = taken.measurements.find((item) => item.unit === ids.filter && item.workload)!;

@@ -80,7 +80,6 @@ const owner = (path: string | undefined) =>
 	loaded.stored.find((unit) => unit.status === 'active' && unit.owns.source.includes(path ?? ''))
 		?.id;
 const consumers = () => written.filter((item) => item.to === select);
-
 test('no import written through a build alias of any package is left as a package from outside', () => {
 	const declared = Object.fromEntries(
 		Object.entries(builds).filter(([, own]) => Object.keys(own).length)
@@ -102,7 +101,6 @@ test('no import written through a build alias of any package is left as a packag
 	);
 	expect(outside.map((file) => file.path)).toEqual([]);
 });
-
 test('the registry stores Select as a derived dependency of each of its consumers, and is not stale', () => {
 	const units = consumers().map((item) => owner(item.from));
 	expect(units.sort()).toEqual([
@@ -129,7 +127,6 @@ test('the registry stores Select as a derived dependency of each of its consumer
 	expect(units.filter((id) => !linked(id))).toEqual([]);
 	expect(loaded.fresh.updated).toEqual([]);
 });
-
 test('a change of Select reaches its consumers, the pages that show them, and their tests and scenarios', async () => {
 	const report = await changed(select);
 	expect(report.units.direct).toEqual(['reports.component.select']);

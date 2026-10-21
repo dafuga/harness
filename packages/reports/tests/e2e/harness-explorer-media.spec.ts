@@ -36,12 +36,12 @@ test('a state is shown as it was recorded before and after, each side from its o
 	expect(await file(after(page, selected))).toBe(recordedShot(selected, where));
 	// The commit changed what the page shows, so the two recorded pictures are not the same bytes.
 	expect(recordedShot(parent, where)).not.toBe(recordedShot(selected, where));
-	await page.getByRole('combobox', { name: 'State' }).selectOption('filled');
+	await expect(page.getByRole('combobox', { name: 'State' })).toHaveCount(0);
 	await page
 		.getByRole('group', { name: 'Viewport' })
 		.getByRole('button', { name: 'Mobile' })
 		.click();
-	const moved = { scenario: 'titles-page', state: 'filled', viewport: 'mobile' };
+	const moved = { scenario: 'titles-page', state: 'empty', viewport: 'mobile' };
 	await expect.poll(() => file(after(page, selected))).toBe(recordedShot(selected, moved));
 	expect(await file(before(page, parent))).toBe(recordedShot(parent, moved));
 	await expect(before(page, parent)).toContainText('Parent commit');

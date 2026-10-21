@@ -8,7 +8,7 @@ import {
 	tip,
 	verdict
 } from './support/explorer';
-import { viewports } from './support/harnessCapture';
+import { capturePhase, viewports } from './support/harnessCapture';
 import { seeded, short } from './support/harnessHistory';
 
 const { commits } = seeded();
@@ -32,18 +32,6 @@ async function reveal(page: Page): Promise<void> {
 		if (!shown) await summary.click();
 	}
 }
-// Kept only by a run with TAKE_SCREENSHOT=true and a before or after label; fonts and images wait.
-async function proof(page: Page, name: string): Promise<void> {
-	if (process.env.TAKE_SCREENSHOT !== 'true') return;
-	const label = process.env.SCREENSHOT_LABEL;
-	if (label !== 'before' && label !== 'after') throw new Error('SCREENSHOT_LABEL: before or after');
-	await page.evaluate(async () => {
-		await document.fonts.ready;
-		await Promise.all([...document.images].map((image) => image.decode()));
-	});
-	const folder = process.env.HARNESS_EXPLORER_SHOTS ?? test.info().outputDir;
-	await page.screenshot({ path: `${folder}/${label}-${name}.png`, fullPage: true });
-}
 /** What the comparison of the recorded results came to, as the panel says it in words. */
 const told = (page: Page, label: string) =>
 	content(page).getByRole('status').filter({ hasText: label });
@@ -54,7 +42,7 @@ test('a page leads to its components, those to components, and those to function
 	page
 }) => {
 	await page.goto(main('pages'));
-	await open(page, 'Titles');
+	await open(page, 'Open Titles');
 	await expect(heading(page, 'Titles')).toBeVisible();
 	await page.getByRole('tab', { name: 'Uses', exact: true }).click();
 	await checkpoint(page, 'evidence-page-uses');
@@ -69,31 +57,41 @@ test('a page leads to its components, those to components, and those to function
 	await open(page, 'Title row');
 	await expectPath(page, main(`components/${units.row}`));
 	await page.getByRole('tab', { name: 'Uses', exact: true }).click();
-	await open(page, 'Slugify');
-	await expectPath(page, main(`functions/${units.slugify}`));
-	await expect(heading(page, 'Slugify')).toBeVisible();
+	await content(page).locator('.ex-function-call').first().click();
+	await expectPath(page, main(`helpers/slugify/contract`));
+	await expect(heading(page, 'slugify')).toBeVisible();
 });
 
-test('source is not shown until Details and then Source are opened, on a page too', async ({
+test('page source stays hidden and a missing repository is explicit on its Source tab', async ({
 	page
 }) => {
 	const file = 'src/routes/titles/+page.svelte';
 	await page.goto(main(`pages/${units.page}`));
 	await expect(heading(page, 'Titles')).toBeVisible();
 	await expect(content(page).getByText(file)).toHaveCount(0);
-	await content(page).getByRole('link', { name: 'Details' }).click();
-	await expectPath(page, main(`pages/${units.page}/details`));
-	await checkpoint(page, 'evidence-page-details');
-	for (const section of ['Contract', 'Size', 'Performance profile']) {
-		await expect(content(page).getByRole('heading', { name: section, exact: true })).toBeVisible();
-	}
-	await expect(page.getByRole('tab')).toHaveText(['Contract', 'Measurements', 'Source', 'History']);
+	await expect(content(page).getByRole('link', { name: 'Details', exact: true })).toHaveCount(0);
+	await expect(page.getByRole('tab')).toHaveText([
+		'Overview',
+		'Contract',
+		'Uses',
+		'States',
+		'History',
+		'Source'
+	]);
+	await page.getByRole('tab', { name: 'Contract', exact: true }).click();
+	await expectPath(page, main(`pages/${units.page}?tab=contract`));
+	await checkpoint(page, 'evidence-page-contract');
+	await expect(content(page).getByRole('heading', { name: 'Contract', exact: true })).toBeVisible();
 	await expect(content(page).getByText(file)).toHaveCount(0);
-	await page.getByRole('tab', { name: 'Source' }).click();
-	await expectPath(page, main(`pages/${units.page}/details?tab=source`));
-	await expect(content(page).getByText(file).first()).toBeVisible();
+	await page.getByRole('tab', { name: 'Source', exact: true }).click();
+	await expectPath(page, main(`pages/${units.page}?tab=source`));
+	await expect(
+		content(page).getByText('GitHub source unavailable for this revision.', { exact: true })
+	).toBeVisible();
 	await page.reload();
-	await expect(content(page).getByText(file).first()).toBeVisible();
+	await expect(
+		content(page).getByText('GitHub source unavailable for this revision.', { exact: true })
+	).toBeVisible();
 	await checkpoint(page, 'evidence-page-source');
 });
 
@@ -129,9 +127,7 @@ test('a branch tip shows one current screenshot and a selected commit shows pare
 }) => {
 	await page.goto(tip(explorerBranch, `pages/${units.page}`));
 	await checkpoint(page, 'evidence-current-page');
-	await expect(
-		content(page).getByText(`Current snapshot · ${short(commits.approved)}`)
-	).toBeVisible();
+	await expect(content(page).getByText(`Branch tip · ${short(commits.approved)}`)).toBeVisible();
 	await expect(content(page).getByText(/^Before ·/)).toHaveCount(0);
 	await expect(content(page).locator('img[src*="/harness/media/"]')).toHaveCount(1);
 	await content(page).getByRole('group', { name: 'Viewport' }).getByText('Mobile').click();
@@ -168,7 +164,7 @@ test('a function shows its end-to-end run before and after, and says whether beh
 	await expect(told(page, 'Behavior changed')).toBeVisible();
 	await expect(content(page).getByText(`Before · ${short(commits.baseline)}`)).toBeVisible();
 	await reveal(page);
-	await proof(page, 'evidence-behavior-revealed');
+	await capturePhase(page, 'evidence-behavior-revealed');
 	await expect(content(page).getByText('hello world').first()).toBeVisible();
 	await expect(content(page).getByText('HELLO WORLD').first()).toBeVisible();
 	await expect(content(page).getByText('Surrounding spaces are removed').first()).toBeVisible();
@@ -179,7 +175,7 @@ test('a function shows its end-to-end run before and after, and says whether beh
 	await page.goto(tip(explorerBranch, `functions/${units.slugify}`));
 	await expect(content(page).getByText(/^Before ·/)).toHaveCount(0);
 	await reveal(page);
-	await proof(page, 'evidence-tip-revealed');
+	await capturePhase(page, 'evidence-tip-revealed');
 	await expect(content(page).getByText('Slugify each title').first()).toBeVisible();
 });
 
@@ -196,7 +192,7 @@ test('the history of an entity lists the commits behind the shown one, with grow
 	await expect(of(commits.reordered)).toHaveCount(0);
 	// This commit changed what the function returns without changing its size: it is listed.
 	await of(commits.shout)
-		.getByRole('link', { name: /View revision/ })
+		.getByRole('link', { name: short(commits.shout), exact: true })
 		.first()
 		.click();
 	await expectPath(page, at('main', commits.shout, `functions/${units.slugify}`));

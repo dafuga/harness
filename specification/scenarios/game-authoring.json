@@ -1,0 +1,292 @@
+{
+	"schemaVersion": 1,
+	"id": "game-authoring",
+	"title": "Native game creation, authored rules, checkpoint art, saved play and read-only history",
+	"kind": "ui",
+	"units": [
+		"desktop.page.game",
+		"desktop.component.game-create",
+		"desktop.component.game-workspace",
+		"desktop.component.game-view-fields",
+		"desktop.component.game-preview",
+		"desktop.component.game-checkpoint-pane",
+		"desktop.component.game-checkpoint-image",
+		"desktop.component.game-checkpoint-editor",
+		"desktop.component.game-graph",
+		"desktop.component.game-mechanics",
+		"desktop.component.game-navigation-guard",
+		"desktop.component.game-text-field",
+		"desktop.component.game-trace"
+	],
+	"states": [
+		{
+			"id": "2d-creation",
+			"title": "2d creation",
+			"coverage": "required",
+			"units": ["desktop.component.game-create"]
+		},
+		{
+			"id": "2d-mechanics",
+			"title": "2d mechanics",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-view-fields",
+				"desktop.component.game-mechanics",
+				"desktop.component.game-text-field"
+			]
+		},
+		{
+			"id": "2d-fit-graph",
+			"title": "2d fit graph",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-view-fields",
+				"desktop.component.game-checkpoint-pane",
+				"desktop.component.game-checkpoint-image",
+				"desktop.component.game-checkpoint-editor",
+				"desktop.component.game-graph",
+				"desktop.component.game-text-field",
+				"desktop.component.game-trace"
+			]
+		},
+		{
+			"id": "2d-saved",
+			"title": "2d saved",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-view-fields",
+				"desktop.component.game-checkpoint-pane",
+				"desktop.component.game-checkpoint-image",
+				"desktop.component.game-checkpoint-editor",
+				"desktop.component.game-graph",
+				"desktop.component.game-text-field",
+				"desktop.component.game-trace"
+			]
+		},
+		{
+			"id": "2d-reopened",
+			"title": "2d reopened",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-view-fields",
+				"desktop.component.game-checkpoint-pane",
+				"desktop.component.game-checkpoint-image",
+				"desktop.component.game-checkpoint-editor",
+				"desktop.component.game-graph",
+				"desktop.component.game-text-field",
+				"desktop.component.game-trace"
+			]
+		},
+		{
+			"id": "2d-play",
+			"title": "2d play",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-view-fields",
+				"desktop.component.game-preview"
+			]
+		},
+		{
+			"id": "2d-history",
+			"title": "2d history",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-view-fields",
+				"desktop.component.game-checkpoint-pane",
+				"desktop.component.game-checkpoint-image",
+				"desktop.component.game-checkpoint-editor",
+				"desktop.component.game-graph",
+				"desktop.component.game-text-field",
+				"desktop.component.game-trace"
+			]
+		},
+		{
+			"id": "3d-creation",
+			"title": "3d creation",
+			"coverage": "required",
+			"units": ["desktop.component.game-create"]
+		},
+		{
+			"id": "3d-mechanics",
+			"title": "3d mechanics",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-view-fields",
+				"desktop.component.game-mechanics",
+				"desktop.component.game-text-field"
+			]
+		},
+		{
+			"id": "3d-fit-graph",
+			"title": "3d fit graph",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-view-fields",
+				"desktop.component.game-checkpoint-pane",
+				"desktop.component.game-checkpoint-image",
+				"desktop.component.game-checkpoint-editor",
+				"desktop.component.game-graph",
+				"desktop.component.game-text-field",
+				"desktop.component.game-trace"
+			]
+		},
+		{
+			"id": "3d-saved",
+			"title": "3d saved",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-view-fields",
+				"desktop.component.game-checkpoint-pane",
+				"desktop.component.game-checkpoint-image",
+				"desktop.component.game-checkpoint-editor",
+				"desktop.component.game-graph",
+				"desktop.component.game-text-field",
+				"desktop.component.game-trace"
+			]
+		},
+		{
+			"id": "3d-reopened",
+			"title": "3d reopened",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-view-fields",
+				"desktop.component.game-checkpoint-pane",
+				"desktop.component.game-checkpoint-image",
+				"desktop.component.game-checkpoint-editor",
+				"desktop.component.game-graph",
+				"desktop.component.game-text-field",
+				"desktop.component.game-trace"
+			]
+		},
+		{
+			"id": "3d-play",
+			"title": "3d play",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-view-fields",
+				"desktop.component.game-preview"
+			]
+		},
+		{
+			"id": "3d-history",
+			"title": "3d history",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-view-fields",
+				"desktop.component.game-checkpoint-pane",
+				"desktop.component.game-checkpoint-image",
+				"desktop.component.game-checkpoint-editor",
+				"desktop.component.game-graph",
+				"desktop.component.game-text-field",
+				"desktop.component.game-trace"
+			]
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 1440,
+			"height": 900
+		},
+		{
+			"id": "tablet",
+			"width": 920,
+			"height": 1180
+		},
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 844
+		}
+	],
+	"tests": [
+		{
+			"id": "native-game-authoring",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/game-native.spec.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 300000
+		}
+	],
+	"evidence": [
+		{
+			"id": "game-native-screens",
+			"kind": "screenshot",
+			"states": [
+				"2d-creation",
+				"2d-mechanics",
+				"2d-fit-graph",
+				"2d-saved",
+				"2d-reopened",
+				"2d-play",
+				"2d-history",
+				"3d-creation",
+				"3d-mechanics",
+				"3d-fit-graph",
+				"3d-saved",
+				"3d-reopened",
+				"3d-play",
+				"3d-history"
+			],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "full-page",
+			"required": true
+		},
+		{
+			"id": "game-native-runtime",
+			"kind": "benchmark",
+			"states": ["2d-reopened", "3d-reopened"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"required": true
+		},
+		{
+			"id": "game-native-output",
+			"kind": "output",
+			"states": [
+				"2d-creation",
+				"2d-mechanics",
+				"2d-fit-graph",
+				"2d-saved",
+				"2d-reopened",
+				"2d-play",
+				"2d-history",
+				"3d-creation",
+				"3d-mechanics",
+				"3d-fit-graph",
+				"3d-saved",
+				"3d-reopened",
+				"3d-play",
+				"3d-history"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

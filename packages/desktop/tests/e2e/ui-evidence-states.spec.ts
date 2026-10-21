@@ -115,7 +115,9 @@ test('images of what is no longer shown are let go', async ({ page }) => {
 	expect(held.length).toBeGreaterThanOrEqual(2);
 	expect((await evidenceState(page)).urls.revoked).toEqual([]);
 	await page.getByRole('link', { name: 'Helpers', exact: true }).click();
-	await expect(page.getByRole('link', { name: 'Open filterOrders', exact: true })).toBeVisible();
+	await expect(
+		page.getByRole('link', { name: 'Open filterOrders(orders, searchText)', exact: true })
+	).toBeVisible();
 	const { revoked } = (await evidenceState(page)).urls;
 	expect(held.filter((url) => !revoked.includes(url))).toEqual([]);
 });

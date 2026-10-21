@@ -164,7 +164,7 @@ test.describe('a registry of several hundred units', () => {
 		await search(page).fill('generated 477');
 		await expect(cards(page)).toHaveCount(1);
 		expect(await fits(page)).toBe(true);
-		await titled(page).click();
+		await cards(page).locator('.ex-function-call').click();
 		await expectPath(page, tip('main', 'helpers/unit477/contract'));
 	});
 });

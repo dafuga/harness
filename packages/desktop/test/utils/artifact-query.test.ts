@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { mediaFile } from '../../../reports/src/utils/harnessEvidence';
 import { artifactQuery } from '../../src/utils/artifactQuery';
@@ -10,23 +11,24 @@ const shot = (side: 'before' | 'after') =>
 		(item) => item.state === 'default' && item.capture.viewport === 'desktop'
 	)!;
 
-test('a capture is asked for by the binding of the side that lists it', () => {
-	const after = shot('after');
-	expect(artifactQuery(result, scope, 'after', mediaFile(after.capture))).toEqual({
-		...scope,
-		side: 'after',
-		recordId: 'rec-cccccc-0000',
-		scenarioId: 'orders-page',
-		state: 'default',
-		evidenceId: 'screens',
-		viewport: 'desktop',
-		sha256: after.capture.sha256,
-		notesRevision: pinned.notes,
-		evidenceRevision: pinned.evidence
-	});
-	const before = artifactQuery(result, scope, 'before', mediaFile(shot('before').capture));
-	expect(before).toMatchObject({ side: 'before', recordId: 'rec-bbbbbb-0000' });
-});
+test('a capture is asked for by the binding of the side that lists it', () =>
+	measureWorkload('desktop.function.artifact-query', 'listed-capture-request', () => {
+		const after = shot('after');
+		expect(artifactQuery(result, scope, 'after', mediaFile(after.capture))).toEqual({
+			...scope,
+			side: 'after',
+			recordId: 'rec-cccccc-0000',
+			scenarioId: 'orders-page',
+			state: 'default',
+			evidenceId: 'screens',
+			viewport: 'desktop',
+			sha256: after.capture.sha256,
+			notesRevision: pinned.notes,
+			evidenceRevision: pinned.evidence
+		});
+		const before = artifactQuery(result, scope, 'before', mediaFile(shot('before').capture));
+		expect(before).toMatchObject({ side: 'before', recordId: 'rec-bbbbbb-0000' });
+	}));
 
 test('what a side does not list is not asked for, whatever name is given', () => {
 	const file = mediaFile(shot('after').capture);

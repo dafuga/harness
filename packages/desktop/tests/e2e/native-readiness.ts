@@ -30,6 +30,11 @@ async function designsAt(page: Page, expected: NativeExpected): Promise<void> {
 	await expect(page.getByLabel('Viewed context', { exact: true }).locator('strong')).toHaveText(
 		name
 	);
+	const footer = page.locator('footer.status-bar');
+	await expect(footer).toContainText(expected.commit.slice(0, 7));
+	await expect(footer).toContainText(
+		expected.state === 'history' ? 'Historical commit · comments only' : 'Local project'
+	);
 }
 
 /** Approval is offered on the tip, recorded once approved, and refused on a historical commit. */

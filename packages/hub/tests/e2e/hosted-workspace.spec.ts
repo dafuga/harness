@@ -79,6 +79,9 @@ test('a comment on a historical commit names that commit', async ({ page }) => {
 	await expect(page.getByLabel('Viewed context', { exact: true }).locator('strong')).toHaveText(
 		earlier.slice(0, 7)
 	);
+	await expect(page.getByRole('contentinfo')).toContainText('Historical commit · comments only');
+	await expect(page.getByRole('contentinfo')).toContainText(earlier.slice(0, 7));
+	await expect(page.getByRole('button', { name: 'Go to tip', exact: true })).toBeVisible();
 	await noAgentControls(page);
 	await page.getByRole('button', { name: 'Comment on image', exact: true }).click();
 	await message(page).fill('This was clearer');

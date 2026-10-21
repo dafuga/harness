@@ -24,13 +24,14 @@ async function create(page: Page, name: string, dimension: string) {
 	await expect(page.getByLabel('Dimension', { exact: true })).toHaveValue(dimension);
 	await expect(page.getByText('Demo', { exact: true })).toHaveCount(0);
 }
-async function author(page: Page) {
+async function author(page: Page, dimension: string) {
 	await page.getByLabel('View title', { exact: true }).fill('Authored courtyard');
 	await page.getByRole('button', { name: 'New view', exact: true }).click();
 	await page.getByLabel('View title', { exact: true }).fill('Second view');
 	await page.getByLabel('View', { exact: true }).selectOption('courtyard');
 	await page.getByRole('button', { name: 'Mechanics', exact: true }).click();
 	await page.getByRole('textbox', { name: 'Title', exact: true }).first().fill('Authored movement');
+	await capture(page, `${dimension}-mechanics`);
 	await page.getByRole('button', { name: 'Checkpoints', exact: true }).click();
 	await page.getByRole('button', { name: 'Add checkpoint', exact: true }).click();
 	await page.getByLabel('Checkpoint title', { exact: true }).fill('After the garden');
@@ -44,7 +45,7 @@ async function author(page: Page) {
 	await page.getByLabel('Action 1 target', { exact: true }).press('Tab');
 	await page.getByRole('button', { name: 'Fit View', exact: true }).click();
 	await page.getByText('Collect the key', { exact: true }).first().scrollIntoViewIfNeeded();
-	await capture(page, 'fit-graph');
+	await capture(page, `${dimension}-fit-graph`);
 	await expect(page.getByText('Collect the key', { exact: true }).first()).toBeInViewport({
 		ratio: 1
 	});
@@ -103,9 +104,21 @@ async function play(page: Page, dimension: string) {
 	await page.getByRole('button', { name: 'Save', exact: true }).click();
 	await expect(page.getByText('Unsaved changes', { exact: true })).toHaveCount(0);
 }
-async function history(page: Page, root: string) {
+async function history(page: Page, root: string, dimension: string) {
 	execFileSync('git', ['add', '.'], { cwd: root });
-	execFileSync('git', ['commit', '-m', 'feat: save authored game'], { cwd: root });
+	execFileSync(
+		'git',
+		[
+			'-c',
+			'user.name=Harness Test',
+			'-c',
+			'user.email=harness-test@example.invalid',
+			'commit',
+			'-m',
+			'feat: save authored game'
+		],
+		{ cwd: root }
+	);
 	const commit = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
 	const url = new URL(page.url());
 	url.searchParams.set('commit', commit);
@@ -118,6 +131,7 @@ async function history(page: Page, root: string) {
 	await expect(
 		page.getByRole('img', { name: 'Collected key gameplay reference', exact: true })
 	).toBeVisible();
+	await capture(page, `${dimension}-history`);
 	await expect(
 		page.getByRole('button', { name: 'Regenerate checkpoint image', exact: true })
 	).toBeDisabled();
@@ -149,10 +163,10 @@ for (const { dimension, viewport } of ['2d', '3d'].flatMap((dimension) =>
 			await page.setViewportSize(viewport);
 			await test.step('Create a game', () => create(page, name, dimension));
 			await imageProvider(root);
-			await test.step('Author rules and image', () => author(page));
+			await test.step('Author rules and image', () => author(page, dimension));
 			await persisted(page, root, dimension);
 			await play(page, dimension);
-			await history(page, root);
+			await history(page, root, dimension);
 			finished = true;
 		} finally {
 			if (finished) await app?.close();

@@ -9,21 +9,21 @@ import { atlas, hostedFixture } from './hosted-fixture';
 type Box = { x: number; y: number; width: number; height: number };
 const pages = `/projects/${atlas}/harness/branch/main/pages`;
 const widths = [1440, 1379, 1300, 1251, 920, 768, 390];
-const bar = (page: Page) => page.getByRole('banner');
+const bar = (page: Page) => page.getByRole('banner', { includeHidden: true });
+const trigger = (page: Page) =>
+	bar(page).getByRole('button', { name: 'Search entities', exact: true, includeHidden: true });
 const field = (page: Page) =>
 	page
 		.getByRole('dialog', { name: 'Search project' })
 		.getByRole('combobox', { name: 'Search entities', exact: true });
-const trigger = (page: Page) =>
-	bar(page).getByRole('button', { name: 'Search entities', exact: true });
 const found = (page: Page) => page.getByRole('listbox', { name: 'Entities found', exact: true });
 const controls = (page: Page): Locator[] => [
-	bar(page).getByRole('button', { name: 'Choose branch', exact: true }),
-	bar(page).getByRole('button', { name: 'Choose commit', exact: true }),
+	bar(page).getByRole('button', { name: 'Choose branch', exact: true, includeHidden: true }),
+	bar(page).getByRole('button', { name: 'Choose commit', exact: true, includeHidden: true }),
 	bar(page).getByText('Ada Example', { exact: true }),
-	bar(page).getByRole('link', { name: 'Projects', exact: true }),
-	bar(page).getByRole('link', { name: 'Members', exact: true }),
-	bar(page).getByRole('button', { name: 'Sign out', exact: true })
+	bar(page).getByRole('link', { name: 'Projects', exact: true, includeHidden: true }),
+	bar(page).getByRole('link', { name: 'Members', exact: true, includeHidden: true }),
+	bar(page).getByRole('button', { name: 'Sign out', exact: true, includeHidden: true })
 ];
 const box = async (locator: Locator): Promise<Box> => (await locator.boundingBox())!;
 /** Whether two boxes share a pixel, the first with a focus ring of three pixels around it. */
