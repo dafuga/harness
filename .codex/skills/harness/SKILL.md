@@ -144,3 +144,5 @@ When a project-creation flow owns a new directory, test failure after files were
 ## Concurrent Main Integration
 
 Pin head, main and their merge base before reviewing removals. A behind-main diff is not proof that the branch deleted a feature. When integrating new main work, preserve its source behavior and original assertions alongside branch changes. Review conflicted tests against the merged source; never select an older implementation together with weaker expectations to obtain green checks.
+
+When reconciling changed assertions, map each expected state to its selected fixture revision and manifest status. Run every reconciled standardized test before broad verification; active, retired and never-present entities have different history behavior.
