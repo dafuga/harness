@@ -126,11 +126,14 @@ test('a real operation that is slowed without changing its result fails the end-
 		return file as {
 			responseDigest: string;
 			target: string;
-			measurements: Array<{ method: string }>;
+			measurements: Array<{ method: string; metric: string; value: number }>;
 		};
 	};
 	const fast = await digest(before);
 	expect(fast.target).toBe('module');
+	const rss = fast.measurements.find((entry) => entry.metric === 'process-peak-rss-bytes');
+	expect(rss?.value, 'tiny fresh rank process has sane byte-scale RSS').toBeGreaterThan(0);
+	expect(rss?.value, 'tiny fresh rank process has sane byte-scale RSS').toBeLessThan(8 * 1024 ** 3);
 	expect(fast.measurements[0].method).toMatch(
 		/end-to-end calls through the declared module target/
 	);

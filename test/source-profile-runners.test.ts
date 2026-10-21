@@ -10,15 +10,17 @@ test('normal Vitest imports and its Bun commands capture their own real operatio
 			'subject.test.ts',
 			`import { expect, test } from 'vitest';
 import { spawnSync } from 'node:child_process';
+import { writeFileSync } from 'node:fs';
 import { greet } from './subject';
 test('real source operations',()=>{
  expect(greet('direct')).toBe('DIRECT');
+ writeFileSync('node-rss.json',JSON.stringify(process.memoryUsage().rss));
  const child=spawnSync('bun',['run.ts'],{encoding:'utf8',env:process.env});
  expect([child.status,child.stdout.trim(),child.stderr]).toEqual([0,'FIXTURE-VALUE','']);
 });`
 		);
 		await fixture.run(['bun', 'x', 'vitest', 'run'], fixture.environment);
-		const measurements = await runnerCaptures(fixture.directory);
+		const measurements = await runnerCaptures(fixture.directory, fixture.root);
 		expect(
 			measurements.filter((item) => item.unitOfMeasure === 'ms'),
 			'both actual runners require source observations'
