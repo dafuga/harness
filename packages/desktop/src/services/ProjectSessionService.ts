@@ -50,6 +50,9 @@ export class ProjectSessionService {
 	catalog: CatalogService | null = null;
 	private query: RevisionQuery = { branch: null, commit: null };
 	busy = false;
+	get selecting(): boolean {
+		return this.opening;
+	}
 	async open(directory: string): Promise<ProjectSnapshot> {
 		if (this.busy || this.pending || this.opening)
 			throw new Error('Cancel or finish the current run before switching projects.');

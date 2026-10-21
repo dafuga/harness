@@ -2,7 +2,7 @@
 	"name": "selected-project-read",
 	"goal": "Keep the currently selected project readable during active runs while refusing a switch to another project",
 	"createdAt": "2026-10-21T14:35:32.733Z",
-	"updatedAt": "2026-10-21T14:36:47.414Z",
+	"updatedAt": "2026-10-21T14:39:10.024Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T14:39:08.973Z",
+			"evidence": "At cb7432733, the standard two-project ownership flow rejects selecting its own project during active work before the new read assertions can pass."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T14:39:10.024Z",
+			"evidence": "Return the current project snapshot for idempotent selection while no project switch is opening. All other selections retain the existing busy/pending/opening guard."
 		},
 		{
 			"id": "green",
