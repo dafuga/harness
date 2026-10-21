@@ -6,9 +6,11 @@
 	"name": "runtime-profile-applicability",
 	"goal": "Require real profiles for executable units without asking declarative CSS for a nonexistent module call; unreadable and mixed sources remain required.",
 	"createdAt": "2026-10-21T09:07:19.527Z",
-	"updatedAt": "2026-10-21T09:07:49.000Z",
+	"updatedAt": "2026-10-21T09:18:40.726Z",
 	"template": "regression-prevention",
-	"templateLineage": ["regression-prevention"],
+	"templateLineage": [
+		"regression-prevention"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -29,17 +31,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T09:13:29.037Z",
+			"evidence": "Sealed red 078014d6aa1800e80b7f153cc0905648e03087193f5a199e75fcec59666e6bd6 at 25e06b3c fails because readable CSS is incorrectly required. The same matrix also asserts unreadable CSS and mixed executable ownership remain required."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T09:13:29.730Z",
+			"evidence": "Inspect source languages after the unreadable guard, excluding only readable CSS from module executability. Preserve empty ownership, unknown files, unexported scripts and mixed-unit requirements. Add the applicability matrix checkpoint to the existing local Harness skill."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T09:18:40.726Z",
+			"evidence": "Readable CSS-only module source is exempt from nonexistent callable profiling; unreadable CSS, mixed code, unexported scripts and unknown ownership remain required. All18 focused tests, types and source audit pass. The local Harness skill requires the full applicability matrix before classifier changes and validates successfully."
 		},
 		{
 			"id": "green",

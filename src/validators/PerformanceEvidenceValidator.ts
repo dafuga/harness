@@ -32,8 +32,10 @@ function executable(unit: ComponentManifest, files: Map<string, SourceFile>): bo
 	if (unit.runtime.kind !== 'module') return true;
 	const owned = unit.owns.source.map((path) => files.get(path));
 	if (owned.some((file) => !file?.read)) return true;
-	if (owned.length === 0 || owned.some((file) => file?.exports.length === 0)) return true;
-	return owned.some((file) => file?.exports.some((item) => item.kind !== 'type'));
+	if (owned.length === 0) return true;
+	const code = owned.filter((file) => file?.language !== 'css');
+	if (code.some((file) => file?.exports.length === 0)) return true;
+	return code.some((file) => file?.exports.some((item) => item.kind !== 'type'));
 }
 
 function requiredMetrics(
