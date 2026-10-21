@@ -17,16 +17,25 @@ async function sourceScreenshot(page: Page, info: TestInfo, phase: string) {
 }
 
 for (const width of [1440, 920, 390]) {
-	test(`catalog and detail source use the selected revision at ${width}px`, async ({
+	test(`only the detail Source tab opens code at the selected revision at ${width}px`, async ({
 		page
 	}, info) => {
 		await page.setViewportSize({ width, height: 900 });
 		await evidenceFixture(page);
 		const root = `/projects/${sharedProject}/harness/branch/${encodeURIComponent(branch)}`;
 		await page.goto(`${root}/functions`);
-		const button = page.getByRole('button', { name: 'View code for filterOrders', exact: true });
-		await sourceScreenshot(page, info, 'action');
+		await sourceScreenshot(page, info, 'catalog');
+		await expect(page.getByRole('button', { name: /^View code for / })).toHaveCount(0);
+		await page.getByRole('link', { name: 'Open filterOrders', exact: true }).click();
+		await expect(page.getByRole('button', { name: /^View code for / })).toHaveCount(0);
+		await page.getByRole('button', { name: 'Source', exact: true }).click();
+		const button = page.getByRole('button', { name: 'View code for Filter orders', exact: true });
+		await expect(
+			page.locator('.entity-heading').getByRole('button', { name: /^View code for / })
+		).toHaveCount(0);
+		await expect(page.locator('pre')).toHaveCount(0);
 		await expect(button).toBeVisible();
+		await sourceScreenshot(page, info, 'action');
 		const address = page.url();
 		await button.click();
 		const dialog = page.getByRole('dialog');
@@ -38,7 +47,9 @@ for (const width of [1440, 920, 390]) {
 		await expect(dialog).toHaveCount(0);
 		await expect(button).toBeFocused();
 		expect(page.url()).toBe(address);
-		await page.goto(`${root}/commit/${commits.middle}/functions/${ids.filter}`);
+		await page.getByRole('button', { name: 'Overview', exact: true }).click();
+		await expect(page.getByRole('button', { name: /^View code for / })).toHaveCount(0);
+		await page.goto(`${root}/commit/${commits.middle}/functions/${ids.filter}/source`);
 		await page.getByRole('button', { name: 'View code for Filter orders', exact: true }).click();
 		await expect(dialog.locator('pre')).toContainText('export {};');
 		await expect(dialog.getByText(commits.middle.slice(0, 7), { exact: true })).toBeVisible();
@@ -48,7 +59,7 @@ for (const width of [1440, 920, 390]) {
 test('a source refusal is explicit and leaves no previous code visible', async ({ page }) => {
 	await evidenceFixture(page);
 	await page.goto(
-		`/projects/${sharedProject}/harness/branch/${encodeURIComponent(branch)}/functions`
+		`/projects/${sharedProject}/harness/branch/${encodeURIComponent(branch)}/functions/${ids.filter}/source`
 	);
 	await page.evaluate(() => {
 		const host = window as unknown as { harness: { source: () => Promise<unknown> } };
@@ -56,7 +67,7 @@ test('a source refusal is explicit and leaves no previous code visible', async (
 			throw new Error('Source refused for this revision.');
 		};
 	});
-	await page.getByRole('button', { name: 'View code for filterOrders', exact: true }).click();
+	await page.getByRole('button', { name: 'View code for Filter orders', exact: true }).click();
 	const dialog = page.getByRole('dialog');
 	await expect(dialog.getByRole('alert')).toHaveText('Source refused for this revision.');
 	await expect(dialog.locator('pre')).toHaveCount(0);

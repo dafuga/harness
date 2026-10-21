@@ -18,17 +18,29 @@ const phase = process.env.SCREENSHOT_LABEL ?? 'run';
 
 for (const [viewport, size] of Object.entries(viewports)) {
 	for (const [label, category, name, id] of kinds) {
-		test(`${label} source opens from its catalog at ${viewport} width`, async ({ page }, info) => {
+		test(`${label} code opens only from the detail Source tab at ${viewport} width`, async ({
+			page
+		}, info) => {
 			await page.setViewportSize(size);
 			await open(page, { category }, 'source');
-			const address = await where(page);
-			const action = page.getByRole('button', { name: `View code for ${name}`, exact: true });
 			await page.evaluate(() => document.fonts.ready);
+			await capture(page, `${phase}-source-catalog-${category}-${viewport}`);
+			await expect(page.getByRole('button', { name: /^View code for / })).toHaveCount(0);
+			await open(page, { category, entity: id }, 'source');
+			await expect(page.getByRole('button', { name: /^View code for / })).toHaveCount(0);
+			await page.getByRole('tab', { name: 'Source', exact: true }).click();
+			const address = await where(page);
+			const title = category === 'functions' ? 'Filter orders' : name;
+			const action = page.getByRole('button', { name: `View code for ${title}`, exact: true });
+			await expect(
+				page.locator('.ex-head').getByRole('button', { name: /^View code for / })
+			).toHaveCount(0);
+			await expect(page.locator('pre')).toHaveCount(0);
+			await expect(action, 'Source offers the code modal for every entity type').toBeVisible();
 			await capture(page, `${phase}-source-action-${category}-${viewport}`);
-			await expect(action, 'every catalog type exposes actual source').toBeVisible();
 			const started = await page.evaluate(() => performance.now());
 			await action.click();
-			const dialog = page.getByRole('dialog', { name: `${name} · Source code` });
+			const dialog = page.getByRole('dialog', { name: `${title} · Source code` });
 			await expect(dialog).toBeVisible();
 			await expect(dialog.locator('pre')).toContainText(commits.tip);
 			await expect(dialog.locator('pre')).toContainText('export const sourceRevision');
@@ -55,7 +67,9 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			await expect(dialog).toHaveCount(0);
 			await expect(action).toBeFocused();
 			expect(await where(page)).toEqual(address);
-			await open(page, { category, entity: id, commit: commits.middle }, 'source');
+			await page.getByRole('tab', { name: 'Contract', exact: true }).click();
+			await expect(page.getByRole('button', { name: /^View code for / })).toHaveCount(0);
+			await open(page, { category, entity: id, commit: commits.middle, tab: 'source' }, 'source');
 			await page
 				.getByRole('button', {
 					name: `View code for ${category === 'functions' ? 'Filter orders' : name}`,
@@ -73,9 +87,9 @@ for (const [viewport, size] of Object.entries(viewports)) {
 	}
 }
 
-test('source file selection and closing retain the filtered collection', async ({ page }) => {
-	await open(page, { category: 'services' }, 'source');
-	await page.getByRole('searchbox', { name: 'Search services' }).fill('Order store');
+test('source file selection and closing retain the detail Source tab', async ({ page }) => {
+	await open(page, { category: 'services', entity: ids.store, tab: 'source' }, 'source');
+	const address = await where(page);
 	await page.getByRole('button', { name: 'View code for Order store' }).click();
 	const dialog = page.getByRole('dialog');
 	await dialog
@@ -85,26 +99,32 @@ test('source file selection and closing retain the filtered collection', async (
 		sourceText(commits.tip, 'src/services/OrderStore.types.ts')
 	);
 	await page.keyboard.press('Escape');
-	await expect(page.getByRole('searchbox', { name: 'Search services' })).toHaveValue('Order store');
+	expect(await where(page)).toEqual(address);
+	await expect(page.getByRole('button', { name: 'View code for Order store' })).toBeFocused();
 });
 
-test('the Source tab shows file contents and older histories state an explicit gap', async ({
+test('Source opens file contents in a modal and older histories state an explicit gap', async ({
 	page
 }) => {
 	const route = { category: 'functions' as const, entity: ids.filter, tab: 'source' as const };
 	await open(page, { ...route, commit: commits.middle }, 'source');
-	await expect(page.locator('pre')).toHaveText(
+	await expect(page.locator('pre')).toHaveCount(0);
+	await page.getByRole('button', { name: 'View code for Filter orders', exact: true }).click();
+	await expect(page.getByRole('dialog').locator('pre')).toHaveText(
 		sourceText(commits.middle, 'src/functions/filterOrders.ts')
 	);
 	await open(page, route);
+	await page.getByRole('button', { name: 'View code for Filter orders', exact: true }).click();
 	await expect(
-		page.getByText('Source contents are not recorded for this revision.', { exact: true })
+		page
+			.getByRole('dialog')
+			.getByText('Source contents are not recorded for this revision.', { exact: true })
 	).toBeVisible();
 	await expect(page.locator('pre')).toHaveCount(0);
 });
 
 test('a delayed previous source read cannot replace the selected file', async ({ page }) => {
-	await open(page, { category: 'services' }, 'source');
+	await open(page, { category: 'services', entity: ids.store, tab: 'source' }, 'source');
 	const previous = sourceText(commits.tip, 'src/services/OrderStore.ts');
 	const hash = createHash('sha256').update(previous).digest('hex');
 	let release = () => {};

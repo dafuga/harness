@@ -99,8 +99,8 @@ for (const shared of [false, true]) {
 				.filter({ has: page.getByRole('heading', { name: pageTitle, exact: true }) });
 			await expect(card.locator('img')).toBeVisible();
 			await capture(page, info, `${mode}-${size.id}`);
-			expect((await card.innerText()).replace(/\s+/g, ' ').trim()).toBe(`${pageTitle} View code`);
-			await expect(card.getByRole('button', { name: `View code for ${pageTitle}` })).toBeVisible();
+			expect((await card.innerText()).replace(/\s+/g, ' ').trim()).toBe(pageTitle);
+			await expect(card.getByRole('button', { name: /^View code for / })).toHaveCount(0);
 			await expect(card.locator('.card-meta, .plan-badge, .verification-wrap')).toHaveCount(0);
 			const open = card.getByRole('link', { name: `Open ${pageTitle}`, exact: true });
 			await expect(open).toHaveCount(1);

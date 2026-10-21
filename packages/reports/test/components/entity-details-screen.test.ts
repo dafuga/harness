@@ -21,6 +21,7 @@ test('details of every kind open on the contract, size and performance, with no 
 			expect(body, place.entity).toContain(`aria-label="${heading}"`);
 		}
 		expect(words(body), place.entity).not.toMatch(owned);
+		expect(words(body), place.entity).not.toContain('View code');
 		expect(drawn(body), place.entity).toBe(drawn(content('commit', at)));
 	}
 });
@@ -32,6 +33,8 @@ test('its tabs open measurements, and the source only where the source is asked 
 	expect(words(measured)).not.toMatch(owned);
 	const source = screen(EntityDetailsScreen, 'commit', { ...at, tab: 'source' });
 	expect(words(source)).toContain('src/routes/orders/+page.svelte');
+	expect(source).toContain('aria-label="View code for Orders page"');
+	expect(source).not.toContain('<pre');
 });
 
 test('details of an entity the revision does not hold say that it is missing', () => {

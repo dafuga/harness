@@ -129,8 +129,8 @@ for (const [name, size] of Object.entries(viewports)) {
 		});
 		await capture(tab, `compact-page-${name}`);
 		const card = tab.getByRole('article', { name: 'Orders page', exact: true });
-		expect((await card.innerText()).replace(/\s+/g, ' ').trim()).toBe('Orders page View code');
-		await expect(card.getByRole('button', { name: 'View code for Orders page' })).toBeVisible();
+		expect((await card.innerText()).replace(/\s+/g, ' ').trim()).toBe('Orders page');
+		await expect(card.getByRole('button', { name: /^View code for / })).toHaveCount(0);
 		await expect(card.locator('.hx-verdict, .ex-fact')).toHaveCount(0);
 		const action = card.getByRole('link', { name: 'Open Orders page', exact: true });
 		await expect(action).toHaveCount(1);
