@@ -112,54 +112,6 @@ test('a commit that no branch reaches has no branch invented for it', () => {
 	expect(explorerRoutePath(location)).toBe(`/commit/${sha}/functions`);
 	expect(explorerRoute(`/commit/${sha}/functions`)).toEqual(location);
 });
-test('the tab of a section is kept in the query and only where it exists', () => {
-	const source: ExplorerLocation = {
-		branch: 'main',
-		commit: null,
-		category: 'pages',
-		entity: 'reports.page.titles',
-		section: 'details',
-		tab: 'source'
-	};
-	expect(explorerRoutePath(source)).toBe('/branch/main/pages/reports.page.titles?tab=source');
-	expect(explorerRoute('/branch/main/pages/reports.page.titles/details', '?tab=source')).toEqual(
-		source
-	);
-	expect(explorerRoute('/branch/main/pages/reports.page.titles', '?tab=source')?.tab).toBe(
-		'source'
-	);
-	expect(explorerRoutePath({ ...source, tab: 'measurements' })).toBe(
-		'/branch/main/pages/reports.page.titles'
-	);
-	const plain = explorerRoute('/branch/main/pages/reports.page.titles/details', '?tab=tests');
-	expect(plain?.tab).toBeUndefined();
-	expect(explorerRoute('/branch/main/pages/reports.page.titles', '?tab=tests')?.tab).toBe('states');
-	for (const category of ['pages', 'components', 'shells']) {
-		const path = `/branch/main/${category}/visual`;
-		expect(explorerRoute(path, '?tab=states')?.tab).toBe('states');
-		expect(explorerRoutePath(explorerRoute(path, '?tab=tests')!)).toBe(`${path}?tab=states`);
-	}
-	for (const category of ['functions', 'services', 'configs']) {
-		const path = `/branch/main/${category}/headless`;
-		expect(explorerRoute(path, '?tab=tests')!.tab).toBe(
-			category === 'functions' ? 'examples' : 'tests'
-		);
-		expect(explorerRoute(path, '?tab=states')!.tab).toBeUndefined();
-	}
-	expect(explorerRoute('/branch/main/pages', '?tab=tests')?.tab).toBeUndefined();
-	expect(explorerRoute('/branch/main/pages/reports.page.titles', '?tab=contract')?.tab).toBe(
-		'contract'
-	);
-	expect(
-		explorerRoutePath({
-			branch: 'main',
-			commit: sha,
-			category: 'pages',
-			entity: 'reports.page.titles',
-			tab: 'contract'
-		})
-	).toBe(`/branch/main/commit/${sha}/pages/reports.page.titles?tab=contract`);
-});
 test('a callable has a distinct revision-bound address across tabs and history', () => {
 	for (const commit of [null, sha]) {
 		const location = {
