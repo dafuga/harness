@@ -1,0 +1,127 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [9.89s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ChDpee
+
+ ✓ test/utils/settle-processes.test.ts (6 tests) 19058ms
+   ✓ a vetted service that left a passing command is handed over, never signalled, and recorded  5457ms
+   ✓ a failing command hands it over as well, and still fails  916ms
+   ✓ at its time limit a command's own processes are stopped and the service is not  4524ms
+   ✓ a possible service inside the command's group is reached by no group signal, and fails it  3471ms
+   ✓ when the processes cannot be read nothing is signalled and the command does not pass  830ms
+   ✓ an ordinary process left behind is still stopped and fails the command, Apple-signed or not  3633ms
+ ❯ test/utils/platform-services.test.ts (9 tests | 4 failed) 1858ms
+   × the vetted service, vouched for, departed and adopted, is delegated 229ms
+     → expected 'private' to be 'delegated' // Object.is equality
+   × a service under another identity earns nothing, though it sits at the path 235ms
+     → expected 'private' to be 'protected' // Object.is equality
+   ✓ a look-alike elsewhere and a link at the vetted path earn nothing 210ms
+   ✓ tools that nothing vouches for cannot vouch for their service 108ms
+   ✓ a service that has not left its command is not delegated 115ms
+   ✓ a process whose program cannot be read is protected, never private 242ms
+   ✓ another process under the same id is not the one that was followed 71ms
+   × other tools are the command's own, Apple-signed or not; a launcher is not 422ms
+     → expected 'private' to be 'protected' // Object.is equality
+   × the installed tools satisfy what is asked of them 7ms
+     → expected [ 'usr/bin/ibtoold' ] to deeply equal [ 'usr/bin/ibtoold', …(1) ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/platform-services.test.ts > the vetted service, vouched for, departed and adopted, is delegated
+AssertionError: expected 'private' to be 'delegated' // Object.is equality
+
+Expected: "delegated"
+Received: "private"
+
+ ❯ test/utils/platform-services.test.ts:47:34
+     45|   for (const service of made.authority.services) {
+     46|    const known = adopted(join(made.authority.root, service.path), forL…
+     47|    expect(await standing(known)).toBe('delegated');
+       |                                  ^
+     48|   }
+     49|  }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  test/utils/platform-services.test.ts > a service under another identity earns nothing, though it sits at the path
+AssertionError: expected 'private' to be 'protected' // Object.is equality
+
+Expected: "protected"
+Received: "private"
+
+ ❯ test/utils/platform-services.test.ts:57:46
+     55|   for (const service of made.other.services) {
+     56|    const other = adopted(join(made.other.root, service.path), forLong(…
+     57|    expect(await standing(other, made.other)).toBe('protected');
+       |                                              ^
+     58|   }
+     59|  }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  test/utils/platform-services.test.ts > other tools are the command's own, Apple-signed or not; a launcher is not
+AssertionError: expected 'private' to be 'protected' // Object.is equality
+
+Expected: "protected"
+Received: "private"
+
+ ❯ test/utils/platform-services.test.ts:115:78
+    113|   expect(await standing(adopted(made.helper, forLong('helper')))).toBe…
+    114|   for (const name of ['ibtool', 'IBAgent-iOS'])
+    115|    expect(await standing(adopted(join(made.home, 'another', name), ['3…
+       |                                                                              ^
+    116|  }
+    117| );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  test/utils/platform-services.test.ts > the installed tools satisfy what is asked of them
+AssertionError: expected [ 'usr/bin/ibtoold' ] to deeply equal [ 'usr/bin/ibtoold', …(1) ]
+
+- Expected
++ Received
+
+  [
+    "usr/bin/ibtoold",
+-   "Platforms/iPhoneSimulator.platform/Developer/Library/Xcode/Overlays/IBAgent-iOS",
+  ]
+
+ ❯ test/utils/platform-services.test.ts:123:55
+    121|  const verify = (args: string[]) =>
+    122|   execFileSync('codesign', ['--verify', ...args], { stdio: 'pipe' });
+    123|  expect(real.services.map((service) => service.path)).toEqual([
+       |                                                       ^
+    124|   'usr/bin/ibtoold',
+    125|   'Platforms/iPhoneSimulator.platform/Developer/Library/Xcode/Overlays…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  4 failed | 11 passed (15)
+   Start at  00:27:52
+   Duration  24.57s (transform 122ms, setup 152ms, collect 90ms, tests 20.92s, environment 0ms, prepare 69ms)
+
