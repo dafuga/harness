@@ -44,6 +44,14 @@ function resume(value: unknown): RemoteResume | null {
 	};
 }
 
+function approvalProjects(value: unknown): string[] {
+	const ids = Array.isArray(value) ? (value as unknown[]) : [];
+	const projectIds = ids.map((id) => matching(id, remotePatterns.projectId, 'invalid-message'));
+	const distinct = new Set(projectIds).size === projectIds.length;
+	if (!ids.length || ids.length > 64 || !distinct) throw new RemoteFailure('invalid-message');
+	return projectIds;
+}
+
 /** Inputs the protocol itself defines. Bridge inputs are validated by the host's own rules. */
 export class RemoteInputValidator {
 	attach(input: unknown): AttachInput {
@@ -74,16 +82,13 @@ export class RemoteInputValidator {
 		const present = fields(input);
 		const withComments = present && Object.hasOwn(present, 'comments');
 		const item = exact(
-				input,
-				withComments
-					? 'agents,comments,deviceId,pairingId,projectIds'
-					: 'agents,deviceId,pairingId,projectIds'
-			),
-			ids = Array.isArray(item.projectIds) ? (item.projectIds as unknown[]) : [];
-		const projectIds = ids.map((id) => matching(id, remotePatterns.projectId, 'invalid-message'));
-		const distinct = new Set(projectIds).size === projectIds.length;
-		if (!ids.length || ids.length > 64 || !distinct || typeof item.agents !== 'boolean')
-			throw new RemoteFailure('invalid-message');
+			input,
+			withComments
+				? 'agents,comments,deviceId,pairingId,projectIds'
+				: 'agents,deviceId,pairingId,projectIds'
+		);
+		const projectIds = approvalProjects(item.projectIds);
+		if (typeof item.agents !== 'boolean') throw new RemoteFailure('invalid-message');
 		const { pairingId } = this.pairing({ pairingId: item.pairingId }),
 			{ deviceId } = this.device({ deviceId: item.deviceId });
 		if (withComments && (typeof item.comments !== 'boolean' || (item.agents && !item.comments)))

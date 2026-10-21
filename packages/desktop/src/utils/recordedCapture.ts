@@ -29,8 +29,8 @@ export function recordedCapture(
 	binding: CaptureBinding
 ): ListedCapture {
 	const side = evidence[binding.side];
-	const record = side?.record?.id === binding.recordId ? side.record : null;
-	const found = (side?.captures ?? []).find(
+	if (!side) throw new Error(unlisted);
+	const found = side.captures.find(
 		(item) =>
 			item.scenario === binding.scenarioId &&
 			item.state === binding.state &&
@@ -38,9 +38,12 @@ export function recordedCapture(
 			(item.capture.viewport ?? null) === binding.viewport &&
 			item.capture.sha256 === binding.sha256
 	);
-	if (found?.focused?.record === binding.recordId)
+	if (!found) throw new Error(unlisted);
+	if (found.focused?.record === binding.recordId)
 		return { capture: found.capture, record: binding.recordId, focused: true };
-	const ran = record?.scenarios.find((item) => item.id === binding.scenarioId);
-	if (!found || !ran) throw new Error(unlisted);
+	const record = side.record;
+	if (!record || record.id !== binding.recordId) throw new Error(unlisted);
+	const ran = record.scenarios.find((item) => item.id === binding.scenarioId);
+	if (!ran) throw new Error(unlisted);
 	return { capture: found.capture, record: ran.origin.record };
 }

@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { artifactLimit } from '../../../desktop/src/utils/artifactMedia';
@@ -19,18 +20,19 @@ const tipOf = (f: EvidenceFixture) => asked(f.commits.changed, 'verified', 'curr
 const within = (f: EvidenceFixture, entity?: string) =>
 	asked(f.commits.changed, 'main', 'commit', entity);
 
-test('the bytes of a listed capture are answered with their hash and attested type', async () => {
-	const f = evidenceFixture();
-	const shown = await read(f, within(f));
-	for (const side of ['after', 'before'] as const) {
-		const query = bound(shown, within(f), side);
-		const stored = f.records[side === 'after' ? 'second' : 'first'].files.get(shot);
-		const found = await bytesOf(f, query);
-		expect(found).toMatchObject({ mediaType: 'image/png', sha256: query.sha256 });
-		expect(found.bytes).toEqual(stored);
-	}
-	expect(bound(shown, within(f), 'before').recordId).toBe(f.records.first.record.id);
-});
+test('the bytes of a listed capture are answered with their hash and attested type', () =>
+	measureWorkload('hub.service.hub-evidence', 'listed-artifact-read', async () => {
+		const f = evidenceFixture();
+		const shown = await read(f, within(f));
+		for (const side of ['after', 'before'] as const) {
+			const query = bound(shown, within(f), side);
+			const stored = f.records[side === 'after' ? 'second' : 'first'].files.get(shot);
+			const found = await bytesOf(f, query);
+			expect(found).toMatchObject({ mediaType: 'image/png', sha256: query.sha256 });
+			expect(found.bytes).toEqual(stored);
+		}
+		expect(bound(shown, within(f), 'before').recordId).toBe(f.records.first.record.id);
+	}));
 
 test('an inherited capture is read from the record that produced it', async () => {
 	const f = evidenceFixture();

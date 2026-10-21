@@ -1,4 +1,4 @@
-import { expect, type Locator, type Page } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { recordCapture } from '../../../../../src/utils/record-capture/recordCapture';
@@ -11,6 +11,19 @@ export const viewports = [
 	{ id: 'mobile', width: 390, height: 844 }
 ] as const;
 export type Viewport = (typeof viewports)[number];
+
+// Kept only by a run with TAKE_SCREENSHOT=true and a before or after label; fonts and images wait.
+export async function capturePhase(page: Page, name: string): Promise<void> {
+	if (process.env.TAKE_SCREENSHOT !== 'true') return;
+	const label = process.env.SCREENSHOT_LABEL;
+	if (label !== 'before' && label !== 'after') throw new Error('SCREENSHOT_LABEL: before or after');
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		await Promise.all([...document.images].map((image) => image.decode()));
+	});
+	const folder = process.env.HARNESS_EXPLORER_SHOTS ?? test.info().outputDir;
+	await page.screenshot({ path: `${folder}/${label}-${name}.png`, fullPage: true });
+}
 
 /**
  * Outside `harness verify` no revision is being verified, so the built server is told this

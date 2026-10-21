@@ -22,12 +22,14 @@ export function artifactQuery(
 	file: string | ExplorerCapture
 ): EvidenceArtifactQuery | null {
 	const held = result.evidence[side];
-	const stored = (held?.captures ?? []).filter((item) => item.capture.media !== null);
+	if (!held) return null;
+	const stored = held.captures.filter((item) => item.capture.media !== null);
 	const found = stored.find((item) =>
 		typeof file === 'string' ? mediaFile(item.capture) === file : item === file
 	);
-	const record = found?.focused?.record || held?.record?.id;
-	if (!record || !found) return null;
+	if (!found) return null;
+	const record = found.focused?.record || held.record?.id;
+	if (!record) return null;
 	const { capture } = found;
 	return {
 		...scope,

@@ -44,7 +44,7 @@ test('a page at its branch tip shows one current screenshot beside its contract,
 	await evidenceFixture(page);
 	await page.goto(pageAt());
 	const tabs = page.getByRole('navigation', { name: 'Entity sections' });
-	const names = ['Overview', 'Designs', 'Used In', 'Uses', 'States', 'History'];
+	const names = ['Overview', 'Designs', 'Used In', 'Uses', 'States', 'History', 'Source'];
 	await expect(tabs.getByRole('button')).toHaveText(names);
 	await expect(tabs.getByRole('button', { name: 'Overview' })).toHaveAttribute(
 		'aria-current',
@@ -159,12 +159,8 @@ test('an inherited capture is not the current one, and sides that are not alike 
 	await expect(shown.getByLabel('Scenario', { exact: true })).toHaveValue(cardScenario);
 	const current = shown.getByRole('figure', { name: `Current snapshot · ${short(commits.tip)}` });
 	await expect(current.getByText('Inherited from bbbbbbb', { exact: true })).toBeVisible();
-	await expect(
-		current.getByText(
-			'The capture on record was inherited from bbbbbbb; it was not captured at ccccccc.'
-		)
-	).toBeVisible();
-	await expect(current.getByRole('img')).toHaveCount(0);
+	await expect(current.getByText('Inherited capture · passed')).toBeVisible();
+	expect((await drawn(current.getByRole('img'))).tone).toEqual(tones[commits.middle]);
 	await runtimeEvidence(page, info, 'inherited');
 	await componentScreens(page, info, 'current');
 	await expect(page.locator('.entity-heading .verification')).toHaveAccessibleName(

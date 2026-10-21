@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { explorerEvidence } from '../../../reports/src/utils/explorerEvidence';
 import { recordedCapture } from '../../src/utils/recordedCapture';
@@ -26,19 +27,24 @@ const binding = {
 };
 const unlisted = /not listed/;
 
-test('a capture is found by the whole of its binding, on the side that lists it', () => {
-	const found = recordedCapture(evidence(home), binding);
-	expect(found.record).toBe('record-aaaa');
-	expect(found.capture).toMatchObject({ kind: 'screenshot', sha256: screen, viewport: 'desktop' });
-	const before = recordedCapture(evidence(home), {
-		...binding,
-		side: 'before',
-		recordId: 'record-bbbb'
-	});
-	expect(before.capture.path).toBe(`evidence/${parent}/screenshot.bin`);
-	const run = { ...binding, scenarioId: 'feed-run', viewport: null, sha256: output };
-	expect(recordedCapture(evidence(feed), run).capture.kind).toBe('output');
-});
+test('a capture is found by the whole of its binding, on the side that lists it', () =>
+	measureWorkload('desktop.function.recorded-capture', 'capture-binding-validation', () => {
+		const found = recordedCapture(evidence(home), binding);
+		expect(found.record).toBe('record-aaaa');
+		expect(found.capture).toMatchObject({
+			kind: 'screenshot',
+			sha256: screen,
+			viewport: 'desktop'
+		});
+		const before = recordedCapture(evidence(home), {
+			...binding,
+			side: 'before',
+			recordId: 'record-bbbb'
+		});
+		expect(before.capture.path).toBe(`evidence/${parent}/screenshot.bin`);
+		const run = { ...binding, scenarioId: 'feed-run', viewport: null, sha256: output };
+		expect(recordedCapture(evidence(feed), run).capture.kind).toBe('output');
+	}));
 
 test('one field that differs, or a capture of another entity, is not listed', () => {
 	const changes = [

@@ -9,6 +9,7 @@
 	"owns": {
 		"source": ["packages/remote/src/models/Remote.types.ts"],
 		"symbols": [
+			"RemoteGrant",
 			"REMOTE_PROTOCOL",
 			"remoteLimits",
 			"RemoteLimits",
@@ -34,7 +35,6 @@
 			"WireEvent",
 			"WireMessage",
 			"RemoteRevision",
-			"RemoteGrant",
 			"RemoteResume",
 			"AttachInput",
 			"RemoteAttachment",

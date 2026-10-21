@@ -46,6 +46,7 @@ export class HubEvidenceService {
 			projectId
 		} as EvidenceArtifactQuery;
 		const context = await hubEvidenceContext(this.deps, actor, query);
+		const { repository } = context;
 		await hubEvidencePins(context.base, query);
 		const built = await hubEvidenceScope(context.base, query, context.tip);
 		let found;
@@ -57,12 +58,7 @@ export class HubEvidenceService {
 		} catch {
 			return hubFail('artifact-refused');
 		}
-		if (found.focused)
-			return this.focusedArtifact(actor, projectId, {
-				found,
-				built,
-				repository: context.repository
-			});
+		if (found.focused) return this.focusedArtifact(actor, projectId, { found, built, repository });
 		const original = await hubEvidenceOrigin(built.history, found.record);
 		if (!original || original.problems.length) return hubFail('artifact-refused');
 		const fact = original.facts.get(found.capture.path);
@@ -74,7 +70,7 @@ export class HubEvidenceService {
 		} catch {
 			return hubFail('artifact-refused');
 		}
-		await this.authorize(actor, projectId, context.repository);
+		await this.authorize(actor, projectId, repository);
 		return answer;
 	}
 	private async focusedArtifact(
