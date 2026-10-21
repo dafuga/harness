@@ -2,7 +2,11 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 
-const home = 'src/components/harness';
+const home: string = JSON.parse(
+	readFileSync('../../specification/units/reports.component.harness-explorer-content.json', 'utf8')
+)
+	.runtime.entry.replace('packages/reports/', '')
+	.replace(/\/[^/]+$/, '');
 const routes = 'src/routes/harness/branch/[branch]/[...at]';
 const categories = ['pages', 'components', 'functions', 'configs', 'services'];
 const entries = {

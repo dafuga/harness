@@ -109,7 +109,36 @@ test('categorized projects generate dynamic folders and audit rejects flat imple
 		const rejected = await runHarness(['audit', '.'], project, false);
 		expect(rejected.exitCode).toBe(1);
 		expect(commandOutput(rejected)).toContain('module-category-folder');
+		await expectCategoryForwarding(project, JSON.parse(category));
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}
 }, 60_000);
+
+/** Supported entries forward props; an implementation cannot hide in their script. */
+async function expectCategoryForwarding(project: string, taxonomy: object) {
+	const entry = 'src/components/Entry.svelte';
+	await mkdir(join(project, 'src/components'), { recursive: true });
+	await writeFile(
+		join(project, 'harness.groups.json'),
+		JSON.stringify({ ...taxonomy, legacy: [entry] })
+	);
+	const script =
+		"import CategoryImplementation from './billing/Entry.svelte'; let props = $props();";
+	const markup = '<CategoryImplementation {...props} />';
+	await writeFile(join(project, entry), `<script lang="ts">${script}</script>${markup}`);
+	const proxy = JSON.parse((await runHarness(['audit', '.', '--json'], project, false)).stdout);
+	const categoryFindings = (report: { findings: Array<{ path: string; rule: string }> }) =>
+		report.findings.filter(
+			(finding) => finding.path === entry && finding.rule === 'module-category-folder'
+		);
+	expect(categoryFindings(proxy)).toEqual([]);
+	await writeFile(
+		join(project, entry),
+		`<script lang="ts">${script} function localLogic() { return 1; }</script>${markup}`
+	);
+	const implementation = JSON.parse(
+		(await runHarness(['audit', '.', '--json'], project, false)).stdout
+	);
+	expect(categoryFindings(implementation)).toHaveLength(1);
+}
