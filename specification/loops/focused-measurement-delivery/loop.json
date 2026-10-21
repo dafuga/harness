@@ -2,7 +2,7 @@
 	"name": "focused-measurement-delivery",
 	"goal": "Preserve original page runtime measurements and screenshots across identical-tree delivery without granting a full verification verdict.",
 	"createdAt": "2026-10-21T21:46:23.123Z",
-	"updatedAt": "2026-10-21T21:46:50.860Z",
+	"updatedAt": "2026-10-21T21:55:38.137Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T21:55:32.155Z",
+			"evidence": "Record cfe0757be35505c503a6f1d1d89acd1b2acef0052466ac12f7c5567b4989344a at cd9e8e9510d8d7418059c9fc4eba83d36fd2d99e fails exactly the two identical-tree measurement assertions in the standard summary matrix. The remaining original/changed/unknown cases pass. All projection, header, Settings and category browser cases pass, retaining 177 original PNGs and 406 observations."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T21:55:33.055Z",
+			"evidence": "Use the same complete-tree identity predicate as focused images for green observations. Accept the original commit, the verified opaque sourceTree or legacy prepared side identity; preserve each original testedRevision and keep the full-verdict record independent. The standard summary matrix and an isolated original-predicate mutation guard reject recurrence."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T21:55:38.137Z",
+			"evidence": "entityShown now selects focused observations by original commit or identical complete tree. The public record remains full-verification only. Its owning contract and Harness guidance state the rule; all nine summary cases pass without changing the committed test."
 		},
 		{
 			"id": "green",
