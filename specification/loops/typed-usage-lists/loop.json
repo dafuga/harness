@@ -2,7 +2,7 @@
 	"name": "typed-usage-lists",
 	"goal": "Group consumers by module type and reserve screenshot previews for visual modules",
 	"createdAt": "2026-10-21T13:20:50.119Z",
-	"updatedAt": "2026-10-21T13:24:09.466Z",
+	"updatedAt": "2026-10-21T13:29:30.688Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -39,17 +39,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T13:27:49.103Z",
+			"evidence": "Shared usageGroups feeds reverse dependency headings and footer lists; nonvisual tooltip skips evidence/image lookup and renders code name plus role."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T13:27:50.699Z",
+			"evidence": "Unchanged 6-case desktop/tablet/mobile browser matrix passes at 39af962d0; pinned run 362e9dc9 matches red runtime/environment and frozen test corpus."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T13:29:30.688Z",
+			"evidence": "Isolated 39af962d0 archive with old relation/footer renderers restored fails 3 assertions; restoring exact repaired files passes all 13 tests. Logs retained under .cache/harness/typed-usage-lists."
 		},
 		{
 			"id": "verify",

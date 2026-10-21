@@ -169,11 +169,7 @@ export async function reviewUsageCards(
 	category: string,
 	direction: string
 ): Promise<void> {
-	if (direction === 'used-in' && category === 'functions') {
-		const used = page.getByRole('region', { name: 'Used In', exact: true });
-		for (const kind of ['Pages', 'Components'])
-			await expect(used.getByRole('heading', { name: `${kind} 1`, exact: true })).toBeVisible();
-	}
+	await reviewConsumerKinds(page, category, direction);
 	const cards = page.locator('.ex-relations article');
 	for (const card of await cards.all()) {
 		await expect(
@@ -200,4 +196,12 @@ export async function reviewUsageCards(
 	if (category === 'components' && direction === 'uses')
 		await expect(page.locator('.ex-relations .ex-function-tile')).toHaveCount(1);
 	expect(await fits(page)).toBe(true);
+}
+
+/** Reverse dependencies name every populated module type. */
+async function reviewConsumerKinds(page: Page, category: string, direction: string): Promise<void> {
+	if (direction !== 'used-in' || category !== 'functions') return;
+	const used = page.getByRole('region', { name: 'Used In', exact: true });
+	for (const kind of ['Pages', 'Components'])
+		await expect(used.getByRole('heading', { name: `${kind} 1`, exact: true })).toBeVisible();
 }
