@@ -64,8 +64,13 @@ async function reviewConsoleAddress(page: Page, commit: string | null, viewport:
 		page,
 		'Readable helper URL without internal module ids or query selectors'
 	).toHaveURL(/\/helpers\/toKebabCase\/contract$/);
+	const frame = await page.getByRole('heading', { level: 1 }).elementHandle();
 	await page.getByRole('tab', { name: 'Examples', exact: true }).click();
 	await expect(page).toHaveURL(/\/helpers\/toKebabCase\/examples$/);
+	await page.evaluate(() => new Promise(requestAnimationFrame));
+	expect(await frame!.evaluate((node) => node.isConnected), 'Tabs keep their helper frame').toBe(
+		true
+	);
 	await page.reload();
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText('toKebabCase');
 

@@ -72,6 +72,12 @@ export const fits = (page: Page): Promise<boolean> =>
 /** Keeps what the page shows, when a run asks for screenshots; the name says what and how wide. */
 export async function capture(page: Page, name: string): Promise<void> {
 	if (process.env.TAKE_SCREENSHOT !== '1') return;
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		await new Promise(requestAnimationFrame);
+		await new Promise(requestAnimationFrame);
+	});
+	await expect(page.locator('.ex-content')).toBeVisible();
 	const directory = process.env.ENTITY_PREVIEW_SHOTS ?? '/tmp/harness-entity-preview-shots';
 	mkdirSync(directory, { recursive: true });
 	await page.screenshot({ path: join(directory, `${name}.png`), fullPage: true });
