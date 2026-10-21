@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { at, checkpoint, explorer } from './support/explorer';
 import { captureSections, viewports } from './support/harnessCapture';
-import { home, seeded, short } from './support/harnessHistory';
+import { home, revision, seeded, short } from './support/harnessHistory';
 import { fits } from './support/sharedSelect';
 import type { HarnessRevision } from '../../src/models/Harness.types';
 import { explorerKindCategory } from '../../../../src/utils/explorerRoute';
@@ -98,21 +98,13 @@ const metric = (page: Page, name: string) =>
 		.getByRole('definition');
 const details = (commit: string, unit: string) =>
 	at(keptBranch, commit, `functions/${unit}/details?tab=measurements`);
-const recorded = (commit: string) =>
-	JSON.parse(
-		readFileSync(join(home, 'data/revisions', `${commit}.json`), 'utf8')
-	) as HarnessRevision;
+const recorded = (commit: string) => revision<HarnessRevision>(commit);
 const observed = (commit: string, unit: string, metric: string, target?: string) =>
 	recorded(commit)
 		.records.flatMap((record) => record.measurements)
 		.find(
 			(item) => item.unit === unit && item.metric === metric && (!target || item.target === target)
 		);
-const stored = (commit: string) =>
-	JSON.parse(readFileSync(join(home, 'data/revisions', `${commit}.json`), 'utf8')) as {
-		explanations: Array<{ unit: string; behavior: string }>;
-	};
-
 for (const viewport of viewports) {
 	test(`emitted observations retain distinct targets behind compact figures at ${viewport.id} width`, async ({
 		page
@@ -157,12 +149,12 @@ test('uncounted complexity keeps its recorded reason and never becomes zero', as
 	expect(
 		recorded(commits.shout).registry.units.find((unit) => unit.id === units.slugify)?.limits
 			?.metrics.complexity
-	).toBeTypeOf('number');
+	).toEqual(expect.any(Number));
 	await expect(profile(page).getByRole('table')).toHaveCount(0);
 });
 
 test('history deduplicates repeated reasons and keeps the full written notes', async ({ page }) => {
-	const written = stored(commits.twin).explanations.filter((item) => item.unit === units.page);
+	const written = recorded(commits.twin).explanations.filter((item) => item.unit === units.page);
 	expect(written.length).toBeGreaterThan(1);
 	const count = new Set(written.map((item) => item.behavior)).size;
 	await page.goto(at(keptBranch, commits.twin, `pages/${units.page}/history`));

@@ -66,10 +66,8 @@ export interface SeededRevision {
 export const seeded = (): SeededHistory =>
 	JSON.parse(readFileSync(join(home, 'meta.json'), 'utf8')) as SeededHistory;
 
-export const revision = (commit: string): SeededRevision =>
-	JSON.parse(
-		readFileSync(join(home, 'data/revisions', `${commit}.json`), 'utf8')
-	) as SeededRevision;
+export const revision = <T = SeededRevision>(commit: string): T =>
+	JSON.parse(readFileSync(join(home, 'data/revisions', `${commit}.json`), 'utf8')) as T;
 
 export const short = (commit: string): string => commit.slice(0, 7);
 

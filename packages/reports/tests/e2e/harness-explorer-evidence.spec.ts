@@ -97,9 +97,13 @@ test('page source stays hidden and a missing repository is explicit on its Sourc
 	await expect(content(page).getByText(file)).toHaveCount(0);
 	await page.getByRole('tab', { name: 'Source', exact: true }).click();
 	await expectPath(page, main(`pages/${units.page}?tab=source`));
-	await expect(content(page).getByText('GitHub source unavailable', { exact: true })).toBeVisible();
+	await expect(
+		content(page).getByText('GitHub source unavailable for this revision.', { exact: true })
+	).toBeVisible();
 	await page.reload();
-	await expect(content(page).getByText('GitHub source unavailable', { exact: true })).toBeVisible();
+	await expect(
+		content(page).getByText('GitHub source unavailable for this revision.', { exact: true })
+	).toBeVisible();
 	await checkpoint(page, 'evidence-page-source');
 });
 
