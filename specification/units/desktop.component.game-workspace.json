@@ -45,6 +45,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.component.game-navigation-guard",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.component.game-preview",
 			"via": "import",
 			"origin": "derived"
@@ -60,7 +65,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.model.desktop-bridge-types",
+			"unit": "desktop.model.game-workspace-types",
 			"via": "import",
 			"origin": "derived"
 		},

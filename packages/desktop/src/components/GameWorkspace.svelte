@@ -1,21 +1,17 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { untrack } from 'svelte';
+	import GameNavigationGuard from './GameNavigationGuard.svelte';
+	import type { GameWorkspaceProps as Props } from '../models/GameWorkspace.types';
 	import GameViewFields from './GameViewFields.svelte';
 	import { createRun, exampleDocument, validateDocument, enterView } from '../../../game/src/index';
 	import type { Checkpoint, GameDocument, GameRun, GameView } from '../../../game/src/index';
-	import type { DesktopBridge } from '../models/DesktopBridge.types';
 	import GameCheckpointPane from './GameCheckpointPane.svelte';
 	import GameGraph from './GameGraph.svelte';
 	import GameMechanics from './GameMechanics.svelte';
 	import GamePreview from './GamePreview.svelte';
 	import GameTrace from './GameTrace.svelte';
-	interface Props {
-		projectId?: string | null;
-		commit?: string;
-		readonly?: boolean;
-		bridge?: DesktopBridge;
-	}
+
 	type Source = Pick<Props, 'projectId' | 'commit' | 'bridge'>;
 	const tabs = ['Preview', 'Checkpoints', 'Mechanics'] as const;
 	let { projectId = null, commit, readonly = false, bridge }: Props = $props();
@@ -118,6 +114,7 @@
 	});
 </script>
 
+<GameNavigationGuard active={!demo && editable && dirty} />
 <section class="game" data-harness-component="game-workspace">
 	<a class="back" href={resolve('/harness')}><span aria-hidden="true">←</span> Back to project</a>
 	<header class="row" style="flex-wrap:wrap">
