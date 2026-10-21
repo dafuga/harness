@@ -6,6 +6,8 @@ import { runCommand } from '../support/cli';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { benchmarkCaptureSchema } from '../../src/core/verifyTypes';
+import { benchmarkMeasurements } from '../../src/services/record-assembly-service/sealRecord';
+import type { Gathered } from '../../src/utils/gatherCaptures';
 
 const input = { unit: 'function.schema-fixture', workload: 'initialize-fields' };
 
@@ -78,6 +80,7 @@ test('child scopes retain actual child RSS and reject failed invocations', async
 			workload: 'cold-node-process',
 			target: 'module' as const,
 			command: [process.execPath, '-e', 'console.log(process.memoryUsage().rss)'],
+			partial: 'Actual child process only; excludes external integrations and the parent runner.',
 			cwd: process.cwd()
 		};
 		const references: number[] = [];
@@ -97,9 +100,17 @@ test('child scopes retain actual child RSS and reject failed invocations', async
 		expect(captures).toHaveLength(2);
 		expect(new Set(captures.map((capture) => capture.file)).size).toBe(2);
 		for (const [index, capture] of captures.entries()) {
-			const data = benchmarkCaptureSchema.parse(
-				JSON.parse(await readFile(join(directory, capture.file), 'utf8'))
-			);
+			const benchmark = JSON.parse(await readFile(join(directory, capture.file), 'utf8'));
+			const data = benchmarkCaptureSchema.parse(benchmark);
+			expect(data.measurements, 'partial boundary survives benchmark parsing').toEqual([
+				expect.objectContaining({ partial: input.partial }),
+				expect.objectContaining({ partial: input.partial })
+			]);
+			const assembled = benchmarkMeasurements([{ benchmark } as Gathered], {
+				commit: 'a'.repeat(40),
+				profile: 'protocol-fixture'
+			});
+			expect(assembled.every((item) => item.partial === input.partial)).toBe(true);
 			const [time, memory] = data.measurements;
 			expect(time.metric).toBe('latency-process-ms');
 			expect(time.value).toBeGreaterThan(0);
