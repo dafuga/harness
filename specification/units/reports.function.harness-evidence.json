@@ -9,9 +9,20 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/console-server/harnessReport.ts",
+			"packages/reports/src/utils/explorer-ui/console-server/harnessReport.ts",
+			"packages/reports/src/utils/explorer-ui/harnessEvidence.ts",
 			"packages/reports/src/utils/harnessEvidence.ts"
 		],
-		"symbols": ["harnessReport", "mediaFile", "harnessEvidence", "harnessReport"]
+		"symbols": [
+			"harnessReport",
+			"harnessReport",
+			"mediaFile",
+			"harnessEvidence",
+			"harnessReport",
+			"harnessReport",
+			"mediaFile",
+			"harnessEvidence"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -85,11 +96,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/harnessEvidence.ts",
+		"entry": "packages/reports/src/utils/explorer-ui/harnessEvidence.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/harnessEvidence.ts"
+				"entry": "packages/reports/src/utils/explorer-ui/harnessEvidence.ts"
 			}
 		]
 	},

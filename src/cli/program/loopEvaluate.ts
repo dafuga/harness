@@ -6,7 +6,7 @@ import {
 	appendTrace,
 	type LoopEvaluator,
 	type LoopInput
-} from '../../workflows/loop-state/loopState';
+} from '../../workflows/development-tooling/loop-state/loopState';
 
 export interface LoopEvaluationResult {
 	loop: string;

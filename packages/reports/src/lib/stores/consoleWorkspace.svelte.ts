@@ -1,1 +1,1 @@
-export { createConsoleWorkspaceStore } from '../console-workspace/consoleWorkspace.svelte';
+export { createConsoleWorkspaceStore } from '../projects-sessions/console-workspace/consoleWorkspace.svelte';

@@ -8,9 +8,16 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
 			"packages/desktop/src/services/desktop-run-service/project-run-service/ProjectRunService.ts"
 		],
-		"symbols": ["plannedBefore", "ProjectRunService", "ProjectRunService.run"]
+		"symbols": [
+			"plannedBefore",
+			"ProjectRunService",
+			"ProjectRunService.run",
+			"plannedBefore",
+			"ProjectRunService"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -100,11 +107,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/desktop-run-service/project-run-service/ProjectRunService.ts",
+		"entry": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/desktop-run-service/project-run-service/ProjectRunService.ts"
+				"entry": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts"
 			}
 		]
 	},

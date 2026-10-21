@@ -9,9 +9,11 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/catalog-service/CatalogService.ts",
-			"packages/desktop/src/services/project-session-service/catalog-service/CatalogService.ts"
+			"packages/desktop/src/services/project-session-service/catalog-service/CatalogService.ts",
+			"packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/CatalogService.ts"
 		],
 		"symbols": [
+			"CatalogService",
 			"CatalogService",
 			"CatalogService",
 			"CatalogService.constructor",
@@ -84,11 +86,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/project-session-service/catalog-service/CatalogService.ts",
+		"entry": "packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/CatalogService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/project-session-service/catalog-service/CatalogService.ts"
+				"entry": "packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/CatalogService.ts"
 			}
 		]
 	},

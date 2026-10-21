@@ -1,7 +1,7 @@
-import type { D1CredentialStores } from '../../../../utils/d1CredentialStores';
+import type { D1CredentialStores } from '../../../../utils/networking-security/d1CredentialStores';
 import type { D1Like } from './D1AuthStoreAdapter';
-import type { SessionStore } from '../../../../models/HubAuthStore.types';
-import type { AuthRecordValidator } from '../../../../validators/AuthRecordValidator';
+import type { SessionStore } from '../../../../models/accounts-access/HubAuthStore.types';
+import type { AuthRecordValidator } from '../../../../validators/accounts-access/AuthRecordValidator';
 
 const SESSION_COLUMNS =
 	'id_hash, kind, parent_hash, actor_id, actor_email, actor_name, resource, created_at, expires_at, revoked_at';

@@ -9,9 +9,11 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/lib/server/auth/request-session-service/RequestSessionService.ts",
+			"packages/hub/src/lib/verification-evidence/server/auth/request-session-service/RequestSessionService.ts",
 			"packages/hub/src/services/request-session-service/RequestSessionService.ts"
 		],
 		"symbols": [
+			"RequestSessionService",
 			"RequestSessionOptions",
 			"RequestSessionService",
 			"RequestSessionService.constructor",
@@ -96,11 +98,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/lib/server/auth/request-session-service/RequestSessionService.ts",
+		"entry": "packages/hub/src/lib/verification-evidence/server/auth/request-session-service/RequestSessionService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/lib/server/auth/request-session-service/RequestSessionService.ts"
+				"entry": "packages/hub/src/lib/verification-evidence/server/auth/request-session-service/RequestSessionService.ts"
 			}
 		]
 	},

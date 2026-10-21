@@ -7,14 +7,24 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/block-spans/statementEnd.ts", "src/utils/sourceNesting.ts"],
+		"source": [
+			"src/utils/block-spans/statementEnd.ts",
+			"src/utils/development-tooling/block-spans/statementEnd.ts",
+			"src/utils/development-tooling/sourceNesting.ts",
+			"src/utils/sourceNesting.ts"
+		],
 		"symbols": [
+			"statementEnd",
 			"statementEnd",
 			"SourceNesting",
 			"sourceNesting",
 			"matchingBrace",
 			"bodyEnd",
-			"statementEnd"
+			"statementEnd",
+			"statementEnd",
+			"sourceNesting",
+			"matchingBrace",
+			"bodyEnd"
 		]
 	},
 	"contract": {
@@ -93,11 +103,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/sourceNesting.ts",
+		"entry": "src/utils/development-tooling/sourceNesting.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/sourceNesting.ts"
+				"entry": "src/utils/development-tooling/sourceNesting.ts"
 			}
 		]
 	},

@@ -1,15 +1,18 @@
 import { z } from 'zod';
-import { fail } from '../../core/errors';
-import type { SourceGraph } from '../../core/sourceTypes';
+import { fail } from '../../core/development-tooling/errors';
+import type { SourceGraph } from '../../core/development-tooling/sourceTypes';
 import {
 	componentManifestSchema,
 	scenarioManifestSchema,
 	type ComponentManifest
-} from '../../core/unitTypes';
-import { verificationRecordSchema } from '../../core/verificationTypes';
-import { fileNode, unitNode } from '../../services/SourceGraphService';
-import { componentVersion, type ComponentVersion } from '../../utils/componentVersion';
-import { graphOf, loadUnits } from '../../workflows/load-units/loadUnits';
+} from '../../core/development-tooling/unitTypes';
+import { verificationRecordSchema } from '../../core/verification-evidence/verificationTypes';
+import { fileNode, unitNode } from '../../services/development-tooling/SourceGraphService';
+import {
+	componentVersion,
+	type ComponentVersion
+} from '../../utils/development-tooling/componentVersion';
+import { graphOf, loadUnits } from '../../workflows/development-tooling/load-units/loadUnits';
 import type { UnitsOptions } from './manageUnits';
 
 const schemas = {

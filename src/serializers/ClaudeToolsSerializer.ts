@@ -1,1 +1,1 @@
-export { ClaudeToolsSerializer } from './claude-tools-serializer/ClaudeToolsSerializer';
+export { ClaudeToolsSerializer } from './agents-providers/claude-tools-serializer/ClaudeToolsSerializer';

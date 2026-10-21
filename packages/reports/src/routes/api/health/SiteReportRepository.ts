@@ -1,6 +1,6 @@
-import type { Report } from '../../../models/Report.types';
-import { ownedBySite } from '../../../utils/reportSite';
-import { ReportRepository } from '../../../repositories/report-repository/ReportRepository';
+import type { Report } from '../../../models/reports-media/Report.types';
+import { ownedBySite } from '../../../utils/reports-media/reportSite';
+import { ReportRepository } from '../../../repositories/reports-media/report-repository/ReportRepository';
 
 /**
  * The report store as one site may see it. A report recorded for another application is as

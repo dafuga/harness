@@ -1,13 +1,16 @@
 import type { CommittedThread } from 'collaboration';
 import type { ComponentManifest } from '../../../../../../../src/core/unitTypes';
 import type { EntityDetail } from '../../../../../../desktop/src/models/Desktop.types';
-import { hubRead, type HubSourceContext } from '../../../../utils/hubSource';
+import { hubRead, type HubSourceContext } from '../../../../utils/development-tooling/hubSource';
 import { readUnitDocumentation } from '../../../../../../../src/utils/unit-documentation/unitDocumentation';
-import { hubCatalog, hubOwnedPaths } from '../../../../utils/hub-catalog/hubCatalog';
+import {
+	hubCatalog,
+	hubOwnedPaths
+} from '../../../../utils/networking-security/hub-catalog/hubCatalog';
 import { hubRelationships } from './hubCatalog';
-import { hubFail } from '../../../../utils/hubJson';
-import { hubThreads } from '../../../../utils/hubThreads';
-import { hubHistory } from '../../../../utils/hubHistory';
+import { hubFail } from '../../../../utils/development-tooling/hubJson';
+import { hubThreads } from '../../../../utils/networking-security/hubThreads';
+import { hubHistory } from '../../../../utils/git-source-history/hubHistory';
 import { hubArtifactCommit } from './hubArtifactCommit';
 import { hubSize } from './hubSize';
 import { hubEntityContract } from './hubEntityContract';

@@ -1,10 +1,2 @@
-export interface GithubAppJwtInput {
-	appId: string;
-	key: CryptoKey;
-	now: number;
-}
-
-export {
-	githubAppKey,
-	githubAppJwt
-} from '../lib/server/auth/installation-token-service/githubAppJwt';
+export { githubAppKey, githubAppJwt } from './verification-evidence/githubAppJwt';
+export * from './verification-evidence/githubAppJwt';

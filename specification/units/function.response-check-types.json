@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/responseCheckTypes.ts"],
+		"source": [
+			"src/core/responseCheckTypes.ts",
+			"src/core/verification-evidence/responseCheckTypes.ts"
+		],
 		"symbols": [
 			"ResponseCriterion",
 			"ResponseCheckOptions",
@@ -38,11 +41,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/core/responseCheckTypes.ts",
+		"entry": "src/core/verification-evidence/responseCheckTypes.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/core/responseCheckTypes.ts"
+				"entry": "src/core/verification-evidence/responseCheckTypes.ts"
 			}
 		]
 	},

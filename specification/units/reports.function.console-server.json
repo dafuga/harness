@@ -9,9 +9,13 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/console-server/consoleServer.ts",
-			"packages/reports/src/utils/consoleServer.ts"
+			"packages/reports/src/utils/consoleServer.ts",
+			"packages/reports/src/utils/explorer-ui/console-server/consoleServer.ts"
 		],
 		"symbols": [
+			"consoleDirectory",
+			"consoleData",
+			"consoleServer",
 			"consoleDirectory",
 			"consoleData",
 			"consoleServer",

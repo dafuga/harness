@@ -1,1 +1,1 @@
-export { designDirections } from './plan-design/designDirections';
+export { designDirections } from './planning-collaboration/plan-design/designDirections';

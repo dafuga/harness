@@ -1,1 +1,1 @@
-export { ProjectSessionService } from './project-session-service/ProjectSessionService';
+export { ProjectSessionService } from './projects-sessions/project-session-service/ProjectSessionService';

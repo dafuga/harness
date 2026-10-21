@@ -7,8 +7,21 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/load-units/loadUnits.ts", "src/workflows/loadUnits.ts"],
-		"symbols": ["LoadedUnits", "loadUnits", "graphOf", "loadUnits", "graphOf", "LoadedUnits"]
+		"source": [
+			"src/workflows/development-tooling/load-units/loadUnits.ts",
+			"src/workflows/load-units/loadUnits.ts",
+			"src/workflows/loadUnits.ts"
+		],
+		"symbols": [
+			"LoadedUnits",
+			"loadUnits",
+			"graphOf",
+			"loadUnits",
+			"graphOf",
+			"loadUnits",
+			"graphOf",
+			"LoadedUnits"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -115,11 +128,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/load-units/loadUnits.ts",
+		"entry": "src/workflows/development-tooling/load-units/loadUnits.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/load-units/loadUnits.ts"
+				"entry": "src/workflows/development-tooling/load-units/loadUnits.ts"
 			}
 		]
 	},

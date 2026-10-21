@@ -9,9 +9,11 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/desktop-bridge/ProjectImageCacheService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectImageCacheService.ts",
 			"packages/desktop/src/services/ProjectImageCacheService.ts"
 		],
 		"symbols": [
+			"ProjectImageCacheService",
 			"ProjectImageCacheService",
 			"ProjectImageCacheService.constructor",
 			"ProjectImageCacheService.read",
@@ -67,11 +69,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/lib/desktop-bridge/ProjectImageCacheService.ts",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectImageCacheService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/lib/desktop-bridge/ProjectImageCacheService.ts"
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectImageCacheService.ts"
 			}
 		]
 	},

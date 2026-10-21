@@ -9,7 +9,8 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/adapters/EvidenceRefsAdapter.ts",
-			"packages/desktop/src/lib/desktop-bridge/EvidenceRefsAdapter.ts"
+			"packages/desktop/src/lib/desktop-bridge/EvidenceRefsAdapter.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/EvidenceRefsAdapter.ts"
 		],
 		"symbols": [
 			"notesRef",
@@ -17,6 +18,9 @@
 			"EvidenceRefsAdapter",
 			"PinnedRevisions",
 			"CurrentRefs",
+			"notesRef",
+			"evidenceRef",
+			"EvidenceRefsAdapter",
 			"PinnedRevisions",
 			"CurrentRefs",
 			"notesRef",
@@ -79,11 +83,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/lib/desktop-bridge/EvidenceRefsAdapter.ts",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-bridge/EvidenceRefsAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/lib/desktop-bridge/EvidenceRefsAdapter.ts"
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-bridge/EvidenceRefsAdapter.ts"
 			}
 		]
 	},

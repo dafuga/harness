@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/relay/src/lib/host-runtime/HostLinkService.ts"],
+		"source": [
+			"packages/relay/src/lib/execution-runtimes/host-runtime/HostLinkService.ts",
+			"packages/relay/src/lib/host-runtime/HostLinkService.ts"
+		],
 		"symbols": [
 			"HostLinkService",
 			"HostLinkService.constructor",
@@ -15,7 +18,8 @@
 			"HostLinkService.notify",
 			"HostLinkService.drop",
 			"HostLinkService.welcome",
-			"HostLinkService.seen"
+			"HostLinkService.seen",
+			"HostLinkService"
 		]
 	},
 	"contract": {
@@ -106,11 +110,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/lib/host-runtime/HostLinkService.ts",
+		"entry": "packages/relay/src/lib/execution-runtimes/host-runtime/HostLinkService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/lib/host-runtime/HostLinkService.ts"
+				"entry": "packages/relay/src/lib/execution-runtimes/host-runtime/HostLinkService.ts"
 			}
 		]
 	},

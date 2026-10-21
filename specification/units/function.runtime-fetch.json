@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/runtimeFetch.ts"],
-		"symbols": ["runtimeFetch"]
+		"source": ["src/utils/execution-runtimes/runtimeFetch.ts", "src/utils/runtimeFetch.ts"],
+		"symbols": ["runtimeFetch", "runtimeFetch"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,11 +42,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/runtimeFetch.ts",
+		"entry": "src/utils/execution-runtimes/runtimeFetch.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/runtimeFetch.ts"
+				"entry": "src/utils/execution-runtimes/runtimeFetch.ts"
 			}
 		]
 	},

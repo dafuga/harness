@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/lib/select-environment/CapacitorProjectsService.ts"],
+		"source": [
+			"packages/desktop/src/lib/select-environment/CapacitorProjectsService.ts",
+			"packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts"
+		],
 		"symbols": [
+			"CapacitorProjectsService",
 			"CapacitorProjectsServiceConfig",
 			"CapacitorProjectsService",
 			"CapacitorProjectsService.constructor",
@@ -63,11 +67,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/lib/select-environment/CapacitorProjectsService.ts",
+		"entry": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/lib/select-environment/CapacitorProjectsService.ts"
+				"entry": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts"
 			}
 		]
 	},

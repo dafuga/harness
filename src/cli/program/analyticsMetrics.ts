@@ -1,4 +1,8 @@
-import type { AnalyticsEvent, AnalyticsFilter, LoopMetric } from '../../core/analyticsTypes';
+import type {
+	AnalyticsEvent,
+	AnalyticsFilter,
+	LoopMetric
+} from '../../core/reports-media/analyticsTypes';
 import { jevMetrics } from './analyticsJevMetrics';
 
 export function analyticsSnapshot(events: AnalyticsEvent[], filter: AnalyticsFilter = {}) {

@@ -9,9 +9,13 @@
 	"owns": {
 		"source": [
 			"src/services/budget-service/comparisonDifferences.ts",
-			"src/utils/comparisonDifferences.ts"
+			"src/services/verification-evidence/budget-service/comparisonDifferences.ts",
+			"src/utils/comparisonDifferences.ts",
+			"src/utils/verification-evidence/comparisonDifferences.ts"
 		],
 		"symbols": [
+			"comparisonDifferences",
+			"comparisonDifferences",
 			"comparisonDifferences",
 			"MeasuredDefinition",
 			"ComparisonVerdict",
@@ -55,11 +59,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/comparisonDifferences.ts",
+		"entry": "src/utils/verification-evidence/comparisonDifferences.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/comparisonDifferences.ts"
+				"entry": "src/utils/verification-evidence/comparisonDifferences.ts"
 			}
 		]
 	},

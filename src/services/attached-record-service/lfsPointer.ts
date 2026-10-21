@@ -1,1 +1,1 @@
-export { parseLfsPointer } from '../history-status-service/attached-record-service/lfsPointer';
+export { parseLfsPointer } from '../verification-evidence/history-status-service/attached-record-service/lfsPointer';

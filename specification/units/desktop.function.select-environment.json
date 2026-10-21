@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/select-environment/selectEnvironment.ts",
+			"packages/desktop/src/lib/verification-evidence/select-environment/selectEnvironment.ts",
 			"packages/desktop/src/utils/selectEnvironment.ts"
 		],
-		"symbols": ["selectEnvironment", "selectEnvironment"]
+		"symbols": ["selectEnvironment", "selectEnvironment", "selectEnvironment"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -50,11 +51,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/lib/select-environment/selectEnvironment.ts",
+		"entry": "packages/desktop/src/lib/verification-evidence/select-environment/selectEnvironment.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/lib/select-environment/selectEnvironment.ts"
+				"entry": "packages/desktop/src/lib/verification-evidence/select-environment/selectEnvironment.ts"
 			}
 		]
 	},

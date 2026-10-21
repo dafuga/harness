@@ -1,1 +1,1 @@
-export { nativeScope } from '../components/native-approval/nativeScope';
+export { nativeScope } from '../components/shared-primitives/native-approval/nativeScope';

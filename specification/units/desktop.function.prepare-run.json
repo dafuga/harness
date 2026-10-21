@@ -8,16 +8,23 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/agents-providers/desktop-run-service/prepareRun.ts",
 			"packages/desktop/src/services/desktop-run-service/prepareRun.ts",
+			"packages/desktop/src/utils/agents-providers/prepareRun.ts",
 			"packages/desktop/src/utils/prepareRun.ts"
 		],
 		"symbols": [
+			"prepareRun",
 			"prepareRun",
 			"Preparation",
 			"imageModel",
 			"messageFor",
 			"recordRunFailure",
-			"prepareRun"
+			"prepareRun",
+			"prepareRun",
+			"imageModel",
+			"messageFor",
+			"recordRunFailure"
 		]
 	},
 	"contract": {
@@ -148,11 +155,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/prepareRun.ts",
+		"entry": "packages/desktop/src/utils/agents-providers/prepareRun.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/prepareRun.ts"
+				"entry": "packages/desktop/src/utils/agents-providers/prepareRun.ts"
 			}
 		]
 	},

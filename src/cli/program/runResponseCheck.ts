@@ -1,6 +1,9 @@
-import { resolvedContext, validateReport } from '../../workflows/analyticsRecord';
-import { recordResponse } from '../../workflows/recordJevAnalytics';
-import type { ResponseCheckOptions, ResponseCheckReport } from '../../core/responseCheckTypes';
+import { resolvedContext, validateReport } from '../../workflows/reports-media/analyticsRecord';
+import { recordResponse } from '../../workflows/agents-providers/recordJevAnalytics';
+import type {
+	ResponseCheckOptions,
+	ResponseCheckReport
+} from '../../core/verification-evidence/responseCheckTypes';
 import {
 	responseCheckSettings,
 	readResponseCheckInput,
@@ -9,7 +12,7 @@ import {
 import {
 	responseCheckDefinitions,
 	responseRubricVersion
-} from '../../workflows/responseCheckRubric';
+} from '../../workflows/verification-evidence/responseCheckRubric';
 import { assessResponse } from './responseCheckEvaluate';
 
 export async function checkResponse(options: ResponseCheckOptions): Promise<ResponseCheckReport> {

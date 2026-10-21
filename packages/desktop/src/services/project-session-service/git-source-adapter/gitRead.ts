@@ -1,7 +1,2 @@
-import { gitRead, gitRevision } from '../../../utils/gitRead';
-
-export async function gitFiles(root: string, revision: string): Promise<string[]> {
-	return (await gitRead(root, ['ls-tree', '-rz', '--name-only', await gitRevision(root, revision)]))
-		.split('\0')
-		.filter(Boolean);
-}
+export { gitFiles } from '../../projects-sessions/project-session-service/git-source-adapter/gitRead';
+export * from '../../projects-sessions/project-session-service/git-source-adapter/gitRead';

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/ConsoleChat.svelte"],
-		"symbols": ["ConsoleChat"]
+		"source": [
+			"packages/reports/src/components/ConsoleChat.svelte",
+			"packages/reports/src/components/planning-collaboration/ConsoleChat.svelte"
+		],
+		"symbols": ["ConsoleChat", "ConsoleChat"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -56,11 +59,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/ConsoleChat.svelte",
+		"entry": "packages/reports/src/components/planning-collaboration/ConsoleChat.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/ConsoleChat.svelte"
+				"entry": "packages/reports/src/components/planning-collaboration/ConsoleChat.svelte"
 			}
 		]
 	},

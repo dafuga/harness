@@ -1,4 +1,4 @@
 export {
-	NativeHostedCredential,
+	type NativeHostedCredential,
 	RemoteHttpProjectAdapter
-} from '../../lib/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter';
+} from '../../lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter';

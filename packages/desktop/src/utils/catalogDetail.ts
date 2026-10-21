@@ -1,1 +1,1 @@
-export { catalogDetail } from '../services/project-session-service/catalog-service/catalogDetail';
+export { catalogDetail } from '../services/projects-sessions/project-session-service/catalog-service/catalogDetail';

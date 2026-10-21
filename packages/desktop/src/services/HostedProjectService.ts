@@ -1,1 +1,1 @@
-export { HostedProjectService } from './desktop-bridge-service/HostedProjectService';
+export { HostedProjectService } from './development-tooling/desktop-bridge-service/HostedProjectService';

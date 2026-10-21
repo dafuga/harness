@@ -1,10 +1,13 @@
-import { fail } from '../../core/errors';
-import type { FileWriteStatus } from '../../core/files';
-import type { ComponentManifest } from '../../core/unitTypes';
-import { scaffoldKinds, type PieceKind } from '../../templates/scaffoldTypes';
-import { stableJson } from '../../utils/stableJson';
-import { generatePiece, type GenerateResult } from '../../workflows/generate-code/generateCode';
-import { loadUnits } from '../../workflows/load-units/loadUnits';
+import { fail } from '../../core/development-tooling/errors';
+import type { FileWriteStatus } from '../../core/development-tooling/files';
+import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
+import { scaffoldKinds, type PieceKind } from '../../templates/development-tooling/scaffoldTypes';
+import { stableJson } from '../../utils/development-tooling/stableJson';
+import {
+	generatePiece,
+	type GenerateResult
+} from '../../workflows/projects-sessions/generate-code/generateCode';
+import { loadUnits } from '../../workflows/development-tooling/load-units/loadUnits';
 
 export interface GenerateUnitInput {
 	name: string;
@@ -12,6 +15,7 @@ export interface GenerateUnitInput {
 	responsibility?: string;
 	force?: boolean;
 	root?: string;
+	group?: string;
 }
 
 const aliases: Record<string, PieceKind> = { function: 'util', endpoint: 'api', page: 'view' };
@@ -24,7 +28,9 @@ export async function generateUnit(input: GenerateUnitInput): Promise<GenerateRe
 		kind: pieceKind(input.kind ?? 'function'),
 		name: input.name,
 		force: input.force,
-		root
+		root,
+		group: input.group,
+		responsibility: input.responsibility
 	});
 	const loaded = await loadUnits(root);
 	const generated = new Set(piece.writes.map((write) => write.path));

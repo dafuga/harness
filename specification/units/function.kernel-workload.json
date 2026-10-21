@@ -9,6 +9,7 @@
 	"owns": {
 		"source": [
 			"src/cli/program/run-kernel/kernelWorkload.ts",
+			"src/utils/execution-runtimes/kernelWorkload.ts",
 			"src/utils/kernelWorkload.ts",
 			"src/workflows/run-kernel/kernelWorkload.ts"
 		],
@@ -19,6 +20,10 @@
 			"edges",
 			"kernelMutations",
 			"kernelTexts",
+			"kernelMutations",
+			"kernelTexts",
+			"kernelWorkload",
+			"edges",
 			"kernelMutations",
 			"kernelTexts"
 		]
@@ -80,11 +85,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/kernelWorkload.ts",
+		"entry": "src/utils/execution-runtimes/kernelWorkload.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/kernelWorkload.ts"
+				"entry": "src/utils/execution-runtimes/kernelWorkload.ts"
 			}
 		]
 	},

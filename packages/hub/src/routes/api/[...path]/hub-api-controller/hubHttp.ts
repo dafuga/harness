@@ -1,5 +1,5 @@
-import { hubHttp } from '../../../../utils/hub-http/hubHttp';
-import { hubFail } from '../../../../utils/hubJson';
+import { hubHttp } from '../../../../utils/networking-security/hub-http/hubHttp';
+import { hubFail } from '../../../../utils/development-tooling/hubJson';
 
 export function hubQuery(request: Request) {
 	const url = new URL(request.url),

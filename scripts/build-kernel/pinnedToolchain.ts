@@ -1,4 +1,8 @@
-import { PinnedTool, ToolAnswer, PinnedOptions } from '../../src/utils/pinnedToolchain';
+import {
+	PinnedTool,
+	ToolAnswer,
+	PinnedOptions
+} from '../../src/utils/development-tooling/pinnedToolchain';
 import { spawnSync } from 'node:child_process';
 import { readFileSync, statSync } from 'node:fs';
 import { delimiter, dirname, join, resolve } from 'node:path';

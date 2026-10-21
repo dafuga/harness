@@ -1,5 +1,5 @@
 import type { Command } from 'commander';
-import { fail } from '../../core/errors';
+import { fail } from '../../core/development-tooling/errors';
 import { checkScenarios, listScenarios, showScenario } from './inspectScenarios';
 
 interface Flags {

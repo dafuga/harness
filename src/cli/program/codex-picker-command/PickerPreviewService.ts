@@ -1,5 +1,5 @@
-import type { ProviderSwitchService } from '../../../services/ProviderSwitchService';
-import { pickerMcpTools } from '../../../utils/pickerMcpTools';
+import type { ProviderSwitchService } from '../../../services/agents-providers/ProviderSwitchService';
+import { pickerMcpTools } from '../../../utils/development-tooling/pickerMcpTools';
 
 /** Isolated local preview, not a desktop control transport. */
 export class PickerPreviewService {

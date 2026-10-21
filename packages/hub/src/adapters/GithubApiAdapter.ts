@@ -1,2 +1,5 @@
-export { GithubApiAdapter } from '../lib/server/auth/GithubApiAdapter';
-export type { GithubApiOptions, InstallationScope } from '../lib/server/auth/GithubApiAdapter';
+export { GithubApiAdapter } from '../lib/verification-evidence/server/auth/GithubApiAdapter';
+export type {
+	GithubApiOptions,
+	InstallationScope
+} from '../lib/verification-evidence/server/auth/GithubApiAdapter';

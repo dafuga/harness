@@ -10,9 +10,13 @@
 		"source": [
 			"packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubEvidenceScope.ts",
 			"packages/hub/src/services/hub-evidence-service/hubEvidenceScope.ts",
-			"packages/hub/src/utils/hubEvidenceScope.ts"
+			"packages/hub/src/utils/hubEvidenceScope.ts",
+			"packages/hub/src/utils/networking-security/hubEvidenceScope.ts"
 		],
 		"symbols": [
+			"hubEvidenceContext",
+			"hubEvidencePins",
+			"hubEvidenceScope",
 			"hubEvidenceContext",
 			"hubEvidencePins",
 			"hubEvidenceScope",
@@ -148,11 +152,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hubEvidenceScope.ts",
+		"entry": "packages/hub/src/utils/networking-security/hubEvidenceScope.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/hubEvidenceScope.ts"
+				"entry": "packages/hub/src/utils/networking-security/hubEvidenceScope.ts"
 			}
 		]
 	},

@@ -9,6 +9,7 @@
 	"owns": {
 		"source": [
 			"packages/remote/src/services/EventLogService.ts",
+			"packages/remote/src/services/networking-security/wire-session-service/EventLogService.ts",
 			"packages/remote/src/services/wire-session-service/EventLogService.ts"
 		],
 		"symbols": [
@@ -19,7 +20,8 @@
 			"EventLogService.constructor",
 			"EventLogService.sequence",
 			"EventLogService.append",
-			"EventLogService.since"
+			"EventLogService.since",
+			"EventLogService"
 		]
 	},
 	"contract": {
@@ -72,11 +74,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/remote/src/services/wire-session-service/EventLogService.ts",
+		"entry": "packages/remote/src/services/networking-security/wire-session-service/EventLogService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/remote/src/services/wire-session-service/EventLogService.ts"
+				"entry": "packages/remote/src/services/networking-security/wire-session-service/EventLogService.ts"
 			}
 		]
 	},

@@ -1,15 +1,7 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
-	import { browserContext } from '../utils/browserContext';
-	let { projectId }: { projectId?: string } = $props();
-	const { session } = browserContext();
+	import CategoryImplementation from './accounts-access/AccountMenu.svelte';
+	import type { ComponentProps } from 'svelte';
+	let props: ComponentProps<typeof CategoryImplementation> = $props();
 </script>
 
-<!-- Leaving the workspace is a document navigation: its history entries are its own. -->
-{#if session.actor}<span class="account-name" title={session.actor.email}>{session.actor.name}</span
-	><a href={resolve('/')} data-sveltekit-reload>Projects</a>{#if projectId}<a
-			href={resolve('/projects/[projectId]/members', { projectId })}
-			data-sveltekit-reload>Members</a
-		>{/if}<button type="button" disabled={session.busy} onclick={() => void session.signOut()}
-		>Sign out</button
-	>{/if}
+<CategoryImplementation {...props} />

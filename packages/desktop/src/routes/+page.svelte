@@ -1,16 +1,19 @@
 <script lang="ts">
 	import { onMount, setContext } from 'svelte';
-	import { createRemoteHostStore } from '../lib/stores/remoteHost.svelte';
-	import { createRemotePhoneStore } from '../lib/stores/remotePhone.svelte';
-	import { createWorkspaceStore } from '../lib/stores/workspace.svelte';
-	import { remoteContext } from '../models/Environment.types';
-	import type { EnvironmentHost, EnvironmentKind } from '../models/Environment.types';
-	import { selectEnvironment } from '../lib/select-environment/selectEnvironment';
-	import { isWorkspacePath } from '../utils/workspaceRoute';
-	import HostedConnection from '../components/HostedConnection.svelte';
-	import ProjectGate from '../components/ProjectGate.svelte';
-	import RemoteConnection from '../components/RemoteConnection.svelte';
-	import WorkspaceShell from '../components/WorkspaceShell.svelte';
+	import { createRemoteHostStore } from '../lib/stores/networking-security/remoteHost.svelte';
+	import { createRemotePhoneStore } from '../lib/stores/networking-security/remotePhone.svelte';
+	import { createWorkspaceStore } from '../lib/stores/projects-sessions/workspace.svelte';
+	import { remoteContext } from '../models/development-tooling/Environment.types';
+	import type {
+		EnvironmentHost,
+		EnvironmentKind
+	} from '../models/development-tooling/Environment.types';
+	import { selectEnvironment } from '../lib/verification-evidence/select-environment/selectEnvironment';
+	import { isWorkspacePath } from '../utils/projects-sessions/workspaceRoute';
+	import HostedConnection from '../components/networking-security/HostedConnection.svelte';
+	import ProjectGate from '../components/projects-sessions/ProjectGate.svelte';
+	import RemoteConnection from '../components/networking-security/RemoteConnection.svelte';
+	import WorkspaceShell from '../components/projects-sessions/WorkspaceShell.svelte';
 	import '../lib/styles/workspace.css';
 	import '../lib/styles/design.css';
 	const workspace = createWorkspaceStore();

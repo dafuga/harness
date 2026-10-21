@@ -9,9 +9,11 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/desktop-initialization/NativeConnectionService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/NativeConnectionService.ts",
 			"packages/desktop/src/services/NativeConnectionService.ts"
 		],
 		"symbols": [
+			"NativeConnectionService",
 			"NativeConnectionService",
 			"NativeConnectionService.create",
 			"NativeConnectionService"
@@ -71,11 +73,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/lib/desktop-initialization/NativeConnectionService.ts",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeConnectionService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/lib/desktop-initialization/NativeConnectionService.ts"
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeConnectionService.ts"
 			}
 		]
 	},

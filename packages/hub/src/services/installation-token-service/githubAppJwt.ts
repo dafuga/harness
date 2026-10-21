@@ -1,4 +1,4 @@
 export {
 	githubAppKey,
 	githubAppJwt
-} from '../../lib/server/auth/installation-token-service/githubAppJwt';
+} from '../../lib/verification-evidence/server/auth/installation-token-service/githubAppJwt';

@@ -10,9 +10,15 @@
 		"source": [
 			"packages/reports/src/services/report-command-service/report-publish-service/reportPublicationVerify.ts",
 			"packages/reports/src/services/report-publish-service/reportPublicationVerify.ts",
+			"packages/reports/src/services/reports-media/report-command-service/report-publish-service/reportPublicationVerify.ts",
 			"packages/reports/src/utils/reportPublicationVerify.ts"
 		],
-		"symbols": ["reportPublicationVerify", "reportPublicationVerify", "reportPublicationVerify"]
+		"symbols": [
+			"reportPublicationVerify",
+			"reportPublicationVerify",
+			"reportPublicationVerify",
+			"reportPublicationVerify"
+		]
 	},
 	"contract": {
 		"origin": "declared",

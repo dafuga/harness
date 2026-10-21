@@ -1,20 +1,2 @@
-import type { PlannedFile } from '../core/files';
-
-export function formatConfigFiles(): PlannedFile[] {
-	return [
-		{
-			path: '.gitignore',
-			contents: 'node_modules/\ndist/\ncoverage/\n.svelte-kit/\nbuild/\n.cache/\n.env\n.env.*\n'
-		},
-		{
-			path: '.prettierrc',
-			contents:
-				'{\n\t"useTabs": true,\n\t"singleQuote": true,\n\t"trailingComma": "none",\n\t"printWidth": 100\n}\n'
-		},
-		{
-			path: '.prettierignore',
-			contents:
-				'node_modules\ndist\ncoverage\n.svelte-kit\nbuild\n.cache\n*.cpp\n*.h\n*.hpp\n*.py\n*.sh\n*.wasm\n'
-		}
-	];
-}
+export { formatConfigFiles } from './development-tooling/formatConfig';
+export * from './development-tooling/formatConfig';

@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/repositories/UnitRegistryRepository.ts"],
+		"source": [
+			"src/repositories/UnitRegistryRepository.ts",
+			"src/repositories/verification-evidence/UnitRegistryRepository.ts"
+		],
 		"symbols": [
+			"UnitRegistryRepository",
 			"RegistryRead",
 			"UnitRegistryRepository",
 			"UnitRegistryRepository.constructor",
@@ -115,11 +119,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/repositories/UnitRegistryRepository.ts",
+		"entry": "src/repositories/verification-evidence/UnitRegistryRepository.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/repositories/UnitRegistryRepository.ts"
+				"entry": "src/repositories/verification-evidence/UnitRegistryRepository.ts"
 			}
 		]
 	},

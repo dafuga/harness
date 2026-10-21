@@ -1,5 +1,5 @@
-export { RemoteDeviceSessionsService } from './remote-host-service/RemoteDeviceSessionsService';
+export { RemoteDeviceSessionsService } from './networking-security/remote-host-service/RemoteDeviceSessionsService';
 export type {
 	DeviceAddress,
 	RemoteDeviceSessionsOptions
-} from './remote-host-service/RemoteDeviceSessionsService';
+} from './networking-security/remote-host-service/RemoteDeviceSessionsService';

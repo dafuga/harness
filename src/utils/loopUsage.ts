@@ -1,1 +1,1 @@
-export { loopUsage } from '../services/project-activity-service/loopUsage';
+export { loopUsage } from '../services/projects-sessions/project-activity-service/loopUsage';

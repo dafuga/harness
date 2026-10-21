@@ -1,4 +1,4 @@
-import type { AnalyticsEvent } from '../../core/analyticsTypes';
+import type { AnalyticsEvent } from '../../core/reports-media/analyticsTypes';
 const assessed = new Set(['satisfied', 'clean', 'violations', 'needs-review']);
 export function jevMetrics(
 	events: AnalyticsEvent[],

@@ -9,9 +9,11 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/desktop-initialization/LocalClientService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
 			"packages/desktop/src/services/LocalClientService.ts"
 		],
 		"symbols": [
+			"LocalClientService",
 			"LocalClientOptions",
 			"LocalClientService",
 			"LocalClientService.constructor",
@@ -142,11 +144,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/lib/desktop-initialization/LocalClientService.ts",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/lib/desktop-initialization/LocalClientService.ts"
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts"
 			}
 		]
 	},

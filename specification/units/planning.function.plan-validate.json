@@ -9,9 +9,21 @@
 	"owns": {
 		"source": [
 			"packages/planning/src/utils/plan-design/version.ts",
-			"packages/planning/src/utils/planValidate.ts"
+			"packages/planning/src/utils/planValidate.ts",
+			"packages/planning/src/utils/planning-collaboration/plan-design/version.ts",
+			"packages/planning/src/utils/planning-collaboration/planValidate.ts"
 		],
 		"symbols": [
+			"version",
+			"version",
+			"categories",
+			"text",
+			"slug",
+			"planValidate",
+			"contractHash",
+			"author",
+			"region",
+			"filename",
 			"version",
 			"categories",
 			"text",
@@ -137,11 +149,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/planning/src/utils/planValidate.ts",
+		"entry": "packages/planning/src/utils/planning-collaboration/planValidate.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/planning/src/utils/planValidate.ts"
+				"entry": "packages/planning/src/utils/planning-collaboration/planValidate.ts"
 			}
 		]
 	},

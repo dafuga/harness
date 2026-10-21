@@ -8,9 +8,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/components/explorer-ui/harness/entity-history-row/EntityHistoryRow.svelte",
 			"packages/reports/src/components/harness/entity-history-row/EntityHistoryRow.svelte"
 		],
-		"symbols": ["EntityHistoryRow"]
+		"symbols": ["EntityHistoryRow", "EntityHistoryRow"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -124,11 +125,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/entity-history-row/EntityHistoryRow.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/harness/entity-history-row/EntityHistoryRow.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/harness/entity-history-row/EntityHistoryRow.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/harness/entity-history-row/EntityHistoryRow.svelte"
 			}
 		]
 	},

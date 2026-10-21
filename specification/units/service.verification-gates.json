@@ -9,9 +9,17 @@
 	"owns": {
 		"source": [
 			"src/services/VerificationGates.ts",
-			"src/workflows/run-verify/verification-service/record-assembly-service/VerificationGates.ts"
+			"src/workflows/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts"
 		],
-		"symbols": ["registryGate", "ledgerGate", "registryGate", "ledgerGate"]
+		"symbols": [
+			"registryGate",
+			"ledgerGate",
+			"registryGate",
+			"ledgerGate",
+			"registryGate",
+			"ledgerGate"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -69,11 +77,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
+		"entry": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/run-verify/verification-service/record-assembly-service/VerificationGates.ts"
+				"entry": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts"
 			}
 		]
 	},

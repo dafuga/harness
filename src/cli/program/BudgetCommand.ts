@@ -6,7 +6,7 @@ import {
 	budgetStatus,
 	type BenchInput,
 	type SignedInput
-} from '../../workflows/run-budget/runBudget';
+} from '../../workflows/verification-evidence/run-budget/runBudget';
 import { budgetApprove, budgetEstablish } from './signBudget';
 
 type Flags = Partial<SignedInput> & Partial<BenchInput> & { json?: boolean };

@@ -1,1 +1,1 @@
-export { hubBodyBytes } from './hub-http/hubBodyBytes';
+export { hubBodyBytes } from './networking-security/hub-http/hubBodyBytes';

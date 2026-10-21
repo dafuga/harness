@@ -1,22 +1,28 @@
 import { spawn, spawnSync } from 'node:child_process';
-import { HttpRuntimeAdapter } from '../../../../adapters/HttpRuntimeAdapter';
-import { ProcessRuntimeAdapter } from '../../../../adapters/process-runtime-adapter/ProcessRuntimeAdapter';
-import { WasmRuntimeAdapter } from '../../../../adapters/wasm-runtime-adapter/WasmRuntimeAdapter';
-import type { BenchMeasurement, KernelBenchmark } from '../../../../core/benchmarkTypes';
-import { fail } from '../../../../core/errors';
-import type { RuntimeRequest, UnitRuntime } from '../../../../core/runtimeTypes';
-import type { RuntimeKind } from '../../../../core/unitTypes';
-import { benchMeasurement, type MeasureContext } from '../../../../utils/benchMeasurement';
+import { HttpRuntimeAdapter } from '../../../../adapters/execution-runtimes/HttpRuntimeAdapter';
+import { ProcessRuntimeAdapter } from '../../../../adapters/execution-runtimes/process-runtime-adapter/ProcessRuntimeAdapter';
+import { WasmRuntimeAdapter } from '../../../../adapters/execution-runtimes/wasm-runtime-adapter/WasmRuntimeAdapter';
+import type {
+	BenchMeasurement,
+	KernelBenchmark
+} from '../../../../core/development-tooling/benchmarkTypes';
+import { fail } from '../../../../core/development-tooling/errors';
+import type { RuntimeRequest, UnitRuntime } from '../../../../core/execution-runtimes/runtimeTypes';
+import type { RuntimeKind } from '../../../../core/development-tooling/unitTypes';
+import {
+	benchMeasurement,
+	type MeasureContext
+} from '../../../../utils/verification-evidence/benchMeasurement';
 import { benchSamples } from './benchSamples';
-import { median } from '../../../../utils/benchSamples';
-import { impactKernel } from '../../../../utils/impact-kernel/impactKernel';
+import { median } from '../../../../utils/development-tooling/benchSamples';
+import { impactKernel } from '../../../../utils/execution-runtimes/impact-kernel/impactKernel';
 import {
 	kernelArtifacts,
 	type Environment,
 	type KernelArtifacts
-} from '../../../../utils/kernelArtifacts';
+} from '../../../../utils/execution-runtimes/kernelArtifacts';
 import { peakMemory } from './peakMemory';
-import { UnitRuntimeService } from '../../../../services/UnitRuntimeService';
+import { UnitRuntimeService } from '../../../../services/execution-runtimes/UnitRuntimeService';
 
 export interface BenchPlan {
 	/** Command line that starts this CLI, used for fresh-process samples and the HTTP server. */

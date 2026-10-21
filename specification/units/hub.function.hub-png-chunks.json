@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/routes/api/[...path]/hub-projection-service/hubPngChunks.ts",
-			"packages/hub/src/utils/hubPngChunks.ts"
+			"packages/hub/src/utils/hubPngChunks.ts",
+			"packages/hub/src/utils/networking-security/hubPngChunks.ts"
 		],
-		"symbols": ["hubPngChunks", "Header", "State", "hubPngChunks"]
+		"symbols": ["hubPngChunks", "hubPngChunks", "Header", "State", "hubPngChunks"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -40,11 +41,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hubPngChunks.ts",
+		"entry": "packages/hub/src/utils/networking-security/hubPngChunks.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/hubPngChunks.ts"
+				"entry": "packages/hub/src/utils/networking-security/hubPngChunks.ts"
 			}
 		]
 	},

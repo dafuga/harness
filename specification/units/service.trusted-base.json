@@ -9,9 +9,11 @@
 	"owns": {
 		"source": [
 			"src/services/TrustedBaseService.ts",
-			"src/workflows/run-verify/TrustedBaseService.ts"
+			"src/workflows/run-verify/TrustedBaseService.ts",
+			"src/workflows/verification-evidence/run-verify/TrustedBaseService.ts"
 		],
 		"symbols": [
+			"TrustedBaseService",
 			"TrustedBaseService",
 			"TrustedBaseService",
 			"TrustedBaseService.constructor",
@@ -66,11 +68,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/run-verify/TrustedBaseService.ts",
+		"entry": "src/workflows/verification-evidence/run-verify/TrustedBaseService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/run-verify/TrustedBaseService.ts"
+				"entry": "src/workflows/verification-evidence/run-verify/TrustedBaseService.ts"
 			}
 		]
 	},

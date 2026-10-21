@@ -8,10 +8,21 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/planning/src/lib/planning-collaboration/planning/planning-service/planHistory.ts",
 			"packages/planning/src/lib/planning/planning-service/planHistory.ts",
-			"packages/planning/src/utils/planHistory.ts"
+			"packages/planning/src/utils/planHistory.ts",
+			"packages/planning/src/utils/planning-collaboration/planHistory.ts"
 		],
-		"symbols": ["planHistory", "commits", "revisionInfo", "planHistory"]
+		"symbols": [
+			"planHistory",
+			"planHistory",
+			"planHistory",
+			"commits",
+			"revisionInfo",
+			"commits",
+			"revisionInfo",
+			"planHistory"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -106,11 +117,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/planning/src/utils/planHistory.ts",
+		"entry": "packages/planning/src/utils/planning-collaboration/planHistory.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/planning/src/utils/planHistory.ts"
+				"entry": "packages/planning/src/utils/planning-collaboration/planHistory.ts"
 			}
 		]
 	},

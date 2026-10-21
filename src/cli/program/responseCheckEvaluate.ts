@@ -1,16 +1,16 @@
-import { JevAdapter } from '../../adapters/JevAdapter';
-import type { JevChoice, JevEvaluation, JevRequest } from '../../core/jevTypes';
+import { JevAdapter } from '../../adapters/agents-providers/JevAdapter';
+import type { JevChoice, JevEvaluation, JevRequest } from '../../core/agents-providers/jevTypes';
 import type {
 	ResponseAssessment,
 	ResponseCheckInput,
 	ResponseCheckReport,
 	ResponseCheckSettings
-} from '../../core/responseCheckTypes';
+} from '../../core/verification-evidence/responseCheckTypes';
 import {
 	responseCheckDefinitions,
 	responseCheckQuestions,
 	type ResponseCheckDefinition
-} from '../../workflows/responseCheckRubric';
+} from '../../workflows/verification-evidence/responseCheckRubric';
 
 type Evaluate = (request: JevRequest) => Promise<JevEvaluation>;
 

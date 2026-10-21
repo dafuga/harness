@@ -8,14 +8,14 @@ import type {
 	GrantStore,
 	OneTimeStore,
 	SessionStore
-} from '../../../../models/HubAuthStore.types';
+} from '../../../../models/accounts-access/HubAuthStore.types';
 import { d1CredentialStores } from './d1CredentialStores';
-import { EMAIL_PURGES } from '../../../../utils/d1EmailStores';
+import { EMAIL_PURGES } from '../../../../utils/networking-security/d1EmailStores';
 import { d1EmailStores } from './d1EmailStores';
 import { EXPIRE_GRANTS } from '../../../../utils/d1GrantStore';
 import { d1GrantStore } from './d1GrantStore';
 import { d1OneTimeStores } from './d1OneTimeStores';
-import { AuthRecordValidator } from '../../../../validators/AuthRecordValidator';
+import { AuthRecordValidator } from '../../../../validators/accounts-access/AuthRecordValidator';
 
 /** The part of Cloudflare's D1Database this adapter uses; a D1Database satisfies it. */
 export interface D1Statement {

@@ -1,7 +1,7 @@
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import type { AddressInfo } from 'node:net';
-import type { UnitRuntime } from '../../../core/runtimeTypes';
-import { runtimeReply } from '../../../utils/runtimeReply';
+import type { UnitRuntime } from '../../../core/execution-runtimes/runtimeTypes';
+import { runtimeReply } from '../../../utils/execution-runtimes/runtimeReply';
 
 export interface ServedRuntime {
 	url: string;

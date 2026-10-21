@@ -1,4 +1,4 @@
 export {
 	registryGate,
 	ledgerGate
-} from '../workflows/run-verify/verification-service/record-assembly-service/VerificationGates';
+} from '../workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates';

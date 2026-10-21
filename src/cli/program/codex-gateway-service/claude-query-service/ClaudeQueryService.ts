@@ -1,7 +1,10 @@
 import { query, type SDKMessage } from '@anthropic-ai/claude-agent-sdk';
-import type { GatewayRequest, GatewaySession } from '../../../../utils/gatewayTypes';
+import type {
+	GatewayRequest,
+	GatewaySession
+} from '../../../../utils/development-tooling/gatewayTypes';
 import type { CodexSessionRepository } from '../codex-session-repository/CodexSessionRepository';
-import { ClaudeToolsSerializer } from '../../../../serializers/claude-tools-serializer/ClaudeToolsSerializer';
+import { ClaudeToolsSerializer } from '../../../../serializers/agents-providers/claude-tools-serializer/ClaudeToolsSerializer';
 import { gatewayMessages } from './gatewayMessages';
 import { gatewayOptions } from './gatewayOptions';
 

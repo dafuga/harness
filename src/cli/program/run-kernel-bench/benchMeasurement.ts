@@ -1,8 +1,12 @@
-import type { MeasureContext, Value, Artifact } from '../../../utils/benchMeasurement';
-import { benchMeasurement } from '../../../utils/benchMeasurement';
-import type { BenchMeasurement } from '../../../core/benchmarkTypes';
-import type { RuntimeKind } from '../../../core/unitTypes';
-import type { KernelBuild } from '../../../utils/kernelArtifacts';
+import type {
+	MeasureContext,
+	Value,
+	Artifact
+} from '../../../utils/verification-evidence/benchMeasurement';
+import { benchMeasurement } from '../../../utils/verification-evidence/benchMeasurement';
+import type { BenchMeasurement } from '../../../core/development-tooling/benchmarkTypes';
+import type { RuntimeKind } from '../../../core/development-tooling/unitTypes';
+import type { KernelBuild } from '../../../utils/execution-runtimes/kernelArtifacts';
 
 const separate = 'The reference ships inside the CLI bundle and has no separate artifact.';
 

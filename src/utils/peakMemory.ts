@@ -1,3 +1,2 @@
-export type PeakMemory = { bytes: number } | { unavailable: string };
-
-export { peakMemory } from '../cli/program/run-kernel-bench/kernel-benchmark-service/peakMemory';
+export { peakMemory } from './development-tooling/peakMemory';
+export * from './development-tooling/peakMemory';

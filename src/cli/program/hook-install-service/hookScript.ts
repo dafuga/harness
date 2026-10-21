@@ -1,4 +1,8 @@
-import { stageFile, hookMarker, chainedSuffix } from '../../../utils/hookScript';
+import {
+	stageFile,
+	hookMarker,
+	chainedSuffix
+} from '../../../utils/development-tooling/hookScript';
 
 /**
  * How a stage hands on what Git gave it. A push arrives as lines of input, which are read once

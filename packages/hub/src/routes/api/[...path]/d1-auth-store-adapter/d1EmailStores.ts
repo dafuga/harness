@@ -1,7 +1,10 @@
-import type { D1EmailStores } from '../../../../utils/d1EmailStores';
+import type { D1EmailStores } from '../../../../utils/networking-security/d1EmailStores';
 import type { D1Like } from './D1AuthStoreAdapter';
-import type { EmailLedgerStore, EmailProofStore } from '../../../../models/HubAuthStore.types';
-import type { AuthRecordValidator } from '../../../../validators/AuthRecordValidator';
+import type {
+	EmailLedgerStore,
+	EmailProofStore
+} from '../../../../models/accounts-access/HubAuthStore.types';
+import type { AuthRecordValidator } from '../../../../validators/accounts-access/AuthRecordValidator';
 
 const CREATE =
 	'INSERT INTO auth_email_proofs (id_hash, actor_id, actor_email, actor_name, code_hash, code_expires_at, attempts, claimed, expires_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';

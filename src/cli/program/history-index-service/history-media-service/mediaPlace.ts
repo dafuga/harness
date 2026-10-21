@@ -1,6 +1,6 @@
-import type { MediaFile } from '../../../../utils/mediaPlace';
+import type { MediaFile } from '../../../../utils/development-tooling/mediaPlace';
 import { createHash } from 'node:crypto';
-import type { ResolvedMedia } from '../../../../utils/recordView';
+import type { ResolvedMedia } from '../../../../utils/development-tooling/recordView';
 
 const directory = 'media';
 

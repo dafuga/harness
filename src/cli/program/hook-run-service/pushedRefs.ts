@@ -1,4 +1,4 @@
-import { refKind } from '../../../utils/historyRefs';
+import { refKind } from '../../../utils/git-source-history/historyRefs';
 
 const deleted = /^0+$/;
 

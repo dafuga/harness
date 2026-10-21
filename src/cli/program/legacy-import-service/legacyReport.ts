@@ -1,6 +1,6 @@
-import type { LegacyReport } from '../../../utils/legacyReport';
+import type { LegacyReport } from '../../../utils/reports-media/legacyReport';
 import { z } from 'zod';
-import type { LegacyRecord } from '../../../core/historyTypes';
+import type { LegacyRecord } from '../../../core/git-source-history/historyTypes';
 
 const text = z.string().min(1);
 

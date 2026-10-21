@@ -1,1 +1,1 @@
-export { type HarnessPage, homePath, harnessPage } from './harness-page/harnessPage';
+export { type HarnessPage, homePath, harnessPage } from './explorer-ui/harness-page/harnessPage';

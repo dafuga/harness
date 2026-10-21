@@ -8,10 +8,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/components/explorer-ui/harness/entity-tests/entityRemoved.ts",
 			"packages/reports/src/components/harness/entity-tests/entityRemoved.ts",
 			"packages/reports/src/utils/entityRemoved.ts"
 		],
-		"symbols": ["entityRemoved", "entityRemoved"]
+		"symbols": ["entityRemoved", "entityRemoved", "entityRemoved"]
 	},
 	"contract": {
 		"origin": "declared",

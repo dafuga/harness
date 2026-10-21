@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/EntityBehavior.svelte"],
-		"symbols": ["EntityBehavior"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/harness/EntityBehavior.svelte",
+			"packages/reports/src/components/harness/EntityBehavior.svelte"
+		],
+		"symbols": ["EntityBehavior", "EntityBehavior"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -122,11 +125,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/EntityBehavior.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/harness/EntityBehavior.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/harness/EntityBehavior.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/harness/EntityBehavior.svelte"
 			}
 		]
 	},

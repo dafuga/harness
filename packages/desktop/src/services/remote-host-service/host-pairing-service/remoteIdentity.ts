@@ -1,9 +1,2 @@
-import { randomBytes } from '../../../../../remote/src/utils/remoteBytes';
-
-const codeAlphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-
-/** Eight characters a person reads on the computer and types on the phone, as `XXXX-XXXX`. */
-export function pairingCode(): string {
-	const text = [...randomBytes(8)].map((byte) => codeAlphabet[byte & 31]).join('');
-	return `${text.slice(0, 4)}-${text.slice(4)}`;
-}
+export { pairingCode } from '../../networking-security/remote-host-service/host-pairing-service/remoteIdentity';
+export * from '../../networking-security/remote-host-service/host-pairing-service/remoteIdentity';

@@ -1,1 +1,1 @@
-export { HostedEvidenceService } from '../lib/desktop-initialization/remote-http-project-adapter/HostedEvidenceService';
+export { HostedEvidenceService } from '../lib/development-tooling/desktop-initialization/remote-http-project-adapter/HostedEvidenceService';

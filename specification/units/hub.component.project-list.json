@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/ProjectList.svelte"],
-		"symbols": ["ProjectList"]
+		"source": [
+			"packages/hub/src/components/ProjectList.svelte",
+			"packages/hub/src/components/projects-sessions/ProjectList.svelte"
+		],
+		"symbols": ["ProjectList", "ProjectList"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,11 +34,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/ProjectList.svelte",
+		"entry": "packages/hub/src/components/projects-sessions/ProjectList.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/ProjectList.svelte"
+				"entry": "packages/hub/src/components/projects-sessions/ProjectList.svelte"
 			}
 		]
 	},

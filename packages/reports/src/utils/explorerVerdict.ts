@@ -2,4 +2,4 @@ export {
 	verdictRecord,
 	verdictCoverage,
 	explorerVerdict
-} from './explorer-verdict/explorerVerdict';
+} from './explorer-ui/explorer-verdict/explorerVerdict';

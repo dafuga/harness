@@ -1,1 +1,4 @@
-export { createAgentSettingsStore, agentSettings } from '../agent-settings/agentSettings.svelte';
+export {
+	createAgentSettingsStore,
+	agentSettings
+} from '../agents-providers/agent-settings/agentSettings.svelte';

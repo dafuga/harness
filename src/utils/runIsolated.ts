@@ -1,1 +1,5 @@
-export { type IsolatedRun, type IsolatedResult, runIsolated } from './run-isolated/runIsolated';
+export {
+	type IsolatedRun,
+	type IsolatedResult,
+	runIsolated
+} from './reports-media/run-isolated/runIsolated';

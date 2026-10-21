@@ -9,9 +9,11 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/ProjectSessionService.ts",
-			"packages/desktop/src/services/project-session-service/ProjectSessionService.ts"
+			"packages/desktop/src/services/project-session-service/ProjectSessionService.ts",
+			"packages/desktop/src/services/projects-sessions/project-session-service/ProjectSessionService.ts"
 		],
 		"symbols": [
+			"ProjectSessionService",
 			"ProjectSessionService",
 			"ProjectSessionService",
 			"ProjectSessionService.constructor",
@@ -144,11 +146,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/project-session-service/ProjectSessionService.ts",
+		"entry": "packages/desktop/src/services/projects-sessions/project-session-service/ProjectSessionService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/project-session-service/ProjectSessionService.ts"
+				"entry": "packages/desktop/src/services/projects-sessions/project-session-service/ProjectSessionService.ts"
 			}
 		]
 	},

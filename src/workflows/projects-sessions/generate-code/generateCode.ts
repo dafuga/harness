@@ -1,0 +1,125 @@
+import { applyExports } from './exports';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import type { ExportPlan } from '../../../core/projects-sessions/exports';
+import { fail } from '../../../core/development-tooling/errors';
+import {
+	ensureParents,
+	renderFileList,
+	writePlannedFiles,
+	type FileWriteResult
+} from '../../../core/development-tooling/files';
+import { detectProjectKind } from './project';
+import { validateCodeName } from '../../../core/development-tooling/validation';
+import { parseFields } from '../../../core/development-tooling/fields/fields';
+import { adapterTypeFiles } from '../../../templates/development-tooling/adapterTypes';
+import { browserTestFiles } from '../../../templates/development-tooling/browserTest';
+import { modelFiles, type AdapterName } from '../../../templates/development-tooling/model';
+import { pieceFiles, type PieceKind } from '../../../templates/development-tooling/pieces';
+import {
+	isAppOnlyScaffold,
+	scaffoldKinds
+} from '../../../templates/development-tooling/scaffoldTypes';
+import { adapterExportPlan, modelExportPlans, pieceExportPlans } from './exportPlans';
+import { groupedFiles, groupedExports, assertUniqueGroupedNames } from './groupedFiles';
+import { generationGroup, saveGenerationGroup } from './generationGroup';
+
+export { scaffoldKinds };
+
+export type { PieceKind };
+
+const adapters = ['d1', 'sqlite', 'postgres'] as const;
+
+export interface GenerateModelInput {
+	name: string;
+	rawFields: string[];
+	adapter: string;
+	force?: boolean;
+	root?: string;
+	group?: string;
+}
+
+export interface GeneratePieceInput {
+	kind: PieceKind;
+	name: string;
+	force?: boolean;
+	root?: string;
+	group?: string;
+	responsibility?: string;
+}
+
+export interface GenerateResult {
+	kind: string;
+	name: string;
+	writes: FileWriteResult[];
+	exportsUpdated: boolean;
+}
+
+export async function generateModel(input: GenerateModelInput): Promise<GenerateResult> {
+	const root = input.root ?? process.cwd();
+	const name = validateCodeName(input.name);
+	const adapter = normalizeAdapter(input.adapter);
+	const selection = generationGroup(root, input);
+	const planned = [
+		...adapterTypeFiles(),
+		...modelFiles({ name, fields: parseFields(input.rawFields), adapter })
+	];
+	const { files, paths } = groupedFiles(planned, selection?.group.id);
+
+	assertUniqueGroupedNames(root, selection?.group.id, files);
+	await ensureParents(root, files);
+	const writes = await writePlannedFiles(root, files, { force: input.force });
+	writes.push(...(await saveGenerationGroup(root, selection)));
+	const exportsUpdated = await maybeExport(
+		root,
+		groupedExports([...modelExportPlans(name), adapterExportPlan(adapter)], paths)
+	);
+
+	return { kind: 'model', name, writes, exportsUpdated };
+}
+
+export async function generatePiece(input: GeneratePieceInput): Promise<GenerateResult> {
+	const root = input.root ?? process.cwd();
+	const name = validateCodeName(input.name);
+	const projectKind = await detectProjectKind(root);
+
+	if (isAppOnlyScaffold(input.kind) && projectKind !== 'app') {
+		fail(`The ${input.kind} scaffold is only available in Harness app projects.`);
+	}
+
+	const support = ['e2e', 'resource'].includes(input.kind)
+		? browserTestFiles().filter((file) => !existsSync(join(root, file.path)))
+		: [];
+	const source = !['test', 'e2e', 'feature', 'migration'].includes(input.kind);
+	const selection = source ? generationGroup(root, input) : undefined;
+	const grouped = groupedFiles(pieceFiles(input.kind, name), selection?.group.id);
+	const files = [...grouped.files, ...support];
+	assertUniqueGroupedNames(root, selection?.group.id, files);
+	await ensureParents(root, files);
+	const writes = await writePlannedFiles(root, files, { force: input.force });
+	writes.push(...(await saveGenerationGroup(root, selection)));
+	const exportsUpdated =
+		projectKind === 'lib'
+			? await maybeExport(root, groupedExports(pieceExportPlans(input.kind, name), grouped.paths))
+			: false;
+
+	return { kind: input.kind, name, writes, exportsUpdated };
+}
+
+export function renderGenerateResult(result: GenerateResult): string {
+	const exportLine = result.exportsUpdated ? '\n  update src/index.ts' : '';
+	return `Generated ${result.kind} "${result.name}".\n${renderFileList(result.writes)}${exportLine}`;
+}
+
+function normalizeAdapter(value: string): AdapterName {
+	if (adapters.includes(value as AdapterName)) {
+		return value as AdapterName;
+	}
+
+	return fail(`Unsupported adapter "${value}". Use d1, sqlite, or postgres.`);
+}
+
+async function maybeExport(root: string, plans: ExportPlan[]): Promise<boolean> {
+	const projectKind = await detectProjectKind(root);
+	return projectKind === 'lib' ? applyExports(root, plans) : false;
+}

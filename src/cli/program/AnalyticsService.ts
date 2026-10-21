@@ -1,12 +1,12 @@
-import { projectIdentity } from '../../workflows/analyticsRecord';
+import { projectIdentity } from '../../workflows/reports-media/analyticsRecord';
 import { resolve } from 'node:path';
 import { writeFile } from 'node:fs/promises';
-import { AnalyticsRepository } from '../../repositories/AnalyticsRepository';
+import { AnalyticsRepository } from '../../repositories/reports-media/AnalyticsRepository';
 import { analyticsSnapshot } from './analyticsMetrics';
-import { importAnalytics } from '../../workflows/importAnalytics';
-import type { AnalyticsFilter } from '../../core/analyticsTypes';
+import { importAnalytics } from '../../workflows/reports-media/importAnalytics';
+import type { AnalyticsFilter } from '../../core/reports-media/analyticsTypes';
 import { analyticsHtml } from './analyticsHtml';
-import { sameSite } from '../../utils/repository-identity/repositoryIdentity';
+import { sameSite } from '../../utils/accounts-access/repository-identity/repositoryIdentity';
 
 export interface AnalyticsOptions extends AnalyticsFilter {
 	json?: boolean;

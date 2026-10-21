@@ -8,12 +8,14 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/serializers/agents-providers/claude-tools-serializer/GatewayEventsService.ts",
 			"src/serializers/claude-tools-serializer/GatewayEventsService.ts",
 			"src/services/GatewayEventsService.ts"
 		],
 		"symbols": [
 			"GatewayEventsService",
 			"GatewayEventsService.finishToolBatch",
+			"GatewayEventsService",
 			"GatewayEventsService"
 		]
 	},
@@ -42,11 +44,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/serializers/claude-tools-serializer/GatewayEventsService.ts",
+		"entry": "src/serializers/agents-providers/claude-tools-serializer/GatewayEventsService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/serializers/claude-tools-serializer/GatewayEventsService.ts"
+				"entry": "src/serializers/agents-providers/claude-tools-serializer/GatewayEventsService.ts"
 			}
 		]
 	},

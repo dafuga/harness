@@ -3,11 +3,11 @@ import {
 	renderFileList,
 	writePlannedFiles,
 	type FileWriteResult
-} from '../../../core/files';
+} from '../../../core/development-tooling/files';
 import { validateProjectName } from './validation';
-import { projectFiles, type ProjectKind } from '../../../templates/project';
+import { projectFiles, type ProjectKind } from '../../../templates/projects-sessions/project';
 
-export type { ProjectKind } from '../../../templates/project';
+export type { ProjectKind } from '../../../templates/projects-sessions/project';
 
 export interface CreateProjectInput {
 	kind: ProjectKind;

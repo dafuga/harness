@@ -1,4 +1,4 @@
-import type { HubSourceContext } from '../../../../utils/hubSource';
+import type { HubSourceContext } from '../../../../utils/development-tooling/hubSource';
 
 /** An immutable design has one introduction. Rewrites or gaps do not attest a comparison. */
 export async function hubArtifactCommit(

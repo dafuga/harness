@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/remote/src/services/wire-session-service/WireSessionService.ts"],
+		"source": [
+			"packages/remote/src/services/networking-security/wire-session-service/WireSessionService.ts",
+			"packages/remote/src/services/wire-session-service/WireSessionService.ts"
+		],
 		"symbols": [
 			"WireSessionOptions",
 			"WireLink",
@@ -16,7 +19,8 @@
 			"WireSessionService.ended",
 			"WireSessionService.connect",
 			"WireSessionService.emit",
-			"WireSessionService.end"
+			"WireSessionService.end",
+			"WireSessionService"
 		]
 	},
 	"contract": {
@@ -97,11 +101,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/remote/src/services/wire-session-service/WireSessionService.ts",
+		"entry": "packages/remote/src/services/networking-security/wire-session-service/WireSessionService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/remote/src/services/wire-session-service/WireSessionService.ts"
+				"entry": "packages/remote/src/services/networking-security/wire-session-service/WireSessionService.ts"
 			}
 		]
 	},

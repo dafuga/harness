@@ -9,9 +9,11 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/RemoteProjectionService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteProjectionService.ts",
 			"packages/desktop/src/services/RemoteProjectionService.ts"
 		],
 		"symbols": [
+			"RemoteProjectionService",
 			"RemoteProjectionService",
 			"RemoteProjectionService.constructor",
 			"RemoteProjectionService.branch",
@@ -128,11 +130,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/RemoteProjectionService.ts",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteProjectionService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/RemoteProjectionService.ts"
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteProjectionService.ts"
 			}
 		]
 	},

@@ -9,9 +9,17 @@
 	"owns": {
 		"source": [
 			"packages/planning/src/utils/plan-read/planRead.ts",
-			"packages/planning/src/utils/planRead.ts"
+			"packages/planning/src/utils/planRead.ts",
+			"packages/planning/src/utils/planning-collaboration/plan-read/planRead.ts"
 		],
-		"symbols": ["approvalMatches", "planRead", "approvalMatches", "planRead"]
+		"symbols": [
+			"approvalMatches",
+			"planRead",
+			"approvalMatches",
+			"planRead",
+			"approvalMatches",
+			"planRead"
+		]
 	},
 	"contract": {
 		"origin": "declared",

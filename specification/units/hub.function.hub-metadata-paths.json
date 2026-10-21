@@ -8,10 +8,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/hub/src/utils/development-tooling/hub-metadata/hubMetadataPaths.ts",
 			"packages/hub/src/utils/hub-metadata/hubMetadataPaths.ts",
 			"packages/hub/src/utils/hubMetadataPaths.ts"
 		],
-		"symbols": ["hubMetadataPaths", "hubMetadataPaths"]
+		"symbols": ["hubMetadataPaths", "hubMetadataPaths", "hubMetadataPaths"]
 	},
 	"contract": {
 		"origin": "declared",

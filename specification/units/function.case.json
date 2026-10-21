@@ -7,8 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/case.ts"],
-		"symbols": ["toKebabCase", "toPascalCase", "toCamelCase", "toSnakeCase"]
+		"source": ["src/core/case.ts", "src/core/development-tooling/case.ts"],
+		"symbols": [
+			"toKebabCase",
+			"toPascalCase",
+			"toCamelCase",
+			"toSnakeCase",
+			"toKebabCase",
+			"toPascalCase",
+			"toCamelCase",
+			"toSnakeCase"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -70,7 +79,7 @@
 	"helperContracts": [
 		{
 			"name": "toKebabCase",
-			"source": "src/core/case.ts",
+			"source": "src/core/development-tooling/case.ts",
 			"inputs": [
 				{
 					"name": "toKebabCase.textToConvert",
@@ -211,7 +220,7 @@
 		},
 		{
 			"name": "toPascalCase",
-			"source": "src/core/case.ts",
+			"source": "src/core/development-tooling/case.ts",
 			"inputs": [
 				{
 					"name": "toPascalCase.textToConvert",
@@ -328,7 +337,7 @@
 		},
 		{
 			"name": "toCamelCase",
-			"source": "src/core/case.ts",
+			"source": "src/core/development-tooling/case.ts",
 			"inputs": [
 				{
 					"name": "toCamelCase.textToConvert",
@@ -377,7 +386,7 @@
 		},
 		{
 			"name": "toSnakeCase",
-			"source": "src/core/case.ts",
+			"source": "src/core/development-tooling/case.ts",
 			"inputs": [
 				{
 					"name": "toSnakeCase.textToConvert",
@@ -400,11 +409,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/core/case.ts",
+		"entry": "src/core/development-tooling/case.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/core/case.ts"
+				"entry": "src/core/development-tooling/case.ts"
 			}
 		]
 	},

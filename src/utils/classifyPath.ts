@@ -1,1 +1,1 @@
-export { type PathClass, classifyPath } from './classify-path/classifyPath';
+export { type PathClass, classifyPath } from './accounts-access/classify-path/classifyPath';

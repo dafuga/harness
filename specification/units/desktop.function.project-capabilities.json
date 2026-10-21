@@ -9,9 +9,18 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/load-workspace/projectCapabilities.ts",
-			"packages/desktop/src/utils/projectCapabilities.ts"
+			"packages/desktop/src/utils/projectCapabilities.ts",
+			"packages/desktop/src/utils/projects-sessions/load-workspace/projectCapabilities.ts",
+			"packages/desktop/src/utils/projects-sessions/projectCapabilities.ts"
 		],
-		"symbols": ["projectCapabilities", "closedCapabilities", "projectCapabilities"]
+		"symbols": [
+			"projectCapabilities",
+			"projectCapabilities",
+			"closedCapabilities",
+			"projectCapabilities",
+			"closedCapabilities",
+			"projectCapabilities"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -60,11 +69,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/projectCapabilities.ts",
+		"entry": "packages/desktop/src/utils/projects-sessions/projectCapabilities.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/projectCapabilities.ts"
+				"entry": "packages/desktop/src/utils/projects-sessions/projectCapabilities.ts"
 			}
 		]
 	},

@@ -9,9 +9,11 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/adapters/planning-facade-adapter/PlanningFacadeAdapter.ts",
-			"packages/desktop/src/services/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts"
+			"packages/desktop/src/services/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
+			"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts"
 		],
 		"symbols": [
+			"PlanningFacadeAdapter",
 			"PlanningFacadeAdapter",
 			"PlanningFacadeAdapter",
 			"PlanningFacadeAdapter.open",
@@ -186,11 +188,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
+		"entry": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts"
+				"entry": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts"
 			}
 		]
 	},

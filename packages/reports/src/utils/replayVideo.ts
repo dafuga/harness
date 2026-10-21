@@ -1,14 +1,3 @@
-import { createHash } from 'node:crypto';
-import type { Report } from '../models/Report.types';
-import { replayFrames } from './replayFrames';
-
-export function replayVideoKey(report: Report) {
-	return createHash('sha256')
-		.update(
-			JSON.stringify(replayFrames(report.evidence).map((f) => [f.item.id, f.item.file])) +
-				':3s:1280x720:v2'
-		)
-		.digest('hex');
-}
-
-export { replayVideo } from '../routes/api/replay-video/replay-video-service/replayVideo';
+export { replayVideo } from './reports-media/replayVideo';
+export { replayVideoKey } from './reports-media/replayVideo';
+export * from './reports-media/replayVideo';

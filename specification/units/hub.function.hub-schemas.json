@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubSchemas.ts"],
+		"source": [
+			"packages/hub/src/utils/development-tooling/hubSchemas.ts",
+			"packages/hub/src/utils/hubSchemas.ts"
+		],
 		"symbols": [
 			"hubContractSchema",
 			"hubPlanSchema",
@@ -16,6 +19,11 @@
 			"HubPlan",
 			"HubDesign",
 			"HubApproval",
+			"hubSchemas",
+			"hubContractSchema",
+			"hubPlanSchema",
+			"hubDesignSchema",
+			"hubApprovalSchema",
 			"hubSchemas"
 		]
 	},
@@ -65,11 +73,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hubSchemas.ts",
+		"entry": "packages/hub/src/utils/development-tooling/hubSchemas.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/hubSchemas.ts"
+				"entry": "packages/hub/src/utils/development-tooling/hubSchemas.ts"
 			}
 		]
 	},

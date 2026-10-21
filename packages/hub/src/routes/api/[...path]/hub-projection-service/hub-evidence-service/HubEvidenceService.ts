@@ -10,10 +10,10 @@ import { artifactLimit } from '../../../../../../../desktop/src/utils/artifactMe
 import { recordedAnswer } from '../../../../../../../desktop/src/utils/recorded-answer/recordedAnswer';
 import { recordedCapture } from '../../../../../../../desktop/src/utils/recordedCapture';
 import { explorerEvidence } from '../../../../../../../reports/src/utils/explorerEvidence';
-import { hubFail } from '../../../../../utils/hubJson';
-import { hubEvidenceOrigin } from '../../../../../utils/hubEvidenceViews';
+import { hubFail } from '../../../../../utils/development-tooling/hubJson';
+import { hubEvidenceOrigin } from '../../../../../utils/verification-evidence/hubEvidenceViews';
 import { hubEvidenceContext, hubEvidencePins, hubEvidenceScope } from './hubEvidenceScope';
-import { type HubEvidenceDependencies } from '../../../../../utils/hubEvidenceScope';
+import { type HubEvidenceDependencies } from '../../../../../utils/networking-security/hubEvidenceScope';
 
 /** Authenticated request-scoped GitHub readers. Kept answers are disposable and principal scoped. */
 export class HubEvidenceService {

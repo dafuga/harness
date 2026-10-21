@@ -1,6 +1,6 @@
 import type { ComponentManifest } from '../../../../../../../src/core/unitTypes';
 import type { PlanRecord } from '../../../../../../desktop/src/models/PlanningPort.types';
-import { hubContractHash } from '../../../../utils/hubJson';
+import { hubContractHash } from '../../../../utils/development-tooling/hubJson';
 
 export async function hubEntityContract(
 	unit?: Pick<ComponentManifest, 'contract'>,

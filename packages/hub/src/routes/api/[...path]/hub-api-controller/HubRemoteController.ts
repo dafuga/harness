@@ -1,9 +1,9 @@
 import type { Actor } from 'collaboration';
 import type { RemoteHostRegistration } from '../../../../../../remote/src/models/RemoteRelay.types';
-import { hubBody, hubHttp } from '../../../../utils/hub-http/hubHttp';
-import { hubFail } from '../../../../utils/hubJson';
-import type { HubRemoteRuntime } from '../../../../utils/hubRemote';
-import { RemoteHostValidator } from '../../../../validators/RemoteHostValidator';
+import { hubBody, hubHttp } from '../../../../utils/networking-security/hub-http/hubHttp';
+import { hubFail } from '../../../../utils/development-tooling/hubJson';
+import type { HubRemoteRuntime } from '../../../../utils/networking-security/hubRemote';
+import { RemoteHostValidator } from '../../../../validators/networking-security/RemoteHostValidator';
 
 interface Route {
 	kind: 'hosts' | 'host' | 'device';

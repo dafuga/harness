@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/unitsConfig.ts"],
+		"source": ["src/core/development-tooling/unitsConfig.ts", "src/core/unitsConfig.ts"],
 		"symbols": [
 			"unitsConfigFile",
 			"unitsDirectory",
@@ -16,6 +16,15 @@
 			"workloadsDirectory",
 			"unitsConfigSchema",
 			"UnitsConfig",
+			"defaultGlobalFiles",
+			"defaultUnitsConfig",
+			"pathMatches",
+			"unitsConfigFile",
+			"unitsDirectory",
+			"scenariosDirectory",
+			"budgetsLedger",
+			"workloadsDirectory",
+			"unitsConfigSchema",
 			"defaultGlobalFiles",
 			"defaultUnitsConfig",
 			"pathMatches"
@@ -87,11 +96,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/core/unitsConfig.ts",
+		"entry": "src/core/development-tooling/unitsConfig.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/core/unitsConfig.ts"
+				"entry": "src/core/development-tooling/unitsConfig.ts"
 			}
 		]
 	},

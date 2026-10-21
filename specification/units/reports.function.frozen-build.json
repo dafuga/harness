@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/frozenBuild.ts"],
-		"symbols": ["FrozenBuild", "frozenBuild"]
+		"source": [
+			"packages/reports/src/utils/development-tooling/frozenBuild.ts",
+			"packages/reports/src/utils/frozenBuild.ts"
+		],
+		"symbols": ["FrozenBuild", "frozenBuild", "frozenBuild"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -53,11 +56,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/frozenBuild.ts",
+		"entry": "packages/reports/src/utils/development-tooling/frozenBuild.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/frozenBuild.ts"
+				"entry": "packages/reports/src/utils/development-tooling/frozenBuild.ts"
 			}
 		]
 	},

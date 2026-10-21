@@ -1,1 +1,1 @@
-export { catalogHistory } from '../services/project-session-service/catalog-service/catalogHistory';
+export { catalogHistory } from '../services/projects-sessions/project-session-service/catalog-service/catalogHistory';

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/activityTypes.ts"],
+		"source": ["src/core/activityTypes.ts", "src/core/projects-sessions/activityTypes.ts"],
 		"symbols": [
+			"agentRegistrationSchema",
+			"agentBeatSchema",
+			"agentEndSchema",
 			"agentRegistrationSchema",
 			"agentBeatSchema",
 			"agentEndSchema",
@@ -52,11 +55,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/core/activityTypes.ts",
+		"entry": "src/core/projects-sessions/activityTypes.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/core/activityTypes.ts"
+				"entry": "src/core/projects-sessions/activityTypes.ts"
 			}
 		]
 	},

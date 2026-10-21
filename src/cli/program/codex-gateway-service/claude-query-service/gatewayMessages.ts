@@ -1,6 +1,6 @@
 import type { SDKUserMessage } from '@anthropic-ai/claude-agent-sdk';
-import { GatewayContentSerializer } from '../../../../serializers/GatewayContentSerializer';
-import type { GatewayRequest } from '../../../../utils/gatewayTypes';
+import { GatewayContentSerializer } from '../../../../serializers/development-tooling/GatewayContentSerializer';
+import type { GatewayRequest } from '../../../../utils/development-tooling/gatewayTypes';
 import { gatewayPrompt } from './gatewayPrompt';
 
 export function gatewayMessages(request: GatewayRequest): AsyncGenerator<SDKUserMessage> {

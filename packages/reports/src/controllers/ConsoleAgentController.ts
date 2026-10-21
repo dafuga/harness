@@ -1,1 +1,1 @@
-export { ConsoleAgentController } from '../lib/server-hooks/ConsoleAgentController';
+export { ConsoleAgentController } from '../lib/development-tooling/server-hooks/ConsoleAgentController';

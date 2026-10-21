@@ -10,9 +10,19 @@
 		"source": [
 			"packages/reports/src/routes/api/health/reportHttp.ts",
 			"packages/reports/src/routes/api/reports/[id]/[type]/[file]/reportHttp.ts",
-			"packages/reports/src/utils/reportHttp.ts"
+			"packages/reports/src/utils/reportHttp.ts",
+			"packages/reports/src/utils/reports-media/reportHttp.ts"
 		],
-		"symbols": ["reportHttp", "reportFile", "repository", "reportHttp", "reportFile"]
+		"symbols": [
+			"reportHttp",
+			"reportFile",
+			"reportHttp",
+			"reportFile",
+			"repository",
+			"repository",
+			"reportHttp",
+			"reportFile"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -117,11 +127,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/reportHttp.ts",
+		"entry": "packages/reports/src/utils/reports-media/reportHttp.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/reportHttp.ts"
+				"entry": "packages/reports/src/utils/reports-media/reportHttp.ts"
 			}
 		]
 	},

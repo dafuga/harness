@@ -1,1 +1,1 @@
-export { TrustedBaseService } from '../workflows/run-verify/TrustedBaseService';
+export { TrustedBaseService } from '../workflows/verification-evidence/run-verify/TrustedBaseService';

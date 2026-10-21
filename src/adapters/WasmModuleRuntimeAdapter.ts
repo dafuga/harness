@@ -1,5 +1,8 @@
 export {
 	wasmUnavailable,
 	WasmModuleRuntimeAdapter
-} from './wasm-runtime-adapter/WasmModuleRuntimeAdapter';
-export type { WasmSource, WasmLoader } from './wasm-runtime-adapter/WasmModuleRuntimeAdapter';
+} from './execution-runtimes/wasm-runtime-adapter/WasmModuleRuntimeAdapter';
+export type {
+	WasmSource,
+	WasmLoader
+} from './execution-runtimes/wasm-runtime-adapter/WasmModuleRuntimeAdapter';

@@ -1,12 +1,12 @@
-import type { D1OneTimeStores } from '../../../../utils/d1OneTimeStores';
+import type { D1OneTimeStores } from '../../../../utils/networking-security/d1OneTimeStores';
 import type { D1Like } from './D1AuthStoreAdapter';
 import type {
 	ChallengeRecord,
 	ExchangeStore,
 	GithubStateRecord,
 	OneTimeStore
-} from '../../../../models/HubAuthStore.types';
-import type { AuthRecordValidator } from '../../../../validators/AuthRecordValidator';
+} from '../../../../models/accounts-access/HubAuthStore.types';
+import type { AuthRecordValidator } from '../../../../validators/accounts-access/AuthRecordValidator';
 
 /** DELETE ... RETURNING removes and returns in one statement, so only one caller gets the row. */
 const CLAIM = 'WHERE id_hash = ? AND expires_at > ? RETURNING *';

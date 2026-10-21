@@ -1,1 +1,1 @@
-export { reportIngest } from '../repositories/report-repository/reportIngest';
+export { reportIngest } from '../repositories/reports-media/report-repository/reportIngest';

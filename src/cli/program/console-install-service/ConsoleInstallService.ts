@@ -14,7 +14,6 @@ import {
 import { indexFiles } from '../../../utils/indexFiles';
 import { hostWarnings, installableHost } from './installableHost';
 import { ConsoleChangeService, type FileState } from '../../../services/ConsoleChangeService';
-
 export interface ConsoleInstallOptions {
 	host: string;
 	/** Module of the host that exports the policy, written as the host imports it. */
@@ -32,7 +31,6 @@ export interface ConsoleInstallOptions {
 	/** Leave files that hold other content as the host's own version. */
 	keep?: boolean;
 }
-
 export interface ConsoleInstallResult {
 	host: string;
 	base: string;

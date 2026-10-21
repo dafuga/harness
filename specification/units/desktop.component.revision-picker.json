@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/RevisionPicker.svelte"],
-		"symbols": ["RevisionPicker"]
+		"source": [
+			"packages/desktop/src/components/RevisionPicker.svelte",
+			"packages/desktop/src/components/shared-primitives/RevisionPicker.svelte"
+		],
+		"symbols": ["RevisionPicker", "RevisionPicker"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -48,11 +51,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/RevisionPicker.svelte",
+		"entry": "packages/desktop/src/components/shared-primitives/RevisionPicker.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/RevisionPicker.svelte"
+				"entry": "packages/desktop/src/components/shared-primitives/RevisionPicker.svelte"
 			}
 		]
 	},

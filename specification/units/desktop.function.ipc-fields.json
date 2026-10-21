@@ -8,6 +8,8 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/utils/development-tooling/ipc-payload/regionField.ts",
+			"packages/desktop/src/utils/development-tooling/ipcFields.ts",
 			"packages/desktop/src/utils/ipc-payload/regionField.ts",
 			"packages/desktop/src/utils/ipcFields.ts"
 		],
@@ -21,7 +23,17 @@
 			"idPattern",
 			"versionPattern",
 			"enumField",
-			"regionField"
+			"regionField",
+			"regionField",
+			"regionField",
+			"ipcFields",
+			"textField",
+			"nullableText",
+			"hashPattern",
+			"commitPattern",
+			"idPattern",
+			"versionPattern",
+			"enumField"
 		]
 	},
 	"contract": {
@@ -137,11 +149,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/ipcFields.ts",
+		"entry": "packages/desktop/src/utils/development-tooling/ipcFields.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/ipcFields.ts"
+				"entry": "packages/desktop/src/utils/development-tooling/ipcFields.ts"
 			}
 		]
 	},

@@ -1,4 +1,4 @@
-import type { PeakMemory } from '../../../../utils/peakMemory';
+import type { PeakMemory } from '../../../../utils/development-tooling/peakMemory';
 import { spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { platform } from 'node:os';

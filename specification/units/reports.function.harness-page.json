@@ -8,10 +8,20 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/utils/explorer-ui/harness-page/harnessPage.ts",
 			"packages/reports/src/utils/harness-page/harnessPage.ts",
 			"packages/reports/src/utils/harnessPage.ts"
 		],
-		"symbols": ["HarnessPage", "homePath", "harnessPage", "HarnessPage", "homePath", "harnessPage"]
+		"symbols": [
+			"HarnessPage",
+			"homePath",
+			"harnessPage",
+			"homePath",
+			"harnessPage",
+			"HarnessPage",
+			"homePath",
+			"harnessPage"
+		]
 	},
 	"contract": {
 		"origin": "declared",

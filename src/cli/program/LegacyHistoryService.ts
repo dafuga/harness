@@ -1,13 +1,13 @@
-import { EvidenceTreeAdapter } from '../../adapters/EvidenceTreeAdapter';
-import { LfsAdapter } from '../../adapters/LfsAdapter';
-import type { LegacyEntry, LegacyMedia } from '../../core/historyIndexTypes';
+import { EvidenceTreeAdapter } from '../../adapters/verification-evidence/EvidenceTreeAdapter';
+import { LfsAdapter } from '../../adapters/git-source-history/LfsAdapter';
+import type { LegacyEntry, LegacyMedia } from '../../core/git-source-history/historyIndexTypes';
 import {
 	evidenceRef,
 	legacyDirectory,
 	legacyRecordSchema,
 	type LegacyRecord
-} from '../../core/historyTypes';
-import { lfsStored } from '../../utils/lfsPointer';
+} from '../../core/git-source-history/historyTypes';
+import { lfsStored } from '../../utils/verification-evidence/lfsPointer';
 import type { HistoryMediaService } from './history-index-service/history-media-service/HistoryMediaService';
 
 /**

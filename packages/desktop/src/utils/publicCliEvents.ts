@@ -1,1 +1,1 @@
-export { publicCliEvents } from '../adapters/claude-cli-adapter/publicCliEvents';
+export { publicCliEvents } from '../adapters/agents-providers/claude-cli-adapter/publicCliEvents';

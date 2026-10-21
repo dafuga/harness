@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/validators/ScenarioManifestValidator.ts"],
-		"symbols": ["ScenarioManifestValidator", "ScenarioManifestValidator.validate"]
+		"source": [
+			"src/validators/ScenarioManifestValidator.ts",
+			"src/validators/verification-evidence/ScenarioManifestValidator.ts"
+		],
+		"symbols": [
+			"ScenarioManifestValidator",
+			"ScenarioManifestValidator",
+			"ScenarioManifestValidator.validate"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -44,11 +51,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/validators/ScenarioManifestValidator.ts",
+		"entry": "src/validators/verification-evidence/ScenarioManifestValidator.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/validators/ScenarioManifestValidator.ts"
+				"entry": "src/validators/verification-evidence/ScenarioManifestValidator.ts"
 			}
 		]
 	},

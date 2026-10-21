@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/remote/src/validators/WireMessageValidator.ts"],
+		"source": [
+			"packages/remote/src/validators/WireMessageValidator.ts",
+			"packages/remote/src/validators/networking-security/WireMessageValidator.ts"
+		],
 		"symbols": [
+			"WireMessageValidator",
 			"WireMessageValidator",
 			"WireMessageValidator.request",
 			"WireMessageValidator.message"
@@ -57,11 +61,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/remote/src/validators/WireMessageValidator.ts",
+		"entry": "packages/remote/src/validators/networking-security/WireMessageValidator.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/remote/src/validators/WireMessageValidator.ts"
+				"entry": "packages/remote/src/validators/networking-security/WireMessageValidator.ts"
 			}
 		]
 	},

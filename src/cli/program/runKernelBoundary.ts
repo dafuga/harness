@@ -1,15 +1,15 @@
-import { ProcessRuntimeAdapter } from '../../adapters/process-runtime-adapter/ProcessRuntimeAdapter';
-import { representativeWorkload } from '../../core/benchmarkTypes';
-import { fail } from '../../core/errors';
-import type { Comparison } from '../../core/comparisonTypes';
-import type { UnitRuntime } from '../../core/runtimeTypes';
-import type { RuntimeKind } from '../../core/unitTypes';
-import { UnitRuntimeService } from '../../services/UnitRuntimeService';
-import { benchRounds, roundMeasurements } from '../../utils/benchSamples';
-import { comparisonContext } from '../../utils/comparison-context/comparisonContext';
-import { kernelArtifacts } from '../../utils/kernelArtifacts';
-import { kernelWorkload } from '../../utils/kernelWorkload';
-import { recordCapture } from '../../utils/record-capture/recordCapture';
+import { ProcessRuntimeAdapter } from '../../adapters/execution-runtimes/process-runtime-adapter/ProcessRuntimeAdapter';
+import { representativeWorkload } from '../../core/development-tooling/benchmarkTypes';
+import { fail } from '../../core/development-tooling/errors';
+import type { Comparison } from '../../core/development-tooling/comparisonTypes';
+import type { UnitRuntime } from '../../core/execution-runtimes/runtimeTypes';
+import type { RuntimeKind } from '../../core/development-tooling/unitTypes';
+import { UnitRuntimeService } from '../../services/execution-runtimes/UnitRuntimeService';
+import { benchRounds, roundMeasurements } from '../../utils/development-tooling/benchSamples';
+import { comparisonContext } from '../../utils/development-tooling/comparison-context/comparisonContext';
+import { kernelArtifacts } from '../../utils/execution-runtimes/kernelArtifacts';
+import { kernelWorkload } from '../../utils/execution-runtimes/kernelWorkload';
+import { recordCapture } from '../../utils/reports-media/record-capture/recordCapture';
 
 /** The unit that owns the public invocation boundary: adapters, validation and the kernel. */
 export const boundaryUnit = 'service.unit-runtime';

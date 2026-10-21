@@ -3,7 +3,7 @@ import type {
 	EvidenceArtifactQuery
 } from '../../../../../../desktop/src/models/DesktopEvidence.types';
 import { evidencePayload } from '../../../../../../desktop/src/utils/evidencePayload';
-import { hubFail } from '../../../../utils/hubJson';
+import { hubFail } from '../../../../utils/development-tooling/hubJson';
 
 function fields(request: Request, projectId: string, channel: string) {
 	const input: Record<string, unknown> = Object.fromEntries(new URL(request.url).searchParams);

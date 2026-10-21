@@ -1,4 +1,4 @@
-import type { RuntimeRequest } from '../../../core/runtimeTypes';
+import type { RuntimeRequest } from '../../../core/execution-runtimes/runtimeTypes';
 
 interface Loose {
 	base: { nodes: unknown[]; edges: unknown[] };

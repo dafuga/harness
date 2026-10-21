@@ -8,7 +8,9 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/repositories/git-source-history/history-note-repository/noteLines.ts",
 			"src/repositories/history-note-repository/noteLines.ts",
+			"src/utils/git-source-history/note-lines/noteCommit.ts",
 			"src/utils/note-lines/noteCommit.ts",
 			"src/utils/noteLines.ts"
 		],
@@ -16,7 +18,12 @@
 			"noteLine",
 			"noteLines",
 			"mergeNoteLines",
+			"noteLine",
+			"noteLines",
+			"mergeNoteLines",
 			"ReadNote",
+			"noteCommit",
+			"readNoteLines",
 			"noteCommit",
 			"readNoteLines",
 			"ReadNote",

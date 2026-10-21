@@ -1,1 +1,1 @@
-export { desktopBridge } from '../lib/desktop-bridge/desktopBridge';
+export { desktopBridge } from '../lib/development-tooling/desktop-bridge/desktopBridge';

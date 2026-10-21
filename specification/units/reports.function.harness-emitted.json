@@ -8,11 +8,16 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/components/explorer-ui/harness/harness-compare/harnessEmitted.ts",
+			"packages/reports/src/components/explorer-ui/harness/harness-growth/harnessEmitted.ts",
 			"packages/reports/src/components/harness/harness-compare/harnessEmitted.ts",
 			"packages/reports/src/components/harness/harness-growth/harnessEmitted.ts",
+			"packages/reports/src/utils/explorer-ui/harnessEmitted.ts",
 			"packages/reports/src/utils/harnessEmitted.ts"
 		],
 		"symbols": [
+			"emittedChange",
+			"emittedTargets",
 			"emittedChange",
 			"emittedTargets",
 			"metric",
@@ -26,7 +31,17 @@
 			"harnessEmitted",
 			"EmittedChange",
 			"emittedChange",
-			"emittedTargets"
+			"emittedTargets",
+			"emittedChange",
+			"emittedTargets",
+			"metric",
+			"order",
+			"emittedBytes",
+			"emittedLabel",
+			"emittedKey",
+			"built",
+			"targetsOf",
+			"harnessEmitted"
 		]
 	},
 	"contract": {
@@ -121,11 +136,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/harnessEmitted.ts",
+		"entry": "packages/reports/src/utils/explorer-ui/harnessEmitted.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/harnessEmitted.ts"
+				"entry": "packages/reports/src/utils/explorer-ui/harnessEmitted.ts"
 			}
 		]
 	},

@@ -9,9 +9,17 @@
 	"owns": {
 		"source": [
 			"packages/collaboration/src/utils/create-collaboration/createInvitation.ts",
-			"packages/collaboration/src/utils/createInvitation.ts"
+			"packages/collaboration/src/utils/createInvitation.ts",
+			"packages/collaboration/src/utils/projects-sessions/create-collaboration/createInvitation.ts"
 		],
-		"symbols": ["createInvitation", "acceptInvitation", "createInvitation", "acceptInvitation"]
+		"symbols": [
+			"createInvitation",
+			"acceptInvitation",
+			"createInvitation",
+			"acceptInvitation",
+			"createInvitation",
+			"acceptInvitation"
+		]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,10 +7,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/nativePickerProtocol.ts"],
+		"source": [
+			"src/utils/development-tooling/nativePickerProtocol.ts",
+			"src/utils/nativePickerProtocol.ts"
+		],
 		"symbols": [
 			"PickerData",
 			"PickerRpc",
+			"nativePickerProtocol",
+			"pickerProvider",
+			"nativeOpusModel",
 			"nativePickerProtocol",
 			"pickerProvider",
 			"nativeOpusModel"
@@ -58,11 +64,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/nativePickerProtocol.ts",
+		"entry": "src/utils/development-tooling/nativePickerProtocol.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/nativePickerProtocol.ts"
+				"entry": "src/utils/development-tooling/nativePickerProtocol.ts"
 			}
 		]
 	},

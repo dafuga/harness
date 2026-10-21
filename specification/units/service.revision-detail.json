@@ -7,14 +7,19 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/revision-detail-service/RevisionDetailService.ts"],
+		"source": [
+			"src/services/explorer-ui/revision-detail-service/RevisionDetailService.ts",
+			"src/services/revision-detail-service/RevisionDetailService.ts"
+		],
 		"symbols": [
 			"RevisionDetail",
 			"BuiltRevision",
 			"revisionSources",
 			"RevisionDetailService",
 			"RevisionDetailService.constructor",
-			"RevisionDetailService.build"
+			"RevisionDetailService.build",
+			"revisionSources",
+			"RevisionDetailService"
 		]
 	},
 	"contract": {
@@ -166,11 +171,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/revision-detail-service/RevisionDetailService.ts",
+		"entry": "src/services/explorer-ui/revision-detail-service/RevisionDetailService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/revision-detail-service/RevisionDetailService.ts"
+				"entry": "src/services/explorer-ui/revision-detail-service/RevisionDetailService.ts"
 			}
 		]
 	},

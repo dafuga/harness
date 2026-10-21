@@ -9,12 +9,14 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/adapters/GithubApiAdapter.ts",
-			"packages/hub/src/lib/server/auth/GithubApiAdapter.ts"
+			"packages/hub/src/lib/server/auth/GithubApiAdapter.ts",
+			"packages/hub/src/lib/verification-evidence/server/auth/GithubApiAdapter.ts"
 		],
 		"symbols": [
 			"GithubApiAdapter",
 			"GithubApiOptions",
 			"InstallationScope",
+			"GithubApiAdapter",
 			"GithubApiOptions",
 			"InstallationScope",
 			"GithubApiAdapter",
@@ -125,11 +127,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/lib/server/auth/GithubApiAdapter.ts",
+		"entry": "packages/hub/src/lib/verification-evidence/server/auth/GithubApiAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/lib/server/auth/GithubApiAdapter.ts"
+				"entry": "packages/hub/src/lib/verification-evidence/server/auth/GithubApiAdapter.ts"
 			}
 		]
 	},

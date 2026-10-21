@@ -8,9 +8,13 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/services/explorer-ui/revision-detail-service/pureHelperCalls.ts",
+			"src/services/explorer-ui/revision-detail-service/pureHelpers.ts",
+			"src/services/explorer-ui/revision-detail-service/unitMetadata.ts",
 			"src/services/revision-detail-service/pureHelperCalls.ts",
 			"src/services/revision-detail-service/pureHelpers.ts",
 			"src/services/revision-detail-service/unitMetadata.ts",
+			"src/utils/explorer-ui/unitMetadata.ts",
 			"src/utils/unitMetadata.ts"
 		],
 		"symbols": [
@@ -18,9 +22,14 @@
 			"pureHelperCalls",
 			"pureHelpers",
 			"unitMetadata",
+			"pureGlobals",
+			"pureHelperCalls",
+			"pureHelpers",
+			"unitMetadata",
 			"PublicHelper",
 			"PublicServiceClass",
 			"UnitMetadata",
+			"unitMetadata",
 			"unitMetadata"
 		]
 	},
@@ -59,6 +68,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.module-group",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.revision-registry",
 			"via": "import",
 			"origin": "derived"
@@ -77,15 +91,20 @@
 			"unit": "function.unit-documentation",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "service.module-category",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/unitMetadata.ts",
+		"entry": "src/utils/explorer-ui/unitMetadata.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/unitMetadata.ts"
+				"entry": "src/utils/explorer-ui/unitMetadata.ts"
 			}
 		]
 	},

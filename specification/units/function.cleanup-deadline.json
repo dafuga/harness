@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/cleanupDeadline.ts"],
-		"symbols": ["CleanupDeadline", "cleanupDeadline"]
+		"source": ["src/utils/cleanupDeadline.ts", "src/utils/development-tooling/cleanupDeadline.ts"],
+		"symbols": ["cleanupDeadline", "CleanupDeadline", "cleanupDeadline"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,11 +31,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/cleanupDeadline.ts",
+		"entry": "src/utils/development-tooling/cleanupDeadline.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/cleanupDeadline.ts"
+				"entry": "src/utils/development-tooling/cleanupDeadline.ts"
 			}
 		]
 	},

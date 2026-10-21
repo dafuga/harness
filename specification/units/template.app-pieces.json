@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/templates/appPieces.ts"],
+		"source": ["src/templates/appPieces.ts", "src/templates/development-tooling/appPieces.ts"],
 		"symbols": [
+			"componentFiles",
+			"viewFiles",
+			"layoutFiles",
+			"apiFiles",
+			"storeFiles",
+			"hookFiles",
+			"e2eFiles",
+			"partialFiles",
 			"componentFiles",
 			"viewFiles",
 			"layoutFiles",
@@ -105,11 +113,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/templates/appPieces.ts",
+		"entry": "src/templates/development-tooling/appPieces.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/templates/appPieces.ts"
+				"entry": "src/templates/development-tooling/appPieces.ts"
 			}
 		]
 	},

@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/analyticsOptions.ts"],
-		"symbols": ["analyticsOptions"]
+		"source": ["src/utils/analyticsOptions.ts", "src/utils/reports-media/analyticsOptions.ts"],
+		"symbols": ["analyticsOptions", "analyticsOptions"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,11 +31,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/analyticsOptions.ts",
+		"entry": "src/utils/reports-media/analyticsOptions.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/analyticsOptions.ts"
+				"entry": "src/utils/reports-media/analyticsOptions.ts"
 			}
 		]
 	},

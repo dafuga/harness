@@ -9,13 +9,15 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/services/report-command-service/report-publish-service/ReportPublishService.ts",
-			"packages/reports/src/services/report-publish-service/ReportPublishService.ts"
+			"packages/reports/src/services/report-publish-service/ReportPublishService.ts",
+			"packages/reports/src/services/reports-media/report-command-service/report-publish-service/ReportPublishService.ts"
 		],
 		"symbols": [
 			"ReportPublishService",
+			"ReportPublishService",
+			"ReportPublishService",
 			"ReportPublishService.constructor",
-			"ReportPublishService.publish",
-			"ReportPublishService"
+			"ReportPublishService.publish"
 		]
 	},
 	"contract": {
@@ -89,11 +91,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/services/report-command-service/report-publish-service/ReportPublishService.ts",
+		"entry": "packages/reports/src/services/reports-media/report-command-service/report-publish-service/ReportPublishService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/services/report-command-service/report-publish-service/ReportPublishService.ts"
+				"entry": "packages/reports/src/services/reports-media/report-command-service/report-publish-service/ReportPublishService.ts"
 			}
 		]
 	},

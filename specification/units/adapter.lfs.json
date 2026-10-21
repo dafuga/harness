@@ -7,8 +7,9 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/adapters/LfsAdapter.ts"],
+		"source": ["src/adapters/LfsAdapter.ts", "src/adapters/git-source-history/LfsAdapter.ts"],
 		"symbols": [
+			"LfsAdapter",
 			"LfsAdapter",
 			"LfsAdapter.constructor",
 			"LfsAdapter.path",
@@ -92,11 +93,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/adapters/LfsAdapter.ts",
+		"entry": "src/adapters/git-source-history/LfsAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/adapters/LfsAdapter.ts"
+				"entry": "src/adapters/git-source-history/LfsAdapter.ts"
 			}
 		]
 	},

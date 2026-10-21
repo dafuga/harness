@@ -1,1 +1,1 @@
-export { ConnectGuardMiddleware } from '../lib/relay/ConnectGuardMiddleware';
+export { ConnectGuardMiddleware } from '../lib/networking-security/relay/ConnectGuardMiddleware';

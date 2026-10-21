@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/ReportView.svelte"],
-		"symbols": ["ReportView"]
+		"source": [
+			"packages/reports/src/components/ReportView.svelte",
+			"packages/reports/src/components/reports-media/ReportView.svelte"
+		],
+		"symbols": ["ReportView", "ReportView"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -102,11 +105,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/ReportView.svelte",
+		"entry": "packages/reports/src/components/reports-media/ReportView.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/ReportView.svelte"
+				"entry": "packages/reports/src/components/reports-media/ReportView.svelte"
 			}
 		]
 	},

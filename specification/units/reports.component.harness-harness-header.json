@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/HarnessHeader.svelte"],
-		"symbols": ["HarnessHeader"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/harness/HarnessHeader.svelte",
+			"packages/reports/src/components/harness/HarnessHeader.svelte"
+		],
+		"symbols": ["HarnessHeader", "HarnessHeader"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -67,11 +70,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/HarnessHeader.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/harness/HarnessHeader.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/harness/HarnessHeader.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/harness/HarnessHeader.svelte"
 			}
 		]
 	},

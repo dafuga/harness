@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/HostedWorkspace.svelte"],
-		"symbols": ["HostedWorkspace"]
+		"source": [
+			"packages/hub/src/components/HostedWorkspace.svelte",
+			"packages/hub/src/components/projects-sessions/HostedWorkspace.svelte"
+		],
+		"symbols": ["HostedWorkspace", "HostedWorkspace"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -71,11 +74,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/HostedWorkspace.svelte",
+		"entry": "packages/hub/src/components/projects-sessions/HostedWorkspace.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/HostedWorkspace.svelte"
+				"entry": "packages/hub/src/components/projects-sessions/HostedWorkspace.svelte"
 			}
 		]
 	},

@@ -5,7 +5,7 @@ import {
 	type LoopEvaluator,
 	type LoopInput,
 	type LoopStep
-} from '../../workflows/loop-state/loopState';
+} from '../../workflows/development-tooling/loop-state/loopState';
 
 export interface NextLoopStepInput extends LoopInput {
 	loop: string;

@@ -1,1 +1,1 @@
-export { relayFrame } from '../remote-host-service/relay-link-service/relayFrame';
+export { relayFrame } from '../networking-security/remote-host-service/relay-link-service/relayFrame';

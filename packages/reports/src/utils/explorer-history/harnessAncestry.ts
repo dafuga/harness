@@ -1,15 +1,2 @@
-import type { HarnessIndex } from '../../models/Harness.types';
-
-/** Commits that are ancestors of a commit, following recorded parents; the commit is excluded. */
-export function harnessAncestry(index: HarnessIndex, commit: string): Set<string> {
-	const parents = new Map(index.revisions.map((revision) => [revision.commit, revision.parents]));
-	const seen = new Set<string>();
-	const queue = [...(parents.get(commit) ?? [])];
-	while (queue.length > 0) {
-		const next = queue.pop() as string;
-		if (seen.has(next)) continue;
-		seen.add(next);
-		queue.push(...(parents.get(next) ?? []));
-	}
-	return seen;
-}
+export { harnessAncestry } from '../explorer-ui/explorer-history/harnessAncestry';
+export * from '../explorer-ui/explorer-history/harnessAncestry';

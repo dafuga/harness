@@ -4,14 +4,15 @@ import {
 	generatePiece,
 	renderGenerateResult,
 	scaffoldKinds
-} from '../../workflows/generate-code/generateCode';
-import type { PieceKind } from '../../workflows/generate-code/generateCode';
+} from '../../workflows/projects-sessions/generate-code/generateCode';
+import type { PieceKind } from '../../workflows/projects-sessions/generate-code/generateCode';
 import { generateUnit } from './generateUnit';
 
 interface UnitFlags {
 	kind?: string;
 	responsibility?: string;
 	force?: boolean;
+	group?: string;
 }
 
 export function registerGenerateCommand(program: Command): void {
@@ -21,6 +22,7 @@ export function registerGenerateCommand(program: Command): void {
 		.command('model <name> [fields...]')
 		.option('--adapter <adapter>', 'Persistence adapter: d1, sqlite, or postgres', 'd1')
 		.option('--force', 'Overwrite files that already exist.')
+		.option('--group <category>', 'Responsibility category folder; creates new categories.')
 		.description('Generate an ActiveRecord-like model.')
 		.action(runGenerateModel);
 
@@ -28,6 +30,7 @@ export function registerGenerateCommand(program: Command): void {
 		.command('unit <name>')
 		.option('--kind <kind>', 'Scaffold shape for the unit source.', 'function')
 		.option('--responsibility <text>', 'The one responsibility this unit owns.')
+		.option('--group <category>', 'Responsibility category folder; creates new categories.')
 		.option('--force', 'Overwrite files that already exist.')
 		.description('Generate a unit of any kind together with its component manifest.')
 		.action(async (name: string, flags: UnitFlags) =>
@@ -38,8 +41,9 @@ export function registerGenerateCommand(program: Command): void {
 		command
 			.command(`${kind} <name>`)
 			.option('--force', 'Overwrite files that already exist.')
+			.option('--group <category>', 'Responsibility category folder; creates new categories.')
 			.description(`Generate a ${kind}.`)
-			.action((name: string, options: { force?: boolean }) =>
+			.action((name: string, options: { force?: boolean; group?: string }) =>
 				runGeneratePiece(kind, name, options)
 			);
 	}
@@ -48,13 +52,14 @@ export function registerGenerateCommand(program: Command): void {
 async function runGenerateModel(
 	name: string,
 	rawFields: string[],
-	options: { adapter: string; force?: boolean }
+	options: { adapter: string; force?: boolean; group?: string }
 ): Promise<void> {
 	const result = await generateModel({
 		name,
 		rawFields,
 		adapter: options.adapter,
-		force: options.force
+		force: options.force,
+		group: options.group
 	});
 	console.log(renderGenerateResult(result));
 }
@@ -62,8 +67,8 @@ async function runGenerateModel(
 async function runGeneratePiece(
 	kind: PieceKind,
 	name: string,
-	options: { force?: boolean }
+	options: { force?: boolean; group?: string }
 ): Promise<void> {
-	const result = await generatePiece({ kind, name, force: options.force });
+	const result = await generatePiece({ kind, name, force: options.force, group: options.group });
 	console.log(renderGenerateResult(result));
 }

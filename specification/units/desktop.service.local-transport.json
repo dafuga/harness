@@ -9,9 +9,11 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/desktop-initialization/LocalTransportService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/LocalTransportService.ts",
 			"packages/desktop/src/services/LocalTransportService.ts"
 		],
 		"symbols": [
+			"LocalTransportService",
 			"LocalSocket",
 			"LocalTransportTarget",
 			"LocalTransportOptions",
@@ -92,11 +94,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/lib/desktop-initialization/LocalTransportService.ts",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalTransportService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/lib/desktop-initialization/LocalTransportService.ts"
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalTransportService.ts"
 			}
 		]
 	},

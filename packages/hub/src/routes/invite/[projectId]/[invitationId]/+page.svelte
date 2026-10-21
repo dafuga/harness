@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import HubFrame from '../../../../components/HubFrame.svelte';
-	import InviteAccept from '../../../../components/InviteAccept.svelte';
-	import LoginPanel from '../../../../components/login-panel/LoginPanel.svelte';
-	import { browserContext } from '../../../../utils/browserContext';
+	import HubFrame from '../../../../components/shared-primitives/HubFrame.svelte';
+	import InviteAccept from '../../../../components/shared-primitives/InviteAccept.svelte';
+	import LoginPanel from '../../../../components/accounts-access/login-panel/LoginPanel.svelte';
+	import { browserContext } from '../../../../utils/development-tooling/browserContext';
 	const { session } = browserContext();
 </script>
 

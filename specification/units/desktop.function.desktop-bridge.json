@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/desktop-bridge/desktopBridge.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
 			"packages/desktop/src/utils/desktopBridge.ts"
 		],
-		"symbols": ["desktopBridge", "desktopBridge"]
+		"symbols": ["desktopBridge", "desktopBridge", "desktopBridge"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -81,11 +82,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/lib/desktop-bridge/desktopBridge.ts",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/lib/desktop-bridge/desktopBridge.ts"
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts"
 			}
 		]
 	},

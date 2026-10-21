@@ -1,4 +1,4 @@
-import { sdkPackage } from '../utils/buildStamp';
+import { sdkPackage } from '../utils/development-tooling/buildStamp';
 import { registerCodexCommand } from './program/CodexCommand';
 import { registerAnalyticsCommand } from './program/AnalyticsCommand';
 import { registerActivityCommand } from './program/ActivityCommand';

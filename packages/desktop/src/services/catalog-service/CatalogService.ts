@@ -1,1 +1,1 @@
-export { CatalogService } from '../project-session-service/catalog-service/CatalogService';
+export { CatalogService } from '../projects-sessions/project-session-service/catalog-service/CatalogService';

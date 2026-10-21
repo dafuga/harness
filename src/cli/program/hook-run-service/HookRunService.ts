@@ -1,6 +1,9 @@
 import { pushedRefs } from './pushedRefs';
-import { historyAttach } from '../../../workflows/runHistory';
-import { verifyCheck, verifyRun } from '../../../workflows/run-verify/runVerify';
+import { historyAttach } from '../../../workflows/git-source-history/runHistory';
+import {
+	verifyCheck,
+	verifyRun
+} from '../../../workflows/verification-evidence/run-verify/runVerify';
 
 export interface HookOutcome {
 	/** Commits that may be pushed, each with the record that proves it. */

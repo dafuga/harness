@@ -1,1 +1,4 @@
-export { ConsoleAgentService, consoleAgent } from '../lib/server-hooks/ConsoleAgentService';
+export {
+	ConsoleAgentService,
+	consoleAgent
+} from '../lib/development-tooling/server-hooks/ConsoleAgentService';

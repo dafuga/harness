@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/collaboration/src/utils/create-git-hub-source/createGitHubSource.ts",
-			"packages/collaboration/src/utils/createGitHubSource.ts"
+			"packages/collaboration/src/utils/createGitHubSource.ts",
+			"packages/collaboration/src/utils/git-source-history/create-git-hub-source/createGitHubSource.ts"
 		],
-		"symbols": ["createGitHubSource", "createGitHubSource"]
+		"symbols": ["createGitHubSource", "createGitHubSource", "createGitHubSource"]
 	},
 	"contract": {
 		"origin": "declared",

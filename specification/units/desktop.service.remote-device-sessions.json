@@ -9,6 +9,7 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/RemoteDeviceSessionsService.ts",
+			"packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
 			"packages/desktop/src/services/remote-host-service/RemoteDeviceSessionsService.ts"
 		],
 		"symbols": [
@@ -25,7 +26,8 @@
 			"RemoteDeviceSessionsService.revoke",
 			"RemoteDeviceSessionsService.detachAll",
 			"RemoteDeviceSessionsService.announce",
-			"RemoteDeviceSessionsService.end"
+			"RemoteDeviceSessionsService.end",
+			"RemoteDeviceSessionsService"
 		]
 	},
 	"contract": {
@@ -115,11 +117,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/remote-host-service/RemoteDeviceSessionsService.ts",
+		"entry": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/remote-host-service/RemoteDeviceSessionsService.ts"
+				"entry": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts"
 			}
 		]
 	},

@@ -1,1 +1,1 @@
-export { explorerLegacy } from './console-canonical/explorerLegacy';
+export { explorerLegacy } from './projects-sessions/console-canonical/explorerLegacy';

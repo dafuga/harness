@@ -1,4 +1,4 @@
-import type { HubSourceContext } from '../../../../utils/hubSource';
+import type { HubSourceContext } from '../../../../utils/development-tooling/hubSource';
 
 export function hubSize(context: HubSourceContext, paths: string[]) {
 	const entries = paths.map((path) => context.entries.find((e) => e.path === path));

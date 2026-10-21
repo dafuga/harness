@@ -1,2 +1,2 @@
-export { RemotePairingControlService } from './remote-host-service/RemotePairingControlService';
-export type { RemoteHostAccess } from './remote-host-service/RemotePairingControlService';
+export { RemotePairingControlService } from './networking-security/remote-host-service/RemotePairingControlService';
+export type { RemoteHostAccess } from './networking-security/remote-host-service/RemotePairingControlService';

@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/verificationTypes.ts"],
+		"source": [
+			"src/core/verification-evidence/verificationTypes.ts",
+			"src/core/verificationTypes.ts"
+		],
 		"symbols": [
 			"captureSchema",
 			"scenarioResultSchema",
@@ -22,7 +25,14 @@
 			"BudgetFinding",
 			"RecordedComponent",
 			"Measurement",
-			"VerificationRecord"
+			"VerificationRecord",
+			"captureSchema",
+			"scenarioResultSchema",
+			"profileSchema",
+			"budgetFindingSchema",
+			"componentVersionSchema",
+			"measurementSchema",
+			"verificationRecordSchema"
 		]
 	},
 	"contract": {
@@ -91,11 +101,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/core/verificationTypes.ts",
+		"entry": "src/core/verification-evidence/verificationTypes.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/core/verificationTypes.ts"
+				"entry": "src/core/verification-evidence/verificationTypes.ts"
 			}
 		]
 	},

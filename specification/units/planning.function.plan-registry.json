@@ -8,10 +8,19 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/planning/src/lib/planning-collaboration/planning/planning-service/planRegistry.ts",
 			"packages/planning/src/lib/planning/planning-service/planRegistry.ts",
-			"packages/planning/src/utils/planRegistry.ts"
+			"packages/planning/src/utils/planRegistry.ts",
+			"packages/planning/src/utils/planning-collaboration/planRegistry.ts"
 		],
-		"symbols": ["planRegistry", "planningIgnores", "planRegistry"]
+		"symbols": [
+			"planRegistry",
+			"planRegistry",
+			"planRegistry",
+			"planningIgnores",
+			"planningIgnores",
+			"planRegistry"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -77,11 +86,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/planning/src/utils/planRegistry.ts",
+		"entry": "packages/planning/src/utils/planning-collaboration/planRegistry.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/planning/src/utils/planRegistry.ts"
+				"entry": "packages/planning/src/utils/planning-collaboration/planRegistry.ts"
 			}
 		]
 	},

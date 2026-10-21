@@ -1,6 +1,6 @@
-import type { WarmResult } from '../../../../utils/benchSamples';
-import { timeCall, median } from '../../../../utils/benchSamples';
-import type { RuntimeRequest, UnitRuntime } from '../../../../core/runtimeTypes';
+import type { WarmResult } from '../../../../utils/development-tooling/benchSamples';
+import { timeCall, median } from '../../../../utils/development-tooling/benchSamples';
+import type { RuntimeRequest, UnitRuntime } from '../../../../core/execution-runtimes/runtimeTypes';
 
 /** Steady-state latency and throughput on a runtime that is already initialized. */
 export async function benchSamples(

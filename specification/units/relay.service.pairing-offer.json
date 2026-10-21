@@ -8,6 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/relay/src/lib/execution-runtimes/host-runtime/PairingOfferService.ts",
 			"packages/relay/src/lib/host-runtime/PairingOfferService.ts",
 			"packages/relay/src/services/PairingOfferService.ts"
 		],
@@ -20,6 +21,7 @@
 			"PairingOfferService.deny",
 			"PairingOfferService.close",
 			"PairingOfferService.sweep",
+			"PairingOfferService",
 			"PairingOfferService"
 		]
 	},
@@ -107,11 +109,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/lib/host-runtime/PairingOfferService.ts",
+		"entry": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingOfferService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/lib/host-runtime/PairingOfferService.ts"
+				"entry": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingOfferService.ts"
 			}
 		]
 	},

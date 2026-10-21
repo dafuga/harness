@@ -1,1 +1,1 @@
-export { SocketFrameService } from '../../lib/host-runtime/socket-frame-service/SocketFrameService';
+export { SocketFrameService } from '../../lib/execution-runtimes/host-runtime/socket-frame-service/SocketFrameService';

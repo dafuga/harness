@@ -1,16 +1,19 @@
-import type { HubEvidenceDependencies } from '../../../../../utils/hubEvidenceScope';
+import type { HubEvidenceDependencies } from '../../../../../utils/networking-security/hubEvidenceScope';
 import type { Actor } from 'collaboration';
 import type {
 	EntityEvidenceQuery,
 	EvidenceArtifactQuery
 } from '../../../../../../../desktop/src/models/DesktopEvidence.types';
 import { recordedScope } from '../../../../../../../desktop/src/utils/recordedScope';
-import { hubSource, type HubSourceContext } from '../../../../../utils/hubSource';
+import {
+	hubSource,
+	type HubSourceContext
+} from '../../../../../utils/development-tooling/hubSource';
 import { hubNotes } from './hubNotes';
-import { hubEvidenceRevision } from '../../../../../utils/hub-evidence-revision/hubEvidenceRevision';
-import { hubFail } from '../../../../../utils/hubJson';
-import { HubAttachedService } from '../../../../../services/hub-evidence-service/hub-attached-service/HubAttachedService';
-import { HubRecordStatusService } from '../../../../../services/hub-evidence-service/HubRecordStatusService';
+import { hubEvidenceRevision } from '../../../../../utils/verification-evidence/hub-evidence-revision/hubEvidenceRevision';
+import { hubFail } from '../../../../../utils/development-tooling/hubJson';
+import { HubAttachedService } from '../../../../../services/verification-evidence/hub-evidence-service/hub-attached-service/HubAttachedService';
+import { HubRecordStatusService } from '../../../../../services/verification-evidence/hub-evidence-service/HubRecordStatusService';
 
 export async function hubEvidenceContext(
 	deps: HubEvidenceDependencies,

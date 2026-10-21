@@ -1,1 +1,1 @@
-export { ReportImportService } from './report-command-service/ReportImportService';
+export { ReportImportService } from './reports-media/report-command-service/ReportImportService';

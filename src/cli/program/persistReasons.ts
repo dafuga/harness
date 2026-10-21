@@ -1,9 +1,9 @@
 import { resolve } from 'node:path';
-import { GitAdapter } from '../../adapters/GitAdapter';
-import type { HistoryNote } from '../../core/historyTypes';
-import { HistoryNoteRepository } from '../../repositories/history-note-repository/HistoryNoteRepository';
-import { explainedRange } from '../../workflows/runExplain';
-import { sourceCommit } from '../../workflows/runHistory';
+import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
+import type { HistoryNote } from '../../core/git-source-history/historyTypes';
+import { HistoryNoteRepository } from '../../repositories/git-source-history/history-note-repository/HistoryNoteRepository';
+import { explainedRange } from '../../workflows/development-tooling/runExplain';
+import { sourceCommit } from '../../workflows/git-source-history/runHistory';
 
 export interface PersistedReasons {
 	commit: string;

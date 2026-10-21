@@ -1,13 +1,22 @@
-import { GitAdapter } from '../../adapters/GitAdapter';
-import type { BudgetEvent, PerformanceBaselineEntry } from '../../core/budgetTypes';
-import { metricUnits } from '../../core/comparisonTypes';
-import { fail } from '../../core/errors';
-import type { ComponentManifest } from '../../core/unitTypes';
-import type { Measurement, VerificationRecord } from '../../core/verificationTypes';
-import { VerificationStoreRepository } from '../../repositories/VerificationStoreRepository';
-import { frozenMetrics, isFrozen } from '../../utils/budgetFindings';
-import { emittedKey, emittedSizes } from '../../utils/emittedSizes';
-import { loadBudgets, type SignedInput } from '../../workflows/run-budget/runBudget';
+import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
+import type {
+	BudgetEvent,
+	PerformanceBaselineEntry
+} from '../../core/verification-evidence/budgetTypes';
+import { metricUnits } from '../../core/development-tooling/comparisonTypes';
+import { fail } from '../../core/development-tooling/errors';
+import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
+import type {
+	Measurement,
+	VerificationRecord
+} from '../../core/verification-evidence/verificationTypes';
+import { VerificationStoreRepository } from '../../repositories/verification-evidence/VerificationStoreRepository';
+import { frozenMetrics, isFrozen } from '../../utils/verification-evidence/budgetFindings';
+import { emittedKey, emittedSizes } from '../../utils/development-tooling/emittedSizes';
+import {
+	loadBudgets,
+	type SignedInput
+} from '../../workflows/verification-evidence/run-budget/runBudget';
 
 /** A limit may only come from a clean record whose every other gate passed, signed by a reviewer. */
 async function signedRecord(input: SignedInput, root: string): Promise<VerificationRecord> {

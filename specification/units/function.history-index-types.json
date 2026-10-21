@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/historyIndexTypes.ts"],
+		"source": ["src/core/git-source-history/historyIndexTypes.ts", "src/core/historyIndexTypes.ts"],
 		"symbols": [
 			"indexedRecordSchema",
 			"indexedRevisionSchema",
@@ -21,7 +21,14 @@
 			"BenchmarkSeries",
 			"LegacyEntry",
 			"LegacyMedia",
-			"HistoryIndex"
+			"HistoryIndex",
+			"indexedRecordSchema",
+			"indexedRevisionSchema",
+			"benchmarkSeriesSchema",
+			"legacyMediaSchema",
+			"legacyEntrySchema",
+			"historyIndexSchema",
+			"indexedExplanationSchema"
 		]
 	},
 	"contract": {
@@ -90,11 +97,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/core/historyIndexTypes.ts",
+		"entry": "src/core/git-source-history/historyIndexTypes.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/core/historyIndexTypes.ts"
+				"entry": "src/core/git-source-history/historyIndexTypes.ts"
 			}
 		]
 	},

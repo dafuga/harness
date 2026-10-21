@@ -1,1 +1,4 @@
-export { sameOrigin, bearerToken } from '../../lib/server/auth/request-session-service/authHttp';
+export {
+	sameOrigin,
+	bearerToken
+} from '../../lib/verification-evidence/server/auth/request-session-service/authHttp';

@@ -1,5 +1,9 @@
 import type { Command } from 'commander';
-import { renderImpact, runImpact, type ImpactOptions } from '../../workflows/runImpact';
+import {
+	renderImpact,
+	runImpact,
+	type ImpactOptions
+} from '../../workflows/development-tooling/runImpact';
 
 export function registerImpactCommand(program: Command): void {
 	program

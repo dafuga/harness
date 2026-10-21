@@ -8,14 +8,19 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/services/explorer-ui/revision-detail-service/unitDocumentation.ts",
 			"src/services/revision-detail-service/unitDocumentation.ts",
+			"src/utils/explorer-ui/unit-documentation/unitDocumentation.ts",
 			"src/utils/unit-documentation/unitDocumentation.ts",
 			"src/utils/unitDocumentation.ts"
 		],
 		"symbols": [
 			"hydrateUnitDocumentation",
+			"hydrateUnitDocumentation",
 			"UsageExample",
 			"UnitDocumentation",
+			"unitDocumentation",
+			"readUnitDocumentation",
 			"unitDocumentation",
 			"readUnitDocumentation",
 			"UsageExample",

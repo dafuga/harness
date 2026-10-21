@@ -1,1 +1,1 @@
-export { desktopIpc } from '../desktop-initialization/initialize-desktop/desktopIpc';
+export { desktopIpc } from '../development-tooling/desktop-initialization/initialize-desktop/desktopIpc';

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/MeasuresPanel.svelte"],
-		"symbols": ["MeasuresPanel"]
+		"source": [
+			"packages/desktop/src/components/MeasuresPanel.svelte",
+			"packages/desktop/src/components/shared-primitives/MeasuresPanel.svelte"
+		],
+		"symbols": ["MeasuresPanel", "MeasuresPanel"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,11 +45,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/MeasuresPanel.svelte",
+		"entry": "packages/desktop/src/components/shared-primitives/MeasuresPanel.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/MeasuresPanel.svelte"
+				"entry": "packages/desktop/src/components/shared-primitives/MeasuresPanel.svelte"
 			}
 		]
 	},

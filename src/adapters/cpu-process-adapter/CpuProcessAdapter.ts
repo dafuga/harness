@@ -1,1 +1,1 @@
-export { CpuProcessAdapter } from '../../services/cpu-usage-service/cpu-process-adapter/CpuProcessAdapter';
+export { CpuProcessAdapter } from '../../services/development-tooling/cpu-usage-service/cpu-process-adapter/CpuProcessAdapter';

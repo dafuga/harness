@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/record-regression/RegressionProofService.ts"],
+		"source": [
+			"src/workflows/record-regression/RegressionProofService.ts",
+			"src/workflows/verification-evidence/record-regression/RegressionProofService.ts"
+		],
 		"symbols": [
+			"RegressionProofService",
 			"RegressionRun",
 			"RegressionProofService",
 			"RegressionProofService.constructor",
@@ -113,11 +117,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/record-regression/RegressionProofService.ts",
+		"entry": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/record-regression/RegressionProofService.ts"
+				"entry": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts"
 			}
 		]
 	},

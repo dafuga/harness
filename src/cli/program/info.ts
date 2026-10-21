@@ -1,7 +1,7 @@
 import type { Command } from 'commander';
-import { fail } from '../../core/errors';
-import { availableGuideTopics, findGuide } from '../../guides/guide';
-import { renderGuide } from '../../guides/render';
+import { fail } from '../../core/development-tooling/errors';
+import { availableGuideTopics, findGuide } from '../../guides/development-tooling/guide';
+import { renderGuide } from '../../guides/development-tooling/render';
 
 export function registerInfoCommand(program: Command): void {
 	program

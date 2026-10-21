@@ -8,21 +8,27 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/planning/src/lib/planning-collaboration/planning/planning-service/planWrite.ts",
 			"packages/planning/src/lib/planning/planning-service/planWrite.ts",
 			"packages/planning/src/utils/plan-write/clean.ts",
-			"packages/planning/src/utils/planWrite.ts"
+			"packages/planning/src/utils/planWrite.ts",
+			"packages/planning/src/utils/planning-collaboration/plan-write/clean.ts"
 		],
 		"symbols": [
+			"planWrite",
+			"planWrite",
+			"clean",
+			"assertClean",
+			"commitFiles",
+			"Files",
+			"clean",
+			"assertClean",
+			"commitFiles",
 			"planWrite",
 			"Files",
 			"clean",
 			"assertClean",
-			"commitFiles",
-			"Files",
-			"clean",
-			"assertClean",
-			"commitFiles",
-			"planWrite"
+			"commitFiles"
 		]
 	},
 	"contract": {

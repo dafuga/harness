@@ -10,9 +10,13 @@
 		"source": [
 			"packages/reports/src/services/report-command-service/report-publish-service/reportPublication.ts",
 			"packages/reports/src/services/report-publish-service/reportPublication.ts",
-			"packages/reports/src/utils/reportPublication.ts"
+			"packages/reports/src/services/reports-media/report-command-service/report-publish-service/reportPublication.ts",
+			"packages/reports/src/utils/reportPublication.ts",
+			"packages/reports/src/utils/reports-media/reportPublication.ts"
 		],
 		"symbols": [
+			"reportPublication",
+			"reportPublication",
 			"reportPublication",
 			"reportPublication",
 			"PublicationFile",
@@ -73,11 +77,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/reportPublication.ts",
+		"entry": "packages/reports/src/utils/reports-media/reportPublication.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/reportPublication.ts"
+				"entry": "packages/reports/src/utils/reports-media/reportPublication.ts"
 			}
 		]
 	},

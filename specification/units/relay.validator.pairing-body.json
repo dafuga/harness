@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/relay/src/validators/PairingBodyValidator.ts"],
+		"source": [
+			"packages/relay/src/validators/PairingBodyValidator.ts",
+			"packages/relay/src/validators/networking-security/PairingBodyValidator.ts"
+		],
 		"symbols": [
+			"PairingBodyValidator",
 			"PairingBodyValidator",
 			"PairingBodyValidator.request",
 			"PairingBodyValidator.verifier"
@@ -57,11 +61,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/validators/PairingBodyValidator.ts",
+		"entry": "packages/relay/src/validators/networking-security/PairingBodyValidator.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/validators/PairingBodyValidator.ts"
+				"entry": "packages/relay/src/validators/networking-security/PairingBodyValidator.ts"
 			}
 		]
 	},

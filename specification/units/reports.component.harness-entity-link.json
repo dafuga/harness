@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/EntityLink.svelte"],
-		"symbols": ["EntityLink"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/harness/EntityLink.svelte",
+			"packages/reports/src/components/harness/EntityLink.svelte"
+		],
+		"symbols": ["EntityLink", "EntityLink"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -72,11 +75,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/EntityLink.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/harness/EntityLink.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/harness/EntityLink.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/harness/EntityLink.svelte"
 			}
 		]
 	},

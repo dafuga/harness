@@ -7,8 +7,25 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/remote/src/models/Remote.types.ts"],
+		"source": [
+			"packages/remote/src/models/Remote.types.ts",
+			"packages/remote/src/models/networking-security/Remote.types.ts"
+		],
 		"symbols": [
+			"REMOTE_PROTOCOL",
+			"remoteLimits",
+			"attachMethod",
+			"readMethods",
+			"commentMethods",
+			"agentMethods",
+			"localMethods",
+			"controlMethods",
+			"remoteMethods",
+			"revisionMethods",
+			"projectlessMethods",
+			"mutationMethods",
+			"remoteErrorMessages",
+			"RemoteFailure",
 			"REMOTE_PROTOCOL",
 			"remoteLimits",
 			"RemoteLimits",
@@ -119,11 +136,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/remote/src/models/Remote.types.ts",
+		"entry": "packages/remote/src/models/networking-security/Remote.types.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/remote/src/models/Remote.types.ts"
+				"entry": "packages/remote/src/models/networking-security/Remote.types.ts"
 			}
 		]
 	},

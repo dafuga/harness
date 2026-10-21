@@ -3,8 +3,8 @@ import type {
 	GithubGrantRecord,
 	GrantLease,
 	GrantStore
-} from '../../../../models/HubAuthStore.types';
-import type { AuthRecordValidator } from '../../../../validators/AuthRecordValidator';
+} from '../../../../models/accounts-access/HubAuthStore.types';
+import type { AuthRecordValidator } from '../../../../validators/accounts-access/AuthRecordValidator';
 
 export /** What a tombstone keeps is the row and its generation. Every token is erased. */
 const ERASE =

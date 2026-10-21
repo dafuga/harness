@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/AudioEvidence.svelte"],
-		"symbols": ["AudioEvidence"]
+		"source": [
+			"packages/reports/src/components/AudioEvidence.svelte",
+			"packages/reports/src/components/verification-evidence/AudioEvidence.svelte"
+		],
+		"symbols": ["AudioEvidence", "AudioEvidence"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -72,11 +75,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/AudioEvidence.svelte",
+		"entry": "packages/reports/src/components/verification-evidence/AudioEvidence.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/AudioEvidence.svelte"
+				"entry": "packages/reports/src/components/verification-evidence/AudioEvidence.svelte"
 			}
 		]
 	},

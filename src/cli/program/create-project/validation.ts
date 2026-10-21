@@ -1,4 +1,4 @@
-import { validateName } from '../../../core/validation';
+import { validateName } from '../../../core/development-tooling/validation';
 
 export function validateProjectName(name: string): string {
 	return validateName(name, 'Project name');
@@ -10,5 +10,5 @@ export {
 	validateExportName,
 	validateName,
 	validateFieldName
-} from '../../../core/validation';
-export { validateKebabName } from '../../../workflows/loop-state/validation';
+} from '../../../core/development-tooling/validation';
+export { validateKebabName } from '../../../workflows/development-tooling/loop-state/validation';

@@ -2,4 +2,4 @@ export {
 	type RunContext,
 	type CheckOutcome,
 	CheckRunService
-} from './check-run-service/CheckRunService';
+} from '../../verification-evidence/run-verify/verification-service/check-run-service/CheckRunService';

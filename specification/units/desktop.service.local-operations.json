@@ -9,9 +9,11 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/desktop-initialization/LocalOperationsService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
 			"packages/desktop/src/services/LocalOperationsService.ts"
 		],
 		"symbols": [
+			"LocalOperationsService",
 			"LocalControl",
 			"LocalOperationsOptions",
 			"LocalOperationsService",
@@ -81,11 +83,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/lib/desktop-initialization/LocalOperationsService.ts",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/lib/desktop-initialization/LocalOperationsService.ts"
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts"
 			}
 		]
 	},

@@ -1,5 +1,5 @@
 import { timingSafeEqual } from 'node:crypto';
-import { CodexRequestValidator } from '../../../validators/CodexRequestValidator';
+import { CodexRequestValidator } from '../../../validators/agents-providers/CodexRequestValidator';
 import { CodexSessionRepository } from './codex-session-repository/CodexSessionRepository';
 import { ClaudeGatewayAdapter } from './ClaudeGatewayAdapter';
 import { gatewayReplay } from './gatewayReplay';

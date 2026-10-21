@@ -1,1 +1,1 @@
-export { NativeAuthService } from '../lib/desktop-initialization/NativeAuthService';
+export { NativeAuthService } from '../lib/development-tooling/desktop-initialization/NativeAuthService';

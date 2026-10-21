@@ -5,8 +5,8 @@ import type {
 	ResponseCheckInput,
 	ResponseCheckOptions,
 	ResponseCheckSettings
-} from '../../core/responseCheckTypes';
-import { ResponseCheckInputValidator } from '../../validators/ResponseCheckInputValidator';
+} from '../../core/verification-evidence/responseCheckTypes';
+import { ResponseCheckInputValidator } from '../../validators/verification-evidence/ResponseCheckInputValidator';
 
 export const responseInputLimit = 24000;
 

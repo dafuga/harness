@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/relay/src/utils/isRecord.ts"],
-		"symbols": ["isRecord"]
+		"source": [
+			"packages/relay/src/utils/development-tooling/isRecord.ts",
+			"packages/relay/src/utils/isRecord.ts"
+		],
+		"symbols": ["isRecord", "isRecord"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,11 +34,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/utils/isRecord.ts",
+		"entry": "packages/relay/src/utils/development-tooling/isRecord.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/utils/isRecord.ts"
+				"entry": "packages/relay/src/utils/development-tooling/isRecord.ts"
 			}
 		]
 	},

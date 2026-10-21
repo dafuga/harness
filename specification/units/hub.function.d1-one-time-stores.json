@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1OneTimeStores.ts",
-			"packages/hub/src/utils/d1OneTimeStores.ts"
+			"packages/hub/src/utils/d1OneTimeStores.ts",
+			"packages/hub/src/utils/networking-security/d1OneTimeStores.ts"
 		],
-		"symbols": ["d1OneTimeStores", "D1OneTimeStores", "d1OneTimeStores"]
+		"symbols": ["d1OneTimeStores", "d1OneTimeStores", "D1OneTimeStores", "d1OneTimeStores"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -55,11 +56,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/d1OneTimeStores.ts",
+		"entry": "packages/hub/src/utils/networking-security/d1OneTimeStores.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/d1OneTimeStores.ts"
+				"entry": "packages/hub/src/utils/networking-security/d1OneTimeStores.ts"
 			}
 		]
 	},

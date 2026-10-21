@@ -1,6 +1,6 @@
-import { analyticsOptions } from '../../utils/analyticsOptions';
+import { analyticsOptions } from '../../utils/reports-media/analyticsOptions';
 import type { Command } from 'commander';
-import type { ResponseCheckOptions } from '../../core/responseCheckTypes';
+import type { ResponseCheckOptions } from '../../core/verification-evidence/responseCheckTypes';
 import { runResponseCheck } from './runResponseCheck';
 
 export function registerResponseCheckCommand(program: Command): void {

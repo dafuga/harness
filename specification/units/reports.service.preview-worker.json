@@ -8,13 +8,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/lib/development-tooling/preview-node/preview-worker-service/PreviewWorkerService.ts",
 			"packages/reports/src/lib/preview-node/preview-worker-service/PreviewWorkerService.ts"
 		],
 		"symbols": [
 			"PreviewWorkerService",
 			"PreviewWorkerService.constructor",
 			"PreviewWorkerService.start",
-			"PreviewWorkerService.close"
+			"PreviewWorkerService.close",
+			"PreviewWorkerService"
 		]
 	},
 	"contract": {
@@ -90,11 +92,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/lib/preview-node/preview-worker-service/PreviewWorkerService.ts",
+		"entry": "packages/reports/src/lib/development-tooling/preview-node/preview-worker-service/PreviewWorkerService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/lib/preview-node/preview-worker-service/PreviewWorkerService.ts"
+				"entry": "packages/reports/src/lib/development-tooling/preview-node/preview-worker-service/PreviewWorkerService.ts"
 			}
 		]
 	},

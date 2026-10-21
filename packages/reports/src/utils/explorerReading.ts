@@ -2,4 +2,4 @@ export {
 	artifactRun,
 	artifactDifferences,
 	explorerReading
-} from './explorer-reading/explorerReading';
+} from './explorer-ui/explorer-reading/explorerReading';

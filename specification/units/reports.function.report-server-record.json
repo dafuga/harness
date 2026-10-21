@@ -10,11 +10,17 @@
 		"source": [
 			"packages/reports/src/services/report-command-service/report-server-service/reportServerRecord.ts",
 			"packages/reports/src/services/report-server-service/reportServerRecord.ts",
-			"packages/reports/src/utils/reportServerRecord.ts"
+			"packages/reports/src/services/reports-media/report-command-service/report-server-service/reportServerRecord.ts",
+			"packages/reports/src/utils/reportServerRecord.ts",
+			"packages/reports/src/utils/reports-media/reportServerRecord.ts"
 		],
 		"symbols": [
 			"stopReportServer",
 			"stopReportServer",
+			"stopReportServer",
+			"stopReportServer",
+			"processStarted",
+			"reportServerRecord",
 			"ServerRecord",
 			"StoppedServer",
 			"processStarted",
@@ -73,11 +79,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/reportServerRecord.ts",
+		"entry": "packages/reports/src/utils/reports-media/reportServerRecord.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/reportServerRecord.ts"
+				"entry": "packages/reports/src/utils/reports-media/reportServerRecord.ts"
 			}
 		]
 	},

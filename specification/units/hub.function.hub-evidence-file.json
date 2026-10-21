@@ -9,9 +9,18 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/services/hub-evidence-service/hub-attached-service/hubEvidenceFile.ts",
-			"packages/hub/src/utils/hubEvidenceFile.ts"
+			"packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/hubEvidenceFile.ts",
+			"packages/hub/src/utils/hubEvidenceFile.ts",
+			"packages/hub/src/utils/verification-evidence/hubEvidenceFile.ts"
 		],
-		"symbols": ["hubEvidenceFile", "evidenceFileLimit", "hubEvidenceFile"]
+		"symbols": [
+			"hubEvidenceFile",
+			"hubEvidenceFile",
+			"hubEvidenceFile",
+			"evidenceFileLimit",
+			"evidenceFileLimit",
+			"hubEvidenceFile"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -76,11 +85,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hubEvidenceFile.ts",
+		"entry": "packages/hub/src/utils/verification-evidence/hubEvidenceFile.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/hubEvidenceFile.ts"
+				"entry": "packages/hub/src/utils/verification-evidence/hubEvidenceFile.ts"
 			}
 		]
 	},

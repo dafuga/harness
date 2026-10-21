@@ -1,2 +1,2 @@
-export { reviewCleanCode } from '../audit/reviewCleanCode';
-export type { ReviewCleanCodeInput } from '../audit/reviewCleanCode';
+export { reviewCleanCode } from '../audit/development-tooling/reviewCleanCode';
+export type { ReviewCleanCodeInput } from '../audit/development-tooling/reviewCleanCode';

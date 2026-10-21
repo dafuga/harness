@@ -9,13 +9,15 @@
 	"owns": {
 		"source": [
 			"packages/relay/src/controllers/HostObjectController.ts",
+			"packages/relay/src/lib/execution-runtimes/host-runtime/HostObjectController.ts",
 			"packages/relay/src/lib/host-runtime/HostObjectController.ts"
 		],
 		"symbols": [
 			"HostObjectController",
 			"HostObjectController",
 			"HostObjectController.constructor",
-			"HostObjectController.handle"
+			"HostObjectController.handle",
+			"HostObjectController"
 		]
 	},
 	"contract": {
@@ -84,11 +86,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/lib/host-runtime/HostObjectController.ts",
+		"entry": "packages/relay/src/lib/execution-runtimes/host-runtime/HostObjectController.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/lib/host-runtime/HostObjectController.ts"
+				"entry": "packages/relay/src/lib/execution-runtimes/host-runtime/HostObjectController.ts"
 			}
 		]
 	},

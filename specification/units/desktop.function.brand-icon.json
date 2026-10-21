@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/desktop/scripts/mac-icon/brandIcon.ts",
-			"packages/desktop/src/utils/brandIcon.ts"
+			"packages/desktop/src/utils/brandIcon.ts",
+			"packages/desktop/src/utils/development-tooling/brandIcon.ts"
 		],
-		"symbols": ["brandIcon", "BrandIconVariant", "brandIcon"]
+		"symbols": ["brandIcon", "brandIcon", "BrandIconVariant", "brandIcon"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -45,11 +46,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/brandIcon.ts",
+		"entry": "packages/desktop/src/utils/development-tooling/brandIcon.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/brandIcon.ts"
+				"entry": "packages/desktop/src/utils/development-tooling/brandIcon.ts"
 			}
 		]
 	},

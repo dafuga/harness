@@ -1,1 +1,1 @@
-export { selectEnvironment } from '../lib/select-environment/selectEnvironment';
+export { selectEnvironment } from '../lib/verification-evidence/select-environment/selectEnvironment';

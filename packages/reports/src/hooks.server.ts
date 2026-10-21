@@ -1,1 +1,1 @@
-export { handle } from './lib/server-hooks/hooks.server';
+export { handle } from './lib/development-tooling/server-hooks/hooks.server';

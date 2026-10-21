@@ -7,8 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/project.ts", "src/workflows/generate-code/project.ts"],
-		"symbols": ["DetectedProjectKind", "detectProjectKind", "DetectedProjectKind"]
+		"source": [
+			"src/core/project.ts",
+			"src/core/projects-sessions/project.ts",
+			"src/workflows/generate-code/project.ts",
+			"src/workflows/projects-sessions/generate-code/project.ts"
+		],
+		"symbols": [
+			"DetectedProjectKind",
+			"detectProjectKind",
+			"detectProjectKind",
+			"DetectedProjectKind"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,11 +41,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/generate-code/project.ts",
+		"entry": "src/workflows/projects-sessions/generate-code/project.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/generate-code/project.ts"
+				"entry": "src/workflows/projects-sessions/generate-code/project.ts"
 			}
 		]
 	},

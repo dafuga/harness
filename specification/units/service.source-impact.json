@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/revision-detail-service/source-impact-service/SourceImpactService.ts"],
+		"source": [
+			"src/services/explorer-ui/revision-detail-service/source-impact-service/SourceImpactService.ts",
+			"src/services/revision-detail-service/source-impact-service/SourceImpactService.ts"
+		],
 		"symbols": [
 			"SourceImpact",
 			"SourceImpactService",
@@ -16,7 +19,8 @@
 			"SourceImpactService.reasons",
 			"SourceImpactService.parent",
 			"SourceImpactService.stored",
-			"SourceImpactService.measurements"
+			"SourceImpactService.measurements",
+			"SourceImpactService"
 		]
 	},
 	"contract": {
@@ -130,11 +134,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/revision-detail-service/source-impact-service/SourceImpactService.ts",
+		"entry": "src/services/explorer-ui/revision-detail-service/source-impact-service/SourceImpactService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/revision-detail-service/source-impact-service/SourceImpactService.ts"
+				"entry": "src/services/explorer-ui/revision-detail-service/source-impact-service/SourceImpactService.ts"
 			}
 		]
 	},

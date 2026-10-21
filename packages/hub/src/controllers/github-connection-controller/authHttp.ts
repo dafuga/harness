@@ -1,1 +1,1 @@
-export { authRedirect } from '../../lib/server/auth/github-connection-controller/authHttp';
+export { authRedirect } from '../../lib/verification-evidence/server/auth/github-connection-controller/authHttp';

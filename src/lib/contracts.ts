@@ -15,7 +15,7 @@ export {
 	scenarioManifestSchema,
 	unitDependencySchema,
 	unitIdPattern
-} from '../core/unitTypes';
+} from '../core/development-tooling/unitTypes';
 export type {
 	ComponentManifest,
 	ContractItem,
@@ -23,7 +23,7 @@ export type {
 	RuntimeKind,
 	ScenarioManifest,
 	UnitDependency
-} from '../core/unitTypes';
+} from '../core/development-tooling/unitTypes';
 export {
 	budgetFindingSchema,
 	captureSchema,
@@ -32,7 +32,7 @@ export {
 	profileSchema,
 	scenarioResultSchema,
 	verificationRecordSchema
-} from '../core/verificationTypes';
+} from '../core/verification-evidence/verificationTypes';
 export type {
 	BudgetFinding,
 	Capture,
@@ -41,12 +41,12 @@ export type {
 	ScenarioResult,
 	VerificationProfile,
 	VerificationRecord
-} from '../core/verificationTypes';
-export { unitsConfigSchema } from '../core/unitsConfig';
-export type { UnitsConfig } from '../core/unitsConfig';
-export { ComponentManifestValidator } from '../validators/ComponentManifestValidator';
-export type { ManifestValidation } from '../validators/ComponentManifestValidator';
-export { ScenarioManifestValidator } from '../validators/ScenarioManifestValidator';
-export { VerificationRecordValidator } from '../validators/VerificationRecordValidator';
-export { componentVersion } from '../utils/componentVersion';
-export type { ComponentVersion } from '../utils/componentVersion';
+} from '../core/verification-evidence/verificationTypes';
+export { unitsConfigSchema } from '../core/development-tooling/unitsConfig';
+export type { UnitsConfig } from '../core/development-tooling/unitsConfig';
+export { ComponentManifestValidator } from '../validators/development-tooling/ComponentManifestValidator';
+export type { ManifestValidation } from '../validators/development-tooling/ComponentManifestValidator';
+export { ScenarioManifestValidator } from '../validators/verification-evidence/ScenarioManifestValidator';
+export { VerificationRecordValidator } from '../validators/verification-evidence/VerificationRecordValidator';
+export { componentVersion } from '../utils/development-tooling/componentVersion';
+export type { ComponentVersion } from '../utils/development-tooling/componentVersion';

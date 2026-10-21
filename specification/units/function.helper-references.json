@@ -8,15 +8,19 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/services/explorer-ui/revision-detail-service/helperReferences.ts",
 			"src/services/revision-detail-service/helperReferences.ts",
+			"src/utils/explorer-ui/helperReferences.ts",
 			"src/utils/helperReferences.ts"
 		],
 		"symbols": [
+			"helperReferences",
 			"helperReferences",
 			"HelperBinding",
 			"HelperReference",
 			"ClassFacts",
 			"HelperFacts",
+			"helperReferences",
 			"helperReferences"
 		]
 	},
@@ -60,11 +64,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/helperReferences.ts",
+		"entry": "src/utils/explorer-ui/helperReferences.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/helperReferences.ts"
+				"entry": "src/utils/explorer-ui/helperReferences.ts"
 			}
 		]
 	},

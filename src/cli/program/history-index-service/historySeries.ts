@@ -1,9 +1,15 @@
-import type { BenchmarkSeries, HistoryIndex } from '../../../core/historyIndexTypes';
-import type { Measurement, VerificationRecord } from '../../../core/verificationTypes';
-import { frozenMetrics } from '../../../utils/budgetFindings';
-import type { BudgetReview } from '../../../utils/budgetReviews';
-import { canonicalJson } from '../../../utils/canonicalJson';
-import { emittedKey, emittedSizes } from '../../../utils/emittedSizes';
+import type {
+	BenchmarkSeries,
+	HistoryIndex
+} from '../../../core/git-source-history/historyIndexTypes';
+import type {
+	Measurement,
+	VerificationRecord
+} from '../../../core/verification-evidence/verificationTypes';
+import { frozenMetrics } from '../../../utils/verification-evidence/budgetFindings';
+import type { BudgetReview } from '../../../utils/verification-evidence/budgetReviews';
+import { canonicalJson } from '../../../utils/development-tooling/canonicalJson';
+import { emittedKey, emittedSizes } from '../../../utils/development-tooling/emittedSizes';
 
 type Growth = HistoryIndex['units'];
 

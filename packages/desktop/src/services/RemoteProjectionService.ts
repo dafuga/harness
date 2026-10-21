@@ -1,1 +1,1 @@
-export { RemoteProjectionService } from '../lib/desktop-initialization/remote-http-project-adapter/RemoteProjectionService';
+export { RemoteProjectionService } from '../lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteProjectionService';

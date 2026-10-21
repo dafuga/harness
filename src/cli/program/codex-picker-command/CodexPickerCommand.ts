@@ -1,10 +1,10 @@
 import type { Command } from 'commander';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { ProviderSwitchRepository } from '../../../repositories/ProviderSwitchRepository';
-import { ProviderSwitchService } from '../../../services/ProviderSwitchService';
-import { ProviderCatalogAdapter } from '../../../adapters/ProviderCatalogAdapter';
-import { CodexPickerMcpService } from '../../../services/CodexPickerMcpService';
+import { ProviderSwitchRepository } from '../../../repositories/agents-providers/ProviderSwitchRepository';
+import { ProviderSwitchService } from '../../../services/agents-providers/ProviderSwitchService';
+import { ProviderCatalogAdapter } from '../../../adapters/agents-providers/ProviderCatalogAdapter';
+import { CodexPickerMcpService } from '../../../services/agents-providers/CodexPickerMcpService';
 import { PickerPreviewService } from './PickerPreviewService';
 import { pickerPaths } from './pickerPaths';
 

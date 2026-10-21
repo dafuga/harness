@@ -1,6 +1,6 @@
-import type { BudgetReview } from '../../../utils/budgetReviews';
-import type { BudgetEvent } from '../../../core/budgetTypes';
-import { canonicalJson } from '../../../utils/canonicalJson';
+import type { BudgetReview } from '../../../utils/verification-evidence/budgetReviews';
+import type { BudgetEvent } from '../../../core/verification-evidence/budgetTypes';
+import { canonicalJson } from '../../../utils/development-tooling/canonicalJson';
 
 function review(event: BudgetEvent): BudgetReview {
 	const { type, reviewer, reason, at, unmeasured } = event;

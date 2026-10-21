@@ -1,8 +1,8 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { mediaPlace } from './mediaPlace';
-import { type MediaFile, type MediaPlacer } from '../../../../utils/mediaPlace';
-import type { ResolvedMedia } from '../../../../utils/recordView';
+import { type MediaFile, type MediaPlacer } from '../../../../utils/development-tooling/mediaPlace';
+import type { ResolvedMedia } from '../../../../utils/development-tooling/recordView';
 
 /**
  * Writes original evidence bytes into the output, named by their hash. Bytes that are missing,

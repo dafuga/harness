@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/sourceSnapshot.ts"],
-		"symbols": ["SourceSnapshot", "fileHash", "sourceSnapshot"]
+		"source": [
+			"packages/desktop/src/utils/sourceSnapshot.ts",
+			"packages/desktop/src/utils/verification-evidence/sourceSnapshot.ts"
+		],
+		"symbols": ["fileHash", "sourceSnapshot", "SourceSnapshot", "fileHash", "sourceSnapshot"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -47,11 +50,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/sourceSnapshot.ts",
+		"entry": "packages/desktop/src/utils/verification-evidence/sourceSnapshot.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/sourceSnapshot.ts"
+				"entry": "packages/desktop/src/utils/verification-evidence/sourceSnapshot.ts"
 			}
 		]
 	},

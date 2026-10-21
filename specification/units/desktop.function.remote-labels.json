@@ -8,12 +8,22 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/components/networking-security/remote-host-panel/remoteLabels.ts",
+			"packages/desktop/src/components/networking-security/remote-offer-code/remoteLabels.ts",
+			"packages/desktop/src/components/networking-security/remote-phone-panel/remoteLabels.ts",
 			"packages/desktop/src/components/remote-host-panel/remoteLabels.ts",
 			"packages/desktop/src/components/remote-offer-code/remoteLabels.ts",
 			"packages/desktop/src/components/remote-phone-panel/remoteLabels.ts",
+			"packages/desktop/src/utils/networking-security/remoteLabels.ts",
 			"packages/desktop/src/utils/remoteLabels.ts"
 		],
 		"symbols": [
+			"relayName",
+			"hostLine",
+			"hostSummary",
+			"timeLeft",
+			"grantSummary",
+			"remoteLabels",
 			"relayName",
 			"hostLine",
 			"hostSummary",
@@ -36,7 +46,24 @@
 			"hostSummary",
 			"timeLeft",
 			"grantSummary",
-			"remoteLabels"
+			"remoteLabels",
+			"relayName",
+			"hostLine",
+			"hostSummary",
+			"timeLeft",
+			"grantSummary",
+			"remoteLabels",
+			"lockNote",
+			"awakeNote",
+			"lockedNote",
+			"unlockedNote",
+			"approveNote",
+			"awayNote",
+			"revokedNote",
+			"plural",
+			"keyLabel",
+			"identityLabel",
+			"grantLabel"
 		]
 	},
 	"contract": {
@@ -182,7 +209,7 @@
 	"helperContracts": [
 		{
 			"name": "plural",
-			"source": "packages/desktop/src/utils/remoteLabels.ts",
+			"source": "packages/desktop/src/utils/networking-security/remoteLabels.ts",
 			"inputs": [
 				{
 					"name": "plural.count",
@@ -208,7 +235,7 @@
 		},
 		{
 			"name": "identityLabel",
-			"source": "packages/desktop/src/utils/remoteLabels.ts",
+			"source": "packages/desktop/src/utils/networking-security/remoteLabels.ts",
 			"inputs": [
 				{
 					"name": "identityLabel.deviceId",
@@ -229,11 +256,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/remoteLabels.ts",
+		"entry": "packages/desktop/src/utils/networking-security/remoteLabels.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/remoteLabels.ts"
+				"entry": "packages/desktop/src/utils/networking-security/remoteLabels.ts"
 			}
 		]
 	},

@@ -7,8 +7,27 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/generate-code/generateCode.ts"],
+		"source": [
+			"src/workflows/generate-code/generateCode.ts",
+			"src/workflows/generate-code/generationGroup.ts",
+			"src/workflows/generate-code/groupedFiles.ts",
+			"src/workflows/generate-code/groupedImports.ts",
+			"src/workflows/projects-sessions/generate-code/generateCode.ts",
+			"src/workflows/projects-sessions/generate-code/generationGroup.ts",
+			"src/workflows/projects-sessions/generate-code/groupedFiles.ts",
+			"src/workflows/projects-sessions/generate-code/groupedImports.ts"
+		],
 		"symbols": [
+			"scaffoldKinds",
+			"generateModel",
+			"generatePiece",
+			"renderGenerateResult",
+			"generationGroup",
+			"saveGenerationGroup",
+			"groupedFiles",
+			"groupedExports",
+			"groupedImports",
+			"groupedSpecifier",
 			"scaffoldKinds",
 			"PieceKind",
 			"GenerateModelInput",
@@ -16,7 +35,14 @@
 			"GenerateResult",
 			"generateModel",
 			"generatePiece",
-			"renderGenerateResult"
+			"renderGenerateResult",
+			"generationGroup",
+			"saveGenerationGroup",
+			"groupedFiles",
+			"groupedExports",
+			"assertUniqueGroupedNames",
+			"groupedImports",
+			"groupedSpecifier"
 		]
 	},
 	"contract": {
@@ -33,6 +59,82 @@
 			{
 				"name": "renderGenerateResult.result",
 				"type": "GenerateResult"
+			},
+			{
+				"name": "generationGroup.root",
+				"type": "string"
+			},
+			{
+				"name": "generationGroup.input",
+				"type": "{ name: string; group?: string; responsibility?: string }"
+			},
+			{
+				"name": "saveGenerationGroup.root",
+				"type": "string"
+			},
+			{
+				"name": "saveGenerationGroup.selection",
+				"type": "Selection"
+			},
+			{
+				"name": "groupedFiles.files",
+				"type": "PlannedFile[]"
+			},
+			{
+				"name": "groupedFiles.group",
+				"type": "string"
+			},
+			{
+				"name": "groupedExports.plans",
+				"type": "ExportPlan[]"
+			},
+			{
+				"name": "groupedExports.paths",
+				"type": "Map<string, string>"
+			},
+			{
+				"name": "assertUniqueGroupedNames.root",
+				"type": "string"
+			},
+			{
+				"name": "assertUniqueGroupedNames.group",
+				"type": "string | undefined"
+			},
+			{
+				"name": "assertUniqueGroupedNames.files",
+				"type": "PlannedFile[]"
+			},
+			{
+				"name": "groupedImports.contents",
+				"type": "string"
+			},
+			{
+				"name": "groupedImports.before",
+				"type": "string"
+			},
+			{
+				"name": "groupedImports.after",
+				"type": "string"
+			},
+			{
+				"name": "groupedImports.paths",
+				"type": "Map<string, string>"
+			},
+			{
+				"name": "groupedSpecifier.specifier",
+				"type": "string"
+			},
+			{
+				"name": "groupedSpecifier.before",
+				"type": "string"
+			},
+			{
+				"name": "groupedSpecifier.after",
+				"type": "string"
+			},
+			{
+				"name": "groupedSpecifier.paths",
+				"type": "Map<string, string>"
 			}
 		],
 		"outputs": [
@@ -47,6 +149,34 @@
 			{
 				"name": "renderGenerateResult",
 				"type": "string"
+			},
+			{
+				"name": "generationGroup",
+				"type": "Selection | undefined"
+			},
+			{
+				"name": "saveGenerationGroup",
+				"type": "Promise<FileWriteResult[]>"
+			},
+			{
+				"name": "groupedFiles",
+				"type": "unknown"
+			},
+			{
+				"name": "groupedExports",
+				"type": "ExportPlan[]"
+			},
+			{
+				"name": "assertUniqueGroupedNames",
+				"type": "void"
+			},
+			{
+				"name": "groupedImports",
+				"type": "string"
+			},
+			{
+				"name": "groupedSpecifier",
+				"type": "string"
 			}
 		],
 		"errors": [
@@ -57,6 +187,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "config.module-groups",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.errors",
 			"via": "import",
@@ -78,12 +213,27 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.module-group",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.project",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
+			"unit": "function.stable-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.validation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-category",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -120,11 +270,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/generate-code/generateCode.ts",
+		"entry": "src/workflows/projects-sessions/generate-code/generateCode.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/generate-code/generateCode.ts"
+				"entry": "src/workflows/projects-sessions/generate-code/generateCode.ts"
 			}
 		]
 	},

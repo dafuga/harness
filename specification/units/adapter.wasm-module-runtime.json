@@ -9,6 +9,7 @@
 	"owns": {
 		"source": [
 			"src/adapters/WasmModuleRuntimeAdapter.ts",
+			"src/adapters/execution-runtimes/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts",
 			"src/adapters/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts"
 		],
 		"symbols": [
@@ -24,7 +25,9 @@
 			"WasmModuleRuntimeAdapter.invoke",
 			"WasmModuleRuntimeAdapter.invokeText",
 			"WasmModuleRuntimeAdapter.memoryBytes",
-			"WasmModuleRuntimeAdapter.close"
+			"WasmModuleRuntimeAdapter.close",
+			"wasmUnavailable",
+			"WasmModuleRuntimeAdapter"
 		]
 	},
 	"contract": {
@@ -94,11 +97,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/adapters/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts",
+		"entry": "src/adapters/execution-runtimes/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/adapters/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts"
+				"entry": "src/adapters/execution-runtimes/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts"
 			}
 		]
 	},

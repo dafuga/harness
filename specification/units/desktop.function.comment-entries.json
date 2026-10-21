@@ -9,11 +9,22 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/adapters/browser-project-adapter/commentEntries.ts",
+			"packages/desktop/src/adapters/explorer-ui/browser-project-adapter/commentEntries.ts",
+			"packages/desktop/src/components/explorer-ui/thread-panel/commentEntries.ts",
 			"packages/desktop/src/components/thread-panel/commentEntries.ts",
 			"packages/desktop/src/utils/commentEntries.ts",
+			"packages/desktop/src/utils/explorer-ui/commentEntries.ts",
 			"packages/hub/src/utils/browser-bridge/commentEntries.ts"
 		],
 		"symbols": [
+			"commentEntries",
+			"commentEntries",
+			"threadInfo",
+			"pendingEntries",
+			"requestEntry",
+			"threadInfo",
+			"pendingEntries",
+			"requestEntry",
 			"commentEntries",
 			"threadInfo",
 			"pendingEntries",
@@ -124,11 +135,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/adapters/browser-project-adapter/commentEntries.ts",
+		"entry": "packages/desktop/src/adapters/explorer-ui/browser-project-adapter/commentEntries.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/adapters/browser-project-adapter/commentEntries.ts"
+				"entry": "packages/desktop/src/adapters/explorer-ui/browser-project-adapter/commentEntries.ts"
 			}
 		]
 	},

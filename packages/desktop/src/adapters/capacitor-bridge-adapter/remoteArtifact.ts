@@ -1,1 +1,1 @@
-export { remoteArtifact } from '../../lib/select-environment/capacitor-bridge-adapter/remoteArtifact';
+export { remoteArtifact } from '../../lib/verification-evidence/select-environment/capacitor-bridge-adapter/remoteArtifact';

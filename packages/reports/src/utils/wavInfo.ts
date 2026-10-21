@@ -1,1 +1,1 @@
-export { wavInfo } from './audio-asset/wavInfo';
+export { wavInfo } from './reports-media/audio-asset/wavInfo';

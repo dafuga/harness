@@ -1,5 +1,5 @@
 import type { Command } from 'commander';
-import { CpuUsageService } from '../../services/cpu-usage-service/CpuUsageService';
+import { CpuUsageService } from '../../services/development-tooling/cpu-usage-service/CpuUsageService';
 import { AnalyticsService } from './AnalyticsService';
 export function registerAnalyticsCommand(program: Command): void {
 	const analytics = program

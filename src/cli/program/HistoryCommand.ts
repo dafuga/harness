@@ -8,7 +8,7 @@ import {
 	historyStatus,
 	renderStatus,
 	type HistoryOptions
-} from '../../workflows/runHistory';
+} from '../../workflows/git-source-history/runHistory';
 
 type Flags = HistoryOptions & { json?: boolean };
 

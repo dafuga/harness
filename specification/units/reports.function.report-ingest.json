@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/repositories/report-repository/reportIngest.ts",
+			"packages/reports/src/repositories/reports-media/report-repository/reportIngest.ts",
 			"packages/reports/src/utils/reportIngest.ts"
 		],
-		"symbols": ["reportIngest", "reportIngest"]
+		"symbols": ["reportIngest", "reportIngest", "reportIngest"]
 	},
 	"contract": {
 		"origin": "declared",

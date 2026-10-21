@@ -1,10 +1,13 @@
 import { resolve } from 'node:path';
-import { WorkingTreeAdapter } from '../../adapters/WorkingTreeAdapter';
-import { fail } from '../../core/errors';
-import type { ScenarioManifest } from '../../core/unitTypes';
-import { ScenarioRepository } from '../../repositories/ScenarioRepository';
-import { UnitRegistryRepository } from '../../repositories/UnitRegistryRepository';
-import { scenarioRequirements, type ScenarioRequirements } from '../../utils/scenarioRequirements';
+import { WorkingTreeAdapter } from '../../adapters/git-source-history/WorkingTreeAdapter';
+import { fail } from '../../core/development-tooling/errors';
+import type { ScenarioManifest } from '../../core/development-tooling/unitTypes';
+import { ScenarioRepository } from '../../repositories/verification-evidence/ScenarioRepository';
+import { UnitRegistryRepository } from '../../repositories/verification-evidence/UnitRegistryRepository';
+import {
+	scenarioRequirements,
+	type ScenarioRequirements
+} from '../../utils/verification-evidence/scenarioRequirements';
 
 async function load(root = process.cwd()) {
 	const absolute = resolve(root);

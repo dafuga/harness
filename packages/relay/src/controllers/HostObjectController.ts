@@ -1,1 +1,1 @@
-export { HostObjectController } from '../lib/host-runtime/HostObjectController';
+export { HostObjectController } from '../lib/execution-runtimes/host-runtime/HostObjectController';

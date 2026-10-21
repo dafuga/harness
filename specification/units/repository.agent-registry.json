@@ -9,11 +9,13 @@
 	"owns": {
 		"source": [
 			"src/repositories/AgentRegistryRepository.ts",
-			"src/services/agent-activity-service/AgentRegistryRepository.ts"
+			"src/services/agent-activity-service/AgentRegistryRepository.ts",
+			"src/services/agents-providers/agent-activity-service/AgentRegistryRepository.ts"
 		],
 		"symbols": [
 			"AgentRegistryRepository",
 			"StoredAgent",
+			"AgentRegistryRepository",
 			"StoredAgent",
 			"AgentRegistryRepository",
 			"AgentRegistryRepository.constructor",
@@ -107,11 +109,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/agent-activity-service/AgentRegistryRepository.ts",
+		"entry": "src/services/agents-providers/agent-activity-service/AgentRegistryRepository.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/agent-activity-service/AgentRegistryRepository.ts"
+				"entry": "src/services/agents-providers/agent-activity-service/AgentRegistryRepository.ts"
 			}
 		]
 	},

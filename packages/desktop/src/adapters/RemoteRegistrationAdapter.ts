@@ -1,2 +1,2 @@
-export { RemoteRegistrationAdapter } from '../lib/desktop-initialization/RemoteRegistrationAdapter';
-export type { RemoteRegistrationAdapterConfig } from '../lib/desktop-initialization/RemoteRegistrationAdapter';
+export { RemoteRegistrationAdapter } from '../lib/development-tooling/desktop-initialization/RemoteRegistrationAdapter';
+export type { RemoteRegistrationAdapterConfig } from '../lib/development-tooling/desktop-initialization/RemoteRegistrationAdapter';

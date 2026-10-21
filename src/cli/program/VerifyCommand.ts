@@ -1,5 +1,5 @@
 import type { Command } from 'commander';
-import { fail } from '../../core/errors';
+import { fail } from '../../core/development-tooling/errors';
 import {
 	renderVerify,
 	verifyCheck,
@@ -7,7 +7,7 @@ import {
 	verifyRun,
 	verifyStamp,
 	type VerifyOptions
-} from '../../workflows/run-verify/runVerify';
+} from '../../workflows/verification-evidence/run-verify/runVerify';
 
 type Flags = VerifyOptions & { json?: boolean };
 

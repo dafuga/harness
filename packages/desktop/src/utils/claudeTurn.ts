@@ -1,1 +1,1 @@
-export { claudeTurn } from '../adapters/claude-cli-adapter/claudeTurn';
+export { claudeTurn } from '../adapters/agents-providers/claude-cli-adapter/claudeTurn';

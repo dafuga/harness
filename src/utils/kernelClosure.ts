@@ -1,1 +1,1 @@
-export { kernelClosure } from './impact-kernel/kernelClosure';
+export { kernelClosure } from './execution-runtimes/impact-kernel/kernelClosure';

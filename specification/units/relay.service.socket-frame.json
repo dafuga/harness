@@ -8,6 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/relay/src/lib/execution-runtimes/host-runtime/socket-frame-service/SocketFrameService.ts",
 			"packages/relay/src/lib/host-runtime/socket-frame-service/SocketFrameService.ts",
 			"packages/relay/src/services/socket-frame-service/SocketFrameService.ts"
 		],
@@ -16,6 +17,7 @@
 			"SocketFrameService.constructor",
 			"SocketFrameService.message",
 			"SocketFrameService.closed",
+			"SocketFrameService",
 			"SocketFrameService"
 		]
 	},
@@ -98,11 +100,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/lib/host-runtime/socket-frame-service/SocketFrameService.ts",
+		"entry": "packages/relay/src/lib/execution-runtimes/host-runtime/socket-frame-service/SocketFrameService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/lib/host-runtime/socket-frame-service/SocketFrameService.ts"
+				"entry": "packages/relay/src/lib/execution-runtimes/host-runtime/socket-frame-service/SocketFrameService.ts"
 			}
 		]
 	},

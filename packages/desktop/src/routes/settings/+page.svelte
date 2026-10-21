@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
-	import AgentSettings from '../../components/AgentSettings.svelte';
-	import { isWorkspacePath } from '../../utils/workspaceRoute';
+	import AgentSettings from '../../components/agents-providers/AgentSettings.svelte';
+	import { isWorkspacePath } from '../../utils/projects-sessions/workspaceRoute';
 	import '../../lib/styles/workspace.css';
 	import '../../lib/styles/design.css';
 	const title = 'Settings';

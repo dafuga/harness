@@ -1,7 +1,7 @@
 import { json, type RequestEvent } from '@sveltejs/kit';
-import { R2ScreenshotStoreAdapter } from '../../../adapters/R2ScreenshotStoreAdapter';
+import { R2ScreenshotStoreAdapter } from '../../../adapters/reports-media/R2ScreenshotStoreAdapter';
 import { ScreenshotUploadService, type ScreenshotUploadInput } from './ScreenshotUploadService';
-import { repository } from '../../../utils/reportHttp';
+import { repository } from '../../../utils/reports-media/reportHttp';
 
 function requestProblem(request: Request, url: URL) {
 	if (request.headers.get('origin') !== url.origin)

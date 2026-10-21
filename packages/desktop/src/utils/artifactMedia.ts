@@ -1,4 +1,3 @@
-/** The most raw bytes one artifact may have: as base64 it still fits one message of 16 MiB. */
-export const artifactLimit = 11 * 1024 * 1024;
-
-export { artifactMedia } from './artifact-answer/artifactMedia';
+export { artifactMedia } from './development-tooling/artifactMedia';
+export { artifactLimit } from './development-tooling/artifactMedia';
+export * from './development-tooling/artifactMedia';

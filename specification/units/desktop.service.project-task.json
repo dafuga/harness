@@ -8,9 +8,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/agents-providers/desktop-run-service/project-task-service/ProjectTaskService.ts",
 			"packages/desktop/src/services/desktop-run-service/project-task-service/ProjectTaskService.ts"
 		],
-		"symbols": ["ProjectTaskService", "ProjectTaskService.run"]
+		"symbols": ["ProjectTaskService", "ProjectTaskService.run", "ProjectTaskService"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -91,11 +92,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/desktop-run-service/project-task-service/ProjectTaskService.ts",
+		"entry": "packages/desktop/src/services/agents-providers/desktop-run-service/project-task-service/ProjectTaskService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/desktop-run-service/project-task-service/ProjectTaskService.ts"
+				"entry": "packages/desktop/src/services/agents-providers/desktop-run-service/project-task-service/ProjectTaskService.ts"
 			}
 		]
 	},

@@ -2,10 +2,10 @@ import {
 	readNoteLines,
 	type ReadNote
 } from '../../../../../../../../src/utils/note-lines/noteCommit';
-import type { HubSourceContext } from '../../../../../utils/hubSource';
-import { hubRaw } from '../../../../../utils/hubRaw';
-import { hubFail } from '../../../../../utils/hubJson';
-import { hubPinnedSource } from '../../../../../utils/hubPinnedSource';
+import type { HubSourceContext } from '../../../../../utils/development-tooling/hubSource';
+import { hubRaw } from '../../../../../utils/development-tooling/hubRaw';
+import { hubFail } from '../../../../../utils/development-tooling/hubJson';
+import { hubPinnedSource } from '../../../../../utils/verification-evidence/hubPinnedSource';
 
 /** Caller owns one immutable authorized context. Its memo never crosses principals. */
 const pending = new WeakMap<HubSourceContext, Map<string, Promise<Map<string, ReadNote>>>>();

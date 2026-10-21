@@ -1,21 +1,21 @@
 import { createHash } from 'node:crypto';
 import { realpathSync } from 'node:fs';
-import type { TreeFile } from '../../../adapters/EvidenceTreeAdapter';
-import { GitAdapter } from '../../../adapters/GitAdapter';
-import { LfsAdapter } from '../../../adapters/LfsAdapter';
+import type { TreeFile } from '../../../adapters/verification-evidence/EvidenceTreeAdapter';
+import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
+import { LfsAdapter } from '../../../adapters/git-source-history/LfsAdapter';
 import {
 	legacyDirectory,
 	type EvidencePointer,
 	type LegacyRecord
-} from '../../../core/historyTypes';
-import { EvidenceBranchRepository } from '../../../repositories/evidence-branch-repository/EvidenceBranchRepository';
-import { HistoryNoteRepository } from '../../../repositories/history-note-repository/HistoryNoteRepository';
+} from '../../../core/git-source-history/historyTypes';
+import { EvidenceBranchRepository } from '../../../repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository';
+import { HistoryNoteRepository } from '../../../repositories/git-source-history/history-note-repository/HistoryNoteRepository';
 import { LegacyReportRepository } from './LegacyReportRepository';
-import { sourceArchiveRef } from '../../../utils/historyRefs';
+import { sourceArchiveRef } from '../../../utils/git-source-history/historyRefs';
 import { legacyReport } from './legacyReport';
-import { type LegacyReport } from '../../../utils/legacyReport';
-import { lfsPointer, lfsStored } from '../../../utils/lfsPointer';
-import { stableJson } from '../../../utils/stableJson';
+import { type LegacyReport } from '../../../utils/reports-media/legacyReport';
+import { lfsPointer, lfsStored } from '../../../utils/verification-evidence/lfsPointer';
+import { stableJson } from '../../../utils/development-tooling/stableJson';
 
 export interface LegacyImport {
 	imported: Array<{

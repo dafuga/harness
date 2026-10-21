@@ -1,1 +1,1 @@
-export { codexState } from '../adapters/codex-app-server-adapter/codexState';
+export { codexState } from '../adapters/agents-providers/codex-app-server-adapter/codexState';

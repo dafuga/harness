@@ -1,6 +1,6 @@
-import { hubFail } from '../../../../utils/hubJson';
+import { hubFail } from '../../../../utils/development-tooling/hubJson';
 import { hubPngChunks } from './hubPngChunks';
-import { type Header, type State } from '../../../../utils/hubPngChunks';
+import { type Header, type State } from '../../../../utils/networking-security/hubPngChunks';
 
 const LIMIT = 32 * 1024 * 1024;
 

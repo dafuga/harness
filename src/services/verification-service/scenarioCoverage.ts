@@ -1,1 +1,1 @@
-export { scenarioCoverage } from '../../workflows/run-verify/verification-service/scenarioCoverage';
+export { scenarioCoverage } from '../../workflows/verification-evidence/run-verify/verification-service/scenarioCoverage';

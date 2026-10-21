@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/run-verify/runVerify.ts"],
+		"source": [
+			"src/workflows/run-verify/runVerify.ts",
+			"src/workflows/verification-evidence/run-verify/runVerify.ts"
+		],
 		"symbols": [
+			"verifyRun",
+			"verifyCheck",
+			"verifyIdentity",
+			"verifyStamp",
+			"renderVerify",
 			"VerifyOptions",
 			"verifyRun",
 			"verifyCheck",
@@ -154,11 +162,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/run-verify/runVerify.ts",
+		"entry": "src/workflows/verification-evidence/run-verify/runVerify.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/run-verify/runVerify.ts"
+				"entry": "src/workflows/verification-evidence/run-verify/runVerify.ts"
 			}
 		]
 	},

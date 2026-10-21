@@ -9,12 +9,22 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/entity-view/threadAnchor.ts",
+			"packages/desktop/src/components/explorer-ui/entity-view/threadAnchor.ts",
+			"packages/desktop/src/components/explorer-ui/thread-links/threadAnchor.ts",
+			"packages/desktop/src/components/explorer-ui/thread-panel/threadAnchor.ts",
 			"packages/desktop/src/components/thread-links/threadAnchor.ts",
 			"packages/desktop/src/components/thread-panel/threadAnchor.ts",
+			"packages/desktop/src/utils/explorer-ui/threadAnchor.ts",
 			"packages/desktop/src/utils/threadAnchor.ts"
 		],
 		"symbols": [
 			"versionOption",
+			"versionOption",
+			"sameImage",
+			"shownApproval",
+			"otherOption",
+			"designTarget",
+			"threadAnchor",
 			"sameImage",
 			"shownApproval",
 			"otherOption",
@@ -31,7 +41,17 @@
 			"designTarget",
 			"threadAnchor",
 			"versionOption",
-			"sameImage"
+			"sameImage",
+			"shownApproval",
+			"otherOption",
+			"designTarget",
+			"threadAnchor",
+			"versionOption",
+			"sameImage",
+			"entityTarget",
+			"imageTarget",
+			"optionImages",
+			"designOption"
 		]
 	},
 	"contract": {
@@ -221,11 +241,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/threadAnchor.ts",
+		"entry": "packages/desktop/src/utils/explorer-ui/threadAnchor.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/threadAnchor.ts"
+				"entry": "packages/desktop/src/utils/explorer-ui/threadAnchor.ts"
 			}
 		]
 	},

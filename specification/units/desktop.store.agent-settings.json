@@ -9,9 +9,12 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/agent-settings/agentSettings.svelte.ts",
+			"packages/desktop/src/lib/agents-providers/agent-settings/agentSettings.svelte.ts",
 			"packages/desktop/src/lib/stores/agentSettings.svelte.ts"
 		],
 		"symbols": [
+			"createAgentSettingsStore",
+			"agentSettings",
 			"createAgentSettingsStore",
 			"agentSettings",
 			"createAgentSettingsStore",
@@ -52,11 +55,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/lib/agent-settings/agentSettings.svelte.ts",
+		"entry": "packages/desktop/src/lib/agents-providers/agent-settings/agentSettings.svelte.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/lib/agent-settings/agentSettings.svelte.ts"
+				"entry": "packages/desktop/src/lib/agents-providers/agent-settings/agentSettings.svelte.ts"
 			}
 		]
 	},

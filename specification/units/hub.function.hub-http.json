@@ -11,7 +11,8 @@
 			"packages/hub/src/controllers/hub-api-controller/hubHttp.ts",
 			"packages/hub/src/routes/api/[...path]/hub-api-controller/hubHttp.ts",
 			"packages/hub/src/utils/hub-http/hubHttp.ts",
-			"packages/hub/src/utils/hubHttp.ts"
+			"packages/hub/src/utils/hubHttp.ts",
+			"packages/hub/src/utils/networking-security/hub-http/hubHttp.ts"
 		],
 		"symbols": [
 			"hubQuery",
@@ -23,7 +24,9 @@
 			"hubHttp",
 			"hubBody",
 			"hubQuery",
-			"hubHttpFailure"
+			"hubHttpFailure",
+			"hubHttp",
+			"hubBody"
 		]
 	},
 	"contract": {

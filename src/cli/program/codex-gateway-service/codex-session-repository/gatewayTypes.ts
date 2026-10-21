@@ -1,4 +1,4 @@
-import type { GatewaySession } from '../../../../utils/gatewayTypes';
+import type { GatewaySession } from '../../../../utils/development-tooling/gatewayTypes';
 
 export function gatewayTypes(id: string): GatewaySession {
 	return {

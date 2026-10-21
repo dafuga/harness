@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/repositories/RegressionProofRepository.ts"],
+		"source": [
+			"src/repositories/RegressionProofRepository.ts",
+			"src/repositories/verification-evidence/RegressionProofRepository.ts"
+		],
 		"symbols": [
+			"RegressionProofRepository",
+			"regressionNotes",
 			"RegressionNote",
 			"RegressionProofRepository",
 			"RegressionProofRepository.constructor",
@@ -96,11 +101,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/repositories/RegressionProofRepository.ts",
+		"entry": "src/repositories/verification-evidence/RegressionProofRepository.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/repositories/RegressionProofRepository.ts"
+				"entry": "src/repositories/verification-evidence/RegressionProofRepository.ts"
 			}
 		]
 	},

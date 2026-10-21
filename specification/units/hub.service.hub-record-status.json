@@ -9,9 +9,11 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/services/HubRecordStatusService.ts",
-			"packages/hub/src/services/hub-evidence-service/HubRecordStatusService.ts"
+			"packages/hub/src/services/hub-evidence-service/HubRecordStatusService.ts",
+			"packages/hub/src/services/verification-evidence/hub-evidence-service/HubRecordStatusService.ts"
 		],
 		"symbols": [
+			"HubRecordStatusService",
 			"HubRecordStatusService",
 			"HubRecordStatusService",
 			"HubRecordStatusService.constructor",
@@ -101,11 +103,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/services/hub-evidence-service/HubRecordStatusService.ts",
+		"entry": "packages/hub/src/services/verification-evidence/hub-evidence-service/HubRecordStatusService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/services/hub-evidence-service/HubRecordStatusService.ts"
+				"entry": "packages/hub/src/services/verification-evidence/hub-evidence-service/HubRecordStatusService.ts"
 			}
 		]
 	},

@@ -1,5 +1,5 @@
 import type { Command } from 'commander';
-import { fail } from '../../core/errors';
+import { fail } from '../../core/development-tooling/errors';
 import { listUnits, renderUnit, showUnit, unitSchema, unitsGraph } from './inspectUnits';
 import { checkUnits, indexUnits, renderCheck, renderIndex, retireUnit } from './manageUnits';
 

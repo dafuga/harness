@@ -9,9 +9,22 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/project-session-service/git-source-adapter/gitRead.ts",
-			"packages/desktop/src/utils/gitRead.ts"
+			"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/gitRead.ts",
+			"packages/desktop/src/utils/gitRead.ts",
+			"packages/desktop/src/utils/projects-sessions/gitRead.ts"
 		],
-		"symbols": ["gitFiles", "gitRead", "gitRevision", "gitText", "gitFiles"]
+		"symbols": [
+			"gitFiles",
+			"gitFiles",
+			"gitFiles",
+			"gitRead",
+			"gitRevision",
+			"gitText",
+			"gitRead",
+			"gitRevision",
+			"gitText",
+			"gitFiles"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -95,11 +108,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/gitRead.ts",
+		"entry": "packages/desktop/src/utils/projects-sessions/gitRead.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/gitRead.ts"
+				"entry": "packages/desktop/src/utils/projects-sessions/gitRead.ts"
 			}
 		]
 	},

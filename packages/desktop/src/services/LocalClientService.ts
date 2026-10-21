@@ -1,2 +1,2 @@
-export { LocalClientService } from '../lib/desktop-initialization/LocalClientService';
-export type { LocalClientOptions } from '../lib/desktop-initialization/LocalClientService';
+export { LocalClientService } from '../lib/development-tooling/desktop-initialization/LocalClientService';
+export type { LocalClientOptions } from '../lib/development-tooling/desktop-initialization/LocalClientService';

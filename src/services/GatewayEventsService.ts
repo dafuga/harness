@@ -1,1 +1,1 @@
-export { GatewayEventsService } from '../serializers/claude-tools-serializer/GatewayEventsService';
+export { GatewayEventsService } from '../serializers/agents-providers/claude-tools-serializer/GatewayEventsService';

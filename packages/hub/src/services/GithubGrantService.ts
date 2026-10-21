@@ -3,5 +3,5 @@ export {
 	GRANT_TTL,
 	REFRESH_LEASE,
 	GithubGrantService
-} from '../lib/server/auth/GithubGrantService';
-export type { GithubGrantOptions } from '../lib/server/auth/GithubGrantService';
+} from '../lib/verification-evidence/server/auth/GithubGrantService';
+export type { GithubGrantOptions } from '../lib/verification-evidence/server/auth/GithubGrantService';

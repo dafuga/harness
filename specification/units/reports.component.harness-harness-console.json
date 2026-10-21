@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/HarnessConsole.svelte"],
-		"symbols": ["HarnessConsole"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/harness/HarnessConsole.svelte",
+			"packages/reports/src/components/harness/HarnessConsole.svelte"
+		],
+		"symbols": ["HarnessConsole", "HarnessConsole"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -137,11 +140,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/HarnessConsole.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/harness/HarnessConsole.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/harness/HarnessConsole.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/harness/HarnessConsole.svelte"
 			}
 		]
 	},

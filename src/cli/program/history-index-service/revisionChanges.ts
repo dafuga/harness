@@ -3,7 +3,7 @@ import type {
 	Kind,
 	ChangesInput,
 	RevisionChanges
-} from '../../../utils/revisionChanges';
+} from '../../../utils/development-tooling/revisionChanges';
 
 /** What the versions of two registries say: a version changes with the manifest or an owned file. */
 function versioned(before: UnitVersions, after: UnitVersions): Record<Kind, string[]> {

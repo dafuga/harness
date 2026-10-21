@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/desktop-initialization/projection-cache-service/projectionCachePurge.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/projection-cache-service/projectionCachePurge.ts",
 			"packages/desktop/src/utils/projectionCachePurge.ts"
 		],
-		"symbols": ["projectionCachePurge", "projectionCachePurge"]
+		"symbols": ["projectionCachePurge", "projectionCachePurge", "projectionCachePurge"]
 	},
 	"contract": {
 		"origin": "declared",

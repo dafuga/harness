@@ -1,23 +1,23 @@
 import { resolve } from 'node:path';
-import { GitAdapter } from '../../../adapters/GitAdapter';
+import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import {
 	calibrationNote,
 	representativeWorkload,
 	type KernelBenchmark
-} from '../../../core/benchmarkTypes';
-import { fail } from '../../../core/errors';
-import { kernelContract } from '../../../core/kernelTypes';
-import { MeasurementRepository } from '../../../repositories/MeasurementRepository';
+} from '../../../core/development-tooling/benchmarkTypes';
+import { fail } from '../../../core/development-tooling/errors';
+import { kernelContract } from '../../../core/execution-runtimes/kernelTypes';
+import { MeasurementRepository } from '../../../repositories/verification-evidence/MeasurementRepository';
 import {
 	KernelBenchmarkService,
 	serveKernel,
 	type WorkloadRun
 } from './kernel-benchmark-service/KernelBenchmarkService';
 import { sizeMeasurements } from './benchMeasurement';
-import { chooseRuntime } from '../../../utils/chooseRuntime';
-import { kernelArtifacts } from '../../../utils/kernelArtifacts';
-import { kernelWorkload } from '../../../utils/kernelWorkload';
-import { machineProfile } from '../../../utils/machineProfile';
+import { chooseRuntime } from '../../../utils/execution-runtimes/chooseRuntime';
+import { kernelArtifacts } from '../../../utils/execution-runtimes/kernelArtifacts';
+import { kernelWorkload } from '../../../utils/execution-runtimes/kernelWorkload';
+import { machineProfile } from '../../../utils/development-tooling/machineProfile';
 
 export interface BenchOptions {
 	root?: string;

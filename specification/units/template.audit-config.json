@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/templates/auditConfig.ts"],
-		"symbols": ["auditConfigFiles"]
+		"source": ["src/templates/auditConfig.ts", "src/templates/development-tooling/auditConfig.ts"],
+		"symbols": ["auditConfigFiles", "auditConfigFiles"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -40,11 +40,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/templates/auditConfig.ts",
+		"entry": "src/templates/development-tooling/auditConfig.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/templates/auditConfig.ts"
+				"entry": "src/templates/development-tooling/auditConfig.ts"
 			}
 		]
 	},

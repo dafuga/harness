@@ -1,1 +1,1 @@
-export { initializeDesktop } from './initialize-desktop/initializeDesktop';
+export { initializeDesktop } from '../development-tooling/desktop-initialization/initialize-desktop/initializeDesktop';

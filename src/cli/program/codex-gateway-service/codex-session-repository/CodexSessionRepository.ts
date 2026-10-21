@@ -1,5 +1,8 @@
 import { gatewayTypes } from './gatewayTypes';
-import { type GatewayItem, type GatewaySession } from '../../../../utils/gatewayTypes';
+import {
+	type GatewayItem,
+	type GatewaySession
+} from '../../../../utils/development-tooling/gatewayTypes';
 
 export class CodexSessionRepository {
 	private readonly sessions = new Map<string, GatewaySession>();

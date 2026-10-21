@@ -7,8 +7,8 @@ import {
 	renderRoster,
 	renderShown,
 	showActivity
-} from '../../workflows/runActivity';
-import type { AgentInput } from '../../utils/agentStatement';
+} from '../../workflows/projects-sessions/runActivity';
+import type { AgentInput } from '../../utils/agents-providers/agentStatement';
 
 type Flags = AgentInput & { json?: boolean; limit?: string; failed?: boolean };
 

@@ -9,9 +9,11 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/adapters/ReportPagesRetentionAdapter.ts",
-			"packages/reports/src/services/report-command-service/report-retention-service/ReportPagesRetentionAdapter.ts"
+			"packages/reports/src/services/report-command-service/report-retention-service/ReportPagesRetentionAdapter.ts",
+			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportPagesRetentionAdapter.ts"
 		],
 		"symbols": [
+			"ReportPagesRetentionAdapter",
 			"ReportPagesRetentionAdapter",
 			"ReportPagesRetentionAdapter",
 			"ReportPagesRetentionAdapter.constructor",
@@ -75,11 +77,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/services/report-command-service/report-retention-service/ReportPagesRetentionAdapter.ts",
+		"entry": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportPagesRetentionAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/services/report-command-service/report-retention-service/ReportPagesRetentionAdapter.ts"
+				"entry": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportPagesRetentionAdapter.ts"
 			}
 		]
 	},

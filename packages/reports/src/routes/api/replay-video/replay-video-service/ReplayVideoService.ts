@@ -1,12 +1,12 @@
 import { readFile, lstat } from 'node:fs/promises';
 import { join, basename } from 'node:path';
-import { ReportRepository } from '../../../../repositories/report-repository/ReportRepository';
+import { ReportRepository } from '../../../../repositories/reports-media/report-repository/ReportRepository';
 import { replayVideo } from './replayVideo';
-import { replayVideoKey } from '../../../../utils/replayVideo';
-import { reportRetention } from '../../../../utils/reportRetention';
-import { reportLock } from '../../../../utils/reportLock';
-import { ReplayStorageService } from '../../../../services/ReplayStorageService';
-import type { Report } from '../../../../models/Report.types';
+import { replayVideoKey } from '../../../../utils/reports-media/replayVideo';
+import { reportRetention } from '../../../../utils/reports-media/reportRetention';
+import { reportLock } from '../../../../utils/reports-media/reportLock';
+import { ReplayStorageService } from '../../../../services/reports-media/ReplayStorageService';
+import type { Report } from '../../../../models/reports-media/Report.types';
 
 const jobs = new Map<string, Promise<Buffer>>();
 

@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/source-index-service/sourceBlocks.ts", "src/utils/sourceBlocks.ts"],
-		"symbols": ["sourceBlocks", "SourceBlock", "sourceBlocks"]
+		"source": [
+			"src/services/development-tooling/source-index-service/sourceBlocks.ts",
+			"src/services/source-index-service/sourceBlocks.ts",
+			"src/utils/development-tooling/sourceBlocks.ts",
+			"src/utils/sourceBlocks.ts"
+		],
+		"symbols": ["sourceBlocks", "sourceBlocks", "SourceBlock", "sourceBlocks", "sourceBlocks"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -57,11 +62,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/sourceBlocks.ts",
+		"entry": "src/utils/development-tooling/sourceBlocks.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/sourceBlocks.ts"
+				"entry": "src/utils/development-tooling/sourceBlocks.ts"
 			}
 		]
 	},

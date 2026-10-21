@@ -1,1 +1,4 @@
-export { planThread, append } from '../lib/planning/planning-service/planThread';
+export {
+	planThread,
+	append
+} from '../lib/planning-collaboration/planning/planning-service/planThread';

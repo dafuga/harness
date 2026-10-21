@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/hooks.server.ts",
+			"packages/reports/src/lib/development-tooling/server-hooks/hooks.server.ts",
 			"packages/reports/src/lib/server-hooks/hooks.server.ts"
 		],
-		"symbols": ["handle", "handle"]
+		"symbols": ["handle", "handle", "handle"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -48,11 +49,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/lib/server-hooks/hooks.server.ts",
+		"entry": "packages/reports/src/lib/development-tooling/server-hooks/hooks.server.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/lib/server-hooks/hooks.server.ts"
+				"entry": "packages/reports/src/lib/development-tooling/server-hooks/hooks.server.ts"
 			}
 		]
 	},

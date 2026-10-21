@@ -1,6 +1,6 @@
-export { RelayLinkService } from '../remote-host-service/relay-link-service/RelayLinkService';
+export { RelayLinkService } from '../networking-security/remote-host-service/relay-link-service/RelayLinkService';
 export type {
 	RelayLinkState,
 	RelayCommandInput,
 	RelayLinkOptions
-} from '../remote-host-service/relay-link-service/RelayLinkService';
+} from '../networking-security/remote-host-service/relay-link-service/RelayLinkService';

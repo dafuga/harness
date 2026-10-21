@@ -1,1 +1,1 @@
-export { approvalMatches, planRead } from './plan-read/planRead';
+export { approvalMatches, planRead } from './planning-collaboration/plan-read/planRead';

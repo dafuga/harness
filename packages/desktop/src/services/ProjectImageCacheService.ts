@@ -1,1 +1,1 @@
-export { ProjectImageCacheService } from '../lib/desktop-bridge/ProjectImageCacheService';
+export { ProjectImageCacheService } from '../lib/development-tooling/desktop-bridge/ProjectImageCacheService';

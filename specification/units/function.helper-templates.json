@@ -8,10 +8,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/services/explorer-ui/revision-detail-service/helperTemplates.ts",
 			"src/services/revision-detail-service/helperTemplates.ts",
 			"src/utils/helperTemplates.ts"
 		],
-		"symbols": ["helperTemplates", "helperTemplates"]
+		"symbols": ["helperTemplates", "helperTemplates", "helperTemplates"]
 	},
 	"contract": {
 		"origin": "declared",

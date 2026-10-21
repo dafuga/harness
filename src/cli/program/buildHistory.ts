@@ -1,6 +1,6 @@
 import { resolve } from 'node:path';
-import { GitAdapter } from '../../adapters/GitAdapter';
-import { fail } from '../../core/errors';
+import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
+import { fail } from '../../core/development-tooling/errors';
 import {
 	HistoryIndexService,
 	type BuiltHistory

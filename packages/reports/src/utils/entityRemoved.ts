@@ -1,1 +1,1 @@
-export { entityRemoved } from '../components/harness/entity-tests/entityRemoved';
+export { entityRemoved } from '../components/explorer-ui/harness/entity-tests/entityRemoved';

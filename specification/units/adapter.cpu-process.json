@@ -9,9 +9,15 @@
 	"owns": {
 		"source": [
 			"src/adapters/cpu-process-adapter/CpuProcessAdapter.ts",
-			"src/services/cpu-usage-service/cpu-process-adapter/CpuProcessAdapter.ts"
+			"src/services/cpu-usage-service/cpu-process-adapter/CpuProcessAdapter.ts",
+			"src/services/development-tooling/cpu-usage-service/cpu-process-adapter/CpuProcessAdapter.ts"
 		],
-		"symbols": ["CpuProcessAdapter", "CpuProcessAdapter", "CpuProcessAdapter.sample"]
+		"symbols": [
+			"CpuProcessAdapter",
+			"CpuProcessAdapter",
+			"CpuProcessAdapter",
+			"CpuProcessAdapter.sample"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -43,11 +49,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/cpu-usage-service/cpu-process-adapter/CpuProcessAdapter.ts",
+		"entry": "src/services/development-tooling/cpu-usage-service/cpu-process-adapter/CpuProcessAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/cpu-usage-service/cpu-process-adapter/CpuProcessAdapter.ts"
+				"entry": "src/services/development-tooling/cpu-usage-service/cpu-process-adapter/CpuProcessAdapter.ts"
 			}
 		]
 	},

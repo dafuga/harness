@@ -8,10 +8,19 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/services/development-tooling/source-index-service/blockComplexity.ts",
 			"src/services/source-index-service/blockComplexity.ts",
-			"src/utils/blockComplexity.ts"
+			"src/utils/blockComplexity.ts",
+			"src/utils/development-tooling/blockComplexity.ts"
 		],
-		"symbols": ["templateComplexity", "blockComplexity", "templateComplexity"]
+		"symbols": [
+			"templateComplexity",
+			"templateComplexity",
+			"templateComplexity",
+			"blockComplexity",
+			"blockComplexity",
+			"templateComplexity"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -49,11 +58,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/blockComplexity.ts",
+		"entry": "src/utils/development-tooling/blockComplexity.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/blockComplexity.ts"
+				"entry": "src/utils/development-tooling/blockComplexity.ts"
 			}
 		]
 	},

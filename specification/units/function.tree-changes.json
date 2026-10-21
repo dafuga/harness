@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/impact-service/treeChanges.ts", "src/utils/treeChanges.ts"],
-		"symbols": ["treeChanges", "TreeChange", "treeChanges"]
+		"source": [
+			"src/services/impact-service/treeChanges.ts",
+			"src/services/reports-media/impact-service/treeChanges.ts",
+			"src/utils/reports-media/treeChanges.ts",
+			"src/utils/treeChanges.ts"
+		],
+		"symbols": ["treeChanges", "treeChanges", "TreeChange", "treeChanges", "treeChanges"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,11 +47,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/treeChanges.ts",
+		"entry": "src/utils/reports-media/treeChanges.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/treeChanges.ts"
+				"entry": "src/utils/reports-media/treeChanges.ts"
 			}
 		]
 	},

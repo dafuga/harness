@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/StatusBadge.svelte"],
-		"symbols": ["StatusBadge"]
+		"source": [
+			"packages/reports/src/components/StatusBadge.svelte",
+			"packages/reports/src/components/shared-primitives/StatusBadge.svelte"
+		],
+		"symbols": ["StatusBadge", "StatusBadge"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,11 +45,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/StatusBadge.svelte",
+		"entry": "packages/reports/src/components/shared-primitives/StatusBadge.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/StatusBadge.svelte"
+				"entry": "packages/reports/src/components/shared-primitives/StatusBadge.svelte"
 			}
 		]
 	},

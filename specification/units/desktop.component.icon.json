@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/Icon.svelte"],
-		"symbols": ["Icon"]
+		"source": [
+			"packages/desktop/src/components/Icon.svelte",
+			"packages/desktop/src/components/shared-primitives/Icon.svelte"
+		],
+		"symbols": ["Icon", "Icon"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -36,11 +39,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/Icon.svelte",
+		"entry": "packages/desktop/src/components/shared-primitives/Icon.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/Icon.svelte"
+				"entry": "packages/desktop/src/components/shared-primitives/Icon.svelte"
 			}
 		]
 	},

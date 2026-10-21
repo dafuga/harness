@@ -1,5 +1,9 @@
-import type { GatewayEvent, GatewayItem, GatewaySession } from '../../../utils/gatewayTypes';
-import { CodexResponsesSerializer } from '../../../serializers/CodexResponsesSerializer';
+import type {
+	GatewayEvent,
+	GatewayItem,
+	GatewaySession
+} from '../../../utils/development-tooling/gatewayTypes';
+import { CodexResponsesSerializer } from '../../../serializers/agents-providers/CodexResponsesSerializer';
 import type { CodexSessionRepository } from './codex-session-repository/CodexSessionRepository';
 
 export function gatewayStream(

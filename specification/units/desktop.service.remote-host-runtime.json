@@ -9,6 +9,7 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/RemoteHostRuntimeService.ts",
+			"packages/desktop/src/services/networking-security/remote-host-service/RemoteHostRuntimeService.ts",
 			"packages/desktop/src/services/remote-host-service/RemoteHostRuntimeService.ts"
 		],
 		"symbols": [
@@ -22,7 +23,8 @@
 			"RemoteHostRuntimeService.start",
 			"RemoteHostRuntimeService.stop",
 			"RemoteHostRuntimeService.end",
-			"RemoteHostRuntimeService.online"
+			"RemoteHostRuntimeService.online",
+			"RemoteHostRuntimeService"
 		]
 	},
 	"contract": {
@@ -81,11 +83,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/remote-host-service/RemoteHostRuntimeService.ts",
+		"entry": "packages/desktop/src/services/networking-security/remote-host-service/RemoteHostRuntimeService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/remote-host-service/RemoteHostRuntimeService.ts"
+				"entry": "packages/desktop/src/services/networking-security/remote-host-service/RemoteHostRuntimeService.ts"
 			}
 		]
 	},

@@ -1,1 +1,1 @@
-export { remoteFailureText } from '../remote-host-service/device-session-service/remoteFailureText';
+export { remoteFailureText } from '../networking-security/remote-host-service/device-session-service/remoteFailureText';

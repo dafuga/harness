@@ -8,10 +8,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/components/networking-security/remote-offer-code/qrSymbol.ts",
 			"packages/desktop/src/components/remote-offer-code/qrSymbol.ts",
+			"packages/desktop/src/utils/networking-security/qrSymbol.ts",
 			"packages/desktop/src/utils/qrSymbol.ts"
 		],
-		"symbols": ["qrSymbol", "QrSymbol", "qrLimits", "qrSymbol"]
+		"symbols": ["qrSymbol", "qrSymbol", "QrSymbol", "qrLimits", "qrSymbol", "qrSymbol", "qrLimits"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -45,11 +47,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/qrSymbol.ts",
+		"entry": "packages/desktop/src/utils/networking-security/qrSymbol.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/qrSymbol.ts"
+				"entry": "packages/desktop/src/utils/networking-security/qrSymbol.ts"
 			}
 		]
 	},

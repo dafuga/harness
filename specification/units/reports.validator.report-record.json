@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/validators/ReportRecordValidator.ts"],
-		"symbols": ["ReportRecordValidator", "ReportRecordValidator.validate"]
+		"source": [
+			"packages/reports/src/validators/ReportRecordValidator.ts",
+			"packages/reports/src/validators/reports-media/ReportRecordValidator.ts"
+		],
+		"symbols": ["ReportRecordValidator", "ReportRecordValidator", "ReportRecordValidator.validate"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -45,11 +48,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/validators/ReportRecordValidator.ts",
+		"entry": "packages/reports/src/validators/reports-media/ReportRecordValidator.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/validators/ReportRecordValidator.ts"
+				"entry": "packages/reports/src/validators/reports-media/ReportRecordValidator.ts"
 			}
 		]
 	},

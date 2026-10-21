@@ -1,18 +1,7 @@
 <script lang="ts">
-	import type { Workspace } from '../lib/stores/workspace.svelte';
-	import { imageUrl } from '../utils/imageUrl';
-	let {
-		workspace,
-		entityId,
-		version,
-		sha256,
-		title
-	}: { workspace: Workspace; entityId: string; version: string; sha256: string; title: string } =
-		$props();
-	let url = $state('');
-	$effect(() => imageUrl(workspace, { entityId, version, sha256 }, (value) => (url = value)));
+	import CategoryImplementation from './shared-primitives/ImageThumbnail.svelte';
+	import type { ComponentProps } from 'svelte';
+	let props: ComponentProps<typeof CategoryImplementation> = $props();
 </script>
 
-{#if url}<img class="version-thumbnail" src={url} alt={title} />{:else}<span class="muted"
-		>Preview unavailable</span
-	>{/if}
+<CategoryImplementation {...props} />

@@ -1,5 +1,5 @@
 import type { Options } from '@anthropic-ai/claude-agent-sdk';
-import type { GatewaySession } from '../../../../utils/gatewayTypes';
+import type { GatewaySession } from '../../../../utils/development-tooling/gatewayTypes';
 
 export function gatewayOptions(session: GatewaySession): Options {
 	const env = { ...process.env };

@@ -3,10 +3,13 @@ import {
 	ConsoleInstallService,
 	type ConsoleInstallResult
 } from './console-install-service/ConsoleInstallService';
-import { fail } from '../../core/errors';
+import { fail } from '../../core/development-tooling/errors';
 import { ConsoleUninstallService, type ConsoleUninstallResult } from './ConsoleUninstallService';
-import { consoleManifestFile, type ConsoleChange } from '../../utils/consoleManifest';
-import { indexFiles } from '../../utils/indexFiles';
+import {
+	consoleManifestFile,
+	type ConsoleChange
+} from '../../utils/development-tooling/consoleManifest';
+import { indexFiles } from '../../utils/development-tooling/indexFiles';
 
 export interface ConsoleInstallFlags {
 	host: string;

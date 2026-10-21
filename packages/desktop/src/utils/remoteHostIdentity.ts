@@ -1,10 +1,2 @@
-import type { RemoteHostRegisterInput, RemoteHostRegistration } from '../../../remote/src/index';
-
-export type RegisterRemoteHost = (
-	input: RemoteHostRegisterInput
-) => Promise<RemoteHostRegistration>;
-
-export {
-	remoteHostIdentity,
-	registerRemoteHost
-} from '../services/remote-host-service/remote-host-switch-service/remoteHostIdentity';
+export { remoteHostIdentity, registerRemoteHost } from './networking-security/remoteHostIdentity';
+export * from './networking-security/remoteHostIdentity';

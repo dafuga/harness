@@ -8,8 +8,11 @@
 	"status": "active",
 	"documentation": "packages/reports/specification/features/planned/managed-preview-server.md",
 	"owns": {
-		"source": ["packages/reports/src/utils/previewArguments.ts"],
-		"symbols": ["PreviewArguments", "previewArguments"]
+		"source": [
+			"packages/reports/src/utils/development-tooling/previewArguments.ts",
+			"packages/reports/src/utils/previewArguments.ts"
+		],
+		"symbols": ["PreviewArguments", "previewArguments", "previewArguments"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -66,11 +69,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/previewArguments.ts",
+		"entry": "packages/reports/src/utils/development-tooling/previewArguments.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/previewArguments.ts"
+				"entry": "packages/reports/src/utils/development-tooling/previewArguments.ts"
 			}
 		]
 	},

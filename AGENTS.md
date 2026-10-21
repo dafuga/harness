@@ -85,3 +85,14 @@ These rules apply only to this Harness repository, including requests made in an
 Read `harness info naming` and the scaffold guide before naming a module. Classes keep PascalCase and their role suffix; models and components keep PascalCase; functions, pure helpers and value modules keep their actual camelCase name. Match source filenames and primary declarations, preserve framework entries and stable registered IDs, and keep descriptive responsibilities separate from code names. Use the same canonical code identity on cards, usage links and detail headings. Standard catalog coverage compares those surfaces for class, callable, component and model consumers at current and historical revisions; card-only naming overrides are not allowed.
 
 Shared Services lists require source-proven concrete instantiated classes with multiple public instance methods (including inherited methods) and two distinct active runtime owner units for that class. Exclude functions, objects, static namespaces and source-unproven historical entries. Preserve actual PascalCase class identifiers; never capitalize a function label to imply a class. Review responsibilities and real method usage separately: structural eligibility cannot prove absence of semantic redundancy.
+
+## Responsibility Categories
+
+Place every module type in `src/<kind>/<category>/` using the project taxonomy in
+`harness.groups.json`. Use `harness generate <kind> <name> --group <category>` for
+new code; a new explicit group extends the taxonomy. Reuse an existing category
+when its responsibility fits. Unambiguous names or declared responsibilities can
+select it automatically; ambiguity requires a deliberate category choice. Keep
+private helpers and single-owner services inside their owner category. Preserve
+registered IDs, framework entries and public URLs. The explorer reads category
+folders and titles from the selected source revision for every collection.

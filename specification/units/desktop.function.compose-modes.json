@@ -8,11 +8,18 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/components/explorer-ui/thread-panel/composeModes.ts",
 			"packages/desktop/src/components/thread-panel/composeModes.ts",
-			"packages/desktop/src/utils/composeModes.ts"
+			"packages/desktop/src/utils/composeModes.ts",
+			"packages/desktop/src/utils/explorer-ui/composeModes.ts"
 		],
 		"symbols": [
 			"composeModes",
+			"composeModes",
+			"composeModes",
+			"designCounts",
+			"defaultDesignCount",
+			"visualCategory",
 			"ComposeMode",
 			"AgentChoice",
 			"RunDraft",
@@ -79,11 +86,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/composeModes.ts",
+		"entry": "packages/desktop/src/utils/explorer-ui/composeModes.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/composeModes.ts"
+				"entry": "packages/desktop/src/utils/explorer-ui/composeModes.ts"
 			}
 		]
 	},

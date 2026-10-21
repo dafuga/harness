@@ -9,10 +9,13 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/desktop-initialization/initialize-desktop/rendererAssets.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/rendererAssets.ts",
 			"packages/desktop/src/lib/initialize-desktop/rendererAssets.ts",
 			"packages/desktop/src/utils/rendererAssets.ts"
 		],
 		"symbols": [
+			"rendererPolicy",
+			"rendererAssets",
 			"rendererPolicy",
 			"rendererAssets",
 			"rendererPolicy",

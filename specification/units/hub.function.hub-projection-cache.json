@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubProjectionCache.ts"],
-		"symbols": ["hubProjectionCache"]
+		"source": [
+			"packages/hub/src/utils/development-tooling/hubProjectionCache.ts",
+			"packages/hub/src/utils/hubProjectionCache.ts"
+		],
+		"symbols": ["hubProjectionCache", "hubProjectionCache"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -52,11 +55,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hubProjectionCache.ts",
+		"entry": "packages/hub/src/utils/development-tooling/hubProjectionCache.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/hubProjectionCache.ts"
+				"entry": "packages/hub/src/utils/development-tooling/hubProjectionCache.ts"
 			}
 		]
 	},

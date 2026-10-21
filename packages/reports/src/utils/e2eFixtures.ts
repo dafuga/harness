@@ -5,4 +5,4 @@ export {
 	openE2eRun,
 	namedE2eRun,
 	closeE2eRun
-} from './e2e-fixtures/e2eFixtures';
+} from './development-tooling/e2e-fixtures/e2eFixtures';

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/correctedLocation.ts"],
-		"symbols": ["correctedLocation"]
+		"source": [
+			"packages/reports/src/utils/correctedLocation.ts",
+			"packages/reports/src/utils/development-tooling/correctedLocation.ts"
+		],
+		"symbols": ["correctedLocation", "correctedLocation"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,11 +45,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/correctedLocation.ts",
+		"entry": "packages/reports/src/utils/development-tooling/correctedLocation.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/correctedLocation.ts"
+				"entry": "packages/reports/src/utils/development-tooling/correctedLocation.ts"
 			}
 		]
 	},

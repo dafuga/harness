@@ -1,4 +1,4 @@
 export {
 	pngChecksum,
 	mediaFacts
-} from '../../workflows/run-verify/verification-service/check-run-service/mediaFacts';
+} from '../../workflows/verification-evidence/run-verify/verification-service/check-run-service/mediaFacts';

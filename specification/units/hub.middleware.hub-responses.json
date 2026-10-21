@@ -8,10 +8,16 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/hub/src/lib/development-tooling/server-hooks/HubResponsesMiddleware.ts",
 			"packages/hub/src/lib/server-hooks/HubResponsesMiddleware.ts",
 			"packages/hub/src/middleware/HubResponsesMiddleware.ts"
 		],
-		"symbols": ["HubResponsesMiddleware", "HubResponsesMiddleware.handle", "HubResponsesMiddleware"]
+		"symbols": [
+			"HubResponsesMiddleware",
+			"HubResponsesMiddleware.handle",
+			"HubResponsesMiddleware",
+			"HubResponsesMiddleware"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -32,11 +38,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/lib/server-hooks/HubResponsesMiddleware.ts",
+		"entry": "packages/hub/src/lib/development-tooling/server-hooks/HubResponsesMiddleware.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/lib/server-hooks/HubResponsesMiddleware.ts"
+				"entry": "packages/hub/src/lib/development-tooling/server-hooks/HubResponsesMiddleware.ts"
 			}
 		]
 	},

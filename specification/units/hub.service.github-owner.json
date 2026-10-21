@@ -9,9 +9,11 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/lib/server/auth/GithubOwnerService.ts",
+			"packages/hub/src/lib/verification-evidence/server/auth/GithubOwnerService.ts",
 			"packages/hub/src/services/GithubOwnerService.ts"
 		],
 		"symbols": [
+			"GithubOwnerService",
 			"GithubOwnerOptions",
 			"GithubOwnerService",
 			"GithubOwnerService.constructor",
@@ -82,11 +84,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/lib/server/auth/GithubOwnerService.ts",
+		"entry": "packages/hub/src/lib/verification-evidence/server/auth/GithubOwnerService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/lib/server/auth/GithubOwnerService.ts"
+				"entry": "packages/hub/src/lib/verification-evidence/server/auth/GithubOwnerService.ts"
 			}
 		]
 	},

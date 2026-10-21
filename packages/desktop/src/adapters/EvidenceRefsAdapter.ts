@@ -2,5 +2,8 @@ export {
 	notesRef,
 	evidenceRef,
 	EvidenceRefsAdapter
-} from '../lib/desktop-bridge/EvidenceRefsAdapter';
-export type { PinnedRevisions, CurrentRefs } from '../lib/desktop-bridge/EvidenceRefsAdapter';
+} from '../lib/development-tooling/desktop-bridge/EvidenceRefsAdapter';
+export type {
+	PinnedRevisions,
+	CurrentRefs
+} from '../lib/development-tooling/desktop-bridge/EvidenceRefsAdapter';

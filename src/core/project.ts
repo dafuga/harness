@@ -1,1 +1,1 @@
-export type DetectedProjectKind = 'app' | 'lib' | 'unknown';
+export * from './projects-sessions/project';

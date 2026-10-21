@@ -12,7 +12,7 @@ import { renderLoopSearchResults, searchLoops } from './loopSearch';
 import {
 	recordRegression,
 	type RecordRegressionInput
-} from '../../workflows/record-regression/recordRegression';
+} from '../../workflows/verification-evidence/record-regression/recordRegression';
 
 export function registerLoopCommand(program: Command): void {
 	const command = program

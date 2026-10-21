@@ -3,7 +3,7 @@ import type {
 	EntityEvidenceQuery,
 	EvidenceArtifactQuery
 } from '../../../../../../desktop/src/models/DesktopEvidence.types';
-import { hubHistory } from '../../../../utils/hubHistory';
+import { hubHistory } from '../../../../utils/git-source-history/hubHistory';
 import type {
 	Actor,
 	CollaborationApi,
@@ -11,17 +11,21 @@ import type {
 	SourceHistoryAdapter
 } from 'collaboration';
 import type { ThreadMessage } from '../../../../../../desktop/src/models/Desktop.types';
-import { hubSource, hubRead } from '../../../../utils/hubSource';
-import { hubCatalog, hubOwnedPaths, hubAttestPlan } from '../../../../utils/hub-catalog/hubCatalog';
-import { hubRecords } from '../../../../utils/hubRecords';
-import { hubFail } from '../../../../utils/hubJson';
+import { hubSource, hubRead } from '../../../../utils/development-tooling/hubSource';
+import {
+	hubCatalog,
+	hubOwnedPaths,
+	hubAttestPlan
+} from '../../../../utils/networking-security/hub-catalog/hubCatalog';
+import { hubRecords } from '../../../../utils/development-tooling/hubRecords';
+import { hubFail } from '../../../../utils/development-tooling/hubJson';
 import { hubMessages } from './hubThreads';
-import { hubThreads } from '../../../../utils/hubThreads';
-import { hubPlans } from '../../../../utils/hubPlans';
+import { hubThreads } from '../../../../utils/networking-security/hubThreads';
+import { hubPlans } from '../../../../utils/networking-security/hubPlans';
 import { hubDesignImage } from './hubDesigns';
 import { hubSnapshot } from './hubSnapshot';
 import { hubEntity } from './hubEntity';
-import { hubProjectionCache } from '../../../../utils/hubProjectionCache';
+import { hubProjectionCache } from '../../../../utils/development-tooling/hubProjectionCache';
 import { RemoteProjectResponseValidator } from '../../../../../../desktop/src/validators/RemoteProjectResponseValidator';
 
 interface Dependencies {

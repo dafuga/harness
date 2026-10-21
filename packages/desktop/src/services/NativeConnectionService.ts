@@ -1,1 +1,1 @@
-export { NativeConnectionService } from '../lib/desktop-initialization/NativeConnectionService';
+export { NativeConnectionService } from '../lib/development-tooling/desktop-initialization/NativeConnectionService';

@@ -1,1 +1,1 @@
-export { planOptions } from '../../lib/planning/planning-service/planOptions';
+export { planOptions } from '../../lib/planning-collaboration/planning/planning-service/planOptions';

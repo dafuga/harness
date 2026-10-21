@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/planning/src/utils/planImageCodec.ts"],
-		"symbols": ["planImageCodec"]
+		"source": [
+			"packages/planning/src/utils/planImageCodec.ts",
+			"packages/planning/src/utils/planning-collaboration/planImageCodec.ts"
+		],
+		"symbols": ["planImageCodec", "planImageCodec"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -43,11 +46,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/planning/src/utils/planImageCodec.ts",
+		"entry": "packages/planning/src/utils/planning-collaboration/planImageCodec.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/planning/src/utils/planImageCodec.ts"
+				"entry": "packages/planning/src/utils/planning-collaboration/planImageCodec.ts"
 			}
 		]
 	},

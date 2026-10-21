@@ -9,9 +9,11 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/desktop-initialization/projection-cache-service/ProjectionCacheService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService.ts",
 			"packages/desktop/src/services/projection-cache-service/ProjectionCacheService.ts"
 		],
 		"symbols": [
+			"ProjectionCacheService",
 			"ProjectionCacheService",
 			"ProjectionCacheService.constructor",
 			"ProjectionCacheService.get",
@@ -136,11 +138,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/lib/desktop-initialization/projection-cache-service/ProjectionCacheService.ts",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/lib/desktop-initialization/projection-cache-service/ProjectionCacheService.ts"
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService.ts"
 			}
 		]
 	},

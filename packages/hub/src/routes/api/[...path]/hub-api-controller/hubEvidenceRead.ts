@@ -1,7 +1,7 @@
 import type { Actor } from 'collaboration';
 import type { HubProjectionService } from '../hub-projection-service/HubProjectionService';
 import { hubArtifactQuery, hubEvidenceQuery } from './hubEvidenceQuery';
-import { hubHttp } from '../../../../utils/hub-http/hubHttp';
+import { hubHttp } from '../../../../utils/networking-security/hub-http/hubHttp';
 
 interface EvidenceRead {
 	actor: Actor;

@@ -8,11 +8,17 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/components/explorer-ui/harness/entity-sections/entityShown.ts",
 			"packages/reports/src/components/harness/entity-sections/entityShown.ts",
-			"packages/reports/src/utils/entityShown.ts"
+			"packages/reports/src/utils/entityShown.ts",
+			"packages/reports/src/utils/explorer-ui/entityShown.ts"
 		],
 		"symbols": [
 			"entityShown",
+			"entityShown",
+			"entityShown",
+			"entityChanged",
+			"helperEntity",
 			"EntityShown",
 			"Shown",
 			"entityChanged",
@@ -112,11 +118,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/entityShown.ts",
+		"entry": "packages/reports/src/utils/explorer-ui/entityShown.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/entityShown.ts"
+				"entry": "packages/reports/src/utils/explorer-ui/entityShown.ts"
 			}
 		]
 	},

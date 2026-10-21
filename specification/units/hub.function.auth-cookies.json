@@ -7,12 +7,21 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/authCookies.ts"],
+		"source": [
+			"packages/hub/src/utils/accounts-access/authCookies.ts",
+			"packages/hub/src/utils/authCookies.ts"
+		],
 		"symbols": [
 			"SESSION_COOKIE",
 			"CHALLENGE_COOKIE",
 			"EMAIL_PROOF_COOKIE",
 			"CookieOptions",
+			"authCookies",
+			"issueCookie",
+			"clearCookie",
+			"SESSION_COOKIE",
+			"CHALLENGE_COOKIE",
+			"EMAIL_PROOF_COOKIE",
 			"authCookies",
 			"issueCookie",
 			"clearCookie"
@@ -94,11 +103,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/authCookies.ts",
+		"entry": "packages/hub/src/utils/accounts-access/authCookies.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/authCookies.ts"
+				"entry": "packages/hub/src/utils/accounts-access/authCookies.ts"
 			}
 		]
 	},

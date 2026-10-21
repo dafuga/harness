@@ -1,9 +1,9 @@
-import { design } from '../../../../utils/hub-designs/design';
+import { design } from '../../../../utils/networking-security/hub-designs/design';
 import { hubPng } from './hubPng';
-import { hubRead } from '../../../../utils/hubSource';
-import type { HubSourceContext } from '../../../../utils/hubSource';
-import { hubFail } from '../../../../utils/hubJson';
-import type { HubPlan } from '../../../../utils/hubSchemas';
+import { hubRead } from '../../../../utils/development-tooling/hubSource';
+import type { HubSourceContext } from '../../../../utils/development-tooling/hubSource';
+import { hubFail } from '../../../../utils/development-tooling/hubJson';
+import type { HubPlan } from '../../../../utils/development-tooling/hubSchemas';
 
 export async function hubDesignImage(
 	context: HubSourceContext,

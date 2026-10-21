@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/EntitySource.svelte"],
-		"symbols": ["EntitySource"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/harness/EntitySource.svelte",
+			"packages/reports/src/components/harness/EntitySource.svelte"
+		],
+		"symbols": ["EntitySource", "EntitySource"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -37,11 +40,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/EntitySource.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/harness/EntitySource.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/harness/EntitySource.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/harness/EntitySource.svelte"
 			}
 		]
 	},

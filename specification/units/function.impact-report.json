@@ -7,8 +7,22 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/impact-service/impactReport.ts", "src/utils/impactReport.ts"],
-		"symbols": ["impactReport", "testFile", "graphTests", "impactReport"]
+		"source": [
+			"src/services/impact-service/impactReport.ts",
+			"src/services/reports-media/impact-service/impactReport.ts",
+			"src/utils/impactReport.ts",
+			"src/utils/reports-media/impactReport.ts"
+		],
+		"symbols": [
+			"impactReport",
+			"impactReport",
+			"impactReport",
+			"testFile",
+			"graphTests",
+			"testFile",
+			"graphTests",
+			"impactReport"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -62,11 +76,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/impactReport.ts",
+		"entry": "src/utils/reports-media/impactReport.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/impactReport.ts"
+				"entry": "src/utils/reports-media/impactReport.ts"
 			}
 		]
 	},

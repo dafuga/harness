@@ -1,10 +1,13 @@
-import type { HubApiRuntime } from '../../../utils/hubRuntime';
+import type { HubApiRuntime } from '../../../utils/networking-security/hubRuntime';
 import { createCollaboration, createGitHubRepository, createGitHubSource } from 'collaboration';
-import type { HubEnv } from '../../../config/hubEnvConfig';
+import type { HubEnv } from '../../../config/development-tooling/hubEnvConfig';
 import { HubProjectionService } from './hub-projection-service/HubProjectionService';
-import { createHubAuth, createD1AuthStore } from '../../../lib/server/auth/auth';
+import {
+	createHubAuth,
+	createD1AuthStore
+} from '../../../lib/verification-evidence/server/auth/auth';
 import { hubCache } from './hubCache';
-import { hubFail } from '../../../utils/hubJson';
+import { hubFail } from '../../../utils/development-tooling/hubJson';
 import { hubRemote } from './hubRemote';
 
 export function hubRuntime(env: HubEnv): HubApiRuntime {

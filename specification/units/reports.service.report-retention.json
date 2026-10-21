@@ -8,9 +8,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/services/report-command-service/report-retention-service/ReportRetentionService.ts"
+			"packages/reports/src/services/report-command-service/report-retention-service/ReportRetentionService.ts",
+			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportRetentionService.ts"
 		],
 		"symbols": [
+			"ReportRetentionService",
 			"ReportRetentionService",
 			"ReportRetentionService.constructor",
 			"ReportRetentionService.run"
@@ -95,11 +97,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/services/report-command-service/report-retention-service/ReportRetentionService.ts",
+		"entry": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportRetentionService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/services/report-command-service/report-retention-service/ReportRetentionService.ts"
+				"entry": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportRetentionService.ts"
 			}
 		]
 	},

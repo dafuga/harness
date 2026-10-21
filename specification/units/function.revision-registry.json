@@ -7,8 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/revision-registry/revisionRegistry.ts", "src/utils/revisionRegistry.ts"],
-		"symbols": ["RevisionRegistry", "revisionRegistry", "RevisionRegistry", "revisionRegistry"]
+		"source": [
+			"src/utils/revision-registry/revisionRegistry.ts",
+			"src/utils/revisionRegistry.ts",
+			"src/utils/verification-evidence/revision-registry/revisionRegistry.ts"
+		],
+		"symbols": [
+			"revisionRegistry",
+			"RevisionRegistry",
+			"revisionRegistry",
+			"RevisionRegistry",
+			"revisionRegistry"
+		]
 	},
 	"contract": {
 		"origin": "declared",

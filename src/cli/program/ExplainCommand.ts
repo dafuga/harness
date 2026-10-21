@@ -1,6 +1,11 @@
 import type { Command } from 'commander';
-import { fail } from '../../core/errors';
-import { explainAdd, explainedRange, listed, type ExplainInput } from '../../workflows/runExplain';
+import { fail } from '../../core/development-tooling/errors';
+import {
+	explainAdd,
+	explainedRange,
+	listed,
+	type ExplainInput
+} from '../../workflows/development-tooling/runExplain';
 
 type Flags = ExplainInput & { json?: boolean };
 

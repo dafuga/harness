@@ -1,1 +1,1 @@
-export { reportPages } from '../report-command-service/report-publish-service/reportPages';
+export { reportPages } from '../reports-media/report-command-service/report-publish-service/reportPages';

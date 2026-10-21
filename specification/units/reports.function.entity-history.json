@@ -8,9 +8,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/components/explorer-ui/harness/entity-change/entityHistory.ts",
+			"packages/reports/src/components/explorer-ui/harness/entity-history/entityHistory.ts",
 			"packages/reports/src/components/harness/entity-change/entityHistory.ts",
 			"packages/reports/src/components/harness/entity-history/entityHistory.ts",
-			"packages/reports/src/utils/entityHistory.ts"
+			"packages/reports/src/utils/entityHistory.ts",
+			"packages/reports/src/utils/explorer-ui/entityHistory.ts"
 		],
 		"symbols": [
 			"reviewChanges",
@@ -18,6 +21,18 @@
 			"historyListed",
 			"entityHistory",
 			"historyProfiles",
+			"reviewChanges",
+			"historyVerdict",
+			"historyListed",
+			"entityHistory",
+			"historyProfiles",
+			"historyVerdict",
+			"historyListed",
+			"entityHistory",
+			"historyProfiles",
+			"reviewChanges",
+			"signedBytes",
+			"signedCount",
 			"HistoryTiming",
 			"signedBytes",
 			"signedCount",
@@ -155,11 +170,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/entityHistory.ts",
+		"entry": "packages/reports/src/utils/explorer-ui/entityHistory.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/entityHistory.ts"
+				"entry": "packages/reports/src/utils/explorer-ui/entityHistory.ts"
 			}
 		]
 	},

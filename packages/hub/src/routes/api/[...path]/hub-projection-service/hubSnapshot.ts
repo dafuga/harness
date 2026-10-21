@@ -5,10 +5,10 @@ import type {
 	SourceHistoryAdapter
 } from 'collaboration';
 import type { ProjectSnapshot } from '../../../../../../desktop/src/models/Desktop.types';
-import { hubSource } from '../../../../utils/hubSource';
-import { hubCatalog } from '../../../../utils/hub-catalog/hubCatalog';
-import { hubFail, hubHash } from '../../../../utils/hubJson';
-import { hubProjectionCache } from '../../../../utils/hubProjectionCache';
+import { hubSource } from '../../../../utils/development-tooling/hubSource';
+import { hubCatalog } from '../../../../utils/networking-security/hub-catalog/hubCatalog';
+import { hubFail, hubHash } from '../../../../utils/development-tooling/hubJson';
+import { hubProjectionCache } from '../../../../utils/development-tooling/hubProjectionCache';
 import { RemoteProjectResponseValidator } from '../../../../../../desktop/src/validators/RemoteProjectResponseValidator';
 
 export async function hubSnapshot(

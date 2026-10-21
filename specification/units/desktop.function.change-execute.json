@@ -8,10 +8,18 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/agents-providers/desktop-run-service/change-run-service/changeExecute.ts",
 			"packages/desktop/src/services/desktop-run-service/change-run-service/changeExecute.ts",
 			"packages/desktop/src/utils/changeExecute.ts"
 		],
-		"symbols": ["changeExecute", "recordChange", "changeExecute", "recordChange"]
+		"symbols": [
+			"changeExecute",
+			"recordChange",
+			"changeExecute",
+			"recordChange",
+			"changeExecute",
+			"recordChange"
+		]
 	},
 	"contract": {
 		"origin": "declared",

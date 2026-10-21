@@ -9,10 +9,11 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/device-session-service/remoteFailureText.ts",
+			"packages/desktop/src/services/networking-security/remote-host-service/device-session-service/remoteFailureText.ts",
 			"packages/desktop/src/services/remote-host-service/device-session-service/remoteFailureText.ts",
 			"packages/desktop/src/utils/remoteFailureText.ts"
 		],
-		"symbols": ["remoteFailureText", "remoteFailureText", "remoteFailureText"]
+		"symbols": ["remoteFailureText", "remoteFailureText", "remoteFailureText", "remoteFailureText"]
 	},
 	"contract": {
 		"origin": "declared",

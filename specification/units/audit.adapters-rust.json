@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/adapters/rust.ts"],
-		"symbols": ["rustAdapter"]
+		"source": ["src/audit/adapters/rust.ts", "src/audit/development-tooling/adapters/rust.ts"],
+		"symbols": ["rustAdapter", "rustAdapter"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -40,11 +40,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/audit/adapters/rust.ts",
+		"entry": "src/audit/development-tooling/adapters/rust.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/audit/adapters/rust.ts"
+				"entry": "src/audit/development-tooling/adapters/rust.ts"
 			}
 		]
 	},

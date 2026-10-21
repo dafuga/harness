@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/lib/stores/threadRun.svelte.ts"],
-		"symbols": ["createThreadRunStore", "ThreadRun"]
+		"source": [
+			"packages/desktop/src/lib/stores/development-tooling/threadRun.svelte.ts",
+			"packages/desktop/src/lib/stores/threadRun.svelte.ts"
+		],
+		"symbols": ["createThreadRunStore", "ThreadRun", "createThreadRunStore"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -40,11 +43,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/lib/stores/threadRun.svelte.ts",
+		"entry": "packages/desktop/src/lib/stores/development-tooling/threadRun.svelte.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/lib/stores/threadRun.svelte.ts"
+				"entry": "packages/desktop/src/lib/stores/development-tooling/threadRun.svelte.ts"
 			}
 		]
 	},

@@ -1,4 +1,4 @@
-import { resolveLoopTemplate } from '../../workflows/loop-templates/loopTemplates';
+import { resolveLoopTemplate } from '../../workflows/development-tooling/loop-templates/loopTemplates';
 import {
 	appendTrace,
 	loopPaths,
@@ -13,16 +13,16 @@ import {
 	type LoopState,
 	type LoopStatus,
 	type LoopStep
-} from '../../workflows/loop-state/loopState';
-import { fail } from '../../core/errors';
-import { enforceRegressionStep } from '../../workflows/record-regression/recordRegression';
+} from '../../workflows/development-tooling/loop-state/loopState';
+import { fail } from '../../core/development-tooling/errors';
+import { enforceRegressionStep } from '../../workflows/verification-evidence/record-regression/recordRegression';
 
 export {
 	type LoopEvaluator,
 	type LoopState,
 	type LoopStatus,
 	type LoopStep
-} from '../../workflows/loop-state/loopState';
+} from '../../workflows/development-tooling/loop-state/loopState';
 
 export interface CreateLoopInput extends LoopInput {
 	name: string;

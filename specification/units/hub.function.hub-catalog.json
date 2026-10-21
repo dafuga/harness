@@ -10,7 +10,8 @@
 		"source": [
 			"packages/hub/src/routes/api/[...path]/hub-projection-service/hubCatalog.ts",
 			"packages/hub/src/utils/hub-catalog/hubCatalog.ts",
-			"packages/hub/src/utils/hubCatalog.ts"
+			"packages/hub/src/utils/hubCatalog.ts",
+			"packages/hub/src/utils/networking-security/hub-catalog/hubCatalog.ts"
 		],
 		"symbols": [
 			"hubRelationships",
@@ -20,7 +21,10 @@
 			"hubCatalog",
 			"hubAttestPlan",
 			"hubOwnedPaths",
-			"hubRelationships"
+			"hubRelationships",
+			"hubCatalog",
+			"hubAttestPlan",
+			"hubOwnedPaths"
 		]
 	},
 	"contract": {

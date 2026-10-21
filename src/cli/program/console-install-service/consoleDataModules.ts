@@ -1,6 +1,9 @@
-import type { IndexFile, BundledSize } from '../../../utils/consoleDataModules';
+import type { IndexFile, BundledSize } from '../../../utils/development-tooling/consoleDataModules';
 import { gzipSync } from 'node:zlib';
-import { consoleServerDirectory, type HostFile } from '../../../utils/consoleHostFiles';
+import {
+	consoleServerDirectory,
+	type HostFile
+} from '../../../utils/development-tooling/consoleHostFiles';
 
 const types: Record<string, string> = {
 	png: 'image/png',

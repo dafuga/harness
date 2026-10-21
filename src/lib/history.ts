@@ -14,14 +14,14 @@ export {
 	legacyRecordSchema,
 	notesRef,
 	sourceArchivePrefix
-} from '../core/historyTypes';
+} from '../core/git-source-history/historyTypes';
 export type {
 	EvidenceFile,
 	EvidenceManifest,
 	EvidencePointer,
 	HistoryNote,
 	LegacyRecord
-} from '../core/historyTypes';
+} from '../core/git-source-history/historyTypes';
 export {
 	benchmarkSeriesSchema,
 	historyIndexSchema,
@@ -29,7 +29,7 @@ export {
 	indexedRevisionSchema,
 	legacyEntrySchema,
 	legacyMediaSchema
-} from '../core/historyIndexTypes';
+} from '../core/git-source-history/historyIndexTypes';
 export type {
 	BenchmarkSeries,
 	HistoryIndex,
@@ -37,19 +37,29 @@ export type {
 	IndexedRevision,
 	LegacyEntry,
 	LegacyMedia
-} from '../core/historyIndexTypes';
-export { lfsPointer, lfsStored } from '../utils/lfsPointer';
-export { parseLfsPointer } from '../services/history-status-service/attached-record-service/lfsPointer';
-export type { LfsObject } from '../utils/lfsPointer';
-export { mergeNoteLines, noteLine } from '../repositories/history-note-repository/noteLines';
-export { noteCommit, readNoteLines } from '../utils/note-lines/noteCommit';
-export { type ReadNote } from '../utils/note-lines/noteCommit';
-export { refKind, sourceArchiveRef } from '../utils/historyRefs';
-export type { RefKind } from '../utils/historyRefs';
-export { recordLineage } from '../utils/recordLineage';
-export type { LineageSource } from '../utils/recordLineage';
+} from '../core/git-source-history/historyIndexTypes';
+export { lfsPointer, lfsStored } from '../utils/verification-evidence/lfsPointer';
+export { parseLfsPointer } from '../services/verification-evidence/history-status-service/attached-record-service/lfsPointer';
+export type { LfsObject } from '../utils/verification-evidence/lfsPointer';
+export {
+	mergeNoteLines,
+	noteLine
+} from '../repositories/git-source-history/history-note-repository/noteLines';
+export { noteCommit, readNoteLines } from '../utils/git-source-history/note-lines/noteCommit';
+export { type ReadNote } from '../utils/git-source-history/note-lines/noteCommit';
+export { refKind, sourceArchiveRef } from '../utils/git-source-history/historyRefs';
+export type { RefKind } from '../utils/git-source-history/historyRefs';
+export { recordLineage } from '../utils/development-tooling/recordLineage';
+export type { LineageSource } from '../utils/development-tooling/recordLineage';
 export { pushedRefs } from '../cli/program/hook-run-service/pushedRefs';
-export type { RecordView, ResolvedMedia } from '../utils/recordView';
-export { type RevisionRegistry } from '../utils/revision-registry/revisionRegistry';
-export { regressionRecordSchema, regressionViewSchema } from '../core/regressionTypes';
-export type { RegressionRecord, RegressionPoint, RegressionView } from '../core/regressionTypes';
+export type { RecordView, ResolvedMedia } from '../utils/development-tooling/recordView';
+export { type RevisionRegistry } from '../utils/verification-evidence/revision-registry/revisionRegistry';
+export {
+	regressionRecordSchema,
+	regressionViewSchema
+} from '../core/verification-evidence/regressionTypes';
+export type {
+	RegressionRecord,
+	RegressionPoint,
+	RegressionView
+} from '../core/verification-evidence/regressionTypes';

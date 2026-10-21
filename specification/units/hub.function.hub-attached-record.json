@@ -9,9 +9,19 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/services/hub-evidence-service/hub-attached-service/hubAttachedRecord.ts",
-			"packages/hub/src/utils/hubAttachedRecord.ts"
+			"packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/hubAttachedRecord.ts",
+			"packages/hub/src/utils/hubAttachedRecord.ts",
+			"packages/hub/src/utils/verification-evidence/hubAttachedRecord.ts"
 		],
-		"symbols": ["hubAttachedRecord", "HubAttachedRecord", "hubRecordJson", "hubAttachedRecord"]
+		"symbols": [
+			"hubAttachedRecord",
+			"hubAttachedRecord",
+			"hubAttachedRecord",
+			"hubRecordJson",
+			"HubAttachedRecord",
+			"hubRecordJson",
+			"hubAttachedRecord"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -65,11 +75,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hubAttachedRecord.ts",
+		"entry": "packages/hub/src/utils/verification-evidence/hubAttachedRecord.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/hubAttachedRecord.ts"
+				"entry": "packages/hub/src/utils/verification-evidence/hubAttachedRecord.ts"
 			}
 		]
 	},

@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/ConsoleChangeService.ts"],
+		"source": [
+			"src/services/ConsoleChangeService.ts",
+			"src/services/projects-sessions/ConsoleChangeService.ts"
+		],
 		"symbols": [
+			"replacedDirectory",
+			"ConsoleChangeService",
 			"replacedDirectory",
 			"FileState",
 			"ConsoleChangeService",
@@ -118,11 +123,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/ConsoleChangeService.ts",
+		"entry": "src/services/projects-sessions/ConsoleChangeService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/ConsoleChangeService.ts"
+				"entry": "src/services/projects-sessions/ConsoleChangeService.ts"
 			}
 		]
 	},

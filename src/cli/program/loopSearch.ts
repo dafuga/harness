@@ -5,8 +5,8 @@ import {
 	loopPaths,
 	readLoop,
 	type LoopInput
-} from '../../workflows/loop-state/loopState';
-import { listLoopTemplates } from '../../workflows/loop-templates/loopTemplates';
+} from '../../workflows/development-tooling/loop-state/loopState';
+import { listLoopTemplates } from '../../workflows/development-tooling/loop-templates/loopTemplates';
 
 export type LoopSearchKind = 'loop' | 'template';
 

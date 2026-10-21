@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/adapters/typescript.ts"],
-		"symbols": ["typeScriptAdapter"]
+		"source": [
+			"src/audit/adapters/typescript.ts",
+			"src/audit/development-tooling/adapters/typescript.ts"
+		],
+		"symbols": ["typeScriptAdapter", "typeScriptAdapter"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -55,11 +58,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/audit/adapters/typescript.ts",
+		"entry": "src/audit/development-tooling/adapters/typescript.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/audit/adapters/typescript.ts"
+				"entry": "src/audit/development-tooling/adapters/typescript.ts"
 			}
 		]
 	},

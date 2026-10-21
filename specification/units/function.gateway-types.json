@@ -9,6 +9,7 @@
 	"owns": {
 		"source": [
 			"src/cli/program/codex-gateway-service/codex-session-repository/gatewayTypes.ts",
+			"src/utils/development-tooling/gatewayTypes.ts",
 			"src/utils/gatewayTypes.ts"
 		],
 		"symbols": [
@@ -19,6 +20,7 @@
 			"GatewayEvent",
 			"PendingTool",
 			"GatewaySession",
+			"gatewayTypes",
 			"gatewayTypes"
 		]
 	},
@@ -43,11 +45,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/gatewayTypes.ts",
+		"entry": "src/utils/development-tooling/gatewayTypes.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/gatewayTypes.ts"
+				"entry": "src/utils/development-tooling/gatewayTypes.ts"
 			}
 		]
 	},

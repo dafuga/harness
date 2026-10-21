@@ -1,28 +1,32 @@
 import { createHash } from 'node:crypto';
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { EvidenceTreeAdapter } from '../../../adapters/EvidenceTreeAdapter';
-import type { HistoryIndex, IndexedRevision, LegacyEntry } from '../../../core/historyIndexTypes';
-import { evidenceRef, notesRef } from '../../../core/historyTypes';
-import type { VerificationRecord } from '../../../core/verificationTypes';
+import { EvidenceTreeAdapter } from '../../../adapters/verification-evidence/EvidenceTreeAdapter';
+import type {
+	HistoryIndex,
+	IndexedRevision,
+	LegacyEntry
+} from '../../../core/git-source-history/historyIndexTypes';
+import { evidenceRef, notesRef } from '../../../core/git-source-history/historyTypes';
+import type { VerificationRecord } from '../../../core/verification-evidence/verificationTypes';
 import {
 	SourceHistoryRepository,
 	type SourceRevision
-} from '../../../repositories/source-history-repository/SourceHistoryRepository';
+} from '../../../repositories/git-source-history/source-history-repository/SourceHistoryRepository';
 import { budgetReviews } from './budgetReviews';
 import { historySeries, unitGrowth } from './historySeries';
 import { revisionChanges } from './revisionChanges';
-import { type RevisionChanges } from '../../../utils/revisionChanges';
-import type { RevisionRegistry } from '../../../utils/revision-registry/revisionRegistry';
-import { revisionSummary } from '../../../utils/revisionSummary';
-import { stableJson } from '../../../utils/stableJson';
+import { type RevisionChanges } from '../../../utils/development-tooling/revisionChanges';
+import type { RevisionRegistry } from '../../../utils/verification-evidence/revision-registry/revisionRegistry';
+import { revisionSummary } from '../../../utils/development-tooling/revisionSummary';
+import { stableJson } from '../../../utils/development-tooling/stableJson';
 import { HistoryMediaService } from './history-media-service/HistoryMediaService';
-import { HistoryStatusService } from '../../../services/history-status-service/HistoryStatusService';
-import { ProjectActivityService } from '../../../services/project-activity-service/ProjectActivityService';
+import { HistoryStatusService } from '../../../services/verification-evidence/history-status-service/HistoryStatusService';
+import { ProjectActivityService } from '../../../services/projects-sessions/project-activity-service/ProjectActivityService';
 import {
 	RevisionDetailService,
 	type BuiltRevision
-} from '../../../services/revision-detail-service/RevisionDetailService';
+} from '../../../services/explorer-ui/revision-detail-service/RevisionDetailService';
 
 export interface BuiltHistory {
 	out: string;

@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/namePatterns.ts"],
+		"source": ["src/audit/development-tooling/namePatterns.ts", "src/audit/namePatterns.ts"],
 		"symbols": [
+			"fileName",
+			"typeScriptStem",
+			"fileNameFinding",
+			"isPascalCase",
+			"isCamelCase",
+			"isKebabCase",
+			"escapeRegExp",
 			"fileName",
 			"typeScriptStem",
 			"fileNameFinding",
@@ -100,11 +107,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/audit/namePatterns.ts",
+		"entry": "src/audit/development-tooling/namePatterns.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/audit/namePatterns.ts"
+				"entry": "src/audit/development-tooling/namePatterns.ts"
 			}
 		]
 	},

@@ -9,9 +9,11 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/HostedProjectService.ts",
-			"packages/desktop/src/services/desktop-bridge-service/HostedProjectService.ts"
+			"packages/desktop/src/services/desktop-bridge-service/HostedProjectService.ts",
+			"packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.ts"
 		],
 		"symbols": [
+			"HostedProjectService",
 			"HostedProjectService",
 			"HostedProjectService",
 			"HostedProjectService.constructor",
@@ -66,11 +68,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/desktop-bridge-service/HostedProjectService.ts",
+		"entry": "packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/desktop-bridge-service/HostedProjectService.ts"
+				"entry": "packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.ts"
 			}
 		]
 	},

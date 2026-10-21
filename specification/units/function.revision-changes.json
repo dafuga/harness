@@ -10,6 +10,7 @@
 		"source": [
 			"src/cli/program/history-index-service/revisionChanges.ts",
 			"src/services/history-index-service/revisionChanges.ts",
+			"src/utils/development-tooling/revisionChanges.ts",
 			"src/utils/revisionChanges.ts"
 		],
 		"symbols": [
@@ -20,6 +21,7 @@
 			"ChangedUnits",
 			"RevisionChanges",
 			"ChangesInput",
+			"revisionChanges",
 			"revisionChanges"
 		]
 	},
@@ -44,11 +46,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/revisionChanges.ts",
+		"entry": "src/utils/development-tooling/revisionChanges.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/revisionChanges.ts"
+				"entry": "src/utils/development-tooling/revisionChanges.ts"
 			}
 		]
 	},

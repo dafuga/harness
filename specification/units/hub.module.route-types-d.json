@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/lib/routeTypes.d.ts"],
+		"source": [
+			"packages/hub/src/lib/development-tooling/routeTypes.d.ts",
+			"packages/hub/src/lib/routeTypes.d.ts"
+		],
 		"symbols": []
 	},
 	"contract": {
@@ -19,11 +22,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/lib/routeTypes.d.ts",
+		"entry": "packages/hub/src/lib/development-tooling/routeTypes.d.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/lib/routeTypes.d.ts"
+				"entry": "packages/hub/src/lib/development-tooling/routeTypes.d.ts"
 			}
 		]
 	},

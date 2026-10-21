@@ -1,12 +1,12 @@
 import { hostedCapabilities } from '../../../../../../desktop/src/utils/hostedCapabilities';
 import type { Actor, CollaborationApi, AddCommentInput } from 'collaboration';
-import type { HubApiRuntime } from '../../../../utils/hubRuntime';
+import type { HubApiRuntime } from '../../../../utils/networking-security/hubRuntime';
 import type { HubProjectionService } from '../hub-projection-service/HubProjectionService';
 import { HubAgentController, type HubAgentPort } from './HubAgentController';
 import { HubRemoteController } from './HubRemoteController';
-import { hubBody, hubHttp } from '../../../../utils/hub-http/hubHttp';
+import { hubBody, hubHttp } from '../../../../utils/networking-security/hub-http/hubHttp';
 import { hubHttpFailure, hubQuery } from './hubHttp';
-import { hubFail } from '../../../../utils/hubJson';
+import { hubFail } from '../../../../utils/development-tooling/hubJson';
 import { hubEvidenceRead } from './hubEvidenceRead';
 
 interface Context {

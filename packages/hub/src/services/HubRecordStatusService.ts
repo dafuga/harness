@@ -1,1 +1,1 @@
-export { HubRecordStatusService } from './hub-evidence-service/HubRecordStatusService';
+export { HubRecordStatusService } from './verification-evidence/hub-evidence-service/HubRecordStatusService';

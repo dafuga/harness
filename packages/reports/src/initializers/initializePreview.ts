@@ -1,1 +1,1 @@
-export { initializePreview } from '../lib/initialize-preview/initializePreview';
+export { initializePreview } from '../lib/development-tooling/initialize-preview/initializePreview';

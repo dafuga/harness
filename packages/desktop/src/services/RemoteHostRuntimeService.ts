@@ -1,5 +1,5 @@
-export { RemoteHostRuntimeService } from './remote-host-service/RemoteHostRuntimeService';
+export { RemoteHostRuntimeService } from './networking-security/remote-host-service/RemoteHostRuntimeService';
 export type {
 	RelayLinkTuning,
 	RemoteHostRuntimeOptions
-} from './remote-host-service/RemoteHostRuntimeService';
+} from './networking-security/remote-host-service/RemoteHostRuntimeService';

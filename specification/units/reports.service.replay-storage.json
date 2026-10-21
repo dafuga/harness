@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/services/ReplayStorageService.ts"],
+		"source": [
+			"packages/reports/src/services/ReplayStorageService.ts",
+			"packages/reports/src/services/reports-media/ReplayStorageService.ts"
+		],
 		"symbols": [
+			"ReplayStorageService",
 			"ReplayStorageService",
 			"ReplayStorageService.store",
 			"ReplayStorageService.restore"
@@ -88,11 +92,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/services/ReplayStorageService.ts",
+		"entry": "packages/reports/src/services/reports-media/ReplayStorageService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/services/ReplayStorageService.ts"
+				"entry": "packages/reports/src/services/reports-media/ReplayStorageService.ts"
 			}
 		]
 	},

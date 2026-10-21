@@ -7,8 +7,21 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/history-sync-service/historyRefs.ts", "src/utils/historyRefs.ts"],
-		"symbols": ["historyRefs", "RefKind", "sourceArchiveRef", "refKind", "historyRefs"]
+		"source": [
+			"src/cli/program/history-sync-service/historyRefs.ts",
+			"src/utils/git-source-history/historyRefs.ts",
+			"src/utils/historyRefs.ts"
+		],
+		"symbols": [
+			"historyRefs",
+			"RefKind",
+			"sourceArchiveRef",
+			"refKind",
+			"historyRefs",
+			"historyRefs",
+			"sourceArchiveRef",
+			"refKind"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -52,11 +65,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/historyRefs.ts",
+		"entry": "src/utils/git-source-history/historyRefs.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/historyRefs.ts"
+				"entry": "src/utils/git-source-history/historyRefs.ts"
 			}
 		]
 	},

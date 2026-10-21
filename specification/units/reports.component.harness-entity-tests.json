@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/entity-tests/EntityTests.svelte"],
-		"symbols": ["EntityTests"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/harness/entity-tests/EntityTests.svelte",
+			"packages/reports/src/components/harness/entity-tests/EntityTests.svelte"
+		],
+		"symbols": ["EntityTests", "EntityTests"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -107,11 +110,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/entity-tests/EntityTests.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/harness/entity-tests/EntityTests.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/harness/entity-tests/EntityTests.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/harness/entity-tests/EntityTests.svelte"
 			}
 		]
 	},

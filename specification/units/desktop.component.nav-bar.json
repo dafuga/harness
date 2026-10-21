@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/nav-bar/NavBar.svelte"],
-		"symbols": ["NavBar"]
+		"source": [
+			"packages/desktop/src/components/nav-bar/NavBar.svelte",
+			"packages/desktop/src/components/projects-sessions/nav-bar/NavBar.svelte"
+		],
+		"symbols": ["NavBar", "NavBar"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -88,11 +91,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/nav-bar/NavBar.svelte",
+		"entry": "packages/desktop/src/components/projects-sessions/nav-bar/NavBar.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/nav-bar/NavBar.svelte"
+				"entry": "packages/desktop/src/components/projects-sessions/nav-bar/NavBar.svelte"
 			}
 		]
 	},

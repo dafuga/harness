@@ -106,3 +106,14 @@ Before freezing a naming regression, format and lint the strengthened tests and 
 Keep registered test titles stable when extending naming coverage; verification records bind to those names.
 
 Shared Services lists require source-proven concrete instantiated classes with multiple public instance methods (including inherited methods) and two distinct active runtime owner units for that class. Exclude functions, objects, static namespaces and source-unproven historical entries. Preserve actual PascalCase class identifiers; never capitalize a function label to imply a class. Review responsibilities and real method usage separately: structural eligibility cannot prove absence of semantic redundancy.
+
+## Responsibility Categories
+
+Place every module type in `src/<kind>/<category>/` using the project taxonomy in
+`harness.groups.json`. Use `harness generate <kind> <name> --group <category>` for
+new code; a new explicit group extends the taxonomy. Reuse an existing category
+when its responsibility fits. Unambiguous names or declared responsibilities can
+select it automatically; ambiguity requires a deliberate category choice. Keep
+private helpers and single-owner services inside their owner category. Preserve
+registered IDs, framework entries and public URLs. The explorer reads category
+folders and titles from the selected source revision for every collection.

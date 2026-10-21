@@ -1,1 +1,1 @@
-export { NativePickerSwitchService } from './native-picker-bridge-service/NativePickerSwitchService';
+export { NativePickerSwitchService } from './development-tooling/native-picker-bridge-service/NativePickerSwitchService';

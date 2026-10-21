@@ -1,13 +1,13 @@
-import { EvidenceTreeAdapter } from '../../../adapters/EvidenceTreeAdapter';
-import { LfsAdapter } from '../../../adapters/LfsAdapter';
-import { fail } from '../../../core/errors';
+import { EvidenceTreeAdapter } from '../../../adapters/verification-evidence/EvidenceTreeAdapter';
+import { LfsAdapter } from '../../../adapters/git-source-history/LfsAdapter';
+import { fail } from '../../../core/development-tooling/errors';
 import {
 	evidenceRef,
 	notesRef,
 	remoteTrackingPrefix,
 	sourceArchivePrefix
-} from '../../../core/historyTypes';
-import { HistoryNoteRepository } from '../../../repositories/history-note-repository/HistoryNoteRepository';
+} from '../../../core/git-source-history/historyTypes';
+import { HistoryNoteRepository } from '../../../repositories/git-source-history/history-note-repository/HistoryNoteRepository';
 import { historyRefs } from './historyRefs';
 
 export type RefChange = 'absent' | 'unchanged' | 'created' | 'fast-forwarded' | 'merged';

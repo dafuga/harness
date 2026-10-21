@@ -1,1 +1,1 @@
-export { ConsoleBridgeAdapter } from '../lib/console-workspace/ConsoleBridgeAdapter';
+export { ConsoleBridgeAdapter } from '../lib/projects-sessions/console-workspace/ConsoleBridgeAdapter';

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/project-activity/ProjectActivity.svelte"],
-		"symbols": ["ProjectActivity"]
+		"source": [
+			"packages/reports/src/components/project-activity/ProjectActivity.svelte",
+			"packages/reports/src/components/projects-sessions/project-activity/ProjectActivity.svelte"
+		],
+		"symbols": ["ProjectActivity", "ProjectActivity"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -77,11 +80,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/project-activity/ProjectActivity.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/project-activity/ProjectActivity.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/project-activity/ProjectActivity.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/project-activity/ProjectActivity.svelte"
 			}
 		]
 	},

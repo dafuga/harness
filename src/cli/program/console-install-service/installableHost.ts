@@ -1,8 +1,8 @@
-import type { HostRequest } from '../../../utils/installableHost';
+import type { HostRequest } from '../../../utils/development-tooling/installableHost';
 import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { fail } from '../../../core/errors';
+import { fail } from '../../../core/development-tooling/errors';
 
 const packageName = '@dafuga01/harness';
 

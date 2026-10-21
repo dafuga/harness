@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/ChoiceDialog.svelte"],
-		"symbols": ["ChoiceDialog"]
+		"source": [
+			"packages/desktop/src/components/ChoiceDialog.svelte",
+			"packages/desktop/src/components/shared-primitives/ChoiceDialog.svelte"
+		],
+		"symbols": ["ChoiceDialog", "ChoiceDialog"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -66,11 +69,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/ChoiceDialog.svelte",
+		"entry": "packages/desktop/src/components/shared-primitives/ChoiceDialog.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/ChoiceDialog.svelte"
+				"entry": "packages/desktop/src/components/shared-primitives/ChoiceDialog.svelte"
 			}
 		]
 	},

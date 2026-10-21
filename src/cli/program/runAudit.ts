@@ -1,11 +1,14 @@
-import type { AnalyticsContext } from '../../core/analyticsTypes';
-import { resolvedContext, validateReport } from '../../workflows/analyticsRecord';
-import { recordCleanCode } from '../../workflows/recordJevAnalytics';
+import type { AnalyticsContext } from '../../core/reports-media/analyticsTypes';
+import { resolvedContext, validateReport } from '../../workflows/reports-media/analyticsRecord';
+import { recordCleanCode } from '../../workflows/agents-providers/recordJevAnalytics';
 import { resolve } from 'node:path';
-import { auditProject } from '../../audit/audit';
-import { parseAuditProfile } from '../../audit/profile';
-import { renderAudit, renderAuditCoverage } from '../../audit/render';
-import { cleanCodeExitCode, renderCleanCode } from '../../audit/cleanCodeRender';
+import { auditProject } from '../../audit/development-tooling/audit';
+import { parseAuditProfile } from '../../audit/development-tooling/profile';
+import { renderAudit, renderAuditCoverage } from '../../audit/development-tooling/render';
+import {
+	cleanCodeExitCode,
+	renderCleanCode
+} from '../../audit/development-tooling/cleanCodeRender';
 
 export interface AuditCommandOptions extends AnalyticsContext {
 	profile?: string;

@@ -1,6 +1,6 @@
 import { rm, rmdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
-import { fail } from '../../core/errors';
+import { fail } from '../../core/development-tooling/errors';
 import {
 	consoleManifest,
 	consoleManifestFile,
@@ -8,8 +8,8 @@ import {
 	type ConsoleChange,
 	type ConsoleFileEntry,
 	type ConsoleManifest
-} from '../../utils/consoleManifest';
-import { ConsoleChangeService } from '../../services/ConsoleChangeService';
+} from '../../utils/development-tooling/consoleManifest';
+import { ConsoleChangeService } from '../../services/projects-sessions/ConsoleChangeService';
 
 export interface ConsoleUninstallOptions {
 	host: string;

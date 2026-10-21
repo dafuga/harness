@@ -1,1 +1,1 @@
-export { gatherCaptures } from '../../workflows/run-verify/verification-service/check-run-service/gatherCaptures';
+export { gatherCaptures } from '../../workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherCaptures';

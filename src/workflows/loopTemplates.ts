@@ -1,6 +1,9 @@
-export { listLoopTemplates, resolveLoopTemplate } from './loop-templates/loopTemplates';
+export {
+	listLoopTemplates,
+	resolveLoopTemplate
+} from './development-tooling/loop-templates/loopTemplates';
 export type {
 	LoopTemplateStep,
 	LoopTemplate,
 	ResolvedLoopTemplate
-} from './loop-templates/loopTemplates';
+} from './development-tooling/loop-templates/loopTemplates';

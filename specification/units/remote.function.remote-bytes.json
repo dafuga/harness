@@ -8,10 +8,13 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/remote/src/services/networking-security/wire-session-service/remoteBytes.ts",
 			"packages/remote/src/services/wire-session-service/remoteBytes.ts",
+			"packages/remote/src/utils/networking-security/remoteBytes.ts",
 			"packages/remote/src/utils/remoteBytes.ts"
 		],
 		"symbols": [
+			"stableJson",
 			"stableJson",
 			"CryptoSource",
 			"cryptoSource",
@@ -26,7 +29,20 @@
 			"sha256",
 			"randomBytes",
 			"safeEqual",
-			"stableJson"
+			"stableJson",
+			"stableJson",
+			"cryptoSource",
+			"remoteBytes",
+			"bytesText",
+			"toBase64",
+			"fromBase64",
+			"toBase64Url",
+			"fromBase64Url",
+			"toHex",
+			"concatBytes",
+			"sha256",
+			"randomBytes",
+			"safeEqual"
 		]
 	},
 	"contract": {
@@ -181,11 +197,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/remote/src/utils/remoteBytes.ts",
+		"entry": "packages/remote/src/utils/networking-security/remoteBytes.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/remote/src/utils/remoteBytes.ts"
+				"entry": "packages/remote/src/utils/networking-security/remoteBytes.ts"
 			}
 		]
 	},

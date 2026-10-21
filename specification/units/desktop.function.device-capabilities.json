@@ -9,10 +9,16 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/device-operations-service/deviceCapabilities.ts",
+			"packages/desktop/src/services/networking-security/remote-host-service/device-session-service/device-operations-service/deviceCapabilities.ts",
 			"packages/desktop/src/services/remote-host-service/device-session-service/device-operations-service/deviceCapabilities.ts",
 			"packages/desktop/src/utils/deviceCapabilities.ts"
 		],
-		"symbols": ["deviceCapabilities", "deviceCapabilities", "deviceCapabilities"]
+		"symbols": [
+			"deviceCapabilities",
+			"deviceCapabilities",
+			"deviceCapabilities",
+			"deviceCapabilities"
+		]
 	},
 	"contract": {
 		"origin": "declared",

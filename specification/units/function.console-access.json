@@ -9,9 +9,13 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/console-server/consoleAccess.ts",
-			"src/utils/consoleAccess.ts"
+			"packages/reports/src/utils/explorer-ui/console-server/consoleAccess.ts",
+			"src/utils/consoleAccess.ts",
+			"src/utils/explorer-ui/consoleAccess.ts"
 		],
 		"symbols": [
+			"consoleAccess",
+			"consoleAccess",
 			"consoleAccess",
 			"ConsoleData",
 			"ConsoleExportInput",
@@ -59,11 +63,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/consoleAccess.ts",
+		"entry": "src/utils/explorer-ui/consoleAccess.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/consoleAccess.ts"
+				"entry": "src/utils/explorer-ui/consoleAccess.ts"
 			}
 		]
 	},

@@ -1,9 +1,14 @@
 import { existsSync } from 'node:fs';
 import { chmod, mkdir, readFile, readdir, rename, rm, writeFile } from 'node:fs/promises';
 import { isAbsolute, join, relative, resolve } from 'node:path';
-import { GitAdapter } from '../../../adapters/GitAdapter';
-import { fail } from '../../../core/errors';
-import { chainedSuffix, hookStages, stageFile, type HookStage } from '../../../utils/hookScript';
+import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
+import { fail } from '../../../core/development-tooling/errors';
+import {
+	chainedSuffix,
+	hookStages,
+	stageFile,
+	type HookStage
+} from '../../../utils/development-tooling/hookScript';
 import { hookScript, managedHook } from './hookScript';
 
 /** One stage as this worktree has it: its shared wrapper, and whether it was asked for here. */

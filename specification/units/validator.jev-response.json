@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/validators/JevResponseValidator.ts"],
-		"symbols": ["JevResponseValidator", "JevResponseValidator.validate"]
+		"source": [
+			"src/validators/JevResponseValidator.ts",
+			"src/validators/agents-providers/JevResponseValidator.ts"
+		],
+		"symbols": ["JevResponseValidator", "JevResponseValidator", "JevResponseValidator.validate"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -49,11 +52,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/validators/JevResponseValidator.ts",
+		"entry": "src/validators/agents-providers/JevResponseValidator.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/validators/JevResponseValidator.ts"
+				"entry": "src/validators/agents-providers/JevResponseValidator.ts"
 			}
 		]
 	},

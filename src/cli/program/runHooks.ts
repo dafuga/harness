@@ -1,7 +1,7 @@
 import { resolve } from 'node:path';
-import { GitAdapter } from '../../adapters/GitAdapter';
-import { fail } from '../../core/errors';
-import { CommitMessageService } from '../../services/commit-message-service/CommitMessageService';
+import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
+import { fail } from '../../core/development-tooling/errors';
+import { CommitMessageService } from '../../services/git-source-history/commit-message-service/CommitMessageService';
 import { HookInstallService, type HookStatus } from './hook-install-service/HookInstallService';
 import { HookRunService, type HookOutcome } from './hook-run-service/HookRunService';
 

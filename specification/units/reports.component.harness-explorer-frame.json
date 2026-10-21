@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/ExplorerFrame.svelte"],
-		"symbols": ["ExplorerFrame"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/harness/ExplorerFrame.svelte",
+			"packages/reports/src/components/harness/ExplorerFrame.svelte"
+		],
+		"symbols": ["ExplorerFrame", "ExplorerFrame"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -83,11 +86,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/ExplorerFrame.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/harness/ExplorerFrame.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/harness/ExplorerFrame.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/harness/ExplorerFrame.svelte"
 			}
 		]
 	},

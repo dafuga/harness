@@ -2,4 +2,4 @@ export {
 	repositoryIdentity,
 	sameRepository,
 	sameSite
-} from './repository-identity/repositoryIdentity';
+} from './accounts-access/repository-identity/repositoryIdentity';

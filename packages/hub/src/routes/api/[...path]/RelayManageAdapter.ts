@@ -5,8 +5,8 @@ import type {
 	RelayRegistered,
 	RemoteHostSummary
 } from '../../../../../remote/src/models/RemoteRelay.types';
-import { hubFail } from '../../../utils/hubJson';
-import { RelayReplyValidator } from '../../../validators/RelayReplyValidator';
+import { hubFail } from '../../../utils/development-tooling/hubJson';
+import { RelayReplyValidator } from '../../../validators/networking-security/RelayReplyValidator';
 
 export interface RelayManageAdapterConfig {
 	/** The relay's host objects: one per host id. `/manage/*` is reachable through this only. */

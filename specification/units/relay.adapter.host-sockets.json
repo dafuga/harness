@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/relay/src/lib/host-runtime/HostSocketsAdapter.ts"],
+		"source": [
+			"packages/relay/src/lib/execution-runtimes/host-runtime/HostSocketsAdapter.ts",
+			"packages/relay/src/lib/host-runtime/HostSocketsAdapter.ts"
+		],
 		"symbols": [
 			"HostSocketsAdapter",
 			"HostSocketsAdapter.constructor",
@@ -19,7 +22,8 @@
 			"HostSocketsAdapter.connection",
 			"HostSocketsAdapter.all",
 			"HostSocketsAdapter.send",
-			"HostSocketsAdapter.close"
+			"HostSocketsAdapter.close",
+			"HostSocketsAdapter"
 		]
 	},
 	"contract": {
@@ -111,11 +115,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/lib/host-runtime/HostSocketsAdapter.ts",
+		"entry": "packages/relay/src/lib/execution-runtimes/host-runtime/HostSocketsAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/lib/host-runtime/HostSocketsAdapter.ts"
+				"entry": "packages/relay/src/lib/execution-runtimes/host-runtime/HostSocketsAdapter.ts"
 			}
 		]
 	},

@@ -9,9 +9,17 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/lib/server/auth/composeHubAuth.ts",
-			"packages/hub/src/utils/composeHubAuth.ts"
+			"packages/hub/src/lib/verification-evidence/server/auth/composeHubAuth.ts",
+			"packages/hub/src/utils/composeHubAuth.ts",
+			"packages/hub/src/utils/verification-evidence/composeHubAuth.ts"
 		],
-		"symbols": ["composeHubAuth", "HubAuthParts", "composeHubAuth"]
+		"symbols": [
+			"composeHubAuth",
+			"composeHubAuth",
+			"composeHubAuth",
+			"HubAuthParts",
+			"composeHubAuth"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -130,11 +138,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/composeHubAuth.ts",
+		"entry": "packages/hub/src/utils/verification-evidence/composeHubAuth.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/composeHubAuth.ts"
+				"entry": "packages/hub/src/utils/verification-evidence/composeHubAuth.ts"
 			}
 		]
 	},
