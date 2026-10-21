@@ -6,7 +6,7 @@
 	"name": "source-runner-lifecycle",
 	"goal": "Source profiling observes actual execution with bounded overhead while preserving foreign-process startup, type erasure, declaration collection and explicit benchmark boundaries.",
 	"createdAt": "2026-10-21T13:14:51.960Z",
-	"updatedAt": "2026-10-21T13:28:31.473Z",
+	"updatedAt": "2026-10-21T13:40:43.025Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -52,12 +52,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T13:40:41.718Z",
+			"evidence": "Paired red6c4d204d at1c5b852ca and green93bfd36b at694acd350 pass all seven unchanged lifecycle/sampling cases in the same environment. Intermediate49f6fdd3 failed evidence startup and is not a green checkpoint."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T13:40:43.025Z",
+			"evidence": "The isolated old loader fails six lifecycle/sampling cases while registered-import behavior passes. Repaired source passes all seven. The five original failed files also pass unchanged with profiling enabled:20tests on694acd350, including original timing and type-entry guards."
 		},
 		{
 			"id": "verify",
