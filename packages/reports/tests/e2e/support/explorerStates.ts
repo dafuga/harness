@@ -116,10 +116,18 @@ const reaches: Record<string, (page: Page) => Promise<void>> = {
 			content(page).getByRole('heading', { name: 'Contract', exact: true })
 		).toBeVisible();
 	},
-	// Source is shown only here, after it was asked for.
+	// This synthetic Git history has no GitHub remote; Source states that boundary explicitly.
 	async source(page) {
 		await page.goto(at('main', commits.approved, `functions/${units.slugify}/details?tab=source`));
-		await expect(content(page).getByText('src/utils/slugify.ts').first()).toBeVisible();
+		await expect(page.getByRole('tab', { name: 'Source', exact: true })).toHaveAttribute(
+			'aria-selected',
+			'true'
+		);
+		const source = content(page).getByRole('region', { name: 'GitHub source', exact: true });
+		await expect(
+			source.getByText('GitHub source unavailable for this revision.', { exact: true })
+		).toBeVisible();
+		await expect(source.getByRole('link')).toHaveCount(0);
 	},
 	// The commits that changed a function, with its growth and the approval of it.
 	async history(page) {
