@@ -6,7 +6,7 @@
 	"name": "exact-verification-time-bound",
 	"goal": "Allow exact native verification to finish within a bounded supported duration while preserving every check, permission and performance limit.",
 	"createdAt": "2026-10-21T11:50:32.855Z",
-	"updatedAt": "2026-10-21T11:52:14.392Z",
+	"updatedAt": "2026-10-21T11:55:41.459Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -52,12 +52,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:55:36.992Z",
+			"evidence": "Paired red34f27c04 at32fa0036 and green0d4aea08 ata0a97d60 run identical six-case workflow coverage. All six cases pass; only timeout/comment changed in the native job."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:55:41.459Z",
+			"evidence": "Isolated180minute workflow fails the strengthened timeout assertion; restored360minute workflow passes. All existing workflow safeguards remain asserted. A new hosted exact job is still required."
 		},
 		{
 			"id": "verify",
