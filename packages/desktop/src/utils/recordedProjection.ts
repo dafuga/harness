@@ -69,6 +69,7 @@ function detail(whole: HarnessRevision, entity: string, shown: Shown): HarnessRe
 	const changed = sourceImpact && { ...impact(sourceImpact), expanded: sourceImpact.expanded };
 	return {
 		commit: whole.commit,
+		...(whole.side ? { side: whole.side } : {}),
 		registry: {
 			available: registry.available,
 			...(registry.gap === undefined ? {} : { gap: registry.gap }),

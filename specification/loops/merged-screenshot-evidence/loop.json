@@ -2,9 +2,11 @@
 	"name": "merged-screenshot-evidence",
 	"goal": "Keep source-identical merged screenshots visible with honest original provenance and verify main after landing",
 	"createdAt": "2026-10-21T19:06:15.524Z",
-	"updatedAt": "2026-10-21T19:06:53.848Z",
+	"updatedAt": "2026-10-21T19:15:01.889Z",
 	"template": "regression-prevention",
-	"templateLineage": ["regression-prevention"],
+	"templateLineage": [
+		"regression-prevention"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -25,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T19:13:42.518Z",
+			"evidence": "Immutable red checkpoint at d3ac9bd7bbf7aef240ed23047ec9b02fe427425c fails source-identical squash in the existing loop/history matrix; separate UI selection run also rejects the same-tree image. Original main screenshot has zero page preview images."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T19:13:43.573Z",
+			"evidence": "Resolve sealed focused proof for identical complete Git trees, preserve original commit/build and focused status, reject changed trees, capture details routes through existing browser cases, and verify the actual merged history before handoff."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T19:15:01.889Z",
+			"evidence": "Git-backed history now reuses sealed focused captures only across identical complete source trees; shared UI retains original provenance, projections retain tree identity, and generated/local guidance requires post-merge preview decoding."
 		},
 		{
 			"id": "green",
