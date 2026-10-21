@@ -82,13 +82,20 @@ function application(home: string, name: string, place: (target: string) => void
 	mkdirSync(join(root, 'usr/bin'), { recursive: true });
 	writeFileSync(join(bundle, 'Contents/Info.plist'), plist(rootIdentifier));
 	copyFileSync(join(home, 'daemon'), join(bundle, 'Contents/MacOS/Synthetic'));
-	place(join(root, 'usr/bin/ibtoold'));
+	const paths = [
+		'usr/bin/ibtoold',
+		'Platforms/iPhoneSimulator.platform/Developer/Library/Xcode/Overlays/IBAgent-iOS'
+	];
+	for (const path of paths) {
+		mkdirSync(dirname(join(root, path)), { recursive: true });
+		place(join(root, path));
+	}
 	sign(rootIdentifier, bundle);
 	return {
 		root,
 		rootCode: bundle,
 		rootRequirement: `identifier "${rootIdentifier}"`,
-		services: [{ path: 'usr/bin/ibtoold', requirement: `identifier "${serviceIdentifier}"` }]
+		services: paths.map((path) => ({ path, requirement: `identifier "${serviceIdentifier}"` }))
 	};
 }
 

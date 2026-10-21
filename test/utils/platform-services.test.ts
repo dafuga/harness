@@ -42,15 +42,20 @@ async function standing(known: TrackedProcess, authority?: ServiceAuthority, gro
 test.skipIf(!mac)(
 	'the vetted service, vouched for, departed and adopted, is delegated',
 	async () => {
-		expect(await standing(adopted(made.service, forLong('vetted')))).toBe('delegated');
+		for (const service of made.authority.services) {
+			const known = adopted(join(made.authority.root, service.path), forLong('vetted'));
+			expect(await standing(known)).toBe('delegated');
+		}
 	}
 );
 
 test.skipIf(!mac)(
 	'a service under another identity earns nothing, though it sits at the path',
 	async () => {
-		const other = adopted(join(made.other.root, 'usr/bin/ibtoold'), forLong('other'));
-		expect(await standing(other, made.other)).toBe('protected');
+		for (const service of made.other.services) {
+			const other = adopted(join(made.other.root, service.path), forLong('other'));
+			expect(await standing(other, made.other)).toBe('protected');
+		}
 	}
 );
 
@@ -102,10 +107,12 @@ test.skipIf(!mac)(
 	"other tools are the command's own, Apple-signed or not; a launcher is not",
 	async () => {
 		mkdirSync(join(made.home, 'another'));
-		symlinkSync('/bin/sleep', join(made.home, 'another/ibtool'));
+		for (const name of ['ibtool', 'IBAgent-iOS'])
+			symlinkSync('/bin/sleep', join(made.home, 'another', name));
 		expect(await standing(adopted('/bin/sleep', ['30']))).toBe('private');
 		expect(await standing(adopted(made.helper, forLong('helper')))).toBe('private');
-		expect(await standing(adopted(join(made.home, 'another/ibtool'), ['30']))).toBe('protected');
+		for (const name of ['ibtool', 'IBAgent-iOS'])
+			expect(await standing(adopted(join(made.home, 'another', name), ['30']))).toBe('protected');
 	}
 );
 
@@ -113,9 +120,14 @@ test.skipIf(!mac || !macAuthority())('the installed tools satisfy what is asked 
 	const real = macAuthority()!;
 	const verify = (args: string[]) =>
 		execFileSync('codesign', ['--verify', ...args], { stdio: 'pipe' });
-	expect(real.services).toHaveLength(1);
-	expect(real.services[0].requirement).toContain('anchor apple');
+	expect(real.services.map((service) => service.path)).toEqual([
+		'usr/bin/ibtoold',
+		'Platforms/iPhoneSimulator.platform/Developer/Library/Xcode/Overlays/IBAgent-iOS'
+	]);
+	for (const service of real.services) {
+		expect(service.requirement).toContain('anchor apple');
+		verify([`-R=${service.requirement}`, join(real.root, service.path)]);
+	}
 	expect(real.rootRequirement).toContain('anchor apple');
-	verify([`-R=${real.services[0].requirement}`, join(real.root, real.services[0].path)]);
 	verify(['--ignore-resources', `-R=${real.rootRequirement}`, real.rootCode]);
 });
