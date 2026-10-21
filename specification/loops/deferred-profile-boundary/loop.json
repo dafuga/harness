@@ -6,7 +6,7 @@
 	"name": "deferred-profile-boundary",
 	"goal": "Initialization observations never stand in for deferred object operations; retain real data initialization profiles.",
 	"createdAt": "2026-10-21T18:13:28.237Z",
-	"updatedAt": "2026-10-21T18:13:29.957Z",
+	"updatedAt": "2026-10-21T18:16:16.443Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -29,12 +29,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T18:16:15.639Z",
+			"evidence": "7226b67bd strengthened the same standard matrix before repair. Immutable Harness red proof records 7 import-only cases incorrectly producing 2 observations instead of 0, while genuine data and existing runner cases pass."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T18:16:16.443Z",
+			"evidence": "Traverse executable callable bodies at every initializer depth; accept only recursively inspected literal object/array/known-container data. Unknown callback references must keep profiling incomplete. Preserve model/schema initialization scope and normal function invocation observers."
 		},
 		{
 			"id": "implement",
