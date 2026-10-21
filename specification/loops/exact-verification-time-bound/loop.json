@@ -6,7 +6,7 @@
 	"name": "exact-verification-time-bound",
 	"goal": "Allow exact native verification to finish within a bounded supported duration while preserving every check, permission and performance limit.",
 	"createdAt": "2026-10-21T11:50:32.855Z",
-	"updatedAt": "2026-10-21T11:50:34.201Z",
+	"updatedAt": "2026-10-21T11:52:14.392Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -31,17 +31,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:52:11.859Z",
+			"evidence": "Committed32fa0036 redebefdacb99 fails the native timeout assertion for360minutes; the other five obligation tests pass unchanged."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:52:13.109Z",
+			"evidence": "Raise only the existing macOS exact job time bound to360minutes. Preserve both jobs, native tooling, read-only permissions, full commands, budget judgement and final failure propagation."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:52:14.392Z",
+			"evidence": "All six unchanged workflow contract tests pass. The diff changes only the native timeout and its explanatory comment; hosted verification still needs a new actual run."
 		},
 		{
 			"id": "green",

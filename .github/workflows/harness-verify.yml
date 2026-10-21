@@ -55,10 +55,10 @@ jobs:
     # Native evidence comes from Swift, the iOS SDK and a simulator, which exist only on macOS.
     # The full check above stays on Linux; this job runs on Apple silicon.
     runs-on: macos-15
-    # Time for the run to end and leave its record: where an uncertain reference widens the
-    # impact, every test and scenario is run, one command each, and that took more than an hour.
-    # It allows time only; it is no budget and it approves nothing.
-    timeout-minutes: 180
+    # The exact-commit job exceeded its three-hour bound during complete verification.
+    # Leave time for native preparation and every existing check to produce its record.
+    # This remains bounded and changes no checks, permissions or performance budgets.
+    timeout-minutes: 360
     env:
       DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
     steps:
