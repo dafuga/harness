@@ -5,7 +5,7 @@ import { join, resolve } from 'node:path';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { GameDocumentRepository } from '../packages/game/src/repositories/GameDocumentRepository';
 import type { GameDocument } from '../packages/game/src/models/Game.types';
-import { playableGame } from './support/playableGame';
+import { playableGame, gameCli } from './support/playableGame';
 const cli = resolve('src/index.ts');
 
 test.each([
@@ -18,13 +18,7 @@ test.each([
 	async (dimension, entry) => {
 		const root = await mkdtemp(join(tmpdir(), 'harness-game-cli-'));
 		try {
-			const cli = entry === 'source' ? resolve('src/index.ts') : join(root, 'harness.js');
-			if (entry === 'bundled')
-				execFileSync(
-					'bun',
-					['build', resolve('src/index.ts'), '--target', 'bun', '--outfile', cli],
-					{ stdio: 'pipe' }
-				);
+			const cli = gameCli(root, entry);
 			execFileSync('bun', [cli, 'new', 'game', 'adventure', '--dimension', dimension], {
 				cwd: root
 			});

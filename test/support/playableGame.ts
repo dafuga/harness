@@ -108,3 +108,13 @@ async function address(server: ReturnType<typeof spawn>): Promise<string> {
 		});
 	});
 }
+
+/** Build the CLI into its disposable install root before exercising that entry. */
+export function gameCli(root: string, entry: string): string {
+	const cli = entry === 'source' ? resolve('src/index.ts') : join(root, 'harness.js');
+	if (entry === 'bundled')
+		execFileSync('bun', ['build', resolve('src/index.ts'), '--target', 'bun', '--outfile', cli], {
+			stdio: 'pipe'
+		});
+	return cli;
+}
