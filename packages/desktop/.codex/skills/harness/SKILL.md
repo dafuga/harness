@@ -15,6 +15,7 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 9. Use public dependency entry points. Verify cold Node imports with external dependencies as well as packaged CJS bundles; call the real operation in both modes.
 10. Keep browser tests and fixtures in normal compiler inputs. When changing compiler coverage, run the standard SvelteKit configuration suite: excluded invalid browser code is a control, the owning config must reject it, and valid browser code must pass. Check the actual Desktop corpus before broad browser verification; do not rely on ignored lint paths.
 11. When shared fixture source or helper contracts change during a merge, execute its authored calls against every generated revision before broad verification. Read calls and expected results from the committed fixture contract; do not keep a second hard-coded set with different parameter types. Run the fixture's standard consumers too, because TypeScript does not check generated source strings.
+12. For shared-header geometry changes, run the existing search viewport matrix with the workspace selector suite before broad verification. Preserve target size, label visibility, non-overlap, overall header height and project/context spacing together; a passing control-size case does not establish that the whole header fits. Retain inspected source-bound before/after captures.
 
 ## Bug and Regression Loops
 
