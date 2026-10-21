@@ -74,32 +74,7 @@ export async function reviewHelperUsage(page: Page, viewport: string): Promise<v
 		const usage = card.getByRole('group', { name: 'Used In', exact: true });
 		await expect(usage, 'helper cards expose their consumers').toBeVisible();
 		await expect(usage.getByRole('link')).toHaveText(['Order list', 'Order store', 'Order']);
-		const consumer = usage.getByRole('link', { name: 'Order list', exact: true });
-		await consumer.hover();
-		await capture(page, `usage-preview-${commit ? 'commit' : 'tip'}-${viewport}`);
-		const preview = page.getByRole('tooltip', { name: 'Preview of Order list', exact: true });
-		await expect(preview, 'consumer links show screenshot previews').toBeVisible();
-		const image = preview.getByRole('img', { name: 'Screenshot of Order list', exact: true });
-		await expect(image).toHaveAttribute(
-			'src',
-			`/media/${(commit ?? commits.tip).slice(0, 7)}-default-desktop.png`
-		);
-		await expect(image).toHaveJSProperty('naturalWidth', 1440);
-		await preview.hover();
-		await expect(preview).toBeVisible();
-		expect(await fits(page)).toBe(true);
-		await page.keyboard.press('Escape');
-		await expect(preview).toHaveCount(0);
-		await consumer.focus();
-		await expect(preview, 'keyboard focus shows the same preview').toBeVisible();
-		await page.keyboard.press('Escape');
-		await expect(preview).toHaveCount(0);
-		const missing = usage.getByRole('link', { name: 'Order store', exact: true });
-		await missing.hover();
-		await expect(
-			page.getByRole('tooltip', { name: 'Preview of Order store', exact: true })
-		).toContainText('No screenshot is recorded at this revision');
-		await page.mouse.move(1, 1);
+		await reviewConsumerPreview(page, usage, commit, viewport);
 		const sizes = await card.evaluate((node) => [
 			parseFloat(getComputedStyle(node.querySelector('code')!).fontSize),
 			parseFloat(getComputedStyle(node.querySelector('[aria-label="Used In"]')!).fontSize)
@@ -125,6 +100,40 @@ export async function reviewHelperUsage(page: Page, viewport: string): Promise<v
 			await open(page, { category: 'functions', commit }, 'helpers');
 		}
 	}
+}
+
+async function reviewConsumerPreview(
+	page: Page,
+	usage: Locator,
+	commit: string | null,
+	viewport: string
+): Promise<void> {
+	const consumer = usage.getByRole('link', { name: 'Order list', exact: true });
+	await consumer.hover();
+	await capture(page, `usage-preview-${commit ? 'commit' : 'tip'}-${viewport}`);
+	const preview = page.getByRole('tooltip', { name: 'Preview of Order list', exact: true });
+	await expect(preview, 'consumer links show screenshot previews').toBeVisible();
+	const image = preview.getByRole('img', { name: 'Screenshot of Order list', exact: true });
+	await expect(image).toHaveAttribute(
+		'src',
+		`/media/${(commit ?? commits.tip).slice(0, 7)}-default-desktop.png`
+	);
+	await expect(image).toHaveJSProperty('naturalWidth', 1440);
+	await preview.hover();
+	await expect(preview).toBeVisible();
+	expect(await fits(page)).toBe(true);
+	await page.keyboard.press('Escape');
+	await expect(preview).toHaveCount(0);
+	await consumer.focus();
+	await expect(preview, 'keyboard focus shows the same preview').toBeVisible();
+	await page.keyboard.press('Escape');
+	await expect(preview).toHaveCount(0);
+	const missing = usage.getByRole('link', { name: 'Order store', exact: true });
+	await missing.hover();
+	await expect(
+		page.getByRole('tooltip', { name: 'Preview of Order store', exact: true })
+	).toContainText('No screenshot is recorded at this revision');
+	await page.mouse.move(1, 1);
 }
 
 /** Source navigation stays bound to the selected repository and full commit. */
