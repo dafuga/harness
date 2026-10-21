@@ -2,7 +2,7 @@
 	"name": "project-chat-label",
 	"goal": "Read-only or unbound project views expose project chat without promising agent execution",
 	"createdAt": "2026-10-21T13:47:55.805Z",
-	"updatedAt": "2026-10-21T13:47:57.835Z",
+	"updatedAt": "2026-10-21T13:50:11.665Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T13:50:11.665Z",
+			"evidence": "Immutable d465c0163 capability-matrix proof fails for past commits, read-only views and missing project identities: each incorrectly renders Work with agent instead of Open project chat."
 		},
 		{
 			"id": "implement",

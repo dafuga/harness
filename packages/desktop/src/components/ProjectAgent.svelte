@@ -11,7 +11,7 @@
 	// svelte-ignore state_referenced_locally
 	const agent = createProjectAgentStore(workspace);
 	const kind = $derived(workspace.category.slice(0, -1));
-	const label = $derived(workspace.capabilities.agents ? 'Work with agent' : 'Open project chat');
+	const label = $derived(agent.allowed ? 'Work with agent' : 'Open project chat');
 	onMount(() => agent.listen());
 	$effect(() => {
 		if (open && agent.allowed) untrack(() => agent.loadProviders());

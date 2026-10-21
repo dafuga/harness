@@ -1,4 +1,5 @@
 import type { Workspace } from '../lib/stores/workspace.svelte';
+import { tick } from 'svelte';
 
 export interface ImageRequest {
 	entityId: string;
@@ -34,6 +35,7 @@ export function imageUrl(
 			});
 	return () => {
 		disposed = true;
-		if (url) URL.revokeObjectURL(url);
+		// An effect tears down before its old image binding is removed from the DOM.
+		if (url) void tick().then(() => URL.revokeObjectURL(url));
 	};
 }
