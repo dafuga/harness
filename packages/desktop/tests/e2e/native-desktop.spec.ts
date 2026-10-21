@@ -1,12 +1,7 @@
 import { nativeImageFixture } from './native-image-fixture';
 import { nativeCapture } from './native-capture';
-import {
-	test,
-	expect,
-	_electron,
-	type ElectronApplication,
-	type Page
-} from '../../../../test/support/browserTest';
+import { test, expect, _electron } from '../../../../test/support/browserTest';
+import type { ElectronApplication, Page } from '../../../../test/support/browserTest';
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
@@ -41,11 +36,8 @@ async function isolation(app: ElectronApplication, page: Page) {
 	const preferences = await app.evaluate(({ BrowserWindow }) => {
 		const contents = BrowserWindow.getAllWindows()[0].webContents;
 		// Electron exposes this diagnostic getter without a public type declaration.
-		const preferences = Reflect.get(
-			contents,
-			'getLastWebPreferences'
-		) as () => Electron.WebPreferences;
-		const options = preferences.call(contents);
+		const read = Reflect.get(contents, 'getLastWebPreferences') as () => Electron.WebPreferences;
+		const options = read.call(contents);
 		return {
 			sandbox: options?.sandbox,
 			contextIsolation: options?.contextIsolation,

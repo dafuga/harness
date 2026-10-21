@@ -169,3 +169,9 @@ Before pushing a CI configuration change or starting broad verification, find an
 the existing workflow policy tests, including assertions on changed limits. Keep
 execution commands, permissions and environment boundaries covered when revising
 those expectations; formatting alone does not verify a workflow change.
+
+## Acceptance Fixture Review
+
+After editing acceptance fixtures, run their owning workspace typecheck, formatting
+and audit before a broad check, even when only imports or casts changed. Test files
+share the workspace size limits; a passing runtime case does not prove that audit.
