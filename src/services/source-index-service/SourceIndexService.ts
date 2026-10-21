@@ -1,3 +1,4 @@
+import ts from 'typescript';
 import { extname } from 'node:path';
 import type {
 	ExportedSymbol,
@@ -23,7 +24,10 @@ export interface SourceIndex {
 	files: Map<string, SourceFile>;
 }
 
+type Execution = NonNullable<SourceFile['execution']>;
+
 interface Parsed {
+	execution: Execution;
 	bytes: number;
 	lines: number;
 	references: SourceReference[];
@@ -79,6 +83,7 @@ export class SourceIndexService {
 			lines: parsed.lines,
 			language,
 			read: parsed.read,
+			execution: parsed.execution,
 			decisions: parsed.read ? complexityCoverage(entry.path, parsed.scripted) : 'unsupported',
 			classification: placed.classification,
 			workspace: placed.workspace,
@@ -108,6 +113,7 @@ export class SourceIndexService {
 }
 
 const empty: Parsed = {
+	execution: 'unknown',
 	bytes: 0,
 	lines: 0,
 	references: [],
@@ -121,6 +127,7 @@ const empty: Parsed = {
 function parseText(code: string, language: SourceLanguage, path: string): Parsed {
 	const scan = exportsOf(code, language, path);
 	return {
+		execution: sourceExecution(code, language, path),
 		bytes: Buffer.byteLength(code),
 		lines: code.split('\n').length - (code.endsWith('\n') ? 1 : 0),
 		references: scanImports(code, language),
@@ -157,4 +164,54 @@ function resolve(
 		files: context.paths,
 		workspaceRoot: context.placed.workspaceRoot
 	});
+}
+
+/** Only inspected declarations can omit runtime profiling; exported types alone prove nothing. */
+function sourceExecution(code: string, language: SourceLanguage, path: string): Execution {
+	if (language === 'css') return 'declarative';
+	if (language !== 'ts') return 'unknown';
+	const file = ts.createSourceFile(path, code, ts.ScriptTarget.Latest, true);
+	const diagnostics = (file as ts.SourceFile & { parseDiagnostics: readonly ts.Diagnostic[] })
+		.parseDiagnostics;
+	if (diagnostics.length) return 'unknown';
+	return file.statements.every(declarationOnly) ? 'declarative' : 'runtime';
+}
+
+function declarationOnly(node: ts.Statement): boolean {
+	if (
+		[
+			ts.isInterfaceDeclaration(node),
+			ts.isTypeAliasDeclaration(node),
+			ts.isEmptyStatement(node)
+		].some(Boolean)
+	)
+		return true;
+	if (
+		ts.isDeclarationStatement(node) &&
+		(ts.getCombinedModifierFlags(node) & ts.ModifierFlags.Ambient) !== 0
+	)
+		return true;
+	if (ts.isImportDeclaration(node)) return typeOnlyImport(node.importClause);
+	if (!ts.isExportDeclaration(node)) return false;
+	if (node.isTypeOnly) return true;
+	const named = node.exportClause;
+	return (
+		!node.moduleSpecifier &&
+		Boolean(named && ts.isNamedExports(named) && named.elements.every((item) => item.isTypeOnly))
+	);
+}
+
+function typeOnlyImport(clause: ts.ImportClause | undefined): boolean {
+	if (!clause) return false;
+	if (clause.isTypeOnly) return true;
+	const named = clause.namedBindings;
+	return (
+		!clause.name &&
+		Boolean(
+			named &&
+			ts.isNamedImports(named) &&
+			named.elements.length > 0 &&
+			named.elements.every((item) => item.isTypeOnly)
+		)
+	);
 }

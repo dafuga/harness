@@ -41,6 +41,8 @@ export interface SourceFile {
 	identity?: { id: string; kind: string; name: string };
 	/** False when the file was not read: nothing is known about its content, not even its size. */
 	read: boolean;
+	/** Parsed execution facts; absent or unknown never exempts a file from runtime evidence. */
+	execution?: 'declarative' | 'runtime' | 'unknown';
 	/** Whether its decision points are counted, absent by nature, or not counted at all. */
 	decisions: ComplexityCoverage;
 	references: ResolvedReference[];
