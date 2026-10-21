@@ -18,6 +18,7 @@ Harness owns performance measurement and the final audit of coding and planning 
 - This repository opts into mandatory performance evidence for plain `harness verify run`. Bootstrap schemas use explicit Harness workloads over actual parse calls, preserving the automatic observer's cycle exclusions.
 - Non-JavaScript workloads retain their actual child-process timing and peak RSS through Harness captures. Standard export tests execute the real PDF and ZIP scripts; parent-runner memory cannot stand in for Python memory.
 - Retention installation coverage executes the real Python main against a temporary filesystem and explicitly mocked scheduler commands; its partial profile cannot claim live scheduler installation.
+- Standard native checks measure their compiled Debug and Release Swift binaries separately from compilation. These partial macOS observations cover real remote/account behavior with test transports and vaults, excluding UIKit, camera, simulator and device performance.
 
 ## Dependencies
 
