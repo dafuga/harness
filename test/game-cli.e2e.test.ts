@@ -15,7 +15,7 @@ test.each(['2d', '3d'])(
 			});
 			const cwd = join(root, 'adventure');
 			const manifest = JSON.parse(await readFile(join(cwd, 'package.json'), 'utf8'));
-			expect(manifest.harness).toEqual({ kind: 'game', dimension });
+			expect(manifest.harness).toEqual({ kind: 'game', dimension, aiRendering: false });
 			for (const [kind, name] of [
 				['view', 'inventory'],
 				['game-view', 'battle'],

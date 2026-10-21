@@ -1,4 +1,18 @@
-import { expect, test } from 'vitest';
+import { expect, test, vi } from 'vitest';
+import type * as Three from 'three';
+import { create3d } from '../packages/game/src/utils/create3d';
+const painted = vi.hoisted(() => vi.fn());
+vi.mock('three', async (original) => ({
+	...(await original<typeof Three>()),
+	WebGLRenderer: class {
+		setSize() {}
+		setClearColor() {}
+		render(...args: unknown[]) {
+			painted(...args);
+		}
+		dispose() {}
+	}
+}));
 import { createRun, stepGame, exampleDocument, validateDocument } from '../packages/game/src/index';
 
 test.each(['2d', '3d'] as const)(
@@ -39,4 +53,31 @@ test('invalid references and unknown operations are rejected before execution', 
 	const malformed = JSON.parse(JSON.stringify(exampleDocument('2d')));
 	malformed.views[0].checkpoints[0].actions[0].type = 'eval';
 	expect(validateDocument(malformed).length).toBeGreaterThan(0);
+});
+
+test('native dimensions select real camera types while preserving engine objects', () => {
+	const canvas = {
+		width: 1280,
+		height: 704,
+		dataset: {},
+		getContext: () => ({})
+	} as unknown as HTMLCanvasElement;
+	const source = create3d(canvas);
+	const view = exampleDocument('2d').views[0];
+	const run = createRun();
+	source.render(run, view);
+	const [world, flat] = painted.mock.lastCall!;
+	expect(flat.isOrthographicCamera).toBe(true);
+	expect(
+		world.children.filter((object: { visible: boolean }) => object.visible).length
+	).toBeGreaterThan(3);
+	const progressed = stepGame(run, { x: 2, y: 0 }, view);
+	source.render(progressed, { ...view, dimension: '3d' });
+	const [sameWorld, deep] = painted.mock.lastCall!;
+	expect(sameWorld).toBe(world);
+	expect(deep.isPerspectiveCamera).toBe(true);
+	expect(progressed.state.hasKey).toBe(true);
+	expect(world.children.filter((object: { visible: boolean }) => !object.visible)).toHaveLength(1);
+	expect(canvas.dataset.dimension).toBe('3d');
+	source.dispose();
 });

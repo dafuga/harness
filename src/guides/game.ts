@@ -10,7 +10,9 @@ export const gameGuide: Guide = {
 	],
 	rules: [
 		'Game projects retain app generators and pages.',
-		'The deterministic runtime owns outcomes; AI transforms appearance only.',
+		'Native Three.js owns 2D/3D gameplay; generate and save image assets during authoring.',
+		'Use GPT Image or another chosen image model for textures/sprites; build geometry or import GLB separately.',
+		'AI rendering is off by default; keep rendering experiments explicitly opt-in.',
 		'AI preview is disabled pending a credential-safe transport; prepared sessions cap at 60 seconds.',
 		'Set HARNESS_GAME_DECART_API_KEY in the project-owned ignored .env.local; never commit it.'
 	],

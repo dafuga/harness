@@ -8,7 +8,7 @@ export function gameFiles(input: ProjectTemplateInput, app: PlannedFile[]): Plan
 	const dimension = input.dimension ?? '2d';
 	const manifest = app.find((file) => file.path === 'package.json')!;
 	const pkg = JSON.parse(manifest.contents);
-	pkg.harness = { kind: 'game', dimension };
+	pkg.harness = { kind: 'game', dimension, aiRendering: false };
 	pkg.dependencies = { three: '0.180.0', '@decartai/sdk': '0.2.12' };
 	pkg.devDependencies['@types/three'] = '0.180.0';
 	manifest.contents = JSON.stringify(pkg, null, '\t') + '\n';
@@ -21,9 +21,14 @@ export function gameFiles(input: ProjectTemplateInput, app: PlannedFile[]): Plan
 		{ path: 'game.json', contents: dimension === '3d' ? gameDocument3d : gameDocument2d },
 		{ path: 'src/routes/game/+page.svelte', contents: gamePage() },
 		{
+			path: 'static/game/assets/README.md',
+			contents:
+				'# Saved game assets\n\nGenerate textures, sprites, UI art and references with GPT Image or another chosen image model during authoring. Save selected files here and record their provider/model, prompt, license and purpose. Load them using Three.js TextureLoader, Sprite or GLTFLoader. Images are not 3D meshes: build geometry or import GLB models separately. Never call an image model in the render loop.\n'
+		},
+		{
 			path: 'GAME.md',
 			contents:
-				'# Game authoring\n\nOpen this project in Harness and use Game Views to edit game.json.\n\nViews own UI and visual direction; mechanics own state/input/event contracts. Checkpoints execute structured conditions and actions. Run the /game route to play the starter. Live AI preview is disabled pending a credential-safe transport and a project-owned provider credential.\n'
+				'# Game authoring\n\nOpen this project in Harness and use Game Views to edit game.json.\n\nViews own UI and visual direction; mechanics own state/input/event contracts. Checkpoints execute structured conditions and actions. Run the /game route to play the starter. Native Three.js renders gameplay in both 2D (orthographic) and 3D (perspective). AI rendering is off by default. Generate and save art during authoring; see static/game/assets/README.md. Existing AI adapters remain available for explicitly enabled experiments.\n'
 		}
 	];
 }
@@ -32,15 +37,13 @@ function gamePage(): string {
  import {onMount} from 'svelte';
  import document from '../../../game.json';
  import {createRun,stepGame} from '$lib/game/utils/gameStep';
- import {draw2d} from '$lib/game/utils/draw2d';
  import type {GameView,GameRun} from '$lib/game/models/Game.types';
  let canvas:HTMLCanvasElement; let run=$state(createRun()); let ready=$state(false);
  const view=document.views[0] as GameView;
  let render:(run:GameRun,view:GameView)=>void;
  function move(x:number,y:number,choice?:string){run=stepGame(run,{x,y,choice},view);render?.(run,view);}
  onMount(()=>{let dispose=()=>{};let active=true;
- if(view.dimension==='3d') void import('$lib/game/utils/create3d').then(({create3d})=>{if(!active)return;const scene=create3d(canvas);render=(r,v)=>scene.render(r,v);dispose=()=>scene.dispose();render(run,view);ready=true;});
- else {render=(r,v)=>draw2d(canvas,r,v);render(run,view);ready=true;}
+ void import('$lib/game/utils/create3d').then(({create3d})=>{if(!active)return;const scene=create3d(canvas);render=(r,v)=>scene.render(r,v);dispose=()=>scene.dispose();render(run,view);ready=true;});
  return ()=>{active=false;dispose();};});
  </script>
  <svelte:head><title>{view.title}</title></svelte:head>

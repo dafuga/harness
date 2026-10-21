@@ -10,6 +10,7 @@ export function create3d(canvas: HTMLCanvasElement) {
 	renderer.setSize(canvas.width, canvas.height, false);
 	renderer.setClearColor('#152c29');
 	const scene = new THREE.Scene();
+	const flat = flatCamera(canvas.width / canvas.height);
 	const camera = new THREE.PerspectiveCamera(48, canvas.width / canvas.height, 0.1, 100);
 	camera.position.set(6, 7, 13);
 	camera.lookAt(4, 0, 0);
@@ -35,7 +36,8 @@ export function create3d(canvas: HTMLCanvasElement) {
 			key.visible = !run.state.hasKey && run.state['visible:key'] !== false;
 			door.visible = !run.state.doorOpen && run.state['visible:door'] !== false;
 			player.visible = run.state['visible:player'] !== false;
-			renderer.render(scene, camera);
+			renderer.render(scene, _view.dimension === '2d' ? flat : camera);
+			canvas.dataset.dimension = _view.dimension;
 			canvas.dataset.ready = 'true';
 		},
 		dispose() {
@@ -52,4 +54,12 @@ export function create3d(canvas: HTMLCanvasElement) {
 
 function box(x: number, y: number, z: number, color: string) {
 	return new THREE.Mesh(new THREE.BoxGeometry(x, y, z), new THREE.MeshStandardMaterial({ color }));
+}
+
+function flatCamera(aspect: number) {
+	const camera = new THREE.OrthographicCamera(-4.5 * aspect, 4.5 * aspect, 4.5, -4.5, 0.1, 100);
+	camera.position.set(4, 12, 0);
+	camera.up.set(0, 0, -1);
+	camera.lookAt(4, 0, 0);
+	return camera;
 }

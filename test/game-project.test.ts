@@ -6,12 +6,16 @@ test.each(['2d', '3d'] as const)(
 	(dimension) => {
 		const files = projectFiles({ kind: 'game', name: 'game-proof', dimension });
 		const manifest = JSON.parse(files.find((f) => f.path === 'package.json')!.contents);
-		expect(manifest.harness).toEqual({ kind: 'game', dimension });
+		expect(manifest.harness).toEqual({ kind: 'game', dimension, aiRendering: false });
 		expect(files.some((f) => f.path === 'svelte.config.js')).toBe(true);
 		expect(files.some((f) => f.path === 'src/routes/+page.svelte')).toBe(true);
 		expect(files.some((f) => f.path === 'game.json')).toBe(true);
 		expect(files.some((f) => f.path === 'src/lib/game/utils/gameStep.ts')).toBe(true);
-		expect(files.some((f) => f.path === 'src/routes/game/+page.svelte')).toBe(true);
+		const page = files.find((f) => f.path === 'src/routes/game/+page.svelte')!.contents;
+		expect(page).toContain('create3d');
+		expect(page).not.toContain('draw2d');
+		expect(page).not.toContain('startRender');
+		expect(files.some((f) => f.path === 'static/game/assets/README.md')).toBe(true);
 	}
 );
 
