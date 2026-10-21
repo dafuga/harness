@@ -15,19 +15,23 @@
 		"inputs": [
 			{
 				"name": "githubRepositoryUrl.remote",
-				"type": "string"
+				"type": "string",
+				"description": "GitHub HTTPS or SSH remote address; other hosts and credential-bearing URLs are unsupported."
 			},
 			{
 				"name": "githubSourceUrl.repository",
-				"type": "string | undefined"
+				"type": "string | undefined",
+				"description": "Public GitHub repository URL, or undefined when the project has none."
 			},
 			{
 				"name": "githubSourceUrl.commit",
-				"type": "string"
+				"type": "string",
+				"description": "Full lowercase Git commit hash of the selected source revision."
 			},
 			{
 				"name": "githubSourceUrl.path",
-				"type": "string"
+				"type": "string",
+				"description": "Repository-relative file path; each segment is encoded for the GitHub URL."
 			}
 		],
 		"outputs": [
@@ -45,6 +49,63 @@
 		"errors": []
 	},
 	"dependencies": [],
+	"helperContracts": [
+		{
+			"name": "githubRepositoryUrl",
+			"source": "src/utils/githubSourceUrl.ts",
+			"inputs": [
+				{
+					"name": "githubRepositoryUrl.remote",
+					"type": "string"
+				}
+			],
+			"output": "string | undefined",
+			"pure": true,
+			"consumers": [
+				{
+					"unit": "desktop.service.project-session"
+				},
+				{
+					"unit": "function.github-source-url",
+					"symbol": "githubSourceUrl"
+				},
+				{
+					"unit": "hub.service.hub-projection"
+				},
+				{
+					"unit": "service.history-index"
+				}
+			]
+		},
+		{
+			"name": "githubSourceUrl",
+			"source": "src/utils/githubSourceUrl.ts",
+			"inputs": [
+				{
+					"name": "githubSourceUrl.repository",
+					"type": "string | undefined"
+				},
+				{
+					"name": "githubSourceUrl.commit",
+					"type": "string"
+				},
+				{
+					"name": "githubSourceUrl.path",
+					"type": "string"
+				}
+			],
+			"output": "string | undefined",
+			"pure": true,
+			"consumers": [
+				{
+					"unit": "desktop.component.details-panel"
+				},
+				{
+					"unit": "reports.component.harness-explorer-frame"
+				}
+			]
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/utils/githubSourceUrl.ts",

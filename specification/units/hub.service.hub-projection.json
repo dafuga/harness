@@ -136,7 +136,7 @@
 			},
 			{
 				"name": "HubProjectionService.snapshot",
-				"type": "unknown"
+				"type": "Promise<ProjectSnapshot>"
 			},
 			{
 				"name": "HubProjectionService.entity",
@@ -174,6 +174,11 @@
 		},
 		{
 			"unit": "desktop.validator.remote-project-response",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.github-source-url",
 			"via": "import",
 			"origin": "derived"
 		},

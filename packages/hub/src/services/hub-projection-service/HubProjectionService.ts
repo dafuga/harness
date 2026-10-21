@@ -8,9 +8,11 @@ import type {
 	Actor,
 	CollaborationApi,
 	CollaborationCache,
+	RepositoryIdentity,
 	SourceHistoryAdapter
 } from 'collaboration';
-import type { ThreadMessage } from '../../../../desktop/src/models/Desktop.types';
+import type { ThreadMessage, ProjectSnapshot } from '../../../../desktop/src/models/Desktop.types';
+import { githubRepositoryUrl } from '../../../../../src/utils/githubSourceUrl';
 import { hubSource, hubRead } from '../../utils/hubSource';
 import { hubCatalog, hubOwnedPaths, hubAttestPlan } from '../../utils/hub-catalog/hubCatalog';
 import { hubRecords } from '../../utils/hubRecords';
@@ -49,9 +51,10 @@ export class HubProjectionService {
 		actor: Actor,
 		projectId: string,
 		query: { branch: string | null; commit: string | null }
-	) {
+	): Promise<ProjectSnapshot> {
 		const project = await this.context.api.getProject(actor, projectId);
-		return hubSnapshot({ ...this.context, actor, project }, query);
+		const snapshot = await hubSnapshot({ ...this.context, actor, project }, query);
+		return snapshotWithRepositoryUrl(snapshot, project.sourceRepository);
 	}
 	async entity(
 		actor: Actor,
@@ -146,4 +149,20 @@ export class HubProjectionService {
 		if (!thread) return hubFail('not-found');
 		return hubMessages(thread);
 	}
+}
+
+/** @pure Adds the public source destination without changing the cached project identity. */
+function snapshotWithRepositoryUrl(
+	snapshot: ProjectSnapshot,
+	repository: RepositoryIdentity
+): ProjectSnapshot {
+	return {
+		...snapshot,
+		project: {
+			...snapshot.project,
+			repositoryUrl: githubRepositoryUrl(
+				`https://github.com/${repository.owner}/${repository.name}`
+			)
+		}
+	};
 }

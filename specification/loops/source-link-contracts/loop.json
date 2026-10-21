@@ -25,7 +25,8 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Existing standard guards fail at 3b9fa53c4 and pass unchanged after repair (12 tests). loop record refuses unchanged tests, so no immutable auxiliary checkpoint is claimed and steps remain pending. Output and test hashes are retained in the task evidence."
 		},
 		{
 			"id": "implement",
