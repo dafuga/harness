@@ -129,3 +129,11 @@ export function recordedShot(
 	if (!shot?.media) throw new Error(`no stored ${where.state} at ${where.viewport} for ${commit}`);
 	return shot.media.replace(/^media\//, '');
 }
+
+/** Overview exposes actual source size and whatever runtime observations were recorded. */
+export async function measured(page: Page): Promise<void> {
+	await expect(page.getByRole('region', { name: 'Size', exact: true })).toBeVisible();
+	await expect(
+		page.getByRole('region', { name: 'Performance profile', exact: true })
+	).toBeVisible();
+}

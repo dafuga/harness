@@ -1,3 +1,8 @@
+---
+name: harness
+description: Use Harness generators, loops, registry and completion gates when planning, implementing or verifying this CLI workspace.
+---
+
 # Harness Project Discipline
 
 Use this skill whenever you are planning, implementing, reviewing, or verifying code in this Harness CLI project.
@@ -46,6 +51,8 @@ must not accept a row that contradicts the collection's inclusion rule.
 
 ## Bug and Regression Loops
 
+- Include external test inputs, such as migration review JSON outside test directories, with `--test` so regression proof freezes them alongside the test corpus.
+
 - Commit the strengthened failing test before product repair. Run `harness loop record <loop> --phase red --test <path> --command <command> --assertion <actual failure>` on that commit. Make a separate fix commit and run `loop record --phase green` against the same tests, fixtures, command and environment. Keep both commits when landing; never squash away this regression history. Focused red/green proof does not replace full verification.
 
 - For a reported bug, first diagnose why existing tests missed it. Name the responsible standardized test or scenario and its missing inputs, lifecycle, fixture or assertion; record the coverage gap before product repair.
@@ -89,6 +96,7 @@ must not accept a row that contradicts the collection's inclusion rule.
 
 ## Integration Checkpoints
 
+- For shared test-support edits, run the owning workspace audit before the long root check. Root audit exclusions can omit files the workspace audits. Extract cohesive assertions into existing support modules when a file reaches its limit.
 - Test Node server imports with external dependencies and packaged CJS bundles; cold-import and call the operation in each supported mode. Prefer public package entries over internal build files.
 - When a public SDK export reaches new runtime dependencies, rebuild and cold-import the affected packed entry in an empty consumer without workspace-only frameworks. Call the exported operation as well as type-checking it; run the standard packaged API acceptance before broad verification.
 - When catalog eligibility, labels or card controls change, refresh the canonical registry fixtures and run the existing planning-reference and browser navigation suites. A catalog display filter must not remove valid registry identities from planning prompts or direct historical routes. Cover active private units, first-parent removals and unrelated parent units; keep private units out of collections.
