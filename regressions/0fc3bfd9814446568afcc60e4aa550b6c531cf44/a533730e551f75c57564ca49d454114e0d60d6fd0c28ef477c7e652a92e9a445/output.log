@@ -1,0 +1,1343 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [10.32s]
+$ bun run --cwd packages/reports svelte-kit sync && bun run --cwd packages/desktop svelte-kit sync && bun run --cwd packages/hub svelte-kit sync && bun run build:kernel && bun run build:cli && bun run build:api && bun run --cwd packages/reports build && bun scripts/package-reports.ts && bun run build:picker
+$ bun scripts/build-kernel.ts
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.26
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.151
+   Compiling itoa v1.0.18
+   Compiling memchr v2.8.3
+   Compiling syn v3.0.7
+   Compiling serde_derive v1.0.229
+   Compiling impact-kernel v0.1.0 (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/crates/impact-kernel)
+    Finished `release` profile [optimized] target(s) in 8.00s
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde_json v1.0.151
+   Compiling serde v1.0.229
+   Compiling impact-kernel v0.1.0 (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/crates/impact-kernel)
+    Finished `release` profile [optimized] target(s) in 3.12s
+Built impact kernel: wasm 142396 bytes (wasm-opt wasm-opt version 131), native 402080 bytes.
+$ bun build src/index.ts --target bun --outdir dist
+Bundled 1345 modules in 181ms
+
+  index.js  14.32 MB  (entry point)
+
+$ bun scripts/build-api.ts
+Built public API: contracts, runtime, verification, history, edge, console and index, declarations in dist/types.
+$ bun run --cwd ../desktop svelte-kit sync && vite build && vite build --config src/config/reportViteConfig.ts && vite build --config src/config/consoleViteConfig.ts
+vite v6.4.4 building SSR bundle for production...
+transforming...
+✓ 1042 modules transformed.
+rendering chunks...
+vite v6.4.4 building for production...
+transforming...
+✓ 503 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                                          0.03 kB │ gzip:  0.05 kB
+.svelte-kit/output/client/.vite/manifest.json                                       21.08 kB │ gzip:  2.18 kB
+.svelte-kit/output/client/_app/immutable/assets/EntityDetailsScreen.BiwRoejT.css     0.06 kB │ gzip:  0.08 kB
+.svelte-kit/output/client/_app/immutable/assets/explorerName.BTqLquDb.css            1.87 kB │ gzip:  0.62 kB
+.svelte-kit/output/client/_app/immutable/assets/RegressionProof.WwOTQN5N.css         1.87 kB │ gzip:  0.70 kB
+.svelte-kit/output/client/_app/immutable/assets/EntityFrame.BlHkYAzb.css             2.43 kB │ gzip:  0.86 kB
+.svelte-kit/output/client/_app/immutable/assets/ExplorerIndex.DKkr3fAC.css           2.61 kB │ gzip:  0.78 kB
+.svelte-kit/output/client/_app/immutable/assets/ExplorerCatalogItems.11CTq2uK.css    2.78 kB │ gzip:  1.00 kB
+.svelte-kit/output/client/_app/immutable/assets/EntitySections.Cl1O_ecF.css          4.95 kB │ gzip:  1.48 kB
+.svelte-kit/output/client/_app/immutable/assets/EntitySummary.LdfZWK90.css           5.75 kB │ gzip:  1.58 kB
+.svelte-kit/output/client/_app/immutable/assets/HarnessScreen.B_vDjJbh.css          36.98 kB │ gzip:  7.49 kB
+.svelte-kit/output/client/_app/immutable/assets/0.D8DtVlaP.css                      40.99 kB │ gzip:  9.01 kB
+.svelte-kit/output/client/_app/immutable/entry/start.BRRJeVYz.js                     0.12 kB │ gzip:  0.11 kB
+.svelte-kit/output/client/_app/immutable/chunks/DiHynxyJ.js                          0.15 kB │ gzip:  0.13 kB
+.svelte-kit/output/client/_app/immutable/nodes/23.BvJKsQqF.js                        0.20 kB │ gzip:  0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/19.BIHm-7SD.js                        0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/22.CxXeYnA7.js                        0.20 kB │ gzip:  0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/31.PzmIErCj.js                        0.20 kB │ gzip:  0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/11.D-kpF3qa.js                        0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/18.BRpxmflT.js                        0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/30.DdVf-EIr.js                        0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/10.CIt7l0F7.js                        0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/27.COdsA0Eg.js                        0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/15.AvJeeN81.js                        0.20 kB │ gzip:  0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/26.veZybO6i.js                        0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/7.DYQC0lRx.js                         0.20 kB │ gzip:  0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/14.DXXajQre.js                        0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/6.CvCTZ3cq.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/24.CGD7Jw49.js                        0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/25.DFV185cF.js                        0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/20.D1qcEGsT.js                        0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/21.DAay0ey2.js                        0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/32.CU3k6hIw.js                        0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/33.DwE-goS0.js                        0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/12.BMUfMcn3.js                        0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/13.DvuzproM.js                        0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/28.DTIX5VxN.js                        0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/29.CBnEX1Hj.js                        0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/16.DSIzUoAi.js                        0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/17.A38Lzoi8.js                        0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/8.BvyehW7t.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/9.sij9z0QN.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/1.arNGUN87.js                         0.38 kB │ gzip:  0.27 kB
+.svelte-kit/output/client/_app/immutable/chunks/COlXhHcf.js                          0.66 kB │ gzip:  0.38 kB
+.svelte-kit/output/client/_app/immutable/chunks/CGXAuROB.js                          0.71 kB │ gzip:  0.40 kB
+.svelte-kit/output/client/_app/immutable/chunks/CHsqL-6W.js                          0.98 kB │ gzip:  0.37 kB
+.svelte-kit/output/client/_app/immutable/chunks/iaf3Dt1D.js                          1.11 kB │ gzip:  0.57 kB
+.svelte-kit/output/client/_app/immutable/nodes/4.DtkI3doR.js                         1.12 kB │ gzip:  0.59 kB
+.svelte-kit/output/client/_app/immutable/chunks/CArbV9yU.js                          1.21 kB │ gzip:  0.62 kB
+.svelte-kit/output/client/_app/immutable/chunks/wbPk3Yxo.js                          1.37 kB │ gzip:  0.66 kB
+.svelte-kit/output/client/_app/immutable/chunks/AKBUfDTP.js                          2.41 kB │ gzip:  1.27 kB
+.svelte-kit/output/client/_app/immutable/chunks/BAjqDVO6.js                          2.43 kB │ gzip:  1.29 kB
+.svelte-kit/output/client/_app/immutable/chunks/WVezsdkM.js                          4.67 kB │ gzip:  2.05 kB
+.svelte-kit/output/client/_app/immutable/chunks/DrkpsVo8.js                          4.78 kB │ gzip:  2.15 kB
+.svelte-kit/output/client/_app/immutable/chunks/g_TpqOGE.js                          5.77 kB │ gzip:  2.51 kB
+.svelte-kit/output/client/_app/immutable/chunks/LQpOQS_v.js                          6.45 kB │ gzip:  2.92 kB
+.svelte-kit/output/client/_app/immutable/chunks/DBly0hIq.js                          7.45 kB │ gzip:  3.12 kB
+.svelte-kit/output/client/_app/immutable/chunks/D1AnxR9M.js                         10.89 kB │ gzip:  4.63 kB
+.svelte-kit/output/client/_app/immutable/chunks/BHIgu3-c.js                         11.80 kB │ gzip:  4.87 kB
+.svelte-kit/output/client/_app/immutable/entry/app.DszUTQle.js                      13.48 kB │ gzip:  4.11 kB
+.svelte-kit/output/client/_app/immutable/chunks/252SV_fZ.js                         15.11 kB │ gzip:  5.78 kB
+.svelte-kit/output/client/_app/immutable/chunks/BN1jd8AN.js                         24.26 kB │ gzip: 10.39 kB
+.svelte-kit/output/client/_app/immutable/chunks/DhyzcxBe.js                         27.14 kB │ gzip: 10.02 kB
+.svelte-kit/output/client/_app/immutable/chunks/CgkI09pc.js                         29.90 kB │ gzip: 11.36 kB
+.svelte-kit/output/client/_app/immutable/chunks/CziTY9rn.js                         30.55 kB │ gzip: 11.79 kB
+.svelte-kit/output/client/_app/immutable/chunks/D5ziSELH.js                         31.14 kB │ gzip: 12.08 kB
+.svelte-kit/output/client/_app/immutable/nodes/0.k87OC7hN.js                        42.82 kB │ gzip: 15.55 kB
+.svelte-kit/output/client/_app/immutable/chunks/DFPCEuSW.js                         69.78 kB │ gzip: 24.25 kB
+.svelte-kit/output/client/_app/immutable/chunks/GLkBXtG5.js                        117.98 kB │ gzip: 40.24 kB
+✓ built in 1.30s
+.svelte-kit/output/server/.vite/manifest.json                                                                         31.60 kB
+.svelte-kit/output/server/_app/immutable/assets/EntityDetailsScreen.BiwRoejT.css                                       0.06 kB
+.svelte-kit/output/server/_app/immutable/assets/explorerName.BTqLquDb.css                                              1.87 kB
+.svelte-kit/output/server/_app/immutable/assets/RegressionProof.WwOTQN5N.css                                           1.87 kB
+.svelte-kit/output/server/_app/immutable/assets/EntityFrame.BlHkYAzb.css                                               2.43 kB
+.svelte-kit/output/server/_app/immutable/assets/ExplorerIndex.CcDzYFbz.css                                             2.58 kB
+.svelte-kit/output/server/_app/immutable/assets/ExplorerCatalogItems.11CTq2uK.css                                      2.78 kB
+.svelte-kit/output/server/_app/immutable/assets/EntitySections.Cl1O_ecF.css                                            4.95 kB
+.svelte-kit/output/server/_app/immutable/assets/EntitySummary.LdfZWK90.css                                             5.75 kB
+.svelte-kit/output/server/_app/immutable/assets/HarnessScreen._R37MgAL.css                                            36.89 kB
+.svelte-kit/output/server/_app/immutable/assets/_layout.CfTXjtYE.css                                                  40.69 kB
+.svelte-kit/output/server/entries/pages/_page.server.ts.js                                                             0.11 kB
+.svelte-kit/output/server/entries/pages/analytics/_page.server.ts.js                                                   0.11 kB
+.svelte-kit/output/server/entries/pages/harness/analytics/_page.server.ts.js                                           0.11 kB
+.svelte-kit/output/server/entries/pages/harness/reports/_page.server.ts.js                                             0.11 kB
+.svelte-kit/output/server/entries/pages/reports/_id_/_page.server.ts.js                                                0.16 kB
+.svelte-kit/output/server/entries/endpoints/harness/data/_...path_/_server.ts.js                                       0.17 kB
+.svelte-kit/output/server/entries/endpoints/harness/media/_file_/_server.ts.js                                         0.17 kB
+.svelte-kit/output/server/chunks/internal2.js                                                                          0.19 kB
+.svelte-kit/output/server/env.js                                                                                       0.23 kB
+.svelte-kit/output/server/entries/endpoints/api/reports/_server.ts.js                                                  0.24 kB
+.svelte-kit/output/server/entries/endpoints/harness/export/_commit_/_server.ts.js                                      0.25 kB
+.svelte-kit/output/server/chunks/Desktop.types.js                                                                      0.30 kB
+.svelte-kit/output/server/entries/endpoints/api/reports/_id_/_server.ts.js                                             0.33 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/pages/_page.svelte.js                          0.33 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/pages/_entity_/_page.svelte.js                 0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/models/_entity_/_page.svelte.js                0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/shells/_entity_/_page.svelte.js                0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/configs/_entity_/_page.svelte.js               0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/components/_entity_/_page.svelte.js            0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/models/_page.svelte.js                         0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/shells/_page.svelte.js                         0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/configs/_page.svelte.js                        0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/services/_page.svelte.js                       0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/functions/_page.svelte.js                      0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/components/_page.svelte.js                     0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/services/_entity_/_page.svelte.js              0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/functions/_entity_/_page.svelte.js             0.35 kB
+.svelte-kit/output/server/entries/fallbacks/error.svelte.js                                                            0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/pages/_entity_/details/_page.svelte.js         0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/pages/_entity_/history/_page.svelte.js         0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/models/_entity_/details/_page.svelte.js        0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/models/_entity_/history/_page.svelte.js        0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/shells/_entity_/details/_page.svelte.js        0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/shells/_entity_/history/_page.svelte.js        0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/configs/_entity_/details/_page.svelte.js       0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/configs/_entity_/history/_page.svelte.js       0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/services/_entity_/details/_page.svelte.js      0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/services/_entity_/history/_page.svelte.js      0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/functions/_entity_/details/_page.svelte.js     0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/functions/_entity_/history/_page.svelte.js     0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/components/_entity_/details/_page.svelte.js    0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/components/_entity_/history/_page.svelte.js    0.36 kB
+.svelte-kit/output/server/internal.js                                                                                  0.40 kB
+.svelte-kit/output/server/chunks/server.js                                                                             0.45 kB
+.svelte-kit/output/server/entries/pages/harness/_...view_/_page.server.ts.js                                           0.48 kB
+.svelte-kit/output/server/chunks/buildStamp.js                                                                         0.51 kB
+.svelte-kit/output/server/entries/endpoints/api/health/_server.ts.js                                                   0.62 kB
+.svelte-kit/output/server/chunks/index2.js                                                                             0.78 kB
+.svelte-kit/output/server/chunks/evidenceMedia.js                                                                      1.06 kB
+.svelte-kit/output/server/chunks/ExplorerPagesScreen.js                                                                1.08 kB
+.svelte-kit/output/server/chunks/utils.js                                                                              1.09 kB
+.svelte-kit/output/server/entries/pages/harness/reports/_id_/_page.server.ts.js                                        1.12 kB
+.svelte-kit/output/server/chunks/ExplorerCatalogScreen.js                                                              1.15 kB
+.svelte-kit/output/server/chunks/EntityVisualScreen.js                                                                 1.51 kB
+.svelte-kit/output/server/chunks/EntityBehaviorScreen.js                                                               1.56 kB
+.svelte-kit/output/server/chunks/mediaResponse.js                                                                      1.84 kB
+.svelte-kit/output/server/entries/endpoints/api/report-audio-upload/_server.ts.js                                      1.89 kB
+.svelte-kit/output/server/entries/endpoints/api/report-audio-comparison/_server.ts.js                                  1.99 kB
+.svelte-kit/output/server/entries/pages/harness/_...view_/_page.svelte.js                                              2.05 kB
+.svelte-kit/output/server/chunks/reportAssets.js                                                                       2.06 kB
+.svelte-kit/output/server/chunks/writingLimits.js                                                                      2.10 kB
+.svelte-kit/output/server/entries/endpoints/api/reports/_id_/_type_/_file_/_server.ts.js                               2.10 kB
+.svelte-kit/output/server/chunks/reportBuildIdentity.js                                                                2.23 kB
+.svelte-kit/output/server/chunks/AudioUploadService.js                                                                 2.41 kB
+.svelte-kit/output/server/chunks/index.js                                                                              2.65 kB
+.svelte-kit/output/server/chunks/utils2.js                                                                             3.09 kB
+.svelte-kit/output/server/chunks/EntityConfigScreen.js                                                                 3.23 kB
+.svelte-kit/output/server/chunks/internal.js                                                                           3.40 kB
+.svelte-kit/output/server/chunks/EntityAudio.js                                                                        3.47 kB
+.svelte-kit/output/server/chunks/reportSite.js                                                                         3.69 kB
+.svelte-kit/output/server/entries/endpoints/api/report-screenshot-upload/_server.ts.js                                 4.22 kB
+.svelte-kit/output/server/chunks/RegressionProof.js                                                                    5.27 kB
+.svelte-kit/output/server/chunks/exports.js                                                                            5.54 kB
+.svelte-kit/output/server/chunks/helperContract.js                                                                     5.91 kB
+.svelte-kit/output/server/chunks/EntityDetailsScreen.js                                                                6.52 kB
+.svelte-kit/output/server/chunks/explorerRoute.js                                                                      6.71 kB
+.svelte-kit/output/server/entries/endpoints/api/analytics-cpu/_server.ts.js                                            7.52 kB
+.svelte-kit/output/server/chunks/explorerName.js                                                                       9.02 kB
+.svelte-kit/output/server/entries/endpoints/api/replay-video/_server.ts.js                                             9.27 kB
+.svelte-kit/output/server/chunks/ExplorerIndex.js                                                                     11.62 kB
+.svelte-kit/output/server/chunks/EntityHistoryScreen.js                                                               12.59 kB
+.svelte-kit/output/server/chunks/explorerVerdict.js                                                                   14.30 kB
+.svelte-kit/output/server/chunks/ExplorerCatalogItems.js                                                              19.94 kB
+.svelte-kit/output/server/chunks/ComponentManifestValidator.js                                                        20.57 kB
+.svelte-kit/output/server/entries/endpoints/api/project-activity/_server.ts.js                                        24.22 kB
+.svelte-kit/output/server/chunks/reportHttp.js                                                                        26.25 kB
+.svelte-kit/output/server/chunks/shared.js                                                                            34.21 kB
+.svelte-kit/output/server/chunks/EntityFrame.js                                                                       36.52 kB
+.svelte-kit/output/server/remote-entry.js                                                                             36.85 kB
+.svelte-kit/output/server/chunks/EntitySummary.js                                                                     41.63 kB
+.svelte-kit/output/server/chunks/HistoryStatusService.js                                                              43.04 kB
+.svelte-kit/output/server/entries/pages/_layout.svelte.js                                                             59.80 kB
+.svelte-kit/output/server/chunks/HarnessScreen.js                                                                     71.29 kB
+.svelte-kit/output/server/chunks/EntitySections.js                                                                    93.18 kB
+.svelte-kit/output/server/index.js                                                                                   130.95 kB
+.svelte-kit/output/server/chunks/root.js                                                                             133.59 kB
+.svelte-kit/output/server/entries/hooks.server.js                                                                    288.72 kB
+.svelte-kit/output/server/chunks/consoleServer.js                                                                    339.97 kB
+✓ built in 5.24s
+
+Run npm run preview to preview your production build locally.
+
+> Using @sveltejs/adapter-node
+../../node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "../../node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+../../node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "../../node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+Circular dependency: ../../node_modules/zod/v4/core/core.js -> ../../node_modules/zod/v4/core/util.js -> ../../node_modules/zod/v4/core/core.js
+Circular dependency: ../../node_modules/smol-toml/dist/struct.js -> ../../node_modules/smol-toml/dist/extract.js -> ../../node_modules/smol-toml/dist/struct.js
+Generated an empty chunk: "chunks/internal2.js".
+  ✔ done
+vite v6.4.4 building for production...
+transforming...
+✓ 179 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/viewer/report.css       38.81 kB │ gzip:  8.73 kB
+dist/viewer/report.iife.js  177.46 kB │ gzip: 60.32 kB
+✓ built in 1.10s
+vite v6.4.4 building for production...
+transforming...
+✓ 341 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/console/console.css       89.85 kB │ gzip:  17.84 kB
+dist/console/console.iife.js  358.38 kB │ gzip: 122.19 kB
+✓ built in 1.63s
+$ bun run --cwd packages/reports build:picker && bun scripts/build-picker.ts
+$ vite build --config src/config/pickerViteConfig.ts
+vite v6.4.4 building for production...
+transforming...
+../../node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "../../node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+../../node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "../../node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+✓ 268 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/picker/picker.css       14.58 kB │ gzip:  3.92 kB
+dist/picker/picker.iife.js  295.06 kB │ gzip: 83.98 kB
+✓ built in 1.44s
+$ bun run --cwd packages/planning build && bun run --cwd packages/desktop build
+$ bun build src/index.ts --target node --outdir dist
+Bundled 159 modules in 15ms
+
+  index.js  0.81 MB  (entry point)
+
+$ bun run sync:shared && vite build && bun run build:main
+$ bun run --cwd ../reports svelte-kit sync
+vite v6.4.4 building SSR bundle for production...
+transforming...
+✓ 404 modules transformed.
+rendering chunks...
+vite v6.4.4 building for production...
+transforming...
+✓ 491 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                            0.03 kB │ gzip:   0.05 kB
+.svelte-kit/output/client/.vite/manifest.json                          6.00 kB │ gzip:   0.92 kB
+.svelte-kit/output/client/_app/immutable/assets/5.DbWwJIA3.css         0.63 kB │ gzip:   0.30 kB
+.svelte-kit/output/client/_app/immutable/assets/design.CO-P6mpW.css   23.98 kB │ gzip:   5.63 kB
+.svelte-kit/output/client/_app/immutable/assets/2.D_-8BRRM.css        40.25 kB │ gzip:   8.26 kB
+.svelte-kit/output/client/_app/immutable/chunks/a6i_WdGT.js            0.04 kB │ gzip:   0.06 kB
+.svelte-kit/output/client/_app/immutable/nodes/3.BgX9B0Fc.js           0.15 kB │ gzip:   0.13 kB
+.svelte-kit/output/client/_app/immutable/nodes/4.BgX9B0Fc.js           0.15 kB │ gzip:   0.13 kB
+.svelte-kit/output/client/_app/immutable/chunks/BFZObvHH.js            0.19 kB │ gzip:   0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/0.BdTNIgOV.js           0.34 kB │ gzip:   0.26 kB
+.svelte-kit/output/client/_app/immutable/chunks/DZiPonxU.js            0.47 kB │ gzip:   0.31 kB
+.svelte-kit/output/client/_app/immutable/nodes/1.CFPKI1mi.js           0.48 kB │ gzip:   0.32 kB
+.svelte-kit/output/client/_app/immutable/chunks/wbPk3Yxo.js            1.37 kB │ gzip:   0.66 kB
+.svelte-kit/output/client/_app/immutable/chunks/0TgkRI1x.js            1.39 kB │ gzip:   0.77 kB
+.svelte-kit/output/client/_app/immutable/chunks/Ds_9q-iQ.js            1.81 kB │ gzip:   0.91 kB
+.svelte-kit/output/client/_app/immutable/chunks/DgSqevqp.js            2.19 kB │ gzip:   1.09 kB
+.svelte-kit/output/client/_app/immutable/chunks/CGpzyOwG.js            2.24 kB │ gzip:   0.99 kB
+.svelte-kit/output/client/_app/immutable/nodes/5.CA__BIQh.js           2.73 kB │ gzip:   1.43 kB
+.svelte-kit/output/client/_app/immutable/chunks/BOKNYRS-.js            2.77 kB │ gzip:   1.37 kB
+.svelte-kit/output/client/_app/immutable/chunks/CoSwXrs1.js            6.48 kB │ gzip:   2.93 kB
+.svelte-kit/output/client/_app/immutable/entry/app.ly9oO-c_.js         7.07 kB │ gzip:   3.15 kB
+.svelte-kit/output/client/_app/immutable/chunks/Bc0UXj8l.js            9.23 kB │ gzip:   3.83 kB
+.svelte-kit/output/client/_app/immutable/chunks/qINl7__n.js           14.05 kB │ gzip:   6.29 kB
+.svelte-kit/output/client/_app/immutable/entry/start.Biz1UxeF.js      21.30 kB │ gzip:   8.19 kB
+.svelte-kit/output/client/_app/immutable/chunks/CnMSm5Zs.js           29.47 kB │ gzip:  11.29 kB
+.svelte-kit/output/client/_app/immutable/nodes/2.ChkPnLUo.js         372.41 kB │ gzip: 126.44 kB
+✓ built in 1.21s
+.svelte-kit/output/server/.vite/manifest.json                                                     4.64 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.DbWwJIA3.css                                0.63 kB
+.svelte-kit/output/server/_app/immutable/assets/design.DU1uMw70.css                              23.77 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.D5q_Aef6.css                               36.86 kB
+.svelte-kit/output/server/entries/pages/_layout.ts.js                                             0.04 kB
+.svelte-kit/output/server/entries/pages/harness/_...path_/_page.svelte.js                         0.15 kB
+.svelte-kit/output/server/entries/pages/projects/_projectId_/harness/_...path_/_page.svelte.js    0.15 kB
+.svelte-kit/output/server/entries/fallbacks/layout.svelte.js                                      0.17 kB
+.svelte-kit/output/server/chunks/internal2.js                                                     0.19 kB
+.svelte-kit/output/server/env.js                                                                  0.23 kB
+.svelte-kit/output/server/internal.js                                                             0.40 kB
+.svelte-kit/output/server/chunks/server.js                                                        0.50 kB
+.svelte-kit/output/server/entries/fallbacks/error.svelte.js                                       1.02 kB
+.svelte-kit/output/server/chunks/utils.js                                                         1.09 kB
+.svelte-kit/output/server/chunks/exports.js                                                       2.39 kB
+.svelte-kit/output/server/chunks/design.js                                                        2.91 kB
+.svelte-kit/output/server/chunks/url.js                                                           3.16 kB
+.svelte-kit/output/server/chunks/internal.js                                                      3.44 kB
+.svelte-kit/output/server/chunks/routing.js                                                       3.76 kB
+.svelte-kit/output/server/entries/pages/settings/_page.svelte.js                                  4.28 kB
+.svelte-kit/output/server/chunks/shared.js                                                       34.21 kB
+.svelte-kit/output/server/remote-entry.js                                                        36.85 kB
+.svelte-kit/output/server/index.js                                                              130.05 kB
+.svelte-kit/output/server/chunks/root.js                                                        134.65 kB
+.svelte-kit/output/server/entries/pages/_page.svelte.js                                         288.08 kB
+✓ built in 3.09s
+
+Run npm run preview to preview your production build locally.
+
+> Using @sveltejs/adapter-static
+  Wrote site to "build"
+  ✔ done
+$ bun scripts/build-main.ts
+
+ RUN  v3.2.4 /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/desktop
+
+ ❯ test/utils/recorded-projection.test.ts (7 tests | 4 failed) 31ms
+   ✓ a side keeps what judges this entity and nothing of another 3ms
+   × what a commit changed is kept for this entity alone, and no file is named 4ms
+     → expected { …(7) } to not have property "side"
+   × the projection re-derives direct evidence without filenames and leaves its input alone 1ms
+     → expected { …(7) } to not have property "side"
+   × the projection re-derives same-tree evidence without filenames and leaves its input alone 1ms
+     → expected { …(8) } to not have property "side"
+   × the projection re-derives changed-tree evidence without filenames and leaves its input alone 1ms
+     → expected { …(8) } to not have property "side"
+   ✓ a side whose revision is not held stays the gap it is 0ms
+   ✓ regression proof reaches each transport for its own entity and exact side 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/recorded-projection.test.ts > what a commit changed is kept for this entity alone, and no file is named
+AssertionError: expected { …(7) } to not have property "side"
+
+[32m- Expected:[39m 
+undefined
+
+[31m+ Received:[39m 
+"sides/tree.json"
+
+ ❯ test/utils/recorded-projection.test.ts:143:21
+    141|   changed: []
+    142|  });
+    143|  expect(detail).not.toHaveProperty('side');
+       |                     ^
+    144|  expect(detail).not.toHaveProperty('rangeReasons');
+    145| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  test/utils/recorded-projection.test.ts > the projection re-derives direct evidence without filenames and leaves its input alone
+AssertionError: expected { …(7) } to not have property "side"
+
+[32m- Expected:[39m 
+undefined
+
+[31m+ Received:[39m 
+"sides/tree.json"
+
+ ❯ test/utils/recorded-projection.test.ts:153:38
+    151|   const untouched = structuredClone(evidence);
+    152|   const projected = recordedProjection(evidence, home);
+    153|   expect(projected.after.detail).not.toHaveProperty('side');
+       |                                      ^
+    154|   if (mode !== 'direct')
+    155|    expect(projected.after.captures).toHaveLength(mode === 'same-tree' …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  test/utils/recorded-projection.test.ts > the projection re-derives same-tree evidence without filenames and leaves its input alone
+ FAIL  test/utils/recorded-projection.test.ts > the projection re-derives changed-tree evidence without filenames and leaves its input alone
+AssertionError: expected { …(8) } to not have property "side"
+
+[32m- Expected:[39m 
+undefined
+
+[31m+ Received:[39m 
+"sides/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.json"
+
+ ❯ test/utils/recorded-projection.test.ts:153:38
+    151|   const untouched = structuredClone(evidence);
+    152|   const projected = recordedProjection(evidence, home);
+    153|   expect(projected.after.detail).not.toHaveProperty('side');
+       |                                      ^
+    154|   if (mode !== 'direct')
+    155|    expect(projected.after.captures).toHaveLength(mode === 'same-tree' …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 3 passed (7)
+   Start at  22:28:22
+   Duration  366ms (transform 66ms, setup 0ms, collect 117ms, tests 31ms, environment 0ms, prepare 42ms)
+
+
+Running 3 tests using 1 worker
+
+  ✘  1 tests/e2e/agent-settings.spec.ts:14:2 › Settings owns the persistent design count at 1440px (134ms)
+  ✘  2 tests/e2e/agent-settings.spec.ts:14:2 › Settings owns the persistent design count at 920px (125ms)
+  ✘  3 tests/e2e/agent-settings.spec.ts:14:2 › Settings owns the persistent design count at 390px (127ms)
+
+
+  1) tests/e2e/agent-settings.spec.ts:14:2 › Settings owns the persistent design count at 1440px ───
+
+    Error: The rendered build has no compiled identity stamp
+
+       at scenario-capture.ts:41
+
+      39 | 	const buildId = buildStamp(stamp ?? undefined);
+      40 | 	const revision = process.env.HARNESS_VERIFY_REVISION ?? '';
+    > 41 | 	if (!buildId) throw new Error('The rendered build has no compiled identity stamp');
+         | 	                    ^
+      42 | 	if (process.env.HARNESS_VERIFY !== '1' || !/^[a-f0-9]{40}$/.test(revision))
+      43 | 		throw new Error('A verification revision is required to record a capture');
+      44 | 	await pageWorkload(page, scenario, { ...capture, viewport, buildId });
+        at scenarioCapture (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/desktop/tests/e2e/scenario-capture.ts:41:22)
+        at rememberSettings (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/desktop/tests/e2e/agent-settings-fixture.ts:55:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/desktop/tests/e2e/agent-settings.spec.ts:18:3
+
+    Error Context: test-results/agent-settings-Settings-ow-8bac6-tent-design-count-at-1440px/error-context.md
+
+  2) tests/e2e/agent-settings.spec.ts:14:2 › Settings owns the persistent design count at 920px ────
+
+    Error: The rendered build has no compiled identity stamp
+
+       at scenario-capture.ts:41
+
+      39 | 	const buildId = buildStamp(stamp ?? undefined);
+      40 | 	const revision = process.env.HARNESS_VERIFY_REVISION ?? '';
+    > 41 | 	if (!buildId) throw new Error('The rendered build has no compiled identity stamp');
+         | 	                    ^
+      42 | 	if (process.env.HARNESS_VERIFY !== '1' || !/^[a-f0-9]{40}$/.test(revision))
+      43 | 		throw new Error('A verification revision is required to record a capture');
+      44 | 	await pageWorkload(page, scenario, { ...capture, viewport, buildId });
+        at scenarioCapture (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/desktop/tests/e2e/scenario-capture.ts:41:22)
+        at rememberSettings (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/desktop/tests/e2e/agent-settings-fixture.ts:55:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/desktop/tests/e2e/agent-settings.spec.ts:18:3
+
+    Error Context: test-results/agent-settings-Settings-ow-a4d76-stent-design-count-at-920px/error-context.md
+
+  3) tests/e2e/agent-settings.spec.ts:14:2 › Settings owns the persistent design count at 390px ────
+
+    Error: The rendered build has no compiled identity stamp
+
+       at scenario-capture.ts:41
+
+      39 | 	const buildId = buildStamp(stamp ?? undefined);
+      40 | 	const revision = process.env.HARNESS_VERIFY_REVISION ?? '';
+    > 41 | 	if (!buildId) throw new Error('The rendered build has no compiled identity stamp');
+         | 	                    ^
+      42 | 	if (process.env.HARNESS_VERIFY !== '1' || !/^[a-f0-9]{40}$/.test(revision))
+      43 | 		throw new Error('A verification revision is required to record a capture');
+      44 | 	await pageWorkload(page, scenario, { ...capture, viewport, buildId });
+        at scenarioCapture (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/desktop/tests/e2e/scenario-capture.ts:41:22)
+        at rememberSettings (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/desktop/tests/e2e/agent-settings-fixture.ts:55:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/desktop/tests/e2e/agent-settings.spec.ts:18:3
+
+    Error Context: test-results/agent-settings-Settings-ow-2455b-stent-design-count-at-390px/error-context.md
+
+  3 failed
+    tests/e2e/agent-settings.spec.ts:14:2 › Settings owns the persistent design count at 1440px ────
+    tests/e2e/agent-settings.spec.ts:14:2 › Settings owns the persistent design count at 920px ─────
+    tests/e2e/agent-settings.spec.ts:14:2 › Settings owns the persistent design count at 390px ─────
+
+ RUN  v3.2.4 /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports
+
+ ❯ test/components/entity-overview.test.ts (11 tests | 1 failed) 42ms
+   ✓ an overview groups size and timings in Performance profile, with no source 14ms
+   ✓ a page at a selected commit shows the parent and the commit for one state and viewport 3ms
+   ✓ a page at the branch tip shows exactly one screenshot and no before or after 1ms
+   × a side with no capture of the state is a stated gap, never the other side picture 6ms
+     → expected ' Pages Orders page Orders page Page O…' not to contain 'Focused capture'
+   ✓ a component no visual scenario names keeps the screenshot pane, as a stated gap 1ms
+   ✓ a page lists its components as components, each a link in the same scope 4ms
+   ✓ a function at a selected commit shows its end-to-end results before and after 1ms
+   ✓ a function at the branch tip shows one run, and an unrecorded one is a cross 2ms
+   ✓ a behaviour that cannot be established is unknown and shown as failed 1ms
+   ✓ a config shows what it provides and who uses it, with no screenshot and no benchmark 3ms
+   ✓ contract and details list required states without an overview selector 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/entity-overview.test.ts > a side with no capture of the state is a stated gap, never the other side picture
+AssertionError: expected ' Pages Orders page Orders page Page O…' not to contain 'Focused capture'
+
+Expected: [32m"Focused capture"[39m
+Received: [31m" Pages Orders page Orders page Page Overview Contract Uses States History Source Lists the orders of an account. Commit comparison Desktop Tablet Mobile 1440 × 900 View full comparison Before · aaaaaaa Parent commit Focused capture Open full size After · bbbbbbb Selected commit Focused capture Open full size Behavior change This commit records no reason for a change of this entity. Performance profile Source size Not measured Complexity Not measured Latency Not measured Memory Not measured No benchmark is recorded for this revision. "[39m
+
+ ❯ test/components/entity-overview.test.ts:79:29
+     77|   'bbbbbbb-default-desktop.png'
+     78|  ]);
+     79|  expect(words(focused)).not.toContain('Focused capture');
+       |                             ^
+     80|  expect(words(focused)).not.toContain('Open full size');
+     81|  expect(verdicts(focused).some((badge) => badge.passed)).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 10 passed (11)
+   Start at  22:28:25
+   Duration  1.49s (transform 806ms, setup 0ms, collect 1.13s, tests 42ms, environment 0ms, prepare 33ms)
+
+
+Running 10 tests using 1 worker
+
+  ✘   1 test/entity-preview-actions.spec.ts:20:2 › visual overviews lead with screenshots at desktop width (30.0s)
+  ✓   2 test/entity-preview-actions.spec.ts:29:2 › usage stays in dedicated tabs at desktop width (5.1s)
+  ✘   3 test/entity-preview-actions.spec.ts:20:2 › visual overviews lead with screenshots at tablet width (30.0s)
+  ✓   4 test/entity-preview-actions.spec.ts:29:2 › usage stays in dedicated tabs at tablet width (4.8s)
+  ✘   5 test/entity-preview-actions.spec.ts:20:2 › visual overviews lead with screenshots at mobile width (30.0s)
+  ✓   6 test/entity-preview-actions.spec.ts:29:2 › usage stays in dedicated tabs at mobile width (4.6s)
+  ✘   7 test/entity-preview-marks.spec.ts:211:2 › measurements at desktop: multiple metrics stay readable without a budget (6.6s)
+  ✘   8 test/entity-preview-marks.spec.ts:211:2 › measurements at tablet: multiple metrics stay readable without a budget (6.6s)
+  ✘   9 test/entity-preview-marks.spec.ts:211:2 › measurements at mobile: multiple metrics stay readable without a budget (6.6s)
+  ✓  10 test/entity-preview.spec.ts:74:1 › a page shows one screenshot at the tip and a matching pair at a commit (496ms)
+
+
+  1) test/entity-preview-actions.spec.ts:20:2 › visual overviews lead with screenshots at desktop width 
+
+    Error: captions contain only revision identity
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.ex-pane figcaption .ex-standing')
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - captions contain only revision identity locator('.ex-pane figcaption .ex-standing') with timeout 5000ms
+      - waiting for locator('.ex-pane figcaption .ex-standing')
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewOverview.ts:120
+
+      118 | 			'captions contain only revision identity'
+      119 | 		)
+    > 120 | 		.toHaveCount(0);
+          | 		 ^
+      121 | 	await expect
+      122 | 		.soft(page.getByRole('button', { name: 'Open full size', exact: true }), 'images open directly')
+      123 | 		.toHaveCount(0);
+        at reviewOverviewControls (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewOverview.ts:120:4)
+        at reviewVisual (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewPage.ts:99:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entity-preview-actions.spec.ts:25:5
+
+    Error: images open directly
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('button', { name: 'Open full size', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - images open directly getByRole('button', { name: 'Open full size', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Open full size', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewOverview.ts:123
+
+      121 | 	await expect
+      122 | 		.soft(page.getByRole('button', { name: 'Open full size', exact: true }), 'images open directly')
+    > 123 | 		.toHaveCount(0);
+          | 		 ^
+      124 | 	await expect(
+      125 | 		page.locator('.ex-evidence-head p'),
+      126 | 		'screenshot heading has no explanatory paragraph'
+        at reviewOverviewControls (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewOverview.ts:123:4)
+        at reviewVisual (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewPage.ts:99:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entity-preview-actions.spec.ts:25:5
+
+    Error: captions contain only revision identity
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.ex-pane figcaption .ex-standing')
+    Expected: 0
+    Received: 2
+    Timeout:  5000ms
+
+    Call log:
+      - captions contain only revision identity locator('.ex-pane figcaption .ex-standing') with timeout 5000ms
+      - waiting for locator('.ex-pane figcaption .ex-standing')
+        14 × locator resolved to 2 elements
+           - unexpected value "2"
+
+
+       at entityPreviewOverview.ts:120
+
+      118 | 			'captions contain only revision identity'
+      119 | 		)
+    > 120 | 		.toHaveCount(0);
+          | 		 ^
+      121 | 	await expect
+      122 | 		.soft(page.getByRole('button', { name: 'Open full size', exact: true }), 'images open directly')
+      123 | 		.toHaveCount(0);
+        at reviewOverviewControls (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewOverview.ts:120:4)
+        at reviewVisual (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewPage.ts:99:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entity-preview-actions.spec.ts:25:5
+
+    Error: images open directly
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('button', { name: 'Open full size', exact: true })
+    Expected: 0
+    Received: 2
+    Timeout:  5000ms
+
+    Call log:
+      - images open directly getByRole('button', { name: 'Open full size', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Open full size', exact: true })
+        14 × locator resolved to 2 elements
+           - unexpected value "2"
+
+
+       at entityPreviewOverview.ts:123
+
+      121 | 	await expect
+      122 | 		.soft(page.getByRole('button', { name: 'Open full size', exact: true }), 'images open directly')
+    > 123 | 		.toHaveCount(0);
+          | 		 ^
+      124 | 	await expect(
+      125 | 		page.locator('.ex-evidence-head p'),
+      126 | 		'screenshot heading has no explanatory paragraph'
+        at reviewOverviewControls (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewOverview.ts:123:4)
+        at reviewVisual (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewPage.ts:99:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entity-preview-actions.spec.ts:25:5
+
+    Error: captions contain only revision identity
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.ex-pane figcaption .ex-standing')
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - captions contain only revision identity locator('.ex-pane figcaption .ex-standing') with timeout 5000ms
+      - waiting for locator('.ex-pane figcaption .ex-standing')
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewOverview.ts:120
+
+      118 | 			'captions contain only revision identity'
+      119 | 		)
+    > 120 | 		.toHaveCount(0);
+          | 		 ^
+      121 | 	await expect
+      122 | 		.soft(page.getByRole('button', { name: 'Open full size', exact: true }), 'images open directly')
+      123 | 		.toHaveCount(0);
+        at reviewOverviewControls (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewOverview.ts:120:4)
+        at reviewVisual (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewPage.ts:99:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entity-preview-actions.spec.ts:25:5
+
+    Test timeout of 30000ms exceeded.
+
+    Error: images open directly
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('button', { name: 'Open full size', exact: true })
+    Expected: 0
+    Received: 1
+
+    Call log:
+      - images open directly getByRole('button', { name: 'Open full size', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Open full size', exact: true })
+        10 × locator resolved to 1 element
+           - unexpected value "1"
+      - Test ended.
+
+
+       at entityPreviewOverview.ts:123
+
+      121 | 	await expect
+      122 | 		.soft(page.getByRole('button', { name: 'Open full size', exact: true }), 'images open directly')
+    > 123 | 		.toHaveCount(0);
+          | 		 ^
+      124 | 	await expect(
+      125 | 		page.locator('.ex-evidence-head p'),
+      126 | 		'screenshot heading has no explanatory paragraph'
+        at reviewOverviewControls (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewOverview.ts:123:4)
+        at reviewVisual (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewPage.ts:99:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entity-preview-actions.spec.ts:25:5
+
+    Error: screenshot heading has no explanatory paragraph
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.ex-evidence-head p')
+    Expected: 0
+    Received: undefined
+
+
+       at entityPreviewOverview.ts:127
+
+      125 | 		page.locator('.ex-evidence-head p'),
+      126 | 		'screenshot heading has no explanatory paragraph'
+    > 127 | 	).toHaveCount(0);
+          | 	  ^
+      128 | }
+      129 |
+      130 | /** A focused capture remains usable without pretending there is a full verification record. */
+        at reviewOverviewControls (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewOverview.ts:127:4)
+        at reviewVisual (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewPage.ts:99:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entity-preview-actions.spec.ts:25:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-vis-6e20f-creenshots-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-vis-6e20f-creenshots-at-desktop-width/error-context.md
+
+  2) test/entity-preview-actions.spec.ts:20:2 › visual overviews lead with screenshots at tablet width 
+
+    Error: captions contain only revision identity
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.ex-pane figcaption .ex-standing')
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - captions contain only revision identity locator('.ex-pane figcaption .ex-standing') with timeout 5000ms
+      - waiting for locator('.ex-pane figcaption .ex-standing')
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewOverview.ts:120
+
+      118 | 			'captions contain only revision identity'
+      119 | 		)
+    > 120 | 		.toHaveCount(0);
+          | 		 ^
+      121 | 	await expect
+      122 | 		.soft(page.getByRole('button', { name: 'Open full size', exact: true }), 'images open directly')
+      123 | 		.toHaveCount(0);
+        at reviewOverviewControls (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewOverview.ts:120:4)
+        at reviewVisual (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewPage.ts:99:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entity-preview-actions.spec.ts:25:5
+
+    Error: images open directly
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('button', { name: 'Open full size', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - images open directly getByRole('button', { name: 'Open full size', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Open full size', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewOverview.ts:123
+
+      121 | 	await expect
+      122 | 		.soft(page.getByRole('button', { name: 'Open full size', exact: true }), 'images open directly')
+    > 123 | 		.toHaveCount(0);
+          | 		 ^
+      124 | 	await expect(
+      125 | 		page.locator('.ex-evidence-head p'),
+      126 | 		'screenshot heading has no explanatory paragraph'
+        at reviewOverviewControls (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewOverview.ts:123:4)
+        at reviewVisual (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewPage.ts:99:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entity-preview-actions.spec.ts:25:5
+
+    Error: captions contain only revision identity
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.ex-pane figcaption .ex-standing')
+    Expected: 0
+    Received: 2
+    Timeout:  5000ms
+
+    Call log:
+      - captions contain only revision identity locator('.ex-pane figcaption .ex-standing') with timeout 5000ms
+      - waiting for locator('.ex-pane figcaption .ex-standing')
+        14 × locator resolved to 2 elements
+           - unexpected value "2"
+
+
+       at entityPreviewOverview.ts:120
+
+      118 | 			'captions contain only revision identity'
+      119 | 		)
+    > 120 | 		.toHaveCount(0);
+          | 		 ^
+      121 | 	await expect
+      122 | 		.soft(page.getByRole('button', { name: 'Open full size', exact: true }), 'images open directly')
+      123 | 		.toHaveCount(0);
+        at reviewOverviewControls (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewOverview.ts:120:4)
+        at reviewVisual (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewPage.ts:99:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entity-preview-actions.spec.ts:25:5
+
+    Error: images open directly
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('button', { name: 'Open full size', exact: true })
+    Expected: 0
+    Received: 2
+    Timeout:  5000ms
+
+    Call log:
+      - images open directly getByRole('button', { name: 'Open full size', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Open full size', exact: true })
+        14 × locator resolved to 2 elements
+           - unexpected value "2"
+
+
+       at entityPreviewOverview.ts:123
+
+      121 | 	await expect
+      122 | 		.soft(page.getByRole('button', { name: 'Open full size', exact: true }), 'images open directly')
+    > 123 | 		.toHaveCount(0);
+          | 		 ^
+      124 | 	await expect(
+      125 | 		page.locator('.ex-evidence-head p'),
+      126 | 		'screenshot heading has no explanatory paragraph'
+        at reviewOverviewControls (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewOverview.ts:123:4)
+        at reviewVisual (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewPage.ts:99:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entity-preview-actions.spec.ts:25:5
+
+    Error: captions contain only revision identity
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.ex-pane figcaption .ex-standing')
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - captions contain only revision identity locator('.ex-pane figcaption .ex-standing') with timeout 5000ms
+      - waiting for locator('.ex-pane figcaption .ex-standing')
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewOverview.ts:120
+
+      118 | 			'captions contain only revision identity'
+      119 | 		)
+    > 120 | 		.toHaveCount(0);
+          | 		 ^
+      121 | 	await expect
+      122 | 		.soft(page.getByRole('button', { name: 'Open full size', exact: true }), 'images open directly')
+      123 | 		.toHaveCount(0);
+        at reviewOverviewControls (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewOverview.ts:120:4)
+        at reviewVisual (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewPage.ts:99:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entity-preview-actions.spec.ts:25:5
+
+    Test timeout of 30000ms exceeded.
+
+    Error: images open directly
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('button', { name: 'Open full size', exact: true })
+    Expected: 0
+    Received: 1
+
+    Call log:
+      - images open directly getByRole('button', { name: 'Open full size', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Open full size', exact: true })
+        10 × locator resolved to 1 element
+           - unexpected value "1"
+      - Test ended.
+
+
+       at entityPreviewOverview.ts:123
+
+      121 | 	await expect
+      122 | 		.soft(page.getByRole('button', { name: 'Open full size', exact: true }), 'images open directly')
+    > 123 | 		.toHaveCount(0);
+          | 		 ^
+      124 | 	await expect(
+      125 | 		page.locator('.ex-evidence-head p'),
+      126 | 		'screenshot heading has no explanatory paragraph'
+        at reviewOverviewControls (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewOverview.ts:123:4)
+        at reviewVisual (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewPage.ts:99:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entity-preview-actions.spec.ts:25:5
+
+    Error: screenshot heading has no explanatory paragraph
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.ex-evidence-head p')
+    Expected: 0
+    Received: undefined
+
+
+       at entityPreviewOverview.ts:127
+
+      125 | 		page.locator('.ex-evidence-head p'),
+      126 | 		'screenshot heading has no explanatory paragraph'
+    > 127 | 	).toHaveCount(0);
+          | 	  ^
+      128 | }
+      129 |
+      130 | /** A focused capture remains usable without pretending there is a full verification record. */
+        at reviewOverviewControls (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewOverview.ts:127:4)
+        at reviewVisual (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewPage.ts:99:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entity-preview-actions.spec.ts:25:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-vis-ec3df-screenshots-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-vis-ec3df-screenshots-at-tablet-width/error-context.md
+
+  3) test/entity-preview-actions.spec.ts:20:2 › visual overviews lead with screenshots at mobile width 
+
+    Error: captions contain only revision identity
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.ex-pane figcaption .ex-standing')
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - captions contain only revision identity locator('.ex-pane figcaption .ex-standing') with timeout 5000ms
+      - waiting for locator('.ex-pane figcaption .ex-standing')
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewOverview.ts:120
+
+      118 | 			'captions contain only revision identity'
+      119 | 		)
+    > 120 | 		.toHaveCount(0);
+          | 		 ^
+      121 | 	await expect
+      122 | 		.soft(page.getByRole('button', { name: 'Open full size', exact: true }), 'images open directly')
+      123 | 		.toHaveCount(0);
+        at reviewOverviewControls (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewOverview.ts:120:4)
+        at reviewVisual (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewPage.ts:99:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entity-preview-actions.spec.ts:25:5
+
+    Error: images open directly
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('button', { name: 'Open full size', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - images open directly getByRole('button', { name: 'Open full size', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Open full size', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewOverview.ts:123
+
+      121 | 	await expect
+      122 | 		.soft(page.getByRole('button', { name: 'Open full size', exact: true }), 'images open directly')
+    > 123 | 		.toHaveCount(0);
+          | 		 ^
+      124 | 	await expect(
+      125 | 		page.locator('.ex-evidence-head p'),
+      126 | 		'screenshot heading has no explanatory paragraph'
+        at reviewOverviewControls (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewOverview.ts:123:4)
+        at reviewVisual (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewPage.ts:99:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entity-preview-actions.spec.ts:25:5
+
+    Error: captions contain only revision identity
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.ex-pane figcaption .ex-standing')
+    Expected: 0
+    Received: 2
+    Timeout:  5000ms
+
+    Call log:
+      - captions contain only revision identity locator('.ex-pane figcaption .ex-standing') with timeout 5000ms
+      - waiting for locator('.ex-pane figcaption .ex-standing')
+        14 × locator resolved to 2 elements
+           - unexpected value "2"
+
+
+       at entityPreviewOverview.ts:120
+
+      118 | 			'captions contain only revision identity'
+      119 | 		)
+    > 120 | 		.toHaveCount(0);
+          | 		 ^
+      121 | 	await expect
+      122 | 		.soft(page.getByRole('button', { name: 'Open full size', exact: true }), 'images open directly')
+      123 | 		.toHaveCount(0);
+        at reviewOverviewControls (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewOverview.ts:120:4)
+        at reviewVisual (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewPage.ts:99:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entity-preview-actions.spec.ts:25:5
+
+    Error: images open directly
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('button', { name: 'Open full size', exact: true })
+    Expected: 0
+    Received: 2
+    Timeout:  5000ms
+
+    Call log:
+      - images open directly getByRole('button', { name: 'Open full size', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Open full size', exact: true })
+        14 × locator resolved to 2 elements
+           - unexpected value "2"
+
+
+       at entityPreviewOverview.ts:123
+
+      121 | 	await expect
+      122 | 		.soft(page.getByRole('button', { name: 'Open full size', exact: true }), 'images open directly')
+    > 123 | 		.toHaveCount(0);
+          | 		 ^
+      124 | 	await expect(
+      125 | 		page.locator('.ex-evidence-head p'),
+      126 | 		'screenshot heading has no explanatory paragraph'
+        at reviewOverviewControls (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewOverview.ts:123:4)
+        at reviewVisual (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewPage.ts:99:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entity-preview-actions.spec.ts:25:5
+
+    Error: captions contain only revision identity
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.ex-pane figcaption .ex-standing')
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - captions contain only revision identity locator('.ex-pane figcaption .ex-standing') with timeout 5000ms
+      - waiting for locator('.ex-pane figcaption .ex-standing')
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewOverview.ts:120
+
+      118 | 			'captions contain only revision identity'
+      119 | 		)
+    > 120 | 		.toHaveCount(0);
+          | 		 ^
+      121 | 	await expect
+      122 | 		.soft(page.getByRole('button', { name: 'Open full size', exact: true }), 'images open directly')
+      123 | 		.toHaveCount(0);
+        at reviewOverviewControls (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewOverview.ts:120:4)
+        at reviewVisual (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewPage.ts:99:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entity-preview-actions.spec.ts:25:5
+
+    Test timeout of 30000ms exceeded.
+
+    Error: images open directly
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('button', { name: 'Open full size', exact: true })
+    Expected: 0
+    Received: 1
+
+    Call log:
+      - images open directly getByRole('button', { name: 'Open full size', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Open full size', exact: true })
+        10 × locator resolved to 1 element
+           - unexpected value "1"
+      - Test ended.
+
+
+       at entityPreviewOverview.ts:123
+
+      121 | 	await expect
+      122 | 		.soft(page.getByRole('button', { name: 'Open full size', exact: true }), 'images open directly')
+    > 123 | 		.toHaveCount(0);
+          | 		 ^
+      124 | 	await expect(
+      125 | 		page.locator('.ex-evidence-head p'),
+      126 | 		'screenshot heading has no explanatory paragraph'
+        at reviewOverviewControls (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewOverview.ts:123:4)
+        at reviewVisual (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewPage.ts:99:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entity-preview-actions.spec.ts:25:5
+
+    Error: screenshot heading has no explanatory paragraph
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.ex-evidence-head p')
+    Expected: 0
+    Received: undefined
+
+
+       at entityPreviewOverview.ts:127
+
+      125 | 		page.locator('.ex-evidence-head p'),
+      126 | 		'screenshot heading has no explanatory paragraph'
+    > 127 | 	).toHaveCount(0);
+          | 	  ^
+      128 | }
+      129 |
+      130 | /** A focused capture remains usable without pretending there is a full verification record. */
+        at reviewOverviewControls (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewOverview.ts:127:4)
+        at reviewVisual (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewPage.ts:99:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entity-preview-actions.spec.ts:25:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-vis-5375c-screenshots-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-vis-5375c-screenshots-at-mobile-width/error-context.md
+
+  4) test/entity-preview-marks.spec.ts:211:2 › measurements at desktop: multiple metrics stay readable without a budget 
+
+    Error: expect(locator).not.toContainText(expected) failed
+
+    Locator: locator('section[aria-labelledby="ex-screens-title"]')
+    Expected substring: not "Focused capture"
+    Received string: "Commit comparison DesktopTabletMobile 1440 × 900  View full comparison   Before · aaaaaaa Parent commit Focused capture  Open full size After · bbbbbbb Selected commit Focused capture  Open full size   Behavior change This commit records no reason for a change of this entity. "
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "soft not toContainText" locator('section[aria-labelledby="ex-screens-title"]') with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]')
+        14 × locator resolved to <section class="ex-card ex-evidence" aria-labelledby="ex-screens-title">…</section>
+           - unexpected value "Commit comparison DesktopTabletMobile 1440 × 900  View full comparison   Before · aaaaaaa Parent commit Focused capture  Open full size After · bbbbbbb Selected commit Focused capture  Open full size   Behavior change This commit records no reason for a change of this entity. "
+
+
+       at entityPreviewOverview.ts:143
+
+      141 | 		.soft(panel.getByRole('img'), 'focused screenshots appear on both committed sides')
+      142 | 		.toHaveCount(2);
+    > 143 | 	await expect.soft(panel).not.toContainText('Focused capture');
+          | 	                             ^
+      144 | 	for (const label of ['Desktop', 'Tablet', 'Mobile']) {
+      145 | 		const button = panel.getByRole('button', { name: label, exact: true });
+      146 | 		await expect.soft(button, 'every viewport has a capture').toHaveCount(1);
+        at reviewFocusedScreens (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewOverview.ts:143:31)
+        at reviewMeasurements (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewPage.ts:190:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-marks-measu-03db8-y-readable-without-a-budget/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-marks-measu-03db8-y-readable-without-a-budget/error-context.md
+
+  5) test/entity-preview-marks.spec.ts:211:2 › measurements at tablet: multiple metrics stay readable without a budget 
+
+    Error: expect(locator).not.toContainText(expected) failed
+
+    Locator: locator('section[aria-labelledby="ex-screens-title"]')
+    Expected substring: not "Focused capture"
+    Received string: "Commit comparison DesktopTabletMobile 1440 × 900  View full comparison   Before · aaaaaaa Parent commit Focused capture  Open full size After · bbbbbbb Selected commit Focused capture  Open full size   Behavior change This commit records no reason for a change of this entity. "
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "soft not toContainText" locator('section[aria-labelledby="ex-screens-title"]') with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]')
+        14 × locator resolved to <section class="ex-card ex-evidence" aria-labelledby="ex-screens-title">…</section>
+           - unexpected value "Commit comparison DesktopTabletMobile 1440 × 900  View full comparison   Before · aaaaaaa Parent commit Focused capture  Open full size After · bbbbbbb Selected commit Focused capture  Open full size   Behavior change This commit records no reason for a change of this entity. "
+
+
+       at entityPreviewOverview.ts:143
+
+      141 | 		.soft(panel.getByRole('img'), 'focused screenshots appear on both committed sides')
+      142 | 		.toHaveCount(2);
+    > 143 | 	await expect.soft(panel).not.toContainText('Focused capture');
+          | 	                             ^
+      144 | 	for (const label of ['Desktop', 'Tablet', 'Mobile']) {
+      145 | 		const button = panel.getByRole('button', { name: label, exact: true });
+      146 | 		await expect.soft(button, 'every viewport has a capture').toHaveCount(1);
+        at reviewFocusedScreens (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewOverview.ts:143:31)
+        at reviewMeasurements (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewPage.ts:190:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-marks-measu-3d6a9-y-readable-without-a-budget/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-marks-measu-3d6a9-y-readable-without-a-budget/error-context.md
+
+  6) test/entity-preview-marks.spec.ts:211:2 › measurements at mobile: multiple metrics stay readable without a budget 
+
+    Error: expect(locator).not.toContainText(expected) failed
+
+    Locator: locator('section[aria-labelledby="ex-screens-title"]')
+    Expected substring: not "Focused capture"
+    Received string: "Commit comparison DesktopTabletMobile 1440 × 900  View full comparison   Before · aaaaaaa Parent commit Focused capture  Open full size After · bbbbbbb Selected commit Focused capture  Open full size   Behavior change This commit records no reason for a change of this entity. "
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "soft not toContainText" locator('section[aria-labelledby="ex-screens-title"]') with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]')
+        14 × locator resolved to <section class="ex-card ex-evidence" aria-labelledby="ex-screens-title">…</section>
+           - unexpected value "Commit comparison DesktopTabletMobile 1440 × 900  View full comparison   Before · aaaaaaa Parent commit Focused capture  Open full size After · bbbbbbb Selected commit Focused capture  Open full size   Behavior change This commit records no reason for a change of this entity. "
+
+
+       at entityPreviewOverview.ts:143
+
+      141 | 		.soft(panel.getByRole('img'), 'focused screenshots appear on both committed sides')
+      142 | 		.toHaveCount(2);
+    > 143 | 	await expect.soft(panel).not.toContainText('Focused capture');
+          | 	                             ^
+      144 | 	for (const label of ['Desktop', 'Tablet', 'Mobile']) {
+      145 | 		const button = panel.getByRole('button', { name: label, exact: true });
+      146 | 		await expect.soft(button, 'every viewport has a capture').toHaveCount(1);
+        at reviewFocusedScreens (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewOverview.ts:143:31)
+        at reviewMeasurements (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entityPreviewPage.ts:190:2)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-nMfUmA/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-marks-measu-b0c14-y-readable-without-a-budget/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-marks-measu-b0c14-y-readable-without-a-budget/error-context.md
+
+  6 failed
+    test/entity-preview-actions.spec.ts:20:2 › visual overviews lead with screenshots at desktop width 
+    test/entity-preview-actions.spec.ts:20:2 › visual overviews lead with screenshots at tablet width 
+    test/entity-preview-actions.spec.ts:20:2 › visual overviews lead with screenshots at mobile width 
+    test/entity-preview-marks.spec.ts:211:2 › measurements at desktop: multiple metrics stay readable without a budget 
+    test/entity-preview-marks.spec.ts:211:2 › measurements at tablet: multiple metrics stay readable without a budget 
+    test/entity-preview-marks.spec.ts:211:2 › measurements at mobile: multiple metrics stay readable without a budget 
+  4 passed (2.2m)
+[WebServer] $ bun run --cwd ../desktop svelte-kit sync && vite build && vite build --config src/config/reportViteConfig.ts && vite build --config src/config/consoleViteConfig.ts
+[WebServer] ../../node_modules/zod/v4/core/util.js (400:0): A comment
+[WebServer] 
+[WebServer] "// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+[WebServer] 
+[WebServer] in "../../node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+[WebServer] ../../node_modules/zod/v4/core/regexes.js (74:0): A comment
+[WebServer] 
+[WebServer] "/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+[WebServer]  * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+[WebServer]  * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+[WebServer] 
+[WebServer] in "../../node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+[WebServer] Circular dependency: ../../node_modules/zod/v4/core/core.js -> ../../node_modules/zod/v4/core/util.js -> ../../node_modules/zod/v4/core/core.js
+[WebServer] Circular dependency: ../../node_modules/smol-toml/dist/struct.js -> ../../node_modules/smol-toml/dist/extract.js -> ../../node_modules/smol-toml/dist/struct.js
+[WebServer] Generated an empty chunk: "chunks/internal2.js".
+
+Running 3 tests using 1 worker
+
+  ✓  1 tests/e2e/harness-explorer-measures.spec.ts:48:2 › every entity kind shows selected source measurements at desktop width (6.4s)
+  ✓  2 tests/e2e/harness-explorer-measures.spec.ts:48:2 › every entity kind shows selected source measurements at tablet width (6.2s)
+  ✓  3 tests/e2e/harness-explorer-measures.spec.ts:48:2 › every entity kind shows selected source measurements at mobile width (6.1s)
+
+  3 passed (2.4m)
