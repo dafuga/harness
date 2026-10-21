@@ -15,6 +15,7 @@ import { createRequire } from 'node:module';
 import { createPlanning } from '../../../planning/src/lib/planning/index';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
 import { PlanningFacadeAdapter } from '../../src/adapters/planning-facade-adapter/PlanningFacadeAdapter';
+import type { WebPreferences } from 'electron';
 
 const desktopRoot = resolve(import.meta.dirname, '../..');
 const electronBinary = createRequire(import.meta.url)('electron') as string;
@@ -39,7 +40,10 @@ async function project(root: string) {
 }
 async function isolation(app: ElectronApplication, page: Page) {
 	const preferences = await app.evaluate(({ BrowserWindow }) => {
-		const options = BrowserWindow.getAllWindows()[0].webContents.getLastWebPreferences();
+		const contents = BrowserWindow.getAllWindows()[0].webContents;
+		// Electron exposes this runtime inspection method without declaring it in WebContents.
+		const inspected = contents as typeof contents & { getLastWebPreferences(): WebPreferences };
+		const options = inspected.getLastWebPreferences();
 		return {
 			sandbox: options?.sandbox,
 			contextIsolation: options?.contextIsolation,

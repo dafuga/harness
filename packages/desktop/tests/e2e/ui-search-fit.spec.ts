@@ -75,12 +75,18 @@ async function fits(page: Page, width: number, without: number[]): Promise<void>
 			.map((link) => link.textContent?.trim());
 	});
 	expect(clipped, 'All category links and labels must fit visibly inside the nav').toEqual([]);
-	const search = await box(trigger(page));
+	const search = await box(bar(page).getByRole('button', { name: 'Search entities', exact: true }));
 	const fields = await Promise.all(revision(page).map(box));
 	expect(fields.map((one) => meet(search, one, 3))).toEqual([false, false]);
 	// The search takes nothing of the room of either revision field.
 	expect(fields.map((one) => Math.round(one.width))).toEqual(without);
-	expect(search.width).toBeGreaterThanOrEqual(40);
+	expect(search.width, 'Search target width remains at least 40 pixels').toBeGreaterThanOrEqual(40);
+	expect(search.height, 'Search target height remains at least 40 pixels').toBeGreaterThanOrEqual(
+		40
+	);
+	const links = await navigation.getByRole('link').all();
+	const overlaps = await Promise.all(links.map(async (link) => meet(search, await box(link), 0)));
+	expect(overlaps, 'Search target does not cover category links').toEqual(links.map(() => false));
 	expect([search.x >= 0, search.x + search.width <= width]).toEqual([true, true]);
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
 		width
