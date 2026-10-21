@@ -6,7 +6,7 @@
 	"name": "runtime-profile-applicability",
 	"goal": "Require real profiles for executable units without asking declarative CSS for a nonexistent module call; unreadable and mixed sources remain required.",
 	"createdAt": "2026-10-21T09:07:19.527Z",
-	"updatedAt": "2026-10-21T09:18:40.726Z",
+	"updatedAt": "2026-10-21T09:20:48.501Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -52,12 +52,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T09:20:46.864Z",
+			"evidence": "Sealed same-process red217b65c561f6371cb50cb55d76158e915332fe239908868c21c99fa9d37a77b9 at25e06b3c and green1c5c868cdfdfda79de6e4936f01d9160496b8ab6640136961e7ca020acdcca60 at90bf151f use identical frozen tests and command. All11 validator cases pass, with actual 1,000-unit validation latency and process RSS observations."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T09:20:48.501Z",
+			"evidence": "The isolated red snapshot restores the old classifier and fails the CSS-only assertion. The isolated green snapshot passes the unchanged declarative, executable, unknown, unreadable and mixed-source matrix. Existing task completion tests retain mandatory executable profiles without budgets."
 		},
 		{
 			"id": "verify",

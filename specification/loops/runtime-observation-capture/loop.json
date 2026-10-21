@@ -1,0 +1,68 @@
+{
+	"completion": {
+		"version": 1,
+		"kind": "coding"
+	},
+	"name": "runtime-observation-capture",
+	"goal": "Harness captures real one-pass synchronous and awaited operation latency and process memory without rerunning effectful behavior tests or replacing results.",
+	"createdAt": "2026-10-21T09:27:44.989Z",
+	"updatedAt": "2026-10-21T09:27:49.215Z",
+	"template": "regression-prevention",
+	"templateLineage": ["regression-prevention"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
+			"status": "complete",
+			"completedAt": "2026-10-21T09:27:46.230Z",
+			"evidence": "Mandatory profiling exposed existing backend behavior tests without captures. The batch profiler repeats operations, so applying it blindly to effectful normal tests would duplicate writes and requests. Add one-pass Harness observations, then integrate only real operation boundaries; unsupported boundaries remain missing rather than borrowed."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
+			"status": "complete",
+			"completedAt": "2026-10-21T09:27:49.215Z",
+			"evidence": "The existing performance-profile suite verifies repeated workload counts, failures and evidence serialization. Extend it to single execution, synchronous identity, awaited completion, rejection identity, invalid input admission, separate callable/workload buffers and honest whole-process RSS. Test operation timing rather than whole test duration."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "propose",
+			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "guard",
+			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

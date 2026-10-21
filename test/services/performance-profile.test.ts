@@ -1,4 +1,8 @@
-import { profileProfiler } from '../support/taskProfiles';
+import {
+	profileProfiler,
+	isolatedProfileCapture,
+	profileSingleCallObservation
+} from '../support/taskProfiles';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -79,4 +83,97 @@ test('Harness capture retains separate workloads in its standard benchmark evide
 		vi.unstubAllEnvs();
 		await rm(directory, { recursive: true, force: true });
 	}
+});
+
+test('single-pass observations retain synchronous results and never repeat effects', async () => {
+	await isolatedProfileCapture(async (directory) => {
+		const profiler = new PerformanceProfileService();
+		const result = { title: 'One title' };
+		const operation = vi.fn(() => result);
+		const input = { unit: 'function.title', callable: 'title', workload: 'title-once' };
+		expect(profiler.observe(input, operation)).toBe(result);
+		expect(profiler.observe(input, operation)).toBe(result);
+		expect(operation).toHaveBeenCalledTimes(2);
+		const measurements = profiler.flush();
+		expect(measurements).toHaveLength(2);
+		expect(measurements.every((item) => item.samples === 2 && item.workload === 'title-once')).toBe(
+			true
+		);
+		expect(measurements.find((item) => item.unitOfMeasure === 'ms')!.value).toBeGreaterThanOrEqual(
+			0
+		);
+		const memory = measurements.find((item) => item.unitOfMeasure === 'bytes')!;
+		expect(memory.value).toBeGreaterThan(0);
+		expect(memory.method).toContain('whole process');
+		expect(profiler.flush()).toEqual([]);
+		const lines = (await readFile(join(directory, 'captures.ndjson'), 'utf8')).trim().split('\n');
+		expect(lines).toHaveLength(1);
+		const captured = JSON.parse(await readFile(join(directory, JSON.parse(lines[0]).file), 'utf8'));
+		expect(benchmarkCaptureSchema.parse(captured).measurements).toEqual(measurements);
+	});
+	await profileSingleCallObservation();
+});
+
+test('awaited observations finish only after the actual operation settles', async () => {
+	await isolatedProfileCapture(async () => {
+		const profiler = new PerformanceProfileService();
+		const result = { title: 'Ready' };
+		let finish!: (value: typeof result) => void;
+		const pending = new Promise<typeof result>((resolve) => (finish = resolve));
+		const input = { unit: 'function.title', workload: 'pending-title' };
+		expect(profiler.observe(input, () => pending)).toBe(pending);
+		expect(profiler.flush()).toEqual([]);
+		const operation = vi.fn(() => pending);
+		const observed = profiler.observeAsync(input, operation);
+		expect(profiler.flush()).toEqual([]);
+		finish(result);
+		expect(await observed).toBe(result);
+		expect(operation).toHaveBeenCalledTimes(1);
+		const measurements = profiler.flush();
+		expect(measurements).toHaveLength(2);
+		expect(measurements.every((item) => item.samples === 1)).toBe(true);
+		expect(measurements.find((item) => item.unitOfMeasure === 'ms')!.method).toContain('await');
+	});
+});
+
+test('observation failures and invalid subjects produce no successful samples', async () => {
+	await isolatedProfileCapture(async () => {
+		const profiler = new PerformanceProfileService();
+		const input = { unit: 'function.title', workload: 'title-failure' };
+		const failure = new Error('the original operation failed');
+		expect(() =>
+			profiler.observe(input, () => {
+				throw failure;
+			})
+		).toThrow(failure);
+		await expect(
+			profiler.observeAsync(input, async () => {
+				throw failure;
+			})
+		).rejects.toBe(failure);
+		const operation = vi.fn();
+		expect(() => profiler.observe({ ...input, unit: '' }, operation)).toThrow();
+		await expect(profiler.observeAsync({ ...input, workload: '' }, operation)).rejects.toThrow();
+		expect(operation).not.toHaveBeenCalled();
+		expect(profiler.flush()).toEqual([]);
+	});
+});
+
+test('one-pass captures retain separate callable and workload observations', async () => {
+	await isolatedProfileCapture(async (directory) => {
+		const profiler = new PerformanceProfileService();
+		for (const [callable, workload] of [
+			['title', 'short'],
+			['title', 'long'],
+			['subtitle', 'short']
+		])
+			profiler.observe({ unit: 'function.title', callable, workload }, () =>
+				workload.toUpperCase()
+			);
+		const measurements = profiler.flush();
+		expect(measurements).toHaveLength(6);
+		expect(new Set(measurements.map((item) => `${item.callable}/${item.workload}`)).size).toBe(3);
+		const lines = (await readFile(join(directory, 'captures.ndjson'), 'utf8')).trim().split('\n');
+		expect(new Set(lines.map((line) => JSON.parse(line).file)).size).toBe(3);
+	});
 });

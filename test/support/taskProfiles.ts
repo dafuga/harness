@@ -5,6 +5,36 @@ import {
 	type PerformanceEvidenceInput
 } from '../../src/validators/PerformanceEvidenceValidator';
 import { unmeasured } from '../../src/services/record-assembly-service/unmeasured';
+import { mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+
+/** Fake unit identifiers in profiler protocol tests never enter actual task evidence. */
+export async function isolatedProfileCapture(check: (directory: string) => Promise<void>) {
+	const directory = await mkdtemp(join(tmpdir(), 'harness-observation-'));
+	const previous: Record<string, string | undefined> = {
+		HARNESS_EVIDENCE_DIR: process.env.HARNESS_EVIDENCE_DIR,
+		TAKE_SCREENSHOT: process.env.TAKE_SCREENSHOT
+	};
+	process.env.HARNESS_EVIDENCE_DIR = directory;
+	process.env.TAKE_SCREENSHOT = '1';
+	try {
+		await check(directory);
+	} finally {
+		for (const name of ['HARNESS_EVIDENCE_DIR', 'TAKE_SCREENSHOT']) {
+			if (previous[name] === undefined) delete process.env[name];
+			else process.env[name] = previous[name];
+		}
+		await rm(directory, { recursive: true, force: true });
+	}
+}
+
+export async function profileSingleCallObservation() {
+	const profiler = new PerformanceProfileService();
+	await taskProfile('service.performance-profile', 'observe-one-title-call', () =>
+		profiler.observe({ unit: 'function.title', workload: 'title-text' }, () => ' TITLE '.trim())
+	);
+}
 
 /** Actual operations over explicit fixture inputs; measurements are never fixture constants. */
 export async function taskProfile(
