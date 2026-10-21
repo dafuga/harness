@@ -6,7 +6,7 @@
 	"name": "profile-boundary-retention",
 	"goal": "Retain declared partial workload boundaries from actual child captures through benchmark parsing and verification assembly.",
 	"createdAt": "2026-10-21T23:04:05.532Z",
-	"updatedAt": "2026-10-21T23:07:28.013Z",
+	"updatedAt": "2026-10-21T23:11:50.433Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -43,17 +43,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T23:11:47.636Z",
+			"evidence": "Commit ca8a2a433 adds the optional string field already supported by saved measurements. All four standard scope cases, root types, lint and audit pass. No historical captures or records were rewritten."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T23:11:49.054Z",
+			"evidence": "Same-process frozen red 9d157467 at 360328425 drops the partial boundary; paired green 3f7d3a3d at ca8a2a433 passes the identical actual-child matrix, retaining the note through parsing and verification assembly."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T23:11:50.433Z",
+			"evidence": "The isolated original-schema snapshot reproduces the missing-boundary failure; the restored fix snapshot passes unchanged tests. Both use actual child-process observations with successful RSS, unique-path and failed-invocation controls intact."
 		},
 		{
 			"id": "verify",
