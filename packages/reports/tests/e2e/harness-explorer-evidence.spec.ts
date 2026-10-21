@@ -70,11 +70,13 @@ test('a page leads to its components, those to components, and those to function
 	await expectPath(page, main(`components/${units.row}`));
 	await page.getByRole('tab', { name: 'Uses', exact: true }).click();
 	await content(page).locator('.ex-function-call').first().click();
-	await expectPath(page, main(`helpers/slugify/in/${units.slugify}/contract`));
+	await expectPath(page, main(`helpers/slugify/contract`));
 	await expect(heading(page, 'slugify')).toBeVisible();
 });
 
-test('page source stays hidden until its Source tab is opened', async ({ page }) => {
+test('page source stays hidden and a missing repository is explicit on its Source tab', async ({
+	page
+}) => {
 	const file = 'src/routes/titles/+page.svelte';
 	await page.goto(main(`pages/${units.page}`));
 	await expect(heading(page, 'Titles')).toBeVisible();
@@ -95,9 +97,9 @@ test('page source stays hidden until its Source tab is opened', async ({ page })
 	await expect(content(page).getByText(file)).toHaveCount(0);
 	await page.getByRole('tab', { name: 'Source', exact: true }).click();
 	await expectPath(page, main(`pages/${units.page}?tab=source`));
-	await expect(content(page).getByText(file).first()).toBeVisible();
+	await expect(content(page).getByText('GitHub source unavailable', { exact: true })).toBeVisible();
 	await page.reload();
-	await expect(content(page).getByText(file).first()).toBeVisible();
+	await expect(content(page).getByText('GitHub source unavailable', { exact: true })).toBeVisible();
 	await checkpoint(page, 'evidence-page-source');
 });
 
@@ -198,7 +200,7 @@ test('the history of an entity lists the commits behind the shown one, with grow
 	await expect(of(commits.reordered)).toHaveCount(0);
 	// This commit changed what the function returns without changing its size: it is listed.
 	await of(commits.shout)
-		.getByRole('link', { name: /View revision/ })
+		.getByRole('link', { name: short(commits.shout), exact: true })
 		.first()
 		.click();
 	await expectPath(page, at('main', commits.shout, `functions/${units.slugify}`));

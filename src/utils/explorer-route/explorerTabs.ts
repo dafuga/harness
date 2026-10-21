@@ -22,15 +22,23 @@ export const explorerTabs = {
 } as const satisfies Record<string, readonly string[]>;
 export type ExplorerTab = (typeof explorerTabs)[keyof typeof explorerTabs][number];
 
+/** The category admits only the states it can actually show. */
+function tabQuery(category: ExplorerLocation['category'], search: string): string | null {
+	const asked = new URLSearchParams(search).get('tab');
+	const visual = ['pages', 'components', 'shells'].includes(category);
+	if (category === 'pages' && asked === 'used-in') return null;
+	if (asked === 'tests') {
+		if (visual) return 'states';
+		if (category === 'functions') return 'examples';
+	}
+	if (!visual && asked === 'states') return null;
+	return asked;
+}
+
 /** The tab a query names, when the shown section has it and it is not the default one. */
 export function tabOf(location: ExplorerLocation, search: string): ExplorerTab | undefined {
 	if (!location.entity && !location.helper) return undefined;
 	const [, ...others] = explorerTabs[location.section ?? 'overview'] as readonly ExplorerTab[];
-	let asked = new URLSearchParams(search).get('tab');
-	const visual = ['pages', 'components', 'shells'].includes(location.category);
-	if (location.category === 'pages' && asked === 'used-in') return undefined;
-	if (visual && asked === 'tests') asked = 'states';
-	if (location.category === 'functions' && asked === 'tests') asked = 'examples';
-	if (!visual && asked === 'states') return undefined;
+	const asked = tabQuery(location.category, search);
 	return others.find((known) => known === asked);
 }
