@@ -6,7 +6,7 @@
 	"name": "browser-test-type-coverage",
 	"goal": "Desktop normal type checks include browser tests and fixtures, rejecting unbound identifiers before UI execution.",
 	"createdAt": "2026-10-21T17:46:46.004Z",
-	"updatedAt": "2026-10-21T19:55:56.447Z",
+	"updatedAt": "2026-10-21T19:58:46.805Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -40,7 +40,9 @@
 		{
 			"id": "hosted",
 			"title": "Include the hosted Hub browser corpus and verify modal search through both hosts.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T19:58:46.805Z",
+			"evidence": "730038928 reproduces the Hub compiler exclusion while the four existing configuration cases pass. d902212f4 passes all five unchanged cases, actual Hub types/lint/audit, and all 28 hosted browser cases. The normal search matrix now verifies modal isolation, Escape, restored focus and reopening. Full exact-commit historical verification remains pending."
 		}
 	],
 	"evaluators": [
