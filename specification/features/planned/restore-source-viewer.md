@@ -52,3 +52,9 @@ with category folders and concrete service proofs.
 The follow-up retains the original relocation hashes and records reviewed source
 commits and definitions in the existing ledgers. The guard and its assertions stay
 unchanged. An isolated semantic mutation must still fail it before main landing.
+
+The current-source guard remains unchanged; its standard test now additionally
+checks each reviewed definition against its immutable source commit and retained
+original proof. All 12 unit-index cases pass at `0fc4fddb5`. The ledger correction
+changes metadata only, so Harness correctly declines to seal it as a product-code
+repair. This is separate from the fully sealed Source-viewer red/green pair.
