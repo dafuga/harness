@@ -2,7 +2,7 @@
 	"name": "quiet-history-navigation",
 	"goal": "Hide repeated index limitation notices while preserving revision navigation and history metadata.",
 	"createdAt": "2026-10-21T11:18:24.634Z",
-	"updatedAt": "2026-10-21T11:18:26.841Z",
+	"updatedAt": "2026-10-21T11:19:58.554Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:19:58.554Z",
+			"evidence": "9b793db8: unique body assertion fails because both notices are present. Immutable output and matching screenshot inspected; earlier ambiguous-locator record excluded."
 		},
 		{
 			"id": "implement",

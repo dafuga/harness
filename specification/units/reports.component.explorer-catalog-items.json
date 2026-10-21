@@ -15,27 +15,33 @@
 		"inputs": [
 			{
 				"name": "ExplorerCatalogItems.category",
-				"type": "ExplorerCategory"
+				"type": "ExplorerCategory",
+				"description": "Required catalog category choosing screenshot cards, helper cards or the category table."
 			},
 			{
 				"name": "ExplorerCatalogItems.rows",
-				"type": "CatalogRow[]"
+				"type": "CatalogRow[]",
+				"description": "Required revision-scoped rows to render in their supplied order."
 			},
 			{
 				"name": "ExplorerCatalogItems.nav",
-				"type": "EntityNav"
+				"type": "EntityNav",
+				"description": "Required entity navigation retaining the selected branch and revision."
 			},
 			{
 				"name": "ExplorerCatalogItems.lens",
-				"type": "EntityLens"
+				"type": "EntityLens",
+				"description": "Required evidence lens supplying screenshots for each visual entity."
 			},
 			{
 				"name": "ExplorerCatalogItems.mediaBase",
-				"type": "string"
+				"type": "string",
+				"description": "Required URL prefix used to resolve captured screenshot assets."
 			},
 			{
 				"name": "ExplorerCatalogItems.verification",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional verification visibility, defaulting to true; relationship tabs pass false."
 			}
 		],
 		"outputs": [

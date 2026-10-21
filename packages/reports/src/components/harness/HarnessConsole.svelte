@@ -178,11 +178,7 @@
 	/>
 	<main class="hx-main">
 		{#if !index && !problem}<p class="hc-muted" role="status">Loading history…</p>{/if}
-		{#if index?.truncated}
-			<p class="hc-notice">
-				Older commits were left out of this index; it says so rather than hide them.
-			</p>
-		{/if}
+
 		{#if scope && !shown && !problem}
 			<p class="hc-muted" role="status">Loading this revision…</p>
 		{/if}
