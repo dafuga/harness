@@ -1,3 +1,5 @@
+import type { ExplorerEntity } from '../src/models/Explorer.types';
+import type { entityCatalog } from '../src/utils/entityCatalog';
 /** Class evidence shared by the normal catalog, detail and browser fixtures. */
 export function serviceClassProof(
 	name = 'OrderStore',
@@ -36,4 +38,63 @@ export function invalidServiceClasses(proof: ReturnType<typeof serviceClassProof
 		[{ ...proof, consumers: proof.consumers.slice(0, 1) }],
 		[{ ...proof, source: 'src/unowned.ts' }]
 	];
+}
+
+interface Reads {
+	species: number;
+	indexed: number;
+	iterated: number;
+}
+
+function observed<T>(items: T[], reads: Reads): T[] {
+	class Observed extends Array<T> {
+		static get [Symbol.species]() {
+			reads.species++;
+			return Array;
+		}
+	}
+	const list = new Observed(...items);
+	const first = list[0];
+	Object.defineProperty(list, '0', {
+		get() {
+			reads.indexed++;
+			return first;
+		}
+	});
+	Object.defineProperty(list, Symbol.iterator, {
+		value: function* () {
+			reads.iterated++;
+		}
+	});
+	return list;
+}
+
+/** Preserve the public entry's indexed-array admission before any JSON serialization. */
+export function admission(
+	catalog: typeof entityCatalog,
+	entities: ExplorerEntity[],
+	relations: Parameters<typeof entityCatalog>[2]
+): string[] {
+	const errors: string[] = [];
+	const original = entities.find((entity) => entity.category === 'services')!;
+	const ownerReads = { species: 0, indexed: 0, iterated: 0 };
+	const entityReads = { species: 0, indexed: 0, iterated: 0 };
+	const consumers = observed(original.unit.serviceConsumers ?? [], ownerReads);
+	const metadata = serviceMetadata(consumers, original.name, original.unit.owns.source[0]);
+	Object.assign(ownerReads, { species: 0, indexed: 0, iterated: 0 });
+	const entity = { ...original, unit: { ...original.unit, ...metadata } };
+	const input = observed(
+		[entity, ...entities.filter((item) => item.id !== original.id)],
+		entityReads
+	);
+	const shown = catalog(input, 'services', relations);
+	if (shown.length !== 1 || shown[0].id !== original.id || shown[0].usedIn?.length !== 2)
+		errors.push('indexed entities and consumers must retain the shared class row');
+	for (const [label, actual, expected] of [
+		['entities', entityReads, { species: 2, indexed: 2, iterated: 0 }],
+		['owners', ownerReads, { species: 1, indexed: 1, iterated: 0 }]
+	] as const)
+		if (JSON.stringify(actual) !== JSON.stringify(expected))
+			errors.push(`${label}: ${JSON.stringify(actual)} expected ${JSON.stringify(expected)}`);
+	return errors;
 }

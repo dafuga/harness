@@ -7,7 +7,7 @@ import { explorerEntities } from '../../src/utils/explorerEntities';
 import { explorerRelations } from '../../src/utils/explorerRelations';
 import { record, revision } from '../entityFixture';
 import { privateServiceUsers } from '../entityPreviewHelpers';
-import { invalidServiceClasses, serviceMetadata } from '../entityClassFixtures';
+import { invalidServiceClasses, serviceMetadata, admission } from '../entityClassFixtures';
 import { commits, ids } from '../entityUnits';
 const head = revision(commits.middle, [record(commits.middle)]);
 // The same commit with the empty state of the page never captured.
@@ -114,6 +114,7 @@ test('service rows require two distinct resolved runtime owners and use that set
 			serviceRows({ ...original, unit: { ...original.unit, ...serviceMetadata(consumers) } }),
 			'transitive pages and imports cannot establish sharing'
 		).toEqual([]);
+	expect(admission(entityCatalog, known, () => related)).toEqual([]);
 	const proof = serviceMetadata([{ unit: ids.list }, { unit: ids.search }]).serviceClasses[0];
 	for (const serviceClasses of invalidServiceClasses(proof))
 		expect(
