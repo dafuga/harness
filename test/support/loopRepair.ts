@@ -1,4 +1,5 @@
 import { captureFixture } from './loop-repair/captureFixture';
+import { createHash } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect } from 'vitest';
@@ -167,6 +168,10 @@ async function expectSavedScreens(root: string, commit: string): Promise<void> {
 		})
 	);
 	const screen = detail.regressions[0].green.captures[0];
+	for (const kept of detail.regressions[0].green.captures) {
+		const bytes = await readFile(join(out, kept.capture.media));
+		expect(createHash('sha256').update(bytes).digest('hex')).toBe(kept.capture.sha256);
+	}
 	expect(screen.capture.media, 'rebuilt history resolves focused screenshot media').toMatch(
 		/^media\//
 	);
