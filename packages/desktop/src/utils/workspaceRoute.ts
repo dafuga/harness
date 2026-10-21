@@ -1,5 +1,6 @@
 import { categories } from '../models/Desktop.types';
 import type { Category } from '../models/Desktop.types';
+import type { Workspace } from '../lib/stores/workspace.svelte';
 
 /**
  * The sections of an entity that have an address of their own; its overview has none.
@@ -96,4 +97,17 @@ export function workspacePath(target: WorkspaceTarget): string {
 	const section = target.entityId && target.suffix ? `/${suffix(target.suffix ?? undefined)}` : '';
 	const entity = target.entityId ? `/${encodeURIComponent(target.entityId)}${section}` : '';
 	return `${project}/harness${branch}${commit}/${target.category}${entity}`;
+}
+
+/** Game views follow the shown revision and are available only to a local game bridge. */
+export function workspaceGameViews(
+	workspace: Pick<Workspace, 'snapshot' | 'projectId' | 'local' | 'bridge'>
+): string | null {
+	const { snapshot, projectId, local, bridge } = workspace;
+	const available = !!bridge?.gameRead;
+	if (snapshot?.project.kind !== 'game' || !projectId || !local || !available) return null;
+	const views = `/game?projectId=${encodeURIComponent(projectId)}`;
+	return snapshot.writable
+		? views
+		: `${views}&readonly=1&commit=${encodeURIComponent(snapshot.revision.commit)}`;
 }

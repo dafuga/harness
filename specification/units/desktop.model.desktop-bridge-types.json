@@ -9,6 +9,9 @@
 	"owns": {
 		"source": ["packages/desktop/src/models/DesktopBridge.types.ts"],
 		"symbols": [
+			"CreatedEntity",
+			"RunPhase",
+			"RunEvent",
 			"ProjectTaskRequest",
 			"channels",
 			"ChannelName",
@@ -26,9 +29,6 @@
 			"ApprovalDraft",
 			"RunRequest",
 			"ProjectRunRequest",
-			"CreatedEntity",
-			"RunPhase",
-			"RunEvent",
 			"DesktopBridge"
 		]
 	},
@@ -79,6 +79,11 @@
 		},
 		{
 			"unit": "desktop.model.project-task-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.run-context-types",
 			"via": "import",
 			"origin": "derived"
 		},

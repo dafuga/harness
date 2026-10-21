@@ -13,6 +13,7 @@
 	import RevisionPicker from '../RevisionPicker.svelte';
 	import WorkspaceLink from '../WorkspaceLink.svelte';
 	import { workspaceSearch } from './workspaceSearch';
+	import { workspaceGameViews } from '../../utils/workspaceRoute';
 	/** `account` is the place of a host app for who is signed in; the desktop app has none. */
 	let { workspace, account }: { workspace: Workspace; account?: Snippet } = $props();
 	// Results open only from the projection that listed them; one left from another is refused.
@@ -29,20 +30,7 @@
 		if (!tabs || !shown || !row) return;
 		tabs.scrollLeft += shown.left - row.left - (row.width - shown.width) / 2;
 	});
-	/** A game's own views; a revision that is not the tip opens them read-only at its commit. */
-	const gameViews = $derived.by(() => {
-		const { snapshot, projectId } = workspace;
-		if (
-			snapshot?.project.kind !== 'game' ||
-			!projectId ||
-			!workspace.local ||
-			!workspace.bridge?.gameRead
-		)
-			return null;
-		const views = `/game?projectId=${encodeURIComponent(projectId)}`;
-		if (snapshot.writable) return views;
-		return `${views}&readonly=1&commit=${encodeURIComponent(snapshot.revision.commit)}`;
-	});
+	const gameViews = $derived(workspaceGameViews(workspace));
 </script>
 
 <!-- Focus follows the rows: project, environment and revision, categories, then search. -->

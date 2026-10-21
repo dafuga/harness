@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/models/RunContext.types.ts"],
-		"symbols": ["RunContext"]
+		"symbols": ["RunContext", "CreatedEntity", "RunPhase", "RunEvent"]
 	},
 	"contract": {
 		"origin": "derived",

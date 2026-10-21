@@ -1,5 +1,6 @@
+import { bound, bindingFields } from './ui-evidence-bindings';
+export { bindingFields, bindingKey } from './ui-evidence-bindings';
 import type { CacheIdentity } from '../../../collaboration/src/models/Collaboration.types';
-import type { ExplorerSide } from '../../../reports/src/models/Explorer.types';
 import type { HarnessUnit } from '../../../reports/src/models/Harness.types';
 import { explorerBehavior } from '../../../reports/src/utils/explorerBehavior';
 import { explorerEvidence } from '../../../reports/src/utils/explorerEvidence';
@@ -107,55 +108,6 @@ function entity(unit: HarnessUnit, image: number) {
 	};
 }
 
-/** What binds one request for bytes: every field the bridge is given, in one fixed order. */
-export const bindingFields = [
-	'entityId',
-	'mode',
-	'commit',
-	'branch',
-	'side',
-	'recordId',
-	'scenarioId',
-	'state',
-	'evidenceId',
-	'viewport',
-	'sha256',
-	'notesRevision',
-	'evidenceRevision'
-] as const;
-export const bindingKey = (query: Record<string, unknown>) =>
-	bindingFields.map((name) => query[name] ?? '').join('|');
-
-/** Every capture an answer lists, by the binding a request for its bytes has to state. */
-function bound(result: EntityEvidenceResult, mode: Mode, unit: string) {
-	const { scope, identity: pin, evidence } = result;
-	const sides: Array<['before' | 'after', ExplorerSide | null]> = [
-		['before', evidence.before],
-		['after', evidence.after]
-	];
-	return sides.flatMap(([side, held]) =>
-		(held?.captures ?? []).map((found) => {
-			const { capture } = found;
-			const key = bindingKey({
-				entityId: unit,
-				mode,
-				commit: scope.commit,
-				branch,
-				side,
-				recordId: held?.record?.id,
-				scenarioId: found.scenario,
-				state: found.state,
-				evidenceId: capture.evidence,
-				viewport: capture.viewport,
-				sha256: capture.sha256,
-				notesRevision: pin.notesRevision,
-				evidenceRevision: pin.evidenceRevision
-			});
-			return [key, capture.sha256] as const;
-		})
-	);
-}
-
 /** One incremental record: only the unchanged card and the checks it actually inherited. */
 function onlyInherited(history: ReturnType<typeof observedHistory>): void {
 	const tip = history.revisions[commits.tip];
@@ -191,7 +143,7 @@ export function evidenceData(
 			behavior: explorerBehavior(evidence)
 		};
 		results[`${unit.id}|${mode}|${scope.commit}`] = found;
-		for (const [key, sha256] of bound(found, mode, unit.id)) bindings[key] = sha256;
+		for (const [key, sha256] of bound(found, mode, unit.id, branch)) bindings[key] = sha256;
 	};
 	for (const unit of units) {
 		read(unit, 'current', commits.tip);

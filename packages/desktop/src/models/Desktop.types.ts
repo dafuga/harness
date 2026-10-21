@@ -1,4 +1,4 @@
-import type { ProjectCapabilities, CacheProvenance } from './ProjectContext.types';
+import type { ProjectCapabilities, CacheProvenance, ProjectIdentity } from './ProjectContext.types';
 import type { DesignVersion } from './DesignVersion.types';
 import type { ComponentManifest } from '../../../../src/lib/contracts';
 import type { UnitDocumentation } from '../../../../src/utils/unit-documentation/unitDocumentation';
@@ -201,13 +201,7 @@ export interface EntityDetail extends CatalogEntity {
 }
 
 export interface ProjectSnapshot {
-	project: {
-		name: string;
-		root: string;
-		id?: string;
-		kind?: 'app' | 'game' | 'local' | 'shared';
-		dimension?: '2d' | '3d';
-	};
+	project: ProjectIdentity;
 	capabilities?: ProjectCapabilities;
 	cache?: CacheProvenance;
 	revision: Revision;

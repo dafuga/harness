@@ -97,3 +97,12 @@ export interface NativeHostedStatus {
 		interval: number;
 	};
 }
+
+/** Identity shared by app and game project snapshots. */
+export interface ProjectIdentity {
+	name: string;
+	root: string;
+	id?: string;
+	kind?: 'app' | 'game' | 'local' | 'shared';
+	dimension?: '2d' | '3d';
+}
