@@ -98,6 +98,8 @@ test('a different checkout is refused without affecting the owner', async () => 
 	start(f, webPort);
 	await ready(webPort);
 	const owner = await publishedPreviewOwner(f.owner, webPort);
+	const worker = await previewWorkerPid(webPort);
+	expect(worker).toBeGreaterThan(0);
 	await taskProfile('reports.function.preview-owner', 'ready-owner-http', () =>
 		previewOwner(f.owner, owner.identity)
 	);
@@ -110,6 +112,8 @@ test('a different checkout is refused without affecting the owner', async () => 
 		expect(starting.reads()).toBeGreaterThan(1);
 		await expect(fetch(`http://127.0.0.1:${nextPort}`)).rejects.toThrow();
 		await ready(webPort);
+		expect(await publishedPreviewOwner(f.owner, webPort)).toEqual(owner);
+		expect(await previewWorkerPid(webPort)).toBe(worker);
 	} finally {
 		await starting.close();
 	}
