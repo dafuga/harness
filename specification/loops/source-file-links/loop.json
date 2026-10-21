@@ -2,7 +2,7 @@
 	"name": "source-file-links",
 	"goal": "Source lists actual files with revision-pinned GitHub links and a modal button for each file",
 	"createdAt": "2026-10-21T15:24:58.053Z",
-	"updatedAt": "2026-10-21T18:09:23.096Z",
+	"updatedAt": "2026-10-21T21:53:29.443759Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -47,7 +47,7 @@
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
 			"status": "pending",
-			"evidence": "At 6f9dba967 all 55 focused browser cases and Reports/Desktop complete checks pass. Root check then fails 45 of 198 Desktop browser cases; the clean 418f9e426 baseline reproduces all 45. Two legacy Source steps pass after test-only 1e17b5a5d. Broader repairs are authorized under desktop-ui-verification; full verification remains pending."
+			"evidence": "Final local bun run check passes at971368d28:3503Vitest cases with31existing skips and226Desktop/Hub browser cases. Fresh Reports Source44cases pass. Immutable greens6f(Source)and1fa(Desktop)remain valid for their frozen inputs; hosted CI setup and budget gates remain separate. CLI closeout refuses the newer test-maintenance commit: Complete this regression step at its current tested commit. Pending status retained; no proof rewritten."
 		}
 	],
 	"evaluators": [

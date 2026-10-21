@@ -271,3 +271,47 @@ now explicitly captures and requires both Examples states, deriving the total
 from the declared evidence matrix. All six owner tests pass; product code is
 unchanged. The failed run and its 3,993-second output remain retained. A complete
 root rerun remains required before verification closes.
+
+## Final local verification and closeout boundary
+
+The complete `bun run check` passes at `971368d28` in 4,152.628 seconds. It
+passes 3,503 Vitest cases with 31 existing skips, plus all 198 Desktop and
+28 Hub browser cases. Every workspace check, build, lint, type check and audit
+passes. Native Debug/Release protocol checks and all 53 Swift source limits pass.
+The final Reports Source scenarios also pass at that revision: 44 cases, no
+skips, unexpected failures or retries. Product code remains `1fa2d58ce`.
+
+The root check's sampled process-tree peak is 3,590,434,816 bytes across 31
+processes. Adding the five original task previews gives 3,701,829,632 bytes
+across 36 processes. The later frozen preview is additional (45,285,376 bytes
+observed separately); shared Codex, in-app browser, remote model compute and
+other projects are excluded or unmeasurable. This is process memory, not a
+function-level observation or a whole-machine claim.
+
+GitHub feature branches now contain Source revision `971368d28` and catalog
+revision `edd93768`. Report.types.ts and ProjectAgent.svelte match their selected
+Git blobs, and the exact GitHub Report file renders in the signed-in browser.
+The current Source list and modal screenshots were captured from the frozen
+compiled bundle `059b7da3` built at `2cad44d84`; Source code remains unchanged
+through the final tested revision. Earlier failures and screenshots are retained.
+
+The separate hosted exact-commit run 39672599734 stops before tests: its clean
+Reports build imports Desktop composeModes.ts without Desktop's generated
+Svelte configuration. It also reports 77 missing baseline approvals and 859
+unapproved metric-growth findings since its last verified revision. The
+dependent Full check job is cancelled. This is not a billing failure; no gate
+was bypassed. The delivery stays focused on the verified local UI. Hosted CI,
+budget approval and application release remain incomplete; no application
+deployment or physical-device installation was performed.
+
+The Source and Desktop loop closeout commands both refuse the newer tested
+revision: “Complete this regression step at its current tested commit.” Their
+valid immutable greens are earlier product commits; subsequent standardized-test
+maintenance changed the globally frozen test corpus. Their verify steps remain
+pending with the actual passing local results. No gate was weakened, proof
+rewritten or artificial product commit created to close them. The auxiliary
+unchanged-guard checkpoint remains unavailable as documented above.
+
+The feature report remains in progress while these verification gates are open.
+Its screenshots, per-unit links, history, measurements and raw outcomes remain
+outside the worktree. Private R2 retention is not website publication.

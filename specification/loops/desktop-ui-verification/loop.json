@@ -2,7 +2,7 @@
 	"name": "desktop-ui-verification",
 	"goal": "Desktop browser scenarios pass with current catalogs and controls, correct image lifecycles and no overflow or browser errors.",
 	"createdAt": "2026-10-21T18:23:33.780Z",
-	"updatedAt": "2026-10-21T19:12:42.793Z",
+	"updatedAt": "2026-10-21T21:53:29.444294Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -46,7 +46,8 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Final local bun run check passes at971368d28:3503Vitest cases with31existing skips and226Desktop/Hub browser cases. Fresh Reports Source44cases pass. Immutable greens6f(Source)and1fa(Desktop)remain valid for their frozen inputs; hosted CI setup and budget gates remain separate. CLI closeout refuses the newer test-maintenance commit: Complete this regression step at its current tested commit. Pending status retained; no proof rewritten."
 		}
 	],
 	"evaluators": [
