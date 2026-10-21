@@ -1,5 +1,6 @@
 import { beforeEach, afterEach } from 'vitest';
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
+import { captureLineSchema } from '../../src/core/verifyTypes';
 import { evidenceRequested, recordCapture } from '../../src/utils/record-capture/recordCapture';
 const owners: Record<string, string> = {
 	'game/test/index': 'game.entry.index',
@@ -103,13 +104,18 @@ afterEach(({ task }) => {
 		];
 	});
 	recordCapture(
-		{
+		captureLineSchema.parse({
 			evidence: 'game-behavior-benchmarks',
 			kind: 'benchmark',
-			state: task.name,
+			state:
+				'case-' +
+				createHash('sha256')
+					.update(file + '\n' + task.name)
+					.digest('hex')
+					.slice(0, 24),
 			file: 'game-behavior-' + randomUUID() + '.json',
 			mediaType: 'application/json'
-		},
+		}),
 		JSON.stringify({ measurements })
 	);
 });
