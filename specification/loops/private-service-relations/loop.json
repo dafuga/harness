@@ -2,7 +2,7 @@
 	"name": "private-service-relations",
 	"goal": "Keep single-owner instantiated service classes in their owner relationships while excluding them from the global shared catalog",
 	"createdAt": "2026-10-21T22:52:17.695Z",
-	"updatedAt": "2026-10-21T23:24:11.024Z",
+	"updatedAt": "2026-10-21T23:35:36.167Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -46,7 +46,9 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T23:35:36.167Z",
+			"evidence": "Current proof a80ff5be at 9497fac05 passes 51 unchanged cases; red is 140f20a4 at 427300dee. All 723 original images decode and match revision/hash metadata; eight contact sheets and owner-detail crops were inspected. Types, lint, audit and the canonical registry pass."
 		}
 	],
 	"evaluators": [
