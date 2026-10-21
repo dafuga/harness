@@ -4,6 +4,7 @@ import { commits, ids } from './entityUnits';
 import { frameId } from './entityPreviewData';
 import { sourceText } from './entitySourceFixture';
 import { createHash } from 'node:crypto';
+import type { Page, TestInfo } from '@playwright/test';
 
 const kinds = [
 	['Models', 'models', 'Order', 'app.model.order'],
@@ -15,6 +16,23 @@ const kinds = [
 	['Services', 'services', 'Order store', ids.store]
 ] as const;
 const phase = process.env.SCREENSHOT_LABEL ?? 'run';
+
+async function sourceMetrics(page: Page, info: TestInfo, started: number) {
+	await info.attach('source-view-metrics', {
+		body: JSON.stringify(
+			await page.evaluate(
+				(start) => ({
+					openMs: performance.now() - start,
+					pageHeapBytes:
+						(performance as Performance & { memory?: { usedJSHeapSize: number } }).memory
+							?.usedJSHeapSize ?? null
+				}),
+				started
+			)
+		),
+		contentType: 'application/json'
+	});
+}
 
 for (const [viewport, size] of Object.entries(viewports)) {
 	for (const [label, category, name, id] of kinds) {
@@ -49,20 +67,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			expect(await where(page)).toEqual(address);
 			expect(await fits(page)).toBe(true);
 			await capture(page, `${phase}-source-open-${category}-${viewport}`);
-			await info.attach('source-view-metrics', {
-				body: JSON.stringify(
-					await page.evaluate(
-						(start) => ({
-							openMs: performance.now() - start,
-							pageHeapBytes:
-								(performance as Performance & { memory?: { usedJSHeapSize: number } }).memory
-									?.usedJSHeapSize ?? null
-						}),
-						started
-					)
-				),
-				contentType: 'application/json'
-			});
+			await sourceMetrics(page, info, started);
 			await page.keyboard.press('Escape');
 			await expect(dialog).toHaveCount(0);
 			await expect(action).toBeFocused();

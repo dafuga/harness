@@ -2,7 +2,7 @@
 	"name": "source-tab-code-action",
 	"goal": "Every catalog opens details without a code action; only the detail Source tab offers View code in a revision-specific modal.",
 	"createdAt": "2026-10-21T11:35:13.478Z",
-	"updatedAt": "2026-10-21T11:37:44.491Z",
+	"updatedAt": "2026-10-21T11:39:53.111Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:39:53.111Z",
+			"evidence": "Test-only 2b8b5dac fails on catalog View code actions: expected zero, received one. Reports and Desktop standard scenarios and concise-card assertions fail on existing placement. Immutable record f73a49558af7963a044e863ab15a693e8af8f128608025253b132e5fb56caa5b."
 		},
 		{
 			"id": "implement",
