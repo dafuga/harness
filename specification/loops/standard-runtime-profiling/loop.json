@@ -6,7 +6,7 @@
 	"name": "standard-runtime-profiling",
 	"goal": "Standard runners record actual registered operations through Harness profiling with preserved behavior, source scope, benchmark boundaries and truthful missing coverage.",
 	"createdAt": "2026-10-21T10:25:19.874Z",
-	"updatedAt": "2026-10-21T10:25:19.874Z",
+	"updatedAt": "2026-10-21T10:53:23.912Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -17,12 +17,16 @@
 		{
 			"id": "spec",
 			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T10:53:21.896Z",
+			"evidence": "Existing backend behavior tests execute real source but do not emit operation-boundary profiles. The internal adapter scaffold at9a259e6e intentionally has no transform operation and is not enabled. Real captures must bind registered source without timing entire tests or replaying effects."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T10:53:23.912Z",
+			"evidence": "Replace the generated constructor-only test with source-runner boundary coverage: sync and async operations, private-field receivers, cached Promise identity, rejection propagation, argument/result privacy, unknown source and generator deferral. Fixture metrics stay in an owned temporary sink; self-profiles time the actual transformer."
 		},
 		{
 			"id": "red",
