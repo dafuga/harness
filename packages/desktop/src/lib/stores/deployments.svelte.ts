@@ -7,6 +7,7 @@ import type {
 } from '../../models/Deployment.types';
 class DeploymentsState {
 	environment = $state<DeploymentEnvironment>('dev');
+	viewing = $state(false);
 	statuses = $state<DeploymentStatus[]>([]);
 	loading = $state(false);
 	error = $state('');
@@ -23,9 +24,7 @@ class DeploymentsState {
 	get job() {
 		return this.workspace.activity?.items.find((item) => item.id === this.jobId) ?? null;
 	}
-	get receipt() {
-		return this.job?.receipt ?? null;
-	}
+	receipt = $derived(this.job?.receipt ?? null);
 	get pending() {
 		return this.reviewing || this.starting || Boolean(this.job && !this.job.finishedAt);
 	}
@@ -42,6 +41,7 @@ class DeploymentsState {
 	}
 	choose(value: DeploymentEnvironment) {
 		this.environment = value;
+		this.viewing = true;
 	}
 	clear() {
 		this.plan = null;
@@ -52,6 +52,7 @@ class DeploymentsState {
 		if (this.owner !== this.workspace.projectId) {
 			this.owner = this.workspace.projectId;
 			this.environment = 'dev';
+			this.viewing = false;
 			this.jobId = null;
 			untrack(() => {
 				this.statuses = [];

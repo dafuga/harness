@@ -83,7 +83,6 @@
 			'brand project project project account'
 			'environment environment revision tip tip'
 			'summary summary summary summary summary'
-			'status status status status status'
 			'tools tools tools search search';
 		gap: 4px 0;
 		padding-top: 4px;
@@ -94,12 +93,11 @@
 			'account account account account account'
 			'environment environment revision tip tip'
 			'summary summary summary summary summary'
-			'status status status status status'
 			'tools tools tools search search';
 	}
 	.topbar:has(.topbar-search)::before {
 		content: '';
-		grid-area: environment-start / 1 / status-end / -1;
+		grid-area: environment-start / 1 / summary-end / -1;
 		align-self: stretch;
 		margin-block: 2px;
 		border: 1px solid var(--line);
