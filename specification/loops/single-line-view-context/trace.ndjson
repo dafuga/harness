@@ -1,0 +1,2 @@
+{"event":"loop.created","timestamp":"2026-10-21T10:32:28.928Z","name":"single-line-view-context","goal":"Show exactly the viewed branch, commit or environment and its updated time on one line","template":"visual-change","templateLineage":["feature","visual-change"]}
+{"event":"step.completed","timestamp":"2026-10-21T10:33:21.203Z","loop":"single-line-view-context","step":"spec","evidence":"scope.md records one context, source-specific time and existing scenario coverage gap"}

@@ -93,6 +93,7 @@ test('catalog search, changed filter and conversational plan request', async ({ 
 
 test('Go to tip exits both historical and explicitly pinned tip revisions', async ({ page }) => {
 	await fakeProject(page, true);
+	await page.setViewportSize({ width: 320, height: 568 });
 	await page.goto('/');
 	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
 	for (const commit of ['b'.repeat(40), 'a'.repeat(40)]) {
@@ -110,8 +111,15 @@ test('Go to tip exits both historical and explicitly pinned tip revisions', asyn
 				path: `test-results/go-to-tip-${process.env.SCREENSHOT_LABEL ?? 'local'}-${commit[0]}.png`
 			});
 		}
+		await expect(page.locator('.revision-summary strong')).toHaveText(commit.slice(0, 7));
+		await expect(page.locator('.revision-summary time')).toHaveAttribute(
+			'datetime',
+			commit[0] === 'a' ? '2026-10-11' : '2026-10-10'
+		);
 		await page.getByRole('button', { name: 'Go to tip', exact: true }).click();
 		await expect(page).toHaveURL(/\/harness\/branch\/feat%2Factivity\/pages$/);
+		await expect(page.locator('.revision-summary strong')).toHaveText('feat/activity');
+		await expect(page.locator('.revision-summary time')).toHaveAttribute('datetime', '2026-10-11');
 		await expect(page.getByLabel('Commit', { exact: true })).toHaveValue('a'.repeat(40));
 		await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toBeEnabled();
 		if (process.env.TAKE_SCREENSHOT === 'true') {
@@ -169,6 +177,19 @@ test('workspace selectors start collapsed and environment stays directly selecta
 				path: `/tmp/harness-env-evidence/mobile-header-${width}-${environment}-${process.env.SCREENSHOT_LABEL ?? 'local'}.png`
 			});
 		await expect(page.getByText(/Changes reach preprod\./)).toHaveCount(0);
+		const summary = page.locator('.revision-summary');
+		await expect(summary.locator('strong')).toHaveText(environment);
+		await expect(summary.locator('time')).toHaveAttribute('datetime', '2026-10-20T10:15:00.000Z');
+		await expect(page.locator('.environment-status')).toHaveCount(0);
+		await expect(summary).not.toContainText(/Deployed|Current|branch tip|Tip/);
+		const sameLine = await summary.evaluate((element) => {
+			const name = element.querySelector('strong')!.getBoundingClientRect();
+			const time = element.querySelector('time')!.getBoundingClientRect();
+			return (
+				Math.abs(name.top - time.top) < 4 && time.right <= element.getBoundingClientRect().right
+			);
+		});
+		expect(sameLine, 'Viewed context and update time must fit on one line').toBe(true);
 		const projectControl = await page
 			.getByRole('button', { name: 'Choose workbench' })
 			.boundingBox();
