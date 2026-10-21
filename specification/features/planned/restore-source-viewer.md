@@ -31,3 +31,24 @@ test code identical between the committed red and green runs.
 ## Future Enhancements
 
 - Editing and saving code remain outside this read-only viewer.
+
+## Committed viewer proof
+
+Final test checkpoint `fb503f7d5` fails with missing per-file actions and archived
+source. Product `16ab6fdf6` passes the same unchanged test corpus, fixtures,
+command and environment: one Git archive case, seven Source unit cases and 24
+responsive browser cases. Red `3611cf8f`; green `b1da64af`. Earlier copied-fixture
+corrections remain in history and are superseded by this final pair.
+
+## Main ownership review
+
+The standard unit-index guard identifies eleven service definitions whose live
+bodies evolved after the original relocation. Token comparison against remote
+main `0816efe0e` proves ten are exactly main's current behavior. The remaining
+history builder intentionally adds the source archive proven by the viewer pair.
+The helper metadata enrichment intentionally combines main's committed examples
+with category folders and concrete service proofs.
+
+The follow-up retains the original relocation hashes and records reviewed source
+commits and definitions in the existing ledgers. The guard and its assertions stay
+unchanged. An isolated semantic mutation must still fail it before main landing.
