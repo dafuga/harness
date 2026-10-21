@@ -101,6 +101,11 @@ export function functionName(unit: CatalogRow['entity']['unit']): string {
 
 const sortName = (row: CatalogRow) => row.helper?.name ?? row.name;
 
+/** Global collections need shared owners; owner relationships retain one owner. */
+function hasRequiredServiceOwners(count: number, options: { related?: boolean }): boolean {
+	return count >= 2 || Boolean(options.related && count === 1);
+}
+
 export function byName(left: CatalogRow, right: CatalogRow): number {
 	return sortName(left).localeCompare(sortName(right), 'en', { sensitivity: 'base' });
 }
@@ -157,7 +162,8 @@ export function entityCatalog(
 						Boolean(owner && owner.change !== 'removed' && owner.unit.status === 'active')
 					)
 					.slice(0, 3);
-				return usedIn.length >= 2 ? [{ ...row, shared: true, usedIn }] : [];
+				const shared = usedIn.length >= 2;
+				return hasRequiredServiceOwners(usedIn.length, options) ? [{ ...row, shared, usedIn }] : [];
 			}
 			if (category !== 'functions') return [row];
 			const helpers = (entity.unit.helpers ?? []).filter(sharedHelper);
