@@ -58,8 +58,13 @@ test('coverage distinguishes audit exclusions from the complete source inventory
 		await writeFile(join(root, 'src/component.vue'), '<template />\n');
 		await writeFile(join(root, 'node_modules/ignored.ts'), 'export const ignored = true;\n');
 		const native = ['ios/App/App/Native.swift', 'android/app/src/main/Native.kt'];
-		const generated = ['ios/DerivedData/Generated.swift', 'android/build/Generated.kt'];
-		for (const path of [...native, ...generated]) {
+		const generated = [
+			'ios/DerivedData/Generated.swift',
+			'ios/App/App/public/Generated.js',
+			'android/build/Generated.kt',
+			'android/app/src/main/assets/Generated.js'
+		];
+		for (const path of [...native, ...generated, 'public/source.js']) {
 			await mkdir(dirname(join(root, path)), { recursive: true });
 			await writeFile(join(root, path), '// native source\n');
 		}
@@ -73,7 +78,7 @@ test('coverage distinguishes audit exclusions from the complete source inventory
 		const tree = new WorkingTreeAdapter(root);
 		for (const path of native) expect(await tree.read(path)).toBe('// native source\n');
 		const paths = (await tree.list()).map((entry) => entry.path);
-		expect(paths).toEqual(expect.arrayContaining(native));
+		expect(paths).toEqual(expect.arrayContaining([...native, 'public/source.js']));
 		for (const path of generated) expect(paths).not.toContain(path);
 		expect(paths).not.toContain('node_modules/ignored.ts');
 		const profiler = new PerformanceProfileService();
