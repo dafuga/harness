@@ -12,6 +12,7 @@ This is a Harness CLI project. Treat Harness as the operating contract for every
 - Before replacing iteration, collection construction or property access in code that takes in-memory JSON, characterize through its public entry what admission accepts before serialization: own iterators, species and getters included. A JSON round trip holds none of them, so its parity is not enough; keep those cases in the normal tests.
 - When adding shared UI imports, declare their source reference bindings and run `test/shared-select-impact.test.ts`, `test/shared-search-impact.test.ts` and `test/shared-alias-index.test.ts` before handing off the component.
 - Keep files small, focused, and aligned with `harness.audit.json` limits.
+- When changing a helper recorded by `local-helper-ownership`, keep its original migration definition and record the intentional update in `followUps` with the implementation commit and reason. Run `test/services/unit-index.test.ts` alongside the owning workspace's checks before landing.
 - Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `harness audit`.
 - An agent that works here says so: `bun run dev -- activity register --label <who> --task <what> --units <ids>`, then `activity heartbeat <id>` as it goes (or `HARNESS_AGENT_ID=<id>` on its Harness commands) and `activity finish <id>` at the end. `bun run dev -- info activity` has the rules.
 
@@ -63,6 +64,9 @@ These rules apply only to this Harness repository, including requests made in an
 - Resolve a scenario screenshot slot to its declared units. A slot name is not a page identity; never fill a missing preview with another page's image.
 - Rebuild or reopen the delivered history from its Git evidence, decode every required image, and inspect fresh screenshots before reporting completion. Both comparison sides need their own images; never substitute another unit, state or revision.
 - After squash landing, check the actual remote base commit's prepared history and decode its visible previews. Identical complete Git trees may retain focused captures with their original revision and status; a different tree requires new captures. A feature-branch screenshot alone is not merged delivery.
+- When screenshot metadata crosses a projection or transport, run its existing isolation and re-derivation tests alongside browser captures, even when full verification is deferred. Carry opaque source-tree identity and original provenance, without prepared-history cache filenames.
+- When changing the screenshot viewer, capture the entity being reviewed as well as the viewer. Reopen that entity at the delivered revision with every device image and page workload figure present; an older selected commit does not prove current delivery.
+- Preserve focused runtime measurements across identical complete source trees, using the same identity rule as screenshots. Keep their original tested revision and focused status; source reuse does not grant a full verification verdict.
 - Keep focused screenshots available even when full verification fails, with their focused run and outcome clearly labelled. They grant no full verification verdict. Missing or corrupt bytes keep the visual check open; report the exact blocker and continue the repair.
 
 ## Code Rules
