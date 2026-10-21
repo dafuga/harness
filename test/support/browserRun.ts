@@ -3,7 +3,7 @@ import { readdirSync, readFileSync, type Dirent } from 'node:fs';
 import { join, relative, resolve, sep } from 'node:path';
 import { ownEnvironment } from './cli';
 import { runFailures, type RunReport } from './runFailures';
-import { teardownGate } from './runGate';
+import { teardownGate, type RunGate } from './runGate';
 import { freePort } from './workers';
 
 const runControls = ['--reporter=json', '--max-failures=1'];
@@ -136,6 +136,17 @@ export async function runPassed(run: Ended, name: string): Promise<void> {
 	const told = failures.length > 0 ? failures.join('\n\n') : 'It reported no failed test.';
 	const ending = `Its output ended with:\n${run.output().slice(-2000)}`;
 	throw new Error(`The ${name} run exited ${code}.\n${told}\n\n${ending}`);
+}
+
+/** Actual teardown arrival, or the diagnostics of a run that ended before reaching its gate. */
+export async function atTeardown(run: Ended, gate: Pick<RunGate, 'reached'>, name: string) {
+	return Promise.race([
+		gate.reached,
+		run.finished.then(async () => {
+			await runPassed(run, name);
+			throw new Error(`The ${name} run ended before reaching its teardown gate.`);
+		})
+	]);
 }
 
 /** Resolves once the application server at `url` answers; fails when it never does. */

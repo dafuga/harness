@@ -5,6 +5,7 @@ import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import {
 	browserRun,
+	atTeardown,
 	eventually,
 	runPassed as passed,
 	seededHistories,
@@ -30,11 +31,6 @@ const longer = [
 	'tests/e2e/harness-explorer-catalog.spec.ts',
 	'tests/e2e/harness-protection.spec.ts'
 ];
-/**
- * How often the longer run repeats its specs: they take seconds, and it has to outlast the whole
- * of the shorter run, from the seeding of its history to the removal of it.
- */
-const lasting = 60;
 const media = (home: string) =>
 	readdirSync(home, { recursive: true, withFileTypes: true }).filter(
 		(entry) => entry.isFile() && /^[0-9a-f]{64}\.(png|wav)$/.test(entry.name)
@@ -63,7 +59,7 @@ afterAll(async () => {
 });
 
 test('two runs at once each keep their own history, media and results, through the teardown of the other', async () => {
-	// The longer run starts first and goes on while the shorter one seeds, runs and clears away.
+	// The broader run starts first and stays alive at its gate while its peer clears away.
 	// Each run keeps its history after its specs until the observer has seen what it needs of it.
 	const gated = async (name: string) => {
 		const gate = await openRunGate(scratch, name);
@@ -72,7 +68,7 @@ test('two runs at once each keep their own history, media and results, through t
 	};
 	const secondGate = await gated('second');
 	const second = await browserRun('second', scratch, longer, {
-		repeat: lasting,
+		repeat: 1,
 		gate: secondGate.path
 	});
 	runs.push(second);
@@ -90,13 +86,31 @@ test('two runs at once each keep their own history, media and results, through t
 	});
 	const before = both.map(kept);
 	expect(before.every((history) => history.media > 0)).toBe(true);
+	const [firstRoot, secondRoot] = await Promise.all([
+		atTeardown(first, firstGate, 'first'),
+		atTeardown(second, secondGate, 'second')
+	]);
+	expect(new Set([firstRoot, secondRoot])).toEqual(new Set(both.map((history) => history.home)));
 
 	// The shorter run ends and removes what it made. Nothing of the other is touched by that.
 	firstGate.release();
 	await passed(first, 'first');
 	const left = both.filter((history) => existsSync(history.home));
 	expect(left).toHaveLength(1);
+	expect(left[0].home).toBe(secondRoot);
 	expect(kept(left[0])).toEqual(before[both.indexOf(left[0])]);
+	const own = await fetch(`${second.url}/harness/data/revisions/${left[0].commits.baseline}.json`, {
+		signal: AbortSignal.timeout(5_000)
+	});
+	expect(own.status).toBe(200);
+	expect((await own.json()).commit).toBe(left[0].commits.baseline);
+	const departed = both.find((history) => history.home === firstRoot)!;
+	const foreign = await fetch(
+		`${second.url}/harness/data/revisions/${departed.commits.baseline}.json`,
+		{ signal: AbortSignal.timeout(5_000) }
+	);
+	expect(foreign.status).toBe(404);
+	await foreign.arrayBuffer();
 
 	// Its peer gone and its own history seen to be untouched, the longer run may clear away too.
 	secondGate.release();
