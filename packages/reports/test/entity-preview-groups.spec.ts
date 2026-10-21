@@ -1,6 +1,7 @@
 import { expect, test } from '../../../test/support/browserTest';
 import { capture, fits, open, viewports, chooseCatalogFilter } from './entityPreviewPage';
-import { commits } from './entityUnits';
+import { commits, ids } from './entityUnits';
+import { frameId } from './entityPreviewData';
 
 test.setTimeout(90_000);
 
@@ -56,5 +57,44 @@ for (const [viewport, size] of Object.entries(viewports)) {
 		await open(page, { category: 'services', commit: commits.first }, 'groups');
 		await expect(page.getByRole('heading', { level: 2, name: /^Purchases \d+$/ })).toBeVisible();
 		await expect(page.getByRole('heading', { level: 2, name: /^Orders \d+$/ })).toHaveCount(0);
+	});
+}
+
+for (const [viewport, size] of Object.entries(viewports)) {
+	test(`source lists category implementation files only at ${viewport}`, async ({ page }) => {
+		await page.setViewportSize(size);
+		for (const [category, entity, file] of [
+			['services', ids.store, 'src/services/orders/OrderStore.ts'],
+			['components', ids.list, 'src/components/orders/OrderList.ts'],
+			['functions', ids.filter, 'src/functions/orders/filterOrders.ts'],
+			['configs', ids.settings, 'src/configs/orders/orderSettings.ts'],
+			['models', 'app.model.order', 'src/models/orders/Order.ts'],
+			['shells', frameId, 'src/shells/orders/OrderFrame.svelte'],
+			['pages', ids.page, 'src/routes/orders/+page.svelte']
+		] as const) {
+			await open(page, { category, entity, commit: commits.middle, tab: 'source' }, 'groups');
+			await page.evaluate(async () => {
+				await document.fonts.ready;
+				await Promise.all(
+					[...document.images]
+						.filter((image) => {
+							const box = image.getBoundingClientRect();
+							return box.width > 0 && box.height > 0 && box.top < innerHeight && box.bottom > 0;
+						})
+						.map(async (image) => {
+							await image.decode();
+							if (!image.complete || !image.naturalWidth || !image.naturalHeight)
+								throw new Error('Image not ready');
+						})
+				);
+			});
+			await capture(page, `source-${category}-${viewport}`);
+			const section = page.locator('section[aria-labelledby="ex-source-title"]');
+			await expect
+				.soft(section.getByRole('heading', { name: /Symbols|Execution targets/ }))
+				.toHaveCount(0, { timeout: 500 });
+			await expect.soft(section.getByRole('listitem')).toHaveText([file], { timeout: 500 });
+			expect(await fits(page)).toBe(true);
+		}
 	});
 }

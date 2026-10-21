@@ -20,6 +20,10 @@ framework entrypoints and private ownership survive category moves.
   category selections combined with existing filters, and reset all selections.
 - Category metadata belongs to the selected revision, never the current checkout.
 - Shared/private eligibility, canonical code names, IDs and historical links remain.
+- Source tabs show the real category-folder implementation files, with no symbols
+  or execution-target inventory. Framework entry files retain their real paths.
+- Category folder names use taxonomy ids such as `agents-providers`; display titles
+  such as Agents & providers do not rename code or invent filesystem paths.
 - Standard generator, audit, metadata, catalog and responsive browser coverage
   supplies unchanged red/green proof. Existing full-check blockers remain explicit.
 
@@ -33,6 +37,10 @@ Existing generator checks expect type folders but do not assert category placeme
 or rewritten generated imports. Catalog checks cover search and eligibility but
 not category grouping, combinations, custom categories or revision changes.
 Extend these standard checks rather than introduce a separate testing path.
+Source-tab coverage checked visibility but missed relocation forwarding entries
+and excess symbol/runtime metadata. Shared category fixtures now include actual
+group folders plus compatibility entries; standard detail and responsive browser
+coverage checks the same file-only presentation across entity kinds.
 
 ## Implementation
 
