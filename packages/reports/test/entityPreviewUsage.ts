@@ -127,8 +127,15 @@ export async function reviewUsageCards(
 			page.getByRole('region', { name: 'Uses', exact: true }).locator('article.ex-page-card'),
 			'Relationships reuse catalog cards'
 		).toHaveCount(2);
-	if (category === 'components' && direction === 'uses')
-		await expect(page.locator('.ex-relations .ex-function-tile')).toHaveCount(1);
+	if (category === 'components' && direction === 'uses') {
+		for (const kind of ['Functions', 'Services']) {
+			const group = page.getByRole('group', { name: `${kind} uses`, exact: true });
+			await expect(
+				group.locator('.ex-function-tile'),
+				'each module group has its own card'
+			).toHaveCount(1);
+		}
+	}
 	expect(await fits(page)).toBe(true);
 }
 
@@ -138,4 +145,65 @@ async function reviewConsumerKinds(page: Page, category: string, direction: stri
 	const used = page.getByRole('region', { name: 'Used In', exact: true });
 	for (const kind of ['Pages', 'Components'])
 		await expect(used.getByRole('heading', { name: `${kind} 1`, exact: true })).toBeVisible();
+}
+
+/** Service cards keep only a recorded name and usage, with navigation in the viewed revision. */
+export async function reviewServiceCard(page: Page, viewport: string): Promise<void> {
+	for (const commit of [null, commits.middle]) {
+		await open(page, { category: 'services', commit }, 'helpers');
+		await page.evaluate(async () => {
+			await document.fonts.ready;
+		});
+		await capture(page, `service-card-${commit ? 'commit' : 'tip'}-${viewport}`);
+		const card = page.getByRole('article', { name: 'OrderStore', exact: true });
+		await expect(
+			page.getByRole('article'),
+			'only instantiated shared classes with multiple methods are services'
+		).toHaveCount(1);
+		await expect(card, 'service cards show only name and usage').toHaveText(
+			/^\s*OrderStore\s*Used In\s*Components\s*OrderList\s*SearchBox\s*$/
+		);
+		await expect(card.locator('h2, p, img, button, svg, .hx-verdict')).toHaveCount(0);
+		const usage = card.getByRole('group', { name: 'Used In', exact: true });
+		await expect(
+			usage.getByRole('list', { name: 'Components', exact: true }).getByRole('link')
+		).toHaveText(['OrderList', 'SearchBox']);
+		for (const search of ['OrderStore', 'OrderStore']) {
+			await page.getByRole('searchbox', { name: 'Search services' }).fill(search);
+			await expect(card).toHaveCount(1);
+		}
+		expect(await fits(page)).toBe(true);
+		await card.getByRole('link', { name: 'OrderStore', exact: true }).press('Enter');
+		expect(await where(page)).toMatchObject({
+			branch: 'feature/orders',
+			category: 'services',
+			entity: ids.store,
+			commit
+		});
+		await expect(page.getByRole('heading', { name: 'OrderStore', exact: true })).toBeVisible();
+		await open(page, { category: 'services', commit }, 'helpers');
+		await card
+			.getByRole('group', { name: 'Used In', exact: true })
+			.getByRole('link', { name: 'OrderList', exact: true })
+			.press('Enter');
+		expect(await where(page)).toMatchObject({
+			branch: 'feature/orders',
+			category: 'components',
+			entity: ids.list,
+			commit
+		});
+		await reviewFunctionService(page, commit);
+	}
+}
+/** Shared effectful functions retain their actual code identity outside the class catalog. */
+async function reviewFunctionService(page: Page, commit: string | null) {
+	await open(page, { category: 'services', commit }, 'helpers');
+	await expect(page.getByRole('article', { name: 'recordAnalytics', exact: true })).toHaveCount(0);
+	await open(
+		page,
+		{ category: 'services', entity: 'app.workflow.record-analytics', commit },
+		'helpers'
+	);
+	await expect(page.getByRole('heading', { name: 'recordAnalytics', exact: true })).toBeVisible();
+	expect(await where(page)).toMatchObject({ commit, entity: 'app.workflow.record-analytics' });
 }
