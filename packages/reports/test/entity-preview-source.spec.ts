@@ -91,8 +91,8 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			).toHaveCount(0);
 			await expect(page.locator('pre')).toHaveCount(0);
 			await capture(page, `${phase}-source-action-${category}-${viewport}`);
-			await fileLink(page, path, commits.tip);
 			await expect(action, 'Every source file has its own code action').toBeVisible();
+			await fileLink(page, path, commits.tip);
 			const started = await page.evaluate(() => performance.now());
 			await action.click();
 			const dialog = page.getByRole('dialog', { name: `${title} · Source code` });

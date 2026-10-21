@@ -3,7 +3,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { expect, test } from 'vitest';
 import type { ComponentManifest } from '../src/core/unitTypes';
-import { HistoryIndexService } from '../src/services/history-index-service/HistoryIndexService';
+import { HistoryIndexService } from '../src/cli/program/history-index-service/HistoryIndexService';
 import { fixtureSources } from './support/verifyFixture';
 import { unitProject } from './support/unitProject';
 import { repoAt, type VerifyRepo } from './support/verifyRepo';
