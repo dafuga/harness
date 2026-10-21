@@ -64,7 +64,10 @@ for (const [viewport, size] of Object.entries(viewports)) {
 				.click();
 			await expect(page.getByRole('dialog').locator('pre')).toContainText(commits.middle);
 			await expect(page.getByRole('dialog').locator('pre')).not.toContainText(commits.tip);
-			await page.getByRole('dialog').getByRole('button', { name: 'Close', exact: true }).click();
+			await page
+				.getByRole('dialog')
+				.getByRole('button', { name: 'Close viewer', exact: true })
+				.click();
 			await expect(page.getByRole('dialog')).toHaveCount(0);
 		});
 	}
