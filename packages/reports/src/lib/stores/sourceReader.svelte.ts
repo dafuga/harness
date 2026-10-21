@@ -8,6 +8,10 @@ export interface SourceState {
 export type SourceFiles = () => Promise<string[]>;
 export type SourceRead = (path: string) => Promise<string>;
 
+function sourceError(cause: unknown): string {
+	return cause instanceof Error ? cause.message : String(cause);
+}
+
 /** Owns one source read session; later selections and disposal supersede pending replies. */
 export function createSourceReaderStore() {
 	const state = $state<SourceState>({ files: [], path: '', text: '', loading: true, error: '' });
@@ -17,13 +21,13 @@ export function createSourceReaderStore() {
 		if (!state.files.includes(path)) return;
 		const own = ++generation;
 		Object.assign(state, { path, text: '', loading: true, error: '' });
-		const result = { text: '', error: '', loading: false };
 		try {
-			result.text = await read(path);
+			const text = await read(path);
+			if (own === generation) state.text = text;
 		} catch (cause) {
-			result.error = cause instanceof Error ? cause.message : String(cause);
+			if (own === generation) state.error = sourceError(cause);
 		} finally {
-			if (own === generation) Object.assign(state, result);
+			if (own === generation) state.loading = false;
 		}
 	}
 	async function initialise(files: SourceFiles, load: SourceRead) {
@@ -38,7 +42,7 @@ export function createSourceReaderStore() {
 			if (found.length) await select(found[0]);
 		} catch (cause) {
 			if (own !== generation) return;
-			state.error = cause instanceof Error ? cause.message : String(cause);
+			state.error = sourceError(cause);
 			state.loading = false;
 		}
 	}
