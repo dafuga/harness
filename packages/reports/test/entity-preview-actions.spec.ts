@@ -1,14 +1,6 @@
 import { reviewUsageCards } from './entityPreviewFunctions';
 import { expect, test } from '../../../test/support/browserTest';
-import {
-	capture,
-	fits,
-	open,
-	viewports,
-	where,
-	reviewVisual,
-	reviewStates
-} from './entityPreviewPage';
+import { capture, open, viewports, where, reviewVisual, reviewStates } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 const page = { category: 'pages' as const, entity: ids.page };
 for (const [name, size] of Object.entries(viewports)) {
