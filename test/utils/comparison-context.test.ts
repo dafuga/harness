@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest';
 import { comparisonSchema, roundsProtocol, warmupCalls } from '../../src/core/comparisonTypes';
+import { taskProfile } from '../support/taskProfiles';
 import {
 	comparisonContext,
 	requestDigest
@@ -18,8 +19,11 @@ test('requestDigest covers the whole request and ignores key order', () => {
 	expect(requestDigest({ operation: 'rank' })).not.toBe(requestDigest(request));
 });
 
-test('comparisonContext states the request, the boundary and the sampling that were used', () => {
+test('comparisonContext states the request, the boundary and the sampling that were used', async () => {
 	const context = comparisonContext(request, { rounds: 5, iterations: 30 });
+	await taskProfile('function.comparison-types', 'parse-rank-comparison-context', () =>
+		comparisonSchema.parse(context)
+	);
 	expect(context).toEqual({
 		request: requestDigest(request),
 		boundary: 'public-invocation',
