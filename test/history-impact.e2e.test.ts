@@ -1,6 +1,7 @@
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
+import { execFileSync } from 'node:child_process';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { baselineRepo, type VerifyRepo } from './support/verifyRepo';
 
@@ -28,6 +29,40 @@ let repo: VerifyRepo;
 let out: string;
 const commits: Record<string, { commit: string; parent: string }> = {};
 const title = 'src/services/TitleService.ts';
+
+test.each([
+	['src/utils/sideImpact.ts', 'storedSide'],
+	['src/services/source-impact-service/sideImpact.ts', 'storedSide'],
+	['src/utils/sideImpact.ts', 'sideImpact'],
+	['packages/reports/src/components/harness/harness-compare/sideImpact.ts', 'sideImpact']
+])('stored history runtime cold-imports %s and calls %s', (entry, symbol) => {
+	const code = `
+import {pathToFileURL} from 'node:url';
+const api = await import(pathToFileURL(process.argv[1]).href);
+const {defaultUnitsConfig: config} = await import(pathToFileURL(process.argv[3]).href);
+const graph = {nodes:[],edges:[],uncertain:[]};
+const current = {revision:'a'.repeat(40),config,entries:[],manifests:[],scenarios:[],graph};
+const stored = {schemaVersion:1,config,files:[],units:[],scenarios:[],...graph};
+const output = process.argv[2] === 'storedSide' ? api.storedSide(current) : await api.sideImpact(null,{commit:current.revision,side:stored});
+console.log(JSON.stringify(output));`;
+	const output = JSON.parse(
+		execFileSync('bun', ['-e', code, resolve(entry), symbol, resolve('src/core/unitsConfig.ts')], {
+			encoding: 'utf8'
+		})
+	);
+	expect(output).toMatchObject(
+		symbol === 'storedSide'
+			? { schemaVersion: 1, files: [], units: [], nodes: [], edges: [], uncertain: [] }
+			: {
+					base: null,
+					expanded: false,
+					units: { direct: [], indirect: [], added: [], removed: [] },
+					scenarios: [],
+					changed: [],
+					uncertain: []
+				}
+	);
+});
 
 /** Commits a source edit exactly as written: no re-index, no reason, no verification. */
 async function sourceOnly(name: string, edit: () => Promise<unknown>): Promise<void> {
