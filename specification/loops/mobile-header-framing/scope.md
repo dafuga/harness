@@ -1,0 +1,7 @@
+# Mobile header framing
+
+Daniel rejected the stripped-back header and requested visible borders, padding and better organization. Have Opus5.5 make the actual visual edits to the existing header components and responsive styles. Reuse Select, ChoiceDialog and EntitySearch; preserve environment selection, revision navigation, activity light, deployment entry points and deployment boundaries.
+
+The standardized workspace selector scenario checked fit and branch readability, but not breathing room between project and context controls. Add an8px minimum vertical gap there and retain320px/390px dev/prod checks. Capture before the assertion. Permit up to184px local header height for the explicitly requested padding, replacing the previous164px compaction target. This is a bounded visual iteration; do not manufacture aesthetic test failures. Visually inspect the borders, grouping and padding separately from functional assertions.
+
+Direct candidates: desktop.component.project-switcher, desktop.component.environment-picker, desktop.component.revision-picker and desktop.style.responsive. NavBar and shared controls are dependencies checked, not new UI implementations. The stylesheet has no explorer category. Read registry contracts and reverse dependencies before editing. Verify focused E2E, components, types, lint, build, audit, root check and manual browser states. No application deployment.
