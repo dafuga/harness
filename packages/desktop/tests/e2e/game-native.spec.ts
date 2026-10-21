@@ -1,68 +1,17 @@
 import {
 	expect,
 	test,
-	_electron,
 	type Page,
 	type ElectronApplication
 } from '../../../../test/support/browserTest';
-import { mkdtemp, readFile, writeFile, appendFile, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
-import { createRequire } from 'node:module';
 import { homedir, tmpdir } from 'node:os';
-import { join, resolve } from 'node:path';
+import { join } from 'node:path';
+import { capture, launch, imageProvider, recordRuntime } from './game-native-fixture';
 import { nativeImageFixture } from './native-image-fixture';
 import type { GameDocument } from '../../../game/src/models/Game.types';
-const binary = createRequire(import.meta.url)('electron') as string;
-const desktop = resolve(import.meta.dirname, '../..');
 test.setTimeout(120_000);
-async function capture(page: Page, state: string) {
-	if (process.env.TAKE_SCREENSHOT !== 'true') return;
-	await page.evaluate(async () => {
-		await document.fonts.ready;
-		await Promise.all([...document.images].map((image) => image.decode()));
-	});
-	await page.screenshot({
-		path: `test-results/game-native-${state}-${page.viewportSize()?.width}.png`,
-		fullPage: true
-	});
-}
-async function launch(profile: string) {
-	const entry = join(profile, 'acceptance.cjs');
-	const png = Buffer.from(nativeImageFixture()).toString('base64');
-	await writeFile(
-		entry,
-		`
- const { app } = require('electron');
- app.setAppPath(${JSON.stringify(desktop)});
- const original = globalThis.fetch;
- globalThis.fetch = async (input, options) => {
-  if (String(input) !== 'https://api.openai.com/v1/images/generations') return original(input, options);
-  const body = JSON.parse(String(options?.body));
-  if (body.model !== 'gpt-image-2' || !body.prompt.includes('Consequences:')) throw new Error('Incorrect image request');
-  return new Response(JSON.stringify({ data: [{ b64_json: ${JSON.stringify(png)} }] }));
- };
- require(${JSON.stringify(join(desktop, 'dist/main.cjs'))});
- `
-	);
-	const env = Object.fromEntries(
-		Object.entries(process.env).filter(
-			([name, value]) => name !== 'ELECTRON_RUN_AS_NODE' && value !== undefined
-		)
-	) as Record<string, string>;
-	return _electron.launch({
-		executablePath: binary,
-		args: [entry, `--user-data-dir=${profile}`],
-		env
-	});
-}
-async function imageProvider(root: string) {
-	await appendFile(join(root, '.gitignore'), '\n.env.local\n');
-	await writeFile(
-		join(root, '.env.local'),
-		'HARNESS_GAME_OPENAI_API_KEY=synthetic-game-test-key\n',
-		{ mode: 0o600 }
-	);
-}
 async function create(page: Page, name: string, dimension: string) {
 	await expect(page.getByRole('button', { name: 'Open Project', exact: true })).toBeVisible();
 	await page.getByLabel('Project type', { exact: true }).selectOption('game');
@@ -124,24 +73,7 @@ async function persisted(page: Page, root: string, dimension: string) {
 	const started = performance.now();
 	await page.reload();
 	await expect(page.locator('canvas[data-ready="true"]').first()).toBeVisible();
-	const cdp = await page.context().newCDPSession(page);
-	const heap = await cdp.send('Runtime.getHeapUsage');
-	await cdp.detach();
-	await appendFile(
-		resolve(desktop, '../../.cache/game-authoring-evidence/runtime.ndjson'),
-		JSON.stringify({
-			revision: execFileSync('git', ['rev-parse', 'HEAD'], {
-				cwd: desktop,
-				encoding: 'utf8'
-			}).trim(),
-			dimension,
-			viewport: page.viewportSize(),
-			workload: 'Native page reload to saved game and ready canvas',
-			elapsedMs: performance.now() - started,
-			pageHeapBytes: heap.usedSize,
-			memoryScope: 'Whole renderer V8 heap; excludes GPU and main process'
-		}) + '\n'
-	);
+	await recordRuntime(page, started, dimension);
 	await expect(page.getByLabel('View title', { exact: true })).toHaveValue('Authored courtyard');
 	await page.getByRole('button', { name: 'Checkpoints', exact: true }).click();
 	await page.getByText('Collect the key', { exact: true }).first().click();
