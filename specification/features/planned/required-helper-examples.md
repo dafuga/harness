@@ -87,3 +87,13 @@ Routing proof `1fc95d66` fails and `846b2a93` passes the unchanged committed com
 The actual managed preview accepts the original query URL and ends at `/helpers/formatDuration/examples`; Contract, Examples, History, commit selection, Back and refresh retain the same helper. Its original user tab could not attach to browser control, so a fresh in-app tab was opened and the original was preserved. Fresh screenshots are inspected and remain outside source control. Local focused capture bytes and hashes are retained under `.cache/harness/readable-helper-urls/`; this does not grant a full verification verdict.
 
 The root check passed formatting, types, lint and Rust checks before its remaining unit run was interrupted after independent audit reconfirmed the inherited 224-line `test/shared-select-impact.test.ts` violation. Root verification and hosted checks remain unresolved; native UI and iOS are not tested here. The loop verification step stays pending. No production application deployment or merge into main is claimed.
+
+## Helper page copy
+
+[EntityFrame](http://127.0.0.1:5688/harness/branch/dafuga%2Fgithub-source-links/components/reports.component.harness-entity-frame) now places each helper tab's content directly below the tabs. The repeated module ownership paragraph was removed once in this shared frame; its consumers and dependencies need no edits. [Unit history](http://127.0.0.1:5688/harness/branch/dafuga%2Fgithub-source-links/components/reports.component.harness-entity-frame/history) identifies the affected component.
+
+Existing callable tests previously checked identity and API content without excluding the unwanted commentary. The strengthened unit and shared browser checks fail at `c5d89c4d`; the identical committed desktop browser command and frozen test corpus pass at `36a1feb7`. Fresh before/after screenshots are inspected and retained outside source control under `.cache/harness/helper-detail-note/`. The managed preview's Examples tab confirms the removal without browser errors. This text removal needs no runtime benchmark.
+
+Repository verification remains incomplete: root audit still finds the inherited 224-line `test/shared-select-impact.test.ts` above its 220-line limit. The loop's full verification step remains pending; focused proof does not grant a full verdict or authorize merging past unresolved checks.
+
+The complete Reports package check passes on `36a1feb7`: formatting, Svelte/type checks, lint, 610 tests, all three builds and app audit. Root formatting passes after formatting the generated loop record. No production deployment or native app verification applies to this copy change.
