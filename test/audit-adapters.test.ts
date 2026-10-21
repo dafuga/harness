@@ -7,6 +7,8 @@ import { collectAuditedFiles } from '../src/audit/collect';
 import { WorkingTreeAdapter } from '../src/adapters/WorkingTreeAdapter';
 import { PerformanceProfileService } from '../src/services/PerformanceProfileService';
 import { adaptersForProfile, resolveAuditProfile } from '../src/audit/adapters/registry';
+import { measureProcess } from './support/cli-measurement/measureHarness';
+import { runCommand } from './support/cli';
 
 test('audit profiles select ecosystem adapters', () => {
 	expect(adaptersForProfile('app').map((adapter) => adapter.id)).toEqual([
@@ -34,6 +36,28 @@ test('audit profiles select ecosystem adapters', () => {
 		'wasm'
 	]);
 });
+
+test.each(['reports', 'planning', 'desktop', 'collaboration', 'hub', 'remote', 'relay'])(
+	'the %s workspace launcher audits through the current repository CLI',
+	async (workspace) => {
+		const result = await measureProcess(
+			{
+				units: [`${workspace}.script.harness-audit`],
+				workload: 'cold-current-source-workspace-audit',
+				target: 'module',
+				command: ['bun', 'scripts/harness-audit.ts'],
+				cwd: join(process.cwd(), 'packages', workspace),
+				env: {
+					HARNESS_CLI_PATH: join(process.cwd(), 'src/index.ts'),
+					HARNESS_RUNTIME_PROFILE_BOUNDARY: 'benchmark'
+				}
+			},
+			runCommand
+		);
+		expect(result.exitCode, result.stderr).toBe(0);
+		expect(result.stdout).toContain('Harness audit passed.');
+	}
+);
 
 test('auto profile detects Svelte apps and Harness libs', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-profile-'));
