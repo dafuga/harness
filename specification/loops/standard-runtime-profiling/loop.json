@@ -6,7 +6,7 @@
 	"name": "standard-runtime-profiling",
 	"goal": "Standard runners record actual registered operations through Harness profiling with preserved behavior, source scope, benchmark boundaries and truthful missing coverage.",
 	"createdAt": "2026-10-21T10:25:19.874Z",
-	"updatedAt": "2026-10-21T11:11:03.073Z",
+	"updatedAt": "2026-10-21T11:12:42.665Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -52,12 +52,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:12:40.160Z",
+			"evidence": "Paired redc3859108 and green22887d5b run the unchanged five-case corpus and command in one environment. Green source d53cc616 passed; two real adapter latency and whole-process RSS measurements retained."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:12:42.665Z",
+			"evidence": "The isolated snapshot at01669429 reintroduces the missing transform boundary and fails all five normal cases; unchanged repaired snapshot d53cc616 passes. Full task verification remains pending."
 		},
 		{
 			"id": "verify",
