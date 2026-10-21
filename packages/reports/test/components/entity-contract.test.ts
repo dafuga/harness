@@ -154,8 +154,8 @@ test('a selected callable page excludes sibling APIs and rejects missing symbols
 			{ category: 'functions', entity: ids.filter, tab: 'contract' },
 			{ head }
 		);
-		expect(legacy).toContain('helper=first');
-		expect(legacy).toContain('helper=second');
+		expect(legacy).toContain(`/helpers/first/in/${ids.filter}/contract`);
+		expect(legacy).toContain(`/helpers/second/in/${ids.filter}/contract`);
 		expect(legacy).not.toContain('aria-label="first contract"');
 	}
 });
