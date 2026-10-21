@@ -107,16 +107,16 @@ test('in a browser each branch, commit and category of the installed console is 
 	await page.waitForURL(`**${tip('shells')}`);
 	await page.getByRole('heading', { level: 1, name: 'Shells' }).waitFor();
 	expect(await commit.inputValue()).toBe(head);
-	await links.filter({ hasText: 'Functions' }).click();
+	await links.filter({ hasText: 'Helpers' }).click();
 	await page.waitForURL(`**${tip('functions')}`);
 	expect(await commit.inputValue()).toBe(head);
 	await commit.selectOption(other);
 	await page.waitForURL(`**${main(other, 'functions')}`);
-	await page.getByRole('heading', { level: 1, name: 'Functions' }).waitFor();
+	await page.getByRole('heading', { level: 1, name: 'Helpers' }).waitFor();
 
 	// A reload keeps the page, and back and forward return to the pages that were visited.
 	await page.reload();
-	await page.getByRole('heading', { level: 1, name: 'Functions' }).waitFor();
+	await page.getByRole('heading', { level: 1, name: 'Helpers' }).waitFor();
 	expect(await commit.inputValue()).toBe(other);
 	await page.goBack();
 	await page.waitForURL(`**${tip('functions')}`);
