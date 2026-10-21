@@ -3,6 +3,7 @@ import { exampleDocument } from '../packages/game/src/utils/keyDoor';
 import { readFile, writeFile } from 'node:fs/promises';
 const paths = [
 	'models/Game.types.ts',
+	'validators/gameDocument.ts',
 	'utils/gameStep.ts',
 	'utils/keyDoor.ts',
 	'utils/checkpointGraph.ts',

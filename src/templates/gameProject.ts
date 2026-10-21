@@ -39,6 +39,11 @@ export function gameFiles(input: ProjectTemplateInput, app: PlannedFile[]): Plan
 		},
 		{ path: 'src/routes/game/+page.svelte', contents: gamePage() },
 		{
+			path: 'test/game-document.test.ts',
+			contents:
+				"import { expect, test } from 'vitest';\nimport document from '../game.json';\nimport { validateDocument } from '../src/lib/game/validators/gameDocument';\n\ntest('game document satisfies the authoring contract', () => {\n\texpect(validateDocument(document)).toEqual([]);\n});\n"
+		},
+		{
 			path: 'static/game/assets/README.md',
 			contents:
 				'# Saved game assets\n\nGenerate textures, sprites, UI art and references with GPT Image or another chosen image model during authoring. Save selected files here and record their provider/model, prompt, license and purpose. Load them using Three.js TextureLoader, Sprite or GLTFLoader. Images are not 3D meshes: build geometry or import GLB models separately. Never call an image model in the render loop.\n'
@@ -55,8 +60,10 @@ function gamePage(): string {
  import {onMount} from 'svelte';
  import document from '../../../game.json';
  import {createRun,stepGame} from '$lib/game/utils/gameStep';
+ import {assertDocument} from '$lib/game/validators/gameDocument';
  import type {GameView,GameRun} from '$lib/game/models/Game.types';
  let canvas:HTMLCanvasElement; let run=$state(createRun()); let ready=$state(false);
+ assertDocument(document);
  const view=document.views[0] as GameView;
  let render:(run:GameRun,view:GameView)=>void;
  function move(x:number,y:number,choice?:string){run=stepGame(run,{x,y,choice},view);render?.(run,view);}
