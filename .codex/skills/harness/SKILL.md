@@ -100,6 +100,7 @@ must not accept a row that contradicts the collection's inclusion rule.
 
 ## Integration Checkpoints
 
+- When changing native runner startup, exercise normal root and inherited configurations without native TypeScript loading, disabling that capability when the host supports it. Keep native entries in JavaScript and let the supported runner compile typed tooling; a successful import on a newer Node does not prove that boundary.
 - For shared test-support edits, run the owning workspace audit before the long root check. Root audit exclusions can omit files the workspace audits. Extract cohesive assertions into existing support modules when a file reaches its limit.
 - Test Node server imports with external dependencies and packaged CJS bundles; cold-import and call the operation in each supported mode. Prefer public package entries over internal build files.
 - When a public SDK export reaches new runtime dependencies, rebuild and cold-import the affected packed entry in an empty consumer without workspace-only frameworks. Call the exported operation as well as type-checking it; run the standard packaged API acceptance before broad verification.
