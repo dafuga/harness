@@ -78,8 +78,8 @@ async function rejectChangedTest(root: string, frozen: string): Promise<void> {
 	await runCommand(['git', 'reset', '-q', 'HEAD', '--', 'proof.ts'], root);
 	await rejected(root, ['--phase', 'green', '--commit', bad.stdout.trim()], 'unchanged');
 }
-async function commitRepair(root: string, message: string): Promise<void> {
-	await runCommand(['git', 'add', '-A'], root);
+async function commitRepair(root: string, message: string, paths = ['-A']): Promise<void> {
+	await runCommand(['git', 'add', ...paths], root);
 	await runCommand(
 		[
 			'git',
@@ -93,6 +93,16 @@ async function commitRepair(root: string, message: string): Promise<void> {
 		],
 		root
 	);
+}
+
+export async function commitRepairBookkeeping(root: string, legacy: boolean): Promise<void> {
+	if (legacy) {
+		const path = join(root, 'specification/loops/repair/loop.json');
+		const state = JSON.parse(await readFile(path, 'utf8'));
+		delete state.completion;
+		await writeFile(path, JSON.stringify(state));
+	}
+	await commitRepair(root, 'chore: retain regression proof notes', ['specification/loops/repair']);
 }
 
 export async function expectPendingVerification(root: string): Promise<void> {
