@@ -117,3 +117,50 @@ export async function reviewOverviewControls(page: Page, category: string): Prom
 		'screenshot heading has no explanatory paragraph'
 	).toHaveCount(0);
 }
+
+/** A focused capture remains usable without pretending there is a full verification record. */
+export async function reviewFocusedScreens(
+	page: Page,
+	name: string,
+	visit: () => Promise<void>,
+	capture: (name: string) => Promise<void>
+): Promise<void> {
+	await visit();
+	await capture('focused-screens-' + name);
+	const panel = page.locator('section[aria-labelledby="ex-screens-title"]');
+	await expect
+		.soft(panel.getByRole('img'), 'focused screenshots appear on both committed sides')
+		.toHaveCount(2);
+	await expect.soft(panel).toContainText('Focused capture');
+	for (const label of ['Desktop', 'Tablet', 'Mobile']) {
+		const button = panel.getByRole('button', { name: label, exact: true });
+		await expect.soft(button, 'every viewport has a capture').toHaveCount(1);
+		if (await button.count()) {
+			await button.click();
+			await expect
+				.soft(panel.locator('img').last())
+				.toHaveAttribute('src', new RegExp('-default-' + label.toLowerCase() + '.png$'));
+			for (const image of await panel.getByRole('img').all())
+				await image.evaluate((node: HTMLImageElement) => node.decode());
+		}
+	}
+}
+
+/** The overview presents one observed value per metric instead of workload tables. */
+export async function reviewScalarMeasurements(page: Page): Promise<void> {
+	const profile = page.getByRole('region', { name: 'Performance profile' });
+	await expect.soft(profile.getByRole('table'), 'overview performance has no table').toHaveCount(0);
+	const rows = await profile
+		.locator('dl > div')
+		.evaluateAll((items) =>
+			Object.fromEntries(
+				items.map((row) => [
+					row.querySelector('dt')!.textContent!.trim(),
+					row.querySelector('dd')!.textContent!.trim()
+				])
+			)
+		);
+	expect.soft(rows.Latency, 'one latency value').toBe('0.12 ms');
+	expect.soft(rows.Memory, 'one memory value').toBe('93 MB');
+	await reviewProfileRows(page);
+}

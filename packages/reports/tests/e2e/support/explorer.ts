@@ -45,8 +45,31 @@ export async function checkpoint(page: Page, name: string): Promise<void> {
 	if (process.env.TAKE_SCREENSHOT !== '1') return;
 	mkdirSync(shots, { recursive: true });
 	await settled(page);
-	await page.screenshot({ path: join(shots, `${name}.png`), fullPage: true });
+	const bytes = await page.screenshot({ path: join(shots, `${name}.png`), fullPage: true });
+	await pageScreenshot(page, name, bytes);
 	await pageBenchmark(page, name);
+}
+
+/** Each persisted picture names the actual app page, state, viewport and served revision. */
+async function pageScreenshot(page: Page, name: string, bytes: Buffer): Promise<void> {
+	const unit = pageUnit(page.url());
+	const server = await servedBuild(page);
+	if (!unit || !server || server.revision !== process.env.HARNESS_VERIFY_REVISION) return;
+	const width = page.viewportSize()!.width;
+	const state = new URL(page.url()).searchParams.get('tab') ?? 'overview';
+	recordCapture(
+		{
+			evidence: unit,
+			kind: 'screenshot',
+			state,
+			viewport: width >= 1200 ? 'desktop' : width >= 600 ? 'tablet' : 'mobile',
+			file: name + '.png',
+			mediaType: 'image/png',
+			provenance: 'actual-capture',
+			server
+		},
+		bytes
+	);
 }
 
 /** Runtime observations of the real route, never of a later client-side destination. */

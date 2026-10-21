@@ -1,6 +1,6 @@
 import type { HarnessRevision, HarnessScenario, HarnessUnit } from '../src/models/Harness.types';
 import { record, revision } from './entityFixture';
-import { commits, ids, scenarios, units } from './entityUnits';
+import { capture, commits, ids, scenarios, units } from './entityUnits';
 
 /** A page of the synthetic app that is made of nothing the orders page is made of. */
 export const otherPage = 'app.page.returns';
@@ -87,4 +87,32 @@ export function withSourceMeasures(detail: HarnessRevision): HarnessRevision {
 		]
 	}));
 	return { ...detail, records, registry: { ...detail.registry, units } };
+}
+
+/** Focused UI evidence exists independently of a full verification verdict. */
+export function withFocused(detail: HarnessRevision, target = ids.page): HarnessRevision {
+	const captures = ['desktop', 'tablet', 'mobile'].map((viewport) => ({
+		unit: target,
+		capture: {
+			...capture(detail.commit, { kind: 'screenshot', state: 'default', viewport }),
+			kind: 'screenshot' as const,
+			status: 'passed' as const,
+			bytes: 1,
+			provenance: 'actual-capture' as const
+		}
+	}));
+	const point = {
+		commit: detail.commit,
+		status: 'passed' as const,
+		command: 'browser acceptance',
+		assertion: 'page is rendered',
+		output: 'passed',
+		finishedAt: '2026-10-21T10:00:00Z',
+		captures
+	};
+	return {
+		...detail,
+		records: [],
+		regressions: [{ loop: 'visual-acceptance', units: [target], red: null, green: point }]
+	};
 }

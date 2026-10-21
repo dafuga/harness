@@ -6,6 +6,8 @@ import type { PreviewVariant } from './entityPreviewData';
 import { previewHome } from './entityPreviewSetup';
 import {
 	reviewMeasuredSources,
+	reviewFocusedScreens,
+	reviewScalarMeasurements,
 	reviewOverviewControls,
 	reviewProfileRows
 } from './entityPreviewOverview';
@@ -187,20 +189,8 @@ export async function reviewMeasurements(tab: Page, name: string): Promise<void>
 	await capture(tab, `automatic-measurements-${name}`);
 	await expect(performance).toContainText('0.12 ms');
 	await expect(performance).not.toContainText('No performance budget');
-	const metric = performance.getByRole('cell', {
-		name: 'Benchmark process peak RSS',
-		exact: true
-	});
-	const fragments = await metric.evaluate((cell) => {
-		const range = document.createRange();
-		const text = [...cell.childNodes].find(
-			(node) => node.nodeType === Node.TEXT_NODE && node.textContent?.includes('Benchmark')
-		)!;
-		range.setStart(text, 0);
-		range.setEnd(text, 'Benchmark'.length);
-		return range.getClientRects().length;
-	});
-	expect(fragments, 'benchmark labels stay whole').toBe(1);
+
+	await reviewScalarMeasurements(tab);
 	expect(await fits(tab)).toBe(true);
 	await open(tab, { category: 'services', entity: ids.store, commit: commits.middle });
 	await ready(tab);
@@ -215,4 +205,13 @@ export async function reviewMeasurements(tab: Page, name: string): Promise<void>
 		await ready(tab);
 		await capture(tab, `measurements-current-${route.category}-${name}`);
 	});
+	await reviewFocusedScreens(
+		tab,
+		name,
+		() => open(tab, { category: 'pages', entity: ids.page, commit: commits.middle }, 'focused'),
+		async (name) => {
+			await ready(tab);
+			await capture(tab, name);
+		}
+	);
 }

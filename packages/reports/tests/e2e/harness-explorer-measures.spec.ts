@@ -2,7 +2,7 @@ import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { at, checkpoint, explorer } from './support/explorer';
-import { viewports } from './support/harnessCapture';
+import { captureSections, viewports } from './support/harnessCapture';
 import { home, seeded, short } from './support/harnessHistory';
 import { fits } from './support/sharedSelect';
 import type { HarnessRevision } from '../../src/models/Harness.types';
@@ -81,6 +81,7 @@ for (const viewport of viewports)
 				await expect(row).not.toContainText('Not measured');
 				await expect(row.locator('dd')).toContainText(/\d/);
 			}
+			await captureSections(page, `current-measurements-${category}-${viewport.id}`, checkpoint);
 		}
 	});
 

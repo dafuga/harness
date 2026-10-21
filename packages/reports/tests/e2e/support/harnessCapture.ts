@@ -155,3 +155,16 @@ export async function captureAudio(
 	keep(`${state}.wav`, bytes);
 	return durationSeconds;
 }
+
+/** Every visible tab of the real route keeps its own screenshot at the selected viewport. */
+export async function captureSections(
+	page: Page,
+	name: string,
+	checkpoint: (page: Page, name: string) => Promise<void>
+): Promise<void> {
+	const tabs = await page.getByRole('tablist').getByRole('tab').allTextContents();
+	for (const label of tabs.filter((label) => label.trim() !== 'Overview')) {
+		await page.getByRole('tab', { name: label.trim(), exact: true }).click();
+		await checkpoint(page, name + '-' + label.trim().toLowerCase().replaceAll(' ', '-'));
+	}
+}

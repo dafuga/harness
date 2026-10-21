@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { record, revision } from '../entityFixture';
 import { content, count, verdicts, words } from '../entityRender';
-import { both } from '../entityStates';
+import { both, withFocused } from '../entityStates';
 import { commits, ids, scenarios } from '../entityUnits';
 
 const page = { category: 'pages' as const, entity: ids.page };
@@ -14,15 +14,15 @@ test('an overview groups size and timings in Performance profile, with no source
 	expect(body).not.toContain('aria-label="Size"');
 	const profile = /<section[^>]*aria-label="Performance profile"[^>]*>(.*?)<\/section>/s.exec(body);
 	expect(profile).not.toBeNull();
-	for (const label of ['Source size 800 B', 'Complexity', 'thousand orders'])
+	for (const label of ['Source size 800 B', 'Complexity', 'Latency 0.12 ms', 'Memory'])
 		expect(words(profile![1])).toContain(label);
 	expect(words(profile![1])).not.toContain('Emitted size');
 	expect(body).not.toContain('aria-label="Contract"');
 	expect(words(content('commit', { ...filter, tab: 'contract' }))).toContain('orders');
 	expect(words(body)).toContain('Source size 800 B');
 	expect(words(body)).toContain('Not measured');
-	expect(words(body)).toContain('thousand orders');
-	expect(words(body)).toContain('5%');
+	expect(words(body)).not.toContain('thousand orders');
+	expect(words(body)).not.toContain('5%');
 	expect(words(body)).not.toMatch(/src\/|\.ts\b|filterOrders|v-app\./);
 	expect(words(body)).not.toMatch(/provenance/i);
 });
@@ -68,6 +68,21 @@ test('a side with no capture of the state is a stated gap, never the other side 
 	expect(words(body)).toContain(
 		'Before · aaaaaaa Parent commit No verification record is attached to this commit.'
 	);
+	const focused = content('commit', page, {
+		head: withFocused(revision(commits.middle, [])),
+		parent: withFocused(parent)
+	});
+	expect(shots(focused), 'focused screenshots display without a full verification record').toEqual([
+		'aaaaaaa-default-desktop.png',
+		'bbbbbbb-default-desktop.png'
+	]);
+	expect(words(focused)).toContain('Focused capture');
+	expect(verdicts(focused).some((badge) => badge.passed)).toBe(false);
+	const other = content('commit', page, {
+		head: withFocused(revision(commits.middle, []), ids.list),
+		parent
+	});
+	expect(shots(other), 'another unit never supplies the missing screenshot').toEqual([]);
 });
 
 test('a component no visual scenario names keeps the screenshot pane, as a stated gap', () => {

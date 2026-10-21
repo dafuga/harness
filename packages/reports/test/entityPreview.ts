@@ -26,6 +26,7 @@ import {
 	type PreviewVariant
 } from './entityPreviewData';
 import { commits, ids } from './entityUnits';
+import { withFocused } from './entityStates';
 import { withHelpers } from './entityPreviewHelpers';
 
 /** The synthetic history in a browser, for the checks that need one; no server and no real data. */
@@ -41,6 +42,8 @@ const stored: Record<string, HarnessRevision> = {
 };
 if (variant === 'measurements')
 	for (const commit of Object.keys(stored)) stored[commit] = withMeasurements(stored[commit]);
+if (variant === 'focused')
+	for (const commit of Object.keys(stored)) stored[commit] = withFocused(stored[commit]);
 if (variant === 'helpers')
 	for (const commit of Object.keys(stored)) stored[commit] = withHelpers(stored[commit]);
 if (variant === 'inherited')
