@@ -74,26 +74,32 @@ export async function reviewRelationPaging(page: Page, viewport: string): Promis
 		await page.getByRole('tab', { name: 'Used In', exact: true }).click();
 		await expect(pages.getByRole('article'), 'returning to the tab resets batches').toHaveCount(4);
 		await open(page, { category: 'pages', entity: ids.page, commit, tab: 'uses' }, 'relations');
-		await expandTable(page, viewport, commit);
+		await expandUsageGroups(page, viewport, commit);
 		expect(await fits(page)).toBe(true);
 	}
 }
 
-async function expandTable(page: Page, viewport: string, commit: string | null): Promise<void> {
-	const services = page.getByRole('group', { name: 'Services uses', exact: true });
-	const rows = services.locator('tbody tr');
-	const more = services.getByRole('button', { name: 'View more Services', exact: true });
-	await expect(rows, 'table module types use the same four-entry batches').toHaveCount(4);
-	await more.click();
-	await expect(rows).toHaveCount(8);
-	await more.press('Enter');
-	await expect(rows).toHaveCount(9);
-	await expect(more).toHaveCount(0);
-	await expect(services.locator('tbody tr').nth(8).getByRole('link').first()).toBeFocused();
-	await capture(page, `relations-table-${commit ? 'commit' : 'tip'}-${viewport}`);
-	await expect(
-		page.getByRole('group', { name: 'Components uses', exact: true }).getByRole('article')
-	).toHaveCount(4);
+async function expandUsageGroups(
+	page: Page,
+	viewport: string,
+	commit: string | null
+): Promise<void> {
+	for (const kind of ['Services', 'Models']) {
+		const group = page.getByRole('group', { name: `${kind} uses`, exact: true });
+		const items = kind === 'Services' ? group.getByRole('article') : group.locator('tbody tr');
+		const more = group.getByRole('button', { name: `View more ${kind}`, exact: true });
+		await expect(items, 'card and table groups use four-entry batches').toHaveCount(4);
+		await more.click();
+		await expect(items).toHaveCount(8);
+		await more.press('Enter');
+		await expect(items).toHaveCount(9);
+		await expect(more).toHaveCount(0);
+		await expect(items.nth(8).getByRole('link').first()).toBeFocused();
+		await capture(page, `relations-${kind.toLowerCase()}-${commit ? 'commit' : 'tip'}-${viewport}`);
+		await expect(
+			page.getByRole('group', { name: 'Components uses', exact: true }).getByRole('article')
+		).toHaveCount(4);
+	}
 }
 
 /** Usage tabs use the same cards as their collections without widening the page. */
@@ -127,6 +133,11 @@ export async function reviewUsageCards(
 			page.getByRole('region', { name: 'Uses', exact: true }).locator('article.ex-page-card'),
 			'Relationships reuse catalog cards'
 		).toHaveCount(2);
+	expect(await fits(page)).toBe(true);
+}
+
+/** Reverse dependencies name every populated module type. */
+async function reviewConsumerKinds(page: Page, category: string, direction: string): Promise<void> {
 	if (category === 'components' && direction === 'uses') {
 		for (const kind of ['Functions', 'Services']) {
 			const group = page.getByRole('group', { name: `${kind} uses`, exact: true });
@@ -136,11 +147,6 @@ export async function reviewUsageCards(
 			).toHaveCount(1);
 		}
 	}
-	expect(await fits(page)).toBe(true);
-}
-
-/** Reverse dependencies name every populated module type. */
-async function reviewConsumerKinds(page: Page, category: string, direction: string): Promise<void> {
 	if (direction !== 'used-in' || category !== 'functions') return;
 	const used = page.getByRole('region', { name: 'Used In', exact: true });
 	for (const kind of ['Pages', 'Components'])
