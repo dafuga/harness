@@ -5,6 +5,7 @@ import { join } from 'node:path';
 interface PackageManifest {
 	harness?: {
 		kind?: string;
+		dimension?: string;
 	};
 	scripts?: Record<string, string>;
 	devDependencies?: Record<string, string>;
@@ -32,6 +33,12 @@ export async function detectProjectKind(root: string): Promise<DetectedProjectKi
 	}
 
 	return 'unknown';
+}
+
+/** The game dimension declared in package.json harness metadata, when it is a supported one. */
+export async function detectGameDimension(root: string): Promise<'2d' | '3d' | undefined> {
+	const dimension = (await readPackage(root))?.harness?.dimension;
+	return dimension === '2d' || dimension === '3d' ? dimension : undefined;
 }
 
 function explicitProjectKind(

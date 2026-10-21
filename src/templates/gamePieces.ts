@@ -1,12 +1,15 @@
 import type { PlannedFile } from '../core/files';
 import { toKebabCase, toCamelCase, toPascalCase } from '../core/case';
+import { fail } from '../core/errors';
+import type { PieceContext } from './pieces';
 
-export function gameViewFiles(name: string): PlannedFile[] {
+export function gameViewFiles(name: string, { dimension }: PieceContext): PlannedFile[] {
+	if (!dimension) fail('A game view needs harness.dimension 2d or 3d in package.json.');
 	const symbol = toCamelCase(name) + 'ViewConfig';
 	return [
 		{
 			path: 'src/config/' + symbol + '.ts',
-			contents: `import type { GameView } from '../lib/game/models/Game.types';\n\nexport const ${symbol}: GameView = {\n\tid: '${toKebabCase(name)}',\n\ttitle: '${toPascalCase(name)}',\n\tdimension: '2d',\n\tstyle: '',\n\tcheckpoints: []\n};\n`
+			contents: `import type { GameView } from '../lib/game/models/Game.types';\n\nexport const ${symbol}: GameView = {\n\tid: '${toKebabCase(name)}',\n\ttitle: '${toPascalCase(name)}',\n\tdimension: '${dimension}',\n\tstyle: '',\n\tcheckpoints: []\n};\n`
 		}
 	];
 }

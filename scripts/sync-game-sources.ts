@@ -1,5 +1,3 @@
-import { format } from 'prettier';
-import { exampleDocument } from '../packages/game/src/utils/keyDoor';
 import { readFile, writeFile } from 'node:fs/promises';
 const paths = [
 	'models/Game.types.ts',
@@ -20,15 +18,3 @@ await writeFile(
 		JSON.stringify(sources, null, '\t') +
 		';\n'
 );
-
-for (const dimension of ['2d', '3d'] as const) {
-	const text = await format(JSON.stringify(exampleDocument(dimension)), {
-		parser: 'json',
-		useTabs: true,
-		printWidth: 100
-	});
-	await writeFile(
-		'src/templates/gameDocument' + dimension + '.ts',
-		'export const gameDocument' + dimension + ' = ' + JSON.stringify(text) + ';\n'
-	);
-}

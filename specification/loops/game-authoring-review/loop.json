@@ -2,7 +2,7 @@
 	"name": "game-authoring-review",
 	"goal": "Preserve focused authoring edits and paid image results, scope traces by view, recover failed project creation, and generate correctly dimensioned game scaffolds.",
 	"createdAt": "2026-10-21T16:27:45.229Z",
-	"updatedAt": "2026-10-21T16:36:43.273Z",
+	"updatedAt": "2026-10-21T17:23:50.406Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T17:18:12.365Z",
+			"evidence": "At d3710b16e, the clean snapshot reproduces incorrect 3D scaffold guidance/dimensions, EACCES masking and partial-folder retry failure, swallowed credential diagnostics, focused edits not dirty, cross-view trace entries, dropped image results and repeated same-image reads. The failing assertion and test corpus are preserved in the paired record."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T17:23:50.406Z",
+			"evidence": "Report edits on input while preserving raw focused drafts; filter trace by view; retain same-checkpoint paid results with earlier-guidance notice and avoid redundant reads. Roll back only owned partial creations with async Git, carry project dimensions into scaffolds, and generate seed documents from one source."
 		},
 		{
 			"id": "green",

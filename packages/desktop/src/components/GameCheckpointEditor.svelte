@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Select from '$shared/Select.svelte';
+	import GameTextField from './GameTextField.svelte';
 	import type { Checkpoint, Condition, GameAction } from '../../../game/src/models/Game.types';
 	/** Checkpoint edits return new values to the parent. */
 	let {
@@ -68,10 +69,10 @@
 				</label>
 				<label>
 					<span>Prerequisites</span>
-					<input
+					<GameTextField
 						value={node.requires.join(', ')}
 						placeholder="Checkpoint ids, comma separated"
-						onchange={(e) => requires(node, e.currentTarget.value)}
+						change={(text) => requires(node, text)}
 					/>
 				</label>
 				<label class="check">
@@ -88,11 +89,11 @@
 				</div>
 				{#each node.conditions as c, i (i)}
 					<div class="row" role="group" aria-label="Condition {i + 1}">
-						<input
-							aria-label="Condition {i + 1} field"
+						<GameTextField
+							label="Condition {i + 1} field"
 							placeholder="Field"
 							value={c.field}
-							onchange={(e) => condition(node, i, { field: e.currentTarget.value })}
+							change={(field) => condition(node, i, { field })}
 						/>
 						<Select
 							label="Condition {i + 1} comparison"
@@ -100,11 +101,11 @@
 						>
 							{#each Object.entries(ops) as [op, t] (op)}<option value={op}>{t}</option>{/each}
 						</Select>
-						<input
-							aria-label="Condition {i + 1} value"
+						<GameTextField
+							label="Condition {i + 1} value"
 							placeholder="Value"
 							value={String(c.value)}
-							onchange={(e) => condition(node, i, { value: parse(e.currentTarget.value) })}
+							change={(text) => condition(node, i, { value: parse(text) })}
 						/>
 						<button
 							type="button"
@@ -127,17 +128,17 @@
 						>
 							{#each Object.entries(kinds) as [k, t] (k)}<option value={k}>{t}</option>{/each}
 						</Select>
-						<input
-							aria-label="Action {i + 1} target"
+						<GameTextField
+							label="Action {i + 1} target"
 							placeholder="Target"
 							value={a.target}
-							onchange={(e) => action(node, i, { target: e.currentTarget.value })}
+							change={(target) => action(node, i, { target })}
 						/>
-						<input
-							aria-label="Action {i + 1} value"
+						<GameTextField
+							label="Action {i + 1} value"
 							placeholder="Value"
 							value={String(a.value)}
-							onchange={(e) => action(node, i, { value: parse(e.currentTarget.value) })}
+							change={(text) => action(node, i, { value: parse(text) })}
 						/>
 						<button
 							type="button"

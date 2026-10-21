@@ -1,7 +1,6 @@
 import type { PlannedFile } from '../core/files';
 import type { ProjectTemplateInput } from './project';
-import { gameDocument2d } from './gameDocument2d';
-import { gameDocument3d } from './gameDocument3d';
+import { exampleDocument } from '../../packages/game/src/utils/keyDoor';
 import { gameSources } from './gameSources';
 
 export function gameFiles(input: ProjectTemplateInput, app: PlannedFile[]): PlannedFile[] {
@@ -9,7 +8,7 @@ export function gameFiles(input: ProjectTemplateInput, app: PlannedFile[]): Plan
 	const manifest = app.find((file) => file.path === 'package.json')!;
 	const pkg = JSON.parse(manifest.contents);
 	pkg.harness = { kind: 'game', dimension, aiRendering: false };
-	pkg.dependencies = { three: '0.180.0', '@decartai/sdk': '0.2.12' };
+	pkg.dependencies = { three: '0.180.0' };
 	pkg.devDependencies['@types/three'] = '0.180.0';
 	manifest.contents = JSON.stringify(pkg, null, '\t') + '\n';
 	const formatting = app.find((file) => file.path === '.prettierrc')!;
@@ -30,12 +29,7 @@ export function gameFiles(input: ProjectTemplateInput, app: PlannedFile[]): Plan
 		})),
 		{
 			path: 'game.json',
-			contents:
-				JSON.stringify(
-					JSON.parse(dimension === '3d' ? gameDocument3d : gameDocument2d),
-					null,
-					'\t'
-				) + '\n'
+			contents: JSON.stringify(exampleDocument(dimension), null, '\t') + '\n'
 		},
 		{ path: 'src/routes/game/+page.svelte', contents: gamePage() },
 		{
@@ -51,7 +45,7 @@ export function gameFiles(input: ProjectTemplateInput, app: PlannedFile[]): Plan
 		{
 			path: 'GAME.md',
 			contents:
-				'# Game authoring\n\nOpen this project in Harness and use Game Views to edit game.json.\n\nViews own UI and visual direction; mechanics own state/input/event contracts. Checkpoints execute structured conditions and actions. Run the /game route to play the starter. Native Three.js renders gameplay in both 2D (orthographic) and 3D (perspective). AI rendering is off by default. Generate and save art during authoring; see static/game/assets/README.md. Existing AI adapters remain available for explicitly enabled experiments.\n'
+				'# Game authoring\n\nOpen this project in Harness and use Game Views to edit game.json.\n\nViews own UI and visual direction; mechanics own state/input/event contracts. Checkpoints execute structured conditions and actions. Run the /game route to play the starter. Native Three.js renders gameplay in both 2D (orthographic) and 3D (perspective). AI rendering is off by default. Generate and save art during authoring; see static/game/assets/README.md. The retained live-video connector stays disabled until a credential-safe transport is registered; gameplay needs no vendor video SDK.\n'
 		}
 	];
 }

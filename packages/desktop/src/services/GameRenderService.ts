@@ -1,7 +1,7 @@
 import { DecartAdapter } from '../../../game/src/adapters/DecartAdapter';
 import type { RenderSessionRequest } from '../../../game/src/models/Game.types';
 import type { ProjectSessionService } from './ProjectSessionService';
-import { projectGameCredential } from '../utils/projectGameCredential';
+import { ProjectGameCredentialAdapter } from '../adapters/ProjectGameCredentialAdapter';
 const renderers = new Map<string, DecartAdapter>();
 
 export class GameRenderService {
@@ -20,7 +20,7 @@ export class GameRenderService {
 			);
 		let adapter = renderers.get(root);
 		if (!adapter) {
-			const key = await projectGameCredential(root, 'HARNESS_GAME_DECART_API_KEY');
+			const key = await new ProjectGameCredentialAdapter(root).read('HARNESS_GAME_DECART_API_KEY');
 			adapter = new DecartAdapter(serverTokens(key, this.send));
 			renderers.set(root, adapter);
 		}

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onDestroy, untrack } from 'svelte';
+	import { onDestroy } from 'svelte';
 	import type { Checkpoint, GameView, GameDocument } from '../../../game/src/models/Game.types';
 	import type { DesktopBridge } from '../models/DesktopBridge.types';
 	let {
@@ -25,7 +25,8 @@
 	} = $props();
 	let preview = $state(''),
 		busy = $state(false),
-		error = $state('');
+		error = $state(''),
+		note = $state('');
 	let generation = 0,
 		reading = 0;
 	const ready = $derived(
@@ -46,24 +47,23 @@
 			checkpoint.actions
 		]);
 	}
+	/** Every edit replaces the pane's context: reading depends on these values, not on the edit. */
+	const owner = $derived(projectId + ':' + view.id + ':' + checkpoint.id),
+		path = $derived(checkpoint.image?.path),
+		project = $derived(projectId),
+		at = $derived(commit),
+		reader = $derived(bridge?.gameImageRead);
 	$effect(() => {
-		const owner = projectId + ':' + view.id + ':' + checkpoint.id;
-		untrack(() => {
-			void owner;
-			generation++;
-			busy = false;
-			error = '';
-		});
+		void owner;
+		generation++;
+		busy = false;
+		error = note = '';
 	});
 	$effect(() => {
-		const path = checkpoint.image?.path,
-			id = projectId,
-			at = commit,
-			read = bridge?.gameImageRead;
 		const source = ++reading;
-		preview = '';
-		if (path && id && read)
-			void read({ projectId: id, path, ...(at ? { commit: at } : {}) })
+		preview = error = '';
+		if (path && project && reader)
+			void reader({ projectId: project, path, ...(at ? { commit: at } : {}) })
 				.then((url) => {
 					if (source === reading) preview = url;
 				})
@@ -74,16 +74,14 @@
 			reading++;
 		};
 	});
-	onDestroy(() => {
-		generation++;
-		reading++;
-	});
+	// The read effect's own teardown already ends reading; only a pending generation needs ending.
+	onDestroy(() => void generation++);
 	async function generate() {
 		if (!ready || busy || !projectId || !revision || !bridge?.gameImageGenerate) return;
 		const source = ++generation,
 			stamp = identity();
 		busy = true;
-		error = '';
+		error = note = '';
 		try {
 			const result = await bridge.gameImageGenerate({
 				projectId,
@@ -92,9 +90,11 @@
 				checkpointId: checkpoint.id,
 				expectedRevision: revision
 			});
-			if (source !== generation || stamp !== identity() || readonly || commit) return;
+			if (source !== generation || readonly || commit) return;
 			change({ image: result.image });
 			preview = result.dataUrl;
+			if (stamp !== identity())
+				note = 'Made from earlier guidance. Regenerate to match your edits.';
 		} catch (cause) {
 			if (source === generation)
 				error = cause instanceof Error ? cause.message : 'Image generation failed.';
@@ -151,6 +151,7 @@
 			>{/if}
 	</div>
 	{#if error}<p role="alert" class="error">{error}</p>{/if}
+	{#if note && checkpoint.image}<p class="hint" role="status">{note}</p>{/if}
 	<p class="hint">
 		Save the graph to keep this reference. Images guide appearance; mechanics stay in the engine.
 	</p>

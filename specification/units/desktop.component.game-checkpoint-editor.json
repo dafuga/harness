@@ -40,6 +40,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.component.game-text-field",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "game.model.game-types",
 			"via": "import",
 			"origin": "derived"

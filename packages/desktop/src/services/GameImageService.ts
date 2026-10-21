@@ -5,7 +5,7 @@ import { assertDocument } from '../../../game/src/validators/gameDocument';
 import type { CheckpointImage } from '../../../game/src/models/Game.types';
 import type { GameDesktopBridge } from '../models/GameDesktopBridge.types';
 import type { ProjectSessionService } from './ProjectSessionService';
-import { projectGameCredential } from '../utils/projectGameCredential';
+import { ProjectGameCredentialAdapter } from '../adapters/ProjectGameCredentialAdapter';
 type Request = Parameters<NonNullable<GameDesktopBridge['gameImageGenerate']>>[0];
 const active = new Set<string>();
 export class GameImageService {
@@ -49,7 +49,7 @@ export class GameImageService {
 			'Consequences: ' + JSON.stringify(node.actions)
 		].join('\n');
 		if (prompt.length > 20000) throw new Error('Checkpoint image guidance is too long.');
-		const key = await projectGameCredential(root, 'HARNESS_GAME_OPENAI_API_KEY');
+		const key = await new ProjectGameCredentialAdapter(root).read('HARNESS_GAME_OPENAI_API_KEY');
 		const bytes = await this.adapter.generate(key, prompt);
 		const path = await new CheckpointImageRepository(root).save(bytes);
 		const image: CheckpointImage = {

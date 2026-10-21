@@ -9,14 +9,14 @@ import {
 	writePlannedFiles,
 	type FileWriteResult
 } from '../../core/files';
-import { detectProjectKind } from './project';
+import { detectGameDimension, detectProjectKind } from './project';
 import { validateCodeName } from '../../core/validation';
 import { parseFields } from '../../core/fields/fields';
 import { adapterTypeFiles } from '../../templates/adapterTypes';
 import { browserTestFiles } from '../../templates/browserTest';
 import { modelFiles, type AdapterName } from '../../templates/model';
 import { pieceFiles, type PieceKind } from '../../templates/pieces';
-import { isAppOnlyScaffold, scaffoldKinds } from '../../templates/scaffoldTypes';
+import { isAppOnlyScaffold, scaffoldDetails, scaffoldKinds } from '../../templates/scaffoldTypes';
 import { adapterExportPlan, modelExportPlans, pieceExportPlans } from '../exportPlans';
 
 export { scaffoldKinds };
@@ -71,7 +71,7 @@ export async function generatePiece(input: GeneratePieceInput): Promise<Generate
 	const name = validateCodeName(input.name);
 	const projectKind = await detectProjectKind(root);
 
-	if (['game-view', 'mechanic', 'checkpoint'].includes(input.kind) && projectKind !== 'game') {
+	if (scaffoldDetails[input.kind].gameOnly && projectKind !== 'game') {
 		fail('Game scaffolds require a Harness game project.');
 	}
 
@@ -82,7 +82,8 @@ export async function generatePiece(input: GeneratePieceInput): Promise<Generate
 	const support = ['e2e', 'resource'].includes(input.kind)
 		? browserTestFiles().filter((file) => !existsSync(join(root, file.path)))
 		: [];
-	const files = [...pieceFiles(input.kind, name), ...support];
+	const dimension = projectKind === 'game' ? await detectGameDimension(root) : undefined;
+	const files = [...pieceFiles(input.kind, name, { dimension }), ...support];
 	await ensureParents(root, files);
 	const writes = await writePlannedFiles(root, files, { force: input.force });
 	const exportsUpdated =

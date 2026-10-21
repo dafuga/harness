@@ -1,7 +1,7 @@
-import { mkdir } from 'node:fs/promises';
+import { mkdir, rm } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
-import { execFileSync } from 'node:child_process';
+import { GitAdapter } from '../../../../src/adapters/GitAdapter';
 import { createProject } from '../../../../src/workflows/create-project/createProject';
 import { validateProjectName } from '../../../../src/workflows/create-project/validation';
 import { GameDocumentRepository } from '../../../game/src/repositories/GameDocumentRepository';
@@ -20,18 +20,18 @@ export class GameProjectService {
 		const parent = this.projectsRoot,
 			target = join(parent, input.name);
 		await mkdir(parent, { recursive: true });
-		try {
-			await mkdir(target);
-		} catch {
-			throw new Error('A project with that name already exists.');
-		}
-		await createProject({ ...input, parent });
-		execFileSync('git', ['init', '-b', 'main'], { cwd: target, stdio: 'pipe' });
-		execFileSync('git', ['add', '.'], { cwd: target, stdio: 'pipe' });
-		execFileSync('git', ['commit', '-m', 'feat: initialize ' + input.kind + ' project'], {
-			cwd: target,
-			stdio: 'pipe'
+		await mkdir(target).catch((error: NodeJS.ErrnoException) => {
+			if (error.code === 'EEXIST') throw new Error('A project with that name already exists.');
+			throw error;
 		});
+		try {
+			await createProject({ ...input, parent });
+			await initialize(new GitAdapter(target), input.kind);
+		} catch (error) {
+			// Only this call created the target, so a failed attempt leaves nothing to block a retry.
+			await rm(target, { recursive: true, force: true });
+			throw error;
+		}
 		return this.session.open(target);
 	}
 	async read(input: Parameters<NonNullable<DesktopBridge['gameRead']>>[0]) {
@@ -47,4 +47,11 @@ export class GameProjectService {
 			new GameDocumentRepository(root).save(input.document, input.expectedRevision)
 		);
 	}
+}
+
+/** Commits with the author Git already resolves for the user; a missing identity fails as Git reports it. */
+async function initialize(git: GitAdapter, kind: string) {
+	await git.run(['init', '-b', 'main']);
+	await git.run(['add', '.']);
+	await git.run(['commit', '-m', 'feat: initialize ' + kind + ' project']);
 }

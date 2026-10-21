@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/templates/pieces.ts"],
-		"symbols": ["PieceKind", "pieceFiles"]
+		"symbols": ["PieceKind", "PieceContext", "pieceFiles"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -20,6 +20,10 @@
 			{
 				"name": "pieceFiles.name",
 				"type": "string"
+			},
+			{
+				"name": "pieceFiles.context",
+				"type": "PieceContext"
 			}
 		],
 		"outputs": [

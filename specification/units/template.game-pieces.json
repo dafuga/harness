@@ -18,6 +18,10 @@
 				"type": "string"
 			},
 			{
+				"name": "gameViewFiles.input",
+				"type": "PieceContext"
+			},
+			{
 				"name": "mechanicFiles.name",
 				"type": "string"
 			},
@@ -40,7 +44,12 @@
 				"type": "PlannedFile[]"
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -49,7 +58,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.files",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.pieces",
 			"via": "import",
 			"origin": "derived"
 		}

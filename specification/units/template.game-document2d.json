@@ -5,7 +5,11 @@
 	"title": "gameDocument2d",
 	"responsibility": "Owns the gameDocument2d scaffold template.",
 	"responsibilityOrigin": "derived",
-	"status": "active",
+	"status": "retired",
+	"retired": {
+		"reason": "Generate the identical 2D starter from exampleDocument instead of maintaining a duplicate serialized literal.",
+		"at": "2026-10-21T17:20:01.189Z"
+	},
 	"owns": {
 		"source": ["src/templates/gameDocument2d.ts"],
 		"symbols": ["gameDocument2d"]

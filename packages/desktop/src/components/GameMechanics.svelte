@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { MechanicDefinition } from '../../../game/src/index';
+	import GameTextField from './GameTextField.svelte';
 	let {
 		mechanics,
 		change,
@@ -78,20 +79,20 @@
 				<div class="contract">
 					<label>
 						<span>Inputs</span>
-						<input
+						<GameTextField
 							value={mechanic.inputs.join(', ')}
 							placeholder="x, y, choice"
 							{readonly}
-							onchange={(event) => update(index, { inputs: names(event.currentTarget.value) })}
+							change={(text) => update(index, { inputs: names(text) })}
 						/>
 					</label>
 					<label>
 						<span>Events</span>
-						<input
+						<GameTextField
 							value={mechanic.events.join(', ')}
 							placeholder="key-collected"
 							{readonly}
-							onchange={(event) => update(index, { events: names(event.currentTarget.value) })}
+							change={(text) => update(index, { events: names(text) })}
 						/>
 					</label>
 				</div>

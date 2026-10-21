@@ -123,3 +123,9 @@ the existing follow-up ledger, then run the standardized unit-index guard.
 ## Native Unload Verification
 
 Whenever a change adds, removes or alters unload prevention (`beforeNavigate` cancel, `beforeunload`), verify it in the native host: close, reload and quit each offer Stay or Discard; Stay keeps the document and a working backend; shutdown starts only after every window accepted closing. Browser-only or automation-intercepted dialogs do not prove this.
+
+## Authoring Failure Coverage
+
+When a form protects unsaved work, type in each affected control without blurring it, including partial numbers and comma-separated lists. Verify dirty state immediately, cancel keyboard reload or native close, retain the focused draft, and save the exact parsed values. A blur-before-save case alone is insufficient.
+
+When a project-creation flow owns a new directory, test failure after files were written or Git initialization began, then retry the same name. Remove only that attempt's partial target; preserve existing paths and a completed project if only opening it fails.

@@ -16,13 +16,7 @@
 		"outputs": [],
 		"errors": []
 	},
-	"dependencies": [
-		{
-			"unit": "game.function.key-door",
-			"via": "import",
-			"origin": "derived"
-		}
-	],
+	"dependencies": [],
 	"runtime": {
 		"kind": "module",
 		"entry": "scripts/sync-game-sources.ts",
