@@ -34,13 +34,39 @@ export interface CollectedFiles {
 	ignoredPaths: string[];
 }
 
-export async function collectAuditedFiles(root: string): Promise<CollectedFiles> {
-	return collectFiles(root, '');
+interface CollectionPolicy {
+	excluded: ReadonlySet<string>;
+	includeNativeSources: boolean;
 }
 
-async function collectFiles(root: string, prefix: string): Promise<CollectedFiles> {
+export async function collectAuditedFiles(
+	root: string,
+	options: { includeNativeSources?: boolean } = {}
+): Promise<CollectedFiles> {
+	const includeNativeSources = options.includeNativeSources === true;
+	const excluded = includeNativeSources
+		? new Set([
+				...[...ignoredDirs].filter((name) => name !== 'ios' && name !== 'android'),
+				'DerivedData',
+				'xcuserdata',
+				'.externalNativeBuild',
+				'.cxx',
+				'capacitor-cordova-ios-plugins',
+				'capacitor-cordova-android-plugins'
+			])
+		: ignoredDirs;
+	return collectFiles(root, '', { excluded, includeNativeSources });
+}
+
+async function collectFiles(
+	root: string,
+	prefix: string,
+	policy: CollectionPolicy
+): Promise<CollectedFiles> {
 	const entries = await readdir(root);
-	const nested = await Promise.all(entries.map((entry) => collectEntry(root, entry, prefix)));
+	const nested = await Promise.all(
+		entries.map((entry) => collectEntry(root, entry, prefix, policy))
+	);
 
 	return {
 		files: nested.flatMap((result) => result.files),
@@ -49,7 +75,12 @@ async function collectFiles(root: string, prefix: string): Promise<CollectedFile
 	};
 }
 
-async function collectEntry(root: string, entry: string, prefix: string): Promise<CollectedFiles> {
+async function collectEntry(
+	root: string,
+	entry: string,
+	prefix: string,
+	policy: CollectionPolicy
+): Promise<CollectedFiles> {
 	const path = join(root, entry);
 	const details = await lstat(path);
 	const relativePath = prefix ? `${prefix}/${entry}` : entry;
@@ -59,19 +90,34 @@ async function collectEntry(root: string, entry: string, prefix: string): Promis
 	}
 
 	if (details.isDirectory()) {
-		return ignoredDirs.has(entry)
+		return ignoredDirectory(entry, relativePath, policy)
 			? { files: [], dirs: [], ignoredPaths: [`${relativePath}/`] }
-			: collectDirectory(path, relativePath);
+			: collectDirectory(path, relativePath, policy);
 	}
 
 	return { files: [{ path, extension: extname(entry).toLowerCase() }], dirs: [], ignoredPaths: [] };
 }
 
-async function collectDirectory(path: string, relativePath: string): Promise<CollectedFiles> {
-	const collected = await collectFiles(path, relativePath);
+async function collectDirectory(
+	path: string,
+	relativePath: string,
+	policy: CollectionPolicy
+): Promise<CollectedFiles> {
+	const collected = await collectFiles(path, relativePath, policy);
 	return {
 		files: collected.files,
 		dirs: [`${relativePath}/`, ...collected.dirs],
 		ignoredPaths: collected.ignoredPaths
 	};
+}
+
+/** Native web bundles are generated; ordinary public source directories remain visible. */
+function ignoredDirectory(name: string, path: string, policy: CollectionPolicy): boolean {
+	return (
+		policy.excluded.has(name) ||
+		(policy.includeNativeSources &&
+			/(?:^|\/)ios\/App\/(?:output|App\/public)(?:\/|$)|(?:^|\/)android\/app\/src\/main\/assets(?:\/|$)/.test(
+				path
+			))
+	);
 }

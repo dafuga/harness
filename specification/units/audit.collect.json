@@ -16,6 +16,10 @@
 			{
 				"name": "collectAuditedFiles.root",
 				"type": "string"
+			},
+			{
+				"name": "collectAuditedFiles.options",
+				"type": "{ includeNativeSources?: boolean }"
 			}
 		],
 		"outputs": [
