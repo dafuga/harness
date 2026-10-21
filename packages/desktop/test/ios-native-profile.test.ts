@@ -19,12 +19,18 @@ async function nativeCheck(script: string) {
 				'Whole real native-check command, including compilation and subprocess work. Driver timing and OS RSS are separate from compiled Swift adapter behavior; no simulator, camera or physical-device performance.'
 		},
 		async (command, cwd) => {
+			let responsive = false;
+			const turn = setImmediate(() => {
+				responsive = true;
+			});
 			const child = spawnSync(command[0], command.slice(1), {
 				cwd,
 				encoding: 'utf8',
 				timeout: 120000,
 				maxBuffer: 2_000_000
 			});
+			clearImmediate(turn);
+			expect(responsive, 'native command must leave the test RPC event loop responsive').toBe(true);
 			expect(child.error ?? null).toBeNull();
 			return {
 				exitCode: child.status ?? 1,
