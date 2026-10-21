@@ -1,6 +1,5 @@
 import { fakeProject } from './ui-workspace-fixture';
 import { expect, test } from '../../../../test/support/browserTest';
-
 test('browser preview exposes no writable backend', async ({ page }) => {
 	await page.goto('/');
 	if (process.env.TAKE_SCREENSHOT === 'true') {
@@ -11,7 +10,6 @@ test('browser preview exposes no writable backend', async ({ page }) => {
 	await expect(page.getByRole('button', { name: 'Open Project', exact: true })).toBeDisabled();
 	await expect(page.getByText(/Browser preview · read-only/)).toBeVisible();
 });
-
 test('designless Plan preserves truthful status and branch/commit paths', async ({ page }) => {
 	await fakeProject(page);
 	await page.goto('/');
@@ -66,7 +64,6 @@ test('designless Plan preserves truthful status and branch/commit paths', async 
 			.getByRole('link', { name: 'Components', exact: true })
 	).toHaveAttribute('href', `/harness/branch/feat%2Factivity/commit/${'b'.repeat(40)}/components`);
 });
-
 test('catalog search, changed filter and conversational plan request', async ({ page }) => {
 	await fakeProject(page, true);
 	await page.goto('/');
@@ -90,7 +87,6 @@ test('catalog search, changed filter and conversational plan request', async ({ 
 		.toContain('Add an Activity page to make work visible');
 	await expect(page.getByRole('textbox', { name: 'Message', exact: true })).toBeVisible();
 });
-
 test('Go to tip exits both historical and explicitly pinned tip revisions', async ({ page }) => {
 	await fakeProject(page, true);
 	await page.setViewportSize({ width: 320, height: 568 });
@@ -131,7 +127,6 @@ test('Go to tip exits both historical and explicitly pinned tip revisions', asyn
 		}
 	}
 });
-
 test('workspace selectors start collapsed and environment stays directly selectable', async ({
 	page
 }) => {
