@@ -50,7 +50,7 @@ const workloads: Record<string, [RegExp, string[]][]> = {
 	'desktop/test/services/game-image': [[/^image IPC/, ['desktop.function.game-payload']]],
 	'root/game-project': [
 		[/^embedded engine/, ['template.game-sources']],
-		[/.*/, ['template.game-project', 'template.project-tests']]
+		[/^game project retains/, ['template.game-project', 'template.project-tests']]
 	],
 	'root/game-cli.e2e': [
 		[
