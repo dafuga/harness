@@ -85,9 +85,6 @@
 				shared={isShared(host.lens.relations(entity.id), entity.unit)}
 				preview={screens}
 			/>
-			{#if host.route.helper}<p class="ex-note">
-					Size, complexity, history, relationships and verification describe the owning module.
-				</p>{/if}
 			{@render screen(entity, nav)}
 		{:else}
 			<EntityMissing
