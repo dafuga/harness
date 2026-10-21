@@ -17,13 +17,13 @@ export function createSourceReaderStore() {
 		if (!state.files.includes(path)) return;
 		const own = ++generation;
 		Object.assign(state, { path, text: '', loading: true, error: '' });
+		const result = { text: '', error: '', loading: false };
 		try {
-			const text = await read(path);
-			if (own === generation) state.text = text;
+			result.text = await read(path);
 		} catch (cause) {
-			if (own === generation) state.error = cause instanceof Error ? cause.message : String(cause);
+			result.error = cause instanceof Error ? cause.message : String(cause);
 		} finally {
-			if (own === generation) state.loading = false;
+			if (own === generation) Object.assign(state, result);
 		}
 	}
 	async function initialise(files: SourceFiles, load: SourceRead) {
