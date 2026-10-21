@@ -137,7 +137,7 @@
 	}
 	/* On a phone the icons end the bar's rail, after the environment, and Go to tip ends its row.
 	   The branch and what is shown take a whole line beneath, so neither is cut short; the tip is
-	   named in the branch dialog, with when it was committed. */
+	   named in the branch dialog, with when it was committed. All keep off the bar's frame. */
 	@media (max-width: 560px) {
 		.revision-picker {
 			display: contents;
@@ -146,7 +146,7 @@
 			grid-area: revision;
 			display: flex;
 			justify-self: start;
-			margin-inline-start: -1px;
+			margin: 8px 0 0 -1px;
 			border-radius: 0 8px 8px 0;
 			background: var(--panel);
 			box-shadow: inset 0 0 0 1px var(--line);
@@ -158,7 +158,8 @@
 			gap: 8px;
 			min-width: 0;
 			max-width: none;
-			margin: 0;
+			margin: 2px 0 0;
+			padding-inline: 6px;
 			line-height: 13px;
 		}
 		/* A long branch gives way first; what is shown stays whole. */
@@ -179,6 +180,7 @@
 			grid-area: tip;
 			justify-self: end;
 			height: 30px;
+			margin: 8px 6px 0 0;
 			padding: 0 12px;
 			border-color: rgb(255 208 53 / 0.5);
 			border-radius: 15px;

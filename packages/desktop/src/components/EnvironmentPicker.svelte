@@ -129,7 +129,7 @@
 	}
 	/* On a phone the choice and Deploy begin the bar's rail, which the revision icons end. How the
 	   environment stands is told under the rail on a line of its own, its time after its commit; a
-	   note wraps under that line. */
+	   note wraps under that line. Both keep off the edge of the bar's frame round them. */
 	@media (max-width: 560px) {
 		.full-note {
 			display: none;
@@ -143,6 +143,7 @@
 		.environment-choice {
 			grid-area: environment;
 			gap: 0;
+			margin: 8px 0 0 6px;
 			border-radius: 8px 0 0 8px;
 			background: var(--panel);
 			box-shadow: inset 0 0 0 1px var(--line);
@@ -167,6 +168,8 @@
 			grid-area: status;
 			gap: 0;
 			min-width: 0;
+			margin-bottom: 8px;
+			padding-inline: 6px;
 		}
 		small {
 			line-height: 13px;

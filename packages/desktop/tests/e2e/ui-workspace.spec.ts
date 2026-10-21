@@ -171,13 +171,21 @@ test('workspace selectors start collapsed and environment stays directly selecta
 			await page.screenshot({
 				path: `/tmp/harness-env-evidence/mobile-header-${width}-${environment}-${process.env.SCREENSHOT_LABEL ?? 'local'}.png`
 			});
+		const projectControl = await page
+			.getByRole('button', { name: 'Choose workbench' })
+			.boundingBox();
+		const contextControl = await page.getByLabel('Environment', { exact: true }).boundingBox();
+		expect(
+			contextControl!.y - projectControl!.y - projectControl!.height,
+			'Mobile project and context controls need breathing room'
+		).toBeGreaterThanOrEqual(8);
 		const branchFits = await page
 			.locator('.revision-summary strong')
 			.evaluate((element) => element.scrollWidth <= element.clientWidth);
 		expect(branchFits, 'The short current branch name must remain readable on mobile').toBe(true);
 		const header = await page.getByRole('banner').boundingBox();
 		expect(header!.height, 'Mobile header must leave room for project content').toBeLessThanOrEqual(
-			164
+			184
 		);
 		expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
 			width
