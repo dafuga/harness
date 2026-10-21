@@ -2,7 +2,7 @@ import type { HarnessRevision } from '../src/models/Harness.types';
 import { revision } from './entityFixture';
 import { commits, ids } from './entityUnits';
 import { withHelpers } from './entityPreviewHelpers';
-import { withFrame, withGroups } from './entityPreviewData';
+import { withGroups } from './entityPreviewData';
 
 /** Distinct text makes incorrect commit, selected file and HTML execution observable. */
 export function sourceText(commit: string, path: string): string {
@@ -11,7 +11,7 @@ export function sourceText(commit: string, path: string): string {
 
 /** All seven kinds retain supported aliases beside category implementations. */
 export function sourceCatalog(detail: HarnessRevision): HarnessRevision {
-	const added = withGroups(withHelpers(withFrame(detail, 'shell')));
+	const added = withGroups(withHelpers(detail));
 	return {
 		...added,
 		registry: {
