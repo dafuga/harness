@@ -12,11 +12,9 @@ export const source = 'export function greet(name: string) { return name.toUpper
 export function nativeRunnerEnvironments(environment: Record<string, string>) {
 	const variants = [environment];
 	const flags = process.allowedNodeEnvironmentFlags;
-	const disable = flags.has('--no-strip-types')
-		? '--no-strip-types'
-		: flags.has('--experimental-strip-types')
-			? '--no-experimental-strip-types'
-			: undefined;
+	let disable: string | undefined;
+	if (flags.has('--no-strip-types')) disable = '--no-strip-types';
+	else if (flags.has('--experimental-strip-types')) disable = '--no-experimental-strip-types';
 	if (disable)
 		variants.push({
 			...environment,
