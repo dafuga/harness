@@ -1,0 +1,44 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [10.86s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-XlIXWB
+
+ ✓ test/utils/settle-processes.test.ts (6 tests) 19197ms
+   ✓ a vetted service that left a passing command is handed over, never signalled, and recorded  5453ms
+   ✓ a failing command hands it over as well, and still fails  921ms
+   ✓ at its time limit a command's own processes are stopped and the service is not  4503ms
+   ✓ a possible service inside the command's group is reached by no group signal, and fails it  3492ms
+   ✓ when the processes cannot be read nothing is signalled and the command does not pass  845ms
+   ✓ an ordinary process left behind is still stopped and fails the command, Apple-signed or not  3756ms
+ ✓ test/utils/platform-services.test.ts (9 tests) 2379ms
+   ✓ the vetted service, vouched for, departed and adopted, is delegated  304ms
+   ✓ other tools are the command's own, Apple-signed or not; a launcher is not  505ms
+
+ Test Files  2 passed (2)
+      Tests  15 passed (15)
+   Start at  00:28:35
+   Duration  25.97s (transform 140ms, setup 161ms, collect 154ms, tests 21.58s, environment 0ms, prepare 79ms)
+
