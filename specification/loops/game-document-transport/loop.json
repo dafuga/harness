@@ -2,7 +2,7 @@
 	"name": "game-document-transport",
 	"goal": "A valid game document of up to 1 MiB saves and reopens over the local transport; phone requests stay bounded at 64 KiB.",
 	"createdAt": "2026-10-21T14:23:41.588Z",
-	"updatedAt": "2026-10-21T14:41:05.032Z",
+	"updatedAt": "2026-10-21T14:49:48.784Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T14:49:47.873Z",
+			"evidence": "At b7139eb0c the standard repository and real-socket tests fail on mode preservation, Unicode overflow, replacement cleanup and a valid near-1MiB request. Cache-free normal entrypoints preserve valid snapshot boundaries."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T14:49:48.784Z",
+			"evidence": "Use a bounded local-only 1MiB plus envelope request limit on both ends, retaining remote defaults and frame caps. Save and read use UTF-8 bytes, preserve modes and clean failed temporary replacements."
 		},
 		{
 			"id": "green",

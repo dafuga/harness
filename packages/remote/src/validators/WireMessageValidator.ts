@@ -46,8 +46,8 @@ function requestId(item: Fields): string | undefined {
 /** The three wire shapes and nothing else: no extra field, no unlisted method. */
 export class WireMessageValidator {
 	/** Host side. A failure carries `requestId` whenever the request can still be answered. */
-	request(text: string): WireRequest {
-		const item = this.parse(text, remoteLimits.requestBytes),
+	request(text: string, limit: number = remoteLimits.requestBytes): WireRequest {
+		const item = this.parse(text, limit),
 			id = requestId(item),
 			input = fields(item.input);
 		if (!id || item.type !== 'request' || !exact(item, 'id,input,method,type'))
