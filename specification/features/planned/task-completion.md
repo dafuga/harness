@@ -13,6 +13,7 @@ Harness owns performance measurement and the final audit of coding and planning 
 - The CLI, new task loops, agent completion and app coding/planning completion use the same checks. Cancellation and failed work remain recordable.
 - Changes after an audit invalidate completion. Missing workload definitions block coding completion with an actionable message.
 - Entity overviews retain expandable measured values and frozen limits after legacy Details links redirect; unavailable metrics never become zero. Source remains a dedicated tab.
+- Source inventories outside Git retain authored iOS and Android files while excluding generated output; audit scope remains explicit.
 - Historical records remain readable; their absent profiling cannot satisfy a new completion claim.
 
 ## Dependencies
