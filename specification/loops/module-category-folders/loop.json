@@ -31,7 +31,8 @@
 		{
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Live browser passes at c4447fb64: category combinations, search/reset, Configs and usage navigation. Fresh captures inspected. Required root/workspace checks and Jev remain blocked."
 		}
 	],
 	"evaluators": [

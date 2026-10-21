@@ -98,11 +98,15 @@ The frozen local preview uses build
 `a512448576c52a76af598e4cf4d43e69d158d40b35258d97cd8aa74743ad34ef`.
 Its health endpoint identifies the delivered commit. The portable three-commit
 history builds without gaps. Automated captures were inspected at 1440, 834 and
-390 pixels. Live Codex-browser inspection is blocked by the existing tab's
-internal error-page URL policy; a user reload was requested. No alternate browser
-was used to bypass that restriction. The fresh Jev advisory cannot complete
-without the project's dedicated credential. Full verification remains pending,
-and the feature report stays active and unpublished.
+390 pixels. After Daniel reloaded the existing tab, live Codex-browser inspection
+passed at 775×988. Services shows 52 classes; two category combinations show 19
+and 10, search combines with those filters, and Reset restores 52. Configs shows
+13 entries and two selected categories show two. A Used In link opens the correct
+class detail in the same branch. Three fresh real-page captures were inspected
+after font readiness; captured diagnostics contain no warnings or errors. These
+manual observations supplement the automated fixture proof. The fresh Jev advisory
+cannot complete without the project's dedicated credential. Full verification
+remains pending, and the feature report stays active and unpublished.
 
 ## Review links
 
