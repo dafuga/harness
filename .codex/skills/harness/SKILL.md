@@ -169,6 +169,8 @@ and components; helpers, services, models and configs use compact code previews.
 A missing screenshot does not make a visual component nonvisual. Extend the normal
 mixed-consumer browser matrix to prove both visual and nonvisual preview variants.
 
+Component preview bindings reuse canonical contracts and relation fixtures. Never combine another entity's row with invented callable metadata or empty consumers for a shared-helper preview. The standard component matrix asserts the call and linked consumers at every viewport and captures ready pixels before assertions, retaining failed-state diagnostics. A fixture repair is not a renderer regression; keep that distinction in its evidence.
+
 When changing a previously relocated helper's behavior, review its ownership
 migration follow-up as well as its callers and contract. Keep the original move
 and identity intact; record the intentional new definition and source commit in

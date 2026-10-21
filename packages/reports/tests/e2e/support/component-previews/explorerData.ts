@@ -30,6 +30,7 @@ export const contract = entityContract(entity.unit, {
 export const measure = entityMeasure(entity.unit, head.records[0]);
 export const reasons = entityReasons(head.explanations);
 export const rows = entityCatalog(entities, 'components', reading.relations);
+export const helperRows = entityCatalog(entities, 'functions', reading.relations);
 export const options = screenOptions(evidence.scenarios);
 export const client = {
 	revision: async (commit: string) => revision(commit, [record(commit)]),
