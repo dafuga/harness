@@ -44,9 +44,18 @@ export function helperEntity(
 			helpers: [helper],
 			owns: { source: [helper.source], symbols: [helperName] },
 			contract: helperFields(unit, helperName),
-			documentation: unit.helpers?.length === 1 ? unit.documentation : undefined
+			documentation: helperDocumentation(unit, helper)
 		}
 	};
+}
+
+function helperDocumentation(
+	unit: HarnessUnit,
+	helper: NonNullable<HarnessUnit['helpers']>[number]
+) {
+	if (helper.examples?.length) return { path: '', examples: helper.examples };
+	if (unit.helpers?.length === 1) return unit.documentation;
+	return undefined;
 }
 
 /** Field ownership is decided against the original module, before its helper list is narrowed. */

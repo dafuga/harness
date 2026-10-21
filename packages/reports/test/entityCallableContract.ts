@@ -24,6 +24,21 @@ export async function reviewCallableContract(page: Page, commit: string | null, 
 		});
 		await capture(page, `callable-${name}-${commit ? 'commit' : 'tip'}-${viewport}`);
 		await reviewCallableApi(page, name, result);
+		await page.getByRole('tab', { name: 'Examples', exact: true }).click();
+		await capture(page, `callable-examples-${name}-${commit ? 'commit' : 'tip'}-${viewport}`);
+		await expect(
+			page.getByText(
+				'Size, complexity, history, relationships and verification describe the owning module.',
+				{ exact: true }
+			),
+			'Helper tabs omit module ownership commentary'
+		).toHaveCount(0);
+		const code = page.locator('.examples pre');
+		await expect(code, 'Callable examples are required').toHaveCount(1);
+		await expect(code).toContainText(
+			name === 'reset' ? 'reset() ?? null' : `${name}("hello world")`
+		);
+		expect(await fits(page)).toBe(true);
 		await page.getByRole('tab', { name: 'History', exact: true }).click();
 		expect(await where(page)).toMatchObject({ helper: name, commit, section: 'history' });
 		await page.getByRole('tab', { name: 'Contract', exact: true }).click();
@@ -31,12 +46,17 @@ export async function reviewCallableContract(page: Page, commit: string | null, 
 		await expect(page.getByRole('heading', { level: 1 })).toHaveText(name);
 	}
 	expect(await fits(page)).toBe(true);
+	await reviewConsoleAddress(page, commit, viewport);
+}
+
+/** The real host resolves readable links and restores them on refresh. */
+async function reviewConsoleAddress(page: Page, commit: string | null, viewport: string) {
 	await open(
 		page,
 		{
 			category: 'functions',
 			entity: 'app.function.filter-orders',
-			helper: 'filterOrders',
+			helper: 'toKebabCase',
 			commit,
 			tab: 'contract'
 		},
@@ -45,8 +65,39 @@ export async function reviewCallableContract(page: Page, commit: string | null, 
 	await expect(
 		page.getByRole('heading', { level: 1 }),
 		'the real console resolves callable addresses'
-	).toHaveText('filterOrders');
+	).toHaveText('toKebabCase');
 	await capture(page, `callable-console-${commit ? 'commit' : 'tip'}-${viewport}`);
+	await expect(
+		page,
+		'Readable helper URL without internal module ids or query selectors'
+	).toHaveURL(/\/helpers\/toKebabCase\/contract$/);
+	const frame = await page.getByRole('heading', { level: 1 }).elementHandle();
+	await page.getByRole('tab', { name: 'Examples', exact: true }).click();
+	await expect(page).toHaveURL(/\/helpers\/toKebabCase\/examples$/);
+	await page.evaluate(() => new Promise(requestAnimationFrame));
+	await capture(page, `callable-frame-${commit ? 'commit' : 'tip'}-${viewport}`);
+	expect(await frame!.evaluate((node) => node.isConnected), 'Tabs keep their helper frame').toBe(
+		true
+	);
+	await page.reload();
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText('toKebabCase');
+
+	await open(
+		page,
+		{
+			category: 'functions',
+			entity: 'function.generated-0',
+			helper: 'filterOrders',
+			commit,
+			tab: 'contract'
+		},
+		'console'
+	);
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText('filterOrders');
+	await capture(page, `callable-qualified-${commit ? 'commit' : 'tip'}-${viewport}`);
+	await expect(page).toHaveURL(/\/helpers\/filterOrders\/in\/function.generated-0\/contract$/);
+	await page.reload();
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText('filterOrders');
 }
 
 /** The selected callable owns each parameter, return and error example. */

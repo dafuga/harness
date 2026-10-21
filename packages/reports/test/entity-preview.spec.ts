@@ -1,3 +1,4 @@
+import { reviewHelperSource } from './entityPreviewFunctions';
 import { expect, test } from '../../../test/support/browserTest';
 import { capture, chooseCatalogFilter, fits, open, viewports, where } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
@@ -164,37 +165,29 @@ test('one entity page keeps source optional without a duplicate Details page', a
 }) => {
 	for (const [name, size] of Object.entries(viewports)) {
 		await tab.setViewportSize(size);
-		await open(tab, filter);
-		await tab.evaluate(async () => {
-			await document.fonts.ready;
-		});
-		await capture(tab, `unified-function-${name}`);
-		await expect(
-			tab.getByRole('link', { name: 'Details', exact: true }),
-			'no second Details page'
-		).toHaveCount(0);
-		await expect(tab.getByText('Source ownership')).toHaveCount(0);
-		await tab.getByRole('tab', { name: 'Source', exact: true }).click();
-		expect(await where(tab)).toEqual({
-			branch: 'feature/orders',
-			commit: null,
-			...filter,
-			tab: 'source'
-		});
-		await expect(tab.getByText('src/functions/filterOrders.ts', { exact: true })).toBeVisible();
-		await tab.getByRole('tab', { name: 'Overview', exact: true }).click();
-		expect(await where(tab)).toEqual({ branch: 'feature/orders', commit: null, ...filter });
+		await reviewHelperSource(tab, name);
 	}
 });
+
 test('history lists changes, keeps profiles apart and opens a revision', async ({ page: tab }) => {
 	await open(tab, { ...filter, section: 'history', commit: commits.middle });
 	await expect(tab.locator('.ex-history tbody tr')).toHaveCount(2);
 	await expect(tab.getByText('0.15 → 0.12 ms').first()).toBeVisible();
 	await capture(tab, 'function-history-desktop');
+	await expect(
+		tab.locator('.ex-history').getByText(/^(Added|Removed)$/),
+		'History lifecycle badges'
+	).toHaveCount(0);
+	await expect(
+		tab.getByText('Selected change', { exact: false }),
+		'Compact commit history'
+	).toHaveCount(0);
+	await expect(tab.getByRole('columnheader', { name: 'Evidence', exact: true })).toHaveCount(0);
+	await expect(tab.locator('.ex-history time').first()).toHaveAttribute('title', /2026-10-09/);
 	await tab.getByRole('combobox', { name: 'Performance profile' }).selectOption('ci-linux');
-	await expect(tab.getByRole('columnheader', { name: 'Timing (ci-linux)' })).toBeVisible();
+	await expect(tab.getByRole('columnheader', { name: 'Latency (ci-linux)' })).toBeVisible();
 	await expect(tab.locator('.ex-history tbody tr').first()).toContainText('0.31 ms');
-	await tab.getByRole('link', { name: 'View revision aaaaaaa' }).click();
+	await tab.getByRole('link', { name: 'aaaaaaa', exact: true }).click();
 	expect(await where(tab)).toEqual({ branch: 'feature/orders', commit: commits.first, ...filter });
 	await expect(tab.getByText('First version')).toBeVisible();
 });

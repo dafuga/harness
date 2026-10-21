@@ -50,7 +50,7 @@
 	text-align: right;
 	white-space: nowrap;
 }
-/* Nine columns share one row: a heading or a pill wraps between its words to narrow a column. */
+/* Six columns share one row: a heading or a pill wraps between its words to narrow a column. */
 .ex-content .ex-history th,
 .ex-content .ex-history td {
 	padding: 14px 10px;
@@ -64,7 +64,7 @@
 .ex-content .ex-pill.wraps {
 	border-radius: 10px;
 }
-/* A date, a verdict and an action are read whole; the sentences between them take the room left. */
+/* Dates and commit links stay whole; the behavior column takes the remaining room. */
 .ex-content .ex-history td:first-child,
 .ex-content .ex-history .ex-open a {
 	white-space: nowrap;

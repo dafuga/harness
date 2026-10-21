@@ -8,12 +8,17 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/scripts/build-main.ts"],
-		"symbols": []
+		"symbols": ["desktopNodeOptions"]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [],
-		"outputs": [],
+		"outputs": [
+			{
+				"name": "desktopNodeOptions",
+				"type": "unknown"
+			}
+		],
 		"errors": [
 			{
 				"name": "Error",

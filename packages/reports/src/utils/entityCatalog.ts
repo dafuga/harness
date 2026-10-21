@@ -121,15 +121,17 @@ function helperConsumers(
 export function entityCatalog(
 	entities: ExplorerEntity[],
 	category: ExplorerCategory,
-	relations: (id: string) => Relations
+	relations: (id: string) => Relations,
+	options: { related?: boolean; consumers?: ExplorerEntity[] } = {}
 ): CatalogRow[] {
-	const byId = new Map(entities.map((entity) => [entity.id, entity]));
+	const byId = new Map((options.consumers ?? entities).map((entity) => [entity.id, entity]));
 	return entities
 		.filter((entity) => entity.category === category)
 		.flatMap((entity) => {
 			const row = rowOf(entity, relations(entity.id));
 			if (category !== 'functions') return [row];
 			const helpers = (entity.unit.helpers ?? []).filter(sharedHelper);
+			if (options.related && helpers.length === 0) return [row];
 			return helpers
 				.map((helper) => ({
 					...row,
@@ -139,7 +141,7 @@ export function entityCatalog(
 					name: helper.name,
 					id: helpers.length === 1 ? entity.id : `${entity.id}#${helper.source}:${helper.name}`
 				}))
-				.filter((item) => item.usedIn.length >= 2);
+				.filter((item) => options.related || item.usedIn.length >= 2);
 		})
 		.sort(byName);
 }
