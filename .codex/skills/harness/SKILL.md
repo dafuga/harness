@@ -171,6 +171,8 @@ mixed-consumer browser matrix to prove both visual and nonvisual preview variant
 
 Component preview bindings reuse canonical contracts and relation fixtures. Never combine another entity's row with invented callable metadata or empty consumers for a shared-helper preview. The standard component matrix asserts the call and linked consumers at every viewport and captures ready pixels before assertions, retaining failed-state diagnostics. A fixture repair is not a renderer regression; keep that distinction in its evidence.
 
+Apply the component's real host theme in its preview wrapper. A visible component without inherited catalog variables is not a faithful preview. Assert a rendered theme property in the normal matrix and inspect the original captures; do not restyle the component to compensate for missing fixture context.
+
 When changing a previously relocated helper's behavior, review its ownership
 migration follow-up as well as its callers and contract. Keep the original move
 and identity intact; record the intentional new definition and source commit in
