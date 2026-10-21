@@ -12,6 +12,7 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 6. Keep generated and hand-edited files inside the configured Harness rule limits.
 7. Use `harness info clean-code` for optional Jev review; preview coverage before enabling it, use a project-owned credential, and assess advisory results before gating.
 8. Verify with `bun run check` before handing work back.
+9. Use public dependency entry points. Verify cold Node imports with external dependencies as well as packaged CJS bundles; call the real operation in both modes.
 
 ## Bug and Regression Loops
 

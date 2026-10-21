@@ -8,12 +8,26 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/scripts/build-main.ts"],
-		"symbols": []
+		"symbols": ["buildDesktopBundle"]
 	},
 	"contract": {
 		"origin": "derived",
-		"inputs": [],
-		"outputs": [],
+		"inputs": [
+			{
+				"name": "buildDesktopBundle.entry",
+				"type": "string"
+			},
+			{
+				"name": "buildDesktopBundle.output",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "buildDesktopBundle",
+				"type": "Promise<void>"
+			}
+		],
 		"errors": [
 			{
 				"name": "Error",
