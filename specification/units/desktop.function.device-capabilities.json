@@ -2,26 +2,31 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.device-capabilities",
 	"kind": "function",
-	"title": "deviceCapabilities",
-	"responsibility": "Owns the deviceCapabilities shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Describe an approved device’s permissions",
+	"responsibility": "Builds the action permissions for a device allowed to read and comment on a computer’s project.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/deviceCapabilities.ts"],
-		"symbols": ["deviceCapabilities"]
+		"source": [
+			"packages/desktop/src/services/device-operations-service/deviceCapabilities.ts",
+			"packages/desktop/src/utils/deviceCapabilities.ts"
+		],
+		"symbols": ["deviceCapabilities", "deviceCapabilities"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "deviceCapabilities.agents",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Whether the approved device is also allowed to use agents. This value controls agent, planning and approval actions together."
 			}
 		],
 		"outputs": [
 			{
 				"name": "deviceCapabilities",
-				"type": "ProjectCapabilities"
+				"type": "ProjectCapabilities",
+				"description": "Capabilities with comments enabled and local as the source. Agents, planning and approval equal the supplied flag. The reason explains read-and-comment-only access when false, or that comments remain pending on the computer until connected when true."
 			}
 		],
 		"errors": []

@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { expect, test } from 'vitest';
-import { artifactAnswer } from '../../src/utils/artifactAnswer';
+import { artifactAnswer } from '../../src/utils/artifact-answer/artifactAnswer';
 
 const hash = (bytes: Uint8Array) => createHash('sha256').update(bytes).digest('hex');
 const limit = 11 * 1024 * 1024;

@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/CpuUsageService.ts"],
+		"source": ["src/services/cpu-usage-service/CpuUsageService.ts"],
 		"symbols": ["CpuUsageService", "CpuUsageService.constructor", "CpuUsageService.snapshot"]
 	},
 	"contract": {
@@ -40,11 +40,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/CpuUsageService.ts",
+		"entry": "src/services/cpu-usage-service/CpuUsageService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/CpuUsageService.ts"
+				"entry": "src/services/cpu-usage-service/CpuUsageService.ts"
 			}
 		]
 	},

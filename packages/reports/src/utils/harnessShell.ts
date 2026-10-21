@@ -1,7 +1,6 @@
 import type { ExplorerCategory, ExplorerLocation, ExplorerScope } from '../models/Explorer.types';
 import type { HarnessIndex, HarnessRevisionSummary } from '../models/Harness.types';
-import { branchCommits, retainedBranch } from './harnessAncestry';
-import { categoryIcon, type HarnessIconName } from './harnessIcons';
+import { type HarnessIconName } from './harnessIcons';
 import type { SearchEntry } from './entitySearch';
 
 /** What a host gives the bar of the explorer. */
@@ -22,6 +21,7 @@ export interface HarnessNavbarInput {
 	/** Every entity of the revision in view to search, or null while the host reads it. */
 	search?: { entries: SearchEntry[] | null };
 }
+
 /** One tab of a row of tabs; with an address it is a link that a new tab can open. */
 export interface HarnessTab<View extends string = string> {
 	id: View;
@@ -29,10 +29,12 @@ export interface HarnessTab<View extends string = string> {
 	href?: string;
 	disabled?: boolean;
 }
+
 export interface HarnessShellLink {
 	href: string;
 	to: ExplorerLocation;
 }
+
 export interface HarnessShellCategory {
 	id: ExplorerCategory;
 	label: string;
@@ -42,6 +44,7 @@ export interface HarnessShellCategory {
 	href: string | null;
 	to: ExplorerLocation | null;
 }
+
 export interface HarnessShellRevision {
 	branch: string;
 	commit: string;
@@ -56,20 +59,12 @@ export interface HarnessShellRevision {
 	branchTo: (name: string) => ExplorerLocation;
 	commitTo: (commit: string) => ExplorerLocation;
 }
+
 export interface HarnessShellView {
 	home: { href: string; to: ExplorerLocation | null };
 	categories: HarnessShellCategory[];
 	revision: HarnessShellRevision | null;
 }
-
-const labels: Array<[ExplorerCategory, string]> = [
-	['pages', 'Pages'],
-	['shells', 'Shells'],
-	['components', 'Components'],
-	['functions', 'Functions'],
-	['configs', 'Configs'],
-	['services', 'Services']
-];
 
 /** Whether a click is one the application follows itself: plain, primary and not yet handled. */
 export function plainClick(event: MouseEvent): boolean {
@@ -77,56 +72,4 @@ export function plainClick(event: MouseEvent): boolean {
 	return event.button === 0 && !modified && !event.defaultPrevented;
 }
 
-function viewed(scope: ExplorerScope): string {
-	if (scope.branch === null) return 'Retained commit';
-	if (scope.mode === 'current') return 'Current · branch tip';
-	return scope.atTip ? 'Selected commit · branch tip' : 'Historical commit';
-}
-
-/** A branch is opened at its tip, on the same entity; the retained commits at their newest. */
-function branched(input: HarnessNavbarInput, from: ExplorerLocation, name: string) {
-	if (name !== retainedBranch) return { ...from, branch: name, commit: null };
-	const newest = input.index ? branchCommits(input.index, retainedBranch)[0] : undefined;
-	return { ...from, branch: null, commit: newest?.commit ?? from.commit };
-}
-
-function revision(input: HarnessNavbarInput, scope: ExplorerScope): HarnessShellRevision {
-	const { location } = scope;
-	const listed = input.commits.some((item) => item.commit === scope.commit);
-	const current = { ...location, commit: null };
-	const there = scope.mode === 'current' || scope.tip === null;
-	return {
-		branch: scope.branch ?? retainedBranch,
-		commit: scope.commit,
-		commits: listed ? input.commits : [scope.summary, ...input.commits],
-		note: scope.tip ? `Tip · ${scope.tip.slice(0, 7)}` : 'No branch tip',
-		viewed: viewed(scope),
-		tip: there ? null : { href: input.href(current), to: current },
-		branchTo: (name) => branched(input, location, name),
-		commitTo: (commit) => ({ ...location, commit })
-	};
-}
-
-/**
- * What the bar of the explorer shows for an address: where the brand leads, the five
- * categories inside the branch and commit that are viewed, and the revision controls. Every
- * address is formatted by the host; none is put together here.
- */
-export function harnessShell(input: HarnessNavbarInput): HarnessShellView {
-	const { scope } = input;
-	const place = scope?.location ?? null;
-	const tip: ExplorerLocation | null =
-		scope && scope.branch !== null
-			? { branch: scope.branch, commit: null, category: 'pages' }
-			: null;
-	const categories = labels.map(([id, label]) => {
-		const to = place ? { branch: place.branch, commit: place.commit, category: id } : null;
-		const active = place?.category === id;
-		return { id, label, icon: categoryIcon[id], active, href: to ? input.href(to) : null, to };
-	});
-	return {
-		home: { href: tip ? input.href(tip) : input.base, to: tip },
-		categories,
-		revision: scope ? revision(input, scope) : null
-	};
-}
+export { harnessShell } from '../components/harness/harness-navbar/harnessShell';

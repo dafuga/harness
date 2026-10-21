@@ -64,7 +64,21 @@
 			"CommitMessageService",
 			"revisionReasons",
 			"verificationNoteIdentity",
-			"bugRepairPolicy"
+			"previewBinding",
+			"readTreeTexts",
+			"bugRepairPolicy",
+			"RegressionProofService",
+			"RegressionProofRepository",
+			"regressionFiles",
+			"regressionRecordSchema",
+			"recordRegression",
+			"regressionHistory",
+			"unitDocumentation",
+			"unitMetadata",
+			"helperScopes",
+			"helperTemplates",
+			"helperReferences",
+			"helperConsumers"
 		]
 	},
 	"contract": {
@@ -200,6 +214,26 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.helper-consumers",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.helper-references",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.helper-scopes",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.helper-templates",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.native-picker-protocol",
 			"via": "reexport",
 			"origin": "derived"
@@ -230,12 +264,52 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.preview-binding",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.read-tree-texts",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.record-regression",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.regression-files",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.regression-history",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.regression-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.revision-changes",
 			"via": "reexport",
 			"origin": "derived"
 		},
 		{
 			"unit": "function.revision-reasons",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-documentation",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-metadata",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -256,6 +330,11 @@
 		},
 		{
 			"unit": "repository.provider-switch",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.regression-proof",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -336,6 +415,11 @@
 		},
 		{
 			"unit": "service.provider-switch-apply",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.regression-proof",
 			"via": "reexport",
 			"origin": "derived"
 		},

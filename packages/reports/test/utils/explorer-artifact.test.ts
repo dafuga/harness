@@ -1,6 +1,10 @@
 import { createHash } from 'node:crypto';
 import { expect, test } from 'vitest';
-import { artifactBehavior, artifactText, explorerArtifact } from '../../src/utils/explorerArtifact';
+import {
+	artifactBehavior,
+	explorerArtifact
+} from '../../src/utils/explorer-reading/explorerArtifact';
+import { artifactText } from '../../src/utils/explorerArtifact';
 import { capture } from '../explorerFixture';
 
 const body = JSON.stringify({

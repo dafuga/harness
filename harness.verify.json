@@ -32,6 +32,7 @@
 		"coverage/",
 		"dist/",
 		"node_modules/",
+		"packages/reports/.cache/",
 		"packages/reports/.svelte-kit/",
 		"packages/reports/.test-reports/",
 		"packages/reports/build/",
@@ -224,6 +225,14 @@
 			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-search-fit.spec.ts"
 		},
 		{
+			"path": "packages/reports/tests/e2e/explorer-shell-capture-readiness.spec.ts",
+			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts {target}"
+		},
+		{
+			"path": "packages/reports/test/entity-preview-actions.spec.ts",
+			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
+		},
+		{
 			"path": "packages/reports/test/entity-preview.spec.ts",
 			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
 		},
@@ -247,6 +256,10 @@
 			"path": "packages/reports/tests/e2e/explorer-shell-browser-errors.spec.ts",
 			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-browser-errors.spec.ts",
 			"timeoutMs": 180000
+		},
+		{
+			"path": "packages/reports/tests/e2e/explorer-shell-activity-list.spec.ts",
+			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-activity-list.spec.ts"
 		}
 	],
 	"tools": [

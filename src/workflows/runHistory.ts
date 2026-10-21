@@ -2,7 +2,10 @@ import { resolve } from 'node:path';
 import { GitAdapter } from '../adapters/GitAdapter';
 import { fail } from '../core/errors';
 import { VerificationStoreRepository } from '../repositories/VerificationStoreRepository';
-import { EvidenceAttachService, type Attached } from '../services/EvidenceAttachService';
+import {
+	EvidenceAttachService,
+	type Attached
+} from '../services/evidence-attach-service/EvidenceAttachService';
 import { EvidenceRestoreService } from '../services/EvidenceRestoreService';
 import { HistoryStatusService, type CommitStatus } from '../services/HistoryStatusService';
 

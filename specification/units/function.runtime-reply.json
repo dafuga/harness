@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.runtime-reply",
 	"kind": "function",
-	"title": "runtimeReply",
-	"responsibility": "Decides the HTTP status and envelope a served unit answers one request with.",
+	"title": "HTTP runtime reply",
+	"responsibility": "Rejects unsupported methods and invalid JSON before invoking a served unit.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,25 +11,29 @@
 		"symbols": ["RuntimeReply", "runtimeReply"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "runtimeReply.runtime",
-				"type": "UnitRuntime"
+				"type": "UnitRuntime",
+				"description": "Runtime to invoke after HTTP admission."
 			},
 			{
 				"name": "runtimeReply.method",
-				"type": "string"
+				"type": "string",
+				"description": "HTTP method, accepted only when exactly POST."
 			},
 			{
 				"name": "runtimeReply.read",
-				"type": "() => Promise<string>"
+				"type": "() => Promise<string>",
+				"description": "Async body-text reader, called only for POST requests."
 			}
 		],
 		"outputs": [
 			{
 				"name": "runtimeReply",
-				"type": "Promise<RuntimeReply>"
+				"type": "Promise<RuntimeReply>",
+				"description": "405 invalid-request for other methods, 400 invalid-json for unreadable/malformed/nonportable input, otherwise 200 with the runtime’s own response, including application failure envelopes."
 			}
 		],
 		"errors": []

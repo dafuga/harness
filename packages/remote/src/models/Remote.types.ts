@@ -49,6 +49,12 @@ export const localMethods = [
 	'gameSave',
 	'gameRender',
 	'gameImageGenerate',
+	'deploymentStatus',
+	'deploymentActivities',
+	'startDeployment',
+	'deploymentProgress',
+	'planDeployment',
+	'deploy',
 	'openProject',
 	'selectProject',
 	'hostedStatus',
@@ -83,10 +89,10 @@ export const revisionMethods: readonly RemoteMethod[] = [
 	'approve',
 	'startRun'
 ];
-/** Methods of a device that name no project. */
 export const projectlessMethods: readonly RemoteMethod[] = [
 	attachMethod,
 	'listProjects',
+	'deploymentActivities',
 	'providers'
 ];
 /** Answers remembered by request id: re-sending one of these never runs it twice. */
@@ -97,6 +103,9 @@ export const mutationMethods: readonly RemoteMethod[] = [
 	'gameSave',
 	'gameRender',
 	'gameImageGenerate',
+	'deploy',
+	'planDeployment',
+	'startDeployment',
 	'openProject',
 	'selectProject',
 	'connectHosted',
@@ -177,6 +186,8 @@ export interface RemoteRevision {
 }
 export interface RemoteGrant {
 	projects: { id: string; name: string }[];
+	/** False grants read-only access; omitted preserves older read-and-comment grants. */
+	comments?: boolean;
 	agents: boolean;
 }
 export interface RemoteResume {

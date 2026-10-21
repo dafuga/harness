@@ -2,21 +2,22 @@
 	"schemaVersion": 1,
 	"id": "reports.function.report-runtime-root",
 	"kind": "function",
-	"title": "reportRuntimeRoot",
-	"responsibility": "Owns the reportRuntimeRoot shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Reports runtime directory",
+	"responsibility": "Finds the reports package runtime root for supporting tools and assets.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/utils/reportRuntimeRoot.ts"],
 		"symbols": ["reportRuntimeRoot"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "reportRuntimeRoot",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Environment override HARNESS_REPORTS_RUNTIME_ROOT when non-nullish, otherwise the resolved directory two levels above the current module URL."
 			}
 		],
 		"errors": []

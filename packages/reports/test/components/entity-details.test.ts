@@ -12,12 +12,21 @@ const tabs = (body: string) =>
 
 test('details opens on the contract with size and performance, and shows no source', () => {
 	const body = content('commit', page);
-	expect(tabs(body)).toEqual(['Contract', 'Measurements', 'Source', 'History']);
-	expect(words(body)).toContain('Contract and measurements');
+	expect(tabs(body)).toEqual([
+		'Overview',
+		'Contract',
+		'Used In',
+		'Uses',
+		'States',
+		'History',
+		'Source'
+	]);
+	expect(words(body)).toContain('Lists the orders of an account.');
 	for (const heading of ['Contract', 'Size', 'Performance profile']) {
 		expect(body).toContain(`aria-label="${heading}"`);
 	}
-	expect(words(body)).toContain('Back to overview');
+	expect(words(body)).not.toContain('Back to overview');
+	expect(words(body)).not.toContain('Details');
 	expect(words(body)).not.toMatch(owned);
 	expect(words(body)).not.toMatch(/Source ownership|provenance/i);
 });
@@ -26,7 +35,9 @@ test('a page has details like every other kind: purpose, address, inputs, output
 	const body = content('current', page);
 	expect(words(body)).toContain('Purpose Lists the orders of an account.');
 	expect(words(body)).toContain('App route /orders');
-	expect(words(body)).toContain('Inputs account id, search text');
+	expect(words(body)).toContain('Inputs');
+	for (const input of ['account id', 'search text'])
+		expect(words(body)).toMatch(new RegExp(`\\b${input}\\b`, 'i'));
 	expect(words(body)).toContain('Required states default, empty');
 	expect(words(body)).toContain('Source size Not measured');
 	// Back to the overview keeps the branch tip; nothing adds a commit to the address.
@@ -42,7 +53,7 @@ test('source is shown only when the source tab is the open one', () => {
 	const body = content('commit', { ...page, tab: 'source' });
 	expect(words(body)).toContain('Source ownership');
 	expect(words(body)).toContain('src/routes/orders/+page.svelte');
-	expect(body).toContain(`/commit/${commits.middle}/pages/${ids.page}/details?tab=source`);
+	expect(body).toContain(`/commit/${commits.middle}/pages/${ids.page}?tab=source`);
 });
 
 test('measurements name the limit each figure is frozen at, or that none is recorded', () => {
@@ -83,7 +94,7 @@ test('a recorded note that names a file is shown without it on measurements and 
 	}
 });
 
-test('a declared contract explains each item on the details, and stays names on the overview', () => {
+test('a declared contract explains each item in its dedicated tab and details', () => {
 	const head = revision(commits.middle, [record(commits.middle)]);
 	const told = {
 		inputs: [{ name: 'branch', type: 'string', description: 'The branch, as one path segment.' }],
@@ -95,14 +106,17 @@ test('a declared contract explains each item on the details, and stays names on 
 	);
 	head.registry = { ...head.registry, units };
 	const details = content('commit', page, { head });
-	expect(words(details)).toContain('Inputs branch branch The branch, as one path segment.');
-	expect(words(details)).toContain('rendered markup The page with its verdict.');
-	expect(words(details)).toContain(
-		'Fails with not at revision not at revision A missing page is said.'
+	const contract = content(
+		'commit',
+		{ category: 'pages', entity: ids.page, tab: 'contract' },
+		{ head }
 	);
-	const overview = content('commit', { category: 'pages', entity: ids.page }, { head });
-	expect(words(overview)).toContain(
-		'Inputs branch Output rendered markup Fails with not at revision'
-	);
-	expect(words(overview)).not.toContain('The branch, as one path segment.');
+	for (const body of [details, contract]) {
+		for (const type of ['string', 'markup', 'notice']) expect(words(body)).toContain(type);
+		expect(body).toContain('View example for Branch');
+		expect(words(body)).toContain('Example not recorded');
+		expect(words(body)).not.toContain('The branch, as one path segment.');
+		expect(words(body)).not.toContain('The page with its verdict.');
+		expect(words(body)).not.toContain('A missing page is said.');
+	}
 });

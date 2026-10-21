@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { expect, test } from 'vitest';
 import type { ExplorerBehavior, ExplorerBehaviorRow } from '../../src/models/Explorer.types';
-import { explorerReading } from '../../src/utils/explorerReading';
+import { explorerReading } from '../../src/utils/explorer-reading/explorerReading';
 import { capture } from '../explorerFixture';
 
 const hash = (text: string) => createHash('sha256').update(text).digest('hex');

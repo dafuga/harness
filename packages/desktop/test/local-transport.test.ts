@@ -36,10 +36,25 @@ test('the bridge works over a socket that only this machine can reach', async ()
 	const f = await localFixture(),
 		client = f.connect(f.window());
 	expect(f.transport.address).toBe('127.0.0.1');
+	expect(await client.request('deploymentActivities')).toEqual([]);
+	await expect(client.request('startDeployment', { planId: 'invalid' })).rejects.toThrow('Invalid');
 	const opened = await client.request<ProjectSnapshot>('openProject');
 	expect(opened.project).toMatchObject({ root: f.root, id: f.project.id });
 	expect(await client.request('listProjects')).toMatchObject([{ id: f.project.id, kind: 'local' }]);
 	expect((await client.request<ProjectSnapshot>('snapshot', view)).writable).toBe(true);
+	expect(await client.request('deploymentStatus')).toEqual(
+		expect.arrayContaining([
+			expect.objectContaining({ environment: 'dev', receipt: null, available: false })
+		])
+	);
+	await expect(
+		client.request('planDeployment', { environment: 'unknown', commit: opened.revision.commit })
+	).rejects.toThrow('Invalid');
+	await expect(client.request('deploy', { planId: 'no-review' })).rejects.toThrow('Invalid');
+	expect(await client.request('deploymentProgress', { planId: 'a'.repeat(36) })).toBeNull();
+	await expect(client.request('deploymentProgress', { planId: 'no-plan' })).rejects.toThrow(
+		'Invalid'
+	);
 	const plan = { category: 'pages', title: 'Loopback', goal: 'Over a socket' };
 	expect((await client.request<EntityDetail>('createPlan', plan)).title).toBe('Loopback');
 	expect(client.wire.attachment).toMatchObject({ role: 'local', grant: null, device: null });
@@ -158,3 +173,14 @@ test('the control port travels over the same socket, with exactly what the page 
 		['enable', undefined]
 	]);
 }, 40000);
+
+// One backend can be asked to start again by concurrent app/window startup paths.
+test('repeated concurrent listens reuse one listener and closing releases it', async () => {
+	const f = await localFixture();
+	const ports = await Promise.all([f.transport.listen(), f.transport.listen()]);
+	expect(ports).toEqual([f.port, f.port]);
+	await f.transport.close();
+	await expect(fetch(`http://127.0.0.1:${f.port}`)).rejects.toThrow();
+	const next = await f.transport.listen();
+	expect(next).toBeGreaterThan(0);
+});

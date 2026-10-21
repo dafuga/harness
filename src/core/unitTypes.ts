@@ -33,7 +33,19 @@ export const performanceTolerance = 0.05;
 export const contractItemSchema = z.strictObject({
 	name: text,
 	type: text,
-	description: z.string().optional()
+	description: z.string().optional(),
+	/** Values a person declared as examples of the item; any JSON, kept exactly as written. */
+	examples: z.array(z.json()).optional()
+});
+
+/** Reviewed helper declarations, derived at indexing time and pinned with the source. */
+export const helperContractSchema = z.strictObject({
+	name: text,
+	source: text,
+	inputs: z.array(contractItemSchema),
+	output: z.string().optional(),
+	pure: z.literal(true),
+	consumers: z.array(z.strictObject({ unit: identifier, symbol: text.optional() })).min(2)
 });
 
 export const unitDependencySchema = z.strictObject({
@@ -72,6 +84,11 @@ export const componentManifestSchema = z.strictObject({
 	/** `derived` marks the generated placeholder; `declared` marks a statement a person wrote. */
 	responsibilityOrigin: z.enum(['derived', 'declared']),
 	status: z.enum(['active', 'retired']),
+	/** Committed usage documentation, read from the same source tree as this manifest. */
+	documentation: z
+		.string()
+		.regex(/^(?!\/)(?!.*(?:^|\/)\.{1,2}(?:\/|$))[a-zA-Z0-9_./-]+\.md$/)
+		.optional(),
 	retired: z.strictObject({ reason: text, at: text }).optional(),
 	/** Retired identities this unit continues; their baselines and history carry over. */
 	lineage: z.strictObject({ predecessors: z.array(identifier).min(1) }).optional(),
@@ -83,9 +100,14 @@ export const componentManifestSchema = z.strictObject({
 		errors: z.array(contractItemSchema)
 	}),
 	dependencies: z.array(unitDependencySchema),
+	helperContracts: z.array(helperContractSchema).optional(),
 	/** `kind` and `entry` name the default execution target; `targets` lists every applicable one. */
 	runtime: executionTargetSchema.extend({ targets: z.array(executionTargetSchema).min(1) }),
 	scenarios: z.array(identifier),
+	/** The one recorded state used to preview a visual unit; never a planning design. */
+	preview: z
+		.strictObject({ scenario: identifier, state: identifier, viewport: identifier })
+		.optional(),
 	budgets: z.strictObject({
 		size: z.literal('frozen'),
 		complexity: z.literal('frozen'),

@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.portable-json",
 	"kind": "function",
-	"title": "portableJson",
-	"responsibility": "Decides whether a request means the same thing in every runtime, so non-portable input is refused identically everywhere.",
+	"title": "Portable JSON admission",
+	"responsibility": "Checks whether values can retain their meaning across supported JSON runtimes within the nesting bound.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,29 +11,34 @@
 		"symbols": ["maxJsonDepth", "portableJson", "notPortable"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "portableJson.value",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Value to inspect: finite numbers, well-formed strings, booleans, null, arrays and plain/null-prototype objects are supported. Undefined object fields are ignored; unsupported values are refused."
 			},
 			{
 				"name": "portableJson.level",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Current container nesting depth, default zero; recursive calls advance it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "maxJsonDepth",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Maximum supported array/object nesting depth, 64."
 			},
 			{
 				"name": "portableJson",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when inspected values pass numeric, Unicode, prototype and depth checks; false otherwise. Input is checked in place rather than cloned or serialized."
 			},
 			{
 				"name": "notPortable",
-				"type": "RuntimeResponse"
+				"type": "RuntimeResponse",
+				"description": "Shared runtime failure with code invalid-json and message request is not valid JSON."
 			}
 		],
 		"errors": []

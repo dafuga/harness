@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.reference-text",
 	"kind": "component",
-	"title": "ReferenceText",
-	"responsibility": "Renders agent and person text with registered unit references as links to the shown revision, and all else as text.",
+	"title": "Reference text",
+	"responsibility": "Turns known unit references in ordinary text into links within the displayed workspace.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/ReferenceText.svelte"],
+		"source": ["packages/desktop/src/components/reference-text/ReferenceText.svelte"],
 		"symbols": ["ReferenceText"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ReferenceText.text",
-				"type": "string"
+				"type": "string",
+				"description": "Required plain text parsed for [[unit:<id>]] references. Unknown references and ordinary text remain as written; nothing is interpreted as markup."
 			},
 			{
 				"name": "ReferenceText.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Workspace providing the project, revision and navigation context for resolved links."
 			},
 			{
 				"name": "ReferenceText.entity",
-				"type": "CatalogEntity | null"
+				"type": "CatalogEntity | null",
+				"description": "Optional viewed entity, null by default, available for reference lookup before the catalog lists it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ReferenceText",
-				"type": "markup"
+				"type": "markup",
+				"description": "Inline text interleaved with recognized unit links and category icons. Adds no surrounding element and leaves unresolved references as text."
 			}
 		],
 		"errors": []
@@ -68,11 +72,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/ReferenceText.svelte",
+		"entry": "packages/desktop/src/components/reference-text/ReferenceText.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/ReferenceText.svelte"
+				"entry": "packages/desktop/src/components/reference-text/ReferenceText.svelte"
 			}
 		]
 	},

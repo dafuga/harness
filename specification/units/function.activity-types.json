@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.activity-types",
 	"kind": "function",
-	"title": "activityTypes",
-	"responsibility": "Names what project activity is made of: the three files an agent writes, a roster entry, committed work and what only a running Harness can say.",
+	"title": "Agent activity records",
+	"responsibility": "Defines the stored registration, heartbeat and completion records, plus the types used to report agents and repository activity.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -28,20 +28,23 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "agentRegistrationSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Zod schema for a version 1 registration: nonempty identity, label and registration time; nullable provider, model and process identity; positive integer heartbeat allowance. Extra fields are rejected."
 			},
 			{
 				"name": "agentBeatSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Zod schema for a heartbeat with a nonempty time, nullable branch, task and loop, and an array of nonempty unit ids. Extra fields are rejected."
 			},
 			{
 				"name": "agentEndSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Zod schema for a final completion time, completed or failed status, and nullable outcome. Extra fields are rejected."
 			}
 		],
 		"errors": []

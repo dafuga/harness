@@ -1,0 +1,59 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.entity-examples",
+	"kind": "component",
+	"title": "Usage examples",
+	"responsibility": "Shows documented examples as short titles and code with expected output comments.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/EntityExamples.svelte"],
+		"symbols": ["EntityExamples"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "EntityExamples.documentation",
+				"type": "UnitDocumentation | undefined",
+				"description": "Documentation read from this entity at the selected commit; absent or invalid content shows a gap."
+			}
+		],
+		"outputs": [
+			{
+				"name": "EntityExamples",
+				"type": "markup",
+				"description": "Only example titles and code snippets, or a stated gap when documentation is absent."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.unit-documentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.usage-examples-usage-examples",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/EntityExamples.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/EntityExamples.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

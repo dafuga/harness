@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { explorerCategories } from '../../../../src/utils/explorerRoute';
 import { resolveImport } from '../../../../src/utils/resolveImport';
-import { scanImports } from '../../../../src/utils/scanImports';
+import { scanImports } from '../../../../src/services/source-index-service/scanImports';
 
 // The imports of the real source, read and resolved as `harness units index` reads them, so what
 // is asserted here is what the registry will say a page is made of.

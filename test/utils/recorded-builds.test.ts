@@ -6,7 +6,7 @@ import type { VerificationRecord } from '../../src/core/verificationTypes';
 import { VerificationStoreRepository } from '../../src/repositories/VerificationStoreRepository';
 import { BuildIdentityService } from '../../src/services/BuildIdentityService';
 import { emptyBuildStamp } from '../../src/utils/buildStamp';
-import { recordedBuilds } from '../../src/utils/recordedBuilds';
+import { recordedBuilds } from '../../src/services/record-assembly-service/recordedBuilds';
 import { recordIntact, sealRecord } from '../../src/utils/sealRecord';
 import { VerificationRecordValidator } from '../../src/validators/VerificationRecordValidator';
 import { verificationSample } from '../support/verificationSample';

@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/remote/src/services/SecureChannelService.ts"],
+		"source": ["packages/remote/src/services/secure-channel-service/SecureChannelService.ts"],
 		"symbols": [
 			"SecureChannelOptions",
 			"SecureChannelService",
@@ -119,11 +119,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/remote/src/services/SecureChannelService.ts",
+		"entry": "packages/remote/src/services/secure-channel-service/SecureChannelService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/remote/src/services/SecureChannelService.ts"
+				"entry": "packages/remote/src/services/secure-channel-service/SecureChannelService.ts"
 			}
 		]
 	},

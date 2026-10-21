@@ -7,7 +7,7 @@
 		"kind": "app"
 	},
 	"scripts": {
-		"dev": "bun run sync:shared && vite dev --host 127.0.0.1 --port 5799 --strictPort",
+		"dev": "bun run sync:shared && bun ../reports/src/initializers/initializePreview.ts --port 5799",
 		"build": "bun run sync:shared && vite build && bun run build:main",
 		"sync:shared": "bun run --cwd ../reports svelte-kit sync",
 		"build:main": "bun scripts/build-main.ts",
@@ -36,7 +36,9 @@
 		"@capacitor/core": "7.4.5",
 		"@decartai/sdk": "0.2.12",
 		"@xyflow/svelte": "1.4.1",
+		"jsonc-parser": "^3.3.1",
 		"qrcode": "1.5.4",
+		"smol-toml": "^1.9.1",
 		"ws": "8.21.0"
 	},
 	"devDependencies": {

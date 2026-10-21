@@ -5,6 +5,34 @@ import { dirname, join } from 'node:path';
 import { ProjectSessionService } from '../src/services/ProjectSessionService';
 import { loaders, manifest, ordinary, rendered, twin } from './catalog-listing-manifests';
 import type { Listing } from './catalog-listing-manifests';
+import type { ComponentManifest } from '../../../src/lib/contracts';
+import type { DesignVersion } from '../src/models/Desktop.types';
+import type { PlanRecord } from '../src/models/PlanningPort.types';
+
+/** The plan/version states a catalog can receive, independent of image storage. */
+export const imagelessDesign: DesignVersion = {
+	version: 'v001',
+	createdAt: '2026-10-17T00:00:00.000Z',
+	commit: null,
+	generator: 'fixture',
+	prompt: 'Describe the page',
+	baseRevision: 'a'.repeat(40),
+	images: [],
+	approval: null
+};
+export function pagePlan(unit: ComponentManifest, versions: DesignVersion[] = []): PlanRecord {
+	return {
+		id: unit.id,
+		path: 'src/pages/orders',
+		category: 'pages',
+		title: unit.title,
+		goal: unit.responsibility,
+		lifecycle: 'draft',
+		contract: { inputs: [], outputs: [], errors: [], hash: null },
+		versions,
+		threads: []
+	};
+}
 
 const git = (root: string, ...args: string[]) =>
 	execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();

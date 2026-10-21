@@ -1,5 +1,5 @@
 import { afterEach, expect, test, vi } from 'vitest';
-import { reportPages } from '../../src/utils/reportPages';
+import { reportPages } from '../../src/services/report-publish-service/reportPages';
 import type { PublicationBundle } from '../../src/utils/reportPublication';
 const { processReport } = vi.hoisted(() => ({ processReport: vi.fn() }));
 vi.mock('../../src/utils/reportProcess', () => ({ reportProcess: processReport }));

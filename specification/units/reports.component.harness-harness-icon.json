@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-harness-icon",
 	"kind": "component",
-	"title": "HarnessIcon",
-	"responsibility": "Draws one icon of the shared outline set at an asked size: decoration beside words, or a named image when it stands alone.",
+	"title": "Explorer icon",
+	"responsibility": "Renders a named explorer SVG icon with optional accessible labeling.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,25 +11,29 @@
 		"symbols": ["HarnessIcon"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HarnessIcon.name",
-				"type": "HarnessIconName"
+				"type": "HarnessIconName",
+				"description": "Required icon-catalog name selecting its path and whether it uses solid styling."
 			},
 			{
 				"name": "HarnessIcon.size",
-				"type": "number"
+				"type": "number",
+				"description": "Optional square size in pixels, defaulting to 20."
 			},
 			{
 				"name": "HarnessIcon.label",
-				"type": "string"
+				"type": "string",
+				"description": "Optional accessible label. A nonempty label makes the SVG an image; otherwise it is hidden from assistive technology."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HarnessIcon",
-				"type": "markup"
+				"type": "markup",
+				"description": "An unfocusable SVG with a 24-unit view box and the selected catalog path."
 			}
 		],
 		"errors": []

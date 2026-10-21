@@ -11,10 +11,11 @@ const shots = (body: string) =>
 
 test('an overview shows contract, size and performance, and nothing of the source', () => {
 	const body = content('commit', filter);
-	for (const heading of ['Contract', 'Size', 'Performance profile']) {
+	for (const heading of ['Size', 'Performance profile']) {
 		expect(body).toContain(`aria-label="${heading}"`);
 	}
-	expect(words(body)).toContain('Inputs orders, search text');
+	expect(body).not.toContain('aria-label="Contract"');
+	expect(words(content('commit', { ...filter, tab: 'contract' }))).toContain('orders');
 	expect(words(body)).toContain('Source size 800 B');
 	expect(words(body)).toContain('Not measured');
 	expect(words(body)).toContain('thousand orders');
@@ -32,7 +33,7 @@ test('a page at a selected commit shows the parent and the commit for one state 
 	// The later tip is never a side of the comparison.
 	expect(body).not.toContain('ccccccc');
 	expect(words(body)).toContain('Behavior change');
-	expect(body).toContain(`/commit/${commits.middle}/pages/${ids.page}?tab=tests`);
+	expect(body).toContain(`/commit/${commits.middle}/pages/${ids.page}?tab=states`);
 });
 
 test('a page at the branch tip shows exactly one screenshot and no before or after', () => {
@@ -82,12 +83,13 @@ test('a component no visual scenario names keeps the screenshot pane, as a state
 });
 
 test('a page lists its components as components, each a link in the same scope', () => {
-	const body = content('commit', page);
+	const body = content('commit', { ...page, tab: 'uses' });
 	expect(words(body)).toMatch(/Uses\s+3\s+Components\s+2\s+Order list/);
 	expect(body).toContain(`/commit/${commits.middle}/components/${ids.list}`);
 	expect(words(body)).toContain('App route');
 	expect(words(body)).toContain('/orders');
-	expect(words(body)).toContain('Details');
+	expect(words(body)).not.toContain('Details');
+	expect(words(body)).toContain('Source');
 });
 
 test('a function at a selected commit shows its end-to-end results before and after', () => {
@@ -128,7 +130,10 @@ test('a config shows what it provides and who uses it, with no screenshot and no
 	expect(words(body)).toContain('Current configuration');
 	expect(words(body)).toContain('page size');
 	expect(words(body)).toContain('Used In');
-	expect(words(body)).toContain('Orders page');
+	expect(body).not.toMatch(/aria-label="(?:Used In|Uses)"/);
+	expect(
+		words(content('current', { category: 'configs', entity: ids.settings, tab: 'used-in' }))
+	).toContain('Orders page');
 	expect(count(body, /<img/g)).toBe(0);
 	expect(words(body)).not.toMatch(/End-to-end|Current screenshot/);
 	const changed = record(commits.middle);
@@ -149,7 +154,7 @@ const offered = (body: string) => {
 	return [...select.matchAll(/<option[^>]*value="([^"]*)"/g)].map((found) => found[1]);
 };
 
-test('the required states an overview and the details list are those its selector offers', () => {
+test('the contract and details list the required states the overview selector offers', () => {
 	for (const entity of [ids.page, ids.list]) {
 		const at = {
 			category: entity === ids.page ? ('pages' as const) : ('components' as const),
@@ -159,10 +164,11 @@ test('the required states an overview and the details list are those its selecto
 		expect(offered(overview), entity).toEqual(['default', 'empty']);
 		// The scenario has a required state of another page too: it is not asked of this entity.
 		const label = entity === ids.page ? 'Required states' : 'States';
-		expect(words(overview), entity).toContain(`${label} ${offered(overview).join(', ')} Size`);
+		const contract = content('commit', { ...at, tab: 'contract' }, both());
+		expect(words(contract), entity).toContain(`${label} ${offered(overview).join(', ')}`);
 		const details = content('commit', { ...at, section: 'details' }, both());
-		expect(words(details), entity).toContain(`${label} default, empty Size`);
-		for (const body of [overview, details]) {
+		expect(words(details), entity).toContain(`${label} default, empty`);
+		for (const body of [overview, contract, details]) {
 			expect(words(body), entity).not.toMatch(/returns|src\/|\.ts\b|\.svelte\b/);
 		}
 	}

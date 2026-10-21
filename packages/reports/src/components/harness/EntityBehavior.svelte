@@ -5,12 +5,12 @@
 	import { entityLens, shortCommit, type EntityNav } from '../../utils/entityLens';
 	import { notMeasured } from '../../utils/entityMeasure';
 	import type { EntityReasons as Reasons } from '../../utils/entityReasons';
-	import { explorerReading } from '../../utils/explorerReading';
-	import EntityReasons from './EntityReasons.svelte';
+	import { explorerReading } from '../../utils/explorer-reading/explorerReading';
+	import EntityReasons from './entity-reasons/EntityReasons.svelte';
 	import EntityRun from './EntityRun.svelte';
 	import HarnessAction from './HarnessAction.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
-	import HarnessVerdict from './HarnessVerdict.svelte';
+	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
 	let {
 		behavior,
 		read = null,
@@ -96,7 +96,7 @@
 			</p>
 		</div>
 		<HarnessAction href={nav.href(tests)} onclick={() => nav.go(tests)} icon="arrow-right"
-			>{paired ? 'View full comparison' : 'View full test'}</HarnessAction
+			>{unit ? 'View examples' : paired ? 'View full comparison' : 'View full test'}</HarnessAction
 		>
 		{#if scope.mode === 'current'}
 			<HarnessAction
@@ -108,7 +108,7 @@
 		{/if}
 	</header>
 	{#if shown.groups.length === 0}
-		<p class="ex-gap">
+		<p class="ex-gap ex-unrecorded">
 			<HarnessVerdict passed={false} label="Evidence missing" />
 			<span>No end-to-end result is recorded for this entity at {at}.</span>
 		</p>
@@ -165,3 +165,10 @@
 		</dl>
 	</div>
 </section>
+
+<style>
+	.ex-gap.ex-unrecorded {
+		border-color: var(--hx-line, #273e50);
+		color: var(--hx-muted, #92a6bb);
+	}
+</style>

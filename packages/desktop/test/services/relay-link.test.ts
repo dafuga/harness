@@ -1,8 +1,8 @@
 import { expect, test } from 'vitest';
 import type { RelayHostFrame } from '../../../remote/src/index';
 import type { RemoteSocket } from '../../../remote/src/index';
-import { RelayLinkService } from '../../src/services/RelayLinkService';
-import type { RelayLinkOptions } from '../../src/services/RelayLinkService';
+import { RelayLinkService } from '../../src/services/relay-link-service/RelayLinkService';
+import type { RelayLinkOptions } from '../../src/services/relay-link-service/RelayLinkService';
 
 const hostId = 'a'.repeat(40),
 	deviceId = 'd'.repeat(40),

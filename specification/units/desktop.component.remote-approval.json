@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.remote-approval",
 	"kind": "component",
-	"title": "RemoteApproval",
-	"responsibility": "Owns the RemoteApproval Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Remote approval",
+	"responsibility": "Lets a computer user grant selected projects and optional agent permission to a requesting phone.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/RemoteApproval.svelte"],
 		"symbols": ["RemoteApproval"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RemoteApproval.request",
-				"type": "RemotePairingRequest"
+				"type": "RemotePairingRequest",
+				"description": "Required phone request supplying name, platform, device identity and pairing identity. Approval sends both displayed identities; denial sends the pairing identifier."
 			},
 			{
 				"name": "RemoteApproval.projects",
-				"type": "{ id: string; name: string }[]"
+				"type": "{ id: string; name: string }[]",
+				"description": "Required project choices; none are initially selected. An empty list explains that a local project is needed."
 			},
 			{
 				"name": "RemoteApproval.store",
-				"type": "RemoteHost"
+				"type": "RemoteHost",
+				"description": "Host state providing busy and approve/deny operations. Approval receives selected project identifiers and agents=false unless explicitly checked. Operation failures are delegated to this store."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RemoteApproval",
-				"type": "markup"
+				"type": "markup",
+				"description": "Request fieldset showing phone identity, project checkboxes and Plan/Change permission. Approve is disabled while busy or without a chosen project; Deny is disabled while busy. Submits exactly the selected project list and agent flag."
 			}
 		],
 		"errors": []
@@ -47,6 +51,11 @@
 		},
 		{
 			"unit": "desktop.store.remote-host",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.select",
 			"via": "import",
 			"origin": "derived"
 		}

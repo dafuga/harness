@@ -1,3 +1,4 @@
+import { expect } from 'vitest';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { attach, harnessJson } from './historyRepo';
@@ -41,7 +42,11 @@ export interface Detail {
 	commit: string;
 	registry: {
 		available: boolean;
-		units: Array<{ id: string }>;
+		units: Array<{
+			id: string;
+			sourceMeasurements?: Array<{ metric: string; value: number | null; testedRevision: string }>;
+			helpers?: Array<{ name: string; source: string; inputs: Array<{ name: string }> }>;
+		}>;
 		graph: {
 			nodes: Array<{ id: string }>;
 			edges: Array<{ from: string; to: string; via: string }>;
@@ -102,4 +107,14 @@ export async function indexedRepo(): Promise<{
 	await repo.git(['commit', '-q', '--allow-empty', '-m', 'chore: not verified yet']);
 	const unverified = await repo.git(['rev-parse', 'HEAD']);
 	return { repo, commits: { failed: first, baseline: head, changed: next, unverified }, changed };
+}
+
+export function expectSourceMeasures(detail: Detail, commit: string): void {
+	const unit = detail.registry.units.find((unit) => unit.id === 'function.slugify');
+	expect(unit?.sourceMeasurements, 'source metrics exist without a verification record').toEqual(
+		expect.arrayContaining([
+			expect.objectContaining({ metric: 'source-bytes', value: 100, testedRevision: commit }),
+			expect.objectContaining({ metric: 'complexity', value: expect.any(Number) })
+		])
+	);
 }

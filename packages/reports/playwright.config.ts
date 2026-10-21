@@ -1,6 +1,6 @@
 import { defineConfig } from '@playwright/test';
 import { resolve } from 'node:path';
-import { namedE2eRun, openE2eRun } from './src/utils/e2eFixtures';
+import { namedE2eRun, openE2eRun } from './src/utils/e2e-fixtures/e2eFixtures';
 // Every run seeds a directory of its own and listens on ports of its own, so two runs at once,
 // from one checkout or from two verification snapshots, never read or remove each other's
 // fixtures. The first process of a run chooses both; its servers, seeds and specs inherit them.

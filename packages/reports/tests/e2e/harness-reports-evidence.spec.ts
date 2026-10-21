@@ -2,10 +2,10 @@ import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { readFileSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { scenarioManifestSchema } from '../../../../src/core/unitTypes';
-import { gatherCaptures } from '../../../../src/utils/gatherCaptures';
-import { scenarioCoverage } from '../../../../src/utils/scenarioCoverage';
-import { ReportRepository } from '../../src/repositories/ReportRepository';
-import { ReportExportService } from '../../src/services/ReportExportService';
+import { gatherCaptures } from '../../../../src/services/check-run-service/gatherCaptures';
+import { scenarioCoverage } from '../../../../src/services/verification-service/scenarioCoverage';
+import { ReportRepository } from '../../src/repositories/report-repository/ReportRepository';
+import { ReportExportService } from '../../src/services/report-export-service/ReportExportService';
 import { audioPairFixture } from '../../test/audioPairFixture';
 import {
 	captureAudio,
@@ -131,9 +131,9 @@ test('a paired recording plays in the viewer and is captured as the server serve
 }) => {
 	await states.audio(page);
 	const player = page.getByRole('dialog').locator('audio').first();
-	expect(await player.evaluate((clip: HTMLAudioElement) => clip.currentSrc)).toContain(
-		`${origin}/api/reports/${made.paired}/assets/`
-	);
+	await expect
+		.poll(() => player.evaluate((clip: HTMLAudioElement) => clip.currentSrc))
+		.toContain(`${origin}/api/reports/${made.paired}/assets/`);
 	expect(await captureAudio(page, 'audio', player, evidence)).toBeCloseTo(6, 0);
 });
 

@@ -8,6 +8,7 @@
 	import RuntimeAudio from './RuntimeAudio.svelte';
 	import RuntimeBehavior from './RuntimeBehavior.svelte';
 	import RuntimeScreens from './RuntimeScreens.svelte';
+	import RegressionProof from '../../../reports/src/components/RegressionProof.svelte';
 	let {
 		entity,
 		workspace,
@@ -36,6 +37,15 @@
 
 <!-- What verification captured from running software; a planned design is never shown here. -->
 <section class="panel runtime-evidence" aria-label="Recorded runtime evidence">
+	<RegressionProof
+		items={result?.evidence.after.detail?.regressions ?? []}
+		unit={entity.id}
+		href={(commit) => workspace.link({ commit, category: entity.category, entityId: entity.id })}
+		follow={(commit) =>
+			void workspace.navigate(
+				workspace.link({ commit, category: entity.category, entityId: entity.id })
+			)}
+	/>
 	<div class="row">
 		<h2>Recorded runtime evidence</h2>
 		<span class="chip runtime-chip">Runtime capture</span>{#if where}<small>{where}</small>{/if}

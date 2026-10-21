@@ -1,7 +1,10 @@
 import { resolve } from 'node:path';
 import { GitAdapter } from '../adapters/GitAdapter';
 import { fail } from '../core/errors';
-import { HistoryIndexService, type BuiltHistory } from '../services/HistoryIndexService';
+import {
+	HistoryIndexService,
+	type BuiltHistory
+} from '../services/history-index-service/HistoryIndexService';
 import { LegacyHistoryService } from '../services/LegacyHistoryService';
 
 export interface BuildOptions {

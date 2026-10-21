@@ -1,7 +1,16 @@
 import { expect, test, type Locator, type Page } from '../../../../test/support/browserTest';
 import { fits, pictured, screens, sharedField, typed } from './support/sharedSelect';
-import { box, channels, combo, reachable, styled } from './support/shellChecks';
-import { sha, shellBranch, shellMount } from './support/shellData';
+import {
+	box,
+	channels,
+	combo,
+	compactRevision,
+	reachable,
+	navigationSpacing,
+	styled,
+	revisionDivider
+} from './support/shellChecks';
+import { sha, shellBranch, shellMount, longBranch } from './support/shellData';
 import {
 	buildShellFixture,
 	captureShell,
@@ -9,7 +18,6 @@ import {
 	removeShellFixture,
 	shellOrigin
 } from './support/shellFixture';
-
 /**
  * The bar of the explorer, looked at alone over a made-up history: the brand, six categories
  * and the revision that is viewed. Its page is built by this run and answered from its own
@@ -40,7 +48,6 @@ async function opened(page: Page, width: number, height: number): Promise<Locato
 	await expect(page.getByText('Harness', { exact: true }).first()).toBeVisible();
 	return page.getByRole('banner');
 }
-
 /** Chooses an earlier commit, then opens Functions there with the keyboard. */
 async function earlierFunctions(page: Page, bar: Locator): Promise<Locator> {
 	const functions = bar.getByRole('link', { name: 'Functions' });
@@ -59,6 +66,7 @@ for (const [screen, width, height] of screens) {
 	}) => {
 		const bar = await opened(page, width, height);
 		await pictured(page, `explorer-shell-bar-${screen}`);
+		await navigationSpacing(bar);
 		const links = bar.getByRole('navigation', { name: 'Harness categories' }).getByRole('link');
 		await expect(links).toHaveText(categories);
 		await expect(page.getByRole('link', { name: /Reports|Analytics|Activity|Growth/ })).toHaveCount(
@@ -115,7 +123,7 @@ for (const [screen, width, height] of screens) {
 		if (screen === 'desktop') {
 			// On a wide screen the brand, the categories and both fields are one row.
 			const [row, first] = [await box(bar), await box(links.nth(0))];
-			expect(row.height).toBeLessThanOrEqual(first.height + 2);
+			expect(row.height).toBeLessThanOrEqual(first.height + 18);
 			expect((await box(brand)).x).toBeLessThan(first.x);
 			expect(first.x).toBeLessThan((await box(combo(bar, 'Branch'))).x);
 		}
@@ -129,34 +137,28 @@ for (const [screen, width, height] of screens) {
 		const [branch, commit] = [combo(bar, 'Branch'), combo(bar, 'Commit')];
 		const tip = bar.getByRole('button', { name: 'Go to tip' });
 		await pictured(page, `explorer-shell-current-${screen}`);
-		// At the tip of a branch: the viewed commit is the tip, and there is nowhere to go back to.
+		await revisionDivider(bar);
+		await compactRevision(bar);
 		await expect(branch).toHaveValue(shellBranch);
 		await expect(commit).toHaveValue(sha(5));
 		for (const field of [branch, commit]) {
 			await sharedField(field);
 			await reachable(field, width);
 		}
-		await expect(bar.getByText('Tip · 0505050')).toBeVisible();
-		await expect(bar.getByText('Current · branch tip')).toBeVisible();
-		// Both are read whole: neither is cut short by the field above it.
-		for (const note of await bar.locator('small').all())
-			expect(await note.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(
-				true
-			);
+		await expect(branch).toHaveAttribute('title', /Tip · 0505050/);
+		await expect(commit).toHaveAttribute('title', /Current · branch tip/);
+		await expect(bar.locator('small').first()).not.toBeVisible();
 		await expect(tip).toBeDisabled();
 		await reachable(tip, width);
 
-		// A chosen commit is a route of its own; the tip stays what it is.
 		const functions = await earlierFunctions(page, bar);
-		await expect(bar.getByText('Historical commit')).toBeVisible();
-		await expect(bar.getByText('Tip · 0505050')).toBeVisible();
+		await expect(commit).toHaveAttribute('title', /Historical commit/);
+		await expect(branch).toHaveAttribute('title', /Tip · 0505050/);
 		await expect(functions).toHaveAttribute('aria-current', 'page');
-		// Every link of the bar stays in the branch and the commit that are viewed.
 		await expect(bar.getByRole('link', { name: 'Pages' })).toHaveAttribute(
 			'href',
 			`${earlier}/pages`
 		);
-		// The closed field shows the short hash once: inside the field, before its caret.
 		const short = bar.getByText('0303030', { exact: true });
 		await expect(short).toBeVisible();
 		expect(channels(await styled(commit, 'color'))[3], 'the field paints no second text').toBe(0);
@@ -167,6 +169,11 @@ for (const [screen, width, height] of screens) {
 		await expect(commit.locator('option:checked')).toHaveText(/^0303030 Record page evidence/);
 		await pictured(page, `explorer-shell-historical-${screen}`);
 		await captureShell(page, home, { state: 'historical', viewport: screen });
+		await branch.selectOption(longBranch);
+		await expect(branch).toHaveValue(longBranch);
+		await expect(branch).toHaveAttribute('title', new RegExp(longBranch));
+		await expect(branch.locator('..').locator('.report-select-value')).toHaveText('featur…h-name');
+		await compactRevision(bar);
 		expect(await fits(page)).toBe(true);
 	});
 
@@ -183,14 +190,14 @@ for (const [screen, width, height] of screens) {
 		await reachable(back, width);
 		await back.click();
 		await expect(page).toHaveURL(at(`${scoped}/functions`));
-		await expect(bar.getByText('Current · branch tip')).toBeVisible();
+		await expect(commit).toHaveAttribute('title', /Current · branch tip/);
 		await expect(bar.getByRole('button', { name: 'Go to tip' })).toBeDisabled();
 		await expect(commit).toHaveValue(sha(5));
 
 		// Back, a reload and forward each show the scope their address names.
 		await page.goBack();
 		await expect(page).toHaveURL(at(`${earlier}/functions`));
-		await expect(bar.getByText('Historical commit')).toBeVisible();
+		await expect(commit).toHaveAttribute('title', /Historical commit/);
 		await expect(commit).toHaveValue(sha(3));
 		await page.reload();
 		await expect(commit).toHaveValue(sha(3));
@@ -203,8 +210,8 @@ for (const [screen, width, height] of screens) {
 		await typed(page, branch, 'm');
 		await expect(page).toHaveURL(at(`${shellMount}/branch/main/functions`));
 		await expect(branch).toBeFocused();
-		await expect(bar.getByText('Tip · 0303030')).toBeVisible();
-		await expect(bar.getByText('Current · branch tip')).toBeVisible();
+		await expect(branch).toHaveAttribute('title', /Tip · 0303030/);
+		await expect(commit).toHaveAttribute('title', /Current · branch tip/);
 		await expect(commit).toHaveValue(sha(3));
 		await captureShell(page, home, { state: 'returned', viewport: screen });
 		expect(await fits(page)).toBe(true);

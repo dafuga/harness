@@ -12,7 +12,7 @@ import type {
 import { RelaySocketAdapter } from '../src/adapters/RelaySocketAdapter';
 import type { ProjectSnapshot } from '../src/models/Desktop.types';
 import type { RunEvent } from '../src/models/DesktopBridge.types';
-import { RemoteHostService } from '../src/services/RemoteHostService';
+import { RemoteHostService } from '../src/services/remote-host-service/RemoteHostService';
 import { deferred } from './remote-fixture';
 import { hostFixture } from './remote-host-fixture';
 

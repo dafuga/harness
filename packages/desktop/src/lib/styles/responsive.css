@@ -6,45 +6,14 @@
 		grid-template-columns: repeat(4, minmax(0, 1fr));
 	}
 }
-/* Wide enough for one row, the search included: the gaps narrow as those of the explorer bar do. */
-@media (min-width: 1410px) {
-	.topbar:has(.topbar-search) {
-		column-gap: clamp(10px, 1.1vw, 22px);
-	}
-}
-/* Narrower than one row: the search takes a row of its own after the revision, as in the explorer bar. */
-@media (max-width: 1409px) {
-	.topbar-search {
-		flex: 1 0 100%;
-		max-width: none;
-		padding-bottom: 12px;
-	}
-	.topbar-search .entity-search {
-		max-width: 420px;
-	}
-}
 @media (max-width: 1250px) {
 	.topbar {
 		flex-wrap: wrap;
 		gap: 12px;
 		padding-top: 12px;
 	}
-	.topbar nav {
-		order: 3;
-		width: 100%;
-		justify-content: center;
-		height: 70px;
-	}
-	.revision-picker {
-		margin-left: auto;
-	}
-	/* The categories end the bar here, a row-gap under the search. */
-	.topbar-search {
-		padding-bottom: 0;
-	}
-	.project-switcher {
-		border-inline: 0;
-		padding: 0;
+	.catalog-tools > input {
+		flex-basis: 100%;
 	}
 	.base-panels {
 		grid-template-columns: minmax(0, 1fr);
@@ -87,24 +56,11 @@
 	.thread-scroll {
 		max-height: 380px;
 	}
-	.catalog-tools {
-		flex-wrap: wrap;
-	}
-	.catalog-tools > input {
-		flex-basis: 100%;
-	}
 	.entity-main {
 		padding: 18px;
 	}
 	.brand {
 		font-size: 20px;
-	}
-	.revision-picker {
-		gap: 8px;
-		padding-left: 12px;
-	}
-	.revision-picker label {
-		max-width: 155px;
 	}
 	.before-after {
 		grid-template-columns: minmax(0, 1fr);
@@ -114,46 +70,91 @@
 	.topbar {
 		padding: 10px 12px 0;
 	}
-	.topbar-search .entity-search {
-		max-width: none;
-	}
-	.brand {
-		width: 100%;
-		justify-content: center;
-	}
-	.project-switcher {
-		width: 100%;
-		justify-content: center;
-	}
-	.revision-picker {
-		flex-wrap: wrap;
-	}
 	.account {
-		width: 100%;
-		justify-content: center;
+		justify-content: flex-end;
 		border: 0;
 		padding: 0;
 	}
-	.revision-picker {
-		margin: 0;
-		border: 0;
-		padding: 0;
-		width: 100%;
+	/* The bar in bands: mark, project and light; a frame round the environment and revision rail and
+	   the lines of what it shows; the categories and search. An account has a row of its own. */
+	.topbar:has(.topbar-search) {
+		grid-template-columns: 26px auto minmax(0, 1fr) auto 34px;
+		grid-template-areas:
+			'brand project project project account'
+			'environment environment revision tip tip'
+			'summary summary summary summary summary'
+			'tools tools tools search search';
+		gap: 4px 0;
+		padding-top: 4px;
 	}
-	.revision-picker label {
-		flex: 1;
-		max-width: none;
-		width: 45%;
+	.topbar.with-account {
+		grid-template-areas:
+			'brand project project project project'
+			'account account account account account'
+			'environment environment revision tip tip'
+			'summary summary summary summary summary'
+			'tools tools tools search search';
+	}
+	.topbar:has(.topbar-search)::before {
+		content: '';
+		grid-area: environment-start / 1 / summary-end / -1;
+		align-self: stretch;
+		margin-block: 2px;
+		border: 1px solid var(--line);
+		border-radius: 12px;
+		background: var(--panel);
+	}
+	/* The mark alone stands for Harness, so the project's name keeps the room. */
+	.topbar:has(.topbar-search) .brand-mark {
+		display: flex;
+		font-size: 26px;
+	}
+	.brand-word {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+	.topbar-search {
+		grid-area: search;
+	}
+	/* Icons are quiet, with no box of their own until hovered; focus rings them from inside. */
+	header.topbar .agent-icon,
+	header.topbar .topbar-search .entity-search-trigger,
+	header.topbar .topbar-search .topbar-settings {
+		width: 34px;
+		height: 34px;
+		padding: 0;
+		border-color: transparent;
+		background: none;
+		color: var(--muted);
+	}
+	header.topbar .agent-icon:focus-visible {
+		outline-offset: -2px;
 	}
 	.topbar nav {
-		height: 65px;
-		overflow-x: auto;
-		justify-content: flex-start;
-		gap: 2px;
+		height: 34px;
+		overflow: auto hidden;
+		scrollbar-width: none;
 	}
 	.topbar nav a {
-		min-width: 68px;
+		flex: 1 0 auto;
+		min-width: 60px;
+		gap: 1px;
+		padding: 1px 8px 0;
+		border-bottom-width: 2px;
+		color: var(--muted);
 		font-size: 11px;
+	}
+	.topbar nav svg {
+		width: 16px;
+		height: 16px;
+	}
+	/* Inside the scrolling row a focus ring is drawn within its tab, so the row never cuts it. */
+	.topbar nav a:focus-visible {
+		outline-offset: -3px;
 	}
 	.catalog {
 		padding: 18px;
@@ -167,6 +168,9 @@
 	}
 	.catalog > .row p {
 		font-size: 13px;
+	}
+	.catalog-tools .report-select {
+		flex: 1 1 auto;
 	}
 	.card-grid {
 		grid-template-columns: 1fr;

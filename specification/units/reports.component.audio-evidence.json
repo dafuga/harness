@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "reports.component.audio-evidence",
 	"kind": "component",
-	"title": "AudioEvidence",
-	"responsibility": "Owns the AudioEvidence Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Audio evidence",
+	"responsibility": "Presents a recording with playback, transcript, provenance and download controls.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/components/AudioEvidence.svelte"],
 		"symbols": ["AudioEvidence"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "AudioEvidence.item",
-				"type": "Evidence"
+				"type": "Evidence",
+				"description": "Required audio evidence including file, title, status and optional duration, transcript, source, note and provenance. Missing flag, empty file or playback error yields unavailable/not-proven display. Valid recorded duration takes precedence over loaded metadata."
 			},
 			{
 				"name": "AudioEvidence.assetBase",
-				"type": "string"
+				"type": "string",
+				"description": "Required prefix concatenated directly with the recorded file to form playback/download URL."
 			},
 			{
 				"name": "AudioEvidence.idPrefix",
-				"type": "string"
+				"type": "string",
+				"description": "Optional HTML ID prefix, default evidence-. Additional copies can supply a distinct prefix to avoid duplicate card IDs."
 			}
 		],
 		"outputs": [
 			{
 				"name": "AudioEvidence",
-				"type": "markup"
+				"type": "markup",
+				"description": "Audio card with user-initiated controls and no preload. Playing pauses other document audio; destruction pauses its player. Missing audio exposes notes. Transcript disclosure starts open when text exists. Shows provenance/time and a sanitized download filename with phase and recognized extension. Playback metadata fills missing duration but does not change recorded status."
 			}
 		],
 		"errors": []

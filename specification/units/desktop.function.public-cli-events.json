@@ -2,26 +2,31 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.public-cli-events",
 	"kind": "function",
-	"title": "publicCliEvents",
-	"responsibility": "Owns the publicCliEvents shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Extract public assistant text",
+	"responsibility": "Extracts text parts from assistant events while ignoring other event content.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/publicCliEvents.ts"],
-		"symbols": ["publicCliEvents"]
+		"source": [
+			"packages/desktop/src/adapters/claude-cli-adapter/publicCliEvents.ts",
+			"packages/desktop/src/utils/publicCliEvents.ts"
+		],
+		"symbols": ["publicCliEvents", "publicCliEvents"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "publicCliEvents.value",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The candidate CLI event. It must be an assistant event with a message object and content array to yield text."
 			}
 		],
 		"outputs": [
 			{
 				"name": "publicCliEvents",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "An ordered list of string text parts whose type is text. Non-assistant events, malformed structures, reasoning parts and tool bodies produce no text entries."
 			}
 		],
 		"errors": []

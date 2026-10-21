@@ -3,7 +3,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { deflateSync } from 'node:zlib';
 import { audioFixture } from './audioFixture';
-import { previewRecord } from './entityPreviewData';
+import { stateRecord } from './entityPreviewData';
 import { commits } from './entityUnits';
 
 type Colour = [number, number, number];
@@ -88,7 +88,7 @@ export function entityPreviewAssets(directory: string): Record<string, string> {
 	mkdirSync(join(directory, 'media'), { recursive: true });
 	const hashes: Record<string, string> = {};
 	for (const commit of Object.values(commits)) {
-		const states = previewRecord(commit).scenarios.flatMap((scenario) => scenario.states);
+		const states = stateRecord(commit).scenarios.flatMap((scenario) => scenario.states);
 		for (const state of states) {
 			for (const capture of state.captures) {
 				const [width, height] = sizes[capture.viewport ?? 'desktop'];

@@ -3,14 +3,15 @@ import { entityLabels, entityLens } from '../../src/utils/entityLens';
 import { place } from '../entityPlaces';
 import { commits, ids } from '../entityUnits';
 
-test('there are exactly six collections and pages come first', () => {
+test('there are exactly seven collections and pages come first', () => {
 	expect(Object.keys(entityLabels)).toEqual([
 		'pages',
 		'shells',
 		'components',
 		'functions',
 		'configs',
-		'services'
+		'services',
+		'models'
 	]);
 	const words = Object.values(entityLabels).flatMap((label) => [label.title, label.subtitle]);
 	expect(words.join(' ')).not.toMatch(/sub-?components|related|reports/i);
@@ -47,4 +48,17 @@ test('only a link that names a commit leaves the revision, and a collection keep
 	expect(entityLens(from, { entity: ids.page })).not.toHaveProperty('section');
 	// A commit on no branch keeps having none; no branch is invented for a link.
 	expect(entityLens(place({ branch: null }), { category: 'configs' }).branch).toBeNull();
+});
+
+test('callable identity follows its own tabs and commits, never another entity', () => {
+	const from = { ...place({ category: 'functions', entity: ids.filter }), helper: 'filterOrders' };
+	expect(entityLens(from, { entity: ids.filter, tab: 'contract' })).toHaveProperty(
+		'helper',
+		'filterOrders'
+	);
+	expect(
+		entityLens(from, { entity: ids.filter, section: 'history', commit: commits.first })
+	).toHaveProperty('helper', 'filterOrders');
+	expect(entityLens(from, { entity: ids.list })).not.toHaveProperty('helper');
+	expect(entityLens(from, { category: 'functions' })).not.toHaveProperty('helper');
 });

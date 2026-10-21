@@ -3,8 +3,8 @@ import { mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import process from 'node:process';
-import { CodexAppServerAdapter } from '../src/adapters/CodexAppServerAdapter';
-import { ClaudeCliAdapter } from '../src/adapters/ClaudeCliAdapter';
+import { CodexAppServerAdapter } from '../src/adapters/codex-app-server-adapter/CodexAppServerAdapter';
+import { ClaudeCliAdapter } from '../src/adapters/claude-cli-adapter/ClaudeCliAdapter';
 import type { AgentTurn } from '../src/models/AgentRunner.types';
 const roots: string[] = [],
 	pids: number[] = [];

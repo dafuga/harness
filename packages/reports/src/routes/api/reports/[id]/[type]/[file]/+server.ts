@@ -1,5 +1,6 @@
 import { error, isHttpError, type RequestEvent } from '@sveltejs/kit';
-import { reportFile } from '../../../../../../utils/reportHttp';
+import { reportFile } from './reportHttp';
+
 export async function GET({ params, request }: RequestEvent) {
 	try {
 		return await reportFile(params.id!, params.type!, params.file!, request.headers.get('range'));

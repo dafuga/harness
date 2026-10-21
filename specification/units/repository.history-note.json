@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/repositories/HistoryNoteRepository.ts"],
+		"source": ["src/repositories/history-note-repository/HistoryNoteRepository.ts"],
 		"symbols": [
 			"HistoryNoteRepository",
 			"HistoryNoteRepository.constructor",
@@ -108,11 +108,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/repositories/HistoryNoteRepository.ts",
+		"entry": "src/repositories/history-note-repository/HistoryNoteRepository.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/repositories/HistoryNoteRepository.ts"
+				"entry": "src/repositories/history-note-repository/HistoryNoteRepository.ts"
 			}
 		]
 	},

@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "reports.component.activity-agents",
 	"kind": "component",
-	"title": "ActivityAgents",
-	"responsibility": "Shows how many registered agents are working and each agent as it described itself, or says that this is not known here.",
+	"title": "Activity agents",
+	"responsibility": "Shows declared agent activity while making stale, unavailable and unreadable registrations explicit.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/ActivityAgents.svelte"],
+		"source": ["packages/reports/src/components/activity-agents/ActivityAgents.svelte"],
 		"symbols": ["ActivityAgents"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ActivityAgents.agents",
-				"type": "AgentRoster | null"
+				"type": "AgentRoster | null",
+				"description": "Required roster or null. Null means live activity is not available in this recorded history, not zero working agents. Roster supplies counts, tracking state and declared agent details."
 			},
 			{
 				"name": "ActivityAgents.sampledAt",
-				"type": "string"
+				"type": "string",
+				"description": "Optional sample timestamp, empty by default. Supplies displayed UTC read time and freshness calculation."
 			},
 			{
 				"name": "ActivityAgents.reading",
-				"type": "{ now: number; failed: boolean; refresh: () => void }"
+				"type": "{ now: number; failed: boolean; refresh: () => void }",
+				"description": "Optional current clock, refresh-failure flag and refresh callback. When absent the view uses the sample time for freshness and offers no refresh button."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ActivityAgents",
-				"type": "markup"
+				"type": "markup",
+				"description": "Working-agents card with current or Unknown count, stale/failed-read notices and registration guidance when tracking was never used. Lists agents with state, model, checkout, branch and details. Working agents expose task/loop and four unit chips initially; nonworking declarations stay behind a disclosure. Unreadable registrations are reported as uncounted."
 			}
 		],
 		"errors": []
@@ -58,11 +62,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/ActivityAgents.svelte",
+		"entry": "packages/reports/src/components/activity-agents/ActivityAgents.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/ActivityAgents.svelte"
+				"entry": "packages/reports/src/components/activity-agents/ActivityAgents.svelte"
 			}
 		]
 	},

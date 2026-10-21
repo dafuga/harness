@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { entityShown } from '../../src/utils/entityShown';
+import { entityShown } from '../../src/components/harness/entity-sections/entityShown';
 import { record, revision } from '../entityFixture';
 import { hostProps } from '../entityRender';
 import { both, namedRevision, namedUnits, otherPage } from '../entityStates';

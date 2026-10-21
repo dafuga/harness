@@ -1,5 +1,6 @@
-import { expect, test, type Locator } from '../../../test/support/browserTest';
-import { capture, fits, open, viewports } from './entityPreviewPage';
+import { expect, test, type Locator, type Page } from '../../../test/support/browserTest';
+import { capture, fits, open, viewports, where } from './entityPreviewPage';
+import { reviewCallableContract } from './entityCallableContract';
 import { commits, ids } from './entityUnits';
 
 /** How many words of an element are drawn across more than one line. */
@@ -24,7 +25,7 @@ test('a long word in a narrow column of a collection stays whole, and the table 
 	page: tab
 }) => {
 	await tab.setViewportSize(viewports.mobile);
-	await open(tab, { category: 'components', commit: commits.middle });
+	await open(tab, { category: 'services', commit: commits.middle });
 	const cells = tab.locator('.ex-table tbody tr').first().locator('td');
 	for (const position of [0, 1]) {
 		await cells.nth(position).evaluate((cell, text) => (cell.textContent = text), long);
@@ -57,13 +58,146 @@ test('the details of a declared contract say what each item is, and fit a phone'
 	const page = { category: 'pages' as const, entity: ids.page, section: 'details' as const };
 	await open(tab, { ...page, commit: commits.middle }, 'declared');
 	const contract = tab.getByRole('region', { name: 'Contract' });
-	await expect(contract.getByText('The branch, as one encoded path segment.')).toBeVisible();
-	await expect(contract.getByText('A missing page is said, not replaced.')).toBeVisible();
+	await expect(contract).not.toContainText('The branch, as one encoded path segment.');
+	await contract.getByRole('button', { name: 'View example for Branch', exact: true }).click();
+	await expect(tab.getByRole('dialog')).toContainText('The branch, as one encoded path segment.');
+	await tab.getByRole('button', { name: 'Close viewer', exact: true }).click();
+	await contract
+		.getByRole('button', { name: 'View example for Not at revision', exact: true })
+		.click();
+	await expect(tab.getByRole('dialog')).toContainText('A missing page is said, not replaced.');
+	await tab.getByRole('button', { name: 'Close viewer', exact: true }).click();
 	await capture(tab, 'details-declared-desktop');
 	await tab.setViewportSize(viewports.mobile);
 	expect(await fits(tab)).toBe(true);
 	await capture(tab, 'details-declared-mobile');
-	// The overview names the items and leaves what each is to the details.
+	// The dedicated Contract tab explains it without requiring technical details.
 	await open(tab, { category: 'pages', entity: ids.page, commit: commits.middle }, 'declared');
-	await expect(tab.getByText('The branch, as one encoded path segment.')).toHaveCount(0);
+	await expect(tab.getByRole('region', { name: 'Contract', exact: true })).toHaveCount(0);
+	await tab.getByRole('tab', { name: 'Contract', exact: true }).click();
+	await contract.getByRole('button', { name: 'View example for Branch', exact: true }).click();
+	await expect(tab.getByRole('dialog')).toContainText('The branch, as one encoded path segment.');
 });
+
+/** The same field interaction in every revision and viewport, over declared and legacy examples. */
+async function reviewExamples(tab: Page, contract: Locator, checkpoint: string): Promise<void> {
+	const info = contract.getByRole('button', { name: 'View example for Branch', exact: true });
+	await expect(info).toHaveAttribute('aria-haspopup', 'dialog');
+	await info.click();
+	const dialog = tab.getByRole('dialog');
+	await expect(dialog).toBeVisible();
+	await expect(dialog).toContainText('feature/orders');
+	await expect(dialog).toContainText('Declared');
+	await expect(dialog).toContainText('string');
+	await expect(dialog).toContainText('The branch, as one encoded path segment.');
+	await capture(tab, `contract-example-${checkpoint}`);
+	await tab.keyboard.press('Escape');
+	await expect(dialog).toHaveCount(0);
+	await expect(info).toBeFocused();
+	for (const [name, sample] of [
+		['Enabled', 'false'],
+		['Limit', '0'],
+		['Empty', 'null'],
+		['Query', '""'],
+		['Settings', 'Safe <tag>'],
+		['Commit', 'Example not recorded'],
+		['Label', 'Illustrative']
+	]) {
+		await contract.getByRole('button', { name: `View example for ${name}`, exact: true }).click();
+		await expect(dialog).toContainText(sample);
+		await expect(dialog.locator('tag')).toHaveCount(0);
+		if (name === 'Settings') await expect(dialog).toContainText('Other');
+		expect(await fits(tab)).toBe(true);
+		await dialog.getByRole('button', { name: 'Close viewer', exact: true }).click();
+	}
+	const output = contract.getByRole('table', { name: 'Outputs', exact: true });
+	await output.getByRole('button').click();
+	await expect(dialog).toContainText('<main>Orders</main>');
+	await expect(dialog.locator('main')).toHaveCount(0);
+	await dialog.getByRole('button', { name: 'Close viewer', exact: true }).click();
+}
+
+/** Closed rows preview examples, clip long values and end with an accessible details control. */
+async function compactExamples(table: Locator): Promise<void> {
+	await expect(
+		table.getByRole('columnheader', { name: 'Example', exact: true }),
+		'contract has an Example column'
+	).toBeVisible();
+	await expect(table.getByRole('columnheader', { name: 'Description', exact: true })).toHaveCount(
+		0
+	);
+	const branch = table.getByRole('row').filter({ hasText: 'Branch' });
+	await expect(branch.getByRole('cell').nth(1)).toContainText('feature/orders');
+	await expect(branch.getByRole('cell').last().getByRole('button')).toHaveAttribute(
+		'aria-haspopup',
+		'dialog'
+	);
+	const available = await branch
+		.getByRole('cell')
+		.nth(1)
+		.locator('code')
+		.evaluate((code) => {
+			const end = code.closest('tr')!.lastElementChild!.getBoundingClientRect().left;
+			return Math.min(innerWidth, end) - code.getBoundingClientRect().left;
+		});
+	expect(available, 'example preview is visible beside the action').toBeGreaterThan(24);
+	const contained = await branch
+		.getByRole('cell')
+		.last()
+		.evaluate((cell) => {
+			const button = cell.querySelector('button')!.getBoundingClientRect();
+			const box = cell.getBoundingClientRect();
+			return button.left >= box.left && button.right <= box.right + 1;
+		});
+	expect(contained, 'info button fits within its trailing cell').toBe(true);
+	const settings = table.getByRole('row').filter({ hasText: 'Settings' });
+	const clipped = await settings
+		.getByRole('cell')
+		.nth(1)
+		.evaluate((cell) =>
+			[cell, ...cell.querySelectorAll('*')].some((element) => {
+				const style = getComputedStyle(element);
+				return style.textOverflow === 'ellipsis' && element.scrollWidth > element.clientWidth;
+			})
+		);
+	expect(clipped, 'long example is visibly clipped with an ellipsis').toBe(true);
+}
+
+for (const [width, size] of Object.entries(viewports)) {
+	test(`contract has its own typed example view at ${width} width`, async ({ page: tab }) => {
+		await tab.setViewportSize(size);
+		for (const commit of [null, commits.middle]) {
+			await open(tab, { category: 'pages', entity: ids.page, commit }, 'declared');
+			await capture(tab, `contract-overview-${commit ? 'commit' : 'tip'}-${width}`);
+			await expect(
+				tab.getByRole('tab', { name: 'Contract', exact: true }),
+				'contract has its own tab'
+			).toHaveCount(1);
+			await expect(tab.getByRole('region', { name: 'Contract', exact: true })).toHaveCount(0);
+			await tab.getByRole('tab', { name: 'Contract', exact: true }).click();
+			const contract = tab.getByRole('region', { name: 'Contract', exact: true });
+			await expect(contract).toBeVisible();
+			await tab.evaluate(async () => {
+				await document.fonts.ready;
+			});
+			await capture(tab, `contract-fields-${commit ? 'commit' : 'tip'}-${width}`);
+			const inputs = contract.getByRole('table', { name: 'Inputs', exact: true });
+			await expect(inputs, 'contract inputs are a table').toBeVisible();
+			await expect(inputs.getByRole('row').filter({ hasText: 'Branch' })).toContainText('string');
+			await expect(contract.getByRole('table', { name: 'Outputs', exact: true })).toBeVisible();
+			await compactExamples(inputs);
+			await expect(contract).toContainText('<main>Orders</main>');
+			await expect(contract).not.toContainText('The branch, as one encoded path segment.');
+			await expect(contract.getByRole('img')).toHaveCount(0);
+			await reviewExamples(tab, contract, `${commit ? 'commit' : 'tip'}-${width}`);
+			expect(await where(tab)).toMatchObject({
+				commit,
+				category: 'pages',
+				entity: ids.page,
+				tab: 'contract'
+			});
+			expect(await fits(tab)).toBe(true);
+			await reviewCallableContract(tab, commit, width);
+		}
+	});
+}

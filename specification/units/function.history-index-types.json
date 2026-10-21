@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.history-index-types",
 	"kind": "function",
-	"title": "historyIndexTypes",
-	"responsibility": "Defines the portable history index: revisions with coverage, records, growth, benchmark series and legacy reports.",
+	"title": "History index schemas",
+	"responsibility": "Defines the stored history index, revision coverage, growth, benchmark series and legacy report shapes.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -25,36 +25,43 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "indexedRecordSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Strict schema for attached record identity, pass/fail status, profile, finish time, nullable base, validity and problems."
 			},
 			{
 				"name": "indexedRevisionSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Strict schema for source revision metadata, parents, branches, retention, coverage, gaps, records, reason count, legacy ids, optional direct changes and detail-file path."
 			},
 			{
 				"name": "benchmarkSeriesSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Strict schema grouping one unit/workload/metric/target into series separated by profile, unit, method and comparison context, with commit/record/value points and an incompatibility flag."
 			},
 			{
 				"name": "legacyMediaSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Strict schema for legacy media provenance, original file metadata, nullable hash/size and resolved media path or gap."
 			},
 			{
 				"name": "legacyEntrySchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Strict schema preserving a legacy report’s original outcome, times and revision, optional linked commit, checks and media."
 			},
 			{
 				"name": "historyIndexSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Strict version 1 index schema containing history refs, branches, revisions, unit growth and reviews, benchmarks, profiles, legacy reports, truncation and problems."
 			},
 			{
 				"name": "indexedExplanationSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The same explanation schema used for stored change reasons; indexing does not alter the reason."
 			}
 		],
 		"errors": []

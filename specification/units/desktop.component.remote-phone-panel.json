@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.remote-phone-panel",
 	"kind": "component",
-	"title": "RemotePhonePanel",
-	"responsibility": "Owns the RemotePhonePanel Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Remote phone panel",
+	"responsibility": "Guides pairing from a phone and displays connection status and granted access.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/RemotePhonePanel.svelte"],
+		"source": ["packages/desktop/src/components/remote-phone-panel/RemotePhonePanel.svelte"],
 		"symbols": ["RemotePhonePanel"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RemotePhonePanel.store",
-				"type": "RemotePhone"
+				"type": "RemotePhone",
+				"description": "Phone status and operations, including scan/disconnect, busy/errors, scan failure and fixture flag. Scan receives the entered device name, initially iPhone."
 			},
 			{
 				"name": "RemotePhonePanel.compact",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional flag, false by default. Compact hides unpaired setup form/instructions, grant/device details and fixture notice; applicable connection actions and store errors remain."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RemotePhonePanel",
-				"type": "markup"
+				"type": "markup",
+				"description": "Connection panel when status and labels exist. Full unpaired view offers a phone-name input limited to 80 characters and QR scan/retry. Other states display status and a disconnect action labeled Cancel for pairing/pending approval, Connect again for revoked, otherwise Disconnect. Full mode shows grant and phone identity. Busy disables buttons; errors are alerts."
 			}
 		],
 		"errors": []
@@ -44,11 +47,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/RemotePhonePanel.svelte",
+		"entry": "packages/desktop/src/components/remote-phone-panel/RemotePhonePanel.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/RemotePhonePanel.svelte"
+				"entry": "packages/desktop/src/components/remote-phone-panel/RemotePhonePanel.svelte"
 			}
 		]
 	},

@@ -2,7 +2,8 @@ import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
-import { sideImpact, type StoredSide } from '../src/utils/sideImpact';
+import { sideImpact } from '../packages/reports/src/components/harness/harness-compare/sideImpact';
+import { type StoredSide } from '../src/utils/sideImpact';
 import { baselineRepo, type VerifyRepo } from './support/verifyRepo';
 
 interface Impact {

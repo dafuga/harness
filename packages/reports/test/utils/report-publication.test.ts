@@ -1,7 +1,7 @@
 import { afterEach, expect, test } from 'vitest';
 import { readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { reportPublication } from '../../src/utils/reportPublication';
+import { reportPublication } from '../../src/services/report-publish-service/reportPublication';
 import { publicationFixture } from '../publicationFixture';
 const roots: string[] = [];
 afterEach(async () => {

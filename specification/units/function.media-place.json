@@ -2,38 +2,43 @@
 	"schemaVersion": 1,
 	"id": "function.media-place",
 	"kind": "function",
-	"title": "mediaPlace",
-	"responsibility": "Owns the mediaPlace shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Verified media location",
+	"responsibility": "Names intact capture bytes by content hash and reports a gap when bytes are absent or differ from the record.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/mediaPlace.ts"],
-		"symbols": ["MediaFile", "MediaPlacer", "mediaPlace", "checkedMedia"]
+		"source": ["src/services/history-media-service/mediaPlace.ts", "src/utils/mediaPlace.ts"],
+		"symbols": ["mediaPlace", "MediaFile", "MediaPlacer", "checkedMedia", "mediaPlace"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "mediaPlace.bytes",
-				"type": "Buffer | undefined"
+				"type": "Buffer | undefined",
+				"description": "Original capture bytes, or undefined when unavailable."
 			},
 			{
 				"name": "mediaPlace.file",
-				"type": "MediaFile"
+				"type": "MediaFile",
+				"description": "Recorded path and expected SHA-256 digest; the path supplies the extension."
 			},
 			{
 				"name": "mediaPlace.gap",
-				"type": "string"
+				"type": "string",
+				"description": "Explanation to return when bytes are missing or fail the digest check."
 			}
 		],
 		"outputs": [
 			{
 				"name": "mediaPlace",
-				"type": "ResolvedMedia"
+				"type": "ResolvedMedia",
+				"description": "media/hash.extension when bytes match, using a lowercase extension or bin fallback; otherwise media null and the supplied gap. No file is read or written."
 			},
 			{
 				"name": "checkedMedia",
-				"type": "MediaPlacer"
+				"type": "MediaPlacer",
+				"description": "Async MediaPlacer wrapper around the same check; it reports placement without writing bytes."
 			}
 		],
 		"errors": []

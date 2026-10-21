@@ -69,7 +69,8 @@ export class HostedProjectService {
 		key: keyof Bridge,
 		input: Record<string, unknown> & { projectId: string }
 	): Promise<unknown> {
-		if (key === 'providers') return [];
+		if (['providers', 'startRun', 'cancelRun', 'openThread', 'approve'].includes(key))
+			return agent(this.remote, key, input);
 		if (key === 'capabilities') return this.remote.capabilities(input.projectId);
 		if (key === 'pendingComments') return [];
 		if (key === 'addComment') {
@@ -78,24 +79,34 @@ export class HostedProjectService {
 			);
 			return { kind: 'shared', projectId: input.projectId, thread };
 		}
-		if (['evidence', 'artifact'].includes(key) && !this.remote[key as 'evidence' | 'artifact'])
-			throw new Error(unread);
-		const methods = [
-			'snapshot',
-			'entity',
-			'source',
-			'image',
-			'messages',
-			'history',
-			'evidence',
-			'artifact'
-		] as const;
-		if (!(methods as readonly string[]).includes(key))
-			throw new Error('Agent runs and source mutations are unavailable in shared projects.');
-		const method = this.remote[key as (typeof methods)[number]] as (
-			input: unknown
-		) => Promise<unknown>;
-		if (!method) throw new Error('Desktop operation unavailable.');
-		return method.call(this.remote, input);
+		return readOperation(this.remote, key, input);
 	}
+}
+
+type HostedInput = Record<string, unknown> & { projectId: string };
+function agent(remote: RemoteProjectPort, key: keyof Bridge, input: HostedInput) {
+	if (remote.agent) return remote.agent(key, input, input.projectId);
+	if (key === 'providers') return [];
+	throw new Error(
+		'Agent runs and source mutations are unavailable in shared projects without a connected executor.'
+	);
+}
+function readOperation(remote: RemoteProjectPort, key: keyof Bridge, input: HostedInput) {
+	if (['evidence', 'artifact'].includes(key) && !remote[key as 'evidence' | 'artifact'])
+		throw new Error(unread);
+	const methods = [
+		'snapshot',
+		'entity',
+		'source',
+		'image',
+		'messages',
+		'history',
+		'evidence',
+		'artifact'
+	] as const;
+	if (!(methods as readonly string[]).includes(key))
+		throw new Error('Agent runs and source mutations are unavailable in shared projects.');
+	const method = remote[key as (typeof methods)[number]] as (input: unknown) => Promise<unknown>;
+	if (!method) throw new Error('Desktop operation unavailable.');
+	return method.call(remote, input);
 }

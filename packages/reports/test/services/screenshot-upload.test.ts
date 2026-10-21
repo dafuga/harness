@@ -2,7 +2,7 @@ import { afterEach, expect, test, vi } from 'vitest';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { ReportRepository } from '../../src/repositories/ReportRepository';
+import { ReportRepository } from '../../src/repositories/report-repository/ReportRepository';
 import { ScreenshotUploadService } from '../../src/services/ScreenshotUploadService';
 
 const roots: string[] = [];

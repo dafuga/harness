@@ -2,38 +2,43 @@
 	"schemaVersion": 1,
 	"id": "reports.component.project-activity",
 	"kind": "component",
-	"title": "ProjectActivity",
-	"responsibility": "Lays out the activity of one repository and gives its parts one look; without live data it is a recorded history.",
+	"title": "Project activity overview",
+	"responsibility": "Presents recorded repository activity alongside available live agent and worktree observations.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/ProjectActivity.svelte"],
+		"source": ["packages/reports/src/components/project-activity/ProjectActivity.svelte"],
 		"symbols": ["ProjectActivity"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProjectActivity.activity",
-				"type": "ProjectActivity"
+				"type": "ProjectActivity",
+				"description": "Required recorded activity, including repository identity, branch/head, work and loops. Its kind controls whether registry information is described as recorded."
 			},
 			{
 				"name": "ProjectActivity.live",
-				"type": "LiveActivity | null"
+				"type": "LiveActivity | null",
+				"description": "Required live observations or null. Supplies agent and worktree state when available."
 			},
 			{
 				"name": "ProjectActivity.base",
-				"type": "string"
+				"type": "string",
+				"description": "Required explorer prefix used for commit links. A commit uses the current branch when it belongs there, otherwise a listed matching branch."
 			},
 			{
 				"name": "ProjectActivity.reading",
-				"type": "{ now: number; failed: boolean; refresh: () => void }"
+				"type": "{ now: number; failed: boolean; refresh: () => void }",
+				"description": "Optional live-reading state, supplying the current time, failed-read flag and refresh callback to the live views."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectActivity",
-				"type": "markup"
+				"type": "markup",
+				"description": "Repository identity and commit navigation, agent observations, worktrees, recorded work and loops. Missing live data remains distinguishable from observations. This component renders supplied data and does not fetch it."
 			}
 		],
 		"errors": []
@@ -72,11 +77,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/ProjectActivity.svelte",
+		"entry": "packages/reports/src/components/project-activity/ProjectActivity.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/ProjectActivity.svelte"
+				"entry": "packages/reports/src/components/project-activity/ProjectActivity.svelte"
 			}
 		]
 	},

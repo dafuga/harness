@@ -1,6 +1,25 @@
 # Harness desktop
 
-A local Electron workspace for browsing Pages, Shells, Components, Functions, Configs and Services, finding any of them with the global search in the top bar, reviewing committed designs, and sending Plan or Change requests to installed agent CLIs.
+A local Electron workspace for browsing Pages, Shells, Components, Helpers, Models, Configs and Services, finding any of them with the global search in the top bar, reviewing committed designs, and sending Plan or Change requests to installed agent CLIs.
+
+## Google account projects
+
+Use **Connect shared projects** to sign in with Google through the trusted Harness Hub.
+The same account sees projects it owns and projects whose invitations it accepted on Web,
+Electron and iOS. Lists refresh on focus, when a page becomes visible or reconnects, and
+at most every 30 seconds while visible. A removed membership or rejected session clears
+protected views; a temporary outage preserves the saved login.
+
+The iOS account connection works without a paired Mac. Pairing adds explicitly granted
+local Mac projects beside hosted projects; removing that pairing leaves the independent
+account intact. Local folders are not uploaded automatically by signing in.
+
+Configure the dedicated Hub using [the Hub setup guide](../hub/README.md). Electron reads
+its exact `HARNESS_HUB_ORIGIN`; an iOS build uses the public Xcode build setting of that
+name through `HarnessHubOrigin` in Info.plist. Leave it unset until the real HTTPS Hub
+is configured. The bundled renderer stays local, and Google approval opens in the system
+browser. Native credentials remain in OS-protected storage, outside renderer messages;
+the iOS account uses a separate device-only Keychain entry from Mac pairing.
 
 ## Run locally
 
@@ -20,11 +39,17 @@ bun run package:mac
 open dist/mac/Harness.app
 ```
 
-The packaging script creates a local, ad-hoc-signed app. It does not notarize, publish, or install a production release.
+By default packaging signs the local app ad hoc. Rebuilds that change its code can change its signing requirement, which can make macOS ask for access to Harness's existing Keychain item again. Use the same project-authorized certificate for successive builds to keep a stable identity:
+
+```sh
+HARNESS_MAC_SIGN_IDENTITY=<exact-certificate-SHA1> bun run package:mac
+```
+
+The fingerprint selects an identity already available to `security find-identity -v -p codesigning`; it is not a password or private key. For repeated local builds, Bun can read this setting from this package's ignored `.env.local` file. An invalid or unavailable selection fails before the app is written. Signing is verified after packaging. Moving from ad-hoc signing can still require Keychain approval; compare the designated requirement of successive builds before assuming access is stable. This setting does not change Keychain permissions or disable encryption. Packaging does not notarize, publish, or install a production release.
 
 ## Projects and shared collaboration
 
-The top-left picker switches between saved local projects and shared GitHub projects. Local projects retain Plan/Change controls; shared projects support human comments only. Launch with the dedicated `HARNESS_HUB_ORIGIN` to connect through a browser sign-in and one-time desktop code. The main process stores the session through Electron safeStorage; credentials never enter the renderer.
+The top-left picker switches between saved local projects and shared GitHub projects. Local projects retain Plan/Change controls. Shared project actions follow membership: readers browse, commenters discuss, and writers can request agent work when a project executor is available. Launch with the dedicated `HARNESS_HUB_ORIGIN` to connect through browser sign-in and a one-time device code. The main process stores the session through Electron safeStorage; credentials never enter the renderer.
 
 Project URLs start with `/projects/{projectId}/harness/branch/{encodedBranch}/`, with an optional `/commit/{fullSha}/` before the entity category. Cached shared views display their saved time while offline and disable mutations. Access denial clears protected cached views; pending drafts stay distinct from acknowledged GitHub comments.
 
@@ -120,3 +145,32 @@ Its screenshots and `report.json` go to `work/mobile/ios-acceptance/`, which Git
 A simulator has no camera, so the pairing scans in the isolated acceptance fixture are answered by the TEST ONLY scanner of `ios/Checks/Acceptance/SyntheticScanner.swift`. `--scan-fixture`, Debug only like `--fixture`, builds it into `.cache/ios/scan-fixture/` from an isolated copy of the native source in which it stands for the camera scanner and nothing else differs; the run fails if a product of the real source holds it. With that copy the run goes through each scan that is no offer, a scan that connects nothing until the fixture computer approves it, and denial. The Debug and Release products of the real source are started with the same launch argument and still have only their camera: a scan finds none, a refused camera is said as that, and nothing reaches the computer. The run sets the camera permission of its own simulator with `simctl privacy` and presses no prompt. No camera reads a code in any of this: a scan by a physical camera and the system's permission prompt are proven by nothing here. `ios:check:native`, `ios:check:vectors` and `test/ios-scanner-barrier.test.ts` hold the reader, the scan boundary and the absence of any other way in.
 
 See the [feature specification](specification/features/planned/image-threads.md) and [UI/native loop evidence](../../specification/loops/harness-image-threads/desktop-ui-native-evidence.md).
+
+## Environments and Cloudflare deployment
+
+The top bar keeps the project/workbench, Branch and Commit selectors behind labelled icons. Environment remains visible: dev, stage, preprod or prod. It scopes the next Change request; the source branch and commit remain visible separately. Environment times are the last deployment verified by this desktop, while revision times come from Git. Deployment does not switch or push Git branches.
+
+Projects without a configured deployment target keep local changes available and say **Local changes only**. A scoped Change requires a clean checkout of the configured source branch, verifies the source with `bun run check`, commits its changes, and queues the resulting commit through dev, stage and preprod up to the selected environment. The agent run returns once the chain is queued; each higher job waits for its own lower job to pass. Requests viewed in prod stop at preprod. **Deploy** opens one production promotion modal showing the verified preprod commit, current production commit and how many commits production is behind. Its single **Promote to production** button deploys that exact preprod commit from an isolated checkout, preserving the browsing revision and any local changes. Live status follows preparation, checks, build, upload and health verification. Each configured preceding environment must have a verified receipt for the same commit; production additionally requires forward-only history from its current commit. Expired, reused, changed-project, changed-source and changed-configuration plans are refused. A failed upload/health check does not advance the saved environment state; inspect Cloudflare before retrying because an upload may already have succeeded.
+
+The top-right **Deployments** light shows the active count. Open it for active and recent jobs labelled by destination, then choose a job for its source commit, timestamps, current step, error or verified receipt. These details reuse the production modal’s progress components. Jobs stay visible when switching projects. Each job builds its captured commit in an isolated checkout: different destinations can run together, while the same provider target queues. Later edits or lower-environment deployments can continue; configuration or destination changes still stop a job. Failed jobs stop dependent jobs and never advance their receipts. Recent history is limited to 64 finished jobs and is kept for the lifetime of the desktop host.
+
+The first plugin supports Cloudflare Workers with explicit named environments and Cloudflare Pages. It detects `wrangler.jsonc`, `wrangler.json` and `wrangler.toml`. Ambiguous mappings stay unavailable. Add `harness.deploy.json` in the selected project's root to state its source branch, account, environment aliases, dedicated credential variable names and HTTPS health endpoints:
+
+```json
+{
+	"adapter": "cloudflare",
+	"sourceBranch": "dev",
+	"config": "wrangler.jsonc",
+	"environments": {
+		"dev": {
+			"wranglerEnvironment": "development",
+			"name": "my-app-dev",
+			"accountId": "00000000000000000000000000000000",
+			"tokenEnv": "HARNESS_MY_APP_DEV_CLOUDFLARE_API_TOKEN",
+			"healthUrl": "https://dev.example.com/health"
+		}
+	}
+}
+```
+
+Add stage, preprod and prod entries for configured targets. Worker mappings must match an explicit `env.<name>.name` in Wrangler and use distinct Worker identities. Pages mappings instead name a `branch` and the Pages project `name`; output comes from `pages_build_output_dir`. The adapter checks the live Pages production branch before upload. Provider credentials are read only in the host, passed only to the adapter subprocess and removed from agent/check subprocess environments. Set the dedicated variables in the desktop host's managed launch environment; do not put tokens in this JSON. A repository needs its normal `check` and `build` scripts and locally installed Wrangler. Receipts live in the Git common directory's `harness-deployments/receipts.json` and are shared across worktrees. Remote phones and hosted read-only projects cannot execute deployment operations.

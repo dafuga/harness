@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.kernel-artifacts",
 	"kind": "function",
-	"title": "kernelArtifacts",
-	"responsibility": "Locates the built impact kernel artifacts without building anything.",
+	"title": "Kernel artifact location",
+	"responsibility": "Finds an existing kernel build record and available Wasm/native files without building or running them.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,17 +11,19 @@
 		"symbols": ["Environment", "KernelBuild", "KernelFile", "KernelArtifacts", "kernelArtifacts"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "kernelArtifacts.env",
-				"type": "Environment"
+				"type": "Environment",
+				"description": "Environment map, defaulting to process.env. HARNESS_KERNEL_DIR restricts lookup to its resolved directory; otherwise known bundle/checkout locations are tried."
 			}
 		],
 		"outputs": [
 			{
 				"name": "kernelArtifacts",
-				"type": "KernelArtifacts"
+				"type": "KernelArtifacts",
+				"description": "Build directory, parsed build record and paths of existing Wasm/native artifacts, or all undefined when no build.json is found."
 			}
 		],
 		"errors": []

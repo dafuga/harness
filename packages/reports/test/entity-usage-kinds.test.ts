@@ -4,13 +4,13 @@ import { commits, ids } from './entityUnits';
 
 /**
  * A config and a service are shown with the things around them as every entity is: under Used In
- * and Uses, on the overview and at each tab. What uses a config is listed once, never a second
+ * and Uses, exclusively in their own tabs. What uses a config is listed once, never a second
  * time under another name.
  */
 const base = `/harness/branch/feature%2Forders/commit/${commits.middle}`;
 const settings = { category: 'configs', entity: ids.settings } as const;
 const store = { category: 'services', entity: ids.store } as const;
-const named = ['Overview', 'Used In', 'Uses', 'Tests', 'History'];
+const named = ['Overview', 'Contract', 'Used In', 'Uses', 'Tests', 'History', 'Source'];
 const sections = (body: string) =>
 	[...body.matchAll(/<section class="ex-card[^"]*" aria-label="([^"]+)"/g)].map(
 		(match) => match[1]
@@ -38,15 +38,15 @@ test('a config and a service have the sections of every entity, and none is name
 		}
 });
 
-test('what uses a config is listed once, under Used In, on its overview and at its tab', () => {
+test('a config overview omits usage and its Used In tab lists each consumer once', () => {
 	const overview = content('commit', settings);
-	expect(sections(overview).filter((name) => /^Use/.test(name))).toEqual(['Used In', 'Uses']);
-	expect(card(overview, 'Used In')).toMatch(/^Used In 1 Orders page\s+Page\b/);
-	expect(times(overview, `href="${base}/pages/${ids.page}"`)).toBe(1);
+	expect(sections(overview).filter((name) => /^Use/.test(name))).toEqual([]);
+	expect(times(overview, `href="${base}/pages/${ids.page}"`)).toBe(0);
 	expect(words(overview)).toContain('Settings it provides');
 	expect(words(overview)).not.toContain('Nothing in the registry uses it.');
 	const used = content('commit', { ...settings, tab: 'used-in' });
 	expect(sections(used)).toEqual(['Used In']);
+	expect(times(used, `href="${base}/pages/${ids.page}"`)).toBe(1);
 	expect(card(used, 'Used In')).toMatch(/^Used In 1 Orders page\s+Page\b/);
 	expect(card(content('commit', { ...settings, tab: 'uses' }), 'Uses')).toBe(
 		'Uses 0 It uses no component, function, config or service.'
@@ -55,11 +55,14 @@ test('what uses a config is listed once, under Used In, on its overview and at i
 
 test('a service says what uses it, down from the page, and what it uses', () => {
 	const overview = content('commit', store);
-	expect(card(overview, 'Used In')).toMatch(
+	expect(sections(overview).filter((name) => /^Use/.test(name))).toEqual([]);
+	expect(card(content('commit', { ...store, tab: 'uses' }), 'Uses')).toBe(
+		'Uses 0 It uses no component, function, config or service.'
+	);
+	const used = content('commit', { ...store, tab: 'used-in' });
+	expect(card(used, 'Used In')).toMatch(
 		/^Used In 2 Orders page\s+Page\b.*Order list\s+Component\b/
 	);
-	expect(card(overview, 'Uses')).toBe('Uses 0 It uses no component, function, config or service.');
-	const used = content('commit', { ...store, tab: 'used-in' });
 	expect(sections(used)).toEqual(['Used In']);
 	expect(used).toContain(`href="${base}/components/${ids.list}"`);
 	expect(card(used, 'Used In')).not.toMatch(/src\/|\.ts\b/);

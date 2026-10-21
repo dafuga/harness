@@ -2,8 +2,8 @@
 	import type { Snippet } from 'svelte';
 	import type { Workspace } from '../lib/stores/workspace.svelte';
 	import CatalogView from './CatalogView.svelte';
-	import EntityView from './EntityView.svelte';
-	import NavBar from './NavBar.svelte';
+	import EntityView from './entity-view/EntityView.svelte';
+	import NavBar from './nav-bar/NavBar.svelte';
 	import ProjectAgent from './ProjectAgent.svelte';
 	import StatusBar from './StatusBar.svelte';
 	let { workspace, account }: { workspace: Workspace; account?: Snippet } = $props();
@@ -18,6 +18,7 @@
 			/>{/key}{:else}{#key workspace.projectId}<CatalogView {workspace} />{/key}{/if}<StatusBar
 		{workspace}
 	/>
-	<!-- One conversation per project and revision: a request never follows to another one. -->
-	{#key `${workspace.projectId}:${workspace.snapshot?.writable}`}<ProjectAgent {workspace} />{/key}
+	<!-- One conversation per project: it stays through entities, history and pinned commits, and
+	     a request never follows to another project. -->
+	{#key workspace.projectId}<ProjectAgent {workspace} />{/key}
 </div>

@@ -14,7 +14,7 @@ const tabs = (page: Page) => page.getByRole('navigation', { name: 'Entity sectio
 const current = (page: Page) => tabs(page).locator('[aria-current="page"]');
 const path = (page: Page) => new URL(page.url()).pathname;
 const panel = (page: Page, name: string) => page.getByRole('region', { name, exact: true });
-const named = ['Overview', 'Plan', 'Used In', 'Uses', 'Evidence', 'History'];
+const named = ['Overview', 'Plan', 'Used In', 'Uses', 'Examples', 'History', 'Source'];
 /** Goes to an address as Back and Forward do: the page stays loaded, and what it shows changes. */
 const visit = (page: Page, address: string) =>
 	page.evaluate((to) => {

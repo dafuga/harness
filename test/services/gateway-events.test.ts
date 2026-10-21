@@ -1,6 +1,6 @@
 import { expect, test, vi } from 'vitest';
 import { GatewayEventsService } from '../../src/services/GatewayEventsService';
-import { CodexSessionRepository } from '../../src/repositories/CodexSessionRepository';
+import { CodexSessionRepository } from '../../src/repositories/codex-session-repository/CodexSessionRepository';
 test('parallel bridge calls close their response batch only once', async () => {
 	vi.useFakeTimers();
 	try {

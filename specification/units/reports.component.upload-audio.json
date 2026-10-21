@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "reports.component.upload-audio",
 	"kind": "component",
-	"title": "UploadAudio",
-	"responsibility": "Owns the UploadAudio Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Audio evidence upload",
+	"responsibility": "Adds a single recording or paired before-and-after audio evidence to a report.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/components/UploadAudio.svelte"],
 		"symbols": ["UploadAudio"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "UploadAudio.reportId",
-				"type": "string"
+				"type": "string",
+				"description": "Required report identifier included in submitted form data."
 			},
 			{
 				"name": "UploadAudio.onUploaded",
-				"type": "(report: Report) => void"
+				"type": "(report: Report) => void",
+				"description": "Required callback receiving the returned report after a 201 response with an evidence array."
 			}
 		],
 		"outputs": [
 			{
 				"name": "UploadAudio",
-				"type": "markup"
+				"type": "markup",
+				"description": "Expandable audio upload form with single/comparison modes, required title up to 120 characters, optional source up to 200 and notes up to 2000. Rejects selected files above 50,000,000 bytes before posting. Controls lock during upload; failures appear in status text. Success resets fields and file pickers while retaining the mode."
 			}
 		],
 		"errors": []

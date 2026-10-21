@@ -2,7 +2,7 @@ import { mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, expect, test } from 'vitest';
-import { readBrowserDiagnostics } from '../../src/utils/readBrowserDiagnostics';
+import { readBrowserDiagnostics } from '../../src/services/check-run-service/readBrowserDiagnostics';
 
 let root = '';
 beforeEach(() => {

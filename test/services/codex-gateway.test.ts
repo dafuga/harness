@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { CodexGatewayService } from '../../src/services/CodexGatewayService';
+import { CodexGatewayService } from '../../src/services/codex-gateway-service/CodexGatewayService';
 
 const payload = {
 	model: 'claude-opus-5-5',

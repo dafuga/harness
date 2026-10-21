@@ -12,16 +12,26 @@
 	},
 	"contract": {
 		"origin": "derived",
-		"inputs": [],
+		"inputs": [
+			{
+				"name": "handle.input",
+				"type": "unknown"
+			}
+		],
 		"outputs": [
 			{
 				"name": "handle",
-				"type": "Handle"
+				"type": "unknown"
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.controller.console-agent",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.function.console-server",
 			"via": "import",

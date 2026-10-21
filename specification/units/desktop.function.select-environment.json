@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.select-environment",
 	"kind": "function",
-	"title": "selectEnvironment",
-	"responsibility": "Owns the selectEnvironment shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Choose the app environment",
+	"responsibility": "Connect the native mobile or desktop adapter when available, otherwise select the web environment.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/selectEnvironment.ts"],
 		"symbols": ["selectEnvironment"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "selectEnvironment.host",
-				"type": "EnvironmentHost"
+				"type": "EnvironmentHost",
+				"description": "Host providing Capacitor detection and an optional desktop bridge."
 			}
 		],
 		"outputs": [
 			{
 				"name": "selectEnvironment",
-				"type": "Environment"
+				"type": "Environment",
+				"description": "Mobile environment when Capacitor reports native, else desktop when the bridge exists, else web with no bridge and local false."
 			}
 		],
 		"errors": []

@@ -24,6 +24,9 @@ test('the shared select names its field, carries its form name and holds the opt
 	);
 	expect(body).toMatch(/<\/select>\s*<svg\b[^>]*aria-hidden="true"/);
 	expect(field(markup())[0]).not.toContain('name=');
+	const compact = markup({ compact: true, display: 'feature/very-long-branch-name' });
+	expect(compact).toContain('featur…h-name');
+	expect(field(compact)[0]).toContain('title="feature/very-long-branch-name"');
 });
 
 test('a disabled select is disabled as a field and dimmed together with its caret', () => {

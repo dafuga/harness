@@ -2,34 +2,41 @@
 	"schemaVersion": 1,
 	"id": "reports.function.artifact-cases",
 	"kind": "function",
-	"title": "artifactCases",
-	"responsibility": "Owns the artifactCases shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Recorded invocation reader",
+	"responsibility": "Reads recorded function input/output cases while distinguishing missing or malformed evidence.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/artifactCases.ts"],
-		"symbols": ["caseForm", "artifactCases"]
+		"source": [
+			"packages/reports/src/components/entity-cases/artifactCases.ts",
+			"packages/reports/src/utils/artifactCases.ts"
+		],
+		"symbols": ["artifactCases", "caseForm", "artifactCases"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "artifactCases.document",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Parsed artifact document of unknown shape."
 			},
 			{
 				"name": "artifactCases.unit",
-				"type": "string"
+				"type": "string",
+				"description": "Optional expected unit identifier. When supplied, recorded invocations must name that unit."
 			}
 		],
 		"outputs": [
 			{
 				"name": "caseForm",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Supported form: schema version 1, function-invocations kind, at most 64 cases and case names up to 160 characters."
 			},
 			{
 				"name": "artifactCases",
-				"type": "ExplorerArtifactCases"
+				"type": "ExplorerArtifactCases",
+				"description": "Returns invocation cases only when every case has a nonempty bounded name, input and exactly one of output or error, with valid unit/symbol metadata. Otherwise returns a stated gap. Legacy top-level input/inputs/request plus output/outputs/response become one observation row; false, zero, null and empty values are retained."
 			}
 		],
 		"errors": []

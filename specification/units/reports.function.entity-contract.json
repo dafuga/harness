@@ -2,54 +2,74 @@
 	"schemaVersion": 1,
 	"id": "reports.function.entity-contract",
 	"kind": "function",
-	"title": "entityContract",
-	"responsibility": "Reads the contract of a unit as rows of plain words for its kind, and names the states it has to be proven in.",
+	"title": "Readable entity contracts",
+	"responsibility": "Converts declared interfaces and applicable scenario states into readable contract rows.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/entityContract.ts"],
-		"symbols": ["ContractRow", "ContractFacts", "humanize", "requiredStates", "entityContract"]
+		"source": [
+			"packages/reports/src/components/harness/entity-sections/entityContract.ts",
+			"packages/reports/src/utils/entityContract.ts"
+		],
+		"symbols": [
+			"requiredStates",
+			"entityContract",
+			"ContractRow",
+			"ContractFacts",
+			"humanize",
+			"requiredStates",
+			"entityContract"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "humanize.name",
-				"type": "string"
+				"type": "string",
+				"description": "Identifier to split into ordinary lowercase words."
 			},
 			{
 				"name": "requiredStates.unit",
-				"type": "HarnessUnit"
+				"type": "HarnessUnit",
+				"description": "Unit whose required states are requested."
 			},
 			{
 				"name": "requiredStates.scenarios",
-				"type": "HarnessScenario[]"
+				"type": "HarnessScenario[]",
+				"description": "Scenario declarations to examine."
 			},
 			{
 				"name": "requiredStates.units",
-				"type": "HarnessUnit[]"
+				"type": "HarnessUnit[]",
+				"description": "Registry units used to determine which scenario states actually show the unit."
 			},
 			{
 				"name": "entityContract.unit",
-				"type": "HarnessUnit"
+				"type": "HarnessUnit",
+				"description": "Unit supplying its responsibility, contract and runtime."
 			},
 			{
 				"name": "entityContract.facts",
-				"type": "ContractFacts"
+				"type": "ContractFacts",
+				"description": "Display category plus optional app route and applicable states."
 			}
 		],
 		"outputs": [
 			{
 				"name": "humanize",
-				"type": "string"
+				"type": "string",
+				"description": "Words separated at camel-case, acronym and underscore/dot/hyphen boundaries, trimmed and lowercased."
 			},
 			{
 				"name": "requiredStates",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Unique required state identifiers from scenarios naming the unit, narrowed through scenarioFor."
 			},
 			{
 				"name": "entityContract",
-				"type": "ContractRow[]"
+				"type": "ContractRow[]",
+				"description": "Category-specific rows: pages include purpose, address and required states; configs show purpose and provided outputs; other categories show inputs, outputs and errors, with service runtime and supplied states. Field descriptions are retained, with missing descriptions stated when some fields are described. Component-self markup outputs read rendered markup."
 			}
 		],
 		"errors": []
@@ -69,6 +89,72 @@
 			"unit": "reports.model.harness-types",
 			"via": "import",
 			"origin": "derived"
+		}
+	],
+	"helperContracts": [
+		{
+			"name": "humanize",
+			"source": "packages/reports/src/utils/entityContract.ts",
+			"inputs": [
+				{
+					"name": "humanize.name",
+					"type": "string"
+				}
+			],
+			"output": "string",
+			"pure": true,
+			"consumers": [
+				{
+					"unit": "desktop.component.contract-panel"
+				},
+				{
+					"unit": "reports.component.harness-entity-change"
+				},
+				{
+					"unit": "reports.component.harness-entity-config"
+				},
+				{
+					"unit": "reports.component.harness-entity-measures"
+				},
+				{
+					"unit": "reports.component.harness-explorer-table"
+				},
+				{
+					"unit": "reports.component.recorded-value"
+				},
+				{
+					"unit": "reports.function.contract-fields",
+					"symbol": "nameOf"
+				},
+				{
+					"unit": "reports.function.entity-contract",
+					"symbol": "row"
+				},
+				{
+					"unit": "reports.function.entity-history",
+					"symbol": "named"
+				},
+				{
+					"unit": "reports.function.entity-measure",
+					"symbol": "metricLabel"
+				},
+				{
+					"unit": "reports.function.entity-measure",
+					"symbol": "timing"
+				},
+				{
+					"unit": "reports.function.entity-reasons",
+					"symbol": "attempts"
+				},
+				{
+					"unit": "reports.function.entity-reasons",
+					"symbol": "subject"
+				},
+				{
+					"unit": "reports.function.entity-reasons",
+					"symbol": "uses"
+				}
+			]
 		}
 	],
 	"runtime": {

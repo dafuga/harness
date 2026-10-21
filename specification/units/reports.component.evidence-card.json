@@ -2,38 +2,49 @@
 	"schemaVersion": 1,
 	"id": "reports.component.evidence-card",
 	"kind": "component",
-	"title": "EvidenceCard",
-	"responsibility": "Owns the EvidenceCard Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Evidence card",
+	"responsibility": "Presents one screenshot or audio gallery entry with its recorded status and provenance.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/components/EvidenceCard.svelte"],
 		"symbols": ["EvidenceCard"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EvidenceCard.item",
-				"type": "Evidence"
+				"type": "Evidence",
+				"description": "Required evidence record. Media classification selects screenshot or audio display. For screenshots, missing flag or image-load error disables opening and changes displayed status to not-proven."
 			},
 			{
 				"name": "EvidenceCard.before",
-				"type": "Evidence"
+				"type": "Evidence",
+				"description": "Optional original recording. For audio items, presence selects a paired comparison card; otherwise audio is rendered individually. Ignored for screenshots."
 			},
 			{
 				"name": "EvidenceCard.assetBase",
-				"type": "string"
+				"type": "string",
+				"description": "Required prefix concatenated with screenshot files or passed to audio playback."
 			},
 			{
 				"name": "EvidenceCard.onopen",
-				"type": "() => void"
+				"type": "() => void",
+				"description": "Required callback invoked by screenshot or paired-audio opening controls. Individual audio playback uses its own controls."
+			},
+			{
+				"name": "EvidenceCard.compact",
+				"type": "boolean",
+				"description": "Optional screenshot presentation: false by default. True keeps provenance in a Capture details disclosure beneath the image. Audio rendering is unchanged.",
+				"examples": [true]
 			}
 		],
 		"outputs": [
 			{
 				"name": "EvidenceCard",
-				"type": "markup"
+				"type": "markup",
+				"description": "Screenshot card with lazy image, title anchor, category, status, provenance and optional viewport/time. Missing screenshots show a placeholder and note. Audio delegates to its single or paired card. The component does not verify evidence bytes."
 			}
 		],
 		"errors": []

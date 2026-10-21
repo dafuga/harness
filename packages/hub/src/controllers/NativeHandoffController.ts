@@ -1,5 +1,5 @@
-import type { NativeHandoffService } from '../services/NativeHandoffService';
-import type { RequestSessionService } from '../services/RequestSessionService';
+import type { NativeHandoffService } from '../services/native-handoff-service/NativeHandoffService';
+import type { RequestSessionService } from '../services/request-session-service/RequestSessionService';
 import { authHttp, readJson } from '../utils/authHttp';
 import type { AuthRoutes } from '../utils/authHttp';
 import { AuthRequestValidator } from '../validators/AuthRequestValidator';

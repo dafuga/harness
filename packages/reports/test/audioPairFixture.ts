@@ -1,6 +1,6 @@
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { ReportRepository } from '../src/repositories/ReportRepository';
+import { ReportRepository } from '../src/repositories/report-repository/ReportRepository';
 import { audioFixture } from './audioFixture';
 /** `project` is where the report says it was recorded; a site only shows its own checkouts. */
 export async function audioPairFixture(root: string, project = '/tmp/audio-comparison') {

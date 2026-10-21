@@ -89,102 +89,86 @@
 	opacity: 0.6;
 	cursor: not-allowed;
 }
-/* The branch with its tip, the commit that is viewed, and the way back to the tip. */
+/* Compact native revision selectors; full labels and status remain in their hover titles. */
 .hx-revision {
 	position: relative;
 	display: flex;
+	align-self: center;
 	align-items: center;
-	gap: 10px clamp(10px, 1vw, 20px);
-	min-width: 0;
+	gap: 6px;
+	flex: none;
+	width: max-content;
+	max-width: 100%;
 	margin-left: auto;
-	padding: 4px 0 4px clamp(12px, 1.3vw, 26px);
-}
-.hx-revision::before {
-	content: '';
-	position: absolute;
-	inset: 18px auto 18px 0;
-	width: 1px;
-	background: var(--hx-line-strong);
+	padding: 0 0 0 12px;
+	border-left: 1px solid var(--hx-line-strong);
 }
 .hx-revision label {
-	display: grid;
-	grid-template-columns: minmax(0, 1fr);
+	position: relative;
 	flex: none;
-	gap: 3px;
-	width: 128px;
+	width: 116px;
 	min-width: 0;
-	color: var(--hx-soft);
-	font-size: 0.92rem;
-	line-height: 1.25;
+	color: var(--hx-text);
+	font-size: 12px;
+	line-height: 1.2;
 }
-/* The branch field gives way first when a long name and a narrow screen meet. */
 .hx-revision label:first-of-type {
-	flex: 0 1 clamp(168px, 14vw, 232px);
-	width: auto;
-	min-width: 132px;
-}
-.hx-revision label > * {
-	grid-column: 1;
+	width: 160px;
 }
 .hx-revision label > span:first-child {
-	display: flex;
-	grid-row: 1;
-	align-items: center;
-	gap: 8px;
+	position: absolute;
+	z-index: 1;
+	inset-inline-start: 9px;
+	top: 50%;
+	transform: translateY(-50%);
+	pointer-events: none;
+	color: var(--hx-muted);
+}
+.hx-revision label > span:first-child svg {
+	width: 14px;
+	height: 14px;
+}
+.hx-revision .revision-name,
+.hx-revision small {
+	display: none;
 }
 .hx-revision .report-select {
-	grid-row: 2;
+	display: block;
 }
 .hx-revision select {
-	width: 100%;
-	min-height: 44px;
-	padding: 0 42px 0 14px;
+	padding-inline-start: 28px;
 	border: 1px solid var(--hx-line-strong);
-	border-radius: var(--hx-radius-small);
+	border-radius: 6px;
 	background: var(--hx-bg);
-	color: var(--hx-text);
 	font: inherit;
-	font-size: 1rem;
-	font-weight: 450;
-	text-overflow: ellipsis;
+}
+.hx-revision .report-select-value {
+	inset-inline-start: 28px;
 }
 .hx-revision select:hover {
 	border-color: var(--hx-muted);
 }
-.hx-revision small {
-	grid-row: 3;
-	justify-self: start;
-	min-width: max-content;
-	padding-left: 14px;
-	color: var(--hx-muted);
-	font-size: 0.85rem;
-	white-space: nowrap;
-}
-/* The closed commit field shows the short hash; the line of each commit is in its option. */
-.hx-revision .hx-shown {
-	position: relative;
-	z-index: 1;
-	grid-area: 2 / 1;
-	align-self: center;
-	justify-self: start;
-	margin-left: 15px;
-	color: var(--hx-text);
-	font-size: 1rem;
-	font-weight: 450;
-	pointer-events: none;
-}
-.hx-revision label:has(.hx-shown) select {
-	color: transparent;
-}
-.hx-revision label:has(.hx-shown) option {
-	background: var(--hx-surface);
-	color: var(--hx-text);
-}
 .hx-revision .hx-action {
 	flex: none;
+	width: 32px;
+	min-width: 32px;
+	min-height: 32px;
+	height: 32px;
+	padding: 0;
+	border-radius: 6px;
 }
-@media (forced-colors: active) {
-	.hx-revision .hx-shown {
-		display: none;
+@media (pointer: coarse) {
+	.hx-revision .hx-action {
+		min-width: 44px;
+		width: 44px;
+		height: 44px;
+	}
+}
+@media (max-width: 360px) {
+	.hx-revision label:first-of-type {
+		width: 136px;
+	}
+	.hx-revision label {
+		width: 96px;
 	}
 }

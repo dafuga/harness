@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { createGitHubSource } from '../src/utils/createGitHubSource';
+import { createGitHubSource } from '../src/utils/create-git-hub-source/createGitHubSource';
 import { sourceRepository } from './githubFixture';
 import type { GitHubOptions } from '../src/models/Collaboration.types';
 const tip = 'a'.repeat(40),

@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.status-icon",
 	"kind": "component",
-	"title": "StatusIcon",
-	"responsibility": "Owns the StatusIcon Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Status icon",
+	"responsibility": "Displays a verification marker and lets a person inspect the reason behind it.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/StatusIcon.svelte"],
 		"symbols": ["StatusIcon"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "StatusIcon.status",
-				"type": "Verification"
+				"type": "Verification",
+				"description": "Verification state: verified, failed, unverified or unknown. Only verified renders a check and passed styling; all other states render a cross. The marker does not independently evaluate evidence."
 			},
 			{
 				"name": "StatusIcon.reason",
-				"type": "string"
+				"type": "string",
+				"description": "Required explanatory text, used as the accessible label and tooltip. An empty string falls back to “No verification recorded for this revision.”"
 			}
 		],
 		"outputs": [
 			{
 				"name": "StatusIcon",
-				"type": "markup"
+				"type": "markup",
+				"description": "Verification button showing a check or cross. Click, keyboard focus or pointer hover opens the explanatory text as a status message; blur or pointer leave closes it. The accessible label and native tooltip carry the same explanation."
 			}
 		],
 		"errors": []

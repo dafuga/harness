@@ -2,36 +2,43 @@
 	"schemaVersion": 1,
 	"id": "collaboration.function.github-commit-facts",
 	"kind": "function",
-	"title": "githubCommitFacts",
-	"responsibility": "Owns the githubCommitFacts shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Read immutable commit facts",
+	"responsibility": "Fetch and verify a GitHub commit before returning its tree, parents and summary metadata.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/collaboration/src/utils/githubCommitFacts.ts"],
-		"symbols": ["githubCommitFacts"]
+		"source": [
+			"packages/collaboration/src/utils/create-git-hub-source/githubCommitFacts.ts",
+			"packages/collaboration/src/utils/githubCommitFacts.ts"
+		],
+		"symbols": ["githubCommitFacts", "githubCommitFacts"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "githubCommitFacts.client",
-				"type": "GitHubTransport"
+				"type": "GitHubTransport",
+				"description": "Repository transport used for access checks and the commit request."
 			},
 			{
 				"name": "githubCommitFacts.commit",
-				"type": "string"
+				"type": "string",
+				"description": "Exact 40-character lowercase hex commit SHA."
 			}
 		],
 		"outputs": [
 			{
 				"name": "githubCommitFacts",
-				"type": "Promise<SourceCommitFacts | null>"
+				"type": "Promise<SourceCommitFacts | null>",
+				"description": "Verified commit facts, or null when GitHub returns 404; the subject is the first paragraph with line breaks collapsed."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects invalid input, denied repository access, a mismatched returned SHA or unavailable GitHub data."
 			}
 		]
 	},

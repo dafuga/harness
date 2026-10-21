@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { hubEvidencePins } from '../../src/utils/hubEvidenceScope';
+import { hubEvidencePins } from '../../src/services/hub-evidence-service/hubEvidenceScope';
 import { evidenceFixture, other, refusal, sourceAt } from '../support/evidenceFixture';
 
 test('revisions a request repeats are kept when each ref is or was there', async () => {

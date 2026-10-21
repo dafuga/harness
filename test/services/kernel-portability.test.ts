@@ -1,10 +1,11 @@
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { HttpRuntimeAdapter } from '../../src/adapters/HttpRuntimeAdapter';
-import { ProcessRuntimeAdapter } from '../../src/adapters/ProcessRuntimeAdapter';
+import { ProcessRuntimeAdapter } from '../../src/adapters/process-runtime-adapter/ProcessRuntimeAdapter';
 import type { RuntimeRequest, UnitRuntime } from '../../src/core/runtimeTypes';
 import { RuntimeServerService, type ServedRuntime } from '../../src/services/RuntimeServerService';
 import { UnitRuntimeService } from '../../src/services/UnitRuntimeService';
-import { impactKernel, impactKernelText } from '../../src/utils/impactKernel';
+import { impactKernel } from '../../src/utils/impact-kernel/impactKernel';
+import { impactKernelText } from '../../src/workflows/run-kernel/impactKernel';
 import { kernelArtifacts } from '../../src/utils/kernelArtifacts';
 
 const refused = {

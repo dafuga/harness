@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.process-descendants",
 	"kind": "function",
-	"title": "processDescendants",
-	"responsibility": "Follows the processes a command started, by their parent links, and stops those that outlive it; each is identified by its id and start time, so nothing else is ever signalled.",
+	"title": "Process descendant tracking",
+	"responsibility": "Tracks a command’s process identities through parent and group observations and signals only still-matching tracked processes.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -20,37 +20,44 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "processDescendants.root",
-				"type": "number"
+				"type": "number",
+				"description": "Root command pid to begin tracking while that command has not yet been reaped."
 			},
 			{
 				"name": "processDescendants.read",
-				"type": "ProcessTable"
+				"type": "ProcessTable",
+				"description": "Optional process-table reader, defaulting to the system ps reader; null or rejection means unreadable."
 			},
 			{
 				"name": "signalProcesses.known",
-				"type": "TrackedProcess[]"
+				"type": "TrackedProcess[]",
+				"description": "Tracked pids and start times eligible for a fresh identity check before signalling."
 			},
 			{
 				"name": "signalProcesses.signal",
-				"type": "'SIGTERM' | 'SIGKILL'"
+				"type": "'SIGTERM' | 'SIGKILL'",
+				"description": "SIGTERM or SIGKILL to send to still-matching identities."
 			}
 		],
 		"outputs": [
 			{
 				"name": "processTable",
-				"type": "Promise<Row[] | null>"
+				"type": "Promise<Row[] | null>",
+				"description": "System process rows containing pid, parent, group and start time, or null if the bounded ps read fails or omits this process."
 			},
 			{
 				"name": "processDescendants",
-				"type": "Descendants"
+				"type": "Descendants",
+				"description": "Tracker with look, survivors, alive and closed methods. It remembers parent provenance and start times, marks unsupported group-only identities unproven, and stops treating a reused root pid as the original command."
 			},
 			{
 				"name": "signalProcesses",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves after attempting signals only for supplied identities still present in a fresh process table. Empty/unreadable tables send no signals; kill errors are ignored."
 			}
 		],
 		"errors": []

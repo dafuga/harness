@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.scenario-requirements",
 	"kind": "function",
-	"title": "scenarioRequirements",
-	"responsibility": "Expands a scenario contract into the exact captures it demands and the states it does not prove.",
+	"title": "Scenario capture requirements",
+	"responsibility": "Expands required evidence across applicable states and viewports and separates missing from inapplicable states.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,17 +11,19 @@
 		"symbols": ["RequiredCapture", "ScenarioRequirements", "scenarioRequirements"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "scenarioRequirements.scenario",
-				"type": "ScenarioManifest"
+				"type": "ScenarioManifest",
+				"description": "Scenario manifest containing state coverage, evidence requirements and named viewports."
 			}
 		],
 		"outputs": [
 			{
 				"name": "scenarioRequirements",
-				"type": "ScenarioRequirements"
+				"type": "ScenarioRequirements",
+				"description": "Required capture combinations only for required evidence on required states, plus unproven missing states and excluded inapplicable states with reasons. Evidence without viewports produces one requirement per state."
 			}
 		],
 		"errors": []

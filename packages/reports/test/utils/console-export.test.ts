@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { consoleExport } from '../../src/utils/consoleExport';
+import { consoleExport } from '../../src/utils/console-server/consoleExport';
 
 const commit = 'a'.repeat(40);
 const older = 'b'.repeat(40);

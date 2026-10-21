@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "reports.component.report-checks",
 	"kind": "component",
-	"title": "ReportChecks",
-	"responsibility": "Owns the ReportChecks Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Recorded report checks",
+	"responsibility": "Lists the checks and diagnostic details stored in a report.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/components/ReportChecks.svelte"],
 		"symbols": ["ReportChecks"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ReportChecks.checks",
-				"type": "Check[]"
+				"type": "Check[]",
+				"description": "Required recorded checks, supplying status, grouping, counts and optional command/output details."
 			},
 			{
 				"name": "ReportChecks.embedded",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional compact presentation, defaulting to false. True omits the enclosing panel and Checks heading."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ReportChecks",
-				"type": "markup"
+				"type": "markup",
+				"description": "Check list with statuses, available count values and expandable diagnostic details, or an explicit empty state. It displays recorded checks without executing commands."
 			}
 		],
 		"errors": []

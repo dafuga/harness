@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import * as remote from '../src';
+import * as remote from '../src/index';
 
 const names = [
 	'REMOTE_PROTOCOL',

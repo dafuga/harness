@@ -2,38 +2,50 @@
 	"schemaVersion": 1,
 	"id": "function.required-reasons",
 	"kind": "function",
-	"title": "requiredReasons",
-	"responsibility": "Lists every changed function or unit between two revisions that needs a reason.",
+	"title": "Required change explanations",
+	"responsibility": "Finds unit additions/removals, symbol changes and otherwise-unexplained declared-manifest changes that need reasons.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/requiredReasons.ts"],
-		"symbols": ["ReasonSide", "presentUnits", "requiredReasons"]
+		"source": ["src/utils/required-reasons/requiredReasons.ts", "src/utils/requiredReasons.ts"],
+		"symbols": [
+			"ReasonSide",
+			"presentUnits",
+			"requiredReasons",
+			"ReasonSide",
+			"presentUnits",
+			"requiredReasons"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "presentUnits.side",
-				"type": "ReasonSide"
+				"type": "ReasonSide",
+				"description": "Revision source index and unit manifests to filter for active units with present owned source."
 			},
 			{
 				"name": "requiredReasons.base",
-				"type": "ReasonSide"
+				"type": "ReasonSide",
+				"description": "Earlier revision’s source blocks and manifests."
 			},
 			{
 				"name": "requiredReasons.head",
-				"type": "ReasonSide"
+				"type": "ReasonSide",
+				"description": "Later revision’s source blocks and manifests."
 			}
 		],
 		"outputs": [
 			{
 				"name": "presentUnits",
-				"type": "Map<string, ComponentManifest>"
+				"type": "Map<string, ComponentManifest>",
+				"description": "Map of active manifests with at least one owned path present in the source index."
 			},
 			{
 				"name": "requiredReasons",
-				"type": "RequiredReason[]"
+				"type": "RequiredReason[]",
+				"description": "Sorted required reasons with unit/symbol, change kind and before/after fingerprints. Identical named blocks can move files unchanged; whole-unit changes use *, and declared-manifest changes use <manifest> only when no symbol changes already require reasons."
 			}
 		],
 		"errors": []

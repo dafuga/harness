@@ -14,6 +14,7 @@ export interface HostedCall {
 export interface HostedState {
 	configured: boolean;
 	signedIn: boolean;
+	actor: typeof ada;
 	empty: boolean;
 	github: { configured: boolean; connected: boolean; login: string | null };
 	/** An address that waits for its code, and whether this deployment can send email. */
@@ -49,7 +50,7 @@ function githubAnswer(state: HostedState, call: HostedCall): Answer {
 }
 
 function authAnswer(state: HostedState, call: HostedCall): Answer | null {
-	const actor = state.signedIn ? ada : null;
+	const actor = state.signedIn ? state.actor : null;
 	const id = state.configured ? clientId : null;
 	if (call.path === '/api/auth/status')
 		return { json: { actor, configured: state.configured, clientId: id } };
@@ -97,6 +98,7 @@ export async function hostedFixture(page: Page, options: Partial<HostedState> = 
 	const state: HostedState = {
 		configured: true,
 		signedIn: true,
+		actor: ada,
 		empty: false,
 		github: { configured: true, connected: true, login: 'ada-example' },
 		email: { proof: null, delivery: true },

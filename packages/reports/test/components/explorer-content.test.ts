@@ -6,17 +6,17 @@ import { commits, ids } from '../entityUnits';
 const source = /src\/|\+page\.svelte|\.ts\b|OrdersPage|filterOrders/;
 const banned = /sub-?components|\brelated\b|\breports?\b|dashboard|analytics/i;
 
-test('the pages collection is cards with the page own screenshot, a verdict and a real link', () => {
+test('the pages collection is cards with only the page title and its screenshot', () => {
 	const body = content('current');
 	expect(words(body)).toContain('Pages Start with the pages people use.');
 	expect(body).toContain('aria-label="Orders page"');
 	// The tip shows the tip's capture, and the link stays on the branch without a commit.
 	expect(body).toContain('src="/harness/media/ccccccc-default-desktop.png"');
 	expect(body).toContain('href="/harness/branch/feature%2Forders/pages/app.page.orders"');
-	expect(words(body)).toContain('2 components');
-	// The verdict of a card is the icon alone; its words are its name, not text on the card.
+	expect(words(body)).not.toContain('2 components');
+	// Verification belongs to the page itself, never a catalog card.
 	const card = body.slice(0, body.indexOf('class="ex-legend"'));
-	expect(verdicts(card)).toEqual([{ passed: true, name: 'Full coverage passed', reasons: [] }]);
+	expect(verdicts(card)).toEqual([]);
 	// The footer explains the two marks by showing them: no status word is written beside either.
 	const footer = body.slice(body.indexOf('class="ex-legend"'));
 	expect(verdicts(footer).map((mark) => `${mark.passed} ${mark.name}`)).toEqual([
@@ -33,12 +33,10 @@ test('the pages collection is cards with the page own screenshot, a verdict and 
 	expect(words(body)).not.toMatch(banned);
 });
 
-test('the other four collections are tables with their own columns and no file names', () => {
+test('configs and services keep columns; component and function grids expose no file names', () => {
 	const headers = (body: string) =>
 		[...body.matchAll(/<th scope="col">(.*?)<\/th>/gs)].map((match) => words(match[1]).trim());
 	const expected = {
-		components: ['Component', 'Used on', 'Contains', 'Verification', 'Open'],
-		functions: ['Function', 'Responsibility', 'Used by', 'Verification', 'Open'],
 		configs: ['Config', 'Purpose', 'Used by', 'Changed', 'Verification', 'Open'],
 		services: ['Service', 'Responsibility', 'Execution target', 'Consumers', 'Verification', 'Open']
 	};
@@ -49,24 +47,35 @@ test('the other four collections are tables with their own columns and no file n
 		expect(words(body)).not.toMatch(banned);
 	}
 	const components = content('commit', { category: 'components' });
+	expect(count(components, /<article\b/g)).toBe(3);
+	expect(count(components, /<img\b/g)).toBe(3);
+	expect(words(components)).not.toMatch(source);
+	expect(words(components)).not.toMatch(banned);
 	expect(words(components)).toContain('Order list');
 	expect(words(components)).toContain('Orders page');
 	// A link from a selected commit stays at that commit.
 	expect(components).toContain(`/commit/${commits.middle}/components/${ids.list}`);
+	const functions = content('commit', { category: 'functions' });
+	expect(count(functions, /<article\b/g)).toBe(1);
+	expect(count(functions, /<img\b/g)).toBe(0);
+	// Function symbols now appear in usage calls; source paths and component symbols stay hidden.
+	expect(words(functions)).not.toMatch(/src\/|\+page\.svelte|\.ts\b|OrdersPage/);
+	expect(words(functions)).toContain('filterOrders(orders, "SERVICE")');
+	expect(words(functions)).not.toMatch(banned);
 });
 
 test('a collection offers search, changed only and an order, and says how many it lists', () => {
 	const body = content('commit', { category: 'functions' });
-	expect(body).toContain('aria-label="Search functions"');
-	expect(body).toMatch(/<input[^>]*role="switch"/);
-	expect(words(body)).toContain('Changed only');
-	expect(body).toMatch(/<select[^>]*aria-label="Order"/);
-	expect(words(body)).toContain('1 of 1 functions shown');
+	expect(body).toContain('aria-label="Search helpers"');
+	expect(body).toContain('aria-label="Filters"');
+	expect(words(body)).not.toContain('Changed only');
+	expect(body).not.toMatch(/<select[^>]*aria-label="Order"/);
+	expect(words(body)).toContain('1 of 1 helpers shown');
 });
 
 test('verification is a check or a cross with its reason, and never a share', () => {
 	const partial = revision(commits.middle, [record(commits.middle, false)]);
-	const body = content('commit', {}, { head: partial });
+	const body = content('commit', { category: 'pages', entity: ids.page }, { head: partial });
 	const [badge] = verdicts(body);
 	expect(badge).toEqual({
 		passed: false,

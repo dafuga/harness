@@ -6,6 +6,8 @@ class SessionState {
 	status = $state<AuthStatus | null>(null);
 	error = $state('');
 	busy = $state(false);
+	/** Counts the questions asked; an answer to an earlier one is older than what is shown. */
+	private asked = 0;
 	constructor(private auth: BrowserAuth) {}
 	get actor() {
 		return this.status?.actor ?? null;
@@ -15,11 +17,29 @@ class SessionState {
 		return this.actor ? null : (this.status?.emailProof ?? null);
 	}
 	async refresh() {
+		const turn = ++this.asked;
 		try {
-			this.status = await this.auth.status();
+			const status = await this.auth.status();
+			if (turn === this.asked) this.status = status;
 		} catch (cause) {
+			if (turn !== this.asked) return;
 			this.status = null;
 			this.error = String(cause);
+		}
+	}
+	/**
+	 * Asks again while the page is open. Only an answer changes who is shown as signed in: one
+	 * that cannot be read now leaves the last answer, and the next focus or interval asks again.
+	 * The same answer keeps its object, so nothing that shows it is rendered or asked again.
+	 */
+	async check() {
+		const turn = ++this.asked;
+		try {
+			const status = await this.auth.status();
+			if (turn !== this.asked || JSON.stringify(status) === JSON.stringify(this.status)) return;
+			this.status = status;
+		} catch {
+			/* Reported by the read that needs the session; this one is asked again. */
 		}
 	}
 	challenge() {
@@ -41,6 +61,8 @@ class SessionState {
 	}
 	/** After a change the status is read again: only the server's answer signs anyone in or out. */
 	private async change(action: () => Promise<unknown>) {
+		/** A status asked for before the change cannot answer for after it. */
+		this.asked++;
 		this.busy = true;
 		this.error = '';
 		try {

@@ -6,6 +6,7 @@ import { runFailures, type RunReport } from './runFailures';
 import { teardownGate } from './runGate';
 import { freePort } from './workers';
 
+const runControls = ['--reporter=json', '--max-failures=1'];
 const reports = resolve(import.meta.dirname, '../../packages/reports');
 const ports = [
 	'PROJECT_REPORTS_E2E_PORT',
@@ -91,7 +92,7 @@ export async function browserRun(
 		PLAYWRIGHT_JSON_OUTPUT_FILE: results,
 		[teardownGate]: gate
 	};
-	const args = ['x', 'playwright', 'test', ...specs, '--reporter=json', `--repeat-each=${repeat}`];
+	const args = ['x', 'playwright', 'test', ...specs, ...runControls, `--repeat-each=${repeat}`];
 	const child = spawn('bun', [...args, '--output', join(scratch, `${name}-output`)], {
 		cwd: reports,
 		env,

@@ -1,16 +1,26 @@
+import { createDeploymentActivityStore } from './deploymentActivity.svelte';
+import { createDeploymentsStore } from './deployments.svelte';
 import type { DesktopBridge } from '../../models/DesktopBridge.types';
 import type { Category, EntityDetail, ProjectSnapshot } from '../../models/Desktop.types';
 import type { RemotePorts } from '../../models/Environment.types';
-import type { DesktopProject, ProjectCapabilities } from '../../models/ProjectContext.types';
-import { cacheStatus, type OfflineView } from '../../utils/cacheStatus';
-import { loadWorkspace, type LoadedWorkspace } from '../../utils/loadWorkspace';
+import type {
+	CacheStatus,
+	DesktopProject,
+	ProjectCapabilities
+} from '../../models/ProjectContext.types';
+import { cacheStatus, deniedNotice, everyProject } from '../../utils/cache-status/cacheStatus';
+import type { OfflineView } from '../../utils/cache-status/cacheStatus';
+import { loadWorkspace, type LoadedWorkspace } from '../../utils/load-workspace/loadWorkspace';
 import { openProject } from '../../utils/openProject';
 import { closedCapabilities } from '../../utils/projectCapabilities';
 import { listedProjects } from '../../utils/projectList';
 import { workspacePath, workspaceRoute } from '../../utils/workspaceRoute';
 import type { RouteSuffix, WorkspaceRoute } from '../../utils/workspaceRoute';
-
 class WorkspaceState {
+	readonly activity = createDeploymentActivityStore(this);
+	readonly deployments = createDeploymentsStore(this);
+	routeProject = true;
+	onNavigate?: (url: string, push: boolean) => void;
 	snapshot = $state<ProjectSnapshot | null>(null);
 	entity = $state<EntityDetail | null>(null);
 	category = $state<Category>('pages');
@@ -31,6 +41,8 @@ class WorkspaceState {
 	/** The project a navigation is under way to; the one the bridge was last told to select. */
 	target: string | null = null;
 	readonly selection = { id: null as string | null };
+	/** True while the last discovery was a kept copy, which says nothing of current membership. */
+	listedOffline = false;
 	private serial = 0;
 	private listing = 0;
 	private queue: Promise<unknown> = Promise.resolve();
@@ -40,9 +52,8 @@ class WorkspaceState {
 		this.release?.();
 		this.bridge = value;
 		this.local = options.local ?? true;
-		const { host, phone } = options;
-		this.remote = { host, phone };
-		this.release = value?.onCacheStatus?.((event) => cacheStatus(this, event));
+		this.remote = { host: options.host, phone: options.phone };
+		this.release = value?.onCacheStatus?.((event) => heard(this, event));
 	}
 	/** A read or a listing that is under way is no longer shown when it answers. */
 	invalidate() {
@@ -55,8 +66,7 @@ class WorkspaceState {
 	}
 	/** What every request for the shown project carries; empty without project identities. */
 	get context(): { projectId?: string } {
-		const projectId = this.projectId;
-		return projectId ? { projectId } : {};
+		return this.projectId ? { projectId: this.projectId } : {};
 	}
 	path(nextCategory = this.category, id?: string, suffix = '') {
 		if (!this.snapshot) return '/';
@@ -67,7 +77,11 @@ class WorkspaceState {
 	}
 	/** A link inside the shown project: a branch tip, or a full commit of that branch. */
 	link(target: Partial<Omit<WorkspaceRoute, 'projectId'>>) {
-		return workspacePath({ category: this.category, ...target, projectId: this.projectId });
+		return workspacePath({
+			category: this.category,
+			...target,
+			projectId: this.routeProject ? this.projectId : null
+		});
 	}
 	async navigate(url: string, push = true) {
 		if (!this.bridge) return;
@@ -80,8 +94,7 @@ class WorkspaceState {
 			const loaded = await this.load(route, token);
 			if (!loaded || token !== this.serial) return;
 			const shown = this.show(route, loaded);
-			if (push) globalThis.history.pushState({}, '', shown);
-			else if (shown !== url) globalThis.history.replaceState({}, '', shown);
+			if (shouldNavigate(push, shown, url)) (this.onNavigate ?? browserNavigate)(shown, push);
 		} catch (cause) {
 			if (token === this.serial) this.error = String(cause);
 		} finally {
@@ -107,29 +120,61 @@ class WorkspaceState {
 		this.suffix = route.suffix;
 		return this.path(this.category, route.entityId ?? undefined, route.suffix ?? '');
 	}
-	openProject() {
-		return openProject(this);
-	}
+	openProject = () => openProject(this);
 	/** Keeps the category; entity, branch and commit belong to the project that is left. */
-	async switchProject(projectId: string) {
-		if (!projectId || projectId === this.projectId) return;
-		await this.navigate(workspacePath({ projectId, category: this.category }));
-	}
+	switchProject = (projectId: string) => switchProject(this, projectId);
 	async loadProjects() {
 		if (!this.bridge) return;
 		const listing = ++this.listing;
 		try {
 			const listed = await listedProjects(this.bridge);
-			if (listing === this.listing) this.projects = listed;
+			if (listing === this.listing) reconcile(this, listed);
 		} catch (cause) {
 			if (listing === this.listing) this.error = String(cause);
 		}
 	}
-	async refresh() {
-		await this.navigate(globalThis.location.pathname, false);
-	}
+	refresh = () => this.navigate(globalThis.location.pathname, false);
 }
 export function createWorkspaceStore() {
 	return new WorkspaceState();
 }
 export type Workspace = WorkspaceState;
+/** A discovery event says whether the list it precedes is current; every event is applied. */
+function heard(workspace: WorkspaceState, event: CacheStatus) {
+	if (event.projectId === everyProject) workspace.listedOffline = event.status === 'offline';
+	cacheStatus(workspace, event);
+}
+/**
+ * Takes a fresh list. A shown shared project it no longer names leaves the page with what it
+ * allowed and any navigation towards it; a kept copy of the list removes nothing.
+ */
+function reconcile(workspace: WorkspaceState, listed: DesktopProject[]) {
+	workspace.projects = listed;
+	const id = workspace.projectId;
+	const shared = workspace.capabilities.source === 'github';
+	if (!id || !shared || workspace.listedOffline) return;
+	if (listed.some((item) => item.id === id)) return;
+	workspace.invalidate();
+	workspace.snapshot = null;
+	workspace.entity = null;
+	workspace.offline = null;
+	workspace.capabilities = closedCapabilities;
+	workspace.error = deniedNotice;
+	if (workspace.target === id) workspace.target = null;
+	if (workspace.selection.id === id) workspace.selection.id = null;
+}
+
+function browserNavigate(shown: string, push: boolean) {
+	if (push) globalThis.history.pushState({}, '', shown);
+	else globalThis.history.replaceState({}, '', shown);
+}
+
+function shouldNavigate(push: boolean, shown: string, asked: string) {
+	return push || shown !== asked;
+}
+
+/** A project selection keeps the category and leaves its former revision behind. */
+async function switchProject(workspace: Workspace, projectId: string) {
+	if (!projectId || projectId === workspace.projectId) return;
+	await workspace.navigate(workspacePath({ projectId, category: workspace.category }));
+}

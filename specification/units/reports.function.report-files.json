@@ -2,60 +2,73 @@
 	"schemaVersion": 1,
 	"id": "reports.function.report-files",
 	"kind": "function",
-	"title": "reportFiles",
-	"responsibility": "Owns the reportFiles shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Report store file helpers",
+	"responsibility": "Resolves the report root, validates identifiers and reads or atomically replaces JSON files.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/reportFiles.ts"],
-		"symbols": ["reportFiles", "safeId", "readJson", "atomicJson"]
+		"source": [
+			"packages/reports/src/repositories/report-repository/reportFiles.ts",
+			"packages/reports/src/utils/reportFiles.ts"
+		],
+		"symbols": ["reportFiles", "safeId", "readJson", "atomicJson", "reportFiles"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "reportFiles.root",
-				"type": "string"
+				"type": "string",
+				"description": "Optional root override; empty falls through to environment and then the user-home default."
 			},
 			{
 				"name": "safeId.id",
-				"type": "string"
+				"type": "string",
+				"description": "Identifier containing only ASCII letters, digits, underscore or hyphen, from one to 100 characters."
 			},
 			{
 				"name": "readJson.path",
-				"type": "string"
+				"type": "string",
+				"description": "JSON file to read."
 			},
 			{
 				"name": "atomicJson.path",
-				"type": "string"
+				"type": "string",
+				"description": "Destination JSON path."
 			},
 			{
 				"name": "atomicJson.data",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Serializable value to write."
 			}
 		],
 		"outputs": [
 			{
 				"name": "reportFiles",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Explicit root, PROJECT_REPORTS_HOME, or the project-reports directory under the user’s Codex home folder."
 			},
 			{
 				"name": "safeId",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Validated identifier unchanged."
 			},
 			{
 				"name": "readJson",
-				"type": "Promise<T>"
+				"type": "Promise<T>",
+				"description": "Promise resolving to parsed JSON cast to the requested type, without runtime shape validation."
 			},
 			{
 				"name": "atomicJson",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Promise that creates parent directories, writes formatted JSON to a UUID-suffixed temporary file and renames it over the destination."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Invalid identifiers throw Invalid report or asset ID. Read, parse, serialization and filesystem failures propagate."
 			}
 		]
 	},

@@ -1,6 +1,6 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import HarnessVerdict from '../../src/components/harness/HarnessVerdict.svelte';
+import HarnessVerdict from '../../src/components/harness/harness-verdict/HarnessVerdict.svelte';
 import { harnessIcons } from '../../src/utils/harnessIcons';
 
 const markup = (props: Record<string, unknown>) =>
@@ -47,19 +47,21 @@ test('no caller brings the words back: a label, a frame and the bare look all dr
 	expect(root(markup({ passed: false }))).not.toMatch(/\bframed\b/);
 });
 
-test('everything that is not a pass is the red cross: failed, missing, stale and unknown alike', () => {
-	for (const passed of [false, undefined, null, 'true', 1, 0.99, 'passed', {}]) {
-		const body = markup({ passed, label: 'Evidence missing' });
-		const shown = [root(body).includes('failed'), body.includes(`d="${harnessIcons.failed}"`)];
-		expect([passed, ...shown]).toEqual([passed, true, true]);
-		expect([passed, /\bpassed\b/.test(root(body))]).toEqual([passed, false]);
+test('missing, stale and incomplete evidence use a neutral info icon, actual failure stays red', () => {
+	for (const label of [
+		'Evidence missing',
+		'Evidence stale',
+		'Coverage incomplete',
+		'No end-to-end result is recorded'
+	]) {
+		const body = markup({ passed: false, label });
+		expect(root(body)).toContain('unknown');
+		expect(body).not.toContain(`d="${harnessIcons.failed}"`);
 		expect(body).not.toContain(`d="${harnessIcons.passed}"`);
 	}
-	// There is no third state, no share and no amber.
-	for (const passed of [true, false]) {
-		const body = markup({ passed, reasons: ['2 of 3 states'] });
-		expect(drawn(body)).not.toMatch(/%|percent|partial|warning|amber/i);
-	}
+	const failed = markup({ passed: false, label: 'Verification failed' });
+	expect(root(failed)).toContain('failed');
+	expect(failed).toContain(`d="${harnessIcons.failed}"`);
 });
 
 test('the mark is a button named by the status, and described by the tooltip that holds the reasons', () => {

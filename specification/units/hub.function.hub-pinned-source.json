@@ -2,45 +2,53 @@
 	"schemaVersion": 1,
 	"id": "hub.function.hub-pinned-source",
 	"kind": "function",
-	"title": "hubPinnedSource",
-	"responsibility": "Owns the hubPinnedSource shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Read an immutable evidence revision",
+	"responsibility": "Build a source context pinned to an exact commit and recognize safe stored evidence paths.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/hubPinnedSource.ts"],
-		"symbols": ["hubPinnedSource", "hubEvidencePath"]
+		"source": [
+			"packages/hub/src/services/hub-attached-service/hubPinnedSource.ts",
+			"packages/hub/src/utils/hubPinnedSource.ts"
+		],
+		"symbols": ["hubEvidencePath", "hubPinnedSource", "hubEvidencePath"]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hubPinnedSource.base",
-				"type": "HubSourceContext"
+				"type": "HubSourceContext",
+				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubPinnedSource.commit",
-				"type": "string"
+				"type": "string",
+				"description": "Full 40-character lowercase hexadecimal commit ID that the source must resolve unchanged."
 			},
 			{
 				"name": "hubEvidencePath.path",
-				"type": "string"
+				"type": "string",
+				"description": "Repository-relative path to check."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubPinnedSource",
-				"type": "Promise<HubSourceContext>"
+				"type": "Promise<HubSourceContext>",
+				"description": "New context for the exact commit/tree, sharing source/cache and retaining the original authorization identity while changing requestedRef."
 			},
 			{
 				"name": "hubEvidencePath",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True for a nonempty slash-separated path with no empty, dot or parent segments, backslashes or control/delete characters."
 			}
 		],
 		"errors": [
 			{
 				"name": "invalid-evidence-revision",
 				"type": "refused",
-				"description": "Not a full commit hash, or not resolved as that very commit."
+				"description": "Commit format is invalid or the source resolves it to a different commit."
 			}
 		]
 	},

@@ -12,7 +12,9 @@ import { alpha, beta, earlier, searchFixture } from './ui-search-fixture';
  */
 const alphaAt = (rest: string) => `/projects/${alpha}/harness/branch/feat%2Falpha/${rest}`;
 const field = (page: Page) =>
-	page.getByRole('banner').getByRole('combobox', { name: 'Search entities', exact: true });
+	page
+		.getByRole('dialog', { name: 'Search project' })
+		.getByRole('combobox', { name: 'Search entities', exact: true });
 const found = (page: Page) => page.getByRole('listbox', { name: 'Entities found', exact: true });
 const options = (page: Page) => found(page).getByRole('option');
 const long =
@@ -50,6 +52,7 @@ async function opened(page: Page, info: TestInfo, at: string, name: string) {
 	await page.goto(at);
 	await expect(page.getByRole('navigation', { name: 'Catalog categories' })).toBeVisible();
 	await remember(page, info, `ready-${name}`);
+	await page.getByRole('button', { name: 'Search entities', exact: true }).click();
 }
 /** Follows an address in place, as back and forward do, with the next reads delayed. */
 async function followed(page: Page, path: string) {
@@ -81,7 +84,7 @@ test('while another project loads, no result of the project left is offered', as
 	await evidenced(page, 'search-project-loading');
 	await expect(page.getByText('No entity matches “alpha”')).toBeVisible();
 	await field(page).fill('only');
-	await expect(options(page)).toHaveText([/Function.*Beta only function/]);
+	await expect(options(page)).toHaveText([/Helper.*Beta only function/]);
 });
 
 test('while another commit loads, no result of the tip is offered, then only that commit is', async ({
@@ -89,7 +92,7 @@ test('while another commit loads, no result of the tip is offered, then only tha
 }, info) => {
 	await opened(page, info, alphaAt('pages'), 'search-commit-change');
 	await field(page).fill('format');
-	await expect(options(page)).toHaveText([/Function.*Alpha format time/]);
+	await expect(options(page)).toHaveText([/Helper.*Alpha format time/]);
 	await followed(page, alphaAt(`commit/${earlier}/pages`));
 	await expect(options(page)).toHaveCount(0);
 	await expect(page.getByText('Loading entities…').first()).toBeVisible();
@@ -104,13 +107,14 @@ test('Escape in the search leaves the project agent and its draft as they were',
 	page
 }, info) => {
 	await opened(page, info, alphaAt('pages'), 'search-agent-draft');
+	await field(page).press('Escape');
 	await page.getByRole('button', { name: 'Work with agent', exact: true }).click();
 	const agent = page.getByRole('complementary', { name: 'Project agent', exact: true });
 	await agent.getByRole('textbox', { name: 'Message', exact: true }).fill('Keep this draft');
+	await page.getByRole('button', { name: 'Search entities', exact: true }).click();
 	await field(page).fill('alpha');
 	await field(page).press('Escape');
-	await field(page).press('Escape');
-	await expect(field(page)).toHaveValue('');
+	await expect(found(page)).toBeHidden();
 	await expect(agent).toBeVisible();
 	await expect(agent.getByRole('textbox', { name: 'Message', exact: true })).toHaveValue(
 		'Keep this draft'
@@ -148,15 +152,20 @@ test('a long name wraps inside the results on a phone, which stay inside the scr
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 });
 
-test('at a wide desktop the search shares the one row of the top bar, overlapping nothing', async ({
+test('desktop search and revision icons retain their widths across the responsive header rows', async ({
 	page
 }, info) => {
 	await opened(page, info, alphaAt('pages'), 'search-fit-desktop');
+	await field(page).press('Escape');
 	const bar = page.getByRole('banner');
 	const revision = () =>
 		Promise.all(
 			['Branch', 'Commit'].map(async (name) =>
-				Math.round((await bar.getByRole('combobox', { name, exact: true }).boundingBox())!.width)
+				Math.round(
+					(await bar
+						.getByRole('button', { name: `Choose ${name.toLowerCase()}`, exact: true })
+						.boundingBox())!.width
+				)
 			)
 		);
 	// The branch and commit fields keep the width a wider screen gives them: the search squeezes neither.
@@ -165,15 +174,16 @@ test('at a wide desktop the search shares the one row of the top bar, overlappin
 	await page.setViewportSize({ width: 1440, height: 900 });
 	expect(await revision()).toEqual(natural);
 	const [search, branch, row] = [
-		(await field(page).boundingBox())!,
-		(await bar.getByRole('combobox', { name: 'Branch', exact: true }).boundingBox())!,
+		(await bar.getByRole('button', { name: 'Search entities', exact: true }).boundingBox())!,
+		(await bar.getByRole('button', { name: 'Choose branch', exact: true }).boundingBox())!,
 		(await bar.getByRole('navigation', { name: 'Catalog categories' }).boundingBox())!
 	];
 	type Box = typeof row;
 	// The layout of a wide desktop is one row: the field and the branch field lie in the row of the
 	// categories, as the branch field did before the search.
 	const within = (item: Box) => item.y >= row.y && item.y + item.height <= row.y + row.height;
-	expect([within(search), within(branch)]).toEqual([true, true]);
+	expect(within(search)).toBe(true);
+	expect(branch.y + branch.height).toBeLessThanOrEqual(row.y);
 	// The field, with its focus ring of three pixels, and the branch field meet on neither axis.
 	const ring = 3;
 	const meet = (one: Box, two: Box) =>
@@ -182,6 +192,6 @@ test('at a wide desktop the search shares the one row of the top bar, overlappin
 		one.y - ring < two.y + two.height &&
 		two.y < one.y + one.height + ring;
 	expect(meet(search, branch)).toBe(false);
-	expect(search.width).toBeGreaterThanOrEqual(120);
+	expect(search.width).toBeGreaterThanOrEqual(40);
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(1440);
 });

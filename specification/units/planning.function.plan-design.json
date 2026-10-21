@@ -2,60 +2,74 @@
 	"schemaVersion": 1,
 	"id": "planning.function.plan-design",
 	"kind": "function",
-	"title": "planDesign",
-	"responsibility": "Owns the planDesign shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Write and approve design versions",
+	"responsibility": "Read verified design images, append a design version, or approve the exact current design content.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/planning/src/utils/planDesign.ts"],
-		"symbols": ["readImage", "planDesign", "approve"]
+		"source": [
+			"packages/planning/src/services/planning-service/planDesign.ts",
+			"packages/planning/src/utils/plan-design/readImage.ts",
+			"packages/planning/src/utils/planDesign.ts"
+		],
+		"symbols": ["planDesign", "approve", "readImage", "readImage", "planDesign", "approve"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "readImage.git",
-				"type": "Git"
+				"type": "Git",
+				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "readImage.input",
-				"type": "ReadImageInput"
+				"type": "ReadImageInput",
+				"description": "Unit ID, version and file, with optional revision, expected hash and option; revision defaults to HEAD."
 			},
 			{
 				"name": "planDesign.git",
-				"type": "Git"
+				"type": "Git",
+				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "planDesign.input",
-				"type": "AddDesignInput"
+				"type": "AddDesignInput",
+				"description": "Unit, prompt and generator with images or options, optional notes and contract, base revision and revision source; expectedLatest enforces an optional latest-version check."
 			},
 			{
 				"name": "approve.git",
-				"type": "Git"
+				"type": "Git",
+				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "approve.input",
-				"type": "ApproveDesignInput"
+				"type": "ApproveDesignInput",
+				"description": "Latest unit/version, reviewer, contract hash, exact image bindings, optional notes hash and option selection."
 			}
 		],
 		"outputs": [
 			{
 				"name": "readImage",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Verified PNG bytes and image metadata, owning option when present, and version creation commit."
 			},
 			{
 				"name": "planDesign",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Commit metadata and the appended sequential design version. Visual units require images; functions reject images; headless versions without images require notes."
 			},
 			{
 				"name": "approve",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Commit metadata and the saved approval marked current after matching the latest version and exact content."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects invalid input/images, stale versions, missing or changed artifacts, mismatched approvals and unsafe or dirty writes; Git failures propagate."
 			}
 		]
 	},

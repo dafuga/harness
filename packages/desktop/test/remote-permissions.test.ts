@@ -51,31 +51,39 @@ test('folders, hosted credentials and the control port are not device methods', 
 	});
 }, 30000);
 
-test('without the agents permission a device reads and comments only', async () => {
-	const f = await remoteFixture(),
-		grant = { projects: [{ id: f.project.id, name: f.project.name }], agents: false },
-		{ client, attachment } = await f.device(grant).connect(),
-		projectId = f.project.id;
-	for (const method of agentMethods) {
-		expect(attachment.methods).not.toContain(method);
-		expect(await outcome(client, method, f.start())).toBe('method-denied');
-	}
-	const snapshot = await client.request<ProjectSnapshot>('snapshot', {
-		projectId,
-		branch: null,
-		commit: null
-	});
-	expect(snapshot.capabilities).toMatchObject({
-		comments: true,
-		agents: false,
-		planning: false,
-		approval: false
-	});
-	expect(snapshot.writable).toBe(false);
-	expect(await client.request('capabilities', { projectId })).toEqual(snapshot.capabilities);
-	expect(await client.request('providers')).toEqual([]);
-	expect(f.run).not.toHaveBeenCalled();
-}, 30000);
+test.each([true, false])(
+	'a non-writer device has comments=%s and never runs an agent',
+	async (comments) => {
+		const f = await remoteFixture(),
+			grant = { projects: [{ id: f.project.id, name: f.project.name }], agents: false, comments },
+			{ client, attachment } = await f.device(grant).connect(),
+			projectId = f.project.id;
+		for (const method of agentMethods) {
+			expect(attachment.methods).not.toContain(method);
+			expect(await outcome(client, method, f.start())).toBe('method-denied');
+		}
+		const snapshot = await client.request<ProjectSnapshot>('snapshot', {
+			projectId,
+			branch: null,
+			commit: null
+		});
+		expect(snapshot.capabilities).toMatchObject({
+			comments,
+			agents: false,
+			planning: false,
+			approval: false
+		});
+		expect(snapshot.writable).toBe(false);
+		expect(await client.request('capabilities', { projectId })).toEqual(snapshot.capabilities);
+		expect(await client.request('providers')).toEqual([]);
+		if (!comments) {
+			expect(await outcome(client, 'addComment', { projectId })).toBe('method-denied');
+			expect(await outcome(client, 'openThread', { projectId })).toBe('method-denied');
+		}
+		expect(f.run).not.toHaveBeenCalled();
+	},
+	30000
+);
 
 test('a change needs the checked-out tip: history and other branches are read-only', async () => {
 	const f = await remoteFixture(),

@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "function.gateway-content-error",
 	"kind": "function",
-	"title": "gatewayContentError",
-	"responsibility": "Owns the gatewayContentError shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Gateway content error",
+	"responsibility": "Constructs the named error used for gateway content failures.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/gatewayContentError.ts"],
 		"symbols": ["gatewayContentError"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "gatewayContentError.message",
-				"type": "string"
+				"type": "string",
+				"description": "Human-readable explanation to place on the error."
 			}
 		],
 		"outputs": [
 			{
 				"name": "gatewayContentError",
-				"type": "Error"
+				"type": "Error",
+				"description": "New Error with the supplied message and name GatewayContentError; construction does not throw it."
 			}
 		],
 		"errors": []

@@ -2,16 +2,16 @@
 	"schemaVersion": 1,
 	"id": "function.analytics-types",
 	"kind": "function",
-	"title": "analyticsTypes",
-	"responsibility": "Owns the analyticsTypes shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Analytics record types",
+	"responsibility": "Defines attribution context, recorded analytics events, query filters and loop metrics.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/core/analyticsTypes.ts"],
 		"symbols": ["AnalyticsContext", "AnalyticsEvent", "AnalyticsFilter", "LoopMetric"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
 		"errors": []

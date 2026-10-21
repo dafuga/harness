@@ -1,10 +1,9 @@
 import type { ExplorerEntity } from '../models/Explorer.types';
 import type { ExplorerScreenProps } from '../models/ExplorerScreen.types';
-import type { HarnessRecord } from '../models/Harness.types';
-import { entityContract, requiredStates, type ContractRow } from './entityContract';
-import { entityMeasure, type EntityMeasure } from './entityMeasure';
+import type { HarnessRecord, HarnessUnit } from '../models/Harness.types';
+import { type ContractRow } from './entityContract';
+import { type EntityMeasure } from './entityMeasure';
 import { entityReasons, type EntityReasons } from './entityReasons';
-import { verdictRecord } from './explorerVerdict';
 
 export interface EntityShown {
 	contract: ContractRow[];
@@ -13,26 +12,51 @@ export interface EntityShown {
 	record: HarnessRecord | null;
 }
 
-type Shown = Pick<ExplorerScreenProps, 'head' | 'parent'>;
-
-/**
- * What an overview and a details screen say about one entity: its contract, and its size and
- * performance from the record that judges the shown revision. An entity the shown commit
- * removed has nothing there, so the states of its last contract are those its parent required.
- */
-export function entityShown(host: Shown, entity: ExplorerEntity): EntityShown {
-	const held = entity.change === 'removed' && host.parent ? host.parent : host.head;
-	const record = verdictRecord(host.head);
-	const contract = entityContract(entity.unit, {
-		category: entity.category,
-		appRoute: entity.appRoute,
-		// The registry that holds the entity says what it is made into, so which states apply.
-		states: requiredStates(entity.unit, held.registry.scenarios, held.registry.units)
-	});
-	return { contract, measure: entityMeasure(entity.unit, record), record };
-}
+export type Shown = Pick<ExplorerScreenProps, 'head' | 'parent'>;
 
 /** What the shown commit itself says it changed in one entity, held to the length of a reason. */
 export function entityChanged(host: Pick<Shown, 'head'>, unit: string): EntityReasons {
 	return entityReasons(host.head.explanations.filter((item) => item.unit === unit));
+}
+
+export { entityShown } from '../components/harness/entity-sections/entityShown';
+
+/** Select one callable's API without inventing a new unit or borrowing sibling declarations. */
+export function helperEntity(
+	owner: ExplorerEntity | undefined,
+	helperName?: string
+): ExplorerEntity | undefined {
+	if (!owner || !helperName) return owner;
+	if (owner.category !== 'functions') return undefined;
+	const unit = owner.unit;
+	const helper = unit.helpers?.find((candidate) => candidate.name === helperName);
+	if (!helper) return undefined;
+	const output = unit.contract.outputs.find(
+		(field) => field.name === helperName || field.name.startsWith(`${helperName}.`)
+	);
+	return {
+		...owner,
+		name: helperName,
+		purpose: output?.description ?? `Helper defined in ${unit.title}.`,
+		unit: {
+			...unit,
+			title: helperName,
+			helpers: [helper],
+			owns: { source: [helper.source], symbols: [helperName] },
+			contract: helperFields(unit, helperName),
+			documentation: unit.helpers?.length === 1 ? unit.documentation : undefined
+		}
+	};
+}
+
+/** Field ownership is decided against the original module, before its helper list is narrowed. */
+function helperFields(unit: HarnessUnit, helperName: string): HarnessUnit['contract'] {
+	const only = unit.helpers?.length === 1;
+	return {
+		inputs: unit.contract.inputs.filter((field) => field.name.startsWith(`${helperName}.`)),
+		outputs: unit.contract.outputs.filter(
+			(field) => field.name === helperName || field.name.startsWith(`${helperName}.`)
+		),
+		errors: unit.contract.errors.filter((field) => only || field.name.startsWith(`${helperName}.`))
+	};
 }

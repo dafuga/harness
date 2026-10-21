@@ -1,4 +1,4 @@
-import { pinnedToolchain } from '../src/utils/pinnedToolchain';
+import { pinnedToolchain } from './build-kernel/pinnedToolchain';
 
 /**
  * Runs one tool of the Rust toolchain that rust-toolchain.toml pins, with the arguments given:

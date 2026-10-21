@@ -11,8 +11,15 @@
 		item,
 		before,
 		assetBase,
+		compact = false,
 		onopen
-	}: { item: Evidence; before?: Evidence; assetBase: string; onopen: () => void } = $props();
+	}: {
+		item: Evidence;
+		before?: Evidence;
+		assetBase: string;
+		compact?: boolean;
+		onopen: () => void;
+	} = $props();
 	let imageError = $state(false);
 	let missing = $derived(Boolean(item.missing || imageError));
 </script>
@@ -39,18 +46,22 @@
 				/>{/if}
 			{#if !missing}<span class="view-hint">↗ {$t('fullSize')}</span>{/if}
 		</button>
-		<div class="card-body">
-			<div class="card-kicker">
-				<span>{item.category}</span><StatusBadge status={missing ? 'not-proven' : item.status} />
-			</div>
-			<h3><a href={'#evidence-' + item.id}>{item.title}</a></h3>
-			{#if missing && item.note}<p class="muted">{item.note}</p>{/if}
-			<EvidenceProvenance {item} />
-			<div class="evidence-meta">
-				{#if item.viewport}<span>{item.viewport}</span>{/if}{#if item.capturedAt}<time
-						datetime={item.capturedAt}>{timeAgo(item.capturedAt)}</time
-					>{/if}
-			</div>
-		</div>
+		{#if compact}
+			<details class="card-body">
+				<summary>Capture details</summary><EvidenceProvenance {item} />
+			</details>
+		{:else}<div class="card-body">
+				<div class="card-kicker">
+					<span>{item.category}</span><StatusBadge status={missing ? 'not-proven' : item.status} />
+				</div>
+				<h3><a href={'#evidence-' + item.id}>{item.title}</a></h3>
+				{#if missing && item.note}<p class="muted">{item.note}</p>{/if}
+				<EvidenceProvenance {item} />
+				<div class="evidence-meta">
+					{#if item.viewport}<span>{item.viewport}</span>{/if}{#if item.capturedAt}<time
+							datetime={item.capturedAt}>{timeAgo(item.capturedAt)}</time
+						>{/if}
+				</div>
+			</div>{/if}
 	</article>
 {/if}

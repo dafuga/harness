@@ -1,0 +1,69 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.explorer-function-card",
+	"kind": "component",
+	"title": "Function card",
+	"responsibility": "Shows a linked helper invocation and a smaller Used In row linking up to three consumers.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/ExplorerFunctionCard.svelte"],
+		"symbols": ["ExplorerFunctionCard"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ExplorerFunctionCard.row",
+				"type": "CatalogRow",
+				"description": "The function at the viewed revision, including sample arguments and up to three distinct component, service or model consumer links."
+			},
+			{
+				"name": "ExplorerFunctionCard.nav",
+				"type": "EntityNav",
+				"description": "Navigation that keeps the selected branch and commit when opening the function or a consumer."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ExplorerFunctionCard",
+				"type": "markup",
+				"description": "A clickable example invocation and smaller Used In row. Up to three per-helper consumer links retain revision scope; absent eligible consumers show a dash."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-entity-link",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/ExplorerFunctionCard.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/ExplorerFunctionCard.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

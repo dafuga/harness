@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-entity-source",
 	"kind": "component",
-	"title": "EntitySource",
-	"responsibility": "Lists the files, symbols and execution targets an entity owns; it is mounted only for the source tab of details.",
+	"title": "Source ownership",
+	"responsibility": "Lists the source ownership and execution targets recorded for an entity.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,17 +11,19 @@
 		"symbols": ["EntitySource"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EntitySource.unit",
-				"type": "HarnessUnit"
+				"type": "HarnessUnit",
+				"description": "Required unit with owned files/symbols, runtime targets, identity and version."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntitySource",
-				"type": "markup"
+				"type": "markup",
+				"description": "Files, symbols and execution-target lists plus identity/version. Empty files or symbols are explicit. Lists ownership only; does not fetch or display file contents."
 			}
 		],
 		"errors": []

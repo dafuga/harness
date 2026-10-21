@@ -9,6 +9,7 @@
 	"owns": {
 		"source": ["packages/desktop/src/models/DesktopBridge.types.ts"],
 		"symbols": [
+			"ProjectTaskRequest",
 			"channels",
 			"ChannelName",
 			"runEventChannel",
@@ -52,6 +53,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.model.deployment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.desktop-evidence-types",
 			"via": "import",
 			"origin": "derived"
@@ -68,6 +74,11 @@
 		},
 		{
 			"unit": "desktop.model.project-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.project-task-types",
 			"via": "import",
 			"origin": "derived"
 		},

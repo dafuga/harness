@@ -3,7 +3,11 @@ import { mkdtempSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, expect, test } from 'vitest';
-import { repositoryIdentity, sameRepository, sameSite } from '../../src/utils/repositoryIdentity';
+import {
+	repositoryIdentity,
+	sameRepository,
+	sameSite
+} from '../../src/utils/repository-identity/repositoryIdentity';
 
 const root = mkdtempSync(join(tmpdir(), 'harness-repository-identity-'));
 const user = ['-c', 'user.name=Fixture', '-c', 'user.email=f@harness.invalid'];

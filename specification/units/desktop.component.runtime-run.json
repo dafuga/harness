@@ -2,50 +2,58 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.runtime-run",
 	"kind": "component",
-	"title": "RuntimeRun",
-	"responsibility": "Owns the RuntimeRun Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Runtime run",
+	"responsibility": "Presents one side of recorded behavior by scenario, state and artifact.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/RuntimeRun.svelte"],
 		"symbols": ["RuntimeRun"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RuntimeRun.shown",
-				"type": "EntityBehavior"
+				"type": "EntityBehavior",
+				"description": "Grouped results and scenario titles. Overall passes only when groups exist and every group passes on the chosen side."
 			},
 			{
 				"name": "RuntimeRun.side",
-				"type": "'before' | 'after'"
+				"type": "'before' | 'after'",
+				"description": "Required before or after, selecting outcomes and cells. Only after displays difference paths."
 			},
 			{
 				"name": "RuntimeRun.title",
-				"type": "string"
+				"type": "string",
+				"description": "Required heading and accessible name."
 			},
 			{
 				"name": "RuntimeRun.role",
-				"type": "string"
+				"type": "string",
+				"description": "Required descriptive badge for this side."
 			},
 			{
 				"name": "RuntimeRun.lost",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Required failure flag forwarded so unread artifacts are not left pending."
 			},
 			{
 				"name": "RuntimeRun.refusals",
-				"type": "Record<string, string>"
+				"type": "Record<string, string>",
+				"description": "Required hash-to-refusal map. Each artifact uses its capture hash or the empty-string key when no hash exists."
 			},
 			{
 				"name": "RuntimeRun.unit",
-				"type": "string"
+				"type": "string",
+				"description": "Optional function identifier forwarded to artifact case rendering."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RuntimeRun",
-				"type": "markup"
+				"type": "markup",
+				"description": "Run status, state headings and result artifacts with Passed/Failed/Not recorded labels. After-side results list differences. Empty groups do not count as passing."
 			}
 		],
 		"errors": []

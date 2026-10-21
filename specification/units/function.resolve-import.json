@@ -2,34 +2,38 @@
 	"schemaVersion": 1,
 	"id": "function.resolve-import",
 	"kind": "function",
-	"title": "resolveImport",
-	"responsibility": "Owns the resolveImport shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Tracked import resolution",
+	"responsibility": "Resolves a scanned reference to a tracked repository file, external package or explicit uncertainty.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/resolveImport.ts"],
 		"symbols": ["ResolveContext", "resolveImport"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "resolveImport.from",
-				"type": "string"
+				"type": "string",
+				"description": "Repository-relative importing file path using forward slashes."
 			},
 			{
 				"name": "resolveImport.reference",
-				"type": "SourceReference"
+				"type": "SourceReference",
+				"description": "Scanned reference with import kind, optional literal specifier, type-only flag and detail for computed references."
 			},
 			{
 				"name": "resolveImport.context",
-				"type": "ResolveContext"
+				"type": "ResolveContext",
+				"description": "Tracked path set and owning workspace root for relative and $lib resolution."
 			}
 		],
 		"outputs": [
 			{
 				"name": "resolveImport",
-				"type": "ResolvedReference"
+				"type": "ResolvedReference",
+				"description": "Resolved file path, external package/framework name or non-literal/unresolved uncertainty, retaining via and typeOnly. Tries supported extensions, index files and .js-to-.ts fallback; does not read the filesystem."
 			}
 		],
 		"errors": []

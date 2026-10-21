@@ -102,7 +102,7 @@ test('an unverified commit cannot be pushed, a verified one can, and its evidenc
 	expect(blocked.exitCode).not.toBe(0);
 	expect(blocked.stderr).toContain('harness: push blocked');
 	expect(blocked.stderr).toContain(
-		'function.slugify: source-bytes grew from 87 to 148 without a recorded approval'
+		'function.slugify: source-bytes grew from 100 to 161 without a recorded approval'
 	);
 	expect(await remoteHead(repo)).toBe(before);
 	expect((await noteLines(repo)).filter((line) => line.kind === 'verification')).toEqual([

@@ -2,34 +2,41 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.project-capabilities",
 	"kind": "function",
-	"title": "projectCapabilities",
-	"responsibility": "Owns the projectCapabilities shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Determine allowed project actions",
+	"responsibility": "Determines which actions the shown project allows, using reported capabilities and requiring an available operation before enabling comments.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/projectCapabilities.ts"],
-		"symbols": ["closedCapabilities", "projectCapabilities"]
+		"source": [
+			"packages/desktop/src/utils/load-workspace/projectCapabilities.ts",
+			"packages/desktop/src/utils/projectCapabilities.ts"
+		],
+		"symbols": ["projectCapabilities", "closedCapabilities", "projectCapabilities"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "projectCapabilities.bridge",
-				"type": "DesktopBridge"
+				"type": "DesktopBridge",
+				"description": "The desktop connection. Its optional capabilities reader is used when the snapshot does not state capabilities, and its addComment operation must exist before comments can be enabled."
 			},
 			{
 				"name": "projectCapabilities.snapshot",
-				"type": "ProjectSnapshot"
+				"type": "ProjectSnapshot",
+				"description": "The shown project snapshot, including optional capabilities and project identity. Capabilities stated in the snapshot take precedence over a separate read."
 			}
 		],
 		"outputs": [
 			{
 				"name": "closedCapabilities",
-				"type": "ProjectCapabilities"
+				"type": "ProjectCapabilities",
+				"description": "The default read-only capabilities: comments, agents, planning and approval all disabled, with local as the source."
 			},
 			{
 				"name": "projectCapabilities",
-				"type": "Promise<ProjectCapabilities>"
+				"type": "Promise<ProjectCapabilities>",
+				"description": "A promise for the available actions and their source, with an optional reason. Uses snapshot capabilities first, otherwise asks the connection for this project. If that read fails, disables all actions and explains that the project did not report its permissions. For an older connection without a capabilities reader, agents, planning and approval stay enabled and comments stay disabled. Reported comments are enabled only when addComment is a function."
 			}
 		],
 		"errors": []

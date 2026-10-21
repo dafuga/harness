@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/LegacyImportService.ts"],
+		"source": ["src/services/legacy-import-service/LegacyImportService.ts"],
 		"symbols": [
 			"LegacyImport",
 			"LegacyImportService",
@@ -98,11 +98,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/LegacyImportService.ts",
+		"entry": "src/services/legacy-import-service/LegacyImportService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/LegacyImportService.ts"
+				"entry": "src/services/legacy-import-service/LegacyImportService.ts"
 			}
 		]
 	},

@@ -2,7 +2,7 @@ import { rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { AnalyticsRepository } from '../../../../src/repositories/AnalyticsRepository';
 import type { AnalyticsEvent } from '../../../../src/core/analyticsTypes';
-import { e2eFixtures } from '../../src/utils/e2eFixtures';
+import { e2eFixtures } from '../../src/utils/e2e-fixtures/e2eFixtures';
 
 const { root, analytics, site } = e2eFixtures();
 export function seedAnalyticsE2e(): void {

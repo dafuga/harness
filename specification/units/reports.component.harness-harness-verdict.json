@@ -2,42 +2,48 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-harness-verdict",
 	"kind": "component",
-	"title": "HarnessVerdict",
-	"responsibility": "The binary verification badge: the green check only for a verdict that passed and the red cross for every other value, drawn as an icon alone, with its status and reasons in a tooltip that opens on hover, focus or tap.",
+	"title": "Verification verdict indicator",
+	"responsibility": "Shows whether supplied evidence passed and exposes its explanation in an accessible tooltip.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/HarnessVerdict.svelte"],
+		"source": ["packages/reports/src/components/harness/harness-verdict/HarnessVerdict.svelte"],
 		"symbols": ["HarnessVerdict"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HarnessVerdict.passed",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Required verdict. Only the literal value true is treated as proven."
 			},
 			{
 				"name": "HarnessVerdict.label",
-				"type": "string"
+				"type": "string",
+				"description": "Optional displayed verdict text. When omitted or null, uses Full coverage passed or Verification failed according to passed; an empty string is retained."
 			},
 			{
 				"name": "HarnessVerdict.reasons",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Optional failure explanations, defaulting to an empty list. Suppressed for a proven verdict."
 			},
 			{
 				"name": "HarnessVerdict.framed",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Optional outlined presentation, defaulting to false."
 			},
 			{
 				"name": "HarnessVerdict.bare",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Accepted compatibility prop that is not read and has no effect."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HarnessVerdict",
-				"type": "markup"
+				"type": "markup",
+				"description": "Verdict icon and tooltip. Hover or keyboard focus reveals the explanation; clicking pins it, while Escape, blur or an outside pointer action closes it. The tooltip stays within the viewport and supports keyboard scrolling when its content overflows."
 			}
 		],
 		"errors": []
@@ -56,11 +62,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/HarnessVerdict.svelte",
+		"entry": "packages/reports/src/components/harness/harness-verdict/HarnessVerdict.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/harness/HarnessVerdict.svelte"
+				"entry": "packages/reports/src/components/harness/harness-verdict/HarnessVerdict.svelte"
 			}
 		]
 	},

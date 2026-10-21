@@ -61,6 +61,11 @@
 		]
 	},
 	"scenarios": ["agent-settings"],
+	"preview": {
+		"scenario": "agent-settings",
+		"state": "settings",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

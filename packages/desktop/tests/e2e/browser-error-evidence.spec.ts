@@ -47,6 +47,7 @@ for (const width of [1440, 390]) {
 		await page.setViewportSize({ width, height: 1000 });
 		await evidenceFixture(page, { shared: true, observedUnits: [ids.list], browserErrors });
 		await page.goto(address);
+		await page.getByText('Verification details', { exact: true }).click();
 		const coverage = page.getByRole('region', { name: 'Evidence coverage' });
 		await expect(
 			coverage.getByRole('heading', { name: /Search across synthetic orders/ }).first()
@@ -79,6 +80,7 @@ for (const width of [1440, 390]) {
 			true
 		);
 		await page.goto(address.replace('/components/', `/commit/${commits.first}/components/`));
+		await page.getByText('Verification details', { exact: true }).click();
 		await expect(page.getByRole('region', { name: 'Evidence coverage' })).toBeVisible();
 		await expect(page.getByRole('group', { name: 'Browser errors' })).toHaveCount(0);
 	});

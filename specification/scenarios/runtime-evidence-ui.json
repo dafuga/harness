@@ -13,118 +13,414 @@
 		"desktop.component.runtime-evidence",
 		"desktop.component.coverage-panel",
 		"desktop.store.entity-evidence",
-		"desktop.style.evidence"
+		"desktop.style.evidence",
+		"reports.component.regression-proof",
+		"desktop.component.history-panel"
 	],
 	"states": [
 		{
 			"id": "current",
 			"title": "current",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.runtime-pane",
+				"desktop.component.runtime-screens",
+				"desktop.component.runtime-behavior",
+				"desktop.component.runtime-audio",
+				"desktop.component.runtime-artifact",
+				"desktop.component.runtime-run",
+				"desktop.component.runtime-evidence",
+				"desktop.component.coverage-panel",
+				"desktop.store.entity-evidence",
+				"desktop.style.evidence"
+			]
 		},
 		{
 			"id": "commit",
 			"title": "commit",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.runtime-pane",
+				"desktop.component.runtime-screens",
+				"desktop.component.runtime-behavior",
+				"desktop.component.runtime-audio",
+				"desktop.component.runtime-artifact",
+				"desktop.component.runtime-run",
+				"desktop.component.runtime-evidence",
+				"desktop.component.coverage-panel",
+				"desktop.store.entity-evidence",
+				"desktop.style.evidence"
+			]
 		},
 		{
 			"id": "inherited",
 			"title": "inherited",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.runtime-pane",
+				"desktop.component.runtime-screens",
+				"desktop.component.runtime-behavior",
+				"desktop.component.runtime-audio",
+				"desktop.component.runtime-artifact",
+				"desktop.component.runtime-run",
+				"desktop.component.runtime-evidence",
+				"desktop.component.coverage-panel",
+				"desktop.store.entity-evidence",
+				"desktop.style.evidence"
+			]
 		},
 		{
 			"id": "not-alike",
 			"title": "not alike",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.runtime-pane",
+				"desktop.component.runtime-screens",
+				"desktop.component.runtime-behavior",
+				"desktop.component.runtime-audio",
+				"desktop.component.runtime-artifact",
+				"desktop.component.runtime-run",
+				"desktop.component.runtime-evidence",
+				"desktop.component.coverage-panel",
+				"desktop.store.entity-evidence",
+				"desktop.style.evidence"
+			]
 		},
 		{
 			"id": "missing",
 			"title": "missing",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.runtime-pane",
+				"desktop.component.runtime-screens",
+				"desktop.component.runtime-behavior",
+				"desktop.component.runtime-audio",
+				"desktop.component.runtime-artifact",
+				"desktop.component.runtime-run",
+				"desktop.component.runtime-evidence",
+				"desktop.component.coverage-panel",
+				"desktop.store.entity-evidence",
+				"desktop.style.evidence"
+			]
 		},
 		{
 			"id": "rejected",
 			"title": "rejected",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.runtime-pane",
+				"desktop.component.runtime-screens",
+				"desktop.component.runtime-behavior",
+				"desktop.component.runtime-audio",
+				"desktop.component.runtime-artifact",
+				"desktop.component.runtime-run",
+				"desktop.component.runtime-evidence",
+				"desktop.component.coverage-panel",
+				"desktop.store.entity-evidence",
+				"desktop.style.evidence"
+			]
 		},
 		{
 			"id": "first-commit",
 			"title": "first commit",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.runtime-pane",
+				"desktop.component.runtime-screens",
+				"desktop.component.runtime-behavior",
+				"desktop.component.runtime-audio",
+				"desktop.component.runtime-artifact",
+				"desktop.component.runtime-run",
+				"desktop.component.runtime-evidence",
+				"desktop.component.coverage-panel",
+				"desktop.store.entity-evidence",
+				"desktop.style.evidence"
+			]
 		},
 		{
 			"id": "function-current",
 			"title": "function current",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.runtime-pane",
+				"desktop.component.runtime-screens",
+				"desktop.component.runtime-behavior",
+				"desktop.component.runtime-audio",
+				"desktop.component.runtime-artifact",
+				"desktop.component.runtime-run",
+				"desktop.component.runtime-evidence",
+				"desktop.component.coverage-panel",
+				"desktop.store.entity-evidence",
+				"desktop.style.evidence"
+			]
 		},
 		{
 			"id": "function-commit",
 			"title": "function commit",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.runtime-pane",
+				"desktop.component.runtime-screens",
+				"desktop.component.runtime-behavior",
+				"desktop.component.runtime-audio",
+				"desktop.component.runtime-artifact",
+				"desktop.component.runtime-run",
+				"desktop.component.runtime-evidence",
+				"desktop.component.coverage-panel",
+				"desktop.store.entity-evidence",
+				"desktop.style.evidence"
+			]
 		},
 		{
 			"id": "behavior-unknown",
 			"title": "behavior unknown",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.runtime-pane",
+				"desktop.component.runtime-screens",
+				"desktop.component.runtime-behavior",
+				"desktop.component.runtime-audio",
+				"desktop.component.runtime-artifact",
+				"desktop.component.runtime-run",
+				"desktop.component.runtime-evidence",
+				"desktop.component.coverage-panel",
+				"desktop.store.entity-evidence",
+				"desktop.style.evidence"
+			]
 		},
 		{
 			"id": "refused",
 			"title": "refused",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.runtime-pane",
+				"desktop.component.runtime-screens",
+				"desktop.component.runtime-behavior",
+				"desktop.component.runtime-audio",
+				"desktop.component.runtime-artifact",
+				"desktop.component.runtime-run",
+				"desktop.component.runtime-evidence",
+				"desktop.component.coverage-panel",
+				"desktop.store.entity-evidence",
+				"desktop.style.evidence"
+			]
 		},
 		{
 			"id": "audio-current",
 			"title": "audio current",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.runtime-pane",
+				"desktop.component.runtime-screens",
+				"desktop.component.runtime-behavior",
+				"desktop.component.runtime-audio",
+				"desktop.component.runtime-artifact",
+				"desktop.component.runtime-run",
+				"desktop.component.runtime-evidence",
+				"desktop.component.coverage-panel",
+				"desktop.store.entity-evidence",
+				"desktop.style.evidence"
+			]
 		},
 		{
 			"id": "audio-commit",
 			"title": "audio commit",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.runtime-pane",
+				"desktop.component.runtime-screens",
+				"desktop.component.runtime-behavior",
+				"desktop.component.runtime-audio",
+				"desktop.component.runtime-artifact",
+				"desktop.component.runtime-run",
+				"desktop.component.runtime-evidence",
+				"desktop.component.coverage-panel",
+				"desktop.store.entity-evidence",
+				"desktop.style.evidence"
+			]
 		},
 		{
 			"id": "coverage",
 			"title": "coverage",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.runtime-pane",
+				"desktop.component.runtime-screens",
+				"desktop.component.runtime-behavior",
+				"desktop.component.runtime-audio",
+				"desktop.component.runtime-artifact",
+				"desktop.component.runtime-run",
+				"desktop.component.runtime-evidence",
+				"desktop.component.coverage-panel",
+				"desktop.store.entity-evidence",
+				"desktop.style.evidence"
+			]
 		},
 		{
 			"id": "old-host-gap",
 			"title": "old host gap",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.runtime-pane",
+				"desktop.component.runtime-screens",
+				"desktop.component.runtime-behavior",
+				"desktop.component.runtime-audio",
+				"desktop.component.runtime-artifact",
+				"desktop.component.runtime-run",
+				"desktop.component.runtime-evidence",
+				"desktop.component.coverage-panel",
+				"desktop.store.entity-evidence",
+				"desktop.style.evidence"
+			]
 		},
 		{
 			"id": "shared-saved",
 			"title": "shared saved",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.runtime-pane",
+				"desktop.component.runtime-screens",
+				"desktop.component.runtime-behavior",
+				"desktop.component.runtime-audio",
+				"desktop.component.runtime-artifact",
+				"desktop.component.runtime-run",
+				"desktop.component.runtime-evidence",
+				"desktop.component.coverage-panel",
+				"desktop.store.entity-evidence",
+				"desktop.style.evidence"
+			]
 		},
 		{
 			"id": "status-missing",
 			"title": "status missing",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.runtime-pane",
+				"desktop.component.runtime-screens",
+				"desktop.component.runtime-behavior",
+				"desktop.component.runtime-audio",
+				"desktop.component.runtime-artifact",
+				"desktop.component.runtime-run",
+				"desktop.component.runtime-evidence",
+				"desktop.component.coverage-panel",
+				"desktop.store.entity-evidence",
+				"desktop.style.evidence"
+			]
 		},
 		{
 			"id": "screen-interaction",
 			"title": "screen interaction",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.runtime-pane",
+				"desktop.component.runtime-screens",
+				"desktop.component.runtime-behavior",
+				"desktop.component.runtime-audio",
+				"desktop.component.runtime-artifact",
+				"desktop.component.runtime-run",
+				"desktop.component.runtime-evidence",
+				"desktop.component.coverage-panel",
+				"desktop.store.entity-evidence",
+				"desktop.style.evidence"
+			]
 		},
 		{
 			"id": "behavior-interaction",
 			"title": "behavior interaction",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.runtime-pane",
+				"desktop.component.runtime-screens",
+				"desktop.component.runtime-behavior",
+				"desktop.component.runtime-audio",
+				"desktop.component.runtime-artifact",
+				"desktop.component.runtime-run",
+				"desktop.component.runtime-evidence",
+				"desktop.component.coverage-panel",
+				"desktop.store.entity-evidence",
+				"desktop.style.evidence"
+			]
 		},
 		{
 			"id": "state-interaction",
 			"title": "state interaction",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.runtime-pane",
+				"desktop.component.runtime-screens",
+				"desktop.component.runtime-behavior",
+				"desktop.component.runtime-audio",
+				"desktop.component.runtime-artifact",
+				"desktop.component.runtime-run",
+				"desktop.component.runtime-evidence",
+				"desktop.component.coverage-panel",
+				"desktop.store.entity-evidence",
+				"desktop.style.evidence"
+			]
 		},
 		{
 			"id": "review-interaction",
 			"title": "review interaction",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.runtime-pane",
+				"desktop.component.runtime-screens",
+				"desktop.component.runtime-behavior",
+				"desktop.component.runtime-audio",
+				"desktop.component.runtime-artifact",
+				"desktop.component.runtime-run",
+				"desktop.component.runtime-evidence",
+				"desktop.component.coverage-panel",
+				"desktop.store.entity-evidence",
+				"desktop.style.evidence"
+			]
 		},
 		{
 			"id": "phone-gap",
 			"title": "phone gap",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.runtime-pane",
+				"desktop.component.runtime-screens",
+				"desktop.component.runtime-behavior",
+				"desktop.component.runtime-audio",
+				"desktop.component.runtime-artifact",
+				"desktop.component.runtime-run",
+				"desktop.component.runtime-evidence",
+				"desktop.component.coverage-panel",
+				"desktop.store.entity-evidence",
+				"desktop.style.evidence"
+			]
+		},
+		{
+			"id": "regression-proof",
+			"title": "regression proof",
+			"coverage": "required",
+			"units": [
+				"reports.component.regression-proof",
+				"desktop.store.entity-evidence",
+				"desktop.component.history-panel"
+			]
+		},
+		{
+			"id": "regression-proof-output",
+			"title": "regression proof output",
+			"coverage": "required",
+			"units": [
+				"reports.component.regression-proof",
+				"desktop.store.entity-evidence",
+				"desktop.component.history-panel"
+			]
+		},
+		{
+			"id": "regression-proof-before",
+			"title": "regression proof before",
+			"coverage": "required",
+			"units": [
+				"reports.component.regression-proof",
+				"desktop.store.entity-evidence",
+				"desktop.component.runtime-evidence"
+			]
 		}
 	],
 	"viewports": [
@@ -211,7 +507,10 @@
 				"coverage",
 				"old-host-gap",
 				"shared-saved",
-				"status-missing"
+				"status-missing",
+				"regression-proof",
+				"regression-proof-output",
+				"regression-proof-before"
 			],
 			"viewports": ["desktop"],
 			"provenance": "actual-capture",
@@ -222,7 +521,13 @@
 		{
 			"id": "runtime-screens-tablet",
 			"kind": "screenshot",
-			"states": ["current", "commit"],
+			"states": [
+				"current",
+				"commit",
+				"regression-proof",
+				"regression-proof-output",
+				"regression-proof-before"
+			],
 			"viewports": ["tablet"],
 			"provenance": "actual-capture",
 			"build": "desktop-renderer",
@@ -232,7 +537,14 @@
 		{
 			"id": "runtime-screens-mobile",
 			"kind": "screenshot",
-			"states": ["current", "commit", "phone-gap"],
+			"states": [
+				"current",
+				"commit",
+				"phone-gap",
+				"regression-proof",
+				"regression-proof-output",
+				"regression-proof-before"
+			],
 			"viewports": ["mobile"],
 			"provenance": "actual-capture",
 			"build": "desktop-renderer",

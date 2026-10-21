@@ -1,5 +1,5 @@
 import type { SecurePacket } from '../../src/models/RemoteSecure.types';
-import { SecureChannelService } from '../../src/services/SecureChannelService';
+import { SecureChannelService } from '../../src/services/secure-channel-service/SecureChannelService';
 import { remoteIdentity } from '../../src/utils/remoteIdentity';
 import { remoteKeys } from '../../src/utils/remoteKeys';
 

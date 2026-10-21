@@ -2,7 +2,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { expect, test } from 'vitest';
 import { unitsConfigFile, unitsConfigSchema } from '../src/core/unitsConfig';
 import { verifyConfigFile, verifyConfigSchema } from '../src/core/verifyTypes';
-import { verifyPlan } from '../src/utils/verifyPlan';
+import { verifyPlan } from '../src/services/verification-service/verifyPlan';
 
 /**
  * The checks verification plans for this repository's own declared configuration: an entity
@@ -40,6 +40,7 @@ test('the Shells preview spec runs once, in the reports package, under the entit
 
 test('every entity preview spec of the reports package is run by the config that finds it', () => {
 	expect(previews).toEqual([
+		'entity-preview-actions.spec.ts',
 		'entity-preview-marks.spec.ts',
 		'entity-preview-shells.spec.ts',
 		'entity-preview-test-cases.spec.ts',
@@ -51,6 +52,14 @@ test('every entity preview spec of the reports package is run by the config that
 			spec,
 			preview(spec)
 		]);
+});
+
+test('capture readiness runs under the server-free shell config', () => {
+	const path = 'packages/reports/tests/e2e/explorer-shell-capture-readiness.spec.ts';
+	expect(existsSync(path)).toBe(true);
+	expect(planned(path)[0].command).toBe(
+		'bun x playwright test --config src/config/shellPlaywrightConfig.ts tests/e2e/explorer-shell-capture-readiness.spec.ts'
+	);
 });
 
 test('an ordinary reports end-to-end spec keeps the default Playwright config', () => {

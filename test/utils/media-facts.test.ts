@@ -1,6 +1,6 @@
 import { deflateSync } from 'node:zlib';
 import { expect, test } from 'vitest';
-import { mediaFacts, pngChecksum } from '../../src/utils/mediaFacts';
+import { mediaFacts, pngChecksum } from '../../src/services/check-run-service/mediaFacts';
 
 function chunk(type: string, data: Buffer): Buffer {
 	const body = Buffer.concat([Buffer.from(type), data]);

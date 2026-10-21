@@ -4,11 +4,14 @@ import { beforeAll, expect, test } from 'vitest';
 import { HandlerRuntimeAdapter } from '../src/adapters/HandlerRuntimeAdapter';
 import { WorkingTreeAdapter } from '../src/adapters/WorkingTreeAdapter';
 import type { ImpactSide } from '../src/core/impactTypes';
-import { ImpactService } from '../src/services/ImpactService';
+import { ImpactService } from '../src/services/impact-service/ImpactService';
 import { SourceGraphService } from '../src/services/SourceGraphService';
-import { SourceIndexService, type SourceIndex } from '../src/services/SourceIndexService';
-import { impactKernel } from '../src/utils/impactKernel';
-import { scanImports } from '../src/utils/scanImports';
+import {
+	SourceIndexService,
+	type SourceIndex
+} from '../src/services/source-index-service/SourceIndexService';
+import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
+import { scanImports } from '../src/services/source-index-service/scanImports';
 import { showUnit } from '../src/workflows/inspectUnits';
 import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
 
@@ -23,7 +26,9 @@ const hosted = 'packages/hub/src/components/HostedWorkspace.svelte';
 /** What the Web workspace imports of the shared workspace, by the unit that owns each file. */
 const shared: Record<string, string> = {
 	'desktop.component.workspace-shell': 'packages/desktop/src/components/WorkspaceShell.svelte',
+	'desktop.function.cache-status': 'packages/desktop/src/utils/cache-status/cacheStatus.ts',
 	'desktop.function.workspace-route': 'packages/desktop/src/utils/workspaceRoute.ts',
+	'desktop.service.project-sync': 'packages/desktop/src/services/ProjectSyncService.ts',
 	'desktop.store.workspace': 'packages/desktop/src/lib/stores/workspace.svelte.ts'
 };
 const indexer = new SourceIndexService();

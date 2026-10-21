@@ -2,31 +2,48 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.revision-picker",
 	"kind": "component",
-	"title": "RevisionPicker",
-	"responsibility": "Owns the RevisionPicker Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Revision picker",
+	"responsibility": "Shows the selected branch, commit or environment with its update time and opens revision choices.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/RevisionPicker.svelte"],
 		"symbols": ["RevisionPicker"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RevisionPicker.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Workspace supplying snapshot, revision, branch/commit lists, pinned state and navigation. Values follow the displayed revision. Branch navigation supplies only branch; commit navigation includes both."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RevisionPicker",
-				"type": "markup"
+				"type": "markup",
+				"description": "One summary line names the branch or explicit short commit hash with its timestamp. For an environment scope, it reads Updated at and the deployment date and time; the selector already names the environment. Icon dialogs select revisions and Go to tip exits a pinned revision."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.component.choice-dialog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.revision-time",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.store.workspace",
 			"via": "import",

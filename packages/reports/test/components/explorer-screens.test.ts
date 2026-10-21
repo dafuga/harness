@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 
@@ -33,7 +33,11 @@ const mounted = Object.fromEntries(
 /** The components a file imports, by name. */
 const imported = (file: string): string[] =>
 	[...readFileSync(file, 'utf8').matchAll(/from '[^']*\/(\w+)\.svelte'/g)].map((found) => found[1]);
-const own = (name: string) => join(home, `${name}.svelte`);
+const files = readdirSync(home, { recursive: true, encoding: 'utf8' }).filter((file) =>
+	file.endsWith('.svelte')
+);
+const own = (name: string) =>
+	join(home, files.find((file) => file.split('/').at(-1) === `${name}.svelte`) ?? `${name}.svelte`);
 const direct = (name: string) => imported(own(name));
 
 /** Every component of the explorer that one reaches through what it imports. */
@@ -61,9 +65,12 @@ test('no entry reaches the content that shows every screen, or the host that mou
 	}
 });
 
-test('a collection reaches its own listing: cards for pages, a table for every other kind', () => {
+test('collections reuse visual cards and tables without loading entity detail panes', () => {
 	expect(has(entries.cards, ['ExplorerPageCard', 'ExplorerTable'])).toEqual(['ExplorerPageCard']);
-	expect(has(entries.table, ['ExplorerPageCard', 'ExplorerTable'])).toEqual(['ExplorerTable']);
+	expect(has(entries.table, ['ExplorerPageCard', 'ExplorerTable'])).toEqual([
+		'ExplorerPageCard',
+		'ExplorerTable'
+	]);
 	for (const entry of [entries.cards, entries.table]) {
 		expect(has(entry, ['ExplorerControls', 'EntityMissing']), entry).toHaveLength(2);
 		expect(has(entry, ['EntityHeader', 'EntityScreens', 'EntityHistory']), entry).toEqual([]);
@@ -79,9 +86,9 @@ test('an overview names the evidence of its kind itself, and no pane of another 
 	expect(named(entries.visual)).toEqual(['EntityAudio', 'EntityScreens']);
 	expect(named(entries.behavior)).toEqual(['EntityAudio', 'EntityBehavior']);
 	expect(named(entries.config)).toEqual(['EntityConfig']);
-	// A config is neither seen nor heard; what is run is not pictured.
-	expect(has(entries.config, ['EntityScreens', 'EntityAudio'])).toEqual([]);
-	expect(has(entries.behavior, ['EntityScreens', 'EntityConfig'])).toEqual([]);
+	// The shared frame reaches component captures; each overview still owns only its kind of evidence.
+	expect(has(entries.config, ['EntityAudio'])).toEqual([]);
+	expect(has(entries.behavior, ['EntityConfig'])).toEqual([]);
 	expect(has(entries.visual, ['EntityConfig'])).toEqual([]);
 	for (const entry of [entries.visual, entries.behavior, entries.config]) {
 		const tabs = [
@@ -89,22 +96,23 @@ test('an overview names the evidence of its kind itself, and no pane of another 
 			'EntityMissing',
 			'EntityRelations',
 			'EntitySummary',
-			'EntityTests'
+			'EntityTests',
+			'EntitySource'
 		];
-		expect(has(entry, tabs), entry).toHaveLength(5);
-		expect(has(entry, ['EntityHistory', 'EntitySource', 'ExplorerTable']), entry).toEqual([]);
+		expect(has(entry, tabs), entry).toHaveLength(6);
+		expect(has(entry, ['EntityHistory', 'ExplorerTable']), entry).toEqual([]);
 	}
 });
 
-test('details and history each reach their own screen and not the evidence of an overview', () => {
-	const evidence = ['EntityScreens', 'EntityBehavior', 'EntityTests', 'EntityRelations'];
+test('details and history share component captures while keeping their own screen content', () => {
+	const evidence = ['EntityBehavior', 'EntityTests', 'EntityRelations'];
 	expect(has(entries.details, ['EntitySummary', 'EntityMeasures', 'EntitySource'])).toHaveLength(3);
 	expect(has(entries.details, [...evidence, 'EntityHistory'])).toEqual([]);
 	const rows = ['EntityHistory', 'EntityHistoryRow', 'EntityChange', 'EntityReasons'];
 	expect(has(entries.history, rows)).toHaveLength(4);
 	expect(has(entries.history, [...evidence, 'EntitySource', 'EntityMeasures'])).toEqual([]);
 	for (const entry of [entries.details, entries.history]) {
-		expect(has(entry, ['EntityHeader', 'EntityMissing']), entry).toHaveLength(2);
+		expect(has(entry, ['EntityHeader', 'EntityMissing', 'EntityScreens']), entry).toHaveLength(3);
 	}
 });
 

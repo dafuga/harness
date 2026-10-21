@@ -24,7 +24,7 @@ test('a branch link has no commit and a legacy link has no project', () => {
 		commit: null,
 		category: 'services',
 		entityId: 'service.mail',
-		suffix: 'details'
+		suffix: 'source'
 	});
 	const legacy = workspaceRoute(`/harness/branch/feat%2Fa%2Fb/commit/${commit}/configs`);
 	expect(legacy).toMatchObject({
@@ -60,10 +60,10 @@ test('built links encode what a path cannot carry', () => {
 			commit: null,
 			category: 'pages',
 			entityId: 'page:a/b',
-			suffix: 'details'
+			suffix: 'source'
 		})
 	).toBe(
-		'/projects/6f1d2c3b-4a59-4e68-9f70-8a1b2c3d4e5f/harness/branch/release%2F1.0/pages/page%3Aa%2Fb/details'
+		'/projects/6f1d2c3b-4a59-4e68-9f70-8a1b2c3d4e5f/harness/branch/release%2F1.0/pages/page%3Aa%2Fb/source'
 	);
 	expect(workspacePath({ branch: 'main', category: 'pages', suffix: 'history' })).toBe(
 		'/harness/branch/main/pages'
@@ -87,7 +87,7 @@ test('an abbreviated commit, an unknown category and a foreign address are refus
 
 test('every section of an entity has an address of its own, and its overview has none', () => {
 	const entity = '/projects/p/harness/branch/main/pages/page%3Aactivity';
-	for (const suffix of ['designs', 'relationships', 'evidence', 'history', 'details'] as const) {
+	for (const suffix of ['designs', 'relationships', 'evidence', 'history', 'source'] as const) {
 		const route = workspaceRoute(`${entity}/${suffix}`);
 		expect(route.suffix).toBe(suffix);
 		expect(workspacePath(route)).toBe(`${entity}/${suffix}`);

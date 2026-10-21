@@ -2,7 +2,7 @@ import { expect, test } from '../../../../test/support/browserTest';
 import { atlas, hostedFixture } from './hosted-fixture';
 import { handoff, userCode } from './hosted-native';
 
-const field = { name: 'Code shown in the desktop app', exact: true };
+const field = { name: 'Code shown on your Harness device', exact: true };
 const approve = { name: 'Approve this device', exact: true };
 
 test('the approval page names what is asked, and takes the typed code in a body, never an address', async ({
@@ -14,15 +14,23 @@ test('the approval page names what is asked, and takes the typed code in a body,
 		type: 'console',
 		message: 'Failed to load resource: the server responded with a status of 400 (Bad Request)',
 		source: new URL(`/api/auth/native/approve`, baseURL).href,
-		reason: 'Deliberately submitting the wrong desktop approval code verifies rejection.'
+		reason: 'Deliberately submitting the wrong device approval code verifies rejection.'
 	});
 	const state = await hostedFixture(page, { signedIn: false });
 	await page.goto(`/native/${handoff}`);
-	await expect(page.getByRole('heading', { name: 'Connect the desktop app' })).toBeVisible();
+	await expect(page.getByRole('heading', { name: 'Connect a Harness device' })).toBeVisible();
 	await expect(page.getByRole('textbox')).toHaveCount(0);
 	await page.getByRole('button', { name: 'Sign in with Google' }).click();
 	await expect(page.getByText('every shared project you can open, now and later')).toBeVisible();
 	await expect(page.getByText(/Never type a code\s+that someone sent you/)).toBeVisible();
+	await expect(page.getByText(/writers\s+can\s+ask\s+agents\s+to\s+make\s+changes/)).toBeVisible();
+	if (process.env.TAKE_SCREENSHOT === 'true') {
+		await page.evaluate(() => document.fonts.ready);
+		await page.screenshot({
+			path: `/tmp/harness-google-native-approval-${process.env.SCREENSHOT_LABEL ?? 'proof'}.png`,
+			fullPage: true
+		});
+	}
 	const approvals = () => state.calls.filter((call) => call.path.endsWith('/native/approve'));
 	expect(approvals()).toEqual([]);
 	await page.getByRole('textbox', field).fill('wxyz-0000');

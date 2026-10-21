@@ -36,7 +36,9 @@ test('the project switcher keeps the category and shows only the chosen project'
 	await components.click();
 	await expect(page.getByRole('heading', { name: 'Alpha button', exact: true })).toBeVisible();
 	const before = (await calls(page)).length;
+	await page.getByRole('button', { name: 'Choose workbench', exact: true }).click();
 	await project.selectOption(beta);
+	await page.keyboard.press('Escape');
 	await expect(page).toHaveURL(new RegExp(`/projects/${beta}/harness/branch/main/components$`));
 	await expect(page.getByRole('heading', { name: 'Beta button', exact: true })).toBeVisible();
 	await expect(page.getByRole('main').getByText(/Alpha/)).toHaveCount(0);
@@ -55,8 +57,10 @@ test('an answer for the previous project that arrives late is never rendered', a
 			entity: 600
 		};
 	});
-	await page.getByRole('link', { name: 'Review designs' }).click();
+	await page.getByRole('link', { name: 'Open Alpha activity' }).click();
+	await page.getByRole('button', { name: 'Choose workbench', exact: true }).click();
 	await page.getByLabel('Project', { exact: true }).selectOption(beta);
+	await page.keyboard.press('Escape');
 	const betaPages = new RegExp(`/projects/${beta}/harness/branch/main/pages$`);
 	await expect(page).toHaveURL(betaPages);
 	await page.waitForTimeout(900);
@@ -71,7 +75,7 @@ test('the same entity id of another project shows no thread, message or image of
 	page
 }) => {
 	await openAlpha(page);
-	await page.getByRole('link', { name: 'Review designs' }).click();
+	await page.getByRole('link', { name: 'Open Alpha activity' }).click();
 	await page.getByRole('button', { name: 'Open thread 1', exact: true }).click();
 	await expect(page.getByText('Alpha: keep the filters on one line.')).toBeVisible();
 	await expect(
@@ -108,10 +112,12 @@ test('a project link opens its project, full commit, entity and History', async 
 	await expect(page.getByLabel('Project', { exact: true })).toHaveValue(alpha);
 	await expect(page.getByLabel('Branch', { exact: true })).toHaveValue('feat/alpha');
 	await expect(page.getByLabel('Commit', { exact: true })).toHaveValue(earlier);
-	await expect(page.getByText(`Tip · ${tip.slice(0, 7)}`, { exact: true })).toBeVisible();
-	await expect(
-		page.getByText(`Historical commit · ${earlier.slice(0, 7)}`, { exact: true })
-	).toBeVisible();
+	expect(await page.getByLabel('Branch', { exact: true }).getAttribute('title')).toContain(
+		`Tip · ${tip.slice(0, 7)}`
+	);
+	expect(await page.getByLabel('Commit', { exact: true }).getAttribute('title')).toContain(
+		`Historical commit · ${earlier.slice(0, 7)}`
+	);
 	await expect(page.getByRole('link', { name: 'pages › Alpha activity' })).toHaveAttribute(
 		'href',
 		pinned
@@ -119,7 +125,10 @@ test('a project link opens its project, full commit, entity and History', async 
 	expect((await calls(page))[0]).toMatchObject({ op: 'selectProject', projectId: alpha });
 	await page.getByRole('button', { name: 'Go to tip', exact: true }).click();
 	await expect(page).toHaveURL(new RegExp(`/projects/${alpha}/harness/branch/feat%2Falpha/pages$`));
-	await expect(page.getByText('Current · branch tip', { exact: true })).toBeVisible();
+	await expect(page.getByLabel('Commit', { exact: true })).toHaveAttribute(
+		'title',
+		/Current · branch tip/
+	);
 	await expect(page.getByRole('button', { name: 'Go to tip', exact: true })).toHaveCount(0);
 	await expect(
 		categories(page).getByRole('link', { name: 'Services', exact: true })

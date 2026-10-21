@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/SourceImpactService.ts"],
+		"source": ["src/services/source-impact-service/SourceImpactService.ts"],
 		"symbols": [
 			"SourceImpact",
 			"SourceImpactService",
@@ -15,7 +15,8 @@
 			"SourceImpactService.of",
 			"SourceImpactService.reasons",
 			"SourceImpactService.parent",
-			"SourceImpactService.stored"
+			"SourceImpactService.stored",
+			"SourceImpactService.measurements"
 		]
 	},
 	"contract": {
@@ -40,6 +41,10 @@
 			{
 				"name": "SourceImpactService.stored.commit",
 				"type": "string"
+			},
+			{
+				"name": "SourceImpactService.measurements.commit",
+				"type": "string"
 			}
 		],
 		"outputs": [
@@ -58,6 +63,10 @@
 			{
 				"name": "SourceImpactService.stored",
 				"type": "Promise<StoredSide | undefined>"
+			},
+			{
+				"name": "SourceImpactService.measurements",
+				"type": "unknown"
 			}
 		],
 		"errors": []
@@ -99,6 +108,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.unit-measurements",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.impact",
 			"via": "import",
 			"origin": "derived"
@@ -116,11 +130,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/SourceImpactService.ts",
+		"entry": "src/services/source-impact-service/SourceImpactService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/SourceImpactService.ts"
+				"entry": "src/services/source-impact-service/SourceImpactService.ts"
 			}
 		]
 	},

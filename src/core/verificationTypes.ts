@@ -99,6 +99,8 @@ export const componentVersionSchema = z.strictObject({
 /** One measured metric, or an explicit statement that it could not be measured. */
 export const measurementSchema = z.strictObject({
 	unit: identifier,
+	/** Selected exported callable when a module contains several helpers. */
+	callable: text.optional(),
 	metric: text,
 	unitOfMeasure: text,
 	value: z.number().nullable(),

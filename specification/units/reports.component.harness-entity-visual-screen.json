@@ -63,7 +63,7 @@
 			{
 				"name": "EntityVisualScreen.screenshotOverview",
 				"type": "markup",
-				"description": "A page or a component with its summary and screenshots: one at the tip, parent and commit at a commit. Relationships and tests by tab."
+				"description": "Page and shell screenshots lead Overview. Components keep their screenshots above every tab through the shared frame; Overview retains measurements and any audio without duplicating the screenshots."
 			}
 		],
 		"errors": [

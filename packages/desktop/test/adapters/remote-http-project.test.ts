@@ -1,7 +1,7 @@
 import { createServer } from 'node:http';
 import { once } from 'node:events';
 import { test, expect, vi } from 'vitest';
-import { RemoteHttpProjectAdapter } from '../../src/adapters/RemoteHttpProjectAdapter';
+import { RemoteHttpProjectAdapter } from '../../src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter';
 const origin = 'https://harness.example.invalid';
 const actor = {
 	id: 'google:fixture',

@@ -2,7 +2,7 @@ import { appendFile, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { CheckRunService } from '../src/services/CheckRunService';
+import { CheckRunService } from '../src/services/check-run-service/CheckRunService';
 import { verificationRecordSchema } from '../src/core/verificationTypes';
 import { recordView } from '../src/utils/recordView';
 import { verificationSample } from './support/verificationSample';

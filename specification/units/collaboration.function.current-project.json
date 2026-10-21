@@ -2,72 +2,88 @@
 	"schemaVersion": 1,
 	"id": "collaboration.function.current-project",
 	"kind": "function",
-	"title": "currentProject",
-	"responsibility": "Owns the currentProject shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Authorize and transact collaboration records",
+	"responsibility": "Resolve project membership and retry validated record changes against their current repository revision.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/collaboration/src/utils/currentProject.ts"],
-		"symbols": ["currentProject", "readRecords", "transaction", "now"]
+		"source": [
+			"packages/collaboration/src/utils/create-collaboration/readRecords.ts",
+			"packages/collaboration/src/utils/currentProject.ts"
+		],
+		"symbols": ["readRecords", "currentProject", "transaction", "now", "readRecords"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "currentProject.records",
-				"type": "CollaborationRecords"
+				"type": "CollaborationRecords",
+				"description": "Validated records snapshot to search."
 			},
 			{
 				"name": "currentProject.actor",
-				"type": "Actor"
+				"type": "Actor",
+				"description": "Verified actor whose membership is required."
 			},
 			{
 				"name": "currentProject.projectId",
-				"type": "string"
+				"type": "string",
+				"description": "Project UUID to resolve."
 			},
 			{
 				"name": "currentProject.roles",
-				"type": "Role[]"
+				"type": "Role[]",
+				"description": "Allowed roles; defaults to owner, commenter and viewer."
 			},
 			{
 				"name": "readRecords.deps",
-				"type": "CollaborationDependencies"
+				"type": "CollaborationDependencies",
+				"description": "Repository dependency used to read and validate a snapshot."
 			},
 			{
 				"name": "transaction.deps",
-				"type": "CollaborationDependencies"
+				"type": "CollaborationDependencies",
+				"description": "Repository dependency supporting read and compare-and-swap."
 			},
 			{
 				"name": "transaction.operation",
-				"type": "(records: CollaborationRecords) => Promise<T>"
+				"type": "(records: CollaborationRecords) => Promise<T>",
+				"description": "Async operation that may mutate parsed records and return a result; can run again after write conflicts."
 			},
 			{
 				"name": "now.deps",
-				"type": "CollaborationDependencies"
+				"type": "CollaborationDependencies",
+				"description": "Optional clock dependency; otherwise uses the current system date."
 			}
 		],
 		"outputs": [
 			{
 				"name": "currentProject",
-				"type": "ProjectSummary"
+				"type": "ProjectSummary",
+				"description": "Matching project with the actor’s membership role."
 			},
 			{
 				"name": "readRecords",
-				"type": "Promise<CollaborationRecords>"
+				"type": "Promise<CollaborationRecords>",
+				"description": "Parsed records from the repository snapshot."
 			},
 			{
 				"name": "transaction",
-				"type": "Promise<{ value: T; revision: string }>"
+				"type": "Promise<{ value: T; revision: string }>",
+				"description": "Operation result and revision; unchanged records avoid a write, and changed records retry at most five times."
 			},
 			{
 				"name": "now",
-				"type": "Date"
+				"type": "Date",
+				"description": "Injected date or a new Date from the system clock."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects invalid actors or records, denied projects or roles and five unsuccessful write attempts; callback and repository errors propagate."
 			}
 		]
 	},

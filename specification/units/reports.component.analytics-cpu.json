@@ -2,21 +2,22 @@
 	"schemaVersion": 1,
 	"id": "reports.component.analytics-cpu",
 	"kind": "component",
-	"title": "AnalyticsCpu",
-	"responsibility": "Owns the AnalyticsCpu Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Analytics cpu",
+	"responsibility": "Shows sampled local CPU usage while distinguishing machine totals from repository-agent activity.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/AnalyticsCpu.svelte"],
+		"source": ["packages/reports/src/components/analytics-cpu/AnalyticsCpu.svelte"],
 		"symbols": ["AnalyticsCpu"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "AnalyticsCpu",
-				"type": "markup"
+				"type": "markup",
+				"description": "Starts a CPU client on mount and stops it on cleanup. Displays pending, available sample or unavailable/retry states; failed samples replace old readings. Shows machine, process-group and tracked-combined percentages, sample metadata and repository-agent process rows. Null percentages stay Not measured. Manual refresh delegates to the client. Explains that history filters do not apply, shared app-server CPU is not attributable per chat, cloud inference is excluded and samples are not automatically published."
 			}
 		],
 		"errors": []
@@ -35,11 +36,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/AnalyticsCpu.svelte",
+		"entry": "packages/reports/src/components/analytics-cpu/AnalyticsCpu.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/AnalyticsCpu.svelte"
+				"entry": "packages/reports/src/components/analytics-cpu/AnalyticsCpu.svelte"
 			}
 		]
 	},

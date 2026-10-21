@@ -2,21 +2,22 @@
 	"schemaVersion": 1,
 	"id": "function.picker-paths",
 	"kind": "function",
-	"title": "pickerPaths",
-	"responsibility": "Owns the pickerPaths shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Model picker storage paths",
+	"responsibility": "Computes the picker state and provider catalog locations from environment overrides or the user’s Codex directory.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/pickerPaths.ts"],
-		"symbols": ["pickerPaths"]
+		"source": ["src/commands/codex-picker-command/pickerPaths.ts", "src/utils/pickerPaths.ts"],
+		"symbols": ["pickerPaths", "pickerPaths"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "pickerPaths",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Picker home from HARNESS_PICKER_HOME or CODEX_HOME/harness/picker, plus OpenAI models_cache.json and Harness Claude catalog paths under CODEX_HOME. Without CODEX_HOME, the root is the user home .codex directory. No directories are created or files read."
 			}
 		],
 		"errors": []

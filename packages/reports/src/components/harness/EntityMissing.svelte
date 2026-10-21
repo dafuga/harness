@@ -2,7 +2,7 @@
 	import type { ExplorerLocation } from '../../models/Explorer.types';
 	import type { EntityNav } from '../../utils/entityLens';
 	import HarnessAction from './HarnessAction.svelte';
-	import HarnessVerdict from './HarnessVerdict.svelte';
+	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
 	let {
 		title,
 		message,

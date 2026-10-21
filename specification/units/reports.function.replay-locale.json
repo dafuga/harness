@@ -2,21 +2,25 @@
 	"schemaVersion": 1,
 	"id": "reports.function.replay-locale",
 	"kind": "function",
-	"title": "replayLocale",
-	"responsibility": "Owns the replayLocale shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Replay translations",
+	"responsibility": "Registers the English screenshot-replay dictionary once per module instance.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/replayLocale.ts"],
-		"symbols": ["replayLocale"]
+		"source": [
+			"packages/reports/src/components/gameplay-replay/replayLocale.ts",
+			"packages/reports/src/utils/replayLocale.ts"
+		],
+		"symbols": ["replayLocale", "replayLocale"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "replayLocale",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Registers replay labels and messages with the locale library on the first call; later calls return without repeating registration. No value is returned."
 			}
 		],
 		"errors": []

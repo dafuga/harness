@@ -1,4 +1,5 @@
 import { runtimeEvidence } from './runtime-evidence';
+import { reviewRegression } from './ui-regression-fixture';
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import {
 	branch,
@@ -50,17 +51,19 @@ test('the address decides the section, also when the entity stays the same', asy
 	await expect(current(page)).toHaveText('Overview');
 	// Details is left with its address: the section that is named next is shown without it.
 	await visit(page, at(filter, undefined, '/details'));
-	await expect(page.getByRole('heading', { name: 'Details', exact: true })).toBeVisible();
+	await expect(page.getByRole('heading', { name: 'Source files', exact: true })).toBeVisible();
 	await visit(page, at(filter, undefined, '/evidence'));
-	await expect(current(page)).toHaveText('Evidence');
+	await expect(current(page)).toHaveText('Examples');
+	// Helper Examples now includes its verification coverage directly.
 	await expect(page.getByRole('region', { name: 'Evidence coverage' })).toBeVisible();
-	await expect(page.getByRole('heading', { name: 'Details', exact: true })).toHaveCount(0);
+	await expect(page.getByRole('heading', { name: 'Source files', exact: true })).toHaveCount(0);
 	// A section chosen on the page has its address, and Details closes when another is chosen.
-	await page.getByRole('button', { name: 'Details →', exact: true }).click();
-	await expect.poll(() => path(page)).toBe(at(filter, undefined, '/details'));
+	await expect(page.getByRole('button', { name: 'Details →', exact: true })).toHaveCount(0);
+	await tabs(page).getByRole('button', { name: 'Source', exact: true }).click();
+	await expect.poll(() => path(page)).toBe(at(filter, undefined, '/source'));
 	await tabs(page).getByRole('button', { name: 'Used In' }).click();
 	await expect.poll(() => path(page)).toBe(at(filter, undefined, '/used-in'));
-	await expect(page.getByRole('heading', { name: 'Details', exact: true })).toHaveCount(0);
+	await expect(page.getByRole('heading', { name: 'Source files', exact: true })).toHaveCount(0);
 });
 
 test('going to the tip from a named commit leaves the commit, as it did before', async ({
@@ -97,6 +100,12 @@ test('a commit of the history is a link only where the shown branch is known to 
 	await expect(page.getByRole('heading', { name: 'Entity history' })).toHaveCount(0);
 	const after = runtime(page).getByRole('group', { name: `After · ${short(commits.middle)}` });
 	await expect(after).toBeVisible();
+});
+
+test('regression history links the committed failing test and unchanged passing fix', async ({
+	page
+}, info) => {
+	await reviewRegression(page, info);
 });
 
 test('the status beside the name is the verdict of the record that was read, or says why there is none', async ({
@@ -168,7 +177,7 @@ test('an entity is named in words, and a page states its address as a fact', asy
 	await expect(
 		page.getByRole('heading', { level: 2, name: 'Orders page', exact: true })
 	).toBeVisible();
-	await page.getByRole('link', { name: 'Open page' }).click();
+	await page.getByRole('link', { name: 'Open Orders page' }).click();
 	await expect(
 		page.getByRole('heading', { level: 1, name: 'Orders page', exact: true })
 	).toBeVisible();

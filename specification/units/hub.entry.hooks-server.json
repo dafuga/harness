@@ -12,11 +12,16 @@
 	},
 	"contract": {
 		"origin": "derived",
-		"inputs": [],
+		"inputs": [
+			{
+				"name": "handle.input",
+				"type": "unknown"
+			}
+		],
 		"outputs": [
 			{
 				"name": "handle",
-				"type": "Handle"
+				"type": "unknown"
 			}
 		],
 		"errors": []

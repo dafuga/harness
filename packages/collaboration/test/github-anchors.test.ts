@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { createGitHubSource } from '../src/utils/createGitHubSource';
+import { createGitHubSource } from '../src/utils/create-git-hub-source/createGitHubSource';
 import { digest } from '../src/utils/parseCollaborationInput';
 import { base64 } from '../src/utils/githubTransport';
 import { anchor, sourceRepository } from './githubFixture';

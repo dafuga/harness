@@ -2,7 +2,7 @@ import { afterEach, expect, test, vi } from 'vitest';
 import { createRemotePhoneStore } from '../../src/lib/stores/remotePhone.svelte';
 import type { Workspace } from '../../src/lib/stores/workspace.svelte';
 import type { RemoteMobileStatus } from '../../src/models/Environment.types';
-import { nameNotice, scanFailures, scanNotices } from '../../src/utils/scanNotice';
+import { nameNotice, scanFailures, scanNotices } from '../../src/utils/scan-notice/scanNotice';
 
 const grant = { projects: [{ id: 'local-1', name: 'One' }], agents: true };
 const at = (state: RemoteMobileStatus['state'], change: Partial<RemoteMobileStatus> = {}) =>

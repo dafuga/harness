@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "function.classify-path",
 	"kind": "function",
-	"title": "classifyPath",
-	"responsibility": "Owns the classifyPath shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Repository path classification",
+	"responsibility": "Determines a file’s owning workspace and whether it belongs to the registry, ignored files, global inputs, tests, source or other files.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/classifyPath.ts"],
-		"symbols": ["PathClass", "classifyPath"]
+		"source": ["src/utils/classify-path/classifyPath.ts", "src/utils/classifyPath.ts"],
+		"symbols": ["PathClass", "classifyPath", "PathClass", "classifyPath"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "classifyPath.path",
-				"type": "string"
+				"type": "string",
+				"description": "Repository-relative path using forward slashes, to compare with workspace roots and configured patterns."
 			},
 			{
 				"name": "classifyPath.config",
-				"type": "UnitsConfig"
+				"type": "UnitsConfig",
+				"description": "Workspace roots and ignored, global and test patterns used for classification."
 			}
 		],
 		"outputs": [
 			{
 				"name": "classifyPath",
-				"type": "PathClass"
+				"type": "PathClass",
+				"description": "Classification, workspace name and root, workspace-relative path, and source identity when recognized. The deepest matching workspace wins; registry, ignored, global, test and source checks run in that order."
 			}
 		],
 		"errors": []

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { content, words } from '../entityRender';
+import { content, verdicts, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';
 
 const sections = (body: string) =>
@@ -11,11 +11,20 @@ const both = (mode: 'commit' | 'current' = 'commit') =>
 	[content(mode, { ...list, tab: 'uses' }), content(mode, { ...list, tab: 'used-in' })] as const;
 
 test('what an entity uses is one section of kinds of their own, and what uses it is another', () => {
-	const [uses, used] = both();
-	expect([sections(uses), sections(used)]).toEqual([['Uses'], ['Used In']]);
-	expect(words(uses)).toMatch(/Components\s+1\s+Order card[^]*Functions\s+1[^]*Services\s+1/);
-	expect(words(uses + used)).not.toMatch(/sub-?components|\brelated\b/i);
-	expect(words(uses + used)).not.toMatch(/src\/|\.ts\b/);
+	for (const mode of ['current', 'commit'] as const) {
+		const [uses, used] = both(mode);
+		expect([sections(uses), sections(used)]).toEqual([['Uses'], ['Used In']]);
+		expect(words(uses)).toMatch(/Components\s+1\s+Order card[^]*Functions\s+1[^]*Services\s+1/);
+		expect(words(uses + used)).not.toMatch(/sub-?components|\brelated\b/i);
+		expect(words(uses + used)).not.toMatch(/src\/|\.ts\b/);
+		for (const body of [uses, used]) {
+			expect(
+				verdicts(body.slice(body.indexOf('class="ex-relations"'))),
+				'usage rows omit verification marks'
+			).toHaveLength(0);
+			expect(verdicts(/<header class="ex-head"[^]*?<\/header>/.exec(body)![0])).toHaveLength(1);
+		}
+	}
 });
 
 test('each related entity is a link to it in the same branch and commit', () => {
@@ -36,5 +45,5 @@ test('a page leads to its components and a component to the components inside it
 	const tabs = [...page.matchAll(/role="tab"[^>]*>(.*?)<\/(?:a|button)>/gs)].map((match) =>
 		words(match[1]).trim()
 	);
-	expect(tabs).toEqual(['Overview', 'Used In', 'Uses', 'Tests', 'History']);
+	expect(tabs).toEqual(['Overview', 'Contract', 'Used In', 'Uses', 'States', 'History', 'Source']);
 });

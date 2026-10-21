@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.filter-dialog",
+	"kind": "component",
+	"title": "Catalog filters",
+	"responsibility": "Opens catalog filters and sorting from one compact icon.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/FilterDialog.svelte"],
+		"symbols": ["FilterDialog"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "FilterDialog.active",
+				"type": "number",
+				"description": "Number of nondefault filter and sort choices. Highlights the icon; excludes local search."
+			},
+			{
+				"name": "FilterDialog.onreset",
+				"type": "() => void",
+				"description": "Restores default filter and sort choices while preserving the local search query."
+			},
+			{
+				"name": "FilterDialog.children",
+				"type": "Snippet",
+				"description": "The catalog’s existing filter controls, rendered inside the dialog."
+			}
+		],
+		"outputs": [
+			{
+				"name": "FilterDialog",
+				"type": "markup",
+				"description": "One icon opens a Filters modal. Done, Escape and backdrop close it and restore focus to the icon. Reset invokes the supplied callback."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.modal",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/FilterDialog.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/FilterDialog.svelte"
+			}
+		]
+	},
+	"scenarios": ["harness-console"],
+	"preview": {
+		"scenario": "harness-console",
+		"state": "catalog-filters",
+		"viewport": "desktop"
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

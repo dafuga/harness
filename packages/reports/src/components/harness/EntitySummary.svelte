@@ -1,52 +1,24 @@
 <script lang="ts">
-	import type { ContractRow } from '../../utils/entityContract';
 	import { notMeasured, type EntityMeasure } from '../../utils/entityMeasure';
 	import HarnessIcon from './HarnessIcon.svelte';
 	let {
-		contract,
 		measure,
-		compact = false,
-		last
+		compact = false
 	}: {
-		contract: ContractRow[];
 		measure: EntityMeasure;
-		/** The row of three cards above the evidence of an overview; false for the Details page. */
+		/** The size and performance cards of an overview, without notes; false for Details. */
 		compact?: boolean;
-		/** For an entity the shown commit removed: the parent commit this contract was last held at. */
-		last?: string;
 	} = $props();
-	let title = $derived(last ? `Last contract · ${last.slice(0, 7)}` : 'Contract');
-	// The purpose is the sentence under the name of an overview; it is not said twice there.
-	let rows = $derived(compact ? contract.filter((row) => row.label !== 'Purpose') : contract);
+	const displayed = (row: EntityMeasure['size'][number]) =>
+		row.label === 'Emitted size' && row.note?.includes('no separate artifact')
+			? 'Not applicable'
+			: row.value;
 	const where = (row: EntityMeasure['performance'][number]) =>
 		[row.target, row.profile].filter(Boolean).join(' · ') || '—';
 </script>
 
-<div class="ex-summary" class:compact>
-	<section class="ex-card" aria-label={last ? 'Last contract' : 'Contract'}>
-		<h2><HarnessIcon name="contract" size={24} /> {title}</h2>
-		{#if last}
-			<p class="ex-note">Removed at the shown commit; this is what its parent held.</p>
-		{/if}
-		<dl class="ex-rows">
-			{#each rows as row, position (position)}
-				<div>
-					<dt>{row.label}</dt>
-					<dd>
-						{row.value}
-						<!-- Where a contract says what each item is, the details say it; an overview names. -->
-						{#if !compact && row.items}
-							<ul class="ex-items">
-								{#each row.items as item}
-									<li><strong>{item.name}</strong> <span>{item.text}</span></li>
-								{/each}
-							</ul>
-						{/if}
-					</dd>
-				</div>
-			{/each}
-		</dl>
-	</section>
+<!-- Size and performance only: the contract is a tab of its own, and a section of Details. -->
+<div class="ex-summary" class:compact class:benchmarked={measure.performance.length > 1}>
 	<section class="ex-card" aria-label="Size">
 		<h2><HarnessIcon name="size" size={24} /> Size</h2>
 		<dl class="ex-rows ex-figures">
@@ -54,8 +26,10 @@
 				<div>
 					<dt>{row.label}</dt>
 					<dd class:unmeasured={row.value === notMeasured} title={row.note}>
-						{row.value}
-						{#if row.note && !compact}<span class="ex-note">{row.note}</span>{/if}
+						{displayed(row)}
+						{#if row.note && (!compact || row.value === notMeasured)}<span class="ex-note"
+								>{row.note}</span
+							>{/if}
 					</dd>
 				</div>
 			{/each}
@@ -74,7 +48,7 @@
 					<dd class="unmeasured">{notMeasured}</dd>
 				</div>
 			</dl>
-			<p class="ex-note">No performance budget is declared for it.</p>
+			<p class="ex-note">No benchmark is recorded for this revision.</p>
 		{:else if measure.performance.length === 1}
 			{@const row = measure.performance[0]}
 			<dl class="ex-rows ex-figures">
@@ -88,7 +62,9 @@
 				</div>
 				<div>
 					<dt>{row.metric}</dt>
-					<dd class:unmeasured={row.value === notMeasured}>{row.value}</dd>
+					<dd class:unmeasured={row.value === notMeasured} title={row.note}>
+						{row.value}{#if row.note}<span class="ex-note">{row.note}</span>{/if}
+					</dd>
 				</div>
 				<div>
 					<dt>Tolerance</dt>
@@ -113,7 +89,9 @@
 								<td>{row.workload}</td>
 								<td>{row.metric}</td>
 								<td>{where(row)}</td>
-								<td class:unmeasured={row.value === notMeasured}>{row.value}</td>
+								<td class:unmeasured={row.value === notMeasured} title={row.note}
+									>{row.value}{#if row.note}<span class="ex-note">{row.note}</span>{/if}</td
+								>
 								<td class:over={row.over}
 									>{row.tolerance}{row.over ? ' · above the 5% policy' : ''}</td
 								>
@@ -125,3 +103,17 @@
 		{/if}
 	</section>
 </div>
+
+<style>
+	.benchmarked {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.ex-note {
+		display: block;
+		margin-top: 4px;
+	}
+	td {
+		overflow-wrap: normal;
+		word-break: normal;
+	}
+</style>

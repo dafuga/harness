@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import EntityVisualScreen from '../../src/components/harness/EntityVisualScreen.svelte';
-import { content, drawn, count, screen, words } from '../entityRender';
+import { content, disclosed, drawn, count, screen, words } from '../entityRender';
 import { ids } from '../entityUnits';
 
 const page = { category: 'pages' as const, entity: ids.page };
@@ -17,7 +17,9 @@ test('a page and a component open on their screenshots: a pair at a commit, one 
 		expect(words(tip), at.entity).toContain('Current screenshot');
 		expect(count(tip, /<img\b/g), at.entity).toBe(1);
 	}
-	expect(words(screen(EntityVisualScreen, 'commit', page))).toMatch(/Uses\s+3\s+Components\s+2/);
+	expect(words(screen(EntityVisualScreen, 'commit', { ...page, tab: 'uses' }))).toMatch(
+		/Uses\s+3\s+Components\s+2/
+	);
 });
 
 test('the tabs of the address open what it uses and its tests on the same screen', () => {
@@ -26,7 +28,9 @@ test('the tabs of the address open what it uses and its tests on the same screen
 	expect(words(related)).toContain('Order list');
 	expect(count(related, /<img\b/g)).toBe(0);
 	const tests = screen(EntityVisualScreen, 'commit', { ...page, tab: 'tests' });
-	expect(words(tests)).toContain('Verification at bbbbbbb');
+	expect(words(tests)).toContain('States');
+	expect(words(tests)).not.toContain('Verification at bbbbbbb');
+	expect(disclosed(tests)).toContain('Verification at bbbbbbb');
 	expect(drawn(tests)).toBe(drawn(content('commit', { ...page, tab: 'tests' })));
 });
 

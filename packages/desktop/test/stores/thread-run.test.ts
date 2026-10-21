@@ -71,3 +71,18 @@ test('failure and cancellation end the run and refresh what was persisted', asyn
 	expect(run.error).toBe('Provider stopped');
 	expect(refresh).toHaveBeenCalledTimes(2);
 });
+
+test('only a configured environment scopes a Change; unconfigured projects keep local edits', async () => {
+	const startRun = vi.fn(async (_request: RunRequest) => ({ runId: 'scoped' }));
+	const { workspace } = workspaceOf({ startRun });
+	Object.assign(workspace, {
+		deployments: { environment: 'prod', selected: { available: false } }
+	});
+	const first = createThreadRunStore(workspace);
+	await first.start(async () => ({ ...request, mode: 'change' }));
+	expect(startRun.mock.calls[0][0]).not.toHaveProperty('environment');
+	Object.assign(workspace, { deployments: { environment: 'prod', selected: { available: true } } });
+	const second = createThreadRunStore(workspace);
+	await second.start(async () => ({ ...request, mode: 'change' }));
+	expect(startRun.mock.calls[1][0]).toHaveProperty('environment', 'prod');
+});

@@ -1,11 +1,12 @@
-/** The six kinds of entity the explorer shows, in the order of its navigation. */
+/** The seven kinds of entity the explorer shows, in the order of its navigation. */
 export const explorerCategories = [
 	'pages',
 	'shells',
 	'components',
 	'functions',
 	'configs',
-	'services'
+	'services',
+	'models'
 ] as const;
 export type ExplorerCategory = (typeof explorerCategories)[number];
 
@@ -28,6 +29,7 @@ const kinds = new Map<string, ExplorerCategory>([
 	['form', 'functions'],
 	['config', 'configs'],
 	['initializer', 'configs'],
+	['model', 'models'],
 	['service', 'services'],
 	['endpoint', 'services'],
 	['api', 'services'],
@@ -45,7 +47,7 @@ const kinds = new Map<string, ExplorerCategory>([
 
 /**
  * The category a kind of unit is listed under. Null for a kind that is none of the six: a rule,
- * a guide, a template, a model, a script or anything unknown is not presented as a function.
+ * a guide, a template, a script or anything unknown is not presented as a function.
  */
 export function explorerKindCategory(kind: string): ExplorerCategory | null {
 	return kinds.get(kind) ?? null;
@@ -58,9 +60,20 @@ export type ExplorerSection = (typeof explorerSections)[number];
 /**
  * The tabs a section keeps in the query; the first of each is its default and is not written.
  * `relationships` is the former address of what `used-in` and `uses` show: it is still read.
+ * Source is optional on the entity page; Details is accepted only as a legacy address.
  */
 export const explorerTabs = {
-	overview: ['overview', 'used-in', 'uses', 'relationships', 'tests'],
+	overview: [
+		'overview',
+		'contract',
+		'used-in',
+		'uses',
+		'relationships',
+		'tests',
+		'examples',
+		'states',
+		'source'
+	],
 	details: ['contract', 'measurements', 'source'],
 	history: []
 } as const satisfies Record<string, readonly string[]>;
@@ -75,6 +88,8 @@ export interface ExplorerLocation {
 	category: ExplorerCategory;
 	/** The id of a unit; absent on the index of a category. */
 	entity?: string;
+	/** A callable within its owning unit, resolved at the selected revision. */
+	helper?: string;
 	/** Absent for the overview of the entity. */
 	section?: ExplorerSection;
 	/** A tab of the section other than its default one. */
@@ -128,7 +143,11 @@ function scope(parts: string[]): Scope | undefined {
 function tabOf(location: ExplorerLocation, search: string): ExplorerTab | undefined {
 	if (!location.entity) return undefined;
 	const [, ...others] = explorerTabs[location.section ?? 'overview'] as readonly ExplorerTab[];
-	const asked = new URLSearchParams(search).get('tab');
+	let asked = new URLSearchParams(search).get('tab');
+	const visual = ['pages', 'components', 'shells'].includes(location.category);
+	if (visual && asked === 'tests') asked = 'states';
+	if (location.category === 'functions' && asked === 'tests') asked = 'examples';
+	if (!visual && asked === 'states') return undefined;
 	return others.find((known) => known === asked);
 }
 
@@ -156,17 +175,39 @@ export function explorerRoute(path: string, search = ''): ExplorerLocation | und
 	if (!isCategory(category) || !selected) return undefined;
 	const { branch, commit } = found;
 	const location: ExplorerLocation = { branch, commit, category, ...selected };
+	const helper = helperOf(location, new URLSearchParams(search).get('helper'));
+	if (helper) location.helper = helper;
 	const tab = tabOf(location, search);
 	return tab ? { ...location, tab } : location;
 }
 
+/** Legacy Details links keep their scope and open a tab of the existing entity page. */
+export function canonicalExplorerLocation(location: ExplorerLocation): ExplorerLocation {
+	if (location.section !== 'details') return location;
+	const canonical = { ...location };
+	delete canonical.section;
+	if (location.tab === 'measurements') delete canonical.tab;
+	else canonical.tab = location.tab === 'source' ? 'source' : 'contract';
+	return canonical;
+}
+
 /** The canonical path of an address, with its tab as a query; every part is one segment. */
 export function explorerRoutePath(location: ExplorerLocation): string {
+	location = canonicalExplorerLocation(location);
 	const branch = location.branch === null ? '' : `/branch/${encodeURIComponent(location.branch)}`;
 	const commit = location.commit === null ? '' : `/commit/${location.commit}`;
 	const entity = location.entity ? `/${encodeURIComponent(location.entity)}` : '';
 	const section = location.entity && location.section ? `/${location.section}` : '';
 	const tab = tabOf(location, `tab=${location.tab ?? ''}`);
-	const query = tab ? `?tab=${tab}` : '';
+	const params = new URLSearchParams();
+	if (tab) params.set('tab', tab);
+	const helper = helperOf(location, location.helper);
+	if (helper) params.set('helper', helper);
+	const query = params.size ? `?${params}` : '';
 	return `${branch}${commit}/${location.category}${entity}${section}${query}`;
+}
+
+/** A helper selector belongs only to a function entity, never to a category or visual entity. */
+function helperOf(location: ExplorerLocation, helper?: string | null): string | undefined {
+	return location.category === 'functions' && location.entity && helper ? helper : undefined;
 }

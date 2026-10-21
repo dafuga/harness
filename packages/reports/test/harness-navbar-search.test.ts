@@ -1,6 +1,6 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import HarnessNavbar from '../src/components/harness/HarnessNavbar.svelte';
+import HarnessNavbar from '../src/components/harness/harness-navbar/HarnessNavbar.svelte';
 import type { ExplorerLocation } from '../src/models/Explorer.types';
 import type { SearchEntry } from '../src/utils/entitySearch';
 import {
@@ -40,23 +40,9 @@ const bar = (location: ExplorerLocation, search: { entries: SearchEntry[] | null
 			search
 		}
 	}).body.replace(/<!--.*?-->/gs, '');
-const field = (html: string) => /<input\b[^>]*role="combobox"[^>]*>/s.exec(html)?.[0] ?? '';
-
-test('the bar holds one search field labelled for entities, as a combobox of a listbox', () => {
+test('global search starts as a single icon button with its query inside a closed modal', () => {
 	const html = bar({ branch: shellBranch, commit: null, category: 'pages' });
-	expect(html.match(/role="combobox"/g)).toHaveLength(1);
-	expect(field(html)).toMatch(/aria-label="Search entities"/);
-	expect(field(html)).toMatch(/aria-expanded="false"/);
-	expect(field(html)).toMatch(/placeholder="Search entities"/);
-});
-
-test('with a commit selected the field says the commit it searches', () => {
-	const html = bar({ branch: shellBranch, commit: sha(3), category: 'functions' });
-	expect(field(html)).toMatch(new RegExp(`placeholder="Search at ${sha(3).slice(0, 7)}"`));
-});
-
-test('while the revision is read the field says so and offers no results', () => {
-	const html = bar({ branch: shellBranch, commit: null, category: 'pages' }, { entries: null });
-	expect(field(html)).toMatch(/placeholder="Loading entities…"/);
-	expect(html).not.toMatch(/role="option"/);
+	expect(html).toMatch(/aria-label="Search entities"/);
+	expect(html).not.toMatch(/role="combobox"|role="listbox"|<input\b/);
+	expect(html).toMatch(/aria-haspopup="dialog"/);
 });

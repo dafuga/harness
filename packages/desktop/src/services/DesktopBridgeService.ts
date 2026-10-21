@@ -1,7 +1,7 @@
 import { HostedProjectService } from './HostedProjectService';
 import type { ProjectSessionService } from './ProjectSessionService';
-import type { ProviderDiscoveryService } from './ProviderDiscoveryService';
-import type { DesktopRunService } from './DesktopRunService';
+import type { ProviderDiscoveryService } from './provider-discovery-service/ProviderDiscoveryService';
+import type { DesktopRunService } from './desktop-run-service/DesktopRunService';
 import { desktopBridge } from '../utils/desktopBridge';
 export class DesktopBridgeService {
 	constructor(

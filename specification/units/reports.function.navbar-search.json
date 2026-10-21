@@ -2,30 +2,36 @@
 	"schemaVersion": 1,
 	"id": "reports.function.navbar-search",
 	"kind": "function",
-	"title": "navbarSearch",
-	"responsibility": "Gives the bar's search the entries of exactly the revision in view and its scope in words, and a location only for a result those entries hold.",
+	"title": "Scoped navigation search",
+	"responsibility": "Accepts search entries only for the currently displayed revision and validates result destinations.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/navbarSearch.ts"],
-		"symbols": ["NavbarSearch", "navbarSearch"]
+		"source": [
+			"packages/reports/src/components/harness/harness-navbar/navbarSearch.ts",
+			"packages/reports/src/utils/navbarSearch.ts"
+		],
+		"symbols": ["navbarSearch", "NavbarSearch", "navbarSearch"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "navbarSearch.scope",
-				"type": "ExplorerScope | null"
+				"type": "ExplorerScope | null",
+				"description": "Resolved explorer scope, or null while unavailable."
 			},
 			{
 				"name": "navbarSearch.given",
-				"type": "SearchEntry[] | null | undefined"
+				"type": "SearchEntry[] | null | undefined",
+				"description": "Entries for the displayed revision, null/undefined while loading."
 			}
 		],
 		"outputs": [
 			{
 				"name": "navbarSearch",
-				"type": "NavbarSearch"
+				"type": "NavbarSearch",
+				"description": "Accepted entries only when a location exists and every entry matches its commit, plus a scope label and destination resolver. Destinations require matching commit, category and identifier in the accepted set, and preserve the displayed branch/revision mode."
 			}
 		],
 		"errors": []

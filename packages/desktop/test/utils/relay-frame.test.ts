@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { relayFrame } from '../../src/utils/relayFrame';
+import { relayFrame } from '../../src/services/relay-link-service/relayFrame';
 
 const deviceId = 'd'.repeat(40),
 	connectionId = 'c'.repeat(32),

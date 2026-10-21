@@ -2,9 +2,9 @@
 	"schemaVersion": 1,
 	"id": "function.picker-types",
 	"kind": "function",
-	"title": "pickerTypes",
-	"responsibility": "Owns the pickerTypes shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Provider switch state types",
+	"responsibility": "Defines pending provider switches, session observations and control interfaces, and derives a request revision marker.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/core/pickerTypes.ts"],
@@ -19,21 +19,24 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "switchRevision.record",
-				"type": "SwitchRequest | null"
+				"type": "SwitchRequest | null",
+				"description": "Switch request whose id and status identify the revision, or null when no request exists."
 			}
 		],
 		"outputs": [
 			{
 				"name": "desktopControlUnavailable",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "User-facing notice that desktop control is unavailable, requests remain pending and provider settings have not changed."
 			},
 			{
 				"name": "switchRevision",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "Request id followed by a colon and its current status, or null for no request."
 			}
 		],
 		"errors": []

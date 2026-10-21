@@ -2,32 +2,35 @@
 	"schemaVersion": 1,
 	"id": "planning.function.plan-image-codec",
 	"kind": "function",
-	"title": "planImageCodec",
-	"responsibility": "Owns the planImageCodec shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Validate a planning PNG",
+	"responsibility": "Decode a complete PNG and return its dimensions within image size limits.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/planning/src/utils/planImageCodec.ts"],
 		"symbols": ["planImageCodec"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "planImageCodec.bytes",
-				"type": "Uint8Array"
+				"type": "Uint8Array",
+				"description": "PNG bytes, from 33 bytes through 32 MiB inclusive, with positive dimensions totaling at most 32 million pixels."
 			}
 		],
 		"outputs": [
 			{
 				"name": "planImageCodec",
-				"type": "{ width: number; height: number }"
+				"type": "{ width: number; height: number }",
+				"description": "Decoded image width and height after CRC-checked PNG decoding."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "invalid-image for unsupported size, invalid dimensions or failed PNG decoding."
 			}
 		]
 	},

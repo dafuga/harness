@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "function.gather-captures",
 	"kind": "function",
-	"title": "gatherCaptures",
-	"responsibility": "Reads the captures one check wrote and inspects every file they name.",
+	"title": "Capture evidence collection",
+	"responsibility": "Reads a check’s capture index and inspects each declared evidence file to build record entries.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/gatherCaptures.ts"],
-		"symbols": ["Gathered", "GatherResult", "gatherCaptures"]
+		"source": ["src/services/check-run-service/gatherCaptures.ts", "src/utils/gatherCaptures.ts"],
+		"symbols": ["gatherCaptures", "Gathered", "GatherResult", "gatherCaptures"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "gatherCaptures.directory",
-				"type": "string"
+				"type": "string",
+				"description": "Evidence directory containing the capture index and files it names."
 			},
 			{
 				"name": "gatherCaptures.recordPath",
-				"type": "string"
+				"type": "string",
+				"description": "Record-relative prefix prepended to each captured filename."
 			}
 		],
 		"outputs": [
 			{
 				"name": "gatherCaptures",
-				"type": "GatherResult"
+				"type": "GatherResult",
+				"description": "Gathered captures with SHA-256, byte size, current timestamp and initial passed status, plus media facts or parsed benchmark data. Malformed index lines and missing files are returned as failures; no index yields empty arrays."
 			}
 		],
 		"errors": []

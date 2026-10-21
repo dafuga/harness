@@ -2,58 +2,68 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.remote-authority",
 	"kind": "function",
-	"title": "remoteAuthority",
-	"responsibility": "Owns the remoteAuthority shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Compare remote access",
+	"responsibility": "Identify the connected computer, phone and grant so views can react to access changes.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/remoteAuthority.ts"],
 		"symbols": ["Authority", "noAuthority", "remoteAuthority", "authorityChange", "excludes"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "remoteAuthority.status",
-				"type": "RemoteMobileStatus"
+				"type": "RemoteMobileStatus",
+				"description": "Remote status containing optional host, device and access grant."
 			},
 			{
 				"name": "authorityChange.known",
-				"type": "Authority"
+				"type": "Authority",
+				"description": "Previously remembered holder and serialized grant."
 			},
 			{
 				"name": "authorityChange.next",
-				"type": "Authority"
+				"type": "Authority",
+				"description": "New holder and serialized grant."
 			},
 			{
 				"name": "authorityChange.steady",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Whether the connection remained steady between these observations."
 			},
 			{
 				"name": "excludes.status",
-				"type": "RemoteMobileStatus"
+				"type": "RemoteMobileStatus",
+				"description": "Status whose project grant is checked."
 			},
 			{
 				"name": "excludes.projectId",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "Project ID to check, or null for no selected project."
 			}
 		],
 		"outputs": [
 			{
 				"name": "noAuthority",
-				"type": "Authority"
+				"type": "Authority",
+				"description": "Initial authority with no holder and an empty grant."
 			},
 			{
 				"name": "remoteAuthority",
-				"type": "Authority"
+				"type": "Authority",
+				"description": "Combined host/device identity and JSON serialization of the grant."
 			},
 			{
 				"name": "authorityChange",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "none for identical steady access; holder for a changed known holder; grant otherwise, including reconnection."
 			},
 			{
 				"name": "excludes",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when a non-null project is absent from the grant; false when no project is selected."
 			}
 		],
 		"errors": []

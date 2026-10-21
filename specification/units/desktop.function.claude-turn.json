@@ -2,36 +2,43 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.claude-turn",
 	"kind": "function",
-	"title": "claudeTurn",
-	"responsibility": "Owns the claudeTurn shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Run one Claude request",
+	"responsibility": "Runs the requested Claude model, forwards public output and reports only a completed matching-model result.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/claudeTurn.ts"],
-		"symbols": ["claudeTurn"]
+		"source": [
+			"packages/desktop/src/adapters/claude-cli-adapter/claudeTurn.ts",
+			"packages/desktop/src/utils/claudeTurn.ts"
+		],
+		"symbols": ["claudeTurn", "claudeTurn"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "claudeTurn.command",
-				"type": "CliCommand"
+				"type": "CliCommand",
+				"description": "The Claude executable and initial arguments. The helper adds noninteractive streaming output, the requested model, bypassPermissions and disabled session persistence."
 			},
 			{
 				"name": "claudeTurn.turn",
-				"type": "AgentTurn"
+				"type": "AgentTurn",
+				"description": "The model, optional effort, working directory, prompt, access mode, cancellation signal and callbacks. The prompt goes to standard input. Read-only access limits available tools to Read, Glob and Grep; reported Write and Edit paths are sent to the optional file callback."
 			}
 		],
 		"outputs": [
 			{
 				"name": "claudeTurn",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "A promise for the final public result text and the exact model reported by Claude. Public streamed events are forwarded while it runs; malformed JSON lines are ignored."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects if Claude reports another model, returns no completed result, marks its final result as an error, or the CLI process fails. Cancellation and process time or output limits also propagate."
 			}
 		]
 	},

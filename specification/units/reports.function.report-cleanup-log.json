@@ -2,30 +2,36 @@
 	"schemaVersion": 1,
 	"id": "reports.function.report-cleanup-log",
 	"kind": "function",
-	"title": "reportCleanupLog",
-	"responsibility": "Owns the reportCleanupLog shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Retention cleanup history",
+	"responsibility": "Records cleanup results while retaining recent bounded history.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/reportCleanupLog.ts"],
-		"symbols": ["reportCleanupLog"]
+		"source": [
+			"packages/reports/src/services/report-retention-service/reportCleanupLog.ts",
+			"packages/reports/src/utils/reportCleanupLog.ts"
+		],
+		"symbols": ["reportCleanupLog", "reportCleanupLog"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "reportCleanupLog.root",
-				"type": "string"
+				"type": "string",
+				"description": "Report store root containing the retention log."
 			},
 			{
 				"name": "reportCleanupLog.result",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "JSON-serializable cleanup result to record."
 			}
 		],
 		"outputs": [
 			{
 				"name": "reportCleanupLog",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Promise that rewrites the log with parseable entries newer than the retention cutoff and a timestamped new result, keeping only the latest 300 lines. Missing log files start empty; no value is returned."
 			}
 		],
 		"errors": []

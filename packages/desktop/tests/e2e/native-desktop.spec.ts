@@ -12,9 +12,9 @@ import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join, resolve, isAbsolute } from 'node:path';
 import { createRequire } from 'node:module';
-import { createPlanning } from '../../../planning/src/index';
+import { createPlanning } from '../../../planning/src/lib/planning/index';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
-import { PlanningFacadeAdapter } from '../../src/adapters/PlanningFacadeAdapter';
+import { PlanningFacadeAdapter } from '../../src/adapters/planning-facade-adapter/PlanningFacadeAdapter';
 
 const desktopRoot = resolve(import.meta.dirname, '../..');
 const electronBinary = createRequire(import.meta.url)('electron') as string;
@@ -69,13 +69,15 @@ async function openDraftThroughUi(page: Page, root: string) {
 	await expect(page.getByLabel('Branch', { exact: true })).toHaveValue('feat/native');
 	await expect(page.getByRole('button', { name: 'New page' })).toHaveCount(0);
 	await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toBeVisible();
-	await page.getByRole('link', { name: 'Review designs →', exact: true }).click();
+	await page.getByRole('link', { name: 'Open Native activity', exact: true }).click();
 	const sections = page.getByRole('navigation', { name: 'Entity sections' });
 	await sections.getByRole('button', { name: 'Designs', exact: true }).click();
 	await expect(page.getByRole('heading', { name: 'No design image yet' })).toBeVisible();
 	const tip = git(root, 'rev-parse', 'HEAD');
 	await expect(page.getByLabel('Commit', { exact: true })).toHaveValue(tip);
-	await expect(page.getByText(`Tip · ${tip.slice(0, 7)}`, { exact: true })).toBeVisible();
+	expect(await page.getByLabel('Branch', { exact: true }).getAttribute('title')).toContain(
+		`Tip · ${tip.slice(0, 7)}`
+	);
 	const api = await createPlanning(root),
 		plans = await api.listPlans();
 	expect(plans).toHaveLength(1);
@@ -127,10 +129,12 @@ async function committedImage(page: Page, root: string, unitId: string) {
 	return imageCommit;
 }
 async function historical(page: Page, commit: string, unitId: string) {
+	await page.getByRole('button', { name: 'Choose commit', exact: true }).click();
 	await page.getByLabel('Commit', { exact: true }).selectOption(commit);
+	await page.keyboard.press('Escape');
 	await expect(page).toHaveURL(new RegExp(`/branch/feat%2Fnative/commit/${commit}/pages$`));
 	await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toHaveCount(0);
-	await page.getByRole('link', { name: 'Review designs' }).click();
+	await page.getByRole('link', { name: 'Open Native activity' }).click();
 	await expect(page.getByRole('button', { name: 'Approve v001', exact: true })).toBeDisabled();
 	await nativeCapture(page, { state: 'history', unitId, commit });
 	const rejected = await page.evaluate(async () => {

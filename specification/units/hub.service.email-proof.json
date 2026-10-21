@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/services/EmailProofService.ts"],
+		"source": ["packages/hub/src/services/email-proof-service/EmailProofService.ts"],
 		"symbols": [
 			"PENDING_TTL",
 			"CODE_TTL",
@@ -143,11 +143,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/services/EmailProofService.ts",
+		"entry": "packages/hub/src/services/email-proof-service/EmailProofService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/services/EmailProofService.ts"
+				"entry": "packages/hub/src/services/email-proof-service/EmailProofService.ts"
 			}
 		]
 	},

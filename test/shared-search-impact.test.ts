@@ -1,11 +1,16 @@
+import { readFileSync } from 'node:fs';
+import { posix } from 'node:path';
 import { beforeAll, expect, test } from 'vitest';
 import { HandlerRuntimeAdapter } from '../src/adapters/HandlerRuntimeAdapter';
 import { WorkingTreeAdapter } from '../src/adapters/WorkingTreeAdapter';
 import type { ImpactReport, ImpactSide } from '../src/core/impactTypes';
-import { ImpactService } from '../src/services/ImpactService';
+import { ImpactService } from '../src/services/impact-service/ImpactService';
 import { SourceGraphService } from '../src/services/SourceGraphService';
-import { SourceIndexService, type SourceIndex } from '../src/services/SourceIndexService';
-import { impactKernel } from '../src/utils/impactKernel';
+import {
+	SourceIndexService,
+	type SourceIndex
+} from '../src/services/source-index-service/SourceIndexService';
+import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
 import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
 
 /**
@@ -14,9 +19,11 @@ import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
  * reads this very repository through the index: with the declaration the bar depends on the search
  * and a change of the search reaches the shared workspace; without it the import is a package.
  */
-const search = 'packages/reports/src/components/EntitySearch.svelte';
-const bar = 'packages/desktop/src/components/NavBar.svelte';
-const specifier = '$shared/EntitySearch.svelte';
+const sourceOf = (id: string): string =>
+	JSON.parse(readFileSync(`specification/units/${id}.json`, 'utf8')).runtime.entry;
+const search = sourceOf('reports.component.entity-search');
+const bar = sourceOf('desktop.component.nav-bar');
+const specifier = '$shared/' + posix.relative('packages/reports/src/components', search);
 const indexer = new SourceIndexService();
 const analysis = new ImpactService(new HandlerRuntimeAdapter(impactKernel));
 let loaded: LoadedUnits;

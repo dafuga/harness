@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { importRemoteKeys, remoteIdentity, remotePatterns } from '../../../remote/src/index';
-import { remoteHostIdentity } from '../../src/utils/remoteHostIdentity';
+import { remoteHostIdentity } from '../../src/services/remote-host-switch-service/remoteHostIdentity';
 
 test('a new host identity is off, self-certifying and unlike any other', async () => {
 	const identity = await remoteHostIdentity(),

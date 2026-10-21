@@ -2,76 +2,105 @@
 	"schemaVersion": 1,
 	"id": "planning.function.plan-write",
 	"kind": "function",
-	"title": "planWrite",
-	"responsibility": "Owns the planWrite shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Serialize planning writes",
+	"responsibility": "Queue planning work per repository, guard artifact cleanliness and commit only the prepared files.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/planning/src/utils/planWrite.ts"],
-		"symbols": ["Files", "planWrite", "clean", "assertClean", "commitFiles"]
+		"source": [
+			"packages/planning/src/services/planning-service/planWrite.ts",
+			"packages/planning/src/utils/plan-write/clean.ts",
+			"packages/planning/src/utils/planWrite.ts"
+		],
+		"symbols": [
+			"planWrite",
+			"Files",
+			"clean",
+			"assertClean",
+			"commitFiles",
+			"Files",
+			"clean",
+			"assertClean",
+			"commitFiles",
+			"planWrite"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "planWrite.git",
-				"type": "Git"
+				"type": "Git",
+				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "planWrite.work",
-				"type": "() => Promise<T>"
+				"type": "() => Promise<T>",
+				"description": "Asynchronous operation to run under the repository planning lock."
 			},
 			{
 				"name": "clean.git",
-				"type": "Git"
+				"type": "Git",
+				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "clean.unitPath",
-				"type": "string"
+				"type": "string",
+				"description": "Plan folder whose metadata, designs, threads and attributes must be clean."
 			},
 			{
 				"name": "assertClean.git",
-				"type": "Git"
+				"type": "Git",
+				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "assertClean.artifactPaths",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Repository-relative artifact paths to inspect, including ignored and untracked files."
 			},
 			{
 				"name": "commitFiles.git",
-				"type": "Git"
+				"type": "Git",
+				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "commitFiles.files",
-				"type": "Files"
+				"type": "Files",
+				"description": "Map of repository-relative paths to text or bytes to commit."
 			},
 			{
 				"name": "commitFiles.message",
-				"type": "string"
+				"type": "string",
+				"description": "Git commit message."
 			}
 		],
 		"outputs": [
 			{
 				"name": "planWrite",
-				"type": "Promise<T>"
+				"type": "Promise<T>",
+				"description": "Result of the queued operation; records the starting HEAD and releases the planning lock afterward, including after failure."
 			},
 			{
 				"name": "clean",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Returns nothing when the plan artifact paths are safe and clean."
 			},
 			{
 				"name": "assertClean",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Returns nothing when all supplied paths are safe and Git reports no changes there."
 			},
 			{
 				"name": "commitFiles",
-				"type": "Promise<Omit<Committed<never>, 'value'>>"
+				"type": "Promise<Omit<Committed<never>, 'value'>>",
+				"description": "Commit ID, parent, branch and prepared file paths after staging through a temporary index and installing the commit."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects a busy repository, unsafe or dirty artifact paths, changed transaction HEAD, unavailable branch or ineffective PNG LFS filters; Git/filesystem failures propagate."
 			}
 		]
 	},

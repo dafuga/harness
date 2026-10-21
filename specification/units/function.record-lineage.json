@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "function.record-lineage",
 	"kind": "function",
-	"title": "recordLineage",
-	"responsibility": "Validates what a record inherits, its base record and the records behind referenced scenarios, to the root, and refuses cycles.",
+	"title": "Verification ancestry checks",
+	"responsibility": "Checks that inherited base and scenario evidence comes from available, matching, passing and sound records without cycles.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,25 +11,29 @@
 		"symbols": ["LineageSource", "recordLineage"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "recordLineage.record",
-				"type": "VerificationRecord"
+				"type": "VerificationRecord",
+				"description": "Verification record whose base and referenced scenario ancestry should be checked."
 			},
 			{
 				"name": "recordLineage.source",
-				"type": "LineageSource"
+				"type": "LineageSource",
+				"description": "Lookup for stored records and callback reporting record identity, seal and evidence problems."
 			},
 			{
 				"name": "recordLineage.path",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Optional ancestor id trail, default empty, used to detect cyclic inheritance."
 			}
 		],
 		"outputs": [
 			{
 				"name": "recordLineage",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Problem strings for missing, mismatched, failed, damaged or cyclic ancestry and changed inherited states. An empty list means no examined lineage violation; checks are cached per object only within this call."
 			}
 		],
 		"errors": []

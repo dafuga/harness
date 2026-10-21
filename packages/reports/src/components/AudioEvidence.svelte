@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onDestroy } from 'svelte';
 	import type { Evidence } from '../models/Report.types';
-	import { audioDuration, mediaMime } from '../utils/evidenceMedia';
+	import { formatDuration, mediaMime } from '../utils/evidenceMedia';
 	import { timeAgo } from '../utils/reportDisplay';
 	import { t } from '../utils/reportLocale';
 	import EvidenceProvenance from './EvidenceProvenance.svelte';
@@ -95,7 +95,7 @@
 						· {$t(item.phase)}{/if}</span
 				>
 				{#if seconds}<time class="audio-duration" datetime={`PT${Math.round(seconds)}S`}
-						>{audioDuration(seconds)}</time
+						>{formatDuration(seconds)}</time
 					>{/if}
 			</span>
 		</div>

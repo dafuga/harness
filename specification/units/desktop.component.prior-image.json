@@ -2,42 +2,48 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.prior-image",
 	"kind": "component",
-	"title": "PriorImage",
-	"responsibility": "Owns the PriorImage Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Prior image",
+	"responsibility": "Shows an earlier committed design image without annotation controls.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/PriorImage.svelte"],
 		"symbols": ["PriorImage"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "PriorImage.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Workspace used by the image-URL helper to load the earlier image."
 			},
 			{
 				"name": "PriorImage.entityId",
-				"type": "string"
+				"type": "string",
+				"description": "Required entity identifier for the image request."
 			},
 			{
 				"name": "PriorImage.version",
-				"type": "string"
+				"type": "string",
+				"description": "Required earlier version, used in the request and Before caption."
 			},
 			{
 				"name": "PriorImage.sha256",
-				"type": "string"
+				"type": "string",
+				"description": "Required image hash for the request; the component does not choose which image is earlier."
 			},
 			{
 				"name": "PriorImage.title",
-				"type": "string"
+				"type": "string",
+				"description": "Required alternative text for the image."
 			}
 		],
 		"outputs": [
 			{
 				"name": "PriorImage",
-				"type": "markup"
+				"type": "markup",
+				"description": "Figure labeled Before and the supplied version. Shows the returned image or Loading earlier image. Ignores the helper’s error argument, so a failure can remain indistinguishable from loading."
 			}
 		],
 		"errors": []

@@ -2,73 +2,95 @@
 	"schemaVersion": 1,
 	"id": "function.note-lines",
 	"kind": "function",
-	"title": "noteLines",
-	"responsibility": "Reads, validates and merges the lines of a Harness note; a line written for another commit is reported and never used.",
+	"title": "Git history note lines",
+	"responsibility": "Serializes, merges and validates append-only history note entries tied to a particular source commit.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/noteLines.ts"],
+		"source": [
+			"src/repositories/history-note-repository/noteLines.ts",
+			"src/utils/note-lines/noteCommit.ts",
+			"src/utils/noteLines.ts"
+		],
 		"symbols": [
-			"ReadNote",
 			"noteLine",
 			"noteLines",
-			"noteCommit",
 			"mergeNoteLines",
-			"readNoteLines"
+			"ReadNote",
+			"noteCommit",
+			"readNoteLines",
+			"ReadNote",
+			"noteCommit",
+			"readNoteLines",
+			"noteLine",
+			"noteLines",
+			"mergeNoteLines"
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "noteLine.entry",
-				"type": "HistoryNote"
+				"type": "HistoryNote",
+				"description": "Validated history entry to serialize canonically."
 			},
 			{
 				"name": "noteLines.entries",
-				"type": "HistoryNote[]"
+				"type": "HistoryNote[]",
+				"description": "History entries to write in their existing order."
 			},
 			{
 				"name": "noteCommit.entry",
-				"type": "HistoryNote"
+				"type": "HistoryNote",
+				"description": "History entry whose owning source commit should be read."
 			},
 			{
 				"name": "mergeNoteLines.left",
-				"type": "string"
+				"type": "string",
+				"description": "First note text to union with the second."
 			},
 			{
 				"name": "mergeNoteLines.right",
-				"type": "string"
+				"type": "string",
+				"description": "Second note text to union with the first."
 			},
 			{
 				"name": "readNoteLines.text",
-				"type": "string"
+				"type": "string",
+				"description": "Newline-delimited note text to validate line by line."
 			},
 			{
 				"name": "readNoteLines.commit",
-				"type": "string"
+				"type": "string",
+				"description": "Commit the note belongs to; entries naming a different commit are rejected."
 			}
 		],
 		"outputs": [
 			{
 				"name": "noteLine",
-				"type": "string"
+				"type": "string",
+				"description": "Canonical JSON for one entry, without an added newline."
 			},
 			{
 				"name": "noteLines",
-				"type": "string"
+				"type": "string",
+				"description": "Canonical JSON entries each followed by a newline; an empty list produces empty text."
 			},
 			{
 				"name": "noteCommit",
-				"type": "string"
+				"type": "string",
+				"description": "Verification source.commit or the commit field of a reason/legacy entry."
 			},
 			{
 				"name": "mergeNoteLines",
-				"type": "string"
+				"type": "string",
+				"description": "Sorted unique nonblank lines, each with a trailing newline. The union does not validate or canonicalize the supplied lines."
 			},
 			{
 				"name": "readNoteLines",
-				"type": "ReadNote"
+				"type": "ReadNote",
+				"description": "Valid entries for the requested commit in line order and problems identifying malformed or foreign-commit lines; blank lines are ignored."
 			}
 		],
 		"errors": []

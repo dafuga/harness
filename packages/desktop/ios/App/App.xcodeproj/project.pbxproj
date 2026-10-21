@@ -41,6 +41,12 @@
 		B8F42CF7319C98CB422FF903 /* RemoteRelayClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECED2DCB3710DB54D786F53 /* RemoteRelayClient.swift */; };
 		95B882654B48CC26E524FC5A /* RemoteRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A38CF2711983D5E972DFB20 /* RemoteRequests.swift */; };
 		150A06A937141DE718B77115 /* RemoteSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5827BD6FA246D531D8E8BD7 /* RemoteSession.swift */; };
+		7A1C4E2B9D3F5A6B8C0D1F2F /* HubAccountModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C4E2B9D3F5A6B8C0D1E2F /* HubAccountModels.swift */; };
+		7A1C4E2B9D3F5A6B8C0D1F30 /* HubAccountVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C4E2B9D3F5A6B8C0D1E30 /* HubAccountVault.swift */; };
+		7A1C4E2B9D3F5A6B8C0D1F31 /* HubAccountHttp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C4E2B9D3F5A6B8C0D1E31 /* HubAccountHttp.swift */; };
+		7A1C4E2B9D3F5A6B8C0D1F32 /* HubAccountSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C4E2B9D3F5A6B8C0D1E32 /* HubAccountSession.swift */; };
+		7A1C4E2B9D3F5A6B8C0D1F33 /* HubAccountHandoff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C4E2B9D3F5A6B8C0D1E33 /* HubAccountHandoff.swift */; };
+		7A1C4E2B9D3F5A6B8C0D1F34 /* HarnessAccountPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C4E2B9D3F5A6B8C0D1E34 /* HarnessAccountPlugin.swift */; };
 		504EC30D1FED79650016851F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 504EC30B1FED79650016851F /* Main.storyboard */; };
 		504EC30F1FED79650016851F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 504EC30E1FED79650016851F /* Assets.xcassets */; };
 		504EC3121FED79650016851F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 504EC3101FED79650016851F /* LaunchScreen.storyboard */; };
@@ -82,6 +88,12 @@
 		DECED2DCB3710DB54D786F53 /* RemoteRelayClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/RemoteRelayClient.swift; sourceTree = "<group>"; };
 		6A38CF2711983D5E972DFB20 /* RemoteRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/RemoteRequests.swift; sourceTree = "<group>"; };
 		D5827BD6FA246D531D8E8BD7 /* RemoteSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/RemoteSession.swift; sourceTree = "<group>"; };
+		7A1C4E2B9D3F5A6B8C0D1E2F /* HubAccountModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubAccountModels.swift; sourceTree = "<group>"; };
+		7A1C4E2B9D3F5A6B8C0D1E30 /* HubAccountVault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubAccountVault.swift; sourceTree = "<group>"; };
+		7A1C4E2B9D3F5A6B8C0D1E31 /* HubAccountHttp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubAccountHttp.swift; sourceTree = "<group>"; };
+		7A1C4E2B9D3F5A6B8C0D1E32 /* HubAccountSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubAccountSession.swift; sourceTree = "<group>"; };
+		7A1C4E2B9D3F5A6B8C0D1E33 /* HubAccountHandoff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubAccountHandoff.swift; sourceTree = "<group>"; };
+		7A1C4E2B9D3F5A6B8C0D1E34 /* HarnessAccountPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HarnessAccountPlugin.swift; sourceTree = "<group>"; };
 		504EC30C1FED79650016851F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		504EC30E1FED79650016851F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		504EC3111FED79650016851F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -154,6 +166,12 @@
 				DECED2DCB3710DB54D786F53 /* RemoteRelayClient.swift */,
 				6A38CF2711983D5E972DFB20 /* RemoteRequests.swift */,
 				D5827BD6FA246D531D8E8BD7 /* RemoteSession.swift */,
+				7A1C4E2B9D3F5A6B8C0D1E2F /* HubAccountModels.swift */,
+				7A1C4E2B9D3F5A6B8C0D1E30 /* HubAccountVault.swift */,
+				7A1C4E2B9D3F5A6B8C0D1E31 /* HubAccountHttp.swift */,
+				7A1C4E2B9D3F5A6B8C0D1E32 /* HubAccountSession.swift */,
+				7A1C4E2B9D3F5A6B8C0D1E33 /* HubAccountHandoff.swift */,
+				7A1C4E2B9D3F5A6B8C0D1E34 /* HarnessAccountPlugin.swift */,
 				504EC30B1FED79650016851F /* Main.storyboard */,
 				504EC30E1FED79650016851F /* Assets.xcassets */,
 				504EC3101FED79650016851F /* LaunchScreen.storyboard */,
@@ -276,6 +294,12 @@
 				B8F42CF7319C98CB422FF903 /* RemoteRelayClient.swift in Sources */,
 				95B882654B48CC26E524FC5A /* RemoteRequests.swift in Sources */,
 				150A06A937141DE718B77115 /* RemoteSession.swift in Sources */,
+				7A1C4E2B9D3F5A6B8C0D1F2F /* HubAccountModels.swift in Sources */,
+				7A1C4E2B9D3F5A6B8C0D1F30 /* HubAccountVault.swift in Sources */,
+				7A1C4E2B9D3F5A6B8C0D1F31 /* HubAccountHttp.swift in Sources */,
+				7A1C4E2B9D3F5A6B8C0D1F32 /* HubAccountSession.swift in Sources */,
+				7A1C4E2B9D3F5A6B8C0D1F33 /* HubAccountHandoff.swift in Sources */,
+				7A1C4E2B9D3F5A6B8C0D1F34 /* HarnessAccountPlugin.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

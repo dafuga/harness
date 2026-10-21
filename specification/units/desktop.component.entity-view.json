@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "desktop.component.entity-view",
 	"kind": "component",
-	"title": "EntityView",
-	"responsibility": "Owns the EntityView Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Entity view",
+	"responsibility": "Coordinates the entity tabs, optional source and conversation within the current workspace.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/EntityView.svelte"],
+		"source": ["packages/desktop/src/components/entity-view/EntityView.svelte"],
 		"symbols": ["EntityView"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EntityView.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Loaded workspace with an entity, navigation context, capabilities, revision and bridge operations. The entity must exist before rendering. The URL suffix selects a section, with unknown suffixes falling back to Overview and an old designs suffix opening Plan for a function. Agent-backed annotation requires agent capability and a writable snapshot; comment capability also permits annotations."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityView",
-				"type": "markup"
+				"type": "markup",
+				"description": "Entity identity, verification and the selected tab, with optional Source and conversation. Components keep their runtime screenshot above every tab; existing evidence and annotation rules remain in force."
 			}
 		],
 		"errors": []
@@ -113,6 +115,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.function.workspace-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.desktop-types",
 			"via": "import",
 			"origin": "derived"
@@ -128,6 +135,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.entity-examples",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.explorer-name",
 			"via": "import",
 			"origin": "derived"
@@ -135,11 +147,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/EntityView.svelte",
+		"entry": "packages/desktop/src/components/entity-view/EntityView.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/EntityView.svelte"
+				"entry": "packages/desktop/src/components/entity-view/EntityView.svelte"
 			}
 		]
 	},

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/initializers/initializeDesktop.ts"],
-		"symbols": ["initializeDesktop"]
+		"source": [
+			"packages/desktop/src/initializers/initializeDesktop.ts",
+			"packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts"
+		],
+		"symbols": ["initializeDesktop", "initializeDesktop"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -16,7 +19,7 @@
 		"outputs": [
 			{
 				"name": "initializeDesktop",
-				"type": "Promise<BrowserWindow>"
+				"type": "Promise<BrowserWindow | null>"
 			}
 		],
 		"errors": []
@@ -135,11 +138,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/initializers/initializeDesktop.ts",
+		"entry": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/initializers/initializeDesktop.ts"
+				"entry": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts"
 			}
 		]
 	},

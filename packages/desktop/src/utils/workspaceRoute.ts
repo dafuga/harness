@@ -12,10 +12,26 @@ export const routeSuffixes = [
 	'uses',
 	'relationships',
 	'evidence',
+	'examples',
+	'states',
 	'history',
+	'source',
 	'details'
 ] as const;
 export type RouteSuffix = (typeof routeSuffixes)[number] | null;
+/** Labels and addresses of the shared entity page sections. */
+export const workspaceSections = {
+	Overview: '',
+	Designs: 'designs',
+	Plan: 'plan',
+	'Used In': 'used-in',
+	Uses: 'uses',
+	Evidence: 'evidence',
+	Examples: 'examples',
+	States: 'states',
+	History: 'history',
+	Source: 'source'
+} as const;
 /** What a workspace address names. A legacy `/harness` address names no project. */
 export interface WorkspaceRoute {
 	projectId: string | null;
@@ -45,6 +61,7 @@ function revision(rest: string[]) {
 	return { branch, commit: null, offset: 1 };
 }
 function suffix(value: string | undefined): RouteSuffix {
+	if (value === 'details') return 'source';
 	return routeSuffixes.find((known) => known === value) ?? null;
 }
 
@@ -76,7 +93,7 @@ export function workspacePath(target: WorkspaceTarget): string {
 	const project = target.projectId ? `/projects/${encodeURIComponent(target.projectId)}` : '';
 	const branch = target.branch ? `/branch/${encodeURIComponent(target.branch)}` : '';
 	const commit = target.commit ? `/commit/${target.commit}` : '';
-	const section = target.entityId && target.suffix ? `/${target.suffix}` : '';
+	const section = target.entityId && target.suffix ? `/${suffix(target.suffix ?? undefined)}` : '';
 	const entity = target.entityId ? `/${encodeURIComponent(target.entityId)}${section}` : '';
 	return `${project}/harness${branch}${commit}/${target.category}${entity}`;
 }

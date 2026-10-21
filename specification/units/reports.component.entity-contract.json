@@ -1,0 +1,104 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.entity-contract",
+	"kind": "component",
+	"title": "Typed contract",
+	"responsibility": "Shows component fields or each function’s actual parameters and return value, with types and example details.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/entity-contract/EntityContract.svelte"],
+		"symbols": ["EntityContract"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "EntityContract.unit",
+				"type": "HarnessUnit",
+				"description": "The entity at the selected revision, including the fields and examples its contract records."
+			},
+			{
+				"name": "EntityContract.category",
+				"type": "ExplorerCategory",
+				"description": "The kind of entity; config outputs are labelled Provides."
+			},
+			{
+				"name": "EntityContract.contract",
+				"type": "ContractRow[]",
+				"description": "Prepared contract facts such as purpose, route, required states and execution targets."
+			},
+			{
+				"name": "EntityContract.last",
+				"type": "string",
+				"description": "Optional parent commit when the selected revision removed this entity."
+			}
+		],
+		"outputs": [
+			{
+				"name": "EntityContract",
+				"type": "markup",
+				"description": "Typed component tables or separate callable API contracts. Literal parameter names and each return value stay together; info controls open full examples."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.contract-example",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.contract-table",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.modal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.contract-fields",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/entity-contract/EntityContract.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/entity-contract/EntityContract.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

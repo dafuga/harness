@@ -10,7 +10,7 @@ import { evidenced, shell, withShell } from './ui-shells-fixture';
  * it under Shells. A screenshot is kept before the checks of each place when TAKE_SCREENSHOT=true.
  */
 const route = (rest: string) => `/projects/${alpha}/harness/branch/feat%2Falpha/${rest}`;
-const categories = ['Pages', 'Shells', 'Components', 'Functions', 'Configs', 'Services'];
+const categories = ['Pages', 'Shells', 'Components', 'Helpers', 'Configs', 'Services', 'Models'];
 const nav = (page: Page) => page.getByRole('navigation', { name: 'Catalog categories' });
 
 /**
@@ -64,7 +64,7 @@ test('an old Components address of the shell opens it under Shells, keeping its 
 	await expect(
 		page.getByRole('heading', { level: 1, name: 'Shared workspace shell' })
 	).toBeVisible();
-	await expect(page).toHaveURL(route(`shells/${shell}/details`));
+	await expect(page).toHaveURL(route(`shells/${shell}/source`));
 	await expect(nav(page).getByRole('link', { name: 'Shells' })).toHaveClass(/active/);
 	await expect(page.locator('.chip').filter({ hasText: /^shell$/ })).toBeVisible();
 	await evidenced(page, 'shells-legacy-address');

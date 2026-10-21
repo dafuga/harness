@@ -1,6 +1,6 @@
 import { ProjectContextValidator } from './ProjectContextValidator';
 import { channels } from '../models/DesktopBridge.types';
-import { ipcPayload } from '../utils/ipcPayload';
+import { ipcPayload } from '../utils/ipc-payload/ipcPayload';
 import { gamePayload } from '../utils/gamePayload';
 export class IpcRequestValidator {
 	parse(channel: string, input: unknown): unknown {

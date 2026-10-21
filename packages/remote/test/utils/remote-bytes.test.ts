@@ -8,11 +8,11 @@ import {
 	remoteBytes,
 	safeEqual,
 	sha256,
-	stableJson,
 	toBase64,
 	toBase64Url,
 	toHex
 } from '../../src/utils/remoteBytes';
+import { stableJson } from '../../src/services/wire-session-service/remoteBytes';
 
 test('text and base64 encodings round-trip, base64url without padding', () => {
 	expect(bytesText(remoteBytes('héllo ✓'))).toBe('héllo ✓');

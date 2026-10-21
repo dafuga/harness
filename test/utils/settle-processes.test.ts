@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, symlinkSync } from 'node:fs';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
-import { runIsolated } from '../../src/utils/runIsolated';
+import { runIsolated } from '../../src/utils/run-isolated/runIsolated';
 import {
 	alive,
 	child,

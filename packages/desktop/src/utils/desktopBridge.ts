@@ -1,13 +1,16 @@
 import { GameImageService } from '../services/GameImageService';
 import { GameProjectService } from '../services/GameProjectService';
 import { GameRenderService } from '../services/GameRenderService';
+import { DeploymentService } from '../services/DeploymentService';
+import { repositoryLease } from './repositoryLease';
 import { ProjectImageCacheService } from '../services/ProjectImageCacheService';
 import { ProjectOperationsService } from '../services/ProjectOperationsService';
 import { RecordedEvidenceService } from '../services/RecordedEvidenceService';
 import type { DesktopBridge } from '../models/DesktopBridge.types';
+import type { DeploymentBridge } from '../models/Deployment.types';
 import type { ProjectSessionService } from '../services/ProjectSessionService';
-import type { ProviderDiscoveryService } from '../services/ProviderDiscoveryService';
-import type { DesktopRunService } from '../services/DesktopRunService';
+import type { ProviderDiscoveryService } from '../services/provider-discovery-service/ProviderDiscoveryService';
+import type { DesktopRunService } from '../services/desktop-run-service/DesktopRunService';
 interface BridgeContext {
 	session: ProjectSessionService;
 	providers: ProviderDiscoveryService;
@@ -26,7 +29,20 @@ async function writable(context: BridgeContext) {
 }
 /** Planning writes of one repository happen one at a time, whichever client asks. */
 function exclusive<T>(session: ProjectSessionService, work: () => Promise<T>): Promise<T> {
-	return session.arbiter.exclusive(session.requireProject().root, work);
+	const root = session.requireProject().root;
+	return session.arbiter.exclusive(root, async () => {
+		const release = await repositoryLease(root);
+		if (!release)
+			throw new Error('Wait for the current run or planning write in this or another Harness app.');
+		try {
+			release.signal.throwIfAborted();
+			const value = await work();
+			release.signal.throwIfAborted();
+			return value;
+		} finally {
+			await release();
+		}
+	});
 }
 async function thread(context: BridgeContext, input: Parameters<DesktopBridge['openThread']>[0]) {
 	const p = await writable(context),
@@ -50,20 +66,8 @@ async function create(context: BridgeContext, input: Parameters<DesktopBridge['c
 		revision = await p.source.revision({ branch: p.revision.branch, commit: null });
 	return p.catalog.entity(plan.id, revision.commit);
 }
-export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRunEvent'> {
-	const { session, providers, runs, choose } = context;
-	const operations = new ProjectOperationsService(session);
-	const images = new GameImageService(session);
-	const game = new GameProjectService(session),
-		render = new GameRenderService(session);
-	const recorded = new RecordedEvidenceService(session);
-	const bridge: Omit<DesktopBridge, 'onRunEvent'> = {
-		gameCreate: (input) => game.create(input),
-		gameImageGenerate: (input) => images.generate(input),
-		gameImageRead: (input) => images.read(input),
-		gameRead: (input) => game.read(input),
-		gameSave: (input) => game.save(input),
-		gameRender: (input) => render.start(input),
+function authentication(session: ProjectSessionService) {
+	return {
 		hostedStatus: () =>
 			session.auth?.status() ?? Promise.resolve({ configured: false, state: 'signed-out' }),
 		connectHosted: async () => {
@@ -71,7 +75,17 @@ export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRu
 			return session.auth.connect();
 		},
 		disconnectHosted: () =>
-			session.auth?.disconnect() ?? Promise.resolve({ configured: false, state: 'signed-out' }),
+			session.auth?.disconnect() ?? Promise.resolve({ configured: false, state: 'signed-out' })
+	};
+}
+export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRunEvent'> {
+	const { session, providers, runs, choose } = context;
+	const operations = new ProjectOperationsService(session);
+	const recorded = new RecordedEvidenceService(session);
+	const bridge: Omit<DesktopBridge, 'onRunEvent'> = {
+		...deploymentOperations(session),
+		...gameOperations(session),
+		...authentication(session),
 		listProjects: () => operations.listProjects(),
 		selectProject: (input) => operations.selectProject(input),
 		capabilities: (input) => operations.capabilities(input),
@@ -97,18 +111,19 @@ export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRu
 		startRun: (input) => runs.start(input),
 		cancelRun: async (input) => runs.cancel(input.runId)
 	};
-	return bindProjectBridge(session, bridge);
-}
-
-function bindProjectBridge(
-	session: ProjectSessionService,
-	bridge: Omit<DesktopBridge, 'onRunEvent'>
-) {
 	return new Proxy(bridge, {
 		get(target, property: keyof typeof bridge) {
 			const operation = target[property];
 			if (typeof operation !== 'function') return operation;
-			if (['openProject', 'selectProject', 'listProjects', 'gameCreate'].includes(property))
+			if (
+				[
+					'openProject',
+					'selectProject',
+					'listProjects',
+					'deploymentActivities',
+					'gameCreate'
+				].includes(property)
+			)
 				return operation;
 			return async (input?: { projectId?: string }) => {
 				session.assertProject(input?.projectId);
@@ -121,4 +136,33 @@ function bindProjectBridge(
 			};
 		}
 	});
+}
+function deploymentOperations(session: ProjectSessionService): DeploymentBridge {
+	const deployments = new DeploymentService(session);
+	return {
+		deploymentStatus: (input) => deployments.status(input),
+		deploymentActivities: async () => deployments.activities(),
+		startDeployment: (input) => deployments.start(input),
+		deploymentProgress: (input) => deployments.progress(input),
+		planDeployment: (input) => deployments.plan(input),
+		deploy: (input) => deployments.deploy(input)
+	};
+}
+
+function gameOperations(session: ProjectSessionService) {
+	const images = new GameImageService(session);
+	const game = new GameProjectService(session),
+		render = new GameRenderService(session);
+	return {
+		gameCreate: (input: Parameters<NonNullable<DesktopBridge['gameCreate']>>[0]) =>
+			game.create(input),
+		gameImageGenerate: (input: Parameters<NonNullable<DesktopBridge['gameImageGenerate']>>[0]) =>
+			images.generate(input),
+		gameImageRead: (input: Parameters<NonNullable<DesktopBridge['gameImageRead']>>[0]) =>
+			images.read(input),
+		gameRead: (input: Parameters<NonNullable<DesktopBridge['gameRead']>>[0]) => game.read(input),
+		gameSave: (input: Parameters<NonNullable<DesktopBridge['gameSave']>>[0]) => game.save(input),
+		gameRender: (input: Parameters<NonNullable<DesktopBridge['gameRender']>>[0]) =>
+			render.start(input)
+	};
 }

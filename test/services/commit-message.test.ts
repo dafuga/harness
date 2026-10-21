@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { evidenceMarker } from '../../src/core/historyTypes';
-import { CommitMessageService } from '../../src/services/CommitMessageService';
+import { CommitMessageService } from '../../src/services/commit-message-service/CommitMessageService';
 
 let root: string;
 const identity = ['-c', 'user.name=Fixture', '-c', 'user.email=fixture@harness.invalid'];

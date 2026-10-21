@@ -28,6 +28,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.record-regression",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "workflow.loop-evaluate",
 			"via": "import",
 			"origin": "derived"

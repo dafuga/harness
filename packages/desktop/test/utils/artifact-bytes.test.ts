@@ -1,7 +1,8 @@
 import { createHash } from 'node:crypto';
 import { expect, test } from 'vitest';
 import type { EvidenceArtifactQuery } from '../../src/models/DesktopEvidence.types';
-import { artifactBytes, damagedArtifact, unreadArtifact } from '../../src/utils/artifactBytes';
+import { artifactBytes } from '../../src/components/recorded-preview/artifactBytes';
+import { damagedArtifact, unreadArtifact } from '../../src/utils/artifactBytes';
 
 const bytes = new TextEncoder().encode('recorded');
 const sha256 = createHash('sha256').update(bytes).digest('hex');

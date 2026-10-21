@@ -3,7 +3,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { reportPdf } from '../src/utils/reportPdf';
+import { reportPdf } from '../src/services/report-export-service/reportPdf';
 
 function buildFixture(directory: string, python: string): string {
 	const assets = join(directory, 'assets');

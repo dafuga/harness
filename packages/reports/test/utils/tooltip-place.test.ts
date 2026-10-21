@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { tooltipPlace } from '../../src/utils/tooltipPlace';
+import { tooltipPlace } from '../../src/components/harness/harness-verdict/tooltipPlace';
 
 const view = { width: 390, height: 844 };
 const tip = { width: 240, height: 80 };

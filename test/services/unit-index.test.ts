@@ -1,11 +1,72 @@
 import { expect, test } from 'vitest';
-import type { ComponentManifest } from '../../src/core/unitTypes';
+import { componentManifestSchema, type ComponentManifest } from '../../src/core/unitTypes';
 import { SourceGraphService } from '../../src/services/SourceGraphService';
 import { UnitRegistryValidator } from '../../src/validators/UnitRegistryValidator';
-import { indexFiles, retire, unitOf } from '../support/memoryTree';
+import { indexFiles, retire, unitOf, movedDefinition } from '../support/memoryTree';
+import { existsSync, readFileSync } from 'node:fs';
+import { posix, resolve } from 'node:path';
+import migration from '../../specification/loops/local-helper-ownership/migration.json';
 
 const slugify = 'export function slugify(input: string): string {\n\treturn input.trim();\n}\n';
 const other = 'export function slugifyTitle(input: string): string {\n\treturn input;\n}\n';
+
+test('recorded source moves retain definitions, owner-local placement and registered identity', () => {
+	const root = resolve(import.meta.dirname, '../..');
+	const gaps: string[] = [];
+	for (const move of migration.helpers) {
+		const target = resolve(root, move.to);
+		if (!existsSync(target)) {
+			gaps.push(`${move.name}: owner-local source is missing`);
+			continue;
+		}
+		if (posix.dirname(move.to) !== posix.dirname(move.ownerSource))
+			gaps.push(`${move.name}: different owner folder`);
+		if (!existsSync(resolve(root, move.ownerSource)))
+			gaps.push(`${move.name}: owner source is missing`);
+		const reviewed = migration.followUps.find(
+			(item) => item.unit === move.unit && item.name === move.name
+		);
+		if (movedDefinition(move.to, move.name) !== (reviewed?.definition ?? move.definition))
+			gaps.push(`${move.name}: definition changed`);
+		const unit = JSON.parse(
+			readFileSync(resolve(root, `specification/units/${move.unit}.json`), 'utf8')
+		) as ComponentManifest;
+		if (unit.id !== move.unit || !unit.owns.source.includes(move.to))
+			gaps.push(`${move.name}: registered identity lost`);
+	}
+
+	expect(migration.helpers).toHaveLength(411);
+	expect(
+		gaps,
+		`owner-local helper placement: ${gaps.length} gaps; ${gaps.slice(0, 12).join('; ')}`
+	).toEqual([]);
+});
+
+test('public route filenames retain their registered ownership', () => {
+	const root = resolve(import.meta.dirname, '../..');
+	const gaps: string[] = [];
+	for (const route of migration.publicRoutes) {
+		if (!existsSync(resolve(root, route.source)))
+			gaps.push(`${route.unit}: public route filename moved`);
+		const unit = JSON.parse(
+			readFileSync(resolve(root, `specification/units/${route.unit}.json`), 'utf8')
+		) as ComponentManifest;
+		if (!unit.owns.source.includes(route.source)) gaps.push(`${route.unit}: route ownership lost`);
+	}
+	expect(gaps).toEqual([]);
+});
+
+test('declared preview and documentation survive source re-indexing', async () => {
+	const documentation = 'src/components/Panel.md';
+	const files = { 'src/components/Panel.svelte': '<p>Sales</p>', [documentation]: '# Sales' };
+	const first = unitOf(await indexFiles(files), 'component.panel');
+	const preview = { scenario: 'sales', state: 'loaded', viewport: 'desktop' };
+	const declared = componentManifestSchema.parse({ ...first, preview, documentation });
+	const again = await indexFiles(files, [declared]);
+	expect(unitOf(again, first.id).preview).toEqual(preview);
+	expect(unitOf(again, first.id).documentation).toBe(documentation);
+	expect(again.result.updated).toEqual([]);
+});
 
 async function retiredSlugify(path: string): Promise<ComponentManifest> {
 	return retire(unitOf(await indexFiles({ [path]: slugify }), 'function.slugify'));
@@ -134,4 +195,21 @@ test('an alternative implementation is a related unit linked by a declared contr
 			{ from: 'file:src/utils/rankFast.ts', to: 'unit:function.rank', via: 'contract' }
 		])
 	);
+});
+
+test('several owned files produce identical metadata after one indexing pass', async () => {
+	const files = {
+		'src/utils/z.ts': 'export function z() { return 1; }',
+		'src/utils/a.ts': 'export function a() { return 2; }'
+	};
+	const first = unitOf(
+		await indexFiles({ 'src/utils/z.ts': files['src/utils/z.ts'] }),
+		'function.z'
+	);
+	const grouped = { ...first, owns: { source: Object.keys(files), symbols: ['z', 'a'] } };
+	const once = await indexFiles(files, [grouped]);
+	const again = await indexFiles(files, once.result.manifests);
+	expect(again.result.updated, 'one-pass source indexing must be idempotent').toEqual([]);
+	expect(again.result.manifests).toEqual(once.result.manifests);
+	expect([...once.index.files.keys()]).toEqual(Object.keys(files));
 });

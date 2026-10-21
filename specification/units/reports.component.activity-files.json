@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.activity-files",
 	"kind": "component",
-	"title": "ActivityFiles",
-	"responsibility": "Lists recently changed files with their components: committed ones, and apart from them what is not committed in each checkout.",
+	"title": "Activity files",
+	"responsibility": "Separates currently uncommitted files from recent committed file changes.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,29 +11,34 @@
 		"symbols": ["ActivityFiles"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ActivityFiles.files",
-				"type": "CommittedFile[]"
+				"type": "CommittedFile[]",
+				"description": "Required committed changes with path, status, last-change commit/time and unit owners. Kept in supplied order."
 			},
 			{
 				"name": "ActivityFiles.worktrees",
-				"type": "WorktreeState[] | null"
+				"type": "WorktreeState[] | null",
+				"description": "Required checkout snapshots or null. Null denotes unavailable live checkout state; an empty array or no changes displays no uncommitted changes. Includes truncation information."
 			},
 			{
 				"name": "ActivityFiles.href",
-				"type": "(commit: string) => string"
+				"type": "(commit: string) => string",
+				"description": "Required callback forming a commit-page link for each committed file."
 			},
 			{
 				"name": "ActivityFiles.registry",
-				"type": "string"
+				"type": "string",
+				"description": "Required wording identifying which revision’s registry supplied component ownership labels."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ActivityFiles",
-				"type": "markup"
+				"type": "markup",
+				"description": "Uncommitted and committed lists with paths, status, ownership chips and commit links. Shows six entries initially in each list, with expansion controls. Counts changed files and checkouts, mentions truncation and distinguishes unavailable live state from empty lists. The data is displayed without querying Git."
 			}
 		],
 		"errors": []

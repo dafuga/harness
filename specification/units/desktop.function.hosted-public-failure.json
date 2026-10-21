@@ -2,26 +2,31 @@
 	"schemaVersion": 1,
 	"id": "desktop.function.hosted-public-failure",
 	"kind": "function",
-	"title": "hostedPublicFailure",
-	"responsibility": "Owns the hostedPublicFailure shared function.",
-	"responsibilityOrigin": "derived",
+	"title": "Describe a hosted read failure",
+	"responsibility": "Turns a failed hosted response into a bounded public error without repeating arbitrary server prose.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/hostedPublicFailure.ts"],
-		"symbols": ["hostedPublicFailure"]
+		"source": [
+			"packages/desktop/src/adapters/hosted-http-adapter/hostedPublicFailure.ts",
+			"packages/desktop/src/utils/hostedPublicFailure.ts"
+		],
+		"symbols": ["hostedPublicFailure", "hostedPublicFailure"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hostedPublicFailure.response",
-				"type": "Response"
+				"type": "Response",
+				"description": "The HTTP response to inspect. At most 4,096 body bytes are read as JSON to look for a recognized public error code."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hostedPublicFailure",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "A promise for a HostedFailureValidator error object, marked denied for status 401 or 403 and failed otherwise. A recognized code is included in the message; malformed, oversized or unrecognized bodies fall back to the HTTP status. The error object is returned, not thrown here."
 			}
 		],
 		"errors": []

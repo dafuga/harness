@@ -86,8 +86,8 @@
 			"reason": "Built kernel in a source checkout; the dependency on kernel.impact-kernel is declared on the unit."
 		},
 		{
-			"from": "packages/reports/src/utils/e2eFixtures.ts",
-			"specifier": "../../../../.cache/reports-e2e/",
+			"from": "packages/reports/src/utils/e2e-fixtures/e2eFixtures.ts",
+			"specifier": "../../../../../.cache/reports-e2e/",
 			"external": "browser-run-build",
 			"reason": "Where a browser run keeps its copy of the finished build: a generated directory in the checkout cache, never source."
 		},
@@ -138,6 +138,144 @@
 			"specifier": "$desktop/utils/artifactMedia",
 			"to": "packages/desktop/src/utils/artifactMedia.ts",
 			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser API imports artifactLimit from this file."
+		},
+		{
+			"from": "packages/desktop/src/components/AgentControls.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "The desktop's build alias $shared is packages/reports/src/components: the agent controls render the Select of the reports package."
+		},
+		{
+			"from": "packages/desktop/src/components/CatalogView.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "The desktop's build alias $shared is packages/reports/src/components: the catalog view renders the Select of the reports package."
+		},
+		{
+			"from": "packages/desktop/src/components/design-panel/DesignPanel.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "The desktop's build alias $shared is packages/reports/src/components: the design panel renders the Select of the reports package."
+		},
+		{
+			"from": "packages/desktop/src/components/project-switcher/ProjectSwitcher.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "The desktop's build alias $shared is packages/reports/src/components: the project switcher renders the Select of the reports package."
+		},
+		{
+			"from": "packages/desktop/src/components/nav-bar/NavBar.svelte",
+			"specifier": "$shared/entity-search/EntitySearch.svelte",
+			"to": "packages/reports/src/components/entity-search/EntitySearch.svelte",
+			"reason": "The desktop's build alias $shared is packages/reports/src/components: the top bar renders the entity search of the reports package."
+		},
+		{
+			"from": "packages/desktop/src/components/RevisionPicker.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "The desktop's build alias $shared is packages/reports/src/components: the revision picker renders the Select of the reports package."
+		},
+		{
+			"from": "packages/desktop/src/components/RuntimeScreens.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "The desktop's build alias $shared is packages/reports/src/components: the runtime screens render the Select of the reports package."
+		},
+		{
+			"from": "packages/hub/src/components/invitation-form/InvitationForm.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "The hub's build alias $shared is packages/reports/src/components: the invitation form renders the Select of the reports package."
+		},
+		{
+			"from": "packages/hub/src/components/ProjectCreate.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "The hub's build alias $shared is packages/reports/src/components: the project form renders the Select of the reports package."
+		},
+		{
+			"from": "packages/desktop/src/components/nav-bar/NavBar.svelte",
+			"specifier": "$shared/BrandMark.svelte",
+			"to": "packages/reports/src/components/BrandMark.svelte",
+			"reason": "The desktop navbar renders the shared brand component through its configured $shared alias."
+		},
+		{
+			"from": "packages/desktop/src/components/ProjectGate.svelte",
+			"specifier": "$shared/BrandMark.svelte",
+			"to": "packages/reports/src/components/BrandMark.svelte",
+			"reason": "The desktop project gate renders the shared brand component through its configured $shared alias."
+		},
+		{
+			"from": "packages/hub/src/components/HubFrame.svelte",
+			"specifier": "$shared/BrandMark.svelte",
+			"to": "packages/reports/src/components/BrandMark.svelte",
+			"reason": "The hosted frame renders the shared brand component through its configured $shared alias."
+		},
+		{
+			"from": "packages/desktop/src/components/AgentSettings.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "The desktop Settings page reuses the shared Select through the configured $shared alias."
+		},
+		{
+			"from": "packages/desktop/src/components/CoveragePanel.svelte",
+			"specifier": "../../../reports/src/components/BrowserErrors.svelte",
+			"to": "packages/reports/src/components/browser-errors/BrowserErrors.svelte",
+			"reason": "Component evidence and console tests render the same recorded browser diagnostics."
+		},
+		{
+			"from": "packages/desktop/src/utils/hostedEvidenceRecord.ts",
+			"specifier": "../../../../src/core/browserDiagnostics",
+			"to": "src/core/browserDiagnostics.ts",
+			"reason": "Hosted evidence validates the same recorded browser diagnostic contract as the verification runner."
+		},
+		{
+			"from": "packages/desktop/src/components/CatalogView.svelte",
+			"specifier": "$shared/FilterDialog.svelte",
+			"to": "packages/reports/src/components/FilterDialog.svelte",
+			"reason": "The shared catalog uses the same filter dialog on Web, Electron and iOS."
+		},
+		{
+			"from": "packages/hub/src/routes/browserApi.ts",
+			"specifier": "$desktop/utils/hostedResponse",
+			"to": "packages/desktop/src/utils/hostedResponse.ts",
+			"reason": "The declared source binding matches this platform build alias and current owner-local path."
+		},
+		{
+			"from": "packages/hub/src/routes/browserApi.ts",
+			"specifier": "$desktop/utils/artifactMedia",
+			"to": "packages/desktop/src/utils/artifactMedia.ts",
+			"reason": "The declared source binding matches this platform build alias and current owner-local path."
+		},
+		{
+			"from": "packages/hub/src/components/HostedWorkspace.svelte",
+			"specifier": "$desktop/services/ProjectSyncService",
+			"to": "packages/desktop/src/services/ProjectSyncService.ts",
+			"reason": "The Hub build resolves $desktop to the shared desktop source, so account refresh and access cleanup use the same implementation on every platform."
+		},
+		{
+			"from": "packages/hub/src/components/HostedWorkspace.svelte",
+			"specifier": "$desktop/utils/cache-status/cacheStatus",
+			"to": "packages/desktop/src/utils/cache-status/cacheStatus.ts",
+			"reason": "The Hub build resolves $desktop to the shared desktop source, so account refresh and access cleanup use the same implementation on every platform."
+		},
+		{
+			"from": "packages/hub/src/routes/+page.svelte",
+			"specifier": "$desktop/services/ProjectSyncService",
+			"to": "packages/desktop/src/services/ProjectSyncService.ts",
+			"reason": "The Hub build resolves $desktop to the shared desktop source, so account refresh and access cleanup use the same implementation on every platform."
+		},
+		{
+			"from": "packages/desktop/src/components/EnvironmentPicker.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "Environment selection reuses the shared keyboard and value selection control."
+		},
+		{
+			"from": "packages/reports/src/utils/e2eFixtures.ts",
+			"specifier": "../../../../.cache/reports-e2e/",
+			"external": "browser-run-build",
+			"reason": "Where a browser run keeps its copy of the finished build: a generated directory in the checkout cache, never source."
 		},
 		{
 			"from": "packages/hub/src/utils/browserArtifact.ts",
@@ -200,18 +338,6 @@
 			"reason": "The hub's build alias $desktop is packages/desktop/src: the evidence reads are typed by ProjectContext from this file."
 		},
 		{
-			"from": "packages/desktop/src/components/AgentControls.svelte",
-			"specifier": "$shared/Select.svelte",
-			"to": "packages/reports/src/components/Select.svelte",
-			"reason": "The desktop's build alias $shared is packages/reports/src/components: the agent controls render the Select of the reports package."
-		},
-		{
-			"from": "packages/desktop/src/components/CatalogView.svelte",
-			"specifier": "$shared/Select.svelte",
-			"to": "packages/reports/src/components/Select.svelte",
-			"reason": "The desktop's build alias $shared is packages/reports/src/components: the catalog view renders the Select of the reports package."
-		},
-		{
 			"from": "packages/desktop/src/components/DesignPanel.svelte",
 			"specifier": "$shared/Select.svelte",
 			"to": "packages/reports/src/components/Select.svelte",
@@ -230,28 +356,10 @@
 			"reason": "The desktop's build alias $shared is packages/reports/src/components: the top bar renders the entity search of the reports package."
 		},
 		{
-			"from": "packages/desktop/src/components/RevisionPicker.svelte",
-			"specifier": "$shared/Select.svelte",
-			"to": "packages/reports/src/components/Select.svelte",
-			"reason": "The desktop's build alias $shared is packages/reports/src/components: the revision picker renders the Select of the reports package."
-		},
-		{
-			"from": "packages/desktop/src/components/RuntimeScreens.svelte",
-			"specifier": "$shared/Select.svelte",
-			"to": "packages/reports/src/components/Select.svelte",
-			"reason": "The desktop's build alias $shared is packages/reports/src/components: the runtime screens render the Select of the reports package."
-		},
-		{
 			"from": "packages/hub/src/components/InvitationForm.svelte",
 			"specifier": "$shared/Select.svelte",
 			"to": "packages/reports/src/components/Select.svelte",
 			"reason": "The hub's build alias $shared is packages/reports/src/components: the invitation form renders the Select of the reports package."
-		},
-		{
-			"from": "packages/hub/src/components/ProjectCreate.svelte",
-			"specifier": "$shared/Select.svelte",
-			"to": "packages/reports/src/components/Select.svelte",
-			"reason": "The hub's build alias $shared is packages/reports/src/components: the project form renders the Select of the reports package."
 		},
 		{
 			"from": "packages/desktop/src/components/NavBar.svelte",
@@ -260,34 +368,10 @@
 			"reason": "The desktop navbar renders the shared brand component through its configured $shared alias."
 		},
 		{
-			"from": "packages/desktop/src/components/ProjectGate.svelte",
-			"specifier": "$shared/BrandMark.svelte",
-			"to": "packages/reports/src/components/BrandMark.svelte",
-			"reason": "The desktop project gate renders the shared brand component through its configured $shared alias."
-		},
-		{
-			"from": "packages/hub/src/components/HubFrame.svelte",
-			"specifier": "$shared/BrandMark.svelte",
-			"to": "packages/reports/src/components/BrandMark.svelte",
-			"reason": "The hosted frame renders the shared brand component through its configured $shared alias."
-		},
-		{
-			"from": "packages/desktop/src/components/AgentSettings.svelte",
-			"specifier": "$shared/Select.svelte",
-			"to": "packages/reports/src/components/Select.svelte",
-			"reason": "The desktop Settings page reuses the shared Select through the configured $shared alias."
-		},
-		{
 			"from": "packages/desktop/src/components/CoveragePanel.svelte",
 			"specifier": "../../../reports/src/components/BrowserErrors.svelte",
 			"to": "packages/reports/src/components/BrowserErrors.svelte",
 			"reason": "Component evidence and console tests render the same recorded browser diagnostics."
-		},
-		{
-			"from": "packages/desktop/src/utils/hostedEvidenceRecord.ts",
-			"specifier": "../../../../src/core/browserDiagnostics",
-			"to": "src/core/browserDiagnostics.ts",
-			"reason": "Hosted evidence validates the same recorded browser diagnostic contract as the verification runner."
 		},
 		{
 			"from": "packages/desktop/src/components/GamePreview.svelte",

@@ -1,9 +1,11 @@
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
+import { readdirSync, readFileSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
 import { IpcRequestValidator } from '../src/validators/IpcRequestValidator';
 import { NavigationValidator } from '../src/validators/NavigationValidator';
-import { scrubEnvironment } from '../src/utils/scrubEnvironment';
-import { publicCliEvents } from '../src/utils/publicCliEvents';
+import { scrubEnvironment } from '../src/utils/cli-environment/scrubEnvironment';
+import { publicCliEvents } from '../src/adapters/claude-cli-adapter/publicCliEvents';
 
 test('remote pages and child frames cannot use the project bridge', () => {
 	const gate = new NavigationValidator();
@@ -44,7 +46,14 @@ test('IPC refuses unknown operations, invalid regions and unapproved changes', (
 });
 
 test('subscription subprocesses omit API overrides without changing the parent', () => {
-	const env = { PATH: '/bin', OPENAI_API_KEY: 'synthetic', ANTHROPIC_BASE_URL: 'synthetic' };
+	const env = {
+		PATH: '/bin',
+		OPENAI_API_KEY: 'synthetic',
+		ANTHROPIC_BASE_URL: 'synthetic',
+		CLOUDFLARE_API_TOKEN: 'synthetic',
+		HARNESS_FIXTURE_DEV_CLOUDFLARE_API_TOKEN: 'synthetic',
+		CLOUDFLARE_ENV: 'prod'
+	};
 	expect(scrubEnvironment(env)).toEqual({ PATH: '/bin' });
 	expect(env.OPENAI_API_KEY).toBe('synthetic');
 });
@@ -62,4 +71,38 @@ test('private reasoning is never forwarded to the renderer', () => {
 			}
 		})
 	).toEqual(['Design is ready.']);
+});
+
+function sources(directory: string): string[] {
+	return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+		const path = resolve(directory, entry.name);
+		if (entry.isDirectory()) return sources(path);
+		return /\.(ts|js|svelte)$/.test(path) ? [path] : [];
+	});
+}
+
+test('portable workspace sources must not depend on the Hub app', () => {
+	const desktop = resolve(import.meta.dirname, '..');
+	const hub = resolve(desktop, '../hub');
+	const dependencies = sources(resolve(desktop, 'src')).flatMap((path) => {
+		const imports = [
+			...readFileSync(path, 'utf8').matchAll(
+				/(?:\bfrom\s*|\bimport\s*(?:\(\s*)?|\brequire\s*\(\s*)['"]([^'"]+)['"]/g
+			)
+		];
+		return imports
+			.filter(([, specifier]) => {
+				const target = resolve(dirname(path), specifier);
+				return target === hub || target.startsWith(`${hub}/`) || /^hub(?:\/|$)/.test(specifier);
+			})
+			.map(([, specifier]) => `${path.slice(desktop.length + 1)} -> ${specifier}`);
+	});
+	const aliases = readFileSync(resolve(desktop, 'svelte.config.js'), 'utf8');
+	const upwardAliases = [...aliases.matchAll(/['"]([^'"]*\.\.\/hub(?:\/[^'"]*)?)['"]/g)].map(
+		([, target]) => `Svelte alias -> ${target}`
+	);
+	expect(
+		[...dependencies, ...upwardAliases],
+		'portable workspace sources must not depend on the Hub app'
+	).toEqual([]);
 });

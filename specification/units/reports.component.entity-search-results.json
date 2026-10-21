@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.entity-search-results",
 	"kind": "component",
-	"title": "EntitySearchResults",
-	"responsibility": "The results of the shared search: each a link with a category badge, its name and purpose; the active one marked; loading and nothing found said.",
+	"title": "Entity search results",
+	"responsibility": "Shows ranked entity links inside the project search modal.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,49 +11,54 @@
 		"symbols": ["EntitySearchResults"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EntitySearchResults.id",
-				"type": "string"
+				"type": "string",
+				"description": "Required list ID and prefix for indexed option IDs."
 			},
 			{
 				"name": "EntitySearchResults.found",
-				"type": "SearchEntry[]"
+				"type": "SearchEntry[]",
+				"description": "Required results in supplied order, with category, name, purpose and identity."
 			},
 			{
 				"name": "EntitySearchResults.active",
-				"type": "number"
+				"type": "number",
+				"description": "Required zero-based active position for aria-selected; an out-of-range value selects none."
 			},
 			{
 				"name": "EntitySearchResults.loading",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Required flag showing Loading entities regardless of current result count."
 			},
 			{
 				"name": "EntitySearchResults.query",
-				"type": "string"
+				"type": "string",
+				"description": "Required query text used in the empty-result message."
 			},
 			{
 				"name": "EntitySearchResults.scope",
-				"type": "string"
-			},
-			{
-				"name": "EntitySearchResults.shift",
-				"type": "number"
+				"type": "string",
+				"description": "Required human-readable revision/search scope displayed above results."
 			},
 			{
 				"name": "EntitySearchResults.href",
-				"type": "(entry: SearchEntry) => string"
+				"type": "(entry: SearchEntry) => string",
+				"description": "Required callback supplying each result’s actual link target."
 			},
 			{
 				"name": "EntitySearchResults.choose",
-				"type": "(entry: SearchEntry) => void"
+				"type": "(entry: SearchEntry) => void",
+				"description": "Required callback for ordinary primary-button clicks. Modified or other-button clicks retain native link behavior."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntitySearchResults",
-				"type": "markup"
+				"type": "markup",
+				"description": "A scrollable list of ranked entity links, their categories and purposes, with loading or no-match feedback. Modified clicks preserve normal browser link behavior."
 			}
 		],
 		"errors": []

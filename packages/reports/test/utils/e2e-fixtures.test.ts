@@ -9,7 +9,7 @@ import {
 	freePorts,
 	namedE2eRun,
 	openE2eRun
-} from '../../src/utils/e2eFixtures';
+} from '../../src/utils/e2e-fixtures/e2eFixtures';
 
 const made: string[] = [];
 afterEach(() => {
