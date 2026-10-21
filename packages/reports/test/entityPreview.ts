@@ -131,7 +131,8 @@ if (variant === 'console') {
 	window.fetch = Object.assign(
 		(input: Parameters<typeof fetch>[0], init?: Parameters<typeof fetch>[1]) => {
 			const path = String(input);
-			if (path.endsWith('/data/index.json')) return Promise.resolve(Response.json(index));
+			if (path.endsWith('/data/index.json'))
+				return Promise.resolve(Response.json({ ...index, truncated: true }));
 			if (path.endsWith('/data/activity.json')) {
 				return Promise.resolve(Response.json({ repository: { name: 'Synthetic orders' } }));
 			}
