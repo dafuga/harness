@@ -55,6 +55,14 @@ export async function reviewCallableContract(page: Page, commit: string | null, 
 		'the real console resolves callable addresses'
 	).toHaveText('filterOrders');
 	await capture(page, `callable-console-${commit ? 'commit' : 'tip'}-${viewport}`);
+	await expect(
+		page,
+		'Readable helper URL without internal module ids or query selectors'
+	).toHaveURL(/\/helpers\/filterOrders\/contract$/);
+	await page.getByRole('tab', { name: 'Examples', exact: true }).click();
+	await expect(page).toHaveURL(/\/helpers\/filterOrders\/examples$/);
+	await page.reload();
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText('filterOrders');
 }
 
 /** The selected callable owns each parameter, return and error example. */

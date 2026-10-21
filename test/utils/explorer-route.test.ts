@@ -172,9 +172,15 @@ test('a callable has a distinct revision-bound address across tabs and history',
 		};
 		const path = explorerRoutePath(location);
 		const url = new URL(path, 'http://localhost');
-		expect(url.searchParams.get('helper'), 'helper identity is part of its detail address').toBe(
-			'toKebabCase'
+		const prefix = `/branch/${encoded}${commit ? `/commit/${commit}` : ''}`;
+		expect(url.pathname, 'Readable helper paths').toBe(
+			`${prefix}/helpers/toKebabCase/in/function.case/contract`
 		);
+		expect(url.search).toBe('');
+		const short = { ...location, entity: undefined };
+		const simple = `${prefix}/helpers/toKebabCase/contract`;
+		expect(explorerRoute(simple)).toEqual(short);
+		expect(explorerRoutePath(short)).toBe(simple);
 		expect(explorerRoute(url.pathname, url.search)).toEqual(location);
 		const history = { ...location, section: 'history' as const, tab: undefined };
 		const at = new URL(explorerRoutePath(history), 'http://localhost');
