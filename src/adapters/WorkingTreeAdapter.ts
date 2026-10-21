@@ -38,7 +38,7 @@ export class WorkingTreeAdapter implements SourceTree {
 	}
 
 	private async walked(): Promise<string[]> {
-		const collected = await collectAuditedFiles(this.root);
+		const collected = await collectAuditedFiles(this.root, { includeNativeSources: true });
 		return collected.files.map((file) => relative(this.root, file.path).replaceAll('\\', '/'));
 	}
 
