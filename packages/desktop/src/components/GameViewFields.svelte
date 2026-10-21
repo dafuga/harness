@@ -37,7 +37,7 @@
 	{#if !readonly}<button onclick={create}>New view</button>{/if}
 </div>
 <label class="field">
-	<small>Style for AI video</small>
+	<small>Art direction</small>
 	<textarea rows="2" value={view.style} {readonly} oninput={restyle}></textarea>
 </label>
 
