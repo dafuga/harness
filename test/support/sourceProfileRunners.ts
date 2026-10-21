@@ -9,21 +9,21 @@ export const preload = join(repository, 'src/adapters/source-profile-adapter/bun
 export const source = 'export function greet(name: string) { return name.toUpperCase(); }\n';
 
 /** Synthetic unit ids and captures stay in this owned directory, never in real project evidence. */
-export async function runnerFixture() {
+export async function runnerFixture(subjectSource = source, symbol = 'greet', output = 'string') {
 	const root = await mkdtemp(join(tmpdir(), 'harness-runner-profiles-'));
 	const directory = join(root, 'captures');
 	await mkdir(directory);
 	await mkdir(join(root, 'specification/units'), { recursive: true });
 	await symlink(join(repository, 'node_modules'), join(root, 'node_modules'), 'dir');
 	await writeFile(join(root, 'package.json'), '{"type":"module"}');
-	await writeFile(join(root, 'subject.ts'), source);
+	await writeFile(join(root, 'subject.ts'), subjectSource);
 	await writeFile(
 		join(root, 'run.ts'),
 		"import { greet } from './subject.ts'; console.log(greet('fixture-value'));\n"
 	);
 	await writeFile(
 		join(root, 'specification/units/function.runner-fixture.json'),
-		JSON.stringify(manifest())
+		JSON.stringify(manifest(symbol, output))
 	);
 	await writeFile(join(root, 'vitest.config.ts'), config(root));
 	return {
@@ -69,7 +69,7 @@ export async function runnerCaptures(directory: string) {
 	).flat();
 }
 
-function manifest() {
+function manifest(symbol: string, output: string) {
 	return {
 		schemaVersion: 1,
 		id: 'function.runner-fixture',
@@ -78,11 +78,11 @@ function manifest() {
 		responsibility: 'Exercise real source-bound runner operations.',
 		responsibilityOrigin: 'declared',
 		status: 'active',
-		owns: { source: ['subject.ts'], symbols: ['greet'] },
+		owns: { source: ['subject.ts'], symbols: [symbol] },
 		contract: {
 			origin: 'declared',
 			inputs: [],
-			outputs: [{ name: 'greet', type: 'string' }],
+			outputs: [{ name: symbol, type: output }],
 			errors: []
 		},
 		dependencies: [],
