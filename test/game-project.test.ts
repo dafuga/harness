@@ -2,6 +2,7 @@ import { expect, test } from 'vitest';
 import { projectFiles } from '../src/templates/project';
 import { evidenceRequested, recordCapture } from '../src/utils/record-capture/recordCapture';
 import { machineProfile } from '../src/utils/machineProfile';
+import { exampleDocument } from '../packages/game/src/utils/keyDoor';
 
 test.each(['2d', '3d'] as const)(
 	'game project retains app scaffolds with %s engine',
@@ -11,7 +12,9 @@ test.each(['2d', '3d'] as const)(
 		expect(manifest.harness).toEqual({ kind: 'game', dimension, aiRendering: false });
 		expect(files.some((f) => f.path === 'svelte.config.js')).toBe(true);
 		expect(files.some((f) => f.path === 'src/routes/+page.svelte')).toBe(true);
-		expect(files.some((f) => f.path === 'game.json')).toBe(true);
+		expect(files.find((f) => f.path === 'game.json')!.contents).toBe(
+			JSON.stringify(exampleDocument(dimension), null, '\t') + '\n'
+		);
 		expect(files.some((f) => f.path === 'src/lib/game/utils/gameStep.ts')).toBe(true);
 		const page = files.find((f) => f.path === 'src/routes/game/+page.svelte')!.contents;
 		expect(page).toContain('create3d');

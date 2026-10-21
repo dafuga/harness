@@ -1,5 +1,6 @@
 import { expect, test, vi } from 'vitest';
-import { writeFile } from 'node:fs/promises';
+import { chmod, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { fixture, git } from '../project-fixture';
 import { GameProjectService } from '../../src/services/GameProjectService';
@@ -77,7 +78,51 @@ test('project creation initializes a game without overwriting an existing direct
 	await expect(
 		service.create({ name: 'test-game', kind: 'game', dimension: '2d' })
 	).rejects.toThrow('already exists');
-});
+	await mkdir(join(root, 'projects', 'user-folder'));
+	await writeFile(join(root, 'projects', 'user-folder', 'notes.txt'), 'mine');
+	await expect(
+		service.create({ name: 'user-folder', kind: 'game', dimension: '2d' })
+	).rejects.toThrow('already exists');
+	expect(await readFile(join(root, 'projects', 'user-folder', 'notes.txt'), 'utf8')).toBe('mine');
+}, 30_000);
+
+test('failed project creation reports its cause, removes only its own target and can be retried', async () => {
+	const { session, root } = await fixture();
+	const projects = join(root, 'projects'),
+		target = join(projects, 'retry-game'),
+		service = new GameProjectService(session, projects),
+		input = { name: 'retry-game', kind: 'game', dimension: '2d' } as const;
+	await mkdir(projects);
+	await chmod(projects, 0o500);
+	await expect.soft(service.create(input)).rejects.toMatchObject({ code: 'EACCES' });
+	await chmod(projects, 0o700);
+	const identity = join(root, 'git-identity');
+	await writeFile(identity, '[user]\n\tuseConfigOnly = true\n');
+	vi.stubEnv('GIT_CONFIG_GLOBAL', identity);
+	vi.stubEnv('GIT_CONFIG_NOSYSTEM', '1');
+	for (const name of ['NAME', 'EMAIL']) {
+		vi.stubEnv('GIT_AUTHOR_' + name, undefined);
+		vi.stubEnv('GIT_COMMITTER_' + name, undefined);
+	}
+	vi.stubEnv('EMAIL', undefined);
+	try {
+		await expect(service.create(input)).rejects.toThrow(/user\.email|identity|who you are/);
+		expect.soft(existsSync(target), 'owned partial target removed').toBe(false);
+		await writeFile(identity, '[user]\n\tname = Retry Author\n\temail = retry@example.invalid\n');
+		const created = await service.create(input);
+		expect(created.project.kind).toBe('game');
+		expect(git(target, 'log', '-1', '--format=%an <%ae>')).toBe(
+			'Retry Author <retry@example.invalid>'
+		);
+		vi.spyOn(session, 'open').mockRejectedValueOnce(new Error('registry unavailable'));
+		await expect(service.create({ ...input, name: 'opened-later' })).rejects.toThrow(
+			'registry unavailable'
+		);
+		expect(git(join(projects, 'opened-later'), 'status', '--porcelain')).toBe('');
+	} finally {
+		vi.unstubAllEnvs();
+	}
+}, 30_000);
 
 test('AI preview fails closed before credential access without a safe transport', async () => {
 	const { session } = await fixture();

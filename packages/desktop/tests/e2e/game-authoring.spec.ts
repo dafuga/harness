@@ -1,4 +1,4 @@
-import { keepEdits } from './game-unsaved-fixture';
+import { keepEdits, keepTypedFields } from './game-unsaved-fixture';
 import { expect, test } from '../../../../test/support/browserTest';
 import { fakeProject } from './ui-workspace-fixture';
 if (process.env.TAKE_SCREENSHOT === 'true') test.use({ video: 'on' });
@@ -91,6 +91,9 @@ test('saved graph edits persist, invalid references block saves and history is r
 	await expect(page.getByText('Unsaved changes', { exact: true })).toHaveCount(0);
 	await page.reload();
 	await expect(page.getByLabel('View title', { exact: true })).toHaveValue('Saved courtyard');
+	await keepTypedFields(page, () =>
+		page.evaluate(() => JSON.parse(localStorage.getItem('game-test-document') ?? 'null'))
+	);
 	await page.getByRole('button', { name: 'Checkpoints', exact: true }).click();
 	await page.getByText('Collect the key', { exact: true }).first().click();
 	await page.getByLabel('Prerequisites', { exact: true }).fill('missing-node');
@@ -109,9 +112,15 @@ test('view creation and checkpoint creation/deletion preserve independent mechan
 	page
 }) => {
 	await page.goto('/game');
+	const trace = page.getByText(/^Execution trace/);
+	for (let step = 0; step < 2; step++)
+		await page.getByRole('button', { name: 'Move right' }).click();
 	await page.getByRole('button', { name: 'New view', exact: true }).click();
 	await expect(page.getByLabel('View title', { exact: true })).toHaveValue('New view');
 	await page.getByRole('button', { name: 'Checkpoints', exact: true }).click();
+	await expect(trace, 'a cloned view shares ids but not the courtyard trace').toHaveText(
+		'Execution trace (0)'
+	);
 	await page.getByRole('button', { name: 'Add checkpoint', exact: true }).click();
 	await expect(page.getByLabel('Checkpoint title', { exact: true })).toHaveValue('Checkpoint 5');
 	await page.getByRole('button', { name: 'Delete checkpoint', exact: true }).click();
@@ -124,6 +133,13 @@ test('view creation and checkpoint creation/deletion preserve independent mechan
 	await expect(page.getByRole('textbox', { name: 'Title', exact: true })).toHaveValue(
 		'Independent movement'
 	);
+	await page.getByLabel('View', { exact: true }).selectOption({ label: 'The courtyard' });
+	await page.getByRole('button', { name: 'Checkpoints', exact: true }).click();
+	await expect(trace).toHaveText('Execution trace (1)');
+	await trace.click();
+	await expect(
+		page.getByRole('list', { name: 'Checkpoint execution trace' }).getByRole('listitem')
+	).toHaveText([/^Collect the key · tick 2/]);
 });
 
 test('3D remains playable when the browser cannot provide WebGL', async ({ page }) => {

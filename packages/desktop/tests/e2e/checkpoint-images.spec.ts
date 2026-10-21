@@ -1,57 +1,5 @@
 import { expect, test } from '../../../../test/support/browserTest';
-import { exampleDocument } from '../../../game/src/utils/keyDoor';
-import { readFile } from 'node:fs/promises';
-const projectId = 'local-' + 'a'.repeat(64);
-const tiny =
-	'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=';
-async function setup(page: import('@playwright/test').Page) {
-	const sample = process.env.CHECKPOINT_IMAGE_FIXTURE;
-	const png = sample ? (await readFile(sample)).toString('base64') : tiny;
-	await page.addInitScript(
-		({ document, projectId, png }) => {
-			let saved = document;
-			Object.assign(window, {
-				__imageCalls: 0,
-				harness: {
-					gameRead: async () => ({
-						document: JSON.parse(
-							localStorage.getItem('checkpoint-document') || JSON.stringify(saved)
-						),
-						revision: 'b'.repeat(64)
-					}),
-					gameSave: async (input: { document: typeof document }) => {
-						saved = input.document;
-						localStorage.setItem('checkpoint-document', JSON.stringify(saved));
-						return { revision: 'b'.repeat(64) };
-					},
-					gameImageGenerate: async (input: {
-						projectId: string;
-						viewId: string;
-						checkpointId: string;
-					}) => {
-						Object.assign(window, {
-							__imageCalls: (window as unknown as { __imageCalls: number }).__imageCalls + 1
-						});
-						return {
-							image: {
-								path: 'static/game/checkpoints/' + 'c'.repeat(64) + '.png',
-								model: 'gpt-image-2',
-								prompt: input.checkpointId,
-								createdAt: '2026-10-20T12:00:00Z'
-							},
-							dataUrl: 'data:image/png;base64,' + png
-						};
-					},
-					gameImageRead: async () => 'data:image/png;base64,' + png
-				}
-			});
-		},
-		{ document: exampleDocument(), projectId, png }
-	);
-	await page.goto('/game?projectId=' + projectId);
-	await page.getByRole('button', { name: 'Checkpoints', exact: true }).click();
-	await page.getByText('Collect the key', { exact: true }).first().click();
-}
+import { projectId, setup, tiny } from './checkpoint-image-fixture';
 test('checkpoint image generation persists with the graph and history stays read-only', async ({
 	page
 }) => {
@@ -88,6 +36,19 @@ test('checkpoint image generation persists with the graph and history stays read
 	await expect(page.getByLabel('Checkpoint image direction', { exact: true })).toHaveValue(
 		'A brass key in a lush garden'
 	);
+	const reads = () =>
+		page.evaluate(() => (window as unknown as { __imageReads: number }).__imageReads);
+	const opened = await reads();
+	await page
+		.getByLabel('Checkpoint image direction', { exact: true })
+		.pressSequentially(' at dusk');
+	await page.getByLabel('Checkpoint title', { exact: true }).pressSequentially('!');
+	await page.getByLabel('Checkpoint title', { exact: true }).press('Backspace');
+	await expect(reference).toBeVisible();
+	expect(await reads(), 'editing the checkpoint keeps its image without reading it again').toBe(
+		opened
+	);
+	await page.getByRole('button', { name: 'Save', exact: true }).click();
 	if (process.env.TAKE_SCREENSHOT === 'true') {
 		await page.evaluate(async () => {
 			await document.fonts.ready;
@@ -142,6 +103,7 @@ test('generation errors preserve the graph and late results never attach to anot
 				})
 			);
 	});
+	await laterResults(page); // A removed reference clears its error; edited guidance keeps a paid result.
 	await page.getByRole('button', { name: 'Generate checkpoint image', exact: true }).click();
 	await page.getByText('Unlock the door', { exact: true }).first().click();
 	await page.evaluate(() => (window as unknown as { __deliverImage: () => void }).__deliverImage());
@@ -153,6 +115,39 @@ test('generation errors preserve the graph and late results never attach to anot
 	const saved = await page.evaluate(() => localStorage.getItem('checkpoint-document'));
 	expect(saved).not.toContain('checkpoints/');
 });
+
+async function laterResults(page: import('@playwright/test').Page) {
+	const deliver = () =>
+			page.evaluate(() => (window as unknown as { __deliverImage: () => void }).__deliverImage()),
+		readable = (png: string | null) =>
+			page.evaluate((png) => {
+				const host = (window as unknown as { harness: Record<string, unknown> }).harness;
+				host.gameImageRead = async () => {
+					if (png) return 'data:image/png;base64,' + png;
+					throw new Error('Unreadable fixture image');
+				};
+			}, png),
+		generate = page.getByRole('button', { name: /^(Re)?[Gg]enerate checkpoint image$/ }),
+		reference = page.getByRole('img', { name: 'Collect the key gameplay reference', exact: true }),
+		unreadable = page.getByText('Unable to read this checkpoint image.', { exact: true });
+	await generate.click();
+	await deliver();
+	await readable(null);
+	await page.getByText('Unlock the door', { exact: true }).first().click();
+	await page.getByText('Collect the key', { exact: true }).first().click();
+	await expect(unreadable).toBeVisible();
+	await page.getByRole('button', { name: 'Remove image reference', exact: true }).click();
+	await expect(unreadable, 'a removed reference leaves no stale read error').toHaveCount(0);
+	await readable(tiny);
+	await generate.click();
+	await page.getByLabel('Checkpoint image direction', { exact: true }).fill('Moonlit courtyard');
+	await deliver();
+	await expect(reference, 'a paid result survives guidance edited during generation').toBeVisible();
+	await expect(
+		page.getByText('Made from earlier guidance. Regenerate to match your edits.', { exact: true })
+	).toBeVisible();
+	await page.getByRole('button', { name: 'Remove image reference', exact: true }).click();
+}
 
 test('a generated game displays the saved reference after completing its checkpoint', async ({
 	page

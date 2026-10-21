@@ -32,7 +32,11 @@ test.each(['2d', '3d'])(
 			const saved = await repository.read();
 			saved.document.views[0].title = 'Authored courtyard';
 			await repository.save(saved.document, saved.revision);
-			execFileSync('bun', ['run', 'check'], { cwd, stdio: 'pipe' });
+			execFileSync('bun', ['run', 'check'], {
+				cwd,
+				stdio: 'pipe',
+				env: { ...process.env, HARNESS_CLI_PATH: cli }
+			});
 			await invalidGames(cwd, saved.document);
 			expect(await readFile(join(cwd, 'src/routes/inventory/+page.svelte'), 'utf8')).toContain(
 				'Inventory'
@@ -42,6 +46,9 @@ test.each(['2d', '3d'])(
 			);
 			expect(await readFile(join(cwd, 'src/config/victoryCheckpointConfig.ts'), 'utf8')).toContain(
 				'victory'
+			);
+			expect(await readFile(join(cwd, 'src/config/battleViewConfig.ts'), 'utf8')).toContain(
+				`dimension: '${dimension}'`
 			);
 			expect(() =>
 				execFileSync('bun', [cli, 'new', 'game', 'bad', '--dimension', '4d'], {
@@ -108,17 +115,35 @@ async function playableRoute(cwd: string) {
 test('game-only generators reject apps before creating broken imports', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-app-no-game-'));
 	try {
-		execFileSync('bun', [cli, 'new', 'app', 'app'], { cwd: root });
-		expect(() =>
-			execFileSync('bun', [cli, 'generate', 'mechanic', 'movement'], {
-				cwd: join(root, 'app'),
-				stdio: 'pipe'
-			})
-		).toThrow();
+		for (const kind of ['app', 'lib']) execFileSync('bun', [cli, 'new', kind, kind], { cwd: root });
+		execFileSync('bun', [cli, 'new', 'game', 'game', '--dimension', '3d'], { cwd: root });
+		for (const scaffold of ['game-view', 'mechanic', 'checkpoint']) {
+			const info = JSON.parse(
+				execFileSync('bun', [cli, 'info', scaffold, '--json'], { cwd: root, encoding: 'utf8' })
+			);
+			expect(info.rules).toContain('This scaffold belongs in Harness game projects.');
+			for (const kind of ['app', 'lib']) {
+				const result = spawnSync('bun', [cli, 'generate', scaffold, 'movement'], {
+					cwd: join(root, kind),
+					encoding: 'utf8'
+				});
+				expect(result.status, `${scaffold} in ${kind}`).not.toBe(0);
+				expect(result.stderr).toContain('Game scaffolds require a Harness game project.');
+			}
+			const [, ...args] = info.exampleCommands[0].split(' ');
+			const output = execFileSync('bun', [cli, ...args], {
+				cwd: join(root, 'game'),
+				encoding: 'utf8'
+			});
+			const emitted = [...output.matchAll(/^ {2}create (\S+)$/gm)].map((match) => match[1]);
+			expect(emitted.length).toBeGreaterThan(0);
+			for (const path of emitted)
+				expect(info.contains.join('\n')).toContain(path.replaceAll('example', '<name>'));
+		}
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}
-});
+}, 30_000);
 
 /** The generated project's ordinary test entrypoint enforces the author's graph contract. */
 async function invalidGames(cwd: string, valid: GameDocument) {
