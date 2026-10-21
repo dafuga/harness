@@ -6,11 +6,9 @@
 	"name": "xcode-overlay-service",
 	"goal": "Recognize only the selected signed Xcode overlay service after verified system adoption; preserve refusal of lookalikes and unproven leftovers.",
 	"createdAt": "2026-10-21T23:24:09.052Z",
-	"updatedAt": "2026-10-21T23:24:49.189Z",
+	"updatedAt": "2026-10-21T23:27:09.198Z",
 	"template": "regression-prevention",
-	"templateLineage": [
-		"regression-prevention"
-	],
+	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -31,12 +29,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T23:27:08.526Z",
+			"evidence": "Committed db6b9f92b; sealed red afedac467 reproduces four actual policy assertions, including private instead of delegated, with the existing settlement controls retained. An earlier assertion description did not match output and was rejected rather than accepted as proof."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T23:27:09.198Z",
+			"evidence": "Add only the canonical selected-Xcode IBAgent-iOS path and Apple signature to the vetted set; guard its name from signalling elsewhere. Keep signature, process identity, detached group and launchd-adoption checks unchanged."
 		},
 		{
 			"id": "implement",
