@@ -4,6 +4,7 @@
 	import { humanize } from '../../utils/entityContract';
 	import { entityLabels, entityLens, type EntityNav } from '../../utils/entityLens';
 	import { categoryIcon } from '../../utils/harnessIcons';
+	import SourceCodeAction from '../SourceCodeAction.svelte';
 	import EntityLink from './EntityLink.svelte';
 	import HarnessAction from './HarnessAction.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
@@ -76,16 +77,29 @@
 					{/each}
 					<td data-label="Verification"><HarnessVerdict {...row.verdict} /></td>
 					<td class="ex-open">
-						<HarnessAction
-							href={nav.href(open(row))}
-							onclick={() => nav.go(open(row))}
-							tone="plain"
-							icon="arrow-right"
-							label={`Open ${row.name}`}>Open</HarnessAction
-						>
+						<span class="ex-row-actions">
+							<SourceCodeAction entity={row.entity} {nav} title={row.name} />
+							<HarnessAction
+								href={nav.href(open(row))}
+								onclick={() => nav.go(open(row))}
+								tone="plain"
+								icon="arrow-right"
+								label={`Open ${row.name}`}>Open</HarnessAction
+							>
+						</span>
 					</td>
 				</tr>
 			{/each}
 		</tbody>
 	</table>
 </div>
+
+<style>
+	.ex-row-actions {
+		display: inline-flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: flex-end;
+		gap: 8px;
+	}
+</style>

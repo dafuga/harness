@@ -57,7 +57,11 @@
 	{:else}{@render verificationPanel()}{/if}
 {:else if host.route.tab === 'source'}
 	<div role="tabpanel" aria-label={`${entity.name} source`}>
-		<EntitySource unit={entity.unit} />
+		<EntitySource
+			unit={entity.unit}
+			mediaBase={host.mediaBase}
+			commit={entity.lastAt ?? host.scope.commit}
+		/>
 	</div>
 {:else if host.route.tab === 'contract'}
 	<div role="tabpanel" aria-label={`${entity.name} contract`}>

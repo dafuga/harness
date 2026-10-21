@@ -12,7 +12,9 @@
 		contract,
 		measure,
 		record,
-		tab
+		tab,
+		mediaBase,
+		commit
 	}: {
 		entity: ExplorerEntity;
 		contract: ContractRow[];
@@ -20,12 +22,15 @@
 		record: HarnessRecord | null;
 		/** The open tab; without one Details shows the contract and nothing of the source. */
 		tab?: ExplorerTab;
+		/** Where archived source is read from, and the revision it was archived at. */
+		mediaBase?: string;
+		commit?: string;
 	} = $props();
 </script>
 
 <div role="tabpanel" aria-label={`${entity.name} details`}>
 	{#if tab === 'source'}
-		<EntitySource unit={entity.unit} />
+		<EntitySource unit={entity.unit} {mediaBase} {commit} />
 	{:else if tab === 'measurements'}
 		<EntityMeasures unit={entity.unit} {record} />
 	{:else}

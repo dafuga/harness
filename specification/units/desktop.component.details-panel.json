@@ -16,7 +16,7 @@
 			{
 				"name": "DetailsPanel.entity",
 				"type": "EntityDetail",
-				"description": "Entity supplying its kind, size and performance text, owned source paths and identifier. A source request is scoped to this identifier. An empty source list produces “No source files recorded.”"
+				"description": "Entity supplying its identifier and owned source paths. Reads are scoped to this identifier; an empty list shows an explicit no-files message."
 			},
 			{
 				"name": "DetailsPanel.workspace",
@@ -28,7 +28,7 @@
 			{
 				"name": "DetailsPanel",
 				"type": "markup",
-				"description": "Source files for the displayed entity and revision. Choosing a file clears old text and errors, requests its contents and shows the result. A failed read displays an alert."
+				"description": "Shared source reader for the displayed entity and revision. Selection clears old contents and errors; late replies are ignored and failed reads show an alert."
 			}
 		],
 		"errors": []
@@ -41,6 +41,11 @@
 		},
 		{
 			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.source-content",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -260,6 +260,24 @@
 			"specifier": "$desktop/services/ProjectSyncService",
 			"to": "packages/desktop/src/services/ProjectSyncService.ts",
 			"reason": "The Hub build resolves $desktop to the shared desktop source, so account refresh and access cleanup use the same implementation on every platform."
+		},
+		{
+			"from": "packages/desktop/src/components/EntitySourceAction.svelte",
+			"specifier": "../../../reports/src/components/harness/HarnessAction.svelte",
+			"to": "packages/reports/src/components/harness/HarnessAction.svelte",
+			"reason": "The Desktop source viewer uses the canonical shared source-code controls in Reports."
+		},
+		{
+			"from": "packages/desktop/src/components/EntitySourceAction.svelte",
+			"specifier": "../../../reports/src/components/SourceDialog.svelte",
+			"to": "packages/reports/src/components/SourceDialog.svelte",
+			"reason": "The Desktop source viewer uses the canonical shared source-code controls in Reports."
+		},
+		{
+			"from": "packages/desktop/src/components/DetailsPanel.svelte",
+			"specifier": "../../../reports/src/components/SourceContent.svelte",
+			"to": "packages/reports/src/components/SourceContent.svelte",
+			"reason": "The Desktop source viewer uses the canonical shared source-code controls in Reports."
 		}
 	]
 }

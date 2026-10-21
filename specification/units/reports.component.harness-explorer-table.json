@@ -33,7 +33,7 @@
 			{
 				"name": "ExplorerTable",
 				"type": "markup",
-				"description": "Named table with entity/shared badges, category-specific usage/responsibility/target columns, verdict and Open action. Shells/components show summaries under names; configs show changed state. Empty rows produce an empty table without a separate message."
+				"description": "Category-specific entity rows with verdict, Open and View code actions. Opening source preserves the collection address, filters and revision."
 			}
 		],
 		"errors": []
@@ -56,6 +56,11 @@
 		},
 		{
 			"unit": "reports.component.harness-harness-verdict",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.source-code-action",
 			"via": "import",
 			"origin": "derived"
 		},
