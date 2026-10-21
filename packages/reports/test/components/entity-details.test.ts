@@ -91,7 +91,7 @@ test('source is shown only when the source tab is the open one', () => {
 		);
 		const files = grouped.length ? grouped : entity.unit.owns.source;
 		expect(
-			[...section.matchAll(/<li>(.*?)<\/li>/gs)].map((match) =>
+			[...section.matchAll(/<li\b[^>]*>(.*?)<\/li>/gs)].map((match) =>
 				words(match[1])
 					.replace(/View code$/, '')
 					.trim()

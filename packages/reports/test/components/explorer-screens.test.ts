@@ -40,13 +40,15 @@ const imported = (file: string): string[] =>
 const files = readdirSync(home, { recursive: true, encoding: 'utf8' }).filter((file) =>
 	file.endsWith('.svelte')
 );
-const registered = readdirSync('../../specification/units').flatMap((file) => {
-	const entry = JSON.parse(readFileSync(join('../../specification/units', file), 'utf8')).runtime
-		.entry as string;
-	return entry.startsWith('packages/reports/') && entry.endsWith('.svelte')
-		? [[entry.split('/').at(-1)!.replace('.svelte', ''), entry.replace('packages/reports/', '')]]
-		: [];
-});
+const registered = readdirSync('../../specification/units').flatMap(
+	(file): Array<[string, string]> => {
+		const entry = JSON.parse(readFileSync(join('../../specification/units', file), 'utf8')).runtime
+			.entry as string;
+		return entry.startsWith('packages/reports/') && entry.endsWith('.svelte')
+			? [[entry.split('/').at(-1)!.replace('.svelte', ''), entry.replace('packages/reports/', '')]]
+			: [];
+	}
+);
 const implementations = new Map(registered);
 const own = (name: string) =>
 	implementations.get(name) ??
