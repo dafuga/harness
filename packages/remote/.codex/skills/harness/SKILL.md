@@ -29,6 +29,8 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 
 ## Hard Limits
 
+Keep explicit Harness workloads in the standard public-entry and response-ledger tests for cold imports, secure-error constructors and creation/replay. The automatic observer preserves synchronous promise identity and does not invent constructor or barrel-import observations. Do not make a synchronous API async just to profile it. Cold child imports use the benchmark boundary, verify the actual public exports, and retain child-process RSS separately from parent-runner memory.
+
 - Files: 220 lines.
 - Functions: 55 lines.
 - Classes: 120 lines.
