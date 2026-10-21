@@ -1,4 +1,3 @@
-import { reviewUsageCards } from './entityPreviewFunctions';
 import { expect, type Page } from '@playwright/test';
 import type { ExplorerLocation } from '../src/models/Explorer.types';
 import { commits, ids } from './entityUnits';
@@ -95,4 +94,48 @@ async function expandTable(page: Page, viewport: string, commit: string | null):
 	await expect(
 		page.getByRole('group', { name: 'Components uses', exact: true }).getByRole('article')
 	).toHaveCount(4);
+}
+
+/** Usage tabs use the same cards as their collections without widening the page. */
+export async function reviewUsageCards(
+	page: Page,
+	category: string,
+	direction: string,
+	commit: string | null = commits.middle
+): Promise<void> {
+	await reviewConsumerKinds(page, category, direction);
+	const cards = page.locator('.ex-relations article');
+	for (const card of await cards.all()) {
+		await expect(
+			card.getByRole('group', { name: 'Used In', exact: true }),
+			'every relationship card includes its usage footer'
+		).toBeVisible();
+	}
+	if (category === 'components' && direction === 'uses') {
+		const card = page.getByRole('article', { name: 'OrderCard', exact: true });
+		await expect(
+			card
+				.getByRole('group', { name: 'Used In', exact: true })
+				.getByRole('link', { name: 'OrderList', exact: true })
+		).toHaveAttribute(
+			'href',
+			`/harness/branch/feature%2Forders${commit ? `/commit/${commit}` : ''}/components/${ids.list}`
+		);
+	}
+	if (category === 'pages' && direction === 'uses')
+		await expect(
+			page.getByRole('region', { name: 'Uses', exact: true }).locator('article.ex-page-card'),
+			'Relationships reuse catalog cards'
+		).toHaveCount(2);
+	if (category === 'components' && direction === 'uses')
+		await expect(page.locator('.ex-relations .ex-function-tile')).toHaveCount(1);
+	expect(await fits(page)).toBe(true);
+}
+
+/** Reverse dependencies name every populated module type. */
+async function reviewConsumerKinds(page: Page, category: string, direction: string): Promise<void> {
+	if (direction !== 'used-in' || category !== 'functions') return;
+	const used = page.getByRole('region', { name: 'Used In', exact: true });
+	for (const kind of ['Pages', 'Components'])
+		await expect(used.getByRole('heading', { name: `${kind} 1`, exact: true })).toBeVisible();
 }

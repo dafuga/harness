@@ -5,6 +5,7 @@ import { deflateSync } from 'node:zlib';
 import { audioFixture } from './audioFixture';
 import { stateRecord } from './entityPreviewData';
 import { capture, commits } from './entityUnits';
+import { sourcePaths, sourceText } from './entitySourceFixture';
 
 type Colour = [number, number, number];
 const tints: Record<string, Colour> = { a: [36, 52, 71], b: [20, 39, 58], c: [16, 44, 52] };
@@ -82,14 +83,8 @@ function run(state: string, kind: string) {
 	};
 }
 
-/**
- * Writes the media of the synthetic history under a directory: a drawn screenshot for every
- * screenshot capture, a short tone a browser can play for every clip, and a stated run for
- * every other one. Returns the hash of each file by the
- * name its capture has, so that a page can be given captures whose hashes are those of its bytes.
- */
-export function entityPreviewAssets(directory: string): Record<string, string> {
-	mkdirSync(join(directory, 'media'), { recursive: true });
+/** Committed text fixtures retain their original hashes and insertion order. */
+function sourceAssets(directory: string): Record<string, string> {
 	const hashes: Record<string, string> = {};
 	for (const commit of Object.values(commits)) {
 		for (const path of sourcePaths) {
@@ -99,6 +94,18 @@ export function entityPreviewAssets(directory: string): Record<string, string> {
 			writeFileSync(join(directory, `media/${hash}.txt`), text);
 		}
 	}
+	return hashes;
+}
+
+/**
+ * Writes the media of the synthetic history under a directory: a drawn screenshot for every
+ * screenshot capture, a short tone a browser can play for every clip, and a stated run for
+ * every other one. Returns the hash of each file by the
+ * name its capture has, so that a page can be given captures whose hashes are those of its bytes.
+ */
+export function entityPreviewAssets(directory: string): Record<string, string> {
+	mkdirSync(join(directory, 'media'), { recursive: true });
+	const hashes = sourceAssets(directory);
 	for (const commit of Object.values(commits)) {
 		const states = stateRecord(commit).scenarios.flatMap((scenario) => scenario.states);
 		for (const state of states) {
@@ -123,4 +130,3 @@ export function entityPreviewAssets(directory: string): Record<string, string> {
 	}
 	return hashes;
 }
-import { sourcePaths, sourceText } from './entitySourceFixture';

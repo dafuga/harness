@@ -2,6 +2,7 @@ import type {
 	ExplorerBehavior,
 	ExplorerCategory,
 	ExplorerEvidence,
+	ExplorerEntity,
 	ExplorerHistoryRow,
 	ExplorerLocation,
 	ExplorerRelations
@@ -28,12 +29,7 @@ export interface EntityLens {
 /** How a component reaches another place: where it is, the address of a place, and going there. */
 export interface EntityNav {
 	/** Opens one owned file without changing the current address. */
-	source?(
-		entity: import('../../models/explorer-ui/Explorer.types').ExplorerEntity,
-		title?: string,
-		trigger?: HTMLElement,
-		path?: string
-	): void;
+	source?(entity: ExplorerEntity, title?: string, trigger?: HTMLElement, path?: string): void;
 	route: ExplorerLocation;
 	href(to: ExplorerLocation): string;
 	go(to: ExplorerLocation): void;
