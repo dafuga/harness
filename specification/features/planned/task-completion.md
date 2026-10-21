@@ -8,6 +8,7 @@ Harness owns performance measurement and the final audit of coding and planning 
 
 - Coding completion requires clean committed source, intact verification of that revision, and representative latency and memory observations for affected executable units, independently of budget declarations.
 - Harness profiling runs declared workloads, records workload, sample count, runtime profile, revision and the measurement boundary, and labels whole-process memory accurately.
+- Mandatory profiling accepts actual browser navigation and JavaScript-heap observations for their declared unit target. Wrong targets, stale revisions, other workloads and synthetic rule-fixture observations remain rejected; collector repairs require fresh observations.
 - Planning completion checks the proposal, acceptance criteria, dependencies, verification and performance-testing plan without executing implementation work.
 - A deterministic end-of-task audit reports missing, stale, failed and uncertain evidence; it never claims that heuristics prove arbitrary semantic correctness.
 - The CLI, new task loops, agent completion and app coding/planning completion use the same checks. Cancellation and failed work remain recordable.

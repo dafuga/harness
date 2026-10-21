@@ -51,11 +51,13 @@ function requiredMetrics(
 			observed(item)
 	);
 	const latency = own.filter(
-		(item) => item.metric.startsWith('latency-') && item.unitOfMeasure === 'ms'
+		(item) =>
+			(item.metric.startsWith('latency-') || item.metric === 'browser-navigation-ms') &&
+			item.unitOfMeasure === 'ms'
 	);
 	const memory = own.filter(
 		(item) =>
-			['memory-bytes', 'process-peak-rss-bytes'].includes(item.metric) &&
+			['memory-bytes', 'process-peak-rss-bytes', 'browser-js-heap-bytes'].includes(item.metric) &&
 			item.unitOfMeasure === 'bytes' &&
 			item.value! > 0
 	);

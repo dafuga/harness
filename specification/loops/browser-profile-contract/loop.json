@@ -6,7 +6,7 @@
 	"name": "browser-profile-contract",
 	"goal": "Accept real browser navigation and heap observations for their declared unit target without accepting stale, mismatched or fixture evidence.",
 	"createdAt": "2026-10-21T22:34:21.143Z",
-	"updatedAt": "2026-10-21T22:34:22.533Z",
+	"updatedAt": "2026-10-21T22:36:28.355Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -29,12 +29,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T22:36:27.502Z",
+			"evidence": "Sealed red at 0baf335c3 fails both declared-target browser cases with the named navigation/heap assertion; 20 existing cases pass. The first attempt lacked snapshot dependencies and was rejected as setup failure; only the locked-install rerun is defect proof."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T22:36:28.355Z",
+			"evidence": "Recognize the two existing browser metric names alongside canonical latency and memory observations. Preserve revision, profile, callable, workload, sample and declared-target matching, including fixture exclusion. Correct the producer module binding separately and rerun its actual browser flow; do not relabel archived measurements."
 		},
 		{
 			"id": "implement",
