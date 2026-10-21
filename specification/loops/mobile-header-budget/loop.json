@@ -6,7 +6,7 @@
 	"name": "mobile-header-budget",
 	"goal": "Preserve 40-pixel mobile search targets inside the existing 184-pixel header budget.",
 	"createdAt": "2026-10-21T19:20:13.037Z",
-	"updatedAt": "2026-10-21T19:31:37.631Z",
+	"updatedAt": "2026-10-21T19:46:21.238Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -43,17 +43,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T19:46:16.135Z",
+			"evidence": "The mobile grid uses zero inter-band gap, retaining 40px category rows and search/settings targets. The normal eight-width search matrix now enforces the existing 184px mobile header bound; catalog banner scope excludes the search dialog banner."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T19:46:18.751Z",
+			"evidence": "8d5c74e84 passes the same compiled search/workspace command: 21 cases, 24 source-bound NavBar captures. Proof 4ef943bd retains the unchanged e2ff5dfbf regression corpus and paired red 9e849c9b. Inspected 320px and 390px original pixels."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T19:46:21.238Z",
+			"evidence": "Fresh isolated recurrence rejects unfixed e2ff5dfbf with proof c3db48ce and 20 captures, then passes repaired 8d5c74e84 with proof 7f825d85 and 24 captures. Both phases use the same command, frozen inputs and environment. Broader verification remains pending."
 		},
 		{
 			"id": "verify",
