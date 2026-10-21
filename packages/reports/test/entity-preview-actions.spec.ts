@@ -167,6 +167,7 @@ for (const [name, size] of Object.entries(viewports)) {
 			await document.fonts.ready;
 		});
 		await capture(tab, `responsive-console-${name}`);
+		await expect(tab.locator('.hx-shell')).not.toContainText('Older commits were left out');
 		await info.attach('interaction-ms', {
 			body: JSON.stringify({ tab: elapsed, category: categoryMs, search: searchMs }),
 			contentType: 'application/json'
