@@ -162,3 +162,10 @@ When reconciling changed assertions, map each expected state to its selected fix
 Before a broad run after importing main changes, run the existing standard tests owned by each imported source change, including unchanged test files. Check their expectations against the imported contract before retaining or revising them.
 
 When integrating project-specific navigation into a changed shared header, exercise each project variant at the declared viewports. The standard acceptance test must assert separation from reserved search/settings controls and activate the added entry and a retained control; visibility alone does not prove usable navigation.
+
+## CI Configuration Review
+
+Before pushing a CI configuration change or starting broad verification, find and run
+the existing workflow policy tests, including assertions on changed limits. Keep
+execution commands, permissions and environment boundaries covered when revising
+those expectations; formatting alone does not verify a workflow change.
