@@ -82,6 +82,9 @@ for (const viewport of viewports)
 				await expect(row.locator('dd')).toContainText(/\d/);
 			}
 			await captureSections(page, `current-measurements-${category}-${viewport.id}`, checkpoint);
+			await page.goto(at('feature/shells', commits.shelled, `${category}/${unit.id}/details`));
+			await expect(profile).toBeVisible();
+			await checkpoint(page, `details-measurements-${category}-${viewport.id}`);
 		}
 	});
 
