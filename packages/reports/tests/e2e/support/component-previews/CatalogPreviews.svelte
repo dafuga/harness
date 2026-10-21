@@ -13,9 +13,12 @@
 	const fullFrame = /harness-(navbar|header|console|shell)$/.test(id);
 	const explorer =
 		unit.source.includes('/components/harness/') ||
-		['explorer-catalog-items', 'explorer-usage', 'explorer-usage-link'].some(
-			(name) => id === `reports.component.${name}`
-		);
+		[
+			'explorer-catalog-items',
+			'explorer-function-card',
+			'explorer-usage',
+			'explorer-usage-link'
+		].some((name) => id === `reports.component.${name}`);
 	const reports = id.startsWith('reports.');
 	const historyColumns = [
 		'Date',
