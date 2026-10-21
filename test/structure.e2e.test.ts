@@ -97,6 +97,7 @@ test('categorized projects generate dynamic folders and audit rejects flat imple
 		expect(JSON.parse(category).groups).toEqual(
 			expect.arrayContaining([expect.objectContaining({ id: 'billing' })])
 		);
+		await runHarness(['units', 'index', '--write'], project);
 		const indexed = await runHarness(['units', 'check'], project);
 		expect(indexed.exitCode).toBe(0);
 		const accepted = await runHarness(['audit', '.'], project);

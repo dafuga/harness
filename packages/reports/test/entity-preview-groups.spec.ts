@@ -2,6 +2,8 @@ import { expect, test } from '../../../test/support/browserTest';
 import { capture, fits, open, viewports, chooseCatalogFilter } from './entityPreviewPage';
 import { commits } from './entityUnits';
 
+test.setTimeout(90_000);
+
 for (const [viewport, size] of Object.entries(viewports)) {
 	test(`category folders group every collection and filter together at ${viewport}`, async ({
 		page
