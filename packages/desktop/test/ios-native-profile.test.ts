@@ -20,8 +20,8 @@ function nativeCheck(script: string) {
 
 test.skipIf(process.platform !== 'darwin')(
 	'Swift reproduces the backend encrypted protocol vectors',
-	() => {
-		const output = nativeCheck('ios:check:vectors');
+	async () => {
+		const output = await nativeCheck('ios:check:vectors');
 		expect(output).toContain('All vectors reproduced.');
 		expect(output).not.toContain('FAIL');
 	},
@@ -30,16 +30,25 @@ test.skipIf(process.platform !== 'darwin')(
 
 test.skipIf(process.platform !== 'darwin')(
 	'native Debug and Release verify authority, redirects, caching and replay',
-	() => {
-		const output = nativeCheck('ios:check:native');
-		expect(output).toMatch(/Debug: \d+ passed, 0 failed\./);
-		expect(output).toMatch(/Release: \d+ passed, 0 failed\./);
-		expect(output).not.toContain('FAIL');
+	async () => {
+		let responsive = false;
+		const timer = setTimeout(() => {
+			responsive = true;
+		}, 0);
+		try {
+			const output = await nativeCheck('ios:check:native');
+			expect(responsive, 'Native checks must let the test worker process events').toBe(true);
+			expect(output).toMatch(/Debug: \d+ passed, 0 failed\./);
+			expect(output).toMatch(/Release: \d+ passed, 0 failed\./);
+			expect(output).not.toContain('FAIL');
+		} finally {
+			clearTimeout(timer);
+		}
 	},
 	120000
 );
 
-test('Swift source remains within the declared native shape limits', () => {
-	const output = nativeCheck('ios:check:limits');
+test('Swift source remains within the declared native shape limits', async () => {
+	const output = await nativeCheck('ios:check:limits');
 	expect(output).toMatch(/\d+ Swift files checked; 0 findings\./);
 }, 20000);
