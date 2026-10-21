@@ -9,6 +9,9 @@ import {
 } from '../repositories/VerificationStoreRepository';
 import type { VerificationRecord } from '../core/verificationTypes';
 import { componentVersion } from '../utils/componentVersion';
+import type { ComponentVersion } from '../utils/componentVersion';
+import type { ComponentManifest } from '../core/unitTypes';
+import { canonicalJson } from '../utils/canonicalJson';
 import { recordLineage } from '../utils/recordLineage';
 import { recordIntact } from '../utils/sealRecord';
 import { loadSide } from '../workflows/loadRevisions';
@@ -94,9 +97,13 @@ export class VerificationCheckService {
 			.filter((component) => {
 				const manifest = head.manifests.find((unit) => unit.id === component.unit);
 				const actual = manifest ? componentVersion(manifest, head.index.files) : undefined;
-				const same = (key: 'manifest' | 'source' | 'contract' | 'runtime') =>
-					actual?.[key] === component[key];
-				return !(same('manifest') && same('source') && same('contract') && same('runtime'));
+				if (sameVersion(component, actual)) return false;
+				const stored = head.stored.find((unit) => unit.id === component.unit);
+				const historical = historicalContract(manifest, stored);
+				return !sameVersion(
+					component,
+					historical ? componentVersion(historical, head.index.files) : undefined
+				);
 			})
 			.map((component) => `component ${component.unit} does not match the source at this commit`);
 	}
@@ -114,4 +121,21 @@ export class VerificationCheckService {
 			return hash === file.sha256 ? [] : [`evidence ${file.path} does not match its recorded hash`];
 		});
 	}
+}
+
+function sameVersion(recorded: ComponentVersion, actual?: ComponentVersion): boolean {
+	return (['manifest', 'source', 'contract', 'runtime'] as const).every(
+		(key) => actual?.[key] === recorded[key]
+	);
+}
+
+/** Only derived contract interpretation may drift; all other committed metadata must agree. */
+function historicalContract(
+	fresh?: ComponentManifest,
+	stored?: ComponentManifest
+): ComponentManifest | undefined {
+	if (fresh?.contract.origin !== 'derived' || stored?.contract.origin !== 'derived') return;
+	return canonicalJson({ ...stored, contract: fresh.contract }) === canonicalJson(fresh)
+		? stored
+		: undefined;
 }

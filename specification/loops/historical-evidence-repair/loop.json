@@ -6,9 +6,11 @@
 	"name": "historical-evidence-repair",
 	"goal": "All unverified history has intact evidence, exact-source reasons and real representative runtime profiles; budget growth retains independent review before completion.",
 	"createdAt": "2026-10-21T08:50:13.415Z",
-	"updatedAt": "2026-10-21T08:50:47.166Z",
+	"updatedAt": "2026-10-21T09:01:36.723Z",
 	"template": "regression-prevention",
-	"templateLineage": ["regression-prevention"],
+	"templateLineage": [
+		"regression-prevention"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -29,17 +31,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T08:58:24.563Z",
+			"evidence": "Sealed red 74e7ea6d92b2444451f709f9d2aa545a24cb5adfe557dbb1fd49b0ab1a29d14b at b564121b rejects unchanged metadata under changed derived interpretation. The independent recorded-version tampering matrix passes."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T08:58:25.241Z",
+			"evidence": "Accept the exact committed stored manifest only for derived-contract interpretation drift when every other reconciled manifest field agrees. Recompute all version hashes from actual committed files and retain record, source, runtime, manifest and evidence integrity checks."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T09:01:36.723Z",
+			"evidence": "Current checker preserves only the exact stored derived contract when all other reconciled metadata agrees. Ten focused tests pass; altered source/version fields and changed ancestor evidence remain refused. Actual historical record 70043084 now passes integrity unchanged; source audit and types pass."
 		},
 		{
 			"id": "green",

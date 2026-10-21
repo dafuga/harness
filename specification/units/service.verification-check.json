@@ -68,6 +68,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.canonical-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.component-version",
 			"via": "import",
 			"origin": "derived"
@@ -79,6 +84,11 @@
 		},
 		{
 			"unit": "function.seal-record",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
 			"via": "import",
 			"origin": "derived"
 		},
