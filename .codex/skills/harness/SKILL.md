@@ -79,6 +79,7 @@ must not accept a row that contradicts the collection's inclusion rule.
 - Resolve a scenario screenshot slot to its declared units. A slot name is not a page identity; never fill a missing preview with another page's image.
 - Rebuild or reopen the delivered history from its Git evidence, decode every required image, and inspect fresh screenshots before reporting completion. Both comparison sides need their own images; never substitute another unit, state or revision.
 - After a squash landing, verify the actual remote base commit's prepared history and visible previews. Feature-commit screenshots alone do not prove merged delivery. Reuse focused pixels only for an identical complete Git source tree, retain their original commit and focused status, and require fresh captures for any different tree. Include sibling squash commits and changed-tree rejection in the standard Git-backed history tests.
+- Complete and format tracked loop metadata before the final capture run. Keep the captured tree unchanged through landing; further tracked changes require fresh captures.
 - Keep focused screenshots available even when full verification fails, with their focused run and outcome clearly labelled. They grant no full verification verdict. Missing or corrupt bytes keep the visual check open; report the exact blocker and continue the repair.
 
 ## Measurement Evidence
