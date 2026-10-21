@@ -29,3 +29,30 @@ test('where the unit is a component at that revision, or is not there, the addre
 	expect(correctedLocation(at, [])).toBeNull();
 	expect(correctedLocation({ ...at, entity: undefined }, listed('shells'))).toBeNull();
 });
+
+test('helper names resolve only against one owner in the viewed revision', () => {
+	const route: ExplorerLocation = {
+		branch: 'feat/x',
+		commit: null,
+		category: 'functions',
+		helper: 'formatDuration',
+		tab: 'examples'
+	};
+	const owner = {
+		id: 'function.duration',
+		category: 'functions',
+		unit: { helpers: [{ name: 'formatDuration' }] }
+	} as ExplorerEntity;
+	expect(correctedLocation(route, [owner]), 'Readable helper names resolve to their owner').toEqual(
+		{ ...route, entity: owner.id }
+	);
+	expect(correctedLocation(route, [])).toBeNull();
+	const another = { ...owner, id: 'function.other-duration' };
+	expect(correctedLocation(route, [owner, another])).toBeNull();
+	expect(correctedLocation({ ...route, entity: owner.id }, [owner, another])).toBeNull();
+	expect(correctedLocation({ ...route, commit: 'b'.repeat(40) }, [another])).toEqual({
+		...route,
+		commit: 'b'.repeat(40),
+		entity: another.id
+	});
+});

@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/scripts/build-main.ts"],
-		"symbols": ["buildDesktopBundle"]
+		"symbols": ["desktopNodeOptions", "buildDesktopBundle"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -23,6 +23,10 @@
 			}
 		],
 		"outputs": [
+			{
+				"name": "desktopNodeOptions",
+				"type": "unknown"
+			},
 			{
 				"name": "buildDesktopBundle",
 				"type": "Promise<void>"

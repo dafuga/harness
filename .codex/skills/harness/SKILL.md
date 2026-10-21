@@ -117,3 +117,34 @@ must not accept a row that contradicts the collection's inclusion rule.
 - Nesting: 4 levels.
 - Parameters: 4.
 - Classes per file: 1.
+
+## Callable usage examples
+
+Every public helper needs committed examples with a real invocation, argument values and expected output or error. Execute authored examples against the actual implementation. `harness units check` rejects missing examples; indexing must preserve them and the detail page must select only the current callable and revision.
+
+Use descriptive behavior titles, never numbered placeholders. Choose one representative example per distinct behavior; combine redundant inputs. Review implementation features and meaningful error or empty states. Equal outputs alone do not establish duplication. Keep exhaustive boundary cases in tests. Registry checks reject placeholder titles and repeated titles or calls; semantic overlap requires agent review.
+
+## Route identity and UI state
+
+When changing URL structure or moving tabs between query strings and paths, key the rendered page by its logical entity, helper, branch, revision and section; tab or canonical-alias changes must preserve the frame. Extend the existing host browser matrix to assert DOM continuity across tabs, refresh and correctly scoped links. Capture after canonical navigation, fonts and layout settle, and inspect the original images; a passing text assertion alone does not establish a ready screenshot.
+
+## Shared Catalog Interaction Review
+
+When reusing a catalog item in relationships or another context, review the rendered
+variants and their supplied data, not only the component import. The existing
+standardized catalog and relationship matrix must exercise the same consumer
+footer, clickable references, hover/focus preview and branch/revision navigation.
+Include empty usage and missing screenshots. A class-name or entity-name assertion
+alone does not prove interaction parity. Keep screenshot evidence at the failing
+and passing checkpoints; do not substitute another entity or revision's image.
+
+Consumer views must group references by declared module type in both relationship
+sections and shared card footers. Screenshot UI belongs to visual pages, shells
+and components; helpers, services, models and configs use compact code previews.
+A missing screenshot does not make a visual component nonvisual. Extend the normal
+mixed-consumer browser matrix to prove both visual and nonvisual preview variants.
+
+When changing a previously relocated helper's behavior, review its ownership
+migration follow-up as well as its callers and contract. Keep the original move
+and identity intact; record the intentional new definition and source commit in
+the existing follow-up ledger, then run the standardized unit-index guard.

@@ -18,7 +18,7 @@ import { alpha, searchFixture } from './ui-search-fixture';
  */
 type Box = { x: number; y: number; width: number; height: number };
 const at = (rest: string) => `/projects/${alpha}/harness/branch/feat%2Falpha/${rest}`;
-const widths = [1440, 1379, 1300, 1251, 920, 768, 390];
+const widths = [1440, 1379, 1300, 1251, 920, 768, 390, 320];
 const bar = (page: Page) => page.getByRole('banner');
 const field = (page: Page) =>
 	page
@@ -52,7 +52,30 @@ async function opened(page: Page, width: number): Promise<number[]> {
 	return without.map(Math.round);
 }
 async function fits(page: Page, width: number, without: number[]): Promise<void> {
-	const search = await box(bar(page).getByRole('button', { name: 'Search entities', exact: true }));
+	const navigation = bar(page).getByRole('navigation', { name: 'Catalog categories' });
+	const clipped = await navigation.evaluate((element) => {
+		const frame = element.getBoundingClientRect();
+		return [...element.querySelectorAll('a')]
+			.filter((link) => {
+				const rect = link.getBoundingClientRect();
+				const label = link.querySelector('span')!;
+				const text = label.getBoundingClientRect();
+				return [
+					rect.left >= Math.max(0, frame.left) - 1,
+					rect.right <= Math.min(innerWidth, frame.right) + 1,
+					rect.top >= frame.top - 1,
+					rect.bottom <= frame.bottom + 1,
+					text.width > 0,
+					text.height > 0,
+					text.left >= rect.left - 1,
+					text.right <= rect.right + 1,
+					label.scrollWidth <= Math.max(label.clientWidth, text.width) + 1
+				].includes(false);
+			})
+			.map((link) => link.textContent?.trim());
+	});
+	expect(clipped, 'All category links and labels must fit visibly inside the nav').toEqual([]);
+	const search = await box(trigger(page));
 	const fields = await Promise.all(revision(page).map(box));
 	expect(fields.map((one) => meet(search, one, 3))).toEqual([false, false]);
 	// The search takes nothing of the room of either revision field.
@@ -92,6 +115,11 @@ for (const width of widths) {
 				.evaluate((dialog) => dialog.matches(':modal'))
 		).toBe(true);
 		await remember(page, info, `fit-open-${width}`);
+		await page.keyboard.press('Escape');
+		await bar(page).getByRole('link', { name: 'Models', exact: true }).click();
+		await expect(page).toHaveURL(at('models'));
+		await remember(page, info, `fit-models-${width}`);
+		await fits(page, width, without);
 	});
 
 	test(`at ${width} pixels a result opens in place, and with a modifier in another tab`, async ({

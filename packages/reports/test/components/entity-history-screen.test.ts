@@ -4,7 +4,7 @@ import { content, drawn, screen, words } from '../entityRender';
 import { ids } from '../entityUnits';
 
 const hashes = (body: string) =>
-	[...body.matchAll(/class="ex-hash"[^>]*>(\w+)</g)].map((match) => match[1]);
+	[...body.matchAll(/class="ex-hash"[^>]*>(?:<!--.*?-->)*(\w+)</g)].map((match) => match[1]);
 
 test('the history screen lists the commits that changed the entity, for every kind', () => {
 	const filter = {
@@ -14,7 +14,7 @@ test('the history screen lists the commits that changed the entity, for every ki
 	};
 	const body = screen(EntityHistoryScreen, 'commit', filter);
 	expect(hashes(body)).toEqual(['bbbbbbb', 'aaaaaaa']);
-	expect(words(body)).toContain('Selected change · bbbbbbb');
+	expect(words(body), 'Compact commit history').not.toContain('Selected change');
 	expect(drawn(body)).toBe(drawn(content('commit', filter)));
 	const page = { category: 'pages' as const, entity: ids.page, section: 'history' as const };
 	expect(hashes(screen(EntityHistoryScreen, 'commit', page))).toEqual(['aaaaaaa']);

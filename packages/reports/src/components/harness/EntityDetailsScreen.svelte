@@ -12,6 +12,8 @@
 		{@const summary = entityShown(host, entity)}
 		<EntityDetails
 			{entity}
+			repository={host.index.sourceRepository}
+			commit={entity.lastAt ?? host.scope.commit}
 			contract={summary.contract}
 			measure={summary.measure}
 			record={summary.record}

@@ -37,6 +37,16 @@
 				"name": "EntityDetails.tab",
 				"type": "ExplorerTab",
 				"description": "Optional selected tab. Exactly source shows source; measurements shows measured detail; missing or any other tab uses the summary."
+			},
+			{
+				"name": "EntityDetails.repository",
+				"type": "string | undefined",
+				"description": "Canonical GitHub repository address for source navigation."
+			},
+			{
+				"name": "EntityDetails.commit",
+				"type": "string",
+				"description": "Full commit hash of the viewed entity."
 			}
 		],
 		"outputs": [

@@ -10,12 +10,7 @@ import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
 import { aliases, imports, select, type Written } from './support/selectImports';
 import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
 
-/**
- * ONE SELECT ACROSS REGISTERED APPS. Desktop, Hub and Reports import the Select of the
- * reports package through their declared alias or a shared relative import. This reads this very repository through the index,
- * the graph and the impact analysis and holds them to every alias the packages' own builds
- * declare: all that is simulated is the content hash of the one file said to have changed.
- */
+/** Exercise real cross-package aliases and impact by changing only the Select content hash. */
 const shared = '$shared';
 const indexer = new sourceIndex.SourceIndexService();
 const analysis = new ImpactService(new HandlerRuntimeAdapter(impactKernel));

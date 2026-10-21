@@ -1,6 +1,11 @@
 import { expect, test } from 'vitest';
 import { explorerLegacy } from '../../src/utils/console-canonical/explorerLegacy';
-import { explorerKindCategory, explorerRoutePath } from '../../src/utils/explorerRoute';
+import {
+	explorerKindCategory,
+	explorerRoutePath,
+	explorerRoute,
+	type ExplorerLocation
+} from '../../src/utils/explorerRoute';
 
 const sha = 'a'.repeat(40);
 const base = 'b'.repeat(40);
@@ -66,4 +71,53 @@ test('a kind is one of the seven categories or none; nothing else becomes a func
 	for (const kind of ['audit', 'guide', 'template', 'module', 'script', 'style', 'toString']) {
 		expect([kind, explorerKindCategory(kind)]).toEqual([kind, null]);
 	}
+});
+
+test('the tab of a section is kept in the query and only where it exists', () => {
+	const source: ExplorerLocation = {
+		branch: 'main',
+		commit: null,
+		category: 'pages',
+		entity: 'reports.page.titles',
+		section: 'details',
+		tab: 'source'
+	};
+	expect(explorerRoutePath(source)).toBe('/branch/main/pages/reports.page.titles?tab=source');
+	expect(explorerRoute('/branch/main/pages/reports.page.titles/details', '?tab=source')).toEqual(
+		source
+	);
+	expect(explorerRoute('/branch/main/pages/reports.page.titles', '?tab=source')?.tab).toBe(
+		'source'
+	);
+	expect(explorerRoutePath({ ...source, tab: 'measurements' })).toBe(
+		'/branch/main/pages/reports.page.titles'
+	);
+	const plain = explorerRoute('/branch/main/pages/reports.page.titles/details', '?tab=tests');
+	expect(plain?.tab).toBeUndefined();
+	expect(explorerRoute('/branch/main/pages/reports.page.titles', '?tab=tests')?.tab).toBe('states');
+	for (const category of ['pages', 'components', 'shells']) {
+		const path = `/branch/main/${category}/visual`;
+		expect(explorerRoute(path, '?tab=states')?.tab).toBe('states');
+		expect(explorerRoutePath(explorerRoute(path, '?tab=tests')!)).toBe(`${path}?tab=states`);
+	}
+	for (const category of ['functions', 'services', 'configs']) {
+		const path = `/branch/main/${category}/headless`;
+		expect(explorerRoute(path, '?tab=tests')!.tab).toBe(
+			category === 'functions' ? 'examples' : 'tests'
+		);
+		expect(explorerRoute(path, '?tab=states')!.tab).toBeUndefined();
+	}
+	expect(explorerRoute('/branch/main/pages', '?tab=tests')?.tab).toBeUndefined();
+	expect(explorerRoute('/branch/main/pages/reports.page.titles', '?tab=contract')?.tab).toBe(
+		'contract'
+	);
+	expect(
+		explorerRoutePath({
+			branch: 'main',
+			commit: sha,
+			category: 'pages',
+			entity: 'reports.page.titles',
+			tab: 'contract'
+		})
+	).toBe(`/branch/main/commit/${sha}/pages/reports.page.titles?tab=contract`);
 });

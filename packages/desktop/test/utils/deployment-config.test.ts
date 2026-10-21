@@ -57,20 +57,20 @@ test.each(['jsonc', 'toml'])(
 	}
 );
 
-test.each(['cjs', 'esm'] as const)(
+test.each(['cjs', 'external-cjs', 'esm'] as const)(
 	'the Node %s deployment boundary resolves JSONC parsing',
 	async (format) => {
 		const { execFileSync } = await import('node:child_process');
 		const root = await mkdtemp(join(tmpdir(), 'harness-cf-bundle-'));
 		try {
-			if (format === 'esm')
+			if (format !== 'cjs')
 				await symlink(resolve('../..', 'node_modules'), join(root, 'node_modules'), 'dir');
 			await writeFile(join(root, 'wrangler.jsonc'), '{"name":"fixture",/* comment */"env":{}}');
 			await writeFile(
 				join(root, 'harness.deploy.json'),
 				JSON.stringify({ adapter: 'cloudflare', sourceBranch: 'dev', environments: {} })
 			);
-			const bundle = join(root, `deployment.${format === 'cjs' ? 'cjs' : 'mjs'}`);
+			const bundle = join(root, `deployment.${format === 'esm' ? 'mjs' : 'cjs'}`);
 			const cjs = `import {buildDesktopBundle} from './scripts/build-main.ts';
 const run = () => buildDesktopBundle('src/utils/deploymentConfig.ts', ${JSON.stringify(bundle)});
 if (process.env.HARNESS_EVIDENCE_DIR) {
@@ -87,8 +87,9 @@ if (process.env.HARNESS_EVIDENCE_DIR) {
 							'--target',
 							'node',
 							'--format',
-							format,
-							...(format === 'esm' ? ['--packages', 'external'] : []),
+							format === 'esm' ? 'esm' : 'cjs',
+							'--packages',
+							'external',
 							'--outfile',
 							bundle
 						],

@@ -101,7 +101,7 @@ for (const [name, size] of Object.entries(viewports)) {
 		expect(said.endsWith('…')).toBe(true);
 		expect(said.split(/\s+/).length).toBeLessThanOrEqual(30);
 		expect([...said].length).toBeLessThanOrEqual(200);
-		const full = tab.locator('#ex-reasons-full');
+		const full = row.locator('details.ex-full');
 		await expect(full).not.toHaveAttribute('open');
 		await expect(tab.getByText('unit 70').first()).toBeHidden();
 		expect(await fits(tab)).toBe(true);
@@ -109,7 +109,7 @@ for (const [name, size] of Object.entries(viewports)) {
 		const spare = await scroller.evaluate((box) => box.clientWidth - box.scrollWidth);
 		if (name === 'desktop') expect(spare).toBeGreaterThanOrEqual(0);
 		await capture(tab, `history-long-short-${name}`);
-		await row.getByRole('button', { name: 'Full reasons of bbbbbbb' }).press('Enter');
+		await full.locator('summary').press('Enter');
 		await expect(full).toHaveAttribute('open');
 		await expect(full.locator('summary')).toBeFocused();
 		for (const symbol of ['cpuSample', 'cpuClient', 'cpuGroups', 'cpuHistory']) {

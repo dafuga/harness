@@ -51,7 +51,9 @@ for (const [name, size] of Object.entries(viewports)) {
 			const viewed = (commit ?? commits.tip).slice(0, 7);
 			await expect(shot).toHaveAttribute('src', `/media/${viewed}-default-desktop.png`);
 			expect(await shot.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBe(1440);
-			await expect(cards.first()).toHaveText(/Order card\s+Used In\s+Order list\s+Orders page/);
+			await expect(cards.first()).toHaveText(
+				/Order card\s+Used In\s+Pages\s+Orders page\s*Components\s+Order list/
+			);
 			await expect(cards.first().locator('button, .hx-verdict, .ex-fact, figcaption')).toHaveCount(
 				0
 			);

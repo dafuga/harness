@@ -14,9 +14,16 @@ test('what an entity uses is one section of kinds of their own, and what uses it
 	for (const mode of ['current', 'commit'] as const) {
 		const [uses, used] = both(mode);
 		expect([sections(uses), sections(used)]).toEqual([['Uses'], ['Used In']]);
-		expect(words(uses)).toMatch(/Components\s+1\s+Order card[^]*Functions\s+1[^]*Services\s+1/);
+		expect(words(uses)).toMatch(/Components\s+1[^]*Order card[^]*Functions\s+1[^]*Services\s+1/);
 		expect(words(uses + used)).not.toMatch(/sub-?components|\brelated\b/i);
 		expect(words(uses + used)).not.toMatch(/src\/|\.ts\b/);
+		expect(uses, 'Relationships reuse catalog cards').toContain('ex-function-tile');
+		expect(uses).toContain('ex-page-card');
+		expect(uses).toContain('aria-label="Services"');
+		expect(used).toContain('ex-page-card');
+		expect(words(used)).toMatch(/Used In\s+1\s+Pages\s+1[^]*Orders page/);
+		expect(used).toContain('aria-label="Used In"');
+		expect(uses).toContain('aria-label="Used In"');
 		for (const body of [uses, used]) {
 			expect(
 				verdicts(body.slice(body.indexOf('class="ex-relations"'))),
@@ -31,7 +38,7 @@ test('each related entity is a link to it in the same branch and commit', () => 
 	const [uses, used] = both();
 	const base = `/harness/branch/feature%2Forders/commit/${commits.middle}`;
 	expect(uses).toContain(`href="${base}/components/${ids.card}"`);
-	expect(uses).toContain(`href="${base}/functions/${ids.filter}"`);
+	expect(uses).toContain(`href="${base}/helpers/filterOrders/in/${ids.filter}/contract"`);
 	expect(uses).toContain(`href="${base}/services/${ids.store}"`);
 	expect(used).toContain(`href="${base}/pages/${ids.page}"`);
 	// A kind the entity uses nothing of is left out; it is not listed as an empty one.

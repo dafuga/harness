@@ -1,10 +1,11 @@
-import { recordCatalogCapture } from './entityPreviewCapture';
 import { expect, type Page } from '@playwright/test';
-import { existsSync, mkdirSync, readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { extname, join } from 'node:path';
 import type { ExplorerLocation } from '../src/models/Explorer.types';
 import type { PreviewVariant } from './entityPreviewData';
 import { previewHome } from './entityPreviewSetup';
+import { capture, ready } from './entityPreviewCapture';
+export { capture } from './entityPreviewCapture';
 // A local address is a secure context, so the page can hash the bytes of an artifact it reads.
 export const origin = 'http://localhost:41739';
 export const viewports = {
@@ -13,6 +14,7 @@ export const viewports = {
 	mobile: { width: 390, height: 844 }
 };
 const served = new WeakSet<Page>();
+const variants = new WeakMap<Page, PreviewVariant>();
 const types: Record<string, string> = {
 	'.js': 'text/javascript',
 	'.css': 'text/css',
@@ -20,14 +22,14 @@ const types: Record<string, string> = {
 	'.wav': 'audio/wav',
 	'.json': 'application/json'
 };
-function shell(home: string): string {
+function shell(home: string, variant: PreviewVariant = ''): string {
 	const sheets = readdirSync(home).filter((name) => name.endsWith('.css'));
 	const hashes = readFileSync(join(home, 'hashes.json'), 'utf8');
 	const links = sheets.map((name) => `<link rel="stylesheet" href="/${name}">`).join('');
 	return `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">${links}</head>
 <body><div class="hx-shell"><main class="hx-main" id="app"></main></div>
-<script>window.artifactHashes=${hashes}</script><script src="/preview.iife.js"></script></body></html>`;
+<script>window.artifactHashes=${hashes};window.previewVariant=${JSON.stringify(variant)}</script><script src="/preview.iife.js"></script></body></html>`;
 }
 /**
  * Opens the content at an address, served from the built preview and from nowhere else. A
@@ -39,13 +41,15 @@ export async function open(
 	variant: PreviewVariant = ''
 ): Promise<void> {
 	const home = previewHome();
+	variants.set(page, variant);
 	// Keep asset routes installed while this page switches views, including pending lazy reads.
 	await page.goto('about:blank');
 	if (!served.has(page)) {
 		await page.route(`${origin}/**`, (request) => {
 			const path = new URL(request.request().url()).pathname;
 			const file = join(home, path.replace(/^\/harness\/media\//, 'media/'));
-			if (path === '/') return request.fulfill({ contentType: 'text/html', body: shell(home) });
+			if (path === '/' || /^\/harness\/(branch|commit)\//.test(path))
+				return request.fulfill({ contentType: 'text/html', body: shell(home, variants.get(page)) });
 			if (!existsSync(file)) return request.fulfill({ status: 404, body: 'not in the preview' });
 			return request.fulfill({ contentType: types[extname(file)], body: readFileSync(file) });
 		});
@@ -67,25 +71,6 @@ export const shown = async (page: Page, selector: string): Promise<string[]> =>
 /** True when nothing makes the page wider than its window. */
 export const fits = (page: Page): Promise<boolean> =>
 	page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1);
-/** Keeps what the page shows, when a run asks for screenshots; the name says what and how wide. */
-export async function capture(page: Page, name: string): Promise<void> {
-	if (process.env.TAKE_SCREENSHOT !== '1') return;
-	const directory = process.env.ENTITY_PREVIEW_SHOTS ?? '/tmp/harness-entity-preview-shots';
-	mkdirSync(directory, { recursive: true });
-	const bytes = await page.screenshot({ path: join(directory, `${name}.png`), fullPage: true });
-	await recordCatalogCapture(previewHome(), name, bytes);
-}
-/** Wait for the visible capture to render without forcing offscreen lazy images to load. */
-async function ready(page: Page): Promise<void> {
-	await page.evaluate(async () => {
-		await document.fonts.ready;
-		const visible = [...document.images].filter((image) => {
-			const box = image.getBoundingClientRect();
-			return box.width > 0 && box.height > 0 && box.top < innerHeight && box.bottom > 0;
-		});
-		await Promise.all(visible.map((image) => image.decode()));
-	});
-}
 /** Visual evidence leads its overview; a component retains it above every row of tabs. */
 export async function reviewVisual(
 	page: Page,

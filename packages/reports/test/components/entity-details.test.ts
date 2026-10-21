@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { record, revision } from '../entityFixture';
+import { index, record, revision } from '../entityFixture';
 import { content, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';
 
@@ -46,14 +46,25 @@ test('a page has details like every other kind: purpose, address, inputs, output
 });
 
 test('source is shown only when the source tab is the open one', () => {
-	const closed = ['measurements', undefined] as const;
-	for (const tab of closed) {
+	for (const tab of ['measurements', undefined] as const)
 		expect(words(content('commit', { ...page, tab }))).not.toMatch(owned);
+	for (const mode of ['current', 'commit'] as const) {
+		const body = content(mode, { ...page, tab: 'source' });
+		const commit = mode === 'current' ? commits.tip : commits.middle;
+		expect(body, 'GitHub source links use the selected commit').toContain(
+			`href="https://github.com/example/orders/blob/${commit}/src/routes/orders/%2Bpage.svelte"`
+		);
+		expect(words(body)).not.toMatch(/Source ownership|Symbols|Execution targets|Identity /);
 	}
-	const body = content('commit', { ...page, tab: 'source' });
-	expect(words(body)).toContain('Source ownership');
-	expect(words(body)).toContain('src/routes/orders/+page.svelte');
-	expect(body).toContain(`/commit/${commits.middle}/pages/${ids.page}?tab=source`);
+	for (const sourceRepository of [
+		undefined,
+		'javascript:alert(1)',
+		'https://github.com.evil/repo'
+	]) {
+		const body = content('commit', { ...page, tab: 'source' }, {}, { ...index, sourceRepository });
+		expect(words(body)).toContain('GitHub source unavailable');
+		expect(body).not.toContain('href="https://github.com/');
+	}
 });
 
 test('measurements name the limit each figure is frozen at, or that none is recorded', () => {

@@ -3,7 +3,7 @@
 	"id": "desktop.component.revision-picker",
 	"kind": "component",
 	"title": "Revision picker",
-	"responsibility": "Selects the displayed branch or commit and allows returning to its branch tip.",
+	"responsibility": "Shows the selected branch, commit or environment with its update time and opens revision choices.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -23,7 +23,7 @@
 			{
 				"name": "RevisionPicker",
 				"type": "markup",
-				"description": "One compact row of native branch and commit dropdowns. Long names are shortened in the middle; full names and current, pinned or historical status appear on hover. Go to tip returns pinned or historical views to the current branch."
+				"description": "One summary line names the branch or explicit short commit hash with its timestamp. For an environment scope, it reads Updated at and the deployment date and time; the selector already names the environment. Icon dialogs select revisions and Go to tip exits a pinned revision."
 			}
 		],
 		"errors": []

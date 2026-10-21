@@ -11,8 +11,8 @@ type Relations = Pick<ExplorerRelations, 'pages' | 'usedBy' | 'components'>;
 
 export interface CatalogRow {
 	helper?: NonNullable<ExplorerEntity['unit']['helpers']>[number];
-	/** First three distinct current consumers; helper consumers are component, service or model units. */
-	usedIn?: Array<Pick<ExplorerEntity, 'id' | 'name' | 'category'>>;
+	/** First three distinct revision-scoped consumers for linked usage previews. */
+	usedIn?: ExplorerEntity[];
 	entity: ExplorerEntity;
 	id: string;
 	name: string;
@@ -77,15 +77,8 @@ function rowOf(entity: ExplorerEntity, related: Relations): CatalogRow {
 		usedIn: [
 			...new Map(
 				[...related.usedBy, ...related.pages]
-					.filter((consumer) => consumer.change !== 'removed')
-					.map((consumer) => [
-						consumer.id,
-						{
-							id: consumer.id,
-							name: consumer.name,
-							category: consumer.category
-						}
-					])
+					.filter((item) => item.change !== 'removed')
+					.map((item) => [item.id, item])
 			).values()
 		].slice(0, 3),
 		usedOn: names(related.pages),
@@ -121,7 +114,7 @@ function helperConsumers(
 		if (!entity || seen.has(entity.id) || entity.change === 'removed') continue;
 		if (!['components', 'services', 'models'].includes(entity.category)) continue;
 		seen.add(entity.id);
-		usedIn.push({ id: entity.id, name: entity.name, category: entity.category });
+		usedIn.push(entity);
 		if (usedIn.length === 3) break;
 	}
 	return usedIn;
@@ -135,15 +128,17 @@ function helperConsumers(
 export function entityCatalog(
 	entities: ExplorerEntity[],
 	category: ExplorerCategory,
-	relations: (id: string) => Relations
+	relations: (id: string) => Relations,
+	options: { related?: boolean; consumers?: ExplorerEntity[] } = {}
 ): CatalogRow[] {
-	const byId = new Map(entities.map((entity) => [entity.id, entity]));
+	const byId = new Map((options.consumers ?? entities).map((entity) => [entity.id, entity]));
 	return entities
 		.filter((entity) => entity.category === category)
 		.flatMap((entity) => {
 			const row = rowOf(entity, relations(entity.id));
 			if (category !== 'functions') return [row];
 			const helpers = (entity.unit.helpers ?? []).filter(sharedHelper);
+			if (options.related && helpers.length === 0) return [row];
 			return helpers
 				.map((helper) => ({
 					...row,
@@ -153,7 +148,7 @@ export function entityCatalog(
 					name: helper.name,
 					id: helpers.length === 1 ? entity.id : `${entity.id}#${helper.source}:${helper.name}`
 				}))
-				.filter((item) => item.usedIn.length >= 2);
+				.filter((item) => options.related || item.usedIn.length >= 2);
 		})
 		.sort(byName);
 }

@@ -130,6 +130,7 @@ function unitView(
 		scenarios: unit.scenarios,
 		owns: unit.owns,
 		contract: { inputs, outputs, errors },
+		...(unit.helperContracts ? { helpers: unit.helperContracts } : {}),
 		...(unit.preview ? { preview: unit.preview } : {}),
 		...(unit.documentation
 			? { documentation: { path: unit.documentation, examples: [], gap: 'Document not loaded.' } }

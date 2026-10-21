@@ -4,11 +4,7 @@
 	import { displayTime, revisionTime } from '../utils/revisionTime';
 	import ChoiceDialog from './ChoiceDialog.svelte';
 	import Icon from './Icon.svelte';
-	/**
-	 * The shown revision is said in one place; its branch and commit pickers wait behind icons.
-	 * Git times are told as such: when the commit and the branch tip were committed, never when
-	 * anything was deployed.
-	 */
+	/** One selected context and its source-specific update time, with revision choices behind icons. */
 	let { workspace }: { workspace: Workspace } = $props();
 	let branch = $state('');
 	let commit = $state('');
@@ -26,12 +22,27 @@
 	});
 	const committed = $derived(snapshot ? revisionTime(snapshot, 'commit') : null);
 	const tipped = $derived(snapshot ? revisionTime(snapshot, 'branch') : null);
+	const environment = $derived(
+		workspace.deployments.viewing ? workspace.deployments.environment : null
+	);
+	const name = $derived(
+		environment ? 'Updated at' : workspace.pinned ? revision?.commit.slice(0, 7) : revision?.branch
+	);
+	const updated = $derived(
+		environment
+			? (workspace.deployments.selected?.receipt?.updatedAt ?? null)
+			: workspace.pinned
+				? committed
+				: tipped
+	);
 	/** A choice closes its dialog, so focus is back on its icon while the revision loads. */
 	function chooseBranch(close?: () => void) {
+		workspace.deployments.viewing = false;
 		close?.();
 		void workspace.navigate(workspace.link({ branch }));
 	}
 	function chooseCommit(close: () => void) {
+		workspace.deployments.viewing = false;
 		close();
 		void workspace.navigate(workspace.link({ branch, commit }));
 	}
@@ -43,39 +54,63 @@
 	>{/snippet}
 
 {#if snapshot && revision}<div class="revision-picker">
-		<ChoiceDialog label="Choose branch" title="Choose branch" width={320} maxHeight={320} gap={10}>
-			{#snippet icon()}<Icon name="branch" size={18} />{/snippet}
-			{#snippet children(close: () => void)}<label
-					class="picker-field"
-					onchange={() => chooseBranch(close)}
-					>Branch<Select
-						label="Branch"
-						title={`Tip · ${revision.tip.slice(0, 7)}`}
-						bind:value={branch}
-						>{#each snapshot.branches as item (item.name)}<option value={item.name}
-								>{item.name}</option
-							>{/each}</Select
-					></label
-				>{@render when(`Branch tip ${revision.tip.slice(0, 7)} committed`, tipped)}{/snippet}
-		</ChoiceDialog>
-		<ChoiceDialog label="Choose commit" title="Choose commit" width={380} maxHeight={320} gap={10}>
-			{#snippet icon()}<Icon name="commit" size={18} />{/snippet}
-			{#snippet children(close: () => void)}<label
-					class="picker-field"
-					onchange={() => chooseCommit(close)}
-					>Commit<Select label="Commit" title={viewed} bind:value={commit}
-						>{#each snapshot.commits as item (item.hash)}<option value={item.hash}
-								>{item.hash.slice(0, 7)} · {item.subject}</option
-							>{/each}</Select
-					></label
-				>{@render when('Commit updated', committed)}{/snippet}
-		</ChoiceDialog>
-		<div class="revision-summary">
-			<strong title={revision.branch}>{revision.branch}</strong><small class="tip"
-				>Tip · {revision.tip.slice(0, 7)}</small
-			><small class:historical={!revision.atTip}>{viewed}</small>
+		<div class="revision-choices">
+			<ChoiceDialog
+				label="Choose branch"
+				title="Choose branch"
+				width={320}
+				maxHeight={320}
+				gap={10}
+			>
+				{#snippet icon()}<Icon name="branch" size={18} />{/snippet}
+				{#snippet children(close: () => void)}<label
+						class="picker-field"
+						onchange={() => chooseBranch(close)}
+						>Branch<Select
+							label="Branch"
+							title={`Tip · ${revision.tip.slice(0, 7)}`}
+							bind:value={branch}
+							>{#each snapshot.branches as item (item.name)}<option value={item.name}
+									>{item.name}</option
+								>{/each}</Select
+						></label
+					>{@render when(`Branch tip ${revision.tip.slice(0, 7)} committed`, tipped)}{/snippet}
+				{#snippet footer(close: () => void)}<button
+						type="button"
+						onclick={() => chooseBranch(close)}>View branch</button
+					>{/snippet}
+			</ChoiceDialog>
+			<ChoiceDialog
+				label="Choose commit"
+				title="Choose commit"
+				width={380}
+				maxHeight={320}
+				gap={10}
+			>
+				{#snippet icon()}<Icon name="commit" size={18} />{/snippet}
+				{#snippet children(close: () => void)}<label
+						class="picker-field"
+						onchange={() => chooseCommit(close)}
+						>Commit<Select label="Commit" title={viewed} bind:value={commit}
+							>{#each snapshot.commits as item (item.hash)}<option value={item.hash}
+									>{item.hash.slice(0, 7)} · {item.subject}</option
+								>{/each}</Select
+						></label
+					>{@render when('Commit updated', committed)}{/snippet}
+				{#snippet footer(close: () => void)}<button
+						type="button"
+						onclick={() => chooseCommit(close)}>View commit</button
+					>{/snippet}
+			</ChoiceDialog>
 		</div>
-		{#if !revision.atTip || workspace.pinned}<button
+		<div class="revision-summary" aria-label="Viewed context">
+			<strong title={name}>{name}</strong><small
+				>{environment ? '' : '· '}<time datetime={updated ?? undefined} title="Last updated"
+					>{displayTime(updated)}</time
+				></small
+			>
+		</div>
+		{#if !environment && (!revision.atTip || workspace.pinned)}<button
 				type="button"
 				class="go-to-tip"
 				aria-label="Go to tip"
@@ -90,11 +125,17 @@
 		align-items: center;
 		gap: 8px;
 	}
+	/* The branch and commit icons are a group of their own only where a phone draws one. */
+	.revision-choices {
+		display: contents;
+	}
 	.revision-summary {
-		display: grid;
+		display: flex;
+		align-items: baseline;
+		gap: 6px;
 		flex: 0 1 auto;
 		min-width: 0;
-		max-width: 210px;
+		max-width: 300px;
 		margin-inline-start: 4px;
 		font-size: 13px;
 		line-height: 1.35;
@@ -104,7 +145,11 @@
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
+	.revision-summary strong {
+		min-width: 0;
+	}
 	.revision-summary small {
+		flex: none;
 		line-height: 1.35;
 	}
 	/* In its dialog a picker is a field of the dialog's width, not one of the bar. */
@@ -117,30 +162,52 @@
 	.picker-field :global(.report-select) {
 		display: block;
 	}
-	/* On a phone the icons, the branch and what is shown share one row beside the environment; the
-	   tip is named in the branch dialog, with when it was committed. */
+	/* Context and timestamp share the inset line beneath the mobile control rail. */
 	@media (max-width: 560px) {
 		.revision-picker {
+			display: contents;
+		}
+		.revision-choices {
+			grid-area: revision;
 			display: flex;
-			gap: 6px;
-			min-width: 0;
-			margin-inline-start: 6px;
+			justify-self: start;
+			margin: 8px 0 0 -1px;
+			border-radius: 0 8px 8px 0;
+			background: var(--panel);
+			box-shadow: inset 0 0 0 1px var(--line);
 		}
 		.revision-summary {
-			flex: 1 1 auto;
+			grid-area: summary;
+			display: flex;
+			align-items: baseline;
+			gap: 8px;
+			min-width: 0;
 			max-width: none;
-			margin-inline-start: 2px;
-			line-height: 1.3;
+			margin: 2px 0 8px;
+			padding-inline: 6px;
+			line-height: 13px;
+		}
+		/* A long branch gives way first; what is shown stays whole. */
+		.revision-summary strong {
+			flex: 0 1 auto;
+			min-width: 0;
+			font-size: 12px;
 		}
 		.revision-summary small {
+			flex: none;
 			font-size: 11px;
-			line-height: 1.3;
-		}
-		.tip {
-			display: none;
+			line-height: 13px;
 		}
 		.go-to-tip {
-			padding: 6px 8px;
+			grid-area: tip;
+			justify-self: end;
+			height: 30px;
+			margin: 8px 6px 0 0;
+			padding: 0 12px;
+			border-color: rgb(255 208 53 / 0.5);
+			border-radius: 15px;
+			background: none;
+			color: var(--gold);
 		}
 	}
 </style>

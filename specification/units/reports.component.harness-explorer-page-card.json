@@ -37,6 +37,16 @@
 				"name": "ExplorerPageCard.category",
 				"type": "'pages' | 'components'",
 				"description": "Defaults to pages. Components show only their screenshot, title and first three distinct consumer links."
+			},
+			{
+				"name": "ExplorerPageCard.lens",
+				"type": "EntityLens",
+				"description": "Revision-scoped screenshot evidence for linked consumers."
+			},
+			{
+				"name": "ExplorerPageCard.verification",
+				"type": "boolean",
+				"description": "Accepted for shared catalog compatibility; visual cards show screenshot, title and consumer links."
 			}
 		],
 		"outputs": [
@@ -49,6 +59,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.explorer-usage",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.harness-entity-link",
 			"via": "import",
