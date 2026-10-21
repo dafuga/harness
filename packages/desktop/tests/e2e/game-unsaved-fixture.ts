@@ -14,7 +14,7 @@ export async function keepEdits(page: Page) {
 	await expect(page).toHaveURL(address);
 	await expect(title).toHaveValue(value);
 	const unloading = page.waitForEvent('dialog', { timeout: 2000 });
-	const reload = page.reload().catch(() => undefined);
+	const reload = page.reload({ timeout: 2000 }).catch(() => undefined);
 	const prompt = await unloading;
 	expect(prompt.type()).toBe('beforeunload');
 	await prompt.dismiss();
