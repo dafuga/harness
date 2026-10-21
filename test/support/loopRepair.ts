@@ -31,7 +31,7 @@ const directory = process.env.HARNESS_EVIDENCE_DIR;
 if (directory) {
  mkdirSync(directory, {recursive:true});
  writeFileSync(directory+'/sample.json', JSON.stringify({measurements:[{unit:'function.sample', metric:'latency-warm-ms', unitOfMeasure:'ms', value:0.5, workload:'sample', method:'Synthetic fixture timing.'}]}));
- writeFileSync(directory+'/page.png', Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO7SX6QAAAAASUVORK5CYII=', 'base64'));
+ writeFileSync(directory+'/page.png', Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGMQUDAAAACkAGE0Zn1yAAAAAElFTkSuQmCC', 'base64'));
  const screen={evidence:'page.sample',kind:'screenshot',state:'overview',viewport:'desktop',file:'page.png',mediaType:'image/png',provenance:'fixture',server:{buildId:'fixture',revision:process.env.HARNESS_VERIFY_REVISION}};
  writeFileSync(directory+'/captures.ndjson', [JSON.stringify({evidence:'sample', kind:'benchmark', state:'sample', file:'sample.json', mediaType:'application/json'}),JSON.stringify(screen)].join('\\n')+'\\n');
 }
