@@ -95,6 +95,7 @@ must not accept a row that contradicts the collection's inclusion rule.
 ## Measurement Evidence
 
 - End coding and planning tasks through `harness task check`. Coding completion requires an intact record for the committed source and actual representative latency and memory profiles, independently of budget declarations. Run `harness verify run --require-performance`; use the Harness `PerformanceProfileService` or declared benchmark runner rather than ad hoc timing scripts.
+- This repository also declares `performanceRequired: 1`, so ordinary verification cannot publish a passing record without those profiles. Keep that opt-in covered by the standard self-verification configuration test. Profile cycle-sensitive bootstrap schemas through their real parsing tests; never remove the cycle exclusions or replace parse cost with whole-test duration.
 - Planning audits inspect the proposal, acceptance criteria, dependencies, verification and performance-testing plan without implementing it. Structural heuristics cannot prove arbitrary semantic fulfillment: expose remaining uncertainty and required review. Missing, stale and failed evidence cannot be replaced with free-text claims.
 
 - Source size and complexity are automatic observations of the selected committed tree; show them even when no full verification record exists.
