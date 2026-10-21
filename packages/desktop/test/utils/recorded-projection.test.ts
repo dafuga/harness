@@ -32,8 +32,14 @@ test('a side keeps what judges this entity and nothing of another', () => {
 	]);
 });
 
-test('what a commit changed is kept for this entity alone, and no file is named', () => {
-	const { detail } = recordedProjection(full(feed), feed).after;
+test('a commit keeps entity changes and its supplied source-tree binding', () => {
+	const evidence = full(feed);
+	const headSide = `sides/${'c'.repeat(40)}.json`;
+	const parentSide = `sides/${'d'.repeat(40)}.json`;
+	evidence.after.detail!.side = headSide;
+	evidence.before!.detail!.side = parentSide;
+	const projected = recordedProjection(evidence, feed);
+	const { detail } = projected.after;
 	const units = { direct: [], indirect: [feed], added: [], removed: [] };
 	expect(detail?.comparison).toEqual({
 		base: null,
@@ -50,8 +56,12 @@ test('what a commit changed is kept for this entity alone, and no file is named'
 		uncertain: [],
 		changed: []
 	});
-	expect(detail).not.toHaveProperty('side');
+	expect(detail?.side).toBe(headSide);
+	expect(projected.before?.detail?.side).toBe(parentSide);
 	expect(detail).not.toHaveProperty('rangeReasons');
+	const withoutBinding = full(feed);
+	delete withoutBinding.after.detail!.side;
+	expect(recordedProjection(withoutBinding, feed).after.detail).not.toHaveProperty('side');
 });
 
 test('the projection derives the same evidence and verdict, and leaves its input alone', () => {

@@ -149,4 +149,6 @@ Pin head, main and their merge base before reviewing removals. A behind-main dif
 
 When reconciling changed assertions, map each expected state to its selected fixture revision and manifest status. Run every reconciled standardized test before broad verification; active, retired and never-present entities have different history behavior.
 
+Before a broad run after importing main changes, run the existing standard tests owned by each imported source change, including unchanged test files. Check their expectations against the imported contract before retaining or revising them.
+
 When integrating project-specific navigation into a changed shared header, exercise each project variant at the declared viewports. The standard acceptance test must assert separation from reserved search/settings controls and activate the added entry and a retained control; visibility alone does not prove usable navigation.
