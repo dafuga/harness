@@ -62,3 +62,5 @@ The game service lifecycle fixture performs multiple Git snapshots, historical r
 Full desktop verification also exposed older canonical fixture functions without the pure/shared callable metadata now required by main's helper catalog. The shared project fixture and named-reference fixture declare that eligibility; production catalog filtering and all existing behavior assertions remain intact.
 
 Mobile graph fitting allows zoom to 0.1 for both initial layout and the explicit Fit View control. Native authoring scenarios require the key checkpoint fully visible after adding a dependent node, before clicking it, in both dimensions and every standard viewport.
+
+Narrow authoring layouts stack the graph and checkpoint editor rather than reserving a 280-pixel editor beside an unusably narrow graph. This preserves the existing controls and gives Fit View the full mobile width.

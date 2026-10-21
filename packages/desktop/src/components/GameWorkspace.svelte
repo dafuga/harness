@@ -215,4 +215,9 @@
 		gap: 16px;
 		align-items: start;
 	}
+	@media (max-width: 760px) {
+		.split {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
 </style>
