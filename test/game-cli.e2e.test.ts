@@ -1,25 +1,37 @@
 import { expect, test } from 'vitest';
-import { stripVTControlCharacters } from 'node:util';
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
-import { execFileSync, spawn, spawnSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { GameDocumentRepository } from '../packages/game/src/repositories/GameDocumentRepository';
 import type { GameDocument } from '../packages/game/src/models/Game.types';
+import { playableGame } from './support/playableGame';
 const cli = resolve('src/index.ts');
 
-test.each(['2d', '3d'])(
-	'CLI creates %s games and supports app and game generators',
-	async (dimension) => {
+test.each([
+	['2d', 'source'],
+	['3d', 'source'],
+	['2d', 'bundled'],
+	['3d', 'bundled']
+])(
+	'CLI creates %s games through %s and supports app and game generators',
+	async (dimension, entry) => {
 		const root = await mkdtemp(join(tmpdir(), 'harness-game-cli-'));
 		try {
+			const cli = entry === 'source' ? resolve('src/index.ts') : join(root, 'harness.js');
+			if (entry === 'bundled')
+				execFileSync(
+					'bun',
+					['build', resolve('src/index.ts'), '--target', 'bun', '--outfile', cli],
+					{ stdio: 'pipe' }
+				);
 			execFileSync('bun', [cli, 'new', 'game', 'adventure', '--dimension', dimension], {
 				cwd: root
 			});
 			const cwd = join(root, 'adventure');
 			const manifest = JSON.parse(await readFile(join(cwd, 'package.json'), 'utf8'));
 			expect(manifest.harness).toEqual({ kind: 'game', dimension, aiRendering: false });
-			await playableRoute(cwd);
+			await playableGame(cwd);
 			for (const [kind, name] of [
 				['view', 'inventory'],
 				['game-view', 'battle'],
@@ -62,55 +74,6 @@ test.each(['2d', '3d'])(
 	},
 	120_000
 );
-
-async function playableRoute(cwd: string) {
-	execFileSync('bun', ['install', '--backend=copyfile'], { cwd, stdio: 'pipe' });
-	const server = spawn(
-		process.execPath,
-		['node_modules/vite/bin/vite.js', 'dev', '--host', '127.0.0.1', '--port', '0'],
-		{
-			cwd,
-			stdio: ['ignore', 'pipe', 'pipe'],
-			env: { ...process.env, FORCE_COLOR: '1', NO_COLOR: undefined }
-		}
-	);
-	try {
-		const url = await new Promise<string>((resolveUrl, reject) => {
-			let output = '';
-			const timeout = setTimeout(
-				() =>
-					reject(new Error('Generated game did not start: ' + stripVTControlCharacters(output))),
-				30_000
-			);
-			server.stderr.on('data', (chunk) => {
-				output += String(chunk);
-			});
-			server.once('exit', () => {
-				clearTimeout(timeout);
-				reject(new Error('Generated game exited'));
-			});
-			server.once('error', reject);
-			server.stdout.on('data', (chunk) => {
-				output += String(chunk);
-				const address = stripVTControlCharacters(output).match(
-					/(http:\/\/127\.0\.0\.1:\d+)\//
-				)?.[1];
-				if (address) {
-					clearTimeout(timeout);
-					resolveUrl(address);
-				}
-			});
-		});
-		const response = await fetch(url + '/game');
-		expect(response.status).toBe(200);
-		expect(await response.text()).toContain('<canvas');
-		const reopened = await fetch(url + '/game');
-		expect(await reopened.text()).toContain('<canvas');
-	} finally {
-		server.kill();
-		await new Promise<void>((resolveExit) => server.once('exit', () => resolveExit()));
-	}
-}
 
 test('game-only generators reject apps before creating broken imports', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-app-no-game-'));

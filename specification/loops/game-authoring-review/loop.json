@@ -2,7 +2,7 @@
 	"name": "game-authoring-review",
 	"goal": "Preserve focused authoring edits and paid image results, scope traces by view, recover failed project creation, and generate correctly dimensioned game scaffolds.",
 	"createdAt": "2026-10-21T16:27:45.229Z",
-	"updatedAt": "2026-10-21T17:23:50.406Z",
+	"updatedAt": "2026-10-21T17:35:13.140Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T17:35:13.140Z",
+			"evidence": "Unchanged paired tests pass at 3527b694fa062910386334b5cd1569dac2f16897 on the same Darwin/arm64 profile. Inspected matching focused steps capture: Unsaved changes is visible and Save enabled before blur. Creation, credentials and image lifecycle assertions pass."
 		},
 		{
 			"id": "verify",

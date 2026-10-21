@@ -165,6 +165,24 @@ test('a generated game displays the saved reference after completing its checkpo
 	}
 	await expect(page.locator('canvas')).toHaveAttribute('data-ready', 'true');
 	await page.getByRole('button', { name: 'Move right', exact: true }).click({ clickCount: 2 });
+	if (process.env.CHECKPOINT_GAME_TRANSITIONS === '1') {
+		if (process.env.TAKE_SCREENSHOT === 'true') {
+			await page.evaluate(() => document.fonts.ready);
+			await page.screenshot({
+				path: 'test-results/checkpoint-view-transition.png',
+				fullPage: true
+			});
+		}
+		await expect(
+			page.getByRole('heading', { name: 'Second chamber', exact: true }),
+			'checkpoint transitions must enter the target view'
+		).toBeVisible();
+		await expect(
+			page.getByRole('img', { name: 'Collect the key gameplay reference', exact: true })
+		).toHaveCount(0);
+		await page.getByRole('button', { name: 'Move right', exact: true }).click();
+		await expect(page.getByRole('heading', { name: 'The courtyard', exact: true })).toBeVisible();
+	}
 	const reference = page.getByRole('img', {
 		name: 'Collect the key gameplay reference',
 		exact: true
