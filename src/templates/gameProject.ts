@@ -12,6 +12,12 @@ export function gameFiles(input: ProjectTemplateInput, app: PlannedFile[]): Plan
 	pkg.dependencies = { three: '0.180.0', '@decartai/sdk': '0.2.12' };
 	pkg.devDependencies['@types/three'] = '0.180.0';
 	manifest.contents = JSON.stringify(pkg, null, '\t') + '\n';
+	const vite = app.find((file) => file.path === 'vite.config.ts')!;
+	// Vite otherwise caches /game as the root game.json module after the first page load.
+	vite.contents = vite.contents.replace(
+		'plugins: [sveltekit()],',
+		"plugins: [sveltekit()],\n\tresolve: { extensions: ['.mjs', '.js', '.mts', '.ts', '.jsx', '.tsx'] },"
+	);
 	return [
 		...app,
 		...Object.entries(gameSources).map(([path, contents]) => ({
