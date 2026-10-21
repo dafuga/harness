@@ -75,7 +75,6 @@ function told(side: ExplorerSide, found: ExplorerCapture) {
 	if (!side.record || !tested) return unrecorded;
 	return captureProvenance(side.record, tested, found.capture);
 }
-
 /** A recorded capture as a gallery item, with the standing the record gives it and nothing more. */
 function item(side: ExplorerSide, found: ExplorerCapture, phase: Phase): Evidence {
 	const { capture, scenario, state } = found;
@@ -102,7 +101,6 @@ function item(side: ExplorerSide, found: ExplorerCapture, phase: Phase): Evidenc
 		transcript: capture.transcript
 	};
 }
-
 /** What a gap is named by: the picked state, or that no visual scenario names the entity. */
 function gapOf(pick: ScreenPick | null, at: string) {
 	if (!pick) {
@@ -116,7 +114,6 @@ function gapOf(pick: ScreenPick | null, at: string) {
 		none: null
 	};
 }
-
 /** A side's own gap, never another's capture; an undeclared visual state says so. */
 function gap(
 	side: ExplorerSide | null,
@@ -140,18 +137,15 @@ function gap(
 		mediaType: 'image'
 	};
 }
-
 const matches = (found: ExplorerCapture, pick: ScreenPick) =>
 	found.capture.kind === 'screenshot' &&
 	found.scenario === pick.scenario &&
 	found.state === pick.state &&
 	found.capture.viewport === pick.viewport;
-
 interface Pane {
 	found?: ExplorerCapture;
 	shown: Evidence;
 }
-
 /** One side at the picked state: its own capture, or its stated gap. */
 function pane(
 	side: ExplorerSide | null,
@@ -198,7 +192,8 @@ export function catalogShot(evidence: ExplorerEvidence, preview?: ScreenPick): E
 			entry.usable &&
 			entry.capture.kind === 'screenshot' &&
 			entry.capture.media !== null &&
-			(!preview || entry.focused || matches(entry, preview))
+			(!preview ||
+				matches(entry, { ...preview, scenario: entry.focused ? entry.scenario : preview.scenario }))
 	);
 	const found = usable.find((entry) => entry.current) ?? usable[0];
 	if (!found) return null;
