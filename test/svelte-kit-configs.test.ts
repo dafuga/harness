@@ -125,3 +125,43 @@ test('a cold build prepares every imported SvelteKit workspace before Reports co
 	);
 	expect(value.stdout.trim()).toBe('3');
 }, 90000);
+
+test('Desktop compiler inputs reject invalid browser tests and accept valid ones', () => {
+	const repository = join(import.meta.dirname, '..');
+	const config = JSON.parse(
+		readFileSync(join(repository, 'packages/desktop/tsconfig.json'), 'utf8')
+	);
+	const root = tree({ desktop: { tsconfig: JSON.stringify(config) } });
+	const directory = join(root, 'packages/desktop');
+	symlinkSync(join(repository, 'node_modules'), join(root, 'node_modules'));
+	writeFileSync(
+		join(directory, '.svelte-kit/tsconfig.json'),
+		JSON.stringify({
+			compilerOptions: { module: 'ESNext', target: 'ESNext', types: [], noEmit: true }
+		})
+	);
+	mkdirSync(join(directory, 'src'), { recursive: true });
+	mkdirSync(join(directory, 'tests/e2e'), { recursive: true });
+	writeFileSync(join(directory, 'src/control.ts'), 'export const count: number = 1;');
+	const browser = join(directory, 'tests/e2e/browser.spec.ts');
+	writeFileSync(browser, 'export const count = unboundBrowserTarget;');
+	const compile = () =>
+		spawnSync('bun', ['x', 'tsc', '--noEmit', '--project', 'tsconfig.json'], {
+			cwd: directory,
+			encoding: 'utf8',
+			timeout: 30000
+		});
+	writeFileSync(
+		join(directory, 'tsconfig.json'),
+		JSON.stringify({ ...config, include: ['src/**/*.ts'] })
+	);
+	const excluded = compile();
+	expect(excluded.status, excluded.stdout + excluded.stderr).toBe(0);
+	writeFileSync(join(directory, 'tsconfig.json'), JSON.stringify(config));
+	const invalid = compile();
+	expect(invalid.status, 'the owning compiler must check browser tests').not.toBe(0);
+	expect(invalid.stdout + invalid.stderr).toContain("Cannot find name 'unboundBrowserTarget'");
+	writeFileSync(browser, 'export const count: number = 1;');
+	const valid = compile();
+	expect(valid.status, valid.stdout + valid.stderr).toBe(0);
+}, 90000);
