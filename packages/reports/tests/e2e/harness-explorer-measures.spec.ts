@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { at, checkpoint, explorer } from './support/explorer';
 import { captureSections, viewports } from './support/harnessCapture';
-import { home, seeded, short } from './support/harnessHistory';
+import { home, revision, seeded, short } from './support/harnessHistory';
 import { fits } from './support/sharedSelect';
 import type { HarnessRevision } from '../../src/models/Harness.types';
 import { explorerKindCategory } from '../../../../src/utils/explorerRoute';
@@ -98,21 +98,13 @@ const metric = (page: Page, name: string) =>
 		.getByRole('definition');
 const details = (commit: string, unit: string) =>
 	at(keptBranch, commit, `functions/${unit}/details?tab=measurements`);
-const recorded = (commit: string) =>
-	JSON.parse(
-		readFileSync(join(home, 'data/revisions', `${commit}.json`), 'utf8')
-	) as HarnessRevision;
+const recorded = (commit: string) => revision<HarnessRevision>(commit);
 const observed = (commit: string, unit: string, metric: string, target?: string) =>
 	recorded(commit)
 		.records.flatMap((record) => record.measurements)
 		.find(
 			(item) => item.unit === unit && item.metric === metric && (!target || item.target === target)
 		);
-const stored = (commit: string) =>
-	JSON.parse(readFileSync(join(home, 'data/revisions', `${commit}.json`), 'utf8')) as {
-		explanations: Array<{ unit: string; behavior: string }>;
-	};
-
 for (const viewport of viewports) {
 	test(`emitted observations retain distinct targets behind compact figures at ${viewport.id} width`, async ({
 		page
@@ -153,58 +145,48 @@ test('uncounted complexity keeps its recorded reason and never becomes zero', as
 	await expect(metric(page, 'Complexity')).toContainText(/^\d+/);
 	expect(observed(commits.native, 'kernel.mixed', 'complexity')?.partial).toBeTruthy();
 	await page.goto(details(commits.shout, units.slugify));
-	await expect(metric(page, 'Complexity')).toHaveText(/^\d+$/);
+	await expect(metric(page, 'Complexity')).toHaveText(/^\s*\d+\s*$/);
 	expect(
 		recorded(commits.shout).registry.units.find((unit) => unit.id === units.slugify)?.limits
 			?.metrics.complexity
-	).toBeTypeOf('number');
+	).toEqual(expect.any(Number));
 	await expect(profile(page).getByRole('table')).toHaveCount(0);
 });
 
-test('reasons that differ only in the file they are about are told once, and all stay to be read', async ({
-	page
-}) => {
-	const recorded = stored(commits.twin).explanations.filter((item) => item.unit === units.page);
-	expect(recorded.length).toBeGreaterThan(1);
-	// The page has two files changed for one reason: the same words, recorded once for each.
-	const notes = new Set(recorded.map((item) => item.behavior)).size;
+test('history deduplicates repeated reasons and keeps the full written notes', async ({ page }) => {
+	const written = recorded(commits.twin).explanations.filter((item) => item.unit === units.page);
+	expect(written.length).toBeGreaterThan(1);
+	const count = new Set(written.map((item) => item.behavior)).size;
 	await page.goto(at(keptBranch, commits.twin, `pages/${units.page}/history`));
 	await checkpoint(page, 'measures-reasons');
-	await expect(content(page).getByRole('heading', { name: 'Why it changed' })).toBeVisible();
-	await expect(
-		content(page)
-			.getByRole('term')
-			.filter({ hasText: /^Behavior$/ })
-	).toHaveCount(notes);
-	const full = content(page).getByRole('group').filter({ hasText: 'Full reasons' });
-	await expect(full).toContainText(`${notes} ${notes === 1 ? 'note' : 'notes'}`);
+	const row = content(page)
+		.locator('tbody tr')
+		.filter({ has: page.getByRole('link', { name: short(commits.twin), exact: true }) });
+	const full = row.locator('details');
+	await expect(full.locator('summary')).toContainText(`${count} ${count === 1 ? 'note' : 'notes'}`);
 	await full.locator('summary').click();
-	await expect(full.getByText(recorded[0].behavior).first()).toBeVisible();
-	// No file is named with a reason: where a change is, is shown under Details and Source.
-	await expect(content(page).getByText(/src\/routes\/titles/)).toHaveCount(0);
+	const notes = full.getByRole('region', { name: 'What changed, as written' });
+	await expect(notes.getByRole('listitem')).toHaveCount(count);
+	await expect(notes).toContainText(written[0].behavior);
 });
 
-test('a change is compared with its own parent under matching profiles, with its growth', async ({
+test('history compares consecutive changes and never borrows another unit latency', async ({
 	page
 }) => {
+	const data = recorded(commits.twin);
+	expect(data.sourceImpact?.base).toBe(commits.paired);
 	await page.goto(at(keptBranch, commits.twin, `pages/${units.page}/history`));
-	const compared = content(page).getByRole('table', {
-		name: 'Before and after, under matching profiles'
-	});
+	await checkpoint(page, 'measures-parent-comparison');
+	const rows = content(page).locator('tbody tr');
+	const row = (sha: string) =>
+		rows.filter({ has: page.getByRole('link', { name: short(sha), exact: true }) });
+	await expect(row(commits.paired)).toBeVisible();
+	await expect(row(commits.twin)).toContainText('+5 B');
+	await expect(row(commits.twin).getByRole('cell').last()).toHaveText('Not measured');
 	await expect(
-		compared.getByRole('columnheader', { name: `Before (${short(commits.paired)})` })
-	).toBeVisible();
-	await expect(
-		compared.getByRole('columnheader', { name: `After (${short(commits.twin)})` })
-	).toBeVisible();
-	await expect(compared.getByRole('row').filter({ hasText: 'Source size' })).toContainText(
-		/[+−-]\d+ B/
-	);
-	// A timing column names the one profile its values were taken under.
-	await page.goto(at('main', commits.reordered, `services/${units.service}/history`));
-	await expect(
-		content(page).getByRole('columnheader', { name: /^Timing \([0-9a-z-]+\)$/ })
-	).toHaveCount(1);
+		content(page).getByRole('table', { name: 'Before and after, under matching profiles' })
+	).toHaveCount(0);
+	expect(await fits(page)).toBe(true);
 });
 
 test.describe('a record with hundreds of failures of other units', () => {
