@@ -12,6 +12,6 @@ export default defineConfig({
 		// A fresh checkout has no generated SvelteKit configs; root tests resolve them.
 		globalSetup: [owned('./test/svelteKitConfigs.ts')],
 		setupFiles: ['test/setup.ts'],
-		exclude: ['packages/**', 'node_modules/**', 'dist/**', 'work/**']
+		exclude: ['packages/**', '**/node_modules/**', 'dist/**', 'work/**', '.cache/**']
 	}
 });
