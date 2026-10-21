@@ -6,7 +6,7 @@
 	"name": "runner-profile-integration",
 	"goal": "Normal Vitest and Bun runners emit actual source-bound profiles while preserving production builds, benchmark boundaries and fixture isolation.",
 	"createdAt": "2026-10-21T11:15:14.941Z",
-	"updatedAt": "2026-10-21T11:20:02.793Z",
+	"updatedAt": "2026-10-21T11:21:45.607Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -52,12 +52,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:21:43.371Z",
+			"evidence": "Paired red1e8dd29f atf46368e1 and green65cd3907 at62fb785a execute the same four-case corpus and command in one environment; all cases pass on repair."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:21:45.607Z",
+			"evidence": "Isolated pre-integration source f46368e1 returns correct operation results but fails two capture assertions; repaired62fb785a passes with both runner observations and unchanged fixture/build isolation."
 		},
 		{
 			"id": "verify",
