@@ -37,7 +37,9 @@ const files = readdirSync(home, { recursive: true, encoding: 'utf8' }).filter((f
 	file.endsWith('.svelte')
 );
 const own = (name: string) =>
-	join(home, files.find((file) => file.split('/').at(-1) === `${name}.svelte`) ?? `${name}.svelte`);
+	files.some((file) => file.split('/').at(-1) === `${name}.svelte`)
+		? join(home, files.find((file) => file.split('/').at(-1) === `${name}.svelte`)!)
+		: join('src/components', `${name}.svelte`);
 const direct = (name: string) => imported(own(name));
 
 /** Every component of the explorer that one reaches through what it imports. */
@@ -66,7 +68,14 @@ test('no entry reaches the content that shows every screen, or the host that mou
 });
 
 test('collections reuse visual cards and tables without loading entity detail panes', () => {
-	expect(has(entries.cards, ['ExplorerPageCard', 'ExplorerTable'])).toEqual(['ExplorerPageCard']);
+	for (const entry of [entries.cards, entries.table, 'EntityRelations'])
+		expect(has(entry, ['ExplorerCatalogItems']), 'collections share one item renderer').toEqual([
+			'ExplorerCatalogItems'
+		]);
+	expect(has(entries.cards, ['ExplorerPageCard', 'ExplorerTable'])).toEqual([
+		'ExplorerPageCard',
+		'ExplorerTable'
+	]);
 	expect(has(entries.table, ['ExplorerPageCard', 'ExplorerTable'])).toEqual([
 		'ExplorerPageCard',
 		'ExplorerTable'
@@ -100,7 +109,11 @@ test('an overview names the evidence of its kind itself, and no pane of another 
 			'EntitySource'
 		];
 		expect(has(entry, tabs), entry).toHaveLength(6);
-		expect(has(entry, ['EntityHistory', 'ExplorerTable']), entry).toEqual([]);
+		expect(has(entry, ['EntityHistory']), entry).toEqual([]);
+		expect(
+			has(entry, ['ExplorerCatalogItems', 'ExplorerPageCard', 'ExplorerTable']),
+			entry
+		).toHaveLength(3);
 	}
 });
 

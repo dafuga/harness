@@ -47,7 +47,7 @@ test('a config overview omits usage and its Used In tab lists each consumer once
 	const used = content('commit', { ...settings, tab: 'used-in' });
 	expect(sections(used)).toEqual(['Used In']);
 	expect(times(used, `href="${base}/pages/${ids.page}"`)).toBe(1);
-	expect(card(used, 'Used In')).toMatch(/^Used In 1 Orders page\s+Page\b/);
+	expect(card(used, 'Used In')).toMatch(/^Used In 1 .*Orders page/);
 	expect(card(content('commit', { ...settings, tab: 'uses' }), 'Uses')).toBe(
 		'Uses 0 It uses no component, function, config or service.'
 	);
@@ -60,9 +60,7 @@ test('a service says what uses it, down from the page, and what it uses', () => 
 		'Uses 0 It uses no component, function, config or service.'
 	);
 	const used = content('commit', { ...store, tab: 'used-in' });
-	expect(card(used, 'Used In')).toMatch(
-		/^Used In 2 Orders page\s+Page\b.*Order list\s+Component\b/
-	);
+	expect(card(used, 'Used In')).toMatch(/^Used In 2 .*Orders page.*Order list/);
 	expect(sections(used)).toEqual(['Used In']);
 	expect(used).toContain(`href="${base}/components/${ids.list}"`);
 	expect(card(used, 'Used In')).not.toMatch(/src\/|\.ts\b/);

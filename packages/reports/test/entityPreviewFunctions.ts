@@ -123,3 +123,19 @@ export async function reviewHelperSource(page: Page, viewport: string): Promise<
 		expect(await where(page)).toEqual({ branch: 'feature/orders', commit, ...filter });
 	}
 }
+
+/** Usage tabs use the same cards as their collections without widening the page. */
+export async function reviewUsageCards(
+	page: Page,
+	category: string,
+	direction: string
+): Promise<void> {
+	if (category === 'pages' && direction === 'uses')
+		await expect(
+			page.getByRole('region', { name: 'Uses', exact: true }).locator('article.ex-page-card'),
+			'Relationships reuse catalog cards'
+		).toHaveCount(2);
+	if (category === 'components' && direction === 'uses')
+		await expect(page.locator('.ex-relations .ex-function-tile')).toHaveCount(1);
+	expect(await fits(page)).toBe(true);
+}
