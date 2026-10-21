@@ -41,3 +41,11 @@ Formatter and details coverage distinguish no declared output from a declared bu
 
 - All entity kinds show source measurements from the selected committed tree, even when an older prepared index or record lacks them. Missing placeholders cannot override current source observations.
 - Changed executable units record representative timing and accurately scoped memory in normal evidence runs, with the tested revision, workload, target, profile and method. Missing applicable captures remain a verification gap.
+
+### Durable capture delivery and concise metrics
+
+Focused page checks retain decoded screenshot bytes in Harness's sealed Git evidence before cleanup. Rebuilt history resolves only images of the selected unit, state, viewport and exact served revision. Focused images stay labelled separately from full verification. Each required desktop, tablet and mobile capture must reopen successfully before handoff or merge, including both sides of a comparison. Standard loop CLI coverage removes a stored screenshot and proves validation rejects it; standard entity tests reject another unit's image.
+
+Overview presents Source size, Complexity, Latency and Memory as equal-height rows with one value each. Its selected latency and memory share one workload, execution target and profile. Detailed measurement tables remain in Details. No averaging or relabelling whole-page heap as isolated memory is permitted.
+
+The earlier regression escaped because loop tests covered retained logs and timings while browser tests required the verbose table. Those same standard cases now require retained pixels, rebuilds and scalar rows at three widths. The generated tenant instructions, repository instructions and reusable Harness skill all enforce this delivery gate.

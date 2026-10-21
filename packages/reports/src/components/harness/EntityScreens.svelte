@@ -50,6 +50,8 @@
 	let tests = $derived(entityLens(nav.route, { ...entity(), tab: 'states' }));
 	/** A declared preview keeps its own scenario and state, never another in its place. */
 	function picked(viewport?: string): ScreenPick | null {
+		if (options.some((item) => item.scenario === 'focused'))
+			return screenPick(options, { scenario: 'focused', viewport });
 		const fixed = preview;
 		if (!fixed) return screenPick(options, { viewport });
 		const declared = options.find((item) => item.scenario === fixed.scenario);
@@ -67,6 +69,7 @@
 	}
 	/** Where a shown capture was taken and how its check ended; a reused one names its commit. */
 	function standing(item: Evidence): string {
+		if (item.standing === 'Focused capture') return item.standing;
 		const reused = item.phase !== 'before' && shown.origin;
 		const origin = reused ? `Inherited from ${shortCommit(reused)}` : item.standing;
 		return [origin, item.status].filter(Boolean).join(' · ');
@@ -116,7 +119,9 @@
 					<strong>{named.title}</strong>
 					{#if named.role}<span class="ex-pill">{named.role}</span>{/if}
 					{#if !item.missing}
-						<span class="ex-standing" class:stale={item.standing !== 'Fresh capture'}
+						<span
+							class="ex-standing"
+							class:stale={item.standing !== 'Fresh capture' && item.standing !== 'Focused capture'}
 							>{standing(item)}</span
 						>
 						<button type="button" class="ex-text-button" onclick={() => (viewing = item)}

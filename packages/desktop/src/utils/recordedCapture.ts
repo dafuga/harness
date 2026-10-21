@@ -12,6 +12,7 @@ export interface ListedCapture {
 	capture: HarnessCapture;
 	/** The record whose sealed files hold the bytes: for an inherited result, its origin. */
 	record: string;
+	focused?: boolean;
 }
 
 const unlisted = 'This capture is not listed by the evidence of this entity at these revisions.';
@@ -37,6 +38,8 @@ export function recordedCapture(
 			(item.capture.viewport ?? null) === binding.viewport &&
 			item.capture.sha256 === binding.sha256
 	);
+	if (found?.focused?.record === binding.recordId)
+		return { capture: found.capture, record: binding.recordId, focused: true };
 	const ran = record?.scenarios.find((item) => item.id === binding.scenarioId);
 	if (!found || !ran) throw new Error(unlisted);
 	return { capture: found.capture, record: ran.origin.record };

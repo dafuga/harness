@@ -3,7 +3,7 @@
 	"id": "repository.regression-proof",
 	"kind": "repository",
 	"title": "Regression evidence store",
-	"responsibility": "Preserve regression records without changing their source commits.",
+	"responsibility": "Preserve regression records without changing their source commits. Retains original focused screenshot bytes, validates hashes and decoding, and survives Git history rebuilds.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
