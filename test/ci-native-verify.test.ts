@@ -16,6 +16,12 @@ const at = (text: string): number => verify.indexOf(text);
 
 test('the full check stays on Linux with its display and dependency setup', () => {
 	expect(check).toContain('name: Full check\n    runs-on: ubuntu-latest\n    timeout-minutes: 45');
+	const checkout = check.slice(check.indexOf('actions/checkout@'), check.indexOf('- name:'));
+	expect(checkout).toContain('ref: ${{ env.COMMIT }}');
+	expect(checkout, 'ownership review commits must be available to the full check').toContain(
+		'fetch-depth: 0'
+	);
+	expect(checkout).toContain('persist-credentials: false');
 	expect(check).toContain('@playwright/test/cli.js install --with-deps chromium');
 	expect(check).toContain('sudo apt-get install --yes git-lfs xauth libgtk-3-0t64 ffmpeg');
 	expect(check).toContain('run: xvfb-run -a bun run check');
