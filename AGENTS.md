@@ -63,6 +63,7 @@ These rules apply only to this Harness repository, including requests made in an
 - Resolve a scenario screenshot slot to its declared units. A slot name is not a page identity; never fill a missing preview with another page's image.
 - Rebuild or reopen the delivered history from its Git evidence, decode every required image, and inspect fresh screenshots before reporting completion. Both comparison sides need their own images; never substitute another unit, state or revision.
 - After squash landing, check the actual remote base commit's prepared history and decode its visible previews. Identical complete Git trees may retain focused captures with their original revision and status; a different tree requires new captures. A feature-branch screenshot alone is not merged delivery.
+- When screenshot metadata crosses a projection or transport, run its existing isolation and re-derivation tests alongside browser captures, even when full verification is deferred. Carry opaque source-tree identity and original provenance, without prepared-history cache filenames.
 - Keep focused screenshots available even when full verification fails, with their focused run and outcome clearly labelled. They grant no full verification verdict. Missing or corrupt bytes keep the visual check open; report the exact blocker and continue the repair.
 
 ## Code Rules
