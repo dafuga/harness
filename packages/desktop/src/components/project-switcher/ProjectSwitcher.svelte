@@ -57,6 +57,13 @@
 		white-space: nowrap;
 		font-size: 14px;
 	}
+	/* Narrower than a desktop the switcher is no bordered column of the bar. */
+	@media (max-width: 1250px) {
+		.project-switcher {
+			border-inline: 0;
+			padding: 0;
+		}
+	}
 	/* On a phone the name is the row's title, cut short only where the row ends, and the choice and
 	   Add are quiet icons beside it. */
 	@media (max-width: 560px) {
