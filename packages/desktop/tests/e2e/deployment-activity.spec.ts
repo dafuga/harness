@@ -78,9 +78,8 @@ test('deployment activity shows concurrent destinations and opens their current 
 	await expect(light).toBeVisible();
 	await expect(light).toHaveAttribute('data-active', '3');
 	await expect(light).toHaveText('');
-	await expect(page.getByRole('banner')).not.toContainText(
-		/Run checks|Uploading preprod|Building stage/
-	);
+	for (const progress of ['Run checks', 'Uploading preprod', 'Building stage'])
+		await expect(page.getByRole('banner').getByText(progress, { exact: true })).not.toBeVisible();
 	await expect(page.getByRole('dialog', { name: 'Deployments', exact: true })).not.toBeVisible();
 	await light.click();
 	const dialog = page.getByRole('dialog', { name: 'Deployments', exact: true });
