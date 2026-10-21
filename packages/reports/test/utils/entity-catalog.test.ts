@@ -77,7 +77,7 @@ test('a collection lists the entities of its category by the name a person reads
 		catalogFilter(sorted, { ...filter, search: 'Z title' }).map((row) => row.id),
 		'owner names remain searchable when cards show callable names'
 	).toEqual(['Alpha']);
-	const shown = rows('components').map(({ entity: _entity, ...row }) => row);
+	const shown = rows('components').map(({ entity: _entity, usedIn: _consumers, ...row }) => row);
 	expect(JSON.stringify(shown)).not.toMatch(/src\/|\.ts"|OrderList/);
 });
 
@@ -85,10 +85,8 @@ test('a component says which pages it is used on and which components it contain
 	const card = rows('components').find((row) => row.id === ids.card)!;
 	expect(card.usedOn).toEqual(['Orders page']);
 	expect(card.usedBy).toEqual(['Order list']);
-	expect(card.usedIn).toEqual([
-		{ id: ids.list, name: 'Order list', category: 'components' },
-		{ id: ids.page, name: 'Orders page', category: 'pages' }
-	]);
+	expect(card.usedIn?.map((item) => item.id)).toEqual([ids.list, ids.page]);
+	expect(card.usedIn?.every((item) => item.unit.id === item.id)).toBe(true);
 	const list = rows('components').find((row) => row.id === ids.list)!;
 	expect(list.contains).toEqual(['Order card']);
 	expect(list.shared).toBe(false);

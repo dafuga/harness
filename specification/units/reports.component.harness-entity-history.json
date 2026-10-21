@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-entity-history",
 	"kind": "component",
 	"title": "Entity history",
-	"responsibility": "Explores recorded changes to one entity and reads additional revision details on demand.",
+	"responsibility": "Shows changed commits with direct revision links, relative dates, source size, complexity and profile-scoped latency. Long reasons remain inline; no selected-change panel or duplicate action.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -53,17 +53,12 @@
 			{
 				"name": "EntityHistory",
 				"type": "markup",
-				"description": "History table with selected-profile timings, verdicts and a selected-change panel. Defaults selection to the viewed commit or first listed change and profile to the first valid choice. Reads details for listed changes and up to ten unread commits on demand. Unknown changes and empty known history are explicit. Full-reason selection focuses its disclosure after rendering."
+				"description": "Shows changed commits with direct revision links, relative dates, source size, complexity and profile-scoped latency. Long reasons remain inline; no selected-change panel or duplicate action."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
-		{
-			"unit": "reports.component.harness-entity-change",
-			"via": "import",
-			"origin": "derived"
-		},
 		{
 			"unit": "reports.component.harness-entity-history-row",
 			"via": "import",

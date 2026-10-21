@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/HarnessConsole.svelte"],
-		"symbols": ["HarnessConsole"]
+		"source": [
+			"packages/reports/src/components/harness/HarnessConsole.svelte",
+			"packages/reports/src/components/harness/harness-console/consoleView.ts"
+		],
+		"symbols": ["HarnessConsole", "ConsoleAnswer", "consoleRelations", "consoleView"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -48,7 +51,7 @@
 			{
 				"name": "HarnessConsole",
 				"type": "markup",
-				"description": "Explorer header and selected screen, with loading, unavailable-address, truncated-history and missing-registry notices. Index and selected-revision failures become visible problem text; unavailable parent data becomes null."
+				"description": "Explorer header and selected screen, with loading, unavailable-address and missing-registry notices. Index and selected-revision failures become visible problem text; unavailable parent data becomes null."
 			}
 		],
 		"errors": []

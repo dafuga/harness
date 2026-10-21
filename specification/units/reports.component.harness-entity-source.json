@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-entity-source",
 	"kind": "component",
-	"title": "Source ownership",
-	"responsibility": "Lists the source ownership and execution targets recorded for an entity.",
+	"title": "GitHub source",
+	"responsibility": "Links to the owned source files on GitHub at the selected commit.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -16,14 +16,24 @@
 			{
 				"name": "EntitySource.unit",
 				"type": "HarnessUnit",
-				"description": "Required unit with owned files/symbols, runtime targets, identity and version."
+				"description": "Entity with owned source files."
+			},
+			{
+				"name": "EntitySource.repository",
+				"type": "string | undefined",
+				"description": "Canonical GitHub repository URL, when available."
+			},
+			{
+				"name": "EntitySource.commit",
+				"type": "string",
+				"description": "Full commit hash for the viewed entity revision."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntitySource",
 				"type": "markup",
-				"description": "Files, symbols and execution-target lists plus identity/version. Empty files or symbols are explicit. Lists ownership only; does not fetch or display file contents."
+				"description": "GitHub file links pinned to the selected commit, or an explicit unavailable message. No internal ownership metadata."
 			}
 		],
 		"errors": []

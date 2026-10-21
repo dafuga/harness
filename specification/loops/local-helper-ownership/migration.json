@@ -4870,6 +4870,34 @@
 			"commit": "636f1f0956761a0723e8fdb9b79932ca7f7bbaee",
 			"reason": "Wait for the published owner address before refusing a conflicting checkout; deterministic lifecycle proof retains the original worker and ownership.",
 			"definition": "2d705923a9bde3d9c942de28b905cb1900897a3b18104e52343a0d9926e744d2"
+		},
+		{
+			"unit": "reports.function.entity-usage",
+			"name": "entityUsage",
+			"commit": "f549d87bd8bb6eb19418ef2c3df73be55dd5bf30",
+			"reason": "Group reverse dependencies and shared consumer footers by declared module type while preserving ownership and identity.",
+			"definition": "cc6a2de1f4a9b449a903fff1bf56f1fbf4523a8da998c6ea6f840ef113c9fb62"
+		},
+		{
+			"unit": "function.unit-metadata",
+			"name": "unitMetadata",
+			"commit": "132d82b5342d010c3431ef40d94a80d02622776d",
+			"reason": "Preserve committed callable examples when enriching source signatures and consumers.",
+			"definition": "b633dc1809d64266de3f23f4c330fdcc4528ff9f1725dea57eff416025dfeb65"
+		},
+		{
+			"unit": "reports.function.entity-history",
+			"name": "entityHistory",
+			"commit": "4cf3c2c6440cd49bc6dd92c731a3287f16d62f8c",
+			"reason": "Show only elapsed-time benchmark series as latency in compact commit history.",
+			"definition": "d928e2f493ceb344949fb3fe6c4fde2aa542905fae8b5c9f35c4dfeca0b669a5"
+		},
+		{
+			"unit": "reports.function.explorer-history",
+			"name": "historyDetail",
+			"commit": "4cf3c2c6440cd49bc6dd92c731a3287f16d62f8c",
+			"reason": "Read source size and complexity from the exact historical revision alongside existing evidence.",
+			"definition": "efd95649c13e63d700372d38417c274df8a18bfb1a955447ee974d61261b679b"
 		}
 	]
 }

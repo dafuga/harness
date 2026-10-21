@@ -1,8 +1,9 @@
 <script lang="ts">
 	import type { Evidence } from '../../models/Report.types';
 	import { type CatalogRow } from '../../utils/entityCatalog';
-	import { entityLens, shortCommit, type EntityNav } from '../../utils/entityLens';
+	import { entityLens, shortCommit, type EntityLens, type EntityNav } from '../../utils/entityLens';
 	import { categoryIcon } from '../../utils/harnessIcons';
+	import ExplorerUsage from '../ExplorerUsage.svelte';
 	import EntityLink from './EntityLink.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
 	let {
@@ -10,6 +11,7 @@
 		shot,
 		mediaBase,
 		nav,
+		lens,
 		category = 'pages'
 	}: {
 		row: CatalogRow;
@@ -17,8 +19,11 @@
 		shot: Evidence | null;
 		mediaBase: string;
 		nav: EntityNav;
-		/** Pages show their title and screenshot; components also link to their consumers. */
+		lens: EntityLens;
+		/** Pages and components show their screenshot, title and linked consumers. */
 		category?: 'pages' | 'components';
+		/** Relationship cards keep verification on the entity detail page. */
+		verification?: boolean;
 	} = $props();
 	let to = $derived(entityLens(nav.route, { category, entity: row.id }));
 	let file = $derived(shot && !shot.missing ? shot.file : '');
@@ -63,6 +68,8 @@
 			<h2>{row.name}</h2>
 			<span class="ex-thumb">{@render picture()}</span>
 		</EntityLink>
+		<!-- Beside the page's link, never inside it: a link holds no other link. -->
+		<ExplorerUsage consumers={row.usedIn ?? []} {nav} {lens} {mediaBase} />
 	{:else}
 		<EntityLink
 			{to}
@@ -75,15 +82,7 @@
 		</EntityLink>
 		<div class="ex-page-body">
 			<h2><EntityLink {to} {nav}>{row.name}</EntityLink></h2>
-			<div class="ex-component-usage" role="group" aria-label="Used In">
-				<span>Used In</span>
-				{#each row.usedIn ?? [] as consumer (consumer.id)}
-					<EntityLink
-						to={entityLens(nav.route, { category: consumer.category, entity: consumer.id })}
-						{nav}>{consumer.name}</EntityLink
-					>{' '}
-				{:else}<span>—</span>{/each}
-			</div>
+			<ExplorerUsage consumers={(row.usedIn ?? []).slice(0, 3)} {nav} {lens} {mediaBase} />
 		</div>
 	{/if}
 </article>
@@ -91,6 +90,7 @@
 <style>
 	.ex-page-card.ex-page-minimal {
 		grid-template-columns: minmax(0, 1fr);
+		gap: 12px;
 	}
 	:global(.ex-page-open) {
 		display: grid;
@@ -104,14 +104,5 @@
 	:global(.ex-page-open:focus-visible) {
 		outline: 2px solid var(--ex-gold);
 		outline-offset: 6px;
-	}
-
-	.ex-component-usage {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px 12px;
-		align-items: baseline;
-		font-size: 0.8rem;
-		color: var(--hx-muted, #92a6bb);
 	}
 </style>

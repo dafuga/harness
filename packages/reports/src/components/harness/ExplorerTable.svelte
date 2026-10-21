@@ -2,41 +2,61 @@
 	import type { ExplorerCategory } from '../../models/Explorer.types';
 	import { listed, type CatalogRow } from '../../utils/entityCatalog';
 	import { humanize } from '../../utils/entityContract';
-	import { entityLabels, entityLens, type EntityNav } from '../../utils/entityLens';
+	import {
+		entityLabels,
+		entityLens,
+		type EntityLens,
+		type EntityNav
+	} from '../../utils/entityLens';
 	import { categoryIcon } from '../../utils/harnessIcons';
+	import ExplorerUsage from '../ExplorerUsage.svelte';
 	import EntityLink from './EntityLink.svelte';
 	import HarnessAction from './HarnessAction.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
 	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
 	type Kind = Exclude<ExplorerCategory, 'pages'>;
-	let { category, rows, nav }: { category: Kind; rows: CatalogRow[]; nav: EntityNav } = $props();
-	/** What uses a row: the entities that use it directly, else the pages it is shown on. */
-	const users = (row: CatalogRow) => listed(row.usedBy.length ? row.usedBy : row.usedOn);
+	let {
+		category,
+		rows,
+		nav,
+		lens,
+		mediaBase,
+		verification = true
+	}: {
+		category: Kind;
+		rows: CatalogRow[];
+		nav: EntityNav;
+		lens: EntityLens;
+		mediaBase: string;
+		verification?: boolean;
+	} = $props();
+	/** A column's words for a row; null for what uses the row, shown as the shared usage footer. */
+	type Column = [string, ((row: CatalogRow) => string) | null];
 	const targets = (row: CatalogRow) => row.targets.map(humanize).join(' · ') || 'none';
-	const composed: Array<[string, (row: CatalogRow) => string]> = [
-		['Used on', (row) => listed(row.usedOn)],
+	const composed: Column[] = [
+		['Used on', null],
 		['Contains', (row) => listed(row.contains, 2)]
 	];
-	const columns: Record<Kind, Array<[string, (row: CatalogRow) => string]>> = {
+	const columns: Record<Kind, Column[]> = {
 		shells: composed,
 		components: composed,
 		functions: [
 			['Responsibility', (row) => row.summary],
-			['Used by', users]
+			['Used by', null]
 		],
 		models: [
 			['Purpose', (row) => row.summary],
-			['Used by', users]
+			['Used by', null]
 		],
 		configs: [
 			['Purpose', (row) => row.summary],
-			['Used by', users],
+			['Used by', null],
 			['Changed', (row) => (row.changed ? 'Changed' : '—')]
 		],
 		services: [
 			['Responsibility', (row) => row.summary],
 			['Execution target', targets],
-			['Consumers', users]
+			['Consumers', null]
 		]
 	};
 	let shown = $derived(columns[category]);
@@ -52,7 +72,7 @@
 			<tr>
 				<th scope="col">{one}</th>
 				{#each shown as [title], position (position)}<th scope="col">{title}</th>{/each}
-				<th scope="col">Verification</th>
+				{#if verification}<th scope="col">Verification</th>{/if}
 				<th scope="col"><span class="ex-hidden">Open</span></th>
 			</tr>
 		</thead>
@@ -71,10 +91,16 @@
 					</th>
 					{#each shown as [title, read], position (position)}
 						<td data-label={title} class:changed={title === 'Changed' && row.changed}
-							>{read(row)}</td
+							>{#if read}{read(row)}{:else}<ExplorerUsage
+									consumers={row.usedIn ?? []}
+									{nav}
+									{lens}
+									{mediaBase}
+								/>{/if}</td
 						>
 					{/each}
-					<td data-label="Verification"><HarnessVerdict {...row.verdict} /></td>
+					{#if verification}<td data-label="Verification"><HarnessVerdict {...row.verdict} /></td
+						>{/if}
 					<td class="ex-open">
 						<HarnessAction
 							href={nav.href(open(row))}

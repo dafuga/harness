@@ -14,6 +14,7 @@ export interface Summary {
 	detail: string;
 }
 export interface Index {
+	sourceRepository?: string;
 	schemaVersion: number;
 	branches: Array<{ name: string; head: string }>;
 	revisions: Summary[];

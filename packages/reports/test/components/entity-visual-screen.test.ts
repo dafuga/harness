@@ -26,7 +26,7 @@ test('the tabs of the address open what it uses and its tests on the same screen
 	const related = screen(EntityVisualScreen, 'commit', { ...page, tab: 'uses' });
 	expect(related).toContain('aria-label="Orders page uses"');
 	expect(words(related)).toContain('Order list');
-	expect(count(related, /<img\b/g)).toBe(0);
+	expect(count(related, /<img\b/g), 'relationship cards show their component screenshots').toBe(2);
 	const tests = screen(EntityVisualScreen, 'commit', { ...page, tab: 'tests' });
 	expect(words(tests)).toContain('States');
 	expect(words(tests)).not.toContain('Verification at bbbbbbb');

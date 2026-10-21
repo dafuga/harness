@@ -1,7 +1,13 @@
 import { mkdir, rename, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { slugifySource, titleServiceSource, unitProject } from './support/unitProject';
+import {
+	slugifySource,
+	titleServiceSource,
+	unitProject,
+	sharedDateHelperProject,
+	utcDateExamples
+} from './support/unitProject';
 
 interface Manifest {
 	id: string;
@@ -164,17 +170,7 @@ test('check rejects invalid manifests and schemas are exposed', async () => {
 }, 60_000);
 
 test('index records reviewed shared helper contracts for clients without source rescans', async () => {
-	const project = await unitProject('lib');
-	await project.write(
-		'src/utils/formatDate.ts',
-		'/** @pure */\nexport function formatDate(iso: string): string { return new Date(iso).toISOString(); }\n'
-	);
-	for (const name of ['first', 'second'])
-		await project.write(
-			`src/utils/${name}.ts`,
-			`import { formatDate } from './formatDate';\nexport function ${name}(value: string) { return formatDate(value); }`
-		);
-	await project.harness(['units', 'index', '--write']);
+	const project = await sharedDateHelperProject();
 	const unit = await project.json<{ helperContracts: unknown[] }>(
 		'specification/units/function.format-date.json'
 	);
@@ -189,6 +185,34 @@ test('index records reviewed shared helper contracts for clients without source 
 			])
 		})
 	]);
+	const missing = await project.harness(['units', 'check'], false);
+	expect(missing.exitCode, 'Callable examples are required').toBe(1);
+	const examples = utcDateExamples;
+	const writeExamples = (examples: unknown[]) =>
+		project.write(
+			'specification/units/function.format-date.json',
+			JSON.stringify({
+				...unit,
+				helperContracts: unit.helperContracts.map((item) => ({ ...(item as object), examples }))
+			})
+		);
+	for (const names of [
+		['Example 1'],
+		['formatDate: example 2'],
+		['UTC date', ' utc DATE '],
+		['UTC date', 'Date formatting']
+	]) {
+		await writeExamples(names.map((name) => ({ ...examples[0], name })));
+		await project.harness(['units', 'index', '--write']);
+		const rejected = await project.harness(['units', 'check'], false);
+		expect(rejected.exitCode, 'Distinct descriptive helper behaviors are required').toBe(1);
+	}
+	await writeExamples(examples);
+	await project.harness(['units', 'index', '--write']);
+	const again = await project.json<{ helperContracts: Array<{ examples: unknown }> }>(
+		'specification/units/function.format-date.json'
+	);
+	expect(again.helperContracts[0].examples).toEqual(examples);
 	await project.harness(['units', 'check']);
 	await rm(join(project.root, '..'), { recursive: true, force: true });
 }, 60000);

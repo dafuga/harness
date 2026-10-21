@@ -3,7 +3,7 @@
 	"id": "reports.function.entity-history",
 	"kind": "function",
 	"title": "Entity history presentation",
-	"responsibility": "Formats history verdicts, recorded timing comparisons, budget reviews and measurement changes.",
+	"responsibility": "Keeps change history and latency series scoped to the listed commits and their own workload, execution target and machine profile.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {

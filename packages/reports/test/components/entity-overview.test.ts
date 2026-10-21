@@ -84,7 +84,7 @@ test('a component no visual scenario names keeps the screenshot pane, as a state
 
 test('a page lists its components as components, each a link in the same scope', () => {
 	const body = content('commit', { ...page, tab: 'uses' });
-	expect(words(body)).toMatch(/Uses\s+3\s+Components\s+2\s+Order list/);
+	expect(words(body)).toMatch(/Uses\s+3\s+Components\s+2[^]*Order list/);
 	expect(body).toContain(`/commit/${commits.middle}/components/${ids.list}`);
 	expect(words(body)).toContain('App route');
 	expect(words(body)).toContain('/orders');

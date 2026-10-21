@@ -12,6 +12,7 @@ export interface UsageGroup {
 export interface EntityUsage {
 	/** What uses it: the pages that show it first, then everything else, each once. */
 	usedIn: ExplorerEntity[];
+	usedInGroups: UsageGroup[];
 	/** What it uses, kind by kind; a kind it uses nothing of is left out. */
 	uses: UsageGroup[];
 	/** What it uses that is none of the five kinds. */
@@ -20,4 +21,4 @@ export interface EntityUsage {
 	count: number;
 }
 
-export { entityUsage } from '../components/harness/entity-relations/entityUsage';
+export { entityUsage, usageGroups } from '../components/harness/entity-relations/entityUsage';

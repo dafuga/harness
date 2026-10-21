@@ -3,7 +3,7 @@
 	"id": "desktop.component.environment-picker",
 	"kind": "component",
 	"title": "Environment picker",
-	"responsibility": "Selects the environment scope for changes and shows its latest verified deployment timestamp.",
+	"responsibility": "Selects the environment scope for changes and switches the shared header summary to that environment.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -28,17 +28,12 @@
 			{
 				"name": "EnvironmentPicker",
 				"type": "markup",
-				"description": "Selects the environment scope for changes and shows its latest verified deployment timestamp."
+				"description": "Selects the environment scope for changes and switches the shared header summary to that environment."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
-		{
-			"unit": "desktop.function.revision-time",
-			"via": "import",
-			"origin": "derived"
-		},
 		{
 			"unit": "desktop.model.deployment-types",
 			"via": "import",

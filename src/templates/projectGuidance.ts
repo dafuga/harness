@@ -22,6 +22,12 @@ ${taskCompletionInstructions()
 - Every active visual component requires a preview bound to its own required screenshot state and viewport. Capture the actual component with representative parameters; verify fresh or validated inherited screenshots at the selected revision. A missing image or failed verdict blocks handoff: inspect and repair its registry, scenario, reason, ledger and budget failures; never hide the failure, substitute another component, or relabel a capture. Component titles name the component, with state labels confined to scenario states.
 - Reproduce required parent layout and CSS selectors in isolated previews, isolate app themes, and assert their computed layout. Provide semantic table containers for row components. Reject caught fixture errors and blank icons; use representative dates with the preview clock. Label synthetic media inputs; reject undeclared media instead of substituting a generic screenshot. Inspect the final pixels before accepting captures.
 
+## Callable usage examples
+
+- Every public helper needs committed usage examples in its callable contract: a real call, argument values, and expected output or error. Verify examples against the implementation; never invent outcomes.
+- Use descriptive behavior titles, never numbered placeholders. Choose one representative example per distinct behavior; combine redundant inputs. Review the implementation to identify features, including meaningful error or empty states. Equal outputs alone do not establish duplication. Keep exhaustive boundary cases in tests, not the Examples tab.
+- Run \`harness units check\`: missing helper examples, placeholder titles and repeated titles or calls must fail. Re-indexing must preserve authored examples. Each helper detail page shows only its own examples at the viewed commit.
+
 ## Bug and Regression Loops
 
 ${bugRepairPolicy()
