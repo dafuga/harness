@@ -4779,6 +4779,55 @@
 			"commit": "f22e91fa",
 			"reason": "Keep model relations in their separate catalog category.",
 			"definition": "3de8093b75f09af4d6c9725f036e38ccabba60e9ece720f785b585f11e9f4423"
+		},
+		{
+			"unit": "function.unit-documentation",
+			"name": "unitDocumentation",
+			"commit": "424e3c549e09ed6b040f13d76e53c7f2bdb70e27",
+			"reason": "Preserve authored function calls and shared setup in committed usage documentation.",
+			"definition": "178bb75751d525b1bd8d20e89d73f041c6536466ac656103487683af3a10f367"
+		},
+		{
+			"unit": "desktop.function.ipc-payload",
+			"name": "runPayload",
+			"commit": "093e9b654a52a5d3c2fc64e0af428c33eb96b56c",
+			"reason": "Carry the canonical optional deployment environment across the existing run IPC boundary.",
+			"definition": "7db3c53210d6e9481b2e1505e2a2a35eec08ec899e8200d5ca5fc2948b7e494f"
+		},
+		{
+			"unit": "desktop.function.prepare-project-task",
+			"name": "prepareProjectTask",
+			"commit": "093e9b654a52a5d3c2fc64e0af428c33eb96b56c",
+			"reason": "Validate environment configuration and source cleanliness before admitting general-chat writes.",
+			"definition": "b1fc8d35ad47d455c12eff51c3d30200c59360b77e995b2031ca85fe8bd70989"
+		},
+		{
+			"unit": "desktop.function.prepare-run",
+			"name": "prepareRun",
+			"commit": "093e9b654a52a5d3c2fc64e0af428c33eb96b56c",
+			"reason": "Validate the selected deployment environment before admitting approved entity changes.",
+			"definition": "952d57fef52b450cc905fcc13f53d647d987d2685897c5ba47b795726be78338"
+		},
+		{
+			"unit": "desktop.function.scrub-environment",
+			"name": "scrubEnvironment",
+			"commit": "093e9b654a52a5d3c2fc64e0af428c33eb96b56c",
+			"reason": "Remove inherited Cloudflare and Wrangler credentials before launching agent subprocesses.",
+			"definition": "0db72e2a49862f3859a846b448bab964d5f991bf03d548b80704c4a95ed5aad0"
+		},
+		{
+			"unit": "reports.function.entity-measure",
+			"name": "entityMeasure",
+			"commit": "cd36c21c5b2e593e2e30ea549146c519f246a2f8",
+			"reason": "Review main-branch support for recorded regression measurements alongside existing runtime observations.",
+			"definition": "7110374921d27ac582f1e6ac64f7910e804b23f12eea28296e7060cfb721661d"
+		},
+		{
+			"unit": "reports.function.entity-shown",
+			"name": "entityShown",
+			"commit": "cd36c21c5b2e593e2e30ea549146c519f246a2f8",
+			"reason": "Review main-branch derivation of unit measurements from the current record and matching regression proofs.",
+			"definition": "f6de7fca7ef306650d26d58e0fbd3d3357b74b63383585560ba8bbd27fab28f2"
 		}
 	]
 }

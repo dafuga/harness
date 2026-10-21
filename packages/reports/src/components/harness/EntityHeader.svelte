@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { ExplorerEntity, ExplorerLocation } from '../../models/Explorer.types';
+	import { explorerCategory } from '../../utils/explorerCategory';
 	import { entityLabels, entityLens, type EntityNav } from '../../utils/entityLens';
 	import { categoryIcon } from '../../utils/harnessIcons';
 	import EntityLink from './EntityLink.svelte';
@@ -9,11 +10,14 @@
 	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
 	let {
 		entity,
+		owner,
 		nav,
 		shared = false,
 		preview
 	}: {
 		entity: ExplorerEntity;
+		/** The sole owner of a private function, when the revision records one. */
+		owner?: ExplorerEntity;
 		nav: EntityNav;
 		shared?: boolean;
 		/** What stays between the identity and the tabs on every tab: the screenshots of a component. */
@@ -21,6 +25,9 @@
 	} = $props();
 	type Place = Pick<ExplorerLocation, 'section' | 'tab'>;
 	let label = $derived(entityLabels[entity.category]);
+	let privateFunction = $derived(
+		entity.category === 'functions' && explorerCategory(entity.unit) === null
+	);
 	let visual = $derived(['pages', 'components', 'shells'].includes(entity.category));
 	let evidenceTab: 'states' | 'examples' | 'tests' = $derived.by(() => {
 		if (visual) return 'states';
@@ -63,9 +70,18 @@
 <nav class="ex-crumbs" aria-label="Breadcrumb">
 	<ol>
 		<li>
-			<EntityLink to={entityLens(nav.route, { category: entity.category })} {nav}
-				>{label.title}</EntityLink
-			>
+			{#if privateFunction}
+				{#if owner}
+					<EntityLink
+						to={entityLens(nav.route, { category: owner.category, entity: owner.id })}
+						{nav}>{owner.name}</EntityLink
+					>
+				{:else}<span>Function</span>{/if}
+			{:else}
+				<EntityLink to={entityLens(nav.route, { category: entity.category })} {nav}
+					>{label.title}</EntityLink
+				>
+			{/if}
 		</li>
 		{#if nav.route.section === 'history'}
 			<li><EntityLink to={at()} {nav}>{entity.name}</EntityLink></li>

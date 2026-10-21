@@ -43,9 +43,7 @@
 	</div>
 {:else if entity.category === 'functions' && (host.route.tab === 'examples' || host.route.tab === 'tests')}
 	<div role="tabpanel" aria-label={`${entity.name} examples`} class="ex-stack">
-		<EntityExamples documentation={entity.unit.documentation}>
-			{#snippet verification()}{@render verificationPanel()}{/snippet}
-		</EntityExamples>
+		<EntityExamples documentation={entity.unit.documentation} />
 	</div>
 {:else if host.route.tab === 'states' || host.route.tab === 'tests'}
 	{#if visual}

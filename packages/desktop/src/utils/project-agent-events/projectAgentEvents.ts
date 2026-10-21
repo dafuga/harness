@@ -49,6 +49,7 @@ export async function projectAgentEvents(agent: ProjectAgent, value: RunEvent): 
 	agent.settle?.(value.kind === 'finished' || kept !== null);
 	agent.settle = null;
 	await agent.workspace.refresh();
+	await agent.workspace.deployments?.load();
 	// Only a plan that holds the request is opened; `kept.threadId` is the thread it is in.
 	if (kept) {
 		rememberCreatedThread(agent.workspace, kept);

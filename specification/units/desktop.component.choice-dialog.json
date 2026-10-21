@@ -29,6 +29,11 @@
 				"description": "Optional flag, false by default, disabling the trigger. Does not close an already-open dialog."
 			},
 			{
+				"name": "ChoiceDialog.activeCount",
+				"type": "number",
+				"description": "Number of active jobs to show in the deployment dialog heading."
+			},
+			{
 				"name": "ChoiceDialog.width",
 				"type": "number",
 				"description": "Required preferred width in pixels, capped at viewport width minus 24 pixels."
@@ -49,9 +54,19 @@
 				"description": "Required content rendered inside the trigger button."
 			},
 			{
+				"name": "ChoiceDialog.onopen",
+				"type": "() => void",
+				"description": "Callback invoked when the dialog opens so its latest contents can be loaded."
+			},
+			{
 				"name": "ChoiceDialog.children",
 				"type": "Snippet<[close: () => void]>",
 				"description": "Required content function receiving a close callback for dismissing the dialog after selection."
+			},
+			{
+				"name": "ChoiceDialog.footer",
+				"type": "Snippet<[close: () => void]>",
+				"description": "Optional action row kept at the bottom of the dialog while the body scrolls; receives the same close callback."
 			}
 		],
 		"outputs": [

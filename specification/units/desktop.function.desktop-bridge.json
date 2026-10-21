@@ -41,7 +41,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.model.deployment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.deployment",
 			"via": "import",
 			"origin": "derived"
 		},

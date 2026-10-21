@@ -1,3 +1,4 @@
+import type { DeploymentEnvironment, DeploymentBridge } from './Deployment.types';
 import type { ProjectTaskRequest } from './ProjectTask.types';
 export type { ProjectTaskRequest } from './ProjectTask.types';
 import type {
@@ -31,8 +32,13 @@ import type {
 	ThreadInfo,
 	ThreadMessage
 } from './Desktop.types';
-
 export const channels = {
+	deploymentStatus: 'deployment:status',
+	deploymentActivities: 'deployment:activities',
+	startDeployment: 'deployment:start',
+	deploymentProgress: 'deployment:progress',
+	planDeployment: 'deployment:plan',
+	deploy: 'deployment:execute',
 	openProject: 'project:open',
 	listProjects: 'project:list',
 	selectProject: 'project:select',
@@ -60,7 +66,6 @@ export const channels = {
 export type ChannelName = (typeof channels)[keyof typeof channels];
 export const runEventChannel = 'run:event';
 export const cacheEventChannel = 'cache:status';
-
 export interface RevisionQuery extends ProjectContext {
 	branch: string | null;
 	commit: string | null;
@@ -115,8 +120,8 @@ export interface ApprovalDraft extends ProjectContext {
 	/** The one design option approved, required when the version has options. */
 	option?: string;
 }
-
 export interface RunRequest extends ProjectContext {
+	environment?: DeploymentEnvironment;
 	mode: RunMode;
 	provider: ProviderId;
 	/** An identifier the provider itself listed. It is never replaced by another. */
@@ -164,8 +169,8 @@ export interface CreatedEntity {
 export type RunPhase = 'queued' | 'prompting' | 'generating' | 'saving' | 'changing' | 'recording';
 
 /**
- * Public progress of a run: status words, the agent's public text and results. A run that
- * ends never states that tests passed; `verified` is false by construction.
+ * Public progress of a run: status words, the agent's public text and results. Host checks
+ * and deployment do not grant registered unit verification; `verified` remains false.
  */
 export type RunEvent = { runId: string } & (
 	| { kind: 'status'; phase: RunPhase; detail: string }
@@ -179,7 +184,7 @@ export type RunEvent = { runId: string } & (
 );
 
 /** What the preload script exposes as `window.harness`. Without it a page is a preview. */
-export interface DesktopBridge {
+export interface DesktopBridge extends DeploymentBridge {
 	onCacheStatus?(listener: (event: CacheStatus) => void): () => void;
 	history?(
 		input: EntityQuery & { page: number; branch?: string }

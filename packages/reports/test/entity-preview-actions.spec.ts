@@ -1,3 +1,8 @@
+import {
+	reviewHelperCard,
+	reviewHelperUsage,
+	reviewPrivateFunctions
+} from './entityPreviewFunctions';
 import { expect, test } from '../../../test/support/browserTest';
 import {
 	capture,
@@ -44,9 +49,10 @@ for (const [name, size] of Object.entries(viewports)) {
 			});
 			await capture(tab, `grid-${category}-${name}`);
 			const cards = tab.getByRole('article');
-			await expect(cards, 'only exported shared helpers are listed').toHaveCount(
-				category === 'components' ? 3 : 1
-			);
+			await expect(
+				cards,
+				'only helpers used in two distinct visible places are listed'
+			).toHaveCount(category === 'components' ? 3 : 1);
 			const card = (await cards.first().boundingBox())!;
 			const available = (await tab.locator('.ex-index').boundingBox())!;
 			if (name !== 'mobile') {
@@ -54,21 +60,9 @@ for (const [name, size] of Object.entries(viewports)) {
 			}
 			expect(await fits(tab)).toBe(true);
 			if (category === 'functions') {
-				await expect(cards.first(), 'function cards omit detail panels').not.toContainText(
-					/Contract|Inputs|Output|Used by|View tests|Shared|Changed/
-				);
-				await expect(cards.locator('.hx-verdict')).toHaveCount(0);
-				await expect(cards.locator('code'), 'function cards show example calls').toHaveText(
-					'filterOrders(orders, "SERVICE")'
-				);
-				await expect(cards.locator('h2, p, img')).toHaveCount(0);
-				await expect(cards.locator('svg'), 'function cards have no arrow').toHaveCount(0);
-				const action = cards.getByRole('link');
-				await expect(action).toHaveCount(1);
-				await action.press('Enter');
-				expect(await where(tab)).toMatchObject({ category, entity: ids.filter, commit: null });
-				await tab.getByRole('tab', { name: 'Contract', exact: true }).click();
-				await expect(tab.getByRole('table', { name: 'Parameters', exact: true })).toBeVisible();
+				await reviewHelperCard(tab, cards);
+				await reviewHelperUsage(tab, name);
+				await reviewPrivateFunctions(tab, name);
 			}
 		}
 	});
@@ -119,7 +113,6 @@ for (const [name, size] of Object.entries(viewports)) {
 		await tab.keyboard.press('Enter');
 		expect(await where(tab)).toEqual({ branch: 'feature/orders', commit: null, ...page });
 	});
-
 	test(`the console keeps a loaded revision responsive at ${name} width`, async ({
 		page: tab
 	}, info) => {

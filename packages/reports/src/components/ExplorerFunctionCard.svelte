@@ -49,6 +49,16 @@
 	>
 		<code>{call}</code>
 	</EntityLink>
+	<div class="ex-function-usage" role="group" aria-label="Used In">
+		<span>Used In</span>
+		{#each row.usedIn ?? [] as consumer (consumer.id)}
+			<EntityLink
+				to={entityLens(nav.route, { category: consumer.category, entity: consumer.id })}
+				{nav}
+				class="ex-function-consumer">{consumer.name}</EntityLink
+			>
+		{:else}<span>—</span>{/each}
+	</div>
 </article>
 
 <style>
@@ -77,7 +87,25 @@
 	.ex-function-tile :global(.ex-function-call) {
 		display: block;
 		min-width: 0;
-		padding: 16px;
+		padding: 16px 16px 8px;
 		border-radius: inherit;
+	}
+	.ex-function-usage {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px 10px;
+		padding: 0 16px 14px;
+		color: var(--ex-muted);
+		font-size: 0.75rem;
+		line-height: 1.5;
+	}
+	.ex-function-usage :global(.ex-function-consumer) {
+		color: var(--ex-soft);
+		overflow-wrap: anywhere;
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+	.ex-function-usage :global(.ex-function-consumer:hover) {
+		color: var(--ex-text);
 	}
 </style>

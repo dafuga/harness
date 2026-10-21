@@ -26,6 +26,8 @@ import {
 	type PreviewVariant
 } from './entityPreviewData';
 import { commits, ids } from './entityUnits';
+import { withHelpers } from './entityPreviewHelpers';
+
 /** The synthetic history in a browser, for the checks that need one; no server and no real data. */
 const variant = new URLSearchParams(location.search).get('variant') as PreviewVariant | null;
 const recorded = (commit: string, whole = true) => revision(commit, [previewRecord(commit, whole)]);
@@ -138,32 +140,6 @@ if (variant === 'console') {
 	history.replaceState(null, '', '/harness' + explorerRoutePath(asked()));
 	mount(HarnessShell, { target, props: { base: '/harness', exportable: false } });
 } else show(asked());
-/** Source-derived helper metadata distinguishes callable utilities from implementation units. */
-function withHelpers(detail: HarnessRevision): HarnessRevision {
-	const template = detail.registry.units.find((unit) => unit.id === ids.filter)!;
-	const hidden = ['types', 'schema', 'private', 'class-method', 'legacy', 'unused', 'single'].map(
-		(kind) => {
-			let helpers: typeof template.helpers = kind === 'legacy' ? undefined : [];
-			if (kind === 'unused' || kind === 'single') {
-				helpers = template.helpers?.map((helper) => ({
-					...helper,
-					name: kind,
-					consumers: kind === 'single' ? [{ unit: ids.list }] : []
-				}));
-			}
-			return {
-				...template,
-				id: `function.${kind}`,
-				title: kind,
-				helpers
-			};
-		}
-	);
-	return {
-		...detail,
-		registry: { ...detail.registry, units: [...detail.registry.units, ...hidden] }
-	};
-}
 function callableFixture(unit: HarnessUnit): HarnessUnit {
 	const returnNames: Record<string, string> = {
 		toKebabCase: 'kebabCaseText',

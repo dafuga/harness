@@ -3,6 +3,7 @@ import ExplorerCatalogScreen from '../../src/components/harness/ExplorerCatalogS
 import { revision } from '../entityFixture';
 import { count, drawn, screen, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';
+import { withHelpers } from '../entityPreviewHelpers';
 
 test('function catalog cards stay concise and retain revision links without detail panels', () => {
 	for (const mode of ['current', 'commit'] as const) {
@@ -16,7 +17,13 @@ test('function catalog cards stay concise and retain revision links without deta
 		expect(words(card)).not.toContain('Returns the orders');
 		expect(words(card)).not.toMatch(/Contract|Inputs|Output|Used by|View tests|Shared|Changed/);
 		expect(count(body, /class="hx-verdict/g)).toBe(0);
-		expect(count(card, /<a\b/g), 'only the function call opens its page').toBe(1);
+		expect(count(card, /<a\b/g), 'function call and its two consumer links').toBe(3);
+		expect(words(card)).toContain('Used In');
+		expect(words(card)).toContain('Order list');
+		expect(words(card)).toContain('Order store');
+		expect(card).toContain(
+			`/branch/feature%2Forders${mode === 'current' ? '' : `/commit/${commits.middle}`}/services/${ids.store}`
+		);
 		expect(card).not.toMatch(/<svg|ex-function-open/);
 		const commit = mode === 'current' ? '' : `/commit/${commits.middle}`;
 		expect(body).toContain(`/branch/feature%2Forders${commit}/functions/${ids.filter}`);
@@ -90,4 +97,33 @@ test('documented parameters belong to the displayed revision; missing values sta
 	expect(words(screen(ExplorerCatalogScreen, 'commit', { category: 'functions' }))).toContain(
 		'filterOrders(orders, "SERVICE")'
 	);
+});
+
+test('helper usage selects three distinct eligible consumers before truncating', () => {
+	const head = withHelpers(revision(commits.tip, []));
+	const body = screen(ExplorerCatalogScreen, 'current', { category: 'functions' }, { head });
+	const card = /<article\b.*?<\/article>/s.exec(body)![0];
+	expect(words(card)).toContain('Used In');
+	expect(count(card, /<a\b/g)).toBe(4);
+	for (const target of [
+		`components/${ids.list}`,
+		`services/${ids.store}`,
+		'models/app.model.order'
+	])
+		expect(card).toContain(`/branch/feature%2Forders/${target}`);
+	for (const excluded of [ids.page, ids.card, 'missing']) expect(card).not.toContain(excluded);
+	const helper = head.registry.units.find((unit) => unit.id === ids.filter)!;
+	for (const consumers of [
+		[{ unit: ids.page }, { unit: ids.filter }],
+		[{ unit: ids.list }, { unit: ids.filter }],
+		[{ unit: ids.list }, { unit: 'missing' }],
+		[
+			{ unit: ids.list, symbol: 'first' },
+			{ unit: ids.list, symbol: 'second' }
+		]
+	]) {
+		helper.helpers![0].consumers = consumers;
+		const empty = screen(ExplorerCatalogScreen, 'current', { category: 'functions' }, { head });
+		expect(count(empty, /<article\b/g), 'zero or one visible consumer is private').toBe(0);
+	}
 });

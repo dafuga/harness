@@ -1,3 +1,4 @@
+import { helperContract } from '../../../../src/utils/helperContract';
 import { explorerKindCategory, type ExplorerCategory } from '../../../../src/utils/explorerRoute';
 import type { HarnessUnit } from '../models/Harness.types';
 
@@ -31,8 +32,10 @@ const renders = (unit: Classified) =>
  */
 export function explorerCategory(unit: Classified): ExplorerCategory | null {
 	if (renders(unit)) return 'pages';
-	if (unit.kind === 'module' && unit.helpers?.length) return 'functions';
 	const category = explorerKindCategory(unit.kind);
+	if (category === 'functions' || unit.kind === 'module') {
+		return unit.helpers?.some(helperContract) ? 'functions' : null;
+	}
 	return category === 'pages' ? 'services' : category;
 }
 

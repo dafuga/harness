@@ -6,35 +6,12 @@
 		grid-template-columns: repeat(4, minmax(0, 1fr));
 	}
 }
-/* Narrower than one row: the revision takes a row of its own under the bar, and the search, with
-   the settings, stays at the end of the first row, as in the explorer bar. */
-@media (max-width: 1409px) {
-	.topbar-search {
-		margin-left: auto;
-	}
-	.revision-picker {
-		order: 1;
-		flex: none;
-		margin-left: 0;
-		border-left: 0;
-		padding: 0 0 4px;
-	}
-}
+/* NavBar arranges the workspace bar down to a tablet; a phone's rows are under 560 pixels here. */
 @media (max-width: 1250px) {
 	.topbar {
 		flex-wrap: wrap;
 		gap: 12px;
 		padding-top: 12px;
-	}
-	.topbar nav {
-		order: 3;
-		width: 100%;
-		justify-content: center;
-		height: 70px;
-	}
-	/* The categories end the bar here, a row-gap under the revision. */
-	.revision-picker {
-		padding-bottom: 0;
 	}
 	.project-switcher {
 		border-inline: 0;
@@ -91,9 +68,6 @@
 	.brand {
 		font-size: 20px;
 	}
-	.revision-picker {
-		gap: 8px;
-	}
 	.before-after {
 		grid-template-columns: minmax(0, 1fr);
 	}
@@ -102,12 +76,6 @@
 	.topbar {
 		padding: 10px 12px 0;
 	}
-	/* The brand and the search share the first row; the project, revision and account follow. */
-	.project-switcher {
-		order: 1;
-		width: 100%;
-		justify-content: center;
-	}
 	.account {
 		order: 2;
 		width: 100%;
@@ -115,21 +83,64 @@
 		border: 0;
 		padding: 0;
 	}
-	.revision-picker {
-		margin: 0;
-		border: 0;
-		padding: 0;
-		max-width: 100%;
+	/* The workspace bar in three rows: the mark, the project and the deployment light; the
+	   environment beside the revision, with how the environment stands under both; the categories,
+	   which scroll, and the search. A signed-in account takes a row under the project. */
+	.topbar:has(.topbar-search) {
+		grid-template-columns: 34px auto minmax(0, 1fr) auto;
+		grid-template-areas:
+			'brand project project account'
+			'environment environment revision revision'
+			'status status status status'
+			'tools tools tools search';
+		gap: 4px 6px;
+		padding-top: 6px;
 	}
+	.topbar.with-account {
+		grid-template-areas:
+			'brand project project project'
+			'account account account account'
+			'environment environment revision revision'
+			'status status status status'
+			'tools tools tools search';
+	}
+	/* The mark alone stands for Harness, so the project's name keeps the room. */
+	.topbar:has(.topbar-search) .brand-mark {
+		display: flex;
+		font-size: 28px;
+	}
+	.brand-word {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+	.topbar-search {
+		grid-area: search;
+	}
+	/* The categories scroll along the last row, the shown one brought into view. */
 	.topbar nav {
-		height: 65px;
-		overflow-x: auto;
-		justify-content: flex-start;
 		gap: 2px;
+		height: 44px;
+		overflow: auto hidden;
+		scrollbar-width: none;
 	}
 	.topbar nav a {
-		min-width: 68px;
+		flex: none;
+		min-width: 62px;
+		gap: 4px;
+		padding-inline: 6px;
 		font-size: 11px;
+	}
+	.topbar nav svg {
+		width: 18px;
+		height: 18px;
+	}
+	/* Inside the scrolling row a focus ring is drawn within its tab, so the row never cuts it. */
+	.topbar nav a:focus-visible {
+		outline-offset: -3px;
 	}
 	.catalog {
 		padding: 18px;

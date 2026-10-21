@@ -180,9 +180,8 @@ test('a callable has a distinct revision-bound address across tabs and history',
 		const at = new URL(explorerRoutePath(history), 'http://localhost');
 		expect(explorerRoute(at.pathname, at.search)).toEqual(history);
 	}
-	expect(explorerRoute('/branch/main/components/card', '?helper=wrong')).not.toHaveProperty(
-		'helper'
-	);
+	const component = explorerRoute('/branch/main/components/card', '?helper=wrong');
+	expect(component).not.toHaveProperty('helper');
 	expect(explorerRoute('/branch/main/functions', '?helper=wrong')).not.toHaveProperty('helper');
 });
 test('an entity id is one encoded segment', () => {

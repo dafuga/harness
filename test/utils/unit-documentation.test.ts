@@ -10,17 +10,23 @@ import { indexFiles, memoryTree, unitOf } from '../support/memoryTree';
 const id = 'function.rank',
 	path = 'src/functions/rank/README.md';
 const uses = [
-	{ name: 'Keep values', input: { enabled: false, limit: 0, empty: null }, output: '' },
+	{
+		name: 'Keep values',
+		call: 'rank({ enabled: false, limit: 0, empty: null })',
+		input: { enabled: false, limit: 0, empty: null },
+		output: ''
+	},
 	{ name: 'An expected error', input: [], error: false }
 ];
 const markdown = (unitId = id, examples: unknown = uses) =>
 	'# Rank\n\n```harness-examples\n' +
-	JSON.stringify({ schemaVersion: 1, unitId, examples }) +
+	JSON.stringify({ schemaVersion: 1, unitId, setup: 'const rank = (value) => value;', examples }) +
 	'\n```\n';
 
 test('committed documents preserve expected values and never invent observed results', () => {
 	const doc = unitDocumentation(markdown(), id, path);
 	expect(doc.examples).toEqual(uses);
+	expect(doc).toHaveProperty('setup', 'const rank = (value) => value;');
 	expect(doc.text).toBe(markdown());
 	expect(doc.gap).toBeUndefined();
 	for (const text of [
@@ -34,6 +40,8 @@ test('committed documents preserve expected values and never invent observed res
 		expect(unitDocumentation(text, id).gap).toBeTruthy();
 	}
 	for (const examples of [
+		[{ name: 'Empty call', call: '', input: 1, output: 1 }],
+		[{ name: 'Non-code call', call: { text: 'rank(1)' }, input: 1, output: 1 }],
 		[{ name: 'Absent', input: 1 }],
 		[{ name: 'Ambiguous', input: 1, output: 2, error: 3 }]
 	]) {

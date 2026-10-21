@@ -42,6 +42,11 @@
 				"name": "explorerEntities.parent",
 				"type": "HarnessRevision | null",
 				"description": "Optional first-parent revision, used to show removed units in their last active form."
+			},
+			{
+				"name": "explorerEntity.includePrivate",
+				"type": "boolean | undefined",
+				"description": "Explicitly resolve a private callable for an owner or retained detail address; defaults to false for collections."
 			}
 		],
 		"outputs": [

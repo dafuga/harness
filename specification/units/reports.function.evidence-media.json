@@ -3,12 +3,12 @@
 	"id": "reports.function.evidence-media",
 	"kind": "function",
 	"title": "Evidence media formatting",
-	"responsibility": "Determines supported media MIME/type labels and formats audio duration.",
+	"responsibility": "Determines supported media MIME/type labels and formats duration in seconds for display.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/utils/evidenceMedia.ts"],
-		"symbols": ["mediaMime", "evidenceMedia", "audioDuration"]
+		"symbols": ["mediaMime", "evidenceMedia", "formatDuration"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -24,9 +24,10 @@
 				"description": "Evidence with optional explicit media type and file address."
 			},
 			{
-				"name": "audioDuration.seconds",
+				"name": "formatDuration.seconds",
 				"type": "number",
-				"description": "Optional duration in seconds."
+				"description": "Optional duration in seconds.",
+				"examples": [90]
 			}
 		],
 		"outputs": [
@@ -41,8 +42,8 @@
 				"description": "Explicit media type when present; otherwise audio for an audio extension or data:audio/ URL, and image for everything else."
 			},
 			{
-				"name": "audioDuration",
-				"type": "unknown",
+				"name": "formatDuration",
+				"type": "string",
 				"description": "Floored duration as minutes:seconds or hours:minutes:seconds. Empty for absent, negative or nonfinite values."
 			}
 		],
@@ -57,15 +58,15 @@
 	],
 	"helperContracts": [
 		{
-			"name": "audioDuration",
+			"name": "formatDuration",
 			"source": "packages/reports/src/utils/evidenceMedia.ts",
 			"inputs": [
 				{
-					"name": "audioDuration.seconds",
+					"name": "formatDuration.seconds",
 					"type": "number"
 				}
 			],
-			"output": "unknown",
+			"output": "string",
 			"pure": true,
 			"consumers": [
 				{
