@@ -185,6 +185,8 @@ export interface HarnessExplanation {
 export interface HarnessRevision {
 	regressions?: RegressionView[];
 	commit: string;
+	/** Opaque whole-tree identity retained by entity projections, without a cache filename. */
+	sourceTree?: string;
 	registry: {
 		available: boolean;
 		gap?: string;

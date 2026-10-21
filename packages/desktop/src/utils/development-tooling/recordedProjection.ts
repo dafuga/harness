@@ -67,9 +67,10 @@ function detail(whole: HarnessRevision, entity: string, shown: Shown): HarnessRe
 		uncertain: []
 	});
 	const changed = sourceImpact && { ...impact(sourceImpact), expanded: sourceImpact.expanded };
+	const sourceTree = focusedTree(whole, proofs);
 	return {
 		commit: whole.commit,
-		...(whole.side ? { side: whole.side } : {}),
+		...(sourceTree ? { sourceTree } : {}),
 		registry: {
 			available: registry.available,
 			...(registry.gap === undefined ? {} : { gap: registry.gap }),
@@ -111,4 +112,15 @@ function ownPoint(
 		...point,
 		...(point.captures ? { captures: point.captures.filter((item) => item.unit === entity) } : {})
 	};
+}
+
+/** The opaque tree that validates this entity's retained captures; no cache path is projected. */
+function focusedTree(whole: HarnessRevision, proofs: NonNullable<HarnessRevision['regressions']>) {
+	return proofs
+		.flatMap((proof) => [proof.green, proof.red])
+		.find(
+			(point) =>
+				point?.sourceTree &&
+				(whole.sourceTree === point.sourceTree || whole.side === `sides/${point.sourceTree}.json`)
+		)?.sourceTree;
 }

@@ -3,7 +3,7 @@
 	"id": "reports.function.entity-shown",
 	"kind": "function",
 	"title": "Entity overview data",
-	"responsibility": "Assembles an entity’s readable contract and measurements using the host’s revision context.",
+	"responsibility": "Assembles an entity’s contract and measurements, retaining focused observations for the same commit or identical complete source tree with original provenance.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -64,7 +64,7 @@
 			{
 				"name": "entityShown",
 				"type": "EntityShown",
-				"description": "Readable contract, measurements and the selected verdict record. Removed entities use parent declarations for applicable states when available, while measurements still come from the head verdict record."
+				"description": "Readable contract, measurements and the selected verdict record. Removed entities use parent declarations for applicable states. Source and full-record figures can be supplemented by focused observations of the same commit or identical complete source tree, retaining their tested revision without granting a full verification verdict."
 			},
 			{
 				"name": "entityChanged",

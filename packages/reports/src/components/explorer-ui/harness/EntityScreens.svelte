@@ -71,13 +71,6 @@
 		if (paired) return { title: `After · ${at}`, role: 'Selected commit' };
 		return { title: `Branch tip · ${at}` };
 	}
-	/** Where a shown capture was taken and how its check ended; a reused one names its commit. */
-	function standing(item: Evidence): string {
-		if (item.standing === 'Focused capture') return item.standing;
-		const reused = item.phase !== 'before' && shown.origin;
-		const origin = reused ? `Inherited from ${shortCommit(reused)}` : item.standing;
-		return [origin, item.status].filter(Boolean).join(' · ');
-	}
 </script>
 
 <section class="ex-card ex-evidence" aria-labelledby="ex-screens-title">
@@ -122,16 +115,6 @@
 				<figcaption>
 					<strong>{named.title}</strong>
 					{#if named.role}<span class="ex-pill">{named.role}</span>{/if}
-					{#if !item.missing}
-						<span
-							class="ex-standing"
-							class:stale={item.standing !== 'Fresh capture' && item.standing !== 'Focused capture'}
-							>{standing(item)}</span
-						>
-						<button type="button" class="ex-text-button" onclick={() => (viewing = item)}
-							><HarnessIcon name="expand" size={16} /> Open full size</button
-						>
-					{/if}
 				</figcaption>
 				{#if item.missing}
 					<p class="ex-gap">

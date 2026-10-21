@@ -76,7 +76,8 @@ test('a side with no capture of the state is a stated gap, never the other side 
 		'aaaaaaa-default-desktop.png',
 		'bbbbbbb-default-desktop.png'
 	]);
-	expect(words(focused)).toContain('Focused capture');
+	expect(words(focused)).not.toContain('Focused capture');
+	expect(words(focused)).not.toContain('Open full size');
 	expect(verdicts(focused).some((badge) => badge.passed)).toBe(false);
 	const sized = content('current', page, {
 		head: withFocused(revision(commits.tip, []), ids.page, {

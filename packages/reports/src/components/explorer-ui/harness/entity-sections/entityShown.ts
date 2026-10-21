@@ -5,9 +5,9 @@ import { entityMeasure } from './entityMeasure';
 import { verdictRecord } from '../../../../utils/explorer-ui/explorer-verdict/explorerVerdict';
 
 /**
- * What an overview and a details screen say about one entity: its contract, and its size and
- * performance from the record that judges the shown revision. An entity the shown commit
- * removed has nothing there, so the states of its last contract are those its parent required.
+ * Describe one entity using the selected revision's contract and recorded observations.
+ * Focused figures can come from an identical whole tree without acquiring a full verdict.
+ * Removed entities retain the states their parent required.
  */
 export function entityShown(host: Shown, entity: ExplorerEntity): EntityShown {
 	const held = entity.change === 'removed' && host.parent ? host.parent : host.head;
@@ -18,8 +18,14 @@ export function entityShown(host: Shown, entity: ExplorerEntity): EntityShown {
 		// The registry that holds the entity says what it is made into, so which states apply.
 		states: requiredStates(entity.unit, held.registry.scenarios, held.registry.units)
 	});
-	const observations = (host.head.regressions ?? []).flatMap((proof) =>
-		proof.green?.commit === host.head.commit ? (proof.green.measurements ?? []) : []
+	const observations = (host.head.regressions ?? []).flatMap(({ green }) =>
+		green &&
+		(green.commit === host.head.commit ||
+			(green.sourceTree &&
+				(host.head.sourceTree === green.sourceTree ||
+					host.head.side === `sides/${green.sourceTree}.json`)))
+			? (green.measurements ?? [])
+			: []
 	);
 	return { contract, measure: entityMeasure(entity.unit, record, observations), record };
 }

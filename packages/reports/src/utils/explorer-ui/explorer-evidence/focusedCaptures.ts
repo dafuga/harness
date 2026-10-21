@@ -10,7 +10,9 @@ export function focusedCaptures(detail: HarnessRevision, unit: string): Explorer
 					(point) =>
 						point &&
 						(point.commit === detail.commit ||
-							(point.sourceTree && detail.side === `sides/${point.sourceTree}.json`))
+							(point.sourceTree &&
+								(detail.sourceTree === point.sourceTree ||
+									detail.side === `sides/${point.sourceTree}.json`)))
 				)
 				.map((point) => ({ loop: run.loop, point: point! }))
 		)

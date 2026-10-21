@@ -8,7 +8,7 @@ import { entityReasons, type EntityReasons } from './entityReasons';
 export interface EntityShown {
 	contract: ContractRow[];
 	measure: EntityMeasure;
-	/** The one record that judges the shown revision; its figures and its verdict go together. */
+	/** Full-verification verdict only; focused observations retain their original revision separately. */
 	record: HarnessRecord | null;
 }
 

@@ -96,7 +96,13 @@ test('a page shows one screenshot at the tip and a matching pair at a commit', a
 		'/media/aaaaaaa-default-mobile.png',
 		'/media/bbbbbbb-default-mobile.png'
 	]);
-	await tab.getByRole('button', { name: 'Open full size' }).last().click();
+	const image = tab.locator('.ex-evidence .ex-shot').last();
+	await image.click();
+	await expect(tab.getByRole('dialog')).toBeVisible();
+	await tab.keyboard.press('Escape');
+	await expect(tab.getByRole('dialog')).toHaveCount(0);
+	await image.focus();
+	await image.press('Enter');
 	await expect(tab.getByRole('dialog')).toBeVisible();
 });
 test('a function shows its recorded run: steps, input, output and assertions', async ({
